@@ -25,6 +25,20 @@ Source contract:
 Static markers: role=listbox, role=option, aria-selected, aria-controls,
 aria-live polite, focus-visible, and zero cramped or overlapping controls.
 
+## WCAG / Focus Evidence Required
+
+Before public demo approval, the review must capture:
+
+- WCAG 2.2 visible focus indicator evidence.
+- Keyboard-only path without pointer input.
+- No keyboard trap across windows, toolbar, listbox, graph, inspector, tables,
+  and recent activity cards.
+- Logical focus order that matches visual reading order.
+- Focus targets that are not obscured by sticky bars or overlapping windows.
+- Reduced-motion review for graph state.
+- Screen-reader transcript that preserves mock, planned, disabled, and
+  Local Demo labels without claiming private Obsidian import or live AI access.
+
 ## Manual Review Path
 
 1. Open `desktop.html`.
@@ -41,14 +55,29 @@ aria-live polite, focus-visible, and zero cramped or overlapping controls.
 ## Automated Evidence
 
 ```bash
+npm run report:seis-second-brain-accessibility-focus-report
+npm run check:seis-second-brain-accessibility-focus-report
 npm run check:seis-second-brain
 npm run check:seis-second-brain-browser-smoke
 npm run check:seis-second-brain-readiness-contracts
 ```
 
+`npm run report:seis-second-brain-accessibility-focus-report` writes
+`reports/seis-public-demo/second-brain-accessibility-focus-latest.json` and
+`reports/seis-public-demo/second-brain-accessibility-focus-latest.md`. This
+artifact validates repo-static ARIA/focus markers and the browser-smoke mobile
+target audit contract, but it intentionally keeps manual keyboard transcript,
+screen-reader transcript, reduced-motion review note, and human accessibility
+review approval blocked until a human review records them.
+
 The readiness contract validates ARIA/focus markers statically. The browser
 smoke validates the working app surface, mobile control count, zero cramped
 targets, and VFS persistence.
+
+The automated smoke is not enough for public release by itself. Required manual
+evidence still includes a current browser smoke result, manual keyboard
+transcript, screen-reader transcript, mobile viewport target audit,
+reduced-motion review note, and human accessibility review approval.
 
 ## Release Boundary
 

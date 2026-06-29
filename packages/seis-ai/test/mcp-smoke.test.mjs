@@ -66,7 +66,7 @@ function rpcSession(requests, { timeoutMs = 15000 } = {}) {
 }
 
 describe("seis-mcp stdio smoke", () => {
-  it("initializes and lists 34 tools, 3 prompts, 28 resources", async () => {
+  it("initializes and lists 34 tools, 3 prompts, 29 resources", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -135,6 +135,7 @@ describe("seis-mcp stdio smoke", () => {
       "seis://ai/agent-permission-matrix.json",
       "seis://ai/agent-role-schema.json",
       "seis://ai/agi-evaluation-protocol.json",
+      "seis://ai/agi-github-user-readiness-gates.json",
       "seis://ai/agi-public-readiness-evidence.json",
       "seis://ai/approval-fixture.json",
       "seis://ai/cancellation-fixture.json",
@@ -250,7 +251,7 @@ describe("seis-mcp stdio smoke", () => {
     assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
     const payload = JSON.parse(resource.result.contents[0].text);
     assert.equal(payload.id, "seis-ai-core-mcp-runtime-contract");
-    assert.equal(payload.resourceCount, 28);
+    assert.equal(payload.resourceCount, 29);
     assert.equal(payload.transport, "stdio JSON-RPC");
   });
 
@@ -563,6 +564,45 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.publicReadyAsLocalDemo, true);
     assert.equal(payload.readinessSummary.acceptedClaimEvidenceCount, 0);
     assert.ok(payload.minimumClaimEvidenceMatrix.every((item) => item.claimAllowedIfMissing === false));
+  });
+
+  it("reads the SEIS AI Core AGI GitHub user readiness gates resource through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "resources/read",
+        params: {
+          uri: "seis://ai/agi-github-user-readiness-gates.json",
+        },
+      },
+    ]);
+
+    const resource = responses.get(2);
+    assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
+    const payload = JSON.parse(resource.result.contents[0].text);
+    assert.equal(payload.id, "seis-agi-github-user-readiness-gates");
+    assert.equal(payload.status, "review-gated-local-demo-ready");
+    assert.equal(payload.resourceUri, "seis://ai/agi-github-user-readiness-gates.json");
+    assert.equal(payload.routeEligibleToday, false);
+    assert.equal(payload.runtimeAuthority, false);
+    assert.equal(payload.agiClaimAllowed, false);
+    assert.equal(payload.publicReadyAsAgi, false);
+    assert.equal(payload.publicReadyForLocalDemo, true);
+    assert.equal(payload.githubReadyForEveryone, false);
+    assert.ok(payload.readinessGates.some((gate) => gate.id === "public-release-approval" && gate.status === "approval-gated"));
+    assert.ok(payload.forbiddenClaims.includes("GitHub users can run routeable 512B inference today."));
   });
 
   it("reads the SEIS AI Core 20B evidence card template resources through the protocol", async () => {

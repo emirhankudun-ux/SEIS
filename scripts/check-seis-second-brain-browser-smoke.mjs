@@ -15,7 +15,8 @@ const REQUIRED_ARTIFACTS = [
   "/home/seis/SecondBrain/seis-second-brain-vault-snapshot.md",
   "/home/seis/SecondBrain/graph-links.json",
   "/home/seis/SecondBrain/second-brain-review-gate.md",
-  "/home/seis/SecondBrain/github-readiness-review.md"
+  "/home/seis/SecondBrain/github-readiness-review.md",
+  "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md"
 ];
 
 function ensure(condition, message) {
@@ -55,6 +56,21 @@ function createStaticServer() {
 
     response.writeHead(200, { "Content-Type": contentType(filePath) });
     response.end(readFileSync(filePath));
+  });
+}
+
+async function listenStaticServer(server) {
+  await new Promise((resolveListen, rejectListen) => {
+    server.once("error", rejectListen);
+    server.listen(0, HOST, () => {
+      server.off("error", rejectListen);
+      resolveListen();
+    });
+  }).catch((error) => {
+    if (error?.code === "EPERM" && error?.address === HOST) {
+      throw new Error(`Cannot run Second Brain browser smoke because this environment cannot bind ${HOST}. Original error: ${error.message}`);
+    }
+    throw error;
   });
 }
 
@@ -221,6 +237,8 @@ function collectRelevantIssues(events) {
     .map((event) => ({
       level: event.params?.entry?.level || event.params?.type || event.method,
       text: event.params?.entry?.text
+        || event.params?.exceptionDetails?.exception?.description
+        || event.params?.exceptionDetails?.exception?.value
         || event.params?.exceptionDetails?.text
         || event.params?.args?.map((arg) => arg.value || arg.description || "").join(" ")
         || event.params?.errorText
@@ -264,8 +282,13 @@ function validateStaticContract() {
     "data-second-brain-agent-roster",
     "second-brain-capture",
     "second-brain-link",
+    "second-brain-training-pack",
     "second-brain-review",
     "second-brain-export-github",
+    "seis-agent-training-pack.md",
+    "seis-language-model-training-curriculum.json",
+    "Language Model Training Curriculum",
+    "No model install",
     "Obsidian bridge planned",
     "Human review before GitHub"
   ]) {
@@ -328,7 +351,7 @@ async function smokeSecondBrain(client, baseUrl) {
       installedAiRows: root?.querySelectorAll('[data-second-brain-installed-ai] tbody tr').length || 0,
       subAgentRows: root?.querySelectorAll('[data-second-brain-subagents] tbody tr').length || 0,
       agentRosterRows: root?.querySelectorAll('[data-second-brain-agent-roster] tbody tr').length || 0,
-      actionButtons: root?.querySelectorAll('[data-action="app-primary"], [data-action="second-brain-capture"], [data-action="second-brain-link"], [data-action="second-brain-review"], [data-action="second-brain-export-github"]').length || 0,
+      actionButtons: root?.querySelectorAll('[data-action="app-primary"], [data-action="second-brain-capture"], [data-action="second-brain-link"], [data-action="second-brain-training-pack"], [data-action="second-brain-review"], [data-action="second-brain-export-github"]').length || 0,
       localDemoCopy: text.includes('Local Demo'),
       obsidianCopy: text.includes('Obsidian bridge planned'),
       githubReviewCopy: text.includes('Human review before GitHub'),
@@ -350,7 +373,7 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(initial.installedAiRows === 6, `expected six installed AI rows, got ${initial.installedAiRows}`);
   ensure(initial.subAgentRows === 6, `expected six sub-agent rows, got ${initial.subAgentRows}`);
   ensure(initial.agentRosterRows === 12, `expected twelve autonomous agent rows, got ${initial.agentRosterRows}`);
-  ensure(initial.actionButtons === 5, `expected five Second Brain actions, got ${initial.actionButtons}`);
+  ensure(initial.actionButtons === 6, `expected six Second Brain actions, got ${initial.actionButtons}`);
   ensure(initial.localDemoCopy, "Second Brain must label Local Demo mode.");
   ensure(initial.obsidianCopy, "Second Brain must label Obsidian bridge as planned.");
   ensure(initial.githubReviewCopy, "Second Brain must label human review before GitHub.");
@@ -369,6 +392,7 @@ async function smokeSecondBrain(client, baseUrl) {
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="app-primary"][data-app-id="second-brain"]');
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-capture"]');
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-link"]');
+  await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-training-pack"]');
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-review"]');
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-export-github"]');
 
@@ -385,6 +409,7 @@ async function smokeSecondBrain(client, baseUrl) {
       notePaths: secondBrainPaths.filter((path) => path.endsWith('.md') && !path.includes('capture-')),
       lastActionVisible: text.includes('GitHub readiness export saved'),
       reviewVisible: text.includes('Human review required') || text.includes('human-review-required'),
+      trainingPackVisible: text.toLowerCase().includes('training pack saved'),
       status: diagnostics.appStatus('second-brain')
     };
   })()`);
@@ -394,6 +419,7 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(artifacts.notePaths.length >= 8, `Second Brain expected snapshot plus note/review markdown files, got ${artifacts.notePaths.length}`);
   ensure(artifacts.lastActionVisible, "Second Brain GitHub readiness action did not update visible state.");
   ensure(artifacts.reviewVisible, "Second Brain review state not visible after actions.");
+  ensure(artifacts.trainingPackVisible, "Second Brain training pack action did not update visible state.");
   ensure(artifacts.status?.lastAction?.includes("GitHub readiness export saved"), `Second Brain app status should record the readiness export: ${JSON.stringify(artifacts.status)}`);
 
   await evaluate(client, "window.__SEIS_DESKTOP__.openApp('ai-assistant')");
@@ -475,6 +501,7 @@ async function smokeMobile(client, baseUrl) {
       hasGraph: Boolean(root?.querySelector('[data-second-brain-graph]')),
       hasGithubGate: Boolean(root?.querySelector('[data-second-brain-github-gate]')),
       horizontalOverflow: document.documentElement.scrollWidth > window.innerWidth + 1,
+      appHeading: (root?.querySelector('h2')?.textContent || '').trim(),
       secondBrainText: (root?.innerText || '').slice(0, 400)
     };
   })()`);
@@ -487,7 +514,7 @@ async function smokeMobile(client, baseUrl) {
   ensure(mobile.targetCount >= 10, `Second Brain mobile expected interactive controls, got ${mobile.targetCount}`);
   ensure(mobile.crampedTargets <= 4, `Second Brain mobile has too many cramped targets: ${mobile.crampedTargets}; ${mobile.crampedSummary}`);
   ensure(!mobile.horizontalOverflow, "Second Brain mobile viewport has horizontal overflow.");
-  ensure(mobile.secondBrainText.includes("SEIS Second Brain"), "Second Brain mobile content missing app title.");
+  ensure(mobile.appHeading === "SEIS Second Brain" || mobile.secondBrainText.includes("SEIS Second Brain"), "Second Brain mobile content missing app title.");
 
   const screenshotPath = await screenshot(client, "second-brain-mobile.png");
   return { ...mobile, screenshot: screenshotPath };
@@ -508,7 +535,7 @@ async function main() {
   mkdirSync(SCREENSHOT_DIR, { recursive: true });
 
   const staticServer = createStaticServer();
-  await new Promise((resolveListen) => staticServer.listen(0, HOST, resolveListen));
+  await listenStaticServer(staticServer);
   const appPort = staticServer.address().port;
   const debugPort = 59000 + Math.floor(Math.random() * 2000);
   const userDataDir = join(tmpdir(), `seis-second-brain-smoke-${Date.now()}`);

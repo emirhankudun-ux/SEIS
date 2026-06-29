@@ -27,6 +27,10 @@ Current implementation lives in:
 - `scripts/check-seis-second-brain.mjs`
 - `scripts/check-seis-second-brain-readiness-contracts.mjs`
 - `scripts/check-seis-second-brain-browser-smoke.mjs`
+- `scripts/create-seis-obsidian-safe-import-dry-run.mjs`
+- `scripts/create-seis-read-only-model-router-decision.mjs`
+- `scripts/create-seis-second-brain-accessibility-focus-report.mjs`
+- `scripts/create-seis-second-brain-agent-registry.mjs`
 - `docs/product/seis-obsidian-bridge-safe-import.md`
 - `docs/reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md`
 - `docs/releases/PUBLIC_DEMO_RELEASE_CHECKLIST_PR54.md`
@@ -40,14 +44,24 @@ Search, SEIS AI, Command Center, Launchpad, Favorites, and desktop shortcuts.
 | --- | --- | --- |
 | Markdown vault | Browser-local Local Demo | Seed notes render under `/home/seis/SecondBrain`; `Save Vault Snapshot` writes note files and `seis-second-brain-vault-snapshot.md` into the browser VFS. |
 | Knowledge graph | Browser-local Local Demo | Graph nodes and backlinks are generated from repo-owned seed records; `Link Graph` writes `graph-links.json`. |
+| Agent training pack | Local Demo read-only | `Build Training Pack` writes `/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md` with Obsidian, accessibility, router, PR #54 checklist, and language model training curriculum summaries. |
+| Language model training curriculum | Planned-training contract | `content/development/seis-language-model-training-curriculum.json` and `reports/seis-model-scaling/seis-language-model-training-curriculum.md` map candidate model families, local seed-model lanes, retrieval lanes, and approval gates without installing models, downloading checkpoints, training, benchmarking, calling providers, or claiming SEIS owns a foundation model. |
 | Installed AI bridge | Local Demo context only | SEIS AI exposes a Second Brain tab with all 6 current installed AI profiles: Codex, SEIS Local Demo Runtime, Claude Review Profile, Qwen Alternative Review, Gemini Secondary Validation, and Ollama Local Candidate. Missing Key and Disabled states remain explicit. |
+| read-only model-router decision artifact | Provider-neutral review-only | `npm run report:seis-read-only-model-router-decision` writes `reports/seis-public-demo/read-only-model-router-decision-latest.json` and `.md` with installed AI profile fixtures, blocked reasons, explicit fallback policy, `executionPerformed: false`, and no provider calls. |
+| Second Brain agent registry artifact | Review-only | `npm run report:seis-second-brain-agent-registry` writes `reports/seis-public-demo/second-brain-agent-registry-latest.json` and `.md` by joining installed AI profiles, AI workforce assignments, managed sub-agent lanes, the 12-agent roster, Obsidian bridge boundaries, plugin inventory, MCP surfaces, and connector activation policy without provider calls, credential validation, private vault reads, autonomous writes, SSH, deployment, GitHub mutation, or release approval. |
 | Sub-agent lanes | Status/plan-only | All 6 current managed SEIS sub-agent lanes are indexed: SEIS Hub, SEIS Cloud, SEIS-Code, SEIS-Design, SEIS-DATA, and SEIS-Security. They can review/propose only; they cannot expand permissions or mutate external systems. |
 | Autonomous agent roster | Status/plan-only | The Second Brain maps the 12-agent target roster: Architect, Code, Design, UI/UX, Research, Search, Security, DevOps, Documentation, QA, Cloud, and Automation. |
 | GitHub readiness | Human review required | `Export GitHub Readiness` writes a blocked-by-review readiness note; the dedicated browser-smoke checks the export and reload persistence. Push, merge, release, Pages, and public launch still require approval. |
 | Obsidian bridge | Planned | Future bridge must use explicit user-selected import, provenance review, no-secret filtering, and approval before sync. |
 | Obsidian bridge safe import contract | Planned-gated | `content/development/seis-obsidian-bridge-safe-import-contract.json` and `docs/product/seis-obsidian-bridge-safe-import.md` require explicit user-selected source path, dry-run manifest, no private note body commits, provenance, accessibility review, and human approval before GitHub publication. |
+| Obsidian safe-import dry-run artifact | Repo-owned dry-run | `npm run report:seis-obsidian-safe-import-dry-run` writes `reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json` and `.md` from repo-owned seed note metadata only. It records `selectedByUser: false`, `humanApprovalState: not-requested`, and no private vault read. |
 | Second Brain accessibility/focus QA | Contract-active | `content/development/seis-second-brain-accessibility-focus-qa.json` and `docs/reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md` bind listbox/option roles, `aria-selected`, `aria-controls`, `aria-live polite`, focus-visible styling, inspector focus, and zero cramped mobile controls. |
+| accessibility/focus QA artifact | Review-gated | `npm run report:seis-second-brain-accessibility-focus-report` writes `reports/seis-public-demo/second-brain-accessibility-focus-latest.json` and `.md` with repo-static ARIA/focus evidence, browser-smoke mobile target audit coverage, and explicit blockers for manual keyboard transcript, screen-reader transcript, reduced-motion review, and human accessibility approval. |
 | Public demo release checklist | Review-gated | `content/development/seis-public-demo-release-checklist-pr54.json` and `docs/releases/PUBLIC_DEMO_RELEASE_CHECKLIST_PR54.md` keep PR #54 review separate from merge, Pages publication, private vault import, live provider routing, SSH, deployment, or production-readiness claims. |
+| SEIS public demo go/no-go gate | Read-only NO-GO classifier | `scripts/check-seis-public-demo-go-no-go.mjs` and `npm run check:seis-public-demo-go-no-go -- --run-fast-checks` validate that public demo release remains blocked until current browser-smoke evidence, clean release-candidate review, and explicit human approval exist. |
+| PR #54 review packet | Required before release | `reports/seis-public-demo/pr54-review-packet-latest.md` summarizes the go/no-go decision, evidence manifest, blockers, and required reviewer decisions without approving merge, Pages publication, release tagging, deployment, private Obsidian import, live provider routing, or SSH. |
+| Worktree review packet | Required while dirty | `reports/seis-public-demo/worktree-review-latest.md` classifies the dirty worktree for PR #54 release-candidate review without staging, committing, deleting, resetting, pushing, merging, or approving release. |
+| stage plan | Required before commit | `reports/seis-public-demo/pr54-stage-plan-latest.md` separates the Second Brain readiness slice from unrelated workstreams and prints human-review-only `git add -- ...` commands without executing them. |
 
 ## Safety Boundary
 
@@ -85,17 +99,29 @@ review, and explicit approval for any GitHub publication step.
 
 ```bash
 npm run check:seis-second-brain
+npm run report:seis-obsidian-safe-import-dry-run
+npm run check:seis-obsidian-safe-import-dry-run
+npm run report:seis-read-only-model-router-decision
+npm run check:seis-read-only-model-router-decision
+npm run report:seis-second-brain-accessibility-focus-report
+npm run check:seis-second-brain-accessibility-focus-report
+npm run report:seis-second-brain-agent-registry
+npm run check:seis-second-brain-agent-registry
 npm run check:seis-second-brain-readiness-contracts
 npm run check:seis-second-brain-browser-smoke
+npm run check:seis-public-demo-go-no-go -- --run-fast-checks
 ```
 
 The validators check the JSON contract, readiness contracts, Desktop app
 wiring, UI action hooks, CSS surface, documentation, package scripts, and
 basic sensitive-pattern rules.
 The browser-smoke starts the local Desktop route in Chrome, opens Second Brain,
-runs all five vault/review/GitHub-readiness actions, verifies browser-VFS
-artifacts after reload, opens the SEIS AI Second Brain bridge, and checks the
-mobile viewport for usable controls and no horizontal overflow.
+runs all six vault/training-pack/review/GitHub-readiness actions, verifies
+browser-VFS artifacts after reload, opens the SEIS AI Second Brain bridge, and
+checks the mobile viewport for usable controls and no horizontal overflow. The
+public demo go/no-go gate is read-only and should return `NO-GO` until the
+current release candidate has fresh browser evidence and explicit human
+approval.
 
 ## Next Safe Work
 
@@ -108,3 +134,6 @@ mobile viewport for usable controls and no horizontal overflow.
    files, and sub-agent responsibilities.
 4. Use the PR #54 public demo checklist before merge, Pages publication, live
    providers, SSH, deployment, or public demo release.
+5. Keep `npm run check:seis-public-demo-go-no-go -- --run-fast-checks` wired
+   into the release review so GitHub publication stays blocked until evidence
+   and approval exist.

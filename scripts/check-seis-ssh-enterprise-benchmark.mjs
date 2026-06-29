@@ -24,6 +24,8 @@ const evidence = [];
 const accessModel = readJson("deploy/seis-ssh-access-model.json", true);
 const roadmap = readJson("deploy/seis-ssh-cloud-roadmap.json", true);
 const contract = readJson("deploy/seis-ssh-closed-runtime-contract.json", true);
+const publicAccessContract = readJson("deploy/seis-ssh-public-access-contract.json", true);
+const liveReadinessEvidence = readJson("content/development/seis-ssh-live-readiness-evidence.json", true);
 const packageJson = readJson("package.json", true);
 const installSh = readText("server/cloud/ssh-ai-shell/install.sh");
 const daemonService = readText("server/cloud/ssh-ai-shell/systemd/ssh-ai.service");
@@ -107,6 +109,10 @@ addCheck({
   weight: 12,
   pass: Boolean(packageJson?.scripts?.["check:seis-ssh-access-model"])
     && Boolean(packageJson?.scripts?.["check:seis-ssh-picker-compatibility"])
+    && Boolean(packageJson?.scripts?.["check:seis-ssh-public-access"])
+    && Boolean(packageJson?.scripts?.["check:seis-ssh-public-onboarding"])
+    && Boolean(packageJson?.scripts?.["check:seis-ssh-public-contributor-doctor"])
+    && Boolean(packageJson?.scripts?.["check:seis-ssh-live-readiness-evidence"])
     && Boolean(packageJson?.scripts?.["check:seis-ssh-closed-runtime"])
     && Boolean(packageJson?.scripts?.["check:seis-ssh-cloud-roadmap"]),
   evidence: {
@@ -114,11 +120,54 @@ addCheck({
     value: {
       accessModel: packageJson?.scripts?.["check:seis-ssh-access-model"],
       picker: packageJson?.scripts?.["check:seis-ssh-picker-compatibility"],
+      publicAccess: packageJson?.scripts?.["check:seis-ssh-public-access"],
+      publicOnboarding: packageJson?.scripts?.["check:seis-ssh-public-onboarding"],
+      publicContributorDoctor: packageJson?.scripts?.["check:seis-ssh-public-contributor-doctor"],
+      liveReadinessEvidence: packageJson?.scripts?.["check:seis-ssh-live-readiness-evidence"],
       closedRuntime: packageJson?.scripts?.["check:seis-ssh-closed-runtime"],
       roadmap: packageJson?.scripts?.["check:seis-ssh-cloud-roadmap"],
     },
   },
   summary: "Birden fazla denetim birikimi; tek noktadan onay yerine kontrollü guardrail seti.",
+});
+
+addCheck({
+  id: "seis-ssh-public-github-access",
+  label: "Public GitHub access keeps server and port stable",
+  category: "governance",
+  weight: 8,
+  pass: publicAccessContract?.id === "seis-ssh-public-access-contract"
+    && publicAccessContract?.targetAlias === "SEIS-SSH"
+    && publicAccessContract?.serverAndPortPolicy?.mode === "preserve-existing-server-and-port"
+    && publicAccessContract?.serverAndPortPolicy?.englishInvariant === "Keep the same server and port."
+    && (publicAccessContract?.approvalGates || []).includes("change-server-or-port")
+    && (publicAccessContract?.requiredCommands || []).includes("npm run check:seis-ssh-public-onboarding")
+    && (publicAccessContract?.requiredCommands || []).includes("npm run check:seis-ssh-public-contributor-doctor")
+    && (publicAccessContract?.requiredCommands || []).includes("npm run check:seis-ssh-live-readiness-evidence")
+    && (publicAccessContract?.evidenceSurfaces || []).includes("scripts/create-seis-ssh-public-onboarding-pack.mjs")
+    && (publicAccessContract?.evidenceSurfaces || []).includes("scripts/check-seis-ssh-public-contributor-doctor.mjs")
+    && (publicAccessContract?.evidenceSurfaces || []).includes("content/development/seis-ssh-live-readiness-evidence.json")
+    && liveReadinessEvidence?.targetAlias === "SEIS-SSH"
+    && liveReadinessEvidence?.serverAndPortPolicy?.serverOrPortChanged === false
+    && accessModel?.publicAccessContract === "deploy/seis-ssh-public-access-contract.json"
+    && roadmap?.publicAccessContract === "deploy/seis-ssh-public-access-contract.json",
+  evidence: {
+    source: [
+      "deploy/seis-ssh-public-access-contract.json",
+      "deploy/seis-ssh-access-model.json",
+      "deploy/seis-ssh-cloud-roadmap.json",
+    ],
+    value: {
+      alias: publicAccessContract?.targetAlias,
+      invariant: publicAccessContract?.serverAndPortPolicy?.englishInvariant,
+      policy: publicAccessContract?.serverAndPortPolicy?.mode,
+      approvalGate: "change-server-or-port",
+      onboardingGate: "npm run check:seis-ssh-public-onboarding",
+      contributorDoctorGate: "npm run check:seis-ssh-public-contributor-doctor",
+      liveEvidenceStatus: liveReadinessEvidence?.status,
+    },
+  },
+  summary: "GitHub'da herkesin kullanabilecegi SSH deneyimi, alias sadeligi kadar mevcut sunucu ve portun izinsiz degismemesine de bagli.",
 });
 
 addCheck({

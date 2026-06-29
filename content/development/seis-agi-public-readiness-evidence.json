@@ -17,6 +17,7 @@
     "apexModelProgram": "content/development/seis-512b-apex-model-program.json",
     "modelScalingProfile": "content/development/seis-model-scaling-hardware-profile.json",
     "modelScalingCouncil": "content/development/seis-model-scaling-subagent-council.json",
+    "githubUserReadinessGates": "content/development/seis-agi-github-user-readiness-gates.json",
     "publicReadinessDoc": "docs/ai/seis-agi-public-readiness-evidence.md"
   },
   "truthBoundary": "This evidence matrix records what is missing before any public SEIS AGI or 512B claim. It does not run evaluations, train or download models, run inference, benchmark, call providers, provision GPU/cloud resources, execute SSH, deploy, or approve route eligibility.",
