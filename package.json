@@ -158,6 +158,7 @@
     "report:seis-ssh-public-onboarding": "node scripts/create-seis-ssh-public-onboarding-pack.mjs --write",
     "check:seis-ssh-public-contributor-doctor": "node scripts/check-seis-ssh-public-contributor-doctor.mjs --check",
     "report:seis-ssh-public-contributor-doctor": "node scripts/check-seis-ssh-public-contributor-doctor.mjs --write",
+    "run:seis-ssh-public-onboarding": "npm run cloud:ssh-config:install -- --dry-run && npm run report:seis-ssh-public-access && npm run check:seis-ssh-public-access && npm run check:seis-ssh-public-onboarding && npm run check:seis-ssh-public-contributor-doctor && npm run check:seis-ssh-picker-compatibility && npm run report:seis-ssh-public-onboarding && npm run report:seis-ssh-public-contributor-doctor",
     "check:seis-ssh-live-readiness-evidence": "node scripts/check-seis-ssh-live-readiness-evidence.mjs",
     "cloud:self-hosted:kit": "node scripts/create-self-hosted-seis-cloud-kit.mjs",
     "cloud:migration:audit": "node scripts/cloud-migration-audit.mjs",

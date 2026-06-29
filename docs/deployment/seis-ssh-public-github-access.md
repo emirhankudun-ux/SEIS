@@ -42,6 +42,7 @@ in git, no fake online status, and no local-Mac dependency.
 Use this read-only sequence for a GitHub review:
 
 ```bash
+npm run run:seis-ssh-public-onboarding
 npm run check:seis-ssh-public-access
 npm run check:seis-ssh-public-access-report
 npm run check:seis-ssh-public-onboarding
@@ -54,6 +55,11 @@ npm run check:seis-ssh-access-model
 npm run check:seis-ssh-picker-compatibility
 npm run check:seis-ssh-cloud-roadmap
 ```
+
+`npm run run:seis-ssh-public-onboarding` is the single contributor-friendly
+entrypoint command. It runs read-only dry-run checks, validates the public gates,
+prints expected onboarding evidence, and writes a clean set of onboarding/public-
+contributor report files without opening an SSH session.
 
 These commands prove repo governance and public-access wiring. They do not
 prove a live SSH session.
