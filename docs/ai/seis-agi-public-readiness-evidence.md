@@ -5,6 +5,10 @@ machine-readable public readiness matrix for SEIS AGI and the 512B apex target.
 It is exposed to local MCP clients as the read-only resource
 `seis://ai/agi-public-readiness-evidence.json`.
 
+GitHub user-readiness claim boundaries are tracked separately in
+`content/development/seis-agi-github-user-readiness-gates.json`, exposed as
+`seis://ai/agi-github-user-readiness-gates.json`.
+
 Status: `blocked-missing-real-agi-evidence`.
 
 This matrix does not prove AGI. It records the evidence that is still missing

@@ -117,6 +117,7 @@ const APPS = [
   ["seis-cloud", "SEIS Cloud", "Connected", "CLD", "Inspect local cloud readiness, SSH boundaries, deployment handoff, and no-key status.", "seis-cloud"],
   ["seis-evolution", "SEIS Evolution", "Connected", "EVO", "Unify pinned SEIS AI work, desktop demo scope, websites, and SEIS-SSH boundaries.", "seis-evolution"],
   ["sub-agent-control", "Sub-Agent Control", "Connected", "5Y", "Inspect the five-year bounded sub-agent plan, dry-run queue, redaction gates, and ledger evidence.", "subagent-control"],
+  ["nvidia-catalog", "NVIDIA Catalog", "Connected", "NV", "Review the NVIDIA GitHub org, Build skills, and run-anywhere model catalog as an approval-gated accelerator intake.", "nvidia-catalog"],
   ["wow-gallery", "SEIS WOW Gallery", "Connected", "WOW", "Browse imported SEIS_WOW visual pages and Kimi references as safe design sources.", "wow-gallery"],
   ["video-hero-gallery", "Video Hero Gallery", "Connected", "MOV", "Open four local showcase routes and save favorites.", "video-gallery"],
   ["mythic-gacha", "Mythic Gacha", "Connected", "MYT", "Draw local mythical creature cards with persisted history.", "gacha"],
@@ -150,13 +151,14 @@ const FAVORITES = [
   "wow-gallery",
   "seis-evolution",
   "sub-agent-control",
+  "nvidia-catalog",
   "settings",
   "notes",
   "app-center",
   "mythic-gacha"
 ];
 
-const DESKTOP_SHORTCUTS = ["files", "terminal", "settings", "search", "demo-studio", "linux-replica", "seis-code", "seis-design", "second-brain", "seis-store", "music"];
+const DESKTOP_SHORTCUTS = ["files", "terminal", "settings", "search", "demo-studio", "linux-replica", "seis-code", "seis-design", "second-brain", "seis-store", "nvidia-catalog", "music"];
 const KEYBOARD_SHORTCUT_GROUPS = [
   {
     name: "System",
@@ -599,6 +601,8 @@ const SEIS_V17_COMMAND_CENTER_VALIDATION_QUEUE = [
   ["Browser product smoke", "npm run check:product-experience-browser-smoke", "Desktop, SEIS Code, AI Plugin Center, product routes, and mobile overflow proof."],
   ["AI Core package", "npm test --prefix packages/seis-ai", "Provider registry, MCP tools/resources, local agent loop, and non-claim boundaries."],
   ["Model scaling profile", "npm run check:seis-model-scaling-hardware-profile", "20B on 16GB+ RAM planning profile, memory budget contract, future 70B ladder, 150B frontier lane, and 512B AGI apex boundary."],
+  ["NVIDIA accelerator catalog", "npm run check:seis-nvidia-accelerator-catalog", "NVIDIA GitHub, Build skills, and model catalog are dry-run only; no clone, download, NIM call, GPU, Docker, SSH, or credential use."],
+  ["NVIDIA installed integrations", "npm run check:seis-nvidia-installed-integrations", "11 local NVIDIA Codex skill manifests are installed into SEIS as runtime-gated capability records."],
   ["Frontier escalation policy", "npm run check:seis-model-frontier-escalation-policy", "No-skip-20B policy, 70B research gate, 150B frontier gate, 512B AGI apex gate, and highest-parameter non-claim boundary."],
   ["Second Brain contract", "npm run check:seis-second-brain", "Obsidian-style vault, installed AI, sub-agent, GitHub readiness, and no-secret knowledge boundary."],
   ["150B frontier model program", "npm run check:seis-150b-frontier-model-program", "150B program charter, plan-only stages, non-claim flags, and promotion gates for future 70B/150B+ escalation."],
@@ -911,6 +915,15 @@ const SEIS_V17_COMMAND_CENTER_MODULES = [
     routeId: "seis-ai-core-3d-demo",
     evidence: "npm run check:seis-model-scaling-hardware-profile",
     detail: "16GB+ RAM starts at the documented 20B profile; 70B and 150B frontier tiers stay future-gated until hardware, inference, training, safety, and validation evidence exist."
+  },
+  {
+    id: "nvidia-accelerator-catalog",
+    label: "NVIDIA Accelerator Catalog",
+    status: "Planned/Gated",
+    state: "planned-gated",
+    appId: "nvidia-catalog",
+    evidence: "npm run check:seis-nvidia-accelerator-catalog",
+    detail: "NVIDIA GitHub, Build skills, run-anywhere model sources, and 11 local NVIDIA skill manifests are installed as SEIS registry/UI records only; repo clone, model download, NIM calls, Docker, GPU, SSH, and credentials remain approval-gated."
   },
   {
     id: "search",
@@ -1413,6 +1426,14 @@ const SEIS_SECOND_BRAIN_SYSTEM = {
   vaultRoot: "/home/seis/SecondBrain",
   snapshotPath: "/home/seis/SecondBrain/seis-second-brain-vault-snapshot.md",
   githubReadinessPath: "/home/seis/SecondBrain/github-readiness-review.md",
+  trainingPackPath: "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md",
+  releaseReviewPacketPath: "reports/seis-public-demo/pr54-review-packet-latest.md",
+  languageModelTrainingCurriculum: {
+    status: "planned-training-contract",
+    contractPath: "content/development/seis-language-model-training-curriculum.json",
+    reportPath: "reports/seis-model-scaling/seis-language-model-training-curriculum.md",
+    boundary: "Planning-only curriculum. No model install, checkpoint download, foundation pretraining, fine-tuning, benchmark execution, provider call, SSH, or deployment is authorized."
+  },
   obsidianState: "Obsidian bridge planned",
   runtimeBoundary: "Browser-local Markdown vault and graph. No Obsidian plugin install, provider call, SSH, deployment, GitHub mutation, credential access, or autonomous write runtime.",
   labels: ["Local Demo", "Obsidian bridge planned", "No secrets", "Human review before GitHub"],
@@ -1672,6 +1693,63 @@ const SEIS_SYSTEM_OS_EVIDENCE = {
   dryRunOnly: true,
   releasePromotionAllowed: false
 };
+const NVIDIA_ACCELERATOR_CATALOG = {
+  id: "seis-nvidia-accelerator-catalog",
+  appId: "nvidia-catalog",
+  sourcePath: "content/development/seis-nvidia-accelerator-catalog.json",
+  docPath: "docs/ai/nvidia-accelerator-catalog.md",
+  status: "catalog-ready-install-blocked",
+  mode: "Local Demo catalog",
+  qualityGate: "npm run check:seis-nvidia-accelerator-catalog",
+  installedIntegrationsGate: "npm run check:seis-nvidia-installed-integrations",
+  planCommand: "npm run plan:nvidia-catalog-install",
+  installedIntegrationsRegistry: "content/development/seis-nvidia-installed-integrations.json",
+  githubOrg: "https://github.com/NVIDIA",
+  buildSkills: "https://build.nvidia.com/skills",
+  buildModels: "https://build.nvidia.com/models",
+  githubPublicRepoCount: 756,
+  buildSkillsUrlStatus: 200,
+  buildModelsUrlStatus: 200,
+  sampleRepos: [
+    ["skills", "Python", "NOASSERTION", "not-cloned"],
+    ["cosmos", "Jupyter Notebook", "NOASSERTION", "not-cloned"],
+    ["SkillSpector", "Python", "Apache-2.0", "not-cloned"],
+    ["nv-redfish", "Rust", "Apache-2.0", "not-cloned"],
+    ["Isaac-GR00T", "Python", "Apache-2.0", "not-cloned"]
+  ],
+  domains: ["AI and machine learning", "Physical AI", "Accelerated computing", "Infrastructure", "Developer tools"],
+  audiences: ["Developer", "AI engineer", "ML engineer", "Application developer", "Platform engineer", "DevOps engineer", "Data scientist", "HPC developer", "Robotics developer", "Security engineer"],
+  publishers: ["nvidia", "meta", "qwen", "mistralai", "openai", "google", "microsoft", "deepseek_ai", "stabilityai", "bytedance", "ansys", "siemens"],
+  gpuTypes: ["B200", "H100 80GB", "H200", "L40S", "A100 80GB", "A10G", "GB200", "GH200", "L4", "DGX Spark", "RTX PRO 6000 Blackwell"],
+  installedSkillIntegrations: [
+    ["aiq-deploy", "AI-Q Deploy", "AI-Q", "installed-gated", "Deployment capability visible; live AI-Q setup remains approval-gated."],
+    ["aiq-research", "AI-Q Research", "AI-Q", "installed-gated", "Research capability visible; backend query requires verified trusted endpoint."],
+    ["cuopt-user-rules", "cuOpt User Rules", "Optimization", "installed-gated", "Optimization guidance visible; cuOpt server or SDK install remains gated."],
+    ["dynamo-interconnect-check", "Dynamo Interconnect Check", "Dynamo", "installed-gated", "Read-only fabric validation lane visible; cluster access remains gated."],
+    ["dynamo-router-starter", "Dynamo Router Starter", "Dynamo", "installed-gated", "Router bring-up lane visible; local/Kubernetes router actions remain gated."],
+    ["nemoclaw-user-get-started", "NemoClaw Quickstart", "Agent Sandbox", "installed-gated", "Sandbox onboarding lane visible; remote installer execution remains gated."],
+    ["omniverse-cad-to-simready", "Omniverse CAD to SimReady", "Omniverse", "installed-gated", "Design-to-simulation lane visible; asset conversion services remain gated."],
+    ["omniverse-realtime-viewer", "Omniverse Realtime Viewer", "Omniverse", "installed-gated", "Realtime viewer lane visible; GPU viewer runtime remains gated."],
+    ["omniverse-usd-performance-tuning", "Omniverse USD Performance Tuning", "Omniverse", "installed-gated", "USD performance lane visible; private scene profiling remains gated."],
+    ["physical-ai-infrastructure-setup-and-resilient-scaling", "Physical AI Infrastructure", "Physical AI", "installed-gated", "Cloud/cluster lane visible; MicroK8s, AKS, OSMO, and NIM Operator actions remain gated."],
+    ["physical-ai-neural-reconstruction", "Physical AI Neural Reconstruction", "Physical AI", "installed-gated", "Neural reconstruction lane visible; datasets and simulation jobs remain gated."]
+  ],
+  blockedActions: [
+    "Clone all NVIDIA GitHub repositories",
+    "Download model weights or NIM containers",
+    "Call NVIDIA Build/NIM APIs",
+    "Provision GPU infrastructure",
+    "Install dependencies or Docker images",
+    "Store NVIDIA credentials in browser state"
+  ],
+  queue: [
+    ["NVIDIA GitHub inventory", "dry-run-ready", "metadata and allowlist queue only"],
+    ["NVIDIA Build skills", "catalog-link-only", "skill-specific install requires license review"],
+    ["NVIDIA Build models", "catalog-link-only", "model-specific hardware, cost, and credential review"],
+    ["SEIS AI router alignment", "planned-gated", "backend-only provider mediation required"],
+    ["SEIS Cloud GPU readiness", "planned-gated", "explicit cloud/GPU/SSH approval required"]
+  ]
+};
 const SEIS_DEMO_STUDIO_STATUS = [
   ["Working", "Runs in this browser demo and can be opened from the journey."],
   ["Local Demo", "Interactive local state or VFS artifact only; no provider, SSH, deployment, or GitHub write."],
@@ -1775,7 +1853,17 @@ const SEIS_STORE_ITEMS = [
   { id: "wow-gallery-web", name: "SEIS WOW Gallery", category: "Website", status: "Available", target: "route", targetId: "wow-gallery-web", detail: "190 imported PNG page previews, 197 HTML references, and two Kimi external reference links." },
   { id: "mythic-gacha-web", name: "Mythic Gacha Web", category: "Website", status: "Available", target: "route", targetId: "mythic-gacha-web", detail: "Playable Shan Hai Jing-inspired gacha and bestiary route." },
   { id: "video-hero-gallery", name: "Video Hero Gallery", category: "Website", status: "Available", target: "route", targetId: "video-hero-gallery", detail: "Four immersive video hero showcase pages." },
-  { id: "seis-ai-core-3d-demo", name: "SEIS AI Core 3D", category: "AI", status: "Available", target: "route", targetId: "seis-ai-core-3d-demo", detail: "Big-tech style AI Core, model router, prompt engine, and sub-agent website." }
+  { id: "seis-ai-core-3d-demo", name: "SEIS AI Core 3D", category: "AI", status: "Available", target: "route", targetId: "seis-ai-core-3d-demo", detail: "Big-tech style AI Core, model router, prompt engine, and sub-agent website." },
+  { id: "nvidia-catalog", name: "NVIDIA Accelerator Catalog", category: "AI", status: "Available", target: "app", targetId: "nvidia-catalog", detail: "Approval-gated catalog for NVIDIA GitHub repos, Build skills, and run-anywhere models. Install records are dry-run only." },
+  ...NVIDIA_ACCELERATOR_CATALOG.installedSkillIntegrations.map(([id, name, category, status, safeUse]) => ({
+    id: `nvidia-skill-${id}`,
+    name,
+    category: `NVIDIA ${category}`,
+    status: "Installed/Gated",
+    target: "app",
+    targetId: "nvidia-catalog",
+    detail: `${status}: ${safeUse}`
+  }))
 ];
 const DB_NAME = "seis-desktop-os";
 const DB_VERSION = 1;
@@ -2597,6 +2685,9 @@ function handleClick(event) {
       break;
     case "second-brain-link":
       linkSecondBrainGraph();
+      break;
+    case "second-brain-training-pack":
+      exportSecondBrainTrainingPack();
       break;
     case "second-brain-review":
       reviewSecondBrainVault();
@@ -3622,6 +3713,7 @@ function defaultWindowSize(app) {
   if (app.type === "linux-replica") return { w: 1060, h: 680 };
   if (app.type === "seis-website") return { w: 1040, h: 660 };
   if (app.type === "seis-evolution") return { w: 1040, h: 660 };
+  if (app.type === "nvidia-catalog") return { w: 1040, h: 660 };
   if (app.type === "subagent-control") return { w: 920, h: 610 };
   if (app.type === "settings" || app.type === "monitor") return { w: 680, h: 450 };
   return { w: 680, h: 440 };
@@ -3867,6 +3959,8 @@ function renderApp(app) {
       return renderSeisEvolution();
     case "subagent-control":
       return renderSubAgentControl();
+    case "nvidia-catalog":
+      return renderNvidiaCatalog();
     case "vault":
       return renderVault();
     default:
@@ -3881,6 +3975,40 @@ const DEMO_STUDIO_CHECKLIST = [
   ["approvalGates", "SSH, deploy, push, merge, and production cloud actions remain human-approval gated."],
   ["mobileReady", "Responsive shell remains usable before demo promotion."]
 ];
+
+const SEIS_SSH_PUBLIC_ACCESS_CONTRACT = {
+  alias: "SEIS-SSH",
+  label: "Public GitHub SSH",
+  status: "Documented / approval-gated",
+  invariant: "Keep same server and port",
+  contract: "deploy/seis-ssh-public-access-contract.json",
+  runbook: "docs/deployment/seis-ssh-public-github-access.md",
+  qualityGate: "npm run check:seis-ssh-public-access",
+  reportCommand: "npm run report:seis-ssh-public-access",
+  onboardingCommand: "npm run report:seis-ssh-public-onboarding",
+  contributorDoctorCommand: "npm run report:seis-ssh-public-contributor-doctor",
+  liveEvidenceCommand: "npm run check:seis-ssh-live-readiness-evidence",
+  localArtifact: "/home/seis/Documents/seis-ssh-public-access.md",
+  onboardingArtifact: "/home/seis/Documents/seis-ssh-public-onboarding.md",
+  contributorDoctorArtifact: "/home/seis/Documents/seis-ssh-public-contributor-doctor.md",
+  liveEvidenceArtifact: "docs/deployment/seis-ssh-live-readiness-evidence.md",
+  states: [
+    ["documented", "GitHub contributors can review the public runbook and checks."],
+    ["onboarding-pack", "A read-only GitHub review pack explains reviewer, maintainer, and new-contributor paths without writing SSH config."],
+    ["contributor-doctor", "A read-only local doctor checks GitHub/SSH prerequisites and produces a review report without contacting GitHub."],
+    ["live-blocked", "Latest approved live probe preserves server/port but is blocked by GitHub Codespaces billing."],
+    ["terminal-compatible", "Codespaces transport may work in terminal when authenticated."],
+    ["picker-warning", "Some GUI pickers can show ProxyCommand transports offline."],
+    ["runtime-ready", "Allowed only after strict online evidence passes."]
+  ],
+  approvalGates: [
+    "Change server or port",
+    "Install or overwrite SSH config",
+    "Bootstrap remote VM",
+    "Execute live SSH",
+    "Change firewall or sshd"
+  ]
+};
 
 function getFileManagerState() {
   const data = getAppData("files");
@@ -4809,7 +4937,7 @@ function renderGenericApp(app) {
 
 function renderLaunchpadApp() {
   const categories = [...new Set(APPS.map((app) => app.category))];
-  const featuredIds = ["seis-code", "code-ide", "search", "seis-design", "seis-cloud", "second-brain", "seis-store", "music", "ai-assistant", "video-hero-gallery", "mythic-gacha"];
+  const featuredIds = ["seis-code", "code-ide", "search", "seis-design", "seis-cloud", "second-brain", "seis-store", "nvidia-catalog", "music", "ai-assistant", "video-hero-gallery", "mythic-gacha"];
   const featured = featuredIds.map(getApp).filter(Boolean);
   return `<section class="app-main launchpad-app" data-launchpad-app>
     <div class="toolbar">
@@ -4902,6 +5030,7 @@ function renderSecondBrain() {
       <button type="button" data-action="app-primary" data-app-id="second-brain">Save Vault Snapshot</button>
       <button type="button" data-action="second-brain-capture">Capture Note</button>
       <button type="button" data-action="second-brain-link">Link Graph</button>
+      <button type="button" data-action="second-brain-training-pack">Build Training Pack</button>
       <button type="button" data-action="second-brain-review">Run Review Gate</button>
       <button type="button" data-action="second-brain-export-github">Export GitHub Readiness</button>
       <button type="button" data-action="open-app" data-app-id="ai-assistant">Open SEIS AI</button>
@@ -4927,6 +5056,7 @@ function renderSecondBrain() {
       <article class="metric-card"><strong>Agent Roster</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length}</p></article>
       <article class="metric-card"><strong>Quality Gate</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.qualityGate)}</p></article>
       <article class="metric-card"><strong>Last Snapshot</strong><p>${data.lastSnapshot?.time || "Not saved yet"}</p></article>
+      <article class="metric-card"><strong>Last Training Pack</strong><p>${data.lastTrainingPack?.time || "Not built yet"}</p></article>
       <article class="metric-card"><strong>Publish State</strong><p>Human review before GitHub</p></article>
     </div>
     <section class="second-brain-layout">
@@ -5707,6 +5837,7 @@ function renderSeisSearchGateway() {
     ["seis-website", "SEIS Website", "Product pages", "Premium pages for SEIS AI, OS, Code, Design, Search, Cloud, Store, and Agents"],
     ["seis-cloud", "SEIS Cloud", "Runtime boundary", "Ollama/Qwen/local runtime references, SSH/cloud safety gates"],
     ["seis-store", "SEIS Store", "App catalog", "App Store/Microsoft Store-style local catalog for apps and demo websites"],
+    ["nvidia-catalog", "NVIDIA Catalog", "Accelerator catalog", "NVIDIA GitHub, Build skills, and run-anywhere models as dry-run only"],
     ["launchpad", "Launchpad", "Application grid", "Full-window launcher for all installed SEIS demo apps"],
     ["music", "Music", "Local soundtrack", "Demo playlist and local music surface with persistent state"],
     ["wow-gallery", "SEIS WOW Gallery", "Imported references", "190 SEIS_WOW page previews, HTML references, and Kimi external links"],
@@ -5730,6 +5861,7 @@ function renderSeisSearchGateway() {
       <button type="button" data-action="open-app" data-app-id="seis-website">Open SEIS Website</button>
       <button type="button" data-action="open-app" data-app-id="seis-cloud">Open SEIS Cloud</button>
       <button type="button" data-action="open-app" data-app-id="seis-store">Open Store</button>
+      <button type="button" data-action="open-app" data-app-id="nvidia-catalog">Open NVIDIA Catalog</button>
       <button type="button" data-action="open-demo-route" data-value="wow-gallery-web">Open WOW Gallery</button>
       <button type="button" data-action="open-demo-route" data-value="seis-ai-core-3d-demo">Open AI Core 3D</button>
       <button type="button" data-action="generic-export" data-app-id="search">Export Search Map</button>
@@ -5816,6 +5948,14 @@ function getSeisSearchTabResults(tab, context) {
     action: "open-app",
     appId: "ai-assistant"
   });
+  const nvidiaIntegrationResult = ([id, name, category, status, safeUse]) => ({
+    title: name,
+    meta: `NVIDIA ${category} · ${status}`,
+    detail: safeUse,
+    action: "open-app",
+    appId: "nvidia-catalog",
+    value: id
+  });
   const fileResult = (item) => ({
     title: baseName(item.path),
     meta: item.type.toUpperCase(),
@@ -5835,6 +5975,7 @@ function getSeisSearchTabResults(tab, context) {
     AI: [
       appResult(["ai-assistant", "SEIS AI", "AI Core", "Local Demo assistant, installed AI profiles, tool calls, and plugin awareness"]),
       appResult(["second-brain", "SEIS Second Brain", "AI knowledge cockpit", "Obsidian-style Local Demo context, bounded sub-agents, and GitHub review gates"]),
+      appResult(["nvidia-catalog", "NVIDIA Catalog", "AI accelerator intake", "NVIDIA Build skills and models as catalog-only provenance, not live routing"]),
       routeResult(DEMO_ROUTES.find((route) => route.id === "seis-ai-core-3d-demo")),
       ...SEIS_INSTALLED_AI_SYSTEMS.slice(0, 3).map((system) => ({
         title: system.name,
@@ -5857,11 +5998,17 @@ function getSeisSearchTabResults(tab, context) {
     ],
     Cloud: [
       appResult(["seis-cloud", "SEIS Cloud", "Mock Safe", "SSH/cloud readiness, deployment gates, health, logs, backups, and no-secret boundaries"]),
+      appResult(["nvidia-catalog", "NVIDIA GPU/NIM Catalog", "Planned/Gated", "GPU, NIM, Docker, and model install paths stay dry-run until approved"]),
       appResult(["seis-evolution", "SEIS Evolution", "SSH boundary", "Pinned scope, local inventory, and approval-gated cloud/SSH references"]),
+      ...NVIDIA_ACCELERATOR_CATALOG.installedSkillIntegrations
+        .filter(([, , category]) => ["AI-Q", "Dynamo", "Physical AI"].includes(category))
+        .map(nvidiaIntegrationResult),
       ...localInventoryPreview.filter(([, role]) => /Cloud|Local AI|Browser/i.test(role)).map(inventoryResult)
     ],
     Apps: gatewayApps.map(appResult),
     Plugins: [
+      appResult(["nvidia-catalog", "NVIDIA Accelerator Catalog", "Catalog-only", "Provider, skills, and model awareness without clone, download, NIM call, or credentials"]),
+      ...NVIDIA_ACCELERATOR_CATALOG.installedSkillIntegrations.map(nvidiaIntegrationResult),
       ...SEIS_AI_PLUGIN_LANES.map(pluginResult),
       ...SEIS_PERSONAL_PLUGIN_AI_CORE_LANE_MATRIX.slice(0, 4).map((plugin) => ({
         title: plugin.displayName,
@@ -6021,6 +6168,7 @@ function renderSeisCommandCenter() {
     ["seis-design", "◆", "Design", "Canvas, tokens, previews", "rose"],
     ["second-brain", "BR", "Second Brain", "Vault, graph, review gates", "amber"],
     ["seis-cloud", "☁", "Cloud", "SSH-safe runtime boundary", "cyan"],
+    ["nvidia-catalog", "NV", "NVIDIA", "Catalog, dry-run gates", "cyan"],
     ["seis-store", "+", "Store", "Apps, agents, plugins", "amber"],
     ["terminal", ">_", "Terminal", "Local demo commands", "rose"],
     ["files", "▣", "Files", "VFS, recents, previews", "cyan"],
@@ -6460,7 +6608,9 @@ function renderSeisCloud() {
   const checks = [
     ["Core demo", "Available", "Static web app runs without cloud credentials."],
     ["SSH execution", "Disabled", "Requires explicit approval and audited target host."],
+    ["Public GitHub SSH", "Documented", "SEIS-SSH keeps the same server and port; validated by npm run check:seis-ssh-public-access."],
     ["Provider keys", "Missing Key", "Core demo remains functional without model-provider keys."],
+    ["NVIDIA GPU/NIM", "Planned/Gated", "NVIDIA catalog is dry-run only; GPU, NIM, Docker, and model downloads require approval."],
     ["Deployment", "Planned", "Use a reviewed PR and release gate before publishing."]
   ];
   return `<section class="app-main seis-cloud-app" data-seis-cloud-app>
@@ -6477,6 +6627,24 @@ function renderSeisCloud() {
       <article class="metric-card"><strong>SSH Boundary</strong><p>Approval required</p></article>
       <article class="metric-card"><strong>Demo Copy</strong><p>Static folder portable</p></article>
     </div>
+    <section class="subagent-panel local-inventory-panel">
+      <h3>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.label)}</h3>
+      <p class="muted">${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.alias)} is the single public-facing alias. ${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.invariant)}. Live SSH is disabled until strict evidence and owner approval exist.</p>
+      <div class="metric-grid">
+        <article class="metric-card"><strong>Alias</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.alias)}</p></article>
+        <article class="metric-card"><strong>Status</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.status)}</p></article>
+        <article class="metric-card"><strong>Contract</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.contract)}</p></article>
+        <article class="metric-card"><strong>Gate</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.qualityGate)}</p></article>
+        <article class="metric-card"><strong>Report</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.reportCommand)}</p></article>
+        <article class="metric-card"><strong>Onboarding</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.onboardingCommand)}</p></article>
+        <article class="metric-card"><strong>Doctor</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.contributorDoctorCommand)}</p></article>
+        <article class="metric-card"><strong>Live Evidence</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.liveEvidenceCommand)}</p></article>
+      </div>
+      <table class="data-table">
+        <thead><tr><th>State</th><th>Meaning</th></tr></thead>
+        <tbody>${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.states.map(([stateLabel, meaning]) => `<tr><td>${escapeHtml(stateLabel)}</td><td>${escapeHtml(meaning)}</td></tr>`).join("")}</tbody>
+      </table>
+    </section>
     <table class="data-table">
       <thead><tr><th>Surface</th><th>Status</th><th>Evidence</th></tr></thead>
       <tbody>${checks.map(([surface, status, evidence]) => `<tr><td>${escapeHtml(surface)}</td><td>${escapeHtml(status)}</td><td>${escapeHtml(evidence)}</td></tr>`).join("")}</tbody>
@@ -6488,6 +6656,87 @@ function renderSeisCloud() {
         <thead><tr><th>Tool</th><th>SEIS Role</th><th>Use</th><th>Status</th></tr></thead>
         <tbody>${runtimeTools.map(([tool, role, use, status]) => `<tr><td>${escapeHtml(tool)}</td><td>${escapeHtml(role)}</td><td>${escapeHtml(use)}</td><td>${escapeHtml(status)}</td></tr>`).join("")}</tbody>
       </table>
+    </section>
+  </section>`;
+}
+
+function renderNvidiaCatalog() {
+  const data = getAppData("nvidia-catalog");
+  const catalog = NVIDIA_ACCELERATOR_CATALOG;
+  return `<section class="app-main nvidia-catalog-app" data-nvidia-catalog>
+    <div class="toolbar">
+      <button type="button" data-action="app-primary" data-app-id="nvidia-catalog">Save Dry-Run Plan</button>
+      <button type="button" data-action="open-app" data-app-id="ai-assistant">Open SEIS AI</button>
+      <button type="button" data-action="open-app" data-app-id="seis-cloud">Open SEIS Cloud</button>
+      <button type="button" data-action="open-app" data-app-id="seis-store">Open Store</button>
+      <button type="button" data-action="generic-export" data-app-id="nvidia-catalog">Export Catalog State</button>
+    </div>
+    <p class="status-note">NVIDIA Catalog installs catalog awareness into SEIS only. It does not clone all NVIDIA repos, download model weights, call NIM APIs, pull Docker images, provision GPUs, execute SSH, install dependencies, or store NVIDIA credentials.</p>
+    <div class="metric-grid">
+      <article class="metric-card"><strong>GitHub Repos</strong><p>${catalog.githubPublicRepoCount}</p></article>
+      <article class="metric-card"><strong>Build Skills</strong><p>${catalog.buildSkillsUrlStatus}</p></article>
+      <article class="metric-card"><strong>Build Models</strong><p>${catalog.buildModelsUrlStatus}</p></article>
+      <article class="metric-card"><strong>Mode</strong><p>${escapeHtml(catalog.mode)}</p></article>
+      <article class="metric-card"><strong>Quality Gate</strong><p>${escapeHtml(catalog.qualityGate)}</p></article>
+      <article class="metric-card"><strong>Installed Skills</strong><p>${catalog.installedSkillIntegrations.length}</p></article>
+      <article class="metric-card"><strong>Last Plan</strong><p>${data.lastPlan?.time || "Not saved yet"}</p></article>
+    </div>
+    <section class="subagent-panel">
+      <h3>Official Source Links</h3>
+      <div class="system-app-strip">
+        <button type="button" class="search-gateway-card" data-action="open-route" data-value="${escapeAttr(catalog.githubOrg)}">
+          <span>NVIDIA GitHub</span>
+          <small>${escapeHtml(catalog.githubOrg)}</small>
+          <em>Public repo inventory source. No clone from this button.</em>
+        </button>
+        <button type="button" class="search-gateway-card" data-action="open-route" data-value="${escapeAttr(catalog.buildSkills)}">
+          <span>NVIDIA Build Skills</span>
+          <small>${escapeHtml(catalog.buildSkills)}</small>
+          <em>Catalog link only. Skill runtime install stays approval-gated.</em>
+        </button>
+        <button type="button" class="search-gateway-card" data-action="open-route" data-value="${escapeAttr(catalog.buildModels)}">
+          <span>NVIDIA Build Models</span>
+          <small>${escapeHtml(catalog.buildModels)}</small>
+          <em>Run-anywhere model catalog. No model download or NIM call.</em>
+        </button>
+      </div>
+    </section>
+    <section class="subagent-panel">
+      <h3>Dry-Run Install Queue</h3>
+      <table class="data-table">
+        <thead><tr><th>Item</th><th>Status</th><th>Next safe step</th></tr></thead>
+        <tbody>${catalog.queue.map(([title, status, next]) => `<tr><td>${escapeHtml(title)}</td><td>${escapeHtml(status)}</td><td>${escapeHtml(next)}</td></tr>`).join("")}</tbody>
+      </table>
+    </section>
+    <section class="subagent-panel">
+      <h3>NVIDIA Installed Integrations</h3>
+      <p class="status-note">These 11 local NVIDIA skill manifests are installed into SEIS as searchable capability records. Runtime execution stays blocked until a specific allowlist and approval exist.</p>
+      <table class="data-table">
+        <thead><tr><th>Integration</th><th>Category</th><th>Status</th><th>Safe SEIS use</th></tr></thead>
+        <tbody>${catalog.installedSkillIntegrations.map(([id, name, category, status, safeUse]) => `<tr><td>${escapeHtml(name)}<br><small>${escapeHtml(id)}</small></td><td>${escapeHtml(category)}</td><td>${escapeHtml(status)}</td><td>${escapeHtml(safeUse)}</td></tr>`).join("")}</tbody>
+      </table>
+    </section>
+    <section class="subagent-panel">
+      <h3>Sample Recently Updated Repos</h3>
+      <table class="data-table">
+        <thead><tr><th>Repo</th><th>Language</th><th>License</th><th>Install state</th></tr></thead>
+        <tbody>${catalog.sampleRepos.map(([name, language, license, state]) => `<tr><td>${escapeHtml(name)}</td><td>${escapeHtml(language)}</td><td>${escapeHtml(license)}</td><td>${escapeHtml(state)}</td></tr>`).join("")}</tbody>
+      </table>
+    </section>
+    <section class="subagent-panel">
+      <h3>Build Catalog Filters</h3>
+      <div class="evolution-safety-grid">
+        <article><strong>Skill domains</strong><p>${escapeHtml(catalog.domains.join(", "))}</p></article>
+        <article><strong>Audiences</strong><p>${escapeHtml(catalog.audiences.join(", "))}</p></article>
+        <article><strong>Publishers</strong><p>${escapeHtml(catalog.publishers.join(", "))}</p></article>
+        <article><strong>GPU filters</strong><p>${escapeHtml(catalog.gpuTypes.join(", "))}</p></article>
+      </div>
+    </section>
+    <section class="subagent-panel">
+      <h3>Blocked Until Human Approval</h3>
+      <ul class="subagent-gate-list">
+        ${catalog.blockedActions.map((action) => `<li>${escapeHtml(action)}</li>`).join("")}
+      </ul>
     </section>
   </section>`;
 }
@@ -6738,6 +6987,25 @@ function renderAiAssistantTab(activeTab, data) {
           <button type="button" data-action="export-personal-plugin-bridge">Export Plugin Bridge</button>
           <button type="button" class="secondary-action" data-action="export-ai-core-resource-bridge">Export AI Core Bridge</button>
         </div>
+      </section>
+      <section class="subagent-panel" data-nvidia-ai-catalog-bridge>
+        <h3>NVIDIA Accelerator Catalog</h3>
+        <p class="status-note">NVIDIA Build and GitHub sources are available to SEIS AI as catalog and provenance context only. This is not a live NVIDIA provider, NIM route, model download, GPU runtime, or credential setup.</p>
+        <div class="metric-grid">
+          <article class="metric-card"><strong>GitHub Repos</strong><p>${NVIDIA_ACCELERATOR_CATALOG.githubPublicRepoCount}</p></article>
+          <article class="metric-card"><strong>Mode</strong><p>${escapeHtml(NVIDIA_ACCELERATOR_CATALOG.mode)}</p></article>
+          <article class="metric-card"><strong>Build Models</strong><p>${NVIDIA_ACCELERATOR_CATALOG.buildModelsUrlStatus}</p></article>
+          <article class="metric-card"><strong>Quality Gate</strong><p>${escapeHtml(NVIDIA_ACCELERATOR_CATALOG.qualityGate)}</p></article>
+          <article class="metric-card"><strong>Installed Skills</strong><p>${NVIDIA_ACCELERATOR_CATALOG.installedSkillIntegrations.length}</p></article>
+        </div>
+        <div class="toolbar compact-toolbar">
+          <button type="button" data-action="open-app" data-app-id="nvidia-catalog">Open NVIDIA Catalog</button>
+          <button type="button" data-action="app-primary" data-app-id="nvidia-catalog">Save Dry-Run Plan</button>
+        </div>
+        <table class="data-table">
+          <thead><tr><th>Installed NVIDIA lane</th><th>Category</th><th>Status</th><th>Safe SEIS use</th></tr></thead>
+          <tbody>${NVIDIA_ACCELERATOR_CATALOG.installedSkillIntegrations.map(([id, name, category, status, safeUse]) => `<tr><td>${escapeHtml(name)}<br><span class="muted">${escapeHtml(id)}</span></td><td>${escapeHtml(category)}</td><td>${escapeHtml(status)}</td><td>${escapeHtml(safeUse)}</td></tr>`).join("")}</tbody>
+        </table>
       </section>
       ${getAiPlugins().map((plugin) => `<article class="mini-card plugin-card">
         <strong>${escapeHtml(plugin.name)}</strong>
@@ -7964,7 +8232,7 @@ function runAppPrimaryAction(appId, body) {
     data.result = `${APPS.filter((item) => `${item.name} ${item.description}`.toLowerCase().includes(data.query.toLowerCase())).length} local app matches.`;
     const path = "/home/seis/Documents/seis-search-gateway-map.md";
     const websiteRoutes = DEMO_ROUTES.filter((route) => route.kind === "Website" || route.kind === "Playable route" || route.kind === "Full-page IDE" || route.kind === "Showcase route" || route.kind === "External reference");
-    upsertFile(path, `# SEIS Search Gateway Map\n\nGenerated: ${new Date().toISOString()}\nQuery: ${data.query}\n\n## Core Apps\n- SEIS System OS: Linux, macOS, and Windows-inspired shell where the rest of SEIS appears.\n- SEIS Code: VS Code-like desktop app.\n- Code IDE: dedicated IDE cockpit.\n- SEIS Design: design, website, and handoff surface.\n- SEIS Cloud: SSH/cloud safety and local runtime boundary.\n- SEIS Store: local app and route catalog.\n- Music: local demo soundtrack.\n- SEIS WOW Gallery: imported visual reference board for Kimi and SEIS_WOW packages.\n- SEIS AI: Local Demo AI Control Center.\n\n## Website Routes\n${websiteRoutes.map((route) => `- ${route.label}: ${route.path}`).join("\n")}\n\n## Local Tool Inventory\n${LOCAL_ECOSYSTEM_INVENTORY.apps.map(([tool, role, use, status]) => `- ${tool}: ${role} / ${use} / ${status}`).join("\n")}\n\n## Safety\nNo application bundles, private keys, provider secrets, SSH commands, or licensed app contents are copied into this browser demo. External Kimi links are labeled as references.\n`);
+    upsertFile(path, `# SEIS Search Gateway Map\n\nGenerated: ${new Date().toISOString()}\nQuery: ${data.query}\n\n## Core Apps\n- SEIS System OS: Linux, macOS, and Windows-inspired shell where the rest of SEIS appears.\n- SEIS Code: VS Code-like desktop app.\n- Code IDE: dedicated IDE cockpit.\n- SEIS Design: design, website, and handoff surface.\n- SEIS Cloud: SSH/cloud safety and local runtime boundary.\n- SEIS Store: local app and route catalog.\n- NVIDIA Catalog: approval-gated NVIDIA GitHub, Build skills, model catalog intake, and ${NVIDIA_ACCELERATOR_CATALOG.installedSkillIntegrations.length} runtime-gated installed skill lanes.\n- Music: local demo soundtrack.\n- SEIS WOW Gallery: imported visual reference board for Kimi and SEIS_WOW packages.\n- SEIS AI: Local Demo AI Control Center.\n\n## NVIDIA Installed Integrations\n${NVIDIA_ACCELERATOR_CATALOG.installedSkillIntegrations.map(([id, name, category, status]) => `- ${name} (${id}): NVIDIA ${category} / ${status}`).join("\n")}\n\n## Website Routes\n${websiteRoutes.map((route) => `- ${route.label}: ${route.path}`).join("\n")}\n\n## Local Tool Inventory\n${LOCAL_ECOSYSTEM_INVENTORY.apps.map(([tool, role, use, status]) => `- ${tool}: ${role} / ${use} / ${status}`).join("\n")}\n\n## Safety\nNo application bundles, private keys, provider secrets, SSH commands, or licensed app contents are copied into this browser demo. External Kimi links are labeled as references.\n`);
     getListData(appId).unshift({ id: `search-${Date.now()}`, title: "Search gateway snapshot saved", body: path, done: true });
     message = `SEIS Search gateway snapshot saved to ${path}.`;
   } else if (app.type === "extensions") {
@@ -8066,6 +8334,7 @@ function runAppPrimaryAction(appId, body) {
       runtime: "browser-local",
       localRuntimeTools: LOCAL_ECOSYSTEM_INVENTORY.apps.filter(([, lane]) => ["Runtime", "Local AI", "Local/Secondary AI", "Agent IDE", "Implementation", "Apple Native", "Development"].includes(lane)).length,
       sshExecution: false,
+      publicAccessContract: SEIS_SSH_PUBLIC_ACCESS_CONTRACT.contract,
       deployment: false,
       secretsStored: false
     };
@@ -8077,6 +8346,25 @@ function runAppPrimaryAction(appId, body) {
       done: true
     });
     message = `SEIS Cloud local preflight saved to ${path}.`;
+  } else if (app.type === "nvidia-catalog") {
+    const data = getAppData(appId);
+    const timestamp = new Date().toISOString();
+    const path = "/home/seis/Documents/nvidia-accelerator-catalog-plan.md";
+    data.lastPlan = {
+      time: timestamp,
+      path,
+      status: NVIDIA_ACCELERATOR_CATALOG.status,
+      githubPublicRepos: NVIDIA_ACCELERATOR_CATALOG.githubPublicRepoCount,
+      liveInstallAllowed: false
+    };
+    upsertFile(path, buildNvidiaCatalogMarkdown(timestamp));
+    getListData(appId).unshift({
+      id: `nvidia-${Date.now()}`,
+      title: "NVIDIA dry-run plan saved",
+      body: path,
+      done: true
+    });
+    message = `NVIDIA accelerator dry-run plan saved to ${path}.`;
   } else if (app.type === "seis-evolution") {
     const data = getAppData(appId);
     const timestamp = new Date().toISOString();
@@ -8215,6 +8503,155 @@ ${SEIS_SECOND_BRAIN_SYSTEM.runtimeBoundary}
 `;
 }
 
+function buildSecondBrainTrainingPackMarkdown(timestamp) {
+  const installedRows = SEIS_INSTALLED_AI_SYSTEMS.map((system) => `- ${system.name} | ${system.status} | ${system.role} | ${system.boundary}`);
+  const laneRows = SUB_AGENT_DEMO.lanes.map(([name, lane, tool, scope]) => `- ${name} | ${lane} | ${tool} | ${scope}`);
+  const rosterRows = SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.map(([agent, status, duty]) => `- ${agent} | ${status} | ${duty}`);
+
+  return `# SEIS Second Brain Agent Training Pack
+
+Generated: ${timestamp}
+Mode: Local Demo read-only
+Status: ${SEIS_SECOND_BRAIN_SYSTEM.status}
+Vault root: ${SEIS_SECOND_BRAIN_SYSTEM.vaultRoot}
+Snapshot path: ${SEIS_SECOND_BRAIN_SYSTEM.snapshotPath}
+GitHub readiness path: ${SEIS_SECOND_BRAIN_SYSTEM.githubReadinessPath}
+Training pack path: ${SEIS_SECOND_BRAIN_SYSTEM.trainingPackPath}
+Observed AI profiles: ${SEIS_INSTALLED_AI_SYSTEMS.length}
+Observed sub-agent lanes: ${SUB_AGENT_DEMO.lanes.length}
+Observed autonomous agent roster: ${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length}
+
+## 1) Obsidian Bridge Safe Import
+
+- Contract source: content/development/seis-obsidian-bridge-safe-import-contract.json
+- Current mode: planned-gated, explicit user-selected import only.
+- Runtime boundary:
+  - No private vault import.
+  - No host vault read.
+  - No automatic Obsidian plugin installation.
+  - No private note body commits.
+  - No .obsidian workspace or plugin state copy.
+  - Human approval before any GitHub publication.
+- Dry-run manifest contract:
+  - metadata-only-by-default
+  - source path fingerprint, candidate count, blocked file count, secret scan summary, provenance labels, publishability labels, redaction summary, attachment review summary, and human approval state are required before import.
+
+### Runtime artifact summary
+
+${SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.map((note) => `- ${note.title} (${note.id}) → ${note.path}`).join("\n")}
+
+## 2) Second Brain Accessibility / Focus QA
+
+- Contract source: content/development/seis-second-brain-accessibility-focus-qa.json
+- Required markers:
+  - Markdown vault: listbox/option with aria-selected.
+  - Knowledge graph: listbox/option with aria-controls.
+  - Inspector: focusable with aria-live polite.
+  - Focus-visible styling and no cramped controls on mobile.
+- Runtime focus/roles in UI:
+  - Note list selector: .second-brain-note-list[role="listbox"]
+  - Note options selector: .second-brain-note-list [role="option"]
+  - Graph list selector: .second-brain-graph[role="listbox"]
+  - Graph nodes selector: .second-brain-node [role="option"]
+  - Inspector selector: #second-brain-inspector-panel[data-second-brain-inspector]
+  - Inspector focus target: [tabindex="0"] with aria-live="polite"
+- Manual public-demo evidence still required:
+  - WCAG 2.2 visible focus indicator
+  - manual keyboard transcript
+  - screen-reader transcript
+  - mobile viewport target audit
+  - human accessibility review approval
+
+## 3) Provider-Neutral Read-Only Router
+
+- Contract source: content/development/seis-read-only-model-router-contract.json
+- Provider states:
+  - Local Demo, Available, Missing Key, Disabled, Rate Limited, Error, Unknown
+- Routing rules:
+  - Missing Key is not Error.
+  - Local-only mode never routes to cloud providers.
+  - No silent fallback without explicit declaration.
+  - Live execution stays blocked until backend-only mediation exists.
+  - Decision integrity requires redacted review-only output, explicit provider state, explicit selected provider, explicit fallback policy, blocked reasons when ineligible, no prompt body, no credential material, and executionPerformed=false.
+  - Provider states declared for this contract: ${[
+  "Local Demo",
+  "Available",
+  "Missing Key",
+  "Disabled",
+  "Rate Limited",
+  "Error",
+  "Unknown"
+].join(", ")}
+  - Blocked model classes:
+    - ${SEIS_READ_ONLY_MODEL_ROUTER_CONTRACT.blockedModelClasses.length
+    ? SEIS_READ_ONLY_MODEL_ROUTER_CONTRACT.blockedModelClasses.map((entry) => `- ${entry}`).join("\n    - ")
+    : "none defined"}
+
+## 4) Public Demo PR #54 Checklist
+
+- Contract source: content/development/seis-public-demo-release-checklist-pr54.json
+- Current status: review-gated-not-released.
+- Review packet: ${SEIS_SECOND_BRAIN_SYSTEM.releaseReviewPacketPath}
+- Validation path:
+  - Required command list:
+    - npm run check:seis-second-brain-readiness-contracts
+    - npm run check:seis-second-brain
+    - npm run check:seis-second-brain-browser-smoke
+    - npm run check:seis-ultimate-demo
+    - npm run check:product-experience-browser-smoke
+- Blocked without approval:
+  - merge to main
+  - GitHub Pages publication
+  - Obsidian private vault import
+  - live provider routing
+  - SSH execution
+  - deployment
+
+## 5) Language Model Training Curriculum
+
+- Contract source: ${SEIS_SECOND_BRAIN_SYSTEM.languageModelTrainingCurriculum.contractPath}
+- Report artifact: ${SEIS_SECOND_BRAIN_SYSTEM.languageModelTrainingCurriculum.reportPath}
+- Current status: ${SEIS_SECOND_BRAIN_SYSTEM.languageModelTrainingCurriculum.status}
+- Boundary:
+  - ${SEIS_SECOND_BRAIN_SYSTEM.languageModelTrainingCurriculum.boundary}
+  - Candidate model families stay metadata-only unless a specific model, license, checksum, hardware budget, model card, dataset card, rollback plan, and explicit human approval exist.
+  - Retrieval and local seed-model lanes can improve Second Brain planning evidence without claiming SEIS owns a trained foundation model.
+
+## Installed AI Profiles
+
+${installedRows.join("\n")}
+
+## Managed Sub-Agent Lanes
+
+${laneRows.join("\n")}
+
+## Autonomous Agent Roster
+
+${rosterRows.join("\n")}
+
+## Current Boundaries
+
+- ${SEIS_SECOND_BRAIN_SYSTEM.runtimeBoundary}
+- Snapshot path: ${SEIS_SECOND_BRAIN_SYSTEM.snapshotPath}
+- GitHub readiness path: ${SEIS_SECOND_BRAIN_SYSTEM.githubReadinessPath}
+- Training pack path: ${SEIS_SECOND_BRAIN_SYSTEM.trainingPackPath}
+- PR #54 review packet: ${SEIS_SECOND_BRAIN_SYSTEM.releaseReviewPacketPath}
+- Language model training curriculum: ${SEIS_SECOND_BRAIN_SYSTEM.languageModelTrainingCurriculum.contractPath}
+- Quality gate: ${SEIS_SECOND_BRAIN_SYSTEM.qualityGate}
+`;
+}
+
+const SEIS_READ_ONLY_MODEL_ROUTER_CONTRACT = {
+  blockedModelClasses: [
+    "20B planned-not-validated",
+    "70B research-roadmap",
+    "150B frontier-program-plan-only",
+    "300B+ not-scoped",
+    "512B apex-program-plan-only",
+    "highest-available-future not-scoped"
+  ]
+};
+
 function saveSecondBrainSnapshot(mode = "snapshot", { quiet = false } = {}) {
   const data = getSecondBrainData();
   const timestamp = new Date().toISOString();
@@ -8248,6 +8685,30 @@ function saveSecondBrainSnapshot(mode = "snapshot", { quiet = false } = {}) {
     toast("SEIS Second Brain", message);
   }
   return SEIS_SECOND_BRAIN_SYSTEM.snapshotPath;
+}
+
+function exportSecondBrainTrainingPack() {
+  const timestamp = new Date().toISOString();
+  const path = SEIS_SECOND_BRAIN_SYSTEM.trainingPackPath;
+  upsertFile(path, buildSecondBrainTrainingPackMarkdown(timestamp));
+  const data = addSecondBrainActivity("Training Pack", "Read-only", `Training Pack saved to ${path}.`);
+  data.lastTrainingPack = {
+    time: timestamp,
+    path,
+    contractsCovered: 4,
+    installedAiProfiles: SEIS_INSTALLED_AI_SYSTEMS.length,
+    managedSubAgentLanes: SUB_AGENT_DEMO.lanes.length,
+    autonomousAgentRoster: SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length,
+    artifactPath: path
+  };
+  const message = `Second Brain training pack saved to ${path}.`;
+  getAppStatus("second-brain").lastAction = message;
+  log("second-brain", message);
+  saveState();
+  renderOpenWindows("second-brain");
+  renderOpenWindows("files");
+  renderOpenWindows("system-logs");
+  toast("SEIS Second Brain", message);
 }
 
 function selectSecondBrainNote(noteId) {
@@ -8628,8 +9089,52 @@ function defaultGenericText(app) {
   if (app.type === "subagent-control") return buildSubAgentDryRunMarkdown(new Date().toISOString());
   if (app.type === "seis-design") return buildSeisDesignHandoffMarkdown(new Date().toISOString());
   if (app.type === "seis-cloud") return buildSeisCloudPreflightMarkdown(new Date().toISOString());
+  if (app.type === "nvidia-catalog") return buildNvidiaCatalogMarkdown(new Date().toISOString());
   if (app.type === "seis-evolution") return buildSeisEvolutionSnapshotMarkdown(new Date().toISOString());
   return `${app.name}\n\n${app.description}\n\nUse New, Save, and Export to update persistent local state.`;
+}
+
+function buildNvidiaCatalogMarkdown(timestamp) {
+  const catalog = NVIDIA_ACCELERATOR_CATALOG;
+  return `# NVIDIA Accelerator Catalog Dry-Run
+
+Generated: ${timestamp}
+Mode: ${catalog.mode}
+Status: ${catalog.status}
+Source contract: ${catalog.sourcePath}
+Documentation: ${catalog.docPath}
+Installed integrations registry: ${catalog.installedIntegrationsRegistry}
+Quality gate: ${catalog.qualityGate}
+Installed integrations gate: ${catalog.installedIntegrationsGate}
+Plan command: ${catalog.planCommand}
+
+## Sources
+- GitHub org: ${catalog.githubOrg}
+- Build skills: ${catalog.buildSkills}
+- Build models: ${catalog.buildModels}
+- Public repos observed: ${catalog.githubPublicRepoCount}
+
+## Dry-Run Queue
+${catalog.queue.map(([title, status, next]) => `- ${title}: ${status} / ${next}`).join("\n")}
+
+## NVIDIA Installed Integrations
+${catalog.installedSkillIntegrations.map(([id, name, category, status, safeUse]) => `- ${name} (${id}): ${category} / ${status} / ${safeUse}`).join("\n")}
+
+## Sample Repos
+${catalog.sampleRepos.map(([name, language, license, state]) => `- ${name}: ${language} / ${license} / ${state}`).join("\n")}
+
+## Blocked Actions
+${catalog.blockedActions.map((item) => `- ${item}`).join("\n")}
+
+## Build Filters
+- Skill domains: ${catalog.domains.join(", ")}
+- Audiences: ${catalog.audiences.join(", ")}
+- Publishers: ${catalog.publishers.join(", ")}
+- GPU filters: ${catalog.gpuTypes.join(", ")}
+
+## Boundary
+This artifact is browser-local Local Demo evidence. It does not clone NVIDIA repos, download models, call NIM APIs, install dependencies, pull Docker images, provision GPUs, execute SSH, mutate GitHub, or store NVIDIA credentials.
+`;
 }
 
 function buildSeisDesignHandoffMarkdown(timestamp) {
@@ -8671,11 +9176,33 @@ Mode: browser-local static demo
 SSH execution: disabled
 Deployment: not performed
 Secrets stored in browser: no
+Public SSH alias: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.alias}
+Public SSH contract: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.contract}
+Public SSH runbook: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.runbook}
+Public SSH quality gate: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.qualityGate}
+Public SSH report command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.reportCommand}
+Public SSH onboarding command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.onboardingCommand}
+Public SSH onboarding artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.onboardingArtifact}
+Public SSH contributor doctor command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.contributorDoctorCommand}
+Public SSH contributor doctor artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.contributorDoctorArtifact}
+Public SSH live evidence command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.liveEvidenceCommand}
+Public SSH live evidence artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.liveEvidenceArtifact}
+Server/port invariant: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.invariant}
 
 ## Boundary
 - This demo can be copied as static files and run from a local server.
 - SSH, deployment, cloud credentials, GitHub mutation, and server changes require explicit approval.
 - Missing provider keys do not block the core desktop, code, design, cloud, video, or gacha surfaces.
+- SEIS-SSH public onboarding preserves the existing HostName and Port unless the human owner approves endpoint migration.
+- The public onboarding pack is not a shared credential path; contributors use authorized GitHub/Codespaces or approved cloud workspaces.
+- The contributor doctor is read-only and does not contact GitHub, open SSH, or write SSH config.
+- Latest live probe is blocked by GitHub Codespaces billing; do not claim online/mobile readiness until strict checks pass.
+
+## Public GitHub SSH States
+${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.states.map(([stateLabel, meaning]) => `- ${stateLabel}: ${meaning}`).join("\n")}
+
+## Approval Gates
+${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.approvalGates.map((gate) => `- ${gate}`).join("\n")}
 
 ## Local Runtime Tool Map
 ${runtimeTools.map(([tool, role, use, status]) => `- ${tool}: ${role} / ${use} / ${status}`).join("\n")}

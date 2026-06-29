@@ -13,6 +13,7 @@ const paths = {
   policy: "content/development/seis-model-frontier-escalation-policy.json",
   council: "content/development/seis-model-scaling-subagent-council.json",
   publicReadinessEvidence: "content/development/seis-agi-public-readiness-evidence.json",
+  githubUserReadinessGates: "content/development/seis-agi-github-user-readiness-gates.json",
   pluginIntegration: "content/development/seis-agent-plugin-integration.json",
   mcpRuntime: "content/development/seis-ai-core-mcp-runtime-contract.json",
   helper: "packages/seis-ai/src/lib/plugin-integration.mjs",
@@ -33,6 +34,7 @@ const profile = readJson(paths.profile, "model scaling profile");
 const policy = readJson(paths.policy, "frontier escalation policy");
 const council = readJson(paths.council, "model scaling council");
 const publicReadinessEvidence = readJson(paths.publicReadinessEvidence, "AGI public readiness evidence");
+const githubUserReadinessGates = readJson(paths.githubUserReadinessGates, "AGI GitHub user readiness gates");
 const pluginIntegration = readJson(paths.pluginIntegration, "plugin integration");
 const mcpRuntime = readJson(paths.mcpRuntime, "MCP runtime contract");
 
@@ -209,15 +211,21 @@ ensure((council?.stageAssignments || []).some((stage) => stage.stage === "512B" 
 ensure(publicReadinessEvidence?.status === "blocked-missing-real-agi-evidence", "public readiness evidence must stay blocked");
 ensure(publicReadinessEvidence?.agiClaimAllowed === false, "public readiness evidence must block AGI claims");
 ensure(publicReadinessEvidence?.publicReadyAsAgi === false, "public readiness evidence must not be public-ready as AGI");
+ensure(publicReadinessEvidence?.sourceOfTruth?.githubUserReadinessGates === paths.githubUserReadinessGates, "public readiness evidence must point to GitHub user readiness gates");
 ensure(publicReadinessEvidence?.readinessSummary?.minimumClaimEvidenceCount === protocol?.minimumEvidenceBeforeAnyAgiClaim?.length, "public readiness evidence minimum evidence count must match protocol");
 ensure((publicReadinessEvidence?.minimumClaimEvidenceMatrix || []).every((item) => item.claimAllowedIfMissing === false && item.routeEligibleIfMissing === false), "public readiness evidence must block missing claim evidence");
+ensure(githubUserReadinessGates?.status === "review-gated-local-demo-ready", "GitHub user readiness gates must remain review-gated Local Demo ready");
+ensure(githubUserReadinessGates?.githubReadyForEveryone === false, "GitHub user readiness gates must not mark everyone-ready");
+ensure(githubUserReadinessGates?.publicReadyForLocalDemo === true, "GitHub user readiness gates must allow Local Demo review");
+ensure(githubUserReadinessGates?.agiClaimAllowed === false, "GitHub user readiness gates must block AGI claims");
 
 ensureArrayIncludesAll(pluginIntegration?.runtimeIntegration?.mcpResources, [
   "seis://ai/agi-evaluation-protocol.json",
-  "seis://ai/agi-public-readiness-evidence.json"
+  "seis://ai/agi-public-readiness-evidence.json",
+  "seis://ai/agi-github-user-readiness-gates.json"
 ], "pluginIntegration.runtimeIntegration.mcpResources");
 ensureArrayIncludesAll(pluginIntegration?.qualityCommands, ["node scripts/check-seis-agi-evaluation-protocol.mjs"], "pluginIntegration.qualityCommands");
-ensure(mcpRuntime?.resourceCount === 28, "MCP runtime contract must record 28 resources");
+ensure(mcpRuntime?.resourceCount === 29, "MCP runtime contract must record 29 resources");
 
 for (const [text, label] of [
   [helper, "AI Core helper"],

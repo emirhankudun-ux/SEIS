@@ -1,0 +1,469 @@
+{
+  "id": "seis-big-tech-mcp-skill-inventory",
+  "date": "2026-06-29",
+  "status": "kimi-cli-installed-claude-detected-apple-mcp-configured",
+  "source": "current Codex tool discovery, curated skill installer pass, official MoonshotAI Kimi Code package metadata, Claude Code CLI checks, and XcodeBuildMCP npm metadata",
+  "goal": "Keep Google ecosystem and major technology platform MCP, skill, plugin, and connector coverage visible without claiming live provider access.",
+  "installed_skill_pass": {
+    "curated_repo": "openai/skills",
+    "curated_path": "skills/.curated",
+    "installed_at": "2026-06-29",
+    "requires_codex_restart": true,
+    "installed_skill_count": 38,
+    "skills": [
+      "aspnet-core",
+      "chatgpt-apps",
+      "cli-creator",
+      "cloudflare-deploy",
+      "define-goal",
+      "figma",
+      "figma-code-connect-components",
+      "figma-create-design-system-rules",
+      "figma-create-new-file",
+      "figma-generate-design",
+      "figma-generate-library",
+      "figma-implement-design",
+      "figma-use",
+      "gh-address-comments",
+      "gh-fix-ci",
+      "jupyter-notebook",
+      "linear",
+      "migrate-to-codex",
+      "netlify-deploy",
+      "notion-knowledge-capture",
+      "notion-meeting-intelligence",
+      "notion-research-documentation",
+      "notion-spec-to-implementation",
+      "openai-docs",
+      "pdf",
+      "playwright",
+      "playwright-interactive",
+      "render-deploy",
+      "screenshot",
+      "security-best-practices",
+      "security-ownership-map",
+      "security-threat-model",
+      "sentry",
+      "speech",
+      "transcribe",
+      "vercel-deploy",
+      "winui-app",
+      "yeet"
+    ],
+    "remaining_curated_skills_not_installed": [
+      {
+        "name": "hatch-pet",
+        "reason": "Not related to the requested Google, Kimi, Claude, Apple, Windows, or major technology platform integration scope."
+      }
+    ],
+    "experimental_path_status": "skills/.experimental was checked and was not available from the curated skills repository at the time of this pass."
+  },
+  "cli_installations": [
+    {
+      "vendor": "Moonshot AI",
+      "name": "Kimi Code CLI",
+      "package": "@moonshot-ai/kimi-code",
+      "version": "0.20.2",
+      "install_source": "official npm package from the MoonshotAI/kimi-code repository",
+      "path": "/Users/emirhankudun/.local/bin/kimi",
+      "status": "installed_and_path_verified",
+      "verification": "kimi --version returned 0.20.2",
+      "provider_state": "No providers configured; login or API-key setup remains user-owned.",
+      "notes": [
+        "The official install path was chosen over the unrelated third-party npm package named kimi-code.",
+        "Kimi user config was initialized at ~/.kimi-code/config.toml with defaults only and no provider credentials.",
+        "The SEIS project now has .kimi-code/mcp.json and .kimi-code/skills/seis-integration-guardian/SKILL.md for project-local Kimi MCP and skill coverage."
+      ]
+    },
+    {
+      "vendor": "Anthropic",
+      "name": "Claude Code CLI",
+      "package": "@anthropic-ai/claude-code",
+      "version": "2.1.177",
+      "install_source": "pre-existing local CLI",
+      "path": "/Users/emirhankudun/.local/bin/claude",
+      "status": "installed_and_path_verified",
+      "verification": "claude --version returned 2.1.177; latest npm metadata observed as 2.1.195",
+      "provider_state": "Claude Code MCP entries are project-visible but pending user approval inside Claude Code."
+    },
+    {
+      "vendor": "Apple",
+      "name": "XcodeBuildMCP",
+      "package": "xcodebuildmcp",
+      "version": "2.6.2",
+      "install_source": "official npm package metadata points to github.com/getsentry/XcodeBuildMCP",
+      "path": "npx -y xcodebuildmcp",
+      "status": "npx_runnable_and_project_mcp_registered",
+      "verification": "npx -y xcodebuildmcp --version returned 2.6.2",
+      "provider_state": "Claude Code lists xcodebuildmcp as Pending approval; Codex session also exposes XcodeBuildMCP tools for enabled workflows."
+    }
+  ],
+  "project_mcp_and_skill_configs": [
+    {
+      "path": ".mcp.json",
+      "client": "Claude Code compatible project MCP config",
+      "servers": [
+        "seis",
+        "xcodebuildmcp"
+      ],
+      "status": "valid_json; Claude Code lists both servers as Pending approval"
+    },
+    {
+      "path": ".kimi-code/mcp.json",
+      "client": "Kimi Code project MCP config",
+      "servers": [
+        "seis",
+        "xcodebuildmcp"
+      ],
+      "status": "valid_json; activates in Kimi sessions after user login/provider setup as needed"
+    },
+    {
+      "path": ".kimi-code/skills/seis-integration-guardian/SKILL.md",
+      "client": "Kimi Code project Skill",
+      "status": "installed as a secrets-free project skill"
+    }
+  ],
+  "connector_install_attempts": [
+    {
+      "name": "BigQuery",
+      "tool_id": "connector_7c3f2c8cdbf64bb0b183ff52f527a06e",
+      "vendor": "Google",
+      "status": "install_requested_but_user_not_confirmed",
+      "completed": false,
+      "user_confirmed": false,
+      "next_action": "User must approve the connector install/auth flow before BigQuery can become callable."
+    }
+  ],
+  "local_apps_detected": [
+    {
+      "app": "Antigravity IDE.app",
+      "location": "workspace root and /Applications",
+      "status": "local app detected"
+    },
+    {
+      "app": "Claude.app",
+      "location": "/Applications",
+      "status": "local app detected; Claude Code CLI is also installed and project MCP entries are pending user approval"
+    },
+    {
+      "app": "Codex.app",
+      "location": "workspace root and /Applications",
+      "status": "local app detected"
+    },
+    {
+      "app": "Cursor.app",
+      "location": "workspace root and /Applications",
+      "status": "local app detected"
+    },
+    {
+      "app": "Ollama.app",
+      "location": "workspace root and /Applications",
+      "status": "local app detected"
+    },
+    {
+      "app": "Qwen.app",
+      "location": "workspace root and /Applications",
+      "status": "local app detected"
+    },
+    {
+      "app": "Xcode.app",
+      "location": "/Applications",
+      "status": "local app detected"
+    },
+    {
+      "app": "Kimi",
+      "location": "workspace root and /Applications",
+      "status": "no local app detected; official Kimi Code CLI installed and path verified"
+    }
+  ],
+  "current_session_mcp_surfaces": [
+    {
+      "vendor": "Google",
+      "surfaces": [
+        "Gmail",
+        "Google Calendar",
+        "Google Drive",
+        "Google Docs",
+        "Google Sheets",
+        "Google Slides"
+      ],
+      "namespaces": [
+        "mcp__codex_apps__gmail",
+        "mcp__codex_apps__google_calendar",
+        "mcp__codex_apps__google_drive"
+      ],
+      "status": "callable in current Codex session",
+      "write_gate": "Explicit user intent is required before mail, calendar, Drive, Docs, Sheets, or Slides mutations."
+    },
+    {
+      "vendor": "Apple",
+      "surfaces": [
+        "XcodeBuildMCP",
+        "iOS simulator workflow",
+        "SwiftPM",
+        "Build iOS Apps skills",
+        "Build macOS Apps skills"
+      ],
+      "namespaces": [
+        "mcp__xcodebuildmcp"
+      ],
+      "status": "callable for enabled simulator workflows; local Xcode.app detected; xcodebuildmcp also registered in Claude and Kimi project MCP configs",
+      "write_gate": "Project build/run/test actions must follow XcodeBuildMCP session-default rules; device, macOS, debugging, and UI automation capabilities may require separate configuration."
+    },
+    {
+      "vendor": "Moonshot AI / Kimi",
+      "surfaces": [
+        "Kimi Code CLI",
+        "Kimi project MCP config",
+        "Kimi project Skill",
+        "Kimi provider config"
+      ],
+      "namespaces": [],
+      "status": "official CLI installed and path verified; no provider configured; official Kimi Datasource plugin requires OAuth login before installation",
+      "write_gate": "Do not run Kimi provider login, OAuth, API-key setup, or plugin installation without explicit user interaction and approval."
+    },
+    {
+      "vendor": "Anthropic / Claude",
+      "surfaces": [
+        "Claude Desktop",
+        "Claude Code CLI",
+        "Claude Code project MCP client"
+      ],
+      "namespaces": [],
+      "status": "local app and CLI detected; SEIS and xcodebuildmcp project MCP entries are pending user approval in Claude Code; no standalone Codex Anthropic connector was found",
+      "write_gate": "Claude MCP approval, provider auth, or plugin installation must be completed by the user inside Claude Code or an approved secure setup flow."
+    },
+    {
+      "vendor": "Microsoft and Windows",
+      "surfaces": [
+        "WinUI app skill",
+        "ASP.NET Core skill",
+        "Azure local skills",
+        "Outlook Calendar plugin candidate",
+        "Outlook Email plugin candidate",
+        "Teams plugin candidate",
+        "SharePoint plugin candidate"
+      ],
+      "namespaces": [],
+      "status": "local skills installed or available; connector installs require explicit user confirmation",
+      "write_gate": "Azure, Outlook, Teams, SharePoint, and Windows app mutations require exact target, credentials boundary, and approval."
+    },
+    {
+      "vendor": "OpenAI",
+      "surfaces": [
+        "OpenAI Platform API key setup",
+        "OpenAI documentation skill"
+      ],
+      "namespaces": [
+        "mcp__codex_apps__openai_platform",
+        "mcp__openai_api_key_local_confirmation"
+      ],
+      "status": "callable and approval-gated for secret creation",
+      "write_gate": "Use the secure key setup flow only; never print or commit API keys."
+    },
+    {
+      "vendor": "GitHub",
+      "surfaces": [
+        "repositories",
+        "issues",
+        "pull requests",
+        "review metadata"
+      ],
+      "namespaces": [
+        "mcp__codex_apps__github"
+      ],
+      "status": "callable in current Codex session",
+      "write_gate": "PR, issue, reviewer, and repository mutations require explicit user intent."
+    },
+    {
+      "vendor": "Figma",
+      "surfaces": [
+        "design file automation",
+        "Figma Plugin API execution",
+        "design-system sync"
+      ],
+      "namespaces": [
+        "mcp__codex_apps__figma"
+      ],
+      "status": "callable in current Codex session",
+      "write_gate": "Follow Figma skill guidance before file writes."
+    },
+    {
+      "vendor": "Cloudflare",
+      "surfaces": [
+        "Cloudflare docs",
+        "Cloudflare API execution",
+        "OpenAPI search"
+      ],
+      "namespaces": [
+        "mcp__cloudflare_api"
+      ],
+      "status": "callable in current Codex session",
+      "write_gate": "Cloudflare account mutations require explicit target and approval."
+    },
+    {
+      "vendor": "Vercel",
+      "surfaces": [
+        "Vercel docs",
+        "projects",
+        "deployments",
+        "protected deployment fetch"
+      ],
+      "namespaces": [
+        "mcp__codex_apps__vercel"
+      ],
+      "status": "callable in current Codex session",
+      "write_gate": "Deployments and project mutations require explicit approval."
+    },
+    {
+      "vendor": "Slack",
+      "surfaces": [
+        "messages",
+        "files",
+        "workspace content"
+      ],
+      "namespaces": [
+        "mcp__codex_apps__slack"
+      ],
+      "status": "partially callable from current tool discovery",
+      "write_gate": "Sending messages or channel changes require explicit user intent."
+    },
+    {
+      "vendor": "Supabase",
+      "surfaces": [
+        "projects",
+        "branches",
+        "migrations",
+        "logs",
+        "edge functions"
+      ],
+      "namespaces": [
+        "mcp__codex_apps__supabase"
+      ],
+      "status": "callable in current Codex session",
+      "write_gate": "Project pause, restore, branch delete, and database changes require explicit approval."
+    },
+    {
+      "vendor": "Shopify",
+      "surfaces": [
+        "Admin GraphQL validation",
+        "store management"
+      ],
+      "namespaces": [
+        "mcp__codex_apps__shopify"
+      ],
+      "status": "partially callable from current tool discovery",
+      "write_gate": "Store mutations require explicit approval and schema validation first."
+    },
+    {
+      "vendor": "Notion",
+      "surfaces": [
+        "workspace search",
+        "connected sources"
+      ],
+      "namespaces": [
+        "mcp__codex_apps__notion"
+      ],
+      "status": "callable in current Codex session",
+      "write_gate": "Workspace edits require explicit target and user intent."
+    },
+    {
+      "vendor": "Asana",
+      "surfaces": [
+        "teams",
+        "task planning"
+      ],
+      "namespaces": [
+        "mcp__codex_apps__asana"
+      ],
+      "status": "partially callable from current tool discovery",
+      "write_gate": "Task or project mutations require explicit approval."
+    },
+    {
+      "vendor": "Clay",
+      "surfaces": [
+        "GTM enrichment",
+        "company research",
+        "contact search"
+      ],
+      "namespaces": [
+        "mcp__codex_apps__clay"
+      ],
+      "status": "callable in current Codex session",
+      "write_gate": "Credit-costing enrichments must only be requested when the user explicitly asks for those data points."
+    },
+    {
+      "vendor": "Vantage",
+      "surfaces": [
+        "cloud cost alerts",
+        "cost reporting"
+      ],
+      "namespaces": [
+        "mcp__codex_apps__vantage"
+      ],
+      "status": "partially callable from current tool discovery",
+      "write_gate": "Budget and alert mutations require explicit approval."
+    }
+  ],
+  "named_provider_gaps": [
+    {
+      "surface": "Gemini",
+      "status": "no standalone callable MCP namespace or curated skill was found in this pass",
+      "next_action": "Keep as planned until an exact plugin, connector, or user-approved setup path is available."
+    },
+    {
+      "surface": "Google Cloud",
+      "status": "no standalone callable MCP namespace or curated skill was found in this pass",
+      "next_action": "Add only after exact target project, credentials boundary, billing/cost review, and approval."
+    },
+    {
+      "surface": "Firebase",
+      "status": "no standalone callable MCP namespace or curated skill was found in this pass",
+      "next_action": "Add only after exact project selection, deployment policy, and approval."
+    },
+    {
+      "surface": "BigQuery",
+      "status": "install candidate found and install requested, but user confirmation was not completed",
+      "next_action": "Wait for user approval of the connector install/auth flow."
+    },
+    {
+      "surface": "Vertex AI, YouTube, Google Ads, Google Chat, Google Tasks, Google Keep, Google Forms",
+      "status": "not configured in current Codex MCP discovery",
+      "next_action": "Treat as planned or disabled until a specific callable connector is installed and verified."
+    },
+    {
+      "surface": "Claude / Anthropic",
+      "status": "Claude.app and Claude Code CLI are installed, and SEIS project MCP entries are visible to Claude Code but pending user approval; no standalone Codex Anthropic MCP namespace or exact connector was found",
+      "next_action": "Run Claude Code interactively to approve the project MCP servers if desired; keep external Anthropic provider setup approval-gated."
+    },
+    {
+      "surface": "Kimi / Moonshot AI",
+      "status": "official Kimi Code CLI is installed and path verified, with project-local MCP and Skill config added; no provider is configured and no official plugin was installed because Kimi Datasource requires OAuth login",
+      "next_action": "User can run kimi login or open Kimi and install official marketplace plugins such as Kimi Datasource after OAuth; do not store credentials in SEIS."
+    }
+  ],
+  "security_boundary": {
+    "no_secrets_stored": true,
+    "no_provider_calls": true,
+    "no_ssh": true,
+    "no_deployment": true,
+    "no_git_push_or_merge": true,
+    "notes": [
+      "No OAuth tokens, API keys, private keys, cookies, service accounts, or profile identifiers were written to repository files.",
+      "Skill installation was local to the Codex skills directory and does not add project dependencies.",
+      "Kimi CLI installation was user-level and does not add project dependencies; the SEIS repo only stores secrets-free Kimi MCP and Skill config.",
+      "Current MCP availability is a session capability snapshot, not a production integration claim."
+    ]
+  },
+  "validation": [
+    "Curated skill list fetched from openai/skills.",
+    "Selected major technology platform skills installed into $CODEX_HOME/skills; all relevant curated skills were installed except hatch-pet.",
+    "Installed skill directories verified locally.",
+    "tool_search discovery checked Google, Kimi, Claude, Apple, Windows, Microsoft, and major technology platform terms.",
+    "Official Kimi Code CLI installed and verified with kimi --version.",
+    "Claude Code CLI verified with claude --version and project MCP list.",
+    "XcodeBuildMCP verified through npx and registered in .mcp.json plus .kimi-code/mcp.json.",
+    "BigQuery connector install was requested but not completed because the user did not confirm the connector flow.",
+    "Repository records should be validated with jq and git diff checks."
+  ]
+}

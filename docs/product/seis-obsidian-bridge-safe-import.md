@@ -31,6 +31,41 @@ Source contract:
 | Sanitized import preview | Planned | Redacted local preview; no private note body by default. |
 | Public sync | Blocked | Separate GitHub publication approval. |
 
+## Dry-Run Manifest Contract
+
+Any future bridge must create a dry-run manifest before import. The manifest
+must include a redacted or hashed source path fingerprint, `selectedByUser`,
+candidate note count, blocked file count, blocked path matches, secret-scan
+summary, provenance labels, publishability labels, redaction summary, attachment
+review summary, body import policy, and human approval state.
+
+The default body policy is `metadata-only-by-default`. Private note body text is
+not copied into repo-owned fixtures unless a separate review approves a public
+fixture. Supported decision labels include `public-safe-metadata-only`,
+`needs-redaction`, `needs-provenance-review`, `blocked-private`,
+`blocked-secret-risk`, and `blocked-attachment-risk`.
+
+## Repo-Owned Dry-Run Artifact
+
+Current public-demo review can generate a repo-owned dry-run artifact without
+reading a real private vault:
+
+```bash
+npm run report:seis-obsidian-safe-import-dry-run
+npm run check:seis-obsidian-safe-import-dry-run
+```
+
+This writes `reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json`
+and `reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md`. The
+artifact is intentionally limited to repo-owned seed note metadata from
+`content/development/seis-second-brain-system.json`; it records
+`selectedByUser: false`, `humanApprovalState: not-requested`, and
+`bodyImportPolicy: metadata-only-by-default`.
+
+It is not a private Obsidian import. It does not scan a host vault, store an
+absolute private path, copy private note bodies, copy attachments, install a
+plugin, call providers, execute SSH, mutate GitHub, deploy, or approve release.
+
 ## Forbidden By Default
 
 - Automatic Obsidian plugin install.
@@ -52,6 +87,8 @@ Source contract:
 ## Validation
 
 ```bash
+npm run report:seis-obsidian-safe-import-dry-run
+npm run check:seis-obsidian-safe-import-dry-run
 npm run check:seis-second-brain-readiness-contracts
 ```
 

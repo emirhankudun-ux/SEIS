@@ -124,6 +124,8 @@ npm run report:seis-read-only-model-router-decision
 npm run check:seis-read-only-model-router-decision
 npm run report:seis-second-brain-accessibility-focus-report
 npm run check:seis-second-brain-accessibility-focus-report
+npm run report:seis-second-brain-agent-registry
+npm run check:seis-second-brain-agent-registry
 npm run check:seis-second-brain-readiness-contracts
 npm run check:seis-second-brain-browser-smoke
 npm run check:seis-public-demo-go-no-go -- --run-fast-checks
@@ -200,6 +202,42 @@ The latest approval-gated live probe is tracked in
 readiness is blocked by a GitHub Codespaces billing issue; the same server and
 port policy remains preserved, but online/mobile-ready claims are not allowed.
 
+## SEIS Brain and Obsidian Memory
+
+SEIS ships a markdown-first second-brain layer under `seis-brain/vault` for
+agent/context continuity and public-safe project memory.
+
+- `SEIS_SECOND_BRAIN.md` explains the memory model and operating rules.
+- `SEIS_OBSIDIAN_VAULT.md` explains folder structure and backlinks.
+- `docs/OBSIDIAN_SECOND_BRAIN.md` mirrors onboarding notes for contributors.
+- `seis-brain/vault/00_Index/SEIS Home.md` is the memory entry point.
+
+Do not store credentials, private keys, hostnames, raw secrets, or private data
+in these notes. Use `docs/PUBLIC_READINESS.md` for release-safe checks.
+
+## Installed AI / Local AI Registry
+
+SEIS tracks installed and available AI capabilities in:
+
+- `SEIS_INSTALLED_AI_TOOLS.md`
+- `seis-brain/vault/04_AI/`
+- `docs/LOCAL_AI_SETUP.md`
+- `docs/OBSIDIAN_SECOND_BRAIN.md`
+
+The repo does not require keys for core demo operation. Local or provider-based AI
+features are explicitly labeled by mode.
+
+## SEIS-SSH and Cloud Readiness
+
+SEIS remote-development and cloud-readiness concepts are documented in:
+
+- `SEIS_SSH.md`
+- `docs/SEIS_SSH_SETUP.md`
+- `seis-brain/vault/07_SSH_Cloud/`
+
+Real SSH credentials are never committed. SEIS-SSH docs provide sample-safe
+metadata and deployment readiness gate names.
+
 `npm run check:seis-second-brain-readiness-contracts` validates the Second
 Brain readiness contracts for the Obsidian bridge safe import plan,
 accessibility/focus QA, provider-neutral read-only model-router boundary, and
@@ -230,6 +268,14 @@ Second Brain accessibility/focus QA artifacts under `reports/seis-public-demo/`.
 Those artifacts validate repo-static ARIA/focus markers and browser-smoke
 coverage while keeping manual keyboard transcript, screen-reader transcript,
 reduced-motion review, and human accessibility approval blocked until review.
+
+`npm run report:seis-second-brain-agent-registry` writes the Second Brain agent
+registry artifacts under `reports/seis-public-demo/`. Those artifacts join the
+installed AI profiles, supervised AI workforce assignments, bounded sub-agent
+roster, Obsidian bridge boundary, plugin inventory, MCP surfaces, and connector
+activation rules without reading a private Obsidian vault, validating
+credentials, calling providers, enabling autonomous writes, executing SSH,
+mutating GitHub, deploying, or approving release.
 
 `npm run report:seis-public-demo-go-no-go` writes PR/release-review artifacts
 under `reports/seis-public-demo/`, including the evidence manifest and
@@ -585,3 +631,35 @@ TypeScript, Rust, design systems, DevOps, security, and GitHub Pages.
 SEIS is actively evolving. Some historical documents still record earlier
 private or consolidation phases. The current direction is open source,
 main-centered, AI-native, security-conscious, and architecture-led.
+
+## SEIS Brain
+
+SEIS is backed by a markdown-first, Obsidian-compatible second brain.
+
+- `SEIS_SECOND_BRAIN.md` and `SEIS_OBSIDIAN_VAULT.md` define the memory model.
+- `seis-brain/vault` stores public-safe memory, links, context packs, and ADRs.
+- The second brain helps AI agents and contributors get correct context quickly.
+
+## Obsidian Vault
+
+The vault path is `seis-brain/vault`.
+
+- Open in Obsidian directly.
+- No plugins are required.
+- Private/local-only material is intentionally not committed.
+
+## Local AI / Ollama
+
+- Local AI is optional.
+- Core demo works in no-key mode.
+- Ollama can help local summaries and documentation drafting.
+- Local AI policy and safe contract: [`SEIS_LOCAL_AI_OLLAMA.md`](SEIS_LOCAL_AI_OLLAMA.md).
+
+## SEIS-SSH
+
+- `SEIS_SSH.md` and `docs/SEIS_SSH_SETUP.md` document the safe remote-development concept.
+- Real credentials and live SSH are not included by default.
+
+## Public Readiness
+
+See `docs/PUBLIC_READINESS.md` for the readiness checklist and blockers.

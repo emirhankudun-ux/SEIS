@@ -39,10 +39,12 @@ The long-term cloud-only roadmap lives in:
 deploy/seis-ssh-cloud-roadmap.json
 deploy/seis-ssh-closed-runtime-contract.json
 deploy/seis-ssh-5-year-enterprise-benchmark.json
+deploy/seis-ssh-public-access-contract.json
 docs/deployment/seis-ssh-cloud-roadmap.md
 docs/deployment/seis-ssh-closed-developer-runtime.md
 docs/deployment/seis-ssh-new-device-bootstrap.md
 docs/deployment/seis-ssh-5-year-enterprise-blueprint.md
+docs/deployment/seis-ssh-public-github-access.md
 ```
 
 The roadmap keeps the current online setup from becoming a short-term local
@@ -55,6 +57,17 @@ workaround. It locks the following long-horizon direction:
 - sanitized closed-runtime handoff without secrets
 - no local Mac, LAN, direct VPS, or VPN-specific picker aliases
 - new computer bootstrap through the same `SEIS-SSH` alias
+- public GitHub onboarding that keeps the same server and port
+- read-only onboarding pack for reviewer, maintainer, and new-contributor paths
+- read-only contributor doctor for local tool and sanitized SSH snapshot checks
+- live readiness evidence that records the current billing blocker without changing server or port
+
+Public-access invariant:
+
+```text
+Keep the same server and port.
+Ayni sunucu ve baglanti noktasi korunur.
+```
 
 ## Companies And Teams
 
@@ -84,6 +97,10 @@ development runtime isolated.
 
 ```bash
 npm run check:seis-ssh-access-model
+npm run check:seis-ssh-public-access
+npm run check:seis-ssh-public-onboarding
+npm run check:seis-ssh-public-contributor-doctor
+npm run check:seis-ssh-live-readiness-evidence
 npm run check:seis-ssh-cloud-roadmap
 npm run check:seis-ssh-closed-runtime
 npm run check:seis-ssh-enterprise-benchmark

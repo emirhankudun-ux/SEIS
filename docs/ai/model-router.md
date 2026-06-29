@@ -18,7 +18,7 @@ user selection.
 | Router implementation | Planned | No central router implementation exists in this branch. | Typed environment validation and live adapter tests are missing. | Keep routing disabled until server-only adapter tests exist. |
 | Routing policy | Documented | This document and `docs/ai/seis-ai-core.md`. | No runtime policy tests. | Add fixtures before live providers. |
 | Provider state model | Documented fixture | `content/development/seis-ai-core-provider-registry.json`, `seis_ai_core_provider_status`, `seis://ai/provider-registry.json`. | No live health checks or credential validation are performed. | Use the fixture for UI/MCP status before live adapters. |
-| Read-only model-router contract | Planned-read-only contract | `content/development/seis-read-only-model-router-contract.json`, `docs/ai/read-only-model-router-contract.md`, `npm run check:seis-second-brain-readiness-contracts`. | No runtime gateway, provider calls, credential validation, browser secrets, silent fallback, or local-only cloud fallback. | Keep the contract explanatory until backend-only provider mediation and no-key fixtures exist. |
+| Read-only model-router contract | Planned-read-only contract | `content/development/seis-read-only-model-router-contract.json`, `docs/ai/read-only-model-router-contract.md`, `reports/seis-public-demo/read-only-model-router-decision-latest.json`, `npm run check:seis-read-only-model-router-decision`, `npm run check:seis-second-brain-readiness-contracts`. | No runtime gateway, provider calls, credential validation, browser secrets, silent fallback, or local-only cloud fallback. | Keep the contract explanatory until backend-only provider mediation and no-key fixtures exist. |
 | Model scaling profile | Planned compatibility contract | `content/development/seis-model-scaling-hardware-profile.json`, `docs/ai/seis-model-scaling.md`, `seis_ai_core_model_scaling_status`. | The 20B / 16GB+ RAM target plus 70B, 150B, and 512B apex lanes are not routeable models until weights, model cards, runtime adapters, safety evals, AGI eval protocol, and benchmarks exist. | Keep Local Demo as fallback and block 20B, 70B, 150B, or 512B routing until profile gates pass. |
 | Model parameter ladder | Planning contract, not runtime | `content/development/seis-model-parameter-ladder.json`, `seis://ai/model-parameter-ladder.json`, `npm run check:seis-model-parameter-ladder`. | The 20B, 70B, 150B, 300B+, 512B, and highest-future parameter classes are explicit route-blocked targets, not trained, AGI, or routeable SEIS models. | Use the ladder only to explain promotion order and approval gates; never treat it as model availability. |
 | 150B frontier model program | Plan-only route gate | `content/development/seis-150b-frontier-model-program.json`, `seis://ai/150b-frontier-model-program.json`, `npm run check:seis-150b-frontier-model-program`. | The 150B program is a charter and promotion-gate record only, not weights, inference, benchmark evidence, cloud/GPU capacity, SSH, or production readiness. | Keep 150B route eligibility blocked until 20B and 70B evidence plus clean-room, budget, privacy, safety, observability, rollback, and approval gates pass. |
@@ -126,3 +126,19 @@ documented in `docs/ai/read-only-model-router-contract.md`. It is validated by
 provider-neutral routing decisions, but it must not perform live routing,
 validate credentials, receive browser secrets, send private prompts, route
 private Obsidian vault content, or silently switch providers.
+
+Its decision integrity rules require redacted review-only output, explicit
+provider state, explicit selected provider, explicit fallback policy, blocked
+reasons when a route is ineligible, and `executionPerformed` staying false for
+all contract-level decisions.
+
+The read-only model-router decision artifact is
+`reports/seis-public-demo/read-only-model-router-decision-latest.json` with the
+reader-facing Markdown at
+`reports/seis-public-demo/read-only-model-router-decision-latest.md`. Generate
+it with `npm run report:seis-read-only-model-router-decision` and validate it
+with `npm run check:seis-read-only-model-router-decision`. It is a
+read-only model-router decision artifact for installed AI profile fixtures and
+blocked route decisions; it does not call providers, validate credentials,
+store prompt bodies, route private Obsidian content, use silent fallback, or
+approve live routing.

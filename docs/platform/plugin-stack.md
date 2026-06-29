@@ -28,6 +28,30 @@ Policy records:
 | Canonical SEIS plugin | `seis-ai-agent@seis-repo` |
 | Legacy SEIS mirror | `seis@personal` compatibility only |
 
+## 2026-06-29 Major Platform Skill Pass
+
+SEIS now has a companion inventory for Google ecosystem and major technology
+platform MCP, skill, plugin, and connector coverage:
+
+- `docs/platform/big-tech-mcp-skill-inventory.md`
+- `content/development/seis-big-tech-mcp-skill-inventory.json`
+
+The pass installed curated local Codex skills for OpenAI, GitHub, Figma,
+Cloudflare, Vercel, Netlify, Render, Linear, Sentry, Microsoft app frameworks,
+Jupyter, Notion, PDF/screenshot/speech/transcription, Playwright, and security
+review support. Google Workspace MCP coverage remains Gmail, Calendar, Drive,
+Docs, Sheets, and Slides. BigQuery appeared as an installable connector
+candidate, but user confirmation did not complete. Google Cloud, Firebase,
+Gemini, Vertex AI, YouTube, Google Ads, Chat, Tasks, Keep, and Forms remain
+planned or approval-gated until specific callable connectors are available and
+verified. Apple coverage is through local `Xcode.app`, XcodeBuildMCP, and
+Build iOS/macOS skills. After the follow-up install pass, the official Kimi
+Code CLI is installed and verified, SEIS has Kimi project-local MCP and Skill
+config, Claude Desktop and Claude Code CLI are installed, and Claude Code lists
+the SEIS plus XcodeBuildMCP project MCP servers as pending user approval. Kimi
+provider login, Kimi marketplace plugin installation, and Claude MCP approval
+remain explicit user-owned actions.
+
 ## Priority Categories
 
 | Category | Primary OpenAI/Codex plugins |

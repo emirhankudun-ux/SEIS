@@ -6,6 +6,7 @@
   "strategy": "cloud-only-long-horizon",
   "status": "active",
   "enterpriseBenchmarkSource": "deploy/seis-ssh-5-year-enterprise-benchmark.json",
+  "publicAccessContract": "deploy/seis-ssh-public-access-contract.json",
   "portableBootstrap": {
     "artifact": "docs/deployment/seis-ssh-new-device-bootstrap.md",
     "target": "new-computer-and-chatgpt-codex-surfaces",
@@ -64,6 +65,14 @@
       "id": "cloud-only-entrypoint",
       "statement": "SEIS-SSH must resolve to a cloud transport and must not depend on 127.0.0.1, .local, or a direct public VPS alias.",
       "evidence": ["npm run cloud:ssh:online:strict"]
+    },
+    {
+      "id": "same-server-port-preservation",
+      "statement": "SEIS-SSH onboarding, docs, checks, and demo surfaces must preserve the existing server and port unless the human owner explicitly approves endpoint migration.",
+      "evidence": [
+        "deploy/seis-ssh-public-access-contract.json",
+        "npm run check:seis-ssh-public-access"
+      ]
     },
     {
       "id": "individual-normal-cloud",
@@ -205,6 +214,10 @@
     "Do not weaken company/team VPN requirements to simplify onboarding."
   ],
   "validationCommands": [
+    "npm run check:seis-ssh-public-access",
+    "npm run check:seis-ssh-public-onboarding",
+    "npm run check:seis-ssh-public-contributor-doctor",
+    "npm run check:seis-ssh-live-readiness-evidence",
     "npm run check:seis-ssh-cloud-roadmap",
     "npm run check:seis-ssh-closed-runtime",
     "npm run check:seis-ssh-access-model",
