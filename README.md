@@ -595,3 +595,34 @@ TypeScript, Rust, design systems, DevOps, security, and GitHub Pages.
 SEIS is actively evolving. Some historical documents still record earlier
 private or consolidation phases. The current direction is open source,
 main-centered, AI-native, security-conscious, and architecture-led.
+
+## SEIS Brain
+
+SEIS is backed by a markdown-first, Obsidian-compatible second brain.
+
+- `SEIS_SECOND_BRAIN.md` and `SEIS_OBSIDIAN_VAULT.md` define the memory model.
+- `seis-brain/vault` stores public-safe memory, links, context packs, and ADRs.
+- The second brain helps AI agents and contributors get correct context quickly.
+
+## Obsidian Vault
+
+The vault path is `seis-brain/vault`.
+
+- Open in Obsidian directly.
+- No plugins are required.
+- Private/local-only material is intentionally not committed.
+
+## Local AI / Ollama
+
+- Local AI is optional.
+- Core demo works in no-key mode.
+- Ollama can help local summaries and documentation drafting.
+
+## SEIS-SSH
+
+- `SEIS_SSH.md` and `docs/SEIS_SSH_SETUP.md` document the safe remote-development concept.
+- Real credentials and live SSH are not included by default.
+
+## Public Readiness
+
+See `docs/PUBLIC_READINESS.md` for the readiness checklist and blockers.

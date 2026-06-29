@@ -10,6 +10,18 @@ Date: 2026-06-23
 | [STATUS.md](STATUS.md) | Current branch status matrix. |
 | [../ARCHITECTURE.md](../ARCHITECTURE.md) | Root architecture pointer for agents and contributors. |
 | [../ROADMAP.md](../ROADMAP.md) | Root roadmap pointer for agents and contributors. |
+| [../SEIS_SECOND_BRAIN.md](../SEIS_SECOND_BRAIN.md) | Public-second brain operating model and onboarding for long-term memory layer. |
+| [../SEIS_OBSIDIAN_VAULT.md](../SEIS_OBSIDIAN_VAULT.md) | Obsidian-compatible vault rules for public-safe SEIS memory. |
+| [../SEIS_INSTALLED_AI_TOOLS.md](../SEIS_INSTALLED_AI_TOOLS.md) | Installed AI tooling and model/provider safety registry. |
+| [../SEIS_SUB_AGENTS.md](../SEIS_SUB_AGENTS.md) | Bounded sub-agent coordination model and output contract. |
+| [../SEIS_SSH.md](../SEIS_SSH.md) | Safe remote-development/documented SSH concept and constraints. |
+| [../roadmap/seis-long-horizon-strategy.md](../roadmap/seis-long-horizon-strategy.md) | Long-horizon 0–10 year strategy with first- and second-stage operational blueprints. |
+| [GETTING_STARTED.md](GETTING_STARTED.md) | New contributor onboarding and run instructions. |
+| [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | Common operational and demo troubleshooting guidance. |
+| [PUBLIC_READINESS.md](PUBLIC_READINESS.md) | Public readiness evidence checklist and readiness criteria. |
+| [LOCAL_AI_SETUP.md](LOCAL_AI_SETUP.md) | Optional local AI/Ollama setup guidance. |
+| [SEIS_SSH_SETUP.md](SEIS_SSH_SETUP.md) | Safe SEIS-SSH onboarding and deployment gates. |
+| [OBSIDIAN_SECOND_BRAIN.md](OBSIDIAN_SECOND_BRAIN.md) | Obsidian second-brain mapping for SEIS contributors and agents. |
 | [governance/seis-integration-and-github-development.md](governance/seis-integration-and-github-development.md) | Integration policy for keeping every SEIS workstream tied to GitHub, evidence, and PR sequencing. |
 | [reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md](reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md) | Canonical `SEIS/` workspace rule and classification of nearby SEIS-like folders. |
 | [reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md](reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md) | Foundation audit and review report. |
