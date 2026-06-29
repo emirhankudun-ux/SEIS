@@ -283,7 +283,8 @@
     "quality:governance:publish:ci": "npm run quality:governance:publish -- --ci --auto-heal",
     "check:seis-commit-packages": "node scripts/create-seis-commit-packages.cjs --check",
     "execute:seis-action-execution": "node scripts/execute-seis-action-execution.mjs",
-    "check:seis-model-scaling-subagent-council": "node scripts/check-seis-model-scaling-subagent-council.mjs"
+    "check:seis-model-scaling-subagent-council": "node scripts/check-seis-model-scaling-subagent-council.mjs",
+    "check:seis-github-merge-gates": "node scripts/check-seis-github-merge-gates.mjs"
   },
   "engines": {
     "node": ">=18"

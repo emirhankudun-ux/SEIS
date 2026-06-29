@@ -1,0 +1,108 @@
+{
+  "id": "seis-github-merge-gates",
+  "version": "2026.06.29",
+  "status": "active-governance-evidence",
+  "purpose": "Record the GitHub main-branch merge gates that currently explain why auto-merge can be enabled while PRs remain blocked until human review requirements are satisfied.",
+  "qualityGate": "npm run check:seis-github-merge-gates",
+  "sourceOfTruth": {
+    "repository": "emirhankudun-ux/SEIS",
+    "branch": "main",
+    "rulesApi": "GET /repos/emirhankudun-ux/SEIS/rules/branches/main",
+    "documentation": "docs/governance/seis-github-merge-gates.md",
+    "validator": "scripts/check-seis-github-merge-gates.mjs"
+  },
+  "observedAt": "2026-06-29T13:31:00Z",
+  "mergePolicy": {
+    "mainDirectPushAllowed": false,
+    "forcePushAllowed": false,
+    "adminBypassAllowedForCodex": false,
+    "autoMergeAllowedAfterRequirements": true,
+    "allowedMergeMethods": ["merge", "squash", "rebase"],
+    "preferredMergeMethod": "squash",
+    "humanReviewRequired": true
+  },
+  "requiredRules": [
+    {
+      "type": "pull_request",
+      "requiredApprovingReviewCount": 10,
+      "requireCodeOwnerReview": true,
+      "requireLastPushApproval": true,
+      "requiredReviewThreadResolution": true,
+      "dismissStaleReviewsOnPush": true,
+      "reviewDraftPullRequests": true,
+      "whyItMatters": "Auto-merge cannot complete until the required human and code-owner review gates are satisfied."
+    },
+    {
+      "type": "required_signatures",
+      "whyItMatters": "Unsigned commits can be accepted onto feature branches only when branch creation bypass is permitted, but protected main still requires signed history at merge time."
+    },
+    {
+      "type": "required_linear_history",
+      "whyItMatters": "Merge commits are not acceptable for protected main history."
+    },
+    {
+      "type": "code_scanning",
+      "tool": "CodeQL",
+      "alertsThreshold": "errors",
+      "securityAlertsThreshold": "high_or_higher",
+      "whyItMatters": "CodeQL must not report blocking alerts before a PR can merge."
+    },
+    {
+      "type": "code_quality",
+      "severity": "all",
+      "whyItMatters": "Repository quality gates are part of the merge readiness signal."
+    },
+    {
+      "type": "deletion",
+      "whyItMatters": "Protected refs must not be deleted as part of normal PR work."
+    },
+    {
+      "type": "non_fast_forward",
+      "whyItMatters": "Force-push and non-fast-forward updates are blocked for protected refs."
+    },
+    {
+      "type": "creation",
+      "whyItMatters": "Restricted branch creation requires approved actors or repository ruleset bypass."
+    },
+    {
+      "type": "update",
+      "whyItMatters": "Branch updates must satisfy repository rules before protected integration."
+    }
+  ],
+  "blockedPrExamples": [
+    {
+      "pr": 58,
+      "title": "test(seis): cover Linux replica public demo entry",
+      "autoMergeEnabled": true,
+      "mergeStateStatus": "BLOCKED",
+      "checksObserved": "success",
+      "likelyRemainingGate": "pull request review and protected-branch policy requirements"
+    },
+    {
+      "pr": 62,
+      "title": "feat(ai-core): add subagent handoff fixture",
+      "autoMergeEnabled": true,
+      "mergeStateStatus": "BLOCKED",
+      "checksObserved": "mostly-success-with-swift-codeql-queued-at-observation-time",
+      "likelyRemainingGate": "pull request review and protected-branch policy requirements"
+    }
+  ],
+  "safeOperatorActions": [
+    "Keep work on short-lived feature branches.",
+    "Open focused PRs with validation and rollback notes.",
+    "Enable auto-merge after PR creation when branch policy allows it.",
+    "Ask human reviewers to satisfy review count, code owner review, and last-push approval.",
+    "Re-run or wait for CodeQL, security, governance, and quality checks.",
+    "Do not use admin bypass unless the repository owner explicitly accepts that risk for the specific PR."
+  ],
+  "forbiddenForCodex": [
+    "admin merge bypass",
+    "force push",
+    "direct push to main",
+    "branch protection weakening",
+    "history rewrite",
+    "review self-approval claims",
+    "marking merge complete before GitHub reports mergedAt"
+  ],
+  "nextSafeAction": "Use this contract as the human-review checklist for blocked auto-merge PRs, then continue development in independent, reviewable branches while reviewers satisfy protected-branch gates."
+}
