@@ -22,6 +22,7 @@ Current implementation lives in:
 - `apps/web/desktop.css`
 - `content/development/seis-second-brain-system.json`
 - `content/development/seis-obsidian-bridge-safe-import-contract.json`
+- `content/development/seis-agi-independent-evidence-ledger.json`
 - `content/development/seis-second-brain-accessibility-focus-qa.json`
 - `content/development/seis-public-demo-release-checklist-pr54.json`
 - `scripts/check-seis-second-brain.mjs`
@@ -31,6 +32,7 @@ Current implementation lives in:
 - `scripts/create-seis-read-only-model-router-decision.mjs`
 - `scripts/create-seis-second-brain-accessibility-focus-report.mjs`
 - `scripts/create-seis-second-brain-agent-registry.mjs`
+- `scripts/check-seis-agi-independent-evidence-ledger.mjs`
 - `docs/product/seis-obsidian-bridge-safe-import.md`
 - `docs/reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md`
 - `docs/releases/PUBLIC_DEMO_RELEASE_CHECKLIST_PR54.md`
@@ -46,6 +48,7 @@ Search, SEIS AI, Command Center, Launchpad, Favorites, and desktop shortcuts.
 | Knowledge graph | Browser-local Local Demo | Graph nodes and backlinks are generated from repo-owned seed records; `Link Graph` writes `graph-links.json`. |
 | Agent training pack | Local Demo read-only | `Build Training Pack` writes `/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md` with Obsidian, accessibility, router, PR #54 checklist, and language model training curriculum summaries. |
 | Language model training curriculum | Planned-training contract | `content/development/seis-language-model-training-curriculum.json` and `reports/seis-model-scaling/seis-language-model-training-curriculum.md` map candidate model families, local seed-model lanes, retrieval lanes, and approval gates without installing models, downloading checkpoints, training, benchmarking, calling providers, or claiming SEIS owns a foundation model. |
+| Independent AGI evidence ledger | Review-gated | `npm run check:seis-agi-independent-evidence-ledger` and `content/development/seis-agi-independent-evidence-ledger.json` keep AGI/512B public claims blocked until independent external evidence and explicit human approval are recorded. |
 | Installed AI bridge | Local Demo context only | SEIS AI exposes a Second Brain tab with all 6 current installed AI profiles: Codex, SEIS Local Demo Runtime, Claude Review Profile, Qwen Alternative Review, Gemini Secondary Validation, and Ollama Local Candidate. Missing Key and Disabled states remain explicit. |
 | read-only model-router decision artifact | Provider-neutral review-only | `npm run report:seis-read-only-model-router-decision` writes `reports/seis-public-demo/read-only-model-router-decision-latest.json` and `.md` with installed AI profile fixtures, blocked reasons, explicit fallback policy, `executionPerformed: false`, and no provider calls. |
 | Second Brain agent registry artifact | Review-only | `npm run report:seis-second-brain-agent-registry` writes `reports/seis-public-demo/second-brain-agent-registry-latest.json` and `.md` by joining installed AI profiles, AI workforce assignments, managed sub-agent lanes, the 12-agent roster, Obsidian bridge boundaries, plugin inventory, MCP surfaces, and connector activation policy without provider calls, credential validation, private vault reads, autonomous writes, SSH, deployment, GitHub mutation, or release approval. |
