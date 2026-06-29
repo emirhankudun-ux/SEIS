@@ -115,6 +115,14 @@ if (council) {
   ensure(stages.some((stage) => stage.stage === "512B" && (stage.leadAgents || []).length === 12), "512B stage must assign all 12 council agents");
   ensure(stages.some((stage) => stage.stage === "512B" && (stage.requiredBeforePromotion || []).includes("AGI capability evaluation protocol")), "512B stage must require AGI capability evaluation protocol");
 
+  const apexDuties = Array.isArray(council.apex512bCouncilDuties) ? council.apex512bCouncilDuties : [];
+  ensure(apexDuties.length === 12, "apex512bCouncilDuties must assign exactly 12 agents");
+  ensureArrayIncludesAll(apexDuties.map((entry) => entry.agentId), agents.map((agent) => agent.id), "apex512bCouncilDuties.agentId");
+  for (const duty of apexDuties) {
+    ensureNonEmpty(duty.duty, `${duty.agentId}.apex512b duty`);
+    ensure(Array.isArray(duty.evidence) && duty.evidence.length >= 3, `${duty.agentId}.apex512b evidence must be populated`);
+  }
+
   ensureArrayIncludesAll(council.forbiddenClaims, [
     "SEIS has trained a 20B foundation model.",
     "SEIS has trained a 70B foundation model.",

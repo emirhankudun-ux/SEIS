@@ -36,6 +36,13 @@ boundary rather than a local-runtime claim:
   documents a public MoE model card with total and activated parameter counts,
   which reinforces that SEIS must track total parameters, activated parameters,
   inference memory, context length, and safety separately.
+- [NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework)
+  keeps governance, risk mapping, measurement, management, safety, security,
+  privacy, transparency, accountability, and fairness as first-class gates for
+  any SEIS AGI-readiness claim.
+- [Anthropic Responsible Scaling Policy](https://www.anthropic.com/responsible-scaling-policy)
+  reinforces that capability thresholds, safeguards, security posture, and
+  escalation reviews must be explicit before frontier model deployment claims.
 
 Validation:
 
@@ -366,6 +373,32 @@ evidence exists, a clean-room training plan is accepted, an AGI capability
 evaluation protocol is written, all-agent council review is recorded, and
 explicit human approval exists.
 
+## 512B AGI Readiness Research Baseline
+
+The 512B program now carries a public internet research baseline inside
+`content/development/seis-512b-apex-model-program.json`. That baseline links
+frontier-scale examples such as Llama 3.1 405B, Megatron-Turing NLG 530B,
+DeepSeek-V3 671B MoE, and Qwen3-235B-A22B to SEIS engineering implications.
+
+The baseline is deliberately conservative:
+
+- parameter count alone is not AGI evidence
+- a prompt, RAG layer, provider wrapper, local demo, or sub-agent assignment is
+  not a SEIS-owned foundation model
+- total parameters, activated parameters, context length, inference memory,
+  model-card evidence, dataset provenance, and safety evidence must be tracked
+  separately
+- public GitHub readiness requires zero-key reproducible startup, CI evidence,
+  release/rollback notes, forbidden-claim checks, and no secret exposure
+
+The AGI readiness definition remains `definition-only-not-demonstrated`.
+Before SEIS can make any real AGI claim, the repository must contain
+independent multi-domain capability evaluation, long-horizon planning
+evaluation, tool-use reliability evidence, out-of-distribution generalization
+evidence, privacy/data-rights review, red-team results, model/system cards,
+training logs, checkpoint governance, external review, and explicit human
+approval.
+
 ## Language Model Intake Registry
 
 SEIS tracks broad model-family intake separately from model scaling:
@@ -415,6 +448,15 @@ eligibility by themselves.
 The council is coordination evidence only. A plan-only sub-agent assignment is
 not runtime evidence and cannot be used as proof that SEIS has trained,
 downloaded, benchmarked, served, or routed a 20B, 70B, or 150B model.
+
+For the 512B program, all 12 agents now have explicit plan-only duties:
+architecture charter, validator/MCP synchronization, honest UI labeling,
+user-facing no-overclaim review, public research tracking, provenance-aware
+search, security blocking, distributed runtime planning, documentation
+alignment, deterministic QA, cloud-disabled status, and automation/push/merge
+approval gates. These duties improve readiness only; they do not authorize
+model downloads, training, benchmarks, provider calls, SSH, deployment, GitHub
+mutation, or route eligibility.
 
 ## 20B / 16GB+ Memory Budget Contract
 
@@ -473,7 +515,7 @@ MCP resource:
 | 20B | Now | Planned, not validated | Quantized local compatibility benchmark and no-key startup validation. |
 | 70B | Future | Research roadmap | Clean-room dataset, model card, safety eval, hardware budget, and explicit approval. |
 | 150B | Future frontier | Frontier research roadmap | Only after 20B and 70B evidence exists; requires clean-room training plan, distributed-runtime budget, privacy review, safety eval, observability, rollback, and explicit human approval. |
-| 120B+ | Future | Research roadmap | Independent evaluation, privacy review, observability, rollback plan, and cost approval. |
+| 300B+ | Future | Research roadmap | Independent evaluation, privacy review, observability, rollback plan, and cost approval. |
 | 512B | Apex frontier | Apex program, plan only | Only after 20B, 70B, 150B, and 300B+ evidence exists; requires clean-room training plan, frontier cluster budget, AGI eval protocol, safety red-team, observability, rollback, cost-stop, all-agent review, and explicit approval. |
 | Highest available future | Long-term | Not scoped | Do not scope until 20B, 70B, 150B, 300B+, and 512B gates have evidence. |
 

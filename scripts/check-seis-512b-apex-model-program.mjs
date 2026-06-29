@@ -72,6 +72,50 @@ if (program) {
   ], "program.sourceOfTruth values");
   ensure((program.programStages || []).length === 7, "program must expose seven 512B stages");
   ensure((program.programStages || []).every((stage) => stage.routeEligibleToday === false), "all 512B stages must be route-ineligible");
+  ensure(program.internetResearchBaseline?.status === "current-public-evidence-reviewed", "program must include current public internet research baseline");
+  ensure(program.internetResearchBaseline?.updatedAt === "2026-06-29", "internet research baseline date mismatch");
+  ensureArrayIncludesAll(
+    (program.internetResearchBaseline?.sources || []).map((source) => source.id),
+    [
+      "meta-llama-3-1-405b",
+      "megatron-turing-nlg-530b",
+      "deepseek-v3-671b-moe",
+      "qwen3-235b-a22b-instruct",
+      "nist-ai-risk-management-framework",
+      "anthropic-responsible-scaling-policy"
+    ],
+    "program.internetResearchBaseline.sources"
+  );
+  for (const source of program.internetResearchBaseline?.sources || []) {
+    ensureNonEmpty(source.url, `${source.id}.url`);
+    ensureNonEmpty(source.evidenceType, `${source.id}.evidenceType`);
+    ensureNonEmpty(source.seisImplication, `${source.id}.seisImplication`);
+  }
+  ensure(program.agiReadinessDefinition?.status === "definition-only-not-demonstrated", "AGI readiness definition must stay not demonstrated");
+  ensure(program.agiReadinessDefinition?.claimStatus === "real-agi-not-proven", "AGI claim status must remain not proven");
+  ensureArrayIncludesAll(program.agiReadinessDefinition?.minimumEvidenceBeforeAnyAgiClaim, [
+    "independent multi-domain capability evaluation",
+    "long-horizon planning evaluation",
+    "safety and misuse evaluation",
+    "training logs and checkpoint governance",
+    "human approval and external review"
+  ], "program.agiReadinessDefinition.minimumEvidenceBeforeAnyAgiClaim");
+  ensureArrayIncludesAll(program.agiReadinessDefinition?.requiredNegativeControls, [
+    "prompt/RAG/provider wrapper is not AGI",
+    "parameter count alone is not AGI evidence",
+    "installed AI presence is not training evidence",
+    "sub-agent council approval is not runtime authority",
+    "Local Demo behavior is not live model capability"
+  ], "program.agiReadinessDefinition.requiredNegativeControls");
+  ensureArrayIncludesAll(
+    (program.githubPublicReadinessGates || []).map((gate) => gate.id),
+    ["open-source-contract", "reproducible-local-demo", "frontier-non-claim-guard", "ci-and-release-safety"],
+    "program.githubPublicReadinessGates"
+  );
+  for (const gate of program.githubPublicReadinessGates || []) {
+    ensure(gate.status === "required-before-public-readiness", `${gate.id}.status must stay required-before-public-readiness`);
+    ensure(Array.isArray(gate.requiredEvidence) && gate.requiredEvidence.length >= 4, `${gate.id}.requiredEvidence must be populated`);
+  }
   ensureArrayIncludesAll(program.agentCouncil?.leadAgents, [
     "architect-agent",
     "code-agent",
@@ -114,6 +158,15 @@ ensure((policy?.escalationStages || []).some((stage) => stage.id === "stage-4-51
 
 ensure(council?.sourceOfTruth?.apexModelProgram === paths.program, "council must point to 512B apex model program");
 ensure((council?.stageAssignments || []).some((stage) => stage.stage === "512B" && stage.routeEligibleToday === false && (stage.leadAgents || []).length === 12), "council must assign all 12 agents to 512B plan-only stage");
+ensureArrayIncludesAll(
+  (council?.apex512bCouncilDuties || []).map((entry) => entry.agentId),
+  program?.agentCouncil?.leadAgents || [],
+  "council.apex512bCouncilDuties"
+);
+for (const duty of council?.apex512bCouncilDuties || []) {
+  ensureNonEmpty(duty.duty, `${duty.agentId}.apex512b duty`);
+  ensure(Array.isArray(duty.evidence) && duty.evidence.length >= 3, `${duty.agentId}.apex512b evidence must be populated`);
+}
 
 ensureArrayIncludesAll(pluginIntegration?.runtimeIntegration?.mcpResources, ["seis://ai/512b-apex-model-program.json"], "pluginIntegration.runtimeIntegration.mcpResources");
 ensureArrayIncludesAll(pluginIntegration?.qualityCommands, ["npm run check:seis-512b-apex-model-program"], "pluginIntegration.qualityCommands");
@@ -153,6 +206,10 @@ function ensureArrayIncludesAll(candidate, required, label) {
   ensure(Array.isArray(candidate), `${label} must be an array`);
   const values = new Set(Array.isArray(candidate) ? candidate : []);
   for (const item of required) ensure(values.has(item), `${label} missing ${item}`);
+}
+
+function ensureNonEmpty(value, label) {
+  ensure(typeof value === "string" && value.trim().length > 0, `${label} must be a non-empty string`);
 }
 
 function readJson(relativePath, label) {

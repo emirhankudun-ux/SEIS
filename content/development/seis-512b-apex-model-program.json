@@ -95,6 +95,100 @@
       "independent safety review accepted"
     ]
   },
+  "internetResearchBaseline": {
+    "status": "current-public-evidence-reviewed",
+    "updatedAt": "2026-06-29",
+    "purpose": "Anchor the 512B SEIS AGI direction in public frontier-model and AI-risk-management evidence without claiming SEIS has trained, downloaded, benchmarked, or served a 512B model.",
+    "sources": [
+      {
+        "id": "meta-llama-3-1-405b",
+        "label": "Meta Llama 3.1 405B",
+        "url": "https://ai.meta.com/blog/meta-llama-3-1/",
+        "evidenceType": "frontier-scale open foundation model announcement",
+        "seisImplication": "405B-class systems are frontier-scale engineering programs, so 512B must stay a distributed research program rather than a laptop/runtime claim."
+      },
+      {
+        "id": "megatron-turing-nlg-530b",
+        "label": "Megatron-Turing NLG 530B",
+        "url": "https://arxiv.org/abs/2201.11990",
+        "evidenceType": "530B-scale distributed training report",
+        "seisImplication": "A 512B SEIS target requires distributed training architecture, model-parallel design, cost controls, observability, rollback, and independent review before any training scope."
+      },
+      {
+        "id": "deepseek-v3-671b-moe",
+        "label": "DeepSeek-V3 671B MoE",
+        "url": "https://github.com/deepseek-ai/DeepSeek-V3",
+        "evidenceType": "public MoE architecture reference",
+        "seisImplication": "Total parameters, active parameters, memory, routing, and evaluation must be tracked separately; SEIS must not equate headline parameter count with AGI capability."
+      },
+      {
+        "id": "qwen3-235b-a22b-instruct",
+        "label": "Qwen3-235B-A22B-Instruct-2507",
+        "url": "https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507",
+        "evidenceType": "public MoE model card",
+        "seisImplication": "SEIS model cards must record total parameters, activated parameters, context length, inference memory needs, license, and safety notes before any route eligibility."
+      },
+      {
+        "id": "nist-ai-risk-management-framework",
+        "label": "NIST AI Risk Management Framework",
+        "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+        "evidenceType": "AI risk management framework",
+        "seisImplication": "512B AGI readiness must include governance, risk mapping, measurement, management, safety, security, privacy, transparency, accountability, and fairness gates."
+      },
+      {
+        "id": "anthropic-responsible-scaling-policy",
+        "label": "Anthropic Responsible Scaling Policy",
+        "url": "https://www.anthropic.com/responsible-scaling-policy",
+        "evidenceType": "frontier model scaling safety policy",
+        "seisImplication": "SEIS must treat capability thresholds, deployment safeguards, security posture, and escalation reviews as promotion gates, not optional release notes."
+      }
+    ]
+  },
+  "agiReadinessDefinition": {
+    "status": "definition-only-not-demonstrated",
+    "claimStatus": "real-agi-not-proven",
+    "minimumEvidenceBeforeAnyAgiClaim": [
+      "independent multi-domain capability evaluation",
+      "robust out-of-distribution generalization report",
+      "tool-use reliability and recovery evaluation",
+      "long-horizon planning evaluation",
+      "safety and misuse evaluation",
+      "privacy and data-rights review",
+      "red-team report",
+      "transparent model card and system card",
+      "training logs and checkpoint governance",
+      "human approval and external review"
+    ],
+    "requiredNegativeControls": [
+      "prompt/RAG/provider wrapper is not AGI",
+      "parameter count alone is not AGI evidence",
+      "installed AI presence is not training evidence",
+      "sub-agent council approval is not runtime authority",
+      "Local Demo behavior is not live model capability"
+    ]
+  },
+  "githubPublicReadinessGates": [
+    {
+      "id": "open-source-contract",
+      "status": "required-before-public-readiness",
+      "requiredEvidence": ["license review", "contribution guide", "security policy", "public issue templates", "reviewed README claims"]
+    },
+    {
+      "id": "reproducible-local-demo",
+      "status": "required-before-public-readiness",
+      "requiredEvidence": ["zero-key startup", "Local Demo fallback", "deterministic fixtures", "no live-provider dependency"]
+    },
+    {
+      "id": "frontier-non-claim-guard",
+      "status": "required-before-public-readiness",
+      "requiredEvidence": ["forbidden-claim scan", "512B plan-only validator", "AGI proof absent warning", "no trained-weight claim"]
+    },
+    {
+      "id": "ci-and-release-safety",
+      "status": "required-before-public-readiness",
+      "requiredEvidence": ["passing AI validators", "secret scan", "artifact provenance", "release checklist", "rollback note"]
+    }
+  ],
   "agentCouncil": {
     "status": "all-installed-ai-plan-only",
     "source": "content/development/seis-model-scaling-subagent-council.json",

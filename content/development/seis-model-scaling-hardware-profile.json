@@ -364,8 +364,8 @@
       "promotionGate": "Do not scope runtime until 20B, 70B, 150B, and 300B+ evidence exists, then require clean-room training plan, frontier cluster budget, AGI eval protocol, safety red-team, observability, rollback, cost-stop, all-agent council review, and explicit human approval."
     },
     {
-      "id": "seis-120b-plus-research-target",
-      "parameterClass": "120B+",
+      "id": "seis-300b-plus-exploration-boundary",
+      "parameterClass": "300B+",
       "horizon": "future",
       "targetHardwareClass": "approved multi-device or cloud research runtime",
       "status": "research-roadmap",
@@ -424,7 +424,7 @@
       "id": "cloud-research-runtime",
       "label": "Approved cloud or multi-device research runtime",
       "allowedToday": "Disabled",
-      "modelTarget": "150B, 120B+, and highest-available future classes",
+      "modelTarget": "150B, 300B+, and highest-available future classes",
       "claimStatus": "not-scoped",
       "mustPassBeforeUse": [
         "deployment approval",
