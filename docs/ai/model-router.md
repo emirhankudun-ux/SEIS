@@ -23,6 +23,7 @@ user selection.
 | Model parameter ladder | Planning contract, not runtime | `content/development/seis-model-parameter-ladder.json`, `seis://ai/model-parameter-ladder.json`, `npm run check:seis-model-parameter-ladder`. | The 20B, 70B, 150B, 300B+, 512B, and highest-future parameter classes are explicit route-blocked targets, not trained, AGI, or routeable SEIS models. | Use the ladder only to explain promotion order and approval gates; never treat it as model availability. |
 | 150B frontier model program | Plan-only route gate | `content/development/seis-150b-frontier-model-program.json`, `seis://ai/150b-frontier-model-program.json`, `npm run check:seis-150b-frontier-model-program`. | The 150B program is a charter and promotion-gate record only, not weights, inference, benchmark evidence, cloud/GPU capacity, SSH, or production readiness. | Keep 150B route eligibility blocked until 20B and 70B evidence plus clean-room, budget, privacy, safety, observability, rollback, and approval gates pass. |
 | 512B apex model program | Plan-only SEIS AGI readiness gate with public research baseline | `content/development/seis-512b-apex-model-program.json`, `seis://ai/512b-apex-model-program.json`, `npm run check:seis-512b-apex-model-program`. | The 512B program is an apex planning, internet-researched frontier baseline, AGI-readiness definition, and public GitHub readiness record only, not AGI, weights, inference, benchmark evidence, cloud/GPU capacity, SSH, or production readiness. | Keep 512B route eligibility blocked until 20B, 70B, 150B, and 300B+ evidence plus clean-room, independent AGI eval protocol, all installed AI/sub-agent council review, public-readiness gates, and approval gates pass. |
+| AGI evaluation protocol | Read-only evidence gate, not AGI proof | `content/development/seis-agi-evaluation-protocol.json`, `seis://ai/agi-evaluation-protocol.json`, `node scripts/check-seis-agi-evaluation-protocol.mjs`. | The protocol defines required evidence for a future AGI claim, but no evaluation has run and no AGI claim is allowed. | Keep AGI route eligibility blocked until independent evaluation, red-team, model/system cards, external review, and human approval exist. |
 | Fallback behavior | Documented | Local Demo and no-key startup are required. | No runtime gateway. | Keep fallback identity visible in future UI. |
 
 ## Rules / Policy
@@ -66,6 +67,7 @@ Before the router is marked implemented, add:
 - model parameter ladder tests with `npm run check:seis-model-parameter-ladder`
 - 150B frontier program tests with `npm run check:seis-150b-frontier-model-program`
 - 512B apex program tests with `npm run check:seis-512b-apex-model-program`
+- AGI evaluation protocol tests with `node scripts/check-seis-agi-evaluation-protocol.mjs`
 - no-key startup test
 - local-only fallback test
 - rate-limit fixture
@@ -77,6 +79,7 @@ Before the router is marked implemented, add:
 
 - [seis-ai-core.md](seis-ai-core.md)
 - [read-only-model-router-contract.md](read-only-model-router-contract.md)
+- [seis-agi-evaluation-protocol.md](seis-agi-evaluation-protocol.md)
 - [prompt-engine.md](prompt-engine.md)
 - [agent-runtime.md](agent-runtime.md)
 - [../audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md](../audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md)

@@ -66,7 +66,7 @@ function rpcSession(requests, { timeoutMs = 15000 } = {}) {
 }
 
 describe("seis-mcp stdio smoke", () => {
-  it("initializes and lists 34 tools, 3 prompts, 26 resources", async () => {
+  it("initializes and lists 34 tools, 3 prompts, 27 resources", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -134,6 +134,7 @@ describe("seis-mcp stdio smoke", () => {
       "seis://ai/512b-apex-model-program.json",
       "seis://ai/agent-permission-matrix.json",
       "seis://ai/agent-role-schema.json",
+      "seis://ai/agi-evaluation-protocol.json",
       "seis://ai/approval-fixture.json",
       "seis://ai/cancellation-fixture.json",
       "seis://ai/dry-run-task-queue.json",
@@ -248,7 +249,7 @@ describe("seis-mcp stdio smoke", () => {
     assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
     const payload = JSON.parse(resource.result.contents[0].text);
     assert.equal(payload.id, "seis-ai-core-mcp-runtime-contract");
-    assert.equal(payload.resourceCount, 26);
+    assert.equal(payload.resourceCount, 27);
     assert.equal(payload.transport, "stdio JSON-RPC");
   });
 
@@ -480,9 +481,49 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.productionReady, false);
     assert.equal(payload.programStages.length, 7);
     assert.equal(payload.agentCouncil.leadAgents.length, 12);
+    assert.equal(payload.sourceOfTruth.agiEvaluationProtocol, "content/development/seis-agi-evaluation-protocol.json");
+    assert.equal(payload.agiReadinessDefinition.resourceUri, "seis://ai/agi-evaluation-protocol.json");
     assert.ok(payload.forbiddenClaimRules.includes("no-trained-512b-weights-claim"));
     assert.ok(payload.forbiddenClaimRules.includes("no-installed-ai-presence-as-training-evidence-claim"));
     assert.ok(payload.programStages.every((stage) => stage.routeEligibleToday === false));
+  });
+
+  it("reads the SEIS AI Core AGI evaluation protocol resource through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "resources/read",
+        params: {
+          uri: "seis://ai/agi-evaluation-protocol.json",
+        },
+      },
+    ]);
+
+    const resource = responses.get(2);
+    assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
+    const payload = JSON.parse(resource.result.contents[0].text);
+    assert.equal(payload.id, "seis-agi-evaluation-protocol");
+    assert.equal(payload.status, "protocol-draft-not-run");
+    assert.equal(payload.resourceUri, "seis://ai/agi-evaluation-protocol.json");
+    assert.equal(payload.agiClaimAllowed, false);
+    assert.equal(payload.evaluationRunStatus, "not-run");
+    assert.equal(payload.routeEligibleToday, false);
+    assert.equal(payload.runtimeAuthority, false);
+    assert.ok(payload.evaluationDimensions.length >= 8);
+    assert.ok(payload.negativeControls.includes("parameter count alone is not AGI evidence"));
+    assert.ok(payload.forbiddenClaims.includes("SEIS has achieved real AGI."));
   });
 
   it("reads the SEIS AI Core 20B evidence card template resources through the protocol", async () => {

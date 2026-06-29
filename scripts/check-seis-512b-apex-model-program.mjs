@@ -8,6 +8,7 @@ const failures = [];
 
 const paths = {
   program: "content/development/seis-512b-apex-model-program.json",
+  agiEvaluationProtocol: "content/development/seis-agi-evaluation-protocol.json",
   profile: "content/development/seis-model-scaling-hardware-profile.json",
   ladder: "content/development/seis-model-parameter-ladder.json",
   policy: "content/development/seis-model-frontier-escalation-policy.json",
@@ -28,6 +29,7 @@ const paths = {
 for (const [label, relativePath] of Object.entries(paths)) ensureFile(relativePath, label);
 
 const program = readJson(paths.program, "512B apex model program");
+const agiEvaluationProtocol = readJson(paths.agiEvaluationProtocol, "AGI evaluation protocol");
 const profile = readJson(paths.profile, "model scaling profile");
 const ladder = readJson(paths.ladder, "parameter ladder");
 const policy = readJson(paths.policy, "frontier escalation policy");
@@ -68,7 +70,8 @@ if (program) {
     paths.ladder,
     paths.policy,
     "content/development/seis-150b-frontier-model-program.json",
-    paths.council
+    paths.council,
+    paths.agiEvaluationProtocol
   ], "program.sourceOfTruth values");
   ensure((program.programStages || []).length === 7, "program must expose seven 512B stages");
   ensure((program.programStages || []).every((stage) => stage.routeEligibleToday === false), "all 512B stages must be route-ineligible");
@@ -93,6 +96,8 @@ if (program) {
   }
   ensure(program.agiReadinessDefinition?.status === "definition-only-not-demonstrated", "AGI readiness definition must stay not demonstrated");
   ensure(program.agiReadinessDefinition?.claimStatus === "real-agi-not-proven", "AGI claim status must remain not proven");
+  ensure(program.agiReadinessDefinition?.protocol === paths.agiEvaluationProtocol, "AGI readiness definition must link the AGI evaluation protocol");
+  ensure(program.agiReadinessDefinition?.resourceUri === "seis://ai/agi-evaluation-protocol.json", "AGI readiness definition must link the AGI evaluation protocol MCP resource");
   ensureArrayIncludesAll(program.agiReadinessDefinition?.minimumEvidenceBeforeAnyAgiClaim, [
     "independent multi-domain capability evaluation",
     "long-horizon planning evaluation",
@@ -135,6 +140,7 @@ if (program) {
     "70B evidence accepted",
     "150B evidence accepted",
     "300B+ feasibility accepted",
+    "AGI evaluation protocol accepted",
     "all installed AI and sub-agent council review recorded",
     "explicit human approval recorded"
   ], "program.promotionGates");
@@ -144,6 +150,31 @@ if (program) {
     "no-512b-benchmark-claim",
     "no-installed-ai-presence-as-training-evidence-claim"
   ], "program.forbiddenClaimRules");
+}
+
+if (agiEvaluationProtocol) {
+  ensure(agiEvaluationProtocol.id === "seis-agi-evaluation-protocol", "AGI evaluation protocol id mismatch");
+  ensure(agiEvaluationProtocol.status === "protocol-draft-not-run", "AGI evaluation protocol must stay protocol-draft-not-run");
+  ensure(agiEvaluationProtocol.resourceUri === "seis://ai/agi-evaluation-protocol.json", "AGI evaluation protocol resource URI mismatch");
+  ensure(agiEvaluationProtocol.agiClaimAllowed === false, "AGI evaluation protocol must not allow AGI claims");
+  ensure(agiEvaluationProtocol.routeEligibleToday === false, "AGI evaluation protocol must not be route eligible");
+  ensure(agiEvaluationProtocol.runtimeAuthority === false, "AGI evaluation protocol must not grant runtime authority");
+  ensure(agiEvaluationProtocol.evaluationRunStatus === "not-run", "AGI evaluation protocol must not claim an evaluation run");
+  ensure((agiEvaluationProtocol.evaluationDimensions || []).length >= 8, "AGI evaluation protocol must define at least eight evaluation dimensions");
+  ensureArrayIncludesAll(agiEvaluationProtocol.minimumEvidenceBeforeAnyAgiClaim, [
+    "20B gate evidence accepted",
+    "70B gate evidence accepted",
+    "150B gate evidence accepted",
+    "300B+ feasibility accepted",
+    "512B training or inference evidence independently verified",
+    "external review completed",
+    "explicit human approval recorded"
+  ], "AGI evaluation protocol minimumEvidenceBeforeAnyAgiClaim");
+  ensureArrayIncludesAll(agiEvaluationProtocol.negativeControls, [
+    "parameter count alone is not AGI evidence",
+    "Local Demo behavior is not live model capability",
+    "green CI is not AGI proof"
+  ], "AGI evaluation protocol negativeControls");
 }
 
 ensure(profile?.sourceOfTruth?.apexModelProgram === paths.program, "profile must point to 512B apex model program");
@@ -169,8 +200,10 @@ for (const duty of council?.apex512bCouncilDuties || []) {
 }
 
 ensureArrayIncludesAll(pluginIntegration?.runtimeIntegration?.mcpResources, ["seis://ai/512b-apex-model-program.json"], "pluginIntegration.runtimeIntegration.mcpResources");
+ensureArrayIncludesAll(pluginIntegration?.runtimeIntegration?.mcpResources, ["seis://ai/agi-evaluation-protocol.json"], "pluginIntegration.runtimeIntegration.mcpResources");
 ensureArrayIncludesAll(pluginIntegration?.qualityCommands, ["npm run check:seis-512b-apex-model-program"], "pluginIntegration.qualityCommands");
-ensure(mcpRuntime?.resourceCount === 26, "MCP runtime contract must record 26 resources");
+ensureArrayIncludesAll(pluginIntegration?.qualityCommands, ["node scripts/check-seis-agi-evaluation-protocol.mjs"], "pluginIntegration.qualityCommands");
+ensure(mcpRuntime?.resourceCount === 27, "MCP runtime contract must record 27 resources");
 
 if (packageJson) {
   ensure(packageJson.scripts?.["check:seis-512b-apex-model-program"] === "node scripts/check-seis-512b-apex-model-program.mjs", "package.json must expose check:seis-512b-apex-model-program");
@@ -189,6 +222,18 @@ for (const [text, label] of [
 ]) {
   ensure(text.includes("seis-512b-apex-model-program"), `${label} must reference 512B apex model program id/path`);
   ensure(text.includes("seis://ai/512b-apex-model-program.json"), `${label} must reference 512B apex model program MCP URI`);
+}
+
+for (const [text, label] of [
+  [helper, "AI Core helper"],
+  [mcpServer, "MCP server"],
+  [mcpSmoke, "MCP smoke tests"],
+  [aiCoreDoc, "AI Core docs"],
+  [scalingDoc, "model scaling docs"],
+  [routerDoc, "model router docs"]
+]) {
+  ensure(text.includes("seis-agi-evaluation-protocol"), `${label} must reference AGI evaluation protocol id/path`);
+  ensure(text.includes("seis://ai/agi-evaluation-protocol.json"), `${label} must reference AGI evaluation protocol MCP URI`);
 }
 
 finish("SEIS 512B apex model program check passed.");

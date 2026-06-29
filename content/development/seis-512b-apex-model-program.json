@@ -20,6 +20,7 @@
     "frontierEscalationPolicy": "content/development/seis-model-frontier-escalation-policy.json",
     "frontierModelProgram": "content/development/seis-150b-frontier-model-program.json",
     "modelScalingSubagentCouncil": "content/development/seis-model-scaling-subagent-council.json",
+    "agiEvaluationProtocol": "content/development/seis-agi-evaluation-protocol.json",
     "aiCoreDoc": "docs/ai/seis-ai-core.md",
     "modelScalingDoc": "docs/ai/seis-model-scaling.md",
     "modelRouterDoc": "docs/ai/model-router.md"
@@ -147,6 +148,8 @@
   "agiReadinessDefinition": {
     "status": "definition-only-not-demonstrated",
     "claimStatus": "real-agi-not-proven",
+    "protocol": "content/development/seis-agi-evaluation-protocol.json",
+    "resourceUri": "seis://ai/agi-evaluation-protocol.json",
     "minimumEvidenceBeforeAnyAgiClaim": [
       "independent multi-domain capability evaluation",
       "robust out-of-distribution generalization report",
@@ -217,6 +220,7 @@
     "frontier-scale distributed runtime budget accepted",
     "dataset provenance and contamination-control plan accepted",
     "privacy and data rights review accepted",
+    "AGI evaluation protocol accepted",
     "safety evaluation and red-team plan accepted",
     "observability, kill-switch, rollback, and cost-stop plan accepted",
     "all installed AI and sub-agent council review recorded",

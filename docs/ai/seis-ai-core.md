@@ -127,11 +127,13 @@ Model scaling resources:
 `content/development/seis-model-parameter-ladder.json`,
 `content/development/seis-150b-frontier-model-program.json`,
 `content/development/seis-512b-apex-model-program.json`,
+`content/development/seis-agi-evaluation-protocol.json`,
 `content/development/seis-model-scaling-subagent-council.json`,
 `seis://ai/model-scaling-hardware-profile.json`, and
 `seis://ai/model-parameter-ladder.json`, and
 `seis://ai/150b-frontier-model-program.json`, and
-`seis://ai/512b-apex-model-program.json`. The parameter ladder keeps 20B, 70B,
+`seis://ai/512b-apex-model-program.json`, and
+`seis://ai/agi-evaluation-protocol.json`. The parameter ladder keeps 20B, 70B,
 150B, 300B+, 512B, and highest-future classes route-blocked until measured evidence,
 model/dataset cards, safety review, and human approval exist.
 
@@ -159,6 +161,7 @@ Validation:
 npm run check:seis-model-scaling-hardware-profile
 npm run check:seis-150b-frontier-model-program
 npm run check:seis-512b-apex-model-program
+node scripts/check-seis-agi-evaluation-protocol.mjs
 npm run check:seis-model-scaling-subagent-council
 ```
 

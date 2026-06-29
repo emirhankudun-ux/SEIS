@@ -23,6 +23,7 @@ import { i18nAddKey, i18nRenameKey } from "../lib/i18n-write.mjs";
 import {
   AI_CORE_150B_FRONTIER_MODEL_PROGRAM_PATH,
   AI_CORE_512B_APEX_MODEL_PROGRAM_PATH,
+  AI_CORE_AGI_EVALUATION_PROTOCOL_PATH,
   AI_CORE_20B_DATASET_CARD_TEMPLATE_PATH,
   AI_CORE_20B_MODEL_CARD_TEMPLATE_PATH,
   AI_CORE_PROVIDER_REGISTRY_PATH,
@@ -926,6 +927,25 @@ Steps:
           uri: "seis://ai/512b-apex-model-program.json",
           mimeType: "application/json",
           text: readFileSync(path.join(repoRoot, ...AI_CORE_512B_APEX_MODEL_PROGRAM_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "ai-core-agi-evaluation-protocol",
+    "seis://ai/agi-evaluation-protocol.json",
+    {
+      description:
+        "SEIS AI Core read-only seis-agi-evaluation-protocol from content/development/seis-agi-evaluation-protocol.json; not AGI proof, training, inference, benchmark, or route authority",
+      mimeType: "application/json",
+    },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/agi-evaluation-protocol.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...AI_CORE_AGI_EVALUATION_PROTOCOL_PATH.split("/")), "utf8"),
         },
       ],
     })

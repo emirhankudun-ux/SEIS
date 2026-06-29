@@ -356,10 +356,19 @@ MCP resource:
 
 `seis://ai/512b-apex-model-program.json`
 
+AGI evaluation protocol:
+
+`content/development/seis-agi-evaluation-protocol.json`
+
+MCP resource:
+
+`seis://ai/agi-evaluation-protocol.json`
+
 Validation:
 
 ```bash
 npm run check:seis-512b-apex-model-program
+node scripts/check-seis-agi-evaluation-protocol.mjs
 ```
 
 The status is `apex-program-plan-only`. It is not AGI, a trained model,
@@ -369,8 +378,8 @@ all SEIS sub-agents can review a 512B readiness path without gaining download,
 training, benchmark, provider, cloud/GPU, SSH, deployment, or release authority.
 
 The 512B Apex Model Program remains blocked until 20B, 70B, 150B, and 300B+
-evidence exists, a clean-room training plan is accepted, an AGI capability
-evaluation protocol is written, all-agent council review is recorded, and
+evidence exists, a clean-room training plan is accepted, the AGI capability
+evaluation protocol is accepted, all-agent council review is recorded, and
 explicit human approval exists.
 
 ## 512B AGI Readiness Research Baseline
@@ -392,6 +401,11 @@ The baseline is deliberately conservative:
   release/rollback notes, forbidden-claim checks, and no secret exposure
 
 The AGI readiness definition remains `definition-only-not-demonstrated`.
+`content/development/seis-agi-evaluation-protocol.json` now defines the
+required evaluation dimensions: multi-domain reasoning, long-horizon planning,
+tool-use reliability, out-of-distribution generalization, memory/learning
+boundaries, safety/misuse resistance, security/data governance, and human plus
+external review.
 Before SEIS can make any real AGI claim, the repository must contain
 independent multi-domain capability evaluation, long-horizon planning
 evaluation, tool-use reliability evidence, out-of-distribution generalization
