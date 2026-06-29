@@ -1,9 +1,9 @@
 # SEIS Public Demo Worktree Review
 
-Generated: 2026-06-29T13:09:20.290Z
+Generated: 2026-06-29T13:14:56.803Z
 Decision: NO-GO
 Release blocking: yes
-Dirty paths: 9
+Dirty paths: 15
 Workstreams: 2
 
 ## Review Rule
@@ -21,17 +21,23 @@ approval exists.
 Status: candidate-scope-needs-review
 
 - M README.md
+- M reports/seis-public-demo/go-no-go-latest.md
+- M reports/seis-public-demo/pr54-review-packet-latest.md
+- M reports/seis-public-demo/pr54-stage-plan-latest.md
+- M reports/seis-public-demo/worktree-review-latest.md
 
 ## Unclassified Dirty Paths
 
 Status: needs-human-review
 
 - M AGENTS.md
-- ?? SEIS_INSTALLED_AI_TOOLS.md
-- ?? SEIS_OBSIDIAN_VAULT.md
-- ?? SEIS_SECOND_BRAIN.md
-- ?? SEIS_SSH.md
-- ?? SEIS_SUB_AGENTS.md
+- M ROADMAP.md
+- M SEIS_INSTALLED_AI_TOOLS.md
+- M SEIS_OBSIDIAN_VAULT.md
+- M SEIS_SECOND_BRAIN.md
+- M SEIS_SSH.md
+- M SEIS_SUB_AGENTS.md
+- M roadmap/seis-long-horizon-strategy.md
+- M seis-brain/README.md
 - ?? roadmap/seis-61-120-month-long-horizon-ops-blueprint.md
-- ?? seis-brain/
 

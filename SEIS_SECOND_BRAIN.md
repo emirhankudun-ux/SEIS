@@ -1,58 +1,89 @@
 # SEIS Second Brain
 
 ## Purpose
-SEIS Second Brain is a markdown-first memory layer that helps the team and AI agents remember context across releases.
+
+SEIS Second Brain is the public-safe, markdown-first memory layer of the SEIS
+ecosystem. It preserves project intent, architecture logic, decision history, and
+operating constraints so SEIS can retain context across long-term development.
 
 ## Why SEIS needs a second brain
-- Keep product and architecture decisions discoverable.
-- Preserve lessons from failed attempts and risky experiments.
-- Reduce repeated onboarding and context loss.
-- Provide safe, public-safe memory for GitHub contributors.
+
+- Prevent context loss in handoffs and long-horizon work.
+- Preserve module decisions, blockers, and proof-based status for AI agents.
+- Keep onboarding fast and consistent for new contributors.
+- Keep repository intelligence explicit and traceable.
 
 ## What the second brain stores
+
 - Product vision, architecture, design, and roadmap decisions.
-- AI Core and provider/router/agent governance.
-- Module status, mock-planned-real markers, and release blockers.
-- CI/doc/deployment learnings and notable fixes.
-- Public-safe onboarding and usage guidance.
+- Model-provider and router boundaries.
+- Agent roles, task queue concepts, and governance outcomes.
+- Demo mode labels and release blockers.
+- Onboarding, troubleshooting, and public-readiness evidence notes.
+- Safe learning/lessons records.
 
 ## What it must never store
-- Private keys, tokens, real passwords, private hostnames.
-- `.env` values, service account files, personal data, unpublished secrets.
-- Any private SSH credentials or proprietary code dumps.
+
+- Private keys, tokens, passwords, private hostnames, or real credentials.
+- `.env` values and service account files.
+- Personal data and unreleased secret business context.
+- Raw private note bodies from unpublished vaults.
 
 ## Obsidian vault structure
-The vault is `seis-brain/vault` and is Obsidian-compatible with plain Markdown and optional backlinks.
+
+The public-safe vault is `seis-brain/vault`. It is plain Markdown and
+Obsidian-compatible with standard internal links (`[[...]]`), and no plugins are
+required.
 
 ## Public/private boundary
-Only public-safe memory is committed. Private memory remains outside this repository.
+
+- `seis-brain/vault/*` contains public-safe notes.
+- Private/local memory must remain local-only and outside committed paths.
 
 ## AI agent context packs
-Context packs live in `seis-brain/vault/12_Context_Packs` and describe handoff-safe operating rules.
 
-## Decision ledger
-Decision records are stored in `seis-brain/vault/09_Decisions`.
+Context packs in `seis-brain/vault/12_Context_Packs` summarize operating rules
+for different agent types (Codex, Ollama, Obsidian, SSH, and Cursor).
 
-## Failure ledger
-Failure and learning notes are stored under `seis-brain/vault/10_Logs`.
+## Decision and failure ledger
+
+- Decisions are recorded in `seis-brain/vault/09_Decisions`.
+- Failure and recovery notes are recorded in `seis-brain/vault/10_Logs`.
 
 ## Roadmap memory
-Roadmap snapshots are stored in `seis-brain/vault/11_Roadmap` and linked from core index notes.
+
+Year and phase memory is tracked in `seis-brain/vault/11_Roadmap` and
+linked from top-level index notes.
 
 ## SEIS Search integration
-Search metadata should be driven from public-safe notes and context packs. Private notes are excluded.
+
+Searchable indexes favor:
+
+- Public-safe notes under `seis-brain/vault`.
+- Document indices in root `docs/*`.
+- `SEIS` root status/roadmap evidence files.
+
+Private/local notes are intentionally excluded.
 
 ## Future app integration
-Later, a `SeisBrain` panel can read these notes for overview and copy-friendly context packs.
+
+Future SEIS Brain app work can aggregate:
+
+- latest state markers (`status`, `next actions`, `dependencies`)
+- context pack exports
+- decision/failure recaps for live review
 
 ## Verification checklist
-- [ ] `seis-brain/README.md` exists.
-- [ ] Core index notes exist.
-- [ ] At least one architecture and one AI note exists.
-- [ ] ADR and context pack files exist.
-- [ ] Public/private boundary is documented.
+
+- [x] `seis-brain/README.md` exists.
+- [x] Vault index notes exist.
+- [x] Architecture, AI, agents, and roadmap note groups exist.
+- [x] Decision and context pack files exist.
+- [ ] Vault import safety checks run (`npm run report:seis-obsidian-safe-import-dry-run`).
+- [x] Public/private boundary is explicitly documented.
 
 ## Next steps
-- Add context-packer templates.
-- Add docs-to-vault QA checklist and run book.
-- Add agent registry and install matrix in vault notes.
+
+- Expand context pack coverage for all agent lanes.
+- Add a small vault QA runbook and smoke-check command list.
+- Keep seed-note metadata synchronized with `SEIS_OBSIDIAN_VAULT.md`.

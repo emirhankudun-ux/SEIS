@@ -1,30 +1,47 @@
 # SEIS Installed AI Tools Registry
 
 ## Purpose
-Track installed/usable AI tools with safety-aware capabilities.
+
+Track installed and usable AI tools with explicit status, safety rules, and
+assignment guidance.
 
 ## Tool categories
+
 - Local model runners
 - Coding agents
 - Cloud providers
 - Design/research assistants
-- Note/knowledge assistants
+- Knowledge/workflow assistants
 
 ## Tool registry
 
 | Tool | Type | Local/Cloud | Best For | Requires Key | SEIS Usage | Safety Notes | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Ollama | local runner | local | local docs, drafts, summaries | no | Local AI experiments and context generation | Local-only, no secret storage | planned/demo |
-| Codex | coding agent | cloud | repo-safe implementation, repair, PR loop | account required | PR-safe repo execution | follow AGENTS and no secrets in prompts | available |
-| Cursor | IDE assistant | cloud/local | editing, small safe tasks | account required | local IDE support | avoid huge context dumps | available |
-| Claude Code | architecture/code reviewer | cloud | deep review, planning | account required | architectural and refactor review | no direct merge, no secrets | available |
-| Gemini | cloud agent | cloud | docs/research, ecosystem checks | account required | research and docs cross-check | secrets only in private tooling | planned |
-| ChatGPT | cloud agent | cloud | explanation and planning | account required | human-readable planning assistance | do not expose secrets | available |
-| GitHub Copilot | coding assistant | cloud | completion support | account required | in-editor coding support | configured per IDE | planned |
-| OpenRouter | provider gateway | cloud | model routing experiments | key required | model selection experiments | do not claim production routing | unknown |
-| LM Studio | local runner | local | local model testing | no | optional local fallback | isolated local install | planned |
-| Obsidian | knowledge app | local | vault authoring and navigation | no | note and backlink workflow | keep secrets out of vault commits | available |
+| Ollama | local runner | local | local docs, summaries, drafts | no | Local-first markdown workflows | Local-only; no secret material in prompts | available |
+| Codex | coding agent | cloud | repo-safe implementation, repair, PR loop | account | Repo-safe coding and debugging | no secrets in prompts; follow AGENTS | available |
+| Cursor | IDE assistant | cloud/local | scoped editing and refactors | account | Local IDE support | avoid broad contexts; preserve scope | available |
+| Claude Code | architecture/code reviewer | cloud | architecture review and long reasoning | account | architecture and design review | no direct deploy/push | available |
+| Gemini | cloud agent | cloud | docs/research checks | account | documentation and ecosystem research | no credentials in repo/prompts | planned |
+| ChatGPT | cloud agent | cloud | planning and explanation | account | prompt drafting and triage support | no key claims without provider setup | available |
+| GitHub Copilot | coding assistant | cloud | in-editor completions | account | coding assist | user IDE-scoped configuration only | planned |
+| OpenRouter | provider gateway | cloud | provider experimentation | key | provider diversity exploration | no production routing without backend checks | unknown |
+| LM Studio | local runner | local | local model testing | no | optional local benchmark/CLI experiments | no outbound secrets | planned |
+| Obsidian | knowledge app | local | vault authoring and navigation | no | project knowledge continuity | public-safe notes only | available |
+| OpenAI | cloud provider | cloud | generation/reasoning | key | provider-neutral future runtime routing concept | backend-only secrets | planned |
+| Anthropic | cloud provider | cloud | long-form reasoning and review | key | alternative model exploration | backend-only secrets | planned |
+| local model runners | local | local | context reconstruction | no | offline recovery workflows | no private corpus leakage | planned |
+
+## Which tool to use for which SEIS task
+
+- Stable docs editing: Codex, Claude Code (review), Cursor.
+- PR governance and audit: AGENTS + Claude Code + Codex.
+- Context pack generation: Ollama or ChatGPT (review mode).
+- Note vault onboarding: Obsidian + Codex review.
+- Local reconstruction experiments: Ollama.
+- Provider comparison only: OpenRouter, OpenAI, Anthropic (reviewed, metadata-only).
 
 ## Safety notes
-- No live provider credentials in frontend code.
-- Keep provider status metadata explicit.
+
+- No live provider credentials in frontend or committed prompt outputs.
+- Use `status`/`mode` metadata for every tool-dependent action (demo/planned/mock).
+- Any live provider claim must be backed by backend checks, not mock text.

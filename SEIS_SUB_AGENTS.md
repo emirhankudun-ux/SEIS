@@ -1,20 +1,25 @@
 # SEIS Sub-Agent System
 
 ## Purpose
-Define bounded, supervised AI agents for safe SEIS development.
+
+SEIS uses a bounded, supervised sub-agent runtime where each assistant has a
+defined role, explicit permission set, and review contract.
 
 ## Supervision model
-- Human-defined objectives.
-- Scope-limited outputs.
+
+- Human objective defines scope.
 - No autonomous repository-wide writes.
+- No production or deployment action without explicit review.
+- Every non-trivial task includes verification and uncertainty reporting.
 
 ## Agent hierarchy
+
 - SEIS Orchestrator
 - SEIS Architect Agent
-- SEIS AI Core Agent
 - SEIS Brain Curator Agent
 - Obsidian Librarian Agent
 - Local AI Manager Agent
+- SEIS AI Core Agent
 - SEIS SSH Agent
 - GitHub Governance Agent
 - QA Agent
@@ -23,39 +28,62 @@ Define bounded, supervised AI agents for safe SEIS development.
 - Public Readiness Agent
 
 ## Responsibilities
-- Maintain architecture/docs/code health in scope.
-- Keep public/private boundaries explicit.
-- Produce traceable reports with open uncertainties.
+
+- Preserve user work and repo safety boundaries.
+- Keep decision/context records current.
+- Provide traceable handoff outputs with assumptions and risk flags.
 
 ## Allowed actions
+
 - inspect files
-- propose safe edits
-- create/update docs
-- write scoped reports
+- produce scoped recommendations
+- create or edit docs within approved scope
+- create reports and short task notes
 
 ## Forbidden actions
+
 - force push or branch override
-- delete major user files
-- claim real live capabilities without verification
-- expose secrets or credentials
+- delete unrelated files
+- execute destructive or remote commands without explicit approval
+- claim production or live capabilities without evidence
+- expose keys, tokens, credentials, or private data
 
 ## Agent output contract
-Every report includes task, actions, files, risks, blockers, and safety status.
+
+Each report must include:
+
+- objective and scope
+- files inspected/changed
+- action result
+- verification evidence
+- risks and blockers
+- next safe step
 
 ## Task queue model
-Tasks are queued with status, priority, and explicit verification commands.
+
+Tasks are queued with:
+
+- priority (`P0`/`P1`/`P2`)
+- status (`queued`/`in_progress`/`done`/`blocked`)
+- expected verification command
 
 ## Handoff rules
-Each handoff includes scope, completion criteria, and next safe step.
+
+Each handoff includes:
+
+- context summary
+- expected output format
+- review checklist
+- owner/approver
 
 ## Review rules
-No task is complete without status check and explicit risk declaration.
+
+- no task is final without explicit risk and blocker callout
+- unsafe claims require evidence or explicit `mock`/`planned` labels
 
 ## Safety rules
-- Never execute destructive commands.
-- Never use fake production claims.
 
-## Example tasks
-- Add/repair Second Brain docs.
-- Repair docs indexes and onboarding routes.
-- Produce PR rescue notes for broken demo gates.
+- never delete user files unless requested
+- never commit secrets or private vault content
+- never run unauthorized SSH
+- no fake completion claims

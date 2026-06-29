@@ -1,6 +1,6 @@
 # PR #54 Public Demo Review Packet
 
-Generated: 2026-06-29T13:09:20.290Z
+Generated: 2026-06-29T13:14:56.803Z
 Decision: NO-GO
 Status: review-gated-not-released
 Mode: read-only
@@ -33,16 +33,15 @@ Obsidian import, live provider routing, or production-readiness claims.
 
 - dirty-worktree
 - human-release-approval-missing
-- current-browser-smoke-evidence-missing
 
 ## Evidence Manifest Summary
 
 | Metric | Count |
 | --- | ---: |
 | Total | 23 |
-| Passed | 20 |
+| Passed | 21 |
 | Blocked | 2 |
-| Missing current evidence | 1 |
+| Missing current evidence | 0 |
 | Failed | 0 |
 
 ## Evidence Items
@@ -62,7 +61,7 @@ Obsidian import, live provider routing, or production-readiness claims.
 | pr54-review-packet | passed | reports/seis-public-demo/pr54-review-packet-latest.md |
 | worktree-review-packet | passed | reports/seis-public-demo/worktree-review-latest.md |
 | pr54-stage-plan | passed | reports/seis-public-demo/pr54-stage-plan-latest.md |
-| current-browser-smoke | missing-current-evidence | npm run check:seis-second-brain-browser-smoke |
+| current-browser-smoke | passed | npm run check:seis-second-brain-browser-smoke |
 | release-worktree-review | blocked | git status --short |
 | human-release-approval | blocked | explicit approval required |
 | npm-run-check-seis-obsidian-safe-import-dry-run | passed | Command exited 0 in the current run. |

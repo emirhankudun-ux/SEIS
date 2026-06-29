@@ -1,56 +1,95 @@
 # SEIS-SSH
 
 ## Purpose
-SEIS-SSH is the safe remote-development concept layer of SEIS.
+
+SEIS-SSH is the documented remote-development and cloud-readiness surface for
+safe contributor onboarding and review.
 
 ## What SEIS-SSH is
-A documented model for local + remote cloud workflows, codespaces concepts, and governance-safe checks.
+
+- A governance-safe concept for local and remote workflow planning.
+- A standards surface for host/policy, not a credential store.
+- A pre-flight onboarding layer for contributor readiness.
 
 ## What SEIS-SSH is not
-- Not a live deployment system by default.
-- Not a credential distribution layer.
-- Not a magic remote command runner.
+
+- A live deployment tool by default.
+- A credential distribution mechanism.
+- A tool for unattended remote execution.
 
 ## Local development
-Use local workspaces first. Keep remote steps as documented intent.
+
+1. Start locally first.
+2. Validate with local scripts and browser gates.
+3. Use SEIS-SSH docs only for planning, readiness, and migration notes.
 
 ## Remote workspace concept
-GitHub Codespaces and future cloud shells are documented paths; they require explicit human approval.
 
-## GitHub Codespaces concept
-Codespaces can be used as an optional standardized environment concept.
+GitHub Codespaces and cloud shells are optional targets. They require:
+
+- explicit human approval
+- sample-safe config
+- no real credentials in repo
+- visible rollback path
 
 ## OpenSSH / Ed25519 safety
-Never include private keys or real credentials in public docs.
+
+- Never store private keys in repo.
+- Never claim host access without approval evidence.
+- Never post real hostnames or usernames in public files.
 
 ## Environment variables
-Reference only sanitized examples (no real values).
+
+Public docs may reference examples only:
+
+```bash
+export SEIS_SSH_ALIAS=...
+export SEIS_SSH_HOST=...
+export SEIS_SSH_USER=...
+```
 
 ## Credential policy
-- No secrets in commit history.
-- No credential dumps in docs.
+
+- No secrets, PEM, `*.key`, or private host profiles in Git.
+- `.env` values are never committed.
 
 ## Demo SSH profiles
-Profiles are demo/sample-only metadata.
+
+Keep demo profiles metadata-only (`label`, `intent`, `status`, `review notes`).
 
 ## Safe commands
-- status checks
-- dry-run probes
-- local log review
+
+- `ssh -V` (local tool check only, no remote connect)
+- `git remote -v`
+- local docs and config checks
+- offline readiness dry-run scripts
 
 ## Dangerous commands
-Do not include destructive command examples that can erase or leak data.
+
+- Recursive destructive deletes
+- raw credential writes
+- remote command execution without explicit authorization
 
 ## Deployment readiness
-Document required approvals, checklist items, and rollout gates.
+
+- `plan`, `owner`, `rollback`, and `required approvals` before claiming deployment
+  readiness.
 
 ## Rollback readiness
-Keep rollback steps documented with clear owner and expected impact.
+
+Define rollback plan before rollout:
+
+- who owns each step
+- expected impact per step
+- recovery verification
 
 ## Future plans
-Optional Tailscale/VPN and one-command bootstrap remain planned and off by default.
+
+- Planned: Tailscale/VPN path and one-command bootstrap
+- Planned: approval-gated production SSH runbooks
 
 ## Security checklist
+
 - no real keys
 - no real host credentials
-- no claims of live SSH without proof
+- no unverified deployment claims
