@@ -57,9 +57,10 @@ npm run check:seis-ssh-cloud-roadmap
 ```
 
 `npm run run:seis-ssh-public-onboarding` is the single contributor-friendly
-entrypoint command. It runs read-only dry-run checks, validates the public gates,
+entrypoint command. It runs read-only dry-run checks, validates the local setup,
 prints expected onboarding evidence, and writes a clean set of onboarding/public-
-contributor report files without opening an SSH session.
+contributor report files. It requires local prerequisite readiness (SSH, Git,
+`SEIS-SSH` alias) and does not open an SSH session.
 
 These commands prove repo governance and public-access wiring. They do not
 prove a live SSH session.
