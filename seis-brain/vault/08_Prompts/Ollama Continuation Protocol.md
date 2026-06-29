@@ -1,8 +1,15 @@
+---
+type: prompt
+module: seis-prompts
+status: draft
+visibility: public
+updated: 2026-06-29
+---
+
 # Ollama Continuation Protocol
 
-For long outputs: end at clean boundary and write `CONTINUE_FROM: <section>`.
+For long outputs:
 
-User response pattern:
-- `DEVAM`
-
-Continue without repeating previous text.
+1. stop at clean boundary
+2. write `CONTINUE_FROM: <section>`
+3. continue after `DEVAM`

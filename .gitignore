@@ -177,6 +177,12 @@ apps/web/content/
 # Documentation
 docs/*
 !docs/STATUS.md
+!docs/GETTING_STARTED.md
+!docs/TROUBLESHOOTING.md
+!docs/OBSIDIAN_SECOND_BRAIN.md
+!docs/LOCAL_AI_SETUP.md
+!docs/SEIS_SSH_SETUP.md
+!docs/PUBLIC_READINESS.md
 !docs/product/
 !docs/product/*.md
 !docs/reviews/

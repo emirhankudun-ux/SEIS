@@ -202,6 +202,42 @@ The latest approval-gated live probe is tracked in
 readiness is blocked by a GitHub Codespaces billing issue; the same server and
 port policy remains preserved, but online/mobile-ready claims are not allowed.
 
+## SEIS Brain and Obsidian Memory
+
+SEIS ships a markdown-first second-brain layer under `seis-brain/vault` for
+agent/context continuity and public-safe project memory.
+
+- `SEIS_SECOND_BRAIN.md` explains the memory model and operating rules.
+- `SEIS_OBSIDIAN_VAULT.md` explains folder structure and backlinks.
+- `docs/OBSIDIAN_SECOND_BRAIN.md` mirrors onboarding notes for contributors.
+- `seis-brain/vault/00_Index/SEIS Home.md` is the memory entry point.
+
+Do not store credentials, private keys, hostnames, raw secrets, or private data
+in these notes. Use `docs/PUBLIC_READINESS.md` for release-safe checks.
+
+## Installed AI / Local AI Registry
+
+SEIS tracks installed and available AI capabilities in:
+
+- `SEIS_INSTALLED_AI_TOOLS.md`
+- `seis-brain/vault/04_AI/`
+- `docs/LOCAL_AI_SETUP.md`
+- `docs/OBSIDIAN_SECOND_BRAIN.md`
+
+The repo does not require keys for core demo operation. Local or provider-based AI
+features are explicitly labeled by mode.
+
+## SEIS-SSH and Cloud Readiness
+
+SEIS remote-development and cloud-readiness concepts are documented in:
+
+- `SEIS_SSH.md`
+- `docs/SEIS_SSH_SETUP.md`
+- `seis-brain/vault/07_SSH_Cloud/`
+
+Real SSH credentials are never committed. SEIS-SSH docs provide sample-safe
+metadata and deployment readiness gate names.
+
 `npm run check:seis-second-brain-readiness-contracts` validates the Second
 Brain readiness contracts for the Obsidian bridge safe import plan,
 accessibility/focus QA, provider-neutral read-only model-router boundary, and

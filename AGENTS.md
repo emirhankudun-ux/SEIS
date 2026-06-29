@@ -185,3 +185,42 @@ flowchart TD
 - Treat Wix as secondary and use it only when the task specifically requires Wix hosting, Wix CMS, or an existing Wix project surface.
 - Keep Lovable outputs modular, accessible, low-motion aware, and easy to migrate back into the clean SEIS codebase.
 - Do not let external builder convenience override repository governance, rollback safety, source clarity, or dependency restraint.
+
+## SEIS Brain Rules
+
+- Keep project memory markdown-first.
+- Use `seis-brain/vault` for public-safe Obsidian notes.
+- Do not commit private notes.
+- Do not put secrets in memory files.
+- AI-generated notes are drafts until reviewed.
+
+## Obsidian Rules
+
+- Use plain markdown.
+- Use frontmatter for important notes.
+- Use `[[internal links]]` where helpful.
+- Do not require Obsidian plugins.
+- Maintain index notes.
+
+## Local AI Rules
+
+- Ollama is optional.
+- Demo must not require local models.
+- Do not claim local model output is verified unless reviewed.
+- Use context packs to guide local models.
+
+## SEIS-SSH Rules
+
+- Never include real private keys.
+- Never include real tokens.
+- Never include real host credentials.
+- Use sample/demo metadata only.
+- Do not generate destructive remote commands.
+- Human review required for deployment commands.
+
+## Public Readiness Rules
+
+- Keep setup instructions current.
+- Demo must work without API keys.
+- Broken CTAs/assets are blockers.
+- Public docs must be safe for GitHub.
