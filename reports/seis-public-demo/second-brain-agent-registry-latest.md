@@ -1,6 +1,6 @@
 # SEIS Second Brain Agent Registry
 
-Generated: 2026-06-29T08:14:24.301Z
+Generated: 2026-06-29T13:22:42.859Z
 Status: review-only-agent-registry
 Mode: repo-local-no-live-execution
 Decision: NO-GO-autonomous-execution-not-approved
