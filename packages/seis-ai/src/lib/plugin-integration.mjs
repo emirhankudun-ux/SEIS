@@ -18,6 +18,8 @@ export const AI_CORE_AGI_EVALUATION_PROTOCOL_PATH = "content/development/seis-ag
 export const AI_CORE_AGI_EVALUATION_PROTOCOL_RESOURCE_URI = "seis://ai/agi-evaluation-protocol.json";
 export const AI_CORE_AGI_PUBLIC_READINESS_EVIDENCE_PATH = "content/development/seis-agi-public-readiness-evidence.json";
 export const AI_CORE_AGI_PUBLIC_READINESS_EVIDENCE_RESOURCE_URI = "seis://ai/agi-public-readiness-evidence.json";
+export const AI_CORE_AGI_GITHUB_USER_READINESS_GATES_PATH = "content/development/seis-agi-github-user-readiness-gates.json";
+export const AI_CORE_AGI_GITHUB_USER_READINESS_GATES_RESOURCE_URI = "seis://ai/agi-github-user-readiness-gates.json";
 export const AI_CORE_20B_MODEL_CARD_TEMPLATE_PATH = "content/development/seis-20b-model-card-template.json";
 export const AI_CORE_20B_DATASET_CARD_TEMPLATE_PATH = "content/development/seis-20b-dataset-card-template.json";
 export const AI_CORE_20B_BENCHMARK_MANIFEST_PATH = "reports/seis-model-scaling/20b-16gb-memory-benchmark.json";
@@ -204,6 +206,14 @@ export function readAiCoreAgiPublicReadinessEvidence(repoRoot) {
   return JSON.parse(readFileSync(filePath, "utf8"));
 }
 
+export function readAiCoreAgiGithubUserReadinessGates(repoRoot) {
+  const filePath = path.join(repoRoot, ...AI_CORE_AGI_GITHUB_USER_READINESS_GATES_PATH.split("/"));
+  if (!existsSync(filePath)) {
+    throw new Error(`SEIS AGI GitHub user readiness gates are missing: ${AI_CORE_AGI_GITHUB_USER_READINESS_GATES_PATH}`);
+  }
+  return JSON.parse(readFileSync(filePath, "utf8"));
+}
+
 export function aiCoreProviderStatus(repoRoot, options = {}) {
   try {
     const registry = readAiCoreProviderRegistry(repoRoot);
@@ -306,6 +316,10 @@ export function aiCoreModelScalingStatus(repoRoot, options = {}) {
       profile.sourceOfTruth?.agiPublicReadinessEvidence
       || apexTarget.sourceOfTruth?.agiPublicReadinessEvidence
       || AI_CORE_AGI_PUBLIC_READINESS_EVIDENCE_PATH;
+    const agiGithubUserReadinessGatesPath =
+      profile.sourceOfTruth?.agiGithubUserReadinessGates
+      || apexTarget.sourceOfTruth?.githubUserReadinessGates
+      || AI_CORE_AGI_GITHUB_USER_READINESS_GATES_PATH;
     const benchmarkManifestPath = profile.sourceOfTruth?.benchmarkManifest || AI_CORE_20B_BENCHMARK_MANIFEST_PATH;
     const benchmarkDryRunPath = profile.sourceOfTruth?.benchmarkDryRun || AI_CORE_20B_BENCHMARK_DRY_RUN_PATH;
     const localHardwarePreflightCheckPath =
@@ -318,6 +332,7 @@ export function aiCoreModelScalingStatus(repoRoot, options = {}) {
     const frontierModelProgram = readJsonIfExists(repoRoot, frontierModelProgramPath) || {};
     const apexModelProgram = readJsonIfExists(repoRoot, apexModelProgramPath) || {};
     const agiPublicReadinessEvidence = readJsonIfExists(repoRoot, agiPublicReadinessEvidencePath) || {};
+    const agiGithubUserReadinessGates = readJsonIfExists(repoRoot, agiGithubUserReadinessGatesPath) || {};
     const benchmarkManifestSource = readJsonSource(repoRoot, benchmarkManifestPath);
     const benchmarkDryRunSource = readJsonSource(repoRoot, benchmarkDryRunPath);
     const benchmarkManifest = benchmarkManifestSource.data || {};
@@ -346,6 +361,7 @@ export function aiCoreModelScalingStatus(repoRoot, options = {}) {
       frontierModelProgramPath,
       apexModelProgramPath,
       agiPublicReadinessEvidencePath,
+      agiGithubUserReadinessGatesPath,
       benchmarkManifestPath,
       benchmarkDryRunPath,
       localHardwarePreflightCheckPath,
@@ -586,6 +602,23 @@ export function aiCoreModelScalingStatus(repoRoot, options = {}) {
         acceptedClaimEvidenceCount: agiPublicReadinessEvidence.readinessSummary?.acceptedClaimEvidenceCount ?? null,
         missingClaimEvidenceCount: agiPublicReadinessEvidence.readinessSummary?.missingClaimEvidenceCount ?? null,
       },
+      agiGithubUserReadinessGates: {
+        path: agiGithubUserReadinessGatesPath,
+        id: agiGithubUserReadinessGates.id,
+        status: agiGithubUserReadinessGates.status,
+        resourceUri:
+          agiGithubUserReadinessGates.resourceUri || AI_CORE_AGI_GITHUB_USER_READINESS_GATES_RESOURCE_URI,
+        qualityGate: agiGithubUserReadinessGates.qualityGate,
+        routeEligibleToday: agiGithubUserReadinessGates.routeEligibleToday === true,
+        runtimeAuthority: agiGithubUserReadinessGates.runtimeAuthority === true,
+        agiClaimAllowed: agiGithubUserReadinessGates.agiClaimAllowed === true,
+        publicReadyAsAgi: agiGithubUserReadinessGates.publicReadyAsAgi === true,
+        publicReadyForLocalDemo: agiGithubUserReadinessGates.publicReadyForLocalDemo === true,
+        githubReadyForEveryone: agiGithubUserReadinessGates.githubReadyForEveryone === true,
+        readinessGateCount: Array.isArray(agiGithubUserReadinessGates.readinessGates)
+          ? agiGithubUserReadinessGates.readinessGates.length
+          : 0,
+      },
       evidenceTemplates: {
         modelCard: {
           path: modelCardTemplatePath,
@@ -678,6 +711,7 @@ export function aiCoreModelScalingStatus(repoRoot, options = {}) {
       payload.model150bFrontierProgram = frontierModelProgram;
       payload.model512bApexProgram = apexModelProgram;
       payload.agiPublicReadinessEvidenceFull = agiPublicReadinessEvidence;
+      payload.agiGithubUserReadinessGatesFull = agiGithubUserReadinessGates;
       payload.model20bBenchmarkManifest = benchmarkManifest;
       payload.model20bBenchmarkDryRun = benchmarkDryRun;
       payload.modelCardTemplate = modelCardTemplate;

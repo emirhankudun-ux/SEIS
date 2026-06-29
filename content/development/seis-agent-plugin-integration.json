@@ -230,6 +230,7 @@
       "seis://ai/512b-apex-model-program.json",
       "seis://ai/agi-evaluation-protocol.json",
       "seis://ai/agi-public-readiness-evidence.json",
+      "seis://ai/agi-github-user-readiness-gates.json",
       "seis://ai/20b-model-card-template.json",
       "seis://ai/20b-dataset-card-template.json",
       "seis://ai/version-registry.json",

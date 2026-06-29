@@ -45,6 +45,41 @@ The read-only router may describe:
 - blocked reasons
 - fallback policy
 
+Every decision must preserve decision integrity:
+
+- read-only only
+- execution performed is always false
+- no prompt body in the decision
+- no credential material in the decision
+- redacted decision logs only
+- provider state must be named
+- selected provider must be explicit
+- fallback must be explicit
+- blocked reasons are required when a route is ineligible
+- private Obsidian content is not routable
+
+## Review Artifact
+
+Current PR #54 review can generate a provider-neutral read-only model-router
+decision artifact:
+
+```bash
+npm run report:seis-read-only-model-router-decision
+npm run check:seis-read-only-model-router-decision
+```
+
+This writes
+`reports/seis-public-demo/read-only-model-router-decision-latest.json` and
+`reports/seis-public-demo/read-only-model-router-decision-latest.md`. The
+artifact records installed AI profile fixtures, managed sub-agent lanes,
+autonomous agent roster coverage, provider states, explicit fallback policy,
+blocked reasons, and required approvals.
+
+It is not a runtime gateway. It keeps `executionPerformed: false`, does not
+validate credentials, does not store prompt bodies, does not expose browser
+secrets, does not call providers, does not route private Obsidian content, does
+not use silent fallback, and does not approve live routing.
+
 The read-only router must not receive:
 
 - API keys
@@ -85,6 +120,8 @@ Live routing requires all of the following before implementation:
 ## Validation
 
 ```bash
+npm run report:seis-read-only-model-router-decision
+npm run check:seis-read-only-model-router-decision
 npm run check:seis-second-brain-readiness-contracts
 ```
 

@@ -7,6 +7,12 @@
   "qualityGate": "npm run check:seis-second-brain-readiness-contracts",
   "linkedSmoke": "npm run check:seis-second-brain-browser-smoke",
   "linkedBrowserSmoke": "npm run check:seis-second-brain-browser-smoke",
+  "reviewArtifact": {
+    "status": "required-before-public-demo-review",
+    "json": "reports/seis-public-demo/second-brain-accessibility-focus-latest.json",
+    "markdown": "reports/seis-public-demo/second-brain-accessibility-focus-latest.md",
+    "qualityGate": "npm run check:seis-second-brain-accessibility-focus-report"
+  },
   "focusOrder": [
     "toolbar actions",
     "Markdown vault note list",
@@ -53,6 +59,23 @@
     "Confirm inspector title/summary changes and receives a visible focus ring",
     "Confirm reduced-motion users do not need animation to understand graph state",
     "Confirm status copy preserves Local Demo, planned, disabled, and human-review labels"
+  ],
+  "wcagFocusChecks": [
+    "WCAG 2.2 visible focus indicator",
+    "keyboard-only path without pointer input",
+    "no keyboard trap",
+    "logical focus order matches visual reading order",
+    "focus target is not obscured by sticky bars or windows",
+    "reduced motion respected for graph state",
+    "screen-reader status names mock, planned, disabled, and local-demo states honestly"
+  ],
+  "evidenceRequiredBeforePublicDemo": [
+    "current browser smoke result",
+    "manual keyboard transcript",
+    "screen-reader transcript",
+    "mobile viewport target audit",
+    "reduced-motion review note",
+    "human accessibility review approval"
   ],
   "blockedUntil": [
     "screen-reader transcript review",

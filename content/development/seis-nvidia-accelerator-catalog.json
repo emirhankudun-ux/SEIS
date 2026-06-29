@@ -1,0 +1,245 @@
+{
+  "id": "seis-nvidia-accelerator-catalog",
+  "version": 1,
+  "status": "catalog-ready-install-blocked",
+  "updatedAt": "2026-06-29",
+  "qualityGate": "npm run check:seis-nvidia-accelerator-catalog",
+  "installedIntegrationsRegistry": "content/development/seis-nvidia-installed-integrations.json",
+  "purpose": "Map the requested NVIDIA GitHub organization, NVIDIA Build skills, and NVIDIA Build run-anywhere model catalog into SEIS as a safe, reviewable accelerator catalog without bulk cloning repositories, downloading model weights, calling NIM APIs, or storing credentials.",
+  "sourceOfTruth": {
+    "githubOrganization": "https://github.com/NVIDIA",
+    "githubApi": "https://api.github.com/orgs/NVIDIA",
+    "buildSkills": "https://build.nvidia.com/skills",
+    "buildModels": "https://build.nvidia.com/models",
+    "providedSkillsFilterUrl": "https://build.nvidia.com/skills?filters=domain%3Adomain_ai_and_machine_learning%2Cdomain%3Adomain_physical_ai%2Cdomain%3Adomain_accelerated_computing%2Cdomain%3Adomain_infrastructure%2Cdomain%3Adomain_developer_tools%2Caudience%3Aaudience_developer%2Caudience%3Aaudience_ai_engineer%2Caudience%3Aaudience_ml_engineer%2Caudience%3Aaudience_application_developer%2Caudience%3Aaudience_platform_engineer%2Caudience%3Aaudience_devops_engineer%2Caudience%3Aaudience_data_scientist%2Caudience%3Aaudience_hpc_developer%2Caudience%3Aaudience_hands_on_builder%2Caudience%3Aaudience_robotics_developer%2Caudience%3Aaudience_solutions_architect%2Caudience%3Aaudience_research_academic%2Caudience%3Aaudience_data_engineer%2Caudience%3Aaudience_simulation_engineer%2Caudience%3Aaudience_it_operations%2Caudience%3Aaudience_production_operator%2Caudience%3Aaudience_quantum_researcher%2Caudience%3Aaudience_security_engineer",
+    "providedModelsFilterUrl": "https://build.nvidia.com/models?filters=nimType%3Anim_type_run_anywhere%2Cpublisher%3Anvidia%2Cpublisher%3Ameta%2Cpublisher%3Aqwen%2Cpublisher%3Amistralai%2Cpublisher%3Ablack_forest_labs%2Cpublisher%3Aopenai%2Cpublisher%3Agoogle%2Cpublisher%3Amicrosoft%2Cpublisher%3Adeepmind%2Cpublisher%3Adeepseek_ai%2Cpublisher%3Aipd%2Cpublisher%3Amit%2Cpublisher%3Aopenfold%2Cpublisher%3Aminimaxai%2Cpublisher%3Astepfun_ai%2Cpublisher%3Aarc%2Cpublisher%3Abaai%2Cpublisher%3Abaidu%2Cpublisher%3Acolabfold%2Cpublisher%3Aresembleai%2Cpublisher%3Amoonshotai%2Cpublisher%3Asarvamai%2Cpublisher%3Astabilityai%2Cpublisher%3Az_ai%2Cpublisher%3Astockmark%2Cpublisher%3Acadence%2Cpublisher%3Aabacusai%2Cpublisher%3Abytedance%2Cpublisher%3Aansys%2Cpublisher%3Asiemens%2Cpublisher%3Aupstage%2CgpuType%3Agpu_type_b200%2CgpuType%3Agpu_type_h100_80gb_hbm3%2CgpuType%3Agpu_type_h200%2CgpuType%3Agpu_type_l40s%2CgpuType%3Agpu_type_a100_sxm4_80gb%2CgpuType%3Agpu_type_a10g%2CgpuType%3Agpu_type_h100_nvl%2CgpuType%3Agpu_type_a100_pg509_200%2CgpuType%3Agpu_type_gb200%2CgpuType%3Agpu_type_gh200_144g_hbm3e%2CgpuType%3Agpu_type_gh200_120gb%2CgpuType%3Agpu_type_gh200_480gb%2CgpuType%3Agpu_type_h200_nvl%2CgpuType%3Agpu_type_rtx_pro_6000_blackwell_server_edition%2CgpuType%3Agpu_type_l40%2CgpuType%3Agpu_type_dgx_spark%2CgpuType%3Agpu_type_l4%2CgpuType%3Agpu_type_rtx_pro_6000_blackwell_workstation_edition"
+  },
+  "verifiedSnapshot": {
+    "observedAt": "2026-06-29",
+    "method": "read-only GitHub REST API org and repo metadata probe",
+    "githubPublicRepoCount": 756,
+    "sampleRecentlyUpdatedRepos": [
+      {
+        "name": "skills",
+        "language": "Python",
+        "license": "NOASSERTION",
+        "installState": "not-cloned"
+      },
+      {
+        "name": "cosmos",
+        "language": "Jupyter Notebook",
+        "license": "NOASSERTION",
+        "installState": "not-cloned"
+      },
+      {
+        "name": "SkillSpector",
+        "language": "Python",
+        "license": "Apache-2.0",
+        "installState": "not-cloned"
+      },
+      {
+        "name": "nv-redfish",
+        "language": "Rust",
+        "license": "Apache-2.0",
+        "installState": "not-cloned"
+      },
+      {
+        "name": "Isaac-GR00T",
+        "language": "Python",
+        "license": "Apache-2.0",
+        "installState": "not-cloned"
+      }
+    ],
+    "buildSkillsUrlStatus": 200,
+    "buildModelsUrlStatus": 200,
+    "modelsPageTitle": "Models | Try NVIDIA NIM APIs"
+  },
+  "requestedScope": {
+    "github": {
+      "organization": "NVIDIA",
+      "requestedMode": "all-public-repos",
+      "safeMode": "metadata-catalog-and-allowlist-queue",
+      "bulkCloneState": "blocked"
+    },
+    "skills": {
+      "domains": [
+        "AI and machine learning",
+        "Physical AI",
+        "Accelerated computing",
+        "Infrastructure",
+        "Developer tools"
+      ],
+      "audiences": [
+        "Developer",
+        "AI engineer",
+        "ML engineer",
+        "Application developer",
+        "Platform engineer",
+        "DevOps engineer",
+        "Data scientist",
+        "HPC developer",
+        "Hands-on builder",
+        "Robotics developer",
+        "Solutions architect",
+        "Research academic",
+        "Data engineer",
+        "Simulation engineer",
+        "IT operations",
+        "Production operator",
+        "Quantum researcher",
+        "Security engineer"
+      ],
+      "installState": "catalog-link-only"
+    },
+    "models": {
+      "nimType": "run-anywhere",
+      "publishers": [
+        "nvidia",
+        "meta",
+        "qwen",
+        "mistralai",
+        "black_forest_labs",
+        "openai",
+        "google",
+        "microsoft",
+        "deepmind",
+        "deepseek_ai",
+        "ipd",
+        "mit",
+        "openfold",
+        "minimaxai",
+        "stepfun_ai",
+        "arc",
+        "baai",
+        "baidu",
+        "colabfold",
+        "resembleai",
+        "moonshotai",
+        "sarvamai",
+        "stabilityai",
+        "z_ai",
+        "stockmark",
+        "cadence",
+        "abacusai",
+        "bytedance",
+        "ansys",
+        "siemens",
+        "upstage"
+      ],
+      "gpuTypes": [
+        "b200",
+        "h100_80gb_hbm3",
+        "h200",
+        "l40s",
+        "a100_sxm4_80gb",
+        "a10g",
+        "h100_nvl",
+        "a100_pg509_200",
+        "gb200",
+        "gh200_144g_hbm3e",
+        "gh200_120gb",
+        "gh200_480gb",
+        "h200_nvl",
+        "rtx_pro_6000_blackwell_server_edition",
+        "l40",
+        "dgx_spark",
+        "l4",
+        "rtx_pro_6000_blackwell_workstation_edition"
+      ],
+      "installState": "catalog-link-only"
+    }
+  },
+  "installPolicy": {
+    "bulkCloneAllowed": false,
+    "cloneAllPublicReposAllowed": false,
+    "modelDownloadAllowed": false,
+    "nimApiCallAllowed": false,
+    "gpuProvisionAllowed": false,
+    "dockerPullAllowed": false,
+    "dependencyInstallAllowed": false,
+    "secretReadAllowed": false,
+    "browserSecretAllowed": false,
+    "sshExecutionAllowed": false,
+    "githubWriteAllowed": false,
+    "defaultCommandMode": "dry-run-plan-only",
+    "approvalRequiredForAnyApply": true,
+    "truthBoundary": "This catalog installs NVIDIA awareness and local NVIDIA skill integration records into SEIS, not NVIDIA repositories, model weights, skills runtime packages, NIM endpoints, GPUs, Docker images, or credentials."
+  },
+  "allowedNow": [
+    "Render NVIDIA catalog status inside SEIS Desktop, Search, Store, AI Core, and Cloud surfaces.",
+    "Render 11 locally installed NVIDIA Codex skill manifests as SEIS installed integration records.",
+    "Generate a deterministic dry-run install queue.",
+    "Open official NVIDIA and GitHub source URLs for human review.",
+    "Record an allowlist candidate set after license and security review.",
+    "Keep Local Demo mode working with zero NVIDIA credentials."
+  ],
+  "blockedUntilApproved": [
+    "Clone all NVIDIA GitHub repositories.",
+    "Clone any NVIDIA repository into this repo without an allowlist.",
+    "Download model weights or NIM containers.",
+    "Call NVIDIA Build/NIM APIs.",
+    "Provision GPU infrastructure.",
+    "Install dependencies for NVIDIA samples.",
+    "Run Docker, SSH, or cloud commands.",
+    "Store NVIDIA API keys or secrets in browser state, localStorage, IndexedDB, docs, or committed files."
+  ],
+  "installQueue": [
+    {
+      "id": "nvidia-github-inventory",
+      "title": "NVIDIA GitHub inventory",
+      "status": "dry-run-ready",
+      "nextCommand": "npm run plan:nvidia-catalog-install",
+      "approvalNeeded": "network refresh and allowlisted clone only"
+    },
+    {
+      "id": "nvidia-build-skills",
+      "title": "NVIDIA Build skills catalog",
+      "status": "catalog-link-only",
+      "nextCommand": "open official Build skills URL",
+      "approvalNeeded": "skill-specific runtime install and license review"
+    },
+    {
+      "id": "nvidia-build-models",
+      "title": "NVIDIA Build run-anywhere model catalog",
+      "status": "catalog-link-only",
+      "nextCommand": "open official Build models URL",
+      "approvalNeeded": "model-specific license, hardware, cost, and credential review"
+    },
+    {
+      "id": "seis-ai-router-alignment",
+      "title": "SEIS AI model-router alignment",
+      "status": "planned-gated",
+      "nextCommand": "npm run check:seis-nvidia-accelerator-catalog",
+      "approvalNeeded": "backend-only provider mediation before live routing"
+    },
+    {
+      "id": "seis-cloud-gpu-readiness",
+      "title": "SEIS Cloud GPU readiness lane",
+      "status": "planned-gated",
+      "nextCommand": "document approved GPU/runtime target",
+      "approvalNeeded": "explicit cloud/GPU/SSH approval"
+    }
+  ],
+  "desktopSurface": {
+    "appId": "nvidia-catalog",
+    "displayName": "NVIDIA Catalog",
+    "mode": "Local Demo catalog",
+    "storeStatus": "Available",
+    "commandCenterState": "planned-gated",
+    "providerState": "Missing Key is not Error; NVIDIA credentials are not required for core demo."
+  },
+  "securityNotes": [
+    "No NVIDIA token, NGC key, NIM key, SSH private key, cookie, or provider credential is stored.",
+    "NOASSERTION licenses in sampled repos require review before any clone or reuse.",
+    "Official Build model availability is not a routeable SEIS model claim.",
+    "Run-anywhere model filters do not prove local hardware compatibility.",
+    "All live provider, GPU, Docker, SSH, and dependency actions remain human-approval gated."
+  ],
+  "documentation": {
+    "primaryDoc": "docs/ai/nvidia-accelerator-catalog.md",
+    "installedIntegrationsDoc": "docs/ai/nvidia-installed-integrations.md",
+    "statusDoc": "docs/STATUS.md",
+    "backlogDoc": "docs/roadmap/MASTER_BACKLOG.md",
+    "nextQueueDoc": "docs/roadmap/NEXT_PR_QUEUE.md"
+  }
+}

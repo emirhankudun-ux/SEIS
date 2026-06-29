@@ -24,6 +24,7 @@ import {
   AI_CORE_150B_FRONTIER_MODEL_PROGRAM_PATH,
   AI_CORE_512B_APEX_MODEL_PROGRAM_PATH,
   AI_CORE_AGI_EVALUATION_PROTOCOL_PATH,
+  AI_CORE_AGI_GITHUB_USER_READINESS_GATES_PATH,
   AI_CORE_AGI_PUBLIC_READINESS_EVIDENCE_PATH,
   AI_CORE_20B_DATASET_CARD_TEMPLATE_PATH,
   AI_CORE_20B_MODEL_CARD_TEMPLATE_PATH,
@@ -966,6 +967,25 @@ Steps:
           uri: "seis://ai/agi-public-readiness-evidence.json",
           mimeType: "application/json",
           text: readFileSync(path.join(repoRoot, ...AI_CORE_AGI_PUBLIC_READINESS_EVIDENCE_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "ai-core-agi-github-user-readiness-gates",
+    "seis://ai/agi-github-user-readiness-gates.json",
+    {
+      description:
+        "SEIS AI Core read-only seis-agi-github-user-readiness-gates from content/development/seis-agi-github-user-readiness-gates.json; separates Local Demo GitHub review from real AGI, 512B inference, release, provider, benchmark, or route authority",
+      mimeType: "application/json",
+    },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/agi-github-user-readiness-gates.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...AI_CORE_AGI_GITHUB_USER_READINESS_GATES_PATH.split("/")), "utf8"),
         },
       ],
     })

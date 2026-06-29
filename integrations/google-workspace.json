@@ -1,6 +1,145 @@
 {
   "name": "SEIS CLOSED CODE Google Workspace",
-  "date": "2026-06-05",
+  "date": "2026-06-29",
+  "runtime_audit": {
+    "audited_at": "2026-06-29",
+    "mode": "read-only MCP tool discovery plus profile verification",
+    "profile_identity": "verified in-session; not persisted",
+    "persistence_rule": "Do not store Google profile email, profile image, OAuth tokens, cookies, refresh tokens, service accounts, or private workspace data in repository files."
+  },
+  "mcp": {
+    "gmail": {
+      "namespace": "mcp__codex_apps__gmail",
+      "plugin": "Gmail",
+      "status": "available in current Codex session",
+      "profile_verified": true,
+      "write_gate": "Explicit user intent is required before send, draft-send, archive, trash, label, forward, or bulk mail actions."
+    },
+    "google_calendar": {
+      "namespace": "mcp__codex_apps__google_calendar",
+      "plugin": "Google Calendar",
+      "status": "available in current Codex session",
+      "profile_verified": true,
+      "write_gate": "Explicit user intent is required before create, update, delete, respond, reminder, hold, or recurring-event actions."
+    },
+    "google_drive": {
+      "namespace": "mcp__codex_apps__google_drive",
+      "plugin": "Google Drive",
+      "status": "available in current Codex session",
+      "profile_verified": true,
+      "covers": [
+        "Drive",
+        "Docs",
+        "Sheets",
+        "Slides"
+      ],
+      "write_gate": "Explicit target file, folder, audience, and user intent are required before create, edit, import, share, move, copy, upload, or delete actions."
+    }
+  },
+  "skills": {
+    "gmail": [
+      "gmail:gmail"
+    ],
+    "calendar": [
+      "google-calendar:google-calendar"
+    ],
+    "drive": [
+      "google-drive:google-drive",
+      "google-drive:google-docs",
+      "google-drive:google-sheets",
+      "google-drive:google-slides"
+    ]
+  },
+  "ecosystem_coverage": [
+    {
+      "app": "Gmail",
+      "status": "mcp-and-skill-active",
+      "mcp_namespace": "mcp__codex_apps__gmail",
+      "skills": [
+        "gmail:gmail"
+      ]
+    },
+    {
+      "app": "Google Calendar",
+      "status": "mcp-and-skill-active",
+      "mcp_namespace": "mcp__codex_apps__google_calendar",
+      "skills": [
+        "google-calendar:google-calendar"
+      ]
+    },
+    {
+      "app": "Google Drive",
+      "status": "mcp-and-skill-active",
+      "mcp_namespace": "mcp__codex_apps__google_drive",
+      "skills": [
+        "google-drive:google-drive"
+      ]
+    },
+    {
+      "app": "Google Docs",
+      "status": "covered-through-google-drive-mcp",
+      "mcp_namespace": "mcp__codex_apps__google_drive",
+      "skills": [
+        "google-drive:google-docs"
+      ]
+    },
+    {
+      "app": "Google Sheets",
+      "status": "covered-through-google-drive-mcp",
+      "mcp_namespace": "mcp__codex_apps__google_drive",
+      "skills": [
+        "google-drive:google-sheets"
+      ]
+    },
+    {
+      "app": "Google Slides",
+      "status": "covered-through-google-drive-mcp",
+      "mcp_namespace": "mcp__codex_apps__google_drive",
+      "skills": [
+        "google-drive:google-slides"
+      ]
+    },
+    {
+      "app": "Google Meet",
+      "status": "indirect-through-calendar",
+      "mcp_namespace": "mcp__codex_apps__google_calendar",
+      "skills": [
+        "google-calendar:google-calendar"
+      ],
+      "note": "Calendar event creation can request a Google Meet link; no standalone Meet MCP is configured."
+    },
+    {
+      "app": "Google Chat",
+      "status": "not-configured",
+      "mcp_namespace": null,
+      "skills": []
+    },
+    {
+      "app": "Google Tasks",
+      "status": "not-configured",
+      "mcp_namespace": null,
+      "skills": []
+    },
+    {
+      "app": "Google Keep",
+      "status": "not-configured",
+      "mcp_namespace": null,
+      "skills": []
+    },
+    {
+      "app": "Google Forms",
+      "status": "not-configured",
+      "mcp_namespace": null,
+      "skills": []
+    },
+    {
+      "app": "Google Cloud and Firebase",
+      "status": "planned-and-approval-gated",
+      "mcp_namespace": null,
+      "skills": [],
+      "note": "No live Google Cloud or Firebase MCP access was verified in this Codex session."
+    }
+  ],
   "drive": {
     "operating_plan": {
       "title": "SEIS CLOSED CODE Operating Plan",
@@ -29,5 +168,5 @@
       "url": "https://www.google.com/calendar/event?eid=ZWg5djhtamRjdHZjaGY2aTljczRqMDJkZjQgZW1pcmhhbmt1ZHVuQG0"
     }
   },
-  "sync_rule": "Update this file whenever Drive or Calendar artifacts change."
+  "sync_rule": "Update this file whenever Gmail, Calendar, Drive, Docs, Sheets, Slides, or related Google Workspace artifacts or MCP availability change."
 }
