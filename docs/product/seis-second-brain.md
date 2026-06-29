@@ -137,3 +137,5 @@ approval.
 5. Keep `npm run check:seis-public-demo-go-no-go -- --run-fast-checks` wired
    into the release review so GitHub publication stays blocked until evidence
    and approval exist.
+6. Second Brain readiness and agent-registry slice was re-staged/revalidated for
+   the PR sync flow on 2026-06-29.
