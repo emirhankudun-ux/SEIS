@@ -142,6 +142,8 @@ resources including the 512B apex program.
 | `gh pr list --state open --limit 30 --json number,title,headRefName,baseRefName,isDraft,mergeStateStatus,updatedAt` | Passed | Read-only inventory returned 25 open PRs; no PR write action was performed. |
 | `gh pr list --state closed --limit 30 --json number,title,headRefName,baseRefName,mergedAt,closedAt,updatedAt` | Passed | Read-only inventory returned 13 recently closed PRs, all merged in the returned set. |
 | `git branch --no-merged main --no-color` | Passed | Local unmerged branches visible: `seis/product-experience-suite`, `seis/ai-core-app-foundation-continuation`, and `seis/ai-model-env-defaults`. |
+| `npm run cloud:ssh:online -- --connect-timeout 12` | Blocked | Approval-gated read-only live probe preserved `SEIS-SSH`, Codespaces transport, and port `22`, but GitHub Codespaces start failed with a sanitized HTTP 402 billing issue; remote repo and Codex CLI were not verified. |
+| `npm run check:seis-ssh-live-readiness-evidence` | Passed | Validates the live-readiness evidence record and prevents online/mobile-ready claims while the provider billing blocker remains active. |
 | Root pointer/source-of-truth review | Passed | `ARCHITECTURE.md` and `ROADMAP.md` now point to canonical docs without duplicating implementation claims. |
 | `npm run check:foundation` | Passed | Current foundation validator completed after repository hygiene recovery on this branch. |
 | `npm run build:static` | Passed | Static server package was produced locally at `dist/seis-static.zip`; no deployment was performed. |
