@@ -8,13 +8,33 @@
   "vaultRoot": "/home/seis/SecondBrain",
   "snapshotPath": "/home/seis/SecondBrain/seis-second-brain-vault-snapshot.md",
   "githubReadinessPath": "/home/seis/SecondBrain/github-readiness-review.md",
+  "trainingPackPath": "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md",
+  "releaseReviewPacketPath": "reports/seis-public-demo/pr54-review-packet-latest.md",
+  "obsidianSafeImportDryRunPath": "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json",
+  "obsidianSafeImportDryRunMarkdownPath": "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md",
+  "readOnlyModelRouterDecisionPath": "reports/seis-public-demo/read-only-model-router-decision-latest.json",
+  "readOnlyModelRouterDecisionMarkdownPath": "reports/seis-public-demo/read-only-model-router-decision-latest.md",
+  "accessibilityFocusReportPath": "reports/seis-public-demo/second-brain-accessibility-focus-latest.json",
+  "accessibilityFocusReportMarkdownPath": "reports/seis-public-demo/second-brain-accessibility-focus-latest.md",
+  "agentRegistryReportPath": "reports/seis-public-demo/second-brain-agent-registry-latest.json",
+  "agentRegistryReportMarkdownPath": "reports/seis-public-demo/second-brain-agent-registry-latest.md",
+  "languageModelTrainingCurriculum": {
+    "status": "planned-training-contract",
+    "contractPath": "content/development/seis-language-model-training-curriculum.json",
+    "reportPath": "reports/seis-model-scaling/seis-language-model-training-curriculum.md",
+    "boundary": "Planning-only curriculum. No model install, checkpoint download, foundation pretraining, fine-tuning, benchmark execution, provider call, SSH, deployment, or foundation-model ownership claim is authorized."
+  },
   "obsidianBridge": {
     "status": "planned",
     "currentMode": "browser-local Markdown vault only",
     "allowedToday": [
       "render repo-owned seed notes",
       "export Markdown snapshots into browser-local VFS",
+      "generate repo-owned dry-run manifest artifacts under reports/seis-public-demo",
       "show graph links and backlinks from static records",
+      "generate provider-neutral read-only router decision artifacts under reports/seis-public-demo",
+      "generate accessibility/focus QA artifacts under reports/seis-public-demo",
+      "generate Second Brain agent registry artifacts under reports/seis-public-demo",
       "record human-review-required GitHub readiness gates"
     ],
     "forbiddenToday": [
@@ -221,6 +241,11 @@
       "step": "Review",
       "status": "human-review-required",
       "detail": "Run no-secret, provenance, mock/real/planned, accessibility, and docs alignment review."
+    },
+    {
+      "step": "Training Pack",
+      "status": "local-demo",
+      "detail": "Generate deterministic Second Brain read-only onboarding pack covering Obsidian, accessibility, model-router, and PR #54 release checklist contracts."
     },
     {
       "step": "Publish",

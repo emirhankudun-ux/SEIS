@@ -124,6 +124,8 @@ npm run report:seis-read-only-model-router-decision
 npm run check:seis-read-only-model-router-decision
 npm run report:seis-second-brain-accessibility-focus-report
 npm run check:seis-second-brain-accessibility-focus-report
+npm run report:seis-second-brain-agent-registry
+npm run check:seis-second-brain-agent-registry
 npm run check:seis-second-brain-readiness-contracts
 npm run check:seis-second-brain-browser-smoke
 npm run check:seis-public-demo-go-no-go -- --run-fast-checks
@@ -230,6 +232,14 @@ Second Brain accessibility/focus QA artifacts under `reports/seis-public-demo/`.
 Those artifacts validate repo-static ARIA/focus markers and browser-smoke
 coverage while keeping manual keyboard transcript, screen-reader transcript,
 reduced-motion review, and human accessibility approval blocked until review.
+
+`npm run report:seis-second-brain-agent-registry` writes the Second Brain agent
+registry artifacts under `reports/seis-public-demo/`. Those artifacts join the
+installed AI profiles, supervised AI workforce assignments, bounded sub-agent
+roster, Obsidian bridge boundary, plugin inventory, MCP surfaces, and connector
+activation rules without reading a private Obsidian vault, validating
+credentials, calling providers, enabling autonomous writes, executing SSH,
+mutating GitHub, deploying, or approving release.
 
 `npm run report:seis-public-demo-go-no-go` writes PR/release-review artifacts
 under `reports/seis-public-demo/`, including the evidence manifest and

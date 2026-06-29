@@ -14,6 +14,8 @@ For the 5-year enterprise benchmark view, see:
 
 - [seis-ssh-5-year-enterprise-blueprint.md](./seis-ssh-5-year-enterprise-blueprint.md)
 - `deploy/seis-ssh-5-year-enterprise-benchmark.json`
+- [seis-ssh-public-github-access.md](./seis-ssh-public-github-access.md)
+- `deploy/seis-ssh-public-access-contract.json`
 
 ## Non-Negotiable Invariants
 
@@ -24,6 +26,11 @@ For the 5-year enterprise benchmark view, see:
 5. Companies and teams require WireGuard or an equivalent peer-authenticated VPN cloud route.
 6. Developers use a closed cloud development system for sensitive or long-running work.
 7. Remote readiness is not declared until `/workspaces/SEIS` and Codex CLI are verified.
+8. Public GitHub onboarding must keep the same server and port.
+9. Ayni sunucu ve baglanti noktasi korunur.
+10. Public onboarding evidence must stay read-only and must not create shared credentials.
+11. Contributor doctor evidence must stay local-only and must not contact GitHub or open SSH.
+12. Live readiness blockers must be recorded explicitly; a green static check is not live proof.
 
 ## Tracks
 
@@ -148,6 +155,10 @@ Weekly:
 
 Release:
 
+- run `npm run check:seis-ssh-public-access`
+- run `npm run check:seis-ssh-public-onboarding`
+- run `npm run check:seis-ssh-public-contributor-doctor`
+- run `npm run check:seis-ssh-live-readiness-evidence`
 - run `npm run check:seis-ssh-access-model`
 - run `npm run check:seis-ssh-cloud-roadmap`
 - run `npm run check:seis-ssh-closed-runtime`
@@ -164,6 +175,7 @@ Incident:
 ```bash
 npm run check:seis-ssh-cloud-roadmap
 npm run check:seis-ssh-closed-runtime
+npm run check:seis-ssh-public-access
 npm run check:seis-ssh-access-model
 npm run check:seis-ssh-enterprise-benchmark
 npm run cloud:ssh:online:strict

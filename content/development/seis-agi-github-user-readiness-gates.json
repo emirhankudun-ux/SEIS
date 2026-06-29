@@ -1,0 +1,194 @@
+{
+  "id": "seis-agi-github-user-readiness-gates",
+  "version": "2026.06.29",
+  "status": "review-gated-local-demo-ready",
+  "resourceUri": "seis://ai/agi-github-user-readiness-gates.json",
+  "qualityGate": "node scripts/check-seis-agi-github-user-readiness-gates.mjs",
+  "coreCredentialRequirement": "none",
+  "defaultRuntimeMode": "seis-local-demo",
+  "routeEligibleToday": false,
+  "runtimeAuthority": false,
+  "agiClaimAllowed": false,
+  "publicReadyAsAgi": false,
+  "publicReadyForLocalDemo": true,
+  "githubReadyForEveryone": false,
+  "claimDecision": "github-users-can-review-local-demo-not-real-agi",
+  "sourceOfTruth": {
+    "agiEvaluationProtocol": "content/development/seis-agi-evaluation-protocol.json",
+    "agiPublicReadinessEvidence": "content/development/seis-agi-public-readiness-evidence.json",
+    "apexModelProgram": "content/development/seis-512b-apex-model-program.json",
+    "mcpRuntimeContract": "content/development/seis-ai-core-mcp-runtime-contract.json",
+    "pluginIntegration": "content/development/seis-agent-plugin-integration.json",
+    "doc": "docs/ai/seis-agi-github-user-readiness-gates.md"
+  },
+  "truthBoundary": "This gate pack defines what a GitHub user may safely trust today. It does not prove SEIS AGI, train or download a 512B model, run inference, run benchmarks, approve release, mutate GitHub, call providers, provision cloud/GPU resources, execute SSH, or grant route eligibility.",
+  "researchBaseline": [
+    {
+      "id": "nist-ai-rmf",
+      "source": "NIST AI Risk Management Framework",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "seisImplication": "GitHub readiness must include explicit governance, risk, transparency, measurement, and accountability boundaries before public AI capability claims."
+    },
+    {
+      "id": "nist-ai-600-1",
+      "source": "NIST AI 600-1 Generative AI Profile",
+      "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+      "seisImplication": "Generative-AI public readiness must treat misuse, data, privacy, transparency, cybersecurity, and measurement risks as release gates, not marketing copy."
+    },
+    {
+      "id": "metr-long-task-evaluations",
+      "source": "METR long-task capability measurement",
+      "url": "https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/",
+      "seisImplication": "Long-horizon autonomy claims require task-duration and completion evidence; local demo behavior and green CI are not enough."
+    },
+    {
+      "id": "arc-agi",
+      "source": "ARC-AGI benchmark",
+      "url": "https://arcprize.org/arc-agi",
+      "seisImplication": "Abstract generalization claims require dedicated evaluation evidence; parameter count or installed assistants cannot prove AGI."
+    }
+  ],
+  "githubUserModes": [
+    {
+      "id": "local-demo-review",
+      "label": "Local Demo review",
+      "status": "allowed",
+      "requiresSecrets": false,
+      "allowedClaim": "Users can inspect repository-local SEIS AI contracts, MCP resources, and validators.",
+      "forbiddenClaim": "Users cannot treat the repository as a trained 512B model or real AGI."
+    },
+    {
+      "id": "validator-review",
+      "label": "Validator review",
+      "status": "allowed",
+      "requiresSecrets": false,
+      "allowedClaim": "Users can run read-only validators that preserve the Local Demo and no-AGI boundary.",
+      "forbiddenClaim": "Passing validators cannot prove AGI, 512B training, 512B inference, or benchmark success."
+    },
+    {
+      "id": "real-agi-use",
+      "label": "Real AGI use",
+      "status": "blocked",
+      "requiresSecrets": false,
+      "allowedClaim": "No real AGI use is available today.",
+      "forbiddenClaim": "SEIS is not a routeable AGI or 512B inference system."
+    },
+    {
+      "id": "live-provider-use",
+      "label": "Live provider use",
+      "status": "disabled-until-configured",
+      "requiresSecrets": true,
+      "allowedClaim": "Optional provider integrations may be configured later behind backend-only secrets.",
+      "forbiddenClaim": "No provider key is required or present for the core GitHub demo."
+    }
+  ],
+  "readinessGates": [
+    {
+      "id": "zero-key-local-demo",
+      "status": "satisfied-for-local-demo",
+      "ownerAgents": ["architect-agent", "documentation-agent", "qa-agent"],
+      "requiredEvidence": [
+        "coreCredentialRequirement is none",
+        "MCP resources are read-only",
+        "validators pass without provider keys"
+      ],
+      "blocksGithubLocalDemo": false,
+      "blocksAgiClaim": true
+    },
+    {
+      "id": "mcp-resource-contract",
+      "status": "satisfied-for-local-demo",
+      "ownerAgents": ["code-agent", "automation-agent", "qa-agent"],
+      "requiredEvidence": [
+        "seis://ai/agi-github-user-readiness-gates.json is listed",
+        "resources/read returns the gate pack",
+        "MCP smoke validates the resource count"
+      ],
+      "blocksGithubLocalDemo": false,
+      "blocksAgiClaim": true
+    },
+    {
+      "id": "claim-boundary",
+      "status": "satisfied-for-local-demo",
+      "ownerAgents": ["security-agent", "documentation-agent", "research-agent"],
+      "requiredEvidence": [
+        "forbiddenClaims block AGI ownership",
+        "public readiness evidence blocks AGI claims",
+        "negative controls reject parameter-count-only claims"
+      ],
+      "blocksGithubLocalDemo": false,
+      "blocksAgiClaim": true
+    },
+    {
+      "id": "fresh-clone-user-path",
+      "status": "partial",
+      "ownerAgents": ["documentation-agent", "qa-agent", "automation-agent"],
+      "requiredEvidence": [
+        "fresh clone instructions verified",
+        "one-command local AI readiness check documented",
+        "cross-platform local demo smoke evidence recorded"
+      ],
+      "blocksGithubLocalDemo": true,
+      "blocksAgiClaim": true
+    },
+    {
+      "id": "independent-agi-evaluations",
+      "status": "missing",
+      "ownerAgents": ["research-agent", "qa-agent", "external-reviewer"],
+      "requiredEvidence": [
+        "multi-domain evaluation run",
+        "long-horizon task evidence",
+        "abstract generalization benchmark evidence"
+      ],
+      "blocksGithubLocalDemo": false,
+      "blocksAgiClaim": true
+    },
+    {
+      "id": "512b-training-inference-evidence",
+      "status": "missing",
+      "ownerAgents": ["architect-agent", "code-agent", "cloud-agent", "human-owner"],
+      "requiredEvidence": [
+        "clean-room training plan accepted",
+        "512B checkpoint governance accepted",
+        "independent inference and benchmark evidence accepted"
+      ],
+      "blocksGithubLocalDemo": false,
+      "blocksAgiClaim": true
+    },
+    {
+      "id": "public-release-approval",
+      "status": "approval-gated",
+      "ownerAgents": ["human-owner", "security-agent", "devops-agent"],
+      "requiredEvidence": [
+        "human release approval recorded",
+        "PR merged by approved maintainer",
+        "release notes and rollback plan accepted"
+      ],
+      "blocksGithubLocalDemo": true,
+      "blocksAgiClaim": true
+    }
+  ],
+  "requiredBeforeEveryoneReady": [
+    "fresh clone local demo path verified",
+    "one-command AI readiness validator documented and passing",
+    "all required CI checks green on the target commit",
+    "human release approval recorded",
+    "public README claim boundary reviewed",
+    "no secrets or private keys exposed",
+    "AGI and 512B claim boundaries preserved"
+  ],
+  "forbiddenClaims": [
+    "SEIS has achieved real AGI.",
+    "SEIS includes trained 512B weights.",
+    "GitHub users can run routeable 512B inference today.",
+    "Passing CI or CodeQL proves AGI.",
+    "Installed AI or sub-agents prove AGI.",
+    "Provider API access is SEIS-owned AGI."
+  ],
+  "nextSafeActions": [
+    "Expose this gate pack as a read-only MCP resource.",
+    "Keep public GitHub readiness separate from real AGI readiness.",
+    "Validate the gate pack through deterministic local checks.",
+    "Record human approval requirements before merge, release, deployment, or public AGI claims."
+  ]
+}

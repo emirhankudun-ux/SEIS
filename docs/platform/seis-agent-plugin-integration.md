@@ -32,6 +32,7 @@ The MCP resource set includes `seis://agent/plugin-integration.json`,
 `seis://ai/provider-registry.json`,
 `seis://ai/model-scaling-hardware-profile.json`,
 `seis://ai/150b-frontier-model-program.json`,
+`seis://ai/agi-github-user-readiness-gates.json`,
 `seis://ai/version-registry.json`,
 `seis://ai/version-promotion-gates.json`,
 `seis://ai/subagent-operating-model.json`,
@@ -69,7 +70,7 @@ panels:
   `plan-only` permission boundaries.
 - `MCP Runtime Contract` in Installed AI displays the local stdio JSON-RPC
   contract from `content/development/seis-ai-core-mcp-runtime-contract.json`,
-  34 tools, 26 resources, 3 prompts, the no-dependency fallback transport, and
+  34 tools, 29 resources, 3 prompts, the no-dependency fallback transport, and
   the smoke-test gate that proves SEIS AI Core can read plugin/provider/model-scaling
   resources, including `seis://ai/model-parameter-ladder.json` and
   `seis://ai/model-frontier-escalation-policy.json`, read

@@ -109,7 +109,7 @@ The standalone SEIS demo now includes an AI Core constellation inspector that
 joins the installed AI route mesh, personal plugin lane mesh, MCP runtime
 contract, selected five-year quarter, and 3D hero diagnostics into one local
 read-only surface. Product browser smoke verifies the inspector exposes six AI
-routes, five personal plugin lanes, 34 MCP tools, 28 MCP resources, three MCP
+routes, five personal plugin lanes, 34 MCP tools, 29 MCP resources, three MCP
 prompts, and a 32-node / 53-edge AI Core 3D graph without requiring provider
 keys, SSH, deployment, GitHub mutation, or external connector authentication.
 
@@ -120,6 +120,14 @@ Runtime inspection tools:
 `seis_ai_core_version_promotion_dry_run`,
 `seis_ai_core_subagent_model`, and
 `seis_ai_core_subagent_review_ledger`.
+
+GitHub user readiness gates:
+`content/development/seis-agi-github-user-readiness-gates.json`,
+`seis://ai/agi-github-user-readiness-gates.json`,
+`node scripts/check-seis-agi-github-user-readiness-gates.mjs`.
+AGI public readiness evidence:
+`content/development/seis-agi-public-readiness-evidence.json`,
+`seis://ai/agi-public-readiness-evidence.json`.
 
 Model scaling resources:
 `content/development/seis-model-scaling-hardware-profile.json`,
