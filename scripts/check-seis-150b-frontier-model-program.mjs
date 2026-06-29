@@ -155,9 +155,10 @@ if (pluginIntegration) {
 }
 
 if (mcpRuntimeContract) {
-  ensure(mcpRuntimeContract.resourceCount === 26, "MCP runtime contract must record 26 resources");
+  ensure(mcpRuntimeContract.resourceCount === 27, "MCP runtime contract must record 27 resources");
   const resourceSurface = (mcpRuntimeContract.surfaces || []).find((surface) => surface.id === "resources") || {};
   ensure(String(resourceSurface.evidence || "").includes("150B frontier model program"), "MCP resource evidence must mention 150B frontier model program");
+  ensure(String(resourceSurface.evidence || "").includes("AGI evaluation protocol"), "MCP resource evidence must mention AGI evaluation protocol");
   ensure(String(resourceSurface.duty || "").includes("150B frontier program"), "MCP resource duty must mention 150B frontier program");
 }
 

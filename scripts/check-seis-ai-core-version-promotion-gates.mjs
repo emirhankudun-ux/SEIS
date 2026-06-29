@@ -181,7 +181,8 @@ ensure(Array.isArray(fiveYearPlan?.years) && fiveYearPlan.years.length === 5, "f
 
 if (mcpRuntimeContract) {
   ensure(mcpRuntimeContract.resourceUri === "seis://ai/mcp-runtime-contract.json", "MCP runtime contract resource URI mismatch");
-  ensure(mcpRuntimeContract.resourceCount === 26, "MCP runtime contract must record 26 resources");
+  ensure(mcpRuntimeContract.resourceCount === 27, "MCP runtime contract must record 27 resources");
+  ensure(String(mcpRuntimeContract.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("AGI evaluation protocol"), "MCP runtime contract resource evidence must mention AGI evaluation protocol");
 }
 ensure(providerRegistry?.id === "seis-ai-core-provider-registry", "provider registry id mismatch");
 ensure(providerRegistry?.coreCredentialRequirement === "none", "provider registry must keep zero-key core");
