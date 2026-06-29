@@ -1,0 +1,83 @@
+{
+  "id": "seis-ai-core-handoff-fixture",
+  "version": "2026.06.29",
+  "status": "documented-fixture",
+  "purpose": "Define the bounded handoff report shape for SEIS AI Core sub-agents without enabling background automation, autonomous writes, external mutation, or secret access.",
+  "qualityGate": "npm run check:seis-ai-core-subagent-runtime-fixtures",
+  "runtimeBoundary": "status-and-plan-only",
+  "writerPolicy": "single-writer",
+  "handoffRequiredFor": [
+    "writer role transfer",
+    "reviewer handoff",
+    "blocked approval gate",
+    "validation failure",
+    "scope reduction",
+    "cross-lane planning"
+  ],
+  "requiredFields": [
+    "id",
+    "fromRoleId",
+    "toRoleId",
+    "laneId",
+    "handoffType",
+    "scope",
+    "summary",
+    "filesTouched",
+    "validationRun",
+    "validationStatus",
+    "approvalBoundary",
+    "rollbackNote",
+    "secretHandling",
+    "nextAction",
+    "createdAt"
+  ],
+  "forbiddenContent": [
+    "secret values",
+    "private keys",
+    "raw provider errors",
+    "unapproved credentials",
+    "hidden chain-of-thought",
+    "unreviewed destructive instructions"
+  ],
+  "allowedValidationStatuses": [
+    "not-run",
+    "pending",
+    "passed",
+    "failed",
+    "blocked"
+  ],
+  "sampleHandoffs": [
+    {
+      "id": "handoff-seis-code-reviewer",
+      "fromRoleId": "engineering-subagent",
+      "toRoleId": "repository-governance-subagent",
+      "laneId": "seis-code",
+      "handoffType": "reviewer-handoff",
+      "scope": [
+        "content/development/seis-ai-core-handoff-fixture.json",
+        "scripts/check-seis-ai-core-subagent-runtime-fixtures.mjs"
+      ],
+      "summary": "Review a documented handoff fixture and validator binding before any future write-gated sub-agent runtime promotion.",
+      "filesTouched": [
+        "content/development/seis-ai-core-handoff-fixture.json",
+        "scripts/check-seis-ai-core-subagent-runtime-fixtures.mjs"
+      ],
+      "validationRun": "npm run check:seis-ai-core-subagent-runtime-fixtures",
+      "validationStatus": "pending",
+      "approvalBoundary": "This handoff does not authorize GitHub push, merge, SSH, deployment, provider calls, credential access, dependency installation, file deletion, or background autonomous writes.",
+      "rollbackNote": "Revert the handoff fixture and validator additions if the contract is rejected.",
+      "secretHandling": {
+        "containsSecretValue": false,
+        "redactionStatus": "not-required",
+        "forbiddenFields": [
+          "credentialValue",
+          "authorizationHeader",
+          "rawProviderError"
+        ]
+      },
+      "nextAction": "A human or separate reviewer inspects the scoped diff and validation result before any runtime promotion.",
+      "createdAt": "2026-06-29T00:00:00.000Z"
+    }
+  ],
+  "nextPromotionGate": "Turn this fixture into an executable handoff report test only after permission, approval, cancellation, redaction, and ledger checks pass together."
+}

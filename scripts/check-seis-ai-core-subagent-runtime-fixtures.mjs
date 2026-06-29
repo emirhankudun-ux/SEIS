@@ -13,6 +13,7 @@ const paths = {
   approval: "content/development/seis-ai-core-approval-fixture.json",
   redaction: "content/development/seis-ai-core-redaction-fixture.json",
   executionLedger: "content/development/seis-ai-core-execution-ledger-fixture.json",
+  handoff: "content/development/seis-ai-core-handoff-fixture.json",
   runtimeFixtures: "content/development/seis-ai-core-subagent-runtime-fixtures.json",
   reviewLedger: "content/development/seis-ai-core-subagent-review-ledger.json",
   versionRegistry: "content/development/seis-ai-core-version-registry.json",
@@ -56,6 +57,7 @@ const cancellation = readJson(paths.cancellation, "cancellation fixture");
 const approval = readJson(paths.approval, "approval fixture");
 const redaction = readJson(paths.redaction, "redaction fixture");
 const executionLedger = readJson(paths.executionLedger, "execution ledger fixture");
+const handoff = readJson(paths.handoff, "handoff fixture");
 const runtimeFixtures = readJson(paths.runtimeFixtures, "consolidated runtime fixture pack");
 const operatingModel = readJson(paths.operatingModel, "sub-agent operating model");
 const pluginIntegration = readJson(paths.pluginIntegration, "plugin integration manifest");
@@ -270,6 +272,60 @@ if (executionLedger) {
   }
 }
 
+if (handoff) {
+  ensure(handoff.id === "seis-ai-core-handoff-fixture", "handoff fixture id mismatch");
+  ensure(handoff.status === "documented-fixture", "handoff fixture must stay documented-fixture");
+  ensure(handoff.runtimeBoundary === "status-and-plan-only", "handoff fixture must keep status-and-plan-only boundary");
+  ensure(handoff.writerPolicy === "single-writer", "handoff fixture must keep single-writer policy");
+  ensureArrayIncludesAll(handoff.handoffRequiredFor, [
+    "writer role transfer",
+    "reviewer handoff",
+    "blocked approval gate",
+    "validation failure",
+  ], "handoff.handoffRequiredFor");
+  ensureArrayIncludesAll(handoff.requiredFields, [
+    "id",
+    "fromRoleId",
+    "toRoleId",
+    "laneId",
+    "handoffType",
+    "scope",
+    "summary",
+    "filesTouched",
+    "validationRun",
+    "validationStatus",
+    "approvalBoundary",
+    "rollbackNote",
+    "secretHandling",
+    "nextAction",
+    "createdAt",
+  ], "handoff.requiredFields");
+  ensureArrayIncludesAll(handoff.forbiddenContent, [
+    "secret values",
+    "private keys",
+    "raw provider errors",
+    "unapproved credentials",
+    "hidden chain-of-thought",
+  ], "handoff.forbiddenContent");
+  ensureArrayIncludesAll(handoff.allowedValidationStatuses, ["not-run", "pending", "passed", "failed", "blocked"], "handoff.allowedValidationStatuses");
+  const roleIds = new Set(roleSchema?.roles?.map((role) => role.id) || []);
+  const handoffs = Array.isArray(handoff.sampleHandoffs) ? handoff.sampleHandoffs : [];
+  ensure(handoffs.length >= 1, "handoff fixture must include at least one sample handoff");
+  for (const record of handoffs) {
+    ensure(roleIds.has(record.fromRoleId), `${record.id}.fromRoleId must map to role schema`);
+    ensure(roleIds.has(record.toRoleId), `${record.id}.toRoleId must map to role schema`);
+    ensure(requiredLanes.includes(record.laneId), `${record.id}.laneId must be known`);
+    ensure(Array.isArray(record.scope) && record.scope.length > 0, `${record.id}.scope must not be empty`);
+    ensure(Array.isArray(record.filesTouched), `${record.id}.filesTouched must be an array`);
+    ensure(typeof record.validationRun === "string" && record.validationRun.length > 0, `${record.id}.validationRun must be set`);
+    ensure(handoff.allowedValidationStatuses.includes(record.validationStatus), `${record.id}.validationStatus must be allowed`);
+    ensure(typeof record.approvalBoundary === "string" && record.approvalBoundary.includes("does not authorize"), `${record.id}.approvalBoundary must deny implicit authority`);
+    ensure(typeof record.rollbackNote === "string" && record.rollbackNote.length > 0, `${record.id}.rollbackNote must be set`);
+    ensure(record.secretHandling?.containsSecretValue === false, `${record.id}.secretHandling must not contain secrets`);
+    ensure(typeof record.nextAction === "string" && record.nextAction.length > 0, `${record.id}.nextAction must be set`);
+  }
+}
+
 if (runtimeFixtures) {
   ensure(runtimeFixtures.id === "seis-ai-core-subagent-runtime-fixtures", "runtime fixtures id mismatch");
   ensure(runtimeFixtures.status === "documented-fixture", "runtime fixtures must stay documented-fixture");
@@ -293,12 +349,13 @@ if (runtimeFixtures) {
   ensure(runtimeFixtures.sourceOfTruth?.approvalFixture === paths.approval, "runtime fixtures must point to approval fixture");
   ensure(runtimeFixtures.sourceOfTruth?.redactionFixture === paths.redaction, "runtime fixtures must point to redaction fixture");
   ensure(runtimeFixtures.sourceOfTruth?.executionLedgerFixture === paths.executionLedger, "runtime fixtures must point to execution ledger fixture");
+  ensure(runtimeFixtures.sourceOfTruth?.handoffFixture === paths.handoff, "runtime fixtures must point to handoff fixture");
   ensure(runtimeFixtures.sourceOfTruth?.reviewLedger === paths.reviewLedger, "runtime fixtures must point to review ledger");
   ensure(runtimeFixtures.sourceOfTruth?.versionRegistry === paths.versionRegistry, "runtime fixtures must point to version registry");
   ensure(runtimeFixtures.sourceOfTruth?.versionPromotionGates === paths.versionPromotionGates, "runtime fixtures must point to version promotion gates");
   ensureArrayIncludesAll(
     (runtimeFixtures.fixtures || []).map((fixture) => fixture.path),
-    [paths.roleSchema, paths.permissionMatrix, paths.queue, paths.cancellation, paths.approval, paths.redaction, paths.executionLedger],
+    [paths.roleSchema, paths.permissionMatrix, paths.queue, paths.cancellation, paths.approval, paths.redaction, paths.executionLedger, paths.handoff],
     "runtimeFixtures.fixtures"
   );
   ensureArrayIncludesAll(runtimeFixtures.roleSchema?.requiredRoleIds, requiredRoles, "runtimeFixtures.roleSchema.requiredRoleIds");
@@ -313,6 +370,9 @@ if (runtimeFixtures) {
   ensure(runtimeFixtures.executionLedgerFixture?.path === paths.executionLedger, "runtimeFixtures execution ledger must point to execution ledger file");
   ensure(runtimeFixtures.executionLedgerFixture?.mode === "append-only-planned", "runtimeFixtures execution ledger must stay append-only-planned");
   ensure(runtimeFixtures.executionLedgerFixture?.reviewLedger === paths.reviewLedger, "runtimeFixtures execution ledger must point to review ledger");
+  ensure(runtimeFixtures.handoffFixture?.path === paths.handoff, "runtimeFixtures handoff fixture must point to handoff file");
+  ensure(runtimeFixtures.handoffFixture?.writerPolicy === "single-writer", "runtimeFixtures handoff fixture must keep single-writer policy");
+  ensure(runtimeFixtures.handoffFixture?.runtimeBoundary === "status-and-plan-only", "runtimeFixtures handoff fixture must stay status-and-plan-only");
 }
 
 if (operatingModel) {
@@ -323,6 +383,7 @@ if (operatingModel) {
   ensure(operatingModel.sourceOfTruth?.approvalFixture === paths.approval, "operating model must point to approval fixture");
   ensure(operatingModel.sourceOfTruth?.redactionFixture === paths.redaction, "operating model must point to redaction fixture");
   ensure(operatingModel.sourceOfTruth?.executionLedgerFixture === paths.executionLedger, "operating model must point to execution ledger fixture");
+  ensure(operatingModel.sourceOfTruth?.handoffFixture === paths.handoff, "operating model must point to handoff fixture");
   ensure(operatingModel.sourceOfTruth?.runtimeFixtures === paths.runtimeFixtures, "operating model must point to runtime fixture pack");
   ensure(operatingModel.sourceOfTruth?.versionRegistry === paths.versionRegistry, "operating model must point to version registry");
   ensure(operatingModel.sourceOfTruth?.versionPromotionGates === paths.versionPromotionGates, "operating model must point to version promotion gates");
@@ -334,6 +395,7 @@ if (operatingModel) {
     "approval fixture",
     "redaction fixture",
     "execution ledger fixture",
+    "handoff fixture",
     "runtime fixture pack",
   ], "operatingModel.evidenceRequirements");
 }
@@ -383,6 +445,7 @@ for (const [text, label] of [
     "seis-ai-core-approval-fixture.json",
     "seis-ai-core-redaction-fixture.json",
     "seis-ai-core-execution-ledger-fixture.json",
+    "seis-ai-core-handoff-fixture.json",
     "seis-ai-core-subagent-runtime-fixtures.json",
     "seis-ai-core-subagent-review-ledger.json",
     "seis-ai-core-version-registry.json",

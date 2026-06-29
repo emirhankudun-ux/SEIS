@@ -20,6 +20,7 @@
     "approvalFixture": "content/development/seis-ai-core-approval-fixture.json",
     "redactionFixture": "content/development/seis-ai-core-redaction-fixture.json",
     "executionLedgerFixture": "content/development/seis-ai-core-execution-ledger-fixture.json",
+    "handoffFixture": "content/development/seis-ai-core-handoff-fixture.json",
     "runtimeFixtures": "content/development/seis-ai-core-subagent-runtime-fixtures.json",
     "reviewLedger": "content/development/seis-ai-core-subagent-review-ledger.json",
     "modelScalingSubagentCouncil": "content/development/seis-model-scaling-subagent-council.json"
@@ -277,6 +278,7 @@
     "approval fixture",
     "redaction fixture",
     "execution ledger fixture",
+    "handoff fixture",
     "runtime fixture pack",
     "quarterly review ledger",
     "20B/70B/150B/512B model-scaling sub-agent council",
