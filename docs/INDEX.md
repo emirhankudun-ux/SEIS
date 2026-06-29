@@ -15,6 +15,7 @@ Date: 2026-06-23
 | [../SEIS_INSTALLED_AI_TOOLS.md](../SEIS_INSTALLED_AI_TOOLS.md) | Installed AI tooling and model/provider safety registry. |
 | [../SEIS_SUB_AGENTS.md](../SEIS_SUB_AGENTS.md) | Bounded sub-agent coordination model and output contract. |
 | [../SEIS_SSH.md](../SEIS_SSH.md) | Safe remote-development/documented SSH concept and constraints. |
+| [../SEIS_LOCAL_AI_OLLAMA.md](../SEIS_LOCAL_AI_OLLAMA.md) | Optional Ollama/local AI usage contract and safety mode. |
 | [../roadmap/seis-long-horizon-strategy.md](../roadmap/seis-long-horizon-strategy.md) | Long-horizon 0–10 year strategy with first- and second-stage operational blueprints. |
 | [GETTING_STARTED.md](GETTING_STARTED.md) | New contributor onboarding and run instructions. |
 | [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | Common operational and demo troubleshooting guidance. |

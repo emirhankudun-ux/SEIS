@@ -1,6 +1,17 @@
+---
+type: agent-note
+module: seis-agents
+status: draft
+visibility: public
+updated: 2026-06-29
+---
+
 # Agent Workforce
 
-Registry of bounded agents for SEIS work:
+Registry of bounded SEIS agents with explicit boundaries and evidence requirements.
+
+## Active lanes
+
 - SEIS Orchestrator
 - Architect Agent
 - SEIS Brain Curator
@@ -14,13 +25,20 @@ Registry of bounded agents for SEIS work:
 - Security Agent
 - PR Rescue Agent
 - UI UX Agent
-- Demo Packaging Agent
-- Code Agent
-- Design Agent
-- Research Agent
-- Search Agent
-- Documentation Agent
-- Public Readiness Agent
 - DevOps Agent
 - Cloud Agent
 - Automation Agent
+- Documentation Agent
+- Search Agent
+- Research Agent
+- Code Agent
+- Design Agent
+- Demo Packaging Agent
+- Public Readiness Agent
+- SSH Agent
+
+## Governance contract
+
+- Do not alter user files outside approved scope.
+- Keep handoff notes and risk notes visible in the relevant task log.
+- All agents operate under the bounded action model in `SEIS_SUB_AGENTS.md`.

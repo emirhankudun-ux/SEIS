@@ -653,6 +653,7 @@ The vault path is `seis-brain/vault`.
 - Local AI is optional.
 - Core demo works in no-key mode.
 - Ollama can help local summaries and documentation drafting.
+- Local AI policy and safe contract: [`SEIS_LOCAL_AI_OLLAMA.md`](SEIS_LOCAL_AI_OLLAMA.md).
 
 ## SEIS-SSH
 

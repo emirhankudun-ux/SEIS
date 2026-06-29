@@ -15,23 +15,47 @@ defined role, explicit permission set, and review contract.
 ## Agent hierarchy
 
 - SEIS Orchestrator
-- SEIS Architect Agent
-- SEIS Brain Curator Agent
-- Obsidian Librarian Agent
-- Local AI Manager Agent
+- Architect Agent
+- SEIS Brain Curator
+- AI Core Agent
 - SEIS AI Core Agent
-- SEIS SSH Agent
+- Obsidian Librarian Agent
+- Brain Curator Agent
+- Local AI Manager Agent
 - GitHub Governance Agent
 - QA Agent
 - Security Agent
 - PR Rescue Agent
 - Public Readiness Agent
+- DevOps Agent
+- Cloud Agent
+- Automation Agent
+- Documentation Agent
+- Search Agent
+- Design Agent
+- Code Agent
+- Demo Packaging Agent
+- UI UX Agent
+- Research Agent
+- SSH Agent
 
 ## Responsibilities
 
 - Preserve user work and repo safety boundaries.
 - Keep decision/context records current.
 - Provide traceable handoff outputs with assumptions and risk flags.
+
+## Agent operating contract
+
+- Each active agent has:
+  - a narrow purpose,
+  - bounded input/output scope,
+  - documented allowed actions,
+  - forbidden actions,
+  - evidence-aware outputs.
+- All outputs must list objective, touched scope, command evidence, and blockers.
+- Agents must use `public`/`planned`/`mock`/`disabled` state labels for runtime claims.
+- No agent may imply live provider, SSH, deployment, or repository mutation unless explicit approval is present.
 
 ## Allowed actions
 
@@ -66,6 +90,22 @@ Tasks are queued with:
 - priority (`P0`/`P1`/`P2`)
 - status (`queued`/`in_progress`/`done`/`blocked`)
 - expected verification command
+- handoff owner
+- explicit review deadline
+- blocker reason and unblock condition
+
+## Task queue schema
+
+Each task should follow:
+
+- `id` (short stable)
+- `agent` (owner)
+- `priority` (`P0`, `P1`, `P2`)
+- `status` (`queued`, `in_progress`, `done`, `blocked`)
+- `scope`
+- `verification`
+- `risk`
+- `next_step`
 
 ## Handoff rules
 
@@ -75,11 +115,22 @@ Each handoff includes:
 - expected output format
 - review checklist
 - owner/approver
+- explicit rollback path
+
+## Output format
+
+- Task objective
+- Inputs inspected
+- Actions performed
+- Evidence produced
+- Risks identified
+- Blockers and required approval
 
 ## Review rules
 
 - no task is final without explicit risk and blocker callout
-- unsafe claims require evidence or explicit `mock`/`planned` labels
+- unsafe claims require evidence or explicit `mock`/`planned`/`disabled` labels
+- blocked tasks must stay visible in `docs/roadmap/NEXT_PR_QUEUE.md` until resolved
 
 ## Safety rules
 
@@ -87,3 +138,18 @@ Each handoff includes:
 - never commit secrets or private vault content
 - never run unauthorized SSH
 - no fake completion claims
+
+## Runtime policy markers
+
+- `mock`: behavior is simulated or scaffolded
+- `planned`: behavior documented, not yet running
+- `real`: behavior has passing evidence gates
+- `disabled`: feature intentionally not enabled
+- `blocked`: explicit gate or approval missing
+
+## Required evidence
+
+- `git status --short` for current local deltas
+- `npm run check:seis-second-brain` for second-brain baseline
+- `npm run check:desktop-os` for desktop demo stability
+- `npm run check:seis-public-demo-go-no-go -- --run-fast-checks` for release blockers

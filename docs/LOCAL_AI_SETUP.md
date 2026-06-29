@@ -3,6 +3,8 @@
 ## Purpose
 
 Provide a local, optional path for markdown drafting and context workflows.
+Authoritative contract and policy details are in
+[`SEIS_LOCAL_AI_OLLAMA.md`](../SEIS_LOCAL_AI_OLLAMA.md).
 
 ## What local AI is used for
 
