@@ -175,7 +175,8 @@ if (benchmarkDryRun) {
 if (pluginIntegration) {
   ensureArrayIncludesAll(pluginIntegration.runtimeIntegration?.mcpResources, [
     "seis://ai/model-parameter-ladder.json",
-    "seis://ai/150b-frontier-model-program.json"
+    "seis://ai/150b-frontier-model-program.json",
+    "seis://ai/agi-evaluation-protocol.json"
   ], "pluginIntegration.runtimeIntegration.mcpResources");
   ensureArrayIncludesAll(pluginIntegration.qualityCommands, [
     "npm run check:seis-model-parameter-ladder"
@@ -183,8 +184,9 @@ if (pluginIntegration) {
 }
 
 if (mcpRuntimeContract) {
-  ensure(mcpRuntimeContract.resourceCount === 26, "MCP runtime contract must record 26 resources");
+  ensure(mcpRuntimeContract.resourceCount === 27, "MCP runtime contract must record 27 resources");
   ensure(String(mcpRuntimeContract.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("parameter ladder"), "MCP resource evidence must mention parameter ladder");
+  ensure(String(mcpRuntimeContract.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("AGI evaluation protocol"), "MCP resource evidence must mention AGI evaluation protocol");
 }
 
 if (packageJson) {
