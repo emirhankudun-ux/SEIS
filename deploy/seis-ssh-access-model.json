@@ -114,6 +114,7 @@
       "npm run check:seis-ssh-access-model",
       "npm run check:seis-ssh-picker-compatibility",
       "npm run check:seis-ssh-public-access",
+      "npm run check:seis-ssh-public-first-run",
       "npm run check:seis-ssh-public-onboarding",
       "npm run check:seis-ssh-public-contributor-doctor",
       "npm run check:seis-ssh-live-readiness-evidence",

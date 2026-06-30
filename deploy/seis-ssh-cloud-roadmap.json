@@ -71,7 +71,8 @@
       "statement": "SEIS-SSH onboarding, docs, checks, and demo surfaces must preserve the existing server and port unless the human owner explicitly approves endpoint migration.",
       "evidence": [
         "deploy/seis-ssh-public-access-contract.json",
-        "npm run check:seis-ssh-public-access"
+        "npm run check:seis-ssh-public-access",
+        "npm run check:seis-ssh-public-first-run"
       ]
     },
     {
@@ -215,6 +216,7 @@
   ],
   "validationCommands": [
     "npm run check:seis-ssh-public-access",
+    "npm run check:seis-ssh-public-first-run",
     "npm run check:seis-ssh-public-onboarding",
     "npm run check:seis-ssh-public-contributor-doctor",
     "npm run check:seis-ssh-live-readiness-evidence",

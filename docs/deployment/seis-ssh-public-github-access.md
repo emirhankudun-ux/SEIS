@@ -39,9 +39,22 @@ in git, no fake online status, and no local-Mac dependency.
 
 ## Contributor Quickstart
 
-Use this read-only sequence for a GitHub review:
+Start here on a new machine or fresh clone:
 
 ```bash
+npm run run:seis-ssh-public-first-run
+```
+
+This first-run command is read-only. It produces a sanitized local snapshot,
+shows whether setup is needed, and keeps missing `SEIS-SSH` configuration as a
+clear next action instead of pretending live SSH is ready. It does not contact
+GitHub, write `~/.ssh/config`, open SSH, or change the server or port.
+
+Use this fuller read-only sequence for a GitHub review after first-run:
+
+```bash
+npm run check:seis-ssh-public-first-run
+npm run report:seis-ssh-public-first-run
 npm run run:seis-ssh-public-onboarding
 npm run check:seis-ssh-public-access
 npm run check:seis-ssh-public-access-report
@@ -57,10 +70,11 @@ npm run check:seis-ssh-cloud-roadmap
 ```
 
 `npm run run:seis-ssh-public-onboarding` is the single contributor-friendly
-entrypoint command. It runs read-only dry-run checks, validates the local setup,
-prints expected onboarding evidence, and writes a clean set of onboarding/public-
-contributor report files. It requires local prerequisite readiness (SSH, Git,
-`SEIS-SSH` alias) and does not open an SSH session.
+deep-readiness command after first-run. It runs read-only dry-run checks,
+validates the local setup, prints expected onboarding evidence, and writes a
+clean set of onboarding/public-contributor report files. It requires local
+prerequisite readiness (SSH, Git, `SEIS-SSH` alias) and does not open an SSH
+session.
 
 These commands prove repo governance and public-access wiring. They do not
 prove a live SSH session.
@@ -93,6 +107,12 @@ under `reports/seis-ssh-public-access/`. It uses `ssh -G SEIS-SSH` only to read
 the local OpenSSH config expansion; it does not open an SSH session. Direct
 hostnames are redacted and represented by a short SHA-256 prefix so reviewers
 can compare endpoint continuity without publishing the server name.
+
+`npm run report:seis-ssh-public-first-run` writes the first-run guide to
+`reports/seis-ssh-public-access/first-run-latest.md`. It is designed for a
+new GitHub contributor who needs one safe starting command, a sanitized local
+snapshot, local tool readiness, and the next approved setup path without
+config writes or live SSH.
 
 `npm run report:seis-ssh-public-onboarding` writes a GitHub review-oriented
 onboarding pack to `reports/seis-ssh-public-access/onboarding-pack-latest.md`.
@@ -168,6 +188,7 @@ Human approval is required for:
 
 ```bash
 npm run check:seis-ssh-public-access
+npm run check:seis-ssh-public-first-run
 npm run check:seis-ssh-public-onboarding
 npm run check:seis-ssh-public-contributor-doctor
 npm run check:seis-ssh-live-readiness-evidence

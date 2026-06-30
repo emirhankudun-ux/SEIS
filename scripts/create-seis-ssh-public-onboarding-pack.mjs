@@ -119,6 +119,7 @@ function buildOnboardingPack(report) {
         status: "ready",
         promise: "Can review the public contract, run static gates, and attach the sanitized onboarding pack without credentials.",
         commands: [
+          "npm run check:seis-ssh-public-first-run",
           "npm run check:seis-ssh-public-access",
           "npm run check:seis-ssh-public-access-report",
           "npm run check:seis-ssh-public-onboarding",
@@ -140,6 +141,7 @@ function buildOnboardingPack(report) {
         status: "approval-gated",
         promise: "Uses the existing SEIS-SSH endpoint and preserves the current server and port.",
         commands: [
+          "npm run report:seis-ssh-public-first-run",
           "npm run report:seis-ssh-public-access",
           "npm run report:seis-ssh-public-onboarding",
           "npm run check:seis-ssh-picker-compatibility",
@@ -158,6 +160,7 @@ function buildOnboardingPack(report) {
         promise: "Can use the same SEIS-SSH alias pattern for an authorized personal Codespace or approved cloud workspace without accessing maintainer secrets.",
         commands: [
           "gh auth refresh -h github.com -s codespace",
+          "npm run run:seis-ssh-public-first-run",
           "npm run cloud:ssh-config:install -- --dry-run",
           "npm run check:seis-ssh-picker-compatibility",
           "ssh -G SEIS-SSH",
@@ -174,6 +177,8 @@ function buildOnboardingPack(report) {
     ],
     acceptanceGates: {
       publicReview: [
+        "npm run check:seis-ssh-public-first-run",
+        "npm run report:seis-ssh-public-first-run",
         "npm run check:seis-ssh-public-access",
         "npm run check:seis-ssh-public-access-report",
         "npm run check:seis-ssh-public-onboarding",

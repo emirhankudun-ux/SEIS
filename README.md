@@ -176,6 +176,8 @@ Use this static gate before claiming public SSH onboarding is wired:
 ```bash
 npm run check:seis-ssh-public-access
 npm run report:seis-ssh-public-access
+npm run check:seis-ssh-public-first-run
+npm run report:seis-ssh-public-first-run
 npm run check:seis-ssh-public-onboarding
 npm run report:seis-ssh-public-onboarding
 npm run check:seis-ssh-public-contributor-doctor
@@ -185,6 +187,12 @@ npm run check:seis-ssh-live-readiness-evidence
 
 This does not execute SSH. Live readiness still requires explicit approval and
 strict evidence such as `npm run cloud:ssh:online:strict`.
+
+`npm run run:seis-ssh-public-first-run` is the safest first command for a new
+GitHub contributor. It creates a read-only first-run guide, reports local setup
+needs without treating missing `SEIS-SSH` as live readiness, and preserves the
+same server and port without contacting GitHub, writing SSH config, or opening
+SSH.
 
 `npm run report:seis-ssh-public-onboarding` writes a read-only GitHub review
 pack under `reports/seis-ssh-public-access/`. It does not write SSH config,

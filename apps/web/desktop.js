@@ -3985,15 +3985,18 @@ const SEIS_SSH_PUBLIC_ACCESS_CONTRACT = {
   runbook: "docs/deployment/seis-ssh-public-github-access.md",
   qualityGate: "npm run check:seis-ssh-public-access",
   reportCommand: "npm run report:seis-ssh-public-access",
+  firstRunCommand: "npm run run:seis-ssh-public-first-run",
   onboardingCommand: "npm run report:seis-ssh-public-onboarding",
   contributorDoctorCommand: "npm run report:seis-ssh-public-contributor-doctor",
   liveEvidenceCommand: "npm run check:seis-ssh-live-readiness-evidence",
   localArtifact: "/home/seis/Documents/seis-ssh-public-access.md",
+  firstRunArtifact: "/home/seis/Documents/seis-ssh-public-first-run.md",
   onboardingArtifact: "/home/seis/Documents/seis-ssh-public-onboarding.md",
   contributorDoctorArtifact: "/home/seis/Documents/seis-ssh-public-contributor-doctor.md",
   liveEvidenceArtifact: "docs/deployment/seis-ssh-live-readiness-evidence.md",
   states: [
     ["documented", "GitHub contributors can review the public runbook and checks."],
+    ["first-run", "A read-only first-run guide gives new contributors setup-needed status without opening SSH or changing config."],
     ["onboarding-pack", "A read-only GitHub review pack explains reviewer, maintainer, and new-contributor paths without writing SSH config."],
     ["contributor-doctor", "A read-only local doctor checks GitHub/SSH prerequisites and produces a review report without contacting GitHub."],
     ["live-blocked", "Latest approved live probe preserves server/port but is blocked by GitHub Codespaces billing."],
@@ -6636,6 +6639,7 @@ function renderSeisCloud() {
         <article class="metric-card"><strong>Contract</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.contract)}</p></article>
         <article class="metric-card"><strong>Gate</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.qualityGate)}</p></article>
         <article class="metric-card"><strong>Report</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.reportCommand)}</p></article>
+        <article class="metric-card"><strong>First Run</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.firstRunCommand)}</p></article>
         <article class="metric-card"><strong>Onboarding</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.onboardingCommand)}</p></article>
         <article class="metric-card"><strong>Doctor</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.contributorDoctorCommand)}</p></article>
         <article class="metric-card"><strong>Live Evidence</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.liveEvidenceCommand)}</p></article>
@@ -9181,6 +9185,8 @@ Public SSH contract: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.contract}
 Public SSH runbook: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.runbook}
 Public SSH quality gate: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.qualityGate}
 Public SSH report command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.reportCommand}
+Public SSH first-run command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.firstRunCommand}
+Public SSH first-run artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.firstRunArtifact}
 Public SSH onboarding command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.onboardingCommand}
 Public SSH onboarding artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.onboardingArtifact}
 Public SSH contributor doctor command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.contributorDoctorCommand}
