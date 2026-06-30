@@ -1,6 +1,6 @@
 # SEIS Second Brain Accessibility Focus QA
 
-Generated: 2026-06-29T13:22:40.599Z
+Generated: 2026-06-30T11:51:48.095Z
 Status: review-gated-human-accessibility-needed
 Mode: repo-static-and-browser-smoke-evidence
 Decision: NO-GO-human-accessibility-review-required

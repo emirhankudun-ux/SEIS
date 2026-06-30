@@ -21,6 +21,22 @@ function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
 }
 
+function normalizeGitHubRemoteUrl(value) {
+  return String(value || "")
+    .trim()
+    .replace(/^git@github\.com:/i, "https://github.com/")
+    .replace(/^ssh:\/\/git@github\.com\//i, "https://github.com/")
+    .replace(/\.git$/i, "")
+    .replace(/\/+$/g, "")
+    .toLowerCase();
+}
+
+function remoteUrlsTargetSameRepo(actual, expected) {
+  const normalizedActual = normalizeGitHubRemoteUrl(actual);
+  const normalizedExpected = normalizeGitHubRemoteUrl(expected);
+  return normalizedActual.length > 0 && normalizedActual === normalizedExpected;
+}
+
 function git(args) {
   return spawnSync("git", args, {
     encoding: "utf8",
@@ -74,7 +90,10 @@ if (contract) {
 
 const origin = git(["remote", "get-url", "origin"]);
 ensure(origin.status === 0, "origin remote must be configured");
-ensure(origin.stdout.trim() === contract?.remote?.url, `origin remote must match contract URL, got ${origin.stdout.trim() || "empty"}`);
+ensure(
+  remoteUrlsTargetSameRepo(origin.stdout.trim(), contract?.remote?.url),
+  `origin remote must target contract repository, got ${origin.stdout.trim() || "empty"}`
+);
 
 if (state.gitInside) {
   ensure(state.hasRemote, "publish state must see a configured remote");
