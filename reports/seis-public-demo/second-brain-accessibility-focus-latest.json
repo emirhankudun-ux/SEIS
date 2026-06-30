@@ -1,0 +1,146 @@
+{
+  "id": "seis-second-brain-accessibility-focus-qa-pr54",
+  "title": "SEIS Second Brain Accessibility Focus QA",
+  "generatedAt": "2026-06-30T21:17:59.225Z",
+  "status": "review-gated-human-accessibility-needed",
+  "mode": "repo-static-and-browser-smoke-evidence",
+  "decision": "NO-GO-human-accessibility-review-required",
+  "contractPath": "content/development/seis-second-brain-accessibility-focus-qa.json",
+  "secondBrainPath": "content/development/seis-second-brain-system.json",
+  "linkedSmoke": "npm run check:seis-second-brain-browser-smoke",
+  "selectors": {
+    "root": "[data-second-brain-app]",
+    "noteList": ".second-brain-note-list[role=\"listbox\"]",
+    "noteOption": ".second-brain-note-list [role=\"option\"]",
+    "graphList": ".second-brain-graph[role=\"listbox\"]",
+    "graphOption": ".second-brain-graph [role=\"option\"]",
+    "inspector": "#second-brain-inspector-panel[data-second-brain-inspector]",
+    "githubGate": "[data-second-brain-github-gate]"
+  },
+  "focusOrder": [
+    "toolbar actions",
+    "Markdown vault note list",
+    "Knowledge Graph Search Vault action",
+    "Knowledge Graph node list",
+    "inspector panel",
+    "Installed AI table",
+    "Managed Sub-Agent table",
+    "Autonomous Agent roster",
+    "GitHub gate table",
+    "Recent activity cards"
+  ],
+  "installedAiProfileCount": 6,
+  "managedSubAgentLaneCount": 6,
+  "autonomousAgentRosterCount": 12,
+  "automatedEvidence": [
+    {
+      "id": "rootSelector",
+      "status": "passed",
+      "source": "apps/web/desktop.js"
+    },
+    {
+      "id": "noteListRole",
+      "status": "passed",
+      "source": "apps/web/desktop.js"
+    },
+    {
+      "id": "noteOptionRole",
+      "status": "passed",
+      "source": "apps/web/desktop.js"
+    },
+    {
+      "id": "graphListRole",
+      "status": "passed",
+      "source": "apps/web/desktop.js"
+    },
+    {
+      "id": "graphOptionControls",
+      "status": "passed",
+      "source": "apps/web/desktop.js"
+    },
+    {
+      "id": "inspectorLive",
+      "status": "passed",
+      "source": "apps/web/desktop.js"
+    },
+    {
+      "id": "inspectorFocusable",
+      "status": "passed",
+      "source": "apps/web/desktop.js"
+    },
+    {
+      "id": "visibleFocusCss",
+      "status": "passed",
+      "source": "apps/web/desktop.css"
+    },
+    {
+      "id": "noClaimBoundaryCopy",
+      "status": "passed",
+      "source": "apps/web/desktop.js"
+    },
+    {
+      "id": "mobileSmokeTargetAudit",
+      "status": "passed",
+      "source": "scripts/check-seis-second-brain-browser-smoke.mjs"
+    }
+  ],
+  "requiredEvidence": [
+    {
+      "id": "current-browser-smoke-result",
+      "requirement": "current browser smoke result",
+      "status": "blocked",
+      "evidence": "Run npm run check:seis-second-brain-browser-smoke and regenerate go/no-go evidence."
+    },
+    {
+      "id": "manual-keyboard-transcript",
+      "requirement": "manual keyboard transcript",
+      "status": "blocked",
+      "evidence": "Human keyboard-only transcript required before public release."
+    },
+    {
+      "id": "screen-reader-transcript",
+      "requirement": "screen-reader transcript",
+      "status": "blocked",
+      "evidence": "Human screen-reader transcript required before public release."
+    },
+    {
+      "id": "mobile-viewport-target-audit",
+      "requirement": "mobile viewport target audit",
+      "status": "blocked",
+      "evidence": "scripts/check-seis-second-brain-browser-smoke.mjs"
+    },
+    {
+      "id": "mobile-assistive-technology-review",
+      "requirement": "mobile assistive-technology review",
+      "status": "blocked",
+      "evidence": "Human mobile assistive-technology review required before public release."
+    },
+    {
+      "id": "reduced-motion-review-note",
+      "requirement": "reduced-motion review note",
+      "status": "blocked",
+      "evidence": "Human reduced-motion review note required before public release."
+    },
+    {
+      "id": "human-accessibility-review-approval",
+      "requirement": "human accessibility review approval",
+      "status": "blocked",
+      "evidence": "Explicit human accessibility approval required before public release."
+    }
+  ],
+  "summary": {
+    "automatedPassed": 10,
+    "automatedFailed": 0,
+    "requiredPassed": 0,
+    "requiredBlocked": 7
+  },
+  "safetyBoundary": {
+    "privateObsidianImportPerformed": false,
+    "providerCallsPerformed": false,
+    "credentialAccessPerformed": false,
+    "sshExecuted": false,
+    "deploymentPerformed": false,
+    "githubMutationPerformed": false,
+    "releaseApprovalGranted": false
+  }
+}

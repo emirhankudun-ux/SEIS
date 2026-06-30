@@ -1,11 +1,11 @@
 # PR #54 Stage Plan
 
-Generated: 2026-06-29T13:14:56.803Z
+Generated: 2026-06-30T21:21:14.901Z
 Decision: NO-GO
 Status: review-gated-not-released
 Ready for human review: yes
-Candidate paths: 5
-Excluded paths: 10
+Candidate paths: 11
+Excluded paths: 19
 
 ## Scope
 
@@ -15,31 +15,47 @@ delete, reset, deploy, import Obsidian, execute SSH, or call model providers.
 
 ## Candidate Paths For One Review Slice
 
-- M README.md
-- M reports/seis-public-demo/go-no-go-latest.md
-- M reports/seis-public-demo/pr54-review-packet-latest.md
-- M reports/seis-public-demo/pr54-stage-plan-latest.md
-- M reports/seis-public-demo/worktree-review-latest.md
+- A reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json
+- M reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md
+- A reports/seis-public-demo/read-only-model-router-decision-latest.json
+- M reports/seis-public-demo/read-only-model-router-decision-latest.md
+- A reports/seis-public-demo/second-brain-accessibility-focus-latest.json
+- M reports/seis-public-demo/second-brain-accessibility-focus-latest.md
+- A reports/seis-public-demo/second-brain-agent-registry-latest.json
+- M reports/seis-public-demo/second-brain-agent-registry-latest.md
+- M scripts/check-seis-second-brain-readiness-contracts.mjs
+- M scripts/create-seis-second-brain-accessibility-focus-report.mjs
+- M scripts/create-seis-second-brain-agent-registry.mjs
 
 ## Excluded Separate Workstreams
 
-- M AGENTS.md (Unclassified Dirty Paths)
-- M ROADMAP.md (Unclassified Dirty Paths)
-- M SEIS_INSTALLED_AI_TOOLS.md (Unclassified Dirty Paths)
-- M SEIS_OBSIDIAN_VAULT.md (Unclassified Dirty Paths)
-- M SEIS_SECOND_BRAIN.md (Unclassified Dirty Paths)
-- M SEIS_SSH.md (Unclassified Dirty Paths)
+- M .gitignore (Unclassified Dirty Paths)
 - M SEIS_SUB_AGENTS.md (Unclassified Dirty Paths)
-- M roadmap/seis-long-horizon-strategy.md (Unclassified Dirty Paths)
-- M seis-brain/README.md (Unclassified Dirty Paths)
-- ?? roadmap/seis-61-120-month-long-horizon-ops-blueprint.md (Unclassified Dirty Paths)
+- A "seis-brain/vault/05_Agents/AI Core Agent.md" (Unclassified Dirty Paths)
+- M "seis-brain/vault/05_Agents/Agent Workforce.md" (Unclassified Dirty Paths)
+- A "seis-brain/vault/05_Agents/Automation Agent.md" (Unclassified Dirty Paths)
+- A "seis-brain/vault/05_Agents/Brain Curator Agent.md" (Unclassified Dirty Paths)
+- A "seis-brain/vault/05_Agents/Cloud Agent.md" (Unclassified Dirty Paths)
+- A "seis-brain/vault/05_Agents/Code Agent.md" (Unclassified Dirty Paths)
+- A "seis-brain/vault/05_Agents/Design Agent.md" (Unclassified Dirty Paths)
+- A "seis-brain/vault/05_Agents/DevOps Agent.md" (Unclassified Dirty Paths)
+- A "seis-brain/vault/05_Agents/Documentation Agent.md" (Unclassified Dirty Paths)
+- M "seis-brain/vault/05_Agents/Obsidian Librarian Agent.md" (Unclassified Dirty Paths)
+- A "seis-brain/vault/05_Agents/Public Readiness Agent.md" (Unclassified Dirty Paths)
+- A "seis-brain/vault/05_Agents/Research Agent.md" (Unclassified Dirty Paths)
+- M "seis-brain/vault/05_Agents/SSH Agent.md" (Unclassified Dirty Paths)
+- A "seis-brain/vault/05_Agents/Search Agent.md" (Unclassified Dirty Paths)
+- A "seis-brain/vault/12_Context_Packs/SEIS Claude Code Context.md" (Unclassified Dirty Paths)
+- M "seis-brain/vault/12_Context_Packs/SEIS Github Context.md" (Unclassified Dirty Paths)
+- M "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md" (Unclassified Dirty Paths)
 
 ## Human-Run Git Add Commands
 
 Run only after reviewing the diff and confirming these paths belong in the same
 PR #54 readiness slice:
 
-- `git add -- 'README.md' 'reports/seis-public-demo/go-no-go-latest.md' 'reports/seis-public-demo/pr54-review-packet-latest.md' 'reports/seis-public-demo/pr54-stage-plan-latest.md' 'reports/seis-public-demo/worktree-review-latest.md'`
+- `git add -- 'reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json' 'reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md' 'reports/seis-public-demo/read-only-model-router-decision-latest.json' 'reports/seis-public-demo/read-only-model-router-decision-latest.md' 'reports/seis-public-demo/second-brain-accessibility-focus-latest.json' 'reports/seis-public-demo/second-brain-accessibility-focus-latest.md' 'reports/seis-public-demo/second-brain-agent-registry-latest.json' 'reports/seis-public-demo/second-brain-agent-registry-latest.md'`
+- `git add -- 'scripts/check-seis-second-brain-readiness-contracts.mjs' 'scripts/create-seis-second-brain-accessibility-focus-report.mjs' 'scripts/create-seis-second-brain-agent-registry.mjs'`
 
 ## Required Validation Before Commit
 
