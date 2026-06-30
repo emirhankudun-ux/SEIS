@@ -63,6 +63,8 @@ npm run check:seis-ssh-public-first-run
 npm run report:seis-ssh-public-first-run
 npm run check:seis-ssh-public-troubleshooting
 npm run report:seis-ssh-public-troubleshooting
+npm run check:seis-ssh-public-support-packet
+npm run report:seis-ssh-public-support-packet
 npm run run:seis-ssh-public-onboarding
 npm run check:seis-ssh-public-access
 npm run check:seis-ssh-public-access-report
@@ -127,6 +129,15 @@ guide to `reports/seis-ssh-public-access/troubleshooting-latest.md`. It is the
 safe artifact to attach when a contributor asks whether `SEIS-SSH` is missing,
 offline, blocked by provider billing, picker-incompatible, or unsafe for a live
 claim.
+
+`npm run report:seis-ssh-public-support-packet` writes the issue-ready support
+packet to `reports/seis-ssh-public-access/support-packet-latest.md`. Use it
+before opening the `SEIS SSH access support` GitHub issue form. It gives the
+contributor copy/paste fields for command names, sanitized status labels,
+warning IDs, blocker IDs, transport class, port, and endpoint fingerprint prefix
+without including full `ssh -G` output, full hostnames, full IP addresses,
+private keys, tokens, passwords, cookies, `.env` values, or provider
+credentials.
 
 `npm run report:seis-ssh-public-onboarding` writes a GitHub review-oriented
 onboarding pack to `reports/seis-ssh-public-access/onboarding-pack-latest.md`.
@@ -213,6 +224,7 @@ Human approval is required for:
 npm run check:seis-ssh-public-access
 npm run check:seis-ssh-public-first-run
 npm run check:seis-ssh-public-troubleshooting
+npm run check:seis-ssh-public-support-packet
 npm run check:seis-ssh-public-onboarding
 npm run check:seis-ssh-public-contributor-doctor
 npm run check:seis-ssh-live-readiness-evidence

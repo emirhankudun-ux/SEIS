@@ -121,6 +121,7 @@ function buildOnboardingPack(report) {
         commands: [
           "npm run check:seis-ssh-public-first-run",
           "npm run check:seis-ssh-public-troubleshooting",
+          "npm run check:seis-ssh-public-support-packet",
           "npm run check:seis-ssh-public-access",
           "npm run check:seis-ssh-public-access-report",
           "npm run check:seis-ssh-public-onboarding",
@@ -144,6 +145,7 @@ function buildOnboardingPack(report) {
         commands: [
           "npm run report:seis-ssh-public-first-run",
           "npm run report:seis-ssh-public-troubleshooting",
+          "npm run report:seis-ssh-public-support-packet",
           "npm run report:seis-ssh-public-access",
           "npm run report:seis-ssh-public-onboarding",
           "npm run check:seis-ssh-picker-compatibility",
@@ -164,6 +166,7 @@ function buildOnboardingPack(report) {
           "gh auth refresh -h github.com -s codespace",
           "npm run run:seis-ssh-public-first-run",
           "npm run run:seis-ssh-public-troubleshooting",
+          "npm run run:seis-ssh-public-support-packet",
           "npm run cloud:ssh-config:install -- --dry-run",
           "npm run check:seis-ssh-picker-compatibility",
           "ssh -G SEIS-SSH",
@@ -184,6 +187,8 @@ function buildOnboardingPack(report) {
         "npm run report:seis-ssh-public-first-run",
         "npm run check:seis-ssh-public-troubleshooting",
         "npm run report:seis-ssh-public-troubleshooting",
+        "npm run check:seis-ssh-public-support-packet",
+        "npm run report:seis-ssh-public-support-packet",
         "npm run check:seis-ssh-public-access",
         "npm run check:seis-ssh-public-access-report",
         "npm run check:seis-ssh-public-onboarding",
