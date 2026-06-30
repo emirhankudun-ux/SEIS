@@ -75,6 +75,7 @@ npm run report:seis-ssh-public-support-packet
 npm run check:seis-ssh-public-github-quickstart
 npm run report:seis-ssh-public-github-quickstart
 npm run check:seis-ssh-public-pr-template
+npm run check:seis-ssh-public-ci-workflow
 npm run check:seis-ssh-public-artifact-hygiene
 npm run run:seis-ssh-public-onboarding
 npm run check:seis-ssh-public-access
@@ -163,6 +164,12 @@ credentials, live SSH, config writes, or endpoint changes.
 same-server/port invariant, no-secret boundary, public artifact hygiene gate,
 approval-gated live SSH claim wording, and the support issue/runbook links used
 by public GitHub reviewers.
+
+`npm run check:seis-ssh-public-ci-workflow` verifies that
+`.github/workflows/seis-ssh-public-access.yml` runs only the read-only public
+SEIS-SSH gates on pull requests. It must not execute live SSH, refresh GitHub
+auth, write SSH config, set endpoint migration variables, or publish raw
+`ProxyCommand` / `IdentityFile` details.
 
 `npm run check:seis-ssh-public-artifact-hygiene` generates all public
 SEIS-SSH JSON/Markdown reports in a temporary directory and scans them before
@@ -260,6 +267,7 @@ npm run check:seis-ssh-public-troubleshooting
 npm run check:seis-ssh-public-support-packet
 npm run check:seis-ssh-public-github-quickstart
 npm run check:seis-ssh-public-pr-template
+npm run check:seis-ssh-public-ci-workflow
 npm run check:seis-ssh-public-artifact-hygiene
 npm run check:seis-ssh-public-onboarding
 npm run check:seis-ssh-public-contributor-doctor

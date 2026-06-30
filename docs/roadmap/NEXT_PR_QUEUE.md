@@ -20,10 +20,12 @@ Date: 2026-06-23
 ### SEIS-SSH PR Template Gate Addendum
 
 PR 1E now also includes the GitHub pull request checklist for SEIS-SSH changes.
-Use `npm run check:seis-ssh-public-pr-template` with the public access,
-artifact hygiene, and live-readiness evidence checks before attaching public
-SSH artifacts to a PR. This keeps the same-server/port invariant, no-secret
-boundary, and approval-gated live SSH claim language visible during review.
+Use `npm run check:seis-ssh-public-pr-template` and
+`npm run check:seis-ssh-public-ci-workflow` with the public access, artifact
+hygiene, and live-readiness evidence checks before attaching public SSH
+artifacts to a PR. This keeps the same-server/port invariant, no-secret
+boundary, approval-gated live SSH claim language, and dedicated GitHub Actions
+gate visible during review.
 
 ## PR 0: SEIS Integration And GitHub Development Spine
 

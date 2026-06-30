@@ -106,11 +106,14 @@ Date: 2026-06-23
 ## SEIS-BL-052 Current Addendum
 
 `SEIS-BL-052` now includes `npm run check:seis-ssh-public-pr-template`,
-`.github/PULL_REQUEST_TEMPLATE.md`, and
-`scripts/check-seis-ssh-public-pr-template.mjs` as public GitHub review
-evidence. The gate keeps same-server/port preservation, no-secret boundaries,
-artifact hygiene, support issue routing, and approval-gated live SSH claims
-visible for every SEIS-SSH pull request.
+`npm run check:seis-ssh-public-ci-workflow`,
+`.github/PULL_REQUEST_TEMPLATE.md`,
+`.github/workflows/seis-ssh-public-access.yml`,
+`scripts/check-seis-ssh-public-pr-template.mjs`, and
+`scripts/check-seis-ssh-public-ci-workflow.mjs` as public GitHub review
+evidence. The gates keep same-server/port preservation, no-secret boundaries,
+artifact hygiene, support issue routing, dedicated GitHub Actions checks, and
+approval-gated live SSH claims visible for every SEIS-SSH pull request.
 
 ## Deferred Dangerous Work
 

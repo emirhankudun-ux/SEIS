@@ -185,6 +185,7 @@ npm run report:seis-ssh-public-support-packet
 npm run check:seis-ssh-public-github-quickstart
 npm run report:seis-ssh-public-github-quickstart
 npm run check:seis-ssh-public-pr-template
+npm run check:seis-ssh-public-ci-workflow
 npm run check:seis-ssh-public-artifact-hygiene
 npm run check:seis-ssh-public-onboarding
 npm run report:seis-ssh-public-onboarding
@@ -224,6 +225,11 @@ contacting GitHub, or changing the existing `SEIS-SSH` server and port.
 request template includes the `SEIS-SSH` review checklist, same-server/port
 invariant, no-secret boundary, public artifact hygiene gate, and approval-gated
 live SSH claim wording.
+
+`npm run check:seis-ssh-public-ci-workflow` verifies the dedicated GitHub
+Actions workflow for public SEIS-SSH review. The workflow runs only read-only
+static gates on pull requests and does not open live SSH, write SSH config,
+change endpoint variables, or publish raw SSH config details.
 
 `npm run check:seis-ssh-public-artifact-hygiene` generates every public
 SEIS-SSH JSON/Markdown report in a temporary directory and verifies that the
