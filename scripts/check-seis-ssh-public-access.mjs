@@ -12,6 +12,7 @@ const files = {
   runbook: "docs/deployment/seis-ssh-public-github-access.md",
   accessDoc: "docs/deployment/seis-ssh-access-model.md",
   roadmapDoc: "docs/deployment/seis-ssh-cloud-roadmap.md",
+  setupDoc: "docs/SEIS_SSH_SETUP.md",
   readme: "README.md",
   index: "docs/INDEX.md",
   status: "docs/STATUS.md",
@@ -53,6 +54,14 @@ const githubReader = (contract?.profiles || []).find((profile) => profile.id ===
 const individualUser = (contract?.profiles || []).find((profile) => profile.id === "individual-user") || {};
 ensure((githubReader.allowedActions || []).includes("run the read-only contributor doctor"), "github-reader profile must allow contributor doctor");
 ensure((individualUser.requiredEvidence || []).includes("npm run check:seis-ssh-public-contributor-doctor"), "individual-user profile must require contributor doctor evidence");
+
+const commitVerification = contract?.githubCommitVerification || {};
+ensure(commitVerification.status === "owner-action-required", "commit verification must remain owner-action-required until GitHub signing key evidence exists");
+ensure(commitVerification.requiredScope === "admin:ssh_signing_key", "commit verification must document the GitHub signing-key scope");
+ensure((commitVerification.localGitRequirements || []).includes("gpg.format ssh"), "commit verification must require SSH signing format");
+ensure((commitVerification.localGitRequirements || []).includes("commit.gpgsign true"), "commit verification must require signed commits");
+ensure((commitVerification.forbiddenActions || []).includes("commit private signing keys"), "commit verification must forbid private signing keys in git");
+ensure(String(commitVerification.readyClaim || "").includes("verified signatures"), "commit verification ready claim must require GitHub verified signatures");
 
 ensure(accessModel?.publicAccessContract === files.contract, "access model must link public access contract");
 ensure(roadmap?.publicAccessContract === files.contract, "roadmap must link public access contract");
@@ -106,6 +115,7 @@ const docs = [
   files.runbook,
   files.accessDoc,
   files.roadmapDoc,
+  files.setupDoc,
   files.readme,
   files.index,
   files.status,
@@ -125,6 +135,10 @@ for (const token of [
   "npm run check:seis-ssh-live-readiness-evidence",
   "deploy/seis-ssh-public-access-contract.json",
   "docs/deployment/seis-ssh-public-github-access.md",
+  "GitHub SSH commit verification",
+  "admin:ssh_signing_key",
+  "commit.gpgsign true",
+  "verified signatures",
   "content/development/seis-ssh-live-readiness-evidence.json",
   "docs/deployment/seis-ssh-live-readiness-evidence.md"
 ]) {
