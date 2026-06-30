@@ -5991,6 +5991,44 @@ function getV17CommandCenterCoverage() {
       runtimeBoundary: "status-and-plan-only",
       assignments: SEIS_MODEL_SCALING_UI_PROFILE.subagentCouncilAssignments.slice()
     },
+    githubMergeGates: {
+      currentState: "auto-merge-enabled / protected-branch-blocked",
+      evidenceSource: "GitHub protected-branch rules observed on 2026-06-29; browser UI is local evidence only",
+      requiredApprovals: 10,
+      preferredMergeMethod: "squash",
+      autoMergeIsBypass: false,
+      adminBypassAllowedForCodex: false,
+      liveGitHubMutationFromBrowser: false,
+      requiredRules: [
+        "10 approving reviews",
+        "code owner review",
+        "last-push approval",
+        "review thread resolution",
+        "signed commits",
+        "linear history",
+        "CodeQL/code scanning",
+        "code quality gates"
+      ],
+      observedPrs: [
+        ["#58", "Linux Replica public entry smoke", "checks passed", "blocked by protected-branch review gates"],
+        ["#62", "AI Core sub-agent handoff fixture", "checks mostly passed / CodeQL swift queued at observation", "blocked by protected-branch review gates"],
+        ["#65", "GitHub merge gate governance contract", "checks mostly passed / CodeQL swift queued at observation", "blocked by protected-branch review gates"]
+      ],
+      safeActions: [
+        "Keep auto-merge enabled when branch policy allows it.",
+        "Ask human reviewers and code owners to approve.",
+        "Wait for CodeQL, security, governance, and quality gates.",
+        "Do not claim merged until GitHub reports mergedAt and a merge commit."
+      ],
+      forbiddenActions: [
+        "admin merge bypass without explicit PR-specific owner approval",
+        "force push",
+        "direct push to main",
+        "branch protection weakening",
+        "history rewrite",
+        "self-approval claims"
+      ]
+    },
     masterObjectiveCoverage: {
       ...SEIS_MASTER_OBJECTIVE_COVERAGE_UI,
       itemCount: masterObjectiveCoverageItems.length,
@@ -6118,6 +6156,28 @@ function renderSeisCommandCenter() {
       <table class="data-table">
         <thead><tr><th>Gate</th><th>Command</th><th>Scope</th></tr></thead>
         <tbody>${validationRows.map(([gate, command, scope]) => `<tr><td>${escapeHtml(gate)}</td><td><code>${escapeHtml(command)}</code></td><td>${escapeHtml(scope)}</td></tr>`).join("")}</tbody>
+      </table>
+    </section>
+    <section class="subagent-panel" data-github-merge-gates>
+      <h3>GitHub Merge Gates</h3>
+      <div class="evolution-safety-grid">
+        <article><strong>Current State</strong><p>${escapeHtml(coverage.githubMergeGates.currentState)}</p></article>
+        <article><strong>Required Approvals</strong><p>${coverage.githubMergeGates.requiredApprovals} human approvals plus code-owner and last-push approval</p></article>
+        <article><strong>Preferred Merge</strong><p>${escapeHtml(coverage.githubMergeGates.preferredMergeMethod)}; auto-merge is not a bypass</p></article>
+        <article><strong>Admin Bypass</strong><p>${coverage.githubMergeGates.adminBypassAllowedForCodex ? "Allowed" : "Forbidden for Codex without explicit PR-specific owner approval"}</p></article>
+      </div>
+      <p class="status-note">${escapeHtml(coverage.githubMergeGates.evidenceSource)}. This panel does not call GitHub, approve reviews, merge, push, or weaken branch protection.</p>
+      <table class="data-table" data-github-merge-gate-rules>
+        <thead><tr><th>Required Rule</th><th>Meaning</th></tr></thead>
+        <tbody>${coverage.githubMergeGates.requiredRules.map((rule) => `<tr data-github-merge-gate-rule><td>${escapeHtml(rule)}</td><td>Must be satisfied before protected-main integration completes.</td></tr>`).join("")}</tbody>
+      </table>
+      <table class="data-table" data-github-merge-gate-prs>
+        <thead><tr><th>PR</th><th>Scope</th><th>Checks</th><th>Remaining Gate</th></tr></thead>
+        <tbody>${coverage.githubMergeGates.observedPrs.map(([pr, scope, checks, gate]) => `<tr data-github-merge-gate-pr="${escapeAttr(pr)}"><td>${escapeHtml(pr)}</td><td>${escapeHtml(scope)}</td><td>${escapeHtml(checks)}</td><td>${escapeHtml(gate)}</td></tr>`).join("")}</tbody>
+      </table>
+      <table class="data-table">
+        <thead><tr><th>Safe Action</th><th>Forbidden Action</th></tr></thead>
+        <tbody>${coverage.githubMergeGates.safeActions.map((action, index) => `<tr><td>${escapeHtml(action)}</td><td>${escapeHtml(coverage.githubMergeGates.forbiddenActions[index] || "Do not invent merge completion.")}</td></tr>`).join("")}</tbody>
       </table>
     </section>
     <section class="subagent-panel" data-master-objective-coverage>
@@ -8470,6 +8530,18 @@ Generated: ${timestamp}
 - App launch actions: ${coverage.appLinks}
 - Route launch actions: ${coverage.routeLinks}
 - Target interactivity: ${coverage.interactionTarget}
+
+## GitHub Merge Gates
+- Current state: ${coverage.githubMergeGates.currentState}
+- Required approvals: ${coverage.githubMergeGates.requiredApprovals}
+- Preferred merge method: ${coverage.githubMergeGates.preferredMergeMethod}
+- Auto-merge is bypass: ${coverage.githubMergeGates.autoMergeIsBypass ? "yes" : "no"}
+- Admin bypass allowed for Codex: ${coverage.githubMergeGates.adminBypassAllowedForCodex ? "yes" : "no"}
+- Browser live GitHub mutation: ${coverage.githubMergeGates.liveGitHubMutationFromBrowser ? "yes" : "no"}
+- Required rules: ${coverage.githubMergeGates.requiredRules.join("; ")}
+- Observed PR gates: ${coverage.githubMergeGates.observedPrs.map(([pr, scope, checks, gate]) => `${pr} / ${scope} / ${checks} / ${gate}`).join("; ")}
+- Safe actions: ${coverage.githubMergeGates.safeActions.join("; ")}
+- Forbidden actions: ${coverage.githubMergeGates.forbiddenActions.join("; ")}
 
 ## Model Scaling Boundary
 - 16GB+ RAM floor: ${coverage.modelScalingFloor}
