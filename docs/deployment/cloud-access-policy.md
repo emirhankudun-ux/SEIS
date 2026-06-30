@@ -34,6 +34,26 @@ Use strict mode when a handoff should fail unless the public URL is reachable:
 npm run cloud:public:readiness:strict -- --repo OWNER/REPO
 ```
 
+### GitHub Pages Actions Contract
+
+GitHub Pages must use GitHub Actions as the build and deployment source. The
+repository Pages API should report `build_type` as `workflow` before SEIS claims
+that the public cloud lane is ready.
+
+The deploy workflow lives at `.github/workflows/pages.yml` and must keep:
+
+- `contents: read`, `pages: write`, and `id-token: write` permissions
+- `workflow_dispatch` for manual reruns
+- `npm run build:static`
+- `npm run check:static-build`
+- `npm run check:seis-second-brain-browser-smoke` with GitHub-hosted Chrome
+- pinned `actions/configure-pages`, `actions/upload-pages-artifact`, and
+  `actions/deploy-pages`
+
+The browser smoke step is part of the deploy artifact gate. If Chrome is not
+available in a local environment, report that limitation explicitly instead of
+claiming rendered Second Brain evidence.
+
 ## Team VPN Cloud
 
 VPN cloud is for workplaces and teams. It is the private operating surface for

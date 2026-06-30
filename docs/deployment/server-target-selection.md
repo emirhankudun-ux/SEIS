@@ -71,6 +71,16 @@ Before a public GitHub Pages handoff, run:
 npm run cloud:public:readiness -- --repo OWNER/REPO
 ```
 
+Confirm that the repository Pages settings use GitHub Actions:
+
+```bash
+gh api repos/OWNER/REPO/pages --jq '.build_type'
+```
+
+The expected value is `workflow`. After the repo setting is confirmed, rerun the
+`Deploy Public Cloud` workflow and keep the Pages artifact gate paired with the
+Second Brain Chrome browser smoke in `.github/workflows/pages.yml`.
+
 Then run:
 
 ```bash
