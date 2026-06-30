@@ -1,11 +1,11 @@
 # PR #54 Stage Plan
 
-Generated: 2026-06-30T22:39:34.019Z
+Generated: 2026-06-30T23:04:10.128Z
 Decision: NO-GO
 Status: review-gated-not-released
 Ready for human review: yes
-Candidate paths: 20
-Excluded paths: 2
+Candidate paths: 22
+Excluded paths: 0
 
 ## Scope
 
@@ -15,6 +15,7 @@ delete, reset, deploy, import Obsidian, execute SSH, or call model providers.
 
 ## Candidate Paths For One Review Slice
 
+- M .gitignore
 - M README.md
 - M content/development/seis-public-demo-release-checklist-pr54.json
 - M docs/INDEX.md
@@ -33,22 +34,22 @@ delete, reset, deploy, import Obsidian, execute SSH, or call model providers.
 - M reports/seis-public-demo/worktree-review-latest.md
 - M scripts/check-seis-public-demo-go-no-go.mjs
 - M scripts/check-seis-second-brain-readiness-contracts.mjs
-- ?? reports/seis-public-demo/security-gate-redacted-latest.json
-- ?? reports/seis-public-demo/security-gate-redacted-latest.md
+- ?? reports/seis-public-demo/second-brain-public-reviewer-pack-latest.json
+- ?? reports/seis-public-demo/second-brain-public-reviewer-pack-latest.md
+- ?? scripts/create-seis-second-brain-public-reviewer-pack.mjs
 
 ## Excluded Separate Workstreams
 
-- M .gitignore (Unclassified Dirty Paths)
-- ?? scripts/create-seis-public-demo-security-gate-report.mjs (Unclassified Dirty Paths)
+- None
 
 ## Human-Run Git Add Commands
 
 Run only after reviewing the diff and confirming these paths belong in the same
 PR #54 readiness slice:
 
-- `git add -- 'README.md' 'content/development/seis-public-demo-release-checklist-pr54.json' 'docs/INDEX.md' 'docs/SEIS_MASTER_INDEX.md' 'docs/STATUS.md' 'docs/product/seis-second-brain.md' 'docs/releases/PUBLIC_DEMO_RELEASE_CHECKLIST_PR54.md' 'docs/roadmap/MASTER_BACKLOG.md'`
-- `git add -- 'docs/roadmap/NEXT_PR_QUEUE.md' 'package.json' 'reports/seis-public-demo/evidence-manifest-latest.json' 'reports/seis-public-demo/go-no-go-latest.json' 'reports/seis-public-demo/go-no-go-latest.md' 'reports/seis-public-demo/pr54-review-packet-latest.md' 'reports/seis-public-demo/pr54-stage-plan-latest.md' 'reports/seis-public-demo/worktree-review-latest.md'`
-- `git add -- 'scripts/check-seis-public-demo-go-no-go.mjs' 'scripts/check-seis-second-brain-readiness-contracts.mjs' 'reports/seis-public-demo/security-gate-redacted-latest.json' 'reports/seis-public-demo/security-gate-redacted-latest.md'`
+- `git add -- '.gitignore' 'README.md' 'content/development/seis-public-demo-release-checklist-pr54.json' 'docs/INDEX.md' 'docs/SEIS_MASTER_INDEX.md' 'docs/STATUS.md' 'docs/product/seis-second-brain.md' 'docs/releases/PUBLIC_DEMO_RELEASE_CHECKLIST_PR54.md'`
+- `git add -- 'docs/roadmap/MASTER_BACKLOG.md' 'docs/roadmap/NEXT_PR_QUEUE.md' 'package.json' 'reports/seis-public-demo/evidence-manifest-latest.json' 'reports/seis-public-demo/go-no-go-latest.json' 'reports/seis-public-demo/go-no-go-latest.md' 'reports/seis-public-demo/pr54-review-packet-latest.md' 'reports/seis-public-demo/pr54-stage-plan-latest.md'`
+- `git add -- 'reports/seis-public-demo/worktree-review-latest.md' 'scripts/check-seis-public-demo-go-no-go.mjs' 'scripts/check-seis-second-brain-readiness-contracts.mjs' 'reports/seis-public-demo/second-brain-public-reviewer-pack-latest.json' 'reports/seis-public-demo/second-brain-public-reviewer-pack-latest.md' 'scripts/create-seis-second-brain-public-reviewer-pack.mjs'`
 
 ## Required Validation Before Commit
 

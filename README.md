@@ -126,6 +126,8 @@ npm run report:seis-second-brain-accessibility-focus-report
 npm run check:seis-second-brain-accessibility-focus-report
 npm run report:seis-second-brain-agent-registry
 npm run check:seis-second-brain-agent-registry
+npm run report:seis-second-brain-public-reviewer-pack
+npm run check:seis-second-brain-public-reviewer-pack
 npm run report:seis-public-demo-security-gate
 npm run check:seis-public-demo-security-gate
 npm run check:seis-second-brain-readiness-contracts
@@ -279,6 +281,12 @@ roster, Obsidian bridge boundary, plugin inventory, MCP surfaces, and connector
 activation rules without reading a private Obsidian vault, validating
 credentials, calling providers, enabling autonomous writes, executing SSH,
 mutating GitHub, deploying, or approving release.
+
+`npm run report:seis-second-brain-public-reviewer-pack` writes the Second Brain
+public reviewer pack under `reports/seis-public-demo/`. That pack gives GitHub
+reviewers a no-key local review path for the Second Brain slice without private
+Obsidian data, live provider routing, autonomous writes, SSH, deployment,
+GitHub Pages publication, merge, or release approval.
 
 `npm run report:seis-public-demo-security-gate` writes redacted public demo
 security gate artifacts under `reports/seis-public-demo/`. Those artifacts

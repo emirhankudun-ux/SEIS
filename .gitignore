@@ -146,6 +146,7 @@ ios/
 !reports/seis-public-demo/read-only-model-router-decision-latest.json
 !reports/seis-public-demo/second-brain-accessibility-focus-latest.json
 !reports/seis-public-demo/second-brain-agent-registry-latest.json
+!reports/seis-public-demo/second-brain-public-reviewer-pack-latest.json
 !reports/seis-public-demo/security-gate-redacted-latest.json
 !packages/seis-ai/data/permission-policy-seed.json
 !packages/seis-ai/models/permission-policy-seed-v0.json

@@ -1,7 +1,7 @@
 {
   "id": "seis-public-demo-evidence-manifest-pr54",
   "title": "SEIS Public Demo Evidence Manifest After PR 54 Review",
-  "generatedAt": "2026-06-30T22:39:34.019Z",
+  "generatedAt": "2026-06-30T23:04:10.128Z",
   "decision": "NO-GO",
   "status": "review-gated-not-released",
   "mode": "read-only",
@@ -13,8 +13,8 @@
     "requiredState": "reviewed before merge or public release"
   },
   "summary": {
-    "total": 25,
-    "passed": 21,
+    "total": 27,
+    "passed": 23,
     "blocked": 3,
     "missingCurrentEvidence": 1,
     "failed": 0,
@@ -83,6 +83,13 @@
       "requirement": "Public demo security gate has redacted current-tree and full-history evidence before release review.",
       "status": "blocked",
       "evidence": "reports/seis-public-demo/security-gate-redacted-latest.json"
+    },
+    {
+      "id": "second-brain-public-reviewer-pack",
+      "type": "artifact",
+      "requirement": "GitHub reviewers have a no-key Second Brain review pack before public demo review.",
+      "status": "passed",
+      "evidence": "reports/seis-public-demo/second-brain-public-reviewer-pack-latest.json"
     },
     {
       "id": "go-no-go-report-json",
@@ -171,6 +178,14 @@
       "status": "passed",
       "evidence": "Command exited 0 in the current run.",
       "command": "npm run check:seis-second-brain-agent-registry"
+    },
+    {
+      "id": "npm-run-check-seis-second-brain-public-reviewer-pack",
+      "type": "command",
+      "requirement": "npm run check:seis-second-brain-public-reviewer-pack",
+      "status": "passed",
+      "evidence": "Command exited 0 in the current run.",
+      "command": "npm run check:seis-second-brain-public-reviewer-pack"
     },
     {
       "id": "npm-run-check-seis-public-demo-security-gate",

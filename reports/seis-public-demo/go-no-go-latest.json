@@ -10,13 +10,13 @@
     "head": "codex/seis-demo-github-upload-20260624",
     "requiredState": "reviewed before merge or public release"
   },
-  "checkedAt": "2026-06-30T22:39:34.019Z",
+  "checkedAt": "2026-06-30T23:04:10.128Z",
   "checks": {
     "checklist": {
       "id": "seis-public-demo-release-checklist-pr54",
       "status": "review-gated-not-released",
       "releaseDecision": "not ready until checklist gates pass",
-      "requiredValidation": 25,
+      "requiredValidation": 27,
       "blockedActions": 8,
       "approvalNeeded": 7
     },
@@ -56,6 +56,15 @@
       "autonomousAgentRosterCount": 12,
       "mcpVendorSurfaceCount": 17
     },
+    "publicReviewerPack": {
+      "status": "reviewer-ready-no-key-local-demo",
+      "mode": "github-public-review-no-private-data",
+      "decision": "NO-GO-review-pack-does-not-approve-release",
+      "requiresApiKeys": false,
+      "requiresPrivateObsidianVault": false,
+      "quickStartCount": 5,
+      "reviewSurfaceCount": 8
+    },
     "securityGate": {
       "status": "blocked-full-history-security-review",
       "mode": "redacted-local-and-ci-evidence",
@@ -88,6 +97,8 @@
       "accessibilityFocusReport": "node scripts/create-seis-second-brain-accessibility-focus-report.mjs --write",
       "agentRegistry": "node scripts/create-seis-second-brain-agent-registry.mjs --check",
       "agentRegistryReport": "node scripts/create-seis-second-brain-agent-registry.mjs --write",
+      "publicReviewerPack": "node scripts/create-seis-second-brain-public-reviewer-pack.mjs --check",
+      "publicReviewerPackReport": "node scripts/create-seis-second-brain-public-reviewer-pack.mjs --write",
       "securityGate": "node scripts/create-seis-public-demo-security-gate-report.mjs --check",
       "securityGateReport": "node scripts/create-seis-public-demo-security-gate-report.mjs --write",
       "goNoGo": "node scripts/check-seis-public-demo-go-no-go.mjs",
@@ -116,9 +127,9 @@
         " M reports/seis-public-demo/worktree-review-latest.md",
         " M scripts/check-seis-public-demo-go-no-go.mjs",
         " M scripts/check-seis-second-brain-readiness-contracts.mjs",
-        "?? reports/seis-public-demo/security-gate-redacted-latest.json",
-        "?? reports/seis-public-demo/security-gate-redacted-latest.md",
-        "?? scripts/create-seis-public-demo-security-gate-report.mjs"
+        "?? reports/seis-public-demo/second-brain-public-reviewer-pack-latest.json",
+        "?? reports/seis-public-demo/second-brain-public-reviewer-pack-latest.md",
+        "?? scripts/create-seis-second-brain-public-reviewer-pack.mjs"
       ]
     },
     "fastValidation": [
@@ -144,6 +155,12 @@
         "command": "npm run check:seis-second-brain-agent-registry",
         "status": 0,
         "stdout": "\n> seis@0.1.0 check:seis-second-brain-agent-registry\n> node scripts/create-seis-second-brain-agent-registry.mjs --check\n\nSEIS Second Brain agent registry check passed.\n",
+        "stderr": ""
+      },
+      {
+        "command": "npm run check:seis-second-brain-public-reviewer-pack",
+        "status": 0,
+        "stdout": "\n> seis@0.1.0 check:seis-second-brain-public-reviewer-pack\n> node scripts/create-seis-second-brain-public-reviewer-pack.mjs --check\n\nSEIS Second Brain public reviewer pack check passed.\n",
         "stderr": ""
       },
       {
@@ -192,8 +209,8 @@
     "Use --require-ready only after human approval and current browser-smoke evidence exist."
   ],
   "evidenceManifest": {
-    "itemCount": 25,
-    "passedCount": 21,
+    "itemCount": 27,
+    "passedCount": 23,
     "blockedCount": 3,
     "missingEvidenceCount": 1,
     "artifactPath": "reports/seis-public-demo/evidence-manifest-latest.json"
@@ -201,13 +218,13 @@
   "worktreeReview": {
     "artifactPath": "reports/seis-public-demo/worktree-review-latest.md",
     "dirtyCount": 22,
-    "workstreamCount": 2,
+    "workstreamCount": 1,
     "releaseBlocking": true
   },
   "stagePlan": {
     "artifactPath": "reports/seis-public-demo/pr54-stage-plan-latest.md",
-    "candidatePathCount": 20,
-    "excludedPathCount": 2,
+    "candidatePathCount": 22,
+    "excludedPathCount": 0,
     "readyForHumanReview": true
   }
 }

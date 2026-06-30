@@ -37,6 +37,9 @@ const paths = {
   agentRegistryScript: "scripts/create-seis-second-brain-agent-registry.mjs",
   agentRegistryJson: "reports/seis-public-demo/second-brain-agent-registry-latest.json",
   agentRegistryMarkdown: "reports/seis-public-demo/second-brain-agent-registry-latest.md",
+  publicReviewerPackScript: "scripts/create-seis-second-brain-public-reviewer-pack.mjs",
+  publicReviewerPackJson: "reports/seis-public-demo/second-brain-public-reviewer-pack-latest.json",
+  publicReviewerPackMarkdown: "reports/seis-public-demo/second-brain-public-reviewer-pack-latest.md",
   securityGateScript: "scripts/create-seis-public-demo-security-gate-report.mjs",
   securityGateJson: "reports/seis-public-demo/security-gate-redacted-latest.json",
   securityGateMarkdown: "reports/seis-public-demo/security-gate-redacted-latest.md",
@@ -66,6 +69,7 @@ const obsidianDryRun = reportGenerating ? null : readJson(paths.obsidianDryRunJs
 const routerDecision = reportGenerating ? null : readJson(paths.routerDecisionJson, "read-only model-router decision artifact");
 const accessibilityFocus = reportGenerating ? null : readJson(paths.accessibilityFocusJson, "Second Brain accessibility/focus artifact");
 const agentRegistry = reportGenerating ? null : readJson(paths.agentRegistryJson, "Second Brain agent registry artifact");
+const publicReviewerPack = reportGenerating ? null : readJson(paths.publicReviewerPackJson, "Second Brain public reviewer pack artifact");
 const securityGate = reportGenerating ? null : readJson(paths.securityGateJson, "public demo security gate redacted artifact");
 const desktopJs = readText(paths.desktopJs, "Desktop runtime");
 const desktopCss = readText(paths.desktopCss, "Desktop styles");
@@ -80,6 +84,7 @@ if (obsidianDryRun) validateObsidianDryRun(obsidianDryRun);
 if (routerDecision && routerContract) validateRouterDecision(routerDecision, routerContract);
 if (accessibilityFocus && accessibilityContract) validateAccessibilityFocus(accessibilityFocus, accessibilityContract);
 if (agentRegistry) validateAgentRegistry(agentRegistry);
+if (publicReviewerPack) validatePublicReviewerPack(publicReviewerPack);
 if (securityGate) validateSecurityGate(securityGate);
 if (packageJson) validatePackage(packageJson);
 validateDesktopAccessibility(desktopJs, desktopCss);
@@ -332,6 +337,68 @@ function validateAgentRegistry(report) {
   ensure(!/"(?:promptBodyText|promptText|messages|conversation)"\s*:/i.test(serialized), "Second Brain agent registry must not include prompt body fields.");
 }
 
+function validatePublicReviewerPack(report) {
+  ensure(report.id === "seis-second-brain-public-reviewer-pack-pr104", "Second Brain public reviewer pack id mismatch.");
+  ensure(report.title === "SEIS Second Brain Public Reviewer Pack", "Second Brain public reviewer pack title mismatch.");
+  ensure(report.status === "reviewer-ready-no-key-local-demo", "Second Brain public reviewer pack status mismatch.");
+  ensure(report.mode === "github-public-review-no-private-data", "Second Brain public reviewer pack mode mismatch.");
+  ensure(report.decision === "NO-GO-review-pack-does-not-approve-release", "Second Brain public reviewer pack must not approve release.");
+  ensure(report.pullRequest?.number === 104, "Second Brain public reviewer pack must bind PR #104.");
+  ensure(report.sourcePaths?.secondBrain === "content/development/seis-second-brain-system.json", "Second Brain public reviewer pack source Second Brain path mismatch.");
+  ensure(report.sourcePaths?.securityGate === paths.securityGateJson, "Second Brain public reviewer pack source security gate path mismatch.");
+  ensure(report.noKeyLocalDemoContract?.requiresApiKeys === false, "Second Brain public reviewer pack must not require API keys.");
+  ensure(report.noKeyLocalDemoContract?.requiresProviderLogin === false, "Second Brain public reviewer pack must not require provider login.");
+  ensure(report.noKeyLocalDemoContract?.requiresPrivateObsidianVault === false, "Second Brain public reviewer pack must not require private Obsidian.");
+  ensure(report.noKeyLocalDemoContract?.requiresSsh === false, "Second Brain public reviewer pack must not require SSH.");
+  ensure(report.noKeyLocalDemoContract?.requiresDeployment === false, "Second Brain public reviewer pack must not require deployment.");
+  ensure(report.noKeyLocalDemoContract?.browserLocalDemoOnly === true, "Second Brain public reviewer pack must stay browser-local.");
+  ensureArrayMin(report.quickStart, 5, "Second Brain public reviewer pack quickStart");
+  ensureArrayMin(report.reviewSurfaces, 8, "Second Brain public reviewer pack review surfaces");
+  ensureArrayMin(report.reviewerMustConfirm, 6, "Second Brain public reviewer pack reviewer confirmations");
+  ensureArrayMin(report.blockedUntilApproval, 8, "Second Brain public reviewer pack approval blockers");
+  for (const required of [
+    "No API keys required for the core demo.",
+    "No private Obsidian vault import was performed.",
+    "No live provider routing was performed.",
+    "Security history blocker remains until owner-approved remediation."
+  ]) {
+    ensureIncludes(report.reviewerMustConfirm, required, "Second Brain public reviewer pack reviewer confirmations");
+  }
+  for (const blocked of [
+    "private Obsidian import",
+    "live provider routing",
+    "autonomous write execution",
+    "SSH execution",
+    "deployment",
+    "merge to main",
+    "history rewrite or reviewed security baseline"
+  ]) {
+    ensureIncludes(report.blockedUntilApproval, blocked, "Second Brain public reviewer pack approval blockers");
+  }
+  for (const [key, expected] of [
+    ["privateObsidianVaultReadPerformed", false],
+    ["privateNoteBodyCopied", false],
+    ["providerCallsPerformed", false],
+    ["credentialValidationPerformed", false],
+    ["browserSecretsExposed", false],
+    ["promptBodiesStored", false],
+    ["autonomousWriteExecutionPerformed", false],
+    ["externalConnectorMutationPerformed", false],
+    ["sshExecuted", false],
+    ["deploymentPerformed", false],
+    ["githubMutationPerformedByReport", false],
+    ["releaseApprovalGranted", false]
+  ]) {
+    ensure(report.safetyBoundary?.[key] === expected, `Second Brain public reviewer pack safety boundary ${key} must be ${expected}.`);
+  }
+  const serialized = JSON.stringify(report);
+  ensure(!serialized.includes("file://"), "Second Brain public reviewer pack must not include file:// paths.");
+  ensure(!serialized.includes("/Users/"), "Second Brain public reviewer pack must not include absolute private /Users paths.");
+  ensure(!/sk-[A-Za-z0-9_-]{20,}/.test(serialized), "Second Brain public reviewer pack must not include OpenAI-style API keys.");
+  ensure(!/-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----/.test(serialized), "Second Brain public reviewer pack must not include private key bodies.");
+  ensure(!/\b(?:password|token|secret|api[_-]?key)\s*=\s*['"][^'"]+['"]/i.test(serialized), "Second Brain public reviewer pack must not include inline credential assignments.");
+}
+
 function validateSecurityGate(report) {
   ensure(report.id === "seis-public-demo-security-gate-redacted-pr104", "Security gate artifact id mismatch.");
   ensure(report.title === "SEIS Public Demo Security Gate Redacted Evidence", "Security gate artifact title mismatch.");
@@ -548,6 +615,8 @@ function validateReleaseChecklist(checklist) {
     "npm run report:seis-second-brain-accessibility-focus-report",
     "npm run check:seis-second-brain-agent-registry",
     "npm run report:seis-second-brain-agent-registry",
+    "npm run check:seis-second-brain-public-reviewer-pack",
+    "npm run report:seis-second-brain-public-reviewer-pack",
     "npm run check:seis-public-demo-security-gate",
     "npm run report:seis-public-demo-security-gate",
     "npm run check:seis-public-demo-go-no-go -- --run-fast-checks",
@@ -570,6 +639,8 @@ function validateReleaseChecklist(checklist) {
     "reports/seis-public-demo/second-brain-accessibility-focus-latest.md",
     "reports/seis-public-demo/second-brain-agent-registry-latest.json",
     "reports/seis-public-demo/second-brain-agent-registry-latest.md",
+    "reports/seis-public-demo/second-brain-public-reviewer-pack-latest.json",
+    "reports/seis-public-demo/second-brain-public-reviewer-pack-latest.md",
     "reports/seis-public-demo/security-gate-redacted-latest.json",
     "reports/seis-public-demo/security-gate-redacted-latest.md",
     "reports/seis-public-demo/pr54-review-packet-latest.md",
@@ -691,6 +762,16 @@ function validatePackage(packageJson) {
     "package.json must expose report:seis-second-brain-agent-registry."
   );
   ensure(
+    packageJson.scripts?.["check:seis-second-brain-public-reviewer-pack"] ===
+      "node scripts/create-seis-second-brain-public-reviewer-pack.mjs --check",
+    "package.json must expose check:seis-second-brain-public-reviewer-pack."
+  );
+  ensure(
+    packageJson.scripts?.["report:seis-second-brain-public-reviewer-pack"] ===
+      "node scripts/create-seis-second-brain-public-reviewer-pack.mjs --write",
+    "package.json must expose report:seis-second-brain-public-reviewer-pack."
+  );
+  ensure(
     packageJson.scripts?.["check:seis-public-demo-security-gate"] ===
       "node scripts/create-seis-public-demo-security-gate-report.mjs --check",
     "package.json must expose check:seis-public-demo-security-gate."
@@ -741,16 +822,16 @@ function validateDocsAndIndexes() {
     [paths.obsidianDoc, ["Obsidian Bridge Safe Import", "planned-gated", "No private note body", "dry-run manifest", "metadata-only-by-default", "report:seis-obsidian-safe-import-dry-run", "obsidian-safe-import-dry-run-latest"]],
     [paths.accessibilityDoc, ["Second Brain Accessibility Focus QA", "role=listbox", "focus-visible", "WCAG 2.2 visible focus indicator", "screen-reader transcript", "report:seis-second-brain-accessibility-focus-report", "second-brain-accessibility-focus-latest", "npm run check:seis-second-brain-browser-smoke"]],
     [paths.routerDoc, ["Read-Only Model Router Contract", "Missing Key is not Error", "backend-only provider mediation", "decision integrity", "report:seis-read-only-model-router-decision", "read-only-model-router-decision-latest", "npm run check:seis-second-brain-readiness-contracts"]],
-    [paths.releaseDoc, ["Public Demo Release Checklist", "PR #54", "review-gated-not-released", "Do not merge", "check:seis-public-demo-go-no-go", "report:seis-public-demo-go-no-go", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "report:seis-public-demo-security-gate", "security-gate-redacted-latest", "PR #54 review packet", "worktree review", "stage plan", "NO-GO"]],
-    [paths.secondBrainDoc, ["Obsidian bridge safe import contract", "Obsidian safe-import dry-run artifact", "read-only model-router decision artifact", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "public demo security gate redacted evidence", "Second Brain accessibility/focus QA", "npm run check:seis-second-brain-readiness-contracts", "check:seis-public-demo-go-no-go", "PR #54 review packet", "stage plan"]],
+    [paths.releaseDoc, ["Public Demo Release Checklist", "PR #54", "review-gated-not-released", "Do not merge", "check:seis-public-demo-go-no-go", "report:seis-public-demo-go-no-go", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "report:seis-second-brain-public-reviewer-pack", "report:seis-public-demo-security-gate", "second-brain-public-reviewer-pack-latest", "security-gate-redacted-latest", "PR #54 review packet", "worktree review", "stage plan", "NO-GO"]],
+    [paths.secondBrainDoc, ["Obsidian bridge safe import contract", "Obsidian safe-import dry-run artifact", "read-only model-router decision artifact", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "Second Brain public reviewer pack", "public demo security gate redacted evidence", "Second Brain accessibility/focus QA", "npm run check:seis-second-brain-readiness-contracts", "check:seis-public-demo-go-no-go", "PR #54 review packet", "stage plan"]],
     [paths.modelRouterDoc, ["read-only model-router contract", "Provider-neutral", "Missing Key is not Error", "decision integrity", "read-only model-router decision artifact"]],
-    [paths.status, ["SEIS Second Brain readiness contracts", "Obsidian bridge safe import", "Obsidian safe-import dry-run", "read-only model-router decision", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "public demo security gate redacted evidence", "PR #54 public demo release checklist"]],
-    [paths.index, ["SEIS Obsidian Bridge Safe Import", "Second Brain Accessibility Focus QA", "Read-Only Model Router Contract", "Public Demo Release Checklist PR54", "check-seis-public-demo-go-no-go.mjs", "create-seis-obsidian-safe-import-dry-run.mjs", "create-seis-read-only-model-router-decision.mjs", "create-seis-second-brain-accessibility-focus-report.mjs", "create-seis-second-brain-agent-registry.mjs", "create-seis-public-demo-security-gate-report.mjs", "reports/seis-public-demo/go-no-go-latest", "reports/seis-public-demo/evidence-manifest-latest", "reports/seis-public-demo/obsidian-safe-import-dry-run-latest", "reports/seis-public-demo/read-only-model-router-decision-latest", "reports/seis-public-demo/second-brain-accessibility-focus-latest", "reports/seis-public-demo/second-brain-agent-registry-latest", "reports/seis-public-demo/security-gate-redacted-latest", "reports/seis-public-demo/pr54-review-packet-latest", "reports/seis-public-demo/worktree-review-latest", "reports/seis-public-demo/pr54-stage-plan-latest"]],
-    [paths.masterIndex, ["SEIS Obsidian Bridge Safe Import", "Second Brain Accessibility Focus QA", "Read-Only Model Router Contract", "Public Demo Release Checklist PR54", "check:seis-public-demo-go-no-go", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "report:seis-public-demo-security-gate", "reports/seis-public-demo/go-no-go-latest", "reports/seis-public-demo/evidence-manifest-latest", "reports/seis-public-demo/obsidian-safe-import-dry-run-latest", "reports/seis-public-demo/read-only-model-router-decision-latest", "reports/seis-public-demo/second-brain-accessibility-focus-latest", "reports/seis-public-demo/second-brain-agent-registry-latest", "reports/seis-public-demo/security-gate-redacted-latest", "reports/seis-public-demo/pr54-review-packet-latest", "reports/seis-public-demo/worktree-review-latest", "reports/seis-public-demo/pr54-stage-plan-latest"]],
-    [paths.backlog, ["Obsidian bridge safe import", "Obsidian safe-import dry-run artifact", "read-only model-router decision artifact", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "public demo security gate redacted evidence", "Second Brain accessibility/focus QA", "read-only model-router contract", "PR #54 public demo release checklist", "SEIS public demo go/no-go gate", "PR #54 review packet", "worktree review", "stage plan"]],
-    [paths.nextQueue, ["Obsidian bridge safe import", "Obsidian safe-import dry-run artifact", "read-only model-router decision artifact", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "public demo security gate redacted evidence", "Second Brain accessibility/focus QA", "read-only model-router contract", "PR #54 public demo release checklist", "PR #54 review packet", "worktree review", "stage plan"]],
-    [paths.readme, ["check:seis-second-brain-readiness-contracts", "Second Brain readiness contracts", "check:seis-public-demo-go-no-go", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "report:seis-public-demo-security-gate"]],
-    [paths.publicDemoGoNoGo, ["human-release-approval-missing", "current-browser-smoke-evidence-missing", "dirty-worktree", "security-full-history-remediation-needed", "obsidian-safe-import-dry-run", "read-only-router-decision", "accessibility-focus-qa-artifact", "second-brain-agent-registry", "security-gate-redacted-evidence", "NO-GO"]]
+    [paths.status, ["SEIS Second Brain readiness contracts", "Obsidian bridge safe import", "Obsidian safe-import dry-run", "read-only model-router decision", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "Second Brain public reviewer pack", "public demo security gate redacted evidence", "PR #54 public demo release checklist"]],
+    [paths.index, ["SEIS Obsidian Bridge Safe Import", "Second Brain Accessibility Focus QA", "Read-Only Model Router Contract", "Public Demo Release Checklist PR54", "check-seis-public-demo-go-no-go.mjs", "create-seis-obsidian-safe-import-dry-run.mjs", "create-seis-read-only-model-router-decision.mjs", "create-seis-second-brain-accessibility-focus-report.mjs", "create-seis-second-brain-agent-registry.mjs", "create-seis-second-brain-public-reviewer-pack.mjs", "create-seis-public-demo-security-gate-report.mjs", "reports/seis-public-demo/go-no-go-latest", "reports/seis-public-demo/evidence-manifest-latest", "reports/seis-public-demo/obsidian-safe-import-dry-run-latest", "reports/seis-public-demo/read-only-model-router-decision-latest", "reports/seis-public-demo/second-brain-accessibility-focus-latest", "reports/seis-public-demo/second-brain-agent-registry-latest", "reports/seis-public-demo/second-brain-public-reviewer-pack-latest", "reports/seis-public-demo/security-gate-redacted-latest", "reports/seis-public-demo/pr54-review-packet-latest", "reports/seis-public-demo/worktree-review-latest", "reports/seis-public-demo/pr54-stage-plan-latest"]],
+    [paths.masterIndex, ["SEIS Obsidian Bridge Safe Import", "Second Brain Accessibility Focus QA", "Read-Only Model Router Contract", "Public Demo Release Checklist PR54", "check:seis-public-demo-go-no-go", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "report:seis-second-brain-public-reviewer-pack", "report:seis-public-demo-security-gate", "reports/seis-public-demo/go-no-go-latest", "reports/seis-public-demo/evidence-manifest-latest", "reports/seis-public-demo/obsidian-safe-import-dry-run-latest", "reports/seis-public-demo/read-only-model-router-decision-latest", "reports/seis-public-demo/second-brain-accessibility-focus-latest", "reports/seis-public-demo/second-brain-agent-registry-latest", "reports/seis-public-demo/second-brain-public-reviewer-pack-latest", "reports/seis-public-demo/security-gate-redacted-latest", "reports/seis-public-demo/pr54-review-packet-latest", "reports/seis-public-demo/worktree-review-latest", "reports/seis-public-demo/pr54-stage-plan-latest"]],
+    [paths.backlog, ["Obsidian bridge safe import", "Obsidian safe-import dry-run artifact", "read-only model-router decision artifact", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "Second Brain public reviewer pack", "public demo security gate redacted evidence", "Second Brain accessibility/focus QA", "read-only model-router contract", "PR #54 public demo release checklist", "SEIS public demo go/no-go gate", "PR #54 review packet", "worktree review", "stage plan"]],
+    [paths.nextQueue, ["Obsidian bridge safe import", "Obsidian safe-import dry-run artifact", "read-only model-router decision artifact", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "Second Brain public reviewer pack", "public demo security gate redacted evidence", "Second Brain accessibility/focus QA", "read-only model-router contract", "PR #54 public demo release checklist", "PR #54 review packet", "worktree review", "stage plan"]],
+    [paths.readme, ["check:seis-second-brain-readiness-contracts", "Second Brain readiness contracts", "check:seis-public-demo-go-no-go", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "report:seis-second-brain-public-reviewer-pack", "report:seis-public-demo-security-gate"]],
+    [paths.publicDemoGoNoGo, ["human-release-approval-missing", "current-browser-smoke-evidence-missing", "dirty-worktree", "security-full-history-remediation-needed", "obsidian-safe-import-dry-run", "read-only-router-decision", "accessibility-focus-qa-artifact", "second-brain-agent-registry", "second-brain-public-reviewer-pack", "security-gate-redacted-evidence", "NO-GO"]]
   ];
 
   for (const [filePath, phrases] of requiredPhrases) {
@@ -792,6 +873,9 @@ function validateNoSecrets() {
     paths.agentRegistryScript,
     paths.agentRegistryJson,
     paths.agentRegistryMarkdown,
+    paths.publicReviewerPackScript,
+    paths.publicReviewerPackJson,
+    paths.publicReviewerPackMarkdown,
     paths.securityGateScript,
     paths.securityGateJson,
     paths.securityGateMarkdown,

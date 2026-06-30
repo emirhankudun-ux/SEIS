@@ -2,7 +2,7 @@
 
 Date: 2026-06-23
 
-Second Brain readiness contract note: public demo security gate redacted evidence is now part of `SEIS-BL-049`. `npm run report:seis-public-demo-security-gate` and `npm run check:seis-public-demo-security-gate` keep PR #104 security blocker evidence public-safe without raw secret values, `.gitleaks.toml` changes, history rewrite, force push, SSH, deployment, or release approval.
+Second Brain readiness contract note: public demo security gate redacted evidence and the Second Brain public reviewer pack are now part of `SEIS-BL-049`. `npm run report:seis-public-demo-security-gate`, `npm run check:seis-public-demo-security-gate`, `npm run report:seis-second-brain-public-reviewer-pack`, and `npm run check:seis-second-brain-public-reviewer-pack` keep PR #104 review evidence public-safe without raw secret values, private Obsidian data, provider keys, `.gitleaks.toml` changes, history rewrite, force push, SSH, deployment, or release approval.
 
 | ID | Priority | Lane | Work | Acceptance evidence |
 | --- | --- | --- | --- | --- |

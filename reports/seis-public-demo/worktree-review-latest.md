@@ -1,10 +1,10 @@
 # SEIS Public Demo Worktree Review
 
-Generated: 2026-06-30T22:39:34.019Z
+Generated: 2026-06-30T23:04:10.128Z
 Decision: NO-GO
 Release blocking: yes
 Dirty paths: 22
-Workstreams: 2
+Workstreams: 1
 
 ## Review Rule
 
@@ -20,6 +20,7 @@ approval exists.
 
 Status: candidate-scope-needs-review
 
+- M .gitignore
 - M README.md
 - M content/development/seis-public-demo-release-checklist-pr54.json
 - M docs/INDEX.md
@@ -38,12 +39,6 @@ Status: candidate-scope-needs-review
 - M reports/seis-public-demo/worktree-review-latest.md
 - M scripts/check-seis-public-demo-go-no-go.mjs
 - M scripts/check-seis-second-brain-readiness-contracts.mjs
-- ?? reports/seis-public-demo/security-gate-redacted-latest.json
-- ?? reports/seis-public-demo/security-gate-redacted-latest.md
-
-## Unclassified Dirty Paths
-
-Status: needs-human-review
-
-- M .gitignore
-- ?? scripts/create-seis-public-demo-security-gate-report.mjs
+- ?? reports/seis-public-demo/second-brain-public-reviewer-pack-latest.json
+- ?? reports/seis-public-demo/second-brain-public-reviewer-pack-latest.md
+- ?? scripts/create-seis-second-brain-public-reviewer-pack.mjs
