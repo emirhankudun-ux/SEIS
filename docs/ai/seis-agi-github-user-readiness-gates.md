@@ -53,6 +53,9 @@ The gate pack keeps SEIS aligned with public risk and evaluation references:
 - Real AGI and 512B claims remain blocked until independent evaluation,
   training/inference, benchmark, safety, and external review evidence exists.
 
+**Hard requirement:** AGI and 512B claims stay blocked until independent
+evidence is collected and approved by human review.
+
 ## Validate
 
 ```bash
