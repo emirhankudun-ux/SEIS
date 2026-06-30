@@ -46,6 +46,7 @@ jobs:
         run: npm run check:seis-second-brain-browser-smoke
         env:
           CHROME_PATH: /usr/bin/google-chrome
+          SEIS_SECOND_BRAIN_SMOKE_WEB_ROOT: dist/seis-static
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b

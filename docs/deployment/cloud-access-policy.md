@@ -48,12 +48,14 @@ The deploy workflow lives at `.github/workflows/pages.yml` and must keep:
 - `npm run build:static`
 - `npm run check:static-build`
 - `npm run check:seis-second-brain-browser-smoke` with GitHub-hosted Chrome
+  against `dist/seis-static`
 - pinned `actions/configure-pages`, `actions/upload-pages-artifact`, and
   `actions/deploy-pages`
 
-The browser smoke step is part of the deploy artifact gate. If Chrome is not
-available in a local environment, report that limitation explicitly instead of
-claiming rendered Second Brain evidence.
+The browser smoke step is part of the deploy artifact gate and should render the
+built Pages package, not only source files. If Chrome is not available in a local
+environment, report that limitation explicitly instead of claiming rendered
+Second Brain evidence.
 
 Manual dispatches from PR branches may be used for build artifact and browser
 smoke evidence, but the publish step remains reserved for `main`.

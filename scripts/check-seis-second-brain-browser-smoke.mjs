@@ -5,7 +5,7 @@ import { join, normalize, resolve } from "node:path";
 import { tmpdir } from "node:os";
 
 const ROOT = process.cwd();
-const WEB_ROOT = join(ROOT, "apps", "web");
+const WEB_ROOT = resolve(ROOT, process.env.SEIS_SECOND_BRAIN_SMOKE_WEB_ROOT || join("apps", "web"));
 const SCREENSHOT_DIR = join(ROOT, "dist", "qa", "second-brain-smoke");
 const HOST = "127.0.0.1";
 const DEBUG_HOST = "127.0.0.1";
@@ -570,6 +570,7 @@ async function main() {
     console.log(JSON.stringify({
       ok: true,
       browser: chromePath,
+      webRoot: resolve(WEB_ROOT),
       appPort,
       screenshotDir: resolve(SCREENSHOT_DIR),
       secondBrain,

@@ -117,12 +117,13 @@ ensure(publicReadiness.includes("mode: \"read-only\""), "public readiness checke
 ensure(publicReadiness.includes("audience: \"everyone\""), "public readiness checker must preserve everyone audience");
 ensure(publicReadiness.includes("vpnRequired: false"), "public readiness checker must keep VPN disabled for public cloud");
 ensure(publicReadiness.includes("github-pages-disabled"), "public readiness checker must report disabled GitHub Pages");
+ensure(publicReadiness.includes("github-pages-build-type-not-workflow"), "public readiness checker must block non-workflow Pages builds");
 
 ensure(pagesWorkflow.includes("branches: [main]"), "Pages workflow must deploy from main");
 ensure(pagesWorkflow.includes("workflow_dispatch:"), "Pages workflow must support manual reruns");
-ensure(pagesWorkflow.includes("contents: read"), "Pages workflow must keep contents read-only");
-ensure(pagesWorkflow.includes("pages: write"), "Pages workflow must grant Pages write permission");
-ensure(pagesWorkflow.includes("id-token: write"), "Pages workflow must grant OIDC id-token write permission");
+ensure(/contents:\s*["']?read["']?/.test(pagesWorkflow), "Pages workflow must keep contents read-only");
+ensure(/pages:\s*["']?write["']?/.test(pagesWorkflow), "Pages workflow must grant Pages write permission");
+ensure(/id-token:\s*["']?write["']?/.test(pagesWorkflow), "Pages workflow must grant OIDC id-token write permission");
 ensure(pagesWorkflow.includes("if: github.ref == 'refs/heads/main'"), "Pages deploy job must be main-branch only");
 ensure(/actions\/upload-pages-artifact@[a-f0-9]{40}/.test(pagesWorkflow), "Pages workflow must upload a pinned Pages artifact action");
 ensure(/actions\/deploy-pages@[a-f0-9]{40}/.test(pagesWorkflow), "Pages workflow must deploy through a pinned GitHub Pages action");
@@ -130,7 +131,8 @@ ensure(/actions\/configure-pages@[a-f0-9]{40}/.test(pagesWorkflow), "Pages workf
 ensure(pagesWorkflow.includes("npm run build:static"), "Pages workflow must build the static package");
 ensure(pagesWorkflow.includes("npm run check:static-build"), "Pages workflow must validate the static package");
 ensure(pagesWorkflow.includes("npm run check:seis-second-brain-browser-smoke"), "Pages workflow must run the Second Brain browser smoke before upload");
-ensure(pagesWorkflow.includes("CHROME_PATH: /usr/bin/google-chrome"), "Pages workflow must use GitHub-hosted Chrome for browser smoke");
+ensure(/CHROME_PATH:\s*["']?\/usr\/bin\/google-chrome["']?/.test(pagesWorkflow), "Pages workflow must use GitHub-hosted Chrome for browser smoke");
+ensure(/SEIS_SECOND_BRAIN_SMOKE_WEB_ROOT:\s*["']?dist\/seis-static["']?/.test(pagesWorkflow), "Pages workflow must smoke the built Pages artifact");
 ensure(pagesWorkflow.includes("dist/seis-static"), "Pages workflow must publish dist/seis-static");
 
 const migrationAuditPath = "cloud-migration-audit.ci.json";
