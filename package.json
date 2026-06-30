@@ -12,6 +12,7 @@
     "check:release-sync": "node scripts/check-release-sync.cjs",
     "check:ai-stack": "node scripts/check-ai-stack.cjs",
     "check:ai-routing-policy": "node scripts/check-ai-routing-policy.cjs",
+    "check:seis-ai-model": "node scripts/check-seis-ai-model.cjs",
     "check:design-system": "node scripts/check-design-system.mjs",
     "check:governance": "node scripts/check-governance.mjs",
     "check:doc-links": "node scripts/check-doc-links.mjs",

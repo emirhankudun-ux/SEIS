@@ -1,0 +1,39 @@
+{
+  "id": "seis-native-ai-model",
+  "name": "SEIS-150B",
+  "version": 1,
+  "parametersBillions": 150,
+  "status": "specification",
+  "doc": "docs/platform/seis-native-ai-model.md",
+  "executable": "scripts/seis-ai-model.cjs",
+  "record": "content/governance/seis-ai-model.json",
+  "routingDoc": "docs/platform/hybrid-ai-routing-policy.md",
+  "architecture": {
+    "family": "decoder-only-transformer",
+    "hiddenSize": 12288,
+    "numLayers": 82,
+    "numAttentionHeads": 96,
+    "numKeyValueHeads": 12,
+    "feedForwardMultiplier": 3.25,
+    "vocabSize": 128256,
+    "maxContextTokens": 32768,
+    "positionalEncoding": "rope",
+    "normalization": "rmsnorm",
+    "activation": "swiglu",
+    "tiedEmbeddings": true
+  },
+  "training": {
+    "paradigm": "self-supervised pretraining + instruction tuning + preference alignment",
+    "tokensBillions": 3000,
+    "precision": "bf16",
+    "optimizer": "adamw",
+    "parallelism": ["tensor", "pipeline", "data", "fully-sharded"],
+    "estimatedAccelerators": "1k+ high-memory GPUs (e.g. H100-class)"
+  },
+  "routing": {
+    "tier": "sovereign-inhouse",
+    "defaultTodayRemains": "codex",
+    "promoteWhen": "status === 'released' && evaluation gates pass"
+  },
+  "artifact": null
+}

@@ -19,6 +19,7 @@ const roots = [
   "docs/decisions",
   "docs/design",
   "docs/platform/hybrid-ai-routing-policy.md",
+  "docs/platform/seis-native-ai-model.md",
 ];
 
 function collect(target, out) {
