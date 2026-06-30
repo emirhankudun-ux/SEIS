@@ -1,7 +1,7 @@
 {
   "id": "seis-knowledge-retrieval-training-contract",
   "version": "2026.07.01",
-  "generatedAt": "2026-06-30T22:56:34.358Z",
+  "generatedAt": "2026-06-30T23:18:24.845Z",
   "status": "contract-defined-not-indexed",
   "qualityGate": "npm run check:seis-knowledge-retrieval-training",
   "reportCommand": "npm run report:seis-knowledge-retrieval-training",

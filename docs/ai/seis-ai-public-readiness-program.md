@@ -29,7 +29,8 @@ This command verifies the model intake registry, language-model curriculum, AI
 workforce training contract, AI fresh-clone readiness contract, model-scaling
 gates, 512B apex program, AGI evaluation protocol, AGI public readiness
 evidence, GitHub user readiness gates, independent evidence ledger, retrieval
-source provenance, evaluation fixture, and local dry-run gates.
+source provenance, evaluation fixture, local dry-run, and citation scorer
+dry-run gates.
 
 It does not install models, download checkpoints, train models, call providers,
 provision cloud/GPU capacity, execute SSH, push, merge, deploy, release, grant
@@ -85,6 +86,7 @@ trained, downloaded, benchmarked, or served a 512B model.
 - `npm run check:seis-retrieval-source-provenance` passes on the target commit.
 - `npm run check:seis-retrieval-evaluation-fixtures` passes on the target commit.
 - `npm run check:seis-retrieval-evaluation-dry-run` passes on the target commit.
+- `npm run check:seis-retrieval-citation-scorer-dry-run` passes on the target commit.
 - `npm run check:seis-ai-public-readiness` passes on the target commit.
 - Required CI checks green on the target commit.
 - Public README claim boundary reviewed.
@@ -131,9 +133,11 @@ trained, downloaded, benchmarked, or served a 512B model.
 - `content/development/seis-retrieval-source-provenance-manifest.json`
 - `content/development/seis-retrieval-evaluation-fixtures.json`
 - `content/development/seis-retrieval-evaluation-dry-run.json`
+- `content/development/seis-retrieval-citation-scorer-dry-run.json`
 - `reports/seis-model-scaling/seis-retrieval-source-provenance-manifest.md`
 - `reports/seis-model-scaling/seis-retrieval-evaluation-fixtures.md`
 - `reports/seis-model-scaling/seis-retrieval-evaluation-dry-run.md`
+- `reports/seis-model-scaling/seis-retrieval-citation-scorer-dry-run.md`
 
 ## Validate
 
@@ -144,6 +148,7 @@ npm run check:seis-ai-fresh-clone-readiness
 npm run check:seis-retrieval-source-provenance
 npm run check:seis-retrieval-evaluation-fixtures
 npm run check:seis-retrieval-evaluation-dry-run
+npm run check:seis-retrieval-citation-scorer-dry-run
 npm run check:seis-ai-public-readiness
 npm run check:seis-ai-public-readiness-report
 ```
