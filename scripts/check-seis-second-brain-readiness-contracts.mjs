@@ -519,7 +519,12 @@ function validatePublicDemoArtifacts(report, manifest) {
   ensure(report.pullRequest?.number === 54, "public demo go/no-go report must bind PR #54.");
   ensure(Array.isArray(report.blockers), "public demo go/no-go report blockers must be an array.");
   const reportBlockers = Array.isArray(report.blockers) ? report.blockers : [];
-  ensure(reportBlockers.includes("dirty-worktree"), "public demo go/no-go report must block dirty worktree.");
+  const dirtyCount = Number(report.worktreeReview?.dirtyCount || 0);
+  if (dirtyCount > 0) {
+    ensure(reportBlockers.includes("dirty-worktree"), "public demo go/no-go report must block dirty worktree when dirty paths exist.");
+  } else {
+    ensure(!reportBlockers.includes("dirty-worktree"), "clean public demo go/no-go report must not block dirty worktree.");
+  }
   ensure(reportBlockers.includes("human-release-approval-missing"), "public demo go/no-go report must block missing human approval.");
   const browserSmokeMissing = reportBlockers.includes("current-browser-smoke-evidence-missing");
   ensure(report.evidenceManifest?.artifactPath === "reports/seis-public-demo/evidence-manifest-latest.json", "public demo report must point to evidence manifest artifact.");
@@ -537,7 +542,7 @@ function validatePublicDemoArtifacts(report, manifest) {
   ensure(report.evidenceManifest?.blockedCount === manifestSummary.blocked, "public demo report evidence blockedCount must match evidence manifest summary.");
   ensure(report.evidenceManifest?.missingEvidenceCount === manifestSummary.missingCurrentEvidence, "public demo report evidence missingEvidenceCount must match evidence manifest summary.");
   ensure(manifest.summary?.failed === 0, "public demo evidence manifest must have zero failed evidence items.");
-  ensure(manifest.summary?.blocked >= 2, "public demo evidence manifest must include release blockers.");
+  ensure(manifest.summary?.blocked >= 1, "public demo evidence manifest must include release blockers.");
   if (browserSmokeMissing) {
     ensure(manifest.summary?.missingCurrentEvidence >= 1, "public demo evidence manifest must keep missing current browser evidence visible.");
     ensureListEntryContains((manifest.items || []).map((item) => `${item.id}:${item.status}`), "current-browser-smoke:missing-current-evidence", "public demo evidence manifest items");
