@@ -1,0 +1,186 @@
+{
+  "schema": "seis.demo.apps.v1",
+  "updated": "2026-06-30",
+  "mode": "browser-local-demo",
+  "safety": {
+    "requiresApiKeys": false,
+    "executesSsh": false,
+    "mutatesGithub": false,
+    "deploys": false,
+    "storesSecrets": false,
+    "notes": "This manifest is a browser-local demo map. Mock and planned modules must stay labeled until verified live implementations exist."
+  },
+  "apps": [
+    {
+      "id": "command-center",
+      "name": "Command Center",
+      "category": "system",
+      "state": "mock",
+      "route": "desktop.html#command-center",
+      "evidence": "Existing desktop route concept with Command Center coverage.",
+      "demoAction": "Open system status, governance, CI, roadmap, and launch controls."
+    },
+    {
+      "id": "desktop-os",
+      "name": "SEIS Desktop OS",
+      "category": "os",
+      "state": "real",
+      "route": "desktop.html",
+      "evidence": "Existing browser desktop shell artifact.",
+      "demoAction": "Open dock, top bar, app windows, launcher, and desktop session."
+    },
+    {
+      "id": "linux-replica",
+      "name": "SEIS Linux Replica",
+      "category": "os",
+      "state": "real",
+      "route": "seis-linux-replica.html",
+      "evidence": "Existing Linux-like browser demo using supplied reference assets.",
+      "demoAction": "Open the Linux-like live demo surface."
+    },
+    {
+      "id": "ai-core",
+      "name": "SEIS AI Core",
+      "category": "ai",
+      "state": "mock",
+      "route": "desktop.html#ai-core",
+      "evidence": "Demo-mode AI Core panels and docs; no live provider call is claimed.",
+      "demoAction": "Show local demo mode, agent planning, provider states, and safety rules."
+    },
+    {
+      "id": "model-router",
+      "name": "Model Router",
+      "category": "ai",
+      "state": "mock",
+      "route": "desktop.html#model-router",
+      "evidence": "Provider-neutral routing concept; backend live calls are future work.",
+      "demoAction": "Explain task routing by privacy, cost, speed, context, and fallback."
+    },
+    {
+      "id": "provider-registry",
+      "name": "Provider Registry",
+      "category": "ai",
+      "state": "mock",
+      "route": "desktop.html#provider-registry",
+      "evidence": "Provider metadata concept with Missing Key, Disabled, Error, and Available states.",
+      "demoAction": "Show cloud/local providers without exposing frontend secrets."
+    },
+    {
+      "id": "seis-code",
+      "name": "SEIS Code IDE",
+      "category": "developer",
+      "state": "real",
+      "route": "seis-code.html",
+      "evidence": "Existing browser IDE artifact.",
+      "demoAction": "Open file explorer, editor surface, AI panel, terminal, and PR rescue concept."
+    },
+    {
+      "id": "design-studio",
+      "name": "SEIS Design Studio",
+      "category": "creative",
+      "state": "mock",
+      "route": "desktop.html#design",
+      "evidence": "Desktop design surface and design-system docs; export/live design actions remain demo-safe.",
+      "demoAction": "Show canvas, typography, colors, components, prototype preview, and AI design safe mode."
+    },
+    {
+      "id": "search",
+      "name": "SEIS Search",
+      "category": "knowledge",
+      "state": "mock",
+      "route": "desktop.html#search",
+      "evidence": "Search concept spans AI, Web, Code, Design, Cloud, Apps, Plugins, and Files.",
+      "demoAction": "Search modules, docs, providers, agents, roadmap, commands, and files."
+    },
+    {
+      "id": "cloud-ssh",
+      "name": "SEIS Cloud / SSH Center",
+      "category": "operations",
+      "state": "mock",
+      "route": "desktop.html#cloud",
+      "evidence": "Cloud/SSH status is presentation-safe unless verified externally.",
+      "demoAction": "Show GitHub, CI, SSH, deployments, logs, backups, and environment boundaries."
+    },
+    {
+      "id": "store",
+      "name": "SEIS Store",
+      "category": "marketplace",
+      "state": "planned",
+      "route": "desktop.html#store",
+      "evidence": "Marketplace and plugin layer are product requirements; install state is not live yet.",
+      "demoAction": "Show apps, plugins, AI agents, themes, developer tools, and safe install/update concepts."
+    },
+    {
+      "id": "music",
+      "name": "SEIS Music",
+      "category": "creative",
+      "state": "planned",
+      "route": "desktop.html#music",
+      "evidence": "Music app is part of the required ecosystem; playback is not live in this manifest.",
+      "demoAction": "Show player, playlists, album cards, waveform, and AI recommendation safe mode."
+    },
+    {
+      "id": "launchpad",
+      "name": "SEIS Launchpad",
+      "category": "system",
+      "state": "mock",
+      "route": "desktop.html#launchpad",
+      "evidence": "Launchpad is represented as app grid and route target concept.",
+      "demoAction": "Open all SEIS apps from a single grid."
+    },
+    {
+      "id": "files",
+      "name": "SEIS Files",
+      "category": "system",
+      "state": "mock",
+      "route": "desktop.html#files",
+      "evidence": "File manager is demo-safe; destructive rename/delete must stay guarded.",
+      "demoAction": "Show folders, files, recent docs, open-file concept, search, and safe create actions."
+    },
+    {
+      "id": "terminal",
+      "name": "SEIS Terminal / SSH",
+      "category": "developer",
+      "state": "mock",
+      "route": "desktop.html#terminal",
+      "evidence": "Terminal UI is local demo mode; real SSH requires explicit approval.",
+      "demoAction": "Show local demo terminal, command history, SSH status, logs, and repository sync concept."
+    },
+    {
+      "id": "website",
+      "name": "SEIS Website",
+      "category": "website",
+      "state": "real",
+      "route": "index.html",
+      "evidence": "Existing web landing entry.",
+      "demoAction": "Open product landing, premium story, and public showcase entry."
+    },
+    {
+      "id": "agents",
+      "name": "SEIS Agents",
+      "category": "ai",
+      "state": "mock",
+      "route": "desktop.html#agents",
+      "evidence": "Agent workforce is modeled as supervised roles with allowed and forbidden actions.",
+      "demoAction": "Show Architect, Code, Design, Security, DevOps, Docs, QA, Cloud, Search, and Automation agents."
+    },
+    {
+      "id": "plugins",
+      "name": "SEIS Plugins",
+      "category": "marketplace",
+      "state": "planned",
+      "route": "desktop.html#plugins",
+      "evidence": "Plugin marketplace is a future layer; no live plugin install is claimed.",
+      "demoAction": "Show plugin catalog, install boundary, permissions, and future MCP awareness."
+    },
+    {
+      "id": "wow-gallery",
+      "name": "SEIS WOW Gallery",
+      "category": "showcase",
+      "state": "real",
+      "route": "wow-gallery.html",
+      "evidence": "Existing visual showcase artifact.",
+      "demoAction": "Open cinematic visual proof pages and product-quality presentation surfaces."
+    }
+  ]
+}
