@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en" data-seis-design-studio="browser-local">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SEIS Design Studio Center</title>
+    <meta
+      name="description"
+      content="Browser-local SEIS Design Studio demo with canvas, tokens, typography, components, prototype preview, and mock-safe AI design assistant."
+    />
+    <link rel="stylesheet" href="./design-studio-center.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to Design Studio workspace</a>
+
+    <header class="topbar" aria-label="SEIS Design Studio status bar">
+      <div class="brand-mark" aria-hidden="true">S</div>
+      <div>
+        <p class="eyebrow">SEIS Core / Browser-local design surface</p>
+        <h1>SEIS Design Studio Center</h1>
+      </div>
+      <div class="status-strip" aria-label="Safety state">
+        <span class="status-pill real">Browser-local</span>
+        <span class="status-pill mock">AI assistant mock/safe mode</span>
+        <span class="status-pill blocked">No upload or provider call</span>
+      </div>
+    </header>
+
+    <main id="main" class="studio-shell" tabindex="-1">
+      <section class="hero-panel" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Canvas, design tokens, components, prototype</p>
+          <h2 id="hero-title">A premium design tool surface for the SEIS creative operating system.</h2>
+          <p>
+            This demo turns the Design Studio requirement into a working browser-local workspace with selectable layers,
+            token controls, component cards, safe save/export interactions, and clearly labeled mock AI design support.
+          </p>
+        </div>
+        <div class="safety-card" aria-label="Non export and non provider contract">
+          <p class="eyebrow">Runtime contract</p>
+          <code>providerCallStarted: false</code>
+          <code>assetUploaded: false</code>
+          <code>exportWritten: false</code>
+          <code>networkRequested: false</code>
+        </div>
+      </section>
+
+      <section class="studio-grid" aria-label="SEIS Design Studio workspace">
+        <aside class="panel rail-panel" aria-labelledby="layers-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Layers</p>
+              <h3 id="layers-title">Canvas map</h3>
+            </div>
+            <span class="status-pill real">Selectable</span>
+          </div>
+          <div id="layerList" class="layer-list" aria-label="Design layers"></div>
+        </aside>
+
+        <section class="panel canvas-panel" aria-labelledby="canvas-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Canvas</p>
+              <h3 id="canvas-title">SEIS prototype preview</h3>
+            </div>
+            <div class="toolbar" aria-label="Design actions">
+              <button id="saveSnapshot" class="solid-button" type="button">Save snapshot</button>
+              <button id="prepareExport" class="ghost-button" type="button">Prepare export</button>
+              <button id="applyAiSuggestion" class="ghost-button" type="button">Apply AI suggestion</button>
+            </div>
+          </div>
+
+          <div class="canvas-stage" aria-label="Prototype canvas">
+            <article id="prototypeCard" class="prototype-card">
+              <p class="eyebrow">SEIS Design Studio</p>
+              <h2 id="prototypeHeadline">Design with calm precision.</h2>
+              <p id="prototypeBody">
+                A local-first creative surface for tokens, components, motion notes, and review-ready product design.
+              </p>
+              <div class="prototype-actions">
+                <button type="button">Open prototype</button>
+                <button type="button">Review tokens</button>
+              </div>
+            </article>
+            <div class="canvas-orbit orbit-a" aria-hidden="true"></div>
+            <div class="canvas-orbit orbit-b" aria-hidden="true"></div>
+          </div>
+
+          <div id="statusFeed" class="status-feed" aria-live="polite">
+            Browser-local studio ready. Select layers, tune tokens, save snapshots, or prepare a mock export contract.
+          </div>
+        </section>
+
+        <aside class="panel inspector-panel" aria-labelledby="inspector-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Inspector</p>
+              <h3 id="inspector-title">Design tokens</h3>
+            </div>
+            <span id="selectedLayerPill" class="status-pill real">Hero Card</span>
+          </div>
+
+          <div class="control-stack" aria-label="Token controls">
+            <label>
+              <span>Accent color</span>
+              <select id="accentSelect">
+                <option value="cyan">Cyan Glass</option>
+                <option value="violet">Violet Signal</option>
+                <option value="amber">Amber Review</option>
+                <option value="green">Green Ready</option>
+              </select>
+            </label>
+            <label>
+              <span>Typography scale</span>
+              <select id="typeScaleSelect">
+                <option value="editorial">Editorial</option>
+                <option value="compact">Compact</option>
+                <option value="poster">Poster</option>
+              </select>
+            </label>
+            <label>
+              <span>Corner radius</span>
+              <input id="radiusRange" type="range" min="14" max="42" value="28" />
+            </label>
+            <label>
+              <span>Glass depth</span>
+              <input id="depthRange" type="range" min="12" max="48" value="28" />
+            </label>
+          </div>
+
+          <div class="token-grid" aria-label="Current token values">
+            <article><span>Accent</span><strong id="accentToken">Cyan Glass</strong></article>
+            <article><span>Type</span><strong id="typeToken">Editorial</strong></article>
+            <article><span>Radius</span><strong id="radiusToken">28px</strong></article>
+            <article><span>Depth</span><strong id="depthToken">28px</strong></article>
+          </div>
+        </aside>
+      </section>
+
+      <section class="bottom-grid" aria-label="Components, prototype states, and AI assistant">
+        <article class="panel component-panel" aria-labelledby="components-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Component cards</p>
+              <h3 id="components-title">Reusable system pieces</h3>
+            </div>
+            <span class="status-pill real">Interactive</span>
+          </div>
+          <div id="componentCards" class="component-grid" aria-label="Components"></div>
+        </article>
+
+        <article class="panel prototype-panel" aria-labelledby="prototype-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Prototype preview</p>
+              <h3 id="prototype-title">State rail</h3>
+            </div>
+            <span id="prototypeState" class="status-pill mock">Overview</span>
+          </div>
+          <div class="state-rail" aria-label="Prototype states">
+            <button class="state-chip active" type="button" data-state="overview">Overview</button>
+            <button class="state-chip" type="button" data-state="handoff">Handoff</button>
+            <button class="state-chip" type="button" data-state="review">Review</button>
+            <button class="state-chip" type="button" data-state="launch">Launch</button>
+          </div>
+          <pre id="exportPreview" class="export-preview">No export prepared yet. Use Prepare export to generate a local contract preview.</pre>
+        </article>
+
+        <article class="panel ai-panel" aria-labelledby="ai-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">AI design assistant mock/safe mode</p>
+              <h3 id="ai-title">Suggestions</h3>
+            </div>
+            <span class="status-pill mock">No provider call</span>
+          </div>
+          <div id="assistantCards" class="assistant-list" aria-label="AI design suggestions"></div>
+        </article>
+      </section>
+
+      <section class="status-ledger" aria-labelledby="ledger-title">
+        <div>
+          <p class="eyebrow">Mock vs real status</p>
+          <h2 id="ledger-title">Honest design-tool boundaries</h2>
+        </div>
+        <div class="ledger-grid">
+          <article>
+            <span class="status-pill real">Real</span>
+            <h3>Token controls</h3>
+            <p>Canvas styling, prototype state, snapshots, and component selection run in browser-local JavaScript.</p>
+          </article>
+          <article>
+            <span class="status-pill real">Real</span>
+            <h3>Session persistence</h3>
+            <p>State is saved under <code>seis.design.studio.center.v1</code> in localStorage.</p>
+          </article>
+          <article>
+            <span class="status-pill mock">Mock</span>
+            <h3>AI assistance</h3>
+            <p>Suggestions are deterministic local text, not provider output, training, or benchmark evidence.</p>
+          </article>
+          <article>
+            <span class="status-pill blocked">Blocked</span>
+            <h3>External export</h3>
+            <p>No upload, cloud sync, file write, network request, provider call, or asset pipeline is attempted.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script src="./design-studio-center.js" defer></script>
+  </body>
+</html>
