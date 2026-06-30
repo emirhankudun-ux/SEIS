@@ -6,6 +6,10 @@ Sub-agents are bounded, supervised workers that accelerate SEIS work without rep
 
 Each sub-agent follows explicit ownership, permission, and review constraints.
 
+The canonical bounded-agent roster is maintained in
+[`SEIS_AGENT_WORKFORCE.md`](./SEIS_AGENT_WORKFORCE.md) and mirrored in
+[`seis-brain/vault/05_Agents/Agent Workforce.md`](./seis-brain/vault/05_Agents/Agent%20Workforce.md).
+
 ## Supervision model
 
 - Human review for all non-trivial decisions.
@@ -75,6 +79,13 @@ Each output should include:
 - all non-trivial changes go through manual review.
 - evidence requirements must be explicit.
 - unknown claims must be marked `planned` until confirmed.
+
+## Source-of-truth mapping
+
+- `SEIS_AGENT_WORKFORCE.md` stores the operational roster.
+- `seis-brain/vault/05_Agents/Agent Workforce.md` stores the vault mirror for quick
+  in-vault discoverability.
+- `docs/INDEX.md` and `docs/SEIS_MASTER_INDEX.md` provide discoverability for onboarding.
 
 ## Safety rules
 

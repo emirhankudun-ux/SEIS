@@ -18,7 +18,7 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | Root architecture pointer | [../ARCHITECTURE.md](../ARCHITECTURE.md) |
 | Root roadmap pointer | [../ROADMAP.md](../ROADMAP.md) |
 | 10-year strategy roadmap | [../roadmap/seis-long-horizon-strategy.md](../roadmap/seis-long-horizon-strategy.md) |
-| Second Brain policy docs | [../SEIS_SECOND_BRAIN.md](../SEIS_SECOND_BRAIN.md), [../SEIS_OBSIDIAN_VAULT.md](../SEIS_OBSIDIAN_VAULT.md), [../SEIS_INSTALLED_AI_TOOLS.md](../SEIS_INSTALLED_AI_TOOLS.md), [../SEIS_SUB_AGENTS.md](../SEIS_SUB_AGENTS.md), [../SEIS_LOCAL_AI_OLLAMA.md](../SEIS_LOCAL_AI_OLLAMA.md) |
+| Second Brain policy docs | [../SEIS_SECOND_BRAIN.md](../SEIS_SECOND_BRAIN.md), [../SEIS_OBSIDIAN_VAULT.md](../SEIS_OBSIDIAN_VAULT.md), [../SEIS_INSTALLED_AI_TOOLS.md](../SEIS_INSTALLED_AI_TOOLS.md), [../SEIS_SUB_AGENTS.md](../SEIS_SUB_AGENTS.md), [../SEIS_AGENT_WORKFORCE.md](../SEIS_AGENT_WORKFORCE.md), [../SEIS_LOCAL_AI_OLLAMA.md](../SEIS_LOCAL_AI_OLLAMA.md) |
 | SEIS-SSH docs | [../SEIS_SSH.md](../SEIS_SSH.md), [OBSIDIAN_SECOND_BRAIN.md](OBSIDIAN_SECOND_BRAIN.md), [SEIS_SSH_SETUP.md](SEIS_SSH_SETUP.md), [LOCAL_AI_SETUP.md](LOCAL_AI_SETUP.md) |
 | Current status | [STATUS.md](STATUS.md) |
 | Documentation index | [INDEX.md](INDEX.md) |
@@ -57,7 +57,7 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | Second Brain Accessibility Focus QA | [reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md](reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md) |
 | Shared VFS contract | [product/shared-vfs-contract.md](product/shared-vfs-contract.md) |
 | Getting started / onboarding | [GETTING_STARTED.md](GETTING_STARTED.md), [TROUBLESHOOTING.md](TROUBLESHOOTING.md), [PUBLIC_READINESS.md](PUBLIC_READINESS.md) |
-| Sub-agent system | [../SEIS_SUB_AGENTS.md](../SEIS_SUB_AGENTS.md) |
+| Sub-agent system | [../SEIS_SUB_AGENTS.md](../SEIS_SUB_AGENTS.md), [../SEIS_AGENT_WORKFORCE.md](../SEIS_AGENT_WORKFORCE.md) |
 | Installed AI tools | [../SEIS_INSTALLED_AI_TOOLS.md](../SEIS_INSTALLED_AI_TOOLS.md) |
 | SEIS Code browser foundation | [product/seis-code-foundation.md](product/seis-code-foundation.md) |
 | Video Hero showcase | [product/video-hero-showcase.md](product/video-hero-showcase.md) |

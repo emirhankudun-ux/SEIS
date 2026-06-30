@@ -136,6 +136,8 @@ node scripts/check-seis-linux-replica-public-walkthrough.mjs
 node scripts/check-seis-static-demo-routes.mjs
 npm run check:seis-code
 npm run check:seis-website-pages
+npm run check:seis-sub-agent-5-year-plan
+npm run check:seis-agent-workforce
 npm run check:seis-ultimate-demo
 npm run check:seis-ssh-public-access
 npm run check:seis-fullstack-contract
@@ -210,6 +212,7 @@ agent/context continuity and public-safe project memory.
 - `SEIS_SECOND_BRAIN.md` explains the memory model and operating rules.
 - `SEIS_OBSIDIAN_VAULT.md` explains folder structure and backlinks.
 - `SEIS_SUB_AGENTS.md` explains bounded agent roles, permissions, and handoff rules.
+- `SEIS_AGENT_WORKFORCE.md` stores the bounded agent registry and role map.
 - `docs/OBSIDIAN_SECOND_BRAIN.md` mirrors onboarding notes for contributors.
 - `seis-brain/vault/00_Index/SEIS Home.md` is the memory entry point.
 
