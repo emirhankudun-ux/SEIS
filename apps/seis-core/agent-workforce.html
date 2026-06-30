@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SEIS Agent Workforce Console</title>
+  <meta name="description" content="Browser-local SEIS Agent Workforce Console for supervised, dry-run-only AI agent planning.">
+  <link rel="stylesheet" href="./agent-workforce.css">
+</head>
+<body data-seis-agent-workforce="browser-local-dry-run">
+  <a class="skip-link" href="#main">Skip to Agent Workforce Console</a>
+  <header class="shell-header" aria-label="SEIS Agent Workforce status">
+    <a class="brand" href="./index.html" aria-label="Back to SEIS Command Center">
+      <span class="brand-mark">S</span>
+      <span><strong>SEIS Core</strong><small>Agent Workforce Console</small></span>
+    </a>
+    <nav class="top-actions" aria-label="Console actions">
+      <button type="button" data-action="focus-intake">New mission</button>
+      <button type="button" data-action="load-sample">Load safe sample</button>
+      <button type="button" data-action="clear-log">Clear local log</button>
+    </nav>
+  </header>
+
+  <main id="main" class="workspace">
+    <section class="hero-panel" aria-labelledby="hero-title">
+      <p class="eyebrow">Local Demo mode - no provider calls</p>
+      <h1 id="hero-title">A supervised workforce cockpit for SEIS agents.</h1>
+      <p class="hero-copy">Plan, route, approve, cancel, and hand off agent work as dry-run evidence before any write-capable automation exists. Every state is explicit: real local UI, mock agent execution, planned runtime, or blocked action.</p>
+      <div class="hero-stats" aria-label="Agent runtime facts">
+        <article><span>18</span><strong>agent roles</strong><small>metadata-only</small></article>
+        <article><span>0</span><strong>provider calls</strong><small>providerCalled: false</small></article>
+        <article><span>6</span><strong>safety gates</strong><small>approval-needed</small></article>
+      </div>
+    </section>
+
+    <section class="control-grid" aria-label="Agent mission controls">
+      <form id="mission-form" class="mission-card">
+        <div class="section-label">
+          <p class="eyebrow">Mission intake</p>
+          <h2>Route a dry-run mission</h2>
+        </div>
+        <label for="mission-input">Mission</label>
+        <textarea id="mission-input" name="mission" rows="7" placeholder="Example: Review SEIS Prompt Engine fixtures and prepare a rollback-safe PR summary." required></textarea>
+        <div class="form-row">
+          <label for="risk-select">Risk lane</label>
+          <select id="risk-select" name="risk">
+            <option value="review">Review before write</option>
+            <option value="local-only">Local-only analysis</option>
+            <option value="blocked">Blocked until approval</option>
+            <option value="documentation">Documentation-only</option>
+          </select>
+        </div>
+        <button type="submit" class="primary-action">Create dry-run route</button>
+      </form>
+
+      <aside class="route-preview" aria-labelledby="route-title">
+        <div class="section-label">
+          <p class="eyebrow">Current route</p>
+          <h2 id="route-title">Supervised plan</h2>
+        </div>
+        <dl id="route-facts" class="fact-list">
+          <div><dt>Owner</dt><dd>Architect Agent</dd></div>
+          <div><dt>State</dt><dd>approval-needed</dd></div>
+          <div><dt>Execution</dt><dd>dry-run-only</dd></div>
+          <div><dt>Credential read</dt><dd>false</dd></div>
+        </dl>
+        <p id="live-region" class="live-region" aria-live="polite">No mission has been routed in this session.</p>
+      </aside>
+    </section>
+
+    <section class="agent-wall" aria-labelledby="agent-wall-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Agent workforce</p>
+          <h2 id="agent-wall-title">Roles, permissions, and evidence gates</h2>
+        </div>
+        <div class="filter-row" role="group" aria-label="Filter agents">
+          <button type="button" class="filter-chip is-active" data-filter="all">All</button>
+          <button type="button" class="filter-chip" data-filter="ready">Ready</button>
+          <button type="button" class="filter-chip" data-filter="review">Review</button>
+          <button type="button" class="filter-chip" data-filter="blocked">Blocked</button>
+        </div>
+      </div>
+      <div id="agent-grid" class="agent-grid"></div>
+    </section>
+
+    <section class="ops-grid" aria-label="Safety and handoff evidence">
+      <article class="panel-card">
+        <p class="eyebrow">Safety gates</p>
+        <h2>What blocks autonomy</h2>
+        <ul id="safety-list"></ul>
+      </article>
+      <article class="panel-card">
+        <p class="eyebrow">Dry-run queue</p>
+        <h2>Session evidence</h2>
+        <div id="task-queue" class="task-queue"></div>
+      </article>
+      <article class="panel-card wide">
+        <p class="eyebrow">Mock vs real status</p>
+        <h2>Runtime honesty ledger</h2>
+        <div class="ledger-grid">
+          <article><strong>Real</strong><p>Static app, localStorage state, mission routing preview, button interactions, visible audit log.</p></article>
+          <article><strong>Mock</strong><p>Agent execution, provider selection, task output, and automation are dry-run demo metadata.</p></article>
+          <article><strong>Planned</strong><p>Executable permission enforcement, handoff schema, cancellation runtime, and redacted tool-output tests.</p></article>
+          <article><strong>Blocked</strong><p>Background runners, write-capable agents, SSH, GitHub mutation, deployment, and live providers require human approval.</p></article>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script src="./agent-workforce.js" type="module"></script>
+</body>
+</html>
