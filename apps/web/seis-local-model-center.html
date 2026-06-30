@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="en" data-seis-local-model-center="browser-local">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SEIS Local Model Center - Browser Local Demo</title>
+  <meta name="description" content="SEIS Local Model Center browser-local demo for Ollama, local model registry, offline prompt testing, continuation protocol and local-first AI safety." />
+  <style>
+    :root {
+      --bg: #070a0b;
+      --ink: #f6efdf;
+      --muted: #aeb7b4;
+      --dim: #71807d;
+      --panel: rgba(15, 21, 23, 0.8);
+      --panel-strong: rgba(21, 30, 32, 0.92);
+      --line: rgba(243, 225, 184, 0.14);
+      --line-strong: rgba(243, 225, 184, 0.25);
+      --amber: #f3c768;
+      --mint: #8fdbc2;
+      --blue: #8fb5ff;
+      --violet: #c3a9ff;
+      --red: #ff8d82;
+      --green: #a7ec92;
+      --shadow: 0 28px 82px rgba(0, 0, 0, 0.46);
+      --display: "Avenir Next", "Trebuchet MS", Verdana, sans-serif;
+      --body: "Gill Sans", "Avenir Next", "Trebuchet MS", sans-serif;
+      --mono: "SFMono-Regular", "Cascadia Mono", "Courier New", monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      color: var(--ink);
+      background: var(--bg);
+      font-family: var(--body);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 14% 12%, rgba(143, 219, 194, 0.22), transparent 28%),
+        radial-gradient(circle at 84% 10%, rgba(195, 169, 255, 0.18), transparent 31%),
+        radial-gradient(circle at 50% 102%, rgba(243, 199, 104, 0.16), transparent 35%),
+        linear-gradient(132deg, #050707 0%, #101617 48%, #060807 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.034) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.026) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.72), transparent 70%);
+      opacity: 0.48;
+    }
+
+    button, input, textarea, select { font: inherit; }
+    button { border: 0; color: inherit; cursor: pointer; }
+    button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
+
+    .shell {
+      width: min(1500px, calc(100vw - 28px));
+      margin: 0 auto;
+      padding: 18px 0 44px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 12px;
+      z-index: 30;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 16px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(5, 8, 9, 0.78);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(22px);
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; min-width: max-content; }
+    .mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      color: #08100e;
+      background: linear-gradient(145deg, var(--mint), var(--amber) 58%, var(--violet));
+      font-family: var(--display);
+      font-weight: 900;
+      letter-spacing: -0.08em;
+      box-shadow: 0 14px 42px rgba(143, 219, 194, 0.26);
+    }
+    .brand strong { display: block; font-family: var(--display); font-size: 0.9rem; letter-spacing: 0.14em; text-transform: uppercase; }
+    .brand span { display: block; margin-top: 2px; color: var(--muted); font-size: 0.75rem; }
+
+    .search {
+      height: 42px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.045);
+      color: var(--muted);
+    }
+    .search input { width: 100%; min-width: 120px; background: transparent; border: 0; color: var(--ink); outline: 0; }
+
+    .top-actions { display: flex; align-items: center; gap: 8px; }
+    .pill, .button, .icon-button, .tab, .model-card, .task-card, .action-card, .gate-card {
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease, opacity 180ms ease;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.055);
+      color: var(--muted);
+      font-size: 0.78rem;
+      white-space: nowrap;
+    }
+    .dot { width: 9px; height: 9px; border-radius: 99px; background: var(--green); box-shadow: 0 0 18px rgba(167,236,146,0.72); }
+    .dot.demo { background: var(--amber); box-shadow: 0 0 18px rgba(243,199,104,0.72); }
+    .dot.blocked { background: var(--red); box-shadow: 0 0 18px rgba(255,141,130,0.62); }
+
+    .button, .icon-button {
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.06);
+      font-weight: 800;
+    }
+    .button.primary { color: #0b100e; border-color: transparent; background: linear-gradient(135deg, var(--mint), #f4e1a2 54%, var(--amber)); box-shadow: 0 18px 52px rgba(143,219,194,0.18); }
+    .icon-button { width: 42px; padding: 0; }
+    .button:hover, .icon-button:hover, .tab:hover, .model-card:hover, .task-card:hover, .action-card:hover, .gate-card:hover { transform: translateY(-2px); border-color: var(--line-strong); background: rgba(255,255,255,0.09); }
+    .button.primary:hover { box-shadow: 0 24px 64px rgba(243,199,104,0.24); }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.06fr 0.94fr;
+      gap: 20px;
+      margin-top: 22px;
+    }
+    .panel, .hero-main, .prompt-panel {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 32px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(24px);
+    }
+    .panel::after, .hero-main::after, .prompt-panel::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(125deg, rgba(255,255,255,0.13), transparent 24%, transparent 74%, rgba(255,255,255,0.05));
+      opacity: 0.32;
+    }
+    .hero-main { min-height: 520px; padding: 34px; display: flex; flex-direction: column; justify-content: space-between; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      width: fit-content;
+      padding: 8px 12px;
+      border: 1px solid rgba(143,219,194,0.28);
+      border-radius: 999px;
+      color: var(--mint);
+      background: rgba(143,219,194,0.08);
+      font-size: 0.78rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 820px; margin: 24px 0 18px; font-family: var(--display); font-size: clamp(3.25rem, 7.5vw, 8.2rem); line-height: 0.82; letter-spacing: -0.08em; }
+    .hero-copy { max-width: 760px; color: var(--muted); font-size: clamp(1.05rem, 1.55vw, 1.32rem); line-height: 1.55; }
+    .metric-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 28px; }
+    .metric { min-height: 116px; padding: 18px; border: 1px solid var(--line); border-radius: 24px; background: rgba(255,255,255,0.045); }
+    .metric strong { display: block; font-family: var(--display); font-size: 1.78rem; letter-spacing: -0.05em; }
+    .metric span { display: block; margin-top: 8px; color: var(--muted); font-size: 0.82rem; line-height: 1.35; }
+
+    .prompt-panel { min-height: 520px; padding: 26px; display: grid; grid-template-rows: auto 1fr auto; gap: 14px; }
+    .panel-header { position: relative; z-index: 1; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 16px; }
+    .panel-title { margin-bottom: 5px; font-family: var(--display); font-size: 1.18rem; letter-spacing: -0.035em; }
+    .panel-kicker { margin-bottom: 0; color: var(--muted); font-size: 0.84rem; line-height: 1.36; }
+
+    .state {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 28px;
+      padding: 0 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.055);
+      color: var(--muted);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .state.local-demo, .state.available { color: var(--green); border-color: rgba(167,236,146,0.28); }
+    .state.mock { color: var(--amber); border-color: rgba(243,199,104,0.28); }
+    .state.planned { color: var(--blue); border-color: rgba(143,181,255,0.28); }
+    .state.disabled { color: var(--dim); }
+    .state.blocked { color: var(--red); border-color: rgba(255,141,130,0.28); }
+
+    .prompt-box { position: relative; z-index: 1; display: grid; grid-template-rows: auto 1fr auto; gap: 12px; }
+    textarea {
+      min-height: 174px;
+      resize: vertical;
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(4,8,9,0.82);
+      color: var(--ink);
+      padding: 14px;
+      line-height: 1.45;
+    }
+    .output {
+      min-height: 176px;
+      padding: 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(143,219,194,0.18);
+      background: rgba(4,8,9,0.82);
+      color: #e1ffef;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+
+    .grid-2, .grid-3 { display: grid; gap: 18px; margin-top: 18px; }
+    .grid-2 { grid-template-columns: 1.22fr 0.78fr; }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .panel { padding: 22px; }
+
+    .tabs { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    .tab { min-height: 36px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,0.045); color: var(--muted); }
+    .tab[aria-selected="true"] { color: #08100e; border-color: transparent; background: linear-gradient(135deg, var(--mint), var(--amber)); font-weight: 900; }
+
+    .workspace { position: relative; z-index: 1; min-height: 420px; border: 1px solid var(--line); border-radius: 24px; background: rgba(255,255,255,0.04); overflow: hidden; }
+    .pane { display: none; padding: 16px; }
+    .pane.active { display: grid; gap: 12px; animation: paneIn 220ms ease both; }
+    .card-grid, .action-grid, .gate-grid { display: grid; gap: 12px; position: relative; z-index: 1; }
+    .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .action-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .gate-grid { grid-template-columns: 1fr; }
+
+    .model-card, .task-card, .action-card, .gate-card {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(255,255,255,0.045);
+      padding: 14px;
+      text-align: left;
+    }
+    .model-card strong, .task-card strong, .action-card strong, .gate-card strong { display: block; margin-bottom: 7px; font-size: 0.96rem; }
+    .model-card span, .task-card span, .action-card span, .gate-card span { display: block; color: var(--muted); font-size: 0.8rem; line-height: 1.38; }
+    .model-card small, .task-card small, .action-card small, .gate-card small { display: inline-flex; margin-top: 12px; padding: 5px 8px; border-radius: 999px; background: rgba(255,255,255,0.07); color: var(--muted); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    .model-card.hidden, .task-card.hidden, .gate-card.hidden { display: none; }
+
+    .status-list { position: relative; z-index: 1; display: grid; gap: 10px; }
+    .status-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px; border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,0.045); }
+    .status-row strong { display: block; margin-bottom: 4px; }
+    .status-row span { color: var(--muted); font-size: 0.8rem; line-height: 1.35; }
+
+    .console { position: relative; z-index: 1; min-height: 252px; padding: 14px; border: 1px solid rgba(143,219,194,0.18); border-radius: 20px; background: rgba(4,8,9,0.82); color: #e1ffef; font-family: var(--mono); overflow: auto; }
+    .log-line { display: grid; grid-template-columns: 112px 1fr; gap: 12px; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.045); font-size: 0.78rem; }
+    .log-line:last-child { border-bottom: 0; }
+    .log-line b { color: var(--amber); }
+
+    .drawer { position: fixed; top: 88px; right: 22px; z-index: 70; width: min(430px, calc(100vw - 44px)); max-height: calc(100vh - 116px); display: grid; gap: 14px; padding: 18px; border: 1px solid var(--line-strong); border-radius: 28px; background: rgba(5,8,9,0.95); box-shadow: 0 30px 90px rgba(0,0,0,0.58); backdrop-filter: blur(22px); transform: translateX(calc(100% + 42px)); opacity: 0; pointer-events: none; transition: transform 230ms ease, opacity 230ms ease; }
+    .drawer.open { transform: translateX(0); opacity: 1; pointer-events: auto; }
+    .drawer-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .drawer h2 { margin: 0; font-family: var(--display); letter-spacing: -0.04em; }
+
+    .toast-stack { position: fixed; left: 50%; bottom: 22px; z-index: 90; display: grid; gap: 10px; width: min(560px, calc(100vw - 32px)); transform: translateX(-50%); pointer-events: none; }
+    .toast { padding: 13px 16px; border-radius: 18px; border: 1px solid var(--line-strong); background: rgba(6,10,11,0.95); box-shadow: 0 18px 50px rgba(0,0,0,0.42); color: var(--muted); animation: toastIn 220ms ease both; }
+    .footer { margin-top: 18px; padding: 20px 4px 0; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; color: var(--dim); font-size: 0.8rem; }
+    code { font-family: var(--mono); }
+
+    @keyframes paneIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes toastIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 1ms !important; scroll-behavior: auto !important; transition-duration: 1ms !important; } }
+    @media (max-width: 1160px) { .hero, .grid-2, .grid-3 { grid-template-columns: 1fr; } .metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 760px) {
+      .shell { width: min(100vw - 20px, 720px); padding-top: 10px; }
+      .topbar { grid-template-columns: 1fr auto; border-radius: 24px; top: 8px; }
+      .search { grid-column: 1 / -1; order: 3; }
+      .top-actions .pill { display: none; }
+      .hero-main, .prompt-panel, .panel { border-radius: 24px; padding: 18px; }
+      h1 { font-size: clamp(3.1rem, 18vw, 5.5rem); }
+      .metric-grid, .card-grid, .action-grid { grid-template-columns: 1fr; }
+      .status-row, .log-line { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar" aria-label="SEIS Local Model Center top bar">
+      <div class="brand">
+        <div class="mark" aria-hidden="true">LM</div>
+        <div><strong>SEIS Local Model Center</strong><span>Ollama and offline AI workbench</span></div>
+      </div>
+      <label class="search" for="localSearch">
+        <span aria-hidden="true">search</span>
+        <input id="localSearch" type="search" placeholder="Search models, tasks, safety gates, protocols" autocomplete="off" />
+      </label>
+      <div class="top-actions">
+        <span class="pill"><span class="dot demo"></span>Offline Demo mode</span>
+        <button class="icon-button" type="button" data-action="open-drawer" aria-label="Open local AI boundary">?</button>
+        <button class="button primary" type="button" data-action="save">Save state</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="heroTitle">
+        <article class="hero-main">
+          <div>
+            <span class="eyebrow"><span class="dot"></span>No paid APIs required</span>
+            <h1 id="heroTitle">Local AI as a safe first-class lane.</h1>
+            <p class="hero-copy">This browser-local demo shows how SEIS can plan Ollama/local model workflows without requiring cloud keys, private credentials, downloads, inference, SSH or network access. Everything here is a safe planning and prompt-testing surface.</p>
+          </div>
+          <div class="metric-grid" aria-label="Local AI metrics">
+            <div class="metric"><strong id="modelCount">0</strong><span>local model registry profiles with honest readiness states</span></div>
+            <div class="metric"><strong id="taskCount">0</strong><span>local AI task lanes mapped to demo fallback behavior</span></div>
+            <div class="metric"><strong>0</strong><span>API keys needed for the browser-local demo</span></div>
+            <div class="metric"><strong id="gateCount">0</strong><span>safety gates before any real local inference claim</span></div>
+          </div>
+        </article>
+
+        <aside class="prompt-panel" aria-labelledby="promptTitle">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title" id="promptTitle">Local prompt testing</h2>
+              <p class="panel-kicker">Draft prompts and see deterministic mock AI responses. No localhost request is made.</p>
+            </div>
+            <span class="state mock">mock response</span>
+          </div>
+          <div class="prompt-box">
+            <textarea id="promptInput" aria-label="Local prompt draft">Draft a SEIS repo summary with local-only context and no cloud fallback.</textarea>
+            <button class="button primary" type="button" data-action="run-prompt">Run local demo prompt</button>
+            <div class="output" id="promptOutput" aria-live="polite">Output will appear here. executionPerformed=false.</div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="grid-2" aria-label="Local Model Center workbench">
+        <article class="panel" aria-labelledby="workbenchTitle">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title" id="workbenchTitle">Local AI workbench</h2>
+              <p class="panel-kicker">Registry, local model status, task lanes, safety gates and continuation protocol stay separate so planned local AI is not mistaken for installed inference.</p>
+            </div>
+            <span class="state local-demo">browser-local</span>
+          </div>
+          <div class="tabs" role="tablist" aria-label="Local Model Center tabs">
+            <button class="tab" type="button" role="tab" aria-selected="true" aria-controls="pane-models" id="tab-models" data-tab="models">Local model registry</button>
+            <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="pane-tasks" id="tab-tasks" data-tab="tasks">Local task lanes</button>
+            <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="pane-gates" id="tab-gates" data-tab="gates">Safety gates</button>
+            <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="pane-protocol" id="tab-protocol" data-tab="protocol">Continuation protocol</button>
+          </div>
+          <div class="workspace">
+            <div class="pane active" role="tabpanel" id="pane-models" aria-labelledby="tab-models"><div class="card-grid" id="modelGrid"></div></div>
+            <div class="pane" role="tabpanel" id="pane-tasks" aria-labelledby="tab-tasks"><div class="card-grid" id="taskGrid"></div></div>
+            <div class="pane" role="tabpanel" id="pane-gates" aria-labelledby="tab-gates"><div class="gate-grid" id="gateGrid"></div></div>
+            <div class="pane" role="tabpanel" id="pane-protocol" aria-labelledby="tab-protocol">
+              <div class="status-list">
+                <div class="status-row"><div><strong>CONTINUE_FROM marker</strong><span>Long local outputs stop at a clean boundary and declare the next section.</span></div><span class="state planned">protocol</span></div>
+                <div class="status-row"><div><strong>DEVAM continuation</strong><span>User writes DEVAM to continue without repeating earlier content.</span></div><span class="state planned">protocol</span></div>
+                <div class="status-row"><div><strong>Manifest discipline</strong><span>Generated files should be tracked in a local manifest and reviewed before commit.</span></div><span class="state planned">protocol</span></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <aside class="panel" aria-labelledby="quickTitle">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title" id="quickTitle">Quick actions</h2>
+              <p class="panel-kicker">Every action updates local state or changes view only. No hidden endpoint call exists.</p>
+            </div>
+            <span class="state local-demo">localStorage</span>
+          </div>
+          <div class="action-grid">
+            <button class="action-card" type="button" data-action="show-endpoint"><strong>Show Ollama endpoint</strong><span>Documents optional localhost endpoint without connecting to it.</span><small>http://localhost:11434</small></button>
+            <button class="action-card" type="button" data-action="show-small-model"><strong>Show small model mode</strong><span>Highlights laptop-friendly local draft workflows.</span><small>small model mode</small></button>
+            <button class="action-card" type="button" data-action="show-continuation"><strong>Show CONTINUE_FROM</strong><span>Opens long context continuation protocol.</span><small>DEVAM</small></button>
+            <button class="action-card" type="button" data-action="show-safety"><strong>Show safety gates</strong><span>Opens blocked and planned gates before any real inference claim.</span><small>safe local dev</small></button>
+            <button class="action-card" type="button" data-action="mark-reviewed"><strong>Mark reviewed</strong><span>Stores a local review note for this browser session.</span><small>local-demo</small></button>
+            <button class="action-card" type="button" data-action="reset"><strong>Reset session</strong><span>Clears the Local Model Center localStorage state key.</span><small>localStorage</small></button>
+          </div>
+        </aside>
+      </section>
+
+      <section class="grid-3" aria-label="Local AI status">
+        <article class="panel" aria-labelledby="endpointTitle">
+          <div class="panel-header"><div><h2 class="panel-title" id="endpointTitle">Local endpoint documentation</h2><p class="panel-kicker">Endpoint is documentation only here. The page does not connect.</p></div><span class="state disabled">not connected</span></div>
+          <div class="status-list">
+            <div class="status-row"><div><strong>Ollama endpoint</strong><span><code>http://localhost:11434</code> is optional future local-only endpoint documentation.</span></div><span class="state planned">planned</span></div>
+            <div class="status-row"><div><strong>Network policy</strong><span>No browser request, health check, model list call or download is performed.</span></div><span class="state local-demo">safe</span></div>
+            <div class="status-row"><div><strong>Cloud fallback</strong><span>Local/private mode never silently falls back to paid cloud APIs.</span></div><span class="state blocked">blocked</span></div>
+          </div>
+        </article>
+
+        <article class="panel" aria-labelledby="tasksTitle">
+          <div class="panel-header"><div><h2 class="panel-title" id="tasksTitle">Local AI tasks</h2><p class="panel-kicker">Supported concept lanes for future local model use.</p></div><span class="state mock">mock</span></div>
+          <div class="status-list">
+            <div class="status-row"><div><strong>Repo summarization</strong><span>Use sanitized repo-local context and reviewed output.</span></div><span class="state planned">planned</span></div>
+            <div class="status-row"><div><strong>Prompt generation</strong><span>Generate SEIS-owned draft prompts with no copied proprietary prompts.</span></div><span class="state planned">planned</span></div>
+            <div class="status-row"><div><strong>PR summary draft</strong><span>Draft PR body locally, then human review before GitHub mutation.</span></div><span class="state mock">demo</span></div>
+          </div>
+        </article>
+
+        <article class="panel" aria-labelledby="logTitle">
+          <div class="panel-header"><div><h2 class="panel-title" id="logTitle">Local activity log</h2><p class="panel-kicker">Redacted browser events only.</p></div><span class="state local-demo">safe log</span></div>
+          <div class="console" id="activityLog" aria-live="polite"></div>
+        </article>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>State key: <code>seis.local.model.center.demo.v1</code></span>
+      <span>No endpoint calls, downloads, inference, SSH, provider calls or paid APIs are used.</span>
+    </footer>
+  </div>
+
+  <aside class="drawer" id="drawer" aria-hidden="true" aria-labelledby="drawerTitle">
+    <div class="drawer-head"><h2 id="drawerTitle">Local AI boundary</h2><button class="icon-button" type="button" data-action="close-drawer" aria-label="Close drawer">X</button></div>
+    <div class="status-list" id="drawerBody"></div>
+    <button class="button primary" type="button" data-action="save">Save local state</button>
+  </aside>
+
+  <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="true"></div>
+
+  <script>
+    (() => {
+      const STATE_KEY = "seis.local.model.center.demo.v1";
+      const models = [
+        ["ollama-planned", "Ollama Local Runtime", "planned", "Optional localhost runtime, not connected by this page."],
+        ["small-model", "Small Model Mode", "mock", "Laptop-friendly draft mode for summaries, prompt drafts and local command explanations."],
+        ["long-context", "Long Context Local Lane", "planned", "Continuation-first workflow using CONTINUE_FROM and DEVAM boundaries."],
+        ["local-router", "Local Router Fallback", "local-demo", "Deterministic browser fallback when live local model evidence is absent."],
+        ["model-card", "Model Card Gate", "blocked", "Real model use requires model card, license review, safety notes and human approval."],
+        ["offline-fixture", "Offline Demo Fixture", "available", "Mock AI responses for demos with no downloads, inference or provider calls."]
+      ];
+      const tasks = [
+        ["repo-summary", "Repo summarization", "Summarize SEIS scope from reviewed local context only."],
+        ["prompt-generation", "Prompt generation", "Draft SEIS-owned prompts without copying proprietary system prompts."],
+        ["documentation", "Documentation generation", "Produce local docs drafts with human review before commit."],
+        ["architecture", "Architecture planning", "Plan modules, constraints and rollback notes without live execution."],
+        ["code-review", "Code review assistance", "Suggest review notes from sanitized snippets only."],
+        ["memory-reconstruction", "SEIS memory reconstruction", "Rebuild context packs from approved public/local notes."],
+        ["design-critique", "Design critique draft", "Critique UI direction using SEIS design rules."],
+        ["pr-summary", "PR summary draft", "Prepare PR body text for human review."],
+        ["command-explain", "Local command explanations", "Explain commands without executing them."],
+        ["mock-response", "Mock AI responses", "Generate deterministic local demo output." ]
+      ];
+      const gates = [
+        ["no-paid-api", "No paid API dependency", "available", "The browser-local demo needs zero provider keys."],
+        ["no-network", "No network calls", "available", "The page does not call localhost, cloud APIs or GitHub."],
+        ["no-download", "No model downloads", "blocked", "Downloads require explicit user action outside this page."],
+        ["license-review", "Model license review", "planned", "Every candidate model needs license and provenance notes."],
+        ["privacy", "Private context boundary", "planned", "Private prompts stay local and cannot silently route to cloud."],
+        ["benchmark", "Hardware benchmark", "planned", "Real local model claims need measured memory and speed evidence."],
+        ["human-review", "Human review", "blocked", "No local model can approve its own promotion."],
+        ["manifest", "Generated file manifest", "planned", "Large local outputs need manifest and review before commit." ]
+      ];
+      const defaultState = { tab: "models", reviewed: false, logs: [["boot", "Local Model Center opened in browser-local mode."], ["safety", "No endpoint, provider, download, inference, SSH or paid API was used."], ["protocol", "CONTINUE_FROM and DEVAM protocol is available as documentation."]] };
+      let state = loadState();
+      const $ = (selector, root = document) => root.querySelector(selector);
+      const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+
+      function loadState() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(STATE_KEY) || "null");
+          if (saved && typeof saved === "object") return { ...defaultState, ...saved, logs: Array.isArray(saved.logs) ? saved.logs : defaultState.logs };
+        } catch (error) { return { ...defaultState }; }
+        return { ...defaultState };
+      }
+      function saveState(showToast = true) { localStorage.setItem(STATE_KEY, JSON.stringify(state)); if (showToast) toast("Local Model Center state saved."); }
+      function addLog(scope, message) { state.logs = [[scope, message], ...state.logs].slice(0, 16); renderLog(); saveState(false); }
+      function stateClass(value) { return value.toLowerCase().replace(/\s+/g, "-"); }
+      function label(value) { return `<span class="state ${stateClass(value)}">${value}</span>`; }
+
+      function renderModels() {
+        $("#modelGrid").innerHTML = models.map(([id, name, status, detail]) => `<button class="model-card" type="button" data-model="${id}" data-search="${[id, name, status, detail].join(' ').toLowerCase()}"><strong>${name}</strong><span>${detail}</span><small>${status}</small></button>`).join("");
+        $$(".model-card").forEach((card) => card.addEventListener("click", () => { const item = models.find((model) => model[0] === card.dataset.model); addLog("model", `${item[1]} inspected. State: ${item[2]}.`); toast(`${item[1]} is ${item[2]}.`); }));
+      }
+      function renderTasks() {
+        $("#taskGrid").innerHTML = tasks.map(([id, name, detail]) => `<button class="task-card" type="button" data-task="${id}" data-search="${[id, name, detail].join(' ').toLowerCase()}"><strong>${name}</strong><span>${detail}</span><small>local task lane</small></button>`).join("");
+        $$(".task-card").forEach((card) => card.addEventListener("click", () => { const item = tasks.find((task) => task[0] === card.dataset.task); addLog("task", `${item[1]} selected as local draft lane.`); toast("Task lane selected in demo mode."); }));
+      }
+      function renderGates() {
+        $("#gateGrid").innerHTML = gates.map(([id, name, status, detail]) => `<button class="gate-card" type="button" data-gate="${id}" data-search="${[id, name, status, detail].join(' ').toLowerCase()}"><strong>${name}</strong><span>${detail}</span><small>${status}</small></button>`).join("");
+        $$(".gate-card").forEach((card) => card.addEventListener("click", () => { const item = gates.find((gate) => gate[0] === card.dataset.gate); addLog("gate", `${item[1]} reviewed. Status: ${item[2]}.`); }));
+      }
+      function renderLog() {
+        const time = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+        $("#activityLog").innerHTML = state.logs.map(([scope, message]) => `<div class="log-line"><b>${time} ${scope}</b><span>${message}</span></div>`).join("");
+      }
+      function renderMetrics() { $("#modelCount").textContent = models.length; $("#taskCount").textContent = tasks.length; $("#gateCount").textContent = gates.length; }
+      function setTab(tab) { state.tab = tab; $$(".tab").forEach((button) => button.setAttribute("aria-selected", String(button.dataset.tab === tab))); $$(".pane").forEach((pane) => pane.classList.toggle("active", pane.id === `pane-${tab}`)); saveState(false); }
+      function runPrompt() {
+        const prompt = $("#promptInput").value.trim() || "Draft local-only SEIS output.";
+        const clipped = prompt.length > 120 ? `${prompt.slice(0, 120)}...` : prompt;
+        $("#promptOutput").textContent = `[local-demo]\nexecutionPerformed=false\nmodel=offline-fixture\nendpointCall=false\ncloudFallback=false\n\nDraft response for: ${clipped}\n\n- Use local-only context.\n- Keep output reviewable.\n- If output grows too long, write CONTINUE_FROM: next-section.\n- Continue only after DEVAM.\n- Do not claim live Ollama inference without external proof.`;
+        addLog("prompt", "Mock local prompt response generated without endpoint call.");
+      }
+      function openDrawer() {
+        $("#drawerBody").innerHTML = `<div class="status-row"><div><strong>Real</strong><span>Static UI, local prompt simulation, search, tabs and localStorage state.</span></div>${label("available")}</div><div class="status-row"><div><strong>Mock</strong><span>Model registry, prompt output and task routing are demo-only metadata.</span></div>${label("mock")}</div><div class="status-row"><div><strong>Planned</strong><span>Optional Ollama adapter and localhost health checks after approval.</span></div>${label("planned")}</div><div class="status-row"><div><strong>Blocked</strong><span>Downloads, real inference, cloud fallback, SSH and model promotion without evidence.</span></div>${label("blocked")}</div>`;
+        const drawer = $("#drawer"); drawer.classList.add("open"); drawer.setAttribute("aria-hidden", "false"); $("[data-action='close-drawer']").focus();
+      }
+      function closeDrawer() { const drawer = $("#drawer"); drawer.classList.remove("open"); drawer.setAttribute("aria-hidden", "true"); }
+      function toast(message) { const stack = $("#toastStack"); const item = document.createElement("div"); item.className = "toast"; item.textContent = message; stack.appendChild(item); window.setTimeout(() => item.remove(), 3200); }
+      function applySearch(value) { const needle = value.trim().toLowerCase(); $$('[data-search]').forEach((item) => item.classList.toggle("hidden", Boolean(needle) && !item.dataset.search.includes(needle))); }
+      function handleAction(action) {
+        if (action === "open-drawer") openDrawer();
+        if (action === "close-drawer") closeDrawer();
+        if (action === "save") saveState(true);
+        if (action === "run-prompt") runPrompt();
+        if (action === "show-endpoint") { openDrawer(); addLog("endpoint", "Optional Ollama endpoint documented without connection."); }
+        if (action === "show-small-model") { setTab("models"); addLog("model", "Small Model Mode highlighted."); toast("Small model mode is demo metadata."); }
+        if (action === "show-continuation") { setTab("protocol"); addLog("protocol", "CONTINUE_FROM / DEVAM protocol opened."); }
+        if (action === "show-safety") { setTab("gates"); addLog("gate", "Local AI safety gates opened."); }
+        if (action === "mark-reviewed") { state.reviewed = true; addLog("review", "Local Model Center marked reviewed in local state."); toast("Review marker stored locally."); }
+        if (action === "reset") { localStorage.removeItem(STATE_KEY); state = { ...defaultState, logs: [...defaultState.logs] }; renderAll(); toast("Local Model Center state reset."); }
+      }
+      function bind() {
+        $$(".tab").forEach((button) => button.addEventListener("click", () => setTab(button.dataset.tab)));
+        $$('[data-action]').forEach((item) => item.addEventListener("click", () => handleAction(item.dataset.action)));
+        $("#localSearch").addEventListener("input", (event) => applySearch(event.target.value));
+        document.addEventListener("keydown", (event) => { if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") { event.preventDefault(); $("#localSearch").focus(); } if (event.key === "Escape") closeDrawer(); });
+      }
+      function renderAll() { renderModels(); renderTasks(); renderGates(); renderLog(); renderMetrics(); setTab(state.tab || "models"); }
+      renderAll();
+      bind();
+    })();
+  </script>
+</body>
+</html>
