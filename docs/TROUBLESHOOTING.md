@@ -5,6 +5,33 @@
 - Missing Node dependencies or script failures usually indicate environment mismatch.
 - Keep command output and reproduce with explicit path and command.
 
+## iCloud Drive / local file access problems
+
+If the checkout is under an iCloud-backed path such as `Library/Mobile Documents` or `CloudDocs`, macOS may allow directory metadata reads while blocking file contents with `Operation not permitted` or `EPERM`.
+
+Use narrow probes before wider scans:
+
+```bash
+pwd
+ls -la
+sed -n '1,40p' AGENTS.md
+sed -n '1,80p' package.json
+```
+
+Treat this as a local privacy, iCloud file-provider, or Full Disk Access boundary when:
+
+- the repo path is visible but known files cannot be read
+- `.git` exists but `git status` fails with `Operation not permitted`
+- Node or npm commands fail with cwd or EPERM errors before project code runs
+
+Safe recovery options:
+
+1. Grant Full Disk Access to the terminal or app running the agent.
+2. Ensure the folder is fully downloaded from iCloud and not optimized away.
+3. Use a non-iCloud clone or worktree for code changes and CI reproduction.
+
+Do not treat this as repository corruption. Stop broad recursive scans once the permission boundary is clear, and do not claim build or validator failures until the same command is reproduced from an accessible checkout.
+
 ## Build problems
 
 - Confirm current directory for each script.
