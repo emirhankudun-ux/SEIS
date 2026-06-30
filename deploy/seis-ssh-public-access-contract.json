@@ -55,6 +55,23 @@
       "a private key or token appears in repo artifacts"
     ]
   },
+  "githubCommitVerification": {
+    "status": "owner-action-required",
+    "authKeyPurpose": "GitHub SSH authentication proves the clone, fetch, and push transport.",
+    "signingKeyPurpose": "GitHub SSH signing keys verify commit signatures for protected branch rules.",
+    "requiredScope": "admin:ssh_signing_key",
+    "localGitRequirements": [
+      "gpg.format ssh",
+      "commit.gpgsign true",
+      "user.signingkey points to the public SSH key path"
+    ],
+    "forbiddenActions": [
+      "commit private signing keys",
+      "paste signing key material into docs or prompts",
+      "force-push rewritten signed commits without explicit owner approval"
+    ],
+    "readyClaim": "A branch may claim GitHub-verified signed commits only after the public signing key is registered as a GitHub signing key and the PR shows verified signatures."
+  },
   "profiles": [
     {
       "id": "github-reader",

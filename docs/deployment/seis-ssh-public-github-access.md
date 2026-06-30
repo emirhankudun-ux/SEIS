@@ -13,6 +13,27 @@ Ayni sunucu ve baglanti noktasi korunur.
 The public promise is simple: one memorable alias, clear evidence, no secrets
 in git, no fake online status, and no local-Mac dependency.
 
+## GitHub Commit Verification
+
+GitHub SSH authentication and GitHub SSH commit verification are separate
+gates. An authentication key can clone, fetch, and push over
+`git@github.com:...`, but protected branches may still reject or bypass-review a
+commit until the same public key, or a dedicated public key, is registered as a
+GitHub signing key.
+
+SEIS uses this public-safe rule:
+
+- local Git may use `gpg.format ssh`, `commit.gpgsign true`, and
+  `user.signingkey` pointing to a public SSH key path
+- GitHub must also have the public key registered as a signing key
+- the GitHub CLI scope needed for signing-key registration is
+  `admin:ssh_signing_key`
+- never commit, print, or paste the private key
+- do not force-push rewritten signed commits without explicit owner approval
+
+Ready claim: a branch can claim GitHub-verified signed commits only when the PR
+commit list shows verified signatures.
+
 ## What Is Real Today
 
 - `SEIS-SSH` is the only visible SEIS SSH alias.
