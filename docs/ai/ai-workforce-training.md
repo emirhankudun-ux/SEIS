@@ -22,6 +22,8 @@ Validation:
 ```bash
 npm run check:seis-ai-workforce-training
 npm run check:seis-language-model-intake
+npm run report:seis-language-model-training-curriculum
+npm run check:seis-language-model-training-curriculum
 npm run automation:seis-ai-workforce-training
 ```
 
@@ -57,6 +59,26 @@ npm run automation:seis-ai-workforce-training
 8. Human approval is required before live provider calls, cloud fine-tuning,
    paid benchmarks, dataset downloads, SSH, deployment, push, merge, or model
    publication.
+
+## Language Model Coverage Plan
+
+Tüm dil modeli adaylarını (Llama, Qwen, Gemma, Mistral, DeepSeek, OpenAI
+open-weight, embedding/reranker, code-specialist) bir kereye mahsus aynı güvenli
+katmanda planlayıp onaylamak için şu iki komutu çalıştırın:
+
+```bash
+npm run report:seis-language-model-training-curriculum
+npm run check:seis-language-model-training-curriculum
+```
+
+Üretilen çıktılar:
+
+- `content/development/seis-language-model-training-curriculum.json`
+- `reports/seis-model-scaling/seis-language-model-training-curriculum.json`
+- `reports/seis-model-scaling/seis-language-model-training-curriculum.md`
+
+Bu plan gerçek yükleme veya eğitim yapmadan önce lisans, checksum, model kartı,
+veri kartı ve insan onayı şartlarını açıkça zorunlu kılar.
 
 ## Language Model Intake Registry
 

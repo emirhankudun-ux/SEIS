@@ -1,7 +1,7 @@
 {
   "id": "seis-language-model-training-curriculum",
   "version": "2026.06.23",
-  "generatedAt": "2026-06-29T06:09:40.048Z",
+  "generatedAt": "2026-06-30T20:01:05.812Z",
   "status": "planned-training-contract",
   "truthBoundary": [
     "Language model training curriculum is planning-only.",
@@ -452,7 +452,7 @@
   "report": {
     "id": "seis-language-model-training-curriculum",
     "version": "2026.06.23",
-    "generatedAt": "2026-06-29T06:09:40.048Z",
+    "generatedAt": "2026-06-30T20:01:05.812Z",
     "status": "planned-training-contract",
     "truthBoundary": [
       "Language model training curriculum is planning-only.",
