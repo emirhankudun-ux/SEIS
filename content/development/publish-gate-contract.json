@@ -11,6 +11,9 @@
       "work",
       "main",
       "codex/publish-local-seis-20260618-163043"
+    ],
+    "acceptedLocalBranchPrefixes": [
+      "codex/"
     ]
   },
   "readinessLevels": [

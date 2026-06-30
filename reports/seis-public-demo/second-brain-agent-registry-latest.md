@@ -1,6 +1,6 @@
 # SEIS Second Brain Agent Registry
 
-Generated: 2026-06-30T11:35:28.592Z
+Generated: 2026-06-30T14:00:35.962Z
 Status: review-only-agent-registry
 Mode: repo-local-no-live-execution
 Decision: NO-GO-autonomous-execution-not-approved
@@ -24,8 +24,8 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 ## Second Brain Binding
 
 - status: local-demo
-- vaultRoot: /home/seis/SecondBrain
-- trainingPackPath: /home/seis/SecondBrain/07-learning/seis-agent-training-pack.md
+- vaultRoot: browser-vfs/SecondBrain
+- trainingPackPath: browser-vfs/SecondBrain/07-learning/seis-agent-training-pack.md
 - obsidianBridgeStatus: planned
 - privateVaultImportEnabled: false
 - hostVaultReadEnabled: false

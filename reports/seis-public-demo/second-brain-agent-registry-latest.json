@@ -1,7 +1,7 @@
 {
   "id": "seis-second-brain-agent-registry-pr54",
   "title": "SEIS Second Brain Agent Registry",
-  "generatedAt": "2026-06-30T11:35:28.592Z",
+  "generatedAt": "2026-06-30T14:00:35.962Z",
   "status": "review-only-agent-registry",
   "mode": "repo-local-no-live-execution",
   "decision": "NO-GO-autonomous-execution-not-approved",
@@ -20,8 +20,8 @@
   },
   "secondBrainBinding": {
     "status": "local-demo",
-    "vaultRoot": "/home/seis/SecondBrain",
-    "trainingPackPath": "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md",
+    "vaultRoot": "browser-vfs/SecondBrain",
+    "trainingPackPath": "browser-vfs/SecondBrain/07-learning/seis-agent-training-pack.md",
     "obsidianBridgeStatus": "planned",
     "privateVaultImportEnabled": false,
     "hostVaultReadEnabled": false,

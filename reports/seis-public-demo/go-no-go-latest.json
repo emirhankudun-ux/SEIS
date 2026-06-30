@@ -10,7 +10,7 @@
     "head": "codex/seis-demo-github-upload-20260624",
     "requiredState": "reviewed before merge or public release"
   },
-  "checkedAt": "2026-06-30T11:55:47.100Z",
+  "checkedAt": "2026-06-30T14:02:27.500Z",
   "checks": {
     "checklist": {
       "id": "seis-public-demo-release-checklist-pr54",
@@ -46,7 +46,7 @@
       "mode": "repo-static-and-browser-smoke-evidence",
       "decision": "NO-GO-human-accessibility-review-required",
       "automatedFailed": 0,
-      "requiredBlocked": 4
+      "requiredBlocked": 5
     },
     "agentRegistry": {
       "status": "review-only-agent-registry",
@@ -83,25 +83,24 @@
     },
     "git": {
       "commandStatus": 0,
-      "dirtyCount": 17,
+      "dirtyCount": 16,
       "dirtyPaths": [
-        " M .gitignore",
+        " M content/development/publish-gate-contract.json",
+        " M docs/deployment/publish-gate-contract.md",
+        " M reports/seis-public-demo/evidence-manifest-latest.json",
+        " M reports/seis-public-demo/go-no-go-latest.json",
         " M reports/seis-public-demo/go-no-go-latest.md",
-        " M reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md",
         " M reports/seis-public-demo/pr54-review-packet-latest.md",
         " M reports/seis-public-demo/pr54-stage-plan-latest.md",
-        " M reports/seis-public-demo/read-only-model-router-decision-latest.md",
+        " M reports/seis-public-demo/second-brain-accessibility-focus-latest.json",
         " M reports/seis-public-demo/second-brain-accessibility-focus-latest.md",
+        " M reports/seis-public-demo/second-brain-agent-registry-latest.json",
         " M reports/seis-public-demo/second-brain-agent-registry-latest.md",
         " M reports/seis-public-demo/worktree-review-latest.md",
         " M scripts/check-publish-gate-contract.mjs",
         " M scripts/check-seis-second-brain-readiness-contracts.mjs",
-        "?? reports/seis-public-demo/evidence-manifest-latest.json",
-        "?? reports/seis-public-demo/go-no-go-latest.json",
-        "?? reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json",
-        "?? reports/seis-public-demo/read-only-model-router-decision-latest.json",
-        "?? reports/seis-public-demo/second-brain-accessibility-focus-latest.json",
-        "?? reports/seis-public-demo/second-brain-agent-registry-latest.json"
+        " M scripts/create-seis-second-brain-accessibility-focus-report.mjs",
+        " M scripts/create-seis-second-brain-agent-registry.mjs"
       ]
     },
     "fastValidation": [
@@ -173,14 +172,14 @@
   },
   "worktreeReview": {
     "artifactPath": "reports/seis-public-demo/worktree-review-latest.md",
-    "dirtyCount": 17,
+    "dirtyCount": 16,
     "workstreamCount": 2,
     "releaseBlocking": true
   },
   "stagePlan": {
     "artifactPath": "reports/seis-public-demo/pr54-stage-plan-latest.md",
-    "candidatePathCount": 15,
-    "excludedPathCount": 2,
+    "candidatePathCount": 13,
+    "excludedPathCount": 3,
     "readyForHumanReview": true
   }
 }

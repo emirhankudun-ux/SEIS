@@ -1,11 +1,11 @@
 # PR #54 Stage Plan
 
-Generated: 2026-06-30T11:55:47.100Z
+Generated: 2026-06-30T14:02:27.500Z
 Decision: NO-GO
 Status: review-gated-not-released
 Ready for human review: yes
-Candidate paths: 15
-Excluded paths: 2
+Candidate paths: 13
+Excluded paths: 3
 
 ## Scope
 
@@ -15,25 +15,24 @@ delete, reset, deploy, import Obsidian, execute SSH, or call model providers.
 
 ## Candidate Paths For One Review Slice
 
+- M reports/seis-public-demo/evidence-manifest-latest.json
+- M reports/seis-public-demo/go-no-go-latest.json
 - M reports/seis-public-demo/go-no-go-latest.md
-- M reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md
 - M reports/seis-public-demo/pr54-review-packet-latest.md
 - M reports/seis-public-demo/pr54-stage-plan-latest.md
-- M reports/seis-public-demo/read-only-model-router-decision-latest.md
+- M reports/seis-public-demo/second-brain-accessibility-focus-latest.json
 - M reports/seis-public-demo/second-brain-accessibility-focus-latest.md
+- M reports/seis-public-demo/second-brain-agent-registry-latest.json
 - M reports/seis-public-demo/second-brain-agent-registry-latest.md
 - M reports/seis-public-demo/worktree-review-latest.md
 - M scripts/check-seis-second-brain-readiness-contracts.mjs
-- ?? reports/seis-public-demo/evidence-manifest-latest.json
-- ?? reports/seis-public-demo/go-no-go-latest.json
-- ?? reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json
-- ?? reports/seis-public-demo/read-only-model-router-decision-latest.json
-- ?? reports/seis-public-demo/second-brain-accessibility-focus-latest.json
-- ?? reports/seis-public-demo/second-brain-agent-registry-latest.json
+- M scripts/create-seis-second-brain-accessibility-focus-report.mjs
+- M scripts/create-seis-second-brain-agent-registry.mjs
 
 ## Excluded Separate Workstreams
 
-- M .gitignore (Unclassified Dirty Paths)
+- M content/development/publish-gate-contract.json (Unclassified Dirty Paths)
+- M docs/deployment/publish-gate-contract.md (Unclassified Dirty Paths)
 - M scripts/check-publish-gate-contract.mjs (Unclassified Dirty Paths)
 
 ## Human-Run Git Add Commands
@@ -41,8 +40,8 @@ delete, reset, deploy, import Obsidian, execute SSH, or call model providers.
 Run only after reviewing the diff and confirming these paths belong in the same
 PR #54 readiness slice:
 
-- `git add -- 'reports/seis-public-demo/go-no-go-latest.md' 'reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md' 'reports/seis-public-demo/pr54-review-packet-latest.md' 'reports/seis-public-demo/pr54-stage-plan-latest.md' 'reports/seis-public-demo/read-only-model-router-decision-latest.md' 'reports/seis-public-demo/second-brain-accessibility-focus-latest.md' 'reports/seis-public-demo/second-brain-agent-registry-latest.md' 'reports/seis-public-demo/worktree-review-latest.md'`
-- `git add -- 'scripts/check-seis-second-brain-readiness-contracts.mjs' 'reports/seis-public-demo/evidence-manifest-latest.json' 'reports/seis-public-demo/go-no-go-latest.json' 'reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json' 'reports/seis-public-demo/read-only-model-router-decision-latest.json' 'reports/seis-public-demo/second-brain-accessibility-focus-latest.json' 'reports/seis-public-demo/second-brain-agent-registry-latest.json'`
+- `git add -- 'reports/seis-public-demo/evidence-manifest-latest.json' 'reports/seis-public-demo/go-no-go-latest.json' 'reports/seis-public-demo/go-no-go-latest.md' 'reports/seis-public-demo/pr54-review-packet-latest.md' 'reports/seis-public-demo/pr54-stage-plan-latest.md' 'reports/seis-public-demo/second-brain-accessibility-focus-latest.json' 'reports/seis-public-demo/second-brain-accessibility-focus-latest.md' 'reports/seis-public-demo/second-brain-agent-registry-latest.json'`
+- `git add -- 'reports/seis-public-demo/second-brain-agent-registry-latest.md' 'reports/seis-public-demo/worktree-review-latest.md' 'scripts/check-seis-second-brain-readiness-contracts.mjs' 'scripts/create-seis-second-brain-accessibility-focus-report.mjs' 'scripts/create-seis-second-brain-agent-registry.mjs'`
 
 ## Required Validation Before Commit
 

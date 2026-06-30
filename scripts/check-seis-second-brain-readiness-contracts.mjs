@@ -262,6 +262,7 @@ function validateAccessibilityFocus(report, contract) {
   }
   ensureListEntryContains((report.requiredEvidence || []).map((item) => `${item.id}:${item.status}`), "manual-keyboard-transcript:blocked", "Accessibility focus required evidence statuses");
   ensureListEntryContains((report.requiredEvidence || []).map((item) => `${item.id}:${item.status}`), "screen-reader-transcript:blocked", "Accessibility focus required evidence statuses");
+  ensureListEntryContains((report.requiredEvidence || []).map((item) => `${item.id}:${item.status}`), "mobile-assistive-technology-review:blocked", "Accessibility focus required evidence statuses");
   ensureListEntryContains((report.requiredEvidence || []).map((item) => `${item.id}:${item.status}`), "human-accessibility-review-approval:blocked", "Accessibility focus required evidence statuses");
   const serialized = JSON.stringify(report);
   ensure(!serialized.includes("file://"), "Accessibility focus artifact must not include file:// paths.");
@@ -284,6 +285,8 @@ function validateAgentRegistry(report) {
   ensure(report.secondBrainBinding?.privateVaultImportEnabled === false, "Second Brain agent registry must not enable private vault import.");
   ensure(report.secondBrainBinding?.hostVaultReadEnabled === false, "Second Brain agent registry must not enable host vault reads.");
   ensure(report.secondBrainBinding?.githubMutationEnabled === false, "Second Brain agent registry must not enable GitHub mutation.");
+  ensure(!String(report.secondBrainBinding?.vaultRoot || "").startsWith("/home/"), "Second Brain agent registry vaultRoot must be public-safe and repo-neutral.");
+  ensure(!String(report.secondBrainBinding?.trainingPackPath || "").startsWith("/home/"), "Second Brain agent registry trainingPackPath must be public-safe and repo-neutral.");
   ensureArrayMin(report.providerProfiles, 6, "Second Brain agent registry provider profiles");
   ensureArrayMin(report.workforceAssignments, 10, "Second Brain agent registry workforce assignments");
   ensureArrayMin(report.subAgentMesh?.managedSubAgentLanes, 6, "Second Brain agent registry managed sub-agent lanes");
@@ -515,9 +518,10 @@ function validatePublicDemoArtifacts(report, manifest) {
   ensure(report.mode === "read-only", "public demo go/no-go report must stay read-only.");
   ensure(report.pullRequest?.number === 54, "public demo go/no-go report must bind PR #54.");
   ensure(Array.isArray(report.blockers), "public demo go/no-go report blockers must be an array.");
-  ensure(report.blockers.includes("dirty-worktree"), "public demo go/no-go report must block dirty worktree.");
-  ensure(report.blockers.includes("human-release-approval-missing"), "public demo go/no-go report must block missing human approval.");
-  const browserSmokeMissing = report.blockers.includes("current-browser-smoke-evidence-missing");
+  const reportBlockers = Array.isArray(report.blockers) ? report.blockers : [];
+  ensure(reportBlockers.includes("dirty-worktree"), "public demo go/no-go report must block dirty worktree.");
+  ensure(reportBlockers.includes("human-release-approval-missing"), "public demo go/no-go report must block missing human approval.");
+  const browserSmokeMissing = reportBlockers.includes("current-browser-smoke-evidence-missing");
   ensure(report.evidenceManifest?.artifactPath === "reports/seis-public-demo/evidence-manifest-latest.json", "public demo report must point to evidence manifest artifact.");
   ensure(report.worktreeReview?.artifactPath === "reports/seis-public-demo/worktree-review-latest.md", "public demo report must point to worktree review artifact.");
   ensure(report.stagePlan?.artifactPath === "reports/seis-public-demo/pr54-stage-plan-latest.md", "public demo report must point to stage plan artifact.");
@@ -526,6 +530,12 @@ function validatePublicDemoArtifacts(report, manifest) {
   ensure(manifest.decision === "NO-GO", "public demo evidence manifest decision mismatch.");
   ensure(manifest.status === "review-gated-not-released", "public demo evidence manifest status mismatch.");
   ensure(manifest.pullRequest?.number === 54, "public demo evidence manifest must bind PR #54.");
+  const manifestItems = Array.isArray(manifest.items) ? manifest.items : [];
+  const manifestSummary = manifest.summary || {};
+  ensure(report.evidenceManifest?.itemCount === manifestItems.length, "public demo report evidence itemCount must match evidence manifest items.");
+  ensure(report.evidenceManifest?.passedCount === manifestSummary.passed, "public demo report evidence passedCount must match evidence manifest summary.");
+  ensure(report.evidenceManifest?.blockedCount === manifestSummary.blocked, "public demo report evidence blockedCount must match evidence manifest summary.");
+  ensure(report.evidenceManifest?.missingEvidenceCount === manifestSummary.missingCurrentEvidence, "public demo report evidence missingEvidenceCount must match evidence manifest summary.");
   ensure(manifest.summary?.failed === 0, "public demo evidence manifest must have zero failed evidence items.");
   ensure(manifest.summary?.blocked >= 2, "public demo evidence manifest must include release blockers.");
   if (browserSmokeMissing) {

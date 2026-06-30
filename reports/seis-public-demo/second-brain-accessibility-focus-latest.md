@@ -1,6 +1,6 @@
 # SEIS Second Brain Accessibility Focus QA
 
-Generated: 2026-06-30T11:51:48.095Z
+Generated: 2026-06-30T14:00:33.169Z
 Status: review-gated-human-accessibility-needed
 Mode: repo-static-and-browser-smoke-evidence
 Decision: NO-GO-human-accessibility-review-required
@@ -37,6 +37,7 @@ accessibility approval work is complete.
 | manual keyboard transcript | blocked | Human keyboard-only transcript required before public release. |
 | screen-reader transcript | blocked | Human screen-reader transcript required before public release. |
 | mobile viewport target audit | passed | scripts/check-seis-second-brain-browser-smoke.mjs |
+| mobile assistive-technology review | blocked | Human mobile assistive-technology review required before public release. |
 | reduced-motion review note | blocked | Human reduced-motion review note required before public release. |
 | human accessibility review approval | blocked | Explicit human accessibility approval required before public release. |
 

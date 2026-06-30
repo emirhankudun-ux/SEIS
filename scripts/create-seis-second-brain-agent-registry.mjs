@@ -140,8 +140,8 @@ function buildReport(generatedAt) {
     },
     secondBrainBinding: {
       status: secondBrain?.status,
-      vaultRoot: secondBrain?.vaultRoot,
-      trainingPackPath: secondBrain?.trainingPackPath,
+      vaultRoot: publicSecondBrainPath(secondBrain?.vaultRoot),
+      trainingPackPath: publicSecondBrainPath(secondBrain?.trainingPackPath),
       obsidianBridgeStatus: secondBrain?.obsidianBridge?.status,
       privateVaultImportEnabled: obsidianContract?.currentRuntime?.privateVaultImportEnabled ?? false,
       hostVaultReadEnabled: obsidianContract?.currentRuntime?.hostVaultReadEnabled ?? false,
@@ -242,6 +242,14 @@ function inferProfileStatus(profileId, assignments) {
   return match?.status || "recorded-profile";
 }
 
+function publicSecondBrainPath(value) {
+  const text = String(value || "");
+  const prefix = "/home/seis/SecondBrain";
+  if (text === prefix) return "browser-vfs/SecondBrain";
+  if (text.startsWith(`${prefix}/`)) return `browser-vfs/SecondBrain/${text.slice(prefix.length + 1)}`;
+  return text;
+}
+
 function validateReport(value, label) {
   ensure(value?.id === "seis-second-brain-agent-registry-pr54", `${label} id mismatch.`);
   ensure(value?.title === "SEIS Second Brain Agent Registry", `${label} title mismatch.`);
@@ -255,6 +263,8 @@ function validateReport(value, label) {
   ensure(value?.secondBrainBinding?.privateVaultImportEnabled === false, `${label} private vault import must be disabled.`);
   ensure(value?.secondBrainBinding?.hostVaultReadEnabled === false, `${label} host vault reads must be disabled.`);
   ensure(value?.secondBrainBinding?.githubMutationEnabled === false, `${label} GitHub mutation must be disabled.`);
+  ensure(!String(value?.secondBrainBinding?.vaultRoot || "").startsWith("/home/"), `${label} vaultRoot must be public-safe and repo-neutral.`);
+  ensure(!String(value?.secondBrainBinding?.trainingPackPath || "").startsWith("/home/"), `${label} trainingPackPath must be public-safe and repo-neutral.`);
   ensureArrayMin(value?.providerProfiles, 6, `${label} providerProfiles`);
   ensureArrayMin(value?.workforceAssignments, 10, `${label} workforceAssignments`);
   ensureArrayMin(value?.subAgentMesh?.managedSubAgentLanes, 6, `${label} managedSubAgentLanes`);

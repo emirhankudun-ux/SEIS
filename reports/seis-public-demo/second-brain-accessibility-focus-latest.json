@@ -1,7 +1,7 @@
 {
   "id": "seis-second-brain-accessibility-focus-qa-pr54",
   "title": "SEIS Second Brain Accessibility Focus QA",
-  "generatedAt": "2026-06-30T11:51:48.095Z",
+  "generatedAt": "2026-06-30T14:00:33.169Z",
   "status": "review-gated-human-accessibility-needed",
   "mode": "repo-static-and-browser-smoke-evidence",
   "decision": "NO-GO-human-accessibility-review-required",
@@ -110,6 +110,12 @@
       "evidence": "scripts/check-seis-second-brain-browser-smoke.mjs"
     },
     {
+      "id": "mobile-assistive-technology-review",
+      "requirement": "mobile assistive-technology review",
+      "status": "blocked",
+      "evidence": "Human mobile assistive-technology review required before public release."
+    },
+    {
       "id": "reduced-motion-review-note",
       "requirement": "reduced-motion review note",
       "status": "blocked",
@@ -126,7 +132,7 @@
     "automatedPassed": 10,
     "automatedFailed": 0,
     "requiredPassed": 2,
-    "requiredBlocked": 4
+    "requiredBlocked": 5
   },
   "safetyBoundary": {
     "privateObsidianImportPerformed": false,
