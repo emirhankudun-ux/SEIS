@@ -51,6 +51,7 @@ npm run report:seis-obsidian-safe-import-dry-run
 npm run report:seis-read-only-model-router-decision
 npm run report:seis-second-brain-accessibility-focus-report
 npm run report:seis-second-brain-agent-registry
+npm run report:seis-public-demo-security-gate
 npm run report:seis-public-demo-go-no-go
 ```
 
@@ -85,6 +86,15 @@ installed AI profiles, AI workforce assignments, managed sub-agent lanes, the
 connector activation policy while keeping live provider routing, private vault
 reads, autonomous writes, credential validation, SSH, deployment, GitHub
 mutation, and release approval disabled.
+
+The public demo security gate command writes
+`reports/seis-public-demo/security-gate-redacted-latest.json` and
+`reports/seis-public-demo/security-gate-redacted-latest.md`. It records the
+PR #104 security blocker using only redacted categories, paths, commit IDs, and
+counts. It keeps the current-tree scan clean, the full-history blocker visible,
+and approval requirements explicit without storing raw secret values, weakening
+`.gitleaks.toml`, downloading full job logs, rewriting history, force-pushing,
+or approving release.
 
 This writes `reports/seis-public-demo/go-no-go-latest.json`,
 `reports/seis-public-demo/go-no-go-latest.md`, and
@@ -134,6 +144,8 @@ npm run report:seis-second-brain-accessibility-focus-report
 npm run check:seis-second-brain-accessibility-focus-report
 npm run report:seis-second-brain-agent-registry
 npm run check:seis-second-brain-agent-registry
+npm run report:seis-public-demo-security-gate
+npm run check:seis-public-demo-security-gate
 npm run report:seis-public-demo-go-no-go
 npm run check:seis-second-brain
 npm run check:seis-second-brain-browser-smoke
@@ -157,6 +169,7 @@ git diff --check
 - Obsidian safe import contract review.
 - Provider-neutral read-only model-router boundary review.
 - Security/no-secret review.
+- Redacted PR #104 security gate review.
 - Mock versus real status review.
 - Public docs clarity review.
 - Release rollback review.
@@ -179,6 +192,8 @@ Release can move forward only when:
 - all required validation passes on the release candidate,
 - the worktree has no unrelated release-blocking dirty files,
 - no secret-like values or private vault content are committed,
+- Secret & Vulnerability Scan historical findings have approved remediation or
+  reviewed security baseline,
 - Second Brain import and accessibility gates are documented,
 - router remains read-only and provider-neutral,
 - mock, local demo, planned, disabled, and real states are labelled,

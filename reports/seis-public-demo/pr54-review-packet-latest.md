@@ -1,6 +1,6 @@
 # PR #54 Public Demo Review Packet
 
-Generated: 2026-06-30T21:33:19.482Z
+Generated: 2026-06-30T22:39:34.019Z
 Decision: NO-GO
 Status: review-gated-not-released
 Mode: read-only
@@ -25,22 +25,25 @@ Obsidian import, live provider routing, or production-readiness claims.
 - npm run check:seis-read-only-model-router-decision: passed
 - npm run check:seis-second-brain-accessibility-focus-report: passed
 - npm run check:seis-second-brain-agent-registry: passed
+- npm run check:seis-public-demo-security-gate: passed
 - npm run check:seis-second-brain-readiness-contracts: passed
 - npm run check:seis-second-brain: passed
 - git diff --check: passed
 
 ## Current Blockers
 
+- dirty-worktree
 - human-release-approval-missing
 - current-browser-smoke-evidence-missing
+- security-full-history-remediation-needed
 
 ## Evidence Manifest Summary
 
 | Metric | Count |
 | --- | ---: |
-| Total | 23 |
+| Total | 25 |
 | Passed | 21 |
-| Blocked | 1 |
+| Blocked | 3 |
 | Missing current evidence | 1 |
 | Failed | 0 |
 
@@ -56,18 +59,20 @@ Obsidian import, live provider routing, or production-readiness claims.
 | second-brain-agent-registry | passed | reports/seis-public-demo/second-brain-agent-registry-latest.json |
 | obsidian-safe-import-dry-run | passed | reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json |
 | read-only-router-decision | passed | reports/seis-public-demo/read-only-model-router-decision-latest.json |
+| security-gate-redacted-evidence | blocked | reports/seis-public-demo/security-gate-redacted-latest.json |
 | go-no-go-report-json | passed | reports/seis-public-demo/go-no-go-latest.json |
 | go-no-go-report-markdown | passed | reports/seis-public-demo/go-no-go-latest.md |
 | pr54-review-packet | passed | reports/seis-public-demo/pr54-review-packet-latest.md |
 | worktree-review-packet | passed | reports/seis-public-demo/worktree-review-latest.md |
 | pr54-stage-plan | passed | reports/seis-public-demo/pr54-stage-plan-latest.md |
 | current-browser-smoke | missing-current-evidence | npm run check:seis-second-brain-browser-smoke |
-| release-worktree-review | passed | git status --short |
+| release-worktree-review | blocked | git status --short |
 | human-release-approval | blocked | explicit approval required |
 | npm-run-check-seis-obsidian-safe-import-dry-run | passed | Command exited 0 in the current run. |
 | npm-run-check-seis-read-only-model-router-decision | passed | Command exited 0 in the current run. |
 | npm-run-check-seis-second-brain-accessibility-focus-report | passed | Command exited 0 in the current run. |
 | npm-run-check-seis-second-brain-agent-registry | passed | Command exited 0 in the current run. |
+| npm-run-check-seis-public-demo-security-gate | passed | Command exited 0 in the current run. |
 | npm-run-check-seis-second-brain-readiness-contracts | passed | Command exited 0 in the current run. |
 | npm-run-check-seis-second-brain | passed | Command exited 0 in the current run. |
 | git-diff-check | passed | Command exited 0 in the current run. |

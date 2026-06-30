@@ -37,6 +37,8 @@ const files = {
   accessibilityFocusMarkdown: "reports/seis-public-demo/second-brain-accessibility-focus-latest.md",
   agentRegistryJson: "reports/seis-public-demo/second-brain-agent-registry-latest.json",
   agentRegistryMarkdown: "reports/seis-public-demo/second-brain-agent-registry-latest.md",
+  securityGateJson: "reports/seis-public-demo/security-gate-redacted-latest.json",
+  securityGateMarkdown: "reports/seis-public-demo/security-gate-redacted-latest.md",
   releaseDoc: "docs/releases/PUBLIC_DEMO_RELEASE_CHECKLIST_PR54.md",
   secondBrainDoc: "docs/product/seis-second-brain.md",
   statusDoc: "docs/STATUS.md",
@@ -62,6 +64,7 @@ const obsidianDryRun = readJson(files.obsidianDryRunJson, "Obsidian safe-import 
 const routerDecision = readJson(files.routerDecisionJson, "read-only model-router decision artifact");
 const accessibilityFocus = readJson(files.accessibilityFocusJson, "Second Brain accessibility/focus artifact");
 const agentRegistry = readJson(files.agentRegistryJson, "Second Brain agent registry artifact");
+const securityGate = readJson(files.securityGateJson, "public demo security gate redacted artifact");
 const packageJson = readJson(files.packageJson, "package.json");
 
 validateContracts();
@@ -72,6 +75,9 @@ if (runFastChecks) runFastValidation();
 
 if (!approved) blockers.push("human-release-approval-missing");
 if (!browserSmokeCurrentRun) blockers.push("current-browser-smoke-evidence-missing");
+if (securityGate?.decision === "NO-GO-security-history-remediation-needed") {
+  blockers.push("security-full-history-remediation-needed");
+}
 
 const ready = failures.length === 0 && blockers.length === 0;
 const report = {
@@ -154,6 +160,8 @@ function validateContracts() {
   ensureIncludes(checklist.requiredValidation, "npm run report:seis-second-brain-accessibility-focus-report", "required validation");
   ensureIncludes(checklist.requiredValidation, "npm run check:seis-second-brain-agent-registry", "required validation");
   ensureIncludes(checklist.requiredValidation, "npm run report:seis-second-brain-agent-registry", "required validation");
+  ensureIncludes(checklist.requiredValidation, "npm run check:seis-public-demo-security-gate", "required validation");
+  ensureIncludes(checklist.requiredValidation, "npm run report:seis-public-demo-security-gate", "required validation");
   ensureIncludes(checklist.requiredValidation, "npm run check:seis-second-brain", "required validation");
   ensureIncludes(checklist.requiredValidation, "npm run check:seis-second-brain-browser-smoke", "required validation");
   ensureIncludes(checklist.requiredValidation, "npm run check:seis-second-brain-readiness-contracts", "required validation");
@@ -169,6 +177,8 @@ function validateContracts() {
   ensureIncludes(checklist.requiredArtifacts, "reports/seis-public-demo/second-brain-accessibility-focus-latest.md", "required artifacts");
   ensureIncludes(checklist.requiredArtifacts, "reports/seis-public-demo/second-brain-agent-registry-latest.json", "required artifacts");
   ensureIncludes(checklist.requiredArtifacts, "reports/seis-public-demo/second-brain-agent-registry-latest.md", "required artifacts");
+  ensureIncludes(checklist.requiredArtifacts, "reports/seis-public-demo/security-gate-redacted-latest.json", "required artifacts");
+  ensureIncludes(checklist.requiredArtifacts, "reports/seis-public-demo/security-gate-redacted-latest.md", "required artifacts");
   ensureIncludes(checklist.requiredArtifacts, "reports/seis-public-demo/pr54-review-packet-latest.md", "required artifacts");
   ensureIncludes(checklist.requiredArtifacts, "reports/seis-public-demo/worktree-review-latest.md", "required artifacts");
   ensureIncludes(checklist.requiredArtifacts, "reports/seis-public-demo/pr54-stage-plan-latest.md", "required artifacts");
@@ -299,6 +309,36 @@ function validateContracts() {
     ensure(agentRegistry.safetyBoundary?.releaseApprovalGranted === false, "Second Brain agent registry must not grant release approval.");
   }
 
+  if (securityGate) {
+    checks.securityGate = {
+      status: securityGate.status,
+      mode: securityGate.mode,
+      decision: securityGate.decision,
+      currentTreeStatus: securityGate.currentTreeSecretScan?.status,
+      currentTreeFindings: securityGate.currentTreeSecretScan?.findings,
+      fullHistoryStatus: securityGate.fullHistorySecretScan?.status,
+      fullHistoryFindings: securityGate.fullHistorySecretScan?.totalFindings,
+      rawSecretValuesStored: securityGate.safetyBoundary?.rawSecretValuesStored
+    };
+    ensure(securityGate.id === "seis-public-demo-security-gate-redacted-pr104", "Security gate artifact id mismatch.");
+    ensure(securityGate.status === "blocked-full-history-security-review", "Security gate artifact must keep full-history blocker visible.");
+    ensure(securityGate.mode === "redacted-local-and-ci-evidence", "Security gate artifact mode mismatch.");
+    ensure(securityGate.decision === "NO-GO-security-history-remediation-needed", "Security gate artifact must block public release.");
+    ensure(securityGate.currentTreeSecretScan?.status === "clean-redacted-no-git", "Security gate must record current-tree clean scan.");
+    ensure(securityGate.currentTreeSecretScan?.findings === 0, "Security gate current-tree findings must be zero.");
+    ensure(securityGate.currentTreeSecretScan?.securityPolicyChanged === false, "Security gate must not change scanner policy.");
+    ensure(securityGate.currentTreeSecretScan?.gitleaksAllowlistCommitted === false, "Security gate must not commit a gitleaks allowlist.");
+    ensure(securityGate.fullHistorySecretScan?.status === "blocked-redacted-findings", "Security gate must record full-history blocker.");
+    ensure((securityGate.fullHistorySecretScan?.totalFindings || 0) >= 1, "Security gate must include historical finding count.");
+    ensure(securityGate.fullHistorySecretScan?.rawSecretValuesStored === false, "Security gate must not store raw historical finding values.");
+    ensure(securityGate.fullHistorySecretScan?.fullJobLogDownloaded === false, "Security gate must not store full job logs.");
+    ensure(securityGate.safetyBoundary?.rawSecretValuesStored === false, "Security gate must not store raw secret values.");
+    ensure(securityGate.safetyBoundary?.gitleaksPolicyChanged === false, "Security gate must not change gitleaks policy.");
+    ensure(securityGate.safetyBoundary?.historyRewritePerformed === false, "Security gate must not rewrite history.");
+    ensure(securityGate.safetyBoundary?.forcePushPerformed === false, "Security gate must not force-push.");
+    ensure(securityGate.safetyBoundary?.releaseApprovalGranted === false, "Security gate must not grant release approval.");
+  }
+
   if (router) {
     checks.router = {
       status: router.status,
@@ -354,6 +394,8 @@ function validateContracts() {
       accessibilityFocusReport: packageJson.scripts?.["report:seis-second-brain-accessibility-focus-report"] || null,
       agentRegistry: packageJson.scripts?.["check:seis-second-brain-agent-registry"] || null,
       agentRegistryReport: packageJson.scripts?.["report:seis-second-brain-agent-registry"] || null,
+      securityGate: packageJson.scripts?.["check:seis-public-demo-security-gate"] || null,
+      securityGateReport: packageJson.scripts?.["report:seis-public-demo-security-gate"] || null,
       goNoGo: packageJson.scripts?.["check:seis-public-demo-go-no-go"] || null,
       goNoGoStrict: packageJson.scripts?.["check:seis-public-demo-go-no-go:strict"] || null
     };
@@ -390,6 +432,14 @@ function validateContracts() {
       "package.json must expose report:seis-second-brain-agent-registry."
     );
     ensure(
+      packageJson.scripts?.["check:seis-public-demo-security-gate"] === "node scripts/create-seis-public-demo-security-gate-report.mjs --check",
+      "package.json must expose check:seis-public-demo-security-gate."
+    );
+    ensure(
+      packageJson.scripts?.["report:seis-public-demo-security-gate"] === "node scripts/create-seis-public-demo-security-gate-report.mjs --write",
+      "package.json must expose report:seis-public-demo-security-gate."
+    );
+    ensure(
       packageJson.scripts?.["check:seis-public-demo-go-no-go"] === "node scripts/check-seis-public-demo-go-no-go.mjs",
       "package.json must expose check:seis-public-demo-go-no-go."
     );
@@ -402,7 +452,7 @@ function validateContracts() {
 
 function validateDocs() {
   const required = [
-    [files.releaseDoc, ["Public Demo Release Checklist", "check:seis-public-demo-go-no-go", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "obsidian-safe-import-dry-run-latest", "read-only-model-router-decision-latest", "second-brain-accessibility-focus-latest", "second-brain-agent-registry-latest", "NO-GO", "Do not merge PR #54"]],
+    [files.releaseDoc, ["Public Demo Release Checklist", "check:seis-public-demo-go-no-go", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "report:seis-public-demo-security-gate", "obsidian-safe-import-dry-run-latest", "read-only-model-router-decision-latest", "second-brain-accessibility-focus-latest", "second-brain-agent-registry-latest", "security-gate-redacted-latest", "NO-GO", "Do not merge PR #54"]],
     [files.secondBrainDoc, ["Agent training pack", "Second Brain agent registry artifact", "check:seis-public-demo-go-no-go", "Build Training Pack"]],
     [files.statusDoc, ["SEIS public demo go/no-go gate", "check:seis-public-demo-go-no-go"]],
     [files.nextQueue, ["SEIS public demo go/no-go gate", "check:seis-public-demo-go-no-go"]]
@@ -439,6 +489,7 @@ function runFastValidation() {
     ["npm", ["run", "check:seis-read-only-model-router-decision"], {}],
     ["npm", ["run", "check:seis-second-brain-accessibility-focus-report"], {}],
     ["npm", ["run", "check:seis-second-brain-agent-registry"], {}],
+    ["npm", ["run", "check:seis-public-demo-security-gate"], {}],
     ["npm", ["run", "check:seis-second-brain-readiness-contracts"], { SEIS_PUBLIC_DEMO_REPORT_GENERATING: "1" }],
     ["npm", ["run", "check:seis-second-brain"], {}],
     ["git", ["diff", "--check"], {}]
@@ -469,6 +520,7 @@ function nextActions(items, validationFailures) {
   const actions = [];
   if (validationFailures.length > 0) actions.push("Fix release gate contract failures before reviewing public demo readiness.");
   if (items.includes("dirty-worktree")) actions.push("Review and stage only coherent release-candidate changes, or rerun with --allow-dirty-worktree for a planning-only report.");
+  if (items.includes("security-full-history-remediation-needed")) actions.push("Resolve the GitHub security full-history blocker through explicit owner-approved history remediation, affected-secret rotation, or reviewed security baseline.");
   if (items.includes("current-browser-smoke-evidence-missing")) actions.push("Run current browser-smoke evidence in an environment that can bind localhost and launch Chrome.");
   if (items.includes("human-release-approval-missing")) actions.push("Get explicit human owner approval before merge, Pages publication, release tag, deployment, SSH, live providers, or public launch.");
   return actions;
@@ -998,6 +1050,19 @@ function buildEvidenceManifest(value) {
           ? "passed"
           : "failed",
       evidence: files.routerDecisionJson
+    },
+    {
+      id: "security-gate-redacted-evidence",
+      type: "artifact",
+      requirement: "Public demo security gate has redacted current-tree and full-history evidence before release review.",
+      status:
+        value.checks.securityGate?.currentTreeStatus === "clean-redacted-no-git"
+        && value.checks.securityGate?.currentTreeFindings === 0
+        && value.checks.securityGate?.fullHistoryStatus === "blocked-redacted-findings"
+        && value.checks.securityGate?.rawSecretValuesStored === false
+          ? "blocked"
+          : "failed",
+      evidence: files.securityGateJson
     },
     {
       id: "go-no-go-report-json",

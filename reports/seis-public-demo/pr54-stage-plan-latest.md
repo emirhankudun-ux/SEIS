@@ -1,11 +1,11 @@
 # PR #54 Stage Plan
 
-Generated: 2026-06-30T21:33:19.482Z
+Generated: 2026-06-30T22:39:34.019Z
 Decision: NO-GO
 Status: review-gated-not-released
-Ready for human review: no
-Candidate paths: 0
-Excluded paths: 0
+Ready for human review: yes
+Candidate paths: 20
+Excluded paths: 2
 
 ## Scope
 
@@ -15,18 +15,40 @@ delete, reset, deploy, import Obsidian, execute SSH, or call model providers.
 
 ## Candidate Paths For One Review Slice
 
-- None
+- M README.md
+- M content/development/seis-public-demo-release-checklist-pr54.json
+- M docs/INDEX.md
+- M docs/SEIS_MASTER_INDEX.md
+- M docs/STATUS.md
+- M docs/product/seis-second-brain.md
+- M docs/releases/PUBLIC_DEMO_RELEASE_CHECKLIST_PR54.md
+- M docs/roadmap/MASTER_BACKLOG.md
+- M docs/roadmap/NEXT_PR_QUEUE.md
+- M package.json
+- M reports/seis-public-demo/evidence-manifest-latest.json
+- M reports/seis-public-demo/go-no-go-latest.json
+- M reports/seis-public-demo/go-no-go-latest.md
+- M reports/seis-public-demo/pr54-review-packet-latest.md
+- M reports/seis-public-demo/pr54-stage-plan-latest.md
+- M reports/seis-public-demo/worktree-review-latest.md
+- M scripts/check-seis-public-demo-go-no-go.mjs
+- M scripts/check-seis-second-brain-readiness-contracts.mjs
+- ?? reports/seis-public-demo/security-gate-redacted-latest.json
+- ?? reports/seis-public-demo/security-gate-redacted-latest.md
 
 ## Excluded Separate Workstreams
 
-- None
+- M .gitignore (Unclassified Dirty Paths)
+- ?? scripts/create-seis-public-demo-security-gate-report.mjs (Unclassified Dirty Paths)
 
 ## Human-Run Git Add Commands
 
 Run only after reviewing the diff and confirming these paths belong in the same
 PR #54 readiness slice:
 
-- None
+- `git add -- 'README.md' 'content/development/seis-public-demo-release-checklist-pr54.json' 'docs/INDEX.md' 'docs/SEIS_MASTER_INDEX.md' 'docs/STATUS.md' 'docs/product/seis-second-brain.md' 'docs/releases/PUBLIC_DEMO_RELEASE_CHECKLIST_PR54.md' 'docs/roadmap/MASTER_BACKLOG.md'`
+- `git add -- 'docs/roadmap/NEXT_PR_QUEUE.md' 'package.json' 'reports/seis-public-demo/evidence-manifest-latest.json' 'reports/seis-public-demo/go-no-go-latest.json' 'reports/seis-public-demo/go-no-go-latest.md' 'reports/seis-public-demo/pr54-review-packet-latest.md' 'reports/seis-public-demo/pr54-stage-plan-latest.md' 'reports/seis-public-demo/worktree-review-latest.md'`
+- `git add -- 'scripts/check-seis-public-demo-go-no-go.mjs' 'scripts/check-seis-second-brain-readiness-contracts.mjs' 'reports/seis-public-demo/security-gate-redacted-latest.json' 'reports/seis-public-demo/security-gate-redacted-latest.md'`
 
 ## Required Validation Before Commit
 

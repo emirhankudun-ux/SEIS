@@ -1,6 +1,6 @@
 # SEIS Public Demo Go/No-Go Report
 
-Generated: 2026-06-30T21:33:19.482Z
+Generated: 2026-06-30T22:39:34.019Z
 Decision: NO-GO
 Status: review-gated-not-released
 Mode: read-only
@@ -13,14 +13,17 @@ Evidence manifest: reports/seis-public-demo/evidence-manifest-latest.json
 - npm run check:seis-read-only-model-router-decision: passed
 - npm run check:seis-second-brain-accessibility-focus-report: passed
 - npm run check:seis-second-brain-agent-registry: passed
+- npm run check:seis-public-demo-security-gate: passed
 - npm run check:seis-second-brain-readiness-contracts: passed
 - npm run check:seis-second-brain: passed
 - git diff --check: passed
 
 ## Blockers
 
+- dirty-worktree
 - human-release-approval-missing
 - current-browser-smoke-evidence-missing
+- security-full-history-remediation-needed
 
 ## Failures
 
@@ -32,6 +35,8 @@ Evidence manifest: reports/seis-public-demo/evidence-manifest-latest.json
 
 ## Next Actions
 
+- Review and stage only coherent release-candidate changes, or rerun with --allow-dirty-worktree for a planning-only report.
+- Resolve the GitHub security full-history blocker through explicit owner-approved history remediation, affected-secret rotation, or reviewed security baseline.
 - Run current browser-smoke evidence in an environment that can bind localhost and launch Chrome.
 - Get explicit human owner approval before merge, Pages publication, release tag, deployment, SSH, live providers, or public launch.
 

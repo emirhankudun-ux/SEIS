@@ -2,6 +2,8 @@
 
 Date: 2026-06-23
 
+Second Brain readiness contract note: public demo security gate redacted evidence is now part of `SEIS-BL-049`. `npm run report:seis-public-demo-security-gate` and `npm run check:seis-public-demo-security-gate` keep PR #104 security blocker evidence public-safe without raw secret values, `.gitleaks.toml` changes, history rewrite, force push, SSH, deployment, or release approval.
+
 | ID | Priority | Lane | Work | Acceptance evidence |
 | --- | --- | --- | --- | --- |
 | `SEIS-BL-001` | P0 | Goal Tracking OS | Keep structured goal, evidence, and execution records valid. | `npm run check:goal-tracking` passes. |

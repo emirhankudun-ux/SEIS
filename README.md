@@ -126,6 +126,8 @@ npm run report:seis-second-brain-accessibility-focus-report
 npm run check:seis-second-brain-accessibility-focus-report
 npm run report:seis-second-brain-agent-registry
 npm run check:seis-second-brain-agent-registry
+npm run report:seis-public-demo-security-gate
+npm run check:seis-public-demo-security-gate
 npm run check:seis-second-brain-readiness-contracts
 npm run check:seis-second-brain-browser-smoke
 npm run check:seis-public-demo-go-no-go -- --run-fast-checks
@@ -241,8 +243,9 @@ metadata and deployment readiness gate names.
 `npm run check:seis-second-brain-readiness-contracts` validates the Second
 Brain readiness contracts for the Obsidian bridge safe import plan,
 accessibility/focus QA, provider-neutral read-only model-router boundary, and
-PR #54 public demo release checklist without enabling private vault import,
-live provider routing, SSH, deployment, merge, or publication.
+PR #54 public demo release checklist plus redacted PR #104 security gate
+evidence without enabling private vault import, live provider routing, SSH,
+deployment, merge, or publication.
 
 `npm run check:seis-public-demo-go-no-go -- --run-fast-checks` is the read-only
 public demo release gate. It is expected to report `NO-GO` until current browser
@@ -276,6 +279,13 @@ roster, Obsidian bridge boundary, plugin inventory, MCP surfaces, and connector
 activation rules without reading a private Obsidian vault, validating
 credentials, calling providers, enabling autonomous writes, executing SSH,
 mutating GitHub, deploying, or approving release.
+
+`npm run report:seis-public-demo-security-gate` writes redacted public demo
+security gate artifacts under `reports/seis-public-demo/`. Those artifacts
+record PR #104 current-tree clean status, full-history blocker categories,
+paths, counts, and required owner approvals without storing raw secret values,
+weakening `.gitleaks.toml`, downloading full job logs, rewriting history,
+force-pushing, or approving release.
 
 `npm run report:seis-public-demo-go-no-go` writes PR/release-review artifacts
 under `reports/seis-public-demo/`, including the evidence manifest and

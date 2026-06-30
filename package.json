@@ -32,6 +32,8 @@
     "report:seis-second-brain-accessibility-focus-report": "node scripts/create-seis-second-brain-accessibility-focus-report.mjs --write",
     "check:seis-second-brain-agent-registry": "node scripts/create-seis-second-brain-agent-registry.mjs --check",
     "report:seis-second-brain-agent-registry": "node scripts/create-seis-second-brain-agent-registry.mjs --write",
+    "check:seis-public-demo-security-gate": "node scripts/create-seis-public-demo-security-gate-report.mjs --check",
+    "report:seis-public-demo-security-gate": "node scripts/create-seis-public-demo-security-gate-report.mjs --write",
     "check:seis-public-demo-go-no-go": "node scripts/check-seis-public-demo-go-no-go.mjs",
     "check:seis-public-demo-go-no-go:strict": "node scripts/check-seis-public-demo-go-no-go.mjs --require-ready",
     "report:seis-public-demo-go-no-go": "node scripts/check-seis-public-demo-go-no-go.mjs --run-fast-checks --output reports/seis-public-demo/go-no-go-latest.json --markdown reports/seis-public-demo/go-no-go-latest.md --manifest reports/seis-public-demo/evidence-manifest-latest.json --review-packet reports/seis-public-demo/pr54-review-packet-latest.md --worktree-review reports/seis-public-demo/worktree-review-latest.md --stage-plan reports/seis-public-demo/pr54-stage-plan-latest.md",

@@ -99,6 +99,7 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | SEIS read-only model-router decision | `npm run report:seis-read-only-model-router-decision` |
 | SEIS Second Brain accessibility/focus QA artifact | `npm run report:seis-second-brain-accessibility-focus-report` |
 | SEIS Second Brain agent registry | `npm run report:seis-second-brain-agent-registry` |
+| SEIS public demo security gate | `npm run report:seis-public-demo-security-gate` |
 | SEIS public demo go/no-go report | [../reports/seis-public-demo/go-no-go-latest.md](../reports/seis-public-demo/go-no-go-latest.md) |
 | SEIS public demo evidence manifest | [../reports/seis-public-demo/evidence-manifest-latest.json](../reports/seis-public-demo/evidence-manifest-latest.json) |
 | SEIS Obsidian safe-import dry-run JSON | [../reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json](../reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json) |
@@ -109,6 +110,8 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | SEIS Second Brain accessibility/focus Markdown | [../reports/seis-public-demo/second-brain-accessibility-focus-latest.md](../reports/seis-public-demo/second-brain-accessibility-focus-latest.md) |
 | SEIS Second Brain agent registry JSON | [../reports/seis-public-demo/second-brain-agent-registry-latest.json](../reports/seis-public-demo/second-brain-agent-registry-latest.json) |
 | SEIS Second Brain agent registry Markdown | [../reports/seis-public-demo/second-brain-agent-registry-latest.md](../reports/seis-public-demo/second-brain-agent-registry-latest.md) |
+| SEIS public demo security gate JSON | [../reports/seis-public-demo/security-gate-redacted-latest.json](../reports/seis-public-demo/security-gate-redacted-latest.json) |
+| SEIS public demo security gate Markdown | [../reports/seis-public-demo/security-gate-redacted-latest.md](../reports/seis-public-demo/security-gate-redacted-latest.md) |
 | SEIS public demo PR #54 review packet | [../reports/seis-public-demo/pr54-review-packet-latest.md](../reports/seis-public-demo/pr54-review-packet-latest.md) |
 | SEIS public demo worktree review | [../reports/seis-public-demo/worktree-review-latest.md](../reports/seis-public-demo/worktree-review-latest.md) |
 | SEIS public demo PR #54 stage plan | [../reports/seis-public-demo/pr54-stage-plan-latest.md](../reports/seis-public-demo/pr54-stage-plan-latest.md) |
