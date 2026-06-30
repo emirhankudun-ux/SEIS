@@ -5,6 +5,10 @@
 SEIS uses a bounded, supervised sub-agent runtime where each assistant has a
 defined role, explicit permission set, and review contract.
 
+The canonical bounded-agent roster is maintained in
+[`SEIS_AGENT_WORKFORCE.md`](./SEIS_AGENT_WORKFORCE.md) and mirrored in
+[`seis-brain/vault/05_Agents/Agent Workforce.md`](./seis-brain/vault/05_Agents/Agent%20Workforce.md).
+
 ## Supervision model
 
 - Human objective defines scope.
@@ -80,6 +84,13 @@ Each handoff includes:
 
 - no task is final without explicit risk and blocker callout
 - unsafe claims require evidence or explicit `mock`/`planned` labels
+
+## Source-of-truth mapping
+
+- `SEIS_AGENT_WORKFORCE.md` stores the operational roster.
+- `seis-brain/vault/05_Agents/Agent Workforce.md` stores the vault mirror for quick
+  in-vault discoverability.
+- `docs/INDEX.md` and `docs/SEIS_MASTER_INDEX.md` provide discoverability for onboarding.
 
 ## Safety rules
 

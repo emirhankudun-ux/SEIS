@@ -14,6 +14,7 @@ Date: 2026-06-23
 | [../SEIS_OBSIDIAN_VAULT.md](../SEIS_OBSIDIAN_VAULT.md) | Obsidian-compatible vault rules for public-safe SEIS memory. |
 | [../SEIS_INSTALLED_AI_TOOLS.md](../SEIS_INSTALLED_AI_TOOLS.md) | Installed AI tooling and model/provider safety registry. |
 | [../SEIS_SUB_AGENTS.md](../SEIS_SUB_AGENTS.md) | Bounded sub-agent coordination model and output contract. |
+| [SEIS_AGENT_WORKFORCE.md](../SEIS_AGENT_WORKFORCE.md) | Agent workforce registry and role definitions for bounded supervision. |
 | [../SEIS_SSH.md](../SEIS_SSH.md) | Safe remote-development/documented SSH concept and constraints. |
 | [../roadmap/seis-long-horizon-strategy.md](../roadmap/seis-long-horizon-strategy.md) | Long-horizon 0–10 year strategy with first- and second-stage operational blueprints. |
 | [GETTING_STARTED.md](GETTING_STARTED.md) | New contributor onboarding and run instructions. |
