@@ -1,12 +1,13 @@
 {
   "id": "seis-knowledge-retrieval-training-contract-report",
-  "generatedAt": "2026-06-30T21:37:55.384Z",
+  "generatedAt": "2026-06-30T22:20:41.917Z",
   "status": "contract-ready-index-not-built",
   "sourceContract": "content/development/seis-knowledge-retrieval-training-contract.json",
   "summary": {
     "sourceClassCount": 5,
     "internetResearchSourceCount": 5,
     "agentResponsibilityCount": 12,
+    "sourceProvenanceManifest": true,
     "retrievalIndexBuild": false,
     "embeddingModelInstall": false,
     "providerEmbeddingCalls": false,
@@ -15,6 +16,7 @@
   },
   "safeNextCommands": [
     "npm run report:seis-knowledge-retrieval-training",
+    "npm run check:seis-retrieval-source-provenance",
     "npm run check:seis-knowledge-retrieval-training",
     "npm run check:seis-language-model-install-training-ledger",
     "npm run check:seis-agi-evaluation-protocol"

@@ -293,6 +293,8 @@
     "report:seis-language-model-install-training-ledger": "node scripts/create-seis-language-model-install-training-ledger.mjs --write",
     "check:seis-knowledge-retrieval-training": "node scripts/create-seis-knowledge-retrieval-training-contract.mjs",
     "report:seis-knowledge-retrieval-training": "node scripts/create-seis-knowledge-retrieval-training-contract.mjs --write",
+    "check:seis-retrieval-source-provenance": "node scripts/create-seis-retrieval-source-provenance-manifest.mjs",
+    "report:seis-retrieval-source-provenance": "node scripts/create-seis-retrieval-source-provenance-manifest.mjs --write",
     "check:seis-language-model-intake": "node scripts/check-seis-language-model-intake.mjs",
     "plan:seis-language-model-install": "node scripts/plan-seis-language-model-install.mjs",
     "check:seis-nvidia-accelerator-catalog": "node scripts/check-seis-nvidia-accelerator-catalog.mjs",

@@ -1,6 +1,6 @@
 # SEIS Knowledge Retrieval Training Contract
 
-Generated: 2026-06-30T21:37:55.384Z
+Generated: 2026-06-30T22:20:41.917Z
 
 Status: contract-ready-index-not-built
 
@@ -11,6 +11,7 @@ Status: contract-ready-index-not-built
 | Source classes | 5 |
 | Internet research sources | 5 |
 | Agent responsibilities | 12 |
+| Source provenance manifest accepted | true |
 | Retrieval index build approved | false |
 | Embedding model install approved | false |
 | Provider embedding calls approved | false |
@@ -20,6 +21,7 @@ Status: contract-ready-index-not-built
 ## Safe Next Commands
 
 - `npm run report:seis-knowledge-retrieval-training`
+- `npm run check:seis-retrieval-source-provenance`
 - `npm run check:seis-knowledge-retrieval-training`
 - `npm run check:seis-language-model-install-training-ledger`
 - `npm run check:seis-agi-evaluation-protocol`

@@ -313,6 +313,7 @@ Bu hedefin kısa hali:
   - `npm run check:seis-ai-public-readiness` — Local Demo, fresh-clone, 512B/AGI claim boundary ve alt ajan readiness zincirini tek komutta doğrular.
   - `npm run check:seis-ai-public-readiness-program` — Program bileşeni ve sıralı ready durumunu doğrular.
   - `npm run check:seis-ai-fresh-clone-readiness` — Fresh-clone başlangıç koşullarını doğrular.
+  - `npm run check:seis-retrieval-source-provenance` — Gelecekteki retrieval index için allowlist, SHA-256 provenance ve redacted local secret-scan dry-run kapısını doğrular; index/model/provider/training iddiası üretmez.
   - `npm run report:seis-ai-public-readiness` — `reports/seis-ai-public-readiness/latest.{json,md}` raporlarını üretir.
 - **AGI Kanıt Kuralı:** Gerçek AGI iddiası için bağımsız evaluation, safety review, training logs, checkpoint governance, model card ve explicit approval gerekir.
 

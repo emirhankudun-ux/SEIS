@@ -20,6 +20,7 @@ const paths = {
   agiGithubUserReadinessGates: "content/development/seis-agi-github-user-readiness-gates.json",
   agiIndependentEvidenceLedger: "content/development/seis-agi-independent-evidence-ledger.json",
   freshCloneReadiness: "content/development/seis-ai-fresh-clone-readiness.json",
+  retrievalSourceProvenance: "content/development/seis-retrieval-source-provenance-manifest.json",
   doc: "docs/ai/seis-ai-public-readiness-program.md",
   githubReadinessDoc: "docs/ai/seis-agi-github-user-readiness-gates.md",
   packageJson: "package.json"
@@ -40,6 +41,7 @@ const publicReadiness = readJson(paths.agiPublicReadinessEvidence, "AGI public r
 const githubGates = readJson(paths.agiGithubUserReadinessGates, "AGI GitHub user readiness gates");
 const independentLedger = readJson(paths.agiIndependentEvidenceLedger, "AGI independent evidence ledger");
 const freshCloneReadiness = readJson(paths.freshCloneReadiness, "AI fresh-clone readiness");
+const retrievalSourceProvenance = readJson(paths.retrievalSourceProvenance, "retrieval source provenance manifest");
 const packageJson = readJson(paths.packageJson, "package.json");
 const doc = readText(paths.doc, "AI public readiness docs");
 const githubReadinessDoc = readText(paths.githubReadinessDoc, "AGI GitHub user readiness docs");
@@ -95,6 +97,7 @@ if (program) {
   ensureSource(program, "agiGithubUserReadinessGates", paths.agiGithubUserReadinessGates);
   ensureSource(program, "agiIndependentEvidenceLedger", paths.agiIndependentEvidenceLedger);
   ensureSource(program, "freshCloneReadiness", paths.freshCloneReadiness);
+  ensureSource(program, "retrievalSourceProvenance", paths.retrievalSourceProvenance);
   ensureSource(program, "doc", paths.doc);
 
   ensureArrayIncludesAll(
@@ -121,6 +124,7 @@ if (program) {
     [
       "local-demo-readiness",
       "one-command-ai-readiness",
+      "retrieval-source-provenance",
       "fresh-clone-release-path",
       "human-release-approval",
       "real-512b-evidence",
@@ -132,6 +136,7 @@ if (program) {
     ensure(gate.blocksAgiClaim === true, `${gate.id}.blocksAgiClaim must stay true`);
     ensure(Array.isArray(gate.evidence) && gate.evidence.length >= 1, `${gate.id}.evidence must be populated`);
   }
+  ensure((program.readinessGates || []).some((gate) => gate.id === "retrieval-source-provenance" && gate.status === "available" && gate.evidence?.includes("npm run check:seis-retrieval-source-provenance")), "retrieval source provenance gate must be available with its validator command");
   ensure((program.readinessGates || []).some((gate) => gate.id === "fresh-clone-release-path" && gate.status === "partial" && gate.blocksGithubReadyForEveryone === true), "fresh clone gate must block everyone-ready status");
   ensure((program.readinessGates || []).some((gate) => gate.id === "human-release-approval" && gate.status === "approval-gated" && gate.blocksGithubReadyForEveryone === true), "human release gate must block everyone-ready status");
   ensure((program.readinessGates || []).some((gate) => gate.id === "real-512b-evidence" && gate.status === "missing"), "real 512B evidence gate must remain missing");
@@ -145,6 +150,7 @@ if (program) {
   ensureArrayIncludesAll(program.requiredBeforeGithubReadyForEveryone, [
     "fresh clone local demo path verified",
     "npm run check:seis-ai-fresh-clone-readiness passes on the target commit",
+    "npm run check:seis-retrieval-source-provenance passes on the target commit",
     "npm run check:seis-ai-public-readiness passes on the target commit",
     "required CI checks green on the target commit",
     "human release approval recorded",
@@ -194,9 +200,16 @@ ensure(githubGates?.oneCommandReadinessValidator?.command === "npm run check:sei
 ensure(independentLedger?.status === "planned-without-independent-evidence", "independent evidence ledger must remain planned without independent evidence");
 ensure(freshCloneReadiness?.status === "contract-defined-not-release-evidence", "fresh-clone readiness must remain contract-defined");
 ensure(freshCloneReadiness?.freshCloneVerified === false, "fresh-clone readiness must not claim verified clone evidence");
+ensure(retrievalSourceProvenance?.status === "manifest-defined-index-blocked", "retrieval source provenance manifest must remain index-blocked");
+ensure(retrievalSourceProvenance?.secretScan?.status === "passed-redacted-local-dry-run", "retrieval source provenance secret scan must stay a passed redacted local dry-run");
+ensure(retrievalSourceProvenance?.secretScan?.findingsCount === 0, "retrieval source provenance must have zero secret findings");
+ensure(retrievalSourceProvenance?.approvedToday?.persistentRetrievalIndex === false, "retrieval source provenance must not approve a persistent retrieval index");
+ensure(retrievalSourceProvenance?.publicClaims?.canClaimRetrievalIndexBuilt === false, "retrieval source provenance must not claim a retrieval index");
+ensure(retrievalSourceProvenance?.publicClaims?.canClaimAGI === false, "retrieval source provenance must not claim AGI");
 ensure(packageJson?.scripts?.["check:seis-ai-public-readiness-program"] === "node scripts/check-seis-ai-public-readiness-program.mjs", "package.json must expose check:seis-ai-public-readiness-program");
 ensure(packageJson?.scripts?.["check:seis-ai-public-readiness"] === "node scripts/check-seis-ai-public-readiness.mjs", "package.json must expose check:seis-ai-public-readiness");
 ensure(packageJson?.scripts?.["check:seis-ai-fresh-clone-readiness"] === "node scripts/check-seis-ai-fresh-clone-readiness.mjs", "package.json must expose check:seis-ai-fresh-clone-readiness");
+ensure(packageJson?.scripts?.["check:seis-retrieval-source-provenance"] === "node scripts/create-seis-retrieval-source-provenance-manifest.mjs", "package.json must expose check:seis-retrieval-source-provenance");
 ensure(packageJson?.scripts?.["report:seis-ai-public-readiness"] === "node scripts/create-seis-ai-public-readiness-report.mjs --write", "package.json must expose report:seis-ai-public-readiness");
 ensure(packageJson?.scripts?.["check:seis-ai-public-readiness-report"] === "node scripts/create-seis-ai-public-readiness-report.mjs", "package.json must expose check:seis-ai-public-readiness-report");
 

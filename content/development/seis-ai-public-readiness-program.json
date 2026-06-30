@@ -37,6 +37,7 @@
     "agiGithubUserReadinessGates": "content/development/seis-agi-github-user-readiness-gates.json",
     "agiIndependentEvidenceLedger": "content/development/seis-agi-independent-evidence-ledger.json",
     "freshCloneReadiness": "content/development/seis-ai-fresh-clone-readiness.json",
+    "retrievalSourceProvenance": "content/development/seis-retrieval-source-provenance-manifest.json",
     "doc": "docs/ai/seis-ai-public-readiness-program.md"
   },
   "internetResearchBaseline": [
@@ -119,6 +120,13 @@
       "evidence": ["npm run check:seis-ai-public-readiness"]
     },
     {
+      "id": "retrieval-source-provenance",
+      "status": "available",
+      "blocksGithubReadyForEveryone": false,
+      "blocksAgiClaim": true,
+      "evidence": ["npm run check:seis-retrieval-source-provenance", "local redacted dry-run source inventory"]
+    },
+    {
       "id": "fresh-clone-release-path",
       "status": "partial",
       "blocksGithubReadyForEveryone": true,
@@ -156,6 +164,7 @@
   "requiredBeforeGithubReadyForEveryone": [
     "fresh clone local demo path verified",
     "npm run check:seis-ai-fresh-clone-readiness passes on the target commit",
+    "npm run check:seis-retrieval-source-provenance passes on the target commit",
     "npm run check:seis-ai-public-readiness passes on the target commit",
     "required CI checks green on the target commit",
     "public README claim boundary reviewed",

@@ -28,7 +28,8 @@ npm run check:seis-ai-public-readiness
 This command verifies the model intake registry, language-model curriculum, AI
 workforce training contract, AI fresh-clone readiness contract, model-scaling
 gates, 512B apex program, AGI evaluation protocol, AGI public readiness
-evidence, GitHub user readiness gates, and independent evidence ledger.
+evidence, GitHub user readiness gates, independent evidence ledger, and
+retrieval source provenance gate.
 
 It does not install models, download checkpoints, train models, call providers,
 provision cloud/GPU capacity, execute SSH, push, merge, deploy, release, grant
@@ -81,6 +82,7 @@ trained, downloaded, benchmarked, or served a 512B model.
 
 - Fresh clone local demo path verified.
 - `npm run check:seis-ai-fresh-clone-readiness` passes on the target commit.
+- `npm run check:seis-retrieval-source-provenance` passes on the target commit.
 - `npm run check:seis-ai-public-readiness` passes on the target commit.
 - Required CI checks green on the target commit.
 - Public README claim boundary reviewed.
@@ -124,6 +126,8 @@ trained, downloaded, benchmarked, or served a 512B model.
 - `content/development/seis-agi-independent-evidence-ledger.json`
 - `content/development/seis-model-scaling-subagent-council.json`
 - `content/development/seis-ai-fresh-clone-readiness.json`
+- `content/development/seis-retrieval-source-provenance-manifest.json`
+- `reports/seis-model-scaling/seis-retrieval-source-provenance-manifest.md`
 
 ## Validate
 
@@ -131,6 +135,7 @@ trained, downloaded, benchmarked, or served a 512B model.
 npm run public:readiness
 npm run check:seis-ai-public-readiness-program
 npm run check:seis-ai-fresh-clone-readiness
+npm run check:seis-retrieval-source-provenance
 npm run check:seis-ai-public-readiness
 npm run check:seis-ai-public-readiness-report
 ```
