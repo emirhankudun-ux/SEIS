@@ -64,6 +64,7 @@ body:
       label: Commands run
       description: List only command names and high-level results. Redact paths, hostnames, IPs, and account names.
       placeholder: |
+        npm run run:seis-ssh-public-github-quickstart -> passed / warning / failed
         npm run run:seis-ssh-public-first-run -> passed / warning / failed
         npm run run:seis-ssh-public-troubleshooting -> passed / warning / failed
         npm run report:seis-ssh-public-contributor-doctor -> passed / warning / failed

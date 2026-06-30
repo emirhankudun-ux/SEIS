@@ -3988,6 +3988,7 @@ const SEIS_SSH_PUBLIC_ACCESS_CONTRACT = {
   firstRunCommand: "npm run run:seis-ssh-public-first-run",
   troubleshootingCommand: "npm run run:seis-ssh-public-troubleshooting",
   supportPacketCommand: "npm run run:seis-ssh-public-support-packet",
+  quickstartCommand: "npm run run:seis-ssh-public-github-quickstart",
   onboardingCommand: "npm run report:seis-ssh-public-onboarding",
   contributorDoctorCommand: "npm run report:seis-ssh-public-contributor-doctor",
   liveEvidenceCommand: "npm run check:seis-ssh-live-readiness-evidence",
@@ -3995,6 +3996,7 @@ const SEIS_SSH_PUBLIC_ACCESS_CONTRACT = {
   firstRunArtifact: "/home/seis/Documents/seis-ssh-public-first-run.md",
   troubleshootingArtifact: "/home/seis/Documents/seis-ssh-public-troubleshooting.md",
   supportPacketArtifact: "/home/seis/Documents/seis-ssh-public-support-packet.md",
+  quickstartArtifact: "/home/seis/Documents/seis-ssh-public-github-quickstart.md",
   onboardingArtifact: "/home/seis/Documents/seis-ssh-public-onboarding.md",
   contributorDoctorArtifact: "/home/seis/Documents/seis-ssh-public-contributor-doctor.md",
   liveEvidenceArtifact: "docs/deployment/seis-ssh-live-readiness-evidence.md",
@@ -4003,6 +4005,7 @@ const SEIS_SSH_PUBLIC_ACCESS_CONTRACT = {
     ["first-run", "A read-only first-run guide gives new contributors setup-needed status without opening SSH or changing config."],
     ["troubleshooting", "A read-only troubleshooting guide maps missing alias, picker warning, billing blocker, and unsafe target states to safe actions."],
     ["support-packet", "A read-only support packet gives GitHub issue copy/paste fields without full hostnames, full IPs, secrets, live SSH, or config writes."],
+    ["github-quickstart", "A read-only GitHub quickstart turns first-run, troubleshooting, doctor, and support packet output into one public path."],
     ["onboarding-pack", "A read-only GitHub review pack explains reviewer, maintainer, and new-contributor paths without writing SSH config."],
     ["contributor-doctor", "A read-only local doctor checks GitHub/SSH prerequisites and produces a review report without contacting GitHub."],
     ["live-blocked", "Latest approved live probe preserves server/port but is blocked by GitHub Codespaces billing."],
@@ -6648,6 +6651,7 @@ function renderSeisCloud() {
         <article class="metric-card"><strong>First Run</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.firstRunCommand)}</p></article>
         <article class="metric-card"><strong>Troubleshooting</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.troubleshootingCommand)}</p></article>
         <article class="metric-card"><strong>Support Packet</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.supportPacketCommand)}</p></article>
+        <article class="metric-card"><strong>GitHub Quickstart</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.quickstartCommand)}</p></article>
         <article class="metric-card"><strong>Onboarding</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.onboardingCommand)}</p></article>
         <article class="metric-card"><strong>Doctor</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.contributorDoctorCommand)}</p></article>
         <article class="metric-card"><strong>Live Evidence</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.liveEvidenceCommand)}</p></article>
@@ -9199,6 +9203,8 @@ Public SSH troubleshooting command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.troublesho
 Public SSH troubleshooting artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.troubleshootingArtifact}
 Public SSH support packet command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.supportPacketCommand}
 Public SSH support packet artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.supportPacketArtifact}
+Public SSH GitHub quickstart command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.quickstartCommand}
+Public SSH GitHub quickstart artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.quickstartArtifact}
 Public SSH onboarding command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.onboardingCommand}
 Public SSH onboarding artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.onboardingArtifact}
 Public SSH contributor doctor command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.contributorDoctorCommand}

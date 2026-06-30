@@ -100,6 +100,7 @@ function buildSupportPacket() {
       userType: "GitHub contributor / Individual SEIS user / ChatGPT/Codex user",
       supportCase: supportCase({ snapshot, liveEvidence, diagnosticIds }),
       commandsRun: [
+        "npm run run:seis-ssh-public-github-quickstart -> quickstart-ready",
         `npm run run:seis-ssh-public-first-run -> ${firstRun.status || statusLabel(firstRun)}`,
         `npm run run:seis-ssh-public-troubleshooting -> ${troubleshooting.status || statusLabel(troubleshooting)}`,
         `npm run report:seis-ssh-public-contributor-doctor -> ${doctor.status || statusLabel(doctor)}`,
@@ -131,6 +132,7 @@ function buildSupportPacket() {
         "npm run report:seis-ssh-public-support-packet"
       ],
       safeInputs: [
+        "npm run run:seis-ssh-public-github-quickstart",
         "npm run run:seis-ssh-public-first-run",
         "npm run run:seis-ssh-public-troubleshooting",
         "npm run report:seis-ssh-public-contributor-doctor"

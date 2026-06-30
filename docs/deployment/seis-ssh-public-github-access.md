@@ -42,9 +42,16 @@ in git, no fake online status, and no local-Mac dependency.
 Start here on a new machine or fresh clone:
 
 ```bash
+npm run run:seis-ssh-public-github-quickstart
 npm run run:seis-ssh-public-first-run
 npm run run:seis-ssh-public-troubleshooting
 ```
+
+The GitHub quickstart command is the safest one-command entrypoint for a public
+contributor. It reduces the first-run guide, troubleshooting guide, contributor
+doctor, and support packet into a step-by-step path from fresh clone to
+secret-safe GitHub support issue. It does not contact GitHub, write
+`~/.ssh/config`, open SSH, or change the server or port.
 
 This first-run command is read-only. It produces a sanitized local snapshot,
 shows whether setup is needed, and keeps missing `SEIS-SSH` configuration as a
@@ -65,6 +72,8 @@ npm run check:seis-ssh-public-troubleshooting
 npm run report:seis-ssh-public-troubleshooting
 npm run check:seis-ssh-public-support-packet
 npm run report:seis-ssh-public-support-packet
+npm run check:seis-ssh-public-github-quickstart
+npm run report:seis-ssh-public-github-quickstart
 npm run run:seis-ssh-public-onboarding
 npm run check:seis-ssh-public-access
 npm run check:seis-ssh-public-access-report
@@ -138,6 +147,14 @@ warning IDs, blocker IDs, transport class, port, and endpoint fingerprint prefix
 without including full `ssh -G` output, full hostnames, full IP addresses,
 private keys, tokens, passwords, cookies, `.env` values, or provider
 credentials.
+
+`npm run report:seis-ssh-public-github-quickstart` writes the contributor-facing
+quickstart to
+`reports/seis-ssh-public-access/github-quickstart-latest.md`. It is the best
+artifact for a public GitHub user who wants one clear read-only path: start
+first-run, diagnose warnings, run the local doctor, and prepare the support
+packet without raw SSH config output, hostnames, IP addresses, shared
+credentials, live SSH, config writes, or endpoint changes.
 
 `npm run report:seis-ssh-public-onboarding` writes a GitHub review-oriented
 onboarding pack to `reports/seis-ssh-public-access/onboarding-pack-latest.md`.
@@ -225,6 +242,7 @@ npm run check:seis-ssh-public-access
 npm run check:seis-ssh-public-first-run
 npm run check:seis-ssh-public-troubleshooting
 npm run check:seis-ssh-public-support-packet
+npm run check:seis-ssh-public-github-quickstart
 npm run check:seis-ssh-public-onboarding
 npm run check:seis-ssh-public-contributor-doctor
 npm run check:seis-ssh-live-readiness-evidence

@@ -182,6 +182,8 @@ npm run check:seis-ssh-public-troubleshooting
 npm run report:seis-ssh-public-troubleshooting
 npm run check:seis-ssh-public-support-packet
 npm run report:seis-ssh-public-support-packet
+npm run check:seis-ssh-public-github-quickstart
+npm run report:seis-ssh-public-github-quickstart
 npm run check:seis-ssh-public-onboarding
 npm run report:seis-ssh-public-onboarding
 npm run check:seis-ssh-public-contributor-doctor
@@ -209,6 +211,12 @@ GitHub `SEIS SSH access support` form. It summarizes command results, sanitized
 status labels, warning IDs, blocker IDs, transport class, port, and endpoint
 fingerprint prefix without printing full hostnames, full IP addresses, private
 keys, tokens, cookies, provider credentials, or `.env` values.
+
+`npm run run:seis-ssh-public-github-quickstart` creates a read-only GitHub
+quickstart for public contributors. It reduces first-run, troubleshooting,
+contributor doctor, and support-packet outputs into one step-by-step path from
+fresh clone to secret-safe issue form without opening SSH, writing SSH config,
+contacting GitHub, or changing the existing `SEIS-SSH` server and port.
 
 `npm run report:seis-ssh-public-onboarding` writes a read-only GitHub review
 pack under `reports/seis-ssh-public-access/`. It does not write SSH config,
