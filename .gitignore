@@ -18,8 +18,15 @@ apps/web/wow-pages/imported/**/png/*.png
 .env
 .env.local
 .env.*
+*.env.*
+*.env.local
+credentials.local.json
+service-account*.json
 !.env.example
+!.env.*.example
 .seis-secrets/
+seis-brain/private/
+seis-brain/local-only/
 
 # Secret and SSH key material
 *.pem

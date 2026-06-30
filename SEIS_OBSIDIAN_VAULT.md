@@ -2,38 +2,48 @@
 
 ## Purpose
 
-SEIS uses an Obsidian-compatible vault as a public-safe knowledge layer.
-All core project context should be discoverable from plain Markdown notes and
-internal links.
+SEIS Obsidian Vault is the public-safe, plain Markdown knowledge layer for
+human and agent onboarding.
+
+It must remain searchable, reviewable, and plugin-independent.
 
 ## Folder structure
 
 - `seis-brain/README.md`
-- `seis-brain/vault/`
-  - `00_Index`
-  - `01_Product`
-  - `02_Architecture`
-  - `03_Design_System`
-  - `04_AI`
-  - `05_Agents`
-  - `06_GitHub`
-  - `07_SSH_Cloud`
-  - `08_Prompts`
-  - `09_Decisions`
-  - `10_Logs`
-  - `11_Roadmap`
-  - `12_Context_Packs`
-  - `13_Public_Private_Boundaries`
+- `seis-brain/vault/00_Index`
+- `seis-brain/vault/01_Product`
+- `seis-brain/vault/02_Architecture`
+- `seis-brain/vault/03_Design_System`
+- `seis-brain/vault/04_AI`
+- `seis-brain/vault/05_Agents`
+- `seis-brain/vault/06_GitHub`
+- `seis-brain/vault/07_SSH_Cloud`
+- `seis-brain/vault/08_Prompts`
+- `seis-brain/vault/09_Decisions`
+- `seis-brain/vault/10_Logs`
+- `seis-brain/vault/11_Roadmap`
+- `seis-brain/vault/12_Context_Packs`
+- `seis-brain/vault/13_Public_Private_Boundaries`
 
 ## Note naming rules
 
-- Use stable, descriptive Turkish/English titles.
-- Use numeric domain folders as above.
-- Keep names stable for backlinks and review diffs.
+- Use clear title-case names.
+- Use safe characters only (`_`, `-`, spaces, alphanumerics).
+- Keep one concept per note.
+- Avoid overly long file names.
 
 ## Frontmatter rules
 
-Use frontmatter for high-value notes:
+Use frontmatter for structured notes, especially:
+
+- `type`
+- `module`
+- `status` (draft/reviewed/approved/deprecated)
+- `visibility` (public/local-only)
+- `owner`
+- `updated`
+
+Example:
 
 ```yaml
 ---
@@ -41,76 +51,96 @@ type: architecture
 module: seis-ai-core
 status: draft
 visibility: public
-updated: 2026-06-29
+owner: SEIS
+updated: 2026-06-30
 ---
 ```
 
 ## Backlink rules
 
-Use `[[...]]` links for all note-to-note dependencies, including:
-
-- architecture and agents
-- model/router constraints
-- release readiness gates
+- Use `[[Note Name]]` links where they increase navigability.
+- Keep one link section in each note (`## Related Notes`).
+- Avoid link cycles unless intentionally representing feedback loops.
 
 ## Public-safe notes
 
-- Never commit secrets, credentials, private hostnames, or token values.
-- Keep `status` explicit and conservative (`draft`, `reviewed`, `approved`, `deprecated`).
+- architecture
+- design system
+- security rules
+- product principles
+- roadmap and milestones
+- provider safety summaries
 
 ## Local-only notes
 
-Private notes stay outside repository scope. Use local ignore-safe directories when
-capturing personal notes.
+- private infrastructure details
+- private keys, tokens, credentials
+- personal or sensitive operational plans
+- machine-specific host metadata
+
+Do not commit local-only content.
 
 ## Context packs
 
-`seis-brain/vault/12_Context_Packs` contains compact handoff prompts for agent
-lanes. Keep each file short, review-ready, and no secret.
+Context packs are compact onboarding snippets for specific workflows:
 
-## ADR notes
-
-Decisions are stored under `09_Decisions` with consequences and alternatives.
+- SEIS AI/agents
+- local AI operations
+- SSH/cloud safety
+- demo run review
 
 ## Logs and lessons
 
-Operational logs are tracked in:
+Keep recurring notes for:
 
-- `10_Logs/Failed Attempts.md`
-- `10_Logs/Weekly Progress.md`
-- `10_Logs/Lessons Learned.md`
+- failed attempts
+- CI failures
+- demo packaging history
+- blocked items and decisions
 
 ## How to open in Obsidian
 
-Open the `seis-brain` folder in Obsidian and start from:
+Open folder path:
 
-- `vault/00_Index/SEIS Home.md`
-- `vault/00_Index/SEIS Map.md`
+`seis-brain/vault`
+
+No plugins are required for the baseline use.
 
 ## Plugin policy
 
-No plugin is required. Optional plugins can be used for graphs, kanban, or graph view.
+- Basic vault usage: no mandatory plugins.
+- Optional plugin suggestions are appended in a separate optional section.
+- Never make plugins a hard dependency for onboarding.
 
 ## Maintenance rules
 
-- Update index notes when adding a new concept.
-- Keep backlinks synchronized to avoid orphaned notes.
-- Keep frontmatter current when status changes.
+- Update index notes when adding/removing core notes.
+- Keep `SEIS Home` and `SEIS Map` current.
+- Validate links during major churn.
+- Mark stale notes with `status: deprecated` and add replacement links.
 
 ## Example note
 
 ```md
 ---
 type: product
-module: seis-product
-status: draft
+module: seis-os
+status: reviewed
 visibility: public
-updated: 2026-06-29
+updated: 2026-06-30
 ---
 
-# SEIS Vision
+# SEIS Product Principles
 
-- summary: ...
-- state: draft
-- next actions: ...
+## Current State
+demo
+
+## Related Notes
+- [[SEIS Home]]
+- [[Premium UI Rules]]
 ```
+
+## Governance reminder
+
+All vault content is governed by `AGENTS.md`, `SEIS_SECOND_BRAIN.md`, and
+`docs/PUBLIC_READINESS.md`.

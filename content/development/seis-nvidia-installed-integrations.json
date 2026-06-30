@@ -199,6 +199,7 @@
     "Execute SSH, cluster, cloud, or GitHub write actions."
   ],
   "safeCurrentCommands": [
+    "npm run check:seis-nvidia-aiq-runtime-allowlist-plan",
     "npm run check:seis-nvidia-installed-integrations",
     "npm run check:seis-nvidia-accelerator-catalog",
     "npm run plan:nvidia-catalog-install"
@@ -206,6 +207,9 @@
   "documentation": {
     "primaryDoc": "docs/ai/nvidia-installed-integrations.md",
     "reviewDoc": "docs/reviews/NVIDIA_INSTALLED_INTEGRATIONS_REVIEW.md",
+    "aiqRuntimeAllowlistPlan": "content/development/seis-nvidia-aiq-runtime-allowlist-plan.json",
+    "aiqRuntimeAllowlistDoc": "docs/ai/nvidia-aiq-runtime-allowlist-plan.md",
+    "aiqRuntimeAllowlistReview": "docs/reviews/NVIDIA_AIQ_RUNTIME_ALLOWLIST_REVIEW.md",
     "statusDoc": "docs/STATUS.md",
     "backlogDoc": "docs/roadmap/MASTER_BACKLOG.md",
     "nextQueueDoc": "docs/roadmap/NEXT_PR_QUEUE.md"

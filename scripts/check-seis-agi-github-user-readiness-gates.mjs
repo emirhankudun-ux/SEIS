@@ -52,6 +52,36 @@ if (gates) {
   ensure(gates.publicReadyForLocalDemo === true, "gates must allow Local Demo review");
   ensure(gates.githubReadyForEveryone === false, "gates must keep everyone-ready false until release evidence exists");
   ensure(gates.claimDecision === "github-users-can-review-local-demo-not-real-agi", "claim decision mismatch");
+  ensure(gates.oneCommandReadinessValidator?.status === "available-local-demo-gate", "one-command readiness validator status mismatch");
+  ensure(gates.oneCommandReadinessValidator?.command === "npm run check:seis-ai-public-readiness", "one-command readiness validator command mismatch");
+  ensure(gates.oneCommandReadinessValidator?.mode === "local-demo-readiness-only", "one-command readiness validator mode mismatch");
+  for (const field of [
+    "installsModels",
+    "downloadsCheckpoints",
+    "trainsModels",
+    "callsProviders",
+    "provisionsCloudOrGpu",
+    "executesSsh",
+    "pushesOrMerges",
+    "grantsAgiClaim",
+    "grants512bRouteEligibility"
+  ]) {
+    ensure(gates.oneCommandReadinessValidator?.[field] === false, `oneCommandReadinessValidator.${field} must remain false`);
+  }
+  ensureArrayIncludesAll(gates.oneCommandReadinessValidator?.checks, [
+    "check:seis-language-model-intake",
+    "check:seis-language-model-training-curriculum",
+    "check:seis-ai-workforce-training",
+    "check:seis-agent-workforce",
+    "check:seis-model-scaling-hardware-profile",
+    "check:seis-model-parameter-ladder",
+    "check:seis-model-scaling-subagent-council",
+    "check:seis-512b-apex-model-program",
+    "check:seis-agi-evaluation-protocol",
+    "check:seis-agi-public-readiness-evidence",
+    "check:seis-agi-github-user-readiness-gates",
+    "check:seis-agi-independent-evidence-ledger"
+  ], "oneCommandReadinessValidator.checks");
   ensure(String(gates.truthBoundary || "").includes("does not prove SEIS AGI"), "truth boundary must block AGI proof claims");
   ensure(String(gates.truthBoundary || "").includes("train or download a 512B model"), "truth boundary must block 512B training/download claims");
   ensure(String(gates.truthBoundary || "").includes("approve release"), "truth boundary must block release approval claims");

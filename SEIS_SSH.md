@@ -75,6 +75,17 @@ Keep demo profiles metadata-only (`label`, `intent`, `status`, `review notes`).
 - `plan`, `owner`, `rollback`, and `required approvals` before claiming deployment
   readiness.
 
+## Readiness checks before claiming remote rollout
+
+- `npm run check:seis-ssh-public-access`
+- `npm run check:seis-ssh-public-onboarding`
+- `npm run check:seis-ssh-public-contributor-doctor`
+- `npm run check:seis-ssh-live-readiness-evidence`
+- `npm run check:seis-ssh-access-model`
+- `npm run check:seis-ssh-picker-compatibility`
+
+Do not publish a positive rollout result without these check outcomes recorded.
+
 ## Rollback readiness
 
 Define rollback plan before rollout:
