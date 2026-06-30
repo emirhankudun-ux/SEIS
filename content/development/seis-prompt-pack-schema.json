@@ -1,0 +1,63 @@
+{
+  "id": "seis-prompt-pack-schema",
+  "version": 1,
+  "status": "documented-schema",
+  "updatedAt": "2026-07-01",
+  "purpose": "Define the SEIS Prompt Engine prompt-pack contract for browser-local demos, repository review prompts, security review prompts, and future backend-only provider routing without executing prompts or reading credentials.",
+  "truthBoundary": "Static repository contract only. This schema validates prompt-pack metadata; it does not execute prompts, call providers, validate credentials, read private archives, or promote historical prompts automatically.",
+  "qualityGate": "npm run check:seis-prompt-pack-contracts",
+  "requiredFields": [
+    "id",
+    "title",
+    "version",
+    "ownerArea",
+    "intendedCapability",
+    "allowedContext",
+    "deniedContext",
+    "providerCapabilityRequirements",
+    "outputSchema",
+    "evaluationFixture",
+    "rollbackNote",
+    "allowedActions",
+    "forbiddenActions",
+    "safetyBoundaries",
+    "validationMethod",
+    "reviewState",
+    "executionPolicy"
+  ],
+  "fieldDefinitions": {
+    "id": "Stable kebab-case prompt-pack identifier.",
+    "title": "Human-readable prompt pack name.",
+    "version": "Semver-style prompt-pack version.",
+    "ownerArea": "Owning SEIS module or governance lane.",
+    "intendedCapability": "Specific task family this prompt pack supports.",
+    "allowedContext": "Repository-safe context classes that may be provided to the pack.",
+    "deniedContext": "Context classes that must never be included.",
+    "providerCapabilityRequirements": "Capability profile the future model router must satisfy before live use.",
+    "outputSchema": "Required response shape or artifact shape.",
+    "evaluationFixture": "Static fixture used for no-provider validation.",
+    "rollbackNote": "How to disable or revert the pack safely.",
+    "allowedActions": "Actions an assistant may perform under this pack.",
+    "forbiddenActions": "Actions the pack must never authorize.",
+    "safetyBoundaries": "No-secrets, local-only, review, clean-room, and escalation boundaries.",
+    "validationMethod": "Static or future runtime validation method.",
+    "reviewState": "Current review state: reviewed-fixture, draft, blocked, or retired.",
+    "executionPolicy": "Whether prompt execution, provider calls, credential reads, and archive promotion are allowed. Current fixtures must keep all false."
+  },
+  "executionPolicyInvariant": {
+    "promptExecuted": false,
+    "providerCalled": false,
+    "credentialRead": false,
+    "archivePromoted": false,
+    "browserSecretAllowed": false,
+    "liveRoutingAllowed": false
+  },
+  "publicSafetyInvariants": [
+    "Prompt packs must not contain API keys, private keys, real tokens, cookies, or private host credentials.",
+    "Prompt packs must not copy proprietary or leaked system prompts.",
+    "Prompt packs must mark demo, local-only, blocked, planned, and approval-needed states explicitly.",
+    "Prompt packs must not claim prompt engineering, retrieval, routing, or fixtures are model training.",
+    "Prompt packs must not enable browser-side live provider calls.",
+    "Prompt packs must be reversible through a documented rollback note."
+  ]
+}
