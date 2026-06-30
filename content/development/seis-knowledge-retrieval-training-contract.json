@@ -1,0 +1,282 @@
+{
+  "id": "seis-knowledge-retrieval-training-contract",
+  "version": "2026.07.01",
+  "generatedAt": "2026-06-30T21:37:55.384Z",
+  "status": "contract-defined-not-indexed",
+  "qualityGate": "npm run check:seis-knowledge-retrieval-training",
+  "reportCommand": "npm run report:seis-knowledge-retrieval-training",
+  "purpose": "Define the safe knowledge and retrieval foundation required before SEIS can become genuinely useful, public-ready, or eligible for future model training claims.",
+  "truthBoundary": [
+    "This contract builds no retrieval index.",
+    "It installs no embedding or reranker model.",
+    "It sends no repository data to external providers.",
+    "It downloads no datasets.",
+    "It runs no fine-tune, LoRA, adapter training, foundation pretraining, or benchmark.",
+    "It does not prove SEIS is fully knowledgeable, routeable 512B, or AGI."
+  ],
+  "sourceOfTruth": {
+    "installTrainingLedger": "content/development/seis-language-model-install-training-ledger.json",
+    "modelScalingProfile": "content/development/seis-model-scaling-hardware-profile.json",
+    "agiEvaluationProtocol": "content/development/seis-agi-evaluation-protocol.json",
+    "docs": "docs/ai/seis-knowledge-retrieval-training.md"
+  },
+  "internetResearchBaseline": [
+    {
+      "id": "huggingface-transformers",
+      "sourceType": "official-docs",
+      "url": "https://huggingface.co/docs/transformers/index",
+      "usedFor": "Framework boundary for model training/inference planning; checkpoint provenance remains separate."
+    },
+    {
+      "id": "ollama-library",
+      "sourceType": "official-catalog",
+      "url": "https://ollama.com/library",
+      "usedFor": "Local model family discovery; catalog presence does not grant SEIS install permission."
+    },
+    {
+      "id": "meta-llama-3-1-405b",
+      "sourceType": "official-announcement",
+      "url": "https://ai.meta.com/blog/meta-llama-3-1/",
+      "usedFor": "Frontier-scale parameter baseline showing why 405B/512B must remain research-scale."
+    },
+    {
+      "id": "deepseek-v3",
+      "sourceType": "primary-repo",
+      "url": "https://github.com/deepseek-ai/DeepSeek-V3",
+      "usedFor": "MoE scale reference; total and active parameters must be tracked separately."
+    },
+    {
+      "id": "nist-ai-rmf",
+      "sourceType": "official-guidance",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "usedFor": "Risk management baseline for public AI readiness and governance."
+    }
+  ],
+  "approvedToday": {
+    "localSourceInventory": true,
+    "metadataOnlySourceCatalog": true,
+    "retrievalArchitecturePlanning": true,
+    "retrievalIndexBuild": false,
+    "embeddingModelInstall": false,
+    "rerankerModelInstall": false,
+    "providerEmbeddingCalls": false,
+    "externalWebCrawl": false,
+    "datasetDownload": false,
+    "trainingOnRetrievedSources": false,
+    "runtimeAuthority": false
+  },
+  "knowledgeDefinition": {
+    "term": "tam-bilgili-seis",
+    "meaning": "Source-grounded SEIS knowledge over approved repository, documentation, governance, roadmap, security, AI, model, and public-source metadata with measurable retrieval/eval quality.",
+    "nonMeaning": "Not a claim that one model has memorized all knowledge, trained on all sources, or achieved AGI."
+  },
+  "sourceClasses": [
+    {
+      "id": "repo-public-docs",
+      "status": "candidate-allowlisted",
+      "examples": [
+        "README.md",
+        "ARCHITECTURE.md",
+        "ROADMAP.md",
+        "SECURITY.md",
+        "docs/**"
+      ],
+      "allowedToday": "metadata inventory only",
+      "beforeIndexBuild": [
+        "path allowlist",
+        "secret scan",
+        "license/provenance note",
+        "chunking strategy"
+      ]
+    },
+    {
+      "id": "repo-governance-json",
+      "status": "candidate-allowlisted",
+      "examples": [
+        "content/development/seis-*.json",
+        "packages/seis-ai/models/*.json"
+      ],
+      "allowedToday": "metadata inventory only",
+      "beforeIndexBuild": [
+        "schema validation",
+        "secret scan",
+        "source-of-truth mapping",
+        "staleness check"
+      ]
+    },
+    {
+      "id": "repo-reports",
+      "status": "candidate-allowlisted",
+      "examples": [
+        "reports/seis-model-scaling/*.md",
+        "reports/seis-ai-workforce-training/*.md"
+      ],
+      "allowedToday": "metadata inventory only",
+      "beforeIndexBuild": [
+        "generated artifact check",
+        "stale report check",
+        "claim boundary review"
+      ]
+    },
+    {
+      "id": "official-public-ai-sources",
+      "status": "metadata-only",
+      "examples": [
+        "official model docs",
+        "official model cards",
+        "NIST guidance",
+        "primary papers"
+      ],
+      "allowedToday": "citation and metadata only",
+      "beforeIndexBuild": [
+        "license review",
+        "citation record",
+        "no bulk scrape",
+        "cache policy"
+      ]
+    },
+    {
+      "id": "private-user-data",
+      "status": "blocked",
+      "examples": [
+        ".env",
+        "tokens",
+        "SSH keys",
+        "cookies",
+        "private notes",
+        "unreviewed attachments"
+      ],
+      "allowedToday": "blocked",
+      "beforeIndexBuild": [
+        "never index without explicit separate policy"
+      ]
+    }
+  ],
+  "requiredBeforeRetrievalIndexBuild": [
+    "path allowlist for source files",
+    "secret and credential scan",
+    "private data exclusion policy",
+    "chunk schema and source URI policy",
+    "provenance manifest with source type and license notes",
+    "staleness detection for generated reports",
+    "local-only fallback behavior",
+    "redacted logs",
+    "human approval"
+  ],
+  "requiredBeforeEmbeddingOrRerankerInstall": [
+    "specific model id and version",
+    "license and acceptable-use review",
+    "checkpoint source and checksum",
+    "model card",
+    "disk/RAM/GPU budget",
+    "rollback and deletion plan",
+    "no-secret prompt/log boundary",
+    "human approval"
+  ],
+  "requiredBeforeFullyKnowledgeableClaim": [
+    "retrieval index built from approved sources",
+    "retrieval precision and recall evaluation",
+    "citation faithfulness evaluation",
+    "hallucination regression suite",
+    "security redaction test",
+    "fresh clone validation",
+    "public documentation explaining real/mock/planned states",
+    "independent review"
+  ],
+  "agentResponsibilities": [
+    {
+      "id": "architect",
+      "responsibility": "Own retrieval architecture, source-of-truth mapping, and promotion boundaries.",
+      "authority": "plan-review-validate-only",
+      "runtimeAuthority": false
+    },
+    {
+      "id": "code",
+      "responsibility": "Implement indexers only after allowlists and secret scans are accepted.",
+      "authority": "plan-review-validate-only",
+      "runtimeAuthority": false
+    },
+    {
+      "id": "design",
+      "responsibility": "Keep Command Center knowledge surfaces honest and readable.",
+      "authority": "plan-review-validate-only",
+      "runtimeAuthority": false
+    },
+    {
+      "id": "ui-ux",
+      "responsibility": "Expose source citations, stale states, and fallback modes clearly.",
+      "authority": "plan-review-validate-only",
+      "runtimeAuthority": false
+    },
+    {
+      "id": "research",
+      "responsibility": "Maintain primary-source citations and current model landscape notes.",
+      "authority": "plan-review-validate-only",
+      "runtimeAuthority": false
+    },
+    {
+      "id": "search",
+      "responsibility": "Define retrieval quality metrics and query fixtures.",
+      "authority": "plan-review-validate-only",
+      "runtimeAuthority": false
+    },
+    {
+      "id": "security",
+      "responsibility": "Block secrets, private files, and unsafe provider routing.",
+      "authority": "plan-review-validate-only",
+      "runtimeAuthority": false
+    },
+    {
+      "id": "devops",
+      "responsibility": "Plan local-only build, cache, and rollback workflows.",
+      "authority": "plan-review-validate-only",
+      "runtimeAuthority": false
+    },
+    {
+      "id": "documentation",
+      "responsibility": "Document source classes, non-claims, and run commands.",
+      "authority": "plan-review-validate-only",
+      "runtimeAuthority": false
+    },
+    {
+      "id": "qa",
+      "responsibility": "Validate precision/recall, citation, and hallucination fixtures.",
+      "authority": "plan-review-validate-only",
+      "runtimeAuthority": false
+    },
+    {
+      "id": "cloud",
+      "responsibility": "Keep cloud/provider paths disabled until approved.",
+      "authority": "plan-review-validate-only",
+      "runtimeAuthority": false
+    },
+    {
+      "id": "automation",
+      "responsibility": "Keep reports reproducible and stale checks strict.",
+      "authority": "plan-review-validate-only",
+      "runtimeAuthority": false
+    }
+  ],
+  "routeEligibility": {
+    "localDemoKnowledgeSurface": true,
+    "retrievalIndexRoute": false,
+    "embeddingRoute": false,
+    "rerankerRoute": false,
+    "cloudKnowledgeRoute": false,
+    "trainingDataRoute": false,
+    "agiRoute": false,
+    "evidence": {
+      "installTrainingLedgerStatus": "safety-gated-install-and-training-ledger",
+      "modelScalingApexStatus": "not-scoped",
+      "agiClaimAllowed": false
+    }
+  },
+  "publicClaims": {
+    "canClaimKnowledgeContractDefined": true,
+    "canClaimRetrievalIndexBuilt": false,
+    "canClaimEmbeddingModelInstalled": false,
+    "canClaimSEISTrainedOnKnowledgeBase": false,
+    "canClaimFullyKnowledgeableAI": false,
+    "canClaimAGI": false
+  }
+}

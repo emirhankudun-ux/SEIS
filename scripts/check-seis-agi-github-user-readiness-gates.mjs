@@ -12,6 +12,7 @@ const paths = {
   protocol: "content/development/seis-agi-evaluation-protocol.json",
   apexProgram: "content/development/seis-512b-apex-model-program.json",
   independentEvidenceLedger: "content/development/seis-agi-independent-evidence-ledger.json",
+  freshCloneReadiness: "content/development/seis-ai-fresh-clone-readiness.json",
   mcpRuntime: "content/development/seis-ai-core-mcp-runtime-contract.json",
   pluginIntegration: "content/development/seis-agent-plugin-integration.json",
   doc: "docs/ai/seis-agi-github-user-readiness-gates.md",
@@ -30,6 +31,7 @@ const protocol = readJson(paths.protocol, "AGI evaluation protocol");
 const apexProgram = readJson(paths.apexProgram, "512B apex program");
 const mcpRuntime = readJson(paths.mcpRuntime, "MCP runtime contract");
 const independentEvidenceLedger = readJson(paths.independentEvidenceLedger, "AGI independent evidence ledger");
+const freshCloneReadiness = readJson(paths.freshCloneReadiness, "AI fresh-clone readiness");
 const pluginIntegration = readJson(paths.pluginIntegration, "plugin integration");
 const doc = readText(paths.doc, "AGI GitHub user readiness docs");
 const publicReadinessDoc = readText(paths.publicReadinessDoc, "AGI public readiness docs");
@@ -73,6 +75,7 @@ if (gates) {
     "check:seis-language-model-training-curriculum",
     "check:seis-ai-workforce-training",
     "check:seis-agent-workforce",
+    "check:seis-ai-fresh-clone-readiness",
     "check:seis-model-scaling-hardware-profile",
     "check:seis-model-parameter-ladder",
     "check:seis-model-scaling-subagent-council",
@@ -92,6 +95,7 @@ if (gates) {
   ensure(gates.sourceOfTruth?.mcpRuntimeContract === paths.mcpRuntime, "sourceOfTruth.mcpRuntimeContract mismatch");
   ensure(gates.sourceOfTruth?.pluginIntegration === paths.pluginIntegration, "sourceOfTruth.pluginIntegration mismatch");
   ensure(gates.sourceOfTruth?.agiIndependentEvidenceLedger === paths.independentEvidenceLedger, "sourceOfTruth.agiIndependentEvidenceLedger mismatch");
+  ensure(gates.sourceOfTruth?.freshCloneReadiness === paths.freshCloneReadiness, "sourceOfTruth.freshCloneReadiness mismatch");
   ensure(gates.sourceOfTruth?.doc === paths.doc, "sourceOfTruth.doc mismatch");
 
   ensureArrayIncludesAll(
@@ -140,6 +144,7 @@ if (gates) {
 
   ensureArrayIncludesAll(gates.requiredBeforeEveryoneReady, [
     "fresh clone local demo path verified",
+    "npm run check:seis-ai-fresh-clone-readiness passes on the target commit",
     "one-command AI readiness validator documented and passing",
     "all required CI checks green on the target commit",
     "human release approval recorded",
@@ -164,6 +169,8 @@ ensure(protocol?.agiClaimAllowed === false, "AGI evaluation protocol must keep A
 ensure(apexProgram?.sourceOfTruth?.githubUserReadinessGates === paths.gates, "512B apex program must point to GitHub user readiness gates");
 ensure(independentEvidenceLedger?.status === "planned-without-independent-evidence", "independent evidence ledger must remain planned-without-independent-evidence while blocks are in force");
 ensure(independentEvidenceLedger?.agiClaimAllowed === false, "independent evidence ledger must keep AGI claims blocked");
+ensure(freshCloneReadiness?.status === "contract-defined-not-release-evidence", "fresh-clone readiness must remain contract-defined");
+ensure(freshCloneReadiness?.freshCloneVerified === false, "fresh-clone readiness must not claim verified clone evidence");
 ensure(apexProgram?.routeEligibleToday === false, "512B apex program must stay route blocked");
 
 ensureArrayIncludesAll(pluginIntegration?.runtimeIntegration?.mcpResources, [

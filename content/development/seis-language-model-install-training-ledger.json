@@ -1,0 +1,500 @@
+{
+  "id": "seis-language-model-install-training-ledger",
+  "version": "2026.07.01",
+  "generatedAt": "2026-06-30T21:37:55.320Z",
+  "status": "safety-gated-install-and-training-ledger",
+  "qualityGate": "npm run check:seis-language-model-install-training-ledger",
+  "reportCommand": "npm run report:seis-language-model-install-training-ledger",
+  "truthBoundary": [
+    "This ledger plans model intake, install readiness, and training readiness only.",
+    "It downloads no model weights.",
+    "It installs no language model.",
+    "It runs no inference.",
+    "It runs no provider call.",
+    "It runs no dataset download.",
+    "It runs no fine-tune, LoRA, adapter training, or foundation pretraining.",
+    "It proves no AGI capability and creates no SEIS-owned foundation model checkpoint."
+  ],
+  "userRequestInterpretation": {
+    "requestedGoal": "Install all language models and train SEIS AI to be fully knowledgeable.",
+    "safeInterpretation": "Do not bulk-install everything. Build a gated install/training ledger, then promote one approved model lane at a time with license, hardware, dataset, benchmark, and human-review evidence.",
+    "knowledgeDefinition": "Tam bilgili SEIS means source-grounded retrieval, clean provenance, evaluation, and safe routing. It does not mean pretending a single model memorized every possible source."
+  },
+  "sourceOfTruth": {
+    "registry": "content/development/seis-language-model-intake-registry.json",
+    "curriculum": "content/development/seis-language-model-training-curriculum.json",
+    "hardwareProfile": "content/development/seis-model-scaling-hardware-profile.json",
+    "parameterLadder": "content/development/seis-model-parameter-ladder.json",
+    "knowledgeRetrievalTraining": "content/development/seis-knowledge-retrieval-training-contract.json",
+    "planScript": "scripts/plan-seis-language-model-install.mjs"
+  },
+  "approvedToday": {
+    "allModelInstall": false,
+    "languageModelDownloads": false,
+    "checkpointHandling": false,
+    "providerCalls": false,
+    "datasetDownloads": false,
+    "retrievalIndexImplementation": false,
+    "adapterTraining": false,
+    "fineTuning": false,
+    "foundationPretraining": false,
+    "repoLocalSeedModelTraining": true
+  },
+  "operatingPolicy": {
+    "bulkInstallAllowed": false,
+    "downloadAuthorized": false,
+    "trainingAuthorized": false,
+    "adapterTrainingAuthorized": false,
+    "fineTuningAuthorized": false,
+    "runtimeAuthorityGranted": false,
+    "secretReadAllowed": false,
+    "browserSecretAllowed": false
+  },
+  "currentHardwareBoundary": {
+    "laneId": "developer-16gb",
+    "ramClass": "16GB+",
+    "allowedToday": "metadata and deterministic seed-model lab only",
+    "blockedClasses": [
+      "70B",
+      "150B",
+      "300B+",
+      "405B",
+      "512B",
+      "671B+"
+    ],
+    "currentTargetParameterClass": "20B",
+    "currentTargetCompatibilityStatus": "planned-not-validated",
+    "currentTargetTrainingStatus": "not-started",
+    "currentTargetRouteEligibleToday": false,
+    "currentTargetRuntimeAuthority": false
+  },
+  "modelFamilies": [
+    {
+      "id": "code-specialist",
+      "displayName": "Code specialist model families",
+      "source": "ollama-library/huggingface-transformers",
+      "representativeClasses": [
+        "1B-7B local",
+        "14B-34B research",
+        "70B+ frontier"
+      ],
+      "installState": "not-installed-by-registry",
+      "allowedToday": "metadata-only",
+      "trainingUse": "not-authorized",
+      "licenseReviewStatus": "required-per-checkpoint",
+      "installDecision": "blocked-until-per-model-approval",
+      "trainingDecision": "blocked-not-authorized",
+      "allowedLocalActionToday": "metadata-only plus clean-room code-assistant evaluation planning",
+      "requiredBeforeInstall": [
+        "human approval for the specific model id and quantization",
+        "license and acceptable-use review",
+        "disk, RAM, GPU/CPU, and thermal budget estimate",
+        "checkpoint source, checksum, and provenance record",
+        "model card or model-card template",
+        "no-secret prompt and log boundary",
+        "local-only fallback plan",
+        "rollback and deletion plan"
+      ],
+      "requiredBeforeTraining": [
+        "completed dataset card with source inventory and license map",
+        "PII, secrets, credentials, and private-data scan",
+        "clean-room provenance statement",
+        "training objective and expected artifact type",
+        "eval suite and held-out benchmark definition",
+        "compute budget and stop condition",
+        "safety review and misuse review",
+        "checkpoint governance and model card",
+        "human approval recorded before execution"
+      ],
+      "nextSafeStep": "Prepare a code-eval fixture and security checks before selecting a coding checkpoint."
+    },
+    {
+      "id": "deepseek",
+      "displayName": "DeepSeek family",
+      "source": "ollama-library/deepseek",
+      "representativeClasses": [
+        "1.5B-70B reasoning",
+        "671B MoE frontier"
+      ],
+      "installState": "not-installed-by-registry",
+      "allowedToday": "metadata-only",
+      "trainingUse": "not-authorized",
+      "licenseReviewStatus": "required-per-checkpoint",
+      "installDecision": "blocked-until-per-model-approval",
+      "trainingDecision": "blocked-not-authorized",
+      "allowedLocalActionToday": "metadata-only plus license/hardware review planning",
+      "requiredBeforeInstall": [
+        "human approval for the specific model id and quantization",
+        "license and acceptable-use review",
+        "disk, RAM, GPU/CPU, and thermal budget estimate",
+        "checkpoint source, checksum, and provenance record",
+        "model card or model-card template",
+        "no-secret prompt and log boundary",
+        "local-only fallback plan",
+        "rollback and deletion plan"
+      ],
+      "requiredBeforeTraining": [
+        "completed dataset card with source inventory and license map",
+        "PII, secrets, credentials, and private-data scan",
+        "clean-room provenance statement",
+        "training objective and expected artifact type",
+        "eval suite and held-out benchmark definition",
+        "compute budget and stop condition",
+        "safety review and misuse review",
+        "checkpoint governance and model card",
+        "human approval recorded before execution"
+      ],
+      "nextSafeStep": "Keep candidate metadata only until a single model id, license, quantization, checksum, and rollback plan are approved."
+    },
+    {
+      "id": "embedding-and-reranker",
+      "displayName": "Embedding and reranker families",
+      "source": "ollama-library/huggingface-transformers",
+      "representativeClasses": [
+        "small embedding",
+        "large embedding",
+        "reranker"
+      ],
+      "installState": "not-installed-by-registry",
+      "allowedToday": "metadata-only",
+      "trainingUse": "not-authorized",
+      "licenseReviewStatus": "required",
+      "installDecision": "blocked-until-per-model-approval",
+      "trainingDecision": "blocked-not-authorized",
+      "allowedLocalActionToday": "metadata-only plus retrieval architecture planning",
+      "requiredBeforeInstall": [
+        "human approval for the specific model id and quantization",
+        "license and acceptable-use review",
+        "disk, RAM, GPU/CPU, and thermal budget estimate",
+        "checkpoint source, checksum, and provenance record",
+        "model card or model-card template",
+        "no-secret prompt and log boundary",
+        "local-only fallback plan",
+        "rollback and deletion plan"
+      ],
+      "requiredBeforeTraining": [
+        "completed dataset card with source inventory and license map",
+        "PII, secrets, credentials, and private-data scan",
+        "clean-room provenance statement",
+        "training objective and expected artifact type",
+        "eval suite and held-out benchmark definition",
+        "compute budget and stop condition",
+        "safety review and misuse review",
+        "checkpoint governance and model card",
+        "human approval recorded before execution"
+      ],
+      "nextSafeStep": "Prepare a provenance-safe local retrieval pilot without downloading a checkpoint yet."
+    },
+    {
+      "id": "gemma",
+      "displayName": "Google Gemma family",
+      "source": "ollama-library/gemma",
+      "representativeClasses": [
+        "small local",
+        "12B-31B research"
+      ],
+      "installState": "not-installed-by-registry",
+      "allowedToday": "metadata-only",
+      "trainingUse": "not-authorized",
+      "licenseReviewStatus": "required",
+      "installDecision": "blocked-until-per-model-approval",
+      "trainingDecision": "blocked-not-authorized",
+      "allowedLocalActionToday": "metadata-only plus license/hardware review planning",
+      "requiredBeforeInstall": [
+        "human approval for the specific model id and quantization",
+        "license and acceptable-use review",
+        "disk, RAM, GPU/CPU, and thermal budget estimate",
+        "checkpoint source, checksum, and provenance record",
+        "model card or model-card template",
+        "no-secret prompt and log boundary",
+        "local-only fallback plan",
+        "rollback and deletion plan"
+      ],
+      "requiredBeforeTraining": [
+        "completed dataset card with source inventory and license map",
+        "PII, secrets, credentials, and private-data scan",
+        "clean-room provenance statement",
+        "training objective and expected artifact type",
+        "eval suite and held-out benchmark definition",
+        "compute budget and stop condition",
+        "safety review and misuse review",
+        "checkpoint governance and model card",
+        "human approval recorded before execution"
+      ],
+      "nextSafeStep": "Keep candidate metadata only until a single model id, license, quantization, checksum, and rollback plan are approved."
+    },
+    {
+      "id": "llama",
+      "displayName": "Meta Llama family",
+      "source": "ollama-library/meta-llama",
+      "representativeClasses": [
+        "1B-8B local",
+        "70B research",
+        "405B frontier"
+      ],
+      "installState": "not-installed-by-registry",
+      "allowedToday": "metadata-only",
+      "trainingUse": "not-authorized",
+      "licenseReviewStatus": "required",
+      "installDecision": "blocked-until-per-model-approval",
+      "trainingDecision": "blocked-not-authorized",
+      "allowedLocalActionToday": "metadata-only plus license/hardware review planning",
+      "requiredBeforeInstall": [
+        "human approval for the specific model id and quantization",
+        "license and acceptable-use review",
+        "disk, RAM, GPU/CPU, and thermal budget estimate",
+        "checkpoint source, checksum, and provenance record",
+        "model card or model-card template",
+        "no-secret prompt and log boundary",
+        "local-only fallback plan",
+        "rollback and deletion plan"
+      ],
+      "requiredBeforeTraining": [
+        "completed dataset card with source inventory and license map",
+        "PII, secrets, credentials, and private-data scan",
+        "clean-room provenance statement",
+        "training objective and expected artifact type",
+        "eval suite and held-out benchmark definition",
+        "compute budget and stop condition",
+        "safety review and misuse review",
+        "checkpoint governance and model card",
+        "human approval recorded before execution"
+      ],
+      "nextSafeStep": "Keep candidate metadata only until a single model id, license, quantization, checksum, and rollback plan are approved."
+    },
+    {
+      "id": "mistral",
+      "displayName": "Mistral family",
+      "source": "ollama-library/mistral",
+      "representativeClasses": [
+        "7B local",
+        "22B-24B research",
+        "MoE frontier"
+      ],
+      "installState": "not-installed-by-registry",
+      "allowedToday": "metadata-only",
+      "trainingUse": "not-authorized",
+      "licenseReviewStatus": "required-per-checkpoint",
+      "installDecision": "blocked-until-per-model-approval",
+      "trainingDecision": "blocked-not-authorized",
+      "allowedLocalActionToday": "metadata-only plus license/hardware review planning",
+      "requiredBeforeInstall": [
+        "human approval for the specific model id and quantization",
+        "license and acceptable-use review",
+        "disk, RAM, GPU/CPU, and thermal budget estimate",
+        "checkpoint source, checksum, and provenance record",
+        "model card or model-card template",
+        "no-secret prompt and log boundary",
+        "local-only fallback plan",
+        "rollback and deletion plan"
+      ],
+      "requiredBeforeTraining": [
+        "completed dataset card with source inventory and license map",
+        "PII, secrets, credentials, and private-data scan",
+        "clean-room provenance statement",
+        "training objective and expected artifact type",
+        "eval suite and held-out benchmark definition",
+        "compute budget and stop condition",
+        "safety review and misuse review",
+        "checkpoint governance and model card",
+        "human approval recorded before execution"
+      ],
+      "nextSafeStep": "Keep candidate metadata only until a single model id, license, quantization, checksum, and rollback plan are approved."
+    },
+    {
+      "id": "openai-open-weight",
+      "displayName": "OpenAI open-weight candidates",
+      "source": "ollama-library/gpt-oss",
+      "representativeClasses": [
+        "20B planning",
+        "120B research"
+      ],
+      "installState": "not-installed-by-registry",
+      "allowedToday": "metadata-only",
+      "trainingUse": "not-authorized",
+      "licenseReviewStatus": "required",
+      "installDecision": "blocked-until-per-model-approval",
+      "trainingDecision": "blocked-not-authorized",
+      "allowedLocalActionToday": "metadata-only plus license/hardware review planning",
+      "requiredBeforeInstall": [
+        "human approval for the specific model id and quantization",
+        "license and acceptable-use review",
+        "disk, RAM, GPU/CPU, and thermal budget estimate",
+        "checkpoint source, checksum, and provenance record",
+        "model card or model-card template",
+        "no-secret prompt and log boundary",
+        "local-only fallback plan",
+        "rollback and deletion plan"
+      ],
+      "requiredBeforeTraining": [
+        "completed dataset card with source inventory and license map",
+        "PII, secrets, credentials, and private-data scan",
+        "clean-room provenance statement",
+        "training objective and expected artifact type",
+        "eval suite and held-out benchmark definition",
+        "compute budget and stop condition",
+        "safety review and misuse review",
+        "checkpoint governance and model card",
+        "human approval recorded before execution"
+      ],
+      "nextSafeStep": "Keep candidate metadata only until a single model id, license, quantization, checksum, and rollback plan are approved."
+    },
+    {
+      "id": "qwen",
+      "displayName": "Qwen family",
+      "source": "ollama-library/qwen",
+      "representativeClasses": [
+        "0.6B-14B local",
+        "30B-32B research",
+        "235B MoE frontier"
+      ],
+      "installState": "not-installed-by-registry",
+      "allowedToday": "metadata-only",
+      "trainingUse": "not-authorized",
+      "licenseReviewStatus": "required-per-checkpoint",
+      "installDecision": "blocked-until-per-model-approval",
+      "trainingDecision": "blocked-not-authorized",
+      "allowedLocalActionToday": "metadata-only plus license/hardware review planning",
+      "requiredBeforeInstall": [
+        "human approval for the specific model id and quantization",
+        "license and acceptable-use review",
+        "disk, RAM, GPU/CPU, and thermal budget estimate",
+        "checkpoint source, checksum, and provenance record",
+        "model card or model-card template",
+        "no-secret prompt and log boundary",
+        "local-only fallback plan",
+        "rollback and deletion plan"
+      ],
+      "requiredBeforeTraining": [
+        "completed dataset card with source inventory and license map",
+        "PII, secrets, credentials, and private-data scan",
+        "clean-room provenance statement",
+        "training objective and expected artifact type",
+        "eval suite and held-out benchmark definition",
+        "compute budget and stop condition",
+        "safety review and misuse review",
+        "checkpoint governance and model card",
+        "human approval recorded before execution"
+      ],
+      "nextSafeStep": "Keep candidate metadata only until a single model id, license, quantization, checksum, and rollback plan are approved."
+    }
+  ],
+  "safeSequence": [
+    {
+      "order": 1,
+      "id": "metadata-intake",
+      "status": "active",
+      "action": "Keep all language-model families metadata-only and run registry validators."
+    },
+    {
+      "order": 2,
+      "id": "hardware-preflight",
+      "status": "active-not-benchmark",
+      "action": "Observe local RAM/host profile without claiming compatibility."
+    },
+    {
+      "order": 3,
+      "id": "knowledge-retrieval-contract",
+      "status": "contract-defined-not-indexed",
+      "action": "Use the knowledge retrieval training contract to define approved source classes, provenance, and eval gates."
+    },
+    {
+      "order": 4,
+      "id": "knowledge-retrieval-first",
+      "status": "planned",
+      "action": "Build SEIS retrieval/knowledge provenance before any fine-tune."
+    },
+    {
+      "order": 5,
+      "id": "single-small-local-pilot",
+      "status": "approval-required",
+      "action": "Select exactly one small or quantized local checkpoint after license, checksum, disk, RAM, and rollback review."
+    },
+    {
+      "order": 6,
+      "id": "adapter-experiment",
+      "status": "blocked",
+      "action": "Run only after dataset card, model card, eval plan, safety review, and human approval."
+    },
+    {
+      "order": 7,
+      "id": "20b-compatibility-benchmark",
+      "status": "planned-not-validated",
+      "action": "Benchmark a selected quantized 20B candidate before any router eligibility claim."
+    },
+    {
+      "order": 8,
+      "id": "frontier-scale-research",
+      "status": "disabled",
+      "action": "70B, 150B, 300B+, 512B, and higher classes stay disabled until lower gates produce real evidence."
+    }
+  ],
+  "allowedTrainingNow": [
+    {
+      "id": "repo-local-seed-models",
+      "command": "npm run automation:seis-ai-workforce-training",
+      "meaning": "Rebuild deterministic SEIS-owned seed artifacts for policy, memory ranking, eval criticism, and routing.",
+      "foundationModelTraining": false,
+      "runtimeAuthority": false
+    }
+  ],
+  "blockedTrainingNow": [
+    "retrieval embedding model install",
+    "LoRA or adapter training",
+    "full fine-tune",
+    "foundation pretraining",
+    "20B live inference",
+    "70B/150B/512B route eligibility",
+    "public AGI claim"
+  ],
+  "publicClaims": {
+    "canClaimAllModelsInstalled": false,
+    "canClaimSEISTrainedFoundationModel": false,
+    "canClaim20BRouteable": false,
+    "canClaim512BOrAGI": false,
+    "canClaimFullyKnowledgeableModel": false,
+    "canClaimKnowledgeProgramDefined": true
+  },
+  "ladderSnapshot": [
+    {
+      "id": "seis-20b-16gb-plus-local-compatibility",
+      "status": "planned-not-validated",
+      "routeEligibleToday": false
+    },
+    {
+      "id": "seis-70b-research-lane",
+      "status": "research-roadmap",
+      "routeEligibleToday": false
+    },
+    {
+      "id": "seis-150b-frontier-research-lane",
+      "status": "frontier-research-roadmap",
+      "routeEligibleToday": false
+    },
+    {
+      "id": "seis-300b-plus-exploration-boundary",
+      "status": "not-scoped",
+      "routeEligibleToday": false
+    },
+    {
+      "id": "seis-512b-agi-apex-research-lane",
+      "status": "apex-program-plan-only",
+      "routeEligibleToday": false
+    },
+    {
+      "id": "seis-highest-available-future-boundary",
+      "status": "not-scoped",
+      "routeEligibleToday": false
+    }
+  ],
+  "evidenceArtifacts": [
+    "content/development/seis-language-model-intake-registry.json",
+    "content/development/seis-language-model-training-curriculum.json",
+    "content/development/seis-model-scaling-hardware-profile.json",
+    "content/development/seis-model-parameter-ladder.json",
+    "content/development/seis-language-model-install-training-ledger.json",
+    "reports/seis-model-scaling/seis-language-model-install-training-ledger.json",
+    "reports/seis-model-scaling/seis-language-model-install-training-ledger.md",
+    "content/development/seis-knowledge-retrieval-training-contract.json"
+  ]
+}

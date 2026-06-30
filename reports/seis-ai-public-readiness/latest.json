@@ -1,0 +1,289 @@
+{
+  "id": "seis-ai-public-readiness-report",
+  "generatedAt": "2026-06-30T21:21:57.696Z",
+  "status": "local-demo-public-review-ready-not-agi",
+  "sourceOfTruth": {
+    "program": "content/development/seis-ai-public-readiness-program.json",
+    "freshClone": "content/development/seis-ai-fresh-clone-readiness.json",
+    "githubGates": "content/development/seis-agi-github-user-readiness-gates.json",
+    "publicEvidence": "content/development/seis-agi-public-readiness-evidence.json",
+    "independentLedger": "content/development/seis-agi-independent-evidence-ledger.json"
+  },
+  "oneCommandReadinessValidator": "npm run check:seis-ai-public-readiness",
+  "decision": {
+    "publicReadyForLocalDemo": true,
+    "githubReadyForEveryone": false,
+    "publicReadyAsAgi": false,
+    "freshCloneVerified": false,
+    "routeEligibleToday": false,
+    "runtimeAuthority": false,
+    "agiClaimAllowed": false
+  },
+  "boundary": {
+    "installsModels": false,
+    "downloadsCheckpoints": false,
+    "trainsModels": false,
+    "callsProviders": false,
+    "provisionsCloudOrGpu": false,
+    "executesSsh": false,
+    "pushesOrMerges": false,
+    "deploysOrReleases": false,
+    "grantsAgiClaim": false,
+    "grants512bRouteEligibility": false
+  },
+  "githubAudienceModes": [
+    {
+      "id": "github-local-demo-user",
+      "status": "allowed",
+      "allowedUse": "Run the Local Demo, inspect AI contracts, and run local validators without provider keys.",
+      "forbiddenUse": "Treat SEIS as a trained 512B model, live AGI, routeable inference service, or provider-key-backed assistant."
+    },
+    {
+      "id": "github-maintainer",
+      "status": "approval-gated",
+      "allowedUse": "Review PRs, run validators, inspect evidence, and record human approvals.",
+      "forbiddenUse": "Push, merge, release, deploy, publish weights, or unlock runtime authority without explicit approval and passing checks."
+    },
+    {
+      "id": "external-researcher",
+      "status": "review-only",
+      "allowedUse": "Review public artifacts, challenge evidence, and propose benchmark or safety improvements.",
+      "forbiddenUse": "Count plan-only records as independent AGI evidence."
+    },
+    {
+      "id": "real-agi-user",
+      "status": "blocked",
+      "allowedUse": "No real AGI use is available today.",
+      "forbiddenUse": "Claim SEIS has achieved AGI or can run 512B inference from this repository."
+    }
+  ],
+  "requiredFreshCloneCommands": [
+    "npm run check:seis-ai-public-readiness",
+    "npm run check:seis-ai-public-readiness-program",
+    "npm run check:seis-ai-fresh-clone-readiness"
+  ],
+  "requiredBeforeGithubReadyForEveryone": [
+    "fresh clone local demo path verified",
+    "npm run check:seis-ai-fresh-clone-readiness passes on the target commit",
+    "npm run check:seis-ai-public-readiness passes on the target commit",
+    "required CI checks green on the target commit",
+    "public README claim boundary reviewed",
+    "secret scan completed",
+    "human release approval recorded",
+    "release notes and rollback plan accepted",
+    "AGI and 512B claim boundaries preserved"
+  ],
+  "requiredBeforeAnyAgiClaim": [
+    "real 512B training or inference evidence independently verified",
+    "multi-domain capability evaluation accepted",
+    "long-horizon planning evaluation accepted",
+    "agentic autonomy time-horizon evaluation accepted",
+    "abstract generalization evaluation accepted",
+    "frontier safety threshold review accepted",
+    "generative AI risk profile accepted",
+    "privacy, data-rights, and clean-room review accepted",
+    "red-team report accepted",
+    "model card and system card published",
+    "training logs and checkpoint governance reviewed",
+    "external review completed",
+    "explicit human approval recorded"
+  ],
+  "blockers": [
+    {
+      "source": "public-readiness-program",
+      "id": "fresh-clone-release-path",
+      "status": "partial",
+      "blocksGithubReadyForEveryone": true,
+      "blocksAgiClaim": true,
+      "evidence": [
+        "fresh clone instructions still require release evidence"
+      ]
+    },
+    {
+      "source": "public-readiness-program",
+      "id": "human-release-approval",
+      "status": "approval-gated",
+      "blocksGithubReadyForEveryone": true,
+      "blocksAgiClaim": true,
+      "evidence": [
+        "maintainer approval required before PR merge, release, deployment, or public claim promotion"
+      ]
+    },
+    {
+      "source": "public-readiness-program",
+      "id": "real-512b-evidence",
+      "status": "missing",
+      "blocksGithubReadyForEveryone": false,
+      "blocksAgiClaim": true,
+      "evidence": [
+        "no 512B weights, training logs, inference logs, benchmark report, or independent verification"
+      ]
+    },
+    {
+      "source": "public-readiness-program",
+      "id": "independent-agi-evidence",
+      "status": "missing",
+      "blocksGithubReadyForEveryone": false,
+      "blocksAgiClaim": true,
+      "evidence": [
+        "independent AGI evidence ledger has no accepted evidence"
+      ]
+    },
+    {
+      "source": "fresh-clone-readiness",
+      "id": "install-and-no-key-start",
+      "status": "required-before-everyone-ready",
+      "blocksGithubReadyForEveryone": true,
+      "blocksAgiClaim": true,
+      "evidence": [
+        "fresh clone install log",
+        "zero-key Local Demo readiness log",
+        "no provider-key requirement"
+      ]
+    },
+    {
+      "source": "fresh-clone-readiness",
+      "id": "security-and-secret-boundary",
+      "status": "required-before-everyone-ready",
+      "blocksGithubReadyForEveryone": true,
+      "blocksAgiClaim": true,
+      "evidence": [
+        "secret scan evidence",
+        "SECURITY.md reviewed",
+        "no .env or private key exposure"
+      ]
+    },
+    {
+      "source": "fresh-clone-readiness",
+      "id": "public-claim-review",
+      "status": "required-before-everyone-ready",
+      "blocksGithubReadyForEveryone": true,
+      "blocksAgiClaim": true,
+      "evidence": [
+        "README claim boundary reviewed",
+        "AGI and 512B forbidden claims preserved",
+        "human approval recorded"
+      ]
+    },
+    {
+      "source": "fresh-clone-readiness",
+      "id": "release-and-rollback",
+      "status": "approval-gated",
+      "blocksGithubReadyForEveryone": true,
+      "blocksAgiClaim": true,
+      "evidence": [
+        "release notes",
+        "rollback plan",
+        "maintainer approval"
+      ]
+    },
+    {
+      "source": "github-user-readiness-gates",
+      "id": "fresh-clone-user-path",
+      "status": "partial",
+      "blocksGithubReadyForEveryone": true,
+      "blocksAgiClaim": true,
+      "evidence": [
+        "fresh clone instructions verified",
+        "one-command local AI readiness check documented",
+        "cross-platform local demo smoke evidence recorded"
+      ]
+    },
+    {
+      "source": "github-user-readiness-gates",
+      "id": "independent-agi-evaluations",
+      "status": "missing",
+      "blocksGithubReadyForEveryone": false,
+      "blocksAgiClaim": true,
+      "evidence": [
+        "multi-domain evaluation run",
+        "long-horizon task evidence",
+        "abstract generalization benchmark evidence"
+      ]
+    },
+    {
+      "source": "github-user-readiness-gates",
+      "id": "512b-training-inference-evidence",
+      "status": "missing",
+      "blocksGithubReadyForEveryone": false,
+      "blocksAgiClaim": true,
+      "evidence": [
+        "clean-room training plan accepted",
+        "512B checkpoint governance accepted",
+        "independent inference and benchmark evidence accepted"
+      ]
+    },
+    {
+      "source": "github-user-readiness-gates",
+      "id": "public-release-approval",
+      "status": "approval-gated",
+      "blocksGithubReadyForEveryone": true,
+      "blocksAgiClaim": true,
+      "evidence": [
+        "human release approval recorded",
+        "PR merged by approved maintainer",
+        "release notes and rollback plan accepted"
+      ]
+    }
+  ],
+  "evidenceLedger": {
+    "status": "planned-without-independent-evidence",
+    "agiClaimAllowed": false,
+    "githubReadyForEveryone": false
+  },
+  "publicEvidenceSummary": {
+    "protocolStatus": "protocol-draft-not-run",
+    "apexProgramStatus": "apex-program-plan-only",
+    "sourceDerivedGateCount": 4,
+    "evaluationDimensionCount": 11,
+    "minimumClaimEvidenceCount": 20,
+    "acceptedClaimEvidenceCount": 0,
+    "missingClaimEvidenceCount": 20,
+    "blockedReason": "All minimum AGI evidence remains missing, not-run, or approval-gated.",
+    "allowedPublicUse": "GitHub users may inspect and run the Local Demo and validators; they must not treat the repository as a trained 512B model or real AGI."
+  },
+  "internetResearchBaseline": [
+    {
+      "id": "llama-3-1-405b",
+      "url": "https://arxiv.org/abs/2407.21783",
+      "evidenceType": "405B public frontier-scale model paper",
+      "seisImplication": "512B SEIS work must be treated as frontier-scale research, not as a local runtime claim."
+    },
+    {
+      "id": "megatron-turing-nlg-530b",
+      "url": "https://arxiv.org/abs/2201.11990",
+      "evidenceType": "530B distributed training report",
+      "seisImplication": "512B training needs distributed architecture, data governance, evaluation, observability, budget, and rollback evidence."
+    },
+    {
+      "id": "deepseek-v3-671b",
+      "url": "https://github.com/deepseek-ai/DeepSeek-V3",
+      "evidenceType": "671B MoE public model reference",
+      "seisImplication": "Total parameters, active parameters, routing, memory, licensing, and evaluation must be tracked separately."
+    },
+    {
+      "id": "nist-ai-rmf",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "evidenceType": "AI risk management framework",
+      "seisImplication": "Public AI readiness needs governance, risk mapping, measurement, management, transparency, and accountability gates."
+    },
+    {
+      "id": "nist-ai-600-1",
+      "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+      "evidenceType": "generative AI risk profile",
+      "seisImplication": "SEIS AGI and 512B readiness needs misuse, privacy, cybersecurity, transparency, and measurement gates before public claims."
+    },
+    {
+      "id": "metr-long-task-horizon",
+      "url": "https://arxiv.org/abs/2503.14499",
+      "evidenceType": "long-task capability evaluation",
+      "seisImplication": "AGI-style autonomy claims need time-horizon evidence, not demos, parameter count, or installed assistant presence."
+    }
+  ],
+  "nextSafeActions": [
+    "Keep Local Demo and validator review public-safe.",
+    "Run npm run check:seis-ai-public-readiness before AI claim changes.",
+    "Add fresh-clone evidence before changing githubReadyForEveryone.",
+    "Record human approval before PR merge, release, deployment, provider setup, model download, training, benchmark, or public claim promotion."
+  ]
+}

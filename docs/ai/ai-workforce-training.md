@@ -22,7 +22,64 @@ Validation:
 ```bash
 npm run check:seis-ai-workforce-training
 npm run check:seis-language-model-intake
+npm run report:seis-language-model-training-curriculum
+npm run check:seis-language-model-training-curriculum
 npm run automation:seis-ai-workforce-training
+```
+
+### Tüm Aileler İçin Kurulum Planı (Dry-Run)
+
+Gerçek kurulum başlamadan önce tüm aday aileler için kurulum planını üretmek için:
+
+```bash
+npm run plan:seis-language-model-install
+npm run plan:seis-language-model-install -- --json
+npm run plan:seis-language-model-install -- --family llama,qwen,gemma,mistral,deepseek,openai-open-weight,embedding-and-reranker,code-specialist
+```
+
+Bu komutlar sadece **metadata planı** çıkarır:
+
+- Aile readiness ve bloklistesi
+- Örnek yerel komut önerileri
+- Eğitim/evidence gereksinimleri
+- 16GB hedefli yol haritası önizlemesi
+
+Canlı kurulum veya checkpoint indirme bu komutlarla çalışmaz.
+
+### Tam Bilgili Aile Kurulum Akışı (Önerilen)
+
+SEIS'te “bütün dil modellerini kurmak” güvenli tarafta şu şekilde işler:
+
+1. **Kurulum Planı (her zaman metadata-first):**
+   `npm run plan:seis-language-model-install -- --family ...`
+   Burada tüm ailelerin readiness, izin durumu ve bloklistesi üretilir.
+
+2. **Doğrulama Paketleri:**
+   - `npm run check:seis-language-model-intake`
+   - `npm run check:seis-ai-workforce-training`
+   - `npm run report:seis-language-model-training-curriculum`
+   - `npm run check:seis-language-model-training-curriculum`
+
+3. **Yerel Öğrenme Hazırlığı (tamamen yerel):**
+   `npm run automation:seis-ai-workforce-training`
+   Bu adım sadece seed model artefaktlarını ve güvenlik/performans doğrulama
+   paketlerini yeniden üretir.
+
+4. **İnsan Onayıyla İleri Adım:**
+   Model indirme, fine-tune/adaptör, benchmark veya runtime yetkisi için her ailede
+   ayrıca model kartı + veri kartı + checksum + rollback onayı gerekir.
+
+#### Aile Bazlı Yol Haritası
+
+- **20B (16GB+):** retrieval layer + seed modeli + ölçüm kanıtı olmadan canlı rota açılmaz.
+- **70B:** önce 20B kanıt zinciri, ardından ayrıca donanım/safety/onay seti gerekir.
+- **150B ve 512B+:** frontier araştırma statüsünde kalır; plan onayı, dağıtık bütçe ve
+  insan onayı olmadan canlı lane'e geçilmez.
+
+Özet akış:
+
+```text
+Plan (metadata) -> Checkler -> Curriculum -> Seed rebuild -> İnsan onayı -> Bir sonraki güvenli faz
 ```
 
 ## Current Status
@@ -57,6 +114,26 @@ npm run automation:seis-ai-workforce-training
 8. Human approval is required before live provider calls, cloud fine-tuning,
    paid benchmarks, dataset downloads, SSH, deployment, push, merge, or model
    publication.
+
+## Language Model Coverage Plan
+
+Tüm dil modeli adaylarını (Llama, Qwen, Gemma, Mistral, DeepSeek, OpenAI
+open-weight, embedding/reranker, code-specialist) bir kereye mahsus aynı güvenli
+katmanda planlayıp onaylamak için şu iki komutu çalıştırın:
+
+```bash
+npm run report:seis-language-model-training-curriculum
+npm run check:seis-language-model-training-curriculum
+```
+
+Üretilen çıktılar:
+
+- `content/development/seis-language-model-training-curriculum.json`
+- `reports/seis-model-scaling/seis-language-model-training-curriculum.json`
+- `reports/seis-model-scaling/seis-language-model-training-curriculum.md`
+
+Bu plan gerçek yükleme veya eğitim yapmadan önce lisans, checksum, model kartı,
+veri kartı ve insan onayı şartlarını açıkça zorunlu kılar.
 
 ## Language Model Intake Registry
 
@@ -107,6 +184,36 @@ Gemini, OpenAI, or any cloud provider.
 - Runtime authority remains false until independent benchmarks, observability,
   rollback, human approval, and security review pass.
 
+## Model Kurulum & Eğitim Notları
+
+- `bütün modeli kurmak` bir tek adımda yapılmaz; aile bazlı ve onay bazlıdır.
+- Canlı install hattı henüz kapalıdır; planlar sadece karar ve risk yönetimi içindir.
+- 16GB+ makinede öncelik: küçük/quantize modeller, retrieval layer, seed artifactlar.
+- Tam model eğitimi (adapter/finetune/full pretrain) için ek plan dosyaları, dataset kartları ve checkpoint kanıtı gerekir.
+
+## Install and Training Ledger
+
+`content/development/seis-language-model-install-training-ledger.json` is the
+current source-of-truth for the request to install all language models and train
+SEIS AI. The safe interpretation is phased and evidence-gated:
+
+- no bulk model install;
+- no checkpoint download without per-model approval;
+- no provider calls with repository data by default;
+- no adapter, LoRA, fine-tune, or foundation pretraining without dataset cards,
+  model cards, evaluation plans, safety review, and human approval;
+- only deterministic repo-local seed-model training is allowed today.
+
+Generate and validate the ledger with:
+
+```bash
+npm run report:seis-language-model-install-training-ledger
+npm run check:seis-language-model-install-training-ledger
+```
+
+The reviewer-facing report is maintained at
+`reports/seis-model-scaling/seis-language-model-install-training-ledger.md`.
+
 ## Mock vs Real
 
 | Surface | Status |
@@ -121,6 +228,7 @@ Gemini, OpenAI, or any cloud provider.
 
 - [SEIS AI Core](seis-ai-core.md)
 - [Model Router](model-router.md)
+- [Knowledge Retrieval Training](seis-knowledge-retrieval-training.md)
 - [Agent Runtime](agent-runtime.md)
 - [Prompt Engine](prompt-engine.md)
 - [AI Workforce Assignments](../development/agents/ai-workforce-assignments.md)

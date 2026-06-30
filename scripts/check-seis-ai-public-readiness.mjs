@@ -9,6 +9,7 @@ const checks = [
   "check:seis-language-model-training-curriculum",
   "check:seis-ai-workforce-training",
   "check:seis-agent-workforce",
+  "check:seis-ai-fresh-clone-readiness",
   "check:seis-model-scaling-hardware-profile",
   "check:seis-model-parameter-ladder",
   "check:seis-model-scaling-subagent-council",
@@ -17,7 +18,8 @@ const checks = [
   "check:seis-agi-public-readiness-evidence",
   "check:seis-agi-github-user-readiness-gates",
   "check:seis-agi-independent-evidence-ledger",
-  "check:seis-ai-public-readiness-program"
+  "check:seis-ai-public-readiness-program",
+  "check:seis-ai-public-readiness-report"
 ];
 
 const results = [];

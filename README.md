@@ -116,8 +116,10 @@ Primary demo routes:
 Key local validation commands:
 
 ```bash
+npm run foundation:check
 npm run check:desktop-os
 npm run check:seis-second-brain
+npm run brain:check
 npm run report:seis-obsidian-safe-import-dry-run
 npm run check:seis-obsidian-safe-import-dry-run
 npm run report:seis-read-only-model-router-decision
@@ -139,7 +141,10 @@ npm run check:seis-website-pages
 npm run check:seis-sub-agent-5-year-plan
 npm run check:seis-agent-workforce
 npm run check:seis-ultimate-demo
+npm run check:seis-ai-public-readiness
+npm run public:readiness
 npm run check:seis-ssh-public-access
+npm run secrets:check
 npm run check:seis-fullstack-contract
 npm run check:seis-fullstack-server-smoke
 npm run check:seis-fullstack-no-server-fallback-smoke
@@ -304,6 +309,11 @@ Bu hedefin kısa hali:
 - **512B Apex Programı:** `content/development/seis-512b-apex-model-program.json` ile internet-araştırmalı, plan-only ve route-blocked tutulur; AGI tanımı `definition-only-not-demonstrated` durumundadır.
 - **Alt Ajan Konseyi:** Tüm kurulu AI/sub-agent rolleri 512B için ayrı görev matrisine sahiptir, ama yalnızca planlama, inceleme ve doğrulama görevleri alır.
 - **Güvenli AI Core:** Local Demo varsayılandır; provider key, cloud/GPU, SSH, benchmark ve training insan onayı olmadan kapalıdır.
+- **AI Public Readiness:**
+  - `npm run check:seis-ai-public-readiness` — Local Demo, fresh-clone, 512B/AGI claim boundary ve alt ajan readiness zincirini tek komutta doğrular.
+  - `npm run check:seis-ai-public-readiness-program` — Program bileşeni ve sıralı ready durumunu doğrular.
+  - `npm run check:seis-ai-fresh-clone-readiness` — Fresh-clone başlangıç koşullarını doğrular.
+  - `npm run report:seis-ai-public-readiness` — `reports/seis-ai-public-readiness/latest.{json,md}` raporlarını üretir.
 - **AGI Kanıt Kuralı:** Gerçek AGI iddiası için bağımsız evaluation, safety review, training logs, checkpoint governance, model card ve explicit approval gerekir.
 
 ## Core Scope
