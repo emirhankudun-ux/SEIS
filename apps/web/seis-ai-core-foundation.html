@@ -1,0 +1,1290 @@
+<!doctype html>
+<html lang="en" data-seis-ai-core-foundation="browser-local">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SEIS AI Core Foundation - Browser Local Demo</title>
+  <meta name="description" content="Browser-local SEIS AI Core foundation demo for provider registry, model router, prompt engine, local model mode and safety gates." />
+  <style>
+    :root {
+      --bg: #07090b;
+      --ink: #f7f1df;
+      --muted: #aeb8b5;
+      --soft: #76817f;
+      --panel: rgba(15, 20, 23, 0.78);
+      --panel-strong: rgba(20, 28, 31, 0.9);
+      --line: rgba(245, 230, 190, 0.14);
+      --line-strong: rgba(245, 230, 190, 0.26);
+      --amber: #f4c96c;
+      --cyan: #8dd7d0;
+      --blue: #8fb5ff;
+      --violet: #bba5ff;
+      --green: #9be990;
+      --red: #ff897e;
+      --orange: #f1975c;
+      --shadow: 0 30px 88px rgba(0, 0, 0, 0.46);
+      --display: "Avenir Next", "Trebuchet MS", Verdana, sans-serif;
+      --body: "Gill Sans", "Avenir Next", "Trebuchet MS", sans-serif;
+      --mono: "SFMono-Regular", "Cascadia Mono", "Courier New", monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      color: var(--ink);
+      background: var(--bg);
+      font-family: var(--body);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 12% 16%, rgba(141, 215, 208, 0.22), transparent 28%),
+        radial-gradient(circle at 82% 4%, rgba(187, 165, 255, 0.18), transparent 30%),
+        radial-gradient(circle at 50% 100%, rgba(244, 201, 108, 0.18), transparent 36%),
+        linear-gradient(132deg, #050708 0%, #101416 47%, #070806 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 58px 58px;
+      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.72), transparent 68%);
+      opacity: 0.5;
+    }
+
+    button,
+    input,
+    select,
+    textarea { font: inherit; }
+
+    button {
+      border: 0;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible,
+    [tabindex]:focus-visible {
+      outline: 2px solid var(--amber);
+      outline-offset: 3px;
+    }
+
+    .shell {
+      width: min(1500px, calc(100vw - 28px));
+      margin: 0 auto;
+      padding: 18px 0 44px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 12px;
+      z-index: 40;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 16px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(5, 8, 10, 0.78);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(22px);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      min-width: max-content;
+    }
+
+    .mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background:
+        radial-gradient(circle at 28% 22%, rgba(255, 255, 255, 0.92), transparent 18%),
+        linear-gradient(145deg, var(--cyan), var(--amber) 54%, var(--violet));
+      color: #0b1010;
+      font-family: var(--display);
+      font-weight: 900;
+      letter-spacing: -0.08em;
+      box-shadow: 0 14px 42px rgba(141, 215, 208, 0.26);
+    }
+
+    .brand strong {
+      display: block;
+      font-family: var(--display);
+      font-size: 0.9rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .brand span {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+
+    .search {
+      height: 42px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.045);
+      color: var(--muted);
+    }
+
+    .search input {
+      width: 100%;
+      min-width: 120px;
+      color: var(--ink);
+      background: transparent;
+      border: 0;
+      outline: 0;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pill,
+    .button,
+    .icon-button,
+    .tab,
+    .provider-card,
+    .route-card,
+    .prompt-card,
+    .gate-card,
+    .action-card {
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease, opacity 180ms ease;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.055);
+      color: var(--muted);
+      font-size: 0.78rem;
+      white-space: nowrap;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 99px;
+      background: var(--green);
+      box-shadow: 0 0 18px rgba(155, 233, 144, 0.72);
+    }
+
+    .dot.mock { background: var(--amber); box-shadow: 0 0 18px rgba(244, 201, 108, 0.72); }
+    .dot.blocked { background: var(--red); box-shadow: 0 0 18px rgba(255, 137, 126, 0.65); }
+
+    .button,
+    .icon-button {
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.06);
+      padding: 0 14px;
+      font-weight: 800;
+    }
+
+    .button.primary {
+      color: #10110f;
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--cyan), #f4e5b4 50%, var(--amber));
+      box-shadow: 0 18px 52px rgba(141, 215, 208, 0.18);
+    }
+
+    .icon-button { width: 42px; padding: 0; }
+
+    .button:hover,
+    .icon-button:hover,
+    .provider-card:hover,
+    .route-card:hover,
+    .prompt-card:hover,
+    .gate-card:hover,
+    .action-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--line-strong);
+      background: rgba(255, 255, 255, 0.09);
+    }
+
+    .button.primary:hover {
+      background: linear-gradient(135deg, var(--cyan), #fff0bd 50%, var(--amber));
+      box-shadow: 0 24px 64px rgba(244, 201, 108, 0.24);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 20px;
+      margin-top: 22px;
+    }
+
+    .panel,
+    .hero-main,
+    .router-panel {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 32px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(24px);
+    }
+
+    .panel::after,
+    .hero-main::after,
+    .router-panel::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(125deg, rgba(255, 255, 255, 0.13), transparent 24%, transparent 74%, rgba(255, 255, 255, 0.05));
+      opacity: 0.32;
+    }
+
+    .hero-main {
+      min-height: 520px;
+      padding: 34px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      width: fit-content;
+      padding: 8px 12px;
+      border: 1px solid rgba(141, 215, 208, 0.28);
+      border-radius: 999px;
+      color: var(--cyan);
+      background: rgba(141, 215, 208, 0.08);
+      font-size: 0.78rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    p { margin-top: 0; }
+
+    h1 {
+      max-width: 820px;
+      margin: 24px 0 18px;
+      font-family: var(--display);
+      font-size: clamp(3.3rem, 7.4vw, 8.4rem);
+      line-height: 0.82;
+      letter-spacing: -0.08em;
+    }
+
+    .hero-copy {
+      max-width: 760px;
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: clamp(1.05rem, 1.55vw, 1.34rem);
+      line-height: 1.55;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .metric {
+      min-height: 118px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.045);
+    }
+
+    .metric strong {
+      display: block;
+      font-family: var(--display);
+      font-size: 1.8rem;
+      letter-spacing: -0.05em;
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.35;
+    }
+
+    .router-panel {
+      min-height: 520px;
+      padding: 26px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 16px;
+    }
+
+    .panel-header {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .panel-title {
+      margin-bottom: 5px;
+      font-family: var(--display);
+      font-size: 1.18rem;
+      letter-spacing: -0.035em;
+    }
+
+    .panel-kicker {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 0.84rem;
+      line-height: 1.36;
+    }
+
+    .state {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 28px;
+      padding: 0 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.055);
+      color: var(--muted);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .state.available,
+    .state.local-demo { color: var(--green); border-color: rgba(155, 233, 144, 0.28); }
+    .state.missing-key { color: var(--amber); border-color: rgba(244, 201, 108, 0.28); }
+    .state.disabled { color: var(--soft); }
+    .state.blocked { color: var(--red); border-color: rgba(255, 137, 126, 0.28); }
+    .state.planned { color: var(--blue); border-color: rgba(143, 181, 255, 0.28); }
+    .state.demo-only { color: var(--cyan); border-color: rgba(141, 215, 208, 0.28); }
+
+    .router-map {
+      position: relative;
+      z-index: 1;
+      min-height: 300px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(141, 215, 208, 0.18), transparent 15%),
+        radial-gradient(circle at 50% 50%, transparent 28%, rgba(244, 201, 108, 0.09) 29%, transparent 30%),
+        radial-gradient(circle at 50% 50%, transparent 44%, rgba(187, 165, 255, 0.09) 45%, transparent 46%),
+        linear-gradient(145deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.025));
+      overflow: hidden;
+    }
+
+    .router-core {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 130px;
+      height: 130px;
+      transform: translate(-50%, -50%);
+      display: grid;
+      place-items: center;
+      border-radius: 42px;
+      color: #081010;
+      background: linear-gradient(145deg, var(--cyan), var(--amber));
+      font-family: var(--display);
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      text-align: center;
+      box-shadow: 0 0 80px rgba(141, 215, 208, 0.2);
+    }
+
+    .node {
+      position: absolute;
+      width: 130px;
+      min-height: 48px;
+      display: grid;
+      place-items: center;
+      padding: 8px;
+      text-align: center;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(6, 9, 11, 0.78);
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .node:nth-child(2) { left: 10%; top: 14%; }
+    .node:nth-child(3) { right: 12%; top: 13%; }
+    .node:nth-child(4) { right: 6%; top: 48%; }
+    .node:nth-child(5) { left: 52%; bottom: 11%; }
+    .node:nth-child(6) { left: 8%; bottom: 18%; }
+
+    .router-controls {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    select {
+      min-height: 44px;
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--ink);
+      padding: 0 12px;
+    }
+
+    .grid-3,
+    .grid-2 {
+      display: grid;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-2 { grid-template-columns: 1.2fr 0.8fr; }
+
+    .panel { padding: 22px; }
+
+    .tabs {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .tab {
+      min-height: 36px;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.045);
+      color: var(--muted);
+    }
+
+    .tab[aria-selected="true"] {
+      color: #081010;
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--cyan), var(--amber));
+      font-weight: 900;
+    }
+
+    .workspace {
+      position: relative;
+      z-index: 1;
+      min-height: 420px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.04);
+      overflow: hidden;
+    }
+
+    .pane { display: none; padding: 16px; }
+    .pane.active { display: grid; gap: 12px; animation: paneIn 220ms ease both; }
+
+    .card-grid,
+    .prompt-grid,
+    .gate-grid,
+    .action-grid {
+      display: grid;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .prompt-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .gate-grid { grid-template-columns: 1fr; }
+    .action-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    .provider-card,
+    .route-card,
+    .prompt-card,
+    .gate-card,
+    .action-card {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.045);
+      padding: 14px;
+      text-align: left;
+    }
+
+    .provider-card strong,
+    .route-card strong,
+    .prompt-card strong,
+    .gate-card strong,
+    .action-card strong {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 0.96rem;
+    }
+
+    .provider-card span,
+    .route-card span,
+    .prompt-card span,
+    .gate-card span,
+    .action-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.38;
+    }
+
+    .provider-card small,
+    .route-card small,
+    .prompt-card small,
+    .gate-card small,
+    .action-card small {
+      display: inline-flex;
+      margin-top: 12px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--muted);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .provider-card.hidden,
+    .prompt-card.hidden,
+    .route-card.hidden,
+    .gate-card.hidden { display: none; }
+
+    .decision-box,
+    .console {
+      position: relative;
+      z-index: 1;
+      border: 1px solid rgba(141, 215, 208, 0.18);
+      border-radius: 20px;
+      background: rgba(4, 8, 10, 0.82);
+      padding: 14px;
+      font-family: var(--mono);
+      color: #dfffee;
+    }
+
+    .decision-box {
+      min-height: 190px;
+      display: grid;
+      gap: 8px;
+      align-content: start;
+    }
+
+    .decision-row,
+    .log-line {
+      display: grid;
+      grid-template-columns: 132px 1fr;
+      gap: 12px;
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.045);
+      font-size: 0.78rem;
+    }
+
+    .decision-row:last-child,
+    .log-line:last-child { border-bottom: 0; }
+    .decision-row b,
+    .log-line b { color: var(--amber); }
+
+    .console {
+      min-height: 260px;
+      overflow: auto;
+    }
+
+    .safety-list {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 10px;
+    }
+
+    .safety-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.045);
+    }
+
+    .safety-row strong { display: block; margin-bottom: 4px; }
+    .safety-row span { color: var(--muted); font-size: 0.8rem; line-height: 1.35; }
+
+    .drawer {
+      position: fixed;
+      top: 88px;
+      right: 22px;
+      z-index: 70;
+      width: min(430px, calc(100vw - 44px));
+      max-height: calc(100vh - 116px);
+      display: grid;
+      gap: 14px;
+      padding: 18px;
+      border: 1px solid var(--line-strong);
+      border-radius: 28px;
+      background: rgba(5, 8, 10, 0.95);
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.58);
+      backdrop-filter: blur(22px);
+      transform: translateX(calc(100% + 42px));
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 230ms ease, opacity 230ms ease;
+    }
+
+    .drawer.open {
+      transform: translateX(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .drawer-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .drawer h2 {
+      margin: 0;
+      font-family: var(--display);
+      letter-spacing: -0.04em;
+    }
+
+    .toast-stack {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      z-index: 90;
+      display: grid;
+      gap: 10px;
+      width: min(560px, calc(100vw - 32px));
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .toast {
+      padding: 13px 16px;
+      border-radius: 18px;
+      border: 1px solid var(--line-strong);
+      background: rgba(6, 10, 12, 0.95);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.42);
+      color: var(--muted);
+      animation: toastIn 220ms ease both;
+    }
+
+    .footer {
+      margin-top: 18px;
+      padding: 20px 4px 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      color: var(--soft);
+      font-size: 0.8rem;
+    }
+
+    code { font-family: var(--mono); }
+
+    @keyframes paneIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 1ms !important;
+        scroll-behavior: auto !important;
+        transition-duration: 1ms !important;
+      }
+    }
+
+    @media (max-width: 1160px) {
+      .hero,
+      .grid-3,
+      .grid-2 { grid-template-columns: 1fr; }
+      .metric-grid,
+      .prompt-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 760px) {
+      .shell { width: min(100vw - 20px, 720px); padding-top: 10px; }
+      .topbar { grid-template-columns: 1fr auto; border-radius: 24px; top: 8px; }
+      .search { grid-column: 1 / -1; order: 3; }
+      .top-actions .pill { display: none; }
+      .hero-main,
+      .router-panel,
+      .panel { border-radius: 24px; padding: 18px; }
+      h1 { font-size: clamp(3.3rem, 18vw, 5.6rem); }
+      .metric-grid,
+      .card-grid,
+      .prompt-grid,
+      .action-grid { grid-template-columns: 1fr; }
+      .router-map { display: grid; gap: 10px; padding: 16px; }
+      .router-core,
+      .node { position: static; transform: none; width: auto; }
+      .router-core { height: 90px; }
+      .router-controls { grid-template-columns: 1fr; }
+      .safety-row,
+      .decision-row,
+      .log-line { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar" aria-label="SEIS AI Core top bar">
+      <div class="brand">
+        <div class="mark" aria-hidden="true">AI</div>
+        <div><strong>SEIS AI Core</strong><span>Provider-neutral foundation demo</span></div>
+      </div>
+      <label class="search" for="aiSearch">
+        <span aria-hidden="true">search</span>
+        <input id="aiSearch" type="search" placeholder="Search providers, routes, prompt packs, gates" autocomplete="off" />
+      </label>
+      <div class="top-actions">
+        <span class="pill"><span class="dot mock"></span>Local Demo mode</span>
+        <button class="icon-button" type="button" data-action="open-drawer" aria-label="Open AI Core drawer">?</button>
+        <button class="button primary" type="button" data-action="save">Save state</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="heroTitle">
+        <article class="hero-main">
+          <div>
+            <span class="eyebrow"><span class="dot"></span>No-key startup and visible fallback</span>
+            <h1 id="heroTitle">AI Core without fake live AI.</h1>
+            <p class="hero-copy">This browser-local SEIS AI Core foundation demo turns the existing provider registry, model router and prompt engine contracts into an interactive review surface. It does not call cloud providers, validate credentials, run SSH, deploy, train models or claim a SEIS foundation model.</p>
+          </div>
+          <div class="metric-grid" aria-label="AI Core foundation metrics">
+            <div class="metric"><strong id="providerCount">0</strong><span>provider registry entries shown with honest state labels</span></div>
+            <div class="metric"><strong id="routeCount">0</strong><span>model router task classes kept in Local Demo mode</span></div>
+            <div class="metric"><strong id="promptCount">0</strong><span>versioned prompt engine packs staged for review</span></div>
+            <div class="metric"><strong id="gateCount">0</strong><span>safety gates before live provider routing</span></div>
+          </div>
+        </article>
+
+        <aside class="router-panel" aria-labelledby="routerTitle">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title" id="routerTitle">Model router simulator</h2>
+              <p class="panel-kicker">Select a task and inspect the blocked, fallback or local-demo decision. The decision is deterministic and browser-local.</p>
+            </div>
+            <span class="state demo-only">demo-only</span>
+          </div>
+          <div class="router-map" aria-label="Provider-neutral model router map">
+            <div class="router-core">Model Router</div>
+            <div class="node">Task type</div>
+            <div class="node">Privacy mode</div>
+            <div class="node">Provider status</div>
+            <div class="node">Fallback policy</div>
+            <div class="node">Safety gates</div>
+          </div>
+          <div class="router-controls">
+            <select id="taskSelect" aria-label="Select model router task">
+              <option value="repo-audit">Repo audit</option>
+              <option value="coding">Coding assistant</option>
+              <option value="design-critique">Design critique</option>
+              <option value="security-review">Security review</option>
+              <option value="local-private">Local/private mode</option>
+              <option value="live-cloud">Future live cloud request</option>
+            </select>
+            <button class="button primary" type="button" data-action="route-task">Route task</button>
+          </div>
+        </aside>
+      </section>
+
+      <section class="grid-2" aria-label="AI Core workbench">
+        <article class="panel" aria-labelledby="workbenchTitle">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title" id="workbenchTitle">AI Core workbench</h2>
+              <p class="panel-kicker">Provider registry, model router, prompt engine and safety gates are separate so Missing Key is never confused with Error.</p>
+            </div>
+            <span class="state local-demo">browser-local</span>
+          </div>
+          <div class="tabs" role="tablist" aria-label="AI Core tabs">
+            <button class="tab" type="button" role="tab" aria-selected="true" aria-controls="pane-providers" id="tab-providers" data-tab="providers">Provider registry</button>
+            <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="pane-router" id="tab-router" data-tab="router">Model router</button>
+            <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="pane-prompts" id="tab-prompts" data-tab="prompts">Prompt engine</button>
+            <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="pane-gates" id="tab-gates" data-tab="gates">Safety gates</button>
+          </div>
+          <div class="workspace">
+            <div class="pane active" role="tabpanel" id="pane-providers" aria-labelledby="tab-providers">
+              <div class="card-grid" id="providerGrid"></div>
+            </div>
+            <div class="pane" role="tabpanel" id="pane-router" aria-labelledby="tab-router">
+              <div class="card-grid" id="routeGrid"></div>
+              <div class="decision-box" id="decisionBox" aria-live="polite"></div>
+            </div>
+            <div class="pane" role="tabpanel" id="pane-prompts" aria-labelledby="tab-prompts">
+              <div class="prompt-grid" id="promptGrid"></div>
+            </div>
+            <div class="pane" role="tabpanel" id="pane-gates" aria-labelledby="tab-gates">
+              <div class="gate-grid" id="gateGrid"></div>
+            </div>
+          </div>
+        </article>
+
+        <aside class="panel" aria-labelledby="quickTitle">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title" id="quickTitle">Quick actions</h2>
+              <p class="panel-kicker">Actions update local state or reveal guidance. No hidden network or provider path exists.</p>
+            </div>
+            <span class="state local-demo">localStorage</span>
+          </div>
+          <div class="action-grid">
+            <button class="action-card" type="button" data-action="mark-reviewed">
+              <strong>Mark AI Core reviewed</strong>
+              <span>Records a browser-local review note for this demo session.</span>
+              <small>local-demo</small>
+            </button>
+            <button class="action-card" type="button" data-action="open-drawer">
+              <strong>Show implementation boundary</strong>
+              <span>Explains what is real, mock, planned, blocked and approval-needed.</span>
+              <small>honest states</small>
+            </button>
+            <button class="action-card" type="button" data-action="simulate-missing-key">
+              <strong>Simulate Missing Key</strong>
+              <span>Shows how cloud providers are excluded without calling them.</span>
+              <small>missing key</small>
+            </button>
+            <button class="action-card" type="button" data-action="reset">
+              <strong>Reset local state</strong>
+              <span>Clears `seis.ai.core.foundation.demo.v1` from this browser.</span>
+              <small>localStorage</small>
+            </button>
+            <button class="action-card" type="button" data-action="show-no-key">
+              <strong>Show no-key proof</strong>
+              <span>Jumps to the gate that keeps core AI useful with zero cloud keys.</span>
+              <small>available</small>
+            </button>
+            <button class="action-card" type="button" data-action="show-local-only">
+              <strong>Show local-only fallback</strong>
+              <span>Routes the private-mode path and keeps cloud fallback disabled.</span>
+              <small>local-only</small>
+            </button>
+            <button class="action-card" type="button" data-action="show-prompt-schema">
+              <strong>Show prompt schema lane</strong>
+              <span>Opens the prompt engine preview without executing prompt bodies.</span>
+              <small>planned</small>
+            </button>
+            <button class="action-card" type="button" data-action="show-server-gate">
+              <strong>Show server gate</strong>
+              <span>Highlights why live cloud providers need backend-only validation.</span>
+              <small>blocked</small>
+            </button>
+          </div>
+        </aside>
+      </section>
+
+      <section class="grid-3" aria-label="AI Core safety and evidence">
+        <article class="panel" aria-labelledby="statusTitle">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title" id="statusTitle">No-key startup</h2>
+              <p class="panel-kicker">Core SEIS must remain useful when no cloud provider credential exists.</p>
+            </div>
+            <span class="state available">available</span>
+          </div>
+          <div class="safety-list">
+            <div class="safety-row"><div><strong>Core boot</strong><span>Local Demo mode starts with zero cloud keys.</span></div><span class="state available">pass</span></div>
+            <div class="safety-row"><div><strong>Cloud AI</strong><span>OpenAI, Anthropic, Gemini and other cloud routes are Missing Key until server-only validation exists.</span></div><span class="state missing-key">missing key</span></div>
+            <div class="safety-row"><div><strong>Local Ollama</strong><span>Documented as optional local-only future mode, not required for this page.</span></div><span class="state planned">planned</span></div>
+          </div>
+        </article>
+
+        <article class="panel" aria-labelledby="evidenceTitle">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title" id="evidenceTitle">Evidence ledger</h2>
+              <p class="panel-kicker">Repository-local sources are used as explanation, not live runtime proof.</p>
+            </div>
+            <span class="state demo-only">read-only</span>
+          </div>
+          <div class="safety-list">
+            <div class="safety-row"><div><strong>Provider fixture</strong><span><code>content/development/seis-ai-core-provider-registry.json</code></span></div><span class="state demo-only">fixture</span></div>
+            <div class="safety-row"><div><strong>Router contract</strong><span><code>docs/ai/model-router.md</code></span></div><span class="state planned">documented</span></div>
+            <div class="safety-row"><div><strong>Prompt contract</strong><span><code>docs/ai/prompt-engine.md</code></span></div><span class="state planned">documented</span></div>
+          </div>
+        </article>
+
+        <article class="panel" aria-labelledby="logTitle">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title" id="logTitle">AI Core activity log</h2>
+              <p class="panel-kicker">Redacted local events only. No prompt bodies leave the page.</p>
+            </div>
+            <span class="state local-demo">safe log</span>
+          </div>
+          <div class="console" id="activityLog" aria-live="polite"></div>
+        </article>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>State key: <code>seis.ai.core.foundation.demo.v1</code></span>
+      <span>Network, SSH, provider calls, training and deployment are intentionally absent.</span>
+    </footer>
+  </div>
+
+  <aside class="drawer" id="drawer" aria-hidden="true" aria-labelledby="drawerTitle">
+    <div class="drawer-head">
+      <h2 id="drawerTitle">AI Core boundary</h2>
+      <button class="icon-button" type="button" data-action="close-drawer" aria-label="Close drawer">X</button>
+    </div>
+    <div class="safety-list" id="drawerBody"></div>
+    <button class="button primary" type="button" data-action="save">Save local state</button>
+  </aside>
+
+  <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="true"></div>
+
+  <script>
+    (() => {
+      const STATE_KEY = "seis.ai.core.foundation.demo.v1";
+
+      const providers = [
+        ["seis-local-demo", "SEIS Local Demo Runtime", "Available", "browser-local-demo", "general-chat-demo, repository-planning-demo, tool-ledger-demo", "No provider key, no cloud model and no trained SEIS foundation model is claimed."],
+        ["codex-operator", "Codex Operator Session", "Available", "repo-local-supervised", "implementation, repository-review, validation, planning", "Represents supervised operator work, not a browser-exposed provider."],
+        ["openai-general", "OpenAI General Provider", "Missing Key", "server-only-cloud", "general chat, structured output, tool calling", "Unavailable until backend credential validation and adapter tests exist."],
+        ["anthropic-claude", "Anthropic Claude", "Missing Key", "server-only-cloud", "architecture review, long-context review, code review", "Unavailable until backend credential validation and adapter tests exist."],
+        ["google-gemini", "Google Gemini", "Missing Key", "server-only-cloud", "secondary validation, multimodal review", "Unavailable until backend credential validation and adapter tests exist."],
+        ["ollama-local", "Ollama Local Models", "Disabled", "local-only-planned", "offline/local inference, prompt testing", "Future optional localhost lane. Not required for this browser-local demo."]
+      ];
+
+      const routes = [
+        ["repo-audit", "Repo audit", "seis-local-demo", "Local Demo", "Summarize repository posture from visible metadata only; no private scan is performed by this page."],
+        ["coding", "Coding assistant", "codex-operator", "Supervised", "Requires human-reviewed implementation flow and PR validation outside this page."],
+        ["design-critique", "Design critique", "seis-local-demo", "Local Demo", "Uses SEIS design rules and mock critique patterns without sending screenshots to providers."],
+        ["security-review", "Security review", "feature-disabled", "Blocked", "Needs real file evidence and secret-safe tooling; no browser-only claim is made."],
+        ["local-private", "Local/private mode", "seis-local-demo", "Local Demo", "Local-only policy never silently falls back to a cloud provider."],
+        ["live-cloud", "Future live cloud request", "feature-disabled", "Missing Key", "Blocked until server-only provider validation, redaction and audit logs exist."]
+      ];
+
+      const prompts = [
+        ["base-seis-identity", "Base SEIS identity prompt", "v0.1", "Defines AI-native creative OS identity and forbidden generic dashboard drift."],
+        ["repo-audit", "Repository audit prompt", "v0.1", "Guides safe inspection before edits and preserves supplied assets."],
+        ["pr-rescue", "PR rescue prompt", "v0.1", "Explains branch safety, validation, rollback and review gate behavior."],
+        ["security-review", "Security review prompt", "v0.1", "Flags secrets, frontend keys, fake provider claims and unsafe SSH instructions."],
+        ["design-system", "Design system prompt", "v0.1", "Maintains premium dark cinematic UI with accessibility constraints."],
+        ["ollama-continuation", "Ollama continuation prompt", "v0.1", "Defines local continuation behavior without paid API dependency."]
+      ];
+
+      const gates = [
+        ["server-only-env", "Server-only environment validation", "blocked", "Required before any live cloud provider route is eligible."],
+        ["no-key-startup", "No-key startup test", "available", "Core demo remains available with zero provider credentials."],
+        ["local-only-fallback", "Local-only fallback test", "planned", "Must prove private/local mode never switches to cloud silently."],
+        ["redacted-log", "Redacted routing decision log", "planned", "Provider decisions must not store prompt bodies or raw secrets."],
+        ["client-secret-scan", "Client bundle secret exposure check", "blocked", "Required before live provider UI is connected."],
+        ["prompt-pack-schema", "Prompt-pack schema", "planned", "Required before the prompt engine can be called implemented."],
+        ["provider-fixture-check", "Provider registry fixture validation", "planned", "Should run through the existing registry quality gate."],
+        ["human-approval", "Human approval for live routing", "blocked", "Cloud/SSH/deployment authority cannot be self-approved by agents."]
+      ];
+
+      const defaultState = {
+        tab: "providers",
+        reviewed: false,
+        selectedTask: "repo-audit",
+        logs: [
+          ["boot", "AI Core Foundation opened in browser-local mode."],
+          ["safety", "No provider, SSH, deployment, training or credential validation was executed."],
+          ["router", "Fallback identity is visible and deterministic."]
+        ]
+      };
+
+      const $ = (selector, root = document) => root.querySelector(selector);
+      const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+      let state = loadState();
+
+      function loadState() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(STATE_KEY) || "null");
+          if (saved && typeof saved === "object") return { ...defaultState, ...saved, logs: Array.isArray(saved.logs) ? saved.logs : defaultState.logs };
+        } catch (error) {
+          return { ...defaultState };
+        }
+        return { ...defaultState };
+      }
+
+      function saveState(showToast = true) {
+        localStorage.setItem(STATE_KEY, JSON.stringify(state));
+        if (showToast) toast("AI Core local state saved.");
+      }
+
+      function addLog(scope, message) {
+        state.logs = [[scope, message], ...state.logs].slice(0, 16);
+        renderLog();
+      }
+
+      function stateClass(status) {
+        return status.toLowerCase().replace(/\s+/g, "-");
+      }
+
+      function label(status) {
+        return `<span class="state ${stateClass(status)}">${status}</span>`;
+      }
+
+      function renderProviders() {
+        $("#providerGrid").innerHTML = providers.map(([id, name, status, privacy, capabilities, notes]) => `
+          <button class="provider-card" type="button" data-provider="${id}" data-search="${[id, name, status, privacy, capabilities, notes].join(' ').toLowerCase()}">
+            <strong>${name}</strong>
+            <span>${notes}</span>
+            <small>${status} / ${privacy}</small>
+          </button>
+        `).join("");
+        $$(".provider-card").forEach((card) => card.addEventListener("click", () => {
+          const provider = providers.find((item) => item[0] === card.dataset.provider);
+          addLog("provider", `${provider[1]} inspected. Public state: ${provider[2]}.`);
+          toast(`${provider[1]} is ${provider[2]}.`);
+        }));
+      }
+
+      function renderRoutes() {
+        $("#routeGrid").innerHTML = routes.map(([id, title, provider, mode, detail]) => `
+          <button class="route-card" type="button" data-route="${id}" data-search="${[id, title, provider, mode, detail].join(' ').toLowerCase()}">
+            <strong>${title}</strong>
+            <span>${detail}</span>
+            <small>${mode} -> ${provider}</small>
+          </button>
+        `).join("");
+        $$(".route-card").forEach((card) => card.addEventListener("click", () => routeTask(card.dataset.route)));
+      }
+
+      function renderPrompts() {
+        $("#promptGrid").innerHTML = prompts.map(([id, title, version, detail]) => `
+          <button class="prompt-card" type="button" data-prompt="${id}" data-search="${[id, title, version, detail].join(' ').toLowerCase()}">
+            <strong>${title}</strong>
+            <span>${detail}</span>
+            <small>${id} / ${version}</small>
+          </button>
+        `).join("");
+        $$(".prompt-card").forEach((card) => card.addEventListener("click", () => {
+          const prompt = prompts.find((item) => item[0] === card.dataset.prompt);
+          addLog("prompt", `${prompt[1]} opened as metadata only.`);
+          toast("Prompt pack metadata inspected. No prompt body executed.");
+        }));
+      }
+
+      function renderGates() {
+        $("#gateGrid").innerHTML = gates.map(([id, title, status, detail]) => `
+          <button class="gate-card" type="button" data-gate="${id}" data-search="${[id, title, status, detail].join(' ').toLowerCase()}">
+            <strong>${title}</strong>
+            <span>${detail}</span>
+            <small>${status}</small>
+          </button>
+        `).join("");
+        $$(".gate-card").forEach((card) => card.addEventListener("click", () => {
+          const gate = gates.find((item) => item[0] === card.dataset.gate);
+          addLog("gate", `${gate[1]} reviewed. Status: ${gate[2]}.`);
+        }));
+      }
+
+      function renderDecision(routeId = state.selectedTask) {
+        const route = routes.find((item) => item[0] === routeId) || routes[0];
+        state.selectedTask = route[0];
+        $("#taskSelect").value = route[0];
+        const provider = providers.find((item) => item[0] === route[2]);
+        const publicState = provider ? provider[2] : route[3];
+        const execution = "false";
+        const fallback = route[3] === "Missing Key" || route[3] === "Blocked" ? "feature-disabled" : route[2];
+        $("#decisionBox").innerHTML = `
+          <div class="decision-row"><b>task</b><span>${route[1]}</span></div>
+          <div class="decision-row"><b>selected</b><span>${route[2]}</span></div>
+          <div class="decision-row"><b>public state</b><span>${publicState}</span></div>
+          <div class="decision-row"><b>fallback</b><span>${fallback}</span></div>
+          <div class="decision-row"><b>executionPerformed</b><span>${execution}</span></div>
+          <div class="decision-row"><b>reason</b><span>${route[4]}</span></div>
+        `;
+      }
+
+      function routeTask(routeId = $("#taskSelect").value) {
+        renderDecision(routeId);
+        addLog("router", `${routes.find((item) => item[0] === routeId)[1]} routed in local decision mode.`);
+        saveState(false);
+        setTab("router");
+      }
+
+      function renderLog() {
+        const time = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+        $("#activityLog").innerHTML = state.logs.map(([scope, msg]) => `
+          <div class="log-line"><b>${time} ${scope}</b><span>${msg}</span></div>
+        `).join("");
+      }
+
+      function renderMetrics() {
+        $("#providerCount").textContent = providers.length;
+        $("#routeCount").textContent = routes.length;
+        $("#promptCount").textContent = prompts.length;
+        $("#gateCount").textContent = gates.length;
+      }
+
+      function setTab(name) {
+        state.tab = name;
+        $$(".tab").forEach((button) => button.setAttribute("aria-selected", String(button.dataset.tab === name)));
+        $$(".pane").forEach((pane) => pane.classList.toggle("active", pane.id === `pane-${name}`));
+        saveState(false);
+      }
+
+      function openDrawer() {
+        $("#drawerBody").innerHTML = `
+          <div class="safety-row"><div><strong>Real</strong><span>Static HTML, CSS, JavaScript interactivity and localStorage persistence.</span></div>${label("Available")}</div>
+          <div class="safety-row"><div><strong>Mock</strong><span>Provider, router and prompt records are explanatory demo metadata.</span></div>${label("demo-only")}</div>
+          <div class="safety-row"><div><strong>Planned</strong><span>Backend-only provider adapters, prompt-pack schema, local Ollama adapter and redacted routing logs.</span></div>${label("planned")}</div>
+          <div class="safety-row"><div><strong>Blocked</strong><span>Live cloud AI, credential validation, model training, deployment, SSH and autonomous runtime authority.</span></div>${label("blocked")}</div>
+        `;
+        const drawer = $("#drawer");
+        drawer.classList.add("open");
+        drawer.setAttribute("aria-hidden", "false");
+        $("[data-action='close-drawer']").focus();
+      }
+
+      function closeDrawer() {
+        const drawer = $("#drawer");
+        drawer.classList.remove("open");
+        drawer.setAttribute("aria-hidden", "true");
+      }
+
+      function toast(message) {
+        const stack = $("#toastStack");
+        const item = document.createElement("div");
+        item.className = "toast";
+        item.textContent = message;
+        stack.appendChild(item);
+        window.setTimeout(() => item.remove(), 3200);
+      }
+
+      function applySearch(value) {
+        const needle = value.trim().toLowerCase();
+        $$('[data-search]').forEach((item) => {
+          item.classList.toggle("hidden", Boolean(needle) && !item.dataset.search.includes(needle));
+        });
+      }
+
+      function handleAction(action) {
+        if (action === "open-drawer") openDrawer();
+        if (action === "close-drawer") closeDrawer();
+        if (action === "save") saveState(true);
+        if (action === "route-task") routeTask();
+        if (action === "mark-reviewed") {
+          state.reviewed = true;
+          addLog("review", "AI Core foundation marked reviewed in local state.");
+          saveState(false);
+          toast("AI Core review marker stored locally.");
+        }
+        if (action === "simulate-missing-key") {
+          routeTask("live-cloud");
+          toast("Missing Key path simulated without provider call.");
+        }
+        if (action === "show-no-key") {
+          setTab("gates");
+          addLog("gate", "No-key startup gate inspected as available.");
+          toast("No-key startup remains available.");
+        }
+        if (action === "show-local-only") {
+          routeTask("local-private");
+          toast("Local-only route selected. Cloud fallback remains disabled.");
+        }
+        if (action === "show-prompt-schema") {
+          setTab("prompts");
+          addLog("prompt", "Prompt-pack schema lane opened as planned metadata.");
+          toast("Prompt engine preview opened without execution.");
+        }
+        if (action === "show-server-gate") {
+          setTab("gates");
+          addLog("gate", "Server-only environment validation gate highlighted.");
+          toast("Live providers remain blocked until backend validation exists.");
+        }
+        if (action === "reset") {
+          localStorage.removeItem(STATE_KEY);
+          state = { ...defaultState, logs: [...defaultState.logs] };
+          renderAll();
+          toast("AI Core local state reset.");
+        }
+      }
+
+      function bind() {
+        $$(".tab").forEach((button) => button.addEventListener("click", () => setTab(button.dataset.tab)));
+        $$('[data-action]').forEach((item) => item.addEventListener("click", () => handleAction(item.dataset.action)));
+        $("#taskSelect").addEventListener("change", (event) => { state.selectedTask = event.target.value; renderDecision(); saveState(false); });
+        $("#aiSearch").addEventListener("input", (event) => applySearch(event.target.value));
+        document.addEventListener("keydown", (event) => {
+          if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+            event.preventDefault();
+            $("#aiSearch").focus();
+          }
+          if (event.key === "Escape") closeDrawer();
+        });
+      }
+
+      function renderAll() {
+        renderProviders();
+        renderRoutes();
+        renderPrompts();
+        renderGates();
+        renderDecision(state.selectedTask);
+        renderLog();
+        renderMetrics();
+        setTab(state.tab || "providers");
+      }
+
+      renderAll();
+      bind();
+    })();
+  </script>
+</body>
+</html>
