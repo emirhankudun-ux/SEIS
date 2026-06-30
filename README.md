@@ -178,6 +178,8 @@ npm run check:seis-ssh-public-access
 npm run report:seis-ssh-public-access
 npm run check:seis-ssh-public-first-run
 npm run report:seis-ssh-public-first-run
+npm run check:seis-ssh-public-troubleshooting
+npm run report:seis-ssh-public-troubleshooting
 npm run check:seis-ssh-public-onboarding
 npm run report:seis-ssh-public-onboarding
 npm run check:seis-ssh-public-contributor-doctor
@@ -193,6 +195,12 @@ GitHub contributor. It creates a read-only first-run guide, reports local setup
 needs without treating missing `SEIS-SSH` as live readiness, and preserves the
 same server and port without contacting GitHub, writing SSH config, or opening
 SSH.
+
+`npm run run:seis-ssh-public-troubleshooting` creates a read-only self-service
+troubleshooting guide for GitHub users. It maps common `SEIS-SSH` states such as
+missing alias, Codespaces picker warning, local/LAN target blockers, billing
+blockers, and live-ready claim boundaries to safe next actions without changing
+server, port, SSH config, or GitHub state.
 
 `npm run report:seis-ssh-public-onboarding` writes a read-only GitHub review
 pack under `reports/seis-ssh-public-access/`. It does not write SSH config,

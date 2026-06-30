@@ -20,6 +20,7 @@ const files = {
   desktop: "apps/web/desktop.js",
   reportScript: "scripts/create-seis-ssh-public-access-report.mjs",
   firstRunScript: "scripts/create-seis-ssh-public-first-run.mjs",
+  troubleshootingScript: "scripts/create-seis-ssh-public-troubleshooting-guide.mjs",
   onboardingScript: "scripts/create-seis-ssh-public-onboarding-pack.mjs",
   contributorDoctorScript: "scripts/check-seis-ssh-public-contributor-doctor.mjs",
   liveEvidence: "content/development/seis-ssh-live-readiness-evidence.json",
@@ -59,8 +60,10 @@ ensure(accessModel?.publicAccessContract === files.contract, "access model must 
 ensure(roadmap?.publicAccessContract === files.contract, "roadmap must link public access contract");
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-access"), "access model quality commands must include public access check");
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-first-run"), "access model quality commands must include public first-run check");
+ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-troubleshooting"), "access model quality commands must include public troubleshooting check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-access"), "roadmap validation commands must include public access check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-first-run"), "roadmap validation commands must include public first-run check");
+ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-troubleshooting"), "roadmap validation commands must include public troubleshooting check");
 
 ensure(scripts["check:seis-ssh-public-access"] === "node scripts/check-seis-ssh-public-access.mjs", "package script check:seis-ssh-public-access must be declared");
 ensure(scripts["check:seis-ssh-public-access-report"] === "node scripts/create-seis-ssh-public-access-report.mjs --check", "package script check:seis-ssh-public-access-report must be declared");
@@ -68,6 +71,9 @@ ensure(scripts["report:seis-ssh-public-access"] === "node scripts/create-seis-ss
 ensure(scripts["check:seis-ssh-public-first-run"] === "node scripts/create-seis-ssh-public-first-run.mjs --check", "package script check:seis-ssh-public-first-run must be declared");
 ensure(scripts["report:seis-ssh-public-first-run"] === "node scripts/create-seis-ssh-public-first-run.mjs --write", "package script report:seis-ssh-public-first-run must be declared");
 ensure(scripts["run:seis-ssh-public-first-run"] === "npm run check:seis-ssh-public-first-run && npm run report:seis-ssh-public-first-run", "package script run:seis-ssh-public-first-run must be declared");
+ensure(scripts["check:seis-ssh-public-troubleshooting"] === "node scripts/create-seis-ssh-public-troubleshooting-guide.mjs --check", "package script check:seis-ssh-public-troubleshooting must be declared");
+ensure(scripts["report:seis-ssh-public-troubleshooting"] === "node scripts/create-seis-ssh-public-troubleshooting-guide.mjs --write", "package script report:seis-ssh-public-troubleshooting must be declared");
+ensure(scripts["run:seis-ssh-public-troubleshooting"] === "npm run check:seis-ssh-public-troubleshooting && npm run report:seis-ssh-public-troubleshooting", "package script run:seis-ssh-public-troubleshooting must be declared");
 ensure(scripts["check:seis-ssh-public-onboarding"] === "node scripts/create-seis-ssh-public-onboarding-pack.mjs --check", "package script check:seis-ssh-public-onboarding must be declared");
 ensure(scripts["report:seis-ssh-public-onboarding"] === "node scripts/create-seis-ssh-public-onboarding-pack.mjs --write", "package script report:seis-ssh-public-onboarding must be declared");
 ensure(scripts["check:seis-ssh-public-contributor-doctor"] === "node scripts/check-seis-ssh-public-contributor-doctor.mjs --check", "package script check:seis-ssh-public-contributor-doctor must be declared");
@@ -75,6 +81,7 @@ ensure(scripts["report:seis-ssh-public-contributor-doctor"] === "node scripts/ch
 ensure(scripts["check:seis-ssh-live-readiness-evidence"] === "node scripts/check-seis-ssh-live-readiness-evidence.mjs", "package script check:seis-ssh-live-readiness-evidence must be declared");
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-public-access"), "quality:governance must include public access check");
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-public-first-run"), "quality:governance must include public first-run check");
+ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-public-troubleshooting"), "quality:governance must include public troubleshooting check");
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-public-contributor-doctor"), "quality:governance must include public contributor doctor check");
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-live-readiness-evidence"), "quality:governance must include live readiness evidence check");
 
@@ -84,6 +91,8 @@ for (const command of [
   "npm run report:seis-ssh-public-access",
   "npm run check:seis-ssh-public-first-run",
   "npm run report:seis-ssh-public-first-run",
+  "npm run check:seis-ssh-public-troubleshooting",
+  "npm run report:seis-ssh-public-troubleshooting",
   "npm run check:seis-ssh-public-onboarding",
   "npm run report:seis-ssh-public-onboarding",
   "npm run check:seis-ssh-public-contributor-doctor",
@@ -131,6 +140,8 @@ for (const token of [
   "npm run report:seis-ssh-public-access",
   "npm run check:seis-ssh-public-first-run",
   "npm run report:seis-ssh-public-first-run",
+  "npm run check:seis-ssh-public-troubleshooting",
+  "npm run report:seis-ssh-public-troubleshooting",
   "npm run report:seis-ssh-public-onboarding",
   "npm run report:seis-ssh-public-contributor-doctor",
   "npm run check:seis-ssh-live-readiness-evidence",
@@ -149,6 +160,7 @@ for (const token of [
   "Keep same server and port",
   "seis-ssh-public-access.md",
   "seis-ssh-public-first-run.md",
+  "seis-ssh-public-troubleshooting.md",
   "seis-ssh-public-onboarding.md",
   "seis-ssh-public-contributor-doctor.md",
   "check:seis-ssh-live-readiness-evidence",
@@ -173,6 +185,7 @@ const onboardingScript = read(files.onboardingScript);
 for (const token of [
   "read-only-no-live-ssh-no-config-write",
   "npm run check:seis-ssh-public-first-run",
+  "npm run check:seis-ssh-public-troubleshooting",
   "Ayni sunucu ve baglanti noktasi korunur.",
   "npm run check:seis-ssh-public-onboarding",
   "reports/seis-ssh-public-access/onboarding-pack-latest.md",
@@ -192,10 +205,22 @@ for (const token of [
   ensure(firstRunScript.includes(token), `first-run script must include ${token}`);
 }
 
+const troubleshootingScript = read(files.troubleshootingScript);
+for (const token of [
+  "read-only-no-live-ssh-no-config-write-no-network-auth-check",
+  "npm run run:seis-ssh-public-troubleshooting",
+  "reports/seis-ssh-public-access/troubleshooting-latest.md",
+  "This troubleshooting guide does not write ~/.ssh/config.",
+  "Ayni sunucu ve baglanti noktasi korunur."
+]) {
+  ensure(troubleshootingScript.includes(token), `troubleshooting script must include ${token}`);
+}
+
 const contributorDoctorScript = read(files.contributorDoctorScript);
 for (const token of [
   "read-only-no-live-ssh-no-config-write",
   "npm run check:seis-ssh-public-first-run",
+  "npm run check:seis-ssh-public-troubleshooting",
   "This doctor does not write ~/.ssh/config.",
   "npm run check:seis-ssh-public-contributor-doctor",
   "reports/seis-ssh-public-access/contributor-doctor-latest.md",
@@ -218,6 +243,7 @@ for (const file of [
   files.liveEvidenceScript,
   files.reportScript,
   files.firstRunScript,
+  files.troubleshootingScript,
   files.onboardingScript,
   files.contributorDoctorScript,
   files.readme,

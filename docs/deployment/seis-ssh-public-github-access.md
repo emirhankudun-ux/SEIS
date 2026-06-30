@@ -43,6 +43,7 @@ Start here on a new machine or fresh clone:
 
 ```bash
 npm run run:seis-ssh-public-first-run
+npm run run:seis-ssh-public-troubleshooting
 ```
 
 This first-run command is read-only. It produces a sanitized local snapshot,
@@ -50,11 +51,18 @@ shows whether setup is needed, and keeps missing `SEIS-SSH` configuration as a
 clear next action instead of pretending live SSH is ready. It does not contact
 GitHub, write `~/.ssh/config`, open SSH, or change the server or port.
 
+The troubleshooting command is also read-only. It maps setup-needed, picker
+warning, local/LAN target, provider billing, and live-ready claim states to safe
+next actions without contacting GitHub, writing config, opening SSH, or changing
+the server or port.
+
 Use this fuller read-only sequence for a GitHub review after first-run:
 
 ```bash
 npm run check:seis-ssh-public-first-run
 npm run report:seis-ssh-public-first-run
+npm run check:seis-ssh-public-troubleshooting
+npm run report:seis-ssh-public-troubleshooting
 npm run run:seis-ssh-public-onboarding
 npm run check:seis-ssh-public-access
 npm run check:seis-ssh-public-access-report
@@ -113,6 +121,12 @@ can compare endpoint continuity without publishing the server name.
 new GitHub contributor who needs one safe starting command, a sanitized local
 snapshot, local tool readiness, and the next approved setup path without
 config writes or live SSH.
+
+`npm run report:seis-ssh-public-troubleshooting` writes the troubleshooting
+guide to `reports/seis-ssh-public-access/troubleshooting-latest.md`. It is the
+safe artifact to attach when a contributor asks whether `SEIS-SSH` is missing,
+offline, blocked by provider billing, picker-incompatible, or unsafe for a live
+claim.
 
 `npm run report:seis-ssh-public-onboarding` writes a GitHub review-oriented
 onboarding pack to `reports/seis-ssh-public-access/onboarding-pack-latest.md`.
@@ -189,6 +203,7 @@ Human approval is required for:
 ```bash
 npm run check:seis-ssh-public-access
 npm run check:seis-ssh-public-first-run
+npm run check:seis-ssh-public-troubleshooting
 npm run check:seis-ssh-public-onboarding
 npm run check:seis-ssh-public-contributor-doctor
 npm run check:seis-ssh-live-readiness-evidence

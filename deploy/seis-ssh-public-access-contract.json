@@ -65,6 +65,7 @@
         "read the runbook",
         "run static checks",
         "run the read-only first-run guide",
+        "run the read-only troubleshooting guide",
         "run the read-only contributor doctor",
         "open the SEIS Cloud demo surface"
       ],
@@ -82,6 +83,7 @@
       "requiredEvidence": [
         "npm run check:seis-ssh-public-access",
         "npm run check:seis-ssh-public-first-run",
+        "npm run check:seis-ssh-public-troubleshooting",
         "npm run check:seis-ssh-public-contributor-doctor",
         "npm run check:seis-ssh-picker-compatibility",
         "npm run cloud:ssh:online:strict"
@@ -119,6 +121,7 @@
     "scripts/check-seis-ssh-public-access.mjs",
     "scripts/create-seis-ssh-public-access-report.mjs",
     "scripts/create-seis-ssh-public-first-run.mjs",
+    "scripts/create-seis-ssh-public-troubleshooting-guide.mjs",
     "scripts/create-seis-ssh-public-onboarding-pack.mjs",
     "scripts/check-seis-ssh-public-contributor-doctor.mjs",
     "scripts/check-seis-ssh-live-readiness-evidence.mjs",
@@ -137,6 +140,8 @@
     "npm run report:seis-ssh-public-access",
     "npm run check:seis-ssh-public-first-run",
     "npm run report:seis-ssh-public-first-run",
+    "npm run check:seis-ssh-public-troubleshooting",
+    "npm run report:seis-ssh-public-troubleshooting",
     "npm run check:seis-ssh-public-onboarding",
     "npm run report:seis-ssh-public-onboarding",
     "npm run check:seis-ssh-public-contributor-doctor",
