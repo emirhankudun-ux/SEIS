@@ -15,6 +15,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check:workspace": "node scripts/check-workspace.cjs",
+    "check:github-pr-queue-readiness": "node scripts/check-github-pr-queue-readiness.mjs",
     "check:open-source-governance": "node scripts/check-open-source-governance.mjs",
     "check:seis-master-prompt": "node scripts/check-seis-master-prompt.mjs",
     "check:seis-focus-mode": "node scripts/check-seis-focus-mode.mjs",
