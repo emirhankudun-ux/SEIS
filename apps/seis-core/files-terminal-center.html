@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en" data-seis-files-terminal="browser-local">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SEIS Files + Terminal Center</title>
+    <meta
+      name="description"
+      content="Browser-local SEIS Files and Terminal Center demo with safe virtual files, simulated commands, and explicit real/mock status."
+    />
+    <link rel="stylesheet" href="./files-terminal-center.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to Files + Terminal workspace</a>
+
+    <header class="topbar" aria-label="SEIS Files Terminal status bar">
+      <div class="brand-mark" aria-hidden="true">S</div>
+      <div>
+        <p class="eyebrow">SEIS Core / Browser-local workspace</p>
+        <h1>SEIS Files + Terminal Center</h1>
+      </div>
+      <div class="status-strip" aria-label="Safety state">
+        <span class="status-pill real">Browser-local</span>
+        <span class="status-pill mock">Mock terminal</span>
+        <span class="status-pill blocked">Host access blocked</span>
+      </div>
+    </header>
+
+    <main id="main" class="shell" tabindex="-1">
+      <section class="hero-panel" aria-labelledby="workspace-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Files, terminal, recent work, and safety ledger</p>
+          <h2 id="workspace-title">A serious local demo surface for SEIS Files and the safe Terminal lane.</h2>
+          <p>
+            This route demonstrates a responsive file manager, recent file memory, local note creation,
+            and a command console without touching the host filesystem, credentials, shell, network, or remote machines.
+          </p>
+        </div>
+        <div class="safety-card" aria-label="Non execution contract">
+          <p class="eyebrow">Safety state</p>
+          <code>commandExecuted: false</code>
+          <code>sshExecuted: false</code>
+          <code>filesystemMutated: false</code>
+          <code>credentialRead: false</code>
+        </div>
+      </section>
+
+      <section class="workspace-grid" aria-label="Files and terminal workspace">
+        <article class="panel files-panel" aria-labelledby="files-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">SEIS Files</p>
+              <h3 id="files-title">Virtual file manager</h3>
+            </div>
+            <div class="view-toggle" aria-label="View mode">
+              <button class="ghost-button active" type="button" data-view="grid">Grid</button>
+              <button class="ghost-button" type="button" data-view="list">List</button>
+            </div>
+          </div>
+
+          <div class="toolbar" aria-label="File tools">
+            <label class="search-box">
+              <span>Search</span>
+              <input id="fileSearch" type="search" placeholder="Search local demo files" autocomplete="off" />
+            </label>
+            <button id="newNote" class="solid-button" type="button">Create local note</button>
+            <button id="newFolder" class="ghost-button" type="button">Create local folder</button>
+            <button id="renameItem" class="ghost-button" type="button">Rename selected</button>
+            <button id="deleteItem" class="danger-button" type="button">Delete blocked</button>
+          </div>
+
+          <nav class="breadcrumb" aria-label="Current virtual folder">
+            <button type="button" data-folder="root">SEIS</button>
+            <span>/</span>
+            <strong id="folderName">Command Center</strong>
+          </nav>
+
+          <div id="fileGrid" class="file-grid" aria-label="Virtual files"></div>
+        </article>
+
+        <aside class="panel preview-panel" aria-labelledby="preview-title">
+          <p class="eyebrow">Open file</p>
+          <h3 id="preview-title">No file selected</h3>
+          <p id="previewMeta" class="muted">Choose a virtual file to preview its browser-local content.</p>
+          <pre id="previewBody" class="preview-body">Recent files and selections persist in localStorage only.</pre>
+        </aside>
+
+        <article class="panel terminal-panel" aria-labelledby="terminal-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">SEIS Terminal</p>
+              <h3 id="terminal-title">Safe command palette</h3>
+            </div>
+            <span class="status-pill mock">Simulated output</span>
+          </div>
+
+          <div class="command-row" aria-label="Preset safe commands">
+            <button class="command-chip" type="button" data-command="help">help</button>
+            <button class="command-chip" type="button" data-command="status">status</button>
+            <button class="command-chip" type="button" data-command="ls">ls</button>
+            <button class="command-chip" type="button" data-command="pwd">pwd</button>
+            <button class="command-chip" type="button" data-command="readiness">readiness</button>
+            <button class="command-chip" type="button" data-command="clear">clear</button>
+          </div>
+
+          <div id="terminalOutput" class="terminal-output" aria-live="polite" aria-label="Terminal output"></div>
+
+          <form id="terminalForm" class="terminal-form" autocomplete="off">
+            <label for="terminalInput">Command</label>
+            <div class="terminal-input-wrap">
+              <span aria-hidden="true">seis@local-demo:~$</span>
+              <input id="terminalInput" name="terminalInput" type="text" placeholder="Type help, status, ls, pwd, readiness, or clear" />
+            </div>
+          </form>
+        </article>
+
+        <aside class="panel activity-panel" aria-labelledby="activity-title">
+          <p class="eyebrow">Recent files</p>
+          <h3 id="activity-title">Session memory</h3>
+          <ul id="recentFiles" class="recent-list"></ul>
+          <div class="agent-activity" aria-label="Agent lane status">
+            <p><strong>Files Agent:</strong> browser-local catalog and preview only.</p>
+            <p><strong>Terminal Agent:</strong> simulated commands only.</p>
+            <p><strong>Security Agent:</strong> host access and credentials remain blocked.</p>
+          </div>
+        </aside>
+      </section>
+
+      <section class="status-ledger" aria-labelledby="ledger-title">
+        <div>
+          <p class="eyebrow">Mock vs real status</p>
+          <h2 id="ledger-title">Clear runtime boundaries</h2>
+        </div>
+        <div class="ledger-grid">
+          <article>
+            <span class="status-pill real">Real</span>
+            <h3>Browser interactions</h3>
+            <p>Search, selection, view mode, virtual notes, and terminal history run in the browser.</p>
+          </article>
+          <article>
+            <span class="status-pill real">Real</span>
+            <h3>Session persistence</h3>
+            <p>Local demo state is stored under <code>seis.files.terminal.center.v1</code>.</p>
+          </article>
+          <article>
+            <span class="status-pill mock">Mock</span>
+            <h3>Terminal output</h3>
+            <p>Commands return deterministic demo text and never call the host shell.</p>
+          </article>
+          <article>
+            <span class="status-pill blocked">Blocked</span>
+            <h3>Remote / credential access</h3>
+            <p>No host filesystem, network, secrets, or remote workspace connection is attempted.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script src="./files-terminal-center.js" defer></script>
+  </body>
+</html>
