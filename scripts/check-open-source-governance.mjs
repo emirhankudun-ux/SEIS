@@ -127,6 +127,10 @@ for (const [file, required] of [
   ['docs/governance/open-source-governance.md', '.github/workflows/codeql.yml'],
   ['docs/governance/open-source-governance.md', 'SUPPORT.md'],
   ['docs/governance/open-source-governance.md', 'first-run-quickstart.md'],
+  ['docs/governance/github-pr-queue-readiness.md', 'GitHub PR Queue Readiness'],
+  ['docs/governance/github-pr-queue-readiness.md', 'Security Guardian full-history Gitleaks scan'],
+  ['docs/governance/github-pr-queue-readiness.md', 'Do not weaken `.gitleaks.toml`'],
+  ['docs/governance/github-pr-queue-readiness.md', 'npm run check:github-pr-queue-readiness'],
   ['docs/governance/github-market-readiness.md', 'GitHub discovery and adoption model'],
   ['docs/governance/github-market-readiness.md', 'first-run-quickstart.md'],
   ['docs/governance/github-market-readiness.md', 'Stars are an outcome'],
@@ -205,6 +209,12 @@ if (
   'node scripts/check-open-source-governance.mjs'
 ) {
   failures.push('package.json must expose check:open-source-governance');
+}
+if (
+  packageJson.scripts?.['check:github-pr-queue-readiness'] !==
+  'node scripts/check-github-pr-queue-readiness.mjs'
+) {
+  failures.push('package.json must expose check:github-pr-queue-readiness');
 }
 
 for (const workflow of [
