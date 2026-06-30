@@ -1,6 +1,6 @@
 # SEIS Language Model Training Curriculum
 
-Generated: 2026-06-29T06:09:40.048Z
+Generated: 2026-06-30T21:03:55.156Z
 
 ## Hedef ve Kısıt
 
