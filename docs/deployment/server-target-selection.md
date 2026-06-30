@@ -79,7 +79,9 @@ gh api repos/OWNER/REPO/pages --jq '.build_type'
 
 The expected value is `workflow`. After the repo setting is confirmed, rerun the
 `Deploy Public Cloud` workflow and keep the Pages artifact gate paired with the
-Second Brain Chrome browser smoke in `.github/workflows/pages.yml`.
+Second Brain Chrome browser smoke in `.github/workflows/pages.yml`. PR branch
+dispatches are valid build/smoke proof only; the protected publish step should
+run from `main`.
 
 Then run:
 

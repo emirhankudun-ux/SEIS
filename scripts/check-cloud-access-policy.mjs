@@ -123,6 +123,7 @@ ensure(pagesWorkflow.includes("workflow_dispatch:"), "Pages workflow must suppor
 ensure(pagesWorkflow.includes("contents: read"), "Pages workflow must keep contents read-only");
 ensure(pagesWorkflow.includes("pages: write"), "Pages workflow must grant Pages write permission");
 ensure(pagesWorkflow.includes("id-token: write"), "Pages workflow must grant OIDC id-token write permission");
+ensure(pagesWorkflow.includes("if: github.ref == 'refs/heads/main'"), "Pages deploy job must be main-branch only");
 ensure(/actions\/upload-pages-artifact@[a-f0-9]{40}/.test(pagesWorkflow), "Pages workflow must upload a pinned Pages artifact action");
 ensure(/actions\/deploy-pages@[a-f0-9]{40}/.test(pagesWorkflow), "Pages workflow must deploy through a pinned GitHub Pages action");
 ensure(/actions\/configure-pages@[a-f0-9]{40}/.test(pagesWorkflow), "Pages workflow must configure GitHub Pages through a pinned action");
