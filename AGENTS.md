@@ -208,6 +208,7 @@ flowchart TD
 - Demo must not require local models.
 - Do not claim local model output is verified unless reviewed.
 - Use context packs to guide local models.
+- Detailed local AI policy is documented in [`SEIS_LOCAL_AI_OLLAMA.md`](SEIS_LOCAL_AI_OLLAMA.md).
 
 ## SEIS-SSH Rules
 
