@@ -1,0 +1,730 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SEIS Files Demo</title>
+    <meta
+      name="description"
+      content="A browser-local SEIS Files demo with virtual folders, search, grid/list views, open/create/rename/delete safe-mode interactions, and recent files."
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        --ink: #f8f6ef;
+        --muted: #abb3c2;
+        --dim: #758194;
+        --black: #050608;
+        --panel: rgba(16, 21, 30, 0.78);
+        --line: rgba(255, 255, 255, 0.13);
+        --cyan: #64e7ff;
+        --blue: #7ca2ff;
+        --violet: #b99cff;
+        --amber: #ffc06e;
+        --green: #83e6ac;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        color: var(--ink);
+        font-family:
+          ui-sans-serif,
+          -apple-system,
+          BlinkMacSystemFont,
+          "SF Pro Display",
+          "Segoe UI",
+          sans-serif;
+        background:
+          radial-gradient(circle at 12% 8%, rgba(100, 231, 255, 0.22), transparent 28rem),
+          radial-gradient(circle at 84% 12%, rgba(185, 156, 255, 0.18), transparent 26rem),
+          linear-gradient(135deg, #050608, #101724 48%, #07090d);
+      }
+
+      body::before {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        content: "";
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.032) 1px, transparent 1px);
+        background-size: 72px 72px;
+        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent 78%);
+      }
+
+      a,
+      button,
+      input {
+        min-height: 44px;
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      a:focus-visible,
+      button:focus-visible,
+      input:focus-visible {
+        outline: 0;
+        box-shadow: 0 0 0 3px rgba(100, 231, 255, 0.3);
+      }
+
+      .shell {
+        width: min(1440px, calc(100vw - 28px));
+        margin: 0 auto;
+        padding: 28px 0 44px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 12px 14px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(5, 6, 8, 0.72);
+        backdrop-filter: blur(18px);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .mark {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        place-items: center;
+        border: 1px solid rgba(100, 231, 255, 0.42);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.055);
+        color: var(--cyan);
+        font-weight: 900;
+      }
+
+      .eyebrow {
+        margin: 0;
+        color: var(--cyan);
+        font-size: 11px;
+        font-weight: 850;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .brand strong {
+        display: block;
+        overflow: hidden;
+        font-size: 14px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .top-actions,
+      .hero-actions,
+      .toolbar-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(320px, 0.58fr);
+        gap: 18px;
+        margin-top: 22px;
+      }
+
+      .card,
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: 30px;
+        background:
+          linear-gradient(145deg, rgba(255, 255, 255, 0.095), rgba(255, 255, 255, 0.026)),
+          var(--panel);
+        box-shadow: 0 28px 92px rgba(0, 0, 0, 0.45);
+        backdrop-filter: blur(24px);
+      }
+
+      .hero-main {
+        padding: clamp(28px, 5vw, 62px);
+      }
+
+      h1 {
+        max-width: 900px;
+        margin: 14px 0 18px;
+        font-size: clamp(42px, 7vw, 100px);
+        line-height: 0.9;
+        letter-spacing: -0.078em;
+      }
+
+      .hero-main p {
+        max-width: 780px;
+        margin: 0;
+        color: var(--muted);
+        font-size: clamp(16px, 2vw, 20px);
+        line-height: 1.64;
+      }
+
+      .hero-actions {
+        margin-top: 24px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 11px 15px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--ink);
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .button.primary {
+        border-color: transparent;
+        background: linear-gradient(135deg, var(--cyan), var(--blue));
+        color: #061017;
+        font-weight: 850;
+      }
+
+      .summary {
+        display: grid;
+        gap: 10px;
+        padding: 18px;
+      }
+
+      .metric {
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background: rgba(0, 0, 0, 0.2);
+      }
+
+      .metric strong {
+        display: block;
+        font-size: 30px;
+        letter-spacing: -0.04em;
+      }
+
+      .metric span {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .workspace {
+        display: grid;
+        grid-template-columns: minmax(260px, 0.58fr) minmax(0, 1.42fr);
+        gap: 18px;
+        margin-top: 18px;
+      }
+
+      .panel {
+        padding: 18px;
+      }
+
+      .panel h2 {
+        margin: 0 0 14px;
+        font-size: 22px;
+        letter-spacing: -0.04em;
+      }
+
+      .sidebar-list,
+      .recent-list,
+      .activity-log {
+        display: grid;
+        gap: 8px;
+      }
+
+      .side-item,
+      .recent-item,
+      .log-item {
+        padding: 11px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.045);
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .side-item {
+        width: 100%;
+        color: var(--ink);
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .side-item[aria-pressed="true"] {
+        border-color: rgba(100, 231, 255, 0.48);
+        background: rgba(100, 231, 255, 0.1);
+      }
+
+      .toolbar {
+        display: grid;
+        grid-template-columns: minmax(220px, 1fr) auto;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      input[type="search"] {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--ink);
+        padding: 12px 15px;
+      }
+
+      .files {
+        display: grid;
+        gap: 10px;
+      }
+
+      .files[data-view="grid"] {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .file-card {
+        min-height: 160px;
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background:
+          radial-gradient(circle at 20% 0%, rgba(100, 231, 255, 0.1), transparent 14rem),
+          rgba(255, 255, 255, 0.045);
+        color: var(--ink);
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .file-card[aria-current="true"] {
+        border-color: rgba(100, 231, 255, 0.5);
+        background: rgba(100, 231, 255, 0.1);
+      }
+
+      .file-icon {
+        display: grid;
+        width: 44px;
+        height: 44px;
+        place-items: center;
+        margin-bottom: 12px;
+        border: 1px solid var(--line);
+        border-radius: 15px;
+        color: var(--cyan);
+        background: rgba(255, 255, 255, 0.05);
+        font-weight: 850;
+      }
+
+      .file-card strong {
+        display: block;
+        font-size: 15px;
+      }
+
+      .file-card span {
+        display: block;
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.4;
+      }
+
+      .preview {
+        min-height: 220px;
+        margin-top: 14px;
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: rgba(0, 0, 0, 0.18);
+      }
+
+      .preview h3 {
+        margin: 0 0 8px;
+        font-size: 22px;
+        letter-spacing: -0.04em;
+      }
+
+      .preview p {
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .tag,
+      .state {
+        display: inline-flex;
+        width: fit-content;
+        align-items: center;
+        gap: 7px;
+        padding: 6px 10px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 850;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .state {
+        color: var(--green);
+      }
+
+      .state[data-state="safe"] {
+        color: var(--amber);
+      }
+
+      .notice {
+        margin-top: 18px;
+        padding: 16px;
+        border: 1px solid rgba(255, 192, 110, 0.34);
+        border-radius: 22px;
+        background: rgba(255, 192, 110, 0.08);
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      @media (max-width: 1120px) {
+        .hero,
+        .workspace {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .shell {
+          width: min(100% - 18px, 1440px);
+          padding-top: 10px;
+        }
+
+        .topbar,
+        .toolbar {
+          align-items: stretch;
+          grid-template-columns: 1fr;
+        }
+
+        .topbar,
+        .top-actions,
+        .hero-actions,
+        .toolbar-actions {
+          flex-direction: column;
+        }
+
+        .files[data-view="grid"] {
+          grid-template-columns: 1fr;
+        }
+
+        .button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body data-seis-files-demo>
+    <div class="shell">
+      <header class="topbar" aria-label="SEIS Files top bar">
+        <div class="brand">
+          <div class="mark" aria-hidden="true">F</div>
+          <div>
+            <p class="eyebrow">SEIS Files</p>
+            <strong>Browser-local file manager demo with safe virtual operations</strong>
+          </div>
+        </div>
+        <nav class="top-actions" aria-label="Files related links">
+          <a class="button" href="./desktop.html">Desktop</a>
+          <a class="button" href="./seis-code.html">SEIS Code</a>
+          <a class="button" href="./index.html">Website</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero" aria-labelledby="files-title">
+          <div class="card hero-main">
+            <p class="eyebrow">Real demo artifact, virtual filesystem</p>
+            <h1 id="files-title">Manage project memory without touching real user files.</h1>
+            <p>
+              SEIS Files is a standalone local demo for folders, files, grid/list views, search, recent files, safe create,
+              rename, delete-safe-mode, and preview interactions. Every mutation stays inside localStorage.
+            </p>
+            <div class="hero-actions">
+              <button class="button primary" type="button" data-action="create-file">Create demo file</button>
+              <button class="button" type="button" data-action="create-folder">Create demo folder</button>
+              <button class="button" type="button" data-action="rename-selected">Rename selected</button>
+              <button class="button" type="button" data-action="delete-selected">Delete safe-mode</button>
+              <button class="button" type="button" data-action="reset-files">Reset virtual files</button>
+            </div>
+          </div>
+          <aside class="card summary" aria-label="Files metrics">
+            <div class="metric">
+              <strong id="file-count">0</strong>
+              <span>Virtual files and folders in this browser.</span>
+            </div>
+            <div class="metric">
+              <strong id="recent-count">0</strong>
+              <span>Recently opened virtual items.</span>
+            </div>
+            <div class="metric">
+              <strong>0 disk ops</strong>
+              <span>No real filesystem rename, delete, write, or upload operations.</span>
+            </div>
+          </aside>
+        </section>
+
+        <section class="workspace">
+          <aside class="panel" aria-label="Files sidebar">
+            <h2>Locations</h2>
+            <div class="sidebar-list" id="locations"></div>
+            <h2 style="margin-top: 20px">Recent files</h2>
+            <div class="recent-list" id="recent"></div>
+            <h2 style="margin-top: 20px">Activity</h2>
+            <div class="activity-log" id="activity"></div>
+          </aside>
+
+          <section class="panel" aria-label="File browser">
+            <div class="toolbar">
+              <input id="search" type="search" placeholder="Search virtual files and folders..." />
+              <div class="toolbar-actions">
+                <button class="button" type="button" data-action="view-grid">Grid</button>
+                <button class="button" type="button" data-action="view-list">List</button>
+              </div>
+            </div>
+            <span class="state" data-state="real">local demo</span>
+            <span class="state" data-state="safe">safe mode</span>
+            <div class="files" id="files" data-view="grid"></div>
+            <article class="preview" id="preview" aria-live="polite"></article>
+          </section>
+        </section>
+
+        <section class="notice" aria-label="Safety boundary">
+          Files actions are browser-local demo state only. This page does not read, write, rename, delete, upload, sync, or
+          index real user files. It does not call GitHub, execute SSH, deploy, request credentials, store secrets, or change
+          branch protection. Delete is safe-mode removal from the virtual collection only.
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const seedItems = [
+        { id: "desktop", name: "Desktop OS", type: "folder", location: "SEIS", size: "folder", summary: "Browser shell, dock, launcher, windows, and command surfaces.", tags: ["OS", "Demo"] },
+        { id: "ai-core", name: "AI Core Notes.md", type: "file", location: "SEIS", size: "14 KB", summary: "Provider-neutral AI Core notes, local demo mode, safety gates, and agent roles.", tags: ["AI", "Docs"] },
+        { id: "code", name: "SEIS Code Workspace", type: "folder", location: "Projects", size: "folder", summary: "IDE mock repo, PR rescue notes, command palette, and code panels.", tags: ["IDE", "Code"] },
+        { id: "design", name: "Design Tokens.json", type: "file", location: "Design", size: "9 KB", summary: "Graphite, cyan, violet, spacing, radius, motion, and semantic state tokens.", tags: ["Design", "Tokens"] },
+        { id: "music", name: "Music Session.playlist", type: "file", location: "Creative", size: "3 KB", summary: "Focus tracks, demo runway cues, and mock safe-mode recommendations.", tags: ["Music", "Creative"] },
+        { id: "store", name: "Store Catalog.local", type: "file", location: "Creative", size: "6 KB", summary: "Apps, agents, plugins, themes, and tools with local install state.", tags: ["Store", "Catalog"] },
+        { id: "cloud", name: "Cloud SSH Boundary.md", type: "file", location: "Operations", size: "11 KB", summary: "No real SSH without approval, no private keys, no fake connected state.", tags: ["Cloud", "Security"] },
+        { id: "readiness", name: "Demo Readiness", type: "folder", location: "Operations", size: "folder", summary: "Smoke matrix, click-flow contract, readiness bundle, and route evidence.", tags: ["Validation", "Demo"] }
+      ];
+
+      const storageKey = "seis-files-demo-state-v1";
+      const filesNode = document.querySelector("#files");
+      const locationsNode = document.querySelector("#locations");
+      const recentNode = document.querySelector("#recent");
+      const activityNode = document.querySelector("#activity");
+      const previewNode = document.querySelector("#preview");
+      const searchNode = document.querySelector("#search");
+      const fileCountNode = document.querySelector("#file-count");
+      const recentCountNode = document.querySelector("#recent-count");
+
+      function loadState() {
+        try {
+          return JSON.parse(localStorage.getItem(storageKey)) || {};
+        } catch (error) {
+          return {};
+        }
+      }
+
+      let state = {
+        items: seedItems,
+        selected: seedItems[0].id,
+        location: "all",
+        view: "grid",
+        recent: [],
+        activity: ["Files ready in safe virtual mode."],
+        ...loadState()
+      };
+
+      function saveState() {
+        localStorage.setItem(storageKey, JSON.stringify(state));
+      }
+
+      function log(message) {
+        state.activity = [message, ...state.activity].slice(0, 6);
+        saveState();
+      }
+
+      function locations() {
+        return ["all", ...new Set(state.items.map((item) => item.location))];
+      }
+
+      function visibleItems() {
+        const query = searchNode.value.trim().toLowerCase();
+        return state.items.filter((item) => {
+          const matchesLocation = state.location === "all" || item.location === state.location;
+          const haystack = [item.name, item.type, item.location, item.summary, item.tags.join(" ")].join(" ").toLowerCase();
+          return matchesLocation && (!query || haystack.includes(query));
+        });
+      }
+
+      function selectedItem() {
+        return state.items.find((item) => item.id === state.selected) || state.items[0];
+      }
+
+      function renderLocations() {
+        locationsNode.innerHTML = locations()
+          .map((location) => `<button class="side-item" type="button" data-location="${location}" aria-pressed="${state.location === location}">${location}</button>`)
+          .join("");
+      }
+
+      function renderFiles() {
+        filesNode.dataset.view = state.view;
+        filesNode.innerHTML = visibleItems()
+          .map((item) => `
+            <button class="file-card" type="button" data-file="${item.id}" aria-current="${state.selected === item.id}">
+              <span class="file-icon">${item.type === "folder" ? "DIR" : "DOC"}</span>
+              <strong>${item.name}</strong>
+              <span>${item.location} / ${item.size}</span>
+              <span>${item.summary}</span>
+              <span>${item.tags.join(" / ")}</span>
+            </button>
+          `)
+          .join("");
+      }
+
+      function renderRecent() {
+        recentNode.innerHTML = state.recent.length
+          ? state.recent.map((name) => `<div class="recent-item">${name}</div>`).join("")
+          : '<div class="recent-item">Open a virtual file to populate recent files.</div>';
+      }
+
+      function renderActivity() {
+        activityNode.innerHTML = state.activity.map((entry) => `<div class="log-item">${entry}</div>`).join("");
+      }
+
+      function renderPreview() {
+        const item = selectedItem();
+        if (!item) {
+          previewNode.innerHTML = "<h3>No file selected</h3><p>Select a virtual file or folder.</p>";
+          return;
+        }
+        previewNode.innerHTML = `
+          <h3>${item.name}</h3>
+          <p>${item.summary}</p>
+          <div class="tag-row">
+            <span class="tag">${item.type}</span>
+            <span class="tag">${item.location}</span>
+            <span class="tag">${item.size}</span>
+            ${item.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}
+          </div>
+        `;
+      }
+
+      function renderMetrics() {
+        fileCountNode.textContent = String(state.items.length);
+        recentCountNode.textContent = String(state.recent.length);
+      }
+
+      function render() {
+        renderLocations();
+        renderFiles();
+        renderRecent();
+        renderActivity();
+        renderPreview();
+        renderMetrics();
+      }
+
+      function createItem(type) {
+        const id = `${type}-${Date.now()}`;
+        const name = type === "folder" ? "New Demo Folder" : "New Demo File.md";
+        state.items = [
+          ...state.items,
+          {
+            id,
+            name,
+            type,
+            location: "SEIS",
+            size: type === "folder" ? "folder" : "1 KB",
+            summary: "Created in browser-local safe mode. No real filesystem write occurred.",
+            tags: ["Local", "Safe"]
+          }
+        ];
+        state.selected = id;
+        log(`${name} created in virtual Files demo.`);
+      }
+
+      document.addEventListener("click", (event) => {
+        const action = event.target.closest("[data-action]");
+        const file = event.target.closest("[data-file]");
+        const location = event.target.closest("[data-location]");
+
+        if (file) {
+          const item = state.items.find((entry) => entry.id === file.dataset.file);
+          state.selected = item.id;
+          state.recent = [item.name, ...state.recent.filter((name) => name !== item.name)].slice(0, 5);
+          log(`${item.name} opened in virtual preview.`);
+        }
+
+        if (location) {
+          state.location = location.dataset.location;
+        }
+
+        if (action?.dataset.action === "create-file") {
+          createItem("file");
+        }
+        if (action?.dataset.action === "create-folder") {
+          createItem("folder");
+        }
+        if (action?.dataset.action === "rename-selected") {
+          const item = selectedItem();
+          if (item) {
+            item.name = item.name.startsWith("Renamed") ? item.name.replace("Renamed ", "") : `Renamed ${item.name}`;
+            log(`${item.name} renamed in virtual state only.`);
+          }
+        }
+        if (action?.dataset.action === "delete-selected") {
+          const item = selectedItem();
+          if (item) {
+            state.items = state.items.filter((entry) => entry.id !== item.id);
+            state.selected = state.items[0]?.id || "";
+            log(`${item.name} removed from virtual collection only.`);
+          }
+        }
+        if (action?.dataset.action === "reset-files") {
+          state = { items: seedItems, selected: seedItems[0].id, location: "all", view: "grid", recent: [], activity: ["Files reset to seed virtual state."] };
+        }
+        if (action?.dataset.action === "view-grid") {
+          state.view = "grid";
+        }
+        if (action?.dataset.action === "view-list") {
+          state.view = "list";
+        }
+
+        saveState();
+        render();
+      });
+
+      searchNode.addEventListener("input", renderFiles);
+      render();
+    </script>
+  </body>
+</html>
