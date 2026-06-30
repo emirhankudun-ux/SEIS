@@ -10,7 +10,7 @@
     "head": "codex/seis-demo-github-upload-20260624",
     "requiredState": "reviewed before merge or public release"
   },
-  "checkedAt": "2026-06-30T21:21:14.901Z",
+  "checkedAt": "2026-06-30T21:33:19.482Z",
   "checks": {
     "checklist": {
       "id": "seis-public-demo-release-checklist-pr54",
@@ -83,39 +83,8 @@
     },
     "git": {
       "commandStatus": 0,
-      "dirtyCount": 30,
-      "dirtyPaths": [
-        "M  .gitignore",
-        "M  SEIS_SUB_AGENTS.md",
-        "A  reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json",
-        "M  reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md",
-        "A  reports/seis-public-demo/read-only-model-router-decision-latest.json",
-        "M  reports/seis-public-demo/read-only-model-router-decision-latest.md",
-        "A  reports/seis-public-demo/second-brain-accessibility-focus-latest.json",
-        "M  reports/seis-public-demo/second-brain-accessibility-focus-latest.md",
-        "A  reports/seis-public-demo/second-brain-agent-registry-latest.json",
-        "M  reports/seis-public-demo/second-brain-agent-registry-latest.md",
-        "M  scripts/check-seis-second-brain-readiness-contracts.mjs",
-        "M  scripts/create-seis-second-brain-accessibility-focus-report.mjs",
-        "M  scripts/create-seis-second-brain-agent-registry.mjs",
-        "A  \"seis-brain/vault/05_Agents/AI Core Agent.md\"",
-        "M  \"seis-brain/vault/05_Agents/Agent Workforce.md\"",
-        "A  \"seis-brain/vault/05_Agents/Automation Agent.md\"",
-        "A  \"seis-brain/vault/05_Agents/Brain Curator Agent.md\"",
-        "A  \"seis-brain/vault/05_Agents/Cloud Agent.md\"",
-        "A  \"seis-brain/vault/05_Agents/Code Agent.md\"",
-        "A  \"seis-brain/vault/05_Agents/Design Agent.md\"",
-        "A  \"seis-brain/vault/05_Agents/DevOps Agent.md\"",
-        "A  \"seis-brain/vault/05_Agents/Documentation Agent.md\"",
-        "M  \"seis-brain/vault/05_Agents/Obsidian Librarian Agent.md\"",
-        "A  \"seis-brain/vault/05_Agents/Public Readiness Agent.md\"",
-        "A  \"seis-brain/vault/05_Agents/Research Agent.md\"",
-        "M  \"seis-brain/vault/05_Agents/SSH Agent.md\"",
-        "A  \"seis-brain/vault/05_Agents/Search Agent.md\"",
-        "A  \"seis-brain/vault/12_Context_Packs/SEIS Claude Code Context.md\"",
-        "M  \"seis-brain/vault/12_Context_Packs/SEIS Github Context.md\"",
-        "M  \"seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md\""
-      ]
+      "dirtyCount": 0,
+      "dirtyPaths": []
     },
     "fastValidation": [
       {
@@ -164,13 +133,11 @@
   },
   "failures": [],
   "blockers": [
-    "dirty-worktree",
     "human-release-approval-missing",
     "current-browser-smoke-evidence-missing"
   ],
   "warnings": [],
   "nextActions": [
-    "Review and stage only coherent release-candidate changes, or rerun with --allow-dirty-worktree for a planning-only report.",
     "Run current browser-smoke evidence in an environment that can bind localhost and launch Chrome.",
     "Get explicit human owner approval before merge, Pages publication, release tag, deployment, SSH, live providers, or public launch."
   ],
@@ -181,21 +148,21 @@
   ],
   "evidenceManifest": {
     "itemCount": 23,
-    "passedCount": 20,
-    "blockedCount": 2,
+    "passedCount": 21,
+    "blockedCount": 1,
     "missingEvidenceCount": 1,
     "artifactPath": "reports/seis-public-demo/evidence-manifest-latest.json"
   },
   "worktreeReview": {
     "artifactPath": "reports/seis-public-demo/worktree-review-latest.md",
-    "dirtyCount": 30,
-    "workstreamCount": 2,
-    "releaseBlocking": true
+    "dirtyCount": 0,
+    "workstreamCount": 0,
+    "releaseBlocking": false
   },
   "stagePlan": {
     "artifactPath": "reports/seis-public-demo/pr54-stage-plan-latest.md",
-    "candidatePathCount": 11,
-    "excludedPathCount": 19,
-    "readyForHumanReview": true
+    "candidatePathCount": 0,
+    "excludedPathCount": 0,
+    "readyForHumanReview": false
   }
 }
