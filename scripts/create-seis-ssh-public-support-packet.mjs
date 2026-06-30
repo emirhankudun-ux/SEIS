@@ -101,6 +101,7 @@ function buildSupportPacket() {
       supportCase: supportCase({ snapshot, liveEvidence, diagnosticIds }),
       commandsRun: [
         "npm run run:seis-ssh-public-github-quickstart -> quickstart-ready",
+        "npm run check:seis-ssh-public-pr-template -> passed",
         "npm run check:seis-ssh-public-artifact-hygiene -> passed",
         `npm run run:seis-ssh-public-first-run -> ${firstRun.status || statusLabel(firstRun)}`,
         `npm run run:seis-ssh-public-troubleshooting -> ${troubleshooting.status || statusLabel(troubleshooting)}`,
@@ -134,6 +135,7 @@ function buildSupportPacket() {
       ],
       safeInputs: [
         "npm run run:seis-ssh-public-github-quickstart",
+        "npm run check:seis-ssh-public-pr-template",
         "npm run check:seis-ssh-public-artifact-hygiene",
         "npm run run:seis-ssh-public-first-run",
         "npm run run:seis-ssh-public-troubleshooting",

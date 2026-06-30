@@ -184,6 +184,7 @@ npm run check:seis-ssh-public-support-packet
 npm run report:seis-ssh-public-support-packet
 npm run check:seis-ssh-public-github-quickstart
 npm run report:seis-ssh-public-github-quickstart
+npm run check:seis-ssh-public-pr-template
 npm run check:seis-ssh-public-artifact-hygiene
 npm run check:seis-ssh-public-onboarding
 npm run report:seis-ssh-public-onboarding
@@ -218,6 +219,11 @@ quickstart for public contributors. It reduces first-run, troubleshooting,
 contributor doctor, and support-packet outputs into one step-by-step path from
 fresh clone to secret-safe issue form without opening SSH, writing SSH config,
 contacting GitHub, or changing the existing `SEIS-SSH` server and port.
+
+`npm run check:seis-ssh-public-pr-template` verifies that the GitHub pull
+request template includes the `SEIS-SSH` review checklist, same-server/port
+invariant, no-secret boundary, public artifact hygiene gate, and approval-gated
+live SSH claim wording.
 
 `npm run check:seis-ssh-public-artifact-hygiene` generates every public
 SEIS-SSH JSON/Markdown report in a temporary directory and verifies that the

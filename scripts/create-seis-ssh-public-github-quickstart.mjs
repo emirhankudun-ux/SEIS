@@ -152,6 +152,7 @@ function buildQuickstart() {
       reviewCommands: [
         "npm run check:seis-ssh-public-github-quickstart",
         "npm run report:seis-ssh-public-github-quickstart",
+        "npm run check:seis-ssh-public-pr-template",
         "npm run check:seis-ssh-public-artifact-hygiene",
         "npm run check:seis-ssh-public-access",
         "npm run check:seis-ssh-public-support-packet"

@@ -74,6 +74,7 @@ npm run check:seis-ssh-public-support-packet
 npm run report:seis-ssh-public-support-packet
 npm run check:seis-ssh-public-github-quickstart
 npm run report:seis-ssh-public-github-quickstart
+npm run check:seis-ssh-public-pr-template
 npm run check:seis-ssh-public-artifact-hygiene
 npm run run:seis-ssh-public-onboarding
 npm run check:seis-ssh-public-access
@@ -156,6 +157,12 @@ artifact for a public GitHub user who wants one clear read-only path: start
 first-run, diagnose warnings, run the local doctor, and prepare the support
 packet without raw SSH config output, hostnames, IP addresses, shared
 credentials, live SSH, config writes, or endpoint changes.
+
+`npm run check:seis-ssh-public-pr-template` verifies that
+`.github/PULL_REQUEST_TEMPLATE.md` includes the `SEIS-SSH` review checklist,
+same-server/port invariant, no-secret boundary, public artifact hygiene gate,
+approval-gated live SSH claim wording, and the support issue/runbook links used
+by public GitHub reviewers.
 
 `npm run check:seis-ssh-public-artifact-hygiene` generates all public
 SEIS-SSH JSON/Markdown reports in a temporary directory and scans them before
@@ -252,6 +259,7 @@ npm run check:seis-ssh-public-first-run
 npm run check:seis-ssh-public-troubleshooting
 npm run check:seis-ssh-public-support-packet
 npm run check:seis-ssh-public-github-quickstart
+npm run check:seis-ssh-public-pr-template
 npm run check:seis-ssh-public-artifact-hygiene
 npm run check:seis-ssh-public-onboarding
 npm run check:seis-ssh-public-contributor-doctor

@@ -103,6 +103,15 @@ Date: 2026-06-23
 | `SEIS-BL-036` | `docs/archive-ledger-agent-materials` | `docs: classify assistant archive materials` | Low | No unless moving/deleting files | Add structured archive records for external-agent and generated assistant materials. |
 | `SEIS-BL-037` | `docs/backlog-id-validator` | `test: add backlog id uniqueness check` | Low | No | Add a small docs validator that fails on duplicate backlog IDs. |
 
+## SEIS-BL-052 Current Addendum
+
+`SEIS-BL-052` now includes `npm run check:seis-ssh-public-pr-template`,
+`.github/PULL_REQUEST_TEMPLATE.md`, and
+`scripts/check-seis-ssh-public-pr-template.mjs` as public GitHub review
+evidence. The gate keeps same-server/port preservation, no-secret boundaries,
+artifact hygiene, support issue routing, and approval-gated live SSH claims
+visible for every SEIS-SSH pull request.
+
 ## Deferred Dangerous Work
 
 - Push to `main`.

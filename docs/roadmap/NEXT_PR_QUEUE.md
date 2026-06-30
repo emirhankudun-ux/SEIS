@@ -17,6 +17,14 @@ Date: 2026-06-23
 | 3 | `docs: publish product demo boundary and validation evidence` | Publish current-vs-planned boundaries for the single-entry Desktop demo, Local Demo AI, Plugin Center tabs, shared VFS, Mythic exports, and smoke evidence. | `npm run check:foundation`, `git diff --check`, product docs review | None for docs; approval required for public visibility changes or release publication. |
 | 4 | `feat: add SEIS full-stack contract foundation` | Keep `content/development/seis-fullstack-contract.json`, `server/node/static-server.mjs`, and `docs/architecture/seis-full-stack-transition.md` as the first server/API/data contract for sessions, projects, app install state, AI provider status, audit logs, and safe agent task records while keeping the current static demo usable without keys and without an API server. The Linux Replica now proves the frontend/local-state side through mini Code/Design/Cloud/Store/Music/AI workspaces; the next PR should deepen the durable backend boundary without placing backend-only secrets in the browser and without breaking Local Demo fallback. | `npm run check:seis-fullstack-contract`, `npm run check:seis-fullstack-server-smoke`, `npm run check:seis-fullstack-no-server-fallback-smoke`, `npm run check:seis-ultimate-demo`, `git diff --check`, redacted provider audit | Approval required for new dependencies, live provider calls, external databases, auth providers, deployment, SSH, or writing real credentials. |
 
+### SEIS-SSH PR Template Gate Addendum
+
+PR 1E now also includes the GitHub pull request checklist for SEIS-SSH changes.
+Use `npm run check:seis-ssh-public-pr-template` with the public access,
+artifact hygiene, and live-readiness evidence checks before attaching public
+SSH artifacts to a PR. This keeps the same-server/port invariant, no-secret
+boundary, and approval-gated live SSH claim language visible during review.
+
 ## PR 0: SEIS Integration And GitHub Development Spine
 
 | Field | Value |

@@ -3989,6 +3989,7 @@ const SEIS_SSH_PUBLIC_ACCESS_CONTRACT = {
   troubleshootingCommand: "npm run run:seis-ssh-public-troubleshooting",
   supportPacketCommand: "npm run run:seis-ssh-public-support-packet",
   quickstartCommand: "npm run run:seis-ssh-public-github-quickstart",
+  prTemplateCommand: "npm run check:seis-ssh-public-pr-template",
   artifactHygieneCommand: "npm run check:seis-ssh-public-artifact-hygiene",
   onboardingCommand: "npm run report:seis-ssh-public-onboarding",
   contributorDoctorCommand: "npm run report:seis-ssh-public-contributor-doctor",
@@ -4007,6 +4008,7 @@ const SEIS_SSH_PUBLIC_ACCESS_CONTRACT = {
     ["troubleshooting", "A read-only troubleshooting guide maps missing alias, picker warning, billing blocker, and unsafe target states to safe actions."],
     ["support-packet", "A read-only support packet gives GitHub issue copy/paste fields without full hostnames, full IPs, secrets, live SSH, or config writes."],
     ["github-quickstart", "A read-only GitHub quickstart turns first-run, troubleshooting, doctor, and support packet output into one public path."],
+    ["pr-template", "A pull request checklist keeps SEIS-SSH changes reviewable on GitHub without server/port drift or public secrets."],
     ["artifact-hygiene", "A read-only artifact hygiene gate scans generated public reports before GitHub issue or PR attachment."],
     ["onboarding-pack", "A read-only GitHub review pack explains reviewer, maintainer, and new-contributor paths without writing SSH config."],
     ["contributor-doctor", "A read-only local doctor checks GitHub/SSH prerequisites and produces a review report without contacting GitHub."],
@@ -6654,6 +6656,7 @@ function renderSeisCloud() {
         <article class="metric-card"><strong>Troubleshooting</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.troubleshootingCommand)}</p></article>
         <article class="metric-card"><strong>Support Packet</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.supportPacketCommand)}</p></article>
         <article class="metric-card"><strong>GitHub Quickstart</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.quickstartCommand)}</p></article>
+        <article class="metric-card"><strong>PR Template</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.prTemplateCommand)}</p></article>
         <article class="metric-card"><strong>Artifact Hygiene</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.artifactHygieneCommand)}</p></article>
         <article class="metric-card"><strong>Onboarding</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.onboardingCommand)}</p></article>
         <article class="metric-card"><strong>Doctor</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.contributorDoctorCommand)}</p></article>
@@ -9208,6 +9211,7 @@ Public SSH support packet command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.supportPack
 Public SSH support packet artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.supportPacketArtifact}
 Public SSH GitHub quickstart command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.quickstartCommand}
 Public SSH GitHub quickstart artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.quickstartArtifact}
+Public SSH PR template command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.prTemplateCommand}
 Public SSH artifact hygiene command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.artifactHygieneCommand}
 Public SSH onboarding command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.onboardingCommand}
 Public SSH onboarding artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.onboardingArtifact}

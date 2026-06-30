@@ -18,12 +18,14 @@ const files = {
   backlog: "docs/roadmap/MASTER_BACKLOG.md",
   queue: "docs/roadmap/NEXT_PR_QUEUE.md",
   issueTemplate: ".github/ISSUE_TEMPLATE/seis_ssh_access.yml",
+  prTemplate: ".github/PULL_REQUEST_TEMPLATE.md",
   desktop: "apps/web/desktop.js",
   reportScript: "scripts/create-seis-ssh-public-access-report.mjs",
   firstRunScript: "scripts/create-seis-ssh-public-first-run.mjs",
   troubleshootingScript: "scripts/create-seis-ssh-public-troubleshooting-guide.mjs",
   supportPacketScript: "scripts/create-seis-ssh-public-support-packet.mjs",
   quickstartScript: "scripts/create-seis-ssh-public-github-quickstart.mjs",
+  prTemplateScript: "scripts/check-seis-ssh-public-pr-template.mjs",
   artifactHygieneScript: "scripts/check-seis-ssh-public-artifact-hygiene.mjs",
   onboardingScript: "scripts/create-seis-ssh-public-onboarding-pack.mjs",
   contributorDoctorScript: "scripts/check-seis-ssh-public-contributor-doctor.mjs",
@@ -58,9 +60,14 @@ ensure((serverPolicy.forbiddenActions || []).includes("create-new-visible-alias-
 const githubReader = (contract?.profiles || []).find((profile) => profile.id === "github-reader") || {};
 const individualUser = (contract?.profiles || []).find((profile) => profile.id === "individual-user") || {};
 ensure(contract?.githubExperience?.supportIssueTemplate === files.issueTemplate, "public access contract must link SEIS-SSH support issue template");
+ensure(contract?.githubExperience?.pullRequestTemplate === files.prTemplate, "public access contract must link SEIS-SSH pull request template");
 ensure((contract?.evidenceSurfaces || []).includes(files.issueTemplate), "public access contract must include support issue template evidence surface");
+ensure((contract?.evidenceSurfaces || []).includes(files.prTemplate), "public access contract must include pull request template evidence surface");
+ensure((contract?.evidenceSurfaces || []).includes(files.prTemplateScript), "public access contract must include pull request template checker evidence surface");
 ensure((githubReader.allowedActions || []).includes("run the read-only contributor doctor"), "github-reader profile must allow contributor doctor");
 ensure((githubReader.allowedActions || []).includes("open the secret-safe GitHub issue form"), "github-reader profile must allow secret-safe issue form");
+ensure((githubReader.allowedActions || []).includes("complete the SEIS-SSH pull request checklist"), "github-reader profile must allow SEIS-SSH pull request checklist");
+ensure((githubReader.allowedActions || []).includes("run the read-only pull request template check"), "github-reader profile must allow pull request template check");
 ensure((individualUser.requiredEvidence || []).includes("npm run check:seis-ssh-public-contributor-doctor"), "individual-user profile must require contributor doctor evidence");
 
 ensure(accessModel?.publicAccessContract === files.contract, "access model must link public access contract");
@@ -70,12 +77,14 @@ ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm r
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-troubleshooting"), "access model quality commands must include public troubleshooting check");
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-support-packet"), "access model quality commands must include public support packet check");
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-github-quickstart"), "access model quality commands must include public GitHub quickstart check");
+ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-pr-template"), "access model quality commands must include public PR template check");
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-artifact-hygiene"), "access model quality commands must include public artifact hygiene check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-access"), "roadmap validation commands must include public access check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-first-run"), "roadmap validation commands must include public first-run check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-troubleshooting"), "roadmap validation commands must include public troubleshooting check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-support-packet"), "roadmap validation commands must include public support packet check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-github-quickstart"), "roadmap validation commands must include public GitHub quickstart check");
+ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-pr-template"), "roadmap validation commands must include public PR template check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-artifact-hygiene"), "roadmap validation commands must include public artifact hygiene check");
 
 ensure(scripts["check:seis-ssh-public-access"] === "node scripts/check-seis-ssh-public-access.mjs", "package script check:seis-ssh-public-access must be declared");
@@ -93,6 +102,7 @@ ensure(scripts["run:seis-ssh-public-support-packet"] === "npm run check:seis-ssh
 ensure(scripts["check:seis-ssh-public-github-quickstart"] === "node scripts/create-seis-ssh-public-github-quickstart.mjs --check", "package script check:seis-ssh-public-github-quickstart must be declared");
 ensure(scripts["report:seis-ssh-public-github-quickstart"] === "node scripts/create-seis-ssh-public-github-quickstart.mjs --write", "package script report:seis-ssh-public-github-quickstart must be declared");
 ensure(scripts["run:seis-ssh-public-github-quickstart"] === "npm run check:seis-ssh-public-github-quickstart && npm run report:seis-ssh-public-github-quickstart", "package script run:seis-ssh-public-github-quickstart must be declared");
+ensure(scripts["check:seis-ssh-public-pr-template"] === "node scripts/check-seis-ssh-public-pr-template.mjs", "package script check:seis-ssh-public-pr-template must be declared");
 ensure(scripts["check:seis-ssh-public-artifact-hygiene"] === "node scripts/check-seis-ssh-public-artifact-hygiene.mjs", "package script check:seis-ssh-public-artifact-hygiene must be declared");
 ensure(scripts["check:seis-ssh-public-onboarding"] === "node scripts/create-seis-ssh-public-onboarding-pack.mjs --check", "package script check:seis-ssh-public-onboarding must be declared");
 ensure(scripts["report:seis-ssh-public-onboarding"] === "node scripts/create-seis-ssh-public-onboarding-pack.mjs --write", "package script report:seis-ssh-public-onboarding must be declared");
@@ -120,6 +130,7 @@ for (const command of [
   "npm run report:seis-ssh-public-support-packet",
   "npm run check:seis-ssh-public-github-quickstart",
   "npm run report:seis-ssh-public-github-quickstart",
+  "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-artifact-hygiene",
   "npm run check:seis-ssh-public-onboarding",
   "npm run report:seis-ssh-public-onboarding",
@@ -157,7 +168,8 @@ const docs = [
   files.status,
   files.backlog,
   files.queue,
-  files.issueTemplate
+  files.issueTemplate,
+  files.prTemplate
 ].map(read).join("\n");
 
 for (const token of [
@@ -176,6 +188,7 @@ for (const token of [
   "npm run run:seis-ssh-public-github-quickstart",
   "npm run check:seis-ssh-public-github-quickstart",
   "npm run report:seis-ssh-public-github-quickstart",
+  "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-artifact-hygiene",
   "npm run report:seis-ssh-public-onboarding",
   "npm run report:seis-ssh-public-contributor-doctor",
@@ -185,6 +198,7 @@ for (const token of [
   "content/development/seis-ssh-live-readiness-evidence.json",
   "docs/deployment/seis-ssh-live-readiness-evidence.md",
   ".github/ISSUE_TEMPLATE/seis_ssh_access.yml",
+  ".github/PULL_REQUEST_TEMPLATE.md",
   "SEIS SSH access support"
 ]) {
   ensure(docs.includes(token), `docs must include ${token}`);
@@ -209,6 +223,23 @@ for (const token of [
   ensure(issueTemplate.includes(token), `SEIS-SSH issue template must include ${token}`);
 }
 
+const prTemplate = read(files.prTemplate);
+for (const token of [
+  "## SEIS-SSH Public Access Review",
+  "Keep the same server and port.",
+  "Ayni sunucu ve baglanti noktasi korunur.",
+  "I did not change `HostName` or `Port` for `SEIS-SSH` without linked maintainer approval.",
+  "I did not paste private keys, tokens, passwords, cookies, `.env` values, full hostnames, full IP addresses, or provider credentials.",
+  "No live SSH session was attempted for this PR unless explicit maintainer approval is linked.",
+  "npm run check:seis-ssh-public-pr-template",
+  "npm run check:seis-ssh-public-access",
+  "npm run check:seis-ssh-public-artifact-hygiene",
+  "npm run check:seis-ssh-live-readiness-evidence",
+  ".github/ISSUE_TEMPLATE/seis_ssh_access.yml"
+]) {
+  ensure(prTemplate.includes(token), `SEIS-SSH pull request template must include ${token}`);
+}
+
 const desktop = read(files.desktop);
 for (const token of [
   "SEIS_SSH_PUBLIC_ACCESS_CONTRACT",
@@ -220,6 +251,7 @@ for (const token of [
   "seis-ssh-public-support-packet.md",
   "seis-ssh-public-github-quickstart.md",
   "GitHub Quickstart",
+  "PR Template",
   "Artifact Hygiene",
   "seis-ssh-public-onboarding.md",
   "seis-ssh-public-contributor-doctor.md",
@@ -248,6 +280,7 @@ for (const token of [
   "npm run check:seis-ssh-public-troubleshooting",
   "npm run check:seis-ssh-public-support-packet",
   "npm run check:seis-ssh-public-github-quickstart",
+  "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-artifact-hygiene",
   "Ayni sunucu ve baglanti noktasi korunur.",
   "npm run check:seis-ssh-public-onboarding",
@@ -284,6 +317,7 @@ for (const token of [
   "read-only-no-live-ssh-no-config-write-no-network-auth-check",
   "npm run report:seis-ssh-public-support-packet",
   "npm run run:seis-ssh-public-github-quickstart",
+  "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-artifact-hygiene",
   "reports/seis-ssh-public-access/support-packet-latest.md",
   "This support packet does not write ~/.ssh/config.",
@@ -297,6 +331,7 @@ const quickstartScript = read(files.quickstartScript);
 for (const token of [
   "read-only-no-live-ssh-no-config-write-no-network-auth-check",
   "npm run run:seis-ssh-public-github-quickstart",
+  "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-artifact-hygiene",
   "reports/seis-ssh-public-access/github-quickstart-latest.md",
   "This quickstart does not write ~/.ssh/config.",
@@ -304,6 +339,19 @@ for (const token of [
   "Ayni sunucu ve baglanti noktasi korunur."
 ]) {
   ensure(quickstartScript.includes(token), `GitHub quickstart script must include ${token}`);
+}
+
+const prTemplateScript = read(files.prTemplateScript);
+for (const token of [
+  "## SEIS-SSH Public Access Review",
+  "npm run check:seis-ssh-public-pr-template",
+  "Keep the same server and port.",
+  "Ayni sunucu ve baglanti noktasi korunur.",
+  ".github/PULL_REQUEST_TEMPLATE.md",
+  ".github/ISSUE_TEMPLATE/seis_ssh_access.yml",
+  "No live SSH session was attempted for this PR unless explicit maintainer approval is linked."
+]) {
+  ensure(prTemplateScript.includes(token), `pull request template checker must include ${token}`);
 }
 
 const artifactHygieneScript = read(files.artifactHygieneScript);
@@ -326,6 +374,7 @@ for (const token of [
   "npm run check:seis-ssh-public-troubleshooting",
   "npm run check:seis-ssh-public-support-packet",
   "npm run check:seis-ssh-public-github-quickstart",
+  "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-artifact-hygiene",
   "This doctor does not write ~/.ssh/config.",
   "npm run check:seis-ssh-public-contributor-doctor",
@@ -352,6 +401,7 @@ for (const file of [
   files.troubleshootingScript,
   files.supportPacketScript,
   files.quickstartScript,
+  files.prTemplateScript,
   files.artifactHygieneScript,
   files.onboardingScript,
   files.contributorDoctorScript,
@@ -361,6 +411,7 @@ for (const file of [
   files.backlog,
   files.queue,
   files.issueTemplate,
+  files.prTemplate,
   files.desktop
 ]) {
   requireNotMatches(file, /sk-[A-Za-z0-9_-]{20,}/, "OpenAI-style API keys");

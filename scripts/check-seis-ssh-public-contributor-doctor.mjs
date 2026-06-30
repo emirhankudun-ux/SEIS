@@ -115,6 +115,7 @@ function buildDoctor() {
         "npm run check:seis-ssh-public-troubleshooting",
         "npm run check:seis-ssh-public-support-packet",
         "npm run check:seis-ssh-public-github-quickstart",
+        "npm run check:seis-ssh-public-pr-template",
         "npm run check:seis-ssh-public-artifact-hygiene",
         "npm run check:seis-ssh-public-access",
         "npm run check:seis-ssh-public-access-report",
@@ -126,6 +127,7 @@ function buildDoctor() {
         "npm run report:seis-ssh-public-troubleshooting",
         "npm run report:seis-ssh-public-support-packet",
         "npm run report:seis-ssh-public-github-quickstart",
+        "npm run check:seis-ssh-public-pr-template",
         "npm run check:seis-ssh-public-artifact-hygiene",
         "npm run report:seis-ssh-public-access",
         "npm run report:seis-ssh-public-onboarding",
@@ -134,6 +136,7 @@ function buildDoctor() {
       newContributorDryRun: [
         "gh auth refresh -h github.com -s codespace",
         "npm run run:seis-ssh-public-github-quickstart",
+        "npm run check:seis-ssh-public-pr-template",
         "npm run check:seis-ssh-public-artifact-hygiene",
         "npm run run:seis-ssh-public-first-run",
         "npm run run:seis-ssh-public-troubleshooting",

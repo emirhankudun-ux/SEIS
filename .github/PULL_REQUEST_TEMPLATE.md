@@ -42,6 +42,41 @@ npm run check:open-source-governance
 npm run seis:check
 ```
 
+## SEIS-SSH Public Access Review
+
+Complete this section when the PR changes SSH, cloud access, GitHub
+onboarding, public support, Desktop Cloud Center evidence, or SEIS-SSH
+documentation.
+
+Core invariant:
+
+```text
+Keep the same server and port.
+Ayni sunucu ve baglanti noktasi korunur.
+```
+
+- [ ] I did not rename `SEIS-SSH`.
+- [ ] I did not add a duplicate visible SEIS SSH alias.
+- [ ] I did not change `HostName` or `Port` for `SEIS-SSH` without linked maintainer approval.
+- [ ] I did not paste private keys, tokens, passwords, cookies, `.env` values, full hostnames, full IP addresses, or provider credentials.
+- [ ] No live SSH session was attempted for this PR unless explicit maintainer approval is linked.
+- [ ] Live-ready, mobile-24x7-ready, and picker-ready claims are supported by strict evidence or left as `blocked` / `approval-gated`.
+- [ ] Public artifacts were checked before attaching them to a public issue or PR.
+
+Relevant checks:
+
+```bash
+npm run check:seis-ssh-public-pr-template
+npm run check:seis-ssh-public-access
+npm run check:seis-ssh-public-artifact-hygiene
+npm run check:seis-ssh-live-readiness-evidence
+```
+
+Support path:
+
+- Issue form: `.github/ISSUE_TEMPLATE/seis_ssh_access.yml`
+- Runbook: `docs/deployment/seis-ssh-public-github-access.md`
+
 Quality/Safety evidence (choose one per row):
 
 - Enterprise gate set: [ ] quality [ ] security [ ] ai [ ] ai-policy
