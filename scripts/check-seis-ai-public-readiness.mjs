@@ -8,6 +8,7 @@ const checks = [
   "check:seis-language-model-intake",
   "check:seis-retrieval-source-provenance",
   "check:seis-retrieval-evaluation-fixtures",
+  "check:seis-retrieval-evaluation-dry-run",
   "check:seis-language-model-training-curriculum",
   "check:seis-ai-workforce-training",
   "check:seis-agent-workforce",

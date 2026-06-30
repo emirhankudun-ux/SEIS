@@ -20,7 +20,7 @@ download, training run, 512B route, or AGI proof.
 | Group | Status | Provenance label | Files |
 | --- | --- | --- | --- |
 | root-governance-docs | candidate-allowlisted-metadata-only | repo-owned-governance | 8 |
-| ai-docs | candidate-allowlisted-metadata-only | repo-owned-ai-docs | 16 |
+| ai-docs | candidate-allowlisted-metadata-only | repo-owned-ai-docs | 15 |
 | ai-governance-json | candidate-allowlisted-metadata-only | repo-owned-ai-json | 29 |
 | ai-readiness-reports | candidate-allowlisted-metadata-only | generated-ai-readiness-report | 2 |
 

@@ -74,8 +74,9 @@ Open:
 16. `npm run check:seis-ai-public-readiness-report`
 17. `npm run check:seis-retrieval-source-provenance`
 18. `npm run check:seis-retrieval-evaluation-fixtures`
-19. `npm run check:seis-knowledge-retrieval-training`
-20. `npm run secrets:check`
+19. `npm run check:seis-retrieval-evaluation-dry-run`
+20. `npm run check:seis-knowledge-retrieval-training`
+21. `npm run secrets:check`
 
 ## Demo checklist
 

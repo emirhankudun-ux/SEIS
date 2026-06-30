@@ -1,6 +1,6 @@
 {
   "id": "seis-retrieval-evaluation-fixtures-report",
-  "generatedAt": "2026-06-30T22:37:53.167Z",
+  "generatedAt": "2026-06-30T22:56:12.614Z",
   "status": "fixtures-ready-evaluation-not-run",
   "sourceFixtures": "content/development/seis-retrieval-evaluation-fixtures.json",
   "summary": {
@@ -17,6 +17,7 @@
   "safeNextCommands": [
     "npm run report:seis-retrieval-evaluation-fixtures",
     "npm run check:seis-retrieval-evaluation-fixtures",
+    "npm run check:seis-retrieval-evaluation-dry-run",
     "npm run check:seis-retrieval-source-provenance",
     "npm run check:seis-knowledge-retrieval-training",
     "npm run check:seis-ai-public-readiness"

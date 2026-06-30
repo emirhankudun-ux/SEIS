@@ -1,0 +1,35 @@
+{
+  "id": "seis-retrieval-evaluation-dry-run-report",
+  "generatedAt": "2026-06-30T22:56:34.227Z",
+  "status": "dry-run-passed-no-index-no-model",
+  "sourceDryRun": "content/development/seis-retrieval-evaluation-dry-run.json",
+  "summary": {
+    "goldenQueryChecks": 8,
+    "negativeControlChecks": 5,
+    "invariantChecks": 9,
+    "failedGoldenQueryChecks": 0,
+    "failedNegativeControlChecks": 0,
+    "failedInvariantChecks": 0,
+    "answerGeneration": false,
+    "retrievalIndexQuery": false,
+    "providerCall": false,
+    "benchmarkRun": false,
+    "trainingRun": false
+  },
+  "safeNextCommands": [
+    "npm run report:seis-retrieval-evaluation-dry-run",
+    "npm run check:seis-retrieval-evaluation-dry-run",
+    "npm run check:seis-retrieval-evaluation-fixtures",
+    "npm run check:seis-retrieval-source-provenance",
+    "npm run check:seis-ai-public-readiness"
+  ],
+  "humanApprovalNeededBefore": [
+    "human reviewer accepts dry-run output",
+    "local-only retrieval index build separately approved",
+    "retrieval runner implementation reviewed",
+    "redacted answer logs implemented",
+    "citation scorer implemented",
+    "no-secret output scan implemented",
+    "human approval recorded"
+  ]
+}

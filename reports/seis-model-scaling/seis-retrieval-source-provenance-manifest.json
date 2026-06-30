@@ -1,12 +1,12 @@
 {
   "id": "seis-retrieval-source-provenance-report",
-  "generatedAt": "2026-06-30T22:37:53.072Z",
+  "generatedAt": "2026-06-30T22:56:12.468Z",
   "status": "source-inventory-ready-index-blocked",
   "sourceManifest": "content/development/seis-retrieval-source-provenance-manifest.json",
   "summary": {
     "sourceGroupCount": 4,
-    "fileRecordCount": 55,
-    "scannedFileCount": 55,
+    "fileRecordCount": 54,
+    "scannedFileCount": 54,
     "findingsCount": 0,
     "persistentRetrievalIndex": false,
     "embeddingModelInstall": false,
@@ -24,7 +24,7 @@
       "id": "ai-docs",
       "status": "candidate-allowlisted-metadata-only",
       "provenanceLabel": "repo-owned-ai-docs",
-      "fileCount": 16
+      "fileCount": 15
     },
     {
       "id": "ai-governance-json",

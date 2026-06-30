@@ -239,6 +239,7 @@ function buildReport(fixtures) {
     safeNextCommands: [
       "npm run report:seis-retrieval-evaluation-fixtures",
       "npm run check:seis-retrieval-evaluation-fixtures",
+      "npm run check:seis-retrieval-evaluation-dry-run",
       "npm run check:seis-retrieval-source-provenance",
       "npm run check:seis-knowledge-retrieval-training",
       "npm run check:seis-ai-public-readiness"
@@ -403,6 +404,7 @@ ${sources}
 \`\`\`bash
 npm run report:seis-retrieval-evaluation-fixtures
 npm run check:seis-retrieval-evaluation-fixtures
+npm run check:seis-retrieval-evaluation-dry-run
 \`\`\`
 
 ## Report

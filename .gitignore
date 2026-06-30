@@ -151,6 +151,7 @@ ios/
 !reports/seis-model-scaling/seis-knowledge-retrieval-training-contract.json
 !reports/seis-model-scaling/seis-retrieval-source-provenance-manifest.json
 !reports/seis-model-scaling/seis-retrieval-evaluation-fixtures.json
+!reports/seis-model-scaling/seis-retrieval-evaluation-dry-run.json
 !reports/seis-model-scaling/20b-benchmark-dry-run.json
 !reports/seis-model-scaling/seis-language-model-training-curriculum.json
 !packages/seis-ai/data/permission-policy-seed.json

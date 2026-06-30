@@ -315,6 +315,7 @@ Bu hedefin kısa hali:
   - `npm run check:seis-ai-fresh-clone-readiness` — Fresh-clone başlangıç koşullarını doğrular.
   - `npm run check:seis-retrieval-source-provenance` — Gelecekteki retrieval index için allowlist, SHA-256 provenance ve redacted local secret-scan dry-run kapısını doğrular; index/model/provider/training iddiası üretmez.
   - `npm run check:seis-retrieval-evaluation-fixtures` — Retrieval golden query, negatif kontrol ve metrik fixture kapısını doğrular; eval/benchmark/index/provider/training iddiası üretmez.
+  - `npm run check:seis-retrieval-evaluation-dry-run` — Fixture/source-group coverage ve negatif kontrol policy dry-run kapısını doğrular; cevap üretimi, index sorgusu, provider, benchmark ve training yapmaz.
   - `npm run report:seis-ai-public-readiness` — `reports/seis-ai-public-readiness/latest.{json,md}` raporlarını üretir.
 - **AGI Kanıt Kuralı:** Gerçek AGI iddiası için bağımsız evaluation, safety review, training logs, checkpoint governance, model card ve explicit approval gerekir.
 

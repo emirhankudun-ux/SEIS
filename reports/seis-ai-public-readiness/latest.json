@@ -1,6 +1,6 @@
 {
   "id": "seis-ai-public-readiness-report",
-  "generatedAt": "2026-06-30T22:37:40.086Z",
+  "generatedAt": "2026-06-30T22:55:45.105Z",
   "status": "local-demo-public-review-ready-not-agi",
   "sourceOfTruth": {
     "program": "content/development/seis-ai-public-readiness-program.json",
@@ -67,6 +67,7 @@
     "npm run check:seis-ai-fresh-clone-readiness passes on the target commit",
     "npm run check:seis-retrieval-source-provenance passes on the target commit",
     "npm run check:seis-retrieval-evaluation-fixtures passes on the target commit",
+    "npm run check:seis-retrieval-evaluation-dry-run passes on the target commit",
     "npm run check:seis-ai-public-readiness passes on the target commit",
     "required CI checks green on the target commit",
     "public README claim boundary reviewed",

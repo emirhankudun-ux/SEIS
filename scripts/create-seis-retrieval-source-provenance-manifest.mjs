@@ -11,9 +11,15 @@ const failures = [];
 
 const generatedArtifactExclusions = new Set([
   "docs/ai/seis-retrieval-source-provenance.md",
+  "docs/ai/seis-retrieval-evaluation-fixtures.md",
+  "docs/ai/seis-retrieval-evaluation-dry-run.md",
   "docs/ai/seis-knowledge-retrieval-training.md",
   "reports/seis-model-scaling/seis-retrieval-source-provenance-manifest.json",
   "reports/seis-model-scaling/seis-retrieval-source-provenance-manifest.md",
+  "reports/seis-model-scaling/seis-retrieval-evaluation-fixtures.json",
+  "reports/seis-model-scaling/seis-retrieval-evaluation-fixtures.md",
+  "reports/seis-model-scaling/seis-retrieval-evaluation-dry-run.json",
+  "reports/seis-model-scaling/seis-retrieval-evaluation-dry-run.md",
   "reports/seis-model-scaling/seis-knowledge-retrieval-training-contract.json",
   "reports/seis-model-scaling/seis-knowledge-retrieval-training-contract.md"
 ]);

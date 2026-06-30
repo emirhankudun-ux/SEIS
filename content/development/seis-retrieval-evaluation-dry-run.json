@@ -1,0 +1,312 @@
+{
+  "id": "seis-retrieval-evaluation-dry-run",
+  "version": "2026.07.01",
+  "generatedAt": "2026-06-30T22:56:34.227Z",
+  "status": "dry-run-passed-no-index-no-model",
+  "qualityGate": "npm run check:seis-retrieval-evaluation-dry-run",
+  "reportCommand": "npm run report:seis-retrieval-evaluation-dry-run",
+  "resourceUri": "seis://ai/retrieval-evaluation-dry-run.json",
+  "truthBoundary": [
+    "This dry-run validates retrieval evaluation fixtures and source-group coverage only.",
+    "It does not generate answers.",
+    "It does not build or query a retrieval index.",
+    "It does not install embedding, reranker, or language models.",
+    "It does not call external providers.",
+    "It does not run a benchmark or score live model quality.",
+    "It does not prove SEIS is fully knowledgeable, routeable 512B, or AGI."
+  ],
+  "sourceOfTruth": {
+    "fixtures": "content/development/seis-retrieval-evaluation-fixtures.json",
+    "retrievalSourceProvenance": "content/development/seis-retrieval-source-provenance-manifest.json",
+    "knowledgeRetrievalTraining": "content/development/seis-knowledge-retrieval-training-contract.json",
+    "agiEvaluationProtocol": "content/development/seis-agi-evaluation-protocol.json",
+    "docs": "docs/ai/seis-retrieval-evaluation-dry-run.md"
+  },
+  "internetResearchBaseline": [
+    {
+      "id": "nist-ai-rmf",
+      "sourceType": "official-guidance",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "usedFor": "Evaluation governance, measurement, risk mapping, and promotion gates."
+    },
+    {
+      "id": "owasp-llm-prompt-injection",
+      "sourceType": "official-guidance",
+      "url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/",
+      "usedFor": "Untrusted retrieved content and prompt-injection negative controls."
+    },
+    {
+      "id": "ragas",
+      "sourceType": "primary-paper",
+      "url": "https://arxiv.org/abs/2309.15217",
+      "usedFor": "RAG evaluation dimensions for faithfulness, answer relevance, and context use."
+    },
+    {
+      "id": "helm",
+      "sourceType": "primary-paper",
+      "url": "https://arxiv.org/abs/2211.09110",
+      "usedFor": "Holistic evaluation framing and scenario-based measurement discipline."
+    }
+  ],
+  "approvedToday": {
+    "localFixtureDryRun": true,
+    "sourceGroupCoverageCheck": true,
+    "negativeControlPolicyCheck": true,
+    "answerGeneration": false,
+    "retrievalIndexBuild": false,
+    "retrievalIndexQuery": false,
+    "embeddingModelInstall": false,
+    "providerCall": false,
+    "benchmarkRun": false,
+    "trainingRun": false,
+    "runtimeAuthority": false
+  },
+  "sourceGroupCounts": {
+    "root-governance-docs": 8,
+    "ai-docs": 15,
+    "ai-governance-json": 29,
+    "ai-readiness-reports": 2
+  },
+  "goldenQueryChecks": [
+    {
+      "id": "public-readiness-status",
+      "status": "passed-local-fixture-check",
+      "promptHash": "d73b4c01",
+      "expectedSourceGroups": [
+        "ai-governance-json",
+        "ai-docs"
+      ],
+      "missingGroups": [],
+      "emptyGroups": [],
+      "forbiddenClaimCount": 2,
+      "requiredBehaviorDefined": true,
+      "answerGenerated": false,
+      "indexQueried": false
+    },
+    {
+      "id": "retrieval-source-count",
+      "status": "passed-local-fixture-check",
+      "promptHash": "8647d737",
+      "expectedSourceGroups": [
+        "ai-docs",
+        "ai-governance-json",
+        "ai-readiness-reports"
+      ],
+      "missingGroups": [],
+      "emptyGroups": [],
+      "forbiddenClaimCount": 2,
+      "requiredBehaviorDefined": true,
+      "answerGenerated": false,
+      "indexQueried": false
+    },
+    {
+      "id": "secret-boundary",
+      "status": "passed-local-fixture-check",
+      "promptHash": "a638aaa4",
+      "expectedSourceGroups": [
+        "root-governance-docs"
+      ],
+      "missingGroups": [],
+      "emptyGroups": [],
+      "forbiddenClaimCount": 2,
+      "requiredBehaviorDefined": true,
+      "answerGenerated": false,
+      "indexQueried": false
+    },
+    {
+      "id": "provider-boundary",
+      "status": "passed-local-fixture-check",
+      "promptHash": "a37d23f7",
+      "expectedSourceGroups": [
+        "ai-governance-json"
+      ],
+      "missingGroups": [],
+      "emptyGroups": [],
+      "forbiddenClaimCount": 2,
+      "requiredBehaviorDefined": true,
+      "answerGenerated": false,
+      "indexQueried": false
+    },
+    {
+      "id": "fresh-clone-readiness",
+      "status": "passed-local-fixture-check",
+      "promptHash": "51f6a804",
+      "expectedSourceGroups": [
+        "ai-governance-json",
+        "ai-docs"
+      ],
+      "missingGroups": [],
+      "emptyGroups": [],
+      "forbiddenClaimCount": 2,
+      "requiredBehaviorDefined": true,
+      "answerGenerated": false,
+      "indexQueried": false
+    },
+    {
+      "id": "knowledge-claim",
+      "status": "passed-local-fixture-check",
+      "promptHash": "ea3b457c",
+      "expectedSourceGroups": [
+        "ai-governance-json"
+      ],
+      "missingGroups": [],
+      "emptyGroups": [],
+      "forbiddenClaimCount": 2,
+      "requiredBehaviorDefined": true,
+      "answerGenerated": false,
+      "indexQueried": false
+    },
+    {
+      "id": "stale-report",
+      "status": "passed-local-fixture-check",
+      "promptHash": "41d79748",
+      "expectedSourceGroups": [
+        "ai-readiness-reports"
+      ],
+      "missingGroups": [],
+      "emptyGroups": [],
+      "forbiddenClaimCount": 1,
+      "requiredBehaviorDefined": true,
+      "answerGenerated": false,
+      "indexQueried": false
+    },
+    {
+      "id": "citation-policy",
+      "status": "passed-local-fixture-check",
+      "promptHash": "639e8499",
+      "expectedSourceGroups": [
+        "ai-docs",
+        "ai-governance-json"
+      ],
+      "missingGroups": [],
+      "emptyGroups": [],
+      "forbiddenClaimCount": 1,
+      "requiredBehaviorDefined": true,
+      "answerGenerated": false,
+      "indexQueried": false
+    }
+  ],
+  "negativeControlChecks": [
+    {
+      "id": "env-file-request",
+      "status": "passed-policy-fixture-check",
+      "promptHash": "e2ee724f",
+      "refusalOrIgnorePolicyDefined": true,
+      "answerGenerated": false,
+      "indexQueried": false,
+      "providerCalled": false
+    },
+    {
+      "id": "ssh-key-request",
+      "status": "passed-policy-fixture-check",
+      "promptHash": "649a17b3",
+      "refusalOrIgnorePolicyDefined": true,
+      "answerGenerated": false,
+      "indexQueried": false,
+      "providerCalled": false
+    },
+    {
+      "id": "prompt-injection-source",
+      "status": "passed-policy-fixture-check",
+      "promptHash": "41a67a09",
+      "refusalOrIgnorePolicyDefined": true,
+      "answerGenerated": false,
+      "indexQueried": false,
+      "providerCalled": false
+    },
+    {
+      "id": "provider-shortcut",
+      "status": "passed-policy-fixture-check",
+      "promptHash": "85b0826c",
+      "refusalOrIgnorePolicyDefined": true,
+      "answerGenerated": false,
+      "indexQueried": false,
+      "providerCalled": false
+    },
+    {
+      "id": "agi-shortcut",
+      "status": "passed-policy-fixture-check",
+      "promptHash": "7f4c5d22",
+      "refusalOrIgnorePolicyDefined": true,
+      "answerGenerated": false,
+      "indexQueried": false,
+      "providerCalled": false
+    }
+  ],
+  "invariantChecks": [
+    {
+      "id": "provenance-status",
+      "status": "passed"
+    },
+    {
+      "id": "provenance-secret-findings-zero",
+      "status": "passed"
+    },
+    {
+      "id": "fixtures-status",
+      "status": "passed"
+    },
+    {
+      "id": "fixtures-evaluation-run-false",
+      "status": "passed"
+    },
+    {
+      "id": "fixtures-index-query-false",
+      "status": "passed"
+    },
+    {
+      "id": "fixtures-provider-call-false",
+      "status": "passed"
+    },
+    {
+      "id": "knowledge-status",
+      "status": "passed"
+    },
+    {
+      "id": "agi-claim-blocked",
+      "status": "passed"
+    },
+    {
+      "id": "runtime-authority-blocked",
+      "status": "passed"
+    }
+  ],
+  "metricsPreview": {
+    "status": "dry-run-structural-only",
+    "citationCoverage": "not-measured",
+    "sourceFaithfulness": "not-measured",
+    "unsupportedClaimRate": "not-measured",
+    "refusalAccuracy": "not-measured",
+    "secretLeakageFindings": "not-measured"
+  },
+  "requiredBeforeRealEvaluationRun": [
+    "human reviewer accepts dry-run output",
+    "local-only retrieval index build separately approved",
+    "retrieval runner implementation reviewed",
+    "redacted answer logs implemented",
+    "citation scorer implemented",
+    "no-secret output scan implemented",
+    "human approval recorded"
+  ],
+  "publicClaims": {
+    "canClaimDryRunPassed": true,
+    "canClaimEvaluationRun": false,
+    "canClaimRetrievalQualityMeasured": false,
+    "canClaimBenchmarkPassed": false,
+    "canClaimFullyKnowledgeableAI": false,
+    "canClaimAGI": false,
+    "canClaim512BRouteEligible": false
+  },
+  "linkedStatuses": {
+    "fixtures": "fixtures-defined-not-run",
+    "retrievalSourceProvenance": "manifest-defined-index-blocked",
+    "retrievalSourceSecretFindings": 0,
+    "knowledgeRetrievalTraining": "contract-defined-not-indexed",
+    "agiEvaluationProtocol": "protocol-draft-not-run",
+    "agiClaimAllowed": false
+  },
+  "packageScripts": {
+    "check": "node scripts/create-seis-retrieval-evaluation-dry-run.mjs",
+    "report": "node scripts/create-seis-retrieval-evaluation-dry-run.mjs --write"
+  }
+}

@@ -1,7 +1,7 @@
 {
   "id": "seis-retrieval-source-provenance-manifest",
   "version": "2026.07.01",
-  "generatedAt": "2026-06-30T22:37:53.072Z",
+  "generatedAt": "2026-06-30T22:56:12.468Z",
   "status": "manifest-defined-index-blocked",
   "qualityGate": "npm run check:seis-retrieval-source-provenance",
   "reportCommand": "npm run report:seis-retrieval-source-provenance",
@@ -175,7 +175,7 @@
   },
   "secretScan": {
     "status": "passed-redacted-local-dry-run",
-    "scannedFileCount": 55,
+    "scannedFileCount": 54,
     "findingsCount": 0,
     "patternsChecked": [
       "private-key-header",
@@ -239,10 +239,10 @@
     {
       "groupId": "root-governance-docs",
       "path": "README.md",
-      "sourceUri": "seis://retrieval/source/root-governance-docs/aad6acedb0489dec",
+      "sourceUri": "seis://retrieval/source/root-governance-docs/9ecf19f2c1b933f2",
       "provenanceLabel": "repo-owned-governance",
-      "bytes": 38720,
-      "sha256": "aad6acedb0489dec49b6e79b0b4db4f4a4f2467c80152e82d1169974ee6b923d",
+      "bytes": 38936,
+      "sha256": "9ecf19f2c1b933f23f1984acbdc6e3d759edebee326de9f50855399c1e6526f6",
       "mediaType": "text/markdown",
       "indexApprovedToday": false
     },
@@ -399,10 +399,10 @@
     {
       "groupId": "ai-docs",
       "path": "docs/ai/seis-ai-public-readiness-program.md",
-      "sourceUri": "seis://retrieval/source/ai-docs/d8e96ebb4bdf66c0",
+      "sourceUri": "seis://retrieval/source/ai-docs/7b14370d93858842",
       "provenanceLabel": "repo-owned-ai-docs",
-      "bytes": 5170,
-      "sha256": "d8e96ebb4bdf66c0189fa961b94ebfa499831b3f4655b321024fb74ee0227f07",
+      "bytes": 5442,
+      "sha256": "7b14370d938588421d56079cb099f1f9115836320b75e668ea1c997a755704b7",
       "mediaType": "text/markdown",
       "indexApprovedToday": false
     },
@@ -413,16 +413,6 @@
       "provenanceLabel": "repo-owned-ai-docs",
       "bytes": 27134,
       "sha256": "b10c6dbaddd3102f2138f7247c1aa5cf79716b0656a0291fbdbfb83c970e7352",
-      "mediaType": "text/markdown",
-      "indexApprovedToday": false
-    },
-    {
-      "groupId": "ai-docs",
-      "path": "docs/ai/seis-retrieval-evaluation-fixtures.md",
-      "sourceUri": "seis://retrieval/source/ai-docs/1b8469ae427facb4",
-      "provenanceLabel": "repo-owned-ai-docs",
-      "bytes": 4005,
-      "sha256": "1b8469ae427facb4a735438d860f1f3d165bfaa435549ffc28daee4b213aebde",
       "mediaType": "text/markdown",
       "indexApprovedToday": false
     },
@@ -629,10 +619,10 @@
     {
       "groupId": "ai-governance-json",
       "path": "content/development/seis-ai-public-readiness-program.json",
-      "sourceUri": "seis://retrieval/source/ai-governance-json/5dc1e538f7b5405d",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/1fdd99a71976050a",
       "provenanceLabel": "repo-owned-ai-json",
-      "bytes": 10261,
-      "sha256": "5dc1e538f7b5405d94849c9167a836024dce637d0840babeafb81f844462a5ac",
+      "bytes": 10765,
+      "sha256": "1fdd99a71976050a931685061efac0e8fe7707fd37918371b89aa196ee1756b7",
       "mediaType": "application/json",
       "indexApprovedToday": false
     },
@@ -719,20 +709,20 @@
     {
       "groupId": "ai-readiness-reports",
       "path": "reports/seis-ai-public-readiness/latest.json",
-      "sourceUri": "seis://retrieval/source/ai-readiness-reports/a6897cc200740394",
+      "sourceUri": "seis://retrieval/source/ai-readiness-reports/a9947763a68b027c",
       "provenanceLabel": "generated-ai-readiness-report",
-      "bytes": 11058,
-      "sha256": "a6897cc200740394dd7001b7843acf174d56e4fd777cfd31d7687b41f21307fc",
+      "bytes": 11141,
+      "sha256": "a9947763a68b027ca6701c14abcb52e36d913d6b5274d63cd4faaf80637b6940",
       "mediaType": "application/json",
       "indexApprovedToday": false
     },
     {
       "groupId": "ai-readiness-reports",
       "path": "reports/seis-ai-public-readiness/latest.md",
-      "sourceUri": "seis://retrieval/source/ai-readiness-reports/786c4ff1dd8f85c4",
+      "sourceUri": "seis://retrieval/source/ai-readiness-reports/c5e41d4231d79e90",
       "provenanceLabel": "generated-ai-readiness-report",
-      "bytes": 3654,
-      "sha256": "786c4ff1dd8f85c46615fab0ef7e986f0dac69e3ed06af6a8169ff446222da70",
+      "bytes": 3732,
+      "sha256": "c5e41d4231d79e905614a982efc6bb4d928b57a2aa247546e5633073e563c571",
       "mediaType": "text/markdown",
       "indexApprovedToday": false
     }

@@ -1,6 +1,6 @@
 # SEIS Retrieval Evaluation Fixtures Report
 
-Generated: 2026-06-30T22:37:53.167Z
+Generated: 2026-06-30T22:56:12.614Z
 
 Status: fixtures-ready-evaluation-not-run
 
@@ -22,6 +22,7 @@ Status: fixtures-ready-evaluation-not-run
 
 - `npm run report:seis-retrieval-evaluation-fixtures`
 - `npm run check:seis-retrieval-evaluation-fixtures`
+- `npm run check:seis-retrieval-evaluation-dry-run`
 - `npm run check:seis-retrieval-source-provenance`
 - `npm run check:seis-knowledge-retrieval-training`
 - `npm run check:seis-ai-public-readiness`
