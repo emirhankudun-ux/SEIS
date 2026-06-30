@@ -1,0 +1,32 @@
+{
+  "id": "seis-retrieval-citation-scorer-dry-run-report",
+  "generatedAt": "2026-06-30T23:18:24.745Z",
+  "status": "citation-scorer-dry-run-passed-not-measured",
+  "sourceScorer": "content/development/seis-retrieval-citation-scorer-dry-run.json",
+  "summary": {
+    "scoringRules": 5,
+    "citationChecks": 5,
+    "failedCitationChecks": 0,
+    "sourceRecords": 54,
+    "sourceUriPresent": 54,
+    "sha256Present": 54,
+    "liveCitationScoring": false,
+    "answerGeneration": false,
+    "retrievalIndexQuery": false,
+    "providerCall": false
+  },
+  "safeNextCommands": [
+    "npm run report:seis-retrieval-citation-scorer-dry-run",
+    "npm run check:seis-retrieval-citation-scorer-dry-run",
+    "npm run check:seis-retrieval-evaluation-dry-run",
+    "npm run check:seis-ai-public-readiness"
+  ],
+  "humanApprovalNeededBefore": [
+    "local retrieval index query approved",
+    "answer generation harness approved",
+    "citation scorer implementation reviewed",
+    "redacted logs implemented",
+    "no-secret answer scan implemented",
+    "human approval recorded"
+  ]
+}

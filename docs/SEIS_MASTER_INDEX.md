@@ -107,6 +107,8 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | SEIS retrieval evaluation fixtures report command | `npm run report:seis-retrieval-evaluation-fixtures` |
 | SEIS retrieval evaluation dry-run gate | `npm run check:seis-retrieval-evaluation-dry-run` |
 | SEIS retrieval evaluation dry-run report command | `npm run report:seis-retrieval-evaluation-dry-run` |
+| SEIS retrieval citation scorer dry-run gate | `npm run check:seis-retrieval-citation-scorer-dry-run` |
+| SEIS retrieval citation scorer dry-run report command | `npm run report:seis-retrieval-citation-scorer-dry-run` |
 | SEIS knowledge retrieval training gate | `npm run check:seis-knowledge-retrieval-training` |
 | SEIS knowledge retrieval training report command | `npm run report:seis-knowledge-retrieval-training` |
 | Foundation check alias | `npm run foundation:check` |
@@ -136,6 +138,7 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | SEIS retrieval source provenance report | [../reports/seis-model-scaling/seis-retrieval-source-provenance-manifest.md](../reports/seis-model-scaling/seis-retrieval-source-provenance-manifest.md) |
 | SEIS retrieval evaluation fixtures report | [../reports/seis-model-scaling/seis-retrieval-evaluation-fixtures.md](../reports/seis-model-scaling/seis-retrieval-evaluation-fixtures.md) |
 | SEIS retrieval evaluation dry-run report | [../reports/seis-model-scaling/seis-retrieval-evaluation-dry-run.md](../reports/seis-model-scaling/seis-retrieval-evaluation-dry-run.md) |
+| SEIS retrieval citation scorer dry-run report | [../reports/seis-model-scaling/seis-retrieval-citation-scorer-dry-run.md](../reports/seis-model-scaling/seis-retrieval-citation-scorer-dry-run.md) |
 | SEIS knowledge retrieval training report | [../reports/seis-model-scaling/seis-knowledge-retrieval-training-contract.md](../reports/seis-model-scaling/seis-knowledge-retrieval-training-contract.md) |
 | NVIDIA accelerator catalog | [../content/development/seis-nvidia-accelerator-catalog.json](../content/development/seis-nvidia-accelerator-catalog.json) |
 | NVIDIA accelerator catalog validator | `npm run check:seis-nvidia-accelerator-catalog` |
