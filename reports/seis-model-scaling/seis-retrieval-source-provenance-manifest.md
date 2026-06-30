@@ -1,6 +1,6 @@
 # SEIS Retrieval Source Provenance Report
 
-Generated: 2026-06-30T22:20:41.811Z
+Generated: 2026-06-30T22:37:53.072Z
 
 Status: source-inventory-ready-index-blocked
 
@@ -9,8 +9,8 @@ Status: source-inventory-ready-index-blocked
 | Field | Value |
 | --- | --- |
 | Source groups | 4 |
-| File records | 54 |
-| Scanned files | 54 |
+| File records | 55 |
+| Scanned files | 55 |
 | Secret-scan findings | 0 |
 | Persistent retrieval index approved | false |
 | Embedding model install approved | false |
@@ -22,7 +22,7 @@ Status: source-inventory-ready-index-blocked
 | Group | Status | Provenance label | Files |
 | --- | --- | --- | --- |
 | root-governance-docs | candidate-allowlisted-metadata-only | repo-owned-governance | 8 |
-| ai-docs | candidate-allowlisted-metadata-only | repo-owned-ai-docs | 15 |
+| ai-docs | candidate-allowlisted-metadata-only | repo-owned-ai-docs | 16 |
 | ai-governance-json | candidate-allowlisted-metadata-only | repo-owned-ai-json | 29 |
 | ai-readiness-reports | candidate-allowlisted-metadata-only | generated-ai-readiness-report | 2 |
 

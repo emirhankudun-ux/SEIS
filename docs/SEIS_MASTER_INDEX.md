@@ -103,6 +103,8 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | SEIS AI public readiness report command | `npm run report:seis-ai-public-readiness` |
 | SEIS retrieval source provenance gate | `npm run check:seis-retrieval-source-provenance` |
 | SEIS retrieval source provenance report command | `npm run report:seis-retrieval-source-provenance` |
+| SEIS retrieval evaluation fixtures gate | `npm run check:seis-retrieval-evaluation-fixtures` |
+| SEIS retrieval evaluation fixtures report command | `npm run report:seis-retrieval-evaluation-fixtures` |
 | SEIS knowledge retrieval training gate | `npm run check:seis-knowledge-retrieval-training` |
 | SEIS knowledge retrieval training report command | `npm run report:seis-knowledge-retrieval-training` |
 | Foundation check alias | `npm run foundation:check` |
@@ -130,6 +132,7 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | SEIS AI public readiness report JSON artifact | [../reports/seis-ai-public-readiness/latest.json](../reports/seis-ai-public-readiness/latest.json) |
 | SEIS AI public readiness report markdown artifact | [../reports/seis-ai-public-readiness/latest.md](../reports/seis-ai-public-readiness/latest.md) |
 | SEIS retrieval source provenance report | [../reports/seis-model-scaling/seis-retrieval-source-provenance-manifest.md](../reports/seis-model-scaling/seis-retrieval-source-provenance-manifest.md) |
+| SEIS retrieval evaluation fixtures report | [../reports/seis-model-scaling/seis-retrieval-evaluation-fixtures.md](../reports/seis-model-scaling/seis-retrieval-evaluation-fixtures.md) |
 | SEIS knowledge retrieval training report | [../reports/seis-model-scaling/seis-knowledge-retrieval-training-contract.md](../reports/seis-model-scaling/seis-knowledge-retrieval-training-contract.md) |
 | NVIDIA accelerator catalog | [../content/development/seis-nvidia-accelerator-catalog.json](../content/development/seis-nvidia-accelerator-catalog.json) |
 | NVIDIA accelerator catalog validator | `npm run check:seis-nvidia-accelerator-catalog` |
