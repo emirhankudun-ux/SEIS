@@ -672,7 +672,7 @@ work is separated or approved, current browser evidence is present, and release
 approval exists.
 
 ${groups}
-`;
+`.trimEnd() + "\n";
 }
 
 function renderStagePlan(value) {
@@ -719,7 +719,7 @@ ${validation}
 ## Forbidden Actions
 
 ${forbidden}
-`;
+`.trimEnd() + "\n";
 }
 
 function buildWorktreeReview(value) {

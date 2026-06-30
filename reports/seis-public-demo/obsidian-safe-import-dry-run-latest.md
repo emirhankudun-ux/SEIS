@@ -1,6 +1,6 @@
 # SEIS Obsidian Safe Import Dry-Run
 
-Generated: 2026-06-29T13:22:35.661Z
+Generated: 2026-06-30T11:35:28.467Z
 Status: repo-owned-seed-notes-only
 Mode: dry-run-no-private-vault-read
 Decision: NO-GO-private-vault-import-not-approved

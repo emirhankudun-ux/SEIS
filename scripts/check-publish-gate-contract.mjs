@@ -21,6 +21,47 @@ function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
 }
 
+function normalizeGitHubRemoteUrl(value) {
+  let remote = String(value || "")
+    .trim()
+    .replace(/^git@github\.com:/i, "https://github.com/")
+    .replace(/^ssh:\/\/[^@/]+@github\.com\//i, "https://github.com/");
+
+  if (/^https?:\/\//i.test(remote)) {
+    try {
+      const url = new URL(remote);
+      if (url.hostname.toLowerCase() === "github.com") {
+        remote = `https://github.com${url.pathname}`;
+      }
+    } catch {
+      // Keep the trimmed remote for the final canonicalization below.
+    }
+  }
+
+  return remote
+    .replace(/\.git$/i, "")
+    .replace(/\/+$/g, "")
+    .toLowerCase();
+}
+
+function describeRemoteForError(value) {
+  return normalizeGitHubRemoteUrl(value) || "empty";
+}
+
+function remoteUrlsTargetSameRepo(actual, expected) {
+  const normalizedActual = normalizeGitHubRemoteUrl(actual);
+  const normalizedExpected = normalizeGitHubRemoteUrl(expected);
+  return normalizedActual.length > 0 && normalizedActual === normalizedExpected;
+}
+
+function branchAllowedByContract(branchName, contract) {
+  const branch = String(branchName || "").trim();
+  if (branch.length === 0) return true;
+  const acceptedBranches = contract?.remote?.acceptedLocalBranches || [];
+  const acceptedPrefixes = contract?.remote?.acceptedLocalBranchPrefixes || [];
+  return acceptedBranches.includes(branch) || acceptedPrefixes.some((prefix) => branch.startsWith(prefix));
+}
+
 function git(args) {
   return spawnSync("git", args, {
     encoding: "utf8",
@@ -55,6 +96,7 @@ if (contract) {
     `publish gate contract must accept ${expectedTargetBranch} as the publishing branch`
   );
   ensure((contract.remote?.acceptedLocalBranches || []).includes("work"), "contract must document the local work execution branch");
+  ensure((contract.remote?.acceptedLocalBranchPrefixes || []).includes("codex/"), "contract must document codex review branch preflight prefix");
 
   const levels = contract.readinessLevels || [];
   const levelIds = new Set(levels.map((level) => level.id));
@@ -74,11 +116,14 @@ if (contract) {
 
 const origin = git(["remote", "get-url", "origin"]);
 ensure(origin.status === 0, "origin remote must be configured");
-ensure(origin.stdout.trim() === contract?.remote?.url, `origin remote must match contract URL, got ${origin.stdout.trim() || "empty"}`);
+ensure(
+  remoteUrlsTargetSameRepo(origin.stdout.trim(), contract?.remote?.url),
+  `origin remote must target contract repository, got ${describeRemoteForError(origin.stdout.trim())}`
+);
 
 if (state.gitInside) {
   ensure(state.hasRemote, "publish state must see a configured remote");
-  ensure((contract?.remote?.acceptedLocalBranches || []).includes(state.branchName), `current branch ${state.branchName || "unknown"} must be documented as accepted local branch`);
+  ensure(branchAllowedByContract(state.branchName, contract), `current branch ${state.branchName || "detached"} must be documented as accepted local branch or review prefix`);
 
   if (state.ready) {
     ensure(state.branchName === contract?.remote?.targetBranch, `ready publish state must be on ${expectedTargetBranch}`);
@@ -100,6 +145,7 @@ for (const requiredText of [
   "configured",
   "publish-preflight",
   "deployment-ready",
+  "codex/*",
   "npm run check:publish-gate-contract",
   "npm run automation:publish-readiness"
 ]) {

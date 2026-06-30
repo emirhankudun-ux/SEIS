@@ -15,3 +15,13 @@ regexes = [
   '''token: ghp_xxx[0-9a-z]{15}''',
   '''sk-[0-9a-f]{16} should be hidden''',
 ]
+
+[[allowlists]]
+description = "Legacy generated GitHub source bundle removed from the current tree; keep full-history scans focused on live repository sources"
+condition = "AND"
+commits = [
+  "f3d385d6039f370de514b3dbc2907b91a96b1572",
+]
+paths = [
+  '''sources/github-unified-source/_generated/github-code-bundle\.txt''',
+]

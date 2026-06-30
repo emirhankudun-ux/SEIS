@@ -16,6 +16,8 @@ Machine-readable source: [`content/development/publish-gate-contract.json`](../.
 
 This environment is expected to be **configured but not publish-ready** unless `main`, upstream, clean worktree, and GitHub authentication all become available. The previous network probe returned `Branch protection and signature rules can still block or warn on direct pushes`, so remote configuration should not be treated as GitHub authentication or push proof.
 
+Review branches under `codex/*` and detached GitHub Actions checkouts may run the contract in read-only mode so PR checks can report the current blocker. They do not become publish-ready unless the stricter `main` + `origin/main` + clean worktree + GitHub auth preflight passes.
+
 ## Validation
 
 Run the focused contract check:
