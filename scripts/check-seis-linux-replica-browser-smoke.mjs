@@ -230,18 +230,20 @@ function collectRelevantIssues(events) {
 
 function validateStaticContract() {
   const routePath = "apps/web/seis-linux-replica.html";
+  const publicDemoRoutePath = "apps/web/seis-linux-replica-public-demo.html";
   const referenceAppsPath = "apps/web/reference-banks/reference-apps.js";
   const routesPath = "apps/web/src/config/routes.json";
   const serviceWorkerPath = "apps/web/service-worker.js";
   const readmePath = "README.md";
 
-  for (const file of [routePath, referenceAppsPath, routesPath, serviceWorkerPath, readmePath]) {
+  for (const file of [routePath, publicDemoRoutePath, referenceAppsPath, routesPath, serviceWorkerPath, readmePath]) {
     ensure(existsSync(file), `missing required file: ${file}`);
   }
 
   if (failures.length > 0) return;
 
   const html = readFileSync(routePath, "utf8");
+  const publicDemoHtml = readFileSync(publicDemoRoutePath, "utf8");
   const referenceApps = readFileSync(referenceAppsPath, "utf8");
   const routes = readFileSync(routesPath, "utf8");
   const serviceWorker = readFileSync(serviceWorkerPath, "utf8");
@@ -334,10 +336,16 @@ function validateStaticContract() {
   ensure(html.includes("live:()=>"), "Linux Replica terminal must expose the live demo command.");
   ensure(html.includes("tour:()=>"), "Linux Replica terminal must expose the live demo tour command.");
   ensure(routes.includes("/seis-linux-replica.html"), "routes.json must register SEIS Linux Replica.");
+  ensure(routes.includes("/seis-linux-replica-public-demo.html"), "routes.json must register the Linux Replica public demo entry route.");
   ensure(serviceWorker.includes("./seis-linux-replica.html"), "service worker must precache SEIS Linux Replica.");
+  ensure(serviceWorker.includes("./seis-linux-replica-public-demo.html"), "service worker must precache the Linux Replica public demo entry route.");
   ensure(readme.includes("seis-linux-replica.html"), "README must document SEIS Linux Replica route.");
+  ensure(readme.includes("seis-linux-replica-public-demo.html"), "README must document the public demo entry route.");
   ensure(readme.includes("Live Demo Console"), "README must document the SEIS Linux Replica Live Demo Console.");
   ensure(readme.includes("terminal `live` /") && readme.includes("`readiness` / `sources` commands"), "README must document the Linux Replica live/readiness/sources terminal commands.");
+  ensure(publicDemoHtml.includes("<title>SEIS Linux Replica Public Demo</title>"), "public demo entry route must expose the expected title.");
+  ensure(publicDemoHtml.includes('href="./seis-linux-replica.html?demo=live"'), "public demo entry route must link to the live demo deep link.");
+  ensure(publicDemoHtml.includes("No API keys") && publicDemoHtml.includes("No SSH execution"), "public demo entry route must label no-key/no-SSH boundaries.");
 }
 
 async function smokeLinuxReplica(client, baseUrl) {
@@ -711,6 +719,80 @@ async function smokeLinuxReplicaDeepLink(client, baseUrl) {
   return summary;
 }
 
+async function smokePublicDemoEntry(client, baseUrl) {
+  await client.send("Emulation.setDeviceMetricsOverride", {
+    width: 1280,
+    height: 860,
+    deviceScaleFactor: 1,
+    mobile: false
+  });
+
+  await goto(client, `${baseUrl}/seis-linux-replica-public-demo.html`);
+  await waitFor(client, "document.title === 'SEIS Linux Replica Public Demo'", 10000);
+  await waitFor(client, "document.querySelector('h1')?.textContent?.includes('reviewer-ready')", 10000);
+  const ctaBeforeClick = await evaluate(client, `(() => {
+    const cta = document.querySelector('.button.primary');
+    const href = cta ? new URL(cta.getAttribute('href'), location.href) : null;
+    const bodyText = document.body.innerText;
+    return {
+      title: document.title,
+      label: cta?.textContent?.trim() || "",
+      href: href ? href.pathname + href.search : "",
+      publicRoutePath: location.pathname,
+      evidenceCount: document.querySelectorAll('.metric strong').length,
+      stepCount: document.querySelectorAll('.step').length,
+      boundaryCount: document.querySelectorAll('.boundary').length,
+      noKeyCopy: bodyText.includes('No API keys'),
+      noSshCopy: bodyText.includes('No SSH execution'),
+      suppliedCopy: bodyText.includes('Supplied assets preserved'),
+      referenceCopy: bodyText.includes('219')
+    };
+  })()`);
+  ensure(ctaBeforeClick.title === "SEIS Linux Replica Public Demo", `public demo title changed: ${ctaBeforeClick.title}`);
+  ensure(ctaBeforeClick.label === "Open Live Demo", `public demo primary CTA label changed: ${ctaBeforeClick.label}`);
+  ensure(ctaBeforeClick.href === "/seis-linux-replica.html?demo=live", `public demo CTA must target live demo deep link, found ${ctaBeforeClick.href}`);
+  ensure(ctaBeforeClick.publicRoutePath === "/seis-linux-replica-public-demo.html", `public demo route path changed: ${ctaBeforeClick.publicRoutePath}`);
+  ensure(ctaBeforeClick.evidenceCount >= 4, `public demo evidence metrics missing, found ${ctaBeforeClick.evidenceCount}.`);
+  ensure(ctaBeforeClick.stepCount >= 6, `public demo walkthrough steps missing, found ${ctaBeforeClick.stepCount}.`);
+  ensure(ctaBeforeClick.boundaryCount >= 4, `public demo boundary cards missing, found ${ctaBeforeClick.boundaryCount}.`);
+  ensure(ctaBeforeClick.noKeyCopy === true, "public demo route does not show no-key boundary copy.");
+  ensure(ctaBeforeClick.noSshCopy === true, "public demo route does not show no-SSH boundary copy.");
+  ensure(ctaBeforeClick.suppliedCopy === true, "public demo route does not show supplied asset preservation copy.");
+  ensure(ctaBeforeClick.referenceCopy === true, "public demo route does not show supplied reference module evidence.");
+
+  await evaluate(client, "document.querySelector('.button.primary')?.click()");
+  await waitFor(client, "window.__SEIS_LINUX_REPLICA__?.demoIntent?.() === true", 10000);
+  await waitFor(client, "document.querySelector('#shell')?.classList.contains('is-active')", 10000);
+  await waitFor(client, "document.querySelector('[data-live-demo-console]') && document.querySelector('[data-demo-readiness]')", 10000);
+  const summary = await evaluate(client, `(() => {
+    const bodyText = document.body.innerText;
+    return {
+      ctaLabel: ${JSON.stringify(ctaBeforeClick.label)},
+      ctaHref: ${JSON.stringify(ctaBeforeClick.href)},
+      publicRoutePath: ${JSON.stringify(ctaBeforeClick.publicRoutePath)},
+      path: location.pathname,
+      search: location.search,
+      demoIntent: window.__SEIS_LINUX_REPLICA__?.demoIntent?.() === true,
+      shellActive: document.querySelector('#shell')?.classList.contains('is-active') === true,
+      liveDemoConsole: document.querySelectorAll('[data-live-demo-console]').length,
+      demoReadiness: document.querySelectorAll('[data-demo-readiness]').length,
+      referenceVault: document.querySelectorAll('[data-reference-vault]').length,
+      blockedCopy: bodyText.includes('No SSH') || bodyText.includes('SSH disabled') || bodyText.includes('no host shell')
+    };
+  })()`);
+
+  ensure(summary.path === "/seis-linux-replica.html", `public demo CTA landed on ${summary.path}.`);
+  ensure(summary.search === "?demo=live", `public demo CTA search params changed: ${summary.search}`);
+  ensure(summary.demoIntent === true, "public demo CTA did not preserve demo intent.");
+  ensure(summary.shellActive === true, "public demo CTA did not auto-enter the desktop shell.");
+  ensure(summary.liveDemoConsole >= 1, "public demo CTA did not open Live Demo Console.");
+  ensure(summary.demoReadiness >= 1, "public demo CTA did not open Demo Readiness.");
+  ensure(summary.referenceVault >= 1, "public demo CTA did not open Reference Vault.");
+  ensure(summary.blockedCopy === true, "public demo CTA did not preserve SSH/host-shell boundary copy.");
+
+  return { ...summary, entry: ctaBeforeClick };
+}
+
 async function smokeWebsiteProductCta(client, baseUrl) {
   await client.send("Emulation.setDeviceMetricsOverride", {
     width: 1280,
@@ -850,6 +932,7 @@ async function main() {
     const summary = await smokeLinuxReplica(client, baseUrl);
     const mobileSummary = await smokeLinuxReplicaMobile(client, baseUrl);
     const deepLinkSummary = await smokeLinuxReplicaDeepLink(client, baseUrl);
+    const publicDemoEntrySummary = await smokePublicDemoEntry(client, baseUrl);
     const productPageCtaSummary = await smokeWebsiteProductCta(client, baseUrl);
     const landingCtaSummary = await smokeLandingCta(client, baseUrl);
     const report = {
@@ -862,6 +945,7 @@ async function main() {
       seisLinuxReplica: summary,
       seisLinuxReplicaMobile: mobileSummary,
       seisLinuxReplicaDeepLink: deepLinkSummary,
+      seisLinuxReplicaPublicDemoEntry: publicDemoEntrySummary,
       seisLinuxReplicaProductPageCta: productPageCtaSummary,
       seisLinuxReplicaLandingCta: landingCtaSummary
     };
