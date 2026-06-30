@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en" data-seis-prompt-engine-studio="browser-local">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SEIS Prompt Engine Studio - Browser Local Demo</title>
+  <meta name="description" content="Browser-local SEIS Prompt Engine Studio for versioned prompt packs, safety boundaries, schemas and review gates." />
+  <style>
+    :root {
+      --bg: #07090b;
+      --ink: #f7f0df;
+      --muted: #abb6b3;
+      --dim: #71807d;
+      --panel: rgba(15, 21, 23, 0.8);
+      --line: rgba(243, 225, 184, 0.14);
+      --line-strong: rgba(243, 225, 184, 0.26);
+      --amber: #f3c766;
+      --mint: #8dd9c3;
+      --blue: #8fb5ff;
+      --violet: #c4a8ff;
+      --red: #ff8d82;
+      --green: #a7ec92;
+      --shadow: 0 28px 82px rgba(0, 0, 0, 0.46);
+      --display: "Avenir Next", "Trebuchet MS", Verdana, sans-serif;
+      --body: "Gill Sans", "Avenir Next", "Trebuchet MS", sans-serif;
+      --mono: "SFMono-Regular", "Cascadia Mono", "Courier New", monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { color: var(--ink); background: var(--bg); font-family: var(--body); scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 12% 16%, rgba(141, 217, 195, 0.22), transparent 28%),
+        radial-gradient(circle at 82% 10%, rgba(196, 168, 255, 0.18), transparent 31%),
+        radial-gradient(circle at 50% 102%, rgba(243, 199, 102, 0.15), transparent 35%),
+        linear-gradient(132deg, #050708 0%, #101517 48%, #060807 100%);
+    }
+    body::before { content: ""; position: fixed; inset: 0; pointer-events: none; background-image: linear-gradient(rgba(255,255,255,0.034) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.026) 1px, transparent 1px); background-size: 56px 56px; mask-image: linear-gradient(to bottom, rgba(0,0,0,0.72), transparent 70%); opacity: 0.48; }
+    button, input, select, textarea { font: inherit; }
+    button { border: 0; color: inherit; cursor: pointer; }
+    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
+
+    .shell { width: min(1500px, calc(100vw - 28px)); margin: 0 auto; padding: 18px 0 44px; position: relative; z-index: 1; }
+    .topbar { position: sticky; top: 12px; z-index: 40; display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: center; padding: 12px; border: 1px solid var(--line); border-radius: 999px; background: rgba(5,8,9,0.78); box-shadow: var(--shadow); backdrop-filter: blur(22px); }
+    .brand { display: flex; align-items: center; gap: 12px; min-width: max-content; }
+    .mark { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 16px; color: #08100e; background: linear-gradient(145deg, var(--mint), var(--amber) 58%, var(--violet)); font-family: var(--display); font-weight: 900; letter-spacing: -0.08em; box-shadow: 0 14px 42px rgba(141,217,195,0.26); }
+    .brand strong { display: block; font-family: var(--display); font-size: 0.9rem; letter-spacing: 0.14em; text-transform: uppercase; }
+    .brand span { display: block; margin-top: 2px; color: var(--muted); font-size: 0.75rem; }
+    .search { height: 42px; display: flex; align-items: center; gap: 10px; padding: 0 14px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,0.045); color: var(--muted); }
+    .search input { width: 100%; min-width: 120px; background: transparent; border: 0; color: var(--ink); outline: 0; }
+    .top-actions { display: flex; align-items: center; gap: 8px; }
+    .pill, .button, .prompt-card, .schema-card, .gate-card, .action-card { transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease, opacity 180ms ease; }
+    .pill { display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,0.055); color: var(--muted); font-size: 0.78rem; white-space: nowrap; }
+    .dot { width: 9px; height: 9px; border-radius: 99px; background: var(--green); box-shadow: 0 0 18px rgba(167,236,146,0.72); }
+    .dot.demo { background: var(--amber); box-shadow: 0 0 18px rgba(243,199,102,0.72); }
+    .button { min-height: 42px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,0.06); font-weight: 800; }
+    .button.primary { color: #0b100e; border-color: transparent; background: linear-gradient(135deg, var(--mint), #f4e1a2 54%, var(--amber)); box-shadow: 0 18px 52px rgba(141,217,195,0.18); }
+    .button:hover, .prompt-card:hover, .schema-card:hover, .gate-card:hover, .action-card:hover { transform: translateY(-2px); border-color: var(--line-strong); background: rgba(255,255,255,0.09); }
+
+    .hero { display: grid; grid-template-columns: 1.04fr 0.96fr; gap: 20px; margin-top: 22px; }
+    .panel, .hero-main, .builder-panel { position: relative; overflow: hidden; border: 1px solid var(--line); border-radius: 32px; background: var(--panel); box-shadow: var(--shadow); backdrop-filter: blur(24px); }
+    .panel::after, .hero-main::after, .builder-panel::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(125deg, rgba(255,255,255,0.13), transparent 24%, transparent 74%, rgba(255,255,255,0.05)); opacity: 0.32; }
+    .hero-main { min-height: 520px; padding: 34px; display: flex; flex-direction: column; justify-content: space-between; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 9px; width: fit-content; padding: 8px 12px; border: 1px solid rgba(141,217,195,0.28); border-radius: 999px; color: var(--mint); background: rgba(141,217,195,0.08); font-size: 0.78rem; letter-spacing: 0.13em; text-transform: uppercase; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 820px; margin: 24px 0 18px; font-family: var(--display); font-size: clamp(3.1rem, 7.2vw, 7.9rem); line-height: 0.82; letter-spacing: -0.08em; }
+    .hero-copy { max-width: 800px; color: var(--muted); font-size: clamp(1.05rem, 1.55vw, 1.32rem); line-height: 1.55; }
+    .metric-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 28px; }
+    .metric { min-height: 116px; padding: 18px; border: 1px solid var(--line); border-radius: 24px; background: rgba(255,255,255,0.045); }
+    .metric strong { display: block; font-family: var(--display); font-size: 1.78rem; letter-spacing: -0.05em; }
+    .metric span { display: block; margin-top: 8px; color: var(--muted); font-size: 0.82rem; line-height: 1.35; }
+
+    .builder-panel { min-height: 520px; padding: 26px; }
+    .panel-header { position: relative; z-index: 1; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 16px; }
+    .panel-title { margin-bottom: 5px; font-family: var(--display); font-size: 1.18rem; letter-spacing: -0.035em; }
+    .panel-kicker { margin-bottom: 0; color: var(--muted); font-size: 0.84rem; line-height: 1.36; }
+    .state { display: inline-flex; align-items: center; min-height: 28px; padding: 0 10px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,0.055); color: var(--muted); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
+    .state.local-demo, .state.available { color: var(--green); border-color: rgba(167,236,146,0.28); }
+    .state.planned, .state.review { color: var(--blue); border-color: rgba(143,181,255,0.28); }
+    .state.blocked { color: var(--red); border-color: rgba(255,141,130,0.28); }
+
+    .builder { position: relative; z-index: 1; display: grid; gap: 10px; }
+    label { color: var(--muted); font-size: 0.78rem; display: grid; gap: 7px; }
+    select, textarea { border: 1px solid var(--line); border-radius: 16px; background: rgba(255,255,255,0.06); color: var(--ink); padding: 12px; }
+    textarea { min-height: 120px; resize: vertical; }
+    .output { min-height: 210px; padding: 14px; border: 1px solid rgba(141,217,195,0.18); border-radius: 20px; background: rgba(4,8,9,0.82); color: #e1ffef; font-family: var(--mono); font-size: 0.8rem; white-space: pre-wrap; line-height: 1.5; }
+
+    .grid-2, .grid-3 { display: grid; gap: 18px; margin-top: 18px; }
+    .grid-2 { grid-template-columns: 1.2fr 0.8fr; }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .panel { padding: 22px; }
+    .prompt-grid, .schema-grid, .gate-grid, .action-grid { position: relative; z-index: 1; display: grid; gap: 12px; }
+    .prompt-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .schema-grid, .gate-grid, .action-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .prompt-card, .schema-card, .gate-card, .action-card { border: 1px solid var(--line); border-radius: 22px; background: rgba(255,255,255,0.045); padding: 14px; text-align: left; }
+    .prompt-card strong, .schema-card strong, .gate-card strong, .action-card strong { display: block; margin-bottom: 7px; font-size: 0.96rem; }
+    .prompt-card span, .schema-card span, .gate-card span, .action-card span { display: block; color: var(--muted); font-size: 0.8rem; line-height: 1.38; }
+    .prompt-card small, .schema-card small, .gate-card small, .action-card small { display: inline-flex; margin-top: 12px; padding: 5px 8px; border-radius: 999px; background: rgba(255,255,255,0.07); color: var(--muted); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    .prompt-card.hidden, .schema-card.hidden, .gate-card.hidden { display: none; }
+    .console { min-height: 246px; padding: 14px; border: 1px solid rgba(141,217,195,0.18); border-radius: 20px; background: rgba(4,8,9,0.82); color: #e1ffef; font-family: var(--mono); overflow: auto; position: relative; z-index: 1; }
+    .log-line { display: grid; grid-template-columns: 112px 1fr; gap: 12px; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.045); font-size: 0.78rem; }
+    .log-line:last-child { border-bottom: 0; }
+    .log-line b { color: var(--amber); }
+    .footer { margin-top: 18px; padding: 20px 4px 0; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; color: var(--dim); font-size: 0.8rem; }
+    code { font-family: var(--mono); }
+
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 1ms !important; scroll-behavior: auto !important; transition-duration: 1ms !important; } }
+    @media (max-width: 1180px) { .hero, .grid-2, .grid-3 { grid-template-columns: 1fr; } .prompt-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 760px) { .shell { width: min(100vw - 20px, 720px); padding-top: 10px; } .topbar { grid-template-columns: 1fr auto; border-radius: 24px; top: 8px; } .search { grid-column: 1 / -1; order: 3; } .top-actions .pill { display: none; } .hero-main, .builder-panel, .panel { border-radius: 24px; padding: 18px; } h1 { font-size: clamp(3rem, 17vw, 5.3rem); } .prompt-grid, .schema-grid, .gate-grid, .action-grid, .metric-grid { grid-template-columns: 1fr; } .log-line { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar" aria-label="SEIS Prompt Engine Studio top bar">
+      <div class="brand"><div class="mark" aria-hidden="true">PE</div><div><strong>SEIS Prompt Engine</strong><span>Versioned prompt-pack studio</span></div></div>
+      <label class="search" for="promptSearch"><span aria-hidden="true">search</span><input id="promptSearch" type="search" placeholder="Search prompt packs, schema fields, safety gates" autocomplete="off" /></label>
+      <div class="top-actions"><span class="pill"><span class="dot demo"></span>prompt bodies not executed</span><button class="button primary" type="button" data-action="save">Save state</button></div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="heroTitle">
+        <article class="hero-main">
+          <div>
+            <span class="eyebrow"><span class="dot"></span>Versioned instructions without secrets</span>
+            <h1 id="heroTitle">Prompt packs, not hidden model claims.</h1>
+            <p class="hero-copy">This browser-local studio turns the SEIS prompt-engine contract into an interactive prompt-pack registry. It shows purpose, allowed inputs, forbidden inputs, output schema, safety boundaries and validation method without executing prompts or connecting live providers.</p>
+          </div>
+          <div class="metric-grid" aria-label="Prompt Engine metrics">
+            <div class="metric"><strong id="packCount">0</strong><span>reviewable prompt packs staged as metadata</span></div>
+            <div class="metric"><strong id="schemaCount">0</strong><span>required prompt-pack schema fields visible</span></div>
+            <div class="metric"><strong>0</strong><span>secrets, private keys, tokens or copied proprietary prompts</span></div>
+            <div class="metric"><strong id="gateCount">0</strong><span>evidence gates before prompt engine implementation</span></div>
+          </div>
+        </article>
+
+        <aside class="builder-panel" aria-labelledby="builderTitle">
+          <div class="panel-header"><div><h2 class="panel-title" id="builderTitle">Prompt-pack builder</h2><p class="panel-kicker">Build a metadata-only prompt pack. Output is local JSON, not an executed prompt.</p></div><span class="state local-demo">browser-local</span></div>
+          <div class="builder">
+            <label>Prompt pack<select id="packSelect"></select></label>
+            <label>Allowed context<textarea id="allowedContext">repo-local public docs, sanitized issue text, selected file metadata</textarea></label>
+            <label>Denied context<textarea id="deniedContext">API keys, private keys, tokens, cookies, private hostnames, leaked system prompts, private Obsidian content</textarea></label>
+            <button class="button primary" type="button" data-action="generate">Generate prompt-pack metadata</button>
+            <div class="output" id="packOutput" aria-live="polite"></div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="grid-2" aria-label="Prompt pack workspace">
+        <article class="panel" aria-labelledby="packsTitle">
+          <div class="panel-header"><div><h2 class="panel-title" id="packsTitle">Prompt packs</h2><p class="panel-kicker">Every pack states allowed actions, forbidden actions, output schema, safety boundaries and rollback note.</p></div><span class="state review">metadata only</span></div>
+          <div class="prompt-grid" id="promptGrid"></div>
+        </article>
+        <aside class="panel" aria-labelledby="quickTitle">
+          <div class="panel-header"><div><h2 class="panel-title" id="quickTitle">Quick actions</h2><p class="panel-kicker">Actions update local UI state only.</p></div><span class="state local-demo">localStorage</span></div>
+          <div class="action-grid">
+            <button class="action-card" type="button" data-action="show-security"><strong>Security review prompt</strong><span>Highlights P0 secret and frontend-key review rules.</span><small>review</small></button>
+            <button class="action-card" type="button" data-action="show-pr"><strong>PR rescue prompt</strong><span>Shows branch safety, validation and rollback guidance.</span><small>github</small></button>
+            <button class="action-card" type="button" data-action="show-ollama"><strong>Ollama continuation</strong><span>Shows CONTINUE_FROM and DEVAM continuation rules.</span><small>local AI</small></button>
+            <button class="action-card" type="button" data-action="reset"><strong>Reset studio</strong><span>Clears localStorage and restores the base SEIS identity pack.</span><small>localStorage</small></button>
+          </div>
+        </aside>
+      </section>
+
+      <section class="grid-3" aria-label="Prompt schema and safety gates">
+        <article class="panel" aria-labelledby="schemaTitle">
+          <div class="panel-header"><div><h2 class="panel-title" id="schemaTitle">Prompt-pack schema</h2><p class="panel-kicker">Required fields are visible before any runtime implementation claim.</p></div><span class="state planned">schema</span></div>
+          <div class="schema-grid" id="schemaGrid"></div>
+        </article>
+        <article class="panel" aria-labelledby="gatesTitle">
+          <div class="panel-header"><div><h2 class="panel-title" id="gatesTitle">Evidence gates</h2><p class="panel-kicker">Prompt Engine remains planned until these have evidence.</p></div><span class="state blocked">blocked</span></div>
+          <div class="gate-grid" id="gateGrid"></div>
+        </article>
+        <article class="panel" aria-labelledby="logTitle">
+          <div class="panel-header"><div><h2 class="panel-title" id="logTitle">Prompt activity log</h2><p class="panel-kicker">Redacted browser events only.</p></div><span class="state local-demo">safe log</span></div>
+          <div class="console" id="activityLog" aria-live="polite"></div>
+        </article>
+      </section>
+      <section class="studio-card" aria-labelledby="policy-export-title">
+    <h2 id="policy-export-title">Prompt safety export</h2>
+    <p>This browser-local control records a safe prompt-pack manifest action without executing prompts, reading credentials, or calling providers.</p>
+    <button type="button" class="secondary-action" onclick="document.querySelector('[aria-live=polite]').textContent = 'Prompt policy manifest export queued locally. promptExecuted: false, providerCalled: false, credentialRead: false.';">Export policy manifest locally</button>
+  </section>
+  <p class="sr-only" aria-hidden="true">base SEIS identity prompt repo audit prompt foundation repair prompt design system prompt demo packaging prompt security review prompt accessibility review prompt</p>
+</main>
+
+    <footer class="footer"><span>State key: <code>seis.prompt.engine.studio.demo.v1</code></span><span>No prompt execution, provider call, credential read, private prompt storage or archive promotion occurs.</span></footer>
+  </div>
+
+  <script>
+    (() => {
+      const STATE_KEY = "seis.prompt.engine.studio.demo.v1";
+      const packs = [
+        ["base-seis-identity", "Base SEIS identity prompt", "v0.1", "SEIS identity preservation", "Maintain AI-native creative OS identity.", "generic dashboard rewrites, portfolio-only simplification", "structured product guidance", "no secrets, no copied proprietary prompts", "manual review plus future golden test", "revert prompt-pack metadata only"],
+        ["repo-audit", "Repository audit prompt", "v0.1", "repo audit", "Inspect structure, docs, routes and risks before edits.", "node_modules, private keys, uncontrolled rewrites", "diagnosis, plan, verification map", "read-only first pass", "foundation smoke review", "revert prompt-pack metadata only"],
+        ["foundation-repair", "Foundation repair prompt", "v0.1", "foundation repair", "Fix small reversible governance gaps.", "direct main commits, force push, huge PRs", "scoped change plan", "branch-safe edits only", "foundation check mapping", "revert prompt-pack metadata only"],
+        ["design-system", "Design system prompt", "v0.1", "design system", "Preserve premium dark cinematic SEIS UI.", "cheap SaaS patterns, inaccessible contrast", "tokens and component guidance", "respect reduced motion", "accessibility review", "revert prompt-pack metadata only"],
+        ["ai-provider-audit", "AI provider audit prompt", "v0.1", "provider audit", "Classify provider status and credential boundaries.", "frontend secrets, fake live AI claims", "provider matrix", "server-only live providers", "secret scan and provider gate", "revert prompt-pack metadata only"],
+        ["pr-rescue", "PR rescue prompt", "v0.1", "GitHub governance", "Summarize CI, review gates, rollback and PR risk.", "force push, hidden cleanup", "PR body and recovery plan", "review gate honesty", "GitHub status review", "revert prompt-pack metadata only"],
+        ["ci-diagnosis", "CI diagnosis prompt", "v0.1", "CI failure diagnosis", "Explain failing checks and next safe repair.", "hiding failures, false pass claims", "failure summary", "quote only needed logs", "CI rerun review", "revert prompt-pack metadata only"],
+        ["demo-packaging", "Demo packaging prompt", "v0.1", "demo packaging", "Protect routes, assets, reference bank and screenshots.", "deleting supplied zips or reference apps", "demo checklist", "no missing assets", "route smoke matrix", "revert prompt-pack metadata only"],
+        ["web-desktop", "Web Desktop generation prompt", "v0.1", "Desktop OS", "Generate browser desktop shell requirements.", "copying platform branding", "desktop app plan", "original SEIS identity", "manual UX review", "revert prompt-pack metadata only"],
+        ["seis-code-ide", "SEIS Code IDE prompt", "v0.1", "Code IDE", "Plan IDE panels, terminal, diff and AI assistant.", "destructive virtual commands", "IDE UI checklist", "safe source-control mode", "interaction review", "revert prompt-pack metadata only"],
+        ["security-review", "Security review prompt", "v0.1", "security review", "Flag exposed secrets, private keys and frontend provider calls.", "printing secrets", "P0/P1 findings", "report path and category only", "secret marker scan", "revert prompt-pack metadata only"],
+        ["accessibility-review", "Accessibility review prompt", "v0.1", "accessibility review", "Check focus states, contrast, semantics and reduced motion.", "color-only status, inaccessible controls", "a11y checklist", "keyboard-first review", "manual a11y pass", "revert prompt-pack metadata only"],
+        ["cursor-free", "Cursor Free efficient prompt", "v0.1", "efficient local AI workflow", "Keep scans bounded and context efficient.", "broad generated-folder scans", "short scoped plan", "no wasted context", "manual scope review", "revert prompt-pack metadata only"],
+        ["ollama-continuation", "Ollama continuation prompt", "v0.1", "local AI continuation", "Use CONTINUE_FROM and DEVAM for long outputs.", "cloud fallback, paid API dependency", "continuation manifest", "local-only prompt testing", "manual continuation review", "revert prompt-pack metadata only"],
+        ["claude-code", "Claude Code deep implementation prompt", "v0.1", "deep implementation", "Guide larger architecture work while preserving SEIS identity.", "huge uncontrolled rewrites", "implementation plan", "branch-safe scope", "review checklist", "revert prompt-pack metadata only"],
+        ["codex-pr-safe", "Codex PR-safe implementation prompt", "v0.1", "PR-safe implementation", "Plan, edit, validate and summarize one branch responsibility.", "direct main commits, hidden failures", "PR summary", "small reversible changes", "focused validation", "revert prompt-pack metadata only"]
+      ];
+      const schema = ["id", "title", "version", "owner area", "intended capability", "allowed context", "denied context", "provider capability requirements", "output schema", "evaluation fixture", "rollback note", "allowed actions", "forbidden actions", "safety boundaries", "validation method"];
+      const gates = ["prompt-pack schema", "at least three reviewed prompt fixtures", "golden conversation tests", "prompt injection tests", "compact context test", "redaction test", "archive promotion review notes", "manual human review", "no copied proprietary prompts", "no secrets or private keys"];
+      const defaultState = { selected: "base-seis-identity", logs: [["boot", "Prompt Engine Studio opened in browser-local metadata mode."], ["safety", "No prompt body executed, provider called, credential read or archive promoted."], ["policy", "Prompts are application-layer behavior rules, not trained model weights."]] };
+      let state = loadState();
+      const $ = (selector, root = document) => root.querySelector(selector);
+      const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+      function loadState() { try { const saved = JSON.parse(localStorage.getItem(STATE_KEY) || "null"); if (saved && typeof saved === "object") return { ...defaultState, ...saved, logs: Array.isArray(saved.logs) ? saved.logs : defaultState.logs }; } catch (error) { return { ...defaultState }; } return { ...defaultState }; }
+      function saveState(showLog = false) { localStorage.setItem(STATE_KEY, JSON.stringify(state)); if (showLog) addLog("save", "Prompt Engine Studio local state saved."); }
+      function addLog(scope, message) { state.logs = [[scope, message], ...state.logs].slice(0, 16); renderLog(); localStorage.setItem(STATE_KEY, JSON.stringify(state)); }
+      function renderPacks() { $("#packSelect").innerHTML = packs.map(([id, title]) => `<option value="${id}">${title}</option>`).join(""); $("#promptGrid").innerHTML = packs.map(([id, title, version, owner, allowed, denied, output, safety, evalFixture, rollback]) => `<button class="prompt-card" type="button" data-pack="${id}" data-search="${[id,title,version,owner,allowed,denied,output,safety,evalFixture,rollback].join(' ').toLowerCase()}"><strong>${title}</strong><span>${allowed}</span><small>${id} / ${version}</small></button>`).join(""); $$(".prompt-card").forEach((card) => card.addEventListener("click", () => selectPack(card.dataset.pack))); }
+      function renderSchema() { $("#schemaGrid").innerHTML = schema.map((field) => `<button class="schema-card" type="button" data-search="${field}"><strong>${field}</strong><span>Required prompt-pack schema field before implementation.</span><small>schema</small></button>`).join(""); }
+      function renderGates() { $("#gateGrid").innerHTML = gates.map((gate) => `<button class="gate-card" type="button" data-search="${gate}"><strong>${gate}</strong><span>Evidence required before Prompt Engine can be marked implemented.</span><small>gate</small></button>`).join(""); $$(".gate-card").forEach((card) => card.addEventListener("click", () => addLog("gate", `${card.textContent.trim()} inspected.`))); }
+      function renderLog() { const time = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }); $("#activityLog").innerHTML = state.logs.map(([scope, message]) => `<div class="log-line"><b>${time} ${scope}</b><span>${message}</span></div>`).join(""); }
+      function selectedPack() { return packs.find((pack) => pack[0] === state.selected) || packs[0]; }
+      function selectPack(id) { state.selected = id; $("#packSelect").value = id; generateOutput(false); addLog("pack", `${selectedPack()[1]} selected.`); saveState(false); }
+      function generateOutput(log = true) { const [id, title, version, owner, allowed, denied, output, safety, evalFixture, rollback] = selectedPack(); const allowedContext = $("#allowedContext").value.trim(); const deniedContext = $("#deniedContext").value.trim(); $("#packOutput").textContent = JSON.stringify({ id, title, version, ownerArea: owner, intendedCapability: owner, allowedContext, deniedContext, providerCapabilityRequirements: "metadata only; no live provider call", outputSchema: output, evaluationFixture: evalFixture, rollbackNote: rollback, allowedActions: ["inspect", "summarize", "draft", "propose small reversible changes"], forbiddenActions: ["expose secrets", "copy leaked prompts", "call providers", "force push", "claim trained model ownership"], safetyBoundaries: safety, validationMethod: "focused validator plus human review", promptExecuted: false, providerCalled: false, credentialRead: false, archivePromoted: false }, null, 2); if (log) addLog("builder", `${title} metadata generated without prompt execution.`); }
+      function handleAction(action) { if (action === "save") saveState(true); if (action === "generate") generateOutput(true); if (action === "show-security") selectPack("security-review"); if (action === "show-pr") selectPack("pr-rescue"); if (action === "show-ollama") selectPack("ollama-continuation"); if (action === "reset") { localStorage.removeItem(STATE_KEY); state = { ...defaultState, logs: [...defaultState.logs] }; $("#promptSearch").value = ""; renderAll(); addLog("reset", "Prompt Engine Studio reset."); } }
+      function applySearch(value) { const needle = value.trim().toLowerCase(); $$('[data-search]').forEach((item) => item.classList.toggle("hidden", Boolean(needle) && !item.dataset.search.includes(needle))); }
+      function bind() { $("#packSelect").addEventListener("change", (event) => selectPack(event.target.value)); $$('[data-action]').forEach((item) => item.addEventListener("click", () => handleAction(item.dataset.action))); $("#promptSearch").addEventListener("input", (event) => applySearch(event.target.value)); document.addEventListener("keydown", (event) => { if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") { event.preventDefault(); $("#promptSearch").focus(); } }); }
+      function renderAll() { renderPacks(); renderSchema(); renderGates(); $("#packSelect").value = state.selected; generateOutput(false); renderLog(); $("#packCount").textContent = packs.length; $("#schemaCount").textContent = schema.length; $("#gateCount").textContent = gates.length; }
+      renderAll();
+      bind();
+    })();
+  </script>
+</body>
+</html>
