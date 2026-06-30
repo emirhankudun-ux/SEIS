@@ -39,7 +39,7 @@ resources including the 512B apex program.
 | GitHub PR state | Read-only inspected | `gh pr list --state open --limit 30` found 25 open PRs; `gh pr list --state closed --limit 30` found 13 recently closed PRs, all merged in the returned set. | Do not merge, close, or reopen without approval; triage into a dedicated PR-stack review. |
 | Public readiness | Not ready | Worktree is dirty, full secret-history scan and browser QA are incomplete. | Resolve blockers before public preparation. |
 | Release readiness | Not ready | Static build passed, but no release dry-run, tag, deployment, or rollback drill was performed. | Defer release work until review. |
-| GitHub Actions | Needs alignment | `.github/workflows/foundation-check.yml` references `npm run check:js` and `npm run package:server`, which are not declared in `package.json`. | Align CI scripts in a dedicated CI PR without weakening checks. |
+| GitHub Actions | Aligned for foundation workflow | `.github/workflows/foundation-check.yml` uses declared package scripts only; `npm run check:workspace`, `npm run check:foundation`, and `npm run check:open-source-governance` pass from the SSH clone. `check:js` is not declared in this snapshot and is no longer a foundation workflow requirement. | Keep workflow command references checked against `package.json` before adding new gates. |
 
 ## Extended Lane Status
 
