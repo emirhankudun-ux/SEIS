@@ -1,11 +1,11 @@
 # PR #54 Stage Plan
 
-Generated: 2026-06-30T14:02:27.500Z
+Generated: 2026-06-30T14:29:57.872Z
 Decision: NO-GO
 Status: review-gated-not-released
-Ready for human review: yes
-Candidate paths: 13
-Excluded paths: 3
+Ready for human review: no
+Candidate paths: 0
+Excluded paths: 0
 
 ## Scope
 
@@ -15,33 +15,18 @@ delete, reset, deploy, import Obsidian, execute SSH, or call model providers.
 
 ## Candidate Paths For One Review Slice
 
-- M reports/seis-public-demo/evidence-manifest-latest.json
-- M reports/seis-public-demo/go-no-go-latest.json
-- M reports/seis-public-demo/go-no-go-latest.md
-- M reports/seis-public-demo/pr54-review-packet-latest.md
-- M reports/seis-public-demo/pr54-stage-plan-latest.md
-- M reports/seis-public-demo/second-brain-accessibility-focus-latest.json
-- M reports/seis-public-demo/second-brain-accessibility-focus-latest.md
-- M reports/seis-public-demo/second-brain-agent-registry-latest.json
-- M reports/seis-public-demo/second-brain-agent-registry-latest.md
-- M reports/seis-public-demo/worktree-review-latest.md
-- M scripts/check-seis-second-brain-readiness-contracts.mjs
-- M scripts/create-seis-second-brain-accessibility-focus-report.mjs
-- M scripts/create-seis-second-brain-agent-registry.mjs
+- None
 
 ## Excluded Separate Workstreams
 
-- M content/development/publish-gate-contract.json (Unclassified Dirty Paths)
-- M docs/deployment/publish-gate-contract.md (Unclassified Dirty Paths)
-- M scripts/check-publish-gate-contract.mjs (Unclassified Dirty Paths)
+- None
 
 ## Human-Run Git Add Commands
 
 Run only after reviewing the diff and confirming these paths belong in the same
 PR #54 readiness slice:
 
-- `git add -- 'reports/seis-public-demo/evidence-manifest-latest.json' 'reports/seis-public-demo/go-no-go-latest.json' 'reports/seis-public-demo/go-no-go-latest.md' 'reports/seis-public-demo/pr54-review-packet-latest.md' 'reports/seis-public-demo/pr54-stage-plan-latest.md' 'reports/seis-public-demo/second-brain-accessibility-focus-latest.json' 'reports/seis-public-demo/second-brain-accessibility-focus-latest.md' 'reports/seis-public-demo/second-brain-agent-registry-latest.json'`
-- `git add -- 'reports/seis-public-demo/second-brain-agent-registry-latest.md' 'reports/seis-public-demo/worktree-review-latest.md' 'scripts/check-seis-second-brain-readiness-contracts.mjs' 'scripts/create-seis-second-brain-accessibility-focus-report.mjs' 'scripts/create-seis-second-brain-agent-registry.mjs'`
+- None
 
 ## Required Validation Before Commit
 
