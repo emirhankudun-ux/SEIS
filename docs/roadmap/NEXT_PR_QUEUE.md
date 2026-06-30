@@ -417,3 +417,4 @@ Date: 2026-06-23
 - GitHub PR classification, merge, close, reopen, or other write action.
 - Dependency installation.
 - SSH, deployment, release/tag creation, repository settings changes, secret rotation, public visibility changes, model training, benchmarks, or dataset downloads.
+- PR #104 security scan remediation: local redacted gitleaks current-tree scan isolated a `generic-api-key` false-positive candidate in the static web test i18n key fixture (`apps/web/test/scripts.test.js`), but committing a `.gitleaks.toml` allowlist requires explicit human approval as a security-policy change; full-history scan remains blocked by historical findings in commit `f3d385d6039f370de514b3dbc2907b91a96b1572` under `sources/github-unified-source/_generated/github-code-bundle.txt`; do not print values, do not blanket-allowlist the bundle, and require explicit human approval for history rewrite, affected-secret rotation, or a reviewed security baseline.
