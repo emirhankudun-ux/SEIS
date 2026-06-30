@@ -74,6 +74,23 @@ Before claiming GitHub is updated, verify:
 
 No remote update should be claimed without evidence.
 
+## Verified PR Readiness
+
+Before a SEIS pull request is marked ready for review or treated as public
+readiness evidence, verify:
+
+1. The commit list is tied to the expected GitHub account.
+2. Required signed commits show GitHub-verified signatures.
+3. Security Guardian results are read honestly, including full-history Gitleaks
+   failures.
+4. Draft PRs that are blocked by owner-required security decisions stay draft.
+5. Superseded duplicate PRs are closed only after a materially equivalent,
+   verified replacement exists.
+
+Do not weaken `.gitleaks.toml`, rewrite history, force-push, or hide failing
+checks to make a readiness claim green. Legacy secret-history findings require
+owner-approved remediation.
+
 ## Single Command Governance Closure
 
 After source changes, close the governance lane in one command:
