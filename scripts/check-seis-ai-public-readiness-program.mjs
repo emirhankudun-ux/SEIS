@@ -19,6 +19,7 @@ const paths = {
   agiPublicReadinessEvidence: "content/development/seis-agi-public-readiness-evidence.json",
   agiGithubUserReadinessGates: "content/development/seis-agi-github-user-readiness-gates.json",
   agiIndependentEvidenceLedger: "content/development/seis-agi-independent-evidence-ledger.json",
+  freshCloneReadiness: "content/development/seis-ai-fresh-clone-readiness.json",
   doc: "docs/ai/seis-ai-public-readiness-program.md",
   githubReadinessDoc: "docs/ai/seis-agi-github-user-readiness-gates.md",
   packageJson: "package.json"
@@ -38,6 +39,7 @@ const protocol = readJson(paths.agiEvaluationProtocol, "AGI evaluation protocol"
 const publicReadiness = readJson(paths.agiPublicReadinessEvidence, "AGI public readiness evidence");
 const githubGates = readJson(paths.agiGithubUserReadinessGates, "AGI GitHub user readiness gates");
 const independentLedger = readJson(paths.agiIndependentEvidenceLedger, "AGI independent evidence ledger");
+const freshCloneReadiness = readJson(paths.freshCloneReadiness, "AI fresh-clone readiness");
 const packageJson = readJson(paths.packageJson, "package.json");
 const doc = readText(paths.doc, "AI public readiness docs");
 const githubReadinessDoc = readText(paths.githubReadinessDoc, "AGI GitHub user readiness docs");
@@ -48,6 +50,10 @@ if (program) {
   ensure(program.resourceUri === "seis://ai/public-readiness-program.json", "program resource URI mismatch");
   ensure(program.qualityGate === "npm run check:seis-ai-public-readiness-program", "program qualityGate mismatch");
   ensure(program.oneCommandReadinessValidator === "npm run check:seis-ai-public-readiness", "program one-command validator mismatch");
+  ensure(program.reportCommand === "npm run report:seis-ai-public-readiness", "program report command mismatch");
+  ensure(program.reportCheck === "npm run check:seis-ai-public-readiness-report", "program report check mismatch");
+  ensure(program.reportArtifacts?.json === "reports/seis-ai-public-readiness/latest.json", "program report JSON path mismatch");
+  ensure(program.reportArtifacts?.markdown === "reports/seis-ai-public-readiness/latest.md", "program report markdown path mismatch");
   ensure(program.coreCredentialRequirement === "none", "coreCredentialRequirement must remain none");
   ensure(program.defaultRuntimeMode === "seis-local-demo", "defaultRuntimeMode must stay seis-local-demo");
   ensure(program.publicReadyForLocalDemo === true, "publicReadyForLocalDemo must be true");
@@ -88,6 +94,7 @@ if (program) {
   ensureSource(program, "agiPublicReadinessEvidence", paths.agiPublicReadinessEvidence);
   ensureSource(program, "agiGithubUserReadinessGates", paths.agiGithubUserReadinessGates);
   ensureSource(program, "agiIndependentEvidenceLedger", paths.agiIndependentEvidenceLedger);
+  ensureSource(program, "freshCloneReadiness", paths.freshCloneReadiness);
   ensureSource(program, "doc", paths.doc);
 
   ensureArrayIncludesAll(
@@ -137,6 +144,7 @@ if (program) {
 
   ensureArrayIncludesAll(program.requiredBeforeGithubReadyForEveryone, [
     "fresh clone local demo path verified",
+    "npm run check:seis-ai-fresh-clone-readiness passes on the target commit",
     "npm run check:seis-ai-public-readiness passes on the target commit",
     "required CI checks green on the target commit",
     "human release approval recorded",
@@ -184,8 +192,13 @@ ensure(protocol?.agiClaimAllowed === false, "AGI evaluation protocol must block 
 ensure(publicReadiness?.status === "blocked-missing-real-agi-evidence", "AGI public readiness evidence must stay blocked");
 ensure(githubGates?.oneCommandReadinessValidator?.command === "npm run check:seis-ai-public-readiness", "GitHub gates must expose one-command readiness validator");
 ensure(independentLedger?.status === "planned-without-independent-evidence", "independent evidence ledger must remain planned without independent evidence");
+ensure(freshCloneReadiness?.status === "contract-defined-not-release-evidence", "fresh-clone readiness must remain contract-defined");
+ensure(freshCloneReadiness?.freshCloneVerified === false, "fresh-clone readiness must not claim verified clone evidence");
 ensure(packageJson?.scripts?.["check:seis-ai-public-readiness-program"] === "node scripts/check-seis-ai-public-readiness-program.mjs", "package.json must expose check:seis-ai-public-readiness-program");
 ensure(packageJson?.scripts?.["check:seis-ai-public-readiness"] === "node scripts/check-seis-ai-public-readiness.mjs", "package.json must expose check:seis-ai-public-readiness");
+ensure(packageJson?.scripts?.["check:seis-ai-fresh-clone-readiness"] === "node scripts/check-seis-ai-fresh-clone-readiness.mjs", "package.json must expose check:seis-ai-fresh-clone-readiness");
+ensure(packageJson?.scripts?.["report:seis-ai-public-readiness"] === "node scripts/create-seis-ai-public-readiness-report.mjs --write", "package.json must expose report:seis-ai-public-readiness");
+ensure(packageJson?.scripts?.["check:seis-ai-public-readiness-report"] === "node scripts/create-seis-ai-public-readiness-report.mjs", "package.json must expose check:seis-ai-public-readiness-report");
 
 for (const [text, label] of [
   [doc, "AI public readiness docs"],

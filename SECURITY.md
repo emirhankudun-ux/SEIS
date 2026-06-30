@@ -45,6 +45,13 @@ unless a maintainer explicitly announces another supported release line.
   surfaces.
 - Prefer small, auditable fixes with clear validation.
 
+## Core Operation Mode
+
+Public-facing SEIS operation is designed for Local Demo first. Advanced provider
+features, model routing, and any cloud or SSH-capable workflows are explicitly
+opt-in and must remain in review-gated runtime modes until approval and required
+readiness checks are satisfied.
+
 ## SSH Hardening Contract
 
 SSH and firewall hardening is safety-critical because a bad sequence can lock

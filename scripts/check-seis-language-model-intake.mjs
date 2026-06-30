@@ -8,6 +8,9 @@ const failures = [];
 
 const files = {
   registry: "content/development/seis-language-model-intake-registry.json",
+  installTrainingLedger: "content/development/seis-language-model-install-training-ledger.json",
+  installTrainingLedgerReport: "reports/seis-model-scaling/seis-language-model-install-training-ledger.json",
+  knowledgeRetrievalTraining: "content/development/seis-knowledge-retrieval-training-contract.json",
   trainingPlan: "content/development/seis-ai-workforce-training-plan.json",
   trainingDoc: "docs/ai/ai-workforce-training.md",
   aiCoreDoc: "docs/ai/seis-ai-core.md",
@@ -20,6 +23,9 @@ for (const [label, relativePath] of Object.entries(files)) {
 }
 
 const registry = readJson(files.registry, "language model intake registry");
+const installTrainingLedger = readJson(files.installTrainingLedger, "language model install/training ledger");
+const installTrainingLedgerReport = readJson(files.installTrainingLedgerReport, "language model install/training ledger report");
+const knowledgeRetrievalTraining = readJson(files.knowledgeRetrievalTraining, "knowledge retrieval training contract");
 const trainingPlan = readJson(files.trainingPlan, "AI workforce training plan");
 const trainingDoc = readText(files.trainingDoc, "AI workforce training docs");
 const aiCoreDoc = readText(files.aiCoreDoc, "AI Core docs");
@@ -115,6 +121,80 @@ if (registry) {
   ], "forbiddenClaims");
 }
 
+if (installTrainingLedger && registry) {
+  ensure(installTrainingLedger.id === "seis-language-model-install-training-ledger", "install/training ledger id mismatch");
+  ensure(installTrainingLedger.status === "safety-gated-install-and-training-ledger", "install/training ledger status mismatch");
+  ensure(installTrainingLedger.qualityGate === "npm run check:seis-language-model-install-training-ledger", "install/training ledger quality gate mismatch");
+  ensure(installTrainingLedger.reportCommand === "npm run report:seis-language-model-install-training-ledger", "install/training ledger report command mismatch");
+
+  for (const [field, expected] of Object.entries({
+    allModelInstall: false,
+    languageModelDownloads: false,
+    checkpointHandling: false,
+    providerCalls: false,
+    datasetDownloads: false,
+    adapterTraining: false,
+    fineTuning: false,
+    foundationPretraining: false,
+    repoLocalSeedModelTraining: true
+  })) {
+    ensure(installTrainingLedger.approvedToday?.[field] === expected, `install/training ledger approvedToday.${field} must be ${expected}`);
+  }
+
+  const registryFamilyIds = new Set((registry.candidateModelFamilies || []).map((family) => family.id));
+  const ledgerFamilies = new Map((installTrainingLedger.modelFamilies || []).map((family) => [family.id, family]));
+  ensure(ledgerFamilies.size === registryFamilyIds.size, "install/training ledger must cover every registry family");
+  for (const familyId of registryFamilyIds) {
+    const family = ledgerFamilies.get(familyId);
+    ensure(Boolean(family), `install/training ledger missing family ${familyId}`);
+    if (!family) continue;
+    ensure(family.installDecision === "blocked-until-per-model-approval", `${familyId}: install decision must remain blocked`);
+    ensure(family.trainingDecision === "blocked-not-authorized", `${familyId}: training decision must remain blocked`);
+  }
+
+  ensure(installTrainingLedger.allowedTrainingNow?.length === 1, "ledger must allow only one current training lane");
+  ensure(installTrainingLedger.allowedTrainingNow?.[0]?.id === "repo-local-seed-models", "ledger must allow only repo-local seed training today");
+  ensure(installTrainingLedger.sourceOfTruth?.knowledgeRetrievalTraining === files.knowledgeRetrievalTraining, "install/training ledger must link knowledge retrieval training contract");
+  ensure(
+    installTrainingLedger.safeSequence?.some((step) => step.id === "knowledge-retrieval-contract" && step.status === "contract-defined-not-indexed"),
+    "install/training ledger safe sequence must include knowledge retrieval contract"
+  );
+  ensure(installTrainingLedger.publicClaims?.canClaimAllModelsInstalled === false, "ledger must forbid all-model-installed claim");
+  ensure(installTrainingLedger.publicClaims?.canClaimSEISTrainedFoundationModel === false, "ledger must forbid foundation-model training claim");
+  ensure(installTrainingLedger.publicClaims?.canClaim512BOrAGI === false, "ledger must forbid 512B/AGI claim");
+}
+
+if (installTrainingLedgerReport) {
+  ensure(installTrainingLedgerReport.status === "blocked-for-live-install-safe-for-planning", "install/training ledger report status mismatch");
+  ensure(installTrainingLedgerReport.sourceLedger === files.installTrainingLedger, "install/training ledger report source mismatch");
+  ensure(installTrainingLedgerReport.summary?.allModelInstall === false, "install/training ledger report must block all-model install");
+  ensure(installTrainingLedgerReport.summary?.foundationPretraining === false, "install/training ledger report must block foundation pretraining");
+  ensure(
+    (installTrainingLedgerReport.humanApprovalNeededBefore || []).includes("any model download"),
+    "install/training ledger report must require approval before any model download"
+  );
+}
+
+if (knowledgeRetrievalTraining) {
+  ensure(knowledgeRetrievalTraining.id === "seis-knowledge-retrieval-training-contract", "knowledge retrieval training contract id mismatch");
+  ensure(knowledgeRetrievalTraining.status === "contract-defined-not-indexed", "knowledge retrieval training contract status mismatch");
+  ensure(knowledgeRetrievalTraining.qualityGate === "npm run check:seis-knowledge-retrieval-training", "knowledge retrieval quality gate mismatch");
+  ensure(knowledgeRetrievalTraining.approvedToday?.retrievalIndexBuild === false, "knowledge retrieval must not mark retrieval index as built");
+  ensure(knowledgeRetrievalTraining.approvedToday?.embeddingModelInstall === false, "knowledge retrieval must not install embedding model");
+  ensure(knowledgeRetrievalTraining.approvedToday?.providerEmbeddingCalls === false, "knowledge retrieval must not approve provider embedding calls");
+  ensure(knowledgeRetrievalTraining.approvedToday?.trainingOnRetrievedSources === false, "knowledge retrieval must not approve training on retrieved sources");
+  ensure(knowledgeRetrievalTraining.publicClaims?.canClaimFullyKnowledgeableAI === false, "knowledge retrieval must forbid fully knowledgeable AI claim");
+  ensure(knowledgeRetrievalTraining.publicClaims?.canClaimAGI === false, "knowledge retrieval must forbid AGI claim");
+  ensure(
+    (knowledgeRetrievalTraining.sourceClasses || []).some((source) => source.id === "private-user-data" && source.status === "blocked"),
+    "knowledge retrieval must block private user data"
+  );
+  ensure(
+    (knowledgeRetrievalTraining.requiredBeforeRetrievalIndexBuild || []).includes("secret and credential scan"),
+    "knowledge retrieval index build must require secret and credential scan"
+  );
+}
+
 if (trainingPlan) {
   ensure(trainingPlan.sourceOfTruth?.languageModelIntakeRegistry === files.registry, "training plan must link language model intake registry");
   ensure(
@@ -126,6 +206,7 @@ if (trainingPlan) {
 if (trainingDoc) {
   for (const phrase of [
     "Language Model Intake Registry",
+    "Install and Training Ledger",
     "not bulk installation",
     "metadata-only",
     "retrieval first"
@@ -142,12 +223,30 @@ if (aiCoreDoc) {
 if (modelScalingDoc) {
   ensure(modelScalingDoc.includes("Language Model Intake Registry"), "model scaling docs must mention language model intake registry");
   ensure(modelScalingDoc.includes("seis-language-model-intake-registry.json"), "model scaling docs must link language model intake registry");
+  ensure(modelScalingDoc.includes("Language Model Install and Training Ledger"), "model scaling docs must mention install/training ledger");
+  ensure(modelScalingDoc.includes("seis-language-model-install-training-ledger.json"), "model scaling docs must link install/training ledger");
 }
 
 if (packageJson) {
   ensure(
     packageJson.scripts?.["check:seis-language-model-intake"] === "node scripts/check-seis-language-model-intake.mjs",
     "package.json must expose check:seis-language-model-intake"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-language-model-install-training-ledger"] === "node scripts/create-seis-language-model-install-training-ledger.mjs",
+    "package.json must expose check:seis-language-model-install-training-ledger"
+  );
+  ensure(
+    packageJson.scripts?.["report:seis-language-model-install-training-ledger"] === "node scripts/create-seis-language-model-install-training-ledger.mjs --write",
+    "package.json must expose report:seis-language-model-install-training-ledger"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-knowledge-retrieval-training"] === "node scripts/create-seis-knowledge-retrieval-training-contract.mjs",
+    "package.json must expose check:seis-knowledge-retrieval-training"
+  );
+  ensure(
+    packageJson.scripts?.["report:seis-knowledge-retrieval-training"] === "node scripts/create-seis-knowledge-retrieval-training-contract.mjs --write",
+    "package.json must expose report:seis-knowledge-retrieval-training"
   );
 }
 

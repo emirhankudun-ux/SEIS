@@ -593,6 +593,32 @@ Before 20B can move from planned target to validated local profile, SEIS needs:
 - explicit human approval for any download, training, fine-tuning, publication,
   deployment, SSH, or paid benchmark
 
+## Language Model Install and Training Ledger
+
+The active all-model request is governed by:
+
+- `content/development/seis-language-model-install-training-ledger.json`
+- `reports/seis-model-scaling/seis-language-model-install-training-ledger.md`
+
+This ledger keeps the public claim boundary strict:
+
+- all candidate language-model families remain install-blocked until a single
+  model id, license, checksum, quantization, disk/RAM budget, and rollback plan
+  are approved;
+- SEIS can rebuild deterministic local seed-model artifacts today, but that is
+  not foundation-model training;
+- 20B remains a planned local compatibility target, not a verified routeable
+  runtime;
+- 70B, 150B, 300B+, 512B, and higher classes remain research roadmap items until
+  lower gates produce real evidence.
+
+Use:
+
+```bash
+npm run report:seis-language-model-install-training-ledger
+npm run check:seis-language-model-install-training-ledger
+```
+
 ## Related Documents
 
 - [SEIS AI Core](seis-ai-core.md)

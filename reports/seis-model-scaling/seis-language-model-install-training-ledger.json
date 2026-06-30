@@ -1,0 +1,96 @@
+{
+  "id": "seis-language-model-install-training-ledger-report",
+  "generatedAt": "2026-06-30T21:37:55.320Z",
+  "status": "blocked-for-live-install-safe-for-planning",
+  "sourceLedger": "content/development/seis-language-model-install-training-ledger.json",
+  "summary": {
+    "candidateFamilyCount": 8,
+    "blockedInstallFamilyCount": 8,
+    "allModelInstall": false,
+    "languageModelDownloads": false,
+    "foundationPretraining": false,
+    "repoLocalSeedModelTraining": true
+  },
+  "safeNextCommands": [
+    "npm run check:seis-language-model-intake",
+    "npm run plan:seis-language-model-install -- --json",
+    "npm run inspect:seis-model-local-hardware",
+    "npm run automation:seis-ai-workforce-training",
+    "npm run check:seis-ai-workforce-training"
+  ],
+  "humanApprovalNeededBefore": [
+    "any model download",
+    "any checkpoint handling",
+    "any dataset download",
+    "any adapter, LoRA, fine-tune, or foundation pretraining",
+    "any provider call with repository data",
+    "any route eligibility claim",
+    "any public AGI or trained-model claim"
+  ],
+  "families": [
+    {
+      "id": "code-specialist",
+      "displayName": "Code specialist model families",
+      "installDecision": "blocked-until-per-model-approval",
+      "trainingDecision": "blocked-not-authorized",
+      "allowedLocalActionToday": "metadata-only plus clean-room code-assistant evaluation planning",
+      "nextSafeStep": "Prepare a code-eval fixture and security checks before selecting a coding checkpoint."
+    },
+    {
+      "id": "deepseek",
+      "displayName": "DeepSeek family",
+      "installDecision": "blocked-until-per-model-approval",
+      "trainingDecision": "blocked-not-authorized",
+      "allowedLocalActionToday": "metadata-only plus license/hardware review planning",
+      "nextSafeStep": "Keep candidate metadata only until a single model id, license, quantization, checksum, and rollback plan are approved."
+    },
+    {
+      "id": "embedding-and-reranker",
+      "displayName": "Embedding and reranker families",
+      "installDecision": "blocked-until-per-model-approval",
+      "trainingDecision": "blocked-not-authorized",
+      "allowedLocalActionToday": "metadata-only plus retrieval architecture planning",
+      "nextSafeStep": "Prepare a provenance-safe local retrieval pilot without downloading a checkpoint yet."
+    },
+    {
+      "id": "gemma",
+      "displayName": "Google Gemma family",
+      "installDecision": "blocked-until-per-model-approval",
+      "trainingDecision": "blocked-not-authorized",
+      "allowedLocalActionToday": "metadata-only plus license/hardware review planning",
+      "nextSafeStep": "Keep candidate metadata only until a single model id, license, quantization, checksum, and rollback plan are approved."
+    },
+    {
+      "id": "llama",
+      "displayName": "Meta Llama family",
+      "installDecision": "blocked-until-per-model-approval",
+      "trainingDecision": "blocked-not-authorized",
+      "allowedLocalActionToday": "metadata-only plus license/hardware review planning",
+      "nextSafeStep": "Keep candidate metadata only until a single model id, license, quantization, checksum, and rollback plan are approved."
+    },
+    {
+      "id": "mistral",
+      "displayName": "Mistral family",
+      "installDecision": "blocked-until-per-model-approval",
+      "trainingDecision": "blocked-not-authorized",
+      "allowedLocalActionToday": "metadata-only plus license/hardware review planning",
+      "nextSafeStep": "Keep candidate metadata only until a single model id, license, quantization, checksum, and rollback plan are approved."
+    },
+    {
+      "id": "openai-open-weight",
+      "displayName": "OpenAI open-weight candidates",
+      "installDecision": "blocked-until-per-model-approval",
+      "trainingDecision": "blocked-not-authorized",
+      "allowedLocalActionToday": "metadata-only plus license/hardware review planning",
+      "nextSafeStep": "Keep candidate metadata only until a single model id, license, quantization, checksum, and rollback plan are approved."
+    },
+    {
+      "id": "qwen",
+      "displayName": "Qwen family",
+      "installDecision": "blocked-until-per-model-approval",
+      "trainingDecision": "blocked-not-authorized",
+      "allowedLocalActionToday": "metadata-only plus license/hardware review planning",
+      "nextSafeStep": "Keep candidate metadata only until a single model id, license, quantization, checksum, and rollback plan are approved."
+    }
+  ]
+}

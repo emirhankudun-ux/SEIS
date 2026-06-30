@@ -5,6 +5,8 @@
   "resourceUri": "seis://ai/public-readiness-program.json",
   "qualityGate": "npm run check:seis-ai-public-readiness-program",
   "oneCommandReadinessValidator": "npm run check:seis-ai-public-readiness",
+  "reportCommand": "npm run report:seis-ai-public-readiness",
+  "reportCheck": "npm run check:seis-ai-public-readiness-report",
   "coreCredentialRequirement": "none",
   "defaultRuntimeMode": "seis-local-demo",
   "publicReadyForLocalDemo": true,
@@ -18,6 +20,10 @@
   "benchmarkStatus": "not-run",
   "truthBoundary": "This program defines the public GitHub readiness boundary for SEIS AI. It does not prove AGI, install models, download checkpoints, train a 512B model, run inference, run benchmarks, call providers, provision cloud/GPU resources, execute SSH, push, merge, deploy, publish checkpoints, or grant runtime authority.",
   "researchBaselineVerifiedAt": "2026-06-30",
+  "reportArtifacts": {
+    "json": "reports/seis-ai-public-readiness/latest.json",
+    "markdown": "reports/seis-ai-public-readiness/latest.md"
+  },
   "sourceOfTruth": {
     "languageModelIntakeRegistry": "content/development/seis-language-model-intake-registry.json",
     "languageModelTrainingCurriculum": "content/development/seis-language-model-training-curriculum.json",
@@ -30,6 +36,7 @@
     "agiPublicReadinessEvidence": "content/development/seis-agi-public-readiness-evidence.json",
     "agiGithubUserReadinessGates": "content/development/seis-agi-github-user-readiness-gates.json",
     "agiIndependentEvidenceLedger": "content/development/seis-agi-independent-evidence-ledger.json",
+    "freshCloneReadiness": "content/development/seis-ai-fresh-clone-readiness.json",
     "doc": "docs/ai/seis-ai-public-readiness-program.md"
   },
   "internetResearchBaseline": [
@@ -148,6 +155,7 @@
   },
   "requiredBeforeGithubReadyForEveryone": [
     "fresh clone local demo path verified",
+    "npm run check:seis-ai-fresh-clone-readiness passes on the target commit",
     "npm run check:seis-ai-public-readiness passes on the target commit",
     "required CI checks green on the target commit",
     "public README claim boundary reviewed",

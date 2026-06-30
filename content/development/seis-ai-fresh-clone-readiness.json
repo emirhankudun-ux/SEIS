@@ -1,0 +1,119 @@
+{
+  "id": "seis-ai-fresh-clone-readiness",
+  "version": "2026.06.30",
+  "status": "contract-defined-not-release-evidence",
+  "resourceUri": "seis://ai/fresh-clone-readiness.json",
+  "qualityGate": "npm run check:seis-ai-fresh-clone-readiness",
+  "coreCredentialRequirement": "none",
+  "defaultRuntimeMode": "seis-local-demo",
+  "freshCloneVerified": false,
+  "githubReadyForEveryone": false,
+  "publicReadyForLocalDemo": true,
+  "publicReadyAsAgi": false,
+  "routeEligibleToday": false,
+  "runtimeAuthority": false,
+  "truthBoundary": "This contract defines the fresh-clone readiness requirements for SEIS AI. It does not perform a network clone, install models, download checkpoints, train models, run inference, call providers, provision cloud/GPU resources, execute SSH, push, merge, deploy, release, grant runtime authority, or prove AGI.",
+  "sourceOfTruth": {
+    "publicReadinessProgram": "content/development/seis-ai-public-readiness-program.json",
+    "githubUserReadinessGates": "content/development/seis-agi-github-user-readiness-gates.json",
+    "agiPublicReadinessEvidence": "content/development/seis-agi-public-readiness-evidence.json",
+    "readme": "README.md",
+    "securityPolicy": "SECURITY.md",
+    "packageJson": "package.json",
+    "doc": "docs/ai/seis-ai-fresh-clone-readiness.md"
+  },
+  "githubPublicReadinessBaseline": [
+    {
+      "id": "readme-start-path",
+      "source": "https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes",
+      "requirement": "README explains what the project does, why it is useful, how to get started, where to get help, and contribution expectations.",
+      "seisCheck": "README must mention Local Demo, no-key AI mode, AI public readiness, and the one-command readiness validator."
+    },
+    {
+      "id": "security-policy",
+      "source": "https://docs.github.com/en/code-security/getting-started/quickstart-for-securing-your-repository",
+      "requirement": "Public users need a security policy and vulnerability reporting path.",
+      "seisCheck": "SECURITY.md must exist and AI readiness must block secrets, provider keys, SSH keys, and release without approval."
+    },
+    {
+      "id": "code-security",
+      "source": "https://docs.github.com/en/code-security/getting-started/quickstart-for-securing-your-repository",
+      "requirement": "Code scanning and secret protection are part of repository security readiness.",
+      "seisCheck": "AI fresh-clone readiness must require secret scanning, push protection, code scanning, and dependency review before everyone-ready release."
+    }
+  ],
+  "requiredFreshCloneCommands": [
+    "npm run check:seis-ai-public-readiness",
+    "npm run check:seis-ai-public-readiness-program",
+    "npm run check:seis-ai-fresh-clone-readiness"
+  ],
+  "freshCloneAcceptanceGates": [
+    {
+      "id": "install-and-no-key-start",
+      "status": "required-before-everyone-ready",
+      "requiredEvidence": ["fresh clone install log", "zero-key Local Demo readiness log", "no provider-key requirement"],
+      "blocksGithubReadyForEveryone": true,
+      "blocksAgiClaim": true
+    },
+    {
+      "id": "ai-readiness-validator",
+      "status": "available",
+      "requiredEvidence": [
+        "npm run check:seis-ai-public-readiness passes",
+        "npm run check:seis-ai-public-readiness-program passes"
+      ],
+      "blocksGithubReadyForEveryone": false,
+      "blocksAgiClaim": true
+    },
+    {
+      "id": "security-and-secret-boundary",
+      "status": "required-before-everyone-ready",
+      "requiredEvidence": ["secret scan evidence", "SECURITY.md reviewed", "no .env or private key exposure"],
+      "blocksGithubReadyForEveryone": true,
+      "blocksAgiClaim": true
+    },
+    {
+      "id": "public-claim-review",
+      "status": "required-before-everyone-ready",
+      "requiredEvidence": ["README claim boundary reviewed", "AGI and 512B forbidden claims preserved", "human approval recorded"],
+      "blocksGithubReadyForEveryone": true,
+      "blocksAgiClaim": true
+    },
+    {
+      "id": "release-and-rollback",
+      "status": "approval-gated",
+      "requiredEvidence": ["release notes", "rollback plan", "maintainer approval"],
+      "blocksGithubReadyForEveryone": true,
+      "blocksAgiClaim": true
+    }
+  ],
+  "requiredBeforeFreshCloneVerified": [
+    "fresh clone created from the target commit",
+    "dependencies installed without secrets",
+    "npm run check:seis-ai-public-readiness passes in the clone",
+    "README Local Demo instructions reviewed",
+    "SECURITY.md reviewed",
+    "secret scan completed",
+    "human reviewer records the target commit and environment"
+  ],
+  "requiredBeforeGithubReadyForEveryone": [
+    "freshCloneVerified is true",
+    "all freshCloneAcceptanceGates are satisfied or explicitly approved",
+    "all required CI checks green on the target commit",
+    "human release approval recorded",
+    "release notes and rollback plan accepted",
+    "AGI and 512B claim boundaries preserved"
+  ],
+  "forbiddenClaims": [
+    "Fresh clone success proves AGI.",
+    "Fresh clone success proves 512B inference.",
+    "Local Demo is a trained 512B model.",
+    "A passing readiness validator grants runtime authority.",
+    "A public README can replace model cards, dataset cards, benchmark reports, or training logs."
+  ],
+  "nextSafeActions": [
+    "Run npm run check:seis-ai-fresh-clone-readiness before changing AI public readiness claims.",
+    "Record a real fresh-clone evidence report only after the target commit is selected.",
+    "Keep githubReadyForEveryone false until fresh-clone evidence, CI, security, release notes, rollback, and human approval exist."
+  ]
+}
