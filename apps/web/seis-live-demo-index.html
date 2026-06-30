@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SEIS Live Demo Index</title>
+    <meta
+      name="description"
+      content="A browser-local SEIS live demo index that opens verified demo artifacts and labels mock or planned modules honestly."
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        --ink: #f8f6ef;
+        --muted: #aab1bf;
+        --dim: #747d8d;
+        --black: #050608;
+        --panel: rgba(17, 22, 31, 0.78);
+        --panel-strong: rgba(25, 31, 43, 0.92);
+        --line: rgba(255, 255, 255, 0.13);
+        --cyan: #64e7ff;
+        --blue: #78a4ff;
+        --violet: #b99cff;
+        --amber: #ffc06e;
+        --green: #83e6ac;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        color: var(--ink);
+        font-family:
+          ui-sans-serif,
+          -apple-system,
+          BlinkMacSystemFont,
+          "SF Pro Display",
+          "Segoe UI",
+          sans-serif;
+        background:
+          radial-gradient(circle at 16% 6%, rgba(100, 231, 255, 0.2), transparent 28rem),
+          radial-gradient(circle at 82% 16%, rgba(185, 156, 255, 0.16), transparent 26rem),
+          linear-gradient(135deg, #050608, #101724 48%, #07090d);
+      }
+
+      body::before {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        content: "";
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+        background-size: 72px 72px;
+        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.66), transparent 74%);
+      }
+
+      a,
+      button {
+        min-height: 44px;
+      }
+
+      a:focus-visible,
+      button:focus-visible {
+        outline: 0;
+        box-shadow: 0 0 0 3px rgba(100, 231, 255, 0.3);
+      }
+
+      .shell {
+        width: min(1440px, calc(100vw - 28px));
+        margin: 0 auto;
+        padding: 28px 0 44px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 12px 14px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(5, 6, 8, 0.72);
+        backdrop-filter: blur(18px);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .mark {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        place-items: center;
+        border: 1px solid rgba(100, 231, 255, 0.42);
+        border-radius: 14px;
+        color: var(--cyan);
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        background: rgba(255, 255, 255, 0.055);
+      }
+
+      .eyebrow {
+        margin: 0;
+        color: var(--cyan);
+        font-size: 11px;
+        font-weight: 850;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .brand strong {
+        display: block;
+        overflow: hidden;
+        font-size: 14px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.62fr);
+        gap: 18px;
+        margin-top: 22px;
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 30px;
+        background:
+          linear-gradient(145deg, rgba(255, 255, 255, 0.095), rgba(255, 255, 255, 0.026)),
+          var(--panel);
+        box-shadow: 0 28px 92px rgba(0, 0, 0, 0.45);
+        backdrop-filter: blur(24px);
+      }
+
+      .hero-main {
+        padding: clamp(28px, 5vw, 62px);
+      }
+
+      h1 {
+        max-width: 940px;
+        margin: 14px 0 18px;
+        font-size: clamp(42px, 7vw, 104px);
+        line-height: 0.88;
+        letter-spacing: -0.078em;
+      }
+
+      .hero-main p {
+        max-width: 780px;
+        margin: 0;
+        color: var(--muted);
+        font-size: clamp(16px, 2vw, 20px);
+        line-height: 1.64;
+      }
+
+      .hero-actions,
+      .top-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+      }
+
+      .hero-actions {
+        margin-top: 24px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 11px 15px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--ink);
+        font: inherit;
+        text-decoration: none;
+      }
+
+      .button.primary {
+        border-color: transparent;
+        background: linear-gradient(135deg, var(--cyan), var(--blue));
+        color: #061017;
+        font-weight: 850;
+      }
+
+      .proof {
+        display: grid;
+        gap: 10px;
+        padding: 18px;
+      }
+
+      .metric {
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background: rgba(0, 0, 0, 0.2);
+      }
+
+      .metric strong {
+        display: block;
+        font-size: 30px;
+        letter-spacing: -0.04em;
+      }
+
+      .metric span {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .section-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 18px;
+        margin: 28px 0 14px;
+      }
+
+      .section-head h2 {
+        margin: 0;
+        font-size: clamp(26px, 3vw, 44px);
+        letter-spacing: -0.055em;
+      }
+
+      .section-head p {
+        max-width: 680px;
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .demo-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 280px;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background:
+          radial-gradient(circle at 20% 0%, rgba(100, 231, 255, 0.11), transparent 14rem),
+          var(--panel);
+      }
+
+      .demo-card h3 {
+        margin: 12px 0 10px;
+        font-size: 24px;
+        letter-spacing: -0.04em;
+      }
+
+      .demo-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.55;
+      }
+
+      .state {
+        display: inline-flex;
+        width: fit-content;
+        align-items: center;
+        gap: 7px;
+        padding: 6px 10px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 850;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+      }
+
+      .state::before {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        content: "";
+        background: currentColor;
+      }
+
+      .state[data-state="real"] {
+        color: var(--green);
+      }
+
+      .state[data-state="mock"] {
+        color: var(--amber);
+      }
+
+      .state[data-state="planned"] {
+        color: var(--violet);
+      }
+
+      .card-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 18px;
+      }
+
+      .card-actions .button {
+        flex: 1;
+        min-width: 140px;
+        font-size: 13px;
+      }
+
+      .flow {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .step {
+        padding: 13px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.045);
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .step strong {
+        display: block;
+        margin-bottom: 7px;
+        color: var(--ink);
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .notice {
+        margin-top: 18px;
+        padding: 16px;
+        border: 1px solid rgba(255, 192, 110, 0.34);
+        border-radius: 22px;
+        background: rgba(255, 192, 110, 0.08);
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      @media (max-width: 1180px) {
+        .hero,
+        .grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .hero-main {
+          grid-column: 1 / -1;
+        }
+
+        .flow {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 720px) {
+        .shell {
+          width: min(100% - 18px, 1440px);
+          padding-top: 10px;
+        }
+
+        .topbar,
+        .section-head {
+          align-items: stretch;
+          flex-direction: column;
+        }
+
+        .hero,
+        .grid,
+        .flow {
+          grid-template-columns: 1fr;
+        }
+
+        .button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body data-seis-live-demo-index>
+    <div class="shell">
+      <header class="topbar" aria-label="SEIS live demo top bar">
+        <div class="brand">
+          <div class="mark" aria-hidden="true">S</div>
+          <div>
+            <p class="eyebrow">SEIS Live Demo Index</p>
+            <strong>Verified local entry points for the AI-native creative OS demo</strong>
+          </div>
+        </div>
+        <nav class="top-actions" aria-label="Primary demo links">
+          <a class="button" href="./index.html" data-real-route="index.html">Website</a>
+          <a class="button" href="./desktop.html" data-real-route="desktop.html">Desktop</a>
+          <a class="button" href="./seis-linux-replica.html" data-real-route="seis-linux-replica.html">Linux Replica</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero" aria-labelledby="demo-title">
+          <div class="card hero-main">
+            <p class="eyebrow">No reset, no fake live claims</p>
+            <h1 id="demo-title">Start the SEIS demo from one stable local index.</h1>
+            <p>
+              This page gives reviewers a durable entry point for the current SEIS browser demo. Real artifacts open
+              directly. Mock and planned modules are labeled so the demo stays honest while the ecosystem grows.
+            </p>
+            <div class="hero-actions">
+              <a class="button primary" href="./desktop.html" data-real-route="desktop.html">Launch Desktop OS</a>
+              <a class="button" href="./seis-linux-replica.html" data-real-route="seis-linux-replica.html">Open Linux-like Demo</a>
+              <a class="button" href="./seis-code.html" data-real-route="seis-code.html">Open SEIS Code</a>
+              <a class="button" href="./wow-gallery.html" data-real-route="wow-gallery.html">Open WOW Gallery</a>
+            </div>
+          </div>
+          <aside class="card proof" aria-label="Demo proof">
+            <div class="metric">
+              <strong>5</strong>
+              <span>Verified local route files linked as real demo artifacts.</span>
+            </div>
+            <div class="metric">
+              <strong>15</strong>
+              <span>Required demo beats tracked from landing to final showcase.</span>
+            </div>
+            <div class="metric">
+              <strong>0 keys</strong>
+              <span>No provider secrets, SSH keys, GitHub tokens, or deployment credentials.</span>
+            </div>
+          </aside>
+        </section>
+
+        <section aria-labelledby="real-artifacts">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Real local artifacts</p>
+              <h2 id="real-artifacts">Open what exists now</h2>
+            </div>
+            <p>These cards link only to files that must exist in `apps/web` for the validator to pass.</p>
+          </div>
+          <div class="grid">
+            <article class="demo-card">
+              <div>
+                <span class="state" data-state="real">real</span>
+                <h3>SEIS Website</h3>
+                <p>Public landing entry for the premium product story and showcase route.</p>
+              </div>
+              <div class="card-actions"><a class="button" href="./index.html" data-real-route="index.html">Open Website</a></div>
+            </article>
+            <article class="demo-card">
+              <div>
+                <span class="state" data-state="real">real</span>
+                <h3>Desktop OS</h3>
+                <p>Browser desktop shell with SEIS identity, app surfaces, and command-center framing.</p>
+              </div>
+              <div class="card-actions"><a class="button" href="./desktop.html" data-real-route="desktop.html">Open Desktop</a></div>
+            </article>
+            <article class="demo-card">
+              <div>
+                <span class="state" data-state="real">real</span>
+                <h3>Linux Replica</h3>
+                <p>Linux-like browser demo surface built around preserved supplied reference assets.</p>
+              </div>
+              <div class="card-actions"><a class="button" href="./seis-linux-replica.html" data-real-route="seis-linux-replica.html">Open Replica</a></div>
+            </article>
+            <article class="demo-card">
+              <div>
+                <span class="state" data-state="real">real</span>
+                <h3>SEIS Code</h3>
+                <p>Browser IDE artifact for AI-native engineering, code review, and repo workflow demos.</p>
+              </div>
+              <div class="card-actions"><a class="button" href="./seis-code.html" data-real-route="seis-code.html">Open IDE</a></div>
+            </article>
+            <article class="demo-card">
+              <div>
+                <span class="state" data-state="real">real</span>
+                <h3>WOW Gallery</h3>
+                <p>Cinematic visual showcase for product-quality presentation surfaces.</p>
+              </div>
+              <div class="card-actions"><a class="button" href="./wow-gallery.html" data-real-route="wow-gallery.html">Open Gallery</a></div>
+            </article>
+          </div>
+        </section>
+
+        <section aria-labelledby="demo-flow">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Presentation flow</p>
+              <h2 id="demo-flow">The full SEIS story stays visible</h2>
+            </div>
+            <p>Each beat maps back to the master SEIS demo requirement and can be implemented deeper in future PRs.</p>
+          </div>
+          <div class="flow" data-demo-flow>
+            <div class="step"><strong>01</strong>Opening cinematic landing page</div>
+            <div class="step"><strong>02</strong>Command Center appears</div>
+            <div class="step"><strong>03</strong>User opens SEIS Desktop</div>
+            <div class="step"><strong>04</strong>Desktop shows apps and system status</div>
+            <div class="step"><strong>05</strong>User opens SEIS AI Core</div>
+            <div class="step"><strong>06</strong>Provider registry and model router shown</div>
+            <div class="step"><strong>07</strong>User opens SEIS Code</div>
+            <div class="step"><strong>08</strong>Browser IDE shows mock repo and AI panel</div>
+            <div class="step"><strong>09</strong>User opens SEIS Design</div>
+            <div class="step"><strong>10</strong>Design tokens and premium components shown</div>
+            <div class="step"><strong>11</strong>User opens SEIS Search</div>
+            <div class="step"><strong>12</strong>Search finds modules/docs/agents</div>
+            <div class="step"><strong>13</strong>User opens Cloud/SSH</div>
+            <div class="step"><strong>14</strong>GitHub/CI/status logs shown</div>
+            <div class="step"><strong>15</strong>Final Showcase summarizes SEIS ecosystem</div>
+          </div>
+        </section>
+
+        <section aria-labelledby="future-modules">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Honest module status</p>
+              <h2 id="future-modules">Mock and planned are not hidden</h2>
+            </div>
+            <p>These modules remain part of the product scope, but this page does not pretend they are live integrations.</p>
+          </div>
+          <div class="grid">
+            <article class="demo-card">
+              <div>
+                <span class="state" data-state="mock">mock</span>
+                <h3>AI Core and Model Router</h3>
+                <p>Demo-safe orchestration, provider metadata, local mode, and agent planning. No live provider calls.</p>
+              </div>
+            </article>
+            <article class="demo-card">
+              <div>
+                <span class="state" data-state="mock">mock</span>
+                <h3>Search, Design, Cloud, Files</h3>
+                <p>Interactive product concepts remain labeled until each module is verified as live.</p>
+              </div>
+            </article>
+            <article class="demo-card">
+              <div>
+                <span class="state" data-state="planned">planned</span>
+                <h3>Store, Music, Plugins</h3>
+                <p>Required ecosystem apps are planned and should be implemented in scoped follow-up PRs.</p>
+              </div>
+            </article>
+            <article class="demo-card">
+              <div>
+                <span class="state" data-state="planned">planned</span>
+                <h3>Live GitHub, SSH, Cloud AI</h3>
+                <p>Future backend-only integrations. This browser page performs no remote mutation.</p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="notice" aria-label="Security and honesty boundary">
+          Browser-local demo only. This index does not execute SSH, call GitHub, deploy, call AI providers, request
+          credentials, store secrets, or weaken branch protection. Real links point to existing local files; mock and
+          planned states stay visible.
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
