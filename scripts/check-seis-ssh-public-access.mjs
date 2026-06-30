@@ -10,6 +10,7 @@ const files = {
   roadmap: "deploy/seis-ssh-cloud-roadmap.json",
   packageJson: "package.json",
   runbook: "docs/deployment/seis-ssh-public-github-access.md",
+  codexGitHandoff: "docs/deployment/seis-codex-git-ssh-handoff.md",
   accessDoc: "docs/deployment/seis-ssh-access-model.md",
   roadmapDoc: "docs/deployment/seis-ssh-cloud-roadmap.md",
   readme: "README.md",
@@ -40,6 +41,7 @@ ensure(contract?.targetAlias === "SEIS-SSH", "public access contract must target
 ensure(contract?.sourceModel === files.accessModel, "public access contract must link access model");
 ensure(contract?.sourceRoadmap === files.roadmap, "public access contract must link roadmap");
 ensure(contract?.qualityGate === "npm run check:seis-ssh-public-access", "public access contract must expose quality gate");
+ensure((contract?.evidenceSurfaces || []).includes(files.codexGitHandoff), "public access contract must cite Codex Git SSH handoff");
 
 const serverPolicy = contract?.serverAndPortPolicy || {};
 ensure(serverPolicy.mode === "preserve-existing-server-and-port", "server and port policy must preserve existing target");
@@ -104,6 +106,7 @@ for (const gate of [
 
 const docs = [
   files.runbook,
+  files.codexGitHandoff,
   files.accessDoc,
   files.roadmapDoc,
   files.readme,
@@ -125,6 +128,9 @@ for (const token of [
   "npm run check:seis-ssh-live-readiness-evidence",
   "deploy/seis-ssh-public-access-contract.json",
   "docs/deployment/seis-ssh-public-github-access.md",
+  "docs/deployment/seis-codex-git-ssh-handoff.md",
+  "Codex Git SSH Handoff",
+  "GitHub Git SSH transport and SSH commit signing",
   "content/development/seis-ssh-live-readiness-evidence.json",
   "docs/deployment/seis-ssh-live-readiness-evidence.md"
 ]) {
@@ -188,6 +194,7 @@ ensure((liveEvidence?.claimsForbidden || []).includes("Do not claim SEIS-SSH is 
 for (const file of [
   files.contract,
   files.runbook,
+  files.codexGitHandoff,
   files.liveEvidence,
   files.liveEvidenceDoc,
   files.liveEvidenceScript,

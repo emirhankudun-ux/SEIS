@@ -22,6 +22,17 @@ Local Codex work must stay compatible with that flow:
 7. Do not push, archive, privatize, delete, or transfer repositories without
    explicit maintainer confirmation.
 
+## GitHub SSH Handoff
+
+Codex may use the SEIS SSH clone for GitHub Git operations when the repo-local
+SSH command, signing key, GitHub auth, and remote probe are verified. The
+public-safe procedure lives in
+[`docs/deployment/seis-codex-git-ssh-handoff.md`](./docs/deployment/seis-codex-git-ssh-handoff.md).
+
+This handoff is not the same as `SEIS-SSH` live cloud readiness. A working
+GitHub SSH clone can support branch, commit, push, and PR work, but mobile 24/7
+or remote-runtime claims still require the strict `SEIS-SSH` evidence gates.
+
 ## Primary Identities
 
 Codex work should route through the SEIS identity map:

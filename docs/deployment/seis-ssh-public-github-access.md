@@ -13,6 +13,11 @@ Ayni sunucu ve baglanti noktasi korunur.
 The public promise is simple: one memorable alias, clear evidence, no secrets
 in git, no fake online status, and no local-Mac dependency.
 
+Codex GitHub SSH clone work is tracked separately in
+[`seis-codex-git-ssh-handoff.md`](./seis-codex-git-ssh-handoff.md). That handoff
+can prove GitHub Git transport and SSH commit signing, but it does not prove
+`SEIS-SSH` live runtime or mobile 24/7 readiness.
+
 ## What Is Real Today
 
 - `SEIS-SSH` is the only visible SEIS SSH alias.

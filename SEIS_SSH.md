@@ -23,6 +23,16 @@ safe contributor onboarding and review.
 2. Validate with local scripts and browser gates.
 3. Use SEIS-SSH docs only for planning, readiness, and migration notes.
 
+## Codex GitHub SSH handoff
+
+Codex may use a GitHub SSH clone for branch, commit, push, and pull-request
+work without claiming the live `SEIS-SSH` cloud runtime is online.
+
+Public-safe handoff rules live in
+`docs/deployment/seis-codex-git-ssh-handoff.md`. That runbook separates GitHub
+Git SSH transport and SSH commit signing from direct-cloud/mobile 24/7
+readiness.
+
 ## Remote workspace concept
 
 GitHub Codespaces and cloud shells are optional targets. They require:
