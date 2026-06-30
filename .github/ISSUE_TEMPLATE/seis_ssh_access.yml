@@ -1,0 +1,107 @@
+name: SEIS SSH access support
+description: Get help with SEIS-SSH setup, first-run checks, picker warnings, or blocked live-readiness evidence without sharing secrets.
+title: "[SEIS-SSH] "
+labels: ["seis-ssh", "support"]
+assignees:
+  - emirhankudun-ux
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for public `SEIS-SSH` setup and access support.
+
+        Core invariant:
+
+        `Keep the same server and port.`
+
+        `Ayni sunucu ve baglanti noktasi korunur.`
+
+        Do not paste private keys, tokens, passwords, cookies, `.env` values, full hostnames, full IP addresses, or provider credentials. If this is a vulnerability, stop and follow `SECURITY.md` instead of opening a public issue.
+  - type: dropdown
+    id: user_type
+    attributes:
+      label: User type
+      description: Pick the closest public access path.
+      options:
+        - GitHub contributor
+        - Individual SEIS user
+        - ChatGPT/Codex user
+        - Maintainer
+        - Company or team
+    validations:
+      required: true
+  - type: dropdown
+    id: support_case
+    attributes:
+      label: What do you need help with?
+      description: Choose the safest matching SEIS-SSH support case.
+      options:
+        - First-run setup
+        - Troubleshooting guide
+        - Contributor doctor
+        - Codespaces picker warning
+        - GitHub Codespaces billing blocker
+        - Live-ready claim review
+        - Same server and port preservation
+        - Other public SEIS-SSH question
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety_confirmations
+    attributes:
+      label: Safety confirmations
+      description: Confirm the public issue does not expose private material or request unsafe SSH changes.
+      options:
+        - label: I did not paste private keys, tokens, passwords, cookies, `.env` values, full hostnames, full IP addresses, or provider credentials.
+          required: true
+        - label: I am not asking to change the `SEIS-SSH` server or port without maintainer approval.
+          required: true
+        - label: No live SSH session was attempted unless a maintainer explicitly approved it.
+          required: true
+  - type: textarea
+    id: commands
+    attributes:
+      label: Commands run
+      description: List only command names and high-level results. Redact paths, hostnames, IPs, and account names.
+      placeholder: |
+        npm run run:seis-ssh-public-first-run -> passed / warning / failed
+        npm run run:seis-ssh-public-troubleshooting -> passed / warning / failed
+        npm run report:seis-ssh-public-contributor-doctor -> passed / warning / failed
+    validations:
+      required: true
+  - type: textarea
+    id: sanitized_status
+    attributes:
+      label: Sanitized status
+      description: Paste only sanitized status labels, warning IDs, or blocker IDs from generated reports. Do not paste full `ssh -G` output.
+      placeholder: |
+        status: setup-needed / review-ready / blocked
+        transport: codespace / direct-cloud / unknown
+        port: 22 / configured / unknown
+        warnings: codespaces-picker-warning, live-readiness-blocked-by-billing
+    validations:
+      required: true
+  - type: textarea
+    id: expected_outcome
+    attributes:
+      label: Expected outcome
+      description: Describe what you expected SEIS-SSH to do without requesting shared credentials or unsafe endpoint changes.
+    validations:
+      required: true
+  - type: textarea
+    id: actual_outcome
+    attributes:
+      label: Actual outcome
+      description: Describe what happened using sanitized messages only.
+    validations:
+      required: true
+  - type: checkboxes
+    id: next_actions
+    attributes:
+      label: Requested next action
+      options:
+        - label: Confirm the right read-only command to run next.
+        - label: Review whether this is a known Codespaces picker warning.
+        - label: Review whether this is the current GitHub Codespaces billing blocker.
+        - label: Review documentation or onboarding copy.
+        - label: Escalate to maintainer-only live SSH approval.

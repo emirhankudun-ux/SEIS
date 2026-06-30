@@ -48,6 +48,7 @@ Date: 2026-06-23
 | [operations/seis-cloud-foundation.md](operations/seis-cloud-foundation.md) | Cloud, deployment, and SSH safety foundation. |
 | [deployment/seis-ssh-public-github-access.md](deployment/seis-ssh-public-github-access.md) | SEIS SSH Public GitHub Access runbook: `SEIS-SSH`, same server/port preservation, and public onboarding gates. |
 | [deployment/seis-ssh-live-readiness-evidence.md](deployment/seis-ssh-live-readiness-evidence.md) | Latest approval-gated `SEIS-SSH` live probe evidence, currently blocked by GitHub Codespaces billing while preserving the same server and port. |
+| [../.github/ISSUE_TEMPLATE/seis_ssh_access.yml](../.github/ISSUE_TEMPLATE/seis_ssh_access.yml) | Secret-safe GitHub issue form for public `SEIS-SSH` first-run, troubleshooting, contributor doctor, picker warning, and billing blocker support. |
 | [platform/big-tech-mcp-skill-inventory.md](platform/big-tech-mcp-skill-inventory.md) | Google, Kimi, Claude, Apple, Windows/Microsoft, and major technology MCP/skill/plugin inventory. |
 | [product/seis-code-foundation.md](product/seis-code-foundation.md) | SEIS Code workspace foundation. |
 | [reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md](reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md) | Browser-smoke evidence for SEIS Code, Mythic Gacha, SEIS Linux Replica, and shared workspace export behavior. |

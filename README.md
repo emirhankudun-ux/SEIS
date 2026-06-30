@@ -212,6 +212,12 @@ existing `SEIS-SSH` server and port.
 doctor for GitHub users. It checks local tools and the sanitized `SEIS-SSH`
 snapshot without contacting GitHub, opening SSH, or writing SSH config.
 
+GitHub users can open the `SEIS SSH access support` issue form when they need
+help with first-run setup, troubleshooting, contributor doctor output,
+Codespaces picker warnings, or the current billing blocker. The form requires
+secret-safety confirmations and keeps the same `SEIS-SSH` server and port
+invariant visible before a public issue is submitted.
+
 The latest approval-gated live probe is tracked in
 `content/development/seis-ssh-live-readiness-evidence.json` and
 `docs/deployment/seis-ssh-live-readiness-evidence.md`. As of 2026-06-29, live

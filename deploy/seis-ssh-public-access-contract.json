@@ -37,8 +37,9 @@
     "requiredInvariant": "Do not change the current SEIS-SSH server or connection port during onboarding, docs, checks, demos, or config generation unless the human owner explicitly approves endpoint migration."
   },
   "githubExperience": {
-    "publicPromise": "One memorable SEIS-SSH entrypoint, no secrets in git, no fake online status, no local Mac dependency, and a contributor-friendly runbook.",
+    "publicPromise": "One memorable SEIS-SSH entrypoint, no secrets in git, no fake online status, no local Mac dependency, a contributor-friendly runbook, and a secret-safe GitHub support form.",
     "visibleName": "SEIS-SSH",
+    "supportIssueTemplate": ".github/ISSUE_TEMPLATE/seis_ssh_access.yml",
     "openSourceStatus": "review-ready-contract",
     "claimAllowedOnlyWhen": [
       "SEIS-SSH remains the only visible SEIS SSH alias",
@@ -67,6 +68,7 @@
         "run the read-only first-run guide",
         "run the read-only troubleshooting guide",
         "run the read-only contributor doctor",
+        "open the secret-safe GitHub issue form",
         "open the SEIS Cloud demo surface"
       ],
       "forbiddenActions": [
@@ -127,6 +129,7 @@
     "scripts/check-seis-ssh-live-readiness-evidence.mjs",
     "content/development/seis-ssh-live-readiness-evidence.json",
     "docs/deployment/seis-ssh-live-readiness-evidence.md",
+    ".github/ISSUE_TEMPLATE/seis_ssh_access.yml",
     "apps/web/desktop.js",
     "README.md",
     "docs/STATUS.md",

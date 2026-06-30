@@ -17,6 +17,7 @@ const files = {
   status: "docs/STATUS.md",
   backlog: "docs/roadmap/MASTER_BACKLOG.md",
   queue: "docs/roadmap/NEXT_PR_QUEUE.md",
+  issueTemplate: ".github/ISSUE_TEMPLATE/seis_ssh_access.yml",
   desktop: "apps/web/desktop.js",
   reportScript: "scripts/create-seis-ssh-public-access-report.mjs",
   firstRunScript: "scripts/create-seis-ssh-public-first-run.mjs",
@@ -53,7 +54,10 @@ ensure((serverPolicy.forbiddenActions || []).includes("change-host-to-localhost"
 ensure((serverPolicy.forbiddenActions || []).includes("create-new-visible-alias-for-same-target"), "contract must forbid duplicate visible aliases");
 const githubReader = (contract?.profiles || []).find((profile) => profile.id === "github-reader") || {};
 const individualUser = (contract?.profiles || []).find((profile) => profile.id === "individual-user") || {};
+ensure(contract?.githubExperience?.supportIssueTemplate === files.issueTemplate, "public access contract must link SEIS-SSH support issue template");
+ensure((contract?.evidenceSurfaces || []).includes(files.issueTemplate), "public access contract must include support issue template evidence surface");
 ensure((githubReader.allowedActions || []).includes("run the read-only contributor doctor"), "github-reader profile must allow contributor doctor");
+ensure((githubReader.allowedActions || []).includes("open the secret-safe GitHub issue form"), "github-reader profile must allow secret-safe issue form");
 ensure((individualUser.requiredEvidence || []).includes("npm run check:seis-ssh-public-contributor-doctor"), "individual-user profile must require contributor doctor evidence");
 
 ensure(accessModel?.publicAccessContract === files.contract, "access model must link public access contract");
@@ -128,7 +132,8 @@ const docs = [
   files.index,
   files.status,
   files.backlog,
-  files.queue
+  files.queue,
+  files.issueTemplate
 ].map(read).join("\n");
 
 for (const token of [
@@ -148,9 +153,28 @@ for (const token of [
   "deploy/seis-ssh-public-access-contract.json",
   "docs/deployment/seis-ssh-public-github-access.md",
   "content/development/seis-ssh-live-readiness-evidence.json",
-  "docs/deployment/seis-ssh-live-readiness-evidence.md"
+  "docs/deployment/seis-ssh-live-readiness-evidence.md",
+  ".github/ISSUE_TEMPLATE/seis_ssh_access.yml",
+  "SEIS SSH access support"
 ]) {
   ensure(docs.includes(token), `docs must include ${token}`);
+}
+
+const issueTemplate = read(files.issueTemplate);
+for (const token of [
+  "name: SEIS SSH access support",
+  "title: \"[SEIS-SSH] \"",
+  "Keep the same server and port.",
+  "Ayni sunucu ve baglanti noktasi korunur.",
+  "Do not paste private keys, tokens, passwords, cookies, `.env` values, full hostnames, full IP addresses, or provider credentials.",
+  "npm run run:seis-ssh-public-first-run",
+  "npm run run:seis-ssh-public-troubleshooting",
+  "npm run report:seis-ssh-public-contributor-doctor",
+  "No live SSH session was attempted",
+  "GitHub Codespaces billing blocker",
+  "Codespaces picker warning"
+]) {
+  ensure(issueTemplate.includes(token), `SEIS-SSH issue template must include ${token}`);
 }
 
 const desktop = read(files.desktop);
@@ -251,6 +275,7 @@ for (const file of [
   files.status,
   files.backlog,
   files.queue,
+  files.issueTemplate,
   files.desktop
 ]) {
   requireNotMatches(file, /sk-[A-Za-z0-9_-]{20,}/, "OpenAI-style API keys");

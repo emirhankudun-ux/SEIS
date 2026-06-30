@@ -149,6 +149,15 @@ snapshot without contacting GitHub, opening SSH, or writing SSH config. Use it
 when a contributor says "will this work on my machine?" before any live SSH or
 endpoint migration is considered.
 
+If a contributor still needs help, they should open the `SEIS SSH access
+support` issue form at
+`.github/ISSUE_TEMPLATE/seis_ssh_access.yml`. The form is intentionally
+secret-safe: it asks for command names, sanitized status labels, warning IDs,
+and blocker IDs instead of full `ssh -G` output, full hostnames, full IP
+addresses, private keys, tokens, passwords, cookies, `.env` values, or provider
+credentials. It also repeats that the same `SEIS-SSH` server and port must be
+preserved unless the maintainer explicitly approves a migration.
+
 Use live readiness only when the owner has approved the selected target:
 
 ```bash
