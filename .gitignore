@@ -204,6 +204,8 @@ docs/*
 !docs/governance/
 !docs/governance/*.md
 !docs/governance/**/*.md
+!docs/security/
+!docs/security/*.md
 !docs/adr/
 !docs/adr/*.md
 !docs/decisions/
@@ -212,6 +214,7 @@ docs/*
 # Local accidental artifacts from monorepo preparation
 SEİS/
 SEİS/
+sources/github-unified-source/_generated/
 packages/seis_platform_swift/.build/
 scripts/super-ssh-manager.py
 
