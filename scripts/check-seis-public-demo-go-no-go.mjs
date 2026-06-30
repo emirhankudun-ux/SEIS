@@ -577,7 +577,7 @@ ${actions}
 ## Safety
 
 ${value.safety.map((item) => `- ${item}`).join("\n")}
-`;
+`.trimEnd() + "\n";
 }
 
 function renderPr54ReviewPacket(value, manifest) {
@@ -640,7 +640,7 @@ Do not merge PR #54, publish GitHub Pages, tag a release, deploy, import a
 private Obsidian vault, enable live provider routing, execute SSH, or announce a
 public demo until the strict gate reports GO with explicit approval and current
 browser-smoke evidence.
-`;
+`.trimEnd() + "\n";
 }
 
 function renderWorktreeReview(value) {
@@ -672,7 +672,7 @@ work is separated or approved, current browser evidence is present, and release
 approval exists.
 
 ${groups}
-`;
+`.trimEnd() + "\n";
 }
 
 function renderStagePlan(value) {
@@ -719,7 +719,7 @@ ${validation}
 ## Forbidden Actions
 
 ${forbidden}
-`;
+`.trimEnd() + "\n";
 }
 
 function buildWorktreeReview(value) {
