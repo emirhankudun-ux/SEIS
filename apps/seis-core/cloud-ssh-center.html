@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SEIS Cloud / SSH Center</title>
+  <meta name="description" content="Browser-local SEIS Cloud and SSH readiness center with no real remote execution.">
+  <link rel="stylesheet" href="./cloud-ssh-center.css">
+</head>
+<body data-seis-cloud-ssh="browser-local-readiness">
+  <a class="skip-link" href="#main">Skip to Cloud / SSH Center</a>
+  <header class="top-shell">
+    <a href="./index.html" class="brand" aria-label="Back to SEIS Command Center">
+      <span class="brand-mark">S</span>
+      <span><strong>SEIS Cloud</strong><small>SSH Center / Local Demo</small></span>
+    </a>
+    <div class="header-actions" aria-label="Cloud SSH actions">
+      <button type="button" data-action="select-local">Local mode</button>
+      <button type="button" data-action="select-codespaces">Codespaces plan</button>
+      <button type="button" data-action="select-ssh">SSH readiness</button>
+      <button type="button" data-action="clear-log">Clear local log</button>
+    </div>
+  </header>
+
+  <main id="main" class="workspace">
+    <section class="hero" aria-labelledby="hero-title">
+      <p class="eyebrow">No live SSH - metadata-only control plane</p>
+      <h1 id="hero-title">Cloud readiness without pretending to be connected.</h1>
+      <p>Inspect SEIS cloud, Codespaces, SSH, deployment, backup, provider, and rollback readiness as browser-local demo metadata. This route records planning evidence only; it never connects to hosts, runs SSH, deploys, reads credentials, or exposes private server details.</p>
+      <p class="eyebrow">Safety state</p>
+      <div class="status-grid" aria-label="Cloud safety state">
+        <article><span>connected</span><strong>Local UI</strong><small>real browser state</small></article>
+        <article><span>disabled</span><strong>SSH execution</strong><small>approval required</small></article>
+        <article><span>planned</span><strong>Cloud deploy</strong><small>no live mutation</small></article>
+        <article><span>unknown</span><strong>Remote host</strong><small>not verified here</small></article>
+      </div>
+    </section>
+
+    <section class="console-grid" aria-label="Cloud SSH readiness controls">
+      <article class="panel command-panel">
+        <p class="eyebrow">Readiness composer</p>
+        <h2>Prepare a safe cloud handoff</h2>
+        <form id="readiness-form">
+          <label for="intent-input">Intent</label>
+          <textarea id="intent-input" name="intent" rows="6" placeholder="Example: Prepare a Codespaces-compatible SEIS demo review without changing server or port." required></textarea>
+          <div class="form-row">
+            <label for="mode-select">Mode</label>
+            <select id="mode-select" name="mode">
+              <option value="local-demo">local-demo</option>
+              <option value="codespaces-plan">codespaces-plan</option>
+              <option value="ssh-readiness">ssh-readiness</option>
+              <option value="deployment-plan">deployment-plan</option>
+            </select>
+          </div>
+          <button type="submit" class="primary">Record readiness note</button>
+        </form>
+      </article>
+
+      <aside class="panel facts-panel" aria-labelledby="facts-title">
+        <p class="eyebrow">Active profile</p>
+        <h2 id="facts-title">Safe defaults</h2>
+        <dl id="profile-facts" class="facts">
+          <div><dt>Status</dt><dd>local-demo</dd></div>
+          <div><dt>Remote execution</dt><dd>disabled</dd></div>
+          <div><dt>Credential read</dt><dd>false</dd></div>
+          <div><dt>Server / port</dt><dd>unchanged placeholder</dd></div>
+        </dl>
+        <p id="live-region" class="live-region" aria-live="polite">Cloud / SSH Center loaded in browser-local readiness mode.</p>
+      </aside>
+    </section>
+
+    <section class="panel" aria-labelledby="surface-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Cloud surfaces</p>
+          <h2 id="surface-title">States are explicit, not implied</h2>
+        </div>
+        <div class="filter-row" role="group" aria-label="Filter cloud states">
+          <button type="button" class="chip is-active" data-filter="all">All</button>
+          <button type="button" class="chip" data-filter="connected">Connected</button>
+          <button type="button" class="chip" data-filter="mock">Mock</button>
+          <button type="button" class="chip" data-filter="disabled">Disabled</button>
+          <button type="button" class="chip" data-filter="planned">Planned</button>
+          <button type="button" class="chip" data-filter="unknown">Unknown</button>
+        </div>
+      </div>
+      <div id="surface-grid" class="surface-grid"></div>
+    </section>
+
+    <section class="lower-grid" aria-label="Logs and security notes">
+      <article class="panel">
+        <p class="eyebrow">Local evidence log</p>
+        <h2>Browser-only session notes</h2>
+        <div id="evidence-log" class="evidence-log"></div>
+      </article>
+      <article class="panel">
+        <p class="eyebrow">Security policy</p>
+        <h2>Hard stops</h2>
+        <ul class="policy-list">
+          <li>No private keys, tokens, cookies, service accounts, or raw host credentials.</li>
+          <li>No SSH execution, cloud provisioning, deploy, DNS, or server mutation in this demo route.</li>
+          <li>No fake connected state unless verified outside this browser-local page.</li>
+          <li>Existing server and connection port must remain unchanged unless explicit approval exists.</li>
+          <li>Rollback owner, impact, and recovery verification are required before real rollout.</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+  <script src="./cloud-ssh-center.js" type="module"></script>
+</body>
+</html>
