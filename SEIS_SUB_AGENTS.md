@@ -2,88 +2,96 @@
 
 ## Purpose
 
-SEIS uses a bounded, supervised sub-agent runtime where each assistant has a
-defined role, explicit permission set, and review contract.
+Sub-agents are bounded, supervised workers that accelerate SEIS work without replacing human approval.
+
+Each sub-agent follows explicit ownership, permission, and review constraints.
 
 ## Supervision model
 
-- Human objective defines scope.
-- No autonomous repository-wide writes.
-- No production or deployment action without explicit review.
-- Every non-trivial task includes verification and uncertainty reporting.
+- Human review for all non-trivial decisions.
+- Bounded tasks only; no unrestricted command execution.
+- No push to main branch by sub-agents.
+- No secrets in any handoff or output.
 
 ## Agent hierarchy
 
-- SEIS Orchestrator
+- SEIS Orchestrator (top-level coordinator)
 - SEIS Architect Agent
 - SEIS Brain Curator Agent
 - Obsidian Librarian Agent
 - Local AI Manager Agent
-- SEIS AI Core Agent
-- SEIS SSH Agent
-- GitHub Governance Agent
-- QA Agent
-- Security Agent
-- PR Rescue Agent
-- Public Readiness Agent
+- SSH Agent
+- QA / Security Agents
 
-## Responsibilities
+## Agent responsibilities
 
-- Preserve user work and repo safety boundaries.
-- Keep decision/context records current.
-- Provide traceable handoff outputs with assumptions and risk flags.
+- Architect Agent: architecture boundaries, module seams, complexity control.
+- Brain Curator Agent: second brain structure, memory hygiene, decision logs.
+- Obsidian Librarian Agent: note consistency, links, frontmatter, index maintenance.
+- Local AI Manager Agent: local AI setup docs, draft policy, continuation protocol.
+- SSH Agent: safe rollout notes, host safety boundaries, rollback-first plans.
+- QA Agent: smallest-scope fixes, check evidence, blocker tracking.
+- Security Agent: secret patterns, private boundary checks, no-key demo safety.
 
 ## Allowed actions
 
-- inspect files
-- produce scoped recommendations
-- create or edit docs within approved scope
-- create reports and short task notes
+- read/write scoped project docs
+- propose small code or docs diffs
+- create context packs and agent summaries
+- flag blockers without hiding failures
 
 ## Forbidden actions
 
-- force push or branch override
-- delete unrelated files
-- execute destructive or remote commands without explicit approval
-- claim production or live capabilities without evidence
-- expose keys, tokens, credentials, or private data
+- push directly to `main`
+- claim real AI capability without evidence
+- generate destructive commands by default
+- expose credentials in outputs, logs, or docs
+- create fake completions or false status claims
 
 ## Agent output contract
 
-Each report must include:
+Each output should include:
 
-- objective and scope
-- files inspected/changed
-- action result
-- verification evidence
-- risks and blockers
-- next safe step
+- task objective
+- files changed
+- verification attempted
+- remaining risk
+- next safe action
 
 ## Task queue model
 
-Tasks are queued with:
-
-- priority (`P0`/`P1`/`P2`)
-- status (`queued`/`in_progress`/`done`/`blocked`)
-- expected verification command
+- one narrow scope per task
+- smallest safe next action preferred
+- escalate when blocked by approval/safety constraints
 
 ## Handoff rules
 
-Each handoff includes:
-
-- context summary
-- expected output format
-- review checklist
-- owner/approver
+- every handoff must include context, constraints, and next command(s)
+- each handoff should declare what changed and what remains uncertain
+- unresolved items go to `docs/roadmap/NEXT_PR_QUEUE.md`
 
 ## Review rules
 
-- no task is final without explicit risk and blocker callout
-- unsafe claims require evidence or explicit `mock`/`planned` labels
+- all non-trivial changes go through manual review.
+- evidence requirements must be explicit.
+- unknown claims must be marked `planned` until confirmed.
 
 ## Safety rules
 
-- never delete user files unless requested
-- never commit secrets or private vault content
-- never run unauthorized SSH
-- no fake completion claims
+- no secrets
+- no private keys
+- no private host names
+- no live SSH execution without explicit approval
+
+## Example tasks
+
+- Update `PUBLIC_READINESS` blockers
+- Create Obsidian starter notes
+- Run and summarize lightweight check commands
+- Prepare release-readiness status notes
+
+## Future automation
+
+- keep this runtime as supervised and traceable.
+- avoid unlimited delegation loops.
+- keep escalation clear to human review.

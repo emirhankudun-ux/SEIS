@@ -27,6 +27,61 @@ npm run check:seis-language-model-training-curriculum
 npm run automation:seis-ai-workforce-training
 ```
 
+### Tüm Aileler İçin Kurulum Planı (Dry-Run)
+
+Gerçek kurulum başlamadan önce tüm aday aileler için kurulum planını üretmek için:
+
+```bash
+npm run plan:seis-language-model-install
+npm run plan:seis-language-model-install -- --json
+npm run plan:seis-language-model-install -- --family llama,qwen,gemma,mistral,deepseek,openai-open-weight,embedding-and-reranker,code-specialist
+```
+
+Bu komutlar sadece **metadata planı** çıkarır:
+
+- Aile readiness ve bloklistesi
+- Örnek yerel komut önerileri
+- Eğitim/evidence gereksinimleri
+- 16GB hedefli yol haritası önizlemesi
+
+Canlı kurulum veya checkpoint indirme bu komutlarla çalışmaz.
+
+### Tam Bilgili Aile Kurulum Akışı (Önerilen)
+
+SEIS'te “bütün dil modellerini kurmak” güvenli tarafta şu şekilde işler:
+
+1. **Kurulum Planı (her zaman metadata-first):**
+   `npm run plan:seis-language-model-install -- --family ...`
+   Burada tüm ailelerin readiness, izin durumu ve bloklistesi üretilir.
+
+2. **Doğrulama Paketleri:**
+   - `npm run check:seis-language-model-intake`
+   - `npm run check:seis-ai-workforce-training`
+   - `npm run report:seis-language-model-training-curriculum`
+   - `npm run check:seis-language-model-training-curriculum`
+
+3. **Yerel Öğrenme Hazırlığı (tamamen yerel):**
+   `npm run automation:seis-ai-workforce-training`
+   Bu adım sadece seed model artefaktlarını ve güvenlik/performans doğrulama
+   paketlerini yeniden üretir.
+
+4. **İnsan Onayıyla İleri Adım:**
+   Model indirme, fine-tune/adaptör, benchmark veya runtime yetkisi için her ailede
+   ayrıca model kartı + veri kartı + checksum + rollback onayı gerekir.
+
+#### Aile Bazlı Yol Haritası
+
+- **20B (16GB+):** retrieval layer + seed modeli + ölçüm kanıtı olmadan canlı rota açılmaz.
+- **70B:** önce 20B kanıt zinciri, ardından ayrıca donanım/safety/onay seti gerekir.
+- **150B ve 512B+:** frontier araştırma statüsünde kalır; plan onayı, dağıtık bütçe ve
+  insan onayı olmadan canlı lane'e geçilmez.
+
+Özet akış:
+
+```text
+Plan (metadata) -> Checkler -> Curriculum -> Seed rebuild -> İnsan onayı -> Bir sonraki güvenli faz
+```
+
 ## Current Status
 
 | Area | Status | Evidence | Boundary | Next Safe Action |
@@ -128,6 +183,13 @@ Gemini, OpenAI, or any cloud provider.
   data.
 - Runtime authority remains false until independent benchmarks, observability,
   rollback, human approval, and security review pass.
+
+## Model Kurulum & Eğitim Notları
+
+- `bütün modeli kurmak` bir tek adımda yapılmaz; aile bazlı ve onay bazlıdır.
+- Canlı install hattı henüz kapalıdır; planlar sadece karar ve risk yönetimi içindir.
+- 16GB+ makinede öncelik: küçük/quantize modeller, retrieval layer, seed artifactlar.
+- Tam model eğitimi (adapter/finetune/full pretrain) için ek plan dosyaları, dataset kartları ve checkpoint kanıtı gerekir.
 
 ## Mock vs Real
 

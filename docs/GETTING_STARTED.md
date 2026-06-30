@@ -49,6 +49,10 @@ SEIS local demo includes labeled **Local Demo Mode** for AI and terminal surface
 
 Ollama is optional. If installed, you can route local-only docs/reasoning workflows through separate local tooling. No setup is required for the core demo.
 
+For draft-mode local workflows, safety boundaries, and continuation protocol, see
+[`SEIS_LOCAL_AI_OLLAMA.md`](../SEIS_LOCAL_AI_OLLAMA.md) and
+[`LOCAL_AI_SETUP.md`](LOCAL_AI_SETUP.md).
+
 ## Optional Obsidian vault
 
 Open `seis-brain/vault` in Obsidian for repository memory context. Use plain Markdown and internal links. No plugins are required.
@@ -68,3 +72,5 @@ Read and use `SEIS_SSH.md` and `docs/SEIS_SSH_SETUP.md` for remote-work concepts
 - Read `SEIS_SECOND_BRAIN.md` and `SEIS_OBSIDIAN_VAULT.md`
 - Review `docs/PUBLIC_READINESS.md`
 - Continue with roadmap-linked phase notes under `roadmap/`
+- Review `SEIS_INSTALLED_AI_TOOLS.md` for local/provider tool boundaries.
+- Review `SEIS_SUB_AGENTS.md` for bounded agent handoff and role rules.

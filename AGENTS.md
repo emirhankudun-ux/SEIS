@@ -225,3 +225,11 @@ flowchart TD
 - Demo must work without API keys.
 - Broken CTAs/assets are blockers.
 - Public docs must be safe for GitHub.
+
+## Sub-Agent Runtime
+
+- Supervised multi-agent workflow is documented in
+  [`SEIS_SUB_AGENTS.md`](SEIS_SUB_AGENTS.md).
+- Keep bounded tasks small and approval-safe.
+- Never execute destructive commands without explicit scope review.
+- Use handoff logs and queue updates instead of implicit assumptions.

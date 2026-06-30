@@ -15,11 +15,13 @@ Date: 2026-06-23
 | [../SEIS_INSTALLED_AI_TOOLS.md](../SEIS_INSTALLED_AI_TOOLS.md) | Installed AI tooling and model/provider safety registry. |
 | [../SEIS_SUB_AGENTS.md](../SEIS_SUB_AGENTS.md) | Bounded sub-agent coordination model and output contract. |
 | [../SEIS_SSH.md](../SEIS_SSH.md) | Safe remote-development/documented SSH concept and constraints. |
+| [../SEIS_LOCAL_AI_OLLAMA.md](../SEIS_LOCAL_AI_OLLAMA.md) | Optional local AI / Ollama profile, local-workflow boundaries, and continuation protocol. |
 | [../roadmap/seis-long-horizon-strategy.md](../roadmap/seis-long-horizon-strategy.md) | Long-horizon 0–10 year strategy with first- and second-stage operational blueprints. |
 | [GETTING_STARTED.md](GETTING_STARTED.md) | New contributor onboarding and run instructions. |
 | [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | Common operational and demo troubleshooting guidance. |
 | [PUBLIC_READINESS.md](PUBLIC_READINESS.md) | Public readiness evidence checklist and readiness criteria. |
 | [LOCAL_AI_SETUP.md](LOCAL_AI_SETUP.md) | Optional local AI/Ollama setup guidance. |
+| [SEIS_LOCAL_AI_OLLAMA.md](../SEIS_LOCAL_AI_OLLAMA.md) | Local AI and Ollama boundary profile for drafts, docs, and optional experiments. |
 | [SEIS_SSH_SETUP.md](SEIS_SSH_SETUP.md) | Safe SEIS-SSH onboarding and deployment gates. |
 | [OBSIDIAN_SECOND_BRAIN.md](OBSIDIAN_SECOND_BRAIN.md) | Obsidian second-brain mapping for SEIS contributors and agents. |
 | [governance/seis-integration-and-github-development.md](governance/seis-integration-and-github-development.md) | Integration policy for keeping every SEIS workstream tied to GitHub, evidence, and PR sequencing. |
@@ -79,6 +81,7 @@ Date: 2026-06-23
 | [product/seis-obsidian-bridge-safe-import.md](product/seis-obsidian-bridge-safe-import.md) | Obsidian bridge safe import gates for explicit user-selected source path, dry-run manifest, no secrets, provenance, accessibility, and approval before GitHub publication. |
 | [reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md](reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md) | Second Brain Accessibility Focus QA for keyboard focus, ARIA roles, inspector focus, and mobile target safety. |
 | [reviews/NVIDIA_INSTALLED_INTEGRATIONS_REVIEW.md](reviews/NVIDIA_INSTALLED_INTEGRATIONS_REVIEW.md) | Review packet for NVIDIA installed skill integrations, Store/Search/AI surfaces, runtime boundary, and validation commands. |
+| [reviews/NVIDIA_AIQ_RUNTIME_ALLOWLIST_REVIEW.md](reviews/NVIDIA_AIQ_RUNTIME_ALLOWLIST_REVIEW.md) | Review packet for the NVIDIA AI-Q runtime allowlist, approval gates, and metadata-only runtime boundary. |
 | [product/shared-vfs-contract.md](product/shared-vfs-contract.md) | Browser-local shared VFS contract for Desktop, SEIS Code, Terminal, and Mythic Gacha exports. |
 | [product/video-hero-showcase.md](product/video-hero-showcase.md) | Four-page cinematic Video Hero showcase contract and validation notes. |
 | [product/mythic-gacha.md](product/mythic-gacha.md) | Playable no-key Shan Hai Jing inspired gacha and bestiary foundation. |
@@ -86,6 +89,7 @@ Date: 2026-06-23
 | [ai/ai-workforce-training.md](ai/ai-workforce-training.md) | Installed AI workforce training contract for supervised seed-model improvement without cloud fine-tuning claims. |
 | [ai/nvidia-accelerator-catalog.md](ai/nvidia-accelerator-catalog.md) | NVIDIA GitHub, Build skills, and run-anywhere model catalog intake with dry-run install queue and no-clone/no-download/no-NIM boundary. |
 | [ai/nvidia-installed-integrations.md](ai/nvidia-installed-integrations.md) | 11 local NVIDIA skill manifests installed into SEIS as runtime-gated capability records. |
+| [ai/nvidia-aiq-runtime-allowlist-plan.md](ai/nvidia-aiq-runtime-allowlist-plan.md) | NVIDIA AI-Q runtime allowlist plan for the first planned/gated runtime candidate without live backend execution. |
 | [ai/seis-model-scaling.md](ai/seis-model-scaling.md) | Planned 20B / 16GB+ RAM compatibility target plus future 70B and 150B frontier scale ladder without trained-weight claims. |
 | [ai/model-router.md](ai/model-router.md) | Provider-neutral model routing contract and evidence requirements. |
 | [ai/read-only-model-router-contract.md](ai/read-only-model-router-contract.md) | Read-only provider-neutral router contract: Missing Key is not Error, local-only never routes to cloud, and live execution waits for backend-only mediation. |
@@ -147,6 +151,7 @@ Date: 2026-06-23
 | [../content/development/seis-ai-workforce-training-plan.json](../content/development/seis-ai-workforce-training-plan.json) | Installed AI workforce training plan for supervised local seed-model rebuilds and no-runtime-authority promotion gates. |
 | [../content/development/seis-nvidia-accelerator-catalog.json](../content/development/seis-nvidia-accelerator-catalog.json) | NVIDIA accelerator catalog contract for GitHub org, Build skills, and Build models as dry-run-only source awareness. |
 | [../content/development/seis-nvidia-installed-integrations.json](../content/development/seis-nvidia-installed-integrations.json) | Installed local NVIDIA skill integration registry with 11 runtime-gated capability records. |
+| [../content/development/seis-nvidia-aiq-runtime-allowlist-plan.json](../content/development/seis-nvidia-aiq-runtime-allowlist-plan.json) | NVIDIA AI-Q runtime allowlist plan with approval gates and no-runtime-execution authority. |
 | [../content/development/seis-big-tech-mcp-skill-inventory.json](../content/development/seis-big-tech-mcp-skill-inventory.json) | Google, Kimi, Claude, Apple, Windows/Microsoft, and major technology MCP/skill/plugin inventory for the 2026-06-29 install pass. |
 | [../content/development/seis-second-brain-system.json](../content/development/seis-second-brain-system.json) | Second Brain contract for installed AI profiles, managed sub-agent lanes, Obsidian-style Markdown vault records, graph/backlinks, AI bridge, browser-smoke validation, and GitHub readiness gates. |
 | [../content/development/seis-obsidian-bridge-safe-import-contract.json](../content/development/seis-obsidian-bridge-safe-import-contract.json) | Obsidian bridge safe import contract for explicit user selection, dry-run manifest, no private note body, provenance, accessibility, and publication approval gates. |

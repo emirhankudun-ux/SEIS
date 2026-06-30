@@ -20,6 +20,10 @@ The source-of-truth record is
   integration records. See
   `content/development/seis-nvidia-installed-integrations.json` and
   `docs/ai/nvidia-installed-integrations.md`.
+- A NVIDIA AI-Q runtime allowlist plan as the first selected runtime candidate,
+  still in `Planned/Gated` status. See
+  `content/development/seis-nvidia-aiq-runtime-allowlist-plan.json` and
+  `docs/ai/nvidia-aiq-runtime-allowlist-plan.md`.
 
 ## What Is Not Installed
 
@@ -47,6 +51,7 @@ The source-of-truth record is
 ```bash
 npm run check:seis-nvidia-accelerator-catalog
 npm run check:seis-nvidia-installed-integrations
+npm run check:seis-nvidia-aiq-runtime-allowlist-plan
 npm run plan:nvidia-catalog-install
 npm run plan:nvidia-catalog-install -- --json
 ```

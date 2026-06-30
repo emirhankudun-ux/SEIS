@@ -209,6 +209,7 @@ agent/context continuity and public-safe project memory.
 
 - `SEIS_SECOND_BRAIN.md` explains the memory model and operating rules.
 - `SEIS_OBSIDIAN_VAULT.md` explains folder structure and backlinks.
+- `SEIS_SUB_AGENTS.md` explains bounded agent roles, permissions, and handoff rules.
 - `docs/OBSIDIAN_SECOND_BRAIN.md` mirrors onboarding notes for contributors.
 - `seis-brain/vault/00_Index/SEIS Home.md` is the memory entry point.
 
