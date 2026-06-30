@@ -19,6 +19,7 @@ copyDir("docs/polyglot", join(staticDir, "docs/polyglot"));
 copyDir("docs/server", join(staticDir, "docs/server"));
 copyDir("docs/strategy", join(staticDir, "docs/strategy"));
 copyDir("docs/governance", join(staticDir, "docs/governance"));
+copyDir("reports/seis-public-demo", join(staticDir, "reports/seis-public-demo"));
 copyDir("content", join(staticDir, "content"));
 copyDir("polyglot/contracts", join(staticDir, "contracts/polyglot"));
 copyFile("deploy/server-targets.json", join(staticDir, "_deploy/server-targets.json"));

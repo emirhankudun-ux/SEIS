@@ -1,6 +1,6 @@
 # SEIS Read-Only Model Router Decision
 
-Generated: 2026-06-29T13:22:38.244Z
+Generated: 2026-06-30T12:46:11.120Z
 Status: review-only-no-runtime-authority
 Mode: provider-neutral-read-only
 Decision: NO-GO-live-routing-not-approved

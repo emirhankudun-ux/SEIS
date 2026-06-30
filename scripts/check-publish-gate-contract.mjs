@@ -21,6 +21,31 @@ function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
 }
 
+function remoteSlug(remoteUrl) {
+  const value = String(remoteUrl || "").trim();
+  if (!value) return "";
+  const sshMatch = value.match(/^git@github\.com:([^/]+\/[^/]+?)(?:\.git)?$/);
+  if (sshMatch) return sshMatch[1];
+  const httpsMatch = value.match(/^https:\/\/github\.com\/([^/]+\/[^/]+?)(?:\.git)?\/?$/);
+  return httpsMatch ? httpsMatch[1] : "";
+}
+
+function normalizeRemoteUrl(remoteUrl) {
+  return String(remoteUrl || "").trim().replace(/\/$/, "");
+}
+
+function buildAcceptedRemoteUrls(contractRemoteUrl, repository) {
+  const accepted = new Set();
+  for (const url of [contractRemoteUrl, repository?.remoteUrl]) {
+    const slug = remoteSlug(url);
+    if (!slug) continue;
+    accepted.add(normalizeRemoteUrl(`git@github.com:${slug}.git`));
+    accepted.add(normalizeRemoteUrl(`https://github.com/${slug}`));
+    accepted.add(normalizeRemoteUrl(`https://github.com/${slug}.git`));
+  }
+  return accepted;
+}
+
 function git(args) {
   return spawnSync("git", args, {
     encoding: "utf8",
@@ -74,7 +99,12 @@ if (contract) {
 
 const origin = git(["remote", "get-url", "origin"]);
 ensure(origin.status === 0, "origin remote must be configured");
-ensure(origin.stdout.trim() === contract?.remote?.url, `origin remote must match contract URL, got ${origin.stdout.trim() || "empty"}`);
+const originUrl = origin.stdout.trim();
+const acceptedRemoteUrls = buildAcceptedRemoteUrls(contract?.remote?.url, githubRemote?.repository);
+ensure(
+  acceptedRemoteUrls.has(normalizeRemoteUrl(originUrl)),
+  `origin remote must target ${remoteSlug(contract?.remote?.url) || "configured remote"}, got ${originUrl || "empty"}`
+);
 
 if (state.gitInside) {
   ensure(state.hasRemote, "publish state must see a configured remote");

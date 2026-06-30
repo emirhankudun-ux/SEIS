@@ -1,6 +1,6 @@
 # SEIS Public Demo Go/No-Go Report
 
-Generated: 2026-06-29T13:14:56.803Z
+Generated: 2026-06-30T12:46:16.068Z
 Decision: NO-GO
 Status: review-gated-not-released
 Mode: read-only
@@ -21,6 +21,7 @@ Evidence manifest: reports/seis-public-demo/evidence-manifest-latest.json
 
 - dirty-worktree
 - human-release-approval-missing
+- current-browser-smoke-evidence-missing
 
 ## Failures
 
@@ -33,6 +34,7 @@ Evidence manifest: reports/seis-public-demo/evidence-manifest-latest.json
 ## Next Actions
 
 - Review and stage only coherent release-candidate changes, or rerun with --allow-dirty-worktree for a planning-only report.
+- Run current browser-smoke evidence in an environment that can bind localhost and launch Chrome.
 - Get explicit human owner approval before merge, Pages publication, release tag, deployment, SSH, live providers, or public launch.
 
 ## Safety

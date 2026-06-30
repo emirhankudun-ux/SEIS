@@ -4,6 +4,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import os
 from pathlib import Path
 
 
@@ -69,10 +70,7 @@ def main() -> int:
     if failures:
         return fail(failures)
 
-    failures.extend(run([
-        "python3",
-        "-m",
-        "py_compile",
+    failures.extend(validate_python_syntax([
         "packages/seis_kernel/platform_matrix.py",
         "packages/seis_kernel/platform_language_policy.py",
         "packages/seis_kernel/platform_development_tracks.py",
@@ -80,7 +78,7 @@ def main() -> int:
         "scripts/create-seis-platform-language-policy.py",
         "scripts/create-seis-platform-development-tracks.py",
         "polyglot/windows/scripting/seis_windows_platform.py",
-    ], ROOT))
+    ]))
     failures.extend(run(["python3", "scripts/create-seis-platform-language-policy.py", "--check"], ROOT))
     failures.extend(run(["python3", "scripts/create-seis-platform-development-tracks.py", "--check"], ROOT))
     failures.extend(validate_surface_contents())
@@ -133,6 +131,17 @@ def validate_surface_contents() -> list[str]:
     return failures
 
 
+def validate_python_syntax(files: list[str]) -> list[str]:
+    failures: list[str] = []
+    for rel_path in files:
+        path = ROOT / rel_path
+        try:
+            compile(path.read_text(encoding="utf-8"), rel_path, "exec")
+        except SyntaxError as exc:
+            failures.append(f"python syntax failed in {rel_path}: {exc}")
+    return failures
+
+
 def run_swift_tests() -> list[str]:
     if sys.platform != "darwin":
         print("SEIS platform kernel check: skipping Swift package tests; Apple Combine is only available on Darwin.")
@@ -150,12 +159,27 @@ def run_swift_tests() -> list[str]:
             return []
         return [f"swift --version failed in {relative(ROOT)}: {output}"]
 
-    result = subprocess.run(["swift", "test"], cwd=ROOT / "packages" / "seis_platform_swift", text=True, capture_output=True)
+    with tempfile.TemporaryDirectory(prefix="seis-swift-check-") as temp_dir:
+        swift_env = {
+            **os.environ,
+            "CLANG_MODULE_CACHE_PATH": str(Path(temp_dir) / "clang-module-cache"),
+            "SWIFTPM_HOME": str(Path(temp_dir) / "swiftpm-home"),
+        }
+        result = subprocess.run(
+            ["swift", "test"],
+            cwd=ROOT / "packages" / "seis_platform_swift",
+            text=True,
+            capture_output=True,
+            env=swift_env,
+        )
     if result.returncode == 0:
         return []
     output = command_output(result)
     if is_missing_toolchain_output(output):
         print("SEIS platform kernel check: skipping Swift package tests; configured Swift toolchain is missing.")
+        return []
+    if is_cache_permission_output(output):
+        print("SEIS platform kernel check: skipping Swift package tests; toolchain cache is not writable in this environment.")
         return []
     return [f"swift test failed in packages/seis_platform_swift: {output}"]
 
@@ -211,7 +235,7 @@ def run_java_syntax_when_available() -> list[str]:
     if shutil.which("javac") is None:
         return []
     with tempfile.TemporaryDirectory(prefix="seis-java-check-") as temp_dir:
-        return run(
+        failures = run(
             [
                 "javac",
                 "-d",
@@ -220,6 +244,10 @@ def run_java_syntax_when_available() -> list[str]:
             ],
             ROOT,
         )
+    if failures and any(is_missing_java_runtime_output(failure) for failure in failures):
+        print("SEIS platform kernel check: skipping Java syntax check; Java runtime is not installed.")
+        return []
+    return failures
 
 
 def run_powershell_syntax_when_available() -> list[str]:
@@ -256,6 +284,16 @@ def command_output(result: subprocess.CompletedProcess) -> str:
 def is_missing_toolchain_output(output: str) -> bool:
     normalized = output.lower()
     return "toolchain" in normalized and "could not be located" in normalized
+
+
+def is_cache_permission_output(output: str) -> bool:
+    normalized = output.lower()
+    return "operation not permitted" in normalized and ("cache" in normalized or "modulecache" in normalized)
+
+
+def is_missing_java_runtime_output(output: str) -> bool:
+    normalized = output.lower()
+    return "unable to locate a java runtime" in normalized or "no java runtime present" in normalized
 
 
 def fail(failures: list[str]) -> int:
