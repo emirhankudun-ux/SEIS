@@ -80,10 +80,10 @@ owner explicitly requests removal.
 | --- | --- |
 | Suggested branch | `ci/foundation-workflow-alignment` |
 | Priority | P0 |
-| Goal | Align `.github/workflows/foundation-check.yml` with package scripts that actually exist, without weakening validation. |
-| Include | `.github/workflows/foundation-check.yml`, `package.json` only if narrow script aliases are chosen, status/backlog notes. |
+| Goal | Keep `.github/workflows/foundation-check.yml` aligned with package scripts that actually exist, without weakening validation. |
+| Include | `.github/workflows/foundation-check.yml` if command drift returns, `package.json` only if narrow script aliases are chosen, status/backlog notes. |
 | Exclude | Disabling CI, removing security/governance checks, dependency installation, and branch-protection changes. |
-| Validation | `npm run check:foundation`, selected replacement scripts, `git diff --check`. |
+| Validation | `npm run check:workspace`, `npm run check:foundation`, `npm run check:open-source-governance`, selected replacement scripts, `git diff --check`. |
 | Approval needed | None for script alignment; approval required for branch protection changes or weakened checks. |
 
 ## PR 1: Goal Tracking OS Foundation
