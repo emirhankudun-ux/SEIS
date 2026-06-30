@@ -257,22 +257,31 @@ under `reports/seis-public-demo/`, including the evidence manifest and
 importing Obsidian, calling providers, executing SSH, staging files, committing,
 pushing, or deploying.
 
-## Yeni Nesil AGI Araştırma Hedefi
+## Next-Generation AGI Research Goal
 
-SEIS AGI hedefi şu an kanıt-gated bir araştırma ve uygulama mimarisi olarak
-tutulur. Bu repo gerçek AGI, eğitilmiş 512B ağırlık, benchmark sonucu,
-checkpoint veya canlı inference iddiası yapmaz.
+The SEIS AGI goal is currently kept as evidence-gated research and
+implementation architecture. This repository does not claim real AGI, trained
+512B weights, benchmark results, checkpoints, or live inference.
 
-Bu hedefin kısa hali:
+Short form:
 
-- **Başlangıç hattı:** `16GB+ RAM` için `20B` yerel-uyumluluk hedefi (planlı, test edilmemiş).
-- **Sonraki merdiven:** `70B` araştırma yolu, ardından frontier/long-horizon yolları.
-- **Üst hedef:** `150B`, `300B+`, `512B` ve en yüksek (`highest-available`) parametre sınıfı için tek tek uygun güvenlik, bütçe ve onay kanıtları toplandıktan sonra yol haritası açılır.
+- **Starting lane:** local-compatibility target for `20B` on `16GB+ RAM`
+  (planned, not tested).
+- **Next ladder:** `70B` research path, then frontier and long-horizon paths.
+- **Upper target:** `150B`, `300B+`, `512B`, and the highest-available
+  parameter class only open after separate safety, budget, and approval
+  evidence exists.
 
-- **512B Apex Programı:** `content/development/seis-512b-apex-model-program.json` ile internet-araştırmalı, plan-only ve route-blocked tutulur; AGI tanımı `definition-only-not-demonstrated` durumundadır.
-- **Alt Ajan Konseyi:** Tüm kurulu AI/sub-agent rolleri 512B için ayrı görev matrisine sahiptir, ama yalnızca planlama, inceleme ve doğrulama görevleri alır.
-- **Güvenli AI Core:** Local Demo varsayılandır; provider key, cloud/GPU, SSH, benchmark ve training insan onayı olmadan kapalıdır.
-- **AGI Kanıt Kuralı:** Gerçek AGI iddiası için bağımsız evaluation, safety review, training logs, checkpoint governance, model card ve explicit approval gerekir.
+- **512B Apex Program:** kept internet-researched, plan-only, and
+  route-blocked through `content/development/seis-512b-apex-model-program.json`;
+  AGI remains `definition-only-not-demonstrated`.
+- **Sub-Agent Council:** installed AI and sub-agent roles have a 512B task
+  matrix, but receive only planning, review, and validation duties.
+- **Safe AI Core:** Local Demo remains the default; provider keys, cloud/GPU,
+  SSH, benchmarks, and training stay disabled without human approval.
+- **AGI Evidence Rule:** any real AGI claim requires independent evaluation,
+  safety review, training logs, checkpoint governance, a model card, and
+  explicit approval.
 
 ## Core Scope
 

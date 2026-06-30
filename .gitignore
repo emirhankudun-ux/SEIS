@@ -192,7 +192,7 @@ docs/*
 !docs/development/
 !docs/development/local-ai-workbench.md
 !docs/deployment/
-!docs/deployment/seis-ssh-public-github-access.md
+!docs/deployment/*.md
 !docs/platform/
 !docs/platform/*.md
 !docs/governance/
