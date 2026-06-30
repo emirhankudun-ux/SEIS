@@ -275,14 +275,33 @@
   function parseURLFilters() {
     var params = new URLSearchParams(location.search);
     var raw = params.get('filters') || '';
+    var validDomains = DOMAINS.map(function (d) { return d.id; });
+    var validAudiences = AUDIENCES.map(function (a) { return a.id; });
     raw.split(',').forEach(function (token) {
       var parts = token.split(':');
       if (parts.length !== 2) return;
       var type = parts[0];
       var value = parts[1];
-      if (type === 'domain') state.domains[value] = true;
-      if (type === 'audience') state.audiences[value] = true;
+      if (type === 'domain' && validDomains.indexOf(value) !== -1) state.domains[value] = true;
+      if (type === 'audience' && validAudiences.indexOf(value) !== -1) state.audiences[value] = true;
     });
+  }
+
+  function updateURL() {
+    var tokens = [];
+    Object.keys(state.domains).forEach(function (k) { tokens.push('domain:' + k); });
+    Object.keys(state.audiences).forEach(function (k) { tokens.push('audience:' + k); });
+    var params = new URLSearchParams(location.search);
+    if (tokens.length > 0) {
+      params.set('filters', tokens.join(','));
+    } else {
+      params.delete('filters');
+    }
+    var qs = params.toString();
+    var newUrl = location.pathname + (qs ? '?' + qs : '');
+    if (location.href !== location.origin + newUrl) {
+      history.replaceState(null, '', newUrl);
+    }
   }
 
   function hasFilters() {
@@ -366,6 +385,7 @@
   function render() {
     renderChips();
     renderCards();
+    updateURL();
   }
 
   function toggleFilter(type, value) {
