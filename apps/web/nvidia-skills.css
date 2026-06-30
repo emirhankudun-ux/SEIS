@@ -83,6 +83,7 @@
 
 .ns-chip[aria-pressed="true"] {
   border-color: transparent;
+  background: var(--text);
   color: #07090f;
 }
 
