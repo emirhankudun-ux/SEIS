@@ -101,6 +101,7 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | SEIS read-only model-router decision | `npm run report:seis-read-only-model-router-decision` |
 | SEIS Second Brain accessibility/focus QA artifact | `npm run report:seis-second-brain-accessibility-focus-report` |
 | SEIS Second Brain agent registry | `npm run report:seis-second-brain-agent-registry` |
+| SEIS agent workforce | `npm run check:seis-agent-workforce` |
 | SEIS public demo go/no-go report | [../reports/seis-public-demo/go-no-go-latest.md](../reports/seis-public-demo/go-no-go-latest.md) |
 | SEIS public demo evidence manifest | [../reports/seis-public-demo/evidence-manifest-latest.json](../reports/seis-public-demo/evidence-manifest-latest.json) |
 | SEIS Obsidian safe-import dry-run JSON | [../reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json](../reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json) |
