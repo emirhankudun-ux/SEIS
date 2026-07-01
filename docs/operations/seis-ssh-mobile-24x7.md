@@ -83,6 +83,12 @@ Use the strict doctor in release or mobile-device handoff flows:
 npm run cloud:ssh:mobile-direct:doctor:strict
 ```
 
+The doctor report includes a machine-readable `claimGate`. It keeps
+`readyClaimAllowed`, `continuityClaimAllowed`, and `macOffClaimAllowed` false
+unless the strict doctor was requested and the readiness evidence passed. A
+non-strict report may help debugging, but it does not authorize the public
+mobile 24x7 or Mac-off continuity claim.
+
 ## Decision matrix
 
 - Missing `SEIS_SSH_HOST`: blocked. Set the always-on public VM endpoint before claiming readiness.

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { spawnSync } from "node:child_process";
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, resolve } from "node:path";
 
@@ -15,32 +15,37 @@ if (args.help) {
 const jsonOut = args["json-out"] || "reports/seis-ssh-mobile-24x7-readiness.json";
 const mdOut = args["md-out"] || "reports/seis-ssh-mobile-24x7-readiness.md";
 const requireReady = Boolean(args["require-ready"]);
-const checkArgs = ["scripts/check-seis-ssh-mobile-24x7.mjs"];
-for (const key of ["host", "identity-file", "connect-timeout"]) {
-  if (args[key]) checkArgs.push(`--${key}`, args[key]);
-}
-
-const check = spawnSync(process.execPath, checkArgs, {
-  encoding: "utf8",
-  timeout: 120000
-});
-
-if (check.error) {
-  console.error(`Failed to run mobile readiness check: ${check.error.message}`);
-  process.exit(1);
-}
 
 let readiness;
-try {
-  readiness = JSON.parse(check.stdout || "{}");
-} catch (error) {
-  console.error("Mobile readiness check did not return JSON.");
-  if (check.stdout) console.error(check.stdout);
-  if (check.stderr) console.error(check.stderr);
-  process.exit(1);
+if (args["readiness-json"]) {
+  readiness = readReadinessJson(args["readiness-json"]);
+} else {
+  const checkArgs = ["scripts/check-seis-ssh-mobile-24x7.mjs"];
+  for (const key of ["host", "identity-file", "connect-timeout"]) {
+    if (args[key]) checkArgs.push(`--${key}`, args[key]);
+  }
+
+  const check = spawnSync(process.execPath, checkArgs, {
+    encoding: "utf8",
+    timeout: 120000
+  });
+
+  if (check.error) {
+    console.error(`Failed to run mobile readiness check: ${check.error.message}`);
+    process.exit(1);
+  }
+
+  try {
+    readiness = JSON.parse(check.stdout || "{}");
+  } catch (error) {
+    console.error("Mobile readiness check did not return JSON.");
+    if (check.stdout) console.error(check.stdout);
+    if (check.stderr) console.error(check.stderr);
+    process.exit(1);
+  }
 }
 
-const report = buildReport(sanitize(readiness));
+const report = buildReport(sanitize(readiness), { strictDoctorRequested: requireReady });
 writeJson(jsonOut, report);
 writeText(mdOut, renderMarkdown(report));
 
@@ -52,9 +57,15 @@ if (!report.ok) {
 }
 if (requireReady && !report.ok) process.exit(1);
 
-function buildReport(readiness) {
+function buildReport(readiness, options = {}) {
   const transport = readiness.checks?.sshConfig?.transport || "unknown";
   const mobileReady = readiness.ok === true;
+  const strictDoctorRequested = options.strictDoctorRequested === true;
+  const claimGate = buildClaimGate(readiness, {
+    mobileReady,
+    strictDoctorRequested,
+    transport
+  });
   const generatedAt = new Date().toISOString();
   return {
     id: "seis-ssh-mobile-24x7-readiness",
@@ -66,6 +77,7 @@ function buildReport(readiness) {
     transport,
     mobile24x7Compatible: readiness.checks?.sshConfig?.mobile24x7Compatible === true,
     pickerCompatible: readiness.checks?.sshConfig?.pickerCompatible === true,
+    claimGate,
     blockers: readiness.blockers || [],
     warnings: readiness.warnings || [],
     checks: readiness.checks || {},
@@ -88,6 +100,34 @@ function buildReport(readiness) {
   };
 }
 
+function buildClaimGate(readiness, { mobileReady, strictDoctorRequested, transport }) {
+  const strictDoctorPassed = mobileReady && strictDoctorRequested;
+  const blockers = readiness.blockers || [];
+  return {
+    id: "seis-ssh-mobile-24x7-claim-gate",
+    readyClaim: "SEIS-SSH is ChatGPT mobile/Codex 24x7 ready",
+    continuityClaim: "SEIS remains reachable when the local Mac is closed",
+    status: strictDoctorPassed ? "mobile-24x7-ready" : "blocked",
+    allowedOnlyAfterCommand: "npm run cloud:ssh:mobile-direct:doctor:strict",
+    allowedOnlyAfterClaimScope: "mobile-24x7-ready",
+    strictDoctorRequired: true,
+    strictDoctorRequested,
+    strictDoctorPassed,
+    readyClaimAllowed: strictDoctorPassed,
+    continuityClaimAllowed: strictDoctorPassed,
+    macOffClaimAllowed: strictDoctorPassed,
+    localMacDependencyAllowed: false,
+    codespacesContinuityAllowed: false,
+    browserLocalProofAllowed: false,
+    directCloudTransport: transport === "direct-cloud",
+    blockedBy: strictDoctorPassed ? [] : blockers,
+    generatedBy: "scripts/create-seis-ssh-mobile-24x7-report.mjs",
+    remoteMutationAllowed: false,
+    credentialRead: false,
+    secretStored: false
+  };
+}
+
 function sanitize(value) {
   const home = homedir();
   if (Array.isArray(value)) return value.map(sanitize);
@@ -99,6 +139,15 @@ function sanitize(value) {
     .replaceAll(home, "~")
     .replace(/sk-[A-Za-z0-9_-]{20,}/g, "<redacted-api-key>")
     .replace(/-----BEGIN (OPENSSH|RSA|EC|DSA) PRIVATE KEY-----[\s\S]*?-----END \1 PRIVATE KEY-----/g, "<redacted-private-key>");
+}
+
+function readReadinessJson(file) {
+  try {
+    return JSON.parse(readFileSync(resolve(file), "utf8"));
+  } catch (error) {
+    console.error(`Failed to read readiness JSON: ${error.message}`);
+    process.exit(1);
+  }
 }
 
 function writeJson(file, data) {
@@ -149,6 +198,22 @@ Generated: ${report.generatedAt}
 | SSH-AI installed | ${runtime.checked ? (runtime.sshAiInstalled ? "yes" : "no") : "not checked"} |
 | SSH-AI daemon active | ${runtime.checked ? (runtime.sshAiDaemonActive ? "yes" : "no") : "not checked"} |
 | Codex available | ${runtime.checked ? (runtime.codexAvailable ? "yes" : "no") : "not checked"} |
+
+## Claim Gate
+
+| Claim | Value |
+| --- | --- |
+| Ready claim allowed | ${report.claimGate.readyClaimAllowed ? "yes" : "no"} |
+| Mac-off continuity allowed | ${report.claimGate.macOffClaimAllowed ? "yes" : "no"} |
+| Strict doctor required | ${report.claimGate.strictDoctorRequired ? "yes" : "no"} |
+| Strict doctor requested | ${report.claimGate.strictDoctorRequested ? "yes" : "no"} |
+| Strict doctor passed | ${report.claimGate.strictDoctorPassed ? "yes" : "no"} |
+| Browser-local proof allowed | ${report.claimGate.browserLocalProofAllowed ? "yes" : "no"} |
+| Codespaces continuity allowed | ${report.claimGate.codespacesContinuityAllowed ? "yes" : "no"} |
+
+Blocked by:
+
+${renderList(report.claimGate.blockedBy, "No claim blockers.")}
 
 ## Blockers
 
@@ -218,6 +283,7 @@ Options:
   --identity-file PATH    Override direct-cloud identity file.
   --connect-timeout SEC   SSH/TCP timeout. Default: 12.
   --require-ready         Exit non-zero after writing reports unless mobile 24/7 readiness passes.
+  --readiness-json PATH   Use a precomputed readiness JSON fixture instead of probing SSH.
   --json-out PATH         JSON report path. Default: reports/seis-ssh-mobile-24x7-readiness.json.
   --md-out PATH           Markdown report path. Default: reports/seis-ssh-mobile-24x7-readiness.md.
 `);

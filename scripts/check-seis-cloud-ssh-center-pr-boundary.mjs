@@ -17,9 +17,14 @@ const allowedChangedFiles = new Set([
   "apps/seis-core/test/seis-core-static.test.js",
   "content/development/seis-cloud-ssh-center-readiness.json",
   "docs/deployment/seis-cloud-ssh-center-demo.md",
+  "docs/deployment/seis-ssh-chatgpt-mobile-24x7.md",
+  "docs/operations/seis-ssh-mobile-24x7.md",
   "package.json",
   "scripts/check-seis-cloud-ssh-center-pr-boundary.mjs",
-  "scripts/check-seis-cloud-ssh-center-readiness.mjs"
+  "scripts/check-seis-cloud-ssh-center-readiness.mjs",
+  "scripts/check-seis-ssh-mobile-direct-cloud.mjs",
+  "scripts/create-seis-ssh-mobile-24x7-report.mjs",
+  "scripts/tests/seis-ssh-mobile-24x7-report.test.mjs"
 ]);
 
 const forbiddenDiffPrefixes = [
