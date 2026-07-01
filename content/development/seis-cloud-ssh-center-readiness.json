@@ -24,6 +24,75 @@
   "onlineGate": "npm run cloud:ssh:online:strict",
   "mobile24x7Gate": "npm run cloud:ssh:mobile-24x7:strict",
   "currentKnownBlocker": "mobile-24x7-requires-direct-cloud-transport",
+  "ownerInputChecklist": [
+    {
+      "id": "direct-cloud-host",
+      "label": "Always-on public VM endpoint",
+      "field": "SEIS_SSH_HOST or SEIS_CLOUD_HOST",
+      "status": "unknown",
+      "boundary": "owner input required",
+      "secret": false,
+      "requiredFor24x7": true
+    },
+    {
+      "id": "ssh-port",
+      "label": "SSH TCP port",
+      "field": "SEIS_SSH_PORT",
+      "default": "22",
+      "status": "planned",
+      "boundary": "preserve existing port unless approved",
+      "secret": false,
+      "requiredFor24x7": true
+    },
+    {
+      "id": "runtime-user",
+      "label": "Runtime SSH user",
+      "field": "SEIS_SSH_USER",
+      "default": "aiuser",
+      "status": "planned",
+      "boundary": "least privilege account",
+      "secret": false,
+      "requiredFor24x7": true
+    },
+    {
+      "id": "identity-file-path",
+      "label": "Local identity file path",
+      "field": "SEIS_SSH_IDENTITY_FILE",
+      "default": "~/.ssh/id_ed25519_seis_codex",
+      "status": "planned",
+      "boundary": "local path only; key material never committed",
+      "secret": false,
+      "requiredFor24x7": true
+    },
+    {
+      "id": "remote-repo-dir",
+      "label": "Remote SEIS repository directory",
+      "field": "SEIS_REMOTE_REPO_DIR",
+      "default": "/opt/seis/SEIS",
+      "status": "planned",
+      "boundary": "no destructive sync",
+      "secret": false,
+      "requiredFor24x7": true
+    },
+    {
+      "id": "bootstrap-runbook",
+      "label": "Remote bootstrap runbook",
+      "field": "scripts/bootstrap-seis-ssh-mobile-direct-cloud.sh",
+      "status": "planned",
+      "boundary": "dry-run before mutation",
+      "secret": false,
+      "requiredFor24x7": true
+    },
+    {
+      "id": "rollback-owner",
+      "label": "Rollback owner and console access",
+      "field": "provider console / owner approval",
+      "status": "unknown",
+      "boundary": "required before rollout",
+      "secret": false,
+      "requiredFor24x7": true
+    }
+  ],
   "historyScanBoundary": {
     "fullHistoryGate": "GitHub Secret & Vulnerability Scan",
     "currentKnownFailureSource": "legacy generated bundle in historical commit, not Cloud SSH Center diff",

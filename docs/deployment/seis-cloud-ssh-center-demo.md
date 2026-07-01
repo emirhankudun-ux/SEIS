@@ -15,6 +15,8 @@
 - A PR-boundary gate, `npm run check:seis-cloud-ssh-center-pr-boundary`,
   that proves this Cloud SSH Center PR does not touch generated source bundles,
   workflow bypasses, reports, builds, or secret-bearing generated history files.
+- A public-safe `ownerInputChecklist` for the direct-cloud fields required before
+  any 24/7 claim.
 - Explicit Mac-off continuity metadata: Codespaces may be online but can sleep,
   while true 24/7 mode requires direct-cloud proof.
 - Focused static tests in `apps/seis-core/test/seis-cloud-ssh-center-static.test.js`.
@@ -42,6 +44,22 @@ The target is that SEIS remains reachable whether the local Mac is open or close
 - Codespaces can support Mac-independent remote work while the Codespace is awake, but it can sleep and is not treated as true 24/7 direct cloud.
 - True always-on mode requires direct-cloud SSH transport, TCP reachability, SSH auth, remote runtime checks, `ssh-ai`, the SEIS repo, and remote Codex evidence.
 - Until that stricter gate passes, the public-safe state remains planned, not ready.
+
+## Direct-cloud owner packet
+
+The `ownerInputChecklist` stores field names only. It does not store live host
+values, private key material, provider credentials, or console access. Real
+values stay local and outside Git.
+
+Required before a 24/7 claim:
+
+- `SEIS_SSH_HOST` or `SEIS_CLOUD_HOST`: approved always-on VM endpoint.
+- `SEIS_SSH_PORT`: SSH TCP port, defaulting to `22` unless explicitly approved.
+- `SEIS_SSH_USER`: least-privilege runtime user, defaulting to `aiuser`.
+- `SEIS_SSH_IDENTITY_FILE`: local identity-file path only; key material is never committed.
+- `SEIS_REMOTE_REPO_DIR`: remote SEIS repository directory, defaulting to `/opt/seis/SEIS`.
+- `scripts/bootstrap-seis-ssh-mobile-direct-cloud.sh`: reviewed bootstrap runbook.
+- `provider console / owner approval`: rollback owner and provider-console access.
 
 ## Secret scan boundary
 

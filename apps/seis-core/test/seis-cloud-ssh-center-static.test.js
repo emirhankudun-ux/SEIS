@@ -24,7 +24,10 @@ test("SEIS Cloud SSH Center exposes explicit safe states", async () => {
     "24/7 continuity",
     "Server / port",
     "unchanged placeholder",
-    "Mac-off continuity requires a direct-cloud runtime; Codespaces can sleep."
+    "Mac-off continuity requires a direct-cloud runtime; Codespaces can sleep.",
+    "Direct-cloud owner packet",
+    "Fields required before 24/7 claim",
+    "owner-input-checklist"
   ]) {
     assert.match(html, new RegExp(marker));
   }
@@ -45,7 +48,14 @@ test("SEIS Cloud SSH Center script stays browser-local and non-mutating", async 
     "serverPortChanged: false",
     "mobile24x7Ready: false",
     "directCloudRequired: true",
-    "rollbackRequired: true"
+    "rollbackRequired: true",
+    "ownerInputs",
+    "renderOwnerInputs",
+    "SEIS_SSH_HOST or SEIS_CLOUD_HOST",
+    "SEIS_REMOTE_REPO_DIR",
+    "scripts/bootstrap-seis-ssh-mobile-direct-cloud.sh",
+    "provider console / owner approval",
+    "requiredFor24x7: true"
   ]) {
     assert.match(script, new RegExp(marker));
   }
@@ -68,7 +78,7 @@ test("SEIS Cloud SSH Center script stays browser-local and non-mutating", async 
 
 test("SEIS Cloud SSH Center styles include responsive and reduced-motion support", async () => {
   const css = await read("cloud-ssh-center.css");
-  for (const marker of ["prefers-reduced-motion", "skip-link", "status-grid", "surface-grid", "evidence-log", "@media (max-width: 940px)", "--cyan", "--blue", "--radius"]) {
+  for (const marker of ["prefers-reduced-motion", "skip-link", "status-grid", "surface-grid", "owner-input-grid", "evidence-log", "@media (max-width: 940px)", "--cyan", "--blue", "--radius"]) {
     assert.match(css, new RegExp(marker.replace(/[()]/g, "\\$&")));
   }
 });
@@ -95,6 +105,19 @@ test("SEIS Cloud SSH Center fixture stays synchronized with safe demo states", a
   assert.equal(fixture.historyScanBoundary.bypassAllowedByDefault, false);
   assert.ok(fixture.historyScanBoundary.forbiddenDiffPrefixes.includes("sources/"));
   assert.ok(fixture.historyScanBoundary.forbiddenHeadPaths.includes("sources/github-unified-source/_generated/github-code-bundle.txt"));
+  assert.equal(fixture.ownerInputChecklist.length, 7);
+  const ownerInputIds = new Set(fixture.ownerInputChecklist.map((input) => input.id));
+  for (const id of ["direct-cloud-host", "ssh-port", "runtime-user", "identity-file-path", "remote-repo-dir", "bootstrap-runbook", "rollback-owner"]) {
+    assert.ok(ownerInputIds.has(id));
+  }
+  for (const input of fixture.ownerInputChecklist) {
+    assert.equal(input.secret, false);
+    assert.equal(input.requiredFor24x7, true);
+    assert.ok(fixture.states.includes(input.status));
+    assert.equal(script.includes(input.label), true);
+    assert.equal(script.includes(input.field), true);
+    assert.equal(script.includes(input.boundary), true);
+  }
   assert.equal(fixture.surfaces.length, 12);
   assert.ok(fixture.surfaces.some((surface) => surface.id === "mac-independent-remote-runtime"));
   assert.ok(fixture.surfaces.some((surface) => surface.id === "always-on-direct-cloud"));

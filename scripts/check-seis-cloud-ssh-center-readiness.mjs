@@ -76,6 +76,25 @@ for (const id of ["mac-independent-remote-runtime", "always-on-direct-cloud"]) {
   ensure(surfaceIds.has(id), `fixture must include ${id}`);
 }
 
+const ownerInputs = fixture?.ownerInputChecklist || [];
+ensure(Array.isArray(ownerInputs) && ownerInputs.length === 7, "fixture must define 7 direct-cloud owner input fields");
+const ownerInputIds = new Set();
+for (const input of ownerInputs) {
+  ensure(/^[a-z0-9-]+$/.test(input.id || ""), `owner input id must be kebab-case: ${input.id}`);
+  ensure(!ownerInputIds.has(input.id), `owner input id must be unique: ${input.id}`);
+  ownerInputIds.add(input.id);
+  ensure(states.has(input.status), `owner input ${input.id} must use a declared state`);
+  ensure(input.secret === false, `owner input ${input.id} must stay non-secret`);
+  ensure(input.requiredFor24x7 === true, `owner input ${input.id} must be required for 24/7`);
+  for (const token of [input.label, input.status, input.field, input.boundary]) {
+    ensure(appScript.includes(token), `app script must include owner input token: ${token}`);
+  }
+}
+
+for (const id of ["direct-cloud-host", "ssh-port", "runtime-user", "identity-file-path", "remote-repo-dir", "bootstrap-runbook", "rollback-owner"]) {
+  ensure(ownerInputIds.has(id), `fixture must include owner input ${id}`);
+}
+
 const requiredFlags = fixture?.requiredSafetyFlags || {};
 for (const [flag, value] of Object.entries({
   remoteConnected: false,
@@ -112,10 +131,17 @@ ensure(route.includes("data-seis-cloud-ssh=\"browser-local-readiness\""), "route
 ensure(route.includes("No live SSH - metadata-only control plane"), "route must keep no-live-SSH label");
 ensure(route.includes("server and connection port must remain unchanged"), "route must preserve server/port copy");
 ensure(route.includes("Mac-off continuity requires a direct-cloud runtime; Codespaces can sleep."), "route must disclose Mac-off continuity boundary");
+ensure(route.includes("owner-input-checklist"), "route must render direct-cloud owner input checklist");
+ensure(route.includes("Direct-cloud owner packet"), "route must label direct-cloud owner input packet");
 
 for (const token of [
   files.fixture,
   "schema-backed Cloud / SSH readiness fixture",
+  "ownerInputChecklist",
+  "SEIS_SSH_HOST",
+  "SEIS_CLOUD_HOST",
+  "SEIS_REMOTE_REPO_DIR",
+  "provider console / owner approval",
   "npm run check:seis-cloud-ssh-center-readiness",
   "npm run check:seis-cloud-ssh-center-pr-boundary",
   "npm run cloud:ssh:online:strict",

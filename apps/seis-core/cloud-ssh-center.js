@@ -15,6 +15,16 @@ const surfaces = [
   ["Rollback Readiness", "planned", "Rollback needs owner, impact, command plan, recovery verification, and approval evidence.", "approval-needed", "no live run"]
 ];
 
+const ownerInputs = [
+  ["Always-on public VM endpoint", "unknown", "SEIS_SSH_HOST or SEIS_CLOUD_HOST", "owner input required"],
+  ["SSH TCP port", "planned", "SEIS_SSH_PORT", "preserve existing port unless approved"],
+  ["Runtime SSH user", "planned", "SEIS_SSH_USER", "least privilege account"],
+  ["Local identity file path", "planned", "SEIS_SSH_IDENTITY_FILE", "local path only; key material never committed"],
+  ["Remote SEIS repository directory", "planned", "SEIS_REMOTE_REPO_DIR", "no destructive sync"],
+  ["Remote bootstrap runbook", "planned", "scripts/bootstrap-seis-ssh-mobile-direct-cloud.sh", "dry-run before mutation"],
+  ["Rollback owner and console access", "unknown", "provider console / owner approval", "required before rollout"]
+];
+
 let state = loadState();
 
 function loadState() {
@@ -88,6 +98,24 @@ function renderSurfaces() {
   }).join("");
 }
 
+function renderOwnerInputs() {
+  const target = $("#owner-input-checklist");
+  if (!target) return;
+  target.innerHTML = ownerInputs.map(([label, status, field, boundary]) => `
+    <article class="owner-input-card">
+      <div class="card-topline">
+        <h3>${label}</h3>
+        <span class="status-pill ${status}">${status}</span>
+      </div>
+      <p>${field}</p>
+      <div class="meta-row">
+        <span class="meta-chip">${boundary}</span>
+        <span class="meta-chip">secretStored: false</span>
+        <span class="meta-chip">requiredFor24x7: true</span>
+      </div>
+    </article>`).join("");
+}
+
 function renderLog() {
   if (!state.log.length) {
     $("#evidence-log").innerHTML = `<article class="evidence-card"><strong>No local readiness notes yet.</strong><small>Record a note to produce browser-only evidence.</small></article>`;
@@ -109,6 +137,7 @@ function setMode(mode) {
 
 function render() {
   renderSurfaces();
+  renderOwnerInputs();
   renderLog();
 }
 
