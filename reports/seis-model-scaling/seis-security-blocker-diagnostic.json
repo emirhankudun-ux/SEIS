@@ -1,0 +1,30 @@
+{
+  "id": "seis-security-blocker-diagnostic-report",
+  "generatedAt": "2026-07-01T03:29:10.898Z",
+  "status": "security-blocker-diagnostic-ready-approval-gated",
+  "sourceDiagnostic": "content/development/seis-security-blocker-diagnostic.json",
+  "summary": {
+    "prNumber": 100,
+    "failingChecks": 2,
+    "failedDiagnosticChecks": 0,
+    "secretValuesPrintedOrStored": false,
+    "blockerFixed": false,
+    "githubReadyForEveryone": false,
+    "gitleaksAllowlistChange": false,
+    "historyRewrite": false,
+    "secretRotation": false
+  },
+  "safeNextCommands": [
+    "npm run report:seis-security-blocker-diagnostic",
+    "npm run check:seis-security-blocker-diagnostic",
+    "npm run check:seis-ai-public-readiness"
+  ],
+  "humanApprovalNeededBefore": [
+    "choose narrow gitleaks allowlist vs history cleanup vs rotation plan",
+    "confirm whether the older generated aggregate bundle path may be allowlisted",
+    "confirm whether any exposed secret requires rotation",
+    "approve any history rewrite before execution",
+    "approve any security allowlist push before execution",
+    "approve PR #100 merge only after security checks are green"
+  ]
+}

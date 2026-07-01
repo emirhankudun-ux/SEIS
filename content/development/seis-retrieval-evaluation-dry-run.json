@@ -1,7 +1,7 @@
 {
   "id": "seis-retrieval-evaluation-dry-run",
   "version": "2026.07.01",
-  "generatedAt": "2026-07-01T03:17:09.312Z",
+  "generatedAt": "2026-07-01T03:28:48.312Z",
   "status": "dry-run-passed-no-index-no-model",
   "qualityGate": "npm run check:seis-retrieval-evaluation-dry-run",
   "reportCommand": "npm run report:seis-retrieval-evaluation-dry-run",
