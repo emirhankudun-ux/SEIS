@@ -106,7 +106,7 @@ const CUSTOM_FIELD_VALUES = {
   budgetBand: "Avoid unchecked agency retainer",
   quoteBaseline: "Outside agency quote with vague deliverables and monthly retainer",
   agencyCostControlFocus: "Line item, SEIS in-house route, external-buy trigger, quality risk, evidence requirement, decision owner, and approval gate",
-  agencyCostDefenseFocus: "Quoted line item, replaceable deliverables, in-house coverage index, must-buy trigger, risk owner, validation proof, and next spend decision",
+  agencyCostDefenseFocus: "Blocked retainer line, replaceable SEIS outputs, browser-local coverage score, specialist-buy trigger, risk owner, validation proof, and Friday spend decision",
   designSprintTimelineFocus: "Discovery day, strategy freeze, production block, review checkpoint, revision window, QA pass, handoff day, owner, and blocker rule",
   internalProductionPath: "SEIS draft pack plus validation before buying external help",
   competitivePositioningFocus: "Direct competitors, aspirational references, category cues, visual territory, differentiation, evidence gaps, and decision owner",
@@ -361,6 +361,32 @@ const stateExpression = `(() => {
     .map((item) => item.getAttribute("data-agency-output"));
   const workboardIds = [...document.querySelectorAll("[data-agency-workboard]")]
     .map((item) => item.getAttribute("data-agency-workboard"));
+  const defensePanel = document.querySelector("[data-agency-cost-defense]");
+  const defenseRect = defensePanel?.getBoundingClientRect();
+  const defenseMetrics = Object.fromEntries([...document.querySelectorAll("[data-agency-defense-metric]")]
+    .map((item) => [
+      item.getAttribute("data-agency-defense-metric"),
+      item.querySelector("dd")?.textContent.trim() || ""
+    ]));
+  const outputBoundaryTextCount = [...document.querySelectorAll("[data-agency-output] p")]
+    .filter((item) => /boundary|not-|no-/i.test(item.textContent || "")).length;
+  const workboardBoundaryTextCount = [...document.querySelectorAll("[data-agency-workboard] li")]
+    .filter((item) => /Boundary:|not |no-/i.test(item.textContent || "")).length;
+  const boundaryTextCount = outputBoundaryTextCount + workboardBoundaryTextCount;
+  const workboardCards = [...document.querySelectorAll("[data-agency-workboard]")].map((card) => {
+    const rect = card.getBoundingClientRect();
+    return {
+      id: card.getAttribute("data-agency-workboard") || "",
+      heading: card.querySelector("h3")?.textContent.trim() || "",
+      itemCount: card.querySelectorAll("li").length,
+      visible: rect.width > 0 && rect.height > 0,
+      width: Math.round(rect.width),
+      height: Math.round(rect.height)
+    };
+  });
+  const workboardItemCounts = workboardCards.map((card) => card.itemCount);
+  const duplicateWorkboardIds = workboardIds.filter((id, index) => workboardIds.indexOf(id) !== index);
+  const costDefenseWorkboard = workboardCards.find((card) => card.id === "agency-cost-defense-calculator") || null;
   const buildButton = document.querySelector("[data-build-agency-pack]");
   const exportButton = document.querySelector("[data-export-agency-pack]");
   const copyButton = document.querySelector("[data-copy-agency-pack]");
@@ -382,6 +408,33 @@ const stateExpression = `(() => {
     exportButtonText: exportButton?.textContent.trim() || "",
     copyButtonText: copyButton?.textContent.trim() || "",
     outputText: output?.textContent.trim() || "",
+    agencyDefense: {
+      found: Boolean(defensePanel),
+      label: defensePanel?.getAttribute("aria-label") || "",
+      text: defensePanel?.textContent.trim() || "",
+      visible: Boolean(defenseRect && defenseRect.width > 0 && defenseRect.height > 0),
+      metricCount: Object.keys(defenseMetrics).length,
+      metrics: defenseMetrics,
+      boundaryTextCount,
+      width: Math.round(defenseRect?.width || 0),
+      height: Math.round(defenseRect?.height || 0)
+    },
+    workboardDensity: {
+      count: workboardCards.length,
+      visibleCount: workboardCards.filter((card) => card.visible).length,
+      minItems: workboardItemCounts.length ? Math.min(...workboardItemCounts) : 0,
+      maxItems: workboardItemCounts.length ? Math.max(...workboardItemCounts) : 0,
+      averageItems: workboardItemCounts.length
+        ? Number((workboardItemCounts.reduce((sum, count) => sum + count, 0) / workboardItemCounts.length).toFixed(2))
+        : 0,
+      totalItems: workboardItemCounts.reduce((sum, count) => sum + count, 0),
+      costDefenseHeading: costDefenseWorkboard?.heading || "",
+      costDefenseItems: costDefenseWorkboard?.itemCount || 0,
+      costDefenseText: document.querySelector('[data-agency-workboard="agency-cost-defense-calculator"]')?.textContent.trim() || "",
+      duplicateIds: duplicateWorkboardIds,
+      emptyHeadings: workboardCards.filter((card) => !card.heading).map((card) => card.id),
+      zeroAreaIds: workboardCards.filter((card) => !card.visible).map((card) => card.id)
+    },
     localPack,
     localHandoff,
     handoffManifest,
@@ -395,6 +448,50 @@ const stateExpression = `(() => {
     }
   };
 })()`;
+
+function parseLeadingNumber(value) {
+  const match = String(value || "").match(/\d+/);
+  return match ? Number(match[0]) : Number.NaN;
+}
+
+function ensureAgencyVisualQa(state, label) {
+  const defense = state.agencyDefense || {};
+  const metrics = defense.metrics || {};
+  const coverage = parseLeadingNumber(metrics.coverage);
+  const outputs = parseLeadingNumber(metrics.outputs);
+  const workboards = parseLeadingNumber(metrics.workboards);
+  const boundaries = parseLeadingNumber(metrics.boundaries);
+  const density = state.workboardDensity || {};
+  const metricKeys = Object.keys(metrics).sort().join(",");
+
+  ensure(defense.found, `${label} agency cost defense panel must render`);
+  ensure(defense.visible, `${label} agency cost defense panel must be visible`);
+  ensure(defense.label === "Agency cost defense calculator", `${label} agency cost defense panel must keep accessible label`);
+  ensure(defense.metricCount === 4, `${label} agency cost defense panel must expose four metrics`);
+  ensure(metricKeys === "boundaries,coverage,outputs,workboards", `${label} agency cost defense metric keys must stay complete`);
+  ensure(Number.isFinite(coverage) && coverage >= 90 && coverage <= 100, `${label} coverage index must stay in a defensible 90-100 range`);
+  ensure(outputs === state.outputIds.length, `${label} agency defense output metric must match rendered outputs`);
+  ensure(outputs === REQUIRED_OUTPUTS.length, `${label} agency defense output metric must match required outputs`);
+  ensure(workboards === state.workboardIds.length, `${label} agency defense workboard metric must match rendered workboards`);
+  ensure(workboards === REQUIRED_WORKBOARDS.length, `${label} agency defense workboard metric must match required workboards`);
+  ensure(Number.isFinite(boundaries) && boundaries >= 20, `${label} agency defense boundary metric must prove meaningful boundary coverage`);
+  ensure(boundaries === defense.boundaryTextCount, `${label} agency defense boundary metric must match DOM-derived boundary text count`);
+  ensure(defense.text.includes("Replace or defer external agency spend"), `${label} agency defense panel must show external-spend decision guidance`);
+  ensure(density.count === REQUIRED_WORKBOARDS.length, `${label} workboard density count must match required workboards`);
+  ensure(density.visibleCount === REQUIRED_WORKBOARDS.length, `${label} all workboards must have visible card geometry`);
+  ensure(density.minItems === 4 && density.maxItems === 4, `${label} every agency workboard must keep four review-density items`);
+  ensure(density.totalItems === REQUIRED_WORKBOARDS.length * 4, `${label} visible workboards must keep full checklist density`);
+  ensure(density.averageItems === 4, `${label} agency workboards must keep four-item average density`);
+  ensure(density.costDefenseHeading === "Agency Cost Defense Calculator", `${label} agency cost defense workboard must keep heading`);
+  ensure(density.costDefenseItems === 4, `${label} agency cost defense workboard must keep four decision items`);
+  ensure(density.costDefenseText.includes("Coverage index"), `${label} agency cost defense workboard must include coverage index item`);
+  ensure(density.costDefenseText.includes("Decision path"), `${label} agency cost defense workboard must include decision path item`);
+  ensure(density.costDefenseText.includes("Spend trigger"), `${label} agency cost defense workboard must include spend trigger item`);
+  ensure(density.costDefenseText.includes("not financial advice"), `${label} agency cost defense workboard must include financial-advice boundary`);
+  ensure((density.duplicateIds || []).length === 0, `${label} agency workboards must not duplicate ids`);
+  ensure((density.emptyHeadings || []).length === 0, `${label} agency workboards must not have empty headings`);
+  ensure((density.zeroAreaIds || []).length === 0, `${label} agency workboards must not render zero-area cards`);
+}
 
 async function inspectWorkspaceFile(client, filePath) {
   return evaluate(client, `new Promise((resolve) => {
@@ -478,6 +575,7 @@ async function smokeDesktop(client, baseUrl) {
   for (const fieldId of Object.keys(CUSTOM_FIELD_VALUES)) {
     ensure(Object.hasOwn(before.fieldValues, fieldId), `editable field must render: ${fieldId}`);
   }
+  ensureAgencyVisualQa(before, "desktop");
   ensure(!before.horizontalOverflow, "desktop design page must not horizontally overflow before generation");
 
   await evaluate(client, `(() => {
@@ -599,9 +697,12 @@ async function smokeDesktop(client, baseUrl) {
   ensure(afterBuild.outputText.includes("Hero promise, section order, proof blocks, objection handling, CTA ladder, responsive priority, accessibility notes, analytics questions, and owner"), "generated pack must include custom landing page blueprint field");
   ensure(afterBuild.outputText.includes("Brand sprint plus launch kit"), "generated pack must include custom scope field");
   ensure(afterBuild.outputText.includes("Avoid unchecked agency retainer"), "generated pack must include custom budget band field");
+  ensure(afterBuild.outputText.includes("- Budget band: Avoid unchecked agency retainer"), "generated pack must include labeled edited budget band");
   ensure(afterBuild.outputText.includes("Outside agency quote with vague deliverables and monthly retainer"), "generated pack must include custom quote baseline field");
+  ensure(afterBuild.outputText.includes("- Quote baseline: Outside agency quote with vague deliverables and monthly retainer"), "generated pack must include labeled edited quote baseline");
   ensure(afterBuild.outputText.includes("Line item, SEIS in-house route, external-buy trigger, quality risk, evidence requirement, decision owner, and approval gate"), "generated pack must include custom agency cost control field");
-  ensure(afterBuild.outputText.includes("Quoted line item, replaceable deliverables, in-house coverage index, must-buy trigger, risk owner, validation proof, and next spend decision"), "generated pack must include custom agency cost defense field");
+  ensure(afterBuild.outputText.includes("Blocked retainer line, replaceable SEIS outputs, browser-local coverage score, specialist-buy trigger, risk owner, validation proof, and Friday spend decision"), "generated pack must include custom agency cost defense field");
+  ensure(afterBuild.outputText.includes("- Cost defense focus: Blocked retainer line, replaceable SEIS outputs, browser-local coverage score, specialist-buy trigger, risk owner, validation proof, and Friday spend decision"), "generated pack must include labeled edited agency cost defense focus");
   ensure(afterBuild.outputText.includes("Discovery day, strategy freeze, production block, review checkpoint, revision window, QA pass, handoff day, owner, and blocker rule"), "generated pack must include custom design sprint timeline field");
   ensure(afterBuild.outputText.includes("SEIS draft pack plus validation before buying external help"), "generated pack must include custom internal production path field");
   ensure(afterBuild.outputText.includes("Direct competitors, aspirational references, category cues, visual territory, differentiation, evidence gaps, and decision owner"), "generated pack must include custom competitive positioning field");
@@ -632,6 +733,10 @@ async function smokeDesktop(client, baseUrl) {
   ensure(afterExport.outputText.includes(HANDOFF_PATH), "exported pack must include SEIS Code handoff path");
   ensure(afterExport.handoffManifest?.path === HANDOFF_PATH, "handoff manifest must include SEIS Code path");
   ensure(afterExport.handoffManifest?.content === afterExport.outputText, "handoff manifest must include generated pack content");
+  ensure(afterExport.handoffManifest?.agencyDefense?.coverageIndex === parseLeadingNumber(afterExport.agencyDefense?.metrics?.coverage), "handoff manifest agency defense coverage must match visible panel");
+  ensure(afterExport.handoffManifest?.agencyDefense?.outputCount === REQUIRED_OUTPUTS.length, "handoff manifest must preserve output count");
+  ensure(afterExport.handoffManifest?.agencyDefense?.workboardCount === REQUIRED_WORKBOARDS.length, "handoff manifest must preserve workboard count");
+  ensure(afterExport.handoffManifest?.agencyDefense?.boundaryCount === parseLeadingNumber(afterExport.agencyDefense?.metrics?.boundaries), "handoff manifest agency defense boundary count must match visible panel");
   ensure(afterExport.handoffManifest?.requiresHumanReviewBeforePublication === true, "handoff manifest must preserve human-review gate");
   ensure(afterExport.handoffManifest?.notClaims?.includes("not host filesystem write"), "handoff manifest must not claim host filesystem writes");
   ensure(afterExport.handoffManifest?.notClaims?.includes("not Git commit"), "handoff manifest must not claim Git commits");
@@ -654,6 +759,8 @@ async function smokeDesktop(client, baseUrl) {
   return {
     outputCount: afterBuild.outputIds.length,
     generatedBytes: afterBuild.outputText.length,
+    agencyDefense: before.agencyDefense,
+    workboardDensity: before.workboardDensity,
     handoffPath: workspaceHandoff.path,
     status: afterCopy.status,
     screenshot: await screenshot(client, "desktop-design-agency-kit.png"),
@@ -675,12 +782,15 @@ async function smokeMobile(client, baseUrl) {
   ensure(state.outputIds.length === REQUIRED_OUTPUTS.length, "mobile agency workflow must render all outputs");
   ensure(state.workboardIds.length === REQUIRED_WORKBOARDS.length, "mobile agency workflow must render all visible workboards");
   ensure(state.outputText.includes("handoff-checklist"), "mobile generated pack must include handoff checklist");
+  ensureAgencyVisualQa(state, "mobile");
   ensure(!state.horizontalOverflow, `mobile design page must not horizontally overflow: ${JSON.stringify(state.viewport)}`);
 
   return {
     outputCount: state.outputIds.length,
     workboardCount: state.workboardIds.length,
     generatedBytes: state.outputText.length,
+    agencyDefense: state.agencyDefense,
+    workboardDensity: state.workboardDensity,
     viewport: state.viewport,
     screenshot: await screenshot(client, "mobile-design-agency-kit.png"),
   };

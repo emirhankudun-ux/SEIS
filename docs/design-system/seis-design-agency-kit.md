@@ -443,7 +443,8 @@ Browser-smoke coverage lives in
 Design page, checks the agency workflow, generates the local pack, verifies
 localStorage persistence, exports the browser-local SEIS Code handoff, verifies
 the IndexedDB workspace file, exercises copy status, captures desktop/mobile
-screenshots, and checks horizontal overflow.
+screenshots, verifies the Agency Cost Defense Calculator metric panel, checks
+visible workboard item density, and checks horizontal overflow.
 
 The same smoke script now continues into `apps/web/seis-code.html`, activates
 the `Design Handoff` view, opens `/workspace/Design/seis-design-agency-pack.md`,
@@ -475,9 +476,7 @@ npm run check:seis-public-readiness
 
 ## Next Safe Action
 
-Run the cross-route browser smoke with `CHROME_PATH` available so the SEIS
-Design to SEIS Code review evidence can be captured, then add focused visual QA
-for the visible proposal scope, agency quote comparison, brand rationale,
-brand usage, creative QA, revision, client feedback triage, visual QA evidence,
-case study layout, production manifest, asset size spec, client approval, client-ready export,
-brand audit, launch asset, social variant, and presentation workboards.
+Keep the cross-route browser smoke passing with `CHROME_PATH` available so the
+SEIS Design to SEIS Code review evidence, Agency Cost Defense metrics, and
+visible workboard density stay captured before adding the next agency-replacing
+production layer.

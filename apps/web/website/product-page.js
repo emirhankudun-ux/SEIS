@@ -688,10 +688,10 @@
           <div class="agency-cost-defense" data-agency-cost-defense aria-label="Agency cost defense calculator">
             <span>Agency cost defense</span>
             <dl>
-              <div><dt>Coverage</dt><dd>${defense.coverageIndex}/100</dd></div>
-              <div><dt>Outputs</dt><dd>${defense.outputCount}</dd></div>
-              <div><dt>Workboards</dt><dd>${defense.workboardCount}</dd></div>
-              <div><dt>Boundary checks</dt><dd>${defense.boundaryCount}</dd></div>
+              <div data-agency-defense-metric="coverage"><dt>Coverage</dt><dd>${defense.coverageIndex}/100</dd></div>
+              <div data-agency-defense-metric="outputs"><dt>Outputs</dt><dd>${defense.outputCount}</dd></div>
+              <div data-agency-defense-metric="workboards"><dt>Workboards</dt><dd>${defense.workboardCount}</dd></div>
+              <div data-agency-defense-metric="boundaries"><dt>Boundary checks</dt><dd>${defense.boundaryCount}</dd></div>
             </dl>
             <p>${escapeHtml(defense.decisionHint)}</p>
           </div>

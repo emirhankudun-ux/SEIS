@@ -597,6 +597,10 @@ if (kit) {
   ensure(websiteRuntimeText.includes("Coverage index"), "website runtime must include computed agency coverage index copy");
   ensure(websiteRuntimeText.includes("calculateAgencyDefense"), "website runtime must calculate agency cost defense metrics");
   ensure(websiteRuntimeText.includes("data-agency-cost-defense"), "website runtime must render agency cost defense metrics");
+  ensure(websiteRuntimeText.includes("data-agency-defense-metric"), "website runtime must expose agency cost defense metric hooks");
+  for (const metric of ["coverage", "outputs", "workboards", "boundaries"]) {
+    ensure(websiteRuntimeText.includes(`data-agency-defense-metric="${metric}"`), `website runtime missing agency defense metric hook: ${metric}`);
+  }
   ensure(websiteRuntimeText.includes("not financial advice"), "website runtime must avoid financial advice claims in generated pack");
   ensure(websiteRuntimeText.includes("## Design Sprint Timeline Matrix"), "website runtime must include design sprint timeline matrix section in generated pack");
   ensure(websiteRuntimeText.includes("not a delivery date guarantee"), "website runtime must avoid delivery date guarantee claims in generated pack");
@@ -672,6 +676,12 @@ if (kit) {
   }
   ensure(browserSmokeText.includes("smokeSeisCodeReview"), "browser smoke must include the cross-route SEIS Code review flow");
   ensure(browserSmokeText.includes("codeReviewStateExpression"), "browser smoke must inspect SEIS Code review state");
+  ensure(browserSmokeText.includes("ensureAgencyVisualQa"), "browser smoke must assert agency cost defense visual QA");
+  ensure(browserSmokeText.includes("workboardDensity"), "browser smoke must assert agency workboard density");
+  ensure(browserSmokeText.includes("defenseMetrics"), "browser smoke must inspect agency defense metrics");
+  ensure(browserSmokeText.includes("boundaryTextCount"), "browser smoke must compare agency boundary metric against DOM text");
+  ensure(browserSmokeText.includes("duplicateIds"), "browser smoke must reject duplicated visible workboards");
+  ensure(browserSmokeText.includes("data-agency-defense-metric"), "browser smoke must inspect agency cost defense metric hooks");
   ensure(browserSmokeText.includes(kit.browserWorkflow?.crossRouteSmoke?.reviewPath), "browser smoke must verify the declared review note path");
   ensure(browserSmokeText.includes(kit.browserWorkflow?.crossRouteSmoke?.screenshot), "browser smoke must capture the SEIS Code review screenshot");
   ensure(seisCodeHtmlText.includes(reviewSurface?.activityMarker || ""), "SEIS Code HTML must expose the Design Handoff activity marker");
