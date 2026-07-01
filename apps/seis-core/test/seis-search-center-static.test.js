@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 const root = path.resolve(__dirname, "..");
 const html = fs.readFileSync(path.join(root, "search-center.html"), "utf8");
 const css = fs.readFileSync(path.join(root, "search-center.css"), "utf8");
-const js = fs.readFileSync(path.join(root, "search-center.js"), "utf8");
+const js = fs.readFileSync(path.join(root, "search-center.mjs"), "utf8");
 
 const requiredTabs = ["AI", "Web", "Code", "Design", "Cloud", "Apps", "Plugins", "Files"];
 
@@ -68,6 +68,11 @@ test("Search Center JS keeps browser-local state and safe flags", () => {
   }
 });
 
+test("Search Center loads the ESM entrypoint", () => {
+  assert.ok(html.includes('type="module"'), "Search Center script must load as an ESM module.");
+  assert.ok(html.includes("search-center.mjs"), "Search Center HTML must reference the module entrypoint.");
+});
+
 test("Search Center does not include provider or network access patterns", () => {
   const forbiddenPatterns = [
     /fetch\s*\(/i,
@@ -82,6 +87,11 @@ test("Search Center does not include provider or network access patterns", () =>
     /new\s+File\s*\(/i,
     /new\s+Blob\s*\(/i,
     /window\.open\(/i,
+    /\binnerHTML\b/i,
+    /\beval\s*\(/i,
+    /document\.write/i,
+    /console\.log/i,
+    /\bTODO\b/i,
   ];
 
   for (const pattern of forbiddenPatterns) {
@@ -99,6 +109,9 @@ test("Search Center CSS provides responsive and accessible layout", () => {
     "preview-panel",
     "status-pill",
     "prefers-reduced-motion",
+    "html.reduce-motion",
+    "scroll-behavior: auto",
+    "@media print",
     "@media (max-width: 1080px)",
     "@media (max-width: 640px)",
     ".skip-link",
