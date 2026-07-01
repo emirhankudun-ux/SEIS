@@ -176,6 +176,12 @@ Codex GitHub SSH transport and SSH commit signing are tracked separately in
 branch, signed commit, push, and PR work without claiming the live `SEIS-SSH`
 cloud runtime is online.
 
+Remote Codex CLI bridging is tracked in
+`docs/deployment/seis-remote-codex-cli-bridge.md`. Use
+`npm run cloud:ssh:remote-codex:strict` to prove the cloud workspace can reach
+`/workspaces/SEIS` and `codex --version` without running prompts or mutating the
+remote repo.
+
 Use this static gate before claiming public SSH onboarding is wired:
 
 ```bash

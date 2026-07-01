@@ -33,6 +33,20 @@ This handoff is not the same as `SEIS-SSH` live cloud readiness. A working
 GitHub SSH clone can support branch, commit, push, and PR work, but mobile 24/7
 or remote-runtime claims still require the strict `SEIS-SSH` evidence gates.
 
+## Remote Codex CLI Bridge
+
+When `SEIS-SSH` is online, Codex can verify the remote cloud workspace and
+remote Codex CLI with:
+
+```bash
+npm run cloud:ssh:remote-codex:status
+npm run cloud:ssh:remote-codex:strict
+```
+
+The bridge is read-only by default. It verifies `/workspaces/SEIS`, `git`, and
+`codex --version`; it does not execute prompts, edit files, push branches, or
+publish releases without a separate approval-gated action.
+
 ## Primary Identities
 
 Codex work should route through the SEIS identity map:

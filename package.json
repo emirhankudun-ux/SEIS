@@ -148,6 +148,8 @@
     "cloud:ssh-config:install": "node scripts/install-seis-cloud-ssh-config.mjs",
     "cloud:ssh:online": "node scripts/check-seis-cloud-ssh-online.mjs",
     "cloud:ssh:online:strict": "node scripts/check-seis-cloud-ssh-online.mjs --require-ready",
+    "cloud:ssh:remote-codex:status": "node scripts/check-seis-remote-codex-bridge.mjs",
+    "cloud:ssh:remote-codex:strict": "node scripts/check-seis-remote-codex-bridge.mjs --require-ready",
     "cloud:ssh:ensure-online": "node scripts/ensure-seis-ssh-online.mjs",
     "cloud:ssh:direct-cloud:switch": "node scripts/switch-seis-ssh-direct-cloud.mjs",
     "cloud:ssh:mobile-direct:config:plan": "node scripts/install-seis-ssh-mobile-direct-cloud-config.mjs --dry-run",
