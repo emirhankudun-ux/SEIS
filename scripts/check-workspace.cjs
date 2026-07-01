@@ -121,6 +121,12 @@ const trustedMarketplaceIntake = spawnSync("node", ["scripts/check-trusted-marke
 });
 ensure(trustedMarketplaceIntake.status === 0, "trusted marketplace intake checks must pass.");
 
+const generatedSourceBundles = spawnSync("node", ["scripts/check-generated-source-bundles.mjs"], {
+  cwd: ROOT,
+  encoding: "utf8"
+});
+ensure(generatedSourceBundles.status === 0, "generated source bundle guard must pass.");
+
 if (failures.length > 0) {
   console.error("Workspace check failed:");
   for (const failure of failures) {
