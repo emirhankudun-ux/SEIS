@@ -334,6 +334,28 @@
         "secret handling"
       ],
       "validationDuty": "Codex remains responsible for applying, reviewing, and validating any suggested patch."
+    },
+    {
+      "id": "xcode",
+      "displayName": "Xcode",
+      "route": "xcode",
+      "launcherStatus": "installed",
+      "category": "local-ide-assistant",
+      "coreDuties": [
+        "Support local IDE-aware checks for Swift/SwiftUI and Apple platform workflows when explicitly delegated.",
+        "Verify local project files and build-session boundaries without repository mutation unless explicitly authorized."
+      ],
+      "allowedOutputs": [
+        "build session notes",
+        "local workspace observations",
+        "IDE-focused draft guidance"
+      ],
+      "deniedActions": [
+        "direct merge authority",
+        "unbounded repository edits",
+        "secret handling"
+      ],
+      "validationDuty": "Codex must validate local IDE recommendations against router and repository evidence before execution."
     }
   ],
   "approvalRequiredFor": [
