@@ -27,7 +27,10 @@ test("SEIS Cloud SSH Center exposes explicit safe states", async () => {
     "Mac-off continuity requires a direct-cloud runtime; Codespaces can sleep.",
     "Direct-cloud owner packet",
     "Fields required before 24/7 claim",
-    "owner-input-checklist"
+    "owner-input-checklist",
+    "24/7 acceptance ladder",
+    "Ready only after strict direct-cloud evidence",
+    "acceptance-ladder"
   ]) {
     assert.match(html, new RegExp(marker));
   }
@@ -55,7 +58,12 @@ test("SEIS Cloud SSH Center script stays browser-local and non-mutating", async 
     "SEIS_REMOTE_REPO_DIR",
     "scripts/bootstrap-seis-ssh-mobile-direct-cloud.sh",
     "provider console / owner approval",
-    "requiredFor24x7: true"
+    "requiredFor24x7: true",
+    "acceptanceLadder",
+    "renderAcceptanceLadder",
+    "npm run cloud:ssh:mobile-direct:profile",
+    "npm run cloud:ssh:mobile-direct:doctor:strict",
+    "readyClaimBlockedUntilStrictDoctor: true"
   ]) {
     assert.match(script, new RegExp(marker));
   }
@@ -78,7 +86,7 @@ test("SEIS Cloud SSH Center script stays browser-local and non-mutating", async 
 
 test("SEIS Cloud SSH Center styles include responsive and reduced-motion support", async () => {
   const css = await read("cloud-ssh-center.css");
-  for (const marker of ["prefers-reduced-motion", "skip-link", "status-grid", "surface-grid", "owner-input-grid", "evidence-log", "@media (max-width: 940px)", "--cyan", "--blue", "--radius"]) {
+  for (const marker of ["prefers-reduced-motion", "skip-link", "status-grid", "surface-grid", "owner-input-grid", "acceptance-ladder", "evidence-log", "@media (max-width: 940px)", "--cyan", "--blue", "--radius"]) {
     assert.match(css, new RegExp(marker.replace(/[()]/g, "\\$&")));
   }
 });
@@ -102,6 +110,8 @@ test("SEIS Cloud SSH Center fixture stays synchronized with safe demo states", a
   assert.equal(fixture.mobile24x7Gate, "npm run cloud:ssh:mobile-24x7:strict");
   assert.equal(fixture.prBoundaryGate, "npm run check:seis-cloud-ssh-center-pr-boundary");
   assert.equal(fixture.currentKnownBlocker, "mobile-24x7-requires-direct-cloud-transport");
+  assert.equal(fixture.acceptanceLedger, "content/development/seis-ssh-mobile-direct-cloud-acceptance-ledger.json");
+  assert.equal(fixture.acceptanceContractGate, "npm run check:seis-ssh-mobile-direct-cloud");
   assert.equal(fixture.historyScanBoundary.bypassAllowedByDefault, false);
   assert.ok(fixture.historyScanBoundary.forbiddenDiffPrefixes.includes("sources/"));
   assert.ok(fixture.historyScanBoundary.forbiddenHeadPaths.includes("sources/github-unified-source/_generated/github-code-bundle.txt"));
@@ -118,6 +128,18 @@ test("SEIS Cloud SSH Center fixture stays synchronized with safe demo states", a
     assert.equal(script.includes(input.field), true);
     assert.equal(script.includes(input.boundary), true);
   }
+  assert.equal(fixture.mobile24x7AcceptanceLadder.length, 8);
+  const ladderIds = new Set(fixture.mobile24x7AcceptanceLadder.map((step) => step.id));
+  for (const id of ["profile-contract", "bootstrap-dry-run", "bootstrap-apply", "ssh-config-plan", "ssh-config-install", "readiness-probe", "handoff-doctor", "contract-guard"]) {
+    assert.ok(ladderIds.has(id));
+  }
+  for (const step of fixture.mobile24x7AcceptanceLadder) {
+    assert.ok(fixture.states.includes(step.status));
+    assert.equal(script.includes(step.id), true);
+    assert.equal(script.includes(step.command), true);
+    assert.equal(script.includes(step.claimScope), true);
+  }
+  assert.equal(fixture.mobile24x7AcceptanceLadder.find((step) => step.id === "handoff-doctor").readyEvidence, true);
   assert.equal(fixture.surfaces.length, 12);
   assert.ok(fixture.surfaces.some((surface) => surface.id === "mac-independent-remote-runtime"));
   assert.ok(fixture.surfaces.some((surface) => surface.id === "always-on-direct-cloud"));

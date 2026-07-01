@@ -17,6 +17,8 @@
   workflow bypasses, reports, builds, or secret-bearing generated history files.
 - A public-safe `ownerInputChecklist` for the direct-cloud fields required before
   any 24/7 claim.
+- A `mobile24x7AcceptanceLadder` linked to
+  `content/development/seis-ssh-mobile-direct-cloud-acceptance-ledger.json`.
 - Explicit Mac-off continuity metadata: Codespaces may be online but can sleep,
   while true 24/7 mode requires direct-cloud proof.
 - Focused static tests in `apps/seis-core/test/seis-cloud-ssh-center-static.test.js`.
@@ -60,6 +62,23 @@ Required before a 24/7 claim:
 - `SEIS_REMOTE_REPO_DIR`: remote SEIS repository directory, defaulting to `/opt/seis/SEIS`.
 - `scripts/bootstrap-seis-ssh-mobile-direct-cloud.sh`: reviewed bootstrap runbook.
 - `provider console / owner approval`: rollback owner and provider-console access.
+
+## 24/7 acceptance ladder
+
+The Cloud / SSH Center mirrors the mobile direct-cloud acceptance ledger. The
+visible ladder keeps each evidence step separate from the final ready claim:
+
+- `npm run cloud:ssh:mobile-direct:profile`: configuration-only profile inputs.
+- `npm run cloud:ssh:mobile-direct:bootstrap:plan`: public-key-only bootstrap dry run.
+- `npm run cloud:ssh:mobile-direct:bootstrap:apply`: reviewed remote VM bootstrap.
+- `npm run cloud:ssh:mobile-direct:config:plan`: managed `SEIS-SSH` block preview.
+- `npm run cloud:ssh:mobile-direct:config:install`: local managed alias install.
+- `npm run cloud:ssh:mobile-direct:probe:strict`: direct-cloud transport, TCP, SSH auth, and remote runtime evidence.
+- `npm run cloud:ssh:mobile-direct:doctor:strict`: final mobile 24/7 handoff report.
+- `npm run check:seis-ssh-mobile-direct-cloud`: repo-side contract guard.
+
+Only the strict doctor can support the `mobile-24x7-ready` claim. Earlier green
+steps are useful evidence, not the final ready state.
 
 ## Secret scan boundary
 

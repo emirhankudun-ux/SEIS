@@ -25,6 +25,17 @@ const ownerInputs = [
   ["Rollback owner and console access", "unknown", "provider console / owner approval", "required before rollout"]
 ];
 
+const acceptanceLadder = [
+  ["profile-contract", "unknown", "npm run cloud:ssh:mobile-direct:profile", "configuration-only"],
+  ["bootstrap-dry-run", "planned", "npm run cloud:ssh:mobile-direct:bootstrap:plan", "bootstrap-plan-only"],
+  ["bootstrap-apply", "disabled", "npm run cloud:ssh:mobile-direct:bootstrap:apply", "remote-bootstrap"],
+  ["ssh-config-plan", "planned", "npm run cloud:ssh:mobile-direct:config:plan", "config-plan-only"],
+  ["ssh-config-install", "disabled", "npm run cloud:ssh:mobile-direct:config:install", "local-client-config"],
+  ["readiness-probe", "disabled", "npm run cloud:ssh:mobile-direct:probe:strict", "runtime-readiness"],
+  ["handoff-doctor", "disabled", "npm run cloud:ssh:mobile-direct:doctor:strict", "mobile-24x7-ready"],
+  ["contract-guard", "connected", "npm run check:seis-ssh-mobile-direct-cloud", "governance-contract"]
+];
+
 let state = loadState();
 
 function loadState() {
@@ -116,6 +127,26 @@ function renderOwnerInputs() {
     </article>`).join("");
 }
 
+function renderAcceptanceLadder() {
+  const target = $("#acceptance-ladder");
+  if (!target) return;
+  target.innerHTML = acceptanceLadder.map(([id, status, command, claimScope], index) => `
+    <article class="acceptance-step">
+      <span class="step-index">${String(index + 1).padStart(2, "0")}</span>
+      <div>
+        <div class="card-topline">
+          <h3>${id}</h3>
+          <span class="status-pill ${status}">${status}</span>
+        </div>
+        <p>${command}</p>
+        <div class="meta-row">
+          <span class="meta-chip">${claimScope}</span>
+          <span class="meta-chip">readyClaimBlockedUntilStrictDoctor: true</span>
+        </div>
+      </div>
+    </article>`).join("");
+}
+
 function renderLog() {
   if (!state.log.length) {
     $("#evidence-log").innerHTML = `<article class="evidence-card"><strong>No local readiness notes yet.</strong><small>Record a note to produce browser-only evidence.</small></article>`;
@@ -138,6 +169,7 @@ function setMode(mode) {
 function render() {
   renderSurfaces();
   renderOwnerInputs();
+  renderAcceptanceLadder();
   renderLog();
 }
 

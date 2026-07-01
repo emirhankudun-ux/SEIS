@@ -47,6 +47,8 @@ ensure(fixture?.mobile24x7ReadyByDefault === false, "fixture must keep mobile 24
 ensure(fixture?.onlineGate === "npm run cloud:ssh:online:strict", "fixture must expose the online SSH gate");
 ensure(fixture?.mobile24x7Gate === "npm run cloud:ssh:mobile-24x7:strict", "fixture must expose the mobile 24/7 gate");
 ensure(fixture?.currentKnownBlocker === "mobile-24x7-requires-direct-cloud-transport", "fixture must keep the current 24/7 blocker explicit");
+ensure(fixture?.acceptanceLedger === "content/development/seis-ssh-mobile-direct-cloud-acceptance-ledger.json", "fixture must link the direct-cloud acceptance ledger");
+ensure(fixture?.acceptanceContractGate === "npm run check:seis-ssh-mobile-direct-cloud", "fixture must expose the direct-cloud contract gate");
 ensure(fixture?.historyScanBoundary?.fullHistoryGate === "GitHub Secret & Vulnerability Scan", "fixture must name the full-history secret gate");
 ensure(fixture?.historyScanBoundary?.bypassAllowedByDefault === false, "fixture must forbid secret-history bypass by default");
 ensure((fixture?.historyScanBoundary?.forbiddenDiffPrefixes || []).includes("sources/"), "fixture must forbid sources/ in this PR boundary");
@@ -95,6 +97,26 @@ for (const id of ["direct-cloud-host", "ssh-port", "runtime-user", "identity-fil
   ensure(ownerInputIds.has(id), `fixture must include owner input ${id}`);
 }
 
+const acceptanceLadder = fixture?.mobile24x7AcceptanceLadder || [];
+ensure(Array.isArray(acceptanceLadder) && acceptanceLadder.length === 8, "fixture must define 8 direct-cloud acceptance steps");
+const acceptanceIds = new Set();
+for (const step of acceptanceLadder) {
+  ensure(/^[a-z0-9-]+$/.test(step.id || ""), `acceptance step id must be kebab-case: ${step.id}`);
+  ensure(!acceptanceIds.has(step.id), `acceptance step id must be unique: ${step.id}`);
+  acceptanceIds.add(step.id);
+  ensure(states.has(step.status), `acceptance step ${step.id} must use a declared state`);
+  ensure(typeof step.proves === "string" && step.proves.length > 10, `acceptance step ${step.id} must explain evidence`);
+  ensure(typeof step.readyEvidence === "boolean", `acceptance step ${step.id} must declare readyEvidence`);
+  for (const token of [step.id, step.status, step.command, step.claimScope]) {
+    ensure(appScript.includes(token), `app script must include acceptance step token: ${token}`);
+  }
+}
+
+for (const id of ["profile-contract", "bootstrap-dry-run", "bootstrap-apply", "ssh-config-plan", "ssh-config-install", "readiness-probe", "handoff-doctor", "contract-guard"]) {
+  ensure(acceptanceIds.has(id), `fixture must include acceptance step ${id}`);
+}
+ensure(acceptanceLadder.find((step) => step.id === "handoff-doctor")?.readyEvidence === true, "handoff doctor must be the mobile 24/7 ready evidence step");
+
 const requiredFlags = fixture?.requiredSafetyFlags || {};
 for (const [flag, value] of Object.entries({
   remoteConnected: false,
@@ -133,15 +155,21 @@ ensure(route.includes("server and connection port must remain unchanged"), "rout
 ensure(route.includes("Mac-off continuity requires a direct-cloud runtime; Codespaces can sleep."), "route must disclose Mac-off continuity boundary");
 ensure(route.includes("owner-input-checklist"), "route must render direct-cloud owner input checklist");
 ensure(route.includes("Direct-cloud owner packet"), "route must label direct-cloud owner input packet");
+ensure(route.includes("acceptance-ladder"), "route must render direct-cloud acceptance ladder");
+ensure(route.includes("Ready only after strict direct-cloud evidence"), "route must keep strict evidence copy");
 
 for (const token of [
   files.fixture,
   "schema-backed Cloud / SSH readiness fixture",
   "ownerInputChecklist",
+  "mobile24x7AcceptanceLadder",
+  "content/development/seis-ssh-mobile-direct-cloud-acceptance-ledger.json",
+  "npm run check:seis-ssh-mobile-direct-cloud",
   "SEIS_SSH_HOST",
   "SEIS_CLOUD_HOST",
   "SEIS_REMOTE_REPO_DIR",
   "provider console / owner approval",
+  "npm run cloud:ssh:mobile-direct:doctor:strict",
   "npm run check:seis-cloud-ssh-center-readiness",
   "npm run check:seis-cloud-ssh-center-pr-boundary",
   "npm run cloud:ssh:online:strict",

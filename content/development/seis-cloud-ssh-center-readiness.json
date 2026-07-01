@@ -24,6 +24,8 @@
   "onlineGate": "npm run cloud:ssh:online:strict",
   "mobile24x7Gate": "npm run cloud:ssh:mobile-24x7:strict",
   "currentKnownBlocker": "mobile-24x7-requires-direct-cloud-transport",
+  "acceptanceLedger": "content/development/seis-ssh-mobile-direct-cloud-acceptance-ledger.json",
+  "acceptanceContractGate": "npm run check:seis-ssh-mobile-direct-cloud",
   "ownerInputChecklist": [
     {
       "id": "direct-cloud-host",
@@ -91,6 +93,72 @@
       "boundary": "required before rollout",
       "secret": false,
       "requiredFor24x7": true
+    }
+  ],
+  "mobile24x7AcceptanceLadder": [
+    {
+      "id": "profile-contract",
+      "command": "npm run cloud:ssh:mobile-direct:profile",
+      "claimScope": "configuration-only",
+      "status": "unknown",
+      "proves": "local direct-cloud profile inputs are present",
+      "readyEvidence": false
+    },
+    {
+      "id": "bootstrap-dry-run",
+      "command": "npm run cloud:ssh:mobile-direct:bootstrap:plan",
+      "claimScope": "bootstrap-plan-only",
+      "status": "planned",
+      "proves": "public-key-only bootstrap command is well formed",
+      "readyEvidence": false
+    },
+    {
+      "id": "bootstrap-apply",
+      "command": "npm run cloud:ssh:mobile-direct:bootstrap:apply",
+      "claimScope": "remote-bootstrap",
+      "status": "disabled",
+      "proves": "remote VM was bootstrapped with the selected public key and runtime user",
+      "readyEvidence": false
+    },
+    {
+      "id": "ssh-config-plan",
+      "command": "npm run cloud:ssh:mobile-direct:config:plan",
+      "claimScope": "config-plan-only",
+      "status": "planned",
+      "proves": "managed SEIS-SSH block can be rendered without writing local SSH config",
+      "readyEvidence": false
+    },
+    {
+      "id": "ssh-config-install",
+      "command": "npm run cloud:ssh:mobile-direct:config:install",
+      "claimScope": "local-client-config",
+      "status": "disabled",
+      "proves": "local SEIS-SSH managed block is installed",
+      "readyEvidence": false
+    },
+    {
+      "id": "readiness-probe",
+      "command": "npm run cloud:ssh:mobile-direct:probe:strict",
+      "claimScope": "runtime-readiness",
+      "status": "disabled",
+      "proves": "direct-cloud transport, TCP reachability, SSH auth, and remote runtime readiness",
+      "readyEvidence": false
+    },
+    {
+      "id": "handoff-doctor",
+      "command": "npm run cloud:ssh:mobile-direct:doctor:strict",
+      "claimScope": "mobile-24x7-ready",
+      "status": "disabled",
+      "proves": "strict readiness report was written and passed",
+      "readyEvidence": true
+    },
+    {
+      "id": "contract-guard",
+      "command": "npm run check:seis-ssh-mobile-direct-cloud",
+      "claimScope": "governance-contract",
+      "status": "connected",
+      "proves": "repo contract, scripts, docs, ignore rules, and safety invariants are wired",
+      "readyEvidence": false
     }
   ],
   "historyScanBoundary": {
