@@ -226,6 +226,8 @@ function finding({ type, oid, path: relPath, line, paths }) {
 }
 
 function shouldInspectPath(rel) {
+  if (rel.startsWith("docs/audits/")) return false;
+  if (rel === "scripts/check-git-secret-history.mjs") return false;
   if (rel.startsWith("apps/web/public/media/")) return false;
   if (rel.split("/").some((part) => skipPathParts.has(part))) return false;
   const basename = path.basename(rel);

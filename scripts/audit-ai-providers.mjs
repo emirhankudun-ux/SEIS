@@ -66,6 +66,7 @@ const deploymentCredentialNames = [
 
 const skipDirs = new Set([
   ".git",
+  ".build",
   "node_modules",
   "dist",
   "build",
