@@ -33,7 +33,11 @@ test("SEIS Cloud SSH Center exposes explicit safe states", async () => {
     "acceptance-ladder",
     "Mobile handoff checklist",
     "New-device ready only after direct-cloud proof",
-    "mobile-handoff-checklist"
+    "mobile-handoff-checklist",
+    "Browser-local handoff packet",
+    "Public-safe mobile transfer summary",
+    "handoff-packet",
+    "refresh-packet"
   ]) {
     assert.match(html, new RegExp(marker));
   }
@@ -71,7 +75,12 @@ test("SEIS Cloud SSH Center script stays browser-local and non-mutating", async 
     "renderHandoffChecklist",
     "device-independent-entrypoint",
     "new-device-replayable",
-    "blockingIfMissing: true"
+    "blockingIfMissing: true",
+    "buildHandoffPacket",
+    "renderHandoffPacket",
+    "seis-cloud-ssh-center-mobile-handoff-packet",
+    "localEvidenceNotes",
+    "Browser-local mobile handoff packet refreshed"
   ]) {
     assert.match(script, new RegExp(marker));
   }
@@ -94,7 +103,7 @@ test("SEIS Cloud SSH Center script stays browser-local and non-mutating", async 
 
 test("SEIS Cloud SSH Center styles include responsive and reduced-motion support", async () => {
   const css = await read("cloud-ssh-center.css");
-  for (const marker of ["prefers-reduced-motion", "skip-link", "status-grid", "surface-grid", "owner-input-grid", "acceptance-ladder", "handoff-grid", "evidence-log", "@media (max-width: 940px)", "--cyan", "--blue", "--radius"]) {
+  for (const marker of ["prefers-reduced-motion", "skip-link", "status-grid", "surface-grid", "owner-input-grid", "acceptance-ladder", "handoff-grid", "handoff-packet", "evidence-log", "@media (max-width: 940px)", "--cyan", "--blue", "--radius"]) {
     assert.match(css, new RegExp(marker.replace(/[()]/g, "\\$&")));
   }
 });
@@ -121,6 +130,12 @@ test("SEIS Cloud SSH Center fixture stays synchronized with safe demo states", a
   assert.equal(fixture.currentKnownBlocker, "mobile-24x7-requires-direct-cloud-transport");
   assert.equal(fixture.acceptanceLedger, "content/development/seis-ssh-mobile-direct-cloud-acceptance-ledger.json");
   assert.equal(fixture.acceptanceContractGate, "npm run check:seis-ssh-mobile-direct-cloud");
+  assert.equal(fixture.browserLocalHandoffPacket.id, "seis-cloud-ssh-center-mobile-handoff-packet");
+  assert.equal(fixture.browserLocalHandoffPacket.status, "browser-local-demo");
+  assert.equal(fixture.browserLocalHandoffPacket.containsSecrets, false);
+  assert.equal(fixture.browserLocalHandoffPacket.remoteMutationAllowed, false);
+  assert.ok(fixture.browserLocalHandoffPacket.fields.includes("mobileHandoffChecklist"));
+  assert.ok(fixture.browserLocalHandoffPacket.fields.includes("requiredSafetyFlags"));
   assert.equal(acceptanceLedger.id, "seis-ssh-mobile-direct-cloud-acceptance-ledger");
   assert.equal(acceptanceLedger.readyClaim, "SEIS-SSH is ChatGPT mobile/Codex 24x7 ready");
   assert.ok(acceptanceLedger.readyClaimAllowedOnlyWhen.includes("strict doctor writes a successful readiness handoff report"));

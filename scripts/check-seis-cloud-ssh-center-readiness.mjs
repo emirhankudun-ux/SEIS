@@ -51,6 +51,14 @@ ensure(fixture?.mobile24x7Gate === "npm run cloud:ssh:mobile-24x7:strict", "fixt
 ensure(fixture?.currentKnownBlocker === "mobile-24x7-requires-direct-cloud-transport", "fixture must keep the current 24/7 blocker explicit");
 ensure(fixture?.acceptanceLedger === files.acceptanceLedger, "fixture must link the direct-cloud acceptance ledger");
 ensure(fixture?.acceptanceContractGate === "npm run check:seis-ssh-mobile-direct-cloud", "fixture must expose the direct-cloud contract gate");
+ensure(fixture?.browserLocalHandoffPacket?.id === "seis-cloud-ssh-center-mobile-handoff-packet", "fixture must define browser-local handoff packet id");
+ensure(fixture?.browserLocalHandoffPacket?.status === "browser-local-demo", "browser-local handoff packet must stay demo-only");
+ensure(fixture?.browserLocalHandoffPacket?.generatedBy === files.script, "browser-local handoff packet must point to app script");
+ensure(fixture?.browserLocalHandoffPacket?.containsSecrets === false, "browser-local handoff packet must not contain secrets");
+ensure(fixture?.browserLocalHandoffPacket?.remoteMutationAllowed === false, "browser-local handoff packet must forbid remote mutation");
+for (const field of ["ownerInputChecklist", "mobile24x7AcceptanceLadder", "mobileHandoffChecklist", "requiredSafetyFlags", "currentKnownBlocker"]) {
+  ensure((fixture?.browserLocalHandoffPacket?.fields || []).includes(field), `browser-local handoff packet fields must include ${field}`);
+}
 ensure(acceptanceLedger?.id === "seis-ssh-mobile-direct-cloud-acceptance-ledger", "acceptance ledger id must be stable");
 ensure(acceptanceLedger?.readyClaim === "SEIS-SSH is ChatGPT mobile/Codex 24x7 ready", "acceptance ledger must preserve ready claim");
 ensure(
@@ -202,10 +210,14 @@ ensure(route.includes("acceptance-ladder"), "route must render direct-cloud acce
 ensure(route.includes("Ready only after strict direct-cloud evidence"), "route must keep strict evidence copy");
 ensure(route.includes("mobile-handoff-checklist"), "route must render mobile handoff checklist");
 ensure(route.includes("New-device ready only after direct-cloud proof"), "route must keep mobile handoff boundary copy");
+ensure(route.includes("handoff-packet"), "route must render browser-local handoff packet");
+ensure(route.includes("Browser-local handoff packet"), "route must label browser-local handoff packet");
+ensure(route.includes("refresh-packet"), "route must expose handoff packet refresh action");
 
 for (const token of [
   files.fixture,
   "schema-backed Cloud / SSH readiness fixture",
+  "browserLocalHandoffPacket",
   "ownerInputChecklist",
   "mobile24x7AcceptanceLadder",
   "mobileHandoffChecklist",
@@ -218,6 +230,7 @@ for (const token of [
   "npm run cloud:ssh:mobile-direct:doctor:strict",
   "device-independent-entrypoint",
   "new-device-replayable",
+  "seis-cloud-ssh-center-mobile-handoff-packet",
   "npm run check:seis-cloud-ssh-center-readiness",
   "npm run check:seis-cloud-ssh-center-pr-boundary",
   "npm run cloud:ssh:online:strict",
@@ -226,6 +239,15 @@ for (const token of [
 ]) {
   ensure(doc.includes(token), `docs must include ${token}`);
   ensure(testFile.includes(token) || token === "schema-backed Cloud / SSH readiness fixture", `test must include ${token}`);
+}
+
+for (const token of [
+  "buildHandoffPacket",
+  "renderHandoffPacket",
+  "Browser-local mobile handoff packet refreshed",
+  "localEvidenceNotes"
+]) {
+  ensure(appScript.includes(token), `app script must include handoff packet behavior: ${token}`);
 }
 
 ensure(packageJson?.scripts?.["check:seis-cloud-ssh-center-readiness"] === "node scripts/check-seis-cloud-ssh-center-readiness.mjs", "package script check:seis-cloud-ssh-center-readiness must exist");

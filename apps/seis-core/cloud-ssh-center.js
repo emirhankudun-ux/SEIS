@@ -173,6 +173,33 @@ function renderHandoffChecklist() {
     </article>`).join("");
 }
 
+function buildHandoffPacket() {
+  return {
+    id: "seis-cloud-ssh-center-mobile-handoff-packet",
+    status: "browser-local-demo",
+    generatedAt: new Date().toISOString(),
+    currentKnownBlocker: "mobile-24x7-requires-direct-cloud-transport",
+    remoteConnected: false,
+    sshExecuted: false,
+    deployExecuted: false,
+    credentialRead: false,
+    secretStored: false,
+    serverPortChanged: false,
+    mobile24x7Ready: false,
+    directCloudRequired: true,
+    ownerInputs: ownerInputs.map(([label, status, field, boundary]) => ({ label, status, field, boundary, secret: false })),
+    acceptanceLadder: acceptanceLadder.map(([id, status, command, claimScope]) => ({ id, status, command, claimScope })),
+    mobileHandoffChecklist: handoffChecklist.map(([id, status, label, boundary]) => ({ id, status, label, boundary, blockingIfMissing: true })),
+    localEvidenceNotes: state.log.length
+  };
+}
+
+function renderHandoffPacket() {
+  const target = $("#handoff-packet");
+  if (!target) return;
+  target.textContent = JSON.stringify(buildHandoffPacket(), null, 2);
+}
+
 function renderLog() {
   if (!state.log.length) {
     $("#evidence-log").innerHTML = `<article class="evidence-card"><strong>No local readiness notes yet.</strong><small>Record a note to produce browser-only evidence.</small></article>`;
@@ -197,6 +224,7 @@ function render() {
   renderOwnerInputs();
   renderAcceptanceLadder();
   renderHandoffChecklist();
+  renderHandoffPacket();
   renderLog();
 }
 
@@ -205,10 +233,15 @@ document.addEventListener("click", (event) => {
   if (action?.dataset.action === "select-local") setMode("local-demo");
   if (action?.dataset.action === "select-codespaces") setMode("codespaces-plan");
   if (action?.dataset.action === "select-ssh") setMode("ssh-readiness");
+  if (action?.dataset.action === "refresh-packet") {
+    renderHandoffPacket();
+    $("#live-region").textContent = "Browser-local mobile handoff packet refreshed. No remote connection, SSH, deployment, credential read, or secret storage occurred.";
+  }
   if (action?.dataset.action === "clear-log") {
     state.log = [];
     saveState();
     renderLog();
+    renderHandoffPacket();
     $("#live-region").textContent = "Local readiness log cleared. Repository and remote infrastructure were not changed.";
   }
   const filter = event.target.closest("[data-filter]");
@@ -229,6 +262,7 @@ $("#readiness-form").addEventListener("submit", (event) => {
   const entry = recordLog(intent, mode);
   setMode(mode);
   renderLog();
+  renderHandoffPacket();
   $("#live-region").textContent = `${entry.mode} readiness note recorded locally. remoteConnected: false; sshExecuted: false; deployExecuted: false; credentialRead: false; mobile24x7Ready: false; directCloudRequired: true; serverPortChanged: false.`;
 });
 

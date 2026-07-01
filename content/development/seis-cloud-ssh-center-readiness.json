@@ -26,6 +26,20 @@
   "currentKnownBlocker": "mobile-24x7-requires-direct-cloud-transport",
   "acceptanceLedger": "content/development/seis-ssh-mobile-direct-cloud-acceptance-ledger.json",
   "acceptanceContractGate": "npm run check:seis-ssh-mobile-direct-cloud",
+  "browserLocalHandoffPacket": {
+    "id": "seis-cloud-ssh-center-mobile-handoff-packet",
+    "status": "browser-local-demo",
+    "generatedBy": "apps/seis-core/cloud-ssh-center.js",
+    "containsSecrets": false,
+    "remoteMutationAllowed": false,
+    "fields": [
+      "ownerInputChecklist",
+      "mobile24x7AcceptanceLadder",
+      "mobileHandoffChecklist",
+      "requiredSafetyFlags",
+      "currentKnownBlocker"
+    ]
+  },
   "ownerInputChecklist": [
     {
       "id": "direct-cloud-host",
