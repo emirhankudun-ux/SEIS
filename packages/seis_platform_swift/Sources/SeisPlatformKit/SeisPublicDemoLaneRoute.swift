@@ -62,6 +62,7 @@ public enum SeisPublicDemoLaneSource: String, Codable, CaseIterable, Sendable {
 
 public enum SeisAppLibrarySurfaceKind: String, Codable, CaseIterable, Sendable {
     case library
+    case nativeShell
     case sourceLane
     case aiChat
     case codeAI
@@ -160,6 +161,19 @@ public enum SeisAppLibraryContract {
             requiresBackend: false,
             requiresHumanApproval: false,
             isPublicDemoSafe: true
+        ),
+        SeisAppLibrarySurface(
+            id: "apple-native-shell",
+            title: "Apple Native Shell",
+            shortCode: "APL",
+            kind: .nativeShell,
+            systemImageName: "macwindow",
+            summary: "SeisAppleNativeShell is contained inside the SEIS Linux Replica as a public-safe native capsule; SwiftPM and Xcode execution stay local outside the browser sandbox.",
+            status: .metadataOnly,
+            requiresBackend: false,
+            requiresHumanApproval: false,
+            isPublicDemoSafe: true,
+            forbiddenLiveClaims: ["browser-launched app bundle", "host shell bridge", "provider key bridge"]
         ),
         SeisAppLibrarySurface(
             id: "seis-ai-chat",

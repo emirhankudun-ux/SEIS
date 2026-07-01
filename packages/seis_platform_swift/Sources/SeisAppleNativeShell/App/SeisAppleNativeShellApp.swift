@@ -45,6 +45,14 @@ struct SeisAppleNativeShellApp: App {
                    let url = URL(string: args[index + 1]) {
                     demoShellState.handleDeepLink(url)
                 }
+                if let index = args.firstIndex(of: "--open-panel"),
+                   index + 1 < args.count {
+                    openPanel(args[index + 1])
+                }
+                if let index = args.firstIndex(of: "--open-public-demo-lane"),
+                   index + 1 < args.count {
+                    openPublicDemoLane(source: args[index + 1])
+                }
             }
         }
 
@@ -67,6 +75,16 @@ struct SeisAppleNativeShellApp: App {
                 }
                 .keyboardShortcut("w", modifiers: [.command])
 
+                Button("Open Website Demo Lane") {
+                    openPublicDemoLane(source: "website")
+                }
+
+                Button("Open Ubuntu Demo Lane") {
+                    openPublicDemoLane(source: "ubuntu")
+                }
+
+                Divider()
+
                 Button("Show Demo") {
                     activePanel = .demo
                 }
@@ -76,6 +94,21 @@ struct SeisAppleNativeShellApp: App {
                     activePanel = .applePlatform
                 }
                 .keyboardShortcut("3", modifiers: [.command])
+
+                Button("Show App Library") {
+                    activePanel = .appLibrary
+                }
+                .keyboardShortcut("l", modifiers: [.command])
+
+                Button("Show Brain & SSH") {
+                    activePanel = .brainSSH
+                }
+                .keyboardShortcut("9", modifiers: [.command])
+
+                Button("Show AI Scale") {
+                    activePanel = .aiScale
+                }
+                .keyboardShortcut("0", modifiers: [.command])
 
                 Button("Open Demo") {
                     demoShellState.applyRoute("/demo")
@@ -139,17 +172,37 @@ struct SeisAppleNativeShellApp: App {
     }
 
     private var repositoryRoot: String {
+        SeisRepositoryRootResolver.displayPath()
+    }
+
+    private func openPublicDemoLane(source: String) {
         #if os(macOS)
-        FileManager.default.homeDirectoryForCurrentUser
-            .appendingPathComponent("Library")
-            .appendingPathComponent("Mobile Documents")
-            .appendingPathComponent("com~apple~CloudDocs")
-            .appendingPathComponent("Github")
-            .appendingPathComponent("SEIS")
-            .path
-        #else
-        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-            .first?.path ?? ""
+        let repositoryRootURL = URL(fileURLWithPath: SeisRepositoryRootResolver.resolve(preferredPath: repositoryRoot))
+        guard let url = SeisPublicDemoLaneRoute.fileURL(
+            repositoryRoot: repositoryRootURL,
+            deepLink: "apps/web/seis-linux-replica.html?demo=live&source=\(source)"
+        ) else {
+            return
+        }
+
+        NSWorkspace.shared.open(url)
         #endif
+    }
+
+    private func openPanel(_ rawValue: String) {
+        switch rawValue {
+        case "demo":
+            activePanel = .demo
+        case "app-library":
+            activePanel = .appLibrary
+        case "apple-platform":
+            activePanel = .applePlatform
+        case "ai-scale":
+            activePanel = .aiScale
+        case "brain-ssh":
+            activePanel = .brainSSH
+        default:
+            break
+        }
     }
 }

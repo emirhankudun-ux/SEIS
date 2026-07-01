@@ -19,11 +19,30 @@ This package is the native foundation for:
 - public-safe Apple-first readiness metadata
 - no-key demo contracts
 - SwiftUI-native shell experiments
+- SEIS App Library lane metadata for the Website / AI Platform and Ubuntu Web Desktop demo surfaces
 
 This package can describe public-safe repository metadata without API keys,
 SSH access, provider calls, private vault imports, or first-run repository
-scans. This PR does not change browser demo routing or add native launch
-bridges into web demo lanes.
+scans. It may open approved local demo file URLs, but it must not turn the
+public route into a live provider, SSH, deployment, or host-shell bridge.
+
+## SEIS App Library Contract
+
+`SeisAppLibraryContract` is the shared native record for the public web demo
+library. It keeps the supplied Website and Ubuntu source archives as hidden
+inputs while presenting the visible system UI as SEIS App surfaces:
+
+- `SEIS App Library` (`LIB`)
+- `Website Lane` (`WEB`, `source=website`, 71 modules)
+- `Ubuntu Desktop` (`UBU`, `source=ubuntu`, 148 modules)
+- `SEIS AI Chat` (`AI`)
+- `SEIS Code AI` (`IDE`)
+- `SEIS AGI Control` (`AGI`)
+- `SEIS SSH Control` (`SSH`)
+
+AI, Code AI, AGI, and SSH are separate surfaces. Their live behavior remains
+backend-gated, evidence-gated, and human-approved; the Swift contract records
+those gates and keeps the no-key public demo honest.
 
 ## Validation
 
@@ -67,6 +86,41 @@ with demo-safe metadata:
 
 ```bash
 ./script/build_and_run.sh --verify
+```
+
+Codex/Xcode run action modes:
+
+```bash
+./script/build_and_run.sh --brain-ssh
+./script/build_and_run.sh --verify-brain-ssh
+./script/build_and_run.sh --ai-scale
+./script/build_and_run.sh --verify-ai-scale
+./script/build_and_run.sh --app-library
+./script/build_and_run.sh --verify-app-library
+./script/build_and_run.sh --website-demo-lane
+./script/build_and_run.sh --ubuntu-demo-lane
+./script/build_and_run.sh --verify-website-demo-lane
+./script/build_and_run.sh --verify-ubuntu-demo-lane
+```
+
+The Codex environment exposes matching actions named `Run Brain & SSH`,
+`Run AI Scale`, and `Run App Library`. Website and Ubuntu launch lanes resolve
+to:
+
+```text
+apps/web/seis-linux-replica.html?demo=live&source=website
+apps/web/seis-linux-replica.html?demo=live&source=ubuntu
+```
+
+Native Website and Ubuntu openings must pass through `SeisPublicDemoLaneRoute`
+so only no-key public demo lanes resolve to local file URLs.
+
+The native launcher can carry a public-safe repository snapshot into the app
+bundle via `--repository-snapshot`. The generated resource name is
+`seis-repository-surface-snapshot.json`, and its package check is:
+
+```bash
+npm run check:seis-apple-native-snapshot
 ```
 
 The launcher path is demo-safe metadata only. It must not become a live

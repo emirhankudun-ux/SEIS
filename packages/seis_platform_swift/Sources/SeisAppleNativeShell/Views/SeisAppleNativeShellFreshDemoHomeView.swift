@@ -1,4 +1,5 @@
 import Foundation
+import SeisPlatformKit
 import SwiftUI
 #if os(macOS)
 import AppKit
@@ -79,6 +80,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
         let title: String
         let badge: String
         let intent: String
+        let deepLink: String?
         let icon: String
         let tone: Color
     }
@@ -474,6 +476,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
             )
             .ignoresSafeArea()
         )
+        .preferredColorScheme(.dark)
         .onAppear {
             syncSelectionFromRoute(demoShellState.routeForDisplay)
             if selectedScenarioId == nil, let first = demoShellState.contract.scenarios.first {
@@ -538,7 +541,16 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
 
                 if activePanel == .applePlatform {
                     AppleContinuationWindow()
-                        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 14))
+                        .seisSidebarCard(accent: .indigo, radius: 14, prominence: 0.06)
+                } else if activePanel == .appLibrary {
+                    SeisAppLibraryPanelView(repositoryPath: repositoryPath)
+                        .seisSidebarCard(accent: .cyan, radius: 14, prominence: 0.05)
+                } else if activePanel == .aiScale {
+                    SeisAIModelScaleRoadmapView()
+                        .seisSidebarCard(accent: .cyan, radius: 14, prominence: 0.05)
+                } else if activePanel == .brainSSH {
+                    SeisBrainSSHReadinessView()
+                        .seisSidebarCard(accent: .green, radius: 14, prominence: 0.05)
                 } else {
                     routeContent
                 }
@@ -605,7 +617,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
             }
         }
         .padding(12)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .seisSidebarCard(accent: .cyan, prominence: 0.12)
     }
 
     private var launchShowcaseCard: some View {
@@ -623,10 +635,10 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
                     .font(.caption2)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 6)
-                    .background(.regularMaterial, in: Capsule())
+                    .seisSidebarPill(accent: .blue, prominence: 0.10)
             }
 
-            FlowStepper(steps: ["Repo", "Agent", "Release"], currentStep: routeStep)
+            SeisFlowStepper(steps: ["Repo", "Agent", "Release"], currentStep: routeStep)
 
             HStack(spacing: 8) {
                 Button {
@@ -646,17 +658,18 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.bordered)
+
+                Button {
+                    activePanel = .appLibrary
+                } label: {
+                    Label("LIB", systemImage: "square.grid.2x2.fill")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.bordered)
             }
         }
         .padding(12)
-        .background(
-            LinearGradient(
-                colors: [Color.blue.opacity(0.2), Color.indigo.opacity(0.08)],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            ),
-            in: RoundedRectangle(cornerRadius: 12)
-        )
+        .seisSidebarCard(accent: .blue, prominence: 0.18)
     }
 
     private var featurePillarsCard: some View {
@@ -687,12 +700,12 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(10)
-                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
+                    .seisSidebarCard(accent: feature.tone, radius: 8, prominence: 0.08)
                 }
             }
         }
         .padding(12)
-        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .seisSidebarCard(accent: .cyan, prominence: 0.08)
     }
 
     private var onboardingCard: some View {
@@ -708,7 +721,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
                 .font(.caption)
             }
 
-            FlowStepper(steps: ["Senaryo seç", "Çalıştır", "Sonuç gör"], currentStep: routeStep)
+            SeisFlowStepper(steps: ["Senaryo seç", "Çalıştır", "Sonuç gör"], currentStep: routeStep)
 
             VStack(alignment: .leading, spacing: 6) {
                 ForEach(welcomeHints, id: \.self) { hint in
@@ -733,7 +746,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
             .disabled(!hasScenarios)
         }
         .padding(12)
-        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .seisSidebarCard(accent: .green, prominence: 0.10)
     }
 
     private var quickStartCard: some View {
@@ -770,7 +783,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
             }
         }
         .padding(12)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .seisSidebarCard(accent: .blue, prominence: 0.10)
     }
 
     private var quickRouteCard: some View {
@@ -804,7 +817,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
             }
         }
         .padding(12)
-        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .seisSidebarCard(accent: .cyan, prominence: 0.08)
     }
 
     private var fiveYearVisionCard: some View {
@@ -843,12 +856,12 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
                         }
                     }
                     .padding(8)
-                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
+                    .seisSidebarCard(accent: .indigo, radius: 8, prominence: 0.07)
                 }
             }
         }
         .padding(12)
-        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .seisSidebarCard(accent: .indigo, prominence: 0.08)
     }
 
     private var scenarioLibraryCard: some View {
@@ -894,7 +907,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
             }
         }
         .padding(12)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .seisSidebarCard(accent: .purple, prominence: 0.10)
     }
 
     private var recentRunsCard: some View {
@@ -951,7 +964,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
                             .buttonStyle(.bordered)
                         }
                         .padding(8)
-                        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 10))
+                        .seisSidebarCard(accent: .green, radius: 8, prominence: 0.07)
                     }
                 }
                 HStack {
@@ -966,7 +979,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
             }
         }
         .padding(12)
-        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .seisSidebarCard(accent: .green, prominence: 0.08)
     }
 
     private var releaseDownloadCard: some View {
@@ -1033,7 +1046,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
             }
         }
         .padding(12)
-        .background(.linearGradient(colors: [Color.blue.opacity(0.18), Color.indigo.opacity(0.1)], startPoint: .topLeading, endPoint: .bottomTrailing), in: RoundedRectangle(cornerRadius: 12))
+        .seisSidebarCard(accent: .blue, prominence: 0.16)
     }
 
     private var telemetryCard: some View {
@@ -1054,7 +1067,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
             }
         }
         .padding(10)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .seisSidebarCard(accent: .cyan, radius: 10, prominence: 0.08)
     }
 
     private var routeToolbar: some View {
@@ -1078,7 +1091,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
             }
             .pickerStyle(.segmented)
             .controlSize(.small)
-            .frame(width: 240)
+            .frame(width: 560)
         }
     }
 
@@ -1180,7 +1193,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
                                 .foregroundStyle(.secondary)
                         }
                         .padding(10)
-                        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
+                        .seisSidebarCard(accent: .indigo, radius: 10, prominence: 0.06)
                     }
                 }
             default:
@@ -1195,7 +1208,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
                         Text("Önce repo senaryosunu seçip çalıştırın, sonra SEIS AGI sonucunu tek ekranda görün.")
                             .font(.caption)
                             .foregroundStyle(.secondary)
-                        FlowStepper(steps: ["Repo seç", "Agent çalıştır", "Sonucu gör"], currentStep: routeStep)
+                        SeisFlowStepper(steps: ["Repo seç", "Agent çalıştır", "Sonucu gör"], currentStep: routeStep)
 
                         if let activeRun {
                             HStack {
@@ -1207,12 +1220,12 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
                         }
                     }
                     .padding(12)
-                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+                    .seisSidebarCard(accent: .cyan, prominence: 0.08)
                 }
             }
         }
         .padding(12)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .seisSidebarCard(accent: .cyan, prominence: 0.06)
     }
 
     private var agiSystemMapPanel: some View {
@@ -1241,14 +1254,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
             }
         }
         .padding(12)
-        .background(
-            LinearGradient(
-                colors: [Color.primary.opacity(0.06), Color.secondary.opacity(0.05)],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            ),
-            in: RoundedRectangle(cornerRadius: 12)
-        )
+        .seisSidebarCard(accent: .cyan, prominence: 0.08)
     }
 
     private var liveRepositoryIntelligencePanel: some View {
@@ -1289,7 +1295,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
                 .foregroundStyle(.tertiary)
         }
         .padding(12)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .seisSidebarCard(accent: .blue, prominence: 0.08)
     }
 
     private var pluginSkillFabricPanel: some View {
@@ -1330,14 +1336,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
                 .foregroundStyle(.tertiary)
         }
         .padding(12)
-        .background(
-            LinearGradient(
-                colors: [Color.indigo.opacity(0.10), Color.cyan.opacity(0.08)],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            ),
-            in: RoundedRectangle(cornerRadius: 12)
-        )
+        .seisSidebarCard(accent: .indigo, prominence: 0.10)
     }
 
     private var fullStackDesignSurfacePanel: some View {
@@ -1364,6 +1363,8 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             } else {
+                fullStackPublicDemoHandoffBar
+
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 220), spacing: 10)], alignment: .leading, spacing: 10) {
                     ForEach(fullStackDesignLanes) { lane in
                         fullStackLaneTile(lane)
@@ -1372,7 +1373,46 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
             }
         }
         .padding(12)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .seisSidebarCard(accent: .teal, prominence: 0.08)
+    }
+
+    @ViewBuilder
+    private var fullStackPublicDemoHandoffBar: some View {
+        let lanes = fullStackWebLanes
+
+        if !lanes.isEmpty {
+            HStack(spacing: 8) {
+                Label("Public Demo", systemImage: "globe")
+                    .font(.caption)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.primary)
+
+                Spacer(minLength: 8)
+
+                ForEach(lanes) { lane in
+                    Button {
+                        openFullStackWebLane(lane)
+                    } label: {
+                        Label(fullStackWebLaneButtonTitle(lane), systemImage: fullStackWebLaneButtonIcon(lane))
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                    .help(lane.deepLink ?? "SEIS web lane")
+                }
+
+                Text("No-key")
+                    .font(.caption2)
+                    .fontWeight(.semibold)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(Color.green.opacity(0.15), in: Capsule())
+                    .foregroundStyle(Color.green)
+            }
+            .padding(8)
+            .background(Color.teal.opacity(0.08), in: RoundedRectangle(cornerRadius: 8))
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("Public demo handoff, no-key, \(lanes.map(\.title).joined(separator: ", "))")
+        }
     }
 
     private var agentCommandCenter: some View {
@@ -1396,14 +1436,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
             }
         }
         .padding(12)
-        .background(
-            LinearGradient(
-                colors: [Color.primary.opacity(0.05), Color.accentColor.opacity(0.08)],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            ),
-            in: RoundedRectangle(cornerRadius: 12)
-        )
+        .seisSidebarCard(accent: .purple, prominence: 0.08)
     }
 
     private var releaseReadinessPanel: some View {
@@ -1427,7 +1460,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
             }
         }
         .padding(12)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .seisSidebarCard(accent: .green, prominence: 0.08)
     }
 
     private func scenarioPanel(_ scenario: SeisDemoNativeShellState.ContractScenario) -> some View {
@@ -1456,7 +1489,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
                     .font(.caption2)
                     .foregroundStyle(.secondary)
                     .padding(10)
-                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
+                    .seisSidebarCard(accent: .purple, radius: 8, prominence: 0.06)
 
                 Button {
                     copyPrompt(prompt, scenarioId: scenario.id)
@@ -1501,7 +1534,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
             }
         }
         .padding(12)
-        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .seisSidebarCard(accent: .purple, prominence: 0.08)
     }
 
     private func resultPanel(_ run: SeisDemoNativeShellState.DemoRun) -> some View {
@@ -1537,7 +1570,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
                     }
                 }
                 .padding(8)
-                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
+                .seisSidebarCard(accent: .green, radius: 8, prominence: 0.06)
             }
 
             Button {
@@ -1550,7 +1583,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
             .disabled(demoShellState.scenarioById(run.scenarioId) == nil)
         }
         .padding(12)
-        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .seisSidebarCard(accent: .green, prominence: 0.08)
     }
 
     private var unsupportedRoutePanel: some View {
@@ -1578,7 +1611,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
             }
         }
         .padding(12)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .seisSidebarCard(accent: .orange, prominence: 0.08)
     }
 
     private var emptyScenarioPanel: some View {
@@ -1594,7 +1627,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
             .buttonStyle(.borderedProminent)
         }
         .padding(12)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .seisSidebarCard(accent: .cyan, prominence: 0.08)
     }
 
     private func scenarioCondensedRow(_ scenario: SeisDemoNativeShellState.ContractScenario) -> some View {
@@ -1618,7 +1651,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
             .controlSize(.small)
         }
         .padding(10)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
+        .seisSidebarCard(accent: .purple, radius: 10, prominence: 0.07)
     }
 
     private func scenarioRow(_ scenario: SeisDemoNativeShellState.ContractScenario) -> some View {
@@ -1658,147 +1691,117 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
                 }
             }
             .padding(10)
-            .background(
-                (selectedScenarioId == scenario.id ? Color.accentColor.opacity(0.2) : Color.secondary.opacity(0.08)),
-                in: RoundedRectangle(cornerRadius: 12)
+            .seisSidebarCard(
+                accent: selectedScenarioId == scenario.id ? .blue : .purple,
+                radius: 10,
+                prominence: selectedScenarioId == scenario.id ? 0.18 : 0.07
             )
         }
         .buttonStyle(.plain)
     }
 
     private func agiLayerTile(_ layer: AGILayer) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 8) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(layer.tone.opacity(0.16))
-                        .frame(width: 30, height: 30)
-                    Image(systemName: layer.icon)
-                        .font(.caption)
-                        .foregroundStyle(layer.tone)
-                }
-
-                VStack(alignment: .leading, spacing: 1) {
-                    Text(layer.title)
-                        .font(.caption)
-                        .fontWeight(.semibold)
-                        .lineLimit(1)
-                    Text(layer.signal)
-                        .font(.caption2)
-                        .foregroundStyle(layer.tone)
-                        .lineLimit(1)
-                }
-            }
-
-            Text(layer.description)
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-                .lineLimit(3)
-        }
-        .padding(10)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
+        SeisSignalTile(
+            title: layer.title,
+            signal: layer.signal,
+            detail: layer.description,
+            icon: layer.icon,
+            tone: layer.tone
+        )
     }
 
     private func repositorySignalTile(_ signal: RepositoryLiveSignal) -> some View {
-        VStack(alignment: .leading, spacing: 7) {
-            HStack(spacing: 8) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(signal.tone.opacity(0.16))
-                        .frame(width: 28, height: 28)
-                    Image(systemName: signal.icon)
-                        .font(.caption)
-                        .foregroundStyle(signal.tone)
-                }
-
-                VStack(alignment: .leading, spacing: 1) {
-                    Text(signal.title)
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(1)
-                    Text(signal.value)
-                        .font(.caption)
-                        .fontWeight(.semibold)
-                        .lineLimit(1)
-                }
-            }
-
-            Text(signal.detail)
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-                .lineLimit(2)
-        }
-        .padding(10)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 10))
+        SeisSignalTile(
+            title: signal.value,
+            detail: signal.detail,
+            icon: signal.icon,
+            tone: signal.tone,
+            eyebrow: signal.title,
+            iconSize: 28,
+            detailLineLimit: 2
+        )
     }
 
     private func fullStackLaneTile(_ lane: FullStackDesignLane) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 8) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(lane.tone.opacity(0.16))
-                        .frame(width: 30, height: 30)
-                    Image(systemName: lane.icon)
-                        .font(.caption)
-                        .foregroundStyle(lane.tone)
-                }
+            SeisSignalTile(
+                title: lane.title,
+                signal: lane.badge,
+                detail: fullStackLaneDetail(lane),
+                icon: lane.icon,
+                tone: lane.tone
+            )
 
-                VStack(alignment: .leading, spacing: 1) {
-                    Text(lane.title)
-                        .font(.caption)
-                        .fontWeight(.semibold)
-                        .lineLimit(1)
-                    Text(lane.badge)
-                        .font(.caption2)
-                        .foregroundStyle(lane.tone)
-                        .lineLimit(1)
+            #if os(macOS)
+            if hasFullStackWebLane(lane) {
+                Button {
+                    openFullStackWebLane(lane)
+                } label: {
+                    Label("Web Lane Aç", systemImage: "arrow.up.right.square")
                 }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+                .help(lane.deepLink ?? "SEIS web lane")
+                .accessibilityLabel("\(lane.title) web lane aç")
             }
-
-            Text(lane.intent)
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-                .lineLimit(3)
+            #endif
         }
-        .padding(10)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 10))
+    }
+
+    private func fullStackLaneDetail(_ lane: FullStackDesignLane) -> String {
+        guard let deepLink = lane.deepLink, !deepLink.isEmpty else {
+            return lane.intent
+        }
+
+        return "\(lane.intent)\nWeb lane: \(deepLink)"
+    }
+
+    private var fullStackWebLanes: [FullStackDesignLane] {
+        fullStackDesignLanes.filter { hasFullStackWebLane($0) }
+    }
+
+    private func hasFullStackWebLane(_ lane: FullStackDesignLane) -> Bool {
+        fullStackWebLaneRoute(lane) != nil
+    }
+
+    private func fullStackWebLaneRoute(_ lane: FullStackDesignLane) -> SeisPublicDemoLaneRoute? {
+        guard let deepLink = lane.deepLink?.trimmingCharacters(in: .whitespacesAndNewlines),
+              let route = SeisPublicDemoLaneRoute(deepLink: deepLink),
+              route.isAllowedPublicDemoLane else {
+            return nil
+        }
+
+        return route
+    }
+
+    private func fullStackWebLaneButtonTitle(_ lane: FullStackDesignLane) -> String {
+        if lane.id == "website-ai-platform" {
+            return "Website"
+        }
+        if lane.id == "ubuntu-web-desktop" {
+            return "Ubuntu"
+        }
+        return lane.title
+    }
+
+    private func fullStackWebLaneButtonIcon(_ lane: FullStackDesignLane) -> String {
+        if lane.id == "website-ai-platform" {
+            return "globe"
+        }
+        if lane.id == "ubuntu-web-desktop" {
+            return "display"
+        }
+        return "arrow.up.right.square"
     }
 
     private func capabilityTile(_ capability: AgentCapability) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 8) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(capability.tone.opacity(0.16))
-                        .frame(width: 30, height: 30)
-                    Image(systemName: capability.icon)
-                        .font(.caption)
-                        .foregroundStyle(capability.tone)
-                }
-                VStack(alignment: .leading, spacing: 1) {
-                    Text(capability.title)
-                        .font(.caption)
-                        .fontWeight(.semibold)
-                        .lineLimit(1)
-                    Text(capability.status)
-                        .font(.caption2)
-                        .foregroundStyle(capability.tone)
-                        .lineLimit(1)
-                }
-            }
-
-            Text(capability.description)
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-                .lineLimit(3)
-        }
-        .padding(10)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
+        SeisSignalTile(
+            title: capability.title,
+            signal: capability.status,
+            detail: capability.description,
+            icon: capability.icon,
+            tone: capability.tone
+        )
     }
 
     private func readinessPill(_ title: String, value: String, icon: String) -> some View {
@@ -1818,7 +1821,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
         }
         .padding(10)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 10))
+        .seisSidebarCard(accent: .cyan, radius: 10, prominence: 0.06)
     }
 
     private func routeChip(_ route: String) -> some View {
@@ -1835,7 +1838,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
             }
             .padding(.horizontal, 10)
             .padding(.vertical, 6)
-            .background(.regularMaterial, in: Capsule())
+            .seisSidebarPill(accent: .cyan, prominence: 0.08)
         }
         .buttonStyle(.plain)
     }
@@ -1852,7 +1855,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
         }
         .padding(.horizontal, 10)
         .padding(.vertical, 6)
-        .background(.regularMaterial, in: Capsule())
+        .seisSidebarPill(accent: .blue, prominence: 0.07)
     }
 
     private func metricPill(_ title: String, value: String) -> some View {
@@ -1866,7 +1869,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
                 .lineLimit(1)
         }
         .padding(10)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
+        .seisSidebarCard(accent: .cyan, radius: 10, prominence: 0.07)
     }
 
     private func infoBadge(_ title: String, value: String, tone: Color) -> some View {
@@ -1884,7 +1887,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 6)
-        .background(.regularMaterial, in: Capsule())
+        .seisSidebarPill(accent: tone, prominence: 0.11)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
@@ -2001,6 +2004,29 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
         #endif
     }
 
+    private func openFullStackWebLane(_ lane: FullStackDesignLane) {
+        #if os(macOS)
+        guard let url = fullStackWebLaneURL(lane) else {
+            quickRouteMessage = "Web lane açılamadı."
+            return
+        }
+
+        NSWorkspace.shared.open(url)
+        quickRouteMessage = "\(lane.title) web lane açıldı."
+        #else
+        quickRouteMessage = "macOS dışı desteklenmiyor."
+        #endif
+    }
+
+    private func fullStackWebLaneURL(_ lane: FullStackDesignLane) -> URL? {
+        guard let route = fullStackWebLaneRoute(lane) else {
+            return nil
+        }
+
+        let repositoryRootURL = URL(fileURLWithPath: SeisRepositoryRootResolver.resolve(preferredPath: repositoryPath))
+        return route.fileURL(repositoryRoot: repositoryRootURL)
+    }
+
     private func copyPrompt(_ text: String, scenarioId: String) {
         #if os(macOS)
         let board = NSPasteboard.general
@@ -2039,6 +2065,12 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
     }
 
     private func refreshRepositoryLiveSignals() {
+        if let snapshot = loadRepositorySurfaceSnapshot() {
+            repositoryLiveSignals = snapshot.repositorySignals.map(repositorySignal)
+            lastRepositorySignalRefreshText = "launcher snapshot"
+            return
+        }
+
         let branch = readGitBranchName()
         let languageReport = decodeJSON(
             LanguageDistributionReport.self,
@@ -2049,7 +2081,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
             from: repositoryFileURL("reports/seis-technology-stack.json")
         )
         let packageText = readTextFile("package.json") ?? ""
-        let hasQualityGate = packageText.contains("\"quality\"")
+        let hasQualityGate = packageText.contains("\"quality\"") || packageText.contains("\"quality:governance\"")
         let hasNativeShell = FileManager.default.fileExists(
             atPath: repositoryFileURL("packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/SeisAppleNativeShellFreshDemoHomeView.swift").path
         )
@@ -2103,6 +2135,13 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
     }
 
     private func refreshEcosystemCapabilitySignals() {
+        if let snapshot = loadRepositorySurfaceSnapshot() {
+            ecosystemCapabilitySignals = snapshot.ecosystemSignals.map(repositorySignal)
+            fullStackDesignLanes = snapshot.fullStackDesignLanes.map(fullStackDesignLane)
+            lastCapabilityRefreshText = "launcher snapshot"
+            return
+        }
+
         let lanesReport = decodeJSON(
             PluginCapabilityLanesReport.self,
             from: repositoryFileURL("content/development/plugin-capability-lanes.json")
@@ -2203,12 +2242,43 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
                     title: lane.label,
                     badge: "\(lane.qualityCommands?.count ?? 0) kalite komutu",
                     intent: lane.intent,
+                    deepLink: nil,
                     icon: laneIcon(for: lane.id),
                     tone: laneTone(for: lane.id)
                 )
             }
 
         lastCapabilityRefreshText = relativeDate(for: Date())
+    }
+
+    private func loadRepositorySurfaceSnapshot() -> SeisRepositorySurfaceSnapshot? {
+        guard let snapshotURL = SeisRepositoryRootResolver.repositorySnapshotURL() else {
+            return nil
+        }
+
+        return decodeJSON(SeisRepositorySurfaceSnapshot.self, from: snapshotURL)
+    }
+
+    private func repositorySignal(_ signal: SeisRepositorySurfaceSnapshot.Signal) -> RepositoryLiveSignal {
+        RepositoryLiveSignal(
+            title: signal.title,
+            value: signal.value,
+            detail: signal.detail,
+            icon: signal.icon,
+            tone: signal.color
+        )
+    }
+
+    private func fullStackDesignLane(_ lane: SeisRepositorySurfaceSnapshot.Lane) -> FullStackDesignLane {
+        FullStackDesignLane(
+            id: lane.id,
+            title: lane.title,
+            badge: lane.badge,
+            intent: lane.intent,
+            deepLink: lane.deepLink,
+            icon: lane.icon,
+            tone: lane.color
+        )
     }
 
     private func rememberRoute(_ route: String) {
@@ -2304,7 +2374,8 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
     }
 
     private func repositoryFileURL(_ relativePath: String) -> URL {
-        URL(fileURLWithPath: repositoryPath).appendingPathComponent(relativePath)
+        URL(fileURLWithPath: SeisRepositoryRootResolver.resolve(preferredPath: repositoryPath))
+            .appendingPathComponent(relativePath)
     }
 
     private func readTextFile(_ relativePath: String) -> String? {
@@ -2384,6 +2455,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
                 title: "Builder and prototyping",
                 badge: "fallback",
                 intent: "Create or iterate app surfaces, prototypes, landing systems, and runnable demos.",
+                deepLink: nil,
                 icon: "hammer",
                 tone: .blue
             ),
@@ -2392,6 +2464,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
                 title: "Creative production and design",
                 badge: "fallback",
                 intent: "Shape UI direction, visual assets, design systems, campaign creative, and media outputs.",
+                deepLink: nil,
                 icon: "paintpalette",
                 tone: .pink
             ),
@@ -2400,6 +2473,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
                 title: "Backend, data, and API",
                 badge: "fallback",
                 intent: "Model data, inspect schemas, build API integrations, and maintain backend execution layers.",
+                deepLink: nil,
                 icon: "server.rack",
                 tone: .purple
             ),
@@ -2408,6 +2482,7 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
                 title: "Cloud, DevOps, and release",
                 badge: "fallback",
                 intent: "Coordinate deploy targets, CI/CD, hosting, infrastructure, incidents, and release safety.",
+                deepLink: nil,
                 icon: "icloud.and.arrow.up",
                 tone: .cyan
             )
@@ -2474,59 +2549,6 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
     private struct ReleaseAsset: Decodable {
         let name: String
         let browserDownloadUrl: String?
-    }
-}
-
-private struct FlowStepper: View {
-    let steps: [String]
-    let currentStep: Int
-
-    init(steps: [String], currentStep: Int = 1) {
-        self.steps = steps
-        self.currentStep = currentStep
-    }
-
-    var body: some View {
-        let normalizedCurrentStep = max(1, min(currentStep, max(1, steps.count)))
-        VStack(alignment: .leading, spacing: 6) {
-            Text("Kullanım Aşaması")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-            HStack(spacing: 7) {
-                ForEach(Array(steps.enumerated()), id: \.offset) { index, step in
-                    let completed = index < normalizedCurrentStep - 1
-                    let current = index == normalizedCurrentStep - 1
-                    HStack(spacing: 6) {
-                        ZStack {
-                            Circle()
-                                .fill(completed ? Color.green.opacity(0.45) : (current ? Color.accentColor.opacity(0.45) : Color.secondary.opacity(0.2)))
-                                .frame(width: 18, height: 18)
-                            if completed {
-                                Image(systemName: "checkmark")
-                                    .font(.caption2)
-                                    .fontWeight(.bold)
-                                    .foregroundStyle(.white)
-                            } else {
-                                Text("\(index + 1)")
-                                    .font(.caption2)
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(current ? .white : .secondary)
-                            }
-                        }
-                        Text(step)
-                            .font(.caption2)
-                            .lineLimit(1)
-                            .foregroundStyle(current ? Color.primary : .secondary)
-                            .fontWeight(current ? .semibold : .regular)
-                        if index < steps.count - 1 {
-                            Capsule()
-                                .fill(completed ? Color.green.opacity(0.5) : Color.secondary.opacity(0.25))
-                                .frame(height: 2)
-                        }
-                    }
-                }
-            }
-        }
     }
 }
 
