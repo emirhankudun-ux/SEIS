@@ -30,7 +30,10 @@ test("SEIS Cloud SSH Center exposes explicit safe states", async () => {
     "owner-input-checklist",
     "24/7 acceptance ladder",
     "Ready only after strict direct-cloud evidence",
-    "acceptance-ladder"
+    "acceptance-ladder",
+    "Mobile handoff checklist",
+    "New-device ready only after direct-cloud proof",
+    "mobile-handoff-checklist"
   ]) {
     assert.match(html, new RegExp(marker));
   }
@@ -63,7 +66,12 @@ test("SEIS Cloud SSH Center script stays browser-local and non-mutating", async 
     "renderAcceptanceLadder",
     "npm run cloud:ssh:mobile-direct:profile",
     "npm run cloud:ssh:mobile-direct:doctor:strict",
-    "readyClaimBlockedUntilStrictDoctor: true"
+    "readyClaimBlockedUntilStrictDoctor: true",
+    "handoffChecklist",
+    "renderHandoffChecklist",
+    "device-independent-entrypoint",
+    "new-device-replayable",
+    "blockingIfMissing: true"
   ]) {
     assert.match(script, new RegExp(marker));
   }
@@ -86,7 +94,7 @@ test("SEIS Cloud SSH Center script stays browser-local and non-mutating", async 
 
 test("SEIS Cloud SSH Center styles include responsive and reduced-motion support", async () => {
   const css = await read("cloud-ssh-center.css");
-  for (const marker of ["prefers-reduced-motion", "skip-link", "status-grid", "surface-grid", "owner-input-grid", "acceptance-ladder", "evidence-log", "@media (max-width: 940px)", "--cyan", "--blue", "--radius"]) {
+  for (const marker of ["prefers-reduced-motion", "skip-link", "status-grid", "surface-grid", "owner-input-grid", "acceptance-ladder", "handoff-grid", "evidence-log", "@media (max-width: 940px)", "--cyan", "--blue", "--radius"]) {
     assert.match(css, new RegExp(marker.replace(/[()]/g, "\\$&")));
   }
 });
@@ -153,6 +161,18 @@ test("SEIS Cloud SSH Center fixture stays synchronized with safe demo states", a
   assert.equal(fixture.mobile24x7AcceptanceLadder.find((step) => step.id === "handoff-doctor").readyEvidence, true);
   for (const step of fixture.mobile24x7AcceptanceLadder.filter((item) => item.id !== "handoff-doctor")) {
     assert.equal(step.readyEvidence, false);
+  }
+  assert.equal(fixture.mobileHandoffChecklist.length, acceptanceLedger.mobileHandoffChecklist.length);
+  const ledgerHandoffById = new Map(acceptanceLedger.mobileHandoffChecklist.map((entry) => [entry.id, entry]));
+  for (const item of fixture.mobileHandoffChecklist) {
+    const ledgerItem = ledgerHandoffById.get(item.id);
+    assert.ok(ledgerItem);
+    assert.ok(fixture.states.includes(item.status));
+    assert.equal(item.requirement, ledgerItem.requirement);
+    assert.equal(item.evidence, ledgerItem.evidence);
+    assert.equal(item.blockingIfMissing, true);
+    assert.equal(item.blockingIfMissing, ledgerItem.blockingIfMissing);
+    assert.equal(script.includes(item.id), true);
   }
   assert.equal(fixture.surfaces.length, 12);
   assert.ok(fixture.surfaces.some((surface) => surface.id === "mac-independent-remote-runtime"));

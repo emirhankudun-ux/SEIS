@@ -36,6 +36,15 @@ const acceptanceLadder = [
   ["contract-guard", "connected", "npm run check:seis-ssh-mobile-direct-cloud", "governance-contract"]
 ];
 
+const handoffChecklist = [
+  ["device-independent-entrypoint", "disabled", "Single SEIS-SSH alias", "no local Mac dependency"],
+  ["always-on-cloud-endpoint", "unknown", "Always-on cloud endpoint", "owner input required"],
+  ["remote-runtime-ready", "disabled", "Remote runtime ready", "strict probe required"],
+  ["handoff-report-written", "disabled", "Reusable handoff report", "strict doctor required"],
+  ["secret-boundary-preserved", "connected", "Secret boundary preserved", "git-safe reports"],
+  ["new-device-replayable", "planned", "New-device replayable", "documented runbook"]
+];
+
 let state = loadState();
 
 function loadState() {
@@ -147,6 +156,23 @@ function renderAcceptanceLadder() {
     </article>`).join("");
 }
 
+function renderHandoffChecklist() {
+  const target = $("#mobile-handoff-checklist");
+  if (!target) return;
+  target.innerHTML = handoffChecklist.map(([id, status, label, boundary]) => `
+    <article class="handoff-card">
+      <div class="card-topline">
+        <h3>${label}</h3>
+        <span class="status-pill ${status}">${status}</span>
+      </div>
+      <p>${id}</p>
+      <div class="meta-row">
+        <span class="meta-chip">${boundary}</span>
+        <span class="meta-chip">blockingIfMissing: true</span>
+      </div>
+    </article>`).join("");
+}
+
 function renderLog() {
   if (!state.log.length) {
     $("#evidence-log").innerHTML = `<article class="evidence-card"><strong>No local readiness notes yet.</strong><small>Record a note to produce browser-only evidence.</small></article>`;
@@ -170,6 +196,7 @@ function render() {
   renderSurfaces();
   renderOwnerInputs();
   renderAcceptanceLadder();
+  renderHandoffChecklist();
   renderLog();
 }
 

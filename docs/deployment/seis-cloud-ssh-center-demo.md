@@ -82,6 +82,13 @@ against the ledger:
 Only the strict doctor can support the `mobile-24x7-ready` claim. Earlier green
 steps are useful evidence, not the final ready state.
 
+## Mobile handoff checklist
+
+The center also mirrors the ledger's `mobileHandoffChecklist` with short,
+public-safe UI labels. The checklist keeps these six requirements blocking:
+`device-independent-entrypoint`, always-on cloud endpoint, remote runtime
+readiness, handoff report, secret boundary, and `new-device-replayable`.
+
 ## Secret scan boundary
 
 The GitHub `Secret & Vulnerability Scan` is a full-history gate and may report

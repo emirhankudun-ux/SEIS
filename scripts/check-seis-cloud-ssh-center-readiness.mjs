@@ -138,6 +138,28 @@ for (const step of acceptanceLadder.filter((item) => item.id !== "handoff-doctor
   ensure(step.readyEvidence === false, `acceptance step ${step.id} must not be final ready evidence`);
 }
 
+const mobileHandoffChecklist = fixture?.mobileHandoffChecklist || [];
+ensure(Array.isArray(mobileHandoffChecklist) && mobileHandoffChecklist.length === 6, "fixture must define 6 mobile handoff checklist items");
+const ledgerHandoffById = new Map((acceptanceLedger?.mobileHandoffChecklist || []).map((entry) => [entry.id, entry]));
+const handoffIds = new Set();
+for (const item of mobileHandoffChecklist) {
+  ensure(/^[a-z0-9-]+$/.test(item.id || ""), `handoff item id must be kebab-case: ${item.id}`);
+  ensure(!handoffIds.has(item.id), `handoff item id must be unique: ${item.id}`);
+  handoffIds.add(item.id);
+  ensure(states.has(item.status), `handoff item ${item.id} must use a declared state`);
+  ensure(item.blockingIfMissing === true, `handoff item ${item.id} must block missing evidence`);
+  const ledgerItem = ledgerHandoffById.get(item.id);
+  ensure(Boolean(ledgerItem), `acceptance ledger must include handoff item ${item.id}`);
+  ensure(item.requirement === ledgerItem?.requirement, `handoff item ${item.id} requirement must match acceptance ledger`);
+  ensure(item.evidence === ledgerItem?.evidence, `handoff item ${item.id} evidence must match acceptance ledger`);
+  ensure(item.blockingIfMissing === ledgerItem?.blockingIfMissing, `handoff item ${item.id} blocking flag must match acceptance ledger`);
+  ensure(appScript.includes(item.id), `app script must include handoff item id: ${item.id}`);
+}
+
+for (const id of ["device-independent-entrypoint", "always-on-cloud-endpoint", "remote-runtime-ready", "handoff-report-written", "secret-boundary-preserved", "new-device-replayable"]) {
+  ensure(handoffIds.has(id), `fixture must include handoff item ${id}`);
+}
+
 const requiredFlags = fixture?.requiredSafetyFlags || {};
 for (const [flag, value] of Object.entries({
   remoteConnected: false,
@@ -178,12 +200,15 @@ ensure(route.includes("owner-input-checklist"), "route must render direct-cloud 
 ensure(route.includes("Direct-cloud owner packet"), "route must label direct-cloud owner input packet");
 ensure(route.includes("acceptance-ladder"), "route must render direct-cloud acceptance ladder");
 ensure(route.includes("Ready only after strict direct-cloud evidence"), "route must keep strict evidence copy");
+ensure(route.includes("mobile-handoff-checklist"), "route must render mobile handoff checklist");
+ensure(route.includes("New-device ready only after direct-cloud proof"), "route must keep mobile handoff boundary copy");
 
 for (const token of [
   files.fixture,
   "schema-backed Cloud / SSH readiness fixture",
   "ownerInputChecklist",
   "mobile24x7AcceptanceLadder",
+  "mobileHandoffChecklist",
   files.acceptanceLedger,
   "npm run check:seis-ssh-mobile-direct-cloud",
   "SEIS_SSH_HOST",
@@ -191,6 +216,8 @@ for (const token of [
   "SEIS_REMOTE_REPO_DIR",
   "provider console / owner approval",
   "npm run cloud:ssh:mobile-direct:doctor:strict",
+  "device-independent-entrypoint",
+  "new-device-replayable",
   "npm run check:seis-cloud-ssh-center-readiness",
   "npm run check:seis-cloud-ssh-center-pr-boundary",
   "npm run cloud:ssh:online:strict",

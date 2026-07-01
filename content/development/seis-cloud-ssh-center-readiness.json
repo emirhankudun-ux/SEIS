@@ -161,6 +161,50 @@
       "readyEvidence": false
     }
   ],
+  "mobileHandoffChecklist": [
+    {
+      "id": "device-independent-entrypoint",
+      "status": "disabled",
+      "requirement": "ChatGPT mobile/Codex uses the single SEIS-SSH alias and does not depend on the local Mac.",
+      "evidence": "ssh -G SEIS-SSH shows direct-cloud transport without ProxyCommand.",
+      "blockingIfMissing": true
+    },
+    {
+      "id": "always-on-cloud-endpoint",
+      "status": "unknown",
+      "requirement": "The SSH endpoint is an always-on public VM or DNS name.",
+      "evidence": "npm run cloud:ssh:mobile-direct:probe:strict passes TCP reachability and SSH auth.",
+      "blockingIfMissing": true
+    },
+    {
+      "id": "remote-runtime-ready",
+      "status": "disabled",
+      "requirement": "Remote runtime can serve SEIS work after mobile reconnection.",
+      "evidence": "strict probe reports remote runtime online and SEIS repository present.",
+      "blockingIfMissing": true
+    },
+    {
+      "id": "handoff-report-written",
+      "status": "disabled",
+      "requirement": "A reusable readiness report exists for future device migration.",
+      "evidence": "npm run cloud:ssh:mobile-direct:doctor:strict writes reports/seis-ssh-mobile-24x7-readiness.json.",
+      "blockingIfMissing": true
+    },
+    {
+      "id": "secret-boundary-preserved",
+      "status": "connected",
+      "requirement": "Private keys, API keys, tokens, and runtime secrets remain outside git.",
+      "evidence": "runtime secrets stay in /etc/seis/ssh-ai.env and local readiness reports remain ignored.",
+      "blockingIfMissing": true
+    },
+    {
+      "id": "new-device-replayable",
+      "status": "planned",
+      "requirement": "A new computer can recreate the same mobile SSH entrypoint without copying private runtime state from the old Mac.",
+      "evidence": "bootstrap:plan, config:plan, probe:strict, and doctor:strict commands are documented in the runbook.",
+      "blockingIfMissing": true
+    }
+  ],
   "historyScanBoundary": {
     "fullHistoryGate": "GitHub Secret & Vulnerability Scan",
     "currentKnownFailureSource": "legacy generated bundle in historical commit, not Cloud SSH Center diff",
