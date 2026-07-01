@@ -97,6 +97,15 @@ The route renders a `browserLocalHandoffPacket` with id
 mutation, and summarizes owner input, acceptance ladder, handoff checklist,
 required safety flags, local evidence-note count, and the current known blocker.
 
+## Browser-local claim guard
+
+The route also renders a `browserLocalReadyClaimGuard` with id
+`seis-cloud-ssh-center-ready-claim-guard`. It mirrors the acceptance ledger's
+ready and blocked claim conditions, keeps `readyClaimAllowed: false` and
+`claimAllowedByDefault: false` until `npm run cloud:ssh:mobile-direct:doctor:strict`
+can support the final mobile 24/7 claim. The guard is browser-local, reads no
+credentials, stores no secrets, and performs no remote mutation.
+
 ## Secret scan boundary
 
 The GitHub `Secret & Vulnerability Scan` is a full-history gate and may report

@@ -56,7 +56,7 @@ ensure(fixture?.browserLocalHandoffPacket?.status === "browser-local-demo", "bro
 ensure(fixture?.browserLocalHandoffPacket?.generatedBy === files.script, "browser-local handoff packet must point to app script");
 ensure(fixture?.browserLocalHandoffPacket?.containsSecrets === false, "browser-local handoff packet must not contain secrets");
 ensure(fixture?.browserLocalHandoffPacket?.remoteMutationAllowed === false, "browser-local handoff packet must forbid remote mutation");
-for (const field of ["ownerInputChecklist", "mobile24x7AcceptanceLadder", "mobileHandoffChecklist", "requiredSafetyFlags", "currentKnownBlocker"]) {
+for (const field of ["ownerInputChecklist", "mobile24x7AcceptanceLadder", "mobileHandoffChecklist", "requiredSafetyFlags", "currentKnownBlocker", "browserLocalReadyClaimGuard"]) {
   ensure((fixture?.browserLocalHandoffPacket?.fields || []).includes(field), `browser-local handoff packet fields must include ${field}`);
 }
 ensure(acceptanceLedger?.id === "seis-ssh-mobile-direct-cloud-acceptance-ledger", "acceptance ledger id must be stable");
@@ -69,6 +69,26 @@ ensure(
   (acceptanceLedger?.blockedClaimWhen || []).includes("SEIS-SSH still uses Codespaces transport"),
   "acceptance ledger must block ready claim for Codespaces transport"
 );
+const readyClaimGuard = fixture?.browserLocalReadyClaimGuard || {};
+const ledgerDoctor = (acceptanceLedger?.evidenceMap || []).find((entry) => entry.id === "handoff-doctor");
+ensure(readyClaimGuard.id === "seis-cloud-ssh-center-ready-claim-guard", "fixture must define browser-local ready-claim guard id");
+ensure(readyClaimGuard.sourceLedger === files.acceptanceLedger, "ready-claim guard must point to the direct-cloud acceptance ledger");
+ensure(readyClaimGuard.status === "blocked", "ready-claim guard must stay blocked by default");
+ensure(readyClaimGuard.readyClaim === acceptanceLedger?.readyClaim, "ready-claim guard must mirror the ledger ready claim");
+ensure(JSON.stringify(readyClaimGuard.readyClaimAllowedOnlyWhen || []) === JSON.stringify(acceptanceLedger?.readyClaimAllowedOnlyWhen || []), "ready-claim guard allowed conditions must match ledger");
+ensure(JSON.stringify(readyClaimGuard.blockedClaimWhen || []) === JSON.stringify(acceptanceLedger?.blockedClaimWhen || []), "ready-claim guard blocked conditions must match ledger");
+ensure(readyClaimGuard.allowedOnlyAfterStep === "handoff-doctor", "ready claim must be gated on handoff-doctor");
+ensure(readyClaimGuard.allowedOnlyAfterCommand === ledgerDoctor?.command, "ready-claim guard command must match ledger handoff doctor");
+ensure(readyClaimGuard.allowedOnlyAfterClaimScope === ledgerDoctor?.claimScope && ledgerDoctor?.claimScope === "mobile-24x7-ready", "ready-claim guard scope must match ledger final scope");
+ensure(readyClaimGuard.readyClaimAllowed === false, "ready-claim guard must not allow ready claim by default");
+ensure(readyClaimGuard.claimAllowedByDefault === false, "ready-claim guard claimAllowedByDefault must stay false");
+ensure(readyClaimGuard.mobile24x7ReadyByDefault === false && readyClaimGuard.mobile24x7ReadyByDefault === fixture?.mobile24x7ReadyByDefault, "ready-claim guard must mirror mobile 24/7 default");
+ensure(readyClaimGuard.currentKnownBlocker === fixture?.currentKnownBlocker, "ready-claim guard must expose the current blocker");
+ensure(readyClaimGuard.requiresFinalGate === "npm run cloud:ssh:mobile-direct:doctor:strict", "ready-claim guard must require strict doctor");
+ensure(readyClaimGuard.generatedBy === files.script, "ready-claim guard must point to app script");
+ensure(readyClaimGuard.remoteMutationAllowed === false, "ready-claim guard must forbid remote mutation");
+ensure(readyClaimGuard.credentialRead === false, "ready-claim guard must forbid credential reads");
+ensure(readyClaimGuard.secretStored === false, "ready-claim guard must forbid secret storage");
 ensure(fixture?.historyScanBoundary?.fullHistoryGate === "GitHub Secret & Vulnerability Scan", "fixture must name the full-history secret gate");
 ensure(fixture?.historyScanBoundary?.bypassAllowedByDefault === false, "fixture must forbid secret-history bypass by default");
 ensure((fixture?.historyScanBoundary?.forbiddenDiffPrefixes || []).includes("sources/"), "fixture must forbid sources/ in this PR boundary");
@@ -213,11 +233,14 @@ ensure(route.includes("New-device ready only after direct-cloud proof"), "route 
 ensure(route.includes("handoff-packet"), "route must render browser-local handoff packet");
 ensure(route.includes("Browser-local handoff packet"), "route must label browser-local handoff packet");
 ensure(route.includes("refresh-packet"), "route must expose handoff packet refresh action");
+ensure(route.includes("claim-guard-grid"), "route must render ready claim guard");
+ensure(route.includes("Ready-claim guard"), "route must label ready claim guard");
 
 for (const token of [
   files.fixture,
   "schema-backed Cloud / SSH readiness fixture",
   "browserLocalHandoffPacket",
+  "browserLocalReadyClaimGuard",
   "ownerInputChecklist",
   "mobile24x7AcceptanceLadder",
   "mobileHandoffChecklist",
@@ -231,6 +254,7 @@ for (const token of [
   "device-independent-entrypoint",
   "new-device-replayable",
   "seis-cloud-ssh-center-mobile-handoff-packet",
+  "seis-cloud-ssh-center-ready-claim-guard",
   "npm run check:seis-cloud-ssh-center-readiness",
   "npm run check:seis-cloud-ssh-center-pr-boundary",
   "npm run cloud:ssh:online:strict",
@@ -242,6 +266,13 @@ for (const token of [
 }
 
 for (const token of [
+  "buildClaimGuard",
+  "renderClaimGuard",
+  "readyClaimAllowed: false",
+  "claimAllowedByDefault: false",
+  "browserLocalReadyClaimGuard",
+  "blockingHandoffItems",
+  "unresolvedOwnerInputs",
   "buildHandoffPacket",
   "renderHandoffPacket",
   "Browser-local mobile handoff packet refreshed",

@@ -37,7 +37,10 @@ test("SEIS Cloud SSH Center exposes explicit safe states", async () => {
     "Browser-local handoff packet",
     "Public-safe mobile transfer summary",
     "handoff-packet",
-    "refresh-packet"
+    "refresh-packet",
+    "Ready-claim guard",
+    "Mobile 24/7 claim remains blocked here",
+    "claim-guard-grid"
   ]) {
     assert.match(html, new RegExp(marker));
   }
@@ -80,7 +83,15 @@ test("SEIS Cloud SSH Center script stays browser-local and non-mutating", async 
     "renderHandoffPacket",
     "seis-cloud-ssh-center-mobile-handoff-packet",
     "localEvidenceNotes",
-    "Browser-local mobile handoff packet refreshed"
+    "Browser-local mobile handoff packet refreshed",
+    "buildClaimGuard",
+    "renderClaimGuard",
+    "seis-cloud-ssh-center-ready-claim-guard",
+    "readyClaimAllowed: false",
+    "browserLocalReadyClaimGuard",
+    "claimAllowedByDefault: false",
+    "blockingHandoffItems",
+    "unresolvedOwnerInputs"
   ]) {
     assert.match(script, new RegExp(marker));
   }
@@ -99,11 +110,14 @@ test("SEIS Cloud SSH Center script stays browser-local and non-mutating", async 
   ]) {
     assert.equal(script.includes(forbidden), false, `${forbidden} must not appear`);
   }
+  assert.equal(script.includes("mobile24x7Ready: true"), false);
+  assert.equal(script.includes("claimAllowedByDefault: true"), false);
+  assert.equal((await read("cloud-ssh-center.html")).includes("SEIS-SSH is ChatGPT mobile/Codex 24x7 ready"), false);
 });
 
 test("SEIS Cloud SSH Center styles include responsive and reduced-motion support", async () => {
   const css = await read("cloud-ssh-center.css");
-  for (const marker of ["prefers-reduced-motion", "skip-link", "status-grid", "surface-grid", "owner-input-grid", "acceptance-ladder", "handoff-grid", "handoff-packet", "evidence-log", "@media (max-width: 940px)", "--cyan", "--blue", "--radius"]) {
+  for (const marker of ["prefers-reduced-motion", "skip-link", "status-grid", "surface-grid", "owner-input-grid", "acceptance-ladder", "handoff-grid", "claim-guard-grid", "handoff-packet", "evidence-log", "@media (max-width: 940px)", "--cyan", "--blue", "--radius"]) {
     assert.match(css, new RegExp(marker.replace(/[()]/g, "\\$&")));
   }
 });
@@ -112,6 +126,7 @@ test("SEIS Cloud SSH Center fixture stays synchronized with safe demo states", a
   const fixturePath = "content/development/seis-cloud-ssh-center-readiness.json";
   const fixture = JSON.parse(await readRepo(fixturePath));
   const acceptanceLedger = JSON.parse(await readRepo(fixture.acceptanceLedger));
+  const ledgerEvidenceById = new Map(acceptanceLedger.evidenceMap.map((entry) => [entry.id, entry]));
   const script = await read("cloud-ssh-center.js");
   assert.equal(fixture.qualityGate, "npm run check:seis-cloud-ssh-center-readiness");
   assert.equal(fixture.liveExecutionAllowed, false);
@@ -134,8 +149,27 @@ test("SEIS Cloud SSH Center fixture stays synchronized with safe demo states", a
   assert.equal(fixture.browserLocalHandoffPacket.status, "browser-local-demo");
   assert.equal(fixture.browserLocalHandoffPacket.containsSecrets, false);
   assert.equal(fixture.browserLocalHandoffPacket.remoteMutationAllowed, false);
+  assert.equal(fixture.browserLocalHandoffPacket.fields.includes("browserLocalReadyClaimGuard"), true);
   assert.ok(fixture.browserLocalHandoffPacket.fields.includes("mobileHandoffChecklist"));
   assert.ok(fixture.browserLocalHandoffPacket.fields.includes("requiredSafetyFlags"));
+  assert.equal(fixture.browserLocalReadyClaimGuard.id, "seis-cloud-ssh-center-ready-claim-guard");
+  assert.equal(fixture.browserLocalReadyClaimGuard.sourceLedger, fixture.acceptanceLedger);
+  assert.equal(fixture.browserLocalReadyClaimGuard.status, "blocked");
+  assert.equal(fixture.browserLocalReadyClaimGuard.readyClaim, acceptanceLedger.readyClaim);
+  assert.deepEqual(fixture.browserLocalReadyClaimGuard.readyClaimAllowedOnlyWhen, acceptanceLedger.readyClaimAllowedOnlyWhen);
+  assert.deepEqual(fixture.browserLocalReadyClaimGuard.blockedClaimWhen, acceptanceLedger.blockedClaimWhen);
+  assert.equal(fixture.browserLocalReadyClaimGuard.allowedOnlyAfterStep, "handoff-doctor");
+  assert.equal(fixture.browserLocalReadyClaimGuard.allowedOnlyAfterCommand, ledgerEvidenceById.get("handoff-doctor").command);
+  assert.equal(fixture.browserLocalReadyClaimGuard.allowedOnlyAfterClaimScope, "mobile-24x7-ready");
+  assert.equal(fixture.browserLocalReadyClaimGuard.readyClaimAllowed, false);
+  assert.equal(fixture.browserLocalReadyClaimGuard.claimAllowedByDefault, false);
+  assert.equal(fixture.browserLocalReadyClaimGuard.mobile24x7ReadyByDefault, false);
+  assert.equal(fixture.browserLocalReadyClaimGuard.mobile24x7ReadyByDefault, fixture.mobile24x7ReadyByDefault);
+  assert.equal(fixture.browserLocalReadyClaimGuard.currentKnownBlocker, fixture.currentKnownBlocker);
+  assert.equal(fixture.browserLocalReadyClaimGuard.requiresFinalGate, "npm run cloud:ssh:mobile-direct:doctor:strict");
+  assert.equal(fixture.browserLocalReadyClaimGuard.remoteMutationAllowed, false);
+  assert.equal(fixture.browserLocalReadyClaimGuard.credentialRead, false);
+  assert.equal(fixture.browserLocalReadyClaimGuard.secretStored, false);
   assert.equal(acceptanceLedger.id, "seis-ssh-mobile-direct-cloud-acceptance-ledger");
   assert.equal(acceptanceLedger.readyClaim, "SEIS-SSH is ChatGPT mobile/Codex 24x7 ready");
   assert.ok(acceptanceLedger.readyClaimAllowedOnlyWhen.includes("strict doctor writes a successful readiness handoff report"));
@@ -157,7 +191,6 @@ test("SEIS Cloud SSH Center fixture stays synchronized with safe demo states", a
     assert.equal(script.includes(input.boundary), true);
   }
   assert.equal(fixture.mobile24x7AcceptanceLadder.length, 8);
-  const ledgerEvidenceById = new Map(acceptanceLedger.evidenceMap.map((entry) => [entry.id, entry]));
   const ladderIds = new Set(fixture.mobile24x7AcceptanceLadder.map((step) => step.id));
   for (const id of ["profile-contract", "bootstrap-dry-run", "bootstrap-apply", "ssh-config-plan", "ssh-config-install", "readiness-probe", "handoff-doctor", "contract-guard"]) {
     assert.ok(ladderIds.has(id));

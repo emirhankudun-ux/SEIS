@@ -37,8 +37,45 @@
       "mobile24x7AcceptanceLadder",
       "mobileHandoffChecklist",
       "requiredSafetyFlags",
-      "currentKnownBlocker"
+      "currentKnownBlocker",
+      "browserLocalReadyClaimGuard"
     ]
+  },
+  "browserLocalReadyClaimGuard": {
+    "id": "seis-cloud-ssh-center-ready-claim-guard",
+    "sourceLedger": "content/development/seis-ssh-mobile-direct-cloud-acceptance-ledger.json",
+    "status": "blocked",
+    "readyClaim": "SEIS-SSH is ChatGPT mobile/Codex 24x7 ready",
+    "readyClaimAllowedOnlyWhen": [
+      "SEIS-SSH resolves to direct-cloud SSH without ProxyCommand",
+      "TCP reachability succeeds against the configured public SSH endpoint",
+      "SSH key authentication succeeds in BatchMode",
+      "remote runtime reports online",
+      "SEIS repository is present on the remote host",
+      "strict doctor writes a successful readiness handoff report"
+    ],
+    "blockedClaimWhen": [
+      "SEIS_SSH_HOST is missing",
+      "SEIS-SSH still uses Codespaces transport",
+      "SEIS-SSH points at localhost or the local Mac",
+      "public SSH endpoint is unreachable",
+      "identity file is missing",
+      "SSH authentication fails",
+      "remote runtime or SSH-AI daemon is offline",
+      "strict doctor exits non-zero"
+    ],
+    "allowedOnlyAfterStep": "handoff-doctor",
+    "allowedOnlyAfterCommand": "npm run cloud:ssh:mobile-direct:doctor:strict",
+    "allowedOnlyAfterClaimScope": "mobile-24x7-ready",
+    "readyClaimAllowed": false,
+    "claimAllowedByDefault": false,
+    "mobile24x7ReadyByDefault": false,
+    "currentKnownBlocker": "mobile-24x7-requires-direct-cloud-transport",
+    "requiresFinalGate": "npm run cloud:ssh:mobile-direct:doctor:strict",
+    "generatedBy": "apps/seis-core/cloud-ssh-center.js",
+    "remoteMutationAllowed": false,
+    "credentialRead": false,
+    "secretStored": false
   },
   "ownerInputChecklist": [
     {
