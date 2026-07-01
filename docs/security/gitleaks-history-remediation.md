@@ -28,6 +28,7 @@ As of 2026-07-01, GitHub auto-merge is enabled for:
 
 - PR #77, `ci: add generated source bundle guard`
 - PR #126, `feat(core): add browser-local Search Center`
+- GitHub issue #129 tracks the required owner decision.
 
 Both PRs remain correctly blocked by the same repository-level Guardian
 Gitleaks failure. The blocker is not tied to the current PR diffs; it is tied

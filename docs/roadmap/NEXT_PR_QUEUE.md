@@ -2,6 +2,19 @@
 
 Date: 2026-06-23
 
+## Active Security Merge Blocker
+
+| Field | Value |
+| --- | --- |
+| Tracker | GitHub issue #129, `Security: resolve historical Gitleaks findings in generated source bundle` |
+| Affected PRs | PR #77, `ci: add generated source bundle guard`; PR #126, `feat(core): add browser-local Search Center` |
+| Status | Auto-merge is enabled for both PRs, but GitHub correctly blocks merge on `Secret & Vulnerability Scan` / `Security Summary`. |
+| Root evidence | Historical commit `f3d385d6`, generated path `sources/github-unified-source/_generated/github-code-bundle.txt`. |
+| Current safe work | PR #77 keeps generated source bundles out of the tracked tree and documents the remediation path without exposing secret values. |
+| Human Approval Needed | Owner must approve credential rotation plus history rewrite, changed-range PR/push scan policy while keeping scheduled full-history scans, or private synthetic/rotated confirmation. |
+| Exclude | Do not paste secret values, bypass branch protection, force push, weaken `.gitleaks.toml` with broad allowlists, or disable SEIS Guardian. |
+| Validation | PR #77 local guard: `npm run check:generated-source-bundles`; GitHub remains blocked until owner-approved history remediation is complete. |
+
 ## Current Recommended Product Demo Stack
 
 | Order | Suggested PR title | Scope | Validation | Approval needed |
