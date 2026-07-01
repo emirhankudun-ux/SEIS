@@ -1434,6 +1434,48 @@ const SEIS_SECOND_BRAIN_SYSTEM = {
     reportPath: "reports/seis-model-scaling/seis-language-model-training-curriculum.md",
     boundary: "Planning-only curriculum. No model install, checkpoint download, foundation pretraining, fine-tuning, benchmark execution, provider call, SSH, or deployment is authorized."
   },
+  agentRegistryReportPath: "reports/seis-public-demo/second-brain-agent-registry-latest.md",
+  registrySummary: {
+    status: "review-only-agent-registry",
+    mode: "repo-local-no-live-execution",
+    decision: "NO-GO-autonomous-execution-not-approved",
+    installedAiProfiles: 24,
+    workforceAssignments: 25,
+    launcherRoutes: 18,
+    installedLauncherRoutes: 12,
+    trainingCoverageStatus: "local-demo-read-only",
+    trainingCoverageSource: "repo-owned browser-local Second Brain records only",
+    launcherEvidenceCommand: "npm run ai -- list",
+    launcherEvidenceObservedDate: "2026-07-01",
+    requiredTrainingSections: [
+      "installed AI launcher route coverage",
+      "autonomous agent roster onboarding",
+      "Obsidian safe import boundary",
+      "provider-neutral read-only model router",
+      "human approval gates",
+      "public demo release gates"
+    ],
+    launcherEvidence: [
+      ["seis-agent", "installed", "seis-agent-policy-profile"],
+      ["codex", "installed", "codex-operator"],
+      ["antigravity", "installed", "antigravity"],
+      ["antigravity-ide", "installed", "antigravity-ide"],
+      ["cursor", "installed", "cursor-ide-profile"],
+      ["xcode", "installed", "xcode"],
+      ["openai", "missing-command", "openai-general-profile"],
+      ["claude", "missing-ANTHROPIC_API_KEY", "claude-review-profile"],
+      ["gemini", "missing-GEMINI_API_KEY", "gemini-validation-profile"],
+      ["qwen", "installed", "qwen-review-profile"],
+      ["kimi", "installed", "kimi"],
+      ["ollama", "runtime-not-ready", "ollama-local-profile"],
+      ["opencode", "installed", "opencode"],
+      ["aider", "missing-command", "aider"],
+      ["interpreter", "missing-command", "interpreter"],
+      ["hermes", "installed", "hermes"],
+      ["goose", "installed", "goose"],
+      ["open-design", "installed", "open-design"]
+    ]
+  },
   obsidianState: "Obsidian bridge planned",
   runtimeBoundary: "Browser-local Markdown vault and graph. No Obsidian plugin install, provider call, SSH, deployment, GitHub mutation, credential access, or autonomous write runtime.",
   labels: ["Local Demo", "Obsidian bridge planned", "No secrets", "Human review before GitHub"],
@@ -5015,6 +5057,7 @@ function renderSecondBrain() {
   const links = getSecondBrainLinks();
   const activeNote = notes.find((note) => note.id === data.activeNoteId) || notes[0];
   const backlinks = getSecondBrainBacklinks(activeNote.id);
+  const registry = SEIS_SECOND_BRAIN_SYSTEM.registrySummary;
   const nodePositions = [
     ["seis-os-map", "50%", "12%"],
     ["ai-core-router", "22%", "34%"],
@@ -5051,7 +5094,10 @@ function renderSecondBrain() {
     <div class="metric-grid">
       <article class="metric-card"><strong>Vault Notes</strong><p>${notes.length}</p></article>
       <article class="metric-card"><strong>Graph Links</strong><p>${links.length}</p></article>
-      <article class="metric-card"><strong>Installed AI</strong><p>${SEIS_INSTALLED_AI_SYSTEMS.length}</p></article>
+      <article class="metric-card"><strong>Browser AI Fixtures</strong><p>${SEIS_INSTALLED_AI_SYSTEMS.length}</p></article>
+      <article class="metric-card"><strong>Registry AI Profiles</strong><p>${registry.installedAiProfiles}</p></article>
+      <article class="metric-card"><strong>Launcher Routes</strong><p>${registry.launcherRoutes}</p></article>
+      <article class="metric-card"><strong>Installed Routes</strong><p>${registry.installedLauncherRoutes}</p></article>
       <article class="metric-card"><strong>Managed Lanes</strong><p>${SUB_AGENT_DEMO.lanes.length}</p></article>
       <article class="metric-card"><strong>Agent Roster</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length}</p></article>
       <article class="metric-card"><strong>Quality Gate</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.qualityGate)}</p></article>
@@ -5112,10 +5158,10 @@ function renderSecondBrain() {
     </section>
     <section class="subagent-panel second-brain-ai-index" data-second-brain-ai-index>
       <h3>Installed AI + Agent Memory Index</h3>
-      <p class="status-note">All currently registered installed AI profiles and managed sub-agent lanes are mapped as Second Brain context. They stay Local Demo, Missing Key, Disabled, or status/plan-only until a backend provider and human approval exist.</p>
+      <p class="status-note">The browser runtime keeps ${SEIS_INSTALLED_AI_SYSTEMS.length} local AI fixture rows while the review-only agent registry tracks ${registry.installedAiProfiles} Second Brain profiles, ${registry.launcherRoutes} launcher routes, and ${registry.installedLauncherRoutes} locally installed routes. They stay Local Demo, Missing Key, Disabled, runtime-not-ready, or status/plan-only until a backend provider and human approval exist.</p>
       <div class="split-pane">
         <div>
-          <h4>Installed AI Profiles</h4>
+          <h4>Browser Runtime AI Fixtures</h4>
           <table class="data-table" data-second-brain-installed-ai>
             <thead><tr><th>System</th><th>Status</th><th>Boundary</th></tr></thead>
             <tbody>${SEIS_INSTALLED_AI_SYSTEMS.map((system) => `<tr>
@@ -5137,6 +5183,12 @@ function renderSecondBrain() {
           </table>
         </div>
       </div>
+      <h4>Registry Launcher Evidence</h4>
+      <p class="status-note">Source: ${escapeHtml(registry.launcherEvidenceCommand)} on ${escapeHtml(registry.launcherEvidenceObservedDate)}. Mode: ${escapeHtml(registry.mode)}; decision: ${escapeHtml(registry.decision)}.</p>
+      <table class="data-table" data-second-brain-launcher-evidence>
+        <thead><tr><th>Route</th><th>Status</th><th>Second Brain profile</th></tr></thead>
+        <tbody>${registry.launcherEvidence.map(([route, status, profile]) => `<tr><td>${escapeHtml(route)}</td><td>${escapeHtml(status)}</td><td>${escapeHtml(profile)}</td></tr>`).join("")}</tbody>
+      </table>
       <h4>Autonomous Agent Roster</h4>
       <table class="data-table" data-second-brain-agent-roster>
         <thead><tr><th>Agent</th><th>Status</th><th>Second Brain duty</th></tr></thead>
@@ -7058,11 +7110,14 @@ function renderAiAssistantTab(activeTab, data) {
         <button type="button" data-action="second-brain-link">Link Graph</button>
         <button type="button" data-action="second-brain-review">Run Review Gate</button>
       </div>
-      <p class="status-note">SEIS AI can use the Second Brain as Local Demo context only. Obsidian bridge planned; no private vault import, provider call, GitHub mutation, SSH, deployment, or credential access is performed from this tab.</p>
+      <p class="status-note">SEIS AI can use the Second Brain as Local Demo context only. The browser tab keeps ${SEIS_INSTALLED_AI_SYSTEMS.length} local AI fixtures and references the review-only agent registry for ${SEIS_SECOND_BRAIN_SYSTEM.registrySummary.installedAiProfiles} profiles, ${SEIS_SECOND_BRAIN_SYSTEM.registrySummary.launcherRoutes} launcher routes, and ${SEIS_SECOND_BRAIN_SYSTEM.registrySummary.installedLauncherRoutes} installed routes. Obsidian bridge planned; no private vault import, provider call, GitHub mutation, SSH, deployment, or credential access is performed from this tab.</p>
       <div class="metric-grid">
         <article class="metric-card"><strong>Vault Notes</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.length}</p></article>
         <article class="metric-card"><strong>Graph Links</strong><p>${getSecondBrainLinks().length}</p></article>
-        <article class="metric-card"><strong>Installed AI</strong><p>${SEIS_INSTALLED_AI_SYSTEMS.length}</p></article>
+        <article class="metric-card"><strong>Browser AI Fixtures</strong><p>${SEIS_INSTALLED_AI_SYSTEMS.length}</p></article>
+        <article class="metric-card"><strong>Registry AI Profiles</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.registrySummary.installedAiProfiles}</p></article>
+        <article class="metric-card"><strong>Launcher Routes</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.registrySummary.launcherRoutes}</p></article>
+        <article class="metric-card"><strong>Installed Routes</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.registrySummary.installedLauncherRoutes}</p></article>
         <article class="metric-card"><strong>Sub-Agent Lanes</strong><p>${SUB_AGENT_DEMO.lanes.length}</p></article>
         <article class="metric-card"><strong>Agent Roster</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length}</p></article>
         <article class="metric-card"><strong>Quality Gate</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.qualityGate)}</p></article>
@@ -8458,6 +8513,7 @@ ${SEIS_SECOND_BRAIN_SYSTEM.runtimeBoundary}
 }
 
 function buildSecondBrainSnapshotMarkdown(timestamp, mode) {
+  const registry = SEIS_SECOND_BRAIN_SYSTEM.registrySummary;
   return `# SEIS Second Brain Snapshot
 
 Generated: ${timestamp}
@@ -8481,9 +8537,18 @@ ${SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.map((note) => `- ${note.title}: ${note.sta
 
 ${SEIS_SECOND_BRAIN_SYSTEM.agentLanes.map(([agent, permission, duty]) => `- ${agent}: ${permission} / ${duty}`).join("\n")}
 
-## Installed AI Profiles
+## Browser Runtime AI Fixtures
 
 ${SEIS_INSTALLED_AI_SYSTEMS.map((system) => `- ${system.name}: ${system.status} / ${system.role} / ${system.boundary}`).join("\n")}
+
+## Review-Only Agent Registry Evidence
+
+- Registry report: ${SEIS_SECOND_BRAIN_SYSTEM.agentRegistryReportPath}
+- Registry status: ${registry.status}
+- Registry AI profiles: ${registry.installedAiProfiles}
+- Launcher routes: ${registry.launcherRoutes}
+- Installed launcher routes: ${registry.installedLauncherRoutes}
+- Launcher evidence command: ${registry.launcherEvidenceCommand}
 
 ## Managed Sub-Agent Lanes
 
@@ -8507,6 +8572,9 @@ function buildSecondBrainTrainingPackMarkdown(timestamp) {
   const installedRows = SEIS_INSTALLED_AI_SYSTEMS.map((system) => `- ${system.name} | ${system.status} | ${system.role} | ${system.boundary}`);
   const laneRows = SUB_AGENT_DEMO.lanes.map(([name, lane, tool, scope]) => `- ${name} | ${lane} | ${tool} | ${scope}`);
   const rosterRows = SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.map(([agent, status, duty]) => `- ${agent} | ${status} | ${duty}`);
+  const registry = SEIS_SECOND_BRAIN_SYSTEM.registrySummary;
+  const trainingSectionRows = registry.requiredTrainingSections.map((section) => `- ${section}`);
+  const launcherEvidenceRows = registry.launcherEvidence.map(([route, status, profile]) => `- ${route} | ${status} | ${profile} | workforce assignment: true | profile found: true | live provider route: false`);
 
   return `# SEIS Second Brain Agent Training Pack
 
@@ -8517,7 +8585,12 @@ Vault root: ${SEIS_SECOND_BRAIN_SYSTEM.vaultRoot}
 Snapshot path: ${SEIS_SECOND_BRAIN_SYSTEM.snapshotPath}
 GitHub readiness path: ${SEIS_SECOND_BRAIN_SYSTEM.githubReadinessPath}
 Training pack path: ${SEIS_SECOND_BRAIN_SYSTEM.trainingPackPath}
-Observed AI profiles: ${SEIS_INSTALLED_AI_SYSTEMS.length}
+Registry report: ${SEIS_SECOND_BRAIN_SYSTEM.agentRegistryReportPath}
+Observed registry AI profiles: ${registry.installedAiProfiles}
+Observed browser runtime AI fixtures: ${SEIS_INSTALLED_AI_SYSTEMS.length}
+Observed workforce assignments: ${registry.workforceAssignments}
+Observed launcher routes: ${registry.launcherRoutes}
+Observed installed launcher routes: ${registry.installedLauncherRoutes}
 Observed sub-agent lanes: ${SUB_AGENT_DEMO.lanes.length}
 Observed autonomous agent roster: ${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length}
 
@@ -8587,7 +8660,37 @@ ${SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.map((note) => `- ${note.title} (${note.id}
     ? SEIS_READ_ONLY_MODEL_ROUTER_CONTRACT.blockedModelClasses.map((entry) => `- ${entry}`).join("\n    - ")
     : "none defined"}
 
-## 4) Public Demo PR #54 Checklist
+## 4) Installed AI Launcher Route Coverage
+
+- Registry report: ${SEIS_SECOND_BRAIN_SYSTEM.agentRegistryReportPath}
+- Registry status: ${registry.status}
+- Registry mode: ${registry.mode}
+- Registry decision: ${registry.decision}
+- Launcher command evidence: ${registry.launcherEvidenceCommand}
+- Observed date: ${registry.launcherEvidenceObservedDate}
+- Registry AI profiles: ${registry.installedAiProfiles}
+- AI workforce assignments: ${registry.workforceAssignments}
+- Launcher routes: ${registry.launcherRoutes}
+- Installed launcher routes: ${registry.installedLauncherRoutes}
+- Browser runtime AI fixtures: ${SEIS_INSTALLED_AI_SYSTEMS.length}
+- Training coverage status: ${registry.trainingCoverageStatus}
+- Training coverage source: ${registry.trainingCoverageSource}
+- Required training sections:
+${trainingSectionRows.join("\n")}
+- Safety boundary:
+  - No private Obsidian import.
+  - No provider calls.
+  - No credential validation.
+  - No SSH execution.
+  - No deployment.
+  - No GitHub mutation.
+  - No autonomous write execution.
+
+### Launcher evidence rows
+
+${launcherEvidenceRows.join("\n")}
+
+## 5) Public Demo PR #54 Checklist
 
 - Contract source: content/development/seis-public-demo-release-checklist-pr54.json
 - Current status: review-gated-not-released.
@@ -8607,7 +8710,7 @@ ${SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.map((note) => `- ${note.title} (${note.id}
   - SSH execution
   - deployment
 
-## 5) Language Model Training Curriculum
+## 6) Language Model Training Curriculum
 
 - Contract source: ${SEIS_SECOND_BRAIN_SYSTEM.languageModelTrainingCurriculum.contractPath}
 - Report artifact: ${SEIS_SECOND_BRAIN_SYSTEM.languageModelTrainingCurriculum.reportPath}
@@ -8617,9 +8720,13 @@ ${SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.map((note) => `- ${note.title} (${note.id}
   - Candidate model families stay metadata-only unless a specific model, license, checksum, hardware budget, model card, dataset card, rollback plan, and explicit human approval exist.
   - Retrieval and local seed-model lanes can improve Second Brain planning evidence without claiming SEIS owns a trained foundation model.
 
-## Installed AI Profiles
+## Browser Runtime AI Fixtures
 
 ${installedRows.join("\n")}
+
+## Review-Only Registry Launcher Evidence
+
+${launcherEvidenceRows.join("\n")}
 
 ## Managed Sub-Agent Lanes
 
@@ -8637,6 +8744,7 @@ ${rosterRows.join("\n")}
 - Training pack path: ${SEIS_SECOND_BRAIN_SYSTEM.trainingPackPath}
 - PR #54 review packet: ${SEIS_SECOND_BRAIN_SYSTEM.releaseReviewPacketPath}
 - Language model training curriculum: ${SEIS_SECOND_BRAIN_SYSTEM.languageModelTrainingCurriculum.contractPath}
+- Agent registry report: ${SEIS_SECOND_BRAIN_SYSTEM.agentRegistryReportPath}
 - Quality gate: ${SEIS_SECOND_BRAIN_SYSTEM.qualityGate}
 `;
 }
@@ -8695,8 +8803,11 @@ function exportSecondBrainTrainingPack() {
   data.lastTrainingPack = {
     time: timestamp,
     path,
-    contractsCovered: 4,
-    installedAiProfiles: SEIS_INSTALLED_AI_SYSTEMS.length,
+    contractsCovered: 6,
+    installedAiProfiles: SEIS_SECOND_BRAIN_SYSTEM.registrySummary.installedAiProfiles,
+    browserRuntimeAiFixtures: SEIS_INSTALLED_AI_SYSTEMS.length,
+    launcherRoutes: SEIS_SECOND_BRAIN_SYSTEM.registrySummary.launcherRoutes,
+    installedLauncherRoutes: SEIS_SECOND_BRAIN_SYSTEM.registrySummary.installedLauncherRoutes,
     managedSubAgentLanes: SUB_AGENT_DEMO.lanes.length,
     autonomousAgentRoster: SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length,
     artifactPath: path
@@ -8822,6 +8933,7 @@ ${SEIS_SECOND_BRAIN_SYSTEM.runtimeBoundary}
 
 function exportSecondBrainGithubReadiness() {
   const timestamp = new Date().toISOString();
+  const registry = SEIS_SECOND_BRAIN_SYSTEM.registrySummary;
   upsertFile(SEIS_SECOND_BRAIN_SYSTEM.githubReadinessPath, `# SEIS Second Brain GitHub Readiness
 
 Generated: ${timestamp}
@@ -8835,9 +8947,11 @@ ${SEIS_SECOND_BRAIN_SYSTEM.githubGates.map((gate) => `- ${gate}`).join("\n")}
 
 - Browser-local Markdown vault export.
 - Knowledge graph and backlink display from repo-owned seed notes.
-- Installed AI profile index for ${SEIS_INSTALLED_AI_SYSTEMS.length} current systems as Local Demo/Missing Key/Disabled evidence.
+- Browser runtime AI fixture index for ${SEIS_INSTALLED_AI_SYSTEMS.length} local systems as Local Demo/Missing Key/Disabled evidence.
+- Review-only Second Brain agent registry for ${registry.installedAiProfiles} profiles, ${registry.launcherRoutes} launcher routes, and ${registry.installedLauncherRoutes} installed launcher routes.
 - Managed sub-agent lane index for ${SUB_AGENT_DEMO.lanes.length} current lanes as status/plan-only evidence.
 - Autonomous agent roster for ${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length} Second Brain duties as review-gated planning evidence.
+- Agent registry report: ${SEIS_SECOND_BRAIN_SYSTEM.agentRegistryReportPath}
 - Validator-backed product contract: ${SEIS_SECOND_BRAIN_SYSTEM.qualityGate}
 
 ## What Is Planned Or Disabled
