@@ -90,7 +90,11 @@ test("SEIS Cloud SSH Center fixture stays synchronized with safe demo states", a
   assert.equal(fixture.mobile24x7ReadyByDefault, false);
   assert.equal(fixture.onlineGate, "npm run cloud:ssh:online:strict");
   assert.equal(fixture.mobile24x7Gate, "npm run cloud:ssh:mobile-24x7:strict");
+  assert.equal(fixture.prBoundaryGate, "npm run check:seis-cloud-ssh-center-pr-boundary");
   assert.equal(fixture.currentKnownBlocker, "mobile-24x7-requires-direct-cloud-transport");
+  assert.equal(fixture.historyScanBoundary.bypassAllowedByDefault, false);
+  assert.ok(fixture.historyScanBoundary.forbiddenDiffPrefixes.includes("sources/"));
+  assert.ok(fixture.historyScanBoundary.forbiddenHeadPaths.includes("sources/github-unified-source/_generated/github-code-bundle.txt"));
   assert.equal(fixture.surfaces.length, 12);
   assert.ok(fixture.surfaces.some((surface) => surface.id === "mac-independent-remote-runtime"));
   assert.ok(fixture.surfaces.some((surface) => surface.id === "always-on-direct-cloud"));

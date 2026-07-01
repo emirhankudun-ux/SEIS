@@ -6,6 +6,7 @@
   "script": "apps/seis-core/cloud-ssh-center.js",
   "doc": "docs/deployment/seis-cloud-ssh-center-demo.md",
   "qualityGate": "npm run check:seis-cloud-ssh-center-readiness",
+  "prBoundaryGate": "npm run check:seis-cloud-ssh-center-pr-boundary",
   "storageKey": "seis.cloud.ssh.center.v1",
   "publicSafe": true,
   "liveExecutionAllowed": false,
@@ -23,6 +24,22 @@
   "onlineGate": "npm run cloud:ssh:online:strict",
   "mobile24x7Gate": "npm run cloud:ssh:mobile-24x7:strict",
   "currentKnownBlocker": "mobile-24x7-requires-direct-cloud-transport",
+  "historyScanBoundary": {
+    "fullHistoryGate": "GitHub Secret & Vulnerability Scan",
+    "currentKnownFailureSource": "legacy generated bundle in historical commit, not Cloud SSH Center diff",
+    "bypassAllowedByDefault": false,
+    "forbiddenDiffPrefixes": [
+      ".github/workflows/",
+      "sources/",
+      "reports/",
+      "dist/",
+      "build/",
+      "node_modules/"
+    ],
+    "forbiddenHeadPaths": [
+      "sources/github-unified-source/_generated/github-code-bundle.txt"
+    ]
+  },
   "states": [
     "connected",
     "mock",

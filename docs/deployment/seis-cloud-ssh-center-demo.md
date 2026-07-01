@@ -12,6 +12,9 @@
 - Local-only profile switching for local demo, Codespaces plan, SSH readiness, and deployment plan.
 - A schema-backed Cloud / SSH readiness fixture at
   `content/development/seis-cloud-ssh-center-readiness.json`.
+- A PR-boundary gate, `npm run check:seis-cloud-ssh-center-pr-boundary`,
+  that proves this Cloud SSH Center PR does not touch generated source bundles,
+  workflow bypasses, reports, builds, or secret-bearing generated history files.
 - Explicit Mac-off continuity metadata: Codespaces may be online but can sleep,
   while true 24/7 mode requires direct-cloud proof.
 - Focused static tests in `apps/seis-core/test/seis-cloud-ssh-center-static.test.js`.
@@ -40,6 +43,33 @@ The target is that SEIS remains reachable whether the local Mac is open or close
 - True always-on mode requires direct-cloud SSH transport, TCP reachability, SSH auth, remote runtime checks, `ssh-ai`, the SEIS repo, and remote Codex evidence.
 - Until that stricter gate passes, the public-safe state remains planned, not ready.
 
+## Secret scan boundary
+
+The GitHub `Secret & Vulnerability Scan` is a full-history gate and may report
+legacy generated bundle findings that are outside this route's current diff.
+Do not bypass that gate from this demo route.
+
+Use the PR-boundary gate to prove the current Cloud SSH Center change stays
+scoped:
+
+```bash
+npm run check:seis-cloud-ssh-center-pr-boundary
+```
+
+That check verifies:
+
+- the diff stays inside the expected Cloud SSH Center files;
+- `.github/workflows/`, `sources/`, `reports/`, `dist/`, `build/`, and
+  `node_modules/` are not changed by this PR;
+- `sources/github-unified-source/_generated/github-code-bundle.txt` is absent
+  from `HEAD`;
+- changed files do not contain private-key, GitHub token, OpenAI key, or inline
+  credential-assignment patterns.
+
+It is not a replacement for the full-history secret scan. If the full-history
+gate fails, resolve or explicitly approve the historical secret-cleanup path
+separately.
+
 ## How to run
 
 ```bash
@@ -53,6 +83,7 @@ Open `http://127.0.0.1:4174/cloud-ssh-center.html`.
 ```bash
 node --test apps/seis-core/test/seis-cloud-ssh-center-static.test.js
 npm run check:seis-cloud-ssh-center-readiness
+npm run check:seis-cloud-ssh-center-pr-boundary
 npm run cloud:ssh:online:strict
 npm run cloud:ssh:mobile-24x7:strict
 ```

@@ -8,6 +8,7 @@ const files = {
   fixture: "content/development/seis-cloud-ssh-center-readiness.json",
   route: "apps/seis-core/cloud-ssh-center.html",
   script: "apps/seis-core/cloud-ssh-center.js",
+  prBoundaryScript: "scripts/check-seis-cloud-ssh-center-pr-boundary.mjs",
   test: "apps/seis-core/test/seis-cloud-ssh-center-static.test.js",
   doc: "docs/deployment/seis-cloud-ssh-center-demo.md",
   packageJson: "package.json"
@@ -28,6 +29,7 @@ ensure(fixture?.route === files.route, "fixture must point to Cloud SSH Center r
 ensure(fixture?.script === files.script, "fixture must point to Cloud SSH Center script");
 ensure(fixture?.doc === files.doc, "fixture must point to Cloud SSH Center docs");
 ensure(fixture?.qualityGate === "npm run check:seis-cloud-ssh-center-readiness", "fixture must expose quality gate");
+ensure(fixture?.prBoundaryGate === "npm run check:seis-cloud-ssh-center-pr-boundary", "fixture must expose PR boundary gate");
 ensure(fixture?.storageKey === "seis.cloud.ssh.center.v1", "fixture must preserve local storage key");
 ensure(fixture?.publicSafe === true, "fixture must be public safe");
 ensure(fixture?.liveExecutionAllowed === false, "fixture must not allow live execution");
@@ -45,6 +47,10 @@ ensure(fixture?.mobile24x7ReadyByDefault === false, "fixture must keep mobile 24
 ensure(fixture?.onlineGate === "npm run cloud:ssh:online:strict", "fixture must expose the online SSH gate");
 ensure(fixture?.mobile24x7Gate === "npm run cloud:ssh:mobile-24x7:strict", "fixture must expose the mobile 24/7 gate");
 ensure(fixture?.currentKnownBlocker === "mobile-24x7-requires-direct-cloud-transport", "fixture must keep the current 24/7 blocker explicit");
+ensure(fixture?.historyScanBoundary?.fullHistoryGate === "GitHub Secret & Vulnerability Scan", "fixture must name the full-history secret gate");
+ensure(fixture?.historyScanBoundary?.bypassAllowedByDefault === false, "fixture must forbid secret-history bypass by default");
+ensure((fixture?.historyScanBoundary?.forbiddenDiffPrefixes || []).includes("sources/"), "fixture must forbid sources/ in this PR boundary");
+ensure((fixture?.historyScanBoundary?.forbiddenHeadPaths || []).includes("sources/github-unified-source/_generated/github-code-bundle.txt"), "fixture must forbid generated bundle in HEAD");
 
 const states = new Set(fixture?.states || []);
 for (const state of ["connected", "mock", "disabled", "planned", "unknown"]) {
@@ -111,6 +117,7 @@ for (const token of [
   files.fixture,
   "schema-backed Cloud / SSH readiness fixture",
   "npm run check:seis-cloud-ssh-center-readiness",
+  "npm run check:seis-cloud-ssh-center-pr-boundary",
   "npm run cloud:ssh:online:strict",
   "npm run cloud:ssh:mobile-24x7:strict",
   "mobile-24x7-requires-direct-cloud-transport"
@@ -120,6 +127,8 @@ for (const token of [
 }
 
 ensure(packageJson?.scripts?.["check:seis-cloud-ssh-center-readiness"] === "node scripts/check-seis-cloud-ssh-center-readiness.mjs", "package script check:seis-cloud-ssh-center-readiness must exist");
+ensure(packageJson?.scripts?.["check:seis-cloud-ssh-center-pr-boundary"] === "node scripts/check-seis-cloud-ssh-center-pr-boundary.mjs", "package script check:seis-cloud-ssh-center-pr-boundary must exist");
+ensure(read(files.prBoundaryScript).includes("sources/github-unified-source/_generated/github-code-bundle.txt"), "PR boundary script must guard generated bundle path");
 
 for (const file of Object.values(files)) {
   requireNotMatches(file, /sk-[A-Za-z0-9_-]{20,}/, "OpenAI-style API keys");
