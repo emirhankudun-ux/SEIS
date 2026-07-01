@@ -32,7 +32,8 @@
     "not a business strategy guarantee",
     "not a conversion guarantee",
     "not procurement advice",
-    "not a delivery date guarantee"
+    "not a delivery date guarantee",
+    "not a client contract"
   ],
   "qualityPrinciples": [
     "brief before visuals",
@@ -50,6 +51,16 @@
       "output": "A short creative brief with audience, offer, tone, constraints, and required formats.",
       "evidence": [
         "docs/design-system/seis-design-agency-kit.md"
+      ]
+    },
+    {
+      "id": "discovery-intake",
+      "title": "Client discovery intake",
+      "status": "documented",
+      "output": "A discovery intake matrix covering decision maker, success metric, existing assets, missing inputs, channel needs, legal blockers, private asset boundary, and next evidence request without claiming client contracts.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
       ]
     },
     {
@@ -344,6 +355,20 @@
       ],
       "validationCommands": [
         "npm run check:seis-design-agency-kit"
+      ]
+    },
+    {
+      "id": "client-discovery-intake-matrix",
+      "category": "strategy",
+      "agencyEquivalent": "client discovery and onboarding intake matrix",
+      "seisOutput": "decision maker, success metric, existing assets, missing inputs, channel needs, legal blockers, private asset boundary, next evidence request, and no-client-contract boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:seis-website-pages"
       ]
     },
     {
@@ -899,6 +924,7 @@
     "editableFieldIds": [
       "audience",
       "offer",
+      "clientDiscoveryIntakeFocus",
       "brandStrategyWorkshopFocus",
       "format",
       "landingPageBlueprintFocus",
@@ -932,6 +958,7 @@
     ],
     "generatedOutputIds": [
       "creative-brief",
+      "client-discovery-intake-matrix",
       "brand-strategy-workshop-matrix",
       "proposal-scope-estimator",
       "agency-quote-comparator",
@@ -971,6 +998,7 @@
     ],
     "workboardIds": [
       "brand-audit-scorecard",
+      "client-discovery-intake-matrix",
       "brand-strategy-workshop-matrix",
       "landing-page-blueprint-matrix",
       "proposal-scope-estimator",
@@ -1009,6 +1037,7 @@
       "Agency kit workboards",
       "No-key design production workflow",
       "Client Template",
+      "Client Discovery Intake Matrix",
       "Brand Strategy Workshop Matrix",
       "Landing Page Blueprint Matrix",
       "Proposal Scope Estimate",
@@ -1052,6 +1081,7 @@
       "not guaranteed cost saving",
       "not procurement advice",
       "not a delivery date guarantee",
+      "not a client contract",
       "not market research",
       "not legal copy approval",
       "not social media scheduling",

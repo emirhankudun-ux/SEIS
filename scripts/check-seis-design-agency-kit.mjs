@@ -42,14 +42,16 @@ const REQUIRED_NOT_CLAIMS = [
   "not a conversion guarantee",
   "not procurement advice",
   "not a delivery date guarantee",
+  "not a client contract",
 ];
 
-const REQUIRED_WORKFLOW_IDS = ["intake", "strategy-workshop", "proposal", "comparison", "cost-control", "design-sprint-timeline", "positioning", "messaging", "typography", "color-system", "print-production", "rationale", "moodboard", "asset-shot-list", "logo-evaluation", "identity", "usage", "web", "landing-blueprint", "portfolio", "campaign", "review", "revision", "feedback", "visual-qa", "approval", "export-index", "provenance", "handoff"];
+const REQUIRED_WORKFLOW_IDS = ["intake", "discovery-intake", "strategy-workshop", "proposal", "comparison", "cost-control", "design-sprint-timeline", "positioning", "messaging", "typography", "color-system", "print-production", "rationale", "moodboard", "asset-shot-list", "logo-evaluation", "identity", "usage", "web", "landing-blueprint", "portfolio", "campaign", "review", "revision", "feedback", "visual-qa", "approval", "export-index", "provenance", "handoff"];
 
-const REQUIRED_EDITABLE_FIELD_IDS = ["audience", "offer", "brandStrategyWorkshopFocus", "format", "landingPageBlueprintFocus", "scope", "budgetBand", "quoteBaseline", "agencyCostControlFocus", "designSprintTimelineFocus", "internalProductionPath", "competitivePositioningFocus", "messagingVoiceFocus", "typographyHierarchyFocus", "colorSystemFocus", "rationaleFocus", "moodboardDirectionFocus", "creativeAssetShotListFocus", "logoConceptFocus", "usageGuidelineFocus", "revisionRound", "feedbackTriageFocus", "caseStudyFocus", "deliveryStandard", "printProductionFocus", "visualEvidenceTarget", "exportIndexTarget", "channels", "contentCalendarFocus", "approvalCheckpoint", "deadline", "approvalOwner"];
+const REQUIRED_EDITABLE_FIELD_IDS = ["audience", "offer", "clientDiscoveryIntakeFocus", "brandStrategyWorkshopFocus", "format", "landingPageBlueprintFocus", "scope", "budgetBand", "quoteBaseline", "agencyCostControlFocus", "designSprintTimelineFocus", "internalProductionPath", "competitivePositioningFocus", "messagingVoiceFocus", "typographyHierarchyFocus", "colorSystemFocus", "rationaleFocus", "moodboardDirectionFocus", "creativeAssetShotListFocus", "logoConceptFocus", "usageGuidelineFocus", "revisionRound", "feedbackTriageFocus", "caseStudyFocus", "deliveryStandard", "printProductionFocus", "visualEvidenceTarget", "exportIndexTarget", "channels", "contentCalendarFocus", "approvalCheckpoint", "deadline", "approvalOwner"];
 
 const REQUIRED_DELIVERABLE_IDS = [
   "creative-brief",
+  "client-discovery-intake-matrix",
   "brand-strategy-workshop-matrix",
   "proposal-scope-estimator",
   "agency-quote-comparator",
@@ -92,6 +94,7 @@ const REQUIRED_DELIVERABLE_IDS = [
 
 const REQUIRED_GENERATED_OUTPUT_IDS = [
   "creative-brief",
+  "client-discovery-intake-matrix",
   "brand-strategy-workshop-matrix",
   "proposal-scope-estimator",
   "agency-quote-comparator",
@@ -132,6 +135,7 @@ const REQUIRED_GENERATED_OUTPUT_IDS = [
 
 const REQUIRED_WORKBOARD_IDS = [
   "brand-audit-scorecard",
+  "client-discovery-intake-matrix",
   "brand-strategy-workshop-matrix",
   "landing-page-blueprint-matrix",
   "proposal-scope-estimator",
@@ -179,6 +183,8 @@ const REQUIRED_DOC_PHRASES = [
   "not a guaranteed replacement",
   "browser-local",
   "creative brief",
+  "client discovery intake",
+  "not a client contract",
   "brand strategy workshop",
   "not a business strategy guarantee",
   "landing page blueprint",
@@ -439,6 +445,11 @@ if (kit) {
   );
   ensureIncludesAll(
     kit.browserWorkflow?.notClaims,
+    ["not a client contract"],
+    "browserWorkflow.notClaims",
+  );
+  ensureIncludesAll(
+    kit.browserWorkflow?.notClaims,
     ["not legal copy approval"],
     "browserWorkflow.notClaims",
   );
@@ -524,6 +535,8 @@ if (kit) {
   ensure(websiteRuntimeText.includes("collectAgencyBriefFields"), "website runtime must collect editable brief fields");
   ensure(websiteRuntimeText.includes("data-agency-field"), "website runtime must render editable brief fields");
   ensure(websiteRuntimeText.includes("## Client Template"), "website runtime must include client template section in generated pack");
+  ensure(websiteRuntimeText.includes("## Client Discovery Intake Matrix"), "website runtime must include client discovery intake matrix section in generated pack");
+  ensure(websiteRuntimeText.includes("not a client contract"), "website runtime must avoid client contract claims in generated pack");
   ensure(websiteRuntimeText.includes("## Brand Strategy Workshop Matrix"), "website runtime must include brand strategy workshop matrix section in generated pack");
   ensure(websiteRuntimeText.includes("not a business strategy guarantee"), "website runtime must avoid business strategy guarantee claims in generated pack");
   ensure(websiteRuntimeText.includes("## Landing Page Blueprint Matrix"), "website runtime must include landing page blueprint matrix section in generated pack");
