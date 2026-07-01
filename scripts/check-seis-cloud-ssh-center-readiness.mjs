@@ -56,7 +56,7 @@ ensure(fixture?.browserLocalHandoffPacket?.status === "browser-local-demo", "bro
 ensure(fixture?.browserLocalHandoffPacket?.generatedBy === files.script, "browser-local handoff packet must point to app script");
 ensure(fixture?.browserLocalHandoffPacket?.containsSecrets === false, "browser-local handoff packet must not contain secrets");
 ensure(fixture?.browserLocalHandoffPacket?.remoteMutationAllowed === false, "browser-local handoff packet must forbid remote mutation");
-for (const field of ["ownerInputChecklist", "mobile24x7AcceptanceLadder", "mobileHandoffChecklist", "requiredSafetyFlags", "currentKnownBlocker", "browserLocalReadyClaimGuard"]) {
+for (const field of ["ownerInputChecklist", "mobile24x7AcceptanceLadder", "mobileHandoffChecklist", "requiredSafetyFlags", "currentKnownBlocker", "browserLocalReadyClaimGuard", "browserLocalContinuityGuard"]) {
   ensure((fixture?.browserLocalHandoffPacket?.fields || []).includes(field), `browser-local handoff packet fields must include ${field}`);
 }
 ensure(acceptanceLedger?.id === "seis-ssh-mobile-direct-cloud-acceptance-ledger", "acceptance ledger id must be stable");
@@ -89,6 +89,27 @@ ensure(readyClaimGuard.generatedBy === files.script, "ready-claim guard must poi
 ensure(readyClaimGuard.remoteMutationAllowed === false, "ready-claim guard must forbid remote mutation");
 ensure(readyClaimGuard.credentialRead === false, "ready-claim guard must forbid credential reads");
 ensure(readyClaimGuard.secretStored === false, "ready-claim guard must forbid secret storage");
+const continuityGuard = fixture?.browserLocalContinuityGuard || {};
+ensure(continuityGuard.id === "seis-cloud-ssh-center-continuity-guard", "fixture must define browser-local continuity guard id");
+ensure(continuityGuard.sourceLedger === files.acceptanceLedger, "continuity guard must point to the direct-cloud acceptance ledger");
+ensure(continuityGuard.status === "blocked", "continuity guard must stay blocked by default");
+ensure(continuityGuard.continuityClaim === "SEIS remains reachable when the local Mac is closed", "continuity guard must describe Mac-off continuity claim");
+ensure(JSON.stringify(continuityGuard.continuityAllowedOnlyWhen || []) === JSON.stringify(acceptanceLedger?.readyClaimAllowedOnlyWhen || []), "continuity guard allowed conditions must match ledger ready conditions");
+ensure((continuityGuard.blockedContinuityWhen || []).includes("SEIS-SSH still uses Codespaces transport"), "continuity guard must block Codespaces transport");
+ensure(continuityGuard.allowedOnlyAfterStep === "handoff-doctor", "continuity guard must be gated on handoff-doctor");
+ensure(continuityGuard.allowedOnlyAfterCommand === ledgerDoctor?.command, "continuity guard command must match ledger handoff doctor");
+ensure(continuityGuard.allowedOnlyAfterClaimScope === ledgerDoctor?.claimScope && ledgerDoctor?.claimScope === "mobile-24x7-ready", "continuity guard scope must match ledger final scope");
+ensure(continuityGuard.continuityClaimAllowed === false, "continuity guard must not allow continuity claim by default");
+ensure(continuityGuard.macOffClaimAllowed === false, "continuity guard must not allow Mac-off claim by default");
+ensure(continuityGuard.localMacDependencyAllowed === false, "continuity guard must forbid local Mac dependency");
+ensure(continuityGuard.codespacesContinuityAllowed === false, "continuity guard must forbid Codespaces as 24/7 continuity proof");
+ensure(continuityGuard.browserLocalProofAllowed === false, "continuity guard must reject browser-local proof as final evidence");
+ensure(continuityGuard.currentKnownBlocker === fixture?.currentKnownBlocker, "continuity guard must expose the current blocker");
+ensure(continuityGuard.requiresFinalGate === "npm run cloud:ssh:mobile-direct:doctor:strict", "continuity guard must require strict doctor");
+ensure(continuityGuard.generatedBy === files.script, "continuity guard must point to app script");
+ensure(continuityGuard.remoteMutationAllowed === false, "continuity guard must forbid remote mutation");
+ensure(continuityGuard.credentialRead === false, "continuity guard must forbid credential reads");
+ensure(continuityGuard.secretStored === false, "continuity guard must forbid secret storage");
 ensure(fixture?.historyScanBoundary?.fullHistoryGate === "GitHub Secret & Vulnerability Scan", "fixture must name the full-history secret gate");
 ensure(fixture?.historyScanBoundary?.bypassAllowedByDefault === false, "fixture must forbid secret-history bypass by default");
 ensure((fixture?.historyScanBoundary?.forbiddenDiffPrefixes || []).includes("sources/"), "fixture must forbid sources/ in this PR boundary");
@@ -235,12 +256,15 @@ ensure(route.includes("Browser-local handoff packet"), "route must label browser
 ensure(route.includes("refresh-packet"), "route must expose handoff packet refresh action");
 ensure(route.includes("claim-guard-grid"), "route must render ready claim guard");
 ensure(route.includes("Ready-claim guard"), "route must label ready claim guard");
+ensure(route.includes("continuity-guard-grid"), "route must render continuity guard");
+ensure(route.includes("Continuity guard"), "route must label continuity guard");
 
 for (const token of [
   files.fixture,
   "schema-backed Cloud / SSH readiness fixture",
   "browserLocalHandoffPacket",
   "browserLocalReadyClaimGuard",
+  "browserLocalContinuityGuard",
   "ownerInputChecklist",
   "mobile24x7AcceptanceLadder",
   "mobileHandoffChecklist",
@@ -255,6 +279,7 @@ for (const token of [
   "new-device-replayable",
   "seis-cloud-ssh-center-mobile-handoff-packet",
   "seis-cloud-ssh-center-ready-claim-guard",
+  "seis-cloud-ssh-center-continuity-guard",
   "npm run check:seis-cloud-ssh-center-readiness",
   "npm run check:seis-cloud-ssh-center-pr-boundary",
   "npm run cloud:ssh:online:strict",
@@ -273,6 +298,14 @@ for (const token of [
   "browserLocalReadyClaimGuard",
   "blockingHandoffItems",
   "unresolvedOwnerInputs",
+  "buildContinuityGuard",
+  "renderContinuityGuard",
+  "continuityClaimAllowed: false",
+  "macOffClaimAllowed: false",
+  "localMacDependencyAllowed: false",
+  "codespacesContinuityAllowed: false",
+  "browserLocalProofAllowed: false",
+  "browserLocalContinuityGuard",
   "buildHandoffPacket",
   "renderHandoffPacket",
   "Browser-local mobile handoff packet refreshed",

@@ -38,7 +38,8 @@
       "mobileHandoffChecklist",
       "requiredSafetyFlags",
       "currentKnownBlocker",
-      "browserLocalReadyClaimGuard"
+      "browserLocalReadyClaimGuard",
+      "browserLocalContinuityGuard"
     ]
   },
   "browserLocalReadyClaimGuard": {
@@ -70,6 +71,40 @@
     "readyClaimAllowed": false,
     "claimAllowedByDefault": false,
     "mobile24x7ReadyByDefault": false,
+    "currentKnownBlocker": "mobile-24x7-requires-direct-cloud-transport",
+    "requiresFinalGate": "npm run cloud:ssh:mobile-direct:doctor:strict",
+    "generatedBy": "apps/seis-core/cloud-ssh-center.js",
+    "remoteMutationAllowed": false,
+    "credentialRead": false,
+    "secretStored": false
+  },
+  "browserLocalContinuityGuard": {
+    "id": "seis-cloud-ssh-center-continuity-guard",
+    "sourceLedger": "content/development/seis-ssh-mobile-direct-cloud-acceptance-ledger.json",
+    "status": "blocked",
+    "continuityClaim": "SEIS remains reachable when the local Mac is closed",
+    "continuityAllowedOnlyWhen": [
+      "SEIS-SSH resolves to direct-cloud SSH without ProxyCommand",
+      "TCP reachability succeeds against the configured public SSH endpoint",
+      "SSH key authentication succeeds in BatchMode",
+      "remote runtime reports online",
+      "SEIS repository is present on the remote host",
+      "strict doctor writes a successful readiness handoff report"
+    ],
+    "blockedContinuityWhen": [
+      "SEIS-SSH still depends on localhost or this Mac",
+      "SEIS-SSH still uses Codespaces transport",
+      "no always-on public VM endpoint is configured",
+      "strict doctor has not written a passing mobile readiness report"
+    ],
+    "allowedOnlyAfterStep": "handoff-doctor",
+    "allowedOnlyAfterCommand": "npm run cloud:ssh:mobile-direct:doctor:strict",
+    "allowedOnlyAfterClaimScope": "mobile-24x7-ready",
+    "continuityClaimAllowed": false,
+    "macOffClaimAllowed": false,
+    "localMacDependencyAllowed": false,
+    "codespacesContinuityAllowed": false,
+    "browserLocalProofAllowed": false,
     "currentKnownBlocker": "mobile-24x7-requires-direct-cloud-transport",
     "requiresFinalGate": "npm run cloud:ssh:mobile-direct:doctor:strict",
     "generatedBy": "apps/seis-core/cloud-ssh-center.js",

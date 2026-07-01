@@ -18,6 +18,14 @@ const blockedClaimWhen = [
   "remote runtime or SSH-AI daemon is offline",
   "strict doctor exits non-zero"
 ];
+const continuityClaim = "SEIS remains reachable when the local Mac is closed";
+const continuityAllowedOnlyWhen = readyClaimAllowedOnlyWhen;
+const blockedContinuityWhen = [
+  "SEIS-SSH still depends on localhost or this Mac",
+  "SEIS-SSH still uses Codespaces transport",
+  "no always-on public VM endpoint is configured",
+  "strict doctor has not written a passing mobile readiness report"
+];
 
 const surfaces = [
   ["Local Browser Demo", "connected", "The UI, filters, local readiness log, and status labels are real browser behavior.", "localStorage", "no network"],
@@ -242,6 +250,58 @@ function renderClaimGuard() {
     </article>`).join("");
 }
 
+function buildContinuityGuard() {
+  const finalGate = acceptanceLadder.find(([id]) => id === "handoff-doctor");
+  return {
+    id: "seis-cloud-ssh-center-continuity-guard",
+    sourceLedger: "content/development/seis-ssh-mobile-direct-cloud-acceptance-ledger.json",
+    continuityClaim,
+    continuityAllowedOnlyWhen,
+    blockedContinuityWhen,
+    status: "blocked",
+    continuityClaimAllowed: false,
+    macOffClaimAllowed: false,
+    localMacDependencyAllowed: false,
+    codespacesContinuityAllowed: false,
+    browserLocalProofAllowed: false,
+    allowedOnlyAfterStep: "handoff-doctor",
+    allowedOnlyAfterCommand: finalGate?.[2] || "npm run cloud:ssh:mobile-direct:doctor:strict",
+    allowedOnlyAfterClaimScope: finalGate?.[3] || "mobile-24x7-ready",
+    currentKnownBlocker: "mobile-24x7-requires-direct-cloud-transport",
+    finalGateCommand: finalGate?.[2] || "npm run cloud:ssh:mobile-direct:doctor:strict",
+    blockingHandoffItems: handoffChecklist.filter(([, status]) => status !== "connected").length,
+    unresolvedOwnerInputs: ownerInputs.filter(([, status]) => status !== "connected").length,
+    remoteMutationAllowed: false,
+    credentialRead: false,
+    secretStored: false
+  };
+}
+
+function renderContinuityGuard() {
+  const target = $("#continuity-guard-grid");
+  if (!target) return;
+  const guard = buildContinuityGuard();
+  const cards = [
+    ["Mac-off claim", guard.continuityClaim, "blocked"],
+    ["Local Mac dependency", `allowed: ${guard.localMacDependencyAllowed}`, "direct-cloud only"],
+    ["Codespaces boundary", `allowed: ${guard.codespacesContinuityAllowed}`, "Codespaces can sleep"],
+    ["Final gate", guard.finalGateCommand, "strict doctor only"]
+  ];
+  target.innerHTML = cards.map(([label, value, boundary]) => `
+    <article class="continuity-guard-card">
+      <div class="card-topline">
+        <h3>${label}</h3>
+        <span class="status-pill disabled">${guard.status}</span>
+      </div>
+      <p>${value}</p>
+      <div class="meta-row">
+        <span class="meta-chip">${boundary}</span>
+        <span class="meta-chip">macOffClaimAllowed: ${guard.macOffClaimAllowed}</span>
+        <span class="meta-chip">browserLocalProofAllowed: ${guard.browserLocalProofAllowed}</span>
+      </div>
+    </article>`).join("");
+}
+
 function buildHandoffPacket() {
   return {
     id: "seis-cloud-ssh-center-mobile-handoff-packet",
@@ -257,6 +317,7 @@ function buildHandoffPacket() {
     mobile24x7Ready: false,
     directCloudRequired: true,
     browserLocalReadyClaimGuard: buildClaimGuard(),
+    browserLocalContinuityGuard: buildContinuityGuard(),
     ownerInputs: ownerInputs.map(([label, status, field, boundary]) => ({ label, status, field, boundary, secret: false })),
     acceptanceLadder: acceptanceLadder.map(([id, status, command, claimScope]) => ({ id, status, command, claimScope })),
     mobileHandoffChecklist: handoffChecklist.map(([id, status, label, boundary]) => ({ id, status, label, boundary, blockingIfMissing: true })),
@@ -296,6 +357,7 @@ function render() {
   renderHandoffChecklist();
   renderHandoffPacket();
   renderClaimGuard();
+  renderContinuityGuard();
   renderLog();
 }
 
@@ -307,6 +369,7 @@ document.addEventListener("click", (event) => {
   if (action?.dataset.action === "refresh-packet") {
     renderHandoffPacket();
     renderClaimGuard();
+    renderContinuityGuard();
     $("#live-region").textContent = "Browser-local mobile handoff packet refreshed. No remote connection, SSH, deployment, credential read, or secret storage occurred.";
   }
   if (action?.dataset.action === "clear-log") {
@@ -315,6 +378,7 @@ document.addEventListener("click", (event) => {
     renderLog();
     renderHandoffPacket();
     renderClaimGuard();
+    renderContinuityGuard();
     $("#live-region").textContent = "Local readiness log cleared. Repository and remote infrastructure were not changed.";
   }
   const filter = event.target.closest("[data-filter]");
@@ -337,6 +401,7 @@ $("#readiness-form").addEventListener("submit", (event) => {
   renderLog();
   renderHandoffPacket();
   renderClaimGuard();
+  renderContinuityGuard();
   $("#live-region").textContent = `${entry.mode} readiness note recorded locally. remoteConnected: false; sshExecuted: false; deployExecuted: false; credentialRead: false; mobile24x7Ready: false; directCloudRequired: true; serverPortChanged: false.`;
 });
 

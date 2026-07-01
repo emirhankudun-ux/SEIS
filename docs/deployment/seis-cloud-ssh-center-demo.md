@@ -21,6 +21,8 @@
   `content/development/seis-ssh-mobile-direct-cloud-acceptance-ledger.json`.
 - Explicit Mac-off continuity metadata: Codespaces may be online but can sleep,
   while true 24/7 mode requires direct-cloud proof.
+- A browser-local `browserLocalContinuityGuard` that keeps the computer-off
+  continuity claim blocked until strict direct-cloud evidence exists.
 - Focused static tests in `apps/seis-core/test/seis-cloud-ssh-center-static.test.js`.
 
 ## Real vs mock vs planned
@@ -105,6 +107,19 @@ ready and blocked claim conditions, keeps `readyClaimAllowed: false` and
 `claimAllowedByDefault: false` until `npm run cloud:ssh:mobile-direct:doctor:strict`
 can support the final mobile 24/7 claim. The guard is browser-local, reads no
 credentials, stores no secrets, and performs no remote mutation.
+
+## Browser-local continuity guard
+
+The route also renders a `browserLocalContinuityGuard` with id
+`seis-cloud-ssh-center-continuity-guard`. It protects the computer-off claim
+that SEIS remains reachable when the local Mac is closed. The guard keeps
+`continuityClaimAllowed: false`, `macOffClaimAllowed: false`,
+`localMacDependencyAllowed: false`, `codespacesContinuityAllowed: false`, and
+`browserLocalProofAllowed: false` until
+`npm run cloud:ssh:mobile-direct:doctor:strict` writes a passing handoff report.
+The guard is browser-local, reads no credentials, stores no secrets, performs no
+remote mutation, and treats Codespaces as useful but insufficient because it can
+sleep.
 
 ## Secret scan boundary
 

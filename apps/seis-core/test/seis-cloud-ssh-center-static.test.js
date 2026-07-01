@@ -40,7 +40,10 @@ test("SEIS Cloud SSH Center exposes explicit safe states", async () => {
     "refresh-packet",
     "Ready-claim guard",
     "Mobile 24/7 claim remains blocked here",
-    "claim-guard-grid"
+    "claim-guard-grid",
+    "Continuity guard",
+    "Mac-off continuity is not proven by this browser",
+    "continuity-guard-grid"
   ]) {
     assert.match(html, new RegExp(marker));
   }
@@ -91,7 +94,16 @@ test("SEIS Cloud SSH Center script stays browser-local and non-mutating", async 
     "browserLocalReadyClaimGuard",
     "claimAllowedByDefault: false",
     "blockingHandoffItems",
-    "unresolvedOwnerInputs"
+    "unresolvedOwnerInputs",
+    "buildContinuityGuard",
+    "renderContinuityGuard",
+    "seis-cloud-ssh-center-continuity-guard",
+    "browserLocalContinuityGuard",
+    "continuityClaimAllowed: false",
+    "macOffClaimAllowed: false",
+    "localMacDependencyAllowed: false",
+    "codespacesContinuityAllowed: false",
+    "browserLocalProofAllowed: false"
   ]) {
     assert.match(script, new RegExp(marker));
   }
@@ -112,12 +124,15 @@ test("SEIS Cloud SSH Center script stays browser-local and non-mutating", async 
   }
   assert.equal(script.includes("mobile24x7Ready: true"), false);
   assert.equal(script.includes("claimAllowedByDefault: true"), false);
+  assert.equal(script.includes("continuityClaimAllowed: true"), false);
+  assert.equal(script.includes("macOffClaimAllowed: true"), false);
+  assert.equal(script.includes("browserLocalProofAllowed: true"), false);
   assert.equal((await read("cloud-ssh-center.html")).includes("SEIS-SSH is ChatGPT mobile/Codex 24x7 ready"), false);
 });
 
 test("SEIS Cloud SSH Center styles include responsive and reduced-motion support", async () => {
   const css = await read("cloud-ssh-center.css");
-  for (const marker of ["prefers-reduced-motion", "skip-link", "status-grid", "surface-grid", "owner-input-grid", "acceptance-ladder", "handoff-grid", "claim-guard-grid", "handoff-packet", "evidence-log", "@media (max-width: 940px)", "--cyan", "--blue", "--radius"]) {
+  for (const marker of ["prefers-reduced-motion", "skip-link", "status-grid", "surface-grid", "owner-input-grid", "acceptance-ladder", "handoff-grid", "claim-guard-grid", "continuity-guard-grid", "handoff-packet", "evidence-log", "@media (max-width: 940px)", "--cyan", "--blue", "--radius"]) {
     assert.match(css, new RegExp(marker.replace(/[()]/g, "\\$&")));
   }
 });
@@ -150,6 +165,7 @@ test("SEIS Cloud SSH Center fixture stays synchronized with safe demo states", a
   assert.equal(fixture.browserLocalHandoffPacket.containsSecrets, false);
   assert.equal(fixture.browserLocalHandoffPacket.remoteMutationAllowed, false);
   assert.equal(fixture.browserLocalHandoffPacket.fields.includes("browserLocalReadyClaimGuard"), true);
+  assert.equal(fixture.browserLocalHandoffPacket.fields.includes("browserLocalContinuityGuard"), true);
   assert.ok(fixture.browserLocalHandoffPacket.fields.includes("mobileHandoffChecklist"));
   assert.ok(fixture.browserLocalHandoffPacket.fields.includes("requiredSafetyFlags"));
   assert.equal(fixture.browserLocalReadyClaimGuard.id, "seis-cloud-ssh-center-ready-claim-guard");
@@ -170,6 +186,25 @@ test("SEIS Cloud SSH Center fixture stays synchronized with safe demo states", a
   assert.equal(fixture.browserLocalReadyClaimGuard.remoteMutationAllowed, false);
   assert.equal(fixture.browserLocalReadyClaimGuard.credentialRead, false);
   assert.equal(fixture.browserLocalReadyClaimGuard.secretStored, false);
+  assert.equal(fixture.browserLocalContinuityGuard.id, "seis-cloud-ssh-center-continuity-guard");
+  assert.equal(fixture.browserLocalContinuityGuard.sourceLedger, fixture.acceptanceLedger);
+  assert.equal(fixture.browserLocalContinuityGuard.status, "blocked");
+  assert.equal(fixture.browserLocalContinuityGuard.continuityClaim, "SEIS remains reachable when the local Mac is closed");
+  assert.deepEqual(fixture.browserLocalContinuityGuard.continuityAllowedOnlyWhen, acceptanceLedger.readyClaimAllowedOnlyWhen);
+  assert.ok(fixture.browserLocalContinuityGuard.blockedContinuityWhen.includes("SEIS-SSH still uses Codespaces transport"));
+  assert.equal(fixture.browserLocalContinuityGuard.allowedOnlyAfterStep, "handoff-doctor");
+  assert.equal(fixture.browserLocalContinuityGuard.allowedOnlyAfterCommand, ledgerEvidenceById.get("handoff-doctor").command);
+  assert.equal(fixture.browserLocalContinuityGuard.allowedOnlyAfterClaimScope, "mobile-24x7-ready");
+  assert.equal(fixture.browserLocalContinuityGuard.continuityClaimAllowed, false);
+  assert.equal(fixture.browserLocalContinuityGuard.macOffClaimAllowed, false);
+  assert.equal(fixture.browserLocalContinuityGuard.localMacDependencyAllowed, false);
+  assert.equal(fixture.browserLocalContinuityGuard.codespacesContinuityAllowed, false);
+  assert.equal(fixture.browserLocalContinuityGuard.browserLocalProofAllowed, false);
+  assert.equal(fixture.browserLocalContinuityGuard.currentKnownBlocker, fixture.currentKnownBlocker);
+  assert.equal(fixture.browserLocalContinuityGuard.requiresFinalGate, "npm run cloud:ssh:mobile-direct:doctor:strict");
+  assert.equal(fixture.browserLocalContinuityGuard.remoteMutationAllowed, false);
+  assert.equal(fixture.browserLocalContinuityGuard.credentialRead, false);
+  assert.equal(fixture.browserLocalContinuityGuard.secretStored, false);
   assert.equal(acceptanceLedger.id, "seis-ssh-mobile-direct-cloud-acceptance-ledger");
   assert.equal(acceptanceLedger.readyClaim, "SEIS-SSH is ChatGPT mobile/Codex 24x7 ready");
   assert.ok(acceptanceLedger.readyClaimAllowedOnlyWhen.includes("strict doctor writes a successful readiness handoff report"));
