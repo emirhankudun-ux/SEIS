@@ -91,7 +91,7 @@
         storageKey: "seis.design.agencyPack.v1",
         handoffStorageKey: "seis.design.agencyPack.handoff.v1",
         codeWorkspacePath: "/workspace/Design/seis-design-agency-pack.md",
-        summary: "Build a local draft pack for creative brief, client discovery intake, brand and offer naming, brand strategy workshop, proposal scope estimate, agency quote comparison, agency cost control, design sprint timeline, competitive positioning matrix, brand voice messaging matrix, typography hierarchy matrix, color system accessibility matrix, brand rationale deck, visual reference moodboard, creative asset shot list, logo concept evaluation, brand usage guideline, landing page blueprint, creative director QA, design review decision, revision plan, client feedback triage, case study layout, visual QA evidence, production file manifest, asset size specs, print production readiness, client approval, client-ready export index, brand audit, brand token map, launch asset matrix, social content calendar, social variants, presentation system, asset provenance, and client handoff.",
+        summary: "Build a local draft pack for creative brief, client discovery intake, brand and offer naming, brand strategy workshop, proposal scope estimate, agency quote comparison, agency cost control, design sprint timeline, competitive positioning matrix, brand voice messaging matrix, typography hierarchy matrix, color system accessibility matrix, brand rationale deck, visual reference moodboard, creative asset shot list, logo concept evaluation, brand usage guideline, landing page blueprint, creative director QA, design review decision, approval state transition, revision plan, client feedback triage, case study layout, visual QA evidence, production file manifest, asset size specs, print production readiness, client approval, client-ready export index, brand audit, brand token map, launch asset matrix, social content calendar, social variants, presentation system, asset provenance, and client handoff.",
         fields: [
           ["audience", "Audience", "Founder-led team preparing a premium public demo"],
           ["offer", "Offer", "No-key design production kit for website, social, presentation, and handoff work"],
@@ -116,6 +116,7 @@
           ["logoConceptFocus", "Logo concept focus", "Concept options, mark style, wordmark fit, small-size readability, monochrome use, misuse risk, trademark review blocker, and decision owner"],
           ["usageGuidelineFocus", "Usage guideline focus", "Logo spacing, color use, type hierarchy, imagery rules, do/don't examples, accessibility, misuse boundaries, and escalation owner"],
           ["designReviewDecisionFocus", "Design review decision focus", "Approve, revise, or hold decision, severity, visual debt, blocking fixes, polish queue, evidence links, publication blocker, owner, and next action"],
+          ["approvalStateTransitionFocus", "Approval state transition focus", "Draft, review-ready, revise, hold, approved-for-handoff, evidence link, reviewer, blocker, validation command, rollback note, and next action"],
           ["revisionRound", "Revision round", "One decision round plus one polish round before publication"],
           ["feedbackTriageFocus", "Feedback triage focus", "Sort client comments into decision fixes, polish, out-of-scope requests, risks, owner, and next review action"],
           ["caseStudyFocus", "Case study focus", "Context, challenge, response, proof, accessibility notes, quality path, and publication boundary"],
@@ -149,6 +150,7 @@
           ["brand-usage-guideline", "Usage rules for logo spacing, color use, type hierarchy, imagery treatment, do/don't examples, accessibility, misuse boundaries, and escalation owner."],
           ["creative-director-review", "Creative quality scorecard with decision, required fixes, polish queue, accessibility check, and publication gate."],
           ["design-review-decision-matrix", "Approve, revise, or hold decision, severity, visual debt, blocking fixes, polish queue, evidence links, publication blocker, owner, next action, and no-creative-director-approval boundary."],
+          ["approval-state-transition-ledger", "Draft, review-ready, revise, hold, approved-for-handoff state changes with evidence link, reviewer, blocker, validation command, rollback note, next action, and no-automatic-signoff boundary."],
           ["revision-round-plan", "Decision round, polish round, owner, acceptance criteria, and no-endless-revision boundary."],
           ["client-feedback-triage-board", "Client comment triage for decision fixes, polish, out-of-scope requests, risk notes, owner, and next review action without claiming stakeholder consensus."],
           ["case-study-layout", "Case study structure for context, challenge, response, proof, accessibility notes, quality path, CTA, and no-verified-results boundary."],
@@ -291,6 +293,12 @@
             "Visual debt: separate blocking fixes, polish queue, deferred items, and acceptable tradeoffs before revision starts.",
             "Publication gate: connect proof, accessibility notes, validation command, and unresolved blocker to the release decision.",
             "Boundary: not creative director approval, not publication approval, and not client approval."
+          ]],
+          ["approval-state-transition-ledger", "Approval State Transition Ledger", [
+            "State flow: record draft, review-ready, revise, hold, approved-for-handoff, blocked, or excluded with previous state and next state.",
+            "Evidence link: connect every transition to screenshot path, review note, validation command, blocker, reviewer, and timestamp/source note.",
+            "Rollback note: name the command, file path, or PR commit that proves the prior safe state can be restored.",
+            "Boundary: not automatic signoff, not publication approval, and not client approval."
           ]],
           ["revision-round-plan", "Revision Round Plan", [
             "Round 1: decision fixes only, tied to audience, offer, CTA, contrast, and hierarchy.",
@@ -825,6 +833,13 @@
       "- Publication gate: connect proof, accessibility notes, validation command, and unresolved blocker to the release decision.",
       `- Review decision focus: ${fields.find(([id]) => id === "designReviewDecisionFocus")?.[2] || "Approve, revise, or hold decision, severity, visual debt, blocking fixes, polish queue, evidence links, publication blocker, owner, and next action"}`,
       "- Boundary: not creative director approval, not publication approval, and not client approval.",
+      "",
+      "## Approval State Transition Ledger",
+      "- State flow: record draft, review-ready, revise, hold, approved-for-handoff, blocked, or excluded with previous state and next state.",
+      "- Evidence link: connect every transition to screenshot path, review note, validation command, blocker, reviewer, and timestamp/source note.",
+      "- Rollback note: name the command, file path, or PR commit that proves the prior safe state can be restored.",
+      `- Approval transition focus: ${fields.find(([id]) => id === "approvalStateTransitionFocus")?.[2] || "Draft, review-ready, revise, hold, approved-for-handoff, evidence link, reviewer, blocker, validation command, rollback note, and next action"}`,
+      "- Boundary: not automatic signoff, not publication approval, and not client approval.",
       "",
       "## Revision Plan",
       "- Round 1: decision fixes for audience, offer, CTA, contrast, hierarchy, and missing proof.",

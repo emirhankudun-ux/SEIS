@@ -45,11 +45,12 @@ const REQUIRED_NOT_CLAIMS = [
   "not a client contract",
   "not a brand name clearance",
   "not creative director approval",
+  "not automatic signoff",
 ];
 
-const REQUIRED_WORKFLOW_IDS = ["intake", "discovery-intake", "brand-offer-naming", "strategy-workshop", "proposal", "comparison", "cost-control", "design-sprint-timeline", "positioning", "messaging", "typography", "color-system", "print-production", "rationale", "moodboard", "asset-shot-list", "logo-evaluation", "identity", "usage", "web", "landing-blueprint", "portfolio", "campaign", "review", "design-review-decision", "revision", "feedback", "visual-qa", "approval", "export-index", "provenance", "handoff"];
+const REQUIRED_WORKFLOW_IDS = ["intake", "discovery-intake", "brand-offer-naming", "strategy-workshop", "proposal", "comparison", "cost-control", "design-sprint-timeline", "positioning", "messaging", "typography", "color-system", "print-production", "rationale", "moodboard", "asset-shot-list", "logo-evaluation", "identity", "usage", "web", "landing-blueprint", "portfolio", "campaign", "review", "design-review-decision", "approval-state-transition", "revision", "feedback", "visual-qa", "approval", "export-index", "provenance", "handoff"];
 
-const REQUIRED_EDITABLE_FIELD_IDS = ["audience", "offer", "clientDiscoveryIntakeFocus", "brandOfferNamingFocus", "brandStrategyWorkshopFocus", "format", "landingPageBlueprintFocus", "scope", "budgetBand", "quoteBaseline", "agencyCostControlFocus", "designSprintTimelineFocus", "internalProductionPath", "competitivePositioningFocus", "messagingVoiceFocus", "typographyHierarchyFocus", "colorSystemFocus", "rationaleFocus", "moodboardDirectionFocus", "creativeAssetShotListFocus", "logoConceptFocus", "usageGuidelineFocus", "designReviewDecisionFocus", "revisionRound", "feedbackTriageFocus", "caseStudyFocus", "deliveryStandard", "printProductionFocus", "visualEvidenceTarget", "exportIndexTarget", "channels", "contentCalendarFocus", "approvalCheckpoint", "deadline", "approvalOwner"];
+const REQUIRED_EDITABLE_FIELD_IDS = ["audience", "offer", "clientDiscoveryIntakeFocus", "brandOfferNamingFocus", "brandStrategyWorkshopFocus", "format", "landingPageBlueprintFocus", "scope", "budgetBand", "quoteBaseline", "agencyCostControlFocus", "designSprintTimelineFocus", "internalProductionPath", "competitivePositioningFocus", "messagingVoiceFocus", "typographyHierarchyFocus", "colorSystemFocus", "rationaleFocus", "moodboardDirectionFocus", "creativeAssetShotListFocus", "logoConceptFocus", "usageGuidelineFocus", "designReviewDecisionFocus", "approvalStateTransitionFocus", "revisionRound", "feedbackTriageFocus", "caseStudyFocus", "deliveryStandard", "printProductionFocus", "visualEvidenceTarget", "exportIndexTarget", "channels", "contentCalendarFocus", "approvalCheckpoint", "deadline", "approvalOwner"];
 
 const REQUIRED_DELIVERABLE_IDS = [
   "creative-brief",
@@ -71,6 +72,7 @@ const REQUIRED_DELIVERABLE_IDS = [
   "brand-usage-guideline",
   "creative-director-review",
   "design-review-decision-matrix",
+  "approval-state-transition-ledger",
   "revision-round-plan",
   "client-feedback-triage-board",
   "visual-qa-evidence-ledger",
@@ -116,6 +118,7 @@ const REQUIRED_GENERATED_OUTPUT_IDS = [
   "brand-usage-guideline",
   "creative-director-review",
   "design-review-decision-matrix",
+  "approval-state-transition-ledger",
   "revision-round-plan",
   "client-feedback-triage-board",
   "case-study-layout",
@@ -160,6 +163,7 @@ const REQUIRED_WORKBOARD_IDS = [
   "brand-usage-guideline",
   "creative-director-review",
   "design-review-decision-matrix",
+  "approval-state-transition-ledger",
   "revision-round-plan",
   "client-feedback-triage-board",
   "case-study-layout",
@@ -197,6 +201,8 @@ const REQUIRED_DOC_PHRASES = [
   "not a brand name clearance",
   "design review decision",
   "not creative director approval",
+  "approval state transition",
+  "not automatic signoff",
   "brand strategy workshop",
   "not a business strategy guarantee",
   "landing page blueprint",
@@ -472,6 +478,11 @@ if (kit) {
   );
   ensureIncludesAll(
     kit.browserWorkflow?.notClaims,
+    ["not automatic signoff"],
+    "browserWorkflow.notClaims",
+  );
+  ensureIncludesAll(
+    kit.browserWorkflow?.notClaims,
     ["not legal copy approval"],
     "browserWorkflow.notClaims",
   );
@@ -598,6 +609,8 @@ if (kit) {
   ensure(websiteRuntimeText.includes("## Creative Director QA"), "website runtime must include creative director QA section in generated pack");
   ensure(websiteRuntimeText.includes("## Design Review Decision Matrix"), "website runtime must include design review decision matrix section in generated pack");
   ensure(websiteRuntimeText.includes("not creative director approval"), "website runtime must avoid creative director approval claims in generated pack");
+  ensure(websiteRuntimeText.includes("## Approval State Transition Ledger"), "website runtime must include approval state transition ledger section in generated pack");
+  ensure(websiteRuntimeText.includes("not automatic signoff"), "website runtime must avoid automatic signoff claims in generated pack");
   ensure(websiteRuntimeText.includes("## Revision Plan"), "website runtime must include revision plan section in generated pack");
   ensure(websiteRuntimeText.includes("## Client Feedback Triage Board"), "website runtime must include client feedback triage board section in generated pack");
   ensure(websiteRuntimeText.includes("not a stakeholder consensus guarantee"), "website runtime must avoid stakeholder consensus guarantee claims in generated pack");

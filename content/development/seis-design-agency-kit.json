@@ -35,7 +35,8 @@
     "not a delivery date guarantee",
     "not a client contract",
     "not a brand name clearance",
-    "not creative director approval"
+    "not creative director approval",
+    "not automatic signoff"
   ],
   "qualityPrinciples": [
     "brief before visuals",
@@ -290,6 +291,16 @@
       "title": "Design review decision matrix",
       "status": "documented",
       "output": "A review decision matrix covering approve, revise, or hold status, severity, visual debt, blocking fixes, polish queue, evidence links, publication blockers, owner, and next action without claiming creative director approval.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ]
+    },
+    {
+      "id": "approval-state-transition",
+      "title": "Approval state transition ledger",
+      "status": "documented",
+      "output": "A transition ledger covering draft, review-ready, revise, hold, approved-for-handoff, blocked, or excluded states with evidence links, reviewer, blocker, validation command, rollback note, and next action without claiming automatic signoff.",
       "evidence": [
         "docs/design-system/seis-design-agency-kit.md",
         "apps/web/website/seis-design.html"
@@ -616,6 +627,20 @@
       "validationCommands": [
         "npm run check:seis-design-agency-kit",
         "npm run check:seis-website-pages"
+      ]
+    },
+    {
+      "id": "approval-state-transition-ledger",
+      "category": "quality",
+      "agencyEquivalent": "approval state transition ledger",
+      "seisOutput": "draft, review-ready, revise, hold, approved-for-handoff, blocked, or excluded state changes with evidence link, reviewer, blocker, validation command, rollback note, next action, and no-automatic-signoff boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:seis-design-agency-kit-browser-smoke"
       ]
     },
     {
@@ -995,6 +1020,7 @@
       "logoConceptFocus",
       "usageGuidelineFocus",
       "designReviewDecisionFocus",
+      "approvalStateTransitionFocus",
       "revisionRound",
       "feedbackTriageFocus",
       "caseStudyFocus",
@@ -1028,6 +1054,7 @@
       "brand-usage-guideline",
       "creative-director-review",
       "design-review-decision-matrix",
+      "approval-state-transition-ledger",
       "revision-round-plan",
       "client-feedback-triage-board",
       "case-study-layout",
@@ -1071,6 +1098,7 @@
       "brand-usage-guideline",
       "creative-director-review",
       "design-review-decision-matrix",
+      "approval-state-transition-ledger",
       "revision-round-plan",
       "client-feedback-triage-board",
       "case-study-layout",
@@ -1112,6 +1140,7 @@
       "Brand Usage Guideline",
       "Creative Director QA",
       "Design Review Decision Matrix",
+      "Approval State Transition Ledger",
       "Revision Plan",
       "Client Feedback Triage Board",
       "Case Study Layout Board",
@@ -1142,6 +1171,7 @@
       "not a client contract",
       "not a brand name clearance",
       "not creative director approval",
+      "not automatic signoff",
       "not market research",
       "not legal copy approval",
       "not social media scheduling",
