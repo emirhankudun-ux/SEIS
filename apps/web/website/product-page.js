@@ -91,11 +91,12 @@
         storageKey: "seis.design.agencyPack.v1",
         handoffStorageKey: "seis.design.agencyPack.handoff.v1",
         codeWorkspacePath: "/workspace/Design/seis-design-agency-pack.md",
-        summary: "Build a local draft pack for creative brief, client discovery intake, brand strategy workshop, proposal scope estimate, agency quote comparison, agency cost control, design sprint timeline, competitive positioning matrix, brand voice messaging matrix, typography hierarchy matrix, color system accessibility matrix, brand rationale deck, visual reference moodboard, creative asset shot list, logo concept evaluation, brand usage guideline, landing page blueprint, creative director QA, revision plan, client feedback triage, case study layout, visual QA evidence, production file manifest, asset size specs, print production readiness, client approval, client-ready export index, brand audit, brand token map, launch asset matrix, social content calendar, social variants, presentation system, asset provenance, and client handoff.",
+        summary: "Build a local draft pack for creative brief, client discovery intake, brand and offer naming, brand strategy workshop, proposal scope estimate, agency quote comparison, agency cost control, design sprint timeline, competitive positioning matrix, brand voice messaging matrix, typography hierarchy matrix, color system accessibility matrix, brand rationale deck, visual reference moodboard, creative asset shot list, logo concept evaluation, brand usage guideline, landing page blueprint, creative director QA, revision plan, client feedback triage, case study layout, visual QA evidence, production file manifest, asset size specs, print production readiness, client approval, client-ready export index, brand audit, brand token map, launch asset matrix, social content calendar, social variants, presentation system, asset provenance, and client handoff.",
         fields: [
           ["audience", "Audience", "Founder-led team preparing a premium public demo"],
           ["offer", "Offer", "No-key design production kit for website, social, presentation, and handoff work"],
           ["clientDiscoveryIntakeFocus", "Client discovery intake focus", "Decision maker, success metric, existing assets, missing inputs, channel needs, legal blockers, private asset boundary, and next evidence request"],
+          ["brandOfferNamingFocus", "Brand and offer naming focus", "Name options, offer phrase, audience fit, pronunciation, memorability, domain/social availability notes, trademark blocker, rejected names, and decision owner"],
           ["brandStrategyWorkshopFocus", "Brand strategy workshop focus", "Business goal, audience promise, stakeholder priorities, must-say/must-not-say rules, proof gaps, decision owner, and unresolved questions"],
           ["format", "Deliverable format", "Landing page direction, campaign starter, provenance sheet, and handoff checklist"],
           ["landingPageBlueprintFocus", "Landing page blueprint focus", "Hero promise, section order, proof blocks, objection handling, CTA ladder, responsive priority, accessibility notes, analytics questions, and owner"],
@@ -130,6 +131,7 @@
         outputs: [
           ["creative-brief", "Audience, offer, tone, formats, constraints, deadline, and approval owner."],
           ["client-discovery-intake-matrix", "Decision maker, success metric, existing assets, missing inputs, channel needs, legal blockers, private asset boundary, next evidence request, and no-client-contract boundary."],
+          ["brand-offer-naming-matrix", "Name options, offer phrase, audience fit, pronunciation, memorability, domain/social availability notes, trademark blocker, rejected names, decision owner, and no-brand-name-clearance boundary."],
           ["brand-strategy-workshop-matrix", "Workshop agenda, business goal, audience promise, stakeholder priorities, must-say/must-not-say rules, proof gaps, decision owner, unresolved questions, and no-business-strategy-guarantee boundary."],
           ["proposal-scope-estimator", "Scope, effort band, cut list, review owner, and no-price-guarantee boundary for replacing vague agency quotes with a clear work package."],
           ["agency-quote-comparator", "Compare external agency quote scope against SEIS deliverables, missing evidence, risks, exclusions, and no-guaranteed-savings boundary."],
@@ -179,6 +181,12 @@
             "Evidence request: list existing assets, missing inputs, audience proof, channel needs, technical constraints, and private asset boundary.",
             "Readiness state: mark ready, needs evidence, blocked, deferred, or external-specialist review with one next action.",
             "Boundary: not a client contract, not legal onboarding, and not private asset storage."
+          ]],
+          ["brand-offer-naming-matrix", "Brand & Offer Naming Matrix", [
+            "Name set: compare literal, coined, descriptive, editorial, and system-style name options with rejected-name notes.",
+            "Offer fit: map each option to audience promise, offer phrase, pronunciation, memorability, channel fit, and visual identity fit.",
+            "Availability review: record domain/social availability notes, trademark blocker, SEO confusion risk, decision owner, and next evidence request.",
+            "Boundary: not a brand name clearance, not trademark clearance, and not domain registration."
           ]],
           ["brand-strategy-workshop-matrix", "Brand Strategy Workshop Matrix", [
             "Workshop agenda: capture business goal, audience promise, category pressure, stakeholder priorities, and required decisions before visual work starts.",
@@ -699,6 +707,13 @@
       "- Readiness state: mark ready, needs evidence, blocked, deferred, or external-specialist review with one next action.",
       `- Client discovery focus: ${fields.find(([id]) => id === "clientDiscoveryIntakeFocus")?.[2] || "Decision maker, success metric, existing assets, missing inputs, channel needs, legal blockers, private asset boundary, and next evidence request"}`,
       "- Boundary: not a client contract, not legal onboarding, and not private asset storage.",
+      "",
+      "## Brand & Offer Naming Matrix",
+      "- Name set: compare literal, coined, descriptive, editorial, and system-style name options with rejected-name notes.",
+      "- Offer fit: map each option to audience promise, offer phrase, pronunciation, memorability, channel fit, and visual identity fit.",
+      "- Availability review: record domain/social availability notes, trademark blocker, SEO confusion risk, decision owner, and next evidence request.",
+      `- Naming focus: ${fields.find(([id]) => id === "brandOfferNamingFocus")?.[2] || "Name options, offer phrase, audience fit, pronunciation, memorability, domain/social availability notes, trademark blocker, rejected names, and decision owner"}`,
+      "- Boundary: not a brand name clearance, not trademark clearance, and not domain registration.",
       "",
       "## Brand Strategy Workshop Matrix",
       "- Workshop agenda: capture business goal, audience promise, category pressure, stakeholder priorities, required decisions, and open questions before visual work starts.",

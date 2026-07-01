@@ -33,7 +33,8 @@
     "not a conversion guarantee",
     "not procurement advice",
     "not a delivery date guarantee",
-    "not a client contract"
+    "not a client contract",
+    "not a brand name clearance"
   ],
   "qualityPrinciples": [
     "brief before visuals",
@@ -58,6 +59,16 @@
       "title": "Client discovery intake",
       "status": "documented",
       "output": "A discovery intake matrix covering decision maker, success metric, existing assets, missing inputs, channel needs, legal blockers, private asset boundary, and next evidence request without claiming client contracts.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ]
+    },
+    {
+      "id": "brand-offer-naming",
+      "title": "Brand and offer naming",
+      "status": "documented",
+      "output": "A naming decision matrix covering name options, offer phrase, audience fit, pronunciation, memorability, domain and social availability notes, trademark blockers, rejected names, decision owner, and next evidence request without claiming brand-name clearance.",
       "evidence": [
         "docs/design-system/seis-design-agency-kit.md",
         "apps/web/website/seis-design.html"
@@ -362,6 +373,20 @@
       "category": "strategy",
       "agencyEquivalent": "client discovery and onboarding intake matrix",
       "seisOutput": "decision maker, success metric, existing assets, missing inputs, channel needs, legal blockers, private asset boundary, next evidence request, and no-client-contract boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:seis-website-pages"
+      ]
+    },
+    {
+      "id": "brand-offer-naming-matrix",
+      "category": "strategy",
+      "agencyEquivalent": "brand naming and offer naming workshop matrix",
+      "seisOutput": "name options, offer phrase, audience fit, pronunciation, memorability, domain and social availability notes, trademark blocker, rejected names, decision owner, next evidence request, and no-brand-name-clearance boundary",
       "requiredEvidence": [
         "docs/design-system/seis-design-agency-kit.md",
         "apps/web/website/seis-design.html"
@@ -925,6 +950,7 @@
       "audience",
       "offer",
       "clientDiscoveryIntakeFocus",
+      "brandOfferNamingFocus",
       "brandStrategyWorkshopFocus",
       "format",
       "landingPageBlueprintFocus",
@@ -959,6 +985,7 @@
     "generatedOutputIds": [
       "creative-brief",
       "client-discovery-intake-matrix",
+      "brand-offer-naming-matrix",
       "brand-strategy-workshop-matrix",
       "proposal-scope-estimator",
       "agency-quote-comparator",
@@ -999,6 +1026,7 @@
     "workboardIds": [
       "brand-audit-scorecard",
       "client-discovery-intake-matrix",
+      "brand-offer-naming-matrix",
       "brand-strategy-workshop-matrix",
       "landing-page-blueprint-matrix",
       "proposal-scope-estimator",
@@ -1038,6 +1066,7 @@
       "No-key design production workflow",
       "Client Template",
       "Client Discovery Intake Matrix",
+      "Brand & Offer Naming Matrix",
       "Brand Strategy Workshop Matrix",
       "Landing Page Blueprint Matrix",
       "Proposal Scope Estimate",
@@ -1082,6 +1111,7 @@
       "not procurement advice",
       "not a delivery date guarantee",
       "not a client contract",
+      "not a brand name clearance",
       "not market research",
       "not legal copy approval",
       "not social media scheduling",

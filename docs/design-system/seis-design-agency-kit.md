@@ -6,7 +6,7 @@ The SEIS Design Agency Kit turns `@seis-design` into a public-safe,
 agency-grade creative production lane for founders, designers, and small teams
 that need stronger briefs, identity direction, campaign structure, web
 composition, and handoff discipline before paying for a full agency engagement.
-It also includes a client discovery intake matrix, proposal scope worksheet, agency quote comparator, agency cost control matrix, design sprint timeline matrix,
+It also includes a client discovery intake matrix, brand and offer naming matrix, proposal scope worksheet, agency quote comparator, agency cost control matrix, design sprint timeline matrix,
 brand strategy workshop matrix, competitive positioning matrix, typography pairing and hierarchy matrix,
 brand voice and messaging matrix, color system accessibility matrix, brand rationale deck, visual reference moodboard, creative asset shot list matrix, logo concept evaluation matrix,
 brand usage guideline, landing page blueprint matrix, creative director QA board, revision
@@ -59,6 +59,8 @@ kits, provenance checks, and client handoff evidence reproducible.
 - Not a business strategy guarantee, investor advice, or board-level strategy
   approval.
 - Not a client contract, legal onboarding flow, or private asset storage system.
+- Not a brand name clearance, trademark opinion, domain registration, or final
+  naming approval.
 - Not a conversion guarantee, search ranking guarantee, or legal copy approval
   for published landing pages.
 - Not procurement advice, tax advice, or a purchasing recommendation.
@@ -71,6 +73,7 @@ kits, provenance checks, and client handoff evidence reproducible.
 | --- | --- | --- |
 | Intake | Creative brief with audience, offer, tone, formats, constraints, and approval owner. | Brief exists before visual work starts. |
 | Discovery intake | Client discovery intake matrix with decision maker, success metric, existing assets, missing inputs, channel needs, legal blockers, private asset boundary, next evidence request, and review owner. | Matrix is marked not a client contract, not legal onboarding, and not private asset storage. |
+| Naming | Brand and offer naming matrix with name options, offer phrase, audience fit, pronunciation, memorability, domain/social availability notes, trademark blocker, rejected names, decision owner, and next evidence request. | Matrix is marked not a brand name clearance, not trademark clearance, and not domain registration. |
 | Strategy workshop | Brand strategy workshop matrix with business goal, audience promise, stakeholder priorities, must-say/must-not-say rules, proof gaps, unresolved questions, decision owner, and next review action. | Matrix is marked not a business strategy guarantee, not stakeholder consensus guarantee, and not market research. |
 | Proposal | Scope level, budget boundary, effort cut list, exclusions, and approval path. | Proposal scope is reviewable and marked not a binding quote. |
 | Comparison | External quote line items compared against SEIS draft outputs, evidence gaps, risks, and review owners. | Quote comparison is marked not a guaranteed cost saving. |
@@ -106,6 +109,7 @@ kits, provenance checks, and client handoff evidence reproducible.
 | --- | --- | --- |
 | Brand discovery brief | `creative-brief` with audience, offer, tone, formats, and approval gate. | `content/development/seis-design-agency-kit.json` |
 | Client discovery and onboarding intake | `client-discovery-intake-matrix` with decision maker, success metric, existing assets, missing inputs, channel needs, legal blockers, private asset boundary, next evidence request, and no-client-contract boundary. | This document, the kit JSON, and `apps/web/website/seis-design.html` |
+| Brand naming and offer naming workshop | `brand-offer-naming-matrix` with name options, offer phrase, audience fit, pronunciation, memorability, domain/social availability notes, trademark blocker, rejected names, decision owner, next evidence request, and no-brand-name-clearance boundary. | This document, the kit JSON, and `apps/web/website/seis-design.html` |
 | Brand strategy workshop and stakeholder alignment | `brand-strategy-workshop-matrix` with workshop agenda, business goal, audience promise, stakeholder priorities, must-say/must-not-say rules, proof gaps, unresolved questions, decision owner, and no-business-strategy-guarantee boundary. | This document, the kit JSON, and `apps/web/website/seis-design.html` |
 | Proposal scope worksheet | `proposal-scope-estimator` with scope level, effort boundary, optional cut list, budget boundary, review owner, validation commands, and no-binding-quote disclaimer. | This document and the kit JSON |
 | External agency quote comparison worksheet | `agency-quote-comparator` with external quote baseline, SEIS coverage map, missing evidence, risk decision, review owner, exclusions, and no-guaranteed-savings boundary. | This document and the kit JSON |
@@ -171,6 +175,9 @@ kits, provenance checks, and client handoff evidence reproducible.
 - Client discovery intake matrices are not a client contract, not legal
   onboarding, not private asset storage, and not permission to publish client
   material without human review.
+- Brand and offer naming matrices are not brand name clearance, not trademark
+  clearance, not domain registration, and not permission to launch an unreviewed
+  name.
 - Agency cost control matrices are not procurement advice, not tax advice, not
   a purchasing recommendation, not a guaranteed cost saving, and not a binding
   quote.
@@ -218,6 +225,7 @@ Current controls:
 
 - Editable fields capture `audience`, `offer`, `deliverable format`,
   `client discovery intake focus`,
+  `brand and offer naming focus`,
   `brand strategy workshop focus`,
   `scope level`, `budget band`, `quote baseline`, `internal production path`,
   `agency cost control focus`,
@@ -241,6 +249,7 @@ Current controls:
   variant, and presentation system checklists before a Markdown pack is built.
 - `Build agency pack` creates a local Markdown draft for `creative-brief`,
   `client-discovery-intake-matrix`,
+  `brand-offer-naming-matrix`,
   `brand-strategy-workshop-matrix`,
   `proposal-scope-estimator`, `agency-quote-comparator`,
   `agency-cost-control-matrix`,
@@ -271,6 +280,11 @@ Current controls:
   identify decision makers, success metrics, existing assets, missing inputs,
   channel needs, legal blockers, private asset boundaries, and next evidence
   requests before production without claiming a client contract.
+- The generated Markdown includes `Brand & Offer Naming Matrix` so teams can
+  compare literal, coined, descriptive, editorial, and system-style names
+  against offer fit, pronunciation, memorability, domain/social availability
+  notes, trademark blockers, rejected names, and decision ownership without
+  claiming brand-name clearance.
 - The generated Markdown includes `Agency Cost Control Matrix` so teams can
   split agency cost into line items, SEIS in-house routes, external-buy
   triggers, quality risks, evidence requirements, decision owners, and approval
@@ -340,6 +354,7 @@ Current controls:
   handoff sections without claiming verified customer results.
 - The generated Markdown includes `Creative Director QA`, `Revision Plan`,
   `Client Discovery Intake Matrix`,
+  `Brand & Offer Naming Matrix`,
   `Brand Strategy Workshop Matrix`,
   `Agency Cost Control Matrix`,
   `Design Sprint Timeline Matrix`,
@@ -360,7 +375,7 @@ Current controls:
   naming, safe-zone notes, print proof risks, client exclusions, delivery state, and rollback are
   captured before handoff.
 - The generated Markdown includes `Agency Workboards` for brand audit, launch
-  assets, client discovery intake, proposal scope, agency quote comparison, brand rationale, brand
+  assets, client discovery intake, brand and offer naming, proposal scope, agency quote comparison, brand rationale, brand
   usage, creative QA, revision planning, client feedback triage, visual QA
   evidence, case study layout, production delivery, asset specs, print production readiness, social content calendar, client approval, client-ready
   export, social variants, and presentation system planning.
@@ -379,7 +394,7 @@ The generated pack is draft evidence for human review. It is not automatic
 publication, not client approval, not live provider generation, not a host
 filesystem write, not a Git commit, not deployment, and not a platform spec
 guarantee. It is also not a guaranteed cost saving, not a persuasion guarantee,
-not market research, not legal copy approval, not a font license, not accessibility certification, not print proof approval, not social media scheduling, not model release approval, not a business strategy guarantee, not a conversion guarantee, not procurement advice, not a delivery date guarantee, not a client contract, not licensed asset approval, not final logo approval, not a downloadable archive, not a trademark license, and not fabricated
+not market research, not legal copy approval, not a font license, not accessibility certification, not print proof approval, not social media scheduling, not model release approval, not a business strategy guarantee, not a conversion guarantee, not procurement advice, not a delivery date guarantee, not a client contract, not a brand name clearance, not licensed asset approval, not final logo approval, not a downloadable archive, not a trademark license, and not fabricated
 screenshot or review evidence. It is not a stakeholder consensus guarantee.
 It is not a verified customer case study.
 

@@ -16,6 +16,7 @@ const REVIEW_PATH = "/workspace/Design/seis-design-agency-pack-review.md";
 const REQUIRED_OUTPUTS = [
   "creative-brief",
   "client-discovery-intake-matrix",
+  "brand-offer-naming-matrix",
   "brand-strategy-workshop-matrix",
   "proposal-scope-estimator",
   "agency-quote-comparator",
@@ -56,6 +57,7 @@ const REQUIRED_OUTPUTS = [
 const REQUIRED_WORKBOARDS = [
   "brand-audit-scorecard",
   "client-discovery-intake-matrix",
+  "brand-offer-naming-matrix",
   "brand-strategy-workshop-matrix",
   "landing-page-blueprint-matrix",
   "proposal-scope-estimator",
@@ -90,6 +92,7 @@ const CUSTOM_FIELD_VALUES = {
   audience: "Independent studio operators",
   offer: "Agency-grade launch kit without live provider calls",
   clientDiscoveryIntakeFocus: "Decision maker, success metric, existing assets, missing inputs, channel needs, legal blockers, private asset boundary, and next evidence request",
+  brandOfferNamingFocus: "Literal, coined, descriptive, editorial, and system-style names with offer phrase, pronunciation, memorability, domain/social availability notes, trademark blocker, and decision owner",
   brandStrategyWorkshopFocus: "Business goal, audience promise, stakeholder priorities, must-say and must-not-say rules, proof gaps, unresolved questions, and decision owner",
   format: "Landing page, social set, proof deck, and handoff checklist",
   landingPageBlueprintFocus: "Hero promise, section order, proof blocks, objection handling, CTA ladder, responsive priority, accessibility notes, analytics questions, and owner",
@@ -484,6 +487,7 @@ async function smokeDesktop(client, baseUrl) {
   ensure(afterBuild.outputText.includes("# SEIS Design Agency Pack"), "generated pack must include Markdown title");
   ensure(afterBuild.outputText.includes("creative-brief"), "generated pack must include creative brief output");
   ensure(afterBuild.outputText.includes("client-discovery-intake-matrix"), "generated pack must include client discovery intake output");
+  ensure(afterBuild.outputText.includes("brand-offer-naming-matrix"), "generated pack must include brand and offer naming output");
   ensure(afterBuild.outputText.includes("brand-strategy-workshop-matrix"), "generated pack must include brand strategy workshop output");
   ensure(afterBuild.outputText.includes("proposal-scope-estimator"), "generated pack must include proposal scope estimator output");
   ensure(afterBuild.outputText.includes("agency-quote-comparator"), "generated pack must include agency quote comparator output");
@@ -513,6 +517,8 @@ async function smokeDesktop(client, baseUrl) {
   ensure(afterBuild.outputText.includes("presentation-system-map"), "generated pack must include presentation system output");
   ensure(afterBuild.outputText.includes("## Client Discovery Intake Matrix"), "generated pack must include client discovery intake matrix section");
   ensure(afterBuild.outputText.includes("not a client contract"), "generated pack must avoid client contract claims");
+  ensure(afterBuild.outputText.includes("## Brand & Offer Naming Matrix"), "generated pack must include brand and offer naming matrix section");
+  ensure(afterBuild.outputText.includes("not a brand name clearance"), "generated pack must avoid brand name clearance claims");
   ensure(afterBuild.outputText.includes("## Brand Strategy Workshop Matrix"), "generated pack must include brand strategy workshop matrix section");
   ensure(afterBuild.outputText.includes("not a business strategy guarantee"), "generated pack must avoid business strategy guarantee claims");
   ensure(afterBuild.outputText.includes("## Landing Page Blueprint Matrix"), "generated pack must include landing page blueprint matrix section");
@@ -569,6 +575,7 @@ async function smokeDesktop(client, baseUrl) {
   ensure(afterBuild.outputText.includes("Independent studio operators"), "generated pack must include custom audience field");
   ensure(afterBuild.outputText.includes("Agency-grade launch kit without live provider calls"), "generated pack must include custom offer field");
   ensure(afterBuild.outputText.includes("Decision maker, success metric, existing assets, missing inputs, channel needs, legal blockers, private asset boundary, and next evidence request"), "generated pack must include custom client discovery intake field");
+  ensure(afterBuild.outputText.includes("Literal, coined, descriptive, editorial, and system-style names with offer phrase, pronunciation, memorability, domain/social availability notes, trademark blocker, and decision owner"), "generated pack must include custom brand offer naming field");
   ensure(afterBuild.outputText.includes("Business goal, audience promise, stakeholder priorities, must-say and must-not-say rules, proof gaps, unresolved questions, and decision owner"), "generated pack must include custom brand strategy workshop field");
   ensure(afterBuild.outputText.includes("Hero promise, section order, proof blocks, objection handling, CTA ladder, responsive priority, accessibility notes, analytics questions, and owner"), "generated pack must include custom landing page blueprint field");
   ensure(afterBuild.outputText.includes("Brand sprint plus launch kit"), "generated pack must include custom scope field");
