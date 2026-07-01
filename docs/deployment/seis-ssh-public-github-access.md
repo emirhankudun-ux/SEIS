@@ -79,6 +79,8 @@ npm run check:seis-ssh-public-support-packet
 npm run report:seis-ssh-public-support-packet
 npm run check:seis-ssh-public-github-quickstart
 npm run report:seis-ssh-public-github-quickstart
+npm run check:seis-ssh-public-merge-readiness
+npm run report:seis-ssh-public-merge-readiness
 npm run check:seis-ssh-public-pr-template
 npm run check:seis-ssh-public-ci-workflow
 npm run check:seis-ssh-public-readiness-matrix
@@ -164,6 +166,16 @@ artifact for a public GitHub user who wants one clear read-only path: start
 first-run, diagnose warnings, run the local doctor, and prepare the support
 packet without raw SSH config output, hostnames, IP addresses, shared
 credentials, live SSH, config writes, or endpoint changes.
+
+`npm run report:seis-ssh-public-merge-readiness` writes the public PR merge
+readiness report to
+`reports/seis-ssh-public-access/merge-readiness-latest.md`. It keeps the
+GitHub side honest when static SEIS-SSH checks are green but repository policy
+still blocks merge. The current policy snapshot records
+`requiredApprovingReviewCount: 10`, `requireCodeOwnerReview: true`,
+`requireLastPushApproval: true`, required signatures,
+`mergeStateStatus: BLOCKED`, and auto-merge enabled. This report does not call
+GitHub auth, merge, admin-bypass, open live SSH, or change `SEIS-SSH` host/port.
 
 `npm run check:seis-ssh-public-pr-template` verifies that
 `.github/PULL_REQUEST_TEMPLATE.md` includes the `SEIS-SSH` review checklist,
@@ -257,6 +269,7 @@ port. A new port is not introduced silently.
 | `configured` | A managed local `SEIS-SSH` block exists. | The client has an alias. |
 | `terminal-compatible` | Codespaces or equivalent works from terminal. | Terminal SSH may work when authenticated. |
 | `picker-warning` | UI picker may show ProxyCommand targets offline. | Use direct-cloud only after approved endpoint proof. |
+| `policy-blocked-review-ready` | Static public SSH gates are green, but GitHub rules still block merge. | Keep review/signature requirements visible without claiming merge. |
 | `runtime-ready` | Strict online check passed. | The remote runtime was verified at check time. |
 | `mobile-24x7-ready` | Strict direct-cloud doctor passed. | Mobile/Codex 24x7 claim is allowed. |
 
@@ -279,6 +292,7 @@ npm run check:seis-ssh-public-first-run
 npm run check:seis-ssh-public-troubleshooting
 npm run check:seis-ssh-public-support-packet
 npm run check:seis-ssh-public-github-quickstart
+npm run check:seis-ssh-public-merge-readiness
 npm run check:seis-ssh-public-pr-template
 npm run check:seis-ssh-public-ci-workflow
 npm run check:seis-ssh-public-artifact-hygiene

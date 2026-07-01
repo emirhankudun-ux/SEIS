@@ -26,6 +26,7 @@ const files = {
   troubleshootingScript: "scripts/create-seis-ssh-public-troubleshooting-guide.mjs",
   supportPacketScript: "scripts/create-seis-ssh-public-support-packet.mjs",
   quickstartScript: "scripts/create-seis-ssh-public-github-quickstart.mjs",
+  mergeReadinessScript: "scripts/create-seis-ssh-public-merge-readiness.mjs",
   prTemplateScript: "scripts/check-seis-ssh-public-pr-template.mjs",
   ciWorkflowScript: "scripts/check-seis-ssh-public-ci-workflow.mjs",
   readinessMatrixScript: "scripts/check-seis-ssh-public-readiness-matrix.mjs",
@@ -65,18 +66,22 @@ const individualUser = (contract?.profiles || []).find((profile) => profile.id =
 ensure(contract?.githubExperience?.supportIssueTemplate === files.issueTemplate, "public access contract must link SEIS-SSH support issue template");
 ensure(contract?.githubExperience?.pullRequestTemplate === files.prTemplate, "public access contract must link SEIS-SSH pull request template");
 ensure(contract?.githubExperience?.ciWorkflow === files.ciWorkflow, "public access contract must link SEIS-SSH CI workflow");
+ensure(contract?.githubExperience?.mergeReadinessReport === "npm run report:seis-ssh-public-merge-readiness", "public access contract must link merge readiness report");
 ensure((contract?.evidenceSurfaces || []).includes(files.issueTemplate), "public access contract must include support issue template evidence surface");
 ensure((contract?.evidenceSurfaces || []).includes(files.prTemplate), "public access contract must include pull request template evidence surface");
 ensure((contract?.evidenceSurfaces || []).includes(files.prTemplateScript), "public access contract must include pull request template checker evidence surface");
 ensure((contract?.evidenceSurfaces || []).includes(files.ciWorkflow), "public access contract must include CI workflow evidence surface");
 ensure((contract?.evidenceSurfaces || []).includes(files.ciWorkflowScript), "public access contract must include CI workflow checker evidence surface");
 ensure((contract?.evidenceSurfaces || []).includes(files.readinessMatrixScript), "public access contract must include public readiness matrix evidence surface");
+ensure((contract?.evidenceSurfaces || []).includes(files.mergeReadinessScript), "public access contract must include merge readiness report evidence surface");
+ensure((contract?.evidenceSurfaces || []).includes("reports/seis-ssh-public-access/merge-readiness-latest.md"), "public access contract must include merge readiness report artifact surface");
 ensure((githubReader.allowedActions || []).includes("run the read-only contributor doctor"), "github-reader profile must allow contributor doctor");
 ensure((githubReader.allowedActions || []).includes("open the secret-safe GitHub issue form"), "github-reader profile must allow secret-safe issue form");
 ensure((githubReader.allowedActions || []).includes("complete the SEIS-SSH pull request checklist"), "github-reader profile must allow SEIS-SSH pull request checklist");
 ensure((githubReader.allowedActions || []).includes("run the read-only pull request template check"), "github-reader profile must allow pull request template check");
 ensure((githubReader.allowedActions || []).includes("run the read-only public access CI workflow check"), "github-reader profile must allow public access CI workflow check");
 ensure((githubReader.allowedActions || []).includes("run the read-only public readiness matrix"), "github-reader profile must allow public readiness matrix");
+ensure((githubReader.allowedActions || []).includes("run the read-only merge readiness report"), "github-reader profile must allow merge readiness report");
 ensure((individualUser.requiredEvidence || []).includes("npm run check:seis-ssh-public-contributor-doctor"), "individual-user profile must require contributor doctor evidence");
 
 ensure(accessModel?.publicAccessContract === files.contract, "access model must link public access contract");
@@ -86,6 +91,7 @@ ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm r
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-troubleshooting"), "access model quality commands must include public troubleshooting check");
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-support-packet"), "access model quality commands must include public support packet check");
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-github-quickstart"), "access model quality commands must include public GitHub quickstart check");
+ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-merge-readiness"), "access model quality commands must include public merge readiness check");
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-pr-template"), "access model quality commands must include public PR template check");
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-ci-workflow"), "access model quality commands must include public CI workflow check");
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-readiness-matrix"), "access model quality commands must include public readiness matrix check");
@@ -95,6 +101,7 @@ ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-publ
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-troubleshooting"), "roadmap validation commands must include public troubleshooting check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-support-packet"), "roadmap validation commands must include public support packet check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-github-quickstart"), "roadmap validation commands must include public GitHub quickstart check");
+ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-merge-readiness"), "roadmap validation commands must include public merge readiness check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-pr-template"), "roadmap validation commands must include public PR template check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-ci-workflow"), "roadmap validation commands must include public CI workflow check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-readiness-matrix"), "roadmap validation commands must include public readiness matrix check");
@@ -115,6 +122,9 @@ ensure(scripts["run:seis-ssh-public-support-packet"] === "npm run check:seis-ssh
 ensure(scripts["check:seis-ssh-public-github-quickstart"] === "node scripts/create-seis-ssh-public-github-quickstart.mjs --check", "package script check:seis-ssh-public-github-quickstart must be declared");
 ensure(scripts["report:seis-ssh-public-github-quickstart"] === "node scripts/create-seis-ssh-public-github-quickstart.mjs --write", "package script report:seis-ssh-public-github-quickstart must be declared");
 ensure(scripts["run:seis-ssh-public-github-quickstart"] === "npm run check:seis-ssh-public-github-quickstart && npm run report:seis-ssh-public-github-quickstart", "package script run:seis-ssh-public-github-quickstart must be declared");
+ensure(scripts["check:seis-ssh-public-merge-readiness"] === "node scripts/create-seis-ssh-public-merge-readiness.mjs --check", "package script check:seis-ssh-public-merge-readiness must be declared");
+ensure(scripts["report:seis-ssh-public-merge-readiness"] === "node scripts/create-seis-ssh-public-merge-readiness.mjs --write", "package script report:seis-ssh-public-merge-readiness must be declared");
+ensure(scripts["run:seis-ssh-public-merge-readiness"] === "npm run check:seis-ssh-public-merge-readiness && npm run report:seis-ssh-public-merge-readiness", "package script run:seis-ssh-public-merge-readiness must be declared");
 ensure(scripts["check:seis-ssh-public-pr-template"] === "node scripts/check-seis-ssh-public-pr-template.mjs", "package script check:seis-ssh-public-pr-template must be declared");
 ensure(scripts["check:seis-ssh-public-ci-workflow"] === "node scripts/check-seis-ssh-public-ci-workflow.mjs", "package script check:seis-ssh-public-ci-workflow must be declared");
 ensure(scripts["check:seis-ssh-public-readiness-matrix"] === "node scripts/check-seis-ssh-public-readiness-matrix.mjs", "package script check:seis-ssh-public-readiness-matrix must be declared");
@@ -129,6 +139,7 @@ ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-pu
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-public-troubleshooting"), "quality:governance must include public troubleshooting check");
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-public-support-packet"), "quality:governance must include public support packet check");
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-public-github-quickstart"), "quality:governance must include public GitHub quickstart check");
+ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-public-merge-readiness"), "quality:governance must include public merge readiness check");
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-public-pr-template"), "quality:governance must include public PR template check");
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-public-ci-workflow"), "quality:governance must include public CI workflow check");
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-public-readiness-matrix"), "quality:governance must include public readiness matrix check");
@@ -148,6 +159,8 @@ for (const command of [
   "npm run report:seis-ssh-public-support-packet",
   "npm run check:seis-ssh-public-github-quickstart",
   "npm run report:seis-ssh-public-github-quickstart",
+  "npm run check:seis-ssh-public-merge-readiness",
+  "npm run report:seis-ssh-public-merge-readiness",
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-ci-workflow",
   "npm run check:seis-ssh-public-readiness-matrix",
@@ -209,6 +222,8 @@ for (const token of [
   "npm run run:seis-ssh-public-github-quickstart",
   "npm run check:seis-ssh-public-github-quickstart",
   "npm run report:seis-ssh-public-github-quickstart",
+  "npm run check:seis-ssh-public-merge-readiness",
+  "npm run report:seis-ssh-public-merge-readiness",
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-ci-workflow",
   "npm run check:seis-ssh-public-readiness-matrix",
@@ -257,6 +272,7 @@ for (const token of [
   "No live SSH session was attempted for this PR unless explicit maintainer approval is linked.",
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-access",
+  "npm run check:seis-ssh-public-merge-readiness",
   "npm run check:seis-ssh-public-ci-workflow",
   "npm run check:seis-ssh-public-readiness-matrix",
   "npm run check:seis-ssh-public-artifact-hygiene",
@@ -275,6 +291,7 @@ for (const token of [
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-access",
   "npm run check:seis-ssh-public-github-quickstart",
+  "npm run check:seis-ssh-public-merge-readiness",
   "npm run check:seis-ssh-public-support-packet",
   "npm run check:seis-ssh-public-readiness-matrix",
   "npm run check:seis-ssh-public-artifact-hygiene",
@@ -304,7 +321,9 @@ for (const token of [
   "seis-ssh-public-troubleshooting.md",
   "seis-ssh-public-support-packet.md",
   "seis-ssh-public-github-quickstart.md",
+  "seis-ssh-public-merge-readiness.md",
   "GitHub Quickstart",
+  "Merge Readiness",
   "PR Template",
   "CI Workflow",
   "Artifact Hygiene",
@@ -335,6 +354,7 @@ for (const token of [
   "npm run check:seis-ssh-public-troubleshooting",
   "npm run check:seis-ssh-public-support-packet",
   "npm run check:seis-ssh-public-github-quickstart",
+  "npm run check:seis-ssh-public-merge-readiness",
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-ci-workflow",
   "npm run check:seis-ssh-public-readiness-matrix",
@@ -374,6 +394,7 @@ for (const token of [
   "read-only-no-live-ssh-no-config-write-no-network-auth-check",
   "npm run report:seis-ssh-public-support-packet",
   "npm run run:seis-ssh-public-github-quickstart",
+  "npm run check:seis-ssh-public-merge-readiness",
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-ci-workflow",
   "npm run check:seis-ssh-public-readiness-matrix",
@@ -466,6 +487,7 @@ for (const token of [
   "npm run check:seis-ssh-public-troubleshooting",
   "npm run check:seis-ssh-public-support-packet",
   "npm run check:seis-ssh-public-github-quickstart",
+  "npm run check:seis-ssh-public-merge-readiness",
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-ci-workflow",
   "npm run check:seis-ssh-public-readiness-matrix",
@@ -495,6 +517,7 @@ for (const file of [
   files.troubleshootingScript,
   files.supportPacketScript,
   files.quickstartScript,
+  files.mergeReadinessScript,
   files.prTemplateScript,
   files.ciWorkflowScript,
   files.readinessMatrixScript,

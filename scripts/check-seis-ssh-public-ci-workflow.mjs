@@ -44,6 +44,7 @@ for (const token of [
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-access",
   "npm run check:seis-ssh-public-github-quickstart",
+  "npm run check:seis-ssh-public-merge-readiness",
   "npm run check:seis-ssh-public-support-packet",
   "npm run check:seis-ssh-public-readiness-matrix",
   "npm run check:seis-ssh-public-artifact-hygiene",
@@ -71,14 +72,18 @@ ensure(contract?.githubExperience?.ciWorkflow === files.workflow, "contract must
 ensure((contract?.evidenceSurfaces || []).includes(files.workflow), "contract evidence surfaces must include the CI workflow");
 ensure((contract?.evidenceSurfaces || []).includes("scripts/check-seis-ssh-public-ci-workflow.mjs"), "contract evidence surfaces must include the CI workflow checker");
 ensure((contract?.evidenceSurfaces || []).includes("scripts/check-seis-ssh-public-readiness-matrix.mjs"), "contract evidence surfaces must include the public readiness matrix checker");
+ensure((contract?.evidenceSurfaces || []).includes("scripts/create-seis-ssh-public-merge-readiness.mjs"), "contract evidence surfaces must include the merge readiness report generator");
 ensure((contract?.requiredCommands || []).includes("npm run check:seis-ssh-public-ci-workflow"), "contract required commands must include the CI workflow checker");
 ensure((contract?.requiredCommands || []).includes("npm run check:seis-ssh-public-readiness-matrix"), "contract required commands must include the public readiness matrix checker");
+ensure((contract?.requiredCommands || []).includes("npm run check:seis-ssh-public-merge-readiness"), "contract required commands must include the merge readiness checker");
 ensure(scripts["check:seis-ssh-public-ci-workflow"] === "node scripts/check-seis-ssh-public-ci-workflow.mjs", "package script check:seis-ssh-public-ci-workflow must be declared");
 ensure(scripts["check:seis-ssh-public-readiness-matrix"] === "node scripts/check-seis-ssh-public-readiness-matrix.mjs", "package script check:seis-ssh-public-readiness-matrix must be declared");
+ensure(scripts["check:seis-ssh-public-merge-readiness"] === "node scripts/create-seis-ssh-public-merge-readiness.mjs --check", "package script check:seis-ssh-public-merge-readiness must be declared");
 
 for (const file of Object.values(files)) {
   requireNotMatches(file, /sk-[A-Za-z0-9_-]{20,}/, "OpenAI-style API keys");
-  requireNotMatches(file, /gh[opsu]_[A-Za-z0-9_]{20,}/, "GitHub tokens");
+  requireNotMatches(file, /github_pat_[A-Za-z0-9_]{20,}/, "GitHub fine-grained tokens");
+  requireNotMatches(file, /gh[pousr]_[A-Za-z0-9_]{20,}/, "GitHub tokens");
   requireNotMatches(file, /-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----/, "private keys");
   requireNotMatches(file, /(password|token|secret)\s*[:=]\s*["'][^"']{8,}/i, "inline credential assignments");
 }

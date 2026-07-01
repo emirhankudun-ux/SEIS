@@ -39,6 +39,11 @@ const artifacts = [
     expectedId: "seis-ssh-public-github-quickstart"
   },
   {
+    id: "merge-readiness",
+    script: "scripts/create-seis-ssh-public-merge-readiness.mjs",
+    expectedId: "seis-ssh-public-merge-readiness"
+  },
+  {
     id: "onboarding-pack",
     script: "scripts/create-seis-ssh-public-onboarding-pack.mjs",
     expectedId: "seis-ssh-public-onboarding-pack"
@@ -110,6 +115,8 @@ const report = {
     "reports/seis-ssh-public-access/support-packet-latest.md",
     "reports/seis-ssh-public-access/github-quickstart-latest.json",
     "reports/seis-ssh-public-access/github-quickstart-latest.md",
+    "reports/seis-ssh-public-access/merge-readiness-latest.json",
+    "reports/seis-ssh-public-access/merge-readiness-latest.md",
     "reports/seis-ssh-public-access/onboarding-pack-latest.json",
     "reports/seis-ssh-public-access/onboarding-pack-latest.md",
     "reports/seis-ssh-public-access/contributor-doctor-latest.json",

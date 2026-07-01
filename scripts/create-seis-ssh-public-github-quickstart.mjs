@@ -124,6 +124,13 @@ function buildQuickstart() {
         claim: "Produces copy/paste issue fields with sanitized warning and blocker IDs."
       },
       {
+        id: "merge-readiness",
+        label: "Check GitHub merge readiness",
+        command: "npm run run:seis-ssh-public-merge-readiness",
+        expectedSafeResult: "policy-blocked-review-ready",
+        claim: "Shows when static SSH gates are green but repository review/signature policy still blocks merge."
+      },
+      {
         id: "live-ssh",
         label: "Live SSH only after approval",
         command: "ssh SEIS-SSH",
@@ -156,6 +163,7 @@ function buildQuickstart() {
         "npm run check:seis-ssh-public-ci-workflow",
         "npm run check:seis-ssh-public-readiness-matrix",
         "npm run check:seis-ssh-public-artifact-hygiene",
+        "npm run check:seis-ssh-public-merge-readiness",
         "npm run check:seis-ssh-public-access",
         "npm run check:seis-ssh-public-support-packet"
       ],

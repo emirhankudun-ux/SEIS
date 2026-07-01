@@ -184,6 +184,8 @@ npm run check:seis-ssh-public-support-packet
 npm run report:seis-ssh-public-support-packet
 npm run check:seis-ssh-public-github-quickstart
 npm run report:seis-ssh-public-github-quickstart
+npm run check:seis-ssh-public-merge-readiness
+npm run report:seis-ssh-public-merge-readiness
 npm run check:seis-ssh-public-pr-template
 npm run check:seis-ssh-public-ci-workflow
 npm run check:seis-ssh-public-readiness-matrix
@@ -221,6 +223,14 @@ quickstart for public contributors. It reduces first-run, troubleshooting,
 contributor doctor, and support-packet outputs into one step-by-step path from
 fresh clone to secret-safe issue form without opening SSH, writing SSH config,
 contacting GitHub, or changing the existing `SEIS-SSH` server and port.
+
+`npm run run:seis-ssh-public-merge-readiness` creates a read-only merge
+readiness report for the public SEIS-SSH PR path. It does not call GitHub auth,
+merge, admin-bypass, open live SSH, or change the server or port. The current
+policy snapshot is explicit: `requiredApprovingReviewCount: 10`,
+`requireCodeOwnerReview: true`, `requireLastPushApproval: true`, required
+signatures, `mergeStateStatus: BLOCKED`, and auto-merge enabled while human
+review/signature requirements remain unsatisfied.
 
 `npm run check:seis-ssh-public-pr-template` verifies that the GitHub pull
 request template includes the `SEIS-SSH` review checklist, same-server/port

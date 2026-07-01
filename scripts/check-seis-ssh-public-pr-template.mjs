@@ -42,8 +42,10 @@ for (const token of [
   "No live SSH session was attempted for this PR unless explicit maintainer approval is linked.",
   "Live-ready, mobile-24x7-ready, and picker-ready claims are supported by strict evidence or left as `blocked` / `approval-gated`.",
   "Public artifacts were checked before attaching them to a public issue or PR.",
+  "GitHub merge readiness is represented honestly when repository rules keep `mergeStateStatus: BLOCKED`.",
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-access",
+  "npm run check:seis-ssh-public-merge-readiness",
   "npm run check:seis-ssh-public-ci-workflow",
   "npm run check:seis-ssh-public-readiness-matrix",
   "npm run check:seis-ssh-public-artifact-hygiene",
@@ -62,7 +64,8 @@ ensure(scripts["check:seis-ssh-public-pr-template"] === "node scripts/check-seis
 
 for (const file of Object.values(files)) {
   requireNotMatches(file, /sk-[A-Za-z0-9_-]{20,}/, "OpenAI-style API keys");
-  requireNotMatches(file, /gh[opsu]_[A-Za-z0-9_]{20,}/, "GitHub tokens");
+  requireNotMatches(file, /github_pat_[A-Za-z0-9_]{20,}/, "GitHub fine-grained tokens");
+  requireNotMatches(file, /gh[pousr]_[A-Za-z0-9_]{20,}/, "GitHub tokens");
   requireNotMatches(file, /-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----/, "private keys");
   requireNotMatches(file, /(password|token|secret)\s*[:=]\s*["'][^"']{8,}/i, "inline credential assignments");
 }

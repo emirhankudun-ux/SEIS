@@ -118,6 +118,7 @@
       "npm run check:seis-ssh-public-troubleshooting",
       "npm run check:seis-ssh-public-support-packet",
       "npm run check:seis-ssh-public-github-quickstart",
+      "npm run check:seis-ssh-public-merge-readiness",
       "npm run check:seis-ssh-public-pr-template",
       "npm run check:seis-ssh-public-ci-workflow",
       "npm run check:seis-ssh-public-readiness-matrix",
