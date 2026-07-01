@@ -131,6 +131,13 @@ function buildQuickstart() {
         claim: "Shows when static SSH gates are green but repository review/signature policy still blocks merge."
       },
       {
+        id: "github-policy",
+        label: "Check GitHub policy setup",
+        command: "npm run run:seis-ssh-public-github-policy",
+        expectedSafeResult: "policy-ready-or-setup-needed",
+        claim: "Shows signed commit, last-push approval, code-owner, and review-thread requirements without contacting GitHub."
+      },
+      {
         id: "live-ssh",
         label: "Live SSH only after approval",
         command: "ssh SEIS-SSH",
@@ -164,6 +171,7 @@ function buildQuickstart() {
         "npm run check:seis-ssh-public-readiness-matrix",
         "npm run check:seis-ssh-public-artifact-hygiene",
         "npm run check:seis-ssh-public-merge-readiness",
+        "npm run check:seis-ssh-public-github-policy",
         "npm run check:seis-ssh-public-access",
         "npm run check:seis-ssh-public-support-packet"
       ],

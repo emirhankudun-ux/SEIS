@@ -124,6 +124,7 @@ function buildReport() {
         "npm run check:seis-ssh-public-access",
         "npm run check:seis-ssh-public-artifact-hygiene",
         "npm run check:seis-ssh-public-readiness-matrix",
+        "npm run check:seis-ssh-public-github-policy",
         "gh pr checks 56"
       ],
       approvalGated: [

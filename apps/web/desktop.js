@@ -3990,6 +3990,7 @@ const SEIS_SSH_PUBLIC_ACCESS_CONTRACT = {
   supportPacketCommand: "npm run run:seis-ssh-public-support-packet",
   quickstartCommand: "npm run run:seis-ssh-public-github-quickstart",
   mergeReadinessCommand: "npm run run:seis-ssh-public-merge-readiness",
+  githubPolicyCommand: "npm run run:seis-ssh-public-github-policy",
   prTemplateCommand: "npm run check:seis-ssh-public-pr-template",
   ciWorkflowCommand: "npm run check:seis-ssh-public-ci-workflow",
   artifactHygieneCommand: "npm run check:seis-ssh-public-artifact-hygiene",
@@ -4002,6 +4003,7 @@ const SEIS_SSH_PUBLIC_ACCESS_CONTRACT = {
   supportPacketArtifact: "/home/seis/Documents/seis-ssh-public-support-packet.md",
   quickstartArtifact: "/home/seis/Documents/seis-ssh-public-github-quickstart.md",
   mergeReadinessArtifact: "/home/seis/Documents/seis-ssh-public-merge-readiness.md",
+  githubPolicyArtifact: "/home/seis/Documents/seis-ssh-public-github-policy.md",
   onboardingArtifact: "/home/seis/Documents/seis-ssh-public-onboarding.md",
   contributorDoctorArtifact: "/home/seis/Documents/seis-ssh-public-contributor-doctor.md",
   liveEvidenceArtifact: "docs/deployment/seis-ssh-live-readiness-evidence.md",
@@ -4012,6 +4014,7 @@ const SEIS_SSH_PUBLIC_ACCESS_CONTRACT = {
     ["support-packet", "A read-only support packet gives GitHub issue copy/paste fields without full hostnames, full IPv4/IPv6 addresses, secrets, live SSH, or config writes."],
     ["github-quickstart", "A read-only GitHub quickstart turns first-run, troubleshooting, doctor, and support packet output into one public path."],
     ["merge-readiness", "A read-only merge readiness report keeps GitHub ruleset blockers honest when static SEIS-SSH gates are green."],
+    ["github-policy", "A read-only GitHub policy doctor shows signed commit setup, last-push approval, code-owner, and review-thread requirements."],
     ["pr-template", "A pull request checklist keeps SEIS-SSH changes reviewable on GitHub without server/port drift or public secrets."],
     ["ci-workflow", "A GitHub Actions gate runs the public SEIS-SSH review checks on pull requests before merge review."],
     ["artifact-hygiene", "A read-only artifact hygiene gate scans generated public reports before GitHub issue or PR attachment."],
@@ -6662,6 +6665,7 @@ function renderSeisCloud() {
         <article class="metric-card"><strong>Support Packet</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.supportPacketCommand)}</p></article>
         <article class="metric-card"><strong>GitHub Quickstart</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.quickstartCommand)}</p></article>
         <article class="metric-card"><strong>Merge Readiness</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.mergeReadinessCommand)}</p></article>
+        <article class="metric-card"><strong>GitHub Policy</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.githubPolicyCommand)}</p></article>
         <article class="metric-card"><strong>PR Template</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.prTemplateCommand)}</p></article>
         <article class="metric-card"><strong>CI Workflow</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.ciWorkflowCommand)}</p></article>
         <article class="metric-card"><strong>Artifact Hygiene</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.artifactHygieneCommand)}</p></article>
@@ -9220,6 +9224,8 @@ Public SSH GitHub quickstart command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.quicksta
 Public SSH GitHub quickstart artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.quickstartArtifact}
 Public SSH merge readiness command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.mergeReadinessCommand}
 Public SSH merge readiness artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.mergeReadinessArtifact}
+Public SSH GitHub policy command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.githubPolicyCommand}
+Public SSH GitHub policy artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.githubPolicyArtifact}
 Public SSH PR template command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.prTemplateCommand}
 Public SSH CI workflow command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.ciWorkflowCommand}
 Public SSH artifact hygiene command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.artifactHygieneCommand}

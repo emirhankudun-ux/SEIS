@@ -106,6 +106,7 @@ function buildSupportPacket() {
         "npm run check:seis-ssh-public-readiness-matrix -> passed",
         "npm run check:seis-ssh-public-artifact-hygiene -> passed",
         "npm run check:seis-ssh-public-merge-readiness -> policy-blocked-review-ready",
+        "npm run check:seis-ssh-public-github-policy -> policy-ready-or-setup-needed",
         `npm run run:seis-ssh-public-first-run -> ${firstRun.status || statusLabel(firstRun)}`,
         `npm run run:seis-ssh-public-troubleshooting -> ${troubleshooting.status || statusLabel(troubleshooting)}`,
         `npm run report:seis-ssh-public-contributor-doctor -> ${doctor.status || statusLabel(doctor)}`,
@@ -143,6 +144,7 @@ function buildSupportPacket() {
         "npm run check:seis-ssh-public-readiness-matrix",
         "npm run check:seis-ssh-public-artifact-hygiene",
         "npm run check:seis-ssh-public-merge-readiness",
+        "npm run check:seis-ssh-public-github-policy",
         "npm run run:seis-ssh-public-first-run",
         "npm run run:seis-ssh-public-troubleshooting",
         "npm run report:seis-ssh-public-contributor-doctor"

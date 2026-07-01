@@ -186,6 +186,8 @@ npm run check:seis-ssh-public-github-quickstart
 npm run report:seis-ssh-public-github-quickstart
 npm run check:seis-ssh-public-merge-readiness
 npm run report:seis-ssh-public-merge-readiness
+npm run check:seis-ssh-public-github-policy
+npm run report:seis-ssh-public-github-policy
 npm run check:seis-ssh-public-pr-template
 npm run check:seis-ssh-public-ci-workflow
 npm run check:seis-ssh-public-readiness-matrix
@@ -231,6 +233,12 @@ policy snapshot is explicit: `requiredApprovingReviewCount: 10`,
 `requireCodeOwnerReview: true`, `requireLastPushApproval: true`, required
 signatures, `mergeStateStatus: BLOCKED`, and auto-merge enabled while human
 review/signature requirements remain unsatisfied.
+
+`npm run run:seis-ssh-public-github-policy` creates a read-only GitHub policy
+doctor for public contributors. It checks local signed commit setup without
+printing signing keys and records required signatures, last-push approval, code
+owner review, and review-thread resolution requirements without contacting
+GitHub, opening SSH, merging, or changing the same server and port.
 
 `npm run check:seis-ssh-public-pr-template` verifies that the GitHub pull
 request template includes the `SEIS-SSH` review checklist, same-server/port
