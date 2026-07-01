@@ -30,6 +30,7 @@ const REQUIRED_OUTPUTS = [
   "brand-rationale-deck",
   "visual-reference-moodboard",
   "creative-asset-shot-list-matrix",
+  "creative-asset-licensing-board",
   "logo-concept-evaluation",
   "brand-usage-guideline",
   "creative-director-review",
@@ -75,6 +76,7 @@ const REQUIRED_WORKBOARDS = [
   "brand-rationale-deck",
   "visual-reference-moodboard",
   "creative-asset-shot-list-matrix",
+  "creative-asset-licensing-board",
   "logo-concept-evaluation",
   "brand-usage-guideline",
   "creative-director-review",
@@ -116,6 +118,7 @@ const CUSTOM_FIELD_VALUES = {
   rationaleFocus: "Audience, offer, hierarchy, proof, token choices, objections, and review action",
   moodboardDirectionFocus: "Reference themes, color mood, type attitude, imagery cues, motion tone, provenance notes, rejected directions, and review owner",
   creativeAssetShotListFocus: "Scene, composition, crop, lighting, prop, format, motion need, source/provenance status, release risk, and production owner",
+  assetLicensingDecisionFocus: "Unknown stock source, creator credit, license label, website/social/deck use, crop transformation, model release risk, original fallback, reviewer owner, and block until permission decision",
   logoConceptFocus: "Wordmark, symbol, lockup, small-size readability, monochrome use, misuse risk, trademark blocker, and decision owner",
   usageGuidelineFocus: "Logo spacing, color use, type hierarchy, imagery rules, do and don't examples, accessibility, and escalation owner",
   designReviewDecisionFocus: "Approve, revise, or hold decision, severity, visual debt, blocking fixes, polish queue, evidence links, publication blocker, owner, and next action",
@@ -608,6 +611,7 @@ async function smokeDesktop(client, baseUrl) {
   ensure(afterBuild.outputText.includes("brand-rationale-deck"), "generated pack must include brand rationale deck output");
   ensure(afterBuild.outputText.includes("visual-reference-moodboard"), "generated pack must include visual reference moodboard output");
   ensure(afterBuild.outputText.includes("creative-asset-shot-list-matrix"), "generated pack must include creative asset shot list output");
+  ensure(afterBuild.outputText.includes("creative-asset-licensing-board"), "generated pack must include creative asset licensing board output");
   ensure(afterBuild.outputText.includes("logo-concept-evaluation"), "generated pack must include logo concept evaluation output");
   ensure(afterBuild.outputText.includes("creative-director-review"), "generated pack must include creative director review output");
   ensure(afterBuild.outputText.includes("design-review-decision-matrix"), "generated pack must include design review decision output");
@@ -658,6 +662,8 @@ async function smokeDesktop(client, baseUrl) {
   ensure(afterBuild.outputText.includes("not licensed asset approval"), "generated pack must avoid licensed asset approval claims");
   ensure(afterBuild.outputText.includes("## Creative Asset Shot List Matrix"), "generated pack must include creative asset shot list matrix section");
   ensure(afterBuild.outputText.includes("not model release approval"), "generated pack must avoid model release approval claims");
+  ensure(afterBuild.outputText.includes("## Creative Asset Licensing Board"), "generated pack must include creative asset licensing board section");
+  ensure(afterBuild.outputText.includes("not legal license clearance"), "generated pack must avoid legal license clearance claims");
   ensure(afterBuild.outputText.includes("## Logo Concept Evaluation Matrix"), "generated pack must include logo concept evaluation section");
   ensure(afterBuild.outputText.includes("not final logo approval"), "generated pack must avoid final logo approval claims");
   ensure(afterBuild.outputText.includes("## Brand Usage Guideline"), "generated pack must include brand usage guideline section");
@@ -710,6 +716,8 @@ async function smokeDesktop(client, baseUrl) {
   ensure(afterBuild.outputText.includes("Primary, accent, surface, text, status colors, contrast pairs, dark mode behavior, token mapping, accessibility risk, and review owner"), "generated pack must include custom color system field");
   ensure(afterBuild.outputText.includes("Audience, offer, hierarchy, proof, token choices, objections, and review action"), "generated pack must include custom rationale focus field");
   ensure(afterBuild.outputText.includes("Reference themes, color mood, type attitude, imagery cues, motion tone, provenance notes, rejected directions, and review owner"), "generated pack must include custom moodboard direction field");
+  ensure(afterBuild.outputText.includes("Unknown stock source, creator credit, license label, website/social/deck use, crop transformation, model release risk, original fallback, reviewer owner, and block until permission decision"), "generated pack must include custom asset licensing decision field");
+  ensure(afterBuild.outputText.includes("- Licensing focus: Unknown stock source, creator credit, license label, website/social/deck use, crop transformation, model release risk, original fallback, reviewer owner, and block until permission decision"), "generated pack must include labeled edited asset licensing decision focus");
   ensure(afterBuild.outputText.includes("Wordmark, symbol, lockup, small-size readability, monochrome use, misuse risk, trademark blocker, and decision owner"), "generated pack must include custom logo concept field");
   ensure(afterBuild.outputText.includes("Logo spacing, color use, type hierarchy, imagery rules, do and don't examples, accessibility, and escalation owner"), "generated pack must include custom usage guideline focus field");
   ensure(afterBuild.outputText.includes("Approve, revise, or hold decision, severity, visual debt, blocking fixes, polish queue, evidence links, publication blocker, owner, and next action"), "generated pack must include custom design review decision field");

@@ -21,6 +21,7 @@
     "not a stakeholder consensus guarantee",
     "not a verified customer case study",
     "not licensed asset approval",
+    "not legal license clearance",
     "not final logo approval",
     "not market research",
     "not a font license",
@@ -122,6 +123,16 @@
       "title": "Agency cost defense calculator",
       "status": "documented",
       "output": "A browser-local cost defense calculator that computes coverage index, output count, workboard count, review-gate count, boundary checks, replace/defer/buy/block decision path, risk owner, and next spend decision without claiming financial advice.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ]
+    },
+    {
+      "id": "asset-licensing",
+      "title": "Creative asset licensing board",
+      "status": "documented",
+      "output": "A browser-local asset licensing decision board that records source, creator, license label, usage channel, transformation notes, release risk, fallback asset, approval owner, and block/replace decision without claiming legal license clearance.",
       "evidence": [
         "docs/design-system/seis-design-agency-kit.md",
         "apps/web/website/seis-design.html"
@@ -490,6 +501,20 @@
       "category": "strategy",
       "agencyEquivalent": "agency cost defense calculator",
       "seisOutput": "computed coverage index, replace/defer/buy/block decision path, in-house proof count, must-buy trigger, risk owner, validation proof, next spend decision, and no-financial-advice boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:seis-design-agency-kit-browser-smoke"
+      ]
+    },
+    {
+      "id": "creative-asset-licensing-board",
+      "category": "production",
+      "agencyEquivalent": "creative asset licensing and provenance decision board",
+      "seisOutput": "source, creator, license label, usage channel, transformation notes, release risk, fallback asset, approval owner, block/replace decision, and no-legal-license-clearance boundary",
       "requiredEvidence": [
         "docs/design-system/seis-design-agency-kit.md",
         "apps/web/website/seis-design.html"
@@ -1043,6 +1068,7 @@
       "rationaleFocus",
       "moodboardDirectionFocus",
       "creativeAssetShotListFocus",
+      "assetLicensingDecisionFocus",
       "logoConceptFocus",
       "usageGuidelineFocus",
       "designReviewDecisionFocus",
@@ -1077,6 +1103,7 @@
       "brand-rationale-deck",
       "visual-reference-moodboard",
       "creative-asset-shot-list-matrix",
+      "creative-asset-licensing-board",
       "logo-concept-evaluation",
       "brand-usage-guideline",
       "creative-director-review",
@@ -1122,6 +1149,7 @@
       "brand-rationale-deck",
       "visual-reference-moodboard",
       "creative-asset-shot-list-matrix",
+      "creative-asset-licensing-board",
       "logo-concept-evaluation",
       "brand-usage-guideline",
       "creative-director-review",
@@ -1165,6 +1193,7 @@
       "Brand Rationale Deck",
       "Visual Reference Moodboard",
       "Creative Asset Shot List Matrix",
+      "Creative Asset Licensing Board",
       "Logo Concept Evaluation Matrix",
       "Brand Usage Guideline",
       "Creative Director QA",
@@ -1214,6 +1243,7 @@
       "not fabricated evidence",
       "not a persuasion guarantee",
       "not licensed asset approval",
+      "not legal license clearance",
       "not final logo approval",
       "not downloadable archive",
       "not trademark license",

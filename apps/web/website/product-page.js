@@ -91,7 +91,7 @@
         storageKey: "seis.design.agencyPack.v1",
         handoffStorageKey: "seis.design.agencyPack.handoff.v1",
         codeWorkspacePath: "/workspace/Design/seis-design-agency-pack.md",
-        summary: "Build a local draft pack for creative brief, client discovery intake, brand and offer naming, brand strategy workshop, proposal scope estimate, agency quote comparison, agency cost control, agency cost defense, design sprint timeline, competitive positioning matrix, brand voice messaging matrix, typography hierarchy matrix, color system accessibility matrix, brand rationale deck, visual reference moodboard, creative asset shot list, logo concept evaluation, brand usage guideline, landing page blueprint, creative director QA, design review decision, approval state transition, revision plan, client feedback triage, case study layout, visual QA evidence, production file manifest, asset size specs, print production readiness, client approval, client-ready export index, brand audit, brand token map, launch asset matrix, social content calendar, social variants, presentation system, asset provenance, and client handoff.",
+        summary: "Build a local draft pack for creative brief, client discovery intake, brand and offer naming, brand strategy workshop, proposal scope estimate, agency quote comparison, agency cost control, agency cost defense, design sprint timeline, competitive positioning matrix, brand voice messaging matrix, typography hierarchy matrix, color system accessibility matrix, brand rationale deck, visual reference moodboard, creative asset shot list, creative asset licensing decision board, logo concept evaluation, brand usage guideline, landing page blueprint, creative director QA, design review decision, approval state transition, revision plan, client feedback triage, case study layout, visual QA evidence, production file manifest, asset size specs, print production readiness, client approval, client-ready export index, brand audit, brand token map, launch asset matrix, social content calendar, social variants, presentation system, asset provenance, and client handoff.",
         fields: [
           ["audience", "Audience", "Founder-led team preparing a premium public demo"],
           ["offer", "Offer", "No-key design production kit for website, social, presentation, and handoff work"],
@@ -114,6 +114,7 @@
           ["rationaleFocus", "Rationale focus", "Explain the audience, offer, hierarchy, proof, tone, accessibility, and rollout logic behind the design"],
           ["moodboardDirectionFocus", "Moodboard direction focus", "Reference themes, color mood, type attitude, imagery cues, motion tone, provenance notes, rejected directions, and review owner"],
           ["creativeAssetShotListFocus", "Creative asset shot list focus", "Scene, composition, crop, lighting, prop, format, motion need, source/provenance status, release risk, and production owner"],
+          ["assetLicensingDecisionFocus", "Asset licensing decision focus", "Source, creator, license label, usage channel, transformation, release risk, fallback asset, approval owner, and block/replace decision"],
           ["logoConceptFocus", "Logo concept focus", "Concept options, mark style, wordmark fit, small-size readability, monochrome use, misuse risk, trademark review blocker, and decision owner"],
           ["usageGuidelineFocus", "Usage guideline focus", "Logo spacing, color use, type hierarchy, imagery rules, do/don't examples, accessibility, misuse boundaries, and escalation owner"],
           ["designReviewDecisionFocus", "Design review decision focus", "Approve, revise, or hold decision, severity, visual debt, blocking fixes, polish queue, evidence links, publication blocker, owner, and next action"],
@@ -148,6 +149,7 @@
           ["brand-rationale-deck", "Design decision narrative covering audience, offer, hierarchy, proof, token choices, usage logic, objections, and next review action."],
           ["visual-reference-moodboard", "Reference themes, color mood, type attitude, imagery cues, motion tone, provenance notes, rejected directions, review owner, and no-asset-license boundary."],
           ["creative-asset-shot-list-matrix", "Scene, composition, crop, lighting, prop, format, motion need, source/provenance status, release risk, production owner, and no-model-release-approval boundary."],
+          ["creative-asset-licensing-board", "Source, creator, license label, usage channel, transformation notes, release risk, fallback asset, approval owner, block/replace decision, and no-legal-license-clearance boundary."],
           ["logo-concept-evaluation", "Logo direction matrix for concept options, mark style, wordmark fit, small-size readability, monochrome use, misuse risk, trademark review blocker, decision owner, and no-final-logo-approval boundary."],
           ["brand-usage-guideline", "Usage rules for logo spacing, color use, type hierarchy, imagery treatment, do/don't examples, accessibility, misuse boundaries, and escalation owner."],
           ["creative-director-review", "Creative quality scorecard with decision, required fixes, polish queue, accessibility check, and publication gate."],
@@ -277,6 +279,12 @@
             "Production notes: assign source path, provenance status, release risk, accessibility text need, fallback asset, and production owner.",
             "Review path: mark draft, ready to shoot, needs license review, needs model release review, blocked, or approved for internal draft.",
             "Boundary: not model release approval, not licensed asset approval, and not permission to publish unverified people, product, or location imagery."
+          ]],
+          ["creative-asset-licensing-board", "Creative Asset Licensing Board", [
+            "Source ledger: record source, creator, URL or repo path, license label, allowed usage, transformation notes, and uncertainty before client handoff.",
+            "Usage decision: mark use, replace, seek permission, create original, or block based on channel, transformation, model/property release, and risk.",
+            "Fallback plan: name a public-safe substitute, owner, validation proof, and next review action when any asset is unclear.",
+            "Boundary: not legal license clearance, not licensed asset approval, and not model release approval."
           ]],
           ["logo-concept-evaluation", "Logo Concept Evaluation Matrix", [
             "Concept options: compare wordmark, monogram, symbol, lockup, and no-logo directions against audience, offer, and channel needs.",
@@ -852,6 +860,13 @@
       "- Production notes: assign source path, provenance status, release risk, accessibility text need, fallback asset, and production owner.",
       "- Review path: mark draft, ready to shoot, needs license review, needs model release review, blocked, or approved for internal draft.",
       "- Boundary: not model release approval, not licensed asset approval, and not permission to publish unverified people, product, or location imagery.",
+      "",
+      "## Creative Asset Licensing Board",
+      "- Source ledger: record source, creator, URL or repo path, license label, allowed usage, transformation notes, and uncertainty before client handoff.",
+      "- Usage decision: mark use, replace, seek permission, create original, or block based on channel, transformation, model/property release, and risk.",
+      "- Fallback plan: name a public-safe substitute, owner, validation proof, and next review action when any asset is unclear.",
+      `- Licensing focus: ${fields.find(([id]) => id === "assetLicensingDecisionFocus")?.[2] || "Source, creator, license label, usage channel, transformation, release risk, fallback asset, approval owner, and block/replace decision"}`,
+      "- Boundary: not legal license clearance, not licensed asset approval, and not model release approval.",
       "",
       "## Logo Concept Evaluation Matrix",
       "- Options: compare wordmark, monogram, symbol, lockup, and no-logo directions against the audience, offer, and channel needs.",

@@ -30,6 +30,7 @@ const REQUIRED_NOT_CLAIMS = [
   "not a stakeholder consensus guarantee",
   "not a verified customer case study",
   "not licensed asset approval",
+  "not legal license clearance",
   "not final logo approval",
   "not market research",
   "not a font license",
@@ -49,9 +50,9 @@ const REQUIRED_NOT_CLAIMS = [
   "not automatic signoff",
 ];
 
-const REQUIRED_WORKFLOW_IDS = ["intake", "discovery-intake", "brand-offer-naming", "strategy-workshop", "proposal", "comparison", "cost-control", "cost-defense", "design-sprint-timeline", "positioning", "messaging", "typography", "color-system", "print-production", "rationale", "moodboard", "asset-shot-list", "logo-evaluation", "identity", "usage", "web", "landing-blueprint", "portfolio", "campaign", "review", "design-review-decision", "approval-state-transition", "revision", "feedback", "visual-qa", "approval", "export-index", "provenance", "handoff"];
+const REQUIRED_WORKFLOW_IDS = ["intake", "discovery-intake", "brand-offer-naming", "strategy-workshop", "proposal", "comparison", "cost-control", "cost-defense", "asset-licensing", "design-sprint-timeline", "positioning", "messaging", "typography", "color-system", "print-production", "rationale", "moodboard", "asset-shot-list", "logo-evaluation", "identity", "usage", "web", "landing-blueprint", "portfolio", "campaign", "review", "design-review-decision", "approval-state-transition", "revision", "feedback", "visual-qa", "approval", "export-index", "provenance", "handoff"];
 
-const REQUIRED_EDITABLE_FIELD_IDS = ["audience", "offer", "clientDiscoveryIntakeFocus", "brandOfferNamingFocus", "brandStrategyWorkshopFocus", "format", "landingPageBlueprintFocus", "scope", "budgetBand", "quoteBaseline", "agencyCostControlFocus", "agencyCostDefenseFocus", "designSprintTimelineFocus", "internalProductionPath", "competitivePositioningFocus", "messagingVoiceFocus", "typographyHierarchyFocus", "colorSystemFocus", "rationaleFocus", "moodboardDirectionFocus", "creativeAssetShotListFocus", "logoConceptFocus", "usageGuidelineFocus", "designReviewDecisionFocus", "approvalStateTransitionFocus", "revisionRound", "feedbackTriageFocus", "caseStudyFocus", "deliveryStandard", "printProductionFocus", "visualEvidenceTarget", "exportIndexTarget", "channels", "contentCalendarFocus", "approvalCheckpoint", "deadline", "approvalOwner"];
+const REQUIRED_EDITABLE_FIELD_IDS = ["audience", "offer", "clientDiscoveryIntakeFocus", "brandOfferNamingFocus", "brandStrategyWorkshopFocus", "format", "landingPageBlueprintFocus", "scope", "budgetBand", "quoteBaseline", "agencyCostControlFocus", "agencyCostDefenseFocus", "designSprintTimelineFocus", "internalProductionPath", "competitivePositioningFocus", "messagingVoiceFocus", "typographyHierarchyFocus", "colorSystemFocus", "rationaleFocus", "moodboardDirectionFocus", "creativeAssetShotListFocus", "assetLicensingDecisionFocus", "logoConceptFocus", "usageGuidelineFocus", "designReviewDecisionFocus", "approvalStateTransitionFocus", "revisionRound", "feedbackTriageFocus", "caseStudyFocus", "deliveryStandard", "printProductionFocus", "visualEvidenceTarget", "exportIndexTarget", "channels", "contentCalendarFocus", "approvalCheckpoint", "deadline", "approvalOwner"];
 
 const REQUIRED_DELIVERABLE_IDS = [
   "creative-brief",
@@ -70,6 +71,7 @@ const REQUIRED_DELIVERABLE_IDS = [
   "brand-rationale-deck",
   "visual-reference-moodboard",
   "creative-asset-shot-list-matrix",
+  "creative-asset-licensing-board",
   "logo-concept-evaluation",
   "brand-usage-guideline",
   "creative-director-review",
@@ -117,6 +119,7 @@ const REQUIRED_GENERATED_OUTPUT_IDS = [
   "brand-rationale-deck",
   "visual-reference-moodboard",
   "creative-asset-shot-list-matrix",
+  "creative-asset-licensing-board",
   "logo-concept-evaluation",
   "brand-usage-guideline",
   "creative-director-review",
@@ -163,6 +166,7 @@ const REQUIRED_WORKBOARD_IDS = [
   "brand-rationale-deck",
   "visual-reference-moodboard",
   "creative-asset-shot-list-matrix",
+  "creative-asset-licensing-board",
   "logo-concept-evaluation",
   "brand-usage-guideline",
   "creative-director-review",
@@ -240,6 +244,8 @@ const REQUIRED_DOC_PHRASES = [
   "not licensed asset approval",
   "creative asset shot list",
   "not model release approval",
+  "creative asset licensing",
+  "not legal license clearance",
   "logo concept evaluation",
   "not final logo approval",
   "brand usage guideline",
@@ -622,6 +628,8 @@ if (kit) {
   ensure(websiteRuntimeText.includes("not licensed asset approval"), "website runtime must avoid licensed asset approval claims in generated pack");
   ensure(websiteRuntimeText.includes("## Creative Asset Shot List Matrix"), "website runtime must include creative asset shot list matrix section in generated pack");
   ensure(websiteRuntimeText.includes("not model release approval"), "website runtime must avoid model release approval claims in generated pack");
+  ensure(websiteRuntimeText.includes("## Creative Asset Licensing Board"), "website runtime must include creative asset licensing board section in generated pack");
+  ensure(websiteRuntimeText.includes("not legal license clearance"), "website runtime must avoid legal license clearance claims in generated pack");
   ensure(websiteRuntimeText.includes("## Logo Concept Evaluation Matrix"), "website runtime must include logo concept evaluation matrix section in generated pack");
   ensure(websiteRuntimeText.includes("not final logo approval"), "website runtime must avoid final logo approval claims in generated pack");
   ensure(websiteRuntimeText.includes("## Brand Usage Guideline"), "website runtime must include brand usage guideline section in generated pack");

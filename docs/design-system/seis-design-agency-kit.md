@@ -6,7 +6,7 @@ The SEIS Design Agency Kit turns `@seis-design` into a public-safe,
 agency-grade creative production lane for founders, designers, and small teams
 that need stronger briefs, identity direction, campaign structure, web
 composition, and handoff discipline before paying for a full agency engagement.
-It also includes a client discovery intake matrix, brand and offer naming matrix, proposal scope worksheet, agency quote comparator, agency cost control matrix, agency cost defense calculator, design sprint timeline matrix,
+It also includes a client discovery intake matrix, brand and offer naming matrix, proposal scope worksheet, agency quote comparator, agency cost control matrix, agency cost defense calculator, creative asset licensing board, design sprint timeline matrix,
 brand strategy workshop matrix, competitive positioning matrix, typography pairing and hierarchy matrix,
 brand voice and messaging matrix, color system accessibility matrix, brand rationale deck, visual reference moodboard, creative asset shot list matrix, logo concept evaluation matrix,
 brand usage guideline, landing page blueprint matrix, creative director QA board, design review decision matrix, approval state transition ledger, revision
@@ -41,6 +41,8 @@ kits, provenance checks, and client handoff evidence reproducible.
 - Not a verified customer case study.
 - Not licensed asset approval, stock-library clearance, or permission to
   publish unverified reference material.
+- Not legal license clearance, legal asset licensing advice, or permission to
+  publish unclear third-party material.
 - Not final logo approval or trademark clearance.
 - Not market research, competitor legal advice, or proof of market demand.
 - Not legal copy approval, compliance review, or an advertising performance
@@ -84,6 +86,7 @@ kits, provenance checks, and client handoff evidence reproducible.
 | Comparison | External quote line items compared against SEIS draft outputs, evidence gaps, risks, and review owners. | Quote comparison is marked not a guaranteed cost saving. |
 | Cost control | Agency cost control matrix with line items, SEIS in-house route, external-buy trigger, quality risk, evidence requirement, decision owner, and approval gate. | Matrix is marked not procurement advice, not a guaranteed cost saving, and not a binding quote. |
 | Cost defense | Agency cost defense calculator with computed coverage index, replace/defer/buy/block decision path, in-house proof count, must-buy trigger, risk owner, validation proof, and next spend decision. | Calculator is marked not financial advice, not a guaranteed cost saving, and not procurement approval. |
+| Asset licensing | Creative asset licensing board with source, creator, license label, usage channel, transformation notes, release risk, fallback asset, approval owner, and block/replace decision. | Board is marked not legal license clearance, not licensed asset approval, and not model release approval. |
 | Sprint timeline | Design sprint timeline matrix with discovery day, strategy freeze, production blocks, review checkpoints, revision window, QA pass, handoff day, owner, blocker rule, and validation command. | Matrix is marked not a delivery date guarantee, not a project management service, and not client approval. |
 | Positioning | Competitive positioning matrix with competitor set, category cues, visual territory, differentiation claim, whitespace opportunity, evidence gaps, risks, and decision owner. | Matrix is marked not market research or proof of market demand. |
 | Messaging | Brand voice and messaging matrix with tagline options, message hierarchy, tone rules, proof points, CTA language, channel adaptations, claim risk, and copy review owner. | Matrix is marked not legal copy approval or compliance review. |
@@ -131,6 +134,7 @@ kits, provenance checks, and client handoff evidence reproducible.
 | Brand rationale presentation deck | `brand-rationale-deck` with audience problem, offer promise, visual hierarchy, proof points, token rationale, stakeholder objections, rejected options, and next review action. | This document and the kit JSON |
 | Visual reference and moodboard direction board | `visual-reference-moodboard` with reference themes, color mood, type attitude, imagery cues, motion tone, provenance notes, rejected directions, review owner, and no-asset-license boundary. | This document, the kit JSON, and `docs/design-system/seis-design-foundation.md` |
 | Creative asset shot list matrix | `creative-asset-shot-list-matrix` with scene, composition, crop, lighting, prop, format, motion need, source/provenance status, release risk, production owner, and no-model-release-approval boundary. | This document, the kit JSON, and `docs/design-system/seis-design-foundation.md` |
+| Creative asset licensing and provenance decision board | `creative-asset-licensing-board` with source, creator, license label, usage channel, transformation notes, release risk, fallback asset, approval owner, block/replace decision, and no-legal-license-clearance boundary. | This document, the kit JSON, and `apps/web/website/seis-design.html` |
 | Logo concept evaluation matrix | `logo-concept-evaluation` with concept options, mark style, wordmark fit, small-size readability, monochrome use, misuse risk, trademark review blocker, decision owner, and no-final-logo-approval boundary. | This document, the kit JSON, and `packages/design-tokens/seis.tokens.css` |
 | Creative director review board | `creative-director-review` with approve/revise/hold decision, scorecard, blocking fixes, polish queue, accessibility gate, and publication boundary. | This document and the kit JSON |
 | Design review decision matrix | `design-review-decision-matrix` with approve/revise/hold decision, severity, visual debt, blocking fixes, polish queue, evidence links, publication blocker, owner, next action, and no-creative-director-approval boundary. | This document, the kit JSON, and `apps/web/website/seis-design.html` |
@@ -255,6 +259,7 @@ Current controls:
   `typography hierarchy focus`,
   `color system focus`, `rationale focus`,
   `moodboard direction focus`, `creative asset shot list focus`,
+  `asset licensing decision focus`,
   `logo concept focus`,
   `usage guideline focus`, `design review decision focus`,
   `approval state transition focus`, `revision round`,
@@ -282,6 +287,7 @@ Current controls:
   `brand-rationale-deck`,
   `visual-reference-moodboard`,
   `creative-asset-shot-list-matrix`,
+  `creative-asset-licensing-board`,
   `logo-concept-evaluation`,
   `brand-usage-guideline`, `creative-director-review`,
   `design-review-decision-matrix`,
@@ -326,6 +332,10 @@ Current controls:
   see a browser-local coverage index, output count, workboard count, review
   gates, boundary checks, replace/defer/buy/block decision path, and next spend
   decision without claiming financial advice.
+- The generated Markdown includes `Creative Asset Licensing Board` so teams can
+  record source, creator, license label, usage channel, transformation notes,
+  release risk, fallback asset, approval owner, and block/replace decision
+  without claiming legal license clearance.
 - The generated Markdown includes `Design Sprint Timeline Matrix` so teams can
   map discovery, strategy freeze, production blocks, review checkpoints,
   revision windows, QA pass, handoff day, blocker rules, validation commands,
@@ -397,6 +407,7 @@ Current controls:
   `Brand Strategy Workshop Matrix`,
   `Agency Cost Control Matrix`,
   `Agency Cost Defense Calculator`,
+  `Creative Asset Licensing Board`,
   `Design Sprint Timeline Matrix`,
   `Competitive Positioning Matrix`, `Brand Voice & Messaging Matrix`,
   `Typography Pairing & Hierarchy Matrix`,
@@ -416,7 +427,7 @@ Current controls:
   captured before handoff.
 - The generated Markdown includes `Agency Workboards` for brand audit, launch
   assets, client discovery intake, brand and offer naming, proposal scope, agency quote comparison, brand rationale, brand
-  usage, creative QA, design review decision, approval state transition, agency cost defense, revision planning, client feedback triage, visual QA
+  usage, creative asset licensing, creative QA, design review decision, approval state transition, agency cost defense, revision planning, client feedback triage, visual QA
   evidence, case study layout, production delivery, asset specs, print production readiness, social content calendar, client approval, client-ready
   export, social variants, and presentation system planning.
 - `Export to SEIS Code` saves the current pack into the browser-local SEIS Code
