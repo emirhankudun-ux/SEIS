@@ -334,6 +334,7 @@ function validateStaticContract() {
   ensure(html.includes("sources:()=>referenceSourceRows"), "Linux Replica terminal must expose supplied ZIP source coverage.");
   ensure(html.includes("security:()=>"), "Linux Replica terminal must expose the security gate command.");
   ensure(html.includes("live:()=>"), "Linux Replica terminal must expose the live demo command.");
+  ensure(html.includes("[\"live-demo\",\"demo-readiness\",\"security-gate\",\"reference-vault\""), "Linux Replica live tour must open the Security Gate before the Reference Vault.");
   ensure(html.includes("tour:()=>"), "Linux Replica terminal must expose the live demo tour command.");
   ensure(routes.includes("/seis-linux-replica.html"), "routes.json must register SEIS Linux Replica.");
   ensure(serviceWorker.includes("./seis-linux-replica.html"), "service worker must precache SEIS Linux Replica.");
@@ -412,7 +413,7 @@ async function smokeLinuxReplica(client, baseUrl) {
     input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
     return true;
   })()`);
-  await waitFor(client, "document.querySelector('[data-live-demo-console]') && document.body.innerText.includes('opened Live Demo Console')", 5000);
+  await waitFor(client, "document.querySelector('[data-live-demo-console]') && document.querySelector('[data-security-gate-app]') && document.body.innerText.includes('opened Live Demo Console')", 5000);
 
   await evaluate(client, `(() => {
     const input = document.querySelector('[data-terminal] input');
@@ -439,7 +440,6 @@ async function smokeLinuxReplica(client, baseUrl) {
     document.querySelector('#sideRail [data-side-app="search"]')?.click();
     window.__SEIS_LINUX_REPLICA__.openApp('live-demo');
     window.__SEIS_LINUX_REPLICA__.openApp('demo-readiness');
-    window.__SEIS_LINUX_REPLICA__.openApp('security-gate');
     window.__SEIS_LINUX_REPLICA__.openApp('calculator');
     window.__SEIS_LINUX_REPLICA__.openApp('settings');
     window.__SEIS_LINUX_REPLICA__.openApp('reference-vault');
