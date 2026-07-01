@@ -10,7 +10,7 @@ matched values.
 
 ## Scope
 
-- Commits counted: 288
+- Commits counted: reachable HEAD; exact count intentionally omitted for stable audit diffs
 - History objects considered: 3893
 - Text blobs inspected: 3893
 - Binary blobs skipped: 0
