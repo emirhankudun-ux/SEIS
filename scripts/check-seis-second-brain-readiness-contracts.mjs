@@ -87,7 +87,7 @@ if (routerContract) validateRouterContract(routerContract);
 if (releaseChecklist) validateReleaseChecklist(releaseChecklist);
 if (publicDemoReport && publicDemoEvidenceManifest) validatePublicDemoArtifacts(publicDemoReport, publicDemoEvidenceManifest);
 if (obsidianDryRun) validateObsidianDryRun(obsidianDryRun);
-if (routerDecision && routerContract) validateRouterDecision(routerDecision, routerContract);
+if (routerDecision && routerContract && secondBrain) validateRouterDecision(routerDecision, routerContract, secondBrain);
 if (accessibilityFocus && accessibilityContract && secondBrain) validateAccessibilityFocus(accessibilityFocus, accessibilityContract, secondBrain);
 if (agentRegistry && secondBrain) validateAgentRegistry(agentRegistry, secondBrain);
 if (publicReviewerPack) validatePublicReviewerPack(publicReviewerPack);
@@ -659,7 +659,8 @@ function validateRouterContract(contract) {
   );
 }
 
-function validateRouterDecision(report, contract) {
+function validateRouterDecision(report, contract, secondBrainContract) {
+  const sourceInstalledAiProfiles = secondBrainContract?.installedAiProfiles || [];
   ensure(report.id === "seis-read-only-model-router-decision-pr54", "Router decision artifact id mismatch.");
   ensure(report.title === "SEIS Read-Only Model Router Decision", "Router decision artifact title mismatch.");
   ensure(report.status === "review-only-no-runtime-authority", "Router decision artifact status mismatch.");
@@ -667,11 +668,18 @@ function validateRouterDecision(report, contract) {
   ensure(report.decision === "NO-GO-live-routing-not-approved", "Router decision artifact must block live routing.");
   ensure(report.contractPath === paths.routerContract, "Router decision artifact contract path mismatch.");
   ensure(report.secondBrainPath === "content/development/seis-second-brain-system.json", "Router decision artifact Second Brain path mismatch.");
-  ensureArrayMin(report.installedAiProfiles, 6, "router decision installedAiProfiles");
+  ensureExactArray(report.installedAiProfiles, sourceInstalledAiProfiles, "router decision installedAiProfiles");
+  ensure(report.sourceSnapshot?.installedAiProfileCount === sourceInstalledAiProfiles.length, "Router decision source snapshot installed AI profile count mismatch.");
+  ensure(report.sourceSnapshot?.providerFixtureForEveryInstalledAiProfile === true, "Router decision must require provider fixture coverage for every installed AI profile.");
   ensureArrayMin(report.managedSubAgentLanes, 6, "router decision managedSubAgentLanes");
   ensureArrayMin(report.autonomousAgentRoster, 12, "router decision autonomousAgentRoster");
-  ensureArrayMin(report.providerFixtures, 6, "router decision providerFixtures");
+  ensure(Array.isArray(report.providerFixtures) && report.providerFixtures.length === sourceInstalledAiProfiles.length, "Router decision providerFixtures must match installed AI profile count exactly.");
   ensureArrayMin(report.decisions, 4, "router decision decisions");
+  ensureExactArray(
+    (report.providerFixtures || []).map((fixture) => fixture.profile),
+    sourceInstalledAiProfiles,
+    "router decision provider fixture profiles"
+  );
   for (const [key, expected] of Object.entries(contract.decisionIntegrity || {})) {
     ensure(report.decisionIntegrity?.[key] === expected, `Router decision integrity ${key} must be ${expected}.`);
   }
@@ -1052,6 +1060,19 @@ function ensureFile(filePath, label) {
 function ensureArrayMin(value, minimum, label) {
   ensure(Array.isArray(value), `${label} must be an array.`);
   ensure(Array.isArray(value) && value.length >= minimum, `${label} must include at least ${minimum} records.`);
+}
+
+function ensureExactArray(value, expected, label) {
+  ensure(Array.isArray(value), `${label} must be an array.`);
+  ensure(Array.isArray(expected), `${label} expected source must be an array.`);
+  if (!Array.isArray(value) || !Array.isArray(expected)) return;
+  ensure(value.length === expected.length, `${label} count must match the Second Brain source contract exactly.`);
+  for (const expectedValue of expected) {
+    ensure(value.includes(expectedValue), `${label} missing source item: ${expectedValue}.`);
+  }
+  for (const actualValue of value) {
+    ensure(expected.includes(actualValue), `${label} includes non-source item: ${actualValue}.`);
+  }
 }
 
 function ensureIncludes(values, expected, label) {

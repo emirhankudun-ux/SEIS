@@ -21,7 +21,7 @@ const routerContract = readJson(paths.routerContract, "read-only model-router co
 const secondBrain = readJson(paths.secondBrain, "Second Brain contract");
 const report = buildDecisionReport(routerContract, secondBrain, new Date().toISOString());
 
-validateDecisionReport(report, routerContract, "generated router decision report");
+validateDecisionReport(report, routerContract, secondBrain, "generated router decision report");
 
 if (shouldWrite) {
   writeJson(paths.outputJson, report);
@@ -33,7 +33,7 @@ if (shouldCheck) {
   ensureFile(paths.outputMarkdown, "read-only model-router decision Markdown artifact");
   const existingJson = readJson(paths.outputJson, "read-only model-router decision JSON artifact");
   const existingMarkdown = readText(paths.outputMarkdown, "read-only model-router decision Markdown artifact");
-  if (existingJson) validateDecisionReport(existingJson, routerContract, "existing router decision artifact");
+  if (existingJson) validateDecisionReport(existingJson, routerContract, secondBrain, "existing router decision artifact");
   for (const phrase of [
     "SEIS Read-Only Model Router Decision",
     "Provider calls performed: false",
@@ -72,56 +72,7 @@ function buildDecisionReport(contract, secondBrainContract, generatedAt) {
     ? secondBrainContract.autonomousAgentRoster.map((item) => item.agent)
     : [];
 
-  const providerFixtures = [
-    {
-      profile: "seis-local-demo",
-      provider: "SEIS Local Demo Runtime",
-      model: "local-demo-fixture",
-      providerState: "Local Demo",
-      credentialRequired: false,
-      providerCallsPerformed: false
-    },
-    {
-      profile: "codex-operator",
-      provider: "Codex / ChatGPT operator lane",
-      model: "external-human-operated-codex-context",
-      providerState: "Local Demo",
-      credentialRequired: false,
-      providerCallsPerformed: false
-    },
-    {
-      profile: "claude-review-profile",
-      provider: "Claude review profile",
-      model: "review-profile-not-configured",
-      providerState: "Missing Key",
-      credentialRequired: true,
-      providerCallsPerformed: false
-    },
-    {
-      profile: "qwen-review-profile",
-      provider: "Qwen review profile",
-      model: "review-profile-not-configured",
-      providerState: "Missing Key",
-      credentialRequired: true,
-      providerCallsPerformed: false
-    },
-    {
-      profile: "gemini-validation-profile",
-      provider: "Gemini validation profile",
-      model: "validation-profile-not-configured",
-      providerState: "Missing Key",
-      credentialRequired: true,
-      providerCallsPerformed: false
-    },
-    {
-      profile: "ollama-local-profile",
-      provider: "Ollama local candidate",
-      model: "local-runtime-not-verified",
-      providerState: "Unknown",
-      credentialRequired: false,
-      providerCallsPerformed: false
-    }
-  ].filter((fixture) => installedAiProfiles.includes(fixture.profile));
+  const providerFixtures = installedAiProfiles.map((profile) => makeProviderFixture(profile));
 
   const decisions = [
     makeDecision({
@@ -213,6 +164,13 @@ function buildDecisionReport(contract, secondBrainContract, generatedAt) {
     decision: "NO-GO-live-routing-not-approved",
     contractPath: paths.routerContract,
     secondBrainPath: paths.secondBrain,
+    sourceSnapshot: {
+      installedAiProfileCount: installedAiProfiles.length,
+      managedSubAgentLaneCount: managedSubAgentLanes.length,
+      autonomousAgentRosterCount: autonomousAgentRoster.length,
+      providerFixtureCount: providerFixtures.length,
+      providerFixtureForEveryInstalledAiProfile: true
+    },
     installedAiProfiles,
     managedSubAgentLanes,
     autonomousAgentRoster,
@@ -247,6 +205,104 @@ function buildDecisionReport(contract, secondBrainContract, generatedAt) {
   };
 }
 
+function makeProviderFixture(profile) {
+  const providerInfo = {
+    "seis-local-demo": {
+      provider: "SEIS Local Demo Runtime",
+      model: "local-demo-fixture",
+      providerState: "Local Demo",
+      credentialRequired: false
+    },
+    "codex-operator": {
+      provider: "Codex / ChatGPT operator lane",
+      model: "external-human-operated-codex-context",
+      providerState: "Local Demo",
+      credentialRequired: false
+    },
+    "seis-agent-policy-profile": {
+      provider: "SEIS Agent Policy Runtime",
+      model: "policy-fixture-no-provider-call",
+      providerState: "Local Demo",
+      credentialRequired: false
+    },
+    "claude-review-profile": {
+      provider: "Claude review profile",
+      model: "review-profile-not-configured",
+      providerState: "Missing Key",
+      credentialRequired: true
+    },
+    "qwen-review-profile": {
+      provider: "Qwen review profile",
+      model: "review-profile-not-configured",
+      providerState: "Missing Key",
+      credentialRequired: true
+    },
+    "gemini-validation-profile": {
+      provider: "Gemini validation profile",
+      model: "validation-profile-not-configured",
+      providerState: "Missing Key",
+      credentialRequired: true
+    },
+    "openai-general-profile": {
+      provider: "OpenAI general profile",
+      model: "general-profile-not-configured",
+      providerState: "Missing Key",
+      credentialRequired: true
+    },
+    "anthropic-claude-profile": {
+      provider: "Anthropic Claude profile",
+      model: "anthropic-profile-not-configured",
+      providerState: "Missing Key",
+      credentialRequired: true
+    },
+    "chatgpt-review-profile": {
+      provider: "ChatGPT review profile",
+      model: "chatgpt-review-not-configured",
+      providerState: "Missing Key",
+      credentialRequired: true
+    },
+    "openrouter-provider-profile": {
+      provider: "OpenRouter provider profile",
+      model: "openrouter-profile-not-configured",
+      providerState: "Missing Key",
+      credentialRequired: true
+    },
+    "ollama-local-profile": {
+      provider: "Ollama local candidate",
+      model: "local-runtime-not-verified",
+      providerState: "Unknown",
+      credentialRequired: false
+    },
+    "lm-studio-local-profile": {
+      provider: "LM Studio local candidate",
+      model: "local-runtime-not-verified",
+      providerState: "Unknown",
+      credentialRequired: false
+    }
+  };
+
+  const disabledToolProfile = {
+    provider: readableProfileName(profile),
+    model: "tool-profile-not-live-routable",
+    providerState: "Disabled",
+    credentialRequired: false
+  };
+
+  return {
+    profile,
+    ...(providerInfo[profile] || disabledToolProfile),
+    providerCallsPerformed: false
+  };
+}
+
+function readableProfileName(profile) {
+  return profile
+    .split("-")
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
 function makeDecision(value) {
   return {
     ...value,
@@ -259,7 +315,8 @@ function makeDecision(value) {
   };
 }
 
-function validateDecisionReport(value, contract, label) {
+function validateDecisionReport(value, contract, secondBrainContract, label) {
+  const sourceInstalledAiProfiles = secondBrainContract?.installedAiProfiles || [];
   ensure(value?.id === "seis-read-only-model-router-decision-pr54", `${label} id mismatch.`);
   ensure(value?.title === "SEIS Read-Only Model Router Decision", `${label} title mismatch.`);
   ensure(value?.status === "review-only-no-runtime-authority", `${label} status mismatch.`);
@@ -267,11 +324,16 @@ function validateDecisionReport(value, contract, label) {
   ensure(value?.decision === "NO-GO-live-routing-not-approved", `${label} decision must block live routing.`);
   ensure(value?.contractPath === paths.routerContract, `${label} contract path mismatch.`);
   ensure(value?.secondBrainPath === paths.secondBrain, `${label} Second Brain path mismatch.`);
-  ensure(Array.isArray(value?.installedAiProfiles) && value.installedAiProfiles.length >= 6, `${label} must include installed AI profiles.`);
+  ensureExactArray(value?.installedAiProfiles, sourceInstalledAiProfiles, `${label} installedAiProfiles`);
+  ensure(value?.sourceSnapshot?.installedAiProfileCount === sourceInstalledAiProfiles.length, `${label} sourceSnapshot installed AI profile count mismatch.`);
+  ensure(value?.sourceSnapshot?.providerFixtureForEveryInstalledAiProfile === true, `${label} must require provider fixture coverage for every installed AI profile.`);
   ensure(Array.isArray(value?.managedSubAgentLanes) && value.managedSubAgentLanes.length >= 6, `${label} must include managed sub-agent lanes.`);
   ensure(Array.isArray(value?.autonomousAgentRoster) && value.autonomousAgentRoster.length >= 12, `${label} must include autonomous agent roster.`);
-  ensure(Array.isArray(value?.providerFixtures) && value.providerFixtures.length >= 6, `${label} must include provider fixtures.`);
+  ensure(Array.isArray(value?.providerFixtures) && value.providerFixtures.length === sourceInstalledAiProfiles.length, `${label} must include one provider fixture per installed AI profile.`);
   ensure(Array.isArray(value?.decisions) && value.decisions.length >= 4, `${label} must include read-only decisions.`);
+
+  const fixtureProfiles = (value?.providerFixtures || []).map((fixture) => fixture.profile);
+  ensureExactArray(fixtureProfiles, sourceInstalledAiProfiles, `${label} provider fixture profiles`);
 
   for (const [key, expected] of Object.entries(contract?.decisionIntegrity || {})) {
     ensure(value?.decisionIntegrity?.[key] === expected, `${label} decisionIntegrity.${key} must be ${expected}.`);
@@ -409,6 +471,19 @@ function writeText(filePath, value) {
 
 function ensure(condition, message) {
   if (!condition) failures.push(message);
+}
+
+function ensureExactArray(value, expected, label) {
+  ensure(Array.isArray(value), `${label} must be an array.`);
+  ensure(Array.isArray(expected), `${label} expected source must be an array.`);
+  if (!Array.isArray(value) || !Array.isArray(expected)) return;
+  ensure(value.length === expected.length, `${label} count must match the Second Brain source contract exactly.`);
+  for (const expectedValue of expected) {
+    ensure(value.includes(expectedValue), `${label} missing source item: ${expectedValue}.`);
+  }
+  for (const actualValue of value) {
+    ensure(expected.includes(actualValue), `${label} includes non-source item: ${actualValue}.`);
+  }
 }
 
 function ensureFile(filePath, label) {

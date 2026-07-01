@@ -1,19 +1,44 @@
 {
   "id": "seis-read-only-model-router-decision-pr54",
   "title": "SEIS Read-Only Model Router Decision",
-  "generatedAt": "2026-06-30T21:17:58.965Z",
+  "generatedAt": "2026-07-01T18:52:51.510Z",
   "status": "review-only-no-runtime-authority",
   "mode": "provider-neutral-read-only",
   "decision": "NO-GO-live-routing-not-approved",
   "contractPath": "content/development/seis-read-only-model-router-contract.json",
   "secondBrainPath": "content/development/seis-second-brain-system.json",
+  "sourceSnapshot": {
+    "installedAiProfileCount": 24,
+    "managedSubAgentLaneCount": 6,
+    "autonomousAgentRosterCount": 12,
+    "providerFixtureCount": 24,
+    "providerFixtureForEveryInstalledAiProfile": true
+  },
   "installedAiProfiles": [
     "codex-operator",
     "seis-local-demo",
+    "seis-agent-policy-profile",
     "claude-review-profile",
     "qwen-review-profile",
     "gemini-validation-profile",
-    "ollama-local-profile"
+    "ollama-local-profile",
+    "openai-general-profile",
+    "anthropic-claude-profile",
+    "chatgpt-review-profile",
+    "openrouter-provider-profile",
+    "cursor-ide-profile",
+    "xcode",
+    "github-copilot-profile",
+    "lm-studio-local-profile",
+    "open-design",
+    "antigravity",
+    "antigravity-ide",
+    "aider",
+    "interpreter",
+    "hermes",
+    "goose",
+    "kimi",
+    "opencode"
   ],
   "managedSubAgentLanes": [
     "SEIS Hub",
@@ -39,6 +64,14 @@
   ],
   "providerFixtures": [
     {
+      "profile": "codex-operator",
+      "provider": "Codex / ChatGPT operator lane",
+      "model": "external-human-operated-codex-context",
+      "providerState": "Local Demo",
+      "credentialRequired": false,
+      "providerCallsPerformed": false
+    },
+    {
       "profile": "seis-local-demo",
       "provider": "SEIS Local Demo Runtime",
       "model": "local-demo-fixture",
@@ -47,9 +80,9 @@
       "providerCallsPerformed": false
     },
     {
-      "profile": "codex-operator",
-      "provider": "Codex / ChatGPT operator lane",
-      "model": "external-human-operated-codex-context",
+      "profile": "seis-agent-policy-profile",
+      "provider": "SEIS Agent Policy Runtime",
+      "model": "policy-fixture-no-provider-call",
       "providerState": "Local Demo",
       "credentialRequired": false,
       "providerCallsPerformed": false
@@ -83,6 +116,142 @@
       "provider": "Ollama local candidate",
       "model": "local-runtime-not-verified",
       "providerState": "Unknown",
+      "credentialRequired": false,
+      "providerCallsPerformed": false
+    },
+    {
+      "profile": "openai-general-profile",
+      "provider": "OpenAI general profile",
+      "model": "general-profile-not-configured",
+      "providerState": "Missing Key",
+      "credentialRequired": true,
+      "providerCallsPerformed": false
+    },
+    {
+      "profile": "anthropic-claude-profile",
+      "provider": "Anthropic Claude profile",
+      "model": "anthropic-profile-not-configured",
+      "providerState": "Missing Key",
+      "credentialRequired": true,
+      "providerCallsPerformed": false
+    },
+    {
+      "profile": "chatgpt-review-profile",
+      "provider": "ChatGPT review profile",
+      "model": "chatgpt-review-not-configured",
+      "providerState": "Missing Key",
+      "credentialRequired": true,
+      "providerCallsPerformed": false
+    },
+    {
+      "profile": "openrouter-provider-profile",
+      "provider": "OpenRouter provider profile",
+      "model": "openrouter-profile-not-configured",
+      "providerState": "Missing Key",
+      "credentialRequired": true,
+      "providerCallsPerformed": false
+    },
+    {
+      "profile": "cursor-ide-profile",
+      "provider": "Cursor Ide Profile",
+      "model": "tool-profile-not-live-routable",
+      "providerState": "Disabled",
+      "credentialRequired": false,
+      "providerCallsPerformed": false
+    },
+    {
+      "profile": "xcode",
+      "provider": "Xcode",
+      "model": "tool-profile-not-live-routable",
+      "providerState": "Disabled",
+      "credentialRequired": false,
+      "providerCallsPerformed": false
+    },
+    {
+      "profile": "github-copilot-profile",
+      "provider": "Github Copilot Profile",
+      "model": "tool-profile-not-live-routable",
+      "providerState": "Disabled",
+      "credentialRequired": false,
+      "providerCallsPerformed": false
+    },
+    {
+      "profile": "lm-studio-local-profile",
+      "provider": "LM Studio local candidate",
+      "model": "local-runtime-not-verified",
+      "providerState": "Unknown",
+      "credentialRequired": false,
+      "providerCallsPerformed": false
+    },
+    {
+      "profile": "open-design",
+      "provider": "Open Design",
+      "model": "tool-profile-not-live-routable",
+      "providerState": "Disabled",
+      "credentialRequired": false,
+      "providerCallsPerformed": false
+    },
+    {
+      "profile": "antigravity",
+      "provider": "Antigravity",
+      "model": "tool-profile-not-live-routable",
+      "providerState": "Disabled",
+      "credentialRequired": false,
+      "providerCallsPerformed": false
+    },
+    {
+      "profile": "antigravity-ide",
+      "provider": "Antigravity Ide",
+      "model": "tool-profile-not-live-routable",
+      "providerState": "Disabled",
+      "credentialRequired": false,
+      "providerCallsPerformed": false
+    },
+    {
+      "profile": "aider",
+      "provider": "Aider",
+      "model": "tool-profile-not-live-routable",
+      "providerState": "Disabled",
+      "credentialRequired": false,
+      "providerCallsPerformed": false
+    },
+    {
+      "profile": "interpreter",
+      "provider": "Interpreter",
+      "model": "tool-profile-not-live-routable",
+      "providerState": "Disabled",
+      "credentialRequired": false,
+      "providerCallsPerformed": false
+    },
+    {
+      "profile": "hermes",
+      "provider": "Hermes",
+      "model": "tool-profile-not-live-routable",
+      "providerState": "Disabled",
+      "credentialRequired": false,
+      "providerCallsPerformed": false
+    },
+    {
+      "profile": "goose",
+      "provider": "Goose",
+      "model": "tool-profile-not-live-routable",
+      "providerState": "Disabled",
+      "credentialRequired": false,
+      "providerCallsPerformed": false
+    },
+    {
+      "profile": "kimi",
+      "provider": "Kimi",
+      "model": "tool-profile-not-live-routable",
+      "providerState": "Disabled",
+      "credentialRequired": false,
+      "providerCallsPerformed": false
+    },
+    {
+      "profile": "opencode",
+      "provider": "Opencode",
+      "model": "tool-profile-not-live-routable",
+      "providerState": "Disabled",
       "credentialRequired": false,
       "providerCallsPerformed": false
     }
