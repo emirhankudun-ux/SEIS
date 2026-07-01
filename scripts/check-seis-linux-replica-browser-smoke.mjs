@@ -317,6 +317,7 @@ function validateStaticContract() {
   ensure(html.includes("data-store-panel"), "Linux Replica route must expose a SEIS Store workspace.");
   ensure(html.includes("data-music-panel"), "Linux Replica route must expose a SEIS Music workspace.");
   ensure(html.includes("data-ai-core-panel"), "Linux Replica route must expose a SEIS AI Core workspace.");
+  ensure(html.includes("data-security-gate-app"), "Linux Replica route must expose a Security Gate app.");
   ensure(html.includes("bridgeTargetCount"), "Linux Replica diagnostics must expose bridge target count.");
   for (const marker of ["SEIS Search Gateway", "SEIS Code IDE", "SEIS Design Studio", "SEIS Cloud Center", "SEIS Store", "SEIS Website Hub", "SEIS AI Core"]) {
     ensure(html.includes(marker), `Linux Replica SEIS bridge missing marker: ${marker}`);
@@ -331,6 +332,7 @@ function validateStaticContract() {
   ensure(html.includes("refs:(args)=>"), "Linux Replica terminal must expose the reference listing command.");
   ensure(html.includes("refopen:(args)=>"), "Linux Replica terminal must expose the reference opening command.");
   ensure(html.includes("sources:()=>referenceSourceRows"), "Linux Replica terminal must expose supplied ZIP source coverage.");
+  ensure(html.includes("security:()=>"), "Linux Replica terminal must expose the security gate command.");
   ensure(html.includes("live:()=>"), "Linux Replica terminal must expose the live demo command.");
   ensure(html.includes("tour:()=>"), "Linux Replica terminal must expose the live demo tour command.");
   ensure(routes.includes("/seis-linux-replica.html"), "routes.json must register SEIS Linux Replica.");
@@ -413,6 +415,14 @@ async function smokeLinuxReplica(client, baseUrl) {
 
   await evaluate(client, `(() => {
     const input = document.querySelector('[data-terminal] input');
+    input.value = 'security';
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    return true;
+  })()`);
+  await waitFor(client, "document.querySelector('[data-security-gate-app]') && document.body.innerText.includes('opened Security Gate owner tracker')", 5000);
+
+  await evaluate(client, `(() => {
+    const input = document.querySelector('[data-terminal] input');
     input.value = 'seis';
     input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
     return true;
@@ -428,6 +438,7 @@ async function smokeLinuxReplica(client, baseUrl) {
     document.querySelector('#sideRail [data-side-app="search"]')?.click();
     window.__SEIS_LINUX_REPLICA__.openApp('live-demo');
     window.__SEIS_LINUX_REPLICA__.openApp('demo-readiness');
+    window.__SEIS_LINUX_REPLICA__.openApp('security-gate');
     window.__SEIS_LINUX_REPLICA__.openApp('calculator');
     window.__SEIS_LINUX_REPLICA__.openApp('settings');
     window.__SEIS_LINUX_REPLICA__.openApp('reference-vault');
@@ -465,6 +476,8 @@ async function smokeLinuxReplica(client, baseUrl) {
     const storePanel = document.querySelectorAll('[data-store-panel]').length;
     const musicPanel = document.querySelectorAll('[data-music-panel]').length;
     const aiCorePanel = document.querySelectorAll('[data-ai-core-panel]').length;
+    const securityGateApp = document.querySelectorAll('[data-security-gate-app]').length;
+    const securityPathCards = document.querySelectorAll('.security-path').length;
     const liveDemoConsole = document.querySelectorAll('[data-live-demo-console]').length;
     const liveStepButtons = document.querySelectorAll('[data-live-step]').length;
     const liveSourceRows = document.querySelectorAll('.source-row').length;
@@ -478,6 +491,8 @@ async function smokeLinuxReplica(client, baseUrl) {
     const referenceSources = window.__SEIS_LINUX_REPLICA__.referenceSources();
     const bodyText = document.body.innerText;
     const blockedCopy = bodyText.includes('No SSH') || bodyText.includes('SSH disabled') || bodyText.includes('no host shell');
+    const securityGateVisible = bodyText.includes('Security Gate') && bodyText.includes('Issue #129') && bodyText.includes('Bypass');
+    const securityTerminalVisible = bodyText.includes('opened Security Gate owner tracker');
     const sessionSnapshot = window.__SEIS_LINUX_REPLICA__.session();
     return {
       appCount: window.__SEIS_LINUX_REPLICA__.appCount,
@@ -503,6 +518,8 @@ async function smokeLinuxReplica(client, baseUrl) {
       storePanel,
       musicPanel,
       aiCorePanel,
+      securityGateApp,
+      securityPathCards,
       liveDemoConsole,
       liveStepButtons,
       liveSourceRows,
@@ -521,6 +538,8 @@ async function smokeLinuxReplica(client, baseUrl) {
       neofetchVisible: bodyText.includes('Apps: ' + window.__SEIS_LINUX_REPLICA__.appCount) && bodyText.includes('References: ' + window.__SEIS_LINUX_REPLICA__.referenceCount),
       sourcesVisible: bodyText.includes('Stitch Web Based Linux Desktop') && bodyText.includes('Stitch Yapay Zeka Web Platformu'),
       liveCommandVisible: bodyText.includes('opened Live Demo Console'),
+      securityGateVisible,
+      securityTerminalVisible,
       liveConsoleVisible: bodyText.includes('SEIS Live Linux-like Demo'),
       codeCheckVisible: bodyText.includes('PASS local UI contract'),
       designSnapshotVisible: bodyText.includes('Snapshot saved to VFS') || bodyText.includes('design-token-'),
@@ -558,6 +577,8 @@ async function smokeLinuxReplica(client, baseUrl) {
   ensure(summary.storePanel >= 1, "mini SEIS Store workspace did not render.");
   ensure(summary.musicPanel >= 1, "mini SEIS Music workspace did not render.");
   ensure(summary.aiCorePanel >= 1, "mini SEIS AI Core workspace did not render.");
+  ensure(summary.securityGateApp >= 1, "Security Gate app did not render.");
+  ensure(summary.securityPathCards >= 3, `expected three Security Gate owner paths, found ${summary.securityPathCards}.`);
   ensure(summary.liveDemoConsole >= 1, "Live Demo Console did not render.");
   ensure(summary.demoReadiness >= 1, "Demo Readiness did not render.");
   ensure(summary.readinessGates >= 6, `expected at least six Demo Readiness gates, found ${summary.readinessGates}.`);
@@ -579,6 +600,8 @@ async function smokeLinuxReplica(client, baseUrl) {
   ensure(summary.neofetchVisible === true, "terminal neofetch output did not show runtime app and reference counts.");
   ensure(summary.sourcesVisible === true, "terminal sources command did not show supplied ZIP source coverage.");
   ensure(summary.liveCommandVisible === true, "terminal live command did not report the live tour output.");
+  ensure(summary.securityTerminalVisible === true, "terminal security command did not report the Security Gate output.");
+  ensure(summary.securityGateVisible === true, "Security Gate owner tracker copy is not visible.");
   ensure(summary.liveConsoleVisible === true, "Live Demo Console copy is not visible.");
   ensure(summary.searchGatewayVisible && summary.codeVisible && summary.designVisible && summary.cloudVisible && summary.websiteVisible, "connected SEIS bridge surfaces are not all visible.");
   ensure(summary.blockedCopy === true, "local-only SSH/host-shell boundary copy is missing.");
