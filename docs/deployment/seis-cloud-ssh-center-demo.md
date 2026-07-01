@@ -66,7 +66,9 @@ Required before a 24/7 claim:
 ## 24/7 acceptance ladder
 
 The Cloud / SSH Center mirrors the mobile direct-cloud acceptance ledger. The
-visible ladder keeps each evidence step separate from the final ready claim:
+visible ladder keeps each evidence step separate from the final ready claim, and
+`npm run check:seis-cloud-ssh-center-readiness` cross-validates the ladder
+against the ledger:
 
 - `npm run cloud:ssh:mobile-direct:profile`: configuration-only profile inputs.
 - `npm run cloud:ssh:mobile-direct:bootstrap:plan`: public-key-only bootstrap dry run.

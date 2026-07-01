@@ -94,6 +94,7 @@ test("SEIS Cloud SSH Center styles include responsive and reduced-motion support
 test("SEIS Cloud SSH Center fixture stays synchronized with safe demo states", async () => {
   const fixturePath = "content/development/seis-cloud-ssh-center-readiness.json";
   const fixture = JSON.parse(await readRepo(fixturePath));
+  const acceptanceLedger = JSON.parse(await readRepo(fixture.acceptanceLedger));
   const script = await read("cloud-ssh-center.js");
   assert.equal(fixture.qualityGate, "npm run check:seis-cloud-ssh-center-readiness");
   assert.equal(fixture.liveExecutionAllowed, false);
@@ -112,6 +113,10 @@ test("SEIS Cloud SSH Center fixture stays synchronized with safe demo states", a
   assert.equal(fixture.currentKnownBlocker, "mobile-24x7-requires-direct-cloud-transport");
   assert.equal(fixture.acceptanceLedger, "content/development/seis-ssh-mobile-direct-cloud-acceptance-ledger.json");
   assert.equal(fixture.acceptanceContractGate, "npm run check:seis-ssh-mobile-direct-cloud");
+  assert.equal(acceptanceLedger.id, "seis-ssh-mobile-direct-cloud-acceptance-ledger");
+  assert.equal(acceptanceLedger.readyClaim, "SEIS-SSH is ChatGPT mobile/Codex 24x7 ready");
+  assert.ok(acceptanceLedger.readyClaimAllowedOnlyWhen.includes("strict doctor writes a successful readiness handoff report"));
+  assert.ok(acceptanceLedger.blockedClaimWhen.includes("SEIS-SSH still uses Codespaces transport"));
   assert.equal(fixture.historyScanBoundary.bypassAllowedByDefault, false);
   assert.ok(fixture.historyScanBoundary.forbiddenDiffPrefixes.includes("sources/"));
   assert.ok(fixture.historyScanBoundary.forbiddenHeadPaths.includes("sources/github-unified-source/_generated/github-code-bundle.txt"));
@@ -129,17 +134,26 @@ test("SEIS Cloud SSH Center fixture stays synchronized with safe demo states", a
     assert.equal(script.includes(input.boundary), true);
   }
   assert.equal(fixture.mobile24x7AcceptanceLadder.length, 8);
+  const ledgerEvidenceById = new Map(acceptanceLedger.evidenceMap.map((entry) => [entry.id, entry]));
   const ladderIds = new Set(fixture.mobile24x7AcceptanceLadder.map((step) => step.id));
   for (const id of ["profile-contract", "bootstrap-dry-run", "bootstrap-apply", "ssh-config-plan", "ssh-config-install", "readiness-probe", "handoff-doctor", "contract-guard"]) {
     assert.ok(ladderIds.has(id));
   }
   for (const step of fixture.mobile24x7AcceptanceLadder) {
+    const ledgerStep = ledgerEvidenceById.get(step.id);
+    assert.ok(ledgerStep);
+    assert.equal(step.command, ledgerStep.command);
+    assert.equal(step.claimScope, ledgerStep.claimScope);
+    assert.equal(step.proves, ledgerStep.proves);
     assert.ok(fixture.states.includes(step.status));
     assert.equal(script.includes(step.id), true);
     assert.equal(script.includes(step.command), true);
     assert.equal(script.includes(step.claimScope), true);
   }
   assert.equal(fixture.mobile24x7AcceptanceLadder.find((step) => step.id === "handoff-doctor").readyEvidence, true);
+  for (const step of fixture.mobile24x7AcceptanceLadder.filter((item) => item.id !== "handoff-doctor")) {
+    assert.equal(step.readyEvidence, false);
+  }
   assert.equal(fixture.surfaces.length, 12);
   assert.ok(fixture.surfaces.some((surface) => surface.id === "mac-independent-remote-runtime"));
   assert.ok(fixture.surfaces.some((surface) => surface.id === "always-on-direct-cloud"));

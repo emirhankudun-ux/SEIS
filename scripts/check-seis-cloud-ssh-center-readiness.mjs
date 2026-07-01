@@ -6,6 +6,7 @@ const failures = [];
 
 const files = {
   fixture: "content/development/seis-cloud-ssh-center-readiness.json",
+  acceptanceLedger: "content/development/seis-ssh-mobile-direct-cloud-acceptance-ledger.json",
   route: "apps/seis-core/cloud-ssh-center.html",
   script: "apps/seis-core/cloud-ssh-center.js",
   prBoundaryScript: "scripts/check-seis-cloud-ssh-center-pr-boundary.mjs",
@@ -17,6 +18,7 @@ const files = {
 for (const file of Object.values(files)) read(file);
 
 const fixture = readJson(files.fixture);
+const acceptanceLedger = readJson(files.acceptanceLedger);
 const packageJson = readJson(files.packageJson);
 const route = read(files.route);
 const appScript = read(files.script);
@@ -47,8 +49,18 @@ ensure(fixture?.mobile24x7ReadyByDefault === false, "fixture must keep mobile 24
 ensure(fixture?.onlineGate === "npm run cloud:ssh:online:strict", "fixture must expose the online SSH gate");
 ensure(fixture?.mobile24x7Gate === "npm run cloud:ssh:mobile-24x7:strict", "fixture must expose the mobile 24/7 gate");
 ensure(fixture?.currentKnownBlocker === "mobile-24x7-requires-direct-cloud-transport", "fixture must keep the current 24/7 blocker explicit");
-ensure(fixture?.acceptanceLedger === "content/development/seis-ssh-mobile-direct-cloud-acceptance-ledger.json", "fixture must link the direct-cloud acceptance ledger");
+ensure(fixture?.acceptanceLedger === files.acceptanceLedger, "fixture must link the direct-cloud acceptance ledger");
 ensure(fixture?.acceptanceContractGate === "npm run check:seis-ssh-mobile-direct-cloud", "fixture must expose the direct-cloud contract gate");
+ensure(acceptanceLedger?.id === "seis-ssh-mobile-direct-cloud-acceptance-ledger", "acceptance ledger id must be stable");
+ensure(acceptanceLedger?.readyClaim === "SEIS-SSH is ChatGPT mobile/Codex 24x7 ready", "acceptance ledger must preserve ready claim");
+ensure(
+  (acceptanceLedger?.readyClaimAllowedOnlyWhen || []).includes("strict doctor writes a successful readiness handoff report"),
+  "acceptance ledger must require strict doctor report before ready claim"
+);
+ensure(
+  (acceptanceLedger?.blockedClaimWhen || []).includes("SEIS-SSH still uses Codespaces transport"),
+  "acceptance ledger must block ready claim for Codespaces transport"
+);
 ensure(fixture?.historyScanBoundary?.fullHistoryGate === "GitHub Secret & Vulnerability Scan", "fixture must name the full-history secret gate");
 ensure(fixture?.historyScanBoundary?.bypassAllowedByDefault === false, "fixture must forbid secret-history bypass by default");
 ensure((fixture?.historyScanBoundary?.forbiddenDiffPrefixes || []).includes("sources/"), "fixture must forbid sources/ in this PR boundary");
@@ -100,6 +112,7 @@ for (const id of ["direct-cloud-host", "ssh-port", "runtime-user", "identity-fil
 const acceptanceLadder = fixture?.mobile24x7AcceptanceLadder || [];
 ensure(Array.isArray(acceptanceLadder) && acceptanceLadder.length === 8, "fixture must define 8 direct-cloud acceptance steps");
 const acceptanceIds = new Set();
+const ledgerEvidenceById = new Map((acceptanceLedger?.evidenceMap || []).map((entry) => [entry.id, entry]));
 for (const step of acceptanceLadder) {
   ensure(/^[a-z0-9-]+$/.test(step.id || ""), `acceptance step id must be kebab-case: ${step.id}`);
   ensure(!acceptanceIds.has(step.id), `acceptance step id must be unique: ${step.id}`);
@@ -107,6 +120,11 @@ for (const step of acceptanceLadder) {
   ensure(states.has(step.status), `acceptance step ${step.id} must use a declared state`);
   ensure(typeof step.proves === "string" && step.proves.length > 10, `acceptance step ${step.id} must explain evidence`);
   ensure(typeof step.readyEvidence === "boolean", `acceptance step ${step.id} must declare readyEvidence`);
+  const ledgerStep = ledgerEvidenceById.get(step.id);
+  ensure(Boolean(ledgerStep), `acceptance ledger must include evidence step ${step.id}`);
+  ensure(ledgerStep?.command === step.command, `acceptance step ${step.id} command must match acceptance ledger`);
+  ensure(ledgerStep?.claimScope === step.claimScope, `acceptance step ${step.id} claimScope must match acceptance ledger`);
+  ensure(ledgerStep?.proves === step.proves, `acceptance step ${step.id} evidence text must match acceptance ledger`);
   for (const token of [step.id, step.status, step.command, step.claimScope]) {
     ensure(appScript.includes(token), `app script must include acceptance step token: ${token}`);
   }
@@ -116,6 +134,9 @@ for (const id of ["profile-contract", "bootstrap-dry-run", "bootstrap-apply", "s
   ensure(acceptanceIds.has(id), `fixture must include acceptance step ${id}`);
 }
 ensure(acceptanceLadder.find((step) => step.id === "handoff-doctor")?.readyEvidence === true, "handoff doctor must be the mobile 24/7 ready evidence step");
+for (const step of acceptanceLadder.filter((item) => item.id !== "handoff-doctor")) {
+  ensure(step.readyEvidence === false, `acceptance step ${step.id} must not be final ready evidence`);
+}
 
 const requiredFlags = fixture?.requiredSafetyFlags || {};
 for (const [flag, value] of Object.entries({
@@ -163,7 +184,7 @@ for (const token of [
   "schema-backed Cloud / SSH readiness fixture",
   "ownerInputChecklist",
   "mobile24x7AcceptanceLadder",
-  "content/development/seis-ssh-mobile-direct-cloud-acceptance-ledger.json",
+  files.acceptanceLedger,
   "npm run check:seis-ssh-mobile-direct-cloud",
   "SEIS_SSH_HOST",
   "SEIS_CLOUD_HOST",
