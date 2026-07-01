@@ -1,7 +1,7 @@
 {
   "id": "seis-second-brain-accessibility-focus-qa-pr54",
   "title": "SEIS Second Brain Accessibility Focus QA",
-  "generatedAt": "2026-06-30T21:17:59.225Z",
+  "generatedAt": "2026-07-01T03:19:29.728Z",
   "status": "review-gated-human-accessibility-needed",
   "mode": "repo-static-and-browser-smoke-evidence",
   "decision": "NO-GO-human-accessibility-review-required",
@@ -88,8 +88,8 @@
     {
       "id": "current-browser-smoke-result",
       "requirement": "current browser smoke result",
-      "status": "blocked",
-      "evidence": "Run npm run check:seis-second-brain-browser-smoke and regenerate go/no-go evidence."
+      "status": "passed",
+      "evidence": "reports/seis-public-demo/evidence-manifest-latest.json"
     },
     {
       "id": "manual-keyboard-transcript",
@@ -106,7 +106,7 @@
     {
       "id": "mobile-viewport-target-audit",
       "requirement": "mobile viewport target audit",
-      "status": "blocked",
+      "status": "passed",
       "evidence": "scripts/check-seis-second-brain-browser-smoke.mjs"
     },
     {
@@ -131,8 +131,8 @@
   "summary": {
     "automatedPassed": 10,
     "automatedFailed": 0,
-    "requiredPassed": 0,
-    "requiredBlocked": 7
+    "requiredPassed": 2,
+    "requiredBlocked": 5
   },
   "safetyBoundary": {
     "privateObsidianImportPerformed": false,

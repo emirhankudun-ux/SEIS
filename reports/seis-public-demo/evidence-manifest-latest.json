@@ -1,7 +1,7 @@
 {
   "id": "seis-public-demo-evidence-manifest-pr54",
   "title": "SEIS Public Demo Evidence Manifest After PR 54 Review",
-  "generatedAt": "2026-07-01T03:09:23.785Z",
+  "generatedAt": "2026-07-01T03:22:10.666Z",
   "decision": "NO-GO",
   "status": "review-gated-not-released",
   "mode": "read-only",
@@ -14,9 +14,9 @@
   },
   "summary": {
     "total": 29,
-    "passed": 24,
-    "blocked": 4,
-    "missingCurrentEvidence": 1,
+    "passed": 26,
+    "blocked": 3,
+    "missingCurrentEvidence": 0,
     "failed": 0,
     "notRequested": 0
   },
@@ -137,14 +137,14 @@
       "id": "current-browser-smoke",
       "type": "runtime-evidence",
       "requirement": "Current Second Brain browser smoke evidence exists for this release candidate.",
-      "status": "missing-current-evidence",
+      "status": "passed",
       "evidence": "npm run check:seis-second-brain-browser-smoke"
     },
     {
       "id": "release-worktree-review",
       "type": "repository-state",
       "requirement": "Release candidate worktree has been reviewed and is not carrying unrelated dirty files.",
-      "status": "blocked",
+      "status": "passed",
       "evidence": "git status --short"
     },
     {
