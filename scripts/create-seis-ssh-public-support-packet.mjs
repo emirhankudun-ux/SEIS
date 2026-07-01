@@ -53,7 +53,7 @@ function buildSupportPacket() {
   if (scripts["report:seis-ssh-public-support-packet"] !== "node scripts/create-seis-ssh-public-support-packet.mjs --write") blockers.push("package script report:seis-ssh-public-support-packet must be declared");
   if (scripts["run:seis-ssh-public-support-packet"] !== "npm run check:seis-ssh-public-support-packet && npm run report:seis-ssh-public-support-packet") blockers.push("package script run:seis-ssh-public-support-packet must be declared");
   if (!issueTemplate.includes("SEIS SSH access support")) blockers.push("support issue template must be present");
-  if (!issueTemplate.includes("Do not paste private keys, tokens, passwords, cookies, `.env` values, full hostnames, full IP addresses, or provider credentials.")) blockers.push("support issue template must warn against public secrets");
+  if (!issueTemplate.includes("Do not paste private keys, tokens, passwords, cookies, `.env` values, full hostnames, full IPv4/IPv6 addresses, or provider credentials.")) blockers.push("support issue template must warn against public secrets");
   if (!issueTemplate.includes("Keep the same server and port.")) blockers.push("support issue template must preserve same server and port");
   if (snapshot.transport === "local-or-lan") blockers.push("SEIS-SSH resolves to a local or private LAN target.");
   if (firstRun.ok !== true) blockers.push(...prefixItems("first-run", firstRun.blockers));
@@ -125,7 +125,7 @@ function buildSupportPacket() {
         ? "Support packet generated. Attach the sanitized fields to the SEIS SSH access support issue form."
         : "Support packet blocked. Fix blocker labels first, then regenerate the packet.",
       safetyConfirmations: [
-        "No private keys, tokens, passwords, cookies, .env values, full hostnames, full IP addresses, or provider credentials are included.",
+        "No private keys, tokens, passwords, cookies, .env values, full hostnames, full IPv4/IPv6 addresses, or provider credentials are included.",
         "No request to change the SEIS-SSH server or port is included.",
         "No live SSH session was attempted by this support packet."
       ]
@@ -162,7 +162,7 @@ function buildSupportPacket() {
       "This support packet does not open a live SSH session.",
       "This support packet does not write ~/.ssh/config.",
       "This support packet does not call gh auth status or contact GitHub.",
-      "This support packet does not print private keys, tokens, cookies, full hostnames, full IP addresses, or provider credentials.",
+      "This support packet does not print private keys, tokens, cookies, full hostnames, full IPv4/IPv6 addresses, or provider credentials.",
       "Changing HostName or Port remains approval-gated."
     ]
   };
@@ -363,8 +363,11 @@ function sanitize(value) {
   return String(value || "")
     .replace(/-----BEGIN [^-]+PRIVATE KEY-----[\s\S]*?-----END [^-]+PRIVATE KEY-----/g, "[redacted-private-key]")
     .replace(/sk-[A-Za-z0-9_-]{20,}/g, "[redacted-api-key]")
+    .replace(/github_pat_[A-Za-z0-9_]{20,}/g, "[redacted-github-token]")
     .replace(/gh[pousr]_[A-Za-z0-9_]{20,}/g, "[redacted-github-token]")
     .replace(/\b(?:\d{1,3}\.){3}\d{1,3}\b/g, "[redacted-ip]")
+    .replace(/\b(?:[a-f0-9]{1,4}:){4,7}[a-f0-9]{1,4}\b/gi, "[redacted-ipv6]")
+    .replace(/\b(?:f[cd][a-f0-9]{0,2}|fe80):[a-f0-9:]{2,}\b/gi, "[redacted-ipv6]")
     .replace(/(?:[a-z0-9-]+\.)+[a-z]{2,}/gi, "[redacted-hostname]")
     .replace(/\/Users\/[^/\s]+/g, "~")
     .slice(0, 700);

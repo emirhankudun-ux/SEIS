@@ -87,7 +87,7 @@ try {
       "This matrix does not open a live SSH session.",
       "This matrix does not write ~/.ssh/config.",
       "This matrix does not call gh auth status or contact GitHub.",
-      "This matrix does not print private keys, tokens, cookies, full hostnames, full IP addresses, or provider credentials.",
+      "This matrix does not print private keys, tokens, cookies, full hostnames, full IPv4/IPv6 addresses, or provider credentials.",
       "Changing HostName or Port remains approval-gated."
     ]
   };
@@ -156,9 +156,12 @@ function requireNoSensitiveOutput(id, chunks) {
   for (const [pattern, label] of [
     [/-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----/, "private key"],
     [/sk-[A-Za-z0-9_-]{20,}/, "OpenAI-style API key"],
+    [/github_pat_[A-Za-z0-9_]{20,}/, "GitHub fine-grained token"],
     [/gh[pousr]_[A-Za-z0-9_]{20,}/, "GitHub token"],
     [/\/Users\/[^"'`\s]+/, "private /Users path"],
     [/\b(?:\d{1,3}\.){3}\d{1,3}\b/, "full IPv4 address"],
+    [/\b(?:[a-f0-9]{1,4}:){4,7}[a-f0-9]{1,4}\b/i, "full IPv6 address"],
+    [/\b(?:f[cd][a-f0-9]{0,2}|fe80):[a-f0-9:]{2,}\b/i, "private IPv6 address"],
     [/\bProxyCommand\b/, "raw ProxyCommand detail"],
     [/\bIdentityFile\b/, "raw IdentityFile detail"],
     [/liveConnectionAttempted"\s*:\s*true/, "live SSH attempt"]
@@ -180,7 +183,10 @@ function sanitizeLines(values) {
     .map((line) => line
       .replace(/-----BEGIN [^-]+PRIVATE KEY-----[\s\S]*?-----END [^-]+PRIVATE KEY-----/g, "[redacted-private-key]")
       .replace(/sk-[A-Za-z0-9_-]{20,}/g, "[redacted-api-key]")
+      .replace(/github_pat_[A-Za-z0-9_]{20,}/g, "[redacted-github-token]")
       .replace(/gh[pousr]_[A-Za-z0-9_]{20,}/g, "[redacted-github-token]")
+      .replace(/\b(?:[a-f0-9]{1,4}:){4,7}[a-f0-9]{1,4}\b/gi, "[redacted-ipv6]")
+      .replace(/\b(?:f[cd][a-f0-9]{0,2}|fe80):[a-f0-9:]{2,}\b/gi, "[redacted-ipv6]")
       .replace(/\/Users\/[^"'`\s]+/g, "[redacted-private-path]")
       .slice(0, 240));
 }

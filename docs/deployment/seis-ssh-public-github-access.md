@@ -153,7 +153,7 @@ packet to `reports/seis-ssh-public-access/support-packet-latest.md`. Use it
 before opening the `SEIS SSH access support` GitHub issue form. It gives the
 contributor copy/paste fields for command names, sanitized status labels,
 warning IDs, blocker IDs, transport class, port, and endpoint fingerprint prefix
-without including full `ssh -G` output, full hostnames, full IP addresses,
+without including full `ssh -G` output, full hostnames, full IPv4/IPv6 addresses,
 private keys, tokens, passwords, cookies, `.env` values, or provider
 credentials.
 
@@ -186,8 +186,9 @@ config writes, and server/port mutation remain blocked.
 `npm run check:seis-ssh-public-artifact-hygiene` generates all public
 SEIS-SSH JSON/Markdown reports in a temporary directory and scans them before
 they are attached to a public issue or PR. It blocks private keys, API keys,
-GitHub tokens, inline credentials, full IP addresses, private `/Users` paths,
-raw ProxyCommand details, identity-file paths, live SSH attempts, and
+GitHub classic and fine-grained tokens, inline credentials, full IPv4/IPv6
+addresses, private `/Users` paths, raw ProxyCommand details,
+identity-file paths, live SSH attempts, and
 live-ready overclaims while keeping the same `SEIS-SSH` server and port policy
 visible.
 

@@ -217,7 +217,7 @@
   "guardrails": [
     "Do not add local Mac or LAN aliases to the managed SEIS SSH block.",
     "Do not add direct public VPS aliases to the Codex picker.",
-    "Do not print SSH private keys, GitHub tokens, certificates, or VPN private keys.",
+    "Do not print SSH private keys, GitHub classic or fine-grained tokens, certificates, or VPN private keys.",
     "Do not mark SEIS SSH online unless remote repo and Codex CLI are verified.",
     "Do not weaken company/team VPN requirements to simplify onboarding."
   ],

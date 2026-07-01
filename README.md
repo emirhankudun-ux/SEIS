@@ -213,7 +213,7 @@ server, port, SSH config, or GitHub state.
 `npm run run:seis-ssh-public-support-packet` creates a read-only packet for the
 GitHub `SEIS SSH access support` form. It summarizes command results, sanitized
 status labels, warning IDs, blocker IDs, transport class, port, and endpoint
-fingerprint prefix without printing full hostnames, full IP addresses, private
+fingerprint prefix without printing full hostnames, full IPv4/IPv6 addresses, private
 keys, tokens, cookies, provider credentials, or `.env` values.
 
 `npm run run:seis-ssh-public-github-quickstart` creates a read-only GitHub
@@ -241,7 +241,7 @@ server/port mutation remain blocked.
 `npm run check:seis-ssh-public-artifact-hygiene` generates every public
 SEIS-SSH JSON/Markdown report in a temporary directory and verifies that the
 artifacts are safe to attach to GitHub issues or PR review. It rejects private
-keys, API keys, GitHub tokens, inline credentials, full IP addresses, private
+keys, API keys, GitHub classic and fine-grained tokens, inline credentials, full IPv4/IPv6 addresses, private
 `/Users` paths, raw ProxyCommand details, identity-file paths, live-SSH
 attempts, and live-ready overclaims.
 

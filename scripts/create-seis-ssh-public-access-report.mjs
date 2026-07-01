@@ -211,15 +211,22 @@ function classifyHostname(hostname, transport) {
 }
 
 function isPrivateHost(host) {
-  const match = /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/.exec(String(host || ""));
-  if (!match) return false;
+  const value = String(host || "").toLowerCase();
+  const ipv4 = /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/.exec(value);
+  if (ipv4) {
+    const first = Number(ipv4[1]);
+    const second = Number(ipv4[2]);
 
-  const first = Number(match[1]);
-  const second = Number(match[2]);
+    return first === 10
+      || (first === 172 && second >= 16 && second <= 31)
+      || (first === 192 && second === 168);
+  }
 
-  return first === 10
-    || (first === 172 && second >= 16 && second <= 31)
-    || (first === 192 && second === 168);
+  const bracketless = value.replace(/^\[/, "").replace(/\]$/, "");
+  if (!bracketless.includes(":")) return false;
+  return /^f[cd][0-9a-f]{0,2}:/i.test(bracketless)
+    || bracketless.startsWith("fe80:")
+    || bracketless === "::1";
 }
 
 function safeIsDirectory(path) {
@@ -254,7 +261,11 @@ function sanitize(value) {
   return String(value || "")
     .replace(/-----BEGIN [^-]+PRIVATE KEY-----[\s\S]*?-----END [^-]+PRIVATE KEY-----/g, "[redacted-private-key]")
     .replace(/sk-[A-Za-z0-9_-]{20,}/g, "[redacted-api-key]")
+    .replace(/github_pat_[A-Za-z0-9_]{20,}/g, "[redacted-github-token]")
     .replace(/gh[pousr]_[A-Za-z0-9_]{20,}/g, "[redacted-github-token]")
+    .replace(/\b(?:\d{1,3}\.){3}\d{1,3}\b/g, "[redacted-ip]")
+    .replace(/\b(?:[a-f0-9]{1,4}:){4,7}[a-f0-9]{1,4}\b/gi, "[redacted-ipv6]")
+    .replace(/\b(?:f[cd][a-f0-9]{0,2}|fe80):[a-f0-9:]{2,}\b/gi, "[redacted-ipv6]")
     .slice(0, 400);
 }
 

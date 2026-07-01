@@ -4007,7 +4007,7 @@ const SEIS_SSH_PUBLIC_ACCESS_CONTRACT = {
     ["documented", "GitHub contributors can review the public runbook and checks."],
     ["first-run", "A read-only first-run guide gives new contributors setup-needed status without opening SSH or changing config."],
     ["troubleshooting", "A read-only troubleshooting guide maps missing alias, picker warning, billing blocker, and unsafe target states to safe actions."],
-    ["support-packet", "A read-only support packet gives GitHub issue copy/paste fields without full hostnames, full IPs, secrets, live SSH, or config writes."],
+    ["support-packet", "A read-only support packet gives GitHub issue copy/paste fields without full hostnames, full IPv4/IPv6 addresses, secrets, live SSH, or config writes."],
     ["github-quickstart", "A read-only GitHub quickstart turns first-run, troubleshooting, doctor, and support packet output into one public path."],
     ["pr-template", "A pull request checklist keeps SEIS-SSH changes reviewable on GitHub without server/port drift or public secrets."],
     ["ci-workflow", "A GitHub Actions gate runs the public SEIS-SSH review checks on pull requests before merge review."],

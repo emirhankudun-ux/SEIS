@@ -38,7 +38,7 @@ for (const token of [
   "I did not rename `SEIS-SSH`.",
   "I did not add a duplicate visible SEIS SSH alias.",
   "I did not change `HostName` or `Port` for `SEIS-SSH` without linked maintainer approval.",
-  "I did not paste private keys, tokens, passwords, cookies, `.env` values, full hostnames, full IP addresses, or provider credentials.",
+  "I did not paste private keys, tokens, passwords, cookies, `.env` values, full hostnames, full IPv4/IPv6 addresses, or provider credentials.",
   "No live SSH session was attempted for this PR unless explicit maintainer approval is linked.",
   "Live-ready, mobile-24x7-ready, and picker-ready claims are supported by strict evidence or left as `blocked` / `approval-gated`.",
   "Public artifacts were checked before attaching them to a public issue or PR.",

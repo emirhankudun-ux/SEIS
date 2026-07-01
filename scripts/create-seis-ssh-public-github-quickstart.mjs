@@ -142,7 +142,7 @@ function buildQuickstart() {
         "cookies",
         ".env values",
         "full hostnames",
-        "full IP addresses",
+        "full IPv4/IPv6 addresses",
         "provider credentials"
       ]
     },
@@ -175,7 +175,7 @@ function buildQuickstart() {
       "This quickstart does not open a live SSH session.",
       "This quickstart does not write ~/.ssh/config.",
       "This quickstart does not call gh auth status or contact GitHub.",
-      "This quickstart does not print private keys, tokens, cookies, full hostnames, full IP addresses, or provider credentials.",
+      "This quickstart does not print private keys, tokens, cookies, full hostnames, full IPv4/IPv6 addresses, or provider credentials.",
       "Changing HostName or Port remains approval-gated."
     ]
   };
@@ -362,8 +362,11 @@ function sanitize(value) {
   return String(value || "")
     .replace(/-----BEGIN [^-]+PRIVATE KEY-----[\s\S]*?-----END [^-]+PRIVATE KEY-----/g, "[redacted-private-key]")
     .replace(/sk-[A-Za-z0-9_-]{20,}/g, "[redacted-api-key]")
+    .replace(/github_pat_[A-Za-z0-9_]{20,}/g, "[redacted-github-token]")
     .replace(/gh[pousr]_[A-Za-z0-9_]{20,}/g, "[redacted-github-token]")
     .replace(/\b(?:\d{1,3}\.){3}\d{1,3}\b/g, "[redacted-ip]")
+    .replace(/\b(?:[a-f0-9]{1,4}:){4,7}[a-f0-9]{1,4}\b/gi, "[redacted-ipv6]")
+    .replace(/\b(?:f[cd][a-f0-9]{0,2}|fe80):[a-f0-9:]{2,}\b/gi, "[redacted-ipv6]")
     .replace(/(?:[a-z0-9-]+\.)+[a-z]{2,}/gi, "[redacted-hostname]")
     .replace(/\/Users\/[^/\s]+/g, "~")
     .slice(0, 700);

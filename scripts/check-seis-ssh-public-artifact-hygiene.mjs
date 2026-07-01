@@ -117,7 +117,7 @@ const report = {
   ],
   checks: [
     "generate all public SEIS-SSH JSON and Markdown reports in a temporary directory",
-    "reject private keys, API keys, GitHub tokens, inline credential assignments, full IPv4 addresses, private /Users paths, raw ProxyCommand details, and identity-file paths",
+    "reject private keys, API keys, GitHub classic and fine-grained tokens, inline credential assignments, full IPv4/IPv6 addresses, private /Users paths, raw ProxyCommand details, and identity-file paths",
     "reject liveConnectionAttempted true and strict-ready overclaims",
     "require SEIS-SSH alias, same server/port invariant, and preserved port 22 where a snapshot exists"
   ],
@@ -163,10 +163,13 @@ function validateTextArtifact({ artifact, jsonText, markdownText }) {
   const combined = `${jsonText}\n${markdownText}`;
   const checks = [
     [/-----BEGIN (?:OPENSSH|RSA|EC|DSA)? ?PRIVATE KEY-----/i, "private key block"],
+    [/\bgithub_pat_[A-Za-z0-9_]{20,}\b/, "GitHub fine-grained token"],
     [/\bgh[pousr]_[A-Za-z0-9_]{20,}\b/, "GitHub token"],
     [/\bsk-[A-Za-z0-9_-]{20,}\b/, "OpenAI-style API key"],
     [/\b(?:password|token|secret|api[_-]?key)\s*[:=]\s*["'][^"']{8,}["']/i, "inline credential assignment"],
     [/\b(?:\d{1,3}\.){3}\d{1,3}\b/, "full IPv4 address"],
+    [/\b(?:[a-f0-9]{1,4}:){4,7}[a-f0-9]{1,4}\b/i, "full IPv6 address"],
+    [/\b(?:f[cd][a-f0-9]{0,2}|fe80):[a-f0-9:]{2,}\b/i, "private IPv6 address"],
     [/\/Users\/[^/\s]+/, "private /Users path"],
     [/\bgh\s+cs\s+ssh\s+-c\s+\S+/i, "raw Codespaces ProxyCommand"],
     [/\bIdentityFile\b/i, "raw SSH identity file directive"],
@@ -195,8 +198,11 @@ function sanitizeLines(values) {
   return values.filter(Boolean).map((value) => String(value)
     .replace(/-----BEGIN [^-]+PRIVATE KEY-----[\s\S]*?-----END [^-]+PRIVATE KEY-----/g, "[redacted-private-key]")
     .replace(/sk-[A-Za-z0-9_-]{20,}/g, "[redacted-api-key]")
+    .replace(/github_pat_[A-Za-z0-9_]{20,}/g, "[redacted-github-token]")
     .replace(/gh[pousr]_[A-Za-z0-9_]{20,}/g, "[redacted-github-token]")
     .replace(/\b(?:\d{1,3}\.){3}\d{1,3}\b/g, "[redacted-ip]")
+    .replace(/\b(?:[a-f0-9]{1,4}:){4,7}[a-f0-9]{1,4}\b/gi, "[redacted-ipv6]")
+    .replace(/\b(?:f[cd][a-f0-9]{0,2}|fe80):[a-f0-9:]{2,}\b/gi, "[redacted-ipv6]")
     .replace(/\/Users\/[^/\s]+/g, "~")
     .slice(0, 500));
 }

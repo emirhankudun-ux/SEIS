@@ -114,7 +114,7 @@ Date: 2026-06-23
 `scripts/check-seis-ssh-public-ci-workflow.mjs`,
 `scripts/check-seis-ssh-public-readiness-matrix.mjs` as public GitHub review
 evidence. The gates keep same-server/port preservation, no-secret boundaries,
-clean-runner setup-needed behavior, artifact hygiene, support issue routing,
+clean-runner setup-needed behavior, IPv4/IPv6 artifact hygiene, support issue routing,
 dedicated GitHub Actions checks, and approval-gated live SSH claims visible for
 every SEIS-SSH pull request.
 

@@ -16,7 +16,7 @@ body:
 
         `Ayni sunucu ve baglanti noktasi korunur.`
 
-        Do not paste private keys, tokens, passwords, cookies, `.env` values, full hostnames, full IP addresses, or provider credentials. If this is a vulnerability, stop and follow `SECURITY.md` instead of opening a public issue.
+        Do not paste private keys, tokens, passwords, cookies, `.env` values, full hostnames, full IPv4/IPv6 addresses, or provider credentials. If this is a vulnerability, stop and follow `SECURITY.md` instead of opening a public issue.
   - type: dropdown
     id: user_type
     attributes:
@@ -52,7 +52,7 @@ body:
       label: Safety confirmations
       description: Confirm the public issue does not expose private material or request unsafe SSH changes.
       options:
-        - label: I did not paste private keys, tokens, passwords, cookies, `.env` values, full hostnames, full IP addresses, or provider credentials.
+        - label: I did not paste private keys, tokens, passwords, cookies, `.env` values, full hostnames, full IPv4/IPv6 addresses, or provider credentials.
           required: true
         - label: I am not asking to change the `SEIS-SSH` server or port without maintainer approval.
           required: true

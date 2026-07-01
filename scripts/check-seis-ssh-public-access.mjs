@@ -234,7 +234,7 @@ for (const token of [
   "title: \"[SEIS-SSH] \"",
   "Keep the same server and port.",
   "Ayni sunucu ve baglanti noktasi korunur.",
-  "Do not paste private keys, tokens, passwords, cookies, `.env` values, full hostnames, full IP addresses, or provider credentials.",
+  "Do not paste private keys, tokens, passwords, cookies, `.env` values, full hostnames, full IPv4/IPv6 addresses, or provider credentials.",
   "npm run run:seis-ssh-public-github-quickstart",
   "npm run check:seis-ssh-public-artifact-hygiene",
   "npm run run:seis-ssh-public-first-run",
@@ -253,7 +253,7 @@ for (const token of [
   "Keep the same server and port.",
   "Ayni sunucu ve baglanti noktasi korunur.",
   "I did not change `HostName` or `Port` for `SEIS-SSH` without linked maintainer approval.",
-  "I did not paste private keys, tokens, passwords, cookies, `.env` values, full hostnames, full IP addresses, or provider credentials.",
+  "I did not paste private keys, tokens, passwords, cookies, `.env` values, full hostnames, full IPv4/IPv6 addresses, or provider credentials.",
   "No live SSH session was attempted for this PR unless explicit maintainer approval is linked.",
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-access",
@@ -452,7 +452,8 @@ for (const token of [
   "This hygiene check does not write ~/.ssh/config.",
   "This hygiene check does not call gh auth status or contact GitHub.",
   "Ayni sunucu ve baglanti noktasi korunur.",
-  "full IPv4 addresses",
+  "GitHub classic and fine-grained tokens",
+  "full IPv4/IPv6 addresses",
   "raw ProxyCommand details"
 ]) {
   ensure(artifactHygieneScript.includes(token), `artifact hygiene script must include ${token}`);
@@ -511,6 +512,8 @@ for (const file of [
   files.desktop
 ]) {
   requireNotMatches(file, /sk-[A-Za-z0-9_-]{20,}/, "OpenAI-style API keys");
+  requireNotMatches(file, /github_pat_[A-Za-z0-9_]{20,}/, "GitHub fine-grained tokens");
+  requireNotMatches(file, /gh[pousr]_[A-Za-z0-9_]{20,}/, "GitHub tokens");
   requireNotMatches(file, /-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----/, "private keys");
   requireNotMatches(file, /(password|token|secret)\s*[:=]\s*["'][^"']{8,}/i, "inline credential assignments");
 }
