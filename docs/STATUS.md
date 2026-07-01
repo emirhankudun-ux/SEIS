@@ -5,6 +5,29 @@ Date: 2026-06-24
 This status captures the current branch foundation state. It is not a release,
 deployment, public-readiness, or merge-readiness claim.
 
+## GitHub Merge Queue Continuity - 2026-07-01
+
+The current GitHub queue is being kept in PR-safe auto-merge mode so a machine
+change or Codex session change does not lose review state. Auto-merge means
+GitHub may merge after required branch protections and checks pass; it is not a
+direct main push, not a force merge, and not approval to bypass security.
+
+Tracked queue:
+
+| PR | Purpose | Current gate | Next safe action |
+| --- | --- | --- | --- |
+| #77 | Security owner decision pack for the historical gitleaks blocker | Issue #129 remains the security source of truth; owner approval is needed for rotation or history rewrite paths. | Complete the selected owner path without printing secret values or weakening gitleaks. |
+| #126 | SEIS Search Center foundation | Depends on the repository security gate clearing. | Keep queued; do not mix security-history cleanup into the feature branch. |
+| #130 | Follow-up queue item | Depends on the same protected-branch/security gate. | Keep queued; inspect comments before any code change. |
+| #131 | Follow-up queue item | Depends on the same protected-branch/security gate. | Keep queued; inspect comments before any code change. |
+| #132 | Linux demo Security Gate app | Depends on the repository security gate clearing. | Keep queued; preserve Linux-like demo assets and Local Demo boundaries. |
+| #133 | Search Center review fixes | Stacked on the Search Center branch and depends on #126 plus the repository security gate. | Keep queued; address only concrete review comments. |
+
+Human approval remains required for secret rotation, Git history rewrite,
+branch-protection changes, destructive cleanup, deployment, SSH execution,
+provider credentials, or public release. The queue is intentionally documented
+without secret values.
+
 ## SEIS AI 512B Apex Status
 
 SEIS AI now has a plan-only 512B apex model program for the SEIS AGI direction.
