@@ -1,7 +1,7 @@
 {
   "id": "seis-second-brain-agent-registry-pr54",
   "title": "SEIS Second Brain Agent Registry",
-  "generatedAt": "2026-07-01T18:05:23.348Z",
+  "generatedAt": "2026-07-01T18:13:02.628Z",
   "status": "review-only-agent-registry",
   "mode": "repo-local-no-live-execution",
   "decision": "NO-GO-autonomous-execution-not-approved",
@@ -27,6 +27,207 @@
     "hostVaultReadEnabled": false,
     "bodyImportPolicy": "metadata-only-by-default",
     "githubMutationEnabled": false
+  },
+  "launcherEvidence": {
+    "command": "npm run ai -- list",
+    "observedDate": "2026-07-01",
+    "mode": "local route readiness only",
+    "installedRoutes": [
+      "seis-agent",
+      "codex",
+      "antigravity",
+      "antigravity-ide",
+      "cursor",
+      "xcode",
+      "qwen",
+      "kimi",
+      "opencode",
+      "hermes",
+      "goose",
+      "open-design"
+    ],
+    "tools": [
+      {
+        "route": "seis-agent",
+        "command": "npm",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "seis-agent-policy-profile",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "codex",
+        "command": "codex",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "codex-operator",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "antigravity",
+        "command": "open",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "antigravity",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "antigravity-ide",
+        "command": "open",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "antigravity-ide",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "cursor",
+        "command": "open",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "cursor-ide-profile",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "xcode",
+        "command": "open",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "xcode",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "openai",
+        "command": "openai",
+        "launcherStatus": "missing-command",
+        "secondBrainProfileId": "openai-general-profile",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "claude",
+        "command": "claude",
+        "launcherStatus": "missing-ANTHROPIC_API_KEY",
+        "secondBrainProfileId": "claude-review-profile",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "gemini",
+        "command": "gemini",
+        "launcherStatus": "missing-GEMINI_API_KEY",
+        "secondBrainProfileId": "gemini-validation-profile",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "qwen",
+        "command": "qwen",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "qwen-review-profile",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "kimi",
+        "command": "kimi",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "kimi",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "ollama",
+        "command": "ollama",
+        "launcherStatus": "runtime-not-ready",
+        "secondBrainProfileId": "ollama-local-profile",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "opencode",
+        "command": "opencode",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "opencode",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "aider",
+        "command": "aider",
+        "launcherStatus": "missing-command",
+        "secondBrainProfileId": "aider",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "interpreter",
+        "command": "interpreter",
+        "launcherStatus": "missing-command",
+        "secondBrainProfileId": "interpreter",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "hermes",
+        "command": "hermes",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "hermes",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "goose",
+        "command": "goose",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "goose",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "open-design",
+        "command": "open",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "open-design",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      }
+    ]
   },
   "providerProfiles": [
     {
@@ -207,6 +408,14 @@
     },
     {
       "profileId": "kimi",
+      "status": "installed",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "opencode",
       "status": "installed",
       "secondBrainUse": "review-context-only",
       "liveProviderRouteEnabled": false,
@@ -939,7 +1148,7 @@
     "releaseApprovalGranted": false
   },
   "summary": {
-    "installedAiProfileCount": 23,
+    "installedAiProfileCount": 24,
     "workforceAssignmentCount": 25,
     "managedSubAgentLaneCount": 6,
     "autonomousAgentRosterCount": 12,
@@ -948,6 +1157,8 @@
     "localAppDetectedCount": 8,
     "mcpVendorSurfaceCount": 17,
     "installedSkillCount": 38,
+    "launcherRouteCount": 18,
+    "installedLauncherRouteCount": 12,
     "pluginCapabilityCount": 5,
     "connectorCapabilityCount": 21
   }

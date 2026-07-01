@@ -1,6 +1,6 @@
 # SEIS Second Brain Agent Registry
 
-Generated: 2026-07-01T18:05:23.348Z
+Generated: 2026-07-01T18:13:02.628Z
 Status: review-only-agent-registry
 Mode: repo-local-no-live-execution
 Decision: NO-GO-autonomous-execution-not-approved
@@ -11,7 +11,7 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 
 | Metric | Count |
 | --- | ---: |
-| Installed AI profiles | 23 |
+| Installed AI profiles | 24 |
 | AI workforce assignments | 25 |
 | Managed sub-agent lanes | 6 |
 | Autonomous agent roster | 12 |
@@ -20,6 +20,8 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 | Local apps detected in inventory | 8 |
 | MCP vendor surfaces | 17 |
 | Installed skills in inventory | 38 |
+| Launcher routes | 18 |
+| Installed launcher routes | 12 |
 
 ## Second Brain Binding
 
@@ -31,6 +33,33 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 - hostVaultReadEnabled: false
 - bodyImportPolicy: metadata-only-by-default
 - githubMutationEnabled: false
+
+## Launcher Evidence Coverage
+
+- command: npm run ai -- list
+- observedDate: 2026-07-01
+- mode: local route readiness only
+
+| Route | Status | Second Brain profile | Workforce assignment found | Profile found |
+| --- | --- | --- | --- | --- |
+| seis-agent | installed | seis-agent-policy-profile | true | true |
+| codex | installed | codex-operator | true | true |
+| antigravity | installed | antigravity | true | true |
+| antigravity-ide | installed | antigravity-ide | true | true |
+| cursor | installed | cursor-ide-profile | true | true |
+| xcode | installed | xcode | true | true |
+| openai | missing-command | openai-general-profile | true | true |
+| claude | missing-ANTHROPIC_API_KEY | claude-review-profile | true | true |
+| gemini | missing-GEMINI_API_KEY | gemini-validation-profile | true | true |
+| qwen | installed | qwen-review-profile | true | true |
+| kimi | installed | kimi | true | true |
+| ollama | runtime-not-ready | ollama-local-profile | true | true |
+| opencode | installed | opencode | true | true |
+| aider | missing-command | aider | true | true |
+| interpreter | missing-command | interpreter | true | true |
+| hermes | installed | hermes | true | true |
+| goose | installed | goose | true | true |
+| open-design | installed | open-design | true | true |
 
 ## Provider Profiles
 
@@ -59,6 +88,7 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 | hermes | installed | review-context-only | false |
 | goose | installed | review-context-only | false |
 | kimi | installed | review-context-only | false |
+| opencode | installed | review-context-only | false |
 
 ## AI Workforce Assignments
 

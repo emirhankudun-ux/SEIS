@@ -6,11 +6,140 @@
   "qualityGate": "node scripts/check-ai-workforce-assignments.mjs",
   "currentLauncherEvidence": {
     "command": "npm run ai -- list",
-    "observedDate": "2026-06-23",
+    "observedDate": "2026-07-01",
+    "mode": "local route readiness only",
     "notes": [
       "The command checks local route readiness only.",
       "No provider call, repository upload, secret read, or live model verification was performed.",
       "Missing environment-variable status does not prove a credential does not exist outside the current shell."
+    ],
+    "tools": [
+      {
+        "route": "seis-agent",
+        "command": "npm",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "seis-agent-policy-profile",
+        "registryRequired": true
+      },
+      {
+        "route": "codex",
+        "command": "codex",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "codex-operator",
+        "registryRequired": true
+      },
+      {
+        "route": "antigravity",
+        "command": "open",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "antigravity",
+        "registryRequired": true
+      },
+      {
+        "route": "antigravity-ide",
+        "command": "open",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "antigravity-ide",
+        "registryRequired": true
+      },
+      {
+        "route": "cursor",
+        "command": "open",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "cursor-ide-profile",
+        "registryRequired": true
+      },
+      {
+        "route": "xcode",
+        "command": "open",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "xcode",
+        "registryRequired": true
+      },
+      {
+        "route": "openai",
+        "command": "openai",
+        "launcherStatus": "missing-command",
+        "secondBrainProfileId": "openai-general-profile",
+        "registryRequired": true
+      },
+      {
+        "route": "claude",
+        "command": "claude",
+        "launcherStatus": "missing-ANTHROPIC_API_KEY",
+        "secondBrainProfileId": "claude-review-profile",
+        "registryRequired": true
+      },
+      {
+        "route": "gemini",
+        "command": "gemini",
+        "launcherStatus": "missing-GEMINI_API_KEY",
+        "secondBrainProfileId": "gemini-validation-profile",
+        "registryRequired": true
+      },
+      {
+        "route": "qwen",
+        "command": "qwen",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "qwen-review-profile",
+        "registryRequired": true
+      },
+      {
+        "route": "kimi",
+        "command": "kimi",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "kimi",
+        "registryRequired": true
+      },
+      {
+        "route": "ollama",
+        "command": "ollama",
+        "launcherStatus": "runtime-not-ready",
+        "secondBrainProfileId": "ollama-local-profile",
+        "registryRequired": true
+      },
+      {
+        "route": "opencode",
+        "command": "opencode",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "opencode",
+        "registryRequired": true
+      },
+      {
+        "route": "aider",
+        "command": "aider",
+        "launcherStatus": "missing-command",
+        "secondBrainProfileId": "aider",
+        "registryRequired": true
+      },
+      {
+        "route": "interpreter",
+        "command": "interpreter",
+        "launcherStatus": "missing-command",
+        "secondBrainProfileId": "interpreter",
+        "registryRequired": true
+      },
+      {
+        "route": "hermes",
+        "command": "hermes",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "hermes",
+        "registryRequired": true
+      },
+      {
+        "route": "goose",
+        "command": "goose",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "goose",
+        "registryRequired": true
+      },
+      {
+        "route": "open-design",
+        "command": "open",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "open-design",
+        "registryRequired": true
+      }
     ]
   },
   "writerPolicy": {

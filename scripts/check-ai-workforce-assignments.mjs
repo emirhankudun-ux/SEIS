@@ -6,6 +6,7 @@ import path from "node:path";
 const root = process.cwd();
 const failures = [];
 const contractPath = path.join(root, "content", "development", "ai-workforce-assignments.json");
+const secondBrainPath = path.join(root, "content", "development", "seis-second-brain-system.json");
 const docsPath = path.join(root, "docs", "development", "agents", "ai-workforce-assignments.md");
 const requiredAssignments = [
   "codex",
@@ -41,9 +42,11 @@ const forbiddenApprovalGates = [
 ];
 
 ensureFile(contractPath, "AI workforce assignment contract");
+ensureFile(secondBrainPath, "Second Brain contract");
 ensureFile(docsPath, "AI workforce assignment docs");
 
 const contract = readJson(contractPath, "AI workforce assignment contract");
+const secondBrain = readJson(secondBrainPath, "Second Brain contract");
 const docs = readText(docsPath, "AI workforce assignment docs");
 
 if (contract) {
@@ -89,6 +92,8 @@ if (contract) {
 
   ensure(Array.isArray(contract.assignments), "contract.assignments must be an array");
   const assignments = new Map((contract.assignments || []).map((assignment) => [assignment.id, assignment]));
+  const assignmentsByRoute = new Map((contract.assignments || []).map((assignment) => [assignment.route, assignment]));
+  const secondBrainProfiles = new Set(secondBrain?.installedAiProfiles || []);
   for (const assignmentId of requiredAssignments) {
     const assignment = assignments.get(assignmentId);
     ensure(Boolean(assignment), `assignment missing: ${assignmentId}`);
@@ -116,6 +121,30 @@ if (contract) {
     (assignments.get("github-actions")?.deniedActions || []).some((action) => String(action).includes("secret echoing")),
     "GitHub Actions assignment must forbid secret echoing"
   );
+
+  ensure(contract.currentLauncherEvidence?.command === "npm run ai -- list", "launcher evidence must point to npm run ai -- list");
+  ensure(contract.currentLauncherEvidence?.mode === "local route readiness only", "launcher evidence must stay local route readiness only");
+  ensureArrayWithMinimum(contract.currentLauncherEvidence?.tools, 18, "currentLauncherEvidence.tools");
+  const installedTools = (contract.currentLauncherEvidence?.tools || []).filter((tool) => tool.launcherStatus === "installed");
+  ensure(installedTools.length >= 12, "launcher evidence must include at least twelve installed local routes");
+
+  for (const tool of contract.currentLauncherEvidence?.tools || []) {
+    ensureNonEmptyString(tool.route, "currentLauncherEvidence.tools[].route");
+    ensureNonEmptyString(tool.launcherStatus, `${tool.route}.launcherStatus`);
+    if (!tool.registryRequired) continue;
+
+    const assignment = assignmentsByRoute.get(tool.route);
+    ensure(Boolean(assignment), `launcher route ${tool.route} missing workforce assignment`);
+    ensure(
+      assignment?.launcherStatus === tool.launcherStatus,
+      `launcher route ${tool.route} status mismatch between launcher evidence and workforce assignment`
+    );
+    ensureNonEmptyString(tool.secondBrainProfileId, `${tool.route}.secondBrainProfileId`);
+    ensure(
+      secondBrainProfiles.has(tool.secondBrainProfileId),
+      `launcher route ${tool.route} missing Second Brain profile ${tool.secondBrainProfileId}`
+    );
+  }
 
   ensure(Array.isArray(contract.approvalRequiredFor), "approvalRequiredFor must be an array");
   for (const gate of forbiddenApprovalGates) {

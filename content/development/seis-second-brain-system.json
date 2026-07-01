@@ -77,7 +77,8 @@
     "interpreter",
     "hermes",
     "goose",
-    "kimi"
+    "kimi",
+    "opencode"
   ],
   "managedSubAgentLanes": [
     "SEIS Hub",

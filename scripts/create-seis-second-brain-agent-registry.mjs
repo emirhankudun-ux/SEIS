@@ -117,6 +117,19 @@ function buildReport(generatedAt) {
   }));
   const pluginCapabilities = pluginSkillMap?.capabilities || [];
   const connectorCapabilities = connectorRegistry?.connectors || [];
+  const workforceByRoute = new Map(workforceAssignments.map((assignment) => [assignment.route, assignment]));
+  const secondBrainProfileIds = new Set(secondBrain?.installedAiProfiles || []);
+  const launcherTools = aiWorkforce?.currentLauncherEvidence?.tools || [];
+  const launcherEvidenceTools = launcherTools.map((tool) => ({
+    route: tool.route,
+    command: tool.command,
+    launcherStatus: tool.launcherStatus,
+    secondBrainProfileId: tool.secondBrainProfileId,
+    registryRequired: Boolean(tool.registryRequired),
+    workforceAssignmentFound: Boolean(workforceByRoute.get(tool.route)),
+    secondBrainProfileFound: secondBrainProfileIds.has(tool.secondBrainProfileId),
+    liveProviderRouteEnabled: false
+  }));
 
   return {
     id: "seis-second-brain-agent-registry-pr54",
@@ -147,6 +160,13 @@ function buildReport(generatedAt) {
       hostVaultReadEnabled: obsidianContract?.currentRuntime?.hostVaultReadEnabled ?? false,
       bodyImportPolicy: obsidianContract?.dryRunManifestSchema?.bodyImportPolicy || "metadata-only-by-default",
       githubMutationEnabled: secondBrain?.securityBoundary?.githubMutation ?? false
+    },
+    launcherEvidence: {
+      command: aiWorkforce?.currentLauncherEvidence?.command,
+      observedDate: aiWorkforce?.currentLauncherEvidence?.observedDate,
+      mode: aiWorkforce?.currentLauncherEvidence?.mode,
+      installedRoutes: launcherEvidenceTools.filter((tool) => tool.launcherStatus === "installed").map((tool) => tool.route),
+      tools: launcherEvidenceTools
     },
     providerProfiles,
     workforceAssignments,
@@ -223,6 +243,8 @@ function buildReport(generatedAt) {
       localAppDetectedCount: localAppsDetected.length,
       mcpVendorSurfaceCount: mcpSurfaces.length,
       installedSkillCount: bigTechInventory?.installed_skill_pass?.installed_skill_count || 0,
+      launcherRouteCount: launcherEvidenceTools.length,
+      installedLauncherRouteCount: launcherEvidenceTools.filter((tool) => tool.launcherStatus === "installed").length,
       pluginCapabilityCount: pluginCapabilities.length,
       connectorCapabilityCount: connectorCapabilities.length
     }
@@ -252,7 +274,8 @@ function inferProfileStatus(profileId, assignments) {
     "interpreter": "interpreter",
     "hermes": "hermes",
     "goose": "goose",
-    "kimi": "kimi"
+    "kimi": "kimi",
+    "opencode": "opencode"
   };
   if (profileId === "seis-local-demo") return "local-demo";
   const match = assignments.find((assignment) => assignment.id === byProfile[profileId]);
@@ -292,6 +315,16 @@ function validateReport(value, label) {
   ensure(value?.summary?.workforceAssignmentCount >= 10, `${label} workforce assignment count too low.`);
   ensure(value?.summary?.mcpVendorSurfaceCount >= 10, `${label} MCP vendor surface count too low.`);
   ensure(value?.summary?.installedSkillCount >= 30, `${label} installed skill count too low.`);
+  ensure(value?.launcherEvidence?.command === "npm run ai -- list", `${label} launcher evidence command mismatch.`);
+  ensure(value?.launcherEvidence?.mode === "local route readiness only", `${label} launcher evidence must stay route-readiness-only.`);
+  ensureArrayMin(value?.launcherEvidence?.tools, 18, `${label} launcher evidence tools`);
+  ensure(value?.summary?.installedLauncherRouteCount >= 12, `${label} installed launcher route count too low.`);
+  for (const tool of value?.launcherEvidence?.tools || []) {
+    if (!tool.registryRequired) continue;
+    ensure(tool.workforceAssignmentFound === true, `${label} launcher route ${tool.route} must have workforce assignment.`);
+    ensure(tool.secondBrainProfileFound === true, `${label} launcher route ${tool.route} must have Second Brain profile.`);
+    ensure(tool.liveProviderRouteEnabled === false, `${label} launcher route ${tool.route} must not enable live provider routing.`);
+  }
   ensureArrayMin(value?.requiredEvidenceBeforeAutonomousUse, 8, `${label} requiredEvidenceBeforeAutonomousUse`);
   for (const profile of value?.providerProfiles || []) {
     ensure(profile.liveProviderRouteEnabled === false, `${label} provider profile ${profile.profileId} must not enable live routing.`);
@@ -331,6 +364,12 @@ function renderMarkdown(value) {
   const workforceRows = value.workforceAssignments
     .map((item) => `| ${item.id} | ${item.displayName} | ${item.category} | ${item.status} | ${item.writeAuthority} |`)
     .join("\n");
+  const launcherRows = value.launcherEvidence.tools
+    .map(
+      (item) =>
+        `| ${item.route} | ${item.launcherStatus} | ${item.secondBrainProfileId} | ${item.workforceAssignmentFound} | ${item.secondBrainProfileFound} |`
+    )
+    .join("\n");
   const agentRows = value.subAgentMesh.autonomousAgentRoster
     .map((item) => `| ${item.agent} | ${item.status} | ${item.duty} |`)
     .join("\n");
@@ -360,6 +399,8 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 | Local apps detected in inventory | ${value.summary.localAppDetectedCount} |
 | MCP vendor surfaces | ${value.summary.mcpVendorSurfaceCount} |
 | Installed skills in inventory | ${value.summary.installedSkillCount} |
+| Launcher routes | ${value.summary.launcherRouteCount} |
+| Installed launcher routes | ${value.summary.installedLauncherRouteCount} |
 
 ## Second Brain Binding
 
@@ -371,6 +412,16 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 - hostVaultReadEnabled: ${value.secondBrainBinding.hostVaultReadEnabled}
 - bodyImportPolicy: ${value.secondBrainBinding.bodyImportPolicy}
 - githubMutationEnabled: ${value.secondBrainBinding.githubMutationEnabled}
+
+## Launcher Evidence Coverage
+
+- command: ${value.launcherEvidence.command}
+- observedDate: ${value.launcherEvidence.observedDate}
+- mode: ${value.launcherEvidence.mode}
+
+| Route | Status | Second Brain profile | Workforce assignment found | Profile found |
+| --- | --- | --- | --- | --- |
+${launcherRows}
 
 ## Provider Profiles
 
