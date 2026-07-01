@@ -1,7 +1,7 @@
 {
   "id": "seis-second-brain-agent-registry-pr54",
   "title": "SEIS Second Brain Agent Registry",
-  "generatedAt": "2026-07-01T18:20:29.995Z",
+  "generatedAt": "2026-07-01T18:45:22.359Z",
   "status": "review-only-agent-registry",
   "mode": "repo-local-no-live-execution",
   "decision": "NO-GO-autonomous-execution-not-approved",
@@ -72,9 +72,16 @@
   },
   "launcherEvidence": {
     "command": "npm run ai -- list",
+    "snapshotType": "author-observed-local-snapshot",
     "observedDate": "2026-07-01",
     "mode": "local route readiness only",
-    "installedRoutes": [
+    "runtimeValidationPolicy": {
+      "recomputeCommand": "node scripts/ai-launcher.cjs list",
+      "countsInstalledRoutesFromCurrentRuntime": true,
+      "snapshotIsNotPublicReadinessClaim": true,
+      "statusMismatchMeaning": "environment-specific launcher readiness drift; public readiness must cite the current runtime check, not only this committed snapshot"
+    },
+    "snapshotInstalledRoutes": [
       "seis-agent",
       "codex",
       "antigravity",
@@ -1200,6 +1207,7 @@
     "mcpVendorSurfaceCount": 17,
     "installedSkillCount": 38,
     "launcherRouteCount": 18,
+    "snapshotInstalledLauncherRouteCount": 12,
     "installedLauncherRouteCount": 12,
     "pluginCapabilityCount": 5,
     "connectorCapabilityCount": 21

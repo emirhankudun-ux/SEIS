@@ -78,6 +78,11 @@ function buildReport(generatedAt) {
   const fullHistory = securityGate?.fullHistorySecretScan || {};
   const currentTree = securityGate?.currentTreeSecretScan || {};
   const safetyBoundary = securityGate?.safetyBoundary || {};
+  const fullHistoryRawValuesStored = requireExplicitFalse(fullHistory, "rawSecretValuesStored", "fullHistorySecretScan");
+  const fullHistoryJobLogDownloaded = requireExplicitFalse(fullHistory, "fullJobLogDownloaded", "fullHistorySecretScan");
+  const currentTreeSecurityPolicyChanged = requireExplicitFalse(currentTree, "securityPolicyChanged", "currentTreeSecretScan");
+  const safetyGatePolicyChanged = requireExplicitFalse(safetyBoundary, "gitleaksPolicyChanged", "safetyBoundary");
+  const currentTreeAllowlistCommitted = requireExplicitFalse(currentTree, "gitleaksAllowlistCommitted", "currentTreeSecretScan");
 
   return {
     id: "seis-security-owner-handoff-pr104",
@@ -108,10 +113,11 @@ function buildReport(generatedAt) {
       fullHistoryRules: fullHistory.findingsByRule || {},
       fullHistoryPaths: fullHistory.findingsByPath || [],
       blockedCommitRefs: fullHistory.blockedCommitRefs || [],
-      rawFindingValuesStored: Boolean(fullHistory.rawSecretValuesStored),
-      fullJobLogDownloaded: Boolean(fullHistory.fullJobLogDownloaded),
-      securityPolicyChanged: Boolean(currentTree.securityPolicyChanged || safetyBoundary.gitleaksPolicyChanged),
-      allowlistCommitted: Boolean(currentTree.gitleaksAllowlistCommitted)
+      rawFindingValuesStored: fullHistoryRawValuesStored,
+      fullJobLogDownloaded: fullHistoryJobLogDownloaded,
+      securityPolicyChanged:
+        currentTreeSecurityPolicyChanged === false && safetyGatePolicyChanged === false ? false : "unknown",
+      allowlistCommitted: currentTreeAllowlistCommitted
     },
     ownerDecisionsRequired: [
       {
@@ -337,6 +343,11 @@ function validateSourceLinks() {
   for (const phrase of ["security-gate-redacted-latest", "Secret & Vulnerability Scan historical findings"]) {
     ensure(releaseDocText.includes(phrase), `release checklist missing phrase: ${phrase}`);
   }
+}
+
+function requireExplicitFalse(source, field, label) {
+  ensure(source?.[field] === false, `${label}.${field} must be explicitly false; missing or unknown security evidence is not accepted.`);
+  return source?.[field] === false ? false : "unknown";
 }
 
 function renderMarkdown(value) {

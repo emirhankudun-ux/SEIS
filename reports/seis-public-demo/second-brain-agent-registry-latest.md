@@ -1,6 +1,6 @@
 # SEIS Second Brain Agent Registry
 
-Generated: 2026-07-01T18:20:29.995Z
+Generated: 2026-07-01T18:45:22.359Z
 Status: review-only-agent-registry
 Mode: repo-local-no-live-execution
 Decision: NO-GO-autonomous-execution-not-approved
@@ -21,7 +21,7 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 | MCP vendor surfaces | 17 |
 | Installed skills in inventory | 38 |
 | Launcher routes | 18 |
-| Installed launcher routes | 12 |
+| Snapshot installed launcher routes | 12 |
 
 ## Second Brain Binding
 
@@ -47,8 +47,10 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 ## Launcher Evidence Coverage
 
 - command: npm run ai -- list
+- snapshotType: author-observed-local-snapshot
 - observedDate: 2026-07-01
 - mode: local route readiness only
+- runtimeValidationPolicy: recompute=node scripts/ai-launcher.cjs list, countsInstalledRoutesFromCurrentRuntime=true, snapshotIsNotPublicReadinessClaim=true
 
 | Route | Status | Second Brain profile | Workforce assignment found | Profile found |
 | --- | --- | --- | --- | --- |

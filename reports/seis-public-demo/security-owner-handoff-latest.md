@@ -1,6 +1,6 @@
 # SEIS Security Owner Handoff
 
-Generated: 2026-06-30T23:22:55.428Z
+Generated: 2026-07-01T18:45:51.688Z
 Status: owner-action-required
 Mode: redacted-owner-review-no-raw-values
 Decision: NO-GO-owner-security-decision-required

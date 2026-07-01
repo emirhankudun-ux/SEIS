@@ -9,6 +9,7 @@ const reportGenerating = process.env.SEIS_PUBLIC_DEMO_REPORT_GENERATING === "1";
 
 const paths = {
   obsidianContract: "content/development/seis-obsidian-bridge-safe-import-contract.json",
+  secondBrain: "content/development/seis-second-brain-system.json",
   accessibilityContract: "content/development/seis-second-brain-accessibility-focus-qa.json",
   routerContract: "content/development/seis-read-only-model-router-contract.json",
   releaseChecklist: "content/development/seis-public-demo-release-checklist-pr54.json",
@@ -63,6 +64,7 @@ for (const [label, filePath] of Object.entries(paths)) {
 }
 
 const obsidianContract = readJson(paths.obsidianContract, "Obsidian bridge safe import contract");
+const secondBrain = readJson(paths.secondBrain, "Second Brain contract");
 const accessibilityContract = readJson(paths.accessibilityContract, "Second Brain accessibility focus QA contract");
 const routerContract = readJson(paths.routerContract, "read-only model-router contract");
 const releaseChecklist = readJson(paths.releaseChecklist, "PR 54 public demo release checklist");
@@ -86,8 +88,8 @@ if (releaseChecklist) validateReleaseChecklist(releaseChecklist);
 if (publicDemoReport && publicDemoEvidenceManifest) validatePublicDemoArtifacts(publicDemoReport, publicDemoEvidenceManifest);
 if (obsidianDryRun) validateObsidianDryRun(obsidianDryRun);
 if (routerDecision && routerContract) validateRouterDecision(routerDecision, routerContract);
-if (accessibilityFocus && accessibilityContract) validateAccessibilityFocus(accessibilityFocus, accessibilityContract);
-if (agentRegistry) validateAgentRegistry(agentRegistry);
+if (accessibilityFocus && accessibilityContract && secondBrain) validateAccessibilityFocus(accessibilityFocus, accessibilityContract, secondBrain);
+if (agentRegistry && secondBrain) validateAgentRegistry(agentRegistry, secondBrain);
 if (publicReviewerPack) validatePublicReviewerPack(publicReviewerPack);
 if (securityGate) validateSecurityGate(securityGate);
 if (securityOwnerHandoff) validateSecurityOwnerHandoff(securityOwnerHandoff);
@@ -245,7 +247,7 @@ function validateAccessibilityContract(contract) {
   }
 }
 
-function validateAccessibilityFocus(report, contract) {
+function validateAccessibilityFocus(report, contract, secondBrainContract) {
   ensure(report.id === "seis-second-brain-accessibility-focus-qa-pr54", "Accessibility focus artifact id mismatch.");
   ensure(report.title === "SEIS Second Brain Accessibility Focus QA", "Accessibility focus artifact title mismatch.");
   ensure(report.status === "review-gated-human-accessibility-needed", "Accessibility focus artifact status mismatch.");
@@ -255,6 +257,10 @@ function validateAccessibilityFocus(report, contract) {
   ensure(report.secondBrainPath === "content/development/seis-second-brain-system.json", "Accessibility focus artifact Second Brain path mismatch.");
   ensure(report.linkedSmoke === "npm run check:seis-second-brain-browser-smoke", "Accessibility focus artifact linked smoke mismatch.");
   ensure(report.installedAiProfileCount >= 6, "Accessibility focus artifact must include installed AI profile count.");
+  ensure(
+    report.installedAiProfileCount === (secondBrainContract.installedAiProfiles || []).length,
+    "Accessibility focus artifact installed AI profile count must match the Second Brain source contract exactly."
+  );
   ensure(report.managedSubAgentLaneCount >= 6, "Accessibility focus artifact must include managed sub-agent lane count.");
   ensure(report.autonomousAgentRosterCount >= 12, "Accessibility focus artifact must include autonomous agent roster count.");
   ensureArrayMin(report.automatedEvidence, 10, "Accessibility focus automated evidence");
@@ -287,7 +293,7 @@ function validateAccessibilityFocus(report, contract) {
   ensure(!/\b(?:password|token|secret|api[_-]?key)\s*=\s*['"][^'"]+['"]/i.test(serialized), "Accessibility focus artifact must not include inline credential assignments.");
 }
 
-function validateAgentRegistry(report) {
+function validateAgentRegistry(report, secondBrainContract) {
   ensure(report.id === "seis-second-brain-agent-registry-pr54", "Second Brain agent registry artifact id mismatch.");
   ensure(report.title === "SEIS Second Brain Agent Registry", "Second Brain agent registry title mismatch.");
   ensure(report.status === "review-only-agent-registry", "Second Brain agent registry must stay review-only.");
@@ -327,8 +333,22 @@ function validateAgentRegistry(report) {
   ensureArrayMin(report.subAgentMesh?.autonomousAgentRoster, 12, "Second Brain agent registry autonomous agent roster");
   ensureArrayMin(report.subAgentMesh?.roleSchemaRoles, 5, "Second Brain agent registry role schema roles");
   ensureArrayMin(report.subAgentMesh?.permissionLevels, 5, "Second Brain agent registry permission levels");
+  ensure(
+    report.summary?.installedAiProfileCount === (secondBrainContract.installedAiProfiles || []).length,
+    "Second Brain agent registry installed AI profile count must match the Second Brain source contract exactly."
+  );
   ensure(report.summary?.mcpVendorSurfaceCount >= 10, "Second Brain agent registry must include MCP vendor surfaces.");
   ensure(report.summary?.installedSkillCount >= 30, "Second Brain agent registry must include installed skill count.");
+  ensure(report.launcherEvidence?.snapshotType === "author-observed-local-snapshot", "Second Brain agent registry launcher evidence must be labeled as a local snapshot.");
+  ensure(
+    report.launcherEvidence?.runtimeValidationPolicy?.countsInstalledRoutesFromCurrentRuntime === true,
+    "Second Brain agent registry launcher evidence must require current runtime installed-route counting."
+  );
+  ensure(
+    report.launcherEvidence?.runtimeValidationPolicy?.snapshotIsNotPublicReadinessClaim === true,
+    "Second Brain agent registry launcher evidence snapshot must not be treated as public readiness."
+  );
+  ensure(report.summary?.snapshotInstalledLauncherRouteCount >= 12, "Second Brain agent registry must include snapshot installed launcher route count.");
   ensureArrayMin(report.requiredEvidenceBeforeAutonomousUse, 8, "Second Brain agent registry required evidence before autonomous use");
   for (const profile of report.providerProfiles || []) {
     ensure(profile.liveProviderRouteEnabled === false, `Second Brain agent registry provider ${profile.profileId} must not enable live routing.`);
@@ -376,6 +396,15 @@ function validatePublicReviewerPack(report) {
   ensure(report.noKeyLocalDemoContract?.requiresSsh === false, "Second Brain public reviewer pack must not require SSH.");
   ensure(report.noKeyLocalDemoContract?.requiresDeployment === false, "Second Brain public reviewer pack must not require deployment.");
   ensure(report.noKeyLocalDemoContract?.browserLocalDemoOnly === true, "Second Brain public reviewer pack must stay browser-local.");
+  ensure(report.noKeyLocalDemoContract?.secondBrainStatus === "local-demo", "Second Brain public reviewer pack must bind the live Second Brain source status.");
+  ensure(report.noKeyLocalDemoContract?.agentRegistryStatus === "review-only-agent-registry", "Second Brain public reviewer pack must bind the live agent registry source status.");
+  ensure(
+    report.noKeyLocalDemoContract?.securityGateDecision === "NO-GO-security-history-remediation-needed",
+    "Second Brain public reviewer pack must bind the live security gate decision."
+  );
+  ensure(report.releaseChecklistSnapshot?.status === "review-gated-not-released", "Second Brain public reviewer pack must bind release checklist status.");
+  ensure((report.releaseChecklistSnapshot?.requiredValidationCount || 0) >= 1, "Second Brain public reviewer pack must bind release checklist validations.");
+  ensure((report.releaseChecklistSnapshot?.requiredArtifactCount || 0) >= 1, "Second Brain public reviewer pack must bind release checklist artifacts.");
   ensureArrayMin(report.quickStart, 5, "Second Brain public reviewer pack quickStart");
   ensureArrayMin(report.reviewSurfaces, 8, "Second Brain public reviewer pack review surfaces");
   ensureArrayMin(report.reviewerMustConfirm, 6, "Second Brain public reviewer pack reviewer confirmations");

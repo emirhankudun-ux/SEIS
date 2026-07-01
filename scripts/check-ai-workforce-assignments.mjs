@@ -2,6 +2,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { spawnSync } from "node:child_process";
 
 const root = process.cwd();
 const failures = [];
@@ -48,6 +49,7 @@ ensureFile(docsPath, "AI workforce assignment docs");
 const contract = readJson(contractPath, "AI workforce assignment contract");
 const secondBrain = readJson(secondBrainPath, "Second Brain contract");
 const docs = readText(docsPath, "AI workforce assignment docs");
+const runtimeLauncherEvidence = readRuntimeLauncherEvidence();
 
 if (contract) {
   ensure(contract.id === "seis-ai-workforce-assignments", "contract id must be seis-ai-workforce-assignments");
@@ -124,13 +126,36 @@ if (contract) {
 
   ensure(contract.currentLauncherEvidence?.command === "npm run ai -- list", "launcher evidence must point to npm run ai -- list");
   ensure(contract.currentLauncherEvidence?.mode === "local route readiness only", "launcher evidence must stay local route readiness only");
+  ensure(
+    contract.currentLauncherEvidence?.snapshotType === "author-observed-local-snapshot",
+    "launcher evidence must mark committed statuses as an author-observed local snapshot"
+  );
+  ensure(
+    contract.currentLauncherEvidence?.runtimeValidationPolicy?.recomputeCommand === "node scripts/ai-launcher.cjs list",
+    "launcher evidence runtime policy must recompute via the local launcher"
+  );
+  ensure(
+    contract.currentLauncherEvidence?.runtimeValidationPolicy?.countsInstalledRoutesFromCurrentRuntime === true,
+    "launcher evidence runtime policy must count installed routes from current runtime output"
+  );
+  ensure(
+    contract.currentLauncherEvidence?.runtimeValidationPolicy?.snapshotIsNotPublicReadinessClaim === true,
+    "launcher evidence runtime policy must state the committed snapshot is not a public-readiness claim"
+  );
   ensureArrayWithMinimum(contract.currentLauncherEvidence?.tools, 18, "currentLauncherEvidence.tools");
-  const installedTools = (contract.currentLauncherEvidence?.tools || []).filter((tool) => tool.launcherStatus === "installed");
-  ensure(installedTools.length >= 12, "launcher evidence must include at least twelve installed local routes");
+  const runtimeInstalledTools = Array.from(runtimeLauncherEvidence.values()).filter((tool) => tool.launcherStatus === "installed");
+  ensure(runtimeLauncherEvidence.size >= 18, "current runtime launcher evidence must include every registered local route");
+  ensure(runtimeInstalledTools.length >= 1, "current runtime launcher evidence must include at least one installed route");
 
   for (const tool of contract.currentLauncherEvidence?.tools || []) {
     ensureNonEmptyString(tool.route, "currentLauncherEvidence.tools[].route");
     ensureNonEmptyString(tool.launcherStatus, `${tool.route}.launcherStatus`);
+    const runtimeTool = runtimeLauncherEvidence.get(tool.route);
+    ensure(Boolean(runtimeTool), `current runtime launcher evidence missing route ${tool.route}`);
+    ensure(
+      !runtimeTool || runtimeTool.command === tool.command,
+      `launcher route ${tool.route} command mismatch between snapshot and current runtime`
+    );
     if (!tool.registryRequired) continue;
 
     const assignment = assignmentsByRoute.get(tool.route);
@@ -202,6 +227,33 @@ function readText(filePath, label) {
     failures.push(`${label} could not be read: ${error.message}`);
     return "";
   }
+}
+
+function readRuntimeLauncherEvidence() {
+  const result = spawnSync(process.execPath, ["scripts/ai-launcher.cjs", "list"], {
+    cwd: root,
+    encoding: "utf8",
+    env: process.env
+  });
+
+  if (result.error) {
+    failures.push(`unable to run current launcher evidence: ${result.error.message}`);
+    return new Map();
+  }
+
+  if (result.status !== 0) {
+    failures.push(`current launcher evidence command failed with status ${result.status}: ${result.stderr || result.stdout}`);
+    return new Map();
+  }
+
+  const tools = new Map();
+  for (const line of String(result.stdout || "").split(/\r?\n/)) {
+    const match = line.match(/^\s*-\s+([^:]+):\s+([^\s]+)\s+\[([^\]]+)\]/);
+    if (!match) continue;
+    const [, route, command, launcherStatus] = match;
+    tools.set(route, { route, command, launcherStatus });
+  }
+  return tools;
 }
 
 function ensureNonEmptyString(candidate, label) {

@@ -24,12 +24,13 @@ const paths = {
 };
 
 const failures = [];
-const secondBrain = readJson(paths.secondBrain, "Second Brain contract");
-const releaseChecklist = readJson(paths.releaseChecklist, "public demo release checklist");
-const securityGate = readJson(paths.securityGate, "redacted security gate artifact");
-const agentRegistry = readJson(paths.agentRegistry, "Second Brain agent registry artifact");
+const secondBrain = readRequiredJson(paths.secondBrain, "Second Brain contract");
+const releaseChecklist = readRequiredJson(paths.releaseChecklist, "public demo release checklist");
+const securityGate = readRequiredJson(paths.securityGate, "redacted security gate artifact");
+const agentRegistry = readRequiredJson(paths.agentRegistry, "Second Brain agent registry artifact");
 const report = buildReport(new Date().toISOString());
 
+validateSourceArtifacts();
 validateReport(report, "generated public reviewer pack");
 
 if (shouldWrite) {
@@ -199,6 +200,15 @@ function validateReport(value, label) {
   ensure(value?.noKeyLocalDemoContract?.requiresSsh === false, `${label} must not require SSH.`);
   ensure(value?.noKeyLocalDemoContract?.requiresDeployment === false, `${label} must not require deployment.`);
   ensure(value?.noKeyLocalDemoContract?.browserLocalDemoOnly === true, `${label} must stay browser-local.`);
+  ensure(value?.noKeyLocalDemoContract?.secondBrainStatus === "local-demo", `${label} must bind the live Second Brain source status.`);
+  ensure(value?.noKeyLocalDemoContract?.agentRegistryStatus === "review-only-agent-registry", `${label} must bind the live agent registry source status.`);
+  ensure(
+    value?.noKeyLocalDemoContract?.securityGateDecision === "NO-GO-security-history-remediation-needed",
+    `${label} must bind the live security gate decision.`
+  );
+  ensure(value?.releaseChecklistSnapshot?.status === "review-gated-not-released", `${label} must bind release checklist status.`);
+  ensure((value?.releaseChecklistSnapshot?.requiredValidationCount || 0) >= 1, `${label} must bind release checklist validations.`);
+  ensure((value?.releaseChecklistSnapshot?.requiredArtifactCount || 0) >= 1, `${label} must bind release checklist artifacts.`);
   ensureArrayMin(value?.quickStart, 5, `${label} quickStart`);
   ensureArrayMin(value?.reviewSurfaces, 8, `${label} review surfaces`);
   ensureArrayMin(value?.reviewerMustConfirm, 6, `${label} reviewer confirmations`);
@@ -345,6 +355,32 @@ function readJson(filePath, label) {
     failures.push(`${label} is not valid JSON: ${error.message}`);
     return null;
   }
+}
+
+function readRequiredJson(filePath, label) {
+  const absolutePath = path.join(root, filePath);
+  if (!fs.existsSync(absolutePath)) {
+    failures.push(`missing required source artifact ${label}: ${filePath}`);
+    return null;
+  }
+  return readJson(filePath, label);
+}
+
+function validateSourceArtifacts() {
+  ensure(secondBrain?.status === "local-demo", "Second Brain source contract must be present and local-demo.");
+  ensure(releaseChecklist?.status === "review-gated-not-released", "release checklist source must be present and review-gated.");
+  ensure(
+    securityGate?.decision === "NO-GO-security-history-remediation-needed",
+    "security gate source decision must be present and NO-GO."
+  );
+  ensure(
+    agentRegistry?.decision === "NO-GO-autonomous-execution-not-approved",
+    "agent registry source decision must be present and NO-GO."
+  );
+  ensure(
+    agentRegistry?.summary?.installedAiProfileCount === (secondBrain?.installedAiProfiles || []).length,
+    "agent registry installed AI count must match the Second Brain source contract."
+  );
 }
 
 function ensure(condition, message) {

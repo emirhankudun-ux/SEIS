@@ -6,8 +6,15 @@
   "qualityGate": "node scripts/check-ai-workforce-assignments.mjs",
   "currentLauncherEvidence": {
     "command": "npm run ai -- list",
+    "snapshotType": "author-observed-local-snapshot",
     "observedDate": "2026-07-01",
     "mode": "local route readiness only",
+    "runtimeValidationPolicy": {
+      "recomputeCommand": "node scripts/ai-launcher.cjs list",
+      "countsInstalledRoutesFromCurrentRuntime": true,
+      "snapshotIsNotPublicReadinessClaim": true,
+      "statusMismatchMeaning": "environment-specific launcher readiness drift; public readiness must cite the current runtime check, not only this committed snapshot"
+    },
     "notes": [
       "The command checks local route readiness only.",
       "No provider call, repository upload, secret read, or live model verification was performed.",

@@ -1,6 +1,6 @@
 # SEIS Second Brain Public Reviewer Pack
 
-Generated: 2026-06-30T22:56:03.508Z
+Generated: 2026-07-01T18:45:44.529Z
 Status: reviewer-ready-no-key-local-demo
 Mode: github-public-review-no-private-data
 Decision: NO-GO-review-pack-does-not-approve-release

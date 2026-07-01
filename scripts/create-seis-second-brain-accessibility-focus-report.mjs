@@ -31,7 +31,7 @@ const evidenceManifest = fs.existsSync(path.join(root, paths.evidenceManifest))
   : null;
 
 const report = buildReport(contract, secondBrain, desktopJs, desktopCss, browserSmoke, evidenceManifest, new Date().toISOString());
-validateReport(report, contract, "generated accessibility/focus report");
+validateReport(report, contract, secondBrain, "generated accessibility/focus report");
 
 if (shouldWrite) {
   writeJson(paths.outputJson, report);
@@ -43,7 +43,7 @@ if (shouldCheck) {
   ensureFile(paths.outputMarkdown, "Second Brain accessibility/focus Markdown artifact");
   const existingJson = readJson(paths.outputJson, "Second Brain accessibility/focus JSON artifact");
   const existingMarkdown = readText(paths.outputMarkdown, "Second Brain accessibility/focus Markdown artifact");
-  if (existingJson) validateReport(existingJson, contract, "existing accessibility/focus artifact");
+  if (existingJson) validateReport(existingJson, contract, secondBrain, "existing accessibility/focus artifact");
   for (const phrase of [
     "SEIS Second Brain Accessibility Focus QA",
     "manual keyboard transcript",
@@ -173,7 +173,7 @@ function buildReport(accessibilityContract, secondBrainContract, js, css, smoke,
   };
 }
 
-function validateReport(value, accessibilityContract, label) {
+function validateReport(value, accessibilityContract, secondBrainContract, label) {
   ensure(value?.id === "seis-second-brain-accessibility-focus-qa-pr54", `${label} id mismatch.`);
   ensure(value?.title === "SEIS Second Brain Accessibility Focus QA", `${label} title mismatch.`);
   ensure(value?.status === "review-gated-human-accessibility-needed", `${label} status mismatch.`);
@@ -183,6 +183,10 @@ function validateReport(value, accessibilityContract, label) {
   ensure(value?.secondBrainPath === paths.secondBrain, `${label} Second Brain path mismatch.`);
   ensure(value?.linkedSmoke === "npm run check:seis-second-brain-browser-smoke", `${label} linked smoke mismatch.`);
   ensure(value?.installedAiProfileCount >= 6, `${label} installed AI profile count too low.`);
+  ensure(
+    value?.installedAiProfileCount === (secondBrainContract?.installedAiProfiles || []).length,
+    `${label} installed AI profile count must match the Second Brain source contract exactly.`
+  );
   ensure(value?.managedSubAgentLaneCount >= 6, `${label} managed sub-agent lane count too low.`);
   ensure(value?.autonomousAgentRosterCount >= 12, `${label} autonomous agent roster count too low.`);
   ensure(Array.isArray(value?.automatedEvidence) && value.automatedEvidence.length >= 10, `${label} automated evidence missing.`);

@@ -174,9 +174,11 @@ function buildReport(generatedAt) {
     },
     launcherEvidence: {
       command: aiWorkforce?.currentLauncherEvidence?.command,
+      snapshotType: aiWorkforce?.currentLauncherEvidence?.snapshotType,
       observedDate: aiWorkforce?.currentLauncherEvidence?.observedDate,
       mode: aiWorkforce?.currentLauncherEvidence?.mode,
-      installedRoutes: launcherEvidenceTools.filter((tool) => tool.launcherStatus === "installed").map((tool) => tool.route),
+      runtimeValidationPolicy: aiWorkforce?.currentLauncherEvidence?.runtimeValidationPolicy || {},
+      snapshotInstalledRoutes: launcherEvidenceTools.filter((tool) => tool.launcherStatus === "installed").map((tool) => tool.route),
       tools: launcherEvidenceTools
     },
     providerProfiles,
@@ -255,6 +257,7 @@ function buildReport(generatedAt) {
       mcpVendorSurfaceCount: mcpSurfaces.length,
       installedSkillCount: bigTechInventory?.installed_skill_pass?.installed_skill_count || 0,
       launcherRouteCount: launcherEvidenceTools.length,
+      snapshotInstalledLauncherRouteCount: launcherEvidenceTools.filter((tool) => tool.launcherStatus === "installed").length,
       installedLauncherRouteCount: launcherEvidenceTools.filter((tool) => tool.launcherStatus === "installed").length,
       pluginCapabilityCount: pluginCapabilities.length,
       connectorCapabilityCount: connectorCapabilities.length
@@ -342,13 +345,27 @@ function validateReport(value, label) {
   ensureArrayMin(value?.subAgentMesh?.roleSchemaRoles, 5, `${label} roleSchemaRoles`);
   ensureArrayMin(value?.subAgentMesh?.permissionLevels, 5, `${label} permissionLevels`);
   ensure(value?.summary?.installedAiProfileCount >= 6, `${label} installed AI profile count too low.`);
+  ensure(
+    value?.summary?.installedAiProfileCount === (secondBrain?.installedAiProfiles || []).length,
+    `${label} installed AI profile count must match the Second Brain source contract exactly.`
+  );
   ensure(value?.summary?.workforceAssignmentCount >= 10, `${label} workforce assignment count too low.`);
   ensure(value?.summary?.mcpVendorSurfaceCount >= 10, `${label} MCP vendor surface count too low.`);
   ensure(value?.summary?.installedSkillCount >= 30, `${label} installed skill count too low.`);
   ensure(value?.launcherEvidence?.command === "npm run ai -- list", `${label} launcher evidence command mismatch.`);
+  ensure(value?.launcherEvidence?.snapshotType === "author-observed-local-snapshot", `${label} launcher evidence must be labeled as a local snapshot.`);
   ensure(value?.launcherEvidence?.mode === "local route readiness only", `${label} launcher evidence must stay route-readiness-only.`);
+  ensure(
+    value?.launcherEvidence?.runtimeValidationPolicy?.countsInstalledRoutesFromCurrentRuntime === true,
+    `${label} launcher evidence must require current runtime installed-route counting.`
+  );
+  ensure(
+    value?.launcherEvidence?.runtimeValidationPolicy?.snapshotIsNotPublicReadinessClaim === true,
+    `${label} launcher evidence snapshot must not be treated as public readiness.`
+  );
   ensureArrayMin(value?.launcherEvidence?.tools, 18, `${label} launcher evidence tools`);
   ensure(value?.summary?.installedLauncherRouteCount >= 12, `${label} installed launcher route count too low.`);
+  ensure(value?.summary?.snapshotInstalledLauncherRouteCount >= 12, `${label} snapshot installed launcher route count too low.`);
   for (const tool of value?.launcherEvidence?.tools || []) {
     if (!tool.registryRequired) continue;
     ensure(tool.workforceAssignmentFound === true, `${label} launcher route ${tool.route} must have workforce assignment.`);
@@ -430,7 +447,7 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 | MCP vendor surfaces | ${value.summary.mcpVendorSurfaceCount} |
 | Installed skills in inventory | ${value.summary.installedSkillCount} |
 | Launcher routes | ${value.summary.launcherRouteCount} |
-| Installed launcher routes | ${value.summary.installedLauncherRouteCount} |
+| Snapshot installed launcher routes | ${value.summary.snapshotInstalledLauncherRouteCount} |
 
 ## Second Brain Binding
 
@@ -456,8 +473,10 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 ## Launcher Evidence Coverage
 
 - command: ${value.launcherEvidence.command}
+- snapshotType: ${value.launcherEvidence.snapshotType}
 - observedDate: ${value.launcherEvidence.observedDate}
 - mode: ${value.launcherEvidence.mode}
+- runtimeValidationPolicy: recompute=${value.launcherEvidence.runtimeValidationPolicy.recomputeCommand}, countsInstalledRoutesFromCurrentRuntime=${value.launcherEvidence.runtimeValidationPolicy.countsInstalledRoutesFromCurrentRuntime}, snapshotIsNotPublicReadinessClaim=${value.launcherEvidence.runtimeValidationPolicy.snapshotIsNotPublicReadinessClaim}
 
 | Route | Status | Second Brain profile | Workforce assignment found | Profile found |
 | --- | --- | --- | --- | --- |

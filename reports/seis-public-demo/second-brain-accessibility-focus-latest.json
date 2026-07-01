@@ -1,7 +1,7 @@
 {
   "id": "seis-second-brain-accessibility-focus-qa-pr54",
   "title": "SEIS Second Brain Accessibility Focus QA",
-  "generatedAt": "2026-07-01T03:19:29.728Z",
+  "generatedAt": "2026-07-01T18:45:30.382Z",
   "status": "review-gated-human-accessibility-needed",
   "mode": "repo-static-and-browser-smoke-evidence",
   "decision": "NO-GO-human-accessibility-review-required",
@@ -29,7 +29,7 @@
     "GitHub gate table",
     "Recent activity cards"
   ],
-  "installedAiProfileCount": 6,
+  "installedAiProfileCount": 24,
   "managedSubAgentLaneCount": 6,
   "autonomousAgentRosterCount": 12,
   "automatedEvidence": [

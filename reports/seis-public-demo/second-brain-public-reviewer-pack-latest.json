@@ -1,7 +1,7 @@
 {
   "id": "seis-second-brain-public-reviewer-pack-pr104",
   "title": "SEIS Second Brain Public Reviewer Pack",
-  "generatedAt": "2026-06-30T22:56:03.508Z",
+  "generatedAt": "2026-07-01T18:45:44.529Z",
   "status": "reviewer-ready-no-key-local-demo",
   "mode": "github-public-review-no-private-data",
   "decision": "NO-GO-review-pack-does-not-approve-release",
@@ -94,8 +94,8 @@
   "releaseChecklistSnapshot": {
     "status": "review-gated-not-released",
     "releaseDecision": "not ready until checklist gates pass",
-    "requiredValidationCount": 27,
-    "requiredArtifactCount": 18
+    "requiredValidationCount": 29,
+    "requiredArtifactCount": 20
   },
   "safetyBoundary": {
     "privateObsidianVaultReadPerformed": false,
