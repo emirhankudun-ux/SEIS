@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 const root = path.resolve(__dirname, "..");
 const html = fs.readFileSync(path.join(root, "search-center.html"), "utf8");
 const css = fs.readFileSync(path.join(root, "search-center.css"), "utf8");
-const js = fs.readFileSync(path.join(root, "search-center.mjs"), "utf8");
+const js = fs.readFileSync(path.join(root, "search-center.js"), "utf8");
 
 const requiredTabs = ["AI", "Web", "Code", "Design", "Cloud", "Apps", "Plugins", "Files"];
 
@@ -68,9 +68,10 @@ test("Search Center JS keeps browser-local state and safe flags", () => {
   }
 });
 
-test("Search Center loads the ESM entrypoint", () => {
-  assert.ok(html.includes('type="module"'), "Search Center script must load as an ESM module.");
-  assert.ok(html.includes("search-center.mjs"), "Search Center HTML must reference the module entrypoint.");
+test("Search Center keeps direct-file compatible startup", () => {
+  assert.ok(html.includes('src="./search-center.js"'), "Search Center HTML must reference the classic browser entrypoint.");
+  assert.equal(html.includes('type="module"'), false, "Search Center must not require module script loading for direct-file startup.");
+  assert.equal(html.includes("search-center.mjs"), false, "Search Center must not reference the HTTP-only module entrypoint.");
 });
 
 test("Search Center does not include provider or network access patterns", () => {

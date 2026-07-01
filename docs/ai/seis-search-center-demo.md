@@ -11,7 +11,7 @@ apps/seis-core/search-center.html
 ```
 
 The route is zero-key and browser-local. It does not request live web search, provider APIs, or filesystem access.
-The page loads `apps/seis-core/search-center.mjs` as an ESM browser module.
+The page loads `apps/seis-core/search-center.js` as a classic browser script so the documented static file path can open directly without an HTTP server.
 
 ## What works now
 
@@ -23,7 +23,7 @@ The page loads `apps/seis-core/search-center.mjs` as an ESM browser module.
 - Session persistence in localStorage.
 - Clear mock/real/planned/blocked labels per result.
 - Runtime contract block showing explicit safety flags.
-- ESM-only browser entrypoint with DOM-node rendering instead of render-time HTML string assignment.
+- Direct-file compatible browser entrypoint with DOM-node rendering instead of render-time HTML string assignment.
 - Reduced-motion and print-mode CSS coverage for review and publish readiness.
 
 ## Mock vs real status
@@ -77,7 +77,7 @@ node --test apps/seis-core/test/seis-search-center-static.test.js
 The static validation checks:
 
 - required tabs and runtime contract markers
-- ESM script loading through `search-center.mjs`
+- direct-file compatible script loading through `search-center.js`
 - browser-local safety flags
 - forbidden network, provider, filesystem, and unsafe render patterns
 - reduced-motion and print CSS markers

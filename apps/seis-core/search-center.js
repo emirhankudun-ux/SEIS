@@ -506,10 +506,6 @@ function handleKeyboardShortcuts(event) {
     return;
   }
 
-  if (event.key === "Enter" && document.activeElement?.id === "searchInput") {
-    event.preventDefault();
-    applySearch(dom.searchInput.value);
-  }
 }
 
 function runBootstrap() {
