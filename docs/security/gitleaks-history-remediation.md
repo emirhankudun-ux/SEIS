@@ -22,6 +22,19 @@ findings, and does not rewrite repository history. It records the public-safe
 state and adds a guard so generated unified-source bundles do not return to the
 tracked tree.
 
+## Current PR Impact
+
+As of 2026-07-01, GitHub auto-merge is enabled for:
+
+- PR #77, `ci: add generated source bundle guard`
+- PR #126, `feat(core): add browser-local Search Center`
+
+Both PRs remain correctly blocked by the same repository-level Guardian
+Gitleaks failure. The blocker is not tied to the current PR diffs; it is tied
+to the historical generated bundle evidence listed above. Do not bypass the
+failed check. Merge can resume only after an owner-approved remediation path is
+completed.
+
 ## Required Owner Review
 
 Before changing the security workflow scope or rewriting history, a maintainer
