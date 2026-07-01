@@ -53,6 +53,11 @@ doctor, and support packet into a step-by-step path from fresh clone to
 secret-safe GitHub support issue. It does not contact GitHub, write
 `~/.ssh/config`, open SSH, or change the server or port.
 
+On a clean GitHub Actions runner or fresh machine, missing local `SEIS-SSH`
+configuration is treated as `setup-needed` evidence, not a CI failure. The
+public CI gate still fails on unsafe contract drift, local/LAN targets, secrets,
+live-ready overclaims, or server/port mutation.
+
 This first-run command is read-only. It produces a sanitized local snapshot,
 shows whether setup is needed, and keeps missing `SEIS-SSH` configuration as a
 clear next action instead of pretending live SSH is ready. It does not contact

@@ -57,12 +57,15 @@ function buildReport(targetAlias) {
   if (["local-or-lan"].includes(sshConfig.transport)) failures.push("SEIS-SSH must not resolve to localhost, private LAN, or .local addresses");
   if (sshConfig.alias !== "SEIS-SSH") failures.push("public report must inspect SEIS-SSH");
 
-  const ok = failures.length === 0 && sshConfig.configured;
+  const ok = failures.length === 0;
+  const status = failures.length > 0
+    ? "blocked"
+    : sshConfig.configured ? "review-ready" : "setup-needed";
   return {
     id: "seis-ssh-public-access-report",
     generatedAt: new Date().toISOString(),
     ok,
-    status: ok ? "review-ready" : "blocked",
+    status,
     mode: "read-only-no-live-ssh",
     alias: targetAlias,
     contract: "deploy/seis-ssh-public-access-contract.json",
