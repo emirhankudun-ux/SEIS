@@ -1,0 +1,371 @@
+{
+  "version": 1,
+  "id": "seis-ssh-oracle-free-tier-direct-cloud-plan",
+  "title": "SEIS SSH Oracle Free Tier Direct-Cloud Plan",
+  "status": "planning-only",
+  "targetAlias": "SEIS-SSH",
+  "providerId": "oracle-cloud-free-tier",
+  "sourceMatrix": "deploy/seis-ssh-direct-cloud-provider-matrix.json",
+  "qualityGate": "npm run check:seis-ssh-oracle-free-tier-plan",
+  "reportBoundaryGuard": {
+    "script": "scripts/check-seis-ssh-report-boundary.mjs",
+    "checkCommand": "npm run check:seis-ssh-report-boundary",
+    "mode": "static-gitignore-boundary-no-provider-api-no-live-ssh-no-config-write",
+    "generatedReportsIgnored": true,
+    "sourceContractsCommittable": true,
+    "callsProviderApis": false,
+    "createsVm": false,
+    "opensSshSession": false,
+    "writesSshConfig": false,
+    "readsPrivateKey": false,
+    "printsSecrets": false
+  },
+  "planner": {
+    "script": "scripts/create-seis-ssh-oracle-free-tier-plan.mjs",
+    "runbook": "docs/deployment/seis-ssh-oracle-free-tier-direct-cloud.md",
+    "reportJson": "reports/seis-ssh-oracle-free-tier-plan.json",
+    "reportMarkdown": "reports/seis-ssh-oracle-free-tier-plan.md",
+    "checkCommand": "npm run check:seis-ssh-oracle-free-tier-plan",
+    "reportCommand": "npm run cloud:ssh:oracle-free-tier:plan",
+    "mode": "read-only-no-auth-no-cloud-mutation-no-config-write-no-live-ssh",
+    "callsProviderApis": false,
+    "createsVm": false,
+    "opensSshSession": false,
+    "writesSshConfig": false,
+    "printsSecrets": false
+  },
+  "cloudInitHandoff": {
+    "script": "scripts/create-seis-ssh-oracle-cloud-init-handoff.mjs",
+    "reportJson": "reports/seis-ssh-oracle-cloud-init-handoff.json",
+    "reportMarkdown": "reports/seis-ssh-oracle-cloud-init-handoff.md",
+    "cloudInitYaml": "reports/seis-ssh-oracle-cloud-init-handoff.yaml",
+    "checkCommand": "npm run check:seis-ssh-oracle-cloud-init-handoff",
+    "reportCommand": "npm run cloud:ssh:oracle-cloud-init:handoff",
+    "mode": "local-report-only-no-provider-api-no-live-ssh-no-config-write",
+    "callsProviderApis": false,
+    "createsVm": false,
+    "opensSshSession": false,
+    "writesSshConfig": false,
+    "readsPrivateKey": false,
+    "printsSecrets": false
+  },
+  "instanceLaunchPlan": {
+    "script": "scripts/create-seis-ssh-oracle-instance-launch-plan.mjs",
+    "reportJson": "reports/seis-ssh-oracle-instance-launch-plan.json",
+    "reportMarkdown": "reports/seis-ssh-oracle-instance-launch-plan.md",
+    "checkCommand": "npm run check:seis-ssh-oracle-instance-launch-plan",
+    "reportCommand": "npm run cloud:ssh:oracle-instance:plan",
+    "mode": "local-plan-only-no-provider-api-no-vm-create-no-live-ssh",
+    "callsProviderApis": false,
+    "createsVm": false,
+    "opensSshSession": false,
+    "writesSshConfig": false,
+    "readsPrivateKey": false,
+    "printsSecrets": false
+  },
+  "ownerInputTemplate": {
+    "script": "scripts/create-seis-ssh-oracle-owner-input-template.mjs",
+    "envTemplate": "reports/seis-ssh-oracle-owner-input-template.env",
+    "reportJson": "reports/seis-ssh-oracle-owner-input-template.json",
+    "reportMarkdown": "reports/seis-ssh-oracle-owner-input-template.md",
+    "checkCommand": "npm run check:seis-ssh-oracle-owner-input-template",
+    "reportCommand": "npm run cloud:ssh:oracle-owner:template",
+    "mode": "local-template-only-no-provider-api-no-vm-create-no-live-ssh-no-secret-output",
+    "committable": false,
+    "preservesExistingFileByDefault": true,
+    "forceRequiredToOverwrite": true,
+    "callsProviderApis": false,
+    "createsVm": false,
+    "opensSshSession": false,
+    "writesSshConfig": false,
+    "readsPrivateKey": false,
+    "printsSecrets": false
+  },
+  "ownerPreflight": {
+    "script": "scripts/create-seis-ssh-oracle-owner-preflight.mjs",
+    "reportJson": "reports/seis-ssh-oracle-owner-preflight.json",
+    "reportMarkdown": "reports/seis-ssh-oracle-owner-preflight.md",
+    "checkCommand": "npm run check:seis-ssh-oracle-owner-preflight",
+    "reportCommand": "npm run cloud:ssh:oracle-owner:preflight",
+    "mode": "local-owner-preflight-no-provider-api-no-vm-create-no-live-ssh-no-config-read",
+    "callsProviderApis": false,
+    "createsVm": false,
+    "opensSshSession": false,
+    "writesSshConfig": false,
+    "readsPrivateKey": false,
+    "readsOciConfigContents": false,
+    "printsSecrets": false
+  },
+  "ownerLaunchCommand": {
+    "script": "scripts/create-seis-ssh-oracle-owner-launch-command.mjs",
+    "reportJson": "reports/seis-ssh-oracle-owner-launch-command.json",
+    "reportMarkdown": "reports/seis-ssh-oracle-owner-launch-command.md",
+    "shellScript": "reports/seis-ssh-oracle-owner-launch-command.sh",
+    "checkCommand": "npm run check:seis-ssh-oracle-owner-launch-command",
+    "reportCommand": "npm run cloud:ssh:oracle-owner:launch-command",
+    "mode": "local-launch-command-handoff-no-provider-api-no-vm-create-no-live-ssh-no-config-write",
+    "shellScriptCommittable": false,
+    "printsRawOwnerValuesInReports": false,
+    "preservesExistingShellByDefault": true,
+    "forceRequiredToOverwrite": true,
+    "callsProviderApis": false,
+    "createsVm": false,
+    "opensSshSession": false,
+    "writesSshConfig": false,
+    "readsPrivateKey": false,
+    "readsOciConfigContents": false,
+    "printsSecrets": false
+  },
+  "ownerHandoffBundle": {
+    "script": "scripts/create-seis-ssh-oracle-owner-handoff-bundle.mjs",
+    "reportJson": "reports/seis-ssh-oracle-owner-handoff-bundle.json",
+    "reportMarkdown": "reports/seis-ssh-oracle-owner-handoff-bundle.md",
+    "checkCommand": "npm run check:seis-ssh-oracle-owner-handoff",
+    "reportCommand": "npm run cloud:ssh:oracle-owner:handoff",
+    "mode": "local-owner-handoff-bundle-no-provider-api-no-vm-create-no-live-ssh-no-config-write",
+    "printsRawOwnerValues": false,
+    "callsProviderApis": false,
+    "createsVm": false,
+    "opensSshSession": false,
+    "writesSshConfig": false,
+    "readsPrivateKey": false,
+    "readsOciConfigContents": false,
+    "printsSecrets": false
+  },
+  "postBootHandoff": {
+    "script": "scripts/create-seis-ssh-oracle-postboot-handoff.mjs",
+    "reportJson": "reports/seis-ssh-oracle-postboot-handoff.json",
+    "reportMarkdown": "reports/seis-ssh-oracle-postboot-handoff.md",
+    "checkCommand": "npm run check:seis-ssh-oracle-postboot-handoff",
+    "reportCommand": "npm run cloud:ssh:oracle-postboot:handoff",
+    "mode": "local-postboot-handoff-no-provider-api-no-live-ssh-no-config-write",
+    "callsProviderApis": false,
+    "createsVm": false,
+    "opensSshSession": false,
+    "writesSshConfig": false,
+    "readsPrivateKey": false,
+    "printsSecrets": false
+  },
+  "directCloudPipeline": {
+    "script": "scripts/create-seis-ssh-oracle-direct-cloud-pipeline.mjs",
+    "reportJson": "reports/seis-ssh-oracle-direct-cloud-pipeline.json",
+    "reportMarkdown": "reports/seis-ssh-oracle-direct-cloud-pipeline.md",
+    "checkCommand": "npm run check:seis-ssh-oracle-direct-cloud-pipeline",
+    "reportCommand": "npm run cloud:ssh:oracle-direct-cloud:pipeline",
+    "mode": "local-pipeline-report-no-provider-api-no-live-ssh-no-config-write",
+    "callsProviderApis": false,
+    "createsVm": false,
+    "opensSshSession": false,
+    "writesSshConfig": false,
+    "readsPrivateKey": false,
+    "printsSecrets": false
+  },
+  "optionalGithubCodespacesFallbackPlan": {
+    "script": "scripts/create-seis-ssh-github-codespaces-fallback-plan.mjs",
+    "reportJson": "reports/seis-ssh-github-codespaces-fallback-plan.json",
+    "reportMarkdown": "reports/seis-ssh-github-codespaces-fallback-plan.md",
+    "checkCommand": "npm run check:seis-ssh-github-codespaces-fallback-plan",
+    "reportCommand": "npm run cloud:ssh:github-codespaces:fallback-plan",
+    "mode": "local-github-codespaces-fallback-plan-no-auth-status-no-live-ssh-no-config-write",
+    "fallbackOnly": true,
+    "supportsMobile24x7WhenVerified": false,
+    "callsProviderApis": false,
+    "createsVm": false,
+    "opensSshSession": false,
+    "writesSshConfig": false,
+    "readsPrivateKey": false,
+    "printsSecrets": false
+  },
+  "optionalCloudflareAccessPlan": {
+    "script": "scripts/create-seis-ssh-cloudflare-access-plan.mjs",
+    "reportJson": "reports/seis-ssh-cloudflare-access-plan.json",
+    "reportMarkdown": "reports/seis-ssh-cloudflare-access-plan.md",
+    "checkCommand": "npm run check:seis-ssh-cloudflare-access-plan",
+    "reportCommand": "npm run cloud:ssh:cloudflare-access:plan",
+    "mode": "local-cloudflare-access-plan-no-provider-api-no-login-no-live-ssh-no-config-write",
+    "requiresApprovedCloudOrigin": true,
+    "localMacOriginAllowed": false,
+    "callsProviderApis": false,
+    "createsVm": false,
+    "opensSshSession": false,
+    "writesSshConfig": false,
+    "readsPrivateKey": false,
+    "readsTunnelCredentials": false,
+    "printsSecrets": false
+  },
+  "positioning": {
+    "role": "first always-on direct-cloud VM attempt",
+    "why": "Oracle Cloud Free Tier can provide an always-on compute target for SEIS-SSH when account login, tenancy, capacity, and SSH key installation are available.",
+    "notAReplacementFor": [
+      "strict direct-cloud probe",
+      "strict direct-cloud doctor",
+      "owner-approved endpoint migration"
+    ]
+  },
+  "safeWithoutOracleLogin": [
+    "Verify the OCI CLI binary is available locally.",
+    "Verify the SEIS public key exists without reading private key material.",
+    "Inspect the current SEIS-SSH alias shape with ssh -G.",
+    "Generate redacted local reports.",
+    "Generate a local-only Oracle cloud-init handoff YAML that embeds the SEIS public key.",
+    "Generate a local-only Oracle instance launch command plan with owner-input placeholders.",
+    "Generate a local-only ignored owner-input env template for Oracle compartment, subnet, image, availability-domain, and post-boot endpoint values.",
+    "Generate a local-only owner preflight report that checks OCI session hints and redacted owner-input presence.",
+    "Generate a local-only ignored launch-command handoff shell script only after owner inputs have valid shapes.",
+    "Generate a local-only owner handoff bundle with redacted run order and current blockers.",
+    "Generate a local-only post-boot handoff report after Oracle assigns a public endpoint.",
+    "Generate a local-only pipeline report that summarizes the current blocked stage.",
+    "Keep GitHub Codespaces as the fallback until a real Oracle endpoint exists."
+  ],
+  "requiresOwnerOutsideGit": [
+    "Oracle account login and session setup",
+    "Tenancy, region, and compartment selection",
+    "Always Free VM capacity confirmation",
+    "Public IPv4 or approved DNS endpoint assignment",
+    "Cloud-init user-data paste at first boot",
+    "SEIS public key installation on the VM",
+    "Any Cloudflare Access tunnel, cert, or token setup"
+  ],
+  "phases": [
+    {
+      "id": "local-preflight",
+      "readyWhen": [
+        "npm run check:seis-ssh-oracle-free-tier-plan passes",
+        "OCI CLI is available",
+        "SEIS public key is present"
+      ]
+    },
+    {
+      "id": "owner-oracle-auth",
+      "readyWhen": [
+        "Oracle browser/device login is completed outside git",
+        "Profile and region are selected without committing OCI files"
+      ]
+    },
+    {
+      "id": "owner-preflight",
+      "readyWhen": [
+        "npm run check:seis-ssh-oracle-owner-preflight passes",
+        "npm run check:seis-ssh-oracle-owner-input-template passes",
+        "npm run cloud:ssh:oracle-owner:preflight shows local artifacts ready",
+        "Availability domain, compartment OCID, public subnet OCID, and image OCID are present only as redacted owner inputs with valid shapes"
+      ]
+    },
+    {
+      "id": "owner-launch-command",
+      "readyWhen": [
+        "npm run check:seis-ssh-oracle-owner-launch-command passes",
+        "npm run cloud:ssh:oracle-owner:launch-command writes only ignored local artifacts",
+        "JSON and Markdown reports do not print raw OCIDs, availability-domain values, endpoints, or the raw OCI launch command"
+      ]
+    },
+    {
+      "id": "vm-selection",
+      "readyWhen": [
+        "Always Free compatible VM exists",
+        "Public endpoint is available",
+        "SSH port policy is reviewed"
+      ]
+    },
+    {
+      "id": "cloud-init-handoff",
+      "readyWhen": [
+        "npm run check:seis-ssh-oracle-cloud-init-handoff passes",
+        "Generated cloud-init YAML is reviewed locally",
+        "Cloud-init YAML is pasted into Oracle user-data before first boot"
+      ]
+    },
+    {
+      "id": "public-key-install",
+      "readyWhen": [
+        "SEIS public key is installed in the remote authorized_keys",
+        "No SSH private key is copied to Oracle or git"
+      ]
+    },
+    {
+      "id": "single-alias-activation",
+      "readyWhen": [
+        "npm run cloud:ssh:direct-cloud:activate -- --public-ip <PUBLIC_IP> --direct-user aiuser is owner-approved",
+        "SEIS-SSH remains the only visible alias"
+      ]
+    },
+    {
+      "id": "post-boot-handoff",
+      "readyWhen": [
+        "npm run check:seis-ssh-oracle-postboot-handoff passes",
+        "npm run cloud:ssh:oracle-postboot:handoff records endpoint continuity without printing the endpoint",
+        "Owner run order points to switch, activate, strict probe, strict doctor, and claim gate"
+      ]
+    },
+    {
+      "id": "strict-proof",
+      "readyWhen": [
+        "npm run cloud:ssh:mobile-direct:probe:strict passes",
+        "npm run cloud:ssh:mobile-direct:doctor:strict passes"
+      ]
+    },
+    {
+      "id": "optional-cloudflare-access",
+      "readyWhen": [
+        "A real cloud VM origin already exists",
+        "Cloudflare Access policy is identity-gated",
+        "No tunnel token, cert, or origin credential is committed"
+      ]
+    }
+  ],
+  "readinessBlockersUntilProven": [
+    "Oracle account session is not proven by local planning.",
+    "Tenancy, compartment, and capacity are not proven by local planning.",
+    "No Oracle VM endpoint exists in git-safe metadata.",
+    "Oracle cloud-init user-data has not been applied to a real VM.",
+    "SEIS public key installation on the VM is not proven.",
+    "Strict direct-cloud probe and doctor have not passed."
+  ],
+  "forbiddenActions": [
+    "commit OCI config, session files, private keys, tunnel certs, or tokens",
+    "print Oracle OCIDs, hostnames, public IPs, or session details in public reports",
+    "claim ChatGPT mobile 24x7 readiness before strict probe and doctor pass",
+    "expose the local Mac through Cloudflare as the default SEIS-SSH path",
+    "add a duplicate visible SSH alias to make pickers look online"
+  ],
+  "commands": {
+    "localPlan": "npm run cloud:ssh:oracle-free-tier:plan",
+    "localCheck": "npm run check:seis-ssh-oracle-free-tier-plan",
+    "cloudInitHandoff": "npm run cloud:ssh:oracle-cloud-init:handoff",
+    "checkCloudInitHandoff": "npm run check:seis-ssh-oracle-cloud-init-handoff",
+    "instanceLaunchPlan": "npm run cloud:ssh:oracle-instance:plan",
+    "checkInstanceLaunchPlan": "npm run check:seis-ssh-oracle-instance-launch-plan",
+    "ownerInputTemplate": "npm run cloud:ssh:oracle-owner:template",
+    "checkOwnerInputTemplate": "npm run check:seis-ssh-oracle-owner-input-template",
+    "ownerPreflight": "npm run cloud:ssh:oracle-owner:preflight",
+    "checkOwnerPreflight": "npm run check:seis-ssh-oracle-owner-preflight",
+    "ownerLaunchCommand": "npm run cloud:ssh:oracle-owner:launch-command",
+    "checkOwnerLaunchCommand": "npm run check:seis-ssh-oracle-owner-launch-command",
+    "ownerHandoff": "npm run cloud:ssh:oracle-owner:handoff",
+    "checkOwnerHandoff": "npm run check:seis-ssh-oracle-owner-handoff",
+    "postBootHandoff": "npm run cloud:ssh:oracle-postboot:handoff",
+    "checkPostBootHandoff": "npm run check:seis-ssh-oracle-postboot-handoff",
+    "directCloudPipeline": "npm run cloud:ssh:oracle-direct-cloud:pipeline",
+    "checkDirectCloudPipeline": "npm run check:seis-ssh-oracle-direct-cloud-pipeline",
+    "githubCodespacesFallbackPlan": "npm run cloud:ssh:github-codespaces:fallback-plan",
+    "checkGithubCodespacesFallbackPlan": "npm run check:seis-ssh-github-codespaces-fallback-plan",
+    "oracleLogin": "oci session authenticate --region eu-frankfurt-1 --no-browser --profile-name SEIS",
+    "afterVmExists": "npm run cloud:ssh:direct-cloud:activate -- --public-ip <PUBLIC_IP> --direct-user aiuser",
+    "strictProbe": "npm run cloud:ssh:mobile-direct:probe:strict",
+    "strictDoctor": "npm run cloud:ssh:mobile-direct:doctor:strict",
+    "readinessClaim": "npm run cloud:ssh:direct-cloud:claim"
+  },
+  "security": [
+    "Reports may include only redacted path, fingerprint, and boolean readiness facts.",
+    "Private key material is never read.",
+    "OCI profile files are only detected by path existence; their contents are not read.",
+    "Owner input template files are ignored and must stay local.",
+    "Owner input template generation preserves existing local values unless --force is explicitly used after review.",
+    "Owner preflight reports only presence, detected kind, and SHA-256 prefixes for OCIDs and endpoints.",
+    "Owner launch-command JSON and Markdown reports never print raw owner values; the raw command may exist only in an ignored local shell handoff.",
+    "Owner handoff bundle reports only redacted report statuses, next action, and run order.",
+    "Direct-cloud activation output is redacted and uses endpoint kind plus SHA-256 prefix for continuity.",
+    "Cloud-init handoff output is local-only and ignored because it embeds the public SSH key.",
+    "Live provider calls are outside this planner and require owner approval."
+  ]
+}

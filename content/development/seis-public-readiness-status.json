@@ -1,0 +1,320 @@
+{
+  "id": "seis-public-readiness-status",
+  "status": "active-review-matrix-not-release-claim",
+  "qualityGate": "npm run check:seis-public-readiness-status",
+  "publicReadyClaimAllowed": false,
+  "noKeyDemoRequired": true,
+  "liveClaimsRequireCurrentEvidence": true,
+  "securityBoundary": {
+    "secretsAllowed": false,
+    "privateVaultMaterialAllowed": false,
+    "realSSHCredentialsAllowed": false,
+    "browserProviderSecretsAllowed": false,
+    "githubMutationAllowed": false
+  },
+  "surfaces": [
+    {
+      "id": "identity",
+      "title": "SEIS identity and governance",
+      "status": "documented",
+      "publicSafe": true,
+      "liveClaimAllowed": false,
+      "evidence": [
+        "README.md",
+        "AGENTS.md",
+        "docs/governance/seis-master-prompt.md"
+      ],
+      "requiredChecks": [
+        "npm run check:open-source-governance",
+        "npm run check:foundation"
+      ],
+      "blockers": [
+        "Remote GitHub branch protection state is not verified by this matrix."
+      ],
+      "nextAction": "Keep identity docs and governance checks aligned before public claims."
+    },
+    {
+      "id": "onboarding",
+      "title": "Public onboarding",
+      "status": "validator-backed",
+      "publicSafe": true,
+      "liveClaimAllowed": false,
+      "evidence": [
+        "docs/GETTING_STARTED.md",
+        "docs/TROUBLESHOOTING.md",
+        "docs/PUBLIC_READINESS.md"
+      ],
+      "requiredChecks": [
+        "npm run check:seis-public-readiness-docs"
+      ],
+      "blockers": [
+        "Full contributor journey still depends on local tool availability."
+      ],
+      "nextAction": "Keep setup docs short and no-key first."
+    },
+    {
+      "id": "environment-template",
+      "title": "No-key environment template",
+      "status": "validator-backed",
+      "publicSafe": true,
+      "liveClaimAllowed": false,
+      "evidence": [
+        ".env.example",
+        "scripts/check-seis-env-example.mjs",
+        "docs/security/security-baseline.md"
+      ],
+      "requiredChecks": [
+        "npm run check:seis-env-example"
+      ],
+      "blockers": [
+        "No runtime provider validation is performed."
+      ],
+      "nextAction": "Keep provider key slots blank and model aliases empty until live adapter docs verify them."
+    },
+    {
+      "id": "web-demo",
+      "title": "No-key web demo",
+      "status": "local-demo-review-required",
+      "publicSafe": true,
+      "liveClaimAllowed": false,
+      "evidence": [
+        "docs/product/seis-demo-status.md",
+        "apps/web/desktop.html",
+        "apps/web/desktop.js"
+      ],
+      "requiredChecks": [
+        "npm run check:desktop-os",
+        "npm run check:seis-ultimate-demo",
+        "npm run check:product-experience-browser-smoke"
+      ],
+      "blockers": [
+        "Browser smoke evidence must be current before any public demo release claim.",
+        "No provider, SSH, deployment, or GitHub mutation is allowed from the demo."
+      ],
+      "nextAction": "Run browser smoke checks only when web UI behavior changes or before release review."
+    },
+    {
+      "id": "apple-first",
+      "title": "Apple-first native direction",
+      "status": "scaffolded-validator-backed",
+      "publicSafe": true,
+      "liveClaimAllowed": false,
+      "evidence": [
+        "SEIS_APPLE_FIRST.md",
+        "apps/apple/README.md",
+        "packages/seis_platform_swift/README.md",
+        "docs/apple/APPLE_PUBLIC_READINESS.md"
+      ],
+      "requiredChecks": [
+        "swift test --package-path packages/seis_platform_swift"
+      ],
+      "blockers": [
+        "Native app completion, App Store readiness, live provider routing, and live SSH remain unclaimed."
+      ],
+      "nextAction": "Keep Swift additions useful and test-backed, never filler for language percentages."
+    },
+    {
+      "id": "second-brain",
+      "title": "SEIS Brain and Obsidian-compatible layer",
+      "status": "validator-backed-local-demo",
+      "publicSafe": true,
+      "liveClaimAllowed": false,
+      "evidence": [
+        "docs/OBSIDIAN_SECOND_BRAIN.md",
+        "seis-brain/README.md",
+        "docs/product/seis-second-brain.md",
+        "docs/product/seis-obsidian-bridge-safe-import.md"
+      ],
+      "requiredChecks": [
+        "npm run check:seis-brain-context-packs",
+        "npm run check:seis-second-brain",
+        "npm run check:seis-second-brain-readiness-contracts"
+      ],
+      "blockers": [
+        "Private Obsidian vault import remains planned-gated.",
+        "GitHub publication from imported material requires explicit approval."
+      ],
+      "nextAction": "Keep context packs public-safe and provenance-aware."
+    },
+    {
+      "id": "local-ai",
+      "title": "Local AI and Ollama helper lane",
+      "status": "optional-metadata-only",
+      "publicSafe": true,
+      "liveClaimAllowed": false,
+      "evidence": [
+        "docs/LOCAL_AI_SETUP.md",
+        "docs/development/local-ai-workbench.md",
+        "seis-brain/vault/12_Context_Packs/SEIS Codex Context.md"
+      ],
+      "requiredChecks": [
+        "npm run check:seis-brain-context-packs",
+        "npm run check:ai-workforce-assignments"
+      ],
+      "blockers": [
+        "Local model installation and runtime health are not verified by this matrix.",
+        "Local AI output is draft material until reviewed against repository evidence."
+      ],
+      "nextAction": "Keep Codex as the default writer and use local AI only with sanitized context."
+    },
+    {
+      "id": "ai-core",
+      "title": "SEIS AI Core metadata",
+      "status": "metadata-only-no-live-claims",
+      "publicSafe": true,
+      "liveClaimAllowed": false,
+      "evidence": [
+        "docs/ai/seis-ai-core.md",
+        "docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md",
+        "docs/audits/ai-provider-audit.json"
+      ],
+      "requiredChecks": [
+        "npm run check:ai-provider-audit"
+      ],
+      "blockers": [
+        "No live provider calls, credential validation, or backend adapter readiness is proven."
+      ],
+      "nextAction": "Keep provider records explicit about demo, planned, disabled, missing-key, or auth-gated state."
+    },
+    {
+      "id": "seis-ssh",
+      "title": "SEIS-SSH credential-free setup",
+      "status": "metadata-only-strict-live-gated",
+      "publicSafe": true,
+      "liveClaimAllowed": false,
+      "evidence": [
+        "docs/SEIS_SSH_SETUP.md",
+        "docs/operations/seis-cloud-foundation.md",
+        "server/cloud/ssh-ai-shell/README.md"
+      ],
+      "requiredChecks": [
+        "npm run check:seis-ssh-access-model",
+        "npm run check:seis-ssh-picker-compatibility",
+        "npm run check:seis-ssh-cloud-roadmap"
+      ],
+      "blockers": [
+        "No live SSH access is claimed unless a current strict online check passes.",
+        "Real SSH credentials and private host details are forbidden in public files."
+      ],
+      "nextAction": "Use placeholder-only setup docs and dry-run checks until live review is approved."
+    },
+    {
+      "id": "github-governance",
+      "title": "GitHub community and governance surface",
+      "status": "documented-local-checks",
+      "publicSafe": true,
+      "liveClaimAllowed": false,
+      "evidence": [
+        ".github/PULL_REQUEST_TEMPLATE.md",
+        ".github/ISSUE_TEMPLATE/",
+        "SECURITY.md",
+        "SUPPORT.md",
+        "docs/governance/open-source-governance.md",
+        "docs/governance/branch-policy-reconciliation.md"
+      ],
+      "requiredChecks": [
+        "npm run check:open-source-governance",
+        "npm run check:branch-policy-reconciliation",
+        "npm run check:github-remote-configuration"
+      ],
+      "blockers": [
+        "Live GitHub repository settings, branch protection, and Actions state require remote verification.",
+        "Legacy UIXAppTTR records are archive/migration material, not active target branch instructions."
+      ],
+      "nextAction": "Do not claim GitHub settings are active without current remote evidence."
+    },
+    {
+      "id": "security",
+      "title": "Security and credential boundary",
+      "status": "validator-backed-local-history-scan",
+      "publicSafe": true,
+      "liveClaimAllowed": false,
+      "evidence": [
+        "SECURITY.md",
+        "docs/security/security-baseline.md",
+        ".gitignore",
+        ".env.example",
+        "docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md",
+        "docs/audits/ai-provider-audit.json",
+        "docs/audits/GIT_SECRET_HISTORY_SCAN.md",
+        "docs/audits/git-secret-history-scan.json"
+      ],
+      "requiredChecks": [
+        "npm run check:seis-env-example",
+        "npm run check:ai-provider-audit",
+        "npm run check:git-secret-history"
+      ],
+      "blockers": [
+        "External secret scanner and credential-provider audit logs are not performed by this matrix.",
+        "Unknown security state is not safe or passed."
+      ],
+      "nextAction": "Keep the local redacted history scan passing and run approved external review before broad public release claims."
+    },
+    {
+      "id": "public-indexing",
+      "title": "Public indexing and SEO metadata",
+      "status": "pre-production-noindex-validator-backed",
+      "publicSafe": true,
+      "liveClaimAllowed": false,
+      "evidence": [
+        "docs/seo/metadata-plan.md",
+        "content/site/metadata.json",
+        "apps/web/index.html",
+        "apps/web/robots.txt",
+        "apps/web/sitemap.xml",
+        "scripts/check-seo-metadata.mjs"
+      ],
+      "requiredChecks": [
+        "npm run check:seo"
+      ],
+      "blockers": [
+        "Final production domain and public release window are not approved.",
+        "Page-level robots metadata must remain noindex before production approval."
+      ],
+      "nextAction": "Keep crawl assets aligned to metadata while preserving noindex until public launch review."
+    },
+    {
+      "id": "release-artifacts",
+      "title": "Release artifact retention",
+      "status": "tracked-retained-approval-gated",
+      "publicSafe": true,
+      "liveClaimAllowed": false,
+      "evidence": [
+        "docs/deployment/release-artifact-retention-policy.md",
+        "docs/deployment/release-backup-plan.md",
+        "docs/deployment/server-upload-runbook.md",
+        "releases/latest.json",
+        "scripts/check-release-artifact-policy.mjs"
+      ],
+      "requiredChecks": [
+        "npm run check:release-artifact-policy"
+      ],
+      "blockers": [
+        "Tracked release zip deletion, migration, or replacement requires explicit maintainer approval.",
+        "Retained packages are recovery and handoff evidence, not public release approval."
+      ],
+      "nextAction": "Keep artifact retention policy passing before cleanup, migration, or release-readiness review."
+    },
+    {
+      "id": "publication",
+      "title": "Publication and release claim",
+      "status": "blocked-human-review-required",
+      "publicSafe": true,
+      "liveClaimAllowed": false,
+      "evidence": [
+        "docs/releases/PUBLIC_DEMO_RELEASE_CHECKLIST_PR54.md",
+        "content/development/seis-public-demo-release-checklist-pr54.json",
+        "docs/PUBLIC_READINESS.md"
+      ],
+      "requiredChecks": [
+        "npm run check:seis-second-brain-readiness-contracts",
+        "npm run publish:preflight"
+      ],
+      "blockers": [
+        "Public launch, Pages publication, release readiness, merge, and deployment require explicit human approval.",
+        "Dirty worktree blocks publish preflight."
+      ],
+      "nextAction": "Use this matrix to prepare review; do not treat it as release approval."
+    }
+  ]
+}

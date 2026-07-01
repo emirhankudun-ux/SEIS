@@ -1,0 +1,104 @@
+{
+  "id": "seis-520b-next-frontier-boundary",
+  "version": "2026.06.29",
+  "status": "next-frontier-boundary-plan-only",
+  "resourceUri": "seis://ai/520b-next-frontier-boundary.json",
+  "qualityGate": "npm run check:seis-520b-next-frontier-boundary",
+  "coreCredentialRequirement": "none",
+  "defaultRuntimeMode": "seis-local-demo",
+  "routeEligibleToday": false,
+  "runtimeAuthority": false,
+  "trainingStatus": "not-started",
+  "weightsAvailable": false,
+  "inferenceAvailable": false,
+  "benchmarkStatus": "not-run",
+  "productionReady": false,
+  "truthBoundary": "This record is a plan-only 520B next-frontier boundary for the user-requested long-horizon SEIS AI direction. It does not download models or datasets, train, fine-tune, run inference, benchmark memory, publish checkpoints, call providers, provision GPU/cloud capacity, execute SSH, deploy infrastructure, or claim SEIS owns a trained 520B foundation model or real AGI.",
+  "sourceOfTruth": {
+    "modelScalingProfile": "content/development/seis-model-scaling-hardware-profile.json",
+    "parameterLadder": "content/development/seis-model-parameter-ladder.json",
+    "apexModelProgram": "content/development/seis-512b-apex-model-program.json",
+    "agiEvaluationProtocol": "content/development/seis-agi-evaluation-protocol.json",
+    "agiPublicReadinessEvidence": "content/development/seis-agi-public-readiness-evidence.json",
+    "modelScalingDoc": "docs/ai/seis-model-scaling.md"
+  },
+  "target": {
+    "id": "seis-520b-next-frontier-target",
+    "displayName": "SEIS AI 520B Next Frontier Boundary",
+    "parameterClass": "520B",
+    "parameterCountBillion": 520,
+    "horizon": "next-frontier-after-apex",
+    "hardwareClass": "defined only after 512B apex evidence, dense-vs-MoE decision, budget, safety, privacy, observability, rollback, and human approval",
+    "allowedToday": "Local Demo status, planning, evidence mapping, and validator-backed documentation only",
+    "minimumPrerequisite": "512B apex evidence accepted before any 520B runtime, benchmark, training, provider, GPU/cloud, SSH, deployment, or publication scope"
+  },
+  "periodicMilestones": [
+    {
+      "id": "period-1-20b-floor",
+      "parameterClass": "20B",
+      "status": "planned-not-validated",
+      "promotionGate": "16GB+ measured benchmark, model card, dataset card, local-only fallback, redacted logs, and human approval."
+    },
+    {
+      "id": "period-2-70b-research",
+      "parameterClass": "70B",
+      "status": "research-roadmap",
+      "promotionGate": "20B gates accepted, high-memory hardware plan, safety evaluation, cost plan, and human approval."
+    },
+    {
+      "id": "period-3-150b-frontier",
+      "parameterClass": "150B",
+      "status": "frontier-research-roadmap",
+      "promotionGate": "20B and 70B evidence, clean-room training plan, distributed runtime budget, privacy, safety, observability, rollback, and explicit human approval."
+    },
+    {
+      "id": "period-4-300b-plus-feasibility",
+      "parameterClass": "300B+",
+      "status": "not-scoped",
+      "promotionGate": "150B evidence, architecture strategy, public safety review, hardware feasibility proof, cost ceiling approval, and human approval."
+    },
+    {
+      "id": "period-5-512b-apex",
+      "parameterClass": "512B",
+      "status": "apex-program-plan-only",
+      "promotionGate": "20B, 70B, 150B, and 300B+ evidence, AGI evaluation protocol, frontier cluster budget, safety red-team, observability, rollback, cost-stop, all-agent review, and explicit approval."
+    },
+    {
+      "id": "period-6-520b-next-frontier",
+      "parameterClass": "520B",
+      "status": "next-frontier-boundary-plan-only",
+      "promotionGate": "512B apex evidence accepted, dense-vs-MoE architecture decision, frontier risk review, cost-stop approval, external review, and explicit human approval."
+    }
+  ],
+  "evidenceRequiredBeforeAny520BClaim": [
+    "512B apex evidence accepted",
+    "dense versus MoE architecture decision recorded",
+    "clean-room rights and provenance review",
+    "frontier-scale distributed runtime feasibility proof",
+    "privacy and data-rights review",
+    "frontier safety and misuse evaluation",
+    "observability, kill-switch, rollback, and cost-stop plan",
+    "external review completed",
+    "explicit human approval recorded"
+  ],
+  "forbiddenClaimRules": [
+    "no-trained-520b-weights-claim",
+    "no-routeable-520b-inference-claim",
+    "no-520b-benchmark-claim",
+    "no-520b-cloud-or-ssh-claim",
+    "no-520b-agi-capability-claim"
+  ],
+  "forbiddenClaims": [
+    "SEIS has trained a 520B foundation model.",
+    "SEIS has routeable 520B inference.",
+    "SEIS has benchmarked a 520B model.",
+    "SEIS has provisioned 520B cloud or GPU runtime.",
+    "SEIS has achieved real AGI through the 520B roadmap."
+  ],
+  "nextSafeActions": [
+    "Keep 520B as a plan-only boundary until 512B apex evidence exists.",
+    "Use the native AI Scale panel to show 20B-to-520B cadence without implying runtime readiness.",
+    "Keep Local Demo as the default route while model cards, dataset cards, benchmarks, safety review, and human approval are missing.",
+    "Require this validator before any PR claims 520B readiness."
+  ]
+}

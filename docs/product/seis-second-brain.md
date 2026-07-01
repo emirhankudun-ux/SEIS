@@ -21,10 +21,13 @@ Current implementation lives in:
 - `apps/web/desktop.js`
 - `apps/web/desktop.css`
 - `content/development/seis-second-brain-system.json`
+- `seis-brain/README.md`
+- `seis-brain/vault/12_Context_Packs/`
 - `content/development/seis-obsidian-bridge-safe-import-contract.json`
 - `content/development/seis-second-brain-accessibility-focus-qa.json`
 - `content/development/seis-public-demo-release-checklist-pr54.json`
 - `scripts/check-seis-second-brain.mjs`
+- `scripts/check-seis-brain-context-packs.mjs`
 - `scripts/check-seis-second-brain-readiness-contracts.mjs`
 - `scripts/check-seis-second-brain-browser-smoke.mjs`
 - `docs/product/seis-obsidian-bridge-safe-import.md`
@@ -41,6 +44,7 @@ Search, SEIS AI, Command Center, Launchpad, Favorites, and desktop shortcuts.
 | Markdown vault | Browser-local Local Demo | Seed notes render under `/home/seis/SecondBrain`; `Save Vault Snapshot` writes note files and `seis-second-brain-vault-snapshot.md` into the browser VFS. |
 | Knowledge graph | Browser-local Local Demo | Graph nodes and backlinks are generated from repo-owned seed records; `Link Graph` writes `graph-links.json`. |
 | Installed AI bridge | Local Demo context only | SEIS AI exposes a Second Brain tab with all 6 current installed AI profiles: Codex, SEIS Local Demo Runtime, Claude Review Profile, Qwen Alternative Review, Gemini Secondary Validation, and Ollama Local Candidate. Missing Key and Disabled states remain explicit. |
+| Context packs | Public-safe Markdown | `seis-brain/vault/12_Context_Packs` now includes Codex, Apple/Xcode, SEIS-SSH, Obsidian, Demo, and Public Readiness context packs guarded by `npm run check:seis-brain-context-packs`. |
 | Sub-agent lanes | Status/plan-only | All 6 current managed SEIS sub-agent lanes are indexed: SEIS Hub, SEIS Cloud, SEIS-Code, SEIS-Design, SEIS-DATA, and SEIS-Security. They can review/propose only; they cannot expand permissions or mutate external systems. |
 | Autonomous agent roster | Status/plan-only | The Second Brain maps the 12-agent target roster: Architect, Code, Design, UI/UX, Research, Search, Security, DevOps, Documentation, QA, Cloud, and Automation. |
 | GitHub readiness | Human review required | `Export GitHub Readiness` writes a blocked-by-review readiness note; the dedicated browser-smoke checks the export and reload persistence. Push, merge, release, Pages, and public launch still require approval. |
@@ -85,13 +89,14 @@ review, and explicit approval for any GitHub publication step.
 
 ```bash
 npm run check:seis-second-brain
+npm run check:seis-brain-context-packs
 npm run check:seis-second-brain-readiness-contracts
 npm run check:seis-second-brain-browser-smoke
 ```
 
-The validators check the JSON contract, readiness contracts, Desktop app
-wiring, UI action hooks, CSS surface, documentation, package scripts, and
-basic sensitive-pattern rules.
+The validators check the JSON contract, repo-owned context packs, readiness
+contracts, Desktop app wiring, UI action hooks, CSS surface, documentation,
+package scripts, and basic sensitive-pattern rules.
 The browser-smoke starts the local Desktop route in Chrome, opens Second Brain,
 runs all five vault/review/GitHub-readiness actions, verifies browser-VFS
 artifacts after reload, opens the SEIS AI Second Brain bridge, and checks the

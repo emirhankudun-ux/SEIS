@@ -10,6 +10,13 @@ Date: 2026-06-23
 | [STATUS.md](STATUS.md) | Current branch status matrix. |
 | [../ARCHITECTURE.md](../ARCHITECTURE.md) | Root architecture pointer for agents and contributors. |
 | [../ROADMAP.md](../ROADMAP.md) | Root roadmap pointer for agents and contributors. |
+| [GETTING_STARTED.md](GETTING_STARTED.md) | Public onboarding path, no-key demo boundary, platform lane picker, and first validation commands. |
+| [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | Common local blockers, missing-tool fallbacks, auth-gated assistant handling, and safe failure routing. |
+| [PUBLIC_READINESS.md](PUBLIC_READINESS.md) | GitHub public-readiness checklist for web demo, Apple-first, Second Brain, AI Core, SEIS-SSH, security, and PR reporting. |
+| [governance/public-readiness-status.md](governance/public-readiness-status.md) | Machine-readable public readiness status summary for the current no-key, no-live-claim review matrix. |
+| [OBSIDIAN_SECOND_BRAIN.md](OBSIDIAN_SECOND_BRAIN.md) | Public-safe Obsidian-compatible Second Brain setup boundary and planned-gated private vault import rules. |
+| [LOCAL_AI_SETUP.md](LOCAL_AI_SETUP.md) | Optional Ollama/local AI setup boundary, single-writer rule, and no-secret assistant usage. |
+| [SEIS_SSH_SETUP.md](SEIS_SSH_SETUP.md) | Credential-free SEIS-SSH setup boundary, dry-run checks, strict live-claim gate, and dangerous-action review rules. |
 | [governance/seis-integration-and-github-development.md](governance/seis-integration-and-github-development.md) | Integration policy for keeping every SEIS workstream tied to GitHub, evidence, and PR sequencing. |
 | [reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md](reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md) | Canonical `SEIS/` workspace rule and classification of nearby SEIS-like folders. |
 | [reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md](reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md) | Foundation audit and review report. |
@@ -19,6 +26,7 @@ Date: 2026-06-23
 | [reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md](reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md) | Repeatable browser-smoke evidence for SEIS Code, Mythic Gacha, SEIS Linux Replica, Second Brain, and the browser-local export bridge. |
 | [product/seis-demo-status.md](product/seis-demo-status.md) | Current-vs-planned boundary for the single-entry SEIS Desktop demo, launcher routes, AI App, SEIS Code, and shared VFS bridge. |
 | [product/seis-second-brain.md](product/seis-second-brain.md) | Local Demo Second Brain contract and browser-smoke gate for installed AI profiles, sub-agent lanes, Obsidian-style Markdown vault notes, graph/backlinks, AI bridge, mobile surface, and GitHub readiness gates. |
+| [../seis-brain/README.md](../seis-brain/README.md) | SEIS Brain Context Packs for Codex, Apple/Xcode, SEIS-SSH, Obsidian, Demo, Public Readiness, and public/private boundary review. |
 | [product/seis-obsidian-bridge-safe-import.md](product/seis-obsidian-bridge-safe-import.md) | SEIS Obsidian Bridge Safe Import plan and no-private-note-body publication contract. |
 | [reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md](reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md) | Second Brain Accessibility Focus QA for listbox/option roles, inspector focus, mobile targets, and release review. |
 | [ai/read-only-model-router-contract.md](ai/read-only-model-router-contract.md) | Read-Only Model Router Contract for provider-neutral, no-secret, no-live-routing decisions. |
@@ -114,6 +122,8 @@ Date: 2026-06-23
 | [../content/development/seis-fullstack-contract.json](../content/development/seis-fullstack-contract.json) | `validated-contract` full-stack session/API/data boundary for `/_server/*` Local Demo endpoints with backend-only provider secret rules. |
 | [../content/development/seis-design-component-inventory.json](../content/development/seis-design-component-inventory.json) | Component inventory for current web and showcase surfaces. |
 | [../content/development/seis-ai-workforce-training-plan.json](../content/development/seis-ai-workforce-training-plan.json) | Installed AI workforce training plan for supervised local seed-model rebuilds and no-runtime-authority promotion gates. |
+| [../content/development/seis-public-readiness-status.json](../content/development/seis-public-readiness-status.json) | Active public readiness status matrix covering identity, onboarding, environment, web demo, Apple-first, Second Brain, Local AI, AI Core, SEIS-SSH, GitHub governance, security, and publication blockers. |
+| [../seis-brain/vault/12_Context_Packs/SEIS Codex Context.md](../seis-brain/vault/12_Context_Packs/SEIS%20Codex%20Context.md) | SEIS Brain Context Packs entry for Codex writer rules, verification commands, and public-safe output format. |
 | [../content/development/seis-second-brain-system.json](../content/development/seis-second-brain-system.json) | Second Brain contract for installed AI profiles, managed sub-agent lanes, Obsidian-style Markdown vault records, graph/backlinks, AI bridge, browser-smoke validation, and GitHub readiness gates. |
 | [../content/development/seis-obsidian-bridge-safe-import-contract.json](../content/development/seis-obsidian-bridge-safe-import-contract.json) | Obsidian bridge safe import contract for explicit user selection, dry-run manifest, no private note body, provenance, accessibility, and publication approval gates. |
 | [../content/development/seis-second-brain-accessibility-focus-qa.json](../content/development/seis-second-brain-accessibility-focus-qa.json) | Second Brain Accessibility Focus QA contract for listbox/option roles, inspector focus, focus-visible markers, and mobile control safety. |

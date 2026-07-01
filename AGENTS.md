@@ -61,6 +61,17 @@ SEIS is a humane digital ecosystem focused on cinematic design, premium UI/UX, m
   AppKit, UIKit, Combine, Core Data, and CloudKit.
 - Keep Windows, Android, Web, AI, data, and infrastructure lanes strong without
   forcing unused SDKs, runtimes, frameworks, or dependencies into local setup.
+- Treat `SEIS_APPLE_FIRST.md`, `SEIS_APPLE_PLATFORM_STRATEGY.md`,
+  `SEIS_SWIFTUI_ARCHITECTURE.md`, `apps/apple/README.md`, and `docs/apple/` as
+  the public Apple-first direction for native work.
+- Use `packages/seis_platform_swift` as the active Swift Package unless a
+  separate task explicitly asks for a new package or full Xcode project.
+- Do not add meaningless Swift files to manipulate GitHub language statistics.
+- Preserve the web demo and no-key mode when adding native Apple direction.
+- Keep Apple-native provider, local AI, GitHub, Obsidian/Brain, and SEIS-SSH
+  integrations metadata-only until live behavior is implemented and verified.
+- Never add provider keys, SSH private keys, tokens, real host credentials, or
+  private vault contents to native code, docs, tests, or demo fixtures.
 
 ## Open Source Platform Direction
 

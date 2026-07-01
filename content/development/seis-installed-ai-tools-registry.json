@@ -1,0 +1,503 @@
+{
+  "id": "seis-installed-ai-tools-registry",
+  "version": "2026.06.30",
+  "status": "active-public-safe-registry",
+  "purpose": "Track locally available SEIS development and AI-assistant tools without storing credentials, claiming live provider access, or changing the single-writer policy.",
+  "qualityGate": "npm run check:seis-installed-ai-tools-registry",
+  "observedDate": "2026-06-30",
+  "truthBoundary": {
+    "noKeyCoreDemoRequired": true,
+    "liveProviderClaimsAllowed": false,
+    "credentialStorageAllowed": false,
+    "privateVaultContentAllowed": false,
+    "sshExecutionAllowed": false,
+    "githubMutationAllowed": false,
+    "singleWriterDefault": "codex"
+  },
+  "statusVocabulary": [
+    "available",
+    "manual",
+    "demo",
+    "planned",
+    "unknown"
+  ],
+  "tools": [
+    {
+      "id": "codex-current-session",
+      "name": "Codex",
+      "toolType": "ai-coding-agent",
+      "category": "primary-writer",
+      "runtimeClass": "cloud-assisted-local-repo-session",
+      "status": "available",
+      "requiresAccount": true,
+      "requiresApiKey": false,
+      "canWriteRepository": true,
+      "observedState": "Active supervised repository writer for this SEIS task.",
+      "bestFor": [
+        "Inspecting the SEIS repository",
+        "Applying focused patches",
+        "Running local validation",
+        "Preparing PR-ready summaries"
+      ],
+      "limitations": [
+        "Does not push, merge, deploy, rotate secrets, or run SSH without explicit approval.",
+        "Must preserve unrelated user and agent work in the dirty worktree."
+      ],
+      "safetyNotes": [
+        "Never commit credentials or private vault material.",
+        "Treat secondary assistant output as candidate evidence until verified."
+      ],
+      "seisUsage": "Primary implementation and validation owner for the current change package.",
+      "relatedAgents": [
+        "SEIS Orchestrator",
+        "SEIS Code Agent",
+        "Public Readiness Agent"
+      ],
+      "relatedModules": [
+        "Agent Runtime",
+        "GitHub Governance",
+        "Public Readiness"
+      ],
+      "publicPrivateRisk": "Public-safe when prompts, reports, and diffs exclude secrets and private data.",
+      "recommendedContextPack": "SEIS Codex Context"
+    },
+    {
+      "id": "xcode-seis-platform-swift",
+      "name": "Xcode",
+      "toolType": "apple-native-ide",
+      "category": "apple-first-development",
+      "runtimeClass": "local-desktop-app",
+      "status": "available",
+      "requiresAccount": false,
+      "requiresApiKey": false,
+      "canWriteRepository": true,
+      "observedState": "Xcode 26.6 welcome window shows the recent SEIS Swift Package at packages/seis_platform_swift.",
+      "bestFor": [
+        "Swift Package navigation",
+        "SwiftUI shell review",
+        "macOS Command Center prototype inspection",
+        "Apple-first architecture validation"
+      ],
+      "limitations": [
+        "Xcode presence is not build evidence.",
+        "Opening the package does not prove signing, simulator, or app runtime readiness.",
+        "Repository edits through Xcode must respect the single-writer handoff."
+      ],
+      "safetyNotes": [
+        "Do not add meaningless Swift files for language statistics.",
+        "Do not store provider keys, SSH keys, tokens, or private vault material in Xcode project files.",
+        "Run SwiftPM checks before claiming native validation."
+      ],
+      "seisUsage": "Apple-first native development surface for SeisPlatformKit and SeisAppleNativeShell.",
+      "relatedAgents": [
+        "SEIS Apple Platform Agent",
+        "SEIS UI/UX Agent",
+        "QA Agent"
+      ],
+      "relatedModules": [
+        "Apple Native Foundation",
+        "macOS Command Center",
+        "iPadOS Brain",
+        "iOS Companion"
+      ],
+      "publicPrivateRisk": "Public-safe as local tooling metadata; not a live integration or credential surface.",
+      "recommendedContextPack": "SEIS Apple Context"
+    },
+    {
+      "id": "claude-code-cli-auth-gated",
+      "name": "Claude Code CLI",
+      "toolType": "ai-coding-cli",
+      "category": "architecture-review-candidate",
+      "runtimeClass": "local-cli-with-cloud-auth",
+      "status": "available",
+      "requiresAccount": true,
+      "requiresApiKey": false,
+      "canWriteRepository": false,
+      "observedState": "Claude Code CLI 2.1.195 is installed at ~/.local/bin/claude; claude auth status reports loggedIn true through local claude.ai auth and a sanitized smoke returned CLAUDE_OK.",
+      "bestFor": [
+        "Architecture review",
+        "Refactor critique",
+        "High-risk implementation review",
+        "UX and narrative review"
+      ],
+      "limitations": [
+        "Local Claude auth is user-session state outside the repository, not an API-key credential committed to SEIS.",
+        "No Claude output is accepted as repository truth until Codex verifies it against files and checks.",
+        "Repository writes remain disabled unless a human explicitly transfers writer role."
+      ],
+      "safetyNotes": [
+        "Do not paste provider keys, tokens, private vault notes, SSH material, or personal sensitive data into Claude.",
+        "Use sanitized prompts and diff-only review packets.",
+        "Record Claude output as candidate review material, not final evidence."
+      ],
+      "seisUsage": "Secondary review surface for scoped architecture, refactor, and product-language critique after Codex prepares sanitized context.",
+      "relatedAgents": [
+        "SEIS Architect Agent",
+        "SEIS UI/UX Agent",
+        "QA Agent"
+      ],
+      "relatedModules": [
+        "AI Core",
+        "Agent Workforce",
+        "Quality Governance"
+      ],
+      "publicPrivateRisk": "Public-safe as a local OAuth-backed review route when context excludes secrets and private material.",
+      "recommendedContextPack": "SEIS Claude Code Context",
+      "launcherRoute": "npm run ai -- claude"
+    },
+    {
+      "id": "gemini-cli-auth-gated",
+      "name": "Gemini CLI",
+      "toolType": "ai-research-cli",
+      "category": "research-validation-candidate",
+      "runtimeClass": "local-cli-with-cloud-auth",
+      "status": "manual",
+      "requiresAccount": true,
+      "requiresApiKey": true,
+      "canWriteRepository": false,
+      "observedState": "Gemini CLI 0.49.0 is installed at ~/.local/bin/gemini; Google OAuth completed, then the CLI reported this client is no longer supported for Gemini Code Assist for individuals and points users to Antigravity.",
+      "bestFor": [
+        "Broad documentation synthesis",
+        "Google ecosystem checks",
+        "Compatibility research",
+        "Secondary source comparison"
+      ],
+      "limitations": [
+        "Installed CLI is not live Gemini access through the current individual OAuth path.",
+        "Use Antigravity, a supported Google enterprise/Vertex path, or a local API-key route before claiming Gemini access.",
+        "External research must be rechecked against primary sources before SEIS decisions.",
+        "Repository writes are not part of the default Gemini route."
+      ],
+      "safetyNotes": [
+        "Do not send credentials, private notes, private host details, or unpublished user material to Gemini.",
+        "Use Gemini for sanitized research and review only.",
+        "Codex must cite and verify any accepted research evidence."
+      ],
+      "seisUsage": "Research and documentation comparison helper behind SEIS routing and source-verification rules.",
+      "relatedAgents": [
+        "SEIS Research Agent",
+        "Public Readiness Agent",
+        "SEIS Architect Agent"
+      ],
+      "relatedModules": [
+        "AI Core",
+        "Documentation",
+        "Public Readiness"
+      ],
+      "publicPrivateRisk": "Manual/auth-gated; public-safe only with sanitized context and source citations.",
+      "recommendedContextPack": "SEIS Gemini Context",
+      "launcherRoute": "npm run ai -- gemini"
+    },
+    {
+      "id": "kimi-code-cli-login-required",
+      "name": "Kimi Code CLI",
+      "toolType": "ai-coding-cli",
+      "category": "moonshot-multilingual-review-candidate",
+      "runtimeClass": "local-cli-with-moonshot-login",
+      "status": "manual",
+      "requiresAccount": true,
+      "requiresApiKey": false,
+      "canWriteRepository": false,
+      "observedState": "Kimi Code CLI 0.20.2 is installed at ~/.kimi-code/bin/kimi; kimi doctor is valid, provider list is empty, and kimi login currently reports membership benefits cannot be verified.",
+      "bestFor": [
+        "Moonshot/Kimi model review",
+        "Turkish and multilingual localization",
+        "Long-context copy review",
+        "Alternative reasoning after sanitized handoff"
+      ],
+      "limitations": [
+        "Installed CLI is not live Moonshot/Kimi access until device-code login succeeds and provider list is populated.",
+        "Moonshot/Kimi membership or provider entitlement is required before this route is ready.",
+        "No Kimi output is accepted as repository truth until Codex verifies it against files and checks.",
+        "Repository writes remain disabled unless a human explicitly transfers writer role."
+      ],
+      "safetyNotes": [
+        "Do not paste provider keys, private vault notes, SSH material, or personal sensitive data into Kimi.",
+        "Use sanitized prompts and public-safe context packs only.",
+        "Keep Kimi output as candidate review material until verified."
+      ],
+      "seisUsage": "Moonshot/Kimi helper route for translation, localization, multilingual review, and alternative reasoning after login is configured outside the repository.",
+      "relatedAgents": [
+        "SEIS Research Agent",
+        "SEIS UI/UX Agent",
+        "Public Readiness Agent"
+      ],
+      "relatedModules": [
+        "AI Core",
+        "Prompt Engine",
+        "Quality Governance"
+      ],
+      "publicPrivateRisk": "Manual/login-gated; public-safe only with sanitized context and no private material.",
+      "recommendedContextPack": "SEIS Kimi Context",
+      "launcherRoute": "npm run ai -- kimi"
+    },
+    {
+      "id": "cursor-desktop-secondary-review",
+      "name": "Cursor",
+      "toolType": "ai-editor",
+      "category": "secondary-ide-review-surface",
+      "runtimeClass": "local-desktop-app",
+      "status": "available",
+      "requiresAccount": true,
+      "requiresApiKey": false,
+      "canWriteRepository": false,
+      "observedState": "Cursor 3.9.16 is installed at ~/Applications/Cursor.app with CLI link at ~/.local/bin/cursor.",
+      "bestFor": [
+        "Secondary code review",
+        "IDE navigation",
+        "Diff inspection",
+        "Manual refactor planning"
+      ],
+      "limitations": [
+        "Cursor must not become a second writer while Codex owns the active turn.",
+        "Opening a folder in Cursor is not test, build, or provider evidence.",
+        "Account state and desktop cache are local-only and must not enter the repository."
+      ],
+      "safetyNotes": [
+        "Run git status before any writer handoff to Cursor.",
+        "Do not sync private workspace state, tokens, or desktop cache into Git.",
+        "Keep Cursor output as review material until Codex verifies the diff."
+      ],
+      "seisUsage": "Local secondary IDE and review surface for SEIS work when a human explicitly chooses a visual editor handoff.",
+      "relatedAgents": [
+        "SEIS Code Agent",
+        "QA Agent",
+        "SEIS UI/UX Agent"
+      ],
+      "relatedModules": [
+        "SEIS Code IDE",
+        "Agent Workforce",
+        "Quality Governance"
+      ],
+      "publicPrivateRisk": "Public-safe as installed tooling metadata; desktop state stays local and ignored.",
+      "recommendedContextPack": "SEIS Cursor Context",
+      "launcherRoute": "npm run ai -- cursor"
+    },
+    {
+      "id": "lm-studio-local-model-lab",
+      "name": "LM Studio",
+      "toolType": "local-model-workbench",
+      "category": "local-ai-lab",
+      "runtimeClass": "local-desktop-app-and-cli",
+      "status": "available",
+      "requiresAccount": false,
+      "requiresApiKey": false,
+      "canWriteRepository": false,
+      "observedState": "LM Studio is installed at ~/Applications/LM Studio.app with lms CLI linked at ~/.local/bin/lms.",
+      "bestFor": [
+        "Local model experiments",
+        "Offline draft comparisons",
+        "Model catalog inspection",
+        "Private scratch prompts after review"
+      ],
+      "limitations": [
+        "LM Studio installation does not prove that any model is downloaded or loaded.",
+        "Local inference output is draft material until checked against repository evidence.",
+        "Model weights, caches, prompts, and local chat history must stay outside Git."
+      ],
+      "safetyNotes": [
+        "Do not paste secrets, private vault contents, or real host credentials into local models.",
+        "Local does not automatically mean safe; review logging and storage behavior.",
+        "Keep LM Studio optional so the SEIS no-key demo remains functional."
+      ],
+      "seisUsage": "Optional local model laboratory for offline drafts and comparisons; not a canonical SEIS reasoning source.",
+      "relatedAgents": [
+        "Local AI Manager Agent",
+        "SEIS Brain Curator Agent",
+        "SEIS Research Agent"
+      ],
+      "relatedModules": [
+        "Local AI / Ollama Layer",
+        "SEIS Brain",
+        "AI Core"
+      ],
+      "publicPrivateRisk": "Public-safe as tooling metadata; private model assets and local conversations stay outside the repository.",
+      "recommendedContextPack": "SEIS Local AI Context",
+      "launcherRoute": "npm run ai -- lmstudio"
+    },
+    {
+      "id": "openai-cli-auth-gated",
+      "name": "OpenAI CLI",
+      "toolType": "provider-cli",
+      "category": "primary-provider-utility-candidate",
+      "runtimeClass": "local-cli-with-cloud-auth",
+      "status": "manual",
+      "requiresAccount": true,
+      "requiresApiKey": true,
+      "canWriteRepository": false,
+      "observedState": "OpenAI CLI/Python tooling 2.20.0 is installed at ~/.local/bin/openai; live use requires OPENAI_API_KEY outside the repository.",
+      "bestFor": [
+        "Provider utility checks",
+        "API smoke tests after secure setup",
+        "Model metadata inspection",
+        "Small sanitized analysis tasks"
+      ],
+      "limitations": [
+        "Installed CLI is not live OpenAI access without a local key.",
+        "Provider calls must not run from browser demo code.",
+        "No API key or provider response should be committed."
+      ],
+      "safetyNotes": [
+        "Keep OPENAI_API_KEY local and outside Git.",
+        "Never place provider keys in VITE_ variables or frontend code.",
+        "Use backend/server isolation before any live SEIS provider feature."
+      ],
+      "seisUsage": "Optional provider utility surface after secure local key setup; Codex remains the primary repo integration owner.",
+      "relatedAgents": [
+        "SEIS AI Core Agent",
+        "SEIS Code Agent",
+        "Security Agent"
+      ],
+      "relatedModules": [
+        "Provider Registry",
+        "Model Router",
+        "AI Core"
+      ],
+      "publicPrivateRisk": "Manual/auth-gated; safe only when keys stay local and outputs are reviewed before entering Git.",
+      "recommendedContextPack": "SEIS OpenAI Context",
+      "launcherRoute": "npm run ai -- openai"
+    },
+    {
+      "id": "aider-cli-patch-helper",
+      "name": "Aider",
+      "toolType": "ai-pair-programming-cli",
+      "category": "bounded-patch-helper",
+      "runtimeClass": "local-cli-with-provider-auth",
+      "status": "manual",
+      "requiresAccount": true,
+      "requiresApiKey": true,
+      "canWriteRepository": false,
+      "observedState": "Aider 0.86.2 is installed in an isolated user venv and linked at ~/.local/bin/aider.",
+      "bestFor": [
+        "Small diff-oriented patches",
+        "Refactor suggestions",
+        "Existing-file edits after handoff",
+        "Pair-programming experiments"
+      ],
+      "limitations": [
+        "Aider can modify files, so it stays non-writer by default under SEIS policy.",
+        "Most useful operation requires a configured provider key outside the repository.",
+        "Generated patches must be reviewed by Codex before acceptance."
+      ],
+      "safetyNotes": [
+        "Use only after git status is inspected and active writer ownership is explicit.",
+        "Do not give Aider secrets, private vault notes, or broad uncontrolled scope.",
+        "Keep patch sessions small and reversible."
+      ],
+      "seisUsage": "Scoped implementation partner for small patches only after a human-visible handoff from Codex.",
+      "relatedAgents": [
+        "SEIS Code Agent",
+        "QA Agent",
+        "PR Rescue Agent"
+      ],
+      "relatedModules": [
+        "SEIS Code IDE",
+        "PR Rescue",
+        "Quality Governance"
+      ],
+      "publicPrivateRisk": "Manual/auth-gated; safe only with sanitized scope and explicit writer handoff.",
+      "recommendedContextPack": "SEIS Aider Context",
+      "launcherRoute": "npm run ai -- aider"
+    },
+    {
+      "id": "goose-cli-automation-helper",
+      "name": "Goose",
+      "toolType": "automation-agent-cli",
+      "category": "bounded-automation-candidate",
+      "runtimeClass": "local-cli-with-configuration",
+      "status": "manual",
+      "requiresAccount": true,
+      "requiresApiKey": true,
+      "canWriteRepository": false,
+      "observedState": "Goose 1.39.0 is installed at ~/.local/bin/goose; configuration and provider authentication remain outside the repository.",
+      "bestFor": [
+        "Automation planning",
+        "Runbook experiments",
+        "Task decomposition",
+        "Bounded local assistant workflows"
+      ],
+      "limitations": [
+        "Goose configuration is not repository evidence.",
+        "Autonomous actions require explicit SEIS approval gates.",
+        "No background write, deploy, SSH, or credential handling is allowed by default."
+      ],
+      "safetyNotes": [
+        "Use dry-run style prompts and sanitized context.",
+        "Do not configure Goose with secrets inside the repository.",
+        "Codex must verify any output before implementation or documentation claims."
+      ],
+      "seisUsage": "Optional automation helper for planning and dry-run runbooks under SEIS approval gates.",
+      "relatedAgents": [
+        "SEIS Orchestrator",
+        "SEIS SSH Agent",
+        "QA Agent"
+      ],
+      "relatedModules": [
+        "Automation",
+        "Agent Workforce",
+        "SEIS-SSH"
+      ],
+      "publicPrivateRisk": "Manual/auth-gated; public-safe only as metadata until configured outside Git.",
+      "recommendedContextPack": "SEIS Automation Context",
+      "launcherRoute": "npm run ai -- goose"
+    },
+    {
+      "id": "hermes-desktop-auth-gated",
+      "name": "Hermes",
+      "toolType": "secondary-ai-assistant",
+      "category": "bounded-review-candidate",
+      "runtimeClass": "local-desktop-app-with-auth",
+      "status": "available",
+      "requiresAccount": true,
+      "requiresApiKey": false,
+      "canWriteRepository": false,
+      "observedState": "Hermes Agent v0.17.0 CLI is installed at ~/.local/bin/hermes; local config now uses the OpenAI Codex provider and a sanitized smoke returned HERMES_OK.",
+      "bestFor": [
+        "Bounded secondary review after sanitized handoff",
+        "Contradiction checks",
+        "Planning notes",
+        "Public-readiness review prompts"
+      ],
+      "limitations": [
+        "Hermes local config is outside the repository and must not be copied into SEIS.",
+        "Nous Portal still reports not logged in, so Hermes evidence is limited to the OpenAI Codex provider route.",
+        "Hermes must not become a second writer without explicit handoff."
+      ],
+      "safetyNotes": [
+        "Never paste credentials, provider keys, SSH material, private vault notes, or personal sensitive data into Hermes.",
+        "Record any future Hermes output as candidate review material only.",
+        "Do not relabel auth-gated or fallback output as live provider evidence."
+      ],
+      "seisUsage": "Available secondary-review and MCP gateway candidate for sanitized SEIS context through local user configuration.",
+      "relatedAgents": [
+        "SEIS Architect Agent",
+        "Public Readiness Agent",
+        "Security Agent"
+      ],
+      "relatedModules": [
+        "AI Core",
+        "Agent Workforce",
+        "Quality Governance",
+        "Public Readiness"
+      ],
+      "publicPrivateRisk": "Public-safe as local tooling metadata; review prompts must stay sanitized and no secrets may be shared.",
+      "recommendedContextPack": "SEIS Hermes Handoff Context",
+      "launcherRoute": "npm run ai -- hermes"
+    }
+  ],
+  "handoffRules": [
+    "Codex remains the only writer unless a human explicitly transfers writer role.",
+    "Xcode may be used to inspect and run the Swift package, but native claims require SwiftPM or Xcode build evidence.",
+    "Claude and Hermes are available through local user auth/config as bounded helper or review routes, not autonomous writers.",
+    "Gemini, Kimi, OpenAI, Aider, Goose, Cursor, and LM Studio are connected through SEIS as bounded helper or review routes, not autonomous writers.",
+    "Hermes may receive only sanitized context through local user configuration.",
+    "No tool may receive provider keys, SSH private keys, tokens, private Obsidian notes, or real host credentials.",
+    "API keys, desktop app state, local model caches, provider sessions, and chat logs stay outside the repository.",
+    "Secondary tool output remains candidate evidence until Codex verifies it against repository state."
+  ],
+  "validationCommands": [
+    "npm run check:seis-installed-ai-tools-registry",
+    "npm run check:ai-workforce-assignments",
+    "swift test --package-path packages/seis_platform_swift"
+  ]
+}

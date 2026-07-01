@@ -8,6 +8,7 @@ const OUT_DIR = path.join(ROOT, "docs", "audits");
 const OUT_MD = path.join(OUT_DIR, "AI_PROVIDER_AND_CREDENTIAL_AUDIT.md");
 const OUT_JSON = path.join(OUT_DIR, "ai-provider-audit.json");
 const TODAY = "2026-06-22";
+const CHECK_MODE = process.argv.includes("--check");
 
 const providerCatalog = [
   provider("OpenAI", "cloud model provider", ["openai", "@openai/", "@ai-sdk/openai"], ["api.openai.com", "/v1/responses", "/v1/chat/completions"], ["OPENAI_API_KEY", "OPENAI_BASE_URL", "OPENAI_ORG_ID", "OPENAI_PROJECT_ID"], ["gpt-"]),
@@ -80,8 +81,18 @@ const skipDirs = new Set([
 const skipFiles = new Set([
   "scripts/audit-ai-providers.mjs",
   "docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md",
-  "docs/audits/ai-provider-audit.json"
+  "docs/audits/ai-provider-audit.json",
+  "docs/audits/GIT_SECRET_HISTORY_SCAN.md",
+  "docs/audits/git-secret-history-scan.json"
 ]);
+
+const skipPathPrefixes = [
+  "reports/"
+];
+
+function shouldSkipGeneratedPath(rel) {
+  return skipFiles.has(rel) || skipPathPrefixes.some((prefix) => rel.startsWith(prefix));
+}
 
 const allowedExtensions = new Set([
   ".cjs", ".css", ".env", ".html", ".js", ".json", ".jsx", ".md", ".mjs",
@@ -222,9 +233,39 @@ const report = {
   }
 };
 
+const renderedJson = `${JSON.stringify(report, null, 2)}\n`;
+const renderedMarkdown = renderMarkdown(report);
+
+if (CHECK_MODE) {
+  const failures = [];
+  if (!existsSync(OUT_JSON) || readFileSync(OUT_JSON, "utf8") !== renderedJson) {
+    failures.push(`${toRel(OUT_JSON)} is out of date; run npm run audit:ai-providers`);
+  }
+  if (!existsSync(OUT_MD) || readFileSync(OUT_MD, "utf8") !== renderedMarkdown) {
+    failures.push(`${toRel(OUT_MD)} is out of date; run npm run audit:ai-providers`);
+  }
+  for (const finding of report.secretFindings) {
+    failures.push(`${finding.path}:${finding.line} has ${finding.type}; value intentionally omitted`);
+  }
+  for (const providerRecord of report.providers.filter((item) => item.frontendDirectCall)) {
+    failures.push(`${providerRecord.provider} has a frontend direct provider surface; review before public-readiness`);
+  }
+
+  if (failures.length > 0) {
+    console.error("AI provider audit check failed:");
+    for (const failure of failures) {
+      console.error(`- ${failure}`);
+    }
+    process.exit(1);
+  }
+
+  console.log(`AI provider audit check passed. Providers detected: ${providers.length}. Secret findings without values: 0.`);
+  process.exit(0);
+}
+
 mkdirSync(OUT_DIR, { recursive: true });
-writeFileSync(OUT_JSON, `${JSON.stringify(report, null, 2)}\n`);
-writeFileSync(OUT_MD, renderMarkdown(report));
+writeFileSync(OUT_JSON, renderedJson);
+writeFileSync(OUT_MD, renderedMarkdown);
 
 console.log(`AI provider audit written: ${toRel(OUT_MD)}`);
 console.log(`AI provider audit JSON written: ${toRel(OUT_JSON)}`);
@@ -237,7 +278,7 @@ function provider(name, category, sdkPatterns, endpoints, envVars, modelPatterns
 
 function walk(dir) {
   const output = [];
-  for (const entry of readdirSync(dir)) {
+  for (const entry of readdirSync(dir).sort((a, b) => a.localeCompare(b))) {
     const full = path.join(dir, entry);
     const rel = toRel(full);
     const stats = statSync(full);
@@ -251,7 +292,7 @@ function walk(dir) {
     if (!stats.isFile() || stats.size > 1_000_000) {
       continue;
     }
-    if (skipFiles.has(rel)) {
+    if (shouldSkipGeneratedPath(rel)) {
       continue;
     }
     if (entry.startsWith(".env") && !entry.includes("example")) {
@@ -275,7 +316,7 @@ function readPackageDependencies() {
     ...Object.keys(payload.dependencies || {}),
     ...Object.keys(payload.devDependencies || {}),
     ...Object.keys(payload.optionalDependencies || {})
-  ];
+  ].sort((a, b) => a.localeCompare(b));
 }
 
 function readFileSafe(file) {
@@ -445,7 +486,8 @@ ${payload.finalRequiredCredentialList.noKeyProviders.length === 0 ? "- None curr
 - Review every \`Live but Unverified\` or \`Frontend Direct Call\` finding before
   enabling provider runtime behavior.
 - Add typed server-only environment validation before live provider adapters.
-- Run a dedicated secret-history scanner before any public-readiness claim.
+- Keep \`npm run check:git-secret-history\` passing and run external
+  secret-scanner/provider-log review before any broad public-readiness claim.
 - Keep cloud deployment credentials server-only.
 
 ## Related Documents
@@ -524,7 +566,12 @@ function unique(items) {
 function dedupeLocations(items, keys) {
   const seen = new Set();
   const output = [];
-  for (const item of items) {
+  const sortedItems = [...items].sort((a, b) => {
+    const aKey = keys.map((name) => Array.isArray(a[name]) ? a[name].join(",") : a[name] || "").join("|");
+    const bKey = keys.map((name) => Array.isArray(b[name]) ? b[name].join(",") : b[name] || "").join("|");
+    return aKey.localeCompare(bKey);
+  });
+  for (const item of sortedItems) {
     const key = keys.map((name) => Array.isArray(item[name]) ? item[name].join(",") : item[name] || "").join("|");
     if (seen.has(key)) continue;
     seen.add(key);

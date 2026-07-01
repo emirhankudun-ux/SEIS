@@ -135,7 +135,7 @@ node scripts/check-seis-static-demo-routes.mjs
 npm run check:seis-code
 npm run check:seis-website-pages
 npm run check:seis-ultimate-demo
-npm run check:seis-ssh-public-access
+npm run check:seis-ssh-access-model
 npm run check:seis-fullstack-contract
 npm run check:seis-fullstack-server-smoke
 npm run check:seis-fullstack-no-server-fallback-smoke
@@ -155,9 +155,9 @@ npm run build:static
 npm run check:static-build
 ```
 
-## SEIS SSH Public GitHub Access
+## SEIS SSH Public Readiness
 
-`SEIS-SSH` is the single public-facing SSH alias for SEIS. The public GitHub
+`SEIS-SSH` is the public-safe SSH/cloud readiness lane for SEIS. The current
 contract is:
 
 ```text
@@ -165,40 +165,28 @@ Keep the same server and port.
 Ayni sunucu ve baglanti noktasi korunur.
 ```
 
-The source-of-truth contract is
-`deploy/seis-ssh-public-access-contract.json`, with the runbook at
-`docs/deployment/seis-ssh-public-github-access.md`.
+The current source-of-truth contracts are `deploy/seis-ssh-access-model.json`,
+`deploy/seis-ssh-cloud-roadmap.json`, and
+`deploy/seis-ssh-closed-runtime-contract.json`, with runbooks at
+`docs/deployment/seis-ssh-access-model.md`,
+`docs/deployment/seis-ssh-cloud-roadmap.md`, and
+`docs/deployment/seis-ssh-closed-developer-runtime.md`.
 
-Use this static gate before claiming public SSH onboarding is wired:
+Use these static gates before claiming SSH/cloud readiness is wired:
 
 ```bash
-npm run check:seis-ssh-public-access
-npm run report:seis-ssh-public-access
-npm run check:seis-ssh-public-onboarding
-npm run report:seis-ssh-public-onboarding
-npm run check:seis-ssh-public-contributor-doctor
-npm run report:seis-ssh-public-contributor-doctor
-npm run check:seis-ssh-live-readiness-evidence
+npm run check:seis-ssh-access-model
+npm run check:seis-ssh-cloud-roadmap
+npm run check:seis-ssh-closed-runtime
+npm run check:seis-ssh-picker-compatibility
 ```
 
 This does not execute SSH. Live readiness still requires explicit approval and
 strict evidence such as `npm run cloud:ssh:online:strict`.
 
-`npm run report:seis-ssh-public-onboarding` writes a read-only GitHub review
-pack under `reports/seis-ssh-public-access/`. It does not write SSH config,
-does not open a live connection, and does not create shared credentials; it
-documents reviewer, maintainer, and new-contributor paths while preserving the
-existing `SEIS-SSH` server and port.
-
-`npm run report:seis-ssh-public-contributor-doctor` adds a local self-service
-doctor for GitHub users. It checks local tools and the sanitized `SEIS-SSH`
-snapshot without contacting GitHub, opening SSH, or writing SSH config.
-
-The latest approval-gated live probe is tracked in
-`content/development/seis-ssh-live-readiness-evidence.json` and
-`docs/deployment/seis-ssh-live-readiness-evidence.md`. As of 2026-06-29, live
-readiness is blocked by a GitHub Codespaces billing issue; the same server and
-port policy remains preserved, but online/mobile-ready claims are not allowed.
+The static checks do not write SSH config, open a live connection, create
+shared credentials, mutate GitHub, or deploy infrastructure. Live online/mobile
+claims remain blocked until a strict live probe passes with explicit approval.
 
 `npm run check:seis-second-brain-readiness-contracts` validates the Second
 Brain readiness contracts for the Obsidian bridge safe import plan,
@@ -293,6 +281,21 @@ quality gate.
 Unused SDKs, runtimes, and language toolchains are not installed by default.
 Local development should stay fast, simple, and reversible. CI may install
 specialized tools only when a specific check requires them.
+
+Apple-first native product direction is documented in
+[`SEIS_APPLE_FIRST.md`](./SEIS_APPLE_FIRST.md) and
+[`SEIS_APPLE_PLATFORM_STRATEGY.md`](./SEIS_APPLE_PLATFORM_STRATEGY.md). The
+web demo remains the public no-key showcase, macOS is the primary native Command
+Center target, iPadOS is the SEIS Brain and design review surface, and iOS is a
+companion for status, notes, agent reports, GitHub/CI, and Brain search.
+SwiftUI architecture and public-safe design rules are documented in
+[`SEIS_SWIFTUI_ARCHITECTURE.md`](./SEIS_SWIFTUI_ARCHITECTURE.md),
+[`SEIS_MAC_APP.md`](./SEIS_MAC_APP.md),
+[`SEIS_IOS_IPADOS_APP.md`](./SEIS_IOS_IPADOS_APP.md),
+[`SEIS_APPLE_DESIGN_SYSTEM.md`](./SEIS_APPLE_DESIGN_SYSTEM.md), and
+[`docs/apple`](./docs/apple). Native Apple coordination lives in
+[`apps/apple`](./apps/apple), while the active Swift Package remains
+[`packages/seis_platform_swift`](./packages/seis_platform_swift).
 
 ## Source Languages and Ecosystem Stack
 
@@ -438,8 +441,10 @@ read/write workflows are routed through explicit safety gates.
 | [`packages/seis_kernel_go`](./packages/seis_kernel_go)           | Go governance and readiness policy contracts                                                                             |
 | [`polyglot`](./polyglot)                                         | Cross-language audit lanes and platform proof-of-concept surfaces                                                        |
 | [`apps/web`](./apps/web)                                         | Browser-facing product and documentation surface                                                                         |
+| [`apps/apple`](./apps/apple)                                     | Apple-first native coordination surface for macOS, iPadOS, iOS, and shared Swift package work                            |
 | [`apps/android`](./apps/android)                                 | Android direction and validation notes                                                                                   |
 | [`apps/macos`](./apps/macos)                                     | macOS direction and Apple-native notes                                                                                   |
+| [`docs/apple`](./docs/apple)                                     | Apple-first strategy, SwiftUI architecture, design, accessibility, and public-readiness records                          |
 | [`docs`](./docs)                                                 | Architecture, governance, deployment, strategy, quality, and research records                                            |
 | [`reports`](./reports)                                           | Generated ecosystem, language, capability, and readiness reports                                                         |
 
@@ -534,8 +539,23 @@ python3 -m unittest scripts.tests.test_ultra_ssh_manager
 
 Start with:
 
+- [`docs/GETTING_STARTED.md`](./docs/GETTING_STARTED.md) for the public
+  onboarding path, no-key demo boundary, and lane picker
 - [`docs/development/first-run-quickstart.md`](./docs/development/first-run-quickstart.md)
   for clone, first validation, lane selection, and no-bloat setup
+- [`docs/TROUBLESHOOTING.md`](./docs/TROUBLESHOOTING.md) for common local
+  blockers, auth-gated assistant states, and safe failure handling
+- [`docs/PUBLIC_READINESS.md`](./docs/PUBLIC_READINESS.md) for the public
+  GitHub readiness checklist across web demo, Apple, Brain, AI, and SEIS-SSH
+- [`docs/governance/public-readiness-status.md`](./docs/governance/public-readiness-status.md)
+  and [`content/development/seis-public-readiness-status.json`](./content/development/seis-public-readiness-status.json)
+  for the current machine-readable public-readiness review matrix
+- [`docs/OBSIDIAN_SECOND_BRAIN.md`](./docs/OBSIDIAN_SECOND_BRAIN.md) for the
+  public-safe Obsidian-compatible Second Brain setup boundary
+- [`docs/LOCAL_AI_SETUP.md`](./docs/LOCAL_AI_SETUP.md) for optional Ollama/local
+  AI usage without changing the canonical writer model
+- [`docs/SEIS_SSH_SETUP.md`](./docs/SEIS_SSH_SETUP.md) for credential-free
+  SEIS-SSH setup boundaries and live-claim gates
 - [`CONTRIBUTING.md`](./CONTRIBUTING.md) for contribution rules
 - [`docs/deployment/seis-codespaces-cloud-workspace.md`](./docs/deployment/seis-codespaces-cloud-workspace.md) for a cloud-only dev workflow
 - [`CODE_OF_CONDUCT.md`](./CODE_OF_CONDUCT.md) for community expectations

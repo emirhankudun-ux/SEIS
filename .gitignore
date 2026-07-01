@@ -12,6 +12,7 @@ coverage/
 .next/
 **/.build/
 **/.swiftpm/
+**/.xcode-derived-data/
 apps/web/wow-pages/imported/**/png/*.png
 
 # Environment files and local secrets
@@ -20,6 +21,13 @@ apps/web/wow-pages/imported/**/png/*.png
 .env.*
 !.env.example
 .seis-secrets/
+
+# Local MCP and connector credential configs
+mcp.local.toml
+.mcp.local.toml
+.codex/mcp.local.toml
+.codex/environments/*.local.toml
+.codex/environments/*-local.toml
 
 # Secret and SSH key material
 *.pem
@@ -171,6 +179,12 @@ apps/web/content/
 
 # Documentation
 docs/*
+!docs/GETTING_STARTED.md
+!docs/TROUBLESHOOTING.md
+!docs/PUBLIC_READINESS.md
+!docs/OBSIDIAN_SECOND_BRAIN.md
+!docs/LOCAL_AI_SETUP.md
+!docs/SEIS_SSH_SETUP.md
 !docs/STATUS.md
 !docs/product/
 !docs/product/*.md
@@ -186,6 +200,8 @@ docs/*
 !docs/goals/*.md
 !docs/development/
 !docs/development/local-ai-workbench.md
+!docs/apple/
+!docs/apple/*.md
 !docs/governance/
 !docs/governance/*.md
 !docs/governance/**/*.md
