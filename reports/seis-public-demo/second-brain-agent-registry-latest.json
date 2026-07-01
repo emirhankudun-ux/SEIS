@@ -1,7 +1,7 @@
 {
   "id": "seis-second-brain-agent-registry-pr54",
   "title": "SEIS Second Brain Agent Registry",
-  "generatedAt": "2026-07-01T16:10:18.343Z",
+  "generatedAt": "2026-07-01T16:14:42.317Z",
   "status": "review-only-agent-registry",
   "mode": "repo-local-no-live-execution",
   "decision": "NO-GO-autonomous-execution-not-approved",
@@ -72,6 +72,62 @@
     {
       "profileId": "ollama-local-profile",
       "status": "installed",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "openai-general-profile",
+      "status": "route-defined-current-shell-missing-key",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "anthropic-claude-profile",
+      "status": "route-defined-current-shell-missing-key",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "chatgpt-review-profile",
+      "status": "route-defined-current-shell-missing-key",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "openrouter-provider-profile",
+      "status": "planned",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "cursor-ide-profile",
+      "status": "installed",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "github-copilot-profile",
+      "status": "planned",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "lm-studio-local-profile",
+      "status": "planned",
       "secondBrainUse": "review-context-only",
       "liveProviderRouteEnabled": false,
       "promptBodyStorageAllowed": false,
@@ -212,6 +268,97 @@
         "patch suggestion",
         "terminal-focused code review",
         "debug hypothesis"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "openai",
+      "displayName": "OpenAI / General Provider",
+      "category": "cloud-provider-review",
+      "route": "openai",
+      "status": "route-defined-current-shell-missing-key",
+      "allowedOutputs": [
+        "provider readiness note",
+        "second-opinion comparisons",
+        "quality guidance"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "anthropic",
+      "displayName": "Anthropic / Claude Provider",
+      "category": "cloud-provider-review",
+      "route": "anthropic",
+      "status": "route-defined-current-shell-missing-key",
+      "allowedOutputs": [
+        "provider alignment report",
+        "router compatibility review",
+        "risk note"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "chatgpt",
+      "displayName": "ChatGPT",
+      "category": "planning-triage",
+      "route": "chatgpt",
+      "status": "route-defined-current-shell-missing-key",
+      "allowedOutputs": [
+        "planning summary",
+        "triage guidance",
+        "clarity review"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "openrouter",
+      "displayName": "OpenRouter",
+      "category": "provider-gateway-review",
+      "route": "openrouter",
+      "status": "planned",
+      "allowedOutputs": [
+        "gateway comparison note",
+        "routing recommendation",
+        "risk checklist"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "cursor",
+      "displayName": "Cursor",
+      "category": "editor-assistant",
+      "route": "cursor",
+      "status": "installed",
+      "allowedOutputs": [
+        "refactor suggestion",
+        "editor context guidance",
+        "local workflow note"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "github-copilot",
+      "displayName": "GitHub Copilot",
+      "category": "ide-assistant",
+      "route": "github-copilot",
+      "status": "planned",
+      "allowedOutputs": [
+        "coding suggestion",
+        "IDE UX guidance",
+        "review note"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "lm-studio",
+      "displayName": "LM Studio",
+      "category": "local-model-experiment",
+      "route": "lm-studio",
+      "status": "planned",
+      "allowedOutputs": [
+        "offline experiment note",
+        "local model boundary note",
+        "readiness checklist"
       ],
       "writeAuthority": "review-or-plan-only"
     }
@@ -614,8 +761,8 @@
     "releaseApprovalGranted": false
   },
   "summary": {
-    "installedAiProfileCount": 6,
-    "workforceAssignmentCount": 10,
+    "installedAiProfileCount": 13,
+    "workforceAssignmentCount": 17,
     "managedSubAgentLaneCount": 6,
     "autonomousAgentRosterCount": 12,
     "roleSchemaRoleCount": 5,

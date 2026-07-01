@@ -1,6 +1,6 @@
 # SEIS Second Brain Agent Registry
 
-Generated: 2026-07-01T16:10:18.343Z
+Generated: 2026-07-01T16:14:42.317Z
 Status: review-only-agent-registry
 Mode: repo-local-no-live-execution
 Decision: NO-GO-autonomous-execution-not-approved
@@ -11,8 +11,8 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 
 | Metric | Count |
 | --- | ---: |
-| Installed AI profiles | 6 |
-| AI workforce assignments | 10 |
+| Installed AI profiles | 13 |
+| AI workforce assignments | 17 |
 | Managed sub-agent lanes | 6 |
 | Autonomous agent roster | 12 |
 | Role schema roles | 5 |
@@ -42,6 +42,13 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 | qwen-review-profile | installed | review-context-only | false |
 | gemini-validation-profile | route-defined-current-shell-missing-key | review-context-only | false |
 | ollama-local-profile | installed | review-context-only | false |
+| openai-general-profile | route-defined-current-shell-missing-key | review-context-only | false |
+| anthropic-claude-profile | route-defined-current-shell-missing-key | review-context-only | false |
+| chatgpt-review-profile | route-defined-current-shell-missing-key | review-context-only | false |
+| openrouter-provider-profile | planned | review-context-only | false |
+| cursor-ide-profile | installed | review-context-only | false |
+| github-copilot-profile | planned | review-context-only | false |
+| lm-studio-local-profile | planned | review-context-only | false |
 
 ## AI Workforce Assignments
 
@@ -57,6 +64,13 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 | github-actions | GitHub Actions | automation-validation | remote-ci | review-or-plan-only |
 | kimi | Kimi / Kimi Code | conditional-code-and-localization-review | route-defined-current-shell-missing-command | review-or-plan-only |
 | opencode | OpenCode | bounded-terminal-coding-helper | installed | review-or-plan-only |
+| openai | OpenAI / General Provider | cloud-provider-review | route-defined-current-shell-missing-key | review-or-plan-only |
+| anthropic | Anthropic / Claude Provider | cloud-provider-review | route-defined-current-shell-missing-key | review-or-plan-only |
+| chatgpt | ChatGPT | planning-triage | route-defined-current-shell-missing-key | review-or-plan-only |
+| openrouter | OpenRouter | provider-gateway-review | planned | review-or-plan-only |
+| cursor | Cursor | editor-assistant | installed | review-or-plan-only |
+| github-copilot | GitHub Copilot | ide-assistant | planned | review-or-plan-only |
+| lm-studio | LM Studio | local-model-experiment | planned | review-or-plan-only |
 
 ## Autonomous Agent Roster
 

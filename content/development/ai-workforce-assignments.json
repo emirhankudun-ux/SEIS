@@ -334,6 +334,160 @@
         "secret handling"
       ],
       "validationDuty": "Codex remains responsible for applying, reviewing, and validating any suggested patch."
+    },
+    {
+      "id": "openai",
+      "displayName": "OpenAI / General Provider",
+      "route": "openai",
+      "launcherStatus": "route-defined-current-shell-missing-key",
+      "category": "cloud-provider-review",
+      "coreDuties": [
+        "Review cloud provider readiness evidence for OpenAI compatibility.",
+        "Keep fallback and privacy notes for cloud-assisted second-brain scenarios."
+      ],
+      "allowedOutputs": [
+        "provider readiness note",
+        "second-opinion comparisons",
+        "quality guidance"
+      ],
+      "deniedActions": [
+        "direct repository writes",
+        "claiming production provider availability without adapter evidence",
+        "secret handling"
+      ],
+      "validationDuty": "Validate all OpenAI-related claims against repository provider and router evidence."
+    },
+    {
+      "id": "anthropic",
+      "displayName": "Anthropic / Claude Provider",
+      "route": "anthropic",
+      "launcherStatus": "route-defined-current-shell-missing-key",
+      "category": "cloud-provider-review",
+      "coreDuties": [
+        "Review model-router and runtime boundaries for Anthropic compatibility.",
+        "Track missing-key/disabled state behavior in provider fixtures."
+      ],
+      "allowedOutputs": [
+        "provider alignment report",
+        "router compatibility review",
+        "risk note"
+      ],
+      "deniedActions": [
+        "direct repository writes",
+        "provider claims without evidence",
+        "secret handling"
+      ],
+      "validationDuty": "Cross-check all Anthropic claims against audited provider state and router fixtures."
+    },
+    {
+      "id": "chatgpt",
+      "displayName": "ChatGPT",
+      "route": "chatgpt",
+      "launcherStatus": "route-defined-current-shell-missing-key",
+      "category": "planning-triage",
+      "coreDuties": [
+        "Support planning and explanation tasks in review mode.",
+        "Track evidence quality and boundary drift in planning-oriented outputs."
+      ],
+      "allowedOutputs": [
+        "planning summary",
+        "triage guidance",
+        "clarity review"
+      ],
+      "deniedActions": [
+        "direct repository writes",
+        "provider key assumptions",
+        "secret handling"
+      ],
+      "validationDuty": "Treat planning outputs as review-only until backed by explicit source-of-truth evidence."
+    },
+    {
+      "id": "openrouter",
+      "displayName": "OpenRouter",
+      "route": "openrouter",
+      "launcherStatus": "planned",
+      "category": "provider-gateway-review",
+      "coreDuties": [
+        "Review provider abstraction and routing alternatives.",
+        "Track gateway-specific risks, cost expectations, and compatibility notes."
+      ],
+      "allowedOutputs": [
+        "gateway comparison note",
+        "routing recommendation",
+        "risk checklist"
+      ],
+      "deniedActions": [
+        "live provider switching",
+        "unbounded routing decisions",
+        "secret handling"
+      ],
+      "validationDuty": "Only apply gateway recommendations after backend tests and redaction evidence exist."
+    },
+    {
+      "id": "cursor",
+      "displayName": "Cursor",
+      "route": "cursor",
+      "launcherStatus": "installed",
+      "category": "editor-assistant",
+      "coreDuties": [
+        "Support scoped review-style editor workflows.",
+        "Flag copy/paste and file-safety risks in local refactors."
+      ],
+      "allowedOutputs": [
+        "refactor suggestion",
+        "editor context guidance",
+        "local workflow note"
+      ],
+      "deniedActions": [
+        "unbounded repository-wide edits",
+        "secrets in prompts",
+        "direct merge authority"
+      ],
+      "validationDuty": "Treat Cursor suggestions as bounded review notes; validate in repository context."
+    },
+    {
+      "id": "github-copilot",
+      "displayName": "GitHub Copilot",
+      "route": "github-copilot",
+      "launcherStatus": "planned",
+      "category": "ide-assistant",
+      "coreDuties": [
+        "Support local coding-assistance scenarios.",
+        "Track planned deployment of IDE-first review suggestions."
+      ],
+      "allowedOutputs": [
+        "coding suggestion",
+        "IDE UX guidance",
+        "review note"
+      ],
+      "deniedActions": [
+        "direct repository writes",
+        "unbounded patch generation",
+        "provider key handling"
+      ],
+      "validationDuty": "Do not execute Copilot-driven claims without local review and bounded scope."
+    },
+    {
+      "id": "lm-studio",
+      "displayName": "LM Studio",
+      "route": "lm-studio",
+      "launcherStatus": "planned",
+      "category": "local-model-experiment",
+      "coreDuties": [
+        "Support local model experimentation notes and safety boundaries.",
+        "Track local-only readiness for offline or private model workflows."
+      ],
+      "allowedOutputs": [
+        "offline experiment note",
+        "local model boundary note",
+        "readiness checklist"
+      ],
+      "deniedActions": [
+        "provider-style live routing claims",
+        "private corpus leakage",
+        "secret handling"
+      ],
+      "validationDuty": "Validate any local model suggestion against the Local Demo boundary and offline fixture."
     }
   ],
   "approvalRequiredFor": [

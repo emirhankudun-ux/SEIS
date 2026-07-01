@@ -235,7 +235,14 @@ function inferProfileStatus(profileId, assignments) {
     "claude-review-profile": "claude",
     "qwen-review-profile": "qwen",
     "gemini-validation-profile": "gemini",
-    "ollama-local-profile": "ollama"
+    "ollama-local-profile": "ollama",
+    "openai-general-profile": "openai",
+    "anthropic-claude-profile": "anthropic",
+    "chatgpt-review-profile": "chatgpt",
+    "openrouter-provider-profile": "openrouter",
+    "cursor-ide-profile": "cursor",
+    "github-copilot-profile": "github-copilot",
+    "lm-studio-local-profile": "lm-studio"
   };
   if (profileId === "seis-local-demo") return "local-demo";
   const match = assignments.find((assignment) => assignment.id === byProfile[profileId]);
