@@ -339,7 +339,8 @@ function validateStaticContract() {
   ensure(serviceWorker.includes("./seis-linux-replica.html"), "service worker must precache SEIS Linux Replica.");
   ensure(readme.includes("seis-linux-replica.html"), "README must document SEIS Linux Replica route.");
   ensure(readme.includes("Live Demo Console"), "README must document the SEIS Linux Replica Live Demo Console.");
-  ensure(readme.includes("terminal `live` /") && readme.includes("`readiness` / `sources` commands"), "README must document the Linux Replica live/readiness/sources terminal commands.");
+  ensure(readme.includes("Security Gate") && readme.includes("Issue #129"), "README must document the Linux Replica Security Gate owner handoff.");
+  ensure(readme.includes("terminal `live` /") && readme.includes("`readiness` / `sources` / `security` commands"), "README must document the Linux Replica live/readiness/sources/security terminal commands.");
 }
 
 async function smokeLinuxReplica(client, baseUrl) {

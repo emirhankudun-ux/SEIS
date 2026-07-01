@@ -81,8 +81,8 @@ Primary demo routes:
   Linux-like route with boot, login, top system bar, pinned side rail, live
   activity strip, dock/taskbar, launcher, resizable/draggable windows,
   browser-local VFS, terminal, session persistence, a Live Demo Console,
-  Demo Readiness evidence board, source coverage metrics, terminal `live` /
-  `readiness` / `sources` commands, 65+ core app
+  Demo Readiness evidence board, Security Gate owner handoff, source coverage
+  metrics, terminal `live` / `readiness` / `sources` / `security` commands, 65+ core app
   launch targets, and the live Reference Vault for 219 supplied ZIP modules under
   `apps/web/reference-banks/`. `seis-linux-replica.html?demo=live` is the
   public-demo deep link that auto-enters the browser-local shell and starts the
@@ -94,7 +94,8 @@ Primary demo routes:
   iframe-backed local reference modules with browser-local state changes. The
   focused browser smoke check captures desktop, mobile, and deep-link evidence for the live
   demo console, Demo Readiness gates, source coverage, reference modules,
-  terminal commands, and viewport-safe window sizing. It also validates every populated Reference
+  terminal commands, the Issue #129 security merge blocker handoff, and
+  viewport-safe window sizing. It also validates every populated Reference
   Vault route and thumbnail path in `apps/web/reference-banks/reference-apps.js`
   from the static web serving root, so missing supplied-module assets fail the
   demo gate instead of silently shipping broken cards. The focused review packet
