@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en" data-seis-search="browser-local">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Browser-local SEIS Search Center that routes query results across AI, Code, Design, Cloud, Website, Plugins, Files, and Apps with explicit mock flags."
+    />
+    <title>SEIS Search Center</title>
+    <link rel="stylesheet" href="./search-center.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#searchMain">Skip to search workspace</a>
+
+    <header class="topbar" aria-label="SEIS Search status bar">
+      <div class="brand-mark" aria-hidden="true">S</div>
+      <div>
+        <p class="eyebrow">SEIS Core / Browser-local search surface</p>
+        <h1>SEIS Search Center</h1>
+        <p class="subtitle">Connected results from SEIS AI, Code, Design, Cloud, Website, Plugins, Files, and Apps</p>
+      </div>
+      <div class="status-strip" aria-label="Safety state and mode">
+        <span class="status-pill real">Browser-local</span>
+        <span class="status-pill mock">Mock result mode</span>
+        <span class="status-pill blocked">No live web search</span>
+      </div>
+    </header>
+
+    <main id="searchMain" class="search-shell" tabindex="-1">
+      <section class="search-hero" aria-labelledby="search-title">
+        <div>
+          <p class="eyebrow">Global search</p>
+          <h2 id="search-title">One command rail for the SEIS ecosystem</h2>
+          <p>Use keyboard-first search across live demo surfaces and open each result in a live preview panel.</p>
+        </div>
+        <form class="search-form" role="search" aria-label="Search forms">
+          <label>
+            <span class="sr-only">Search query</span>
+            <input
+              id="searchInput"
+              type="search"
+              autocomplete="off"
+              placeholder="Search design tokens, agents, cloud state, files, docs..."
+              enterkeyhint="search"
+            />
+          </label>
+          <button id="searchButton" type="submit">Run search</button>
+        </form>
+      </section>
+
+      <section class="runtime-strip" aria-label="runtime contract">
+        <article>
+          <p class="eyebrow">Runtime contract</p>
+          <code>networkRequested: false</code>
+          <code>liveWebSearch: false</code>
+          <code>providerCalled: false</code>
+          <code>filesystemRead: false</code>
+          <code>localStorage key: seis.search.center.v1</code>
+        </article>
+        <article>
+          <p class="eyebrow">Labels</p>
+          <span class="status-pill real">Real</span>
+          <span class="status-pill mock">Mock</span>
+          <span class="status-pill blocked">Planned</span>
+          <span class="status-pill blocked">Blocked</span>
+        </article>
+      </section>
+
+      <section class="tab-and-feed" aria-label="Search tabs and quick commands">
+        <div class="search-tabs" id="searchTabs" role="tablist" aria-label="Search categories">
+          <button class="search-tab is-active" type="button" role="tab" aria-selected="true" data-tab="AI">AI</button>
+          <button class="search-tab" type="button" role="tab" aria-selected="false" data-tab="Web">Web</button>
+          <button class="search-tab" type="button" role="tab" aria-selected="false" data-tab="Code">Code</button>
+          <button class="search-tab" type="button" role="tab" aria-selected="false" data-tab="Design">Design</button>
+          <button class="search-tab" type="button" role="tab" aria-selected="false" data-tab="Cloud">Cloud</button>
+          <button class="search-tab" type="button" role="tab" aria-selected="false" data-tab="Apps">Apps</button>
+          <button class="search-tab" type="button" role="tab" aria-selected="false" data-tab="Plugins">Plugins</button>
+          <button class="search-tab" type="button" role="tab" aria-selected="false" data-tab="Files">Files</button>
+        </div>
+
+        <div class="recent-queries" aria-live="polite" id="recentQueries"></div>
+
+        <div class="command-row" aria-label="Example search commands">
+          <button class="command-chip" type="button" data-query="open failed deployments">open failed deployments</button>
+          <button class="command-chip" type="button" data-query="agent readiness checks">agent readiness checks</button>
+          <button class="command-chip" type="button" data-query="design system tokens">design system tokens</button>
+          <button class="command-chip" type="button" data-query="cloud sync status">cloud sync status</button>
+          <button class="command-chip" type="button" data-query="local file diff">local file diff</button>
+        </div>
+      </section>
+
+      <section class="workspace-grid" aria-label="Search workspace">
+        <section class="result-panel" aria-live="polite" aria-label="Search result list">
+          <div class="panel-heading">
+            <p class="eyebrow" id="resultHeading">Results</p>
+            <span class="status-pill mock" id="resultCount">0</span>
+          </div>
+          <div id="resultList" class="result-list"></div>
+        </section>
+
+        <section class="preview-panel" aria-label="Result preview area">
+          <div class="panel-heading">
+            <p class="eyebrow">Selection preview</p>
+            <span id="selectedSource" class="status-pill real">No result</span>
+          </div>
+          <article id="previewTitle" class="preview-title">Select a result to inspect metadata and next action.</article>
+          <p id="previewSummary" class="preview-summary">Keyboard search and click are both supported. Every row has explicit live/mock/planned/blocked labels.</p>
+          <div id="previewMeta" class="preview-meta"></div>
+          <pre id="previewBody" class="preview-body">No preview loaded.</pre>
+          <div id="previewActions" class="preview-actions"></div>
+        </section>
+      </section>
+
+      <section class="results-ledger" aria-label="Mock and real boundaries">
+        <h3 id="ledger-title">Mock vs real status</h3>
+        <div class="ledger-grid">
+          <article>
+            <span class="status-pill real">Real</span>
+            <h4>Query filtering and UI rendering</h4>
+            <p>In-browser filtering and selection logic runs without backend dependencies.</p>
+          </article>
+          <article>
+            <span class="status-pill mock">Mock</span>
+            <h4>Result datasets</h4>
+            <p>Result corpus is seeded and deterministic in browser-local JavaScript only.</p>
+          </article>
+          <article>
+            <span class="status-pill blocked">Planned</span>
+            <h4>Provider-backed web search</h4>
+            <p>Planned only. Add backend API in a later lane with explicit user permission and key handling.</p>
+          </article>
+          <article>
+            <span class="status-pill blocked">Blocked</span>
+            <h4>Live filesystem reads</h4>
+            <p>No direct filesystem reads happen from browser. Use future CLI bridge with approval.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script src="./search-center.js" defer></script>
+  </body>
+</html>
