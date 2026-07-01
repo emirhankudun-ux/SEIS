@@ -26,13 +26,13 @@
     <section class="hero" aria-labelledby="hero-title">
       <p class="eyebrow">No live SSH - metadata-only control plane</p>
       <h1 id="hero-title">Cloud readiness without pretending to be connected.</h1>
-      <p>Inspect SEIS cloud, Codespaces, SSH, deployment, backup, provider, and rollback readiness as browser-local demo metadata. This route records planning evidence only; it never connects to hosts, runs SSH, deploys, reads credentials, or exposes private server details.</p>
+      <p>Inspect SEIS cloud, Codespaces, SSH, deployment, backup, provider, and rollback readiness as browser-local demo metadata. This route records planning evidence only; it never connects to hosts, runs SSH, deploys, reads credentials, changes ports, or exposes private server details.</p>
       <p class="eyebrow">Safety state</p>
       <div class="status-grid" aria-label="Cloud safety state">
         <article><span>connected</span><strong>Local UI</strong><small>real browser state</small></article>
         <article><span>disabled</span><strong>SSH execution</strong><small>approval required</small></article>
-        <article><span>planned</span><strong>Cloud deploy</strong><small>no live mutation</small></article>
-        <article><span>unknown</span><strong>Remote host</strong><small>not verified here</small></article>
+        <article><span>planned</span><strong>Mac-off path</strong><small>cloud runtime required</small></article>
+        <article><span>unknown</span><strong>24/7 host</strong><small>direct-cloud not verified here</small></article>
       </div>
     </section>
 
@@ -62,6 +62,7 @@
         <dl id="profile-facts" class="facts">
           <div><dt>Status</dt><dd>local-demo</dd></div>
           <div><dt>Remote execution</dt><dd>disabled</dd></div>
+          <div><dt>24/7 continuity</dt><dd>requires direct-cloud proof</dd></div>
           <div><dt>Credential read</dt><dd>false</dd></div>
           <div><dt>Server / port</dt><dd>unchanged placeholder</dd></div>
         </dl>
@@ -100,6 +101,7 @@
           <li>No private keys, tokens, cookies, service accounts, or raw host credentials.</li>
           <li>No SSH execution, cloud provisioning, deploy, DNS, or server mutation in this demo route.</li>
           <li>No fake connected state unless verified outside this browser-local page.</li>
+          <li>Mac-off continuity requires a direct-cloud runtime; Codespaces can sleep.</li>
           <li>Existing server and connection port must remain unchanged unless explicit approval exists.</li>
           <li>Rollback owner, impact, and recovery verification are required before real rollout.</li>
         </ul>

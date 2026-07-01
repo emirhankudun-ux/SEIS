@@ -21,8 +21,10 @@ test("SEIS Cloud SSH Center exposes explicit safe states", async () => {
     "planned",
     "unknown",
     "Credential read",
+    "24/7 continuity",
     "Server / port",
-    "unchanged placeholder"
+    "unchanged placeholder",
+    "Mac-off continuity requires a direct-cloud runtime; Codespaces can sleep."
   ]) {
     assert.match(html, new RegExp(marker));
   }
@@ -41,6 +43,8 @@ test("SEIS Cloud SSH Center script stays browser-local and non-mutating", async 
     "credentialRead: false",
     "secretStored: false",
     "serverPortChanged: false",
+    "mobile24x7Ready: false",
+    "directCloudRequired: true",
     "rollbackRequired: true"
   ]) {
     assert.match(script, new RegExp(marker));
@@ -80,7 +84,16 @@ test("SEIS Cloud SSH Center fixture stays synchronized with safe demo states", a
   assert.equal(fixture.deployExecutedByDefault, false);
   assert.equal(fixture.credentialReadByDefault, false);
   assert.equal(fixture.serverPortChangedByDefault, false);
-  assert.equal(fixture.surfaces.length, 10);
+  assert.equal(fixture.macIndependentTarget, true);
+  assert.equal(fixture.codespacesMaySleep, true);
+  assert.equal(fixture.alwaysOnRequiresDirectCloud, true);
+  assert.equal(fixture.mobile24x7ReadyByDefault, false);
+  assert.equal(fixture.onlineGate, "npm run cloud:ssh:online:strict");
+  assert.equal(fixture.mobile24x7Gate, "npm run cloud:ssh:mobile-24x7:strict");
+  assert.equal(fixture.currentKnownBlocker, "mobile-24x7-requires-direct-cloud-transport");
+  assert.equal(fixture.surfaces.length, 12);
+  assert.ok(fixture.surfaces.some((surface) => surface.id === "mac-independent-remote-runtime"));
+  assert.ok(fixture.surfaces.some((surface) => surface.id === "always-on-direct-cloud"));
   for (const surface of fixture.surfaces) {
     assert.equal(surface.remoteMutationAllowed, false);
     assert.match(script, new RegExp(surface.name));

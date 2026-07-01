@@ -15,6 +15,14 @@
   "credentialReadByDefault": false,
   "secretStoredByDefault": false,
   "serverPortChangedByDefault": false,
+  "macIndependentTarget": true,
+  "codespacesMaySleep": true,
+  "currentTransportClass": "codespaces-online-not-24x7",
+  "alwaysOnRequiresDirectCloud": true,
+  "mobile24x7ReadyByDefault": false,
+  "onlineGate": "npm run cloud:ssh:online:strict",
+  "mobile24x7Gate": "npm run cloud:ssh:mobile-24x7:strict",
+  "currentKnownBlocker": "mobile-24x7-requires-direct-cloud-transport",
   "states": [
     "connected",
     "mock",
@@ -47,6 +55,24 @@
       "status": "planned",
       "signal": "cloud workspace",
       "boundary": "approval-needed",
+      "realBehavior": false,
+      "remoteMutationAllowed": false
+    },
+    {
+      "id": "mac-independent-remote-runtime",
+      "name": "Mac Independent Remote Runtime",
+      "status": "planned",
+      "signal": "cloud runtime",
+      "boundary": "Codespaces can sleep",
+      "realBehavior": false,
+      "remoteMutationAllowed": false
+    },
+    {
+      "id": "always-on-direct-cloud",
+      "name": "Always-On Direct Cloud",
+      "status": "planned",
+      "signal": "mobile-24x7 strict",
+      "boundary": "direct-cloud required",
       "realBehavior": false,
       "remoteMutationAllowed": false
     },
@@ -121,6 +147,8 @@
     "credentialRead": false,
     "secretStored": false,
     "serverPortChanged": false,
+    "mobile24x7Ready": false,
+    "directCloudRequired": true,
     "rollbackRequired": true
   },
   "forbiddenClaims": [

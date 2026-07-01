@@ -12,6 +12,8 @@
 - Local-only profile switching for local demo, Codespaces plan, SSH readiness, and deployment plan.
 - A schema-backed Cloud / SSH readiness fixture at
   `content/development/seis-cloud-ssh-center-readiness.json`.
+- Explicit Mac-off continuity metadata: Codespaces may be online but can sleep,
+  while true 24/7 mode requires direct-cloud proof.
 - Focused static tests in `apps/seis-core/test/seis-cloud-ssh-center-static.test.js`.
 
 ## Real vs mock vs planned
@@ -21,10 +23,22 @@
 | Static route and UI interactions | Real | Runs in browser with no dependency install. |
 | Evidence log | Real local state | Stored only in `localStorage` as `seis.cloud.ssh.center.v1`. |
 | GitHub repository status | Mock | No GitHub token or API call is used. |
+| Mac-independent remote runtime | Planned | SEIS should continue without the local Mac once an approved cloud runtime is active. |
+| Always-on direct cloud | Planned | The current known blocker remains `mobile-24x7-requires-direct-cloud-transport`. |
 | SSH connection | Disabled | `sshExecuted: false`; no remote command exists. |
 | Deployment | Planned | `deployExecuted: false`; no deployment mutation exists. |
 | Environment variables | Unknown | `credentialRead: false`; no `.env` or shell profile is read. |
 | Server / port | Preserved | `serverPortChanged: false`; existing server and connection port must remain unchanged without explicit approval. |
+
+## Computer off / always-on boundary
+
+The target is that SEIS remains reachable whether the local Mac is open or closed. The current safe split is:
+
+- `npm run cloud:ssh:online:strict` proves that the configured `SEIS-SSH` alias is reachable now.
+- `npm run cloud:ssh:mobile-24x7:strict` is the stricter gate for ChatGPT mobile / always-on use.
+- Codespaces can support Mac-independent remote work while the Codespace is awake, but it can sleep and is not treated as true 24/7 direct cloud.
+- True always-on mode requires direct-cloud SSH transport, TCP reachability, SSH auth, remote runtime checks, `ssh-ai`, the SEIS repo, and remote Codex evidence.
+- Until that stricter gate passes, the public-safe state remains planned, not ready.
 
 ## How to run
 
@@ -39,6 +53,8 @@ Open `http://127.0.0.1:4174/cloud-ssh-center.html`.
 ```bash
 node --test apps/seis-core/test/seis-cloud-ssh-center-static.test.js
 npm run check:seis-cloud-ssh-center-readiness
+npm run cloud:ssh:online:strict
+npm run cloud:ssh:mobile-24x7:strict
 ```
 
 ## Security notes

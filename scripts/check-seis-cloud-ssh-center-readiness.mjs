@@ -37,13 +37,21 @@ ensure(fixture?.deployExecutedByDefault === false, "fixture must keep deployment
 ensure(fixture?.credentialReadByDefault === false, "fixture must keep credential reads disabled by default");
 ensure(fixture?.secretStoredByDefault === false, "fixture must keep secret storage disabled by default");
 ensure(fixture?.serverPortChangedByDefault === false, "fixture must preserve server and port by default");
+ensure(fixture?.macIndependentTarget === true, "fixture must declare Mac-independent cloud target");
+ensure(fixture?.codespacesMaySleep === true, "fixture must declare that Codespaces can sleep");
+ensure(fixture?.currentTransportClass === "codespaces-online-not-24x7", "fixture must keep current transport class explicit");
+ensure(fixture?.alwaysOnRequiresDirectCloud === true, "fixture must require direct-cloud for always-on mode");
+ensure(fixture?.mobile24x7ReadyByDefault === false, "fixture must keep mobile 24/7 disabled by default");
+ensure(fixture?.onlineGate === "npm run cloud:ssh:online:strict", "fixture must expose the online SSH gate");
+ensure(fixture?.mobile24x7Gate === "npm run cloud:ssh:mobile-24x7:strict", "fixture must expose the mobile 24/7 gate");
+ensure(fixture?.currentKnownBlocker === "mobile-24x7-requires-direct-cloud-transport", "fixture must keep the current 24/7 blocker explicit");
 
 const states = new Set(fixture?.states || []);
 for (const state of ["connected", "mock", "disabled", "planned", "unknown"]) {
   ensure(states.has(state), `fixture states must include ${state}`);
 }
 
-ensure(Array.isArray(fixture?.surfaces) && fixture.surfaces.length === 10, "fixture must define 10 readiness surfaces");
+ensure(Array.isArray(fixture?.surfaces) && fixture.surfaces.length === 12, "fixture must define 12 readiness surfaces");
 
 const surfaceIds = new Set();
 for (const surface of fixture?.surfaces || []) {
@@ -58,6 +66,10 @@ for (const surface of fixture?.surfaces || []) {
   }
 }
 
+for (const id of ["mac-independent-remote-runtime", "always-on-direct-cloud"]) {
+  ensure(surfaceIds.has(id), `fixture must include ${id}`);
+}
+
 const requiredFlags = fixture?.requiredSafetyFlags || {};
 for (const [flag, value] of Object.entries({
   remoteConnected: false,
@@ -66,6 +78,8 @@ for (const [flag, value] of Object.entries({
   credentialRead: false,
   secretStored: false,
   serverPortChanged: false,
+  mobile24x7Ready: false,
+  directCloudRequired: true,
   rollbackRequired: true
 })) {
   ensure(requiredFlags[flag] === value, `fixture safety flag ${flag} must equal ${value}`);
@@ -91,11 +105,15 @@ for (const gate of [
 ensure(route.includes("data-seis-cloud-ssh=\"browser-local-readiness\""), "route must expose browser-local readiness marker");
 ensure(route.includes("No live SSH - metadata-only control plane"), "route must keep no-live-SSH label");
 ensure(route.includes("server and connection port must remain unchanged"), "route must preserve server/port copy");
+ensure(route.includes("Mac-off continuity requires a direct-cloud runtime; Codespaces can sleep."), "route must disclose Mac-off continuity boundary");
 
 for (const token of [
   files.fixture,
   "schema-backed Cloud / SSH readiness fixture",
-  "npm run check:seis-cloud-ssh-center-readiness"
+  "npm run check:seis-cloud-ssh-center-readiness",
+  "npm run cloud:ssh:online:strict",
+  "npm run cloud:ssh:mobile-24x7:strict",
+  "mobile-24x7-requires-direct-cloud-transport"
 ]) {
   ensure(doc.includes(token), `docs must include ${token}`);
   ensure(testFile.includes(token) || token === "schema-backed Cloud / SSH readiness fixture", `test must include ${token}`);

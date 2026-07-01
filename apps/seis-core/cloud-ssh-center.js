@@ -4,6 +4,8 @@ const surfaces = [
   ["Local Browser Demo", "connected", "The UI, filters, local readiness log, and status labels are real browser behavior.", "localStorage", "no network"],
   ["GitHub Repository", "mock", "Repository source-of-truth posture is represented as mock status until live GitHub APIs are reviewed.", "review-needed", "no token"],
   ["Codespaces Workspace", "planned", "Codespaces is a future optional target and requires branch, secret, and rollback review.", "cloud workspace", "approval-needed"],
+  ["Mac Independent Remote Runtime", "planned", "SEIS should keep working when this Mac is closed once an approved cloud runtime is active; this page does not prove that runtime.", "cloud runtime", "Codespaces can sleep"],
+  ["Always-On Direct Cloud", "planned", "True 24/7 requires direct-cloud SSH, TCP reachability, SSH key auth, remote ssh-ai, SEIS repo, and remote Codex evidence.", "mobile-24x7 strict", "direct-cloud required"],
   ["SSH Connection", "disabled", "No SSH command is executed from this page. Real host access requires explicit approval.", "sshExecuted: false", "human gate"],
   ["Deployment Pipeline", "planned", "Deployments need owner, rollback, environment review, and CI evidence before activation.", "deployExecuted: false", "rollback first"],
   ["Environment Variables", "unknown", "This page does not read env files, browser secrets, shell profiles, or service accounts.", "credentialRead: false", "redacted"],
@@ -43,6 +45,8 @@ function recordLog(intent, mode) {
     credentialRead: false,
     secretStored: false,
     serverPortChanged: false,
+    mobile24x7Ready: false,
+    directCloudRequired: true,
     rollbackRequired: true
   };
   state.log.unshift(entry);
@@ -55,9 +59,11 @@ function factsFor(mode) {
   const status = mode === "local-demo" ? "connected local UI" : mode;
   const remote = mode === "ssh-readiness" ? "disabled until approval" : "not connected";
   const deploy = mode === "deployment-plan" ? "planned only" : "not executed";
+  const continuity = mode === "codespaces-plan" ? "Mac-independent while cloud runtime stays awake; not 24/7" : "requires direct-cloud proof";
   return `
     <div><dt>Status</dt><dd>${status}</dd></div>
     <div><dt>Remote execution</dt><dd>${remote}</dd></div>
+    <div><dt>24/7 continuity</dt><dd>${continuity}</dd></div>
     <div><dt>Credential read</dt><dd>false</dd></div>
     <div><dt>Deployment</dt><dd>${deploy}</dd></div>
     <div><dt>Server / port</dt><dd>unchanged placeholder</dd></div>`;
@@ -91,7 +97,7 @@ function renderLog() {
     <article class="evidence-card">
       <strong>${entry.mode}</strong>
       <p>${entry.intent}</p>
-      <small>remoteConnected: ${entry.remoteConnected}; sshExecuted: ${entry.sshExecuted}; deployExecuted: ${entry.deployExecuted}; credentialRead: ${entry.credentialRead}; serverPortChanged: ${entry.serverPortChanged}</small>
+      <small>remoteConnected: ${entry.remoteConnected}; sshExecuted: ${entry.sshExecuted}; deployExecuted: ${entry.deployExecuted}; credentialRead: ${entry.credentialRead}; mobile24x7Ready: ${entry.mobile24x7Ready}; directCloudRequired: ${entry.directCloudRequired}; serverPortChanged: ${entry.serverPortChanged}</small>
     </article>`).join("");
 }
 
@@ -135,7 +141,7 @@ $("#readiness-form").addEventListener("submit", (event) => {
   const entry = recordLog(intent, mode);
   setMode(mode);
   renderLog();
-  $("#live-region").textContent = `${entry.mode} readiness note recorded locally. remoteConnected: false; sshExecuted: false; deployExecuted: false; credentialRead: false; serverPortChanged: false.`;
+  $("#live-region").textContent = `${entry.mode} readiness note recorded locally. remoteConnected: false; sshExecuted: false; deployExecuted: false; credentialRead: false; mobile24x7Ready: false; directCloudRequired: true; serverPortChanged: false.`;
 });
 
 render();
