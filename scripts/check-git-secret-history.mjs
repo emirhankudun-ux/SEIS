@@ -168,7 +168,7 @@ function scanHistory(oids, pathsByOid, objectInfos) {
   return {
     generatedAt: GENERATED_AT,
     mode: "redacted_git_history_secret_scan",
-    commitCount: Number(gitText(["rev-list", "--count", "HEAD"]).trim() || 0),
+    commitCount: "reachable HEAD; exact count intentionally omitted for stable audit diffs",
     historyObjectsConsidered: pathsByOid.size,
     inspectedBlobs,
     skippedLargeBlobs,
