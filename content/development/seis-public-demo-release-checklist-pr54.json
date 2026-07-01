@@ -61,6 +61,8 @@
     "reports/seis-public-demo/security-gate-redacted-latest.md",
     "reports/seis-public-demo/security-owner-handoff-latest.json",
     "reports/seis-public-demo/security-owner-handoff-latest.md",
+    "content/development/seis-public-demo-security-remediation-plan-pr127.json",
+    "docs/security/PR127_SECURITY_REMEDIATION_PLAN.md",
     "reports/seis-public-demo/pr54-review-packet-latest.md",
     "reports/seis-public-demo/worktree-review-latest.md",
     "reports/seis-public-demo/pr54-stage-plan-latest.md"
@@ -91,6 +93,22 @@
       "push, merge, release, Pages publication, deployment, SSH, Obsidian import, or live provider routing"
     ]
   },
+  "securityRemediationPlan": {
+    "status": "owner-approval-required-before-execution",
+    "json": "content/development/seis-public-demo-security-remediation-plan-pr127.json",
+    "markdown": "docs/security/PR127_SECURITY_REMEDIATION_PLAN.md",
+    "appliesToPullRequest": 127,
+    "mustRemainPlanOnly": true,
+    "blockedWithoutOwnerApproval": [
+      "printing raw finding values",
+      "downloading or committing full CI job logs",
+      "blanket-allowlisting historical generated bundles",
+      "weakening Secret & Vulnerability Scan",
+      "history rewrite",
+      "force push",
+      "merge or public demo release"
+    ]
+  },
   "requiredReviews": [
     "PR 54 code review",
     "Second Brain accessibility/focus QA",
@@ -98,6 +116,7 @@
     "provider-neutral model-router boundary review",
     "security/no-secret review",
     "redacted PR #104 security gate review",
+    "PR #127 security remediation plan review",
     "security owner handoff review",
     "Second Brain public reviewer pack review",
     "mock versus real status review",
@@ -121,7 +140,8 @@
     "release tag",
     "live provider enablement",
     "private Obsidian import",
-    "SSH or deployment action"
+    "SSH or deployment action",
+    "PR #127 security remediation execution"
   ],
   "goNoGoCriteria": [
     "all required validation passes on the release candidate",

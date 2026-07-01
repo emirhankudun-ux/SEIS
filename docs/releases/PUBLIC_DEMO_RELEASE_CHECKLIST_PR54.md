@@ -116,6 +116,15 @@ and agent assignments without storing raw finding values, downloading full CI
 logs, changing scanner policy, rewriting history, force-pushing, importing
 private Obsidian content, calling providers, or approving release.
 
+The PR #127 security remediation plan lives at
+`content/development/seis-public-demo-security-remediation-plan-pr127.json` and
+`docs/security/PR127_SECURITY_REMEDIATION_PLAN.md`. It is plan-only,
+owner-approval-required, and redacted. It defines allowed documentation and
+validation work before approval, the required owner decision sequence,
+post-approval runbook, rollback notes, and post-remediation validation without
+printing raw finding values, downloading full job logs, changing scanner
+policy, rewriting history, force-pushing, merging, or releasing.
+
 This writes `reports/seis-public-demo/go-no-go-latest.json`,
 `reports/seis-public-demo/go-no-go-latest.md`, and
 `reports/seis-public-demo/evidence-manifest-latest.json` with the current
@@ -195,6 +204,7 @@ git diff --check
 - Security/no-secret review.
 - Redacted PR #104 security gate review.
 - PR #127 active security gate impact review.
+- PR #127 security remediation plan review.
 - Security owner handoff review.
 - Second Brain public reviewer pack review.
 - Mock versus real status review.

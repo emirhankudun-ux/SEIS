@@ -47,6 +47,8 @@ const paths = {
   securityOwnerHandoffScript: "scripts/create-seis-security-owner-handoff.mjs",
   securityOwnerHandoffJson: "reports/seis-public-demo/security-owner-handoff-latest.json",
   securityOwnerHandoffMarkdown: "reports/seis-public-demo/security-owner-handoff-latest.md",
+  securityRemediationPlanJson: "content/development/seis-public-demo-security-remediation-plan-pr127.json",
+  securityRemediationPlanDoc: "docs/security/PR127_SECURITY_REMEDIATION_PLAN.md",
   desktopJs: "apps/web/desktop.js",
   desktopCss: "apps/web/desktop.css",
   packageJson: "package.json",
@@ -77,6 +79,7 @@ const agentRegistry = reportGenerating ? null : readJson(paths.agentRegistryJson
 const publicReviewerPack = reportGenerating ? null : readJson(paths.publicReviewerPackJson, "Second Brain public reviewer pack artifact");
 const securityGate = reportGenerating ? null : readJson(paths.securityGateJson, "public demo security gate redacted artifact");
 const securityOwnerHandoff = reportGenerating ? null : readJson(paths.securityOwnerHandoffJson, "security owner handoff artifact");
+const securityRemediationPlan = readJson(paths.securityRemediationPlanJson, "PR 127 security remediation plan");
 const desktopJs = readText(paths.desktopJs, "Desktop runtime");
 const desktopCss = readText(paths.desktopCss, "Desktop styles");
 const packageJson = readJson(paths.packageJson, "package.json");
@@ -93,6 +96,7 @@ if (agentRegistry && secondBrain) validateAgentRegistry(agentRegistry, secondBra
 if (publicReviewerPack) validatePublicReviewerPack(publicReviewerPack);
 if (securityGate) validateSecurityGate(securityGate);
 if (securityOwnerHandoff) validateSecurityOwnerHandoff(securityOwnerHandoff);
+if (securityRemediationPlan) validateSecurityRemediationPlan(securityRemediationPlan);
 if (packageJson) validatePackage(packageJson);
 validateDesktopAccessibility(desktopJs, desktopCss);
 validateDocsAndIndexes();
@@ -603,6 +607,129 @@ function validateSecurityOwnerHandoff(report) {
   ensure(!/\b(?:password|token|secret|api[_-]?key)\s*=\s*['"][^'"]+['"]/i.test(serialized), "Security owner handoff must not include inline credential assignments.");
 }
 
+function validateSecurityRemediationPlan(plan) {
+  ensure(plan.id === "seis-public-demo-security-remediation-plan-pr127", "Security remediation plan id mismatch.");
+  ensure(plan.title === "SEIS PR 127 Security Remediation Plan", "Security remediation plan title mismatch.");
+  ensure(plan.status === "owner-approval-required", "Security remediation plan must require owner approval.");
+  ensure(plan.mode === "plan-only-redacted-no-raw-values", "Security remediation plan mode mismatch.");
+  ensure(plan.decision === "NO-GO-owner-approved-remediation-required", "Security remediation plan must block release.");
+  ensure(plan.pullRequest?.number === 127, "Security remediation plan must bind PR #127.");
+  ensure(plan.pullRequest?.url === "https://github.com/emirhankudun-ux/SEIS/pull/127", "Security remediation plan PR URL mismatch.");
+  ensure(plan.pullRequest?.branch === "codex/second-brain-agent-registry-roster-20260701-clean", "Security remediation plan branch mismatch.");
+  ensure(plan.sourceArtifacts?.securityGate === paths.securityGateJson, "Security remediation plan security gate source mismatch.");
+  ensure(plan.sourceArtifacts?.securityOwnerHandoff === paths.securityOwnerHandoffJson, "Security remediation plan owner handoff source mismatch.");
+  ensure(plan.sourceArtifacts?.releaseChecklist === paths.releaseDoc, "Security remediation plan release checklist source mismatch.");
+  ensure(plan.sourceArtifacts?.nextQueue === paths.nextQueue, "Security remediation plan next queue source mismatch.");
+  ensure(plan.scope?.slice === "Second Brain readiness / agent registry release gate", "Security remediation plan slice mismatch.");
+  ensure(plan.scope?.privateObsidianVaultsInScope === false, "Security remediation plan must exclude private Obsidian vaults.");
+  ensure(plan.scope?.liveProvidersInScope === false, "Security remediation plan must exclude live providers.");
+  ensure(plan.scope?.sshInScope === false, "Security remediation plan must exclude SSH.");
+  ensure(plan.scope?.deploymentInScope === false, "Security remediation plan must exclude deployment.");
+  ensure(plan.observedGate?.status === "blocked-by-full-history-secret-scan", "Security remediation plan gate status mismatch.");
+  ensureIncludes(plan.observedGate?.failingGateNames, "Secret & Vulnerability Scan", "Security remediation plan failing gates");
+  ensureIncludes(plan.observedGate?.failingGateNames, "Security Summary", "Security remediation plan failing gates");
+  ensure(plan.observedGate?.currentTreeScope === "clean-redacted-no-git", "Security remediation plan current tree scope mismatch.");
+  ensure(plan.observedGate?.currentTreeFindings === 0, "Security remediation plan current tree findings must be zero.");
+  ensure(plan.observedGate?.fullHistoryScope === "blocked-redacted-findings", "Security remediation plan full history scope mismatch.");
+  ensure((plan.observedGate?.fullHistoryFindingCount || 0) >= 1, "Security remediation plan must keep full-history finding count visible.");
+  for (const [key, expected] of [
+    ["rawFindingValuesStored", false],
+    ["fullJobLogDownloaded", false],
+    ["securityPolicyChanged", false],
+    ["historyRewritePerformed", false],
+    ["forcePushPerformed", false]
+  ]) {
+    ensure(plan.observedGate?.[key] === expected, `Security remediation plan observed gate ${key} must be ${expected}.`);
+  }
+  for (const allowed of [
+    "keep redacted security gate and owner handoff current",
+    "update docs with blocked PR #127 security status",
+    "run local readiness validators",
+    "prepare owner decision checklist"
+  ]) {
+    ensureIncludes(plan.allowedBeforeApproval, allowed, "Security remediation plan allowed pre-approval actions");
+  }
+  for (const required of [
+    "history rewrite or affected path purge",
+    "credential rotation or non-secret attestation",
+    ".gitleaks.toml policy change",
+    "force push after history rewrite",
+    "merge or release after Security Summary passes"
+  ]) {
+    ensureIncludes(plan.requiresOwnerApprovalBeforeExecution, required, "Security remediation plan owner approvals");
+  }
+  for (const forbidden of [
+    "printing raw finding values",
+    "downloading or committing full CI job logs",
+    "blanket-allowlisting historical generated bundles",
+    "weakening Secret & Vulnerability Scan",
+    "rewriting history",
+    "force-pushing rewritten history",
+    "merging PR #127",
+    "publishing a public demo release"
+  ]) {
+    ensureIncludes(plan.forbiddenWithoutOwnerApproval, forbidden, "Security remediation plan forbidden actions");
+  }
+  ensureArrayMin(plan.ownerDecisionSequence, 5, "Security remediation plan owner decision sequence");
+  for (const id of [
+    "confirm-redacted-finding-scope",
+    "rotate-or-attest-affected-credentials",
+    "choose-history-remediation-route",
+    "review-scanner-policy",
+    "release-gate-after-remediation"
+  ]) {
+    ensureListEntryContains((plan.ownerDecisionSequence || []).map((item) => item.id), id, "Security remediation plan owner decision ids");
+  }
+  ensureArrayMin(plan.postApprovalRunbook, 5, "Security remediation plan post-approval runbook");
+  for (const step of plan.postApprovalRunbook || []) {
+    ensure(step.approvalRequired === true, `Security remediation plan runbook step ${step.step} must require approval.`);
+    ensure(step.commandExecutionAllowedByThisPlan === false, `Security remediation plan runbook step ${step.step} must not authorize command execution.`);
+    ensureArrayMin(step.evidenceRequired, 2, `Security remediation plan runbook step ${step.step} evidence`);
+  }
+  ensureArrayMin(plan.rollbackPlan, 3, "Security remediation plan rollback plan");
+  for (const validation of [
+    "Secret & Vulnerability Scan passes on GitHub",
+    "Security Summary passes on GitHub",
+    "CodeRabbit review gate is not blocking",
+    "npm run check:seis-public-demo-security-gate",
+    "npm run check:seis-security-owner-handoff",
+    "npm run check:seis-second-brain-readiness-contracts",
+    "npm run check:seis-second-brain",
+    "git diff --check"
+  ]) {
+    ensureIncludes(plan.validationRequiredAfterRemediation, validation, "Security remediation plan post-remediation validation");
+  }
+  ensure(plan.releaseImpact?.mergeAllowed === false, "Security remediation plan must block merge.");
+  ensure(plan.releaseImpact?.publicDemoReleaseAllowed === false, "Security remediation plan must block public demo release.");
+  ensure(plan.releaseImpact?.githubPagesPublicationAllowed === false, "Security remediation plan must block Pages publication.");
+  ensure(plan.releaseImpact?.privateObsidianImportAllowed === false, "Security remediation plan must block private Obsidian import.");
+  ensure(plan.releaseImpact?.liveProviderRoutingAllowed === false, "Security remediation plan must block live provider routing.");
+  for (const [key, expected] of [
+    ["rawFindingValuesStored", false],
+    ["fullSecurityLogStored", false],
+    ["privateKeyBodyStored", false],
+    ["gitleaksPolicyChanged", false],
+    ["allowlistCommitted", false],
+    ["historyRewritePerformed", false],
+    ["forcePushPerformed", false],
+    ["secretRotationPerformed", false],
+    ["githubMutationPerformedByPlan", false],
+    ["privateObsidianVaultReadPerformed", false],
+    ["providerCallsPerformed", false],
+    ["sshExecuted", false],
+    ["deploymentPerformed", false],
+    ["releaseApprovalGranted", false]
+  ]) {
+    ensure(plan.safetyBoundary?.[key] === expected, `Security remediation plan safety boundary ${key} must be ${expected}.`);
+  }
+  const serialized = JSON.stringify(plan);
+  ensure(!serialized.includes("file://"), "Security remediation plan must not include file:// paths.");
+  ensure(!serialized.includes("/Users/"), "Security remediation plan must not include absolute private /Users paths.");
+  ensure(!/sk-[A-Za-z0-9_-]{20,}/.test(serialized), "Security remediation plan must not include OpenAI-style API keys.");
+  ensure(!/-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----/.test(serialized), "Security remediation plan must not include private key bodies.");
+  ensure(!/\b(?:password|token|secret|api[_-]?key)\s*=\s*['"][^'"]+['"]/i.test(serialized), "Security remediation plan must not include inline credential assignments.");
+}
+
 function validateActiveGateImpacts(impacts, label) {
   ensure(Array.isArray(impacts), `${label} active gate impacts must be an array.`);
   ensure(
@@ -801,6 +928,8 @@ function validateReleaseChecklist(checklist) {
     "reports/seis-public-demo/security-gate-redacted-latest.md",
     "reports/seis-public-demo/security-owner-handoff-latest.json",
     "reports/seis-public-demo/security-owner-handoff-latest.md",
+    "content/development/seis-public-demo-security-remediation-plan-pr127.json",
+    "docs/security/PR127_SECURITY_REMEDIATION_PLAN.md",
     "reports/seis-public-demo/pr54-review-packet-latest.md",
     "reports/seis-public-demo/worktree-review-latest.md",
     "reports/seis-public-demo/pr54-stage-plan-latest.md"
@@ -816,6 +945,14 @@ function validateReleaseChecklist(checklist) {
   ensureListEntryContains(checklist.postPr54ReviewPacket?.mustAnswer, "human owner explicitly approved", "PR 54 post-review packet questions");
   ensureListEntryContains(checklist.postPr54ReviewPacket?.allowedOutcomes, "NO-GO", "PR 54 post-review packet outcomes");
   ensureListEntryContains(checklist.postPr54ReviewPacket?.allowedOutcomes, "GO after strict gate", "PR 54 post-review packet outcomes");
+  ensure(checklist.securityRemediationPlan?.status === "owner-approval-required-before-execution", "PR 54 security remediation plan must require owner approval.");
+  ensure(checklist.securityRemediationPlan?.json === paths.securityRemediationPlanJson, "PR 54 security remediation plan JSON path mismatch.");
+  ensure(checklist.securityRemediationPlan?.markdown === paths.securityRemediationPlanDoc, "PR 54 security remediation plan Markdown path mismatch.");
+  ensure(checklist.securityRemediationPlan?.appliesToPullRequest === 127, "PR 54 security remediation plan must bind PR #127.");
+  ensure(checklist.securityRemediationPlan?.mustRemainPlanOnly === true, "PR 54 security remediation plan must remain plan-only.");
+  ensureListEntryContains(checklist.securityRemediationPlan?.blockedWithoutOwnerApproval, "printing raw finding values", "PR 54 security remediation plan blocked actions");
+  ensureListEntryContains(checklist.securityRemediationPlan?.blockedWithoutOwnerApproval, "history rewrite", "PR 54 security remediation plan blocked actions");
+  ensureListEntryContains(checklist.requiredReviews, "PR #127 security remediation plan review", "PR 54 required reviews");
   ensure(checklist.stagePlan?.status === "required-before-commit", "PR 54 stage plan must be required before commit.");
   ensure(
     checklist.stagePlan?.artifact === "reports/seis-public-demo/pr54-stage-plan-latest.md",
@@ -990,15 +1127,16 @@ function validateDocsAndIndexes() {
     [paths.obsidianDoc, ["Obsidian Bridge Safe Import", "planned-gated", "No private note body", "dry-run manifest", "metadata-only-by-default", "report:seis-obsidian-safe-import-dry-run", "obsidian-safe-import-dry-run-latest"]],
     [paths.accessibilityDoc, ["Second Brain Accessibility Focus QA", "role=listbox", "focus-visible", "WCAG 2.2 visible focus indicator", "screen-reader transcript", "report:seis-second-brain-accessibility-focus-report", "second-brain-accessibility-focus-latest", "npm run check:seis-second-brain-browser-smoke"]],
     [paths.routerDoc, ["Read-Only Model Router Contract", "Missing Key is not Error", "backend-only provider mediation", "decision integrity", "report:seis-read-only-model-router-decision", "read-only-model-router-decision-latest", "npm run check:seis-second-brain-readiness-contracts"]],
-    [paths.releaseDoc, ["Public Demo Release Checklist", "PR #54", "review-gated-not-released", "Do not merge", "check:seis-public-demo-go-no-go", "report:seis-public-demo-go-no-go", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "report:seis-second-brain-public-reviewer-pack", "report:seis-public-demo-security-gate", "report:seis-security-owner-handoff", "second-brain-public-reviewer-pack-latest", "security-gate-redacted-latest", "security-owner-handoff-latest", "PR #127 active security gate impact", "Secret & Vulnerability Scan", "Security Summary", "PR #54 review packet", "worktree review", "stage plan", "NO-GO"]],
-    [paths.secondBrainDoc, ["Obsidian bridge safe import contract", "Obsidian safe-import dry-run artifact", "read-only model-router decision artifact", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "Second Brain public reviewer pack", "public demo security gate redacted evidence", "security owner handoff", "Second Brain accessibility/focus QA", "npm run check:seis-second-brain-readiness-contracts", "check:seis-public-demo-go-no-go", "PR #54 review packet", "stage plan"]],
+    [paths.releaseDoc, ["Public Demo Release Checklist", "PR #54", "review-gated-not-released", "Do not merge", "check:seis-public-demo-go-no-go", "report:seis-public-demo-go-no-go", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "report:seis-second-brain-public-reviewer-pack", "report:seis-public-demo-security-gate", "report:seis-security-owner-handoff", "second-brain-public-reviewer-pack-latest", "security-gate-redacted-latest", "security-owner-handoff-latest", "PR #127 active security gate impact", "PR #127 security remediation plan", "Secret & Vulnerability Scan", "Security Summary", "PR #54 review packet", "worktree review", "stage plan", "NO-GO"]],
+    [paths.securityRemediationPlanDoc, ["PR 127 Security Remediation Plan", "owner-approval-required", "plan-only-redacted-no-raw-values", "NO-GO", "Secret & Vulnerability Scan", "Security Summary", "Forbidden Without Owner Approval", "Post-Approval Runbook", "Validation Required After Remediation", "Safety Boundary"]],
+    [paths.secondBrainDoc, ["Obsidian bridge safe import contract", "Obsidian safe-import dry-run artifact", "read-only model-router decision artifact", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "Second Brain public reviewer pack", "public demo security gate redacted evidence", "security owner handoff", "PR #127 security remediation plan", "Second Brain accessibility/focus QA", "npm run check:seis-second-brain-readiness-contracts", "check:seis-public-demo-go-no-go", "PR #54 review packet", "stage plan"]],
     [paths.modelRouterDoc, ["read-only model-router contract", "Provider-neutral", "Missing Key is not Error", "decision integrity", "read-only model-router decision artifact"]],
-    [paths.status, ["SEIS Second Brain readiness contracts", "Obsidian bridge safe import", "Obsidian safe-import dry-run", "read-only model-router decision", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "Second Brain public reviewer pack", "public demo security gate redacted evidence", "security owner handoff", "PR #54 public demo release checklist"]],
-    [paths.index, ["SEIS Obsidian Bridge Safe Import", "Second Brain Accessibility Focus QA", "Read-Only Model Router Contract", "Public Demo Release Checklist PR54", "check-seis-public-demo-go-no-go.mjs", "create-seis-obsidian-safe-import-dry-run.mjs", "create-seis-read-only-model-router-decision.mjs", "create-seis-second-brain-accessibility-focus-report.mjs", "create-seis-second-brain-agent-registry.mjs", "create-seis-second-brain-public-reviewer-pack.mjs", "create-seis-public-demo-security-gate-report.mjs", "create-seis-security-owner-handoff.mjs", "reports/seis-public-demo/go-no-go-latest", "reports/seis-public-demo/evidence-manifest-latest", "reports/seis-public-demo/obsidian-safe-import-dry-run-latest", "reports/seis-public-demo/read-only-model-router-decision-latest", "reports/seis-public-demo/second-brain-accessibility-focus-latest", "reports/seis-public-demo/second-brain-agent-registry-latest", "reports/seis-public-demo/second-brain-public-reviewer-pack-latest", "reports/seis-public-demo/security-gate-redacted-latest", "reports/seis-public-demo/security-owner-handoff-latest", "reports/seis-public-demo/pr54-review-packet-latest", "reports/seis-public-demo/worktree-review-latest", "reports/seis-public-demo/pr54-stage-plan-latest"]],
-    [paths.masterIndex, ["SEIS Obsidian Bridge Safe Import", "Second Brain Accessibility Focus QA", "Read-Only Model Router Contract", "Public Demo Release Checklist PR54", "check:seis-public-demo-go-no-go", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "report:seis-second-brain-public-reviewer-pack", "report:seis-public-demo-security-gate", "report:seis-security-owner-handoff", "reports/seis-public-demo/go-no-go-latest", "reports/seis-public-demo/evidence-manifest-latest", "reports/seis-public-demo/obsidian-safe-import-dry-run-latest", "reports/seis-public-demo/read-only-model-router-decision-latest", "reports/seis-public-demo/second-brain-accessibility-focus-latest", "reports/seis-public-demo/second-brain-agent-registry-latest", "reports/seis-public-demo/second-brain-public-reviewer-pack-latest", "reports/seis-public-demo/security-gate-redacted-latest", "reports/seis-public-demo/security-owner-handoff-latest", "reports/seis-public-demo/pr54-review-packet-latest", "reports/seis-public-demo/worktree-review-latest", "reports/seis-public-demo/pr54-stage-plan-latest"]],
-    [paths.backlog, ["Obsidian bridge safe import", "Obsidian safe-import dry-run artifact", "read-only model-router decision artifact", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "Second Brain public reviewer pack", "public demo security gate redacted evidence", "security owner handoff", "Second Brain accessibility/focus QA", "read-only model-router contract", "PR #54 public demo release checklist", "SEIS public demo go/no-go gate", "PR #54 review packet", "worktree review", "stage plan"]],
-    [paths.nextQueue, ["Obsidian bridge safe import", "Obsidian safe-import dry-run artifact", "read-only model-router decision artifact", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "Second Brain public reviewer pack", "public demo security gate redacted evidence", "security owner handoff", "Second Brain accessibility/focus QA", "read-only model-router contract", "PR #54 public demo release checklist", "PR #127 active security gate impact", "Secret & Vulnerability Scan", "Security Summary", "PR #54 review packet", "worktree review", "stage plan"]],
-    [paths.readme, ["check:seis-second-brain-readiness-contracts", "Second Brain readiness contracts", "check:seis-public-demo-go-no-go", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "report:seis-second-brain-public-reviewer-pack", "report:seis-public-demo-security-gate", "report:seis-security-owner-handoff"]],
+    [paths.status, ["SEIS Second Brain readiness contracts", "Obsidian bridge safe import", "Obsidian safe-import dry-run", "read-only model-router decision", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "Second Brain public reviewer pack", "public demo security gate redacted evidence", "security owner handoff", "PR #127 security remediation plan", "PR #54 public demo release checklist"]],
+    [paths.index, ["SEIS Obsidian Bridge Safe Import", "Second Brain Accessibility Focus QA", "Read-Only Model Router Contract", "Public Demo Release Checklist PR54", "check-seis-public-demo-go-no-go.mjs", "create-seis-obsidian-safe-import-dry-run.mjs", "create-seis-read-only-model-router-decision.mjs", "create-seis-second-brain-accessibility-focus-report.mjs", "create-seis-second-brain-agent-registry.mjs", "create-seis-second-brain-public-reviewer-pack.mjs", "create-seis-public-demo-security-gate-report.mjs", "create-seis-security-owner-handoff.mjs", "reports/seis-public-demo/go-no-go-latest", "reports/seis-public-demo/evidence-manifest-latest", "reports/seis-public-demo/obsidian-safe-import-dry-run-latest", "reports/seis-public-demo/read-only-model-router-decision-latest", "reports/seis-public-demo/second-brain-accessibility-focus-latest", "reports/seis-public-demo/second-brain-agent-registry-latest", "reports/seis-public-demo/second-brain-public-reviewer-pack-latest", "reports/seis-public-demo/security-gate-redacted-latest", "reports/seis-public-demo/security-owner-handoff-latest", "PR127_SECURITY_REMEDIATION_PLAN", "seis-public-demo-security-remediation-plan-pr127", "reports/seis-public-demo/pr54-review-packet-latest", "reports/seis-public-demo/worktree-review-latest", "reports/seis-public-demo/pr54-stage-plan-latest"]],
+    [paths.masterIndex, ["SEIS Obsidian Bridge Safe Import", "Second Brain Accessibility Focus QA", "Read-Only Model Router Contract", "Public Demo Release Checklist PR54", "check:seis-public-demo-go-no-go", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "report:seis-second-brain-public-reviewer-pack", "report:seis-public-demo-security-gate", "report:seis-security-owner-handoff", "reports/seis-public-demo/go-no-go-latest", "reports/seis-public-demo/evidence-manifest-latest", "reports/seis-public-demo/obsidian-safe-import-dry-run-latest", "reports/seis-public-demo/read-only-model-router-decision-latest", "reports/seis-public-demo/second-brain-accessibility-focus-latest", "reports/seis-public-demo/second-brain-agent-registry-latest", "reports/seis-public-demo/second-brain-public-reviewer-pack-latest", "reports/seis-public-demo/security-gate-redacted-latest", "reports/seis-public-demo/security-owner-handoff-latest", "seis-public-demo-security-remediation-plan-pr127", "PR127_SECURITY_REMEDIATION_PLAN", "reports/seis-public-demo/pr54-review-packet-latest", "reports/seis-public-demo/worktree-review-latest", "reports/seis-public-demo/pr54-stage-plan-latest"]],
+    [paths.backlog, ["Obsidian bridge safe import", "Obsidian safe-import dry-run artifact", "read-only model-router decision artifact", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "Second Brain public reviewer pack", "public demo security gate redacted evidence", "security owner handoff", "PR #127 security remediation plan", "Second Brain accessibility/focus QA", "read-only model-router contract", "PR #54 public demo release checklist", "SEIS public demo go/no-go gate", "PR #54 review packet", "worktree review", "stage plan"]],
+    [paths.nextQueue, ["Obsidian bridge safe import", "Obsidian safe-import dry-run artifact", "read-only model-router decision artifact", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "Second Brain public reviewer pack", "public demo security gate redacted evidence", "security owner handoff", "PR #127 security remediation plan", "Second Brain accessibility/focus QA", "read-only model-router contract", "PR #54 public demo release checklist", "PR #127 active security gate impact", "Secret & Vulnerability Scan", "Security Summary", "PR #54 review packet", "worktree review", "stage plan"]],
+    [paths.readme, ["check:seis-second-brain-readiness-contracts", "Second Brain readiness contracts", "check:seis-public-demo-go-no-go", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "report:seis-second-brain-public-reviewer-pack", "report:seis-public-demo-security-gate", "report:seis-security-owner-handoff", "PR #127 security remediation plan"]],
     [paths.publicDemoGoNoGo, ["human-release-approval-missing", "current-browser-smoke-evidence-missing", "dirty-worktree", "security-full-history-remediation-needed", "obsidian-safe-import-dry-run", "read-only-router-decision", "accessibility-focus-qa-artifact", "second-brain-agent-registry", "second-brain-public-reviewer-pack", "security-gate-redacted-evidence", "security-owner-handoff", "NO-GO"]]
   ];
 
@@ -1016,6 +1154,8 @@ function validateNoSecrets() {
     paths.accessibilityContract,
     paths.routerContract,
     paths.releaseChecklist,
+    paths.securityRemediationPlanJson,
+    paths.securityRemediationPlanDoc,
     paths.obsidianDoc,
     paths.accessibilityDoc,
     paths.routerDoc,

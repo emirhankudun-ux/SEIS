@@ -118,6 +118,8 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | SEIS public demo security gate Markdown | [../reports/seis-public-demo/security-gate-redacted-latest.md](../reports/seis-public-demo/security-gate-redacted-latest.md) |
 | SEIS security owner handoff JSON | [../reports/seis-public-demo/security-owner-handoff-latest.json](../reports/seis-public-demo/security-owner-handoff-latest.json) |
 | SEIS security owner handoff Markdown | [../reports/seis-public-demo/security-owner-handoff-latest.md](../reports/seis-public-demo/security-owner-handoff-latest.md) |
+| SEIS PR #127 security remediation plan JSON | [../content/development/seis-public-demo-security-remediation-plan-pr127.json](../content/development/seis-public-demo-security-remediation-plan-pr127.json) |
+| SEIS PR #127 security remediation plan Markdown | [security/PR127_SECURITY_REMEDIATION_PLAN.md](security/PR127_SECURITY_REMEDIATION_PLAN.md) |
 | SEIS public demo PR #54 review packet | [../reports/seis-public-demo/pr54-review-packet-latest.md](../reports/seis-public-demo/pr54-review-packet-latest.md) |
 | SEIS public demo worktree review | [../reports/seis-public-demo/worktree-review-latest.md](../reports/seis-public-demo/worktree-review-latest.md) |
 | SEIS public demo PR #54 stage plan | [../reports/seis-public-demo/pr54-stage-plan-latest.md](../reports/seis-public-demo/pr54-stage-plan-latest.md) |

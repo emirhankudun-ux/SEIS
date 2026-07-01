@@ -247,9 +247,10 @@ metadata and deployment readiness gate names.
 `npm run check:seis-second-brain-readiness-contracts` validates the Second
 Brain readiness contracts for the Obsidian bridge safe import plan,
 accessibility/focus QA, provider-neutral read-only model-router boundary, and
-PR #54 public demo release checklist plus redacted PR #104 security gate
-evidence and security owner handoff without enabling private vault import, live
-provider routing, SSH, deployment, merge, or publication.
+PR #54 public demo release checklist plus redacted PR #104/PR #127 security
+gate evidence, security owner handoff, and the PR #127 security remediation plan
+without enabling private vault import, live provider routing, SSH, deployment,
+merge, or publication.
 
 `npm run check:seis-public-demo-go-no-go -- --run-fast-checks` is the read-only
 public demo release gate. It is expected to report `NO-GO` until current browser
