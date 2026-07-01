@@ -281,7 +281,14 @@ function validateSourceDocs() {
   for (const phrase of ["fetch-depth: 0", "gitleaks detect", "--redact"]) {
     ensure(workflowText.includes(phrase), `security workflow missing phrase: ${phrase}`);
   }
-  for (const phrase of ["PR #104 security scan remediation", "do not print values", "Do not blanket-allowlist"]) {
+  for (const phrase of [
+    "PR #104 security scan remediation",
+    "PR #127 active security gate impact",
+    "Secret & Vulnerability Scan",
+    "Security Summary",
+    "do not print values",
+    "Do not blanket-allowlist"
+  ]) {
     ensure(nextQueueText.toLowerCase().includes(phrase.toLowerCase()), `NEXT_PR_QUEUE missing phrase: ${phrase}`);
   }
 }

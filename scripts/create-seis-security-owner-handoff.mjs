@@ -350,10 +350,21 @@ function validateSourceLinks() {
   ensure(securityGate?.decision === "NO-GO-security-history-remediation-needed", "security gate must remain NO-GO.");
   ensure(agentRegistry?.decision === "NO-GO-autonomous-execution-not-approved", "agent registry must remain review-only.");
   ensure(publicReviewerPack?.decision === "NO-GO-review-pack-does-not-approve-release", "public reviewer pack must not approve release.");
-  for (const phrase of ["PR #104 security scan remediation", "do not print values", "Do not blanket-allowlist"]) {
+  for (const phrase of [
+    "PR #104 security scan remediation",
+    "PR #127 active security gate impact",
+    "Secret & Vulnerability Scan",
+    "Security Summary",
+    "do not print values",
+    "Do not blanket-allowlist"
+  ]) {
     ensure(nextQueueText.toLowerCase().includes(phrase.toLowerCase()), `NEXT_PR_QUEUE missing phrase: ${phrase}`);
   }
-  for (const phrase of ["security-gate-redacted-latest", "Secret & Vulnerability Scan historical findings"]) {
+  for (const phrase of [
+    "security-gate-redacted-latest",
+    "Secret & Vulnerability Scan historical findings",
+    "PR #127 active security gate impact"
+  ]) {
     ensure(releaseDocText.includes(phrase), `release checklist missing phrase: ${phrase}`);
   }
 }

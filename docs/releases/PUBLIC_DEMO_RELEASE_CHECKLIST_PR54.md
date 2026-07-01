@@ -101,18 +101,20 @@ The public demo security gate command writes
 `reports/seis-public-demo/security-gate-redacted-latest.json` and
 `reports/seis-public-demo/security-gate-redacted-latest.md`. It records the
 PR #104 security blocker using only redacted categories, paths, commit IDs, and
-counts. It keeps the current-tree scan clean, the full-history blocker visible,
-and approval requirements explicit without storing raw secret values, weakening
-`.gitleaks.toml`, downloading full job logs, rewriting history, force-pushing,
-or approving release.
+counts. It also keeps PR #127 listed as an active security gate impact while
+`Secret & Vulnerability Scan` and `Security Summary` fail on the same
+full-history blocker. It keeps the current-tree scan clean, the full-history
+blocker visible, and approval requirements explicit without storing raw secret
+values, weakening `.gitleaks.toml`, downloading full job logs, rewriting
+history, force-pushing, or approving release.
 
 The security owner handoff command writes
 `reports/seis-public-demo/security-owner-handoff-latest.json` and
 `reports/seis-public-demo/security-owner-handoff-latest.md`. It turns the
-PR #104 full-history blocker into explicit owner decisions and agent
-assignments without storing raw finding values, downloading full CI logs,
-changing scanner policy, rewriting history, force-pushing, importing private
-Obsidian content, calling providers, or approving release.
+PR #104 and PR #127 full-history blocker impact into explicit owner decisions
+and agent assignments without storing raw finding values, downloading full CI
+logs, changing scanner policy, rewriting history, force-pushing, importing
+private Obsidian content, calling providers, or approving release.
 
 This writes `reports/seis-public-demo/go-no-go-latest.json`,
 `reports/seis-public-demo/go-no-go-latest.md`, and
@@ -192,6 +194,7 @@ git diff --check
 - Provider-neutral read-only model-router boundary review.
 - Security/no-secret review.
 - Redacted PR #104 security gate review.
+- PR #127 active security gate impact review.
 - Security owner handoff review.
 - Second Brain public reviewer pack review.
 - Mock versus real status review.
