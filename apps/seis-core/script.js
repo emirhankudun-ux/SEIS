@@ -1026,10 +1026,28 @@ const securityAudits = [
 ];
 
 const recommendedActions = [
-  ["Command Center architecture", "Keep Phase 1 static, then promote proven modules to React/Next."],
-  ["Security review", "Make plugin permissions and SSH gates visible before adding remote writes."],
-  ["Automation wiring", "Connect report refresh, quality and release checks to a traceable workflow history."],
-  ["Native bridge", "Use the SwiftUI shell as Phase 3 once Command Center workflows stabilize."]
+  {
+    title: "Cloud SSH Center",
+    detail: "Open the browser-local cloud and SSH readiness surface before any remote handoff.",
+    href: "./cloud-ssh-center.html",
+    label: "Open Cloud SSH Center"
+  },
+  {
+    title: "Command Center architecture",
+    detail: "Keep Phase 1 static, then promote proven modules to React/Next."
+  },
+  {
+    title: "Security review",
+    detail: "Make plugin permissions and SSH gates visible before adding remote writes."
+  },
+  {
+    title: "Automation wiring",
+    detail: "Connect report refresh, quality and release checks to a traceable workflow history."
+  },
+  {
+    title: "Native bridge",
+    detail: "Use the SwiftUI shell as Phase 3 once Command Center workflows stabilize."
+  }
 ];
 
 const recentActivity = [
@@ -1606,10 +1624,11 @@ function renderDashboard() {
     </article>
   `).join("");
 
-  $("#recommended-actions").innerHTML = recommendedActions.map(([title, detail]) => `
+  $("#recommended-actions").innerHTML = recommendedActions.map((action) => `
     <article class="action-card">
-      <strong>${title}</strong>
-      <p>${detail}</p>
+      <strong>${escapeHtml(action.title)}</strong>
+      <p>${escapeHtml(action.detail)}</p>
+      ${action.href ? `<a class="secondary-button action-link" href="${escapeHtml(action.href)}">${escapeHtml(action.label)}</a>` : ""}
     </article>
   `).join("");
 }

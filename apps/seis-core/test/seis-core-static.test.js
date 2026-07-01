@@ -79,6 +79,9 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /memoryEvidence/);
   assert.match(script, /decisionHistory/);
   assert.match(script, /reusablePatterns/);
+  assert.match(script, /Cloud SSH Center/);
+  assert.match(script, /\.\/cloud-ssh-center\.html/);
+  assert.match(script, /Open Cloud SSH Center/);
   assert.match(script, /openCommandPalette/);
 });
 
@@ -208,6 +211,7 @@ test("SEIS Command Center design system preserves required tokens", async () => 
   assert.match(css, /memory-evidence-row/);
   assert.match(css, /decision-history-row/);
   assert.match(css, /pattern-card/);
+  assert.match(css, /action-link/);
   assert.match(css, /@media \(max-width: 900px\)/);
   assert.match(css, /prefers-reduced-motion/);
 });

@@ -319,7 +319,8 @@ h3 {
 .secondary-button,
 .icon-button,
 .text-button,
-.filter-chip {
+.filter-chip,
+.action-link {
   min-height: 40px;
   border-radius: var(--radius);
   border: 1px solid var(--line);
@@ -335,7 +336,8 @@ h3 {
   color: #ffffff;
 }
 
-.secondary-button {
+.secondary-button,
+.action-link {
   background: rgba(255, 255, 255, 0.7);
 }
 
@@ -356,10 +358,12 @@ h3 {
 .secondary-button:hover,
 .icon-button:hover,
 .filter-chip:hover,
+.action-link:hover,
 .primary-button:focus-visible,
 .secondary-button:focus-visible,
 .icon-button:focus-visible,
-.filter-chip:focus-visible {
+.filter-chip:focus-visible,
+.action-link:focus-visible {
   outline: 2px solid rgba(64, 120, 255, 0.28);
   outline-offset: 2px;
 }
@@ -1028,6 +1032,9 @@ h3 {
 
 .alert-card,
 .action-card {
+  display: grid;
+  gap: 10px;
+  align-content: start;
   padding: 12px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -1039,6 +1046,14 @@ h3 {
   margin-bottom: 0;
   color: var(--muted);
   font-size: 13px;
+}
+
+.action-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  text-decoration: none;
 }
 
 .action-grid {
