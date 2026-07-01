@@ -10,13 +10,13 @@
     "head": "codex/seis-demo-github-upload-20260624",
     "requiredState": "reviewed before merge or public release"
   },
-  "checkedAt": "2026-06-30T23:04:10.128Z",
+  "checkedAt": "2026-07-01T03:09:23.785Z",
   "checks": {
     "checklist": {
       "id": "seis-public-demo-release-checklist-pr54",
       "status": "review-gated-not-released",
       "releaseDecision": "not ready until checklist gates pass",
-      "requiredValidation": 27,
+      "requiredValidation": 29,
       "blockedActions": 8,
       "approvalNeeded": 7
     },
@@ -75,6 +75,16 @@
       "fullHistoryFindings": 195,
       "rawSecretValuesStored": false
     },
+    "securityOwnerHandoff": {
+      "status": "owner-action-required",
+      "mode": "redacted-owner-review-no-raw-values",
+      "decision": "NO-GO-owner-security-decision-required",
+      "ownerDecisionCount": 4,
+      "agentAssignmentCount": 4,
+      "rawFindingValuesStored": false,
+      "historyRewritePerformed": false,
+      "forcePushPerformed": false
+    },
     "router": {
       "status": "planned-read-only-contract",
       "providerCalls": false,
@@ -101,6 +111,8 @@
       "publicReviewerPackReport": "node scripts/create-seis-second-brain-public-reviewer-pack.mjs --write",
       "securityGate": "node scripts/create-seis-public-demo-security-gate-report.mjs --check",
       "securityGateReport": "node scripts/create-seis-public-demo-security-gate-report.mjs --write",
+      "securityOwnerHandoff": "node scripts/create-seis-security-owner-handoff.mjs --check",
+      "securityOwnerHandoffReport": "node scripts/create-seis-security-owner-handoff.mjs --write",
       "goNoGo": "node scripts/check-seis-public-demo-go-no-go.mjs",
       "goNoGoStrict": "node scripts/check-seis-public-demo-go-no-go.mjs --require-ready"
     },
@@ -127,9 +139,9 @@
         " M reports/seis-public-demo/worktree-review-latest.md",
         " M scripts/check-seis-public-demo-go-no-go.mjs",
         " M scripts/check-seis-second-brain-readiness-contracts.mjs",
-        "?? reports/seis-public-demo/second-brain-public-reviewer-pack-latest.json",
-        "?? reports/seis-public-demo/second-brain-public-reviewer-pack-latest.md",
-        "?? scripts/create-seis-second-brain-public-reviewer-pack.mjs"
+        "?? reports/seis-public-demo/security-owner-handoff-latest.json",
+        "?? reports/seis-public-demo/security-owner-handoff-latest.md",
+        "?? scripts/create-seis-security-owner-handoff.mjs"
       ]
     },
     "fastValidation": [
@@ -167,6 +179,12 @@
         "command": "npm run check:seis-public-demo-security-gate",
         "status": 0,
         "stdout": "\n> seis@0.1.0 check:seis-public-demo-security-gate\n> node scripts/create-seis-public-demo-security-gate-report.mjs --check\n\nSEIS public demo security gate report check passed.\n",
+        "stderr": ""
+      },
+      {
+        "command": "npm run check:seis-security-owner-handoff",
+        "status": 0,
+        "stdout": "\n> seis@0.1.0 check:seis-security-owner-handoff\n> node scripts/create-seis-security-owner-handoff.mjs --check\n\nSEIS security owner handoff check passed.\n",
         "stderr": ""
       },
       {
@@ -209,9 +227,9 @@
     "Use --require-ready only after human approval and current browser-smoke evidence exist."
   ],
   "evidenceManifest": {
-    "itemCount": 27,
-    "passedCount": 23,
-    "blockedCount": 3,
+    "itemCount": 29,
+    "passedCount": 24,
+    "blockedCount": 4,
     "missingEvidenceCount": 1,
     "artifactPath": "reports/seis-public-demo/evidence-manifest-latest.json"
   },

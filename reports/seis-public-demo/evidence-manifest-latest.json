@@ -1,7 +1,7 @@
 {
   "id": "seis-public-demo-evidence-manifest-pr54",
   "title": "SEIS Public Demo Evidence Manifest After PR 54 Review",
-  "generatedAt": "2026-06-30T23:04:10.128Z",
+  "generatedAt": "2026-07-01T03:09:23.785Z",
   "decision": "NO-GO",
   "status": "review-gated-not-released",
   "mode": "read-only",
@@ -13,9 +13,9 @@
     "requiredState": "reviewed before merge or public release"
   },
   "summary": {
-    "total": 27,
-    "passed": 23,
-    "blocked": 3,
+    "total": 29,
+    "passed": 24,
+    "blocked": 4,
     "missingCurrentEvidence": 1,
     "failed": 0,
     "notRequested": 0
@@ -83,6 +83,13 @@
       "requirement": "Public demo security gate has redacted current-tree and full-history evidence before release review.",
       "status": "blocked",
       "evidence": "reports/seis-public-demo/security-gate-redacted-latest.json"
+    },
+    {
+      "id": "security-owner-handoff",
+      "type": "artifact",
+      "requirement": "Security owner handoff exists before any history rewrite, scanner-policy change, force push, or release override.",
+      "status": "blocked",
+      "evidence": "reports/seis-public-demo/security-owner-handoff-latest.json"
     },
     {
       "id": "second-brain-public-reviewer-pack",
@@ -194,6 +201,14 @@
       "status": "passed",
       "evidence": "Command exited 0 in the current run.",
       "command": "npm run check:seis-public-demo-security-gate"
+    },
+    {
+      "id": "npm-run-check-seis-security-owner-handoff",
+      "type": "command",
+      "requirement": "npm run check:seis-security-owner-handoff",
+      "status": "passed",
+      "evidence": "Command exited 0 in the current run.",
+      "command": "npm run check:seis-security-owner-handoff"
     },
     {
       "id": "npm-run-check-seis-second-brain-readiness-contracts",

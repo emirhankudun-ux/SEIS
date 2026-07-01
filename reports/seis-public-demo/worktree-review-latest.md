@@ -1,6 +1,6 @@
 # SEIS Public Demo Worktree Review
 
-Generated: 2026-06-30T23:04:10.128Z
+Generated: 2026-07-01T03:09:23.785Z
 Decision: NO-GO
 Release blocking: yes
 Dirty paths: 22
@@ -39,6 +39,6 @@ Status: candidate-scope-needs-review
 - M reports/seis-public-demo/worktree-review-latest.md
 - M scripts/check-seis-public-demo-go-no-go.mjs
 - M scripts/check-seis-second-brain-readiness-contracts.mjs
-- ?? reports/seis-public-demo/second-brain-public-reviewer-pack-latest.json
-- ?? reports/seis-public-demo/second-brain-public-reviewer-pack-latest.md
-- ?? scripts/create-seis-second-brain-public-reviewer-pack.mjs
+- ?? reports/seis-public-demo/security-owner-handoff-latest.json
+- ?? reports/seis-public-demo/security-owner-handoff-latest.md
+- ?? scripts/create-seis-security-owner-handoff.mjs

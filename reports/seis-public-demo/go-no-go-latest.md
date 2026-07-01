@@ -1,6 +1,6 @@
 # SEIS Public Demo Go/No-Go Report
 
-Generated: 2026-06-30T23:04:10.128Z
+Generated: 2026-07-01T03:09:23.785Z
 Decision: NO-GO
 Status: review-gated-not-released
 Mode: read-only
@@ -15,6 +15,7 @@ Evidence manifest: reports/seis-public-demo/evidence-manifest-latest.json
 - npm run check:seis-second-brain-agent-registry: passed
 - npm run check:seis-second-brain-public-reviewer-pack: passed
 - npm run check:seis-public-demo-security-gate: passed
+- npm run check:seis-security-owner-handoff: passed
 - npm run check:seis-second-brain-readiness-contracts: passed
 - npm run check:seis-second-brain: passed
 - git diff --check: passed

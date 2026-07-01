@@ -41,6 +41,8 @@ const files = {
   publicReviewerPackMarkdown: "reports/seis-public-demo/second-brain-public-reviewer-pack-latest.md",
   securityGateJson: "reports/seis-public-demo/security-gate-redacted-latest.json",
   securityGateMarkdown: "reports/seis-public-demo/security-gate-redacted-latest.md",
+  securityOwnerHandoffJson: "reports/seis-public-demo/security-owner-handoff-latest.json",
+  securityOwnerHandoffMarkdown: "reports/seis-public-demo/security-owner-handoff-latest.md",
   releaseDoc: "docs/releases/PUBLIC_DEMO_RELEASE_CHECKLIST_PR54.md",
   secondBrainDoc: "docs/product/seis-second-brain.md",
   statusDoc: "docs/STATUS.md",
@@ -68,6 +70,7 @@ const accessibilityFocus = readJson(files.accessibilityFocusJson, "Second Brain 
 const agentRegistry = readJson(files.agentRegistryJson, "Second Brain agent registry artifact");
 const publicReviewerPack = readJson(files.publicReviewerPackJson, "Second Brain public reviewer pack artifact");
 const securityGate = readJson(files.securityGateJson, "public demo security gate redacted artifact");
+const securityOwnerHandoff = readJson(files.securityOwnerHandoffJson, "security owner handoff artifact");
 const packageJson = readJson(files.packageJson, "package.json");
 
 validateContracts();
@@ -167,6 +170,8 @@ function validateContracts() {
   ensureIncludes(checklist.requiredValidation, "npm run report:seis-second-brain-public-reviewer-pack", "required validation");
   ensureIncludes(checklist.requiredValidation, "npm run check:seis-public-demo-security-gate", "required validation");
   ensureIncludes(checklist.requiredValidation, "npm run report:seis-public-demo-security-gate", "required validation");
+  ensureIncludes(checklist.requiredValidation, "npm run check:seis-security-owner-handoff", "required validation");
+  ensureIncludes(checklist.requiredValidation, "npm run report:seis-security-owner-handoff", "required validation");
   ensureIncludes(checklist.requiredValidation, "npm run check:seis-second-brain", "required validation");
   ensureIncludes(checklist.requiredValidation, "npm run check:seis-second-brain-browser-smoke", "required validation");
   ensureIncludes(checklist.requiredValidation, "npm run check:seis-second-brain-readiness-contracts", "required validation");
@@ -186,6 +191,8 @@ function validateContracts() {
   ensureIncludes(checklist.requiredArtifacts, "reports/seis-public-demo/second-brain-public-reviewer-pack-latest.md", "required artifacts");
   ensureIncludes(checklist.requiredArtifacts, "reports/seis-public-demo/security-gate-redacted-latest.json", "required artifacts");
   ensureIncludes(checklist.requiredArtifacts, "reports/seis-public-demo/security-gate-redacted-latest.md", "required artifacts");
+  ensureIncludes(checklist.requiredArtifacts, "reports/seis-public-demo/security-owner-handoff-latest.json", "required artifacts");
+  ensureIncludes(checklist.requiredArtifacts, "reports/seis-public-demo/security-owner-handoff-latest.md", "required artifacts");
   ensureIncludes(checklist.requiredArtifacts, "reports/seis-public-demo/pr54-review-packet-latest.md", "required artifacts");
   ensureIncludes(checklist.requiredArtifacts, "reports/seis-public-demo/worktree-review-latest.md", "required artifacts");
   ensureIncludes(checklist.requiredArtifacts, "reports/seis-public-demo/pr54-stage-plan-latest.md", "required artifacts");
@@ -374,6 +381,55 @@ function validateContracts() {
     ensure(securityGate.safetyBoundary?.releaseApprovalGranted === false, "Security gate must not grant release approval.");
   }
 
+  if (securityOwnerHandoff) {
+    checks.securityOwnerHandoff = {
+      status: securityOwnerHandoff.status,
+      mode: securityOwnerHandoff.mode,
+      decision: securityOwnerHandoff.decision,
+      ownerDecisionCount: securityOwnerHandoff.ownerDecisionsRequired?.length || 0,
+      agentAssignmentCount: securityOwnerHandoff.agentAssignments?.length || 0,
+      rawFindingValuesStored: securityOwnerHandoff.safetyBoundary?.rawFindingValuesStored,
+      historyRewritePerformed: securityOwnerHandoff.safetyBoundary?.historyRewritePerformed,
+      forcePushPerformed: securityOwnerHandoff.safetyBoundary?.forcePushPerformed
+    };
+    ensure(securityOwnerHandoff.id === "seis-security-owner-handoff-pr104", "Security owner handoff artifact id mismatch.");
+    ensure(securityOwnerHandoff.status === "owner-action-required", "Security owner handoff must require owner action.");
+    ensure(securityOwnerHandoff.mode === "redacted-owner-review-no-raw-values", "Security owner handoff mode mismatch.");
+    ensure(securityOwnerHandoff.decision === "NO-GO-owner-security-decision-required", "Security owner handoff must block release.");
+    ensure(securityOwnerHandoff.pullRequest?.number === 104, "Security owner handoff must bind PR #104.");
+    ensure(securityOwnerHandoff.observedSecurityState?.currentTreeStatus === "clean-redacted-no-git", "Security owner handoff must preserve current-tree clean status.");
+    ensure(securityOwnerHandoff.observedSecurityState?.currentTreeFindings === 0, "Security owner handoff current-tree findings must be zero.");
+    ensure(securityOwnerHandoff.observedSecurityState?.fullHistoryStatus === "blocked-redacted-findings", "Security owner handoff must preserve full-history blocker.");
+    ensure((securityOwnerHandoff.observedSecurityState?.fullHistoryFindings || 0) >= 1, "Security owner handoff must include full-history finding count.");
+    ensure(securityOwnerHandoff.observedSecurityState?.rawFindingValuesStored === false, "Security owner handoff must not store raw finding values.");
+    ensure(securityOwnerHandoff.observedSecurityState?.fullJobLogDownloaded === false, "Security owner handoff must not download full job logs.");
+    ensure(securityOwnerHandoff.observedSecurityState?.securityPolicyChanged === false, "Security owner handoff must not change security policy.");
+    ensure(securityOwnerHandoff.observedSecurityState?.allowlistCommitted === false, "Security owner handoff must not commit allowlists.");
+    ensure((securityOwnerHandoff.ownerDecisionsRequired?.length || 0) >= 4, "Security owner handoff must include owner decisions.");
+    ensure((securityOwnerHandoff.agentAssignments?.length || 0) >= 4, "Security owner handoff must include agent assignments.");
+    for (const key of [
+      "rawFindingValuesStored",
+      "fullSecurityLogStored",
+      "privateKeyBodyStored",
+      "gitleaksPolicyChanged",
+      "allowlistCommitted",
+      "historyRewritePerformed",
+      "forcePushPerformed",
+      "secretRotationPerformed",
+      "githubMutationPerformedByReport",
+      "privateObsidianVaultReadPerformed",
+      "providerCallsPerformed",
+      "sshExecuted",
+      "deploymentPerformed",
+      "releaseApprovalGranted"
+    ]) {
+      ensure(securityOwnerHandoff.safetyBoundary?.[key] === false, `Security owner handoff safety boundary ${key} must be false.`);
+    }
+    ensure(securityOwnerHandoff.releaseImpact?.mergeAllowed === false, "Security owner handoff must block merge.");
+    ensure(securityOwnerHandoff.releaseImpact?.publicDemoReleaseAllowed === false, "Security owner handoff must block public demo release.");
+    ensure(securityOwnerHandoff.upstreamReadinessBinding?.securityGateDecision === "NO-GO-security-history-remediation-needed", "Security owner handoff must bind security gate decision.");
+  }
+
   if (router) {
     checks.router = {
       status: router.status,
@@ -433,6 +489,8 @@ function validateContracts() {
       publicReviewerPackReport: packageJson.scripts?.["report:seis-second-brain-public-reviewer-pack"] || null,
       securityGate: packageJson.scripts?.["check:seis-public-demo-security-gate"] || null,
       securityGateReport: packageJson.scripts?.["report:seis-public-demo-security-gate"] || null,
+      securityOwnerHandoff: packageJson.scripts?.["check:seis-security-owner-handoff"] || null,
+      securityOwnerHandoffReport: packageJson.scripts?.["report:seis-security-owner-handoff"] || null,
       goNoGo: packageJson.scripts?.["check:seis-public-demo-go-no-go"] || null,
       goNoGoStrict: packageJson.scripts?.["check:seis-public-demo-go-no-go:strict"] || null
     };
@@ -485,6 +543,14 @@ function validateContracts() {
       "package.json must expose report:seis-public-demo-security-gate."
     );
     ensure(
+      packageJson.scripts?.["check:seis-security-owner-handoff"] === "node scripts/create-seis-security-owner-handoff.mjs --check",
+      "package.json must expose check:seis-security-owner-handoff."
+    );
+    ensure(
+      packageJson.scripts?.["report:seis-security-owner-handoff"] === "node scripts/create-seis-security-owner-handoff.mjs --write",
+      "package.json must expose report:seis-security-owner-handoff."
+    );
+    ensure(
       packageJson.scripts?.["check:seis-public-demo-go-no-go"] === "node scripts/check-seis-public-demo-go-no-go.mjs",
       "package.json must expose check:seis-public-demo-go-no-go."
     );
@@ -497,7 +563,7 @@ function validateContracts() {
 
 function validateDocs() {
   const required = [
-    [files.releaseDoc, ["Public Demo Release Checklist", "check:seis-public-demo-go-no-go", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "report:seis-second-brain-public-reviewer-pack", "report:seis-public-demo-security-gate", "obsidian-safe-import-dry-run-latest", "read-only-model-router-decision-latest", "second-brain-accessibility-focus-latest", "second-brain-agent-registry-latest", "second-brain-public-reviewer-pack-latest", "security-gate-redacted-latest", "NO-GO", "Do not merge PR #54"]],
+    [files.releaseDoc, ["Public Demo Release Checklist", "check:seis-public-demo-go-no-go", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "report:seis-second-brain-public-reviewer-pack", "report:seis-public-demo-security-gate", "report:seis-security-owner-handoff", "obsidian-safe-import-dry-run-latest", "read-only-model-router-decision-latest", "second-brain-accessibility-focus-latest", "second-brain-agent-registry-latest", "second-brain-public-reviewer-pack-latest", "security-gate-redacted-latest", "security-owner-handoff-latest", "NO-GO", "Do not merge PR #54"]],
     [files.secondBrainDoc, ["Agent training pack", "Second Brain agent registry artifact", "check:seis-public-demo-go-no-go", "Build Training Pack"]],
     [files.statusDoc, ["SEIS public demo go/no-go gate", "check:seis-public-demo-go-no-go"]],
     [files.nextQueue, ["SEIS public demo go/no-go gate", "check:seis-public-demo-go-no-go"]]
@@ -536,6 +602,7 @@ function runFastValidation() {
     ["npm", ["run", "check:seis-second-brain-agent-registry"], {}],
     ["npm", ["run", "check:seis-second-brain-public-reviewer-pack"], {}],
     ["npm", ["run", "check:seis-public-demo-security-gate"], {}],
+    ["npm", ["run", "check:seis-security-owner-handoff"], {}],
     ["npm", ["run", "check:seis-second-brain-readiness-contracts"], { SEIS_PUBLIC_DEMO_REPORT_GENERATING: "1" }],
     ["npm", ["run", "check:seis-second-brain"], {}],
     ["git", ["diff", "--check"], {}]
@@ -953,6 +1020,7 @@ function classifyDirtyPath(filePath) {
         "scripts/create-seis-second-brain-accessibility-focus-report.mjs",
         "scripts/create-seis-second-brain-agent-registry.mjs",
         "scripts/create-seis-second-brain-public-reviewer-pack.mjs",
+        "scripts/create-seis-security-owner-handoff.mjs",
         "scripts/check-seis-public-demo-go-no-go.mjs",
         "reports/seis-public-demo/",
         "apps/web/desktop.js",
@@ -1111,6 +1179,20 @@ function buildEvidenceManifest(value) {
           ? "blocked"
           : "failed",
       evidence: files.securityGateJson
+    },
+    {
+      id: "security-owner-handoff",
+      type: "artifact",
+      requirement: "Security owner handoff exists before any history rewrite, scanner-policy change, force push, or release override.",
+      status:
+        value.checks.securityOwnerHandoff?.mode === "redacted-owner-review-no-raw-values"
+        && value.checks.securityOwnerHandoff?.decision === "NO-GO-owner-security-decision-required"
+        && value.checks.securityOwnerHandoff?.rawFindingValuesStored === false
+        && value.checks.securityOwnerHandoff?.historyRewritePerformed === false
+        && value.checks.securityOwnerHandoff?.forcePushPerformed === false
+          ? "blocked"
+          : "failed",
+      evidence: files.securityOwnerHandoffJson
     },
     {
       id: "second-brain-public-reviewer-pack",

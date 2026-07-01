@@ -53,6 +53,7 @@ npm run report:seis-second-brain-accessibility-focus-report
 npm run report:seis-second-brain-agent-registry
 npm run report:seis-second-brain-public-reviewer-pack
 npm run report:seis-public-demo-security-gate
+npm run report:seis-security-owner-handoff
 npm run report:seis-public-demo-go-no-go
 ```
 
@@ -104,6 +105,14 @@ counts. It keeps the current-tree scan clean, the full-history blocker visible,
 and approval requirements explicit without storing raw secret values, weakening
 `.gitleaks.toml`, downloading full job logs, rewriting history, force-pushing,
 or approving release.
+
+The security owner handoff command writes
+`reports/seis-public-demo/security-owner-handoff-latest.json` and
+`reports/seis-public-demo/security-owner-handoff-latest.md`. It turns the
+PR #104 full-history blocker into explicit owner decisions and agent
+assignments without storing raw finding values, downloading full CI logs,
+changing scanner policy, rewriting history, force-pushing, importing private
+Obsidian content, calling providers, or approving release.
 
 This writes `reports/seis-public-demo/go-no-go-latest.json`,
 `reports/seis-public-demo/go-no-go-latest.md`, and
@@ -157,6 +166,8 @@ npm run report:seis-second-brain-public-reviewer-pack
 npm run check:seis-second-brain-public-reviewer-pack
 npm run report:seis-public-demo-security-gate
 npm run check:seis-public-demo-security-gate
+npm run report:seis-security-owner-handoff
+npm run check:seis-security-owner-handoff
 npm run report:seis-public-demo-go-no-go
 npm run check:seis-second-brain
 npm run check:seis-second-brain-browser-smoke
@@ -181,6 +192,7 @@ git diff --check
 - Provider-neutral read-only model-router boundary review.
 - Security/no-secret review.
 - Redacted PR #104 security gate review.
+- Security owner handoff review.
 - Second Brain public reviewer pack review.
 - Mock versus real status review.
 - Public docs clarity review.
@@ -206,6 +218,8 @@ Release can move forward only when:
 - no secret-like values or private vault content are committed,
 - Secret & Vulnerability Scan historical findings have approved remediation or
   reviewed security baseline,
+- security owner handoff decisions are reviewed before any history rewrite,
+  force push, scanner policy change, or release override,
 - Second Brain import and accessibility gates are documented,
 - GitHub reviewers can inspect the Second Brain slice without provider keys or
   private Obsidian data,
