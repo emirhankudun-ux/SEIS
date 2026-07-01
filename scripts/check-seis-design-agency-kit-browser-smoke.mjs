@@ -21,6 +21,7 @@ const REQUIRED_OUTPUTS = [
   "proposal-scope-estimator",
   "agency-quote-comparator",
   "agency-cost-control-matrix",
+  "agency-cost-defense-calculator",
   "design-sprint-timeline-matrix",
   "competitive-positioning-matrix",
   "brand-voice-messaging-matrix",
@@ -65,6 +66,7 @@ const REQUIRED_WORKBOARDS = [
   "proposal-scope-estimator",
   "agency-quote-comparator",
   "agency-cost-control-matrix",
+  "agency-cost-defense-calculator",
   "design-sprint-timeline-matrix",
   "competitive-positioning-matrix",
   "brand-voice-messaging-matrix",
@@ -104,6 +106,7 @@ const CUSTOM_FIELD_VALUES = {
   budgetBand: "Avoid unchecked agency retainer",
   quoteBaseline: "Outside agency quote with vague deliverables and monthly retainer",
   agencyCostControlFocus: "Line item, SEIS in-house route, external-buy trigger, quality risk, evidence requirement, decision owner, and approval gate",
+  agencyCostDefenseFocus: "Quoted line item, replaceable deliverables, in-house coverage index, must-buy trigger, risk owner, validation proof, and next spend decision",
   designSprintTimelineFocus: "Discovery day, strategy freeze, production block, review checkpoint, revision window, QA pass, handoff day, owner, and blocker rule",
   internalProductionPath: "SEIS draft pack plus validation before buying external help",
   competitivePositioningFocus: "Direct competitors, aspirational references, category cues, visual territory, differentiation, evidence gaps, and decision owner",
@@ -498,6 +501,7 @@ async function smokeDesktop(client, baseUrl) {
   ensure(afterBuild.outputText.includes("proposal-scope-estimator"), "generated pack must include proposal scope estimator output");
   ensure(afterBuild.outputText.includes("agency-quote-comparator"), "generated pack must include agency quote comparator output");
   ensure(afterBuild.outputText.includes("agency-cost-control-matrix"), "generated pack must include agency cost control output");
+  ensure(afterBuild.outputText.includes("agency-cost-defense-calculator"), "generated pack must include agency cost defense output");
   ensure(afterBuild.outputText.includes("design-sprint-timeline-matrix"), "generated pack must include design sprint timeline output");
   ensure(afterBuild.outputText.includes("competitive-positioning-matrix"), "generated pack must include competitive positioning matrix output");
   ensure(afterBuild.outputText.includes("brand-voice-messaging-matrix"), "generated pack must include brand voice messaging matrix output");
@@ -537,6 +541,9 @@ async function smokeDesktop(client, baseUrl) {
   ensure(afterBuild.outputText.includes("not a guaranteed cost saving"), "generated pack must avoid guaranteed savings claims");
   ensure(afterBuild.outputText.includes("## Agency Cost Control Matrix"), "generated pack must include agency cost control matrix section");
   ensure(afterBuild.outputText.includes("not procurement advice"), "generated pack must avoid procurement advice claims");
+  ensure(afterBuild.outputText.includes("## Agency Cost Defense Calculator"), "generated pack must include agency cost defense calculator section");
+  ensure(afterBuild.outputText.includes("Coverage index:"), "generated pack must include computed coverage index");
+  ensure(afterBuild.outputText.includes("not financial advice"), "generated pack must avoid financial advice claims");
   ensure(afterBuild.outputText.includes("## Design Sprint Timeline Matrix"), "generated pack must include design sprint timeline matrix section");
   ensure(afterBuild.outputText.includes("not a delivery date guarantee"), "generated pack must avoid delivery date guarantee claims");
   ensure(afterBuild.outputText.includes("## Competitive Positioning Matrix"), "generated pack must include competitive positioning matrix section");
@@ -594,6 +601,7 @@ async function smokeDesktop(client, baseUrl) {
   ensure(afterBuild.outputText.includes("Avoid unchecked agency retainer"), "generated pack must include custom budget band field");
   ensure(afterBuild.outputText.includes("Outside agency quote with vague deliverables and monthly retainer"), "generated pack must include custom quote baseline field");
   ensure(afterBuild.outputText.includes("Line item, SEIS in-house route, external-buy trigger, quality risk, evidence requirement, decision owner, and approval gate"), "generated pack must include custom agency cost control field");
+  ensure(afterBuild.outputText.includes("Quoted line item, replaceable deliverables, in-house coverage index, must-buy trigger, risk owner, validation proof, and next spend decision"), "generated pack must include custom agency cost defense field");
   ensure(afterBuild.outputText.includes("Discovery day, strategy freeze, production block, review checkpoint, revision window, QA pass, handoff day, owner, and blocker rule"), "generated pack must include custom design sprint timeline field");
   ensure(afterBuild.outputText.includes("SEIS draft pack plus validation before buying external help"), "generated pack must include custom internal production path field");
   ensure(afterBuild.outputText.includes("Direct competitors, aspirational references, category cues, visual territory, differentiation, evidence gaps, and decision owner"), "generated pack must include custom competitive positioning field");

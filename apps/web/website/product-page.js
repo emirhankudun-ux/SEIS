@@ -91,7 +91,7 @@
         storageKey: "seis.design.agencyPack.v1",
         handoffStorageKey: "seis.design.agencyPack.handoff.v1",
         codeWorkspacePath: "/workspace/Design/seis-design-agency-pack.md",
-        summary: "Build a local draft pack for creative brief, client discovery intake, brand and offer naming, brand strategy workshop, proposal scope estimate, agency quote comparison, agency cost control, design sprint timeline, competitive positioning matrix, brand voice messaging matrix, typography hierarchy matrix, color system accessibility matrix, brand rationale deck, visual reference moodboard, creative asset shot list, logo concept evaluation, brand usage guideline, landing page blueprint, creative director QA, design review decision, approval state transition, revision plan, client feedback triage, case study layout, visual QA evidence, production file manifest, asset size specs, print production readiness, client approval, client-ready export index, brand audit, brand token map, launch asset matrix, social content calendar, social variants, presentation system, asset provenance, and client handoff.",
+        summary: "Build a local draft pack for creative brief, client discovery intake, brand and offer naming, brand strategy workshop, proposal scope estimate, agency quote comparison, agency cost control, agency cost defense, design sprint timeline, competitive positioning matrix, brand voice messaging matrix, typography hierarchy matrix, color system accessibility matrix, brand rationale deck, visual reference moodboard, creative asset shot list, logo concept evaluation, brand usage guideline, landing page blueprint, creative director QA, design review decision, approval state transition, revision plan, client feedback triage, case study layout, visual QA evidence, production file manifest, asset size specs, print production readiness, client approval, client-ready export index, brand audit, brand token map, launch asset matrix, social content calendar, social variants, presentation system, asset provenance, and client handoff.",
         fields: [
           ["audience", "Audience", "Founder-led team preparing a premium public demo"],
           ["offer", "Offer", "No-key design production kit for website, social, presentation, and handoff work"],
@@ -104,6 +104,7 @@
           ["budgetBand", "Budget band", "Avoid unchecked agency retainer; keep scope review-ready before spend"],
           ["quoteBaseline", "Quote baseline", "External agency quote, retainer, or estimate to compare against scope and evidence"],
           ["agencyCostControlFocus", "Agency cost control focus", "Line item, SEIS in-house route, external-buy trigger, quality risk, evidence requirement, decision owner, and approval gate"],
+          ["agencyCostDefenseFocus", "Agency cost defense focus", "Quoted line item, replaceable deliverables, in-house coverage index, must-buy trigger, risk owner, validation proof, and next spend decision"],
           ["designSprintTimelineFocus", "Design sprint timeline focus", "Discovery day, strategy freeze, production block, review checkpoint, revision window, QA pass, handoff day, owner, and blocker rule"],
           ["internalProductionPath", "Internal production path", "Use SEIS draft pack, validation commands, human review, and SEIS Code handoff before buying external work"],
           ["competitivePositioningFocus", "Competitive positioning focus", "Competitor set, category cues, visual territory, differentiation claim, whitespace opportunity, evidence gaps, risks, and decision owner"],
@@ -138,6 +139,7 @@
           ["proposal-scope-estimator", "Scope, effort band, cut list, review owner, and no-price-guarantee boundary for replacing vague agency quotes with a clear work package."],
           ["agency-quote-comparator", "Compare external agency quote scope against SEIS deliverables, missing evidence, risks, exclusions, and no-guaranteed-savings boundary."],
           ["agency-cost-control-matrix", "Line item, SEIS in-house route, external-buy trigger, quality risk, evidence requirement, decision owner, approval gate, and no-procurement-advice boundary."],
+          ["agency-cost-defense-calculator", "Computed coverage index, replace/defer/buy decision path, in-house proof count, must-buy trigger, risk owner, next spend decision, and no-financial-advice boundary."],
           ["design-sprint-timeline-matrix", "Discovery day, strategy freeze, production block, review checkpoint, revision window, QA pass, handoff day, owner, blocker rule, and no-delivery-date-guarantee boundary."],
           ["competitive-positioning-matrix", "Competitor set, category cues, visual territory, differentiation claim, whitespace opportunity, evidence gaps, risk notes, decision owner, and no-market-research boundary."],
           ["brand-voice-messaging-matrix", "Tagline options, message hierarchy, tone rules, proof points, CTA language, channel adaptations, claim risk, copy review owner, and no-legal-copy-approval boundary."],
@@ -221,6 +223,12 @@
             "SEIS route: map each line item to in-house output, evidence requirement, validation command, owner, and quality risk.",
             "Decision gate: mark build in SEIS, buy external help, defer, needs specialist review, or blocked before spend.",
             "Boundary: not procurement advice, not a guaranteed cost saving, and not a binding quote."
+          ]],
+          ["agency-cost-defense-calculator", "Agency Cost Defense Calculator", [
+            "Coverage index: calculate the current output, workboard, and review-gate coverage before deciding whether to buy external help.",
+            "Decision path: mark replace in SEIS, defer, buy specialist help, or block until evidence based on proof count and risk.",
+            "Spend trigger: require a named risk owner, validation proof, and next spend decision before any external purchase.",
+            "Boundary: not financial advice, not a guaranteed cost saving, and not procurement approval."
           ]],
           ["design-sprint-timeline-matrix", "Design Sprint Timeline Matrix", [
             "Sprint spine: map discovery, strategy freeze, identity production, web/content production, QA, revision, approval, and handoff days.",
@@ -648,6 +656,7 @@
   }
 
   function renderAgencyKitSection(agencyKit) {
+    const defense = calculateAgencyDefense(agencyKit);
     return `<section class="section agency-kit-section" data-agency-kit-workflow>
       <div class="section-heading">
         <p class="eyebrow">Agency Kit</p>
@@ -676,6 +685,16 @@
           <span>${escapeHtml(agencyKit.status)}</span>
           <h3>Draft client handoff pack</h3>
           <p>Generate a browser-local Markdown pack. It is draft evidence for review, not automatic publication or client approval.</p>
+          <div class="agency-cost-defense" data-agency-cost-defense aria-label="Agency cost defense calculator">
+            <span>Agency cost defense</span>
+            <dl>
+              <div><dt>Coverage</dt><dd>${defense.coverageIndex}/100</dd></div>
+              <div><dt>Outputs</dt><dd>${defense.outputCount}</dd></div>
+              <div><dt>Workboards</dt><dd>${defense.workboardCount}</dd></div>
+              <div><dt>Boundary checks</dt><dd>${defense.boundaryCount}</dd></div>
+            </dl>
+            <p>${escapeHtml(defense.decisionHint)}</p>
+          </div>
           <div class="agency-field-grid" aria-label="Editable client brief fields">
             ${agencyKit.fields.map(([id, label, value]) => `<label>
               <span>${escapeHtml(label)}</span>
@@ -704,7 +723,25 @@
     });
   }
 
+  function calculateAgencyDefense(agencyKit) {
+    const outputCount = agencyKit.outputs.length;
+    const workboardCount = agencyKit.workboards.length;
+    const gateCount = agencyKit.gates.length;
+    const outputBoundaryCount = agencyKit.outputs.filter(([_id, body]) => /boundary|not-|no-/i.test(body)).length;
+    const workboardBoundaryCount = agencyKit.workboards
+      .flatMap(([_id, _heading, items]) => items)
+      .filter((item) => /Boundary:|not |no-/i.test(item)).length;
+    const boundaryCount = outputBoundaryCount + workboardBoundaryCount;
+    const proofWeight = outputCount * 2 + workboardCount * 2 + gateCount * 5 + Math.min(boundaryCount, 40);
+    const coverageIndex = Math.min(100, Math.round((proofWeight / 210) * 100));
+    const decisionHint = coverageIndex >= 90
+      ? "Replace or defer external agency spend unless a specialist blocker is named."
+      : "Keep external spend blocked until missing evidence, owner, and validation proof are recorded.";
+    return { outputCount, workboardCount, gateCount, boundaryCount, coverageIndex, decisionHint };
+  }
+
   function formatAgencyPack(title, agencyKit, fields = agencyKit.fields) {
+    const defense = calculateAgencyDefense(agencyKit);
     const lines = [
       `# ${title} Agency Pack`,
       "",
@@ -760,6 +797,13 @@
       "- SEIS route: map each line item to an in-house output, evidence requirement, validation command, owner, and quality risk.",
       "- Decision gate: mark build in SEIS, buy external help, defer, needs specialist review, or blocked before spend.",
       "- Boundary: not procurement advice, not a guaranteed cost saving, and not a binding quote.",
+      "",
+      "## Agency Cost Defense Calculator",
+      `- Coverage index: ${defense.coverageIndex}/100 from ${defense.outputCount} outputs, ${defense.workboardCount} workboards, ${defense.gateCount} review gates, and ${defense.boundaryCount} boundary checks.`,
+      `- Decision hint: ${defense.decisionHint}`,
+      "- Decision path: replace in SEIS, defer, buy specialist help, or block until evidence.",
+      `- Cost defense focus: ${fields.find(([id]) => id === "agencyCostDefenseFocus")?.[2] || "Quoted line item, replaceable deliverables, in-house coverage index, must-buy trigger, risk owner, validation proof, and next spend decision"}`,
+      "- Boundary: not financial advice, not a guaranteed cost saving, and not procurement approval.",
       "",
       "## Design Sprint Timeline Matrix",
       "- Sprint spine: map discovery, strategy freeze, identity production, web/content production, QA, revision, approval, and handoff days.",
@@ -942,6 +986,7 @@
       handoffStorageKey: agencyKit.handoffStorageKey,
       content,
       exportedAt: new Date().toISOString(),
+      agencyDefense: calculateAgencyDefense(agencyKit),
       requiresHumanReviewBeforePublication: true,
       notClaims: ["not host filesystem write", "not Git commit", "not deployment", "not client approval"]
     };

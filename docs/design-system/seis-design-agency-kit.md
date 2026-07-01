@@ -6,7 +6,7 @@ The SEIS Design Agency Kit turns `@seis-design` into a public-safe,
 agency-grade creative production lane for founders, designers, and small teams
 that need stronger briefs, identity direction, campaign structure, web
 composition, and handoff discipline before paying for a full agency engagement.
-It also includes a client discovery intake matrix, brand and offer naming matrix, proposal scope worksheet, agency quote comparator, agency cost control matrix, design sprint timeline matrix,
+It also includes a client discovery intake matrix, brand and offer naming matrix, proposal scope worksheet, agency quote comparator, agency cost control matrix, agency cost defense calculator, design sprint timeline matrix,
 brand strategy workshop matrix, competitive positioning matrix, typography pairing and hierarchy matrix,
 brand voice and messaging matrix, color system accessibility matrix, brand rationale deck, visual reference moodboard, creative asset shot list matrix, logo concept evaluation matrix,
 brand usage guideline, landing page blueprint matrix, creative director QA board, design review decision matrix, approval state transition ledger, revision
@@ -68,6 +68,7 @@ kits, provenance checks, and client handoff evidence reproducible.
 - Not a conversion guarantee, search ranking guarantee, or legal copy approval
   for published landing pages.
 - Not procurement advice, tax advice, or a purchasing recommendation.
+- Not financial advice or approval to spend client budget.
 - Not a delivery date guarantee, project management service, or client approval.
 - Not permission to publish unreviewed client work or unclear assets.
 
@@ -82,6 +83,7 @@ kits, provenance checks, and client handoff evidence reproducible.
 | Proposal | Scope level, budget boundary, effort cut list, exclusions, and approval path. | Proposal scope is reviewable and marked not a binding quote. |
 | Comparison | External quote line items compared against SEIS draft outputs, evidence gaps, risks, and review owners. | Quote comparison is marked not a guaranteed cost saving. |
 | Cost control | Agency cost control matrix with line items, SEIS in-house route, external-buy trigger, quality risk, evidence requirement, decision owner, and approval gate. | Matrix is marked not procurement advice, not a guaranteed cost saving, and not a binding quote. |
+| Cost defense | Agency cost defense calculator with computed coverage index, replace/defer/buy/block decision path, in-house proof count, must-buy trigger, risk owner, validation proof, and next spend decision. | Calculator is marked not financial advice, not a guaranteed cost saving, and not procurement approval. |
 | Sprint timeline | Design sprint timeline matrix with discovery day, strategy freeze, production blocks, review checkpoints, revision window, QA pass, handoff day, owner, blocker rule, and validation command. | Matrix is marked not a delivery date guarantee, not a project management service, and not client approval. |
 | Positioning | Competitive positioning matrix with competitor set, category cues, visual territory, differentiation claim, whitespace opportunity, evidence gaps, risks, and decision owner. | Matrix is marked not market research or proof of market demand. |
 | Messaging | Brand voice and messaging matrix with tagline options, message hierarchy, tone rules, proof points, CTA language, channel adaptations, claim risk, and copy review owner. | Matrix is marked not legal copy approval or compliance review. |
@@ -120,6 +122,7 @@ kits, provenance checks, and client handoff evidence reproducible.
 | Proposal scope worksheet | `proposal-scope-estimator` with scope level, effort boundary, optional cut list, budget boundary, review owner, validation commands, and no-binding-quote disclaimer. | This document and the kit JSON |
 | External agency quote comparison worksheet | `agency-quote-comparator` with external quote baseline, SEIS coverage map, missing evidence, risk decision, review owner, exclusions, and no-guaranteed-savings boundary. | This document and the kit JSON |
 | Agency cost control and build-buy-defer decision matrix | `agency-cost-control-matrix` with line item, SEIS in-house route, external-buy trigger, quality risk, evidence requirement, decision owner, approval gate, and no-procurement-advice boundary. | This document, the kit JSON, and `apps/web/website/seis-design.html` |
+| Agency cost defense calculator | `agency-cost-defense-calculator` with computed coverage index, replace/defer/buy/block decision path, in-house proof count, must-buy trigger, risk owner, validation proof, next spend decision, and no-financial-advice boundary. | This document, the kit JSON, and `apps/web/website/seis-design.html` |
 | Design sprint timeline and milestone plan | `design-sprint-timeline-matrix` with discovery day, strategy freeze, production block, review checkpoint, revision window, QA pass, handoff day, owner, blocker rule, validation command, and no-delivery-date-guarantee boundary. | This document, the kit JSON, and `apps/web/website/seis-design.html` |
 | Competitive positioning and visual territory matrix | `competitive-positioning-matrix` with competitor set, category cues, visual territory, differentiation claim, whitespace opportunity, evidence gaps, risk notes, decision owner, and no-market-research boundary. | This document, the kit JSON, and `apps/web/website/seis-design.html` |
 | Brand voice and messaging matrix | `brand-voice-messaging-matrix` with tagline options, message hierarchy, tone rules, proof points, CTA language, channel adaptations, claim risk, copy review owner, and no-legal-copy-approval boundary. | This document, the kit JSON, and `apps/web/website/seis-design.html` |
@@ -195,6 +198,9 @@ kits, provenance checks, and client handoff evidence reproducible.
 - Agency cost control matrices are not procurement advice, not tax advice, not
   a purchasing recommendation, not a guaranteed cost saving, and not a binding
   quote.
+- Agency cost defense calculators are not financial advice, not procurement
+  approval, not a guaranteed cost saving, and not permission to spend client
+  budget without human review.
 - Design sprint timelines are not a delivery date guarantee, not a project
   management service, not client approval, and not a commitment to ship blocked
   work without evidence.
@@ -242,7 +248,7 @@ Current controls:
   `brand and offer naming focus`,
   `brand strategy workshop focus`,
   `scope level`, `budget band`, `quote baseline`, `internal production path`,
-  `agency cost control focus`,
+  `agency cost control focus`, `agency cost defense focus`,
   `design sprint timeline focus`,
   `landing page blueprint focus`,
   `competitive positioning focus`, `brand voice focus`,
@@ -268,6 +274,7 @@ Current controls:
   `brand-strategy-workshop-matrix`,
   `proposal-scope-estimator`, `agency-quote-comparator`,
   `agency-cost-control-matrix`,
+  `agency-cost-defense-calculator`,
   `design-sprint-timeline-matrix`,
   `competitive-positioning-matrix`, `typography-hierarchy-matrix`,
   `brand-voice-messaging-matrix`,
@@ -315,6 +322,10 @@ Current controls:
   split agency cost into line items, SEIS in-house routes, external-buy
   triggers, quality risks, evidence requirements, decision owners, and approval
   gates before spend without claiming procurement advice.
+- The generated Markdown includes `Agency Cost Defense Calculator` so teams can
+  see a browser-local coverage index, output count, workboard count, review
+  gates, boundary checks, replace/defer/buy/block decision path, and next spend
+  decision without claiming financial advice.
 - The generated Markdown includes `Design Sprint Timeline Matrix` so teams can
   map discovery, strategy freeze, production blocks, review checkpoints,
   revision windows, QA pass, handoff day, blocker rules, validation commands,
@@ -385,6 +396,7 @@ Current controls:
   `Approval State Transition Ledger`,
   `Brand Strategy Workshop Matrix`,
   `Agency Cost Control Matrix`,
+  `Agency Cost Defense Calculator`,
   `Design Sprint Timeline Matrix`,
   `Competitive Positioning Matrix`, `Brand Voice & Messaging Matrix`,
   `Typography Pairing & Hierarchy Matrix`,
@@ -404,7 +416,7 @@ Current controls:
   captured before handoff.
 - The generated Markdown includes `Agency Workboards` for brand audit, launch
   assets, client discovery intake, brand and offer naming, proposal scope, agency quote comparison, brand rationale, brand
-  usage, creative QA, design review decision, approval state transition, revision planning, client feedback triage, visual QA
+  usage, creative QA, design review decision, approval state transition, agency cost defense, revision planning, client feedback triage, visual QA
   evidence, case study layout, production delivery, asset specs, print production readiness, social content calendar, client approval, client-ready
   export, social variants, and presentation system planning.
 - `Export to SEIS Code` saves the current pack into the browser-local SEIS Code
@@ -422,7 +434,7 @@ The generated pack is draft evidence for human review. It is not automatic
 publication, not client approval, not live provider generation, not a host
 filesystem write, not a Git commit, not deployment, and not a platform spec
 guarantee. It is also not a guaranteed cost saving, not a persuasion guarantee,
-not market research, not legal copy approval, not a font license, not accessibility certification, not print proof approval, not social media scheduling, not model release approval, not a business strategy guarantee, not a conversion guarantee, not procurement advice, not a delivery date guarantee, not a client contract, not a brand name clearance, not creative director approval, not automatic signoff, not licensed asset approval, not final logo approval, not a downloadable archive, not a trademark license, and not fabricated
+not market research, not legal copy approval, not a font license, not accessibility certification, not print proof approval, not social media scheduling, not model release approval, not a business strategy guarantee, not a conversion guarantee, not procurement advice, not financial advice, not a delivery date guarantee, not a client contract, not a brand name clearance, not creative director approval, not automatic signoff, not licensed asset approval, not final logo approval, not a downloadable archive, not a trademark license, and not fabricated
 screenshot or review evidence. It is not a stakeholder consensus guarantee.
 It is not a verified customer case study.
 

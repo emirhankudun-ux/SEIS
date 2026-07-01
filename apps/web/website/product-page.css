@@ -343,6 +343,203 @@ h1 {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
+.agency-kit-section {
+  border-block: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.agency-kit-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.72fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.agency-workflow-column {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.agency-output-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.agency-workboard-list {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.agency-output-list article,
+.agency-workboard-list article,
+.agency-builder {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.055);
+  padding: 1rem;
+}
+
+.agency-output-list span,
+.agency-workboard-list span,
+.agency-builder > span {
+  display: block;
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.agency-output-list p,
+.agency-workboard-list li,
+.agency-builder p {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.agency-workboard-list h3 {
+  margin: 0.45rem 0 0;
+  font-size: 1rem;
+}
+
+.agency-workboard-list ul {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0.8rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.agency-builder {
+  position: sticky;
+  top: 6rem;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.agency-gates {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.agency-cost-defense {
+  display: grid;
+  gap: 0.6rem;
+  border: 1px solid rgba(96, 198, 255, 0.28);
+  border-radius: var(--radius);
+  background: rgba(96, 198, 255, 0.08);
+  padding: 0.85rem;
+}
+
+.agency-cost-defense dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin: 0;
+}
+
+.agency-cost-defense div {
+  min-width: 0;
+}
+
+.agency-cost-defense dt {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.agency-cost-defense dd {
+  margin: 0.15rem 0 0;
+  color: var(--text);
+  font-weight: 900;
+}
+
+.agency-field-grid {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.agency-field-grid label {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.agency-field-grid span {
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.agency-field-grid input {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: rgba(0, 0, 0, 0.22);
+  color: var(--text);
+  font: 0.92rem/1.4 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  padding: 0.7rem 0.8rem;
+}
+
+.agency-field-grid input::placeholder {
+  color: var(--muted);
+}
+
+.agency-gates p {
+  margin: 0;
+  border-left: 2px solid var(--accent);
+  padding-left: 0.7rem;
+}
+
+.agency-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.agency-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.055);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 800;
+  padding: 0 0.9rem;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+
+.agency-actions button:hover {
+  border-color: var(--line-strong);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.agency-actions [data-export-agency-pack] {
+  border-color: rgba(96, 198, 255, 0.45);
+  background: rgba(96, 198, 255, 0.12);
+}
+
+[data-agency-pack-output] {
+  overflow: auto;
+  max-height: 18rem;
+  min-height: 9rem;
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(0, 0, 0, 0.22);
+  color: var(--text);
+  font: 0.82rem/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  white-space: pre-wrap;
+  padding: 0.85rem;
+}
+
 .copy-card {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -386,11 +583,17 @@ h1 {
   }
 
   .capability-grid,
+  .agency-kit-shell,
+  .agency-output-list,
   .roadmap-grid,
   .route-grid,
   .proof-grid,
   .status-list {
     grid-template-columns: 1fr;
+  }
+
+  .agency-builder {
+    position: static;
   }
 }
 

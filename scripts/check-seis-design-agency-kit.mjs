@@ -41,6 +41,7 @@ const REQUIRED_NOT_CLAIMS = [
   "not a business strategy guarantee",
   "not a conversion guarantee",
   "not procurement advice",
+  "not financial advice",
   "not a delivery date guarantee",
   "not a client contract",
   "not a brand name clearance",
@@ -48,9 +49,9 @@ const REQUIRED_NOT_CLAIMS = [
   "not automatic signoff",
 ];
 
-const REQUIRED_WORKFLOW_IDS = ["intake", "discovery-intake", "brand-offer-naming", "strategy-workshop", "proposal", "comparison", "cost-control", "design-sprint-timeline", "positioning", "messaging", "typography", "color-system", "print-production", "rationale", "moodboard", "asset-shot-list", "logo-evaluation", "identity", "usage", "web", "landing-blueprint", "portfolio", "campaign", "review", "design-review-decision", "approval-state-transition", "revision", "feedback", "visual-qa", "approval", "export-index", "provenance", "handoff"];
+const REQUIRED_WORKFLOW_IDS = ["intake", "discovery-intake", "brand-offer-naming", "strategy-workshop", "proposal", "comparison", "cost-control", "cost-defense", "design-sprint-timeline", "positioning", "messaging", "typography", "color-system", "print-production", "rationale", "moodboard", "asset-shot-list", "logo-evaluation", "identity", "usage", "web", "landing-blueprint", "portfolio", "campaign", "review", "design-review-decision", "approval-state-transition", "revision", "feedback", "visual-qa", "approval", "export-index", "provenance", "handoff"];
 
-const REQUIRED_EDITABLE_FIELD_IDS = ["audience", "offer", "clientDiscoveryIntakeFocus", "brandOfferNamingFocus", "brandStrategyWorkshopFocus", "format", "landingPageBlueprintFocus", "scope", "budgetBand", "quoteBaseline", "agencyCostControlFocus", "designSprintTimelineFocus", "internalProductionPath", "competitivePositioningFocus", "messagingVoiceFocus", "typographyHierarchyFocus", "colorSystemFocus", "rationaleFocus", "moodboardDirectionFocus", "creativeAssetShotListFocus", "logoConceptFocus", "usageGuidelineFocus", "designReviewDecisionFocus", "approvalStateTransitionFocus", "revisionRound", "feedbackTriageFocus", "caseStudyFocus", "deliveryStandard", "printProductionFocus", "visualEvidenceTarget", "exportIndexTarget", "channels", "contentCalendarFocus", "approvalCheckpoint", "deadline", "approvalOwner"];
+const REQUIRED_EDITABLE_FIELD_IDS = ["audience", "offer", "clientDiscoveryIntakeFocus", "brandOfferNamingFocus", "brandStrategyWorkshopFocus", "format", "landingPageBlueprintFocus", "scope", "budgetBand", "quoteBaseline", "agencyCostControlFocus", "agencyCostDefenseFocus", "designSprintTimelineFocus", "internalProductionPath", "competitivePositioningFocus", "messagingVoiceFocus", "typographyHierarchyFocus", "colorSystemFocus", "rationaleFocus", "moodboardDirectionFocus", "creativeAssetShotListFocus", "logoConceptFocus", "usageGuidelineFocus", "designReviewDecisionFocus", "approvalStateTransitionFocus", "revisionRound", "feedbackTriageFocus", "caseStudyFocus", "deliveryStandard", "printProductionFocus", "visualEvidenceTarget", "exportIndexTarget", "channels", "contentCalendarFocus", "approvalCheckpoint", "deadline", "approvalOwner"];
 
 const REQUIRED_DELIVERABLE_IDS = [
   "creative-brief",
@@ -60,6 +61,7 @@ const REQUIRED_DELIVERABLE_IDS = [
   "proposal-scope-estimator",
   "agency-quote-comparator",
   "agency-cost-control-matrix",
+  "agency-cost-defense-calculator",
   "design-sprint-timeline-matrix",
   "competitive-positioning-matrix",
   "brand-voice-messaging-matrix",
@@ -106,6 +108,7 @@ const REQUIRED_GENERATED_OUTPUT_IDS = [
   "proposal-scope-estimator",
   "agency-quote-comparator",
   "agency-cost-control-matrix",
+  "agency-cost-defense-calculator",
   "design-sprint-timeline-matrix",
   "competitive-positioning-matrix",
   "brand-voice-messaging-matrix",
@@ -151,6 +154,7 @@ const REQUIRED_WORKBOARD_IDS = [
   "proposal-scope-estimator",
   "agency-quote-comparator",
   "agency-cost-control-matrix",
+  "agency-cost-defense-calculator",
   "design-sprint-timeline-matrix",
   "competitive-positioning-matrix",
   "brand-voice-messaging-matrix",
@@ -214,6 +218,8 @@ const REQUIRED_DOC_PHRASES = [
   "not a guaranteed cost saving",
   "agency cost control",
   "not procurement advice",
+  "agency cost defense",
+  "not financial advice",
   "design sprint timeline",
   "not a delivery date guarantee",
   "competitive positioning matrix",
@@ -458,6 +464,11 @@ if (kit) {
   );
   ensureIncludesAll(
     kit.browserWorkflow?.notClaims,
+    ["not financial advice"],
+    "browserWorkflow.notClaims",
+  );
+  ensureIncludesAll(
+    kit.browserWorkflow?.notClaims,
     ["not a delivery date guarantee"],
     "browserWorkflow.notClaims",
   );
@@ -582,6 +593,11 @@ if (kit) {
   ensure(websiteRuntimeText.includes("not a guaranteed cost saving"), "website runtime must avoid guaranteed savings claims in generated pack");
   ensure(websiteRuntimeText.includes("## Agency Cost Control Matrix"), "website runtime must include agency cost control matrix section in generated pack");
   ensure(websiteRuntimeText.includes("not procurement advice"), "website runtime must avoid procurement advice claims in generated pack");
+  ensure(websiteRuntimeText.includes("## Agency Cost Defense Calculator"), "website runtime must include agency cost defense calculator section in generated pack");
+  ensure(websiteRuntimeText.includes("Coverage index"), "website runtime must include computed agency coverage index copy");
+  ensure(websiteRuntimeText.includes("calculateAgencyDefense"), "website runtime must calculate agency cost defense metrics");
+  ensure(websiteRuntimeText.includes("data-agency-cost-defense"), "website runtime must render agency cost defense metrics");
+  ensure(websiteRuntimeText.includes("not financial advice"), "website runtime must avoid financial advice claims in generated pack");
   ensure(websiteRuntimeText.includes("## Design Sprint Timeline Matrix"), "website runtime must include design sprint timeline matrix section in generated pack");
   ensure(websiteRuntimeText.includes("not a delivery date guarantee"), "website runtime must avoid delivery date guarantee claims in generated pack");
   ensure(websiteRuntimeText.includes("## Competitive Positioning Matrix"), "website runtime must include competitive positioning matrix section in generated pack");
@@ -642,6 +658,7 @@ if (kit) {
   ensure(websiteCssText.includes(".agency-workflow-column"), "website CSS must style the visible agency workflow column");
   ensure(websiteCssText.includes(".agency-workboard-list"), "website CSS must style visible agency workboards");
   ensure(websiteCssText.includes(".agency-field-grid"), "website CSS must style agency kit editable fields");
+  ensure(websiteCssText.includes(".agency-cost-defense"), "website CSS must style agency cost defense calculator");
   ensure(websiteCssText.includes("[data-export-agency-pack]"), "website CSS must style agency kit export action");
   ensure(websiteCssText.includes("[data-agency-pack-output]"), "website CSS must style agency pack output");
   ensure(browserSmokeText.includes("data-build-agency-pack"), "browser smoke must click the build agency pack control");

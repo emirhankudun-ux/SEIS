@@ -32,6 +32,7 @@
     "not a business strategy guarantee",
     "not a conversion guarantee",
     "not procurement advice",
+    "not financial advice",
     "not a delivery date guarantee",
     "not a client contract",
     "not a brand name clearance",
@@ -111,6 +112,16 @@
       "title": "Agency cost control matrix",
       "status": "documented",
       "output": "A cost-control matrix that maps agency line items to SEIS in-house routes, external-buy triggers, quality risks, evidence requirements, decision owners, and approval gates without claiming procurement advice or guaranteed savings.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ]
+    },
+    {
+      "id": "cost-defense",
+      "title": "Agency cost defense calculator",
+      "status": "documented",
+      "output": "A browser-local cost defense calculator that computes coverage index, output count, workboard count, review-gate count, boundary checks, replace/defer/buy/block decision path, risk owner, and next spend decision without claiming financial advice.",
       "evidence": [
         "docs/design-system/seis-design-agency-kit.md",
         "apps/web/website/seis-design.html"
@@ -472,6 +483,20 @@
       "validationCommands": [
         "npm run check:seis-design-agency-kit",
         "npm run check:seis-website-pages"
+      ]
+    },
+    {
+      "id": "agency-cost-defense-calculator",
+      "category": "strategy",
+      "agencyEquivalent": "agency cost defense calculator",
+      "seisOutput": "computed coverage index, replace/defer/buy/block decision path, in-house proof count, must-buy trigger, risk owner, validation proof, next spend decision, and no-financial-advice boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:seis-design-agency-kit-browser-smoke"
       ]
     },
     {
@@ -1008,6 +1033,7 @@
       "budgetBand",
       "quoteBaseline",
       "agencyCostControlFocus",
+      "agencyCostDefenseFocus",
       "designSprintTimelineFocus",
       "internalProductionPath",
       "competitivePositioningFocus",
@@ -1042,6 +1068,7 @@
       "proposal-scope-estimator",
       "agency-quote-comparator",
       "agency-cost-control-matrix",
+      "agency-cost-defense-calculator",
       "design-sprint-timeline-matrix",
       "competitive-positioning-matrix",
       "brand-voice-messaging-matrix",
@@ -1086,6 +1113,7 @@
       "proposal-scope-estimator",
       "agency-quote-comparator",
       "agency-cost-control-matrix",
+      "agency-cost-defense-calculator",
       "design-sprint-timeline-matrix",
       "competitive-positioning-matrix",
       "brand-voice-messaging-matrix",
@@ -1128,6 +1156,7 @@
       "Proposal Scope Estimate",
       "Agency Quote Comparator",
       "Agency Cost Control Matrix",
+      "Agency Cost Defense Calculator",
       "Design Sprint Timeline Matrix",
       "Competitive Positioning Matrix",
       "Brand Voice & Messaging Matrix",
@@ -1167,6 +1196,7 @@
       "not platform spec guarantee",
       "not guaranteed cost saving",
       "not procurement advice",
+      "not financial advice",
       "not a delivery date guarantee",
       "not a client contract",
       "not a brand name clearance",
