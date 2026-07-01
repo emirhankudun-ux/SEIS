@@ -82,3 +82,15 @@ import Testing
     #expect(tools.allSatisfy { !$0.safetyNotes.joined(separator: " ").lowercased().contains("secret marker") })
     #expect(tools.compactMap(\.recommendedContextPackID).allSatisfy { contextPackIDs.contains($0) })
 }
+
+@Test func developmentLaneBridgeCoversFiveActiveLanes() {
+    let lanes = SEISAppleFirstFoundation.developmentLanes
+
+    #expect(lanes.count == 5)
+    #expect(lanes.map(\.id) == ["desktop-os", "linux-replica", "seis-code", "apple-swift", "ai-core"])
+    #expect(lanes.allSatisfy { !$0.validator.isEmpty && !$0.detail.isEmpty })
+    #expect(lanes.first { $0.id == "linux-replica" }?.detail.contains("291 launcher targets") == true)
+    #expect(lanes.first { $0.id == "linux-replica" }?.detail.contains("contained Apple Native Shell capsule") == true)
+    #expect(SEISAppleFirstFoundation.developmentLaneValidators.contains("npm run check:seis-code"))
+    #expect(SEISAppleFirstFoundation.developmentLaneValidators.contains("swift test --package-path packages/seis_platform_swift"))
+}

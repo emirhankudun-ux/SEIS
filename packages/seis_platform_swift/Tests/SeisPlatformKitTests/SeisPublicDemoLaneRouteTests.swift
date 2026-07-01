@@ -83,10 +83,21 @@ import Testing
 }
 
 @Test func appLibraryContractSeparatesChatCodeAgiAndSSHWithoutLiveClaims() throws {
+    let nativeShell = try #require(SeisAppLibraryContract.surface(id: "apple-native-shell"))
     let aiChat = try #require(SeisAppLibraryContract.surface(id: "seis-ai-chat"))
     let codeAI = try #require(SeisAppLibraryContract.surface(id: "seis-code-ai"))
     let agi = try #require(SeisAppLibraryContract.surface(id: "seis-agi-control"))
     let ssh = try #require(SeisAppLibraryContract.surface(id: "seis-ssh-control"))
+
+    #expect(nativeShell.kind == .nativeShell)
+    #expect(nativeShell.shortCode == "APL")
+    #expect(nativeShell.summary.contains("Linux Replica"))
+    #expect(nativeShell.summary.contains("contained"))
+    #expect(nativeShell.summary.contains("browser sandbox"))
+    #expect(nativeShell.status == .metadataOnly)
+    #expect(!nativeShell.requiresBackend)
+    #expect(!nativeShell.requiresHumanApproval)
+    #expect(nativeShell.forbiddenLiveClaims.contains("host shell bridge"))
 
     #expect(aiChat.kind == .aiChat)
     #expect(codeAI.kind == .codeAI)

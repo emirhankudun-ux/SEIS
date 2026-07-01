@@ -9,3 +9,18 @@ script = ""
 name = "Run"
 icon = "run"
 command = "./script/build_and_run.sh"
+
+[[actions]]
+name = "Run Brain & SSH"
+icon = "run"
+command = "./script/build_and_run.sh --brain-ssh"
+
+[[actions]]
+name = "Run AI Scale"
+icon = "run"
+command = "./script/build_and_run.sh --ai-scale"
+
+[[actions]]
+name = "Run App Library"
+icon = "run"
+command = "./script/build_and_run.sh --app-library"

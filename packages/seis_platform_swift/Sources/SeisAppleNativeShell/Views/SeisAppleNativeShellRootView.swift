@@ -5,7 +5,11 @@ import AppKit
 
 enum SeisAppleNativeShellPanel: String, CaseIterable, Identifiable {
     case demo
+    case appLibrary
     case applePlatform
+    case developmentLanes
+    case aiScale
+    case brainSSH
 
     var id: String { rawValue }
 
@@ -13,8 +17,16 @@ enum SeisAppleNativeShellPanel: String, CaseIterable, Identifiable {
         switch self {
         case .demo:
             "Demo"
+        case .appLibrary:
+            "App Library"
         case .applePlatform:
             "Platform"
+        case .developmentLanes:
+            "Dev Lanes"
+        case .aiScale:
+            "AI Scale"
+        case .brainSSH:
+            "Brain & SSH"
         }
     }
 
@@ -22,8 +34,16 @@ enum SeisAppleNativeShellPanel: String, CaseIterable, Identifiable {
         switch self {
         case .demo:
             "sparkles"
+        case .appLibrary:
+            "square.grid.2x2"
         case .applePlatform:
             "desktopcomputer"
+        case .developmentLanes:
+            "point.3.connected.trianglepath.dotted"
+        case .aiScale:
+            "chart.line.uptrend.xyaxis"
+        case .brainSSH:
+            "lock.shield"
         }
     }
 }
@@ -104,8 +124,20 @@ struct SeisAppleNativeShellRootView: View {
                                 case .demo:
                                     SeisDemoNativeShellView(state: demoShellState)
                                         .transition(.opacity.combined(with: .move(edge: .trailing)))
+                                case .appLibrary:
+                                    SeisAppLibraryPanelView(repositoryPath: repositoryPath)
+                                        .transition(.opacity.combined(with: .move(edge: .leading)))
                                 case .applePlatform:
                                     AppleContinuationWindow()
+                                        .transition(.opacity.combined(with: .move(edge: .leading)))
+                                case .developmentLanes:
+                                    SeisDevelopmentLaneBridgeView()
+                                        .transition(.opacity.combined(with: .move(edge: .leading)))
+                                case .aiScale:
+                                    SeisAIModelScaleRoadmapView()
+                                        .transition(.opacity.combined(with: .move(edge: .leading)))
+                                case .brainSSH:
+                                    SeisBrainSSHReadinessView()
                                         .transition(.opacity.combined(with: .move(edge: .leading)))
                                 }
                             }
@@ -342,6 +374,30 @@ struct SeisAppleNativeShellRootView: View {
             }
             .buttonStyle(.bordered)
             .controlSize(.small)
+
+            Button {
+                activePanel = .appLibrary
+            } label: {
+                Label("Library", systemImage: "square.grid.2x2")
+            }
+            .buttonStyle(.bordered)
+            .controlSize(.small)
+
+            Button {
+                activePanel = .brainSSH
+            } label: {
+                Label("Brain & SSH", systemImage: "lock.shield")
+            }
+            .buttonStyle(.bordered)
+            .controlSize(.small)
+
+            Button {
+                activePanel = .aiScale
+            } label: {
+                Label("AI Scale", systemImage: "chart.line.uptrend.xyaxis")
+            }
+            .buttonStyle(.bordered)
+            .controlSize(.small)
         }
         .padding(12)
         .frame(maxWidth: .infinity)
@@ -416,6 +472,20 @@ struct SeisAppleNativeShellRootView: View {
                     activePanel = .applePlatform
                 } label: {
                     Label("Diagnostics", systemImage: "chart.bar")
+                }
+                .buttonStyle(.bordered)
+
+                Button {
+                    activePanel = .brainSSH
+                } label: {
+                    Label("Brain & SSH", systemImage: "lock.shield")
+                }
+                .buttonStyle(.bordered)
+
+                Button {
+                    activePanel = .aiScale
+                } label: {
+                    Label("AI Scale", systemImage: "chart.line.uptrend.xyaxis")
                 }
                 .buttonStyle(.bordered)
             }

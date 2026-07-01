@@ -277,6 +277,8 @@ struct SeisAppLibraryPanelView: View {
         switch surface.kind {
         case .library:
             return Palette.cyan
+        case .nativeShell:
+            return Palette.amber
         case .sourceLane:
             return surface.laneSource == .website ? Palette.violet : Palette.green
         case .aiChat:

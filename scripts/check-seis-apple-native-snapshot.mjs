@@ -92,6 +92,8 @@ ensureIncludes("run script", runScript, [
   "\"sourceMode\": \"launcher-generated-public-safe\"",
   "Website / AI Platform",
   "Ubuntu Web Desktop",
+  "\"title\": \"SEIS App Library\"",
+  "stay contained as Linux Replica app surfaces",
   "apps/web/seis-linux-replica.html?demo=live&source=website",
   "apps/web/seis-linux-replica.html?demo=live&source=ubuntu",
   "--website-demo-lane|website-demo-lane",
@@ -113,7 +115,18 @@ ensureIncludes("Swift run handoff contract", swiftContract, [
   "Ubuntu Web Desktop",
   "apps/web/seis-linux-replica.html?demo=live&source=website",
   "apps/web/seis-linux-replica.html?demo=live&source=ubuntu",
-  "generate_repository_snapshot"
+  "generate_repository_snapshot",
+  "--app-library",
+  "--verify-app-library",
+  "--open-panel app-library",
+  "APP_ARGS=(--open-panel app-library)",
+  "Run App Library",
+  "Show App Library"
+]);
+
+ensureIncludes("Codex environment", environment, [
+  "name = \"Run App Library\"",
+  "command = \"./script/build_and_run.sh --app-library\""
 ]);
 
 ensureIncludes("Swift native home view", nativeHomeView, [
@@ -128,27 +141,57 @@ ensureIncludes("Swift native home view", nativeHomeView, [
   "SeisPublicDemoLaneRoute(deepLink: deepLink)",
   "route.isAllowedPublicDemoLane",
   "route.fileURL(repositoryRoot: repositoryRootURL)",
+  "SeisAppLibraryPanelView(repositoryPath: repositoryPath)",
+  "activePanel == .appLibrary",
+  "Label(\"LIB\", systemImage: \"square.grid.2x2.fill\")",
   "Web Lane Aç",
   "Public Demo",
   "No-key"
 ]);
 
+ensureIncludes("Swift native root view", nativeRootView, [
+  "case appLibrary",
+  "\"App Library\"",
+  "\"square.grid.2x2\"",
+  "SeisAppLibraryPanelView(repositoryPath: repositoryPath)",
+  "activePanel = .appLibrary",
+  "Label(\"Library\", systemImage: \"square.grid.2x2\")"
+]);
+
 ensureIncludes("Swift native app menu", nativeApp, [
   "Open Website Demo Lane",
   "Open Ubuntu Demo Lane",
+  "Show App Library",
   "openPublicDemoLane(source: \"website\")",
   "openPublicDemoLane(source: \"ubuntu\")",
+  "activePanel = .appLibrary",
+  "case \"app-library\":",
   "--open-public-demo-lane",
   "SeisPublicDemoLaneRoute.fileURL",
   "apps/web/seis-linux-replica.html?demo=live&source=\\(source)"
 ]);
 
 ensureIncludes("Swift public demo lane route", publicDemoLaneRoute, [
+  "SeisPublicDemoLaneSource",
+  "SeisAppLibraryContract",
+  "visibleTitle = \"SEIS App Library\"",
+  "hiddenSourcePolicy",
+  "case nativeShell",
+  "id: \"apple-native-shell\"",
+  "title: \"Apple Native Shell\"",
+  "SeisAppleNativeShell is contained inside the SEIS Linux Replica",
+  "browser-launched app bundle",
+  "host shell bridge",
+  "sourceLaneSurfaces",
+  "guardedLiveSurfaces",
+  "moduleCount",
   "SeisPublicDemoLaneRoute",
   "expectedRelativePath = \"apps/web/seis-linux-replica.html\"",
-  "allowedSources: Set<String> = [\"website\", \"ubuntu\"]",
+  "allowedSources: Set<String> = Set(SeisPublicDemoLaneSource.allCases.map(\\.rawValue))",
   "allowedQueryNames: Set<String> = [\"demo\", \"source\"]",
   "isAllowedPublicDemoLane",
+  "source: SeisPublicDemoLaneSource?",
+  "appLibrarySurface: SeisAppLibrarySurface?",
   "fileURL(repositoryRoot: URL, deepLink: String)"
 ]);
 
@@ -156,10 +199,35 @@ ensureIncludes("Swift public demo lane route tests", publicDemoLaneRouteTests, [
   "publicDemoLaneRouteBuildsWebsiteFileURL",
   "publicDemoLaneRouteBuildsUbuntuFileURLWithQueryOrderFlexibility",
   "publicDemoLaneRouteRejectsNonPublicDemoDestinations",
+  "appLibraryContractKeepsWebsiteAndUbuntuAsSeisSurfaces",
+  "appLibraryContractSeparatesChatCodeAgiAndSSHWithoutLiveClaims",
+  "apple-native-shell",
+  ".nativeShell",
+  "shortCode == \"APL\"",
+  "SeisAppLibraryContract.moduleCount == 219",
+  "seis-ai-chat",
+  "seis-code-ai",
+  "seis-agi-control",
+  "seis-ssh-control",
   "demo=live&source=website",
   "source=ubuntu&demo=live",
   "source=prod",
   "token=secret"
+]);
+
+ensureIncludes("Swift App Library panel", appLibraryPanel, [
+  "SeisAppLibraryContract.visibleTitle",
+  "SeisAppLibraryContract.moduleCount",
+  "SeisPublicDemoLaneSource.website.moduleCount",
+  "SeisPublicDemoLaneSource.ubuntu.moduleCount",
+  "SeisAppLibraryContract.guardedLiveSurfaces",
+  "ForEach(SeisAppLibraryContract.surfaces)",
+  "Label(\"Open\", systemImage: \"arrow.up.right.square\")",
+  "SeisPublicDemoLaneRoute.fileURL(repositoryRoot: rootURL, deepLink: deepLink)",
+  "Blocked: public demo lane did not pass route validation.",
+  "Opened \\(selectedSurface.shortCode) public demo lane.",
+  "Public Demo Boundary",
+  "SeisAppLibraryContract.hiddenSourcePolicy"
 ]);
 
 ensureIncludes("Swift package README", packageReadme, [
@@ -169,19 +237,25 @@ ensureIncludes("Swift package README", packageReadme, [
   "Ubuntu Web Desktop",
   "?demo=live&source=website",
   "?demo=live&source=ubuntu",
-  "Public Demo handoff bar",
-  "Website or Ubuntu public demo lane",
+  "SEIS App Library Contract",
+  "SEIS App Library",
+  "Website Lane",
+  "Ubuntu Desktop",
+  "SEIS AI Chat",
+  "SEIS Code AI",
+  "SEIS AGI Control",
+  "SEIS SSH Control",
+  "backend-gated",
+  "no-key public demo",
+  "Run App Library",
   "SeisPublicDemoLaneRoute",
-  "only no-key",
-  "Open Website Demo Lane",
-  "Open Ubuntu Demo Lane",
+  "./script/build_and_run.sh --app-library",
+  "./script/build_and_run.sh --verify-app-library",
   "./script/build_and_run.sh --website-demo-lane",
   "./script/build_and_run.sh --ubuntu-demo-lane",
   "./script/build_and_run.sh --verify-website-demo-lane",
   "./script/build_and_run.sh --verify-ubuntu-demo-lane",
-  "validated route helper",
-  "not as a live provider, SSH, or deployment bridge",
-  "no-key/no-SSH",
+  "provider, SSH, deployment, or private-vault bridge",
   "npm run check:seis-apple-native-snapshot"
 ]);
 
@@ -208,14 +282,14 @@ if (generatedSnapshotExists) {
     generatedSnapshot = JSON.parse(generatedText);
     const websiteLane = generatedSnapshot.fullStackDesignLanes?.find((lane) => lane.id === "website-ai-platform");
     const ubuntuLane = generatedSnapshot.fullStackDesignLanes?.find((lane) => lane.id === "ubuntu-web-desktop");
-    const vaultSignal = generatedSnapshot.repositorySignals?.find((signal) => signal.title === "Web Reference Vault");
+    const appLibrarySignal = generatedSnapshot.repositorySignals?.find((signal) => signal.title === "SEIS App Library");
 
     ensure(generatedSnapshot.sourceMode === "launcher-generated-public-safe", "generated snapshot sourceMode must stay launcher-generated-public-safe");
     ensure(websiteLane?.badge === "71 modules", `generated snapshot Website / AI Platform badge mismatch: ${websiteLane?.badge || "missing"}`);
     ensure(ubuntuLane?.badge === "148 modules", `generated snapshot Ubuntu Web Desktop badge mismatch: ${ubuntuLane?.badge || "missing"}`);
     ensure(websiteLane?.deepLink === "apps/web/seis-linux-replica.html?demo=live&source=website", `generated snapshot Website / AI Platform deepLink mismatch: ${websiteLane?.deepLink || "missing"}`);
     ensure(ubuntuLane?.deepLink === "apps/web/seis-linux-replica.html?demo=live&source=ubuntu", `generated snapshot Ubuntu Web Desktop deepLink mismatch: ${ubuntuLane?.deepLink || "missing"}`);
-    ensure(vaultSignal?.value === "219", `generated snapshot Web Reference Vault value mismatch: ${vaultSignal?.value || "missing"}`);
+    ensure(appLibrarySignal?.value === "219", `generated snapshot SEIS App Library value mismatch: ${appLibrarySignal?.value || "missing"}`);
   } catch (error) {
     failures.push(`generated snapshot is not valid JSON: ${error.message}`);
   }
