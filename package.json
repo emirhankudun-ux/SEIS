@@ -303,6 +303,8 @@
     "report:seis-retrieval-citation-scorer-dry-run": "node scripts/create-seis-retrieval-citation-scorer-dry-run.mjs --write",
     "check:seis-no-secret-answer-log-scan": "node scripts/create-seis-no-secret-answer-log-scan.mjs",
     "report:seis-no-secret-answer-log-scan": "node scripts/create-seis-no-secret-answer-log-scan.mjs --write",
+    "check:seis-redacted-answer-log-schema": "node scripts/create-seis-redacted-answer-log-schema.mjs",
+    "report:seis-redacted-answer-log-schema": "node scripts/create-seis-redacted-answer-log-schema.mjs --write",
     "check:seis-language-model-intake": "node scripts/check-seis-language-model-intake.mjs",
     "plan:seis-language-model-install": "node scripts/plan-seis-language-model-install.mjs",
     "check:seis-nvidia-accelerator-catalog": "node scripts/check-seis-nvidia-accelerator-catalog.mjs",

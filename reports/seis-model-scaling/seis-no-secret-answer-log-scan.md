@@ -1,6 +1,6 @@
 # SEIS No-Secret Answer Log Scan Report
 
-Generated: 2026-06-30T23:32:51.144Z
+Generated: 2026-07-01T03:17:24.884Z
 
 Status: no-secret-answer-log-scan-passed-no-answers
 
@@ -22,6 +22,7 @@ Status: no-secret-answer-log-scan-passed-no-answers
 
 - `npm run report:seis-no-secret-answer-log-scan`
 - `npm run check:seis-no-secret-answer-log-scan`
+- `npm run check:seis-redacted-answer-log-schema`
 - `npm run check:seis-retrieval-citation-scorer-dry-run`
 - `npm run check:seis-ai-public-readiness`
 

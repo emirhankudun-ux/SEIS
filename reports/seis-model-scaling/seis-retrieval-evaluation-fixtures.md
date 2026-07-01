@@ -1,6 +1,6 @@
 # SEIS Retrieval Evaluation Fixtures Report
 
-Generated: 2026-06-30T23:32:28.307Z
+Generated: 2026-07-01T03:17:00.599Z
 
 Status: fixtures-ready-evaluation-not-run
 

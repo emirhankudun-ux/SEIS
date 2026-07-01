@@ -1,7 +1,7 @@
 {
   "id": "seis-retrieval-evaluation-fixtures",
   "version": "2026.07.01",
-  "generatedAt": "2026-06-30T23:32:28.307Z",
+  "generatedAt": "2026-07-01T03:17:00.599Z",
   "status": "fixtures-defined-not-run",
   "qualityGate": "npm run check:seis-retrieval-evaluation-fixtures",
   "reportCommand": "npm run report:seis-retrieval-evaluation-fixtures",

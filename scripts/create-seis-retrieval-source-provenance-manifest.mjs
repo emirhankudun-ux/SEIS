@@ -15,6 +15,7 @@ const generatedArtifactExclusions = new Set([
   "docs/ai/seis-retrieval-evaluation-dry-run.md",
   "docs/ai/seis-retrieval-citation-scorer-dry-run.md",
   "docs/ai/seis-no-secret-answer-log-scan.md",
+  "docs/ai/seis-redacted-answer-log-schema.md",
   "docs/ai/seis-knowledge-retrieval-training.md",
   "reports/seis-model-scaling/seis-retrieval-source-provenance-manifest.json",
   "reports/seis-model-scaling/seis-retrieval-source-provenance-manifest.md",
@@ -26,6 +27,8 @@ const generatedArtifactExclusions = new Set([
   "reports/seis-model-scaling/seis-retrieval-citation-scorer-dry-run.md",
   "reports/seis-model-scaling/seis-no-secret-answer-log-scan.json",
   "reports/seis-model-scaling/seis-no-secret-answer-log-scan.md",
+  "reports/seis-model-scaling/seis-redacted-answer-log-schema.json",
+  "reports/seis-model-scaling/seis-redacted-answer-log-schema.md",
   "reports/seis-model-scaling/seis-knowledge-retrieval-training-contract.json",
   "reports/seis-model-scaling/seis-knowledge-retrieval-training-contract.md"
 ]);

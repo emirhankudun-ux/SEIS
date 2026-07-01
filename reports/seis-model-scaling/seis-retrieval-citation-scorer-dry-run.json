@@ -1,6 +1,6 @@
 {
   "id": "seis-retrieval-citation-scorer-dry-run-report",
-  "generatedAt": "2026-06-30T23:32:44.812Z",
+  "generatedAt": "2026-07-01T03:17:16.311Z",
   "status": "citation-scorer-dry-run-passed-not-measured",
   "sourceScorer": "content/development/seis-retrieval-citation-scorer-dry-run.json",
   "summary": {

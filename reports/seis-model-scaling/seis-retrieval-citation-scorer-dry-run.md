@@ -1,6 +1,6 @@
 # SEIS Retrieval Citation Scorer Dry-Run Report
 
-Generated: 2026-06-30T23:32:44.812Z
+Generated: 2026-07-01T03:17:16.311Z
 
 Status: citation-scorer-dry-run-passed-not-measured
 
