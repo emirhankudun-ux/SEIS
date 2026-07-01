@@ -154,6 +154,7 @@ function buildQuickstart() {
         "npm run report:seis-ssh-public-github-quickstart",
         "npm run check:seis-ssh-public-pr-template",
         "npm run check:seis-ssh-public-ci-workflow",
+        "npm run check:seis-ssh-public-readiness-matrix",
         "npm run check:seis-ssh-public-artifact-hygiene",
         "npm run check:seis-ssh-public-access",
         "npm run check:seis-ssh-public-support-packet"

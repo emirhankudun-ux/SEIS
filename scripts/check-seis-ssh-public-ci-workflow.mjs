@@ -45,6 +45,7 @@ for (const token of [
   "npm run check:seis-ssh-public-access",
   "npm run check:seis-ssh-public-github-quickstart",
   "npm run check:seis-ssh-public-support-packet",
+  "npm run check:seis-ssh-public-readiness-matrix",
   "npm run check:seis-ssh-public-artifact-hygiene",
   "npm run check:seis-ssh-live-readiness-evidence",
   "git diff --check"
@@ -69,8 +70,11 @@ for (const forbidden of [
 ensure(contract?.githubExperience?.ciWorkflow === files.workflow, "contract must link the SEIS-SSH CI workflow");
 ensure((contract?.evidenceSurfaces || []).includes(files.workflow), "contract evidence surfaces must include the CI workflow");
 ensure((contract?.evidenceSurfaces || []).includes("scripts/check-seis-ssh-public-ci-workflow.mjs"), "contract evidence surfaces must include the CI workflow checker");
+ensure((contract?.evidenceSurfaces || []).includes("scripts/check-seis-ssh-public-readiness-matrix.mjs"), "contract evidence surfaces must include the public readiness matrix checker");
 ensure((contract?.requiredCommands || []).includes("npm run check:seis-ssh-public-ci-workflow"), "contract required commands must include the CI workflow checker");
+ensure((contract?.requiredCommands || []).includes("npm run check:seis-ssh-public-readiness-matrix"), "contract required commands must include the public readiness matrix checker");
 ensure(scripts["check:seis-ssh-public-ci-workflow"] === "node scripts/check-seis-ssh-public-ci-workflow.mjs", "package script check:seis-ssh-public-ci-workflow must be declared");
+ensure(scripts["check:seis-ssh-public-readiness-matrix"] === "node scripts/check-seis-ssh-public-readiness-matrix.mjs", "package script check:seis-ssh-public-readiness-matrix must be declared");
 
 for (const file of Object.values(files)) {
   requireNotMatches(file, /sk-[A-Za-z0-9_-]{20,}/, "OpenAI-style API keys");

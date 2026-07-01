@@ -81,6 +81,7 @@ npm run check:seis-ssh-public-github-quickstart
 npm run report:seis-ssh-public-github-quickstart
 npm run check:seis-ssh-public-pr-template
 npm run check:seis-ssh-public-ci-workflow
+npm run check:seis-ssh-public-readiness-matrix
 npm run check:seis-ssh-public-artifact-hygiene
 npm run run:seis-ssh-public-onboarding
 npm run check:seis-ssh-public-access
@@ -175,6 +176,12 @@ by public GitHub reviewers.
 SEIS-SSH gates on pull requests. It must not execute live SSH, refresh GitHub
 auth, write SSH config, set endpoint migration variables, or publish raw
 `ProxyCommand` / `IdentityFile` details.
+
+`npm run check:seis-ssh-public-readiness-matrix` simulates a clean GitHub
+Actions runner with an empty home directory. It verifies that a fresh clone
+without local `SEIS-SSH` config remains GitHub-review-ready as `setup-needed`,
+while unsafe local/LAN targets, secrets, live-ready overclaims, live SSH,
+config writes, and server/port mutation remain blocked.
 
 `npm run check:seis-ssh-public-artifact-hygiene` generates all public
 SEIS-SSH JSON/Markdown reports in a temporary directory and scans them before

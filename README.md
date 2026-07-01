@@ -186,6 +186,7 @@ npm run check:seis-ssh-public-github-quickstart
 npm run report:seis-ssh-public-github-quickstart
 npm run check:seis-ssh-public-pr-template
 npm run check:seis-ssh-public-ci-workflow
+npm run check:seis-ssh-public-readiness-matrix
 npm run check:seis-ssh-public-artifact-hygiene
 npm run check:seis-ssh-public-onboarding
 npm run report:seis-ssh-public-onboarding
@@ -230,6 +231,12 @@ live SSH claim wording.
 Actions workflow for public SEIS-SSH review. The workflow runs only read-only
 static gates on pull requests and does not open live SSH, write SSH config,
 change endpoint variables, or publish raw SSH config details.
+
+`npm run check:seis-ssh-public-readiness-matrix` simulates a clean GitHub
+Actions runner with an empty home directory. It proves missing local
+`SEIS-SSH` config stays `setup-needed` and GitHub-review-ready while unsafe
+local/LAN targets, secrets, live-ready overclaims, live SSH, config writes, and
+server/port mutation remain blocked.
 
 `npm run check:seis-ssh-public-artifact-hygiene` generates every public
 SEIS-SSH JSON/Markdown report in a temporary directory and verifies that the

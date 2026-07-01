@@ -44,6 +44,8 @@ for (const token of [
   "Public artifacts were checked before attaching them to a public issue or PR.",
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-access",
+  "npm run check:seis-ssh-public-ci-workflow",
+  "npm run check:seis-ssh-public-readiness-matrix",
   "npm run check:seis-ssh-public-artifact-hygiene",
   "npm run check:seis-ssh-live-readiness-evidence",
   ".github/ISSUE_TEMPLATE/seis_ssh_access.yml",

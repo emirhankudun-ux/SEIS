@@ -28,6 +28,7 @@ const files = {
   quickstartScript: "scripts/create-seis-ssh-public-github-quickstart.mjs",
   prTemplateScript: "scripts/check-seis-ssh-public-pr-template.mjs",
   ciWorkflowScript: "scripts/check-seis-ssh-public-ci-workflow.mjs",
+  readinessMatrixScript: "scripts/check-seis-ssh-public-readiness-matrix.mjs",
   artifactHygieneScript: "scripts/check-seis-ssh-public-artifact-hygiene.mjs",
   onboardingScript: "scripts/create-seis-ssh-public-onboarding-pack.mjs",
   contributorDoctorScript: "scripts/check-seis-ssh-public-contributor-doctor.mjs",
@@ -69,11 +70,13 @@ ensure((contract?.evidenceSurfaces || []).includes(files.prTemplate), "public ac
 ensure((contract?.evidenceSurfaces || []).includes(files.prTemplateScript), "public access contract must include pull request template checker evidence surface");
 ensure((contract?.evidenceSurfaces || []).includes(files.ciWorkflow), "public access contract must include CI workflow evidence surface");
 ensure((contract?.evidenceSurfaces || []).includes(files.ciWorkflowScript), "public access contract must include CI workflow checker evidence surface");
+ensure((contract?.evidenceSurfaces || []).includes(files.readinessMatrixScript), "public access contract must include public readiness matrix evidence surface");
 ensure((githubReader.allowedActions || []).includes("run the read-only contributor doctor"), "github-reader profile must allow contributor doctor");
 ensure((githubReader.allowedActions || []).includes("open the secret-safe GitHub issue form"), "github-reader profile must allow secret-safe issue form");
 ensure((githubReader.allowedActions || []).includes("complete the SEIS-SSH pull request checklist"), "github-reader profile must allow SEIS-SSH pull request checklist");
 ensure((githubReader.allowedActions || []).includes("run the read-only pull request template check"), "github-reader profile must allow pull request template check");
 ensure((githubReader.allowedActions || []).includes("run the read-only public access CI workflow check"), "github-reader profile must allow public access CI workflow check");
+ensure((githubReader.allowedActions || []).includes("run the read-only public readiness matrix"), "github-reader profile must allow public readiness matrix");
 ensure((individualUser.requiredEvidence || []).includes("npm run check:seis-ssh-public-contributor-doctor"), "individual-user profile must require contributor doctor evidence");
 
 ensure(accessModel?.publicAccessContract === files.contract, "access model must link public access contract");
@@ -85,6 +88,7 @@ ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm r
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-github-quickstart"), "access model quality commands must include public GitHub quickstart check");
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-pr-template"), "access model quality commands must include public PR template check");
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-ci-workflow"), "access model quality commands must include public CI workflow check");
+ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-readiness-matrix"), "access model quality commands must include public readiness matrix check");
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-artifact-hygiene"), "access model quality commands must include public artifact hygiene check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-access"), "roadmap validation commands must include public access check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-first-run"), "roadmap validation commands must include public first-run check");
@@ -93,6 +97,7 @@ ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-publ
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-github-quickstart"), "roadmap validation commands must include public GitHub quickstart check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-pr-template"), "roadmap validation commands must include public PR template check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-ci-workflow"), "roadmap validation commands must include public CI workflow check");
+ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-readiness-matrix"), "roadmap validation commands must include public readiness matrix check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-artifact-hygiene"), "roadmap validation commands must include public artifact hygiene check");
 
 ensure(scripts["check:seis-ssh-public-access"] === "node scripts/check-seis-ssh-public-access.mjs", "package script check:seis-ssh-public-access must be declared");
@@ -112,6 +117,7 @@ ensure(scripts["report:seis-ssh-public-github-quickstart"] === "node scripts/cre
 ensure(scripts["run:seis-ssh-public-github-quickstart"] === "npm run check:seis-ssh-public-github-quickstart && npm run report:seis-ssh-public-github-quickstart", "package script run:seis-ssh-public-github-quickstart must be declared");
 ensure(scripts["check:seis-ssh-public-pr-template"] === "node scripts/check-seis-ssh-public-pr-template.mjs", "package script check:seis-ssh-public-pr-template must be declared");
 ensure(scripts["check:seis-ssh-public-ci-workflow"] === "node scripts/check-seis-ssh-public-ci-workflow.mjs", "package script check:seis-ssh-public-ci-workflow must be declared");
+ensure(scripts["check:seis-ssh-public-readiness-matrix"] === "node scripts/check-seis-ssh-public-readiness-matrix.mjs", "package script check:seis-ssh-public-readiness-matrix must be declared");
 ensure(scripts["check:seis-ssh-public-artifact-hygiene"] === "node scripts/check-seis-ssh-public-artifact-hygiene.mjs", "package script check:seis-ssh-public-artifact-hygiene must be declared");
 ensure(scripts["check:seis-ssh-public-onboarding"] === "node scripts/create-seis-ssh-public-onboarding-pack.mjs --check", "package script check:seis-ssh-public-onboarding must be declared");
 ensure(scripts["report:seis-ssh-public-onboarding"] === "node scripts/create-seis-ssh-public-onboarding-pack.mjs --write", "package script report:seis-ssh-public-onboarding must be declared");
@@ -125,6 +131,7 @@ ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-pu
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-public-github-quickstart"), "quality:governance must include public GitHub quickstart check");
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-public-pr-template"), "quality:governance must include public PR template check");
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-public-ci-workflow"), "quality:governance must include public CI workflow check");
+ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-public-readiness-matrix"), "quality:governance must include public readiness matrix check");
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-public-artifact-hygiene"), "quality:governance must include public artifact hygiene check");
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-public-contributor-doctor"), "quality:governance must include public contributor doctor check");
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-live-readiness-evidence"), "quality:governance must include live readiness evidence check");
@@ -143,6 +150,7 @@ for (const command of [
   "npm run report:seis-ssh-public-github-quickstart",
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-ci-workflow",
+  "npm run check:seis-ssh-public-readiness-matrix",
   "npm run check:seis-ssh-public-artifact-hygiene",
   "npm run check:seis-ssh-public-onboarding",
   "npm run report:seis-ssh-public-onboarding",
@@ -203,6 +211,7 @@ for (const token of [
   "npm run report:seis-ssh-public-github-quickstart",
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-ci-workflow",
+  "npm run check:seis-ssh-public-readiness-matrix",
   "npm run check:seis-ssh-public-artifact-hygiene",
   "npm run report:seis-ssh-public-onboarding",
   "npm run report:seis-ssh-public-contributor-doctor",
@@ -248,6 +257,8 @@ for (const token of [
   "No live SSH session was attempted for this PR unless explicit maintainer approval is linked.",
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-access",
+  "npm run check:seis-ssh-public-ci-workflow",
+  "npm run check:seis-ssh-public-readiness-matrix",
   "npm run check:seis-ssh-public-artifact-hygiene",
   "npm run check:seis-ssh-live-readiness-evidence",
   ".github/ISSUE_TEMPLATE/seis_ssh_access.yml"
@@ -265,6 +276,7 @@ for (const token of [
   "npm run check:seis-ssh-public-access",
   "npm run check:seis-ssh-public-github-quickstart",
   "npm run check:seis-ssh-public-support-packet",
+  "npm run check:seis-ssh-public-readiness-matrix",
   "npm run check:seis-ssh-public-artifact-hygiene",
   "npm run check:seis-ssh-live-readiness-evidence",
   "git diff --check"
@@ -325,6 +337,7 @@ for (const token of [
   "npm run check:seis-ssh-public-github-quickstart",
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-ci-workflow",
+  "npm run check:seis-ssh-public-readiness-matrix",
   "npm run check:seis-ssh-public-artifact-hygiene",
   "Ayni sunucu ve baglanti noktasi korunur.",
   "npm run check:seis-ssh-public-onboarding",
@@ -363,6 +376,7 @@ for (const token of [
   "npm run run:seis-ssh-public-github-quickstart",
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-ci-workflow",
+  "npm run check:seis-ssh-public-readiness-matrix",
   "npm run check:seis-ssh-public-artifact-hygiene",
   "reports/seis-ssh-public-access/support-packet-latest.md",
   "This support packet does not write ~/.ssh/config.",
@@ -406,12 +420,29 @@ for (const token of [
   "npm run check:seis-ssh-public-ci-workflow",
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-access",
+  "npm run check:seis-ssh-public-readiness-matrix",
   "npm run check:seis-ssh-public-artifact-hygiene",
   ".github/workflows/seis-ssh-public-access.yml",
   "cloud:ssh:online:strict",
   "ssh SEIS-SSH"
 ]) {
   ensure(ciWorkflowScript.includes(token), `CI workflow checker must include ${token}`);
+}
+
+const readinessMatrixScript = read(files.readinessMatrixScript);
+for (const token of [
+  "read-only-clean-runner-no-live-ssh-no-config-write-no-network-auth-check",
+  "temporary-empty-home",
+  "Setup is needed locally before live SSH can be considered.",
+  "This matrix does not write ~/.ssh/config.",
+  "This matrix does not call gh auth status or contact GitHub.",
+  "Ayni sunucu ve baglanti noktasi korunur.",
+  "scripts/create-seis-ssh-public-access-report.mjs",
+  "scripts/check-seis-ssh-public-contributor-doctor.mjs",
+  "scripts/create-seis-ssh-public-support-packet.mjs",
+  "scripts/create-seis-ssh-public-github-quickstart.mjs"
+]) {
+  ensure(readinessMatrixScript.includes(token), `public readiness matrix script must include ${token}`);
 }
 
 const artifactHygieneScript = read(files.artifactHygieneScript);
@@ -436,6 +467,7 @@ for (const token of [
   "npm run check:seis-ssh-public-github-quickstart",
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-ci-workflow",
+  "npm run check:seis-ssh-public-readiness-matrix",
   "npm run check:seis-ssh-public-artifact-hygiene",
   "This doctor does not write ~/.ssh/config.",
   "npm run check:seis-ssh-public-contributor-doctor",
@@ -464,6 +496,7 @@ for (const file of [
   files.quickstartScript,
   files.prTemplateScript,
   files.ciWorkflowScript,
+  files.readinessMatrixScript,
   files.artifactHygieneScript,
   files.onboardingScript,
   files.contributorDoctorScript,
