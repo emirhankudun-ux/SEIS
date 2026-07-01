@@ -1,7 +1,7 @@
 {
   "id": "seis-second-brain-agent-registry-pr54",
   "title": "SEIS Second Brain Agent Registry",
-  "generatedAt": "2026-07-01T16:14:42.317Z",
+  "generatedAt": "2026-07-01T16:17:53.918Z",
   "status": "review-only-agent-registry",
   "mode": "repo-local-no-live-execution",
   "decision": "NO-GO-autonomous-execution-not-approved",
@@ -132,6 +132,70 @@
       "liveProviderRouteEnabled": false,
       "promptBodyStorageAllowed": false,
       "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "open-design",
+      "status": "installed",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "antigravity",
+      "status": "installed",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "antigravity-ide",
+      "status": "installed",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "aider",
+      "status": "route-defined-current-shell-missing-command",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "interpreter",
+      "status": "route-defined-current-shell-missing-command",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "hermes",
+      "status": "route-defined-current-shell-missing-command",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "goose",
+      "status": "route-defined-current-shell-missing-command",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "kimi",
+      "status": "route-defined-current-shell-missing-command",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
     }
   ],
   "workforceAssignments": [
@@ -228,6 +292,78 @@
         "design brief",
         "visual-system proposal",
         "component and motion recommendations"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "antigravity",
+      "displayName": "Antigravity",
+      "category": "creative-workflow-assistant",
+      "route": "antigravity",
+      "status": "installed",
+      "allowedOutputs": [
+        "visual prompt suggestion",
+        "mock concept review"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "antigravity-ide",
+      "displayName": "Antigravity IDE",
+      "category": "ide-assistant",
+      "route": "antigravity-ide",
+      "status": "installed",
+      "allowedOutputs": [
+        "editor safety note",
+        "workflow suggestion"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "aider",
+      "displayName": "Aider",
+      "category": "bounded-terminal-coding-helper",
+      "route": "aider",
+      "status": "route-defined-current-shell-missing-command",
+      "allowedOutputs": [
+        "diff suggestion",
+        "terminal coding guidance"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "interpreter",
+      "displayName": "Open Interpreter",
+      "category": "local-code-execution-review",
+      "route": "interpreter",
+      "status": "route-defined-current-shell-missing-command",
+      "allowedOutputs": [
+        "execution risk note",
+        "local automation checklist"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "hermes",
+      "displayName": "Hermes",
+      "category": "local-multi-agent-assistant",
+      "route": "hermes",
+      "status": "route-defined-current-shell-missing-command",
+      "allowedOutputs": [
+        "prompt draft review",
+        "synthesis note"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "goose",
+      "displayName": "Goose",
+      "category": "local-build-orchestration-review",
+      "route": "goose",
+      "status": "route-defined-current-shell-missing-command",
+      "allowedOutputs": [
+        "orchestration review",
+        "build-risk note"
       ],
       "writeAuthority": "review-or-plan-only"
     },
@@ -761,8 +897,8 @@
     "releaseApprovalGranted": false
   },
   "summary": {
-    "installedAiProfileCount": 13,
-    "workforceAssignmentCount": 17,
+    "installedAiProfileCount": 21,
+    "workforceAssignmentCount": 23,
     "managedSubAgentLaneCount": 6,
     "autonomousAgentRosterCount": 12,
     "roleSchemaRoleCount": 5,

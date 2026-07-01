@@ -67,7 +67,15 @@
     "openrouter-provider-profile",
     "cursor-ide-profile",
     "github-copilot-profile",
-    "lm-studio-local-profile"
+    "lm-studio-local-profile",
+    "open-design",
+    "antigravity",
+    "antigravity-ide",
+    "aider",
+    "interpreter",
+    "hermes",
+    "goose",
+    "kimi"
   ],
   "managedSubAgentLanes": [
     "SEIS Hub",

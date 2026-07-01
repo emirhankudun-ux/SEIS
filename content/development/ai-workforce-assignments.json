@@ -268,6 +268,132 @@
       "validationDuty": "Design proposals need implementation, accessibility, and browser evidence before release claims."
     },
     {
+      "id": "antigravity",
+      "displayName": "Antigravity",
+      "route": "antigravity",
+      "launcherStatus": "installed",
+      "category": "creative-workflow-assistant",
+      "coreDuties": [
+        "Support visual ideation workflows when explicitly delegated.",
+        "Review model-output visual quality and usability notes for review-only scenarios."
+      ],
+      "allowedOutputs": [
+        "visual prompt suggestion",
+        "mock concept review"
+      ],
+      "deniedActions": [
+        "direct repository writes",
+        "unbounded asset generation",
+        "secret handling"
+      ],
+      "validationDuty": "Validate generated suggestions against repo visual conventions and SEIS accessibility guidance."
+    },
+    {
+      "id": "antigravity-ide",
+      "displayName": "Antigravity IDE",
+      "route": "antigravity-ide",
+      "launcherStatus": "installed",
+      "category": "ide-assistant",
+      "coreDuties": [
+        "Support editor-centric review flow proposals.",
+        "Flag unsafe shortcuts and risky context-copy behavior in local IDE workflows."
+      ],
+      "allowedOutputs": [
+        "editor safety note",
+        "workflow suggestion"
+      ],
+      "deniedActions": [
+        "direct repository writes",
+        "auto refactor across files without Codex review",
+        "secret handling"
+      ],
+      "validationDuty": "Treat Antigravity IDE output as review notes until validated in repo context."
+    },
+    {
+      "id": "aider",
+      "displayName": "Aider",
+      "route": "aider",
+      "launcherStatus": "route-defined-current-shell-missing-command",
+      "category": "bounded-terminal-coding-helper",
+      "coreDuties": [
+        "Support local coding review notes and review-only terminal diffs when delegated.",
+        "Keep patch suggestions bounded and scoped to visible context."
+      ],
+      "allowedOutputs": [
+        "diff suggestion",
+        "terminal coding guidance"
+      ],
+      "deniedActions": [
+        "auto-run broad repository edits",
+        "credential handling",
+        "blind patch application"
+      ],
+      "validationDuty": "Codex validates any patch guidance before repository edit."
+    },
+    {
+      "id": "interpreter",
+      "displayName": "Open Interpreter",
+      "route": "interpreter",
+      "launcherStatus": "route-defined-current-shell-missing-command",
+      "category": "local-code-execution-review",
+      "coreDuties": [
+        "Review local automation and code execution plans for risk.",
+        "Propose guarded execution sequencing in review mode only."
+      ],
+      "allowedOutputs": [
+        "execution risk note",
+        "local automation checklist"
+      ],
+      "deniedActions": [
+        "unauthorized command execution",
+        "unreviewed script execution",
+        "secret handling"
+      ],
+      "validationDuty": "Do not execute code suggestions without explicit human and Codex validation."
+    },
+    {
+      "id": "hermes",
+      "displayName": "Hermes",
+      "route": "hermes",
+      "launcherStatus": "route-defined-current-shell-missing-command",
+      "category": "local-multi-agent-assistant",
+      "coreDuties": [
+        "Support concise model-context synthesis ideas in review mode.",
+        "Track prompt quality and context completeness for local experiments."
+      ],
+      "allowedOutputs": [
+        "prompt draft review",
+        "synthesis note"
+      ],
+      "deniedActions": [
+        "unbounded context dumping",
+        "provider-key assumptions",
+        "secret handling"
+      ],
+      "validationDuty": "Verify synthesis outputs against bounded workflow and evidence before use."
+    },
+    {
+      "id": "goose",
+      "displayName": "Goose",
+      "route": "goose",
+      "launcherStatus": "route-defined-current-shell-missing-command",
+      "category": "local-build-orchestration-review",
+      "coreDuties": [
+        "Review build/test orchestration suggestions for constrained local tasks.",
+        "Flag unsafe automation chains and missing approvals."
+      ],
+      "allowedOutputs": [
+        "orchestration review",
+        "build-risk note"
+      ],
+      "deniedActions": [
+        "unreviewed automation dispatch",
+        "unbounded repository mutation",
+        "secret handling"
+      ],
+      "validationDuty": "Only trust Goose guidance after Codex-level validation in repository context."
+    },
+    {
       "id": "github-actions",
       "displayName": "GitHub Actions",
       "route": "github-actions",

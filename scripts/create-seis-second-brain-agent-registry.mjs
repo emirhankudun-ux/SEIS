@@ -242,7 +242,15 @@ function inferProfileStatus(profileId, assignments) {
     "openrouter-provider-profile": "openrouter",
     "cursor-ide-profile": "cursor",
     "github-copilot-profile": "github-copilot",
-    "lm-studio-local-profile": "lm-studio"
+    "lm-studio-local-profile": "lm-studio",
+    "open-design": "open-design",
+    "antigravity": "antigravity",
+    "antigravity-ide": "antigravity-ide",
+    "aider": "aider",
+    "interpreter": "interpreter",
+    "hermes": "hermes",
+    "goose": "goose",
+    "kimi": "kimi"
   };
   if (profileId === "seis-local-demo") return "local-demo";
   const match = assignments.find((assignment) => assignment.id === byProfile[profileId]);
