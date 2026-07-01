@@ -317,6 +317,7 @@ Bu hedefin kısa hali:
   - `npm run check:seis-retrieval-evaluation-fixtures` — Retrieval golden query, negatif kontrol ve metrik fixture kapısını doğrular; eval/benchmark/index/provider/training iddiası üretmez.
   - `npm run check:seis-retrieval-evaluation-dry-run` — Fixture/source-group coverage ve negatif kontrol policy dry-run kapısını doğrular; cevap üretimi, index sorgusu, provider, benchmark ve training yapmaz.
   - `npm run check:seis-retrieval-citation-scorer-dry-run` — Citation source URI/SHA ve scorer rule dry-run kapısını doğrular; live scoring, cevap üretimi, index sorgusu, provider, benchmark ve training yapmaz.
+  - `npm run check:seis-no-secret-answer-log-scan` — Synthetic answer-log secret-pattern scan kapısını doğrular; real answer log taraması, cevap üretimi, index sorgusu, provider, benchmark ve training yapmaz.
   - `npm run report:seis-ai-public-readiness` — `reports/seis-ai-public-readiness/latest.{json,md}` raporlarını üretir.
 - **AGI Kanıt Kuralı:** Gerçek AGI iddiası için bağımsız evaluation, safety review, training logs, checkpoint governance, model card ve explicit approval gerekir.
 

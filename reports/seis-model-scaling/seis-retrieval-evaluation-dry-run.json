@@ -1,6 +1,6 @@
 {
   "id": "seis-retrieval-evaluation-dry-run-report",
-  "generatedAt": "2026-06-30T23:18:24.649Z",
+  "generatedAt": "2026-06-30T23:32:39.128Z",
   "status": "dry-run-passed-no-index-no-model",
   "sourceDryRun": "content/development/seis-retrieval-evaluation-dry-run.json",
   "summary": {

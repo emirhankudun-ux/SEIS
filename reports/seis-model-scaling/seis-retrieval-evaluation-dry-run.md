@@ -1,6 +1,6 @@
 # SEIS Retrieval Evaluation Dry-Run Report
 
-Generated: 2026-06-30T23:18:24.649Z
+Generated: 2026-06-30T23:32:39.128Z
 
 Status: dry-run-passed-no-index-no-model
 

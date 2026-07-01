@@ -10,6 +10,7 @@ const checks = [
   "check:seis-retrieval-evaluation-fixtures",
   "check:seis-retrieval-evaluation-dry-run",
   "check:seis-retrieval-citation-scorer-dry-run",
+  "check:seis-no-secret-answer-log-scan",
   "check:seis-language-model-training-curriculum",
   "check:seis-ai-workforce-training",
   "check:seis-agent-workforce",

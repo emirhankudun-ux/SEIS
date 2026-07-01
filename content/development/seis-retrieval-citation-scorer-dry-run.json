@@ -1,7 +1,7 @@
 {
   "id": "seis-retrieval-citation-scorer-dry-run",
   "version": "2026.07.01",
-  "generatedAt": "2026-06-30T23:18:24.745Z",
+  "generatedAt": "2026-06-30T23:32:44.812Z",
   "status": "citation-scorer-dry-run-passed-not-measured",
   "qualityGate": "npm run check:seis-retrieval-citation-scorer-dry-run",
   "reportCommand": "npm run report:seis-retrieval-citation-scorer-dry-run",

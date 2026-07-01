@@ -1,6 +1,6 @@
 # SEIS Knowledge Retrieval Training Contract
 
-Generated: 2026-06-30T23:18:24.845Z
+Generated: 2026-06-30T23:32:28.414Z
 
 Status: contract-ready-index-not-built
 

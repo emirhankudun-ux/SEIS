@@ -301,6 +301,8 @@
     "report:seis-retrieval-evaluation-dry-run": "node scripts/create-seis-retrieval-evaluation-dry-run.mjs --write",
     "check:seis-retrieval-citation-scorer-dry-run": "node scripts/create-seis-retrieval-citation-scorer-dry-run.mjs",
     "report:seis-retrieval-citation-scorer-dry-run": "node scripts/create-seis-retrieval-citation-scorer-dry-run.mjs --write",
+    "check:seis-no-secret-answer-log-scan": "node scripts/create-seis-no-secret-answer-log-scan.mjs",
+    "report:seis-no-secret-answer-log-scan": "node scripts/create-seis-no-secret-answer-log-scan.mjs --write",
     "check:seis-language-model-intake": "node scripts/check-seis-language-model-intake.mjs",
     "plan:seis-language-model-install": "node scripts/plan-seis-language-model-install.mjs",
     "check:seis-nvidia-accelerator-catalog": "node scripts/check-seis-nvidia-accelerator-catalog.mjs",
