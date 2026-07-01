@@ -127,10 +127,32 @@
       "validationDuty": "Compare every secondary-agent recommendation against repository evidence before accepting it."
     },
     {
+      "id": "seis-agent",
+      "displayName": "SEIS Agent",
+      "route": "seis-agent",
+      "launcherStatus": "installed",
+      "category": "policy-orchestration",
+      "coreDuties": [
+        "Keep local AI routing aligned with SEIS policy and release boundaries.",
+        "Provide default orchestration fallback when specialist routes are unavailable."
+      ],
+      "allowedOutputs": [
+        "policy routing note",
+        "fallback orchestration summary",
+        "readiness checklist"
+      ],
+      "deniedActions": [
+        "direct merge authority",
+        "secret handling",
+        "deployment without approval"
+      ],
+      "validationDuty": "Treat SEIS Agent output as policy guidance until Codex validates it against repository evidence."
+    },
+    {
       "id": "claude",
       "displayName": "Claude",
       "route": "claude",
-      "launcherStatus": "route-defined-current-shell-missing-key",
+      "launcherStatus": "missing-ANTHROPIC_API_KEY",
       "category": "architecture-review",
       "coreDuties": [
         "Review architecture and product strategy.",
@@ -178,7 +200,7 @@
       "id": "gemini",
       "displayName": "Gemini",
       "route": "gemini",
-      "launcherStatus": "route-defined-current-shell-missing-key",
+      "launcherStatus": "missing-GEMINI_API_KEY",
       "category": "external-readiness-review",
       "coreDuties": [
         "Provide second-opinion review for public readiness.",
@@ -225,7 +247,7 @@
       "id": "ollama",
       "displayName": "Ollama / Local Model",
       "route": "ollama",
-      "launcherStatus": "installed",
+      "launcherStatus": "runtime-not-ready",
       "category": "local-private-draft",
       "coreDuties": [
         "Create local-only drafts for sensitive summaries.",
@@ -313,7 +335,7 @@
       "id": "aider",
       "displayName": "Aider",
       "route": "aider",
-      "launcherStatus": "route-defined-current-shell-missing-command",
+      "launcherStatus": "missing-command",
       "category": "bounded-terminal-coding-helper",
       "coreDuties": [
         "Support local coding review notes and review-only terminal diffs when delegated.",
@@ -334,7 +356,7 @@
       "id": "interpreter",
       "displayName": "Open Interpreter",
       "route": "interpreter",
-      "launcherStatus": "route-defined-current-shell-missing-command",
+      "launcherStatus": "missing-command",
       "category": "local-code-execution-review",
       "coreDuties": [
         "Review local automation and code execution plans for risk.",
@@ -355,7 +377,7 @@
       "id": "hermes",
       "displayName": "Hermes",
       "route": "hermes",
-      "launcherStatus": "route-defined-current-shell-missing-command",
+      "launcherStatus": "installed",
       "category": "local-multi-agent-assistant",
       "coreDuties": [
         "Support concise model-context synthesis ideas in review mode.",
@@ -376,7 +398,7 @@
       "id": "goose",
       "displayName": "Goose",
       "route": "goose",
-      "launcherStatus": "route-defined-current-shell-missing-command",
+      "launcherStatus": "installed",
       "category": "local-build-orchestration-review",
       "coreDuties": [
         "Review build/test orchestration suggestions for constrained local tasks.",
@@ -421,7 +443,7 @@
       "id": "kimi",
       "displayName": "Kimi / Kimi Code",
       "route": "kimi",
-      "launcherStatus": "route-defined-current-shell-missing-command",
+      "launcherStatus": "installed",
       "category": "conditional-code-and-localization-review",
       "coreDuties": [
         "Support multilingual review, localization, and translation tasks when available.",
@@ -465,7 +487,7 @@
       "id": "openai",
       "displayName": "OpenAI / General Provider",
       "route": "openai",
-      "launcherStatus": "route-defined-current-shell-missing-key",
+      "launcherStatus": "missing-command",
       "category": "cloud-provider-review",
       "coreDuties": [
         "Review cloud provider readiness evidence for OpenAI compatibility.",
@@ -570,6 +592,28 @@
         "direct merge authority"
       ],
       "validationDuty": "Treat Cursor suggestions as bounded review notes; validate in repository context."
+    },
+    {
+      "id": "xcode",
+      "displayName": "Xcode",
+      "route": "xcode",
+      "launcherStatus": "installed",
+      "category": "local-ide-assistant",
+      "coreDuties": [
+        "Support local IDE-aware checks for Swift/SwiftUI and Apple platform workflows when explicitly delegated.",
+        "Verify local project files and build-session boundaries without repository mutation unless explicitly authorized."
+      ],
+      "allowedOutputs": [
+        "build session notes",
+        "local workspace observations",
+        "IDE-focused draft guidance"
+      ],
+      "deniedActions": [
+        "direct merge authority",
+        "unbounded repository edits",
+        "secret handling"
+      ],
+      "validationDuty": "Codex must validate local IDE recommendations against router and repository evidence before execution."
     },
     {
       "id": "github-copilot",

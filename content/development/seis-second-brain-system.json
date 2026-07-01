@@ -57,6 +57,7 @@
   "installedAiProfiles": [
     "codex-operator",
     "seis-local-demo",
+    "seis-agent-policy-profile",
     "claude-review-profile",
     "qwen-review-profile",
     "gemini-validation-profile",
@@ -66,6 +67,7 @@
     "chatgpt-review-profile",
     "openrouter-provider-profile",
     "cursor-ide-profile",
+    "xcode",
     "github-copilot-profile",
     "lm-studio-local-profile",
     "open-design",

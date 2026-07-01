@@ -1,7 +1,7 @@
 {
   "id": "seis-second-brain-agent-registry-pr54",
   "title": "SEIS Second Brain Agent Registry",
-  "generatedAt": "2026-07-01T16:17:53.918Z",
+  "generatedAt": "2026-07-01T18:05:23.348Z",
   "status": "review-only-agent-registry",
   "mode": "repo-local-no-live-execution",
   "decision": "NO-GO-autonomous-execution-not-approved",
@@ -46,8 +46,16 @@
       "credentialAccessAllowed": false
     },
     {
+      "profileId": "seis-agent-policy-profile",
+      "status": "installed",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
       "profileId": "claude-review-profile",
-      "status": "route-defined-current-shell-missing-key",
+      "status": "missing-ANTHROPIC_API_KEY",
       "secondBrainUse": "review-context-only",
       "liveProviderRouteEnabled": false,
       "promptBodyStorageAllowed": false,
@@ -63,7 +71,7 @@
     },
     {
       "profileId": "gemini-validation-profile",
-      "status": "route-defined-current-shell-missing-key",
+      "status": "missing-GEMINI_API_KEY",
       "secondBrainUse": "review-context-only",
       "liveProviderRouteEnabled": false,
       "promptBodyStorageAllowed": false,
@@ -71,7 +79,7 @@
     },
     {
       "profileId": "ollama-local-profile",
-      "status": "installed",
+      "status": "runtime-not-ready",
       "secondBrainUse": "review-context-only",
       "liveProviderRouteEnabled": false,
       "promptBodyStorageAllowed": false,
@@ -79,7 +87,7 @@
     },
     {
       "profileId": "openai-general-profile",
-      "status": "route-defined-current-shell-missing-key",
+      "status": "missing-command",
       "secondBrainUse": "review-context-only",
       "liveProviderRouteEnabled": false,
       "promptBodyStorageAllowed": false,
@@ -111,6 +119,14 @@
     },
     {
       "profileId": "cursor-ide-profile",
+      "status": "installed",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "xcode",
       "status": "installed",
       "secondBrainUse": "review-context-only",
       "liveProviderRouteEnabled": false,
@@ -159,7 +175,7 @@
     },
     {
       "profileId": "aider",
-      "status": "route-defined-current-shell-missing-command",
+      "status": "missing-command",
       "secondBrainUse": "review-context-only",
       "liveProviderRouteEnabled": false,
       "promptBodyStorageAllowed": false,
@@ -167,7 +183,7 @@
     },
     {
       "profileId": "interpreter",
-      "status": "route-defined-current-shell-missing-command",
+      "status": "missing-command",
       "secondBrainUse": "review-context-only",
       "liveProviderRouteEnabled": false,
       "promptBodyStorageAllowed": false,
@@ -175,7 +191,7 @@
     },
     {
       "profileId": "hermes",
-      "status": "route-defined-current-shell-missing-command",
+      "status": "installed",
       "secondBrainUse": "review-context-only",
       "liveProviderRouteEnabled": false,
       "promptBodyStorageAllowed": false,
@@ -183,7 +199,7 @@
     },
     {
       "profileId": "goose",
-      "status": "route-defined-current-shell-missing-command",
+      "status": "installed",
       "secondBrainUse": "review-context-only",
       "liveProviderRouteEnabled": false,
       "promptBodyStorageAllowed": false,
@@ -191,7 +207,7 @@
     },
     {
       "profileId": "kimi",
-      "status": "route-defined-current-shell-missing-command",
+      "status": "installed",
       "secondBrainUse": "review-context-only",
       "liveProviderRouteEnabled": false,
       "promptBodyStorageAllowed": false,
@@ -215,11 +231,24 @@
       "writeAuthority": "primary-writer-human-supervised"
     },
     {
+      "id": "seis-agent",
+      "displayName": "SEIS Agent",
+      "category": "policy-orchestration",
+      "route": "seis-agent",
+      "status": "installed",
+      "allowedOutputs": [
+        "policy routing note",
+        "fallback orchestration summary",
+        "readiness checklist"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
       "id": "claude",
       "displayName": "Claude",
       "category": "architecture-review",
       "route": "claude",
-      "status": "route-defined-current-shell-missing-key",
+      "status": "missing-ANTHROPIC_API_KEY",
       "allowedOutputs": [
         "architecture review",
         "product strategy memo",
@@ -247,7 +276,7 @@
       "displayName": "Gemini",
       "category": "external-readiness-review",
       "route": "gemini",
-      "status": "route-defined-current-shell-missing-key",
+      "status": "missing-GEMINI_API_KEY",
       "allowedOutputs": [
         "public readiness notes",
         "UX and accessibility review",
@@ -274,7 +303,7 @@
       "displayName": "Ollama / Local Model",
       "category": "local-private-draft",
       "route": "ollama",
-      "status": "installed",
+      "status": "runtime-not-ready",
       "allowedOutputs": [
         "private draft",
         "offline summary",
@@ -324,7 +353,7 @@
       "displayName": "Aider",
       "category": "bounded-terminal-coding-helper",
       "route": "aider",
-      "status": "route-defined-current-shell-missing-command",
+      "status": "missing-command",
       "allowedOutputs": [
         "diff suggestion",
         "terminal coding guidance"
@@ -336,7 +365,7 @@
       "displayName": "Open Interpreter",
       "category": "local-code-execution-review",
       "route": "interpreter",
-      "status": "route-defined-current-shell-missing-command",
+      "status": "missing-command",
       "allowedOutputs": [
         "execution risk note",
         "local automation checklist"
@@ -348,7 +377,7 @@
       "displayName": "Hermes",
       "category": "local-multi-agent-assistant",
       "route": "hermes",
-      "status": "route-defined-current-shell-missing-command",
+      "status": "installed",
       "allowedOutputs": [
         "prompt draft review",
         "synthesis note"
@@ -360,7 +389,7 @@
       "displayName": "Goose",
       "category": "local-build-orchestration-review",
       "route": "goose",
-      "status": "route-defined-current-shell-missing-command",
+      "status": "installed",
       "allowedOutputs": [
         "orchestration review",
         "build-risk note"
@@ -386,7 +415,7 @@
       "displayName": "Kimi / Kimi Code",
       "category": "conditional-code-and-localization-review",
       "route": "kimi",
-      "status": "route-defined-current-shell-missing-command",
+      "status": "installed",
       "allowedOutputs": [
         "localization review",
         "multilingual copy notes",
@@ -412,7 +441,7 @@
       "displayName": "OpenAI / General Provider",
       "category": "cloud-provider-review",
       "route": "openai",
-      "status": "route-defined-current-shell-missing-key",
+      "status": "missing-command",
       "allowedOutputs": [
         "provider readiness note",
         "second-opinion comparisons",
@@ -469,6 +498,19 @@
         "refactor suggestion",
         "editor context guidance",
         "local workflow note"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "xcode",
+      "displayName": "Xcode",
+      "category": "local-ide-assistant",
+      "route": "xcode",
+      "status": "installed",
+      "allowedOutputs": [
+        "build session notes",
+        "local workspace observations",
+        "IDE-focused draft guidance"
       ],
       "writeAuthority": "review-or-plan-only"
     },
@@ -897,8 +939,8 @@
     "releaseApprovalGranted": false
   },
   "summary": {
-    "installedAiProfileCount": 21,
-    "workforceAssignmentCount": 23,
+    "installedAiProfileCount": 23,
+    "workforceAssignmentCount": 25,
     "managedSubAgentLaneCount": 6,
     "autonomousAgentRosterCount": 12,
     "roleSchemaRoleCount": 5,

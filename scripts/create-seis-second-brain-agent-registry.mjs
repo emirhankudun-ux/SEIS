@@ -232,6 +232,7 @@ function buildReport(generatedAt) {
 function inferProfileStatus(profileId, assignments) {
   const byProfile = {
     "codex-operator": "codex",
+    "seis-agent-policy-profile": "seis-agent",
     "claude-review-profile": "claude",
     "qwen-review-profile": "qwen",
     "gemini-validation-profile": "gemini",
@@ -241,6 +242,7 @@ function inferProfileStatus(profileId, assignments) {
     "chatgpt-review-profile": "chatgpt",
     "openrouter-provider-profile": "openrouter",
     "cursor-ide-profile": "cursor",
+    "xcode": "xcode",
     "github-copilot-profile": "github-copilot",
     "lm-studio-local-profile": "lm-studio",
     "open-design": "open-design",
