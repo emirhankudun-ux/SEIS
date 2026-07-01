@@ -1,7 +1,7 @@
 {
   "generatedAt": "2026-06-22",
   "mode": "redacted_static_repository_audit",
-  "inspectedFiles": 2429,
+  "inspectedFiles": 2171,
   "providers": [
     {
       "provider": "Anthropic Claude",
@@ -106,6 +106,22 @@
         },
         {
           "path": "apps/web/desktop.js",
+          "line": 1239,
+          "matchTypes": [
+            "model:claude-"
+          ],
+          "surface": "frontend"
+        },
+        {
+          "path": "apps/web/desktop.js",
+          "line": 1244,
+          "matchTypes": [
+            "model:claude-"
+          ],
+          "surface": "frontend"
+        },
+        {
+          "path": "apps/web/desktop.js",
           "line": 1304,
           "matchTypes": [
             "model:claude-"
@@ -122,7 +138,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1340,
+          "line": 7290,
           "matchTypes": [
             "model:claude-"
           ],
@@ -130,39 +146,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1345,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "frontend"
-        },
-        {
-          "path": "apps/web/desktop.js",
-          "line": 1405,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "frontend"
-        },
-        {
-          "path": "apps/web/desktop.js",
-          "line": 1411,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "frontend"
-        },
-        {
-          "path": "apps/web/desktop.js",
-          "line": 7495,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "frontend"
-        },
-        {
-          "path": "apps/web/desktop.js",
-          "line": 7504,
+          "line": 7299,
           "matchTypes": [
             "model:claude-"
           ],
@@ -186,7 +170,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 2114,
+          "line": 1857,
           "matchTypes": [
             "model:claude-"
           ],
@@ -194,7 +178,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 2119,
+          "line": 1862,
           "matchTypes": [
             "model:claude-"
           ],
@@ -202,7 +186,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 2147,
+          "line": 1890,
           "matchTypes": [
             "model:claude-"
           ],
@@ -210,7 +194,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 2148,
+          "line": 1891,
           "matchTypes": [
             "model:claude-"
           ],
@@ -218,7 +202,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 2156,
+          "line": 1899,
           "matchTypes": [
             "model:claude-"
           ],
@@ -226,7 +210,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 2157,
+          "line": 1900,
           "matchTypes": [
             "model:claude-"
           ],
@@ -234,7 +218,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 2165,
+          "line": 1908,
           "matchTypes": [
             "model:claude-"
           ],
@@ -7490,7 +7474,7 @@
         },
         {
           "path": "content/development/seis-model-scaling-hardware-profile.json",
-          "line": 519,
+          "line": 476,
           "matchTypes": [
             "model:claude-"
           ],
@@ -12298,7 +12282,7 @@
         },
         {
           "path": "docs/ai/seis-ai-core.md",
-          "line": 60,
+          "line": 57,
           "matchTypes": [
             "model:claude-"
           ],
@@ -12306,7 +12290,7 @@
         },
         {
           "path": "docs/development/ai-cli-stack.md",
-          "line": 182,
+          "line": 173,
           "matchTypes": [
             "env:ANTHROPIC_API_KEY"
           ],
@@ -12362,7 +12346,7 @@
         },
         {
           "path": "docs/product/seis-code-foundation.md",
-          "line": 34,
+          "line": 33,
           "matchTypes": [
             "model:claude-"
           ],
@@ -12370,7 +12354,7 @@
         },
         {
           "path": "docs/product/seis-code-foundation.md",
-          "line": 58,
+          "line": 55,
           "matchTypes": [
             "model:claude-"
           ],
@@ -12378,7 +12362,7 @@
         },
         {
           "path": "docs/product/seis-code-foundation.md",
-          "line": 59,
+          "line": 56,
           "matchTypes": [
             "model:claude-"
           ],
@@ -12410,7 +12394,7 @@
         },
         {
           "path": "docs/reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md",
-          "line": 250,
+          "line": 234,
           "matchTypes": [
             "model:claude-"
           ],
@@ -13305,3278 +13289,6 @@
           "surface": "repository"
         },
         {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/accelerated-computing-cudf/skill-card.md",
-          "line": 37,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/accelerated-computing-cudf/skill-card.md",
-          "line": 65,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/aiq-deploy/skill-card.md",
-          "line": 40,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/aiq-deploy/skill-card.md",
-          "line": 68,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/aiq-research/skill-card.md",
-          "line": 35,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/aiq-research/skill-card.md",
-          "line": 63,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cudaq-guide/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cudaq-guide/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cufolio/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cufolio/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cuopt-developer/skill-card.md",
-          "line": 47,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cuopt-developer/skill-card.md",
-          "line": 75,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cuopt-install/skill-card.md",
-          "line": 39,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cuopt-install/skill-card.md",
-          "line": 67,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cuopt-multi-objective-exploration/skill-card.md",
-          "line": 39,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cuopt-multi-objective-exploration/skill-card.md",
-          "line": 67,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cuopt-numerical-optimization-api-c/skill-card.md",
-          "line": 40,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cuopt-numerical-optimization-api-c/skill-card.md",
-          "line": 68,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cuopt-numerical-optimization-api-cli/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cuopt-numerical-optimization-api-cli/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cuopt-numerical-optimization-api-python/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cuopt-numerical-optimization-api-python/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cuopt-numerical-optimization-formulation/skill-card.md",
-          "line": 39,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cuopt-numerical-optimization-formulation/skill-card.md",
-          "line": 67,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cuopt-routing-api-python/skill-card.md",
-          "line": 41,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cuopt-routing-api-python/skill-card.md",
-          "line": 69,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cuopt-routing-formulation/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cuopt-routing-formulation/skill-card.md",
-          "line": 60,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cuopt-server-api-python/skill-card.md",
-          "line": 41,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cuopt-server-api-python/skill-card.md",
-          "line": 69,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cuopt-server-common/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cuopt-server-common/skill-card.md",
-          "line": 60,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cuopt-skill-evolution/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cuopt-skill-evolution/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cuopt-user-rules/skill-card.md",
-          "line": 41,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cuopt-user-rules/skill-card.md",
-          "line": 69,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cupynumeric-hdf5/skill-card.md",
-          "line": 35,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cupynumeric-hdf5/skill-card.md",
-          "line": 63,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cupynumeric-install/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cupynumeric-install/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cupynumeric-migration-readiness/skill-card.md",
-          "line": 40,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cupynumeric-migration-readiness/skill-card.md",
-          "line": 68,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cupynumeric-parallel-data-load/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/cupynumeric-parallel-data-load/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/dali-dynamic-mode/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/dali-dynamic-mode/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/data-designer/skill-card.md",
-          "line": 35,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/data-designer/skill-card.md",
-          "line": 63,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/deepstream-dev/skill-card.md",
-          "line": 44,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/deepstream-dev/skill-card.md",
-          "line": 71,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/deepstream-import-vision-model/skill-card.md",
-          "line": 37,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/deepstream-import-vision-model/skill-card.md",
-          "line": 64,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/dicom-metadata-extract/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/dicom-metadata-extract/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/dicom-series-preflight/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/dicom-series-preflight/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/dicom-series-to-volume/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/dicom-series-to-volume/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/digital-health-clinical-asr-build/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/digital-health-clinical-asr-build/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/digital-health-clinical-asr-eval/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/digital-health-clinical-asr-eval/skill-card.md",
-          "line": 60,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/digital-health-clinical-asr-finetune/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/digital-health-clinical-asr-finetune/skill-card.md",
-          "line": 60,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/earth2studio-data-fetch/skill-card.md",
-          "line": 35,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/earth2studio-data-fetch/skill-card.md",
-          "line": 63,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/earth2studio-discover/skill-card.md",
-          "line": 37,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/earth2studio-discover/skill-card.md",
-          "line": 65,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/earth2studio-install/skill-card.md",
-          "line": 35,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/earth2studio-install/skill-card.md",
-          "line": 63,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/holoscan-install-conda/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/holoscan-install-conda/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/holoscan-install-container/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/holoscan-install-debian/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/holoscan-install-debian/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/holoscan-install-source/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/holoscan-install-source/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/holoscan-install-wheel/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/holoscan-install-wheel/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/holoscan-setup/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/hsb-app/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/hsb-app/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/hsb-flash/skill-card.md",
-          "line": 35,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/hsb-flash/skill-card.md",
-          "line": 63,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/hsb-setup/skill-card.md",
-          "line": 36,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/hsb-setup/skill-card.md",
-          "line": 64,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/hsb-test/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/hsb-test/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-build-source/skill-card.md",
-          "line": 36,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-build-source/skill-card.md",
-          "line": 64,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-customize-camera/skill-card.md",
-          "line": 35,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-customize-camera/skill-card.md",
-          "line": 63,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-customize-clocks/skill-card.md",
-          "line": 35,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-customize-clocks/skill-card.md",
-          "line": 63,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-customize-fan/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-customize-fan/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-customize-mgbe/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-customize-mgbe/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-customize-nvpmodel/skill-card.md",
-          "line": 32,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-customize-nvpmodel/skill-card.md",
-          "line": 60,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-customize-pcie/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-customize-pcie/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-customize-pinmux/skill-card.md",
-          "line": 32,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-customize-pinmux/skill-card.md",
-          "line": 60,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-customize-uphy/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-customize-uphy/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-customize-usb/skill-card.md",
-          "line": 36,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-customize-usb/skill-card.md",
-          "line": 64,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-derive-carrier/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-derive-carrier/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-diagnostic/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-diagnostic/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-download-bsp/skill-card.md",
-          "line": 32,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-download-bsp/skill-card.md",
-          "line": 60,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-flash-image/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-flash-image/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-generate-kb/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-generate-kb/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-headless-mode/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-headless-mode/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-inference-mem-tune/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-inference-mem-tune/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-init-image/skill-card.md",
-          "line": 37,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-init-image/skill-card.md",
-          "line": 65,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-init-source/skill-card.md",
-          "line": 32,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-init-source/skill-card.md",
-          "line": 60,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-init-target/skill-card.md",
-          "line": 36,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-init-target/skill-card.md",
-          "line": 64,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-link-docs/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-link-docs/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-llm-benchmark/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-llm-benchmark/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-llm-serve/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-llm-serve/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-memory-audit/skill-card.md",
-          "line": 32,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-memory-audit/skill-card.md",
-          "line": 60,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-optimize-memory/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-optimize-memory/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-package/skill-card.md",
-          "line": 36,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-package/skill-card.md",
-          "line": 64,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-print-bsp-info/skill-card.md",
-          "line": 32,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-print-bsp-info/skill-card.md",
-          "line": 60,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-print-device-info/skill-card.md",
-          "line": 32,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-print-device-info/skill-card.md",
-          "line": 60,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-promote-image/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-promote-image/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-quick-start/skill-card.md",
-          "line": 32,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-quick-start/skill-card.md",
-          "line": 60,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-set-target/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-set-target/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-speculative-decoding/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-speculative-decoding/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-validate-image/skill-card.md",
-          "line": 32,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-validate-image/skill-card.md",
-          "line": 60,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/launch-nemo-rl/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/launch-nemo-rl/skill-card.md",
-          "line": 60,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-automodel-distributed-training/skill-card.md",
-          "line": 39,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-automodel-distributed-training/skill-card.md",
-          "line": 67,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-automodel-launcher-config/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-automodel-launcher-config/skill-card.md",
-          "line": 60,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-automodel-model-onboarding/skill-card.md",
-          "line": 42,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-automodel-model-onboarding/skill-card.md",
-          "line": 70,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-automodel-recipe-development/skill-card.md",
-          "line": 39,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-automodel-recipe-development/skill-card.md",
-          "line": 67,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-data-designer-plugin/skill-card.md",
-          "line": 35,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-data-designer-plugin/skill-card.md",
-          "line": 63,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-evaluator-plugin/skill-card.md",
-          "line": 36,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-evaluator-plugin/skill-card.md",
-          "line": 64,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-mlm-bridge-training/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-mlm-bridge-training/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-multi-node-slurm/skill-card.md",
-          "line": 32,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-multi-node-slurm/skill-card.md",
-          "line": 60,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-activation-recompute/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-activation-recompute/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-cpu-offloading/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-cpu-offloading/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-cuda-graphs/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-cuda-graphs/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-expert-parallel-overlap/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-expert-parallel-overlap/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-hierarchical-context-parallel/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-hierarchical-context-parallel/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-megatron-fsdp/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-megatron-fsdp/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-memory-tuning/skill-card.md",
-          "line": 35,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-memory-tuning/skill-card.md",
-          "line": 63,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-moe-comm-overlap/skill-card.md",
-          "line": 35,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-moe-comm-overlap/skill-card.md",
-          "line": 63,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-moe-dispatcher-selection/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-moe-dispatcher-selection/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-moe-hardware-configs/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-moe-hardware-configs/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-moe-long-context/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-moe-long-context/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-moe-optimization-workflow/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-moe-vlm-training/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-moe-vlm-training/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-parallelism-strategies/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-parallelism-strategies/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-sequence-packing/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-sequence-packing/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-tp-dp-comm-overlap/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-perf-tp-dp-comm-overlap/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-recipe-recommender/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-recipe-recommender/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-resiliency/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-mbridge-resiliency/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-retriever/skill-card.md",
-          "line": 38,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-retriever/skill-card.md",
-          "line": 66,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-rl-auto-research/skill-card.md",
-          "line": 35,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-rl-auto-research/skill-card.md",
-          "line": 63,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-rl-brev-etiquette/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-rl-brev-etiquette/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-rl-docs/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-rl-docs/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-rl-session-memory/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemo-rl-session-memory/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemoclaw-user-guide/skill-card.md",
-          "line": 35,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemoclaw-user-guide/skill-card.md",
-          "line": 63,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemotron-customize/skill-card.md",
-          "line": 37,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemotron-customize/skill-card.md",
-          "line": 65,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemotron-policy-generator/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemotron-policy-generator/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemotron-retrieval-recipes/skill-card.md",
-          "line": 36,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemotron-retrieval-recipes/skill-card.md",
-          "line": 64,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemotron-speech/skill-card.md",
-          "line": 40,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemotron-speech/skill-card.md",
-          "line": 67,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nv-generate-ct-rflow/skill-card.md",
-          "line": 35,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nv-generate-ct-rflow/skill-card.md",
-          "line": 63,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nv-generate-mr-brain-finetune/skill-card.md",
-          "line": 32,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nv-generate-mr-brain-finetune/skill-card.md",
-          "line": 60,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nv-generate-mr-brain/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nv-generate-mr-brain/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nv-generate-mr/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nv-generate-mr/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nv-generate-vae-finetune/skill-card.md",
-          "line": 32,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nv-generate-vae-finetune/skill-card.md",
-          "line": 60,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nv-reason-cxr/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nv-reason-cxr/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nv-segment-ct-finetune/skill-card.md",
-          "line": 32,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nv-segment-ct-finetune/skill-card.md",
-          "line": 60,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nv-segment-ct/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nv-segment-ct/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/physical-ai-defect-image-generation/skill-card.md",
-          "line": 36,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/physical-ai-defect-image-generation/skill-card.md",
-          "line": 64,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/physical-ai-video-data-augmentation/skill-card.md",
-          "line": 39,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/physical-ai-video-data-augmentation/skill-card.md",
-          "line": 67,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/physicsnemo-discover/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/physicsnemo-discover/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/skill-card-generator/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/skill-card-generator/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-analyze-changenet-rca/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-analyze-changenet-rca/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-analyze-gaps-visual-changenet/skill-card.md",
-          "line": 36,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-analyze-gaps-visual-changenet/skill-card.md",
-          "line": 64,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-analyze-gaps-vlm-bcq/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-analyze-gaps-vlm-bcq/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-convert-dataset-format/skill-card.md",
-          "line": 32,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-convert-dataset-format/skill-card.md",
-          "line": 60,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-finetune-clip/skill-card.md",
-          "line": 36,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-finetune-clip/skill-card.md",
-          "line": 64,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-finetune-cosmos-embed/skill-card.md",
-          "line": 37,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-finetune-cosmos-embed/skill-card.md",
-          "line": 65,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-finetune-cosmos-reason/skill-card.md",
-          "line": 43,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-finetune-cosmos-reason/skill-card.md",
-          "line": 71,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-finetune-huggingface-model/skill-card.md",
-          "line": 38,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-finetune-huggingface-model/skill-card.md",
-          "line": 66,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-generate-image-grounding/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-generate-image-grounding/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-generate-referring-expressions/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-generate-referring-expressions/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-generate-video-reasoning-annotations/skill-card.md",
-          "line": 36,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-generate-video-reasoning-annotations/skill-card.md",
-          "line": 64,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-launch-workflow/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-launch-workflow/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-list-capabilities/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-list-capabilities/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-mine-aoi-images/skill-card.md",
-          "line": 35,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-mine-aoi-images/skill-card.md",
-          "line": 63,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-port-huggingface-model/skill-card.md",
-          "line": 43,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-port-huggingface-model/skill-card.md",
-          "line": 71,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-route-visual-changenet-samples/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-route-visual-changenet-samples/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-run-automl-deft-pipeline/skill-card.md",
-          "line": 36,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-run-automl-deft-pipeline/skill-card.md",
-          "line": 64,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-run-automl/skill-card.md",
-          "line": 38,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-run-automl/skill-card.md",
-          "line": 66,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-run-deft-aoi/skill-card.md",
-          "line": 37,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-run-deft-aoi/skill-card.md",
-          "line": 65,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-run-inference-service/skill-card.md",
-          "line": 35,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-run-inference-service/skill-card.md",
-          "line": 63,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-run-on-brev/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-run-on-brev/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-run-on-kubernetes/skill-card.md",
-          "line": 36,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-run-on-kubernetes/skill-card.md",
-          "line": 64,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-run-on-lepton/skill-card.md",
-          "line": 36,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-run-on-lepton/skill-card.md",
-          "line": 64,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-run-on-local-docker/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-run-on-local-docker/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-run-on-slurm/skill-card.md",
-          "line": 37,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-run-on-slurm/skill-card.md",
-          "line": 65,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-run-platform/skill-card.md",
-          "line": 37,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-run-platform/skill-card.md",
-          "line": 65,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-setup-nvidia-gpu-host/skill-card.md",
-          "line": 35,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-setup-nvidia-gpu-host/skill-card.md",
-          "line": 63,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-action-recognition/skill-card.md",
-          "line": 37,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-action-recognition/skill-card.md",
-          "line": 65,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-bevfusion/skill-card.md",
-          "line": 36,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-bevfusion/skill-card.md",
-          "line": 64,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-centerpose/skill-card.md",
-          "line": 37,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-centerpose/skill-card.md",
-          "line": 65,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-deformable-detr/skill-card.md",
-          "line": 35,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-deformable-detr/skill-card.md",
-          "line": 63,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-depth-anything-v2/skill-card.md",
-          "line": 36,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-depth-anything-v2/skill-card.md",
-          "line": 64,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-dino/skill-card.md",
-          "line": 37,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-dino/skill-card.md",
-          "line": 65,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-fast-foundation-stereo/skill-card.md",
-          "line": 38,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-fast-foundation-stereo/skill-card.md",
-          "line": 66,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-foundation-stereo/skill-card.md",
-          "line": 36,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-foundation-stereo/skill-card.md",
-          "line": 64,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-grounding-dino/skill-card.md",
-          "line": 35,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-grounding-dino/skill-card.md",
-          "line": 63,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-image-classification/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-image-classification/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-mask-auto-encoder/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-mask-auto-encoder/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-mask-auto-label/skill-card.md",
-          "line": 36,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-mask-auto-label/skill-card.md",
-          "line": 64,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-mask-grounding-dino/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-mask-grounding-dino/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-mask2former/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-mask2former/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-metric-learning-recognition/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-metric-learning-recognition/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-nvdinov2/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-nvdinov2/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-nvpanoptix3d/skill-card.md",
-          "line": 37,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-nvpanoptix3d/skill-card.md",
-          "line": 65,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-ocdnet/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-ocdnet/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-ocrnet/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-ocrnet/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-oneformer/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-oneformer/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-optical-inspection/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-optical-inspection/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-pointpillars/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-pointpillars/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-pose-classification/skill-card.md",
-          "line": 38,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-pose-classification/skill-card.md",
-          "line": 66,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-reid/skill-card.md",
-          "line": 37,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-reid/skill-card.md",
-          "line": 65,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-rtdetr/skill-card.md",
-          "line": 40,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-rtdetr/skill-card.md",
-          "line": 68,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-segformer/skill-card.md",
-          "line": 35,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-segformer/skill-card.md",
-          "line": 63,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-single-step/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-single-step/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-sparse4d/skill-card.md",
-          "line": 35,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-sparse4d/skill-card.md",
-          "line": 63,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-visual-changenet/skill-card.md",
-          "line": 37,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-visual-changenet/skill-card.md",
-          "line": 65,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-validate-dataset-format/skill-card.md",
-          "line": 32,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-validate-dataset-format/skill-card.md",
-          "line": 60,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tilegym-adding-cutile-kernel/skill-card.md",
-          "line": 32,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tilegym-adding-cutile-kernel/skill-card.md",
-          "line": 60,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tilegym-converting-cutile-to-julia/skill-card.md",
-          "line": 36,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tilegym-converting-cutile-to-julia/skill-card.md",
-          "line": 64,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tilegym-converting-cutile-to-triton/skill-card.md",
-          "line": 41,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tilegym-converting-cutile-to-triton/skill-card.md",
-          "line": 69,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tilegym-cutile-autotuning/skill-card.md",
-          "line": 38,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tilegym-cutile-autotuning/skill-card.md",
-          "line": 66,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tilegym-cutile-python/skill-card.md",
-          "line": 37,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tilegym-cutile-python/skill-card.md",
-          "line": 65,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tilegym-improve-cutile-kernel-perf/skill-card.md",
-          "line": 37,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tilegym-improve-cutile-kernel-perf/skill-card.md",
-          "line": 65,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tilegym-monkey-patch-kernels-to-transformers/skill-card.md",
-          "line": 36,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tilegym-monkey-patch-kernels-to-transformers/skill-card.md",
-          "line": 64,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-ask-video/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-ask-video/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-deploy-dense-captioning/skill-card.md",
-          "line": 36,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-deploy-dense-captioning/skill-card.md",
-          "line": 64,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-deploy-detection-tracking-2d/skill-card.md",
-          "line": 38,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-deploy-detection-tracking-2d/skill-card.md",
-          "line": 66,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-deploy-detection-tracking-3d/skill-card.md",
-          "line": 39,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-deploy-detection-tracking-3d/skill-card.md",
-          "line": 67,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-deploy-profile/skill-card.md",
-          "line": 42,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-deploy-profile/skill-card.md",
-          "line": 70,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-deploy-video-embedding/skill-card.md",
-          "line": 38,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-deploy-video-embedding/skill-card.md",
-          "line": 66,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-generate-video-calibration/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-generate-video-calibration/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-generate-video-report/skill-card.md",
-          "line": 35,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-generate-video-report/skill-card.md",
-          "line": 63,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-manage-alerts/skill-card.md",
-          "line": 36,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-manage-alerts/skill-card.md",
-          "line": 64,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-manage-video-io-storage/skill-card.md",
-          "line": 37,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-manage-video-io-storage/skill-card.md",
-          "line": 65,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-query-analytics/skill-card.md",
-          "line": 33,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-query-analytics/skill-card.md",
-          "line": 61,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-search-archive/skill-card.md",
-          "line": 34,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-search-archive/skill-card.md",
-          "line": 62,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-setup-behavior-analytics/skill-card.md",
-          "line": 38,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-setup-behavior-analytics/skill-card.md",
-          "line": 66,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-setup-video-analytics-api/skill-card.md",
-          "line": 35,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-setup-video-analytics-api/skill-card.md",
-          "line": 63,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-summarize-video/skill-card.md",
-          "line": 39,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/vss-summarize-video/skill-card.md",
-          "line": 67,
-          "matchTypes": [
-            "model:claude-"
-          ],
-          "surface": "documentation"
-        },
-        {
           "path": "packages/seis-ai/src/agent/loop.mjs",
           "line": 4,
           "matchTypes": [
@@ -16610,7 +13322,7 @@
         },
         {
           "path": "packages/seis-ai/test/agent.test.mjs",
-          "line": 244,
+          "line": 237,
           "matchTypes": [
             "env:ANTHROPIC_API_KEY"
           ],
@@ -16618,7 +13330,7 @@
         },
         {
           "path": "packages/seis-ai/test/agent.test.mjs",
-          "line": 250,
+          "line": 243,
           "matchTypes": [
             "model:claude-"
           ],
@@ -16626,7 +13338,7 @@
         },
         {
           "path": "packages/seis-ai/test/agent.test.mjs",
-          "line": 257,
+          "line": 250,
           "matchTypes": [
             "env:ANTHROPIC_API_KEY"
           ],
@@ -16634,7 +13346,7 @@
         },
         {
           "path": "packages/seis-ai/test/agent.test.mjs",
-          "line": 49,
+          "line": 43,
           "matchTypes": [
             "model:claude-"
           ],
@@ -16666,7 +13378,7 @@
         },
         {
           "path": "scripts/ai-launcher.cjs",
-          "line": 50,
+          "line": 17,
           "matchTypes": [
             "env:ANTHROPIC_API_KEY"
           ],
@@ -16722,7 +13434,7 @@
         },
         {
           "path": "scripts/check-ai-stack.cjs",
-          "line": 46,
+          "line": 17,
           "matchTypes": [
             "env:ANTHROPIC_API_KEY"
           ],
@@ -16754,7 +13466,7 @@
         },
         {
           "path": "scripts/check-desktop-os.mjs",
-          "line": 275,
+          "line": 268,
           "matchTypes": [
             "model:claude-"
           ],
@@ -16777,14 +13489,6 @@
           "surface": "backend"
         },
         {
-          "path": "scripts/check-seis-ai-nvidia-skills-downloadable.mjs",
-          "line": 234,
-          "matchTypes": [
-            "env:ANTHROPIC_API_KEY"
-          ],
-          "surface": "backend"
-        },
-        {
           "path": "scripts/check-seis-apple-native-snapshot.mjs",
           "line": 62,
           "matchTypes": [
@@ -16794,7 +13498,7 @@
         },
         {
           "path": "scripts/check-seis-code.mjs",
-          "line": 487,
+          "line": 467,
           "matchTypes": [
             "model:claude-"
           ],
@@ -16802,7 +13506,7 @@
         },
         {
           "path": "scripts/check-seis-code.mjs",
-          "line": 491,
+          "line": 471,
           "matchTypes": [
             "model:claude-"
           ],
@@ -16810,7 +13514,7 @@
         },
         {
           "path": "scripts/check-seis-code.mjs",
-          "line": 492,
+          "line": 472,
           "matchTypes": [
             "model:claude-"
           ],
@@ -16874,23 +13578,7 @@
         },
         {
           "path": "scripts/check-seis-public-readiness-docs.mjs",
-          "line": 172,
-          "matchTypes": [
-            "env:ANTHROPIC_API_KEY"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-public-readiness-lanes.mjs",
-          "line": 275,
-          "matchTypes": [
-            "env:ANTHROPIC_API_KEY"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-public-readiness-sensitive-boundary.mjs",
-          "line": 53,
+          "line": 144,
           "matchTypes": [
             "env:ANTHROPIC_API_KEY"
           ],
@@ -16898,7 +13586,7 @@
         },
         {
           "path": "scripts/check-seis-public-readiness-status.mjs",
-          "line": 182,
+          "line": 161,
           "matchTypes": [
             "env:ANTHROPIC_API_KEY"
           ],
@@ -39607,14 +36295,6 @@
           "surface": "backend"
         },
         {
-          "path": "scripts/check-seis-public-readiness-sensitive-boundary.mjs",
-          "line": 53,
-          "matchTypes": [
-            "env:CLOUDFLARE_API_TOKEN"
-          ],
-          "surface": "backend"
-        },
-        {
           "path": "scripts/create-connector-activation-report.cjs",
           "line": 49,
           "matchTypes": [
@@ -39675,7 +36355,7 @@
       "locations": [
         {
           "path": "apps/seis-core/index.html",
-          "line": 617,
+          "line": 588,
           "matchTypes": [
             "model:command-r"
           ],
@@ -39683,7 +36363,7 @@
         },
         {
           "path": "apps/seis-core/script.js",
-          "line": 3002,
+          "line": 2730,
           "matchTypes": [
             "model:command-r"
           ],
@@ -39691,7 +36371,7 @@
         },
         {
           "path": "apps/seis-core/script.js",
-          "line": 3003,
+          "line": 2731,
           "matchTypes": [
             "model:command-r"
           ],
@@ -39699,7 +36379,7 @@
         },
         {
           "path": "apps/seis-core/styles.css",
-          "line": 1758,
+          "line": 1609,
           "matchTypes": [
             "model:command-r"
           ],
@@ -39707,7 +36387,7 @@
         },
         {
           "path": "apps/seis-core/styles.css",
-          "line": 1764,
+          "line": 1615,
           "matchTypes": [
             "model:command-r"
           ],
@@ -39771,7 +36451,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1962,
+          "line": 1862,
           "matchTypes": [
             "model:command-r"
           ],
@@ -39779,7 +36459,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 7567,
+          "line": 7362,
           "matchTypes": [
             "model:command-r"
           ],
@@ -39787,7 +36467,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 7568,
+          "line": 7363,
           "matchTypes": [
             "model:command-r"
           ],
@@ -39795,7 +36475,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 7569,
+          "line": 7364,
           "matchTypes": [
             "model:command-r"
           ],
@@ -39827,7 +36507,7 @@
         },
         {
           "path": "scripts/check-desktop-os.mjs",
-          "line": 673,
+          "line": 666,
           "matchTypes": [
             "model:command-r"
           ],
@@ -40294,7 +36974,7 @@
         },
         {
           "path": "docs/ai/ai-workforce-training.md",
-          "line": 68,
+          "line": 64,
           "matchTypes": [
             "model:deepseek"
           ],
@@ -40326,7 +37006,7 @@
         },
         {
           "path": "docs/ai/seis-model-scaling.md",
-          "line": 421,
+          "line": 390,
           "matchTypes": [
             "model:deepseek"
           ],
@@ -40334,7 +37014,7 @@
         },
         {
           "path": "docs/ai/seis-model-scaling.md",
-          "line": 454,
+          "line": 423,
           "matchTypes": [
             "model:deepseek"
           ],
@@ -40419,22 +37099,6 @@
             "model:deepseek"
           ],
           "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/models/nvidia-nim-run-anywhere-downloadable-registry.json",
-          "line": 62,
-          "matchTypes": [
-            "model:deepseek"
-          ],
-          "surface": "repository"
-        },
-        {
-          "path": "packages/seis-ai/models/nvidia-nim-run-anywhere-downloadable-registry.json",
-          "line": 63,
-          "matchTypes": [
-            "model:deepseek"
-          ],
-          "surface": "repository"
         },
         {
           "path": "plugins/seis/scripts/seis-repo-visibility-audit.sh",
@@ -40953,7 +37617,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1365,
+          "line": 1264,
           "matchTypes": [
             "model:gemini-"
           ],
@@ -40961,7 +37625,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1435,
+          "line": 1334,
           "matchTypes": [
             "model:gemini-"
           ],
@@ -41249,7 +37913,7 @@
         },
         {
           "path": "docs/development/ai-cli-stack.md",
-          "line": 183,
+          "line": 174,
           "matchTypes": [
             "env:GEMINI_API_KEY"
           ],
@@ -41337,7 +38001,7 @@
         },
         {
           "path": "scripts/ai-launcher.cjs",
-          "line": 20,
+          "line": 18,
           "matchTypes": [
             "env:GEMINI_API_KEY"
           ],
@@ -41377,7 +38041,7 @@
         },
         {
           "path": "scripts/check-ai-stack.cjs",
-          "line": 20,
+          "line": 18,
           "matchTypes": [
             "env:GEMINI_API_KEY"
           ],
@@ -41418,14 +38082,6 @@
         {
           "path": "scripts/check-release-artifact-policy.mjs",
           "line": 138,
-          "matchTypes": [
-            "env:GEMINI_API_KEY"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-ai-nvidia-skills-downloadable.mjs",
-          "line": 235,
           "matchTypes": [
             "env:GEMINI_API_KEY"
           ],
@@ -41473,23 +38129,7 @@
         },
         {
           "path": "scripts/check-seis-public-readiness-docs.mjs",
-          "line": 173,
-          "matchTypes": [
-            "env:GEMINI_API_KEY"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-public-readiness-lanes.mjs",
-          "line": 276,
-          "matchTypes": [
-            "env:GEMINI_API_KEY"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-public-readiness-sensitive-boundary.mjs",
-          "line": 53,
+          "line": 145,
           "matchTypes": [
             "env:GEMINI_API_KEY"
           ],
@@ -41497,7 +38137,7 @@
         },
         {
           "path": "scripts/check-seis-public-readiness-status.mjs",
-          "line": 183,
+          "line": 162,
           "matchTypes": [
             "env:GEMINI_API_KEY"
           ],
@@ -42259,14 +38899,6 @@
             "model:vertex"
           ],
           "surface": "documentation"
-        },
-        {
-          "path": "docs/development/ai-cli-stack.md",
-          "line": 195,
-          "matchTypes": [
-            "model:vertex"
-          ],
-          "surface": "documentation"
         }
       ],
       "frontendDirectCall": false,
@@ -42292,8 +38924,7 @@
       "packageOrSdk": [],
       "endpoints": [],
       "modelIdentifiers": [
-        "llama3",
-        "mixtral"
+        "llama3"
       ],
       "locations": [
         {
@@ -42319,14 +38950,6 @@
             "model:llama3"
           ],
           "surface": "frontend"
-        },
-        {
-          "path": "packages/seis-ai/models/nvidia-nim-run-anywhere-downloadable-registry.json",
-          "line": 155,
-          "matchTypes": [
-            "model:mixtral"
-          ],
-          "surface": "repository"
         },
         {
           "path": "server/cloud/ssh-ai-shell/config.py",
@@ -42418,54 +39041,6 @@
             "endpoint:huggingface.co"
           ],
           "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/aiq-research/skill-card.md",
-          "line": 23,
-          "matchTypes": [
-            "endpoint:huggingface.co"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nv-generate-mr-brain/skill-card.md",
-          "line": 23,
-          "matchTypes": [
-            "endpoint:huggingface.co"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nv-generate-mr/skill-card.md",
-          "line": 24,
-          "matchTypes": [
-            "endpoint:huggingface.co"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nv-reason-cxr/skill-card.md",
-          "line": 23,
-          "matchTypes": [
-            "endpoint:huggingface.co"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nv-segment-ct/skill-card.md",
-          "line": 22,
-          "matchTypes": [
-            "endpoint:huggingface.co"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-finetune-cosmos-reason/skill-card.md",
-          "line": 32,
-          "matchTypes": [
-            "endpoint:huggingface.co"
-          ],
-          "surface": "documentation"
         }
       ],
       "frontendDirectCall": false,
@@ -42495,36 +39070,12 @@
       ],
       "locations": [
         {
-          "path": "apps/web/desktop.js",
-          "line": 1312,
-          "matchTypes": [
-            "model:lm-studio"
-          ],
-          "surface": "frontend"
-        },
-        {
           "path": "content/development/seis-installed-ai-tools-registry.json",
           "line": 277,
           "matchTypes": [
             "model:lm-studio"
           ],
           "surface": "repository"
-        },
-        {
-          "path": "scripts/ai-launcher.cjs",
-          "line": 15,
-          "matchTypes": [
-            "model:lm-studio"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/ai-launcher.cjs",
-          "line": 16,
-          "matchTypes": [
-            "model:lm-studio"
-          ],
-          "surface": "backend"
         },
         {
           "path": "scripts/check-seis-installed-ai-tools-registry.mjs",
@@ -42758,7 +39309,7 @@
         },
         {
           "path": "docs/ai/ai-workforce-training.md",
-          "line": 68,
+          "line": 64,
           "matchTypes": [
             "model:mistral"
           ],
@@ -42766,43 +39317,11 @@
         },
         {
           "path": "docs/ai/seis-model-scaling.md",
-          "line": 454,
+          "line": 423,
           "matchTypes": [
             "model:mistral"
           ],
           "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/models/nvidia-nim-run-anywhere-downloadable-registry.json",
-          "line": 155,
-          "matchTypes": [
-            "model:mistral"
-          ],
-          "surface": "repository"
-        },
-        {
-          "path": "packages/seis-ai/models/nvidia-nim-run-anywhere-downloadable-registry.json",
-          "line": 60,
-          "matchTypes": [
-            "model:mistral"
-          ],
-          "surface": "repository"
-        },
-        {
-          "path": "packages/seis-ai/models/nvidia-nim-run-anywhere-downloadable-registry.json",
-          "line": 73,
-          "matchTypes": [
-            "model:mistral"
-          ],
-          "surface": "repository"
-        },
-        {
-          "path": "packages/seis-ai/models/nvidia-nim-run-anywhere-downloadable-registry.json",
-          "line": 88,
-          "matchTypes": [
-            "model:mistral"
-          ],
-          "surface": "repository"
         },
         {
           "path": "scripts/check-seis-language-model-intake.mjs",
@@ -43705,7 +40224,7 @@
         },
         {
           "path": "apps/seis-core/styles.css",
-          "line": 1839,
+          "line": 1684,
           "matchTypes": [
             "model:nim"
           ],
@@ -43713,7 +40232,7 @@
         },
         {
           "path": "apps/seis-core/styles.css",
-          "line": 1846,
+          "line": 1691,
           "matchTypes": [
             "model:nim"
           ],
@@ -43889,7 +40408,7 @@
         },
         {
           "path": "apps/web/desktop.css",
-          "line": 5256,
+          "line": 5159,
           "matchTypes": [
             "model:nim"
           ],
@@ -43913,7 +40432,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 2254,
+          "line": 2154,
           "matchTypes": [
             "model:nim"
           ],
@@ -43921,7 +40440,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3156,
+          "line": 3050,
           "matchTypes": [
             "model:nim"
           ],
@@ -43929,7 +40448,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3376,
+          "line": 3270,
           "matchTypes": [
             "model:nim"
           ],
@@ -43937,7 +40456,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3377,
+          "line": 3271,
           "matchTypes": [
             "model:nim"
           ],
@@ -43945,7 +40464,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3487,
+          "line": 3381,
           "matchTypes": [
             "model:nim"
           ],
@@ -43953,7 +40472,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3488,
+          "line": 3382,
           "matchTypes": [
             "model:nim"
           ],
@@ -43961,7 +40480,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3497,
+          "line": 3391,
           "matchTypes": [
             "model:nim"
           ],
@@ -43969,7 +40488,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3610,
+          "line": 3504,
           "matchTypes": [
             "model:nim"
           ],
@@ -43977,7 +40496,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3637,
+          "line": 3531,
           "matchTypes": [
             "model:nim"
           ],
@@ -43985,7 +40504,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3641,
+          "line": 3535,
           "matchTypes": [
             "model:nim"
           ],
@@ -43993,7 +40512,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3668,
+          "line": 3562,
           "matchTypes": [
             "model:nim"
           ],
@@ -44001,7 +40520,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3686,
+          "line": 3580,
           "matchTypes": [
             "model:nim"
           ],
@@ -44009,7 +40528,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3702,
+          "line": 3596,
           "matchTypes": [
             "model:nim"
           ],
@@ -44017,7 +40536,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3750,
+          "line": 3643,
           "matchTypes": [
             "model:nim"
           ],
@@ -44025,7 +40544,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3781,
+          "line": 3674,
           "matchTypes": [
             "model:nim"
           ],
@@ -44033,7 +40552,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3803,
+          "line": 3696,
           "matchTypes": [
             "model:nim"
           ],
@@ -44041,7 +40560,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3804,
+          "line": 3697,
           "matchTypes": [
             "model:nim"
           ],
@@ -44049,7 +40568,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3812,
+          "line": 3705,
           "matchTypes": [
             "model:nim"
           ],
@@ -44057,7 +40576,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3836,
+          "line": 3729,
           "matchTypes": [
             "model:nim"
           ],
@@ -44065,7 +40584,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 4553,
+          "line": 4444,
           "matchTypes": [
             "model:nim"
           ],
@@ -44073,7 +40592,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 530,
+          "line": 520,
           "matchTypes": [
             "model:nim"
           ],
@@ -44081,7 +40600,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 6480,
+          "line": 6281,
           "matchTypes": [
             "model:nim"
           ],
@@ -44089,7 +40608,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 7180,
+          "line": 6975,
           "matchTypes": [
             "model:nim"
           ],
@@ -44097,7 +40616,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 7181,
+          "line": 6976,
           "matchTypes": [
             "model:nim"
           ],
@@ -44105,7 +40624,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 7182,
+          "line": 6977,
           "matchTypes": [
             "model:nim"
           ],
@@ -44113,7 +40632,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 7200,
+          "line": 6995,
           "matchTypes": [
             "model:nim"
           ],
@@ -44121,7 +40640,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 8116,
+          "line": 7912,
           "matchTypes": [
             "model:nim"
           ],
@@ -52193,7 +48712,7 @@
         },
         {
           "path": "apps/web/seis-code.css",
-          "line": 1467,
+          "line": 1325,
           "matchTypes": [
             "model:nim"
           ],
@@ -52209,7 +48728,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 1078,
+          "line": 1157,
           "matchTypes": [
             "model:nim"
           ],
@@ -52217,7 +48736,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 1159,
+          "line": 1254,
           "matchTypes": [
             "model:nim"
           ],
@@ -52225,7 +48744,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 1406,
+          "line": 1255,
           "matchTypes": [
             "model:nim"
           ],
@@ -52233,7 +48752,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 1511,
+          "line": 1257,
           "matchTypes": [
             "model:nim"
           ],
@@ -52241,7 +48760,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 1512,
+          "line": 1258,
           "matchTypes": [
             "model:nim"
           ],
@@ -52249,7 +48768,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 1514,
+          "line": 2140,
           "matchTypes": [
             "model:nim"
           ],
@@ -52257,7 +48776,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 1515,
+          "line": 304,
           "matchTypes": [
             "model:nim"
           ],
@@ -52265,7 +48784,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 2399,
+          "line": 829,
           "matchTypes": [
             "model:nim"
           ],
@@ -52273,7 +48792,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 340,
+          "line": 910,
           "matchTypes": [
             "model:nim"
           ],
@@ -53449,6 +49968,54 @@
         },
         {
           "path": "content/development/seis-model-parameter-ladder.json",
+          "line": 117,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "content/development/seis-model-parameter-ladder.json",
+          "line": 144,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "content/development/seis-model-parameter-ladder.json",
+          "line": 179,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "content/development/seis-model-parameter-ladder.json",
+          "line": 30,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "content/development/seis-model-parameter-ladder.json",
+          "line": 59,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "content/development/seis-model-parameter-ladder.json",
+          "line": 87,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "content/development/seis-model-scaling-hardware-profile.json",
           "line": 118,
           "matchTypes": [
             "model:nim"
@@ -53456,64 +50023,8 @@
           "surface": "repository"
         },
         {
-          "path": "content/development/seis-model-parameter-ladder.json",
-          "line": 145,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "repository"
-        },
-        {
-          "path": "content/development/seis-model-parameter-ladder.json",
-          "line": 180,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "repository"
-        },
-        {
-          "path": "content/development/seis-model-parameter-ladder.json",
-          "line": 211,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "repository"
-        },
-        {
-          "path": "content/development/seis-model-parameter-ladder.json",
-          "line": 31,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "repository"
-        },
-        {
-          "path": "content/development/seis-model-parameter-ladder.json",
-          "line": 60,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "repository"
-        },
-        {
-          "path": "content/development/seis-model-parameter-ladder.json",
-          "line": 88,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "repository"
-        },
-        {
           "path": "content/development/seis-model-scaling-hardware-profile.json",
-          "line": 143,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "repository"
-        },
-        {
-          "path": "content/development/seis-model-scaling-hardware-profile.json",
-          "line": 36,
+          "line": 35,
           "matchTypes": [
             "model:nim"
           ],
@@ -53801,6 +50312,14 @@
         },
         {
           "path": "deploy/seis-ssh-cloud-roadmap.json",
+          "line": 285,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "deployment-config"
+        },
+        {
+          "path": "deploy/seis-ssh-cloud-roadmap.json",
           "line": 306,
           "matchTypes": [
             "model:nim"
@@ -53809,7 +50328,7 @@
         },
         {
           "path": "deploy/seis-ssh-cloud-roadmap.json",
-          "line": 327,
+          "line": 326,
           "matchTypes": [
             "model:nim"
           ],
@@ -53817,7 +50336,7 @@
         },
         {
           "path": "deploy/seis-ssh-cloud-roadmap.json",
-          "line": 347,
+          "line": 346,
           "matchTypes": [
             "model:nim"
           ],
@@ -53825,15 +50344,7 @@
         },
         {
           "path": "deploy/seis-ssh-cloud-roadmap.json",
-          "line": 367,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "deployment-config"
-        },
-        {
-          "path": "deploy/seis-ssh-cloud-roadmap.json",
-          "line": 387,
+          "line": 366,
           "matchTypes": [
             "model:nim"
           ],
@@ -53913,7 +50424,7 @@
         },
         {
           "path": "docs/ai/seis-model-scaling.md",
-          "line": 523,
+          "line": 491,
           "matchTypes": [
             "model:nim"
           ],
@@ -54041,7 +50552,7 @@
         },
         {
           "path": "docs/development/agents/ai-workforce-assignments.md",
-          "line": 41,
+          "line": 39,
           "matchTypes": [
             "model:nim"
           ],
@@ -54321,7 +50832,7 @@
         },
         {
           "path": "docs/reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md",
-          "line": 203,
+          "line": 187,
           "matchTypes": [
             "model:nim"
           ],
@@ -55736,142 +52247,6 @@
           "surface": "repository"
         },
         {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/digital-health-clinical-asr-setup/skill-card.md",
-          "line": 2,
-          "matchTypes": [
-            "env:NVIDIA_API_KEY"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/mcore-run-on-slurm/skill-card.md",
-          "line": 2,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/mcore-split-pr/skill-card.md",
-          "line": 12,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemotron-speech/skill-card.md",
-          "line": 12,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemotron-speech/skill-card.md",
-          "line": 2,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/nemotron-speech/skill-card.md",
-          "line": 30,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/physical-ai-infrastructure-setup-and-resilient-scaling/skill-card.md",
-          "line": 24,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/physical-ai-video-data-augmentation/skill-card.md",
-          "line": 25,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-mask-auto-label/skill-card.md",
-          "line": 12,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/tao-train-mask-auto-label/skill-card.md",
-          "line": 2,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "packages/seis-ai/models/nvidia-nim-run-anywhere-downloadable-registry.json",
-          "line": 10,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "repository"
-        },
-        {
-          "path": "packages/seis-ai/models/nvidia-nim-run-anywhere-downloadable-registry.json",
-          "line": 11,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "repository"
-        },
-        {
-          "path": "packages/seis-ai/models/nvidia-nim-run-anywhere-downloadable-registry.json",
-          "line": 2,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "repository"
-        },
-        {
-          "path": "packages/seis-ai/models/nvidia-nim-run-anywhere-downloadable-registry.json",
-          "line": 43,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "repository"
-        },
-        {
-          "path": "packages/seis-ai/models/nvidia-nim-run-anywhere-downloadable-registry.json",
-          "line": 7,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "repository"
-        },
-        {
-          "path": "packages/seis-ai/models/nvidia-nim-run-anywhere-downloadable-registry.json",
-          "line": 70,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "repository"
-        },
-        {
-          "path": "packages/seis-ai/models/nvidia-nim-run-anywhere-downloadable-registry.json",
-          "line": 9,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "repository"
-        },
-        {
           "path": "packages/seis-ai/models/seis-model-benchmark-suite.json",
           "line": 12,
           "matchTypes": [
@@ -55969,7 +52344,7 @@
         },
         {
           "path": "packages/seis-ai/src/lib/plugin-integration.mjs",
-          "line": 478,
+          "line": 365,
           "matchTypes": [
             "model:nim"
           ],
@@ -55977,7 +52352,7 @@
         },
         {
           "path": "packages/seis-ai/src/lib/plugin-integration.mjs",
-          "line": 534,
+          "line": 421,
           "matchTypes": [
             "model:nim"
           ],
@@ -55985,7 +52360,7 @@
         },
         {
           "path": "packages/seis-ai/src/lib/plugin-integration.mjs",
-          "line": 571,
+          "line": 458,
           "matchTypes": [
             "model:nim"
           ],
@@ -55993,7 +52368,7 @@
         },
         {
           "path": "packages/seis-ai/src/lib/plugin-integration.mjs",
-          "line": 648,
+          "line": 535,
           "matchTypes": [
             "model:nim"
           ],
@@ -56001,7 +52376,7 @@
         },
         {
           "path": "packages/seis-ai/src/lib/plugin-integration.mjs",
-          "line": 674,
+          "line": 561,
           "matchTypes": [
             "model:nim"
           ],
@@ -56009,7 +52384,7 @@
         },
         {
           "path": "packages/seis-ai/src/lib/plugin-integration.mjs",
-          "line": 698,
+          "line": 585,
           "matchTypes": [
             "model:nim"
           ],
@@ -56017,7 +52392,7 @@
         },
         {
           "path": "packages/seis-ai/src/mcp/server.mjs",
-          "line": 130,
+          "line": 127,
           "matchTypes": [
             "model:nim"
           ],
@@ -56025,7 +52400,7 @@
         },
         {
           "path": "packages/seis-ai/src/mcp/server.mjs",
-          "line": 96,
+          "line": 93,
           "matchTypes": [
             "model:nim"
           ],
@@ -56129,7 +52504,7 @@
         },
         {
           "path": "packages/seis-ai/test/agent.test.mjs",
-          "line": 1166,
+          "line": 1158,
           "matchTypes": [
             "model:nim"
           ],
@@ -56137,7 +52512,7 @@
         },
         {
           "path": "packages/seis-ai/test/agent.test.mjs",
-          "line": 1198,
+          "line": 1190,
           "matchTypes": [
             "model:nim"
           ],
@@ -56145,7 +52520,7 @@
         },
         {
           "path": "packages/seis-ai/test/agent.test.mjs",
-          "line": 285,
+          "line": 278,
           "matchTypes": [
             "model:nim"
           ],
@@ -56153,7 +52528,7 @@
         },
         {
           "path": "packages/seis-ai/test/agent.test.mjs",
-          "line": 401,
+          "line": 394,
           "matchTypes": [
             "model:nim"
           ],
@@ -56161,7 +52536,7 @@
         },
         {
           "path": "packages/seis-ai/test/agent.test.mjs",
-          "line": 402,
+          "line": 395,
           "matchTypes": [
             "model:nim"
           ],
@@ -56169,7 +52544,7 @@
         },
         {
           "path": "packages/seis-ai/test/agent.test.mjs",
-          "line": 403,
+          "line": 396,
           "matchTypes": [
             "model:nim"
           ],
@@ -56177,7 +52552,7 @@
         },
         {
           "path": "packages/seis-ai/test/agent.test.mjs",
-          "line": 404,
+          "line": 397,
           "matchTypes": [
             "model:nim"
           ],
@@ -56185,7 +52560,7 @@
         },
         {
           "path": "packages/seis-ai/test/agent.test.mjs",
-          "line": 405,
+          "line": 398,
           "matchTypes": [
             "model:nim"
           ],
@@ -56193,7 +52568,7 @@
         },
         {
           "path": "packages/seis-ai/test/agent.test.mjs",
-          "line": 406,
+          "line": 399,
           "matchTypes": [
             "model:nim"
           ],
@@ -56201,7 +52576,7 @@
         },
         {
           "path": "packages/seis-ai/test/mcp-smoke.test.mjs",
-          "line": 352,
+          "line": 316,
           "matchTypes": [
             "model:nim"
           ],
@@ -56209,7 +52584,7 @@
         },
         {
           "path": "packages/seis-ai/test/mcp-smoke.test.mjs",
-          "line": 393,
+          "line": 357,
           "matchTypes": [
             "model:nim"
           ],
@@ -56217,7 +52592,7 @@
         },
         {
           "path": "packages/seis-ai/test/mcp-smoke.test.mjs",
-          "line": 602,
+          "line": 565,
           "matchTypes": [
             "model:nim"
           ],
@@ -56225,7 +52600,7 @@
         },
         {
           "path": "packages/seis-ai/test/mcp-smoke.test.mjs",
-          "line": 779,
+          "line": 742,
           "matchTypes": [
             "model:nim"
           ],
@@ -56233,7 +52608,7 @@
         },
         {
           "path": "packages/seis-ai/test/mcp-smoke.test.mjs",
-          "line": 810,
+          "line": 773,
           "matchTypes": [
             "model:nim"
           ],
@@ -56258,38 +52633,6 @@
         {
           "path": "packages/seis-ai/test/model-benchmark-suite.test.mjs",
           "line": 41,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "repository"
-        },
-        {
-          "path": "packages/seis-ai/test/nvidia-nim-downloadable-registry.test.mjs",
-          "line": 10,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "repository"
-        },
-        {
-          "path": "packages/seis-ai/test/nvidia-nim-downloadable-registry.test.mjs",
-          "line": 14,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "repository"
-        },
-        {
-          "path": "packages/seis-ai/test/nvidia-nim-downloadable-registry.test.mjs",
-          "line": 16,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "repository"
-        },
-        {
-          "path": "packages/seis-ai/test/nvidia-nim-downloadable-registry.test.mjs",
-          "line": 18,
           "matchTypes": [
             "model:nim"
           ],
@@ -56577,6 +52920,14 @@
         },
         {
           "path": "scripts/check-ai-workforce-assignments.mjs",
+          "line": 100,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "backend"
+        },
+        {
+          "path": "scripts/check-ai-workforce-assignments.mjs",
           "line": 101,
           "matchTypes": [
             "model:nim"
@@ -56593,7 +52944,7 @@
         },
         {
           "path": "scripts/check-ai-workforce-assignments.mjs",
-          "line": 103,
+          "line": 182,
           "matchTypes": [
             "model:nim"
           ],
@@ -56601,15 +52952,7 @@
         },
         {
           "path": "scripts/check-ai-workforce-assignments.mjs",
-          "line": 191,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-ai-workforce-assignments.mjs",
-          "line": 192,
+          "line": 183,
           "matchTypes": [
             "model:nim"
           ],
@@ -56826,30 +53169,6 @@
         {
           "path": "scripts/check-seis-agi-public-readiness-evidence.mjs",
           "line": 91,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-ai-nvidia-skills-downloadable.mjs",
-          "line": 191,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-ai-nvidia-skills-downloadable.mjs",
-          "line": 193,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-ai-nvidia-skills-downloadable.mjs",
-          "line": 52,
           "matchTypes": [
             "model:nim"
           ],
@@ -57225,7 +53544,7 @@
         },
         {
           "path": "scripts/check-seis-model-parameter-ladder.mjs",
-          "line": 103,
+          "line": 100,
           "matchTypes": [
             "model:nim"
           ],
@@ -57233,7 +53552,7 @@
         },
         {
           "path": "scripts/check-seis-model-parameter-ladder.mjs",
-          "line": 110,
+          "line": 107,
           "matchTypes": [
             "model:nim"
           ],
@@ -57241,7 +53560,7 @@
         },
         {
           "path": "scripts/check-seis-model-parameter-ladder.mjs",
-          "line": 117,
+          "line": 228,
           "matchTypes": [
             "model:nim"
           ],
@@ -57249,7 +53568,7 @@
         },
         {
           "path": "scripts/check-seis-model-parameter-ladder.mjs",
-          "line": 246,
+          "line": 71,
           "matchTypes": [
             "model:nim"
           ],
@@ -57257,7 +53576,7 @@
         },
         {
           "path": "scripts/check-seis-model-parameter-ladder.mjs",
-          "line": 74,
+          "line": 79,
           "matchTypes": [
             "model:nim"
           ],
@@ -57265,7 +53584,7 @@
         },
         {
           "path": "scripts/check-seis-model-parameter-ladder.mjs",
-          "line": 82,
+          "line": 86,
           "matchTypes": [
             "model:nim"
           ],
@@ -57273,15 +53592,7 @@
         },
         {
           "path": "scripts/check-seis-model-parameter-ladder.mjs",
-          "line": 89,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-model-parameter-ladder.mjs",
-          "line": 96,
+          "line": 93,
           "matchTypes": [
             "model:nim"
           ],
@@ -57289,7 +53600,7 @@
         },
         {
           "path": "scripts/check-seis-model-scaling-hardware-profile.mjs",
-          "line": 101,
+          "line": 148,
           "matchTypes": [
             "model:nim"
           ],
@@ -57297,7 +53608,7 @@
         },
         {
           "path": "scripts/check-seis-model-scaling-hardware-profile.mjs",
-          "line": 166,
+          "line": 160,
           "matchTypes": [
             "model:nim"
           ],
@@ -57305,7 +53616,7 @@
         },
         {
           "path": "scripts/check-seis-model-scaling-hardware-profile.mjs",
-          "line": 178,
+          "line": 98,
           "matchTypes": [
             "model:nim"
           ],
@@ -59808,7 +56119,7 @@
         },
         {
           "path": "apps/seis-core/data/seis-router-routes.json",
-          "line": 211,
+          "line": 201,
           "matchTypes": [
             "model:ollama"
           ],
@@ -59816,7 +56127,7 @@
         },
         {
           "path": "apps/seis-core/data/seis-router-routes.json",
-          "line": 218,
+          "line": 208,
           "matchTypes": [
             "model:ollama"
           ],
@@ -59932,7 +56243,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1375,
+          "line": 1274,
           "matchTypes": [
             "model:ollama"
           ],
@@ -59940,7 +56251,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1376,
+          "line": 1275,
           "matchTypes": [
             "model:ollama"
           ],
@@ -59948,7 +56259,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1447,
+          "line": 1346,
           "matchTypes": [
             "model:ollama"
           ],
@@ -59956,7 +56267,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1448,
+          "line": 1347,
           "matchTypes": [
             "model:ollama"
           ],
@@ -59964,7 +56275,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1456,
+          "line": 1355,
           "matchTypes": [
             "model:ollama"
           ],
@@ -59972,7 +56283,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1700,
+          "line": 1599,
           "matchTypes": [
             "model:ollama"
           ],
@@ -59980,7 +56291,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1934,
+          "line": 1833,
           "matchTypes": [
             "model:ollama"
           ],
@@ -59988,7 +56299,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 390,
+          "line": 388,
           "matchTypes": [
             "model:ollama"
           ],
@@ -59996,7 +56307,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 393,
+          "line": 391,
           "matchTypes": [
             "model:ollama"
           ],
@@ -60004,7 +56315,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 5815,
+          "line": 5708,
           "matchTypes": [
             "model:ollama"
           ],
@@ -60012,7 +56323,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 730,
+          "line": 720,
           "matchTypes": [
             "model:ollama"
           ],
@@ -60929,7 +57240,7 @@
         },
         {
           "path": "content/development/seis-model-scaling-hardware-profile.json",
-          "line": 358,
+          "line": 326,
           "matchTypes": [
             "model:ollama"
           ],
@@ -60937,7 +57248,7 @@
         },
         {
           "path": "content/development/seis-model-scaling-hardware-profile.json",
-          "line": 359,
+          "line": 327,
           "matchTypes": [
             "model:ollama"
           ],
@@ -60945,7 +57256,7 @@
         },
         {
           "path": "content/development/seis-public-readiness-status.json",
-          "line": 143,
+          "line": 141,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61137,7 +57448,7 @@
         },
         {
           "path": "docs/ai/ai-workforce-training.md",
-          "line": 45,
+          "line": 43,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61145,7 +57456,7 @@
         },
         {
           "path": "docs/ai/ai-workforce-training.md",
-          "line": 98,
+          "line": 94,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61153,7 +57464,7 @@
         },
         {
           "path": "docs/ai/seis-ai-core.md",
-          "line": 238,
+          "line": 191,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61161,7 +57472,7 @@
         },
         {
           "path": "docs/ai/seis-ai-core.md",
-          "line": 48,
+          "line": 45,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61169,7 +57480,7 @@
         },
         {
           "path": "docs/ai/seis-model-scaling.md",
-          "line": 544,
+          "line": 512,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61201,7 +57512,7 @@
         },
         {
           "path": "docs/development/agents/ai-workforce-assignments.md",
-          "line": 35,
+          "line": 33,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61209,7 +57520,7 @@
         },
         {
           "path": "docs/development/agents/ai-workforce-assignments.md",
-          "line": 60,
+          "line": 58,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61217,7 +57528,7 @@
         },
         {
           "path": "docs/development/agents/ai-workforce-assignments.md",
-          "line": 79,
+          "line": 76,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61225,7 +57536,7 @@
         },
         {
           "path": "docs/development/ai-cli-stack.md",
-          "line": 123,
+          "line": 116,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61233,7 +57544,7 @@
         },
         {
           "path": "docs/development/ai-cli-stack.md",
-          "line": 157,
+          "line": 148,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61241,7 +57552,7 @@
         },
         {
           "path": "docs/development/ai-cli-stack.md",
-          "line": 184,
+          "line": 175,
           "matchTypes": [
             "env:OLLAMA_HOST",
             "endpoint:127.0.0.1:11434",
@@ -61251,7 +57562,7 @@
         },
         {
           "path": "docs/development/ai-cli-stack.md",
-          "line": 200,
+          "line": 179,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61259,7 +57570,7 @@
         },
         {
           "path": "docs/development/ai-cli-stack.md",
-          "line": 205,
+          "line": 184,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61267,7 +57578,7 @@
         },
         {
           "path": "docs/development/ai-cli-stack.md",
-          "line": 24,
+          "line": 22,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61275,7 +57586,7 @@
         },
         {
           "path": "docs/development/ai-cli-stack.md",
-          "line": 37,
+          "line": 35,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61283,7 +57594,7 @@
         },
         {
           "path": "docs/development/ai-cli-stack.md",
-          "line": 38,
+          "line": 36,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61291,7 +57602,7 @@
         },
         {
           "path": "docs/development/ai-cli-stack.md",
-          "line": 55,
+          "line": 51,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61299,7 +57610,7 @@
         },
         {
           "path": "docs/development/ai-cli-stack.md",
-          "line": 65,
+          "line": 61,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61307,7 +57618,7 @@
         },
         {
           "path": "docs/development/ai-cli-stack.md",
-          "line": 76,
+          "line": 72,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61315,7 +57626,7 @@
         },
         {
           "path": "docs/development/ai-cli-stack.md",
-          "line": 91,
+          "line": 85,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61323,7 +57634,7 @@
         },
         {
           "path": "docs/development/ai-cli-stack.md",
-          "line": 92,
+          "line": 86,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61395,15 +57706,7 @@
         },
         {
           "path": "docs/GETTING_STARTED.md",
-          "line": 127,
-          "matchTypes": [
-            "model:ollama"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "docs/governance/open-source-governance.md",
-          "line": 36,
+          "line": 117,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61427,7 +57730,7 @@
         },
         {
           "path": "docs/INDEX.md",
-          "line": 21,
+          "line": 18,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61467,7 +57770,7 @@
         },
         {
           "path": "docs/LOCAL_AI_SETUP.md",
-          "line": 80,
+          "line": 79,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61602,14 +57905,6 @@
           "surface": "repository"
         },
         {
-          "path": "packages/seis-ai/downloadable/nvidia-skills/skill-cards/jetson-llm-benchmark/skill-card.md",
-          "line": 2,
-          "matchTypes": [
-            "model:ollama"
-          ],
-          "surface": "documentation"
-        },
-        {
           "path": "plugins/seis/README.md",
           "line": 118,
           "matchTypes": [
@@ -61619,7 +57914,7 @@
         },
         {
           "path": "README.md",
-          "line": 449,
+          "line": 459,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61627,7 +57922,7 @@
         },
         {
           "path": "README.md",
-          "line": 545,
+          "line": 555,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61635,7 +57930,7 @@
         },
         {
           "path": "scripts/ai-launcher.cjs",
-          "line": 115,
+          "line": 21,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61643,7 +57938,7 @@
         },
         {
           "path": "scripts/ai-launcher.cjs",
-          "line": 116,
+          "line": 39,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61651,15 +57946,7 @@
         },
         {
           "path": "scripts/ai-launcher.cjs",
-          "line": 117,
-          "matchTypes": [
-            "model:ollama"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/ai-launcher.cjs",
-          "line": 23,
+          "line": 40,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61675,7 +57962,7 @@
         },
         {
           "path": "scripts/ai-launcher.cjs",
-          "line": 42,
+          "line": 83,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61683,7 +57970,15 @@
         },
         {
           "path": "scripts/ai-launcher.cjs",
-          "line": 43,
+          "line": 84,
+          "matchTypes": [
+            "model:ollama"
+          ],
+          "surface": "backend"
+        },
+        {
+          "path": "scripts/ai-launcher.cjs",
+          "line": 85,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61691,7 +57986,7 @@
         },
         {
           "path": "scripts/ai-routing-policy.cjs",
-          "line": 81,
+          "line": 77,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61699,7 +57994,7 @@
         },
         {
           "path": "scripts/ai-routing-policy.cjs",
-          "line": 82,
+          "line": 78,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61821,7 +58116,7 @@
         },
         {
           "path": "scripts/check-ai-stack.cjs",
-          "line": 124,
+          "line": 24,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61829,7 +58124,7 @@
         },
         {
           "path": "scripts/check-ai-stack.cjs",
-          "line": 26,
+          "line": 38,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61837,7 +58132,7 @@
         },
         {
           "path": "scripts/check-ai-stack.cjs",
-          "line": 40,
+          "line": 39,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61845,7 +58140,15 @@
         },
         {
           "path": "scripts/check-ai-stack.cjs",
-          "line": 41,
+          "line": 95,
+          "matchTypes": [
+            "model:ollama"
+          ],
+          "surface": "backend"
+        },
+        {
+          "path": "scripts/check-ai-workforce-assignments.mjs",
+          "line": 112,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61861,15 +58164,7 @@
         },
         {
           "path": "scripts/check-ai-workforce-assignments.mjs",
-          "line": 114,
-          "matchTypes": [
-            "model:ollama"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-ai-workforce-assignments.mjs",
-          "line": 144,
+          "line": 135,
           "matchTypes": [
             "model:ollama"
           ],
@@ -61993,7 +58288,7 @@
         },
         {
           "path": "scripts/check-seis-model-scaling-hardware-profile.mjs",
-          "line": 230,
+          "line": 211,
           "matchTypes": [
             "model:ollama"
           ],
@@ -62001,7 +58296,7 @@
         },
         {
           "path": "scripts/check-seis-model-scaling-hardware-profile.mjs",
-          "line": 588,
+          "line": 560,
           "matchTypes": [
             "model:ollama"
           ],
@@ -62435,14 +58730,6 @@
           "surface": "repository"
         },
         {
-          "path": "apps/seis-core/script.js",
-          "line": 399,
-          "matchTypes": [
-            "env:OPENAI_API_KEY"
-          ],
-          "surface": "repository"
-        },
-        {
           "path": "apps/seis-demo-web/data/seis-sub-agent-five-year-plan-view.json",
           "line": 411,
           "matchTypes": [
@@ -62612,7 +58899,7 @@
         },
         {
           "path": "content/development/seis-model-scaling-hardware-profile.json",
-          "line": 519,
+          "line": 476,
           "matchTypes": [
             "model:gpt-"
           ],
@@ -62644,7 +58931,7 @@
         },
         {
           "path": "deploy/seis-ssh-cloud-roadmap.json",
-          "line": 14,
+          "line": 11,
           "matchTypes": [
             "model:gpt-"
           ],
@@ -62668,7 +58955,7 @@
         },
         {
           "path": "docs/development/ai-cli-stack.md",
-          "line": 181,
+          "line": 172,
           "matchTypes": [
             "env:OPENAI_API_KEY"
           ],
@@ -62684,39 +58971,15 @@
         },
         {
           "path": "docs/operations/seis-ssh-mobile-24x7.md",
-          "line": 158,
+          "line": 148,
           "matchTypes": [
             "env:OPENAI_API_KEY"
           ],
           "surface": "documentation"
         },
         {
-          "path": "packages/seis-ai/models/nvidia-nim-run-anywhere-downloadable-registry.json",
-          "line": 102,
-          "matchTypes": [
-            "model:gpt-"
-          ],
-          "surface": "repository"
-        },
-        {
-          "path": "packages/seis-ai/models/nvidia-nim-run-anywhere-downloadable-registry.json",
-          "line": 103,
-          "matchTypes": [
-            "model:gpt-"
-          ],
-          "surface": "repository"
-        },
-        {
-          "path": "packages/seis-ai/test/nvidia-nim-downloadable-registry.test.mjs",
-          "line": 42,
-          "matchTypes": [
-            "model:gpt-"
-          ],
-          "surface": "repository"
-        },
-        {
           "path": "scripts/ai-launcher.cjs",
-          "line": 18,
+          "line": 16,
           "matchTypes": [
             "env:OPENAI_API_KEY"
           ],
@@ -62772,7 +59035,7 @@
         },
         {
           "path": "scripts/check-ai-stack.cjs",
-          "line": 18,
+          "line": 16,
           "matchTypes": [
             "env:OPENAI_API_KEY"
           ],
@@ -62805,14 +59068,6 @@
         {
           "path": "scripts/check-release-artifact-policy.mjs",
           "line": 136,
-          "matchTypes": [
-            "env:OPENAI_API_KEY"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-ai-nvidia-skills-downloadable.mjs",
-          "line": 233,
           "matchTypes": [
             "env:OPENAI_API_KEY"
           ],
@@ -62852,31 +59107,7 @@
         },
         {
           "path": "scripts/check-seis-public-readiness-docs.mjs",
-          "line": 171,
-          "matchTypes": [
-            "env:OPENAI_API_KEY"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-public-readiness-lanes.mjs",
-          "line": 274,
-          "matchTypes": [
-            "env:OPENAI_API_KEY"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-public-readiness-sensitive-boundary.mjs",
-          "line": 198,
-          "matchTypes": [
-            "env:OPENAI_API_KEY"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-public-readiness-sensitive-boundary.mjs",
-          "line": 53,
+          "line": 143,
           "matchTypes": [
             "env:OPENAI_API_KEY"
           ],
@@ -62884,7 +59115,7 @@
         },
         {
           "path": "scripts/check-seis-public-readiness-status.mjs",
-          "line": 181,
+          "line": 160,
           "matchTypes": [
             "env:OPENAI_API_KEY"
           ],
@@ -63893,270 +60124,6 @@
         },
         {
           "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 191,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 192,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 193,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 194,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 195,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 196,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 197,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 198,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 199,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 200,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 201,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 202,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 203,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 204,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 205,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 206,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 207,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 208,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 209,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 210,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 211,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 212,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 213,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 214,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 215,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 216,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 217,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 218,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 219,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 220,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 221,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 222,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
-          "line": 223,
-          "matchTypes": [
-            "model:replicate"
-          ],
-          "surface": "backend"
-        },
-        {
-          "path": "scripts/check-seis-reference-banks.mjs",
           "line": 92,
           "matchTypes": [
             "model:replicate"
@@ -64208,7 +60175,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 4366,
+          "line": 4257,
           "matchTypes": [
             "model:runway"
           ],
@@ -65456,7 +61423,7 @@
         },
         {
           "path": "package.json",
-          "line": 230,
+          "line": 225,
           "matchTypes": [
             "model:runway"
           ],
@@ -65464,7 +61431,7 @@
         },
         {
           "path": "package.json",
-          "line": 98,
+          "line": 94,
           "matchTypes": [
             "model:runway"
           ],
@@ -66509,41 +62476,6 @@
       "securityFindings": []
     },
     {
-      "provider": "Stability AI",
-      "category": "image provider",
-      "expectedEnvironmentVariables": [
-        "STABILITY_API_KEY"
-      ],
-      "apiKeyRequired": true,
-      "packageOrSdk": [],
-      "endpoints": [],
-      "modelIdentifiers": [
-        "stable-diffusion"
-      ],
-      "locations": [
-        {
-          "path": "packages/seis-ai/models/nvidia-nim-run-anywhere-downloadable-registry.json",
-          "line": 100,
-          "matchTypes": [
-            "model:stable-diffusion"
-          ],
-          "surface": "repository"
-        }
-      ],
-      "frontendDirectCall": false,
-      "backendSide": false,
-      "documentationOnly": false,
-      "placeholderOnly": false,
-      "runtimeVerified": false,
-      "reachableRealNetworkCall": false,
-      "noKeyFallback": "not verified",
-      "status": "Unknown",
-      "recommendedAction": "Review manually before enabling.",
-      "finalDecision": "Retain",
-      "apiKeyRequiredState": "optional or required only if feature is enabled",
-      "securityFindings": []
-    },
-    {
       "provider": "Together AI",
       "category": "cloud model provider",
       "expectedEnvironmentVariables": [
@@ -66557,16 +62489,8 @@
       ],
       "locations": [
         {
-          "path": "apps/seis-core/data/seis-god-mode-status.json",
-          "line": 146,
-          "matchTypes": [
-            "model:together"
-          ],
-          "surface": "repository"
-        },
-        {
           "path": "apps/web/desktop.js",
-          "line": 382,
+          "line": 380,
           "matchTypes": [
             "model:together"
           ],
@@ -66773,14 +62697,6 @@
           "surface": "repository"
         },
         {
-          "path": "content/development/seis-ssh-mobile-direct-cloud-acceptance-ledger.json",
-          "line": 79,
-          "matchTypes": [
-            "model:together"
-          ],
-          "surface": "repository"
-        },
-        {
           "path": "content/lab/long-development-roadmap.json",
           "line": 8,
           "matchTypes": [
@@ -66846,7 +62762,7 @@
         },
         {
           "path": "docs/ai/seis-model-scaling.md",
-          "line": 209,
+          "line": 204,
           "matchTypes": [
             "model:together"
           ],
@@ -66902,7 +62818,7 @@
         },
         {
           "path": "docs/reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md",
-          "line": 150,
+          "line": 134,
           "matchTypes": [
             "model:together"
           ],
@@ -66975,14 +62891,6 @@
         {
           "path": "plugins/seis/skills/seis-god-mode-developer/SKILL.md",
           "line": 3,
-          "matchTypes": [
-            "model:together"
-          ],
-          "surface": "documentation"
-        },
-        {
-          "path": "README.md",
-          "line": 215,
           "matchTypes": [
             "model:together"
           ],
@@ -67503,12 +63411,6 @@
     },
     {
       "name": "CLOUDFLARE_API_TOKEN",
-      "path": "scripts/check-seis-public-readiness-sensitive-boundary.mjs",
-      "line": 53,
-      "surface": "backend"
-    },
-    {
-      "name": "CLOUDFLARE_API_TOKEN",
       "path": "scripts/create-connector-activation-report.cjs",
       "line": 49,
       "surface": "backend"
@@ -67569,12 +63471,6 @@
     },
     {
       "name": "GITHUB_TOKEN",
-      "path": "scripts/check-seis-public-readiness-sensitive-boundary.mjs",
-      "line": 53,
-      "surface": "backend"
-    },
-    {
-      "name": "GITHUB_TOKEN",
       "path": "SEIST/deploy/cloud-environment.json",
       "line": 22,
       "surface": "repository"
@@ -67601,12 +63497,6 @@
       "name": "NETLIFY_AUTH_TOKEN",
       "path": "scripts/check-git-secret-history.mjs",
       "line": 61,
-      "surface": "backend"
-    },
-    {
-      "name": "NETLIFY_AUTH_TOKEN",
-      "path": "scripts/check-seis-public-readiness-sensitive-boundary.mjs",
-      "line": 53,
       "surface": "backend"
     },
     {
@@ -67649,12 +63539,6 @@
       "name": "VERCEL_TOKEN",
       "path": "scripts/check-git-secret-history.mjs",
       "line": 61,
-      "surface": "backend"
-    },
-    {
-      "name": "VERCEL_TOKEN",
-      "path": "scripts/check-seis-public-readiness-sensitive-boundary.mjs",
-      "line": 53,
       "surface": "backend"
     },
     {
@@ -67826,13 +63710,6 @@
         "provider": "Runway",
         "expectedEnvironmentVariables": [
           "RUNWAY_API_KEY"
-        ],
-        "status": "Unknown"
-      },
-      {
-        "provider": "Stability AI",
-        "expectedEnvironmentVariables": [
-          "STABILITY_API_KEY"
         ],
         "status": "Unknown"
       },
