@@ -7,129 +7,150 @@ import { dirname } from "node:path";
 const args = parseArgs(process.argv.slice(2));
 const write = Boolean(args.write);
 const check = Boolean(args.check);
-const outputJson = args.output || "reports/seis-ssh-public-access/github-policy-latest.json";
-const outputMarkdown = args.markdown || "reports/seis-ssh-public-access/github-policy-latest.md";
+const outputJson = args.output || "reports/seis-ssh-public-access/signing-guide-latest.json";
+const outputMarkdown = args.markdown || "reports/seis-ssh-public-access/signing-guide-latest.md";
 
 if (args.help) {
   printHelp();
   process.exit(0);
 }
 
-const report = buildReport();
+const guide = buildGuide();
 
 if (write) {
-  writeFile(outputJson, `${JSON.stringify(report, null, 2)}\n`);
-  writeFile(outputMarkdown, renderMarkdown(report));
+  writeFile(outputJson, `${JSON.stringify(guide, null, 2)}\n`);
+  writeFile(outputMarkdown, renderMarkdown(guide));
 }
 
 if (!write) {
-  console.log(JSON.stringify(report, null, 2));
+  console.log(JSON.stringify(guide, null, 2));
 }
 
-if (check && !report.ok) {
+if (check && !guide.ok) {
   process.exit(1);
 }
 
-function buildReport() {
+function buildGuide() {
   const blockers = [];
   const warnings = [];
   const contract = readJson("deploy/seis-ssh-public-access-contract.json", blockers);
   const packageJson = readJson("package.json", blockers);
   const runbook = readText("docs/deployment/seis-ssh-public-github-access.md", blockers);
-  const status = readText("docs/STATUS.md", blockers);
-  const queue = readText("docs/roadmap/NEXT_PR_QUEUE.md", blockers);
+  const readme = readText("README.md", blockers);
   const prTemplate = readText(".github/PULL_REQUEST_TEMPLATE.md", blockers);
   const workflow = readText(".github/workflows/seis-ssh-public-access.yml", blockers);
   const scripts = packageJson?.scripts || {};
   const signing = inspectSigning();
 
-  const expectedRuleset = {
-    name: "SEIS",
-    enforcement: "ACTIVE",
-    target: "BRANCH",
-    requiredApprovingReviewCount: 10,
-    requireCodeOwnerReview: true,
-    requireLastPushApproval: true,
-    requiredReviewThreadResolution: true,
-    requiredSignatures: true
-  };
-
   if (contract?.targetAlias !== "SEIS-SSH") blockers.push("contract targetAlias must remain SEIS-SSH");
   if (contract?.serverAndPortPolicy?.mode !== "preserve-existing-server-and-port") blockers.push("contract must preserve the same server and port");
-  if (contract?.githubExperience?.policyDoctor !== "npm run report:seis-ssh-public-github-policy") blockers.push("contract must link GitHub policy doctor report command");
-  if (scripts["check:seis-ssh-public-github-policy"] !== "node scripts/create-seis-ssh-public-github-policy-doctor.mjs --check") blockers.push("package check script must be declared");
-  if (scripts["report:seis-ssh-public-github-policy"] !== "node scripts/create-seis-ssh-public-github-policy-doctor.mjs --write") blockers.push("package report script must be declared");
-  if (scripts["run:seis-ssh-public-github-policy"] !== "npm run check:seis-ssh-public-github-policy && npm run report:seis-ssh-public-github-policy") blockers.push("package run script must be declared");
-  if (!workflow.includes("npm run check:seis-ssh-public-github-policy")) blockers.push("CI workflow must run GitHub policy doctor");
+  if (contract?.githubExperience?.signingGuide !== "npm run report:seis-ssh-public-signing-guide") blockers.push("contract must link public signing guide report command");
+
+  if (scripts["check:seis-ssh-public-signing-guide"] !== "node scripts/create-seis-ssh-public-signing-guide.mjs --check") blockers.push("package check script must be declared");
+  if (scripts["report:seis-ssh-public-signing-guide"] !== "node scripts/create-seis-ssh-public-signing-guide.mjs --write") blockers.push("package report script must be declared");
+  if (scripts["run:seis-ssh-public-signing-guide"] !== "npm run check:seis-ssh-public-signing-guide && npm run report:seis-ssh-public-signing-guide") blockers.push("package run script must be declared");
+  if (!workflow.includes("npm run check:seis-ssh-public-signing-guide")) blockers.push("CI workflow must run the public signing guide check");
 
   for (const command of [
-    "npm run check:seis-ssh-public-github-policy",
-    "npm run report:seis-ssh-public-github-policy"
+    "npm run check:seis-ssh-public-signing-guide",
+    "npm run report:seis-ssh-public-signing-guide"
   ]) {
     if (!(contract?.requiredCommands || []).includes(command)) blockers.push(`contract must require ${command}`);
   }
 
   for (const surface of [
-    "scripts/create-seis-ssh-public-github-policy-doctor.mjs",
-    "reports/seis-ssh-public-access/github-policy-latest.md"
+    "scripts/create-seis-ssh-public-signing-guide.mjs",
+    "reports/seis-ssh-public-access/signing-guide-latest.md"
   ]) {
     if (!(contract?.evidenceSurfaces || []).includes(surface)) blockers.push(`contract evidence surfaces must include ${surface}`);
   }
 
-  const docs = `${runbook}\n${status}\n${queue}\n${prTemplate}`;
+  const docs = `${runbook}\n${readme}\n${prTemplate}`;
   for (const token of [
-    "npm run check:seis-ssh-public-github-policy",
-    "npm run report:seis-ssh-public-github-policy",
-    "signed commit setup",
-    "required signatures",
-    "last-push approval",
-    "code owner review",
-    "review-thread resolution",
-    "same server and port"
+    "npm run check:seis-ssh-public-signing-guide",
+    "npm run report:seis-ssh-public-signing-guide",
+    "verified signed commits",
+    "GitHub signing key",
+    "same server and port",
+    "required signatures"
   ]) {
     if (!docs.includes(token)) blockers.push(`docs must include ${token}`);
   }
 
-  if (!signing.signatureReady) warnings.push("local signed commit setup is not proven");
+  if (!signing.signatureReady) warnings.push("local verified signed commit setup is not proven");
   if (signing.latestCommitSignature.state !== "good-signature") warnings.push(`latest local commit signature state is ${signing.latestCommitSignature.state}`);
 
   const ok = blockers.length === 0;
   return {
-    id: "seis-ssh-public-github-policy-doctor",
+    id: "seis-ssh-public-signing-guide",
     generatedAt: new Date().toISOString(),
     ok,
-    status: ok && signing.signatureReady ? "policy-ready-local-signing-detected" : ok ? "policy-setup-needed" : "blocked",
-    mode: "read-only-no-github-auth-no-live-ssh-no-merge-no-config-write",
+    status: ok && signing.signatureReady ? "signing-ready-local" : ok ? "signing-setup-needed" : "blocked",
+    mode: "read-only-no-github-auth-no-live-ssh-no-config-write-no-key-print",
     alias: "SEIS-SSH",
-    purpose: "Help public SEIS-SSH contributors understand GitHub review, last-push approval, signed commit setup, and merge policy prerequisites before they push or request merge.",
+    purpose: "Give public SEIS-SSH contributors a safe path to verified signed commits before GitHub required-signature policy blocks merge.",
     serverAndPortPolicy: {
       invariant: "Keep the same server and port.",
       turkishInvariant: "Ayni sunucu ve baglanti noktasi korunur.",
       mutationAllowed: false,
       migrationRequiresApproval: true
     },
-    githubPolicySnapshot: expectedRuleset,
     localGitSigning: signing,
+    safeSetupPaths: [
+      {
+        id: "github-ssh-signing",
+        label: "GitHub SSH signing key path",
+        status: "manual-user-owned",
+        steps: [
+          "Create or select a user-owned public signing key outside the repository.",
+          "Add only the public signing key to GitHub Settings as a signing key.",
+          "Configure git signing outside this script using your chosen global or local scope.",
+          "Make a new commit and verify it shows as signed before requesting merge."
+        ],
+        exampleCommandsNotRun: [
+          "git config --global gpg.format ssh",
+          "git config --global user.signingkey ~/.ssh/<public-signing-key>.pub",
+          "git config --global commit.gpgsign true",
+          "git log -1 --show-signature"
+        ]
+      },
+      {
+        id: "github-gpg-signing",
+        label: "GitHub GPG signing key path",
+        status: "manual-user-owned",
+        steps: [
+          "Generate or select a user-owned GPG signing key outside the repository.",
+          "Add only the public GPG key to GitHub Settings.",
+          "Configure git signing outside this script using your chosen global or local scope.",
+          "Make a new commit and verify it shows as signed before requesting merge."
+        ],
+        exampleCommandsNotRun: [
+          "git config --global gpg.format openpgp",
+          "git config --global user.signingkey <public-key-id>",
+          "git config --global commit.gpgsign true",
+          "git log -1 --show-signature"
+        ]
+      }
+    ],
     contributorChecklist: [
+      "Run npm run check:seis-ssh-public-signing-guide before pushing a SEIS-SSH PR update.",
+      "Use verified signed commits for new SEIS-SSH PR updates when repository rules require signatures.",
+      "Do not paste private keys, tokens, passwords, cookies, or .env values into PRs, issues, docs, or generated reports.",
       "Keep SEIS-SSH as the only visible alias and preserve the same server and port.",
-      "Run npm run check:seis-ssh-public-github-policy before pushing a SEIS-SSH PR update.",
-      "Use signed commits or obtain an approved repository bypass before merge.",
-      "Plan for requiredApprovingReviewCount: 10, code owner review, last-push approval, and review-thread resolution.",
-      "Keep auto-merge enabled only after static gates are green and human policy work is acknowledged."
+      "Treat signing setup as GitHub policy work, not as an SSH server or port change."
     ],
     commands: {
-      check: "npm run check:seis-ssh-public-github-policy",
-      report: "npm run report:seis-ssh-public-github-policy",
+      check: "npm run check:seis-ssh-public-signing-guide",
+      report: "npm run report:seis-ssh-public-signing-guide",
       safePrereqs: [
-        "npm run check:seis-ssh-public-access",
-        "npm run check:seis-ssh-public-merge-readiness",
-        "npm run check:seis-ssh-public-artifact-hygiene",
+        "npm run check:seis-ssh-public-github-policy",
+        "git log -1 --format=%G?",
         "git config --get commit.gpgsign"
       ],
       approvalGated: [
-        "changing repository rulesets",
         "admin-bypassing required signatures",
         "signing or re-signing historical commits",
+        "changing repository rulesets",
         "merging PR #56",
         "live SSH with ssh SEIS-SSH"
       ]
@@ -142,16 +163,16 @@ function buildReport() {
     warnings,
     nextActions: ok
       ? [
-          "If local signing is not ready, run npm run check:seis-ssh-public-signing-guide and configure commit signing outside this repo before the next public SEIS-SSH push.",
-          "Keep required GitHub approvals and review-thread resolution visible in PR updates.",
-          "Do not change SEIS-SSH host or port to work around GitHub policy blockers."
+          "If signing is not ready, configure signing outside this script and create a new signed commit.",
+          "Keep required GitHub approvals and last-push approval visible in PR updates.",
+          "Do not change SEIS-SSH host or port to work around required-signature policy."
         ]
-      : ["Fix GitHub policy doctor wiring, then rerun npm run check:seis-ssh-public-github-policy."],
+      : ["Fix signing guide wiring, then rerun npm run check:seis-ssh-public-signing-guide."],
     safety: [
-      "This doctor does not call gh auth status or contact GitHub.",
-      "This doctor does not open a live SSH session.",
-      "This doctor does not merge, admin-bypass, force-push, or change repository rules.",
-      "This doctor does not print signing keys, private keys, tokens, cookies, hostnames, full IPv4/IPv6 addresses, or provider credentials.",
+      "This guide does not call gh auth status or contact GitHub.",
+      "This guide does not open a live SSH session.",
+      "This guide does not write git config, SSH config, GPG config, or repository settings.",
+      "This guide does not print signing keys, private keys, tokens, cookies, hostnames, full IPv4/IPv6 addresses, or provider credentials.",
       "Changing HostName or Port remains approval-gated."
     ]
   };
@@ -161,7 +182,6 @@ function inspectSigning() {
   const commitGpgSign = readGitConfig("commit.gpgsign");
   const gpgFormat = readGitConfig("gpg.format");
   const signingKey = readGitConfig("user.signingkey");
-  const tagGpgSign = readGitConfig("tag.gpgsign");
   const latestSignature = latestCommitSignature();
   const commitSigningEnabled = normalizeBoolean(commitGpgSign.value) === true;
   const signatureReady = commitSigningEnabled && signingKey.present && ["good-signature", "good-signature-untrusted"].includes(latestSignature.state);
@@ -172,12 +192,12 @@ function inspectSigning() {
     commitGpgSign: normalizeConfigBoolean(commitGpgSign),
     gpgFormat: gpgFormat.present ? sanitizeConfigValue(gpgFormat.value) : "unset",
     signingKeyConfigured: signingKey.present,
-    tagGpgSign: normalizeConfigBoolean(tagGpgSign),
     latestCommitSignature: latestSignature,
     signatureReady,
     notes: [
       "Signing key values are intentionally not printed.",
-      "Missing local signing config is setup-needed, not a SEIS-SSH server or port failure."
+      "Missing signing setup is setup-needed, not a SEIS-SSH server or port failure.",
+      "This guide emits example commands but does not execute git config writes."
     ]
   };
 }
@@ -230,7 +250,7 @@ function sanitizeConfigValue(value) {
 }
 
 function renderMarkdown(report) {
-  return `# SEIS SSH Public GitHub Policy Doctor
+  return `# SEIS SSH Public Signing Guide
 
 Generated: ${report.generatedAt}
 
@@ -249,26 +269,18 @@ ${report.purpose}
 - Mutation allowed: no
 - Migration requires approval: yes
 
-## GitHub Policy Snapshot
-
-- Ruleset: ${report.githubPolicySnapshot.name}
-- Enforcement: ${report.githubPolicySnapshot.enforcement}
-- Target: ${report.githubPolicySnapshot.target}
-- requiredApprovingReviewCount: ${report.githubPolicySnapshot.requiredApprovingReviewCount}
-- requireCodeOwnerReview: ${report.githubPolicySnapshot.requireCodeOwnerReview}
-- requireLastPushApproval: ${report.githubPolicySnapshot.requireLastPushApproval}
-- requiredReviewThreadResolution: ${report.githubPolicySnapshot.requiredReviewThreadResolution}
-- required signatures: ${report.githubPolicySnapshot.requiredSignatures}
-
 ## Local Signed Commit Setup
 
 - Commit signing enabled: ${report.localGitSigning.commitSigningEnabled}
 - commit.gpgsign: ${report.localGitSigning.commitGpgSign}
 - gpg.format: ${report.localGitSigning.gpgFormat}
 - Signing key configured: ${report.localGitSigning.signingKeyConfigured}
-- tag.gpgsign: ${report.localGitSigning.tagGpgSign}
 - Latest commit signature state: ${report.localGitSigning.latestCommitSignature.state}
 - Signature ready: ${report.localGitSigning.signatureReady}
+
+## Safe Setup Paths
+
+${report.safeSetupPaths.map(renderSetupPath).join("\n\n")}
 
 ## Contributor Checklist
 
@@ -303,6 +315,16 @@ ${renderList(report.nextActions, "none")}
 
 ${renderList(report.safety, "none")}
 `;
+}
+
+function renderSetupPath(path) {
+  return `### ${path.label}
+
+- Status: ${path.status}
+- Steps:
+${renderList(path.steps, "none")}
+- Example commands not run by this guide:
+${renderList(path.exampleCommandsNotRun.map((command) => `\`${command}\``), "none")}`;
 }
 
 function renderList(values, fallback) {
@@ -369,9 +391,8 @@ function parseArgs(tokens) {
 }
 
 function printHelp() {
-  console.log(`Usage: node scripts/create-seis-ssh-public-github-policy-doctor.mjs [--check] [--write] [--output file] [--markdown file]
+  console.log(`Usage: node scripts/create-seis-ssh-public-signing-guide.mjs [--check] [--write] [--output file] [--markdown file]
 
-Creates a read-only SEIS-SSH public GitHub policy doctor. It does not contact
-GitHub, open SSH, merge, admin-bypass, change repository settings, print
-signing keys, or change server/port.`);
+Creates a read-only SEIS-SSH public signing guide. It does not contact GitHub,
+open SSH, write git config, print signing keys, or change server/port.`);
 }

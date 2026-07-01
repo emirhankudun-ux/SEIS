@@ -83,6 +83,8 @@ npm run check:seis-ssh-public-merge-readiness
 npm run report:seis-ssh-public-merge-readiness
 npm run check:seis-ssh-public-github-policy
 npm run report:seis-ssh-public-github-policy
+npm run check:seis-ssh-public-signing-guide
+npm run report:seis-ssh-public-signing-guide
 npm run check:seis-ssh-public-pr-template
 npm run check:seis-ssh-public-ci-workflow
 npm run check:seis-ssh-public-readiness-matrix
@@ -185,6 +187,13 @@ contributors check signed commit setup and understand required signatures,
 last-push approval, code owner review, and review-thread resolution before
 asking for merge. It does not contact GitHub, run `gh auth status`, open live
 SSH, merge, admin-bypass, print signing keys, or change the same server and
+port.
+
+`npm run report:seis-ssh-public-signing-guide` writes the public signing guide
+to `reports/seis-ssh-public-access/signing-guide-latest.md`. It gives
+contributors a safe path to verified signed commits and GitHub signing key
+setup when required signatures are active. It does not contact GitHub, write
+git config, print signing keys, open live SSH, or change the same server and
 port.
 
 `npm run check:seis-ssh-public-pr-template` verifies that

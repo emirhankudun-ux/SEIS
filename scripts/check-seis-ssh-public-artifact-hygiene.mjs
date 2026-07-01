@@ -49,6 +49,11 @@ const artifacts = [
     expectedId: "seis-ssh-public-github-policy-doctor"
   },
   {
+    id: "signing-guide",
+    script: "scripts/create-seis-ssh-public-signing-guide.mjs",
+    expectedId: "seis-ssh-public-signing-guide"
+  },
+  {
     id: "onboarding-pack",
     script: "scripts/create-seis-ssh-public-onboarding-pack.mjs",
     expectedId: "seis-ssh-public-onboarding-pack"
@@ -124,6 +129,8 @@ const report = {
     "reports/seis-ssh-public-access/merge-readiness-latest.md",
     "reports/seis-ssh-public-access/github-policy-latest.json",
     "reports/seis-ssh-public-access/github-policy-latest.md",
+    "reports/seis-ssh-public-access/signing-guide-latest.json",
+    "reports/seis-ssh-public-access/signing-guide-latest.md",
     "reports/seis-ssh-public-access/onboarding-pack-latest.json",
     "reports/seis-ssh-public-access/onboarding-pack-latest.md",
     "reports/seis-ssh-public-access/contributor-doctor-latest.json",

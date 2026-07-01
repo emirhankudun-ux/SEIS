@@ -138,6 +138,13 @@ function buildQuickstart() {
         claim: "Shows signed commit, last-push approval, code-owner, and review-thread requirements without contacting GitHub."
       },
       {
+        id: "signing-guide",
+        label: "Prepare verified signed commits",
+        command: "npm run run:seis-ssh-public-signing-guide",
+        expectedSafeResult: "signing-ready-or-setup-needed",
+        claim: "Shows a secret-safe GitHub signing key path for verified signed commits without writing git config."
+      },
+      {
         id: "live-ssh",
         label: "Live SSH only after approval",
         command: "ssh SEIS-SSH",
@@ -172,6 +179,7 @@ function buildQuickstart() {
         "npm run check:seis-ssh-public-artifact-hygiene",
         "npm run check:seis-ssh-public-merge-readiness",
         "npm run check:seis-ssh-public-github-policy",
+        "npm run check:seis-ssh-public-signing-guide",
         "npm run check:seis-ssh-public-access",
         "npm run check:seis-ssh-public-support-packet"
       ],

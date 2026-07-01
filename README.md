@@ -188,6 +188,8 @@ npm run check:seis-ssh-public-merge-readiness
 npm run report:seis-ssh-public-merge-readiness
 npm run check:seis-ssh-public-github-policy
 npm run report:seis-ssh-public-github-policy
+npm run check:seis-ssh-public-signing-guide
+npm run report:seis-ssh-public-signing-guide
 npm run check:seis-ssh-public-pr-template
 npm run check:seis-ssh-public-ci-workflow
 npm run check:seis-ssh-public-readiness-matrix
@@ -239,6 +241,12 @@ doctor for public contributors. It checks local signed commit setup without
 printing signing keys and records required signatures, last-push approval, code
 owner review, and review-thread resolution requirements without contacting
 GitHub, opening SSH, merging, or changing the same server and port.
+
+`npm run run:seis-ssh-public-signing-guide` creates a read-only signing guide
+for verified signed commits when GitHub required signatures are active. It
+shows GitHub signing key setup paths for SSH or GPG signing without contacting
+GitHub, writing git config, printing private keys, opening SSH, or changing the
+same server and port.
 
 `npm run check:seis-ssh-public-pr-template` verifies that the GitHub pull
 request template includes the `SEIS-SSH` review checklist, same-server/port

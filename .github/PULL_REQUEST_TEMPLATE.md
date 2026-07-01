@@ -64,6 +64,7 @@ Ayni sunucu ve baglanti noktasi korunur.
 - [ ] Public artifacts were checked before attaching them to a public issue or PR.
 - [ ] GitHub merge readiness is represented honestly when repository rules keep `mergeStateStatus: BLOCKED`.
 - [ ] Signed commit setup, last-push approval, code owner review, and review-thread resolution requirements are acknowledged.
+- [ ] Verified signed commits are covered by the public signing guide when required signatures are active.
 
 Relevant checks:
 
@@ -72,6 +73,7 @@ npm run check:seis-ssh-public-pr-template
 npm run check:seis-ssh-public-access
 npm run check:seis-ssh-public-merge-readiness
 npm run check:seis-ssh-public-github-policy
+npm run check:seis-ssh-public-signing-guide
 npm run check:seis-ssh-public-ci-workflow
 npm run check:seis-ssh-public-readiness-matrix
 npm run check:seis-ssh-public-artifact-hygiene
