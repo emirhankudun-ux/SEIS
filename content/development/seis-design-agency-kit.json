@@ -1,0 +1,1108 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-design-agency-kit",
+  "updated": "2026-06-30",
+  "status": "agency-kit-foundation",
+  "mode": "no_key_design_production_system",
+  "purpose": "Make SEIS useful as a public-safe, no-key creative production kit for founders, designers, and small teams that need agency-grade structure without immediately buying a full agency engagement.",
+  "notClaims": [
+    "not a guaranteed replacement for every professional designer",
+    "not a live client services marketplace",
+    "not an automated logo generator",
+    "not a paid media buying system",
+    "not a trademark clearance service",
+    "not a production print vendor",
+    "not a platform spec guarantee",
+    "not a guaranteed cost saving",
+    "not fabricated evidence",
+    "not a persuasion guarantee",
+    "not a downloadable archive",
+    "not a trademark license",
+    "not a stakeholder consensus guarantee",
+    "not a verified customer case study",
+    "not licensed asset approval",
+    "not final logo approval",
+    "not market research",
+    "not a font license",
+    "not accessibility certification",
+    "not print proof approval",
+    "not legal copy approval",
+    "not social media scheduling",
+    "not model release approval",
+    "not a business strategy guarantee",
+    "not a conversion guarantee",
+    "not procurement advice",
+    "not a delivery date guarantee"
+  ],
+  "qualityPrinciples": [
+    "brief before visuals",
+    "strategy before decoration",
+    "tokens before one-off styling",
+    "accessibility before polish",
+    "asset provenance before publication",
+    "human review before client delivery"
+  ],
+  "workflow": [
+    {
+      "id": "intake",
+      "title": "Client brief intake",
+      "status": "documented",
+      "output": "A short creative brief with audience, offer, tone, constraints, and required formats.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md"
+      ]
+    },
+    {
+      "id": "strategy-workshop",
+      "title": "Brand strategy workshop",
+      "status": "documented",
+      "output": "A stakeholder-ready workshop matrix covering business goal, audience promise, category pressure, must-say and must-not-say rules, proof gaps, unresolved questions, decision owner, and next review action without claiming business strategy guarantees.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ]
+    },
+    {
+      "id": "proposal",
+      "title": "Proposal scope estimate",
+      "status": "documented",
+      "output": "A no-key scope, effort, cut-list, and approval boundary that helps compare agency quotes without making binding pricing claims.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ]
+    },
+    {
+      "id": "comparison",
+      "title": "Agency quote comparator",
+      "status": "documented",
+      "output": "A public-safe comparison between external quote line items and SEIS draft outputs, evidence gaps, risks, exclusions, and review owners without claiming guaranteed savings.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ]
+    },
+    {
+      "id": "cost-control",
+      "title": "Agency cost control matrix",
+      "status": "documented",
+      "output": "A cost-control matrix that maps agency line items to SEIS in-house routes, external-buy triggers, quality risks, evidence requirements, decision owners, and approval gates without claiming procurement advice or guaranteed savings.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ]
+    },
+    {
+      "id": "design-sprint-timeline",
+      "title": "Design sprint timeline",
+      "status": "documented",
+      "output": "A sprint timeline matrix that maps discovery, strategy freeze, production blocks, review checkpoints, revision windows, QA, approval, handoff, owner, blocker rules, and validation evidence without claiming delivery date guarantees.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ]
+    },
+    {
+      "id": "positioning",
+      "title": "Competitive positioning matrix",
+      "status": "documented",
+      "output": "A competitor-set and visual-territory matrix covering category cues, differentiation claim, whitespace opportunity, evidence gaps, risks, and decision owner without claiming market research.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ]
+    },
+    {
+      "id": "messaging",
+      "title": "Brand voice and messaging matrix",
+      "status": "documented",
+      "output": "A voice and messaging matrix covering tagline options, message hierarchy, tone rules, proof points, CTA language, channel adaptations, claim risk, and copy review owner without claiming legal copy approval.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ]
+    },
+    {
+      "id": "typography",
+      "title": "Typography pairing and hierarchy",
+      "status": "documented",
+      "output": "A typography direction matrix covering display, text, UI, mono, fallback roles, scale, contrast, readability, language support, font license blocker, and implementation owner without claiming font licensing.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "packages/design-tokens/seis.tokens.css"
+      ]
+    },
+    {
+      "id": "color-system",
+      "title": "Color system accessibility matrix",
+      "status": "documented",
+      "output": "A color-system matrix covering palette roles, contrast pairs, dark-mode behavior, status color labeling, token mapping, accessibility risk, and review owner without claiming accessibility certification.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "packages/design-tokens/seis.tokens.css"
+      ]
+    },
+    {
+      "id": "print-production",
+      "title": "Print production readiness",
+      "status": "documented",
+      "output": "A print-readiness matrix covering trim, bleed, safe zone, color mode, resolution, export format, paper/vendor notes, proof status, and review owner without claiming print proof approval.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "docs/product/shared-vfs-contract.md"
+      ]
+    },
+    {
+      "id": "rationale",
+      "title": "Brand rationale deck",
+      "status": "documented",
+      "output": "A design decision narrative covering audience, offer, hierarchy, proof, token choices, objections, tradeoffs, and next review action without claiming guaranteed persuasion.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ]
+    },
+    {
+      "id": "moodboard",
+      "title": "Visual reference moodboard",
+      "status": "documented",
+      "output": "A reference direction board covering themes, color mood, type attitude, imagery cues, motion tone, provenance notes, rejected directions, and review owner without claiming licensed asset approval.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "docs/design-system/seis-design-foundation.md"
+      ]
+    },
+    {
+      "id": "asset-shot-list",
+      "title": "Creative asset shot list",
+      "status": "documented",
+      "output": "A shot-list matrix covering scene, composition, crop, lighting, prop, format, motion need, provenance status, release risk, and production owner without claiming model release approval.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "docs/design-system/seis-design-foundation.md"
+      ]
+    },
+    {
+      "id": "logo-evaluation",
+      "title": "Logo concept evaluation",
+      "status": "documented",
+      "output": "A logo direction matrix covering concept options, mark style, wordmark fit, small-size readability, monochrome use, misuse risk, trademark review blocker, and decision owner without claiming final logo approval.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "packages/design-tokens/seis.tokens.css"
+      ]
+    },
+    {
+      "id": "identity",
+      "title": "Identity direction",
+      "status": "documented",
+      "output": "Color, type, spacing, logo-direction, icon, and usage notes connected to SEIS tokens.",
+      "evidence": [
+        "packages/design-tokens/seis.tokens.css",
+        "docs/design-system/seis-design-foundation.md"
+      ]
+    },
+    {
+      "id": "usage",
+      "title": "Brand usage guideline",
+      "status": "documented",
+      "output": "A logo, color, type, imagery, do/don't, accessibility, misuse, and escalation guide for using SEIS brand assets without claiming trademark licensing or legal clearance.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "packages/design-tokens/seis.tokens.css"
+      ]
+    },
+    {
+      "id": "web",
+      "title": "Landing and portfolio surface",
+      "status": "validated-static-surface",
+      "output": "A no-key landing/page composition path using existing SEIS web routes and design QA.",
+      "evidence": [
+        "apps/web/index.html",
+        "apps/web/website/seis-design.html",
+        "docs/product/seis-demo-status.md"
+      ]
+    },
+    {
+      "id": "landing-blueprint",
+      "title": "Landing page blueprint",
+      "status": "documented",
+      "output": "A landing-page blueprint matrix covering hero promise, section order, proof blocks, objections, CTA ladder, responsive priority, accessibility notes, analytics questions, owner, and no-conversion-guarantee boundary.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ]
+    },
+    {
+      "id": "portfolio",
+      "title": "Case study layout",
+      "status": "documented",
+      "output": "A context, challenge, response, proof, accessibility, quality path, CTA, and handoff structure for portfolio storytelling without claiming verified customer results.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/case-studies/seis-foundation.html"
+      ]
+    },
+    {
+      "id": "campaign",
+      "title": "Campaign and social kit",
+      "status": "documented",
+      "output": "A repeatable post/ad/story/presentation brief structure with safe copy and visual direction.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md"
+      ]
+    },
+    {
+      "id": "review",
+      "title": "Creative director QA",
+      "status": "documented",
+      "output": "A no-key review scorecard for clarity, hierarchy, contrast, consistency, motion restraint, provenance, and publication readiness.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ]
+    },
+    {
+      "id": "revision",
+      "title": "Revision round plan",
+      "status": "documented",
+      "output": "A two-round decision and polish plan that avoids endless revision loops and keeps client handoff reviewable.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md"
+      ]
+    },
+    {
+      "id": "feedback",
+      "title": "Client feedback triage",
+      "status": "documented",
+      "output": "A comment intake and triage board that separates decision fixes, polish, out-of-scope requests, accessibility risk, blocked evidence, owner, and next review action without claiming stakeholder consensus.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ]
+    },
+    {
+      "id": "visual-qa",
+      "title": "Visual QA evidence ledger",
+      "status": "documented",
+      "output": "A screenshot, viewport, accessibility, reviewer-decision, blocker, and validation-command ledger for design review evidence without fabricating unavailable proof.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "scripts/check-seis-design-agency-kit-browser-smoke.mjs"
+      ]
+    },
+    {
+      "id": "approval",
+      "title": "Client approval packet",
+      "status": "documented",
+      "output": "A decision packet with included assets, exclusions, known risks, approval owner, and next-round boundary before client delivery.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ]
+    },
+    {
+      "id": "export-index",
+      "title": "Client-ready export index",
+      "status": "documented",
+      "output": "A delivery index of included outputs, source paths, review state, blockers, exclusions, validation commands, rollback notes, and owners without claiming downloadable archive delivery.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html",
+        "docs/product/shared-vfs-contract.md"
+      ]
+    },
+    {
+      "id": "provenance",
+      "title": "Asset provenance review",
+      "status": "required-before-publication",
+      "output": "A source, license, transformation, and approval record for every external image/video/font.",
+      "evidence": [
+        "docs/design-system/seis-design-foundation.md",
+        "docs/product/video-hero-showcase.md"
+      ]
+    },
+    {
+      "id": "handoff",
+      "title": "Client handoff pack",
+      "status": "documented",
+      "output": "A compact handoff with source paths, validation commands, accessibility notes, and next actions.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "docs/PUBLIC_READINESS.md"
+      ]
+    }
+  ],
+  "deliverables": [
+    {
+      "id": "creative-brief",
+      "category": "strategy",
+      "agencyEquivalent": "brand discovery brief",
+      "seisOutput": "one-page brief with audience, offer, visual tone, formats, deadlines, and approval gate",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit"
+      ]
+    },
+    {
+      "id": "brand-strategy-workshop-matrix",
+      "category": "strategy",
+      "agencyEquivalent": "brand strategy workshop and stakeholder alignment matrix",
+      "seisOutput": "workshop agenda, business goal, audience promise, stakeholder priorities, must-say and must-not-say rules, proof gaps, decision owner, unresolved questions, next review action, and no-business-strategy-guarantee boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:seis-website-pages"
+      ]
+    },
+    {
+      "id": "proposal-scope-estimator",
+      "category": "strategy",
+      "agencyEquivalent": "proposal scope and estimate worksheet",
+      "seisOutput": "scope level, effort boundary, optional cut list, budget boundary, review owner, validation commands, and no-binding-quote disclaimer",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:seis-website-pages"
+      ]
+    },
+    {
+      "id": "agency-quote-comparator",
+      "category": "strategy",
+      "agencyEquivalent": "external agency quote comparison worksheet",
+      "seisOutput": "external quote baseline, SEIS coverage map, missing evidence, risk decision, review owner, exclusions, and no-guaranteed-savings boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:seis-website-pages"
+      ]
+    },
+    {
+      "id": "agency-cost-control-matrix",
+      "category": "strategy",
+      "agencyEquivalent": "agency cost control and build-buy-defer decision matrix",
+      "seisOutput": "line item, SEIS in-house route, external-buy trigger, quality risk, evidence requirement, decision owner, approval gate, and no-procurement-advice boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:seis-website-pages"
+      ]
+    },
+    {
+      "id": "design-sprint-timeline-matrix",
+      "category": "operations",
+      "agencyEquivalent": "design sprint timeline and milestone plan",
+      "seisOutput": "discovery day, strategy freeze, production block, review checkpoint, revision window, QA pass, handoff day, owner, blocker rule, validation command, and no-delivery-date-guarantee boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:seis-website-pages"
+      ]
+    },
+    {
+      "id": "competitive-positioning-matrix",
+      "category": "strategy",
+      "agencyEquivalent": "competitive positioning and visual territory matrix",
+      "seisOutput": "competitor set, category cues, visual territory, differentiation claim, whitespace opportunity, evidence gaps, risk notes, decision owner, and no-market-research boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:seis-website-pages"
+      ]
+    },
+    {
+      "id": "typography-hierarchy-matrix",
+      "category": "identity",
+      "agencyEquivalent": "typography pairing and hierarchy matrix",
+      "seisOutput": "type pairing, hierarchy roles, scale, contrast, readability checks, language support, fallback notes, font license blocker, implementation owner, and no-font-license boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "packages/design-tokens/seis.tokens.css"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:design-component-inventory"
+      ]
+    },
+    {
+      "id": "brand-voice-messaging-matrix",
+      "category": "strategy",
+      "agencyEquivalent": "brand voice and messaging matrix",
+      "seisOutput": "tagline options, message hierarchy, tone rules, proof points, CTA language, channel adaptations, claim risk, copy review owner, and no-legal-copy-approval boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:seis-website-pages"
+      ]
+    },
+    {
+      "id": "color-system-accessibility-matrix",
+      "category": "identity",
+      "agencyEquivalent": "color system and accessibility matrix",
+      "seisOutput": "primary, accent, surface, text, status color roles, contrast pairs, dark-mode behavior, token mapping, accessibility risk, review owner, and no-accessibility-certification boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "packages/design-tokens/seis.tokens.css"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:design-component-inventory"
+      ]
+    },
+    {
+      "id": "brand-rationale-deck",
+      "category": "strategy",
+      "agencyEquivalent": "brand rationale presentation deck",
+      "seisOutput": "audience problem, offer promise, visual hierarchy, proof points, token rationale, stakeholder objections, rejected options, and next review action",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:seis-website-pages"
+      ]
+    },
+    {
+      "id": "visual-reference-moodboard",
+      "category": "identity",
+      "agencyEquivalent": "visual reference and moodboard direction board",
+      "seisOutput": "reference themes, color mood, type attitude, imagery cues, motion tone, provenance notes, rejected directions, review owner, and no-asset-license boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "docs/design-system/seis-design-foundation.md",
+        "packages/design-tokens/seis.tokens.css"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:design-component-inventory"
+      ]
+    },
+    {
+      "id": "creative-asset-shot-list-matrix",
+      "category": "production",
+      "agencyEquivalent": "creative asset shot list and art direction matrix",
+      "seisOutput": "scene, composition, crop, lighting, prop, format, motion need, source/provenance status, release risk, production owner, and no-model-release-approval boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "docs/design-system/seis-design-foundation.md"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:design-component-inventory"
+      ]
+    },
+    {
+      "id": "logo-concept-evaluation",
+      "category": "identity",
+      "agencyEquivalent": "logo concept evaluation matrix",
+      "seisOutput": "concept options, mark style, wordmark fit, small-size readability, monochrome use, misuse risk, trademark review blocker, decision owner, and no-final-logo-approval boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "packages/design-tokens/seis.tokens.css"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:design-component-inventory"
+      ]
+    },
+    {
+      "id": "creative-director-review",
+      "category": "quality",
+      "agencyEquivalent": "creative director review board",
+      "seisOutput": "approve/revise/hold decision, quality scorecard, blocking fixes, polish queue, accessibility gate, and publication boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:seis-website-pages"
+      ]
+    },
+    {
+      "id": "revision-round-plan",
+      "category": "quality",
+      "agencyEquivalent": "revision planning worksheet",
+      "seisOutput": "decision round, polish round, acceptance criteria, owner, no-endless-revision boundary, and client-delivery gate",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit"
+      ]
+    },
+    {
+      "id": "client-feedback-triage-board",
+      "category": "quality",
+      "agencyEquivalent": "client feedback triage board",
+      "seisOutput": "comment source, affected deliverable, requested change, decision fix, polish, out-of-scope request, accessibility risk, blocker, owner, response path, and no-stakeholder-consensus-guarantee boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:seis-website-pages"
+      ]
+    },
+    {
+      "id": "production-file-manifest",
+      "category": "delivery",
+      "agencyEquivalent": "production file delivery manifest",
+      "seisOutput": "source paths, export formats, naming conventions, provenance status, validation commands, rollback notes, and delivery state",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "docs/product/shared-vfs-contract.md"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:seis-code"
+      ]
+    },
+    {
+      "id": "visual-qa-evidence-ledger",
+      "category": "quality",
+      "agencyEquivalent": "visual QA evidence ledger",
+      "seisOutput": "screenshot targets, viewport checks, accessibility notes, reviewer decision, blocker list, validation commands, and no-fabricated-evidence boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "scripts/check-seis-design-agency-kit-browser-smoke.mjs"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:seis-design-agency-kit-browser-smoke"
+      ]
+    },
+    {
+      "id": "asset-size-spec-sheet",
+      "category": "delivery",
+      "agencyEquivalent": "channel export specification sheet",
+      "seisOutput": "starter export ratios, channel roles, safe-zone notes, naming suffixes, source paths, and verify-before-publication boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:seis-website-pages"
+      ]
+    },
+    {
+      "id": "print-production-readiness-matrix",
+      "category": "delivery",
+      "agencyEquivalent": "print production readiness matrix",
+      "seisOutput": "trim size, bleed, safe zone, color mode, resolution, export format, paper/vendor notes, proof status, review owner, and no-print-proof-approval boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "docs/product/shared-vfs-contract.md"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:seis-code"
+      ]
+    },
+    {
+      "id": "client-approval-packet",
+      "category": "delivery",
+      "agencyEquivalent": "client approval and signoff packet",
+      "seisOutput": "decision summary, included assets, exclusions, known risks, approval owner, validation commands, and no-client-approval boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:seis-website-pages"
+      ]
+    },
+    {
+      "id": "client-ready-export-index",
+      "category": "delivery",
+      "agencyEquivalent": "client-ready delivery index",
+      "seisOutput": "included outputs, source paths, review state, blockers, exclusions, validation commands, rollback notes, owner, and no-downloadable-archive boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "docs/product/shared-vfs-contract.md"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:seis-code"
+      ]
+    },
+    {
+      "id": "brand-token-map",
+      "category": "identity",
+      "agencyEquivalent": "starter brand system",
+      "seisOutput": "color, type, spacing, radius, motion, and accessibility token map",
+      "requiredEvidence": [
+        "packages/design-tokens/seis.tokens.css"
+      ],
+      "validationCommands": [
+        "npm run check:design-component-inventory"
+      ]
+    },
+    {
+      "id": "brand-usage-guideline",
+      "category": "identity",
+      "agencyEquivalent": "brand usage guideline",
+      "seisOutput": "logo spacing, color use, type hierarchy, imagery rules, do/don't examples, accessibility notes, misuse boundaries, escalation owner, and no-trademark-license boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "packages/design-tokens/seis.tokens.css"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:design-component-inventory"
+      ]
+    },
+    {
+      "id": "brand-audit-scorecard",
+      "category": "identity",
+      "agencyEquivalent": "brand audit scorecard",
+      "seisOutput": "positioning clarity, visual consistency, accessibility, provenance, and public-readiness scorecard",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "docs/design-system/seis-design-foundation.md"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:design-component-inventory"
+      ]
+    },
+    {
+      "id": "landing-page-direction",
+      "category": "web",
+      "agencyEquivalent": "premium landing page art direction",
+      "seisOutput": "hero, proof, offer, workflow, and CTA structure for no-key web demo surfaces",
+      "requiredEvidence": [
+        "apps/web/index.html",
+        "apps/web/website/seis-design.html"
+      ],
+      "validationCommands": [
+        "npm run check:seis-website-pages"
+      ]
+    },
+    {
+      "id": "landing-page-blueprint-matrix",
+      "category": "web",
+      "agencyEquivalent": "landing page wireframe and conversion copy blueprint",
+      "seisOutput": "section order, hero promise, proof blocks, objection handling, CTA ladder, responsive priority, accessibility notes, analytics questions, owner, and no-conversion-guarantee boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:seis-website-pages"
+      ]
+    },
+    {
+      "id": "launch-asset-matrix",
+      "category": "launch",
+      "agencyEquivalent": "launch asset production matrix",
+      "seisOutput": "website, social, presentation, thumbnail, banner, and handoff asset list with owner and status gates",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:seis-website-pages"
+      ]
+    },
+    {
+      "id": "case-study-layout",
+      "category": "portfolio",
+      "agencyEquivalent": "case study page layout",
+      "seisOutput": "context, challenge, response, proof, accessibility, and quality path structure",
+      "requiredEvidence": [
+        "apps/web/case-studies/seis-foundation.html",
+        "apps/web/case-studies/case-study.css"
+      ],
+      "validationCommands": [
+        "npm run check:seo"
+      ]
+    },
+    {
+      "id": "cinematic-showcase-package",
+      "category": "motion",
+      "agencyEquivalent": "motion-led campaign hero",
+      "seisOutput": "video hero page set with reduced-motion fallback, controls, provenance, and loading policy",
+      "requiredEvidence": [
+        "apps/web/showcase/video-heroes.json",
+        "docs/product/video-hero-showcase.md"
+      ],
+      "validationCommands": [
+        "npm run check:video-hero-showcase",
+        "npm run check:video-hero-performance-budget"
+      ]
+    },
+    {
+      "id": "component-inventory",
+      "category": "system",
+      "agencyEquivalent": "design system component audit",
+      "seisOutput": "component list with source selectors, accessibility notes, motion policy, and validation commands",
+      "requiredEvidence": [
+        "content/development/seis-design-component-inventory.json",
+        "docs/design-system/component-inventory.md"
+      ],
+      "validationCommands": [
+        "npm run check:design-component-inventory"
+      ]
+    },
+    {
+      "id": "asset-provenance-sheet",
+      "category": "governance",
+      "agencyEquivalent": "asset licensing and usage review",
+      "seisOutput": "source, license, transformation, approval, and publication boundary notes",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-foundation.md",
+        "docs/product/video-hero-showcase.md"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit"
+      ]
+    },
+    {
+      "id": "social-campaign-brief",
+      "category": "campaign",
+      "agencyEquivalent": "social campaign starter pack",
+      "seisOutput": "post, story, banner, caption, CTA, and variant notes ready for human review",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit"
+      ]
+    },
+    {
+      "id": "social-content-calendar-matrix",
+      "category": "campaign",
+      "agencyEquivalent": "social content calendar matrix",
+      "seisOutput": "launch themes, channel cadence, publish dates, asset format, caption hook, CTA, asset owner, review state, and no-social-media-scheduling boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit"
+      ]
+    },
+    {
+      "id": "social-variant-set",
+      "category": "campaign",
+      "agencyEquivalent": "social content variant system",
+      "seisOutput": "LinkedIn, Instagram, X, story, banner, announcement, process, trust, and conversion variant direction",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit"
+      ]
+    },
+    {
+      "id": "presentation-cover-system",
+      "category": "presentation",
+      "agencyEquivalent": "pitch deck cover and section system",
+      "seisOutput": "cover, section divider, proof slide, roadmap slide, and handoff note structure",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit"
+      ]
+    },
+    {
+      "id": "presentation-system-map",
+      "category": "presentation",
+      "agencyEquivalent": "pitch deck presentation system",
+      "seisOutput": "cover, agenda, proof, comparison, roadmap, close, and speaker-note structure",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit"
+      ]
+    },
+    {
+      "id": "handoff-checklist",
+      "category": "delivery",
+      "agencyEquivalent": "client handoff checklist",
+      "seisOutput": "files changed, source paths, validation, accessibility, provenance, risks, rollback, and next actions",
+      "requiredEvidence": [
+        "docs/PUBLIC_READINESS.md",
+        "docs/design-system/seis-design-agency-kit.md"
+      ],
+      "validationCommands": [
+        "npm run check:seis-public-readiness",
+        "npm run check:seis-design-agency-kit"
+      ]
+    }
+  ],
+  "minimumValidation": [
+    "npm run check:seis-design-agency-kit",
+    "npm run check:design-component-inventory",
+    "npm run check:video-hero-showcase",
+    "npm run check:video-hero-performance-budget",
+    "npm run check:seis-public-readiness"
+  ],
+  "browserWorkflow": {
+    "status": "browser-local-draft-workflow",
+    "route": "apps/web/website/seis-design.html",
+    "runtime": "apps/web/website/product-page.js",
+    "styles": "apps/web/website/product-page.css",
+    "smokeCheck": "scripts/check-seis-design-agency-kit-browser-smoke.mjs",
+    "storageKey": "seis.design.agencyPack.v1",
+    "handoffStorageKey": "seis.design.agencyPack.handoff.v1",
+    "handoffPath": "/workspace/Design/seis-design-agency-pack.md",
+    "crossRouteSmoke": {
+      "enabled": true,
+      "designRoute": "apps/web/website/seis-design.html",
+      "codeRoute": "apps/web/seis-code.html",
+      "reviewPath": "/workspace/Design/seis-design-agency-pack-review.md",
+      "screenshot": "desktop-seis-code-design-handoff-review.png",
+      "verifies": [
+        "exported pack visible in SEIS Code",
+        "Design Handoff activity opens pack",
+        "review note created in SEIS Code IndexedDB",
+        "no host filesystem write claim"
+      ]
+    },
+    "actions": [
+      "data-build-agency-pack",
+      "data-export-agency-pack",
+      "data-copy-agency-pack"
+    ],
+    "editableFieldIds": [
+      "audience",
+      "offer",
+      "brandStrategyWorkshopFocus",
+      "format",
+      "landingPageBlueprintFocus",
+      "scope",
+      "budgetBand",
+      "quoteBaseline",
+      "agencyCostControlFocus",
+      "designSprintTimelineFocus",
+      "internalProductionPath",
+      "competitivePositioningFocus",
+      "messagingVoiceFocus",
+      "typographyHierarchyFocus",
+      "colorSystemFocus",
+      "rationaleFocus",
+      "moodboardDirectionFocus",
+      "creativeAssetShotListFocus",
+      "logoConceptFocus",
+      "usageGuidelineFocus",
+      "revisionRound",
+      "feedbackTriageFocus",
+      "caseStudyFocus",
+      "deliveryStandard",
+      "printProductionFocus",
+      "visualEvidenceTarget",
+      "exportIndexTarget",
+      "channels",
+      "contentCalendarFocus",
+      "approvalCheckpoint",
+      "deadline",
+      "approvalOwner"
+    ],
+    "generatedOutputIds": [
+      "creative-brief",
+      "brand-strategy-workshop-matrix",
+      "proposal-scope-estimator",
+      "agency-quote-comparator",
+      "agency-cost-control-matrix",
+      "design-sprint-timeline-matrix",
+      "competitive-positioning-matrix",
+      "brand-voice-messaging-matrix",
+      "typography-hierarchy-matrix",
+      "color-system-accessibility-matrix",
+      "brand-rationale-deck",
+      "visual-reference-moodboard",
+      "creative-asset-shot-list-matrix",
+      "logo-concept-evaluation",
+      "brand-usage-guideline",
+      "creative-director-review",
+      "revision-round-plan",
+      "client-feedback-triage-board",
+      "case-study-layout",
+      "visual-qa-evidence-ledger",
+      "production-file-manifest",
+      "asset-size-spec-sheet",
+      "print-production-readiness-matrix",
+      "client-approval-packet",
+      "client-ready-export-index",
+      "brand-token-map",
+      "brand-audit-scorecard",
+      "landing-page-direction",
+      "landing-page-blueprint-matrix",
+      "launch-asset-matrix",
+      "social-campaign-brief",
+      "social-content-calendar-matrix",
+      "social-variant-set",
+      "asset-provenance-sheet",
+      "presentation-cover-system",
+      "presentation-system-map",
+      "handoff-checklist"
+    ],
+    "workboardIds": [
+      "brand-audit-scorecard",
+      "brand-strategy-workshop-matrix",
+      "landing-page-blueprint-matrix",
+      "proposal-scope-estimator",
+      "agency-quote-comparator",
+      "agency-cost-control-matrix",
+      "design-sprint-timeline-matrix",
+      "competitive-positioning-matrix",
+      "brand-voice-messaging-matrix",
+      "typography-hierarchy-matrix",
+      "color-system-accessibility-matrix",
+      "brand-rationale-deck",
+      "visual-reference-moodboard",
+      "creative-asset-shot-list-matrix",
+      "logo-concept-evaluation",
+      "brand-usage-guideline",
+      "creative-director-review",
+      "revision-round-plan",
+      "client-feedback-triage-board",
+      "case-study-layout",
+      "visual-qa-evidence-ledger",
+      "production-file-manifest",
+      "asset-size-spec-sheet",
+      "print-production-readiness-matrix",
+      "client-approval-packet",
+      "client-ready-export-index",
+      "launch-asset-matrix",
+      "social-content-calendar-matrix",
+      "social-variant-set",
+      "presentation-system-map"
+    ],
+    "requiredMarkers": [
+      "data-agency-kit-workflow",
+      "data-agency-field",
+      "data-agency-workboard",
+      "data-agency-pack-output",
+      "Agency kit workboards",
+      "No-key design production workflow",
+      "Client Template",
+      "Brand Strategy Workshop Matrix",
+      "Landing Page Blueprint Matrix",
+      "Proposal Scope Estimate",
+      "Agency Quote Comparator",
+      "Agency Cost Control Matrix",
+      "Design Sprint Timeline Matrix",
+      "Competitive Positioning Matrix",
+      "Brand Voice & Messaging Matrix",
+      "Typography Pairing & Hierarchy Matrix",
+      "Color System Accessibility Matrix",
+      "Brand Rationale Deck",
+      "Visual Reference Moodboard",
+      "Creative Asset Shot List Matrix",
+      "Logo Concept Evaluation Matrix",
+      "Brand Usage Guideline",
+      "Creative Director QA",
+      "Revision Plan",
+      "Client Feedback Triage Board",
+      "Case Study Layout Board",
+      "Visual QA Evidence Ledger",
+      "Production File Manifest",
+      "Asset Size Spec Sheet",
+      "Print Production Readiness Matrix",
+      "Client Approval Packet",
+      "Client-Ready Export Index",
+      "Social Content Calendar Matrix",
+      "Handoff",
+      "Build agency pack",
+      "Export to SEIS Code",
+      "Copy pack",
+      "Human review before publication",
+      "Asset provenance before publication"
+    ],
+    "notClaims": [
+      "not automatic publication",
+      "not client approval",
+      "not binding quote",
+      "not endless revision loop",
+      "not live provider generation",
+      "not platform spec guarantee",
+      "not guaranteed cost saving",
+      "not procurement advice",
+      "not a delivery date guarantee",
+      "not market research",
+      "not legal copy approval",
+      "not social media scheduling",
+      "not model release approval",
+      "not a business strategy guarantee",
+      "not a conversion guarantee",
+      "not a font license",
+      "not accessibility certification",
+      "not print proof approval",
+      "not fabricated evidence",
+      "not a persuasion guarantee",
+      "not licensed asset approval",
+      "not final logo approval",
+      "not downloadable archive",
+      "not trademark license",
+      "not stakeholder consensus guarantee",
+      "not verified customer case study",
+      "not host filesystem write",
+      "not Git commit",
+      "not deployment"
+    ],
+    "validationCommands": [
+      "npm run check:seis-design-agency-kit",
+      "npm run check:seis-design-agency-kit-browser-smoke"
+    ],
+    "reviewSurface": {
+      "route": "apps/web/seis-code.html",
+      "runtime": "apps/web/seis-code.js",
+      "styles": "apps/web/seis-code.css",
+      "view": "design",
+      "activityMarker": "data-view-button=\"design\"",
+      "panelMarker": "data-panel=\"design\"",
+      "reviewPath": "/workspace/Design/seis-design-agency-pack-review.md",
+      "actions": [
+        "open-design-handoff",
+        "import-design-handoff",
+        "create-design-review-note"
+      ],
+      "notClaims": [
+        "not host filesystem write",
+        "not Git commit",
+        "not deployment",
+        "not client approval"
+      ]
+    }
+  },
+  "securityBoundary": {
+    "requiresApiKeys": false,
+    "allowsClientSecrets": false,
+    "allowsPrivateAssets": false,
+    "requiresHumanReviewBeforePublication": true,
+    "requiresAssetProvenance": true
+  }
+}
