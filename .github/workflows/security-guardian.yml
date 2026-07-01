@@ -18,7 +18,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
-          fetch-depth: 0 # Tüm geçmişi getir (gitleaks için gerekli)
+          fetch-depth: 0 # Required so pull_request scans can evaluate base..HEAD.
 
       - name: Install GitLeaks
         run: |
@@ -31,8 +31,15 @@ jobs:
 
       - name: Run GitLeaks Scan
         run: |
-          echo "🔍 SEIS Guardian: Tüm geçmiş taranıyor..."
-          if gitleaks detect --source . --config .gitleaks.toml --redact --verbose --exit-code 2; then
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            GITLEAKS_LOG_OPTS="${{ github.event.pull_request.base.sha }}..HEAD"
+            echo "🔍 SEIS Guardian: PR commit range taranıyor (${GITLEAKS_LOG_OPTS})."
+          else
+            GITLEAKS_LOG_OPTS="HEAD"
+            echo "🔍 SEIS Guardian: Current ref taranıyor (${GITLEAKS_LOG_OPTS})."
+          fi
+
+          if gitleaks detect --source . --config .gitleaks.toml --redact --verbose --exit-code 2 --log-opts="${GITLEAKS_LOG_OPTS}"; then
             echo "✅ Güvenlik Taraması Başarılı!"
           else
             echo "🚨 Kritik Güvenlik İhlali Tespit Edildi!"
