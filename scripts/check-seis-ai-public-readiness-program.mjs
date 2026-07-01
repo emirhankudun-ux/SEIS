@@ -24,6 +24,7 @@ const paths = {
   retrievalEvaluationFixtures: "content/development/seis-retrieval-evaluation-fixtures.json",
   retrievalEvaluationDryRun: "content/development/seis-retrieval-evaluation-dry-run.json",
   retrievalCitationScorerDryRun: "content/development/seis-retrieval-citation-scorer-dry-run.json",
+  noSecretAnswerLogScan: "content/development/seis-no-secret-answer-log-scan.json",
   doc: "docs/ai/seis-ai-public-readiness-program.md",
   githubReadinessDoc: "docs/ai/seis-agi-github-user-readiness-gates.md",
   packageJson: "package.json"
@@ -48,6 +49,7 @@ const retrievalSourceProvenance = readJson(paths.retrievalSourceProvenance, "ret
 const retrievalEvaluationFixtures = readJson(paths.retrievalEvaluationFixtures, "retrieval evaluation fixtures");
 const retrievalEvaluationDryRun = readJson(paths.retrievalEvaluationDryRun, "retrieval evaluation dry-run");
 const retrievalCitationScorerDryRun = readJson(paths.retrievalCitationScorerDryRun, "retrieval citation scorer dry-run");
+const noSecretAnswerLogScan = readJson(paths.noSecretAnswerLogScan, "no-secret answer log scan");
 const packageJson = readJson(paths.packageJson, "package.json");
 const doc = readText(paths.doc, "AI public readiness docs");
 const githubReadinessDoc = readText(paths.githubReadinessDoc, "AGI GitHub user readiness docs");
@@ -107,6 +109,7 @@ if (program) {
   ensureSource(program, "retrievalEvaluationFixtures", paths.retrievalEvaluationFixtures);
   ensureSource(program, "retrievalEvaluationDryRun", paths.retrievalEvaluationDryRun);
   ensureSource(program, "retrievalCitationScorerDryRun", paths.retrievalCitationScorerDryRun);
+  ensureSource(program, "noSecretAnswerLogScan", paths.noSecretAnswerLogScan);
   ensureSource(program, "doc", paths.doc);
 
   ensureArrayIncludesAll(
@@ -137,6 +140,7 @@ if (program) {
       "retrieval-evaluation-fixtures",
       "retrieval-evaluation-dry-run",
       "retrieval-citation-scorer-dry-run",
+      "no-secret-answer-log-scan",
       "fresh-clone-release-path",
       "human-release-approval",
       "real-512b-evidence",
@@ -152,6 +156,7 @@ if (program) {
   ensure((program.readinessGates || []).some((gate) => gate.id === "retrieval-evaluation-fixtures" && gate.status === "available" && gate.evidence?.includes("npm run check:seis-retrieval-evaluation-fixtures")), "retrieval evaluation fixture gate must be available with its validator command");
   ensure((program.readinessGates || []).some((gate) => gate.id === "retrieval-evaluation-dry-run" && gate.status === "available" && gate.evidence?.includes("npm run check:seis-retrieval-evaluation-dry-run")), "retrieval evaluation dry-run gate must be available with its validator command");
   ensure((program.readinessGates || []).some((gate) => gate.id === "retrieval-citation-scorer-dry-run" && gate.status === "available" && gate.evidence?.includes("npm run check:seis-retrieval-citation-scorer-dry-run")), "retrieval citation scorer dry-run gate must be available with its validator command");
+  ensure((program.readinessGates || []).some((gate) => gate.id === "no-secret-answer-log-scan" && gate.status === "available" && gate.evidence?.includes("npm run check:seis-no-secret-answer-log-scan")), "no-secret answer log scan gate must be available with its validator command");
   ensure((program.readinessGates || []).some((gate) => gate.id === "fresh-clone-release-path" && gate.status === "partial" && gate.blocksGithubReadyForEveryone === true), "fresh clone gate must block everyone-ready status");
   ensure((program.readinessGates || []).some((gate) => gate.id === "human-release-approval" && gate.status === "approval-gated" && gate.blocksGithubReadyForEveryone === true), "human release gate must block everyone-ready status");
   ensure((program.readinessGates || []).some((gate) => gate.id === "real-512b-evidence" && gate.status === "missing"), "real 512B evidence gate must remain missing");
@@ -169,6 +174,7 @@ if (program) {
     "npm run check:seis-retrieval-evaluation-fixtures passes on the target commit",
     "npm run check:seis-retrieval-evaluation-dry-run passes on the target commit",
     "npm run check:seis-retrieval-citation-scorer-dry-run passes on the target commit",
+    "npm run check:seis-no-secret-answer-log-scan passes on the target commit",
     "npm run check:seis-ai-public-readiness passes on the target commit",
     "required CI checks green on the target commit",
     "human release approval recorded",
@@ -244,6 +250,17 @@ ensure(retrievalCitationScorerDryRun?.approvedToday?.retrievalIndexQuery === fal
 ensure(retrievalCitationScorerDryRun?.approvedToday?.providerCall === false, "retrieval citation scorer dry-run must not approve provider calls");
 ensure(retrievalCitationScorerDryRun?.publicClaims?.canClaimCitationCoverageMeasured === false, "retrieval citation scorer dry-run must not claim measured citation coverage");
 ensure(retrievalCitationScorerDryRun?.publicClaims?.canClaimAGI === false, "retrieval citation scorer dry-run must not claim AGI");
+ensure(noSecretAnswerLogScan?.status === "no-secret-answer-log-scan-passed-no-answers", "no-secret answer log scan must pass without real answer logs");
+ensure(noSecretAnswerLogScan?.approvedToday?.localSyntheticLogScan === true, "no-secret answer log scan must approve only local synthetic scanning");
+ensure(noSecretAnswerLogScan?.approvedToday?.realAnswerLogScan === false, "no-secret answer log scan must not approve real answer log scanning");
+ensure(noSecretAnswerLogScan?.approvedToday?.answerGeneration === false, "no-secret answer log scan must not generate answers");
+ensure(noSecretAnswerLogScan?.approvedToday?.retrievalIndexQuery === false, "no-secret answer log scan must not query an index");
+ensure(noSecretAnswerLogScan?.approvedToday?.providerCall === false, "no-secret answer log scan must not approve provider calls");
+ensure(noSecretAnswerLogScan?.approvedToday?.benchmarkRun === false, "no-secret answer log scan must not run benchmarks");
+ensure(noSecretAnswerLogScan?.approvedToday?.trainingRun === false, "no-secret answer log scan must not run training");
+ensure(noSecretAnswerLogScan?.publicClaims?.canClaimNoSecretRealAnswerLogs === false, "no-secret answer log scan must not claim real answer logs are clean");
+ensure(noSecretAnswerLogScan?.publicClaims?.canClaimAGI === false, "no-secret answer log scan must not claim AGI");
+ensure(noSecretAnswerLogScan?.publicClaims?.canClaim512BRouteEligible === false, "no-secret answer log scan must not claim 512B route eligibility");
 ensure(packageJson?.scripts?.["check:seis-ai-public-readiness-program"] === "node scripts/check-seis-ai-public-readiness-program.mjs", "package.json must expose check:seis-ai-public-readiness-program");
 ensure(packageJson?.scripts?.["check:seis-ai-public-readiness"] === "node scripts/check-seis-ai-public-readiness.mjs", "package.json must expose check:seis-ai-public-readiness");
 ensure(packageJson?.scripts?.["check:seis-ai-fresh-clone-readiness"] === "node scripts/check-seis-ai-fresh-clone-readiness.mjs", "package.json must expose check:seis-ai-fresh-clone-readiness");
@@ -251,6 +268,7 @@ ensure(packageJson?.scripts?.["check:seis-retrieval-source-provenance"] === "nod
 ensure(packageJson?.scripts?.["check:seis-retrieval-evaluation-fixtures"] === "node scripts/create-seis-retrieval-evaluation-fixtures.mjs", "package.json must expose check:seis-retrieval-evaluation-fixtures");
 ensure(packageJson?.scripts?.["check:seis-retrieval-evaluation-dry-run"] === "node scripts/create-seis-retrieval-evaluation-dry-run.mjs", "package.json must expose check:seis-retrieval-evaluation-dry-run");
 ensure(packageJson?.scripts?.["check:seis-retrieval-citation-scorer-dry-run"] === "node scripts/create-seis-retrieval-citation-scorer-dry-run.mjs", "package.json must expose check:seis-retrieval-citation-scorer-dry-run");
+ensure(packageJson?.scripts?.["check:seis-no-secret-answer-log-scan"] === "node scripts/create-seis-no-secret-answer-log-scan.mjs", "package.json must expose check:seis-no-secret-answer-log-scan");
 ensure(packageJson?.scripts?.["report:seis-ai-public-readiness"] === "node scripts/create-seis-ai-public-readiness-report.mjs --write", "package.json must expose report:seis-ai-public-readiness");
 ensure(packageJson?.scripts?.["check:seis-ai-public-readiness-report"] === "node scripts/create-seis-ai-public-readiness-report.mjs", "package.json must expose check:seis-ai-public-readiness-report");
 

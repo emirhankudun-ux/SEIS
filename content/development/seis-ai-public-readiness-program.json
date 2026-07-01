@@ -41,6 +41,7 @@
     "retrievalEvaluationFixtures": "content/development/seis-retrieval-evaluation-fixtures.json",
     "retrievalEvaluationDryRun": "content/development/seis-retrieval-evaluation-dry-run.json",
     "retrievalCitationScorerDryRun": "content/development/seis-retrieval-citation-scorer-dry-run.json",
+    "noSecretAnswerLogScan": "content/development/seis-no-secret-answer-log-scan.json",
     "doc": "docs/ai/seis-ai-public-readiness-program.md"
   },
   "internetResearchBaseline": [
@@ -151,6 +152,13 @@
       "evidence": ["npm run check:seis-retrieval-citation-scorer-dry-run", "local citation rule dry-run without answer generation, live scoring, index queries, providers, benchmarks, or training"]
     },
     {
+      "id": "no-secret-answer-log-scan",
+      "status": "available",
+      "blocksGithubReadyForEveryone": false,
+      "blocksAgiClaim": true,
+      "evidence": ["npm run check:seis-no-secret-answer-log-scan", "local synthetic no-secret answer log scan without real logs, answer generation, index queries, providers, benchmarks, or training"]
+    },
+    {
       "id": "fresh-clone-release-path",
       "status": "partial",
       "blocksGithubReadyForEveryone": true,
@@ -192,6 +200,7 @@
     "npm run check:seis-retrieval-evaluation-fixtures passes on the target commit",
     "npm run check:seis-retrieval-evaluation-dry-run passes on the target commit",
     "npm run check:seis-retrieval-citation-scorer-dry-run passes on the target commit",
+    "npm run check:seis-no-secret-answer-log-scan passes on the target commit",
     "npm run check:seis-ai-public-readiness passes on the target commit",
     "required CI checks green on the target commit",
     "public README claim boundary reviewed",

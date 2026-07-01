@@ -76,8 +76,9 @@ Open:
 18. `npm run check:seis-retrieval-evaluation-fixtures`
 19. `npm run check:seis-retrieval-evaluation-dry-run`
 20. `npm run check:seis-retrieval-citation-scorer-dry-run`
-21. `npm run check:seis-knowledge-retrieval-training`
-22. `npm run secrets:check`
+21. `npm run check:seis-no-secret-answer-log-scan`
+22. `npm run check:seis-knowledge-retrieval-training`
+23. `npm run secrets:check`
 
 ## Demo checklist
 
