@@ -1,7 +1,7 @@
 {
   "id": "seis-public-demo-security-gate-redacted-pr104",
   "title": "SEIS Public Demo Security Gate Redacted Evidence",
-  "generatedAt": "2026-06-30T22:38:51.137Z",
+  "generatedAt": "2026-07-01T19:03:07.880Z",
   "status": "blocked-full-history-security-review",
   "mode": "redacted-local-and-ci-evidence",
   "decision": "NO-GO-security-history-remediation-needed",
@@ -11,6 +11,38 @@
     "branch": "codex/second-brain-readiness-agent-registry-20260701",
     "base": "main"
   },
+  "activeGateImpacts": [
+    {
+      "pullRequest": 104,
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/104",
+      "branch": "codex/second-brain-readiness-agent-registry-20260701",
+      "status": "blocked-by-full-history-secret-scan",
+      "failingGateNames": [
+        "Secret & Vulnerability Scan",
+        "Security Summary"
+      ],
+      "currentTreeScope": "clean-redacted-no-git",
+      "fullHistoryScope": "blocked-redacted-findings",
+      "mergeAllowed": false,
+      "releaseAllowed": false,
+      "requiresOwnerApproval": true
+    },
+    {
+      "pullRequest": 127,
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/127",
+      "branch": "codex/second-brain-agent-registry-roster-20260701-clean",
+      "status": "blocked-by-full-history-secret-scan",
+      "failingGateNames": [
+        "Secret & Vulnerability Scan",
+        "Security Summary"
+      ],
+      "currentTreeScope": "clean-redacted-no-git",
+      "fullHistoryScope": "blocked-redacted-findings",
+      "mergeAllowed": false,
+      "releaseAllowed": false,
+      "requiresOwnerApproval": true
+    }
+  ],
   "relatedReleaseChecklist": "content/development/seis-public-demo-release-checklist-pr54.json",
   "sourcePaths": {
     "workflow": ".github/workflows/security-guardian.yml",

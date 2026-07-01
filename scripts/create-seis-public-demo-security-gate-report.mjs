@@ -81,6 +81,32 @@ function buildReport(generatedAt) {
       branch: "codex/second-brain-readiness-agent-registry-20260701",
       base: "main"
     },
+    activeGateImpacts: [
+      {
+        pullRequest: 104,
+        url: "https://github.com/emirhankudun-ux/SEIS/pull/104",
+        branch: "codex/second-brain-readiness-agent-registry-20260701",
+        status: "blocked-by-full-history-secret-scan",
+        failingGateNames: ["Secret & Vulnerability Scan", "Security Summary"],
+        currentTreeScope: "clean-redacted-no-git",
+        fullHistoryScope: "blocked-redacted-findings",
+        mergeAllowed: false,
+        releaseAllowed: false,
+        requiresOwnerApproval: true
+      },
+      {
+        pullRequest: 127,
+        url: "https://github.com/emirhankudun-ux/SEIS/pull/127",
+        branch: "codex/second-brain-agent-registry-roster-20260701-clean",
+        status: "blocked-by-full-history-secret-scan",
+        failingGateNames: ["Secret & Vulnerability Scan", "Security Summary"],
+        currentTreeScope: "clean-redacted-no-git",
+        fullHistoryScope: "blocked-redacted-findings",
+        mergeAllowed: false,
+        releaseAllowed: false,
+        requiresOwnerApproval: true
+      }
+    ],
     relatedReleaseChecklist: "content/development/seis-public-demo-release-checklist-pr54.json",
     sourcePaths: {
       workflow: paths.workflow,
@@ -179,6 +205,20 @@ function validateReport(value, label) {
   ensure(value?.mode === "redacted-local-and-ci-evidence", `${label} mode mismatch.`);
   ensure(value?.decision === "NO-GO-security-history-remediation-needed", `${label} decision mismatch.`);
   ensure(value?.pullRequest?.number === 104, `${label} must bind PR #104.`);
+  ensure(
+    (value?.activeGateImpacts || []).some((item) => item.pullRequest === 127),
+    `${label} must record PR #127 as an actively impacted gate.`
+  );
+  for (const impact of value?.activeGateImpacts || []) {
+    ensure(impact.status === "blocked-by-full-history-secret-scan", `${label} active gate impact ${impact.pullRequest} status mismatch.`);
+    ensureIncludes(impact.failingGateNames, "Secret & Vulnerability Scan", `${label} active gate impact ${impact.pullRequest} failing gates`);
+    ensureIncludes(impact.failingGateNames, "Security Summary", `${label} active gate impact ${impact.pullRequest} failing gates`);
+    ensure(impact.currentTreeScope === "clean-redacted-no-git", `${label} active gate impact ${impact.pullRequest} current tree scope mismatch.`);
+    ensure(impact.fullHistoryScope === "blocked-redacted-findings", `${label} active gate impact ${impact.pullRequest} full history scope mismatch.`);
+    ensure(impact.mergeAllowed === false, `${label} active gate impact ${impact.pullRequest} must block merge.`);
+    ensure(impact.releaseAllowed === false, `${label} active gate impact ${impact.pullRequest} must block release.`);
+    ensure(impact.requiresOwnerApproval === true, `${label} active gate impact ${impact.pullRequest} must require owner approval.`);
+  }
   ensure(value?.currentTreeSecretScan?.status === "clean-redacted-no-git", `${label} must record current-tree clean scan.`);
   ensure(value?.currentTreeSecretScan?.findings === 0, `${label} current-tree findings must be zero.`);
   ensure(value?.currentTreeSecretScan?.rawSecretValuesStored === false, `${label} must not store raw current-tree finding values.`);
@@ -255,6 +295,12 @@ function renderMarkdown(value) {
     .join("\n");
   const approval = value.requiredApprovalBeforeRemediation.map((item) => `- ${item}`).join("\n");
   const forbidden = value.forbiddenRemediationWithoutApproval.map((item) => `- ${item}`).join("\n");
+  const activeImpacts = value.activeGateImpacts
+    .map(
+      (item) =>
+        `| PR #${item.pullRequest} | ${item.branch} | ${item.status} | ${item.failingGateNames.join(", ")} | ${item.mergeAllowed} | ${item.releaseAllowed} |`
+    )
+    .join("\n");
 
   return `# SEIS Public Demo Security Gate Redacted Evidence
 
@@ -266,6 +312,12 @@ PR: ${value.pullRequest.url}
 
 This artifact stores only redacted categories, paths, counts, and approval
 requirements. Raw secret values stored: ${value.safetyBoundary.rawSecretValuesStored}.
+
+## Active Gate Impacts
+
+| PR | Branch | Status | Failing gates | Merge allowed | Release allowed |
+| --- | --- | --- | --- | --- | --- |
+${activeImpacts}
 
 ## Current Tree
 

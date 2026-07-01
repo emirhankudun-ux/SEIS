@@ -105,6 +105,7 @@ function buildReport(generatedAt) {
       releaseChecklist: paths.releaseDoc,
       nextQueue: paths.nextQueue
     },
+    activeGateImpacts: securityGate?.activeGateImpacts || [],
     observedSecurityState: {
       currentTreeStatus: currentTree.status,
       currentTreeFindings: currentTree.findings,
@@ -277,6 +278,18 @@ function validateReport(value, label) {
   ensure(value?.mode === "redacted-owner-review-no-raw-values", `${label} mode mismatch.`);
   ensure(value?.decision === "NO-GO-owner-security-decision-required", `${label} decision mismatch.`);
   ensure(value?.pullRequest?.number === 104, `${label} must bind PR #104.`);
+  ensure(
+    (value?.activeGateImpacts || []).some((item) => item.pullRequest === 127),
+    `${label} must record PR #127 as an actively impacted gate.`
+  );
+  for (const impact of value?.activeGateImpacts || []) {
+    ensure(impact.status === "blocked-by-full-history-secret-scan", `${label} active gate impact ${impact.pullRequest} status mismatch.`);
+    ensureIncludes(impact.failingGateNames, "Secret & Vulnerability Scan", `${label} active gate impact ${impact.pullRequest} failing gates`);
+    ensureIncludes(impact.failingGateNames, "Security Summary", `${label} active gate impact ${impact.pullRequest} failing gates`);
+    ensure(impact.mergeAllowed === false, `${label} active gate impact ${impact.pullRequest} must block merge.`);
+    ensure(impact.releaseAllowed === false, `${label} active gate impact ${impact.pullRequest} must block release.`);
+    ensure(impact.requiresOwnerApproval === true, `${label} active gate impact ${impact.pullRequest} must require owner approval.`);
+  }
   ensure(value?.sourceArtifacts?.securityGate === paths.securityGateJson, `${label} security gate source mismatch.`);
   ensure(value?.observedSecurityState?.currentTreeStatus === "clean-redacted-no-git", `${label} must preserve current-tree clean status.`);
   ensure(value?.observedSecurityState?.currentTreeFindings === 0, `${label} current-tree findings must be zero.`);
@@ -359,6 +372,12 @@ function renderMarkdown(value) {
     .join("\n");
   const allowed = value.allowedNextActionsWithoutApproval.map((item) => `- ${item}`).join("\n");
   const forbidden = value.forbiddenWithoutOwnerApproval.map((item) => `- ${item}`).join("\n");
+  const activeImpacts = value.activeGateImpacts
+    .map(
+      (item) =>
+        `| PR #${item.pullRequest} | ${item.branch} | ${item.status} | ${item.failingGateNames.join(", ")} | ${item.mergeAllowed} | ${item.releaseAllowed} |`
+    )
+    .join("\n");
 
   return `# SEIS Security Owner Handoff
 
@@ -377,6 +396,12 @@ Full security log stored: ${value.safetyBoundary.fullSecurityLogStored}
 History rewrite performed: ${value.safetyBoundary.historyRewritePerformed}
 Force push performed: ${value.safetyBoundary.forcePushPerformed}
 Release approval granted: ${value.safetyBoundary.releaseApprovalGranted}
+
+## Active Gate Impacts
+
+| PR | Branch | Status | Failing gates | Merge allowed | Release allowed |
+| --- | --- | --- | --- | --- | --- |
+${activeImpacts}
 
 ## Observed Security State
 

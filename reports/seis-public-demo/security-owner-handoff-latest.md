@@ -1,6 +1,6 @@
 # SEIS Security Owner Handoff
 
-Generated: 2026-07-01T18:45:51.688Z
+Generated: 2026-07-01T19:03:07.944Z
 Status: owner-action-required
 Mode: redacted-owner-review-no-raw-values
 Decision: NO-GO-owner-security-decision-required
@@ -15,6 +15,13 @@ Full security log stored: false
 History rewrite performed: false
 Force push performed: false
 Release approval granted: false
+
+## Active Gate Impacts
+
+| PR | Branch | Status | Failing gates | Merge allowed | Release allowed |
+| --- | --- | --- | --- | --- | --- |
+| PR #104 | codex/second-brain-readiness-agent-registry-20260701 | blocked-by-full-history-secret-scan | Secret & Vulnerability Scan, Security Summary | false | false |
+| PR #127 | codex/second-brain-agent-registry-roster-20260701-clean | blocked-by-full-history-secret-scan | Secret & Vulnerability Scan, Security Summary | false | false |
 
 ## Observed Security State
 

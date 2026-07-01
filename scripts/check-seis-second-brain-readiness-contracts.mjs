@@ -459,6 +459,7 @@ function validateSecurityGate(report) {
   ensure(report.mode === "redacted-local-and-ci-evidence", "Security gate artifact mode mismatch.");
   ensure(report.decision === "NO-GO-security-history-remediation-needed", "Security gate artifact must block public release.");
   ensure(report.pullRequest?.number === 104, "Security gate artifact must bind PR #104.");
+  validateActiveGateImpacts(report.activeGateImpacts, "Security gate");
   ensure(report.sourcePaths?.workflow === ".github/workflows/security-guardian.yml", "Security gate workflow source path mismatch.");
   ensure(report.sourcePaths?.currentTreeFixture === "apps/web/test/scripts.test.js", "Security gate current-tree fixture source path mismatch.");
   ensure(
@@ -535,6 +536,7 @@ function validateSecurityOwnerHandoff(report) {
   ensure(report.mode === "redacted-owner-review-no-raw-values", "Security owner handoff mode mismatch.");
   ensure(report.decision === "NO-GO-owner-security-decision-required", "Security owner handoff must block release.");
   ensure(report.pullRequest?.number === 104, "Security owner handoff must bind PR #104.");
+  validateActiveGateImpacts(report.activeGateImpacts, "Security owner handoff");
   ensure(report.sourceArtifacts?.securityGate === paths.securityGateJson, "Security owner handoff security gate source path mismatch.");
   ensure(report.sourceArtifacts?.agentRegistry === paths.agentRegistryJson, "Security owner handoff agent registry source path mismatch.");
   ensure(report.sourceArtifacts?.publicReviewerPack === paths.publicReviewerPackJson, "Security owner handoff reviewer pack source path mismatch.");
@@ -599,6 +601,24 @@ function validateSecurityOwnerHandoff(report) {
   ensure(!/sk-[A-Za-z0-9_-]{20,}/.test(serialized), "Security owner handoff must not include OpenAI-style API keys.");
   ensure(!/-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----/.test(serialized), "Security owner handoff must not include private key bodies.");
   ensure(!/\b(?:password|token|secret|api[_-]?key)\s*=\s*['"][^'"]+['"]/i.test(serialized), "Security owner handoff must not include inline credential assignments.");
+}
+
+function validateActiveGateImpacts(impacts, label) {
+  ensure(Array.isArray(impacts), `${label} active gate impacts must be an array.`);
+  ensure(
+    (impacts || []).some((item) => item.pullRequest === 127),
+    `${label} active gate impacts must include PR #127.`
+  );
+  for (const impact of impacts || []) {
+    ensure(impact.status === "blocked-by-full-history-secret-scan", `${label} active gate impact ${impact.pullRequest} status mismatch.`);
+    ensureIncludes(impact.failingGateNames, "Secret & Vulnerability Scan", `${label} active gate impact ${impact.pullRequest} failing gates`);
+    ensureIncludes(impact.failingGateNames, "Security Summary", `${label} active gate impact ${impact.pullRequest} failing gates`);
+    ensure(impact.currentTreeScope === "clean-redacted-no-git", `${label} active gate impact ${impact.pullRequest} current tree scope mismatch.`);
+    ensure(impact.fullHistoryScope === "blocked-redacted-findings", `${label} active gate impact ${impact.pullRequest} full history scope mismatch.`);
+    ensure(impact.mergeAllowed === false, `${label} active gate impact ${impact.pullRequest} must block merge.`);
+    ensure(impact.releaseAllowed === false, `${label} active gate impact ${impact.pullRequest} must block release.`);
+    ensure(impact.requiresOwnerApproval === true, `${label} active gate impact ${impact.pullRequest} must require owner approval.`);
+  }
 }
 
 function validateRouterContract(contract) {

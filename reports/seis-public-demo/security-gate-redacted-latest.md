@@ -1,6 +1,6 @@
 # SEIS Public Demo Security Gate Redacted Evidence
 
-Generated: 2026-06-30T22:38:51.137Z
+Generated: 2026-07-01T19:03:07.880Z
 Status: blocked-full-history-security-review
 Mode: redacted-local-and-ci-evidence
 Decision: NO-GO-security-history-remediation-needed
@@ -8,6 +8,13 @@ PR: https://github.com/emirhankudun-ux/SEIS/pull/104
 
 This artifact stores only redacted categories, paths, counts, and approval
 requirements. Raw secret values stored: false.
+
+## Active Gate Impacts
+
+| PR | Branch | Status | Failing gates | Merge allowed | Release allowed |
+| --- | --- | --- | --- | --- | --- |
+| PR #104 | codex/second-brain-readiness-agent-registry-20260701 | blocked-by-full-history-secret-scan | Secret & Vulnerability Scan, Security Summary | false | false |
+| PR #127 | codex/second-brain-agent-registry-roster-20260701-clean | blocked-by-full-history-secret-scan | Secret & Vulnerability Scan, Security Summary | false | false |
 
 ## Current Tree
 
