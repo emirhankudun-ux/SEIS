@@ -22,8 +22,16 @@ test("mobile 24/7 report keeps claims blocked when readiness is blocked", () => 
   assert.equal(report.claimGate.codespacesContinuityAllowed, false);
   assert.equal(report.claimGate.directCloudTransport, false);
   assert.deepEqual(report.claimGate.blockedBy, ["mobile-24x7-requires-direct-cloud-transport"]);
+  assert.equal(report.handoffReplay.replayableOnNewDevice, false);
+  assert.equal(report.handoffReplay.browserLocalProofAllowed, false);
+  assert.equal(report.handoffReplay.codespacesReplayAllowedFor24x7, false);
+  assert.equal(report.handoffReplay.localMacReplayDependencyAllowed, false);
+  assert.deepEqual(report.handoffReplay.blockedBy, ["mobile-24x7-requires-direct-cloud-transport"]);
+  assert.equal(evidenceStatus(report, "profile-contract"), "blocked");
+  assert.equal(evidenceStatus(report, "handoff-doctor"), "strict-doctor-required");
   assert.match(markdown, /Ready claim allowed \| no/);
   assert.match(markdown, /Mac-off continuity allowed \| no/);
+  assert.match(markdown, /Replayable on new device \| no/);
 });
 
 test("mobile 24/7 report requires strict doctor before allowing claims", () => {
@@ -31,12 +39,25 @@ test("mobile 24/7 report requires strict doctor before allowing claims", () => {
 
   assert.equal(report.ok, true);
   assert.equal(report.status, "mobile-24x7-ready");
+  assert.equal(report.claimGate.status, "blocked");
+  assert.equal(report.claimGate.allowedOnlyAfterCommand, "npm run cloud:ssh:mobile-direct:doctor:strict");
+  assert.equal(report.claimGate.allowedOnlyAfterClaimScope, "mobile-24x7-ready");
   assert.equal(report.claimGate.strictDoctorRequired, true);
   assert.equal(report.claimGate.strictDoctorRequested, false);
   assert.equal(report.claimGate.strictDoctorPassed, false);
+  assert.equal(report.claimGate.directCloudTransport, true);
   assert.equal(report.claimGate.readyClaimAllowed, false);
   assert.equal(report.claimGate.macOffClaimAllowed, false);
   assert.equal(report.claimGate.localMacDependencyAllowed, false);
+  assert.deepEqual(report.claimGate.blockedBy, ["strict-doctor-required"]);
+  assert.equal(report.handoffReplay.replayableOnNewDevice, false);
+  assert.equal(report.handoffReplay.requiresStrictDoctor, true);
+  assert.equal(report.handoffReplay.requiresDirectCloudTransport, true);
+  assert.equal(report.handoffReplay.requiresSecretFreeReport, true);
+  assert.deepEqual(report.handoffReplay.blockedBy, ["strict-doctor-required"]);
+  assert.equal(evidenceStatus(report, "profile-contract"), "observed-direct-cloud");
+  assert.equal(evidenceStatus(report, "readiness-probe"), "passed");
+  assert.equal(evidenceStatus(report, "handoff-doctor"), "strict-doctor-required");
 });
 
 test("strict mobile 24/7 report opens claims only after ready evidence", () => {
@@ -50,6 +71,14 @@ test("strict mobile 24/7 report opens claims only after ready evidence", () => {
   assert.equal(report.claimGate.continuityClaimAllowed, true);
   assert.equal(report.claimGate.macOffClaimAllowed, true);
   assert.deepEqual(report.claimGate.blockedBy, []);
+  assert.equal(report.handoffReplay.replayableOnNewDevice, true);
+  assert.equal(report.handoffReplay.commands.probeStrict, "npm run cloud:ssh:mobile-direct:probe:strict");
+  assert.equal(report.handoffReplay.commands.doctorStrict, "npm run cloud:ssh:mobile-direct:doctor:strict");
+  assert.deepEqual(report.handoffReplay.blockedBy, []);
+  assert.equal(report.evidenceManifest.secretFree, true);
+  assert.equal(report.evidenceManifest.credentialValuesIncluded, false);
+  assert.equal(evidenceStatus(report, "handoff-doctor"), "passed");
+  assert.equal(evidenceStatus(report, "contract-guard"), "separate-check-required");
 });
 
 function runReport(readiness, extraArgs = []) {
@@ -79,6 +108,10 @@ function runReport(readiness, extraArgs = []) {
     report: JSON.parse(readFileSync(jsonOut, "utf8")),
     markdown: readFileSync(mdOut, "utf8")
   };
+}
+
+function evidenceStatus(report, id) {
+  return report.evidenceManifest.entries.find((entry) => entry.id === id)?.status;
 }
 
 function blockedReadiness() {

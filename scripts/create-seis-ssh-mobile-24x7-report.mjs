@@ -66,6 +66,9 @@ function buildReport(readiness, options = {}) {
     strictDoctorRequested,
     transport
   });
+  const handoff = buildHandoff();
+  const handoffReplay = buildHandoffReplay(claimGate, handoff);
+  const evidenceManifest = buildEvidenceManifest(readiness, claimGate);
   const generatedAt = new Date().toISOString();
   return {
     id: "seis-ssh-mobile-24x7-readiness",
@@ -78,31 +81,20 @@ function buildReport(readiness, options = {}) {
     mobile24x7Compatible: readiness.checks?.sshConfig?.mobile24x7Compatible === true,
     pickerCompatible: readiness.checks?.sshConfig?.pickerCompatible === true,
     claimGate,
+    handoffReplay,
+    evidenceManifest,
     blockers: readiness.blockers || [],
     warnings: readiness.warnings || [],
     checks: readiness.checks || {},
     nextActions: readiness.nextActions || [],
-    handoff: {
-      strictCommand: "npm run cloud:ssh:mobile-24x7:strict",
-      reportCommand: "npm run cloud:ssh:mobile-24x7:report",
-      directCloudProfileCommand: "npm run cloud:ssh:mobile-direct:profile",
-      directCloudBootstrapPlanCommand: "npm run cloud:ssh:mobile-direct:bootstrap:plan",
-      directCloudBootstrapApplyCommand: "npm run cloud:ssh:mobile-direct:bootstrap:apply",
-      directCloudConfigPlanCommand: "npm run cloud:ssh:mobile-direct:config:plan",
-      directCloudConfigInstallCommand: "npm run cloud:ssh:mobile-direct:config:install",
-      directCloudProbeCommand: "npm run cloud:ssh:mobile-direct:probe",
-      directCloudDoctorCommand: "npm run cloud:ssh:mobile-direct:doctor",
-      directCloudDoctorStrictCommand: "npm run cloud:ssh:mobile-direct:doctor:strict",
-      directCloudSwitchCommand: "npm run cloud:ssh:direct-cloud:switch -- --public-ip <PUBLIC_IP> --direct-user root --apply",
-      mobileReadyDefinition: "SEIS-SSH must use direct-cloud transport, prove TCP reachability, pass SSH key auth, and confirm the remote SSH-AI runtime."
-    },
+    handoff,
     safety: readiness.safety || []
   };
 }
 
 function buildClaimGate(readiness, { mobileReady, strictDoctorRequested, transport }) {
   const strictDoctorPassed = mobileReady && strictDoctorRequested;
-  const blockers = readiness.blockers || [];
+  const blockers = buildClaimBlockers(readiness, { mobileReady, strictDoctorRequested });
   return {
     id: "seis-ssh-mobile-24x7-claim-gate",
     readyClaim: "SEIS-SSH is ChatGPT mobile/Codex 24x7 ready",
@@ -125,6 +117,127 @@ function buildClaimGate(readiness, { mobileReady, strictDoctorRequested, transpo
     remoteMutationAllowed: false,
     credentialRead: false,
     secretStored: false
+  };
+}
+
+function buildClaimBlockers(readiness, { mobileReady, strictDoctorRequested }) {
+  const blockers = Array.isArray(readiness.blockers) ? readiness.blockers : [];
+  if (blockers.length > 0) return blockers;
+  if (!strictDoctorRequested) return ["strict-doctor-required"];
+  if (!mobileReady) return ["mobile-24x7-readiness-not-proven"];
+  return ["strict-doctor-required"];
+}
+
+function buildHandoff() {
+  return {
+    strictCommand: "npm run cloud:ssh:mobile-24x7:strict",
+    reportCommand: "npm run cloud:ssh:mobile-24x7:report",
+    directCloudProfileCommand: "npm run cloud:ssh:mobile-direct:profile",
+    directCloudBootstrapPlanCommand: "npm run cloud:ssh:mobile-direct:bootstrap:plan",
+    directCloudBootstrapApplyCommand: "npm run cloud:ssh:mobile-direct:bootstrap:apply",
+    directCloudConfigPlanCommand: "npm run cloud:ssh:mobile-direct:config:plan",
+    directCloudConfigInstallCommand: "npm run cloud:ssh:mobile-direct:config:install",
+    directCloudProbeCommand: "npm run cloud:ssh:mobile-direct:probe",
+    directCloudDoctorCommand: "npm run cloud:ssh:mobile-direct:doctor",
+    directCloudDoctorStrictCommand: "npm run cloud:ssh:mobile-direct:doctor:strict",
+    directCloudSwitchCommand: "npm run cloud:ssh:direct-cloud:switch -- --public-ip <PUBLIC_IP> --direct-user root --apply",
+    mobileReadyDefinition: "SEIS-SSH must use direct-cloud transport, prove TCP reachability, pass SSH key auth, and confirm the remote SSH-AI runtime."
+  };
+}
+
+function buildHandoffReplay(claimGate, handoff) {
+  const replayableOnNewDevice = claimGate.strictDoctorPassed === true;
+  return {
+    id: "seis-ssh-mobile-24x7-handoff-replay",
+    singleVisibleAlias: "SEIS-SSH",
+    replayableOnNewDevice,
+    requiresStrictDoctor: true,
+    requiresDirectCloudTransport: true,
+    requiresSecretFreeReport: true,
+    requiresLocalKeyMaterialOutsideGit: true,
+    browserLocalProofAllowed: false,
+    codespacesReplayAllowedFor24x7: false,
+    localMacReplayDependencyAllowed: false,
+    blockedBy: replayableOnNewDevice ? [] : claimGate.blockedBy,
+    commands: {
+      profile: handoff.directCloudProfileCommand,
+      bootstrapPlan: handoff.directCloudBootstrapPlanCommand,
+      configPlan: handoff.directCloudConfigPlanCommand,
+      configInstall: handoff.directCloudConfigInstallCommand,
+      probeStrict: "npm run cloud:ssh:mobile-direct:probe:strict",
+      doctorStrict: handoff.directCloudDoctorStrictCommand
+    },
+    generatedBy: "scripts/create-seis-ssh-mobile-24x7-report.mjs",
+    remoteMutationAllowed: false,
+    credentialRead: false,
+    secretStored: false
+  };
+}
+
+function buildEvidenceManifest(readiness, claimGate) {
+  const checks = readiness.checks || {};
+  const ssh = checks.sshConfig || {};
+  const tcp = checks.tcp || {};
+  const auth = checks.sshAuth || {};
+  const runtime = checks.remoteRuntime || {};
+  const directCloud = ssh.transport === "direct-cloud";
+  const readinessPassed = readiness.ok === true;
+  return {
+    id: "seis-ssh-mobile-24x7-evidence-manifest",
+    sourceLedger: "content/development/seis-ssh-mobile-direct-cloud-acceptance-ledger.json",
+    secretFree: true,
+    credentialValuesIncluded: false,
+    entries: [
+      {
+        id: "profile-contract",
+        command: "npm run cloud:ssh:mobile-direct:profile",
+        artifact: "reports/seis-ssh-mobile-direct-cloud-profile.json",
+        status: directCloud ? "observed-direct-cloud" : "blocked",
+        claimScope: "configuration-only"
+      },
+      {
+        id: "bootstrap-dry-run",
+        command: "npm run cloud:ssh:mobile-direct:bootstrap:plan",
+        artifact: "stdout-json",
+        status: "operator-review-required",
+        claimScope: "bootstrap-plan-only"
+      },
+      {
+        id: "bootstrap-apply",
+        command: "npm run cloud:ssh:mobile-direct:bootstrap:apply",
+        artifact: "remote-systemd-state",
+        status: runtime.online === true ? "runtime-observed" : "not-verified-by-report",
+        claimScope: "remote-bootstrap"
+      },
+      {
+        id: "ssh-config-install",
+        command: "npm run cloud:ssh:mobile-direct:config:install",
+        artifact: "~/.ssh/config",
+        status: directCloud && ssh.pickerCompatible === true ? "observed-managed-alias" : "blocked",
+        claimScope: "local-client-config"
+      },
+      {
+        id: "readiness-probe",
+        command: "npm run cloud:ssh:mobile-direct:probe:strict",
+        artifact: "stdout-json",
+        status: readinessPassed && tcp.reachable === true && auth.authenticated === true ? "passed" : "blocked",
+        claimScope: "runtime-readiness"
+      },
+      {
+        id: "handoff-doctor",
+        command: "npm run cloud:ssh:mobile-direct:doctor:strict",
+        artifact: "reports/seis-ssh-mobile-24x7-readiness.json",
+        status: claimGate.strictDoctorPassed === true ? "passed" : "strict-doctor-required",
+        claimScope: "mobile-24x7-ready"
+      },
+      {
+        id: "contract-guard",
+        command: "npm run check:seis-ssh-mobile-direct-cloud",
+        artifact: "ci-log",
+        status: "separate-check-required",
+        claimScope: "governance-contract"
+      }
+    ]
   };
 }
 
@@ -215,6 +328,25 @@ Blocked by:
 
 ${renderList(report.claimGate.blockedBy, "No claim blockers.")}
 
+## Handoff Replay Gate
+
+| Gate | Value |
+| --- | --- |
+| Replayable on new device | ${report.handoffReplay.replayableOnNewDevice ? "yes" : "no"} |
+| Requires strict doctor | ${report.handoffReplay.requiresStrictDoctor ? "yes" : "no"} |
+| Requires direct-cloud transport | ${report.handoffReplay.requiresDirectCloudTransport ? "yes" : "no"} |
+| Browser-local proof allowed | ${report.handoffReplay.browserLocalProofAllowed ? "yes" : "no"} |
+| Codespaces replay allowed for 24/7 | ${report.handoffReplay.codespacesReplayAllowedFor24x7 ? "yes" : "no"} |
+| Local Mac replay dependency allowed | ${report.handoffReplay.localMacReplayDependencyAllowed ? "yes" : "no"} |
+
+Blocked by:
+
+${renderList(report.handoffReplay.blockedBy, "No handoff replay blockers.")}
+
+## Evidence Manifest
+
+${renderEvidenceManifest(report.evidenceManifest)}
+
 ## Blockers
 
 ${renderList(report.blockers, "No blockers.")}
@@ -252,6 +384,17 @@ ${renderList(report.safety, "No safety notes.")}
 function renderList(values, fallback) {
   if (!Array.isArray(values) || values.length === 0) return `- ${fallback}`;
   return values.map((value) => `- ${value}`).join("\n");
+}
+
+function renderEvidenceManifest(manifest) {
+  const entries = Array.isArray(manifest?.entries) ? manifest.entries : [];
+  if (entries.length === 0) return "- No evidence manifest entries.";
+  const rows = entries.map((entry) => `| ${entry.id} | ${entry.status} | ${entry.command} | ${entry.artifact} |`);
+  return [
+    "| Evidence | Status | Command | Artifact |",
+    "| --- | --- | --- | --- |",
+    ...rows
+  ].join("\n");
 }
 
 function parseArgs(tokens) {

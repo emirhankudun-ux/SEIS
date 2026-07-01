@@ -177,3 +177,10 @@ unless the report was produced through the strict doctor path and the readiness
 check passed. A non-strict report can still be useful for debugging, but it does
 not authorize the public claim that SEIS is mobile 24/7 ready or reachable while
 the local Mac is closed.
+
+The same report also contains `handoffReplay` and `evidenceManifest`. The
+`handoffReplay.replayableOnNewDevice` flag stays false until the strict doctor
+passes, which means a new computer or ChatGPT mobile session can replay the
+documented direct-cloud commands without copying private runtime state from the
+old Mac. The evidence manifest stores only commands, artifact paths, and
+sanitized status labels.

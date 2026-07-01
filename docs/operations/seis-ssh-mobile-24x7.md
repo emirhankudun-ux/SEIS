@@ -89,6 +89,12 @@ unless the strict doctor was requested and the readiness evidence passed. A
 non-strict report may help debugging, but it does not authorize the public
 mobile 24x7 or Mac-off continuity claim.
 
+The report also includes `handoffReplay` and `evidenceManifest`. Treat
+`handoffReplay.replayableOnNewDevice` as the Mac-off/new-computer continuity
+gate: it remains false until strict doctor evidence passes. The evidence
+manifest keeps the handoff reviewable without storing private keys, API keys,
+tokens, raw credentials, or host secrets.
+
 ## Decision matrix
 
 - Missing `SEIS_SSH_HOST`: blocked. Set the always-on public VM endpoint before claiming readiness.
