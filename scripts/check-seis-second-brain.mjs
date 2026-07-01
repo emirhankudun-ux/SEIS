@@ -59,6 +59,84 @@ if (contract) {
   ensureArrayMin(contract.autonomousAgentRoster, 12, "autonomousAgentRoster");
   ensureArrayMin(contract.pipeline, 4, "pipeline");
   ensureArrayMin(contract.githubGates, 4, "githubGates");
+  ensure(contract.trainingCoverage?.status === "local-demo-read-only", "trainingCoverage must stay local-demo-read-only");
+  ensure(
+    contract.trainingCoverage?.source === "repo-owned browser-local Second Brain records only",
+    "trainingCoverage source must stay repo-owned browser-local only"
+  );
+  ensure(contract.trainingCoverage?.trainingPackPath === contract.trainingPackPath, "trainingCoverage path must match trainingPackPath");
+  for (const section of [
+    "installed AI launcher route coverage",
+    "autonomous agent roster onboarding",
+    "Obsidian safe import boundary",
+    "provider-neutral read-only model router",
+    "human approval gates",
+    "public demo release gates"
+  ]) {
+    ensure((contract.trainingCoverage?.requiredSections || []).includes(section), `trainingCoverage requiredSections missing ${section}`);
+  }
+  ensure(
+    contract.trainingCoverage?.installedAiCoverage?.sourceContract === "content/development/ai-workforce-assignments.json",
+    "trainingCoverage installed AI source contract mismatch"
+  );
+  ensure(
+    contract.trainingCoverage?.installedAiCoverage?.requireRegistryRequiredLauncherRoutes === true,
+    "trainingCoverage must require registry-required launcher routes"
+  );
+  ensure(
+    contract.trainingCoverage?.installedAiCoverage?.requireSecondBrainProfileForEachLauncherRoute === true,
+    "trainingCoverage must require Second Brain profile for every launcher route"
+  );
+  ensure(
+    contract.trainingCoverage?.installedAiCoverage?.requireNoLiveProviderCalls === true,
+    "trainingCoverage must forbid live provider calls"
+  );
+  ensure(
+    contract.trainingCoverage?.autonomousAgentCoverage?.requiredRosterCount === 12,
+    "trainingCoverage must require the 12-agent roster"
+  );
+  ensure(
+    (contract.autonomousAgentRoster || []).length >= contract.trainingCoverage?.autonomousAgentCoverage?.requiredRosterCount,
+    "trainingCoverage autonomous agent roster count is not satisfied"
+  );
+  ensure(
+    contract.trainingCoverage?.autonomousAgentCoverage?.requireNoWriteExecution === true,
+    "trainingCoverage must block autonomous write execution"
+  );
+  ensure(
+    contract.trainingCoverage?.autonomousAgentCoverage?.requireApprovalBeforeExternalMutation === true,
+    "trainingCoverage must require approval before external mutation"
+  );
+  ensure(contract.trainingCoverage?.obsidianCoverage?.bridgeStatus === "planned", "trainingCoverage Obsidian bridge must stay planned");
+  ensure(
+    contract.trainingCoverage?.obsidianCoverage?.bodyImportPolicy === "metadata-only-by-default",
+    "trainingCoverage Obsidian body policy must stay metadata-only"
+  );
+  for (const [field, expected] of [
+    ["privateVaultReadAllowed", false],
+    ["privateNoteBodyCopyAllowed", false],
+    ["pluginInstallAllowed", false]
+  ]) {
+    ensure(contract.trainingCoverage?.obsidianCoverage?.[field] === expected, `trainingCoverage Obsidian ${field} must be ${expected}`);
+  }
+  for (const gate of [
+    "node scripts/check-seis-second-brain.mjs",
+    "node scripts/check-ai-workforce-assignments.mjs",
+    "node scripts/create-seis-second-brain-agent-registry.mjs --check"
+  ]) {
+    ensure((contract.trainingCoverage?.qualityGates || []).includes(gate), `trainingCoverage qualityGates missing ${gate}`);
+  }
+  for (const blocker of [
+    "private Obsidian import",
+    "live provider routing",
+    "autonomous write execution",
+    "GitHub merge or release"
+  ]) {
+    ensure(
+      (contract.trainingCoverage?.blockedUntil || []).some((item) => String(item).includes(blocker)),
+      `trainingCoverage blockedUntil missing ${blocker}`
+    );
+  }
 
   const noteIds = new Set((contract.vaultNotes || []).map((note) => note.id));
   for (const note of contract.vaultNotes || []) {

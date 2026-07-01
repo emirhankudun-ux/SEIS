@@ -1,6 +1,6 @@
 # SEIS Second Brain Agent Registry
 
-Generated: 2026-07-01T18:13:02.628Z
+Generated: 2026-07-01T18:20:29.995Z
 Status: review-only-agent-registry
 Mode: repo-local-no-live-execution
 Decision: NO-GO-autonomous-execution-not-approved
@@ -33,6 +33,16 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 - hostVaultReadEnabled: false
 - bodyImportPolicy: metadata-only-by-default
 - githubMutationEnabled: false
+
+## Training Coverage
+
+- status: local-demo-read-only
+- source: repo-owned browser-local Second Brain records only
+- trainingPackPath: browser-vfs/SecondBrain/07-learning/seis-agent-training-pack.md
+- requiredSections: installed AI launcher route coverage, autonomous agent roster onboarding, Obsidian safe import boundary, provider-neutral read-only model router, human approval gates, public demo release gates
+- installedAiCoverage: launcher routes=true, profiles=true, noLiveProviderCalls=true
+- autonomousAgentCoverage: requiredRosterCount=12, noWriteExecution=true, approvalBeforeExternalMutation=true
+- obsidianCoverage: bridgeStatus=planned, bodyImportPolicy=metadata-only-by-default, privateVaultReadAllowed=false, privateNoteBodyCopyAllowed=false, pluginInstallAllowed=false
 
 ## Launcher Evidence Coverage
 

@@ -161,6 +161,17 @@ function buildReport(generatedAt) {
       bodyImportPolicy: obsidianContract?.dryRunManifestSchema?.bodyImportPolicy || "metadata-only-by-default",
       githubMutationEnabled: secondBrain?.securityBoundary?.githubMutation ?? false
     },
+    trainingCoverage: {
+      status: secondBrain?.trainingCoverage?.status,
+      source: secondBrain?.trainingCoverage?.source,
+      trainingPackPath: publicSecondBrainPath(secondBrain?.trainingCoverage?.trainingPackPath),
+      requiredSections: secondBrain?.trainingCoverage?.requiredSections || [],
+      installedAiCoverage: secondBrain?.trainingCoverage?.installedAiCoverage || {},
+      autonomousAgentCoverage: secondBrain?.trainingCoverage?.autonomousAgentCoverage || {},
+      obsidianCoverage: secondBrain?.trainingCoverage?.obsidianCoverage || {},
+      qualityGates: secondBrain?.trainingCoverage?.qualityGates || [],
+      blockedUntil: secondBrain?.trainingCoverage?.blockedUntil || []
+    },
     launcherEvidence: {
       command: aiWorkforce?.currentLauncherEvidence?.command,
       observedDate: aiWorkforce?.currentLauncherEvidence?.observedDate,
@@ -305,6 +316,25 @@ function validateReport(value, label) {
   ensure(value?.secondBrainBinding?.githubMutationEnabled === false, `${label} GitHub mutation must be disabled.`);
   ensure(!String(value?.secondBrainBinding?.vaultRoot || "").startsWith("/home/"), `${label} vaultRoot must be public-safe and repo-neutral.`);
   ensure(!String(value?.secondBrainBinding?.trainingPackPath || "").startsWith("/home/"), `${label} trainingPackPath must be public-safe and repo-neutral.`);
+  ensure(value?.trainingCoverage?.status === "local-demo-read-only", `${label} training coverage must stay local-demo-read-only.`);
+  ensure(value?.trainingCoverage?.trainingPackPath === value?.secondBrainBinding?.trainingPackPath, `${label} training coverage path mismatch.`);
+  ensureArrayMin(value?.trainingCoverage?.requiredSections, 6, `${label} training coverage required sections`);
+  ensure(value?.trainingCoverage?.installedAiCoverage?.requireRegistryRequiredLauncherRoutes === true, `${label} training coverage must require launcher route coverage.`);
+  ensure(value?.trainingCoverage?.installedAiCoverage?.requireSecondBrainProfileForEachLauncherRoute === true, `${label} training coverage must require Second Brain profiles.`);
+  ensure(value?.trainingCoverage?.installedAiCoverage?.requireNoLiveProviderCalls === true, `${label} training coverage must forbid live provider calls.`);
+  ensure(value?.trainingCoverage?.autonomousAgentCoverage?.requiredRosterCount === 12, `${label} training coverage must require 12-agent roster.`);
+  ensure(value?.trainingCoverage?.autonomousAgentCoverage?.requireNoWriteExecution === true, `${label} training coverage must block autonomous write execution.`);
+  ensure(value?.trainingCoverage?.obsidianCoverage?.bridgeStatus === "planned", `${label} training coverage Obsidian bridge must stay planned.`);
+  ensure(value?.trainingCoverage?.obsidianCoverage?.bodyImportPolicy === "metadata-only-by-default", `${label} training coverage Obsidian body policy mismatch.`);
+  for (const [field, expected] of [
+    ["privateVaultReadAllowed", false],
+    ["privateNoteBodyCopyAllowed", false],
+    ["pluginInstallAllowed", false]
+  ]) {
+    ensure(value?.trainingCoverage?.obsidianCoverage?.[field] === expected, `${label} training coverage Obsidian ${field} must be ${expected}.`);
+  }
+  ensureArrayMin(value?.trainingCoverage?.qualityGates, 3, `${label} training coverage quality gates`);
+  ensureArrayMin(value?.trainingCoverage?.blockedUntil, 4, `${label} training coverage blockers`);
   ensureArrayMin(value?.providerProfiles, 6, `${label} providerProfiles`);
   ensureArrayMin(value?.workforceAssignments, 10, `${label} workforceAssignments`);
   ensureArrayMin(value?.subAgentMesh?.managedSubAgentLanes, 6, `${label} managedSubAgentLanes`);
@@ -412,6 +442,16 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 - hostVaultReadEnabled: ${value.secondBrainBinding.hostVaultReadEnabled}
 - bodyImportPolicy: ${value.secondBrainBinding.bodyImportPolicy}
 - githubMutationEnabled: ${value.secondBrainBinding.githubMutationEnabled}
+
+## Training Coverage
+
+- status: ${value.trainingCoverage.status}
+- source: ${value.trainingCoverage.source}
+- trainingPackPath: ${value.trainingCoverage.trainingPackPath}
+- requiredSections: ${value.trainingCoverage.requiredSections.join(", ")}
+- installedAiCoverage: launcher routes=${value.trainingCoverage.installedAiCoverage.requireRegistryRequiredLauncherRoutes}, profiles=${value.trainingCoverage.installedAiCoverage.requireSecondBrainProfileForEachLauncherRoute}, noLiveProviderCalls=${value.trainingCoverage.installedAiCoverage.requireNoLiveProviderCalls}
+- autonomousAgentCoverage: requiredRosterCount=${value.trainingCoverage.autonomousAgentCoverage.requiredRosterCount}, noWriteExecution=${value.trainingCoverage.autonomousAgentCoverage.requireNoWriteExecution}, approvalBeforeExternalMutation=${value.trainingCoverage.autonomousAgentCoverage.requireApprovalBeforeExternalMutation}
+- obsidianCoverage: bridgeStatus=${value.trainingCoverage.obsidianCoverage.bridgeStatus}, bodyImportPolicy=${value.trainingCoverage.obsidianCoverage.bodyImportPolicy}, privateVaultReadAllowed=${value.trainingCoverage.obsidianCoverage.privateVaultReadAllowed}, privateNoteBodyCopyAllowed=${value.trainingCoverage.obsidianCoverage.privateNoteBodyCopyAllowed}, pluginInstallAllowed=${value.trainingCoverage.obsidianCoverage.pluginInstallAllowed}
 
 ## Launcher Evidence Coverage
 

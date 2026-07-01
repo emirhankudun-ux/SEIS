@@ -302,6 +302,25 @@ function validateAgentRegistry(report) {
   ensure(report.secondBrainBinding?.githubMutationEnabled === false, "Second Brain agent registry must not enable GitHub mutation.");
   ensure(!String(report.secondBrainBinding?.vaultRoot || "").startsWith("/home/"), "Second Brain agent registry vaultRoot must be public-safe and repo-neutral.");
   ensure(!String(report.secondBrainBinding?.trainingPackPath || "").startsWith("/home/"), "Second Brain agent registry trainingPackPath must be public-safe and repo-neutral.");
+  ensure(report.trainingCoverage?.status === "local-demo-read-only", "Second Brain agent registry training coverage must stay local-demo-read-only.");
+  ensure(report.trainingCoverage?.trainingPackPath === report.secondBrainBinding?.trainingPackPath, "Second Brain agent registry training coverage path mismatch.");
+  ensureArrayMin(report.trainingCoverage?.requiredSections, 6, "Second Brain agent registry training coverage required sections");
+  ensure(report.trainingCoverage?.installedAiCoverage?.requireRegistryRequiredLauncherRoutes === true, "Second Brain agent registry training coverage must require launcher routes.");
+  ensure(report.trainingCoverage?.installedAiCoverage?.requireSecondBrainProfileForEachLauncherRoute === true, "Second Brain agent registry training coverage must require Second Brain profiles.");
+  ensure(report.trainingCoverage?.installedAiCoverage?.requireNoLiveProviderCalls === true, "Second Brain agent registry training coverage must forbid live provider calls.");
+  ensure(report.trainingCoverage?.autonomousAgentCoverage?.requiredRosterCount === 12, "Second Brain agent registry training coverage must require the 12-agent roster.");
+  ensure(report.trainingCoverage?.autonomousAgentCoverage?.requireNoWriteExecution === true, "Second Brain agent registry training coverage must block autonomous write execution.");
+  ensure(report.trainingCoverage?.obsidianCoverage?.bridgeStatus === "planned", "Second Brain agent registry training coverage Obsidian bridge must stay planned.");
+  ensure(report.trainingCoverage?.obsidianCoverage?.bodyImportPolicy === "metadata-only-by-default", "Second Brain agent registry training coverage Obsidian body policy mismatch.");
+  for (const [field, expected] of [
+    ["privateVaultReadAllowed", false],
+    ["privateNoteBodyCopyAllowed", false],
+    ["pluginInstallAllowed", false]
+  ]) {
+    ensure(report.trainingCoverage?.obsidianCoverage?.[field] === expected, `Second Brain agent registry training coverage Obsidian ${field} must be ${expected}.`);
+  }
+  ensureArrayMin(report.trainingCoverage?.qualityGates, 3, "Second Brain agent registry training coverage quality gates");
+  ensureArrayMin(report.trainingCoverage?.blockedUntil, 4, "Second Brain agent registry training coverage blockers");
   ensureArrayMin(report.providerProfiles, 6, "Second Brain agent registry provider profiles");
   ensureArrayMin(report.workforceAssignments, 10, "Second Brain agent registry workforce assignments");
   ensureArrayMin(report.subAgentMesh?.managedSubAgentLanes, 6, "Second Brain agent registry managed sub-agent lanes");

@@ -244,6 +244,48 @@
       "duty": "Safe recurring workflows, ledgers, and human-approved automation gates."
     }
   ],
+  "trainingCoverage": {
+    "status": "local-demo-read-only",
+    "source": "repo-owned browser-local Second Brain records only",
+    "trainingPackPath": "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md",
+    "requiredSections": [
+      "installed AI launcher route coverage",
+      "autonomous agent roster onboarding",
+      "Obsidian safe import boundary",
+      "provider-neutral read-only model router",
+      "human approval gates",
+      "public demo release gates"
+    ],
+    "installedAiCoverage": {
+      "sourceContract": "content/development/ai-workforce-assignments.json",
+      "requireRegistryRequiredLauncherRoutes": true,
+      "requireSecondBrainProfileForEachLauncherRoute": true,
+      "requireNoLiveProviderCalls": true
+    },
+    "autonomousAgentCoverage": {
+      "requiredRosterCount": 12,
+      "requireNoWriteExecution": true,
+      "requireApprovalBeforeExternalMutation": true
+    },
+    "obsidianCoverage": {
+      "bridgeStatus": "planned",
+      "bodyImportPolicy": "metadata-only-by-default",
+      "privateVaultReadAllowed": false,
+      "privateNoteBodyCopyAllowed": false,
+      "pluginInstallAllowed": false
+    },
+    "qualityGates": [
+      "node scripts/check-seis-second-brain.mjs",
+      "node scripts/check-ai-workforce-assignments.mjs",
+      "node scripts/create-seis-second-brain-agent-registry.mjs --check"
+    ],
+    "blockedUntil": [
+      "private Obsidian import has explicit user-selected source path and human approval",
+      "live provider routing has backend-only mediation and redaction evidence",
+      "autonomous write execution has enforced permission matrix and approval fixtures",
+      "GitHub merge or release has passing security gates and human approval"
+    ]
+  },
   "pipeline": [
     {
       "step": "Capture",
