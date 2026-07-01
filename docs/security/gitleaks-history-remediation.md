@@ -39,7 +39,8 @@ completed.
 ## Required Owner Review
 
 Before changing the security workflow scope or rewriting history, a maintainer
-should choose one of these paths:
+should use `docs/security/gitleaks-owner-decision-pack.md` and choose one of
+these paths:
 
 1. Rotate any real credentials that may have appeared in the historical bundle,
    then run an owner-approved history rewrite and coordinate protected-branch
