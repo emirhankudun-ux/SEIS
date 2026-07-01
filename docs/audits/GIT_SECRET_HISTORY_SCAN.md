@@ -10,11 +10,11 @@ matched values.
 
 ## Scope
 
-- Commits counted: 286
-- History objects considered: 3922
-- Text blobs inspected: 3914
+- Commits counted: 288
+- History objects considered: 3893
+- Text blobs inspected: 3893
 - Binary blobs skipped: 0
-- Large blobs skipped: 8
+- Large blobs skipped: 0
 - Maximum blob size: 1000000 bytes
 
 ## Findings
