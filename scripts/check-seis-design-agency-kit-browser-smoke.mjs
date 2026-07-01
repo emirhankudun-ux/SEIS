@@ -32,6 +32,7 @@ const REQUIRED_OUTPUTS = [
   "logo-concept-evaluation",
   "brand-usage-guideline",
   "creative-director-review",
+  "design-review-decision-matrix",
   "revision-round-plan",
   "client-feedback-triage-board",
   "case-study-layout",
@@ -74,6 +75,7 @@ const REQUIRED_WORKBOARDS = [
   "logo-concept-evaluation",
   "brand-usage-guideline",
   "creative-director-review",
+  "design-review-decision-matrix",
   "revision-round-plan",
   "client-feedback-triage-board",
   "case-study-layout",
@@ -111,6 +113,7 @@ const CUSTOM_FIELD_VALUES = {
   creativeAssetShotListFocus: "Scene, composition, crop, lighting, prop, format, motion need, source/provenance status, release risk, and production owner",
   logoConceptFocus: "Wordmark, symbol, lockup, small-size readability, monochrome use, misuse risk, trademark blocker, and decision owner",
   usageGuidelineFocus: "Logo spacing, color use, type hierarchy, imagery rules, do and don't examples, accessibility, and escalation owner",
+  designReviewDecisionFocus: "Approve, revise, or hold decision, severity, visual debt, blocking fixes, polish queue, evidence links, publication blocker, owner, and next action",
   revisionRound: "One decision round plus one polish round",
   feedbackTriageFocus: "Decision fixes, polish, out-of-scope requests, risk notes, owner, and next review action",
   caseStudyFocus: "Context, challenge, response, proof, accessibility, quality path, and publication boundary",
@@ -502,6 +505,7 @@ async function smokeDesktop(client, baseUrl) {
   ensure(afterBuild.outputText.includes("creative-asset-shot-list-matrix"), "generated pack must include creative asset shot list output");
   ensure(afterBuild.outputText.includes("logo-concept-evaluation"), "generated pack must include logo concept evaluation output");
   ensure(afterBuild.outputText.includes("creative-director-review"), "generated pack must include creative director review output");
+  ensure(afterBuild.outputText.includes("design-review-decision-matrix"), "generated pack must include design review decision output");
   ensure(afterBuild.outputText.includes("revision-round-plan"), "generated pack must include revision round plan output");
   ensure(afterBuild.outputText.includes("visual-qa-evidence-ledger"), "generated pack must include visual QA evidence ledger output");
   ensure(afterBuild.outputText.includes("production-file-manifest"), "generated pack must include production file manifest output");
@@ -550,6 +554,8 @@ async function smokeDesktop(client, baseUrl) {
   ensure(afterBuild.outputText.includes("## Brand Usage Guideline"), "generated pack must include brand usage guideline section");
   ensure(afterBuild.outputText.includes("not a trademark license"), "generated pack must avoid trademark license claims");
   ensure(afterBuild.outputText.includes("## Creative Director QA"), "generated pack must include creative director QA section");
+  ensure(afterBuild.outputText.includes("## Design Review Decision Matrix"), "generated pack must include design review decision matrix section");
+  ensure(afterBuild.outputText.includes("not creative director approval"), "generated pack must avoid creative director approval claims");
   ensure(afterBuild.outputText.includes("## Revision Plan"), "generated pack must include revision plan section");
   ensure(afterBuild.outputText.includes("## Client Feedback Triage Board"), "generated pack must include client feedback triage board section");
   ensure(afterBuild.outputText.includes("not a stakeholder consensus guarantee"), "generated pack must avoid stakeholder consensus guarantee claims");
@@ -591,6 +597,7 @@ async function smokeDesktop(client, baseUrl) {
   ensure(afterBuild.outputText.includes("Reference themes, color mood, type attitude, imagery cues, motion tone, provenance notes, rejected directions, and review owner"), "generated pack must include custom moodboard direction field");
   ensure(afterBuild.outputText.includes("Wordmark, symbol, lockup, small-size readability, monochrome use, misuse risk, trademark blocker, and decision owner"), "generated pack must include custom logo concept field");
   ensure(afterBuild.outputText.includes("Logo spacing, color use, type hierarchy, imagery rules, do and don't examples, accessibility, and escalation owner"), "generated pack must include custom usage guideline focus field");
+  ensure(afterBuild.outputText.includes("Approve, revise, or hold decision, severity, visual debt, blocking fixes, polish queue, evidence links, publication blocker, owner, and next action"), "generated pack must include custom design review decision field");
   ensure(afterBuild.outputText.includes("One decision round plus one polish round"), "generated pack must include custom revision round field");
   ensure(afterBuild.outputText.includes("Decision fixes, polish, out-of-scope requests, risk notes, owner, and next review action"), "generated pack must include custom feedback triage focus field");
   ensure(afterBuild.outputText.includes("Context, challenge, response, proof, accessibility, quality path, and publication boundary"), "generated pack must include custom case study focus field");

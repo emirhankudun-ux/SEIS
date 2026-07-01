@@ -34,7 +34,8 @@
     "not procurement advice",
     "not a delivery date guarantee",
     "not a client contract",
-    "not a brand name clearance"
+    "not a brand name clearance",
+    "not creative director approval"
   ],
   "qualityPrinciples": [
     "brief before visuals",
@@ -279,6 +280,16 @@
       "title": "Creative director QA",
       "status": "documented",
       "output": "A no-key review scorecard for clarity, hierarchy, contrast, consistency, motion restraint, provenance, and publication readiness.",
+      "evidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ]
+    },
+    {
+      "id": "design-review-decision",
+      "title": "Design review decision matrix",
+      "status": "documented",
+      "output": "A review decision matrix covering approve, revise, or hold status, severity, visual debt, blocking fixes, polish queue, evidence links, publication blockers, owner, and next action without claiming creative director approval.",
       "evidence": [
         "docs/design-system/seis-design-agency-kit.md",
         "apps/web/website/seis-design.html"
@@ -584,6 +595,20 @@
       "category": "quality",
       "agencyEquivalent": "creative director review board",
       "seisOutput": "approve/revise/hold decision, quality scorecard, blocking fixes, polish queue, accessibility gate, and publication boundary",
+      "requiredEvidence": [
+        "docs/design-system/seis-design-agency-kit.md",
+        "apps/web/website/seis-design.html"
+      ],
+      "validationCommands": [
+        "npm run check:seis-design-agency-kit",
+        "npm run check:seis-website-pages"
+      ]
+    },
+    {
+      "id": "design-review-decision-matrix",
+      "category": "quality",
+      "agencyEquivalent": "design review decision matrix",
+      "seisOutput": "approve, revise, or hold decision, severity, visual debt, blocking fixes, polish queue, evidence links, publication blocker, owner, next action, and no-creative-director-approval boundary",
       "requiredEvidence": [
         "docs/design-system/seis-design-agency-kit.md",
         "apps/web/website/seis-design.html"
@@ -969,6 +994,7 @@
       "creativeAssetShotListFocus",
       "logoConceptFocus",
       "usageGuidelineFocus",
+      "designReviewDecisionFocus",
       "revisionRound",
       "feedbackTriageFocus",
       "caseStudyFocus",
@@ -1001,6 +1027,7 @@
       "logo-concept-evaluation",
       "brand-usage-guideline",
       "creative-director-review",
+      "design-review-decision-matrix",
       "revision-round-plan",
       "client-feedback-triage-board",
       "case-study-layout",
@@ -1043,6 +1070,7 @@
       "logo-concept-evaluation",
       "brand-usage-guideline",
       "creative-director-review",
+      "design-review-decision-matrix",
       "revision-round-plan",
       "client-feedback-triage-board",
       "case-study-layout",
@@ -1083,6 +1111,7 @@
       "Logo Concept Evaluation Matrix",
       "Brand Usage Guideline",
       "Creative Director QA",
+      "Design Review Decision Matrix",
       "Revision Plan",
       "Client Feedback Triage Board",
       "Case Study Layout Board",
@@ -1112,6 +1141,7 @@
       "not a delivery date guarantee",
       "not a client contract",
       "not a brand name clearance",
+      "not creative director approval",
       "not market research",
       "not legal copy approval",
       "not social media scheduling",

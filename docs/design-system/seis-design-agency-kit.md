@@ -9,7 +9,7 @@ composition, and handoff discipline before paying for a full agency engagement.
 It also includes a client discovery intake matrix, brand and offer naming matrix, proposal scope worksheet, agency quote comparator, agency cost control matrix, design sprint timeline matrix,
 brand strategy workshop matrix, competitive positioning matrix, typography pairing and hierarchy matrix,
 brand voice and messaging matrix, color system accessibility matrix, brand rationale deck, visual reference moodboard, creative asset shot list matrix, logo concept evaluation matrix,
-brand usage guideline, landing page blueprint matrix, creative director QA board, revision
+ brand usage guideline, landing page blueprint matrix, creative director QA board, design review decision matrix, revision
 plan, client feedback triage board, case study layout board, production file manifest, asset size spec
 sheet, print production readiness matrix, social content calendar matrix, visual QA evidence ledger, and client approval packet plus a
 client-ready export index so vague agency estimates can be turned into a
@@ -61,6 +61,8 @@ kits, provenance checks, and client handoff evidence reproducible.
 - Not a client contract, legal onboarding flow, or private asset storage system.
 - Not a brand name clearance, trademark opinion, domain registration, or final
   naming approval.
+- Not creative director approval, publication approval, or permission to ship
+  unresolved visual blockers.
 - Not a conversion guarantee, search ranking guarantee, or legal copy approval
   for published landing pages.
 - Not procurement advice, tax advice, or a purchasing recommendation.
@@ -90,6 +92,7 @@ kits, provenance checks, and client handoff evidence reproducible.
 | Logo evaluation | Logo concept evaluation matrix for wordmark, monogram, symbol, lockup, and no-logo directions. | Matrix is marked not final logo approval, not trademark clearance, and not an automated logo generator. |
 | Identity | Color, type, spacing, logo-direction, icon, and usage notes connected to SEIS tokens. | Tokens and accessibility notes are referenced. |
 | Usage | Brand usage guideline for logo spacing, color use, type hierarchy, imagery rules, do/don't examples, accessibility, misuse boundaries, and escalation owner. | Guideline is marked not a trademark license or legal clearance. |
+| Review decision | Design review decision matrix with approve/revise/hold status, severity, visual debt, blocking fixes, polish queue, evidence links, publication blocker, owner, and next action. | Matrix is marked not creative director approval, not publication approval, and not client approval. |
 | Web | Landing, portfolio, case-study, or showcase direction using current no-key web surfaces. | Demo route remains no-key and no live claim is added. |
 | Landing blueprint | Landing page blueprint matrix with hero promise, section order, proof blocks, objection handling, CTA ladder, responsive priority, accessibility notes, analytics questions, owner, and next review action. | Matrix is marked not a conversion guarantee, not a search ranking guarantee, and not legal copy approval. |
 | Portfolio | Case study layout with context, challenge, response, proof, accessibility, quality path, CTA, and handoff sections. | Case study is marked not a verified customer case study. |
@@ -124,6 +127,7 @@ kits, provenance checks, and client handoff evidence reproducible.
 | Creative asset shot list matrix | `creative-asset-shot-list-matrix` with scene, composition, crop, lighting, prop, format, motion need, source/provenance status, release risk, production owner, and no-model-release-approval boundary. | This document, the kit JSON, and `docs/design-system/seis-design-foundation.md` |
 | Logo concept evaluation matrix | `logo-concept-evaluation` with concept options, mark style, wordmark fit, small-size readability, monochrome use, misuse risk, trademark review blocker, decision owner, and no-final-logo-approval boundary. | This document, the kit JSON, and `packages/design-tokens/seis.tokens.css` |
 | Creative director review board | `creative-director-review` with approve/revise/hold decision, scorecard, blocking fixes, polish queue, accessibility gate, and publication boundary. | This document and the kit JSON |
+| Design review decision matrix | `design-review-decision-matrix` with approve/revise/hold decision, severity, visual debt, blocking fixes, polish queue, evidence links, publication blocker, owner, next action, and no-creative-director-approval boundary. | This document, the kit JSON, and `apps/web/website/seis-design.html` |
 | Revision planning worksheet | `revision-round-plan` with decision round, polish round, acceptance criteria, owner, no-endless-revision boundary, and client-delivery gate. | This document and the kit JSON |
 | Client feedback triage board | `client-feedback-triage-board` with comment source, affected deliverable, requested change, decision fix, polish, out-of-scope request, accessibility risk, blocker, owner, response path, and no-stakeholder-consensus-guarantee boundary. | This document and the kit JSON |
 | Case study layout | `case-study-layout` with context, challenge, response, proof, accessibility notes, quality path, CTA, handoff sections, and no-verified-customer-case-study boundary. | This document and `apps/web/case-studies/seis-foundation.html` |
@@ -178,6 +182,9 @@ kits, provenance checks, and client handoff evidence reproducible.
 - Brand and offer naming matrices are not brand name clearance, not trademark
   clearance, not domain registration, and not permission to launch an unreviewed
   name.
+- Design review decision matrices are not creative director approval, not
+  publication approval, not client approval, and not permission to ignore
+  unresolved blockers.
 - Agency cost control matrices are not procurement advice, not tax advice, not
   a purchasing recommendation, not a guaranteed cost saving, and not a binding
   quote.
@@ -236,7 +243,7 @@ Current controls:
   `color system focus`, `rationale focus`,
   `moodboard direction focus`, `creative asset shot list focus`,
   `logo concept focus`,
-  `usage guideline focus`, `revision round`,
+  `usage guideline focus`, `design review decision focus`, `revision round`,
   `feedback triage focus`, `case study focus`, `delivery standard`,
   `print production focus`, `visual evidence target`,
   `export index target`, `primary channels`, `content calendar focus`,
@@ -262,6 +269,7 @@ Current controls:
   `creative-asset-shot-list-matrix`,
   `logo-concept-evaluation`,
   `brand-usage-guideline`, `creative-director-review`,
+  `design-review-decision-matrix`,
   `revision-round-plan`, `client-feedback-triage-board`,
   `case-study-layout`, `production-file-manifest`, `visual-qa-evidence-ledger`, `asset-size-spec-sheet`,
   `print-production-readiness-matrix`,
@@ -285,6 +293,10 @@ Current controls:
   against offer fit, pronunciation, memorability, domain/social availability
   notes, trademark blockers, rejected names, and decision ownership without
   claiming brand-name clearance.
+- The generated Markdown includes `Design Review Decision Matrix` so teams can
+  make approve/revise/hold calls, assign severity, separate visual debt from
+  blockers, track evidence links, and name the next action without claiming
+  creative director approval.
 - The generated Markdown includes `Agency Cost Control Matrix` so teams can
   split agency cost into line items, SEIS in-house routes, external-buy
   triggers, quality risks, evidence requirements, decision owners, and approval
@@ -355,6 +367,7 @@ Current controls:
 - The generated Markdown includes `Creative Director QA`, `Revision Plan`,
   `Client Discovery Intake Matrix`,
   `Brand & Offer Naming Matrix`,
+  `Design Review Decision Matrix`,
   `Brand Strategy Workshop Matrix`,
   `Agency Cost Control Matrix`,
   `Design Sprint Timeline Matrix`,
@@ -376,7 +389,7 @@ Current controls:
   captured before handoff.
 - The generated Markdown includes `Agency Workboards` for brand audit, launch
   assets, client discovery intake, brand and offer naming, proposal scope, agency quote comparison, brand rationale, brand
-  usage, creative QA, revision planning, client feedback triage, visual QA
+  usage, creative QA, design review decision, revision planning, client feedback triage, visual QA
   evidence, case study layout, production delivery, asset specs, print production readiness, social content calendar, client approval, client-ready
   export, social variants, and presentation system planning.
 - `Export to SEIS Code` saves the current pack into the browser-local SEIS Code
@@ -394,7 +407,7 @@ The generated pack is draft evidence for human review. It is not automatic
 publication, not client approval, not live provider generation, not a host
 filesystem write, not a Git commit, not deployment, and not a platform spec
 guarantee. It is also not a guaranteed cost saving, not a persuasion guarantee,
-not market research, not legal copy approval, not a font license, not accessibility certification, not print proof approval, not social media scheduling, not model release approval, not a business strategy guarantee, not a conversion guarantee, not procurement advice, not a delivery date guarantee, not a client contract, not a brand name clearance, not licensed asset approval, not final logo approval, not a downloadable archive, not a trademark license, and not fabricated
+not market research, not legal copy approval, not a font license, not accessibility certification, not print proof approval, not social media scheduling, not model release approval, not a business strategy guarantee, not a conversion guarantee, not procurement advice, not a delivery date guarantee, not a client contract, not a brand name clearance, not creative director approval, not licensed asset approval, not final logo approval, not a downloadable archive, not a trademark license, and not fabricated
 screenshot or review evidence. It is not a stakeholder consensus guarantee.
 It is not a verified customer case study.
 
