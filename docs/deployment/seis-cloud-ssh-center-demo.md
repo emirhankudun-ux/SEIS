@@ -10,6 +10,8 @@
 - Browser-local readiness composer and evidence log.
 - Explicit state labels: connected, mock, disabled, planned, and unknown.
 - Local-only profile switching for local demo, Codespaces plan, SSH readiness, and deployment plan.
+- A schema-backed Cloud / SSH readiness fixture at
+  `content/development/seis-cloud-ssh-center-readiness.json`.
 - Focused static tests in `apps/seis-core/test/seis-cloud-ssh-center-static.test.js`.
 
 ## Real vs mock vs planned
@@ -36,6 +38,7 @@ Open `http://127.0.0.1:4174/cloud-ssh-center.html`.
 
 ```bash
 node --test apps/seis-core/test/seis-cloud-ssh-center-static.test.js
+npm run check:seis-cloud-ssh-center-readiness
 ```
 
 ## Security notes
@@ -45,5 +48,4 @@ This route contains no API keys, private keys, tokens, cookies, service accounts
 ## Next safe actions
 
 - Link this route from the main SEIS Command Center after review.
-- Add a schema-backed Cloud / SSH readiness fixture.
 - Add rollback-first dry-run tests before any real cloud, SSH, VPN, or deployment workflow is enabled.

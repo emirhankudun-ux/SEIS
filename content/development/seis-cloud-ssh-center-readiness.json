@@ -1,0 +1,143 @@
+{
+  "id": "seis-cloud-ssh-center-readiness",
+  "version": 1,
+  "status": "browser-local-demo",
+  "route": "apps/seis-core/cloud-ssh-center.html",
+  "script": "apps/seis-core/cloud-ssh-center.js",
+  "doc": "docs/deployment/seis-cloud-ssh-center-demo.md",
+  "qualityGate": "npm run check:seis-cloud-ssh-center-readiness",
+  "storageKey": "seis.cloud.ssh.center.v1",
+  "publicSafe": true,
+  "liveExecutionAllowed": false,
+  "remoteConnectedByDefault": false,
+  "sshExecutedByDefault": false,
+  "deployExecutedByDefault": false,
+  "credentialReadByDefault": false,
+  "secretStoredByDefault": false,
+  "serverPortChangedByDefault": false,
+  "states": [
+    "connected",
+    "mock",
+    "disabled",
+    "planned",
+    "unknown"
+  ],
+  "surfaces": [
+    {
+      "id": "local-browser-demo",
+      "name": "Local Browser Demo",
+      "status": "connected",
+      "signal": "localStorage",
+      "boundary": "no network",
+      "realBehavior": true,
+      "remoteMutationAllowed": false
+    },
+    {
+      "id": "github-repository",
+      "name": "GitHub Repository",
+      "status": "mock",
+      "signal": "review-needed",
+      "boundary": "no token",
+      "realBehavior": false,
+      "remoteMutationAllowed": false
+    },
+    {
+      "id": "codespaces-workspace",
+      "name": "Codespaces Workspace",
+      "status": "planned",
+      "signal": "cloud workspace",
+      "boundary": "approval-needed",
+      "realBehavior": false,
+      "remoteMutationAllowed": false
+    },
+    {
+      "id": "ssh-connection",
+      "name": "SSH Connection",
+      "status": "disabled",
+      "signal": "sshExecuted: false",
+      "boundary": "human gate",
+      "realBehavior": false,
+      "remoteMutationAllowed": false
+    },
+    {
+      "id": "deployment-pipeline",
+      "name": "Deployment Pipeline",
+      "status": "planned",
+      "signal": "deployExecuted: false",
+      "boundary": "rollback first",
+      "realBehavior": false,
+      "remoteMutationAllowed": false
+    },
+    {
+      "id": "environment-variables",
+      "name": "Environment Variables",
+      "status": "unknown",
+      "signal": "credentialRead: false",
+      "boundary": "redacted",
+      "realBehavior": false,
+      "remoteMutationAllowed": false
+    },
+    {
+      "id": "backups",
+      "name": "Backups",
+      "status": "mock",
+      "signal": "restore test needed",
+      "boundary": "no mutation",
+      "realBehavior": false,
+      "remoteMutationAllowed": false
+    },
+    {
+      "id": "system-health",
+      "name": "System Health",
+      "status": "mock",
+      "signal": "metadata-only",
+      "boundary": "not connected",
+      "realBehavior": false,
+      "remoteMutationAllowed": false
+    },
+    {
+      "id": "provider-health",
+      "name": "Provider Health",
+      "status": "unknown",
+      "signal": "backend-only future",
+      "boundary": "missing evidence",
+      "realBehavior": false,
+      "remoteMutationAllowed": false
+    },
+    {
+      "id": "rollback-readiness",
+      "name": "Rollback Readiness",
+      "status": "planned",
+      "signal": "approval-needed",
+      "boundary": "no live run",
+      "realBehavior": false,
+      "remoteMutationAllowed": false
+    }
+  ],
+  "requiredSafetyFlags": {
+    "remoteConnected": false,
+    "sshExecuted": false,
+    "deployExecuted": false,
+    "credentialRead": false,
+    "secretStored": false,
+    "serverPortChanged": false,
+    "rollbackRequired": true
+  },
+  "forbiddenClaims": [
+    "live SSH is connected",
+    "deployment executed",
+    "credential read",
+    "server or port changed",
+    "provider health verified",
+    "backup restore verified"
+  ],
+  "approvalGates": [
+    "execute-live-ssh",
+    "read-credentials",
+    "change-server-or-port",
+    "deploy",
+    "provision-cloud",
+    "restore-backup",
+    "publish-readiness-claim"
+  ]
+}
