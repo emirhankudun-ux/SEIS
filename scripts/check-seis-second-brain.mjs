@@ -40,6 +40,7 @@ if (contract) {
   ensure(contract.routeId === "seis-second-brain-app", "contract must bind route id seis-second-brain-app");
   ensure(contract.vaultRoot === "/home/seis/SecondBrain", "contract must declare browser-local vault root");
   ensure(contract.trainingPackPath === "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md", "contract must declare browser-local training pack path");
+  ensure(contract.publicContributorPackPath === "/home/seis/SecondBrain/08-public/seis-public-contributor-onboarding.md", "contract must declare browser-local public contributor pack path");
   ensure(contract.releaseReviewPacketPath === "reports/seis-public-demo/pr54-review-packet-latest.md", "contract must declare PR #54 release review packet path");
   ensure(contract.languageModelTrainingCurriculum?.status === "planned-training-contract", "contract must bind planned language model training curriculum");
   ensure(contract.languageModelTrainingCurriculum?.contractPath === trainingCurriculumPath, "contract language model training curriculum path mismatch");
@@ -71,9 +72,37 @@ if (contract) {
     "Obsidian safe import boundary",
     "provider-neutral read-only model router",
     "human approval gates",
-    "public demo release gates"
+    "public demo release gates",
+    "public contributor no-key onboarding"
   ]) {
     ensure((contract.trainingCoverage?.requiredSections || []).includes(section), `trainingCoverage requiredSections missing ${section}`);
+  }
+  ensure(contract.trainingCoverage?.publicContributorPackPath === contract.publicContributorPackPath, "trainingCoverage public contributor pack path must match publicContributorPackPath");
+  ensure(contract.publicContributorOnboarding?.status === "local-demo-no-key", "public contributor onboarding must stay local-demo-no-key");
+  for (const [field, expected] of [
+    ["requiresApiKeys", false],
+    ["requiresProviderLogin", false],
+    ["requiresPrivateObsidianVault", false],
+    ["requiresSsh", false],
+    ["requiresDeployment", false],
+    ["requiresGitHubWriteAccess", false]
+  ]) {
+    ensure(contract.publicContributorOnboarding?.[field] === expected, `public contributor onboarding ${field} must be ${expected}`);
+  }
+  for (const command of [
+    "npm run check:seis-second-brain",
+    "npm run check:seis-second-brain-readiness-contracts",
+    "npm run check:seis-second-brain-browser-smoke"
+  ]) {
+    ensure((contract.publicContributorOnboarding?.reviewCommands || []).includes(command), `public contributor onboarding reviewCommands missing ${command}`);
+  }
+  for (const phrase of [
+    "how to open the browser-local Second Brain",
+    "which installed AI profiles and sub-agent lanes are review-only",
+    "how Obsidian compatibility stays metadata-only and approval-gated",
+    "which GitHub merge and release gates remain blocked"
+  ]) {
+    ensure((contract.publicContributorOnboarding?.mustExplain || []).includes(phrase), `public contributor onboarding mustExplain missing ${phrase}`);
   }
   ensure(
     contract.trainingCoverage?.installedAiCoverage?.sourceContract === "content/development/ai-workforce-assignments.json",
@@ -176,6 +205,7 @@ for (const phrase of [
   "12-agent target roster",
   "GitHub readiness",
   "Agent training pack",
+  "Public contributor onboarding pack",
   "Language model training curriculum",
   "without installing models",
   "Human review required",
@@ -200,6 +230,7 @@ for (const phrase of [
   "second-brain-capture",
   "second-brain-link",
   "second-brain-training-pack",
+  "second-brain-public-contributor-pack",
   "second-brain-review",
   "second-brain-export-github",
   "Save Vault Snapshot",
@@ -210,6 +241,7 @@ for (const phrase of [
   "seis-second-brain-vault-snapshot.md",
   "github-readiness-review.md",
   "seis-agent-training-pack.md",
+  "seis-public-contributor-onboarding.md",
   "releaseReviewPacketPath",
   "pr54-review-packet-latest.md",
   "seis-language-model-training-curriculum.json",
@@ -218,6 +250,10 @@ for (const phrase of [
   "No model install",
   "exportSecondBrainTrainingPack",
   "buildSecondBrainTrainingPackMarkdown",
+  "exportSecondBrainPublicContributorPack",
+  "buildSecondBrainPublicContributorPackMarkdown",
+  "publicContributorPackPath",
+  "publicContributorOnboarding",
   "SEIS_INSTALLED_AI_SYSTEMS.length",
   "registrySummary",
   "data-second-brain-launcher-evidence",

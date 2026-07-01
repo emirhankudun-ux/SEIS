@@ -312,9 +312,12 @@ function validateAgentRegistry(report, secondBrainContract) {
   ensure(report.secondBrainBinding?.githubMutationEnabled === false, "Second Brain agent registry must not enable GitHub mutation.");
   ensure(!String(report.secondBrainBinding?.vaultRoot || "").startsWith("/home/"), "Second Brain agent registry vaultRoot must be public-safe and repo-neutral.");
   ensure(!String(report.secondBrainBinding?.trainingPackPath || "").startsWith("/home/"), "Second Brain agent registry trainingPackPath must be public-safe and repo-neutral.");
+  ensure(!String(report.secondBrainBinding?.publicContributorPackPath || "").startsWith("/home/"), "Second Brain agent registry publicContributorPackPath must be public-safe and repo-neutral.");
   ensure(report.trainingCoverage?.status === "local-demo-read-only", "Second Brain agent registry training coverage must stay local-demo-read-only.");
   ensure(report.trainingCoverage?.trainingPackPath === report.secondBrainBinding?.trainingPackPath, "Second Brain agent registry training coverage path mismatch.");
+  ensure(report.trainingCoverage?.publicContributorPackPath === report.secondBrainBinding?.publicContributorPackPath, "Second Brain agent registry training coverage public contributor path mismatch.");
   ensureArrayMin(report.trainingCoverage?.requiredSections, 6, "Second Brain agent registry training coverage required sections");
+  ensureIncludes(report.trainingCoverage?.requiredSections, "public contributor no-key onboarding", "Second Brain agent registry training coverage required sections");
   ensure(report.trainingCoverage?.installedAiCoverage?.requireRegistryRequiredLauncherRoutes === true, "Second Brain agent registry training coverage must require launcher routes.");
   ensure(report.trainingCoverage?.installedAiCoverage?.requireSecondBrainProfileForEachLauncherRoute === true, "Second Brain agent registry training coverage must require Second Brain profiles.");
   ensure(report.trainingCoverage?.installedAiCoverage?.requireNoLiveProviderCalls === true, "Second Brain agent registry training coverage must forbid live provider calls.");

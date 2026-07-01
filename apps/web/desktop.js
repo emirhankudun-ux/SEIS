@@ -1427,6 +1427,7 @@ const SEIS_SECOND_BRAIN_SYSTEM = {
   snapshotPath: "/home/seis/SecondBrain/seis-second-brain-vault-snapshot.md",
   githubReadinessPath: "/home/seis/SecondBrain/github-readiness-review.md",
   trainingPackPath: "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md",
+  publicContributorPackPath: "/home/seis/SecondBrain/08-public/seis-public-contributor-onboarding.md",
   releaseReviewPacketPath: "reports/seis-public-demo/pr54-review-packet-latest.md",
   languageModelTrainingCurriculum: {
     status: "planned-training-contract",
@@ -1453,7 +1454,8 @@ const SEIS_SECOND_BRAIN_SYSTEM = {
       "Obsidian safe import boundary",
       "provider-neutral read-only model router",
       "human approval gates",
-      "public demo release gates"
+      "public demo release gates",
+      "public contributor no-key onboarding"
     ],
     launcherEvidence: [
       ["seis-agent", "installed", "seis-agent-policy-profile"],
@@ -1479,6 +1481,20 @@ const SEIS_SECOND_BRAIN_SYSTEM = {
   obsidianState: "Obsidian bridge planned",
   runtimeBoundary: "Browser-local Markdown vault and graph. No Obsidian plugin install, provider call, SSH, deployment, GitHub mutation, credential access, or autonomous write runtime.",
   labels: ["Local Demo", "Obsidian bridge planned", "No secrets", "Human review before GitHub"],
+  publicContributorOnboarding: {
+    status: "local-demo-no-key",
+    requiresApiKeys: false,
+    requiresProviderLogin: false,
+    requiresPrivateObsidianVault: false,
+    requiresSsh: false,
+    requiresDeployment: false,
+    requiresGitHubWriteAccess: false,
+    reviewCommands: [
+      "npm run check:seis-second-brain",
+      "npm run check:seis-second-brain-readiness-contracts",
+      "npm run check:seis-second-brain-browser-smoke"
+    ]
+  },
   vaultNotes: [
     {
       id: "seis-os-map",
@@ -2730,6 +2746,9 @@ function handleClick(event) {
       break;
     case "second-brain-training-pack":
       exportSecondBrainTrainingPack();
+      break;
+    case "second-brain-public-contributor-pack":
+      exportSecondBrainPublicContributorPack();
       break;
     case "second-brain-review":
       reviewSecondBrainVault();
@@ -5074,6 +5093,7 @@ function renderSecondBrain() {
       <button type="button" data-action="second-brain-capture">Capture Note</button>
       <button type="button" data-action="second-brain-link">Link Graph</button>
       <button type="button" data-action="second-brain-training-pack">Build Training Pack</button>
+      <button type="button" data-action="second-brain-public-contributor-pack">Build Contributor Pack</button>
       <button type="button" data-action="second-brain-review">Run Review Gate</button>
       <button type="button" data-action="second-brain-export-github">Export GitHub Readiness</button>
       <button type="button" data-action="open-app" data-app-id="ai-assistant">Open SEIS AI</button>
@@ -5103,6 +5123,7 @@ function renderSecondBrain() {
       <article class="metric-card"><strong>Quality Gate</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.qualityGate)}</p></article>
       <article class="metric-card"><strong>Last Snapshot</strong><p>${data.lastSnapshot?.time || "Not saved yet"}</p></article>
       <article class="metric-card"><strong>Last Training Pack</strong><p>${data.lastTrainingPack?.time || "Not built yet"}</p></article>
+      <article class="metric-card"><strong>Last Contributor Pack</strong><p>${data.lastContributorPack?.time || "Not built yet"}</p></article>
       <article class="metric-card"><strong>Publish State</strong><p>Human review before GitHub</p></article>
     </div>
     <section class="second-brain-layout">
@@ -8749,6 +8770,78 @@ ${rosterRows.join("\n")}
 `;
 }
 
+function buildSecondBrainPublicContributorPackMarkdown(timestamp) {
+  const registry = SEIS_SECOND_BRAIN_SYSTEM.registrySummary;
+  const onboarding = SEIS_SECOND_BRAIN_SYSTEM.publicContributorOnboarding;
+  const commandRows = onboarding.reviewCommands.map((command) => `- ${command}`);
+  const launcherRows = registry.launcherEvidence.map(([route, status, profile]) => `- ${route}: ${status} / ${profile}`);
+  const agentRows = SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.map(([agent, status, duty]) => `- ${agent}: ${status} / ${duty}`);
+
+  return `# SEIS Second Brain Public Contributor Onboarding
+
+Generated: ${timestamp}
+Mode: ${onboarding.status}
+Pack path: ${SEIS_SECOND_BRAIN_SYSTEM.publicContributorPackPath}
+Source contract: ${SEIS_SECOND_BRAIN_SYSTEM.sourcePath}
+Product doc: ${SEIS_SECOND_BRAIN_SYSTEM.productDoc}
+
+## What A GitHub Contributor Can Review Now
+
+- Open SEIS Desktop and launch SEIS Second Brain.
+- Inspect the browser-local Markdown vault, graph, backlinks, installed AI fixture index, managed sub-agent lanes, and autonomous agent roster.
+- Build the local training pack at ${SEIS_SECOND_BRAIN_SYSTEM.trainingPackPath}.
+- Build this public contributor pack without API keys, provider login, private Obsidian vault access, SSH, deployment, or GitHub write access.
+- Review the PR #54 release packet at ${SEIS_SECOND_BRAIN_SYSTEM.releaseReviewPacketPath}.
+
+## No-Key Review Commands
+
+${commandRows.join("\n")}
+
+## Installed AI And Launcher Evidence
+
+- Registry report: ${SEIS_SECOND_BRAIN_SYSTEM.agentRegistryReportPath}
+- Registry status: ${registry.status}
+- Registry decision: ${registry.decision}
+- Registry AI profiles: ${registry.installedAiProfiles}
+- Browser runtime AI fixtures: ${SEIS_INSTALLED_AI_SYSTEMS.length}
+- Launcher routes: ${registry.launcherRoutes}
+- Installed launcher routes: ${registry.installedLauncherRoutes}
+
+${launcherRows.join("\n")}
+
+## Sub-Agent And Autonomous Agent Boundary
+
+${agentRows.join("\n")}
+
+The roster is review-gated planning evidence. It does not grant autonomous write execution, external connector mutation, SSH, deployment, provider calls, or GitHub mutation.
+
+## Obsidian Boundary
+
+- Obsidian bridge status: ${SEIS_SECOND_BRAIN_SYSTEM.obsidianState}.
+- Private vault import is disabled.
+- Host filesystem vault reads are disabled.
+- Body import remains metadata-only-by-default until explicit user-selected import and human approval exist.
+- Obsidian plugin installation and .obsidian workspace copy are not performed.
+
+## Blocked Before Public Release
+
+${SEIS_SECOND_BRAIN_SYSTEM.githubGates.map((gate) => `- ${gate}`).join("\n")}
+
+## Safety Checklist
+
+- Requires API keys: ${onboarding.requiresApiKeys}
+- Requires provider login: ${onboarding.requiresProviderLogin}
+- Requires private Obsidian vault: ${onboarding.requiresPrivateObsidianVault}
+- Requires SSH: ${onboarding.requiresSsh}
+- Requires deployment: ${onboarding.requiresDeployment}
+- Requires GitHub write access: ${onboarding.requiresGitHubWriteAccess}
+
+## Current Boundary
+
+${SEIS_SECOND_BRAIN_SYSTEM.runtimeBoundary}
+`;
+}
+
 const SEIS_READ_ONLY_MODEL_ROUTER_CONTRACT = {
   blockedModelClasses: [
     "20B planned-not-validated",
@@ -8813,6 +8906,30 @@ function exportSecondBrainTrainingPack() {
     artifactPath: path
   };
   const message = `Second Brain training pack saved to ${path}.`;
+  getAppStatus("second-brain").lastAction = message;
+  log("second-brain", message);
+  saveState();
+  renderOpenWindows("second-brain");
+  renderOpenWindows("files");
+  renderOpenWindows("system-logs");
+  toast("SEIS Second Brain", message);
+}
+
+function exportSecondBrainPublicContributorPack() {
+  const timestamp = new Date().toISOString();
+  const path = SEIS_SECOND_BRAIN_SYSTEM.publicContributorPackPath;
+  upsertFile(path, buildSecondBrainPublicContributorPackMarkdown(timestamp));
+  const data = addSecondBrainActivity("Contributor Pack", "No-key Local Demo", `Contributor Pack saved to ${path}.`);
+  data.lastContributorPack = {
+    time: timestamp,
+    path,
+    requiresApiKeys: false,
+    requiresPrivateObsidianVault: false,
+    requiresSsh: false,
+    requiresDeployment: false,
+    requiresGitHubWriteAccess: false
+  };
+  const message = `Second Brain contributor pack saved to ${path}.`;
   getAppStatus("second-brain").lastAction = message;
   log("second-brain", message);
   saveState();

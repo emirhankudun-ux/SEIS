@@ -1,7 +1,7 @@
 {
   "id": "seis-second-brain-agent-registry-pr54",
   "title": "SEIS Second Brain Agent Registry",
-  "generatedAt": "2026-07-01T18:45:22.359Z",
+  "generatedAt": "2026-07-01T19:45:55.846Z",
   "status": "review-only-agent-registry",
   "mode": "repo-local-no-live-execution",
   "decision": "NO-GO-autonomous-execution-not-approved",
@@ -22,6 +22,7 @@
     "status": "local-demo",
     "vaultRoot": "browser-vfs/SecondBrain",
     "trainingPackPath": "browser-vfs/SecondBrain/07-learning/seis-agent-training-pack.md",
+    "publicContributorPackPath": "browser-vfs/SecondBrain/08-public/seis-public-contributor-onboarding.md",
     "obsidianBridgeStatus": "planned",
     "privateVaultImportEnabled": false,
     "hostVaultReadEnabled": false,
@@ -32,13 +33,15 @@
     "status": "local-demo-read-only",
     "source": "repo-owned browser-local Second Brain records only",
     "trainingPackPath": "browser-vfs/SecondBrain/07-learning/seis-agent-training-pack.md",
+    "publicContributorPackPath": "browser-vfs/SecondBrain/08-public/seis-public-contributor-onboarding.md",
     "requiredSections": [
       "installed AI launcher route coverage",
       "autonomous agent roster onboarding",
       "Obsidian safe import boundary",
       "provider-neutral read-only model router",
       "human approval gates",
-      "public demo release gates"
+      "public demo release gates",
+      "public contributor no-key onboarding"
     ],
     "installedAiCoverage": {
       "sourceContract": "content/development/ai-workforce-assignments.json",
@@ -1179,7 +1182,8 @@
     "explicit user-selected Obsidian source path before private vault dry-run",
     "backend-only provider mediation before live model routing",
     "current browser-smoke evidence and manual accessibility review",
-    "clean release-candidate worktree review before GitHub publication"
+    "clean release-candidate worktree review before GitHub publication",
+    "public contributor onboarding pack generated from browser-local records"
   ],
   "safetyBoundary": {
     "privateObsidianVaultReadPerformed": false,

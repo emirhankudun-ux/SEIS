@@ -50,6 +50,7 @@ Search, SEIS AI, Command Center, Launchpad, Favorites, and desktop shortcuts.
 | Markdown vault | Browser-local Local Demo | Seed notes render under `/home/seis/SecondBrain`; `Save Vault Snapshot` writes note files and `seis-second-brain-vault-snapshot.md` into the browser VFS. |
 | Knowledge graph | Browser-local Local Demo | Graph nodes and backlinks are generated from repo-owned seed records; `Link Graph` writes `graph-links.json`. |
 | Agent training pack | Local Demo read-only | `Build Training Pack` writes `/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md` with Obsidian, accessibility, router, PR #54 checklist, and language model training curriculum summaries. |
+| Public contributor onboarding pack | Local Demo no-key | `Build Contributor Pack` writes `/home/seis/SecondBrain/08-public/seis-public-contributor-onboarding.md` so GitHub reviewers can inspect the browser-local Second Brain, installed AI registry evidence, sub-agent roster, Obsidian boundary, and blocked release gates without API keys, provider login, private Obsidian vault access, SSH, deployment, or GitHub write access. |
 | Language model training curriculum | Planned-training contract | `content/development/seis-language-model-training-curriculum.json` and `reports/seis-model-scaling/seis-language-model-training-curriculum.md` map candidate model families, local seed-model lanes, retrieval lanes, and approval gates without installing models, downloading checkpoints, training, benchmarking, calling providers, or claiming SEIS owns a foundation model. |
 | Independent AGI evidence ledger | Review-gated | `npm run check:seis-agi-independent-evidence-ledger` and `content/development/seis-agi-independent-evidence-ledger.json` keep AGI/512B public claims blocked until independent external evidence and explicit human approval are recorded. |
 | Installed AI bridge | Local Demo context only | SEIS AI exposes a Second Brain tab with 6 browser runtime AI fixture profiles and the review-only agent registry evidence for 24 Second Brain profiles, 18 launcher routes, and 12 installed launcher routes. Missing Key, Disabled, missing-command, and runtime-not-ready states remain explicit. |
@@ -132,12 +133,12 @@ The validators check the JSON contract, readiness contracts, Desktop app
 wiring, UI action hooks, CSS surface, documentation, package scripts, and
 basic sensitive-pattern rules.
 The browser-smoke starts the local Desktop route in Chrome, opens Second Brain,
-runs all six vault/training-pack/review/GitHub-readiness actions, verifies
-browser-VFS artifacts after reload, opens the SEIS AI Second Brain bridge, and
-checks the mobile viewport for usable controls and no horizontal overflow. The
-public demo go/no-go gate is read-only and should return `NO-GO` until the
-current release candidate has fresh browser evidence and explicit human
-approval.
+runs all seven vault/training-pack/contributor-pack/review/GitHub-readiness
+actions, verifies browser-VFS artifacts after reload, opens the SEIS AI Second
+Brain bridge, and checks the mobile viewport for usable controls and no
+horizontal overflow. The public demo go/no-go gate is read-only and should
+return `NO-GO` until the current release candidate has fresh browser evidence
+and explicit human approval.
 
 ## Next Safe Work
 

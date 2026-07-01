@@ -155,6 +155,7 @@ function buildReport(generatedAt) {
       status: secondBrain?.status,
       vaultRoot: publicSecondBrainPath(secondBrain?.vaultRoot),
       trainingPackPath: publicSecondBrainPath(secondBrain?.trainingPackPath),
+      publicContributorPackPath: publicSecondBrainPath(secondBrain?.publicContributorPackPath),
       obsidianBridgeStatus: secondBrain?.obsidianBridge?.status,
       privateVaultImportEnabled: obsidianContract?.currentRuntime?.privateVaultImportEnabled ?? false,
       hostVaultReadEnabled: obsidianContract?.currentRuntime?.hostVaultReadEnabled ?? false,
@@ -165,6 +166,7 @@ function buildReport(generatedAt) {
       status: secondBrain?.trainingCoverage?.status,
       source: secondBrain?.trainingCoverage?.source,
       trainingPackPath: publicSecondBrainPath(secondBrain?.trainingCoverage?.trainingPackPath),
+      publicContributorPackPath: publicSecondBrainPath(secondBrain?.trainingCoverage?.publicContributorPackPath),
       requiredSections: secondBrain?.trainingCoverage?.requiredSections || [],
       installedAiCoverage: secondBrain?.trainingCoverage?.installedAiCoverage || {},
       autonomousAgentCoverage: secondBrain?.trainingCoverage?.autonomousAgentCoverage || {},
@@ -229,7 +231,8 @@ function buildReport(generatedAt) {
       "explicit user-selected Obsidian source path before private vault dry-run",
       "backend-only provider mediation before live model routing",
       "current browser-smoke evidence and manual accessibility review",
-      "clean release-candidate worktree review before GitHub publication"
+      "clean release-candidate worktree review before GitHub publication",
+      "public contributor onboarding pack generated from browser-local records"
     ],
     safetyBoundary: {
       privateObsidianVaultReadPerformed: false,
@@ -319,9 +322,12 @@ function validateReport(value, label) {
   ensure(value?.secondBrainBinding?.githubMutationEnabled === false, `${label} GitHub mutation must be disabled.`);
   ensure(!String(value?.secondBrainBinding?.vaultRoot || "").startsWith("/home/"), `${label} vaultRoot must be public-safe and repo-neutral.`);
   ensure(!String(value?.secondBrainBinding?.trainingPackPath || "").startsWith("/home/"), `${label} trainingPackPath must be public-safe and repo-neutral.`);
+  ensure(!String(value?.secondBrainBinding?.publicContributorPackPath || "").startsWith("/home/"), `${label} publicContributorPackPath must be public-safe and repo-neutral.`);
   ensure(value?.trainingCoverage?.status === "local-demo-read-only", `${label} training coverage must stay local-demo-read-only.`);
   ensure(value?.trainingCoverage?.trainingPackPath === value?.secondBrainBinding?.trainingPackPath, `${label} training coverage path mismatch.`);
+  ensure(value?.trainingCoverage?.publicContributorPackPath === value?.secondBrainBinding?.publicContributorPackPath, `${label} training coverage public contributor path mismatch.`);
   ensureArrayMin(value?.trainingCoverage?.requiredSections, 6, `${label} training coverage required sections`);
+  ensure((value?.trainingCoverage?.requiredSections || []).includes("public contributor no-key onboarding"), `${label} training coverage missing public contributor onboarding section.`);
   ensure(value?.trainingCoverage?.installedAiCoverage?.requireRegistryRequiredLauncherRoutes === true, `${label} training coverage must require launcher route coverage.`);
   ensure(value?.trainingCoverage?.installedAiCoverage?.requireSecondBrainProfileForEachLauncherRoute === true, `${label} training coverage must require Second Brain profiles.`);
   ensure(value?.trainingCoverage?.installedAiCoverage?.requireNoLiveProviderCalls === true, `${label} training coverage must forbid live provider calls.`);
@@ -454,6 +460,7 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 - status: ${value.secondBrainBinding.status}
 - vaultRoot: ${value.secondBrainBinding.vaultRoot}
 - trainingPackPath: ${value.secondBrainBinding.trainingPackPath}
+- publicContributorPackPath: ${value.secondBrainBinding.publicContributorPackPath}
 - obsidianBridgeStatus: ${value.secondBrainBinding.obsidianBridgeStatus}
 - privateVaultImportEnabled: ${value.secondBrainBinding.privateVaultImportEnabled}
 - hostVaultReadEnabled: ${value.secondBrainBinding.hostVaultReadEnabled}
@@ -465,6 +472,7 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 - status: ${value.trainingCoverage.status}
 - source: ${value.trainingCoverage.source}
 - trainingPackPath: ${value.trainingCoverage.trainingPackPath}
+- publicContributorPackPath: ${value.trainingCoverage.publicContributorPackPath}
 - requiredSections: ${value.trainingCoverage.requiredSections.join(", ")}
 - installedAiCoverage: launcher routes=${value.trainingCoverage.installedAiCoverage.requireRegistryRequiredLauncherRoutes}, profiles=${value.trainingCoverage.installedAiCoverage.requireSecondBrainProfileForEachLauncherRoute}, noLiveProviderCalls=${value.trainingCoverage.installedAiCoverage.requireNoLiveProviderCalls}
 - autonomousAgentCoverage: requiredRosterCount=${value.trainingCoverage.autonomousAgentCoverage.requiredRosterCount}, noWriteExecution=${value.trainingCoverage.autonomousAgentCoverage.requireNoWriteExecution}, approvalBeforeExternalMutation=${value.trainingCoverage.autonomousAgentCoverage.requireApprovalBeforeExternalMutation}

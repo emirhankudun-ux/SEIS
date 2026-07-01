@@ -16,7 +16,8 @@ const REQUIRED_ARTIFACTS = [
   "/home/seis/SecondBrain/graph-links.json",
   "/home/seis/SecondBrain/second-brain-review-gate.md",
   "/home/seis/SecondBrain/github-readiness-review.md",
-  "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md"
+  "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md",
+  "/home/seis/SecondBrain/08-public/seis-public-contributor-onboarding.md"
 ];
 
 function ensure(condition, message) {
@@ -283,6 +284,7 @@ function validateStaticContract() {
     "second-brain-capture",
     "second-brain-link",
     "second-brain-training-pack",
+    "second-brain-public-contributor-pack",
     "second-brain-review",
     "second-brain-export-github",
     "seis-agent-training-pack.md",
@@ -351,7 +353,7 @@ async function smokeSecondBrain(client, baseUrl) {
       installedAiRows: root?.querySelectorAll('[data-second-brain-installed-ai] tbody tr').length || 0,
       subAgentRows: root?.querySelectorAll('[data-second-brain-subagents] tbody tr').length || 0,
       agentRosterRows: root?.querySelectorAll('[data-second-brain-agent-roster] tbody tr').length || 0,
-      actionButtons: root?.querySelectorAll('[data-action="app-primary"], [data-action="second-brain-capture"], [data-action="second-brain-link"], [data-action="second-brain-training-pack"], [data-action="second-brain-review"], [data-action="second-brain-export-github"]').length || 0,
+      actionButtons: root?.querySelectorAll('[data-action="app-primary"], [data-action="second-brain-capture"], [data-action="second-brain-link"], [data-action="second-brain-training-pack"], [data-action="second-brain-public-contributor-pack"], [data-action="second-brain-review"], [data-action="second-brain-export-github"]').length || 0,
       localDemoCopy: text.includes('Local Demo'),
       obsidianCopy: text.includes('Obsidian bridge planned'),
       githubReviewCopy: text.includes('Human review before GitHub'),
@@ -373,7 +375,7 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(initial.installedAiRows === 6, `expected six installed AI rows, got ${initial.installedAiRows}`);
   ensure(initial.subAgentRows === 6, `expected six sub-agent rows, got ${initial.subAgentRows}`);
   ensure(initial.agentRosterRows === 12, `expected twelve autonomous agent rows, got ${initial.agentRosterRows}`);
-  ensure(initial.actionButtons === 6, `expected six Second Brain actions, got ${initial.actionButtons}`);
+  ensure(initial.actionButtons === 7, `expected seven Second Brain actions, got ${initial.actionButtons}`);
   ensure(initial.localDemoCopy, "Second Brain must label Local Demo mode.");
   ensure(initial.obsidianCopy, "Second Brain must label Obsidian bridge as planned.");
   ensure(initial.githubReviewCopy, "Second Brain must label human review before GitHub.");
@@ -393,6 +395,7 @@ async function smokeSecondBrain(client, baseUrl) {
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-capture"]');
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-link"]');
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-training-pack"]');
+  await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-public-contributor-pack"]');
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-review"]');
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-export-github"]');
 
@@ -410,16 +413,18 @@ async function smokeSecondBrain(client, baseUrl) {
       lastActionVisible: text.includes('GitHub readiness export saved'),
       reviewVisible: text.includes('Human review required') || text.includes('human-review-required'),
       trainingPackVisible: text.toLowerCase().includes('training pack saved'),
+      contributorPackVisible: text.toLowerCase().includes('contributor pack saved'),
       status: diagnostics.appStatus('second-brain')
     };
   })()`);
 
   ensure(artifacts.fixedArtifacts.length === REQUIRED_ARTIFACTS.length, `missing Second Brain artifacts: ${JSON.stringify(artifacts)}`);
   ensure(artifacts.capturePaths.length >= 1, "Second Brain capture action did not create an inbox note.");
-  ensure(artifacts.notePaths.length >= 8, `Second Brain expected snapshot plus note/review markdown files, got ${artifacts.notePaths.length}`);
+  ensure(artifacts.notePaths.length >= 9, `Second Brain expected snapshot plus note/review/contributor markdown files, got ${artifacts.notePaths.length}`);
   ensure(artifacts.lastActionVisible, "Second Brain GitHub readiness action did not update visible state.");
   ensure(artifacts.reviewVisible, "Second Brain review state not visible after actions.");
   ensure(artifacts.trainingPackVisible, "Second Brain training pack action did not update visible state.");
+  ensure(artifacts.contributorPackVisible, "Second Brain contributor pack action did not update visible state.");
   ensure(artifacts.status?.lastAction?.includes("GitHub readiness export saved"), `Second Brain app status should record the readiness export: ${JSON.stringify(artifacts.status)}`);
 
   await evaluate(client, "window.__SEIS_DESKTOP__.openApp('ai-assistant')");

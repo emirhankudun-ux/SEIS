@@ -251,6 +251,10 @@ PR #54 public demo release checklist plus redacted PR #104/PR #127 security
 gate evidence, security owner handoff, and the PR #127 security remediation plan
 without enabling private vault import, live provider routing, SSH, deployment,
 merge, or publication.
+The browser-local `Build Contributor Pack` action now writes
+`/home/seis/SecondBrain/08-public/seis-public-contributor-onboarding.md` so
+GitHub reviewers can inspect the Second Brain path without API keys, provider
+login, private Obsidian vault access, SSH, deployment, or GitHub write access.
 
 `npm run check:seis-public-demo-go-no-go -- --run-fast-checks` is the read-only
 public demo release gate. It is expected to report `NO-GO` until current browser
