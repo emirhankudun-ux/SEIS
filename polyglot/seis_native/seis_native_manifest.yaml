@@ -1,0 +1,213 @@
+version: "2026.07.polyglot.kernel"
+status: draft-review
+owner: SEIS
+purpose: "Track non-browser SEIS native, data, systems, mobile, schema, formal, and infrastructure language surfaces."
+rules:
+  - "Apple First remains the highest priority lane."
+  - "Each language file carries the same six-lane SEIS roadmap model."
+  - "New work stays additive, reviewable, and reversible."
+  - "Live services, deployment, credentials, and remote runtimes are not required."
+lanes:
+  - "Apple First"
+  - "Data AI"
+  - "Systems"
+  - "Android"
+  - "Windows"
+  - "Infrastructure"
+languages:
+  - name: Swift
+    file: swift/NativeRoadmap.swift
+    lane: "Apple First"
+    surface: apple-native
+  - name: Python
+    file: python/seis_native_kernel.py
+    lane: "Data AI"
+    surface: data-ai
+  - name: Python Summary
+    file: python/native_polyglot_summary.py
+    lane: "Data AI"
+    surface: validation
+  - name: Rust
+    file: rust/src/lib.rs
+    lane: "Systems"
+    surface: safe-systems
+  - name: Go
+    file: go/seis_native_kernel.go
+    lane: "Infrastructure"
+    surface: infrastructure
+  - name: Kotlin
+    file: kotlin/SeisNativeKernel.kt
+    lane: "Android"
+    surface: mobile
+  - name: Java
+    file: java/SeisNativeKernel.java
+    lane: "Android"
+    surface: jvm
+  - name: CSharp
+    file: csharp/SeisNativeKernel.cs
+    lane: "Windows"
+    surface: dotnet
+  - name: SQL
+    file: sql/seis_native_kernel.sql
+    lane: "Data AI"
+    surface: database
+  - name: Cpp
+    file: cpp/seis_native_kernel.cpp
+    lane: "Systems"
+    surface: systems
+  - name: Ruby
+    file: ruby/seis_native_kernel.rb
+    lane: "Infrastructure"
+    surface: scripting
+  - name: ObjectiveC
+    file: objective_c/SeisNativeKernel.m
+    lane: "Apple First"
+    surface: apple-bridge
+  - name: C
+    file: c/SeisNativeKernel.c
+    lane: "Systems"
+    surface: low-level
+  - name: Zig
+    file: zig/seis_native_kernel.zig
+    lane: "Systems"
+    surface: low-level
+  - name: Dart
+    file: dart/seis_native_kernel.dart
+    lane: "Android"
+    surface: cross-platform
+  - name: Elixir
+    file: elixir/seis_native_kernel.ex
+    lane: "Infrastructure"
+    surface: concurrent-runtime
+  - name: Julia
+    file: julia/seis_native_kernel.jl
+    lane: "Data AI"
+    surface: research
+  - name: R
+    file: r/seis_native_kernel.R
+    lane: "Data AI"
+    surface: analytics
+  - name: Perl
+    file: perl/seis_native_kernel.pl
+    lane: "Infrastructure"
+    surface: scripting
+  - name: Lua
+    file: lua/seis_native_kernel.lua
+    lane: "Infrastructure"
+    surface: embedded-scripting
+  - name: Haskell
+    file: haskell/SeisNativeKernel.hs
+    lane: "Systems"
+    surface: functional-core
+  - name: PHP
+    file: php/SeisNativeKernel.php
+    lane: "Infrastructure"
+    surface: server-scripting
+  - name: OCaml
+    file: ocaml/seis_native_kernel.ml
+    lane: "Systems"
+    surface: typed-functional-core
+  - name: FSharp
+    file: fsharp/SeisNativeKernel.fs
+    lane: "Windows"
+    surface: dotnet-functional-core
+  - name: Nim
+    file: nim/seis_native_kernel.nim
+    lane: "Systems"
+    surface: systems-scripting
+  - name: Clojure
+    file: clojure/seis_native_kernel.clj
+    lane: "Android"
+    surface: jvm-functional-core
+  - name: Erlang
+    file: erlang/seis_native_kernel.erl
+    lane: "Infrastructure"
+    surface: concurrent-runtime
+  - name: Ada
+    file: ada/seis_native_kernel.ads
+    lane: "Systems"
+    surface: safety-critical
+  - name: Ada Body
+    file: ada/seis_native_kernel.adb
+    lane: "Systems"
+    surface: safety-critical
+  - name: Fortran
+    file: fortran/seis_native_kernel.f90
+    lane: "Data AI"
+    surface: scientific-computing
+  - name: Common Lisp
+    file: common_lisp/seis-native-kernel.lisp
+    lane: "Data AI"
+    surface: symbolic-systems
+  - name: Crystal
+    file: crystal/seis_native_kernel.cr
+    lane: "Systems"
+    surface: compiled-scripting
+  - name: V
+    file: v/seis_native_kernel.v
+    lane: "Systems"
+    surface: app-prototyping
+  - name: Lean
+    file: lean/SeisNativeKernel.lean
+    lane: "Systems"
+    surface: formal-verification
+  - name: Coq
+    file: coq/SeisNativeKernel.v
+    lane: "Systems"
+    surface: proof-model
+  - name: Racket
+    file: racket/seis_native_kernel.rkt
+    lane: "Data AI"
+    surface: language-tooling
+  - name: Scheme
+    file: scheme/seis-native-kernel.scm
+    lane: "Infrastructure"
+    surface: functional-scripting
+  - name: Smalltalk
+    file: smalltalk/SeisNativeKernel.st
+    lane: "Systems"
+    surface: object-systems
+  - name: Pascal
+    file: pascal/seis_native_kernel.pas
+    lane: "Systems"
+    surface: structured-legacy
+  - name: COBOL
+    file: cobol/SEISNATIVEKERNEL.cob
+    lane: "Infrastructure"
+    surface: enterprise-legacy
+  - name: Assembly
+    file: assembly/seis_native_kernel.asm
+    lane: "Systems"
+    surface: low-level
+  - name: Solidity
+    file: solidity/SeisNativeKernel.sol
+    lane: "Infrastructure"
+    surface: smart-contract-model
+  - name: Move
+    file: move/seis_native_kernel.move
+    lane: "Systems"
+    surface: resource-oriented-model
+  - name: Starlark
+    file: starlark/seis_native_kernel.bzl
+    lane: "Infrastructure"
+    surface: build-orchestration
+  - name: PowerShell
+    file: powershell/SeisNativeKernel.ps1
+    lane: "Windows"
+    surface: windows-automation
+  - name: Protobuf
+    file: protobuf/seis_native_kernel.proto
+    lane: "Infrastructure"
+    surface: api-schema
+  - name: GraphQL
+    file: graphql/seis_native_kernel.graphql
+    lane: "Infrastructure"
+    surface: query-schema
+  - name: Terraform
+    file: terraform/seis_native_kernel.tf
+    lane: "Infrastructure"
+    surface: infrastructure-model
+  - name: TOML
+    file: toml/seis_native_kernel.toml
+    lane: "Infrastructure"
+    surface: configuration-manifest
