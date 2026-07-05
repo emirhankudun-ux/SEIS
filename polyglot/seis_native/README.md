@@ -70,12 +70,27 @@ Every implementation describes the same lane order:
 
 This keeps the repository language profile honest: each file carries a small, typed, reusable model rather than filler code.
 
+## Manifest and review packet
+
+The manifest tracks every source file, lane, and platform surface:
+
+```text
+polyglot/seis_native/seis_native_manifest.yaml
+```
+
+The review packet keeps merge review focused and repeatable:
+
+```text
+polyglot/seis_native/REVIEW_PACKET.md
+```
+
 ## Local run examples
 
 ```bash
 python3 polyglot/seis_native/python/seis_native_kernel.py
 python3 polyglot/seis_native/python/native_polyglot_summary.py
 python3 polyglot/seis_native/python/check_next_wave_files.py
+python3 polyglot/seis_native/python/check_manifest_consistency.py
 ```
 
 ## Development rule
