@@ -1,0 +1,734 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SEIS GitHub Coding Lab</title>
+    <meta
+      name="description"
+      content="A local-first SEIS planning surface for turning an idea into a GitHub-safe branch, commit, validation, and pull request workflow."
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #07080b;
+        --panel: rgba(255, 255, 255, 0.075);
+        --panel-strong: rgba(255, 255, 255, 0.12);
+        --text: #f5f2eb;
+        --muted: #c5bfb1;
+        --soft: #928a7d;
+        --line: rgba(255, 255, 255, 0.14);
+        --accent: #f2b66d;
+        --accent-2: #9ed9d0;
+        --danger: #ff9f9f;
+        --ok: #b6efc5;
+        --radius: 28px;
+        --shadow: 0 28px 80px rgba(0, 0, 0, 0.42);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        background:
+          radial-gradient(circle at top left, rgba(242, 182, 109, 0.22), transparent 30rem),
+          radial-gradient(circle at 80% 20%, rgba(158, 217, 208, 0.16), transparent 34rem),
+          linear-gradient(145deg, #050507 0%, #0e1118 48%, #07080b 100%);
+        color: var(--text);
+      }
+
+      a {
+        color: inherit;
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+
+      .shell {
+        width: min(1220px, calc(100% - 28px));
+        margin: 0 auto;
+        padding: 28px 0 48px;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.16fr 0.84fr;
+        gap: 22px;
+        align-items: stretch;
+        margin-bottom: 22px;
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: linear-gradient(180deg, var(--panel), rgba(255, 255, 255, 0.045));
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(22px);
+      }
+
+      .hero-main {
+        padding: 34px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .hero-main::after {
+        content: "";
+        position: absolute;
+        inset: auto -10% -35% 44%;
+        height: 280px;
+        border-radius: 999px;
+        background: radial-gradient(circle, rgba(242, 182, 109, 0.18), transparent 62%);
+        pointer-events: none;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        gap: 10px;
+        align-items: center;
+        padding: 8px 12px;
+        border: 1px solid rgba(242, 182, 109, 0.34);
+        border-radius: 999px;
+        color: var(--accent);
+        background: rgba(242, 182, 109, 0.085);
+        font-size: 0.78rem;
+        font-weight: 750;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .pulse {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--ok);
+        box-shadow: 0 0 0 6px rgba(182, 239, 197, 0.13);
+      }
+
+      h1 {
+        max-width: 760px;
+        margin: 24px 0 12px;
+        font-size: clamp(2.55rem, 7vw, 6.15rem);
+        line-height: 0.88;
+        letter-spacing: -0.075em;
+      }
+
+      .lead {
+        max-width: 760px;
+        margin: 0;
+        color: var(--muted);
+        font-size: clamp(1rem, 1.5vw, 1.18rem);
+        line-height: 1.75;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 26px;
+      }
+
+      .button {
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 999px;
+        padding: 12px 17px;
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.09);
+        cursor: pointer;
+        transition:
+          transform 160ms ease,
+          background 160ms ease,
+          border-color 160ms ease;
+      }
+
+      .button:hover,
+      .button:focus-visible {
+        transform: translateY(-1px);
+        border-color: rgba(242, 182, 109, 0.5);
+        background: rgba(242, 182, 109, 0.14);
+        outline: none;
+      }
+
+      .button.primary {
+        color: #17110a;
+        border-color: transparent;
+        background: linear-gradient(135deg, #f6c47f, #f2b66d);
+        font-weight: 800;
+      }
+
+      .hero-aside {
+        padding: 24px;
+        display: grid;
+        gap: 14px;
+      }
+
+      .stat {
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.055);
+      }
+
+      .stat span {
+        color: var(--soft);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      .stat strong {
+        display: block;
+        margin-top: 8px;
+        font-size: clamp(1.4rem, 2.2vw, 2.2rem);
+        letter-spacing: -0.04em;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 0.9fr 1.1fr;
+        gap: 22px;
+      }
+
+      .panel {
+        padding: 24px;
+      }
+
+      .panel h2,
+      .panel h3 {
+        margin: 0 0 12px;
+        letter-spacing: -0.04em;
+      }
+
+      .panel p {
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      .form {
+        display: grid;
+        gap: 16px;
+      }
+
+      label {
+        display: grid;
+        gap: 7px;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 13px 14px;
+        color: var(--text);
+        background: rgba(0, 0, 0, 0.22);
+        outline: none;
+      }
+
+      textarea {
+        min-height: 140px;
+        resize: vertical;
+        line-height: 1.55;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: rgba(242, 182, 109, 0.62);
+        box-shadow: 0 0 0 4px rgba(242, 182, 109, 0.1);
+      }
+
+      .output-grid {
+        display: grid;
+        gap: 14px;
+      }
+
+      .output-card {
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 18px;
+        background: rgba(255, 255, 255, 0.052);
+      }
+
+      .output-card code,
+      pre {
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      }
+
+      .output-card code {
+        color: var(--accent-2);
+      }
+
+      pre {
+        overflow: auto;
+        margin: 12px 0 0;
+        padding: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 16px;
+        color: #e8f3ef;
+        background: rgba(0, 0, 0, 0.32);
+        line-height: 1.55;
+        white-space: pre-wrap;
+      }
+
+      .checks {
+        display: grid;
+        gap: 10px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .checks li {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 10px;
+        align-items: start;
+        color: var(--muted);
+      }
+
+      .checks li::before {
+        content: "✓";
+        color: var(--ok);
+        font-weight: 900;
+      }
+
+      .lane-list {
+        display: grid;
+        gap: 12px;
+        margin: 16px 0 0;
+      }
+
+      .lane {
+        display: grid;
+        gap: 8px;
+        padding: 15px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(0, 0, 0, 0.16);
+      }
+
+      .lane strong {
+        color: var(--text);
+      }
+
+      .lane span {
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .toast {
+        min-height: 24px;
+        color: var(--accent-2);
+        font-weight: 700;
+      }
+
+      .footer-note {
+        margin: 22px 0 0;
+        color: var(--soft);
+        text-align: center;
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 900px) {
+        .hero,
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-main,
+        .panel {
+          padding: 22px;
+        }
+      }
+    </style>
+  </head>
+  <body data-seis-github-coding-lab="local-demo">
+    <div class="shell">
+      <section class="hero">
+        <div class="card hero-main">
+          <span class="eyebrow"><span class="pulse" aria-hidden="true"></span> Local Demo · GitHub-safe · No provider keys</span>
+          <h1>SEIS GitHub Coding Lab</h1>
+          <p class="lead">
+            Turn a rough product idea into a clean branch name, scoped file plan,
+            validation command list, commit message, and pull request brief. This
+            screen is browser-local only: it does not call providers, open SSH, or
+            mutate GitHub by itself.
+          </p>
+          <div class="hero-actions">
+            <button class="button primary" type="button" data-action="build-plan">Build coding plan</button>
+            <button class="button" type="button" data-action="copy-plan">Copy generated plan</button>
+            <button class="button" type="button" data-action="reset-plan">Reset lab</button>
+          </div>
+        </div>
+
+        <aside class="card hero-aside" aria-label="SEIS safety status">
+          <div class="stat">
+            <span>Mode</span>
+            <strong>Local Demo</strong>
+          </div>
+          <div class="stat">
+            <span>Default GitHub path</span>
+            <strong>Branch → PR</strong>
+          </div>
+          <div class="stat">
+            <span>Safety boundary</span>
+            <strong>No secrets</strong>
+          </div>
+        </aside>
+      </section>
+
+      <main class="grid">
+        <section class="card panel" aria-labelledby="planner-title">
+          <h2 id="planner-title">Idea intake</h2>
+          <p>
+            Write the feature like you would explain it to Codex, Claude, Kimi,
+            or a human maintainer. The lab keeps the output small, reversible,
+            and reviewable.
+          </p>
+
+          <form class="form" data-planner-form>
+            <label>
+              Feature goal
+              <textarea data-field="goal" placeholder="Example: Add a mobile-safe SEIS dashboard card that explains GitHub branch, commit, validation, and PR flow."></textarea>
+            </label>
+
+            <label>
+              Product lane
+              <select data-field="lane">
+                <option value="web-demo">Web demo / static route</option>
+                <option value="docs">Documentation / governance</option>
+                <option value="automation">Automation / validation script</option>
+                <option value="apple-first">Apple-first product direction</option>
+                <option value="second-brain">Second Brain / Obsidian memory</option>
+              </select>
+            </label>
+
+            <label>
+              Risk level
+              <select data-field="risk">
+                <option value="low">Low — additive, static, reversible</option>
+                <option value="medium">Medium — touches existing app routes</option>
+                <option value="high">High — security, SSH, provider, deploy, or data boundary</option>
+              </select>
+            </label>
+          </form>
+
+          <div class="lane-list" aria-label="Operating rules">
+            <div class="lane">
+              <strong>1. Keep it small.</strong>
+              <span>Prefer one feature, one route, one validation surface, and one PR.</span>
+            </div>
+            <div class="lane">
+              <strong>2. Keep it honest.</strong>
+              <span>Mark local demo, mock, planned, disabled, and live states clearly.</span>
+            </div>
+            <div class="lane">
+              <strong>3. Keep it reviewable.</strong>
+              <span>Every change should explain why it exists and how it can be checked.</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="card panel" aria-labelledby="output-title">
+          <h2 id="output-title">Generated GitHub workflow</h2>
+          <p class="toast" role="status" aria-live="polite" data-toast></p>
+
+          <div class="output-grid">
+            <article class="output-card">
+              <h3>Branch</h3>
+              <code data-output="branch">chatgpt/seis-github-coding-lab</code>
+            </article>
+
+            <article class="output-card">
+              <h3>Commit</h3>
+              <code data-output="commit">Add SEIS GitHub coding workflow lab</code>
+            </article>
+
+            <article class="output-card">
+              <h3>File plan</h3>
+              <pre data-output="files">apps/web/seis-github-coding-lab.html
+scripts/check-seis-github-coding-lab.mjs
+docs/product/seis-github-coding-lab.md</pre>
+            </article>
+
+            <article class="output-card">
+              <h3>Validation commands</h3>
+              <pre data-output="validation">node scripts/check-seis-github-coding-lab.mjs
+npm run check:seis-code
+npm run check:static-build</pre>
+            </article>
+
+            <article class="output-card">
+              <h3>PR brief</h3>
+              <pre data-output="brief"></pre>
+            </article>
+
+            <article class="output-card">
+              <h3>Review checklist</h3>
+              <ul class="checks" data-output="checks"></ul>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <p class="footer-note">
+        SEIS GitHub Coding Lab stores only this page's draft state in browser localStorage.
+      </p>
+    </div>
+
+    <script>
+      const STORAGE_KEY = "seis.githubCodingLab.v1";
+      const DEFAULT_GOAL =
+        "Add a mobile-safe SEIS dashboard card that explains GitHub branch, commit, validation, and PR flow.";
+
+      const form = document.querySelector("[data-planner-form]");
+      const goalField = document.querySelector('[data-field="goal"]');
+      const laneField = document.querySelector('[data-field="lane"]');
+      const riskField = document.querySelector('[data-field="risk"]');
+      const toast = document.querySelector("[data-toast]");
+
+      const outputs = {
+        branch: document.querySelector('[data-output="branch"]'),
+        commit: document.querySelector('[data-output="commit"]'),
+        files: document.querySelector('[data-output="files"]'),
+        validation: document.querySelector('[data-output="validation"]'),
+        brief: document.querySelector('[data-output="brief"]'),
+        checks: document.querySelector('[data-output="checks"]')
+      };
+
+      const laneConfig = {
+        "web-demo": {
+          label: "Web demo / static route",
+          prefix: "apps/web",
+          files: [
+            "apps/web/<feature>.html",
+            "scripts/check-<feature>.mjs",
+            "docs/product/<feature>.md"
+          ],
+          validationCommands: [
+            "node scripts/check-<feature>.mjs",
+            "npm run check:seis-code",
+            "npm run check:static-build"
+          ]
+        },
+        docs: {
+          label: "Documentation / governance",
+          prefix: "docs",
+          files: ["docs/<lane>/<feature>.md", "data/<feature>.json", "scripts/check-<feature>.mjs"],
+          validationCommands: ["node scripts/check-<feature>.mjs", "npm run check:open-source-governance"]
+        },
+        automation: {
+          label: "Automation / validation script",
+          prefix: "scripts",
+          files: ["scripts/check-<feature>.mjs", "reports/<feature>.md", "docs/development/<feature>.md"],
+          validationCommands: ["node scripts/check-<feature>.mjs", "npm test"]
+        },
+        "apple-first": {
+          label: "Apple-first product direction",
+          prefix: "packages/seis_platform_swift",
+          files: [
+            "packages/seis_platform_swift/Sources/SeisPlatformKit/<Feature>.swift",
+            "docs/apple/<feature>.md",
+            "scripts/check-<feature>.mjs"
+          ],
+          validationCommands: [
+            "node scripts/check-<feature>.mjs",
+            "npm run check:seis-platform-language-policy"
+          ]
+        },
+        "second-brain": {
+          label: "Second Brain / Obsidian memory",
+          prefix: "seis-brain/vault",
+          files: [
+            "seis-brain/vault/00_Index/<Feature>.md",
+            "docs/second-brain/<feature>.md",
+            "scripts/check-<feature>.mjs"
+          ],
+          validationCommands: [
+            "node scripts/check-<feature>.mjs",
+            "npm run check:seis-second-brain"
+          ]
+        }
+      };
+
+      function slugify(value) {
+        return String(value || "seis-feature")
+          .normalize("NFKD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "")
+          .slice(0, 56) || "seis-feature";
+      }
+
+      function titleCase(value) {
+        return slugify(value)
+          .split("-")
+          .filter(Boolean)
+          .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+          .join(" ");
+      }
+
+      function createBranchName(goal, lane) {
+        const feature = slugify(goal).split("-").slice(0, 6).join("-");
+        return `chatgpt/${lane}-${feature}`.slice(0, 90);
+      }
+
+      function expandTemplate(template, goal, lane) {
+        const feature = slugify(goal);
+        const featureTitle = titleCase(goal).replace(/\s/g, "");
+        return template.replaceAll("<feature>", feature).replaceAll("<Feature>", featureTitle).replaceAll("<lane>", lane);
+      }
+
+      function createPlan() {
+        const goal = goalField.value.trim() || DEFAULT_GOAL;
+        const lane = laneField.value;
+        const risk = riskField.value;
+        const config = laneConfig[lane];
+        const branch = createBranchName(goal, lane);
+        const featureTitle = titleCase(goal);
+        const commit = `Add ${featureTitle} workflow`;
+        const files = config.files.map((file) => expandTemplate(file, goal, lane));
+        const validationCommands = config.validationCommands.map((command) => expandTemplate(command, goal, lane));
+        const riskNote =
+          risk === "high"
+            ? "High risk: keep live provider, SSH, deploy, secret, and data mutations disabled until explicit human approval."
+            : risk === "medium"
+              ? "Medium risk: verify route integration, responsive behavior, and rollback path before merging."
+              : "Low risk: additive static work; still include a validation script and human-readable docs.";
+
+        return {
+          goal,
+          lane,
+          laneLabel: config.label,
+          risk,
+          riskNote,
+          branch,
+          commit,
+          files,
+          validationCommands,
+          checks: [
+            "No secrets, hostnames, private keys, or provider tokens are committed.",
+            "The feature is local-first and clearly labels local demo, planned, disabled, and live states.",
+            "The PR description lists changed files, validation commands, rollback path, and remaining gaps.",
+            "Mobile layout, keyboard focus, and reduced-motion expectations are reviewed.",
+            "Any live GitHub, SSH, provider, deploy, or database action remains human-approved only."
+          ]
+        };
+      }
+
+      function renderPlan(plan) {
+        outputs.branch.textContent = plan.branch;
+        outputs.commit.textContent = plan.commit;
+        outputs.files.textContent = plan.files.join("\n");
+        outputs.validation.textContent = plan.validationCommands.join("\n");
+        outputs.brief.textContent = [
+          `## Goal\n${plan.goal}`,
+          `## Lane\n${plan.laneLabel}`,
+          `## Safety\n${plan.riskNote}`,
+          `## Branch\n${plan.branch}`,
+          `## Commit\n${plan.commit}`,
+          `## Validation\n${plan.validationCommands.map((command) => `- ${command}`).join("\n")}`,
+          "## Rollback\nRevert the PR branch or remove the additive files if validation fails."
+        ].join("\n\n");
+
+        outputs.checks.innerHTML = "";
+        for (const check of plan.checks) {
+          const item = document.createElement("li");
+          item.textContent = check;
+          outputs.checks.append(item);
+        }
+      }
+
+      function saveState(plan) {
+        localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify({
+            goal: goalField.value,
+            lane: laneField.value,
+            risk: riskField.value,
+            plan,
+            updatedAt: new Date().toISOString()
+          })
+        );
+      }
+
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return null;
+          return JSON.parse(raw);
+        } catch {
+          return null;
+        }
+      }
+
+      function buildAndRender(message = "Plan generated locally.") {
+        const plan = createPlan();
+        renderPlan(plan);
+        saveState(plan);
+        toast.textContent = message;
+        return plan;
+      }
+
+      async function copyPlan() {
+        const plan = buildAndRender("Plan refreshed and ready to copy.");
+        const text = outputs.brief.textContent;
+        try {
+          await navigator.clipboard.writeText(text);
+          toast.textContent = "Copied PR brief to clipboard.";
+        } catch {
+          const helper = document.createElement("textarea");
+          helper.value = text;
+          helper.setAttribute("readonly", "");
+          helper.style.position = "fixed";
+          helper.style.opacity = "0";
+          document.body.append(helper);
+          helper.select();
+          document.execCommand("copy");
+          helper.remove();
+          toast.textContent = "Copied PR brief with fallback copy.";
+        }
+        return plan;
+      }
+
+      document.querySelector('[data-action="build-plan"]').addEventListener("click", () => buildAndRender());
+      document.querySelector('[data-action="copy-plan"]').addEventListener("click", copyPlan);
+      document.querySelector('[data-action="reset-plan"]').addEventListener("click", () => {
+        localStorage.removeItem(STORAGE_KEY);
+        goalField.value = DEFAULT_GOAL;
+        laneField.value = "web-demo";
+        riskField.value = "low";
+        buildAndRender("Lab reset to the safe default feature.");
+      });
+
+      form.addEventListener("input", () => buildAndRender("Draft updated locally."));
+
+      const saved = loadState();
+      if (saved) {
+        goalField.value = saved.goal || DEFAULT_GOAL;
+        laneField.value = saved.lane || "web-demo";
+        riskField.value = saved.risk || "low";
+        renderPlan(saved.plan || createPlan());
+        toast.textContent = "Restored local draft.";
+      } else {
+        goalField.value = DEFAULT_GOAL;
+        buildAndRender("Safe starter plan loaded.");
+      }
+    </script>
+  </body>
+</html>
