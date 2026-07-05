@@ -104,3 +104,7 @@ python3 polyglot/seis_native/python/check_readme_manifest_sync.py
 ## Development rule
 
 This kernel must not become a browser demo. Keep new work focused on native, mobile, systems, data, database, infrastructure, schema, formal, or scripting languages.
+
+## Review status
+
+The kernel now has a manifest, language-family map, quality gates, and sync checks. Future work should improve validation depth before adding more language surfaces.
