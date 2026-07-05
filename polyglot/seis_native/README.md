@@ -108,3 +108,7 @@ This kernel must not become a browser demo. Keep new work focused on native, mob
 ## Review status
 
 The kernel now has a manifest, language-family map, quality gates, and sync checks. Future work should improve validation depth before adding more language surfaces.
+
+## Change hygiene
+
+Prefer one language-family improvement per review pass so maintainers can inspect changes without losing the thread.
