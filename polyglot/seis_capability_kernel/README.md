@@ -6,8 +6,9 @@ The active implementation lives in:
 polyglot/seis_native/
 ```
 
-Validation command:
+Run examples:
 
 ```bash
-python3 scripts/check-seis-native-polyglot.py
+python3 polyglot/seis_native/python/seis_native_kernel.py
+python3 polyglot/seis_native/python/native_polyglot_summary.py
 ```
