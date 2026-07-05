@@ -34,6 +34,12 @@ The goal is to keep SEIS Apple-first while making the repository stronger across
 | F# | `fsharp/SeisNativeKernel.fs` | .NET functional core |
 | Nim | `nim/seis_native_kernel.nim` | Systems scripting |
 | Clojure | `clojure/seis_native_kernel.clj` | JVM functional core |
+| Erlang | `erlang/seis_native_kernel.erl` | Concurrent runtime |
+| Ada | `ada/seis_native_kernel.ads` | Safety-critical systems |
+| Fortran | `fortran/seis_native_kernel.f90` | Scientific computing |
+| Common Lisp | `common_lisp/seis-native-kernel.lisp` | Symbolic systems |
+| Crystal | `crystal/seis_native_kernel.cr` | Compiled scripting |
+| V | `v/seis_native_kernel.v` | Systems app prototyping |
 
 ## Shared model
 
