@@ -40,6 +40,22 @@ The goal is to keep SEIS Apple-first while making the repository stronger across
 | Common Lisp | `common_lisp/seis-native-kernel.lisp` | Symbolic systems |
 | Crystal | `crystal/seis_native_kernel.cr` | Compiled scripting |
 | V | `v/seis_native_kernel.v` | Systems app prototyping |
+| Lean | `lean/SeisNativeKernel.lean` | Formal verification |
+| Coq | `coq/SeisNativeKernel.v` | Proof model |
+| Racket | `racket/seis_native_kernel.rkt` | Language tooling |
+| Scheme | `scheme/seis-native-kernel.scm` | Minimal functional scripting |
+| Smalltalk | `smalltalk/SeisNativeKernel.st` | Object systems |
+| Pascal | `pascal/seis_native_kernel.pas` | Structured legacy systems |
+| COBOL | `cobol/SEISNATIVEKERNEL.cob` | Enterprise legacy systems |
+| Assembly | `assembly/seis_native_kernel.asm` | Low-level systems |
+| Solidity | `solidity/SeisNativeKernel.sol` | Smart contract model |
+| Move | `move/seis_native_kernel.move` | Resource-oriented model |
+| Starlark | `starlark/seis_native_kernel.bzl` | Build orchestration |
+| PowerShell | `powershell/SeisNativeKernel.ps1` | Windows automation |
+| Protobuf | `protobuf/seis_native_kernel.proto` | API schema |
+| GraphQL | `graphql/seis_native_kernel.graphql` | Query schema |
+| Terraform | `terraform/seis_native_kernel.tf` | Infrastructure model |
+| TOML | `toml/seis_native_kernel.toml` | Configuration manifest |
 
 ## Shared model
 
@@ -59,8 +75,9 @@ This keeps the repository language profile honest: each file carries a small, ty
 ```bash
 python3 polyglot/seis_native/python/seis_native_kernel.py
 python3 polyglot/seis_native/python/native_polyglot_summary.py
+python3 polyglot/seis_native/python/check_next_wave_files.py
 ```
 
 ## Development rule
 
-This kernel must not become a browser demo. Keep new work focused on native, mobile, systems, data, database, infrastructure, or scripting languages.
+This kernel must not become a browser demo. Keep new work focused on native, mobile, systems, data, database, infrastructure, schema, formal, or scripting languages.
