@@ -477,6 +477,16 @@ npm run check:static-build</pre>
             </article>
 
             <article class="output-card">
+              <h3>Terminal handoff</h3>
+              <pre data-output="terminal"></pre>
+            </article>
+
+            <article class="output-card">
+              <h3>Agent handoff prompt</h3>
+              <pre data-output="agent"></pre>
+            </article>
+
+            <article class="output-card">
               <h3>PR brief</h3>
               <pre data-output="brief"></pre>
             </article>
@@ -510,6 +520,8 @@ npm run check:static-build</pre>
         commit: document.querySelector('[data-output="commit"]'),
         files: document.querySelector('[data-output="files"]'),
         validation: document.querySelector('[data-output="validation"]'),
+        terminal: document.querySelector('[data-output="terminal"]'),
+        agent: document.querySelector('[data-output="agent"]'),
         brief: document.querySelector('[data-output="brief"]'),
         checks: document.querySelector('[data-output="checks"]')
       };
@@ -640,6 +652,31 @@ npm run check:static-build</pre>
         outputs.commit.textContent = plan.commit;
         outputs.files.textContent = plan.files.join("\n");
         outputs.validation.textContent = plan.validationCommands.join("\n");
+
+        const safeCommit = plan.commit.replaceAll('"', '\\"');
+        outputs.terminal.textContent = [
+          `git checkout -b ${plan.branch}`,
+          "# edit the scoped files listed by the lab",
+          ...plan.validationCommands,
+          "git status",
+          `git add ${plan.files.join(" ")}`,
+          `git commit -m "${safeCommit}"`,
+          "# open a draft pull request after human review"
+        ].join("\n");
+
+        outputs.agent.textContent = [
+          "You are working inside the SEIS repository.",
+          `Goal: ${plan.goal}`,
+          `Lane: ${plan.laneLabel}`,
+          `Branch: ${plan.branch}`,
+          `Risk boundary: ${plan.riskNote}`,
+          "Change only these scoped files unless review proves another file is required:",
+          ...plan.files.map((file) => `- ${file}`),
+          "Run validation before claiming completion:",
+          ...plan.validationCommands.map((command) => `- ${command}`),
+          "Do not claim live provider, SSH, deployment, database, or GitHub write completion without evidence and approval."
+        ].join("\n");
+
         outputs.brief.textContent = [
           `## Goal\n${plan.goal}`,
           `## Lane\n${plan.laneLabel}`,
