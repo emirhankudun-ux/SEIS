@@ -84,6 +84,13 @@ The review packet keeps merge review focused and repeatable:
 polyglot/seis_native/REVIEW_PACKET.md
 ```
 
+Language families and quality gates live here:
+
+```text
+polyglot/seis_native/LANGUAGE_FAMILIES.md
+polyglot/seis_native/QUALITY_GATES.md
+```
+
 ## Local run examples
 
 ```bash
@@ -91,6 +98,7 @@ python3 polyglot/seis_native/python/seis_native_kernel.py
 python3 polyglot/seis_native/python/native_polyglot_summary.py
 python3 polyglot/seis_native/python/check_next_wave_files.py
 python3 polyglot/seis_native/python/check_manifest_consistency.py
+python3 polyglot/seis_native/python/check_readme_manifest_sync.py
 ```
 
 ## Development rule
