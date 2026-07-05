@@ -20,6 +20,13 @@ The goal is to keep SEIS Apple-first while making the repository stronger across
 | C++ | `cpp/seis_native_kernel.cpp` | Systems |
 | Ruby | `ruby/seis_native_kernel.rb` | Automation support |
 | Objective-C | `objective_c/SeisNativeKernel.m` | Apple bridge |
+| C | `c/SeisNativeKernel.c` | Systems |
+| Zig | `zig/seis_native_kernel.zig` | Systems |
+| Dart | `dart/seis_native_kernel.dart` | Cross-platform app |
+| Elixir | `elixir/seis_native_kernel.ex` | Runtime orchestration |
+| Julia | `julia/seis_native_kernel.jl` | Data / research |
+| R | `r/seis_native_kernel.R` | Data analysis |
+| Perl | `perl/seis_native_kernel.pl` | Scripting support |
 
 ## Shared model
 
@@ -40,3 +47,7 @@ This keeps the repository language profile honest: each file carries a small, ty
 python3 polyglot/seis_native/python/seis_native_kernel.py
 python3 polyglot/seis_native/python/native_polyglot_summary.py
 ```
+
+## Development rule
+
+This kernel must not become a browser demo. Keep new work focused on native, mobile, systems, data, database, infrastructure, or scripting languages.
