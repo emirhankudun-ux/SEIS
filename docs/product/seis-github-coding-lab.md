@@ -8,6 +8,12 @@ It lives at:
 apps/web/seis-github-coding-lab.html
 ```
 
+It is also linked from the SEIS Code Command Lens:
+
+```text
+apps/web/seis-code.html
+```
+
 ## Purpose
 
 The page helps a maintainer, contributor, or AI coding agent draft a reviewable GitHub workflow before touching production surfaces.
@@ -18,6 +24,8 @@ It generates:
 - a commit message
 - a scoped file plan
 - validation commands
+- a terminal handoff
+- an AI agent handoff prompt
 - a pull request brief
 - a review checklist
 
@@ -53,6 +61,16 @@ The intake supports five SEIS-aligned lanes:
 | Apple-first product direction | Add Apple-first Swift, SwiftUI, macOS, iPadOS, or iOS planning surfaces. |
 | Second Brain / Obsidian memory | Add public-safe memory and Obsidian-compatible context surfaces. |
 
+## Handoff outputs
+
+The page produces three review-friendly handoff surfaces:
+
+1. **Terminal handoff** — a copyable branch, validation, status, add, and commit sequence for a human-controlled local workspace.
+2. **Agent handoff prompt** — a bounded prompt that tells Codex, Claude, Kimi, or another coding assistant what to change, which files to stay inside, and which validation commands to run.
+3. **PR brief** — a review-ready summary with goal, lane, safety boundary, branch, commit, validation, and rollback.
+
+The terminal handoff is guidance only. It does not execute commands from the browser and it does not replace maintainer review.
+
 ## Validation
 
 Run the dedicated static gate after changing the page, route registry, service worker, sitemap, or this document:
@@ -73,6 +91,7 @@ npm run check:static-build
 Before merge, verify that:
 
 - `apps/web/seis-github-coding-lab.html` is additive and mobile-safe.
+- `apps/web/seis-code.html` links to the lab from the Command Lens.
 - `apps/web/src/config/routes.json` registers `/seis-github-coding-lab.html`.
 - `apps/web/service-worker.js` precaches the route and bumps the cache version.
 - `apps/web/sitemap.xml` exposes the public route.
@@ -83,7 +102,7 @@ Before merge, verify that:
 
 Possible next steps:
 
-1. Add a link from the SEIS Code route or website product hub.
-2. Add a small browser smoke test that verifies form input, localStorage restore, and copy fallback.
+1. Replace the inline SEIS Code Command Lens link styling with shared CSS once the route graduates from PR staging.
+2. Add a small browser smoke test that verifies form input, localStorage restore, copy fallback, terminal handoff, and agent handoff generation.
 3. Add a server-side, approval-gated GitHub PR creator only after the safety model is documented and reviewed.
 4. Add Apple-first export templates for SwiftUI issue briefs and Xcode implementation plans.
