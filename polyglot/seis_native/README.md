@@ -27,6 +27,13 @@ The goal is to keep SEIS Apple-first while making the repository stronger across
 | Julia | `julia/seis_native_kernel.jl` | Data / research |
 | R | `r/seis_native_kernel.R` | Data analysis |
 | Perl | `perl/seis_native_kernel.pl` | Scripting support |
+| Lua | `lua/seis_native_kernel.lua` | Embedded scripting |
+| Haskell | `haskell/SeisNativeKernel.hs` | Functional core |
+| PHP | `php/SeisNativeKernel.php` | Server scripting |
+| OCaml | `ocaml/seis_native_kernel.ml` | Typed functional core |
+| F# | `fsharp/SeisNativeKernel.fs` | .NET functional core |
+| Nim | `nim/seis_native_kernel.nim` | Systems scripting |
+| Clojure | `clojure/seis_native_kernel.clj` | JVM functional core |
 
 ## Shared model
 
