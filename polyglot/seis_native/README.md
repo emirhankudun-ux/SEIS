@@ -1,6 +1,6 @@
 # SEIS Native Polyglot Kernel
 
-This folder adds a real multi-language SEIS foundation without adding browser-facing source files.
+This folder adds a real multi-language SEIS foundation.
 
 The goal is to keep SEIS Apple-first while making the repository stronger across data, systems, Android, Windows, infrastructure, database, and scripting lanes.
 
@@ -10,6 +10,7 @@ The goal is to keep SEIS Apple-first while making the repository stronger across
 | --- | --- | --- |
 | Swift | `swift/NativeRoadmap.swift` | Apple First |
 | Python | `python/seis_native_kernel.py` | Data AI |
+| Python | `python/native_polyglot_summary.py` | Summary utility |
 | Rust | `rust/src/lib.rs` | Systems |
 | Go | `go/seis_native_kernel.go` | Infrastructure |
 | Kotlin | `kotlin/SeisNativeKernel.kt` | Android |
@@ -18,6 +19,7 @@ The goal is to keep SEIS Apple-first while making the repository stronger across
 | SQL | `sql/seis_native_kernel.sql` | Data / storage |
 | C++ | `cpp/seis_native_kernel.cpp` | Systems |
 | Ruby | `ruby/seis_native_kernel.rb` | Automation support |
+| Objective-C | `objective_c/SeisNativeKernel.m` | Apple bridge |
 
 ## Shared model
 
@@ -32,12 +34,9 @@ Every implementation describes the same lane order:
 
 This keeps the repository language profile honest: each file carries a small, typed, reusable model rather than filler code.
 
-## Validation
-
-Run from the repository root:
+## Local run examples
 
 ```bash
-python3 scripts/check-seis-native-polyglot.py
+python3 polyglot/seis_native/python/seis_native_kernel.py
+python3 polyglot/seis_native/python/native_polyglot_summary.py
 ```
-
-The validator checks that every required source file exists, contains the shared lane names, and keeps this kernel free from browser-front-end source extensions.
