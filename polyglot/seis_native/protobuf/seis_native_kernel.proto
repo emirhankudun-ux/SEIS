@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package seis.nativekernel;
+
+message NativeRoadmapItem {
+  string lane = 1;
+  uint32 score = 2;
+  string language = 3;
+}
+
+message NativeRoadmap {
+  repeated NativeRoadmapItem items = 1;
+}
