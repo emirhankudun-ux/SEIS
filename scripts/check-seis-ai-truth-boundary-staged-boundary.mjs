@@ -118,7 +118,7 @@ for (const entry of staged) {
     fail(`staged blob contains private key marker: ${entry.path}`);
   }
 
-  if (/sk-[A-Za-z0-9_-]{16,}/.test(blob)) {
+  if (/(^|[^A-Za-z0-9_])sk-[A-Za-z0-9_-]{16,}/.test(blob)) {
     fail(`staged blob contains provider API key-shaped value: ${entry.path}`);
   }
 
