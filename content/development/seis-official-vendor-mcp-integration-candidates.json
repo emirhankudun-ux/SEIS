@@ -1,0 +1,507 @@
+{
+  "$schema": "https://seis.dev/schemas/official-vendor-mcp-integration-candidates.schema.json",
+  "id": "seis-official-vendor-mcp-integration-candidates",
+  "version": "2026-07-06",
+  "status": "research-public-safe",
+  "visibility": "public-safe",
+  "purpose": "Track official or vendor-owned MCP integration candidates for SEIS without installing, enabling, authenticating, or claiming live capability.",
+  "sourceOfTruth": {
+    "constitution": "AGENTS.md",
+    "mcpRiskMatrix": "content/development/seis-mcp-permission-risk-matrix.json",
+    "platformDoc": "docs/platform/seis-official-vendor-mcp-integration-candidates.md"
+  },
+  "truthBoundary": {
+    "installationPerformed": false,
+    "runtimeActivationPerformed": false,
+    "credentialsStored": false,
+    "providerCallsPerformed": false,
+    "externalMutationPerformed": false,
+    "demoModeRemainsNoKey": true,
+    "liveReadinessClaimAllowed": false,
+    "packageRunnerDefault": "disabled-or-approval-gated",
+    "activationDefault": "document-only-until-owner-approval"
+  },
+  "activationPolicy": {
+    "defaultMode": "document-only-until-owner-approval",
+    "installationAllowedByThisManifest": false,
+    "runtimeEnabledByThisManifest": false,
+    "blanketActivationAllowed": false,
+    "approvalRequirements": [
+      "explicit owner approval for each vendor",
+      "least-privilege permission review",
+      "credential isolation outside public repo",
+      "dry-run or read-only proof before mutation",
+      "rollback and audit notes",
+      "redacted logs with no secret values"
+    ]
+  },
+  "requiredEvidenceBeforeActivation": [
+    "official vendor-owned source URL",
+    "exact tools and scopes to allow",
+    "auth method and credential storage boundary",
+    "public/private data classification",
+    "mutation preview and rollback plan when writes are possible",
+    "local smoke or sandbox proof with redacted output",
+    "owner approval for runtime enablement"
+  ],
+  "candidates": [
+    {
+      "id": "github-mcp-server",
+      "vendor": "GitHub",
+      "productName": "GitHub MCP Server",
+      "officialStatus": "official-server",
+      "officialSourceType": "vendor-owned-github-repository",
+      "sourceUrls": [
+        "https://github.com/github/github-mcp-server"
+      ],
+      "localOrCloud": "cloud",
+      "authentication": "github-token-or-oauth",
+      "secretsRequired": true,
+      "permissions": [
+        "repository-read",
+        "issues-and-pull-requests",
+        "possible-actions-or-repository-mutation"
+      ],
+      "externalMutationRisk": "high",
+      "riskLevel": "high",
+      "seisValue": "High value for GitHub governance, PR review, issue triage, and repository memory after strict scope control.",
+      "recommendedPriority": "P0",
+      "allowedMode": "document-only-until-owner-approval",
+      "installPolicy": "approval-gated",
+      "packageRunnerDefault": "disabled",
+      "runtimeState": "not-installed-by-this-manifest",
+      "activationState": "not-enabled",
+      "requiredEvidence": [
+        "owner approval",
+        "least-privilege GitHub scopes",
+        "read-only dry run",
+        "mutation preview for any write",
+        "rollback notes",
+        "redacted audit log"
+      ],
+      "safeConfigurationNotes": "Do not enable write-capable repository tools until branch, target repo, token scope, and rollback are explicit."
+    },
+    {
+      "id": "openai-connectors-mcp",
+      "vendor": "OpenAI",
+      "productName": "OpenAI MCP tools and connectors documentation",
+      "officialStatus": "official-docs",
+      "officialSourceType": "vendor-owned-docs",
+      "sourceUrls": [
+        "https://developers.openai.com/api/docs/mcp",
+        "https://developers.openai.com/api/docs/guides/tools-connectors-mcp"
+      ],
+      "localOrCloud": "cloud",
+      "authentication": "provider-or-connector-specific",
+      "secretsRequired": "connector-specific",
+      "permissions": [
+        "connector-specific-read",
+        "connector-specific-tool-use"
+      ],
+      "externalMutationRisk": "medium-to-high",
+      "riskLevel": "high",
+      "seisValue": "High value for future SEIS provider/connector architecture once backend isolation and no-key demo separation are proven.",
+      "recommendedPriority": "P0",
+      "allowedMode": "document-only-until-owner-approval",
+      "installPolicy": "approval-gated",
+      "packageRunnerDefault": "disabled",
+      "runtimeState": "not-installed-by-this-manifest",
+      "activationState": "not-enabled",
+      "requiredEvidence": [
+        "owner approval",
+        "backend or platform-managed key isolation",
+        "connector permission list",
+        "no frontend key exposure",
+        "rate-limit and logging notes",
+        "redacted test output"
+      ],
+      "safeConfigurationNotes": "Use as architecture evidence only until SEIS has a secure live-mode boundary."
+    },
+    {
+      "id": "google-workspace-mcp",
+      "vendor": "Google",
+      "productName": "Google Workspace MCP servers",
+      "officialStatus": "official-docs",
+      "officialSourceType": "vendor-owned-docs",
+      "sourceUrls": [
+        "https://developers.google.com/workspace/guides/configure-mcp-servers"
+      ],
+      "localOrCloud": "cloud",
+      "authentication": "google-oauth-or-admin-config",
+      "secretsRequired": true,
+      "permissions": [
+        "workspace-read",
+        "gmail-calendar-drive-scope-dependent",
+        "possible-workspace-mutation"
+      ],
+      "externalMutationRisk": "high",
+      "riskLevel": "high",
+      "seisValue": "Useful for future SEIS Brain, calendar, and document workflows after workspace scopes are isolated.",
+      "recommendedPriority": "P1",
+      "allowedMode": "document-only-until-owner-approval",
+      "installPolicy": "approval-gated",
+      "packageRunnerDefault": "disabled",
+      "runtimeState": "not-installed-by-this-manifest",
+      "activationState": "not-enabled",
+      "requiredEvidence": [
+        "owner approval",
+        "OAuth scope inventory",
+        "test workspace or least-privilege account",
+        "data retention notes",
+        "read-only proof before writes",
+        "redacted audit log"
+      ],
+      "safeConfigurationNotes": "Never connect personal or private Workspace data to public-demo flows."
+    },
+    {
+      "id": "cloudflare-mcp-servers",
+      "vendor": "Cloudflare",
+      "productName": "Cloudflare MCP servers",
+      "officialStatus": "official-docs",
+      "officialSourceType": "vendor-owned-docs",
+      "sourceUrls": [
+        "https://developers.cloudflare.com/agents/model-context-protocol/",
+        "https://developers.cloudflare.com/agents/model-context-protocol/cloudflare/servers-for-cloudflare/"
+      ],
+      "localOrCloud": "cloud",
+      "authentication": "cloudflare-account-token-or-oauth",
+      "secretsRequired": true,
+      "permissions": [
+        "account-read",
+        "workers-or-infrastructure-management",
+        "possible-deploy-or-config-mutation"
+      ],
+      "externalMutationRisk": "high",
+      "riskLevel": "high",
+      "seisValue": "Strong future value for public edge deployment, observability, and MCP hosting after explicit deploy governance.",
+      "recommendedPriority": "P1",
+      "allowedMode": "document-only-until-owner-approval",
+      "installPolicy": "approval-gated",
+      "packageRunnerDefault": "disabled",
+      "runtimeState": "not-installed-by-this-manifest",
+      "activationState": "not-enabled",
+      "requiredEvidence": [
+        "owner approval",
+        "Cloudflare account and zone boundary",
+        "token scope inventory",
+        "dry-run plan",
+        "rollback plan",
+        "redacted logs"
+      ],
+      "safeConfigurationNotes": "Treat deploy/config tools as blocked until a target, dry run, and rollback are reviewed."
+    },
+    {
+      "id": "vercel-mcp",
+      "vendor": "Vercel",
+      "productName": "Vercel MCP",
+      "officialStatus": "official-docs",
+      "officialSourceType": "vendor-owned-docs",
+      "sourceUrls": [
+        "https://vercel.com/docs/mcp",
+        "https://vercel.com/docs/agent-resources/vercel-mcp",
+        "https://vercel.com/docs/mcp/deploy-mcp-servers-to-vercel",
+        "https://vercel.com/docs/cli/mcp"
+      ],
+      "localOrCloud": "cloud",
+      "authentication": "vercel-account-auth",
+      "secretsRequired": true,
+      "permissions": [
+        "project-read",
+        "deployment-read",
+        "possible-deployment-or-project-mutation"
+      ],
+      "externalMutationRisk": "high",
+      "riskLevel": "high",
+      "seisValue": "Useful for future no-key public demo deployment visibility after deploy targets and rollback are explicit.",
+      "recommendedPriority": "P1",
+      "allowedMode": "document-only-until-owner-approval",
+      "installPolicy": "approval-gated",
+      "packageRunnerDefault": "disabled",
+      "runtimeState": "not-installed-by-this-manifest",
+      "activationState": "not-enabled",
+      "requiredEvidence": [
+        "owner approval",
+        "project target confirmation",
+        "read-only status proof",
+        "deployment dry run",
+        "rollback plan",
+        "redacted output"
+      ],
+      "safeConfigurationNotes": "Do not allow automatic deploys from SEIS until branch, project, preview URL, and rollback are documented."
+    },
+    {
+      "id": "sentry-mcp",
+      "vendor": "Sentry",
+      "productName": "Sentry MCP",
+      "officialStatus": "official-docs",
+      "officialSourceType": "vendor-owned-docs",
+      "sourceUrls": [
+        "https://docs.sentry.io/product/sentry-mcp/",
+        "https://docs.sentry.io/ai/monitoring/mcp/"
+      ],
+      "localOrCloud": "cloud",
+      "authentication": "sentry-account-auth",
+      "secretsRequired": true,
+      "permissions": [
+        "error-and-project-read",
+        "issue-triage",
+        "possible-project-or-issue-mutation"
+      ],
+      "externalMutationRisk": "medium-to-high",
+      "riskLevel": "high",
+      "seisValue": "Good future fit for observability and release quality once project data boundaries are clear.",
+      "recommendedPriority": "P1",
+      "allowedMode": "document-only-until-owner-approval",
+      "installPolicy": "approval-gated",
+      "packageRunnerDefault": "disabled",
+      "runtimeState": "not-installed-by-this-manifest",
+      "activationState": "not-enabled",
+      "requiredEvidence": [
+        "owner approval",
+        "project boundary",
+        "read-only query proof",
+        "PII and event-data review",
+        "mutation policy",
+        "redacted logs"
+      ],
+      "safeConfigurationNotes": "Error/event payloads can include sensitive data; never expose raw Sentry data in public reports."
+    },
+    {
+      "id": "atlassian-rovo-mcp",
+      "vendor": "Atlassian",
+      "productName": "Atlassian Rovo MCP Server",
+      "officialStatus": "official-server",
+      "officialSourceType": "vendor-owned-support-docs",
+      "sourceUrls": [
+        "https://support.atlassian.com/atlassian-rovo-mcp-server/docs/use-atlassian-rovo-mcp-server/",
+        "https://support.atlassian.com/atlassian-rovo-mcp-server/docs/getting-started-with-the-atlassian-remote-mcp-server/",
+        "https://www.atlassian.com/blog/announcements/atlassian-rovo-mcp-ga"
+      ],
+      "localOrCloud": "cloud",
+      "authentication": "atlassian-account-oauth",
+      "secretsRequired": true,
+      "permissions": [
+        "jira-confluence-bitbucket-read",
+        "possible-issue-page-or-repository-mutation"
+      ],
+      "externalMutationRisk": "high",
+      "riskLevel": "high",
+      "seisValue": "Useful for enterprise planning and docs workflows after workspace and permission boundaries are approved.",
+      "recommendedPriority": "P1",
+      "allowedMode": "document-only-until-owner-approval",
+      "installPolicy": "approval-gated",
+      "packageRunnerDefault": "disabled",
+      "runtimeState": "not-installed-by-this-manifest",
+      "activationState": "not-enabled",
+      "requiredEvidence": [
+        "owner approval",
+        "workspace boundary",
+        "OAuth scope inventory",
+        "read-only proof",
+        "mutation preview and rollback",
+        "redacted logs"
+      ],
+      "safeConfigurationNotes": "Keep Jira/Confluence/Bitbucket writes off until an explicit target and rollback are reviewed."
+    },
+    {
+      "id": "notion-mcp",
+      "vendor": "Notion",
+      "productName": "Notion MCP",
+      "officialStatus": "official-docs",
+      "officialSourceType": "vendor-owned-docs",
+      "sourceUrls": [
+        "https://developers.notion.com/guides/mcp/overview",
+        "https://developers.notion.com/guides/mcp/get-started-with-mcp",
+        "https://developers.notion.com/guides/mcp/build-mcp-client"
+      ],
+      "localOrCloud": "cloud",
+      "authentication": "notion-oauth-or-integration-token",
+      "secretsRequired": true,
+      "permissions": [
+        "workspace-read",
+        "database-and-page-read",
+        "possible-page-or-database-mutation"
+      ],
+      "externalMutationRisk": "high",
+      "riskLevel": "high",
+      "seisValue": "Potential bridge for SEIS Brain import/export after public/private boundaries are strict.",
+      "recommendedPriority": "P1",
+      "allowedMode": "document-only-until-owner-approval",
+      "installPolicy": "approval-gated",
+      "packageRunnerDefault": "disabled",
+      "runtimeState": "not-installed-by-this-manifest",
+      "activationState": "not-enabled",
+      "requiredEvidence": [
+        "owner approval",
+        "workspace and database boundary",
+        "private-note exclusion plan",
+        "read-only proof",
+        "write rollback plan",
+        "redacted logs"
+      ],
+      "safeConfigurationNotes": "Do not mix private Notion workspace content with public SEIS Brain without a reviewed export boundary."
+    },
+    {
+      "id": "stripe-mcp",
+      "vendor": "Stripe",
+      "productName": "Stripe MCP",
+      "officialStatus": "official-docs",
+      "officialSourceType": "vendor-owned-docs",
+      "sourceUrls": [
+        "https://docs.stripe.com/mcp",
+        "https://docs.stripe.com/agents"
+      ],
+      "localOrCloud": "cloud",
+      "authentication": "stripe-account-auth-or-api-key",
+      "secretsRequired": true,
+      "permissions": [
+        "account-and-payment-data-read",
+        "possible-financial-object-mutation"
+      ],
+      "externalMutationRisk": "very-high",
+      "riskLevel": "very-high",
+      "seisValue": "Useful only for future commerce experiments in a strict sandbox; not needed for the public demo foundation.",
+      "recommendedPriority": "P2",
+      "allowedMode": "document-only-until-sandbox-owner-approval",
+      "installPolicy": "sandbox-only-approval-gated",
+      "packageRunnerDefault": "disabled",
+      "runtimeState": "not-installed-by-this-manifest",
+      "activationState": "not-enabled",
+      "requiredEvidence": [
+        "owner approval",
+        "Stripe sandbox account only",
+        "no live payment data",
+        "restricted test key boundary outside repo",
+        "mutation dry run",
+        "rollback and audit notes",
+        "redacted sandbox logs"
+      ],
+      "safeConfigurationNotes": "Treat financial data and payment mutations as very high risk. Live Stripe access is blocked by default."
+    },
+    {
+      "id": "supabase-mcp",
+      "vendor": "Supabase",
+      "productName": "Supabase MCP",
+      "officialStatus": "official-docs",
+      "officialSourceType": "vendor-owned-docs",
+      "sourceUrls": [
+        "https://supabase.com/docs/guides/ai-tools/mcp",
+        "https://supabase.com/docs/guides/auth/oauth-server/mcp-authentication",
+        "https://supabase.com/docs/guides/self-hosting/enable-mcp"
+      ],
+      "localOrCloud": "cloud-or-self-hosted",
+      "authentication": "supabase-auth-or-project-token",
+      "secretsRequired": true,
+      "permissions": [
+        "project-read",
+        "database-schema-or-data-access",
+        "possible-database-or-project-mutation"
+      ],
+      "externalMutationRisk": "high",
+      "riskLevel": "high",
+      "seisValue": "Useful for future data layer experiments after schema, RLS, and sandbox boundaries are explicit.",
+      "recommendedPriority": "P1",
+      "allowedMode": "document-only-until-owner-approval",
+      "installPolicy": "approval-gated",
+      "packageRunnerDefault": "disabled",
+      "runtimeState": "not-installed-by-this-manifest",
+      "activationState": "not-enabled",
+      "requiredEvidence": [
+        "owner approval",
+        "sandbox project",
+        "RLS and table-scope review",
+        "read-only query proof",
+        "migration rollback",
+        "redacted logs"
+      ],
+      "safeConfigurationNotes": "Do not attach production databases or personal data to SEIS MCP flows."
+    },
+    {
+      "id": "microsoft-mcp-family",
+      "vendor": "Microsoft",
+      "productName": "Microsoft MCP documentation family",
+      "officialStatus": "official-docs",
+      "officialSourceType": "vendor-owned-docs",
+      "sourceUrls": [
+        "https://learn.microsoft.com/en-us/visualstudio/ide/mcp-servers?view=visualstudio",
+        "https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/model-context-protocol",
+        "https://learn.microsoft.com/en-us/power-platform/developer/playwright-samples/ai-mcp",
+        "https://learn.microsoft.com/en-us/power-apps/maker/data-platform/data-platform-mcp"
+      ],
+      "localOrCloud": "mixed",
+      "authentication": "product-specific-microsoft-account-or-tenant-auth",
+      "secretsRequired": "product-specific",
+      "permissions": [
+        "developer-tooling",
+        "azure-or-power-platform-resource-access",
+        "possible-tenant-or-resource-mutation"
+      ],
+      "externalMutationRisk": "medium-to-high",
+      "riskLevel": "high",
+      "seisValue": "Useful for enterprise interoperability research after a specific Microsoft product surface is selected.",
+      "recommendedPriority": "P2",
+      "allowedMode": "document-only-until-product-scope-is-selected",
+      "installPolicy": "approval-gated",
+      "packageRunnerDefault": "disabled",
+      "runtimeState": "not-installed-by-this-manifest",
+      "activationState": "not-enabled",
+      "requiredEvidence": [
+        "owner approval",
+        "specific Microsoft product selection",
+        "tenant/account boundary",
+        "least-privilege scope review",
+        "read-only proof",
+        "redacted logs"
+      ],
+      "safeConfigurationNotes": "Keep this as a family record until SEIS chooses a concrete Microsoft target."
+    },
+    {
+      "id": "linear-mcp",
+      "vendor": "Linear",
+      "productName": "Linear MCP candidate",
+      "officialStatus": "no-official-server-found",
+      "officialSourceType": "search-result-none",
+      "sourceUrls": [],
+      "localOrCloud": "unknown",
+      "authentication": "unknown",
+      "secretsRequired": "unknown",
+      "permissions": [
+        "unknown"
+      ],
+      "externalMutationRisk": "unknown",
+      "riskLevel": "blocked",
+      "seisValue": "Potential future issue-planning value, but no official Linear-owned MCP server was confirmed in the documented search pass.",
+      "recommendedPriority": "P3",
+      "allowedMode": "do-not-install",
+      "installPolicy": "blocked-without-official-source-or-owner-approval",
+      "packageRunnerDefault": "disabled",
+      "runtimeState": "not-installed-by-this-manifest",
+      "activationState": "not-enabled",
+      "requiredEvidence": [
+        "official Linear-owned source",
+        "owner approval",
+        "permission model",
+        "read-only proof",
+        "mutation and rollback notes",
+        "redacted audit log"
+      ],
+      "safeConfigurationNotes": "Do not install community Linear MCP packages under the official-vendor lane unless the owner explicitly approves that downgrade."
+    }
+  ],
+  "qualityGates": [
+    "No blanket MCP activation.",
+    "No installation or runtime enablement from this manifest.",
+    "No credentials, tokens, OAuth secrets, private workspace data, or real host data in repo.",
+    "Official source required for official-vendor lane.",
+    "External mutation requires owner approval, dry-run evidence, rollback notes, and redacted audit logs.",
+    "Financial, database, deploy, and repository-write tools remain blocked until sandboxed and approved.",
+    "Package runners remain disabled or approval-gated.",
+    "Public demo remains no-key and never claims live MCP readiness."
+  ],
+  "nextActions": [
+    "Select one P0 or P1 vendor for a separate owner-approved activation design.",
+    "Create least-privilege allowlists before enabling any vendor runtime.",
+    "Keep all community MCP candidates in a separate risk lane.",
+    "Surface this manifest in SEIS UI only as documentation/readiness evidence until runtime activation is approved."
+  ]
+}
