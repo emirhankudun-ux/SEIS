@@ -425,6 +425,8 @@ export function aiCoreModelScalingStatus(repoRoot, options = {}) {
     const modelScalingSubagentCouncilPath = profile.sourceOfTruth?.modelScalingSubagentCouncil || AI_CORE_MODEL_SCALING_SUBAGENT_COUNCIL_PATH;
     const frontierModelProgramPath = profile.sourceOfTruth?.frontierModelProgram || AI_CORE_150B_FRONTIER_MODEL_PROGRAM_PATH;
     const apexModelProgramPath = profile.sourceOfTruth?.apexModelProgram || AI_CORE_512B_APEX_MODEL_PROGRAM_PATH;
+    const agi720bFrontierBoundaryPath =
+      profile.sourceOfTruth?.agi720bFrontierBoundary || AI_CORE_720B_AGI_FRONTIER_BOUNDARY_PATH;
     const agiPublicReadinessEvidencePath =
       profile.sourceOfTruth?.agiPublicReadinessEvidence
       || apexTarget.sourceOfTruth?.agiPublicReadinessEvidence
@@ -440,6 +442,7 @@ export function aiCoreModelScalingStatus(repoRoot, options = {}) {
     const modelScalingSubagentCouncil = readJsonIfExists(repoRoot, modelScalingSubagentCouncilPath) || {};
     const frontierModelProgram = readJsonIfExists(repoRoot, frontierModelProgramPath) || {};
     const apexModelProgram = readJsonIfExists(repoRoot, apexModelProgramPath) || {};
+    const agi720bFrontierBoundary = readJsonIfExists(repoRoot, agi720bFrontierBoundaryPath) || {};
     const agiPublicReadinessEvidence = readJsonIfExists(repoRoot, agiPublicReadinessEvidencePath) || {};
     const benchmarkManifestSource = readJsonSource(repoRoot, benchmarkManifestPath);
     const benchmarkDryRunSource = readJsonSource(repoRoot, benchmarkDryRunPath);
@@ -468,6 +471,7 @@ export function aiCoreModelScalingStatus(repoRoot, options = {}) {
       modelScalingSubagentCouncilPath,
       frontierModelProgramPath,
       apexModelProgramPath,
+      agi720bFrontierBoundaryPath,
       agiPublicReadinessEvidencePath,
       benchmarkManifestPath,
       benchmarkDryRunPath,
@@ -693,6 +697,27 @@ export function aiCoreModelScalingStatus(repoRoot, options = {}) {
         forbiddenClaimRules: apexModelProgram.forbiddenClaimRules || [],
         humanApprovalRequiredFor: apexModelProgram.humanApprovalRequiredFor || [],
       },
+      agi720bFrontierBoundary: {
+        path: agi720bFrontierBoundaryPath,
+        id: agi720bFrontierBoundary.id,
+        status: agi720bFrontierBoundary.status,
+        resourceUri: agi720bFrontierBoundary.resourceUri || AI_CORE_720B_AGI_FRONTIER_BOUNDARY_RESOURCE_URI,
+        qualityGate: agi720bFrontierBoundary.qualityGate,
+        routeEligibleToday: agi720bFrontierBoundary.routeEligibleToday === true,
+        runtimeAuthority: agi720bFrontierBoundary.runtimeAuthority === true,
+        trainingStatus: agi720bFrontierBoundary.trainingStatus,
+        weightsAvailable: agi720bFrontierBoundary.weightsAvailable === true,
+        inferenceAvailable: agi720bFrontierBoundary.inferenceAvailable === true,
+        benchmarkStatus: agi720bFrontierBoundary.benchmarkStatus,
+        productionReady: agi720bFrontierBoundary.productionReady === true,
+        agiClaimAllowed: agi720bFrontierBoundary.agiClaimAllowed === true,
+        parameterClass: agi720bFrontierBoundary.target?.parameterClass,
+        parameterCountBillion: agi720bFrontierBoundary.target?.parameterCountBillion ?? null,
+        roundWindows: agi720bFrontierBoundary.supervisedCadence?.roundWindows || [],
+        mcpDefaultPermission: agi720bFrontierBoundary.mcpBoundary?.defaultPermission,
+        forbiddenClaimRules: agi720bFrontierBoundary.forbiddenClaimRules || [],
+        nextSafeActions: agi720bFrontierBoundary.nextSafeActions || [],
+      },
       agiPublicReadinessEvidence: {
         path: agiPublicReadinessEvidencePath,
         id: agiPublicReadinessEvidence.id,
@@ -800,6 +825,7 @@ export function aiCoreModelScalingStatus(repoRoot, options = {}) {
       payload.modelScalingSubagentCouncil = modelScalingSubagentCouncil;
       payload.model150bFrontierProgram = frontierModelProgram;
       payload.model512bApexProgram = apexModelProgram;
+      payload.model720bAgiFrontierBoundary = agi720bFrontierBoundary;
       payload.agiPublicReadinessEvidenceFull = agiPublicReadinessEvidence;
       payload.model20bBenchmarkManifest = benchmarkManifest;
       payload.model20bBenchmarkDryRun = benchmarkDryRun;
@@ -1124,6 +1150,12 @@ export function subagentOperatingModelStatus(repoRoot, options = {}) {
     const integration = readPluginIntegration(repoRoot);
     const longHorizonPlan =
       readJsonIfExists(repoRoot, model.sourceOfTruth?.longHorizonPlan || SUBAGENT_LONG_HORIZON_PLAN_PATH);
+    const swarmRoundLedger =
+      readJsonIfExists(repoRoot, model.sourceOfTruth?.swarmRoundLedger || SUBAGENT_SWARM_ROUND_LEDGER_PATH);
+    const roundExecutionEvidenceLedger = readJsonIfExists(
+      repoRoot,
+      model.sourceOfTruth?.roundExecutionEvidenceLedger || SUBAGENT_ROUND_EXECUTION_EVIDENCE_LEDGER_PATH
+    );
     const roleSchema = readJsonIfExists(repoRoot, model.sourceOfTruth?.roleSchema || SUBAGENT_ROLE_SCHEMA_PATH);
     const permissionMatrixFixture = readJsonIfExists(repoRoot, model.sourceOfTruth?.permissionMatrix || SUBAGENT_PERMISSION_MATRIX_PATH);
     const dryRunQueue = readJsonIfExists(repoRoot, model.sourceOfTruth?.dryRunTaskQueue || SUBAGENT_DRY_RUN_QUEUE_PATH);
@@ -1217,6 +1249,62 @@ export function subagentOperatingModelStatus(repoRoot, options = {}) {
               nextReviewQuarter: reviewLedger.cadence?.nextReviewQuarter ?? null,
             }
           : { path: model.sourceOfTruth?.reviewLedger || SUBAGENT_REVIEW_LEDGER_PATH, missing: true },
+        swarmRoundLedger: swarmRoundLedger
+          ? {
+              path: model.sourceOfTruth?.swarmRoundLedger || SUBAGENT_SWARM_ROUND_LEDGER_PATH,
+              id: swarmRoundLedger.id,
+              status: swarmRoundLedger.status,
+              resourceUri: swarmRoundLedger.resourceUri || SUBAGENT_SWARM_ROUND_LEDGER_RESOURCE_URI,
+              defaultRoundWindow: swarmRoundLedger.ownerObjectiveMap?.defaultRoundWindow ?? null,
+              expandedRoundWindow: swarmRoundLedger.ownerObjectiveMap?.expandedRoundWindow ?? null,
+              expandedRoundWindowRequiresOwnerApproval:
+                swarmRoundLedger.ownerObjectiveMap?.expandedRoundWindowRequiresOwnerApproval === true,
+              roundAssignmentCount: Array.isArray(swarmRoundLedger.roundAssignments)
+                ? swarmRoundLedger.roundAssignments.length
+                : 0,
+              laneAssignmentCount: Array.isArray(swarmRoundLedger.laneAssignments)
+                ? swarmRoundLedger.laneAssignments.length
+                : 0,
+              continuousBackgroundRuntime: swarmRoundLedger.runtimeBoundary?.continuousBackgroundRuntime ?? null,
+              agiClaimAllowed: swarmRoundLedger.runtimeBoundary?.agiClaimAllowed === true,
+            }
+          : { path: model.sourceOfTruth?.swarmRoundLedger || SUBAGENT_SWARM_ROUND_LEDGER_PATH, missing: true },
+        roundExecutionEvidenceLedger: roundExecutionEvidenceLedger
+          ? {
+              path:
+                model.sourceOfTruth?.roundExecutionEvidenceLedger ||
+                SUBAGENT_ROUND_EXECUTION_EVIDENCE_LEDGER_PATH,
+              id: roundExecutionEvidenceLedger.id,
+              status: roundExecutionEvidenceLedger.status,
+              resourceUri:
+                roundExecutionEvidenceLedger.resourceUri || SUBAGENT_ROUND_EXECUTION_EVIDENCE_LEDGER_RESOURCE_URI,
+              currentLevel: roundExecutionEvidenceLedger.runtimeBoundary?.currentLevel ?? null,
+              backgroundAutomation: roundExecutionEvidenceLedger.runtimeBoundary?.backgroundAutomation ?? null,
+              continuousBackgroundRuntime:
+                roundExecutionEvidenceLedger.runtimeBoundary?.continuousBackgroundRuntime ?? null,
+              credentialAccessPerformed:
+                roundExecutionEvidenceLedger.runtimeBoundary?.credentialAccessPerformed === true,
+              sshExecutionPerformed: roundExecutionEvidenceLedger.runtimeBoundary?.sshExecutionPerformed === true,
+              deploymentPerformed: roundExecutionEvidenceLedger.runtimeBoundary?.deploymentPerformed === true,
+              githubMutationPerformed: roundExecutionEvidenceLedger.runtimeBoundary?.githubMutationPerformed === true,
+              providerCallPerformed: roundExecutionEvidenceLedger.runtimeBoundary?.providerCallPerformed === true,
+              modelTrainingPerformed: roundExecutionEvidenceLedger.runtimeBoundary?.modelTrainingPerformed === true,
+              completionClaimAllowed:
+                roundExecutionEvidenceLedger.evidenceSummary?.completionClaimAllowed === true,
+              continuousRuntimeClaimAllowed:
+                roundExecutionEvidenceLedger.evidenceSummary?.continuousRuntimeClaimAllowed === true,
+              agiClaimAllowed: roundExecutionEvidenceLedger.evidenceSummary?.agiClaimAllowed === true,
+              recordedCloseoutCount: roundExecutionEvidenceLedger.roundWindowState?.recordedCloseoutCount ?? null,
+              recordCount: Array.isArray(roundExecutionEvidenceLedger.closeoutRecords)
+                ? roundExecutionEvidenceLedger.closeoutRecords.length
+                : 0,
+            }
+          : {
+              path:
+                model.sourceOfTruth?.roundExecutionEvidenceLedger ||
+                SUBAGENT_ROUND_EXECUTION_EVIDENCE_LEDGER_PATH,
+              missing: true,
+            },
         runtimeFixturePack: runtimeFixturePack
           ? {
               path: model.sourceOfTruth?.runtimeFixtures || SUBAGENT_RUNTIME_FIXTURES_PATH,
@@ -1315,6 +1403,7 @@ export function subagentOperatingModelStatus(repoRoot, options = {}) {
               ? longHorizonPlan.years.reduce((sum, year) => sum + (Array.isArray(year.quarters) ? year.quarters.length : 0), 0)
               : 0,
             forbiddenAutonomy: longHorizonPlan.governance?.forbiddenAutonomy || [],
+            swarmRoundLedger: longHorizonPlan.swarmRoundLedger ?? null,
           }
         : {
             path: model.sourceOfTruth?.longHorizonPlan || SUBAGENT_LONG_HORIZON_PLAN_PATH,

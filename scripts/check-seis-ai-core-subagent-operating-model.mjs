@@ -9,6 +9,8 @@ const modelPath = path.join(root, "content", "development", "seis-ai-core-subage
 const pluginIntegrationPath = path.join(root, "content", "development", "seis-agent-plugin-integration.json");
 const laneStatusPath = path.join(root, "content", "development", "seis-agent-lane-status.json");
 const longHorizonPlanPath = path.join(root, "content", "development", "seis-sub-agent-5-year-plan.json");
+const swarmRoundLedgerPath = path.join(root, "content", "development", "seis-ai-core-subagent-swarm-round-ledger.json");
+const roundExecutionEvidenceLedgerPath = path.join(root, "content", "development", "seis-ai-core-subagent-round-execution-evidence-ledger.json");
 const longHorizonReviewPath = path.join(root, "docs", "reviews", "SUB_AGENT_LONG_HORIZON_AUDIT.md");
 const roleSchemaPath = path.join(root, "content", "development", "seis-ai-core-agent-role-schema.json");
 const permissionMatrixPath = path.join(root, "content", "development", "seis-ai-core-agent-permission-matrix.json");
@@ -44,6 +46,7 @@ const requiredEvidence = [
   "approval fixture",
   "redaction fixture",
   "execution ledger fixture",
+  "round execution evidence ledger",
   "runtime fixture pack",
   "quarterly review ledger",
   "redacted tool-output test",
@@ -55,6 +58,8 @@ ensureFile(modelPath, "SEIS AI Core sub-agent operating model");
 ensureFile(pluginIntegrationPath, "SEIS-Agent plugin integration manifest");
 ensureFile(laneStatusPath, "SEIS agent lane status contract");
 ensureFile(longHorizonPlanPath, "SEIS sub-agent five-year plan");
+ensureFile(swarmRoundLedgerPath, "SEIS sub-agent swarm round ledger");
+ensureFile(roundExecutionEvidenceLedgerPath, "SEIS sub-agent round execution evidence ledger");
 ensureFile(longHorizonReviewPath, "SEIS sub-agent long-horizon audit");
 ensureFile(roleSchemaPath, "SEIS AI Core role schema fixture");
 ensureFile(permissionMatrixPath, "SEIS AI Core permission matrix fixture");
@@ -78,6 +83,8 @@ const model = readJson(modelPath, "SEIS AI Core sub-agent operating model");
 const pluginIntegration = readJson(pluginIntegrationPath, "SEIS-Agent plugin integration manifest");
 const laneStatus = readJson(laneStatusPath, "SEIS agent lane status contract");
 const longHorizonPlan = readJson(longHorizonPlanPath, "SEIS sub-agent five-year plan");
+const swarmRoundLedger = readJson(swarmRoundLedgerPath, "SEIS sub-agent swarm round ledger");
+const roundExecutionEvidenceLedger = readJson(roundExecutionEvidenceLedgerPath, "SEIS sub-agent round execution evidence ledger");
 const longHorizonReview = readText(longHorizonReviewPath, "SEIS sub-agent long-horizon audit");
 const aiCoreDocs = readText(aiCoreDocPath, "SEIS AI Core docs");
 const agentRuntimeDocs = readText(agentRuntimeDocPath, "SEIS agent runtime docs");
@@ -107,6 +114,14 @@ if (model) {
   ensure(
     model.sourceOfTruth?.longHorizonPlan === "content/development/seis-sub-agent-5-year-plan.json",
     "model source of truth must point to the sub-agent five-year plan"
+  );
+  ensure(
+    model.sourceOfTruth?.swarmRoundLedger === "content/development/seis-ai-core-subagent-swarm-round-ledger.json",
+    "model source of truth must point to the sub-agent swarm round ledger"
+  );
+  ensure(
+    model.sourceOfTruth?.roundExecutionEvidenceLedger === "content/development/seis-ai-core-subagent-round-execution-evidence-ledger.json",
+    "model source of truth must point to the sub-agent round execution evidence ledger"
   );
   ensure(
     model.sourceOfTruth?.longHorizonReview === "docs/reviews/SUB_AGENT_LONG_HORIZON_AUDIT.md",
@@ -260,6 +275,14 @@ if (pluginIntegration) {
     "plugin integration must point to the quarterly review ledger"
   );
   ensure(
+    pluginIntegration.fiveYearSubagentDevelopment?.swarmRoundLedger === "content/development/seis-ai-core-subagent-swarm-round-ledger.json",
+    "plugin integration must point to the swarm round ledger"
+  );
+  ensure(
+    pluginIntegration.fiveYearSubagentDevelopment?.roundExecutionEvidenceLedger === "content/development/seis-ai-core-subagent-round-execution-evidence-ledger.json",
+    "plugin integration must point to the round execution evidence ledger"
+  );
+  ensure(
     pluginIntegration.runtimeIntegration?.subagentOperatingModelTool === "seis_ai_core_subagent_model",
     "plugin integration must expose seis_ai_core_subagent_model"
   );
@@ -267,8 +290,11 @@ if (pluginIntegration) {
     "seis://ai/version-registry.json",
     "seis://ai/20b-model-card-template.json",
     "seis://ai/20b-dataset-card-template.json",
+    "seis://ai/720b-agi-frontier-boundary.json",
     "seis://ai/subagent-operating-model.json",
     "seis://ai/sub-agent-5-year-plan.json",
+    "seis://ai/subagent-swarm-round-ledger.json",
+    "seis://ai/subagent-round-execution-evidence-ledger.json",
     "seis://ai/agent-role-schema.json",
     "seis://ai/agent-permission-matrix.json",
     "seis://ai/dry-run-task-queue.json",
@@ -293,7 +319,51 @@ if (longHorizonPlan) {
   ensure(longHorizonPlan.id === "sub-agent-5-year-plan", "long-horizon plan id must be sub-agent-5-year-plan");
   ensure(longHorizonPlan.status === "documented", "long-horizon plan must remain documented until runtime evidence exists");
   ensure(longHorizonPlan.governance?.writerPolicy === "single-writer", "long-horizon plan must keep single-writer policy");
+  ensure(
+    longHorizonPlan.swarmRoundLedger === "content/development/seis-ai-core-subagent-swarm-round-ledger.json",
+    "long-horizon plan must link the swarm round ledger"
+  );
+  ensure(
+    longHorizonPlan.roundExecutionEvidenceLedger === "content/development/seis-ai-core-subagent-round-execution-evidence-ledger.json",
+    "long-horizon plan must link the round execution evidence ledger"
+  );
   ensure(Array.isArray(longHorizonPlan.years) && longHorizonPlan.years.length === 5, "long-horizon plan must cover five years");
+}
+if (swarmRoundLedger) {
+  ensure(swarmRoundLedger.id === "seis-ai-core-subagent-swarm-round-ledger", "swarm round ledger id mismatch");
+  ensure(swarmRoundLedger.status === "plan-only-supervised-ledger", "swarm round ledger must stay plan-only supervised");
+  ensure(swarmRoundLedger.ownerObjectiveMap?.defaultRoundWindow === 15, "swarm round ledger default window must be 15");
+  ensure(swarmRoundLedger.ownerObjectiveMap?.expandedRoundWindow === 30, "swarm round ledger expanded window must be 30");
+  ensure(swarmRoundLedger.ownerObjectiveMap?.expandedRoundWindowRequiresOwnerApproval === true, "30-round expansion must require owner approval");
+  ensure(swarmRoundLedger.runtimeBoundary?.continuousBackgroundRuntime === "not-authorized", "swarm ledger must reject continuous background runtime");
+  ensure(swarmRoundLedger.runtimeBoundary?.agiClaimAllowed === false, "swarm ledger must block AGI claims");
+  ensure(Array.isArray(swarmRoundLedger.roundAssignments) && swarmRoundLedger.roundAssignments.length === 15, "swarm ledger must define 15 default round assignments");
+}
+if (roundExecutionEvidenceLedger) {
+  ensure(roundExecutionEvidenceLedger.id === "seis-ai-core-subagent-round-execution-evidence-ledger", "round execution evidence ledger id mismatch");
+  ensure(roundExecutionEvidenceLedger.status === "repo-local-supervised-closeout-evidence", "round execution evidence ledger status mismatch");
+  ensure(roundExecutionEvidenceLedger.resourceUri === "seis://ai/subagent-round-execution-evidence-ledger.json", "round execution evidence ledger resource URI mismatch");
+  ensure(roundExecutionEvidenceLedger.roundWindowState?.defaultRoundWindow === 15, "round execution evidence ledger default window must be 15");
+  ensure(roundExecutionEvidenceLedger.roundWindowState?.expandedRoundWindow === 30, "round execution evidence ledger expanded window must be 30");
+  const closeoutRecords = Array.isArray(roundExecutionEvidenceLedger.closeoutRecords)
+    ? roundExecutionEvidenceLedger.closeoutRecords
+    : [];
+  ensure(closeoutRecords.length >= 5, "round execution evidence ledger must preserve at least five closeouts");
+  ensure(
+    roundExecutionEvidenceLedger.roundWindowState?.recordedCloseoutCount === closeoutRecords.length,
+    "round execution evidence ledger recorded count must match closeout records"
+  );
+  ensure(
+    roundExecutionEvidenceLedger.evidenceSummary?.totalCloseoutRecords === closeoutRecords.length,
+    "round execution evidence ledger summary count must match closeout records"
+  );
+  ensure(roundExecutionEvidenceLedger.runtimeBoundary?.continuousBackgroundRuntime === "not-authorized", "round execution evidence ledger must reject continuous background runtime");
+  ensure(roundExecutionEvidenceLedger.runtimeBoundary?.credentialAccessPerformed === false, "round execution evidence ledger must not perform credential access");
+  ensure(roundExecutionEvidenceLedger.runtimeBoundary?.sshExecutionPerformed === false, "round execution evidence ledger must not perform SSH execution");
+  ensure(roundExecutionEvidenceLedger.runtimeBoundary?.providerCallPerformed === false, "round execution evidence ledger must not perform provider calls");
+  ensure(roundExecutionEvidenceLedger.runtimeBoundary?.modelTrainingPerformed === false, "round execution evidence ledger must not perform model training");
+  ensure(roundExecutionEvidenceLedger.runtimeBoundary?.agiClaimAllowed === false, "round execution evidence ledger must block AGI claims");
+  ensure(roundExecutionEvidenceLedger.runtimeBoundary?.routeEligibleToday === false, "round execution evidence ledger must not be route eligible");
 }
 for (const token of ["# SEIS Sub-Agent Long-Horizon Audit", "5-Year Gap", "Human Approval Needed"]) {
   ensure(longHorizonReview.includes(token), `long-horizon audit missing ${token}`);
@@ -328,6 +398,7 @@ for (const token of ["Personal sub-agent lanes", "permission matrix", "status/pl
   ensure(agentRuntimeDocs.includes(token), `agent runtime docs missing ${token}`);
 }
 ensure(helper.includes("seis_ai_core_subagent_model"), "helper must define seis_ai_core_subagent_model");
+ensure(helper.includes("SUBAGENT_ROUND_EXECUTION_EVIDENCE_LEDGER_PATH"), "helper must define the round execution evidence ledger path");
 ensure(helper.includes("seis_ai_core_version_status"), "helper must define seis_ai_core_version_status");
 ensure(helper.includes("seis_ai_core_version_promotion_dry_run"), "helper must define seis_ai_core_version_promotion_dry_run");
 for (const [text, label] of [
@@ -354,6 +425,9 @@ ensure(mcp.includes("seis://ai/cancellation-fixture.json"), "MCP server must exp
 ensure(mcp.includes("seis://ai/approval-fixture.json"), "MCP server must expose the sub-agent approval resource");
 ensure(mcp.includes("seis://ai/subagent-runtime-fixtures.json"), "MCP server must expose the sub-agent runtime fixture pack resource");
 ensure(mcp.includes("seis://ai/subagent-review-ledger.json"), "MCP server must expose the sub-agent review ledger resource");
+ensure(mcp.includes("seis://ai/subagent-swarm-round-ledger.json"), "MCP server must expose the sub-agent swarm round ledger resource");
+ensure(mcp.includes("seis://ai/subagent-round-execution-evidence-ledger.json"), "MCP server must expose the sub-agent round execution evidence ledger resource");
+ensure(mcp.includes("seis://ai/720b-agi-frontier-boundary.json"), "MCP server must expose the 720B AGI frontier boundary resource");
 
 if (packageJson) {
   ensure(
@@ -367,6 +441,11 @@ if (packageJson) {
   ensure(
     String(packageJson.scripts?.["quality:governance"] || "").includes("npm run check:seis-ai-core-subagent-runtime-fixtures"),
     "quality:governance must include check:seis-ai-core-subagent-runtime-fixtures"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-ai-core-subagent-round-execution-evidence-ledger"] ===
+      "node scripts/check-seis-ai-core-subagent-round-execution-evidence-ledger.mjs",
+    "package.json must expose check:seis-ai-core-subagent-round-execution-evidence-ledger"
   );
 }
 

@@ -21,6 +21,9 @@ const paths = {
   pluginIntegration: "content/development/seis-agent-plugin-integration.json",
   aiCoreDoc: "docs/ai/seis-ai-core.md",
   agentRuntimeDoc: "docs/ai/agent-runtime.md",
+  subagentRuntimeTest: "packages/seis-ai/test/subagent-runtime-fixtures.test.mjs",
+  subagentRuntimePolicy: "packages/seis-ai/src/lib/subagent-runtime-policy.mjs",
+  subagentRuntimePolicyTest: "packages/seis-ai/test/subagent-runtime-policy.test.mjs",
   tools: "packages/seis-ai/src/agent/tools.mjs",
   mcpServer: "packages/seis-ai/src/mcp/server.mjs",
   pluginHelper: "packages/seis-ai/src/lib/plugin-integration.mjs",
@@ -61,6 +64,9 @@ const operatingModel = readJson(paths.operatingModel, "sub-agent operating model
 const pluginIntegration = readJson(paths.pluginIntegration, "plugin integration manifest");
 const aiCoreDoc = readText(paths.aiCoreDoc, "SEIS AI Core docs");
 const agentRuntimeDoc = readText(paths.agentRuntimeDoc, "agent runtime docs");
+const subagentRuntimeTest = readText(paths.subagentRuntimeTest, "sub-agent runtime fixture simulation test");
+const subagentRuntimePolicy = readText(paths.subagentRuntimePolicy, "sub-agent runtime policy helper");
+const subagentRuntimePolicyTest = readText(paths.subagentRuntimePolicyTest, "sub-agent runtime policy test");
 const tools = readText(paths.tools, "SEIS AI Core agent tools");
 const mcpServer = readText(paths.mcpServer, "SEIS AI Core MCP server");
 const pluginHelper = readText(paths.pluginHelper, "SEIS AI Core plugin helper");
@@ -281,6 +287,18 @@ if (runtimeFixtures) {
   ensure(runtimeFixtures.runtimeBoundary?.backgroundAutomation === "disabled", "runtime fixtures background automation must stay disabled");
   ensure(runtimeFixtures.runtimeBoundary?.writeExecution === "disabled", "runtime fixtures write execution must stay disabled");
   ensure(runtimeFixtures.runtimeBoundary?.credentialAccess === "forbidden", "runtime fixtures credential access must stay forbidden");
+  ensure(runtimeFixtures.executableDryRunTestPlan?.path === paths.subagentRuntimeTest, "runtime fixtures must point to executable dry-run simulation test");
+  ensure(runtimeFixtures.executableDryRunTestPlan?.policyHelper === paths.subagentRuntimePolicy, "runtime fixtures must point to sub-agent runtime policy helper");
+  ensure(runtimeFixtures.executableDryRunTestPlan?.policyTest === paths.subagentRuntimePolicyTest, "runtime fixtures must point to sub-agent runtime policy test");
+  ensure(runtimeFixtures.executableDryRunTestPlan?.mode === "simulation-only", "runtime fixtures test plan must stay simulation-only");
+  ensure(runtimeFixtures.executableDryRunTestPlan?.enablesRuntimeExecution === false, "runtime fixtures test plan must not enable runtime execution");
+  ensureArrayIncludesAll(runtimeFixtures.executableDryRunTestPlan?.coveredBehaviors, [
+    "runtime boundary remains status-and-plan-only",
+    "approval-gated tasks stay blocked while approval is pending",
+    "cancellation ends in a terminal state without later tool calls",
+    "ledger records remain dry-run-only and redacted",
+    "redacted diagnostics are required before future promotion",
+  ], "runtimeFixtures.executableDryRunTestPlan.coveredBehaviors");
   ensure(runtimeFixtures.sourceOfTruth?.operatingModel === paths.operatingModel, "runtime fixtures must point to operating model");
   ensure(
     runtimeFixtures.sourceOfTruth?.fiveYearPlan === "content/development/seis-sub-agent-5-year-plan.json",
@@ -386,10 +404,36 @@ for (const [text, label] of [
     "seis-ai-core-subagent-runtime-fixtures.json",
     "seis-ai-core-subagent-review-ledger.json",
     "seis-ai-core-version-registry.json",
+    "subagent-runtime-fixtures.test.mjs",
+    "subagent-runtime-policy.mjs",
+    "subagent-runtime-policy.test.mjs",
   ]) {
     ensure(text.includes(token), `${label} missing ${token}`);
   }
 }
+
+for (const token of [
+  "simulateDryRunDecision",
+  "approval-gated-cloud-deploy-preview",
+  "blocked-pending-human-approval",
+  "laterToolCallsAllowed",
+  "secretValuesStored",
+]) {
+  ensure(subagentRuntimeTest.includes(token), `sub-agent runtime fixture simulation test missing ${token}`);
+}
+
+for (const token of [
+  "evaluateSubagentRuntimePolicy",
+  "evaluateCancellationSignal",
+  "evaluateRequestedTool",
+  "evaluateRequestedPath",
+  "matchesScope",
+]) {
+  ensure(subagentRuntimePolicy.includes(token), `sub-agent runtime policy helper missing ${token}`);
+  ensure(subagentRuntimePolicyTest.includes(token) || token === "evaluateCancellationSignal" || token === "evaluateRequestedTool" || token === "evaluateRequestedPath", `sub-agent runtime policy test missing ${token}`);
+}
+
+ensure(pluginHelper.includes("evaluateSubagentRuntimePolicy"), "plugin integration helper must use shared sub-agent runtime policy");
 
 for (const [text, label] of [
   [tools, "SEIS AI Core agent tools"],

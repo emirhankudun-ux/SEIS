@@ -17,9 +17,9 @@ runtime orchestration.
 | Area | Status | Evidence | Blocker | Next Safe Action |
 | --- | --- | --- | --- | --- |
 | Agent definitions | Documented fixture, not implemented runtime orchestration | `AGENTS.md` names the multi-assistant model; `docs/development/agents/ai-workforce-assignments.md`; `content/development/seis-ai-core-agent-role-schema.json`. | No live scheduler or write-capable runtime exists. | Keep role schema plan-only until runtime tests exist. |
-| Tool permissions | Documented fixture | `content/development/seis-ai-core-agent-permission-matrix.json`. | No live permission registry enforcement exists. | Keep write-gated and external-gated levels planned until approval fixtures are wired to execution. |
+| Tool permissions | Documented fixture with shared dry-run policy helper | `content/development/seis-ai-core-agent-permission-matrix.json`, `packages/seis-ai/src/lib/subagent-runtime-policy.mjs`, `packages/seis-ai/test/subagent-runtime-policy.test.mjs`. | No live permission registry enforcement exists. | Keep write-gated and external-gated levels planned until approval fixtures are wired to execution. |
 | Handoff protocol | Documented | `AGENTS.md` and this document. | No handoff artifact schema. | Add a reviewer handoff template later. |
-| Automation runtime | Dry-run fixture only | `scripts/ai-launcher.cjs`, `content/development/seis-ai-core-subagent-review-ledger.json`, `content/development/seis-ai-core-subagent-runtime-fixtures.json`, `content/development/seis-ai-core-dry-run-task-queue.json`, `content/development/seis-ai-core-cancellation-fixture.json`, `content/development/seis-ai-core-approval-fixture.json`, `content/development/seis-ai-core-redaction-fixture.json`, `content/development/seis-ai-core-execution-ledger-fixture.json`. | No background runner, write runner, or external mutation runner exists. | Keep automation dry-run until cancellation, approval, redaction, ledger, and validation behavior is executable and tested. |
+| Automation runtime | Dry-run fixture with executable simulation test | `scripts/ai-launcher.cjs`, `packages/seis-ai/test/subagent-runtime-fixtures.test.mjs`, `content/development/seis-ai-core-subagent-review-ledger.json`, `content/development/seis-ai-core-subagent-runtime-fixtures.json`, `content/development/seis-ai-core-dry-run-task-queue.json`, `content/development/seis-ai-core-cancellation-fixture.json`, `content/development/seis-ai-core-approval-fixture.json`, `content/development/seis-ai-core-redaction-fixture.json`, `content/development/seis-ai-core-execution-ledger-fixture.json`. | No background runner, write runner, or external mutation runner exists. | Keep automation dry-run until cancellation, approval, redaction, ledger, and validation behavior has broader runtime coverage. |
 | Version binding | Documented fixture | `content/development/seis-ai-core-version-registry.json`, `content/development/seis-ai-core-provider-registry.json`, `seis_ai_core_version_status`, `seis_ai_core_provider_status`. | No live release channel, live provider adapter, or health-check runtime exists. | Keep SEIS AI Core v0.1 as a zero-key, status/plan-only application-layer profile. |
 | Version promotion dry-run | Documented fixture | `content/development/seis-ai-core-version-promotion-gates.json`, `seis_ai_core_version_promotion_dry_run`. | Dry-run output does not approve releases or enable write lanes. | Use promotion gate output as internal review evidence only. |
 | MCP runtime contract | Local smoke verified | `content/development/seis-ai-core-mcp-runtime-contract.json`, `seis://ai/mcp-runtime-contract.json`. | This does not authenticate remote MCP servers, connectors, credentials, SSH, deploys, or GitHub mutation. | Keep runtime resources verified by `node --test packages/seis-ai/test/mcp-smoke.test.mjs`. |
@@ -74,6 +74,9 @@ Before the agent runtime is marked implemented, add:
 - `content/development/seis-ai-core-approval-fixture.json`
 - `content/development/seis-ai-core-redaction-fixture.json`
 - `content/development/seis-ai-core-execution-ledger-fixture.json`
+- `packages/seis-ai/src/lib/subagent-runtime-policy.mjs`
+- `packages/seis-ai/test/subagent-runtime-policy.test.mjs`
+- `packages/seis-ai/test/subagent-runtime-fixtures.test.mjs`
 - path traversal denial fixture
 - redacted tool-output test
 - handoff report template
@@ -97,5 +100,5 @@ evidence for staged reviews, not autonomous execution.
 
 ## Next Safe Action
 
-Connect the documented fixtures to executable dry-run tests before enabling any
-background or write-capable automation.
+Expand the shared dry-run permission policy into a broader enforcement harness
+before enabling any background or write-capable automation.

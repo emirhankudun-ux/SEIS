@@ -28,12 +28,17 @@ The foundation includes:
 | --- | --- | --- | --- | --- |
 | Model router | Documented, not implemented | `docs/ai/model-router.md`, `content/development/seis-ai-core-provider-registry.json`, `seis_ai_core_provider_status` | No typed environment validation, health checks, or live adapter tests exist. | Keep routing disabled until server-only adapter tests exist. |
 | Prompt engine | Documented, not implemented | `docs/ai/prompt-engine.md` | No versioned prompt registry or regression suite exists. | Define prompt-pack schema and fixtures. |
-| Agent runtime | Documented fixture, not implemented runtime orchestration | `docs/ai/agent-runtime.md`, `scripts/ai-launcher.cjs`, `content/development/seis-ai-core-subagent-review-ledger.json`, `content/development/seis-ai-core-subagent-runtime-fixtures.json`, `content/development/seis-ai-core-agent-role-schema.json`, `content/development/seis-ai-core-agent-permission-matrix.json`, `content/development/seis-ai-core-dry-run-task-queue.json`, `content/development/seis-ai-core-cancellation-fixture.json`, `content/development/seis-ai-core-approval-fixture.json`, `content/development/seis-ai-core-redaction-fixture.json`, `content/development/seis-ai-core-execution-ledger-fixture.json` | No write-gated or background runtime exists. | Keep automation dry-run until fixture validation, approval gates, redaction, and ledger evidence are proven. |
+| Agent runtime | Documented fixture with executable simulation test, not runtime orchestration | `docs/ai/agent-runtime.md`, `scripts/ai-launcher.cjs`, `packages/seis-ai/test/subagent-runtime-fixtures.test.mjs`, `content/development/seis-ai-core-subagent-review-ledger.json`, `content/development/seis-ai-core-subagent-runtime-fixtures.json`, `content/development/seis-ai-core-agent-role-schema.json`, `content/development/seis-ai-core-agent-permission-matrix.json`, `content/development/seis-ai-core-dry-run-task-queue.json`, `content/development/seis-ai-core-cancellation-fixture.json`, `content/development/seis-ai-core-approval-fixture.json`, `content/development/seis-ai-core-redaction-fixture.json`, `content/development/seis-ai-core-execution-ledger-fixture.json` | No write-gated or background runtime exists. | Keep automation dry-run until fixture validation, approval gates, redaction, ledger evidence, and permission-enforcement harness coverage are proven. |
+| God Mode status bridge | Active repo-backed read-only operating-state surface | `seis_god_mode_status`, `seis://agent/god-mode-status.json`, `content/development/seis-god-mode-developer-contract.json`, `content/development/seis-god-mode-module-coverage.json`, `content/development/seis-god-mode-run-state.json`, `content/development/seis-god-mode-work-package.json` | This is local governance evidence only; it performs no file mutation, provider call, credential access, SSH, deployment, GitHub mutation, or completion claim. | Use it before broad God Mode work to report required layer lift, module coverage, run state, commit/release readiness, source health, and next safe actions. |
 | Version registry | Documented fixture | `content/development/seis-ai-core-version-registry.json`, `seis_ai_core_version_status` | No live release channel, live provider adapter, or model ownership evidence exists. | Keep SEIS AI Core v0.1 as a zero-key application-layer profile until provider and runtime gates exist. |
 | Provider registry | Documented fixture | `content/development/seis-ai-core-provider-registry.json`, `seis_ai_core_provider_status`, `seis://ai/provider-registry.json` | This is repo-local status evidence only; it performs no provider calls or credential validation. | Use it for SEIS AI status surfaces before live provider adapters. |
-| Model scaling hardware profile | Planned compatibility contract | `content/development/seis-model-scaling-hardware-profile.json`, `docs/ai/seis-model-scaling.md`, `seis_ai_core_model_scaling_status` | The 20B target for 16GB+ RAM plus future 70B, 150B, and 512B apex lanes are not trained weights, live inference, downloads, AGI proof, or benchmark evidence. | Keep the profile blocked until clean-room model cards, dataset cards, quantized/distributed runtime plans, safety evals, and memory benchmarks exist. |
+| Installed AI tools registry | Active public-safe SEIS AI Tools Bridge | `content/development/seis-installed-ai-tools-registry.json`, `docs/ai/installed-ai-tools-registry.md`, `npm run check:seis-installed-ai-tools-registry` | Tool presence is not product AI implementation, local model readiness, SSH execution, GitHub mutation, deployment, or production readiness. Claude Code CLI is available through local Claude Code auth, Hermes is available through local OpenAI Codex provider config, and Gemini CLI, Kimi Code CLI, OpenAI CLI, Aider, and Goose remain manual/auth-gated or provider-blocked until configured outside the repo. | Keep Codex as the only writer, use Xcode for Apple-native work with build evidence, and expose Claude, Gemini, Kimi, Cursor, LM Studio, OpenAI, Aider, Goose, and Hermes only as bounded helper or review routes. |
+| NVIDIA Skills downloadable catalog | Active public-safe downloadable snapshot | `packages/seis-ai/downloadable/nvidia-skills/nvidia-skills-downloadable-manifest.json`, `packages/seis-ai/downloadable/nvidia-skills/README.md`, `npm run check:seis-ai-nvidia-skills-downloadable` | This is a SEIS AI-contained catalog snapshot only; it does not install global agent skills, embed full `SKILL.md` runtime bodies, call providers, download models or datasets, store credentials, run SSH, mutate GitHub, or prove live NVIDIA access. | Use the catalog for reviewed NVIDIA skill selection and capability mapping before any explicit, scoped local agent install. |
+| Model scaling hardware profile | Planned compatibility contract | `content/development/seis-model-scaling-hardware-profile.json`, `docs/ai/seis-model-scaling.md`, `seis_ai_core_model_scaling_status` | The 20B target for 16GB+ RAM plus future 70B, 150B, 512B apex, 520B next-frontier, and 720B AGI frontier lanes are not trained weights, live inference, downloads, AGI proof, or benchmark evidence. | Keep the profile blocked until clean-room model cards, dataset cards, quantized/distributed runtime plans, safety evals, memory benchmarks, frontier risk review, external review, and explicit human approval exist. |
+| AI truth-boundary language policy | Active governance check | `content/development/seis-ai-truth-boundary-language-policy.json`, `scripts/check-seis-ai-truth-boundary-language.mjs`, `npm run check:seis-ai-truth-boundary-language` | This scans selected SEIS AI, MCP, sub-agent, and model-scaling wording only. It does not train models, download weights, run inference, call providers, execute SSH, provision cloud/GPU resources, mutate GitHub, deploy infrastructure, or approve autonomous background agents. | Add targeted disallowed phrases only when they protect public-safe truth boundaries and pair each ban with a required safer phrase where possible. |
 | 150B frontier model program | Plan-only frontier program record | `content/development/seis-150b-frontier-model-program.json`, `seis://ai/150b-frontier-model-program.json`, `npm run check:seis-150b-frontier-model-program` | The 150B lane is a charter, stage plan, and promotion-gate record only; it is not trained weights, inference, benchmark evidence, provider access, cloud/GPU provisioning, SSH execution, or production readiness. | Keep it blocked until 20B and 70B evidence, clean-room training plan, distributed runtime budget, privacy/safety review, observability, rollback, cost-stop, and human approval exist. |
 | 512B apex model program | Plan-only SEIS AGI readiness record with public research baseline | `content/development/seis-512b-apex-model-program.json`, `seis://ai/512b-apex-model-program.json`, `npm run check:seis-512b-apex-model-program` | The 512B lane is an apex charter, internet-researched frontier-model baseline, AGI-readiness definition, and GitHub-public-readiness gate only; it is not AGI, trained weights, inference, benchmark evidence, provider access, cloud/GPU provisioning, SSH execution, or production readiness. | Keep it blocked until 20B, 70B, 150B, and 300B+ evidence, clean-room training plan, independent AGI eval protocol, all installed AI/sub-agent council review, public readiness evidence, and human approval exist. |
+| 720B AGI frontier boundary | Plan-only five-year frontier boundary | `content/development/seis-720b-agi-frontier-boundary.json`, `seis://ai/720b-agi-frontier-boundary.json`, `npm run check:seis-720b-agi-frontier-boundary` | The 720B lane is a supervised planning boundary only; it is not trained weights, routeable inference, benchmark evidence, cloud/GPU provisioning, SSH execution, uncontrolled background runtime, production readiness, or AGI proof. | Keep it blocked until 20B, 70B, 150B, 300B+, 512B, and 520B evidence exists, AGI evaluation is independently reviewed, frontier safety/cost/rollback controls exist, and explicit human approval is recorded. |
 | Model scaling sub-agent council | Active plan-only coordination contract | `content/development/seis-model-scaling-subagent-council.json`, `docs/ai/seis-model-scaling.md`, `seis_ai_core_model_scaling_status` | Twelve agents coordinate 20B evidence preparation and 70B/150B/512B review duties, with explicit 512B duties for architecture, validator sync, honest UI, research, provenance, security, DevOps, docs, QA, cloud gating, and automation boundaries; they do not run models, benchmarks, training, SSH, providers, GitHub mutation, or cloud/GPU provisioning. | Keep all council agents plan-only until human-reviewed runtime, benchmark, safety, public-readiness, and approval evidence exists. |
 | Language model intake registry | Active metadata-only contract | `content/development/seis-language-model-intake-registry.json`, `docs/ai/ai-workforce-training.md`, `npm run check:seis-language-model-intake` | Candidate model families are reviewed for license, hardware, retrieval, adapter, and training gates; this is not bulk installation, checkpoint download, inference, fine-tune, foundation training, or AGI evidence. | Review one model family at a time and keep retrieval/provenance first before any approved local install. |
 | Version promotion gates | Documented fixture | `content/development/seis-ai-core-version-promotion-gates.json`, `seis_ai_core_version_promotion_dry_run` | Dry-run output is internal review evidence only; it is not release approval. | Use promotion dry-runs to classify readiness without enabling write, deploy, provider, credential, or release authority. |
@@ -58,6 +63,42 @@ The foundation includes:
 - SEIS plugin lane tools may inspect repo-local manifests, skills, and lane
   profiles, but must not claim connector authentication or perform external
   mutation.
+
+## AI Truth-Boundary Language Gate
+
+SEIS AI wording is guarded by a manifest-driven policy:
+`content/development/seis-ai-truth-boundary-language-policy.json`.
+
+Validation:
+
+```bash
+npm run check:seis-ai-truth-boundary-language
+```
+
+The gate protects wording only. It does not prove runtime behavior, call a
+provider, validate credentials, run inference, download models, provision
+cloud/GPU capacity, execute SSH, deploy infrastructure, mutate GitHub, or grant
+sub-agent autonomy.
+
+Current scan coverage includes the five-year sub-agent plan, MCP server wording,
+agent tool schemas, MCP smoke test labels, the generated demo plan view,
+`docs/ai/seis-model-scaling.md`, and
+`content/development/seis-model-scaling-hardware-profile.json`.
+
+When adding a new rule:
+
+- target an exact phrase or narrow pattern that caused a real truth-boundary
+  risk
+- include only files where that wording is unsafe in context
+- add a required safer phrase when the replacement should remain durable
+- keep negative examples inside explicit forbidden-claim records readable as
+  forbidden claims
+- rerun the language gate plus the owning domain check
+
+Use this gate to prevent stale claims such as autonomous sub-agent runtime,
+browser/runtime proof, live execution plans, approved cloud runtime, frontier
+cluster availability, trained weights, routeable inference, SSH execution, or
+real AGI proof from reappearing in public-safe SEIS surfaces.
 
 ## Provider Status Model
 
@@ -109,9 +150,21 @@ The standalone SEIS demo now includes an AI Core constellation inspector that
 joins the installed AI route mesh, personal plugin lane mesh, MCP runtime
 contract, selected five-year quarter, and 3D hero diagnostics into one local
 read-only surface. Product browser smoke verifies the inspector exposes six AI
-routes, five personal plugin lanes, 34 MCP tools, 28 MCP resources, three MCP
+routes, five personal plugin lanes, 35 MCP tools, 32 MCP resources, three MCP
 prompts, and a 32-node / 53-edge AI Core 3D graph without requiring provider
 keys, SSH, deployment, GitHub mutation, or external connector authentication.
+
+Executable dry-run simulation:
+`packages/seis-ai/test/subagent-runtime-fixtures.test.mjs`.
+
+Shared sub-agent runtime policy:
+`packages/seis-ai/src/lib/subagent-runtime-policy.mjs` with coverage in
+`packages/seis-ai/test/subagent-runtime-policy.test.mjs`.
+
+The simulation test exercises the runtime fixture pack without enabling
+runtime execution. It checks the status-and-plan-only boundary, pending human
+approval blocks, cancellation terminal behavior, redacted dry-run ledger
+records, and diagnostic redaction requirements.
 
 Runtime inspection tools:
 `seis_ai_core_provider_status`,
@@ -129,13 +182,17 @@ Model scaling resources:
 `content/development/seis-512b-apex-model-program.json`,
 `content/development/seis-agi-evaluation-protocol.json`,
 `content/development/seis-model-scaling-subagent-council.json`,
+`content/development/seis-520b-next-frontier-boundary.json`,
+`content/development/seis-720b-agi-frontier-boundary.json`,
 `seis://ai/model-scaling-hardware-profile.json`, and
 `seis://ai/model-parameter-ladder.json`, and
 `seis://ai/150b-frontier-model-program.json`, and
 `seis://ai/512b-apex-model-program.json`, and
-`seis://ai/agi-evaluation-protocol.json`. The parameter ladder keeps 20B, 70B,
-150B, 300B+, 512B, and highest-future classes route-blocked until measured evidence,
-model/dataset cards, safety review, and human approval exist.
+`seis://ai/agi-evaluation-protocol.json`, and
+`seis://ai/720b-agi-frontier-boundary.json`. The parameter ladder keeps 20B,
+70B, 150B, 300B+, 512B, 520B, 720B, and highest-future classes route-blocked
+until measured evidence, model/dataset cards, safety review, external review,
+and human approval exist.
 
 ## Model Scaling Hardware Profile
 
@@ -164,6 +221,50 @@ npm run check:seis-512b-apex-model-program
 node scripts/check-seis-agi-evaluation-protocol.mjs
 npm run check:seis-model-scaling-subagent-council
 ```
+
+## Installed AI Tools Registry
+
+SEIS records local AI and development tools in a public-safe registry before
+using them in agent handoffs. This is the SEIS AI Tools Bridge: a metadata-first
+route map for installed tools, not proof of live provider access or local model
+readiness. The current registry covers Codex, Xcode, Claude Code CLI, Gemini
+CLI, Kimi Code CLI, Cursor, LM Studio, OpenAI CLI, Aider, Goose, and Hermes:
+
+- Codex is the current supervised repository writer and validator.
+- Xcode is the Apple-native IDE for `packages/seis_platform_swift`, but Xcode
+  presence is not build evidence.
+- Claude Code CLI is available through local Claude Code auth and a sanitized
+  `CLAUDE_OK` smoke, but remains review-only.
+- Hermes is available through local OpenAI Codex provider configuration and a
+  sanitized `HERMES_OK` smoke; Nous Portal is still not logged in.
+- Gemini CLI, Kimi Code CLI, OpenAI CLI, Aider, and Goose remain
+  manual/auth-gated or provider-blocked helper routes until configured outside
+  the repository.
+- Gemini CLI completed Google OAuth, then reported Gemini Code Assist for
+  individuals no longer supports this CLI client and points users to
+  Antigravity.
+- Kimi Code CLI is installed and `kimi doctor` is valid, but `kimi provider
+  list` is empty and login currently reports membership benefits cannot be
+  verified.
+- Cursor is a secondary IDE/review surface and must not become a second writer
+  without an explicit human-visible handoff.
+- LM Studio is an optional local model lab; installation does not prove a model
+  is downloaded, loaded, or safe for private data.
+
+Machine-readable source:
+`content/development/seis-installed-ai-tools-registry.json`.
+
+Human-readable contract:
+`docs/ai/installed-ai-tools-registry.md`.
+
+Validation:
+
+```bash
+npm run check:seis-installed-ai-tools-registry
+```
+
+The registry does not store credentials, validate provider accounts, execute
+SSH, mutate GitHub, deploy, import a private vault, or claim live model access.
 
 ## AI Workforce Training
 

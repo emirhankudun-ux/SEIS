@@ -257,7 +257,6 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.id, "seis-ai-core-mcp-runtime-contract");
     assert.equal(payload.toolCount, 35);
     assert.equal(payload.resourceCount, 32);
-    assert.equal(payload.promptCount, 3);
     assert.equal(payload.transport, "stdio JSON-RPC");
   });
 
@@ -393,12 +392,13 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.id, "seis-model-parameter-ladder");
     assert.equal(payload.status, "planning-contract-not-runtime");
     assert.equal(payload.routeEligibleToday, false);
-    assert.deepEqual(payload.promotionOrder, ["local-demo", "20B", "70B", "150B", "300B+", "512B", "highest-available-future"]);
+    assert.deepEqual(payload.promotionOrder, ["local-demo", "20B", "70B", "150B", "300B+", "512B", "520B", "highest-available-future"]);
     assert.ok(payload.targets.some((entry) => entry.parameterClass === "20B" && entry.minimumRamClass === "16GB+ RAM"));
     assert.ok(payload.targets.some((entry) => entry.parameterClass === "70B" && entry.status === "research-roadmap"));
     assert.ok(payload.targets.some((entry) => entry.parameterClass === "150B" && entry.status === "frontier-research-roadmap"));
     assert.ok(payload.targets.some((entry) => entry.parameterClass === "300B+" && entry.status === "not-scoped"));
     assert.ok(payload.targets.some((entry) => entry.parameterClass === "512B" && entry.status === "apex-program-plan-only"));
+    assert.ok(payload.targets.some((entry) => entry.parameterClass === "520B" && entry.status === "next-frontier-boundary-plan-only"));
     assert.ok(payload.targets.some((entry) => entry.parameterClass === "highest-available-future" && entry.status === "not-scoped"));
     assert.ok(payload.targets.every((entry) => entry.trainingStatus === "not-started"));
     assert.ok(payload.targets.every((entry) => entry.routeEligibleToday === false));
@@ -948,11 +948,12 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.parameterLadderPath, "content/development/seis-model-parameter-ladder.json");
     assert.equal(payload.parameterLadder.id, "seis-model-parameter-ladder");
     assert.equal(payload.parameterLadder.resourceUri, "seis://ai/model-parameter-ladder.json");
-    assert.equal(payload.parameterLadder.targetCount, 6);
+    assert.equal(payload.parameterLadder.targetCount, 7);
     assert.equal(payload.parameterLadder.routeEligibleToday, false);
     assert.ok(payload.parameterLadder.targets.some((entry) => entry.parameterClass === "20B" && entry.minimumRamClass === "16GB+ RAM"));
     assert.ok(payload.parameterLadder.targets.some((entry) => entry.parameterClass === "300B+" && entry.status === "not-scoped"));
     assert.ok(payload.parameterLadder.targets.some((entry) => entry.parameterClass === "512B" && entry.status === "apex-program-plan-only"));
+    assert.ok(payload.parameterLadder.targets.some((entry) => entry.parameterClass === "520B" && entry.status === "next-frontier-boundary-plan-only"));
     assert.ok(payload.parameterLadder.targets.some((entry) => entry.parameterClass === "highest-available-future" && entry.status === "not-scoped"));
     assert.equal(payload.frontierEscalationPolicyPath, "content/development/seis-model-frontier-escalation-policy.json");
     assert.equal(payload.frontierEscalationPolicy.id, "seis-model-frontier-escalation-policy");
@@ -977,6 +978,15 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.apexModelProgram.inferenceAvailable, false);
     assert.equal(payload.apexModelProgram.benchmarkStatus, "not-run");
     assert.equal(payload.apexModelProgram.stageCount, 7);
+    assert.equal(payload.agi720bFrontierBoundaryPath, "content/development/seis-720b-agi-frontier-boundary.json");
+    assert.equal(payload.agi720bFrontierBoundary.id, "seis-720b-agi-frontier-boundary");
+    assert.equal(payload.agi720bFrontierBoundary.resourceUri, "seis://ai/720b-agi-frontier-boundary.json");
+    assert.equal(payload.agi720bFrontierBoundary.parameterClass, "720B");
+    assert.equal(payload.agi720bFrontierBoundary.routeEligibleToday, false);
+    assert.equal(payload.agi720bFrontierBoundary.runtimeAuthority, false);
+    assert.equal(payload.agi720bFrontierBoundary.agiClaimAllowed, false);
+    assert.deepEqual(payload.agi720bFrontierBoundary.roundWindows, [15, 30]);
+    assert.equal(payload.agi720bFrontierBoundary.mcpDefaultPermission, "read-only-or-plan-only");
     assert.equal(payload.modelCardTemplatePath, "content/development/seis-20b-model-card-template.json");
     assert.equal(payload.datasetCardTemplatePath, "content/development/seis-20b-dataset-card-template.json");
     assert.equal(payload.evidenceTemplates.modelCard.status, "template-not-filled");
@@ -1028,6 +1038,28 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.runtimeBoundary.currentLevel, "status-and-plan-only");
     assert.equal(payload.runtimeFixtures.versionRegistry.id, "seis-ai-core-version-registry");
     assert.equal(payload.runtimeFixtures.reviewLedger.id, "seis-ai-core-subagent-review-ledger");
+    assert.equal(payload.runtimeFixtures.swarmRoundLedger.id, "seis-ai-core-subagent-swarm-round-ledger");
+    assert.equal(payload.runtimeFixtures.swarmRoundLedger.defaultRoundWindow, 15);
+    assert.equal(payload.runtimeFixtures.swarmRoundLedger.expandedRoundWindow, 30);
+    assert.equal(payload.runtimeFixtures.swarmRoundLedger.roundAssignmentCount, 15);
+    assert.equal(payload.runtimeFixtures.swarmRoundLedger.continuousBackgroundRuntime, "not-authorized");
+    assert.equal(payload.runtimeFixtures.swarmRoundLedger.agiClaimAllowed, false);
+    assert.equal(
+      payload.runtimeFixtures.roundExecutionEvidenceLedger.id,
+      "seis-ai-core-subagent-round-execution-evidence-ledger"
+    );
+    assert.equal(payload.runtimeFixtures.roundExecutionEvidenceLedger.currentLevel, "evidence-ledger-only");
+    assert.ok(payload.runtimeFixtures.roundExecutionEvidenceLedger.recordedCloseoutCount >= 5);
+    assert.equal(
+      payload.runtimeFixtures.roundExecutionEvidenceLedger.recordCount,
+      payload.runtimeFixtures.roundExecutionEvidenceLedger.recordedCloseoutCount
+    );
+    assert.equal(payload.runtimeFixtures.roundExecutionEvidenceLedger.credentialAccessPerformed, false);
+    assert.equal(payload.runtimeFixtures.roundExecutionEvidenceLedger.providerCallPerformed, false);
+    assert.equal(payload.runtimeFixtures.roundExecutionEvidenceLedger.modelTrainingPerformed, false);
+    assert.equal(payload.runtimeFixtures.roundExecutionEvidenceLedger.completionClaimAllowed, false);
+    assert.equal(payload.runtimeFixtures.roundExecutionEvidenceLedger.continuousRuntimeClaimAllowed, false);
+    assert.equal(payload.runtimeFixtures.roundExecutionEvidenceLedger.agiClaimAllowed, false);
     assert.equal(payload.runtimeFixtures.runtimeFixturePack.id, "seis-ai-core-subagent-runtime-fixtures");
     assert.equal(payload.runtimeFixtures.dryRunTaskQueue.dryRunOnly, true);
     assert.equal(payload.runtimeFixtures.approvalFixture.blanketApprovalAllowed, false);

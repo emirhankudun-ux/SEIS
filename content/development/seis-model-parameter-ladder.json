@@ -5,8 +5,8 @@
   "updatedAt": "2026-06-24",
   "resourceUri": "seis://ai/model-parameter-ladder.json",
   "qualityGate": "npm run check:seis-model-parameter-ladder",
-  "purpose": "Keep the SEIS AI parameter-growth path explicit from the 16GB+ RAM 20B local compatibility target toward 70B, 150B, 512B AGI research, and future highest-available parameter classes without making premature model, runtime, training, benchmark, AGI, or provider claims.",
-  "truthBoundary": "Parameter ladder only. It creates no trained model, downloads no weights, downloads no datasets, runs no inference, runs no benchmark, trains no model, fine-tunes no model, calls no provider, provisions no GPU or cloud runtime, executes no SSH, deploys nothing, and does not claim SEIS owns 20B, 70B, 150B, 512B, AGI, or frontier foundation-model weights.",
+  "purpose": "Keep the SEIS AI parameter-growth path explicit from the 16GB+ RAM 20B local compatibility target toward 70B, 150B, 512B AGI research, the user-requested 520B next-frontier boundary, and future highest-available parameter classes without making premature model, runtime, training, benchmark, AGI, or provider claims.",
+  "truthBoundary": "Parameter ladder only. It creates no trained model, downloads no weights, downloads no datasets, runs no inference, runs no benchmark, trains no model, fine-tunes no model, calls no provider, provisions no GPU or cloud runtime, executes no SSH, deploys nothing, and does not claim SEIS owns 20B, 70B, 150B, 512B, 520B, AGI, or frontier foundation-model weights.",
   "coreCredentialRequirement": "none",
   "defaultRoute": "seis-local-demo",
   "routeEligibleToday": false,
@@ -18,7 +18,8 @@
     "scalingDoc": "docs/ai/seis-model-scaling.md",
     "modelRouterDoc": "docs/ai/model-router.md",
     "aiCoreDoc": "docs/ai/seis-ai-core.md",
-    "apexModelProgram": "content/development/seis-512b-apex-model-program.json"
+    "apexModelProgram": "content/development/seis-512b-apex-model-program.json",
+    "nextFrontierBoundary": "content/development/seis-520b-next-frontier-boundary.json"
   },
   "targets": [
     {
@@ -171,6 +172,37 @@
       ]
     },
     {
+      "id": "seis-520b-next-frontier-boundary",
+      "displayName": "SEIS 520B Next Frontier Boundary",
+      "parameterClass": "520B",
+      "parameterCountBillion": 520,
+      "horizon": "next-frontier-after-apex",
+      "minimumRamClass": "defined only after 512B apex evidence",
+      "hardwareClass": "frontier-scale distributed research runtime only after dense-vs-MoE decision, budget, safety, privacy, observability, rollback, and governance approval",
+      "allowedToday": "Disabled; Local Demo and validator-backed planning only",
+      "status": "next-frontier-boundary-plan-only",
+      "trainingStatus": "not-started",
+      "weightsAvailable": false,
+      "inferenceAvailable": false,
+      "benchmarkEvidenceAvailable": false,
+      "agiCapabilityEvidenceAvailable": false,
+      "routeEligibleToday": false,
+      "runtimeAuthority": false,
+      "productionReady": false,
+      "quantizationRequired": true,
+      "evidenceRequiredBeforeRoute": [
+        "512B apex evidence accepted",
+        "dense versus MoE architecture decision recorded",
+        "clean-room rights and provenance review",
+        "frontier-scale distributed runtime feasibility proof",
+        "privacy and data-rights review",
+        "frontier safety and misuse evaluation",
+        "observability, kill-switch, rollback, and cost-stop plan",
+        "external review completed",
+        "explicit human approval"
+      ]
+    },
+    {
       "id": "seis-highest-available-future-boundary",
       "displayName": "SEIS Highest Available Future Parameter Boundary",
       "parameterClass": "highest-available-future",
@@ -189,7 +221,7 @@
       "productionReady": false,
       "quantizationRequired": true,
       "evidenceRequiredBeforeRoute": [
-        "20B, 70B, 150B, 300B+, and 512B evidence completed",
+        "20B, 70B, 150B, 300B+, 512B, and 520B evidence completed",
         "current frontier landscape review",
         "clean-room rights and provenance review",
         "distributed runtime feasibility proof",
@@ -222,7 +254,7 @@
     },
     {
       "ramClass": "distributed",
-      "highestTargetToday": "512B AGI apex planning boundary only",
+      "highestTargetToday": "520B next-frontier planning boundary only",
       "routeEligibleToday": false,
       "claimStatus": "not-scoped",
       "requiredProof": "20B, 70B, 150B, and 300B+ evidence plus distributed runtime, privacy, safety, AGI capability evaluation, observability, rollback, budget, all-agent council review, and human approval."
@@ -235,6 +267,7 @@
     "150B",
     "300B+",
     "512B",
+    "520B",
     "highest-available-future"
   ],
   "forbiddenClaims": [
@@ -242,9 +275,10 @@
     "SEIS has trained a 70B foundation model.",
     "SEIS has trained a 150B foundation model.",
     "SEIS has trained a 512B foundation model.",
+    "SEIS has trained a 520B foundation model.",
     "SEIS has achieved real AGI.",
     "SEIS has trained a highest-available frontier foundation model.",
-    "SEIS has routeable 20B, 70B, 150B, 512B, AGI, or frontier weights today.",
+    "SEIS has routeable 20B, 70B, 150B, 512B, 520B, AGI, or frontier weights today.",
     "16GB+ compatibility is verified before measured benchmark evidence exists.",
     "A provider route, wrapper, RAG system, prompt, LoRA, or dry-run report is a SEIS foundation model."
   ],
@@ -265,7 +299,7 @@
   "nextSafeActions": [
     "Keep the 20B lane as a planned local compatibility target until measured evidence exists.",
     "Fill and review model-card and dataset-card templates before any real benchmark runner is introduced.",
-    "Keep 70B, 150B, 300B+, 512B, and highest-available future targets disabled until lower-tier evidence exists.",
+    "Keep 70B, 150B, 300B+, 512B, 520B, and highest-available future targets disabled until lower-tier evidence exists.",
     "Expose this ladder through SEIS AI Core MCP as read-only evidence."
   ]
 }

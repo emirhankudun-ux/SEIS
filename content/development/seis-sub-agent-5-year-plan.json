@@ -37,6 +37,49 @@
       "human review for privileged actions"
     ]
   },
+  "continuousOperatingCadence": {
+    "requestedMode": "five-year-continuous-supervised-development",
+    "roundWindowOptions": [15, 30],
+    "defaultRoundWindow": 15,
+    "expandedRoundWindowRequiresOwnerApproval": true,
+    "runtimeBoundary": "The plan may continue through durable repo-tracked slices, but it does not authorize uncontrolled always-on background agents, autonomous writes, deployment, SSH, provider calls, model training, or GitHub mutation.",
+    "roundCloseoutRequires": [
+      "agent report",
+      "files touched",
+      "validation evidence",
+      "security boundary",
+      "next handoff"
+    ]
+  },
+  "swarmRoundLedger": "content/development/seis-ai-core-subagent-swarm-round-ledger.json",
+  "roundExecutionEvidenceLedger": "content/development/seis-ai-core-subagent-round-execution-evidence-ledger.json",
+  "frontierTarget": {
+    "requestedTarget": "720B AGI",
+    "status": "plan-only-boundary",
+    "sourceOfTruth": "content/development/seis-720b-agi-frontier-boundary.json",
+    "qualityGate": "npm run check:seis-720b-agi-frontier-boundary",
+    "agiClaimAllowed": false,
+    "routeEligibleToday": false,
+    "summary": "The 720B target is a five-year SEIS AI research boundary, not a trained model, routeable runtime, benchmark, deployment, provider call, or AGI proof."
+  },
+  "mcpSelectionPolicy": {
+    "sourceContract": "content/development/seis-ai-core-mcp-runtime-contract.json",
+    "defaultPermission": "read-only-or-plan-only",
+    "requiredBeforeUse": [
+      "bounded SEIS lane",
+      "credential boundary",
+      "validation gate",
+      "human approval for privileged access"
+    ],
+    "forbiddenByDefault": [
+      "credential collection",
+      "SSH execution",
+      "deployment",
+      "GitHub mutation",
+      "unrestricted shell",
+      "model download or training"
+    ]
+  },
   "subAgentLifecycleStates": [
     "proposed",
     "assigned",
@@ -223,7 +266,7 @@
     },
     {
       "year": 5,
-      "theme": "Sustainable autonomous assistance and research readiness",
+      "theme": "Sustainable supervised assistance and research readiness",
       "quarters": [
         {
           "id": "Y5-Q1",

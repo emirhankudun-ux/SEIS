@@ -18,8 +18,8 @@
     "reviewCadence": "quarterly",
     "horizonYears": 5,
     "totalQuarterRecords": 20,
-    "currentHorizonQuarter": "Y1-Q2",
-    "nextReviewQuarter": "Y1-Q3"
+    "currentHorizonQuarter": "Y2-Q1",
+    "nextReviewQuarter": "Y2-Q2"
   },
   "runtimeBoundary": {
     "currentLevel": "status-and-plan-only",
@@ -29,8 +29,8 @@
     "credentialAccess": "forbidden"
   },
   "summary": {
-    "documentedValidatedQuarterCount": 2,
-    "plannedQuarterCount": 18,
+    "documentedValidatedQuarterCount": 5,
+    "plannedQuarterCount": 15,
     "writeGatedQuarterCountEnabled": 0,
     "externalMutationPerformed": false,
     "credentialAccessPerformed": false,
@@ -87,36 +87,64 @@
     },
     {
       "id": "Y1-Q3",
-      "status": "planned",
+      "status": "documented-validated",
       "sourcePlanQuarter": "Y1-Q3",
       "primaryLanes": ["implementation-agent", "design-agent", "validation-agent"],
-      "evidence": [],
-      "validator": "browser smoke and accessibility checks when UI changes exist",
+      "evidence": [
+        "apps/seis-demo-web/index.html",
+        "apps/seis-demo-web/script.js",
+        "apps/seis-demo-web/styles.css",
+        "apps/seis-demo-web/data/seis-sub-agent-five-year-plan-view.json",
+        "reports/seis-sub-agent-five-year-demo-evidence.json",
+        "docs/ai/seis-ai-core.md"
+      ],
+      "validator": "npm run check:product-experience-browser-smoke",
       "externalMutationPerformed": false,
       "humanApprovalNeeded": false,
-      "nextSafeAction": "Create read-only Command Center evidence view for sub-agent status and review queue."
+      "nextSafeAction": "Keep the read-only Command Center evidence view synchronized with generated plan data before adding provider, SSH, or write-gated runtime actions."
     },
     {
       "id": "Y1-Q4",
-      "status": "planned",
+      "status": "documented-validated",
       "sourcePlanQuarter": "Y1-Q4",
       "primaryLanes": ["architecture-agent", "implementation-agent", "security-agent"],
-      "evidence": [],
-      "validator": "no-key startup, provider honesty, redaction, and human-approval checks",
+      "evidence": [
+        "content/development/seis-ai-core-provider-registry.json",
+        "content/development/seis-ai-core-version-registry.json",
+        "content/development/seis-ai-core-version-promotion-gates.json",
+        "content/development/seis-agent-plugin-integration.json",
+        "docs/ai/seis-ai-core.md",
+        "docs/ai/agent-runtime.md",
+        "apps/seis-demo-web/script.js",
+        "apps/seis-demo-web/data/seis-sub-agent-five-year-plan-view.json",
+        "reports/seis-sub-agent-five-year-demo-evidence.json"
+      ],
+      "validator": "npm run check:seis-ai-core-provider-registry",
       "externalMutationPerformed": false,
       "humanApprovalNeeded": false,
-      "nextSafeAction": "Add local demo agent lane and provider-neutral fallback evidence."
+      "nextSafeAction": "Use Y2-Q1 to harden SEIS Desktop, SEIS Code, and shared VFS flows under sub-agent validation while keeping provider routing local-demo/no-key until backend adapter evidence exists."
     },
     {
       "id": "Y2-Q1",
-      "status": "planned",
+      "status": "documented-validated",
       "sourcePlanQuarter": "Y2-Q1",
       "primaryLanes": ["implementation-agent", "design-agent", "validation-agent"],
-      "evidence": [],
-      "validator": "desktop interaction, mobile fit, and VFS persistence checks",
+      "evidence": [
+        "apps/web/desktop.js",
+        "apps/web/seis-code.js",
+        "docs/product/seis-desktop-os.md",
+        "docs/product/seis-code-foundation.md",
+        "docs/product/shared-vfs-contract.md",
+        "docs/reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md",
+        "scripts/check-desktop-os.mjs",
+        "scripts/check-seis-code.mjs",
+        "scripts/check-product-experience-browser-smoke.mjs",
+        "reports/seis-sub-agent-five-year-demo-evidence.json"
+      ],
+      "validator": "npm run check:product-experience-browser-smoke",
       "externalMutationPerformed": false,
       "humanApprovalNeeded": false,
-      "nextSafeAction": "Validate SEIS Desktop, SEIS Code, and shared VFS flows under sub-agent review."
+      "nextSafeAction": "Use Y2-Q2 to promote the dry-run queue into an executable scheduler simulation only, with bounded recursion, timeout, audit-event, redaction, and approval fixtures still blocking external mutation."
     },
     {
       "id": "Y2-Q2",

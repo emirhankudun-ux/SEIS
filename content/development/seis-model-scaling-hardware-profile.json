@@ -3,7 +3,7 @@
   "version": "2026.06.24",
   "status": "planned-compatibility-contract",
   "updatedAt": "2026-06-24",
-  "purpose": "Define the safe SEIS model scaling path from a 20B local-compatibility target for 16GB+ RAM machines toward future 70B, 150B, 512B AGI research, and larger parameter classes without claiming trained weights, AGI capability, or live runtime readiness.",
+  "purpose": "Define the safe SEIS model scaling path from a 20B local-compatibility target for 16GB+ RAM machines toward future 70B, 150B, 512B AGI research, the user-requested 520B next-frontier boundary, and larger parameter classes without claiming trained weights, AGI capability, or live runtime readiness.",
   "qualityGate": "npm run check:seis-model-scaling-hardware-profile",
   "sourceOfTruth": {
     "aiCoreDoc": "docs/ai/seis-ai-core.md",
@@ -11,6 +11,7 @@
     "scalingDoc": "docs/ai/seis-model-scaling.md",
     "frontierModelProgram": "content/development/seis-150b-frontier-model-program.json",
     "apexModelProgram": "content/development/seis-512b-apex-model-program.json",
+    "nextFrontierBoundary": "content/development/seis-520b-next-frontier-boundary.json",
     "frontierEscalationPolicy": "content/development/seis-model-frontier-escalation-policy.json",
     "modelScalingSubagentCouncil": "content/development/seis-model-scaling-subagent-council.json",
     "benchmarkManifest": "reports/seis-model-scaling/20b-16gb-memory-benchmark.json",
@@ -24,7 +25,7 @@
     "modelFamilyRegistry": "packages/seis-ai/models/seis-model-family-registry.json",
     "modelPromotionPolicy": "packages/seis-ai/models/seis-model-promotion-policy.json"
   },
-  "truthBoundary": "Repository-local model scaling and hardware compatibility profile only. It creates no trained 20B, 70B, 150B, 512B, or AGI weights, performs no model download, performs no inference, performs no benchmark, performs no live provider calls, performs no cloud fine-tuning, and does not claim SEIS owns a trained foundation model or a real AGI.",
+  "truthBoundary": "Repository-local model scaling and hardware compatibility profile only. It creates no trained 20B, 70B, 150B, 512B, 520B, or AGI weights, performs no model download, performs no inference, performs no benchmark, performs no live provider calls, performs no cloud fine-tuning, and does not claim SEIS owns a trained foundation model or a real AGI.",
   "coreCredentialRequirement": "none",
   "defaultMode": "local-demo-until-validated",
   "currentTarget": {
@@ -56,7 +57,7 @@
     "displayName": "SEIS 150B Frontier Research Target",
     "parameterClass": "150B",
     "parameterCountBillion": 150,
-    "targetHardwareClass": "approved distributed, multi-accelerator, or cloud research runtime",
+    "targetHardwareClass": "future approved distributed, multi-accelerator, or cloud research class",
     "compatibilityStatus": "not-scoped",
     "trainingStatus": "not-started",
     "weightsAvailable": false,
@@ -77,13 +78,14 @@
     "displayName": "SEIS 512B AGI Apex Research Target",
     "parameterClass": "512B",
     "parameterCountBillion": 512,
-    "targetHardwareClass": "human-approved frontier-scale distributed research cluster",
+    "targetHardwareClass": "human-approved future frontier-scale distributed research class",
     "compatibilityStatus": "not-scoped",
     "trainingStatus": "not-started",
     "weightsAvailable": false,
     "inferenceAvailable": false,
     "benchmarkStatus": "not-run",
     "agiCapabilityStatus": "not-demonstrated",
+    "routeEligibleToday": false,
     "runtimeAuthority": false,
     "productionReady": false,
     "localDemoFallback": "seis-local-demo",
@@ -92,6 +94,29 @@
       "512B is an AGI research objective and apex program boundary, not a claim that SEIS currently has AGI.",
       "No 512B download, training, fine-tuning, inference, benchmark, checkpoint publication, deployment, SSH, or cloud/GPU provisioning is authorized by this profile.",
       "All installed AI and sub-agent roles may coordinate review duties only; they cannot create evidence by assertion or approve their own runtime promotion."
+    ]
+  },
+  "nextFrontierTarget": {
+    "id": "seis-520b-next-frontier-target",
+    "displayName": "SEIS 520B Next Frontier Boundary",
+    "parameterClass": "520B",
+    "parameterCountBillion": 520,
+    "targetHardwareClass": "defined only after 512B apex evidence and a human-approved frontier-scale distributed research plan",
+    "compatibilityStatus": "not-scoped",
+    "trainingStatus": "not-started",
+    "weightsAvailable": false,
+    "inferenceAvailable": false,
+    "benchmarkStatus": "not-run",
+    "agiCapabilityStatus": "not-demonstrated",
+    "routeEligibleToday": false,
+    "runtimeAuthority": false,
+    "productionReady": false,
+    "localDemoFallback": "seis-local-demo",
+    "routerEligibility": "blocked-until-512b-apex-evidence-dense-vs-moe-decision-frontier-risk-review-cost-stop-external-review-and-human-approval",
+    "notes": [
+      "520B is a next-frontier boundary for long-horizon SEIS AI planning, not a trained model claim.",
+      "No 520B download, training, fine-tuning, inference, benchmark, checkpoint publication, deployment, SSH, or cloud/GPU provisioning is authorized by this profile.",
+      "The 520B lane can become scoped only after 512B apex evidence exists and a separate human-approved next-frontier plan is accepted."
     ]
   },
   "memoryBudgetContract": {
@@ -200,7 +225,7 @@
     {
       "id": "distributed-150b-plus-frontier",
       "label": "150B+ distributed frontier lane",
-      "ramClass": "approved distributed, multi-accelerator, or cloud research runtime",
+      "ramClass": "future approved distributed, multi-accelerator, or cloud research class",
       "targetParameterClass": "150B+",
       "quantizationLane": "not scoped",
       "status": "not-scoped",
@@ -284,11 +309,18 @@
       "evidenceRequiredToPromote": "20B, 70B, 150B, and 300B+ evidence, clean-room frontier training plan, frontier-scale cluster budget, safety red-team plan, AGI capability evaluation plan, observability, rollback, cost-stop, all-agent council review, and explicit human approval."
     },
     {
-      "stage": "stage-5-highest-available-future",
+      "stage": "stage-5-520b-next-frontier",
+      "label": "SEIS 520B next-frontier boundary",
+      "status": "next-frontier-boundary-plan-only",
+      "parameterClass": "520B",
+      "evidenceRequiredToPromote": "512B apex evidence, dense-vs-MoE architecture decision, clean-room rights review, frontier risk review, cost-stop plan, external review, and explicit human approval."
+    },
+    {
+      "stage": "stage-6-highest-available-future",
       "label": "Highest future parameter class",
       "status": "not-scoped",
       "parameterClass": "highest-available-future",
-      "evidenceRequiredToPromote": "Do not scope until 20B, 70B, 150B, 300B+, and 512B gates have real evidence."
+      "evidenceRequiredToPromote": "Do not scope until 20B, 70B, 150B, 300B+, 512B, and 520B gates have real evidence."
     }
   ],
   "quantizationProfiles": [
@@ -351,25 +383,33 @@
       "id": "seis-150b-frontier-research-target",
       "parameterClass": "150B",
       "horizon": "future-frontier",
-      "targetHardwareClass": "approved distributed, multi-accelerator, or cloud research runtime",
+      "targetHardwareClass": "future approved distributed, multi-accelerator, or cloud research class",
       "status": "frontier-research-roadmap",
       "promotionGate": "Do not scope runtime until 20B and 70B gates have real evidence, then require clean-room training plan, distributed-runtime budget, safety eval, observability, rollback, privacy, and explicit human approval."
-    },
-    {
-      "id": "seis-512b-agi-apex-target",
-      "parameterClass": "512B",
-      "horizon": "apex-frontier",
-      "targetHardwareClass": "frontier-scale distributed research cluster after approval",
-      "status": "apex-program-plan-only",
-      "promotionGate": "Do not scope runtime until 20B, 70B, 150B, and 300B+ evidence exists, then require clean-room training plan, frontier cluster budget, AGI eval protocol, safety red-team, observability, rollback, cost-stop, all-agent council review, and explicit human approval."
     },
     {
       "id": "seis-300b-plus-exploration-boundary",
       "parameterClass": "300B+",
       "horizon": "future",
-      "targetHardwareClass": "approved multi-device or cloud research runtime",
+      "targetHardwareClass": "future approved multi-device or cloud research class",
       "status": "research-roadmap",
       "promotionGate": "Independent evaluation, privacy review, observability, rollback plan, and cost approval."
+    },
+    {
+      "id": "seis-512b-agi-apex-target",
+      "parameterClass": "512B",
+      "horizon": "apex-frontier",
+      "targetHardwareClass": "future frontier-scale distributed research class after approval",
+      "status": "apex-program-plan-only",
+      "promotionGate": "Do not scope runtime until 20B, 70B, 150B, and 300B+ evidence exists, then require clean-room training plan, frontier cluster budget, AGI eval protocol, safety red-team, observability, rollback, cost-stop, all-agent council review, and explicit human approval."
+    },
+    {
+      "id": "seis-520b-next-frontier-boundary",
+      "parameterClass": "520B",
+      "horizon": "next-frontier-after-apex",
+      "targetHardwareClass": "future frontier-scale distributed research class after 512B apex evidence",
+      "status": "next-frontier-boundary-plan-only",
+      "promotionGate": "Do not scope runtime until 512B apex evidence exists, then require dense-vs-MoE decision, frontier risk review, cost-stop plan, external review, and explicit human approval."
     },
     {
       "id": "seis-highest-parameter-research-target",
@@ -377,7 +417,7 @@
       "horizon": "long-term",
       "targetHardwareClass": "to be defined from measured hardware and model availability",
       "status": "not-scoped",
-      "promotionGate": "Do not scope until 20B, 70B, 150B, 300B+, and 512B gates have real evidence."
+      "promotionGate": "Do not scope until 20B, 70B, 150B, 300B+, 512B, and 520B gates have real evidence."
     }
   ],
   "hardwareTiers": [
@@ -422,9 +462,9 @@
     },
     {
       "id": "cloud-research-runtime",
-      "label": "Approved cloud or multi-device research runtime",
+      "label": "Future approved cloud or multi-device research class",
       "allowedToday": "Disabled",
-      "modelTarget": "150B, 300B+, and highest-available future classes",
+      "modelTarget": "150B, 300B+, 512B, 520B, and highest-available future classes",
       "claimStatus": "not-scoped",
       "mustPassBeforeUse": [
         "deployment approval",
@@ -446,6 +486,7 @@
     "independent benchmark suite",
     "150B frontier research plan with distributed runtime budget, privacy review, safety eval, observability, rollback plan, and explicit human approval",
     "512B apex AGI research plan with frontier cluster budget, AGI capability evaluation protocol, safety red-team, observability, rollback, cost-stop, all-agent review, and explicit human approval",
+    "520B next-frontier boundary with 512B apex evidence, dense-vs-MoE decision, frontier risk review, cost-stop plan, external review, and explicit human approval",
     "human approval before download, training, fine-tuning, publication, deployment, SSH, or paid benchmark"
   ],
   "routerPolicy": {
@@ -462,6 +503,7 @@
       "70B live inference",
       "150B live inference",
       "512B live inference",
+      "520B live inference",
       "cloud fine-tuning",
       "public model publication"
     ]
@@ -471,6 +513,7 @@
     "SEIS has trained a 70B foundation model.",
     "SEIS has trained a 150B foundation model.",
     "SEIS has trained a 512B foundation model.",
+    "SEIS has trained a 520B foundation model.",
     "SEIS has achieved real AGI.",
     "SEIS has downloadable or routeable 150B weights.",
     "SEIS owns ChatGPT-level or Claude-level frontier weights.",
@@ -493,7 +536,8 @@
     "Keep SEIS AI Core in Local Demo mode while the 20B profile is planned.",
     "Keep clean-room dataset and model card templates in template-not-filled status until reviewed evidence exists.",
     "Add a measured memory benchmark fixture before marking 16GB+ compatibility verified.",
-    "Keep 70B and larger targets in research-roadmap status until 20B gates produce real evidence.",
+    "Keep 70B and larger targets in research-roadmap or plan-only status until 20B gates produce real evidence.",
+    "Keep the 520B next-frontier boundary disabled until 512B apex evidence exists and explicit human approval is recorded.",
     "Treat 150B as a frontier research objective that needs separate distributed-runtime, safety, cost, privacy, and human-approval evidence before it can be scoped."
   ]
 }

@@ -3,12 +3,13 @@
 ## Purpose
 
 Define the safe path for SEIS model research from a 20B local-compatibility
-target for 16GB+ RAM machines toward future 70B, 150B, 512B apex SEIS AGI
-readiness, and larger parameter classes.
+target for 16GB+ RAM machines toward future 70B and 150B research lanes, the
+512B apex AGI-readiness research boundary, the 520B Next Frontier Boundary, the
+owner-requested 720B AGI Frontier Boundary, and larger parameter classes.
 
 This is a planning and validation contract. It is not a claim that SEIS has
-trained, downloaded, benchmarked, published, served a 20B, 70B, 150B, or 512B
-model, or demonstrated AGI.
+trained, downloaded, benchmarked, published, served a 20B, 70B, 150B, 512B,
+520B, or 720B model, or demonstrated AGI.
 
 Machine-readable source:
 `content/development/seis-model-scaling-hardware-profile.json`.
@@ -39,7 +40,7 @@ boundary rather than a local-runtime claim:
 - [NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework)
   keeps governance, risk mapping, measurement, management, safety, security,
   privacy, transparency, accountability, and fairness as first-class gates for
-  any SEIS AGI-readiness claim.
+  any SEIS AGI-readiness research-boundary claim.
 - [Anthropic Responsible Scaling Policy](https://www.anthropic.com/responsible-scaling-policy)
   reinforces that capability thresholds, safeguards, security posture, and
   escalation reviews must be explicit before frontier model deployment claims.
@@ -50,6 +51,8 @@ Validation:
 npm run check:seis-model-frontier-escalation-policy
 npm run check:seis-150b-frontier-model-program
 npm run check:seis-512b-apex-model-program
+npm run check:seis-520b-next-frontier-boundary
+npm run check:seis-720b-agi-frontier-boundary
 npm run check:seis-model-scaling-hardware-profile
 npm run check:seis-model-scaling-subagent-council
 npm run check:seis-language-model-intake
@@ -73,6 +76,12 @@ MCP resource:
 MCP resource:
 `seis://ai/512b-apex-model-program.json`.
 
+520B Next Frontier Boundary:
+`content/development/seis-520b-next-frontier-boundary.json`.
+
+720B AGI Frontier Boundary:
+`content/development/seis-720b-agi-frontier-boundary.json`.
+
 Model scaling sub-agent council:
 `content/development/seis-model-scaling-subagent-council.json`.
 
@@ -81,8 +90,10 @@ Model scaling sub-agent council:
 | Target | RAM Class | Status | Runtime Authority | Boundary |
 | --- | --- | --- | --- | --- |
 | SEIS 20B Local Compatibility Target | 16GB+ RAM | Planned, not validated | False | No weights, no inference, no benchmark, no live provider call. |
-| SEIS 150B Frontier Research Target | Approved distributed/multi-accelerator/cloud research runtime | Not scoped | False | No weights, no inference, no benchmark, no live provider call, no cloud provisioning. |
-| SEIS 512B AGI Apex Research Target | Frontier-scale distributed research cluster | Apex program, plan only | False | No AGI proof, no weights, no inference, no benchmark, no provider call, no cloud/GPU provisioning. |
+| SEIS 150B Frontier Research Target | Future approved distributed/multi-accelerator/cloud research class | Not scoped | False | No weights, no inference, no benchmark, no live provider call, no cloud provisioning. |
+| SEIS 512B AGI Apex Research Target | Future frontier-scale distributed research class | Apex program, plan only | False | No AGI proof, no weights, no inference, no benchmark, no provider call, no cloud/GPU provisioning. |
+| SEIS 520B Next Frontier Boundary | Defined only after 512B apex evidence | Next-frontier boundary, plan only | False | No 520B weights, no inference, no benchmark, no provider call, no cloud/GPU provisioning. |
+| SEIS 720B AGI Frontier Boundary | Defined only after lower-tier frontier evidence | AGI frontier boundary, plan only | False | No 720B weights, no inference, no benchmark, no provider call, no cloud/GPU provisioning, no AGI proof. |
 
 16GB+ is a target compatibility class. It becomes a verified claim only after a
 quantized runtime adapter, memory ceiling benchmark, no-key startup test,
@@ -240,13 +251,13 @@ redacted logs, and human review exist.
 
 It is not benchmark evidence. It does not download a model, run inference,
 train weights, fine-tune, call a provider, execute SSH, deploy infrastructure,
-measure RAM, or make 20B, 70B, 150B, or 512B route eligible.
+measure RAM, or make 20B, 70B, 150B, 512B, or 520B route eligible.
 
 ## Model Parameter Ladder
 
 SEIS now has a separate parameter ladder contract for the user-requested path
-from 16GB+ RAM / 20B toward 70B, 150B, 300B+, 512B, and the highest future
-parameter class:
+from 16GB+ RAM / 20B toward 70B, 150B, 300B+, 512B, 520B, and the highest
+future parameter class:
 
 | Surface | Value |
 | --- | --- |
@@ -265,15 +276,16 @@ any model route eligible.
 | --- | --- | --- | --- |
 | 20B | 16GB+ RAM target after measurement | Planned, not validated | Local Demo, deterministic seed-model lab, documentation, and dry-run preflight only |
 | 70B | 64GB+ or approved accelerator/server runtime | Research roadmap | Planning only |
-| 150B | Approved distributed, multi-accelerator, or cloud research runtime | Frontier research roadmap | Disabled |
+| 150B | Future approved distributed, multi-accelerator, or cloud research class | Frontier research roadmap | Disabled |
 | 300B+ | Not scoped | Exploration boundary | Disabled |
-| 512B | Frontier-scale distributed research cluster | Apex program, plan only | Disabled |
+| 512B | Future frontier-scale distributed research class | Apex program, plan only | Disabled |
+| 520B | Defined only after 512B apex evidence | Next-frontier boundary, plan only | Disabled |
 | Highest available future | Defined only after lower-tier measured evidence | Not scoped | Disabled |
 
 ## Frontier Escalation Policy
 
 SEIS now has a dedicated frontier escalation policy for moving from the planned
-20B target toward 70B, 150B, 512B, and larger future classes:
+20B target toward 70B, 150B, 512B, 520B, and larger future classes:
 
 `content/development/seis-model-frontier-escalation-policy.json`
 
@@ -289,7 +301,7 @@ npm run check:seis-model-frontier-escalation-policy
 
 This policy is the formal no-skip ladder. It keeps the following rule explicit:
 
-- `no-skip-20b`: 70B, 150B, 512B, and larger parameter classes cannot become
+- `no-skip-20b`: 70B, 150B, 512B, 520B, and larger parameter classes cannot become
   runtime-scoped until the 20B local compatibility gates produce real evidence.
 
 The policy also records:
@@ -305,8 +317,8 @@ mode remains Local Demo and deterministic seed-model lab only.
 
 The policy does not download models, download datasets, run inference, train,
 fine-tune, benchmark memory, call providers, execute SSH, deploy infrastructure,
-publish weights, or claim SEIS owns a trained 20B, 70B, 150B, 512B, AGI, or
-larger foundation model.
+publish weights, or claim SEIS owns a trained 20B, 70B, 150B, 512B, 520B,
+AGI, or larger foundation model.
 
 ## 150B Frontier Model Program
 
@@ -382,6 +394,58 @@ evidence exists, a clean-room training plan is accepted, the AGI capability
 evaluation protocol is accepted, all-agent council review is recorded, and
 explicit human approval exists.
 
+## 520B Next Frontier Boundary
+
+SEIS now tracks the user-requested 520B direction as a separate next-frontier
+boundary record:
+
+`content/development/seis-520b-next-frontier-boundary.json`
+
+Validation:
+
+```bash
+npm run check:seis-520b-next-frontier-boundary
+```
+
+The status is `next-frontier-boundary-plan-only`. It is not a trained model,
+routeable runtime, benchmark, checkpoint, cloud deployment, SSH workflow,
+provider wrapper, or production claim. It exists so the native AI Scale surface
+can show the 20B-to-520B cadence without implying that SEIS owns or can route a
+520B model.
+
+No 520B runtime, benchmark, provider route, cloud/GPU provisioning, SSH
+execution, checkpoint publication, or AGI claim is allowed until 512B apex
+evidence exists, a dense-vs-MoE architecture decision is recorded, frontier
+safety and privacy review is complete, observability/rollback/cost-stop gates
+exist, external review is completed, and explicit human approval is recorded.
+
+## 720B AGI Frontier Boundary
+
+SEIS now tracks the owner-requested 720B AGI research direction as a separate
+five-year frontier boundary record:
+
+`content/development/seis-720b-agi-frontier-boundary.json`
+
+Validation:
+
+```bash
+npm run check:seis-720b-agi-frontier-boundary
+```
+
+The status is `agi-frontier-boundary-plan-only`. It is not a trained model,
+routeable runtime, benchmark, checkpoint, cloud deployment, SSH workflow,
+provider wrapper, continuous autonomous runtime, or AGI proof. It exists so the
+five-year supervised sub-agent program can carry the 720B research target
+honestly while keeping Codex as the single accountable writer and keeping MCP lanes
+read-only-or-plan-only unless a future task receives explicit approval.
+
+No 720B runtime, benchmark, provider route, cloud/GPU provisioning, SSH
+execution, checkpoint publication, continuous uncontrolled background-agent
+claim, or AGI claim is allowed until lower-tier 20B, 70B, 150B, 300B+, 512B,
+and 520B evidence exists, an architecture decision is recorded, AGI evaluation
+is independently reviewed, safety/privacy/cost-stop gates exist, and explicit
+human approval is recorded.
+
 ## 512B AGI Readiness Research Baseline
 
 The 512B program now carries a public internet research baseline inside
@@ -431,7 +495,7 @@ license review, benchmark plans, safety review, and explicit approval.
 
 ## Model Scaling Sub-Agent Council
 
-The 20B/70B/150B/512B path is now assigned to a dedicated plan-only council:
+The 20B/70B/150B/512B/520B path is now assigned to a dedicated plan-only council:
 
 `content/development/seis-model-scaling-subagent-council.json`
 
@@ -457,6 +521,7 @@ eligibility by themselves.
 | 70B | Research, DevOps, Cloud, Security | Research roadmap | Not route eligible |
 | 150B | Architect, Research, Cloud, Security, QA | Frontier research roadmap | Not route eligible |
 | 512B | Architect, Code, Design, UI/UX, Research, Search, Security, DevOps, Documentation, QA, Cloud, Automation | Apex program, plan only | Not route eligible |
+| 520B | Architect, Research, Security, Documentation, QA, Cloud | Next-frontier boundary, plan only | Not route eligible |
 | Highest future | Architect, Research, Security, Documentation | Not scoped | Not route eligible |
 
 The council is coordination evidence only. A plan-only sub-agent assignment is
@@ -531,7 +596,9 @@ MCP resource:
 | 150B | Future frontier | Frontier research roadmap | Only after 20B and 70B evidence exists; requires clean-room training plan, distributed-runtime budget, privacy review, safety eval, observability, rollback, and explicit human approval. |
 | 300B+ | Future | Research roadmap | Independent evaluation, privacy review, observability, rollback plan, and cost approval. |
 | 512B | Apex frontier | Apex program, plan only | Only after 20B, 70B, 150B, and 300B+ evidence exists; requires clean-room training plan, frontier cluster budget, AGI eval protocol, safety red-team, observability, rollback, cost-stop, all-agent review, and explicit approval. |
-| Highest available future | Long-term | Not scoped | Do not scope until 20B, 70B, 150B, 300B+, and 512B gates have evidence. |
+| 520B | Next frontier after apex | Next-frontier boundary, plan only | Only after 512B apex evidence exists; requires dense-vs-MoE decision, frontier risk review, cost-stop plan, external review, and explicit approval. |
+| 720B | Owner-requested AGI frontier research boundary | AGI frontier boundary, plan only | Only after 20B, 70B, 150B, 300B+, 512B, and 520B evidence exists; requires architecture decision, AGI eval, external review, cost-stop plan, and explicit approval. |
+| Highest available future | Long-term | Not scoped | Do not scope until 20B, 70B, 150B, 300B+, 512B, 520B, and 720B gates have evidence. |
 
 ## Creation Stages
 
@@ -542,7 +609,9 @@ MCP resource:
 | Stage 2 | SEIS 70B research target | Research roadmap |
 | Stage 3 | SEIS 150B frontier research target | Frontier research roadmap |
 | Stage 4 | SEIS 512B apex research target | Apex program, plan only |
-| Stage 5 | Highest available future parameter class | Not scoped |
+| Stage 5 | SEIS 520B next-frontier boundary | Next-frontier boundary, plan only |
+| Stage 6 | SEIS 720B AGI frontier boundary | AGI frontier boundary, plan only |
+| Stage 7 | Highest available future parameter class | Not scoped |
 
 The stage ladder exists so SEIS can move forward without fake checkpoints. A
 stage can be promoted only when its required evidence exists in files, logs,
@@ -566,9 +635,10 @@ The 150B lane is blocked until SEIS has:
 
 ## Non-Goals
 
-- Do not claim SEIS owns trained 20B, 70B, or 150B foundation-model weights.
-- Do not claim 150B weights are downloadable, routeable, benchmarked, or
+- Do not claim SEIS owns trained 20B, 70B, 150B, 512B, 520B, or 720B foundation-model weights.
+- Do not claim 150B, 512B, 520B, or 720B weights are downloadable, routeable, benchmarked, or
   production-ready.
+- Do not claim the 520B or 720B roadmap proves real AGI or frontier runtime readiness.
 - Do not rename third-party checkpoints, LoRA adapters, quantizations, provider
   APIs, prompt profiles, RAG systems, or wrappers as SEIS foundation models.
 - Do not silently route local-only requests to a cloud provider.

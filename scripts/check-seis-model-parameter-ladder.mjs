@@ -12,6 +12,7 @@ const paths = {
   datasetCardTemplate: "content/development/seis-20b-dataset-card-template.json",
   benchmarkDryRun: "reports/seis-model-scaling/20b-benchmark-dry-run.json",
   scalingDoc: "docs/ai/seis-model-scaling.md",
+  nextFrontierBoundary: "content/development/seis-520b-next-frontier-boundary.json",
   aiCoreDoc: "docs/ai/seis-ai-core.md",
   modelRouterDoc: "docs/ai/model-router.md",
   pluginIntegration: "content/development/seis-agent-plugin-integration.json",
@@ -31,6 +32,7 @@ const profile = readJson(paths.profile, "model scaling hardware profile");
 const modelCardTemplate = readJson(paths.modelCardTemplate, "20B model card template");
 const datasetCardTemplate = readJson(paths.datasetCardTemplate, "20B dataset card template");
 const benchmarkDryRun = readJson(paths.benchmarkDryRun, "20B benchmark dry-run");
+const nextFrontierBoundary = readJson(paths.nextFrontierBoundary, "520B next-frontier boundary");
 const pluginIntegration = readJson(paths.pluginIntegration, "plugin integration manifest");
 const mcpRuntimeContract = readJson(paths.mcpRuntimeContract, "MCP runtime contract");
 const packageJson = readJson(paths.packageJson, "package.json");
@@ -53,16 +55,17 @@ if (ladder) {
   ensure(String(ladder.truthBoundary || "").includes("runs no inference"), "truth boundary must forbid inference claims");
   ensure(String(ladder.truthBoundary || "").includes("calls no provider"), "truth boundary must forbid provider calls");
   ensure(String(ladder.truthBoundary || "").includes("executes no SSH"), "truth boundary must forbid SSH execution");
-  ensure(String(ladder.truthBoundary || "").includes("does not claim SEIS owns 20B, 70B, 150B, 512B, AGI"), "truth boundary must forbid ownership and AGI claims");
+  ensure(String(ladder.truthBoundary || "").includes("does not claim SEIS owns 20B, 70B, 150B, 512B, 520B, AGI"), "truth boundary must forbid ownership, 520B, and AGI claims");
 
   ensure(ladder.sourceOfTruth?.modelScalingProfile === paths.profile, "ladder source modelScalingProfile mismatch");
   ensure(ladder.sourceOfTruth?.modelCardTemplate === paths.modelCardTemplate, "ladder source modelCardTemplate mismatch");
   ensure(ladder.sourceOfTruth?.datasetCardTemplate === paths.datasetCardTemplate, "ladder source datasetCardTemplate mismatch");
   ensure(ladder.sourceOfTruth?.benchmarkDryRun === paths.benchmarkDryRun, "ladder source benchmarkDryRun mismatch");
   ensure(ladder.sourceOfTruth?.scalingDoc === paths.scalingDoc, "ladder source scalingDoc mismatch");
+  ensure(ladder.sourceOfTruth?.nextFrontierBoundary === paths.nextFrontierBoundary, "ladder source nextFrontierBoundary mismatch");
 
   const targets = Array.isArray(ladder.targets) ? ladder.targets : [];
-  ensure(targets.length >= 6, "ladder must include at least six targets");
+  ensure(targets.length >= 7, "ladder must include at least seven targets");
   ensureTarget(targets, {
     id: "seis-20b-16gb-plus-local-compatibility",
     parameterClass: "20B",
@@ -100,6 +103,13 @@ if (ladder) {
     minimumRamClass: "approved frontier-scale distributed research cluster only"
   });
   ensureTarget(targets, {
+    id: "seis-520b-next-frontier-boundary",
+    parameterClass: "520B",
+    parameterCountBillion: 520,
+    status: "next-frontier-boundary-plan-only",
+    minimumRamClass: "defined only after 512B apex evidence"
+  });
+  ensureTarget(targets, {
     id: "seis-highest-available-future-boundary",
     parameterClass: "highest-available-future",
     parameterCountBillion: null,
@@ -124,14 +134,15 @@ if (ladder) {
     "ramCompatibilityPolicy.ramClass"
   );
   ensure((ladder.ramCompatibilityPolicy || []).every((item) => item.routeEligibleToday === false), "ramCompatibilityPolicy entries must not be route eligible");
-  ensureArrayIncludesAll(ladder.promotionOrder, ["local-demo", "20B", "70B", "150B", "300B+", "512B", "highest-available-future"], "promotionOrder");
+  ensureArrayIncludesAll(ladder.promotionOrder, ["local-demo", "20B", "70B", "150B", "300B+", "512B", "520B", "highest-available-future"], "promotionOrder");
   ensureArrayIncludesAll(ladder.forbiddenClaims, [
     "SEIS has trained a 20B foundation model.",
     "SEIS has trained a 70B foundation model.",
     "SEIS has trained a 150B foundation model.",
     "SEIS has trained a 512B foundation model.",
+    "SEIS has trained a 520B foundation model.",
     "SEIS has achieved real AGI.",
-    "SEIS has routeable 20B, 70B, 150B, 512B, AGI, or frontier weights today.",
+    "SEIS has routeable 20B, 70B, 150B, 512B, 520B, AGI, or frontier weights today.",
     "16GB+ compatibility is verified before measured benchmark evidence exists."
   ], "forbiddenClaims");
   ensureArrayIncludesAll(ladder.humanApprovalRequiredFor, [
@@ -154,7 +165,14 @@ if (profile) {
   ensure((profile.scaleLadder || []).some((item) => item.parameterClass === "70B"), "profile scale ladder missing 70B");
   ensure((profile.scaleLadder || []).some((item) => item.parameterClass === "150B"), "profile scale ladder missing 150B");
   ensure((profile.scaleLadder || []).some((item) => item.parameterClass === "512B"), "profile scale ladder missing 512B");
+  ensure((profile.scaleLadder || []).some((item) => item.parameterClass === "520B"), "profile scale ladder missing 520B");
   ensure((profile.scaleLadder || []).some((item) => item.parameterClass === "highest-available-future"), "profile scale ladder missing highest future");
+}
+
+if (nextFrontierBoundary) {
+  ensure(nextFrontierBoundary.status === "next-frontier-boundary-plan-only", "520B boundary must stay plan-only");
+  ensure(nextFrontierBoundary.routeEligibleToday === false, "520B boundary must not be route eligible");
+  ensure(nextFrontierBoundary.target?.parameterClass === "520B", "520B boundary target mismatch");
 }
 
 if (modelCardTemplate) {
@@ -184,7 +202,7 @@ if (pluginIntegration) {
 }
 
 if (mcpRuntimeContract) {
-  ensure(mcpRuntimeContract.resourceCount === 28, "MCP runtime contract must record 28 resources");
+  ensure(mcpRuntimeContract.resourceCount === 32, "MCP runtime contract must record 32 resources");
   ensure(String(mcpRuntimeContract.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("parameter ladder"), "MCP resource evidence must mention parameter ladder");
   ensure(String(mcpRuntimeContract.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("AGI evaluation protocol"), "MCP resource evidence must mention AGI evaluation protocol");
   ensure(String(mcpRuntimeContract.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("AGI public readiness evidence"), "MCP resource evidence must mention AGI public readiness evidence");

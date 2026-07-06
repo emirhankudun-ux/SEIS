@@ -16,6 +16,7 @@ const paths = {
   frontierEscalationPolicy: "content/development/seis-model-frontier-escalation-policy.json",
   frontierModelProgram: "content/development/seis-150b-frontier-model-program.json",
   apexModelProgram: "content/development/seis-512b-apex-model-program.json",
+  nextFrontierBoundary: "content/development/seis-520b-next-frontier-boundary.json",
   scalingDoc: "docs/ai/seis-model-scaling.md",
   aiCoreDoc: "docs/ai/seis-ai-core.md",
   modelRouterDoc: "docs/ai/model-router.md",
@@ -48,6 +49,7 @@ const parameterLadder = readJson(paths.parameterLadder, "model parameter ladder"
 const frontierEscalationPolicy = readJson(paths.frontierEscalationPolicy, "frontier escalation policy");
 const frontierModelProgram = readJson(paths.frontierModelProgram, "150B frontier model program");
 const apexModelProgram = readJson(paths.apexModelProgram, "512B apex model program");
+const nextFrontierBoundary = readJson(paths.nextFrontierBoundary, "520B next-frontier boundary");
 const scalingDoc = readText(paths.scalingDoc, "model scaling docs");
 const aiCoreDoc = readText(paths.aiCoreDoc, "AI Core docs");
 const modelRouterDoc = readText(paths.modelRouterDoc, "model router docs");
@@ -70,7 +72,7 @@ if (profile) {
   ensure(profile.status === "planned-compatibility-contract", "profile must stay planned-compatibility-contract");
   ensure(profile.qualityGate === "npm run check:seis-model-scaling-hardware-profile", "qualityGate must point to package script");
   ensure(profile.coreCredentialRequirement === "none", "coreCredentialRequirement must stay none");
-  ensure(String(profile.truthBoundary || "").includes("no trained 20B, 70B, 150B, 512B, or AGI weights"), "truth boundary must forbid trained 20B/70B/150B/512B/AGI weight claims");
+  ensure(String(profile.truthBoundary || "").includes("no trained 20B, 70B, 150B, 512B, 520B, or AGI weights"), "truth boundary must forbid trained 20B/70B/150B/512B/520B/AGI weight claims");
   ensure(String(profile.truthBoundary || "").includes("no inference"), "truth boundary must forbid inference claims");
   ensure(String(profile.truthBoundary || "").includes("no benchmark"), "truth boundary must forbid benchmark claims");
   ensure(String(profile.truthBoundary || "").includes("no live provider calls"), "truth boundary must forbid live provider calls");
@@ -84,6 +86,7 @@ if (profile) {
   ensure(profile.sourceOfTruth?.frontierEscalationPolicy === paths.frontierEscalationPolicy, "sourceOfTruth.frontierEscalationPolicy mismatch");
   ensure(profile.sourceOfTruth?.frontierModelProgram === paths.frontierModelProgram, "sourceOfTruth.frontierModelProgram mismatch");
   ensure(profile.sourceOfTruth?.apexModelProgram === paths.apexModelProgram, "sourceOfTruth.apexModelProgram mismatch");
+  ensure(profile.sourceOfTruth?.nextFrontierBoundary === paths.nextFrontierBoundary, "sourceOfTruth.nextFrontierBoundary mismatch");
   ensure(profile.sourceOfTruth?.modelCardTemplate === paths.modelCardTemplate, "sourceOfTruth.modelCardTemplate mismatch");
   ensure(profile.sourceOfTruth?.datasetCardTemplate === paths.datasetCardTemplate, "sourceOfTruth.datasetCardTemplate mismatch");
   ensure(profile.sourceOfTruth?.aiCoreDoc === paths.aiCoreDoc, "sourceOfTruth.aiCoreDoc mismatch");
@@ -131,6 +134,21 @@ if (profile) {
   ensure(apexTarget.runtimeAuthority === false, "512B runtime authority must remain false");
   ensure(apexTarget.productionReady === false, "512B productionReady must remain false");
   ensure(String(apexTarget.routerEligibility || "").includes("blocked"), "512B router eligibility must stay blocked");
+
+  const nextFrontierTarget = profile.nextFrontierTarget || {};
+  ensure(nextFrontierTarget.id === "seis-520b-next-frontier-target", "nextFrontierTarget id mismatch");
+  ensure(nextFrontierTarget.parameterClass === "520B", "nextFrontierTarget must be 520B");
+  ensure(nextFrontierTarget.parameterCountBillion === 520, "nextFrontierTarget must record 520 billion parameters");
+  ensure(nextFrontierTarget.compatibilityStatus === "not-scoped", "520B compatibility must remain not-scoped");
+  ensure(nextFrontierTarget.trainingStatus === "not-started", "520B training must remain not-started");
+  ensure(nextFrontierTarget.weightsAvailable === false, "520B weights must not be marked available");
+  ensure(nextFrontierTarget.inferenceAvailable === false, "520B inference must not be marked available");
+  ensure(nextFrontierTarget.benchmarkStatus === "not-run", "520B benchmark must remain not-run");
+  ensure(nextFrontierTarget.agiCapabilityStatus === "not-demonstrated", "520B AGI capability must remain not demonstrated");
+  ensure(nextFrontierTarget.routeEligibleToday === false, "520B routeEligibleToday must remain false");
+  ensure(nextFrontierTarget.runtimeAuthority === false, "520B runtime authority must remain false");
+  ensure(nextFrontierTarget.productionReady === false, "520B productionReady must remain false");
+  ensure(String(nextFrontierTarget.routerEligibility || "").includes("blocked"), "520B router eligibility must stay blocked");
 
   const memoryBudget = profile.memoryBudgetContract || {};
   ensure(memoryBudget.id === "seis-20b-16gb-memory-budget-contract", "memoryBudgetContract id mismatch");
@@ -194,12 +212,13 @@ if (profile) {
   ], "benchmarkManifestContract.forbiddenInManifest");
 
   const creationStages = Array.isArray(profile.creationStages) ? profile.creationStages : [];
-  ensure(creationStages.length >= 6, "creationStages must include current, 20B, 70B, 150B, 512B, and highest-future stages");
+  ensure(creationStages.length >= 7, "creationStages must include current, 20B, 70B, 150B, 512B, 520B, and highest-future stages");
   ensure(creationStages.some((item) => item.stage === "stage-1-20b-local-compatibility" && item.parameterClass === "20B" && item.status === "planned-not-validated"), "creationStages must include planned 20B local compatibility stage");
   ensure(creationStages.some((item) => item.stage === "stage-2-70b-research" && item.parameterClass === "70B" && item.status === "research-roadmap"), "creationStages must include 70B research stage");
   ensure(creationStages.some((item) => item.stage === "stage-3-150b-frontier" && item.parameterClass === "150B" && item.status === "frontier-research-roadmap"), "creationStages must include 150B frontier stage");
   ensure(creationStages.some((item) => item.stage === "stage-4-512b-apex" && item.parameterClass === "512B" && item.status === "apex-program-plan-only"), "creationStages must include 512B apex plan-only stage");
-  ensure(creationStages.some((item) => item.stage === "stage-5-highest-available-future" && item.parameterClass === "highest-available-future" && item.status === "not-scoped"), "creationStages must include not-scoped highest future stage");
+  ensure(creationStages.some((item) => item.stage === "stage-5-520b-next-frontier" && item.parameterClass === "520B" && item.status === "next-frontier-boundary-plan-only"), "creationStages must include 520B next-frontier stage");
+  ensure(creationStages.some((item) => item.stage === "stage-6-highest-available-future" && item.parameterClass === "highest-available-future" && item.status === "not-scoped"), "creationStages must include not-scoped highest future stage");
 
   const quantizationProfiles = Array.isArray(profile.quantizationProfiles) ? profile.quantizationProfiles : [];
   ensure(quantizationProfiles.length >= 3, "quantizationProfiles must include at least three planned lanes");
@@ -216,6 +235,7 @@ if (profile) {
   ensure(ladder.some((item) => item.parameterClass === "70B" && item.status === "research-roadmap"), "scale ladder must include future 70B roadmap");
   ensure(ladder.some((item) => item.parameterClass === "150B" && item.status === "frontier-research-roadmap"), "scale ladder must include future 150B frontier roadmap");
   ensure(ladder.some((item) => item.parameterClass === "512B" && item.status === "apex-program-plan-only"), "scale ladder must include 512B apex plan-only target");
+  ensure(ladder.some((item) => item.parameterClass === "520B" && item.status === "next-frontier-boundary-plan-only"), "scale ladder must include 520B next-frontier boundary");
   ensure(ladder.some((item) => item.parameterClass === "highest-available-future" && item.status === "not-scoped"), "scale ladder must include unscoped highest future target");
 
   ensureArrayIncludesAll(
@@ -229,6 +249,7 @@ if (profile) {
     "16GB+ memory ceiling benchmark for 20B target",
     "150B frontier research plan with distributed runtime budget, privacy review, safety eval, observability, rollback plan, and explicit human approval",
     "512B apex AGI research plan with frontier cluster budget, AGI capability evaluation protocol, safety red-team, observability, rollback, cost-stop, all-agent review, and explicit human approval",
+    "520B next-frontier boundary with 512B apex evidence, dense-vs-MoE decision, frontier risk review, cost-stop plan, external review, and explicit human approval",
     "no-key core startup remains passing",
     "human approval before download, training, fine-tuning, publication, deployment, SSH, or paid benchmark"
   ], "promotionGates");
@@ -237,13 +258,14 @@ if (profile) {
   ensure(profile.routerPolicy?.silentCloudFallbackAllowed === false, "routerPolicy must block silent cloud fallback");
   ensure(profile.routerPolicy?.missingKeyIsError === false, "routerPolicy must not confuse Missing Key with Error");
   ensure(profile.routerPolicy?.actualProviderAndModelMustBeVisible === true, "routerPolicy must keep actual provider/model visible");
-  ensureArrayIncludesAll(profile.routerPolicy?.blockedToday, ["20B live inference", "70B live inference", "150B live inference", "512B live inference"], "routerPolicy.blockedToday");
+  ensureArrayIncludesAll(profile.routerPolicy?.blockedToday, ["20B live inference", "70B live inference", "150B live inference", "512B live inference", "520B live inference"], "routerPolicy.blockedToday");
 
   ensureArrayIncludesAll(profile.forbiddenClaims, [
     "SEIS has trained a 20B foundation model.",
     "SEIS has trained a 70B foundation model.",
     "SEIS has trained a 150B foundation model.",
     "SEIS has trained a 512B foundation model.",
+    "SEIS has trained a 520B foundation model.",
     "SEIS has achieved real AGI.",
     "SEIS has downloadable or routeable 150B weights.",
     "Do not mark 16GB+ compatibility as verified before benchmark evidence exists."
@@ -259,6 +281,12 @@ if (profile) {
     "deployment",
     "provider credential setup"
   ], "humanApprovalRequiredFor");
+}
+
+if (nextFrontierBoundary) {
+  ensure(nextFrontierBoundary.status === "next-frontier-boundary-plan-only", "520B boundary must stay plan-only");
+  ensure(nextFrontierBoundary.routeEligibleToday === false, "520B boundary must not be route eligible");
+  ensure(nextFrontierBoundary.target?.parameterClass === "520B", "520B boundary target mismatch");
 }
 
 if (providerRegistry) {

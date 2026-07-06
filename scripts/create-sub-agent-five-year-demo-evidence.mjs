@@ -8,12 +8,16 @@ const promotionGatesRelativePath = "content/development/seis-ai-core-version-pro
 const pluginIntegrationRelativePath = "content/development/seis-agent-plugin-integration.json";
 const mcpRuntimeContractRelativePath = "content/development/seis-ai-core-mcp-runtime-contract.json";
 const providerRegistryRelativePath = "content/development/seis-ai-core-provider-registry.json";
+const swarmRoundLedgerRelativePath = "content/development/seis-ai-core-subagent-swarm-round-ledger.json";
+const roundExecutionEvidenceLedgerRelativePath = "content/development/seis-ai-core-subagent-round-execution-evidence-ledger.json";
 const planPath = path.join(root, planRelativePath);
 const versionRegistryPath = path.join(root, versionRegistryRelativePath);
 const promotionGatesPath = path.join(root, promotionGatesRelativePath);
 const pluginIntegrationPath = path.join(root, pluginIntegrationRelativePath);
 const mcpRuntimeContractPath = path.join(root, mcpRuntimeContractRelativePath);
 const providerRegistryPath = path.join(root, providerRegistryRelativePath);
+const swarmRoundLedgerPath = path.join(root, swarmRoundLedgerRelativePath);
+const roundExecutionEvidenceLedgerPath = path.join(root, roundExecutionEvidenceLedgerRelativePath);
 const reportJsonRelativePath = "reports/seis-sub-agent-five-year-demo-evidence.json";
 const reportMdRelativePath = "reports/seis-sub-agent-five-year-demo-evidence.md";
 const demoPromotionMapRelativePath = "apps/seis-demo-web/data/seis-ai-core-version-promotion-map.json";
@@ -105,6 +109,8 @@ function stableJson(value) {
 
 const mcpRuntimeContract = readJson(mcpRuntimeContractPath);
 const providerRegistry = readJson(providerRegistryPath);
+const swarmRoundLedger = readJson(swarmRoundLedgerPath);
+const roundExecutionEvidenceLedger = readJson(roundExecutionEvidenceLedgerPath);
 
 function laneAction(laneId, quarter) {
   const actions = {
@@ -208,6 +214,8 @@ function buildDemoPlanView(plan) {
     seisAiCoreVersionPromotionGates: promotionGatesRelativePath,
     seisAgentPluginIntegration: pluginIntegrationRelativePath,
     seisAiCoreMcpRuntimeContract: mcpRuntimeContractRelativePath,
+    seisAiCoreSubagentSwarmRoundLedger: swarmRoundLedgerRelativePath,
+    seisAiCoreSubagentRoundExecutionEvidenceLedger: roundExecutionEvidenceLedgerRelativePath,
     seisAiCoreProviderRegistry: providerRegistryRelativePath,
     demoSurface: "apps/seis-demo-web",
     demoBoundary: "local-demo-only",
@@ -219,6 +227,11 @@ function buildDemoPlanView(plan) {
     subAgentsAre: plan.governance?.subAgentsAre || "bounded helpers under human governance",
     forbiddenAutonomy: plan.governance?.forbiddenAutonomy || [],
     requiredControls: plan.governance?.requiredControls || [],
+    continuousOperatingCadence: plan.continuousOperatingCadence || {},
+    swarmRoundLedger,
+    roundExecutionEvidenceLedger,
+    frontierTarget: plan.frontierTarget || {},
+    mcpSelectionPolicy: plan.mcpSelectionPolicy || {},
     yearCount: years.length,
     quarterCount: years.reduce((total, year) => total + year.quarters.length, 0),
     laneCount: (plan.lanes || []).length,
@@ -315,6 +328,8 @@ function buildReport(plan, versionRegistry, promotionGates) {
     seisAiCoreVersionPromotionGates: promotionGatesRelativePath,
     seisAgentPluginIntegration: pluginIntegrationRelativePath,
     seisAiCoreMcpRuntimeContract: mcpRuntimeContractRelativePath,
+    seisAiCoreSubagentSwarmRoundLedger: swarmRoundLedgerRelativePath,
+    seisAiCoreSubagentRoundExecutionEvidenceLedger: roundExecutionEvidenceLedgerRelativePath,
     seisAiCoreProviderRegistry: providerRegistryRelativePath,
     seisSubAgentPlanView: demoPlanViewRelativePath,
     demoSurface: "apps/seis-demo-web",
@@ -323,9 +338,16 @@ function buildReport(plan, versionRegistry, promotionGates) {
     writerPolicy: plan.governance?.writerPolicy || "single-writer",
     defaultWriter: plan.governance?.defaultWriter || "codex",
     forbiddenAutonomy: plan.governance?.forbiddenAutonomy || [],
+    continuousOperatingCadence: plan.continuousOperatingCadence || {},
+    swarmRoundLedger,
+    roundExecutionEvidenceLedger,
+    frontierTarget: plan.frontierTarget || {},
+    mcpSelectionPolicy: plan.mcpSelectionPolicy || {},
     validation: [
       "npm run check:seis-sub-agent-5-year-plan",
       "npm run check:seis-sub-agent-five-year-demo-evidence",
+      "npm run check:seis-720b-agi-frontier-boundary",
+      "npm run check:seis-ai-core-subagent-round-execution-evidence-ledger",
       "npm run check:seis-ai-core-version-registry",
       "npm run check:seis-ai-core-provider-registry",
       "npm run check:seis-ai-core-version-promotion-gates",
@@ -412,7 +434,14 @@ function buildMarkdown(report) {
     `- AI Core promotion gates: ${report.seisAiCoreVersionPromotionGates}`,
     `- SEIS-Agent plugin integration: ${report.seisAgentPluginIntegration}`,
     `- SEIS AI Core MCP runtime contract: ${report.seisAiCoreMcpRuntimeContract}`,
+    `- Swarm round ledger: ${report.seisAiCoreSubagentSwarmRoundLedger}`,
+    `- Round execution evidence ledger: ${report.seisAiCoreSubagentRoundExecutionEvidenceLedger}`,
     `- Demo plan view: ${report.seisSubAgentPlanView}`,
+    `- Frontier target: ${report.frontierTarget.requestedTarget || "not-set"} (${report.frontierTarget.status || "unknown"})`,
+    `- Round cadence: ${report.continuousOperatingCadence.defaultRoundWindow || "unknown"} default / ${(report.continuousOperatingCadence.roundWindowOptions || []).join(", ")} supported`,
+    `- Ledger rounds: ${report.swarmRoundLedger.roundAssignments?.length || 0} default rounds / ${report.swarmRoundLedger.ownerObjectiveMap?.expandedRoundWindow || "unknown"} expanded with owner approval`,
+    `- Closeout evidence: ${report.roundExecutionEvidenceLedger.roundWindowState?.recordedCloseoutCount || 0} records / ${report.roundExecutionEvidenceLedger.roundWindowState?.recordedCloseoutCount || 0}-of-${report.roundExecutionEvidenceLedger.roundWindowState?.defaultRoundWindow || "unknown"} default rounds recorded`,
+    `- MCP policy: ${report.mcpSelectionPolicy.defaultPermission || "unknown"} from ${report.mcpSelectionPolicy.sourceContract || "not-set"}`,
     `- Installed AI Core routes: ${report.installedAiCoreRouteCount}`,
     `- Personal plugin lanes: ${report.personalPluginLaneCount}`,
     `- MCP runtime: ${report.mcpRuntimeToolCount} tools, ${report.mcpRuntimeResourceCount} resources, ${report.mcpRuntimePromptCount} prompts over ${report.mcpRuntimeContract.transport}`,
@@ -424,6 +453,17 @@ function buildMarkdown(report) {
     "## Validation",
     "",
     ...report.validation.map((command) => `- \`${command}\``),
+    "",
+    "## Frontier Target And Cadence",
+    "",
+    "| Surface | Value | Boundary |",
+    "| --- | --- | --- |",
+    `| Frontier target | ${report.frontierTarget.requestedTarget || "not-set"} | ${report.frontierTarget.summary || "Plan-only boundary."} |`,
+    `| Quality gate | ${report.frontierTarget.qualityGate || "not-set"} | Release and AGI claims stay blocked. |`,
+    `| Round cadence | ${(report.continuousOperatingCadence.roundWindowOptions || []).join(" / ")} | ${report.continuousOperatingCadence.runtimeBoundary || "No uncontrolled background runtime."} |`,
+    `| Swarm round ledger | ${report.swarmRoundLedger.resourceUri || "not-set"} | ${report.swarmRoundLedger.truthBoundary || "Plan-only supervised ledger."} |`,
+    `| Round execution evidence | ${report.roundExecutionEvidenceLedger.resourceUri || "not-set"} | ${report.roundExecutionEvidenceLedger.truthBoundary || "Read-only supervised closeout ledger."} |`,
+    `| MCP selection | ${report.mcpSelectionPolicy.defaultPermission || "unknown"} | Useful MCPs need bounded lane, credential boundary, validation gate, and human approval for privileged access. |`,
     "",
     "## Lane Coverage",
     "",

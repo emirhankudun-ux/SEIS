@@ -67,6 +67,40 @@ if (plan) {
   ensure(Array.isArray(plan.governance?.forbiddenAutonomy) && plan.governance.forbiddenAutonomy.includes("deploy"), "plan must forbid autonomous deploy");
   ensure(plan.governance?.forbiddenAutonomy?.includes("secret-access"), "plan must forbid autonomous secret access");
   ensure(plan.governance?.forbiddenAutonomy?.includes("push-to-main"), "plan must forbid push-to-main");
+  ensure(plan.continuousOperatingCadence?.requestedMode === "five-year-continuous-supervised-development", "plan must define the continuous supervised five-year cadence");
+  ensure(plan.continuousOperatingCadence?.defaultRoundWindow === 15, "plan must default to 15-round windows");
+  ensure(plan.continuousOperatingCadence?.expandedRoundWindowRequiresOwnerApproval === true, "30-round expansion must require owner approval");
+  ensure(
+    plan.swarmRoundLedger === "content/development/seis-ai-core-subagent-swarm-round-ledger.json",
+    "plan must link the sub-agent swarm round ledger"
+  );
+  ensure(
+    plan.roundExecutionEvidenceLedger === "content/development/seis-ai-core-subagent-round-execution-evidence-ledger.json",
+    "plan must link the sub-agent round execution evidence ledger"
+  );
+  ensure(
+    Array.isArray(plan.continuousOperatingCadence?.roundWindowOptions) &&
+      plan.continuousOperatingCadence.roundWindowOptions.includes(15) &&
+      plan.continuousOperatingCadence.roundWindowOptions.includes(30),
+    "plan must support 15-round and owner-approved 30-round windows"
+  );
+  ensure(
+    String(plan.continuousOperatingCadence?.runtimeBoundary || "").includes("does not authorize uncontrolled always-on background agents"),
+    "plan must keep continuous work out of uncontrolled background runtime"
+  );
+  ensure(plan.frontierTarget?.requestedTarget === "720B AGI", "plan must carry the owner-requested 720B AGI target");
+  ensure(plan.frontierTarget?.status === "plan-only-boundary", "720B target must stay plan-only");
+  ensure(
+    plan.frontierTarget?.sourceOfTruth === "content/development/seis-720b-agi-frontier-boundary.json",
+    "720B target must point to the 720B frontier boundary"
+  );
+  ensure(plan.frontierTarget?.agiClaimAllowed === false, "720B target must not allow AGI claims");
+  ensure(plan.frontierTarget?.routeEligibleToday === false, "720B target must not be route eligible");
+  ensure(
+    plan.mcpSelectionPolicy?.sourceContract === "content/development/seis-ai-core-mcp-runtime-contract.json",
+    "plan must link the MCP runtime contract"
+  );
+  ensure(plan.mcpSelectionPolicy?.defaultPermission === "read-only-or-plan-only", "MCP selection policy must default to read-only or plan-only");
   ensure(Array.isArray(plan.subAgentLifecycleStates) && plan.subAgentLifecycleStates.includes("blocked"), "plan must define blocked lifecycle state");
   ensure(Array.isArray(plan.lanes) && plan.lanes.length >= 6, "plan must define at least six sub-agent lanes");
 
@@ -150,6 +184,7 @@ for (const required of [
   "apps/seis-demo-web/data/seis-sub-agent-five-year-plan-view.json",
   "content/development/seis-ai-core-version-registry.json",
   "content/development/seis-ai-core-version-promotion-gates.json",
+  "content/development/seis-ai-core-subagent-round-execution-evidence-ledger.json",
   "deterministic-plan-simulation",
   "local-demo-only",
   "promotionDryRunDecision",
@@ -200,6 +235,10 @@ if (evidenceReport) {
     "evidence report must link the AI Core MCP runtime contract"
   );
   ensure(
+    evidenceReport.seisAiCoreSubagentRoundExecutionEvidenceLedger === "content/development/seis-ai-core-subagent-round-execution-evidence-ledger.json",
+    "evidence report must link the round execution evidence ledger"
+  );
+  ensure(
     evidenceReport.seisAiCoreProviderRegistry === "content/development/seis-ai-core-provider-registry.json",
     "evidence report must link the AI Core provider registry"
   );
@@ -208,8 +247,8 @@ if (evidenceReport) {
   ensure(evidenceReport.completionPercent === 100, "evidence report must show 100% deterministic demo completion");
   ensure(evidenceReport.versionTargetCount === 5, "evidence report must include five AI Core version targets");
   ensure(evidenceReport.promotionGateCount === 5, "evidence report must include five AI Core promotion gates");
-  ensure(evidenceReport.mcpRuntimeToolCount === 34, "evidence report must include 34 MCP tools");
-  ensure(evidenceReport.mcpRuntimeResourceCount === 28, "evidence report must include 28 MCP resources");
+  ensure(evidenceReport.mcpRuntimeToolCount === 35, "evidence report must include 35 MCP tools");
+  ensure(evidenceReport.mcpRuntimeResourceCount === 32, "evidence report must include 32 MCP resources");
   ensure(evidenceReport.mcpRuntimePromptCount === 3, "evidence report must include 3 MCP prompts");
   ensure(evidenceReport.providerRegistryProviderCount >= 7, "evidence report must include provider registry provider count");
   ensure(evidenceReport.providerRegistryRequiredForCoreCount === 0, "evidence report must keep provider registry core key count at zero");
@@ -223,6 +262,11 @@ if (evidenceReport) {
   ensure(Array.isArray(evidenceReport.records) && evidenceReport.records.length === 20, "evidence report must include 20 records");
   ensure(Array.isArray(evidenceReport.laneCoverage) && evidenceReport.laneCoverage.length >= 6, "evidence report must include lane coverage");
   ensure(evidenceReport.validation?.includes("npm run check:seis-sub-agent-five-year-demo-evidence"), "evidence report must include its check command");
+  ensure(evidenceReport.validation?.includes("npm run check:seis-720b-agi-frontier-boundary"), "evidence report must include 720B frontier boundary check");
+  ensure(
+    evidenceReport.validation?.includes("npm run check:seis-ai-core-subagent-round-execution-evidence-ledger"),
+    "evidence report must include round execution evidence ledger check"
+  );
   ensure(evidenceReport.validation?.includes("npm run check:seis-ai-core-version-registry"), "evidence report must include AI Core version registry check");
   ensure(
     evidenceReport.validation?.includes("npm run check:seis-ai-core-version-promotion-gates"),
@@ -232,6 +276,30 @@ if (evidenceReport) {
     typeof evidenceReport.truthBoundary === "string" && evidenceReport.truthBoundary.includes("does not prove real five-year autonomous execution"),
     "evidence report must declare the real-execution truth boundary"
   );
+  ensure(evidenceReport.frontierTarget?.requestedTarget === "720B AGI", "evidence report must surface 720B AGI frontier target");
+  ensure(evidenceReport.frontierTarget?.agiClaimAllowed === false, "evidence report must keep 720B AGI claims blocked");
+  ensure(evidenceReport.continuousOperatingCadence?.defaultRoundWindow === 15, "evidence report must surface 15-round default cadence");
+  ensure(evidenceReport.continuousOperatingCadence?.expandedRoundWindowRequiresOwnerApproval === true, "evidence report must keep 30-round expansion owner-approved");
+  ensure(evidenceReport.swarmRoundLedger?.id === "seis-ai-core-subagent-swarm-round-ledger", "evidence report must surface the swarm round ledger");
+  ensure(evidenceReport.swarmRoundLedger?.ownerObjectiveMap?.defaultRoundWindow === 15, "evidence report must surface 15-round ledger window");
+  ensure(evidenceReport.swarmRoundLedger?.ownerObjectiveMap?.expandedRoundWindow === 30, "evidence report must surface 30-round ledger window");
+  ensure(
+    evidenceReport.roundExecutionEvidenceLedger?.id === "seis-ai-core-subagent-round-execution-evidence-ledger",
+    "evidence report must surface the round execution evidence ledger"
+  );
+  ensure(
+    evidenceReport.roundExecutionEvidenceLedger?.roundWindowState?.recordedCloseoutCount >= 5,
+    "evidence report must surface at least five closeout evidence records"
+  );
+  ensure(
+    evidenceReport.roundExecutionEvidenceLedger?.evidenceSummary?.completionClaimAllowed === false,
+    "evidence report must block completion claims from the round execution evidence ledger"
+  );
+  ensure(
+    evidenceReport.roundExecutionEvidenceLedger?.evidenceSummary?.agiClaimAllowed === false,
+    "evidence report must block AGI claims from the round execution evidence ledger"
+  );
+  ensure(evidenceReport.mcpSelectionPolicy?.defaultPermission === "read-only-or-plan-only", "evidence report must surface read-only/plan-only MCP policy");
 
   for (const record of evidenceReport.records || []) {
     ensure(/^v(0\.[1-4]|1\.0)-/.test(record.aiCoreVersionTarget), `${record.sourcePlanQuarter} missing AI Core version target`);
@@ -256,6 +324,21 @@ if (evidenceReport) {
       `${record.sourcePlanQuarter} must include a concrete promotion next safe action`
     );
   }
+}
+
+if (demoPlanView) {
+  ensure(demoPlanView.frontierTarget?.requestedTarget === "720B AGI", "demo plan view must surface 720B AGI frontier target");
+  ensure(demoPlanView.continuousOperatingCadence?.defaultRoundWindow === 15, "demo plan view must surface 15-round default cadence");
+  ensure(demoPlanView.swarmRoundLedger?.id === "seis-ai-core-subagent-swarm-round-ledger", "demo plan view must surface the swarm round ledger");
+  ensure(
+    demoPlanView.roundExecutionEvidenceLedger?.id === "seis-ai-core-subagent-round-execution-evidence-ledger",
+    "demo plan view must surface the round execution evidence ledger"
+  );
+  ensure(
+    demoPlanView.roundExecutionEvidenceLedger?.roundWindowState?.recordedCloseoutCount >= 5,
+    "demo plan view must surface at least five closeout evidence records"
+  );
+  ensure(demoPlanView.mcpSelectionPolicy?.sourceContract === "content/development/seis-ai-core-mcp-runtime-contract.json", "demo plan view must surface MCP runtime source contract");
 }
 
 if (demoPromotionMap) {
@@ -297,7 +380,7 @@ if (demoPlanView) {
   ensure(demoPlanView.yearCount === 5, "demo plan view must cover five years");
   ensure(demoPlanView.quarterCount === 20, "demo plan view must cover 20 quarters");
   ensure(demoPlanView.laneCount >= 6, "demo plan view must include at least six lanes");
-  ensure(demoPlanView.mcpRuntimeResourceCount === 28, "demo plan view must include 28 MCP resources");
+  ensure(demoPlanView.mcpRuntimeResourceCount === 32, "demo plan view must include 32 MCP resources");
   ensure(
     demoPlanView.seisAiCoreProviderRegistry === "content/development/seis-ai-core-provider-registry.json",
     "demo plan view must link the AI Core provider registry"
@@ -366,6 +449,9 @@ for (const required of [
   "AI Core Version Promotion Map",
   "MCP Runtime Contract",
   "content/development/seis-ai-core-mcp-runtime-contract.json",
+  "Round execution evidence ledger: content/development/seis-ai-core-subagent-round-execution-evidence-ledger.json",
+  "Closeout evidence:",
+  "default rounds recorded",
   "Demo plan view: apps/seis-demo-web/data/seis-sub-agent-five-year-plan-view.json",
   "v0.1-foundation",
   "blocked-human-approval",
