@@ -88,6 +88,7 @@
     "demo:seis-sub-agent-five-year": "node scripts/run-sub-agent-five-year-demo.mjs",
     "check:seis-sub-agent-five-year-demo-run": "node scripts/run-sub-agent-five-year-demo.mjs --check",
     "check:seis-sub-agent-five-year-demo-evidence": "node scripts/create-sub-agent-five-year-demo-evidence.mjs --check",
+    "check:seis-demo-foundation-dashboard-data": "node scripts/check-seis-demo-foundation-dashboard-data.mjs",
     "check:seis-universe-omega-goal-system": "node scripts/check-seis-universe-omega-goal-system.mjs",
     "check:uixappttr-sub-agent-briefs": "node scripts/create-subagent-briefs.mjs --check",
     "check:seis-execution-packages": "python3 scripts/create-seis-execution-packages.py --check",
