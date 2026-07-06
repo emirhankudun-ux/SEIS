@@ -71,6 +71,20 @@ Date: 2026-06-23
 | [security/security-baseline.md](security/security-baseline.md) | Current security baseline and blockers. |
 | [audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md](audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md) | Redacted static provider and credential audit. |
 
+## PR0 Foundation Manifests
+
+| Document | Purpose |
+| --- | --- |
+| [development/seis-source-provenance-intake.md](development/seis-source-provenance-intake.md) | Public-safe source provenance intake for Kimi/Stitch archive references, immutable-original handling, and no raw dump rules. |
+| [development/seis-five-year-agency-orchestration-contract.md](development/seis-five-year-agency-orchestration-contract.md) | Supervised agency orchestration contract for staged five-year work, single-writer policy, and read-only reviewer lanes. |
+| [development/seis-mcp-permission-risk-matrix.md](development/seis-mcp-permission-risk-matrix.md) | MCP/tools permission risk matrix for official status, authentication, mutation risk, and approval gates. |
+| [development/seis-stitch-ux-screen-catalog.md](development/seis-stitch-ux-screen-catalog.md) | Stitch UX screen catalog for read-only design review, module families, and no asset-copy boundaries. |
+| [development/seis-swift-apple-bridge-manifest.md](development/seis-swift-apple-bridge-manifest.md) | Swift/Apple bridge manifest for PR1 model handoff without provider calls, SwiftUI shell work, or asset imports. |
+| [decisions/adr-0005-seis-source-provenance-intake.md](decisions/adr-0005-seis-source-provenance-intake.md) | ADR for manifest-first source intake before using external archives as implementation inputs. |
+| [decisions/adr-0006-seis-five-year-agency-orchestration-contract.md](decisions/adr-0006-seis-five-year-agency-orchestration-contract.md) | ADR for supervised agency orchestration before any write-capable automation. |
+| [../seis-brain/vault/12_Context_Packs/SEIS%20Source%20Provenance%20Intake%20Context.md](../seis-brain/vault/12_Context_Packs/SEIS%20Source%20Provenance%20Intake%20Context.md) | SEIS Brain context pack for source provenance intake and future archive review handoff. |
+| [../seis-brain/vault/12_Context_Packs/SEIS%20Five%20Year%20Agency%20Orchestration%20Context.md](../seis-brain/vault/12_Context_Packs/SEIS%20Five%20Year%20Agency%20Orchestration%20Context.md) | SEIS Brain context pack for five-year agency orchestration, reviewer lanes, and promotion gates. |
+
 ## Goal Tracking OS
 
 | Document | Purpose |
@@ -136,5 +150,10 @@ Date: 2026-06-23
 | [../content/development/seis-model-scaling-subagent-council.json](../content/development/seis-model-scaling-subagent-council.json) | `active-plan-only` 12-agent model-scaling council for 20B evidence preparation and 70B/150B non-claim gates. |
 | [../content/development/seis-20b-model-card-template.json](../content/development/seis-20b-model-card-template.json) | `template-not-filled` clean-room model card required before any 20B model artifact, benchmark, route eligibility, or runtime claim. |
 | [../content/development/seis-20b-dataset-card-template.json](../content/development/seis-20b-dataset-card-template.json) | `template-not-filled` clean-room dataset card required before any dataset download, ingestion, training, fine-tuning, benchmark, provider upload, or publication. |
+| [../content/development/seis-source-provenance-intake.json](../content/development/seis-source-provenance-intake.json) | PR0 source provenance manifest for immutable external archive references, public-safe metadata, and review-only intake rules. |
+| [../content/development/seis-five-year-agency-orchestration-contract.json](../content/development/seis-five-year-agency-orchestration-contract.json) | PR0 supervised agency orchestration contract for single-writer implementation, read-only specialist reviews, and promotion gates. |
+| [../content/development/seis-mcp-permission-risk-matrix.json](../content/development/seis-mcp-permission-risk-matrix.json) | PR0 MCP/tools permission risk matrix for auth, mutation, credential, package-runner, and external-system risk classes. |
+| [../content/development/seis-stitch-ux-screen-catalog.json](../content/development/seis-stitch-ux-screen-catalog.json) | PR0 Stitch UX catalog for module-family planning and visual review without copying assets into the repo. |
+| [../content/development/seis-swift-apple-bridge-manifest.json](../content/development/seis-swift-apple-bridge-manifest.json) | PR0 Swift/Apple bridge manifest feeding PR1 model work while keeping SwiftUI, providers, and assets out of scope. |
 | [../reports/seis-model-scaling/20b-16gb-memory-benchmark.json](../reports/seis-model-scaling/20b-16gb-memory-benchmark.json) | `template-not-measured` benchmark manifest for the future 20B / 16GB+ memory test; not benchmark evidence. |
 | [../apps/web/goal-tracking.html](../apps/web/goal-tracking.html) | Generated static Goal Tracking Center page. |
