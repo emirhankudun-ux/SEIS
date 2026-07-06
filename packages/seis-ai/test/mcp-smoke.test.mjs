@@ -66,7 +66,7 @@ function rpcSession(requests, { timeoutMs = 15000 } = {}) {
 }
 
 describe("seis-mcp stdio smoke", () => {
-  it("initializes and lists 35 tools, 3 prompts, 29 resources", async () => {
+  it("initializes and lists 35 tools, 3 prompts, 32 resources", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -134,6 +134,7 @@ describe("seis-mcp stdio smoke", () => {
       "seis://ai/20b-dataset-card-template.json",
       "seis://ai/20b-model-card-template.json",
       "seis://ai/512b-apex-model-program.json",
+      "seis://ai/720b-agi-frontier-boundary.json",
       "seis://ai/agent-permission-matrix.json",
       "seis://ai/agent-role-schema.json",
       "seis://ai/agi-evaluation-protocol.json",
@@ -152,7 +153,9 @@ describe("seis-mcp stdio smoke", () => {
       "seis://ai/sub-agent-5-year-plan.json",
       "seis://ai/subagent-operating-model.json",
       "seis://ai/subagent-review-ledger.json",
+      "seis://ai/subagent-round-execution-evidence-ledger.json",
       "seis://ai/subagent-runtime-fixtures.json",
+      "seis://ai/subagent-swarm-round-ledger.json",
       "seis://ai/version-promotion-gates.json",
       "seis://ai/version-registry.json",
       "seis://web/site-config.json",
@@ -253,7 +256,7 @@ describe("seis-mcp stdio smoke", () => {
     const payload = JSON.parse(resource.result.contents[0].text);
     assert.equal(payload.id, "seis-ai-core-mcp-runtime-contract");
     assert.equal(payload.toolCount, 35);
-    assert.equal(payload.resourceCount, 29);
+    assert.equal(payload.resourceCount, 32);
     assert.equal(payload.promptCount, 3);
     assert.equal(payload.transport, "stdio JSON-RPC");
   });
@@ -524,6 +527,146 @@ describe("seis-mcp stdio smoke", () => {
     assert.ok(payload.forbiddenClaimRules.includes("no-trained-512b-weights-claim"));
     assert.ok(payload.forbiddenClaimRules.includes("no-installed-ai-presence-as-training-evidence-claim"));
     assert.ok(payload.programStages.every((stage) => stage.routeEligibleToday === false));
+  });
+
+  it("reads the SEIS AI Core 720B AGI frontier boundary resource through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "resources/read",
+        params: {
+          uri: "seis://ai/720b-agi-frontier-boundary.json",
+        },
+      },
+    ]);
+
+    const resource = responses.get(2);
+    assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
+    const payload = JSON.parse(resource.result.contents[0].text);
+    assert.equal(payload.id, "seis-720b-agi-frontier-boundary");
+    assert.equal(payload.status, "agi-frontier-boundary-plan-only");
+    assert.equal(payload.resourceUri, "seis://ai/720b-agi-frontier-boundary.json");
+    assert.equal(payload.target.parameterClass, "720B");
+    assert.equal(payload.target.parameterCountBillion, 720);
+    assert.equal(payload.routeEligibleToday, false);
+    assert.equal(payload.runtimeAuthority, false);
+    assert.equal(payload.trainingStatus, "not-started");
+    assert.equal(payload.weightsAvailable, false);
+    assert.equal(payload.inferenceAvailable, false);
+    assert.equal(payload.benchmarkStatus, "not-run");
+    assert.equal(payload.productionReady, false);
+    assert.equal(payload.agiClaimAllowed, false);
+    assert.deepEqual(payload.supervisedCadence.roundWindows, [15, 30]);
+    assert.equal(payload.mcpBoundary.defaultPermission, "read-only-or-plan-only");
+    assert.ok(payload.forbiddenClaimRules.includes("no-trained-720b-weights-claim"));
+    assert.ok(payload.forbiddenClaimRules.includes("no-720b-agi-capability-claim"));
+  });
+
+  it("reads the SEIS AI Core sub-agent swarm round ledger resource through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "resources/read",
+        params: {
+          uri: "seis://ai/subagent-swarm-round-ledger.json",
+        },
+      },
+    ]);
+
+    const resource = responses.get(2);
+    assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
+    const payload = JSON.parse(resource.result.contents[0].text);
+    assert.equal(payload.id, "seis-ai-core-subagent-swarm-round-ledger");
+    assert.equal(payload.status, "plan-only-supervised-ledger");
+    assert.equal(payload.resourceUri, "seis://ai/subagent-swarm-round-ledger.json");
+    assert.equal(payload.ownerObjectiveMap.defaultRoundWindow, 15);
+    assert.equal(payload.ownerObjectiveMap.expandedRoundWindow, 30);
+    assert.equal(payload.ownerObjectiveMap.expandedRoundWindowRequiresOwnerApproval, true);
+    assert.equal(payload.runtimeBoundary.continuousBackgroundRuntime, "not-authorized");
+    assert.equal(payload.runtimeBoundary.credentialAccess, "forbidden");
+    assert.equal(payload.runtimeBoundary.sshExecution, "forbidden");
+    assert.equal(payload.runtimeBoundary.cloudProvisioning, "forbidden");
+    assert.equal(payload.runtimeBoundary.modelTraining, "forbidden");
+    assert.equal(payload.runtimeBoundary.agiClaimAllowed, false);
+    assert.equal(payload.runtimeBoundary.routeEligibleToday, false);
+    assert.equal(payload.roundAssignments.length, 15);
+    assert.ok(payload.forbiddenClaims.includes("SEIS has completed the 720B AGI target."));
+  });
+
+  it("reads the SEIS AI Core sub-agent round execution evidence ledger resource through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "resources/read",
+        params: {
+          uri: "seis://ai/subagent-round-execution-evidence-ledger.json",
+        },
+      },
+    ]);
+
+    const resource = responses.get(2);
+    assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
+    const payload = JSON.parse(resource.result.contents[0].text);
+    assert.equal(payload.id, "seis-ai-core-subagent-round-execution-evidence-ledger");
+    assert.equal(payload.status, "repo-local-supervised-closeout-evidence");
+    assert.equal(payload.resourceUri, "seis://ai/subagent-round-execution-evidence-ledger.json");
+    assert.equal(payload.runtimeBoundary.currentLevel, "evidence-ledger-only");
+    assert.equal(payload.runtimeBoundary.backgroundAutomation, "disabled");
+    assert.equal(payload.runtimeBoundary.continuousBackgroundRuntime, "not-authorized");
+    assert.equal(payload.runtimeBoundary.credentialAccessPerformed, false);
+    assert.equal(payload.runtimeBoundary.sshExecutionPerformed, false);
+    assert.equal(payload.runtimeBoundary.deploymentPerformed, false);
+    assert.equal(payload.runtimeBoundary.githubMutationPerformed, false);
+    assert.equal(payload.runtimeBoundary.providerCallPerformed, false);
+    assert.equal(payload.runtimeBoundary.modelTrainingPerformed, false);
+    assert.equal(payload.runtimeBoundary.agiClaimAllowed, false);
+    assert.equal(payload.runtimeBoundary.routeEligibleToday, false);
+    assert.equal(payload.roundWindowState.defaultRoundWindow, 15);
+    assert.equal(payload.roundWindowState.expandedRoundWindow, 30);
+    assert.equal(payload.roundWindowState.expandedRoundWindowRequiresOwnerApproval, true);
+    assert.ok(payload.roundWindowState.recordedCloseoutCount >= 5);
+    assert.equal(payload.closeoutRecords.length, payload.roundWindowState.recordedCloseoutCount);
+    assert.equal(payload.evidenceSummary.completionClaimAllowed, false);
+    assert.equal(payload.evidenceSummary.continuousRuntimeClaimAllowed, false);
+    assert.equal(payload.evidenceSummary.agiClaimAllowed, false);
+    assert.ok(payload.forbiddenClaims.includes("SEIS has completed a real uninterrupted five-year autonomous run."));
+    assert.ok(payload.forbiddenClaims.includes("SEIS has achieved 720B AGI."));
   });
 
   it("reads the SEIS AI Core AGI evaluation protocol resource through the protocol", async () => {

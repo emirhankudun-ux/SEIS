@@ -23,6 +23,7 @@ import { i18nAddKey, i18nRenameKey } from "../lib/i18n-write.mjs";
 import {
   AI_CORE_150B_FRONTIER_MODEL_PROGRAM_PATH,
   AI_CORE_512B_APEX_MODEL_PROGRAM_PATH,
+  AI_CORE_720B_AGI_FRONTIER_BOUNDARY_PATH,
   AI_CORE_AGI_EVALUATION_PROTOCOL_PATH,
   AI_CORE_AGI_PUBLIC_READINESS_EVIDENCE_PATH,
   AI_CORE_20B_DATASET_CARD_TEMPLATE_PATH,
@@ -49,6 +50,8 @@ import {
   SUBAGENT_EXECUTION_LEDGER_FIXTURE_PATH,
   SUBAGENT_LONG_HORIZON_PLAN_PATH,
   SUBAGENT_LONG_HORIZON_PLAN_VIEW_PATH,
+  SUBAGENT_ROUND_EXECUTION_EVIDENCE_LEDGER_PATH,
+  SUBAGENT_SWARM_ROUND_LEDGER_PATH,
   SUBAGENT_OPERATING_MODEL_PATH,
   SUBAGENT_OPERATING_MODEL_TOOL,
   SUBAGENT_PERMISSION_MATRIX_PATH,
@@ -967,6 +970,25 @@ Steps:
   );
 
   server.resource(
+    "ai-core-720b-agi-frontier-boundary",
+    "seis://ai/720b-agi-frontier-boundary.json",
+    {
+      description:
+        "SEIS AI Core read-only seis-720b-agi-frontier-boundary from content/development/seis-720b-agi-frontier-boundary.json; plan-only, not AGI proof, training, inference, benchmark, SSH, cloud, or background-runtime authority",
+      mimeType: "application/json",
+    },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/720b-agi-frontier-boundary.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...AI_CORE_720B_AGI_FRONTIER_BOUNDARY_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
     "ai-core-agi-evaluation-protocol",
     "seis://ai/agi-evaluation-protocol.json",
     {
@@ -1104,6 +1126,44 @@ Steps:
           uri: "seis://ai/sub-agent-5-year-plan-view.json",
           mimeType: "application/json",
           text: readFileSync(path.join(repoRoot, ...SUBAGENT_LONG_HORIZON_PLAN_VIEW_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "subagent-swarm-round-ledger",
+    "seis://ai/subagent-swarm-round-ledger.json",
+    {
+      description:
+        "SEIS AI Core read-only 15/30-turn supervised sub-agent swarm round ledger; plan-only, not background runtime, AGI proof, SSH, cloud, credential, provider, or deployment authority",
+      mimeType: "application/json",
+    },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/subagent-swarm-round-ledger.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...SUBAGENT_SWARM_ROUND_LEDGER_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "subagent-round-execution-evidence-ledger",
+    "seis://ai/subagent-round-execution-evidence-ledger.json",
+    {
+      description:
+        "SEIS AI Core read-only public-safe supervised round execution evidence ledger; not background runtime, SSH, cloud, credential, provider, deployment, GitHub, model-training, or AGI authority",
+      mimeType: "application/json",
+    },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/subagent-round-execution-evidence-ledger.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...SUBAGENT_ROUND_EXECUTION_EVIDENCE_LEDGER_PATH.split("/")), "utf8"),
         },
       ],
     })

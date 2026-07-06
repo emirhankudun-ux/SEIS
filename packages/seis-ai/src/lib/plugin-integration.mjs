@@ -14,6 +14,8 @@ export const AI_CORE_150B_FRONTIER_MODEL_PROGRAM_PATH = "content/development/sei
 export const AI_CORE_150B_FRONTIER_MODEL_PROGRAM_RESOURCE_URI = "seis://ai/150b-frontier-model-program.json";
 export const AI_CORE_512B_APEX_MODEL_PROGRAM_PATH = "content/development/seis-512b-apex-model-program.json";
 export const AI_CORE_512B_APEX_MODEL_PROGRAM_RESOURCE_URI = "seis://ai/512b-apex-model-program.json";
+export const AI_CORE_720B_AGI_FRONTIER_BOUNDARY_PATH = "content/development/seis-720b-agi-frontier-boundary.json";
+export const AI_CORE_720B_AGI_FRONTIER_BOUNDARY_RESOURCE_URI = "seis://ai/720b-agi-frontier-boundary.json";
 export const AI_CORE_AGI_EVALUATION_PROTOCOL_PATH = "content/development/seis-agi-evaluation-protocol.json";
 export const AI_CORE_AGI_EVALUATION_PROTOCOL_RESOURCE_URI = "seis://ai/agi-evaluation-protocol.json";
 export const AI_CORE_AGI_PUBLIC_READINESS_EVIDENCE_PATH = "content/development/seis-agi-public-readiness-evidence.json";
@@ -29,6 +31,12 @@ export const SUBAGENT_OPERATING_MODEL_PATH = "content/development/seis-ai-core-s
 export const SUBAGENT_LONG_HORIZON_PLAN_PATH = "content/development/seis-sub-agent-5-year-plan.json";
 export const SUBAGENT_LONG_HORIZON_PLAN_VIEW_PATH = "apps/seis-demo-web/data/seis-sub-agent-five-year-plan-view.json";
 export const SUBAGENT_LONG_HORIZON_REVIEW_PATH = "docs/reviews/SUB_AGENT_LONG_HORIZON_AUDIT.md";
+export const SUBAGENT_SWARM_ROUND_LEDGER_PATH = "content/development/seis-ai-core-subagent-swarm-round-ledger.json";
+export const SUBAGENT_SWARM_ROUND_LEDGER_RESOURCE_URI = "seis://ai/subagent-swarm-round-ledger.json";
+export const SUBAGENT_ROUND_EXECUTION_EVIDENCE_LEDGER_PATH =
+  "content/development/seis-ai-core-subagent-round-execution-evidence-ledger.json";
+export const SUBAGENT_ROUND_EXECUTION_EVIDENCE_LEDGER_RESOURCE_URI =
+  "seis://ai/subagent-round-execution-evidence-ledger.json";
 export const SUBAGENT_ROLE_SCHEMA_PATH = "content/development/seis-ai-core-agent-role-schema.json";
 export const SUBAGENT_PERMISSION_MATRIX_PATH = "content/development/seis-ai-core-agent-permission-matrix.json";
 export const SUBAGENT_DRY_RUN_QUEUE_PATH = "content/development/seis-ai-core-dry-run-task-queue.json";
