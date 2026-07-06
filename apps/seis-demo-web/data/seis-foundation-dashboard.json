@@ -1,0 +1,94 @@
+{
+  "$schema": "https://seis.dev/schemas/demo-foundation-dashboard.schema.json",
+  "id": "seis-demo-foundation-dashboard",
+  "version": "2026-07-06",
+  "status": "static-data-ready-ui-pending",
+  "visibility": "public-safe",
+  "mode": "no-key-static-dashboard-data",
+  "purpose": "Provide PR2 dashboard-ready static data for the SEIS web demo without touching the existing demo script or claiming provider/runtime capability.",
+  "sourceRefs": {
+    "implementationSequence": "content/development/seis-pr0-pr1-pr2-implementation-sequence.json",
+    "agencyOrchestration": "content/development/seis-five-year-agency-orchestration-contract.json",
+    "mcpRiskMatrix": "content/development/seis-mcp-permission-risk-matrix.json",
+    "stitchCatalog": "content/development/seis-stitch-ux-screen-catalog.json",
+    "swiftAppleBridge": "content/development/seis-swift-apple-bridge-manifest.json"
+  },
+  "truthBoundary": {
+    "requiresApiKey": false,
+    "providerCallsAllowed": false,
+    "externalMutationAllowed": false,
+    "assetImportAllowed": false,
+    "existingDemoScriptTouched": false,
+    "uiIntegrationStatus": "pending-after-swift-foundation",
+    "sourceDataType": "repo-local-public-safe-manifest-snapshot"
+  },
+  "cards": [
+    {
+      "id": "agency-orchestration",
+      "label": "Agency",
+      "sourceRef": "agencyOrchestration",
+      "status": "draft-public-safe",
+      "summary": "Supervised five-year agency model with Codex as the single writer and subagents limited to inspect/review unless owner policy changes.",
+      "metrics": [
+        {"label": "Departments", "value": 10},
+        {"label": "Planned rounds", "value": 50},
+        {"label": "Subagent write access", "value": "disabled"}
+      ],
+      "nextSafeAction": "Keep swarm activity report-backed and preserve no-key demo behavior."
+    },
+    {
+      "id": "mcp-risk",
+      "label": "MCP Risk",
+      "sourceRef": "mcpRiskMatrix",
+      "status": "draft-public-safe",
+      "summary": "MCP adoption is official-or-owner-approved by default, with candidate and package-runner surfaces gated by evidence and approval.",
+      "metrics": [
+        {"label": "Risk records", "value": 12},
+        {"label": "Blanket activation", "value": "blocked"},
+        {"label": "Credential storage", "value": "disabled"}
+      ],
+      "nextSafeAction": "Keep package runners disabled or approval-gated until a separate threat-model PR lands."
+    },
+    {
+      "id": "stitch-families",
+      "label": "Stitch Families",
+      "sourceRef": "stitchCatalog",
+      "status": "draft-public-safe",
+      "summary": "Stitch archives are cataloged as UX and module vocabulary only; raw archive dumps and unreviewed code copies stay out of the repo.",
+      "metrics": [
+        {"label": "Archives", "value": 2},
+        {"label": "Module families", "value": 10},
+        {"label": "Asset import", "value": "review-gated"}
+      ],
+      "nextSafeAction": "Use the catalog for a future 10-screen visual shortlist without copying binaries."
+    },
+    {
+      "id": "swift-bridge",
+      "label": "Swift Bridge",
+      "sourceRef": "swiftAppleBridge",
+      "status": "draft-public-safe",
+      "summary": "Swift models now bridge MCP risk and Stitch module families while UI integration remains deferred until the data layer is stable.",
+      "metrics": [
+        {"label": "Proposed Swift models", "value": 6},
+        {"label": "Implementation stages", "value": 4},
+        {"label": "SwiftUI shell", "value": "deferred"}
+      ],
+      "nextSafeAction": "Keep Swift validation green before adding any web UI binding or native shell expansion."
+    }
+  ],
+  "fallback": {
+    "enabled": true,
+    "label": "Foundation data unavailable",
+    "message": "Show a no-key, read-only fallback state and link reviewers back to the source manifest paths.",
+    "requiredCardCount": 4
+  },
+  "validation": [
+    "node scripts/check-seis-demo-foundation-dashboard-data.mjs",
+    "node scripts/check-seis-pr0-pr1-pr2-implementation-sequence.mjs",
+    "node scripts/check-seis-source-provenance-intake.mjs",
+    "node scripts/check-seis-mcp-permission-risk-matrix.mjs",
+    "node scripts/check-seis-stitch-ux-screen-catalog.mjs",
+    "node scripts/check-seis-swift-apple-bridge-manifest.mjs"
+  ],
+  "nextHandoff": "Wire this JSON into apps/seis-demo-web only after the dirty demo script is reviewed and PR1 Swift model stability is preserved."
+}
