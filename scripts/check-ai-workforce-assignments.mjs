@@ -17,7 +17,8 @@ const requiredAssignments = [
   "open-design",
   "github-actions",
   "kimi",
-  "opencode"
+  "opencode",
+  "hermes"
 ];
 const requiredWorkflowSteps = [
   "intake",
@@ -115,6 +116,14 @@ if (contract) {
   ensure(
     (assignments.get("github-actions")?.deniedActions || []).some((action) => String(action).includes("secret echoing")),
     "GitHub Actions assignment must forbid secret echoing"
+  );
+  ensure(
+    assignments.get("hermes")?.launcherStatus === "local-installed-review",
+    "Hermes must remain a local installed review route until current config/auth checks pass"
+  );
+  ensure(
+    (assignments.get("hermes")?.deniedActions || []).some((action) => String(action).includes("credential handling")),
+    "Hermes must be denied credential handling"
   );
 
   ensure(Array.isArray(contract.approvalRequiredFor), "approvalRequiredFor must be an array");

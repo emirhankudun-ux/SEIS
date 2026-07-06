@@ -12,7 +12,8 @@ lanes" plan into a reviewable operating contract.
 ## Scope
 
 This applies to Codex, Claude, Qwen, Gemini, CodeRabbit, Ollama/local models,
-OpenDesign, GitHub Actions, Kimi/Kimi Code when available, and OpenCode.
+OpenDesign, GitHub Actions, Kimi/Kimi Code when available, OpenCode, and
+Hermes.
 
 It does not prove that every route is currently configured, authenticated, or
 runtime verified. Availability must be checked before each execution.
@@ -21,7 +22,8 @@ runtime verified. Availability must be checked before each execution.
 
 | Area | Status | Evidence | Blocker | Next Safe Action |
 | --- | --- | --- | --- | --- |
-| Assignment matrix | Documented | `content/development/ai-workforce-assignments.json` | Not wired into a package script yet. | Run `node scripts/check-ai-workforce-assignments.mjs`. |
+| Assignment matrix | Documented | `content/development/ai-workforce-assignments.json`, `npm run check:ai-workforce-assignments`, `node scripts/check-ai-workforce-assignments.mjs` | No runtime enforcement layer yet. | Run `npm run check:ai-workforce-assignments` after changes. |
+| Installed tools registry | Active public-safe registry | `content/development/seis-installed-ai-tools-registry.json`, `docs/ai/installed-ai-tools-registry.md` | Tool presence is not live provider evidence. | Run `npm run check:seis-installed-ai-tools-registry`. |
 | Local route inventory | Observed | `npm run ai -- list` on 2026-06-23 | This is route readiness only, not live provider verification. | Re-run before using a secondary assistant. |
 | Writer policy | Documented | `AGENTS.md`, `docs/ai/agent-runtime.md`, this document | No runtime enforcement layer yet. | Keep Codex as the only writer for the next change package. |
 | Credential boundary | Documented | `SECURITY.md`, `docs/ai/seis-ai-core.md`, this document | No live provider use in this pass. | Keep provider keys server-side and out of prompts/logs. |
@@ -30,7 +32,7 @@ runtime verified. Availability must be checked before each execution.
 
 - Codex is the primary writer and final integration owner.
 - Exactly one assistant may hold writer role for a change package.
-- Claude, Qwen, Gemini, OpenDesign, Ollama, Kimi, OpenCode, and CodeRabbit
+- Claude, Qwen, Gemini, OpenDesign, Ollama, Kimi, OpenCode, Hermes, and CodeRabbit
   operate as scoped reviewers, researchers, designers, or draft helpers unless
   explicitly handed off.
 - API keys may exist in the operator environment, but keys are never copied into
@@ -60,6 +62,7 @@ runtime verified. Availability must be checked before each execution.
 | GitHub Actions | Automated validation | Tests, lint, build, docs checks, provider audit, secret scan where configured | Configured CI only | Check run, logs, annotations |
 | Kimi / Kimi Code | Conditional code and localization reviewer | Localization, multilingual copy, bounded code second opinion when configured | Review only by default | Copy/code review notes |
 | OpenCode | Bounded terminal coding helper | Narrow terminal coding suggestions and debug hypotheses | Patch suggestion only | Suggested patch or debug note |
+| Hermes | Installed secondary review candidate | Sanitized architecture, contradiction, and public-readiness review after current local config/auth checks pass | Review only by default | Bounded review notes |
 
 ## Standard Workflow
 
@@ -75,11 +78,13 @@ runtime verified. Availability must be checked before each execution.
    design quality is in scope.
 6. Ollama/local model handles private or offline draft work when repository
    sensitivity makes cloud routing inappropriate.
-7. Codex applies only evidence-backed changes, validates them, and prepares the
+7. Hermes may provide bounded secondary review only after current local
+   config/auth checks pass and only with sanitized context.
+8. Codex applies only evidence-backed changes, validates them, and prepares the
    reviewable diff.
-8. GitHub Actions validates configured checks after push/PR.
-9. CodeRabbit reviews the PR after it exists.
-10. Codex triages review findings, applies fixes, and leaves a final handoff for
+9. GitHub Actions validates configured checks after push/PR.
+10. CodeRabbit reviews the PR after it exists.
+11. Codex triages review findings, applies fixes, and leaves a final handoff for
     human approval.
 
 ## Handoff Package
@@ -115,11 +120,13 @@ an integration is live, safe, or production-ready.
 - [AI CLI Stack](../ai-cli-stack.md)
 - [SEIS Agent Runtime](../../ai/agent-runtime.md)
 - [SEIS AI Core](../../ai/seis-ai-core.md)
+- [Installed AI Tools Registry](../../ai/installed-ai-tools-registry.md)
 - [SEIS Agent Lane Status](../../governance/seis-agent-lane-status.md)
 - [Security Policy](../../../SECURITY.md)
 - [Root Agent Instructions](../../../AGENTS.md)
 
 ## Next Safe Action
 
-Use this matrix to prepare bounded review prompts for Claude, Qwen, Gemini, and
-OpenDesign while keeping Codex as the only repository writer.
+Use this matrix and the installed tools registry to prepare bounded review
+prompts for Claude, Qwen, Gemini, Hermes, and OpenDesign while keeping Codex as
+the only repository writer.

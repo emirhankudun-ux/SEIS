@@ -35,6 +35,8 @@ npm run automation:seis-ai-workforce-training
 | Language model intake | Active metadata-only contract | `content/development/seis-language-model-intake-registry.json` | This is not bulk installation and grants no download, fine-tune, training, runtime, or AGI authority. | Review one specific model family at a time with license, hardware, model-card, dataset-card, benchmark, and approval gates. |
 | Seed models | Local deterministic lab | `packages/seis-ai/data/*`, `packages/seis-ai/models/*` | Runtime authority remains false. | Rebuild artifacts and promotion policy after accepted case updates. |
 | Live providers | Disabled or missing key unless verified | `content/development/seis-ai-core-provider-registry.json` | Missing Key is not Error, and no browser secrets are allowed. | Add server-only adapters only after typed validation exists. |
+| Xcode native surface | Available local Apple tooling | Xcode 26.6 recent package: `packages/seis_platform_swift` | Local IDE presence is not build evidence and does not change writer ownership. | Use for SwiftPM review after Codex records the diff and runs package checks. |
+| Hermes desktop assistant | Installed local review route | `hermes --version` verifies Hermes Agent v0.17.0; an earlier local provider snapshot returned sanitized `HERMES_OK`; Nous Portal remains not logged in | No product AI implementation, broad provider evidence, or repository write authority is claimed. | Recheck current config/auth, then use only sanitized handoff context for bounded review. |
 
 ## Training Loop
 
@@ -43,6 +45,8 @@ npm run automation:seis-ai-workforce-training
 2. Installed assistants such as Qwen, Ollama, OpenCode, Hermes, Goose, and
    OpenDesign may provide bounded review, contradiction, runbook, or design
    candidate material from sanitized context.
+   If Hermes reports missing authentication again, it returns to blocked/manual
+   and is not used as evidence for implementation readiness.
 3. Codex checks the Language Model Intake Registry before any local model
    experiment. The registry is metadata-only; it is not bulk installation,
    not checkpoint download, and not training authorization.
@@ -120,6 +124,7 @@ Gemini, OpenAI, or any cloud provider.
 ## Related Documents
 
 - [SEIS AI Core](seis-ai-core.md)
+- [Installed AI Tools Registry](installed-ai-tools-registry.md)
 - [Model Router](model-router.md)
 - [Agent Runtime](agent-runtime.md)
 - [Prompt Engine](prompt-engine.md)

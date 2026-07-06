@@ -334,6 +334,30 @@
         "secret handling"
       ],
       "validationDuty": "Codex remains responsible for applying, reviewing, and validating any suggested patch."
+    },
+    {
+      "id": "hermes",
+      "displayName": "Hermes",
+      "route": "hermes",
+      "launcherStatus": "local-installed-review",
+      "category": "bounded-secondary-review-candidate",
+      "coreDuties": [
+        "Prepare bounded secondary review only after current local config and auth checks pass.",
+        "Review sanitized SEIS architecture, public-readiness, and contradiction handoff packages.",
+        "Return candidate notes only; never act as an unreviewed repository writer."
+      ],
+      "allowedOutputs": [
+        "bounded review notes",
+        "contradiction checklist",
+        "public-readiness questions"
+      ],
+      "deniedActions": [
+        "direct repository writes by default",
+        "credential handling",
+        "live provider evidence claims",
+        "SSH, deployment, push, or merge authority"
+      ],
+      "validationDuty": "Codex must verify current Hermes availability and any Hermes output against repository evidence before accepting it."
     }
   ],
   "approvalRequiredFor": [
@@ -356,6 +380,6 @@
     "Use this assignment matrix to prepare bounded prompts for each reviewer.",
     "Keep Codex as the only writer for the next repository change package.",
     "Run the quality gate after changing the AI workforce matrix or related docs.",
-    "Add package.json script alias only after the current dirty package changes are reconciled."
+    "Use the installed AI tools registry before handing sanitized context to Xcode or Hermes."
   ]
 }
