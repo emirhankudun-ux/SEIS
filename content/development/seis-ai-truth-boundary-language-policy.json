@@ -1,0 +1,162 @@
+{
+  "id": "seis-ai-truth-boundary-language-policy",
+  "version": "2026.07.03",
+  "status": "active-governance-check",
+  "purpose": "Keep SEIS AI, sub-agent, MCP, and five-year plan wording aligned with supervised, plan-only, public-safe truth boundaries.",
+  "truthBoundary": "This policy scans wording only. It does not train models, download weights, run inference, call providers, execute SSH, provision cloud/GPU resources, mutate GitHub, deploy infrastructure, or approve autonomous background agents.",
+  "qualityGate": "npm run check:seis-ai-truth-boundary-language",
+  "sourceOfTruth": {
+    "checkScript": "scripts/check-seis-ai-truth-boundary-language.mjs",
+    "fiveYearPlan": "content/development/seis-sub-agent-5-year-plan.json",
+    "mcpServer": "packages/seis-ai/src/mcp/server.mjs",
+    "agentTools": "packages/seis-ai/src/agent/tools.mjs",
+    "agentTest": "packages/seis-ai/test/agent.test.mjs",
+    "mcpSmokeTest": "packages/seis-ai/test/mcp-smoke.test.mjs",
+    "demoPlanView": "apps/seis-demo-web/data/seis-sub-agent-five-year-plan-view.json",
+    "modelScalingDoc": "docs/ai/seis-model-scaling.md",
+    "modelScalingProfile": "content/development/seis-model-scaling-hardware-profile.json",
+    "packageJson": "package.json"
+  },
+  "scanFiles": [
+    {
+      "id": "fiveYearPlan",
+      "path": "content/development/seis-sub-agent-5-year-plan.json"
+    },
+    {
+      "id": "mcpServer",
+      "path": "packages/seis-ai/src/mcp/server.mjs"
+    },
+    {
+      "id": "agentTools",
+      "path": "packages/seis-ai/src/agent/tools.mjs"
+    },
+    {
+      "id": "agentTest",
+      "path": "packages/seis-ai/test/agent.test.mjs"
+    },
+    {
+      "id": "mcpSmokeTest",
+      "path": "packages/seis-ai/test/mcp-smoke.test.mjs"
+    },
+    {
+      "id": "demoPlanView",
+      "path": "apps/seis-demo-web/data/seis-sub-agent-five-year-plan-view.json"
+    },
+    {
+      "id": "modelScalingDoc",
+      "path": "docs/ai/seis-model-scaling.md"
+    },
+    {
+      "id": "modelScalingProfile",
+      "path": "content/development/seis-model-scaling-hardware-profile.json"
+    },
+    {
+      "id": "packageJson",
+      "path": "package.json"
+    }
+  ],
+  "disallowedPatterns": [
+    {
+      "id": "no-autonomous-assistance-theme",
+      "label": "autonomous assistance theme",
+      "fileIds": ["fiveYearPlan", "demoPlanView"],
+      "pattern": "Sustainable autonomous assistance and research readiness"
+    },
+    {
+      "id": "no-browser-runtime-evidence-label",
+      "label": "browser runtime evidence wording",
+      "fileIds": ["mcpServer", "demoPlanView"],
+      "pattern": "browser\\/runtime evidence"
+    },
+    {
+      "id": "no-lane-execution-plan-label",
+      "label": "lane execution plan wording",
+      "fileIds": ["mcpServer", "agentTools"],
+      "pattern": "Create a scoped .* execution plan from SEIS repo evidence"
+    },
+    {
+      "id": "no-plan-only-execution-guidance-label",
+      "label": "plan-only execution guidance wording",
+      "fileIds": ["agentTest"],
+      "pattern": "plan-only execution guidance"
+    },
+    {
+      "id": "no-mcp-smoke-executes-title",
+      "label": "MCP smoke test execution wording",
+      "fileIds": ["mcpSmokeTest"],
+      "pattern": "it\\(\"executes "
+    },
+    {
+      "id": "no-approved-cloud-runtime-class",
+      "label": "approved cloud runtime class wording",
+      "fileIds": ["modelScalingDoc", "modelScalingProfile"],
+      "pattern": "Approved distributed|approved distributed, multi-accelerator, or cloud research runtime|Approved cloud or multi-device research runtime"
+    },
+    {
+      "id": "no-frontier-cluster-runtime-class",
+      "label": "frontier cluster runtime wording",
+      "fileIds": ["modelScalingDoc", "modelScalingProfile"],
+      "pattern": "[Ff]rontier-scale distributed research cluster|frontier-scale distributed research runtime"
+    }
+  ],
+  "requiredPhrases": [
+    {
+      "id": "supervised-assistance-theme",
+      "fileId": "fiveYearPlan",
+      "phrase": "Sustainable supervised assistance and research readiness",
+      "message": "five-year plan must use supervised assistance wording"
+    },
+    {
+      "id": "mcp-implementation-plan-label",
+      "fileId": "mcpServer",
+      "phrase": "implementation plan from SEIS repo evidence",
+      "message": "MCP server lane plan description must use implementation-plan wording"
+    },
+    {
+      "id": "agent-tool-implementation-plan-label",
+      "fileId": "agentTools",
+      "phrase": "implementation plan from SEIS repo evidence",
+      "message": "agent tool schema lane plan description must use implementation-plan wording"
+    },
+    {
+      "id": "browser-demo-evidence-label",
+      "fileId": "mcpServer",
+      "phrase": "browser/demo evidence",
+      "message": "MCP plan-view resource description must use browser/demo evidence wording"
+    },
+    {
+      "id": "model-scaling-future-cloud-class",
+      "fileId": "modelScalingDoc",
+      "phrase": "Future approved distributed/multi-accelerator/cloud research class",
+      "message": "model scaling docs must describe cloud-scale frontier work as a future research class, not live runtime"
+    },
+    {
+      "id": "model-profile-future-cloud-class",
+      "fileId": "modelScalingProfile",
+      "phrase": "future approved distributed, multi-accelerator, or cloud research class",
+      "message": "model scaling profile must describe cloud-scale frontier work as a future research class, not live runtime"
+    },
+    {
+      "id": "model-scaling-future-frontier-class",
+      "fileId": "modelScalingDoc",
+      "phrase": "Future frontier-scale distributed research class",
+      "message": "model scaling docs must describe 512B+ frontier work as a future research class, not a live cluster"
+    },
+    {
+      "id": "model-profile-future-frontier-class",
+      "fileId": "modelScalingProfile",
+      "phrase": "future frontier-scale distributed research class",
+      "message": "model scaling profile must describe 512B+ frontier work as a future research class, not a live cluster"
+    }
+  ],
+  "packageScripts": {
+    "checkScriptName": "check:seis-ai-truth-boundary-language",
+    "checkScriptCommand": "node scripts/check-seis-ai-truth-boundary-language.mjs",
+    "qualityGovernanceMustInclude": "check:seis-ai-truth-boundary-language"
+  },
+  "nextSafeActions": [
+    "Keep this policy narrow until broader documentation surfaces have reviewed allowlists.",
+    "Add new disallowed phrases only when they protect public-safe truth boundaries without blocking legitimate technical terms.",
+    "Keep real runtime, AGI, training, SSH, cloud, and credential claims blocked unless evidence exists and a human approves the scope."
+  ]
+}

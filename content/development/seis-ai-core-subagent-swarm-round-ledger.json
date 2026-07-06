@@ -1,0 +1,237 @@
+{
+  "id": "seis-ai-core-subagent-swarm-round-ledger",
+  "version": 1,
+  "status": "plan-only-supervised-ledger",
+  "resourceUri": "seis://ai/subagent-swarm-round-ledger.json",
+  "sourcePath": "content/development/seis-ai-core-subagent-swarm-round-ledger.json",
+  "qualityGate": "npm run check:seis-ai-core-subagent-swarm-round-ledger",
+  "purpose": "Record the owner-requested 15/30-turn SEIS sub-agent swarm cadence as a supervised, repo-local planning ledger without granting continuous background runtime, external mutation, credential access, SSH, cloud, model training, routeable inference, benchmark, or AGI authority.",
+  "sourceOfTruth": {
+    "agents": "AGENTS.md",
+    "fiveYearPlan": "content/development/seis-sub-agent-5-year-plan.json",
+    "operatingModel": "content/development/seis-ai-core-subagent-operating-model.json",
+    "runtimeFixtures": "content/development/seis-ai-core-subagent-runtime-fixtures.json",
+    "reviewLedger": "content/development/seis-ai-core-subagent-review-ledger.json",
+    "mcpRuntimeContract": "content/development/seis-ai-core-mcp-runtime-contract.json",
+    "agi720bFrontierBoundary": "content/development/seis-720b-agi-frontier-boundary.json"
+  },
+  "truthBoundary": "This ledger is a supervised planning and evidence contract. It does not prove uninterrupted five-year execution, always-on background agents, completed 720B training, routeable 720B inference, AGI capability, cloud/GPU provisioning, SSH execution, provider calls, credential access, deployment, GitHub mutation, or production readiness.",
+  "ownerObjectiveMap": {
+    "duration": "five-years",
+    "target": "720B AGI",
+    "targetStatus": "plan-only-boundary",
+    "defaultRoundWindow": 15,
+    "expandedRoundWindow": 30,
+    "expandedRoundWindowRequiresOwnerApproval": true,
+    "swarmMode": "supervised-subagent-lanes",
+    "singleWriter": "codex",
+    "usefulMcpPolicy": "read-only-or-plan-only by default; privileged MCPs require explicit human approval and credential-safe setup"
+  },
+  "runtimeBoundary": {
+    "currentLevel": "status-and-plan-only",
+    "continuousBackgroundRuntime": "not-authorized",
+    "externalMutation": "not-authorized-without-explicit-human-approval",
+    "credentialAccess": "forbidden",
+    "sshExecution": "forbidden",
+    "cloudProvisioning": "forbidden",
+    "modelTraining": "forbidden",
+    "agiClaimAllowed": false,
+    "routeEligibleToday": false
+  },
+  "roundWindowProfiles": [
+    {
+      "id": "default-15-round-window",
+      "roundCount": 15,
+      "status": "enabled-for-supervised-planning",
+      "approvalRequired": false,
+      "closeoutRequired": ["agent report", "files touched", "validation evidence", "security boundary", "next handoff"],
+      "allowedNow": ["inspect", "plan", "draft scoped patches", "run local validators", "report evidence"],
+      "forbiddenNow": ["deploy", "ssh", "provider call", "credential access", "train model", "claim AGI", "mutate GitHub"]
+    },
+    {
+      "id": "expanded-30-round-window",
+      "roundCount": 30,
+      "status": "owner-approved-expansion-only",
+      "approvalRequired": true,
+      "closeoutRequired": ["15-round midpoint report", "30-round final report", "risk review", "validation replay", "human approval note"],
+      "allowedNow": ["plan expansion", "record required approval", "split disjoint work packages"],
+      "forbiddenNow": ["unbounded recursion", "autonomous background continuation", "privileged tool use without approval"]
+    }
+  ],
+  "laneAssignments": [
+    {
+      "laneId": "architecture-agent",
+      "agentRole": "Architecture and platform coherence",
+      "roundDuty": "Preserve SEIS identity, source-of-truth alignment, five-year roadmap coherence, and 720B plan-only boundaries.",
+      "defaultAuthority": "review-only",
+      "mcpBoundary": "read-only-or-plan-only"
+    },
+    {
+      "laneId": "implementation-agent",
+      "agentRole": "Bounded code and product implementation",
+      "roundDuty": "Implement small scoped patches, MCP resource wiring, generator updates, and test fixtures without overwriting unrelated work.",
+      "defaultAuthority": "scoped-worker",
+      "mcpBoundary": "repo-local-write-only-when-scoped"
+    },
+    {
+      "laneId": "security-agent",
+      "agentRole": "Security, privacy, permission, and credential boundaries",
+      "roundDuty": "Block secrets, unsafe autonomy, credential exposure, SSH/cloud claims, provider key leakage, and fake AGI/runtime claims.",
+      "defaultAuthority": "review-only",
+      "mcpBoundary": "read-only-or-plan-only"
+    },
+    {
+      "laneId": "documentation-agent",
+      "agentRole": "Source-of-truth docs, evidence, and handoffs",
+      "roundDuty": "Keep generated evidence, handoff notes, public/private boundaries, and roadmap status honest and synchronized.",
+      "defaultAuthority": "scoped-worker",
+      "mcpBoundary": "repo-local-write-only-when-scoped"
+    },
+    {
+      "laneId": "validation-agent",
+      "agentRole": "Tests, smoke checks, audit scripts, and release evidence",
+      "roundDuty": "Run local validators, MCP smoke tests, focused formatting checks, and claim-safety checks before handoff.",
+      "defaultAuthority": "review-only-or-scoped-worker",
+      "mcpBoundary": "read-only-or-plan-only"
+    },
+    {
+      "laneId": "design-agent",
+      "agentRole": "Command Center, SEIS Desktop, SEIS Code, and creative product UX",
+      "roundDuty": "Protect icon-first, Apple-first, cinematic calm interface direction while keeping controls accessible.",
+      "defaultAuthority": "proposal-or-scoped-worker",
+      "mcpBoundary": "read-only-or-plan-only"
+    }
+  ],
+  "roundAssignments": [
+    {
+      "round": 1,
+      "laneId": "architecture-agent",
+      "focus": "Confirm current source-of-truth files, AGENTS alignment, and active writer boundary before any scoped work.",
+      "requiredEvidence": ["git status summary", "AGENTS read", "scope statement"],
+      "status": "repo-tracked-plan-ready"
+    },
+    {
+      "round": 2,
+      "laneId": "security-agent",
+      "focus": "Scan planned scope for secrets, unsafe autonomy, SSH/cloud execution, provider key, and fake AGI claims.",
+      "requiredEvidence": ["focused secret scan", "claim boundary review"],
+      "status": "repo-tracked-plan-ready"
+    },
+    {
+      "round": 3,
+      "laneId": "implementation-agent",
+      "focus": "Wire one bounded MCP or source-of-truth improvement with disjoint file ownership.",
+      "requiredEvidence": ["files touched", "local diff summary"],
+      "status": "repo-tracked-plan-ready"
+    },
+    {
+      "round": 4,
+      "laneId": "validation-agent",
+      "focus": "Run the narrowest reliable validators for the changed surface before expanding test scope.",
+      "requiredEvidence": ["validator command", "pass/fail result"],
+      "status": "repo-tracked-plan-ready"
+    },
+    {
+      "round": 5,
+      "laneId": "documentation-agent",
+      "focus": "Regenerate repo-local evidence and update public-safe handoff text for the changed surface.",
+      "requiredEvidence": ["generated evidence path", "staleness check"],
+      "status": "repo-tracked-plan-ready"
+    },
+    {
+      "round": 6,
+      "laneId": "design-agent",
+      "focus": "Review icon-first, calm, accessible presentation needs for any demo-facing artifact.",
+      "requiredEvidence": ["UI impact note", "accessibility boundary"],
+      "status": "repo-tracked-plan-ready"
+    },
+    {
+      "round": 7,
+      "laneId": "architecture-agent",
+      "focus": "Map provider/router/model changes to plan-only source files before any runtime claim.",
+      "requiredEvidence": ["provider boundary", "router eligibility state"],
+      "status": "repo-tracked-plan-ready"
+    },
+    {
+      "round": 8,
+      "laneId": "implementation-agent",
+      "focus": "Advance local-demo, no-key, or MCP-read surface without adding credentials or dependencies casually.",
+      "requiredEvidence": ["no-key behavior", "dependency impact"],
+      "status": "repo-tracked-plan-ready"
+    },
+    {
+      "round": 9,
+      "laneId": "security-agent",
+      "focus": "Review prompt-injection, public/private boundary, and destructive-command safety before handoff.",
+      "requiredEvidence": ["unsafe action review", "public-safe wording check"],
+      "status": "repo-tracked-plan-ready"
+    },
+    {
+      "round": 10,
+      "laneId": "validation-agent",
+      "focus": "Run MCP smoke or demo smoke checks when the resource/tool/browser surface changes.",
+      "requiredEvidence": ["MCP smoke result", "resource count check"],
+      "status": "repo-tracked-plan-ready"
+    },
+    {
+      "round": 11,
+      "laneId": "documentation-agent",
+      "focus": "Update generated reports, roadmap notes, and next safe action without overstating completion.",
+      "requiredEvidence": ["report path", "next safe action"],
+      "status": "repo-tracked-plan-ready"
+    },
+    {
+      "round": 12,
+      "laneId": "design-agent",
+      "focus": "Keep SEIS Command Center direction icon-first, Apple-first, cinematic calm, and not generic SaaS.",
+      "requiredEvidence": ["design boundary note", "accessibility note"],
+      "status": "repo-tracked-plan-ready"
+    },
+    {
+      "round": 13,
+      "laneId": "architecture-agent",
+      "focus": "Advance the 720B frontier target only through evidence ladders and AGI evaluation gates.",
+      "requiredEvidence": ["720B boundary check", "AGI claim blocked"],
+      "status": "repo-tracked-plan-ready"
+    },
+    {
+      "round": 14,
+      "laneId": "validation-agent",
+      "focus": "Replay claim-safety, JSON parse, diff, and focused whitespace checks for touched files.",
+      "requiredEvidence": ["json parse", "diff check", "focused scan"],
+      "status": "repo-tracked-plan-ready"
+    },
+    {
+      "round": 15,
+      "laneId": "documentation-agent",
+      "focus": "Close the 15-round window with an AGENTS-format report and a next-round handoff.",
+      "requiredEvidence": ["agent report", "verification list", "next handoff"],
+      "status": "repo-tracked-plan-ready"
+    }
+  ],
+  "expandedRounds16To30": {
+    "status": "not-started-owner-approval-required",
+    "requires": ["owner approval", "midpoint report", "fresh risk review", "validation replay"],
+    "allowedUse": "Split larger work into disjoint implementation, validation, docs, design, security, and architecture packages after the first 15-round window is reviewed."
+  },
+  "forbiddenClaims": [
+    "SEIS is running uninterrupted autonomous agents for five years.",
+    "SEIS has completed the 720B AGI target.",
+    "SEIS has trained or benchmarked 720B weights.",
+    "SEIS has routeable 720B inference.",
+    "SEIS has provisioned cloud/GPU/SSH runtime for 720B.",
+    "SEIS can use all installed MCPs without authentication, scope, or human approval."
+  ],
+  "validation": [
+    "npm run check:seis-ai-core-subagent-swarm-round-ledger",
+    "npm run check:seis-sub-agent-5-year-plan",
+    "npm run check:seis-agent-plugin-integration",
+    "npm run check:seis-ai-core-subagent-operating-model",
+    "node --test packages/seis-ai/test/mcp-smoke.test.mjs"
+  ],
+  "nextSafeActions": [
+    "Expose this ledger as a read-only MCP resource.",
+    "Include round-window status in generated five-year demo evidence.",
+    "Keep future 30-round expansions blocked until owner approval and midpoint evidence exist."
+  ]
+}

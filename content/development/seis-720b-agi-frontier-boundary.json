@@ -1,0 +1,85 @@
+{
+  "id": "seis-720b-agi-frontier-boundary",
+  "version": "2026.07.03",
+  "status": "agi-frontier-boundary-plan-only",
+  "resourceUri": "seis://ai/720b-agi-frontier-boundary.json",
+  "qualityGate": "npm run check:seis-720b-agi-frontier-boundary",
+  "coreCredentialRequirement": "none",
+  "defaultRuntimeMode": "seis-local-demo",
+  "routeEligibleToday": false,
+  "runtimeAuthority": false,
+  "trainingStatus": "not-started",
+  "weightsAvailable": false,
+  "inferenceAvailable": false,
+  "benchmarkStatus": "not-run",
+  "productionReady": false,
+  "agiClaimAllowed": false,
+  "truthBoundary": "This record is a plan-only 720B AGI frontier boundary for the owner-requested five-year SEIS AI direction. It does not download models or datasets, train, fine-tune, run inference, benchmark memory, publish checkpoints, call providers, provision GPU/cloud capacity, execute SSH, deploy infrastructure, run continuous background agents, or claim SEIS owns a trained 720B foundation model or real AGI.",
+  "sourceOfTruth": {
+    "fiveYearPlan": "content/development/seis-sub-agent-5-year-plan.json",
+    "modelScalingProfile": "content/development/seis-model-scaling-hardware-profile.json",
+    "parameterLadder": "content/development/seis-model-parameter-ladder.json",
+    "nextFrontierBoundary": "content/development/seis-520b-next-frontier-boundary.json",
+    "apexModelProgram": "content/development/seis-512b-apex-model-program.json",
+    "agiEvaluationProtocol": "content/development/seis-agi-evaluation-protocol.json",
+    "agiPublicReadinessEvidence": "content/development/seis-agi-public-readiness-evidence.json",
+    "mcpRuntimeContract": "content/development/seis-ai-core-mcp-runtime-contract.json",
+    "modelScalingDoc": "docs/ai/seis-model-scaling.md"
+  },
+  "target": {
+    "id": "seis-720b-agi-frontier-target",
+    "displayName": "SEIS AI 720B AGI Frontier Boundary",
+    "parameterClass": "720B",
+    "parameterCountBillion": 720,
+    "horizon": "five-year-frontier-research-boundary",
+    "hardwareClass": "defined only after 520B evidence, frontier architecture decision, budget, safety, privacy, observability, rollback, cost-stop, external review, and human approval",
+    "allowedToday": "Local Demo status, planning, evidence mapping, MCP inventory, and validator-backed documentation only",
+    "minimumPrerequisite": "20B, 70B, 150B, 300B+, 512B, and 520B evidence accepted before any 720B runtime, benchmark, training, provider, GPU/cloud, SSH, deployment, publication, or AGI claim scope"
+  },
+  "supervisedCadence": {
+    "requestedDuration": "five-years",
+    "roundWindows": [15, 30],
+    "operatingMode": "supervised-ledgered-rounds-not-uncontrolled-background-runtime",
+    "singleWriter": "codex",
+    "continuousWorkBoundary": "Durable planning, validation, and handoff ledgers may continue across turns; no always-on process is authorized by this record."
+  },
+  "mcpBoundary": {
+    "selectionRule": "Useful MCPs may be added only when they have a bounded SEIS lane, credential boundary, validation gate, and human approval for privileged access.",
+    "defaultPermission": "read-only-or-plan-only",
+    "sourceContract": "content/development/seis-ai-core-mcp-runtime-contract.json"
+  },
+  "evidenceRequiredBeforeAny720BClaim": [
+    "20B, 70B, 150B, 300B+, 512B, and 520B evidence accepted",
+    "720B dense-vs-MoE frontier architecture decision recorded",
+    "clean-room rights and provenance review",
+    "frontier-scale distributed runtime feasibility proof",
+    "privacy and data-rights review",
+    "frontier safety, misuse, and capability-threshold evaluation",
+    "AGI evaluation protocol completed with independent review",
+    "observability, kill-switch, rollback, and cost-stop plan",
+    "external expert review completed",
+    "explicit human approval recorded"
+  ],
+  "forbiddenClaimRules": [
+    "no-trained-720b-weights-claim",
+    "no-routeable-720b-inference-claim",
+    "no-720b-benchmark-claim",
+    "no-720b-cloud-or-ssh-claim",
+    "no-720b-agi-capability-claim",
+    "no-continuous-autonomous-background-agent-claim"
+  ],
+  "forbiddenClaims": [
+    "SEIS has trained a 720B foundation model.",
+    "SEIS has routeable 720B inference.",
+    "SEIS has benchmarked a 720B model.",
+    "SEIS has provisioned 720B cloud or GPU runtime.",
+    "SEIS has achieved real AGI through the 720B roadmap.",
+    "SEIS is running uncontrolled five-year autonomous background agents."
+  ],
+  "nextSafeActions": [
+    "Keep 720B as a plan-only boundary until all lower-tier evidence exists.",
+    "Use 15-round supervised slices by default and require owner approval before any 30-round expansion.",
+    "Keep all MCP additions metadata-only or read-only until each connector has a credential boundary, validation gate, and explicit approval.",
+    "Require this validator before any PR claims 720B AGI frontier readiness."
+  ]
+}

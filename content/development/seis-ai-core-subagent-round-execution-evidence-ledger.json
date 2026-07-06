@@ -1,0 +1,219 @@
+{
+  "id": "seis-ai-core-subagent-round-execution-evidence-ledger",
+  "version": 1,
+  "status": "repo-local-supervised-closeout-evidence",
+  "resourceUri": "seis://ai/subagent-round-execution-evidence-ledger.json",
+  "sourcePath": "content/development/seis-ai-core-subagent-round-execution-evidence-ledger.json",
+  "qualityGate": "npm run check:seis-ai-core-subagent-round-execution-evidence-ledger",
+  "purpose": "Record public-safe supervised closeout evidence for SEIS sub-agent rounds without granting continuous background runtime, external mutation, credential access, SSH, cloud, provider, GitHub, deployment, model-training, routeable inference, benchmark, or AGI authority.",
+  "sourceOfTruth": {
+    "agents": "AGENTS.md",
+    "fiveYearPlan": "content/development/seis-sub-agent-5-year-plan.json",
+    "swarmRoundLedger": "content/development/seis-ai-core-subagent-swarm-round-ledger.json",
+    "operatingModel": "content/development/seis-ai-core-subagent-operating-model.json",
+    "runtimeFixtures": "content/development/seis-ai-core-subagent-runtime-fixtures.json",
+    "reviewLedger": "content/development/seis-ai-core-subagent-review-ledger.json",
+    "mcpRuntimeContract": "content/development/seis-ai-core-mcp-runtime-contract.json",
+    "agi720bFrontierBoundary": "content/development/seis-720b-agi-frontier-boundary.json",
+    "evidenceReport": "reports/seis-sub-agent-five-year-demo-evidence.json"
+  },
+  "truthBoundary": "This ledger records repo-local supervised closeout evidence only. It does not prove real five-year autonomous operation, uninterrupted background agents, autonomous writes, 720B AGI completion, 720B training, routeable 720B inference, benchmark execution, credential access, SSH execution, cloud provisioning, provider calls, deployment, GitHub mutation, or production readiness.",
+  "runtimeBoundary": {
+    "currentLevel": "evidence-ledger-only",
+    "backgroundAutomation": "disabled",
+    "continuousBackgroundRuntime": "not-authorized",
+    "externalMutationPerformed": false,
+    "credentialAccessPerformed": false,
+    "sshExecutionPerformed": false,
+    "deploymentPerformed": false,
+    "githubMutationPerformed": false,
+    "providerCallPerformed": false,
+    "modelTrainingPerformed": false,
+    "releasePromotionAllowed": false,
+    "agiClaimAllowed": false,
+    "routeEligibleToday": false
+  },
+  "roundWindowState": {
+    "defaultRoundWindow": 15,
+    "expandedRoundWindow": 30,
+    "expandedRoundWindowRequiresOwnerApproval": true,
+    "recordedCloseoutCount": 7,
+    "requiredCloseoutFields": [
+      "round",
+      "laneId",
+      "task",
+      "scope",
+      "filesTouched",
+      "verification",
+      "security",
+      "risks",
+      "handoff"
+    ]
+  },
+  "closeoutRecords": [
+    {
+      "id": "round-01-source-of-truth-audit",
+      "round": 1,
+      "laneId": "architecture-agent",
+      "status": "supervised-closeout-recorded",
+      "task": "Confirm source-of-truth files, active contracts, and 31-resource baseline before adding a new MCP resource.",
+      "scope": "read-only audit of AGENTS, MCP server, plugin integration, operating model, five-year plan, generator, and checks",
+      "filesTouched": [],
+      "verification": [
+        "node --test packages/seis-ai/test/mcp-smoke.test.mjs"
+      ],
+      "security": "No secrets, credentials, SSH hosts, provider keys, deploy commands, GitHub mutation, or private data were read into the ledger.",
+      "risks": "The baseline proved the current resource state but did not add the new round execution evidence resource.",
+      "handoff": "Use the audit result to add one public-safe read-only MCP resource and update all resource-count assertions."
+    },
+    {
+      "id": "round-02-contract-scope",
+      "round": 2,
+      "laneId": "security-agent",
+      "status": "supervised-closeout-recorded",
+      "task": "Define the public/private and runtime authority boundary for round execution evidence.",
+      "scope": "repo-local ledger schema, forbidden claims, credential boundary, and no-runtime authority language",
+      "filesTouched": [
+        "content/development/seis-ai-core-subagent-round-execution-evidence-ledger.json"
+      ],
+      "verification": [
+        "npm run check:seis-ai-core-subagent-round-execution-evidence-ledger"
+      ],
+      "security": "The ledger blocks credential access, SSH execution, cloud provisioning, provider calls, GitHub mutation, deployment, model training, routeable inference, and AGI claims.",
+      "risks": "Future records must stay redacted and must not include command output containing secrets or private infrastructure details.",
+      "handoff": "Keep the ledger append-only in spirit and validate every record against the public-safe closeout fields."
+    },
+    {
+      "id": "round-03-mcp-resource-wiring",
+      "round": 3,
+      "laneId": "implementation-agent",
+      "status": "supervised-closeout-recorded",
+      "task": "Expose the round execution evidence ledger as a read-only MCP resource.",
+      "scope": "MCP resource registry, plugin helper constants, plugin manifest resource list, and smoke-test resource contract",
+      "filesTouched": [
+        "packages/seis-ai/src/mcp/server.mjs",
+        "packages/seis-ai/src/lib/plugin-integration.mjs",
+        "content/development/seis-agent-plugin-integration.json",
+        "packages/seis-ai/test/mcp-smoke.test.mjs"
+      ],
+      "verification": [
+        "node --test packages/seis-ai/test/mcp-smoke.test.mjs"
+      ],
+      "security": "The resource is read-only JSON and does not authorize external mutation, credentials, SSH, cloud, deployment, GitHub writes, provider calls, model training, or AGI claims.",
+      "risks": "Hard-coded resource counts must remain synchronized with the MCP runtime contract until those checks become contract-derived.",
+      "handoff": "After wiring, regenerate demo evidence and run the focused sub-agent and MCP checks."
+    },
+    {
+      "id": "round-04-evidence-regeneration",
+      "round": 4,
+      "laneId": "validation-agent",
+      "status": "supervised-closeout-recorded",
+      "task": "Regenerate and validate five-year demo evidence with the 32-resource MCP contract.",
+      "scope": "reports, demo plan view, sub-agent five-year checks, plugin integration checks, operating model checks, and resource-count validators",
+      "filesTouched": [
+        "reports/seis-sub-agent-five-year-demo-evidence.json",
+        "reports/seis-sub-agent-five-year-demo-evidence.md",
+        "apps/seis-demo-web/data/seis-sub-agent-five-year-plan-view.json",
+        "scripts/check-sub-agent-5-year-plan.mjs"
+      ],
+      "verification": [
+        "npm run check:seis-ai-core-subagent-round-execution-evidence-ledger",
+        "npm run check:seis-ai-core-subagent-operating-model",
+        "npm run check:seis-agent-plugin-integration",
+        "npm run check:seis-sub-agent-5-year-plan",
+        "node --test packages/seis-ai/test/mcp-smoke.test.mjs"
+      ],
+      "security": "Validation remains local; no secrets, credential reads, SSH, cloud mutation, provider calls, GitHub mutation, deploys, model training, benchmarks, or production claims are part of the evidence.",
+      "risks": "A broad dirty worktree can contain unrelated user changes; final review must isolate this ledger/resource diff before commit.",
+      "handoff": "Use focused checks as the acceptance gate for the resource addition and keep long-horizon completion claims blocked."
+    },
+    {
+      "id": "round-05-security-claims-audit",
+      "round": 5,
+      "laneId": "security-agent",
+      "status": "supervised-closeout-recorded",
+      "task": "Audit the 720B AGI boundary, swarm round ledger, round execution evidence ledger, MCP resources, generated evidence, and focused checkers for public/private and truth-boundary drift.",
+      "scope": "read-only security and claims review of the new/touched 720B boundary, sub-agent round ledgers, truth-boundary policy, MCP resource wiring, smoke coverage, generated evidence, and focused secret-shaped string scan",
+      "filesTouched": [],
+      "verification": [
+        "npm run check:seis-720b-agi-frontier-boundary",
+        "npm run check:seis-ai-core-subagent-swarm-round-ledger",
+        "npm run check:seis-ai-core-subagent-round-execution-evidence-ledger",
+        "npm run check:seis-ai-truth-boundary-language",
+        "npm run check:seis-sub-agent-five-year-demo-evidence",
+        "node --test packages/seis-ai/test/mcp-smoke.test.mjs",
+        "focused secret-shaped string scan over 720B, sub-agent round, truth-boundary, MCP resource, checker, generator, and generated evidence files"
+      ],
+      "security": "No blocking truth-boundary risk or secret-shaped string was found in the reviewed scope. The reviewed artifacts keep 720B plan-only and block real AGI, routeable inference, training, benchmark, provider-call, credential, SSH, cloud, deployment, GitHub mutation, production-readiness, and uninterrupted autonomous runtime claims.",
+      "risks": "This is a focused review, not a full dirty-worktree security audit. Broader unrelated modified files still need their own review before commit or PR.",
+      "handoff": "Keep future round closeouts public-safe, append-only in spirit, and backed by focused validators before increasing recorded closeout counts."
+    },
+    {
+      "id": "round-06-goal-objective-principles-ingestion",
+      "round": 6,
+      "laneId": "governance-agent",
+      "status": "supervised-closeout-recorded",
+      "task": "Record public-safe strategic closeout themes from the latest read Codex goal objective constitution.",
+      "scope": "public-safe governance ingestion only, covering the latest objective constitution through principle 1380, including creative engineering ecosystem strategy, permanent engineering excellence, Apple-first technology priority, platform self-evaluation, research laboratory, product clarity, transparent AI culture, sustainability, knowledge continuity, contributor experience, discoverability, verification discipline, modular AI evolution, governance, observability, simplicity, reversibility, searchable platform direction, AI safety architecture, ecosystem harmony, dependency lock-in resistance, AI coordination layers, knowledge consolidation, repository excellence, compounding value, ecosystem leadership, and continuous architectural excellence",
+      "filesTouched": [
+        "content/development/seis-ai-core-subagent-round-execution-evidence-ledger.json"
+      ],
+      "verification": [
+        "read latest Codex goal objective constitution through principle 1380",
+        "confirmed the latest objective appended public-safe principles 1361-1380 over the prior objective",
+        "JSON parse for content/development/seis-ai-core-subagent-round-execution-evidence-ledger.json"
+      ],
+      "security": "The record intentionally stores only public-safe strategic themes. It omits local attachment paths, credentials, private file locations, SSH/cloud/provider details, live AI calls, benchmark claims, model-training claims, AGI claims, GitHub mutation, deployment, and external runtime authority.",
+      "risks": "This closeout captures guidance as strategic governance evidence only; it does not prove implementation, automation runtime, provider activity, Apple Intelligence integration, self-evaluation execution, repository intelligence, observability telemetry, or AI safety architecture completion.",
+      "handoff": "Use these themes as future architecture guidance while keeping implementation PR-sized, reversible, verified, public-safe, and separated from live provider, cloud, SSH, deployment, GitHub mutation, or AGI claims."
+    },
+    {
+      "id": "round-07-goal-objective-continuation-ingestion",
+      "round": 7,
+      "laneId": "governance-agent",
+      "status": "supervised-closeout-recorded",
+      "task": "Record public-safe strategic themes from the latest Codex goal objective continuation.",
+      "scope": "public-safe governance ingestion only, covering the latest objective continuation from principles 1361 through 1740, including Apple-first platform leadership, lock-in resistance, AI coordination frameworks, knowledge multipliers, human attention, future compatibility, knowledge consolidation, repository excellence, platform operating models, engineering decision matrices, knowledge governance, Apple-first roadmaps, GitHub-first development discipline, Swift package strategy, AI transparency, repository synchronization, professional foundations, Swift investment, and continuous Apple-first evolution",
+      "filesTouched": [
+        "content/development/seis-ai-core-subagent-round-execution-evidence-ledger.json"
+      ],
+      "verification": [
+        "read latest Codex goal objective continuation from principles 1361 through 1740",
+        "confirmed the latest objective contains 362 principle headings and ends at principle 1740",
+        "JSON parse for content/development/seis-ai-core-subagent-round-execution-evidence-ledger.json"
+      ],
+      "security": "The record stores only public-safe strategic themes. It omits local attachment paths, credentials, private file locations, SSH/cloud/provider details, live AI calls, benchmark claims, model-training claims, AGI claims, GitHub mutation, deployment, and external runtime authority.",
+      "risks": "This closeout captures guidance as strategic governance evidence only; it does not prove implementation, autonomous runtime, provider activity, Apple Intelligence integration, GitHub synchronization, Swift expansion, repository intelligence, observability telemetry, or AI safety architecture completion.",
+      "handoff": "Use these continuation themes to prioritize future SEIS work around Swift-first foundations, GitHub-readable history, knowledge consolidation, public-safe AI governance, and verified Apple-first architecture."
+    }
+  ],
+  "evidenceSummary": {
+    "totalCloseoutRecords": 7,
+    "defaultRoundCompletion": "7/15",
+    "completionClaimAllowed": false,
+    "continuousRuntimeClaimAllowed": false,
+    "agiClaimAllowed": false,
+    "publicSafe": true
+  },
+  "forbiddenClaims": [
+    "SEIS has completed a real uninterrupted five-year autonomous run.",
+    "SEIS has completed all 15 or 30 rounds without supervised evidence.",
+    "SEIS has achieved 720B AGI.",
+    "SEIS has trained 720B weights.",
+    "SEIS has routeable 720B inference.",
+    "SEIS has run 720B benchmarks.",
+    "SEIS used provider credentials, SSH, cloud, deployment, or GitHub mutation for these closeouts."
+  ],
+  "validation": [
+    "npm run check:seis-ai-core-subagent-round-execution-evidence-ledger",
+    "npm run check:seis-ai-core-subagent-operating-model",
+    "npm run check:seis-agent-plugin-integration",
+    "npm run check:seis-sub-agent-5-year-plan",
+    "node --test packages/seis-ai/test/mcp-smoke.test.mjs"
+  ],
+  "nextSafeActions": [
+    "Keep this ledger read-only through MCP.",
+    "Append future closeouts only with public-safe evidence fields.",
+    "Do not promote sub-agent workflows beyond status-and-plan-only without executable permission enforcement, redaction tests, rollback evidence, and explicit human approval."
+  ]
+}
