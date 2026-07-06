@@ -217,7 +217,7 @@ ensureArrayIncludesAll(pluginIntegration?.runtimeIntegration?.mcpResources, [
   "seis://ai/agi-public-readiness-evidence.json"
 ], "pluginIntegration.runtimeIntegration.mcpResources");
 ensureArrayIncludesAll(pluginIntegration?.qualityCommands, ["node scripts/check-seis-agi-evaluation-protocol.mjs"], "pluginIntegration.qualityCommands");
-ensure(mcpRuntime?.resourceCount === 28, "MCP runtime contract must record 28 resources");
+ensure(mcpRuntime?.resourceCount === 32, "MCP runtime contract must record 32 resources");
 
 for (const [text, label] of [
   [helper, "AI Core helper"],
