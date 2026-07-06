@@ -2,6 +2,10 @@
 
 The macOS lane is for local desktop tools around SEIS: repo inspection, archive audit, plugin management, and data review.
 
+For the broader Apple-first product model, start with
+[`../apple/README.md`](../apple/README.md). The active Swift Package remains
+`../../packages/seis_platform_swift`.
+
 ## Initial Direction
 
 - use SwiftUI for first-party desktop surfaces
