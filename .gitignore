@@ -215,6 +215,7 @@ SEİS/
 SEİS/
 packages/seis_platform_swift/.build/
 scripts/super-ssh-manager.py
+packages/seis-ai/downloadable/
 
 # Local SEIS SSH mobile readiness reports
 # Local generated reports
