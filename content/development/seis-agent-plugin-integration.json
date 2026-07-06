@@ -16,7 +16,7 @@
   },
   "auditedSnapshot": {
     "auditedAt": "2026-06-19",
-    "sourceCommand": "WORKDIR=/tmp/seis-installed-plugin-audit-20260619 bash /Users/emirhankudun/plugins/seis/scripts/seis-installed-plugin-audit.sh",
+    "sourceCommand": "local-plugin-audit-command-redacted; rerun with SEIS_PLUGIN_AUDIT_ROOT and an untracked temp workdir",
     "installedEnabledCount": 185,
     "notInstalledCount": 5,
     "personalPluginsInstalledEnabled": [
@@ -221,6 +221,7 @@
     "mcpResource": "seis://agent/plugin-integration.json",
     "mcpResources": [
       "seis://agent/plugin-integration.json",
+      "seis://agent/god-mode-status.json",
       "seis://ai/mcp-runtime-contract.json",
       "seis://ai/provider-registry.json",
       "seis://ai/model-scaling-hardware-profile.json",
@@ -259,7 +260,8 @@
       "seis_design_plan",
       "seis_data_status",
       "seis_data_plan"
-    ]
+    ],
+    "godModeStatusTool": "seis_god_mode_status"
   },
   "fiveYearSubagentDevelopment": {
     "status": "planned-from-active-status-plan-lanes",

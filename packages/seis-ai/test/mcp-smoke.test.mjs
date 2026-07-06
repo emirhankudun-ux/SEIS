@@ -66,7 +66,7 @@ function rpcSession(requests, { timeoutMs = 15000 } = {}) {
 }
 
 describe("seis-mcp stdio smoke", () => {
-  it("initializes and lists 34 tools, 3 prompts, 28 resources", async () => {
+  it("initializes and lists 35 tools, 3 prompts, 29 resources", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -114,6 +114,7 @@ describe("seis-mcp stdio smoke", () => {
       "seis_data_status",
       "seis_design_plan",
       "seis_design_status",
+      "seis_god_mode_status",
       "seis_hub_plan",
       "seis_hub_status",
       "seis_plugin_integration",
@@ -127,6 +128,7 @@ describe("seis-mcp stdio smoke", () => {
 
     const resources = responses.get(3).result.resources.map((r) => r.uri).sort();
     assert.deepEqual(resources, [
+      "seis://agent/god-mode-status.json",
       "seis://agent/plugin-integration.json",
       "seis://ai/150b-frontier-model-program.json",
       "seis://ai/20b-dataset-card-template.json",
@@ -250,8 +252,43 @@ describe("seis-mcp stdio smoke", () => {
     assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
     const payload = JSON.parse(resource.result.contents[0].text);
     assert.equal(payload.id, "seis-ai-core-mcp-runtime-contract");
-    assert.equal(payload.resourceCount, 28);
+    assert.equal(payload.toolCount, 35);
+    assert.equal(payload.resourceCount, 29);
+    assert.equal(payload.promptCount, 3);
     assert.equal(payload.transport, "stdio JSON-RPC");
+  });
+
+  it("calls the SEIS God Mode status tool through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "tools/call",
+        params: {
+          name: "seis_god_mode_status",
+          arguments: {},
+        },
+      },
+    ]);
+
+    const response = responses.get(2);
+    assert.ok(!response.error, `tools/call errored: ${JSON.stringify(response.error)}`);
+    const payload = JSON.parse(response.result.content[0].text);
+    assert.equal(payload.ok, true);
+    assert.equal(payload.tool, "seis_god_mode_status");
+    assert.equal(payload.runState.current, "pending-validation");
+    assert.equal(payload.moduleCount, 5);
   });
 
   it("reads the SEIS AI Core provider registry resource through the protocol", async () => {

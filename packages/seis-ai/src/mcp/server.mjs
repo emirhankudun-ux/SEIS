@@ -37,6 +37,8 @@ import {
   AI_CORE_VERSION_PROMOTION_TOOL,
   AI_CORE_VERSION_REGISTRY_PATH,
   AI_CORE_VERSION_STATUS_TOOL,
+  GOD_MODE_STATUS_RESOURCE_URI,
+  GOD_MODE_STATUS_TOOL,
   MCP_RUNTIME_CONTRACT_PATH,
   PERSONAL_PLUGIN_LANE_TOOLS,
   PLUGIN_INTEGRATION_PATH,
@@ -59,6 +61,7 @@ import {
   aiCoreModelScalingStatus,
   aiCoreVersionPromotionDryRun,
   aiCoreVersionStatus,
+  godModeStatus,
   personalPluginLanePlan,
   personalPluginLaneStatus,
   pluginIntegrationStatus,
@@ -511,6 +514,21 @@ export function buildServer() {
   );
 
   server.tool(
+    GOD_MODE_STATUS_TOOL,
+    "Read the repo-backed SEIS God Mode Developer operating state: required layer lift, module coverage, run-state, work-package readiness, source health, and next safe actions. Read-only; performs no file mutation, provider call, credential access, SSH, deployment, GitHub mutation, or completion claim.",
+    {
+      includeFullRecords: z.boolean().optional().describe("Return the full machine-readable God Mode source records"),
+    },
+    async ({ includeFullRecords }) => {
+      try {
+        return jsonResult(godModeStatus(repoRoot, { includeFullRecords: includeFullRecords === true }));
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
+
+  server.tool(
     AI_CORE_PROVIDER_STATUS_TOOL,
     "Read the SEIS AI Core provider registry for zero-key Local Demo, supervised Codex, optional server-only cloud providers, local-provider candidates, public provider states, and security invariants. Read-only; performs no live provider calls, credential validation, network checks, SSH, deployment, or GitHub mutation.",
     {
@@ -815,6 +833,21 @@ Steps:
           uri: "seis://agent/plugin-integration.json",
           mimeType: "application/json",
           text: readFileSync(path.join(repoRoot, ...PLUGIN_INTEGRATION_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "god-mode-status",
+    GOD_MODE_STATUS_RESOURCE_URI,
+    { description: "SEIS God Mode Developer read-only operating-state summary", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: GOD_MODE_STATUS_RESOURCE_URI,
+          mimeType: "application/json",
+          text: JSON.stringify(godModeStatus(repoRoot, { includeFullRecords: true }), null, 2),
         },
       ],
     })

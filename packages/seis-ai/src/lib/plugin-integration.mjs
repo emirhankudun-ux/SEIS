@@ -38,6 +38,11 @@ export const SUBAGENT_REDACTION_FIXTURE_PATH = "content/development/seis-ai-core
 export const SUBAGENT_EXECUTION_LEDGER_FIXTURE_PATH = "content/development/seis-ai-core-execution-ledger-fixture.json";
 export const SUBAGENT_RUNTIME_FIXTURES_PATH = "content/development/seis-ai-core-subagent-runtime-fixtures.json";
 export const SUBAGENT_REVIEW_LEDGER_PATH = "content/development/seis-ai-core-subagent-review-ledger.json";
+export const GOD_MODE_DEVELOPER_CONTRACT_PATH = "content/development/seis-god-mode-developer-contract.json";
+export const GOD_MODE_MODULE_COVERAGE_PATH = "content/development/seis-god-mode-module-coverage.json";
+export const GOD_MODE_RUN_STATE_PATH = "content/development/seis-god-mode-run-state.json";
+export const GOD_MODE_WORK_PACKAGE_PATH = "content/development/seis-god-mode-work-package.json";
+export const GOD_MODE_STATUS_RESOURCE_URI = "seis://agent/god-mode-status.json";
 export const SUBAGENT_OPERATING_MODEL_TOOL = "seis_ai_core_subagent_model";
 export const SUBAGENT_DRY_RUN_TASK_TOOL = "seis_ai_core_subagent_dry_run";
 export const SUBAGENT_REVIEW_LEDGER_TOOL = "seis_ai_core_subagent_review_ledger";
@@ -45,6 +50,7 @@ export const AI_CORE_PROVIDER_STATUS_TOOL = "seis_ai_core_provider_status";
 export const AI_CORE_MODEL_SCALING_STATUS_TOOL = "seis_ai_core_model_scaling_status";
 export const AI_CORE_VERSION_STATUS_TOOL = "seis_ai_core_version_status";
 export const AI_CORE_VERSION_PROMOTION_TOOL = "seis_ai_core_version_promotion_dry_run";
+export const GOD_MODE_STATUS_TOOL = "seis_god_mode_status";
 export const PERSONAL_PLUGIN_LANE_TOOLS = [
   {
     laneId: "seis",
@@ -164,6 +170,14 @@ export function readAiCoreProviderRegistry(repoRoot) {
   return JSON.parse(readFileSync(filePath, "utf8"));
 }
 
+export function readGodModeDeveloperContract(repoRoot) {
+  const filePath = path.join(repoRoot, ...GOD_MODE_DEVELOPER_CONTRACT_PATH.split("/"));
+  if (!existsSync(filePath)) {
+    throw new Error(`SEIS God Mode developer contract is missing: ${GOD_MODE_DEVELOPER_CONTRACT_PATH}`);
+  }
+  return JSON.parse(readFileSync(filePath, "utf8"));
+}
+
 export function readAiCoreModelScalingProfile(repoRoot) {
   const filePath = path.join(repoRoot, ...AI_CORE_MODEL_SCALING_PROFILE_PATH.split("/"));
   if (!existsSync(filePath)) {
@@ -202,6 +216,105 @@ export function readAiCoreAgiPublicReadinessEvidence(repoRoot) {
     throw new Error(`SEIS AGI public readiness evidence is missing: ${AI_CORE_AGI_PUBLIC_READINESS_EVIDENCE_PATH}`);
   }
   return JSON.parse(readFileSync(filePath, "utf8"));
+}
+
+export function godModeStatus(repoRoot, options = {}) {
+  try {
+    const developerContract = readGodModeDeveloperContract(repoRoot);
+    const moduleCoverage = readJsonIfExists(repoRoot, GOD_MODE_MODULE_COVERAGE_PATH) || {};
+    const runStateRecord = readJsonIfExists(repoRoot, GOD_MODE_RUN_STATE_PATH) || {};
+    const workPackage = readJsonIfExists(repoRoot, GOD_MODE_WORK_PACKAGE_PATH) || {};
+
+    const requiredLayerLift = Array.isArray(developerContract.requiredLayerLift)
+      ? developerContract.requiredLayerLift
+      : [];
+    const modules = Array.isArray(moduleCoverage.modules) ? moduleCoverage.modules : [];
+    const runStates = Array.isArray(runStateRecord.states) ? runStateRecord.states : [];
+    const sections = Array.isArray(workPackage.sections) ? workPackage.sections : [];
+    const nextSafeActions = uniqueStrings([
+      ...runStates.map((state) => state.nextAction),
+      ...modules.map((module) => module.nextBuildSlice),
+      ...(Array.isArray(developerContract.operatingBehavior) ? developerContract.operatingBehavior : []),
+    ]);
+
+    const payload = {
+      ok: true,
+      tool: GOD_MODE_STATUS_TOOL,
+      resourceUri: GOD_MODE_STATUS_RESOURCE_URI,
+      contractPath: GOD_MODE_DEVELOPER_CONTRACT_PATH,
+      moduleCoveragePath: GOD_MODE_MODULE_COVERAGE_PATH,
+      runStatePath: GOD_MODE_RUN_STATE_PATH,
+      workPackagePath: GOD_MODE_WORK_PACKAGE_PATH,
+      id: developerContract.id,
+      status: developerContract.status,
+      qualityGate: developerContract.qualityGate,
+      truthBoundary:
+        "Repository-local God Mode status only; no file mutation, provider call, credential access, SSH, deployment, GitHub mutation, or completion claim.",
+      telemetryEvent: developerContract.feature?.telemetryEvent ?? null,
+      requiredLayerCount: requiredLayerLift.length,
+      requiredLayerLift,
+      moduleCoverageStatus: moduleCoverage.status ?? null,
+      moduleCoverageQualityGate: moduleCoverage.qualityGate ?? null,
+      moduleCount: modules.length,
+      modules: modules.map((module) => ({
+        id: module.id,
+        displayName: module.displayName,
+        nextBuildSlice: module.nextBuildSlice ?? null,
+        coveredLayerCount: module.layers && typeof module.layers === "object" ? Object.keys(module.layers).length : 0,
+        acceptanceEvidenceCount: Array.isArray(module.acceptanceEvidence) ? module.acceptanceEvidence.length : 0,
+      })),
+      runState: {
+        id: runStateRecord.id ?? null,
+        status: runStateRecord.status ?? null,
+        current: runStateRecord.runState ?? null,
+        qualityGate: runStateRecord.qualityGate ?? null,
+        stateCount: runStates.length,
+        states: runStates.map((state) => ({
+          id: state.id,
+          displayName: state.displayName,
+          state: state.state,
+          nextAction: state.nextAction ?? null,
+        })),
+      },
+      commitReadiness: workPackage.commitReadiness ?? null,
+      releaseReadiness: workPackage.releaseReadiness ?? null,
+      workPackageStatus: workPackage.status ?? null,
+      workPackageQualityGate: workPackage.qualityGate ?? null,
+      sectionCount: sections.length,
+      sections: sections.map((section) => ({
+        id: section.id,
+        displayName: section.displayName,
+        status: section.status,
+        qualityGate: section.qualityGate ?? null,
+        rollbackPlan: section.rollbackPlan ?? null,
+      })),
+      sourceHealth: [
+        readJsonSource(repoRoot, GOD_MODE_DEVELOPER_CONTRACT_PATH).health,
+        readJsonSource(repoRoot, GOD_MODE_MODULE_COVERAGE_PATH).health,
+        readJsonSource(repoRoot, GOD_MODE_RUN_STATE_PATH).health,
+        readJsonSource(repoRoot, GOD_MODE_WORK_PACKAGE_PATH).health,
+      ],
+      nextSafeActions,
+    };
+
+    if (options.includeFullRecords === true) {
+      payload.records = {
+        developerContract,
+        moduleCoverage,
+        runState: runStateRecord,
+        workPackage,
+      };
+    }
+
+    return payload;
+  } catch (error) {
+    return {
+      ok: false,
+      tool: GOD_MODE_STATUS_TOOL,
+      contractPath: GOD_MODE_DEVELOPER_CONTRACT_PATH,
+      error: error.message,
+    };
+  }
 }
 
 export function aiCoreProviderStatus(repoRoot, options = {}) {
@@ -1494,6 +1607,10 @@ export function personalPluginLanePlan(repoRoot, laneId, request) {
 
 function findLane(manifest, laneId) {
   return (Array.isArray(manifest.lanes) ? manifest.lanes : []).find((lane) => lane.id === laneId);
+}
+
+function uniqueStrings(values) {
+  return [...new Set(values.filter((value) => typeof value === "string" && value.trim()).map((value) => value.trim()))];
 }
 
 function readJsonIfExists(repoRoot, relativePath) {

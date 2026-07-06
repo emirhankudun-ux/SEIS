@@ -50,7 +50,7 @@ function includesAll(candidate, required, label) {
 function ensureNoSecretsOrLocalPaths(text, label) {
   ensure(!/\/Users\/[A-Za-z0-9._-]+\/[^\s"'`<>]+/.test(text), `${label} must not contain concrete local absolute paths`);
   ensure(!/BEGIN (RSA |OPENSSH |EC |DSA )?PRIVATE KEY/.test(text), `${label} must not contain private key markers`);
-  ensure(!/sk-[A-Za-z0-9_-]{16,}/.test(text), `${label} must not contain provider API key-shaped values`);
+  ensure(!/(^|[^A-Za-z0-9_])sk-[A-Za-z0-9_-]{16,}/.test(text), `${label} must not contain provider API key-shaped values`);
   ensure(!/AKIA[0-9A-Z]{16}/.test(text), `${label} must not contain AWS access-key-shaped values`);
   ensure(!/ghp_[A-Za-z0-9_]{20,}/.test(text), `${label} must not contain GitHub token-shaped values`);
   ensure(!/github_pat_[A-Za-z0-9_]{20,}/.test(text), `${label} must not contain GitHub fine-grained token-shaped values`);

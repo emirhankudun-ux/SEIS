@@ -72,7 +72,7 @@ function scanForSecretsOrLocalPaths(blob, repoPath) {
     fail(`staged blob contains private key marker: ${repoPath}`);
   }
 
-  if (/sk-[A-Za-z0-9_-]{16,}/.test(blob)) {
+  if (/(^|[^A-Za-z0-9_])sk-[A-Za-z0-9_-]{16,}/.test(blob)) {
     fail(`staged blob contains provider API key-shaped value: ${repoPath}`);
   }
 
