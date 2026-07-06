@@ -26,9 +26,13 @@ if ! command -v gitleaks &> /dev/null; then
         brew install gitleaks || true
     else
         echo -e "${RED}❌ Otomatik kurulum desteklenmiyor. Lütfen manuel yükleyin: https://github.com/gitleaks/gitleaks${NC}"
-        exit 1
     fi
-    echo -e "${GREEN}✅ gitleaks yüklendi.${NC}"
+    if ! command -v gitleaks &> /dev/null; then
+        echo -e "${RED}❌ gitleaks hâlâ bulunamadı; gizli anahtar taraması doğrulanamadı.${NC}"
+        exit 1
+    else
+        echo -e "${GREEN}✅ gitleaks yüklendi.${NC}"
+    fi
 fi
 
 # Taramayı Çalıştır
