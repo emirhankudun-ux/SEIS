@@ -13,7 +13,7 @@ const SITEMAP_FILE = path.join(ROOT, "apps", "web", "sitemap.xml");
 const failures = [];
 
 const requiredMenus = ["file", "edit", "selection", "view", "go", "run", "terminal", "help"];
-const requiredViews = ["explorer", "search", "source", "run", "extensions"];
+const requiredViews = ["explorer", "search", "source", "run", "extensions", "design"];
 const requiredPanels = ["terminal", "problems", "output", "debug"];
 const requiredLensActions = ["toggle-command-lens", "focus-terminal", "open-ai-repl", "show-five-year-plan"];
 const requiredCommands = [
@@ -316,7 +316,7 @@ async function runRuntimeSmoke() {
   await waitFor(() => diagnostics.filePaths().length >= 7, "seeded virtual files");
 
   ensure(diagnostics.menuCount() === requiredMenus.length, "Runtime menu count must match the eight required top menus.");
-  ensure(diagnostics.activityViewCount() === requiredViews.length, "Runtime activity view count must match the five required views.");
+  ensure(diagnostics.activityViewCount() === requiredViews.length, "Runtime activity view count must match the required activity views.");
   ensure(diagnostics.bottomPanelCount() === requiredPanels.length, "Runtime bottom panel count must match the four required panels.");
   ensure(diagnostics.languageModes().length >= requiredLanguages.length, "Runtime language mode list must expose 25+ languages.");
   ensure(diagnostics.filePaths().includes("/workspace/README.md"), "Runtime workspace must seed README.md.");
@@ -328,6 +328,8 @@ async function runRuntimeSmoke() {
   ensure(diagnostics.evolutionPhaseCount() === 5, "Runtime Command Lens must expose the 5-year evolution rail.");
   ensure(diagnostics.commandLensSummary().includes("Year 1"), "Runtime Command Lens summary must identify the selected horizon.");
   ensure(diagnostics.evolutionDetailText().includes("Proof gate"), "Runtime Command Lens detail must expose the selected phase proof gate.");
+  ensure(diagnostics.designHandoffText().includes("No handoff found"), "Runtime Design Handoff view must render an empty state before export.");
+  ensure(diagnostics.designHandoffText().includes("No host filesystem write"), "Runtime Design Handoff view must preserve the no-host boundary.");
 
   for (const menu of requiredMenus) {
     click(dom.window, `[data-menu="${menu}"] .menu-button`);
@@ -338,6 +340,18 @@ async function runRuntimeSmoke() {
     click(dom.window, `[data-view-button="${view}"]`);
     ensure(diagnostics.activeView() === view, `Runtime activity view ${view} must activate.`);
   }
+
+  await diagnostics.seedDesignHandoff();
+  click(dom.window, "[data-view-button=\"design\"]");
+  await waitFor(() => diagnostics.designHandoffText().includes("Workspace file ready"), "Design handoff seeded workspace state");
+  click(dom.window, "[data-action=\"open-design-handoff\"]");
+  await waitFor(() => diagnostics.activePath() === "/workspace/Design/seis-design-agency-pack.md", "Design handoff opens in editor");
+  ensure(diagnostics.openTabs().includes("/workspace/Design/seis-design-agency-pack.md"), "Runtime Design Handoff pack must open as an editor tab.");
+  click(dom.window, "[data-action=\"create-design-review-note\"]");
+  await waitFor(() => diagnostics.filePaths().includes("/workspace/Design/seis-design-agency-pack-review.md"), "Design handoff review note file");
+  ensure(diagnostics.activePath() === "/workspace/Design/seis-design-agency-pack-review.md", "Runtime Design Handoff review note must open in editor.");
+  await waitFor(() => diagnostics.outputText().includes("Design Agency Kit review note"), "Design handoff output feedback");
+  ensure(diagnostics.outputText().includes("Design Agency Kit review note"), "Runtime Design Handoff actions must write output feedback.");
 
   for (const panel of requiredPanels) {
     click(dom.window, `[data-bottom-panel="${panel}"]`);
@@ -439,7 +453,13 @@ ensure(html.includes('src="./seis-code.js"'), "SEIS Code HTML must load its runt
 ensure(html.includes("IndexedDB"), "SEIS Code HTML must expose IndexedDB persistence status.");
 ensure(html.includes("Local Demo"), "SEIS Code must truthfully label no-key local demo AI mode.");
 ensure(html.includes("data-command-lens"), "SEIS Code HTML must include the Command Lens rail.");
+ensure(html.includes("data-development-lane-bridge"), "SEIS Code HTML must include the development lane bridge panel.");
+ensure(html.includes("Development Lane Bridge"), "SEIS Code HTML must label the development lane bridge.");
 ensure(html.includes("5-Year Evolution Rail"), "SEIS Code HTML must include the five-year evolution rail.");
+ensure(js.includes("SEIS_CODE_DEVELOPMENT_LANE_BRIDGE"), "SEIS Code must define the development lane bridge contract.");
+ensure(js.includes("show-model-ladder"), "SEIS Code must expose the model ladder action.");
+ensure(js.includes("show-development-lanes"), "SEIS Code must expose the development lanes action.");
+ensure(css.includes(".development-lane-bridge"), "SEIS Code CSS must style the development lane bridge.");
 
 for (const action of requiredLensActions) {
   ensure(html.includes(`data-action="${action}"`) || js.includes(`"${action}"`), `SEIS Code missing Command Lens action: ${action}`);
@@ -484,6 +504,10 @@ for (const required of ["evolutionPhases", "renderCommandLens", "toggleCommandLe
   ensure(js.includes(required), `SEIS Code runtime missing Command Lens capability marker: ${required}`);
 }
 
+for (const required of ["DESIGN_HANDOFF_PATH", "renderDesignHandoff", "openDesignHandoff", "createDesignReviewNote", "seis.design.agencyPack.handoff.v1", "/workspace/Design/seis-design-agency-pack.md", "No host filesystem write"]) {
+  ensure(js.includes(required), `SEIS Code runtime missing Design Handoff capability marker: ${required}`);
+}
+
 for (const required of ["buildPaletteItems", "runPaletteItem", "rememberPaletteCommand", "movePaletteSelection", "paletteRecentCommandIds"]) {
   ensure(js.includes(required), `SEIS Code runtime missing command palette capability marker: ${required}`);
 }
@@ -502,6 +526,10 @@ for (const required of [".monaco-host", ".terminal-output", ".activity-button", 
 
 for (const required of [".command-lens", ".evolution-phase", ".evolution-detail", ".workspace.lens-hidden", ".lens-toggle"]) {
   ensure(css.includes(required), `SEIS Code CSS missing Command Lens selector: ${required}`);
+}
+
+for (const required of [".design-handoff-review", ".handoff-card", ".handoff-actions", ".handoff-preview"]) {
+  ensure(css.includes(required), `SEIS Code CSS missing Design Handoff selector: ${required}`);
 }
 
 for (const required of [".palette-meta", ".palette-group", ".palette-result-main", ".palette-result-detail", ".palette-empty"]) {

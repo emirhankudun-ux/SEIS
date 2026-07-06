@@ -368,7 +368,10 @@ button[disabled] {
 .source-summary,
 .debug-card,
 .run-output,
-.commit-log {
+.commit-log,
+.handoff-card,
+.handoff-meta,
+.handoff-preview {
   color: var(--subtle);
   font-size: 12px;
 }
@@ -376,6 +379,83 @@ button[disabled] {
 .workspace-name {
   margin: 12px 0 8px;
   font-family: var(--mono);
+}
+
+.design-handoff-review {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.handoff-card {
+  display: grid;
+  gap: 4px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 10px;
+}
+
+.handoff-card span,
+.handoff-meta dt {
+  color: var(--teal);
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.handoff-card strong {
+  color: var(--text);
+  font-size: 13px;
+}
+
+.handoff-card p {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-family: var(--mono);
+}
+
+.handoff-meta {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+}
+
+.handoff-meta div {
+  display: grid;
+  gap: 2px;
+  border-left: 2px solid rgba(112, 165, 255, 0.38);
+  padding-left: 8px;
+}
+
+.handoff-meta dd {
+  margin: 0;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.handoff-actions {
+  display: grid;
+  gap: 6px;
+}
+
+.handoff-actions button {
+  justify-content: flex-start;
+  padding: 6px 8px;
+  font-size: 12px;
+}
+
+.handoff-preview {
+  max-height: 230px;
+  overflow: auto;
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(0, 0, 0, 0.18);
+  padding: 10px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .file-tree,
@@ -772,6 +852,68 @@ button[disabled] {
 .evolution-rail {
   display: grid;
   gap: 7px;
+}
+
+.development-lane-bridge {
+  display: grid;
+  gap: 10px;
+}
+
+.lane-bridge-lanes {
+  display: grid;
+  gap: 8px;
+}
+
+.lane-bridge-chip {
+  display: grid;
+  gap: 2px;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(112, 165, 255, 0.18);
+  background: rgba(112, 165, 255, 0.06);
+  color: var(--text);
+}
+
+.lane-bridge-chip strong {
+  font-size: 0.88rem;
+}
+
+.lane-bridge-chip span {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.lane-bridge-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+
+.lane-bridge-table th,
+.lane-bridge-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: left;
+}
+
+.lane-bridge-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.modal-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+}
+
+.modal-table th,
+.modal-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: left;
 }
 
 .evolution-phase {

@@ -14,6 +14,7 @@ Current covered surfaces:
 - SEIS Desktop Files and Terminal
 - SEIS Code workspace and terminal
 - Mythic Gacha card export
+- SEIS Design Agency Kit handoff export
 - Product browser smoke validation
 
 Current implementation files:
@@ -21,8 +22,10 @@ Current implementation files:
 - `apps/web/desktop.js`
 - `apps/web/seis-code.js`
 - `apps/web/mythic-gacha.js`
+- `apps/web/website/product-page.js`
 - `scripts/check-desktop-os-browser-smoke.mjs`
 - `scripts/check-product-experience-browser-smoke.mjs`
+- `scripts/check-seis-design-agency-kit-browser-smoke.mjs`
 
 ## Path Mapping
 
@@ -31,6 +34,7 @@ Current implementation files:
 | SEIS Desktop | `/home/seis` | Mirrors current demo files to SEIS Code under `/workspace` |
 | SEIS Code | `/workspace` | Imports current demo files into Desktop under `/home/seis` |
 | Mythic Gacha | `/workspace/MythicArchive` | Exports card JSON into SEIS Code and Desktop-visible `MythicArchive` |
+| SEIS Design Agency Kit | `/workspace/Design` | Exports the generated agency pack into the SEIS Code browser-local workspace |
 | Desktop Terminal | `/home/seis` current directory | Reads and writes Desktop VFS paths and reflects shared imports |
 | SEIS Code Terminal | `/workspace` current directory | Reads and writes SEIS Code workspace paths and reflects shared exports |
 
@@ -44,6 +48,7 @@ Current implementation files:
 | Desktop delete | Removes current demo paths and removes stale workspace target | `npm run check:desktop-os-browser-smoke` |
 | SEIS Code reload persistence | Keeps terminal-created workspace files across route reload | `npm run check:product-experience-browser-smoke` |
 | Mythic export | Writes card JSON under `/workspace/MythicArchive` | `npm run check:product-experience-browser-smoke` |
+| Design Agency Kit export | Writes Markdown under `/workspace/Design/seis-design-agency-pack.md` and SEIS Code can create `/workspace/Design/seis-design-agency-pack-review.md` | `npm run check:seis-design-agency-kit-browser-smoke`, `npm run check:seis-code` |
 | Desktop import | Imports `/workspace/MythicArchive/SHJ-*` into `/home/seis/MythicArchive` | `npm run check:product-experience-browser-smoke` |
 | Terminal visibility | `ls`, `find`, and `cat` expose current shared files in browser-safe shells | `npm run check:desktop-os-browser-smoke`, `npm run check:product-experience-browser-smoke` |
 
@@ -96,6 +101,7 @@ human approval before implementation.
 
 ## Next Safe Action
 
-Keep Desktop, SEIS Code, Terminal, and Mythic export smoke coverage passing,
-then add browser-restart persistence and conflict-resolution tests before any
-production storage or cloud-sync claim.
+Run the Design Agency Kit cross-route browser smoke with `CHROME_PATH`
+available, keep Desktop, SEIS Code, Terminal, Mythic export, and Design handoff
+coverage passing, then add browser-restart persistence and conflict-resolution
+tests before any production storage or cloud-sync claim.

@@ -2,6 +2,10 @@ const DB_NAME = "seis-code-workspace-v1";
 const DB_VERSION = 1;
 const WORKSPACE = "/workspace";
 const WORKSPACE_CHANNEL = "seis-code-workspace";
+const DESIGN_HANDOFF_PATH = "/workspace/Design/seis-design-agency-pack.md";
+const DESIGN_REVIEW_PATH = "/workspace/Design/seis-design-agency-pack-review.md";
+const DESIGN_HANDOFF_STORAGE_KEY = "seis.design.agencyPack.handoff.v1";
+const DESIGN_PACK_STORAGE_KEY = "seis.design.agencyPack.v1";
 const MONACO_LOADER_URL = "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/loader.js";
 
 const languageByExtension = {
@@ -65,6 +69,38 @@ const supportedLanguageModes = [
 ];
 
 const aiTruthfulnessMarker = "not Anthropic";
+
+const SEIS_CODE_DEVELOPMENT_LANE_BRIDGE = {
+  id: "seis-code-development-lane-bridge",
+  boundary: "Browser-local lane navigation only. No SSH, no live provider calls, and no trained model inference.",
+  lanes: [
+    { id: "desktop-os", label: "SEIS Desktop OS", route: "./desktop.html", status: "Working" },
+    { id: "linux-replica", label: "SEIS Linux Replica", route: "./seis-linux-replica.html", status: "Working" },
+    { id: "seis-code", label: "SEIS Code IDE", route: "./seis-code.html", status: "Active" },
+    { id: "apple-swift", label: "Apple Swift Native", route: "packages/seis_platform_swift", status: "SwiftPM" },
+    { id: "ai-core", label: "SEIS AI Core", route: "./desktop.html#ai-assistant", status: "Plan-only ladder" }
+  ],
+  modelLadder: [
+    { parameterClass: "20B", status: "planned-not-validated" },
+    { parameterClass: "70B", status: "research-roadmap" },
+    { parameterClass: "150B", status: "frontier-program-plan-only" },
+    { parameterClass: "512B", status: "apex-program-plan-only" },
+    { parameterClass: "520B", status: "next-frontier-boundary" }
+  ],
+  providers: [
+    { label: "SEIS Local Demo", status: "Available" },
+    { label: "Codex Operator", status: "Available" },
+    { label: "Claude Review", status: "Missing Key" },
+    { label: "OpenAI Server", status: "Missing Key" }
+  ],
+  validators: [
+    "npm run check:seis-code",
+    "npm run check:desktop-os",
+    "npm run check:seis-model-parameter-ladder",
+    "npm run check:seis-ai-core-provider-registry",
+    "swift test --package-path packages/seis_platform_swift"
+  ]
+};
 
 const evolutionPhases = [
   {
@@ -491,6 +527,7 @@ function renderAll() {
   renderSearchResults();
   renderSourceControl();
   renderExtensions();
+  renderDesignHandoff();
   renderProblems();
   renderStatus();
 }
@@ -543,6 +580,7 @@ function renderCommandLens() {
   if (storage) {
     storage.textContent = `${app.files.size} nodes, ${app.openTabs.length} tabs, ${app.terminalHistory.length} commands, ${installedExtensions} extensions`;
   }
+  renderDevelopmentLaneBridge(lens);
   if (rail) {
     rail.innerHTML = evolutionPhases.map((phase) => `
       <button
@@ -575,6 +613,66 @@ function renderCommandLens() {
       </dl>
     `;
   }
+}
+
+function renderDevelopmentLaneBridge(lens) {
+  const panel = $("[data-development-lane-bridge]", lens);
+  if (!panel) return;
+  const bridge = SEIS_CODE_DEVELOPMENT_LANE_BRIDGE;
+  panel.innerHTML = `
+    <div class="lane-bridge-lanes">
+      ${bridge.lanes.map((lane) => `<button type="button" class="lane-bridge-chip" data-action="open-development-lane-route" data-lane-route="${escapeHtml(lane.route)}" title="${escapeHtml(lane.label)}">
+        <strong>${escapeHtml(lane.label)}</strong>
+        <span>${escapeHtml(lane.status)}</span>
+      </button>`).join("")}
+    </div>
+    <table class="lane-bridge-table">
+      <thead><tr><th>Model</th><th>Status</th></tr></thead>
+      <tbody>${bridge.modelLadder.map((tier) => `<tr><td>${escapeHtml(tier.parameterClass)}</td><td>${escapeHtml(tier.status)}</td></tr>`).join("")}</tbody>
+    </table>
+    <div class="lane-bridge-actions">
+      <button type="button" data-action="show-model-ladder">Model Ladder</button>
+      <button type="button" data-action="show-development-lanes">Lane Details</button>
+    </div>
+  `;
+}
+
+function openDevelopmentLaneRoute(route) {
+  if (!route) return;
+  if (route.startsWith("./")) {
+    window.open(route, "_blank", "noopener,noreferrer");
+    return;
+  }
+  showModal("Apple Swift Native", `<p>Open <code>${escapeHtml(route)}</code> in Xcode, then run:</p><pre><code>swift test --package-path packages/seis_platform_swift</code></pre>`);
+}
+
+function showDevelopmentLanes() {
+  const bridge = SEIS_CODE_DEVELOPMENT_LANE_BRIDGE;
+  showModal("Development Lane Bridge", `
+    <p>${escapeHtml(bridge.boundary)}</p>
+    <table class="modal-table">
+      <thead><tr><th>Lane</th><th>Status</th><th>Route</th></tr></thead>
+      <tbody>${bridge.lanes.map((lane) => `<tr><td>${escapeHtml(lane.label)}</td><td>${escapeHtml(lane.status)}</td><td><code>${escapeHtml(lane.route)}</code></td></tr>`).join("")}</tbody>
+    </table>
+    <h3>Validators</h3>
+    <ul>${bridge.validators.map((command) => `<li><code>${escapeHtml(command)}</code></li>`).join("")}</ul>
+  `);
+}
+
+function showModelLadder() {
+  const bridge = SEIS_CODE_DEVELOPMENT_LANE_BRIDGE;
+  showModal("SEIS Model Parameter Ladder", `
+    <p>Plan-only ladder from <code>content/development/seis-model-parameter-ladder.json</code>. No trained weights or live inference.</p>
+    <table class="modal-table">
+      <thead><tr><th>Class</th><th>Status</th></tr></thead>
+      <tbody>${bridge.modelLadder.map((tier) => `<tr><td>${escapeHtml(tier.parameterClass)}</td><td>${escapeHtml(tier.status)}</td></tr>`).join("")}</tbody>
+    </table>
+    <h3>Provider posture</h3>
+    <table class="modal-table">
+      <thead><tr><th>Provider</th><th>Status</th></tr></thead>
+      <tbody>${bridge.providers.map((provider) => `<tr><td>${escapeHtml(provider.label)}</td><td>${escapeHtml(provider.status)}</td></tr>`).join("")}</tbody>
+    </table>
+  `);
 }
 
 function getSelectedEvolutionPhase() {
@@ -729,6 +827,157 @@ function renderExtensions() {
       card.append(actions);
       list.append(card);
     });
+}
+
+function readJsonLocalStorage(key) {
+  try {
+    const value = localStorage.getItem(key);
+    return value ? JSON.parse(value) : null;
+  } catch {
+    return null;
+  }
+}
+
+function readTextLocalStorage(key) {
+  try {
+    return localStorage.getItem(key) || "";
+  } catch {
+    return "";
+  }
+}
+
+function getDesignHandoffState() {
+  const file = app.files.get(DESIGN_HANDOFF_PATH);
+  const manifest = readJsonLocalStorage(DESIGN_HANDOFF_STORAGE_KEY);
+  const storedPack = readTextLocalStorage(DESIGN_PACK_STORAGE_KEY);
+  const content = file?.content || manifest?.content || storedPack || "";
+  return {
+    file,
+    manifest,
+    storedPack,
+    content,
+    hasWorkspaceFile: Boolean(file?.type === "file"),
+    hasManifest: Boolean(manifest?.content),
+    hasStoredPack: Boolean(storedPack),
+    exportedAt: manifest?.exportedAt || "",
+    source: manifest?.source || "SEIS Design Agency Kit",
+    path: DESIGN_HANDOFF_PATH,
+    workspaceWrite: manifest?.workspaceWrite || (file ? "indexeddb" : "not imported"),
+    requiresReview: manifest?.requiresHumanReviewBeforePublication !== false
+  };
+}
+
+function renderDesignHandoff() {
+  const root = $("[data-design-handoff-review]");
+  if (!root) return;
+  const state = getDesignHandoffState();
+  const status = state.hasWorkspaceFile
+    ? "Workspace file ready"
+    : state.hasManifest
+      ? "Manifest ready for import"
+      : state.hasStoredPack
+        ? "Local pack ready for import"
+        : "No handoff found";
+  const contentBytes = state.content.length;
+  root.innerHTML = `
+    <article class="handoff-card" data-design-handoff-state="${escapeAttr(status)}">
+      <span>Status</span>
+      <strong>${escapeHtml(status)}</strong>
+      <p>${escapeHtml(state.path)}</p>
+    </article>
+    <article class="handoff-card">
+      <span>Boundary</span>
+      <strong>Browser-local review only</strong>
+      <p>No host filesystem write, no Git commit, no deployment, no client approval, and no live provider call.</p>
+    </article>
+    <dl class="handoff-meta">
+      <div><dt>Source</dt><dd>${escapeHtml(state.source)}</dd></div>
+      <div><dt>Bytes</dt><dd>${contentBytes}</dd></div>
+      <div><dt>Workspace write</dt><dd>${escapeHtml(state.workspaceWrite)}</dd></div>
+      <div><dt>Human review</dt><dd>${state.requiresReview ? "Required" : "Not marked"}</dd></div>
+      <div><dt>Exported</dt><dd>${escapeHtml(state.exportedAt || "Not recorded")}</dd></div>
+    </dl>
+    <div class="handoff-actions">
+      <button type="button" data-action="open-design-handoff" ${state.hasWorkspaceFile ? "" : "disabled"}>Open pack</button>
+      <button type="button" data-action="import-design-handoff" ${state.content && !state.hasWorkspaceFile ? "" : "disabled"}>Import manifest</button>
+      <button type="button" data-action="create-design-review-note" ${state.content ? "" : "disabled"}>Create review note</button>
+      <button type="button" data-action="open-seis-design">Open SEIS Design</button>
+    </div>
+    <pre class="handoff-preview" data-design-handoff-preview>${escapeHtml(state.content ? state.content.slice(0, 1400) : "Export from SEIS Design Agency Kit to populate this review surface.")}</pre>
+  `;
+}
+
+async function importDesignHandoffManifest() {
+  const state = getDesignHandoffState();
+  if (!state.content) {
+    appendOutput("No SEIS Design Agency Kit handoff content is available to import.");
+    return;
+  }
+  await ensureFolder(dirname(DESIGN_HANDOFF_PATH));
+  const entry = createFileEntry(DESIGN_HANDOFF_PATH, state.content, "file");
+  await saveFile(entry);
+  appendOutput(`Imported Design Agency Kit handoff into ${DESIGN_HANDOFF_PATH}.`);
+}
+
+async function openDesignHandoff() {
+  const state = getDesignHandoffState();
+  if (!state.hasWorkspaceFile && state.content) {
+    await importDesignHandoffManifest();
+  }
+  if (!app.files.has(DESIGN_HANDOFF_PATH)) {
+    appendOutput("No Design Agency Kit handoff file found. Open SEIS Design and export the pack first.");
+    switchView("design");
+    return;
+  }
+  switchView("design");
+  await openFile(DESIGN_HANDOFF_PATH);
+  appendOutput(`Opened Design Agency Kit handoff: ${DESIGN_HANDOFF_PATH}.`);
+}
+
+async function createDesignReviewNote() {
+  const state = getDesignHandoffState();
+  if (!state.content) {
+    appendOutput("No Design Agency Kit handoff content is available for review note generation.");
+    return;
+  }
+  await ensureFolder(dirname(DESIGN_REVIEW_PATH));
+  const now = new Date().toISOString();
+  const note = [
+    "# SEIS Design Agency Pack Review",
+    "",
+    `Generated: ${now}`,
+    `Source pack: ${DESIGN_HANDOFF_PATH}`,
+    "Mode: browser-local review note",
+    "",
+    "## Boundary",
+    "- No host filesystem write",
+    "- No Git commit",
+    "- No deployment",
+    "- No live provider call",
+    "- No client approval without human review",
+    "",
+    "## Review Checklist",
+    "- [ ] Client template has audience, offer, deliverable format, deadline, and approval owner.",
+    "- [ ] Asset provenance is documented before publication.",
+    "- [ ] Accessibility and responsive risks are named.",
+    "- [ ] Validation commands are listed and current.",
+    "- [ ] Publication, deployment, and client approval remain human-gated.",
+    "",
+    "## Pack Preview",
+    "```md",
+    state.content.slice(0, 2200),
+    "```",
+    ""
+  ].join("\n");
+  const entry = createFileEntry(DESIGN_REVIEW_PATH, note, "file");
+  await saveFile(entry);
+  switchView("design");
+  await openFile(DESIGN_REVIEW_PATH);
+  appendOutput(`Created Design Agency Kit review note: ${DESIGN_REVIEW_PATH}.`);
+}
+
+function openSeisDesignPage() {
+  window.location.href = "./website/seis-design.html";
 }
 
 function renderProblems() {
@@ -1182,7 +1431,15 @@ function setupActions() {
       "refresh-source": renderSourceControl,
       "commit-staged": commitStaged,
       "refresh-extensions": renderExtensions,
+      "refresh-design-handoff": renderDesignHandoff,
+      "open-design-handoff": openDesignHandoff,
+      "import-design-handoff": importDesignHandoffManifest,
+      "create-design-review-note": createDesignReviewNote,
+      "open-seis-design": openSeisDesignPage,
       "show-provider-status": showProviderStatus,
+      "show-model-ladder": showModelLadder,
+      "show-development-lanes": showDevelopmentLanes,
+      "open-development-lane-route": () => openDevelopmentLaneRoute(target.dataset.laneRoute),
       "show-language-list": showLanguageList,
       "show-storage": showStorage,
       "show-line-column": () => app.editor?.focus(),
@@ -2134,6 +2391,8 @@ function buildPaletteItems() {
     { id: "start-claude", group: "Commands", label: "Start Claude REPL", action: startClaudeRepl, detail: "Local Demo runtime", keywords: ["ai", "terminal", "local demo"] },
     { id: "toggle-command-lens", group: "Commands", label: "Toggle Command Lens", action: toggleCommandLens, detail: "Apple-grade control rail", keywords: ["lens", "inspector"] },
     { id: "focus-terminal", group: "Commands", label: "Focus Terminal", action: focusTerminal, detail: "Virtual shell", keywords: ["shell", "terminal"] },
+    { id: "open-design-handoff", group: "Commands", label: "Open Design Handoff", action: openDesignHandoff, detail: DESIGN_HANDOFF_PATH, keywords: ["design", "agency", "handoff", "review"] },
+    { id: "create-design-review-note", group: "Commands", label: "Create Design Review Note", action: createDesignReviewNote, detail: DESIGN_REVIEW_PATH, keywords: ["design", "agency", "checklist", "review"] },
     { id: "open-five-year-plan", group: "Commands", label: "Open Five-Year Plan", action: showFiveYearPlan, detail: "SEIS Code evolution map", keywords: ["roadmap", "apple"] },
     { id: "toggle-sidebar", group: "Commands", label: "Toggle Sidebar", action: toggleSidebar, detail: "Explorer rail", keywords: ["view", "side"] },
     { id: "toggle-word-wrap", group: "Commands", label: "Toggle Word Wrap", action: toggleWordWrap, detail: app.settings.wordWrap, keywords: ["editor", "wrap"] },
@@ -2141,6 +2400,8 @@ function buildPaletteItems() {
     { id: "run-active", group: "Commands", label: "Run Active File", action: runActiveFile, detail: "Browser sandbox", keywords: ["debug", "preview"] },
     { id: "format-active", group: "Commands", label: "Format Document", action: formatActiveFile, detail: getLanguage(app.activePath), keywords: ["editor", "format"] },
     { id: "show-provider-status", group: "Commands", label: "Show AI Provider Status", action: showProviderStatus, detail: "Local Demo truth boundary", keywords: ["ai", "provider", "keys"] },
+    { id: "show-model-ladder", group: "Commands", label: "Show Model Parameter Ladder", action: showModelLadder, detail: "20B to 520B plan-only boundary", keywords: ["ai", "model", "ladder", "20b", "512b"] },
+    { id: "show-development-lanes", group: "Commands", label: "Show Development Lanes", action: showDevelopmentLanes, detail: "Desktop, Linux, Code, Swift, AI Core", keywords: ["lanes", "bridge", "desktop", "swift"] },
     ...evolutionPhases.map((phase) => ({
       id: `phase:${phase.id}`,
       group: "Five-Year Rail",
@@ -2240,7 +2501,7 @@ function showShortcuts() {
 function showAbout() {
   showModal(
     "About SEIS Code",
-    `<p>SEIS Code is a single URL static IDE slice with Monaco, IndexedDB persistence, browser-safe terminal commands, five activity views, eight top menus, and a Claude Code-style Local Demo REPL.</p>
+    `<p>SEIS Code is a single URL static IDE slice with Monaco, IndexedDB persistence, browser-safe terminal commands, six activity views, eight top menus, and a Claude Code-style Local Demo REPL.</p>
     <p>Provider identity remains truthful: Local Demo is not Anthropic.</p>
     <p class="notice">Live AI is intentionally not claimed here. A real Claude response requires a backend Anthropic integration.</p>`
   );
@@ -2358,6 +2619,8 @@ function exposeDiagnostics() {
     evolutionPhaseCount: () => $$("[data-evolution-phase]").length,
     selectedEvolutionPhase: () => getSelectedEvolutionPhase().id,
     evolutionDetailText: () => $("[data-evolution-detail]")?.textContent || "",
+    designHandoffText: () => $("[data-design-handoff-review]")?.textContent || "",
+    designHandoffPreview: () => $("[data-design-handoff-preview]")?.textContent || "",
     paletteResultText: () => $("[data-palette-results]")?.textContent || "",
     paletteStatusText: () => $("[data-palette-status]")?.textContent || "",
     paletteActiveLabel: () => $(".palette-result.is-active .palette-result-main strong")?.textContent || "",
@@ -2365,6 +2628,13 @@ function exposeDiagnostics() {
     switchView,
     switchBottomPanel,
     openFile,
+    openDesignHandoff,
+    createDesignReviewNote,
+    async seedDesignHandoff(content = "# SEIS Design Agency Pack\n\n## Handoff\n- Source: browser-local SEIS Design Agency Kit\n- Boundary: not host filesystem, not Git commit, not deployment\n") {
+      await ensureFolder(dirname(DESIGN_HANDOFF_PATH));
+      await saveFile(createFileEntry(DESIGN_HANDOFF_PATH, content, "file"));
+      renderDesignHandoff();
+    },
     installExtension: (id) => updateExtension(id, { installed: true, enabled: true }),
     async runTerminalCommand(command) {
       const input = $("[data-terminal-input]");

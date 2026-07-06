@@ -68,7 +68,7 @@ For SEIS Code, expected:
 
 - `/apps/web/seis-code.html` loads the browser IDE shell
 - the eight top menus open and trigger real local actions
-- all five activity views switch panels
+- all six activity views switch panels
 - the editor uses Monaco when the CDN is available and textarea fallback when it is not
 - terminal commands operate on the browser virtual file system only
 - `claude` enters a clearly labeled Local Demo REPL, not a live Anthropic session

@@ -119,6 +119,9 @@
           <button class="activity-button" type="button" data-view-button="extensions" title="Extensions" aria-label="Extensions">
             <span>XT</span>
           </button>
+          <button class="activity-button" type="button" data-view-button="design" title="Design Handoff" aria-label="Design Handoff">
+            <span>DH</span>
+          </button>
         </aside>
 
         <section class="sidebar" aria-label="Primary sidebar">
@@ -203,6 +206,15 @@
               <input data-extension-search type="search" placeholder="theme, language, formatter">
             </label>
             <div class="extensions-list" data-extensions-list></div>
+          </div>
+
+          <div class="side-panel" data-panel="design">
+            <div class="panel-header">
+              <h2>Design Handoff</h2>
+              <button type="button" data-action="refresh-design-handoff">Refresh</button>
+            </div>
+            <p class="panel-note">Review browser-local SEIS Design Agency Kit exports without host filesystem, Git, deployment, or live provider claims.</p>
+            <div class="design-handoff-review" data-design-handoff-review></div>
           </div>
         </section>
 
@@ -289,6 +301,11 @@
             </div>
           </section>
 
+          <section class="lens-card" aria-labelledby="lens-development-lanes-title">
+            <h3 id="lens-development-lanes-title">Development Lane Bridge</h3>
+            <div class="development-lane-bridge" data-development-lane-bridge></div>
+          </section>
+
           <section class="lens-card" aria-labelledby="lens-evolution-title">
             <div class="lens-card-header">
               <h3 id="lens-evolution-title">5-Year Evolution Rail</h3>
@@ -302,6 +319,8 @@
 
       <footer class="statusbar" aria-label="Status bar">
         <button type="button" data-action="show-provider-status">Local Demo AI</button>
+        <button type="button" data-action="show-model-ladder">20B→520B ladder</button>
+        <button type="button" data-action="show-development-lanes">Dev lanes</button>
         <button type="button" data-action="show-language-list">24 languages</button>
         <button type="button" data-action="show-storage">IndexedDB</button>
         <button type="button" data-action="toggle-word-wrap">Word Wrap</button>

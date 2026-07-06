@@ -29,6 +29,7 @@ The planned product includes:
 | Monaco and fallback editor | Browser foundation | `apps/web/seis-code.html`, `apps/web/seis-code.js` | Monaco loads from CDN; offline fallback is textarea. | Add offline/no-CDN test. |
 | Interactivity metric | Browser-smoked foundation | `npm run check:product-experience-browser-smoke` verifies a SEIS Code-specific clickable-response rate above the 80% acceptance floor. | Not yet a full assistive-technology traversal. | Expand keyboard and screen-reader cases without weakening the no-fake-control rule. |
 | Virtual file system | Browser foundation with Desktop bridge and reload smoke | `apps/web/seis-code.js`, `apps/web/desktop.js`, `docs/product/shared-vfs-contract.md`, `npm run check:product-experience-browser-smoke` | Uses browser-local storage and current demo path mapping, not production cloud sync or multi-user storage. | Keep Desktop/SEIS Code/Terminal/Mythic export visibility covered and add browser-restart persistence tests. |
+| Design Handoff review | Browser-local SEIS Design Agency Kit review surface with cross-route smoke flow | `apps/web/seis-code.html`, `apps/web/seis-code.js`, `apps/web/seis-code.css`, `docs/design-system/seis-design-agency-kit.md`, `scripts/check-seis-design-agency-kit-browser-smoke.mjs`, `npm run check:seis-code` | Review notes are local VFS artifacts, not client approval, Git commits, deployments, or host filesystem writes. Current local run still needs Chrome/Chromium for screenshot evidence. | Run the cross-route smoke with `CHROME_PATH` when available and attach the generated review screenshot. |
 | Terminal | Browser-smoked foundation | `apps/web/seis-code.js`, `npm run check:seis-code`, `npm run check:product-experience-browser-smoke` | Browser-local terminal UI, not host OS execution. | Keep terminal/VFS smoke passing and expand command coverage as the desktop shell grows. |
 | Claude-style REPL | Browser-smoked Local Demo foundation | `apps/web/seis-code.js`, `npm run check:seis-code`, `npm run check:product-experience-browser-smoke` | No backend AI gateway exists, so responses are Local Demo only. | Keep Local Demo honest until provider registry exists. |
 | REPL tool calls | Browser-smoked Local Demo foundation | `apps/web/seis-code.js`, `npm run check:seis-code`, `npm run check:product-experience-browser-smoke` | Tools are constrained to the browser virtual file system. Broad destructive actions are cancelled by local policy. | Keep the advertised `/tools` registry aligned with executable local tool handlers. |
@@ -49,6 +50,8 @@ SEIS Code can move beyond browser foundation only after:
 - Monaco is integrated.
 - File create/edit/save/read persists across route reload.
 - Terminal commands operate on the same virtual files.
+- Design handoff review opens browser-local Agency Kit exports and creates
+  human-review notes without claiming publication.
 - Source Control actions are real within a simulated or approved adapter.
 - Mobile layout is usable.
 - E2E or smoke tests cover core paths.
@@ -67,6 +70,7 @@ SEIS Code can move beyond browser foundation only after:
 
 ## Next Safe Action
 
-Extend browser interaction tests for Monaco/fallback editing, source-control
-simulation, extension toggles, browser-restart persistence, and broader mobile
-layout flows beyond the current smoke.
+Run the cross-route Design handoff browser smoke with `CHROME_PATH` available,
+then extend Monaco/fallback editing, source-control simulation, extension
+toggles, browser-restart persistence, and broader mobile layout flows beyond the
+current smoke.
