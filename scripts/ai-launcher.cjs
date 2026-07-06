@@ -12,12 +12,14 @@ const ROUTES = {
   antigravity: { command: "open", appPath: appBundlePath( "Antigravity.app" ), aliases: [ "antigravity-2", "antigravity2" ], healthCheck: () => checkAppBundle( "Antigravity.app" ) },
   "antigravity-ide": { command: "open", appPath: appBundlePath( "Antigravity IDE.app" ), aliases: [ "ag-ide" ], healthCheck: () => checkAppBundle( "Antigravity IDE.app" ) },
   cursor: { command: "open", appPath: appBundlePath( "Cursor.app" ), aliases: [ "cursor-editor" ], healthCheck: () => checkAppBundle( "Cursor.app" ) },
+  lmstudio: { command: "open", appPath: appBundlePath( "LM Studio.app" ), aliases: [ "lm-studio", "lm studio" ], healthCheck: () => checkAppBundle( "LM Studio.app" ) },
+  lms: { command: "lms", aliases: [ "lmstudio-cli", "lm-studio-cli" ] },
   xcode: { command: "open", appPath: appBundlePath( "Xcode.app" ), aliases: [ "apple-ide" ], healthCheck: () => checkAppBundle( "Xcode.app" ) },
   openai: { command: "openai", aliases: [ "gpt" ], credential: "OPENAI_API_KEY", online: true },
-  claude: { command: "claude", aliases: [ "anthropic" ], credential: "ANTHROPIC_API_KEY", online: true },
+  claude: { command: "claude", aliases: [ "anthropic" ], healthCheck: checkClaudeAuth, online: true },
   gemini: { command: "gemini", aliases: [ "google" ], credential: "GEMINI_API_KEY", online: true },
   qwen: { command: "qwen", aliases: [ "qwen-cli" ] },
-  kimi: { command: "kimi", aliases: [ "moonshot" ], online: true },
+  kimi: { command: "kimi", aliases: [ "moonshot" ], healthCheck: checkKimiProviders, online: true },
   ollama: { command: "ollama", aliases: [ "local" ], healthCheck: checkOllamaHealth },
   opencode: { command: "opencode", aliases: [ "terminal" ] },
   aider: { command: "aider", aliases: [ "pair" ] },
@@ -42,6 +44,36 @@ function checkOllamaHealth() {
     stdio: "ignore"
   } );
   return result.status === 0;
+}
+
+function checkClaudeAuth() {
+  if ( process.env.ANTHROPIC_API_KEY ) return true;
+  if ( !hasCommand( "claude" ) ) return false;
+  const result = spawnSync( "claude", [ "auth", "status" ], {
+    encoding: "utf8",
+    timeout: 5000
+  } );
+  if ( result.status !== 0 ) return false;
+
+  try {
+    const status = JSON.parse( result.stdout || "{}" );
+    return status.loggedIn === true;
+  } catch {
+    return /"loggedIn"\s*:\s*true/.test( result.stdout || "" );
+  }
+}
+
+function checkKimiProviders() {
+  if ( !hasCommand( "kimi" ) ) return false;
+  const result = spawnSync( "kimi", [ "provider", "list" ], {
+    encoding: "utf8",
+    timeout: 5000
+  } );
+  const output = `${result.stdout || ""}\n${result.stderr || ""}`.toLowerCase();
+  return result.status === 0 &&
+    Boolean( output.trim() ) &&
+    !output.includes( "no providers configured" ) &&
+    !output.includes( "provider list is empty" );
 }
 
 function appBundlePath( bundleName ) {

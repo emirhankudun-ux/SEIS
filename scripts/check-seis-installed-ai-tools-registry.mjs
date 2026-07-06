@@ -95,11 +95,13 @@ if (registry) {
   );
 
   const claude = tools.get("claude-code-cli-auth-gated");
-  ensure(claude?.status === "available", "Claude Code CLI must be available after local login");
+  ensure(claude?.status === "manual", "Claude Code CLI must stay manual/auth-gated when current runtime auth is not ready");
   ensure(claude?.requiresAccount === true, "Claude Code CLI must still require a local Claude account session");
   ensure(claude?.requiresApiKey === false, "Claude Code CLI should not require ANTHROPIC_API_KEY when local Claude auth is present");
   ensure(claude?.canWriteRepository === false, "Claude Code CLI must not write the repository by default");
-  ensure(String(claude?.observedState || "").includes("loggedIn true"), "Claude observed state must record loggedIn true without personal account details");
+  ensure(String(claude?.observedState || "").includes("2026-07-03"), "Claude observed state must date the local auth/plugin snapshot");
+  ensure(String(claude?.observedState || "").includes("loggedIn true"), "Claude observed state must record the historical loggedIn true snapshot without personal account details");
+  ensure(String(claude?.observedState || "").includes("not-ready"), "Claude observed state must record current auth drift when runtime check fails");
 
   const hermes = tools.get("hermes-desktop-auth-gated");
   ensure(hermes?.status === "available", "Hermes must be available after local provider config is fixed");
@@ -155,7 +157,7 @@ if (registry) {
   for (const rule of [
     "Codex remains the only writer",
     "Xcode may be used to inspect and run the Swift package",
-    "Claude and Hermes are available through local user auth/config",
+    "Claude and Hermes are bounded helper or review routes",
     "bounded helper or review routes",
     "Hermes may receive only sanitized context",
     "No tool may receive provider keys",

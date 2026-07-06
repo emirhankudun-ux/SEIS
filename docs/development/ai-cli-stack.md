@@ -14,6 +14,8 @@ npm run ai -- codex
 npm run ai -- antigravity
 npm run ai -- antigravity-ide
 npm run ai -- cursor
+npm run ai -- lmstudio
+npm run ai -- lms --version
 npm run ai -- xcode
 npm run ai -- claude
 npm run ai -- gemini
@@ -42,6 +44,8 @@ Current routing intent:
 - `antigravity`: Antigravity 2.x desktop surface for AI-native workspace sessions.
 - `antigravity-ide`: preferred local IDE surface for SEIS repo/worktree work.
 - `cursor`: secondary AI editor/review surface; keep one writer active.
+- `lmstudio`: local model lab desktop route; no provider or model availability is claimed.
+- `lms`: LM Studio CLI for local model lab status after LM Studio is initialized.
 - `xcode`: Apple platform IDE for Swift, SwiftUI, signing, simulators, and macOS/iOS builds.
 - `aider`: small existing-file patches, refactors, and diff-oriented edits.
 - `openai`: local analysis and summarization on demand.
@@ -70,6 +74,8 @@ npm run ai -- gemini --help
 npm run ai -- qwen --help
 npm run ai -- opencode --help
 npm run ai -- ollama list
+npm run ai -- lmstudio
+npm run ai -- lms --version
 npm run ai -- hermes --version
 npm run ai -- goose --version
 npm run ai -- open-design
@@ -86,6 +92,7 @@ npm run ai -- auto "local offline llama draft"        # → ollama (daemon açı
 npm run ai -- auto "quick repo patch with internet down" # → ollama (eğer açık) / yoksa fallback: seis-agent
 npm run ai -- auto "antigravity ide workspace"      # → antigravity-ide / yoksa fallback: seis-agent
 npm run ai -- auto "cursor review"                  # → cursor / yoksa fallback: seis-agent
+npm run ai -- auto "lm studio local model lab"      # → lmstudio / yoksa fallback: seis-agent
 npm run ai -- auto "xcode swiftui signing"          # → xcode / yoksa fallback: seis-agent
 npm run ai -- auto "hermes mcp gateway"               # → hermes / yoksa fallback: seis-agent
 npm run ai -- auto "goose general agent"              # → goose / yoksa fallback: seis-agent
@@ -116,9 +123,11 @@ Not: Bu kısa yollarda router önce rol önceliğini alır:
 - `AI_FORCE_OFFLINE=1` ile `auto` modu offline-first çalışır; bu durumda openai/claude/gemini/kimi gibi online odaklı yardımcılar eksikse önce `ollama` denenir.
 - `AI_FORCE_ONLINE=1` ile offline fallback atlanır; normal kullanılabilirlik kontrolü uygulanır.
 
-- `antigravity`, `antigravity-ide`, `cursor` ve `xcode`: masaüstü uygulama
+- `antigravity`, `antigravity-ide`, `cursor`, `lmstudio` ve `xcode`: masaüstü uygulama
   rotalarıdır; CLI command yoksa bile `open` üzerinden manuel/istek bazlı açılır.
   Bu rotalar repo hakikati değildir; Git durumu ve SEIS dokümanları kaynak kabul edilir.
+- `lms`: LM Studio yerel model laboratuvarı için CLI yüzeyidir; model indirme,
+  provider erişimi veya canlı inference kanıtı sayılmaz.
 - `interpreter`: dataset, CSV, JSON transform, and log/trace analysis.
 - `claude`: narrative, UX copy, naming, and strategy memo shaping.
 - `kimi`: translation, localization, and multilingual surface work.
@@ -145,7 +154,7 @@ SEIS MCP sunucusunda iki LLM planlama aracı vardır:
 
 Bu akışta SEIS politikası şu şekildedir:
 
-- Yerel yardımcılar: `codex`, `openai`, `claude`, `gemini`, `qwen`, `kimi`, `ollama`, `opencode`, `aider`, `interpreter`, `hermes`, `goose`, `open-design`.
+- Yerel yardımcılar: `codex`, `openai`, `claude`, `gemini`, `qwen`, `kimi`, `ollama`, `opencode`, `aider`, `interpreter`, `cursor`, `lmstudio`, `lms`, `hermes`, `goose`, `open-design`.
 - Tek remote karar katmanı: `seis-agent`.
 - SEIS Agent, remote akışı yönlendirir; yerel yardımcılar doğrudan araç çağrısı için yalnızca yardımcı rolde kullanılır.
 - `npm run automation:plugin-environment-sources` ile üretim sonrası `deploy/cloud-environment.json` içinde source girer:
@@ -170,11 +179,23 @@ npm run check:ai-launcher-offline
 Copy `.env.example` to `.env` and fill API keys as needed:
 
 - `OPENAI_API_KEY`
-- `ANTHROPIC_API_KEY`
+- `ANTHROPIC_API_KEY` (optional; Claude Code can also use local `claude auth login`)
 - `GEMINI_API_KEY`
 - `OLLAMA_HOST` (defaults to `http://127.0.0.1:11434`)
 - `AI_FORCE_OFFLINE=1` (opsiyonel, online olmadan önce offline davranışa zorlar)
 - `AI_FORCE_ONLINE=1` (opsiyonel, `AI_FORCE_OFFLINE` ile çakışmamalıdır)
+
+Current local-auth notes:
+
+- `claude`: local Claude Code auth is verified with `loggedIn true` and a
+  sanitized `CLAUDE_OK` smoke; keep it review-only.
+- `hermes`: local Hermes config uses the OpenAI Codex provider and returned
+  `HERMES_OK`; Nous Portal is still not logged in.
+- `gemini`: Google OAuth completes, then Gemini Code Assist for individuals
+  reports this CLI client is no longer supported; use Antigravity, Vertex, or
+  another approved route before claiming Gemini access.
+- `kimi`: installed and `kimi doctor` is valid, but provider list is empty and
+  login reports membership benefits cannot be verified.
 
 ## Ollama Runtime
 

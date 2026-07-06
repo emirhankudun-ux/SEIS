@@ -12,12 +12,14 @@ const tools = [
   { id: "antigravity", command: "open", optional: true, runtimeCheck: () => checkAppBundle("Antigravity.app") },
   { id: "antigravity-ide", command: "open", optional: true, runtimeCheck: () => checkAppBundle("Antigravity IDE.app") },
   { id: "cursor", command: "open", optional: true, runtimeCheck: () => checkAppBundle("Cursor.app") },
+  { id: "lmstudio", command: "open", optional: true, runtimeCheck: () => checkAppBundle("LM Studio.app") },
+  { id: "lms", optional: true },
   { id: "xcode", command: "open", optional: true, runtimeCheck: () => checkAppBundle("Xcode.app") },
   { id: "openai", optional: true, credential: "OPENAI_API_KEY" },
-  { id: "claude", optional: true, credential: "ANTHROPIC_API_KEY" },
+  { id: "claude", optional: true, runtimeCheck: checkClaudeAuth },
   { id: "gemini", optional: true, credential: "GEMINI_API_KEY" },
   { id: "qwen", optional: true },
-  { id: "kimi", optional: true },
+  { id: "kimi", optional: true, runtimeCheck: checkKimiProviders },
   { id: "opencode", optional: true },
   { id: "aider", optional: true },
   { id: "interpreter", optional: true },
@@ -38,6 +40,33 @@ function commandExists(command) {
 function checkOllamaHealth() {
   const result = spawnSync("bash", ["-lc", "ollama list"], { encoding: "utf8" });
   return result.status === 0;
+}
+
+function checkClaudeAuth() {
+  if (process.env.ANTHROPIC_API_KEY) return true;
+  const result = spawnSync("claude", ["auth", "status"], {
+    encoding: "utf8",
+    timeout: 5000
+  });
+  if (result.status !== 0) return false;
+  try {
+    const status = JSON.parse(result.stdout || "{}");
+    return status.loggedIn === true;
+  } catch {
+    return /"loggedIn"\s*:\s*true/.test(result.stdout || "");
+  }
+}
+
+function checkKimiProviders() {
+  const result = spawnSync("kimi", ["provider", "list"], {
+    encoding: "utf8",
+    timeout: 5000
+  });
+  const output = `${result.stdout || ""}\n${result.stderr || ""}`.toLowerCase();
+  return result.status === 0 &&
+    Boolean(output.trim()) &&
+    !output.includes("no providers configured") &&
+    !output.includes("provider list is empty");
 }
 
 function appBundlePath(bundleName) {
@@ -101,6 +130,7 @@ const routingExpectations = [
   ["antigravity ide workspace", "antigravity-ide"],
   ["antigravity 2.0 app", "antigravity"],
   ["cursor review", "cursor"],
+  ["lm studio local model lab", "lmstudio"],
   ["xcode swiftui signing", "xcode"],
   ["hermes mcp gateway", "hermes"],
   ["goose general agent", "goose"],

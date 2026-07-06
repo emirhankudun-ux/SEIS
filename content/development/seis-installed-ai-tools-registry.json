@@ -4,7 +4,7 @@
   "status": "active-public-safe-registry",
   "purpose": "Track locally available SEIS development and AI-assistant tools without storing credentials, claiming live provider access, or changing the single-writer policy.",
   "qualityGate": "npm run check:seis-installed-ai-tools-registry",
-  "observedDate": "2026-06-30",
+  "observedDate": "2026-07-03",
   "truthBoundary": {
     "noKeyCoreDemoRequired": true,
     "liveProviderClaimsAllowed": false,
@@ -109,11 +109,11 @@
       "toolType": "ai-coding-cli",
       "category": "architecture-review-candidate",
       "runtimeClass": "local-cli-with-cloud-auth",
-      "status": "available",
+      "status": "manual",
       "requiresAccount": true,
       "requiresApiKey": false,
       "canWriteRepository": false,
-      "observedState": "Claude Code CLI 2.1.195 is installed at ~/.local/bin/claude; claude auth status reports loggedIn true through local claude.ai auth and a sanitized smoke returned CLAUDE_OK.",
+      "observedState": "Claude Code CLI 2.1.195 is installed at ~/.local/bin/claude. A 2026-07-03 local snapshot recorded claude auth status loggedIn true, a sanitized CLAUDE_OK smoke, official claude-plugins-official marketplace setup, 16 project-local Claude plugins, and a private local SEIS MCP alias (seis-local). On 2026-07-06, npm run check:ai-stack marked Claude not-ready because the current runtime auth check failed; re-auth is required before review use.",
       "bestFor": [
         "Architecture review",
         "Refactor critique",
@@ -121,7 +121,7 @@
         "UX and narrative review"
       ],
       "limitations": [
-        "Local Claude auth is user-session state outside the repository, not an API-key credential committed to SEIS.",
+        "Local Claude auth is user-session state outside the repository, not an API-key credential committed to SEIS, and it may drift between snapshots.",
         "No Claude output is accepted as repository truth until Codex verifies it against files and checks.",
         "Repository writes remain disabled unless a human explicitly transfers writer role."
       ],
@@ -488,13 +488,219 @@
   "handoffRules": [
     "Codex remains the only writer unless a human explicitly transfers writer role.",
     "Xcode may be used to inspect and run the Swift package, but native claims require SwiftPM or Xcode build evidence.",
-    "Claude and Hermes are available through local user auth/config as bounded helper or review routes, not autonomous writers.",
+    "Claude and Hermes are bounded helper or review routes when current local auth/config checks pass, not autonomous writers.",
     "Gemini, Kimi, OpenAI, Aider, Goose, Cursor, and LM Studio are connected through SEIS as bounded helper or review routes, not autonomous writers.",
     "Hermes may receive only sanitized context through local user configuration.",
     "No tool may receive provider keys, SSH private keys, tokens, private Obsidian notes, or real host credentials.",
     "API keys, desktop app state, local model caches, provider sessions, and chat logs stay outside the repository.",
     "Secondary tool output remains candidate evidence until Codex verifies it against repository state."
   ],
+  "claudeCodeLocalActivation": {
+    "observedDate": "2026-07-03",
+    "source": "https://github.com/anthropics/claude-code",
+    "officialMarketplace": {
+      "name": "claude-plugins-official",
+      "source": "anthropics/claude-plugins-official",
+      "scope": "user-configured-marketplace",
+      "status": "added-locally",
+      "credentialStorageAllowed": false
+    },
+    "localPlugins": [
+      "adobe-for-creativity",
+      "airtable",
+      "apollo-skills",
+      "appwrite",
+      "asana",
+      "atlassian",
+      "auth0",
+      "aws-agents",
+      "aws-agents-for-devsecops",
+      "aws-amplify",
+      "aws-core",
+      "aws-dev-toolkit",
+      "aws-serverless",
+      "azure",
+      "azure-cosmos-db-assistant",
+      "base44",
+      "canva",
+      "claude-code-setup",
+      "claude-md-management",
+      "cloudflare",
+      "code-review",
+      "commit-commands",
+      "context7",
+      "feature-dev",
+      "figma",
+      "firebase",
+      "frontend-design",
+      "github",
+      "gitlab",
+      "linear",
+      "mcp-server-dev",
+      "mongodb",
+      "notion",
+      "playwright",
+      "plugin-dev",
+      "posthog",
+      "pr-review-toolkit",
+      "prisma",
+      "security-guidance",
+      "sentry",
+      "session-report",
+      "shopify",
+      "skill-creator",
+      "slack",
+      "stripe",
+      "supabase",
+      "swift-lsp",
+      "terraform",
+      "twilio-developer-kit",
+      "typescript-lsp",
+      "vercel",
+      "workos",
+      "zapier"
+    ],
+    "pluginScope": "local",
+    "pluginStatus": "enabled",
+    "pluginVisibility": {
+      "verifiedCommand": "claude plugin list",
+      "visiblePluginCount": 53,
+      "status": "visible-and-enabled-in-local-claude-code",
+      "credentialsConfiguredInRepository": false
+    },
+    "largeCompanyPluginGroups": {
+      "creativeAndDesign": [
+        "adobe-for-creativity",
+        "canva",
+        "figma"
+      ],
+      "collaborationAndKnowledge": [
+        "airtable",
+        "asana",
+        "atlassian",
+        "linear",
+        "notion",
+        "slack",
+        "zapier"
+      ],
+      "developerPlatforms": [
+        "github",
+        "gitlab",
+        "vercel",
+        "cloudflare",
+        "firebase",
+        "supabase",
+        "appwrite",
+        "base44",
+        "shopify"
+      ],
+      "cloudAndInfrastructure": [
+        "aws-core",
+        "aws-serverless",
+        "aws-agents",
+        "aws-agents-for-devsecops",
+        "aws-amplify",
+        "aws-dev-toolkit",
+        "azure",
+        "azure-cosmos-db-assistant",
+        "terraform"
+      ],
+      "dataAndApi": [
+        "apollo-skills",
+        "mongodb",
+        "prisma",
+        "posthog",
+        "stripe",
+        "twilio-developer-kit"
+      ],
+      "securityAndIdentity": [
+        "auth0",
+        "workos",
+        "sentry"
+      ]
+    },
+    "mcpStatus": {
+      "projectServer": {
+        "name": "seis",
+        "scope": "project .mcp.json",
+        "status": "pending-human-approval",
+        "reason": "Claude Code does not allow a public repository to approve its own project MCP server in an untrusted checkout."
+      },
+      "localServer": {
+        "name": "seis-local",
+        "scope": "private local Claude config for this project",
+        "status": "connected",
+        "command": "node packages/seis-ai/bin/seis-mcp.mjs"
+      },
+      "credentialStorageAllowed": false,
+      "remoteMutationAllowed": false,
+      "pluginMcpHealthSnapshot": {
+        "verifiedCommand": "claude mcp list",
+        "connected": [
+          "plugin:playwright:playwright",
+          "plugin:aws-agents:awsknowledge",
+          "plugin:firebase:firebase",
+          "plugin:terraform:terraform",
+          "plugin:twilio-developer-kit:twilio-docs",
+          "plugin:apollo-skills:graphos-tools",
+          "plugin:appwrite:appwrite-docs",
+          "plugin:cloudflare:cloudflare-docs",
+          "plugin:prisma:Prisma-Local",
+          "seis-local"
+        ],
+        "needsAuthentication": [
+          "plugin:adobe-for-creativity:Adobe for creativity",
+          "plugin:airtable:airtable",
+          "plugin:asana:asana",
+          "plugin:atlassian:atlassian",
+          "plugin:gitlab:gitlab",
+          "plugin:linear:linear",
+          "plugin:Notion:notion",
+          "plugin:posthog:posthog",
+          "plugin:sentry:sentry",
+          "plugin:slack:slack",
+          "plugin:stripe:stripe",
+          "plugin:supabase:supabase",
+          "plugin:vercel:vercel",
+          "plugin:zapier:zapier",
+          "plugin:canva:canva",
+          "plugin:cloudflare:cloudflare-api",
+          "plugin:cloudflare:cloudflare-bindings",
+          "plugin:cloudflare:cloudflare-builds",
+          "plugin:cloudflare:cloudflare-observability",
+          "plugin:figma:figma",
+          "plugin:prisma:Prisma-Remote"
+        ],
+        "failedToConnect": [
+          "plugin:context7:context7",
+          "plugin:aws-core:aws-mcp",
+          "plugin:aws-serverless:aws-serverless-mcp",
+          "plugin:aws-agents-for-devsecops:aws-devops-agent",
+          "plugin:aws-amplify:aws-mcp",
+          "plugin:aws-dev-toolkit:awsiac",
+          "plugin:aws-dev-toolkit:awspricing",
+          "plugin:azure:azure",
+          "plugin:github:github",
+          "plugin:mongodb:mongodb",
+          "plugin:shopify-plugin:shopify-mcp",
+          "plugin:appwrite:appwrite-api"
+        ],
+        "pendingHumanApproval": [
+          "seis"
+        ]
+      }
+    },
+    "toolingReadiness": {
+      "sourcekitLsp": "available at /usr/bin/sourcekit-lsp",
+      "typescriptLanguageServer": "available at ~/.local/bin/typescript-language-server; typescript-language-server 5.3.0 and tsc 6.0.3 verified after local global tool install"
+    },
+    "securityBoundary": [
+      "Do not commit Claude user settings, local marketplace cache, OAuth data, plugin cache, or .credentials files.",
+      "Installed and enabled Claude plugins are local tool visibility, not live account authorization.",
+      "Token-backed MCP surfaces may remain enabled in Claude Code, but any account connection, OAuth, token, write scope, or cloud mutation must be approved outside the public repository.",
+      "Use connected documentation and local MCP routes for bounded research, code intelligence, and browser QA tasks; failed package-runner MCP routes stay blocked until dependencies and permissions are reviewed."
+    ]
+  },
   "validationCommands": [
     "npm run check:seis-installed-ai-tools-registry",
     "npm run check:ai-workforce-assignments",

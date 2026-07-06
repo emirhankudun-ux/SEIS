@@ -70,6 +70,10 @@ const ROUTE_HINTS = [
     hints: ["cursor", "cursor editor", "cursor review", "secondary ai editor"]
   },
   {
+    tool: "lmstudio",
+    hints: ["lm studio", "lmstudio", "local model lab", "local model workbench", "lms"]
+  },
+  {
     tool: "xcode",
     hints: ["xcode", "swiftui", "apple signing", "ios simulator", "macos build"]
   },
