@@ -16,6 +16,7 @@ const files = {
   configInstaller: "scripts/install-seis-ssh-mobile-direct-cloud-config.mjs",
   readinessProbe: "scripts/check-seis-ssh-mobile-24x7.mjs",
   readinessReport: "scripts/create-seis-ssh-mobile-24x7-report.mjs",
+  readinessClaim: "scripts/create-seis-ssh-direct-cloud-readiness-claim.mjs",
   directProfile: "scripts/create-seis-ssh-mobile-direct-cloud-profile.mjs",
   gitignore: ".gitignore",
 };
@@ -37,6 +38,8 @@ const requiredScripts = {
   "cloud:ssh:mobile-direct:probe:strict": "node scripts/check-seis-ssh-mobile-24x7.mjs --require-ready",
   "cloud:ssh:mobile-direct:doctor": "node scripts/create-seis-ssh-mobile-24x7-report.mjs",
   "cloud:ssh:mobile-direct:doctor:strict": "node scripts/create-seis-ssh-mobile-24x7-report.mjs --require-ready",
+  "cloud:ssh:direct-cloud:claim": "node scripts/create-seis-ssh-direct-cloud-readiness-claim.mjs --write",
+  "check:seis-ssh-direct-cloud-readiness-claim": "node scripts/create-seis-ssh-direct-cloud-readiness-claim.mjs --check",
   "check:seis-ssh-mobile-direct-cloud": "node scripts/check-seis-ssh-mobile-direct-cloud.mjs",
 };
 
@@ -64,7 +67,10 @@ if (contract) {
   ensure(contract.security?.privateKeysInGitAllowed === false, "direct-cloud contract must reject private keys in git");
   ensure(contract.security?.apiKeysInGitAllowed === false, "direct-cloud contract must reject API keys in git");
   ensure(Array.isArray(contract.readiness?.requiredEvidence) && contract.readiness.requiredEvidence.length >= 5, "direct-cloud contract must define readiness evidence");
+  ensure(contract.readiness?.claimCommand === "npm run cloud:ssh:direct-cloud:claim", "direct-cloud contract must expose readiness claim command");
+  ensure(contract.readiness?.claimCheckCommand === "npm run check:seis-ssh-direct-cloud-readiness-claim", "direct-cloud contract must expose readiness claim check");
   ensure(Array.isArray(contract.evidenceSurfaces) && contract.evidenceSurfaces.includes(files.readinessProbe), "direct-cloud contract must cite readiness probe");
+  ensure(Array.isArray(contract.evidenceSurfaces) && contract.evidenceSurfaces.includes(files.readinessClaim), "direct-cloud contract must cite readiness claim gate");
   ensure(contract.acceptanceLedger === files.ledger, "direct-cloud contract must link acceptance ledger");
   ensure(Array.isArray(contract.evidenceSurfaces) && contract.evidenceSurfaces.includes(files.ledger), "direct-cloud contract must cite acceptance ledger");
 }
@@ -81,15 +87,15 @@ if (ledger) {
   ensure(Array.isArray(ledger.remediationOrder) && ledger.remediationOrder.length >= 6, "acceptance ledger must define remediation order");
   ensure(Array.isArray(ledger.mobileHandoffChecklist) && ledger.mobileHandoffChecklist.length >= 6, "acceptance ledger must define mobile handoff checklist");
   const evidenceIds = new Set((ledger.evidenceMap || []).map((entry) => entry.id));
-  for (const id of ["profile-contract", "bootstrap-dry-run", "bootstrap-apply", "ssh-config-install", "readiness-probe", "handoff-doctor", "contract-guard"]) {
+  for (const id of ["profile-contract", "bootstrap-dry-run", "bootstrap-apply", "ssh-config-install", "readiness-probe", "handoff-doctor", "readiness-claim-gate", "contract-guard"]) {
     ensure(evidenceIds.has(id), `acceptance ledger must include evidence id ${id}`);
   }
   const matrixStates = new Set(ledger.decisionMatrix.map((entry) => entry.state));
-  for (const state of ["missing-host", "codespaces-transport", "bootstrap-planned", "config-installed", "strict-probe-passed", "strict-doctor-passed"]) {
+  for (const state of ["missing-host", "codespaces-transport", "bootstrap-planned", "config-installed", "strict-probe-passed", "strict-doctor-passed", "readiness-claim-gate-passed"]) {
     ensure(matrixStates.has(state), `acceptance ledger decision matrix must include state ${state}`);
   }
   const handoffIds = new Set(ledger.mobileHandoffChecklist.map((entry) => entry.id));
-  for (const id of ["device-independent-entrypoint", "always-on-cloud-endpoint", "remote-runtime-ready", "handoff-report-written", "secret-boundary-preserved", "new-device-replayable"]) {
+  for (const id of ["device-independent-entrypoint", "always-on-cloud-endpoint", "remote-runtime-ready", "handoff-report-written", "claim-gate-allowed", "secret-boundary-preserved", "new-device-replayable"]) {
     ensure(handoffIds.has(id), `acceptance ledger mobile handoff checklist must include ${id}`);
   }
 }
@@ -106,6 +112,9 @@ for (const [file, token] of [
   [files.ledger, "A green governance check alone does not prove the cloud VM is reachable."],
   [files.ledger, "strict-doctor-passed"],
   [files.ledger, "Run the strict doctor to write the final mobile handoff report."],
+  [files.ledger, "npm run cloud:ssh:direct-cloud:claim"],
+  [files.ledger, "readiness-claim-gate"],
+  [files.ledger, "claim-gate-allowed"],
   [files.ledger, "device-independent-entrypoint"],
   [files.ledger, "new-device-replayable"],
   [files.ledger, "Private keys, API keys, tokens, and runtime secrets remain outside git."],
@@ -118,6 +127,8 @@ for (const [file, token] of [
   [files.runbook, "npm run cloud:ssh:mobile-direct:bootstrap:apply"],
   [files.runbook, "npm run cloud:ssh:mobile-direct:probe:strict"],
   [files.runbook, "npm run cloud:ssh:mobile-direct:doctor:strict"],
+  [files.runbook, "npm run cloud:ssh:direct-cloud:claim"],
+  [files.runbook, "Readiness claim gate passed"],
   [files.runbook, "keeps private keys and API keys out of git and logs"],
   [files.bootstrapShell, "SEIS_AUTHORIZED_KEY"],
   [files.bootstrapShell, "PasswordAuthentication ${SEIS_PASSWORD_AUTH}"],
@@ -137,6 +148,9 @@ for (const [file, token] of [
   [files.readinessReport, "directCloudBootstrapPlanCommand"],
   [files.readinessReport, "directCloudDoctorStrictCommand"],
   [files.readinessReport, "--require-ready"],
+  [files.readinessClaim, "claimAllowed"],
+  [files.readinessClaim, "strict doctor evidence"],
+  [files.readinessClaim, "does not call provider APIs"],
   [files.directProfile, "bootstrapPlan"],
   [files.directProfile, "strictProbeReadiness"],
   [files.directProfile, "secretsInGitAllowed: false"],

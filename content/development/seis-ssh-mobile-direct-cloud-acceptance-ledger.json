@@ -10,7 +10,8 @@
     "SSH key authentication succeeds in BatchMode",
     "remote runtime reports online",
     "SEIS repository is present on the remote host",
-    "strict doctor writes a successful readiness handoff report"
+    "strict doctor writes a successful readiness handoff report",
+    "readiness claim gate allows the final claim"
   ],
   "blockedClaimWhen": [
     "SEIS_SSH_HOST is missing",
@@ -73,6 +74,13 @@
       "claimScope": "mobile-24x7-ready"
     },
     {
+      "id": "readiness-claim-gate",
+      "command": "npm run cloud:ssh:direct-cloud:claim",
+      "proves": "strict doctor evidence and Oracle owner evidence together allow or block the final readiness claim",
+      "artifact": "reports/seis-ssh-direct-cloud-readiness-claim.json",
+      "claimScope": "final-claim-guard"
+    },
+    {
       "id": "contract-guard",
       "command": "npm run check:seis-ssh-mobile-direct-cloud",
       "proves": "repo contract, scripts, docs, ignore rules, and safety invariants are wired",
@@ -84,6 +92,7 @@
     "A generated profile alone does not prove mobile 24x7 readiness.",
     "A dry-run bootstrap plan alone does not prove remote bootstrap.",
     "A green governance check alone does not prove the cloud VM is reachable.",
+    "A readiness claim report with claimAllowed false does not prove readiness.",
     "A Codespaces SSH alias does not prove 24x7 mobile readiness."
   ],
   "decisionMatrix": [
@@ -131,6 +140,14 @@
       "state": "strict-doctor-passed",
       "detectedBy": "npm run cloud:ssh:mobile-direct:doctor:strict",
       "status": "mobile-24x7-ready",
+      "allowedClaim": "strict readiness report exists",
+      "forbiddenClaim": "final readiness claim until claim gate passes",
+      "nextCommand": "npm run cloud:ssh:direct-cloud:claim"
+    },
+    {
+      "state": "readiness-claim-gate-passed",
+      "detectedBy": "npm run cloud:ssh:direct-cloud:claim",
+      "status": "claim-allowed",
       "allowedClaim": "SEIS-SSH is ChatGPT mobile/Codex 24x7 ready",
       "forbiddenClaim": "none",
       "nextCommand": "ssh SEIS-SSH"
@@ -142,7 +159,8 @@
     "Run bootstrap:apply only when root SSH access to the VM is confirmed.",
     "Install the managed SEIS-SSH config block.",
     "Run the strict probe to prove transport, TCP, SSH auth, and runtime readiness.",
-    "Run the strict doctor to write the final mobile handoff report."
+    "Run the strict doctor to write the final mobile handoff report.",
+    "Run the readiness claim gate before making the ChatGPT mobile/Codex 24x7 claim."
   ],
   "mobileHandoffChecklist": [
     {
@@ -167,6 +185,12 @@
       "id": "handoff-report-written",
       "requirement": "A reusable readiness report exists for future device migration.",
       "evidence": "npm run cloud:ssh:mobile-direct:doctor:strict writes reports/seis-ssh-mobile-24x7-readiness.json.",
+      "blockingIfMissing": true
+    },
+    {
+      "id": "claim-gate-allowed",
+      "requirement": "The final public readiness claim is allowed only after strict evidence is present.",
+      "evidence": "npm run cloud:ssh:direct-cloud:claim writes reports/seis-ssh-direct-cloud-readiness-claim.json with claimAllowed true.",
       "blockingIfMissing": true
     },
     {

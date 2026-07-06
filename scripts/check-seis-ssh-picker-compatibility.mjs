@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import net from "node:net";
 
 const args = parseArgs(process.argv.slice(2));
@@ -40,9 +41,14 @@ const checks = {
     hostAliases: [],
     duplicateSeisAliases: [],
     hostname: null,
+    hostnameKind: null,
+    hostnameSha256Prefix: null,
     user: null,
     proxyCommand: null,
+    proxyCommandPresent: false,
+    proxyCommandPrinted: false,
     identityFile: null,
+    identityFileConfigured: false,
     transport: "unknown",
     terminalCompatible: false,
     pickerCompatible: false,
@@ -72,11 +78,19 @@ if (config.status !== 0) {
   checks.sshConfig.error = config.stderr.trim();
 } else {
   const values = parseSshConfig(config.stdout);
-  checks.sshConfig.hostname = values.hostname || null;
+  const hostname = values.hostname || "";
+  const proxyCommand = normalizeProxyCommand(values.proxycommand);
+  const transport = detectTransport(values);
+  checks.sshConfig.hostname = classifyHostname(hostname, transport);
+  checks.sshConfig.hostnameKind = classifyHostname(hostname, transport);
+  checks.sshConfig.hostnameSha256Prefix = hostname ? sha256Prefix(hostname) : null;
   checks.sshConfig.user = values.user || null;
-  checks.sshConfig.proxyCommand = normalizeProxyCommand(values.proxycommand);
-  checks.sshConfig.identityFile = values.identityfile || null;
-  checks.sshConfig.transport = detectTransport(values);
+  checks.sshConfig.proxyCommand = proxyCommand ? "[redacted-proxy-command]" : null;
+  checks.sshConfig.proxyCommandPresent = Boolean(proxyCommand);
+  checks.sshConfig.proxyCommandPrinted = false;
+  checks.sshConfig.identityFile = values.identityfile ? "~/.ssh/[redacted-identity-file]" : null;
+  checks.sshConfig.identityFileConfigured = Boolean(values.identityfile);
+  checks.sshConfig.transport = transport;
   checks.sshConfig.terminalCompatible = checks.sshConfig.transport === "codespace"
     || checks.sshConfig.transport === "direct-cloud";
   checks.sshConfig.pickerCompatible = checks.sshConfig.transport === "direct-cloud";
@@ -205,6 +219,18 @@ function compatibilityReason(transport) {
   if (transport === "direct-cloud") return "direct-cloud SSH avoids ProxyCommand and is the most picker-compatible mode";
   if (transport === "codespace") return "Codespaces SSH is terminal-compatible, but some pickers may show ProxyCommand targets as offline";
   return "unknown or local SSH transport";
+}
+
+function classifyHostname(hostname, transport) {
+  if (!hostname) return "missing";
+  if (transport === "codespace") return "github.codespaces";
+  if (transport === "direct-cloud") return "redacted-direct-cloud-host";
+  if (transport === "unknown") return "redacted-unknown-host";
+  return "blocked-local-or-lan";
+}
+
+function sha256Prefix(value) {
+  return createHash("sha256").update(String(value)).digest("hex").slice(0, 12);
 }
 
 function isLocalHost(host) {

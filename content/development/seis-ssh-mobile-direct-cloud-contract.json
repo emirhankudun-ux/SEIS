@@ -32,13 +32,16 @@
     "strictProbeCommand": "npm run cloud:ssh:mobile-direct:probe:strict",
     "doctorCommand": "npm run cloud:ssh:mobile-direct:doctor",
     "strictDoctorCommand": "npm run cloud:ssh:mobile-direct:doctor:strict",
+    "claimCommand": "npm run cloud:ssh:direct-cloud:claim",
+    "claimCheckCommand": "npm run check:seis-ssh-direct-cloud-readiness-claim",
     "requiredEvidence": [
       "direct-cloud transport",
       "TCP reachability",
       "SSH key authentication",
       "remote runtime online",
       "SEIS repository present",
-      "strict doctor report written"
+      "strict doctor report written",
+      "readiness claim gate allows the claim"
     ]
   },
   "security": {
@@ -50,7 +53,9 @@
       "reports/seis-ssh-mobile-24x7-readiness.json",
       "reports/seis-ssh-mobile-24x7-readiness.md",
       "reports/seis-ssh-mobile-direct-cloud-profile.json",
-      "reports/seis-ssh-mobile-direct-cloud-profile.md"
+      "reports/seis-ssh-mobile-direct-cloud-profile.md",
+      "reports/seis-ssh-direct-cloud-readiness-claim.json",
+      "reports/seis-ssh-direct-cloud-readiness-claim.md"
     ]
   },
   "acceptanceLedger": "content/development/seis-ssh-mobile-direct-cloud-acceptance-ledger.json",
@@ -63,6 +68,7 @@
     "scripts/install-seis-ssh-mobile-direct-cloud-config.mjs",
     "scripts/check-seis-ssh-mobile-24x7.mjs",
     "scripts/create-seis-ssh-mobile-24x7-report.mjs",
+    "scripts/create-seis-ssh-direct-cloud-readiness-claim.mjs",
     "scripts/create-seis-ssh-mobile-direct-cloud-profile.mjs"
   ]
 }

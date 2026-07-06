@@ -83,6 +83,13 @@ Use the strict doctor in release or mobile-device handoff flows:
 npm run cloud:ssh:mobile-direct:doctor:strict
 ```
 
+Run the final claim gate before saying SEIS-SSH is ChatGPT mobile/Codex 24x7
+ready:
+
+```bash
+npm run cloud:ssh:direct-cloud:claim
+```
+
 ## Decision matrix
 
 - Missing `SEIS_SSH_HOST`: blocked. Set the always-on public VM endpoint before claiming readiness.
@@ -90,7 +97,8 @@ npm run cloud:ssh:mobile-direct:doctor:strict
 - Bootstrap plan passed: planned only. It does not prove the VM was changed.
 - Config install passed: local client configured only. It does not prove remote runtime readiness.
 - Strict probe passed: runtime evidence passed. Run strict doctor to write the handoff report.
-- Strict doctor passed: mobile 24x7 ready claim is allowed.
+- Strict doctor passed: handoff evidence exists. Run the direct-cloud readiness claim gate.
+- Readiness claim gate passed: mobile 24x7 ready claim is allowed.
 
 ## Mobile handoff checklist
 
@@ -99,6 +107,7 @@ npm run cloud:ssh:mobile-direct:doctor:strict
 - Confirm SSH key authentication succeeds in batch mode.
 - Confirm the remote runtime is online and the SEIS repository is present.
 - Confirm `npm run cloud:ssh:mobile-direct:doctor:strict` writes the final readiness report.
+- Confirm `npm run cloud:ssh:direct-cloud:claim` allows the final readiness claim.
 - Confirm private keys, API keys, tokens, and runtime secrets remain outside git.
 - Confirm a new computer can replay bootstrap/config/probe/doctor commands without copying private runtime state from the old Mac.
 
@@ -131,6 +140,7 @@ git pull --ff-only origin main
 npm run cloud:ssh:mobile-24x7:report
 npm run cloud:ssh:mobile-direct:probe
 npm run cloud:ssh:mobile-direct:doctor
+npm run cloud:ssh:direct-cloud:claim
 ```
 
 The session remains SSH-based. The 24x7 guarantee comes from the always-on VM and systemd-managed SSH service, not from the local computer.
@@ -164,6 +174,7 @@ The setup is ready only when all of these are true:
 - `npm run cloud:ssh:mobile-24x7:report` no longer reports a Codespaces-only transport blocker.
 - `npm run cloud:ssh:mobile-direct:probe:strict` succeeds.
 - `npm run cloud:ssh:mobile-direct:doctor:strict` succeeds and writes the handoff report.
+- `npm run cloud:ssh:direct-cloud:claim` writes a report with `claimAllowed` true.
 - `npm run check:seis-ssh-mobile-direct-cloud` passes against the contract.
 - The acceptance ledger maps every ready claim to a concrete command and artifact.
 
