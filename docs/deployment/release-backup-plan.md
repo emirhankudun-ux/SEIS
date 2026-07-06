@@ -22,6 +22,16 @@ releases/latest.json
 deploy/upload-plan.json
 ```
 
+Retention policy:
+
+```text
+docs/deployment/release-artifact-retention-policy.md
+```
+
+Existing tracked release artifacts stay retained until explicit maintainer
+approval chooses deletion, Git LFS, GitHub Releases, object storage, or
+manifest-only migration.
+
 ## Server Rule
 
 Only upload a package whose SHA-256 matches `server-upload-manifest.json`.

@@ -20,6 +20,11 @@ releases/latest.json
 dist/server-drop/
 ```
 
+Release artifact retention is governed by
+[`release-artifact-retention-policy.md`](./release-artifact-retention-policy.md).
+Do not delete, move, or replace retained release zips without explicit
+maintainer approval.
+
 This archive is safe to upload to a static server because it contains a flattened web root with:
 
 - `index.html`
