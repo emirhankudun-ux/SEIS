@@ -161,12 +161,16 @@ ios/
 !reports/seis-sub-agent-five-year-demo-run.json
 !reports/seis-model-scaling/20b-16gb-memory-benchmark.json
 !packages/seis-ai/models/seis-model-family-registry.json
+!packages/seis-ai/models/nvidia-nim-run-anywhere-downloadable-registry.json
 !packages/seis-ai/data/model-benchmark-suite-v0.json
 !packages/seis-ai/models/seis-model-benchmark-suite.json
 !packages/seis-ai/models/seis-model-promotion-policy.json
 !content/development/seis-god-mode-runtime-evidence.json
 !plugins/seis-ai-agent/assets/lanes/*.json
 !reports/seis-commit-packages.json
+!deploy/seis-ssh-public-access-contract.json
+!deploy/seis-ssh-direct-cloud-provider-matrix.json
+!deploy/seis-ssh-oracle-free-tier-direct-cloud-plan.json
 
 # Package lock files
 package-lock.json
@@ -186,6 +190,8 @@ docs/*
 !docs/LOCAL_AI_SETUP.md
 !docs/SEIS_SSH_SETUP.md
 !docs/STATUS.md
+!docs/design-system/
+!docs/design-system/*.md
 !docs/product/
 !docs/product/*.md
 !docs/reviews/
@@ -200,6 +206,11 @@ docs/*
 !docs/goals/*.md
 !docs/development/
 !docs/development/local-ai-workbench.md
+!docs/deployment/
+!docs/deployment/seis-ssh-direct-cloud-provider-matrix.md
+!docs/deployment/seis-ssh-direct-cloud-activation-plan.md
+!docs/deployment/seis-ssh-oracle-free-tier-direct-cloud.md
+!docs/deployment/seis-ssh-public-github-access.md
 !docs/apple/
 !docs/apple/*.md
 !docs/governance/
@@ -220,6 +231,40 @@ packages/seis-ai/downloadable/
 # Local SEIS SSH mobile readiness reports
 # Local generated reports
 reports/tmp/
+reports/seis-ssh-public-access/
+reports/seis-ssh-direct-cloud-activation-plan.json
+reports/seis-ssh-direct-cloud-activation-plan.md
+reports/seis-ssh-direct-cloud-readiness-claim.json
+reports/seis-ssh-direct-cloud-readiness-claim.md
+reports/seis-ssh-oracle-free-tier-plan.json
+reports/seis-ssh-oracle-free-tier-plan.md
+reports/seis-ssh-oracle-cloud-init-handoff.json
+reports/seis-ssh-oracle-cloud-init-handoff.md
+reports/seis-ssh-oracle-cloud-init-handoff.yaml
+reports/seis-ssh-oracle-instance-launch-plan.json
+reports/seis-ssh-oracle-instance-launch-plan.md
+reports/seis-ssh-oracle-owner-input-template.env
+reports/seis-ssh-oracle-owner-input-template.json
+reports/seis-ssh-oracle-owner-input-template.md
+reports/seis-ssh-oracle-owner-preflight.json
+reports/seis-ssh-oracle-owner-preflight.md
+reports/seis-ssh-oracle-owner-launch-command.json
+reports/seis-ssh-oracle-owner-launch-command.md
+reports/seis-ssh-oracle-owner-launch-command.sh
+reports/seis-ssh-oracle-owner-handoff-bundle.json
+reports/seis-ssh-oracle-owner-handoff-bundle.md
+reports/seis-ssh-oracle-owner-action-packet.json
+reports/seis-ssh-oracle-owner-action-packet.md
+reports/seis-ssh-oracle-postboot-handoff.json
+reports/seis-ssh-oracle-postboot-handoff.md
+reports/seis-ssh-oracle-direct-cloud-pipeline.json
+reports/seis-ssh-oracle-direct-cloud-pipeline.md
+reports/seis-ssh-cloudflare-access-plan.json
+reports/seis-ssh-cloudflare-access-plan.md
+reports/seis-ssh-github-codespaces-fallback-plan.json
+reports/seis-ssh-github-codespaces-fallback-plan.md
+reports/seis-ssh-provider-status-board.json
+reports/seis-ssh-provider-status-board.md
 reports/seis-ssh-mobile-24x7-readiness.json
 reports/seis-ssh-mobile-24x7-readiness.md
 reports/seis-ssh-mobile-direct-cloud-profile.json
