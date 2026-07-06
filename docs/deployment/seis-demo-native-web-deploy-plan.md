@@ -5,7 +5,7 @@
 ### Vercel
 
 1. Repository içinde çalışma dizini:
-   - `/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/apps/seis-demo-web`
+   - `apps/seis-demo-web`
 2. Deploy ayarları:
    - `Framework` seçimi: **Other / Static**
    - `Output Directory`: `.`

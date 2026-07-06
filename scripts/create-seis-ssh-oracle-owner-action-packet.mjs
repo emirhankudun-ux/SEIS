@@ -111,6 +111,7 @@ function buildReport(refreshRuns) {
     },
     checklist: {
       missingRequiredOwnerInputs: missingInputs,
+      ownerConsoleChecklist: ownerConsoleChecklist(missingInputs),
       sessionBlockers: blockedSession,
       optionalAfterBoot: [
         {
@@ -173,6 +174,46 @@ function missingOwnerInputs(preflight) {
       envKey: envKeys[input.key] || input.key,
       expectedKind: input.expectedKind,
       detectedKind: input.detectedKind,
+      valuePrinted: false
+    }));
+}
+
+function ownerConsoleChecklist(missingInputs) {
+  const entries = {
+    availabilityDomain: {
+      envKey: "SEIS_ORACLE_AVAILABILITY_DOMAIN",
+      consoleArea: "Oracle Console > Compute > Instances > Create instance > Placement",
+      whatToCopy: "Availability domain label for the selected Always Free region.",
+      publicSafeNote: "Copy into the ignored owner env only; do not commit the value."
+    },
+    compartmentId: {
+      envKey: "SEIS_ORACLE_COMPARTMENT_OCID",
+      consoleArea: "Oracle Console > Identity & Security > Compartments",
+      whatToCopy: "Compartment OCID for the compartment that will own the VM.",
+      publicSafeNote: "Keep the OCID local; reports show only presence and shape."
+    },
+    subnetId: {
+      envKey: "SEIS_ORACLE_SUBNET_OCID",
+      consoleArea: "Oracle Console > Networking > Virtual cloud networks > Subnets",
+      whatToCopy: "Public subnet OCID that the VM will use.",
+      publicSafeNote: "Use a reviewed public subnet; do not paste the OCID into public docs."
+    },
+    imageId: {
+      envKey: "SEIS_ORACLE_IMAGE_OCID",
+      consoleArea: "Oracle Console > Compute > Images or Create instance > Image details",
+      whatToCopy: "Oracle Linux image OCID for the selected region and shape.",
+      publicSafeNote: "Region-specific image IDs stay in the ignored owner env."
+    }
+  };
+
+  const ids = missingInputs.length > 0
+    ? missingInputs.map((input) => input.id)
+    : Object.keys(entries);
+  return ids
+    .map((id) => entries[id])
+    .filter(Boolean)
+    .map((entry) => ({
+      ...entry,
       valuePrinted: false
     }));
 }
@@ -253,6 +294,12 @@ ${report.nextOwnerAction}
 | --- | --- | --- | --- |
 ${renderInputRows(report.checklist.missingRequiredOwnerInputs)}
 
+## Oracle Console Checklist
+
+| Env key | Console area | What to copy | Public safe note |
+| --- | --- | --- | --- |
+${renderConsoleChecklistRows(report.checklist.ownerConsoleChecklist)}
+
 ## Session Blockers
 
 ${renderList(report.checklist.sessionBlockers.map((blocker) => blocker.message), "none")}
@@ -280,6 +327,11 @@ ${renderList(report.safety, "none")}
 function renderInputRows(inputs) {
   if (!Array.isArray(inputs) || inputs.length === 0) return "| none | none | none | none |";
   return inputs.map((input) => `| ${input.label} | ${input.envKey} | ${input.expectedKind} | ${input.detectedKind} |`).join("\n");
+}
+
+function renderConsoleChecklistRows(entries) {
+  if (!Array.isArray(entries) || entries.length === 0) return "| none | none | none | none |";
+  return entries.map((entry) => `| ${entry.envKey} | ${entry.consoleArea} | ${entry.whatToCopy} | ${entry.publicSafeNote} |`).join("\n");
 }
 
 function readJson(file, failures) {

@@ -73,6 +73,9 @@ ensure(closedRuntime?.targetAlias === "SEIS-SSH", "closed runtime contract targe
 ensure(closedRuntime?.runtimeType === "closed-cloud-development-system", "closed runtime contract must require closed cloud development system");
 ensure(enterpriseBenchmark?.targetControlPlane?.year5Default === "identity-aware-ssh-broker", "enterprise benchmark must target identity-aware SSH broker");
 ensure((model?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-enterprise-benchmark"), "qualityCommands must include enterprise benchmark check");
+ensure((model?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-github-codespaces-fallback-plan"), "qualityCommands must include GitHub Codespaces fallback plan check");
+ensure((model?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-provider-status-board"), "qualityCommands must include provider status board check");
+ensure((model?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-oracle-owner-action-packet"), "qualityCommands must include Oracle owner action packet check");
 ensure((roadmap?.tracks || []).some((track) => track.profile === "individual-cloud" && track.vpnRequired === false), "roadmap must preserve individual normal cloud SSH");
 ensure((roadmap?.tracks || []).some((track) => track.profile === "organization-vpn-cloud" && track.vpnRequired === true), "roadmap must preserve organization VPN SSH");
 ensure((roadmap?.tracks || []).some((track) => track.profile === "developer-closed-system" && track.currentProvider === "cloud-isolated-workspace"), "roadmap must preserve developer closed cloud system");

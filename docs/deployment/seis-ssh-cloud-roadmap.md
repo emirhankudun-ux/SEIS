@@ -12,7 +12,14 @@ Codex, future SEIS clients, individual users, companies, teams, and developers.
 
 For the 5-year enterprise benchmark view, see:
 
+- [seis-ssh-public-github-access.md](./seis-ssh-public-github-access.md)
+- [seis-ssh-direct-cloud-provider-matrix.md](./seis-ssh-direct-cloud-provider-matrix.md)
+- [seis-ssh-direct-cloud-activation-plan.md](./seis-ssh-direct-cloud-activation-plan.md)
+- [seis-ssh-oracle-free-tier-direct-cloud.md](./seis-ssh-oracle-free-tier-direct-cloud.md)
 - [seis-ssh-5-year-enterprise-blueprint.md](./seis-ssh-5-year-enterprise-blueprint.md)
+- `deploy/seis-ssh-public-access-contract.json`
+- `deploy/seis-ssh-direct-cloud-provider-matrix.json`
+- `deploy/seis-ssh-oracle-free-tier-direct-cloud-plan.json`
 - `deploy/seis-ssh-5-year-enterprise-benchmark.json`
 
 ## Non-Negotiable Invariants
@@ -34,11 +41,47 @@ without depending on the current Mac.
 
 Current provider: GitHub Codespaces.
 
+Direct-cloud provider decision source:
+
+```text
+deploy/seis-ssh-direct-cloud-provider-matrix.json
+docs/deployment/seis-ssh-direct-cloud-provider-matrix.md
+docs/deployment/seis-ssh-direct-cloud-activation-plan.md
+docs/deployment/seis-ssh-oracle-free-tier-direct-cloud.md
+```
+
+Current recommendation: use `oracle-cloud-free-tier` as the first always-on VM
+candidate, keep `github-codespaces` as a terminal-compatible fallback, and use
+`cloudflare-access-tunnel` only as an identity/access layer after a real cloud
+origin exists. `google-cloud-compute` stays strong when billing, IAM, Compute
+Engine API, and firewall prerequisites are confirmed.
+
 Required evidence:
 
 ```bash
+npm run check:seis-ssh-oracle-free-tier-plan
+npm run check:seis-ssh-oracle-cloud-init-handoff
+npm run check:seis-ssh-oracle-instance-launch-plan
+npm run check:seis-ssh-oracle-owner-input-template
+npm run check:seis-ssh-oracle-owner-preflight
+npm run check:seis-ssh-oracle-owner-launch-command
+npm run check:seis-ssh-oracle-owner-handoff
+npm run check:seis-ssh-oracle-owner-action-packet
+npm run check:seis-ssh-oracle-postboot-handoff
+npm run check:seis-ssh-oracle-direct-cloud-pipeline
+npm run check:seis-ssh-cloudflare-access-plan
+npm run check:seis-ssh-github-codespaces-fallback-plan
+npm run check:seis-ssh-provider-status-board
+npm run check:seis-ssh-direct-cloud-readiness-claim
+npm run check:seis-ssh-report-boundary
 npm run cloud:ssh:online:strict
 ```
+
+### SEIS SSH Report Boundary
+
+`npm run check:seis-ssh-report-boundary` verifies generated reports stay ignored
+while source docs and contracts stay committable. It does not call provider
+APIs, does not open SSH, does not write SSH config, and does not print secrets.
 
 Long-term direction:
 
@@ -120,6 +163,7 @@ Exit criteria:
 
 - a new device can install the same `SEIS-SSH` alias
 - GitHub CLI and identity-file prerequisites are documented
+- public GitHub access reports preserve the current server and port
 - no private keys or tokens are committed
 - ChatGPT and Codex SSH surfaces select `SEIS-SSH` instead of stale local aliases
 
@@ -162,6 +206,17 @@ Incident:
 ## Validation
 
 ```bash
+npm run check:seis-ssh-public-access
+npm run check:seis-ssh-report-boundary
+npm run check:seis-ssh-direct-cloud-provider-matrix
+npm run check:seis-ssh-cloudflare-access-plan
+npm run check:seis-ssh-github-codespaces-fallback-plan
+npm run check:seis-ssh-provider-status-board
+npm run check:seis-ssh-direct-cloud-activation-plan
+npm run check:seis-ssh-oracle-owner-input-template
+npm run check:seis-ssh-oracle-owner-launch-command
+npm run check:seis-ssh-oracle-owner-handoff
+npm run check:seis-ssh-oracle-owner-action-packet
 npm run check:seis-ssh-cloud-roadmap
 npm run check:seis-ssh-closed-runtime
 npm run check:seis-ssh-access-model

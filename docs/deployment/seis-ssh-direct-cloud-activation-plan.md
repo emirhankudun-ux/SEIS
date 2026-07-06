@@ -59,12 +59,16 @@ npm run cloud:ssh:oracle-owner:launch-command
 npm run check:seis-ssh-oracle-owner-launch-command
 npm run cloud:ssh:oracle-owner:handoff
 npm run check:seis-ssh-oracle-owner-handoff
+npm run cloud:ssh:oracle-owner:action-packet
+npm run check:seis-ssh-oracle-owner-action-packet
 npm run cloud:ssh:oracle-postboot:handoff
 npm run check:seis-ssh-oracle-postboot-handoff
 npm run cloud:ssh:oracle-direct-cloud:pipeline
 npm run check:seis-ssh-oracle-direct-cloud-pipeline
 npm run cloud:ssh:github-codespaces:fallback-plan
 npm run check:seis-ssh-github-codespaces-fallback-plan
+npm run cloud:ssh:provider-status:board
+npm run check:seis-ssh-provider-status-board
 npm run cloud:ssh:cloudflare-access:plan
 npm run check:seis-ssh-cloudflare-access-plan
 npm run cloud:ssh:direct-cloud:claim
@@ -83,10 +87,12 @@ scripts/create-seis-ssh-oracle-owner-input-template.mjs
 scripts/create-seis-ssh-oracle-owner-preflight.mjs
 scripts/create-seis-ssh-oracle-owner-launch-command.mjs
 scripts/create-seis-ssh-oracle-owner-handoff-bundle.mjs
+scripts/create-seis-ssh-oracle-owner-action-packet.mjs
 scripts/create-seis-ssh-oracle-postboot-handoff.mjs
 scripts/create-seis-ssh-oracle-direct-cloud-pipeline.mjs
 scripts/create-seis-ssh-cloudflare-access-plan.mjs
 scripts/create-seis-ssh-github-codespaces-fallback-plan.mjs
+scripts/create-seis-ssh-provider-status-board.mjs
 scripts/create-seis-ssh-direct-cloud-readiness-claim.mjs
 ```
 
@@ -105,6 +111,11 @@ out of JSON and Markdown.
 The owner handoff bundle creates one redacted owner-facing run order and status
 snapshot. It does not call Oracle APIs, create VMs, open SSH, write SSH config,
 or print raw owner values.
+The owner action packet refreshes redacted local reports, shows missing owner
+input names, and lists the safe next commands without printing OCIDs,
+endpoints, private keys, tokens, or OCI session contents. Its Oracle Console
+Checklist tells the owner which Console area maps to each missing env key
+without storing the copied values in git.
 The post-boot handoff is the first local-only report after Oracle assigns a
 public endpoint; it records endpoint continuity and the activation/proof order
 without opening SSH.
@@ -113,6 +124,9 @@ direct-cloud report so the next owner action is visible from one command.
 The GitHub Codespaces fallback plan documents the current terminal-compatible
 fallback without calling GitHub APIs, checking auth status, opening SSH, writing
 SSH config, or claiming mobile 24x7 direct-cloud readiness.
+The SEIS SSH Provider Status Board summarizes Oracle, Codespaces, Cloudflare,
+and the readiness claim from local reports without provider APIs, live SSH, or
+config writes.
 The Cloudflare Access plan runs only after a real cloud origin exists. It does
 not call Cloudflare APIs, run tunnel login, open SSH, write SSH config, or allow
 the local Mac as the default SEIS-SSH origin.

@@ -36,6 +36,8 @@ npm run cloud:ssh:online:strict
 The long-term cloud-only roadmap lives in:
 
 ```text
+deploy/seis-ssh-public-access-contract.json
+docs/deployment/seis-ssh-public-github-access.md
 deploy/seis-ssh-cloud-roadmap.json
 deploy/seis-ssh-closed-runtime-contract.json
 deploy/seis-ssh-5-year-enterprise-benchmark.json
@@ -55,6 +57,33 @@ workaround. It locks the following long-horizon direction:
 - sanitized closed-runtime handoff without secrets
 - no local Mac, LAN, direct VPS, or VPN-specific picker aliases
 - new computer bootstrap through the same `SEIS-SSH` alias
+
+## Public GitHub Access Contract
+
+Public GitHub review uses:
+
+```text
+deploy/seis-ssh-public-access-contract.json
+docs/deployment/seis-ssh-public-github-access.md
+```
+
+The public contract keeps the same server and port:
+
+```text
+Keep the same server and port.
+Ayni sunucu ve baglanti noktasi korunur.
+```
+
+It adds read-only reports for reviewers and contributors:
+
+```bash
+npm run check:seis-ssh-public-access
+npm run report:seis-ssh-public-access
+npm run report:seis-ssh-public-onboarding
+```
+
+These reports sanitize host details, never print private keys, and never open a
+live SSH session.
 
 ## Companies And Teams
 
@@ -83,6 +112,7 @@ development runtime isolated.
 ## Validation
 
 ```bash
+npm run check:seis-ssh-public-access
 npm run check:seis-ssh-access-model
 npm run check:seis-ssh-cloud-roadmap
 npm run check:seis-ssh-closed-runtime

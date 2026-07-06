@@ -26,12 +26,16 @@ npm run cloud:ssh:oracle-owner:launch-command
 npm run check:seis-ssh-oracle-owner-launch-command
 npm run cloud:ssh:oracle-owner:handoff
 npm run check:seis-ssh-oracle-owner-handoff
+npm run cloud:ssh:oracle-owner:action-packet
+npm run check:seis-ssh-oracle-owner-action-packet
 npm run cloud:ssh:oracle-postboot:handoff
 npm run check:seis-ssh-oracle-postboot-handoff
 npm run cloud:ssh:oracle-direct-cloud:pipeline
 npm run check:seis-ssh-oracle-direct-cloud-pipeline
 npm run cloud:ssh:github-codespaces:fallback-plan
 npm run check:seis-ssh-github-codespaces-fallback-plan
+npm run cloud:ssh:provider-status:board
+npm run check:seis-ssh-provider-status-board
 npm run cloud:ssh:cloudflare-access:plan
 npm run check:seis-ssh-cloudflare-access-plan
 npm run cloud:ssh:direct-cloud:claim
@@ -51,9 +55,11 @@ reports/seis-ssh-oracle-owner-preflight.md
 reports/seis-ssh-oracle-owner-launch-command.md
 reports/seis-ssh-oracle-owner-launch-command.sh
 reports/seis-ssh-oracle-owner-handoff-bundle.md
+reports/seis-ssh-oracle-owner-action-packet.md
 reports/seis-ssh-oracle-postboot-handoff.md
 reports/seis-ssh-oracle-direct-cloud-pipeline.md
 reports/seis-ssh-github-codespaces-fallback-plan.md
+reports/seis-ssh-provider-status-board.md
 reports/seis-ssh-cloudflare-access-plan.md
 reports/seis-ssh-direct-cloud-readiness-claim.md
 ```
@@ -75,6 +81,8 @@ endpoint hints, and the current SSH alias shape.
   session hints, and redacted owner-input presence plus shape validity.
 - Generate a local-only launch-command handoff shell script only after required
   owner inputs have valid shapes.
+- Generate a local-only owner action packet that lists missing input names and
+  safe command order without printing owner values.
 - Keep GitHub Codespaces as fallback until an Oracle VM exists.
 
 ## What Requires Owner Action Outside Git
@@ -200,6 +208,23 @@ The bundle reads local reports and shows current stage, next action, run order,
 and blockers. It does not call Oracle APIs, create VMs, open SSH, write SSH
 config, or print raw OCIDs/endpoints.
 
+## Owner Action Packet
+
+Generate the owner action packet when you want the next missing inputs and
+safe command order in one redacted report:
+
+```bash
+npm run cloud:ssh:oracle-owner:action-packet
+npm run check:seis-ssh-oracle-owner-action-packet
+```
+
+The owner action packet refreshes local redacted reports, lists missing
+availability-domain, compartment, subnet, and image input names, and keeps raw
+OCIDs, endpoints, hostnames, tokens, private keys, and OCI session contents out
+of JSON, Markdown, and console output. The Oracle Console Checklist inside the
+report maps each missing env key to the relevant Console area, but the copied
+values still belong only in the ignored owner input env file.
+
 ## Post-Boot Handoff
 
 After Oracle assigns a public IP or DNS name, generate a post-boot handoff:
@@ -239,6 +264,18 @@ npm run cloud:ssh:github-codespaces:fallback-plan
 The plan does not call GitHub APIs, does not run `gh auth status`, does not open
 SSH, does not write SSH config, and does not claim mobile 24x7 direct-cloud
 readiness.
+
+## Provider Status Board
+
+Generate the single owner-facing status board after local reports are refreshed:
+
+```bash
+npm run cloud:ssh:provider-status:board
+```
+
+The board summarizes Oracle, GitHub Codespaces, Cloudflare, and the readiness
+claim without provider API calls, live SSH, config writes, raw endpoints,
+private keys, tokens, ProxyCommand details, or provider credentials.
 
 ## Optional Cloudflare Access Plan
 
@@ -305,6 +342,8 @@ scripts/create-seis-ssh-oracle-instance-launch-plan.mjs
 scripts/create-seis-ssh-oracle-owner-input-template.mjs
 scripts/create-seis-ssh-oracle-owner-preflight.mjs
 scripts/create-seis-ssh-oracle-owner-launch-command.mjs
+scripts/create-seis-ssh-oracle-owner-handoff-bundle.mjs
+scripts/create-seis-ssh-oracle-owner-action-packet.mjs
 scripts/create-seis-ssh-oracle-postboot-handoff.mjs
 scripts/create-seis-ssh-oracle-direct-cloud-pipeline.mjs
 ```

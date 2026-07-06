@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { existsSync, readFileSync, rmSync, writeFileSync, chmodSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
@@ -36,21 +37,23 @@ if (!host) blockers.push("--direct-host or --public-ip is required for --transpo
 if (host && isLocalHost(host)) blockers.push("direct host must be a public cloud host, not localhost or .local.");
 if (!/^[A-Za-z_][A-Za-z0-9_.-]*$/.test(user)) blockers.push("--direct-user is invalid.");
 if (!/^[0-9]+$/.test(port) || Number(port) < 1 || Number(port) > 65535) blockers.push("--direct-port must be 1-65535.");
-if (!identityFile || !existsSync(identityFile)) blockers.push(`direct-cloud-identity-file-missing: ${identityFile}`);
+if (!identityFile || !existsSync(identityFile)) blockers.push(`direct-cloud-identity-file-missing: ${redactHome(identityFile)}`);
 
 const result = {
   ok: false,
   mode: apply ? "apply" : "plan",
   targetAlias: "SEIS-SSH",
   requestedTransport: "direct-cloud",
-  directHost: host || null,
+  directHost: host ? redactEndpoint(host) : null,
+  directHostKind: host ? classifyEndpoint(host) : "missing",
+  directHostSha256Prefix: host ? sha256HexPrefix(host) : null,
   directHostSource: resolvedHost.source || null,
   directProvider: provider || null,
   directProject: project || null,
   directUser: user,
   directPort: port,
-  identityFile,
-  sshConfigPath,
+  identityFile: redactHome(identityFile),
+  sshConfigPath: redactHome(sshConfigPath),
   reachable: false,
   sshAuthenticated: false,
   switched: false,
@@ -70,13 +73,13 @@ const result = {
 };
 
 if (blockers.length === 0) {
-    const probe = await probeTcp(host, Number(port), timeoutMs);
-    result.reachable = probe.reachable;
-    if (!probe.reachable) {
-      blockers.push(`direct-cloud-endpoint-unreachable: ${probe.error || "unknown"}`);
-      result.nextActions.push(`Fix cloud firewall, security group, sshd, or IP assignment for ${host}:${port}.`);
-      result.nextActions.push("Keep the current Codespaces SEIS-SSH transport until the endpoint is reachable.");
-    }
+  const probe = await probeTcp(host, Number(port), timeoutMs);
+  result.reachable = probe.reachable;
+  if (!probe.reachable) {
+    blockers.push(`direct-cloud-endpoint-unreachable: ${sanitize(probe.error || "unknown")}`);
+    result.nextActions.push(`Fix cloud firewall, security group, sshd, or IP assignment for ${redactEndpoint(host)}:${port}.`);
+    result.nextActions.push("Keep the current Codespaces SEIS-SSH transport until the endpoint is reachable.");
+  }
 }
 
 if (blockers.length === 0) {
@@ -84,8 +87,8 @@ if (blockers.length === 0) {
   result.sshAuthenticated = authProbe.ok;
   result.sshAuthProbe = authProbe;
   if (!authProbe.ok) {
-    blockers.push(`direct-cloud-ssh-auth-unavailable: ${authProbe.error || "unknown"}`);
-    result.nextActions.push(`Verify root key authorization, sshd policy, and allowed users for ${user}@${host}:${port}.`);
+    blockers.push(`direct-cloud-ssh-auth-unavailable: ${sanitize(authProbe.error || "unknown")}`);
+    result.nextActions.push(`Verify key authorization, sshd policy, and allowed users for ${user}@${redactEndpoint(host)}:${port}.`);
     result.nextActions.push("Do not apply direct-cloud mode until an SSH BatchMode probe succeeds.");
   }
 }
@@ -282,6 +285,25 @@ function isLocalHost(targetHost) {
     || value.endsWith(".local");
 }
 
+function classifyEndpoint(targetHost) {
+  const value = String(targetHost || "").toLowerCase();
+  if (!value) return "missing";
+  if (isLocalHost(value)) return "blocked-local-host";
+  if (isPrivateHost(value)) return "private-network-host";
+  if (/^\d+\.\d+\.\d+\.\d+$/.test(value)) return "public-ip-or-unverified-ip";
+  return "dns-name";
+}
+
+function isPrivateHost(targetHost) {
+  const match = /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/.exec(String(targetHost || ""));
+  if (!match) return false;
+  const first = Number(match[1]);
+  const second = Number(match[2]);
+  return first === 10
+    || (first === 172 && second >= 16 && second <= 31)
+    || (first === 192 && second === 168);
+}
+
 function expandHome(value) {
   const text = String(value || "");
   if (text === "~") return homedir();
@@ -289,9 +311,26 @@ function expandHome(value) {
   return text;
 }
 
+function redactHome(value) {
+  return String(value || "").replaceAll(homedir(), "~");
+}
+
+function redactEndpoint(value) {
+  if (!value) return null;
+  return classifyEndpoint(value) === "dns-name" ? "redacted-direct-cloud-dns" : "redacted-direct-cloud-host";
+}
+
+function sha256HexPrefix(value) {
+  return createHash("sha256").update(String(value)).digest("hex").slice(0, 12);
+}
+
 function sanitize(value) {
   return String(value || "")
+    .replaceAll(homedir(), "~")
+    .replace(/ocid1\.[A-Za-z0-9_.-]+/g, "[redacted-ocid]")
+    .replace(/\b(?:\d{1,3}\.){3}\d{1,3}\b/g, "[redacted-ip]")
     .replace(/gho_[A-Za-z0-9_]+/g, "gho_************************************")
+    .replace(/gh[pousr]_[A-Za-z0-9_]{20,}/g, "[redacted-github-token]")
     .replace(/sk-[A-Za-z0-9_-]+/g, "sk-************************************")
     .trim();
 }

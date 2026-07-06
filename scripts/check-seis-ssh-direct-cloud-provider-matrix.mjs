@@ -21,6 +21,7 @@ const files = {
   oracleOwnerPreflight: "scripts/create-seis-ssh-oracle-owner-preflight.mjs",
   oracleOwnerLaunchCommand: "scripts/create-seis-ssh-oracle-owner-launch-command.mjs",
   oracleOwnerHandoffBundle: "scripts/create-seis-ssh-oracle-owner-handoff-bundle.mjs",
+  oracleOwnerActionPacket: "scripts/create-seis-ssh-oracle-owner-action-packet.mjs",
   oraclePostBootHandoff: "scripts/create-seis-ssh-oracle-postboot-handoff.mjs",
   oracleDirectCloudPipeline: "scripts/create-seis-ssh-oracle-direct-cloud-pipeline.mjs",
   cloudflareAccessPlan: "scripts/create-seis-ssh-cloudflare-access-plan.mjs",
@@ -134,6 +135,16 @@ ensure(matrix?.oracleOwnerHandoffBundle?.writesSshConfig === false, "Oracle owne
 ensure(matrix?.oracleOwnerHandoffBundle?.readsPrivateKey === false, "Oracle owner handoff bundle must not read private keys");
 ensure(matrix?.oracleOwnerHandoffBundle?.readsOciConfigContents === false, "Oracle owner handoff bundle must not read OCI config contents");
 ensure(matrix?.oracleOwnerHandoffBundle?.printsSecrets === false, "Oracle owner handoff bundle must not print secrets");
+ensure(matrix?.oracleOwnerActionPacket?.script === files.oracleOwnerActionPacket, "matrix must link Oracle owner action packet script");
+ensure(matrix?.oracleOwnerActionPacket?.contract === files.oraclePlan, "matrix must link Oracle owner action packet contract");
+ensure(matrix?.oracleOwnerActionPacket?.printsRawOwnerValues === false, "Oracle owner action packet must not print raw owner values");
+ensure(matrix?.oracleOwnerActionPacket?.callsProviderApis === false, "Oracle owner action packet must not call provider APIs");
+ensure(matrix?.oracleOwnerActionPacket?.createsVm === false, "Oracle owner action packet must not create VMs");
+ensure(matrix?.oracleOwnerActionPacket?.opensSshSession === false, "Oracle owner action packet must not open SSH");
+ensure(matrix?.oracleOwnerActionPacket?.writesSshConfig === false, "Oracle owner action packet must not write SSH config");
+ensure(matrix?.oracleOwnerActionPacket?.readsPrivateKey === false, "Oracle owner action packet must not read private keys");
+ensure(matrix?.oracleOwnerActionPacket?.readsOciConfigContents === false, "Oracle owner action packet must not read OCI config contents");
+ensure(matrix?.oracleOwnerActionPacket?.printsSecrets === false, "Oracle owner action packet must not print secrets");
 ensure(matrix?.oraclePostBootHandoff?.script === files.oraclePostBootHandoff, "matrix must link Oracle post-boot handoff script");
 ensure(matrix?.oraclePostBootHandoff?.contract === files.oraclePlan, "matrix must link Oracle post-boot handoff contract");
 ensure(matrix?.oraclePostBootHandoff?.callsProviderApis === false, "Oracle post-boot handoff must not call provider APIs");
@@ -241,6 +252,11 @@ ensure(oraclePlan?.ownerHandoffBundle?.script === files.oracleOwnerHandoffBundle
 ensure(oraclePlan?.ownerHandoffBundle?.printsRawOwnerValues === false, "Oracle owner handoff bundle must not print raw owner values");
 ensure(oraclePlan?.ownerHandoffBundle?.callsProviderApis === false, "Oracle owner handoff bundle must stay local-only");
 ensure(oraclePlan?.ownerHandoffBundle?.createsVm === false, "Oracle owner handoff bundle must not create VMs");
+ensure(oraclePlan?.ownerActionPacket?.script === files.oracleOwnerActionPacket, "Oracle plan must link owner action packet script");
+ensure(oraclePlan?.ownerActionPacket?.printsRawOwnerValues === false, "Oracle owner action packet must not print raw owner values");
+ensure(oraclePlan?.ownerActionPacket?.callsProviderApis === false, "Oracle owner action packet must stay local-only");
+ensure(oraclePlan?.ownerActionPacket?.createsVm === false, "Oracle owner action packet must not create VMs");
+ensure(oraclePlan?.ownerActionPacket?.opensSshSession === false, "Oracle owner action packet must not open SSH");
 ensure(oraclePlan?.postBootHandoff?.script === files.oraclePostBootHandoff, "Oracle plan must link post-boot handoff script");
 ensure(oraclePlan?.postBootHandoff?.callsProviderApis === false, "Oracle post-boot handoff must stay local-only");
 ensure(oraclePlan?.postBootHandoff?.opensSshSession === false, "Oracle post-boot handoff must not open SSH");
@@ -321,6 +337,8 @@ ensure(scripts["check:seis-ssh-oracle-owner-launch-command"] === "node scripts/c
 ensure(scripts["cloud:ssh:oracle-owner:launch-command"] === "node scripts/create-seis-ssh-oracle-owner-launch-command.mjs --write", "package script must declare Oracle owner launch command report");
 ensure(scripts["check:seis-ssh-oracle-owner-handoff"] === "node scripts/create-seis-ssh-oracle-owner-handoff-bundle.mjs --check", "package script must declare Oracle owner handoff bundle check");
 ensure(scripts["cloud:ssh:oracle-owner:handoff"] === "node scripts/create-seis-ssh-oracle-owner-handoff-bundle.mjs --write", "package script must declare Oracle owner handoff bundle report");
+ensure(scripts["check:seis-ssh-oracle-owner-action-packet"] === "node scripts/create-seis-ssh-oracle-owner-action-packet.mjs --check", "package script must declare Oracle owner action packet check");
+ensure(scripts["cloud:ssh:oracle-owner:action-packet"] === "node scripts/create-seis-ssh-oracle-owner-action-packet.mjs --write --refresh", "package script must declare Oracle owner action packet report");
 ensure(scripts["check:seis-ssh-oracle-postboot-handoff"] === "node scripts/create-seis-ssh-oracle-postboot-handoff.mjs --check", "package script must declare Oracle post-boot handoff check");
 ensure(scripts["cloud:ssh:oracle-postboot:handoff"] === "node scripts/create-seis-ssh-oracle-postboot-handoff.mjs --write", "package script must declare Oracle post-boot handoff report");
 ensure(scripts["check:seis-ssh-oracle-direct-cloud-pipeline"] === "node scripts/create-seis-ssh-oracle-direct-cloud-pipeline.mjs --check", "package script must declare Oracle direct-cloud pipeline check");
@@ -342,6 +360,7 @@ const oracleOwnerInputTemplate = read(files.oracleOwnerInputTemplate);
 const oracleOwnerPreflight = read(files.oracleOwnerPreflight);
 const oracleOwnerLaunchCommand = read(files.oracleOwnerLaunchCommand);
 const oracleOwnerHandoffBundle = read(files.oracleOwnerHandoffBundle);
+const oracleOwnerActionPacket = read(files.oracleOwnerActionPacket);
 const oraclePostBootHandoff = read(files.oraclePostBootHandoff);
 const oracleDirectCloudPipeline = read(files.oracleDirectCloudPipeline);
 const cloudflareAccessPlan = read(files.cloudflareAccessPlan);
@@ -381,6 +400,11 @@ ensure(oracleOwnerLaunchCommand.includes("willPreserveExisting"), "Oracle owner 
 ensure(oracleOwnerHandoffBundle.includes("ownerRunOrder"), "Oracle owner handoff bundle must expose owner run order");
 ensure(oracleOwnerHandoffBundle.includes("prints raw owner values") || oracleOwnerHandoffBundle.includes("does not print raw"), "Oracle owner handoff bundle must document raw value redaction");
 ensure(oracleOwnerHandoffBundle.includes("does not call Oracle APIs"), "Oracle owner handoff bundle must remain provider-local");
+ensure(oracleOwnerActionPacket.includes("missingRequiredOwnerInputs"), "Oracle owner action packet must list missing input names");
+ensure(oracleOwnerActionPacket.includes("ownerConsoleChecklist"), "Oracle owner action packet must include owner console checklist");
+ensure(oracleOwnerActionPacket.includes("Oracle Console"), "Oracle owner action packet must name Oracle Console handoff areas");
+ensure(oracleOwnerActionPacket.includes("does not call Oracle APIs"), "Oracle owner action packet must remain provider-local");
+ensure(oracleOwnerActionPacket.includes("Owner OCIDs") && oracleOwnerActionPacket.includes("never printed"), "Oracle owner action packet must document raw owner value redaction");
 ensure(oraclePostBootHandoff.includes("does not call Oracle APIs"), "Oracle post-boot handoff must remain provider-local");
 ensure(oraclePostBootHandoff.includes("does not open SSH"), "Oracle post-boot handoff must not open SSH");
 ensure(oraclePostBootHandoff.includes("SHA-256 prefix"), "Oracle post-boot handoff must redact endpoint continuity");
@@ -416,6 +440,8 @@ ensure(gitignore.includes("reports/seis-ssh-oracle-owner-launch-command.json"), 
 ensure(gitignore.includes("reports/seis-ssh-oracle-owner-launch-command.md"), "gitignore must ignore Oracle owner launch command Markdown report");
 ensure(gitignore.includes("reports/seis-ssh-oracle-owner-handoff-bundle.json"), "gitignore must ignore Oracle owner handoff bundle JSON report");
 ensure(gitignore.includes("reports/seis-ssh-oracle-owner-handoff-bundle.md"), "gitignore must ignore Oracle owner handoff bundle Markdown report");
+ensure(gitignore.includes("reports/seis-ssh-oracle-owner-action-packet.json"), "gitignore must ignore Oracle owner action packet JSON report");
+ensure(gitignore.includes("reports/seis-ssh-oracle-owner-action-packet.md"), "gitignore must ignore Oracle owner action packet Markdown report");
 ensure(gitignore.includes("reports/seis-ssh-cloudflare-access-plan.json"), "gitignore must ignore Cloudflare Access plan JSON report");
 ensure(gitignore.includes("reports/seis-ssh-cloudflare-access-plan.md"), "gitignore must ignore Cloudflare Access plan Markdown report");
 ensure(gitignore.includes("reports/seis-ssh-github-codespaces-fallback-plan.json"), "gitignore must ignore GitHub Codespaces fallback plan JSON report");
@@ -461,6 +487,7 @@ for (const token of [
   "scripts/create-seis-ssh-oracle-owner-preflight.mjs",
   "scripts/create-seis-ssh-oracle-owner-launch-command.mjs",
   "scripts/create-seis-ssh-oracle-owner-handoff-bundle.mjs",
+  "scripts/create-seis-ssh-oracle-owner-action-packet.mjs",
   "scripts/create-seis-ssh-oracle-postboot-handoff.mjs",
   "scripts/create-seis-ssh-oracle-direct-cloud-pipeline.mjs",
   "scripts/create-seis-ssh-cloudflare-access-plan.mjs",
@@ -482,6 +509,8 @@ for (const token of [
   "npm run cloud:ssh:oracle-owner:launch-command",
   "npm run check:seis-ssh-oracle-owner-handoff",
   "npm run cloud:ssh:oracle-owner:handoff",
+  "npm run check:seis-ssh-oracle-owner-action-packet",
+  "npm run cloud:ssh:oracle-owner:action-packet",
   "npm run check:seis-ssh-oracle-postboot-handoff",
   "npm run cloud:ssh:oracle-postboot:handoff",
   "npm run check:seis-ssh-oracle-direct-cloud-pipeline",
@@ -501,6 +530,7 @@ for (const token of [
   "owner preflight",
   "owner launch command",
   "owner handoff bundle",
+  "owner action packet",
   "post-boot handoff",
   "direct-cloud pipeline",
   "Cloudflare Access plan",

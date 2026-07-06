@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { existsSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { homedir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
@@ -38,7 +39,7 @@ if (!/^[0-9]+$/.test(String(directPort)) || Number(directPort) < 1 || Number(dir
   errors.push("--direct-port must be 1-65535.");
 }
 if (!existsSync(directIdentityFile)) {
-  errors.push(`direct-cloud-identity-file-missing: ${directIdentityFile}`);
+  errors.push(`direct-cloud-identity-file-missing: ${redactHome(directIdentityFile)}`);
 }
 
 if (errors.length > 0) {
@@ -98,11 +99,13 @@ console.log(JSON.stringify({
   mode: "ready",
   targetAlias: "SEIS-SSH",
   transport: "direct-cloud",
-  directHost: resolvedHost.value,
+  directHost: redactEndpoint(resolvedHost.value),
+  directHostKind: classifyEndpoint(resolvedHost.value),
+  directHostSha256Prefix: sha256HexPrefix(resolvedHost.value),
   directHostSource: resolvedHost.source,
   directUser,
   directPort,
-  directIdentityFile,
+  directIdentityFile: redactHome(directIdentityFile),
   switchResult: {
     status: switchResult.status,
     stdout: sanitize(switchResult.stdout)
@@ -173,9 +176,46 @@ function expandHome(value) {
   return text;
 }
 
+function redactHome(value) {
+  return String(value || "").replaceAll(homedir(), "~");
+}
+
+function classifyEndpoint(targetHost) {
+  const value = String(targetHost || "").toLowerCase();
+  if (!value) return "missing";
+  if (value === "localhost" || value === "127.0.0.1" || value === "::1" || value.endsWith(".local")) {
+    return "blocked-local-host";
+  }
+  const privateMatch = /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/.exec(value);
+  if (privateMatch) {
+    const first = Number(privateMatch[1]);
+    const second = Number(privateMatch[2]);
+    if (first === 10 || (first === 172 && second >= 16 && second <= 31) || (first === 192 && second === 168)) {
+      return "private-network-host";
+    }
+  }
+  if (/^\d+\.\d+\.\d+\.\d+$/.test(value)) return "public-ip-or-unverified-ip";
+  return "dns-name";
+}
+
+function redactEndpoint(value) {
+  if (!value) return null;
+  return classifyEndpoint(value) === "dns-name" ? "redacted-direct-cloud-dns" : "redacted-direct-cloud-host";
+}
+
+function sha256HexPrefix(value) {
+  return value ? createHash("sha256").update(String(value)).digest("hex").slice(0, 12) : null;
+}
+
 function sanitize(value) {
   return String(value || "")
+    .replaceAll(homedir(), "~")
+    .replace(/ocid1\.[A-Za-z0-9_.-]+/g, "[redacted-ocid]")
+    .replace(/\b(?:\d{1,3}\.){3}\d{1,3}\b/g, "[redacted-ip]")
+    .replace(/("directHost"\s*:\s*)"[^"]+"/g, `$1"${redactEndpoint(resolvedHost.value) || "redacted-direct-cloud-host"}"`)
+    .replace(/("identityFile"\s*:\s*)"[^"]+"/g, `$1"~/.ssh/[redacted-identity-file]"`)
     .replace(/gho_[A-Za-z0-9_]+/g, "gho_************************************")
+    .replace(/gh[pousr]_[A-Za-z0-9_]{20,}/g, "[redacted-github-token]")
     .replace(/sk-[A-Za-z0-9_-]+/g, "sk-************************************")
     .trim();
 }

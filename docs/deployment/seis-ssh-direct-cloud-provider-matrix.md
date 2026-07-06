@@ -65,12 +65,16 @@ npm run cloud:ssh:oracle-owner:launch-command
 npm run check:seis-ssh-oracle-owner-launch-command
 npm run cloud:ssh:oracle-owner:handoff
 npm run check:seis-ssh-oracle-owner-handoff
+npm run cloud:ssh:oracle-owner:action-packet
+npm run check:seis-ssh-oracle-owner-action-packet
 npm run cloud:ssh:oracle-postboot:handoff
 npm run check:seis-ssh-oracle-postboot-handoff
 npm run cloud:ssh:oracle-direct-cloud:pipeline
 npm run check:seis-ssh-oracle-direct-cloud-pipeline
 npm run cloud:ssh:github-codespaces:fallback-plan
 npm run check:seis-ssh-github-codespaces-fallback-plan
+npm run cloud:ssh:provider-status:board
+npm run check:seis-ssh-provider-status-board
 npm run cloud:ssh:cloudflare-access:plan
 npm run check:seis-ssh-cloudflare-access-plan
 npm run cloud:ssh:direct-cloud:claim
@@ -89,10 +93,12 @@ scripts/create-seis-ssh-oracle-owner-input-template.mjs
 scripts/create-seis-ssh-oracle-owner-preflight.mjs
 scripts/create-seis-ssh-oracle-owner-launch-command.mjs
 scripts/create-seis-ssh-oracle-owner-handoff-bundle.mjs
+scripts/create-seis-ssh-oracle-owner-action-packet.mjs
 scripts/create-seis-ssh-oracle-postboot-handoff.mjs
 scripts/create-seis-ssh-oracle-direct-cloud-pipeline.mjs
 scripts/create-seis-ssh-cloudflare-access-plan.mjs
 scripts/create-seis-ssh-github-codespaces-fallback-plan.mjs
+scripts/create-seis-ssh-provider-status-board.mjs
 scripts/create-seis-ssh-direct-cloud-readiness-claim.mjs
 ```
 
@@ -127,6 +133,13 @@ The owner handoff bundle gives the owner one redacted status file with current
 stage, next action, run order, and blockers. It does not call Oracle APIs,
 create VMs, open SSH, write SSH config, or print raw owner values.
 
+The owner action packet is the next owner-facing checkpoint: it refreshes local
+redacted reports, lists missing owner input names, and gives the safe command
+order without printing Oracle OCIDs, endpoints, private keys, tokens, or OCI
+session data. It also includes an Oracle Console Checklist that maps each
+missing env key to the Console area where the owner can find the value, while
+keeping all OCIDs and endpoint values in ignored local files.
+
 The post-boot handoff records the endpoint continuity after Oracle assigns a
 public endpoint, but it still does not call provider APIs, open SSH, or write
 SSH config.
@@ -138,6 +151,11 @@ The GitHub Codespaces fallback plan is local-only and keeps Codespaces honest:
 it can be terminal-compatible, but it is `fallbackOnly`, not mobile 24x7
 direct-cloud readiness. It does not call GitHub APIs, run `gh auth status`,
 open SSH, write SSH config, or print ProxyCommand details.
+
+The SEIS SSH Provider Status Board summarizes Oracle, GitHub Codespaces,
+Cloudflare, and the readiness claim in one owner-facing report. It refreshes
+only local non-mutating reports and does not call provider APIs, open SSH, write
+SSH config, or print secrets.
 
 The Cloudflare Access plan is optional and runs only after a real cloud origin
 exists. It keeps Cloudflare as an identity/access layer, not a VM replacement;
@@ -157,10 +175,12 @@ npm run check:seis-ssh-oracle-owner-input-template
 npm run check:seis-ssh-oracle-owner-preflight
 npm run check:seis-ssh-oracle-owner-launch-command
 npm run check:seis-ssh-oracle-owner-handoff
+npm run check:seis-ssh-oracle-owner-action-packet
 npm run check:seis-ssh-oracle-postboot-handoff
 npm run check:seis-ssh-oracle-direct-cloud-pipeline
 npm run check:seis-ssh-cloudflare-access-plan
 npm run check:seis-ssh-github-codespaces-fallback-plan
+npm run check:seis-ssh-provider-status-board
 npm run check:seis-ssh-oracle-free-tier-plan
 npm run check:seis-ssh-direct-cloud-provider-matrix
 npm run check:seis-ssh-public-access
@@ -190,12 +210,13 @@ endpoint exists and accepts the SEIS public key.
 4. Fill the ignored owner input template locally and rerun owner preflight.
 5. Generate the ignored owner launch-command handoff and review it locally.
 6. Generate the owner handoff bundle for one redacted owner-facing run order.
-7. Create or select an always-on VM only after quota/capacity is confirmed.
-8. Install the existing SEIS public key on the VM.
-9. Run strict direct-cloud probe and doctor.
-10. Run the Cloudflare Access plan only after the cloud VM is real.
-11. Run the GitHub Codespaces fallback plan to keep the fallback status explicit.
-12. Add Cloudflare Access only after the cloud VM is real and the origin policy is identity-gated.
+7. Generate the owner action packet to see missing input names and safe run order.
+8. Create or select an always-on VM only after quota/capacity is confirmed.
+9. Install the existing SEIS public key on the VM.
+10. Run strict direct-cloud probe and doctor.
+11. Run the Cloudflare Access plan only after the cloud VM is real.
+12. Run the GitHub Codespaces fallback plan to keep the fallback status explicit.
+13. Add Cloudflare Access only after the cloud VM is real and the origin policy is identity-gated.
 
 Machine-readable source:
 

@@ -32,6 +32,8 @@ const generatedReportPaths = [
   "reports/seis-ssh-oracle-owner-launch-command.sh",
   "reports/seis-ssh-oracle-owner-handoff-bundle.json",
   "reports/seis-ssh-oracle-owner-handoff-bundle.md",
+  "reports/seis-ssh-oracle-owner-action-packet.json",
+  "reports/seis-ssh-oracle-owner-action-packet.md",
   "reports/seis-ssh-oracle-postboot-handoff.json",
   "reports/seis-ssh-oracle-postboot-handoff.md",
   "reports/seis-ssh-oracle-direct-cloud-pipeline.json",
@@ -59,6 +61,7 @@ const sourceContractPaths = [
   "docs/deployment/seis-ssh-oracle-free-tier-direct-cloud.md",
   "docs/deployment/seis-ssh-public-github-access.md",
   "docs/deployment/seis-ssh-cloud-roadmap.md",
+  "scripts/create-seis-ssh-oracle-owner-action-packet.mjs",
   "scripts/create-seis-ssh-cloudflare-access-plan.mjs",
   "scripts/create-seis-ssh-github-codespaces-fallback-plan.mjs",
   "scripts/create-seis-ssh-provider-status-board.mjs",
@@ -96,6 +99,8 @@ for (const pattern of [
   "reports/seis-ssh-oracle-owner-input-template.env",
   "reports/seis-ssh-oracle-owner-launch-command.sh",
   "reports/seis-ssh-oracle-owner-handoff-bundle.json",
+  "reports/seis-ssh-oracle-owner-action-packet.json",
+  "reports/seis-ssh-oracle-owner-action-packet.md",
   "reports/seis-ssh-oracle-direct-cloud-pipeline.md",
   "reports/seis-ssh-github-codespaces-fallback-plan.json",
   "reports/seis-ssh-github-codespaces-fallback-plan.md",
@@ -146,6 +151,7 @@ for (const file of [
   "scripts/create-seis-ssh-cloudflare-access-plan.mjs",
   "scripts/create-seis-ssh-github-codespaces-fallback-plan.mjs",
   "scripts/create-seis-ssh-provider-status-board.mjs",
+  "scripts/create-seis-ssh-oracle-owner-action-packet.mjs",
   script
 ]) {
   requireNotMatches(file, /sk-[A-Za-z0-9_-]{20,}/, "OpenAI-style API keys");

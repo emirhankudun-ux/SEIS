@@ -132,6 +132,22 @@
     "readsOciConfigContents": false,
     "printsSecrets": false
   },
+  "ownerActionPacket": {
+    "script": "scripts/create-seis-ssh-oracle-owner-action-packet.mjs",
+    "reportJson": "reports/seis-ssh-oracle-owner-action-packet.json",
+    "reportMarkdown": "reports/seis-ssh-oracle-owner-action-packet.md",
+    "checkCommand": "npm run check:seis-ssh-oracle-owner-action-packet",
+    "reportCommand": "npm run cloud:ssh:oracle-owner:action-packet",
+    "mode": "local-owner-action-packet-no-provider-api-no-live-ssh-no-config-write",
+    "printsRawOwnerValues": false,
+    "callsProviderApis": false,
+    "createsVm": false,
+    "opensSshSession": false,
+    "writesSshConfig": false,
+    "readsPrivateKey": false,
+    "readsOciConfigContents": false,
+    "printsSecrets": false
+  },
   "postBootHandoff": {
     "script": "scripts/create-seis-ssh-oracle-postboot-handoff.mjs",
     "reportJson": "reports/seis-ssh-oracle-postboot-handoff.json",
@@ -343,6 +359,8 @@
     "checkOwnerLaunchCommand": "npm run check:seis-ssh-oracle-owner-launch-command",
     "ownerHandoff": "npm run cloud:ssh:oracle-owner:handoff",
     "checkOwnerHandoff": "npm run check:seis-ssh-oracle-owner-handoff",
+    "ownerActionPacket": "npm run cloud:ssh:oracle-owner:action-packet",
+    "checkOwnerActionPacket": "npm run check:seis-ssh-oracle-owner-action-packet",
     "postBootHandoff": "npm run cloud:ssh:oracle-postboot:handoff",
     "checkPostBootHandoff": "npm run check:seis-ssh-oracle-postboot-handoff",
     "directCloudPipeline": "npm run cloud:ssh:oracle-direct-cloud:pipeline",

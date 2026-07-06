@@ -97,6 +97,11 @@ for (const phaseId of [
 const validationCommands = roadmap?.validationCommands || [];
 for (const command of [
   "npm run check:seis-ssh-cloud-roadmap",
+  "npm run check:seis-ssh-report-boundary",
+  "npm run check:seis-ssh-cloudflare-access-plan",
+  "npm run check:seis-ssh-github-codespaces-fallback-plan",
+  "npm run check:seis-ssh-provider-status-board",
+  "npm run check:seis-ssh-oracle-owner-action-packet",
   "npm run check:seis-ssh-closed-runtime",
   "npm run check:seis-ssh-access-model",
   "npm run check:seis-ssh-picker-compatibility",
