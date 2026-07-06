@@ -1,0 +1,102 @@
+{
+  "$schema": "https://seis.dev/schemas/god-mode-mcp-staging-pathspec.schema.json",
+  "id": "seis-god-mode-mcp-staging-pathspec",
+  "version": "2026-07-06",
+  "status": "active-local-staging-boundary",
+  "visibility": "public-safe",
+  "purpose": "Define the narrow God Mode MCP prerequisite staging boundary before MCP runtime hunks are split from AI truth-boundary, NVIDIA, public-readiness, web, deploy, and package-script work.",
+  "activeSlice": "god-mode-mcp-prerequisite",
+  "qualityGate": "node scripts/check-seis-god-mode-mcp-staging-pathspec.mjs",
+  "stagedBoundaryGate": "node scripts/check-seis-god-mode-mcp-staged-boundary.mjs",
+  "cleanWorktreeClaimAllowed": false,
+  "claimBoundary": "This pathspec is a staging and review contract only. It does not prove live AI, 720B weights, AGI capability, provider calls, SSH/cloud provisioning, deployment, GitHub mutation, production readiness, or always-on background agents.",
+  "expectedIntermediateMcpSnapshot": {
+    "toolCount": 35,
+    "resourceCount": 29,
+    "promptCount": 3,
+    "meaning": "God Mode MCP status tool/resource added before AI truth-boundary MCP resources are integrated.",
+    "smokeTest": "node --test packages/seis-ai/test/mcp-smoke.test.mjs"
+  },
+  "stageCommandPolicy": {
+    "mode": "exact-pathspec-plus-reviewed-hunks-only",
+    "forbidden": [
+      "git add .",
+      "git add docs",
+      "git add scripts",
+      "git add packages",
+      "git add content/development",
+      "git add package.json",
+      "git add apps"
+    ]
+  },
+  "pathspecSafeInclude": [
+    "content/development/seis-god-mode-mcp-staging-pathspec.json",
+    "docs/development/seis-god-mode-mcp-staging-pathspec.md",
+    "scripts/check-seis-god-mode-mcp-staging-pathspec.mjs",
+    "scripts/check-seis-god-mode-mcp-staged-boundary.mjs"
+  ],
+  "candidateHunkReviewOnly": [
+    "content/development/seis-ai-core-mcp-runtime-contract.json",
+    "content/development/seis-agent-plugin-integration.json",
+    "packages/seis-ai/src/lib/plugin-integration.mjs",
+    "packages/seis-ai/src/mcp/server.mjs",
+    "packages/seis-ai/test/mcp-smoke.test.mjs",
+    "scripts/create-seis-command-center-god-mode-status.mjs"
+  ],
+  "mustRemainUnstagedUntilSeparatePr": [
+    "package.json",
+    "apps/seis-demo-web/script.js",
+    "apps/seis-demo-web/data/seis-sub-agent-five-year-plan-view.json",
+    "apps/web/",
+    "apps/seis-core/",
+    "deploy/",
+    ".github/",
+    "reports/",
+    "packages/seis-ai/downloadable/",
+    "packages/seis-ai/models/nvidia-nim-run-anywhere-downloadable-registry.json",
+    "docs/reviews/NVIDIA_SKILLS_DOWNLOADABLE_CATALOG_QA.md",
+    "scripts/check-seis-ai-nvidia-skills-downloadable.mjs",
+    "content/development/seis-720b-agi-frontier-boundary.json",
+    "content/development/seis-ai-core-subagent-swarm-round-ledger.json",
+    "content/development/seis-ai-core-subagent-round-execution-evidence-ledger.json",
+    "content/development/seis-ai-truth-boundary-language-policy.json",
+    "scripts/check-seis-720b-agi-frontier-boundary.mjs",
+    "scripts/check-seis-ai-core-subagent-swarm-round-ledger.mjs",
+    "scripts/check-seis-ai-core-subagent-round-execution-evidence-ledger.mjs",
+    "scripts/check-seis-ai-truth-boundary-language.mjs"
+  ],
+  "allowedGodModeMarkers": [
+    "GOD_MODE_STATUS_TOOL",
+    "GOD_MODE_STATUS_RESOURCE_URI",
+    "god-mode-status",
+    "seis_god_mode_status",
+    "seis://agent/god-mode-status.json"
+  ],
+  "forbiddenPayloadMarkers": [
+    "seis://ai/720b-agi-frontier-boundary.json",
+    "seis://ai/subagent-swarm-round-ledger.json",
+    "seis://ai/subagent-round-execution-evidence-ledger.json",
+    "AI_CORE_720B_AGI_FRONTIER_BOUNDARY",
+    "SUBAGENT_SWARM_ROUND_LEDGER",
+    "SUBAGENT_ROUND_EXECUTION_EVIDENCE_LEDGER",
+    "seis-ai-core-subagent-swarm-round-ledger",
+    "seis-ai-core-subagent-round-execution-evidence-ledger",
+    "nvidia-nim-run-anywhere-downloadable-registry",
+    "check:seis-public-readiness-lanes",
+    "check:seis-public-readiness-evidence",
+    "check:seis-public-readiness-sensitive-boundary",
+    "intake:third-party"
+  ],
+  "validation": [
+    "node scripts/check-seis-god-mode-mcp-staging-pathspec.mjs",
+    "node scripts/check-seis-god-mode-mcp-staged-boundary.mjs",
+    "node scripts/check-seis-ai-truth-boundary-core.mjs",
+    "git diff --cached --check",
+    "focused secret-shaped scan over staged God Mode MCP paths"
+  ],
+  "nextSafeActions": [
+    "Hunk-stage only God Mode MCP status constants, tool/resource registration, runtime-contract count updates, and MCP smoke assertions.",
+    "Keep AI truth-boundary MCP resources, 720B frontier resources, NVIDIA downloadable catalog, public-readiness recovery, web UI, deploy, and package script wiring in later slices.",
+    "After God Mode MCP prerequisite passes as 35 tools and 29 resources, integrate the AI truth-boundary MCP resources as a separate 32-resource slice."
+  ]
+}
