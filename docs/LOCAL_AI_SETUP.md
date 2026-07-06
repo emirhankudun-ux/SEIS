@@ -71,6 +71,7 @@ syncs, or indexes before giving it sensitive context.
 
 ```bash
 npm run check:ai-workforce-assignments
+npm run check:seis-installed-ai-tools-registry
 npm run check:seis-brain-context-packs
 npm run check:seis-public-readiness-docs
 ```

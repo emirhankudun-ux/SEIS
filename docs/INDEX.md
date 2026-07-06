@@ -14,6 +14,9 @@ Date: 2026-06-23
 | [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | Common local blockers, missing-tool fallbacks, auth-gated assistant handling, and safe failure routing. |
 | [PUBLIC_READINESS.md](PUBLIC_READINESS.md) | GitHub public-readiness checklist for web demo, Apple-first, Second Brain, AI Core, SEIS-SSH, security, and PR reporting. |
 | [governance/public-readiness-status.md](governance/public-readiness-status.md) | Machine-readable public readiness status summary for the current no-key, no-live-claim review matrix. |
+| [audits/GIT_SECRET_HISTORY_SCAN.md](audits/GIT_SECRET_HISTORY_SCAN.md) | Redacted Git history secret scan report; paths and categories only, never secret values. |
+| [seo/metadata-plan.md](seo/metadata-plan.md) | Pre-production SEO metadata and noindex plan validated by `npm run check:seo`. |
+| [deployment/release-artifact-retention-policy.md](deployment/release-artifact-retention-policy.md) | Release package retention boundary for tracked static artifacts and upload blockers. |
 | [OBSIDIAN_SECOND_BRAIN.md](OBSIDIAN_SECOND_BRAIN.md) | Public-safe Obsidian-compatible Second Brain setup boundary and planned-gated private vault import rules. |
 | [LOCAL_AI_SETUP.md](LOCAL_AI_SETUP.md) | Optional Ollama/local AI setup boundary, single-writer rule, and no-secret assistant usage. |
 | [SEIS_SSH_SETUP.md](SEIS_SSH_SETUP.md) | Credential-free SEIS-SSH setup boundary, dry-run checks, strict live-claim gate, and dangerous-action review rules. |

@@ -51,6 +51,14 @@ for (const required of [
   'Unused SDKs, runtimes, and language toolchains are not installed by default',
   'Apple first',
   'Repository Metadata',
+  'docs/GETTING_STARTED.md',
+  'docs/TROUBLESHOOTING.md',
+  'docs/PUBLIC_READINESS.md',
+  'docs/governance/public-readiness-status.md',
+  'content/development/seis-public-readiness-status.json',
+  'docs/OBSIDIAN_SECOND_BRAIN.md',
+  'docs/LOCAL_AI_SETUP.md',
+  'docs/SEIS_SSH_SETUP.md',
   'plugins/seis-ai-agent',
   'Do not add filler code',
   'ARCHITECTURE.md',
@@ -94,6 +102,70 @@ for (const [file, required] of [
   ['docs/development/first-run-quickstart.md', 'Do not install Swift, Xcode, Android Studio'],
   ['docs/development/first-run-quickstart.md', 'Codex / ChatGPT'],
   ['docs/development/first-run-quickstart.md', 'Claude'],
+  ['docs/GETTING_STARTED.md', 'no-key'],
+  ['docs/GETTING_STARTED.md', 'Apple native'],
+  ['docs/GETTING_STARTED.md', 'SEIS Brain'],
+  ['docs/GETTING_STARTED.md', 'SEIS-SSH'],
+  ['docs/TROUBLESHOOTING.md', 'Demo mode should not require API keys'],
+  ['docs/TROUBLESHOOTING.md', 'Hermes Reports Missing Authentication'],
+  ['docs/TROUBLESHOOTING.md', 'SEIS-SSH Looks Offline'],
+  ['docs/PUBLIC_READINESS.md', 'No-Key Demo Gate'],
+  ['docs/PUBLIC_READINESS.md', 'Apple-First Gate'],
+  ['docs/PUBLIC_READINESS.md', 'Second Brain Gate'],
+  ['docs/PUBLIC_READINESS.md', 'Local AI Gate'],
+  ['docs/PUBLIC_READINESS.md', 'SEIS-SSH Gate'],
+  ['docs/PUBLIC_READINESS.md', 'Public Indexing Gate'],
+  ['docs/PUBLIC_READINESS.md', 'Release Artifact Gate'],
+  ['docs/PUBLIC_READINESS.md', 'npm run check:seis-public-readiness'],
+  ['docs/PUBLIC_READINESS.md', 'npm run check:public-doc-command-wiring'],
+  ['docs/PUBLIC_READINESS.md', 'npm run check:ai-provider-audit'],
+  ['docs/PUBLIC_READINESS.md', 'npm run check:git-secret-history'],
+  ['docs/PUBLIC_READINESS.md', 'npm run check:seo'],
+  ['docs/PUBLIC_READINESS.md', 'npm run check:release-artifact-policy'],
+  ['docs/PUBLIC_READINESS.md', 'npm run check:seis-env-example'],
+  ['docs/PUBLIC_READINESS.md', 'npm run check:seis-public-readiness-status'],
+  ['docs/PUBLIC_READINESS.md', 'pre-production-noindex'],
+  ['docs/governance/public-readiness-status.md', 'active-review-matrix-not-release-claim'],
+  ['docs/governance/public-readiness-status.md', 'not a release approval'],
+  ['docs/governance/public-readiness-status.md', 'pre-production-noindex-validator-backed'],
+  ['docs/governance/public-readiness-status.md', 'blocked-human-review-required'],
+  ['docs/governance/public-readiness-status.md', 'npm run check:seis-public-readiness'],
+  ['docs/governance/public-readiness-status.md', 'npm run check:ai-provider-audit'],
+  ['docs/governance/public-readiness-status.md', 'npm run check:git-secret-history'],
+  ['docs/governance/public-readiness-status.md', 'npm run check:seo'],
+  ['docs/governance/open-source-governance.md', 'content/development/seis-public-readiness-status.json'],
+  ['docs/governance/open-source-governance.md', '.github/workflows/seis-open-source-governance.yml'],
+  ['docs/governance/open-source-governance.md', 'npm run check:seis-public-readiness'],
+  ['docs/governance/open-source-governance.md', 'npm run check:public-doc-command-wiring'],
+  ['docs/governance/open-source-governance.md', 'public docs cannot reference missing npm scripts'],
+  ['docs/governance/open-source-governance.md', 'public-readiness checklist'],
+  ['docs/governance/github-market-readiness.md', 'docs/governance/public-readiness-status.md'],
+  ['docs/GETTING_STARTED.md', 'npm run check:seis-public-readiness'],
+  ['docs/GETTING_STARTED.md', 'npm run check:ai-provider-audit'],
+  ['docs/GETTING_STARTED.md', 'npm run check:git-secret-history'],
+  ['docs/GETTING_STARTED.md', 'npm run check:seo'],
+  ['docs/TROUBLESHOOTING.md', 'Env Example Check Fails'],
+  ['docs/GETTING_STARTED.md', 'npm run check:seis-env-example'],
+  ['docs/INDEX.md', 'audits/GIT_SECRET_HISTORY_SCAN.md'],
+  ['docs/INDEX.md', 'seo/metadata-plan.md'],
+  ['docs/INDEX.md', 'deployment/release-artifact-retention-policy.md'],
+  ['docs/roadmap/MASTER_BACKLOG.md', 'npm run check:master-backlog'],
+  ['docs/roadmap/MASTER_BACKLOG.md', 'npm run check:release-artifact-policy'],
+  ['docs/roadmap/NEXT_PR_QUEUE.md', 'docs/backlog-id-validator'],
+  ['docs/roadmap/NEXT_PR_QUEUE.md', 'npm run check:release-artifact-policy'],
+  ['docs/deployment/release-artifact-retention-policy.md', 'tracked-retained'],
+  ['docs/deployment/release-artifact-retention-policy.md', 'explicit maintainer approval'],
+  ['docs/deployment/release-backup-plan.md', 'release-artifact-retention-policy.md'],
+  ['docs/deployment/server-upload-runbook.md', 'release-artifact-retention-policy.md'],
+  ['docs/OBSIDIAN_SECOND_BRAIN.md', 'planned-gated'],
+  ['docs/OBSIDIAN_SECOND_BRAIN.md', 'SEIS does not import a private Obsidian vault today'],
+  ['docs/OBSIDIAN_SECOND_BRAIN.md', 'npm run check:seis-brain-context-packs'],
+  ['docs/LOCAL_AI_SETUP.md', 'optional helper lane'],
+  ['docs/LOCAL_AI_SETUP.md', 'Keep exactly one tool in writer mode'],
+  ['docs/LOCAL_AI_SETUP.md', 'npm run check:seis-installed-ai-tools-registry'],
+  ['docs/SEIS_SSH_SETUP.md', 'strict online check'],
+  ['docs/SEIS_SSH_SETUP.md', 'Do not use passing docs checks as proof of a live SSH session'],
+  ['docs/SEIS_SSH_SETUP.md', 'npm run check:seis-ssh-access-model'],
   ['docs/development/local-ai-workbench.md', '# SEIS Local AI Workbench'],
   ['docs/development/local-ai-workbench.md', 'competing sources of truth'],
   ['docs/development/local-ai-workbench.md', 'Keep exactly one AI/editor surface in writer mode'],
@@ -118,12 +190,28 @@ for (const [file, required] of [
   ['CHANGELOG.md', '## Unreleased'],
   ['CHANGELOG.md', 'Do not record secrets'],
   ['docs/governance/branch-policy.md', '`main` is the only permanent branch'],
+  ['docs/governance/branch-policy-reconciliation.md', 'active-main-centered-reconciled'],
+  ['docs/governance/branch-policy-reconciliation.md', 'npm run check:branch-policy-reconciliation'],
+  ['docs/governance/branch-policy-reconciliation.md', '`UIXAppTTR` is not the current SEIS target branch'],
   ['docs/governance/open-source-governance.md', 'GitHub Update Rule'],
   ['docs/governance/open-source-governance.md', 'Repository description, homepage, and topics'],
   ['docs/governance/open-source-governance.md', '.github/workflows/codeql.yml'],
   ['docs/governance/open-source-governance.md', 'SUPPORT.md'],
+  ['docs/governance/open-source-governance.md', 'docs/GETTING_STARTED.md'],
+  ['docs/governance/open-source-governance.md', 'docs/TROUBLESHOOTING.md'],
+  ['docs/governance/open-source-governance.md', 'docs/PUBLIC_READINESS.md'],
+  ['docs/governance/open-source-governance.md', 'docs/OBSIDIAN_SECOND_BRAIN.md'],
+  ['docs/governance/open-source-governance.md', 'docs/LOCAL_AI_SETUP.md'],
+  ['docs/governance/open-source-governance.md', 'docs/SEIS_SSH_SETUP.md'],
+  ['docs/governance/open-source-governance.md', 'branch-policy-reconciliation.md'],
   ['docs/governance/open-source-governance.md', 'first-run-quickstart.md'],
   ['docs/governance/github-market-readiness.md', 'GitHub discovery and adoption model'],
+  ['docs/governance/github-market-readiness.md', 'docs/GETTING_STARTED.md'],
+  ['docs/governance/github-market-readiness.md', 'docs/TROUBLESHOOTING.md'],
+  ['docs/governance/github-market-readiness.md', 'docs/PUBLIC_READINESS.md'],
+  ['docs/governance/github-market-readiness.md', 'docs/OBSIDIAN_SECOND_BRAIN.md'],
+  ['docs/governance/github-market-readiness.md', 'docs/LOCAL_AI_SETUP.md'],
+  ['docs/governance/github-market-readiness.md', 'docs/SEIS_SSH_SETUP.md'],
   ['docs/governance/github-market-readiness.md', 'first-run-quickstart.md'],
   ['docs/governance/github-market-readiness.md', 'Stars are an outcome'],
   [
@@ -159,18 +247,55 @@ for (const [file, required] of [
   ['.github/workflows/codeql.yml', 'python'],
   ['.github/workflows/codeql.yml', 'github/codeql-action/init'],
   ['.github/workflows/codeql.yml', 'github/codeql-action/analyze'],
+  ['.github/workflows/seis-open-source-governance.yml', 'npm run check:open-source-governance'],
+  ['.github/workflows/seis-open-source-governance.yml', 'npm run check:public-doc-command-wiring'],
+  ['.github/workflows/seis-open-source-governance.yml', 'npm run check:seis-public-readiness'],
   ['.github/PULL_REQUEST_TEMPLATE.md', 'Architecture Fit'],
+  ['.github/PULL_REQUEST_TEMPLATE.md', 'Public Readiness'],
+  ['.github/PULL_REQUEST_TEMPLATE.md', 'npm run check:seis-public-readiness'],
+  ['.github/PULL_REQUEST_TEMPLATE.md', 'npm run check:public-doc-command-wiring'],
+  ['.github/PULL_REQUEST_TEMPLATE.md', 'Demo mode remains no-key'],
+  ['.github/PULL_REQUEST_TEMPLATE.md', 'private vault material'],
+  ['.github/PULL_REQUEST_TEMPLATE.md', 'auth-gated'],
   ['.github/PULL_REQUEST_TEMPLATE.md', 'Does not install unused SDKs'],
+  ['.github/CODEOWNERS', '* @emirhankudun-ux'],
+  ['.github/CODEOWNERS', '/.github/ @emirhankudun-ux'],
+  ['.github/CODEOWNERS', '/docs/governance/ @emirhankudun-ux'],
+  ['.github/CODEOWNERS', '/docs/security/ @emirhankudun-ux'],
+  ['.github/CODEOWNERS', '/scripts/ @emirhankudun-ux'],
   ['.github/ISSUE_TEMPLATE/config.yml', 'blank_issues_enabled: false'],
   ['.github/ISSUE_TEMPLATE/config.yml', 'SUPPORT.md'],
   ['.github/ISSUE_TEMPLATE/config.yml', 'https://github.com/emirhankudun-ux/SEIS/discussions'],
   ['.github/ISSUE_TEMPLATE/feature_request.md', 'Maintenance Cost'],
+  ['.github/ISSUE_TEMPLATE/feature_request.md', 'How does this preserve no-key demo mode?'],
+  ['.github/ISSUE_TEMPLATE/feature_request.md', 'browser-visible provider keys'],
+  ['.github/ISSUE_TEMPLATE/feature_request.md', 'SEIS-SSH'],
   ['.github/ISSUE_TEMPLATE/bug_report.md', 'follow `SECURITY.md`'],
+  ['.github/ISSUE_TEMPLATE/bug_report.md', 'Demo mode should remain no-key'],
+  ['.github/ISSUE_TEMPLATE/bug_report.md', 'private vault material'],
+  ['.github/ISSUE_TEMPLATE/bug_report.md', 'auth-gated'],
   ['.github/ISSUE_TEMPLATE/custom.md', 'Architecture or governance request'],
+  ['.github/ISSUE_TEMPLATE/custom.md', 'No-key demo impact'],
+  [
+    '.github/ISSUE_TEMPLATE/custom.md',
+    'Live AI, SSH, deployment, GitHub, Pages, or release claim boundary',
+  ],
+  ['.github/ISSUE_TEMPLATE/master_prompt_governance.md', 'npm run check:seis-public-readiness'],
+  ['.github/ISSUE_TEMPLATE/master_prompt_governance.md', 'auth-gated'],
   ['.github/DISCUSSION_TEMPLATE/ideas.yml', 'Platform lane'],
   ['.github/DISCUSSION_TEMPLATE/ideas.yml', 'Maintenance cost'],
+  ['.github/DISCUSSION_TEMPLATE/ideas.yml', 'Keep no-key demo mode'],
+  ['.github/DISCUSSION_TEMPLATE/ideas.yml', 'auth-gated live claims'],
+  ['.github/DISCUSSION_TEMPLATE/ideas.yml', 'browser-visible provider keys'],
   ['.github/DISCUSSION_TEMPLATE/q-a.yml', 'Safety check'],
+  ['.github/DISCUSSION_TEMPLATE/q-a.yml', 'private vault material'],
+  ['.github/DISCUSSION_TEMPLATE/q-a.yml', 'API keys, tokens, SSH credentials'],
   ['.github/DISCUSSION_TEMPLATE/show-and-tell.yml', 'Sharing check'],
+  [
+    '.github/DISCUSSION_TEMPLATE/show-and-tell.yml',
+    'live AI, SSH, deployment, GitHub, Pages, or release claim',
+  ],
+  ['.github/DISCUSSION_TEMPLATE/show-and-tell.yml', 'private vault material'],
 ]) {
   requireIncludes(file, required);
 }
@@ -190,6 +315,39 @@ if (
 ) {
   failures.push('package.json must expose check:open-source-governance');
 }
+if (packageJson.scripts?.['check:js'] !== 'node scripts/check-js-syntax.mjs') {
+  failures.push('package.json must expose check:js');
+}
+if (
+  packageJson.scripts?.['check:branch-policy-reconciliation'] !==
+  'node scripts/check-branch-policy-reconciliation.mjs'
+) {
+  failures.push('package.json must expose check:branch-policy-reconciliation');
+}
+if (
+  packageJson.scripts?.['check:ai-provider-audit'] !==
+  'node scripts/audit-ai-providers.mjs --check'
+) {
+  failures.push('package.json must expose check:ai-provider-audit');
+}
+if (
+  packageJson.scripts?.['check:git-secret-history'] !==
+  'node scripts/check-git-secret-history.mjs --check'
+) {
+  failures.push('package.json must expose check:git-secret-history');
+}
+if (packageJson.scripts?.['check:seo'] !== 'node scripts/check-seo-metadata.mjs') {
+  failures.push('package.json must expose check:seo');
+}
+if (packageJson.scripts?.['check:master-backlog'] !== 'node scripts/check-master-backlog.mjs') {
+  failures.push('package.json must expose check:master-backlog');
+}
+if (
+  packageJson.scripts?.['check:release-artifact-policy'] !==
+  'node scripts/check-release-artifact-policy.mjs'
+) {
+  failures.push('package.json must expose check:release-artifact-policy');
+}
 
 for (const workflow of [
   '.github/workflows/ci.yml',
@@ -199,6 +357,7 @@ for (const workflow of [
   requireIncludes(workflow, 'main');
   requireNotIncludes(workflow, 'UIXAppTTR', 'legacy UIXAppTTR branch trigger');
 }
+requireIncludes('.github/workflows/foundation-check.yml', 'npm run check:js');
 
 for (const workflow of readdirSync(resolve(root, '.github/workflows')).filter(
   name => name.endsWith('.yml') || name.endsWith('.yaml'),

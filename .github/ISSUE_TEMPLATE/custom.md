@@ -28,6 +28,9 @@ development?
 - Security or privacy concerns:
 - Dependency, SDK, runtime, or CI impact:
 - Rollback or migration needs:
+- No-key demo impact:
+- Live AI, SSH, deployment, GitHub, Pages, or release claim boundary:
+- Secrets, private vault material, real host credentials, or browser-visible provider keys risk:
 
 ## Validation
 

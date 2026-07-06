@@ -23,12 +23,12 @@ at `docs/governance/public-readiness-status.md`. Its current status is
 | Identity | `README.md`, `AGENTS.md`, `docs/governance/seis-master-prompt.md` |
 | Getting started | `docs/GETTING_STARTED.md`, `docs/development/first-run-quickstart.md` |
 | Troubleshooting | `docs/TROUBLESHOOTING.md`, `SUPPORT.md`, `SECURITY.md` |
-| Apple-first | `SEIS_APPLE_FIRST.md`, `apps/apple/README.md`, `packages/seis_platform_swift/README.md` |
+| Apple-first | `SEIS_APPLE_FIRST.md`, `apps/apple/README.md`, `packages/seis_platform_swift/README.md`, `docs/apple/APPLE_PUBLIC_READINESS.md`, `npm run check:seis-public-readiness-lanes` |
 | Web demo | no-key local demo docs and route evidence |
-| SEIS Brain | `docs/OBSIDIAN_SECOND_BRAIN.md`, `seis-brain/README.md`, public-safe context packs, public/private boundary note |
+| SEIS Brain | `docs/OBSIDIAN_SECOND_BRAIN.md`, `seis-brain/README.md`, public-safe context packs, public/private boundary note, `npm run check:seis-public-readiness-lanes` |
 | Local AI | `docs/LOCAL_AI_SETUP.md`, optional Ollama/local assistant rules, single-writer boundary |
 | AI Core | provider metadata with no browser secrets, no fake live claims, and redacted provider audit evidence |
-| SEIS-SSH | `docs/SEIS_SSH_SETUP.md`, credential-free docs, demo-only metadata, strict live-claim gates |
+| SEIS-SSH | `docs/SEIS_SSH_SETUP.md`, credential-free docs, demo-only metadata, strict live-claim gates, `npm run check:seis-public-readiness-lanes` |
 | GitHub governance | `.github/` templates, CodeQL workflow, branch and contribution docs, `docs/governance/branch-policy-reconciliation.md`, `npm run check:branch-policy-reconciliation` |
 | Environment | `.env.example`, `npm run check:seis-env-example`, blank server-only provider slots |
 | Security | `SECURITY.md`, no real keys, no private host credentials, no private vault material, redacted provider/credential audit, redacted Git history scan |
@@ -133,8 +133,12 @@ npm run check:git-secret-history
 npm run check:seo
 npm run check:release-artifact-policy
 npm run check:branch-policy-reconciliation
+npm run check:public-doc-command-wiring
 npm run check:seis-public-readiness-docs
 npm run check:seis-public-readiness-status
+npm run check:seis-public-readiness-lanes
+npm run check:seis-public-readiness-evidence
+npm run check:seis-public-readiness-sensitive-boundary
 npm run check:open-source-governance
 npm run check:foundation
 npm run check:seis-env-example

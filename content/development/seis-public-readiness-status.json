@@ -106,7 +106,8 @@
         "docs/apple/APPLE_PUBLIC_READINESS.md"
       ],
       "requiredChecks": [
-        "swift test --package-path packages/seis_platform_swift"
+        "swift test --package-path packages/seis_platform_swift",
+        "npm run check:seis-public-readiness-lanes"
       ],
       "blockers": [
         "Native app completion, App Store readiness, live provider routing, and live SSH remain unclaimed."
@@ -128,7 +129,8 @@
       "requiredChecks": [
         "npm run check:seis-brain-context-packs",
         "npm run check:seis-second-brain",
-        "npm run check:seis-second-brain-readiness-contracts"
+        "npm run check:seis-second-brain-readiness-contracts",
+        "npm run check:seis-public-readiness-lanes"
       ],
       "blockers": [
         "Private Obsidian vault import remains planned-gated.",
@@ -190,7 +192,8 @@
       "requiredChecks": [
         "npm run check:seis-ssh-access-model",
         "npm run check:seis-ssh-picker-compatibility",
-        "npm run check:seis-ssh-cloud-roadmap"
+        "npm run check:seis-ssh-cloud-roadmap",
+        "npm run check:seis-public-readiness-lanes"
       ],
       "blockers": [
         "No live SSH access is claimed unless a current strict online check passes.",

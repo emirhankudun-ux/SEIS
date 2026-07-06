@@ -28,6 +28,13 @@ maintainers, or another group?
 
 Does this require a new dependency, SDK, runtime, service, or CI tool?
 
+## Public Readiness
+
+- How does this preserve no-key demo mode?
+- Does this affect Apple-first, SEIS Brain, local AI, SEIS-SSH, GitHub governance, or public onboarding?
+- Does this avoid secrets, private vault material, real host credentials, and browser-visible provider keys?
+- If this proposes live AI, SSH, deployment, GitHub, Pages, or release behavior, what current evidence or auth-gated boundary proves the claim?
+
 ## Alternatives
 
 What simpler or lower-risk options should be considered?

@@ -30,6 +30,9 @@ on your machine:
 npm run check:open-source-governance
 npm run check:foundation
 npm run check:seis-public-readiness
+npm run check:ai-provider-audit
+npm run check:git-secret-history
+npm run check:seo
 ```
 
 If `npm` is not available but Node.js is available, run the underlying scripts
@@ -42,9 +45,16 @@ node scripts/check-seis-public-readiness.mjs
 ```
 
 The aggregate readiness gate includes `npm run check:seis-env-example`,
+`npm run check:public-doc-command-wiring`,
 `npm run check:seis-public-readiness-docs`,
-`npm run check:seis-public-readiness-status`, and
-`npm run check:seis-brain-context-packs`.
+`npm run check:seis-public-readiness-status`,
+`npm run check:seis-public-readiness-lanes`,
+`npm run check:seis-public-readiness-evidence`,
+`npm run check:seis-public-readiness-sensitive-boundary`, and
+`npm run check:seis-brain-context-packs`. Security and public-indexing lanes
+also expose `npm run check:ai-provider-audit`,
+`npm run check:git-secret-history`, and `npm run check:seo` for PR-ready
+evidence without printing secrets.
 
 For the full first-run lane selector, use
 [`docs/development/first-run-quickstart.md`](./development/first-run-quickstart.md).

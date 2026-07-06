@@ -27,6 +27,14 @@ Reference:
 - [`docs/governance/seis-master-prompt.md`](docs/governance/seis-master-prompt.md)
 - [`docs/governance/seis-master-prompt-change-checklist.md`](docs/governance/seis-master-prompt-change-checklist.md)
 
+## Public Readiness
+
+- [ ] I ran or intentionally scoped the equivalent of `npm run check:seis-public-readiness`.
+- [ ] Public docs command references stay wired through `npm run check:public-doc-command-wiring` when public onboarding/readiness docs change.
+- [ ] Demo mode remains no-key and does not require provider keys, real SSH credentials, database setup, or auth.
+- [ ] This PR does not add secrets, private vault material, real host credentials, or browser-visible provider keys.
+- [ ] Any AI, SSH, deployment, GitHub, Pages, or release claim is labeled demo/planned/blocked/auth-gated unless current evidence proves it.
+
 ## Validation
 
 List the checks you ran:
@@ -39,6 +47,8 @@ npm run check:llm-orchestration-policy
 npm run check:seis-master-prompt-report
 npm run check:seis-master-prompt
 npm run check:open-source-governance
+npm run check:seis-public-readiness
+npm run check:public-doc-command-wiring
 npm run seis:check
 ```
 

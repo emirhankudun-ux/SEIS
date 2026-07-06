@@ -33,8 +33,12 @@ const gettingStarted = requireIncludes("docs/GETTING_STARTED.md", [
   "SEIS Brain",
   "SEIS-SSH",
   "npm run check:seis-public-readiness",
+  "npm run check:public-doc-command-wiring",
   "npm run check:seis-public-readiness-docs",
   "docs/development/first-run-quickstart.md",
+  "npm run check:seis-public-readiness-lanes",
+  "npm run check:seis-public-readiness-evidence",
+  "npm run check:seis-public-readiness-sensitive-boundary",
   "Never commit private notes",
 ]);
 
@@ -64,8 +68,12 @@ const publicReadiness = requireIncludes("docs/PUBLIC_READINESS.md", [
   "docs/LOCAL_AI_SETUP.md",
   "docs/SEIS_SSH_SETUP.md",
   "npm run check:seis-public-readiness",
+  "npm run check:public-doc-command-wiring",
   "npm run check:seis-env-example",
   "npm run check:seis-public-readiness-status",
+  "npm run check:seis-public-readiness-lanes",
+  "npm run check:seis-public-readiness-evidence",
+  "npm run check:seis-public-readiness-sensitive-boundary",
   "pre-production-noindex",
   "suggested PR title and body",
   "Honest blocked status is part of SEIS quality",
@@ -122,6 +130,11 @@ ensure(
   "package.json must expose check:seis-public-readiness",
 );
 ensure(
+  packageJson.scripts?.["check:public-doc-command-wiring"] ===
+    "node scripts/check-public-doc-command-wiring.mjs",
+  "package.json must expose check:public-doc-command-wiring",
+);
+ensure(
   packageJson.scripts?.["check:seis-public-readiness-docs"] ===
     "node scripts/check-seis-public-readiness-docs.mjs",
   "package.json must expose check:seis-public-readiness-docs",
@@ -135,6 +148,21 @@ ensure(
   packageJson.scripts?.["check:seis-public-readiness-status"] ===
     "node scripts/check-seis-public-readiness-status.mjs",
   "package.json must expose check:seis-public-readiness-status",
+);
+ensure(
+  packageJson.scripts?.["check:seis-public-readiness-lanes"] ===
+    "node scripts/check-seis-public-readiness-lanes.mjs",
+  "package.json must expose check:seis-public-readiness-lanes",
+);
+ensure(
+  packageJson.scripts?.["check:seis-public-readiness-evidence"] ===
+    "node scripts/check-seis-public-readiness-evidence.mjs",
+  "package.json must expose check:seis-public-readiness-evidence",
+);
+ensure(
+  packageJson.scripts?.["check:seis-public-readiness-sensitive-boundary"] ===
+    "node scripts/check-seis-public-readiness-sensitive-boundary.mjs",
+  "package.json must expose check:seis-public-readiness-sensitive-boundary",
 );
 
 const sensitivePatterns = [

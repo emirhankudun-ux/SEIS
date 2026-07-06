@@ -42,6 +42,9 @@ Public-ready Apple work must not contain:
   loaded.
 - Claude Code CLI is available through local Claude Code auth and a sanitized
   `CLAUDE_OK` smoke. It remains a public-safe, non-writer review candidate.
+- Hermes is available through local desktop/provider configuration after a
+  sanitized `HERMES_OK` smoke, but it remains a non-writer helper route for
+  public-safe handoff context unless explicitly reviewed.
 - Secondary assistant handoffs remain planned/manual unless explicitly
   configured, sanitized, and re-verified outside the public repository.
 - Gemini CLI and Kimi Code CLI are installed but still provider-blocked:

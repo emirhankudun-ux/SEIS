@@ -101,6 +101,9 @@ includesAll(doc, "public readiness status doc", [
   "npm run check:seis-env-example",
   "npm run check:seis-public-readiness-docs",
   "npm run check:seis-brain-context-packs",
+  "npm run check:seis-public-readiness-lanes",
+  "npm run check:seis-public-readiness-evidence",
+  "npm run check:seis-public-readiness-sensitive-boundary",
   "npm run check:seis-public-readiness-status",
   "pre-production-noindex-validator-backed",
   "tracked-retained-approval-gated",
@@ -113,6 +116,9 @@ includesAll(publicReadiness, "public readiness docs", [
   "npm run check:seis-public-readiness",
   "npm run check:seis-env-example",
   "npm run check:seis-brain-context-packs",
+  "npm run check:seis-public-readiness-lanes",
+  "npm run check:seis-public-readiness-evidence",
+  "npm run check:seis-public-readiness-sensitive-boundary",
   "npm run check:seis-public-readiness-status"
 ]);
 
@@ -145,6 +151,21 @@ ensure(
   packageJson.scripts?.["check:seis-brain-context-packs"] ===
     "node scripts/check-seis-brain-context-packs.mjs",
   "package.json must expose check:seis-brain-context-packs"
+);
+ensure(
+  packageJson.scripts?.["check:seis-public-readiness-lanes"] ===
+    "node scripts/check-seis-public-readiness-lanes.mjs",
+  "package.json must expose check:seis-public-readiness-lanes"
+);
+ensure(
+  packageJson.scripts?.["check:seis-public-readiness-evidence"] ===
+    "node scripts/check-seis-public-readiness-evidence.mjs",
+  "package.json must expose check:seis-public-readiness-evidence"
+);
+ensure(
+  packageJson.scripts?.["check:seis-public-readiness-sensitive-boundary"] ===
+    "node scripts/check-seis-public-readiness-sensitive-boundary.mjs",
+  "package.json must expose check:seis-public-readiness-sensitive-boundary"
 );
 
 const combined = [

@@ -9,11 +9,39 @@ The GitHub-facing surface must stay current:
 
 - `README.md` explains the open source mission, platform scope, architecture map,
   language policy, quality gates, and contribution path.
+- `docs/GETTING_STARTED.md` gives public visitors the no-key onboarding path,
+  lane picker, and first checks without implying live provider or SSH access.
 - `docs/development/first-run-quickstart.md` gives new contributors a clone,
   inspect, validate, and lane-selection path without unnecessary toolchain
   installation.
+- `docs/TROUBLESHOOTING.md` explains missing-tool fallbacks, auth-gated
+  assistant states, SEIS-SSH offline handling, and secret-scan response.
+- `docs/PUBLIC_READINESS.md` records the review checklist for web demo,
+  Apple-first, Second Brain, AI Core, SEIS-SSH, GitHub governance, and security
+  readiness.
+- `docs/governance/public-readiness-status.md` and
+  `content/development/seis-public-readiness-status.json` keep the current
+  public-readiness state machine-readable without turning it into a release
+  approval.
+- `.github/workflows/seis-open-source-governance.yml` runs
+  `npm run check:open-source-governance`,
+  `npm run check:public-doc-command-wiring`, and
+  `npm run check:seis-public-readiness` so community-health, public docs
+  command wiring, and public-readiness gates stay paired in CI.
+- `npm run check:public-doc-command-wiring` is included in the
+  public-readiness aggregate so public docs cannot reference missing npm scripts
+  or missing Node validation files.
+- `docs/OBSIDIAN_SECOND_BRAIN.md` gives the public-safe Obsidian-compatible
+  setup boundary without enabling private vault import.
+- `docs/LOCAL_AI_SETUP.md` documents optional local AI/Ollama use without
+  changing the single-writer or no-secret model.
+- `docs/SEIS_SSH_SETUP.md` keeps SEIS-SSH setup credential-free and separates
+  dry-run checks from strict live-claim evidence.
 - `CONTRIBUTING.md` explains branch flow, AI-assisted contribution rules,
   dependency discipline, and validation expectations.
+- `docs/governance/branch-policy-reconciliation.md` keeps the active
+  `main`-centered branch model separate from legacy UIXAppTTR-era archive and
+  migration records.
 - `SECURITY.md` explains private vulnerability reporting, supported versions,
   dependency policy, MCP/plugin/agent risk, and response targets.
 - `SUPPORT.md` routes public questions, ideas, bugs, feature requests, and
@@ -27,8 +55,15 @@ The GitHub-facing surface must stay current:
   marketplace status prematurely.
 - `.github/ISSUE_TEMPLATE/config.yml` routes public support toward structured
   issues, Discussions, and private security reporting.
+- `.github/ISSUE_TEMPLATE/` keeps bug, feature, governance, and master-prompt
+  requests aligned with no-key demo, credential-free, and live-claim boundaries.
+- `.github/PULL_REQUEST_TEMPLATE.md` keeps architecture fit, validation, and
+  the public-readiness checklist visible before review.
+- `.github/CODEOWNERS` keeps public-facing, governance, security, script,
+  content, and Apple package changes reviewable by the maintainer before merge.
 - `.github/DISCUSSION_TEMPLATE/` keeps ideas, Q&A, and show-and-tell useful
-  before they become issues or pull requests.
+  before they become issues or pull requests while preserving public-safe
+  credential and private-vault boundaries.
 - `.github/workflows/codeql.yml` keeps GitHub CodeQL scanning active for the
   JavaScript, TypeScript, and Python surfaces that carry the web, MCP, AI, and
   automation lanes.

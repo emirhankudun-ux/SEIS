@@ -41,21 +41,37 @@ source ecosystem for:
 Before a major feature, release, demo, or public announcement, verify:
 
 1. `README.md` explains what SEIS is, who it helps, and where to start.
-2. `docs/development/first-run-quickstart.md` proves a new user can clone,
+2. `docs/GETTING_STARTED.md` gives a public onboarding path, no-key demo
+   boundary, and lane picker.
+3. `docs/development/first-run-quickstart.md` proves a new user can clone,
    inspect, validate, and choose a platform lane without installing unrelated
    toolchains.
-3. `SUPPORT.md` routes questions, ideas, bugs, features, and security reports.
-4. `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `CONTRIBUTORS.md`,
+4. `docs/TROUBLESHOOTING.md` routes common local blockers without weakening
+   security or dependency discipline.
+5. `docs/PUBLIC_READINESS.md` records the public checklist for web demo,
+   Apple-first, Second Brain, AI Core, SEIS-SSH, GitHub governance, and
+   security claims.
+6. `docs/governance/public-readiness-status.md` and
+   `content/development/seis-public-readiness-status.json` record the current
+   review matrix without approving release, deployment, live AI, live SSH, or
+   GitHub mutation.
+7. `docs/OBSIDIAN_SECOND_BRAIN.md`, `docs/LOCAL_AI_SETUP.md`, and
+   `docs/SEIS_SSH_SETUP.md` give visitors safe setup boundaries before private
+   vault import, local AI handoff, or SSH/cloud work.
+8. `SUPPORT.md` routes questions, ideas, bugs, features, and security reports.
+9. `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `CONTRIBUTORS.md`,
    and `LICENSE` are current.
-5. Issue, pull request, and discussion templates guide users toward useful
-   reports.
-6. The feature has a small, reviewable diff and a clear rollback path.
-7. Validation is documented and can run without installing unrelated toolchains.
-8. Security, privacy, accessibility, maintainability, and dependency impact are
+10. Issue, pull request, discussion templates, and CODEOWNERS guide users
+   toward useful reports and review paths while preserving no-key demo,
+   credential-free, private-vault, and live-claim boundaries.
+11. The feature has a small, reviewable diff and a clear rollback path.
+12. Validation is documented and can run without installing unrelated
+    toolchains.
+13. Security, privacy, accessibility, maintainability, and dependency impact are
    named.
-9. Documentation links are updated from the most likely entry points.
-10. Generated reports are reproducible through checked commands.
-11. GitHub Actions and CodeQL are green before claiming readiness.
+14. Documentation links are updated from the most likely entry points.
+15. Generated reports are reproducible through checked commands.
+16. GitHub Actions and CodeQL are green before claiming readiness.
 
 ## Star-Worthy Feature Criteria
 

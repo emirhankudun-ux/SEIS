@@ -3,7 +3,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Use this form for SEIS ideas that need community shaping before they become issues or pull requests.
+        Use this form for SEIS ideas that need community shaping before they become issues or pull requests. Keep no-key demo mode, public-safe docs, and auth-gated live claims intact.
   - type: textarea
     id: problem
     attributes:
@@ -50,4 +50,6 @@ body:
         - label: This idea improves SEIS without adding unnecessary bloat.
           required: true
         - label: I considered whether an existing file, tool, or workflow can be improved first.
+          required: true
+        - label: This idea does not require secrets, private vault material, real host credentials, or browser-visible provider keys.
           required: true

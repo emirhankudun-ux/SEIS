@@ -21,4 +21,7 @@ jobs:
         with:
           node-version: '20'
       - name: Check SEIS open source governance
-        run: npm run check:open-source-governance
+        run: |
+          npm run check:open-source-governance
+          npm run check:public-doc-command-wiring
+          npm run check:seis-public-readiness

@@ -23,6 +23,8 @@ jobs:
       - name: Run lightweight checks
         run: |
           npm run check:open-source-governance
+          npm run check:public-doc-command-wiring
+          npm run check:js
           npm run seis:check
           npm run check:workspace
           npm run check:seis-platform-language-policy

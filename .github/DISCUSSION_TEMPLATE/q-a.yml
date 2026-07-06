@@ -3,7 +3,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Ask implementation, architecture, or contribution questions here. Do not post secrets or vulnerability details.
+        Ask implementation, architecture, or contribution questions here. Do not post secrets, private vault material, live credential details, or vulnerability details.
   - type: input
     id: context
     attributes:
@@ -46,4 +46,6 @@ body:
       label: Safety check
       options:
         - label: This is not a private security report or credential issue.
+          required: true
+        - label: This does not require posting API keys, tokens, SSH credentials, or private vault material.
           required: true

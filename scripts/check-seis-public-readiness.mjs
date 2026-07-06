@@ -6,12 +6,28 @@ const checks = [
     command: "scripts/check-seis-env-example.mjs"
   },
   {
+    id: "public-doc-command-wiring",
+    command: "scripts/check-public-doc-command-wiring.mjs"
+  },
+  {
     id: "public-readiness-docs",
     command: "scripts/check-seis-public-readiness-docs.mjs"
   },
   {
     id: "public-readiness-status",
     command: "scripts/check-seis-public-readiness-status.mjs"
+  },
+  {
+    id: "public-readiness-lanes",
+    command: "scripts/check-seis-public-readiness-lanes.mjs"
+  },
+  {
+    id: "public-readiness-evidence",
+    command: "scripts/check-seis-public-readiness-evidence.mjs"
+  },
+  {
+    id: "public-readiness-sensitive-boundary",
+    command: "scripts/check-seis-public-readiness-sensitive-boundary.mjs"
   },
   {
     id: "brain-context-packs",

@@ -143,6 +143,25 @@ Keep `.env.example` placeholder-only. Provider key slots and token slots must
 stay blank, `VITE_` variables must not expose secrets, and model alias defaults
 must stay empty until a live adapter document verifies them.
 
+## Hermes Reports Missing Authentication
+
+If Hermes reports missing authentication, treat that as an auth-gated local
+assistant condition, not a SEIS repository failure. Do not paste provider keys,
+Nous Portal credentials, GitHub tokens, SSH private keys, or `.env` contents
+into docs, prompts, commits, issues, or generated reports.
+
+Safe fallback:
+
+```bash
+git status --short
+npm run check:seis-public-readiness
+npm run check:foundation
+```
+
+Continue with no-key repository validation and record the Hermes authentication
+state as local-only. Live assistant/provider recovery belongs outside the public
+repo unless a credential-free smoke check is explicitly documented.
+
 ## Where To Ask
 
 - Use `SUPPORT.md` for questions, ideas, bugs, and feature routing.

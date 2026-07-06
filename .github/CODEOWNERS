@@ -1,3 +1,22 @@
+# SEIS public GitHub review ownership.
+# This is a local repository ownership contract; live GitHub enforcement still
+# depends on branch protection and repository settings.
+
+* @emirhankudun-ux
+
+/.github/ @emirhankudun-ux
+/AGENTS.md @emirhankudun-ux
+/README.md @emirhankudun-ux
+/SECURITY.md @emirhankudun-ux
+/SUPPORT.md @emirhankudun-ux
+/CONTRIBUTING.md @emirhankudun-ux
+/docs/governance/ @emirhankudun-ux
+/docs/security/ @emirhankudun-ux
+/docs/audits/ @emirhankudun-ux
+/content/development/ @emirhankudun-ux
+/scripts/ @emirhankudun-ux
+/packages/seis_platform_swift/ @emirhankudun-ux
+
 /docs/governance/seis-master-prompt.md @emirhankudun-ux
 /docs/governance/seis-supreme-vision.md @emirhankudun-ux
 /docs/governance/seis-master-prompt-change-checklist.md @emirhankudun-ux

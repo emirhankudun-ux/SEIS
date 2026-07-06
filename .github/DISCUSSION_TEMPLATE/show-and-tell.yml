@@ -3,7 +3,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Share work built with or inspired by SEIS. Useful examples help the ecosystem become practical, not just broad.
+        Share work built with or inspired by SEIS. Useful examples help the ecosystem become practical, not just broad. Label any live AI, SSH, deployment, GitHub, Pages, or release claim with current evidence or keep it demo/planned/blocked/auth-gated.
   - type: input
     id: project
     attributes:
@@ -48,4 +48,6 @@ body:
         - label: I have permission to share any linked material.
           required: true
         - label: This post does not include secrets, tokens, credentials, or private user data.
+          required: true
+        - label: This post does not include private vault material or real host credentials.
           required: true
