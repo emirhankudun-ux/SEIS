@@ -20,6 +20,20 @@
     "aiCoreDoc": "docs/ai/seis-ai-core.md",
     "agentRuntimeDoc": "docs/ai/agent-runtime.md"
   },
+  "executableDryRunTestPlan": {
+    "path": "packages/seis-ai/test/subagent-runtime-fixtures.test.mjs",
+    "policyHelper": "packages/seis-ai/src/lib/subagent-runtime-policy.mjs",
+    "policyTest": "packages/seis-ai/test/subagent-runtime-policy.test.mjs",
+    "mode": "simulation-only",
+    "enablesRuntimeExecution": false,
+    "coveredBehaviors": [
+      "runtime boundary remains status-and-plan-only",
+      "approval-gated tasks stay blocked while approval is pending",
+      "cancellation ends in a terminal state without later tool calls",
+      "ledger records remain dry-run-only and redacted",
+      "redacted diagnostics are required before future promotion"
+    ]
+  },
   "runtimeBoundary": {
     "currentLevel": "status-and-plan-only",
     "backgroundAutomation": "disabled",
