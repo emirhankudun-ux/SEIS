@@ -204,7 +204,7 @@ export function toolDefinitions({ allowWrite = false } = {}) {
       {
         name: lane.planTool,
         description:
-          `Create a scoped ${lane.displayName} execution plan from SEIS repo evidence, guardrails, and quality gates. Plan-only; does not mutate GitHub, cloud, SSH, files, providers, or credentials.`,
+          `Create a scoped ${lane.displayName} implementation plan from SEIS repo evidence, guardrails, and quality gates. Plan-only; does not mutate GitHub, cloud, SSH, files, providers, or credentials.`,
         input_schema: {
           type: "object",
           properties: {

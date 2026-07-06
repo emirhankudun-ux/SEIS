@@ -668,7 +668,7 @@ export function buildServer() {
 
     server.tool(
       lane.planTool,
-      `Create a scoped ${lane.displayName} execution plan from SEIS repo evidence, guardrails, and quality gates. Plan-only; does not mutate GitHub, cloud, SSH, providers, or credentials.`,
+      `Create a scoped ${lane.displayName} implementation plan from SEIS repo evidence, guardrails, and quality gates. Plan-only; does not mutate GitHub, cloud, SSH, providers, or credentials.`,
       {
         request: z.string().describe(`Task request to route through ${lane.displayName}.`),
       },
@@ -1119,7 +1119,7 @@ Steps:
   server.resource(
     "subagent-five-year-plan-view",
     "seis://ai/sub-agent-5-year-plan-view.json",
-    { description: "Generated SEIS five-year sub-agent plan view for browser/runtime evidence", mimeType: "application/json" },
+    { description: "Generated SEIS five-year sub-agent plan view for browser/demo evidence", mimeType: "application/json" },
     async () => ({
       contents: [
         {

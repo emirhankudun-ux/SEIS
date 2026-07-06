@@ -1398,7 +1398,7 @@ describe("executeTool", () => {
     assert.deepEqual(payload.mcpTools, ["seis_code_status", "seis_code_plan"]);
   });
 
-  it("personal SEIS lane plan tools return plan-only execution guidance", () => {
+  it("personal SEIS lane plan tools return plan-only implementation guidance", () => {
     const out = executeTool("seis_cloud_plan", { request: "prepare deployment readiness" }, ctx());
     const payload = JSON.parse(out);
     assert.equal(payload.ok, true);

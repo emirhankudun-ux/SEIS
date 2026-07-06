@@ -793,7 +793,7 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(datasetCard.routeEligibleToday, false);
   });
 
-  it("executes run_all_checks through the protocol", async () => {
+  it("calls run_all_checks through the protocol", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -822,7 +822,7 @@ describe("seis-mcp stdio smoke", () => {
     assert.ok(payload.security);
   });
 
-  it("executes a personal SEIS lane plan tool through the protocol", async () => {
+  it("calls a personal SEIS lane plan tool through the protocol", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -854,7 +854,7 @@ describe("seis-mcp stdio smoke", () => {
     assert.ok(payload.approvalBoundary.includes("explicit human approval"));
   });
 
-  it("executes the SEIS AI Core provider status tool through the protocol", async () => {
+  it("calls the SEIS AI Core provider status tool through the protocol", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -888,7 +888,7 @@ describe("seis-mcp stdio smoke", () => {
     assert.ok(payload.providers.some((provider) => provider.id === "seis-local-demo" && provider.routingEligible === true));
   });
 
-  it("executes the SEIS AI Core model scaling status tool through the protocol", async () => {
+  it("calls the SEIS AI Core model scaling status tool through the protocol", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -997,7 +997,7 @@ describe("seis-mcp stdio smoke", () => {
     assert.ok(payload.scaleLadder.some((entry) => entry.parameterClass === "512B" && entry.status === "apex-program-plan-only"));
   });
 
-  it("executes the SEIS AI Core sub-agent model tool through the protocol", async () => {
+  it("calls the SEIS AI Core sub-agent model tool through the protocol", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -1034,7 +1034,7 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.longHorizonPlan.id, "sub-agent-5-year-plan");
   });
 
-  it("executes the SEIS AI Core version status tool through the protocol", async () => {
+  it("calls the SEIS AI Core version status tool through the protocol", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -1068,7 +1068,7 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.truthBoundaries.isTrainedModel, false);
   });
 
-  it("executes the SEIS AI Core version promotion dry-run tool through the protocol", async () => {
+  it("calls the SEIS AI Core version promotion dry-run tool through the protocol", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -1103,7 +1103,7 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.externalMutationPerformed, false);
   });
 
-  it("executes the SEIS AI Core dry-run evaluator through the protocol", async () => {
+  it("calls the SEIS AI Core dry-run evaluator through the protocol", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -1140,7 +1140,7 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.externalMutationPerformed, false);
   });
 
-  it("executes the SEIS AI Core review ledger tool through the protocol", async () => {
+  it("calls the SEIS AI Core review ledger tool through the protocol", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
