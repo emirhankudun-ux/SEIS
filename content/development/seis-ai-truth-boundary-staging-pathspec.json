@@ -65,13 +65,23 @@
   "knownBlockers": [
     {
       "id": "status-doc-resource-count-drift",
-      "status": "blocking-720b-validator",
-      "evidence": "scripts/check-seis-720b-agi-frontier-boundary.mjs requires docs/STATUS.md to say 32 local MCP resources."
+      "status": "working-tree-aligned-awaiting-hunk-review",
+      "evidence": "scripts/check-seis-720b-agi-frontier-boundary.mjs requires docs/STATUS.md to say 32 local MCP resources; the working tree is aligned but the docs/STATUS.md hunk still needs isolated staging review."
+    },
+    {
+      "id": "ai-core-doc-resource-count-drift",
+      "status": "working-tree-aligned-awaiting-hunk-review",
+      "evidence": "docs/ai/seis-ai-core.md must say 32 MCP resources before that doc is staged with the AI truth-boundary slice."
     },
     {
       "id": "package-json-mixed-hunks",
       "status": "requires-hunk-split",
       "evidence": "package.json contains AI truth-boundary, public-readiness, command-center, third-party intake, and NVIDIA script additions in one dirty file."
+    },
+    {
+      "id": "god-mode-mixed-mcp-hunks",
+      "status": "requires-separate-slice-or-hunk-split",
+      "evidence": "packages/seis-ai/src/mcp/server.mjs, packages/seis-ai/test/mcp-smoke.test.mjs, content/development/seis-ai-core-mcp-runtime-contract.json, and packages/seis-ai/src/lib/plugin-integration.mjs contain God Mode status tool/resource changes interleaved with the AI truth-boundary resources."
     },
     {
       "id": "web-report-qa-permission-blocker",

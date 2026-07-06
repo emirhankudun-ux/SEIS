@@ -45,6 +45,11 @@ ensure(pathspec.qualityGate === "node scripts/check-seis-ai-truth-boundary-stagi
 ensure(pathspec.cleanWorktreeClaimAllowed === false, "pathspec must not claim a clean worktree");
 ensure(String(pathspec.claimBoundary || "").includes("does not prove live AI"), "claim boundary must block live AI claims");
 ensure(String(pathspec.claimBoundary || "").includes("720B weights"), "claim boundary must block 720B weights claims");
+ensure(String(pathspec.claimBoundary || "").includes("SSH/cloud provisioning"), "claim boundary must block SSH/cloud provisioning claims");
+ensure(String(pathspec.claimBoundary || "").includes("provider calls"), "claim boundary must block provider-call claims");
+ensure(String(pathspec.claimBoundary || "").includes("deployment"), "claim boundary must block deployment claims");
+ensure(String(pathspec.claimBoundary || "").includes("GitHub mutation"), "claim boundary must block GitHub mutation claims");
+ensure(String(pathspec.claimBoundary || "").includes("production readiness"), "claim boundary must block production-readiness claims");
 ensure(String(pathspec.claimBoundary || "").includes("AGI capability"), "claim boundary must block AGI claims");
 
 includesAll(pathspec.stageCommandPolicy?.forbidden, [
@@ -99,7 +104,9 @@ includesAll(pathspec.mustRemainUnstagedUntilSeparatePr, [
 const blockerIds = new Set((pathspec.knownBlockers || []).map((blocker) => blocker.id));
 for (const id of [
   "status-doc-resource-count-drift",
+  "ai-core-doc-resource-count-drift",
   "package-json-mixed-hunks",
+  "god-mode-mixed-mcp-hunks",
   "web-report-qa-permission-blocker"
 ]) {
   ensure(blockerIds.has(id), `knownBlockers missing ${id}`);
