@@ -47,6 +47,10 @@ const sitemap = readText(sitemapPath);
 const robots = readText(robotsPath);
 const homeHtml = readText(homePath);
 const caseStudyHtml = readText(caseStudyPath);
+const expectedHomeUrl = canonicalBase ? `${canonicalBase}/` : null;
+const expectedCaseStudyUrl = canonicalBase
+  ? `${canonicalBase}/case-studies/seis-foundation.html`
+  : null;
 const allSeoText = [
   [metadataPath, JSON.stringify(metadata)],
   [sitemapPath, sitemap],
@@ -67,6 +71,14 @@ if (sitemapLocs.length < 2) {
   failures.push("sitemap must include home and case study URLs");
 }
 
+if (expectedHomeUrl && !sitemapLocs.includes(expectedHomeUrl)) {
+  failures.push("sitemap must include the metadata canonical home URL");
+}
+
+if (expectedCaseStudyUrl && !sitemapLocs.includes(expectedCaseStudyUrl)) {
+  failures.push("sitemap must include the SEIS Foundation case study URL");
+}
+
 for (const loc of sitemapLocs) {
   if (!isHttpsUrl(loc)) {
     failures.push(`sitemap loc must be https: ${loc}`);
@@ -82,6 +94,27 @@ if (sitemapUrl && !robots.includes(`Sitemap: ${sitemapUrl}`)) {
 
 if (!homeHtml.includes('<meta name="robots" content="noindex, nofollow">')) {
   failures.push("home page must remain noindex before final production domain confirmation");
+}
+
+if (
+  expectedHomeUrl &&
+  !homeHtml.includes(`<link rel="canonical" href="${expectedHomeUrl}">`)
+) {
+  failures.push("home page canonical URL must match metadata seoPolicy.canonicalBase");
+}
+
+if (
+  expectedHomeUrl &&
+  !homeHtml.includes(`<meta property="og:url" content="${expectedHomeUrl}">`)
+) {
+  failures.push("home page Open Graph URL must match metadata seoPolicy.canonicalBase");
+}
+
+if (
+  canonicalBase &&
+  !homeHtml.includes(`<meta property="og:image" content="${canonicalBase}/og-seis.png">`)
+) {
+  failures.push("home page Open Graph image must use metadata seoPolicy.canonicalBase");
 }
 
 if (!caseStudyHtml.includes('<meta name="robots" content="noindex, nofollow">')) {

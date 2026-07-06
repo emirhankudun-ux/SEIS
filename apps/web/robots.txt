@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://emirhankudun.com/sitemap.xml
+Sitemap: https://emirhankudun-ux.github.io/UIX-Apps/sitemap.xml

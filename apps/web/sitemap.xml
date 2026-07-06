@@ -2,16 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://emirhankudun.com/</loc>
+    <loc>https://emirhankudun-ux.github.io/UIX-Apps/</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="tr"       href="https://emirhankudun.com/"/>
-    <xhtml:link rel="alternate" hreflang="en"       href="https://emirhankudun.com/en/"/>
-    <xhtml:link rel="alternate" hreflang="fr"       href="https://emirhankudun.com/fr/"/>
-    <xhtml:link rel="alternate" hreflang="it"       href="https://emirhankudun.com/it/"/>
-    <xhtml:link rel="alternate" hreflang="de"       href="https://emirhankudun.com/de/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://emirhankudun.com/"/>
+    <xhtml:link rel="alternate" hreflang="tr"       href="https://emirhankudun-ux.github.io/UIX-Apps/tr/"/>
+    <xhtml:link rel="alternate" hreflang="en"       href="https://emirhankudun-ux.github.io/UIX-Apps/en/"/>
+    <xhtml:link rel="alternate" hreflang="fr"       href="https://emirhankudun-ux.github.io/UIX-Apps/fr/"/>
+    <xhtml:link rel="alternate" hreflang="it"       href="https://emirhankudun-ux.github.io/UIX-Apps/it/"/>
+    <xhtml:link rel="alternate" hreflang="de"       href="https://emirhankudun-ux.github.io/UIX-Apps/de/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://emirhankudun-ux.github.io/UIX-Apps/"/>
+  </url>
+  <url>
+    <loc>https://emirhankudun-ux.github.io/UIX-Apps/case-studies/seis-foundation.html</loc>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://emirhankudun-ux.github.io/UIX-Apps/seis-code.html</loc>

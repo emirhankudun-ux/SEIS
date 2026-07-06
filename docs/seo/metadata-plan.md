@@ -1,57 +1,74 @@
-# SEO And Metadata Plan
+# SEIS SEO Metadata Plan
 
-## Current State
+Status: pre-production-noindex
 
-The foundation uses `noindex, nofollow` because the final production domain
-is not confirmed yet. Static crawl assets now point at the GitHub Pages
-publication surface so placeholder URLs cannot leak into a release package.
+SEIS keeps public-indexing posture explicit while the repository is still a
+public-readiness candidate. The web demo may be browsed and reviewed, but search
+engine indexing stays blocked until the maintainer confirms the final production
+domain and release gate.
 
-Canonical base:
+## Current Source Of Truth
+
+- Metadata record: `content/site/metadata.json`
+- Sitemap: `apps/web/sitemap.xml`
+- Robots file: `apps/web/robots.txt`
+- Home page metadata: `apps/web/index.html`
+- Validator: `npm run check:seo`
+
+Current canonical base:
 
 ```text
 https://emirhankudun-ux.github.io/UIX-Apps
 ```
 
-Sitemap:
+Current sitemap:
 
 ```text
 https://emirhankudun-ux.github.io/UIX-Apps/sitemap.xml
 ```
 
+## Current Policy
+
+- `seoPolicy.canonicalBase` must be an HTTPS URL.
+- `seoPolicy.sitemapUrl` must live under the canonical base.
+- Placeholder domains are not allowed in metadata, robots, or sitemap records.
+- The home page and case-study page must keep `noindex, nofollow` before final
+  production-domain confirmation.
+- Open Graph URL and image metadata must use the canonical base.
+
+## Release Boundary
+
+Passing `npm run check:seo` means the pre-production metadata contract is
+internally consistent. It is not a public release approval, Pages publication
+approval, or production indexing approval.
+
+Before changing to `index, follow`, require a separate reviewed PR that confirms:
+
+1. Final production domain.
+2. Canonical URL ownership.
+3. Sitemap destination.
+4. Social preview asset provenance.
+5. Public-readiness status has no blocking security, demo, Apple-first,
+   Second Brain, local AI, or SEIS-SSH issues.
+
 ## Production Requirements
 
 Before production:
 
-- Confirm whether the GitHub Pages URL remains canonical or should be
-  replaced by the final custom domain.
-- Set page-level canonical tags after the final domain is confirmed.
-- Add Open Graph image.
-- Add JSON-LD for the final brand/person/portfolio structure.
-- Change robots to `index, follow`.
+- Confirm whether the GitHub Pages URL remains canonical or should be replaced
+  by the final custom domain.
 - Keep primary copy as readable HTML, not canvas text.
+- Add or confirm JSON-LD for the final brand/person/portfolio structure.
+- Preserve canonical, Open Graph, Twitter card, hreflang, sitemap, robots, and
+  manifest patterns as reviewed metadata, not as an unreviewed legacy head copy.
 - Run `npm run check:seo` before any publish attempt.
 
-## Readiness Contract
+## Verification
 
-- `content/site/metadata.json` is the canonical source for the current
-  foundation URL policy.
-- `apps/web/sitemap.xml` must not contain `example.com`, `localhost`, or other
-  placeholder origins.
-- `apps/web/robots.txt` must reference the same sitemap URL as metadata.
-- The foundation may stay `noindex` until the final domain and public release
-  window are confirmed.
+```bash
+npm run check:seo
+npm run check:seis-public-readiness
+```
 
-## Legacy Patterns To Preserve
-
-From the analyzed portfolio zip:
-
-- canonical
-- Open Graph
-- Twitter card
-- hreflang
-- JSON-LD
-- sitemap
-- robots
-- manifest
-
-These should be migrated as patterns, not copied as a monolithic legacy head block.
+These commands must not require API keys, SSH credentials, private vault
+material, paid providers, or live cloud accounts.
