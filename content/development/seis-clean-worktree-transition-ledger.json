@@ -102,8 +102,13 @@
         "node scripts/check-seis-mcp-permission-risk-matrix.mjs",
         "node scripts/check-seis-stitch-ux-screen-catalog.mjs",
         "node scripts/check-seis-swift-apple-bridge-manifest.mjs",
+        "node scripts/check-seis-pr0-foundation-staging-pathspec.mjs",
+        "node scripts/check-seis-pr0-staged-boundary.mjs",
         "staged path/secret scan",
-        "git diff --check"
+        "npm run check:js",
+        "docs/INDEX.md and docs/STATUS.md review without staging unrelated dirty status work",
+        "node --test packages/seis-ai/test/mcp-smoke.test.mjs",
+        "git diff --check over staged PR0 paths"
       ]
     },
     {

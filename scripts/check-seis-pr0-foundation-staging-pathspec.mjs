@@ -114,6 +114,8 @@ for (const hunkOnlyPath of hunkOnly) {
 assert(manifest.enterpriseDirection?.claimBoundary?.includes("not a market-share"), "enterprise direction must avoid market-share overclaim");
 assert(manifest.installedToolAndPluginUse?.blocked?.includes("blindly enabling every plugin"), "plugin policy must block blind plugin enablement");
 assert(manifest.installedToolAndPluginUse?.blocked?.includes("claiming a tool was used when it was not"), "plugin policy must block fake tool usage claims");
+assert(manifest.validation?.includes("npm run check:js"), "validation must include adjacent npm/js check");
+assert(manifest.validation?.includes("node --test packages/seis-ai/test/mcp-smoke.test.mjs"), "validation must include local MCP smoke");
 
 const cachedPaths = execFileSync("git", ["diff", "--cached", "--name-only"], {
   cwd: repoRoot,

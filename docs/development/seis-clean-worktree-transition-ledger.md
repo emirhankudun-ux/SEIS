@@ -41,9 +41,16 @@ boundary gate is `node scripts/check-seis-pr0-staged-boundary.mjs`.
 Run:
 
 ```sh
+node scripts/check-seis-source-provenance-intake.mjs
+node scripts/check-seis-five-year-agency-orchestration-contract.mjs
+node scripts/check-seis-mcp-permission-risk-matrix.mjs
+node scripts/check-seis-stitch-ux-screen-catalog.mjs
+node scripts/check-seis-swift-apple-bridge-manifest.mjs
 node scripts/check-seis-clean-worktree-transition-ledger.mjs
 node scripts/check-seis-pr0-foundation-staging-pathspec.mjs
 node scripts/check-seis-pr0-staged-boundary.mjs
+npm run check:js
+node --test packages/seis-ai/test/mcp-smoke.test.mjs
 ```
 
 Useful adjacent checks:
@@ -52,6 +59,9 @@ Useful adjacent checks:
 node scripts/check-seis-pr0-pr1-pr2-implementation-sequence.mjs
 npm run check:master-backlog
 ```
+
+Before promotion, review `docs/INDEX.md` and `docs/STATUS.md` for PR0
+visibility without staging unrelated dirty status work.
 
 ## Security
 

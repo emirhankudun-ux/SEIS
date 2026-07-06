@@ -48,6 +48,12 @@ ensure(sequence.backlogId === "SEIS-BL-051", "sequence must map to SEIS-BL-051")
 ensure(sequence.sourceRefs?.pr0StagingPathspec === files.pr0StagingPathspec, "sequence must reference PR0 staging pathspec");
 ensure(Array.isArray(sequence.sequence), "sequence must contain sequence array");
 ensure(sequence.sequence?.length === 3, "sequence must contain PR0, PR1, and PR2");
+ensure(Array.isArray(sequence.pr0AcceptanceOrder), "sequence must define PR0 acceptance order");
+ensure(sequence.pr0AcceptanceOrder?.length === 5, "PR0 acceptance order must have five ordered gates");
+ensure(sequence.pr0AcceptanceOrder?.at(0)?.commands?.includes("node scripts/check-seis-source-provenance-intake.mjs"), "PR0 acceptance order must start with direct manifest checkers");
+ensure(sequence.pr0AcceptanceOrder?.some((gate) => gate.commands?.includes("node scripts/check-seis-pr0-staged-boundary.mjs")), "PR0 acceptance order must include staged boundary checker");
+ensure(sequence.pr0AcceptanceOrder?.some((gate) => gate.commands?.includes("npm run check:js")), "PR0 acceptance order must include adjacent npm/js check");
+ensure(sequence.pr0AcceptanceOrder?.some((gate) => gate.commands?.includes("node --test packages/seis-ai/test/mcp-smoke.test.mjs")), "PR0 acceptance order must include local MCP smoke");
 
 const entries = new Map((sequence.sequence || []).map((entry) => [entry.id, entry]));
 for (const id of [
@@ -63,6 +69,8 @@ const pr1 = entries.get("pr1-swift-model-foundation") || {};
 const pr2 = entries.get("pr2-web-demo-visibility-data-first") || {};
 
 ensure(pr0.nonGoals?.includes("Swift source changes"), "PR0 must keep Swift source out of scope");
+ensure(pr0.validation?.includes("npm run check:js"), "PR0 validation must include adjacent npm/js check");
+ensure(pr0.validation?.includes("node --test packages/seis-ai/test/mcp-smoke.test.mjs"), "PR0 validation must include local MCP smoke");
 ensure(pr1.nonGoals?.includes("SwiftUI shell"), "PR1 must exclude SwiftUI shell");
 ensure(pr1.nonGoals?.includes("Package.swift edit"), "PR1 must exclude Package.swift edits");
 ensure(pr2.nonGoals?.some((goal) => goal.includes("apps/seis-demo-web/script.js")), "PR2 must protect the existing dirty web script in PR0/PR1");

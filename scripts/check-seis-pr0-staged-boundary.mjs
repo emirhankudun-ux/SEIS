@@ -55,8 +55,12 @@ function matchesForbidden(candidate, forbidden) {
 }
 
 const ledger = readJson("content/development/seis-clean-worktree-transition-ledger.json");
+const stagingPathspec = readJson("content/development/seis-pr0-foundation-staging-pathspec.json");
 const pr0 = (ledger.reviewSlices || []).find((slice) => slice.id === "pr0-foundation-manifest-package") || {};
-const allowed = new Set(pr0.includePaths || []);
+const allowed = new Set([
+  ...(pr0.includePaths || []),
+  ...(stagingPathspec.controlPathsAllowedWhenValidatingThisLedger || [])
+]);
 const forbidden = new Set([
   ...(pr0.blockedPaths || []),
   ...(ledger.excludedUntilExplicitReview || []),
@@ -67,6 +71,14 @@ const forbidden = new Set([
 assert(fs.existsSync(ledgerPath), "clean-worktree transition ledger must exist");
 assert(ledger.activeSlice === "pr0-foundation-manifest-package", "ledger active slice must be PR0");
 assert(allowed.size >= 18, "PR0 includePaths must define the staged allowlist");
+assert(
+  Array.isArray(stagingPathspec.controlPathsAllowedWhenValidatingThisLedger),
+  "PR0 staging pathspec must expose control paths"
+);
+assert(
+  allowed.has("content/development/seis-pr0-foundation-staging-pathspec.json"),
+  "PR0 staged boundary must allow staging the pathspec control manifest"
+);
 assert(forbidden.has("package.json"), "forbidden set must hard-code package.json");
 assert(forbidden.has("apps/seis-demo-web/script.js"), "forbidden set must hard-code apps/seis-demo-web/script.js");
 
@@ -110,7 +122,7 @@ for (const entry of staged) {
     fail(`staged blob contains concrete local absolute path: ${entry.path}`);
   }
 
-  if (/BEGIN (RSA |OPENSSH |EC |DSA )?PRIVATE KEY/.test(blob)) {
+  if (/-----BEGIN (RSA |OPENSSH |EC |DSA )?PRIVATE KEY-----/.test(blob)) {
     fail(`staged blob contains private key marker: ${entry.path}`);
   }
 

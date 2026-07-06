@@ -201,6 +201,8 @@ assert(largeReference.pathPrefixes?.includes("packages/seis-ai/downloadable/"), 
 
 assert(Array.isArray(ledger.cleanupSequence) && ledger.cleanupSequence.length === 5, "cleanup sequence must define five ordered steps");
 assert(ledger.cleanupSequence.at(-1)?.action.includes("git status --short is empty"), "final cleanup step must require empty git status");
+assert(pr0.validation?.includes("npm run check:js"), "PR0 validation must include adjacent npm/js check");
+assert(pr0.validation?.includes("node --test packages/seis-ai/test/mcp-smoke.test.mjs"), "PR0 validation must include local MCP smoke");
 
 if (failures.length > 0) {
   console.error("SEIS clean worktree transition ledger check failed:");

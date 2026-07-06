@@ -35,12 +35,21 @@ external mutation, secret sharing, and fake tool-usage claims remain blocked.
 
 ## Verification
 
-Run:
+Run the PR0 acceptance sequence in this order:
 
 ```sh
+node scripts/check-seis-source-provenance-intake.mjs
+node scripts/check-seis-five-year-agency-orchestration-contract.mjs
+node scripts/check-seis-mcp-permission-risk-matrix.mjs
+node scripts/check-seis-stitch-ux-screen-catalog.mjs
+node scripts/check-seis-swift-apple-bridge-manifest.mjs
 node scripts/check-seis-pr0-foundation-staging-pathspec.mjs
+node scripts/check-seis-pr0-staged-boundary.mjs
+npm run check:js
+node --test packages/seis-ai/test/mcp-smoke.test.mjs
 ```
 
-The checker also inspects the Git index. If anything is staged, every staged
-path must be either a PR0 pathspec-safe path or one of this ledger's control
-paths.
+Also review `docs/INDEX.md` and `docs/STATUS.md` for PR0 visibility without
+staging unrelated dirty status work. The staged-boundary checker inspects the
+Git index. If anything is staged, every staged path must be either a PR0
+pathspec-safe path or one of this ledger's control paths.

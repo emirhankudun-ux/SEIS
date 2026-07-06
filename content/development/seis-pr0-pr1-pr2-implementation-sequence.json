@@ -19,6 +19,51 @@
     "stitchCatalog": "content/development/seis-stitch-ux-screen-catalog.json",
     "swiftAppleBridge": "content/development/seis-swift-apple-bridge-manifest.json"
   },
+  "pr0AcceptanceOrder": [
+    {
+      "order": 1,
+      "label": "Five direct PR0 manifest checkers",
+      "commands": [
+        "node scripts/check-seis-source-provenance-intake.mjs",
+        "node scripts/check-seis-five-year-agency-orchestration-contract.mjs",
+        "node scripts/check-seis-mcp-permission-risk-matrix.mjs",
+        "node scripts/check-seis-stitch-ux-screen-catalog.mjs",
+        "node scripts/check-seis-swift-apple-bridge-manifest.mjs"
+      ]
+    },
+    {
+      "order": 2,
+      "label": "PR0 path and secret boundary scan",
+      "commands": [
+        "node scripts/check-seis-pr0-foundation-staging-pathspec.mjs",
+        "node scripts/check-seis-pr0-staged-boundary.mjs",
+        "git diff --check over staged PR0 paths"
+      ]
+    },
+    {
+      "order": 3,
+      "label": "Adjacent npm/node checks",
+      "commands": [
+        "npm run check:js",
+        "npm run check:foundation when package ownership is not part of the staged diff"
+      ]
+    },
+    {
+      "order": 4,
+      "label": "Docs index and status review",
+      "commands": [
+        "review docs/INDEX.md PR0 links",
+        "review docs/STATUS.md PR0 row without staging unrelated dirty status work"
+      ]
+    },
+    {
+      "order": 5,
+      "label": "Local MCP smoke",
+      "commands": [
+        "node --test packages/seis-ai/test/mcp-smoke.test.mjs"
+      ]
+    }
+  ],
   "sequence": [
     {
       "id": "pr0-foundation-manifest-package",
@@ -39,7 +84,13 @@
         "node scripts/check-seis-mcp-permission-risk-matrix.mjs",
         "node scripts/check-seis-stitch-ux-screen-catalog.mjs",
         "node scripts/check-seis-swift-apple-bridge-manifest.mjs",
-        "git diff --check"
+        "node scripts/check-seis-pr0-foundation-staging-pathspec.mjs",
+        "node scripts/check-seis-pr0-staged-boundary.mjs",
+        "targeted staged path/secret scan",
+        "npm run check:js",
+        "docs/INDEX.md and docs/STATUS.md review without staging unrelated dirty status work",
+        "node --test packages/seis-ai/test/mcp-smoke.test.mjs",
+        "git diff --check over staged PR0 paths"
       ],
       "nonGoals": [
         "package.json alias wiring",

@@ -104,7 +104,11 @@
     "node scripts/check-seis-mcp-permission-risk-matrix.mjs",
     "node scripts/check-seis-stitch-ux-screen-catalog.mjs",
     "node scripts/check-seis-swift-apple-bridge-manifest.mjs",
+    "npm run check:js",
+    "docs/INDEX.md and docs/STATUS.md review without staging unrelated dirty status work",
+    "node --test packages/seis-ai/test/mcp-smoke.test.mjs",
     "git diff --cached --name-only must be a subset of pathspecSafeInclude plus controlPathsAllowedWhenValidatingThisLedger",
+    "staged path/secret scan over PR0 paths",
     "git diff --check over staged PR0 paths"
   ],
   "truthBoundary": "This pathspec defines PR0 staging safety. It does not stage files, commit files, clean the tree, prove CI readiness, approve hunk-only docs, prove enterprise competitiveness, and does not authorize staging unrelated dirty work."
