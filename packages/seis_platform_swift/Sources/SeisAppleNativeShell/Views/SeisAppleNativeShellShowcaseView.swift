@@ -128,7 +128,7 @@ struct SeisAppleNativeShellShowcaseView: View {
         .onChange(of: activePanel) { panel in
             if panel == .applePlatform {
                 showcaseArea = .platform
-            } else {
+            } else if panel == .demo {
                 if showcaseArea == .platform {
                     showcaseArea = .dashboard
                 }

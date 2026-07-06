@@ -109,7 +109,17 @@ import Testing
     #expect(contract.packageRelativePath == "packages/seis_platform_swift")
     #expect(contract.runScriptRelativePath == "script/build_and_run.sh")
     #expect(contract.codexRunCommand == "./script/build_and_run.sh")
+    #expect(contract.xcodeOpenRelativePath == "packages/seis_platform_swift/Package.swift")
+    #expect(contract.xcodeSchemeName == "SeisAppleNativeShell")
+    #expect(contract.xcodeDefaultSchemeName == "SeisPlatformKit-Package")
+    #expect(contract.xcodeSchemeSelectionGuidance.contains("switch the active scheme"))
+    #expect(contract.xcodeBuildCommand.contains("-scheme SeisAppleNativeShell"))
+    #expect(contract.xcodeBuildCommand.contains("-derivedDataPath .xcode-derived-data"))
     #expect(contract.supportedModes.contains("--verify"))
+    #expect(contract.supportedModes.contains("--brain-ssh"))
+    #expect(contract.supportedModes.contains("--verify-brain-ssh"))
+    #expect(contract.supportedModes.contains("--ai-scale"))
+    #expect(contract.supportedModes.contains("--verify-ai-scale"))
     #expect(contract.requiredInfoPlistKeys.contains("NSPrincipalClass"))
 }
 
@@ -130,12 +140,23 @@ import Testing
     let root = repositoryRoot()
     let script = try String(contentsOf: root.appending(path: contract.runScriptRelativePath), encoding: .utf8)
     let environment = try String(contentsOf: root.appending(path: ".codex/environments/environment.toml"), encoding: .utf8)
+    let packageReadme = try String(contentsOf: root.appending(path: "packages/seis_platform_swift/README.md"), encoding: .utf8)
+    let nativeApp = try String(
+        contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisAppleNativeShell/App/SeisAppleNativeShellApp.swift"),
+        encoding: .utf8
+    )
 
     for token in contract.expectedScriptTokens {
         #expect(script.contains(token), "missing script token: \(token)")
     }
     for token in contract.expectedEnvironmentTokens {
         #expect(environment.contains(token), "missing environment token: \(token)")
+    }
+    for token in contract.expectedReadmeTokens {
+        #expect(packageReadme.contains(token), "missing package README token: \(token)")
+    }
+    for token in contract.expectedNativeAppTokens {
+        #expect(nativeApp.contains(token), "missing native app token: \(token)")
     }
 }
 
