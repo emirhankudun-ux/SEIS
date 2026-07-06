@@ -48,6 +48,7 @@ const requiredDirectLaneTools = [
   "seis_data_status",
   "seis_data_plan",
 ];
+const machineLocalPathPattern = /(?:\/Users\/|\/private\/|\/var\/folders\/|\/tmp\/|\/home\/|Mobile Documents|com~apple~CloudDocs|file:\/\/)/i;
 
 for (const [filePath, label] of [
   [manifestPath, "plugin integration manifest"],
@@ -86,6 +87,12 @@ if (manifest) {
   ensure(manifest.auditedSnapshot?.installedEnabledCount === 185, "manifest must record the 2026-06-19 installed-enabled count");
   ensure(manifest.auditedSnapshot?.notInstalledCount === 5, "manifest must record the 2026-06-19 not-installed count");
   ensure(manifest.auditedSnapshot?.authenticationClaim === "not-claimed", "manifest must not claim connector authentication readiness");
+  ensure(
+    typeof manifest.auditedSnapshot?.sourceCommand === "string"
+      && manifest.auditedSnapshot.sourceCommand.includes("redacted")
+      && !machineLocalPathPattern.test(manifest.auditedSnapshot.sourceCommand),
+    "manifest audited snapshot source command must be redacted and free of machine-local paths"
+  );
   ensureArrayIncludesAll(manifest.auditedSnapshot?.personalPluginsInstalledEnabled, requiredPersonalPlugins, "auditedSnapshot.personalPluginsInstalledEnabled");
   ensureArrayIncludesAll((manifest.personalPlugins || []).map((plugin) => plugin.id), requiredPersonalPlugins, "personalPlugins");
   ensureArrayIncludesAll((manifest.lanes || []).map((lane) => lane.id), requiredLanes, "lanes");
@@ -99,10 +106,12 @@ if (manifest) {
     "runtimeIntegration must expose the SEIS AI Core version promotion dry-run tool"
   );
   ensure(manifest.runtimeIntegration?.subagentOperatingModelTool === "seis_ai_core_subagent_model", "runtimeIntegration must expose the SEIS AI Core sub-agent model tool");
+  ensure(manifest.runtimeIntegration?.godModeStatusTool === "seis_god_mode_status", "runtimeIntegration must expose the SEIS God Mode status tool");
   ensure(manifest.runtimeIntegration?.mcpTool === "seis_plugin_integration", "runtimeIntegration must expose the MCP tool");
   ensure(manifest.runtimeIntegration?.mcpResource === "seis://agent/plugin-integration.json", "runtimeIntegration must expose the MCP resource");
   ensureArrayIncludesAll(manifest.runtimeIntegration?.mcpResources, [
     "seis://agent/plugin-integration.json",
+    "seis://agent/god-mode-status.json",
     "seis://ai/version-registry.json",
     "seis://ai/provider-registry.json",
     "seis://ai/model-scaling-hardware-profile.json",
@@ -110,6 +119,7 @@ if (manifest) {
     "seis://ai/model-frontier-escalation-policy.json",
     "seis://ai/150b-frontier-model-program.json",
     "seis://ai/512b-apex-model-program.json",
+    "seis://ai/720b-agi-frontier-boundary.json",
     "seis://ai/agi-evaluation-protocol.json",
     "seis://ai/agi-public-readiness-evidence.json",
     "seis://ai/20b-model-card-template.json",
@@ -118,6 +128,8 @@ if (manifest) {
     "seis://ai/subagent-operating-model.json",
     "seis://ai/sub-agent-5-year-plan.json",
     "seis://ai/sub-agent-5-year-plan-view.json",
+    "seis://ai/subagent-swarm-round-ledger.json",
+    "seis://ai/subagent-round-execution-evidence-ledger.json",
     "seis://ai/agent-role-schema.json",
     "seis://ai/agent-permission-matrix.json",
     "seis://ai/dry-run-task-queue.json",
@@ -166,6 +178,9 @@ if (manifest) {
     ["versionRegistry", "five-year version registry"],
     ["versionPromotionGates", "five-year version promotion gates"],
     ["longHorizonPlanView", "five-year generated sub-agent plan view"],
+    ["swarmRoundLedger", "five-year sub-agent swarm round ledger"],
+    ["roundExecutionEvidenceLedger", "five-year sub-agent round execution evidence ledger"],
+    ["agi720bFrontierBoundary", "five-year 720B AGI frontier boundary"],
   ]) {
     ensureFile(path.join(root, manifest.fiveYearSubagentDevelopment?.[key] || ""), label);
   }
@@ -245,10 +260,13 @@ ensure(mcp.includes("subagentOperatingModelStatus"), "MCP server must expose sub
 ensure(mcp.includes("LightweightMcpServer"), "MCP server must keep a no-dependency stdio fallback");
 ensure(mcp.includes("resources/read"), "MCP server fallback must support resource reads");
 ensure(mcp.includes("seis://ai/mcp-runtime-contract.json"), "MCP server must expose the AI Core MCP runtime contract resource");
+ensure(mcp.includes("seis://ai/subagent-swarm-round-ledger.json"), "MCP server must expose the sub-agent swarm round ledger resource");
+ensure(mcp.includes("seis://ai/subagent-round-execution-evidence-ledger.json"), "MCP server must expose the sub-agent round execution evidence ledger resource");
 ensure(mcp.includes("seis://ai/model-scaling-hardware-profile.json"), "MCP server must expose the AI Core model scaling resource");
 ensure(mcp.includes("seis://ai/model-parameter-ladder.json"), "MCP server must expose the AI Core model parameter ladder resource");
 ensure(mcp.includes("seis://ai/model-frontier-escalation-policy.json"), "MCP server must expose the AI Core frontier escalation policy resource");
 ensure(mcp.includes("seis://ai/150b-frontier-model-program.json"), "MCP server must expose the AI Core 150B frontier model program resource");
+ensure(mcp.includes("seis://ai/720b-agi-frontier-boundary.json"), "MCP server must expose the AI Core 720B AGI frontier boundary resource");
 ensure(mcp.includes("seis://ai/20b-model-card-template.json"), "MCP server must expose the AI Core 20B model card template resource");
 ensure(mcp.includes("seis://ai/20b-dataset-card-template.json"), "MCP server must expose the AI Core 20B dataset card template resource");
 
