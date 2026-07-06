@@ -5,7 +5,7 @@ Date: 2026-06-05
 Source archive:
 
 ```text
-/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github.zip
+legacy local Github.zip archive; keep outside /Users/emirhankudun/Developer/SEIS
 ```
 
 Checksum:

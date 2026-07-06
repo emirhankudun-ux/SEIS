@@ -181,12 +181,16 @@ flowchart TD
 - Record durable operating decisions in repository docs instead of leaving them only in chat history.
 - When an assistant is uncertain, it should name the uncertainty, gather local evidence, and avoid broad speculative rewrites.
 
-## iCloud Workspace Intake
+## Canonical Workspace Intake
 
-- Treat `/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github` as the canonical SEIS workspace root, not as a single Git repository.
-- Use this repository as the active GitHub development surface for SEIS on
-  `main`.
-- Before merging root workspace material, follow `docs/governance/icloud-github-workspace-ingestion.md`.
+- Treat `/Users/emirhankudun/Developer/SEIS` as the canonical SEIS Git repository
+  root for current Codex and GitHub work.
+- Treat legacy iCloud Drive `Github` folders as intake/archive/source-review
+  inputs, not as active writable repository roots.
+- Use this repository as the active GitHub development surface for SEIS; keep
+  `main` protected and work through reviewable branches.
+- Before merging legacy workspace material, follow
+  `docs/governance/icloud-github-workspace-ingestion.md`.
 - Do not bulk-import archives, personal media, `.DS_Store`, nested `.git` directories, or symlink mirrors into this repository.
 - Convert broad operating instructions into traceable governance docs before pushing.
 

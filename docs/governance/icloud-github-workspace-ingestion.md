@@ -1,14 +1,17 @@
 # iCloud GitHub Workspace Ingestion
 
-This document defines how the SEIS iCloud Drive `Github` workspace is merged into the active GitHub development repository without turning the repository into a raw file dump.
+This document defines how legacy SEIS iCloud Drive `Github` workspace material
+is reviewed from the canonical local checkout without turning the repository
+into a raw file dump.
 
 ## Source Inputs
 
 The current ingestion pass combines these inputs:
 
-- Root workspace instructions from `/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/AGENTS.md`.
+- Canonical repository instructions from `/Users/emirhankudun/Developer/SEIS/AGENTS.md`.
 - The SEIS Supreme operating-system directive and repository governance docs.
-- The iCloud Drive `Github` workspace inventory.
+- The legacy iCloud Drive `Github` workspace inventory when explicitly selected
+  for intake.
 - The existing SEIS `AGENTS.md`, branch governance, and focus-mode development process.
 
 ## Active GitHub Surface
@@ -25,7 +28,10 @@ The active branch is:
 main
 ```
 
-This repository is the clean development surface. The iCloud root folder is a multi-project workspace containing repositories, archives, assets, symlinks, and personal files. It must not be pushed as a single repository.
+This repository is the clean development surface at
+`/Users/emirhankudun/Developer/SEIS`. Legacy iCloud workspace folders are
+multi-project input areas containing repositories, archives, assets, symlinks,
+and personal files. They must not be pushed as a single repository.
 
 ## Merge Principle
 
@@ -44,7 +50,7 @@ Broad instructions, operating-system language, workspace routing, and repository
 | Personal media | photos, PDFs, resumes, portfolio source media | Do not bulk-commit. Route selected public assets through an asset manifest. |
 | System files | `.DS_Store`, `__MACOSX`, cache folders | Exclude from Git. |
 | Symlink mirrors | `Website 2`, `Website copy`, `UX 2`, `New project copy` | Resolve to real project paths before review. |
-| Duplicate SEIS checkouts | `/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/SEIS`, `SEIST/` | Treat as intake/archive material until individual files are reviewed. |
+| Duplicate SEIS checkouts | legacy iCloud SEIS folders, `SEIST/` | Treat as intake/archive material until individual files are reviewed. |
 | Assistant outputs | Qwen, Codex, Claude, Gemini, and other generated output folders | Keep as archive or future-phase material unless promoted through review. |
 
 ## Safety Rules
