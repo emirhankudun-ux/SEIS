@@ -1,0 +1,223 @@
+{
+  "$schema": "https://seis.dev/schemas/swift-apple-bridge-manifest.schema.json",
+  "id": "seis-swift-apple-bridge-manifest",
+  "version": "2026-07-03",
+  "status": "draft-public-safe",
+  "visibility": "public-safe",
+  "purpose": "Bridge the five-year agency orchestration, source provenance, MCP risk, and Stitch UX catalogs into the existing Apple-first Swift package without touching Swift source in this slice.",
+  "sourceOfTruth": {
+    "constitution": "AGENTS.md",
+    "swiftPackage": "packages/seis_platform_swift/Package.swift",
+    "swiftPackageReadme": "packages/seis_platform_swift/README.md",
+    "orchestrationContract": "content/development/seis-five-year-agency-orchestration-contract.json",
+    "sourceProvenance": "content/development/seis-source-provenance-intake.json",
+    "mcpPermissionRiskMatrix": "content/development/seis-mcp-permission-risk-matrix.json",
+    "stitchUxScreenCatalog": "content/development/seis-stitch-ux-screen-catalog.json"
+  },
+  "swiftPackageSnapshot": {
+    "packageRelativePath": "packages/seis_platform_swift",
+    "packageName": "SeisPlatformKit",
+    "platforms": [
+      "macOS v13",
+      "iOS v16"
+    ],
+    "products": [
+      "SeisPlatformKit",
+      "SeisAppleNativeShell"
+    ],
+    "targets": [
+      "SeisPlatformKit",
+      "SeisAppleNativeShell",
+      "SeisPlatformKitTests"
+    ],
+    "currentSliceTouchesSwiftSource": false,
+    "swiftCheckRequiredForThisSlice": false,
+    "swiftCheckRequiredWhenSwiftChanges": true
+  },
+  "bridgePrinciples": [
+    "Swift is used for real architectural value, not language statistics.",
+    "Swift models should mirror stable public-safe contracts before SwiftUI shell work expands.",
+    "SwiftUI shell work must preserve accessible labels, reduced-motion expectations, and no-key demo boundaries.",
+    "Stitch screens inform module vocabulary and shell layout only after review.",
+    "AI Core surfaces must keep demo/live boundaries explicit across demo, local-ready, cloud-ready, blocked, and failed states.",
+    "MCP and provider surfaces must never expose credentials in public repo files.",
+    "The web demo remains the public showcase while Swift becomes the long-term Apple-first backbone."
+  ],
+  "proposedSwiftModels": [
+    {
+      "id": "SeisAgencyOrchestrationContract",
+      "source": "content/development/seis-five-year-agency-orchestration-contract.json",
+      "purpose": "Represent years, rounds, steps, departments, agent assignments, tool assignments, and truth boundaries.",
+      "target": "SeisPlatformKit",
+      "status": "planned",
+      "codable": true,
+      "identifiable": false,
+      "requiredTests": [
+        "loads public-safe sample contract",
+        "rejects live AI and credential-enabled flags"
+      ]
+    },
+    {
+      "id": "SeisMCPPermissionRiskRecord",
+      "source": "content/development/seis-mcp-permission-risk-matrix.json",
+      "purpose": "Represent MCP risk records, allowed modes, evidence requirements, and activation gates.",
+      "target": "SeisPlatformKit",
+      "status": "planned",
+      "codable": true,
+      "identifiable": true,
+      "requiredTests": [
+        "blocks external mutation by default",
+        "keeps candidate MCPs documentation-only"
+      ]
+    },
+    {
+      "id": "SeisStitchModuleFamily",
+      "source": "content/development/seis-stitch-ux-screen-catalog.json",
+      "purpose": "Represent approved module families and safe next steps for SwiftUI shell planning.",
+      "target": "SeisPlatformKit",
+      "status": "planned",
+      "codable": true,
+      "identifiable": true,
+      "requiredTests": [
+        "preserves catalog-only usage boundary",
+        "requires review before asset adoption"
+      ]
+    },
+    {
+      "id": "SeisSourceProvenanceArchive",
+      "source": "content/development/seis-source-provenance-intake.json",
+      "purpose": "Represent immutable source archives, checksums, roles, and public-safe usage rules.",
+      "target": "SeisPlatformKit",
+      "status": "planned",
+      "codable": true,
+      "identifiable": true,
+      "requiredTests": [
+        "does not expose local archive paths",
+        "distinguishes primary reference from evolution evidence"
+      ]
+    },
+    {
+      "id": "SeisAgentRunRound",
+      "source": "content/development/seis-five-year-agency-orchestration-contract.json",
+      "purpose": "Represent 30-round supervised execution plans for native status surfaces.",
+      "target": "SeisPlatformKit",
+      "status": "planned",
+      "codable": true,
+      "identifiable": true,
+      "requiredTests": [
+        "contains exactly thirty rounds",
+        "does not claim background autonomy"
+      ]
+    },
+    {
+      "id": "SeisAppleShellModule",
+      "source": "content/development/seis-stitch-ux-screen-catalog.json",
+      "purpose": "Represent Apple-first shell modules derived from reviewed Stitch module families.",
+      "target": "SeisAppleNativeShell",
+      "status": "planned",
+      "codable": true,
+      "identifiable": true,
+      "requiredTests": [
+        "maps to reviewed module family",
+        "preserves accessibility metadata"
+      ]
+    }
+  ],
+  "swiftuiShellQueue": [
+    {
+      "id": "agency-command-center-panel",
+      "sourceModuleFamily": "command-center",
+      "candidateViewName": "SeisAgencyCommandCenterPanel",
+      "target": "SeisAppleNativeShell",
+      "status": "planned",
+      "accessibilityRequirement": "Every icon-only control has an accessible label.",
+      "demoBoundary": "Status and plan only; no live AI claim."
+    },
+    {
+      "id": "agent-swarm-ledger-panel",
+      "sourceModuleFamily": "agent-swarm",
+      "candidateViewName": "SeisAgentSwarmLedgerPanel",
+      "target": "SeisAppleNativeShell",
+      "status": "planned",
+      "accessibilityRequirement": "Round status must not rely on color alone.",
+      "demoBoundary": "Repo-tracked ledger only."
+    },
+    {
+      "id": "mcp-risk-panel",
+      "sourceModuleFamily": "security-and-compliance",
+      "candidateViewName": "SeisMCPRiskPanel",
+      "target": "SeisAppleNativeShell",
+      "status": "planned",
+      "accessibilityRequirement": "Risk state labels are explicit and keyboard reachable.",
+      "demoBoundary": "No MCP activation from UI."
+    },
+    {
+      "id": "stitch-module-gallery-panel",
+      "sourceModuleFamily": "creative-lab",
+      "candidateViewName": "SeisStitchModuleGalleryPanel",
+      "target": "SeisAppleNativeShell",
+      "status": "planned",
+      "accessibilityRequirement": "Image previews require alt summaries and review status.",
+      "demoBoundary": "Catalog-only until asset license review."
+    },
+    {
+      "id": "ai-core-boundary-panel",
+      "sourceModuleFamily": "ai-core",
+      "candidateViewName": "SeisAICoreBoundaryPanel",
+      "target": "SeisAppleNativeShell",
+      "status": "planned",
+      "accessibilityRequirement": "Demo, local-ready, cloud-ready, blocked, and failed states are text-labeled.",
+      "demoBoundary": "No provider calls."
+    }
+  ],
+  "implementationStages": [
+    {
+      "id": "manifest-only",
+      "status": "active",
+      "meaning": "This slice documents the bridge and adds validation without editing Swift source."
+    },
+    {
+      "id": "swift-models",
+      "status": "next",
+      "meaning": "Add Codable models and fixture-loading tests for the stable contracts."
+    },
+    {
+      "id": "swiftui-shell-panels",
+      "status": "planned",
+      "meaning": "Add accessible SwiftUI panels after model tests pass."
+    },
+    {
+      "id": "native-demo-routing",
+      "status": "planned",
+      "meaning": "Route native surfaces to public-safe demo data without provider calls."
+    }
+  ],
+  "validation": {
+    "directChecker": "node scripts/check-seis-swift-apple-bridge-manifest.mjs",
+    "swiftDescribeCommand": "swift package describe --package-path packages/seis_platform_swift",
+    "swiftTestCommand": "swift test --package-path packages/seis_platform_swift",
+    "swiftChecksRequiredNow": false,
+    "swiftChecksRequiredWhen": [
+      "Swift source is added or edited",
+      "Package.swift is edited",
+      "Swift resources are added",
+      "SwiftUI views are added or edited"
+    ]
+  },
+  "qualityGates": [
+    "No Swift source is touched in this manifest-only slice.",
+    "No symbolic Swift files are allowed.",
+    "Swift models must load public-safe JSON fixtures before SwiftUI surfaces expand.",
+    "SwiftUI panels must preserve accessible names and visible state labels.",
+    "AI Core UI must not claim live provider calls.",
+    "MCP UI must not activate servers without approval.",
+    "Stitch assets must not be copied before license, size, and public-safe review.",
+    "The web demo remains no-key and preserved."
+  ],
+  "nextActions": [
+    "Add Codable Swift models for the orchestration, MCP risk, and Stitch module family records.",
+    "Add fixture-loading tests against the public-safe JSON manifests.",
+    "Add a small SwiftUI agency command center panel after tests pass.",
+    "Run Swift checks only in the Swift-source PR."
+  ]
+}

@@ -1,0 +1,324 @@
+{
+  "$schema": "https://seis.dev/schemas/source-provenance-intake.schema.json",
+  "id": "seis-source-provenance-intake-2026-07-03",
+  "title": "SEIS Source Provenance Intake",
+  "status": "draft",
+  "visibility": "public-safe",
+  "reviewedAt": "2026-07-03",
+  "purpose": "Track the external Kimi and Stitch archive references as provenance evidence before any asset, code, or design import happens.",
+  "sourceLocationPolicy": {
+    "localPathsCommitted": false,
+    "archiveNamesCommitted": true,
+    "hashesCommitted": true,
+    "note": "Local absolute paths are intentionally excluded. Use archive names, byte sizes, checksums, and review status only."
+  },
+  "intakePolicy": {
+    "originalsModified": false,
+    "repoImportMode": "manifest-first",
+    "binaryImport": "deferred-manual-review",
+    "selectedAssets": "allowed-after-license-size-and-design-review",
+    "fullReferenceDump": "blocked-manual-review",
+    "codeHtmlUsage": "reference-only-until-reviewed",
+    "screenshotsUsage": "catalog-only-until-selected-asset-review",
+    "noLiveAIClaims": true,
+    "noSecrets": true,
+    "preserveWebDemo": true,
+    "preserveAppleFirstDirection": true
+  },
+  "decisionMatrix": [
+    {
+      "topic": "fiveYearDevelopmentModel",
+      "selected": ["A", "B", "C"],
+      "resolution": "Roadmap and PR cycles first, automation architecture as repo-tracked contracts, active background agents only when the platform supports them."
+    },
+    {
+      "topic": "mcpPolicy",
+      "selected": ["A", "B", "C"],
+      "resolution": "Official or approved MCPs are preferred, installed safe MCPs may be used, ecosystem candidates remain documented and gated."
+    },
+    {
+      "topic": "skillsAndPluginUsage",
+      "selected": ["A", "B", "C"],
+      "resolution": "Choose skills per task, maintain a registry, and re-evaluate skill fit at each safe swarm cycle."
+    },
+    {
+      "topic": "firstMilestone",
+      "selected": ["A", "B", "C"],
+      "resolution": "Begin with source inventory and provenance, then demo/UX adaptation, then Swift/Apple bridge work."
+    },
+    {
+      "topic": "zipUsageRule",
+      "selected": ["A", "B", "C"],
+      "resolution": "Original archives stay unchanged, selected assets require review, full reference dump is blocked until license and size approval."
+    },
+    {
+      "topic": "kimiPackages",
+      "selected": ["A", "B", "C"],
+      "resolution": "Track v1-v7, treat v7 as the primary reference, and retain v1-v6 as evolution evidence."
+    },
+    {
+      "topic": "stitchSources",
+      "selected": ["A", "B", "C"],
+      "resolution": "Use Stitch as UX screen catalog, module idea pool, and code reference only after review."
+    },
+    {
+      "topic": "firstPrSize",
+      "selected": ["A", "B", "C"],
+      "resolution": "Use a layered foundation split: start small and safe, then expand through reviewable follow-up PRs."
+    },
+    {
+      "topic": "swiftPriority",
+      "selected": ["A", "B", "C"],
+      "resolution": "Start with Swift model/manifest alignment, defer SwiftUI shell until provenance and roadmap are stable, keep roadmap current."
+    },
+    {
+      "topic": "webDemoPriority",
+      "selected": ["A", "B", "C"],
+      "resolution": "Preserve current demo, plan a SEIS OS workspace, and catalog Stitch modules before visual import."
+    },
+    {
+      "topic": "aiCoreBoundary",
+      "selected": ["A", "B", "C"],
+      "resolution": "Keep demo-only truth boundaries, prepare local AI readiness, and document cloud provider readiness without keys."
+    },
+    {
+      "topic": "agentSwarmVisibility",
+      "selected": ["A", "B", "C"],
+      "resolution": "Use ledgers and reports first, then UI agent panel and SEIS Brain context pack follow-ups."
+    },
+    {
+      "topic": "seisBrain",
+      "selected": ["A", "B", "C"],
+      "resolution": "Add a source inventory note, ADR, and five-year roadmap context pack."
+    },
+    {
+      "topic": "verification",
+      "selected": ["A", "B", "C"],
+      "resolution": "Run existing npm/node checks where scoped, add Swift checks when touching Swift, and introduce a provenance checker."
+    },
+    {
+      "topic": "security",
+      "selected": ["A", "B", "C"],
+      "resolution": "Use secret/public-safe checks, MCP permission risk matrix, and zip license/size risk review."
+    },
+    {
+      "topic": "finalOutputType",
+      "selected": ["A", "B", "C"],
+      "resolution": "Produce decision-complete plan, PR-ready work split, and 30-round swarm backlog."
+    }
+  ],
+  "archives": [
+    {
+      "id": "kimi-agent-deployment-v1",
+      "group": "kimi-agent-deployment",
+      "archiveName": "Kimi_Agent_Deployment_v1.zip",
+      "role": "evolution-evidence",
+      "sha256": "3c7cbd7edff78bd8022c6d7a6e60c837a1c320358ab8449536deae2f81360cdf",
+      "byteSize": 1435051,
+      "fileCount": 64,
+      "uncompressedBytes": 2461973,
+      "compressedBytes": 1424453,
+      "compressionRatio": "42.2%",
+      "reviewStatus": "inventory-only",
+      "allowedUse": ["evolution-comparison", "provenance-ledger"],
+      "blockedUse": ["direct-import", "runtime-replacement", "live-ai-claim"]
+    },
+    {
+      "id": "kimi-agent-deployment-v2",
+      "group": "kimi-agent-deployment",
+      "archiveName": "Kimi_Agent_Deployment_v2.zip",
+      "role": "evolution-evidence",
+      "sha256": "c3ef1fc43d1b0f0142c2294adc7a844a63640164508f9a3aa7e7e9bb72a9070b",
+      "byteSize": 1177931,
+      "fileCount": 26,
+      "uncompressedBytes": 1600698,
+      "compressedBytes": 1173721,
+      "compressionRatio": "26.7%",
+      "reviewStatus": "inventory-only",
+      "allowedUse": ["evolution-comparison", "provenance-ledger"],
+      "blockedUse": ["direct-import", "runtime-replacement", "live-ai-claim"]
+    },
+    {
+      "id": "kimi-agent-deployment-v3",
+      "group": "kimi-agent-deployment",
+      "archiveName": "Kimi_Agent_Deployment_v3.zip",
+      "role": "evolution-evidence",
+      "sha256": "36d1ffb3ac5f45dc8a672e7f9f02cc2d8c90f3e162a6e28fa83670ec225c3cd4",
+      "byteSize": 1227613,
+      "fileCount": 31,
+      "uncompressedBytes": 1745225,
+      "compressedBytes": 1222585,
+      "compressionRatio": "29.9%",
+      "reviewStatus": "inventory-only",
+      "allowedUse": ["evolution-comparison", "provenance-ledger"],
+      "blockedUse": ["direct-import", "runtime-replacement", "live-ai-claim"]
+    },
+    {
+      "id": "kimi-agent-deployment-v4",
+      "group": "kimi-agent-deployment",
+      "archiveName": "Kimi_Agent_Deployment_v4.zip",
+      "role": "evolution-evidence",
+      "sha256": "a492d71e79722f69906a8dfa7e3b6d43144d93e5029c2abf1f64db17eb00ed40",
+      "byteSize": 1227613,
+      "fileCount": 31,
+      "uncompressedBytes": 1745225,
+      "compressedBytes": 1222585,
+      "compressionRatio": "29.9%",
+      "reviewStatus": "inventory-only",
+      "allowedUse": ["evolution-comparison", "provenance-ledger"],
+      "blockedUse": ["direct-import", "runtime-replacement", "live-ai-claim"]
+    },
+    {
+      "id": "kimi-agent-deployment-v5",
+      "group": "kimi-agent-deployment",
+      "archiveName": "Kimi_Agent_Deployment_v5.zip",
+      "role": "evolution-evidence",
+      "sha256": "c5f57d638f0e9330758e8331bfb5a160ba478138ed675cd1ddb4ef959fd83fd9",
+      "byteSize": 1227613,
+      "fileCount": 31,
+      "uncompressedBytes": 1745225,
+      "compressedBytes": 1222585,
+      "compressionRatio": "29.9%",
+      "reviewStatus": "inventory-only",
+      "allowedUse": ["evolution-comparison", "provenance-ledger"],
+      "blockedUse": ["direct-import", "runtime-replacement", "live-ai-claim"]
+    },
+    {
+      "id": "kimi-agent-deployment-v6",
+      "group": "kimi-agent-deployment",
+      "archiveName": "Kimi_Agent_Deployment_v6.zip",
+      "role": "evolution-evidence",
+      "sha256": "0cf0f1d000e41a0b4a6f9c04145daa62ab260b5650e50a6c9bf3547eb62a0e9e",
+      "byteSize": 1231364,
+      "fileCount": 33,
+      "uncompressedBytes": 1760085,
+      "compressedBytes": 1226080,
+      "compressionRatio": "30.3%",
+      "reviewStatus": "inventory-only",
+      "allowedUse": ["evolution-comparison", "provenance-ledger"],
+      "blockedUse": ["direct-import", "runtime-replacement", "live-ai-claim"]
+    },
+    {
+      "id": "kimi-agent-deployment-v7",
+      "group": "kimi-agent-deployment",
+      "archiveName": "Kimi_Agent_Deployment_v7.zip",
+      "role": "primary-reference",
+      "sha256": "d39f889be0ea48dbffde551f30a48a473140ee353c6ee1e90729e3a125e652de",
+      "byteSize": 1247412,
+      "fileCount": 34,
+      "uncompressedBytes": 1822568,
+      "compressedBytes": 1241966,
+      "compressionRatio": "31.9%",
+      "reviewStatus": "inventory-only",
+      "allowedUse": ["primary-reference", "provenance-ledger", "future-selected-asset-review"],
+      "blockedUse": ["direct-import", "runtime-replacement", "live-ai-claim"]
+    },
+    {
+      "id": "stitch-web-based-linux-desktop",
+      "group": "stitch",
+      "archiveName": "stitch_web_based_linux_desktop.zip",
+      "role": "ux-screen-catalog",
+      "sha256": "2ab2f88b46d6e02f107d94d56a20b19b3db3eb005dd4bbb662aba73b8782d2df",
+      "byteSize": 68229506,
+      "fileCount": 490,
+      "uncompressedBytes": 72234314,
+      "compressedBytes": 68117524,
+      "compressionRatio": "5.7%",
+      "reviewStatus": "inventory-only",
+      "allowedUse": ["ux-catalog", "module-idea-pool", "future-selected-asset-review"],
+      "blockedUse": ["bulk-dump", "unreviewed-code-import", "runtime-replacement"]
+    },
+    {
+      "id": "stitch-yapay-zeka-web-platformu",
+      "group": "stitch",
+      "archiveName": "stitch_yapay_zeka_web_platformu.zip",
+      "role": "ai-platform-screen-catalog",
+      "sha256": "a1fa5c6dbe27a38f0ba52669880d4ffcd2d48a5486df6cdda827cf1604ddac55",
+      "byteSize": 26194917,
+      "fileCount": 220,
+      "uncompressedBytes": 27885877,
+      "compressedBytes": 26149693,
+      "compressionRatio": "6.2%",
+      "reviewStatus": "inventory-only",
+      "allowedUse": ["ux-catalog", "module-idea-pool", "future-selected-asset-review"],
+      "blockedUse": ["bulk-dump", "unreviewed-code-import", "runtime-replacement"]
+    }
+  ],
+  "workPackages": [
+    {
+      "id": "wp-01-source-provenance",
+      "size": "small",
+      "status": "current",
+      "scope": "Add public-safe source manifest, checker, docs, ADR, and context pack."
+    },
+    {
+      "id": "wp-02-demo-module-catalog",
+      "size": "small",
+      "status": "planned",
+      "scope": "Review Stitch screens as a catalog and produce no-key demo module candidates without importing binaries."
+    },
+    {
+      "id": "wp-03-swift-provenance-bridge",
+      "size": "small",
+      "status": "planned",
+      "scope": "Mirror the manifest shape into useful Swift models only after JSON policy stabilizes."
+    },
+    {
+      "id": "wp-04-agent-panel-ledger",
+      "size": "small",
+      "status": "planned",
+      "scope": "Expose supervised swarm status in a ledger first, then consider UI panel integration."
+    },
+    {
+      "id": "wp-05-mcp-skills-risk-matrix",
+      "size": "small",
+      "status": "planned",
+      "scope": "Document MCP and skills candidates by official status, permissions, secrets, and SEIS value."
+    }
+  ],
+  "swarmBacklog": {
+    "mode": "supervised-ledger-first",
+    "backgroundAgents": "platform-dependent",
+    "fallbackWhenUnavailable": "simulate-with-safe-cycles",
+    "rounds": [
+      {"id": "round-01", "specialist": "Lead Architect", "objective": "Freeze manifest-first source intake boundary.", "output": "Provenance contract", "verification": "Provenance checker"},
+      {"id": "round-02", "specialist": "Security", "objective": "Audit source policy for path and secret leakage.", "output": "Public-safe notes", "verification": "No local absolute paths"},
+      {"id": "round-03", "specialist": "Documentation", "objective": "Document archive roles and blocked uses.", "output": "Source intake guide", "verification": "Docs review"},
+      {"id": "round-04", "specialist": "SEIS Brain", "objective": "Create reusable context pack.", "output": "Brain context pack", "verification": "Frontmatter and boundary check"},
+      {"id": "round-05", "specialist": "GitHub", "objective": "Split first PR from later visual work.", "output": "PR-ready scope", "verification": "Small-file diff"},
+      {"id": "round-06", "specialist": "UI Systems", "objective": "Catalog Stitch UX screens without imports.", "output": "Screen taxonomy", "verification": "No binary copy"},
+      {"id": "round-07", "specialist": "AI Core", "objective": "Map Kimi references to demo-only AI boundaries.", "output": "AI boundary notes", "verification": "No live AI claims"},
+      {"id": "round-08", "specialist": "Swift", "objective": "Design Swift provenance models.", "output": "Swift model plan", "verification": "Swift checklist"},
+      {"id": "round-09", "specialist": "QA", "objective": "Expand provenance checker only if needed.", "output": "Validation gaps", "verification": "Node checker"},
+      {"id": "round-10", "specialist": "Performance", "objective": "Flag large Stitch archive risks.", "output": "Size risk note", "verification": "Byte-size thresholds"},
+      {"id": "round-11", "specialist": "Accessibility", "objective": "Mark future module gallery a11y requirements.", "output": "A11y checklist", "verification": "Accessible labels plan"},
+      {"id": "round-12", "specialist": "Research", "objective": "Review archive content categories.", "output": "Candidate taxonomy", "verification": "Inventory-only review"},
+      {"id": "round-13", "specialist": "Design System", "objective": "Compare Stitch visual language to SEIS identity.", "output": "Design fit notes", "verification": "Anti-drift checklist"},
+      {"id": "round-14", "specialist": "MCP Governance", "objective": "Create MCP risk matrix follow-up.", "output": "MCP matrix plan", "verification": "No blind installs"},
+      {"id": "round-15", "specialist": "Skills Governance", "objective": "Map task skills to safe work packages.", "output": "Skills fit notes", "verification": "Per-cycle selection"},
+      {"id": "round-16", "specialist": "Release", "objective": "Prepare rollback notes for provenance-only PR.", "output": "Rollback section", "verification": "Delete added files only"},
+      {"id": "round-17", "specialist": "Education", "objective": "Connect source intake to designer-to-engineering learning.", "output": "SEIS Academy note", "verification": "Public-safe summary"},
+      {"id": "round-18", "specialist": "Search", "objective": "Plan future searchable source catalog.", "output": "Search fields", "verification": "No private paths"},
+      {"id": "round-19", "specialist": "Observability", "objective": "Define status signals for archive review.", "output": "Review status fields", "verification": "Stable status enum"},
+      {"id": "round-20", "specialist": "Data Layer", "objective": "Keep provenance schema small and typed.", "output": "Schema notes", "verification": "JSON shape check"},
+      {"id": "round-21", "specialist": "Apple Native", "objective": "Plan macOS source review surface.", "output": "Native bridge concept", "verification": "Swift-first value check"},
+      {"id": "round-22", "specialist": "SEIS-SSH", "objective": "Confirm no remote host or credential assumptions.", "output": "SSH boundary note", "verification": "No SSH host fields"},
+      {"id": "round-23", "specialist": "Product", "objective": "Prioritize v7 as primary reference.", "output": "Kimi evolution note", "verification": "v7 role check"},
+      {"id": "round-24", "specialist": "Demo", "objective": "Plan no-key module gallery candidate.", "output": "Demo follow-up scope", "verification": "Preserve web demo"},
+      {"id": "round-25", "specialist": "Legal/Risk", "objective": "Defer asset import pending license review.", "output": "License risk note", "verification": "Blocked bulk dump"},
+      {"id": "round-26", "specialist": "Architecture", "objective": "Avoid generic dashboard drift.", "output": "Architecture guardrails", "verification": "Anti-drift review"},
+      {"id": "round-27", "specialist": "Testing", "objective": "Add focused checker before package script wiring.", "output": "Checker command", "verification": "Direct node run"},
+      {"id": "round-28", "specialist": "Roadmap", "objective": "Tie source intake to five-year phased roadmap.", "output": "Roadmap context", "verification": "Status values present"},
+      {"id": "round-29", "specialist": "Public Readiness", "objective": "Confirm manifest is safe for GitHub.", "output": "Public readiness notes", "verification": "No private paths"},
+      {"id": "round-30", "specialist": "Lead Architect", "objective": "Prepare next PR handoff.", "output": "Next handoff", "verification": "Final report"}
+    ]
+  },
+  "nextHandoff": {
+    "recommendedNextPr": "docs/source-provenance-intake",
+    "afterMerge": [
+      "Generate a no-key Stitch screen taxonomy.",
+      "Add Swift provenance models if the JSON contract remains stable.",
+      "Add an agent swarm visibility ledger for source review status."
+    ]
+  }
+}

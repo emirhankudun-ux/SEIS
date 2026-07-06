@@ -1,0 +1,1288 @@
+{
+  "$schema": "https://seis.dev/schemas/five-year-agency-orchestration-contract.schema.json",
+  "id": "seis-five-year-agency-orchestration-contract",
+  "version": "2026-07-03",
+  "status": "draft-public-safe",
+  "visibility": "public-safe",
+  "mode": "agency-grade-supervised-continuation",
+  "objective": "Turn the five-year SEIS development model into a repo-tracked operating contract that coordinates agents, tools, MCP policy, source provenance, AI Core boundaries, Apple-first work, SEIS Brain work, verification, and PR-sized execution without claiming uncontrolled autonomy.",
+  "decisionMatrix": {
+    "fiveYearDevelopmentModel": [
+      "roadmap-pr-cycles",
+      "real-automation-architecture",
+      "active-background-agents-when-platform-permits"
+    ],
+    "mcpPolicy": [
+      "official-or-approved-mcp-only-for-activation",
+      "installed-safe-mcps-after-verification",
+      "candidate-ecosystem-pool-as-documentation"
+    ],
+    "skillsAndPlugins": [
+      "task-selected",
+      "registry-inventory",
+      "reselected-each-swarm-round-when-safe"
+    ],
+    "firstMilestone": [
+      "source-inventory-and-provenance",
+      "demo-ux-adaptation",
+      "swift-apple-bridge"
+    ],
+    "zipUseRule": [
+      "originals-immutable-manifest-only",
+      "selected-public-safe-assets-only-after-review",
+      "full-reference-dump-is-manifest-level-until-license-and-size-review"
+    ],
+    "kimiPackages": [
+      "v1-v7-included",
+      "v1-v4-preserved-as-early-evolution-evidence",
+      "v7-primary-reference"
+    ],
+    "stitchSources": [
+      "ux-screen-catalog",
+      "module-idea-pool",
+      "read-only-code-reference-no-direct-copy"
+    ],
+    "firstPrSize": [
+      "small-safe-first-slice",
+      "medium-follow-up-slices",
+      "large-foundation-split-into-reviewed-work-packages"
+    ],
+    "swiftPriority": [
+      "swift-model-and-manifest-first",
+      "swiftui-shell-next",
+      "roadmap-stays-current"
+    ],
+    "webDemoPriority": [
+      "preserve-current-demo",
+      "new-seis-os-workspace-only-behind-safe-scope",
+      "stitch-derived-module-gallery-after-review"
+    ],
+    "aiCoreBoundary": [
+      "demo-only-no-fake-live-ai",
+      "local-ai-ready-metadata",
+      "cloud-provider-ready-keys-free-metadata"
+    ],
+    "agentSwarmVisibility": [
+      "ledger-and-report",
+      "ui-agent-panel-planned",
+      "seis-brain-context-pack"
+    ],
+    "seisBrain": [
+      "source-inventory-note",
+      "adr",
+      "five-year-roadmap-context-pack"
+    ],
+    "verification": [
+      "existing-npm-node-checks",
+      "swift-checks-when-swift-is-touched",
+      "new-provenance-and-orchestration-checkers"
+    ],
+    "security": [
+      "secret-scan-and-public-safe-manifest",
+      "mcp-permission-risk-matrix",
+      "zip-license-and-size-risk-review"
+    ],
+    "finalOutput": [
+      "decision-complete-plan",
+      "pr-ready-work-breakdown",
+      "thirty-round-swarm-backlog"
+    ]
+  },
+  "cycleContract": {
+    "years": 5,
+    "roundsPerRun": 30,
+    "stepsPerProgram": 50,
+    "ownerSelectedThirtyRoundRun": true,
+    "legacySwarmLedgerDefaultRounds": 15,
+    "executionLoop": [
+      "inspect",
+      "assign",
+      "build",
+      "verify",
+      "document",
+      "report",
+      "continue"
+    ],
+    "literalContinuousRuntimeClaimAllowed": false,
+    "backgroundAgents": "platform-dependent",
+    "fallbackWhenBackgroundAgentsUnavailable": "Use repo-tracked ledgers, manifests, context packs, and checkers to preserve continuity between supervised runs.",
+    "singleRunCompletionRule": "One run is complete only after its scoped evidence, docs, and verification are updated or explicitly marked blocked."
+  },
+  "truthBoundary": {
+    "liveAiClaimAllowed": false,
+    "mcpInstallClaimAllowedWithoutVerification": false,
+    "credentialStorageAllowed": false,
+    "externalMutationRequiresApproval": true,
+    "singleWriterMode": "codex-primary-writer",
+    "subagentsMayWrite": false,
+    "subagentsMayInspect": true,
+    "providerCallsAllowed": false,
+    "demoModeMustRemainNoKey": true,
+    "rawArchiveDumpAllowedWithoutReview": false
+  },
+  "sourceOfTruth": {
+    "fiveYearPlan": "content/development/seis-sub-agent-5-year-plan.json",
+    "sourceProvenance": "content/development/seis-source-provenance-intake.json",
+    "installedTools": "content/development/seis-installed-ai-tools-registry.json",
+    "pluginIntegration": "content/development/seis-agent-plugin-integration.json",
+    "subagentOperatingModel": "content/development/seis-ai-core-subagent-operating-model.json",
+    "mcpRuntimeContract": "content/development/seis-ai-core-mcp-runtime-contract.json",
+    "providerRegistry": "content/development/seis-ai-core-provider-registry.json",
+    "sourceProvenanceChecker": "scripts/check-seis-source-provenance-intake.mjs",
+    "subagentOperatingModelChecker": "scripts/check-seis-ai-core-subagent-operating-model.mjs",
+    "constitution": "AGENTS.md"
+  },
+  "mcpPolicy": {
+    "activationDefault": "official-or-owner-approved-only",
+    "installedMcpUse": "verified-only",
+    "candidateUse": "document-only-until-reviewed",
+    "packageRunnerDefault": "disabled-or-approval-gated",
+    "permissionReviewRequired": true,
+    "secretBoundary": "No API keys, tokens, private keys, or real SSH hosts may be stored in public repo files.",
+    "riskMatrixDimensions": [
+      "source",
+      "officialStatus",
+      "permissions",
+      "authentication",
+      "secretRequirement",
+      "externalMutationRisk",
+      "publicRepoSafety",
+      "seisValue",
+      "recommendedPriority"
+    ]
+  },
+  "agencyDepartments": [
+    {
+      "id": "strategy-office",
+      "displayName": "Strategy Office",
+      "agents": [
+        "seis",
+        "seis-product"
+      ],
+      "tools": [
+        "codex-current-session",
+        "claude-code-cli-auth-gated"
+      ],
+      "featureAreas": [
+        "roadmap",
+        "scope-control",
+        "client-grade-reporting"
+      ],
+      "qualityGate": "PR scope remains reviewable and aligned with AGENTS.md."
+    },
+    {
+      "id": "creative-studio",
+      "displayName": "Creative Studio",
+      "agents": [
+        "seis-design",
+        "seis-product"
+      ],
+      "tools": [
+        "cursor-desktop-secondary-review",
+        "codex-current-session"
+      ],
+      "featureAreas": [
+        "icon-first-ux",
+        "stitch-screen-catalog",
+        "cinematic-demo-direction"
+      ],
+      "qualityGate": "Design work remains premium, accessible, and non-generic."
+    },
+    {
+      "id": "engineering-studio",
+      "displayName": "Engineering Studio",
+      "agents": [
+        "seis-code",
+        "seis-governance"
+      ],
+      "tools": [
+        "codex-current-session",
+        "xcode-seis-platform-swift"
+      ],
+      "featureAreas": [
+        "small-pr-implementation",
+        "node-checkers",
+        "swift-manifests"
+      ],
+      "qualityGate": "Changes are reversible and verified with available checks."
+    },
+    {
+      "id": "ai-core-lab",
+      "displayName": "AI Core Lab",
+      "agents": [
+        "seis",
+        "seis-research",
+        "seis-automation"
+      ],
+      "tools": [
+        "openai-cli-auth-gated",
+        "lm-studio-local-model-lab",
+        "hermes-desktop-auth-gated"
+      ],
+      "featureAreas": [
+        "provider-registry",
+        "model-router",
+        "demo-live-boundaries"
+      ],
+      "qualityGate": "No live provider call is claimed unless actually verified outside public repo secrets."
+    },
+    {
+      "id": "data-provenance",
+      "displayName": "Data Provenance Desk",
+      "agents": [
+        "seis-data",
+        "seis-research"
+      ],
+      "tools": [
+        "codex-current-session",
+        "kimi-code-cli-login-required"
+      ],
+      "featureAreas": [
+        "kimi-package-lineage",
+        "stitch-source-inventory",
+        "archive-risk-review"
+      ],
+      "qualityGate": "Archives remain immutable and public-safe references never expose local paths."
+    },
+    {
+      "id": "cloud-ops",
+      "displayName": "Cloud Operations",
+      "agents": [
+        "seis-cloud",
+        "seis-security"
+      ],
+      "tools": [
+        "gemini-cli-auth-gated",
+        "goose-cli-automation-helper"
+      ],
+      "featureAreas": [
+        "cloud-readiness-docs",
+        "ssh-safety",
+        "approval-gated-automation"
+      ],
+      "qualityGate": "No real hosts, credentials, or remote mutations are recorded without owner approval."
+    },
+    {
+      "id": "security-qa",
+      "displayName": "Security and QA",
+      "agents": [
+        "seis-security",
+        "seis-governance"
+      ],
+      "tools": [
+        "codex-current-session",
+        "aider-cli-patch-helper"
+      ],
+      "featureAreas": [
+        "secret-scan",
+        "public-private-boundary",
+        "validator-coverage"
+      ],
+      "qualityGate": "Verification failures are reported honestly and no secret value is printed."
+    },
+    {
+      "id": "release-governance",
+      "displayName": "Release Governance",
+      "agents": [
+        "seis-governance",
+        "seis-product"
+      ],
+      "tools": [
+        "codex-current-session",
+        "claude-code-cli-auth-gated"
+      ],
+      "featureAreas": [
+        "pr-body",
+        "rollback-plan",
+        "release-notes"
+      ],
+      "qualityGate": "Output includes scope, verification, security notes, rollback, and next handoff."
+    },
+    {
+      "id": "research-intelligence",
+      "displayName": "Research Intelligence",
+      "agents": [
+        "seis-research",
+        "seis"
+      ],
+      "tools": [
+        "gemini-cli-auth-gated",
+        "kimi-code-cli-login-required",
+        "lm-studio-local-model-lab"
+      ],
+      "featureAreas": [
+        "mcp-candidate-pool",
+        "local-ai-readiness",
+        "apple-platform-research"
+      ],
+      "qualityGate": "Research is marked as research and never presented as completed product capability."
+    },
+    {
+      "id": "automation-office",
+      "displayName": "Automation Office",
+      "agents": [
+        "seis-automation",
+        "seis-code"
+      ],
+      "tools": [
+        "goose-cli-automation-helper",
+        "openai-cli-auth-gated",
+        "codex-current-session"
+      ],
+      "featureAreas": [
+        "checker-generation",
+        "ledger-refresh",
+        "safe-repeatable-cycles"
+      ],
+      "qualityGate": "Automation is bounded, approval-gated where needed, and never claims invisible background work."
+    }
+  ],
+  "agentFeatureAssignments": [
+    {
+      "agentLane": "seis",
+      "role": "Lead Architect Agent",
+      "ownsFeatures": [
+        "constitutional-scope",
+        "five-year-continuity",
+        "final-agent-report"
+      ],
+      "primaryTools": [
+        "codex-current-session"
+      ],
+      "supportingSkills": [
+        "task-selected",
+        "registry-aware"
+      ],
+      "gates": [
+        "architecture",
+        "public-safety",
+        "verification"
+      ],
+      "forbiddenClaims": [
+        "unverified-live-ai",
+        "uncontrolled-autonomy"
+      ]
+    },
+    {
+      "agentLane": "seis-governance",
+      "role": "GitHub Governance Agent",
+      "ownsFeatures": [
+        "pr-ready-packages",
+        "ci-boundary",
+        "rollback-notes"
+      ],
+      "primaryTools": [
+        "codex-current-session",
+        "claude-code-cli-auth-gated"
+      ],
+      "supportingSkills": [
+        "github-governance",
+        "documentation-review"
+      ],
+      "gates": [
+        "github",
+        "release",
+        "documentation"
+      ],
+      "forbiddenClaims": [
+        "ci-passed-when-not-run"
+      ]
+    },
+    {
+      "agentLane": "seis-cloud",
+      "role": "Cloud and SSH Safety Agent",
+      "ownsFeatures": [
+        "cloud-readiness",
+        "ssh-sample-boundary",
+        "approval-gated-remote-actions"
+      ],
+      "primaryTools": [
+        "gemini-cli-auth-gated",
+        "goose-cli-automation-helper"
+      ],
+      "supportingSkills": [
+        "security-review",
+        "cloud-readiness"
+      ],
+      "gates": [
+        "security",
+        "ssh",
+        "public-private-boundary"
+      ],
+      "forbiddenClaims": [
+        "real-host-ready-without-proof",
+        "remote-action-without-approval"
+      ]
+    },
+    {
+      "agentLane": "seis-code",
+      "role": "Code Agent",
+      "ownsFeatures": [
+        "validators",
+        "manifest-models",
+        "small-safe-implementation"
+      ],
+      "primaryTools": [
+        "codex-current-session",
+        "aider-cli-patch-helper"
+      ],
+      "supportingSkills": [
+        "code-quality",
+        "testing"
+      ],
+      "gates": [
+        "engineering",
+        "tests",
+        "maintainability"
+      ],
+      "forbiddenClaims": [
+        "large-rewrite-without-instruction"
+      ]
+    },
+    {
+      "agentLane": "seis-design",
+      "role": "UI Systems Agent",
+      "ownsFeatures": [
+        "icon-first-shell",
+        "stitch-screen-catalog",
+        "accessibility-preserving-ux"
+      ],
+      "primaryTools": [
+        "cursor-desktop-secondary-review",
+        "codex-current-session"
+      ],
+      "supportingSkills": [
+        "frontend-design",
+        "accessibility"
+      ],
+      "gates": [
+        "design",
+        "accessibility",
+        "performance"
+      ],
+      "forbiddenClaims": [
+        "generic-saas-drift",
+        "decorative-icon-noise"
+      ]
+    },
+    {
+      "agentLane": "seis-data",
+      "role": "Source Provenance Agent",
+      "ownsFeatures": [
+        "archive-inventory",
+        "checksum-ledger",
+        "license-and-size-risk"
+      ],
+      "primaryTools": [
+        "codex-current-session",
+        "kimi-code-cli-login-required"
+      ],
+      "supportingSkills": [
+        "dataset-quality-audit",
+        "documentation"
+      ],
+      "gates": [
+        "provenance",
+        "security",
+        "public-safety"
+      ],
+      "forbiddenClaims": [
+        "source-copied-without-review",
+        "license-clear-without-evidence"
+      ]
+    },
+    {
+      "agentLane": "seis-security",
+      "role": "Security Agent",
+      "ownsFeatures": [
+        "secret-scanning",
+        "mcp-permission-risk",
+        "public-private-boundary"
+      ],
+      "primaryTools": [
+        "codex-current-session",
+        "claude-code-cli-auth-gated"
+      ],
+      "supportingSkills": [
+        "security-audit",
+        "threat-model"
+      ],
+      "gates": [
+        "security",
+        "mcp",
+        "ssh"
+      ],
+      "forbiddenClaims": [
+        "secret-value-printed",
+        "unsafe-mcp-enabled"
+      ]
+    },
+    {
+      "agentLane": "seis-research",
+      "role": "Research Agent",
+      "ownsFeatures": [
+        "apple-platform-research",
+        "mcp-candidate-research",
+        "ai-tool-readiness"
+      ],
+      "primaryTools": [
+        "gemini-cli-auth-gated",
+        "kimi-code-cli-login-required",
+        "lm-studio-local-model-lab"
+      ],
+      "supportingSkills": [
+        "deep-research",
+        "apple-platform"
+      ],
+      "gates": [
+        "research-status",
+        "documentation",
+        "truth-boundary"
+      ],
+      "forbiddenClaims": [
+        "research-as-complete-product"
+      ]
+    },
+    {
+      "agentLane": "seis-automation",
+      "role": "Automation Agent",
+      "ownsFeatures": [
+        "repeatable-checkers",
+        "evidence-refresh",
+        "bounded-swarm-cycles"
+      ],
+      "primaryTools": [
+        "goose-cli-automation-helper",
+        "openai-cli-auth-gated",
+        "codex-current-session"
+      ],
+      "supportingSkills": [
+        "automation",
+        "validation"
+      ],
+      "gates": [
+        "approval",
+        "repeatability",
+        "auditability"
+      ],
+      "forbiddenClaims": [
+        "always-on-without-platform-support"
+      ]
+    },
+    {
+      "agentLane": "seis-product",
+      "role": "Product and Education Agent",
+      "ownsFeatures": [
+        "seis-academy-bridge",
+        "client-grade-roadmap",
+        "next-pr-handoff"
+      ],
+      "primaryTools": [
+        "codex-current-session",
+        "cursor-desktop-secondary-review"
+      ],
+      "supportingSkills": [
+        "product-design",
+        "education"
+      ],
+      "gates": [
+        "product-clarity",
+        "documentation",
+        "owner-alignment"
+      ],
+      "forbiddenClaims": [
+        "owner-design-authority-overridden"
+      ]
+    }
+  ],
+  "toolFeatureAssignments": [
+    {
+      "toolId": "codex-current-session",
+      "statusClass": "available-primary",
+      "allowedMode": "primary-writer-and-verifier",
+      "developsFeatures": [
+        "repo-edits",
+        "validators",
+        "reports",
+        "subagent-coordination"
+      ],
+      "evidenceRequired": "Tool execution transcript and changed files."
+    },
+    {
+      "toolId": "xcode-seis-platform-swift",
+      "statusClass": "available",
+      "allowedMode": "swift-checker-when-swift-touched",
+      "developsFeatures": [
+        "swift-models",
+        "swiftui-shell",
+        "apple-native-readiness"
+      ],
+      "evidenceRequired": "swift package describe/build/test output when Swift files are changed."
+    },
+    {
+      "toolId": "claude-code-cli-auth-gated",
+      "statusClass": "available-review-candidate",
+      "allowedMode": "review-or-plan-only-until-auth-and-scope-confirmed",
+      "developsFeatures": [
+        "architecture-review",
+        "documentation-review",
+        "governance-review"
+      ],
+      "evidenceRequired": "Auth and invocation evidence before any claim of use."
+    },
+    {
+      "toolId": "gemini-cli-auth-gated",
+      "statusClass": "manual",
+      "allowedMode": "research-review-only",
+      "developsFeatures": [
+        "research-cross-check",
+        "mcp-candidate-analysis",
+        "apple-platform-notes"
+      ],
+      "evidenceRequired": "Manual auth and explicit reviewed outputs."
+    },
+    {
+      "toolId": "kimi-code-cli-login-required",
+      "statusClass": "manual",
+      "allowedMode": "read-only-review-until-login",
+      "developsFeatures": [
+        "kimi-package-comparison",
+        "multilingual-review",
+        "source-evolution-notes"
+      ],
+      "evidenceRequired": "Login-ready status and read-only review outputs."
+    },
+    {
+      "toolId": "cursor-desktop-secondary-review",
+      "statusClass": "available",
+      "allowedMode": "secondary-ide-review",
+      "developsFeatures": [
+        "ux-review",
+        "code-navigation",
+        "design-system-review"
+      ],
+      "evidenceRequired": "Manual review notes or linked diffs."
+    },
+    {
+      "toolId": "lm-studio-local-model-lab",
+      "statusClass": "available-local-lab",
+      "allowedMode": "local-ai-readiness-metadata",
+      "developsFeatures": [
+        "local-provider-readiness",
+        "offline-model-notes",
+        "privacy-first-ai-lab"
+      ],
+      "evidenceRequired": "Local endpoint/model availability check before runtime claim."
+    },
+    {
+      "toolId": "openai-cli-auth-gated",
+      "statusClass": "manual",
+      "allowedMode": "keys-free-docs-and-auth-gated-utility",
+      "developsFeatures": [
+        "provider-metadata",
+        "api-boundary-docs",
+        "prompt-engine-notes"
+      ],
+      "evidenceRequired": "No public repo key storage; auth evidence only outside repo."
+    },
+    {
+      "toolId": "aider-cli-patch-helper",
+      "statusClass": "manual",
+      "allowedMode": "bounded-patch-helper",
+      "developsFeatures": [
+        "small-refactors",
+        "test-focused-patches",
+        "reviewable-fixes"
+      ],
+      "evidenceRequired": "Diff and checks from bounded invocation."
+    },
+    {
+      "toolId": "goose-cli-automation-helper",
+      "statusClass": "manual",
+      "allowedMode": "approval-gated-automation",
+      "developsFeatures": [
+        "repeatable-local-automation",
+        "report-generation",
+        "safe-scripts"
+      ],
+      "evidenceRequired": "Approval and command transcript for mutations."
+    },
+    {
+      "toolId": "hermes-desktop-auth-gated",
+      "statusClass": "available-review-candidate",
+      "allowedMode": "bounded-review-candidate",
+      "developsFeatures": [
+        "provider-route-review",
+        "ai-tool-status",
+        "manual-readiness-report"
+      ],
+      "evidenceRequired": "Route readiness output; failed auth must be reported honestly."
+    }
+  ],
+  "runTemplate": {
+    "rounds": [
+      {
+        "round": 1,
+        "department": "strategy-office",
+        "focus": "Confirm AGENTS.md scope, current branch, dirty tree, and safest PR slice.",
+        "output": "Run kickoff ledger",
+        "verification": "git status and relevant file inspection"
+      },
+      {
+        "round": 2,
+        "department": "data-provenance",
+        "focus": "Refresh Kimi and Stitch source inventory without mutating original archives.",
+        "output": "Provenance delta note",
+        "verification": "source provenance checker"
+      },
+      {
+        "round": 3,
+        "department": "security-qa",
+        "focus": "Scan touched files for local paths, tokens, private keys, and unsafe archive dumps.",
+        "output": "Public-safe risk note",
+        "verification": "targeted ripgrep scan"
+      },
+      {
+        "round": 4,
+        "department": "engineering-studio",
+        "focus": "Implement the smallest contract, schema, checker, or docs improvement.",
+        "output": "Reviewable diff",
+        "verification": "node checker or existing npm script"
+      },
+      {
+        "round": 5,
+        "department": "ai-core-lab",
+        "focus": "Update demo/live, local-ready, and cloud-ready metadata without provider calls.",
+        "output": "AI Core boundary delta",
+        "verification": "truth boundary checker"
+      },
+      {
+        "round": 6,
+        "department": "creative-studio",
+        "focus": "Map Stitch UX signals into a public-safe screen or module catalog.",
+        "output": "UX catalog entry",
+        "verification": "documentation review"
+      },
+      {
+        "round": 7,
+        "department": "engineering-studio",
+        "focus": "Strengthen Swift or manifest bridge only when it adds real Apple-first value.",
+        "output": "Swift-ready handoff",
+        "verification": "Swift checks when Swift is touched"
+      },
+      {
+        "round": 8,
+        "department": "automation-office",
+        "focus": "Refresh or add bounded validation scripts for the current evidence.",
+        "output": "Checker update",
+        "verification": "direct checker run"
+      },
+      {
+        "round": 9,
+        "department": "research-intelligence",
+        "focus": "Review MCP, skills, and plugin candidates as documentation-only unless approved.",
+        "output": "Candidate risk note",
+        "verification": "no install or enable claim without proof"
+      },
+      {
+        "round": 10,
+        "department": "release-governance",
+        "focus": "Split oversized work into PR-ready packages.",
+        "output": "PR split note",
+        "verification": "files changed remain reviewable"
+      },
+      {
+        "round": 11,
+        "department": "strategy-office",
+        "focus": "Re-evaluate highest-value next slice against the 50-step ladder.",
+        "output": "Next slice selection",
+        "verification": "contract checker"
+      },
+      {
+        "round": 12,
+        "department": "data-provenance",
+        "focus": "Compare Kimi v7 against v1-v6 as evolution evidence.",
+        "output": "Kimi lineage delta",
+        "verification": "no raw code copy without review"
+      },
+      {
+        "round": 13,
+        "department": "creative-studio",
+        "focus": "Convert approved UX patterns into SEIS-native, icon-first concepts.",
+        "output": "SEIS UX concept note",
+        "verification": "accessibility checklist"
+      },
+      {
+        "round": 14,
+        "department": "ai-core-lab",
+        "focus": "Clarify provider, model, prompt, memory, and router boundaries.",
+        "output": "AI Core ledger entry",
+        "verification": "no fake-live wording"
+      },
+      {
+        "round": 15,
+        "department": "security-qa",
+        "focus": "Review MCP permission matrix and archive license/size risks.",
+        "output": "Security review note",
+        "verification": "risk fields complete"
+      },
+      {
+        "round": 16,
+        "department": "cloud-ops",
+        "focus": "Keep cloud and SSH plans credential-free and approval-gated.",
+        "output": "Cloud readiness note",
+        "verification": "no real host or secret patterns"
+      },
+      {
+        "round": 17,
+        "department": "engineering-studio",
+        "focus": "Add tests or checkers for the current slice.",
+        "output": "Validation delta",
+        "verification": "direct check run"
+      },
+      {
+        "round": 18,
+        "department": "automation-office",
+        "focus": "Prepare repeatable evidence refresh without background claims.",
+        "output": "Automation handoff",
+        "verification": "manual or scriptable steps documented"
+      },
+      {
+        "round": 19,
+        "department": "research-intelligence",
+        "focus": "Mark research, planned, demo, blocked, and done states honestly.",
+        "output": "Status taxonomy update",
+        "verification": "documentation review"
+      },
+      {
+        "round": 20,
+        "department": "release-governance",
+        "focus": "Draft PR body, rollback, risks, and next work.",
+        "output": "PR-ready report section",
+        "verification": "AGENTS.md report checklist"
+      },
+      {
+        "round": 21,
+        "department": "strategy-office",
+        "focus": "Audit whether the work still strengthens Apple-first and AI-native identity.",
+        "output": "Identity alignment note",
+        "verification": "AGENTS.md sections 1-10"
+      },
+      {
+        "round": 22,
+        "department": "creative-studio",
+        "focus": "Prevent generic SaaS drift in any visible UI or UX plan.",
+        "output": "Design drift note",
+        "verification": "design checklist"
+      },
+      {
+        "round": 23,
+        "department": "engineering-studio",
+        "focus": "Reduce duplication and keep modules small.",
+        "output": "Maintainability note",
+        "verification": "diff review"
+      },
+      {
+        "round": 24,
+        "department": "ai-core-lab",
+        "focus": "Keep local AI, cloud AI, and demo AI states distinct.",
+        "output": "AI state map delta",
+        "verification": "truth boundary language scan"
+      },
+      {
+        "round": 25,
+        "department": "data-provenance",
+        "focus": "Ensure source names, versions, checksums, and roles remain traceable.",
+        "output": "Provenance traceability note",
+        "verification": "provenance checker"
+      },
+      {
+        "round": 26,
+        "department": "security-qa",
+        "focus": "Perform final touched-file security review.",
+        "output": "Security final note",
+        "verification": "targeted scan"
+      },
+      {
+        "round": 27,
+        "department": "automation-office",
+        "focus": "Record blocked manual steps and next automation candidates.",
+        "output": "Automation backlog note",
+        "verification": "manual steps are explicit"
+      },
+      {
+        "round": 28,
+        "department": "release-governance",
+        "focus": "Verify all claimed checks were actually run.",
+        "output": "Verification ledger",
+        "verification": "command transcript"
+      },
+      {
+        "round": 29,
+        "department": "strategy-office",
+        "focus": "Choose next highest-value PR-ready slice.",
+        "output": "Next handoff",
+        "verification": "50-step ladder reference"
+      },
+      {
+        "round": 30,
+        "department": "release-governance",
+        "focus": "Produce final SEIS Lead Architect report.",
+        "output": "Agent report",
+        "verification": "Appendix A structure"
+      }
+    ]
+  },
+  "developmentSteps": [
+    {
+      "step": 1,
+      "phase": "Foundation",
+      "owner": "seis",
+      "feature": "Confirm AGENTS.md as highest instruction",
+      "evidence": "Final report references constitution"
+    },
+    {
+      "step": 2,
+      "phase": "Foundation",
+      "owner": "seis-governance",
+      "feature": "Confirm branch and dirty worktree boundaries",
+      "evidence": "git status summary"
+    },
+    {
+      "step": 3,
+      "phase": "Foundation",
+      "owner": "seis",
+      "feature": "Define single-writer supervised swarm mode",
+      "evidence": "orchestration contract"
+    },
+    {
+      "step": 4,
+      "phase": "Foundation",
+      "owner": "seis-product",
+      "feature": "Preserve all selected A/B/C decisions as staged policy",
+      "evidence": "decision matrix"
+    },
+    {
+      "step": 5,
+      "phase": "Foundation",
+      "owner": "seis-governance",
+      "feature": "Split large foundation into PR-sized packages",
+      "evidence": "PR scope report"
+    },
+    {
+      "step": 6,
+      "phase": "Source Provenance",
+      "owner": "seis-data",
+      "feature": "Track Kimi v1-v7 package lineage",
+      "evidence": "source provenance manifest"
+    },
+    {
+      "step": 7,
+      "phase": "Source Provenance",
+      "owner": "seis-data",
+      "feature": "Mark Kimi v7 as primary and older versions as evolution evidence",
+      "evidence": "source provenance manifest"
+    },
+    {
+      "step": 8,
+      "phase": "Source Provenance",
+      "owner": "seis-design",
+      "feature": "Catalog Stitch UX screens without copying raw code",
+      "evidence": "UX catalog note"
+    },
+    {
+      "step": 9,
+      "phase": "Source Provenance",
+      "owner": "seis-security",
+      "feature": "Review archive license and size risk",
+      "evidence": "risk matrix fields"
+    },
+    {
+      "step": 10,
+      "phase": "Source Provenance",
+      "owner": "seis-code",
+      "feature": "Validate provenance schema",
+      "evidence": "provenance checker"
+    },
+    {
+      "step": 11,
+      "phase": "Agency Swarm",
+      "owner": "seis",
+      "feature": "Maintain 30-round run template",
+      "evidence": "round count validation"
+    },
+    {
+      "step": 12,
+      "phase": "Agency Swarm",
+      "owner": "seis",
+      "feature": "Maintain 50-step development ladder",
+      "evidence": "step count validation"
+    },
+    {
+      "step": 13,
+      "phase": "Agency Swarm",
+      "owner": "seis-governance",
+      "feature": "Assign each specialist lane a feature portfolio",
+      "evidence": "agent feature assignments"
+    },
+    {
+      "step": 14,
+      "phase": "Agency Swarm",
+      "owner": "seis-code",
+      "feature": "Assign each tool a safe work mode",
+      "evidence": "tool feature assignments"
+    },
+    {
+      "step": 15,
+      "phase": "Agency Swarm",
+      "owner": "seis-product",
+      "feature": "Produce client-grade progress reports",
+      "evidence": "Appendix A final report"
+    },
+    {
+      "step": 16,
+      "phase": "MCP and Skills",
+      "owner": "seis-security",
+      "feature": "Activate only official or owner-approved MCPs",
+      "evidence": "MCP policy"
+    },
+    {
+      "step": 17,
+      "phase": "MCP and Skills",
+      "owner": "seis-automation",
+      "feature": "Use installed safe MCPs only after verification",
+      "evidence": "tool transcript"
+    },
+    {
+      "step": 18,
+      "phase": "MCP and Skills",
+      "owner": "seis-research",
+      "feature": "Keep candidate MCP ecosystem as documentation until reviewed",
+      "evidence": "candidate risk matrix"
+    },
+    {
+      "step": 19,
+      "phase": "MCP and Skills",
+      "owner": "seis",
+      "feature": "Select skills by task and re-evaluate per swarm round",
+      "evidence": "round report"
+    },
+    {
+      "step": 20,
+      "phase": "MCP and Skills",
+      "owner": "seis-security",
+      "feature": "Keep package runners disabled or approval-gated",
+      "evidence": "MCP policy"
+    },
+    {
+      "step": 21,
+      "phase": "AI Core",
+      "owner": "seis",
+      "feature": "Preserve demo-only boundary",
+      "evidence": "truth boundary checker"
+    },
+    {
+      "step": 22,
+      "phase": "AI Core",
+      "owner": "seis-research",
+      "feature": "Document local AI readiness without assuming runtime availability",
+      "evidence": "installed tools registry"
+    },
+    {
+      "step": 23,
+      "phase": "AI Core",
+      "owner": "seis-cloud",
+      "feature": "Document cloud provider readiness without keys",
+      "evidence": "provider metadata"
+    },
+    {
+      "step": 24,
+      "phase": "AI Core",
+      "owner": "seis-code",
+      "feature": "Keep router decisions explainable",
+      "evidence": "router or contract docs"
+    },
+    {
+      "step": 25,
+      "phase": "AI Core",
+      "owner": "seis-security",
+      "feature": "Block fake live AI claims",
+      "evidence": "truth boundary language scan"
+    },
+    {
+      "step": 26,
+      "phase": "Web Demo and UX",
+      "owner": "seis-design",
+      "feature": "Preserve current demo before any redesign",
+      "evidence": "demo verification"
+    },
+    {
+      "step": 27,
+      "phase": "Web Demo and UX",
+      "owner": "seis-design",
+      "feature": "Plan SEIS OS workspace as incremental shell",
+      "evidence": "UX plan"
+    },
+    {
+      "step": 28,
+      "phase": "Web Demo and UX",
+      "owner": "seis-design",
+      "feature": "Build Stitch-derived module gallery only after review",
+      "evidence": "approved catalog"
+    },
+    {
+      "step": 29,
+      "phase": "Web Demo and UX",
+      "owner": "seis-security",
+      "feature": "Keep demo no-key and public-safe",
+      "evidence": "public readiness check"
+    },
+    {
+      "step": 30,
+      "phase": "Web Demo and UX",
+      "owner": "seis-product",
+      "feature": "Prevent generic SaaS drift",
+      "evidence": "design review note"
+    },
+    {
+      "step": 31,
+      "phase": "Swift and Apple",
+      "owner": "seis-code",
+      "feature": "Add Swift model or manifest only when useful",
+      "evidence": "Swift package check"
+    },
+    {
+      "step": 32,
+      "phase": "Swift and Apple",
+      "owner": "seis-design",
+      "feature": "Plan SwiftUI shell after manifest boundary",
+      "evidence": "Apple bridge handoff"
+    },
+    {
+      "step": 33,
+      "phase": "Swift and Apple",
+      "owner": "seis-product",
+      "feature": "Keep Apple platform roadmap current",
+      "evidence": "roadmap context pack"
+    },
+    {
+      "step": 34,
+      "phase": "Swift and Apple",
+      "owner": "seis-security",
+      "feature": "Avoid symbolic Swift language-stat files",
+      "evidence": "code review"
+    },
+    {
+      "step": 35,
+      "phase": "Swift and Apple",
+      "owner": "seis",
+      "feature": "Map native architecture to web demo safely",
+      "evidence": "ADR or context pack"
+    },
+    {
+      "step": 36,
+      "phase": "SEIS Brain",
+      "owner": "seis-data",
+      "feature": "Create source inventory note",
+      "evidence": "SEIS Brain note"
+    },
+    {
+      "step": 37,
+      "phase": "SEIS Brain",
+      "owner": "seis-governance",
+      "feature": "Create ADR for source provenance and orchestration policy",
+      "evidence": "ADR"
+    },
+    {
+      "step": 38,
+      "phase": "SEIS Brain",
+      "owner": "seis",
+      "feature": "Maintain five-year roadmap context pack",
+      "evidence": "context pack"
+    },
+    {
+      "step": 39,
+      "phase": "SEIS Brain",
+      "owner": "seis-research",
+      "feature": "Separate private memory from public repo knowledge",
+      "evidence": "public/private boundary note"
+    },
+    {
+      "step": 40,
+      "phase": "SEIS Brain",
+      "owner": "seis-product",
+      "feature": "Make handoff reusable by future agents",
+      "evidence": "next handoff"
+    },
+    {
+      "step": 41,
+      "phase": "Quality Gates",
+      "owner": "seis-security",
+      "feature": "Run targeted secret and path scans on touched files",
+      "evidence": "scan command result"
+    },
+    {
+      "step": 42,
+      "phase": "Quality Gates",
+      "owner": "seis-design",
+      "feature": "Apply accessibility gate to icon-first work",
+      "evidence": "accessibility notes"
+    },
+    {
+      "step": 43,
+      "phase": "Quality Gates",
+      "owner": "seis-code",
+      "feature": "Use existing npm/node checks when relevant",
+      "evidence": "command result"
+    },
+    {
+      "step": 44,
+      "phase": "Quality Gates",
+      "owner": "seis-code",
+      "feature": "Use Swift checks when Swift is touched",
+      "evidence": "swift command result or skipped note"
+    },
+    {
+      "step": 45,
+      "phase": "Quality Gates",
+      "owner": "seis-governance",
+      "feature": "Report failed or skipped checks honestly",
+      "evidence": "final report"
+    },
+    {
+      "step": 46,
+      "phase": "Release and Scale",
+      "owner": "seis-governance",
+      "feature": "Prepare suggested PR title and body",
+      "evidence": "final report"
+    },
+    {
+      "step": 47,
+      "phase": "Release and Scale",
+      "owner": "seis-product",
+      "feature": "Prepare next highest-value work",
+      "evidence": "next PR recommendation"
+    },
+    {
+      "step": 48,
+      "phase": "Release and Scale",
+      "owner": "seis-automation",
+      "feature": "Define next checker or evidence refresh",
+      "evidence": "automation backlog"
+    },
+    {
+      "step": 49,
+      "phase": "Release and Scale",
+      "owner": "seis",
+      "feature": "Continue if useful safe work remains",
+      "evidence": "next handoff"
+    },
+    {
+      "step": 50,
+      "phase": "Release and Scale",
+      "owner": "seis-governance",
+      "feature": "Leave SEIS stronger and easier to continue",
+      "evidence": "verified, documented, public-safe repo state"
+    }
+  ]
+}

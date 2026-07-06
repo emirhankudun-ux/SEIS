@@ -1,0 +1,397 @@
+{
+  "$schema": "https://seis.dev/schemas/mcp-permission-risk-matrix.schema.json",
+  "id": "seis-mcp-permission-risk-matrix",
+  "version": "2026-07-03",
+  "status": "draft-public-safe",
+  "visibility": "public-safe",
+  "purpose": "Classify MCP surfaces and candidate MCP adoption paths by source, permissions, authentication, secrets, mutation risk, public-repo safety, SEIS value, priority, and required evidence.",
+  "sourceOfTruth": {
+    "constitution": "AGENTS.md",
+    "orchestrationContract": "content/development/seis-five-year-agency-orchestration-contract.json",
+    "mcpRuntimeContract": "content/development/seis-ai-core-mcp-runtime-contract.json",
+    "pluginIntegration": "content/development/seis-agent-plugin-integration.json",
+    "installedAiTools": "content/development/seis-installed-ai-tools-registry.json"
+  },
+  "runtimeSnapshot": {
+    "source": "content/development/seis-ai-core-mcp-runtime-contract.json",
+    "transport": "stdio JSON-RPC",
+    "toolCount": 35,
+    "resourceCount": 32,
+    "promptCount": 3,
+    "sourceReportedEvidence": "Local smoke contract reports stdio tools/list, resources/list, prompts/list, and bounded calls without remote MCP servers or credentials.",
+    "runtimeAuthority": "local-smoke-and-repo-backed-status-only"
+  },
+  "activationPolicy": {
+    "activationDefault": "official-or-owner-approved-only",
+    "installedMcpUse": "verified-only",
+    "candidateUse": "document-only-until-reviewed",
+    "packageRunnerDefault": "disabled-or-approval-gated",
+    "externalMutationRequiresUserConfirmation": true,
+    "noBlanketActivation": true,
+    "noSecretDisclosure": true,
+    "credentialStorageAllowed": false,
+    "providerCallsAllowedByDefault": false
+  },
+  "riskLevels": [
+    {
+      "id": "low",
+      "meaning": "Local read/status surface with no secrets and no external mutation."
+    },
+    {
+      "id": "medium",
+      "meaning": "Local tool or prompt surface that can shape repo work and needs evidence before claims."
+    },
+    {
+      "id": "high",
+      "meaning": "Credentialed, external, browser, package-runner, or mutation-capable surface requiring explicit approval and evidence."
+    },
+    {
+      "id": "blocked",
+      "meaning": "Not allowed in public-safe SEIS without a separate owner-approved policy and verification path."
+    }
+  ],
+  "records": [
+    {
+      "id": "local-stdio-mcp-runtime",
+      "name": "Local SEIS stdio MCP runtime",
+      "source": "repo-owned package entrypoint",
+      "officialStatus": "repo-owned",
+      "purpose": "Expose local SEIS status, resources, prompts, and bounded smoke-test tools through stdio JSON-RPC.",
+      "permissions": [
+        "local-process",
+        "repo-read",
+        "bounded-tool-call"
+      ],
+      "authentication": "none",
+      "secretsRequired": false,
+      "localOrCloud": "local",
+      "externalMutationRisk": "none-by-contract",
+      "publicRepoSafety": "safe-when-smoke-contract-passes",
+      "seisValue": "High value for local verification and source-of-truth resource reads.",
+      "recommendedPriority": "P0",
+      "riskLevel": "low",
+      "allowedMode": "verified-local-use",
+      "requiredEvidence": [
+        "MCP runtime contract",
+        "local smoke test or direct checker output"
+      ],
+      "safeConfigurationNotes": "Keep stdio local, keys-free, and repo-backed. Do not add remote server calls in this class."
+    },
+    {
+      "id": "repo-backed-resource-reads",
+      "name": "Repo-backed MCP resource reads",
+      "source": "SEIS resource registry",
+      "officialStatus": "repo-owned",
+      "purpose": "Read public-safe JSON resources for provider registry, plugin integration, model boundaries, subagent ledgers, and governance evidence.",
+      "permissions": [
+        "repo-read",
+        "resource-read"
+      ],
+      "authentication": "none",
+      "secretsRequired": false,
+      "localOrCloud": "local",
+      "externalMutationRisk": "none",
+      "publicRepoSafety": "safe-if-resources-remain-public-safe",
+      "seisValue": "High value for traceable context assembly.",
+      "recommendedPriority": "P0",
+      "riskLevel": "low",
+      "allowedMode": "read-only",
+      "requiredEvidence": [
+        "resources/list",
+        "resources/read",
+        "source file checker where available"
+      ],
+      "safeConfigurationNotes": "Resources must not expose local paths, provider keys, SSH credentials, or private notes."
+    },
+    {
+      "id": "repo-backed-check-tools",
+      "name": "Repo-backed MCP check tools",
+      "source": "SEIS MCP tool registry",
+      "officialStatus": "repo-owned",
+      "purpose": "Run or represent bounded SEIS validation tools and status checks.",
+      "permissions": [
+        "repo-read",
+        "bounded-local-execution"
+      ],
+      "authentication": "none",
+      "secretsRequired": false,
+      "localOrCloud": "local",
+      "externalMutationRisk": "low",
+      "publicRepoSafety": "safe-if-tools-do-not-mutate-or-print-secrets",
+      "seisValue": "High value for verification and governance loops.",
+      "recommendedPriority": "P0",
+      "riskLevel": "medium",
+      "allowedMode": "bounded-check-only",
+      "requiredEvidence": [
+        "command output",
+        "no secret print",
+        "failed checks reported honestly"
+      ],
+      "safeConfigurationNotes": "Any tool that mutates files or external systems must move to a higher risk class."
+    },
+    {
+      "id": "status-and-plan-tools",
+      "name": "Status and plan MCP tools",
+      "source": "SEIS plugin lane tools",
+      "officialStatus": "repo-owned",
+      "purpose": "Expose lane status and plan outputs for SEIS hub, cloud, code, design, and data lanes.",
+      "permissions": [
+        "repo-read",
+        "status-render"
+      ],
+      "authentication": "none",
+      "secretsRequired": false,
+      "localOrCloud": "local",
+      "externalMutationRisk": "none",
+      "publicRepoSafety": "safe-if-status-is-honest",
+      "seisValue": "Useful for client-grade reporting and agent handoff.",
+      "recommendedPriority": "P1",
+      "riskLevel": "low",
+      "allowedMode": "status-and-plan-only",
+      "requiredEvidence": [
+        "tool output",
+        "source registry reference"
+      ],
+      "safeConfigurationNotes": "Status tools must not claim CI, provider, deploy, or SSH success unless verified."
+    },
+    {
+      "id": "prompt-rendering-tools",
+      "name": "MCP prompt rendering",
+      "source": "SEIS prompt registry",
+      "officialStatus": "repo-owned",
+      "purpose": "Render bounded audit, internationalization, and review prompts without embedding secrets.",
+      "permissions": [
+        "prompt-read",
+        "prompt-render"
+      ],
+      "authentication": "none",
+      "secretsRequired": false,
+      "localOrCloud": "local",
+      "externalMutationRisk": "none",
+      "publicRepoSafety": "safe-if-prompts-are-public-safe",
+      "seisValue": "Useful for repeatable review and documentation prompts.",
+      "recommendedPriority": "P1",
+      "riskLevel": "medium",
+      "allowedMode": "render-only",
+      "requiredEvidence": [
+        "prompts/list",
+        "prompts/get",
+        "public-safe prompt review"
+      ],
+      "safeConfigurationNotes": "Prompt templates must not embed private conversation dumps or credentials."
+    },
+    {
+      "id": "installed-safe-external-mcp",
+      "name": "Installed safe external MCP",
+      "source": "installed local environment",
+      "officialStatus": "installed-and-verified-required",
+      "purpose": "Use already installed MCPs only when task relevance, auth state, safety scope, and validation path are explicit.",
+      "permissions": [
+        "depends-on-server",
+        "must-be-declared"
+      ],
+      "authentication": "server-specific",
+      "secretsRequired": "server-specific",
+      "localOrCloud": "local-or-cloud",
+      "externalMutationRisk": "server-specific",
+      "publicRepoSafety": "unknown-until-reviewed",
+      "seisValue": "Potentially useful for specialized tasks after verification.",
+      "recommendedPriority": "P2",
+      "riskLevel": "high",
+      "allowedMode": "verified-task-scoped-use-only",
+      "requiredEvidence": [
+        "server identity",
+        "official source or owner approval",
+        "permissions list",
+        "authentication boundary",
+        "safe failure behavior"
+      ],
+      "safeConfigurationNotes": "Do not infer that an installed MCP is safe. Record the source, permissions, secrets, and mutation model first."
+    },
+    {
+      "id": "candidate-mcp-ecosystem-pool",
+      "name": "Candidate MCP ecosystem pool",
+      "source": "research and external ecosystem",
+      "officialStatus": "candidate-unverified",
+      "purpose": "Track possible MCPs for later review without activation.",
+      "permissions": [
+        "none-until-reviewed"
+      ],
+      "authentication": "unknown",
+      "secretsRequired": "unknown",
+      "localOrCloud": "unknown",
+      "externalMutationRisk": "unknown",
+      "publicRepoSafety": "documentation-only",
+      "seisValue": "Useful for roadmap research but not runtime use.",
+      "recommendedPriority": "P3",
+      "riskLevel": "high",
+      "allowedMode": "document-only",
+      "requiredEvidence": [
+        "official source",
+        "maintainer identity",
+        "permission model",
+        "install method",
+        "security notes"
+      ],
+      "safeConfigurationNotes": "Candidate MCPs must not be installed, enabled, or claimed available by this matrix."
+    },
+    {
+      "id": "package-runner-mcp",
+      "name": "Package-runner MCP",
+      "source": "npm, uvx, pipx, docker, or similar runner",
+      "officialStatus": "runner-risk",
+      "purpose": "Start MCPs through package runners only after review because runner commands can fetch and execute code.",
+      "permissions": [
+        "network-download-potential",
+        "local-execution-potential"
+      ],
+      "authentication": "server-specific",
+      "secretsRequired": "server-specific",
+      "localOrCloud": "local-or-cloud",
+      "externalMutationRisk": "high",
+      "publicRepoSafety": "blocked-until-reviewed",
+      "seisValue": "Potential value depends on server, source, and auditability.",
+      "recommendedPriority": "P3",
+      "riskLevel": "high",
+      "allowedMode": "disabled-or-approval-gated",
+      "requiredEvidence": [
+        "owner approval",
+        "official package source",
+        "version pinning plan",
+        "permission review",
+        "rollback plan"
+      ],
+      "safeConfigurationNotes": "Do not approve blanket package-runner prefixes. Keep runner activation scoped and auditable."
+    },
+    {
+      "id": "credentialed-provider-mcp",
+      "name": "Credentialed provider MCP",
+      "source": "cloud provider or AI provider",
+      "officialStatus": "official-or-owner-approved-required",
+      "purpose": "Connect to provider APIs only through secure, keys-free public repo configuration and explicit runtime auth.",
+      "permissions": [
+        "provider-api-access",
+        "account-scope"
+      ],
+      "authentication": "required",
+      "secretsRequired": true,
+      "localOrCloud": "cloud",
+      "externalMutationRisk": "medium-to-high",
+      "publicRepoSafety": "blocked-for-secrets",
+      "seisValue": "Useful for future live mode after backend isolation and owner auth.",
+      "recommendedPriority": "P3",
+      "riskLevel": "high",
+      "allowedMode": "metadata-only-until-auth-isolated",
+      "requiredEvidence": [
+        "official provider source",
+        "auth isolation plan",
+        "redaction policy",
+        "rate-limit and cost notes",
+        "owner approval"
+      ],
+      "safeConfigurationNotes": "Never store provider keys in frontend code, docs, examples, or public repo files."
+    },
+    {
+      "id": "external-mutation-mcp",
+      "name": "External mutation MCP",
+      "source": "issue trackers, repo hosts, docs platforms, databases, cloud services",
+      "officialStatus": "official-or-owner-approved-required",
+      "purpose": "Create, update, delete, deploy, send, schedule, or mutate external state.",
+      "permissions": [
+        "external-write",
+        "account-scope",
+        "audit-required"
+      ],
+      "authentication": "required",
+      "secretsRequired": true,
+      "localOrCloud": "cloud",
+      "externalMutationRisk": "high",
+      "publicRepoSafety": "blocked-until-explicit-approval",
+      "seisValue": "Potentially high after governance, auth, and rollback are documented.",
+      "recommendedPriority": "P4",
+      "riskLevel": "blocked",
+      "allowedMode": "blocked-without-explicit-owner-approval",
+      "requiredEvidence": [
+        "owner approval",
+        "target resource",
+        "mutation preview",
+        "rollback plan",
+        "audit log"
+      ],
+      "safeConfigurationNotes": "No external mutation may be hidden inside a broad automation step."
+    },
+    {
+      "id": "browser-automation-mcp",
+      "name": "Browser automation MCP",
+      "source": "browser or computer control server",
+      "officialStatus": "installed-or-owner-approved-required",
+      "purpose": "Inspect or interact with browser surfaces for testing and research.",
+      "permissions": [
+        "browser-session",
+        "screen-or-dom-access",
+        "possible-auth-context"
+      ],
+      "authentication": "session-specific",
+      "secretsRequired": "possible-session-secrets",
+      "localOrCloud": "local-or-cloud",
+      "externalMutationRisk": "medium-to-high",
+      "publicRepoSafety": "review-required",
+      "seisValue": "Useful for UI smoke tests and browser validation after scope is constrained.",
+      "recommendedPriority": "P2",
+      "riskLevel": "high",
+      "allowedMode": "read-or-test-only-unless-approved",
+      "requiredEvidence": [
+        "test target",
+        "auth boundary",
+        "screenshots or logs without secrets",
+        "mutation avoidance notes"
+      ],
+      "safeConfigurationNotes": "Avoid authenticated private pages unless the owner explicitly asks and secrets are protected."
+    },
+    {
+      "id": "ssh-cloud-deploy-mcp",
+      "name": "SSH, cloud, and deploy MCP",
+      "source": "infrastructure or deployment server",
+      "officialStatus": "owner-approved-required",
+      "purpose": "Operate remote infrastructure, SSH sessions, deployments, or cloud resources.",
+      "permissions": [
+        "remote-execution",
+        "deployment",
+        "infrastructure-mutation"
+      ],
+      "authentication": "required",
+      "secretsRequired": true,
+      "localOrCloud": "cloud",
+      "externalMutationRisk": "critical",
+      "publicRepoSafety": "blocked-without-owner-approved-runbook",
+      "seisValue": "Useful only after SEIS-SSH and deployment runbooks are safe and verified.",
+      "recommendedPriority": "P4",
+      "riskLevel": "blocked",
+      "allowedMode": "blocked-without-explicit-owner-approval-and-runbook",
+      "requiredEvidence": [
+        "owner approval",
+        "credential boundary",
+        "target confirmation",
+        "dry-run or plan",
+        "rollback plan"
+      ],
+      "safeConfigurationNotes": "Never commit real hosts, private keys, passwords, or production deployment secrets."
+    }
+  ],
+  "qualityGates": [
+    "No blanket MCP activation.",
+    "No secret disclosure.",
+    "External mutation requires owner confirmation.",
+    "Candidate MCPs stay documentation-only.",
+    "Package runners are disabled or approval-gated.",
+    "Provider and SSH credentials stay outside public repo.",
+    "Verification claims require actual evidence.",
+    "Failed checks must be reported honestly."
+  ],
+  "nextActions": [
+    "Wire this checker into package scripts only after current package.json ownership is clear.",
+    "Map individual MCP candidates into the appropriate risk class during future registry expansion.",
+    "Keep official/provider-owned MCPs separate from community or package-runner candidates.",
+    "Add UI visibility only after the web demo scope is selected."
+  ]
+}

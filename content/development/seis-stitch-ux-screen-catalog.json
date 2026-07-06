@@ -1,0 +1,338 @@
+{
+  "$schema": "https://seis.dev/schemas/stitch-ux-screen-catalog.schema.json",
+  "id": "seis-stitch-ux-screen-catalog",
+  "version": "2026-07-03",
+  "status": "draft-public-safe",
+  "visibility": "public-safe",
+  "purpose": "Catalog Stitch archive screens as UX, module, and read-only code-reference inputs for SEIS without importing raw archive contents into the repository.",
+  "sourceOfTruth": {
+    "sourceProvenance": "content/development/seis-source-provenance-intake.json",
+    "orchestrationContract": "content/development/seis-five-year-agency-orchestration-contract.json",
+    "mcpPermissionRiskMatrix": "content/development/seis-mcp-permission-risk-matrix.json",
+    "constitution": "AGENTS.md"
+  },
+  "usageBoundary": {
+    "originalArchivesMutable": false,
+    "rawArchiveDumpAllowed": false,
+    "codeCopyAllowedWithoutReview": false,
+    "selectedAssetsAllowedAfterReview": true,
+    "licenseReviewRequired": true,
+    "sizeReviewRequired": true,
+    "publicSafeReviewRequired": true,
+    "demoMayUseAsDesignReference": true,
+    "swiftMayUseAsModuleVocabulary": true
+  },
+  "archives": [
+    {
+      "id": "stitch-web-based-linux-desktop",
+      "archiveName": "stitch_web_based_linux_desktop.zip",
+      "role": "UX screen catalog, Linux desktop metaphor reference, module idea pool, read-only code reference",
+      "observedFromZipListing": true,
+      "entryCount": 490,
+      "screenCount": 162,
+      "codeHtmlCount": 148,
+      "designDocCount": 8,
+      "rootCount": 1,
+      "primarySignals": [
+        "desktop shell",
+        "command center",
+        "AI workspace",
+        "code studio",
+        "design studio",
+        "cloud dashboard",
+        "security audit",
+        "data tools",
+        "automation builder",
+        "knowledge base",
+        "kernel dashboard",
+        "infrastructure map"
+      ],
+      "categoryCounts": {
+        "agent": 3,
+        "command": 3,
+        "ai": 10,
+        "code": 4,
+        "design": 3,
+        "cloud": 6,
+        "security": 3,
+        "database": 4,
+        "k8s": 4,
+        "ssh": 3,
+        "documentation": 3,
+        "prompt": 2,
+        "automation": 3,
+        "shader": 5,
+        "texture": 8,
+        "desktop": 3,
+        "kernel": 6,
+        "training": 3,
+        "health": 3,
+        "network": 1,
+        "billing": 4
+      },
+      "representativeScreens": [
+        "seis_command_center",
+        "seis_ai_workspace",
+        "seis_code_studio",
+        "seis_design_studio_glacier",
+        "seis_cloud_dashboard",
+        "seis_os_agent_command_center_sector_4_1",
+        "seis_os_agent_command_center_sector_4_2",
+        "seis_os_neural_prompt_lab_sector_4_1",
+        "seis_os_ai_resource_allocator_npu_load_sector_4",
+        "seis_os_ai_inference_logs_telemetry_sector_4",
+        "seis_os_ai_dataset_tokenizer_neural_weights_sector_4",
+        "seis_os_ai_agent_training_monitor_sector_4",
+        "seis_os_security_audit_sector_4",
+        "seis_os_encryption_intrusion_audit_sector_4",
+        "seis_os_intrusion_detection_security_audit_sector_4",
+        "seis_ssh_manager_obsidian",
+        "seis_animated_ssh_manager_obsidian",
+        "seis_os_documentation_knowledge_base_sector_6_1",
+        "seis_os_documentation_shared_wiki_sector_6",
+        "seis_os_automation_node_graph_sector_2",
+        "seis_animated_automation_builder_neon_tokyo",
+        "seis_os_database_schema_visualizer_sector_3_1",
+        "seis_os_database_browser_query_lab_sector_3_1",
+        "seis_os_kubernetes_cluster_map_pods_sector_3",
+        "seis_os_global_cloud_map_sector_5",
+        "seis_os_mission_control",
+        "seis_os_animated_desktop_shell",
+        "seis_os_desktop_shell",
+        "seis_kernel_ultimate_dashboard",
+        "seis_os_git_diff_code_review_sector_3"
+      ]
+    },
+    {
+      "id": "stitch-yapay-zeka-web-platformu",
+      "archiveName": "stitch_yapay_zeka_web_platformu.zip",
+      "role": "AI web platform UX reference, module idea pool, read-only code reference",
+      "observedFromZipListing": true,
+      "entryCount": 220,
+      "screenCount": 72,
+      "codeHtmlCount": 71,
+      "designDocCount": 1,
+      "rootCount": 1,
+      "primarySignals": [
+        "AI command center",
+        "agent swarm",
+        "model forge",
+        "compute fabric",
+        "compliance",
+        "marketplace",
+        "developer portal",
+        "documentation",
+        "system health",
+        "global operations",
+        "research"
+      ],
+      "categoryCounts": {
+        "agent": 5,
+        "command": 1,
+        "ai": 67,
+        "code": 1,
+        "design": 1,
+        "cloud": 2,
+        "security": 2,
+        "marketplace": 4,
+        "compliance": 6,
+        "training": 1,
+        "health": 2,
+        "network": 2
+      },
+      "representativeScreens": [
+        "command_center_aether_ai",
+        "ai_agent_orchestra_aether_ai_1",
+        "ai_agent_orchestra_aether_ai_2",
+        "ai_agent_orchestra_aether_ai_3",
+        "agent_swarm_orchestrator_aether_ai",
+        "agent_swarm_control_aether_ai",
+        "model_forge_aether_ai",
+        "compute_fabric_aether_ai_1",
+        "compute_fabric_aether_ai_2",
+        "seis_ai_aether_ai",
+        "seis_ai_v2_aether_ai",
+        "seis_code_aether_ai",
+        "seis_cloud_aether_ai",
+        "seis_design_aether_ai",
+        "seis_research_aether_ai",
+        "seis_engine_core_aether_ai",
+        "security_guardrails_aether_ai",
+        "neural_compliance_aether_ai_1",
+        "neural_compliance_aether_ai_2",
+        "neural_compliance_aether_ai_3",
+        "neural_compliance_engine_aether_ai",
+        "compliance_center_aether_ai",
+        "compliance_ethics_aether_ai",
+        "marketplace_aether_ai_1",
+        "marketplace_aether_ai_2",
+        "marketplace_aether_ai_3",
+        "solutions_marketplace_aether_ai",
+        "global_operations_center_aether_ai",
+        "global_operations_aether_ai",
+        "system_health_aether_ai_1"
+      ]
+    }
+  ],
+  "moduleFamilies": [
+    {
+      "id": "command-center",
+      "label": "Command Center",
+      "sourceSignals": [
+        "seis_command_center",
+        "command_center_aether_ai",
+        "seis_os_agent_command_center_sector_4_1"
+      ],
+      "seisUse": "Plan the icon-first SEIS OS workspace and agent panel without replacing the current demo.",
+      "priority": "P0",
+      "allowedNextStep": "Design brief and public-safe UI map"
+    },
+    {
+      "id": "ai-core",
+      "label": "AI Core",
+      "sourceSignals": [
+        "seis_ai_workspace",
+        "seis_ai_aether_ai",
+        "model_forge_aether_ai",
+        "seis_os_neural_prompt_lab_sector_4_1"
+      ],
+      "seisUse": "Map provider, model, prompt, telemetry, and agent surfaces while preserving demo/live boundaries.",
+      "priority": "P0",
+      "allowedNextStep": "Metadata-first module plan"
+    },
+    {
+      "id": "agent-swarm",
+      "label": "Agent Swarm",
+      "sourceSignals": [
+        "agent_swarm_orchestrator_aether_ai",
+        "agent_swarm_control_aether_ai",
+        "ai_agent_orchestra_aether_ai_1"
+      ],
+      "seisUse": "Inform ledger/report and future UI agent panel concepts without claiming autonomous runtime.",
+      "priority": "P0",
+      "allowedNextStep": "30-round run visualization plan"
+    },
+    {
+      "id": "apple-shell",
+      "label": "Apple-First Shell",
+      "sourceSignals": [
+        "seis_os_mission_control",
+        "seis_os_animated_desktop_shell",
+        "seis_os_quick_settings_notification_center_sector_1"
+      ],
+      "seisUse": "Translate desktop metaphors into Apple-first SwiftUI-ready shell vocabulary without copying Apple apps.",
+      "priority": "P1",
+      "allowedNextStep": "Swift model vocabulary"
+    },
+    {
+      "id": "security-and-compliance",
+      "label": "Security and Compliance",
+      "sourceSignals": [
+        "seis_os_security_audit_sector_4",
+        "security_guardrails_aether_ai",
+        "compliance_center_aether_ai"
+      ],
+      "seisUse": "Shape public/private boundary, MCP risk, AI guardrails, and verification status views.",
+      "priority": "P0",
+      "allowedNextStep": "Risk-state UI catalog"
+    },
+    {
+      "id": "cloud-and-ssh",
+      "label": "Cloud and SSH",
+      "sourceSignals": [
+        "seis_cloud_dashboard",
+        "seis_ssh_manager_obsidian",
+        "global_operations_center_aether_ai"
+      ],
+      "seisUse": "Inform credential-free cloud/SSH readiness surfaces and status boards.",
+      "priority": "P1",
+      "allowedNextStep": "No-secret status panel plan"
+    },
+    {
+      "id": "data-and-infrastructure",
+      "label": "Data and Infrastructure",
+      "sourceSignals": [
+        "seis_os_database_schema_visualizer_sector_3_1",
+        "seis_os_kubernetes_cluster_map_pods_sector_3",
+        "compute_fabric_aether_ai_1"
+      ],
+      "seisUse": "Plan data, infrastructure, and compute observability modules as demo-safe status surfaces.",
+      "priority": "P1",
+      "allowedNextStep": "Module inventory only"
+    },
+    {
+      "id": "knowledge-and-academy",
+      "label": "Knowledge and Academy",
+      "sourceSignals": [
+        "seis_os_documentation_knowledge_base_sector_6_1",
+        "dok_mantasyon_aether_ai",
+        "seis_os_shared_project_wiki_sector_6"
+      ],
+      "seisUse": "Inform SEIS Brain, docs, academy, and context-pack reading surfaces.",
+      "priority": "P1",
+      "allowedNextStep": "SEIS Brain navigation plan"
+    },
+    {
+      "id": "creative-lab",
+      "label": "Creative Lab",
+      "sourceSignals": [
+        "seis_design_studio_glacier",
+        "seis_os_shader_lab_sector_2",
+        "seis_os_procedural_texture_lab_sector_2_1"
+      ],
+      "seisUse": "Inform design studio, shader, texture, and media lab modules while keeping performance budgets.",
+      "priority": "P2",
+      "allowedNextStep": "Design-token and performance review"
+    },
+    {
+      "id": "release-and-marketplace",
+      "label": "Release and Marketplace",
+      "sourceSignals": [
+        "marketplace_aether_ai_1",
+        "solutions_marketplace_aether_ai",
+        "seis_os_app_store_sector_8"
+      ],
+      "seisUse": "Plan future plugin marketplace and release surfaces as research-only until core governance is stable.",
+      "priority": "P3",
+      "allowedNextStep": "Roadmap note only"
+    }
+  ],
+  "adoptionStages": [
+    {
+      "id": "catalog-only",
+      "status": "active",
+      "meaning": "Archive entries are cataloged by name, count, role, and module family."
+    },
+    {
+      "id": "design-review",
+      "status": "next",
+      "meaning": "Selected screens may be visually reviewed and summarized without copying raw code."
+    },
+    {
+      "id": "public-safe-asset-selection",
+      "status": "planned",
+      "meaning": "A small selected asset set may be copied only after license, size, and secret review."
+    },
+    {
+      "id": "seis-native-adaptation",
+      "status": "planned",
+      "meaning": "Approved ideas are rebuilt in SEIS style with accessible, Apple-first, icon-first patterns."
+    }
+  ],
+  "qualityGates": [
+    "Original zip archives remain unchanged.",
+    "No local archive paths are stored in this public-safe catalog.",
+    "Raw HTML is not imported by this catalog.",
+    "Screens are treated as design references until reviewed.",
+    "Selected assets require license, size, and public-safe review.",
+    "SEIS adaptation must preserve the current no-key demo.",
+    "Swift or SwiftUI work must be useful, compile-ready where possible, and not symbolic.",
+    "Any AI or agent UI must preserve demo/live truth boundaries."
+  ],
+  "nextActions": [
+    "Create a visual review shortlist for the Command Center, AI Core, Agent Swarm, Security, and Apple Shell families.",
+    "Add a web demo module-gallery plan without replacing the existing demo.",
+    "Prepare a Swift model vocabulary for approved module families.",
+    "Review license and size before selecting any actual screen assets."
+  ]
+}
