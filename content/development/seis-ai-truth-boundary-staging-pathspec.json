@@ -1,0 +1,97 @@
+{
+  "$schema": "https://seis.dev/schemas/ai-truth-boundary-staging-pathspec.schema.json",
+  "id": "seis-ai-truth-boundary-staging-pathspec",
+  "version": "2026-07-06",
+  "status": "blocked-until-hunk-review-and-status-alignment",
+  "visibility": "public-safe",
+  "purpose": "Define the narrow pathspec for the next AI truth-boundary slice so 720B AGI, supervised sub-agent round ledgers, and claim-language policy work can be staged without dragging unrelated dirty-tree changes into the PR.",
+  "activeSlice": "ai-truth-boundary-and-supervised-subagent-ledgers",
+  "qualityGate": "node scripts/check-seis-ai-truth-boundary-staging-pathspec.mjs",
+  "cleanWorktreeClaimAllowed": false,
+  "claimBoundary": "This pathspec is a staging and review contract only. It does not prove live AI, 720B weights, routeable inference, benchmarks, SSH/cloud provisioning, provider calls, deployment, GitHub mutation, production readiness, AGI capability, or uninterrupted background agents.",
+  "stageCommandPolicy": {
+    "mode": "exact-pathspec-plus-reviewed-hunks-only",
+    "forbidden": [
+      "git add .",
+      "git add docs",
+      "git add scripts",
+      "git add packages",
+      "git add reports",
+      "git add content/development"
+    ]
+  },
+  "pathspecSafeCoreInclude": [
+    "content/development/seis-720b-agi-frontier-boundary.json",
+    "content/development/seis-ai-core-subagent-swarm-round-ledger.json",
+    "content/development/seis-ai-core-subagent-round-execution-evidence-ledger.json",
+    "content/development/seis-ai-truth-boundary-language-policy.json",
+    "scripts/check-seis-720b-agi-frontier-boundary.mjs",
+    "scripts/check-seis-ai-core-subagent-swarm-round-ledger.mjs",
+    "scripts/check-seis-ai-core-subagent-round-execution-evidence-ledger.mjs",
+    "scripts/check-seis-ai-truth-boundary-language.mjs"
+  ],
+  "integrationHunkReviewOnly": [
+    "package.json",
+    "content/development/seis-ai-core-mcp-runtime-contract.json",
+    "content/development/seis-agent-plugin-integration.json",
+    "content/development/seis-sub-agent-5-year-plan.json",
+    "content/development/seis-ai-core-subagent-operating-model.json",
+    "packages/seis-ai/src/lib/plugin-integration.mjs",
+    "packages/seis-ai/src/mcp/server.mjs",
+    "packages/seis-ai/test/mcp-smoke.test.mjs",
+    "reports/seis-sub-agent-five-year-demo-evidence.json",
+    "reports/seis-sub-agent-five-year-demo-evidence.md",
+    "apps/seis-demo-web/data/seis-sub-agent-five-year-plan-view.json",
+    "docs/ai/seis-model-scaling.md",
+    "docs/ai/seis-ai-core.md",
+    "docs/STATUS.md"
+  ],
+  "mustRemainUnstagedUntilSeparatePr": [
+    "packages/seis-ai/downloadable/",
+    "packages/seis-ai/models/nvidia-nim-run-anywhere-downloadable-registry.json",
+    "docs/reviews/NVIDIA_SKILLS_DOWNLOADABLE_CATALOG_QA.md",
+    "scripts/check-seis-ai-nvidia-skills-downloadable.mjs",
+    "apps/web/",
+    "apps/seis-core/",
+    "deploy/",
+    ".github/",
+    "reports/apply-seis-public-readiness-realpath-hardening.mjs",
+    "reports/check-seis-public-readiness-access-recovery.mjs",
+    "reports/seis-public-readiness-access-blocker-note.md",
+    "reports/seis-public-readiness-realpath-hardening-patch.md",
+    "reports/test-seis-public-readiness-realpath-hardening.mjs",
+    "apps/seis-demo-web/script.js"
+  ],
+  "knownBlockers": [
+    {
+      "id": "status-doc-resource-count-drift",
+      "status": "blocking-720b-validator",
+      "evidence": "scripts/check-seis-720b-agi-frontier-boundary.mjs requires docs/STATUS.md to say 32 local MCP resources."
+    },
+    {
+      "id": "package-json-mixed-hunks",
+      "status": "requires-hunk-split",
+      "evidence": "package.json contains AI truth-boundary, public-readiness, command-center, third-party intake, and NVIDIA script additions in one dirty file."
+    },
+    {
+      "id": "web-report-qa-permission-blocker",
+      "status": "separate-web-qa-slice",
+      "evidence": "product-experience browser smoke has a local EPERM artifact cleanup blocker and must not ride with the AI truth-boundary PR."
+    }
+  ],
+  "validation": [
+    "node scripts/check-seis-ai-truth-boundary-staging-pathspec.mjs",
+    "npm run check:seis-720b-agi-frontier-boundary",
+    "npm run check:seis-ai-core-subagent-swarm-round-ledger",
+    "npm run check:seis-ai-core-subagent-round-execution-evidence-ledger",
+    "npm run check:seis-ai-truth-boundary-language",
+    "node --test packages/seis-ai/test/mcp-smoke.test.mjs",
+    "focused secret-shaped scan over staged AI truth-boundary paths",
+    "git diff --cached --check"
+  ],
+  "nextSafeActions": [
+    "Patch or hunk-stage the docs/STATUS.md 32-resource wording before claiming the 720B validator passes.",
+    "Split package.json hunks so only AI truth-boundary script additions and quality:governance entries are staged.",
+    "Keep NVIDIA downloadable, web QA, SSH/cloud, deploy, broad reports, and GitHub governance changes in separate PR-sized slices."
+  ]
+}
