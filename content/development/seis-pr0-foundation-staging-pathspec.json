@@ -1,0 +1,111 @@
+{
+  "$schema": "https://seis.dev/schemas/pr0-foundation-staging-pathspec.schema.json",
+  "id": "seis-pr0-foundation-staging-pathspec",
+  "version": "2026-07-06",
+  "status": "active-local-staging-boundary",
+  "visibility": "public-safe",
+  "purpose": "Provide the exact PR0 pathspec-safe staging boundary for the foundation manifest package so the dirty tree can move toward clean reviewable slices without bulk staging or unrelated work.",
+  "sourceOfTruth": "content/development/seis-clean-worktree-transition-ledger.json",
+  "activeSlice": "pr0-foundation-manifest-package",
+  "qualityGate": "node scripts/check-seis-pr0-foundation-staging-pathspec.mjs",
+  "cleanWorktreeClaimAllowed": false,
+  "stageCommandPolicy": {
+    "mode": "exact-pathspec-only",
+    "commandPreview": "git add -- <paths from pathspecSafeInclude>",
+    "forbidden": [
+      "git add .",
+      "git add docs",
+      "git add scripts",
+      "git add apps",
+      "git add packages",
+      "git add reports"
+    ]
+  },
+  "pathspecSafeInclude": [
+    "content/development/seis-source-provenance-intake.json",
+    "content/development/seis-five-year-agency-orchestration-contract.json",
+    "content/development/seis-mcp-permission-risk-matrix.json",
+    "content/development/seis-stitch-ux-screen-catalog.json",
+    "content/development/seis-swift-apple-bridge-manifest.json",
+    "scripts/check-seis-source-provenance-intake.mjs",
+    "scripts/check-seis-five-year-agency-orchestration-contract.mjs",
+    "scripts/check-seis-mcp-permission-risk-matrix.mjs",
+    "scripts/check-seis-stitch-ux-screen-catalog.mjs",
+    "scripts/check-seis-swift-apple-bridge-manifest.mjs",
+    "docs/development/seis-source-provenance-intake.md",
+    "docs/development/seis-five-year-agency-orchestration-contract.md",
+    "docs/development/seis-mcp-permission-risk-matrix.md",
+    "docs/development/seis-stitch-ux-screen-catalog.md",
+    "docs/development/seis-swift-apple-bridge-manifest.md",
+    "docs/decisions/adr-0005-seis-source-provenance-intake.md",
+    "docs/decisions/adr-0006-seis-five-year-agency-orchestration-contract.md",
+    "seis-brain/vault/12_Context_Packs/SEIS Source Provenance Intake Context.md",
+    "seis-brain/vault/12_Context_Packs/SEIS Five Year Agency Orchestration Context.md"
+  ],
+  "controlPathsAllowedWhenValidatingThisLedger": [
+    "content/development/seis-pr0-foundation-staging-pathspec.json",
+    "scripts/check-seis-pr0-foundation-staging-pathspec.mjs",
+    "docs/development/seis-pr0-foundation-staging-pathspec.md",
+    "content/development/seis-clean-worktree-transition-ledger.json",
+    "content/development/seis-pr0-pr1-pr2-implementation-sequence.json",
+    "scripts/check-seis-clean-worktree-transition-ledger.mjs",
+    "scripts/check-seis-pr0-pr1-pr2-implementation-sequence.mjs",
+    "scripts/check-seis-pr0-staged-boundary.mjs",
+    "docs/development/seis-clean-worktree-transition-ledger.md",
+    "docs/roadmap/MASTER_BACKLOG.md",
+    "docs/roadmap/NEXT_PR_QUEUE.md"
+  ],
+  "hunkReviewOnly": [
+    "docs/INDEX.md",
+    "docs/STATUS.md",
+    "docs/roadmap/MASTER_BACKLOG.md",
+    "docs/roadmap/NEXT_PR_QUEUE.md"
+  ],
+  "mustRemainUnstaged": [
+    "package.json",
+    "apps/seis-demo-web/script.js",
+    "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/AppleContinuationWindow.swift",
+    "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/SeisAppleNativeShellShowcaseView.swift",
+    "packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisPlatformPolicyTests.swift",
+    "packages/seis-ai/downloadable/",
+    "packages/seis-ai/src/",
+    "packages/seis-ai/test/",
+    "apps/web/",
+    "apps/seis-core/",
+    "deploy/",
+    ".github/",
+    "reports/"
+  ],
+  "enterpriseDirection": {
+    "ambition": "Build toward a public, Apple-first, AI-native creative engineering system strong enough to be compared with major technology-company engineering standards.",
+    "method": "Compete through architecture quality, trust, security, accessibility, evidence, modularity, design craft, and long-horizon execution rather than fake claims or unsafe autonomy.",
+    "claimBoundary": "This is a development direction, not a market-share, revenue, benchmark, or live-capability claim."
+  },
+  "installedToolAndPluginUse": {
+    "policy": "Use installed AI tools, plugins, MCPs, and skills when they are fit for a specific task and permission-safe.",
+    "blocked": [
+      "blindly enabling every plugin",
+      "running write-capable external tools without explicit approval",
+      "sending secrets or private repo data to tools",
+      "claiming a tool was used when it was not"
+    ],
+    "firstSafeUse": [
+      "read-only subagent review",
+      "local direct validators",
+      "documentation-only MCP/tool risk records",
+      "official-doc lookup when a specific library or platform decision requires current docs"
+    ]
+  },
+  "validation": [
+    "node scripts/check-seis-pr0-foundation-staging-pathspec.mjs",
+    "node scripts/check-seis-pr0-staged-boundary.mjs",
+    "node scripts/check-seis-source-provenance-intake.mjs",
+    "node scripts/check-seis-five-year-agency-orchestration-contract.mjs",
+    "node scripts/check-seis-mcp-permission-risk-matrix.mjs",
+    "node scripts/check-seis-stitch-ux-screen-catalog.mjs",
+    "node scripts/check-seis-swift-apple-bridge-manifest.mjs",
+    "git diff --cached --name-only must be a subset of pathspecSafeInclude plus controlPathsAllowedWhenValidatingThisLedger",
+    "git diff --check over staged PR0 paths"
+  ],
+  "truthBoundary": "This pathspec defines PR0 staging safety. It does not stage files, commit files, clean the tree, prove CI readiness, approve hunk-only docs, prove enterprise competitiveness, and does not authorize staging unrelated dirty work."
+}

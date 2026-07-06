@@ -1,0 +1,294 @@
+{
+  "$schema": "https://seis.dev/schemas/clean-worktree-transition-ledger.schema.json",
+  "id": "seis-clean-worktree-transition-ledger",
+  "version": "2026-07-06",
+  "status": "active-local-transition",
+  "visibility": "public-safe",
+  "purpose": "Define the owner-approved path from the current broad dirty tree toward a clean SEIS worktree without destructive reset, unrelated staging, secret exposure, asset dumping, provider calls, SSH, deploy, push, or merge.",
+  "objectiveRefs": [
+    "SEIS-BL-051",
+    "seis-pr0-pr1-pr2-implementation-sequence"
+  ],
+  "qualityGate": "node scripts/check-seis-clean-worktree-transition-ledger.mjs",
+  "sourceOfTruth": "content/development/seis-pr0-pr1-pr2-implementation-sequence.json",
+  "pr0StagingPathspec": "content/development/seis-pr0-foundation-staging-pathspec.json",
+  "pr0StagedBoundaryGate": "node scripts/check-seis-pr0-staged-boundary.mjs",
+  "activeSlice": "pr0-foundation-manifest-package",
+  "cleanWorktreeClaimAllowed": false,
+  "currentState": {
+    "branch": "feature/apple-first-foundation",
+    "repoRootPolicy": "canonical-local-seis-repo",
+    "dirtyTreeStatus": "broad-dirty-tree-observed",
+    "completionClaim": "not-clean-yet",
+    "cleanDefinition": "git status --short is empty after approved PR slices are committed, parked, or explicitly discarded by the owner"
+  },
+  "includeAfterValidation": [
+    "content/development/seis-source-provenance-intake.json",
+    "content/development/seis-five-year-agency-orchestration-contract.json",
+    "content/development/seis-mcp-permission-risk-matrix.json",
+    "content/development/seis-stitch-ux-screen-catalog.json",
+    "content/development/seis-swift-apple-bridge-manifest.json",
+    "scripts/check-seis-source-provenance-intake.mjs",
+    "scripts/check-seis-five-year-agency-orchestration-contract.mjs",
+    "scripts/check-seis-mcp-permission-risk-matrix.mjs",
+    "scripts/check-seis-stitch-ux-screen-catalog.mjs",
+    "scripts/check-seis-swift-apple-bridge-manifest.mjs"
+  ],
+  "stackedAfterPr0": [
+    "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisMCPPermissionRiskRecord.swift",
+    "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisStitchModuleFamily.swift",
+    "packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisFoundationManifestLoadingTests.swift"
+  ],
+  "plannedLater": [
+    "pr2-web-demo-visibility-data-first",
+    "governance-package-alias",
+    "mcp-tools-threat-model",
+    "stitch-visual-review-shortlist",
+    "ai-runtime-dry-run",
+    "ssh-cloud-dry-run-only"
+  ],
+  "excludedUntilExplicitReview": [
+    "package.json",
+    "apps/seis-demo-web/script.js",
+    "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/AppleContinuationWindow.swift",
+    "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/SeisAppleNativeShellShowcaseView.swift",
+    "packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisPlatformPolicyTests.swift",
+    "packages/seis-ai/downloadable/",
+    "deploy/",
+    "reports/"
+  ],
+  "singleWriterPolicy": {
+    "writer": "Codex",
+    "subagents": "read-only-reviewers",
+    "secondaryAssistants": "review-only-until-owner-handoff",
+    "noOverwriteUserWork": true
+  },
+  "reviewSlices": [
+    {
+      "id": "pr0-foundation-manifest-package",
+      "status": "ready-for-narrow-staging",
+      "intent": "Stage only public-safe foundation manifest, checker, short docs, ADR, and context-pack files.",
+      "includePaths": [
+        "content/development/seis-source-provenance-intake.json",
+        "content/development/seis-five-year-agency-orchestration-contract.json",
+        "content/development/seis-mcp-permission-risk-matrix.json",
+        "content/development/seis-stitch-ux-screen-catalog.json",
+        "content/development/seis-swift-apple-bridge-manifest.json",
+        "scripts/check-seis-source-provenance-intake.mjs",
+        "scripts/check-seis-five-year-agency-orchestration-contract.mjs",
+        "scripts/check-seis-mcp-permission-risk-matrix.mjs",
+        "scripts/check-seis-stitch-ux-screen-catalog.mjs",
+        "scripts/check-seis-swift-apple-bridge-manifest.mjs",
+        "docs/development/seis-source-provenance-intake.md",
+        "docs/development/seis-five-year-agency-orchestration-contract.md",
+        "docs/development/seis-mcp-permission-risk-matrix.md",
+        "docs/development/seis-stitch-ux-screen-catalog.md",
+        "docs/development/seis-swift-apple-bridge-manifest.md",
+        "docs/decisions/adr-0005-seis-source-provenance-intake.md",
+        "docs/decisions/adr-0006-seis-five-year-agency-orchestration-contract.md",
+        "seis-brain/vault/12_Context_Packs/SEIS Source Provenance Intake Context.md",
+        "seis-brain/vault/12_Context_Packs/SEIS Five Year Agency Orchestration Context.md"
+      ],
+      "blockedPaths": [
+        "package.json",
+        "apps/seis-demo-web/script.js",
+        "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/AppleContinuationWindow.swift",
+        "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/SeisAppleNativeShellShowcaseView.swift",
+        "packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisPlatformPolicyTests.swift"
+      ],
+      "validation": [
+        "node scripts/check-seis-source-provenance-intake.mjs",
+        "node scripts/check-seis-five-year-agency-orchestration-contract.mjs",
+        "node scripts/check-seis-mcp-permission-risk-matrix.mjs",
+        "node scripts/check-seis-stitch-ux-screen-catalog.mjs",
+        "node scripts/check-seis-swift-apple-bridge-manifest.mjs",
+        "staged path/secret scan",
+        "git diff --check"
+      ]
+    },
+    {
+      "id": "pr1-swift-model-foundation",
+      "status": "ready-for-narrow-staging-after-pr0",
+      "intent": "Stage only additive Swift model and fixture loading test files after PR0.",
+      "includePaths": [
+        "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisMCPPermissionRiskRecord.swift",
+        "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisStitchModuleFamily.swift",
+        "packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisFoundationManifestLoadingTests.swift"
+      ],
+      "blockedPaths": [
+        "packages/seis_platform_swift/Package.swift",
+        "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/AppleContinuationWindow.swift",
+        "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/SeisAppleNativeShellShowcaseView.swift",
+        "packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisPlatformPolicyTests.swift",
+        "package.json",
+        "apps/seis-demo-web/script.js"
+      ],
+      "validation": [
+        "swift package describe --package-path packages/seis_platform_swift",
+        "swift test --package-path packages/seis_platform_swift",
+        "node scripts/check-seis-swift-apple-bridge-manifest.mjs",
+        "staged path/secret scan",
+        "git diff --check"
+      ]
+    },
+    {
+      "id": "pr0-pr1-roadmap-splice",
+      "status": "ready-for-coordination-slice",
+      "intent": "Keep the PR0/PR1/PR2 order and clean-worktree transition visible in durable roadmap evidence.",
+      "includePaths": [
+        "content/development/seis-pr0-pr1-pr2-implementation-sequence.json",
+        "content/development/seis-clean-worktree-transition-ledger.json",
+        "content/development/seis-pr0-foundation-staging-pathspec.json",
+        "scripts/check-seis-pr0-pr1-pr2-implementation-sequence.mjs",
+        "scripts/check-seis-clean-worktree-transition-ledger.mjs",
+        "scripts/check-seis-pr0-foundation-staging-pathspec.mjs",
+        "scripts/check-seis-pr0-staged-boundary.mjs",
+        "docs/development/seis-clean-worktree-transition-ledger.md",
+        "docs/development/seis-pr0-foundation-staging-pathspec.md",
+        "docs/roadmap/MASTER_BACKLOG.md",
+        "docs/roadmap/NEXT_PR_QUEUE.md"
+      ],
+      "blockedPaths": [
+        "package.json",
+        "apps/seis-demo-web/script.js",
+        ".github/",
+        "packages/seis-ai/downloadable/"
+      ],
+      "validation": [
+        "node scripts/check-seis-pr0-pr1-pr2-implementation-sequence.mjs",
+        "node scripts/check-seis-clean-worktree-transition-ledger.mjs",
+        "node scripts/check-seis-pr0-foundation-staging-pathspec.mjs",
+        "node scripts/check-seis-pr0-staged-boundary.mjs",
+        "npm run check:master-backlog",
+        "staged path/secret scan",
+        "git diff --check"
+      ]
+    },
+    {
+      "id": "pr2-web-demo-visibility-data-first",
+      "status": "planned-after-pr1",
+      "intent": "Add static dashboard data and checkers before touching any existing dirty web script.",
+      "includePathPrefixes": [
+        "apps/seis-demo-web/data/",
+        "content/development/"
+      ],
+      "blockedPaths": [
+        "apps/seis-demo-web/script.js",
+        "provider keys",
+        "live AI adapters",
+        "asset imports"
+      ],
+      "validation": [
+        "static data checker",
+        "fallback data test",
+        "no-key/fake-live scan",
+        "web static smoke only if UI changes"
+      ]
+    }
+  ],
+  "quarantineGroups": [
+    {
+      "id": "large-reference-downloadables",
+      "riskLevel": "high",
+      "pathPrefixes": [
+        "packages/seis-ai/downloadable/",
+        "content/development/seis-agi-reference-assets/"
+      ],
+      "reason": "Large reference/downloadable trees require license, size, provenance, and public-safety review before any repo inclusion decision.",
+      "allowedNextAction": "manifest-only provenance/security review"
+    },
+    {
+      "id": "ai-runtime-and-mcp-implementation",
+      "riskLevel": "medium",
+      "pathPrefixes": [
+        "packages/seis-ai/src/",
+        "packages/seis-ai/test/",
+        "content/development/seis-ai-core-"
+      ],
+      "reason": "Runtime, MCP, and subagent execution files must stay separate from PR0/PR1 foundation manifests.",
+      "allowedNextAction": "separate AI Core dry-run PR after direct checker review"
+    },
+    {
+      "id": "web-and-product-ui",
+      "riskLevel": "medium",
+      "pathPrefixes": [
+        "apps/web/",
+        "apps/seis-core/",
+        "apps/seis-demo-web/script.js"
+      ],
+      "reason": "UI surfaces are high-conflict and must not be bundled with PR0/PR1 foundation slices.",
+      "allowedNextAction": "PR2 data-first, then UI after script ownership is resolved"
+    },
+    {
+      "id": "ssh-cloud-and-deploy",
+      "riskLevel": "high",
+      "pathPrefixes": [
+        "deploy/",
+        "docs/deployment/",
+        "docs/operations/",
+        "scripts/activate-seis-ssh",
+        "scripts/switch-seis-ssh",
+        "scripts/create-seis-ssh"
+      ],
+      "reason": "SSH, cloud, deploy, and remote mutation work requires explicit approval, dry-run, rollback, and no secret exposure.",
+      "allowedNextAction": "docs-only safety review or dry-run-only contract"
+    },
+    {
+      "id": "github-governance-and-ci",
+      "riskLevel": "medium",
+      "pathPrefixes": [
+        ".github/",
+        "AGENTS.md",
+        "README.md",
+        "docs/governance/"
+      ],
+      "reason": "Governance and CI changes affect public repository behavior and should land as a separate reviewable slice.",
+      "allowedNextAction": "focused governance PR after package.json ownership is clear"
+    },
+    {
+      "id": "generated-reports",
+      "riskLevel": "low",
+      "pathPrefixes": [
+        "reports/"
+      ],
+      "reason": "Reports should be regenerated or refreshed with their source commands, not swept into foundation PRs by accident.",
+      "allowedNextAction": "regenerate from source commands or leave unstaged"
+    }
+  ],
+  "blockedActions": [
+    "git reset --hard",
+    "git checkout --",
+    "bulk add all",
+    "push",
+    "merge",
+    "force push",
+    "delete files",
+    "copy raw zip dumps into repo",
+    "run live providers",
+    "run SSH or deployment mutation",
+    "print secrets"
+  ],
+  "cleanupSequence": [
+    {
+      "order": 1,
+      "action": "Stage and validate PR0 foundation manifest package only."
+    },
+    {
+      "order": 2,
+      "action": "Stage and validate PR1 Swift model foundation only."
+    },
+    {
+      "order": 3,
+      "action": "Stage this clean-worktree transition ledger and PR sequence roadmap splice as a coordination slice."
+    },
+    {
+      "order": 4,
+      "action": "Park or separately branch unrelated AI runtime, web UI, SSH/cloud, governance, and report changes after owner review."
+    },
+    {
+      "order": 5,
+      "action": "Only after every slice is committed, parked, or owner-discarded, verify git status --short is empty."
+    }
+  ],
+  "truthBoundary": "This ledger is a transition control for reaching a clean worktree. It does not claim the worktree is clean today, does not authorize destructive cleanup, does not approve staging unrelated work, and does not prove public release readiness."
+}

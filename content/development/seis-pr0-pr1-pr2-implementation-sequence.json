@@ -1,0 +1,122 @@
+{
+  "$schema": "https://seis.dev/schemas/pr0-pr1-pr2-implementation-sequence.schema.json",
+  "id": "seis-pr0-pr1-pr2-implementation-sequence",
+  "version": "2026-07-06",
+  "status": "active-local-roadmap-splice",
+  "visibility": "public-safe",
+  "purpose": "Merge the latest PR0 foundation-first implementation sequence into the durable SEIS roadmap while preserving clean PR slicing, single-writer policy, and no-key/no-live-claim boundaries.",
+  "backlogId": "SEIS-BL-051",
+  "sourceRefs": {
+    "status": "docs/STATUS.md",
+    "index": "docs/INDEX.md",
+    "masterBacklog": "docs/roadmap/MASTER_BACKLOG.md",
+    "nextPrQueue": "docs/roadmap/NEXT_PR_QUEUE.md",
+    "cleanWorktreeTransition": "content/development/seis-clean-worktree-transition-ledger.json",
+    "pr0StagingPathspec": "content/development/seis-pr0-foundation-staging-pathspec.json",
+    "sourceProvenance": "content/development/seis-source-provenance-intake.json",
+    "agencyOrchestration": "content/development/seis-five-year-agency-orchestration-contract.json",
+    "mcpRiskMatrix": "content/development/seis-mcp-permission-risk-matrix.json",
+    "stitchCatalog": "content/development/seis-stitch-ux-screen-catalog.json",
+    "swiftAppleBridge": "content/development/seis-swift-apple-bridge-manifest.json"
+  },
+  "sequence": [
+    {
+      "id": "pr0-foundation-manifest-package",
+      "label": "PR0 Foundation Manifest Package",
+      "status": "in-progress-local",
+      "scope": [
+        "source provenance manifest",
+        "five-year agency orchestration contract",
+        "MCP permission risk matrix",
+        "Stitch UX screen catalog",
+        "Swift/Apple bridge manifest",
+        "direct checkers",
+        "short docs, ADRs, and SEIS Brain context packs"
+      ],
+      "validation": [
+        "node scripts/check-seis-source-provenance-intake.mjs",
+        "node scripts/check-seis-five-year-agency-orchestration-contract.mjs",
+        "node scripts/check-seis-mcp-permission-risk-matrix.mjs",
+        "node scripts/check-seis-stitch-ux-screen-catalog.mjs",
+        "node scripts/check-seis-swift-apple-bridge-manifest.mjs",
+        "git diff --check"
+      ],
+      "nonGoals": [
+        "package.json alias wiring",
+        "Swift source changes",
+        "web UI changes",
+        "provider calls",
+        "asset copy",
+        "write-capable automation"
+      ]
+    },
+    {
+      "id": "pr1-swift-model-foundation",
+      "label": "PR1 Swift Model Foundation",
+      "status": "implemented-local-stacked-after-pr0",
+      "scope": [
+        "SeisMCPPermissionRiskRecord",
+        "SeisStitchModuleFamily",
+        "public-safe JSON fixture loading tests"
+      ],
+      "validation": [
+        "swift package describe --package-path packages/seis_platform_swift",
+        "swift test --package-path packages/seis_platform_swift",
+        "node scripts/check-seis-swift-apple-bridge-manifest.mjs"
+      ],
+      "nonGoals": [
+        "SwiftUI shell",
+        "provider call",
+        "asset copy",
+        "Package.swift edit",
+        "package.json edit",
+        "web UI integration"
+      ]
+    },
+    {
+      "id": "pr2-web-demo-visibility-data-first",
+      "label": "PR2 Web Demo Visibility Data First",
+      "status": "planned",
+      "scope": [
+        "static dashboard data/checker",
+        "fallback data test",
+        "no-key and fake-live language scan",
+        "UI integration only after Swift model foundation is stable"
+      ],
+      "validation": [
+        "static data checker",
+        "fallback data test",
+        "no-key/fake-live scan",
+        "web static smoke only if UI changes"
+      ],
+      "nonGoals": [
+        "touch existing dirty apps/seis-demo-web/script.js in PR0 or PR1",
+        "live AI",
+        "provider keys",
+        "asset import"
+      ]
+    }
+  ],
+  "gapRegister": [
+    {
+      "id": "clean-worktree-slicing",
+      "status": "open",
+      "risk": "Current worktree contains many unrelated modified and untracked files; clean tree requires owner-approved staging or parking, not reset.",
+      "nextAction": "Use content/development/seis-clean-worktree-transition-ledger.json to stage PR0 and PR1 as narrow slices, then quarantine unrelated AI runtime, web UI, SSH/cloud, governance churn, reports, and large downloadable trees."
+    },
+    {
+      "id": "roadmap-splice",
+      "status": "addressed-by-this-record",
+      "risk": "The newer PR0/PR1/PR2 sequence was visible in status/index but not durable roadmap/backlog surfaces.",
+      "nextAction": "Keep SEIS-BL-051 and this sequence record synchronized until the PR stack is merged."
+    },
+    {
+      "id": "nvidia-downloadable-quarantine",
+      "status": "open",
+      "risk": "Large downloadable/reference trees need license, size, and public-safety review before any repo inclusion decision.",
+      "nextAction": "Treat downloadable assets as separate provenance/security slice; do not bundle with PR0 or PR1."
+    }
+  ],
+  "truthBoundary": "This record sequences implementation and verification work. It does not prove a clean worktree, five elapsed years of execution, live subagents, provider calls, SSH, deployment, public readiness, or release readiness.",
+  "nextHandoff": "Reviewers should treat PR0 and PR1 as stacked, narrow, public-safe slices. PR2 begins with data/checker work and waits on Swift model stability before UI integration."
+}

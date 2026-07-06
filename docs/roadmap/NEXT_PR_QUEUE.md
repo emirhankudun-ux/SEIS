@@ -2,6 +2,21 @@
 
 Date: 2026-06-23
 
+## Current PR0/PR1/PR2 Foundation Sequence
+
+| Order | Sequence ID | Suggested PR title | Scope | Validation | Approval needed |
+| --- | --- | --- | --- | --- | --- |
+| 0 | `pr0-foundation-manifest-package` | `docs: add SEIS five-year foundation manifests` | Source provenance, five-year agency orchestration, MCP permission risk, Stitch UX catalog, Swift/Apple bridge manifest, direct checkers, ADRs, short docs, and SEIS Brain context packs only. | `node scripts/check-seis-source-provenance-intake.mjs`, `node scripts/check-seis-five-year-agency-orchestration-contract.mjs`, `node scripts/check-seis-mcp-permission-risk-matrix.mjs`, `node scripts/check-seis-stitch-ux-screen-catalog.mjs`, `node scripts/check-seis-swift-apple-bridge-manifest.mjs`, staged path/secret scan, `git diff --check`. | None for docs/JSON/checkers/context packs; approval required for package alias wiring, Swift source, web UI, provider calls, SSH, deployment, asset import, push, merge, or unrelated dirty-work staging. |
+| 1 | `pr1-swift-model-foundation` | `apple: add Swift bridge models for MCP risk and Stitch families` | Add `SeisMCPPermissionRiskRecord`, `SeisStitchModuleFamily`, and public-safe JSON fixture loading tests as a stacked Swift model foundation after PR0. | `swift package describe --package-path packages/seis_platform_swift`, `swift test --package-path packages/seis_platform_swift`, `node scripts/check-seis-swift-apple-bridge-manifest.mjs`, staged path/secret scan, `git diff --check`. | None for additive Swift model/test files; approval required for SwiftUI shell, provider calls, asset copy, `Package.swift`, `package.json`, web UI integration, push, or merge. |
+| 2 | `pr2-web-demo-visibility-data-first` | `feat: add SEIS PR0 visibility data for web demo` | Add static dashboard data/checker, fallback data test, no-key/fake-live scan, and defer UI integration until Swift model foundation is stable. | Static data checker, fallback data test, no-key/fake-live scan, and web static smoke only if UI changes. | None for additive static data/checkers; approval required for touching existing dirty `apps/seis-demo-web/script.js`, live AI, provider keys, deployment, push, merge, or asset import. |
+
+Machine-readable bridge: `content/development/seis-pr0-pr1-pr2-implementation-sequence.json`.
+Direct checker: `node scripts/check-seis-pr0-pr1-pr2-implementation-sequence.mjs`.
+Clean-worktree transition ledger: `content/development/seis-clean-worktree-transition-ledger.json`.
+Clean-worktree checker: `node scripts/check-seis-clean-worktree-transition-ledger.mjs`.
+PR0 staging pathspec: `content/development/seis-pr0-foundation-staging-pathspec.json`.
+PR0 staging checkers: `node scripts/check-seis-pr0-foundation-staging-pathspec.mjs` and `node scripts/check-seis-pr0-staged-boundary.mjs`.
+
 ## Current Recommended Product Demo Stack
 
 | Order | Suggested PR title | Scope | Validation | Approval needed |
