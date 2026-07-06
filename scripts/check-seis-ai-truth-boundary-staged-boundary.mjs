@@ -150,9 +150,15 @@ for (const entry of staged) {
       "packages/seis-ai/test/mcp-smoke.test.mjs"
     ].includes(entry.path)
   ) {
-    for (const forbiddenMcpMarker of ["GOD_MODE_STATUS", "god-mode-status", "seis_god_mode_status"]) {
+    for (const forbiddenMcpMarker of [
+      "nvidia-nim-run-anywhere-downloadable-registry",
+      "check:seis-public-readiness-lanes",
+      "check:seis-public-readiness-evidence",
+      "check:seis-public-readiness-sensitive-boundary",
+      "intake:third-party"
+    ]) {
       if (blob.includes(forbiddenMcpMarker)) {
-        fail(`${entry.path} staged blob contains God Mode MCP marker reserved for a separate slice: ${forbiddenMcpMarker}`);
+        fail(`${entry.path} staged blob contains marker reserved for another slice: ${forbiddenMcpMarker}`);
       }
     }
   }

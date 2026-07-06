@@ -81,8 +81,8 @@
     },
     {
       "id": "god-mode-mixed-mcp-hunks",
-      "status": "requires-separate-slice-or-hunk-split",
-      "evidence": "packages/seis-ai/src/mcp/server.mjs, packages/seis-ai/test/mcp-smoke.test.mjs, content/development/seis-ai-core-mcp-runtime-contract.json, and packages/seis-ai/src/lib/plugin-integration.mjs contain God Mode status tool/resource changes interleaved with the AI truth-boundary resources."
+      "status": "resolved-prerequisite-committed",
+      "evidence": "The God Mode MCP prerequisite has been split into its own 35-tool/29-resource slice. AI truth-boundary MCP resource integration may now build on the committed God Mode baseline while still excluding NVIDIA, public-readiness, deploy, package, and web work."
     },
     {
       "id": "web-report-qa-permission-blocker",
@@ -105,6 +105,7 @@
   "nextSafeActions": [
     "Patch or hunk-stage the docs/STATUS.md 32-resource wording before claiming the 720B validator passes.",
     "Split package.json hunks so only AI truth-boundary script additions and quality:governance entries are staged.",
+    "Hunk-stage only the AI truth-boundary MCP 32-resource transition after the God Mode MCP prerequisite baseline.",
     "Keep NVIDIA downloadable, web QA, SSH/cloud, deploy, broad reports, and GitHub governance changes in separate PR-sized slices."
   ]
 }
