@@ -66,6 +66,7 @@ includesAll(pathspec.pathspecSafeCoreInclude, [
   "content/development/seis-ai-core-subagent-swarm-round-ledger.json",
   "content/development/seis-ai-core-subagent-round-execution-evidence-ledger.json",
   "content/development/seis-ai-truth-boundary-language-policy.json",
+  "scripts/check-seis-ai-truth-boundary-core.mjs",
   "scripts/check-seis-720b-agi-frontier-boundary.mjs",
   "scripts/check-seis-ai-core-subagent-swarm-round-ledger.mjs",
   "scripts/check-seis-ai-core-subagent-round-execution-evidence-ledger.mjs",
@@ -115,6 +116,7 @@ for (const id of [
 includesAll(pathspec.validation, [
   "node scripts/check-seis-ai-truth-boundary-staging-pathspec.mjs",
   "node scripts/check-seis-ai-truth-boundary-staged-boundary.mjs",
+  "node scripts/check-seis-ai-truth-boundary-core.mjs",
   "npm run check:seis-720b-agi-frontier-boundary",
   "npm run check:seis-ai-core-subagent-swarm-round-ledger",
   "npm run check:seis-ai-core-subagent-round-execution-evidence-ledger",
