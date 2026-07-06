@@ -8,7 +8,7 @@ Machine-readable source: [`content/development/publish-gate-contract.json`](../.
 
 | Level | Meaning | Allows | Still blocks |
 | --- | --- | --- | --- |
-| `configured` | `origin` points at the configured SEIS repository (`git@github.com:emirhankudun-ux/SEIS.git`). | Local validation, commits, readiness reporting. | Push claims and deployment claims. |
+| `configured` | `origin` points at the configured SEIS repository (`https://github.com/emirhankudun-ux/SEIS.git`). | Local validation, commits, readiness reporting. | Push claims and deployment claims. |
 | `publish-preflight` | Branch is `main`, upstream is `origin/main`, worktree is clean, and GitHub auth is ready. | Bounded push preflight and fast-forward-safe publish attempt. | Automatic deploy without confirmed target. |
 | `deployment-ready` | Publish preflight is ready and server/deployment target has domain, path, owner, and rollback confirmation. | Release artifact upload after human confirmation. | Unconfirmed overwrite and branch cleanup without review. |
 

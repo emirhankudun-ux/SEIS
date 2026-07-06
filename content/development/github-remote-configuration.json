@@ -7,13 +7,13 @@
     "name": "SEIS",
     "owner": "emirhankudun-ux",
     "remoteName": "origin",
-    "remoteUrl": "git@github.com:emirhankudun-ux/SEIS.git",
+    "remoteUrl": "https://github.com/emirhankudun-ux/SEIS.git",
     "targetBranch": "main"
   },
   "localBranchMode": {
-    "currentWorkingBranch": "codex/publish-local-seis-20260618-163043",
-    "tracks": "origin/codex/publish-local-seis-20260618-163043",
-    "reason": "Execution is happening on codex/publish-local-seis-20260618-163043; main remains the intended publish target."
+    "currentWorkingBranch": "feature/apple-first-foundation",
+    "tracks": "origin/feature/apple-first-foundation",
+    "reason": "Execution is happening on a short-lived feature review branch; main remains the intended publish target."
   },
   "publishReadiness": {
     "remoteConfigured": true,

@@ -5,11 +5,12 @@
   "purpose": "Keep local GitHub publication decisions explicit by separating configured remote state from push readiness.",
   "remote": {
     "name": "origin",
-    "url": "git@github.com:emirhankudun-ux/SEIS.git",
+    "url": "https://github.com/emirhankudun-ux/SEIS.git",
     "targetBranch": "main",
     "acceptedLocalBranches": [
       "work",
       "main",
+      "feature/apple-first-foundation",
       "codex/publish-local-seis-20260618-163043"
     ]
   },
