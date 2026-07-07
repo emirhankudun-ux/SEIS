@@ -24,6 +24,9 @@ const requiredFiles = [
   'packages/seis-ai/src/mcp/server.mjs',
   'mcp/seis-mcp-server.mjs',
   'plugins/seis/README.md',
+  'scripts/check-branch-policy-reconciliation.mjs',
+  'scripts/check-master-backlog.mjs',
+  'scripts/check-release-artifact-policy.mjs',
   'script/build_and_run.sh',
   'docs/development/first-run-quickstart.md',
   'docs/development/local-ai-workbench.md',
@@ -33,6 +36,7 @@ const requiredFiles = [
   'docs/governance/seis-supreme-v12-constitution.md',
   '.github/workflows/codeql.yml',
   'scripts/check-open-source-governance.mjs',
+  'scripts/check-public-doc-command-wiring.mjs',
 ];
 
 const requiredTextChecks = [
@@ -87,8 +91,17 @@ const requiredTextChecks = [
     'Do not add filler code only to change language percentages',
   ],
   ['package.json', '"check:open-source-governance"'],
+  ['package.json', '"check:branch-policy-reconciliation"'],
+  ['package.json', '"check:master-backlog"'],
+  ['docs/governance/branch-policy-reconciliation.md', 'active-main-centered-reconciled'],
+  ['docs/governance/branch-policy-reconciliation.md', 'npm run check:branch-policy-reconciliation'],
+  ['package.json', '"check:release-artifact-policy"'],
+  ['docs/deployment/release-artifact-retention-policy.md', 'tracked-retained'],
+  ['docs/deployment/release-artifact-retention-policy.md', 'npm run check:release-artifact-policy'],
   ['.github/workflows/ci.yml', 'npm run quality:governance'],
   ['.github/workflows/seis-open-source-governance.yml', 'SEIS Open Source Governance'],
+  ['.github/workflows/foundation-check.yml', 'npm run check:public-doc-command-wiring'],
+  ['package.json', '"check:public-doc-command-wiring"'],
 ];
 
 const forbiddenTextChecks = [
@@ -129,6 +142,31 @@ for (const [file, needle] of forbiddenTextChecks) {
 const packageJson = JSON.parse(read('package.json') || '{}');
 if (packageJson.scripts?.['check:foundation'] !== 'node scripts/check-foundation.mjs') {
   failures.push('package.json must expose check:foundation');
+}
+
+if (
+  packageJson.scripts?.['check:public-doc-command-wiring'] !==
+  'node scripts/check-public-doc-command-wiring.mjs'
+) {
+  failures.push('package.json must expose check:public-doc-command-wiring');
+}
+
+if (packageJson.scripts?.['check:master-backlog'] !== 'node scripts/check-master-backlog.mjs') {
+  failures.push('package.json must expose check:master-backlog');
+}
+
+if (
+  packageJson.scripts?.['check:branch-policy-reconciliation'] !==
+  'node scripts/check-branch-policy-reconciliation.mjs'
+) {
+  failures.push('package.json must expose check:branch-policy-reconciliation');
+}
+
+if (
+  packageJson.scripts?.['check:release-artifact-policy'] !==
+  'node scripts/check-release-artifact-policy.mjs'
+) {
+  failures.push('package.json must expose check:release-artifact-policy');
 }
 
 if (failures.length > 0) {

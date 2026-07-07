@@ -11,8 +11,8 @@ matched values.
 ## Scope
 
 - Commits counted: reachable HEAD; exact count intentionally omitted for stable audit diffs
-- History objects considered: 3893
-- Text blobs inspected: 3893
+- History objects considered: 4085
+- Text blobs inspected: 4085
 - Binary blobs skipped: 0
 - Large blobs skipped: 0
 - Maximum blob size: 1000000 bytes
