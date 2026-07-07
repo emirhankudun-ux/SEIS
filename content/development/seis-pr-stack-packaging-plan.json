@@ -1,0 +1,198 @@
+{
+  "$schema": "https://seis.dev/schemas/pr-stack-packaging-plan.schema.json",
+  "id": "seis-pr-stack-packaging-plan",
+  "version": "2026-07-07",
+  "status": "active-local-packaging-guard",
+  "visibility": "public-safe",
+  "purpose": "Prevent the current local review branch from being represented as a single PR2 data-only change when the branch contains multiple SEIS slices.",
+  "sourceRefs": {
+    "nextPrQueue": "docs/roadmap/NEXT_PR_QUEUE.md",
+    "implementationSequence": "content/development/seis-pr0-pr1-pr2-implementation-sequence.json",
+    "cleanWorktreeTransition": "content/development/seis-clean-worktree-transition-ledger.json",
+    "pr2DashboardData": "apps/seis-demo-web/data/seis-foundation-dashboard.json"
+  },
+  "branchStack": {
+    "comparisonBase": "origin/feature/apple-first-foundation",
+    "baseRef": "origin/feature/apple-first-foundation",
+    "currentBranch": "feature/apple-first-foundation",
+    "diffCommand": "git diff --name-status origin/feature/apple-first-foundation...HEAD",
+    "packagingClaim": "branch-stack-not-single-pr2-data-only",
+    "singlePr2DataOnlyClaimAllowed": false,
+    "currentBranchRequiresStackedPrPackaging": true,
+    "doNotOpenCurrentBranchAsSinglePr2DataOnly": true,
+    "doNotPushWithoutOwnerApproval": true,
+    "failOnUnclassifiedChangedPaths": true,
+    "failOnDeleteRenameCopy": true,
+    "requiredPublicStatement": "current branch is a branch stack, not a single PR2 data-only PR",
+    "pr2DataOnlyAllowedPaths": [
+      "apps/seis-demo-web/data/seis-foundation-dashboard.json",
+      "content/development/seis-pr0-pr1-pr2-implementation-sequence.json",
+      "docs/roadmap/NEXT_PR_QUEUE.md",
+      "package.json",
+      "scripts/check-seis-demo-foundation-dashboard-boundary.mjs",
+      "scripts/check-seis-demo-foundation-dashboard-data.mjs",
+      "scripts/check-seis-pr0-pr1-pr2-implementation-sequence.mjs"
+    ],
+    "forbiddenIfClaimingSinglePr2": [
+      "apps/seis-demo-web/script.js",
+      "apps/web/",
+      "apps/seis-core/",
+      "packages/seis-ai/",
+      "packages/seis_platform_swift/",
+      ".github/",
+      "deploy/",
+      "reports/",
+      "package.json"
+    ],
+    "requiresExplicitOwnerApproval": [
+      "apps/seis-demo-web/script.js edits in a PR2 data-only claim",
+      "provider or live AI enablement",
+      "SSH or deploy activation",
+      "asset import",
+      "GitHub push, merge, release, or Pages publication"
+    ],
+    "knownNonPr2PathsThatMayExistInBranchDiff": [
+      "apps/seis-demo-web/script.js",
+      "apps/seis-core/script.js",
+      "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/AppleContinuationWindow.swift",
+      "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/SeisAppleNativeShellShowcaseView.swift",
+      "packages/seis-ai/src/mcp/server.mjs"
+    ],
+    "safePrCreationRule": "Create reviewable PRs from exact path/commit slices or stacked branches. Do not describe the full current branch as PR2 data-only while non-PR2 paths exist in the branch diff."
+  },
+  "changedPathClassifications": [
+    {
+      "id": "github-governance",
+      "pathPrefixes": [".github/"],
+      "singlePr2DataOnlyAllowed": false
+    },
+    {
+      "id": "repo-governance-docs",
+      "paths": [".gitignore", "AGENTS.md", "README.md", "package.json"],
+      "pathPrefixes": ["docs/", "seis-brain/"],
+      "singlePr2DataOnlyAllowed": false
+    },
+    {
+      "id": "apple-native",
+      "pathPrefixes": ["apps/macos/", "packages/seis_platform_swift/"],
+      "singlePr2DataOnlyAllowed": false
+    },
+    {
+      "id": "web-demo-pr2-data",
+      "paths": ["apps/seis-demo-web/data/seis-foundation-dashboard.json"],
+      "singlePr2DataOnlyAllowed": true
+    },
+    {
+      "id": "web-demo-other-data",
+      "pathPrefixes": ["apps/seis-demo-web/data/"],
+      "singlePr2DataOnlyAllowed": false
+    },
+    {
+      "id": "web-demo-script",
+      "paths": ["apps/seis-demo-web/script.js"],
+      "singlePr2DataOnlyAllowed": false,
+      "requiresExplicitOwnerApproval": true
+    },
+    {
+      "id": "web-product-ui",
+      "pathPrefixes": ["apps/web/", "apps/seis-core/"],
+      "singlePr2DataOnlyAllowed": false
+    },
+    {
+      "id": "development-records",
+      "pathPrefixes": ["content/development/", "data/"],
+      "singlePr2DataOnlyAllowed": false
+    },
+    {
+      "id": "ssh-deploy",
+      "pathPrefixes": ["deploy/"],
+      "singlePr2DataOnlyAllowed": false,
+      "requiresExplicitOwnerApproval": true
+    },
+    {
+      "id": "ai-runtime",
+      "pathPrefixes": ["packages/seis-ai/"],
+      "singlePr2DataOnlyAllowed": false
+    },
+    {
+      "id": "reports",
+      "pathPrefixes": ["reports/"],
+      "singlePr2DataOnlyAllowed": false
+    },
+    {
+      "id": "scripts",
+      "pathPrefixes": ["scripts/"],
+      "singlePr2DataOnlyAllowed": false
+    }
+  ],
+  "githubPolicy": {
+    "pushAllowedNow": false,
+    "requiresExplicitOwnerApprovalBeforePush": true,
+    "directPushToMainAllowed": false,
+    "forcePushAllowed": false,
+    "mergeAllowedNow": false,
+    "remoteMutationRequiresDryRunAndRollback": true
+  },
+  "slices": [
+    {
+      "id": "pr2-web-demo-visibility-data-first",
+      "status": "data-ready-ui-pending",
+      "intent": "Expose PR0/PR1 foundation visibility as no-key static data and checker evidence without UI wiring.",
+      "allowedPaths": [
+        "apps/seis-demo-web/data/seis-foundation-dashboard.json",
+        "content/development/seis-pr0-pr1-pr2-implementation-sequence.json",
+        "docs/roadmap/NEXT_PR_QUEUE.md",
+        "package.json",
+        "scripts/check-seis-demo-foundation-dashboard-boundary.mjs",
+        "scripts/check-seis-demo-foundation-dashboard-data.mjs",
+        "scripts/check-seis-pr0-pr1-pr2-implementation-sequence.mjs"
+      ],
+      "blockedPaths": [
+        "apps/seis-demo-web/script.js",
+        "provider keys",
+        "live AI adapters",
+        "asset imports",
+        "deployment files",
+        "SSH activation files"
+      ],
+      "requiredValidation": [
+        "npm run check:seis-demo-foundation-dashboard-boundary",
+        "npm run check:seis-demo-foundation-dashboard-data",
+        "node scripts/check-seis-pr0-pr1-pr2-implementation-sequence.mjs",
+        "npm run check:public-doc-command-wiring",
+        "npm run check:foundation",
+        "staged path/secret scan",
+        "git diff --check"
+      ],
+      "truthBoundary": "This slice is data-ready and UI-pending. It does not prove live AI, provider calls, web UI integration, deployment, or release readiness."
+    },
+    {
+      "id": "public-readiness-hardening",
+      "status": "stacked-local-commits",
+      "intent": "Keep evidence path, symlink escape, script-file wiring, and sensitive-boundary checks separate from PR2 UI/data claims.",
+      "requiredValidation": [
+        "npm run check:seis-public-readiness",
+        "npm run check:foundation"
+      ]
+    },
+    {
+      "id": "swift-model-foundation",
+      "status": "stacked-local-commits",
+      "intent": "Keep Swift Codable models and public-safe fixture tests as PR1, separate from web UI integration.",
+      "requiredValidation": [
+        "swift package describe --package-path packages/seis_platform_swift",
+        "swift test --package-path packages/seis_platform_swift"
+      ]
+    }
+  ],
+  "truthBoundary": {
+    "cleanWorktreeMayBeTrueLocally": true,
+    "githubPublished": false,
+    "singlePrCompletionClaimAllowed": false,
+    "liveAiClaimAllowed": false,
+    "providerCredentialClaimAllowed": false,
+    "elapsedFiveYearExecutionClaimAllowed": false,
+    "subagentRuntimeAutonomyClaimAllowed": false
+  },
+  "nextHandoff": "Before GitHub publication, create a PR body that names the exact slice and validation evidence. If the full current branch is pushed, present it as a stacked foundation branch, not as a PR2 data-only branch."
+}

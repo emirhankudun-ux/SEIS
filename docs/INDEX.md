@@ -83,6 +83,7 @@ Date: 2026-06-23
 | [development/seis-mcp-permission-risk-matrix.md](development/seis-mcp-permission-risk-matrix.md) | MCP/tools permission risk matrix for official status, authentication, mutation risk, and approval gates. |
 | [development/seis-stitch-ux-screen-catalog.md](development/seis-stitch-ux-screen-catalog.md) | Stitch UX screen catalog for read-only design review, module families, and no asset-copy boundaries. |
 | [development/seis-swift-apple-bridge-manifest.md](development/seis-swift-apple-bridge-manifest.md) | Swift/Apple bridge manifest for PR1 model handoff without provider calls, SwiftUI shell work, or asset imports. |
+| [development/seis-pr-stack-packaging-plan.md](development/seis-pr-stack-packaging-plan.md) | PR stack packaging guard that prevents the current branch from being framed as a single PR2 data-only PR. |
 | [decisions/adr-0005-seis-source-provenance-intake.md](decisions/adr-0005-seis-source-provenance-intake.md) | ADR for manifest-first source intake before using external archives as implementation inputs. |
 | [decisions/adr-0006-seis-five-year-agency-orchestration-contract.md](decisions/adr-0006-seis-five-year-agency-orchestration-contract.md) | ADR for supervised agency orchestration before any write-capable automation. |
 | [../seis-brain/vault/12_Context_Packs/SEIS%20Source%20Provenance%20Intake%20Context.md](../seis-brain/vault/12_Context_Packs/SEIS%20Source%20Provenance%20Intake%20Context.md) | SEIS Brain context pack for source provenance intake and future archive review handoff. |
@@ -158,5 +159,6 @@ Date: 2026-06-23
 | [../content/development/seis-mcp-permission-risk-matrix.json](../content/development/seis-mcp-permission-risk-matrix.json) | PR0 MCP/tools permission risk matrix for auth, mutation, credential, package-runner, and external-system risk classes. |
 | [../content/development/seis-stitch-ux-screen-catalog.json](../content/development/seis-stitch-ux-screen-catalog.json) | PR0 Stitch UX catalog for module-family planning and visual review without copying assets into the repo. |
 | [../content/development/seis-swift-apple-bridge-manifest.json](../content/development/seis-swift-apple-bridge-manifest.json) | PR0 Swift/Apple bridge manifest feeding PR1 model work while keeping SwiftUI, providers, and assets out of scope. |
+| [../content/development/seis-pr-stack-packaging-plan.json](../content/development/seis-pr-stack-packaging-plan.json) | PR stack packaging plan that keeps PR2 data-only claims separate from the broader local branch diff. |
 | [../reports/seis-model-scaling/20b-16gb-memory-benchmark.json](../reports/seis-model-scaling/20b-16gb-memory-benchmark.json) | `template-not-measured` benchmark manifest for the future 20B / 16GB+ memory test; not benchmark evidence. |
 | [../apps/web/goal-tracking.html](../apps/web/goal-tracking.html) | Generated static Goal Tracking Center page. |

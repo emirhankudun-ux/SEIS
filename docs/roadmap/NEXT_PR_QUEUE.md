@@ -16,6 +16,12 @@ Current local status: PR2 static data is `data-ready-ui-pending` through
 `node scripts/check-seis-demo-foundation-dashboard-boundary.mjs`. UI wiring is
 still intentionally deferred.
 
+Branch packaging guard: the current local branch contains stacked work and must
+not be described as a single PR2 data-only PR. Use
+`content/development/seis-pr-stack-packaging-plan.json` and
+`node scripts/check-seis-pr-stack-packaging-plan.mjs` before GitHub publication
+or PR body drafting. Required public statement: current branch is a branch stack, not a single PR2 data-only PR.
+
 Machine-readable bridge: `content/development/seis-pr0-pr1-pr2-implementation-sequence.json`.
 Direct checker: `node scripts/check-seis-pr0-pr1-pr2-implementation-sequence.mjs`.
 Clean-worktree transition ledger: `content/development/seis-clean-worktree-transition-ledger.json`.

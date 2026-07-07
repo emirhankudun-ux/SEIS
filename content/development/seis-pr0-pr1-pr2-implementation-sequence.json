@@ -137,6 +137,7 @@
       "validation": [
         "node scripts/check-seis-demo-foundation-dashboard-data.mjs",
         "node scripts/check-seis-demo-foundation-dashboard-boundary.mjs",
+        "node scripts/check-seis-pr-stack-packaging-plan.mjs",
         "static data checker",
         "fallback data test",
         "no-key/fake-live scan",
