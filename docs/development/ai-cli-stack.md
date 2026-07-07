@@ -36,6 +36,7 @@ Not:
 `auto` mode first chooses a helper from policy; if that helper is not installed locally, it automatically falls back to `seis-agent` and keeps orchestration alive.
 `auto` mode ayrıca local yardımcıda hazır/kurulum durumu eksikse aynı şekilde fallback yapar (örneğin API anahtarı veya Ollama daemon’u yoksa).
 `auto` mode ek: eğer seçilen helper (openai/claude/gemini/kimi) çevrimdışı olarak değerlendirilirse ve Ollama çalışıyorsa, otomatik olarak önce Ollama’ya geçer. Ollama da yoksa en son SEIS Agent’a düşer.
+W64 routing rule: eligible fallback is local-first when adequate, then owner-selected, then approved cloud providers by capability/privacy/cost, and finally SEIS Agent or Local Demo. If a model/provider limit is reached, the route must be marked `Rate Limited` or blocked for that decision, the fallback identity must be visible, and SEIS must not pretend the next model is the original one.
 
 Current routing intent:
 

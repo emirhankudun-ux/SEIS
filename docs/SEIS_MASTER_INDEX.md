@@ -1,6 +1,6 @@
 # SEIS Master Index
 
-Date: 2026-06-23
+Date: 2026-07-07
 
 ## Purpose
 
@@ -57,6 +57,7 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | SEIS AI Core | [ai/seis-ai-core.md](ai/seis-ai-core.md) |
 | SEIS model scaling profile | [ai/seis-model-scaling.md](ai/seis-model-scaling.md) |
 | Model Router contract | [ai/model-router.md](ai/model-router.md) |
+| W64 provider routing order | [../reports/seis-ai-routing/w64-provider-routing-order.md](../reports/seis-ai-routing/w64-provider-routing-order.md) |
 | Read-Only Model Router Contract | [ai/read-only-model-router-contract.md](ai/read-only-model-router-contract.md) |
 | Prompt Engine contract | [ai/prompt-engine.md](ai/prompt-engine.md) |
 | Agent Runtime contract | [ai/agent-runtime.md](ai/agent-runtime.md) |
@@ -97,6 +98,8 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | Data schema registry | [../content/development/seis-data-schema-registry.json](../content/development/seis-data-schema-registry.json) |
 | SEIS full-stack contract | [../content/development/seis-fullstack-contract.json](../content/development/seis-fullstack-contract.json) |
 | SEIS model scaling hardware profile | [../content/development/seis-model-scaling-hardware-profile.json](../content/development/seis-model-scaling-hardware-profile.json) |
+| SEIS AI Core provider registry | [../content/development/seis-ai-core-provider-registry.json](../content/development/seis-ai-core-provider-registry.json) |
+| W64 provider routing order report | [../reports/seis-ai-routing/w64-provider-routing-order.md](../reports/seis-ai-routing/w64-provider-routing-order.md) |
 | SEIS model parameter ladder | [../content/development/seis-model-parameter-ladder.json](../content/development/seis-model-parameter-ladder.json) |
 | SEIS model frontier escalation policy | [../content/development/seis-model-frontier-escalation-policy.json](../content/development/seis-model-frontier-escalation-policy.json) |
 | SEIS 150B Frontier Model Program | [../content/development/seis-150b-frontier-model-program.json](../content/development/seis-150b-frontier-model-program.json) |

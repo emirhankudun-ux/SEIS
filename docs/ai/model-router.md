@@ -18,26 +18,35 @@ user selection.
 | Router implementation | Planned | No central router implementation exists in this branch. | Typed environment validation and live adapter tests are missing. | Keep routing disabled until server-only adapter tests exist. |
 | Routing policy | Documented | This document and `docs/ai/seis-ai-core.md`. | No runtime policy tests. | Add fixtures before live providers. |
 | Provider state model | Documented fixture | `content/development/seis-ai-core-provider-registry.json`, `seis_ai_core_provider_status`, `seis://ai/provider-registry.json`. | No live health checks or credential validation are performed. | Use the fixture for UI/MCP status before live adapters. |
+| Provider readiness axes | Documented fixture | `providerReadinessAxes` and per-provider `readiness` in `content/development/seis-ai-core-provider-registry.json`; W64 routing report in `reports/seis-ai-routing/w64-provider-routing-order.md`. | No credentials are read, no provider quota is called, and no model output is used as evidence. | Keep installed, credentialed, quota-ready, owner-approved, verified, and blocked as separate states before any route can execute. |
 | Read-only model-router contract | Planned-read-only contract | `content/development/seis-read-only-model-router-contract.json`, `docs/ai/read-only-model-router-contract.md`, `npm run check:seis-second-brain-readiness-contracts`. | No runtime gateway, provider calls, credential validation, browser secrets, silent fallback, or local-only cloud fallback. | Keep the contract explanatory until backend-only provider mediation and no-key fixtures exist. |
 | Model scaling profile | Planned compatibility contract | `content/development/seis-model-scaling-hardware-profile.json`, `docs/ai/seis-model-scaling.md`, `seis_ai_core_model_scaling_status`. | The 20B / 16GB+ RAM target plus 70B, 150B, and 512B apex lanes are not routeable models until weights, model cards, runtime adapters, safety evals, AGI eval protocol, and benchmarks exist. | Keep Local Demo as fallback and block 20B, 70B, 150B, or 512B routing until profile gates pass. |
 | Model parameter ladder | Planning contract, not runtime | `content/development/seis-model-parameter-ladder.json`, `seis://ai/model-parameter-ladder.json`, `npm run check:seis-model-parameter-ladder`. | The 20B, 70B, 150B, 300B+, 512B, and highest-future parameter classes are explicit route-blocked targets, not trained, AGI, or routeable SEIS models. | Use the ladder only to explain promotion order and approval gates; never treat it as model availability. |
 | 150B frontier model program | Plan-only route gate | `content/development/seis-150b-frontier-model-program.json`, `seis://ai/150b-frontier-model-program.json`, `npm run check:seis-150b-frontier-model-program`. | The 150B program is a charter and promotion-gate record only, not weights, inference, benchmark evidence, cloud/GPU capacity, SSH, or production readiness. | Keep 150B route eligibility blocked until 20B and 70B evidence plus clean-room, budget, privacy, safety, observability, rollback, and approval gates pass. |
 | 512B apex model program | Plan-only SEIS AGI readiness gate with public research baseline | `content/development/seis-512b-apex-model-program.json`, `seis://ai/512b-apex-model-program.json`, `npm run check:seis-512b-apex-model-program`. | The 512B program is an apex planning, internet-researched frontier baseline, AGI-readiness definition, and public GitHub readiness record only, not AGI, weights, inference, benchmark evidence, cloud/GPU capacity, SSH, or production readiness. | Keep 512B route eligibility blocked until 20B, 70B, 150B, and 300B+ evidence plus clean-room, independent AGI eval protocol, all installed AI/sub-agent council review, public-readiness gates, and approval gates pass. |
 | AGI evaluation protocol | Read-only evidence gate, not AGI proof | `content/development/seis-agi-evaluation-protocol.json`, `seis://ai/agi-evaluation-protocol.json`, `node scripts/check-seis-agi-evaluation-protocol.mjs`. | The protocol defines required evidence for a future AGI claim, but no evaluation has run and no AGI claim is allowed. | Keep AGI route eligibility blocked until independent evaluation, red-team, model/system cards, external review, and human approval exist. |
-| Fallback behavior | Documented | Local Demo and no-key startup are required. | No runtime gateway. | Keep fallback identity visible in future UI. |
+| Fallback behavior | Documented | Local Demo, no-key startup, and `routingPriority.mode: local-first-when-adequate` are required. | No runtime gateway. | Keep fallback identity visible in future UI. |
 
 ## Rules / Policy
 
 - Core SEIS must boot with zero cloud model-provider keys.
 - Automatic routing must preserve the requested capability.
+- The eligible fallback pool is local-first when local capability is adequate,
+  then owner-selected, then approved cloud providers ranked by capability,
+  privacy, and cost.
 - Local-only mode must never fall back to a cloud provider.
 - Fallback must be visible and must show the actual provider and model.
+- If a future live provider becomes `Rate Limited` or `Error`, the router must
+  mark that provider blocked for that decision, record a redacted reason, and
+  visibly move to the next eligible provider instead of silently switching.
 - Missing Key is not Error; Missing Key means credential evidence is absent,
   while Error means a configured route failed or needs repair.
 - A provider with `Missing Key`, `Disabled`, `Rate Limited`, or `Error` status
   must be excluded unless the user explicitly repairs or retries it.
 - Browser code must not receive provider credentials or unrestricted provider
   base URLs.
+- A provider can route only when `installed`, `credentialed`, `quotaReady`,
+  `ownerApproved`, and `verified` are true and `blocked` is false.
 
 ## Capability Matrix
 
@@ -63,6 +72,8 @@ Before the router is marked implemented, add:
 
 - typed server-only environment validation
 - provider registry contract tests with `npm run check:seis-ai-core-provider-registry`
+- provider readiness-axis fixtures for installed, credentialed, quota-ready,
+  owner-approved, verified, and blocked
 - model scaling hardware profile tests with `npm run check:seis-model-scaling-hardware-profile`
 - model parameter ladder tests with `npm run check:seis-model-parameter-ladder`
 - 150B frontier program tests with `npm run check:seis-150b-frontier-model-program`
@@ -90,7 +101,10 @@ Before the router is marked implemented, add:
 Add a server-only provider registry fixture and no-key startup test before any
 live provider adapter work. The current provider registry fixture is
 `content/development/seis-ai-core-provider-registry.json`; it is status evidence
-only and does not perform live provider calls.
+only and does not perform live provider calls. It separates public provider
+state from route readiness with `installed`, `credentialed`, `quotaReady`,
+`ownerApproved`, `verified`, and `blocked` fields for each provider. Those fields
+are repo-local evidence markers, not credential checks.
 
 The current model scaling profile is
 `content/development/seis-model-scaling-hardware-profile.json`; it records the

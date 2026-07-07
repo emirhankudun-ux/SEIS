@@ -59,6 +59,10 @@ The foundation includes:
 - Browser code must not receive provider secrets.
 - Local-only mode must never fall back to cloud silently.
 - Fallback identity must be visible to the user.
+- The fallback pool is local-first when adequate, then owner-selected, then
+  approved cloud providers ranked by capability, privacy, and cost.
+- If a future provider hits quota or a redacted runtime error, SEIS must block
+  that route for the decision and visibly move to the next eligible provider.
 - Claude-style interfaces must not label non-Anthropic output as Claude.
 - SEIS plugin lane tools may inspect repo-local manifests, skills, and lane
   profiles, but must not claim connector authentication or perform external
@@ -110,6 +114,19 @@ Public provider states must remain:
 - Rate Limited
 - Error
 
+Provider route readiness is tracked separately from public state. Each provider
+record in `content/development/seis-ai-core-provider-registry.json` must expose:
+
+- `installed`
+- `credentialed`
+- `quotaReady`
+- `ownerApproved`
+- `verified`
+- `blocked`
+
+These fields are repo-local evidence markers. They do not read credentials,
+call providers, validate quota, or prove live model availability.
+
 ## Evidence Requirements
 
 AI features need evidence before being marked implemented:
@@ -118,6 +135,8 @@ AI features need evidence before being marked implemented:
 - provider registry tests
 - no-key startup test
 - fallback test
+- provider readiness-axis test for installed, credentialed, quota-ready,
+  owner-approved, verified, and blocked
 - redaction test
 - client-bundle secret exposure check
 - documented provider matrix

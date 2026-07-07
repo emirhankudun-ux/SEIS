@@ -231,9 +231,9 @@ PR0 staging checkers: `node scripts/check-seis-pr0-foundation-staging-pathspec.m
 | --- | --- |
 | Priority | P1 |
 | Goal | Keep model-router, prompt-engine, and agent-runtime contracts explicit before live provider work. |
-| Include | `docs/ai/model-router.md`, `docs/ai/prompt-engine.md`, `docs/ai/agent-runtime.md`, `docs/ai/seis-ai-core.md`, docs indexes, status, and provider audit notes. |
+| Include | `docs/ai/model-router.md`, `docs/ai/prompt-engine.md`, `docs/ai/agent-runtime.md`, `docs/ai/seis-ai-core.md`, `content/development/seis-ai-core-provider-registry.json`, `reports/seis-ai-routing/w64-provider-routing-order.md`, docs indexes, status, and provider audit notes. |
 | Exclude | Live provider calls, SDK installation, API key collection, model training, or runtime gateway claims. |
-| Validation | Documentation review, `npm run audit:ai-providers`, `git diff --check`. |
+| Validation | `npm run check:seis-ai-core-provider-registry`, documentation review, `npm run audit:ai-providers`, `git diff --check`. |
 | Approval needed | None for documentation-only work. |
 
 ## PR 4C: Installed AI Workforce Training Control Plane

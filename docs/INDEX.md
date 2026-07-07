@@ -1,6 +1,6 @@
 # SEIS Documentation Index
 
-Date: 2026-06-23
+Date: 2026-07-07
 
 ## Master Navigation
 
@@ -68,6 +68,7 @@ Date: 2026-06-23
 | [ai/ai-workforce-training.md](ai/ai-workforce-training.md) | Installed AI workforce training contract for supervised seed-model improvement without cloud fine-tuning claims. |
 | [ai/seis-model-scaling.md](ai/seis-model-scaling.md) | Planned 20B / 16GB+ RAM compatibility target plus future 70B and 150B frontier scale ladder without trained-weight claims. |
 | [ai/model-router.md](ai/model-router.md) | Provider-neutral model routing contract and evidence requirements. |
+| [../reports/seis-ai-routing/w64-provider-routing-order.md](../reports/seis-ai-routing/w64-provider-routing-order.md) | W64 provider routing order report for local-first fallback, readiness axes, and no-live-execution evidence. |
 | [ai/read-only-model-router-contract.md](ai/read-only-model-router-contract.md) | Read-only provider-neutral router contract: Missing Key is not Error, local-only never routes to cloud, and live execution waits for backend-only mediation. |
 | [ai/prompt-engine.md](ai/prompt-engine.md) | Versioned prompt-pack contract and prompt safety rules. |
 | [ai/agent-runtime.md](ai/agent-runtime.md) | Human-supervised agent runtime contract and permission boundaries. |
