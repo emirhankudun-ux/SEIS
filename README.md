@@ -82,26 +82,42 @@ Primary demo routes:
   activity strip, dock/taskbar, launcher, resizable/draggable windows,
   browser-local VFS, terminal, session persistence, a Live Demo Console,
   Demo Readiness evidence board, source coverage metrics, terminal `live` /
-  `readiness` / `sources` commands, 65+ core app
-  launch targets, and the live Reference Vault for 219 supplied ZIP modules under
+  `readiness` / `apps` / `refs` / `sources` commands, 65+ core app
+  launch targets, a visible SEIS App Library for 219 supplied ZIP modules under
   `apps/web/reference-banks/`. `seis-linux-replica.html?demo=live` is the
   public-demo deep link that auto-enters the browser-local shell and starts the
   live tour without SSH, deployment, provider calls, or host shell access; the
   landing page primary OS CTAs and SEIS OS product page CTA route to this live
   demo path. TR/EN locale persistence uses
   `seis.locale.v1`, and connected SEIS Search, Code, Design, Cloud, Store,
-  Website, Music, AI Core, and Reference surfaces open mini workspaces or
-  iframe-backed local reference modules with browser-local state changes. The
+  Website, Music, AI Core, SEIS AI Chat, SEIS Code AI, SEIS AGI Control,
+  SEIS SSH Control, Apple Native Shell, and Library surfaces open mini workspaces or
+  iframe-backed local app surfaces with browser-local state changes. The
   focused browser smoke check captures desktop, mobile, and deep-link evidence for the live
-  demo console, Demo Readiness gates, source coverage, reference modules,
-  terminal commands, and viewport-safe window sizing. It also validates every populated Reference
-  Vault route and thumbnail path in `apps/web/reference-banks/reference-apps.js`
+  demo console, Demo Readiness gates, source coverage, library apps,
+  terminal commands, and viewport-safe window sizing. It also validates every populated SEIS App
+  Library route and thumbnail path in `apps/web/reference-banks/reference-apps.js`
   from the static web serving root, so missing supplied-module assets fail the
-  demo gate instead of silently shipping broken cards. The focused review packet
+  demo gate instead of silently shipping broken cards. Website Lane and Ubuntu
+  Desktop visuals are used as hidden source material; the public UI does not show
+  raw source folders. Real AI, AGI, and SSH lanes are separated into
+  backend/approval-gated surfaces so the no-key public demo does not fake live
+  capability. The Apple Native Shell surface is contained inside the Linux
+  Replica as a browser-safe capsule and does not launch host-native apps. The focused review packet
   is maintained at
   [`docs/reviews/SEIS_LINUX_REPLICA_LIVE_DEMO_REVIEW.md`](./docs/reviews/SEIS_LINUX_REPLICA_LIVE_DEMO_REVIEW.md),
   and the public operator walkthrough is maintained at
   [`docs/demos/SEIS_LINUX_REPLICA_PUBLIC_WALKTHROUGH.md`](./docs/demos/SEIS_LINUX_REPLICA_PUBLIC_WALKTHROUGH.md).
+  Source lanes are documented as Website / AI Platform and Ubuntu Web Desktop;
+  source-focused deep links are `?demo=live&source=website` and
+  `?demo=live&source=ubuntu`. The demo uses SEIS placeholder previews when a
+  supplied module has no thumbnail. The Apple-native Swift package mirrors this
+  route contract through `SeisAppLibraryContract` and `SeisPublicDemoLaneRoute`
+  so Xcode surfaces can open the same public-safe Website and Ubuntu lanes
+  without exposing raw source folders or faking live AI/AGI/SSH. Focused validation commands:
+  `node scripts/check-seis-linux-replica-public-walkthrough.mjs`,
+  `node scripts/check-seis-linux-replica-browser-smoke.mjs --static`, and
+  `npm run check:seis-reference-banks`.
 - `seis-linux-replica-public-demo.html` - public reviewer entry route for the
   Linux-like demo. It summarizes the seven-minute walkthrough, current evidence,
   supplied asset boundary, and real/local/mock/disabled states before opening
@@ -118,19 +134,13 @@ Key local validation commands:
 ```bash
 npm run check:desktop-os
 npm run check:seis-second-brain
-npm run report:seis-obsidian-safe-import-dry-run
-npm run check:seis-obsidian-safe-import-dry-run
-npm run report:seis-read-only-model-router-decision
-npm run check:seis-read-only-model-router-decision
-npm run report:seis-second-brain-accessibility-focus-report
-npm run check:seis-second-brain-accessibility-focus-report
+npm run check:seis-brain-context-packs
 npm run check:seis-second-brain-readiness-contracts
 npm run check:seis-second-brain-browser-smoke
-npm run check:seis-public-demo-go-no-go -- --run-fast-checks
-npm run report:seis-public-demo-go-no-go
+npm run check:seis-public-readiness
 npm run check:desktop-os-browser-smoke
 npm run check:seis-linux-replica-browser-smoke
-node scripts/check-seis-linux-replica-public-walkthrough.mjs
+npm run check:seis-linux-replica-public-walkthrough
 node scripts/check-seis-static-demo-routes.mjs
 npm run check:seis-code
 npm run check:seis-website-pages
@@ -188,44 +198,23 @@ The static checks do not write SSH config, open a live connection, create
 shared credentials, mutate GitHub, or deploy infrastructure. Live online/mobile
 claims remain blocked until a strict live probe passes with explicit approval.
 
-`npm run check:seis-second-brain-readiness-contracts` validates the Second
-Brain readiness contracts for the Obsidian bridge safe import plan,
+`npm run check:seis-second-brain-readiness-contracts` validates the Second Brain readiness contracts for the Obsidian bridge safe import plan,
 accessibility/focus QA, provider-neutral read-only model-router boundary, and
 PR #54 public demo release checklist without enabling private vault import,
 live provider routing, SSH, deployment, merge, or publication.
 
-`npm run check:seis-public-demo-go-no-go -- --run-fast-checks` is the read-only
-public demo release gate. It is expected to report `NO-GO` until current browser
-smoke evidence exists, the worktree is reviewed, and the human owner explicitly
-approves release. Second Brain readiness contracts stay review-gated until human
-approval.
+`npm run check:seis-public-readiness` is the current no-key public-readiness
+gate. It validates the environment template, public docs command wiring,
+public-readiness docs and status matrix, plus public-safe SEIS Brain context
+packs. It is not a public launch, release, Pages publication, deployment, live
+AI, live SSH, merge, or approval claim.
 
-`npm run report:seis-obsidian-safe-import-dry-run` writes the repo-owned
-Obsidian safe-import dry-run artifacts under `reports/seis-public-demo/`.
-Those artifacts are generated from SEIS seed note metadata only; they do not
-scan a private Obsidian vault, copy note bodies, install plugins, call
-providers, execute SSH, mutate GitHub, deploy, or approve publication.
-
-`npm run report:seis-read-only-model-router-decision` writes the provider-neutral
-read-only router decision artifacts under `reports/seis-public-demo/`. Those
-artifacts include installed AI profile fixtures and blocked route decisions
-without validating credentials, storing prompt bodies, calling providers,
-routing private Obsidian content, using silent fallback, executing SSH,
-mutating GitHub, deploying, or approving live model routing.
-
-`npm run report:seis-second-brain-accessibility-focus-report` writes the
-Second Brain accessibility/focus QA artifacts under `reports/seis-public-demo/`.
-Those artifacts validate repo-static ARIA/focus markers and browser-smoke
-coverage while keeping manual keyboard transcript, screen-reader transcript,
-reduced-motion review, and human accessibility approval blocked until review.
-
-`npm run report:seis-public-demo-go-no-go` writes PR/release-review artifacts
-under `reports/seis-public-demo/`, including the evidence manifest and
-`reports/seis-public-demo/pr54-review-packet-latest.md` plus the read-only
-`reports/seis-public-demo/worktree-review-latest.md` and
-`reports/seis-public-demo/pr54-stage-plan-latest.md`, without changing GitHub,
-importing Obsidian, calling providers, executing SSH, staging files, committing,
-pushing, or deploying.
+The Obsidian safe-import plan, read-only model-router boundary, Second Brain
+accessibility/focus QA, and PR #54 public demo checklist are currently
+validated together by `npm run check:seis-second-brain-readiness-contracts`.
+They remain review-gated contracts, not report-writing commands, private vault
+imports, provider calls, SSH actions, GitHub mutations, deployments, or release
+approvals.
 
 ## Yeni Nesil AGI Araştırma Hedefi
 

@@ -43,8 +43,9 @@ secret-history/runtime-provider validation has not been performed.
 | `.gitignore` | Hardened for env, key, service-account, and secret-folder patterns. |
 | `.env.example` | Placeholder-only template retained; unverified provider model aliases were removed from default values. |
 | Provider keys | No provider keys requested or verified. Redacted static audit added. |
+| Git history scan | Local redacted scan passed without printing matched values. |
 | SSH | No SSH command executed. |
-| Remaining blocker | Full secret-history scan, typed environment validation, and runtime provider verification were not run. |
+| Remaining blocker | External secret scanner/provider-log review, typed environment validation, and runtime provider verification were not run. |
 
 ## Architecture Review
 
@@ -96,8 +97,11 @@ Desktop Chrome smoke observed 81 app surfaces, 61 primary workflow surfaces,
 clickable-response coverage, and zero cramped mobile targets. The standalone
 SEIS Linux Replica route is now repeatable through
 `npm run check:seis-linux-replica-browser-smoke`; it completes boot/login,
-terminal `neofetch`, 64 launcher tiles, Files/Terminal/Calculator/Settings
-window smoke, local-only boundary checks, and screenshot evidence. This remains
+terminal `neofetch`, terminal `apps`, terminal `sources`, 291 launcher tiles,
+67/67 functional app audit coverage, 35/35 workbench snapshot/reset coverage,
+8/8 playable game reset coverage, Files/Terminal/Calculator/Settings window
+smoke, contained Apple Native Shell capsule evidence, AGI/SSH gated panel
+evidence, local-only boundary checks, and screenshot evidence. This remains
 Local Demo/browser-local evidence only; it is not live provider routing, SSH,
 deployment, push, merge, production storage, or host filesystem access.
 
@@ -121,7 +125,8 @@ runtime or trained SEIS model. This pass documents provider-neutral boundaries,
 no-key startup, provider status states, and the rule that provider routing or
 prompt engineering is not model ownership. A
 redacted static provider and credential audit now exists at
-`docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md`. Dedicated foundation
+`docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md`, and the local redacted Git
+history scan exists at `docs/audits/GIT_SECRET_HISTORY_SCAN.md`. Dedicated foundation
 contracts now exist for `docs/ai/model-router.md`,
 `docs/ai/prompt-engine.md`, and `docs/ai/agent-runtime.md`. The planned 20B /
 16GB+ RAM SEIS model target plus future 70B, 150B, 300B+, and highest-future
@@ -174,7 +179,7 @@ deletion, merge, force-push, and history rewrite remain approval-gated.
 | Reviewer role | Result |
 | --- | --- |
 | Architecture/product reviewer | Confirmed source-of-truth alignment around SEIS as a Command Center / Platform OS, flagged missing root architecture/roadmap pointers, CI script drift, and public-safe path cleanup. |
-| Public readiness/UX reviewer | Flagged CI drift, public-indexing ambiguity, missing GitHub templates/CODEOWNERS, keyboard accessibility gaps, and asset provenance blockers. |
+| Public readiness/UX reviewer | Flagged CI drift, pre-production public-indexing review needs, GitHub template/CODEOWNERS enforcement gaps, keyboard accessibility gaps, and asset provenance blockers. |
 | Contradiction/archive reviewer | Flagged legacy UIXAppTTR branch-policy wording, OpenAI-first/plugin versus provider-neutral AI Core ambiguity, duplicate backlog IDs, release zip artifact risk, and archive-ledger coverage gaps. |
 | Product/design reviewer | Flagged Mythic Gacha pre-draw/insufficient-currency behavior, SEIS Code path-boundary risk, shallow controls, mobile touch-target gaps, token drift, video poster/responsive-source gaps, and per-card art provenance gaps. |
 
@@ -185,11 +190,11 @@ distinguish current, planned, scaffolded, blocked, and evidence-backed states.
 
 ## Public Readiness Review
 
-Not ready. Blockers include dirty worktree review/staging, no full
-secret-history scan, no runtime provider verification, unreconciled workstreams,
-public-indexing ambiguity, missing GitHub templates/CODEOWNERS, incomplete
-keyboard accessibility evidence, asset provenance gaps, and no public exposure
-checklist.
+Not ready. Blockers include dirty worktree review/staging, no external
+secret-scanner/provider-log review, no runtime provider verification,
+unreconciled workstreams, production indexing/public exposure approval, remote GitHub
+template/CODEOWNERS enforcement not verified, incomplete keyboard accessibility
+evidence, asset provenance gaps, and no public exposure checklist.
 
 ## Release Readiness Review
 
@@ -199,7 +204,7 @@ Not ready. No release dry-run, deployment, tag, or rollback drill was performed.
 
 - No external PR state.
 - Open PRs have only been inventoried, not classified in a dedicated PR stack review.
-- No full secret-history scan.
+- No external secret scanner or credential-provider audit log review.
 - No typed environment validation.
 - No runtime AI provider verification.
 - SEIS Code and Mythic Gacha now have repeatable browser smoke evidence, but
@@ -221,7 +226,7 @@ Not ready. No release dry-run, deployment, tag, or rollback drill was performed.
 | Provider docs without runtime verification | Overclaiming live AI readiness | Add typed env validation, provider registry tests, and no-key startup checks before live integration work. |
 | Cloud readiness without live verification | Deployment overclaim | Keep cloud work dry-run until approved. |
 | CI workflow script drift | GitHub Actions can fail or pass without meaningful checks | Align workflow scripts with `package.json` in a dedicated CI PR. |
-| Public indexing ambiguity | Internal preview pages may be crawled or public pages may remain hidden | Decide preview/private/public SEO posture before release. |
+| Production indexing approval | Pages stay in `pre-production-noindex` while final domain and public release posture remain unapproved | Keep `npm run check:seo` passing and require human review before changing to `index, follow`. |
 
 ## Safe Changes Applied
 
@@ -290,8 +295,8 @@ Not ready. No release dry-run, deployment, tag, or rollback drill was performed.
 - Typed environment validation.
 - CI workflow script alignment.
 - Open PR stack classification and replacement plan.
-- GitHub PR/issue templates and CODEOWNERS.
-- Public indexing and exposure checklist decision.
+- Remote GitHub template/CODEOWNERS enforcement review.
+- Production indexing, final-domain, and exposure checklist approval.
 - Release zip artifact policy and possible artifact migration.
 - Legacy UIXAppTTR-era agent/archive material classification.
 - Live provider calls.
@@ -316,7 +321,7 @@ See `docs/STATUS.md` for the final validation table after this pass.
 - No external provider call.
 - No benchmark or model training.
 - No dataset download.
-- No full Git history secret scan.
+- No external secret scanner or credential-provider audit log review.
 
 ## Recommended Next PRs
 
@@ -329,7 +334,7 @@ See `docs/STATUS.md` for the final validation table after this pass.
 7. SEIS model scaling hardware profile hardening, measured memory benchmarks
    against the memory-budget contract, plan-only sub-agent council evidence,
    and clean-room model/dataset card completion.
-8. GitHub templates/CODEOWNERS and public exposure checklist.
+8. Remote GitHub template/CODEOWNERS enforcement and public exposure checklist.
 9. Accessibility keyboard-navigation QA.
 10. Plugin interface validation and browser QA.
 11. SEIS Code and Desktop Code IDE restart-persistence, Monaco/fallback editor,

@@ -170,6 +170,33 @@ ensure(replicaText.includes("referenceSourceFocusCopy"), "Linux Replica route mu
 ensure(replicaText.includes("referenceDesignCards"), "Linux Replica route must render hidden-source design board cards");
 ensure(replicaText.includes("referenceCategoryLabel"), "Linux Replica route must map internal reference categories to SEIS lane labels");
 ensure(replicaText.includes("App Lane Coverage"), "Linux Replica route must use SEIS App Lane wording in visible coverage UI");
+ensure(replicaText.includes('const STARTUP_APP_FLOW=["live-demo","reference-vault","code-ai","ai-chat"]'), "Linux Replica startup must enter Website/Ubuntu context and focus SEIS AI Chat");
+ensure(replicaText.includes('const DEMO_TOUR_APP_FLOW=["live-demo","code-ai","agi-control","ssh-control","demo-readiness","reference-vault","apple-native-shell","terminal","search","code","paint","cloud","ai-chat"]'), "Linux Replica demo tour must finish on SEIS AI Chat after Website/Ubuntu and Apple Native surfaces");
+ensure(replicaText.includes("(restored.length?restored:startup).forEach(openApp)"), "Linux Replica must use the chat-centered startup flow when no session is restored");
+ensure(replicaText.includes("startupAppFlow:()=>STARTUP_APP_FLOW.slice()"), "Linux Replica diagnostics must expose the startup app flow");
+ensure(replicaText.includes("demoTourAppFlow:()=>DEMO_TOUR_APP_FLOW.slice()"), "Linux Replica diagnostics must expose the demo tour app flow");
+ensure(replicaText.includes("\"apple-native-shell\",\"Apple Native Shell\",\"APL\",\"native\""), "Linux Replica must register Apple Native Shell as a contained native app");
+ensure(replicaText.includes("data-seis-apple-native-shell"), "Linux Replica must render the contained Apple Native Shell capsule");
+ensure(replicaText.includes("data-native-shell-contained=\\\"linux-replica\\\""), "Apple Native Shell capsule must declare Linux Replica containment");
+ensure(replicaText.includes("SeisAppleNativeShell is contained as a controlled native capsule"), "Apple Native Shell capsule must explain the containment boundary");
+ensure(replicaText.includes("No app bundle launch, host shell, provider key, SSH, or credential action runs here."), "Apple Native Shell capsule must preserve no-host-launch boundary copy");
+ensure(replicaText.includes('scope:"Apple",state:"Contained"'), "SEIS Search must expose Apple Native Shell as a contained Apple scope");
+ensure(replicaText.includes("apple:()=>{openApp(\"apple-native-shell\")"), "Linux Replica terminal must open the contained Apple Native Shell capsule with apple");
+ensure(replicaText.includes("Try <span class=\\\"info\\\">apple</span>"), "Linux Replica terminal help must surface the Apple Native Shell shortcut");
+ensure(
+  replicaText.includes('data-app=\\"apple-native-shell\\" title=\\"Apple Native Shell\\" aria-label=\\"Apple Native Shell\\">"+appActionSymbolMarkup("apple-native-shell","APL"'),
+  "Linux Replica Launchpad must expose an APL shortcut for Apple Native Shell"
+);
+ensure(replicaText.includes("function appSystemCode"), "Linux Replica route must define SEIS OS app code labels");
+ensure(replicaText.includes("app-code-label"), "Linux Replica route must render compact app code labels in OS chrome");
+ensure(replicaText.includes("<strong>SEIS OS</strong>"), "Linux Replica side rail must use SEIS OS chrome wording");
+ensure(replicaText.includes('b.setAttribute("aria-label","Open "+app.name)'), "Linux Replica desktop icons must keep accessible app names while showing codes");
+ensure(replicaText.includes('b.setAttribute("aria-label","Focus "+app.name)'), "Linux Replica taskbar icons must keep accessible app names while showing codes");
+ensure(replicaText.includes('class=\\\"app-tile\\\" data-app=\\\""+escapeHtml(app.id)+"\\\" title=\\\""+escapeHtml(app.name)+"\\\" aria-label=\\\"Open "+escapeHtml(app.name)'), "Linux Replica launcher tiles must keep accessible names while showing codes");
+ensure(replicaText.includes('class=\\\"app-code-label\\\">"+escapeHtml(appSystemCode(app))'), "Linux Replica launcher tiles must show SEIS app codes");
+ensure(!replicaText.includes('b.innerHTML="<span>"+escapeHtml(app.icon)+"</span><span>"+escapeHtml(app.name)+"</span>"'), "Linux Replica taskbar must not show long app names in the OS chrome");
+ensure(!replicaText.includes('b.innerHTML="<strong>"+escapeHtml(app.icon)+"</strong><span>"+escapeHtml(app.name)+"</span>"'), "Linux Replica desktop icons must not show long app names in the OS chrome");
+ensure(!replicaText.includes('<strong>"+escapeHtml(app.icon)+"</strong><span>"+escapeHtml(app.name)+"</span></button>'), "Linux Replica launcher tiles must not show long app names in the OS chrome");
 ensure(replicaText.includes("lanes:()=>commands.sources()"), "Linux Replica terminal must expose lanes as the user-facing source coverage alias");
 ensure(!replicaText.includes("raw source folders"), "Linux Replica route must not expose raw source folder wording in visible App Library copy");
 ensure(!replicaText.includes("Source Lane Coverage"), "Linux Replica route must not expose Source Lane Coverage in visible UI");
@@ -179,6 +206,17 @@ ensure(!replicaText.includes("<p class=\\\"muted\\\">\"+escapeHtml(app.category)
 ensure(replicaText.includes("data-reference-active-source"), "Linux Replica route must tag the active App Library source");
 ensure(replicaText.includes("data-reference-lane-focus"), "Linux Replica route must expose a visible focused lane strip");
 ensure(replicaText.includes("data-reference-design-board"), "Linux Replica route must expose a visible Design Board");
+ensure(replicaText.includes("data-seis-system-actions"), "Linux Replica route must expose coded SEIS system actions for App Library tiles");
+ensure(
+  replicaText.includes('actionSymbolMarkup(appIconKind(app),"APP"') &&
+    replicaText.includes('actionSymbolMarkup("globe","TAB"'),
+  "Linux Replica App Library tiles must use APP/TAB system action codes"
+);
+ensure(
+  replicaText.includes('actionSymbolMarkup("library","SYS #"+(index+1)'),
+  "Linux Replica App Library tiles must expose compact SYS index codes"
+);
+ensure(!replicaText.includes(">Open</button><button class=\\\"secondary\\\" data-ref-route"), "Linux Replica App Library tiles must not show generic Open/Tab action text");
 ensure(replicaText.includes('data-ref-focus=\\"website\\"'), "Linux Replica route must expose Website lane focus");
 ensure(replicaText.includes('data-ref-focus=\\"ubuntu\\"'), "Linux Replica route must expose Ubuntu lane focus");
 ensure(replicaText.includes("referencePlaceholderMarkup"), "Linux Replica route must define reference thumbnail fallback markup");
@@ -186,6 +224,11 @@ ensure(replicaText.includes(".reference-preview.is-placeholder"), "Linux Replica
 ensure(replicaText.includes(".reference-cover.is-placeholder"), "Linux Replica route must style missing thumbnail detail fallbacks");
 ensure(replicaText.includes("SEIS AI Chat"), "Linux Replica route must expose separate SEIS AI Chat surface");
 ensure(replicaText.includes("SEIS Code AI"), "Linux Replica route must expose separate SEIS Code AI surface");
+ensure(replicaText.includes("seis-ai-chat-transcript.v1"), "SEIS AI Chat must persist a browser-local transcript key");
+ensure(replicaText.includes("data-ai-chat-continuity=\\\"localStorage\\\""), "SEIS AI Chat must label local transcript continuity");
+ensure(replicaText.includes("seis-code-ai-plan.v1"), "SEIS Code AI must persist a separate browser-local plan key");
+ensure(replicaText.includes("data-code-ai-separate=\\\"chat-isolated\\\""), "SEIS Code AI must stay isolated from the chat transcript");
+ensure(replicaText.includes("Keep coding memory separate from SEIS AI Chat"), "SEIS Code AI generated plan must preserve chat/code separation");
 ensure(replicaText.includes("SEIS AGI Control"), "Linux Replica route must expose AGI control gates");
 ensure(replicaText.includes("SEIS SSH Control"), "Linux Replica route must expose SSH control gates");
 ensure(readmeText.includes("219 supplied ZIP modules"), "README must document the 219 supplied ZIP modules");

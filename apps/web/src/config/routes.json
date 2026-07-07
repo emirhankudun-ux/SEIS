@@ -18,7 +18,7 @@
     },
     {
       "path": "/seis-linux-replica.html",
-      "sections": ["boot", "login", "taskbar", "start-menu", "window-manager", "virtual-files", "terminal", "apps"],
+      "sections": ["boot", "login", "taskbar", "start-menu", "window-manager", "virtual-files", "terminal", "functional-app-runtime", "apps"],
       "status": "browser-linux-replica-foundation"
     },
     {

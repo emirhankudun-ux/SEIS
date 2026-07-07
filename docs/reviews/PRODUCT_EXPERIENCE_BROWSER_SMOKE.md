@@ -50,8 +50,8 @@ system, live AI provider readiness, or full visual-regression coverage.
 | SEIS Second Brain | Passed | Dedicated Chrome smoke opened the SEIS Second Brain desktop window, verified 6 vault notes, 6 graph nodes, 6 installed AI rows, 6 managed sub-agent rows, 12 autonomous-agent rows, and 5 real actions; saved snapshot, capture, graph, review, and GitHub-readiness artifacts under `/home/seis/SecondBrain`; verified reload persistence, SEIS AI Second Brain bridge rendering, mobile no-overflow, 21 mobile controls, and zero cramped mobile targets. |
 | SEIS Desktop to SEIS Code handoff | Passed | Dedicated Chrome smoke opened SEIS Code after Desktop terminal operations, found created folders/files, verified moved paths, confirmed removed paths were absent, and read `browser-smoke` plus `moved-smoke` through the SEIS Code terminal. |
 | SEIS Desktop mobile | Passed | Dedicated Chrome smoke loaded 390 x 844 mobile layout with 80 launcher apps, no horizontal overflow, and zero cramped targets. |
-| SEIS demo 3D hero and AI Core constellation | Passed | Product smoke verified the standalone SEIS demo hero canvas is ready, animated, nonblank, exposes 32 graph nodes / 53 edges, records Rotate, Sync, Pause, and constellation Sync interactions, and surfaces six AI routes, five personal plugin lanes, 34 MCP tools, 26 MCP resources, and three MCP prompts without provider keys. |
-| SEIS Code shell | Passed | Headless Chrome loaded the route, found 8 top menus, 5 activity views, 4 bottom panels, and no horizontal overflow. |
+| SEIS demo 3D hero and AI Core constellation | Passed | Product smoke verified the standalone SEIS demo hero canvas is ready, animated, nonblank, exposes 32 graph nodes / 53 edges, records Rotate, Sync, Pause, and constellation Sync interactions, and surfaces six AI routes, five personal plugin lanes, 35 MCP tools, 30 MCP resources, and three MCP prompts without provider keys. |
+| SEIS Code shell | Passed | Headless Chrome loaded the route, found 8 top menus, 6 activity views, 4 bottom panels, and no horizontal overflow. |
 | SEIS Code interactivity | Passed | Browser smoke now measures the SEIS Code clickable-response rate against the 80% acceptance floor before and after core interactions. |
 | SEIS Code editor | Passed with Monaco | Headless Chrome loaded Monaco, kept the fallback editor visually hidden, and accepted the SEIS Code editor surface as ready. |
 | SEIS Code terminal | Passed | Browser terminal wrote and read `smoke.txt`, submitted `keyboard-persist.txt` through keyboard events, entered the Local Demo REPL, reported status, executed write/append/patch/diff/virtual-command tool calls, cancelled broad destructive deletion, streamed a local response, and exited to Shell. |
@@ -104,13 +104,18 @@ app comments, so it was not copied directly as a broken route. The implemented
 route preserves the working product pattern: boot screen, local login, taskbar,
 start menu with categories/search, draggable/minimize/maximize/close windows,
 browser-local VFS, Linux-like terminal commands, TR/EN locale switching through
-the shared `seis.locale.v1` key, and 64 app launch targets. It also exposes a
+the shared `seis.locale.v1` key, 291 launcher targets including Website /
+Ubuntu app surfaces and the contained Apple Native Shell capsule, and 67
+audited browser-local functional core app workflows.
+It also exposes a
 connected SEIS bridge for Search, Code, Design, Cloud, Store, Website, Music,
-and AI Core without running live providers, SSH, deployment, or host shell
-actions. The Code, Design, Cloud, Store, Music, and AI Core bridge entries now
-render mini workspaces that execute browser-local state changes, including local
-code-check output, design-token save, cloud health refresh, store install state,
-music playback state, and bounded AI agent activity labels.
+AI Core, SEIS AI Chat, SEIS Code AI, SEIS AGI Control, SEIS SSH Control, and
+Apple Native Shell without running live providers, SSH, deployment, native host
+launches, or host shell actions. The Code, Design, Cloud, Store, Music, and AI
+Core bridge entries render mini workspaces that execute browser-local state
+changes, including local code-check output, design-token save, cloud health
+refresh, store install state, music playback state, and bounded AI agent
+activity labels.
 
 The full-stack interpretation for SEIS is now explicit: the current route is
 the tested frontend/client shell, while the next implementation slice must add
@@ -125,14 +130,25 @@ Standalone Chrome smoke evidence is now repeatable through
 - boot/login completion
 - TR default language, EN toggle, `document.documentElement.lang`, and
   `localStorage["seis.locale.v1"]` persistence
-- `window.__SEIS_LINUX_REPLICA__.appCount === 64`
-- terminal `neofetch` output with `Apps: 64`
+- `window.__SEIS_LINUX_REPLICA__.appCount === 291`
+- `window.__SEIS_LINUX_REPLICA__.functionalAppCount() === 67`
+- terminal `neofetch` output with `Apps: 291` and `Functional Apps: 67`
+- terminal `apps` output with Workbench and Playable coverage rows
+- terminal `sources`, `website`, and `ubuntu` output for Website / Ubuntu lane
+  coverage
+- terminal `live` output opening the guided live tour
 - terminal `seis` bridge output for connected SEIS surfaces
-- mini SEIS Code, Design, Cloud, Store, Music, and AI Core workspaces
-- 64 launcher tiles
+- mini SEIS Code, Design, Cloud, Store, Music, AI Core, AI Chat, Code AI, AGI,
+  SSH, and Apple Native Shell surfaces
+- 67/67 functional app audit pass coverage
+- 35/35 enhanced workbench primary-action, snapshot, and reset coverage
+- 8/8 playable game reset coverage
+- visible Local Functional Audit evidence in Live Demo Console and Demo
+  Readiness
+- 291 launcher tiles
 - Files, Terminal, Calculator, Settings, Search, and SEIS Code windows open
   together
-- 9 SEIS Search scopes and connected Search/Code/Design/Cloud/Website result
+- 10 SEIS Search scopes and connected Search/Code/Design/Cloud/Website result
   cards
 - no desktop horizontal overflow
 - screenshot evidence at `dist/qa/seis-linux-replica-smoke/desktop.png`
@@ -175,7 +191,7 @@ Latest observed summary:
   zero cramped mobile targets, screenshots under
   `dist/qa/desktop-os-smoke/`.
 - SEIS Code: Monaco ready, fallback editor hidden, terminal ready, 8 menus,
-  5 activity views, 4 bottom panels, measured clickable-response coverage above
+  6 activity views, 4 bottom panels, measured clickable-response coverage above
   the 80% acceptance floor, and route-reload IndexedDB persistence for a
   terminal-created file. The Local Demo REPL also exercises executable
   browser-local tool calls for write, append, patch, diff, virtual command, and
@@ -186,8 +202,8 @@ Latest observed summary:
   SEIS AI tabs in the shared-VFS desktop pass.
 - Standalone SEIS demo: AI Core 3D hero canvas ready, animated, nonblank, 32
   graph nodes, 53 edges, three hero controls, AI Core constellation Sync,
-  6 installed AI routes, 5 personal plugin lanes, 34 MCP tools,
-  26 MCP resources, 3 MCP prompts, 20-quarter sub-agent run, and v0.1-to-v1.0
+  6 installed AI routes, 5 personal plugin lanes, 35 MCP tools,
+  30 MCP resources, 3 MCP prompts, 20-quarter sub-agent run, and v0.1-to-v1.0
   local evidence export.
 - Screenshots were written under ignored `dist/qa/product-experience-smoke/`.
 
