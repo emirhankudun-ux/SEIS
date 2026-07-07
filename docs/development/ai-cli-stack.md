@@ -38,6 +38,13 @@ Not:
 `auto` mode ek: eğer seçilen helper (openai/claude/gemini/kimi) çevrimdışı olarak değerlendirilirse ve Ollama çalışıyorsa, otomatik olarak önce Ollama’ya geçer. Ollama da yoksa en son SEIS Agent’a düşer.
 W64 routing rule: eligible fallback is local-first when adequate, then owner-selected, then approved cloud providers by capability/privacy/cost, and finally SEIS Agent or Local Demo. If a model/provider limit is reached, the route must be marked `Rate Limited` or blocked for that decision, the fallback identity must be visible, and SEIS must not pretend the next model is the original one.
 
+Hermes Computer Use protocol:
+`content/development/seis-hermes-computer-use-protocol.json` defines the safe
+Hermes submit path: use `type_text` to update the app state, confirm the control
+is `Send`, avoid the voice control, and record a repo-only ledger without
+secrets, provider-call claims, or model-output evidence unless a response is
+visibly captured.
+
 Current routing intent:
 
 - `seis-agent`: default orchestration for repo governance, release, and policy-sensitive work.

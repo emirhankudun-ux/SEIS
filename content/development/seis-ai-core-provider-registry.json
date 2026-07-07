@@ -10,6 +10,7 @@
     "modelRouterDoc": "docs/ai/model-router.md",
     "providerAudit": "docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md",
     "providerAuditJson": "docs/audits/ai-provider-audit.json",
+    "hermesComputerUseProtocol": "content/development/seis-hermes-computer-use-protocol.json",
     "pluginIntegration": "content/development/seis-agent-plugin-integration.json",
     "versionRegistry": "content/development/seis-ai-core-version-registry.json",
     "mcpRuntimeContract": "content/development/seis-ai-core-mcp-runtime-contract.json",

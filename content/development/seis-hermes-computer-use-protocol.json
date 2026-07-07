@@ -1,0 +1,136 @@
+{
+  "id": "seis-hermes-computer-use-protocol",
+  "version": "2026.07.07",
+  "status": "documented-protocol",
+  "purpose": "Define the safe Hermes Computer Use workflow for public-safe SEIS prompts, visible submit behavior, provider fallback policy, and repo-only result ledgers.",
+  "qualityGate": "npm run check:seis-hermes-computer-use-protocol",
+  "sourceOfTruth": {
+    "aiCliStack": "docs/development/ai-cli-stack.md",
+    "modelRouter": "docs/ai/model-router.md",
+    "providerRegistry": "content/development/seis-ai-core-provider-registry.json",
+    "w64ProviderRoutingOrder": "reports/seis-ai-routing/w64-provider-routing-order.md",
+    "w64HermesLedger": "reports/seis-ai-routing/w64-hermes-computer-use-ledger.md"
+  },
+  "truthBoundary": "This protocol records UI-observed Hermes usage only. It does not read credentials, call providers directly, validate provider quota, inspect private session storage, claim model execution success, or treat absent model output as evidence.",
+  "appBinding": {
+    "appName": "Hermes",
+    "bundleIdentifier": "com.nousresearch.hermes",
+    "observedWorkspace": "canonical-seis-repo-visible",
+    "observedBranch": "feature-branch-visible",
+    "rawLocalPathRecorded": false,
+    "computerUseRequired": true
+  },
+  "allowedPromptClasses": [
+    "public-safe-policy-review",
+    "repo-only-ledger-review",
+    "read-only-boundary-check"
+  ],
+  "forbiddenPromptContent": [
+    "credentials",
+    "tokens",
+    "private keys",
+    "unredacted provider errors",
+    "private vault note bodies",
+    "deployment commands",
+    "SSH commands",
+    "billing actions",
+    "claims that a model or provider executed unless the result is visibly captured"
+  ],
+  "submitProtocol": {
+    "requiredPreflight": [
+      "Call Computer Use get_app_state before interaction.",
+      "Confirm the Hermes workspace context and branch context are visible or record that they were not visible.",
+      "Use a tiny public-safe prompt whose requested output is bounded.",
+      "Record the exact prompt in a repo-only ledger before or immediately after submission."
+    ],
+    "preferredInputPath": [
+      "Focus the Hermes message text entry area.",
+      "Use Computer Use type_text so the app's input state updates.",
+      "Confirm the submit control is exposed as Send.",
+      "Click the Send control by accessibility element index when available.",
+      "Record that a session route exists if the URL changes, but redact the raw session id from repo evidence."
+    ],
+    "avoidPaths": [
+      "Do not rely on set_value alone when the Send button does not appear.",
+      "Do not click Start voice conversation as a send substitute.",
+      "Do not use pixel coordinates unless accessibility indices are unavailable and the action is already visually confirmed.",
+      "Do not continue submitting retries after the prompt is already accepted."
+    ],
+    "knownHermesAmbiguities": [
+      "set_value may populate the text field visually without enabling Send.",
+      "The nearby control can remain Start voice conversation until real keyboard input updates the app state.",
+      "Clicking the voice control can produce a microphone permission notification without sending the prompt.",
+      "A submitted session can exist without any visible model answer; this is not usable model-output evidence."
+    ]
+  },
+  "fallbackPolicy": {
+    "providerRegistry": "content/development/seis-ai-core-provider-registry.json",
+    "mode": "local-first-when-adequate",
+    "eligibleOnlyWhen": [
+      "installed",
+      "credentialed",
+      "quotaReady",
+      "ownerApproved",
+      "verified",
+      "not blocked"
+    ],
+    "rateLimitHandling": "If a selected model or provider is Rate Limited or Error, record the redacted reason, block that route for the decision, and visibly move to the next eligible provider. Never pretend the fallback provider is the original provider."
+  },
+  "requiredLedgerFields": [
+    "ownerSignal",
+    "appBinding",
+    "workspaceContext",
+    "branchContext",
+    "sessionIdRedacted",
+    "visibleSelectedModelRedacted",
+    "visibleSelectedModelClass",
+    "promptClass",
+    "promptTextPublicSafe",
+    "submitPath",
+    "secretsRequested",
+    "providerCallsClaimed",
+    "liveExecutionClaim",
+    "responseVisible",
+    "repoEvidenceUsed",
+    "uiAmbiguities"
+  ],
+  "observedRuns": [
+    {
+      "id": "w64-hermes-provider-routing-review",
+      "date": "2026-07-07",
+      "sessionIdRedacted": true,
+      "visibleSelectedModelRedacted": true,
+      "visibleSelectedModelClass": "external-provider-ui-label-redacted",
+      "promptClass": "public-safe-policy-review",
+      "promptSubmitted": "ui-submit-observed",
+      "responseVisible": false,
+      "repoEvidenceUsed": "ui-submit-ledger-only-no-model-output",
+      "secretsRequested": false,
+      "providerCallsClaimed": false,
+      "liveExecutionClaim": "none",
+      "rawLocalPathRecorded": false,
+      "rawSessionIdRecorded": false,
+      "exactModelNameRecorded": false,
+      "uiAmbiguities": [
+        "voice-control-click-produced-microphone-notification",
+        "set-value-did-not-enable-send",
+        "type-text-enabled-send",
+        "no-response-visible-after-3m20s"
+      ],
+      "ledger": "reports/seis-ai-routing/w64-hermes-computer-use-ledger.md"
+    }
+  ],
+  "publicSafety": {
+    "rawLocalPathsAllowed": false,
+    "rawSessionIdsAllowed": false,
+    "exactModelNamesAllowed": false,
+    "providerOutputAsEvidenceAllowed": false,
+    "secretValuesAllowed": false
+  },
+  "nextSafeActions": [
+    "Use this protocol before any future Hermes Computer Use submission.",
+    "Keep Hermes prompt packets tiny and public-safe.",
+    "Use Hermes output as evidence only when the response is visibly captured and recorded without secrets.",
+    "Keep provider fallback eligibility tied to the provider registry readiness axes."
+  ]
+}
