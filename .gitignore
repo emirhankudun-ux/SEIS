@@ -186,6 +186,7 @@ apps/web/content/
 docs/*
 !docs/GETTING_STARTED.md
 !docs/TROUBLESHOOTING.md
+!docs/SEIS_GOAL_TRACKING.md
 !docs/PUBLIC_READINESS.md
 !docs/OBSIDIAN_SECOND_BRAIN.md
 !docs/LOCAL_AI_SETUP.md
@@ -203,6 +204,8 @@ docs/*
 !docs/releases/*.md
 !docs/ai/
 !docs/ai/*.md
+!docs/operations/
+!docs/operations/*.md
 !docs/goals/
 !docs/goals/*.md
 !docs/development/

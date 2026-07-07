@@ -141,10 +141,17 @@ if (contract) {
     "software-engineering-scorecard",
   ], "domainGapBacklog");
   for (const item of contract.domainGapBacklog || []) {
-    ensure(item.status === "planned", `${item.id} must remain planned until separately implemented`);
+    ensure(["planned", "implemented"].includes(item.status), `${item.id} must be planned or implemented`);
     ensure(String(item.artifact || "").startsWith("content/development/"), `${item.id} must define a future content/development artifact`);
     ensure(typeof item.purpose === "string" && item.purpose.length > 40, `${item.id} must describe its purpose`);
+    if (item.status === "implemented") {
+      ensure(typeof item.qualityGate === "string" && (item.qualityGate.startsWith("npm run check:") || item.qualityGate.startsWith("node scripts/check-")), `${item.id} implemented item must declare a quality gate`);
+    }
   }
+  const implementedBacklog = (contract.domainGapBacklog || []).filter((item) => item.status === "implemented");
+  ensureArrayIncludesAll(implementedBacklog.map((item) => item.id), [
+    "devops-observability-incident-contract",
+  ], "implemented domainGapBacklog");
   ensure(contract.fiveYearExecutionModel?.minimumHorizonYears === 5, "five-year execution model must keep a minimum five-year horizon");
   ensure(contract.fiveYearExecutionModel?.turnModel === "up-to-200-supervised-turns-with-repo-ledgers", "turn model must preserve 200 supervised turns with ledgers");
   ensure(

@@ -9,11 +9,12 @@
   "fallback": "LightweightMcpServer no-dependency fallback",
   "officialSdk": "@modelcontextprotocol/sdk remains optional unless dependencies are installed",
   "toolCount": 35,
-  "resourceCount": 32,
+  "resourceCount": 33,
   "promptCount": 3,
   "smokeTest": "node --test packages/seis-ai/test/mcp-smoke.test.mjs",
   "pluginGate": "npm run check:seis-agent-plugin-integration",
   "resourceRead": "seis://ai/mcp-runtime-contract.json",
+  "fullUsageMcpBindingResource": "seis://ai/full-usage-mcp-binding.json",
   "pluginIntegrationResource": "seis://agent/plugin-integration.json",
   "boundary": "Browser demo and MCP smoke do not call remote MCP servers, store credentials, execute SSH, deploy, mutate GitHub, or run unrestricted shell tools.",
   "credentialBoundary": "No provider keys, SSH credentials, browser secrets, live deploys, GitHub mutation, or external mutation; local MCP smoke contract only.",
@@ -30,11 +31,11 @@
     {
       "id": "resources",
       "label": "Resource registry",
-      "count": 32,
+      "count": 33,
       "state": "verified",
       "method": "resources/list + resources/read",
-      "evidence": "Plugin integration, God Mode status, provider registry, model scaling profile, model parameter ladder, frontier escalation policy, 150B frontier model program, 512B apex AGI program, 720B AGI frontier boundary, sub-agent swarm round ledger, round execution evidence ledger, AGI evaluation protocol, AGI public readiness evidence, 20B model/dataset card templates, and MCP runtime contract resources are read through the protocol",
-      "duty": "Expose source-of-truth JSON resources for plugin integration, God Mode status, provider states, planned model scaling, parameter ladder boundaries, no-skip-20B frontier policy, 150B frontier program, 512B apex AGI program, 720B AGI frontier boundary, sub-agent swarm round ledger, round execution evidence ledger, AGI evidence protocol, AGI public-readiness claim gates, 20B clean-room evidence templates, MCP runtime, version gates, fixtures, and generated plan views."
+      "evidence": "Plugin integration, God Mode status, full-usage MCP binding, provider registry, model scaling profile, model parameter ladder, frontier escalation policy, 150B frontier model program, 512B apex AGI program, 720B AGI frontier boundary, sub-agent swarm round ledger, round execution evidence ledger, AGI evaluation protocol, AGI public readiness evidence, 20B model/dataset card templates, and MCP runtime contract resources are read through the protocol",
+      "duty": "Expose source-of-truth JSON resources for plugin integration, God Mode status, full-usage MCP binding, provider states, planned model scaling, parameter ladder boundaries, no-skip-20B frontier policy, 150B frontier program, 512B apex AGI program, 720B AGI frontier boundary, sub-agent swarm round ledger, round execution evidence ledger, AGI evidence protocol, AGI public-readiness claim gates, 20B clean-room evidence templates, MCP runtime, version gates, fixtures, and generated plan views."
     },
     {
       "id": "prompts",

@@ -18,6 +18,11 @@ Operate as a calm, modular, high-efficiency AI-native creative-engineering civil
 > [`docs/governance/seis-supreme-v12-constitution.md`](docs/governance/seis-supreme-v12-constitution.md)
 > (SEIS Supreme V12 Ultra Enterprise). This file remains the calm-technology
 > operating layer beneath the active Master Prompt.
+>
+> **Goal Tracking:** all agents must follow
+> [`docs/SEIS_GOAL_TRACKING.md`](docs/SEIS_GOAL_TRACKING.md) before modifying
+> the repository. It defines the clean worktree, 5-year roadmap, supervised
+> swarm, MCP, DevOps, security, 9Router, and GitHub output discipline.
 
 SEIS is a humane digital ecosystem focused on cinematic design, premium UI/UX, modular software engineering, scalable repository governance, calm technology, humane interaction systems, cognitive sustainability, emotionally intelligent interfaces, and sustainable digital environments.
 

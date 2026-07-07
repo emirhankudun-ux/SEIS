@@ -26,7 +26,7 @@ Provide a deterministic repository-local evidence artifact for the five-year sub
 - MCP policy: read-only-or-plan-only from content/development/seis-ai-core-mcp-runtime-contract.json
 - Installed AI Core routes: 6
 - Personal plugin lanes: 5
-- MCP runtime: 35 tools, 32 resources, 3 prompts over stdio JSON-RPC
+- MCP runtime: 35 tools, 33 resources, 3 prompts over stdio JSON-RPC
 - Provider registry: 7 providers, 0 required for core, 3 no-key profiles
 - Release promotion allowed: false
 
@@ -102,7 +102,7 @@ This report does not prove real five-year autonomous execution, background agent
 | Surface | State | Count | Duty |
 | --- | --- | --- | --- |
 | Tool registry | verified | 35 | Expose repo-backed SEIS AI checks, personal plugin lane tools, God Mode operating state, provider registry status, model scaling status, and AI Core version/sub-agent tools. |
-| Resource registry | verified | 32 | Expose source-of-truth JSON resources for plugin integration, God Mode status, provider states, planned model scaling, parameter ladder boundaries, no-skip-20B frontier policy, 150B frontier program, 512B apex AGI program, 720B AGI frontier boundary, sub-agent swarm round ledger, round execution evidence ledger, AGI evidence protocol, AGI public-readiness claim gates, 20B clean-room evidence templates, MCP runtime, version gates, fixtures, and generated plan views. |
+| Resource registry | verified | 33 | Expose source-of-truth JSON resources for plugin integration, God Mode status, full-usage MCP binding, provider states, planned model scaling, parameter ladder boundaries, no-skip-20B frontier policy, 150B frontier program, 512B apex AGI program, 720B AGI frontier boundary, sub-agent swarm round ledger, round execution evidence ledger, AGI evidence protocol, AGI public-readiness claim gates, 20B clean-room evidence templates, MCP runtime, version gates, fixtures, and generated plan views. |
 | Prompt registry | verified | 3 | Provide bounded audit, i18n, and review prompts without embedding secrets. |
 | Transport boundary | verified | 1 | Keep MCP available for local verification while official SDK compatibility remains a separate hardening path. |
 

@@ -16,9 +16,9 @@
     "source": "content/development/seis-ai-core-mcp-runtime-contract.json",
     "transport": "stdio JSON-RPC",
     "toolCount": 35,
-    "resourceCount": 32,
+    "resourceCount": 33,
     "promptCount": 3,
-    "sourceReportedEvidence": "Local smoke contract reports stdio tools/list, resources/list, prompts/list, and bounded calls without remote MCP servers or credentials.",
+    "sourceReportedEvidence": "Local smoke contract reports stdio tools/list, resources/list, prompts/list, the full-usage MCP binding resource, and bounded calls without remote MCP servers or credentials.",
     "runtimeAuthority": "local-smoke-and-repo-backed-status-only"
   },
   "activationPolicy": {

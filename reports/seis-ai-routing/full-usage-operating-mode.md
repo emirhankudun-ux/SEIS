@@ -35,17 +35,34 @@ boundaries, and provider identity honest.
 1. Inspect the current repo truth with `git status --short --untracked-files=all`.
 2. Select exactly one repo and one work item.
 3. Keep Codex as the only writer.
-4. Use Hermes, Eleni-Neferi oracle/tool layers, Cursor, Kimi, LM Studio, Ollama,
+4. Read the MCP binding resource when MCP help is relevant:
+   `seis://ai/full-usage-mcp-binding.json`.
+5. Use Hermes, Eleni-Neferi oracle/tool layers, Cursor, Kimi, LM Studio, Ollama,
    or cloud helpers only as bounded reviewers unless a future explicit writer
    handoff exists.
-5. Keep prompts tiny, public-safe, and bounded.
-6. If a model/provider limit appears, mark that route `Rate Limited` or blocked
+6. Keep prompts tiny, public-safe, and bounded.
+7. If a model/provider limit appears, mark that route `Rate Limited` or blocked
    for the decision and visibly move to the next eligible helper.
-7. Never pretend the fallback provider is the original provider.
-8. Record a repo-only ledger when helper output is used.
-9. Run the smallest validator that actually covers the changed contract.
-10. Push only verified feature-branch commits after a dry-run and explicit
+8. Never pretend the fallback provider is the original provider.
+9. Record a repo-only ledger when helper output is used.
+10. Run the smallest validator that actually covers the changed contract.
+11. Push only verified feature-branch commits after a dry-run and explicit
     approval; protected branches still require PR governance.
+
+## MCP Binding
+
+The full-usage mode is connected to the repo-owned `seis` MCP server through
+`content/development/seis-full-usage-mcp-binding.json` and the resource
+`seis://ai/full-usage-mcp-binding.json`.
+
+The active local MCP surface is 35 tools, 33 resources, and 3 prompts over
+stdio JSON-RPC. Use it for source-of-truth resources, status tools, bounded
+checks, and public-safe prompt rendering. External MCPs stay candidate,
+verified-task-scoped, or blocked according to the MCP permission risk matrix.
+
+Credentialed provider MCPs, external mutation MCPs, authenticated browser
+automation, SSH/cloud/deploy MCPs, and package-runner MCP activation require a
+separate owner-approved runbook before use.
 
 ## Current Evidence
 
@@ -73,3 +90,6 @@ boundaries, and provider identity honest.
 - Provider use requires redacted provider identity, visible route selection,
   owner-approved scope, captured output or deterministic validation, and a
   repo-only ledger. Codex must not read provider credentials.
+- MCP use requires server identity, risk record id, selected tool/resource,
+  allowed mode, auth boundary, captured output, and validator evidence when the
+  output shapes a repo decision.

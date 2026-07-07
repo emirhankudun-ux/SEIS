@@ -825,7 +825,7 @@
   ],
   "mcpRuntimeSurfaceCount": 4,
   "mcpRuntimeToolCount": 35,
-  "mcpRuntimeResourceCount": 32,
+  "mcpRuntimeResourceCount": 33,
   "mcpRuntimePromptCount": 3,
   "mcpRuntimeContract": {
     "id": "seis-ai-core-mcp-runtime-contract",
@@ -838,11 +838,12 @@
     "fallback": "LightweightMcpServer no-dependency fallback",
     "officialSdk": "@modelcontextprotocol/sdk remains optional unless dependencies are installed",
     "toolCount": 35,
-    "resourceCount": 32,
+    "resourceCount": 33,
     "promptCount": 3,
     "smokeTest": "node --test packages/seis-ai/test/mcp-smoke.test.mjs",
     "pluginGate": "npm run check:seis-agent-plugin-integration",
     "resourceRead": "seis://ai/mcp-runtime-contract.json",
+    "fullUsageMcpBindingResource": "seis://ai/full-usage-mcp-binding.json",
     "pluginIntegrationResource": "seis://agent/plugin-integration.json",
     "boundary": "Browser demo and MCP smoke do not call remote MCP servers, store credentials, execute SSH, deploy, mutate GitHub, or run unrestricted shell tools.",
     "credentialBoundary": "No provider keys, SSH credentials, browser secrets, live deploys, GitHub mutation, or external mutation; local MCP smoke contract only.",
@@ -859,11 +860,11 @@
       {
         "id": "resources",
         "label": "Resource registry",
-        "count": 32,
+        "count": 33,
         "state": "verified",
         "method": "resources/list + resources/read",
-        "evidence": "Plugin integration, God Mode status, provider registry, model scaling profile, model parameter ladder, frontier escalation policy, 150B frontier model program, 512B apex AGI program, 720B AGI frontier boundary, sub-agent swarm round ledger, round execution evidence ledger, AGI evaluation protocol, AGI public readiness evidence, 20B model/dataset card templates, and MCP runtime contract resources are read through the protocol",
-        "duty": "Expose source-of-truth JSON resources for plugin integration, God Mode status, provider states, planned model scaling, parameter ladder boundaries, no-skip-20B frontier policy, 150B frontier program, 512B apex AGI program, 720B AGI frontier boundary, sub-agent swarm round ledger, round execution evidence ledger, AGI evidence protocol, AGI public-readiness claim gates, 20B clean-room evidence templates, MCP runtime, version gates, fixtures, and generated plan views."
+        "evidence": "Plugin integration, God Mode status, full-usage MCP binding, provider registry, model scaling profile, model parameter ladder, frontier escalation policy, 150B frontier model program, 512B apex AGI program, 720B AGI frontier boundary, sub-agent swarm round ledger, round execution evidence ledger, AGI evaluation protocol, AGI public readiness evidence, 20B model/dataset card templates, and MCP runtime contract resources are read through the protocol",
+        "duty": "Expose source-of-truth JSON resources for plugin integration, God Mode status, full-usage MCP binding, provider states, planned model scaling, parameter ladder boundaries, no-skip-20B frontier policy, 150B frontier program, 512B apex AGI program, 720B AGI frontier boundary, sub-agent swarm round ledger, round execution evidence ledger, AGI evidence protocol, AGI public-readiness claim gates, 20B clean-room evidence templates, MCP runtime, version gates, fixtures, and generated plan views."
       },
       {
         "id": "prompts",
@@ -889,7 +890,7 @@
     "id": "seis-ai-core-provider-registry",
     "version": 1,
     "status": "documented-fixture",
-    "updatedAt": "2026-06-23",
+    "updatedAt": "2026-07-07",
     "purpose": "Define the zero-key SEIS AI Core provider state contract for Local Demo, personal plugin lanes, and future server-only live provider routing without calling providers or validating credentials.",
     "qualityGate": "npm run check:seis-ai-core-provider-registry",
     "sourceOfTruth": {
@@ -897,9 +898,11 @@
       "modelRouterDoc": "docs/ai/model-router.md",
       "providerAudit": "docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md",
       "providerAuditJson": "docs/audits/ai-provider-audit.json",
+      "hermesComputerUseProtocol": "content/development/seis-hermes-computer-use-protocol.json",
       "pluginIntegration": "content/development/seis-agent-plugin-integration.json",
       "versionRegistry": "content/development/seis-ai-core-version-registry.json",
-      "mcpRuntimeContract": "content/development/seis-ai-core-mcp-runtime-contract.json"
+      "mcpRuntimeContract": "content/development/seis-ai-core-mcp-runtime-contract.json",
+      "w64RoutingOrderReport": "reports/seis-ai-routing/w64-provider-routing-order.md"
     },
     "truthBoundary": "Repository-local provider status fixture only. It performs no live provider calls, no credential validation, no network health checks, no SSH checks, no deployment, and no GitHub mutation.",
     "publicStates": [
@@ -936,14 +939,58 @@
         "meaning": "Future live adapter state for redacted provider/runtime errors; no raw provider error body may be surfaced."
       }
     ],
+    "providerReadinessAxes": [
+      {
+        "axis": "installed",
+        "meaning": "The local app, CLI, adapter, or repo fixture needed for the route is present; this fixture does not install software."
+      },
+      {
+        "axis": "credentialed",
+        "meaning": "The route either requires no credential or has server-only credential evidence; this fixture does not read secrets."
+      },
+      {
+        "axis": "quotaReady",
+        "meaning": "The route is not known to be rate limited; live quota must be proven by a redacted server-only adapter later."
+      },
+      {
+        "axis": "ownerApproved",
+        "meaning": "The owner has approved the route for this lane or class of work."
+      },
+      {
+        "axis": "verified",
+        "meaning": "The route has repo-local evidence or a future redacted health check; this fixture performs no provider call."
+      },
+      {
+        "axis": "blocked",
+        "meaning": "The route must not be selected while any required readiness axis is false."
+      }
+    ],
+    "routingPriority": {
+      "mode": "local-first-when-adequate",
+      "selectionOrder": [
+        "adequate-local-provider",
+        "owner-selected-provider",
+        "capability-compatible-approved-cloud-provider",
+        "lowest-risk-approved-cloud-provider",
+        "lowest-cost-approved-cloud-provider",
+        "seis-local-demo",
+        "feature-disabled"
+      ],
+      "eligibilityRule": "A provider can route only when installed, credentialed, quotaReady, ownerApproved, and verified are true, blocked is false, and the provider supports the requested capability and privacy mode.",
+      "limitHandling": "If the selected provider becomes Rate Limited or Error in a future live adapter, mark that provider blocked for the decision, record the redacted reason, and move visibly to the next eligible provider. Do not silently switch providers."
+    },
     "coreCredentialRequirement": "none",
     "defaultRoutingMode": "local-demo",
     "localOnlyRespected": true,
     "requiredForCore": [],
     "fallbackOrder": [
-      "selected-live-provider",
-      "compatible-live-provider",
+      "adequate-local-provider",
+      "owner-selected-provider",
+      "capability-compatible-approved-cloud-provider",
+      "lowest-risk-approved-cloud-provider",
+      "lowest-cost-approved-cloud-provider",
       "approved-local-provider",
+      "seis-local-demo",
       "local-demo",
       "feature-disabled"
     ],
@@ -971,6 +1018,15 @@
         "backendOnly": true,
         "frontendSecretAllowed": false,
         "fallbackEligible": false,
+        "readiness": {
+          "installed": true,
+          "credentialed": true,
+          "quotaReady": true,
+          "ownerApproved": true,
+          "verified": true,
+          "blocked": false,
+          "blockedReasons": []
+        },
         "evidence": [
           "content/development/seis-agent-plugin-integration.json",
           "packages/seis-ai/src/agent/tools.mjs"
@@ -1000,6 +1056,15 @@
         "backendOnly": true,
         "frontendSecretAllowed": false,
         "fallbackEligible": true,
+        "readiness": {
+          "installed": true,
+          "credentialed": true,
+          "quotaReady": true,
+          "ownerApproved": true,
+          "verified": true,
+          "blocked": false,
+          "blockedReasons": []
+        },
         "evidence": [
           "apps/web/desktop.js",
           "apps/seis-demo-web/script.js",
@@ -1032,6 +1097,19 @@
         "backendOnly": true,
         "frontendSecretAllowed": false,
         "fallbackEligible": false,
+        "readiness": {
+          "installed": false,
+          "credentialed": false,
+          "quotaReady": false,
+          "ownerApproved": false,
+          "verified": false,
+          "blocked": true,
+          "blockedReasons": [
+            "server credential absent or unverified",
+            "server-only adapter tests missing",
+            "owner approval missing for live provider routing"
+          ]
+        },
         "evidence": [
           "docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md"
         ],
@@ -1065,6 +1143,19 @@
         "backendOnly": true,
         "frontendSecretAllowed": false,
         "fallbackEligible": false,
+        "readiness": {
+          "installed": false,
+          "credentialed": false,
+          "quotaReady": false,
+          "ownerApproved": false,
+          "verified": false,
+          "blocked": true,
+          "blockedReasons": [
+            "server credential absent or unverified",
+            "server-only adapter tests missing",
+            "owner approval missing for live provider routing"
+          ]
+        },
         "evidence": [
           "docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md"
         ],
@@ -1094,6 +1185,19 @@
         "backendOnly": true,
         "frontendSecretAllowed": false,
         "fallbackEligible": false,
+        "readiness": {
+          "installed": false,
+          "credentialed": false,
+          "quotaReady": false,
+          "ownerApproved": false,
+          "verified": false,
+          "blocked": true,
+          "blockedReasons": [
+            "server credential absent or unverified",
+            "server-only adapter tests missing",
+            "owner approval missing for live provider routing"
+          ]
+        },
         "evidence": [
           "docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md"
         ],
@@ -1121,6 +1225,19 @@
         "backendOnly": true,
         "frontendSecretAllowed": false,
         "fallbackEligible": false,
+        "readiness": {
+          "installed": false,
+          "credentialed": false,
+          "quotaReady": false,
+          "ownerApproved": false,
+          "verified": false,
+          "blocked": true,
+          "blockedReasons": [
+            "runtime or endpoint not configured",
+            "server-only or local adapter tests missing",
+            "owner approval missing for this helper lane"
+          ]
+        },
         "evidence": [
           "apps/web/desktop.js",
           "apps/seis-demo-web/script.js"
@@ -1152,6 +1269,19 @@
         "backendOnly": true,
         "frontendSecretAllowed": false,
         "fallbackEligible": false,
+        "readiness": {
+          "installed": false,
+          "credentialed": true,
+          "quotaReady": false,
+          "ownerApproved": false,
+          "verified": false,
+          "blocked": true,
+          "blockedReasons": [
+            "local service health unverified",
+            "model inventory unverified",
+            "owner approval missing for local inference"
+          ]
+        },
         "evidence": [
           "docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md",
           "docs/ai/model-router.md"
@@ -1202,10 +1332,12 @@
       "Missing Key and Disabled states must not be routed silently.",
       "Rate Limited and Error states must use redacted output and must not print raw provider responses.",
       "Local-only mode must never fall back to a cloud provider.",
+      "Fallback must be local-first when adequate, then owner-approved and visibly selected by capability, privacy, and cost.",
       "Unavailable providers must remain visibly unavailable in SEIS AI surfaces."
     ],
     "nextSafeActions": [
       "Use this fixture as the provider status source for SEIS AI and MCP evidence.",
+      "Keep provider state separated into installed, credentialed, quotaReady, ownerApproved, verified, and blocked without reading credentials.",
       "Add no-key startup tests before live provider adapters.",
       "Add redacted routing decision logs before enabling live provider routing."
     ]

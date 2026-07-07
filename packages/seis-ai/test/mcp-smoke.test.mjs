@@ -66,7 +66,7 @@ function rpcSession(requests, { timeoutMs = 15000 } = {}) {
 }
 
 describe("seis-mcp stdio smoke", () => {
-  it("initializes and lists 35 tools, 3 prompts, 32 resources", async () => {
+  it("initializes and lists 35 tools, 3 prompts, 33 resources", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -143,6 +143,7 @@ describe("seis-mcp stdio smoke", () => {
       "seis://ai/cancellation-fixture.json",
       "seis://ai/dry-run-task-queue.json",
       "seis://ai/execution-ledger-fixture.json",
+      "seis://ai/full-usage-mcp-binding.json",
       "seis://ai/mcp-runtime-contract.json",
       "seis://ai/model-frontier-escalation-policy.json",
       "seis://ai/model-parameter-ladder.json",
@@ -256,8 +257,41 @@ describe("seis-mcp stdio smoke", () => {
     const payload = JSON.parse(resource.result.contents[0].text);
     assert.equal(payload.id, "seis-ai-core-mcp-runtime-contract");
     assert.equal(payload.toolCount, 35);
-    assert.equal(payload.resourceCount, 32);
+    assert.equal(payload.resourceCount, 33);
+    assert.equal(payload.fullUsageMcpBindingResource, "seis://ai/full-usage-mcp-binding.json");
     assert.equal(payload.transport, "stdio JSON-RPC");
+  });
+
+  it("reads the SEIS full usage MCP binding resource through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "resources/read",
+        params: {
+          uri: "seis://ai/full-usage-mcp-binding.json",
+        },
+      },
+    ]);
+
+    const resource = responses.get(2);
+    assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
+    const payload = JSON.parse(resource.result.contents[0].text);
+    assert.equal(payload.id, "seis-full-usage-mcp-binding");
+    assert.equal(payload.status, "repo-owned-mcp-binding-active");
+    assert.equal(payload.activeRepoOwnedBinding.serverId, "seis");
+    assert.equal(payload.runtimeContract.resourceCount, 33);
   });
 
   it("calls the SEIS God Mode status tool through the protocol", async () => {

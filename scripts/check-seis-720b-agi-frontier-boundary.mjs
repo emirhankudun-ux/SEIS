@@ -153,7 +153,7 @@ ensure(aiCoreDoc.includes("720B AGI frontier boundary"), "AI Core docs must desc
 ensure(aiCoreDoc.includes("content/development/seis-720b-agi-frontier-boundary.json"), "AI Core docs must link the 720B boundary file");
 ensure(aiCoreDoc.includes("seis://ai/720b-agi-frontier-boundary.json"), "AI Core docs must link the 720B MCP resource");
 ensure(aiCoreDoc.includes("not trained weights"), "AI Core docs must keep 720B non-claim language");
-ensure(statusDoc.includes("32 local MCP resources"), "status docs must show the current 32-resource MCP contract");
+ensure(statusDoc.includes("33 local MCP resources"), "status docs must show the current 33-resource MCP contract");
 ensure(!statusDoc.includes("26 local MCP resources"), "status docs must not keep the stale 26-resource MCP count");
 ensure(statusDoc.includes("content/development/seis-720b-agi-frontier-boundary.json"), "status docs must link the 720B boundary file");
 ensure(statusDoc.includes("seis://ai/720b-agi-frontier-boundary.json"), "status docs must link the 720B MCP resource");

@@ -7,11 +7,14 @@
   "sourceOfTruth": {
     "runbook": "reports/seis-ai-routing/full-usage-operating-mode.md",
     "aiCliStack": "docs/development/ai-cli-stack.md",
+    "mcpBinding": "content/development/seis-full-usage-mcp-binding.json",
+    "mcpPermissionRiskMatrix": "content/development/seis-mcp-permission-risk-matrix.json",
+    "mcpRuntimeContract": "content/development/seis-ai-core-mcp-runtime-contract.json",
     "providerRegistry": "content/development/seis-ai-core-provider-registry.json",
     "hermesProtocol": "content/development/seis-hermes-computer-use-protocol.json",
     "modelRouter": "docs/ai/model-router.md"
   },
-  "truthBoundary": "Full usage means using every useful installed or approved helper in the right role. It does not mean blind activation, credential reads, secret capture, silent provider fallback, external writes, deployment, SSH, billing actions, or treating invisible model output as evidence.",
+  "truthBoundary": "Full usage means using every useful installed or approved helper in the right role, including repo-owned MCP resources and bounded MCP tools when their risk class allows it. It does not mean blind activation, credential reads, secret capture, silent provider fallback, external MCP writes, deployment, SSH, billing actions, or treating invisible model output as evidence.",
   "repositoryScope": [
     {
       "id": "seis-canonical",
@@ -230,7 +233,8 @@
       "id": "devops-observability-incident-contract",
       "domain": "devops",
       "artifact": "content/development/seis-observability-incident-contract.json",
-      "status": "planned",
+      "status": "implemented",
+      "qualityGate": "node scripts/check-seis-observability-incident-contract.mjs",
       "purpose": "Define SLI/SLO, alert severity, incident states, audit logs, restore drills, RTO/RPO, and no-secret evidence."
     },
     {
@@ -344,6 +348,27 @@
     ],
     "noCredentialReadByCodex": true
   },
+  "mcpBindingPolicy": {
+    "source": "content/development/seis-full-usage-mcp-binding.json",
+    "defaultServer": "seis",
+    "defaultResource": "seis://ai/full-usage-mcp-binding.json",
+    "defaultAllowedMode": "repo-backed-read-status-and-bounded-checks",
+    "externalMcpUse": "verified-task-scoped-or-owner-approved-only",
+    "notProofOf": [
+      "authenticated external MCP access",
+      "provider credential readiness",
+      "browser session safety",
+      "safe for private data",
+      "approved for external mutation"
+    ],
+    "blockedWithoutExplicitOwnerApproval": [
+      "credentialed provider MCPs",
+      "external mutation MCPs",
+      "browser automation on authenticated private pages",
+      "SSH/cloud/deploy MCPs",
+      "package-runner MCP activation"
+    ]
+  },
   "forbiddenActionsWithoutExplicitOwnerApproval": [
     "credential reads",
     "secret capture",
@@ -402,6 +427,7 @@
     "Exactly one repo is selected for writes at a time.",
     "Codex remains the only writer unless a future explicit handoff exists.",
     "Helpers are used as reviewers or bounded agents with visible identity.",
+    "MCP usage follows the full-usage MCP binding and permission risk matrix.",
     "Owner-reported provider connection is recorded separately from verified provider readiness.",
     "Fallback behavior is visible and recorded.",
     "No model output is used as evidence unless captured and recorded.",
@@ -409,6 +435,7 @@
   ],
   "nextSafeActions": [
     "Use this operating mode before cross-repo AI/helper work.",
+    "Read `seis://ai/full-usage-mcp-binding.json` before future MCP-assisted work.",
     "Select one repo and one work item before invoking helpers.",
     "Mirror compatible public-safe guidance into Eleni-Neferi only when that repo is explicitly selected for editing.",
     "Keep SEIS-ssh active diffs untouched unless that worktree becomes the selected target."

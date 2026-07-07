@@ -69,7 +69,7 @@ panels:
   `plan-only` permission boundaries.
 - `MCP Runtime Contract` in Installed AI displays the local stdio JSON-RPC
   contract from `content/development/seis-ai-core-mcp-runtime-contract.json`,
-  35 tools, 32 resources, 3 prompts, the no-dependency fallback transport, and
+  35 tools, 33 resources, 3 prompts, the no-dependency fallback transport, and
   the smoke-test gate that proves SEIS AI Core can read plugin/provider/model-scaling
   resources, including `seis://ai/model-parameter-ladder.json` and
   `seis://ai/model-frontier-escalation-policy.json`, read

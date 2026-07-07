@@ -1,0 +1,291 @@
+{
+  "id": "seis-full-usage-mcp-binding",
+  "version": "2026.07.07",
+  "status": "repo-owned-mcp-binding-active",
+  "visibility": "public-safe",
+  "purpose": "Bind MCP usage into the SEIS full-usage operating mode so future Design, Developer, DevOps, Coding, LLM, Software Engineering, and AI work can use the repo-owned SEIS MCP server first, then approved external MCPs only through explicit risk, credential, and evidence gates.",
+  "qualityGate": "node scripts/check-seis-full-usage-mcp-binding.mjs",
+  "resourceUri": "seis://ai/full-usage-mcp-binding.json",
+  "sourceOfTruth": {
+    "fullUsageOperatingMode": "content/development/seis-full-usage-operating-mode.json",
+    "mcpPermissionRiskMatrix": "content/development/seis-mcp-permission-risk-matrix.json",
+    "mcpRuntimeContract": "content/development/seis-ai-core-mcp-runtime-contract.json",
+    "credentialBoundary": "docs/governance/mcp-connector-credential-boundary.md",
+    "workspaceMcpConfig": ".mcp.json",
+    "repoOwnedMcpEntrypoint": "packages/seis-ai/bin/seis-mcp.mjs",
+    "smokeTest": "packages/seis-ai/test/mcp-smoke.test.mjs",
+    "runbook": "reports/seis-ai-routing/full-usage-mcp-binding.md"
+  },
+  "truthBoundary": "MCP binding means the repo-owned SEIS MCP server is available as a local, public-safe, stdio resource and tool surface for future full-usage work. It does not prove authenticated external MCP access, cloud provider access, browser-session safety, package-runner safety, SSH, deployment, GitHub mutation, billing actions, or credential readiness.",
+  "activeRepoOwnedBinding": {
+    "serverId": "seis",
+    "workspaceConfig": ".mcp.json",
+    "command": "node",
+    "args": [
+      "packages/seis-ai/bin/seis-mcp.mjs"
+    ],
+    "transport": "stdio JSON-RPC",
+    "status": "local-smoke-verified-when-mcp-smoke-passes",
+    "allowedDefaultMode": "repo-backed-read-status-and-bounded-checks",
+    "resourceExposed": "seis://ai/full-usage-mcp-binding.json",
+    "secretsRequired": false,
+    "externalMutationDefault": false
+  },
+  "runtimeContract": {
+    "toolCount": 35,
+    "resourceCount": 33,
+    "promptCount": 3,
+    "newResource": "seis://ai/full-usage-mcp-binding.json",
+    "smokeTest": "node --test packages/seis-ai/test/mcp-smoke.test.mjs"
+  },
+  "mcpUseOrder": [
+    {
+      "order": 1,
+      "riskRecordId": "local-stdio-mcp-runtime",
+      "use": "Use the repo-owned local SEIS MCP server for source-of-truth resources, status tools, and bounded checks.",
+      "defaultAllowed": true,
+      "requiredEvidence": [
+        "mcp-smoke-passed",
+        "resource-or-tool-output-captured"
+      ]
+    },
+    {
+      "order": 2,
+      "riskRecordId": "repo-backed-resource-reads",
+      "use": "Read public-safe SEIS resources for provider registry, MCP binding, subagent ledgers, model boundaries, and governance contracts.",
+      "defaultAllowed": true,
+      "requiredEvidence": [
+        "resources/list",
+        "resources/read"
+      ]
+    },
+    {
+      "order": 3,
+      "riskRecordId": "repo-backed-check-tools",
+      "use": "Use bounded local check tools only when their scope is explicit and command output is recorded.",
+      "defaultAllowed": true,
+      "requiredEvidence": [
+        "tool identity",
+        "command output",
+        "no secret print"
+      ]
+    },
+    {
+      "order": 4,
+      "riskRecordId": "prompt-rendering-tools",
+      "use": "Render public-safe prompts for repeatable review without embedding private conversation dumps or credentials.",
+      "defaultAllowed": true,
+      "requiredEvidence": [
+        "prompts/list",
+        "prompts/get",
+        "public-safe prompt review"
+      ]
+    },
+    {
+      "order": 5,
+      "riskRecordId": "installed-safe-external-mcp",
+      "use": "Use installed external MCPs only after server identity, permissions, auth boundary, failure behavior, and owner scope are recorded.",
+      "defaultAllowed": false,
+      "requiredEvidence": [
+        "server identity",
+        "permissions list",
+        "authentication boundary",
+        "safe failure behavior"
+      ]
+    },
+    {
+      "order": 6,
+      "riskRecordId": "candidate-mcp-ecosystem-pool",
+      "use": "Keep candidate MCPs as research or documentation-only entries until reviewed.",
+      "defaultAllowed": false,
+      "requiredEvidence": [
+        "official source",
+        "maintainer identity",
+        "permission model"
+      ]
+    },
+    {
+      "order": 7,
+      "riskRecordId": "external-mutation-mcp",
+      "use": "Block external writes, sends, schedules, deploys, deletes, issue updates, database writes, and repo mutations until an explicit owner-approved runbook exists.",
+      "defaultAllowed": false,
+      "requiredEvidence": [
+        "owner approval",
+        "target resource",
+        "mutation preview",
+        "rollback plan",
+        "audit log"
+      ]
+    }
+  ],
+  "domainBindings": [
+    {
+      "domain": "design",
+      "preferredMcpModes": [
+        "repo-backed-resource-reads",
+        "status-and-plan-tools",
+        "prompt-rendering-tools"
+      ],
+      "safeUse": "Read design-system contracts, render review prompts, and collect visual QA status without external design-tool mutation."
+    },
+    {
+      "domain": "developer",
+      "preferredMcpModes": [
+        "local-stdio-mcp-runtime",
+        "repo-backed-check-tools",
+        "repo-backed-resource-reads"
+      ],
+      "safeUse": "Inspect workspace state, read source-of-truth records, and run bounded local checks with Codex as the single writer."
+    },
+    {
+      "domain": "devops",
+      "preferredMcpModes": [
+        "status-and-plan-tools",
+        "repo-backed-resource-reads"
+      ],
+      "safeUse": "Read cloud, SSH, release, and readiness contracts without deployment, SSH execution, or provider mutation."
+    },
+    {
+      "domain": "coding",
+      "preferredMcpModes": [
+        "repo-backed-check-tools",
+        "prompt-rendering-tools"
+      ],
+      "safeUse": "Use MCP checks and prompts as scoped helpers while repository edits remain in Codex."
+    },
+    {
+      "domain": "llm",
+      "preferredMcpModes": [
+        "repo-backed-resource-reads",
+        "prompt-rendering-tools"
+      ],
+      "safeUse": "Read provider, model-router, prompt, and retention contracts before any helper/model route decision."
+    },
+    {
+      "domain": "software-engineering",
+      "preferredMcpModes": [
+        "repo-backed-check-tools",
+        "status-and-plan-tools"
+      ],
+      "safeUse": "Use architecture, testing, security, performance, and maintainability checks as evidence surfaces."
+    },
+    {
+      "domain": "ai",
+      "preferredMcpModes": [
+        "local-stdio-mcp-runtime",
+        "repo-backed-resource-reads",
+        "status-and-plan-tools"
+      ],
+      "safeUse": "Read AI Core, provider registry, MCP permissioning, sub-agent, and model-boundary resources without live provider calls."
+    }
+  ],
+  "routerBridgeCandidates": [
+    {
+      "id": "9router",
+      "kind": "package-runner-router-candidate",
+      "packageName": "9router",
+      "packagePage": "https://www.npmjs.com/package/9router",
+      "observedVersion": "0.5.20",
+      "observedAt": "2026-07-07",
+      "metadataCommand": "npm view 9router --json",
+      "description": "9Router CLI - Start and manage 9Router server",
+      "status": "candidate-package-runner-not-installed",
+      "safeImmediateRoute": "hermes-agent-as-router-under-seis-mcp-binding",
+      "observedRisks": [
+        "postinstall hook declared",
+        "runtime dependencies are installed into a user-home runtime directory",
+        "native or optional runtime dependencies may be lazy-installed on macOS or Linux",
+        "package acts as a local CLI/server/proxy surface",
+        "source repository was not declared in the observed npm metadata"
+      ],
+      "installGate": [
+        "explicit owner approval for package-runner install",
+        "tarball or source review before execution",
+        "no credentials available during install or first run",
+        "rollback command and runtime directory cleanup plan",
+        "repo-only result ledger after any action"
+      ],
+      "notProofOf": [
+        "safe local install",
+        "provider authentication",
+        "quota readiness",
+        "external MCP safety",
+        "Hermes live routing",
+        "SEIS runtime router implementation"
+      ]
+    }
+  ],
+  "externalMcpPoolPolicy": {
+    "eligibleWhen": [
+      "official or owner-approved source",
+      "server identity visible",
+      "permission model recorded",
+      "authentication boundary recorded",
+      "secrets remain outside public repo",
+      "mutation scope is absent or explicitly approved",
+      "safe failure behavior exists"
+    ],
+    "notProofOf": [
+      "authenticated account access",
+      "quotaReady",
+      "safe for private data",
+      "approved for external mutation",
+      "provider credential readiness",
+      "browser session safety"
+    ],
+    "blockedByDefault": [
+      "credentialed-provider-mcp",
+      "external-mutation-mcp",
+      "browser-automation-mcp-with-authenticated-private-pages",
+      "ssh-cloud-deploy-mcp",
+      "package-runner-mcp-without-owner-approval"
+    ]
+  },
+  "perUseLedgerFields": [
+    "repoId",
+    "workItemId",
+    "mcpServerId",
+    "riskRecordId",
+    "selectedToolPromptOrResource",
+    "allowedMode",
+    "permissionClass",
+    "authBoundary",
+    "secretsRequested",
+    "externalMutationIntent",
+    "outputCaptured",
+    "validatorCommand",
+    "fallbackTriggered",
+    "nextSafeAction"
+  ],
+  "forbiddenWithoutExplicitOwnerApproval": [
+    "credential reads",
+    "secret capture",
+    "external connector writes",
+    "provider API mutation",
+    "GitHub push or merge",
+    "browser automation on authenticated private pages",
+    "SSH execution",
+    "cloud provisioning",
+    "deployment",
+    "package-runner MCP activation",
+    "billing or purchase actions"
+  ],
+  "completionDefinition": [
+    "The repo-owned `seis` MCP server is present in `.mcp.json`.",
+    "The full-usage MCP binding is exposed as `seis://ai/full-usage-mcp-binding.json`.",
+    "The MCP runtime contract, permission matrix, smoke test, docs, and checker script agree on 35 tools, 33 resources, and 3 prompts.",
+    "External MCPs remain candidate, verified-task-scoped, or blocked according to the permission risk matrix.",
+    "No credential, provider-call, external-mutation, SSH, deploy, billing, or GitHub mutation claim is made without separate evidence."
+  ],
+  "verificationCommands": [
+    "node scripts/check-seis-full-usage-mcp-binding.mjs",
+    "node scripts/check-seis-mcp-permission-risk-matrix.mjs",
+    "node --test packages/seis-ai/test/mcp-smoke.test.mjs",
+    "npm run check:seis-full-usage-operating-mode"
+  ],
+  "nextSafeActions": [
+    "Use `seis://ai/full-usage-mcp-binding.json` as the first MCP context resource before future MCP-assisted work.",
+    "Create a per-use MCP ledger before allowing external MCP output to shape repository decisions.",
+    "Keep credentialed and mutation-capable MCPs owner-action gated until a target-specific runbook exists."
+  ]
+}

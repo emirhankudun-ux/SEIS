@@ -1217,7 +1217,7 @@ const SEIS_MCP_RUNTIME_CONTRACT = {
   officialSdk: "@modelcontextprotocol/sdk remains optional unless dependencies are installed",
   toolCount: 35,
   promptCount: 3,
-  resourceCount: 32,
+  resourceCount: 33,
   smokeTest: "node --test packages/seis-ai/test/mcp-smoke.test.mjs",
   pluginGate: "npm run check:seis-agent-plugin-integration",
   resourceRead: "seis://ai/mcp-runtime-contract.json",

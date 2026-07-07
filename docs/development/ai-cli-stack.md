@@ -153,6 +153,16 @@ Not: Bu kısa yollarda router önce rol önceliğini alır:
 
 ## MCP Araçlarıyla Rol Planlama
 
+Full usage MCP binding lives in
+`content/development/seis-full-usage-mcp-binding.json` and is exposed through
+the local SEIS MCP resource `seis://ai/full-usage-mcp-binding.json`. The active
+repo-owned MCP surface is 35 tools, 33 resources, 3 prompts over stdio JSON-RPC.
+Use it first for source-of-truth resources, status tools, bounded checks, and
+public-safe prompt rendering. External MCPs remain verified-task-scoped or
+owner-approved only; credentialed provider, external mutation,
+authenticated-browser, SSH/cloud/deploy, and package-runner MCP use stays
+blocked without a separate runbook.
+
 SEIS MCP sunucusunda iki LLM planlama aracı vardır:
 
 - `seis_llm_plan_request`: Rol önyargısı olmadan genel plan

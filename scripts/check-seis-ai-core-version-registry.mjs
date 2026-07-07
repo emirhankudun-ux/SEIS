@@ -181,7 +181,7 @@ if (mcpRuntimeContract) {
   ensure(mcpRuntimeContract.id === "seis-ai-core-mcp-runtime-contract", "MCP runtime contract id mismatch");
   ensure(mcpRuntimeContract.resourceUri === "seis://ai/mcp-runtime-contract.json", "MCP runtime contract resource URI mismatch");
   ensure(mcpRuntimeContract.toolCount === 35, "MCP runtime contract must record 35 tools");
-  ensure(mcpRuntimeContract.resourceCount === 32, "MCP runtime contract must record 32 resources");
+  ensure(mcpRuntimeContract.resourceCount === 33, "MCP runtime contract must record 33 resources");
   ensure(String(mcpRuntimeContract.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("AGI evaluation protocol"), "MCP runtime contract resource evidence must mention AGI evaluation protocol");
   ensure(String(mcpRuntimeContract.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("AGI public readiness evidence"), "MCP runtime contract resource evidence must mention AGI public readiness evidence");
   ensure(mcpRuntimeContract.promptCount === 3, "MCP runtime contract must record 3 prompts");

@@ -38,6 +38,8 @@ import {
   AI_CORE_VERSION_PROMOTION_TOOL,
   AI_CORE_VERSION_REGISTRY_PATH,
   AI_CORE_VERSION_STATUS_TOOL,
+  FULL_USAGE_MCP_BINDING_PATH,
+  FULL_USAGE_MCP_BINDING_RESOURCE_URI,
   GOD_MODE_STATUS_RESOURCE_URI,
   GOD_MODE_STATUS_TOOL,
   MCP_RUNTIME_CONTRACT_PATH,
@@ -866,6 +868,21 @@ Steps:
           uri: "seis://ai/mcp-runtime-contract.json",
           mimeType: "application/json",
           text: readFileSync(path.join(repoRoot, ...MCP_RUNTIME_CONTRACT_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "full-usage-mcp-binding",
+    FULL_USAGE_MCP_BINDING_RESOURCE_URI,
+    { description: "SEIS full-usage MCP binding for repo-owned MCP defaults and external MCP approval gates", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: FULL_USAGE_MCP_BINDING_RESOURCE_URI,
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...FULL_USAGE_MCP_BINDING_PATH.split("/")), "utf8"),
         },
       ],
     })

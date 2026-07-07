@@ -112,7 +112,7 @@ if (matrix) {
 
   ensure(matrix.runtimeSnapshot?.transport === "stdio JSON-RPC", "Runtime transport must remain stdio JSON-RPC.");
   ensure(matrix.runtimeSnapshot?.toolCount === 35, "Runtime snapshot must record 35 tools.");
-  ensure(matrix.runtimeSnapshot?.resourceCount === 32, "Runtime snapshot must record 32 resources.");
+  ensure(matrix.runtimeSnapshot?.resourceCount === 33, "Runtime snapshot must record 33 resources.");
   ensure(matrix.runtimeSnapshot?.promptCount === 3, "Runtime snapshot must record 3 prompts.");
   ensure(matrix.runtimeSnapshot?.runtimeAuthority === "local-smoke-and-repo-backed-status-only", "Runtime authority must stay local smoke and repo-backed status only.");
 

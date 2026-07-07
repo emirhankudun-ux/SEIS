@@ -112,6 +112,8 @@ if (manifest) {
   ensureArrayIncludesAll(manifest.runtimeIntegration?.mcpResources, [
     "seis://agent/plugin-integration.json",
     "seis://agent/god-mode-status.json",
+    "seis://ai/mcp-runtime-contract.json",
+    "seis://ai/full-usage-mcp-binding.json",
     "seis://ai/version-registry.json",
     "seis://ai/provider-registry.json",
     "seis://ai/model-scaling-hardware-profile.json",
@@ -263,6 +265,7 @@ ensure(mcp.includes("subagentOperatingModelStatus"), "MCP server must expose sub
 ensure(mcp.includes("LightweightMcpServer"), "MCP server must keep a no-dependency stdio fallback");
 ensure(mcp.includes("resources/read"), "MCP server fallback must support resource reads");
 ensure(mcp.includes("seis://ai/mcp-runtime-contract.json"), "MCP server must expose the AI Core MCP runtime contract resource");
+ensure(mcp.includes("FULL_USAGE_MCP_BINDING_RESOURCE_URI"), "MCP server must expose the full-usage MCP binding resource");
 ensure(mcp.includes("seis://ai/subagent-swarm-round-ledger.json"), "MCP server must expose the sub-agent swarm round ledger resource");
 ensure(mcp.includes("seis://ai/subagent-round-execution-evidence-ledger.json"), "MCP server must expose the sub-agent round execution evidence ledger resource");
 ensure(mcp.includes("seis://ai/model-scaling-hardware-profile.json"), "MCP server must expose the AI Core model scaling resource");

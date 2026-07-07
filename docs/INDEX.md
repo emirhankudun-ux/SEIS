@@ -7,6 +7,7 @@ Date: 2026-07-07
 | Document | Purpose |
 | --- | --- |
 | [SEIS_MASTER_INDEX.md](SEIS_MASTER_INDEX.md) | Current master navigation for SEIS lanes, evidence, blockers, and next safe actions. |
+| [SEIS_GOAL_TRACKING.md](SEIS_GOAL_TRACKING.md) | Master goal tracking constitution for clean worktree discipline, five-year roadmap order, supervised swarm roles, MCP rules, DevOps gates, 9Router/model routing direction, and final swarm reporting. |
 | [STATUS.md](STATUS.md) | Current branch status matrix. |
 | [../ARCHITECTURE.md](../ARCHITECTURE.md) | Root architecture pointer for agents and contributors. |
 | [../ROADMAP.md](../ROADMAP.md) | Root roadmap pointer for agents and contributors. |
@@ -69,8 +70,11 @@ Date: 2026-07-07
 | [ai/seis-model-scaling.md](ai/seis-model-scaling.md) | Planned 20B / 16GB+ RAM compatibility target plus future 70B and 150B frontier scale ladder without trained-weight claims. |
 | [ai/model-router.md](ai/model-router.md) | Provider-neutral model routing contract and evidence requirements. |
 | [../reports/seis-ai-routing/full-usage-operating-mode.md](../reports/seis-ai-routing/full-usage-operating-mode.md) | Full usage operating mode for Design, Developer, DevOps, Coding, LLM, Software Engineering, and AI lanes with safe helper use and repo-only ledgers. |
+| [../reports/seis-ai-routing/full-usage-mcp-binding.md](../reports/seis-ai-routing/full-usage-mcp-binding.md) | Full usage MCP binding for the repo-owned `seis` MCP server, 35 tools, 33 resources, and external MCP approval gates. |
+| [../reports/seis-ai-routing/hermes-full-usage-mcp-dry-run-ledger.md](../reports/seis-ai-routing/hermes-full-usage-mcp-dry-run-ledger.md) | Hermes Computer Use dry-run ledger for the typed public-safe full-usage MCP prompt and unresolved submit-control ambiguity. |
 | [../reports/seis-ai-routing/w64-provider-routing-order.md](../reports/seis-ai-routing/w64-provider-routing-order.md) | W64 provider routing order report for local-first fallback, readiness axes, and no-live-execution evidence. |
 | [../reports/seis-ai-routing/w64-hermes-computer-use-ledger.md](../reports/seis-ai-routing/w64-hermes-computer-use-ledger.md) | W64 Hermes Computer Use ledger for observed UI submission, submit-control ambiguity, and no-model-output evidence. |
+| [operations/seis-observability-incident-contract.md](operations/seis-observability-incident-contract.md) | DevOps/SRE observability and incident contract for readiness levels, SLI/SLO signals, incident severity, audit fields, restore drills, and IaC approval gates without live telemetry claims. |
 | [development/ai-cli-stack.md](development/ai-cli-stack.md) | Local AI helper routing, fallback behavior, and Hermes Computer Use protocol pointer. |
 | [ai/read-only-model-router-contract.md](ai/read-only-model-router-contract.md) | Read-only provider-neutral router contract: Missing Key is not Error, local-only never routes to cloud, and live execution waits for backend-only mediation. |
 | [ai/prompt-engine.md](ai/prompt-engine.md) | Versioned prompt-pack contract and prompt safety rules. |
@@ -151,6 +155,8 @@ Date: 2026-07-07
 | [../content/development/seis-second-brain-accessibility-focus-qa.json](../content/development/seis-second-brain-accessibility-focus-qa.json) | Second Brain Accessibility Focus QA contract for listbox/option roles, inspector focus, focus-visible markers, and mobile control safety. |
 | [../content/development/seis-read-only-model-router-contract.json](../content/development/seis-read-only-model-router-contract.json) | Read-only model-router contract with no runtime authority, no provider calls, no browser secrets, and no silent fallback. |
 | [../content/development/seis-full-usage-operating-mode.json](../content/development/seis-full-usage-operating-mode.json) | Full usage operating mode across Design, Developer, DevOps, Coding, LLM, Software Engineering, and AI with Codex single-writer, visible helper identity, provider-readiness gating, and repo-only ledgers. |
+| [../content/development/seis-full-usage-mcp-binding.json](../content/development/seis-full-usage-mcp-binding.json) | Full usage MCP binding exposed as `seis://ai/full-usage-mcp-binding.json` with repo-owned MCP defaults and external MCP approval gates. |
+| [../content/development/seis-observability-incident-contract.json](../content/development/seis-observability-incident-contract.json) | DevOps/SRE observability and incident contract for local-only, dry-run, PR-ready, release-candidate, production-gated, incident, restore-drill, IaC-plan, and IaC-apply states. |
 | [../content/development/seis-hermes-computer-use-protocol.json](../content/development/seis-hermes-computer-use-protocol.json) | Hermes Computer Use protocol for public-safe prompts, the verified `type_text` then `Send` path, visible fallback identity, and repo-only ledgers without secret or live-output claims. |
 | [../content/development/seis-public-demo-release-checklist-pr54.json](../content/development/seis-public-demo-release-checklist-pr54.json) | Public Demo Release Checklist PR54 review gate before merge, Pages publication, deployment, or public release. |
 | [../content/development/seis-model-scaling-hardware-profile.json](../content/development/seis-model-scaling-hardware-profile.json) | Planned 20B local-compatibility profile, 16GB+ RAM target class, and future 70B / 150B frontier scale ladder with no live runtime authority. |

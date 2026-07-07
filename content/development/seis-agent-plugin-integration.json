@@ -223,6 +223,7 @@
       "seis://agent/plugin-integration.json",
       "seis://agent/god-mode-status.json",
       "seis://ai/mcp-runtime-contract.json",
+      "seis://ai/full-usage-mcp-binding.json",
       "seis://ai/provider-registry.json",
       "seis://ai/model-scaling-hardware-profile.json",
       "seis://ai/model-parameter-ladder.json",

@@ -1,0 +1,213 @@
+{
+  "id": "seis-observability-incident-contract",
+  "version": "2026.07.07",
+  "status": "documented-contract",
+  "purpose": "Define the public-safe SEIS DevOps/SRE observability and incident contract so CI, release, cloud, SSH, AI routing, rollback, restore-drill, and audit evidence can be tracked without claiming live telemetry or production authority.",
+  "qualityGate": "node scripts/check-seis-observability-incident-contract.mjs",
+  "sourceOfTruth": {
+    "runbook": "docs/operations/seis-observability-incident-contract.md",
+    "fullUsageOperatingMode": "content/development/seis-full-usage-operating-mode.json",
+    "operationsReadiness": "content/development/seis-command-center-operations-readiness.json",
+    "publicReadiness": "content/development/seis-public-readiness-status.json",
+    "sshAccessModel": "deploy/seis-ssh-access-model.json"
+  },
+  "truthBoundary": "This contract is a readiness and evidence model. It is not live monitoring, production telemetry, incident automation, cloud mutation authority, SSH execution authority, and not proof that any external provider dashboard is connected.",
+  "ownerRoles": [
+    "Lead Architect Agent",
+    "DevOps Agent",
+    "Security Agent",
+    "Release Agent",
+    "AI Core Agent"
+  ],
+  "readinessLevels": [
+    {
+      "id": "local-only",
+      "meaning": "Evidence comes from local files and deterministic checks only.",
+      "allows": ["local validation", "docs update", "manifest review"],
+      "blocks": ["production claim", "external mutation", "live incident claim"],
+      "requiredEvidence": ["git status", "targeted checker output"],
+      "externalMutationAuthority": "none"
+    },
+    {
+      "id": "dry-run",
+      "meaning": "A command or release path can be simulated without changing external systems.",
+      "allows": ["dry-run command", "rollback rehearsal", "handoff review"],
+      "blocks": ["deployment", "SSH execution", "billing action"],
+      "requiredEvidence": ["dry-run command", "rollback note"],
+      "externalMutationAuthority": "none"
+    },
+    {
+      "id": "pr-ready",
+      "meaning": "The change is reviewable and has focused local evidence.",
+      "allows": ["feature branch push", "pull request preparation"],
+      "blocks": ["main push", "release tag", "production deploy"],
+      "requiredEvidence": ["clean worktree", "staged pathspec", "clean snapshot checks"],
+      "externalMutationAuthority": "feature-branch-only-after-dry-run-and-approval"
+    },
+    {
+      "id": "release-candidate",
+      "meaning": "Local gates and PR review evidence are ready for release decision.",
+      "allows": ["release review", "candidate changelog", "rollback plan"],
+      "blocks": ["silent publish", "unreviewed deploy", "unverified live claim"],
+      "requiredEvidence": ["PR review status", "release checklist", "security note"],
+      "externalMutationAuthority": "approval-required"
+    },
+    {
+      "id": "production-gated",
+      "meaning": "Production-like work is blocked behind explicit owner approval, credentials outside the public repo, and rollback proof.",
+      "allows": ["production readiness planning", "approval checklist preparation"],
+      "blocks": ["automatic deploy", "public claim of live readiness", "secret-bearing logs"],
+      "requiredEvidence": ["owner approval", "secret isolation proof", "rollback proof"],
+      "externalMutationAuthority": "blocked-without-explicit-approval"
+    },
+    {
+      "id": "incident",
+      "meaning": "A suspected quality, security, release, provider, or cloud issue is being tracked with redacted evidence.",
+      "allows": ["triage", "containment", "rollback recommendation"],
+      "blocks": ["secret value printing", "unapproved remote cleanup", "blame-only reporting"],
+      "requiredEvidence": ["incident id", "severity", "timeline", "owner", "next action"],
+      "externalMutationAuthority": "blocked-without-explicit-approval"
+    },
+    {
+      "id": "restore-drill",
+      "meaning": "Recovery behavior is tested or rehearsed without destructive external action.",
+      "allows": ["restore rehearsal", "RTO/RPO estimate", "rollback dry-run"],
+      "blocks": ["real data overwrite", "unapproved environment reset"],
+      "requiredEvidence": ["restore scope", "RTO target", "RPO target", "rollback command or note"],
+      "externalMutationAuthority": "none"
+    },
+    {
+      "id": "iac-plan",
+      "meaning": "Infrastructure-as-code intent is reviewed as a plan only.",
+      "allows": ["plan review", "cost/risk estimate", "security review"],
+      "blocks": ["apply", "resource creation", "secret upload"],
+      "requiredEvidence": ["plan artifact", "cost class", "risk class", "approval status"],
+      "externalMutationAuthority": "none"
+    },
+    {
+      "id": "iac-apply",
+      "meaning": "Infrastructure mutation remains blocked until explicit owner approval, dry-run evidence, rollback, and secret isolation are present.",
+      "allows": ["approval-gated execution planning", "apply readiness review"],
+      "blocks": ["unapproved apply", "credential exposure", "irreversible mutation"],
+      "requiredEvidence": ["owner approval", "dry-run evidence", "rollback plan", "secret isolation"],
+      "externalMutationAuthority": "blocked-without-explicit-approval"
+    }
+  ],
+  "sliSloCatalog": [
+    {
+      "id": "local-governance-check-health",
+      "sli": "Targeted checker pass rate for the selected PR slice.",
+      "slo": "Every merged PR-ready slice has its direct checker and adjacent governance checks reported.",
+      "measurementSource": "npm scripts and clean snapshot validation",
+      "currentStatus": "local-evidence-only"
+    },
+    {
+      "id": "public-readiness-signal",
+      "sli": "Public-safe readiness blockers are explicit.",
+      "slo": "No public release is claimed while public readiness blockers are open.",
+      "measurementSource": "content/development/seis-public-readiness-status.json",
+      "currentStatus": "tracked-policy-only"
+    },
+    {
+      "id": "ai-provider-route-health",
+      "sli": "Provider route state distinguishes installed, visible, credentialed, quotaReady, verified, rate-limited, and blocked.",
+      "slo": "No live AI route is claimed without current-run readiness evidence.",
+      "measurementSource": "provider registry and future routing ledger",
+      "currentStatus": "planned-ledger-needed"
+    },
+    {
+      "id": "ssh-cloud-safety-health",
+      "sli": "SSH/cloud actions remain credential-free and approval-gated.",
+      "slo": "No SSH execution or cloud mutation occurs without explicit approval, dry-run, and rollback note.",
+      "measurementSource": "SEIS-SSH access model and deployment docs",
+      "currentStatus": "policy-evidence-only"
+    }
+  ],
+  "alertSeverities": [
+    {
+      "id": "sev0",
+      "label": "Critical security or destructive external mutation risk",
+      "response": "Stop, preserve evidence, do not print secrets, request owner approval for any mutation.",
+      "requiresOwnerApproval": true
+    },
+    {
+      "id": "sev1",
+      "label": "Release-blocking quality, CI, or public-readiness failure",
+      "response": "Block release claim, record failing command, define rollback or fix-forward path.",
+      "requiresOwnerApproval": false
+    },
+    {
+      "id": "sev2",
+      "label": "Degraded route, provider limit, missing external evidence, or partial verification",
+      "response": "Mark route blocked or rate-limited, use deterministic validator or lower-risk fallback.",
+      "requiresOwnerApproval": false
+    },
+    {
+      "id": "sev3",
+      "label": "Documentation, handoff, or observability gap",
+      "response": "Track in backlog, attach checker when practical, keep status honest.",
+      "requiresOwnerApproval": false
+    }
+  ],
+  "incidentStates": [
+    "detected",
+    "triage",
+    "contained",
+    "mitigated",
+    "resolved",
+    "postmortem",
+    "follow-up"
+  ],
+  "auditLogFields": [
+    "timestamp",
+    "repoId",
+    "branch",
+    "commit",
+    "actorRole",
+    "eventType",
+    "severity",
+    "readinessLevel",
+    "evidencePath",
+    "redactionStatus",
+    "approvalReference",
+    "rollbackAction",
+    "externalMutationPerformed",
+    "secretValueIncluded"
+  ],
+  "restoreDrillRequirements": [
+    "scope",
+    "riskClass",
+    "rtoTarget",
+    "rpoTarget",
+    "rollbackCommandOrNote",
+    "dataLossRisk",
+    "approvalRequirement",
+    "postDrillFinding"
+  ],
+  "forbiddenClaims": [
+    "live monitoring is active",
+    "production telemetry is connected",
+    "incident automation is executing",
+    "cloud resources were changed",
+    "SSH execution occurred",
+    "provider dashboards were queried"
+  ],
+  "requiredChecks": [
+    "node scripts/check-seis-observability-incident-contract.mjs",
+    "npm run check:seis-full-usage-operating-mode",
+    "npm run check:seis-command-center-operations-readiness",
+    "npm run check:seis-governance-index"
+  ],
+  "completionDefinition": [
+    "Readiness levels cover local-only, dry-run, pr-ready, release-candidate, production-gated, incident, restore-drill, iac-plan, and iac-apply.",
+    "SLI/SLO records identify measurement source and current status without claiming live monitoring.",
+    "Incident severities and states define response behavior without printing secrets or mutating external systems.",
+    "Audit log fields include approval, rollback, redaction, and external mutation markers.",
+    "The runbook, docs index, checker script, and full-usage backlog all point to this contract."
+  ],
+  "nextSafeActions": [
+    "Add a release promotion matrix that consumes these readiness levels.",
+    "Add a redacted LLM routing decision ledger for AI provider incident and rate-limit state.",
+    "Add a future dashboard view only after the static contract and checker remain stable."
+  ]
+}
