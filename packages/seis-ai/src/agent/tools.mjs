@@ -7,6 +7,7 @@ import {
   AI_CORE_PROVIDER_STATUS_TOOL,
   AI_CORE_VERSION_PROMOTION_TOOL,
   AI_CORE_VERSION_STATUS_TOOL,
+  GOD_MODE_STATUS_TOOL,
   PERSONAL_PLUGIN_LANE_TOOLS,
   SUBAGENT_DRY_RUN_TASK_TOOL,
   SUBAGENT_OPERATING_MODEL_TOOL,
@@ -15,6 +16,7 @@ import {
   aiCoreProviderStatus,
   aiCoreVersionPromotionDryRun,
   aiCoreVersionStatus,
+  godModeStatus,
   personalPluginLanePlan,
   personalPluginLaneStatus,
   pluginIntegrationStatus,
@@ -28,7 +30,21 @@ import { runAllChecks, i18nStatus, seoAudit, contractCheck, drawingsCatalog, sty
 
 const MAX_READ_BYTES = 64 * 1024;
 const MAX_GREP_HITS = 60;
+const GIT_MAX_BUFFER_BYTES = 512 * 1024;
+const GIT_EXEC_OPTIONS = { maxBuffer: GIT_MAX_BUFFER_BYTES, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] };
 const SKIP_DIRS = new Set(["node_modules", ".git", "dist", "build", "coverage", "releases", "polyglot"]);
+
+function execGit(args, cwd) {
+  return execFileSync("git", args, { cwd, ...GIT_EXEC_OPTIONS });
+}
+
+function isGitRepository(cwd) {
+  try {
+    return execGit(["rev-parse", "--is-inside-work-tree"], cwd).trim() === "true";
+  } catch {
+    return false;
+  }
+}
 
 /**
  * Tool definitions sent to the Messages API. `write_file` is appended only
@@ -104,6 +120,17 @@ export function toolDefinitions({ allowWrite = false } = {}) {
         type: "object",
         properties: {
           includeFullManifest: { type: "boolean", description: "Return the full manifest in addition to the compact status summary." },
+        },
+      },
+    },
+    {
+      name: GOD_MODE_STATUS_TOOL,
+      description:
+        "Read the repo-backed SEIS God Mode Developer operating state: required layer lift, module coverage, run-state, work-package readiness, source health, and next safe actions. Read-only; performs no file mutation, provider call, credential access, SSH, deployment, GitHub mutation, or completion claim.",
+      input_schema: {
+        type: "object",
+        properties: {
+          includeFullRecords: { type: "boolean", description: "Return the full machine-readable God Mode source records." },
         },
       },
     },
@@ -304,12 +331,13 @@ export function executeTool(name, input, { repoRoot, webRoot, allowWrite = false
       return shown.join("\n") + suffix;
     }
     case "git_diff": {
+      if (!isGitRepository(repoRoot)) return "(not a git repository)";
       const args = input.staged === true ? ["diff", "--staged"] : ["diff", "HEAD"];
       let out;
       try {
-        out = execFileSync("git", args, { cwd: repoRoot, maxBuffer: 512 * 1024, encoding: "utf8" });
+        out = execGit(args, repoRoot);
       } catch (err) {
-        out = (err.stdout ?? "") || err.message;
+        out = (err.stdout ?? "") || (err.stderr ?? "") || err.message;
       }
       if (!out.trim()) return "(no changes)";
       if (out.length > MAX_READ_BYTES) {
@@ -318,18 +346,26 @@ export function executeTool(name, input, { repoRoot, webRoot, allowWrite = false
       return out;
     }
     case "git_log": {
+      if (!isGitRepository(repoRoot)) return "(not a git repository)";
       const count = Math.min(Math.max(1, input.count ?? 10), 40);
       let out;
       try {
-        out = execFileSync("git", ["log", "--oneline", `-${count}`], { cwd: repoRoot, encoding: "utf8" });
+        out = execGit(["log", "--oneline", `-${count}`], repoRoot);
       } catch (err) {
-        out = (err.stdout ?? "") || err.message;
+        out = (err.stdout ?? "") || (err.stderr ?? "") || err.message;
       }
       return out.trim() || "(no commits)";
     }
     case "seis_plugin_integration": {
       return JSON.stringify(
         pluginIntegrationStatus(repoRoot, { includeFullManifest: input.includeFullManifest === true }),
+        null,
+        2
+      );
+    }
+    case GOD_MODE_STATUS_TOOL: {
+      return JSON.stringify(
+        godModeStatus(repoRoot, { includeFullRecords: input?.includeFullRecords === true }),
         null,
         2
       );

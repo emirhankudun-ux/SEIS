@@ -24,6 +24,12 @@ function makeRepo(files = {}) {
   return repoRoot;
 }
 
+function writeRepoJson(file, value) {
+  const abs = path.join(repoRoot, file);
+  mkdirSync(path.dirname(abs), { recursive: true });
+  writeFileSync(abs, JSON.stringify(value), "utf8");
+}
+
 afterEach(() => {
   if (repoRoot) rmSync(repoRoot, { recursive: true, force: true });
   repoRoot = undefined;
@@ -62,6 +68,7 @@ describe("toolDefinitions", () => {
     assert.ok(names.includes("seis_code_plan"));
     assert.ok(names.includes("seis_design_status"));
     assert.ok(names.includes("seis_data_plan"));
+    assert.ok(names.includes("seis_god_mode_status"));
     assert.ok(names.includes("seis_ai_core_provider_status"));
     assert.ok(names.includes("seis_ai_core_model_scaling_status"));
     assert.ok(names.includes("seis_ai_core_version_status"));
@@ -1078,9 +1085,10 @@ describe("executeTool", () => {
     assert.ok(typeof out === "string");
   });
 
-  it("git_diff returns (no changes) or a diff for a non-git tmpdir", () => {
+  it("git_diff returns a clean not-a-repo status for a non-git tmpdir", () => {
     const out = executeTool("git_diff", {}, ctx());
-    assert.ok(typeof out === "string");
+    assert.equal(out, "(not a git repository)");
+    assert.ok(!out.includes("usage:"));
   });
 
   it("git_log returns a string result from the real repo", () => {
@@ -1407,6 +1415,99 @@ describe("executeTool", () => {
     assert.ok(payload.steps.some((step) => step.includes("provider-neutral preflight")));
     assert.ok(payload.approvalBoundary.includes("explicit human approval"));
     assert.deepEqual(payload.defaultChecks, ["npm run check:cloud-access-policy"]);
+  });
+
+  it("seis_god_mode_status summarizes repo-backed God Mode operating state", () => {
+    writeRepoJson("content/development/seis-god-mode-developer-contract.json", {
+      id: "seis-god-mode-developer-contract",
+      status: "active",
+      qualityGate: "npm run check:seis-god-mode-developer",
+      requiredLayerLift: [
+        "product-experience",
+        "application-platform",
+        "ai-agi-learning",
+        "cloud-security",
+        "governance-quality",
+      ],
+      feature: { telemetryEvent: "seis_demo_god_mode_changed" },
+    });
+    writeRepoJson("content/development/seis-god-mode-module-coverage.json", {
+      id: "seis-god-mode-module-coverage",
+      status: "active",
+      qualityGate: "npm run check:seis-god-mode-module-coverage",
+      requiredModules: ["dashboard", "agents"],
+      requiredLayers: [
+        "product-experience",
+        "application-platform",
+        "ai-agi-learning",
+        "cloud-security",
+        "governance-quality",
+      ],
+      modules: [
+        {
+          id: "dashboard",
+          displayName: "Dashboard",
+          nextBuildSlice: "Expose God Mode coverage in the cockpit.",
+          layers: {
+            "product-experience": {},
+            "application-platform": {},
+            "ai-agi-learning": {},
+            "cloud-security": {},
+            "governance-quality": {},
+          },
+          acceptanceEvidence: ["cockpit card", "quality gate"],
+        },
+        {
+          id: "agents",
+          displayName: "Agents",
+          nextBuildSlice: "Expose God Mode as a read-only SEIS AI tool.",
+          layers: {
+            "product-experience": {},
+            "application-platform": {},
+            "ai-agi-learning": {},
+            "cloud-security": {},
+            "governance-quality": {},
+          },
+          acceptanceEvidence: ["tool output"],
+        },
+      ],
+    });
+    writeRepoJson("content/development/seis-god-mode-run-state.json", {
+      id: "seis-god-mode-run-state",
+      status: "active",
+      runState: "pending-validation",
+      qualityGate: "npm run check:seis-god-mode-run-state",
+      states: [
+        {
+          id: "validation-commands",
+          displayName: "Validation commands",
+          state: "executed-local-quality-governance",
+          nextAction: "Keep focused God Mode checks current.",
+        },
+      ],
+    });
+    writeRepoJson("content/development/seis-god-mode-work-package.json", {
+      id: "seis-god-mode-work-package",
+      status: "active",
+      commitReadiness: "pending-validation",
+      releaseReadiness: "pending-validation",
+      qualityGate: "npm run check:seis-god-mode-work-package",
+      sections: [{ id: "agents", status: "implemented-unverified" }],
+    });
+
+    const out = executeTool("seis_god_mode_status", {}, ctx());
+    const payload = JSON.parse(out);
+
+    assert.equal(payload.ok, true);
+    assert.equal(payload.tool, "seis_god_mode_status");
+    assert.equal(payload.requiredLayerCount, 5);
+    assert.equal(payload.moduleCount, 2);
+    assert.equal(payload.runState.current, "pending-validation");
+    assert.equal(payload.commitReadiness, "pending-validation");
+    assert.equal(payload.releaseReadiness, "pending-validation");
+    assert.equal(payload.modules[1].id, "agents");
+    assert.equal(payload.modules[1].nextBuildSlice, "Expose God Mode as a read-only SEIS AI tool.");
+    assert.ok(payload.nextSafeActions.includes("Keep focused God Mode checks current."));
   });
 
   it("run_checks accepts the a11y scope", () => {
