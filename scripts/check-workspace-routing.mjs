@@ -4,6 +4,8 @@ import { spawnSync } from "node:child_process";
 const failures = [];
 const notes = [];
 const githubRemotePath = "content/development/github-remote-configuration.json";
+const branchPolicyPath = "docs/governance/branch-policy.md";
+const branchPolicyReconciliationPath = "docs/governance/branch-policy-reconciliation.md";
 
 function fail(message) {
   failures.push(message);
@@ -40,7 +42,16 @@ const processConfig = existsSync("content/lab/development-process.json")
   : {};
 const branchPolicy = processConfig.activeBranchPolicy || {};
 const githubRemoteConfig = existsSync(githubRemotePath) ? readJson(githubRemotePath) : {};
-const expectedBranch = branchPolicy.githubBranch || githubRemoteConfig?.repository?.targetBranch || "main";
+const branchPolicyText = existsSync(branchPolicyPath) ? readFileSync(branchPolicyPath, "utf8") : "";
+const branchPolicyReconciliation = existsSync(branchPolicyReconciliationPath)
+  ? readFileSync(branchPolicyReconciliationPath, "utf8")
+  : "";
+const mainCenteredPolicy =
+  branchPolicyText.includes("`main` is the only permanent branch for SEIS") &&
+  branchPolicyReconciliation.includes("active-main-centered-reconciled") &&
+  branchPolicyReconciliation.includes("`UIXAppTTR` is not the current SEIS target branch");
+const legacyExpectedBranch = branchPolicy.githubBranch || githubRemoteConfig?.repository?.targetBranch || "main";
+const expectedBranch = mainCenteredPolicy ? githubRemoteConfig?.repository?.targetBranch || "main" : legacyExpectedBranch;
 const expectedRemote = githubRemoteConfig?.repository?.remoteUrl;
 const expectedRemotePath = typeof expectedRemote === "string"
   ? expectedRemote.replace(/^https:\/\//, "").split("/").slice(1).join("/")
@@ -53,9 +64,12 @@ if (insideWorkTree.status === 0 && insideWorkTree.stdout.trim() === "true") {
   const branch = git(["branch", "--show-current"]);
   const remote = git(["remote", "-v"]);
   const currentBranch = branch.stdout.trim();
+  const reviewBranchPrefixes = ["feature/", "fix/", "docs/", "chore/", "experiment/", "codex/", "claude/"];
+  const allowedReviewBranch = mainCenteredPolicy && reviewBranchPrefixes.some((prefix) => currentBranch.startsWith(prefix));
 
-  if (currentBranch !== expectedBranch) {
-    fail(`git workspace must use ${expectedBranch}, got ${currentBranch || "unknown"}`);
+  if (currentBranch !== expectedBranch && !allowedReviewBranch) {
+    const branchRule = mainCenteredPolicy ? `${expectedBranch} or a short-lived review branch` : expectedBranch;
+    fail(`git workspace must use ${branchRule}, got ${currentBranch || "unknown"}`);
   }
 
   if (expectedRemote && !remote.stdout.includes(expectedRemote) && !remote.stdout.includes(expectedRemotePath) && !remote.stdout.includes(expectedRemotePathAlt)) {
@@ -63,6 +77,9 @@ if (insideWorkTree.status === 0 && insideWorkTree.stdout.trim() === "true") {
   }
 
   notes.push(`git workspace detected on ${currentBranch || "unknown"}`);
+  if (allowedReviewBranch) {
+    notes.push(`main-centered review branch accepted; permanent branch remains ${expectedBranch}`);
+  }
 } else {
   const agents = existsSync("AGENTS.md") ? readFileSync("AGENTS.md", "utf8") : "";
   const packageJson = existsSync("package.json") ? readJson("package.json") : {};
