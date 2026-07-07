@@ -1,0 +1,416 @@
+{
+  "id": "seis-full-usage-operating-mode",
+  "version": "2026.07.07",
+  "status": "documented-operating-mode",
+  "purpose": "Define a practical full-usage operating mode for SEIS so Design, Developer, DevOps, Coding, LLM, Software Engineering, and AI workstreams can use helpful agents, MCPs, plugins, and installed AI tools deliberately without losing repository truth, provider identity, or public-safe boundaries.",
+  "qualityGate": "npm run check:seis-full-usage-operating-mode",
+  "sourceOfTruth": {
+    "runbook": "reports/seis-ai-routing/full-usage-operating-mode.md",
+    "aiCliStack": "docs/development/ai-cli-stack.md",
+    "providerRegistry": "content/development/seis-ai-core-provider-registry.json",
+    "hermesProtocol": "content/development/seis-hermes-computer-use-protocol.json",
+    "modelRouter": "docs/ai/model-router.md"
+  },
+  "truthBoundary": "Full usage means using every useful installed or approved helper in the right role. It does not mean blind activation, credential reads, secret capture, silent provider fallback, external writes, deployment, SSH, billing actions, or treating invisible model output as evidence.",
+  "repositoryScope": [
+    {
+      "id": "seis-canonical",
+      "workspaceRef": "canonical-seis-checkout",
+      "role": "primary governance, AI routing, Hermes protocol, and cross-repo operating-mode source of truth",
+      "writerPolicy": "codex-single-writer",
+      "requiredPreflight": "git status --short --untracked-files=all"
+    },
+    {
+      "id": "eleni-neferi",
+      "workspaceRef": "eleni-neferi-selected-repo",
+      "role": "sovereign creative intelligence atelier with its own tool/model orchestration, connector permission matrix, agent swarm, and oracle truth ledger",
+      "writerPolicy": "codex-single-writer-when-selected",
+      "requiredPreflight": "read AGENTS.md, then git status --short --untracked-files=all"
+    },
+    {
+      "id": "seis-ssh",
+      "workspaceRef": "seis-ssh-selected-repo",
+      "role": "cloud/SSH center worktree with existing active changes that must not be overwritten",
+      "writerPolicy": "do-not-touch-unrelated-active-diff",
+      "requiredPreflight": "git status --short --untracked-files=all and branch check"
+    },
+    {
+      "id": "icloud-github-worktrees",
+      "workspaceRef": "adjacent-worktree-inventory",
+      "role": "adjacent repo/worktree inventory for read-only discovery before any selected repo edit",
+      "writerPolicy": "selected-repo-only",
+      "requiredPreflight": "identify the exact .git root before editing"
+    }
+  ],
+  "operatingDomains": [
+    {
+      "id": "design",
+      "name": "Design",
+      "subdomains": [
+        "design-system",
+        "designops-artifact-lifecycle",
+        "brand-governance",
+        "token-governance",
+        "interaction-design",
+        "motion-design",
+        "accessibility-design",
+        "ai-experience-design",
+        "devops-cloud-state-language",
+        "visual-qa",
+        "asset-provenance",
+        "ux-research-content-ia",
+        "design-to-engineering-handoff"
+      ],
+      "primaryEvidence": [
+        "docs/design-system/seis-design-foundation.md",
+        "docs/design-system/seis-design-agency-kit.md",
+        "content/development/seis-design-agency-kit.json"
+      ],
+      "nextGap": "Add a domain-level scorecard that separates visual inspiration, approved assets, generated references, production-ready design decisions, design artifact state, token ownership, and AI/demo/live trust language."
+    },
+    {
+      "id": "developer",
+      "name": "Developer",
+      "subdomains": [
+        "developer-experience",
+        "repository-governance",
+        "code-review",
+        "local-tooling",
+        "per-task-helper-packets",
+        "documentation-authoring",
+        "debugging-workflows",
+        "ci-runtime-depth",
+        "package-scripts",
+        "dependency-governance",
+        "agent-handoff"
+      ],
+      "primaryEvidence": [
+        "AGENTS.md",
+        "docs/INDEX.md",
+        "docs/governance/seis-agent-lane-status.md"
+      ],
+      "nextGap": "Create a developer-lane operating packet that maps each coding task to exact owner, helper role, validator, rollback, runtime depth, dependency policy, and handoff evidence."
+    },
+    {
+      "id": "devops",
+      "name": "DevOps",
+      "subdomains": [
+        "ci-cd",
+        "release-engineering",
+        "observability",
+        "sli-slo-alerting",
+        "incident-response",
+        "audit-log-contract",
+        "public-readiness",
+        "cloud-readiness",
+        "ssh-safety",
+        "iac-provisioning-governance",
+        "release-promotion-matrix",
+        "rollback",
+        "rto-rpo-restore-drills",
+        "environment-parity"
+      ],
+      "primaryEvidence": [
+        "docs/PUBLIC_READINESS.md",
+        "docs/operations/seis-cloud-foundation.md",
+        "content/development/seis-ssh-access-model.json"
+      ],
+      "nextGap": "Add DevOps readiness levels for local-only, dry-run, PR-ready, release-candidate, production-gated, incident, restore-drill, IaC-plan, and IaC-apply states."
+    },
+    {
+      "id": "coding",
+      "name": "Coding",
+      "subdomains": [
+        "frontend",
+        "swift-package-models",
+        "backend-contracts",
+        "domain-fixture-loading",
+        "test-fixtures",
+        "static-checkers",
+        "browser-smoke",
+        "playwright-visual-baseline",
+        "refactoring",
+        "code-generation-boundaries"
+      ],
+      "primaryEvidence": [
+        "apps/web",
+        "packages/seis_platform_swift",
+        "scripts"
+      ],
+      "nextGap": "Keep Swift model foundation, static web data, governance checkers, browser-smoke evidence, and visual-baseline work split into separately reviewable PRs."
+    },
+    {
+      "id": "llm",
+      "name": "LLM",
+      "subdomains": [
+        "provider-registry",
+        "current-run-provider-readiness",
+        "model-router",
+        "prompt-engine",
+        "prompt-output-retention-policy",
+        "context-packs",
+        "evaluation",
+        "fallback-policy",
+        "routing-decision-ledger",
+        "local-model-intake",
+        "ollama-no-key-startup-proof",
+        "redacted-output-ledgers"
+      ],
+      "primaryEvidence": [
+        "content/development/seis-ai-core-provider-registry.json",
+        "docs/ai/model-router.md",
+        "docs/ai/ai-workforce-training.md"
+      ],
+      "nextGap": "Add current-run provider readiness snapshots, redacted routing decision ledger, prompt/output retention policy, and no-key local startup proof before any live LLM routing claim."
+    },
+    {
+      "id": "software-engineering",
+      "name": "Software Engineering",
+      "subdomains": [
+        "architecture",
+        "domain-modeling",
+        "quality-gates",
+        "security-review",
+        "performance-budget",
+        "accessibility-implementation",
+        "testing-strategy",
+        "release-readiness",
+        "technical-debt-register",
+        "architecture-scorecard",
+        "maintainability"
+      ],
+      "primaryEvidence": [
+        "docs/architecture",
+        "docs/decisions",
+        "docs/STATUS.md"
+      ],
+      "nextGap": "Turn broad SEIS quality expectations into tracked architecture, testing, release-readiness, maintainability, and technical-debt scorecards."
+    },
+    {
+      "id": "ai",
+      "name": "AI",
+      "subdomains": [
+        "ai-core",
+        "agent-swarm",
+        "mcp-permissioning",
+        "installed-ai-tools",
+        "official-vendor-mcp-research",
+        "provider-readiness-snapshots",
+        "local-ai",
+        "cloud-ai-boundaries",
+        "rate-limit-cost-incident-state",
+        "model-scaling-research",
+        "safety-eval-evidence",
+        "ai-safety"
+      ],
+      "primaryEvidence": [
+        "docs/ai/seis-ai-core.md",
+        "content/development/seis-mcp-permission-risk-matrix.json",
+        "content/development/seis-ai-core-subagent-operating-model.json"
+      ],
+      "nextGap": "Keep AI automation as supervised agent-swarm planning until live runtime, credentials, rate limits, cost state, incident logs, safety evals, provider readiness, and rollback are proven."
+    }
+  ],
+  "domainGapBacklog": [
+    {
+      "id": "design-domain-scorecard",
+      "domain": "design",
+      "artifact": "content/development/seis-design-operating-model-gap-map.json",
+      "status": "planned",
+      "purpose": "Track DesignOps, token governance, state language, AI experience design, visual QA, and UX research gaps."
+    },
+    {
+      "id": "developer-helper-packet",
+      "domain": "developer",
+      "artifact": "content/development/seis-developer-helper-packet.json",
+      "status": "planned",
+      "purpose": "Tie each coding task to owner, helper role, validator, rollback, dependency policy, and handoff evidence."
+    },
+    {
+      "id": "devops-observability-incident-contract",
+      "domain": "devops",
+      "artifact": "content/development/seis-observability-incident-contract.json",
+      "status": "planned",
+      "purpose": "Define SLI/SLO, alert severity, incident states, audit logs, restore drills, RTO/RPO, and no-secret evidence."
+    },
+    {
+      "id": "devops-release-promotion-matrix",
+      "domain": "devops",
+      "artifact": "content/development/seis-release-promotion-matrix.json",
+      "status": "planned",
+      "purpose": "Map local, preview, staging, production, Pages, cloud, SSH, rollback, and approval gates."
+    },
+    {
+      "id": "llm-routing-decision-ledger",
+      "domain": "llm",
+      "artifact": "content/development/seis-llm-routing-decision-ledger.json",
+      "status": "planned",
+      "purpose": "Capture provider identity, fallback reason, output visibility, validation command, retention policy, and no-secret proof."
+    },
+    {
+      "id": "ai-provider-readiness-snapshot",
+      "domain": "ai",
+      "artifact": "content/development/seis-ai-provider-readiness-snapshot.json",
+      "status": "planned",
+      "purpose": "Separate installed, credentialed, quotaReady, ownerApproved, verified, blocked, rate-limited, and incident states."
+    },
+    {
+      "id": "software-engineering-scorecard",
+      "domain": "software-engineering",
+      "artifact": "content/development/seis-software-engineering-scorecard.json",
+      "status": "planned",
+      "purpose": "Track architecture, testing, release readiness, security, accessibility, performance, maintainability, and technical debt."
+    }
+  ],
+  "fiveYearExecutionModel": {
+    "minimumHorizonYears": 5,
+    "cadence": "quarterly-roadmap-monthly-milestones-weekly-validated-slices",
+    "turnModel": "up-to-200-supervised-turns-with-repo-ledgers",
+    "branchPolicy": "feature-branch-first-pr-review-before-protected-branch",
+    "remoteSyncPolicy": "push verified feature-branch commits after dry-run and explicit approval; never push directly to protected main without authorization",
+    "completionRule": "A domain is not complete until its source artifact, checker, docs index entry, validation evidence, security note, and next handoff are present."
+  },
+  "defaultLoop": [
+    "inspect-current-repo-truth",
+    "select-one-work-item",
+    "choose-helper-role-if-useful",
+    "keep-codex-as-single-writer",
+    "use-helper-output-only-when-visible-and-recorded",
+    "make-small-reversible-repo-change",
+    "run-targeted-validator",
+    "record-repo-only-ledger",
+    "handoff-next-safe-action"
+  ],
+  "helperRoles": [
+    {
+      "id": "codex",
+      "mode": "writer",
+      "safeUse": "repository edits, validation, terminal checks, integration, and final synthesis",
+      "mustRecord": ["changed files", "validation commands", "unrelated changes preserved"]
+    },
+    {
+      "id": "hermes",
+      "mode": "bounded-reviewer",
+      "safeUse": "public-safe, tiny review prompts through the verified Computer Use type_text then Send path",
+      "mustRecord": ["session id when visible", "selected model when visible", "responseVisible", "no secrets"]
+    },
+    {
+      "id": "eleni-neferi-oracle-layer",
+      "mode": "repo-local-governed-review",
+      "safeUse": "Eleni-Neferi tool/model orchestration, connector permission review, agent swarm planning, and oracle truth-ledger checks",
+      "mustRecord": ["local AGENTS boundary", "Eleni validator output", "no fake live AI claim"]
+    },
+    {
+      "id": "local-ai-or-desktop-helper",
+      "mode": "optional-reviewer",
+      "safeUse": "Cursor, Kimi, LM Studio, Ollama, or similar helper only after installed/verified status is known",
+      "mustRecord": ["visible helper identity", "fallback reason", "whether output was captured"]
+    }
+  ],
+  "routingOrder": [
+    "codex-single-writer",
+    "adequate-local-provider",
+    "owner-selected-provider",
+    "capability-compatible-approved-cloud-provider",
+    "lowest-risk-approved-cloud-provider",
+    "lowest-cost-approved-cloud-provider",
+    "repo-local-demo-or-deterministic-validator",
+    "feature-disabled"
+  ],
+  "fallbackRules": [
+    "Provider and model identity must be visible when a helper is used.",
+    "If a model or provider is Rate Limited or Error, block that route for the decision and move visibly to the next eligible route.",
+    "Never pretend a fallback provider is the original provider.",
+    "Local-only or private-work mode must not fall back to cloud.",
+    "Deterministic validators outrank uncaptured model output."
+  ],
+  "providerConnectionPolicy": {
+    "ownerReportedProvidersConnected": true,
+    "meaning": "The owner reports that providers have been connected, so they may be considered candidates for future route verification.",
+    "notProofOf": [
+      "credentialed",
+      "quotaReady",
+      "verified",
+      "safe for private data",
+      "approved for external mutation"
+    ],
+    "requiredBeforeLiveUse": [
+      "server-only credential boundary",
+      "redacted provider identity",
+      "quota or rate-limit state",
+      "ownerApproved route scope",
+      "captured output or deterministic validator",
+      "repo-only ledger"
+    ],
+    "noCredentialReadByCodex": true
+  },
+  "forbiddenActionsWithoutExplicitOwnerApproval": [
+    "credential reads",
+    "secret capture",
+    "private note ingestion",
+    "SSH execution",
+    "deployment",
+    "GitHub push or merge without dry-run and explicit approval",
+    "external connector writes",
+    "billing or purchase actions",
+    "destructive file or branch operations"
+  ],
+  "requiredLedgerFields": [
+    "repoId",
+    "workItemId",
+    "selectedHelper",
+    "helperRole",
+    "visibleProviderOrModel",
+    "promptClass",
+    "outputVisible",
+    "repoEvidenceUsed",
+    "fallbackTriggered",
+    "secretsRequested",
+    "externalMutationPerformed",
+    "validationCommands",
+    "nextSafeAction"
+  ],
+  "verificationEvidence": [
+    {
+      "repoId": "seis-canonical",
+      "commands": [
+        "npm run check:seis-hermes-computer-use-protocol",
+        "npm run check:seis-ai-core-provider-registry"
+      ],
+      "latestObservedStatus": "passed-current-seis-slice"
+    },
+    {
+      "repoId": "eleni-neferi",
+      "commands": [
+        "npm run check:tool-registry",
+        "npm run check:connector-permission-matrix",
+        "npm run check:agent-swarm",
+        "npm run check:oracle-truth-ledger"
+      ],
+      "latestObservedStatus": "candidate-prior-or-external-evidence-not-current-run-verified"
+    },
+    {
+      "repoId": "seis-ssh",
+      "commands": [
+        "git status --short --untracked-files=all"
+      ],
+      "latestObservedStatus": "candidate-external-worktree-not-current-run-verified"
+    }
+  ],
+  "completionDefinition": [
+    "Every selected repo starts with a status/preflight read.",
+    "Exactly one repo is selected for writes at a time.",
+    "Codex remains the only writer unless a future explicit handoff exists.",
+    "Helpers are used as reviewers or bounded agents with visible identity.",
+    "Owner-reported provider connection is recorded separately from verified provider readiness.",
+    "Fallback behavior is visible and recorded.",
+    "No model output is used as evidence unless captured and recorded.",
+    "Relevant repo-local validators pass or are honestly marked unavailable."
+  ],
+  "nextSafeActions": [
+    "Use this operating mode before cross-repo AI/helper work.",
+    "Select one repo and one work item before invoking helpers.",
+    "Mirror compatible public-safe guidance into Eleni-Neferi only when that repo is explicitly selected for editing.",
+    "Keep SEIS-ssh active diffs untouched unless that worktree becomes the selected target."
+  ]
+}

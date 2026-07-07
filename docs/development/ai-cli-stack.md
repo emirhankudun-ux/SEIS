@@ -45,6 +45,15 @@ is `Send`, avoid the voice control, and record a repo-only ledger without
 secrets, provider-call claims, or model-output evidence unless a response is
 visibly captured.
 
+Full usage operating mode:
+`content/development/seis-full-usage-operating-mode.json` is the SEIS operating
+mode for Design, Developer, DevOps, Coding, LLM, Software Engineering, and AI.
+It keeps Codex as single writer, uses helpers as bounded reviewers, treats
+owner-reported provider connections as candidate routes rather than verified
+readiness, requires visible provider identity plus repo-only ledgers for any
+helper output used as evidence, and keeps feature-branch push behind dry-run
+plus explicit approval.
+
 Current routing intent:
 
 - `seis-agent`: default orchestration for repo governance, release, and policy-sensitive work.
