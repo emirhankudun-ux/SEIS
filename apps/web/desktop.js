@@ -48,6 +48,7 @@ const APPS = [
   ["launchpad", "Launchpad", "System", "GRID", "Open a full-window SEIS app launcher with search, categories, and quick launch.", "launchpad"],
   ["seis-system-os", "SEIS System OS", "System", "OS", "Control the Linux, macOS, and Windows-inspired SEIS shell, widgets, recents, workspaces, and system evidence.", "system-os"],
   ["seis-command-center", "SEIS Command Center", "System", "CMD", "Unify V17 demo modules, validation evidence, mock/real/planned states, and review actions.", "seis-command-center"],
+  ["development-lanes", "Development Lanes", "System", "LAN", "Bridge Desktop OS, Linux Replica, SEIS Code, Apple Swift, and AI Core with model ladder and provider status.", "development-lanes"],
   ["demo-studio", "SEIS Demo Studio", "System", "RUN", "Run guided product journeys across OS, AI, Search, Code, Design, Cloud, Store, Music, Files, Terminal, Agents, Plugins, and Website.", "demo-studio"],
   ["linux-replica", "SEIS Linux Replica", "System", "LNX", "Open the supplied-code Web Linux shell adaptation with boot, login, taskbar, launcher, VFS, terminal, and 64 apps.", "linux-replica"],
   ["seis-store", "SEIS Store", "System", "STORE", "Browse installable SEIS apps, extensions, website demos, and local capability packs.", "store"],
@@ -135,6 +136,7 @@ const FAVORITES = [
   "terminal",
   "launchpad",
   "seis-system-os",
+  "development-lanes",
   "demo-studio",
   "linux-replica",
   "seis-code",
@@ -457,6 +459,14 @@ const DEMO_ROUTES = [
     keywords: "seis command center v17 operating center validation demo modules"
   },
   {
+    id: "development-lanes-app",
+    label: "Development Lanes Bridge",
+    kind: "Desktop app",
+    appId: "development-lanes",
+    path: "./desktop.html#development-lanes",
+    keywords: "development lanes bridge desktop linux code swift ai core model ladder provider"
+  },
+  {
     id: "seis-linux-replica-web",
     label: "SEIS Linux Replica",
     kind: "Web Linux route",
@@ -598,12 +608,14 @@ const SEIS_V17_COMMAND_CENTER_VALIDATION_QUEUE = [
   ["Desktop OS contract", "npm run check:desktop-os", "Runnable shell, windows, launcher, VFS, persistence, and diagnostics."],
   ["Browser product smoke", "npm run check:product-experience-browser-smoke", "Desktop, SEIS Code, AI Plugin Center, product routes, and mobile overflow proof."],
   ["AI Core package", "npm test --prefix packages/seis-ai", "Provider registry, MCP tools/resources, local agent loop, and non-claim boundaries."],
-  ["Model scaling profile", "npm run check:seis-model-scaling-hardware-profile", "20B on 16GB+ RAM planning profile, memory budget contract, future 70B ladder, 150B frontier lane, and 512B AGI apex boundary."],
+  ["Model scaling profile", "npm run check:seis-model-scaling-hardware-profile", "20B on 16GB+ RAM planning profile, future 70B ladder, 150B frontier lane, 512B apex, 520B next-frontier, and 720B AGI boundary."],
   ["Frontier escalation policy", "npm run check:seis-model-frontier-escalation-policy", "No-skip-20B policy, 70B research gate, 150B frontier gate, 512B AGI apex gate, and highest-parameter non-claim boundary."],
   ["Second Brain contract", "npm run check:seis-second-brain", "Obsidian-style vault, installed AI, sub-agent, GitHub readiness, and no-secret knowledge boundary."],
   ["150B frontier model program", "npm run check:seis-150b-frontier-model-program", "150B program charter, plan-only stages, non-claim flags, and promotion gates for future 70B/150B+ escalation."],
   ["512B apex AGI program", "npm run check:seis-512b-apex-model-program", "512B AGI research charter, all-agent plan-only review, non-claim flags, and blocked promotion gates."],
-  ["Model scaling sub-agent council", "npm run check:seis-model-scaling-subagent-council", "12 plan-only agents bound to 20B evidence preparation and 70B/150B/512B non-claim gates."],
+  ["520B next-frontier boundary", "npm run check:seis-520b-next-frontier-boundary", "520B plan-only boundary, blocked route eligibility, and next-frontier non-claim flags."],
+  ["720B AGI frontier boundary", "npm run check:seis-720b-agi-frontier-boundary", "720B AGI request boundary, supervised cadence, and blocked AGI/runtime claims."],
+  ["Model scaling sub-agent council", "npm run check:seis-model-scaling-subagent-council", "12 plan-only agents bound to 20B evidence preparation and 70B/150B/512B/520B/720B non-claim gates."],
   ["Website pages", "npm run check:seis-website-pages", "Premium product pages for SEIS AI, OS, Code, Design, Search, Cloud, Store, and Agents."]
 ];
 
@@ -620,7 +632,7 @@ const SEIS_MODEL_SCALING_UI_PROFILE = {
   frontierEscalationResource: "seis://ai/model-frontier-escalation-policy.json",
   frontierEscalationStatus: "policy-active-research-gated",
   frontierEscalationQualityGate: "npm run check:seis-model-frontier-escalation-policy",
-  frontierEscalationRule: "No-skip-20B: 70B, 150B, and 512B cannot become runtime-scoped until lower-tier evidence exists.",
+  frontierEscalationRule: "No-skip-20B: 70B, 150B, 512B, 520B, and 720B cannot become runtime-scoped until lower-tier evidence exists.",
   frontierModelProgram: "content/development/seis-150b-frontier-model-program.json",
   frontierModelProgramResource: "seis://ai/150b-frontier-model-program.json",
   frontierModelProgramStatus: "frontier-program-plan-only",
@@ -648,10 +660,20 @@ const SEIS_MODEL_SCALING_UI_PROFILE = {
     ["Training readiness", "Not authorized", "Not route eligible"],
     ["Evaluation and safety", "Not run", "Not route eligible"]
   ],
+  nextFrontierBoundary: "content/development/seis-520b-next-frontier-boundary.json",
+  nextFrontierBoundaryResource: "seis://ai/520b-next-frontier-boundary.json",
+  nextFrontierBoundaryStatus: "next-frontier-boundary-plan-only",
+  nextFrontierBoundaryQualityGate: "npm run check:seis-520b-next-frontier-boundary",
+  nextFrontierBoundarySummary: "520B is a next-frontier planning boundary only; it is not trained weights, inference, benchmark evidence, cloud/GPU provisioning, SSH execution, production readiness, or AGI proof.",
+  agi720bFrontierBoundary: "content/development/seis-720b-agi-frontier-boundary.json",
+  agi720bFrontierBoundaryResource: "seis://ai/720b-agi-frontier-boundary.json",
+  agi720bFrontierBoundaryStatus: "agi-frontier-boundary-plan-only",
+  agi720bFrontierBoundaryQualityGate: "npm run check:seis-720b-agi-frontier-boundary",
+  agi720bFrontierBoundarySummary: "720B AGI is a supervised five-year plan boundary only; no 720B training, weights, routeable inference, benchmark, cloud/GPU provisioning, SSH, deployment, background runtime, or real AGI claim exists.",
   modelScalingSubagentCouncil: "content/development/seis-model-scaling-subagent-council.json",
   modelScalingSubagentCouncilStatus: "active-plan-only",
   modelScalingSubagentCouncilQualityGate: "npm run check:seis-model-scaling-subagent-council",
-  modelScalingSubagentCouncilSummary: "12 plan-only agents coordinate 20B evidence preparation while 70B, 150B, and 512B remain blocked.",
+  modelScalingSubagentCouncilSummary: "12 plan-only agents coordinate 20B evidence preparation while 70B, 150B, 512B, 520B, and 720B remain blocked.",
   parameterLadderPath: "content/development/seis-model-parameter-ladder.json",
   parameterLadderResource: "seis://ai/model-parameter-ladder.json",
   parameterLadderStatus: "planning-contract-not-runtime",
@@ -675,7 +697,9 @@ const SEIS_MODEL_SCALING_UI_PROFILE = {
     ["32GB+ validation lane", "20B / Q5-Q6 candidate", "Approved adapter tests later", "Not verified"],
     ["64GB+ research lane", "70B research", "Planning only", "Research roadmap"],
     ["Distributed frontier lane", "150B+ future", "Disabled", "Not scoped"],
-    ["Apex AGI lane", "512B future", "Disabled", "AGI not demonstrated"]
+    ["Apex AGI lane", "512B future", "Disabled", "AGI not demonstrated"],
+    ["Next frontier lane", "520B future", "Disabled", "Plan-only boundary"],
+    ["AGI frontier boundary", "720B AGI request", "Disabled", "AGI not demonstrated"]
   ],
   benchmarkGates: [
     "Model artifact license and clean-room provenance",
@@ -691,13 +715,17 @@ const SEIS_MODEL_SCALING_UI_PROFILE = {
     ["Stage 2", "70B research", "Research roadmap"],
     ["Stage 3", "150B frontier", "Frontier roadmap"],
     ["Stage 4", "512B AGI apex", "Plan-only / blocked"],
-    ["Stage 5", "Highest future class", "Not scoped"]
+    ["Stage 5", "520B next frontier", "Plan-only / blocked"],
+    ["Stage 6", "720B AGI frontier boundary", "Plan-only / blocked"],
+    ["Stage 7", "Highest future class", "Not scoped"]
   ],
   subagentCouncilAssignments: [
     ["20B", "Architect, Code, Security, QA, Documentation", "Planned / not validated", "Not route eligible"],
     ["70B", "Research, DevOps, Cloud, Security", "Research roadmap", "Not route eligible"],
     ["150B", "Architect, Research, Cloud, Security, QA", "Frontier roadmap", "Not route eligible"],
     ["512B", "All 12 installed AI / sub-agent roles", "Apex plan-only", "Not route eligible"],
+    ["520B", "Architect, Research, Security, QA, Documentation", "Next-frontier plan-only", "Not route eligible"],
+    ["720B", "Lead Architect, Security, QA, Documentation, Human approval", "AGI frontier plan-only", "Not route eligible"],
     ["Highest future", "Architect, Research, Security, Documentation", "Not scoped", "Not route eligible"]
   ],
   parameterLadderTargets: [
@@ -706,6 +734,8 @@ const SEIS_MODEL_SCALING_UI_PROFILE = {
     ["150B", "Distributed or cloud research runtime", "Frontier roadmap", "Disabled"],
     ["300B+", "Not scoped", "Exploration boundary", "Disabled"],
     ["512B", "Frontier-scale distributed cluster", "Apex AGI plan-only", "Disabled / AGI not demonstrated"],
+    ["520B", "Frontier-scale distributed cluster", "Next-frontier boundary plan-only", "Disabled / evidence missing"],
+    ["720B", "Future frontier infrastructure", "AGI frontier boundary plan-only", "Disabled / AGI not demonstrated"],
     ["Highest available future", "Defined after lower-tier evidence", "Not scoped", "Disabled"]
   ],
   quantizationProfiles: [
@@ -740,9 +770,9 @@ const SEIS_MODEL_SCALING_UI_PROFILE = {
 const SEIS_MASTER_OBJECTIVE_COVERAGE_UI = {
   source: "data/seis-master-objective-coverage.json",
   report: "reports/seis-master-objective-coverage.md",
-  activeCoverage: "seis-ai-150b-frontier-boundary",
+  activeCoverage: "seis-ai-720b-agi-frontier-boundary",
   activeCoverageStatus: "active / evidence-gated",
-  activeRequirement: "Track SEIS AI 150B as a frontier research lane without claiming trained weights, routeable inference, provider access, SSH execution, or production readiness.",
+  activeRequirement: "Track the owner-requested 720B AGI frontier as a supervised five-year plan-only boundary without claiming trained weights, routeable inference, benchmark evidence, cloud/GPU or SSH execution, background autonomy, production readiness, or AGI proof.",
   items: [
     {
       id: "user-work-protection",
@@ -809,6 +839,14 @@ const SEIS_MASTER_OBJECTIVE_COVERAGE_UI = {
       gap: "150B remains blocked until 20B and 70B evidence, clean-room training plan, distributed runtime budget, privacy and safety review, observability, rollback, and explicit human approval exist."
     },
     {
+      id: "seis-ai-720b-agi-frontier-boundary",
+      status: "active",
+      requirement: "Track the owner-requested 720B AGI frontier as a supervised five-year plan-only boundary without claiming trained weights, routeable inference, benchmark evidence, cloud/GPU or SSH execution, background autonomy, production readiness, or AGI proof.",
+      evidence: "content/development/seis-720b-agi-frontier-boundary.json; content/development/seis-sub-agent-5-year-plan.json; packages/seis-ai/src/mcp/server.mjs; apps/web/desktop.js",
+      check: "npm run check:seis-720b-agi-frontier-boundary",
+      gap: "720B remains blocked until 20B, 70B, 150B, 300B+, 512B, and 520B evidence is accepted; AGI evaluation is independently reviewed; safety, cost-stop, rollback, and human approval evidence exists."
+    },
+    {
       id: "open-source-github-readiness",
       status: "active",
       requirement: "Keep GitHub, community, governance, and CI readiness visible.",
@@ -827,6 +865,7 @@ const SEIS_MASTER_OBJECTIVE_COVERAGE_UI = {
   ],
   evidence: [
     "content/development/seis-model-scaling-hardware-profile.json",
+    "content/development/seis-720b-agi-frontier-boundary.json",
     "docs/ai/seis-model-scaling.md",
     "packages/seis-ai/src/lib/plugin-integration.mjs",
     "apps/web/desktop.js"
@@ -835,15 +874,15 @@ const SEIS_MASTER_OBJECTIVE_COVERAGE_UI = {
     "npm run check:seis-master-objective-coverage",
     "npm run check:seis-master-objective-coverage-report",
     "npm run check:seis-model-scaling-hardware-profile",
+    "npm run check:seis-720b-agi-frontier-boundary",
     "npm test --prefix packages/seis-ai",
     "npm run check:desktop-os"
   ],
   blockedUntil: [
-    "20B and 70B evidence",
-    "clean-room training plan",
-    "distributed runtime budget",
-    "privacy and safety review",
-    "observability and rollback",
+    "20B, 70B, 150B, 300B+, 512B, and 520B evidence",
+    "independent AGI evaluation review",
+    "frontier safety and privacy review",
+    "cost-stop and rollback controls",
     "explicit human approval"
   ]
 };
@@ -910,7 +949,7 @@ const SEIS_V17_COMMAND_CENTER_MODULES = [
     appId: "ai-assistant",
     routeId: "seis-ai-core-3d-demo",
     evidence: "npm run check:seis-model-scaling-hardware-profile",
-    detail: "16GB+ RAM starts at the documented 20B profile; 70B and 150B frontier tiers stay future-gated until hardware, inference, training, safety, and validation evidence exist."
+    detail: "16GB+ RAM starts at the documented 20B profile; 70B, 150B, 512B, 520B, and 720B tiers stay future-gated until hardware, inference, training, safety, AGI, and validation evidence exist."
   },
   {
     id: "search",
@@ -1176,9 +1215,9 @@ const SEIS_MCP_RUNTIME_CONTRACT = {
   fallbackRuntime: "LightweightMcpServer no-dependency fallback",
   fallback: "LightweightMcpServer no-dependency fallback",
   officialSdk: "@modelcontextprotocol/sdk remains optional unless dependencies are installed",
-  toolCount: 34,
+  toolCount: 35,
   promptCount: 3,
-  resourceCount: 26,
+  resourceCount: 32,
   smokeTest: "node --test packages/seis-ai/test/mcp-smoke.test.mjs",
   pluginGate: "npm run check:seis-agent-plugin-integration",
   resourceRead: "seis://ai/mcp-runtime-contract.json",
@@ -1188,7 +1227,7 @@ const SEIS_MCP_RUNTIME_CONTRACT = {
     {
       id: "tools",
       label: "Tool registry",
-      count: 34,
+      count: 35,
       method: "tools/list + tools/call",
       evidence: "16 MCP smoke tests pass through stdio JSON-RPC",
       duty: "Expose repo-backed SEIS AI checks, personal plugin lane tools, provider registry status, model scaling status, and AI Core version/sub-agent tools."
@@ -1196,10 +1235,10 @@ const SEIS_MCP_RUNTIME_CONTRACT = {
     {
       id: "resources",
       label: "Resource registry",
-      count: 26,
+      count: 32,
       method: "resources/list + resources/read",
-      evidence: "Plugin integration, provider registry, model scaling profile, model parameter ladder, frontier escalation policy, 150B frontier model program, 512B apex AGI program, 20B model/dataset card templates, and MCP runtime contract resources are read through the protocol",
-      duty: "Expose source-of-truth JSON resources for plugin integration, provider states, planned model scaling, parameter ladder boundaries, no-skip-20B frontier policy, 150B frontier program, 512B apex AGI program, 20B clean-room evidence templates, MCP runtime, version gates, fixtures, and generated plan views."
+      evidence: "Plugin integration, God Mode status, provider registry, model scaling profile, model parameter ladder, frontier escalation policy, 150B frontier model program, 512B apex AGI program, 720B AGI frontier boundary, sub-agent swarm round ledger, sub-agent round execution evidence ledger, AGI evaluation protocol, AGI public readiness evidence, 20B model/dataset card templates, and MCP runtime contract resources are read through the protocol",
+      duty: "Expose source-of-truth JSON resources for plugin integration, God Mode status, provider states, planned model scaling, parameter ladder boundaries, no-skip-20B frontier policy, 150B frontier program, 512B apex AGI program, 720B AGI frontier boundary, sub-agent swarm round ledger, supervised round execution evidence, AGI evidence protocol, AGI public-readiness claim gates, 20B clean-room evidence templates, MCP runtime, version gates, fixtures, and generated plan views."
     },
     {
       id: "prompts",
@@ -1217,6 +1256,97 @@ const SEIS_MCP_RUNTIME_CONTRACT = {
       evidence: "No dependency install required for local smoke",
       duty: "Keep MCP available for local verification while official SDK compatibility remains a separate hardening path."
     }
+  ]
+};
+const SEIS_DEVELOPMENT_LANE_BRIDGE = {
+  id: "seis-development-lane-bridge",
+  version: "2026.06.30",
+  status: "local-demo-bridge",
+  qualityGate: "npm run check:desktop-os",
+  boundary: "Browser-local navigation and evidence only. No SSH, no live provider calls, no Swift build claims, and no trained model inference.",
+  defaultRoutingMode: "local-demo",
+  providerRegistryPath: "content/development/seis-ai-core-provider-registry.json",
+  parameterLadderPath: "content/development/seis-model-parameter-ladder.json",
+  installedToolsRegistryPath: "content/development/seis-installed-ai-tools-registry.json",
+  lanes: [
+    {
+      id: "desktop-os",
+      label: "SEIS Desktop OS",
+      surface: "Browser shell",
+      status: "Working",
+      route: "./desktop.html",
+      appId: "seis-system-os",
+      validator: "npm run check:desktop-os",
+      detail: "Single-entry demo with 81 apps, virtual workspaces, Control Center, and browser-local VFS."
+    },
+    {
+      id: "linux-replica",
+      label: "SEIS Linux Replica",
+      surface: "Web Linux route",
+      status: "Working",
+      route: "./seis-linux-replica.html",
+      appId: "linux-replica",
+      validator: "npm run check:seis-linux-replica-browser-smoke",
+      detail: "286 launcher targets, 67 functional workflows, boot/login/taskbar, and no-host boundary."
+    },
+    {
+      id: "seis-code",
+      label: "SEIS Code IDE",
+      surface: "Browser IDE",
+      status: "Working",
+      route: "./seis-code.html",
+      appId: "seis-code",
+      validator: "npm run check:seis-code",
+      detail: "Monaco editor, virtual terminal, Design Handoff, Command Lens, and Local Demo REPL."
+    },
+    {
+      id: "apple-swift",
+      label: "Apple Swift Native",
+      surface: "SwiftPM package",
+      status: "Validated",
+      route: "packages/seis_platform_swift",
+      appId: null,
+      validator: "swift test --package-path packages/seis_platform_swift",
+      detail: "SeisPlatformKit and SeisAppleNativeShell with plan-only AI scale roadmap and public-safe tooling metadata."
+    },
+    {
+      id: "ai-core",
+      label: "SEIS AI Core",
+      surface: "Governance + Local Demo",
+      status: "Plan-only ladder",
+      route: "./desktop.html#ai-assistant",
+      appId: "ai-assistant",
+      validator: "npm run check:seis-model-parameter-ladder",
+      detail: "Provider-neutral registry, 20B→520B parameter ladder, and Local Demo fallback without live inference."
+    }
+  ],
+  modelLadderSummary: [
+    { parameterClass: "20B", status: "planned-not-validated", routeEligible: false, hardware: "16GB+ RAM" },
+    { parameterClass: "70B", status: "research-roadmap", routeEligible: false, hardware: "64GB+ RAM" },
+    { parameterClass: "150B", status: "frontier-program-plan-only", routeEligible: false, hardware: "distributed runtime" },
+    { parameterClass: "512B", status: "apex-program-plan-only", routeEligible: false, hardware: "AGI eval protocol" },
+    { parameterClass: "520B", status: "next-frontier-boundary", routeEligible: false, hardware: "governance signoff" }
+  ],
+  providerSummary: [
+    { id: "seis-local-demo", label: "SEIS Local Demo", status: "Available", routingEligible: true },
+    { id: "codex-operator", label: "Codex Operator", status: "Available", routingEligible: true },
+    { id: "claude-review-profile", label: "Claude Review", status: "Missing Key", routingEligible: false },
+    { id: "openai-server-profile", label: "OpenAI Server", status: "Missing Key", routingEligible: false }
+  ],
+  installedToolsSummary: [
+    { id: "codex-current-session", name: "Codex", status: "available", writer: true },
+    { id: "xcode-seis-platform-swift", name: "Xcode", status: "available", writer: true },
+    { id: "claude-code-cli-auth-gated", name: "Claude Code CLI", status: "available", writer: false },
+    { id: "cursor-desktop-secondary-review", name: "Cursor", status: "available", writer: false },
+    { id: "lm-studio-local-model-lab", name: "LM Studio", status: "available", writer: false }
+  ],
+  validationCommands: [
+    "npm run check:desktop-os",
+    "npm run check:seis-code",
+    "npm run check:seis-model-parameter-ladder",
+    "npm run check:seis-ai-core-provider-registry",
+    "npm run check:seis-installed-ai-tools-registry",
+    "swift test --package-path packages/seis_platform_swift"
   ]
 };
 const SEIS_INSTALLED_AI_SYSTEMS = [
@@ -1639,13 +1769,14 @@ const SEIS_WOW_REFERENCES = [
   { id: "kimi-linuxos-reference", title: "Kimi LinuxOS", role: "Linux-like OS reference", url: "https://dwfcctyh2o6me.ok.kimi.link/?id=2045932438926155776&share_id=19d9fdbd-d7d2-8a19-8000-00001d7799f6" },
   { id: "kimi-vscode-web-reference", title: "Kimi VS Code Web", role: "VS Code Web reference", url: "https://gmzousbtqpx5w.kimi.page/?id=2057731079068581888&share_id=19e4e6a6-9342-8f07-8000-0000296a37dd" }
 ];
+const SEIS_WOW_REFERENCE_PREVIEW = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 540'%3E%3Crect width='960' height='540' fill='%230b1020'/%3E%3Crect x='64' y='58' width='832' height='424' rx='32' fill='%23131926' stroke='%23334155' stroke-width='2'/%3E%3Ccircle cx='112' cy='108' r='14' fill='%237dd3fc'/%3E%3Ccircle cx='154' cy='108' r='14' fill='%23a78bfa'/%3E%3Ccircle cx='196' cy='108' r='14' fill='%23f59e0b'/%3E%3Crect x='104' y='170' width='250' height='230' rx='24' fill='%231f2937'/%3E%3Crect x='386' y='170' width='470' height='48' rx='16' fill='%23334155'/%3E%3Crect x='386' y='248' width='336' height='34' rx='14' fill='%23475569'/%3E%3Crect x='386' y='316' width='406' height='34' rx='14' fill='%23233445'/%3E%3Ctext x='104' y='448' font-family='Inter,Arial,sans-serif' font-size='34' fill='%23e5e7eb'%3ESEIS reference preview%3C/text%3E%3C/svg%3E";
 const SEIS_WOW_DESIGN_FUSION = [
-  { title: "Desktop Overview", source: "Part 1 / 03", tag: "OS shell", image: "./wow-pages/imported/SEIS_WOW_EXTENDED_PAGES/png/03_desktop_overview.png", motif: "dark wallpaper, top system bar, left activity rail, bottom dock" },
-  { title: "Launchpad All Apps", source: "Part 1 / 04", tag: "Launcher", image: "./wow-pages/imported/SEIS_WOW_EXTENDED_PAGES/png/04_launchpad_all_apps.png", motif: "centered search, tabbed categories, dense app grid" },
-  { title: "Command Center", source: "Part 1 / 17", tag: "Home", image: "./wow-pages/imported/SEIS_WOW_EXTENDED_PAGES/png/17_command_center.png", motif: "large greeting, white product tiles, right-side status panels" },
-  { title: "Command Palette", source: "Part 3 / 47", tag: "Actions", image: "./wow-pages/imported/SEIS_WOW_MORE_PAGES_PART3/png/47_command_palette.png", motif: "six clear action cards with colored icon blocks" },
-  { title: "Window Manager", source: "Part 3 / 57", tag: "Windows", image: "./wow-pages/imported/SEIS_WOW_MORE_PAGES_PART3/png/57_window_manager.png", motif: "window controls, workspace layout, app switching" },
-  { title: "Store App Detail", source: "Part 4 / 79", tag: "Store", image: "./wow-pages/imported/SEIS_WOW_MORE_PAGES_PART4/png/79_store_app_detail.png", motif: "dark app frame with bright feature cards and clear actions" }
+  { title: "Desktop Overview", source: "Part 1 / 03", tag: "OS shell", image: SEIS_WOW_REFERENCE_PREVIEW, motif: "dark wallpaper, top system bar, left activity rail, bottom dock" },
+  { title: "Launchpad All Apps", source: "Part 1 / 04", tag: "Launcher", image: SEIS_WOW_REFERENCE_PREVIEW, motif: "centered search, tabbed categories, dense app grid" },
+  { title: "Command Center", source: "Part 1 / 17", tag: "Home", image: SEIS_WOW_REFERENCE_PREVIEW, motif: "large greeting, white product tiles, right-side status panels" },
+  { title: "Command Palette", source: "Part 3 / 47", tag: "Actions", image: SEIS_WOW_REFERENCE_PREVIEW, motif: "six clear action cards with colored icon blocks" },
+  { title: "Window Manager", source: "Part 3 / 57", tag: "Windows", image: SEIS_WOW_REFERENCE_PREVIEW, motif: "window controls, workspace layout, app switching" },
+  { title: "Store App Detail", source: "Part 4 / 79", tag: "Store", image: SEIS_WOW_REFERENCE_PREVIEW, motif: "dark app frame with bright feature cards and clear actions" }
 ];
 const SEIS_SYSTEM_OS_MODULES = [
   { id: "home-widgets", title: "Home Widget Gallery", source: "Part 7 / 161", image: "./wow-pages/imported/SEIS_WOW_MORE_PAGES_PART7/png/161_home_widget_gallery.png", status: "Connected target", action: "Open widgets from the desktop guide and System OS center." },
@@ -1755,7 +1886,7 @@ const SEIS_DEMO_JOURNEYS = [
 const SEIS_STORE_ITEMS = [
   { id: "seis-system-os", name: "SEIS System OS", category: "System", status: "Installed", target: "app", targetId: "seis-system-os", detail: "Linux, macOS, and Windows-inspired browser OS shell with widgets, recents, app switcher, and validated local evidence." },
   { id: "demo-studio", name: "SEIS Demo Studio", category: "System", status: "Installed", target: "app", targetId: "demo-studio", detail: "Guided product journeys for OS, AI Core, Search, Code, Design, Cloud, Store, Music, Files, Terminal, Agents, Plugins, and Website." },
-  { id: "linux-replica", name: "SEIS Linux Replica", category: "System", status: "Installed", target: "app", targetId: "linux-replica", detail: "Supplied-code Web Linux adaptation with boot, login, taskbar, launcher, windows, VFS, terminal, and 64 local app launch targets." },
+  { id: "linux-replica", name: "SEIS Linux Replica", category: "System", status: "Installed", target: "app", targetId: "linux-replica", detail: "Supplied-code Web Linux adaptation with boot, login, taskbar, launcher, windows, VFS, terminal, 286 launcher targets, and 67 audited functional app workflows." },
   { id: "seis-code", name: "SEIS Code", category: "IDE", status: "Installed", target: "app", targetId: "seis-code", detail: "VS Code-like Monaco workspace, terminal, and VFS bridge." },
   { id: "code-ide", name: "Code IDE", category: "Developer", status: "Installed", target: "app", targetId: "code-ide", detail: "Dedicated IDE cockpit linking SEIS Code, terminal, extensions, and projects." },
   { id: "seis-design", name: "SEIS Design", category: "Creative", status: "Installed", target: "app", targetId: "seis-design", detail: "Website, product polish, motion, and design handoff cockpit." },
@@ -1843,13 +1974,12 @@ let activeWindowId = null;
 let launcherCategory = "All";
 let codeWorkspaceSyncQueue = Promise.resolve();
 let contextMenuState = null;
-let terminalSession = {
+const terminalSession = {
   cwd: "/home/seis",
   historyIndex: -1,
   claudeRepl: false
 };
 
-const root = document.documentElement;
 const shell = document.querySelector(".desktop-shell");
 const layer = document.querySelector("[data-window-layer]");
 const dock = document.querySelector("[data-dock]");
@@ -2363,7 +2493,7 @@ async function syncDesktopFromCodeWorkspace(source = "seis-code-workspace") {
 function parseJSON(value) {
   try {
     return value ? JSON.parse(value) : null;
-  } catch (_error) {
+  } catch {
     return null;
   }
 }
@@ -2704,6 +2834,12 @@ function handleClick(event) {
       break;
     case "export-installed-ai-core-route-matrix":
       exportInstalledAiCoreRouteMatrix();
+      break;
+    case "export-development-lane-bridge":
+      exportDevelopmentLaneBridge();
+      break;
+    case "open-development-lane":
+      openDevelopmentLane(value);
       break;
     case "export-personal-plugin-ai-core-lane-matrix":
       exportPersonalPluginAiCoreLaneMatrix();
@@ -3617,6 +3753,7 @@ function defaultWindowSize(app) {
   if (app.type === "search") return { w: 1000, h: 650 };
   if (app.type === "system-os") return { w: 1120, h: 700 };
   if (app.type === "seis-command-center") return { w: 1120, h: 700 };
+  if (app.type === "development-lanes") return { w: 1120, h: 720 };
   if (app.type === "demo-studio") return { w: 1120, h: 700 };
   if (app.type === "second-brain") return { w: 1120, h: 700 };
   if (app.type === "linux-replica") return { w: 1060, h: 680 };
@@ -3807,6 +3944,8 @@ function renderApp(app) {
       return renderSeisSystemOSApp();
     case "seis-command-center":
       return renderSeisCommandCenter();
+    case "development-lanes":
+      return renderDevelopmentLanes();
     case "demo-studio":
       return renderDemoStudio();
     case "second-brain":
@@ -5512,7 +5651,6 @@ function renderAiCoreOrbitPanel(completedQuarters, processes) {
   const orbit = getAiCoreOrbitState(completedQuarters);
   const activeVersion = getAiCoreVersionTarget(orbit.activeVersionId) || getAiCoreVersionForQuarters(completedQuarters);
   const activeIndex = AI_CORE_VERSION_TARGETS.findIndex((target) => target.id === activeVersion.id);
-  const progress = Math.round(clamp(completedQuarters, 0, getSubAgentQuarters().length) / getSubAgentQuarters().length * 100);
   return `<section class="ai-core-orbit-panel" data-ai-core-orbit data-seis-ai-core-version="${escapeAttr(activeVersion.id)}">
     <div class="ai-core-orbit-copy">
       <span class="eyebrow">SEIS AI Core spatial command surface</span>
@@ -5584,7 +5722,6 @@ function renderAssistant() {
 }
 
 function renderSeisSystemOSApp() {
-  const data = getAppData("seis-system-os");
   const activeProfile = ["linux", "macos", "windows"].includes(state.osProfile) ? state.osProfile : "linux";
   const installedApps = APPS.length;
   const osPages = SEIS_WOW_IMPORTS.reduce((sum, item) => sum + item.pages, 0);
@@ -5921,7 +6058,7 @@ function getV17CommandCenterCoverage() {
     liveSshExecution: false,
     liveDeployment: false,
     modelScalingFloor: "20B local-planned profile for 16GB+ RAM",
-    modelScalingFuture: "70B research, 150B frontier, and 512B AGI apex tiers require future hardware, safety, cost, privacy, AGI capability evaluation, and validation evidence",
+    modelScalingFuture: "70B research, 150B frontier, 512B AGI apex, 520B next-frontier, and 720B AGI frontier tiers require future hardware, safety, cost, privacy, AGI evaluation, and validation evidence",
     modelScalingProfile: SEIS_MODEL_SCALING_UI_PROFILE,
     modelScalingPreflight: {
       status: SEIS_MODEL_SCALING_UI_PROFILE.preflightStatus,
@@ -5979,6 +6116,35 @@ function getV17CommandCenterCoverage() {
       agiCapabilityStatus: "not-demonstrated",
       productionReady: false,
       stages: SEIS_MODEL_SCALING_UI_PROFILE.apexModelProgramStages.slice()
+    },
+    nextFrontierBoundary: {
+      path: SEIS_MODEL_SCALING_UI_PROFILE.nextFrontierBoundary,
+      resource: SEIS_MODEL_SCALING_UI_PROFILE.nextFrontierBoundaryResource,
+      status: SEIS_MODEL_SCALING_UI_PROFILE.nextFrontierBoundaryStatus,
+      qualityGate: SEIS_MODEL_SCALING_UI_PROFILE.nextFrontierBoundaryQualityGate,
+      summary: SEIS_MODEL_SCALING_UI_PROFILE.nextFrontierBoundarySummary,
+      routeEligibleToday: false,
+      runtimeAuthority: false,
+      trainingStatus: "not-started",
+      weightsAvailable: false,
+      inferenceAvailable: false,
+      benchmarkStatus: "not-run",
+      productionReady: false
+    },
+    agi720bFrontierBoundary: {
+      path: SEIS_MODEL_SCALING_UI_PROFILE.agi720bFrontierBoundary,
+      resource: SEIS_MODEL_SCALING_UI_PROFILE.agi720bFrontierBoundaryResource,
+      status: SEIS_MODEL_SCALING_UI_PROFILE.agi720bFrontierBoundaryStatus,
+      qualityGate: SEIS_MODEL_SCALING_UI_PROFILE.agi720bFrontierBoundaryQualityGate,
+      summary: SEIS_MODEL_SCALING_UI_PROFILE.agi720bFrontierBoundarySummary,
+      routeEligibleToday: false,
+      runtimeAuthority: false,
+      trainingStatus: "not-started",
+      weightsAvailable: false,
+      inferenceAvailable: false,
+      benchmarkStatus: "not-run",
+      productionReady: false,
+      agiClaimAllowed: false
     },
     modelScalingSubagentCouncil: {
       path: SEIS_MODEL_SCALING_UI_PROFILE.modelScalingSubagentCouncil,
@@ -6143,10 +6309,10 @@ function renderSeisCommandCenter() {
           <td>${escapeHtml(item.gap)}</td>
         </tr>`).join("")}</tbody>
       </table>
-      <p class="status-note">150B remains blocked until: ${coverage.masterObjectiveCoverage.blockedUntil.map((item) => escapeHtml(item)).join(", ")}.</p>
+      <p class="status-note">Active AI boundary remains blocked until: ${coverage.masterObjectiveCoverage.blockedUntil.map((item) => escapeHtml(item)).join(", ")}.</p>
     </section>
     <section class="subagent-panel">
-      <h3>20B to 512B AI / AGI Model Scaling Profile</h3>
+      <h3>20B to 720B AI / AGI Model Scaling Boundaries</h3>
       <div class="evolution-safety-grid">
         <article><strong>Target</strong><p>${escapeHtml(coverage.modelScalingProfile.currentTarget)} · ${escapeHtml(coverage.modelScalingProfile.ramClass)}</p></article>
         <article><strong>Frontier</strong><p>${escapeHtml(coverage.modelScalingProfile.frontierTarget)} · ${escapeHtml(coverage.modelScalingProfile.frontierStatus)}</p></article>
@@ -6154,6 +6320,8 @@ function renderSeisCommandCenter() {
         <article><strong>Escalation Policy</strong><p>${escapeHtml(coverage.modelFrontierEscalationPolicy.status)} · ${escapeHtml(coverage.modelFrontierEscalationPolicy.path)}</p></article>
         <article><strong>150B Frontier Model Program</strong><p>${escapeHtml(coverage.frontierModelProgram.status)} · ${escapeHtml(coverage.frontierModelProgram.path)}</p></article>
         <article><strong>512B Apex AGI Program</strong><p>${escapeHtml(coverage.apexModelProgram.status)} · ${escapeHtml(coverage.apexModelProgram.path)}</p></article>
+        <article><strong>520B Next Frontier</strong><p>${escapeHtml(coverage.nextFrontierBoundary.status)} · ${escapeHtml(coverage.nextFrontierBoundary.path)}</p></article>
+        <article><strong>720B AGI Boundary</strong><p>${escapeHtml(coverage.agi720bFrontierBoundary.status)} · ${escapeHtml(coverage.agi720bFrontierBoundary.path)}</p></article>
         <article><strong>Sub-Agent Council</strong><p>${escapeHtml(coverage.modelScalingSubagentCouncil.status)} · 12 plan-only agents</p></article>
         <article><strong>Parameter Ladder</strong><p>${escapeHtml(coverage.modelScalingProfile.parameterLadderStatus)} · ${escapeHtml(coverage.modelScalingProfile.parameterLadderPath)}</p></article>
         <article><strong>Compatibility</strong><p>${escapeHtml(coverage.modelScalingProfile.compatibilityClaim)} · ${escapeHtml(coverage.modelScalingProfile.memoryBudgetStatus)}</p></article>
@@ -6205,18 +6373,112 @@ function renderSeisCommandCenter() {
       <p class="status-note">Frontier escalation policy: <code>${escapeHtml(coverage.modelFrontierEscalationPolicy.path)}</code> · <code>${escapeHtml(coverage.modelFrontierEscalationPolicy.resource)}</code> · ${escapeHtml(coverage.modelFrontierEscalationPolicy.status)} · <code>${escapeHtml(coverage.modelFrontierEscalationPolicy.qualityGate)}</code>. ${escapeHtml(coverage.modelFrontierEscalationPolicy.rule)}</p>
       <p class="status-note">150B frontier model program: <code>${escapeHtml(coverage.frontierModelProgram.path)}</code> · <code>${escapeHtml(coverage.frontierModelProgram.resource)}</code> · ${escapeHtml(coverage.frontierModelProgram.status)} · <code>${escapeHtml(coverage.frontierModelProgram.qualityGate)}</code>. ${escapeHtml(coverage.frontierModelProgram.summary)}</p>
       <p class="status-note">512B apex AGI program: <code>${escapeHtml(coverage.apexModelProgram.path)}</code> · <code>${escapeHtml(coverage.apexModelProgram.resource)}</code> · ${escapeHtml(coverage.apexModelProgram.status)} · <code>${escapeHtml(coverage.apexModelProgram.qualityGate)}</code>. ${escapeHtml(coverage.apexModelProgram.summary)}</p>
+      <p class="status-note">520B next-frontier boundary: <code>${escapeHtml(coverage.nextFrontierBoundary.path)}</code> · <code>${escapeHtml(coverage.nextFrontierBoundary.resource)}</code> · ${escapeHtml(coverage.nextFrontierBoundary.status)} · <code>${escapeHtml(coverage.nextFrontierBoundary.qualityGate)}</code>. ${escapeHtml(coverage.nextFrontierBoundary.summary)}</p>
+      <p class="status-note">720B AGI frontier boundary: <code>${escapeHtml(coverage.agi720bFrontierBoundary.path)}</code> · <code>${escapeHtml(coverage.agi720bFrontierBoundary.resource)}</code> · ${escapeHtml(coverage.agi720bFrontierBoundary.status)} · <code>${escapeHtml(coverage.agi720bFrontierBoundary.qualityGate)}</code>. ${escapeHtml(coverage.agi720bFrontierBoundary.summary)}</p>
       <p class="status-note">Model Scaling Sub-Agent Council: <code>${escapeHtml(coverage.modelScalingSubagentCouncil.path)}</code> · ${escapeHtml(coverage.modelScalingSubagentCouncil.status)} · <code>${escapeHtml(coverage.modelScalingSubagentCouncil.qualityGate)}</code>. ${escapeHtml(coverage.modelScalingSubagentCouncil.summary)}</p>
       <p class="status-note">Required 150B evidence before scope: ${coverage.modelScalingProfile.frontierRequiredEvidence.map((item) => escapeHtml(item)).join(", ")}.</p>
-      <p class="status-note">512B / AGI status: ${escapeHtml(coverage.apexModelProgram.agiCapabilityStatus)}. No 512B training, weights, inference, benchmark, checkpoint, cloud/GPU provisioning, SSH, deployment, or real AGI claim exists.</p>
+      <p class="status-note">512B / 520B / 720B AGI status: ${escapeHtml(coverage.apexModelProgram.agiCapabilityStatus)}. No 512B, 520B, or 720B training, weights, inference, benchmark, checkpoint, cloud/GPU provisioning, SSH, deployment, routeable runtime, background autonomy, or real AGI claim exists.</p>
     </section>
     <section class="subagent-panel">
       <h3>Safety Boundary</h3>
       <div class="evolution-safety-grid">
         <article><strong>AI</strong><p>Provider-neutral Local Demo by default. No browser secrets and no trained SEIS model claim.</p></article>
-        <article><strong>Model Scaling</strong><p>20B is a planned 16GB+ profile. 70B, 150B, and 512B AGI tiers need future hardware, inference, training, safety, cost, privacy, benchmark, and AGI evaluation evidence.</p></article>
+        <article><strong>Model Scaling</strong><p>20B is a planned 16GB+ profile. 70B, 150B, 512B, 520B, and 720B AGI tiers need future hardware, inference, training, safety, cost, privacy, benchmark, and AGI evaluation evidence.</p></article>
         <article><strong>SSH/Cloud</strong><p>Real SSH, deployment, firewall, VPN, and cloud mutations remain disabled until explicitly approved.</p></article>
         <article><strong>Review</strong><p>Use validators and snapshots as review evidence; dirty worktree state is reported separately from validator results.</p></article>
       </div>
+    </section>
+  </section>`;
+}
+
+function renderDevelopmentLanes() {
+  const data = getAppData("development-lanes");
+  const bridge = SEIS_DEVELOPMENT_LANE_BRIDGE;
+  return `<section class="app-main development-lanes-app" data-development-lanes-app data-development-lane-bridge>
+    <div class="toolbar">
+      <button type="button" data-action="app-primary" data-app-id="development-lanes">Export Lane Bridge</button>
+      <button type="button" data-action="export-development-lane-bridge">Save Bridge Evidence</button>
+      <button type="button" data-action="open-app" data-app-id="seis-command-center">Open Command Center</button>
+      <button type="button" data-action="open-app" data-app-id="ai-assistant">Open AI Core</button>
+    </div>
+    <p class="status-note">${escapeHtml(bridge.boundary)} Default routing: ${escapeHtml(bridge.defaultRoutingMode)}.</p>
+    <section class="lane-bridge-hero">
+      <div>
+        <span class="wow-section-kicker">Cross-Lane Development Bridge</span>
+        <h2>Desktop · Linux · Code · Swift · AI Core</h2>
+        <p>Unified navigation across the five active SEIS development lanes with validator commands, provider posture, and model ladder boundaries.</p>
+      </div>
+      <div class="lane-bridge-metrics">
+        <article><strong>${bridge.lanes.length}</strong><span>Lanes</span></article>
+        <article><strong>${bridge.modelLadderSummary.length}</strong><span>Model tiers</span></article>
+        <article><strong>${bridge.installedToolsSummary.length}</strong><span>Installed tools</span></article>
+        <article><strong>${bridge.validationCommands.length}</strong><span>Validators</span></article>
+      </div>
+    </section>
+    <section class="subagent-panel">
+      <h3>Development Lanes</h3>
+      <div class="lane-bridge-grid">
+        ${bridge.lanes.map((lane) => `<article class="lane-bridge-card" data-development-lane="${escapeAttr(lane.id)}">
+          <div class="lane-bridge-card-head">
+            <strong>${escapeHtml(lane.label)}</strong>
+            <span class="lane-status">${escapeHtml(lane.status)}</span>
+          </div>
+          <p class="muted">${escapeHtml(lane.detail)}</p>
+          <dl class="lane-bridge-meta">
+            <div><dt>Surface</dt><dd>${escapeHtml(lane.surface)}</dd></div>
+            <div><dt>Validator</dt><dd><code>${escapeHtml(lane.validator)}</code></dd></div>
+          </dl>
+          <div class="lane-bridge-actions">
+            ${lane.appId ? `<button type="button" class="secondary-action" data-action="open-development-lane" data-value="${escapeAttr(lane.id)}">Open in Desktop</button>` : ""}
+            <button type="button" class="secondary-action" data-action="open-demo-route" data-value="${escapeAttr(lane.id === "linux-replica" ? "seis-linux-replica-web" : lane.id === "seis-code" ? "seis-code-app" : lane.id === "desktop-os" ? "desktop-entry" : lane.id === "ai-core" ? "seis-ai-app" : "desktop-entry")}">Open Route</button>
+          </div>
+        </article>`).join("")}
+      </div>
+    </section>
+    <section class="subagent-panel">
+      <h3>Model Parameter Ladder</h3>
+      <p class="status-note">Source: <code>${escapeHtml(bridge.parameterLadderPath)}</code> · Plan-only; no trained weights or live inference.</p>
+      <table class="data-table" data-model-ladder-bridge>
+        <thead><tr><th>Class</th><th>Status</th><th>Hardware</th><th>Route eligible</th></tr></thead>
+        <tbody>${bridge.modelLadderSummary.map((tier) => `<tr data-model-ladder-tier="${escapeAttr(tier.parameterClass)}">
+          <td><strong>${escapeHtml(tier.parameterClass)}</strong></td>
+          <td>${escapeHtml(tier.status)}</td>
+          <td>${escapeHtml(tier.hardware)}</td>
+          <td>${tier.routeEligible ? "Yes" : "No"}</td>
+        </tr>`).join("")}</tbody>
+      </table>
+    </section>
+    <section class="subagent-panel">
+      <h3>Provider Registry Summary</h3>
+      <p class="status-note">Source: <code>${escapeHtml(bridge.providerRegistryPath)}</code> · Missing Key is not Error.</p>
+      <table class="data-table" data-provider-ladder-bridge>
+        <thead><tr><th>Provider</th><th>Status</th><th>Routing</th></tr></thead>
+        <tbody>${bridge.providerSummary.map((provider) => `<tr data-provider-bridge="${escapeAttr(provider.id)}">
+          <td>${escapeHtml(provider.label)}</td>
+          <td>${escapeHtml(provider.status)}</td>
+          <td>${provider.routingEligible ? "Eligible" : "Blocked"}</td>
+        </tr>`).join("")}</tbody>
+      </table>
+    </section>
+    <section class="subagent-panel">
+      <h3>Installed AI Tools</h3>
+      <p class="status-note">Source: <code>${escapeHtml(bridge.installedToolsRegistryPath)}</code> · Codex remains the default writer.</p>
+      <table class="data-table" data-installed-tools-bridge>
+        <thead><tr><th>Tool</th><th>Status</th><th>Writer</th></tr></thead>
+        <tbody>${bridge.installedToolsSummary.map((tool) => `<tr data-installed-tool-bridge="${escapeAttr(tool.id)}">
+          <td>${escapeHtml(tool.name)}</td>
+          <td>${escapeHtml(tool.status)}</td>
+          <td>${tool.writer ? "Yes (handoff-gated)" : "No"}</td>
+        </tr>`).join("")}</tbody>
+      </table>
+    </section>
+    <section class="subagent-panel">
+      <h3>Validation Commands</h3>
+      <table class="data-table">
+        <thead><tr><th>Command</th></tr></thead>
+        <tbody>${bridge.validationCommands.map((command) => `<tr><td><code>${escapeHtml(command)}</code></td></tr>`).join("")}</tbody>
+      </table>
+      <p class="status-note">Last export: ${data.lastExport?.time || "Not saved yet"}${data.lastExport?.path ? ` · ${escapeHtml(data.lastExport.path)}` : ""}</p>
     </section>
   </section>`;
 }
@@ -6294,12 +6556,12 @@ function renderLinuxReplicaApp() {
       <div>
         <p class="status-note">The supplied NebulaOS-style HTML was incomplete, so SEIS uses it as a shell implementation source: boot, login, taskbar, start menu, windows, VFS, and Linux-like terminal behavior are preserved under SEIS identity.</p>
         <h2>Supplied code, SEIS shell.</h2>
-        <p>The standalone route runs locally at <code>./seis-linux-replica.html</code> with 64 app launch targets and no SSH, host OS, provider key, or cloud mutation.</p>
+        <p>The standalone route runs locally at <code>./seis-linux-replica.html</code> with 286 launcher targets, 67 audited functional app workflows, and no SSH, host OS, provider key, or cloud mutation.</p>
       </div>
       <aside class="system-os-evidence-card">
-        <strong>64</strong>
-        <span>local app targets</span>
-        <small>boot · login · taskbar · launcher · windows · VFS · terminal</small>
+        <strong>67/67</strong>
+        <span>functional app audit</span>
+        <small>35 workbenches · 8 games · browser-local</small>
       </aside>
     </section>
     <div class="system-module-grid">
@@ -6521,7 +6783,7 @@ function renderSeisEvolution() {
       <aside class="reference-console" aria-label="Pinned reference from latest task screenshot">
         <h3>Sabitlenenler</h3>
         <div class="reference-list">
-          ${SEIS_EVOLUTION_REFERENCE.pinned.map(([title, time, note], index) => `<article class="reference-row">
+          ${SEIS_EVOLUTION_REFERENCE.pinned.map(([title, time, note]) => `<article class="reference-row">
             <span class="${time === "queued" ? "reference-spinner" : "reference-info"}">${time === "queued" ? "" : "i"}</span>
             <div>
               <strong>${escapeHtml(title)}</strong>
@@ -6940,6 +7202,12 @@ function exposeDiagnostics() {
     contextMenuState: () => ({
       open: Boolean(contextMenu && !contextMenu.hidden),
       kind: contextMenu?.querySelector("[data-context-kind]")?.dataset.contextKind || "",
+      lastTarget: contextMenuState ? {
+        type: contextMenuState.type || "",
+        appId: contextMenuState.appId || "",
+        path: contextMenuState.path || "",
+        windowId: contextMenuState.windowId || ""
+      } : null,
       actions: Array.from(contextMenu?.querySelectorAll("button") || []).map((button) => button.dataset.action || button.textContent.trim())
     }),
     systemState: () => {
@@ -7406,10 +7674,6 @@ function setCommandPalette(force) {
   }
 }
 
-function toggleHidden(node) {
-  node.hidden = !node.hidden;
-}
-
 function dismissDemoGuide() {
   const guide = document.querySelector(".desktop-demo-guide");
   if (!guide) return;
@@ -7489,7 +7753,7 @@ function normalizePath(path) {
     if (part === "..") out.pop();
     else out.push(part);
   }
-  return `/${out.join("/")}` || "/";
+  return `/${out.join("/")}`;
 }
 
 function dirName(path) {
@@ -7824,7 +8088,7 @@ function runAppPrimaryAction(appId, body) {
   const now = new Date().toLocaleTimeString();
   const editorText = body?.querySelector("[data-generic-editor]")?.value || defaultGenericText(app);
   const workflowInput = body?.querySelector("[data-workflow-input]")?.value || "";
-  let message = `${primaryActionLabel(app)} completed at ${now}.`;
+  let message;
 
   if (app.type === "files") {
     const visible = listDir(state.currentDir).map((item) => `- ${item.type}: ${item.path}`).join("\n") || "- empty";
@@ -7875,6 +8139,9 @@ function runAppPrimaryAction(appId, body) {
     upsertFile(path, `# SEIS System OS Blueprint\n\nGenerated: ${timestamp}\nActive profile: ${state.osProfile || "linux"}\nOpen windows: ${state.windows.length}\nInstalled apps: ${APPS.length}\nReference screens: ${SEIS_WOW_IMPORTS.reduce((sum, item) => sum + item.pages, 0)}\n\n## Goal\nBuild SEIS as the operating system first, then expose Code, Design, Cloud, Store, Music, WOW Gallery, Mythic Gacha, AI Core, and sub-agent evidence from that shell.\n\n## OS Modules\n${SEIS_SYSTEM_OS_MODULES.map((module) => `- ${module.title}: ${module.status} / ${module.source} / ${module.action}`).join("\n")}\n\n## Evidence Boundary\n- Demo boundary: ${SEIS_SYSTEM_OS_EVIDENCE.boundary}\n- Completion: ${SEIS_SYSTEM_OS_EVIDENCE.completionPercent}% local evidence\n- Lanes: ${SEIS_SYSTEM_OS_EVIDENCE.lanes}\n- Version targets: ${SEIS_SYSTEM_OS_EVIDENCE.versionTargets}\n- MCP tools: ${SEIS_SYSTEM_OS_EVIDENCE.mcpTools}\n- Release promotion allowed: ${SEIS_SYSTEM_OS_EVIDENCE.releasePromotionAllowed ? "yes" : "no"}\n\n## Safety\nThis OS shell does not execute real SSH, deploy, expose keys, or claim live provider capability. It keeps external and imported references labeled.\n`);
     getListData(appId).unshift({ id: `system-os-${Date.now()}`, title: "System OS blueprint saved", body: path, done: true });
     message = `SEIS System OS blueprint saved to ${path}.`;
+  } else if (app.type === "development-lanes") {
+    exportDevelopmentLaneBridge({ quiet: true });
+    message = "Development Lane Bridge evidence saved.";
   } else if (app.type === "seis-command-center") {
     const data = getAppData(appId);
     const timestamp = new Date().toISOString();
@@ -7909,7 +8176,7 @@ function runAppPrimaryAction(appId, body) {
     const timestamp = new Date().toISOString();
     const path = "/home/seis/Documents/seis-linux-replica-handoff.md";
     data.lastSaved = new Date(timestamp).toLocaleTimeString();
-    upsertFile(path, `# SEIS Linux Replica Handoff\n\nGenerated: ${timestamp}\nRoute: ./seis-linux-replica.html\nSource: user-supplied Web Linux / NebulaOS-style pasted code\n\n## Implemented\n- Boot screen\n- Local login\n- Taskbar\n- Start menu with search and categories\n- Draggable/minimize/maximize/close windows\n- Browser-local VFS\n- Linux-like terminal commands\n- 64 local app launch targets\n\n## Boundary\nThe pasted code ended with placeholder app comments, so SEIS completes the runnable route with local templates. This route does not execute SSH, host shell commands, deployment, provider calls, or external network mutation.\n`);
+    upsertFile(path, `# SEIS Linux Replica Handoff\n\nGenerated: ${timestamp}\nRoute: ./seis-linux-replica.html\nSource: user-supplied Web Linux / NebulaOS-style pasted code\n\n## Implemented\n- Boot screen\n- Local login\n- Taskbar\n- Start menu with search and categories\n- Draggable/minimize/maximize/close windows\n- Browser-local VFS\n- Linux-like terminal commands\n- 286 launcher targets including supplied reference modules\n- 67 audited functional app workflows\n- 35 enhanced workbenches with snapshot/reset coverage\n- 8 playable local games with reset coverage\n- Visible Local Functional Audit evidence\n\n## Boundary\nThe pasted code ended with placeholder app comments, so SEIS completes the runnable route with local templates. This route does not execute SSH, host shell commands, deployment, provider calls, or external network mutation.\n`);
     getListData(appId).unshift({ id: `linux-replica-${Date.now()}`, title: "Linux Replica handoff saved", body: path, done: true });
     message = `SEIS Linux Replica handoff saved to ${path}.`;
   } else if (app.type === "seis-website") {
@@ -8492,6 +8759,12 @@ Generated: ${timestamp}
 - 512B apex AGI program quality gate: ${coverage.apexModelProgram.qualityGate}
 - 512B apex AGI capability status: ${coverage.apexModelProgram.agiCapabilityStatus}
 - 512B apex AGI program stages: ${coverage.apexModelProgram.stages.map(([stage, status, route]) => `${stage} / ${status} / ${route}`).join("; ")}
+- 520B next-frontier boundary: ${coverage.nextFrontierBoundary.path} / ${coverage.nextFrontierBoundary.status}
+- 520B next-frontier boundary resource: ${coverage.nextFrontierBoundary.resource}
+- 520B next-frontier boundary quality gate: ${coverage.nextFrontierBoundary.qualityGate}
+- 720B AGI frontier boundary: ${coverage.agi720bFrontierBoundary.path} / ${coverage.agi720bFrontierBoundary.status}
+- 720B AGI frontier boundary resource: ${coverage.agi720bFrontierBoundary.resource}
+- 720B AGI frontier boundary quality gate: ${coverage.agi720bFrontierBoundary.qualityGate}
 - Model scaling sub-agent council: ${coverage.modelScalingSubagentCouncil.path} / ${coverage.modelScalingSubagentCouncil.status}
 - Model scaling sub-agent council quality gate: ${coverage.modelScalingSubagentCouncil.qualityGate}
 - Model scaling sub-agent council agents: ${coverage.modelScalingSubagentCouncil.agentCount} total / ${coverage.modelScalingSubagentCouncil.planOnlyAgentCount} plan-only
@@ -8522,7 +8795,7 @@ Generated: ${timestamp}
 - Active requirement: ${coverage.masterObjectiveCoverage.activeRequirement}
 - Evidence: ${coverage.masterObjectiveCoverage.evidence.join("; ")}
 - Checks: ${coverage.masterObjectiveCoverage.checks.join("; ")}
-- 150B blocked until: ${coverage.masterObjectiveCoverage.blockedUntil.join(", ")}
+- Active AI boundary blocked until: ${coverage.masterObjectiveCoverage.blockedUntil.join(", ")}
 
 ## Master Objective Coverage Matrix
 ${coverage.masterObjectiveCoverage.items.map((item) => `- ${item.id}: ${item.status} / ${item.check} / ${item.gap}`).join("\n")}
@@ -9495,6 +9768,75 @@ ${SEIS_AI_CORE_RESOURCE_BRIDGE.boundary}
 
 Keep this resource bridge generated from repository-owned source data and validate it with ${SEIS_AI_CORE_RESOURCE_BRIDGE.validator} before using it as Command Center or AI Core display evidence.
 `;
+}
+
+function exportDevelopmentLaneBridge(options = {}) {
+  const data = getAppData("development-lanes");
+  const path = "/home/seis/Documents/seis-development-lane-bridge.md";
+  const timestamp = new Date().toISOString();
+  const bridge = SEIS_DEVELOPMENT_LANE_BRIDGE;
+  upsertFile(path, `# SEIS Development Lane Bridge
+
+Generated: ${timestamp}
+
+${bridge.boundary}
+
+## Lanes
+
+${bridge.lanes.map((lane) => `- ${lane.label} (${lane.id}): ${lane.status} / ${lane.surface} / ${lane.validator}`).join("\n")}
+
+## Model Ladder Summary
+
+${bridge.modelLadderSummary.map((tier) => `- ${tier.parameterClass}: ${tier.status} / ${tier.hardware} / routeEligible=${tier.routeEligible}`).join("\n")}
+
+## Provider Summary
+
+${bridge.providerSummary.map((provider) => `- ${provider.label}: ${provider.status} / routingEligible=${provider.routingEligible}`).join("\n")}
+
+## Installed Tools
+
+${bridge.installedToolsSummary.map((tool) => `- ${tool.name}: ${tool.status} / writer=${tool.writer}`).join("\n")}
+
+## Validation Commands
+
+${bridge.validationCommands.map((command) => `- ${command}`).join("\n")}
+
+## Sources
+
+- Provider registry: ${bridge.providerRegistryPath}
+- Parameter ladder: ${bridge.parameterLadderPath}
+- Installed tools: ${bridge.installedToolsRegistryPath}
+`);
+  data.lastExport = { time: timestamp, path };
+  if (!options.quiet) {
+    getListData("development-lanes").unshift({ id: `lane-bridge-${Date.now()}`, title: "Development Lane Bridge saved", body: path, done: true });
+    toast("Development Lanes", `Saved ${path}.`);
+    log("development-lane-bridge", `Exported development lane bridge to ${path}.`);
+    renderOpenWindows("development-lanes");
+    renderOpenWindows("files");
+    renderOpenWindows("system-logs");
+  }
+  saveState();
+  return path;
+}
+
+function openDevelopmentLane(laneId) {
+  const lane = SEIS_DEVELOPMENT_LANE_BRIDGE.lanes.find((item) => item.id === laneId);
+  if (!lane) {
+    toast("Development Lanes", "Lane not found.");
+    return;
+  }
+  if (lane.appId) {
+    openApp(lane.appId);
+    return;
+  }
+  if (lane.id === "apple-swift") {
+    toast("Apple Swift", "Open packages/seis_platform_swift in Xcode and run swift test --package-path packages/seis_platform_swift.");
+    return;
+  }
+  if (lane.route.startsWith("./")) {
+    window.open(lane.route, "_blank", "noopener,noreferrer");
+  }
 }
 
 function exportInstalledAiCoreRouteMatrix() {

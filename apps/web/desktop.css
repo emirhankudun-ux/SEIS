@@ -5136,6 +5136,103 @@ select:focus-visible,
   }
 }
 
+.lane-bridge-hero {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: minmax(0, 1.4fr) minmax(220px, 0.8fr);
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(124, 92, 255, 0.18), rgba(25, 198, 212, 0.08));
+}
+
+.lane-bridge-metrics {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.lane-bridge-metrics article {
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.24);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.lane-bridge-metrics strong {
+  font-size: 1.4rem;
+}
+
+.lane-bridge-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.lane-bridge-card {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.lane-bridge-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.lane-status {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  background: rgba(25, 198, 212, 0.16);
+  color: #8ef6ff;
+}
+
+.lane-bridge-meta {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.lane-bridge-meta div {
+  display: grid;
+  gap: 2px;
+}
+
+.lane-bridge-meta dt {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.66;
+}
+
+.lane-bridge-meta dd {
+  margin: 0;
+}
+
+.lane-bridge-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.development-lanes-app .subagent-panel + .subagent-panel {
+  margin-top: 16px;
+}
+
+@media (max-width: 900px) {
+  .lane-bridge-hero {
+    grid-template-columns: 1fr;
+  }
+}
+
 @keyframes boot-load {
   from {
     transform: scaleX(0.08);

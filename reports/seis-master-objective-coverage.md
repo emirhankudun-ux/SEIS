@@ -7,8 +7,10 @@ focused checks, coverage status, and remaining gaps. It does not claim
 completion; it makes incompleteness reviewable.
 It also summarizes `data/ssh-hardening-operation-contract.json` because SSH and
 firewall changes are lockout-sensitive security operations.
-It summarizes `content/development/seis-model-scaling-hardware-profile.json` because the 150B SEIS AI direction
-is a frontier research boundary, not trained-weight or inference evidence.
+It summarizes `content/development/seis-model-scaling-hardware-profile.json` and
+`content/development/seis-720b-agi-frontier-boundary.json` because SEIS model-scaling targets are
+frontier planning boundaries, not trained-weight, inference, SSH, cloud, or AGI
+proof evidence.
 
 ## Status
 
@@ -19,8 +21,9 @@ is a frontier research boundary, not trained-weight or inference evidence.
 | Coverage source | data/seis-master-objective-coverage.json |
 | SSH hardening operation contract | data/ssh-hardening-operation-contract.json |
 | SEIS model scaling profile | content/development/seis-model-scaling-hardware-profile.json |
+| 720B AGI frontier boundary | content/development/seis-720b-agi-frontier-boundary.json |
 | Coverage report | reports/seis-master-objective-coverage.md |
-| Coverage items | 10 |
+| Coverage items | 11 |
 | Completion rule | Coverage is complete only when required checks pass or the maintainer explicitly waives them with evidence. |
 
 ## Coverage Matrix
@@ -35,6 +38,7 @@ is a frontier research boundary, not trained-weight or inference evidence.
 | design-accessibility-experience | mapped | Treat design, accessibility, and product experience as engineering systems. | docs/governance/seis-supreme-vision.md; data/seis-operational-goal-tracker.json | npm run check:seis-operational-goal-tracker | Needs ongoing product-surface validation. |
 | ai-data-cloud-automation | active | Keep AI, data, cloud, SSH, and automation work governed and measurable. | data/ssh-hardening-operation-contract.json; docs/deployment/ssh-wireguard-vps-cloud-server.md | npm run check:ssh-vpn-cloud-server; npm run check:seis-master-prompt | Direct cloud mobile SSH remains blocked until strict readiness passes. |
 | seis-ai-150b-frontier-boundary | active | Track the requested SEIS AI 150B direction as an evidence-gated frontier research lane without claiming trained weights, routeable inference, provider access, SSH execution, or production readiness. | content/development/seis-model-scaling-hardware-profile.json; docs/ai/seis-model-scaling.md; packages/seis-ai/src/lib/plugin-integration.mjs; apps/web/desktop.js | npm run check:seis-model-scaling-hardware-profile; npm test --prefix packages/seis-ai; npm run check:desktop-os | 150B remains blocked until 20B and 70B evidence, clean-room training plan, distributed runtime budget, privacy and safety review, observability, rollback, and explicit human approval exist; no trained or routeable 150B SEIS model claim exists. |
+| seis-ai-720b-agi-frontier-boundary | active | Track the owner-requested 720B AGI frontier as a supervised five-year plan-only boundary without claiming trained weights, routeable inference, benchmark evidence, cloud/GPU or SSH execution, background autonomy, production readiness, or AGI proof. | content/development/seis-720b-agi-frontier-boundary.json; content/development/seis-sub-agent-5-year-plan.json; packages/seis-ai/src/mcp/server.mjs; apps/web/desktop.js | npm run check:seis-720b-agi-frontier-boundary; node --test packages/seis-ai/test/mcp-smoke.test.mjs; npm run check:desktop-os | 720B remains blocked until 20B, 70B, 150B, 300B+, 512B, and 520B evidence is accepted; AGI evaluation is independently reviewed; safety, cost-stop, rollback, and human approval evidence exists; no trained, routeable, benchmarked, cloud-provisioned, SSH-executed, background-runtime, or real AGI claim exists. |
 | open-source-github-readiness | active | Keep GitHub, community, governance, and CI readiness visible. | data/seis-master-prompt-github-controls.json; .github/workflows/seis-master-prompt-governance.yml | npm run check:open-source-governance; npm run check:seis-master-prompt | External GitHub branch settings must be verified before claiming enforcement. |
 | god-mode-every-topic-feature-growth | active | Treat God Mode as incomplete unless Dashboard, Goals, Repos, Docs, Agents, security, AI policy, rollback, validation, and handoff all receive explicit feature or governance improvement evidence. | content/development/seis-god-mode-feature-growth-ledger.json; content/development/seis-god-mode-module-coverage.json; content/development/seis-god-mode-completion-audit.json; roadmap/seis-next-steps-implementation-pack.md; docs/governance/seis-god-mode-module-coverage.md | npm run check:seis-god-mode-feature-growth-ledger; npm run check:seis-god-mode-module-coverage; npm run check:seis-god-mode-completion-audit; npm run check:seis-god-mode-work-package | Commit, push, CI, and final staged-boundary evidence are still required before the broad God Mode objective can be marked complete. |
 
@@ -49,7 +53,11 @@ is a frontier research boundary, not trained-weight or inference evidence.
 | Weights available | false | False required before any trained-weight claim |
 | Inference available | false | False required before any routeability claim |
 | Runtime authority | false | False required before cloud, SSH, or distributed runtime use |
-| Forbidden claims | SEIS has trained a 20B foundation model.; SEIS has trained a 70B foundation model.; SEIS has trained a 150B foundation model.; SEIS has trained a 512B foundation model.; SEIS has achieved real AGI.; SEIS has downloadable or routeable 150B weights.; SEIS owns ChatGPT-level or Claude-level frontier weights.; A prompt profile, RAG system, wrapper, LoRA, checkpoint, quantization, or provider API is a SEIS foundation model.; Do not mark 16GB+ compatibility as verified before benchmark evidence exists. | Non-claim boundary |
+| Forbidden claims | SEIS has trained a 20B foundation model.; SEIS has trained a 70B foundation model.; SEIS has trained a 150B foundation model.; SEIS has trained a 512B foundation model.; SEIS has trained a 520B foundation model.; SEIS has achieved real AGI.; SEIS has downloadable or routeable 150B weights.; SEIS owns ChatGPT-level or Claude-level frontier weights.; A prompt profile, RAG system, wrapper, LoRA, checkpoint, quantization, or provider API is a SEIS foundation model.; Do not mark 16GB+ compatibility as verified before benchmark evidence exists. | Non-claim boundary |
+| 720B AGI frontier boundary | SEIS AI 720B AGI Frontier Boundary / 720B | agi-frontier-boundary-plan-only |
+| 720B route eligibility | false | False required before any 720B routeability claim |
+| 720B AGI claim allowed | false | False required before any AGI proof claim |
+| 720B runtime authority | false | False required before cloud, SSH, or background runtime use |
 
 ## SSH Hardening Operation Coverage
 
@@ -70,6 +78,7 @@ npm run check:seis-god-mode-work-package
 npm run check:seis-god-mode-completion-audit
 npm run check:seis-operational-goal-tracker
 npm run check:seis-model-scaling-hardware-profile
+npm run check:seis-720b-agi-frontier-boundary
 npm run check:seis-master-prompt-report
 npm run check:seis-master-prompt
 npm run quality

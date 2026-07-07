@@ -14,6 +14,7 @@
     "npm run check:seis-god-mode-completion-audit",
     "npm run check:seis-operational-goal-tracker",
     "npm run check:seis-model-scaling-hardware-profile",
+    "npm run check:seis-720b-agi-frontier-boundary",
     "npm run check:seis-master-prompt-report",
     "npm run check:seis-master-prompt",
     "npm run quality"
@@ -82,6 +83,14 @@
       "evidence": ["content/development/seis-model-scaling-hardware-profile.json", "docs/ai/seis-model-scaling.md", "packages/seis-ai/src/lib/plugin-integration.mjs", "apps/web/desktop.js"],
       "checks": ["npm run check:seis-model-scaling-hardware-profile", "npm test --prefix packages/seis-ai", "npm run check:desktop-os"],
       "gap": "150B remains blocked until 20B and 70B evidence, clean-room training plan, distributed runtime budget, privacy and safety review, observability, rollback, and explicit human approval exist; no trained or routeable 150B SEIS model claim exists."
+    },
+    {
+      "id": "seis-ai-720b-agi-frontier-boundary",
+      "requirement": "Track the owner-requested 720B AGI frontier as a supervised five-year plan-only boundary without claiming trained weights, routeable inference, benchmark evidence, cloud/GPU or SSH execution, background autonomy, production readiness, or AGI proof.",
+      "status": "active",
+      "evidence": ["content/development/seis-720b-agi-frontier-boundary.json", "content/development/seis-sub-agent-5-year-plan.json", "packages/seis-ai/src/mcp/server.mjs", "apps/web/desktop.js"],
+      "checks": ["npm run check:seis-720b-agi-frontier-boundary", "node --test packages/seis-ai/test/mcp-smoke.test.mjs", "npm run check:desktop-os"],
+      "gap": "720B remains blocked until 20B, 70B, 150B, 300B+, 512B, and 520B evidence is accepted; AGI evaluation is independently reviewed; safety, cost-stop, rollback, and human approval evidence exists; no trained, routeable, benchmarked, cloud-provisioned, SSH-executed, background-runtime, or real AGI claim exists."
     },
     {
       "id": "open-source-github-readiness",

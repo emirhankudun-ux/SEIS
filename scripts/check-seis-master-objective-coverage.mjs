@@ -10,6 +10,7 @@ const coveragePath = "data/seis-master-objective-coverage.json";
 const coverageReportPath = "reports/seis-master-objective-coverage.md";
 const coverageReportGeneratorPath = "scripts/create-seis-master-objective-coverage-report.mjs";
 const modelScalingProfilePath = "content/development/seis-model-scaling-hardware-profile.json";
+const agi720bFrontierBoundaryPath = "content/development/seis-720b-agi-frontier-boundary.json";
 const trackerPath = "data/seis-operational-goal-tracker.json";
 const implementationMapPath = "data/seis-master-prompt-implementation-map.json";
 const acceptanceCriteriaPath = "data/seis-master-prompt-acceptance-criteria.json";
@@ -38,9 +39,11 @@ requireIncludes(coverageReportGeneratorPath, "Mode isolation", "objective covera
 requireIncludes(coverageReportGeneratorPath, "Firewall and lockout safety", "objective coverage report generator must render firewall lockout evidence");
 requireIncludes(coverageReportGeneratorPath, "Idempotency and failure handling", "objective coverage report generator must render idempotency and failure-handling evidence");
 requireIncludes(coverageReportGeneratorPath, modelScalingProfilePath, "objective coverage report generator must include the SEIS model scaling profile");
+requireIncludes(coverageReportGeneratorPath, agi720bFrontierBoundaryPath, "objective coverage report generator must include the 720B AGI frontier boundary");
 requireIncludes(coverageReportGeneratorPath, "AI Frontier Model Boundary", "objective coverage report generator must render AI frontier model coverage");
 requireIncludes(coverageReportPath, "## AI Frontier Model Boundary", "objective coverage report must include AI frontier model coverage");
 requireIncludes(coverageReportPath, "SEIS 150B Frontier Research Target", "objective coverage report must include the SEIS 150B frontier target");
+requireIncludes(coverageReportPath, "720B AGI frontier boundary", "objective coverage report must include the 720B AGI frontier boundary");
 requireIncludes(coverageReportPath, "## SSH Hardening Operation Coverage", "objective coverage report must include SSH operation coverage");
 requireIncludes(coverageReportPath, "Mode isolation", "objective coverage report must include mode isolation evidence");
 requireIncludes(coverageReportPath, "Firewall and lockout safety", "objective coverage report must include firewall lockout evidence");
@@ -82,6 +85,7 @@ if (coverage) {
     "design-accessibility-experience",
     "ai-data-cloud-automation",
     "seis-ai-150b-frontier-boundary",
+    "seis-ai-720b-agi-frontier-boundary",
     "open-source-github-readiness",
     "god-mode-every-topic-feature-growth",
   ]) {
@@ -97,6 +101,7 @@ if (coverage) {
     "npm run check:seis-god-mode-completion-audit",
     "npm run check:seis-operational-goal-tracker",
     "npm run check:seis-model-scaling-hardware-profile",
+    "npm run check:seis-720b-agi-frontier-boundary",
     "npm run check:seis-master-prompt-report",
     "npm run check:seis-master-prompt",
     "npm run quality",
@@ -138,6 +143,24 @@ if (coverage) {
         String(ai150bCoverage.requirement || "").includes("evidence-gated") &&
         String(ai150bCoverage.gap || "").includes("no trained or routeable 150B"),
       `${coveragePath} seis-ai-150b-frontier-boundary must keep 150B evidence-gated and non-claim boundaries explicit`
+    );
+  }
+
+  const ai720bCoverage = findCoverage(coverage, "seis-ai-720b-agi-frontier-boundary");
+  if (ai720bCoverage) {
+    requireCoverageIncludes(ai720bCoverage, "evidence", agi720bFrontierBoundaryPath, "720B AI coverage must cite the 720B AGI frontier boundary");
+    requireCoverageIncludes(ai720bCoverage, "evidence", "content/development/seis-sub-agent-5-year-plan.json", "720B AI coverage must cite the five-year plan");
+    requireCoverageIncludes(ai720bCoverage, "evidence", "packages/seis-ai/src/mcp/server.mjs", "720B AI coverage must cite the MCP server resource surface");
+    requireCoverageIncludes(ai720bCoverage, "evidence", "apps/web/desktop.js", "720B AI coverage must cite the Desktop Command Center surface");
+    requireCoverageIncludes(ai720bCoverage, "checks", "npm run check:seis-720b-agi-frontier-boundary", "720B AI coverage must require the 720B boundary check");
+    requireCoverageIncludes(ai720bCoverage, "checks", "node --test packages/seis-ai/test/mcp-smoke.test.mjs", "720B AI coverage must require the MCP smoke test");
+    requireCoverageIncludes(ai720bCoverage, "checks", "npm run check:desktop-os", "720B AI coverage must require the Desktop OS check");
+    ensure(
+      String(ai720bCoverage.requirement || "").includes("720B") &&
+        String(ai720bCoverage.requirement || "").includes("plan-only") &&
+        String(ai720bCoverage.gap || "").includes("no trained") &&
+        String(ai720bCoverage.gap || "").includes("real AGI claim"),
+      `${coveragePath} seis-ai-720b-agi-frontier-boundary must keep 720B plan-only and non-claim boundaries explicit`
     );
   }
 

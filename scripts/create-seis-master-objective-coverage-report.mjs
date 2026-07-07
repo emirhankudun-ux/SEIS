@@ -10,6 +10,7 @@ const root = resolve(scriptDir, "..");
 const coveragePath = "data/seis-master-objective-coverage.json";
 const sshHardeningOperationContractPath = "data/ssh-hardening-operation-contract.json";
 const modelScalingProfilePath = "content/development/seis-model-scaling-hardware-profile.json";
+const agi720bFrontierBoundaryPath = "content/development/seis-720b-agi-frontier-boundary.json";
 const reportPath = "reports/seis-master-objective-coverage.md";
 
 function read(relativePath) {
@@ -36,6 +37,7 @@ function renderReport() {
   const coverage = readJson(coveragePath);
   const sshHardeningOperationContract = readJson(sshHardeningOperationContractPath);
   const modelScalingProfile = readJson(modelScalingProfilePath);
+  const agi720bFrontierBoundary = readJson(agi720bFrontierBoundaryPath);
   const items = Array.isArray(coverage.coverage) ? coverage.coverage : [];
   const requiredCommands = Array.isArray(coverage.requiredCommands) ? coverage.requiredCommands : [];
   const modeIsolation = sshHardeningOperationContract.modeIsolation || {};
@@ -61,6 +63,7 @@ function renderReport() {
     ["Coverage source", coveragePath],
     ["SSH hardening operation contract", sshHardeningOperationContractPath],
     ["SEIS model scaling profile", modelScalingProfilePath],
+    ["720B AGI frontier boundary", agi720bFrontierBoundaryPath],
     ["Coverage report", reportPath],
     ["Coverage items", items.length],
     ["Completion rule", coverage.completionRule],
@@ -93,6 +96,7 @@ function renderReport() {
 
   const currentTarget = modelScalingProfile.currentTarget || {};
   const frontierTarget = modelScalingProfile.frontierTarget || {};
+  const agi720bTarget = agi720bFrontierBoundary.target || {};
   const frontierRows = [
     ["Profile status", modelScalingProfile.status, "Coverage contract only"],
     ["Current target", `${currentTarget.displayName || "missing"} / ${currentTarget.parameterClass || "missing"}`, currentTarget.compatibilityStatus || "missing"],
@@ -101,7 +105,11 @@ function renderReport() {
     ["Weights available", frontierTarget.weightsAvailable === true, "False required before any trained-weight claim"],
     ["Inference available", frontierTarget.inferenceAvailable === true, "False required before any routeability claim"],
     ["Runtime authority", frontierTarget.runtimeAuthority === true, "False required before cloud, SSH, or distributed runtime use"],
-    ["Forbidden claims", Array.isArray(modelScalingProfile.forbiddenClaims) ? modelScalingProfile.forbiddenClaims.join("; ") : "missing forbidden claims", "Non-claim boundary"]
+    ["Forbidden claims", Array.isArray(modelScalingProfile.forbiddenClaims) ? modelScalingProfile.forbiddenClaims.join("; ") : "missing forbidden claims", "Non-claim boundary"],
+    ["720B AGI frontier boundary", `${agi720bTarget.displayName || agi720bFrontierBoundary.id || "missing"} / ${agi720bTarget.parameterClass || "missing"}`, agi720bFrontierBoundary.status || "missing"],
+    ["720B route eligibility", agi720bFrontierBoundary.routeEligibleToday === true, "False required before any 720B routeability claim"],
+    ["720B AGI claim allowed", agi720bFrontierBoundary.agiClaimAllowed === true, "False required before any AGI proof claim"],
+    ["720B runtime authority", agi720bFrontierBoundary.runtimeAuthority === true, "False required before cloud, SSH, or background runtime use"]
   ].map(tableRow).join("\n");
 
   return `# SEIS Master Objective Coverage Report
@@ -113,8 +121,10 @@ focused checks, coverage status, and remaining gaps. It does not claim
 completion; it makes incompleteness reviewable.
 It also summarizes \`${sshHardeningOperationContractPath}\` because SSH and
 firewall changes are lockout-sensitive security operations.
-It summarizes \`${modelScalingProfilePath}\` because the 150B SEIS AI direction
-is a frontier research boundary, not trained-weight or inference evidence.
+It summarizes \`${modelScalingProfilePath}\` and
+\`${agi720bFrontierBoundaryPath}\` because SEIS model-scaling targets are
+frontier planning boundaries, not trained-weight, inference, SSH, cloud, or AGI
+proof evidence.
 
 ## Status
 

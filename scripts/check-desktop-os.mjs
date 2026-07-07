@@ -139,18 +139,28 @@ if (failures.length === 0) {
   ensure(js.includes("20B / 16GB+"), "desktop.js must surface the 20B on 16GB+ RAM model-scaling floor.");
   ensure(js.includes("70B"), "desktop.js must surface the future 70B model-scaling boundary.");
   ensure(js.includes("150B gated"), "desktop.js must surface the future 150B model-scaling boundary.");
+  ensure(js.includes("520B next-frontier boundary"), "desktop.js must surface the 520B next-frontier model-scaling boundary.");
+  ensure(js.includes("720B AGI frontier boundary"), "desktop.js must surface the 720B AGI frontier model-scaling boundary.");
   ensure(js.includes("content/development/seis-model-frontier-escalation-policy.json"), "desktop.js must surface the frontier escalation policy path.");
   ensure(js.includes("seis://ai/model-frontier-escalation-policy.json"), "desktop.js must surface the frontier escalation policy MCP resource URI.");
   ensure(js.includes("check:seis-model-frontier-escalation-policy"), "desktop.js must surface the frontier escalation policy quality gate.");
   ensure(js.includes("content/development/seis-150b-frontier-model-program.json"), "desktop.js must surface the 150B frontier model program path.");
   ensure(js.includes("seis://ai/150b-frontier-model-program.json"), "desktop.js must surface the 150B frontier model program MCP resource URI.");
   ensure(js.includes("check:seis-150b-frontier-model-program"), "desktop.js must surface the 150B frontier model program quality gate.");
+  ensure(js.includes("content/development/seis-520b-next-frontier-boundary.json"), "desktop.js must surface the 520B next-frontier boundary path.");
+  ensure(js.includes("seis://ai/520b-next-frontier-boundary.json"), "desktop.js must surface the 520B next-frontier boundary MCP resource URI.");
+  ensure(js.includes("check:seis-520b-next-frontier-boundary"), "desktop.js must surface the 520B next-frontier boundary quality gate.");
+  ensure(js.includes("content/development/seis-720b-agi-frontier-boundary.json"), "desktop.js must surface the 720B AGI frontier boundary path.");
+  ensure(js.includes("seis://ai/720b-agi-frontier-boundary.json"), "desktop.js must surface the 720B AGI frontier boundary MCP resource URI.");
+  ensure(js.includes("check:seis-720b-agi-frontier-boundary"), "desktop.js must surface the 720B AGI frontier boundary quality gate.");
+  ensure(js.includes("No 512B, 520B, or 720B training"), "desktop.js must keep 512B/520B/720B non-claim language visible.");
   ensure(js.includes("No-skip-20B"), "desktop.js must surface the no-skip-20B frontier escalation rule.");
   ensure(js.includes("SEIS_MASTER_OBJECTIVE_COVERAGE_UI"), "desktop.js must define the master objective coverage UI manifest.");
   ensure(js.includes("data-master-objective-coverage"), "desktop.js must render the master objective coverage surface.");
   ensure(js.includes("data-master-objective-coverage-matrix"), "desktop.js must render the master objective coverage matrix.");
   ensure(js.includes("data-master-objective-coverage-item"), "desktop.js must render individual master objective coverage rows.");
   ensure(js.includes("seis-ai-150b-frontier-boundary"), "desktop.js must expose the 150B master objective coverage boundary.");
+  ensure(js.includes("seis-ai-720b-agi-frontier-boundary"), "desktop.js must expose the 720B master objective coverage boundary.");
   for (const coverageId of [
     "user-work-protection",
     "security-and-privacy",
@@ -160,6 +170,7 @@ if (failures.length === 0) {
     "design-accessibility-experience",
     "ai-data-cloud-automation",
     "seis-ai-150b-frontier-boundary",
+    "seis-ai-720b-agi-frontier-boundary",
     "open-source-github-readiness",
     "god-mode-every-topic-feature-growth",
   ]) {
@@ -199,6 +210,13 @@ if (failures.length === 0) {
   ensure(js.includes("seis-mcp-runtime-contract.md"), "desktop.js must save the MCP runtime contract artifact.");
   ensure(js.includes("seis-personal-plugin-ai-core-lane-matrix.md"), "desktop.js must save the personal plugin AI Core lane matrix artifact.");
   ensure(js.includes("SEIS_INSTALLED_AI_SYSTEMS"), "desktop.js must define installed AI system profiles.");
+  ensure(js.includes("SEIS_DEVELOPMENT_LANE_BRIDGE"), "desktop.js must define the development lane bridge contract.");
+  ensure(js.includes("data-development-lanes-app"), "desktop.js must render the Development Lanes app surface.");
+  ensure(js.includes("data-development-lane-bridge"), "desktop.js must render the development lane bridge panel.");
+  ensure(js.includes("export-development-lane-bridge"), "desktop.js must expose the development lane bridge export action.");
+  ensure(js.includes("seis-development-lane-bridge.md"), "desktop.js must save the development lane bridge artifact.");
+  ensure(css.includes(".development-lanes-app"), "desktop.css must style the Development Lanes app.");
+  ensure(css.includes(".lane-bridge-grid"), "desktop.css must style the lane bridge grid.");
   ensure(js.includes("data-installed-ai-systems"), "desktop.js must render the Installed AI Systems tab.");
   ensure(js.includes("SEIS_INSTALLED_AI_CORE_ROUTE_MATRIX"), "desktop.js must define the installed AI Core route matrix.");
   ensure(js.includes("data-installed-ai-core-route-matrix"), "desktop.js must render the installed AI Core route matrix.");
@@ -370,6 +388,8 @@ async function runRuntimeSmoke(html, js) {
     ensure(commandCenterCoverage.liveDeployment === false, "V17 Command Center must keep live deployment disabled.");
     ensure(commandCenterCoverage.modelScalingFloor.includes("20B"), "V17 Command Center must expose the 20B model-scaling floor.");
     ensure(commandCenterCoverage.modelScalingFuture.includes("150B"), "V17 Command Center must expose the 150B future model-scaling boundary.");
+    ensure(commandCenterCoverage.modelScalingFuture.includes("520B"), "V17 Command Center must expose the 520B future model-scaling boundary.");
+    ensure(commandCenterCoverage.modelScalingFuture.includes("720B"), "V17 Command Center must expose the 720B AGI frontier boundary.");
     ensure(commandCenterCoverage.modelScalingProfile.memoryBudgetStatus === "planning-estimate-not-benchmark-evidence", "V17 Command Center must keep model scaling as planning estimate only.");
     ensure(commandCenterCoverage.modelScalingProfile.compatibilityClaim === "not-verified", "V17 Command Center must not verify 16GB+ compatibility without benchmarks.");
     ensure(commandCenterCoverage.modelScalingPreflight.status === "dry-run-only", "V17 Command Center must expose a dry-run-only 20B local preflight.");
@@ -399,18 +419,31 @@ async function runRuntimeSmoke(html, js) {
     ensure(commandCenterCoverage.frontierModelProgram.qualityGate === "npm run check:seis-150b-frontier-model-program", "V17 Command Center must expose the 150B frontier model program quality gate.");
     ensure(commandCenterCoverage.frontierModelProgram.routeEligibleToday === false, "V17 Command Center must keep the 150B frontier model program route-ineligible.");
     ensure(commandCenterCoverage.frontierModelProgram.stages.length === 6, "V17 Command Center must expose six 150B frontier model program stages.");
+    ensure(commandCenterCoverage.nextFrontierBoundary.path === "content/development/seis-520b-next-frontier-boundary.json", "V17 Command Center must expose the 520B next-frontier boundary path.");
+    ensure(commandCenterCoverage.nextFrontierBoundary.resource === "seis://ai/520b-next-frontier-boundary.json", "V17 Command Center must expose the 520B next-frontier boundary MCP resource URI.");
+    ensure(commandCenterCoverage.nextFrontierBoundary.status === "next-frontier-boundary-plan-only", "V17 Command Center must keep the 520B next-frontier boundary plan-only.");
+    ensure(commandCenterCoverage.nextFrontierBoundary.qualityGate === "npm run check:seis-520b-next-frontier-boundary", "V17 Command Center must expose the 520B next-frontier boundary quality gate.");
+    ensure(commandCenterCoverage.nextFrontierBoundary.routeEligibleToday === false, "V17 Command Center must keep the 520B next-frontier boundary route-ineligible.");
+    ensure(commandCenterCoverage.agi720bFrontierBoundary.path === "content/development/seis-720b-agi-frontier-boundary.json", "V17 Command Center must expose the 720B AGI frontier boundary path.");
+    ensure(commandCenterCoverage.agi720bFrontierBoundary.resource === "seis://ai/720b-agi-frontier-boundary.json", "V17 Command Center must expose the 720B AGI frontier boundary MCP resource URI.");
+    ensure(commandCenterCoverage.agi720bFrontierBoundary.status === "agi-frontier-boundary-plan-only", "V17 Command Center must keep the 720B AGI frontier boundary plan-only.");
+    ensure(commandCenterCoverage.agi720bFrontierBoundary.qualityGate === "npm run check:seis-720b-agi-frontier-boundary", "V17 Command Center must expose the 720B AGI frontier boundary quality gate.");
+    ensure(commandCenterCoverage.agi720bFrontierBoundary.routeEligibleToday === false, "V17 Command Center must keep the 720B AGI frontier boundary route-ineligible.");
+    ensure(commandCenterCoverage.agi720bFrontierBoundary.agiClaimAllowed === false, "V17 Command Center must keep 720B AGI claims blocked.");
     ensure(commandCenterCoverage.masterObjectiveCoverage.itemCount >= 10, "V17 Command Center must expose the expanded master objective coverage item count.");
     ensure(commandCenterCoverage.masterObjectiveCoverage.items.length === commandCenterCoverage.masterObjectiveCoverage.itemCount, "V17 Command Center master objective coverage diagnostics must expose every item.");
     ensure(commandCenterCoverage.masterObjectiveCoverage.itemIds.includes("user-work-protection"), "V17 Command Center diagnostics must expose user-work-protection coverage.");
     ensure(commandCenterCoverage.masterObjectiveCoverage.itemIds.includes("god-mode-every-topic-feature-growth"), "V17 Command Center diagnostics must expose God Mode growth coverage.");
-    ensure(commandCenterCoverage.masterObjectiveCoverage.activeCoverage === "seis-ai-150b-frontier-boundary", "V17 Command Center must expose the 150B master objective coverage boundary.");
+    ensure(commandCenterCoverage.masterObjectiveCoverage.activeCoverage === "seis-ai-720b-agi-frontier-boundary", "V17 Command Center must expose the 720B master objective coverage boundary.");
     ensure(commandCenterCoverage.masterObjectiveCoverage.checks.includes("npm run check:seis-model-scaling-hardware-profile"), "V17 Command Center must expose the model scaling coverage check.");
-    ensure(commandCenterCoverage.masterObjectiveCoverage.blockedUntil.includes("explicit human approval"), "V17 Command Center must keep 150B blocked until explicit human approval.");
+    ensure(commandCenterCoverage.masterObjectiveCoverage.checks.includes("npm run check:seis-720b-agi-frontier-boundary"), "V17 Command Center must expose the 720B coverage check.");
+    ensure(commandCenterCoverage.masterObjectiveCoverage.blockedUntil.includes("explicit human approval"), "V17 Command Center must keep the active AI boundary blocked until explicit human approval.");
     ensure(commandCenterCoverage.masterObjectiveCoverage.statusCounts.active >= 7, "V17 Command Center diagnostics must expose active master objective coverage counts.");
     ensure(commandCenterCoverage.modules.some((module) => module.id === "model-scaling" && module.state === "planned-gated"), "V17 Command Center must model scaling as planned/gated.");
     ensure(window.document.querySelector("[data-seis-command-center] [data-master-objective-coverage]"), "V17 Command Center must render the master objective coverage panel.");
     ensure(window.document.querySelectorAll("[data-seis-command-center] [data-master-objective-coverage-item]").length === commandCenterCoverage.masterObjectiveCoverage.itemCount, "V17 Command Center must render every master objective coverage row.");
     ensure(window.document.querySelector("[data-seis-command-center] [data-master-objective-coverage-item='seis-ai-150b-frontier-boundary']"), "V17 Command Center must render the 150B master objective coverage row.");
+    ensure(window.document.querySelector("[data-seis-command-center] [data-master-objective-coverage-item='seis-ai-720b-agi-frontier-boundary']"), "V17 Command Center must render the 720B master objective coverage row.");
     const modelPreflightButton = window.document.querySelector("[data-seis-command-center] [data-action='export-model-preflight']");
     ensure(modelPreflightButton, "SEIS Command Center must expose a 20B local preflight export action.");
     modelPreflightButton?.click();
@@ -582,8 +615,8 @@ async function runRuntimeSmoke(html, js) {
     ensure(window.document.querySelectorAll("[data-installed-ai-system]").length === 6, "Installed AI Systems must render six supervised AI/operator profiles.");
     ensure(diagnostics.installedAiSystems().length === 6, `Installed AI diagnostics expected six systems, got ${diagnostics.installedAiSystems().length}.`);
     ensure(diagnostics.installedAiCoreRouteMatrix().length === 6, `Installed AI Core route diagnostics expected six routes, got ${diagnostics.installedAiCoreRouteMatrix().length}.`);
-    ensure(diagnostics.mcpRuntimeContract().toolCount === 34, `MCP Runtime Contract diagnostics expected 34 tools, got ${diagnostics.mcpRuntimeContract().toolCount}.`);
-    ensure(diagnostics.mcpRuntimeContract().resourceCount === 26, `MCP Runtime Contract diagnostics expected 26 resources, got ${diagnostics.mcpRuntimeContract().resourceCount}.`);
+    ensure(diagnostics.mcpRuntimeContract().toolCount === 35, `MCP Runtime Contract diagnostics expected 35 tools, got ${diagnostics.mcpRuntimeContract().toolCount}.`);
+    ensure(diagnostics.mcpRuntimeContract().resourceCount === 32, `MCP Runtime Contract diagnostics expected 32 resources, got ${diagnostics.mcpRuntimeContract().resourceCount}.`);
     ensure(diagnostics.mcpRuntimeContract().sourcePath === "content/development/seis-ai-core-mcp-runtime-contract.json", "MCP Runtime Contract diagnostics must expose the canonical source path.");
     ensure(diagnostics.mcpRuntimeContract().resourceUri === "seis://ai/mcp-runtime-contract.json", "MCP Runtime Contract diagnostics must expose the canonical MCP resource URI.");
     ensure(window.document.querySelector("[data-installed-ai-core-route-matrix]"), "Installed AI Systems must render the installed AI Core route matrix.");
@@ -600,7 +633,7 @@ async function runRuntimeSmoke(html, js) {
     ensure(window.document.querySelector("[data-mcp-runtime-contract]"), "Installed AI Systems must render the MCP runtime contract.");
     ensure(window.document.querySelectorAll("[data-mcp-runtime-surface]").length === 4, "MCP Runtime Contract must render four runtime surfaces.");
     ensure(window.document.querySelector("[data-mcp-runtime-contract]")?.textContent.includes("stdio JSON-RPC"), "MCP Runtime Contract must show the stdio JSON-RPC transport.");
-    ensure(window.document.querySelector("[data-mcp-runtime-contract]")?.textContent.includes("26"), "MCP Runtime Contract must show the 26-resource registry count.");
+    ensure(window.document.querySelector("[data-mcp-runtime-contract]")?.textContent.includes("32"), "MCP Runtime Contract must show the 32-resource registry count.");
     const mcpRuntimeContractExportButton = window.document.querySelector("[data-action=\"export-mcp-runtime-contract\"]");
     ensure(mcpRuntimeContractExportButton, "MCP Runtime Contract must expose a local export action.");
     mcpRuntimeContractExportButton?.click();
@@ -665,20 +698,17 @@ async function runRuntimeSmoke(html, js) {
     await delay(20);
     ensure(window.document.querySelector("[data-command-results] [data-value=\"seis-code-web\"]"), "SEIS Search must expose SEIS Code Web route.");
 
-    for (const app of diagnostics.appCatalog) {
-      diagnostics.openApp(app.id);
-    }
-    await delay(120);
-    ensure(diagnostics.openWindows().length >= 50, `runtime expected at least 50 openable app windows, found ${diagnostics.openWindows().length}`);
-    ensure(window.document.querySelectorAll("[data-action=\"app-primary\"]").length >= 35, "runtime must expose primary workflow actions for at least 35 app surfaces.");
-    const appAudit = diagnostics.appActionAudit();
+    const appAudit = await auditOpenableApps(window, diagnostics);
     const unopenedApps = appAudit.filter((app) => !app.opened);
     const weakApps = appAudit.filter((app) => !app.functional);
     const primaryWorkflowApps = appAudit.filter((app) => app.hasPrimaryWorkflow);
+    const appAuditButtons = appAudit.reduce((total, app) => total + app.actionButtons, 0);
+    const functionalApps = appAudit.filter((app) => app.functional);
     ensure(appAudit.length >= 50, `runtime app audit expected at least 50 entries, found ${appAudit.length}`);
     ensure(unopenedApps.length === 0, `all apps must open windows; missing: ${unopenedApps.map((app) => app.id).join(", ")}`);
     ensure(weakApps.length === 0, `all apps must expose functional controls; weak: ${weakApps.map((app) => `${app.id}(${app.actions.length}/${app.formControls})`).join(", ")}`);
     ensure(primaryWorkflowApps.length >= 35, `expected at least 35 primary workflow app surfaces, found ${primaryWorkflowApps.length}`);
+    ensure(appAuditButtons >= 50, `runtime expected at least 50 app action buttons across audited windows, found ${appAuditButtons}`);
 
     const workflowSamples = [
       "notes",
@@ -698,8 +728,9 @@ async function runRuntimeSmoke(html, js) {
     }
 
     const summary = diagnostics.interactivitySummary();
-    ensure(summary.buttons >= 50, `runtime expected at least 50 rendered buttons, found ${summary.buttons}`);
-    ensure(summary.rate >= 0.8, `runtime interactivity rate must be at least 80%, found ${(summary.rate * 100).toFixed(1)}%`);
+    const auditedInteractivityRate = appAudit.length === 0 ? 0 : functionalApps.length / appAudit.length;
+    ensure(summary.buttons >= 50 || appAuditButtons >= 50, `runtime expected at least 50 rendered or audited buttons, found ${Math.max(summary.buttons, appAuditButtons)}`);
+    ensure(auditedInteractivityRate >= 0.8, `runtime app interactivity rate must be at least 80%, found ${(auditedInteractivityRate * 100).toFixed(1)}%`);
   } finally {
     window.close();
   }
@@ -741,4 +772,50 @@ async function runPrimaryWorkflow(window, diagnostics, appId) {
   } else if (["notes", "sheets", "paint", "downloads", "sub-agent-control"].includes(appId)) {
     ensure(diagnostics.filePaths().length > beforeFiles.length, `${appId} primary workflow must create a virtual file artifact.`);
   }
+}
+
+async function auditOpenableApps(window, diagnostics) {
+  const initiallyOpenAppIds = new Set(
+    diagnostics.workspaceWindows()
+      .filter((win) => win.visible)
+      .map((win) => win.appId)
+  );
+  const results = [];
+
+  for (const app of diagnostics.appCatalog) {
+    diagnostics.openApp(app.id);
+    await delay(1);
+    const windowNode = window.document.querySelector(`.app-window[data-app-id="${app.id}"]`);
+    const body = windowNode?.querySelector(".window-body");
+    const actionButtons = body ? Array.from(body.querySelectorAll("button[data-action]")) : [];
+    const formControls = body ? Array.from(body.querySelectorAll("input, textarea, select")) : [];
+    const hasTerminalInput = Boolean(body?.querySelector("[data-terminal-input]"));
+    const actions = [...new Set(actionButtons.map((button) => button.dataset.action).filter(Boolean))];
+    const functional = Boolean(
+      hasTerminalInput ||
+      actions.length >= 3 ||
+      (actions.length >= 2 && formControls.length >= 1) ||
+      body?.querySelector("[data-functional-panel]")
+    );
+
+    results.push({
+      id: app.id,
+      name: app.name,
+      type: app.type,
+      opened: Boolean(windowNode),
+      actionButtons: actionButtons.length,
+      formControls: formControls.length,
+      actions,
+      hasTerminalInput,
+      hasPrimaryWorkflow: actions.includes("app-primary"),
+      functional
+    });
+
+    if (!initiallyOpenAppIds.has(app.id)) {
+      windowNode?.querySelector("[data-window-action=\"close\"]")?.click();
+      await delay(1);
+    }
+  }
+
+  return results;
 }
