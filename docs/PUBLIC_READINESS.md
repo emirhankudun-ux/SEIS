@@ -139,6 +139,7 @@ npm run check:seis-public-readiness-status
 npm run check:seis-public-readiness-lanes
 npm run check:seis-public-readiness-evidence
 npm run check:seis-public-readiness-sensitive-boundary
+npm run check:seis-public-readiness-symlink-escape
 npm run check:open-source-governance
 npm run check:foundation
 npm run check:seis-env-example

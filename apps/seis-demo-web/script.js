@@ -757,7 +757,7 @@ function initHero3dScene() {
       emphasis: index % 9 === 0
     };
   });
-  let frame = 0;
+  const frame = 0;
 
   function draw(timestamp = 0) {
     const rect = hero3dCanvas.getBoundingClientRect();

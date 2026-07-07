@@ -44,6 +44,7 @@ npm run check:seis-public-readiness-status
 npm run check:seis-public-readiness-lanes
 npm run check:seis-public-readiness-evidence
 npm run check:seis-public-readiness-sensitive-boundary
+npm run check:seis-public-readiness-symlink-escape
 npm run check:seis-brain-context-packs
 ```
 
@@ -52,7 +53,8 @@ public docs command wiring, public-readiness docs, public-readiness status, and
 Apple-first / SEIS Brain / SEIS-SSH lane validators plus SEIS Brain
 context-pack validators. It also verifies that matrix evidence paths exist and
 that matrix npm checks resolve to package scripts, then scans matrix evidence
-files for sensitive-value patterns without printing matched values. Broader
+files for sensitive-value patterns without printing matched values, and rejects
+repo-local evidence symlinks that resolve outside the repository root. Broader
 release/public-launch hardening still needs redacted AI provider audit,
 redacted Git history scan, SEO metadata/noindex policy, release artifact
 retention policy, and branch policy reconciliation checks in a

@@ -1633,7 +1633,7 @@ const viewMeta = {
   knowledge: ["Knowledge", "Knowledge management", "Keep memory, research, and decisions discoverable.", "Capture Note"]
 };
 
-let state = loadState();
+const state = loadState();
 
 function loadState() {
   try {

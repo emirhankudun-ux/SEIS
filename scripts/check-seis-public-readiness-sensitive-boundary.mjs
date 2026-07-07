@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 
-import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, realpathSync, statSync } from "node:fs";
 import { dirname, extname, isAbsolute, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const realRoot = realpathSync(root);
 const failures = [];
 const maxBytes = 1_000_000;
 
@@ -106,16 +107,22 @@ function scanEvidence(surfaceId, evidence) {
     return;
   }
 
-  const stats = statSync(absolutePath);
+  const realPath = realpathSync(absolutePath);
+  if (!isInsideRealRoot(realPath)) {
+    failures.push(`${surfaceId} evidence real path must stay inside repo root: ${evidence}`);
+    return;
+  }
+
+  const stats = statSync(realPath);
   if (stats.isDirectory()) {
-    for (const file of walk(absolutePath)) {
+    for (const file of walk(realPath)) {
       scanFile(surfaceId, file);
     }
     return;
   }
 
   if (stats.isFile()) {
-    scanFile(surfaceId, absolutePath);
+    scanFile(surfaceId, realPath);
   }
 }
 
@@ -245,6 +252,11 @@ function ensure(condition, message) {
 
 function toRepoPath(absolutePath) {
   return absolutePath.slice(root.length + 1).split("/").join("/");
+}
+
+function isInsideRealRoot(absolutePath) {
+  const fromRoot = relative(realRoot, absolutePath);
+  return fromRoot === "" || (!fromRoot.startsWith("..") && !isAbsolute(fromRoot));
 }
 
 function isInsideRoot(absolutePath) {

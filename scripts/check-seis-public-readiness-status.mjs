@@ -76,6 +76,7 @@ const requiredSurfaceIds = [
 
 const surfaces = Array.isArray(matrix?.surfaces) ? matrix.surfaces : [];
 const surfaceIds = new Set(surfaces.map((surface) => surface.id));
+const matrixRequiredChecks = surfaces.flatMap((surface) => surface.requiredChecks || []);
 
 for (const id of requiredSurfaceIds) {
   ensure(surfaceIds.has(id), `matrix missing surface ${id}`);
@@ -104,6 +105,7 @@ includesAll(doc, "public readiness status doc", [
   "npm run check:seis-public-readiness-lanes",
   "npm run check:seis-public-readiness-evidence",
   "npm run check:seis-public-readiness-sensitive-boundary",
+  "npm run check:seis-public-readiness-symlink-escape",
   "npm run check:seis-public-readiness-status",
   "pre-production-noindex-validator-backed",
   "tracked-retained-approval-gated",
@@ -119,6 +121,7 @@ includesAll(publicReadiness, "public readiness docs", [
   "npm run check:seis-public-readiness-lanes",
   "npm run check:seis-public-readiness-evidence",
   "npm run check:seis-public-readiness-sensitive-boundary",
+  "npm run check:seis-public-readiness-symlink-escape",
   "npm run check:seis-public-readiness-status"
 ]);
 
@@ -166,6 +169,15 @@ ensure(
   packageJson.scripts?.["check:seis-public-readiness-sensitive-boundary"] ===
     "node scripts/check-seis-public-readiness-sensitive-boundary.mjs",
   "package.json must expose check:seis-public-readiness-sensitive-boundary"
+);
+ensure(
+  packageJson.scripts?.["check:seis-public-readiness-symlink-escape"] ===
+    "node scripts/check-seis-public-readiness-symlink-escape.mjs",
+  "package.json must expose check:seis-public-readiness-symlink-escape"
+);
+ensure(
+  matrixRequiredChecks.includes("npm run check:seis-public-readiness-symlink-escape"),
+  "matrix must require check:seis-public-readiness-symlink-escape"
 );
 
 const combined = [

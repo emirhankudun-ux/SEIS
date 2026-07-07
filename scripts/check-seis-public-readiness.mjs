@@ -30,6 +30,10 @@ const checks = [
     command: "scripts/check-seis-public-readiness-sensitive-boundary.mjs"
   },
   {
+    id: "public-readiness-symlink-escape",
+    command: "scripts/check-seis-public-readiness-symlink-escape.mjs"
+  },
+  {
     id: "brain-context-packs",
     command: "scripts/check-seis-brain-context-packs.mjs"
   }
