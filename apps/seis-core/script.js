@@ -316,6 +316,112 @@ const seisAiSetup = [
   }
 ];
 
+const aiToolsBridge = {
+  source: "content/development/seis-installed-ai-tools-registry.json",
+  qualityGate: "npm run check:seis-installed-ai-tools-registry",
+  summary: [
+    {
+      label: "Primary Writer",
+      value: "Codex",
+      detail: "single-writer default"
+    },
+    {
+      label: "Connected Routes",
+      value: "11",
+      detail: "Codex, Xcode, Claude, Gemini, Kimi, Cursor, LM Studio, OpenAI, Aider, Goose, Hermes"
+    },
+    {
+      label: "Auth Gated",
+      value: "5",
+      detail: "Gemini, Kimi, OpenAI, Aider, Goose"
+    },
+    {
+      label: "No-key Demo",
+      value: "Preserved",
+      detail: "no browser provider calls"
+    }
+  ],
+  tools: [
+    {
+      name: "Codex",
+      route: "current session",
+      status: "Ready",
+      role: "Primary SEIS repository writer and validator.",
+      boundary: "No push, deploy, SSH, or secret handling without approval."
+    },
+    {
+      name: "Xcode",
+      route: "npm run ai -- xcode",
+      status: "Ready",
+      role: "Apple-native Swift and SwiftUI inspection surface.",
+      boundary: "Presence is not build evidence; SwiftPM or Xcode output is required."
+    },
+    {
+      name: "Claude Code CLI",
+      route: "npm run ai -- claude",
+      status: "Ready",
+      role: "Architecture, refactor, and high-risk implementation critique.",
+      boundary: "Uses local Claude Code auth; sanitized review context only."
+    },
+    {
+      name: "Gemini CLI",
+      route: "npm run ai -- gemini",
+      status: "Review",
+      role: "Research, documentation comparison, and ecosystem validation.",
+      boundary: "Current individual OAuth client is unsupported; use Antigravity or another approved route."
+    },
+    {
+      name: "Kimi Code CLI",
+      route: "npm run ai -- kimi",
+      status: "Review",
+      role: "Moonshot/Kimi model route for Turkish, multilingual, and alternative review.",
+      boundary: "Provider list is empty and login reports a Kimi membership entitlement blocker."
+    },
+    {
+      name: "Cursor",
+      route: "npm run ai -- cursor",
+      status: "Ready",
+      role: "Secondary IDE and visual review surface.",
+      boundary: "Not a second writer unless a human-visible handoff is made."
+    },
+    {
+      name: "LM Studio",
+      route: "npm run ai -- lmstudio",
+      status: "Ready",
+      role: "Optional local model lab and offline draft workbench.",
+      boundary: "Installation is not model readiness; local chats and weights stay out of Git."
+    },
+    {
+      name: "OpenAI CLI",
+      route: "npm run ai -- openai",
+      status: "Review",
+      role: "Provider utility checks after secure local setup.",
+      boundary: "Requires local OPENAI_API_KEY outside the repository and never in frontend code."
+    },
+    {
+      name: "Aider",
+      route: "npm run ai -- aider",
+      status: "Review",
+      role: "Small patch helper after explicit writer handoff.",
+      boundary: "Can modify files, so Codex verifies every candidate diff."
+    },
+    {
+      name: "Goose",
+      route: "npm run ai -- goose",
+      status: "Review",
+      role: "Automation planning and dry-run runbook helper.",
+      boundary: "No background writes, SSH, deploys, or credential handling by default."
+    },
+    {
+      name: "Hermes",
+      route: "npm run ai -- hermes",
+      status: "Ready",
+      role: "Secondary review and MCP gateway candidate.",
+      boundary: "Local OpenAI Codex provider route verified; Nous Portal remains not logged in."
+    }
+  ]
+};
+
 const fallbackSeisRouterLanes = [
   {
     laneId: "seis",
@@ -671,6 +777,68 @@ const featureGrowthLedger = {
     "Final staged-boundary proof that unrelated user work stayed protected"
   ]
 };
+
+const fallbackGodModeOperatingStateArtifact = {
+  artifactId: "seis-command-center-god-mode-status-fallback",
+  sourceTool: "seis_god_mode_status",
+  sourceResource: "seis://agent/god-mode-status.json",
+  sourcePolicy: "embedded fallback from SEIS God Mode governance contracts",
+  sourceRecords: [
+    "content/development/seis-god-mode-developer-contract.json",
+    "content/development/seis-god-mode-module-coverage.json",
+    "content/development/seis-god-mode-run-state.json",
+    "content/development/seis-god-mode-work-package.json"
+  ],
+  summary: {
+    status: "active",
+    requiredLayerCount: 5,
+    moduleCount: 5,
+    runState: "pending-validation",
+    commitReadiness: "pending-validation",
+    releaseReadiness: "pending-validation",
+    nextSafeActionCount: 5
+  },
+  status: {
+    ok: true,
+    tool: "seis_god_mode_status",
+    resourceUri: "seis://agent/god-mode-status.json",
+    status: "active",
+    truthBoundary: "Repository-local God Mode status only; no file mutation, provider call, credential access, SSH, deployment, GitHub mutation, or completion claim.",
+    qualityGate: "npm run check:seis-god-mode-developer",
+    requiredLayerCount: 5,
+    requiredLayerLift: ["product-experience", "application-platform", "ai-agi-learning", "cloud-security", "governance-quality"],
+    moduleCoverageQualityGate: "npm run check:seis-god-mode-module-coverage",
+    moduleCount: 5,
+    modules: [
+      ["dashboard", "Dashboard", "Add a dashboard module card that reads this coverage contract and flags missing evidence."],
+      ["goals", "Goals", "Add a goals module ledger that maps every active objective to validation evidence and rollback readiness."],
+      ["repos", "Repos", "Add a repo health manifest that summarizes required checks and missing governance files per repo lane."],
+      ["docs", "Docs", "Add a docs index that links manifesto, quality gates, AI policy, and God Mode coverage."],
+      ["agents", "Agents", "Add agent lane status that shows which skills are active, checked, and safe to use."]
+    ].map(([id, displayName, nextBuildSlice]) => ({ id, displayName, nextBuildSlice, coveredLayerCount: 5, acceptanceEvidenceCount: 4 })),
+    runState: {
+      current: "pending-validation",
+      qualityGate: "npm run check:seis-god-mode-run-state",
+      stateCount: 7,
+      states: [
+        { id: "validation-commands", displayName: "Validation commands", state: "executed-local-quality-governance", nextAction: "Keep quality:governance current, then capture browser/runtime, commit, push, and CI evidence before completion claims." },
+        { id: "commit-boundary", displayName: "Commit boundary", state: "pending-review", nextAction: "Review staged paths and keep unrelated user work out of the commit." },
+        { id: "push-ci", displayName: "Push and CI", state: "missing-evidence", nextAction: "Push only after validation passes and then capture CI evidence." }
+      ]
+    },
+    commitReadiness: "pending-validation",
+    releaseReadiness: "pending-validation",
+    nextSafeActions: [
+      "Run the relevant God Mode checkers and update status from pending only after command output exists.",
+      "Keep browser evidence current and capture commit, push, and CI evidence before completion claims.",
+      "Run shared contract and module coverage checks before claiming parity.",
+      "Review staged paths and keep unrelated user work out of the commit.",
+      "Do a final staging review before any commit or push."
+    ]
+  }
+};
+
+let godModeOperatingStateArtifact = fallbackGodModeOperatingStateArtifact;
 
 const orchestrationLanes = [
   {
@@ -1715,6 +1883,9 @@ function renderGodMode() {
     </article>
   `).join("");
 
+  renderAiToolsBridge();
+  renderGodModeOperatingState();
+
   $("#godmode-run-timeline").innerHTML = state.godModeRuns.map((run) => {
     const routeMeta = [
       run.lane ? `god mode: ${run.lane}` : null,
@@ -1763,6 +1934,107 @@ function renderGodMode() {
   renderSeisRouter();
   renderMissionRoutePreview();
   renderFeatureGrowthLedger();
+}
+
+function renderAiToolsBridge() {
+  $("#ai-tools-bridge-summary").innerHTML = aiToolsBridge.summary.map((item) => `
+    <article class="bridge-summary-card">
+      <span>${escapeHtml(item.label)}</span>
+      <strong>${escapeHtml(item.value)}</strong>
+      <small>${escapeHtml(item.detail)}</small>
+    </article>
+  `).join("");
+
+  $("#ai-tools-bridge-grid").innerHTML = aiToolsBridge.tools.map((tool) => `
+    <article class="ai-tool-card">
+      <div class="card-topline">
+        <h3>${escapeHtml(tool.name)}</h3>
+        <span class="status-pill ${statusClass(tool.status)}">${escapeHtml(tool.status)}</span>
+      </div>
+      <p>${escapeHtml(tool.role)}</p>
+      <dl class="tool-facts">
+        <div>
+          <dt>Route</dt>
+          <dd>${escapeHtml(tool.route)}</dd>
+        </div>
+        <div>
+          <dt>Boundary</dt>
+          <dd>${escapeHtml(tool.boundary)}</dd>
+        </div>
+      </dl>
+    </article>
+  `).join("");
+}
+
+function godModeOperatingStatus() {
+  return godModeOperatingStateArtifact.status || fallbackGodModeOperatingStateArtifact.status;
+}
+
+function renderGodModeOperatingState() {
+  const artifact = godModeOperatingStateArtifact || fallbackGodModeOperatingStateArtifact;
+  const payload = godModeOperatingStatus();
+  const summary = artifact.summary || {};
+  const currentRunState = payload.runState?.current || summary.runState || "pending-validation";
+  const modules = Array.isArray(payload.modules) ? payload.modules : [];
+  const actions = Array.isArray(payload.nextSafeActions) ? payload.nextSafeActions : [];
+
+  $("#godmode-operating-state-pill").textContent = currentRunState;
+  $("#godmode-operating-state-pill").className = `status-pill ${statusClass(currentRunState)}`;
+  $("#godmode-operating-summary").innerHTML = [
+    ["Tool", artifact.sourceTool || payload.tool || "seis_god_mode_status", artifact.sourceResource || payload.resourceUri || "seis://agent/god-mode-status.json"],
+    ["Required Layers", summary.requiredLayerCount ?? payload.requiredLayerCount ?? "5", "five-layer God Mode lift"],
+    ["Modules", summary.moduleCount ?? payload.moduleCount ?? modules.length, payload.moduleCoverageQualityGate || "module coverage gate"],
+    ["Readiness", summary.commitReadiness || payload.commitReadiness || "pending-validation", `release: ${summary.releaseReadiness || payload.releaseReadiness || "pending-validation"}`]
+  ].map(([label, value, detail]) => `
+    <article class="operating-state-summary-card">
+      <span>${escapeHtml(label)}</span>
+      <strong>${escapeHtml(value)}</strong>
+      <small>${escapeHtml(detail)}</small>
+    </article>
+  `).join("");
+
+  $("#godmode-operating-modules").innerHTML = modules.map((module) => `
+    <article class="operating-state-module-card">
+      <div class="card-topline">
+        <h4>${escapeHtml(module.displayName || module.id)}</h4>
+        <span class="meta-chip">${escapeHtml(module.coveredLayerCount)} layers</span>
+      </div>
+      <p>${escapeHtml(module.nextBuildSlice || "No next build slice recorded.")}</p>
+      <div class="meta-row">
+        <span class="meta-chip">${escapeHtml(module.id)}</span>
+        <span class="meta-chip">${escapeHtml(module.acceptanceEvidenceCount)} evidence points</span>
+      </div>
+    </article>
+  `).join("");
+
+  $("#godmode-operating-actions").innerHTML = actions.slice(0, 5).map((action, index) => `
+    <article class="operating-state-action">
+      <span>${index + 1}</span>
+      <p>${escapeHtml(action)}</p>
+    </article>
+  `).join("");
+  $("#godmode-operating-boundary").textContent = payload.truthBoundary || "Repository-local God Mode status only; no file mutation, provider call, credential access, SSH, deployment, GitHub mutation, or completion claim.";
+}
+
+async function loadGodModeOperatingState() {
+  try {
+    const response = await fetch("data/seis-god-mode-status.json", { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error(`God Mode status request failed with ${response.status}`);
+    }
+    const artifact = await response.json();
+    if (artifact?.sourceTool !== "seis_god_mode_status" || !artifact.status?.ok) {
+      throw new Error("God Mode status artifact is not a valid SEIS AI status payload");
+    }
+    godModeOperatingStateArtifact = artifact;
+  } catch (error) {
+    godModeOperatingStateArtifact = {
+      ...fallbackGodModeOperatingStateArtifact,
+      loadError: error.message,
+      sourcePolicy: `${fallbackGodModeOperatingStateArtifact.sourcePolicy} (fallback active)`
+    };
+  }
+  renderGodModeOperatingState();
 }
 
 function renderMissionRoutePreview() {
@@ -2742,3 +3014,4 @@ $("#motion-toggle").checked = state.settings.reduceMotion;
 bindEvents();
 render();
 loadSeisRouterArtifact();
+loadGodModeOperatingState();

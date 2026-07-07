@@ -1,0 +1,294 @@
+{
+  "artifactId": "seis-command-center-god-mode-status",
+  "schemaVersion": "1.0.0",
+  "generatedBy": "scripts/create-seis-command-center-god-mode-status.mjs",
+  "sourceTool": "seis_god_mode_status",
+  "sourceResource": "seis://agent/god-mode-status.json",
+  "sourcePolicy": "packages/seis-ai/src/lib/plugin-integration.mjs#godModeStatus",
+  "sourceRecords": [
+    "content/development/seis-god-mode-developer-contract.json",
+    "content/development/seis-god-mode-module-coverage.json",
+    "content/development/seis-god-mode-run-state.json",
+    "content/development/seis-god-mode-work-package.json"
+  ],
+  "summary": {
+    "status": "active",
+    "requiredLayerCount": 5,
+    "moduleCount": 5,
+    "runState": "pending-validation",
+    "commitReadiness": "pending-validation",
+    "releaseReadiness": "pending-validation",
+    "nextSafeActionCount": 17
+  },
+  "status": {
+    "ok": true,
+    "tool": "seis_god_mode_status",
+    "resourceUri": "seis://agent/god-mode-status.json",
+    "contractPath": "content/development/seis-god-mode-developer-contract.json",
+    "moduleCoveragePath": "content/development/seis-god-mode-module-coverage.json",
+    "runStatePath": "content/development/seis-god-mode-run-state.json",
+    "workPackagePath": "content/development/seis-god-mode-work-package.json",
+    "id": "seis-god-mode-developer-contract",
+    "status": "active",
+    "qualityGate": "npm run check:seis-god-mode-developer",
+    "truthBoundary": "Repository-local God Mode status only; no file mutation, provider call, credential access, SSH, deployment, GitHub mutation, or completion claim.",
+    "telemetryEvent": "seis_demo_god_mode_changed",
+    "requiredLayerCount": 5,
+    "requiredLayerLift": [
+      "product-experience",
+      "application-platform",
+      "ai-agi-learning",
+      "cloud-security",
+      "governance-quality"
+    ],
+    "moduleCoverageStatus": "active",
+    "moduleCoverageQualityGate": "npm run check:seis-god-mode-module-coverage",
+    "moduleCount": 5,
+    "modules": [
+      {
+        "id": "dashboard",
+        "displayName": "Dashboard",
+        "nextBuildSlice": "Add a dashboard module card that reads this coverage contract and flags missing evidence.",
+        "coveredLayerCount": 5,
+        "acceptanceEvidenceCount": 4
+      },
+      {
+        "id": "goals",
+        "displayName": "Goals",
+        "nextBuildSlice": "Add a goals module ledger that maps every active objective to validation evidence and rollback readiness.",
+        "coveredLayerCount": 5,
+        "acceptanceEvidenceCount": 4
+      },
+      {
+        "id": "repos",
+        "displayName": "Repos",
+        "nextBuildSlice": "Add a repo health manifest that summarizes required checks and missing governance files per repo lane.",
+        "coveredLayerCount": 5,
+        "acceptanceEvidenceCount": 4
+      },
+      {
+        "id": "docs",
+        "displayName": "Docs",
+        "nextBuildSlice": "Add a docs index that links manifesto, quality gates, AI policy, and God Mode coverage.",
+        "coveredLayerCount": 5,
+        "acceptanceEvidenceCount": 4
+      },
+      {
+        "id": "agents",
+        "displayName": "Agents",
+        "nextBuildSlice": "Add agent lane status that shows which skills are active, checked, and safe to use.",
+        "coveredLayerCount": 5,
+        "acceptanceEvidenceCount": 4
+      }
+    ],
+    "runState": {
+      "id": "seis-god-mode-run-state",
+      "status": "active",
+      "current": "pending-validation",
+      "qualityGate": "npm run check:seis-god-mode-run-state",
+      "stateCount": 7,
+      "states": [
+        {
+          "id": "source-controlled-artifacts",
+          "displayName": "Source-controlled artifacts",
+          "state": "present-unverified",
+          "nextAction": "Run the relevant God Mode checkers and update status from pending only after command output exists."
+        },
+        {
+          "id": "runtime-surfaces",
+          "displayName": "Runtime surfaces",
+          "state": "browser-verified-local",
+          "nextAction": "Keep browser evidence current and capture commit, push, and CI evidence before completion claims."
+        },
+        {
+          "id": "telemetry-contracts",
+          "displayName": "Telemetry contracts",
+          "state": "present-unverified",
+          "nextAction": "Run shared contract and module coverage checks before claiming parity."
+        },
+        {
+          "id": "validation-commands",
+          "displayName": "Validation commands",
+          "state": "executed-local-quality-governance",
+          "nextAction": "Keep quality:governance current, then capture browser/runtime, commit, push, and CI evidence before completion claims."
+        },
+        {
+          "id": "commit-boundary",
+          "displayName": "Commit boundary",
+          "state": "pending-review",
+          "nextAction": "Review staged paths and keep unrelated user work out of the commit."
+        },
+        {
+          "id": "push-ci",
+          "displayName": "Push and CI",
+          "state": "missing-evidence",
+          "nextAction": "Push only after validation passes and then capture CI evidence."
+        },
+        {
+          "id": "protected-user-work",
+          "displayName": "Protected user work",
+          "state": "declared-pending-final-review",
+          "nextAction": "Do a final staging review before any commit or push."
+        }
+      ]
+    },
+    "commitReadiness": "pending-validation",
+    "releaseReadiness": "pending-validation",
+    "workPackageStatus": "active",
+    "workPackageQualityGate": "npm run check:seis-god-mode-work-package",
+    "sectionCount": 14,
+    "sections": [
+      {
+        "id": "product-surface",
+        "displayName": "Product Surface",
+        "status": "implemented-unverified",
+        "qualityGate": "npm run check:seis-god-mode-module-coverage",
+        "rollbackPlan": "Revert the added dashboard panels, renderers, styles, and service worker cache version together."
+      },
+      {
+        "id": "goals",
+        "displayName": "Goals",
+        "status": "implemented-unverified",
+        "qualityGate": "npm run check:seis-goals-evidence-ledger",
+        "rollbackPlan": "Remove the goals ledger contract, docs, checker, package script, and quality governance reference."
+      },
+      {
+        "id": "repos",
+        "displayName": "Repos",
+        "status": "implemented-unverified",
+        "qualityGate": "npm run check:seis-repo-health-manifest",
+        "rollbackPlan": "Remove the repo health manifest, docs, checker, package script, and quality governance reference."
+      },
+      {
+        "id": "docs",
+        "displayName": "Docs",
+        "status": "implemented-unverified",
+        "qualityGate": "npm run check:seis-governance-index",
+        "rollbackPlan": "Remove the governance index additions and any newly indexed docs that belong only to this God Mode slice."
+      },
+      {
+        "id": "agents",
+        "displayName": "Agents",
+        "status": "implemented-unverified",
+        "qualityGate": "npm run check:seis-agent-lane-status",
+        "rollbackPlan": "Remove agent lane status artifacts and God Mode skill references from plugin/governance checks."
+      },
+      {
+        "id": "security-ai-rollback",
+        "displayName": "Security, AI, and Rollback",
+        "status": "implemented-unverified",
+        "qualityGate": "npm run check:seis-god-mode-release-readiness",
+        "rollbackPlan": "Remove release readiness contract, docs, checker, dashboard panel, and package script linkage."
+      },
+      {
+        "id": "validation",
+        "displayName": "Validation",
+        "status": "implemented-unverified",
+        "qualityGate": "npm run check:seis-god-mode-validation-plan",
+        "rollbackPlan": "Remove validation plan contract, docs, checker, dashboard panel, package script, and governance index entry."
+      },
+      {
+        "id": "architecture-decisions",
+        "displayName": "Architecture Decisions",
+        "status": "implemented-unverified",
+        "qualityGate": "npm run check:seis-god-mode-adr-workflow",
+        "rollbackPlan": "Remove ADR workflow contract, template, example ADR, checker, dashboard panel, package script, and governance index entries."
+      },
+      {
+        "id": "handoff",
+        "displayName": "Handoff",
+        "status": "implemented-unverified",
+        "qualityGate": "npm run check:seis-god-mode-handoff",
+        "rollbackPlan": "Remove handoff contract, doc, checker, dashboard panel, telemetry event, package script, and governance references."
+      },
+      {
+        "id": "completion-audit",
+        "displayName": "Completion Audit",
+        "status": "implemented-unverified",
+        "qualityGate": "npm run check:seis-god-mode-completion-audit",
+        "rollbackPlan": "Remove completion audit contract, doc, checker, dashboard panel, telemetry event, package script, and governance references."
+      },
+      {
+        "id": "run-state",
+        "displayName": "Run State",
+        "status": "implemented-unverified",
+        "qualityGate": "npm run check:seis-god-mode-run-state",
+        "rollbackPlan": "Remove run-state contract, doc, checker, dashboard panel, telemetry event, package script, and governance references."
+      },
+      {
+        "id": "staging-manifest",
+        "displayName": "Staging Manifest",
+        "status": "implemented-unverified",
+        "qualityGate": "npm run check:seis-god-mode-staging-manifest",
+        "rollbackPlan": "Remove staging manifest contract, doc, checker, dashboard panel, telemetry event, package script, and governance references."
+      },
+      {
+        "id": "changelog",
+        "displayName": "Changelog",
+        "status": "implemented-unverified",
+        "qualityGate": "npm run check:seis-god-mode-changelog",
+        "rollbackPlan": "Remove changelog contract, doc, checker, dashboard panel, telemetry event, package script, and governance references."
+      },
+      {
+        "id": "feature-growth-ledger",
+        "displayName": "Feature Growth Ledger",
+        "status": "implemented-unverified",
+        "qualityGate": "npm run check:seis-god-mode-feature-growth-ledger",
+        "rollbackPlan": "Remove the feature growth ledger panel, contract, docs, checker, package script, Command Center test expectations, and objective coverage references."
+      }
+    ],
+    "sourceHealth": [
+      {
+        "path": "content/development/seis-god-mode-developer-contract.json",
+        "exists": true,
+        "parseOk": true,
+        "ok": true,
+        "status": "ready",
+        "error": null
+      },
+      {
+        "path": "content/development/seis-god-mode-module-coverage.json",
+        "exists": true,
+        "parseOk": true,
+        "ok": true,
+        "status": "ready",
+        "error": null
+      },
+      {
+        "path": "content/development/seis-god-mode-run-state.json",
+        "exists": true,
+        "parseOk": true,
+        "ok": true,
+        "status": "ready",
+        "error": null
+      },
+      {
+        "path": "content/development/seis-god-mode-work-package.json",
+        "exists": true,
+        "parseOk": true,
+        "ok": true,
+        "status": "ready",
+        "error": null
+      }
+    ],
+    "nextSafeActions": [
+      "Run the relevant God Mode checkers and update status from pending only after command output exists.",
+      "Keep browser evidence current and capture commit, push, and CI evidence before completion claims.",
+      "Run shared contract and module coverage checks before claiming parity.",
+      "Keep quality:governance current, then capture browser/runtime, commit, push, and CI evidence before completion claims.",
+      "Review staged paths and keep unrelated user work out of the commit.",
+      "Push only after validation passes and then capture CI evidence.",
+      "Do a final staging review before any commit or push.",
+      "Add a dashboard module card that reads this coverage contract and flags missing evidence.",
+      "Add a goals module ledger that maps every active objective to validation evidence and rollback readiness.",
+      "Add a repo health manifest that summarizes required checks and missing governance files per repo lane.",
+      "Add a docs index that links manifesto, quality gates, AI policy, and God Mode coverage.",
+      "Add agent lane status that shows which skills are active, checked, and safe to use.",
+      "Cross-layer module evidence must exist for Dashboard/Goals/Repos/Docs/Agents before any completion claim.",
+      "No claim of feature completeness without validation + security + rollback proof.",
+      "No public release posture without commit/push/CI evidence or an explicit handoff waiver.",
+      "Every active module lane must keep an auditable rollback slice.",
+      "CI-triggered changes must remain gate-consistent across quality, security, AI, and docs layers."
+    ]
+  }
+}

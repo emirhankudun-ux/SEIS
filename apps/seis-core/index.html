@@ -199,6 +199,24 @@
               </div>
               <div class="mission-brief" id="godmode-mission-brief"></div>
             </section>
+            <section class="panel godmode-operating-state-panel module-spacer" id="godmode-operating-state" aria-labelledby="godmode-operating-state-title">
+              <div class="panel-header">
+                <div>
+                  <h3 id="godmode-operating-state-title">God Mode Operating State</h3>
+                  <p class="panel-summary">Read-only SEIS AI bridge for current God Mode status, module coverage, run-state, and next safe actions.</p>
+                </div>
+                <span class="status-pill attention" id="godmode-operating-state-pill">pending-validation</span>
+              </div>
+              <div class="operating-state-summary" id="godmode-operating-summary"></div>
+              <div class="operating-state-layout">
+                <div class="operating-state-module-grid" id="godmode-operating-modules" aria-label="God Mode module coverage"></div>
+                <aside class="operating-state-actions" aria-labelledby="godmode-operating-actions-title">
+                  <h4 id="godmode-operating-actions-title">Next Safe Actions</h4>
+                  <div id="godmode-operating-actions"></div>
+                </aside>
+              </div>
+              <p class="operating-state-boundary" id="godmode-operating-boundary"></p>
+            </section>
             <div class="godmode-layout module-spacer">
               <section class="panel" aria-labelledby="godmode-protocol-title">
                 <div class="panel-header">
@@ -215,6 +233,17 @@
                 <div class="ai-setup-grid" id="seis-ai-setup"></div>
               </section>
             </div>
+            <section class="panel ai-tools-bridge-panel module-spacer" aria-labelledby="ai-tools-bridge-title">
+              <div class="panel-header">
+                <div>
+                  <h3 id="ai-tools-bridge-title">SEIS AI Tools Bridge</h3>
+                  <p class="panel-summary">Expose installed AI tools as bounded routes without claiming live provider access or changing the single-writer policy.</p>
+                </div>
+                <span class="status-pill attention">Auth-gated</span>
+              </div>
+              <div class="ai-tools-bridge-summary" id="ai-tools-bridge-summary"></div>
+              <div class="ai-tools-bridge-grid" id="ai-tools-bridge-grid"></div>
+            </section>
             <section class="panel router-ledger-panel module-spacer" aria-labelledby="seis-router-ledger-title">
               <div class="panel-header">
                 <div>

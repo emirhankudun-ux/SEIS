@@ -392,6 +392,8 @@ h3 {
 .action-card,
 .protocol-step,
 .ai-setup-card,
+.bridge-summary-card,
+.ai-tool-card,
 .run-step,
 .guardrail-row,
 .artifact-card,
@@ -556,6 +558,9 @@ h3 {
 .protocol-step p,
 .ai-setup-card p,
 .ai-setup-card small,
+.ai-tool-card p,
+.tool-facts dd,
+.tool-facts dt,
 .run-step p,
 .guardrail-row p,
 .artifact-card p,
@@ -599,10 +604,154 @@ h3 {
 }
 
 .ai-setup-card,
+.bridge-summary-card,
+.ai-tool-card,
 .guardrail-row,
 .artifact-card {
   padding: 13px;
   box-shadow: none;
+}
+
+.ai-tools-bridge-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.ai-tools-bridge-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.bridge-summary-card {
+  display: grid;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.bridge-summary-card span,
+.bridge-summary-card small {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.bridge-summary-card strong {
+  font-size: 21px;
+  line-height: 1.05;
+}
+
+.ai-tools-bridge-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 10px;
+}
+
+.ai-tool-card {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.tool-facts {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+}
+
+.tool-facts div {
+  display: grid;
+  grid-template-columns: minmax(72px, 0.26fr) minmax(0, 1fr);
+  gap: 8px;
+}
+
+.tool-facts dt {
+  font-size: 12px;
+  font-weight: 760;
+}
+
+.tool-facts dd {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.godmode-operating-state-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.operating-state-summary,
+.operating-state-module-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 10px;
+}
+
+.operating-state-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.34fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.operating-state-summary-card,
+.operating-state-module-card,
+.operating-state-actions,
+.operating-state-action {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: none;
+}
+
+.operating-state-summary-card span,
+.operating-state-summary-card small,
+.operating-state-module-card p,
+.operating-state-boundary,
+.operating-state-action p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.operating-state-summary-card strong {
+  font-size: 20px;
+  line-height: 1.05;
+}
+
+.operating-state-actions h4,
+.operating-state-module-card h4 {
+  margin: 0;
+  font-size: 14px;
+}
+
+#godmode-operating-actions {
+  display: grid;
+  gap: 8px;
+}
+
+.operating-state-action {
+  grid-template-columns: 24px minmax(0, 1fr);
+  align-items: start;
+}
+
+.operating-state-action span {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--agent-soft);
+  color: #006f70;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.operating-state-boundary {
+  padding-top: 2px;
+  font-size: 12px;
 }
 
 .run-step {
@@ -1645,6 +1794,12 @@ select {
 .compact .mission-brief,
 .compact .protocol-step,
 .compact .ai-setup-card,
+.compact .bridge-summary-card,
+.compact .ai-tool-card,
+.compact .operating-state-summary-card,
+.compact .operating-state-module-card,
+.compact .operating-state-actions,
+.compact .operating-state-action,
 .compact .mission-route-preview,
 .compact .route-preview-card,
 .compact .run-step,
@@ -1744,9 +1899,11 @@ select {
   .security-ops-layout,
   .readiness-summary-grid,
   .operations-readiness-layout,
+  .operating-state-layout,
   .knowledge-map-layout,
   .knowledge-ops-layout,
   .ledger-summary-grid,
+  .ai-tools-bridge-summary,
   .router-summary-grid,
   .routing-matrix-row,
   .feature-growth-grid,

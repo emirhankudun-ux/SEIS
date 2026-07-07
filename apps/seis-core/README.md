@@ -8,6 +8,7 @@ SEIS Command Center is the central operating interface for the SEIS ecosystem. P
 - `styles.css`: design tokens, responsive layout, component variants, density mode, and reduced-motion support.
 - `script.js`: local state, goal creation, repository filtering, agent mode switching, generated 10-lane SEIS router artifact loading, architecture evidence, automation evidence, security evidence, knowledge graph evidence, command palette, settings, and dashboard rendering.
 - `data/seis-router-routes.json`: generated Command Center router artifact produced from `scripts/ai-routing-policy.cjs#chooseAutoRoute`.
+- `data/seis-god-mode-status.json`: generated read-only God Mode Operating State artifact produced from `seis_god_mode_status`.
 - `manifest.webmanifest` and `icon.svg`: installable app metadata and SEIS Core visual identity.
 
 ## Folder Structure
@@ -43,7 +44,7 @@ apps/seis-core/
 
 - App shell: sidebar, topbar, workspace grid, inspector.
 - Dashboard: metrics, operations readiness, active goals, recent activity, repository health, architecture alerts, and recommended actions.
-- God Mode: mission composer, live route preview, SEIS AI setup matrix, 10-lane router ledger, execution protocol, run timeline, guardrails, artifacts, and feature growth ledger for controlled custom AI development.
+- God Mode: mission composer, live route preview, repo-backed Operating State card, SEIS AI setup matrix, 10-lane router ledger, execution protocol, run timeline, guardrails, artifacts, and feature growth ledger for controlled custom AI development.
 - Operating Model: ecosystem domains for repositories, AI agents, MCP systems, plugins, docs, roadmap, goals, automation, cloud, knowledge, and security.
 - Goals: creation form, editable status actions, risk and next-action fields.
 - Repositories: filter chips, health cards, documentation coverage, security posture, testing status, and dependency overview.
@@ -60,6 +61,7 @@ apps/seis-core/
 
 - Create goals locally.
 - Compose God Mode missions and route them through Plan, Build, Review, and Validate lanes.
+- Inspect the repo-backed God Mode Operating State from `seis_god_mode_status`, including module coverage, run-state, commit/release readiness, and next safe actions.
 - Inspect the 10-lane SEIS router output as `tool`, `seisLane`, and `defaultGate` before handoff.
 - Preview the active mission route while typing, using the generated `chooseAutoRoute` policy/model artifact.
 - Persist `tool`, `laneId`, `defaultGate`, and `routeSource` on each God Mode run timeline entry.
@@ -115,4 +117,5 @@ Open `http://127.0.0.1:4174/`.
 ```bash
 node --test apps/seis-core/test/*.test.js
 npm run check:seis-command-center-router
+npm run check:seis-command-center-god-mode-status
 ```

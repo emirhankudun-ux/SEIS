@@ -10,6 +10,7 @@ const requiredFiles = [
   "script.js",
   "manifest.webmanifest",
   "README.md",
+  "data/seis-god-mode-status.json",
   "test/seis-core-static.test.js"
 ];
 
@@ -42,6 +43,9 @@ const requiredScriptSignals = [
   "renderOperationsReadiness",
   "featureGrowthLedger",
   "renderFeatureGrowthLedger",
+  "godModeOperatingStateArtifact",
+  "renderGodModeOperatingState",
+  "loadGodModeOperatingState",
   "workflowRuns",
   "approvalGates",
   "rollbackEvidence",
@@ -189,6 +193,8 @@ for (const selector of [
   ".lane-chip",
   ".protocol-step",
   ".ai-setup-card",
+  ".godmode-operating-state-panel",
+  ".operating-state-summary-card",
   ".run-step",
   ".guardrail-row",
   ".artifact-card",

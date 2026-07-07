@@ -24,6 +24,8 @@ test("SEIS Command Center shell exposes required modules", async () => {
   assert.match(html, /SEIS Command Center/);
   assert.match(html, /id="command-dialog"/);
   assert.match(html, /id="settings-dialog"/);
+  assert.match(html, /SEIS AI Tools Bridge/);
+  assert.match(html, /id="ai-tools-bridge-grid"/);
 });
 
 test("SEIS Command Center script implements local workflows", async () => {
@@ -37,6 +39,13 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /godModeLanes/);
   assert.match(script, /godModeProtocol/);
   assert.match(script, /seisAiSetup/);
+  assert.match(script, /aiToolsBridge/);
+  assert.match(script, /renderAiToolsBridge/);
+  assert.match(script, /Claude Code CLI/);
+  assert.match(script, /Gemini CLI/);
+  assert.match(script, /Kimi Code CLI/);
+  assert.match(script, /Moonshot\/Kimi/);
+  assert.match(script, /LM Studio/);
   assert.match(script, /godModeGuardrails/);
   assert.match(script, /godModeArtifacts/);
   assert.match(script, /godModeRuns/);
@@ -116,6 +125,33 @@ test("SEIS Command Center exposes 10-lane router contract", async () => {
   }
 });
 
+test("SEIS Command Center exposes repo-backed God Mode Operating State", async () => {
+  const html = await readFile(new URL("index.html", root), "utf8");
+  const script = await readFile(new URL("script.js", root), "utf8");
+  const css = await readFile(new URL("styles.css", root), "utf8");
+  const artifact = JSON.parse(await readFile(new URL("data/seis-god-mode-status.json", root), "utf8"));
+
+  assert.match(html, /God Mode Operating State/);
+  assert.match(html, /id="godmode-operating-state"/);
+  assert.match(html, /id="godmode-operating-summary"/);
+  assert.match(html, /id="godmode-operating-modules"/);
+  assert.match(script, /data\/seis-god-mode-status\.json/);
+  assert.match(script, /loadGodModeOperatingState/);
+  assert.match(script, /renderGodModeOperatingState/);
+  assert.match(script, /seis_god_mode_status/);
+  assert.match(css, /godmode-operating-state-panel/);
+  assert.match(css, /operating-state-summary-card/);
+  assert.equal(artifact.sourceTool, "seis_god_mode_status");
+  assert.equal(artifact.sourceResource, "seis://agent/god-mode-status.json");
+  assert.equal(artifact.summary.requiredLayerCount, 5);
+  assert.equal(artifact.summary.moduleCount, 5);
+  assert.equal(artifact.summary.runState, "pending-validation");
+  assert.equal(artifact.summary.commitReadiness, "pending-validation");
+  assert.equal(artifact.summary.releaseReadiness, "pending-validation");
+  assert.ok(artifact.status.modules.some((module) => module.id === "dashboard"));
+  assert.ok(artifact.status.nextSafeActions.length >= 3);
+});
+
 test("SEIS Command Center agents expose operational evidence", async () => {
   const script = await readFile(new URL("script.js", root), "utf8");
   for (const field of ["capabilities", "tasks", "logs", "outputs"]) {
@@ -167,6 +203,10 @@ test("SEIS Command Center design system preserves required tokens", async () => 
   assert.match(css, /lane-chip/);
   assert.match(css, /protocol-step/);
   assert.match(css, /ai-setup-card/);
+  assert.match(css, /ai-tools-bridge-panel/);
+  assert.match(css, /bridge-summary-card/);
+  assert.match(css, /ai-tool-card/);
+  assert.match(css, /tool-facts/);
   assert.match(css, /run-step/);
   assert.match(css, /run-route-meta/);
   assert.match(css, /guardrail-row/);

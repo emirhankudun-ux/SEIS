@@ -157,6 +157,7 @@ ios/
 !packages/seis-ai/data/agent-router-seed-v0.json
 !packages/seis-ai/models/agent-router-seed-v0.json
 !apps/seis-core/data/seis-router-routes.json
+!apps/seis-core/data/seis-god-mode-status.json
 !reports/seis-sub-agent-five-year-demo-evidence.json
 !reports/seis-sub-agent-five-year-demo-run.json
 !reports/seis-model-scaling/20b-16gb-memory-benchmark.json
