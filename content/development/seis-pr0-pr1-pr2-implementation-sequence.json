@@ -127,7 +127,7 @@
     {
       "id": "pr2-web-demo-visibility-data-first",
       "label": "PR2 Web Demo Visibility Data First",
-      "status": "planned",
+      "status": "data-ready-ui-pending",
       "scope": [
         "static dashboard data/checker",
         "fallback data test",
@@ -135,13 +135,15 @@
         "UI integration only after Swift model foundation is stable"
       ],
       "validation": [
+        "node scripts/check-seis-demo-foundation-dashboard-data.mjs",
+        "node scripts/check-seis-demo-foundation-dashboard-boundary.mjs",
         "static data checker",
         "fallback data test",
         "no-key/fake-live scan",
         "web static smoke only if UI changes"
       ],
       "nonGoals": [
-        "touch existing dirty apps/seis-demo-web/script.js in PR0 or PR1",
+        "touch apps/seis-demo-web/script.js in PR2 without explicit owner approval",
         "live AI",
         "provider keys",
         "asset import"

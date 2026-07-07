@@ -16,11 +16,14 @@
   "truthBoundary": {
     "requiresApiKey": false,
     "providerCallsAllowed": false,
+    "fakeLiveClaimsAllowed": false,
     "externalMutationAllowed": false,
     "assetImportAllowed": false,
     "existingDemoScriptTouched": false,
+    "webScriptDataBindingStatus": "not-wired",
     "uiIntegrationStatus": "pending-after-swift-foundation",
-    "sourceDataType": "repo-local-public-safe-manifest-snapshot"
+    "sourceDataType": "repo-local-public-safe-manifest-snapshot",
+    "fallbackMustBeVisibleBeforeUiBinding": true
   },
   "cards": [
     {
@@ -84,6 +87,7 @@
   },
   "validation": [
     "node scripts/check-seis-demo-foundation-dashboard-data.mjs",
+    "node scripts/check-seis-demo-foundation-dashboard-boundary.mjs",
     "node scripts/check-seis-pr0-pr1-pr2-implementation-sequence.mjs",
     "node scripts/check-seis-source-provenance-intake.mjs",
     "node scripts/check-seis-mcp-permission-risk-matrix.mjs",

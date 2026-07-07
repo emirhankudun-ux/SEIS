@@ -73,7 +73,7 @@ ensure(pr0.validation?.includes("npm run check:js"), "PR0 validation must includ
 ensure(pr0.validation?.includes("node --test packages/seis-ai/test/mcp-smoke.test.mjs"), "PR0 validation must include local MCP smoke");
 ensure(pr1.nonGoals?.includes("SwiftUI shell"), "PR1 must exclude SwiftUI shell");
 ensure(pr1.nonGoals?.includes("Package.swift edit"), "PR1 must exclude Package.swift edits");
-ensure(pr2.nonGoals?.some((goal) => goal.includes("apps/seis-demo-web/script.js")), "PR2 must protect the existing dirty web script in PR0/PR1");
+ensure(pr2.nonGoals?.some((goal) => goal.includes("apps/seis-demo-web/script.js") && goal.includes("PR2")), "PR2 must protect the existing web script in PR2 without explicit approval");
 ensure(pr2.validation?.includes("no-key/fake-live scan"), "PR2 must include no-key/fake-live scan");
 
 for (const [label, file] of Object.entries(sequence.sourceRefs || {})) {

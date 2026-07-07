@@ -63,9 +63,12 @@ ensure(dashboard.visibility === "public-safe", "dashboard must be public-safe");
 ensure(dashboard.mode === "no-key-static-dashboard-data", "dashboard must be no-key static data");
 ensure(dashboard.truthBoundary?.requiresApiKey === false, "dashboard must not require API keys");
 ensure(dashboard.truthBoundary?.providerCallsAllowed === false, "dashboard must block provider calls");
+ensure(dashboard.truthBoundary?.fakeLiveClaimsAllowed === false, "dashboard must block fake live claims");
 ensure(dashboard.truthBoundary?.externalMutationAllowed === false, "dashboard must block external mutation");
 ensure(dashboard.truthBoundary?.assetImportAllowed === false, "dashboard must block asset import");
 ensure(dashboard.truthBoundary?.existingDemoScriptTouched === false, "dashboard must not claim the existing demo script was touched");
+ensure(dashboard.truthBoundary?.webScriptDataBindingStatus === "not-wired", "dashboard must keep web script data binding not wired");
+ensure(dashboard.truthBoundary?.fallbackMustBeVisibleBeforeUiBinding === true, "dashboard must require fallback before UI binding");
 ensure(dashboard.fallback?.enabled === true, "dashboard must define a fallback state");
 ensure(dashboard.fallback?.requiredCardCount === 4, "dashboard fallback must expect four cards");
 ensure(Array.isArray(dashboard.cards) && dashboard.cards.length === 4, "dashboard must expose four cards");
@@ -83,7 +86,7 @@ ensure(dashboard.sourceRefs?.stitchCatalog === files.stitch, "Stitch source ref 
 ensure(dashboard.sourceRefs?.swiftAppleBridge === files.swift, "Swift source ref mismatch");
 
 const pr2 = (sequence.sequence || []).find((entry) => entry.id === "pr2-web-demo-visibility-data-first") || {};
-ensure(pr2.status === "planned", "PR2 source sequence must remain planned until UI integration is reviewed");
+ensure(pr2.status === "data-ready-ui-pending", "PR2 source sequence must mark static data ready while UI integration remains pending");
 ensure(pr2.scope?.includes("static dashboard data/checker"), "PR2 source sequence must include static dashboard data/checker");
 ensure(pr2.validation?.includes("fallback data test"), "PR2 source sequence must include fallback data test");
 ensure(pr2.validation?.includes("no-key/fake-live scan"), "PR2 source sequence must include no-key/fake-live scan");
@@ -121,6 +124,7 @@ ensure(swift.validation?.swiftChecksRequiredWhen?.includes("Swift source is adde
 
 for (const required of [
   "node scripts/check-seis-demo-foundation-dashboard-data.mjs",
+  "node scripts/check-seis-demo-foundation-dashboard-boundary.mjs",
   "node scripts/check-seis-pr0-pr1-pr2-implementation-sequence.mjs",
   "node scripts/check-seis-mcp-permission-risk-matrix.mjs",
   "node scripts/check-seis-stitch-ux-screen-catalog.mjs",

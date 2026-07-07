@@ -10,6 +10,12 @@ Date: 2026-06-23
 | 1 | `pr1-swift-model-foundation` | `apple: add Swift bridge models for MCP risk and Stitch families` | Add `SeisMCPPermissionRiskRecord`, `SeisStitchModuleFamily`, and public-safe JSON fixture loading tests as a stacked Swift model foundation after PR0. | `swift package describe --package-path packages/seis_platform_swift`, `swift test --package-path packages/seis_platform_swift`, `node scripts/check-seis-swift-apple-bridge-manifest.mjs`, staged path/secret scan, `git diff --check`. | None for additive Swift model/test files; approval required for SwiftUI shell, provider calls, asset copy, `Package.swift`, `package.json`, web UI integration, push, or merge. |
 | 2 | `pr2-web-demo-visibility-data-first` | `feat: add SEIS PR0 visibility data for web demo` | Add static dashboard data/checker, fallback data test, no-key/fake-live scan, and defer UI integration until Swift model foundation is stable. | Static data checker, fallback data test, no-key/fake-live scan, and web static smoke only if UI changes. | None for additive static data/checkers; approval required for touching existing dirty `apps/seis-demo-web/script.js`, live AI, provider keys, deployment, push, merge, or asset import. |
 
+Current local status: PR2 static data is `data-ready-ui-pending` through
+`apps/seis-demo-web/data/seis-foundation-dashboard.json`,
+`node scripts/check-seis-demo-foundation-dashboard-data.mjs`, and
+`node scripts/check-seis-demo-foundation-dashboard-boundary.mjs`. UI wiring is
+still intentionally deferred.
+
 Machine-readable bridge: `content/development/seis-pr0-pr1-pr2-implementation-sequence.json`.
 Direct checker: `node scripts/check-seis-pr0-pr1-pr2-implementation-sequence.mjs`.
 Clean-worktree transition ledger: `content/development/seis-clean-worktree-transition-ledger.json`.
