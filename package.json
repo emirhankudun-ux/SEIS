@@ -292,6 +292,7 @@
     "check:ai-workforce-assignments": "node scripts/check-ai-workforce-assignments.mjs",
     "check:seis-brain-context-packs": "node scripts/check-seis-brain-context-packs.mjs",
     "check:seis-installed-ai-tools-registry": "node scripts/check-seis-installed-ai-tools-registry.mjs",
+    "check:seis-ai-nvidia-skills-downloadable": "node scripts/check-seis-ai-nvidia-skills-downloadable.mjs",
     "check:seis-god-mode-release-readiness": "node scripts/check-seis-god-mode-release-readiness.mjs",
     "check:seis-god-mode-validation-plan": "node scripts/check-seis-god-mode-validation-plan.mjs",
     "check:seis-god-mode-work-package": "node scripts/check-seis-god-mode-work-package.mjs",

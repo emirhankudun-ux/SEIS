@@ -1,7 +1,7 @@
 {
   "generatedAt": "2026-06-22",
   "mode": "redacted_static_repository_audit",
-  "inspectedFiles": 2206,
+  "inspectedFiles": 2208,
   "providers": [
     {
       "provider": "Anthropic Claude",
@@ -13627,6 +13627,14 @@
         {
           "path": "scripts/check-release-artifact-policy.mjs",
           "line": 137,
+          "matchTypes": [
+            "env:ANTHROPIC_API_KEY"
+          ],
+          "surface": "backend"
+        },
+        {
+          "path": "scripts/check-seis-ai-nvidia-skills-downloadable.mjs",
+          "line": 286,
           "matchTypes": [
             "env:ANTHROPIC_API_KEY"
           ],
@@ -38336,6 +38344,14 @@
           "surface": "backend"
         },
         {
+          "path": "scripts/check-seis-ai-nvidia-skills-downloadable.mjs",
+          "line": 287,
+          "matchTypes": [
+            "env:GEMINI_API_KEY"
+          ],
+          "surface": "backend"
+        },
+        {
           "path": "scripts/check-seis-apple-native-snapshot.mjs",
           "line": 62,
           "matchTypes": [
@@ -53728,6 +53744,30 @@
           "surface": "backend"
         },
         {
+          "path": "scripts/check-seis-ai-nvidia-skills-downloadable.mjs",
+          "line": 218,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "backend"
+        },
+        {
+          "path": "scripts/check-seis-ai-nvidia-skills-downloadable.mjs",
+          "line": 220,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "backend"
+        },
+        {
+          "path": "scripts/check-seis-ai-nvidia-skills-downloadable.mjs",
+          "line": 72,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "backend"
+        },
+        {
           "path": "scripts/check-seis-ai-truth-boundary-staged-boundary.mjs",
           "line": 154,
           "matchTypes": [
@@ -59701,6 +59741,14 @@
         {
           "path": "scripts/check-release-artifact-policy.mjs",
           "line": 136,
+          "matchTypes": [
+            "env:OPENAI_API_KEY"
+          ],
+          "surface": "backend"
+        },
+        {
+          "path": "scripts/check-seis-ai-nvidia-skills-downloadable.mjs",
+          "line": 285,
           "matchTypes": [
             "env:OPENAI_API_KEY"
           ],

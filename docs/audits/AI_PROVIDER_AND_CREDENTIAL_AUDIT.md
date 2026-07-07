@@ -17,27 +17,27 @@ external provider.
 - Binary files, release archives, `node_modules`, generated build folders, and
   media assets are skipped.
 
-Inspected files: 2206
+Inspected files: 2208
 
 ## Provider Matrix
 
 | Provider | Category | Status | Expected env vars | Locations | Frontend direct | Backend side | Decision | Recommended action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Anthropic Claude | cloud model provider | Live but Unverified | ANTHROPIC_API_KEY | 4547 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
+| Anthropic Claude | cloud model provider | Live but Unverified | ANTHROPIC_API_KEY | 4548 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
 | AWS Bedrock | cloud model platform | Unknown | AWS_REGION, AWS_PROFILE | 1 | no | no | Retain | Review manually before enabling. |
 | Cloudflare Workers AI | cloud model platform | Live but Unverified | CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN | 7 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
 | Cohere | cloud model provider | Unknown | COHERE_API_KEY | 23 | no | no | Retain | Review manually before enabling. |
 | DeepSeek | cloud model provider | Unknown | DEEPSEEK_API_KEY | 126 | no | no | Retain | Review manually before enabling. |
-| Google Gemini | cloud model provider | Live but Unverified | GEMINI_API_KEY | 119 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
+| Google Gemini | cloud model provider | Live but Unverified | GEMINI_API_KEY | 120 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
 | Google Vertex AI | cloud model platform | Unknown | GOOGLE_CLOUD_PROJECT, GOOGLE_CLOUD_LOCATION, GOOGLE_APPLICATION_CREDENTIALS | 52 | no | no | Retain | Review manually before enabling. |
 | Groq | cloud model provider | Unknown | GROQ_API_KEY | 7 | no | no | Retain | Review manually before enabling. |
 | Hugging Face | model hosting provider | Unknown | HF_TOKEN | 5 | no | no | Retain | Review manually before enabling. |
 | LM Studio | local model provider | Unknown | LM_STUDIO_BASE_URL | 11 | no | no | Retain | Review manually before enabling. |
 | Luma | media provider | Unknown | LUMA_API_KEY | 8 | no | no | Retain | Review manually before enabling. |
 | Mistral | cloud model provider | Unknown | MISTRAL_API_KEY | 19 | no | no | Retain | Review manually before enabling. |
-| NVIDIA NIM | cloud model provider | Unknown | NVIDIA_API_KEY | 2111 | no | no | Retain | Review manually before enabling. |
+| NVIDIA NIM | cloud model provider | Unknown | NVIDIA_API_KEY | 2114 | no | no | Retain | Review manually before enabling. |
 | Ollama | local model provider | Live but Unverified | OLLAMA_BASE_URL, OLLAMA_HOST | 324 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
-| OpenAI | cloud model provider | Live but Unverified | OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_ORG_ID, OPENAI_PROJECT_ID | 81 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
+| OpenAI | cloud model provider | Live but Unverified | OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_ORG_ID, OPENAI_PROJECT_ID | 82 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
 | Perplexity | cloud model provider | Unknown | PERPLEXITY_API_KEY | 62 | no | no | Retain | Review manually before enabling. |
 | Portkey | model gateway | Unknown | PORTKEY_API_KEY | 2 | no | no | Retain | Review manually before enabling. |
 | Replicate | media/model provider | Unknown | REPLICATE_API_TOKEN | 65 | no | no | Retain | Review manually before enabling. |
