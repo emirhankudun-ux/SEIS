@@ -246,7 +246,8 @@
         "npm run check:seis-env-example",
         "npm run check:ai-provider-audit",
         "npm run check:git-secret-history",
-        "npm run check:seis-public-readiness-symlink-escape"
+        "npm run check:seis-public-readiness-symlink-escape",
+        "npm run check:seis-public-readiness-script-file-wiring"
       ],
       "blockers": [
         "External secret scanner and credential-provider audit logs are not performed by this matrix.",

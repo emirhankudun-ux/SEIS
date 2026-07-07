@@ -34,6 +34,10 @@ const checks = [
     command: "scripts/check-seis-public-readiness-symlink-escape.mjs"
   },
   {
+    id: "public-readiness-script-file-wiring",
+    command: "scripts/check-seis-public-readiness-script-file-wiring.mjs"
+  },
+  {
     id: "brain-context-packs",
     command: "scripts/check-seis-brain-context-packs.mjs"
   }

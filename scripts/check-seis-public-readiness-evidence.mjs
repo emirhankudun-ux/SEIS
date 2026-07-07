@@ -99,6 +99,48 @@ function validateNpmCheck(surfaceId, check) {
 
   ensure(Boolean(scriptName), `${surfaceId} npm check is missing script name`);
   ensure(Boolean(scripts[scriptName]), `${surfaceId} references missing package script: ${check}`);
+  if (scripts[scriptName]) {
+    validatePackageScriptCommandFile(surfaceId, check, scripts[scriptName]);
+  }
+}
+
+function validatePackageScriptCommandFile(surfaceId, check, command) {
+  for (const commandFile of extractCommandFiles(command)) {
+    const absolutePath = resolve(root, commandFile);
+    ensure(isInsideRoot(absolutePath), `${surfaceId} package script command file must stay inside repo root: ${check} -> ${commandFile}`);
+    if (!isInsideRoot(absolutePath)) {
+      continue;
+    }
+
+    ensure(existsSync(absolutePath), `${surfaceId} package script command file missing: ${check} -> ${commandFile}`);
+  }
+}
+
+function extractCommandFiles(command) {
+  const commandFiles = [];
+  for (const segment of String(command).split(/&&|\|\|/)) {
+    const tokens = segment.trim().split(/\s+/).filter(Boolean);
+    const executableIndex = tokens.findIndex((token) => ["node", "python", "python3", "bash", "sh"].includes(token));
+    if (executableIndex === -1) {
+      continue;
+    }
+
+    let candidateIndex = executableIndex + 1;
+    while (tokens[candidateIndex]?.startsWith("-")) {
+      candidateIndex += 1;
+    }
+
+    const candidate = tokens[candidateIndex];
+    if (!candidate || candidate.includes("*") || candidate.includes("$") || candidate.includes("://") || isAbsolute(candidate)) {
+      continue;
+    }
+
+    if (/\.(?:cjs|js|mjs|py|sh)$/.test(candidate)) {
+      commandFiles.push(candidate);
+    }
+  }
+
+  return commandFiles;
 }
 
 function validateExternalCheck(surfaceId, check) {

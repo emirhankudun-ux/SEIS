@@ -26,6 +26,7 @@
     "check:seis-public-readiness-evidence": "node scripts/check-seis-public-readiness-evidence.mjs",
     "check:seis-public-readiness-sensitive-boundary": "node scripts/check-seis-public-readiness-sensitive-boundary.mjs",
     "check:seis-public-readiness-symlink-escape": "node scripts/check-seis-public-readiness-symlink-escape.mjs",
+    "check:seis-public-readiness-script-file-wiring": "node scripts/check-seis-public-readiness-script-file-wiring.mjs",
     "check:seo": "node scripts/check-seo-metadata.mjs",
     "check:seis-env-example": "node scripts/check-seis-env-example.mjs",
     "check:ai-provider-audit": "node scripts/audit-ai-providers.mjs --check",
