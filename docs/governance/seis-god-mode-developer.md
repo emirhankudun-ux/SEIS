@@ -62,6 +62,15 @@ layers must be acknowledged in the handoff when they are not changed.
 6. Run the smallest meaningful check when appropriate.
 7. Summarize findings, changes, validation, risks, and the next best step.
 
+## Current SEIS AI Bridge
+
+SEIS AI exposes God Mode as a read-only operating-state bridge through
+`seis_god_mode_status` and `seis://agent/god-mode-status.json`. The bridge
+summarizes required layer lift, module coverage, run state, work-package
+commit/release readiness, source health, and next safe actions from the
+repo-backed God Mode contracts. It does not mutate files, call providers,
+access credentials, run SSH, deploy, mutate GitHub, or create completion claims.
+
 ## Current Quality Gate
 
 Use this lightweight check for the God Mode governance surface:

@@ -20,6 +20,7 @@ This is the living documentation index for God Mode development. It connects arc
 | ADR template | `docs/governance/seis-adr-template.md` |
 | ADR workflow | `docs/governance/seis-god-mode-adr-workflow.md` |
 | ADR-0001 | `docs/adr/0001-seis-god-mode-operating-system.md` |
+| MCP connector credential boundary | `docs/governance/mcp-connector-credential-boundary.md` |
 | Handoff | `docs/governance/seis-god-mode-handoff.md` |
 | Completion audit | `docs/governance/seis-god-mode-completion-audit.md` |
 | Run state | `docs/governance/seis-god-mode-run-state.md` |
