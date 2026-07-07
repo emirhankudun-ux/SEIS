@@ -1,0 +1,223 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-programming-language-purpose-matrix",
+  "updated": "2026-07-07",
+  "status": "reference-intake-ready-for-local-demo",
+  "mode": "supplied-visual-reference-to-seis-implementation-map",
+  "sourceBoundary": "The percentage charts are captured as supplied visual reference signals only. They are not treated as live market statistics or current benchmark truth.",
+  "goal": "Map programming languages to the SEIS product surfaces, agent lanes, production layers, and long-term native/system roadmap without turning every language into an active dependency.",
+  "priorityModel": [
+    "use the smallest language set needed for the current SEIS layer",
+    "separate current implementation from planned capability",
+    "prefer contracts before runtimes",
+    "do not rewrite working surfaces only to chase trend charts",
+    "activate extra languages only when a scoped PR proves why they are needed"
+  ],
+  "currentCore": {
+    "webDemo": ["HTML", "CSS", "JavaScript"],
+    "repoAutomation": ["Node.js", "Python", "Shell"],
+    "contractsAndDocs": ["JSON", "Markdown", "YAML"],
+    "dataAndStoragePlanning": ["SQL", "JSON Schema"],
+    "futureNativePriority": ["Swift", "Kotlin", "Rust", "C++"]
+  },
+  "purposeGroups": [
+    {
+      "id": "web-sites-and-product-ui",
+      "label": "Web Sites and Product UI",
+      "languages": ["HTML", "CSS", "JavaScript", "TypeScript", "Python", "PHP", "Ruby"],
+      "seisUse": "SEIS public website, Desktop OS local demo, Search, Code, Design, Cloud, Store, Agents, portfolio and product pages.",
+      "state": "working-plus-planned",
+      "nextAction": "Keep current HTML/CSS/JavaScript demo stable; add TypeScript only where contracts and maintainability justify it."
+    },
+    {
+      "id": "desktop-applications",
+      "label": "Desktop Applications",
+      "languages": ["C++", "Java", "Python", "Swift", "C#", "VB.NET"],
+      "seisUse": "Future native desktop helpers, Apple-first SEIS app family, Windows utilities, and local developer tools.",
+      "state": "planned",
+      "nextAction": "Document platform targets before adding native runtime code."
+    },
+    {
+      "id": "operating-systems-and-system-ux",
+      "label": "Operating Systems and System UX",
+      "languages": ["C", "C++", "Rust", "Assembly", "Swift", "Python", "Java"],
+      "seisUse": "SEIS OS reference lab, Linux-like desktop route, system UX research, local shell behavior, and future lower-level tooling.",
+      "state": "reference-lab-planned",
+      "nextAction": "Use as architecture inspiration only; make no kernel or real OS claim until there is a separate system runtime project."
+    },
+    {
+      "id": "mobile-applications",
+      "label": "Mobile Applications",
+      "languages": ["Swift", "Kotlin", "Java", "Dart", "Objective-C", "XML"],
+      "seisUse": "Apple-first iOS/iPadOS direction, future Android companion, mobile SEIS command surfaces.",
+      "state": "planned",
+      "nextAction": "Start with SwiftUI architecture notes before native app implementation."
+    },
+    {
+      "id": "game-3d-and-interactive-worlds",
+      "label": "Game, 3D, and Interactive Worlds",
+      "languages": ["C++", "C#", "Python", "Java", "JavaScript", "Kotlin"],
+      "enginesOrTools": ["Unity", "Unreal"],
+      "seisUse": "Mythic Gacha, creative worlds, 3D/motion systems, interactive showcases, simulation-style UI experiments.",
+      "state": "working-local-demo-plus-planned",
+      "nextAction": "Keep current browser game/showcase routes local; plan engine-based work separately."
+    },
+    {
+      "id": "ai-ml-and-data-science",
+      "label": "AI, ML, and Data Science",
+      "languages": ["Python", "SQL", "R", "Julia", "Java", "C++", "Scala"],
+      "seisUse": "AI Core, RAG, evaluation, embeddings, knowledge indexing, data analysis, model governance, future analytics.",
+      "state": "contract-plus-planned",
+      "nextAction": "Use Python and JSON contracts first; add data notebooks or pipelines only after data boundary approval."
+    },
+    {
+      "id": "backend-api-and-enterprise-services",
+      "label": "Backend, API, and Enterprise Services",
+      "languages": ["Node.js", "Python", "Java", "C#", "Go", "Ruby", "PHP", "Scala"],
+      "seisUse": "Read-only local server, provider router, API contracts, future durable backend, enterprise-grade services.",
+      "state": "local-demo-read-only-plus-planned",
+      "nextAction": "Keep current Node read-only boundary; document Java/Spring and Python service lanes before implementation."
+    },
+    {
+      "id": "devops-cloud-and-automation",
+      "label": "DevOps, Cloud, and Automation",
+      "languages": ["Bash", "Shell", "Python", "YAML", "Dockerfile", "HCL", "Go", "PowerShell"],
+      "seisUse": "Validation scripts, GitHub Actions, deployment readiness, cloud plans, local automation, SSH-safe onboarding.",
+      "state": "working-plus-guarded",
+      "nextAction": "Maintain dry-run and validation-first automation; no deployment or SSH without approval."
+    },
+    {
+      "id": "security-and-governance",
+      "label": "Security and Governance",
+      "languages": ["Python", "Bash", "Shell", "C", "C++", "Rego", "YAML"],
+      "seisUse": "Secret scanning, policy checks, permission models, audit logs, rate limits, provider boundaries, rollback gates.",
+      "state": "working-plus-planned",
+      "nextAction": "Add language-aware security checks before enabling any live backend/provider surface."
+    }
+  ],
+  "referencePopularitySignals": {
+    "snapshotA": {
+      "note": "Supplied visual reference with top usage bars; not live stats.",
+      "items": [
+        { "language": "JavaScript", "value": 65.36 },
+        { "language": "HTML/CSS", "value": 55.08 },
+        { "language": "SQL", "value": 49.43 },
+        { "language": "Python", "value": 48.07 },
+        { "language": "TypeScript", "value": 34.83 },
+        { "language": "Java", "value": 33.27 },
+        { "language": "Bash/Shell", "value": 29.07 },
+        { "language": "C#", "value": 27.98 },
+        { "language": "C++", "value": 22.55 },
+        { "language": "PHP", "value": 20.87 }
+      ]
+    },
+    "snapshotB": {
+      "note": "Supplied visual reference with wider language list; not live stats.",
+      "items": [
+        { "language": "JavaScript", "value": 69.8 },
+        { "language": "HTML", "value": 68.5 },
+        { "language": "CSS", "value": 65.1 },
+        { "language": "SQL", "value": 57.0 },
+        { "language": "Java", "value": 45.3 },
+        { "language": "Bash/Shell", "value": 39.8 },
+        { "language": "Python", "value": 38.8 },
+        { "language": "C#", "value": 34.4 },
+        { "language": "PHP", "value": 30.7 },
+        { "language": "C++", "value": 25.4 },
+        { "language": "C", "value": 23.0 },
+        { "language": "TypeScript", "value": 17.4 },
+        { "language": "Ruby", "value": 10.1 },
+        { "language": "Swift", "value": 8.1 },
+        { "language": "Assembly", "value": 7.4 },
+        { "language": "Go", "value": 7.1 },
+        { "language": "Objective-C", "value": 7.0 },
+        { "language": "VB.NET", "value": 6.7 },
+        { "language": "R", "value": 6.1 },
+        { "language": "Matlab", "value": 5.8 },
+        { "language": "VBA", "value": 4.9 },
+        { "language": "Kotlin", "value": 4.5 },
+        { "language": "Scala", "value": 4.4 },
+        { "language": "Groovy", "value": 4.3 },
+        { "language": "Perl", "value": 4.2 }
+      ]
+    }
+  },
+  "seisLanguageRouting": [
+    {
+      "route": "apps/web",
+      "priorityLanguages": ["HTML", "CSS", "JavaScript"],
+      "reason": "Current working local-first demo and public product UI."
+    },
+    {
+      "route": "scripts",
+      "priorityLanguages": ["Node.js", "Python", "Shell"],
+      "reason": "Validation, reports, local automation, and safe CI gates."
+    },
+    {
+      "route": "server/node",
+      "priorityLanguages": ["Node.js", "JSON"],
+      "reason": "Existing read-only local API fixture boundary."
+    },
+    {
+      "route": "docs/architecture",
+      "priorityLanguages": ["Markdown", "Mermaid", "JSON"],
+      "reason": "Architecture-first delivery before runtime expansion."
+    },
+    {
+      "route": "future/apple-first",
+      "priorityLanguages": ["Swift", "SwiftUI"],
+      "reason": "Long-term native Apple app direction."
+    },
+    {
+      "route": "future/backend-java",
+      "priorityLanguages": ["Java", "SQL", "Spring Boot"],
+      "reason": "Enterprise backend lane after contract and approval."
+    },
+    {
+      "route": "future/ai-data",
+      "priorityLanguages": ["Python", "SQL", "R", "Julia"],
+      "reason": "AI/data workflows after data boundary approval."
+    },
+    {
+      "route": "future/system-lab",
+      "priorityLanguages": ["C", "C++", "Rust", "Assembly"],
+      "reason": "System tooling and OS research only after separate scope."
+    }
+  ],
+  "implementationSlices": [
+    {
+      "id": "slice-01-language-purpose-center",
+      "title": "Programming Language Purpose Center",
+      "deliverable": "A local SEIS route that explains which language belongs to which product surface and why.",
+      "safeNow": true
+    },
+    {
+      "id": "slice-02-language-routing-contract",
+      "title": "Language Routing Contract",
+      "deliverable": "JSON contract used by future validators and roadmap surfaces.",
+      "safeNow": true
+    },
+    {
+      "id": "slice-03-language-aware-agent-planning",
+      "title": "Language-Aware Agent Planning",
+      "deliverable": "Agents select languages by layer, risk, and validation path instead of blindly adding stacks.",
+      "safeNow": true
+    },
+    {
+      "id": "slice-04-native-and-backend-expansion-gates",
+      "title": "Native and Backend Expansion Gates",
+      "deliverable": "Approval gates for Swift, Kotlin, Java/Spring, Rust, C++, cloud, and database work.",
+      "safeNow": false
+    }
+  ],
+  "blockedWithoutApproval": [
+    "adding new runtime dependencies",
+    "rewriting working web surfaces without test coverage",
+    "installing Java/Spring, Unity, Unreal, Docker, Kubernetes, or mobile SDKs",
+    "making live provider calls",
+    "creating external databases",
+    "deploying to cloud",
+    "running SSH or host shell actions",
+    "claiming current market popularity from supplied screenshots without fresh source verification"
+  ]
+}
