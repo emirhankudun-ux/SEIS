@@ -5,6 +5,7 @@ import path from "node:path";
 
 const root = process.cwd();
 const failures = [];
+const canonicalWorkflowRoot = "<repo-root>";
 
 const paths = {
   obsidianContract: "content/development/seis-obsidian-bridge-safe-import-contract.json",
@@ -143,7 +144,20 @@ function validateReleaseChecklist(checklist) {
   ensure(checklist.pullRequest?.number === 54, "PR number must be 54.");
   ensure(checklist.pullRequest?.url === "https://github.com/emirhankudun-ux/SEIS/pull/54", "PR 54 URL mismatch.");
   ensure(checklist.pullRequest?.base === "main", "PR 54 base branch must be main.");
-  ensure(checklist.pullRequest?.head === "codex/seis-demo-github-upload-20260624", "PR 54 head branch mismatch.");
+  ensure(!Object.hasOwn(checklist.pullRequest || {}, "head"), "PR 54 release checklist must not pin the current workflow to an archived head branch.");
+  ensure(
+    checklist.pullRequest?.sourceReference === "PR 54 review record only; current readiness work uses the canonical local checkout.",
+    "PR 54 source reference mismatch."
+  );
+  ensure(checklist.currentWorkflow?.root === canonicalWorkflowRoot, "PR 54 current workflow root must use the public-safe symbolic checkout root.");
+  ensure(
+    checklist.currentWorkflow?.branchSource === "current local checkout branch",
+    "PR 54 current workflow branch source mismatch."
+  );
+  ensure(
+    checklist.currentWorkflow?.staleHeadBranchPolicy === "do not pin readiness validation to the archived PR head branch",
+    "PR 54 stale head branch policy mismatch."
+  );
   for (const action of [
     "merge to main",
     "GitHub Pages publication",

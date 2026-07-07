@@ -12,7 +12,7 @@ if (args.help) {
   process.exit(0);
 }
 
-const sourceRoot = resolveCandidatePath(args.source, path.join(ROOT, "SEIS"));
+const sourceRoot = resolveCandidatePath(args.source, ROOT);
 if (!sourceRoot || !fs.existsSync(sourceRoot) || !fs.statSync(sourceRoot).isDirectory()) {
   console.error(`Kaynak klasör bulunamadı: ${sourceRoot || "<undefined>"}`);
   process.exit(1);
@@ -156,8 +156,9 @@ const candidates = [
   },
 ];
 
-const sourcePrefix = trimPath(sourceRoot);
-const targetPrefix = trimPath(ROOT);
+const sourceRootIsRepo = path.resolve(sourceRoot) === path.resolve(ROOT);
+const sourcePrefix = sourceRootIsRepo ? "<repo-root>" : "<source-root>";
+const targetPrefix = "<repo-root>";
 const inventory = {
   startedAt: new Date().toISOString(),
   sourceRoot: sourcePrefix,
@@ -237,8 +238,8 @@ for (const candidate of candidates) {
     id: candidate.id,
     title: candidate.title,
     priority: candidate.priority,
-    source: trimPath(sourcePath),
-    target: trimPath(targetPath),
+    source: displayPath(sourcePath, sourceRoot, sourcePrefix),
+    target: displayPath(targetPath, ROOT, targetPrefix),
     status,
     action,
     severity,
@@ -310,7 +311,7 @@ Komut:
   node scripts/third-party-intake-blueprint.mjs [seçenekler]
 
 Seçenekler:
-  --source <path>       Üçüncü taraf kök klasör. Varsayılan: ./SEIS
+  --source <path>       Üçüncü taraf kök klasör. Varsayılan: geçerli SEIS repo kökü
   --report-json <path>  JSON çıktı yolu. Varsayılan: reports/third-party-intake-blueprint.json
   --report-md <path>    Markdown çıktı yolu. Varsayılan: reports/third-party-intake-blueprint.md
   --diff                Adapt gerektiren dosyalarda kısa karşılaştırma eklesin.
@@ -396,6 +397,18 @@ function hashFile(filePath) {
 
 function trimPath(filePath) {
   return filePath.replace(/\\/g, "/");
+}
+
+function displayPath(filePath, rootPath, rootLabel) {
+  const normalizedPath = trimPath(path.resolve(filePath));
+  const normalizedRoot = trimPath(path.resolve(rootPath));
+  if (normalizedPath === normalizedRoot) {
+    return rootLabel;
+  }
+  if (normalizedPath.startsWith(`${normalizedRoot}/`)) {
+    return `${rootLabel}/${normalizedPath.slice(normalizedRoot.length + 1)}`;
+  }
+  return `<external-path>/${path.basename(normalizedPath)}`;
 }
 
 function buildSimpleDiff(sourcePath, targetPath, maxLen) {
@@ -515,5 +528,5 @@ function generateMarkdownReport(report, byPriority) {
     }
   }
 
-  return `${md.join("\n")}\n`;
+  return `${md.join("\n").replace(/\n+$/u, "")}\n`;
 }

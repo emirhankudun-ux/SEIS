@@ -13,6 +13,7 @@ import { predictEvalCriticReview } from '../packages/seis-ai/src/model/eval-crit
 import { predictAgentRoute } from '../packages/seis-ai/src/model/agent-router-lab.mjs';
 
 const ROOT = process.cwd();
+const PUBLIC_WORKSPACE_ROOT = '<repo-root>';
 const CONTRACT_PATH = path.join(ROOT, 'content', 'development', 'seis-action-decision-contract.json');
 const DEFAULT_REPORT_JSON = path.join(
   ROOT,
@@ -43,7 +44,7 @@ const reportJsonPath = args.jsonOut || DEFAULT_REPORT_JSON;
 const reportMdPath = args.mdOut || DEFAULT_REPORT_MARKDOWN;
 const report = evaluateActions(input.actions, input.scope, contract, model, {
   includeModel: useModel && Boolean(model),
-  workspaceRoot: workspace,
+  workspaceRoot: PUBLIC_WORKSPACE_ROOT,
   inputPath: input.inputPath,
   agentRouterArtifact,
 });
@@ -327,7 +328,7 @@ function evaluateActions(actions, scope, contract, model, options = {}) {
     scope: {
       workspace: reportScope,
       source: scope || 'local-repo',
-      inputPath: options.inputPath ? path.relative(ROOT, options.inputPath) : null,
+      inputPath: options.inputPath ? displayInputPath(options.inputPath) : null,
     },
     summary: {
       total: sanitized.length,
@@ -481,6 +482,15 @@ function normalizeAction(item) {
     externalWrite: Boolean(asObject.externalWrite),
     workspace: asObject.workspace || 'local-repo',
   };
+}
+
+function displayInputPath(inputPath) {
+  const absoluteInputPath = path.resolve(inputPath);
+  const relativeInputPath = path.relative(ROOT, absoluteInputPath);
+  if (relativeInputPath && !relativeInputPath.startsWith('..') && !path.isAbsolute(relativeInputPath)) {
+    return relativeInputPath;
+  }
+  return `<external-input>/${path.basename(absoluteInputPath)}`;
 }
 
 function buildRouteAdvisory(model, normalized) {

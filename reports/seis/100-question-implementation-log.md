@@ -2,7 +2,7 @@
 
 Toplanan blok: İlk tur (1–5)
 Tarih: 2026-06-09
-Köken: iCloud kaynak (`/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/SEIS`)
+Köken: legacy iCloud kaynak arşivi; güncel doğrulama ve devam eden çalışma kökü `<repo-root>`.
 Hedef: SEIS repo kökünde MCP + plugin + repo bundle yüzeyi kurulum.
 
 ## Blok 1 — 1/10 Soru Grubu (Temel Durum ve Kök Seçimi)

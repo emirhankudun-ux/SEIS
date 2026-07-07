@@ -1,26 +1,21 @@
 # SEIS Üçüncü Taraf Uyum Haritası
 
-Oluşturulma: 2026-06-09T11:58:51.438Z
-Kaynak: /Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/SEIS
-Hedef: /Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS
+Oluşturulma: 2026-07-07T05:49:13.919Z
+Kaynak: <repo-root>
+Hedef: <repo-root>
 
 ## Özet
 - Toplam aday dosya: 16
 - Kaynaktan eklenecek: 0
-- Adaptasyon gereken: 5
-- Tamamen uyumlu: 11
+- Adaptasyon gereken: 0
+- Tamamen uyumlu: 16
 - Kaynakta olmayan ama hedefte olan: 0
 
 ## Aksiyon önceliği (Critical)
 
 ## Aksiyon önceliği (High)
-- LLM planlayıcı: **adapt**
-- LLM görev yönlendirme politikası: **adapt**
-- Plugin manifest: **adapt**
 
 ## Aksiyon önceliği (Medium)
-- LLM paket envanteri: **adapt**
-- LLM adaptör hazırbulma: **adapt**
 
 ## Aksiyon önceliği (Low)
 

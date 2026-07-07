@@ -7,8 +7,13 @@
     "number": 54,
     "url": "https://github.com/emirhankudun-ux/SEIS/pull/54",
     "base": "main",
-    "head": "codex/seis-demo-github-upload-20260624",
+    "sourceReference": "PR 54 review record only; current readiness work uses the canonical local checkout.",
     "requiredState": "reviewed before merge or public release"
+  },
+  "currentWorkflow": {
+    "root": "<repo-root>",
+    "branchSource": "current local checkout branch",
+    "staleHeadBranchPolicy": "do not pin readiness validation to the archived PR head branch"
   },
   "qualityGate": "npm run check:seis-second-brain-readiness-contracts",
   "releaseDecision": "not ready until checklist gates pass",

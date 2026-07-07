@@ -6,6 +6,7 @@ import { containsSecretMaterial } from '../packages/seis-ai/src/lib/redaction.mj
 
 const ROOT = process.cwd();
 const CONTRACT_PATH = path.join(ROOT, 'content', 'development', 'seis-project-intake-contract.json');
+const PUBLIC_WORKSPACE_ROOT = '<repo-root>';
 
 const args = parseArgs(process.argv.slice(2));
 const workspace = resolveWorkspace(args.workspace);
@@ -392,7 +393,7 @@ function generateIntakeReport(workspaceRoot) {
   return {
     generatedAt,
     repository: {
-      workspaceRoot: repository.root,
+      workspaceRoot: PUBLIC_WORKSPACE_ROOT,
       isGitRepo: repository.isGitRepo,
       branch: repository.branch,
       remote: repository.remote,
@@ -401,7 +402,7 @@ function generateIntakeReport(workspaceRoot) {
       recentCommit: repository.recentCommit,
     },
     intake: {
-      workspaceRoot: workspaceRoot,
+      workspaceRoot: PUBLIC_WORKSPACE_ROOT,
       isGitRepo: repository.isGitRepo,
       hasAgents: existsSync(path.join(workspaceRoot, 'AGENTS.md')),
       instructionFiles,

@@ -223,6 +223,7 @@
     "automation:plugin-download-readiness": "node scripts/create-plugin-download-readiness.cjs",
     "automation:requested-software-stack": "node scripts/create-requested-software-stack.cjs",
     "automation:ecosystem-intake": "node scripts/create-seis-ecosystem-intake.cjs",
+    "intake:third-party": "node scripts/third-party-intake-blueprint.mjs --diff",
     "automation:universal-capability-kernel": "python3 scripts/create-seis-universal-capability-kernel.py",
     "automation:seis-platform-language-policy": "python3 scripts/create-seis-platform-language-policy.py",
     "automation:seis-platform-development-tracks": "python3 scripts/create-seis-platform-development-tracks.py",

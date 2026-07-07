@@ -1,9 +1,9 @@
 # SEIS Action Decision Report
 
-Generated at: 2026-06-23T08:08:16.859Z
+Generated at: 2026-07-07T05:47:32.728Z
 
 ## Context
-- Scope: /Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github 2/SEIS
+- Scope: <repo-root>
 - Mode: learned
 - Policy version: seis-action-decision-v0
 - Contract: seis-action-decision-kernel
