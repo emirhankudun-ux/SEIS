@@ -1,0 +1,150 @@
+{
+  "version": "2026.07.developer-roadmap-issue-pack.1",
+  "status": "draft-review",
+  "purpose": "Convert the SEIS developer role roadmap into ready-to-scope GitHub issue packages for contributors and AI coding agents.",
+  "rules": [
+    "Every issue must be small enough for one pull request.",
+    "Every issue must name its role lane, expected output, validation command, and rollback note.",
+    "Every issue must preserve SEIS truth labels for local, mock, planned, disabled, and live states where relevant.",
+    "No issue may require private data, provider keys, live SSH, or deployment access unless separately approved."
+  ],
+  "issue_packages": [
+    {
+      "id": "frontend-surface-task",
+      "role": "frontend-developer",
+      "title": "Review one SEIS product surface for state labels and accessibility",
+      "labels": ["role:frontend", "area:product", "type:review", "risk:low"],
+      "goal": "Pick one SEIS browser-facing or documented product surface and verify that its local, mock, planned, disabled, and live states are understandable.",
+      "deliverables": [
+        "Short review note",
+        "Accessibility and responsive checklist",
+        "One proposed improvement issue or patch"
+      ],
+      "acceptance_criteria": [
+        "The reviewed surface has a clear current-state label",
+        "Keyboard, mobile, or reduced-motion considerations are mentioned",
+        "The issue does not add live provider or deployment claims"
+      ],
+      "validation": ["python3 scripts/check-seis-developer-role-roadmap.py"],
+      "rollback": "Remove the review note or revert the scoped patch if it creates confusion."
+    },
+    {
+      "id": "backend-contract-task",
+      "role": "backend-developer",
+      "title": "Draft one backend or API contract for a SEIS capability",
+      "labels": ["role:backend", "area:architecture", "type:contract", "risk:medium"],
+      "goal": "Define inputs, outputs, errors, safety boundaries, and data assumptions for one future SEIS backend capability.",
+      "deliverables": [
+        "Contract document or JSON contract",
+        "Failure-state notes",
+        "Security and data boundary notes"
+      ],
+      "acceptance_criteria": [
+        "Contract separates public demo data from live or private data",
+        "Secrets are explicitly backend-only",
+        "Rollback or deprecation path is documented"
+      ],
+      "validation": ["python3 scripts/check-seis-developer-role-roadmap.py"],
+      "rollback": "Remove the contract or mark it deprecated if the capability direction changes."
+    },
+    {
+      "id": "full-stack-slice-task",
+      "role": "full-stack-developer",
+      "title": "Plan one thin SEIS full-stack slice",
+      "labels": ["role:full-stack", "area:product", "type:planning", "risk:medium"],
+      "goal": "Connect one product surface, one data or API contract, validation commands, and a rollback note into a tiny vertical slice.",
+      "deliverables": [
+        "Slice plan",
+        "Changed-file map",
+        "Validation command list",
+        "Rollback note"
+      ],
+      "acceptance_criteria": [
+        "The slice is small enough for one PR",
+        "Mock, planned, disabled, and live states are not mixed",
+        "The PR summary can explain current truth state"
+      ],
+      "validation": [
+        "python3 scripts/check-seis-developer-role-roadmap.py",
+        "python3 scripts/check-seis-developer-role-milestones.py"
+      ],
+      "rollback": "Revert the slice plan and linked artifacts if scope expands beyond one PR."
+    },
+    {
+      "id": "devops-readiness-task",
+      "role": "devops-engineer",
+      "title": "Create one no-mutation DevOps readiness plan",
+      "labels": ["role:devops", "area:ops", "type:readiness", "risk:medium"],
+      "goal": "Document how a future CI, cloud, SSH, or deployment path would be checked without live mutation.",
+      "deliverables": [
+        "Dry-run plan",
+        "Approval gate list",
+        "Rollback and observability notes"
+      ],
+      "acceptance_criteria": [
+        "No live service mutation is required",
+        "SSH, cloud, and deployment actions are approval-gated",
+        "The plan names what evidence would be collected"
+      ],
+      "validation": ["python3 scripts/check-seis-developer-role-milestones.py"],
+      "rollback": "Remove or revise the readiness plan if it implies unapproved live access."
+    },
+    {
+      "id": "database-safety-task",
+      "role": "database-administrator",
+      "title": "Draft one SEIS database safety checklist",
+      "labels": ["role:dba", "area:data", "type:safety", "risk:medium"],
+      "goal": "Document schema, migration, backup, restore, performance, security, and privacy expectations for one data surface.",
+      "deliverables": [
+        "Database safety checklist",
+        "Migration notes",
+        "Backup and restore assumptions"
+      ],
+      "acceptance_criteria": [
+        "Private data is excluded from public examples",
+        "Backup and restore expectations are named",
+        "Least-privilege concerns are mentioned"
+      ],
+      "validation": ["python3 scripts/check-seis-developer-role-roadmap.py"],
+      "rollback": "Remove the checklist or convert it to a draft if the data surface is not approved."
+    },
+    {
+      "id": "ai-route-decision-task",
+      "role": "ai-developer",
+      "title": "Write one provider-neutral AI route decision",
+      "labels": ["role:ai", "area:ai-core", "type:decision", "risk:medium"],
+      "goal": "Explain one AI workflow route with local, mock, planned, disabled, and live state boundaries.",
+      "deliverables": [
+        "Route decision note",
+        "Prompt or RAG boundary note",
+        "Provider safety checklist"
+      ],
+      "acceptance_criteria": [
+        "No provider key or private data is exposed",
+        "Fallback behavior is not silent",
+        "Human approval boundaries are clear"
+      ],
+      "validation": ["python3 scripts/check-seis-developer-role-roadmap.py"],
+      "rollback": "Revert the decision note if it overclaims live AI capability."
+    },
+    {
+      "id": "data-pipeline-contract-task",
+      "role": "data-engineer",
+      "title": "Draft one local-first data pipeline contract",
+      "labels": ["role:data", "area:data", "type:contract", "risk:medium"],
+      "goal": "Define a data pipeline plan with source, transform, quality, lineage, privacy, and warehouse assumptions.",
+      "deliverables": [
+        "Pipeline contract",
+        "Lineage sketch",
+        "Quality check list"
+      ],
+      "acceptance_criteria": [
+        "Pipeline can be described without cloud credentials",
+        "Quality and lineage are explicit",
+        "Privacy assumptions are visible"
+      ],
+      "validation": ["python3 scripts/check-seis-developer-role-milestones.py"],
+      "rollback": "Remove the pipeline contract if it depends on unavailable private data."
+    }
+  ]
+}
