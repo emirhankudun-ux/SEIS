@@ -83,6 +83,7 @@ Date: 2026-06-23
 | [product/video-hero-showcase.md](product/video-hero-showcase.md) | Four-page cinematic Video Hero showcase contract and validation notes. |
 | [product/mythic-gacha.md](product/mythic-gacha.md) | Playable no-key Shan Hai Jing inspired gacha and bestiary foundation. |
 | [ai/seis-ai-core.md](ai/seis-ai-core.md) | Provider-neutral SEIS AI Core foundation. |
+| [ai/installed-ai-collaboration-protocol.md](ai/installed-ai-collaboration-protocol.md) | One-writer, reviewer, draft, metadata-only, local-demo, approval-gated, and disabled collaboration protocol for all installed AI tools. |
 | [ai/ai-workforce-training.md](ai/ai-workforce-training.md) | Installed AI workforce training contract for supervised seed-model improvement without cloud fine-tuning claims. |
 | [ai/nvidia-accelerator-catalog.md](ai/nvidia-accelerator-catalog.md) | NVIDIA GitHub, Build skills, and run-anywhere model catalog intake with dry-run install queue and no-clone/no-download/no-NIM boundary. |
 | [ai/nvidia-installed-integrations.md](ai/nvidia-installed-integrations.md) | 11 local NVIDIA skill manifests installed into SEIS as runtime-gated capability records. |

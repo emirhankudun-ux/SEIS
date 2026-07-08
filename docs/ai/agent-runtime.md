@@ -88,6 +88,7 @@ evidence for staged reviews, not autonomous execution.
 
 ## Related Documents
 
+- [installed-ai-collaboration-protocol.md](installed-ai-collaboration-protocol.md)
 - [seis-ai-core.md](seis-ai-core.md)
 - [model-router.md](model-router.md)
 - [prompt-engine.md](prompt-engine.md)
