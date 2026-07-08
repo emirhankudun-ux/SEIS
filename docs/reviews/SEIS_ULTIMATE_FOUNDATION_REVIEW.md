@@ -101,6 +101,31 @@ window smoke, local-only boundary checks, and screenshot evidence. This remains
 Local Demo/browser-local evidence only; it is not live provider routing, SSH,
 deployment, push, merge, production storage, or host filesystem access.
 
+### 2026-07-08 Linux Replica Store Package Marketplace Follow-up
+
+The Linux Replica Store now renders a browser-local package marketplace instead
+of a static app list. It exposes apps, plugins, MCP workbench lanes, installed
+AI lanes, themes, developer tools, design tools, DevOps guardrails, Reference
+Vault, and Search Gateway packages with category filters, open actions, and
+persisted `seis-store-package-*` install/update/enable state. The Store bridge
+workspace uses the same package renderer, so connected SEIS route cards and the
+standalone Store app stay aligned. This remains Local Demo state only: it is not
+live marketplace publication, billing, dependency installation, connector
+authorization, provider execution, host package installation, SSH, deployment,
+GitHub mutation, push, merge, tag, or release.
+
+### 2026-07-08 Linux Replica Plugin/MCP Workbench Follow-up
+
+The Linux Replica now includes a dedicated browser-local Plugin/MCP Workbench
+app. Store package rows for the agent pack, Plugin/MCP Workbench, installed AI
+lanes, and connector governance open that surface instead of looping back into
+the Store. The Workbench exposes declared AI/tool lanes, MCP/plugin/connector
+lanes, lane filters, selected-lane persistence, a six-item subagent dry-run
+queue, a permission matrix, terminal `mcp` command output, and a VFS review note
+export. This is supervised Local Demo evidence only; it does not authenticate
+connectors, execute MCP tools, call providers, install packages, run autonomous
+writes, use SSH, deploy, mutate GitHub, push, merge, tag, or release.
+
 ### 2026-06-24 Second Brain Follow-up
 
 SEIS Desktop now includes a browser-local SEIS Second Brain app and SEIS AI

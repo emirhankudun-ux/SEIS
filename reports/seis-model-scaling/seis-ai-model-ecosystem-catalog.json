@@ -1,0 +1,32 @@
+{
+  "id": "seis-ai-model-ecosystem-catalog-report",
+  "generatedAt": "2026-07-08T12:34:31.049Z",
+  "status": "model-ecosystem-catalog-defined-runtime-blocked",
+  "sourceCatalog": "content/development/seis-ai-model-ecosystem-catalog.json",
+  "summary": {
+    "sources": 9,
+    "candidateFamilies": 12,
+    "installsAuthorized": 0,
+    "downloadsAuthorized": 0,
+    "trainingAuthorized": 0,
+    "routeEligibleFamilies": 0,
+    "canClaimRealAgi": false
+  },
+  "publicClaimBoundary": {
+    "canClaimCatalogExists": true,
+    "canClaimAllModelsInstalled": false,
+    "canClaimTrainingExecuted": false,
+    "canClaimAnyCheckpointDownloaded": false,
+    "canClaimProviderAccessVerified": false,
+    "canClaim20bRuntimeReady": false,
+    "canClaim512bRouteEligible": false,
+    "canClaimSEISOwnedFoundationModel": false,
+    "canClaimRealAgi": false
+  },
+  "nextSafeActions": [
+    "Keep adding model families as metadata records only until exact model approval exists.",
+    "Prioritize retrieval/embedding evaluation before any LLM install.",
+    "Use the local runtime matrix to decide whether a model is only metadata, approval-required, benchmark-required, or blocked.",
+    "Create separate model cards, dataset cards, and benchmark manifests before any adapter or fine-tune experiment."
+  ]
+}

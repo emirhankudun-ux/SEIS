@@ -684,6 +684,36 @@ async function smokeDesktop(client, baseUrl) {
   await waitFor(client, "document.querySelector('[data-ai-plugin-center]')", 5000);
 
   await clickSelector(client, "[data-action='toggle-launcher']");
+  await clickSelector(client, "[data-demo-route-group] [data-value='seis-command-center-app']");
+  await waitFor(client, "window.__SEIS_DESKTOP__.openWindows().includes('SEIS Command Center')", 5000);
+  const pluginMcpContinuity = await evaluate(client, `(() => {
+    const diagnostics = window.__SEIS_DESKTOP__;
+    const continuity = diagnostics.pluginMcpTenYearContinuity();
+    const panel = document.querySelector('[data-seis-command-center] [data-plugin-mcp-ten-year-continuity]');
+    return {
+      id: continuity.id,
+      counts: continuity.counts.length,
+      phases: continuity.phases.length,
+      hardStops: continuity.hardStops,
+      panelVisible: Boolean(panel),
+      phaseRows: document.querySelectorAll('[data-seis-command-center] [data-plugin-mcp-ten-year-phase]').length,
+      hasExportButton: Boolean(document.querySelector('[data-seis-command-center] [data-action="export-plugin-mcp-ten-year-continuity"]')),
+      text: panel?.textContent || ''
+    };
+  })()`);
+  ensure(pluginMcpContinuity.id === "plugin-mcp-ten-year-continuity-map", `Command Center continuity diagnostics id mismatch: ${pluginMcpContinuity.id}`);
+  ensure(pluginMcpContinuity.counts >= 6, `Command Center continuity expected at least six count rows, got ${pluginMcpContinuity.counts}.`);
+  ensure(pluginMcpContinuity.phases === 10, `Command Center continuity expected ten yearly phases, got ${pluginMcpContinuity.phases}.`);
+  ensure(pluginMcpContinuity.hardStops.includes("remote_mcp_trust"), "Command Center continuity must keep remote MCP trust as a hard stop.");
+  ensure(pluginMcpContinuity.hardStops.includes("provider_credential_use"), "Command Center continuity must keep provider credential use as a hard stop.");
+  ensure(pluginMcpContinuity.panelVisible, "Command Center must render the Plugin/MCP ten-year continuity panel.");
+  ensure(pluginMcpContinuity.phaseRows === 10, `Command Center continuity expected ten rendered phase rows, got ${pluginMcpContinuity.phaseRows}.`);
+  ensure(pluginMcpContinuity.hasExportButton, "Command Center continuity panel must expose a local export button.");
+  ensure(pluginMcpContinuity.text.includes("MCP resources") && pluginMcpContinuity.text.includes("29"), "Command Center continuity panel must show the current 29-resource MCP runtime count.");
+  await clickSelector(client, "[data-seis-command-center] [data-action='export-plugin-mcp-ten-year-continuity']");
+  await waitFor(client, "window.__SEIS_DESKTOP__.filePaths().includes('/home/seis/Documents/seis-plugin-mcp-ten-year-continuity-map.md')", 5000);
+
+  await clickSelector(client, "[data-action='toggle-launcher']");
   await clickSelector(client, "[data-demo-route-group] [data-value='sub-agent-os-demo']");
   await waitFor(client, "window.__SEIS_DESKTOP__.openWindows().includes('Sub-Agent Control')", 5000);
   const subAgentInitial = await evaluate(client, `(() => ({

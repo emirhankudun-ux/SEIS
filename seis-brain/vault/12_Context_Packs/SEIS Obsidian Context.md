@@ -1,3 +1,13 @@
+---
+type: context-pack
+module: seis-obsidian
+status: reviewed
+visibility: public
+updated: 2026-06-29
+aliases:
+  - SEIS Obsidian Context
+---
+
 # SEIS Obsidian Context
 
 - Vault-first structure under `seis-brain/vault`.

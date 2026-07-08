@@ -9,6 +9,12 @@
   "snapshotPath": "/home/seis/SecondBrain/seis-second-brain-vault-snapshot.md",
   "githubReadinessPath": "/home/seis/SecondBrain/github-readiness-review.md",
   "trainingPackPath": "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md",
+  "publicContributorPackPath": "/home/seis/SecondBrain/08-public/seis-public-contributor-onboarding.md",
+  "obsidianStarterVaultManifestPath": "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json",
+  "obsidianStarterVaultGuidePath": "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md",
+  "aiCouncilReviewPackPath": "/home/seis/SecondBrain/10-ai-council/seis-ai-council-review-pack.md",
+  "obsidianGraphMapPath": "/home/seis/SecondBrain/11-graph/seis-obsidian-graph-map.md",
+  "agentTrainingDrillsPath": "/home/seis/SecondBrain/12-training/seis-agent-training-drills.md",
   "releaseReviewPacketPath": "reports/seis-public-demo/pr54-review-packet-latest.md",
   "obsidianSafeImportDryRunPath": "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json",
   "obsidianSafeImportDryRunMarkdownPath": "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md",
@@ -35,6 +41,11 @@
       "generate provider-neutral read-only router decision artifacts under reports/seis-public-demo",
       "generate accessibility/focus QA artifacts under reports/seis-public-demo",
       "generate Second Brain agent registry artifacts under reports/seis-public-demo",
+      "generate browser-local public contributor onboarding pack",
+      "generate browser-local Obsidian starter vault manifest from repo-owned seed notes",
+      "generate browser-local installed AI council review pack",
+      "generate browser-local Obsidian wikilink graph map",
+      "generate browser-local agent training drills",
       "record human-review-required GitHub readiness gates"
     ],
     "forbiddenToday": [
@@ -57,10 +68,28 @@
   "installedAiProfiles": [
     "codex-operator",
     "seis-local-demo",
+    "seis-agent-policy-profile",
     "claude-review-profile",
     "qwen-review-profile",
     "gemini-validation-profile",
-    "ollama-local-profile"
+    "ollama-local-profile",
+    "openai-general-profile",
+    "anthropic-claude-profile",
+    "chatgpt-review-profile",
+    "openrouter-provider-profile",
+    "cursor-ide-profile",
+    "xcode",
+    "github-copilot-profile",
+    "lm-studio-local-profile",
+    "open-design",
+    "antigravity",
+    "antigravity-ide",
+    "aider",
+    "interpreter",
+    "hermes",
+    "goose",
+    "kimi",
+    "opencode"
   ],
   "managedSubAgentLanes": [
     "SEIS Hub",
@@ -226,6 +255,151 @@
       "duty": "Safe recurring workflows, ledgers, and human-approved automation gates."
     }
   ],
+  "trainingCoverage": {
+    "status": "local-demo-read-only",
+    "source": "repo-owned browser-local Second Brain records only",
+    "trainingPackPath": "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md",
+    "publicContributorPackPath": "/home/seis/SecondBrain/08-public/seis-public-contributor-onboarding.md",
+    "aiCouncilReviewPackPath": "/home/seis/SecondBrain/10-ai-council/seis-ai-council-review-pack.md",
+    "obsidianGraphMapPath": "/home/seis/SecondBrain/11-graph/seis-obsidian-graph-map.md",
+    "agentTrainingDrillsPath": "/home/seis/SecondBrain/12-training/seis-agent-training-drills.md",
+    "requiredSections": [
+      "installed AI launcher route coverage",
+      "autonomous agent roster onboarding",
+      "Obsidian safe import boundary",
+      "provider-neutral read-only model router",
+      "human approval gates",
+      "public demo release gates",
+      "public contributor no-key onboarding",
+      "Obsidian starter vault no-private-import export",
+      "installed AI council review pack",
+      "Obsidian wikilink graph map",
+      "agent training drills"
+    ],
+    "installedAiCoverage": {
+      "sourceContract": "content/development/ai-workforce-assignments.json",
+      "requireRegistryRequiredLauncherRoutes": true,
+      "requireSecondBrainProfileForEachLauncherRoute": true,
+      "requireNoLiveProviderCalls": true
+    },
+    "autonomousAgentCoverage": {
+      "requiredRosterCount": 12,
+      "requireNoWriteExecution": true,
+      "requireApprovalBeforeExternalMutation": true
+    },
+    "obsidianCoverage": {
+      "bridgeStatus": "planned",
+      "bodyImportPolicy": "metadata-only-by-default",
+      "privateVaultReadAllowed": false,
+      "privateNoteBodyCopyAllowed": false,
+      "pluginInstallAllowed": false,
+      "starterVaultManifestPath": "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json",
+      "starterVaultGuidePath": "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md",
+      "graphMapPath": "/home/seis/SecondBrain/11-graph/seis-obsidian-graph-map.md"
+    },
+    "qualityGates": [
+      "node scripts/check-seis-second-brain.mjs",
+      "node scripts/check-ai-workforce-assignments.mjs",
+      "node scripts/create-seis-second-brain-agent-registry.mjs --check"
+    ],
+    "blockedUntil": [
+      "private Obsidian import has explicit user-selected source path and human approval",
+      "live provider routing has backend-only mediation and redaction evidence",
+      "autonomous write execution has enforced permission matrix and approval fixtures",
+      "GitHub merge or release has passing security gates and human approval"
+    ]
+  },
+  "publicContributorOnboarding": {
+    "status": "local-demo-no-key",
+    "packPath": "/home/seis/SecondBrain/08-public/seis-public-contributor-onboarding.md",
+    "requiresApiKeys": false,
+    "requiresProviderLogin": false,
+    "requiresPrivateObsidianVault": false,
+    "requiresSsh": false,
+    "requiresDeployment": false,
+    "requiresGitHubWriteAccess": false,
+    "reviewCommands": [
+      "npm run check:seis-second-brain",
+      "npm run check:seis-second-brain-readiness-contracts",
+      "npm run check:seis-second-brain-browser-smoke"
+    ],
+    "mustExplain": [
+      "how to open the browser-local Second Brain",
+      "which installed AI profiles and sub-agent lanes are review-only",
+      "how Obsidian compatibility stays metadata-only and approval-gated",
+      "which GitHub merge and release gates remain blocked"
+    ],
+    "forbiddenClaims": [
+      "private Obsidian vault import is live",
+      "live AI provider routing is enabled",
+      "autonomous agents can write externally",
+      "public release is approved"
+    ]
+  },
+  "obsidianStarterVault": {
+    "status": "local-demo-no-key",
+    "manifestPath": "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json",
+    "guidePath": "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md",
+    "source": "repo-owned seed note metadata and generated browser-local markdown only",
+    "requiresPrivateObsidianVault": false,
+    "requiresObsidianPlugin": false,
+    "requiresHostFilesystemRead": false,
+    "copiesDotObsidianState": false,
+    "copiesPrivateNoteBodies": false,
+    "providerCalls": false,
+    "githubMutation": false,
+    "humanApprovalBeforeImport": true
+  },
+  "aiCouncilReviewPack": {
+    "status": "local-demo-no-key",
+    "packPath": "/home/seis/SecondBrain/10-ai-council/seis-ai-council-review-pack.md",
+    "source": "Second Brain installed AI profiles, launcher evidence, managed sub-agent lanes, and autonomous agent roster",
+    "installedAiProfileCount": 24,
+    "managedSubAgentLaneCount": 6,
+    "autonomousAgentRosterCount": 12,
+    "requiresApiKeys": false,
+    "requiresProviderLogin": false,
+    "requiresPrivateObsidianVault": false,
+    "providerCalls": false,
+    "credentialValidation": false,
+    "autonomousWriteExecution": false,
+    "sshExecution": false,
+    "deployment": false,
+    "githubMutation": false,
+    "humanApprovalBeforeUse": true
+  },
+  "obsidianGraphMap": {
+    "status": "local-demo-no-key",
+    "mapPath": "/home/seis/SecondBrain/11-graph/seis-obsidian-graph-map.md",
+    "source": "repo-owned seed note metadata, generated browser-local markdown paths, and explicit wikilinks",
+    "requiresPrivateObsidianVault": false,
+    "requiresObsidianPlugin": false,
+    "requiresHostFilesystemRead": false,
+    "copiesPrivateNoteBodies": false,
+    "providerCalls": false,
+    "credentialValidation": false,
+    "autonomousWriteExecution": false,
+    "sshExecution": false,
+    "deployment": false,
+    "githubMutation": false,
+    "humanApprovalBeforeImport": true
+  },
+  "agentTrainingDrills": {
+    "status": "local-demo-no-key",
+    "drillsPath": "/home/seis/SecondBrain/12-training/seis-agent-training-drills.md",
+    "source": "Second Brain seed notes, installed AI profiles, managed sub-agent lanes, autonomous agent roster, and public-safe Obsidian graph map",
+    "requiresApiKeys": false,
+    "requiresProviderLogin": false,
+    "requiresPrivateObsidianVault": false,
+    "requiresObsidianPlugin": false,
+    "providerCalls": false,
+    "credentialValidation": false,
+    "autonomousWriteExecution": false,
+    "sshExecution": false,
+    "deployment": false,
+    "githubMutation": false,
+    "humanApprovalBeforeUse": true
+  },
   "pipeline": [
     {
       "step": "Capture",
@@ -246,6 +420,31 @@
       "step": "Training Pack",
       "status": "local-demo",
       "detail": "Generate deterministic Second Brain read-only onboarding pack covering Obsidian, accessibility, model-router, and PR #54 release checklist contracts."
+    },
+    {
+      "step": "Contributor Onboarding",
+      "status": "local-demo-no-key",
+      "detail": "Generate a no-key public contributor pack for GitHub reviewers without private Obsidian, provider login, SSH, deployment, or GitHub write access."
+    },
+    {
+      "step": "Obsidian Starter Vault",
+      "status": "local-demo-no-key",
+      "detail": "Generate a browser-local starter vault manifest and guide from repo-owned seed notes without reading private Obsidian vaults, installing plugins, or copying .obsidian state."
+    },
+    {
+      "step": "AI Council Review",
+      "status": "local-demo-no-key",
+      "detail": "Generate a browser-local installed AI council review pack covering every registered AI profile, launcher route, managed sub-agent lane, and autonomous agent duty without provider calls or external mutations."
+    },
+    {
+      "step": "Obsidian Graph Map",
+      "status": "local-demo-no-key",
+      "detail": "Generate a browser-local Obsidian wikilink graph map that connects seed notes, AI council evidence, starter vault artifacts, and public demo gates without reading a private vault."
+    },
+    {
+      "step": "Agent Training Drills",
+      "status": "local-demo-no-key",
+      "detail": "Generate browser-local training drills for every registered AI profile and Second Brain agent lane so reviewers can rehearse Obsidian, graph, registry, and release-gate tasks without provider calls or external mutations."
     },
     {
       "step": "Publish",

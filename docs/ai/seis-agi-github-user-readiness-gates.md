@@ -53,10 +53,31 @@ The gate pack keeps SEIS aligned with public risk and evaluation references:
 - Real AGI and 512B claims remain blocked until independent evaluation,
   training/inference, benchmark, safety, and external review evidence exists.
 
+Fresh-clone readiness plan:
+`content/development/seis-agi-github-fresh-clone-readiness-plan.json`.
+
+The plan is generated into:
+
+- `reports/seis-model-scaling/seis-agi-github-fresh-clone-readiness-plan.json`
+- `reports/seis-model-scaling/seis-agi-github-fresh-clone-readiness-plan.md`
+- `docs/ai/seis-agi-github-fresh-clone-readiness-plan.md`
+
+It keeps `githubReadyForEveryone`, `publicReadyAsAgi`,
+`routeEligibleToday`, and `agiClaimAllowed` false until clean-clone evidence,
+human release approval, and public claim boundaries are accepted.
+
 ## Validate
 
 ```bash
 node scripts/check-seis-agi-github-user-readiness-gates.mjs
+npm run report:seis-agi-github-fresh-clone-readiness-plan
+npm run check:seis-agi-github-fresh-clone-readiness-plan
+npm run check:seis-public-ai-readiness
+npm run check:seis-ai-github-readiness-chain
+npm run report:seis-ai-github-pr-package
+npm run check:seis-ai-github-pr-package
+npm run report:seis-ai-pr-staging-dry-run
+npm run check:seis-ai-pr-staging-dry-run
 ```
 
 The validator fails if this gate pack grants AGI status, 512B route eligibility,

@@ -6,11 +6,147 @@
   "qualityGate": "node scripts/check-ai-workforce-assignments.mjs",
   "currentLauncherEvidence": {
     "command": "npm run ai -- list",
-    "observedDate": "2026-06-23",
+    "snapshotType": "author-observed-local-snapshot",
+    "observedDate": "2026-07-01",
+    "mode": "local route readiness only",
+    "runtimeValidationPolicy": {
+      "recomputeCommand": "node scripts/ai-launcher.cjs list",
+      "countsInstalledRoutesFromCurrentRuntime": true,
+      "snapshotIsNotPublicReadinessClaim": true,
+      "statusMismatchMeaning": "environment-specific launcher readiness drift; public readiness must cite the current runtime check, not only this committed snapshot"
+    },
     "notes": [
       "The command checks local route readiness only.",
       "No provider call, repository upload, secret read, or live model verification was performed.",
       "Missing environment-variable status does not prove a credential does not exist outside the current shell."
+    ],
+    "tools": [
+      {
+        "route": "seis-agent",
+        "command": "npm",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "seis-agent-policy-profile",
+        "registryRequired": true
+      },
+      {
+        "route": "codex",
+        "command": "codex",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "codex-operator",
+        "registryRequired": true
+      },
+      {
+        "route": "antigravity",
+        "command": "open",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "antigravity",
+        "registryRequired": true
+      },
+      {
+        "route": "antigravity-ide",
+        "command": "open",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "antigravity-ide",
+        "registryRequired": true
+      },
+      {
+        "route": "cursor",
+        "command": "open",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "cursor-ide-profile",
+        "registryRequired": true
+      },
+      {
+        "route": "xcode",
+        "command": "open",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "xcode",
+        "registryRequired": true
+      },
+      {
+        "route": "openai",
+        "command": "openai",
+        "launcherStatus": "missing-command",
+        "secondBrainProfileId": "openai-general-profile",
+        "registryRequired": true
+      },
+      {
+        "route": "claude",
+        "command": "claude",
+        "launcherStatus": "missing-ANTHROPIC_API_KEY",
+        "secondBrainProfileId": "claude-review-profile",
+        "registryRequired": true
+      },
+      {
+        "route": "gemini",
+        "command": "gemini",
+        "launcherStatus": "missing-GEMINI_API_KEY",
+        "secondBrainProfileId": "gemini-validation-profile",
+        "registryRequired": true
+      },
+      {
+        "route": "qwen",
+        "command": "qwen",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "qwen-review-profile",
+        "registryRequired": true
+      },
+      {
+        "route": "kimi",
+        "command": "kimi",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "kimi",
+        "registryRequired": true
+      },
+      {
+        "route": "ollama",
+        "command": "ollama",
+        "launcherStatus": "runtime-not-ready",
+        "secondBrainProfileId": "ollama-local-profile",
+        "registryRequired": true
+      },
+      {
+        "route": "opencode",
+        "command": "opencode",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "opencode",
+        "registryRequired": true
+      },
+      {
+        "route": "aider",
+        "command": "aider",
+        "launcherStatus": "missing-command",
+        "secondBrainProfileId": "aider",
+        "registryRequired": true
+      },
+      {
+        "route": "interpreter",
+        "command": "interpreter",
+        "launcherStatus": "missing-command",
+        "secondBrainProfileId": "interpreter",
+        "registryRequired": true
+      },
+      {
+        "route": "hermes",
+        "command": "hermes",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "hermes",
+        "registryRequired": true
+      },
+      {
+        "route": "goose",
+        "command": "goose",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "goose",
+        "registryRequired": true
+      },
+      {
+        "route": "open-design",
+        "command": "open",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "open-design",
+        "registryRequired": true
+      }
     ]
   },
   "writerPolicy": {
@@ -127,10 +263,32 @@
       "validationDuty": "Compare every secondary-agent recommendation against repository evidence before accepting it."
     },
     {
+      "id": "seis-agent",
+      "displayName": "SEIS Agent",
+      "route": "seis-agent",
+      "launcherStatus": "installed",
+      "category": "policy-orchestration",
+      "coreDuties": [
+        "Keep local AI routing aligned with SEIS policy and release boundaries.",
+        "Provide default orchestration fallback when specialist routes are unavailable."
+      ],
+      "allowedOutputs": [
+        "policy routing note",
+        "fallback orchestration summary",
+        "readiness checklist"
+      ],
+      "deniedActions": [
+        "direct merge authority",
+        "secret handling",
+        "deployment without approval"
+      ],
+      "validationDuty": "Treat SEIS Agent output as policy guidance until Codex validates it against repository evidence."
+    },
+    {
       "id": "claude",
       "displayName": "Claude",
       "route": "claude",
-      "launcherStatus": "route-defined-current-shell-missing-key",
+      "launcherStatus": "missing-ANTHROPIC_API_KEY",
       "category": "architecture-review",
       "coreDuties": [
         "Review architecture and product strategy.",
@@ -178,7 +336,7 @@
       "id": "gemini",
       "displayName": "Gemini",
       "route": "gemini",
-      "launcherStatus": "route-defined-current-shell-missing-key",
+      "launcherStatus": "missing-GEMINI_API_KEY",
       "category": "external-readiness-review",
       "coreDuties": [
         "Provide second-opinion review for public readiness.",
@@ -225,7 +383,7 @@
       "id": "ollama",
       "displayName": "Ollama / Local Model",
       "route": "ollama",
-      "launcherStatus": "installed",
+      "launcherStatus": "runtime-not-ready",
       "category": "local-private-draft",
       "coreDuties": [
         "Create local-only drafts for sensitive summaries.",
@@ -268,6 +426,132 @@
       "validationDuty": "Design proposals need implementation, accessibility, and browser evidence before release claims."
     },
     {
+      "id": "antigravity",
+      "displayName": "Antigravity",
+      "route": "antigravity",
+      "launcherStatus": "installed",
+      "category": "creative-workflow-assistant",
+      "coreDuties": [
+        "Support visual ideation workflows when explicitly delegated.",
+        "Review model-output visual quality and usability notes for review-only scenarios."
+      ],
+      "allowedOutputs": [
+        "visual prompt suggestion",
+        "mock concept review"
+      ],
+      "deniedActions": [
+        "direct repository writes",
+        "unbounded asset generation",
+        "secret handling"
+      ],
+      "validationDuty": "Validate generated suggestions against repo visual conventions and SEIS accessibility guidance."
+    },
+    {
+      "id": "antigravity-ide",
+      "displayName": "Antigravity IDE",
+      "route": "antigravity-ide",
+      "launcherStatus": "installed",
+      "category": "ide-assistant",
+      "coreDuties": [
+        "Support editor-centric review flow proposals.",
+        "Flag unsafe shortcuts and risky context-copy behavior in local IDE workflows."
+      ],
+      "allowedOutputs": [
+        "editor safety note",
+        "workflow suggestion"
+      ],
+      "deniedActions": [
+        "direct repository writes",
+        "auto refactor across files without Codex review",
+        "secret handling"
+      ],
+      "validationDuty": "Treat Antigravity IDE output as review notes until validated in repo context."
+    },
+    {
+      "id": "aider",
+      "displayName": "Aider",
+      "route": "aider",
+      "launcherStatus": "missing-command",
+      "category": "bounded-terminal-coding-helper",
+      "coreDuties": [
+        "Support local coding review notes and review-only terminal diffs when delegated.",
+        "Keep patch suggestions bounded and scoped to visible context."
+      ],
+      "allowedOutputs": [
+        "diff suggestion",
+        "terminal coding guidance"
+      ],
+      "deniedActions": [
+        "auto-run broad repository edits",
+        "credential handling",
+        "blind patch application"
+      ],
+      "validationDuty": "Codex validates any patch guidance before repository edit."
+    },
+    {
+      "id": "interpreter",
+      "displayName": "Open Interpreter",
+      "route": "interpreter",
+      "launcherStatus": "missing-command",
+      "category": "local-code-execution-review",
+      "coreDuties": [
+        "Review local automation and code execution plans for risk.",
+        "Propose guarded execution sequencing in review mode only."
+      ],
+      "allowedOutputs": [
+        "execution risk note",
+        "local automation checklist"
+      ],
+      "deniedActions": [
+        "unauthorized command execution",
+        "unreviewed script execution",
+        "secret handling"
+      ],
+      "validationDuty": "Do not execute code suggestions without explicit human and Codex validation."
+    },
+    {
+      "id": "hermes",
+      "displayName": "Hermes",
+      "route": "hermes",
+      "launcherStatus": "installed",
+      "category": "local-multi-agent-assistant",
+      "coreDuties": [
+        "Support concise model-context synthesis ideas in review mode.",
+        "Track prompt quality and context completeness for local experiments."
+      ],
+      "allowedOutputs": [
+        "prompt draft review",
+        "synthesis note"
+      ],
+      "deniedActions": [
+        "unbounded context dumping",
+        "provider-key assumptions",
+        "secret handling"
+      ],
+      "validationDuty": "Verify synthesis outputs against bounded workflow and evidence before use."
+    },
+    {
+      "id": "goose",
+      "displayName": "Goose",
+      "route": "goose",
+      "launcherStatus": "installed",
+      "category": "local-build-orchestration-review",
+      "coreDuties": [
+        "Review build/test orchestration suggestions for constrained local tasks.",
+        "Flag unsafe automation chains and missing approvals."
+      ],
+      "allowedOutputs": [
+        "orchestration review",
+        "build-risk note"
+      ],
+      "deniedActions": [
+        "unreviewed automation dispatch",
+        "unbounded repository mutation",
+        "secret handling"
+      ],
+      "validationDuty": "Only trust Goose guidance after Codex-level validation in repository context."
+    },
+    {
       "id": "github-actions",
       "displayName": "GitHub Actions",
       "route": "github-actions",
@@ -295,7 +579,7 @@
       "id": "kimi",
       "displayName": "Kimi / Kimi Code",
       "route": "kimi",
-      "launcherStatus": "route-defined-current-shell-missing-command",
+      "launcherStatus": "installed",
       "category": "conditional-code-and-localization-review",
       "coreDuties": [
         "Support multilingual review, localization, and translation tasks when available.",
@@ -334,6 +618,182 @@
         "secret handling"
       ],
       "validationDuty": "Codex remains responsible for applying, reviewing, and validating any suggested patch."
+    },
+    {
+      "id": "openai",
+      "displayName": "OpenAI / General Provider",
+      "route": "openai",
+      "launcherStatus": "missing-command",
+      "category": "cloud-provider-review",
+      "coreDuties": [
+        "Review cloud provider readiness evidence for OpenAI compatibility.",
+        "Keep fallback and privacy notes for cloud-assisted second-brain scenarios."
+      ],
+      "allowedOutputs": [
+        "provider readiness note",
+        "second-opinion comparisons",
+        "quality guidance"
+      ],
+      "deniedActions": [
+        "direct repository writes",
+        "claiming production provider availability without adapter evidence",
+        "secret handling"
+      ],
+      "validationDuty": "Validate all OpenAI-related claims against repository provider and router evidence."
+    },
+    {
+      "id": "anthropic",
+      "displayName": "Anthropic / Claude Provider",
+      "route": "anthropic",
+      "launcherStatus": "route-defined-current-shell-missing-key",
+      "category": "cloud-provider-review",
+      "coreDuties": [
+        "Review model-router and runtime boundaries for Anthropic compatibility.",
+        "Track missing-key/disabled state behavior in provider fixtures."
+      ],
+      "allowedOutputs": [
+        "provider alignment report",
+        "router compatibility review",
+        "risk note"
+      ],
+      "deniedActions": [
+        "direct repository writes",
+        "provider claims without evidence",
+        "secret handling"
+      ],
+      "validationDuty": "Cross-check all Anthropic claims against audited provider state and router fixtures."
+    },
+    {
+      "id": "chatgpt",
+      "displayName": "ChatGPT",
+      "route": "chatgpt",
+      "launcherStatus": "route-defined-current-shell-missing-key",
+      "category": "planning-triage",
+      "coreDuties": [
+        "Support planning and explanation tasks in review mode.",
+        "Track evidence quality and boundary drift in planning-oriented outputs."
+      ],
+      "allowedOutputs": [
+        "planning summary",
+        "triage guidance",
+        "clarity review"
+      ],
+      "deniedActions": [
+        "direct repository writes",
+        "provider key assumptions",
+        "secret handling"
+      ],
+      "validationDuty": "Treat planning outputs as review-only until backed by explicit source-of-truth evidence."
+    },
+    {
+      "id": "openrouter",
+      "displayName": "OpenRouter",
+      "route": "openrouter",
+      "launcherStatus": "planned",
+      "category": "provider-gateway-review",
+      "coreDuties": [
+        "Review provider abstraction and routing alternatives.",
+        "Track gateway-specific risks, cost expectations, and compatibility notes."
+      ],
+      "allowedOutputs": [
+        "gateway comparison note",
+        "routing recommendation",
+        "risk checklist"
+      ],
+      "deniedActions": [
+        "live provider switching",
+        "unbounded routing decisions",
+        "secret handling"
+      ],
+      "validationDuty": "Only apply gateway recommendations after backend tests and redaction evidence exist."
+    },
+    {
+      "id": "cursor",
+      "displayName": "Cursor",
+      "route": "cursor",
+      "launcherStatus": "installed",
+      "category": "editor-assistant",
+      "coreDuties": [
+        "Support scoped review-style editor workflows.",
+        "Flag copy/paste and file-safety risks in local refactors."
+      ],
+      "allowedOutputs": [
+        "refactor suggestion",
+        "editor context guidance",
+        "local workflow note"
+      ],
+      "deniedActions": [
+        "unbounded repository-wide edits",
+        "secrets in prompts",
+        "direct merge authority"
+      ],
+      "validationDuty": "Treat Cursor suggestions as bounded review notes; validate in repository context."
+    },
+    {
+      "id": "xcode",
+      "displayName": "Xcode",
+      "route": "xcode",
+      "launcherStatus": "installed",
+      "category": "local-ide-assistant",
+      "coreDuties": [
+        "Support local IDE-aware checks for Swift/SwiftUI and Apple platform workflows when explicitly delegated.",
+        "Verify local project files and build-session boundaries without repository mutation unless explicitly authorized."
+      ],
+      "allowedOutputs": [
+        "build session notes",
+        "local workspace observations",
+        "IDE-focused draft guidance"
+      ],
+      "deniedActions": [
+        "direct merge authority",
+        "unbounded repository edits",
+        "secret handling"
+      ],
+      "validationDuty": "Codex must validate local IDE recommendations against router and repository evidence before execution."
+    },
+    {
+      "id": "github-copilot",
+      "displayName": "GitHub Copilot",
+      "route": "github-copilot",
+      "launcherStatus": "planned",
+      "category": "ide-assistant",
+      "coreDuties": [
+        "Support local coding-assistance scenarios.",
+        "Track planned deployment of IDE-first review suggestions."
+      ],
+      "allowedOutputs": [
+        "coding suggestion",
+        "IDE UX guidance",
+        "review note"
+      ],
+      "deniedActions": [
+        "direct repository writes",
+        "unbounded patch generation",
+        "provider key handling"
+      ],
+      "validationDuty": "Do not execute Copilot-driven claims without local review and bounded scope."
+    },
+    {
+      "id": "lm-studio",
+      "displayName": "LM Studio",
+      "route": "lm-studio",
+      "launcherStatus": "planned",
+      "category": "local-model-experiment",
+      "coreDuties": [
+        "Support local model experimentation notes and safety boundaries.",
+        "Track local-only readiness for offline or private model workflows."
+      ],
+      "allowedOutputs": [
+        "offline experiment note",
+        "local model boundary note",
+        "readiness checklist"
+      ],
+      "deniedActions": [
+        "provider-style live routing claims",
+        "private corpus leakage",
+        "secret handling"
+      ],
+      "validationDuty": "Validate any local model suggestion against the Local Demo boundary and offline fixture."
     }
   ],
   "approvalRequiredFor": [

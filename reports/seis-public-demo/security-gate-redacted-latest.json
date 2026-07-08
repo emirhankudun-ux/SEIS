@@ -1,0 +1,135 @@
+{
+  "id": "seis-public-demo-security-gate-redacted-pr104",
+  "title": "SEIS Public Demo Security Gate Redacted Evidence",
+  "generatedAt": "2026-07-01T19:03:07.880Z",
+  "status": "blocked-full-history-security-review",
+  "mode": "redacted-local-and-ci-evidence",
+  "decision": "NO-GO-security-history-remediation-needed",
+  "pullRequest": {
+    "number": 104,
+    "url": "https://github.com/emirhankudun-ux/SEIS/pull/104",
+    "branch": "codex/second-brain-readiness-agent-registry-20260701",
+    "base": "main"
+  },
+  "activeGateImpacts": [
+    {
+      "pullRequest": 104,
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/104",
+      "branch": "codex/second-brain-readiness-agent-registry-20260701",
+      "status": "blocked-by-full-history-secret-scan",
+      "failingGateNames": [
+        "Secret & Vulnerability Scan",
+        "Security Summary"
+      ],
+      "currentTreeScope": "clean-redacted-no-git",
+      "fullHistoryScope": "blocked-redacted-findings",
+      "mergeAllowed": false,
+      "releaseAllowed": false,
+      "requiresOwnerApproval": true
+    },
+    {
+      "pullRequest": 127,
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/127",
+      "branch": "codex/second-brain-agent-registry-roster-20260701-clean",
+      "status": "blocked-by-full-history-secret-scan",
+      "failingGateNames": [
+        "Secret & Vulnerability Scan",
+        "Security Summary"
+      ],
+      "currentTreeScope": "clean-redacted-no-git",
+      "fullHistoryScope": "blocked-redacted-findings",
+      "mergeAllowed": false,
+      "releaseAllowed": false,
+      "requiresOwnerApproval": true
+    }
+  ],
+  "relatedReleaseChecklist": "content/development/seis-public-demo-release-checklist-pr54.json",
+  "sourcePaths": {
+    "workflow": ".github/workflows/security-guardian.yml",
+    "nextQueue": "docs/roadmap/NEXT_PR_QUEUE.md",
+    "currentTreeFixture": "apps/web/test/scripts.test.js",
+    "historicalGeneratedBundle": "sources/github-unified-source/_generated/github-code-bundle.txt"
+  },
+  "currentTreeSecretScan": {
+    "status": "clean-redacted-no-git",
+    "commandClass": "gitleaks detect --no-git --redact",
+    "findings": 0,
+    "rawSecretValuesStored": false,
+    "fullJobLogDownloaded": false,
+    "securityPolicyChanged": false,
+    "gitleaksAllowlistCommitted": false,
+    "remediation": "static i18n test fixture now uses the real weekly usage translation-key shape"
+  },
+  "fullHistorySecretScan": {
+    "status": "blocked-redacted-findings",
+    "commandClass": "gitleaks detect --redact with full git history",
+    "totalFindings": 195,
+    "redacted": true,
+    "rawSecretValuesStored": false,
+    "fullJobLogDownloaded": false,
+    "findingsByRule": {
+      "generic-api-key": 6,
+      "curl-auth-header": 3,
+      "sourcegraph-access-token": 185,
+      "private-key": 1
+    },
+    "findingsByPath": [
+      {
+        "path": "sources/github-unified-source/_generated/github-code-bundle.txt",
+        "count": 194,
+        "category": "historical-generated-bundle"
+      },
+      {
+        "path": "apps/web/test/scripts.test.js",
+        "count": 1,
+        "category": "historical-static-test-fixture"
+      }
+    ],
+    "blockedCommitRefs": [
+      {
+        "ref": "f3d385d",
+        "count": 194,
+        "category": "historical-generated-bundle"
+      },
+      {
+        "ref": "3126602",
+        "count": 1,
+        "category": "historical-static-test-fixture"
+      }
+    ]
+  },
+  "requiredApprovalBeforeRemediation": [
+    "history rewrite or affected path removal from repository history",
+    "affected-secret rotation decision by repository owner",
+    ".gitleaks.toml security-policy change",
+    "reviewed security baseline for historical generated bundle findings",
+    "merge or release after Security Summary passes"
+  ],
+  "forbiddenRemediationWithoutApproval": [
+    "printing raw finding values",
+    "downloading or committing full CI job logs",
+    "blanket-allowlisting the generated bundle",
+    "weakening the Secret & Vulnerability Scan workflow",
+    "force-pushing rewritten history"
+  ],
+  "releaseImpact": {
+    "mergeAllowed": false,
+    "publicDemoReleaseAllowed": false,
+    "pagesPublicationAllowed": false,
+    "statusReason": "GitHub Secret & Vulnerability Scan and Security Summary remain failing until full-history remediation is approved and completed."
+  },
+  "safetyBoundary": {
+    "rawSecretValuesStored": false,
+    "privateKeyBodyStored": false,
+    "fullSecurityLogStored": false,
+    "gitleaksPolicyChanged": false,
+    "historyRewritePerformed": false,
+    "forcePushPerformed": false,
+    "secretRotationPerformed": false,
+    "githubMutationPerformedByReport": false,
+    "providerCallsPerformed": false,
+    "sshExecuted": false,
+    "deploymentPerformed": false,
+    "releaseApprovalGranted": false
+  }
+}

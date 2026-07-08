@@ -1,0 +1,243 @@
+{
+  "id": "seis-security-owner-handoff-pr104",
+  "title": "SEIS Security Owner Handoff",
+  "generatedAt": "2026-07-01T19:03:07.944Z",
+  "status": "owner-action-required",
+  "mode": "redacted-owner-review-no-raw-values",
+  "decision": "NO-GO-owner-security-decision-required",
+  "pullRequest": {
+    "number": 104,
+    "url": "https://github.com/emirhankudun-ux/SEIS/pull/104",
+    "branch": "codex/second-brain-readiness-agent-registry-20260701",
+    "base": "main"
+  },
+  "sourceArtifacts": {
+    "securityGate": "reports/seis-public-demo/security-gate-redacted-latest.json",
+    "securityGateMarkdown": "reports/seis-public-demo/security-gate-redacted-latest.md",
+    "agentRegistry": "reports/seis-public-demo/second-brain-agent-registry-latest.json",
+    "publicReviewerPack": "reports/seis-public-demo/second-brain-public-reviewer-pack-latest.json",
+    "releaseChecklist": "docs/releases/PUBLIC_DEMO_RELEASE_CHECKLIST_PR54.md",
+    "nextQueue": "docs/roadmap/NEXT_PR_QUEUE.md"
+  },
+  "activeGateImpacts": [
+    {
+      "pullRequest": 104,
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/104",
+      "branch": "codex/second-brain-readiness-agent-registry-20260701",
+      "status": "blocked-by-full-history-secret-scan",
+      "failingGateNames": [
+        "Secret & Vulnerability Scan",
+        "Security Summary"
+      ],
+      "currentTreeScope": "clean-redacted-no-git",
+      "fullHistoryScope": "blocked-redacted-findings",
+      "mergeAllowed": false,
+      "releaseAllowed": false,
+      "requiresOwnerApproval": true
+    },
+    {
+      "pullRequest": 127,
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/127",
+      "branch": "codex/second-brain-agent-registry-roster-20260701-clean",
+      "status": "blocked-by-full-history-secret-scan",
+      "failingGateNames": [
+        "Secret & Vulnerability Scan",
+        "Security Summary"
+      ],
+      "currentTreeScope": "clean-redacted-no-git",
+      "fullHistoryScope": "blocked-redacted-findings",
+      "mergeAllowed": false,
+      "releaseAllowed": false,
+      "requiresOwnerApproval": true
+    }
+  ],
+  "observedSecurityState": {
+    "currentTreeStatus": "clean-redacted-no-git",
+    "currentTreeFindings": 0,
+    "fullHistoryStatus": "blocked-redacted-findings",
+    "fullHistoryFindings": 195,
+    "fullHistoryRules": {
+      "generic-api-key": 6,
+      "curl-auth-header": 3,
+      "sourcegraph-access-token": 185,
+      "private-key": 1
+    },
+    "fullHistoryPaths": [
+      {
+        "path": "sources/github-unified-source/_generated/github-code-bundle.txt",
+        "count": 194,
+        "category": "historical-generated-bundle"
+      },
+      {
+        "path": "apps/web/test/scripts.test.js",
+        "count": 1,
+        "category": "historical-static-test-fixture"
+      }
+    ],
+    "blockedCommitRefs": [
+      {
+        "ref": "f3d385d",
+        "count": 194,
+        "category": "historical-generated-bundle"
+      },
+      {
+        "ref": "3126602",
+        "count": 1,
+        "category": "historical-static-test-fixture"
+      }
+    ],
+    "rawFindingValuesStored": false,
+    "fullJobLogDownloaded": false,
+    "securityPolicyChanged": false,
+    "allowlistCommitted": false
+  },
+  "ownerDecisionsRequired": [
+    {
+      "id": "rotate-or-attest-affected-credentials",
+      "owner": "human-owner",
+      "decisionNeeded": "Decide whether affected historical credentials must be rotated or can be attested as non-sensitive fixtures.",
+      "requiredEvidence": [
+        "dated owner decision",
+        "scope of affected credential classes",
+        "rotation or non-secret attestation path",
+        "no raw values committed to repository"
+      ],
+      "status": "blocked-owner-required"
+    },
+    {
+      "id": "history-remediation-approval",
+      "owner": "human-owner",
+      "decisionNeeded": "Approve either history rewrite/path purge or an explicit reviewed security baseline for the historical generated bundle.",
+      "requiredEvidence": [
+        "chosen remediation route",
+        "rollback plan",
+        "force-push approval if history rewrite is chosen",
+        "post-remediation scan result"
+      ],
+      "status": "blocked-owner-required"
+    },
+    {
+      "id": "security-policy-change-review",
+      "owner": "security-agent-plus-human-owner",
+      "decisionNeeded": "Review any proposed .gitleaks.toml change separately; this handoff does not approve scanner weakening.",
+      "requiredEvidence": [
+        "narrow rule justification",
+        "path-specific reasoning",
+        "independent no-secret review",
+        "explicit owner approval"
+      ],
+      "status": "blocked-owner-required"
+    },
+    {
+      "id": "release-gate-override-denied",
+      "owner": "release-owner",
+      "decisionNeeded": "Keep merge, release, deploy, and Pages publication blocked until security checks pass or a reviewed baseline is approved.",
+      "requiredEvidence": [
+        "GitHub Security Summary pass or approved baseline",
+        "reviewDecision not blocking",
+        "draft status resolved",
+        "current browser-smoke evidence"
+      ],
+      "status": "blocked-owner-required"
+    }
+  ],
+  "agentAssignments": [
+    {
+      "agent": "Security Agent",
+      "allowedActions": [
+        "classify redacted finding categories",
+        "prepare owner decision checklist",
+        "validate no raw values are stored"
+      ],
+      "forbiddenActions": [
+        "print raw finding values",
+        "weaken secret scanning",
+        "approve release"
+      ]
+    },
+    {
+      "agent": "DevOps Agent",
+      "allowedActions": [
+        "draft owner-approved remediation commands",
+        "prepare rollback notes",
+        "rerun checks after approval"
+      ],
+      "forbiddenActions": [
+        "rewrite history without approval",
+        "force-push without approval",
+        "download full security job logs into the repo"
+      ]
+    },
+    {
+      "agent": "Documentation Agent",
+      "allowedActions": [
+        "keep PR #104 blocker notes current",
+        "link handoff artifacts from release docs",
+        "separate mock, planned, blocked, and approved states"
+      ],
+      "forbiddenActions": [
+        "claim production readiness",
+        "hide release blockers",
+        "publish private vault content"
+      ]
+    },
+    {
+      "agent": "QA Agent",
+      "allowedActions": [
+        "run local no-git secret scans",
+        "run readiness validators",
+        "verify generated handoff artifacts"
+      ],
+      "forbiddenActions": [
+        "treat local current-tree pass as full-history pass",
+        "skip GitHub security gates",
+        "approve merge"
+      ]
+    }
+  ],
+  "allowedNextActionsWithoutApproval": [
+    "regenerate this redacted handoff",
+    "run current-tree no-git secret scan",
+    "update docs with blocked security status",
+    "prepare a proposed owner-approved remediation plan"
+  ],
+  "forbiddenWithoutOwnerApproval": [
+    "printing raw finding values",
+    "downloading or committing full CI job logs",
+    "blanket-allowlisting historical generated bundles",
+    "weakening Secret & Vulnerability Scan",
+    "rewriting history",
+    "force-pushing rewritten history",
+    "merging PR #104",
+    "publishing a public demo release"
+  ],
+  "releaseImpact": {
+    "mergeAllowed": false,
+    "publicDemoReleaseAllowed": false,
+    "githubPagesPublicationAllowed": false,
+    "liveProviderRoutingAllowed": false,
+    "privateObsidianImportAllowed": false,
+    "reason": "Owner security decisions and GitHub security gates are still required."
+  },
+  "safetyBoundary": {
+    "rawFindingValuesStored": false,
+    "fullSecurityLogStored": false,
+    "privateKeyBodyStored": false,
+    "gitleaksPolicyChanged": false,
+    "allowlistCommitted": false,
+    "historyRewritePerformed": false,
+    "forcePushPerformed": false,
+    "secretRotationPerformed": false,
+    "githubMutationPerformedByReport": false,
+    "privateObsidianVaultReadPerformed": false,
+    "providerCallsPerformed": false,
+    "sshExecuted": false,
+    "deploymentPerformed": false,
+    "releaseApprovalGranted": false
+  },
+  "upstreamReadinessBinding": {
+    "secondBrainAgentRegistryDecision": "NO-GO-autonomous-execution-not-approved",
+    "publicReviewerPackDecision": "NO-GO-review-pack-does-not-approve-release",
+    "securityGateDecision": "NO-GO-security-history-remediation-needed"
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "id": "seis-second-brain-public-reviewer-pack-pr104",
+  "title": "SEIS Second Brain Public Reviewer Pack",
+  "generatedAt": "2026-07-01T18:45:44.529Z",
+  "status": "reviewer-ready-no-key-local-demo",
+  "mode": "github-public-review-no-private-data",
+  "decision": "NO-GO-review-pack-does-not-approve-release",
+  "pullRequest": {
+    "number": 104,
+    "url": "https://github.com/emirhankudun-ux/SEIS/pull/104",
+    "branch": "codex/second-brain-readiness-agent-registry-20260701",
+    "base": "main"
+  },
+  "sourcePaths": {
+    "secondBrain": "content/development/seis-second-brain-system.json",
+    "releaseChecklist": "content/development/seis-public-demo-release-checklist-pr54.json",
+    "securityGate": "reports/seis-public-demo/security-gate-redacted-latest.json",
+    "agentRegistry": "reports/seis-public-demo/second-brain-agent-registry-latest.json"
+  },
+  "reviewerAudience": [
+    "GitHub reviewer",
+    "new contributor",
+    "maintainer release reviewer",
+    "accessibility reviewer",
+    "security reviewer"
+  ],
+  "noKeyLocalDemoContract": {
+    "requiresApiKeys": false,
+    "requiresProviderLogin": false,
+    "requiresPrivateObsidianVault": false,
+    "requiresSsh": false,
+    "requiresDeployment": false,
+    "browserLocalDemoOnly": true,
+    "secondBrainStatus": "local-demo",
+    "agentRegistryStatus": "review-only-agent-registry",
+    "securityGateDecision": "NO-GO-security-history-remediation-needed"
+  },
+  "quickStart": [
+    {
+      "step": "Install dependencies already expected by the repository.",
+      "command": "npm install",
+      "approval": "Only needed if dependencies are missing in a fresh clone."
+    },
+    {
+      "step": "Validate the Second Brain readiness contracts.",
+      "command": "npm run check:seis-second-brain-readiness-contracts",
+      "approval": "No special approval required."
+    },
+    {
+      "step": "Validate the no-key public reviewer pack.",
+      "command": "npm run check:seis-second-brain-public-reviewer-pack",
+      "approval": "No special approval required."
+    },
+    {
+      "step": "Run the public demo go/no-go classifier.",
+      "command": "npm run check:seis-public-demo-go-no-go -- --run-fast-checks",
+      "approval": "No special approval required; expected decision remains NO-GO until gates clear."
+    },
+    {
+      "step": "Open the local browser demo route.",
+      "command": "cd apps/web && python3 -m http.server 50951 --bind 127.0.0.1",
+      "approval": "No live provider, SSH, or deployment approval is implied."
+    }
+  ],
+  "reviewSurfaces": [
+    "apps/web/desktop.html",
+    "docs/product/seis-second-brain.md",
+    "reports/seis-public-demo/second-brain-agent-registry-latest.md",
+    "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md",
+    "reports/seis-public-demo/read-only-model-router-decision-latest.md",
+    "reports/seis-public-demo/security-gate-redacted-latest.md",
+    "reports/seis-public-demo/go-no-go-latest.md",
+    "reports/seis-public-demo/evidence-manifest-latest.json"
+  ],
+  "reviewerMustConfirm": [
+    "No API keys required for the core demo.",
+    "No private Obsidian vault import was performed.",
+    "No live provider routing was performed.",
+    "Autonomous agent writes remain disabled.",
+    "Security history blocker remains until owner-approved remediation.",
+    "Browser-smoke evidence and human release approval are still required before public release."
+  ],
+  "blockedUntilApproval": [
+    "private Obsidian import",
+    "live provider routing",
+    "autonomous write execution",
+    "SSH execution",
+    "deployment",
+    "GitHub Pages publication",
+    "merge to main",
+    "release tag",
+    "history rewrite or reviewed security baseline"
+  ],
+  "releaseChecklistSnapshot": {
+    "status": "review-gated-not-released",
+    "releaseDecision": "not ready until checklist gates pass",
+    "requiredValidationCount": 29,
+    "requiredArtifactCount": 20
+  },
+  "safetyBoundary": {
+    "privateObsidianVaultReadPerformed": false,
+    "privateNoteBodyCopied": false,
+    "providerCallsPerformed": false,
+    "credentialValidationPerformed": false,
+    "browserSecretsExposed": false,
+    "promptBodiesStored": false,
+    "autonomousWriteExecutionPerformed": false,
+    "externalConnectorMutationPerformed": false,
+    "sshExecuted": false,
+    "deploymentPerformed": false,
+    "githubMutationPerformedByReport": false,
+    "releaseApprovalGranted": false
+  }
+}

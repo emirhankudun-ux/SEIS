@@ -1,0 +1,320 @@
+{
+  "id": "seis-ai-github-pr-package",
+  "version": "2026.07.08",
+  "generatedAt": "2026-07-08T12:34:48.145Z",
+  "status": "ready-for-ai-plugin-mcp-pr-review-not-ready-for-push",
+  "qualityGate": "npm run check:seis-ai-github-pr-package",
+  "reportCommand": "npm run report:seis-ai-github-pr-package",
+  "purpose": "Define the AI plus Plugin/MCP readiness PR package needed to move SEIS toward GitHub-ready local-demo review without mixing unrelated dirty worktree changes.",
+  "sourceOfTruth": {
+    "modelEcosystemCatalog": "content/development/seis-ai-model-ecosystem-catalog.json",
+    "freshCloneReadinessPlan": "content/development/seis-agi-github-fresh-clone-readiness-plan.json",
+    "freshCloneLocalSmoke": "content/development/seis-ai-github-fresh-clone-local-smoke.json",
+    "gitignore": ".gitignore",
+    "publicReadinessEvidence": "content/development/seis-agi-public-readiness-evidence.json",
+    "pluginMcpContinuityMap": "content/development/seis-plugin-mcp-ten-year-continuity-map.json",
+    "pluginMcpContinuityReportJson": "reports/seis-public-demo/plugin-mcp-ten-year-continuity-map-latest.json",
+    "pluginMcpContinuityDoc": "docs/platform/seis-plugin-mcp-ten-year-continuity-map.md",
+    "stagingDryRun": "content/development/seis-ai-pr-staging-dry-run.json",
+    "languageModelIntakeCheck": "scripts/check-seis-language-model-intake.mjs",
+    "aiReadinessChain": "scripts/check-seis-ai-github-readiness-chain.mjs",
+    "modelEcosystemCatalogScript": "scripts/create-seis-ai-model-ecosystem-catalog.mjs",
+    "pluginMcpContinuityScript": "scripts/create-seis-plugin-mcp-ten-year-continuity-map.mjs",
+    "publicReadinessCheck": "scripts/check-seis-public-ai-readiness.mjs",
+    "freshCloneLocalSmokeScript": "scripts/create-seis-ai-github-fresh-clone-local-smoke.mjs",
+    "ciWorkflow": ".github/workflows/seis-ai.yml",
+    "docs": "docs/ai/seis-ai-github-pr-package.md"
+  },
+  "currentDecision": {
+    "localAiReadinessChainPassingRequired": true,
+    "packageReadyForReview": true,
+    "safeToPushNow": false,
+    "safeToMergeNow": false,
+    "reasonPushBlocked": "The worktree contains unrelated modified and untracked files. Stage only the selected AI files in a clean review branch before push."
+  },
+  "selectedAiFiles": [
+    {
+      "path": "package.json",
+      "purpose": "script wiring for AI readiness checks",
+      "exists": true
+    },
+    {
+      "path": ".gitignore",
+      "purpose": "tracked report JSON allowlist for AI readiness evidence",
+      "exists": true
+    },
+    {
+      "path": "scripts/check-seis-language-model-intake.mjs",
+      "purpose": "language model intake guardrail linked to the model ecosystem catalog",
+      "exists": true
+    },
+    {
+      "path": "scripts/create-seis-local-ai-runtime-matrix.mjs",
+      "purpose": "local AI runtime matrix generator",
+      "exists": true
+    },
+    {
+      "path": "content/development/seis-local-ai-runtime-matrix.json",
+      "purpose": "local runtime matrix source record",
+      "exists": true
+    },
+    {
+      "path": "docs/ai/seis-local-ai-runtime-matrix.md",
+      "purpose": "local runtime matrix docs",
+      "exists": true
+    },
+    {
+      "path": "reports/seis-model-scaling/seis-local-ai-runtime-matrix.md",
+      "purpose": "local runtime matrix markdown report",
+      "exists": true
+    },
+    {
+      "path": "scripts/create-seis-ai-model-ecosystem-catalog.mjs",
+      "purpose": "AI model ecosystem catalog generator and validator",
+      "exists": true
+    },
+    {
+      "path": "content/development/seis-ai-model-ecosystem-catalog.json",
+      "purpose": "AI model ecosystem metadata catalog",
+      "exists": true
+    },
+    {
+      "path": "docs/ai/seis-ai-model-ecosystem-catalog.md",
+      "purpose": "AI model ecosystem catalog docs",
+      "exists": true
+    },
+    {
+      "path": "reports/seis-model-scaling/seis-ai-model-ecosystem-catalog.json",
+      "purpose": "AI model ecosystem catalog JSON report",
+      "exists": true
+    },
+    {
+      "path": "reports/seis-model-scaling/seis-ai-model-ecosystem-catalog.md",
+      "purpose": "AI model ecosystem catalog markdown report",
+      "exists": true
+    },
+    {
+      "path": "scripts/check-seis-public-ai-readiness.mjs",
+      "purpose": "public AI claim and source-of-truth guardrail",
+      "exists": true
+    },
+    {
+      "path": "scripts/check-seis-ai-github-readiness-chain.mjs",
+      "purpose": "one-command local AI GitHub readiness chain",
+      "exists": true
+    },
+    {
+      "path": "scripts/create-seis-agi-github-fresh-clone-readiness-plan.mjs",
+      "purpose": "fresh-clone readiness plan generator",
+      "exists": true
+    },
+    {
+      "path": "content/development/seis-agi-github-fresh-clone-readiness-plan.json",
+      "purpose": "fresh-clone readiness plan source record",
+      "exists": true
+    },
+    {
+      "path": "docs/ai/seis-agi-github-fresh-clone-readiness-plan.md",
+      "purpose": "fresh-clone readiness docs",
+      "exists": true
+    },
+    {
+      "path": "reports/seis-model-scaling/seis-agi-github-fresh-clone-readiness-plan.json",
+      "purpose": "fresh-clone readiness JSON report",
+      "exists": true
+    },
+    {
+      "path": "reports/seis-model-scaling/seis-agi-github-fresh-clone-readiness-plan.md",
+      "purpose": "fresh-clone readiness markdown report",
+      "exists": true
+    },
+    {
+      "path": "scripts/create-seis-ai-github-fresh-clone-local-smoke.mjs",
+      "purpose": "fresh-clone local smoke generator and validator",
+      "exists": true
+    },
+    {
+      "path": "content/development/seis-ai-github-fresh-clone-local-smoke.json",
+      "purpose": "fresh-clone local smoke source record",
+      "exists": true
+    },
+    {
+      "path": "docs/ai/seis-ai-github-fresh-clone-local-smoke.md",
+      "purpose": "fresh-clone local smoke docs",
+      "exists": true
+    },
+    {
+      "path": "reports/seis-model-scaling/seis-ai-github-fresh-clone-local-smoke.json",
+      "purpose": "fresh-clone local smoke JSON report",
+      "exists": true
+    },
+    {
+      "path": "reports/seis-model-scaling/seis-ai-github-fresh-clone-local-smoke.md",
+      "purpose": "fresh-clone local smoke markdown report",
+      "exists": true
+    },
+    {
+      "path": "scripts/create-seis-plugin-mcp-ten-year-continuity-map.mjs",
+      "purpose": "Plugin/MCP ten-year continuity map generator",
+      "exists": true
+    },
+    {
+      "path": "content/development/seis-plugin-mcp-ten-year-continuity-map.json",
+      "purpose": "Plugin/MCP continuity source contract",
+      "exists": true
+    },
+    {
+      "path": "docs/platform/seis-plugin-mcp-ten-year-continuity-map.md",
+      "purpose": "Plugin/MCP continuity platform docs",
+      "exists": true
+    },
+    {
+      "path": "reports/seis-public-demo/plugin-mcp-ten-year-continuity-map-latest.json",
+      "purpose": "Plugin/MCP continuity JSON report",
+      "exists": true
+    },
+    {
+      "path": "reports/seis-public-demo/plugin-mcp-ten-year-continuity-map-latest.md",
+      "purpose": "Plugin/MCP continuity markdown report",
+      "exists": true
+    },
+    {
+      "path": "docs/ai/ai-workforce-training.md",
+      "purpose": "AI workforce docs with no-key readiness commands",
+      "exists": true
+    },
+    {
+      "path": "docs/ai/seis-agi-github-user-readiness-gates.md",
+      "purpose": "GitHub user readiness docs with blocker commands",
+      "exists": true
+    },
+    {
+      "path": ".github/workflows/seis-ai.yml",
+      "purpose": "no-key AI plus Plugin/MCP GitHub Actions readiness workflow",
+      "exists": true
+    },
+    {
+      "path": "content/development/seis-ai-github-pr-package.json",
+      "purpose": "this AI plus Plugin/MCP PR package contract",
+      "exists": true
+    },
+    {
+      "path": "docs/ai/seis-ai-github-pr-package.md",
+      "purpose": "human-readable AI plus Plugin/MCP PR package docs",
+      "exists": true
+    },
+    {
+      "path": "reports/seis-model-scaling/seis-ai-github-pr-package.json",
+      "purpose": "AI plus Plugin/MCP PR package JSON report",
+      "exists": true
+    },
+    {
+      "path": "reports/seis-model-scaling/seis-ai-github-pr-package.md",
+      "purpose": "AI plus Plugin/MCP PR package markdown report",
+      "exists": true
+    },
+    {
+      "path": "scripts/create-seis-ai-github-pr-package.mjs",
+      "purpose": "AI plus Plugin/MCP PR package generator and validator",
+      "exists": true
+    },
+    {
+      "path": "scripts/create-seis-ai-pr-staging-dry-run.mjs",
+      "purpose": "AI plus Plugin/MCP staging dry-run generator and validator",
+      "exists": true
+    },
+    {
+      "path": "content/development/seis-ai-pr-staging-dry-run.json",
+      "purpose": "AI plus Plugin/MCP staging dry-run source record",
+      "exists": true
+    },
+    {
+      "path": "docs/ai/seis-ai-pr-staging-dry-run.md",
+      "purpose": "AI plus Plugin/MCP staging dry-run docs",
+      "exists": true
+    },
+    {
+      "path": "reports/seis-model-scaling/seis-ai-pr-staging-dry-run.json",
+      "purpose": "AI plus Plugin/MCP staging dry-run JSON report",
+      "exists": true
+    },
+    {
+      "path": "reports/seis-model-scaling/seis-ai-pr-staging-dry-run.md",
+      "purpose": "AI plus Plugin/MCP staging dry-run markdown report",
+      "exists": true
+    }
+  ],
+  "excludedDirtyPatterns": [
+    "apps/web/*",
+    "docs/product/*",
+    "docs/reviews/*",
+    "reports/seis-public-demo/* except plugin-mcp-ten-year-continuity-map-latest.md/json",
+    "scripts/check-desktop-os*.mjs",
+    "scripts/check-seis-linux-replica-browser-smoke.mjs"
+  ],
+  "requiredValidation": [
+    "npm run report:seis-ai-github-pr-package",
+    "npm run check:seis-ai-github-pr-package",
+    "npm run report:seis-ai-model-ecosystem-catalog",
+    "npm run check:seis-ai-model-ecosystem-catalog",
+    "npm run report:seis-ai-pr-staging-dry-run",
+    "npm run check:seis-ai-pr-staging-dry-run",
+    "npm run check:seis-ai-github-fresh-clone-local-smoke",
+    "npm run check:seis-ai-github-readiness-chain",
+    "npm run check:seis-plugin-mcp-ten-year-continuity-map",
+    "npm run check:seis-public-ai-readiness",
+    "npm run check:seis-agi-github-fresh-clone-readiness-plan"
+  ],
+  "officialGitHubBaseline": [
+    {
+      "id": "github-protected-branches",
+      "url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches",
+      "implication": "Pushes to protected branches should be gated by pull request review and successful required checks."
+    },
+    {
+      "id": "github-actions-secure-use",
+      "url": "https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions",
+      "implication": "Workflow and readiness checks must use least-privilege tokens and avoid plaintext secrets in logs."
+    },
+    {
+      "id": "openssf-scorecard",
+      "url": "https://github.com/ossf/scorecard",
+      "implication": "Security posture should be measurable, but Scorecard-style metrics are not AGI, training, or benchmark evidence."
+    }
+  ],
+  "forbiddenActionsWithoutApproval": [
+    "git push",
+    "git merge",
+    "force push",
+    "branch deletion",
+    "model download",
+    "Ollama pull",
+    "dataset download",
+    "training",
+    "fine-tuning",
+    "inference benchmark",
+    "cloud/GPU provisioning",
+    "provider API call",
+    "SSH execution",
+    "deployment",
+    "release publication"
+  ],
+  "publicClaimBoundary": {
+    "canClaimAiPrPackageExists": true,
+    "canClaimReadinessChainExists": true,
+    "canClaimSafeToPushNow": false,
+    "canClaimGithubReadyForEveryone": false,
+    "canClaimModelInstalled": false,
+    "canClaimTrainingExecuted": false,
+    "canClaim512bRouteEligible": false,
+    "canClaimRealAgi": false
+  },
+  "nextHumanReviewedSteps": [
+    "Move the selected AI files into a clean review branch or clean worktree.",
+    "Run npm run check:seis-ai-github-readiness-chain.",
+    "Confirm Plugin/MCP continuity artifacts match npm run check:seis-plugin-mcp-ten-year-continuity-map.",
+    "Confirm no selected file contains secrets or model artifacts.",
+    "Open a PR with protected-branch checks and human review.",
+    "Keep unrelated Desktop, product-demo, platform, and public-demo files out of the AI plus Plugin/MCP readiness PR."
+  ]
+}

@@ -479,7 +479,7 @@ describe("weekly-usage-governor", () => {
       signals: [
         {
           status: "active",
-          labelKey: "weekly.signal.1",
+          labelKey: "weekly.card.reasoning.label",
           value: "42h",
           titleKey: "weekly.title.1",
           copyKey: "weekly.copy.1"

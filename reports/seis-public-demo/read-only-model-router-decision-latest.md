@@ -1,6 +1,6 @@
 # SEIS Read-Only Model Router Decision
 
-Generated: 2026-06-29T13:22:38.244Z
+Generated: 2026-07-01T18:52:51.510Z
 Status: review-only-no-runtime-authority
 Mode: provider-neutral-read-only
 Decision: NO-GO-live-routing-not-approved
@@ -24,12 +24,30 @@ and private Obsidian content is not routable.
 
 | Profile | Provider state | Provider calls performed |
 | --- | --- | --- |
-| seis-local-demo | Local Demo | false |
 | codex-operator | Local Demo | false |
+| seis-local-demo | Local Demo | false |
+| seis-agent-policy-profile | Local Demo | false |
 | claude-review-profile | Missing Key | false |
 | qwen-review-profile | Missing Key | false |
 | gemini-validation-profile | Missing Key | false |
 | ollama-local-profile | Unknown | false |
+| openai-general-profile | Missing Key | false |
+| anthropic-claude-profile | Missing Key | false |
+| chatgpt-review-profile | Missing Key | false |
+| openrouter-provider-profile | Missing Key | false |
+| cursor-ide-profile | Disabled | false |
+| xcode | Disabled | false |
+| github-copilot-profile | Disabled | false |
+| lm-studio-local-profile | Unknown | false |
+| open-design | Disabled | false |
+| antigravity | Disabled | false |
+| antigravity-ide | Disabled | false |
+| aider | Disabled | false |
+| interpreter | Disabled | false |
+| hermes | Disabled | false |
+| goose | Disabled | false |
+| kimi | Disabled | false |
+| opencode | Disabled | false |
 
 ## Read-Only Decisions
 

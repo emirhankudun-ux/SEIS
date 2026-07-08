@@ -91,7 +91,10 @@ Primary demo routes:
   demo path. TR/EN locale persistence uses
   `seis.locale.v1`, and connected SEIS Search, Code, Design, Cloud, Store,
   Website, Music, AI Core, and Reference surfaces open mini workspaces or
-  iframe-backed local reference modules with browser-local state changes. The
+  iframe-backed local reference modules with browser-local state changes,
+  including a SEIS Store package marketplace for apps, plugins, MCP workbench
+  lanes, installed AI lanes, themes, developer tools, design tools, DevOps
+  guardrails, Reference Vault, and Search Gateway. The
   focused browser smoke check captures desktop, mobile, and deep-link evidence for the live
   demo console, Demo Readiness gates, source coverage, reference modules,
   terminal commands, and viewport-safe window sizing. It also validates every populated Reference
@@ -126,6 +129,12 @@ npm run report:seis-second-brain-accessibility-focus-report
 npm run check:seis-second-brain-accessibility-focus-report
 npm run report:seis-second-brain-agent-registry
 npm run check:seis-second-brain-agent-registry
+npm run report:seis-second-brain-public-reviewer-pack
+npm run check:seis-second-brain-public-reviewer-pack
+npm run report:seis-public-demo-security-gate
+npm run check:seis-public-demo-security-gate
+npm run report:seis-security-owner-handoff
+npm run check:seis-security-owner-handoff
 npm run check:seis-second-brain-readiness-contracts
 npm run check:seis-second-brain-browser-smoke
 npm run check:seis-public-demo-go-no-go -- --run-fast-checks
@@ -241,8 +250,41 @@ metadata and deployment readiness gate names.
 `npm run check:seis-second-brain-readiness-contracts` validates the Second
 Brain readiness contracts for the Obsidian bridge safe import plan,
 accessibility/focus QA, provider-neutral read-only model-router boundary, and
-PR #54 public demo release checklist without enabling private vault import,
-live provider routing, SSH, deployment, merge, or publication.
+PR #54 public demo release checklist plus redacted PR #104/PR #127 security
+gate evidence, security owner handoff, and the PR #127 security remediation plan
+without enabling private vault import, live provider routing, SSH, deployment,
+merge, or publication.
+The browser-local `Build Contributor Pack` action now writes
+`/home/seis/SecondBrain/08-public/seis-public-contributor-onboarding.md` so
+GitHub reviewers can inspect the Second Brain path without API keys, provider
+login, private Obsidian vault access, SSH, deployment, or GitHub write access.
+The browser-local `Export Obsidian Starter Vault` action writes
+`/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json`
+and `/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md` from
+repo-owned seed notes only. This Obsidian starter vault is no-key and does not
+read a private vault, install plugins, copy `.obsidian` state, copy private
+note bodies, call providers, execute SSH, mutate GitHub, deploy, or approve
+publication.
+The browser-local `Build AI Council Pack` action writes the AI council review pack at
+`/home/seis/SecondBrain/10-ai-council/seis-ai-council-review-pack.md` so
+GitHub reviewers can inspect all registered Second Brain AI profiles, launcher
+routes, managed sub-agent lanes, browser AI fixtures, and the 12-agent roster
+without API keys, provider login, credential validation, private Obsidian
+import, autonomous writes, SSH, deployment, GitHub mutation, merge, or release
+approval.
+The browser-local `Build Obsidian Graph Map` action writes the Obsidian graph map at
+`/home/seis/SecondBrain/11-graph/seis-obsidian-graph-map.md` so public reviewers
+can open one wikilink entry note that connects the seed vault, Obsidian starter
+vault artifacts, AI council review pack, and GitHub gates without reading a
+private Obsidian vault, installing plugins, copying private note bodies,
+calling providers, executing agents, using SSH, deploying, mutating GitHub, or
+approving release.
+The browser-local `Build Training Drills` action writes Agent training drills at
+`/home/seis/SecondBrain/12-training/seis-agent-training-drills.md` so every
+registered AI profile and managed sub-agent lane has a repeatable Obsidian,
+graph, registry, and release-gate review exercise without API keys, provider
+login, private vault reads, plugin installs, autonomous writes, SSH,
+deployment, GitHub mutation, merge, or release approval.
 
 `npm run check:seis-public-demo-go-no-go -- --run-fast-checks` is the read-only
 public demo release gate. It is expected to report `NO-GO` until current browser
@@ -276,6 +318,26 @@ roster, Obsidian bridge boundary, plugin inventory, MCP surfaces, and connector
 activation rules without reading a private Obsidian vault, validating
 credentials, calling providers, enabling autonomous writes, executing SSH,
 mutating GitHub, deploying, or approving release.
+
+`npm run report:seis-second-brain-public-reviewer-pack` writes the Second Brain
+public reviewer pack under `reports/seis-public-demo/`. That pack gives GitHub
+reviewers a no-key local review path for the Second Brain slice without private
+Obsidian data, live provider routing, autonomous writes, SSH, deployment,
+GitHub Pages publication, merge, or release approval.
+
+`npm run report:seis-public-demo-security-gate` writes redacted public demo
+security gate artifacts under `reports/seis-public-demo/`. Those artifacts
+record PR #104 current-tree clean status, full-history blocker categories,
+paths, counts, and required owner approvals without storing raw secret values,
+weakening `.gitleaks.toml`, downloading full job logs, rewriting history,
+force-pushing, or approving release.
+
+`npm run report:seis-security-owner-handoff` writes owner-review handoff
+artifacts under `reports/seis-public-demo/`. Those artifacts turn the PR #104
+full-history security blocker into explicit human-owner decisions and agent
+assignments without storing raw finding values, downloading full CI logs,
+changing scanner policy, rewriting history, force-pushing, importing private
+Obsidian content, or approving release.
 
 `npm run report:seis-public-demo-go-no-go` writes PR/release-review artifacts
 under `reports/seis-public-demo/`, including the evidence manifest and

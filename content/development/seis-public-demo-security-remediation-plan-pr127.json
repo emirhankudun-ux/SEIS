@@ -1,0 +1,225 @@
+{
+  "id": "seis-public-demo-security-remediation-plan-pr127",
+  "title": "SEIS PR 127 Security Remediation Plan",
+  "status": "owner-approval-required",
+  "mode": "plan-only-redacted-no-raw-values",
+  "decision": "NO-GO-owner-approved-remediation-required",
+  "pullRequest": {
+    "number": 127,
+    "url": "https://github.com/emirhankudun-ux/SEIS/pull/127",
+    "branch": "codex/second-brain-agent-registry-roster-20260701-clean",
+    "base": "main"
+  },
+  "sourceArtifacts": {
+    "securityGate": "reports/seis-public-demo/security-gate-redacted-latest.json",
+    "securityOwnerHandoff": "reports/seis-public-demo/security-owner-handoff-latest.json",
+    "releaseChecklist": "docs/releases/PUBLIC_DEMO_RELEASE_CHECKLIST_PR54.md",
+    "nextQueue": "docs/roadmap/NEXT_PR_QUEUE.md"
+  },
+  "scope": {
+    "slice": "Second Brain readiness / agent registry release gate",
+    "currentTreeScope": "clean-redacted-no-git",
+    "fullHistoryScope": "blocked-redacted-findings",
+    "privateObsidianVaultsInScope": false,
+    "liveProvidersInScope": false,
+    "sshInScope": false,
+    "deploymentInScope": false
+  },
+  "observedGate": {
+    "status": "blocked-by-full-history-secret-scan",
+    "failingGateNames": [
+      "Secret & Vulnerability Scan",
+      "Security Summary"
+    ],
+    "currentTreeScope": "clean-redacted-no-git",
+    "currentTreeFindings": 0,
+    "fullHistoryScope": "blocked-redacted-findings",
+    "fullHistoryFindingCount": 195,
+    "rawFindingValuesStored": false,
+    "fullJobLogDownloaded": false,
+    "securityPolicyChanged": false,
+    "historyRewritePerformed": false,
+    "forcePushPerformed": false
+  },
+  "allowedBeforeApproval": [
+    "keep redacted security gate and owner handoff current",
+    "update docs with blocked PR #127 security status",
+    "run local readiness validators",
+    "prepare owner decision checklist",
+    "review GitHub check names and conclusions without storing raw finding values"
+  ],
+  "requiresOwnerApprovalBeforeExecution": [
+    "history rewrite or affected path purge",
+    "credential rotation or non-secret attestation",
+    ".gitleaks.toml policy change",
+    "force push after history rewrite",
+    "merge or release after Security Summary passes"
+  ],
+  "forbiddenWithoutOwnerApproval": [
+    "printing raw finding values",
+    "downloading or committing full CI job logs",
+    "blanket-allowlisting historical generated bundles",
+    "weakening Secret & Vulnerability Scan",
+    "rewriting history",
+    "force-pushing rewritten history",
+    "merging PR #127",
+    "publishing a public demo release"
+  ],
+  "ownerDecisionSequence": [
+    {
+      "id": "confirm-redacted-finding-scope",
+      "owner": "security-owner",
+      "decisionNeeded": "Confirm that published remediation evidence may use only redacted categories, paths, counts, and commit refs.",
+      "requiredEvidence": [
+        "dated approval note",
+        "no raw values stored",
+        "source artifacts reviewed"
+      ],
+      "status": "blocked-owner-required"
+    },
+    {
+      "id": "rotate-or-attest-affected-credentials",
+      "owner": "security-owner",
+      "decisionNeeded": "Decide whether affected historical credential-like material must be rotated or can be attested as non-sensitive fixture data.",
+      "requiredEvidence": [
+        "credential class decision",
+        "rotation or attestation record",
+        "no raw values committed"
+      ],
+      "status": "blocked-owner-required"
+    },
+    {
+      "id": "choose-history-remediation-route",
+      "owner": "repository-owner",
+      "decisionNeeded": "Choose history rewrite, affected path purge, or reviewed security baseline before attempting to clear the full-history gate.",
+      "requiredEvidence": [
+        "chosen route",
+        "rollback plan",
+        "approval for any destructive Git action"
+      ],
+      "status": "blocked-owner-required"
+    },
+    {
+      "id": "review-scanner-policy",
+      "owner": "security-owner",
+      "decisionNeeded": "Review any scanner policy change separately and reject broad allowlists.",
+      "requiredEvidence": [
+        "path-specific justification if policy changes",
+        "independent no-secret review",
+        "owner approval"
+      ],
+      "status": "blocked-owner-required"
+    },
+    {
+      "id": "release-gate-after-remediation",
+      "owner": "release-owner",
+      "decisionNeeded": "Allow merge or release only after GitHub security checks, reviews, and the release checklist all pass.",
+      "requiredEvidence": [
+        "Secret & Vulnerability Scan success",
+        "Security Summary success",
+        "review gate not blocking",
+        "release checklist approved"
+      ],
+      "status": "blocked-owner-required"
+    }
+  ],
+  "postApprovalRunbook": [
+    {
+      "step": "freeze-release-gates",
+      "purpose": "Keep merge, Pages publication, deployment, and public release blocked while remediation is prepared.",
+      "approvalRequired": true,
+      "commandExecutionAllowedByThisPlan": false,
+      "evidenceRequired": [
+        "release gate remains NO-GO",
+        "PR #127 remains unmerged"
+      ]
+    },
+    {
+      "step": "produce-redacted-remediation-record",
+      "purpose": "Record the selected remediation route without raw finding values or full CI logs.",
+      "approvalRequired": true,
+      "commandExecutionAllowedByThisPlan": false,
+      "evidenceRequired": [
+        "owner decision record",
+        "affected paths and commit refs only",
+        "raw value storage remains false"
+      ]
+    },
+    {
+      "step": "execute-approved-history-or-baseline-route",
+      "purpose": "Perform only the owner-approved route in a separate security remediation branch or controlled maintenance window.",
+      "approvalRequired": true,
+      "commandExecutionAllowedByThisPlan": false,
+      "evidenceRequired": [
+        "approved commands reviewed before execution",
+        "rollback branch or backup reference",
+        "no unrelated work included"
+      ]
+    },
+    {
+      "step": "rerun-security-and-readiness-gates",
+      "purpose": "Verify GitHub security checks and local Second Brain readiness gates after remediation.",
+      "approvalRequired": true,
+      "commandExecutionAllowedByThisPlan": false,
+      "evidenceRequired": [
+        "Secret & Vulnerability Scan success",
+        "Security Summary success",
+        "npm run check:seis-second-brain-readiness-contracts",
+        "npm run check:seis-second-brain"
+      ]
+    },
+    {
+      "step": "release-owner-review",
+      "purpose": "Review PR checks, PR review state, and public demo release checklist before any merge or publication.",
+      "approvalRequired": true,
+      "commandExecutionAllowedByThisPlan": false,
+      "evidenceRequired": [
+        "review approval",
+        "release checklist approval",
+        "no pending required checks",
+        "explicit merge approval"
+      ]
+    }
+  ],
+  "rollbackPlan": [
+    "stop before force push if any approval or validation evidence is missing",
+    "restore from protected backup ref if approved history remediation fails",
+    "reopen release gate as NO-GO if Security Summary regresses",
+    "document rollback evidence without raw finding values"
+  ],
+  "validationRequiredAfterRemediation": [
+    "Secret & Vulnerability Scan passes on GitHub",
+    "Security Summary passes on GitHub",
+    "CodeRabbit review gate is not blocking",
+    "CodeQL required checks are complete",
+    "npm run check:seis-public-demo-security-gate",
+    "npm run check:seis-security-owner-handoff",
+    "npm run check:seis-second-brain-readiness-contracts",
+    "npm run check:seis-second-brain",
+    "git diff --check"
+  ],
+  "releaseImpact": {
+    "mergeAllowed": false,
+    "publicDemoReleaseAllowed": false,
+    "githubPagesPublicationAllowed": false,
+    "privateObsidianImportAllowed": false,
+    "liveProviderRoutingAllowed": false,
+    "reason": "PR #127 stays blocked until owner-approved remediation is completed and GitHub security checks pass."
+  },
+  "safetyBoundary": {
+    "rawFindingValuesStored": false,
+    "fullSecurityLogStored": false,
+    "privateKeyBodyStored": false,
+    "gitleaksPolicyChanged": false,
+    "allowlistCommitted": false,
+    "historyRewritePerformed": false,
+    "forcePushPerformed": false,
+    "secretRotationPerformed": false,
+    "githubMutationPerformedByPlan": false,
+    "privateObsidianVaultReadPerformed": false,
+    "providerCallsPerformed": false,
+    "sshExecuted": false,
+    "deploymentPerformed": false,
+    "releaseApprovalGranted": false
+  }
+}

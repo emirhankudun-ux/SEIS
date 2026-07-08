@@ -52,6 +52,7 @@ npm run check:seis-150b-frontier-model-program
 npm run check:seis-512b-apex-model-program
 npm run check:seis-model-scaling-hardware-profile
 npm run check:seis-model-scaling-subagent-council
+npm run check:seis-local-ai-runtime-matrix
 npm run check:seis-language-model-intake
 ```
 
@@ -75,6 +76,9 @@ MCP resource:
 
 Model scaling sub-agent council:
 `content/development/seis-model-scaling-subagent-council.json`.
+
+Local AI Runtime Matrix:
+`content/development/seis-local-ai-runtime-matrix.json`.
 
 ## Current Target
 
@@ -428,6 +432,39 @@ or prove AGI.
 The safe order is retrieval first, then a single reviewed local model
 experiment, then adapter/fine-tune work only after model cards, dataset cards,
 license review, benchmark plans, safety review, and explicit approval.
+
+## Local AI Runtime Matrix
+
+SEIS now has a local runtime matrix for 16GB+ machines and future larger
+hardware classes:
+
+```bash
+npm run report:seis-local-ai-runtime-matrix
+npm run check:seis-local-ai-runtime-matrix
+```
+
+The generated evidence is:
+
+| File | Status | Meaning |
+| --- | --- | --- |
+| `content/development/seis-local-ai-runtime-matrix.json` | `runtime-matrix-ready-no-install` | Defines safe local demo, metadata, Ollama-candidate, SFT/LoRA, HF Jobs, 70B, and 512B lanes without executing them. |
+| `reports/seis-model-scaling/seis-local-ai-runtime-matrix.json` | `runtime-matrix-defined-runtime-blocked` | Summarizes blocked install, checkpoint download, local inference, training, HF Job, 20B runtime, 512B, and AGI claims. |
+| `reports/seis-model-scaling/seis-local-ai-runtime-matrix.md` | Report | Human-readable local runtime approval matrix. |
+| `docs/ai/seis-local-ai-runtime-matrix.md` | Docs | Operator-facing explanation of the 16GB+ local runtime boundary. |
+
+This matrix is the safe answer to "install all language models and train SEIS"
+for the current foundation phase. It keeps Local Demo and deterministic seed
+models allowed, but blocks model installs, checkpoint downloads, Ollama pulls,
+local inference claims, SFT/LoRA execution, HF Jobs, provider calls, cloud GPU
+provisioning, SSH execution, GitHub push/merge, 20B runtime readiness, 512B
+readiness, "fully knowledgeable" claims, and AGI claims until exact
+model-specific evidence and human approval exist.
+
+The official research baseline for this matrix is limited to documented
+planning inputs: Hugging Face bitsandbytes quantization, PEFT, TRL SFTTrainer,
+Hugging Face Jobs, and the Ollama public model library. These sources support
+future feasibility planning; they do not prove that SEIS has installed, run, or
+trained any model.
 
 ## Model Scaling Sub-Agent Council
 

@@ -17,11 +17,26 @@ Machine-readable source:
 Language Model Intake Registry:
 `content/development/seis-language-model-intake-registry.json`.
 
+SEIS AI Model Ecosystem Catalog:
+`content/development/seis-ai-model-ecosystem-catalog.json`.
+
 Validation:
 
 ```bash
 npm run check:seis-ai-workforce-training
 npm run check:seis-language-model-intake
+npm run report:seis-ai-model-ecosystem-catalog
+npm run check:seis-ai-model-ecosystem-catalog
+npm run report:seis-local-ai-runtime-matrix
+npm run check:seis-local-ai-runtime-matrix
+npm run report:seis-agi-github-fresh-clone-readiness-plan
+npm run check:seis-agi-github-fresh-clone-readiness-plan
+npm run check:seis-public-ai-readiness
+npm run check:seis-ai-github-readiness-chain
+npm run report:seis-ai-github-pr-package
+npm run check:seis-ai-github-pr-package
+npm run report:seis-ai-pr-staging-dry-run
+npm run check:seis-ai-pr-staging-dry-run
 npm run automation:seis-ai-workforce-training
 ```
 
@@ -33,6 +48,7 @@ npm run automation:seis-ai-workforce-training
 | Workforce assignments | Documented | `content/development/ai-workforce-assignments.json` | Codex remains the only writer by default. | Keep secondary assistants in reviewer/draft mode. |
 | Training control plane | Active local contract | `content/development/seis-ai-workforce-training-plan.json` | No live provider calls, SSH, deployment, dataset download, or cloud fine-tuning. | Run the local validator and seed training runner. |
 | Language model intake | Active metadata-only contract | `content/development/seis-language-model-intake-registry.json` | This is not bulk installation and grants no download, fine-tune, training, runtime, or AGI authority. | Review one specific model family at a time with license, hardware, model-card, dataset-card, benchmark, and approval gates. |
+| Model ecosystem catalog | Active metadata-only catalog | `content/development/seis-ai-model-ecosystem-catalog.json` | Tracks Llama, Qwen, Gemma, Mistral, DeepSeek, Phi, gpt-oss, embeddings, code, multimodal/safety, provider-routed, and 512B research lanes without install, inference, training, or AGI claims. | Keep adding families as metadata, then promote only exact model ids through approval gates. |
 | Seed models | Local deterministic lab | `packages/seis-ai/data/*`, `packages/seis-ai/models/*` | Runtime authority remains false. | Rebuild artifacts and promotion policy after accepted case updates. |
 | Live providers | Disabled or missing key unless verified | `content/development/seis-ai-core-provider-registry.json` | Missing Key is not Error, and no browser secrets are allowed. | Add server-only adapters only after typed validation exists. |
 
@@ -65,6 +81,31 @@ blindly installing everything. It tracks Llama, Qwen, Gemma, Mistral, DeepSeek,
 OpenAI open-weight candidates, embeddings/rerankers, and code-specialist
 families as metadata-only candidates.
 
+## SEIS AI Model Ecosystem Catalog
+
+The model ecosystem catalog is the broader GitHub-ready view of all major model
+lanes SEIS should care about. It records local/open-weight families, external
+provider-routed families, embedding/reranker candidates, code-specialist
+families, multimodal/safety helpers, and the future 512B SEIS AGI research gate.
+
+```bash
+npm run report:seis-ai-model-ecosystem-catalog
+npm run check:seis-ai-model-ecosystem-catalog
+```
+
+Generated outputs:
+
+- `content/development/seis-ai-model-ecosystem-catalog.json`
+- `docs/ai/seis-ai-model-ecosystem-catalog.md`
+- `reports/seis-model-scaling/seis-ai-model-ecosystem-catalog.json`
+- `reports/seis-model-scaling/seis-ai-model-ecosystem-catalog.md`
+
+The catalog is intentionally non-executable. It authorizes zero installs, zero
+checkpoint downloads, zero inference routes, zero provider calls, zero training
+runs, and zero AGI claims. Each exact model id still needs license review,
+checksum/provenance, hardware budget, dataset/model card, benchmark plan,
+rollback plan, security review, and human approval.
+
 This is retrieval first and model-install second:
 
 - build a clean SEIS knowledge graph and retrieval layer before fine-tuning;
@@ -74,6 +115,105 @@ This is retrieval first and model-install second:
   approved small/quantized experiments only;
 - keep 70B, 150B, 300B+, 405B, 512B, and larger models blocked until hardware,
   budget, evaluation, observability, rollback, and approval evidence exists.
+
+## Local AI Runtime Matrix
+
+16GB and larger machines use a separate local runtime matrix:
+
+```bash
+npm run report:seis-local-ai-runtime-matrix
+npm run check:seis-local-ai-runtime-matrix
+```
+
+Generated outputs:
+
+- `content/development/seis-local-ai-runtime-matrix.json`
+- `reports/seis-model-scaling/seis-local-ai-runtime-matrix.json`
+- `reports/seis-model-scaling/seis-local-ai-runtime-matrix.md`
+- `docs/ai/seis-local-ai-runtime-matrix.md`
+
+The matrix currently approves only Local Demo, deterministic seed-model
+artifacts, and metadata-first planning. Model downloads, Ollama pulls, local
+inference, embedding runtime, SFT, LoRA, full fine-tune, foundation
+pretraining, HF Jobs, cloud GPU, SSH, GitHub push/merge, route promotion, 20B
+runtime claims, 512B readiness claims, fully knowledgeable model claims, and
+AGI claims remain false.
+
+Future real model install or training requires exact model id, revision,
+license, checksum, hardware profile, dataset card, model card, benchmark or
+dry-run evidence, secret scan, rollback plan, and human approval. The operating
+model is not "download every model"; it is "queue every model family through a
+safe evidence gate".
+
+## AGI GitHub Fresh-Clone Readiness Plan
+
+The fresh-clone readiness plan turns the GitHub everyone-ready gap into a
+no-key Local Demo checklist. It is the safe path for broad public review before
+any claim that SEIS is easy for every GitHub user to run.
+
+```bash
+npm run report:seis-agi-github-fresh-clone-readiness-plan
+npm run check:seis-agi-github-fresh-clone-readiness-plan
+npm run check:seis-public-ai-readiness
+npm run check:seis-ai-github-readiness-chain
+npm run report:seis-ai-github-pr-package
+npm run check:seis-ai-github-pr-package
+npm run report:seis-ai-pr-staging-dry-run
+npm run check:seis-ai-pr-staging-dry-run
+```
+
+Generated outputs:
+
+- `content/development/seis-agi-github-fresh-clone-readiness-plan.json`
+- `reports/seis-model-scaling/seis-agi-github-fresh-clone-readiness-plan.json`
+- `reports/seis-model-scaling/seis-agi-github-fresh-clone-readiness-plan.md`
+- `docs/ai/seis-agi-github-fresh-clone-readiness-plan.md`
+
+This plan does not prove AGI, install models, run inference, train, fine-tune,
+call providers, provision cloud/GPU resources, execute SSH, push, merge, deploy,
+or approve release. It only defines the evidence required before the Local Demo
+path can be described as fresh-clone verified.
+
+## AI GitHub PR Package
+
+The AI GitHub PR package narrows the current AI readiness work into a reviewable
+PR slice. It exists because the active worktree may contain unrelated Desktop,
+product-demo, platform, SSH, or public-demo changes that must not be mixed into
+an AI-only review.
+
+```bash
+npm run report:seis-ai-github-pr-package
+npm run check:seis-ai-github-pr-package
+```
+
+Generated outputs:
+
+- `content/development/seis-ai-github-pr-package.json`
+- `docs/ai/seis-ai-github-pr-package.md`
+- `reports/seis-model-scaling/seis-ai-github-pr-package.md`
+
+The package keeps push and merge status false until selected AI files are staged
+in a clean branch, the AI GitHub readiness chain passes, and human review
+approves the PR.
+
+## AI PR Staging Dry-Run
+
+The staging dry-run checks the current `git status` against the AI GitHub PR
+package without running `git add`, `git commit`, `git push`, or `git merge`.
+
+```bash
+npm run report:seis-ai-pr-staging-dry-run
+npm run check:seis-ai-pr-staging-dry-run
+```
+
+Generated outputs:
+
+- `content/development/seis-ai-pr-staging-dry-run.json`
+- `docs/ai/seis-ai-pr-staging-dry-run.md`
+- `reports/seis-model-scaling/seis-ai-pr-staging-dry-run.md`
+
+If non-selected dirty or staged files exist, the dry-run keeps push and merge
+blocked and requires a clean review branch or clean worktree.
 
 ## Model Targets
 

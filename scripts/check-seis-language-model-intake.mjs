@@ -8,7 +8,15 @@ const failures = [];
 
 const files = {
   registry: "content/development/seis-language-model-intake-registry.json",
+  modelEcosystemCatalog: "content/development/seis-ai-model-ecosystem-catalog.json",
+  modelEcosystemCatalogReport: "reports/seis-model-scaling/seis-ai-model-ecosystem-catalog.json",
+  modelEcosystemCatalogMarkdown: "reports/seis-model-scaling/seis-ai-model-ecosystem-catalog.md",
+  modelEcosystemCatalogDocs: "docs/ai/seis-ai-model-ecosystem-catalog.md",
   trainingPlan: "content/development/seis-ai-workforce-training-plan.json",
+  localAiRuntimeMatrix: "content/development/seis-local-ai-runtime-matrix.json",
+  localAiRuntimeMatrixReport: "reports/seis-model-scaling/seis-local-ai-runtime-matrix.json",
+  localAiRuntimeMatrixMarkdown: "reports/seis-model-scaling/seis-local-ai-runtime-matrix.md",
+  localAiRuntimeMatrixDocs: "docs/ai/seis-local-ai-runtime-matrix.md",
   trainingDoc: "docs/ai/ai-workforce-training.md",
   aiCoreDoc: "docs/ai/seis-ai-core.md",
   modelScalingDoc: "docs/ai/seis-model-scaling.md",
@@ -20,7 +28,15 @@ for (const [label, relativePath] of Object.entries(files)) {
 }
 
 const registry = readJson(files.registry, "language model intake registry");
+const modelEcosystemCatalog = readJson(files.modelEcosystemCatalog, "AI model ecosystem catalog");
+const modelEcosystemCatalogReport = readJson(files.modelEcosystemCatalogReport, "AI model ecosystem catalog report");
+const modelEcosystemCatalogMarkdown = readText(files.modelEcosystemCatalogMarkdown, "AI model ecosystem catalog markdown");
+const modelEcosystemCatalogDocs = readText(files.modelEcosystemCatalogDocs, "AI model ecosystem catalog docs");
 const trainingPlan = readJson(files.trainingPlan, "AI workforce training plan");
+const localAiRuntimeMatrix = readJson(files.localAiRuntimeMatrix, "local AI runtime matrix");
+const localAiRuntimeMatrixReport = readJson(files.localAiRuntimeMatrixReport, "local AI runtime matrix report");
+const localAiRuntimeMatrixMarkdown = readText(files.localAiRuntimeMatrixMarkdown, "local AI runtime matrix markdown");
+const localAiRuntimeMatrixDocs = readText(files.localAiRuntimeMatrixDocs, "local AI runtime matrix docs");
 const trainingDoc = readText(files.trainingDoc, "AI workforce training docs");
 const aiCoreDoc = readText(files.aiCoreDoc, "AI Core docs");
 const modelScalingDoc = readText(files.modelScalingDoc, "model scaling docs");
@@ -126,12 +142,77 @@ if (trainingPlan) {
 if (trainingDoc) {
   for (const phrase of [
     "Language Model Intake Registry",
+    "SEIS AI Model Ecosystem Catalog",
+    "Local AI Runtime Matrix",
     "not bulk installation",
     "metadata-only",
     "retrieval first"
   ]) {
     ensure(trainingDoc.includes(phrase), `training doc missing phrase: ${phrase}`);
   }
+}
+
+if (modelEcosystemCatalog) {
+  ensure(modelEcosystemCatalog.id === "seis-ai-model-ecosystem-catalog", "model ecosystem catalog id mismatch");
+  ensure(modelEcosystemCatalog.status === "catalog-ready-no-install-no-training", "model ecosystem catalog status mismatch");
+  ensure(modelEcosystemCatalog.qualityGate === "npm run check:seis-ai-model-ecosystem-catalog", "model ecosystem catalog quality gate mismatch");
+  ensure(modelEcosystemCatalog.sourceOfTruth?.languageModelIntake === files.registry, "model ecosystem catalog must link language model intake registry");
+  ensure(modelEcosystemCatalog.sourceOfTruth?.localRuntimeMatrix === files.localAiRuntimeMatrix, "model ecosystem catalog must link local runtime matrix");
+  ensure(modelEcosystemCatalog.ecosystemScope?.coverageMode === "major-family-catalog-not-exhaustive", "model ecosystem catalog must not claim exhaustive coverage");
+  ensureArrayIncludesAll((modelEcosystemCatalog.officialResearchBaseline || []).map((source) => source.id), [
+    "hf-transformers",
+    "hf-peft",
+    "ollama-library",
+    "google-gemma-docs",
+    "qwen-blog",
+    "mistral-models",
+    "deepseek-r1",
+    "openai-gpt-oss-20b",
+    "openai-gpt-oss-120b"
+  ], "model ecosystem official sources");
+  ensureArrayIncludesAll((modelEcosystemCatalog.candidateFamilies || []).map((family) => family.id), [
+    "llama",
+    "qwen",
+    "gemma",
+    "mistral",
+    "deepseek",
+    "phi",
+    "openai-gpt-oss",
+    "embedding-reranker",
+    "code-specialist",
+    "multimodal-safety",
+    "provider-routed",
+    "seis-512b-apex"
+  ], "model ecosystem candidate families");
+  ensure((modelEcosystemCatalog.candidateFamilies || []).every((family) => family.installAuthorized === false), "model ecosystem must authorize no installs");
+  ensure((modelEcosystemCatalog.candidateFamilies || []).every((family) => family.downloadAuthorized === false), "model ecosystem must authorize no downloads");
+  ensure((modelEcosystemCatalog.candidateFamilies || []).every((family) => family.trainingAuthorized === false), "model ecosystem must authorize no training");
+  ensure(modelEcosystemCatalog.allowedToday?.metadataCatalog === true, "model ecosystem should allow metadata catalog");
+  ensure(modelEcosystemCatalog.allowedToday?.modelInstall === false, "model ecosystem must block model install");
+  ensure(modelEcosystemCatalog.allowedToday?.checkpointDownload === false, "model ecosystem must block checkpoint download");
+  ensure(modelEcosystemCatalog.allowedToday?.foundationPretraining === false, "model ecosystem must block foundation pretraining");
+  ensure(modelEcosystemCatalog.publicClaimBoundary?.canClaimAllModelsInstalled === false, "model ecosystem must block all-models-installed claim");
+  ensure(modelEcosystemCatalog.publicClaimBoundary?.canClaim512bRouteEligible === false, "model ecosystem must block 512B route claim");
+  ensure(modelEcosystemCatalog.publicClaimBoundary?.canClaimRealAgi === false, "model ecosystem must block real AGI claim");
+}
+
+if (modelEcosystemCatalogReport) {
+  ensure(modelEcosystemCatalogReport.status === "model-ecosystem-catalog-defined-runtime-blocked", "model ecosystem catalog report status mismatch");
+  ensure(modelEcosystemCatalogReport.summary?.installsAuthorized === 0, "model ecosystem report must show zero installs authorized");
+  ensure(modelEcosystemCatalogReport.summary?.downloadsAuthorized === 0, "model ecosystem report must show zero downloads authorized");
+  ensure(modelEcosystemCatalogReport.summary?.trainingAuthorized === 0, "model ecosystem report must show zero training authorized");
+  ensure(modelEcosystemCatalogReport.summary?.canClaimRealAgi === false, "model ecosystem report must block AGI claim");
+}
+
+if (modelEcosystemCatalogMarkdown) {
+  ensure(modelEcosystemCatalogMarkdown.includes("SEIS AI Model Ecosystem Catalog Report"), "model ecosystem markdown report title missing");
+  ensure(modelEcosystemCatalogMarkdown.includes("Installs authorized"), "model ecosystem markdown report must include install boundary");
+}
+
+if (modelEcosystemCatalogDocs) {
+  ensure(modelEcosystemCatalogDocs.includes("SEIS AI Model Ecosystem Catalog"), "model ecosystem docs title missing");
+  ensure(modelEcosystemCatalogDocs.includes("Candidate Families"), "model ecosystem docs must list candidate families");
+  ensure(modelEcosystemCatalogDocs.includes("canClaimRealAgi: false"), "model ecosystem docs must block AGI claim");
 }
 
 if (aiCoreDoc) {
@@ -142,12 +223,116 @@ if (aiCoreDoc) {
 if (modelScalingDoc) {
   ensure(modelScalingDoc.includes("Language Model Intake Registry"), "model scaling docs must mention language model intake registry");
   ensure(modelScalingDoc.includes("seis-language-model-intake-registry.json"), "model scaling docs must link language model intake registry");
+  ensure(modelScalingDoc.includes("Local AI Runtime Matrix"), "model scaling docs must mention local AI runtime matrix");
+  ensure(modelScalingDoc.includes("seis-local-ai-runtime-matrix.json"), "model scaling docs must link local AI runtime matrix");
+}
+
+if (localAiRuntimeMatrix) {
+  ensure(localAiRuntimeMatrix.id === "seis-local-ai-runtime-matrix", "local AI runtime matrix id mismatch");
+  ensure(localAiRuntimeMatrix.status === "runtime-matrix-ready-no-install", "local AI runtime matrix status mismatch");
+  ensure(localAiRuntimeMatrix.qualityGate === "npm run check:seis-local-ai-runtime-matrix", "local AI runtime matrix quality gate mismatch");
+  ensure(localAiRuntimeMatrix.reportCommand === "npm run report:seis-local-ai-runtime-matrix", "local AI runtime matrix report command mismatch");
+  ensure(localAiRuntimeMatrix.sourceOfTruth?.registry === files.registry, "local AI runtime matrix must link registry");
+  ensure(localAiRuntimeMatrix.sourceOfTruth?.hardwareProfile === "content/development/seis-model-scaling-hardware-profile.json", "local AI runtime matrix must link hardware profile");
+  ensure(localAiRuntimeMatrix.sourceOfTruth?.parameterLadder === "content/development/seis-model-parameter-ladder.json", "local AI runtime matrix must link parameter ladder");
+  ensureArrayIncludesAll((localAiRuntimeMatrix.officialResearchBaseline || []).map((source) => source.id), [
+    "hf-transformers-bitsandbytes",
+    "hf-peft",
+    "hf-trl-sft-trainer",
+    "hf-jobs",
+    "ollama-library"
+  ], "local AI runtime matrix official sources");
+  ensureArrayIncludesAll((localAiRuntimeMatrix.runtimeRows || []).map((row) => row.id), [
+    "seis-local-demo",
+    "deterministic-seed-models",
+    "small-embedding-reranker",
+    "ollama-small-llm-0_5b-8b",
+    "ollama-14b-20b",
+    "small-sft-lora-pilot",
+    "hf-jobs-small-training",
+    "seis-70b-research",
+    "seis-512b-apex-agi"
+  ], "local AI runtime matrix runtime rows");
+  ensure((localAiRuntimeMatrix.runtimeRows || []).find((row) => row.id === "seis-local-demo")?.routeEligibleToday === true, "local AI runtime matrix should keep Local Demo route eligible");
+  ensure((localAiRuntimeMatrix.runtimeRows || []).filter((row) => row.id !== "seis-local-demo").every((row) => row.routeEligibleToday === false), "local AI runtime matrix non-demo rows must be route ineligible");
+  ensure((localAiRuntimeMatrix.runtimeRows || []).every((row) => row.downloadsCheckpoints === false), "local AI runtime matrix must not download checkpoints");
+  ensure((localAiRuntimeMatrix.runtimeRows || []).every((row) => row.runsInference === false), "local AI runtime matrix must not run inference");
+  ensure((localAiRuntimeMatrix.runtimeRows || []).every((row) => row.callsProviders === false), "local AI runtime matrix must not call providers");
+  for (const [field, expected] of Object.entries({
+    modelInstall: false,
+    checkpointDownload: false,
+    ollamaPull: false,
+    localInference: false,
+    sftTraining: false,
+    loraTraining: false,
+    foundationPretraining: false,
+    hfJobSubmission: false,
+    providerCalls: false,
+    cloudGpuProvisioning: false,
+    sshExecution: false,
+    githubPushOrMerge: false,
+    routePromotion: false,
+    agiClaim: false
+  })) {
+    ensure(localAiRuntimeMatrix.approvedToday?.[field] === expected, `local AI runtime matrix approvedToday.${field} must be ${expected}`);
+  }
+  ensure(localAiRuntimeMatrix.publicClaims?.canClaimAnyModelInstalled === false, "local AI runtime matrix must block installed-model claim");
+  ensure(localAiRuntimeMatrix.publicClaims?.canClaimLocalInferenceReady === false, "local AI runtime matrix must block local inference claim");
+  ensure(localAiRuntimeMatrix.publicClaims?.canClaimTrainingExecuted === false, "local AI runtime matrix must block training claim");
+  ensure(localAiRuntimeMatrix.publicClaims?.canClaimSEISOwnedFoundationModel === false, "local AI runtime matrix must block SEIS-owned model claim");
+  ensure(localAiRuntimeMatrix.publicClaims?.canClaim512BReady === false, "local AI runtime matrix must block 512B readiness claim");
+  ensure(localAiRuntimeMatrix.publicClaims?.canClaimAGI === false, "local AI runtime matrix must block AGI claim");
+}
+
+if (localAiRuntimeMatrixReport) {
+  ensure(localAiRuntimeMatrixReport.status === "runtime-matrix-defined-runtime-blocked", "local AI runtime matrix report status mismatch");
+  ensure(localAiRuntimeMatrixReport.sourceMatrix === files.localAiRuntimeMatrix, "local AI runtime matrix report source mismatch");
+  ensure(localAiRuntimeMatrixReport.summary?.installAllowed === false, "local AI runtime matrix report must block install");
+  ensure(localAiRuntimeMatrixReport.summary?.localInferenceAllowed === false, "local AI runtime matrix report must block local inference");
+  ensure(localAiRuntimeMatrixReport.summary?.trainingAllowed === false, "local AI runtime matrix report must block training");
+  ensure(localAiRuntimeMatrixReport.summary?.hfJobSubmissionAllowed === false, "local AI runtime matrix report must block HF Jobs");
+  ensure(localAiRuntimeMatrixReport.summary?.agiClaim === false, "local AI runtime matrix report must block AGI claim");
+}
+
+if (localAiRuntimeMatrixMarkdown) {
+  ensure(localAiRuntimeMatrixMarkdown.includes("SEIS Local AI Runtime Matrix"), "local AI runtime matrix markdown title missing");
+  ensure(localAiRuntimeMatrixMarkdown.includes("Install allowed"), "local AI runtime matrix markdown must include install boundary");
+  ensure(localAiRuntimeMatrixMarkdown.includes("HF Job submission allowed"), "local AI runtime matrix markdown must include HF Job boundary");
+}
+
+if (localAiRuntimeMatrixDocs) {
+  ensure(localAiRuntimeMatrixDocs.includes("16GB Rule"), "local AI runtime matrix docs must include 16GB rule");
+  ensure(localAiRuntimeMatrixDocs.includes("does not train"), "local AI runtime matrix docs must block training");
 }
 
 if (packageJson) {
   ensure(
     packageJson.scripts?.["check:seis-language-model-intake"] === "node scripts/check-seis-language-model-intake.mjs",
     "package.json must expose check:seis-language-model-intake"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-ai-model-ecosystem-catalog"] === "node scripts/create-seis-ai-model-ecosystem-catalog.mjs",
+    "package.json must expose check:seis-ai-model-ecosystem-catalog"
+  );
+  ensure(
+    packageJson.scripts?.["report:seis-ai-model-ecosystem-catalog"] === "node scripts/create-seis-ai-model-ecosystem-catalog.mjs --write",
+    "package.json must expose report:seis-ai-model-ecosystem-catalog"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-local-ai-runtime-matrix"] === "node scripts/create-seis-local-ai-runtime-matrix.mjs",
+    "package.json must expose check:seis-local-ai-runtime-matrix"
+  );
+  ensure(
+    packageJson.scripts?.["report:seis-local-ai-runtime-matrix"] === "node scripts/create-seis-local-ai-runtime-matrix.mjs --write",
+    "package.json must expose report:seis-local-ai-runtime-matrix"
+  );
+  ensure(
+    String(packageJson.scripts?.["quality:governance"] || "").includes("check:seis-local-ai-runtime-matrix"),
+    "quality:governance must include local AI runtime matrix"
+  );
+  ensure(
+    String(packageJson.scripts?.["quality:governance"] || "").includes("check:seis-ai-model-ecosystem-catalog"),
+    "quality:governance must include AI model ecosystem catalog"
   );
 }
 

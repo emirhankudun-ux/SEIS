@@ -1,0 +1,194 @@
+{
+  "id": "seis-agi-github-fresh-clone-readiness-plan",
+  "version": "2026.07.08",
+  "generatedAt": "2026-07-08T12:34:37.203Z",
+  "status": "fresh-clone-plan-ready-evidence-missing",
+  "qualityGate": "npm run check:seis-agi-github-fresh-clone-readiness-plan",
+  "reportCommand": "npm run report:seis-agi-github-fresh-clone-readiness-plan",
+  "purpose": "Turn the AGI GitHub user readiness fresh-clone gap into a concrete, no-key, no-model-download, validator-backed local demo path.",
+  "truthBoundary": [
+    "This plan does not make SEIS a real AGI.",
+    "This plan does not train, fine-tune, download, serve, benchmark, or route a 512B model.",
+    "This plan does not call providers, read secrets, provision cloud/GPU resources, execute SSH, deploy, push, merge, or approve release.",
+    "This plan only defines the evidence required before GitHub users can be told the Local Demo readiness path is reproducible."
+  ],
+  "sourceOfTruth": {
+    "githubUserGates": "content/development/seis-agi-github-user-readiness-gates.json",
+    "publicReadinessEvidence": "content/development/seis-agi-public-readiness-evidence.json",
+    "agiEvaluationProtocol": "content/development/seis-agi-evaluation-protocol.json",
+    "localRuntimeMatrix": "content/development/seis-local-ai-runtime-matrix.json",
+    "modelEcosystemCatalog": "content/development/seis-ai-model-ecosystem-catalog.json",
+    "pluginMcpContinuityMap": "content/development/seis-plugin-mcp-ten-year-continuity-map.json",
+    "freshCloneLocalSmoke": "content/development/seis-ai-github-fresh-clone-local-smoke.json",
+    "aiPrStagingDryRun": "content/development/seis-ai-pr-staging-dry-run.json",
+    "aiGithubReadinessChainScript": "scripts/check-seis-ai-github-readiness-chain.mjs",
+    "docs": "docs/ai/seis-agi-github-fresh-clone-readiness-plan.md"
+  },
+  "currentState": {
+    "githubUserGatesStatus": "review-gated-local-demo-ready",
+    "publicReadinessStatus": "blocked-missing-real-agi-evidence",
+    "agiProtocolStatus": "protocol-draft-not-run",
+    "localRuntimeMatrixStatus": "runtime-matrix-ready-no-install",
+    "githubReadyForEveryone": false,
+    "publicReadyForLocalDemo": true,
+    "publicReadyAsAgi": false,
+    "routeEligibleToday": false,
+    "agiClaimAllowed": false
+  },
+  "officialResearchBaseline": [
+    {
+      "id": "github-protected-branches",
+      "url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches",
+      "observedDate": "2026-07-08",
+      "seisImplication": "Everyone-ready GitHub status must be gated by protected-branch style review, required checks, and no direct unsafe main mutation."
+    },
+    {
+      "id": "github-actions-secure-use",
+      "url": "https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions",
+      "observedDate": "2026-07-08",
+      "seisImplication": "AI readiness workflows must keep secrets least-privilege, avoid plaintext credentials, and prevent secret leakage into logs."
+    },
+    {
+      "id": "openssf-scorecard",
+      "url": "https://github.com/ossf/scorecard",
+      "observedDate": "2026-07-08",
+      "seisImplication": "Public readiness should include measurable repository security posture signals, but a score is not AGI evidence."
+    }
+  ],
+  "oneCommandCandidate": {
+    "command": "npm run check:seis-ai-github-readiness-chain",
+    "status": "defined-not-release-approved",
+    "requiresSecrets": false,
+    "downloadsModels": false,
+    "trainsModels": false,
+    "callsProviders": false,
+    "grantsAgiClaim": false
+  },
+  "readinessChecks": [
+    {
+      "id": "fresh-clone-command-documentation",
+      "status": "partial",
+      "currentEvidence": "Documented command exists, but fresh clone evidence is not recorded from a clean external checkout.",
+      "requiredEvidence": [
+        "README command block",
+        "docs/ai/seis-agi-github-fresh-clone-readiness-plan.md",
+        "docs/ai/seis-ai-github-fresh-clone-local-smoke.md",
+        "human-readable no-key instructions"
+      ],
+      "blocksEveryoneReady": true,
+      "blocksAgiClaim": true
+    },
+    {
+      "id": "zero-key-ai-readiness-chain",
+      "status": "defined",
+      "currentEvidence": "The check chain is defined and must stay no-key/no-provider while covering local AI, public AI, and Plugin/MCP continuity gates.",
+      "requiredEvidence": [
+        "check:seis-local-ai-runtime-matrix",
+        "check:seis-language-model-intake",
+        "check:seis-agi-github-user-readiness-gates",
+        "check:seis-plugin-mcp-ten-year-continuity-map"
+      ],
+      "blocksEveryoneReady": false,
+      "blocksAgiClaim": true
+    },
+    {
+      "id": "model-ecosystem-catalog",
+      "status": "defined",
+      "currentEvidence": "Major model families are cataloged as metadata-only candidates with no install, download, training, or AGI authority.",
+      "requiredEvidence": [
+        "check:seis-ai-model-ecosystem-catalog",
+        "content/development/seis-ai-model-ecosystem-catalog.json"
+      ],
+      "blocksEveryoneReady": false,
+      "blocksAgiClaim": true
+    },
+    {
+      "id": "cross-platform-fresh-clone-smoke",
+      "status": "missing",
+      "currentEvidence": "No macOS/Linux/Windows fresh clone smoke evidence is attached to this plan.",
+      "requiredEvidence": [
+        "clean clone logs",
+        "node/npm version record",
+        "local demo startup evidence"
+      ],
+      "blocksEveryoneReady": true,
+      "blocksAgiClaim": true
+    },
+    {
+      "id": "secret-and-model-download-proof",
+      "status": "defined",
+      "currentEvidence": "Existing gates block secrets, provider calls, model downloads, and training.",
+      "requiredEvidence": [
+        "secret scan evidence",
+        "local runtime matrix",
+        "public readiness evidence"
+      ],
+      "blocksEveryoneReady": false,
+      "blocksAgiClaim": true
+    },
+    {
+      "id": "release-approval",
+      "status": "missing",
+      "currentEvidence": "No human release approval exists for everyone-ready status.",
+      "requiredEvidence": [
+        "PR review approval",
+        "required checks",
+        "rollback plan"
+      ],
+      "blocksEveryoneReady": true,
+      "blocksAgiClaim": true
+    },
+    {
+      "id": "agi-claim-proof",
+      "status": "blocked",
+      "currentEvidence": "AGI and 512B claims remain blocked until independent evidence exists.",
+      "requiredEvidence": [
+        "independent AGI evaluation",
+        "512B training or inference evidence",
+        "external review"
+      ],
+      "blocksEveryoneReady": true,
+      "blocksAgiClaim": true
+    }
+  ],
+  "commandPlan": [
+    "npm run check:seis-local-ai-runtime-matrix",
+    "npm run check:seis-ai-model-ecosystem-catalog",
+    "npm run check:seis-plugin-mcp-ten-year-continuity-map",
+    "npm run check:seis-language-model-intake",
+    "npm run check:seis-ai-workforce-training",
+    "npm run check:seis-agi-evaluation-protocol",
+    "npm run check:seis-agi-public-readiness-evidence",
+    "npm run check:seis-agi-github-user-readiness-gates",
+    "npm run check:seis-512b-apex-model-program",
+    "npm run check:seis-agi-github-fresh-clone-readiness-plan",
+    "npm run check:seis-ai-github-fresh-clone-local-smoke",
+    "npm run check:seis-public-ai-readiness",
+    "npm run check:seis-ai-github-pr-package",
+    "npm run check:seis-ai-pr-staging-dry-run",
+    "npm run check:seis-ai-github-readiness-chain"
+  ],
+  "publicClaimBoundary": {
+    "canClaimFreshClonePlanExists": true,
+    "canClaimFreshCloneVerified": false,
+    "canClaimEveryoneReady": false,
+    "canClaimLocalDemoReviewAllowed": true,
+    "canClaimAnyModelInstalled": false,
+    "canClaim512BRouteEligible": false,
+    "canClaimRealAgi": false
+  },
+  "blockersBeforeEveryoneReady": [
+    "fresh clone local demo path verified on a clean checkout",
+    "one-command AI readiness validator documented and passing in CI",
+    "cross-platform smoke evidence recorded",
+    "secret scan and no-model-download proof attached",
+    "human release approval recorded",
+    "protected branch or equivalent PR review policy confirmed",
+    "AGI and 512B claim boundaries preserved"
+  ],
+  "nextSafeActions": [
+    "Run this plan in check mode after every AI readiness change.",
+    "Attach clean clone logs before changing githubReadyForEveryone.",
+    "Keep AGI claims blocked until independent evaluation and 512B evidence exist."
+  ]
+}

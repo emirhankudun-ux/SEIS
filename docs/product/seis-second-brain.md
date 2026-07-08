@@ -32,6 +32,9 @@ Current implementation lives in:
 - `scripts/create-seis-read-only-model-router-decision.mjs`
 - `scripts/create-seis-second-brain-accessibility-focus-report.mjs`
 - `scripts/create-seis-second-brain-agent-registry.mjs`
+- `scripts/create-seis-second-brain-public-reviewer-pack.mjs`
+- `scripts/create-seis-public-demo-security-gate-report.mjs`
+- `scripts/create-seis-security-owner-handoff.mjs`
 - `scripts/check-seis-agi-independent-evidence-ledger.mjs`
 - `docs/product/seis-obsidian-bridge-safe-import.md`
 - `docs/reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md`
@@ -47,11 +50,20 @@ Search, SEIS AI, Command Center, Launchpad, Favorites, and desktop shortcuts.
 | Markdown vault | Browser-local Local Demo | Seed notes render under `/home/seis/SecondBrain`; `Save Vault Snapshot` writes note files and `seis-second-brain-vault-snapshot.md` into the browser VFS. |
 | Knowledge graph | Browser-local Local Demo | Graph nodes and backlinks are generated from repo-owned seed records; `Link Graph` writes `graph-links.json`. |
 | Agent training pack | Local Demo read-only | `Build Training Pack` writes `/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md` with Obsidian, accessibility, router, PR #54 checklist, and language model training curriculum summaries. |
+| Public contributor onboarding pack | Local Demo no-key | `Build Contributor Pack` writes `/home/seis/SecondBrain/08-public/seis-public-contributor-onboarding.md` so GitHub reviewers can inspect the browser-local Second Brain, installed AI registry evidence, sub-agent roster, Obsidian boundary, and blocked release gates without API keys, provider login, private Obsidian vault access, SSH, deployment, or GitHub write access. |
+| Obsidian starter vault | Local Demo no-key | `Export Obsidian Starter Vault` writes `/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json` and `/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md` from repo-owned seed note metadata and generated browser-local Markdown only; it does not read a private Obsidian vault, install plugins, copy `.obsidian` state, copy private note bodies, call providers, mutate GitHub, execute SSH, or deploy. |
+| AI council review pack | Local Demo no-key | `Build AI Council Pack` writes `/home/seis/SecondBrain/10-ai-council/seis-ai-council-review-pack.md` so reviewers can inspect all 24 registered Second Brain AI profiles, 18 launcher routes, 12 installed launcher routes, browser AI fixtures, managed sub-agent lanes, and the 12-agent roster without API keys, provider login, credential validation, private Obsidian import, autonomous write execution, SSH, deployment, GitHub mutation, merge, or release approval. |
+| Obsidian graph map | Local Demo no-key | `Build Obsidian Graph Map` writes `/home/seis/SecondBrain/11-graph/seis-obsidian-graph-map.md` as a public-safe wikilink entry note connecting seed notes, generated Obsidian starter vault artifacts, the AI council review pack, and GitHub readiness gates without reading private vaults, installing plugins, copying private note bodies, calling providers, executing agents, using SSH, deploying, mutating GitHub, or approving release. |
+| Agent training drills | Local Demo no-key | `Build Training Drills` writes `/home/seis/SecondBrain/12-training/seis-agent-training-drills.md` with repeatable exercises for every registered AI profile, managed sub-agent lane, and the 12-agent roster so reviewers can rehearse Obsidian graph, agent-registry, and release-gate behavior without API keys, provider login, private vault reads, plugin installs, autonomous writes, SSH, deployment, GitHub mutation, merge, or release approval. |
 | Language model training curriculum | Planned-training contract | `content/development/seis-language-model-training-curriculum.json` and `reports/seis-model-scaling/seis-language-model-training-curriculum.md` map candidate model families, local seed-model lanes, retrieval lanes, and approval gates without installing models, downloading checkpoints, training, benchmarking, calling providers, or claiming SEIS owns a foundation model. |
 | Independent AGI evidence ledger | Review-gated | `npm run check:seis-agi-independent-evidence-ledger` and `content/development/seis-agi-independent-evidence-ledger.json` keep AGI/512B public claims blocked until independent external evidence and explicit human approval are recorded. |
-| Installed AI bridge | Local Demo context only | SEIS AI exposes a Second Brain tab with all 6 current installed AI profiles: Codex, SEIS Local Demo Runtime, Claude Review Profile, Qwen Alternative Review, Gemini Secondary Validation, and Ollama Local Candidate. Missing Key and Disabled states remain explicit. |
+| Installed AI bridge | Local Demo context only | SEIS AI exposes a Second Brain tab with 6 browser runtime AI fixture profiles and the review-only agent registry evidence for 24 Second Brain profiles, 18 launcher routes, and 12 installed launcher routes. Missing Key, Disabled, missing-command, and runtime-not-ready states remain explicit. |
 | read-only model-router decision artifact | Provider-neutral review-only | `npm run report:seis-read-only-model-router-decision` writes `reports/seis-public-demo/read-only-model-router-decision-latest.json` and `.md` with installed AI profile fixtures, blocked reasons, explicit fallback policy, `executionPerformed: false`, and no provider calls. |
-| Second Brain agent registry artifact | Review-only | `npm run report:seis-second-brain-agent-registry` writes `reports/seis-public-demo/second-brain-agent-registry-latest.json` and `.md` by joining installed AI profiles, AI workforce assignments, managed sub-agent lanes, the 12-agent roster, Obsidian bridge boundaries, plugin inventory, MCP surfaces, and connector activation policy without provider calls, credential validation, private vault reads, autonomous writes, SSH, deployment, GitHub mutation, or release approval. |
+| Second Brain agent registry artifact | Review-only | `npm run report:seis-second-brain-agent-registry` writes `reports/seis-public-demo/second-brain-agent-registry-latest.json` and `.md` by joining 24 installed AI profiles, 25 AI workforce assignments, 18 launcher routes, 12 installed launcher routes, managed sub-agent lanes, the 12-agent roster, Obsidian bridge boundaries, plugin inventory, MCP surfaces, and connector activation policy without provider calls, credential validation, private vault reads, autonomous writes, SSH, deployment, GitHub mutation, or release approval. |
+| Second Brain public reviewer pack | No-key GitHub review | `npm run report:seis-second-brain-public-reviewer-pack` writes `reports/seis-public-demo/second-brain-public-reviewer-pack-latest.json` and `.md` with a GitHub reviewer quick start, review surfaces, no-key Local Demo boundary, blocked actions, and required confirmations without private Obsidian data, provider login, SSH, deployment, merge, or release approval. |
+| public demo security gate redacted evidence | Review-blocking | `npm run report:seis-public-demo-security-gate` writes `reports/seis-public-demo/security-gate-redacted-latest.json` and `.md` with redacted PR #104 security gate categories, paths, counts, and approval requirements. It records current-tree clean status while keeping full-history remediation blocked without storing raw secret values, changing `.gitleaks.toml`, rewriting history, force-pushing, or approving release. |
+| security owner handoff | Owner-action required | `npm run report:seis-security-owner-handoff` writes `reports/seis-public-demo/security-owner-handoff-latest.json` and `.md` with explicit human-owner security decisions, agent assignments, allowed local actions, and forbidden history/scanner/release actions. It keeps raw finding values, full CI logs, scanner policy changes, history rewrite, force push, private Obsidian import, provider calls, SSH, deployment, merge, and release approval disabled. |
+| PR #127 security remediation plan | Owner-approval required | `content/development/seis-public-demo-security-remediation-plan-pr127.json` and `docs/security/PR127_SECURITY_REMEDIATION_PLAN.md` keep the active PR #127 security blocker plan-only and redacted. The plan defines approval gates, owner decisions, rollback notes, and post-remediation validation while authorizing no raw finding disclosure, full log download, scanner weakening, history rewrite, force push, merge, or release. |
 | Sub-agent lanes | Status/plan-only | All 6 current managed SEIS sub-agent lanes are indexed: SEIS Hub, SEIS Cloud, SEIS-Code, SEIS-Design, SEIS-DATA, and SEIS-Security. They can review/propose only; they cannot expand permissions or mutate external systems. |
 | Autonomous agent roster | Status/plan-only | The Second Brain maps the 12-agent target roster: Architect, Code, Design, UI/UX, Research, Search, Security, DevOps, Documentation, QA, Cloud, and Automation. |
 | GitHub readiness | Human review required | `Export GitHub Readiness` writes a blocked-by-review readiness note; the dedicated browser-smoke checks the export and reload persistence. Push, merge, release, Pages, and public launch still require approval. |
@@ -110,6 +122,12 @@ npm run report:seis-second-brain-accessibility-focus-report
 npm run check:seis-second-brain-accessibility-focus-report
 npm run report:seis-second-brain-agent-registry
 npm run check:seis-second-brain-agent-registry
+npm run report:seis-second-brain-public-reviewer-pack
+npm run check:seis-second-brain-public-reviewer-pack
+npm run report:seis-public-demo-security-gate
+npm run check:seis-public-demo-security-gate
+npm run report:seis-security-owner-handoff
+npm run check:seis-security-owner-handoff
 npm run check:seis-second-brain-readiness-contracts
 npm run check:seis-second-brain-browser-smoke
 npm run check:seis-public-demo-go-no-go -- --run-fast-checks
@@ -119,12 +137,12 @@ The validators check the JSON contract, readiness contracts, Desktop app
 wiring, UI action hooks, CSS surface, documentation, package scripts, and
 basic sensitive-pattern rules.
 The browser-smoke starts the local Desktop route in Chrome, opens Second Brain,
-runs all six vault/training-pack/review/GitHub-readiness actions, verifies
-browser-VFS artifacts after reload, opens the SEIS AI Second Brain bridge, and
-checks the mobile viewport for usable controls and no horizontal overflow. The
-public demo go/no-go gate is read-only and should return `NO-GO` until the
-current release candidate has fresh browser evidence and explicit human
-approval.
+runs all eleven vault/training-pack/contributor-pack/Obsidian-starter/AI-council/Obsidian-graph-map/agent-training-drills/review/GitHub-readiness
+actions, verifies browser-VFS artifacts after reload, opens the SEIS AI Second
+Brain bridge, and checks the mobile viewport for usable controls and no
+horizontal overflow. The public demo go/no-go gate is read-only and should
+return `NO-GO` until the current release candidate has fresh browser evidence
+and explicit human approval.
 
 ## Next Safe Work
 

@@ -1,0 +1,1237 @@
+{
+  "id": "seis-second-brain-agent-registry-pr54",
+  "title": "SEIS Second Brain Agent Registry",
+  "generatedAt": "2026-07-08T11:40:21.973Z",
+  "status": "review-only-agent-registry",
+  "mode": "repo-local-no-live-execution",
+  "decision": "NO-GO-autonomous-execution-not-approved",
+  "sourcePaths": {
+    "secondBrain": "content/development/seis-second-brain-system.json",
+    "aiWorkforce": "content/development/ai-workforce-assignments.json",
+    "roleSchema": "content/development/seis-ai-core-agent-role-schema.json",
+    "permissionMatrix": "content/development/seis-ai-core-agent-permission-matrix.json",
+    "subagentOperatingModel": "content/development/seis-ai-core-subagent-operating-model.json",
+    "laneStatus": "content/development/seis-agent-lane-status.json",
+    "bigTechInventory": "content/development/seis-big-tech-mcp-skill-inventory.json",
+    "pluginSkillMap": "content/development/plugin-skill-capability-map.json",
+    "connectorRegistry": "content/development/connector-capability-registry.json",
+    "obsidianContract": "content/development/seis-obsidian-bridge-safe-import-contract.json",
+    "routerContract": "content/development/seis-read-only-model-router-contract.json"
+  },
+  "secondBrainBinding": {
+    "status": "local-demo",
+    "vaultRoot": "browser-vfs/SecondBrain",
+    "trainingPackPath": "browser-vfs/SecondBrain/07-learning/seis-agent-training-pack.md",
+    "publicContributorPackPath": "browser-vfs/SecondBrain/08-public/seis-public-contributor-onboarding.md",
+    "obsidianStarterVaultManifestPath": "browser-vfs/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json",
+    "obsidianStarterVaultGuidePath": "browser-vfs/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md",
+    "aiCouncilReviewPackPath": "browser-vfs/SecondBrain/10-ai-council/seis-ai-council-review-pack.md",
+    "obsidianGraphMapPath": "browser-vfs/SecondBrain/11-graph/seis-obsidian-graph-map.md",
+    "agentTrainingDrillsPath": "browser-vfs/SecondBrain/12-training/seis-agent-training-drills.md",
+    "obsidianBridgeStatus": "planned",
+    "privateVaultImportEnabled": false,
+    "hostVaultReadEnabled": false,
+    "bodyImportPolicy": "metadata-only-by-default",
+    "githubMutationEnabled": false
+  },
+  "trainingCoverage": {
+    "status": "local-demo-read-only",
+    "source": "repo-owned browser-local Second Brain records only",
+    "trainingPackPath": "browser-vfs/SecondBrain/07-learning/seis-agent-training-pack.md",
+    "publicContributorPackPath": "browser-vfs/SecondBrain/08-public/seis-public-contributor-onboarding.md",
+    "obsidianStarterVaultManifestPath": "browser-vfs/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json",
+    "obsidianStarterVaultGuidePath": "browser-vfs/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md",
+    "aiCouncilReviewPackPath": "browser-vfs/SecondBrain/10-ai-council/seis-ai-council-review-pack.md",
+    "obsidianGraphMapPath": "browser-vfs/SecondBrain/11-graph/seis-obsidian-graph-map.md",
+    "agentTrainingDrillsPath": "browser-vfs/SecondBrain/12-training/seis-agent-training-drills.md",
+    "requiredSections": [
+      "installed AI launcher route coverage",
+      "autonomous agent roster onboarding",
+      "Obsidian safe import boundary",
+      "provider-neutral read-only model router",
+      "human approval gates",
+      "public demo release gates",
+      "public contributor no-key onboarding",
+      "Obsidian starter vault no-private-import export",
+      "installed AI council review pack",
+      "Obsidian wikilink graph map",
+      "agent training drills"
+    ],
+    "installedAiCoverage": {
+      "sourceContract": "content/development/ai-workforce-assignments.json",
+      "requireRegistryRequiredLauncherRoutes": true,
+      "requireSecondBrainProfileForEachLauncherRoute": true,
+      "requireNoLiveProviderCalls": true
+    },
+    "autonomousAgentCoverage": {
+      "requiredRosterCount": 12,
+      "requireNoWriteExecution": true,
+      "requireApprovalBeforeExternalMutation": true
+    },
+    "obsidianCoverage": {
+      "bridgeStatus": "planned",
+      "bodyImportPolicy": "metadata-only-by-default",
+      "privateVaultReadAllowed": false,
+      "privateNoteBodyCopyAllowed": false,
+      "pluginInstallAllowed": false,
+      "starterVaultManifestPath": "browser-vfs/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json",
+      "starterVaultGuidePath": "browser-vfs/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md",
+      "graphMapPath": "browser-vfs/SecondBrain/11-graph/seis-obsidian-graph-map.md"
+    },
+    "qualityGates": [
+      "node scripts/check-seis-second-brain.mjs",
+      "node scripts/check-ai-workforce-assignments.mjs",
+      "node scripts/create-seis-second-brain-agent-registry.mjs --check"
+    ],
+    "blockedUntil": [
+      "private Obsidian import has explicit user-selected source path and human approval",
+      "live provider routing has backend-only mediation and redaction evidence",
+      "autonomous write execution has enforced permission matrix and approval fixtures",
+      "GitHub merge or release has passing security gates and human approval"
+    ]
+  },
+  "launcherEvidence": {
+    "command": "npm run ai -- list",
+    "snapshotType": "author-observed-local-snapshot",
+    "observedDate": "2026-07-01",
+    "mode": "local route readiness only",
+    "runtimeValidationPolicy": {
+      "recomputeCommand": "node scripts/ai-launcher.cjs list",
+      "countsInstalledRoutesFromCurrentRuntime": true,
+      "snapshotIsNotPublicReadinessClaim": true,
+      "statusMismatchMeaning": "environment-specific launcher readiness drift; public readiness must cite the current runtime check, not only this committed snapshot"
+    },
+    "snapshotInstalledRoutes": [
+      "seis-agent",
+      "codex",
+      "antigravity",
+      "antigravity-ide",
+      "cursor",
+      "xcode",
+      "qwen",
+      "kimi",
+      "opencode",
+      "hermes",
+      "goose",
+      "open-design"
+    ],
+    "tools": [
+      {
+        "route": "seis-agent",
+        "command": "npm",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "seis-agent-policy-profile",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "codex",
+        "command": "codex",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "codex-operator",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "antigravity",
+        "command": "open",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "antigravity",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "antigravity-ide",
+        "command": "open",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "antigravity-ide",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "cursor",
+        "command": "open",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "cursor-ide-profile",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "xcode",
+        "command": "open",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "xcode",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "openai",
+        "command": "openai",
+        "launcherStatus": "missing-command",
+        "secondBrainProfileId": "openai-general-profile",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "claude",
+        "command": "claude",
+        "launcherStatus": "missing-ANTHROPIC_API_KEY",
+        "secondBrainProfileId": "claude-review-profile",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "gemini",
+        "command": "gemini",
+        "launcherStatus": "missing-GEMINI_API_KEY",
+        "secondBrainProfileId": "gemini-validation-profile",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "qwen",
+        "command": "qwen",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "qwen-review-profile",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "kimi",
+        "command": "kimi",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "kimi",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "ollama",
+        "command": "ollama",
+        "launcherStatus": "runtime-not-ready",
+        "secondBrainProfileId": "ollama-local-profile",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "opencode",
+        "command": "opencode",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "opencode",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "aider",
+        "command": "aider",
+        "launcherStatus": "missing-command",
+        "secondBrainProfileId": "aider",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "interpreter",
+        "command": "interpreter",
+        "launcherStatus": "missing-command",
+        "secondBrainProfileId": "interpreter",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "hermes",
+        "command": "hermes",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "hermes",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "goose",
+        "command": "goose",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "goose",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      },
+      {
+        "route": "open-design",
+        "command": "open",
+        "launcherStatus": "installed",
+        "secondBrainProfileId": "open-design",
+        "registryRequired": true,
+        "workforceAssignmentFound": true,
+        "secondBrainProfileFound": true,
+        "liveProviderRouteEnabled": false
+      }
+    ]
+  },
+  "providerProfiles": [
+    {
+      "profileId": "codex-operator",
+      "status": "installed",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "seis-local-demo",
+      "status": "local-demo",
+      "secondBrainUse": "local-demo-context",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "seis-agent-policy-profile",
+      "status": "installed",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "claude-review-profile",
+      "status": "missing-ANTHROPIC_API_KEY",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "qwen-review-profile",
+      "status": "installed",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "gemini-validation-profile",
+      "status": "missing-GEMINI_API_KEY",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "ollama-local-profile",
+      "status": "runtime-not-ready",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "openai-general-profile",
+      "status": "missing-command",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "anthropic-claude-profile",
+      "status": "route-defined-current-shell-missing-key",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "chatgpt-review-profile",
+      "status": "route-defined-current-shell-missing-key",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "openrouter-provider-profile",
+      "status": "planned",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "cursor-ide-profile",
+      "status": "installed",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "xcode",
+      "status": "installed",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "github-copilot-profile",
+      "status": "planned",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "lm-studio-local-profile",
+      "status": "planned",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "open-design",
+      "status": "installed",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "antigravity",
+      "status": "installed",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "antigravity-ide",
+      "status": "installed",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "aider",
+      "status": "missing-command",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "interpreter",
+      "status": "missing-command",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "hermes",
+      "status": "installed",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "goose",
+      "status": "installed",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "kimi",
+      "status": "installed",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "opencode",
+      "status": "installed",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    }
+  ],
+  "workforceAssignments": [
+    {
+      "id": "codex",
+      "displayName": "Codex",
+      "category": "primary-writer",
+      "route": "codex",
+      "status": "installed",
+      "allowedOutputs": [
+        "patches",
+        "validation logs",
+        "status reports",
+        "commit plans",
+        "PR descriptions"
+      ],
+      "writeAuthority": "primary-writer-human-supervised"
+    },
+    {
+      "id": "seis-agent",
+      "displayName": "SEIS Agent",
+      "category": "policy-orchestration",
+      "route": "seis-agent",
+      "status": "installed",
+      "allowedOutputs": [
+        "policy routing note",
+        "fallback orchestration summary",
+        "readiness checklist"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "claude",
+      "displayName": "Claude",
+      "category": "architecture-review",
+      "route": "claude",
+      "status": "missing-ANTHROPIC_API_KEY",
+      "allowedOutputs": [
+        "architecture review",
+        "product strategy memo",
+        "risk notes",
+        "PR review notes"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "qwen",
+      "displayName": "Qwen",
+      "category": "contradiction-review",
+      "route": "qwen",
+      "status": "installed",
+      "allowedOutputs": [
+        "contradiction report",
+        "duplicate analysis",
+        "risk matrix",
+        "archive summary"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "gemini",
+      "displayName": "Gemini",
+      "category": "external-readiness-review",
+      "route": "gemini",
+      "status": "missing-GEMINI_API_KEY",
+      "allowedOutputs": [
+        "public readiness notes",
+        "UX and accessibility review",
+        "documentation clarity review",
+        "source comparison notes"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "coderabbit",
+      "displayName": "CodeRabbit",
+      "category": "pull-request-review",
+      "route": "github-pr-review",
+      "status": "pr-dependent",
+      "allowedOutputs": [
+        "PR review comments",
+        "risk findings",
+        "follow-up suggestions"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "ollama",
+      "displayName": "Ollama / Local Model",
+      "category": "local-private-draft",
+      "route": "ollama",
+      "status": "runtime-not-ready",
+      "allowedOutputs": [
+        "private draft",
+        "offline summary",
+        "local-only analysis"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "open-design",
+      "displayName": "OpenDesign / Design Agent",
+      "category": "visual-system-review",
+      "route": "open-design",
+      "status": "installed",
+      "allowedOutputs": [
+        "design brief",
+        "visual-system proposal",
+        "component and motion recommendations"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "antigravity",
+      "displayName": "Antigravity",
+      "category": "creative-workflow-assistant",
+      "route": "antigravity",
+      "status": "installed",
+      "allowedOutputs": [
+        "visual prompt suggestion",
+        "mock concept review"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "antigravity-ide",
+      "displayName": "Antigravity IDE",
+      "category": "ide-assistant",
+      "route": "antigravity-ide",
+      "status": "installed",
+      "allowedOutputs": [
+        "editor safety note",
+        "workflow suggestion"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "aider",
+      "displayName": "Aider",
+      "category": "bounded-terminal-coding-helper",
+      "route": "aider",
+      "status": "missing-command",
+      "allowedOutputs": [
+        "diff suggestion",
+        "terminal coding guidance"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "interpreter",
+      "displayName": "Open Interpreter",
+      "category": "local-code-execution-review",
+      "route": "interpreter",
+      "status": "missing-command",
+      "allowedOutputs": [
+        "execution risk note",
+        "local automation checklist"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "hermes",
+      "displayName": "Hermes",
+      "category": "local-multi-agent-assistant",
+      "route": "hermes",
+      "status": "installed",
+      "allowedOutputs": [
+        "prompt draft review",
+        "synthesis note"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "goose",
+      "displayName": "Goose",
+      "category": "local-build-orchestration-review",
+      "route": "goose",
+      "status": "installed",
+      "allowedOutputs": [
+        "orchestration review",
+        "build-risk note"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "github-actions",
+      "displayName": "GitHub Actions",
+      "category": "automation-validation",
+      "route": "github-actions",
+      "status": "remote-ci",
+      "allowedOutputs": [
+        "check run",
+        "workflow log",
+        "artifact",
+        "annotation"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "kimi",
+      "displayName": "Kimi / Kimi Code",
+      "category": "conditional-code-and-localization-review",
+      "route": "kimi",
+      "status": "installed",
+      "allowedOutputs": [
+        "localization review",
+        "multilingual copy notes",
+        "bounded code review"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "opencode",
+      "displayName": "OpenCode",
+      "category": "bounded-terminal-coding-helper",
+      "route": "opencode",
+      "status": "installed",
+      "allowedOutputs": [
+        "patch suggestion",
+        "terminal-focused code review",
+        "debug hypothesis"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "openai",
+      "displayName": "OpenAI / General Provider",
+      "category": "cloud-provider-review",
+      "route": "openai",
+      "status": "missing-command",
+      "allowedOutputs": [
+        "provider readiness note",
+        "second-opinion comparisons",
+        "quality guidance"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "anthropic",
+      "displayName": "Anthropic / Claude Provider",
+      "category": "cloud-provider-review",
+      "route": "anthropic",
+      "status": "route-defined-current-shell-missing-key",
+      "allowedOutputs": [
+        "provider alignment report",
+        "router compatibility review",
+        "risk note"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "chatgpt",
+      "displayName": "ChatGPT",
+      "category": "planning-triage",
+      "route": "chatgpt",
+      "status": "route-defined-current-shell-missing-key",
+      "allowedOutputs": [
+        "planning summary",
+        "triage guidance",
+        "clarity review"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "openrouter",
+      "displayName": "OpenRouter",
+      "category": "provider-gateway-review",
+      "route": "openrouter",
+      "status": "planned",
+      "allowedOutputs": [
+        "gateway comparison note",
+        "routing recommendation",
+        "risk checklist"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "cursor",
+      "displayName": "Cursor",
+      "category": "editor-assistant",
+      "route": "cursor",
+      "status": "installed",
+      "allowedOutputs": [
+        "refactor suggestion",
+        "editor context guidance",
+        "local workflow note"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "xcode",
+      "displayName": "Xcode",
+      "category": "local-ide-assistant",
+      "route": "xcode",
+      "status": "installed",
+      "allowedOutputs": [
+        "build session notes",
+        "local workspace observations",
+        "IDE-focused draft guidance"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "github-copilot",
+      "displayName": "GitHub Copilot",
+      "category": "ide-assistant",
+      "route": "github-copilot",
+      "status": "planned",
+      "allowedOutputs": [
+        "coding suggestion",
+        "IDE UX guidance",
+        "review note"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "lm-studio",
+      "displayName": "LM Studio",
+      "category": "local-model-experiment",
+      "route": "lm-studio",
+      "status": "planned",
+      "allowedOutputs": [
+        "offline experiment note",
+        "local model boundary note",
+        "readiness checklist"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    }
+  ],
+  "subAgentMesh": {
+    "managedSubAgentLanes": [
+      "SEIS Hub",
+      "SEIS Cloud",
+      "SEIS-Code",
+      "SEIS-Design",
+      "SEIS-DATA",
+      "SEIS-Security"
+    ],
+    "autonomousAgentRoster": [
+      {
+        "agent": "Architect Agent",
+        "status": "status-plan-only",
+        "duty": "Architecture, module boundaries, and rollback-aware implementation plans."
+      },
+      {
+        "agent": "Code Agent",
+        "status": "status-plan-only",
+        "duty": "Scoped implementation notes, validators, and code review evidence."
+      },
+      {
+        "agent": "Design Agent",
+        "status": "status-plan-only",
+        "duty": "Visual system, product feel, design tokens, and interaction evidence."
+      },
+      {
+        "agent": "UI/UX Agent",
+        "status": "status-plan-only",
+        "duty": "Usability, mobile ergonomics, focus order, and accessibility notes."
+      },
+      {
+        "agent": "Research Agent",
+        "status": "status-plan-only",
+        "duty": "Source provenance, prior-art notes, and clean-room research summaries."
+      },
+      {
+        "agent": "Search Agent",
+        "status": "status-plan-only",
+        "duty": "Local vault, docs, route, file, and plugin indexing strategy."
+      },
+      {
+        "agent": "Security Agent",
+        "status": "blocking-review-gate",
+        "duty": "Secret hygiene, private vault boundaries, and approval requirements."
+      },
+      {
+        "agent": "DevOps Agent",
+        "status": "status-plan-only",
+        "duty": "CI, release, deployment, rollback, and no-live-action runbooks."
+      },
+      {
+        "agent": "Documentation Agent",
+        "status": "status-plan-only",
+        "duty": "README, status, index, backlog, and PR queue alignment."
+      },
+      {
+        "agent": "QA Agent",
+        "status": "status-plan-only",
+        "duty": "Validator, browser-smoke, regression, and acceptance evidence."
+      },
+      {
+        "agent": "Cloud Agent",
+        "status": "status-plan-only",
+        "duty": "Cloud, SSH, storage, sync, and provider readiness boundaries."
+      },
+      {
+        "agent": "Automation Agent",
+        "status": "status-plan-only",
+        "duty": "Safe recurring workflows, ledgers, and human-approved automation gates."
+      }
+    ],
+    "roleSchemaRoles": [
+      {
+        "id": "repository-governance-subagent",
+        "laneId": "seis",
+        "authority": "plan-only",
+        "networkScope": "none",
+        "maxSteps": 6,
+        "maxDelegationDepth": 1
+      },
+      {
+        "id": "cloud-readiness-subagent",
+        "laneId": "seis-cloud",
+        "authority": "plan-only",
+        "networkScope": "none",
+        "maxSteps": 6,
+        "maxDelegationDepth": 1
+      },
+      {
+        "id": "engineering-subagent",
+        "laneId": "seis-code",
+        "authority": "plan-only",
+        "networkScope": "none",
+        "maxSteps": 8,
+        "maxDelegationDepth": 1
+      },
+      {
+        "id": "product-design-subagent",
+        "laneId": "seis-design",
+        "authority": "plan-only",
+        "networkScope": "none",
+        "maxSteps": 6,
+        "maxDelegationDepth": 1
+      },
+      {
+        "id": "data-provenance-subagent",
+        "laneId": "seis-data",
+        "authority": "plan-only",
+        "networkScope": "none",
+        "maxSteps": 6,
+        "maxDelegationDepth": 1
+      }
+    ],
+    "permissionLevels": [
+      {
+        "level": "read-only",
+        "status": "enabled",
+        "approvalRequired": false
+      },
+      {
+        "level": "plan-only",
+        "status": "enabled",
+        "approvalRequired": false
+      },
+      {
+        "level": "write-gated",
+        "status": "planned",
+        "approvalRequired": "task-scoped"
+      },
+      {
+        "level": "external-gated",
+        "status": "planned",
+        "approvalRequired": true
+      },
+      {
+        "level": "forbidden",
+        "status": "active",
+        "approvalRequired": "separate security and recovery plan required"
+      }
+    ],
+    "operatingLanes": [
+      {
+        "laneId": "seis",
+        "status": "status-and-plan-only"
+      },
+      {
+        "laneId": "seis-cloud",
+        "status": "status-and-plan-only"
+      },
+      {
+        "laneId": "seis-code",
+        "status": "status-and-plan-only"
+      },
+      {
+        "laneId": "seis-design",
+        "status": "status-and-plan-only"
+      },
+      {
+        "laneId": "seis-data",
+        "status": "status-and-plan-only"
+      }
+    ],
+    "laneStatusCount": 10
+  },
+  "pluginAndMcpSurface": {
+    "installedSkillCount": 38,
+    "installedSkills": [
+      "aspnet-core",
+      "chatgpt-apps",
+      "cli-creator",
+      "cloudflare-deploy",
+      "define-goal",
+      "figma",
+      "figma-code-connect-components",
+      "figma-create-design-system-rules",
+      "figma-create-new-file",
+      "figma-generate-design",
+      "figma-generate-library",
+      "figma-implement-design",
+      "figma-use",
+      "gh-address-comments",
+      "gh-fix-ci",
+      "jupyter-notebook",
+      "linear",
+      "migrate-to-codex",
+      "netlify-deploy",
+      "notion-knowledge-capture",
+      "notion-meeting-intelligence",
+      "notion-research-documentation",
+      "notion-spec-to-implementation",
+      "openai-docs",
+      "pdf",
+      "playwright",
+      "playwright-interactive",
+      "render-deploy",
+      "screenshot",
+      "security-best-practices",
+      "security-ownership-map",
+      "security-threat-model",
+      "sentry",
+      "speech",
+      "transcribe",
+      "vercel-deploy",
+      "winui-app",
+      "yeet"
+    ],
+    "localAppsDetected": [
+      {
+        "app": "Antigravity IDE.app",
+        "status": "local app detected"
+      },
+      {
+        "app": "Claude.app",
+        "status": "local app detected; Claude Code CLI is also installed and project MCP entries are pending user approval"
+      },
+      {
+        "app": "Codex.app",
+        "status": "local app detected"
+      },
+      {
+        "app": "Cursor.app",
+        "status": "local app detected"
+      },
+      {
+        "app": "Ollama.app",
+        "status": "local app detected"
+      },
+      {
+        "app": "Qwen.app",
+        "status": "local app detected"
+      },
+      {
+        "app": "Xcode.app",
+        "status": "local app detected"
+      },
+      {
+        "app": "Kimi",
+        "status": "no local app detected; official Kimi Code CLI installed and path verified"
+      }
+    ],
+    "mcpSurfaces": [
+      {
+        "vendor": "Google",
+        "surfaceCount": 6,
+        "status": "callable in current Codex session",
+        "liveActionGate": "Explicit user intent is required before mail, calendar, Drive, Docs, Sheets, or Slides mutations."
+      },
+      {
+        "vendor": "Apple",
+        "surfaceCount": 5,
+        "status": "callable for enabled simulator workflows; local Xcode.app detected; xcodebuildmcp also registered in Claude and Kimi project MCP configs",
+        "liveActionGate": "Project build/run/test actions must follow XcodeBuildMCP session-default rules; device, macOS, debugging, and UI automation capabilities may require separate configuration."
+      },
+      {
+        "vendor": "Moonshot AI / Kimi",
+        "surfaceCount": 4,
+        "status": "official CLI installed and path verified; no provider configured; official Kimi Datasource plugin requires OAuth login before installation",
+        "liveActionGate": "Do not run Kimi provider login, OAuth, API-key setup, or plugin installation without explicit user interaction and approval."
+      },
+      {
+        "vendor": "Anthropic / Claude",
+        "surfaceCount": 3,
+        "status": "local app and CLI detected; SEIS and xcodebuildmcp project MCP entries are pending user approval in Claude Code; no standalone Codex Anthropic connector was found",
+        "liveActionGate": "Claude MCP approval, provider auth, or plugin installation must be completed by the user inside Claude Code or an approved secure setup flow."
+      },
+      {
+        "vendor": "Microsoft and Windows",
+        "surfaceCount": 7,
+        "status": "local skills installed or available; connector installs require explicit user confirmation",
+        "liveActionGate": "Azure, Outlook, Teams, SharePoint, and Windows app mutations require exact target, credentials boundary, and approval."
+      },
+      {
+        "vendor": "OpenAI",
+        "surfaceCount": 2,
+        "status": "callable and approval-gated for secret creation",
+        "liveActionGate": "Use the secure key setup flow only; never print or commit API keys."
+      },
+      {
+        "vendor": "GitHub",
+        "surfaceCount": 4,
+        "status": "callable in current Codex session",
+        "liveActionGate": "PR, issue, reviewer, and repository mutations require explicit user intent."
+      },
+      {
+        "vendor": "Figma",
+        "surfaceCount": 3,
+        "status": "callable in current Codex session",
+        "liveActionGate": "Follow Figma skill guidance before file writes."
+      },
+      {
+        "vendor": "Cloudflare",
+        "surfaceCount": 3,
+        "status": "callable in current Codex session",
+        "liveActionGate": "Cloudflare account mutations require explicit target and approval."
+      },
+      {
+        "vendor": "Vercel",
+        "surfaceCount": 4,
+        "status": "callable in current Codex session",
+        "liveActionGate": "Deployments and project mutations require explicit approval."
+      },
+      {
+        "vendor": "Slack",
+        "surfaceCount": 3,
+        "status": "partially callable from current tool discovery",
+        "liveActionGate": "Sending messages or channel changes require explicit user intent."
+      },
+      {
+        "vendor": "Supabase",
+        "surfaceCount": 5,
+        "status": "callable in current Codex session",
+        "liveActionGate": "Project pause, restore, branch delete, and database changes require explicit approval."
+      },
+      {
+        "vendor": "Shopify",
+        "surfaceCount": 2,
+        "status": "partially callable from current tool discovery",
+        "liveActionGate": "Store mutations require explicit approval and schema validation first."
+      },
+      {
+        "vendor": "Notion",
+        "surfaceCount": 2,
+        "status": "callable in current Codex session",
+        "liveActionGate": "Workspace edits require explicit target and user intent."
+      },
+      {
+        "vendor": "Asana",
+        "surfaceCount": 2,
+        "status": "partially callable from current tool discovery",
+        "liveActionGate": "Task or project mutations require explicit approval."
+      },
+      {
+        "vendor": "Clay",
+        "surfaceCount": 3,
+        "status": "callable in current Codex session",
+        "liveActionGate": "Credit-costing enrichments must only be requested when the user explicitly asks for those data points."
+      },
+      {
+        "vendor": "Vantage",
+        "surfaceCount": 2,
+        "status": "partially callable from current tool discovery",
+        "liveActionGate": "Budget and alert mutations require explicit approval."
+      }
+    ],
+    "pluginCapabilityCount": 5,
+    "connectorCapabilityCount": 21
+  },
+  "governance": {
+    "writerPolicy": {
+      "primaryWriter": "codex",
+      "rule": "Exactly one assistant may hold writer role for a change package. Other assistants provide scoped review, research, design, or contradiction analysis unless explicitly handed off.",
+      "handoffRequirement": "A handoff must include objective, affected paths, context included, context excluded, risks, expected output, validation command, and approval boundary."
+    },
+    "credentialBoundary": {
+      "rule": "API keys may be available in the operator environment, but keys are never copied into prompts, docs, commits, browser storage, logs, handoff files, or review artifacts.",
+      "runtimePattern": "Live provider use must go through server-side environment variables or an approved backend gateway. The core SEIS product remains usable with zero cloud-provider keys.",
+      "forbiddenStorage": [
+        "repository files",
+        "IndexedDB",
+        "localStorage",
+        "browser cookies",
+        "agent memory",
+        "prompt transcripts",
+        "screenshots",
+        "GitHub issue or PR descriptions"
+      ]
+    },
+    "routerStatus": "planned-read-only-contract",
+    "routerRuntimeAuthority": false,
+    "permissionRuntimeBoundary": "status-and-plan-only",
+    "subagentRuntimeBoundary": "status-and-plan-only"
+  },
+  "requiredEvidenceBeforeAutonomousUse": [
+    "human approval for autonomous write execution",
+    "permission matrix enforced by executable tests",
+    "approval fixture enforced before write-gated actions",
+    "redaction fixture enforced before any provider or connector routing",
+    "explicit user-selected Obsidian source path before private vault dry-run",
+    "backend-only provider mediation before live model routing",
+    "current browser-smoke evidence and manual accessibility review",
+    "clean release-candidate worktree review before GitHub publication",
+    "public contributor onboarding pack generated from browser-local records",
+    "Obsidian starter vault manifest generated from repo-owned browser-local seed notes"
+  ],
+  "safetyBoundary": {
+    "privateObsidianVaultReadPerformed": false,
+    "privateNoteBodyCopied": false,
+    "providerCallsPerformed": false,
+    "credentialValidationPerformed": false,
+    "browserSecretsExposed": false,
+    "promptBodiesStored": false,
+    "autonomousWriteExecutionPerformed": false,
+    "backgroundRunnerEnabled": false,
+    "externalConnectorMutationPerformed": false,
+    "sshExecuted": false,
+    "deploymentPerformed": false,
+    "githubMutationPerformed": false,
+    "releaseApprovalGranted": false
+  },
+  "summary": {
+    "installedAiProfileCount": 24,
+    "workforceAssignmentCount": 25,
+    "managedSubAgentLaneCount": 6,
+    "autonomousAgentRosterCount": 12,
+    "roleSchemaRoleCount": 5,
+    "permissionLevelCount": 5,
+    "localAppDetectedCount": 8,
+    "mcpVendorSurfaceCount": 17,
+    "installedSkillCount": 38,
+    "launcherRouteCount": 18,
+    "snapshotInstalledLauncherRouteCount": 12,
+    "installedLauncherRouteCount": 12,
+    "pluginCapabilityCount": 5,
+    "connectorCapabilityCount": 21
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "id": "seis-local-ai-runtime-matrix-report",
+  "generatedAt": "2026-07-08T11:55:43.716Z",
+  "status": "runtime-matrix-defined-runtime-blocked",
+  "sourceMatrix": "content/development/seis-local-ai-runtime-matrix.json",
+  "summary": {
+    "runtimeRows": 9,
+    "hardwareRuntimeLanes": 5,
+    "installAllowed": false,
+    "checkpointDownloadAllowed": false,
+    "localInferenceAllowed": false,
+    "trainingAllowed": false,
+    "hfJobSubmissionAllowed": false,
+    "agiClaim": false
+  },
+  "publicClaims": {
+    "canClaimRuntimeMatrixExists": true,
+    "canClaim16gbLocalDemoSupported": true,
+    "canClaimAnyModelInstalled": false,
+    "canClaimOllamaModelPulled": false,
+    "canClaimLocalInferenceReady": false,
+    "canClaim20bRuntimeReady": false,
+    "canClaimTrainingExecuted": false,
+    "canClaimHFJobSubmitted": false,
+    "canClaimSEISOwnedFoundationModel": false,
+    "canClaimSEISFullyKnowledgeable": false,
+    "canClaim512BReady": false,
+    "canClaimAGI": false
+  },
+  "blockedBy": [
+    "no per-model human approval",
+    "no approved model artifact checksum",
+    "no measured runtime benchmark",
+    "no approved dataset card for training",
+    "no approved secret storage reference for HF Jobs",
+    "no training logs or checkpoints",
+    "no independent AGI evaluation evidence"
+  ]
+}

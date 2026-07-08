@@ -40,6 +40,12 @@ if (contract) {
   ensure(contract.routeId === "seis-second-brain-app", "contract must bind route id seis-second-brain-app");
   ensure(contract.vaultRoot === "/home/seis/SecondBrain", "contract must declare browser-local vault root");
   ensure(contract.trainingPackPath === "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md", "contract must declare browser-local training pack path");
+  ensure(contract.publicContributorPackPath === "/home/seis/SecondBrain/08-public/seis-public-contributor-onboarding.md", "contract must declare browser-local public contributor pack path");
+  ensure(contract.obsidianStarterVaultManifestPath === "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json", "contract must declare browser-local Obsidian starter vault manifest path");
+  ensure(contract.obsidianStarterVaultGuidePath === "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md", "contract must declare browser-local Obsidian starter vault guide path");
+  ensure(contract.aiCouncilReviewPackPath === "/home/seis/SecondBrain/10-ai-council/seis-ai-council-review-pack.md", "contract must declare browser-local AI council review pack path");
+  ensure(contract.obsidianGraphMapPath === "/home/seis/SecondBrain/11-graph/seis-obsidian-graph-map.md", "contract must declare browser-local Obsidian graph map path");
+  ensure(contract.agentTrainingDrillsPath === "/home/seis/SecondBrain/12-training/seis-agent-training-drills.md", "contract must declare browser-local agent training drills path");
   ensure(contract.releaseReviewPacketPath === "reports/seis-public-demo/pr54-review-packet-latest.md", "contract must declare PR #54 release review packet path");
   ensure(contract.languageModelTrainingCurriculum?.status === "planned-training-contract", "contract must bind planned language model training curriculum");
   ensure(contract.languageModelTrainingCurriculum?.contractPath === trainingCurriculumPath, "contract language model training curriculum path mismatch");
@@ -59,6 +65,199 @@ if (contract) {
   ensureArrayMin(contract.autonomousAgentRoster, 12, "autonomousAgentRoster");
   ensureArrayMin(contract.pipeline, 4, "pipeline");
   ensureArrayMin(contract.githubGates, 4, "githubGates");
+  ensure(contract.trainingCoverage?.status === "local-demo-read-only", "trainingCoverage must stay local-demo-read-only");
+  ensure(
+    contract.trainingCoverage?.source === "repo-owned browser-local Second Brain records only",
+    "trainingCoverage source must stay repo-owned browser-local only"
+  );
+  ensure(contract.trainingCoverage?.trainingPackPath === contract.trainingPackPath, "trainingCoverage path must match trainingPackPath");
+  for (const section of [
+    "installed AI launcher route coverage",
+    "autonomous agent roster onboarding",
+    "Obsidian safe import boundary",
+    "provider-neutral read-only model router",
+    "human approval gates",
+    "public demo release gates",
+    "public contributor no-key onboarding",
+    "Obsidian starter vault no-private-import export",
+    "installed AI council review pack",
+    "Obsidian wikilink graph map",
+    "agent training drills"
+  ]) {
+    ensure((contract.trainingCoverage?.requiredSections || []).includes(section), `trainingCoverage requiredSections missing ${section}`);
+  }
+  ensure(contract.trainingCoverage?.publicContributorPackPath === contract.publicContributorPackPath, "trainingCoverage public contributor pack path must match publicContributorPackPath");
+  ensure(contract.trainingCoverage?.aiCouncilReviewPackPath === contract.aiCouncilReviewPackPath, "trainingCoverage AI council review pack path must match aiCouncilReviewPackPath");
+  ensure(contract.trainingCoverage?.obsidianGraphMapPath === contract.obsidianGraphMapPath, "trainingCoverage Obsidian graph map path must match obsidianGraphMapPath");
+  ensure(contract.trainingCoverage?.agentTrainingDrillsPath === contract.agentTrainingDrillsPath, "trainingCoverage agent training drills path must match agentTrainingDrillsPath");
+  ensure(contract.publicContributorOnboarding?.status === "local-demo-no-key", "public contributor onboarding must stay local-demo-no-key");
+  for (const [field, expected] of [
+    ["requiresApiKeys", false],
+    ["requiresProviderLogin", false],
+    ["requiresPrivateObsidianVault", false],
+    ["requiresSsh", false],
+    ["requiresDeployment", false],
+    ["requiresGitHubWriteAccess", false]
+  ]) {
+    ensure(contract.publicContributorOnboarding?.[field] === expected, `public contributor onboarding ${field} must be ${expected}`);
+  }
+  for (const command of [
+    "npm run check:seis-second-brain",
+    "npm run check:seis-second-brain-readiness-contracts",
+    "npm run check:seis-second-brain-browser-smoke"
+  ]) {
+    ensure((contract.publicContributorOnboarding?.reviewCommands || []).includes(command), `public contributor onboarding reviewCommands missing ${command}`);
+  }
+  for (const phrase of [
+    "how to open the browser-local Second Brain",
+    "which installed AI profiles and sub-agent lanes are review-only",
+    "how Obsidian compatibility stays metadata-only and approval-gated",
+    "which GitHub merge and release gates remain blocked"
+  ]) {
+    ensure((contract.publicContributorOnboarding?.mustExplain || []).includes(phrase), `public contributor onboarding mustExplain missing ${phrase}`);
+  }
+  ensure(
+    contract.trainingCoverage?.installedAiCoverage?.sourceContract === "content/development/ai-workforce-assignments.json",
+    "trainingCoverage installed AI source contract mismatch"
+  );
+  ensure(
+    contract.trainingCoverage?.installedAiCoverage?.requireRegistryRequiredLauncherRoutes === true,
+    "trainingCoverage must require registry-required launcher routes"
+  );
+  ensure(
+    contract.trainingCoverage?.installedAiCoverage?.requireSecondBrainProfileForEachLauncherRoute === true,
+    "trainingCoverage must require Second Brain profile for every launcher route"
+  );
+  ensure(
+    contract.trainingCoverage?.installedAiCoverage?.requireNoLiveProviderCalls === true,
+    "trainingCoverage must forbid live provider calls"
+  );
+  ensure(
+    contract.trainingCoverage?.autonomousAgentCoverage?.requiredRosterCount === 12,
+    "trainingCoverage must require the 12-agent roster"
+  );
+  ensure(
+    (contract.autonomousAgentRoster || []).length >= contract.trainingCoverage?.autonomousAgentCoverage?.requiredRosterCount,
+    "trainingCoverage autonomous agent roster count is not satisfied"
+  );
+  ensure(
+    contract.trainingCoverage?.autonomousAgentCoverage?.requireNoWriteExecution === true,
+    "trainingCoverage must block autonomous write execution"
+  );
+  ensure(
+    contract.trainingCoverage?.autonomousAgentCoverage?.requireApprovalBeforeExternalMutation === true,
+    "trainingCoverage must require approval before external mutation"
+  );
+  ensure(contract.trainingCoverage?.obsidianCoverage?.bridgeStatus === "planned", "trainingCoverage Obsidian bridge must stay planned");
+  ensure(
+    contract.trainingCoverage?.obsidianCoverage?.bodyImportPolicy === "metadata-only-by-default",
+    "trainingCoverage Obsidian body policy must stay metadata-only"
+  );
+  for (const [field, expected] of [
+    ["privateVaultReadAllowed", false],
+    ["privateNoteBodyCopyAllowed", false],
+    ["pluginInstallAllowed", false]
+  ]) {
+    ensure(contract.trainingCoverage?.obsidianCoverage?.[field] === expected, `trainingCoverage Obsidian ${field} must be ${expected}`);
+  }
+  ensure(
+    contract.trainingCoverage?.obsidianCoverage?.starterVaultManifestPath === contract.obsidianStarterVaultManifestPath,
+    "trainingCoverage Obsidian starter vault manifest path must match the top-level contract path"
+  );
+  ensure(
+    contract.trainingCoverage?.obsidianCoverage?.starterVaultGuidePath === contract.obsidianStarterVaultGuidePath,
+    "trainingCoverage Obsidian starter vault guide path must match the top-level contract path"
+  );
+  ensure(
+    contract.trainingCoverage?.obsidianCoverage?.graphMapPath === contract.obsidianGraphMapPath,
+    "trainingCoverage Obsidian graph map path must match the top-level contract path"
+  );
+  ensure(contract.obsidianStarterVault?.status === "local-demo-no-key", "Obsidian starter vault must stay local-demo-no-key");
+  ensure(contract.obsidianStarterVault?.manifestPath === contract.obsidianStarterVaultManifestPath, "Obsidian starter vault manifest path mismatch");
+  ensure(contract.obsidianStarterVault?.guidePath === contract.obsidianStarterVaultGuidePath, "Obsidian starter vault guide path mismatch");
+  for (const [field, expected] of [
+    ["requiresPrivateObsidianVault", false],
+    ["requiresObsidianPlugin", false],
+    ["requiresHostFilesystemRead", false],
+    ["copiesDotObsidianState", false],
+    ["copiesPrivateNoteBodies", false],
+    ["providerCalls", false],
+    ["githubMutation", false],
+    ["humanApprovalBeforeImport", true]
+  ]) {
+    ensure(contract.obsidianStarterVault?.[field] === expected, `Obsidian starter vault ${field} must be ${expected}`);
+  }
+  ensure(contract.aiCouncilReviewPack?.status === "local-demo-no-key", "AI council review pack must stay local-demo-no-key");
+  ensure(contract.aiCouncilReviewPack?.packPath === contract.aiCouncilReviewPackPath, "AI council review pack path mismatch");
+  ensure(contract.aiCouncilReviewPack?.installedAiProfileCount === contract.installedAiProfiles.length, "AI council review pack installed AI profile count mismatch");
+  ensure(contract.aiCouncilReviewPack?.managedSubAgentLaneCount === contract.managedSubAgentLanes.length, "AI council review pack managed sub-agent lane count mismatch");
+  ensure(contract.aiCouncilReviewPack?.autonomousAgentRosterCount === contract.autonomousAgentRoster.length, "AI council review pack autonomous agent roster count mismatch");
+  for (const [field, expected] of [
+    ["requiresApiKeys", false],
+    ["requiresProviderLogin", false],
+    ["requiresPrivateObsidianVault", false],
+    ["providerCalls", false],
+    ["credentialValidation", false],
+    ["autonomousWriteExecution", false],
+    ["sshExecution", false],
+    ["deployment", false],
+    ["githubMutation", false],
+    ["humanApprovalBeforeUse", true]
+  ]) {
+    ensure(contract.aiCouncilReviewPack?.[field] === expected, `AI council review pack ${field} must be ${expected}`);
+  }
+  ensure(contract.obsidianGraphMap?.status === "local-demo-no-key", "Obsidian graph map must stay local-demo-no-key");
+  ensure(contract.obsidianGraphMap?.mapPath === contract.obsidianGraphMapPath, "Obsidian graph map path mismatch");
+  for (const [field, expected] of [
+    ["requiresPrivateObsidianVault", false],
+    ["requiresObsidianPlugin", false],
+    ["requiresHostFilesystemRead", false],
+    ["copiesPrivateNoteBodies", false],
+    ["providerCalls", false],
+    ["credentialValidation", false],
+    ["autonomousWriteExecution", false],
+    ["sshExecution", false],
+    ["deployment", false],
+    ["githubMutation", false],
+    ["humanApprovalBeforeImport", true]
+  ]) {
+    ensure(contract.obsidianGraphMap?.[field] === expected, `Obsidian graph map ${field} must be ${expected}`);
+  }
+  ensure(contract.agentTrainingDrills?.status === "local-demo-no-key", "agent training drills must stay local-demo-no-key");
+  ensure(contract.agentTrainingDrills?.drillsPath === contract.agentTrainingDrillsPath, "agent training drills path mismatch");
+  for (const [field, expected] of [
+    ["requiresApiKeys", false],
+    ["requiresProviderLogin", false],
+    ["requiresPrivateObsidianVault", false],
+    ["requiresObsidianPlugin", false],
+    ["providerCalls", false],
+    ["credentialValidation", false],
+    ["autonomousWriteExecution", false],
+    ["sshExecution", false],
+    ["deployment", false],
+    ["githubMutation", false],
+    ["humanApprovalBeforeUse", true]
+  ]) {
+    ensure(contract.agentTrainingDrills?.[field] === expected, `agent training drills ${field} must be ${expected}`);
+  }
+  for (const gate of [
+    "node scripts/check-seis-second-brain.mjs",
+    "node scripts/check-ai-workforce-assignments.mjs",
+    "node scripts/create-seis-second-brain-agent-registry.mjs --check"
+  ]) {
+    ensure((contract.trainingCoverage?.qualityGates || []).includes(gate), `trainingCoverage qualityGates missing ${gate}`);
+  }
+  for (const blocker of [
+    "private Obsidian import",
+    "live provider routing",
+    "autonomous write execution",
+    "GitHub merge or release"
+  ]) {
+    ensure(
+      (contract.trainingCoverage?.blockedUntil || []).some((item) => String(item).includes(blocker)),
+      `trainingCoverage blockedUntil missing ${blocker}`
+    );
+  }
 
   const noteIds = new Set((contract.vaultNotes || []).map((note) => note.id));
   for (const note of contract.vaultNotes || []) {
@@ -90,11 +289,19 @@ for (const phrase of [
   "Obsidian-style Markdown vault",
   "installed AI profiles",
   "bounded sub-agent lanes",
-  "all 6 current installed AI profiles",
+  "6 browser runtime AI fixture profiles",
+  "24 Second Brain profiles",
+  "18 launcher routes",
+  "12 installed launcher routes",
   "All 6 current managed SEIS sub-agent lanes",
   "12-agent target roster",
   "GitHub readiness",
   "Agent training pack",
+  "Public contributor onboarding pack",
+  "Obsidian starter vault",
+  "AI council review pack",
+  "Obsidian graph map",
+  "Agent training drills",
   "Language model training curriculum",
   "without installing models",
   "Human review required",
@@ -119,6 +326,11 @@ for (const phrase of [
   "second-brain-capture",
   "second-brain-link",
   "second-brain-training-pack",
+  "second-brain-public-contributor-pack",
+  "second-brain-obsidian-starter-vault",
+  "second-brain-ai-council-pack",
+  "second-brain-obsidian-graph-map",
+  "second-brain-agent-training-drills",
   "second-brain-review",
   "second-brain-export-github",
   "Save Vault Snapshot",
@@ -129,6 +341,12 @@ for (const phrase of [
   "seis-second-brain-vault-snapshot.md",
   "github-readiness-review.md",
   "seis-agent-training-pack.md",
+  "seis-public-contributor-onboarding.md",
+  "seis-obsidian-starter-vault-manifest.json",
+  "seis-obsidian-starter-vault.md",
+  "seis-ai-council-review-pack.md",
+  "seis-obsidian-graph-map.md",
+  "seis-agent-training-drills.md",
   "releaseReviewPacketPath",
   "pr54-review-packet-latest.md",
   "seis-language-model-training-curriculum.json",
@@ -137,7 +355,37 @@ for (const phrase of [
   "No model install",
   "exportSecondBrainTrainingPack",
   "buildSecondBrainTrainingPackMarkdown",
+  "exportSecondBrainPublicContributorPack",
+  "buildSecondBrainPublicContributorPackMarkdown",
+  "exportSecondBrainObsidianStarterVault",
+  "buildSecondBrainObsidianStarterVaultManifest",
+  "buildSecondBrainObsidianStarterVaultGuideMarkdown",
+  "exportSecondBrainAiCouncilReviewPack",
+  "buildSecondBrainAiCouncilReviewPackMarkdown",
+  "exportSecondBrainObsidianGraphMap",
+  "buildSecondBrainObsidianGraphMapMarkdown",
+  "exportSecondBrainAgentTrainingDrills",
+  "buildSecondBrainAgentTrainingDrillsMarkdown",
+  "publicContributorPackPath",
+  "publicContributorOnboarding",
+  "obsidianStarterVaultManifestPath",
+  "obsidianStarterVaultGuidePath",
+  "obsidianStarterVault",
+  "aiCouncilReviewPackPath",
+  "aiCouncilReviewPack",
+  "obsidianGraphMapPath",
+  "obsidianGraphMap",
+  "agentTrainingDrillsPath",
+  "agentTrainingDrills",
   "SEIS_INSTALLED_AI_SYSTEMS.length",
+  "registrySummary",
+  "data-second-brain-launcher-evidence",
+  "Registry AI Profiles",
+  "Launcher Routes",
+  "Installed Routes",
+  "Observed registry AI profiles",
+  "Observed launcher routes",
+  "Review-Only Registry Launcher Evidence",
   "SUB_AGENT_DEMO.lanes.length",
   "autonomousAgentRoster",
   "Obsidian bridge planned",

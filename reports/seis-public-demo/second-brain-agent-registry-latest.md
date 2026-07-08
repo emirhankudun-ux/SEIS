@@ -1,6 +1,6 @@
 # SEIS Second Brain Agent Registry
 
-Generated: 2026-06-29T13:22:42.859Z
+Generated: 2026-07-08T11:40:21.973Z
 Status: review-only-agent-registry
 Mode: repo-local-no-live-execution
 Decision: NO-GO-autonomous-execution-not-approved
@@ -11,8 +11,8 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 
 | Metric | Count |
 | --- | ---: |
-| Installed AI profiles | 6 |
-| AI workforce assignments | 10 |
+| Installed AI profiles | 24 |
+| AI workforce assignments | 25 |
 | Managed sub-agent lanes | 6 |
 | Autonomous agent roster | 12 |
 | Role schema roles | 5 |
@@ -20,17 +20,70 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 | Local apps detected in inventory | 8 |
 | MCP vendor surfaces | 17 |
 | Installed skills in inventory | 38 |
+| Launcher routes | 18 |
+| Snapshot installed launcher routes | 12 |
 
 ## Second Brain Binding
 
 - status: local-demo
-- vaultRoot: /home/seis/SecondBrain
-- trainingPackPath: /home/seis/SecondBrain/07-learning/seis-agent-training-pack.md
+- vaultRoot: browser-vfs/SecondBrain
+- trainingPackPath: browser-vfs/SecondBrain/07-learning/seis-agent-training-pack.md
+- publicContributorPackPath: browser-vfs/SecondBrain/08-public/seis-public-contributor-onboarding.md
+- obsidianStarterVaultManifestPath: browser-vfs/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json
+- obsidianStarterVaultGuidePath: browser-vfs/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md
+- aiCouncilReviewPackPath: browser-vfs/SecondBrain/10-ai-council/seis-ai-council-review-pack.md
+- obsidianGraphMapPath: browser-vfs/SecondBrain/11-graph/seis-obsidian-graph-map.md
+- agentTrainingDrillsPath: browser-vfs/SecondBrain/12-training/seis-agent-training-drills.md
 - obsidianBridgeStatus: planned
 - privateVaultImportEnabled: false
 - hostVaultReadEnabled: false
 - bodyImportPolicy: metadata-only-by-default
 - githubMutationEnabled: false
+
+## Training Coverage
+
+- status: local-demo-read-only
+- source: repo-owned browser-local Second Brain records only
+- trainingPackPath: browser-vfs/SecondBrain/07-learning/seis-agent-training-pack.md
+- publicContributorPackPath: browser-vfs/SecondBrain/08-public/seis-public-contributor-onboarding.md
+- obsidianStarterVaultManifestPath: browser-vfs/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json
+- obsidianStarterVaultGuidePath: browser-vfs/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md
+- aiCouncilReviewPackPath: browser-vfs/SecondBrain/10-ai-council/seis-ai-council-review-pack.md
+- obsidianGraphMapPath: browser-vfs/SecondBrain/11-graph/seis-obsidian-graph-map.md
+- agentTrainingDrillsPath: browser-vfs/SecondBrain/12-training/seis-agent-training-drills.md
+- requiredSections: installed AI launcher route coverage, autonomous agent roster onboarding, Obsidian safe import boundary, provider-neutral read-only model router, human approval gates, public demo release gates, public contributor no-key onboarding, Obsidian starter vault no-private-import export, installed AI council review pack, Obsidian wikilink graph map, agent training drills
+- installedAiCoverage: launcher routes=true, profiles=true, noLiveProviderCalls=true
+- autonomousAgentCoverage: requiredRosterCount=12, noWriteExecution=true, approvalBeforeExternalMutation=true
+- obsidianCoverage: bridgeStatus=planned, bodyImportPolicy=metadata-only-by-default, privateVaultReadAllowed=false, privateNoteBodyCopyAllowed=false, pluginInstallAllowed=false
+
+## Launcher Evidence Coverage
+
+- command: npm run ai -- list
+- snapshotType: author-observed-local-snapshot
+- observedDate: 2026-07-01
+- mode: local route readiness only
+- runtimeValidationPolicy: recompute=node scripts/ai-launcher.cjs list, countsInstalledRoutesFromCurrentRuntime=true, snapshotIsNotPublicReadinessClaim=true
+
+| Route | Status | Second Brain profile | Workforce assignment found | Profile found |
+| --- | --- | --- | --- | --- |
+| seis-agent | installed | seis-agent-policy-profile | true | true |
+| codex | installed | codex-operator | true | true |
+| antigravity | installed | antigravity | true | true |
+| antigravity-ide | installed | antigravity-ide | true | true |
+| cursor | installed | cursor-ide-profile | true | true |
+| xcode | installed | xcode | true | true |
+| openai | missing-command | openai-general-profile | true | true |
+| claude | missing-ANTHROPIC_API_KEY | claude-review-profile | true | true |
+| gemini | missing-GEMINI_API_KEY | gemini-validation-profile | true | true |
+| qwen | installed | qwen-review-profile | true | true |
+| kimi | installed | kimi | true | true |
+| ollama | runtime-not-ready | ollama-local-profile | true | true |
+| opencode | installed | opencode | true | true |
+| aider | missing-command | aider | true | true |
+| interpreter | missing-command | interpreter | true | true |
+| hermes | installed | hermes | true | true |
+| goose | installed | goose | true | true |
+| open-design | installed | open-design | true | true |
 
 ## Provider Profiles
 
@@ -38,25 +91,58 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 | --- | --- | --- | --- |
 | codex-operator | installed | review-context-only | false |
 | seis-local-demo | local-demo | local-demo-context | false |
-| claude-review-profile | route-defined-current-shell-missing-key | review-context-only | false |
+| seis-agent-policy-profile | installed | review-context-only | false |
+| claude-review-profile | missing-ANTHROPIC_API_KEY | review-context-only | false |
 | qwen-review-profile | installed | review-context-only | false |
-| gemini-validation-profile | route-defined-current-shell-missing-key | review-context-only | false |
-| ollama-local-profile | installed | review-context-only | false |
+| gemini-validation-profile | missing-GEMINI_API_KEY | review-context-only | false |
+| ollama-local-profile | runtime-not-ready | review-context-only | false |
+| openai-general-profile | missing-command | review-context-only | false |
+| anthropic-claude-profile | route-defined-current-shell-missing-key | review-context-only | false |
+| chatgpt-review-profile | route-defined-current-shell-missing-key | review-context-only | false |
+| openrouter-provider-profile | planned | review-context-only | false |
+| cursor-ide-profile | installed | review-context-only | false |
+| xcode | installed | review-context-only | false |
+| github-copilot-profile | planned | review-context-only | false |
+| lm-studio-local-profile | planned | review-context-only | false |
+| open-design | installed | review-context-only | false |
+| antigravity | installed | review-context-only | false |
+| antigravity-ide | installed | review-context-only | false |
+| aider | missing-command | review-context-only | false |
+| interpreter | missing-command | review-context-only | false |
+| hermes | installed | review-context-only | false |
+| goose | installed | review-context-only | false |
+| kimi | installed | review-context-only | false |
+| opencode | installed | review-context-only | false |
 
 ## AI Workforce Assignments
 
 | ID | Name | Category | Status | Write authority |
 | --- | --- | --- | --- | --- |
 | codex | Codex | primary-writer | installed | primary-writer-human-supervised |
-| claude | Claude | architecture-review | route-defined-current-shell-missing-key | review-or-plan-only |
+| seis-agent | SEIS Agent | policy-orchestration | installed | review-or-plan-only |
+| claude | Claude | architecture-review | missing-ANTHROPIC_API_KEY | review-or-plan-only |
 | qwen | Qwen | contradiction-review | installed | review-or-plan-only |
-| gemini | Gemini | external-readiness-review | route-defined-current-shell-missing-key | review-or-plan-only |
+| gemini | Gemini | external-readiness-review | missing-GEMINI_API_KEY | review-or-plan-only |
 | coderabbit | CodeRabbit | pull-request-review | pr-dependent | review-or-plan-only |
-| ollama | Ollama / Local Model | local-private-draft | installed | review-or-plan-only |
+| ollama | Ollama / Local Model | local-private-draft | runtime-not-ready | review-or-plan-only |
 | open-design | OpenDesign / Design Agent | visual-system-review | installed | review-or-plan-only |
+| antigravity | Antigravity | creative-workflow-assistant | installed | review-or-plan-only |
+| antigravity-ide | Antigravity IDE | ide-assistant | installed | review-or-plan-only |
+| aider | Aider | bounded-terminal-coding-helper | missing-command | review-or-plan-only |
+| interpreter | Open Interpreter | local-code-execution-review | missing-command | review-or-plan-only |
+| hermes | Hermes | local-multi-agent-assistant | installed | review-or-plan-only |
+| goose | Goose | local-build-orchestration-review | installed | review-or-plan-only |
 | github-actions | GitHub Actions | automation-validation | remote-ci | review-or-plan-only |
-| kimi | Kimi / Kimi Code | conditional-code-and-localization-review | route-defined-current-shell-missing-command | review-or-plan-only |
+| kimi | Kimi / Kimi Code | conditional-code-and-localization-review | installed | review-or-plan-only |
 | opencode | OpenCode | bounded-terminal-coding-helper | installed | review-or-plan-only |
+| openai | OpenAI / General Provider | cloud-provider-review | missing-command | review-or-plan-only |
+| anthropic | Anthropic / Claude Provider | cloud-provider-review | route-defined-current-shell-missing-key | review-or-plan-only |
+| chatgpt | ChatGPT | planning-triage | route-defined-current-shell-missing-key | review-or-plan-only |
+| openrouter | OpenRouter | provider-gateway-review | planned | review-or-plan-only |
+| cursor | Cursor | editor-assistant | installed | review-or-plan-only |
+| xcode | Xcode | local-ide-assistant | installed | review-or-plan-only |
+| github-copilot | GitHub Copilot | ide-assistant | planned | review-or-plan-only |
+| lm-studio | LM Studio | local-model-experiment | planned | review-or-plan-only |
 
 ## Autonomous Agent Roster
 
@@ -107,6 +193,8 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 - backend-only provider mediation before live model routing
 - current browser-smoke evidence and manual accessibility review
 - clean release-candidate worktree review before GitHub publication
+- public contributor onboarding pack generated from browser-local records
+- Obsidian starter vault manifest generated from repo-owned browser-local seed notes
 
 ## Safety Boundary
 
