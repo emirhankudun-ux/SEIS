@@ -50,7 +50,9 @@
     .hero-card,
     .panel,
     .step,
-    .boundary {
+    .boundary,
+    .review-console,
+    .mission-card {
       border: 1px solid var(--line);
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.078), rgba(255, 255, 255, 0.035));
       box-shadow: var(--shadow);
@@ -179,6 +181,12 @@
       background: linear-gradient(135deg, rgba(110, 231, 245, 0.28), rgba(169, 164, 255, 0.2));
     }
 
+    .button:focus-visible,
+    .mission-card button:focus-visible {
+      outline: 3px solid rgba(110, 231, 245, 0.72);
+      outline-offset: 3px;
+    }
+
     .note {
       margin-top: 28px;
       color: rgba(244, 241, 232, 0.62);
@@ -188,7 +196,9 @@
 
     .panel,
     .step,
-    .boundary {
+    .boundary,
+    .review-console,
+    .mission-card {
       border-radius: 24px;
       background: var(--panel);
     }
@@ -231,7 +241,9 @@
 
     .metric span,
     .step p,
-    .boundary p {
+    .boundary p,
+    .mission-card p,
+    .console-copy {
       display: block;
       margin-top: 8px;
       color: var(--muted);
@@ -254,6 +266,175 @@
       margin-top: 24px;
     }
 
+    .review-console {
+      margin-top: 24px;
+      padding: clamp(22px, 4vw, 34px);
+      overflow: hidden;
+    }
+
+    .console-header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(230px, 0.36fr);
+      gap: 20px;
+      align-items: end;
+    }
+
+    .console-header h2 {
+      margin: 8px 0 0;
+      font-size: clamp(28px, 5vw, 48px);
+      line-height: 1;
+      letter-spacing: -0.055em;
+    }
+
+    .progress-shell {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(0, 0, 0, 0.18);
+    }
+
+    .progress-shell span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      height: 10px;
+      margin-top: 10px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.09);
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--cyan), var(--violet), var(--amber));
+      transition: width 220ms ease;
+    }
+
+    .console-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(290px, 0.34fr);
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .mission-stack {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .mission-card {
+      position: relative;
+      min-height: 178px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      transition: border-color 180ms ease, transform 180ms ease, background 180ms ease;
+    }
+
+    .mission-card::before {
+      content: attr(data-state-label);
+      display: inline-flex;
+      margin-bottom: 12px;
+      padding: 5px 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.05);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .mission-card[data-done="true"] {
+      border-color: rgba(128, 230, 166, 0.48);
+      background: linear-gradient(180deg, rgba(128, 230, 166, 0.13), rgba(255, 255, 255, 0.035));
+    }
+
+    .mission-card b {
+      display: block;
+      font-size: 16px;
+    }
+
+    .mission-card button {
+      width: 100%;
+      min-height: 42px;
+      margin-top: 16px;
+      border: 1px solid rgba(110, 231, 245, 0.38);
+      border-radius: 14px;
+      color: var(--ink);
+      background: rgba(110, 231, 245, 0.1);
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+    }
+
+    .mission-card button:hover {
+      transform: translateY(-1px);
+      background: rgba(110, 231, 245, 0.16);
+    }
+
+    .console-output {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(0, 0, 0, 0.22);
+    }
+
+    .console-output h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .console-output p {
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .review-note {
+      display: block;
+      min-height: 122px;
+      margin-top: 10px;
+      padding: 12px;
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      color: var(--green);
+      background: rgba(0, 0, 0, 0.26);
+      white-space: pre-wrap;
+    }
+
+    .console-actions {
+      display: grid;
+      gap: 10px;
+      margin-top: auto;
+    }
+
+    .console-actions button,
+    .console-actions a {
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.06);
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+    }
+
     code {
       color: var(--green);
       font-family: "SFMono-Regular", "Cascadia Code", monospace;
@@ -263,7 +444,10 @@
     @media (max-width: 900px) {
       .hero,
       .grid,
-      .boundary-grid {
+      .boundary-grid,
+      .console-header,
+      .console-layout,
+      .mission-stack {
         grid-template-columns: 1fr;
       }
 
@@ -281,7 +465,9 @@
       .hero-card,
       .panel,
       .step,
-      .boundary {
+      .boundary,
+      .review-console,
+      .mission-card {
         animation: rise 620ms ease both;
       }
 
@@ -346,6 +532,72 @@
       </aside>
     </section>
 
+    <section class="review-console" aria-labelledby="review-console-title" data-reviewer-console>
+      <div class="console-header">
+        <div>
+          <p class="eyebrow">Interactive reviewer console</p>
+          <h2 id="review-console-title">Run the public demo like a product review, not a static checklist.</h2>
+          <p class="console-copy">
+            This browser-local console persists reviewer progress with
+            <code>seis.publicDemoReviewerConsole.v1</code>. It does not approve a
+            release, touch supplied assets, call providers, execute SSH, or write
+            outside this browser session.
+          </p>
+        </div>
+        <div class="progress-shell" aria-live="polite">
+          <span id="mission-progress-label">0 of 6 complete</span>
+          <div class="progress-track" aria-hidden="true">
+            <div class="progress-bar" data-progress-bar></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="console-layout">
+        <div class="mission-stack" aria-label="Reviewer mission steps">
+          <article class="mission-card" data-mission="open-live" data-state-label="Real route">
+            <b>Open live SEIS shell</b>
+            <p>Launch the deep link in a new tab and verify boot, desktop, dock, launcher, and Live Demo Console.</p>
+            <button type="button" data-console-action="open-live" aria-pressed="false">Open and mark checked</button>
+          </article>
+          <article class="mission-card" data-mission="copy-server-command" data-state-label="Local run">
+            <b>Copy local server command</b>
+            <p>Use the zero-key static server command before review; it serves only the local <code>apps/web</code> package.</p>
+            <button type="button" data-console-action="copy-server-command" aria-pressed="false">Copy command</button>
+          </article>
+          <article class="mission-card" data-mission="reference-vault" data-state-label="Supplied assets">
+            <b>Verify Reference Vault</b>
+            <p>Confirm the 219 supplied reference modules remain available through local iframe-backed routes.</p>
+            <button type="button" data-console-action="toggle" aria-pressed="false">Mark Reference Vault checked</button>
+          </article>
+          <article class="mission-card" data-mission="terminal-commands" data-state-label="Browser-local">
+            <b>Run terminal commands</b>
+            <p>Use <code>live</code>, <code>readiness</code>, and <code>sources</code> inside the demo terminal.</p>
+            <button type="button" data-console-action="toggle" aria-pressed="false">Mark terminal checked</button>
+          </article>
+          <article class="mission-card" data-mission="safety-boundary" data-state-label="Disabled live ops">
+            <b>Read safety boundary</b>
+            <p>Confirm no SSH execution, host shell, deployment, provider call, browser key, or credential storage is enabled.</p>
+            <button type="button" data-console-action="toggle" aria-pressed="false">Mark safety checked</button>
+          </article>
+          <article class="mission-card" data-mission="export-reviewer-note" data-state-label="Review artifact">
+            <b>Export reviewer note</b>
+            <p>Copy a compact reviewer note that distinguishes real, local demo, mock-safe, and disabled surfaces.</p>
+            <button type="button" data-console-action="export-reviewer-note" aria-pressed="false">Copy reviewer note</button>
+          </article>
+        </div>
+
+        <aside class="console-output" aria-live="polite">
+          <h3>Console status</h3>
+          <p data-console-status>Waiting for reviewer action.</p>
+          <code class="review-note" data-review-note>SEIS public demo review not started yet.</code>
+          <div class="console-actions">
+            <button type="button" data-console-action="reset">Reset local checklist</button>
+            <a href="./seis-linux-replica.html?demo=live">Open live route in this tab</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
     <section class="grid" aria-label="Seven minute walkthrough">
       <article class="step"><b>1. Enter the OS</b><p>Open the live demo and let the browser-local SEIS boot/login flow open the desktop shell.</p></article>
       <article class="step"><b>2. Use Live Demo Console</b><p>Walk through Search, Code, Design, Cloud, Store, Music, AI Core, and Reference Vault surfaces.</p></article>
@@ -362,5 +614,141 @@
       <article class="boundary"><b>Validate</b><p>Run <code>node scripts/check-seis-static-demo-routes.mjs</code> and the focused browser smoke before release.</p></article>
     </section>
   </main>
+  <script>
+    (() => {
+      const storageKey = "seis.publicDemoReviewerConsole.v1";
+      const serverCommand = "python3 -m http.server 50951 --bind 127.0.0.1 --directory apps/web";
+      const initialState = {
+        "open-live": false,
+        "copy-server-command": false,
+        "reference-vault": false,
+        "terminal-commands": false,
+        "safety-boundary": false,
+        "export-reviewer-note": false
+      };
+
+      const cards = Array.from(document.querySelectorAll("[data-mission]"));
+      const status = document.querySelector("[data-console-status]");
+      const progressLabel = document.getElementById("mission-progress-label");
+      const progressBar = document.querySelector("[data-progress-bar]");
+      const reviewNote = document.querySelector("[data-review-note]");
+
+      function loadState() {
+        try {
+          return { ...initialState, ...JSON.parse(localStorage.getItem(storageKey) || "{}") };
+        } catch {
+          return { ...initialState };
+        }
+      }
+
+      let state = loadState();
+
+      function makeNote() {
+        const complete = Object.values(state).filter(Boolean).length;
+        return [
+          "SEIS Linux Replica public demo reviewer note",
+          `Progress: ${complete}/6 reviewer console steps complete`,
+          "Real: boot/login, shell, launcher, windows, Reference Vault, live route",
+          "Local demo: AI Core, Code, Design, Cloud, Store, Music browser state",
+          "Disabled: SSH, sudo, host shell, deployment, provider calls, frontend secrets",
+          "Validation: run node scripts/check-seis-linux-replica-public-walkthrough.mjs and focused browser smoke before release"
+        ].join("\n");
+      }
+
+      function saveState(message) {
+        let nextMessage = message;
+        try {
+          localStorage.setItem(storageKey, JSON.stringify(state));
+        } catch {
+          nextMessage = `${message} Browser storage is unavailable, so progress is kept only in this page session.`;
+        }
+        render(nextMessage);
+      }
+
+      function render(message = "Reviewer console ready.") {
+        const complete = Object.values(state).filter(Boolean).length;
+        const total = Object.keys(initialState).length;
+        const pct = Math.round((complete / total) * 100);
+        progressLabel.textContent = `${complete} of ${total} complete`;
+        progressBar.style.width = `${pct}%`;
+        reviewNote.textContent = makeNote();
+        status.textContent = message;
+
+        for (const card of cards) {
+          const id = card.dataset.mission;
+          const done = Boolean(state[id]);
+          card.dataset.done = String(done);
+          const button = card.querySelector("button");
+          if (button) {
+            button.setAttribute("aria-pressed", String(done));
+          }
+        }
+      }
+
+      async function copyText(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+          return;
+        }
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        textarea.setAttribute("readonly", "");
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        textarea.remove();
+      }
+
+      document.addEventListener("click", async (event) => {
+        const trigger = event.target.closest("[data-console-action]");
+        if (!trigger) return;
+
+        const card = trigger.closest("[data-mission]");
+        const mission = card?.dataset.mission;
+        const action = trigger.dataset.consoleAction;
+
+        if (action === "reset") {
+          state = { ...initialState };
+          try {
+            localStorage.removeItem(storageKey);
+          } catch {
+            // Storage may be unavailable in hardened/private browsing modes.
+          }
+          render("Local reviewer checklist reset. No repository files or supplied assets were touched.");
+          return;
+        }
+
+        if (action === "open-live") {
+          state["open-live"] = true;
+          saveState("Opening live SEIS shell in a new tab.");
+          window.open("./seis-linux-replica.html?demo=live", "_blank", "noopener");
+          return;
+        }
+
+        if (action === "copy-server-command") {
+          state["copy-server-command"] = true;
+          await copyText(serverCommand);
+          saveState("Copied local static server command.");
+          return;
+        }
+
+        if (action === "export-reviewer-note") {
+          state["export-reviewer-note"] = true;
+          await copyText(makeNote());
+          saveState("Copied reviewer note with real/local/mock/disabled boundaries.");
+          return;
+        }
+
+        if (mission) {
+          state[mission] = !state[mission];
+          saveState(state[mission] ? "Reviewer step marked complete." : "Reviewer step marked incomplete.");
+        }
+      });
+
+      render("Reviewer console ready.");
+    })();
+  </script>
 </body>
 </html>
