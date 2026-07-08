@@ -44,6 +44,7 @@ if (contract) {
   ensure(contract.obsidianStarterVaultManifestPath === "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json", "contract must declare browser-local Obsidian starter vault manifest path");
   ensure(contract.obsidianStarterVaultGuidePath === "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md", "contract must declare browser-local Obsidian starter vault guide path");
   ensure(contract.aiCouncilReviewPackPath === "/home/seis/SecondBrain/10-ai-council/seis-ai-council-review-pack.md", "contract must declare browser-local AI council review pack path");
+  ensure(contract.obsidianGraphMapPath === "/home/seis/SecondBrain/11-graph/seis-obsidian-graph-map.md", "contract must declare browser-local Obsidian graph map path");
   ensure(contract.releaseReviewPacketPath === "reports/seis-public-demo/pr54-review-packet-latest.md", "contract must declare PR #54 release review packet path");
   ensure(contract.languageModelTrainingCurriculum?.status === "planned-training-contract", "contract must bind planned language model training curriculum");
   ensure(contract.languageModelTrainingCurriculum?.contractPath === trainingCurriculumPath, "contract language model training curriculum path mismatch");
@@ -78,12 +79,14 @@ if (contract) {
     "public demo release gates",
     "public contributor no-key onboarding",
     "Obsidian starter vault no-private-import export",
-    "installed AI council review pack"
+    "installed AI council review pack",
+    "Obsidian wikilink graph map"
   ]) {
     ensure((contract.trainingCoverage?.requiredSections || []).includes(section), `trainingCoverage requiredSections missing ${section}`);
   }
   ensure(contract.trainingCoverage?.publicContributorPackPath === contract.publicContributorPackPath, "trainingCoverage public contributor pack path must match publicContributorPackPath");
   ensure(contract.trainingCoverage?.aiCouncilReviewPackPath === contract.aiCouncilReviewPackPath, "trainingCoverage AI council review pack path must match aiCouncilReviewPackPath");
+  ensure(contract.trainingCoverage?.obsidianGraphMapPath === contract.obsidianGraphMapPath, "trainingCoverage Obsidian graph map path must match obsidianGraphMapPath");
   ensure(contract.publicContributorOnboarding?.status === "local-demo-no-key", "public contributor onboarding must stay local-demo-no-key");
   for (const [field, expected] of [
     ["requiresApiKeys", false],
@@ -162,6 +165,10 @@ if (contract) {
     contract.trainingCoverage?.obsidianCoverage?.starterVaultGuidePath === contract.obsidianStarterVaultGuidePath,
     "trainingCoverage Obsidian starter vault guide path must match the top-level contract path"
   );
+  ensure(
+    contract.trainingCoverage?.obsidianCoverage?.graphMapPath === contract.obsidianGraphMapPath,
+    "trainingCoverage Obsidian graph map path must match the top-level contract path"
+  );
   ensure(contract.obsidianStarterVault?.status === "local-demo-no-key", "Obsidian starter vault must stay local-demo-no-key");
   ensure(contract.obsidianStarterVault?.manifestPath === contract.obsidianStarterVaultManifestPath, "Obsidian starter vault manifest path mismatch");
   ensure(contract.obsidianStarterVault?.guidePath === contract.obsidianStarterVaultGuidePath, "Obsidian starter vault guide path mismatch");
@@ -195,6 +202,23 @@ if (contract) {
     ["humanApprovalBeforeUse", true]
   ]) {
     ensure(contract.aiCouncilReviewPack?.[field] === expected, `AI council review pack ${field} must be ${expected}`);
+  }
+  ensure(contract.obsidianGraphMap?.status === "local-demo-no-key", "Obsidian graph map must stay local-demo-no-key");
+  ensure(contract.obsidianGraphMap?.mapPath === contract.obsidianGraphMapPath, "Obsidian graph map path mismatch");
+  for (const [field, expected] of [
+    ["requiresPrivateObsidianVault", false],
+    ["requiresObsidianPlugin", false],
+    ["requiresHostFilesystemRead", false],
+    ["copiesPrivateNoteBodies", false],
+    ["providerCalls", false],
+    ["credentialValidation", false],
+    ["autonomousWriteExecution", false],
+    ["sshExecution", false],
+    ["deployment", false],
+    ["githubMutation", false],
+    ["humanApprovalBeforeImport", true]
+  ]) {
+    ensure(contract.obsidianGraphMap?.[field] === expected, `Obsidian graph map ${field} must be ${expected}`);
   }
   for (const gate of [
     "node scripts/check-seis-second-brain.mjs",
@@ -256,6 +280,7 @@ for (const phrase of [
   "Public contributor onboarding pack",
   "Obsidian starter vault",
   "AI council review pack",
+  "Obsidian graph map",
   "Language model training curriculum",
   "without installing models",
   "Human review required",
@@ -283,6 +308,7 @@ for (const phrase of [
   "second-brain-public-contributor-pack",
   "second-brain-obsidian-starter-vault",
   "second-brain-ai-council-pack",
+  "second-brain-obsidian-graph-map",
   "second-brain-review",
   "second-brain-export-github",
   "Save Vault Snapshot",
@@ -297,6 +323,7 @@ for (const phrase of [
   "seis-obsidian-starter-vault-manifest.json",
   "seis-obsidian-starter-vault.md",
   "seis-ai-council-review-pack.md",
+  "seis-obsidian-graph-map.md",
   "releaseReviewPacketPath",
   "pr54-review-packet-latest.md",
   "seis-language-model-training-curriculum.json",
@@ -312,6 +339,8 @@ for (const phrase of [
   "buildSecondBrainObsidianStarterVaultGuideMarkdown",
   "exportSecondBrainAiCouncilReviewPack",
   "buildSecondBrainAiCouncilReviewPackMarkdown",
+  "exportSecondBrainObsidianGraphMap",
+  "buildSecondBrainObsidianGraphMapMarkdown",
   "publicContributorPackPath",
   "publicContributorOnboarding",
   "obsidianStarterVaultManifestPath",
@@ -319,6 +348,8 @@ for (const phrase of [
   "obsidianStarterVault",
   "aiCouncilReviewPackPath",
   "aiCouncilReviewPack",
+  "obsidianGraphMapPath",
+  "obsidianGraphMap",
   "SEIS_INSTALLED_AI_SYSTEMS.length",
   "registrySummary",
   "data-second-brain-launcher-evidence",

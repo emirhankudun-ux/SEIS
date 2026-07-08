@@ -60,6 +60,7 @@ if (shouldCheck) {
     "autonomousWriteExecutionPerformed: false",
     "obsidianStarterVaultManifestPath",
     "aiCouncilReviewPackPath",
+    "obsidianGraphMapPath",
     "No private Obsidian import, provider call, credential validation, SSH, GitHub mutation, or deployment is performed"
   ]) {
     ensure(existingMarkdown.includes(phrase), `Markdown artifact missing phrase: ${phrase}.`);
@@ -161,6 +162,7 @@ function buildReport(generatedAt) {
       obsidianStarterVaultManifestPath: publicSecondBrainPath(secondBrain?.obsidianStarterVaultManifestPath),
       obsidianStarterVaultGuidePath: publicSecondBrainPath(secondBrain?.obsidianStarterVaultGuidePath),
       aiCouncilReviewPackPath: publicSecondBrainPath(secondBrain?.aiCouncilReviewPackPath),
+      obsidianGraphMapPath: publicSecondBrainPath(secondBrain?.obsidianGraphMapPath),
       obsidianBridgeStatus: secondBrain?.obsidianBridge?.status,
       privateVaultImportEnabled: obsidianContract?.currentRuntime?.privateVaultImportEnabled ?? false,
       hostVaultReadEnabled: obsidianContract?.currentRuntime?.hostVaultReadEnabled ?? false,
@@ -175,13 +177,15 @@ function buildReport(generatedAt) {
       obsidianStarterVaultManifestPath: publicSecondBrainPath(secondBrain?.trainingCoverage?.obsidianCoverage?.starterVaultManifestPath),
       obsidianStarterVaultGuidePath: publicSecondBrainPath(secondBrain?.trainingCoverage?.obsidianCoverage?.starterVaultGuidePath),
       aiCouncilReviewPackPath: publicSecondBrainPath(secondBrain?.trainingCoverage?.aiCouncilReviewPackPath),
+      obsidianGraphMapPath: publicSecondBrainPath(secondBrain?.trainingCoverage?.obsidianGraphMapPath),
       requiredSections: secondBrain?.trainingCoverage?.requiredSections || [],
       installedAiCoverage: secondBrain?.trainingCoverage?.installedAiCoverage || {},
       autonomousAgentCoverage: secondBrain?.trainingCoverage?.autonomousAgentCoverage || {},
       obsidianCoverage: {
         ...(secondBrain?.trainingCoverage?.obsidianCoverage || {}),
         starterVaultManifestPath: publicSecondBrainPath(secondBrain?.trainingCoverage?.obsidianCoverage?.starterVaultManifestPath),
-        starterVaultGuidePath: publicSecondBrainPath(secondBrain?.trainingCoverage?.obsidianCoverage?.starterVaultGuidePath)
+        starterVaultGuidePath: publicSecondBrainPath(secondBrain?.trainingCoverage?.obsidianCoverage?.starterVaultGuidePath),
+        graphMapPath: publicSecondBrainPath(secondBrain?.trainingCoverage?.obsidianCoverage?.graphMapPath)
       },
       qualityGates: secondBrain?.trainingCoverage?.qualityGates || [],
       blockedUntil: secondBrain?.trainingCoverage?.blockedUntil || []
@@ -339,16 +343,19 @@ function validateReport(value, label) {
   ensure(!String(value?.secondBrainBinding?.obsidianStarterVaultManifestPath || "").startsWith("/home/"), `${label} obsidianStarterVaultManifestPath must be public-safe and repo-neutral.`);
   ensure(!String(value?.secondBrainBinding?.obsidianStarterVaultGuidePath || "").startsWith("/home/"), `${label} obsidianStarterVaultGuidePath must be public-safe and repo-neutral.`);
   ensure(!String(value?.secondBrainBinding?.aiCouncilReviewPackPath || "").startsWith("/home/"), `${label} aiCouncilReviewPackPath must be public-safe and repo-neutral.`);
+  ensure(!String(value?.secondBrainBinding?.obsidianGraphMapPath || "").startsWith("/home/"), `${label} obsidianGraphMapPath must be public-safe and repo-neutral.`);
   ensure(value?.trainingCoverage?.status === "local-demo-read-only", `${label} training coverage must stay local-demo-read-only.`);
   ensure(value?.trainingCoverage?.trainingPackPath === value?.secondBrainBinding?.trainingPackPath, `${label} training coverage path mismatch.`);
   ensure(value?.trainingCoverage?.publicContributorPackPath === value?.secondBrainBinding?.publicContributorPackPath, `${label} training coverage public contributor path mismatch.`);
   ensure(value?.trainingCoverage?.obsidianStarterVaultManifestPath === value?.secondBrainBinding?.obsidianStarterVaultManifestPath, `${label} training coverage Obsidian starter manifest path mismatch.`);
   ensure(value?.trainingCoverage?.obsidianStarterVaultGuidePath === value?.secondBrainBinding?.obsidianStarterVaultGuidePath, `${label} training coverage Obsidian starter guide path mismatch.`);
   ensure(value?.trainingCoverage?.aiCouncilReviewPackPath === value?.secondBrainBinding?.aiCouncilReviewPackPath, `${label} training coverage AI council review pack path mismatch.`);
+  ensure(value?.trainingCoverage?.obsidianGraphMapPath === value?.secondBrainBinding?.obsidianGraphMapPath, `${label} training coverage Obsidian graph map path mismatch.`);
   ensureArrayMin(value?.trainingCoverage?.requiredSections, 6, `${label} training coverage required sections`);
   ensure((value?.trainingCoverage?.requiredSections || []).includes("public contributor no-key onboarding"), `${label} training coverage missing public contributor onboarding section.`);
   ensure((value?.trainingCoverage?.requiredSections || []).includes("Obsidian starter vault no-private-import export"), `${label} training coverage missing Obsidian starter vault export section.`);
   ensure((value?.trainingCoverage?.requiredSections || []).includes("installed AI council review pack"), `${label} training coverage missing installed AI council review pack section.`);
+  ensure((value?.trainingCoverage?.requiredSections || []).includes("Obsidian wikilink graph map"), `${label} training coverage missing Obsidian wikilink graph map section.`);
   ensure(value?.trainingCoverage?.installedAiCoverage?.requireRegistryRequiredLauncherRoutes === true, `${label} training coverage must require launcher route coverage.`);
   ensure(value?.trainingCoverage?.installedAiCoverage?.requireSecondBrainProfileForEachLauncherRoute === true, `${label} training coverage must require Second Brain profiles.`);
   ensure(value?.trainingCoverage?.installedAiCoverage?.requireNoLiveProviderCalls === true, `${label} training coverage must forbid live provider calls.`);
@@ -358,6 +365,7 @@ function validateReport(value, label) {
   ensure(value?.trainingCoverage?.obsidianCoverage?.bodyImportPolicy === "metadata-only-by-default", `${label} training coverage Obsidian body policy mismatch.`);
   ensure(!String(value?.trainingCoverage?.obsidianCoverage?.starterVaultManifestPath || "").startsWith("/home/"), `${label} training coverage Obsidian starter manifest path must be public-safe and repo-neutral.`);
   ensure(!String(value?.trainingCoverage?.obsidianCoverage?.starterVaultGuidePath || "").startsWith("/home/"), `${label} training coverage Obsidian starter guide path must be public-safe and repo-neutral.`);
+  ensure(!String(value?.trainingCoverage?.obsidianCoverage?.graphMapPath || "").startsWith("/home/"), `${label} training coverage Obsidian graph map path must be public-safe and repo-neutral.`);
   for (const [field, expected] of [
     ["privateVaultReadAllowed", false],
     ["privateNoteBodyCopyAllowed", false],
@@ -487,6 +495,7 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 - obsidianStarterVaultManifestPath: ${value.secondBrainBinding.obsidianStarterVaultManifestPath}
 - obsidianStarterVaultGuidePath: ${value.secondBrainBinding.obsidianStarterVaultGuidePath}
 - aiCouncilReviewPackPath: ${value.secondBrainBinding.aiCouncilReviewPackPath}
+- obsidianGraphMapPath: ${value.secondBrainBinding.obsidianGraphMapPath}
 - obsidianBridgeStatus: ${value.secondBrainBinding.obsidianBridgeStatus}
 - privateVaultImportEnabled: ${value.secondBrainBinding.privateVaultImportEnabled}
 - hostVaultReadEnabled: ${value.secondBrainBinding.hostVaultReadEnabled}
@@ -502,6 +511,7 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 - obsidianStarterVaultManifestPath: ${value.trainingCoverage.obsidianStarterVaultManifestPath}
 - obsidianStarterVaultGuidePath: ${value.trainingCoverage.obsidianStarterVaultGuidePath}
 - aiCouncilReviewPackPath: ${value.trainingCoverage.aiCouncilReviewPackPath}
+- obsidianGraphMapPath: ${value.trainingCoverage.obsidianGraphMapPath}
 - requiredSections: ${value.trainingCoverage.requiredSections.join(", ")}
 - installedAiCoverage: launcher routes=${value.trainingCoverage.installedAiCoverage.requireRegistryRequiredLauncherRoutes}, profiles=${value.trainingCoverage.installedAiCoverage.requireSecondBrainProfileForEachLauncherRoute}, noLiveProviderCalls=${value.trainingCoverage.installedAiCoverage.requireNoLiveProviderCalls}
 - autonomousAgentCoverage: requiredRosterCount=${value.trainingCoverage.autonomousAgentCoverage.requiredRosterCount}, noWriteExecution=${value.trainingCoverage.autonomousAgentCoverage.requireNoWriteExecution}, approvalBeforeExternalMutation=${value.trainingCoverage.autonomousAgentCoverage.requireApprovalBeforeExternalMutation}

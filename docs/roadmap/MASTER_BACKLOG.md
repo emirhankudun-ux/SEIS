@@ -15,6 +15,12 @@ routes, managed sub-agent lanes, and the 12-agent roster. It remains review-only
 and cannot validate credentials, call providers, execute autonomous writes,
 import private Obsidian content, use SSH, deploy, mutate GitHub, merge, or
 approve release.
+Second Brain Obsidian graph map note: `SEIS-BL-049` also covers the no-key
+Obsidian graph map that turns repo-owned seed notes, starter vault artifacts,
+the AI council review pack, and GitHub readiness gates into a browser-local
+wikilink entry note. It remains separate from private vault reads, plugin
+install, private note body copy, provider calls, autonomous writes, SSH,
+deployment, GitHub mutation, merge, and release approval.
 
 | ID | Priority | Lane | Work | Acceptance evidence |
 | --- | --- | --- | --- | --- |

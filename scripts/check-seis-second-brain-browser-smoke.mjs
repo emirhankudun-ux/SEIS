@@ -20,7 +20,8 @@ const REQUIRED_ARTIFACTS = [
   "/home/seis/SecondBrain/08-public/seis-public-contributor-onboarding.md",
   "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json",
   "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md",
-  "/home/seis/SecondBrain/10-ai-council/seis-ai-council-review-pack.md"
+  "/home/seis/SecondBrain/10-ai-council/seis-ai-council-review-pack.md",
+  "/home/seis/SecondBrain/11-graph/seis-obsidian-graph-map.md"
 ];
 
 function ensure(condition, message) {
@@ -290,6 +291,7 @@ function validateStaticContract() {
     "second-brain-public-contributor-pack",
     "second-brain-obsidian-starter-vault",
     "second-brain-ai-council-pack",
+    "second-brain-obsidian-graph-map",
     "second-brain-review",
     "second-brain-export-github",
     "seis-obsidian-starter-vault-manifest.json",
@@ -297,6 +299,8 @@ function validateStaticContract() {
     "Export Obsidian Starter Vault",
     "seis-ai-council-review-pack.md",
     "Build AI Council Pack",
+    "seis-obsidian-graph-map.md",
+    "Build Obsidian Graph Map",
     "seis-agent-training-pack.md",
     "seis-language-model-training-curriculum.json",
     "Language Model Training Curriculum",
@@ -363,7 +367,7 @@ async function smokeSecondBrain(client, baseUrl) {
       installedAiRows: root?.querySelectorAll('[data-second-brain-installed-ai] tbody tr').length || 0,
       subAgentRows: root?.querySelectorAll('[data-second-brain-subagents] tbody tr').length || 0,
       agentRosterRows: root?.querySelectorAll('[data-second-brain-agent-roster] tbody tr').length || 0,
-      actionButtons: root?.querySelectorAll('[data-action="app-primary"], [data-action="second-brain-capture"], [data-action="second-brain-link"], [data-action="second-brain-training-pack"], [data-action="second-brain-public-contributor-pack"], [data-action="second-brain-obsidian-starter-vault"], [data-action="second-brain-ai-council-pack"], [data-action="second-brain-review"], [data-action="second-brain-export-github"]').length || 0,
+      actionButtons: root?.querySelectorAll('[data-action="app-primary"], [data-action="second-brain-capture"], [data-action="second-brain-link"], [data-action="second-brain-training-pack"], [data-action="second-brain-public-contributor-pack"], [data-action="second-brain-obsidian-starter-vault"], [data-action="second-brain-ai-council-pack"], [data-action="second-brain-obsidian-graph-map"], [data-action="second-brain-review"], [data-action="second-brain-export-github"]').length || 0,
       localDemoCopy: text.includes('Local Demo'),
       obsidianCopy: text.includes('Obsidian bridge planned'),
       githubReviewCopy: text.includes('Human review before GitHub'),
@@ -385,7 +389,7 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(initial.installedAiRows === 6, `expected six installed AI rows, got ${initial.installedAiRows}`);
   ensure(initial.subAgentRows === 6, `expected six sub-agent rows, got ${initial.subAgentRows}`);
   ensure(initial.agentRosterRows === 12, `expected twelve autonomous agent rows, got ${initial.agentRosterRows}`);
-  ensure(initial.actionButtons === 9, `expected nine Second Brain actions, got ${initial.actionButtons}`);
+  ensure(initial.actionButtons === 10, `expected ten Second Brain actions, got ${initial.actionButtons}`);
   ensure(initial.localDemoCopy, "Second Brain must label Local Demo mode.");
   ensure(initial.obsidianCopy, "Second Brain must label Obsidian bridge as planned.");
   ensure(initial.githubReviewCopy, "Second Brain must label human review before GitHub.");
@@ -408,6 +412,7 @@ async function smokeSecondBrain(client, baseUrl) {
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-public-contributor-pack"]');
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-obsidian-starter-vault"]');
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-ai-council-pack"]');
+  await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-obsidian-graph-map"]');
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-review"]');
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-export-github"]');
 
@@ -428,19 +433,21 @@ async function smokeSecondBrain(client, baseUrl) {
       contributorPackVisible: text.toLowerCase().includes('contributor pack saved'),
       obsidianStarterVaultVisible: text.includes('Last Obsidian Starter') && !text.includes('Not exported yet'),
       aiCouncilPackVisible: text.includes('Last AI Council Pack') && !text.includes('Not built yet'),
+      obsidianGraphMapVisible: text.includes('Last Obsidian Graph Map') && !text.includes('Not built yet'),
       status: diagnostics.appStatus('second-brain')
     };
   })()`);
 
   ensure(artifacts.fixedArtifacts.length === REQUIRED_ARTIFACTS.length, `missing Second Brain artifacts: ${JSON.stringify(artifacts)}`);
   ensure(artifacts.capturePaths.length >= 1, "Second Brain capture action did not create an inbox note.");
-  ensure(artifacts.notePaths.length >= 11, `Second Brain expected snapshot plus note/review/contributor/Obsidian starter/AI council markdown files, got ${artifacts.notePaths.length}`);
+  ensure(artifacts.notePaths.length >= 12, `Second Brain expected snapshot plus note/review/contributor/Obsidian starter/AI council/graph map markdown files, got ${artifacts.notePaths.length}`);
   ensure(artifacts.lastActionVisible, "Second Brain GitHub readiness action did not update visible state.");
   ensure(artifacts.reviewVisible, "Second Brain review state not visible after actions.");
   ensure(artifacts.trainingPackVisible, "Second Brain training pack action did not update visible state.");
   ensure(artifacts.contributorPackVisible, "Second Brain contributor pack action did not update visible state.");
   ensure(artifacts.obsidianStarterVaultVisible, "Second Brain Obsidian starter vault action did not update visible state.");
   ensure(artifacts.aiCouncilPackVisible, "Second Brain AI council review pack action did not update visible state.");
+  ensure(artifacts.obsidianGraphMapVisible, "Second Brain Obsidian graph map action did not update visible state.");
   ensure(artifacts.status?.lastAction?.includes("GitHub readiness export saved"), `Second Brain app status should record the readiness export: ${JSON.stringify(artifacts.status)}`);
 
   await evaluate(client, "window.__SEIS_DESKTOP__.openApp('ai-assistant')");

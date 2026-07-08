@@ -269,6 +269,13 @@ routes, managed sub-agent lanes, browser AI fixtures, and the 12-agent roster
 without API keys, provider login, credential validation, private Obsidian
 import, autonomous writes, SSH, deployment, GitHub mutation, merge, or release
 approval.
+The browser-local `Build Obsidian Graph Map` action writes the Obsidian graph map at
+`/home/seis/SecondBrain/11-graph/seis-obsidian-graph-map.md` so public reviewers
+can open one wikilink entry note that connects the seed vault, Obsidian starter
+vault artifacts, AI council review pack, and GitHub gates without reading a
+private Obsidian vault, installing plugins, copying private note bodies,
+calling providers, executing agents, using SSH, deploying, mutating GitHub, or
+approving release.
 
 `npm run check:seis-public-demo-go-no-go -- --run-fast-checks` is the read-only
 public demo release gate. It is expected to report `NO-GO` until current browser

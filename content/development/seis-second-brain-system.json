@@ -13,6 +13,7 @@
   "obsidianStarterVaultManifestPath": "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json",
   "obsidianStarterVaultGuidePath": "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md",
   "aiCouncilReviewPackPath": "/home/seis/SecondBrain/10-ai-council/seis-ai-council-review-pack.md",
+  "obsidianGraphMapPath": "/home/seis/SecondBrain/11-graph/seis-obsidian-graph-map.md",
   "releaseReviewPacketPath": "reports/seis-public-demo/pr54-review-packet-latest.md",
   "obsidianSafeImportDryRunPath": "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json",
   "obsidianSafeImportDryRunMarkdownPath": "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md",
@@ -42,6 +43,7 @@
       "generate browser-local public contributor onboarding pack",
       "generate browser-local Obsidian starter vault manifest from repo-owned seed notes",
       "generate browser-local installed AI council review pack",
+      "generate browser-local Obsidian wikilink graph map",
       "record human-review-required GitHub readiness gates"
     ],
     "forbiddenToday": [
@@ -257,6 +259,7 @@
     "trainingPackPath": "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md",
     "publicContributorPackPath": "/home/seis/SecondBrain/08-public/seis-public-contributor-onboarding.md",
     "aiCouncilReviewPackPath": "/home/seis/SecondBrain/10-ai-council/seis-ai-council-review-pack.md",
+    "obsidianGraphMapPath": "/home/seis/SecondBrain/11-graph/seis-obsidian-graph-map.md",
     "requiredSections": [
       "installed AI launcher route coverage",
       "autonomous agent roster onboarding",
@@ -266,7 +269,8 @@
       "public demo release gates",
       "public contributor no-key onboarding",
       "Obsidian starter vault no-private-import export",
-      "installed AI council review pack"
+      "installed AI council review pack",
+      "Obsidian wikilink graph map"
     ],
     "installedAiCoverage": {
       "sourceContract": "content/development/ai-workforce-assignments.json",
@@ -286,7 +290,8 @@
       "privateNoteBodyCopyAllowed": false,
       "pluginInstallAllowed": false,
       "starterVaultManifestPath": "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json",
-      "starterVaultGuidePath": "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md"
+      "starterVaultGuidePath": "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md",
+      "graphMapPath": "/home/seis/SecondBrain/11-graph/seis-obsidian-graph-map.md"
     },
     "qualityGates": [
       "node scripts/check-seis-second-brain.mjs",
@@ -359,6 +364,22 @@
     "githubMutation": false,
     "humanApprovalBeforeUse": true
   },
+  "obsidianGraphMap": {
+    "status": "local-demo-no-key",
+    "mapPath": "/home/seis/SecondBrain/11-graph/seis-obsidian-graph-map.md",
+    "source": "repo-owned seed note metadata, generated browser-local markdown paths, and explicit wikilinks",
+    "requiresPrivateObsidianVault": false,
+    "requiresObsidianPlugin": false,
+    "requiresHostFilesystemRead": false,
+    "copiesPrivateNoteBodies": false,
+    "providerCalls": false,
+    "credentialValidation": false,
+    "autonomousWriteExecution": false,
+    "sshExecution": false,
+    "deployment": false,
+    "githubMutation": false,
+    "humanApprovalBeforeImport": true
+  },
   "pipeline": [
     {
       "step": "Capture",
@@ -394,6 +415,11 @@
       "step": "AI Council Review",
       "status": "local-demo-no-key",
       "detail": "Generate a browser-local installed AI council review pack covering every registered AI profile, launcher route, managed sub-agent lane, and autonomous agent duty without provider calls or external mutations."
+    },
+    {
+      "step": "Obsidian Graph Map",
+      "status": "local-demo-no-key",
+      "detail": "Generate a browser-local Obsidian wikilink graph map that connects seed notes, AI council evidence, starter vault artifacts, and public demo gates without reading a private vault."
     },
     {
       "step": "Publish",

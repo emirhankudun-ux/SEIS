@@ -1431,6 +1431,7 @@ const SEIS_SECOND_BRAIN_SYSTEM = {
   obsidianStarterVaultManifestPath: "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json",
   obsidianStarterVaultGuidePath: "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md",
   aiCouncilReviewPackPath: "/home/seis/SecondBrain/10-ai-council/seis-ai-council-review-pack.md",
+  obsidianGraphMapPath: "/home/seis/SecondBrain/11-graph/seis-obsidian-graph-map.md",
   releaseReviewPacketPath: "reports/seis-public-demo/pr54-review-packet-latest.md",
   languageModelTrainingCurriculum: {
     status: "planned-training-contract",
@@ -1460,7 +1461,8 @@ const SEIS_SECOND_BRAIN_SYSTEM = {
       "public demo release gates",
       "public contributor no-key onboarding",
       "Obsidian starter vault no-private-import export",
-      "installed AI council review pack"
+      "installed AI council review pack",
+      "Obsidian wikilink graph map"
     ],
     launcherEvidence: [
       ["seis-agent", "installed", "seis-agent-policy-profile"],
@@ -1551,6 +1553,21 @@ const SEIS_SECOND_BRAIN_SYSTEM = {
     deployment: false,
     githubMutation: false,
     humanApprovalBeforeUse: true
+  },
+  obsidianGraphMap: {
+    status: "local-demo-no-key",
+    source: "repo-owned seed note metadata, generated browser-local markdown paths, and explicit wikilinks",
+    requiresPrivateObsidianVault: false,
+    requiresObsidianPlugin: false,
+    requiresHostFilesystemRead: false,
+    copiesPrivateNoteBodies: false,
+    providerCalls: false,
+    credentialValidation: false,
+    autonomousWriteExecution: false,
+    sshExecution: false,
+    deployment: false,
+    githubMutation: false,
+    humanApprovalBeforeImport: true
   },
   vaultNotes: [
     {
@@ -2812,6 +2829,9 @@ function handleClick(event) {
       break;
     case "second-brain-ai-council-pack":
       exportSecondBrainAiCouncilReviewPack();
+      break;
+    case "second-brain-obsidian-graph-map":
+      exportSecondBrainObsidianGraphMap();
       break;
     case "second-brain-review":
       reviewSecondBrainVault();
@@ -5159,6 +5179,7 @@ function renderSecondBrain() {
       <button type="button" data-action="second-brain-public-contributor-pack">Build Contributor Pack</button>
       <button type="button" data-action="second-brain-obsidian-starter-vault">Export Obsidian Starter Vault</button>
       <button type="button" data-action="second-brain-ai-council-pack">Build AI Council Pack</button>
+      <button type="button" data-action="second-brain-obsidian-graph-map">Build Obsidian Graph Map</button>
       <button type="button" data-action="second-brain-review">Run Review Gate</button>
       <button type="button" data-action="second-brain-export-github">Export GitHub Readiness</button>
       <button type="button" data-action="open-app" data-app-id="ai-assistant">Open SEIS AI</button>
@@ -5191,6 +5212,7 @@ function renderSecondBrain() {
       <article class="metric-card"><strong>Last Contributor Pack</strong><p>${data.lastContributorPack?.time || "Not built yet"}</p></article>
       <article class="metric-card"><strong>Last Obsidian Starter</strong><p>${data.lastObsidianStarterVault?.time || "Not exported yet"}</p></article>
       <article class="metric-card"><strong>Last AI Council Pack</strong><p>${data.lastAiCouncilReviewPack?.time || "Not built yet"}</p></article>
+      <article class="metric-card"><strong>Last Obsidian Graph Map</strong><p>${data.lastObsidianGraphMap?.time || "Not built yet"}</p></article>
       <article class="metric-card"><strong>Publish State</strong><p>Human review before GitHub</p></article>
     </div>
     <section class="second-brain-layout">
@@ -9104,6 +9126,78 @@ ${SEIS_SECOND_BRAIN_SYSTEM.runtimeBoundary}
 `;
 }
 
+function buildSecondBrainObsidianGraphMapMarkdown(timestamp) {
+  const noteTitle = new Map(SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.map((note) => [note.id, note.title]));
+  const linkRows = getSecondBrainLinks().map(([source, target]) => `- [[${noteTitle.get(source) || source}]] -> [[${noteTitle.get(target) || target}]]`);
+  const noteRows = SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.map((note) => {
+    const outbound = note.links.map((target) => `[[${noteTitle.get(target) || target}]]`).join(", ");
+    const backlinks = getSecondBrainBacklinks(note.id).map((source) => `[[${source.title}]]`).join(", ") || "None";
+    return `- [[${note.title}]] (${note.status})\n  - Path: ${note.path}\n  - Tags: ${note.tags.join(" ")}\n  - Outbound: ${outbound || "None"}\n  - Backlinks: ${backlinks}`;
+  });
+  const artifactRows = [
+    ["Vault snapshot", SEIS_SECOND_BRAIN_SYSTEM.snapshotPath],
+    ["Training pack", SEIS_SECOND_BRAIN_SYSTEM.trainingPackPath],
+    ["Public contributor pack", SEIS_SECOND_BRAIN_SYSTEM.publicContributorPackPath],
+    ["Obsidian starter manifest", SEIS_SECOND_BRAIN_SYSTEM.obsidianStarterVaultManifestPath],
+    ["Obsidian starter guide", SEIS_SECOND_BRAIN_SYSTEM.obsidianStarterVaultGuidePath],
+    ["AI council review pack", SEIS_SECOND_BRAIN_SYSTEM.aiCouncilReviewPackPath],
+    ["GitHub readiness review", SEIS_SECOND_BRAIN_SYSTEM.githubReadinessPath]
+  ].map(([label, path]) => `- ${label}: ${path}`);
+
+  return `# SEIS Second Brain Obsidian Graph Map
+
+Generated: ${timestamp}
+Mode: ${SEIS_SECOND_BRAIN_SYSTEM.obsidianGraphMap.status}
+Map path: ${SEIS_SECOND_BRAIN_SYSTEM.obsidianGraphMapPath}
+Source contract: ${SEIS_SECOND_BRAIN_SYSTEM.sourcePath}
+
+## Purpose
+
+This graph map gives Obsidian users a public-safe entry note for the SEIS Second Brain. It uses repo-owned seed note metadata and explicit wikilinks only. It does not read a private vault, install Obsidian plugins, copy .obsidian state, call providers, execute agents, run SSH, deploy, or mutate GitHub.
+
+## Start Here
+
+- [[SEIS OS Map]]
+- [[AI Core Router]]
+- [[Sub-Agent Council]]
+- [[Obsidian Bridge]]
+- [[GitHub Readiness]]
+- [[Security Review]]
+
+## Seed Notes
+
+${noteRows.join("\n")}
+
+## Graph Edges
+
+${linkRows.join("\n")}
+
+## Generated Browser-Local Artifacts
+
+${artifactRows.join("\n")}
+
+## Review Gates
+
+${SEIS_SECOND_BRAIN_SYSTEM.githubGates.map((gate) => `- ${gate}`).join("\n")}
+
+## Safety Boundary
+
+- Requires private Obsidian vault: ${SEIS_SECOND_BRAIN_SYSTEM.obsidianGraphMap.requiresPrivateObsidianVault}
+- Requires Obsidian plugin: ${SEIS_SECOND_BRAIN_SYSTEM.obsidianGraphMap.requiresObsidianPlugin}
+- Requires host filesystem read: ${SEIS_SECOND_BRAIN_SYSTEM.obsidianGraphMap.requiresHostFilesystemRead}
+- Copies private note bodies: ${SEIS_SECOND_BRAIN_SYSTEM.obsidianGraphMap.copiesPrivateNoteBodies}
+- Provider calls: ${SEIS_SECOND_BRAIN_SYSTEM.obsidianGraphMap.providerCalls}
+- Credential validation: ${SEIS_SECOND_BRAIN_SYSTEM.obsidianGraphMap.credentialValidation}
+- Autonomous write execution: ${SEIS_SECOND_BRAIN_SYSTEM.obsidianGraphMap.autonomousWriteExecution}
+- SSH execution: ${SEIS_SECOND_BRAIN_SYSTEM.obsidianGraphMap.sshExecution}
+- Deployment: ${SEIS_SECOND_BRAIN_SYSTEM.obsidianGraphMap.deployment}
+- GitHub mutation: ${SEIS_SECOND_BRAIN_SYSTEM.obsidianGraphMap.githubMutation}
+- Human approval before import: ${SEIS_SECOND_BRAIN_SYSTEM.obsidianGraphMap.humanApprovalBeforeImport}
+
+${SEIS_SECOND_BRAIN_SYSTEM.runtimeBoundary}
+`;
+}
+
 const SEIS_READ_ONLY_MODEL_ROUTER_CONTRACT = {
   blockedModelClasses: [
     "20B planned-not-validated",
@@ -9246,6 +9340,34 @@ function exportSecondBrainAiCouncilReviewPack() {
     autonomousWriteExecution: false
   };
   const message = `Second Brain AI council review pack saved to ${path}.`;
+  getAppStatus("second-brain").lastAction = message;
+  log("second-brain", message);
+  saveState();
+  renderOpenWindows("second-brain");
+  renderOpenWindows("files");
+  renderOpenWindows("system-logs");
+  toast("SEIS Second Brain", message);
+}
+
+function exportSecondBrainObsidianGraphMap() {
+  const timestamp = new Date().toISOString();
+  const path = SEIS_SECOND_BRAIN_SYSTEM.obsidianGraphMapPath;
+  upsertFile(path, buildSecondBrainObsidianGraphMapMarkdown(timestamp));
+  const data = addSecondBrainActivity("Obsidian Graph Map", "No-key Local Demo", `Obsidian Graph Map saved to ${path}.`);
+  data.lastObsidianGraphMap = {
+    time: timestamp,
+    path,
+    seedNotes: SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.length,
+    graphLinks: getSecondBrainLinks().length,
+    wikilinkMode: true,
+    requiresPrivateObsidianVault: false,
+    requiresObsidianPlugin: false,
+    requiresHostFilesystemRead: false,
+    providerCalls: false,
+    autonomousWriteExecution: false,
+    githubMutation: false
+  };
+  const message = `Second Brain Obsidian graph map saved to ${path}.`;
   getAppStatus("second-brain").lastAction = message;
   log("second-brain", message);
   saveState();
