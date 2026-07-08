@@ -15,3 +15,20 @@ regexes = [
   '''token: ghp_xxx[0-9a-z]{15}''',
   '''sk-[0-9a-f]{16} should be hidden''',
 ]
+
+[[allowlists]]
+description = "Legacy generated source aggregation is not an authoritative source file; scan source inputs instead"
+paths = [
+  '''sources/github-unified-source/_generated/github-code-bundle\.txt''',
+]
+
+[[allowlists]]
+description = "Technology stack labels around Spring Boot and REST APIs are not credentials"
+condition = "AND"
+paths = [
+  '''content/development/seis-agent-fullstack-production-roadmap\.json''',
+]
+regexTarget = "line"
+regexes = [
+  '''Spring Boot.*REST APIs.*microservices''',
+]
