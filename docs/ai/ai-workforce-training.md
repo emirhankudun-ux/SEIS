@@ -30,6 +30,8 @@ npm run check:seis-public-ai-readiness
 npm run check:seis-ai-github-readiness-chain
 npm run report:seis-ai-github-pr-package
 npm run check:seis-ai-github-pr-package
+npm run report:seis-ai-pr-staging-dry-run
+npm run check:seis-ai-pr-staging-dry-run
 npm run automation:seis-ai-workforce-training
 ```
 
@@ -125,6 +127,8 @@ npm run check:seis-public-ai-readiness
 npm run check:seis-ai-github-readiness-chain
 npm run report:seis-ai-github-pr-package
 npm run check:seis-ai-github-pr-package
+npm run report:seis-ai-pr-staging-dry-run
+npm run check:seis-ai-pr-staging-dry-run
 ```
 
 Generated outputs:
@@ -160,6 +164,25 @@ Generated outputs:
 The package keeps push and merge status false until selected AI files are staged
 in a clean branch, the AI GitHub readiness chain passes, and human review
 approves the PR.
+
+## AI PR Staging Dry-Run
+
+The staging dry-run checks the current `git status` against the AI GitHub PR
+package without running `git add`, `git commit`, `git push`, or `git merge`.
+
+```bash
+npm run report:seis-ai-pr-staging-dry-run
+npm run check:seis-ai-pr-staging-dry-run
+```
+
+Generated outputs:
+
+- `content/development/seis-ai-pr-staging-dry-run.json`
+- `docs/ai/seis-ai-pr-staging-dry-run.md`
+- `reports/seis-model-scaling/seis-ai-pr-staging-dry-run.md`
+
+If non-selected dirty or staged files exist, the dry-run keeps push and merge
+blocked and requires a clean review branch or clean worktree.
 
 ## Model Targets
 

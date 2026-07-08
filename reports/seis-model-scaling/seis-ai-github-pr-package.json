@@ -1,0 +1,69 @@
+{
+  "id": "seis-ai-github-pr-package-report",
+  "generatedAt": "2026-07-08T12:08:55.154Z",
+  "status": "ai-plugin-mcp-package-defined-push-blocked",
+  "sourcePackage": "content/development/seis-ai-github-pr-package.json",
+  "summary": {
+    "selectedAiFiles": 26,
+    "missingSelectedFiles": [],
+    "requiredValidation": 8,
+    "safeToPushNow": false,
+    "safeToMergeNow": false,
+    "githubReadyForEveryone": false,
+    "realAgiClaimAllowed": false
+  },
+  "selectedAiFiles": [
+    "package.json",
+    "scripts/create-seis-local-ai-runtime-matrix.mjs",
+    "content/development/seis-local-ai-runtime-matrix.json",
+    "docs/ai/seis-local-ai-runtime-matrix.md",
+    "reports/seis-model-scaling/seis-local-ai-runtime-matrix.md",
+    "scripts/check-seis-public-ai-readiness.mjs",
+    "scripts/check-seis-ai-github-readiness-chain.mjs",
+    "scripts/create-seis-agi-github-fresh-clone-readiness-plan.mjs",
+    "content/development/seis-agi-github-fresh-clone-readiness-plan.json",
+    "docs/ai/seis-agi-github-fresh-clone-readiness-plan.md",
+    "reports/seis-model-scaling/seis-agi-github-fresh-clone-readiness-plan.md",
+    "scripts/create-seis-plugin-mcp-ten-year-continuity-map.mjs",
+    "content/development/seis-plugin-mcp-ten-year-continuity-map.json",
+    "docs/platform/seis-plugin-mcp-ten-year-continuity-map.md",
+    "reports/seis-public-demo/plugin-mcp-ten-year-continuity-map-latest.json",
+    "reports/seis-public-demo/plugin-mcp-ten-year-continuity-map-latest.md",
+    "docs/ai/ai-workforce-training.md",
+    "docs/ai/seis-agi-github-user-readiness-gates.md",
+    "content/development/seis-ai-github-pr-package.json",
+    "docs/ai/seis-ai-github-pr-package.md",
+    "reports/seis-model-scaling/seis-ai-github-pr-package.md",
+    "scripts/create-seis-ai-github-pr-package.mjs",
+    "scripts/create-seis-ai-pr-staging-dry-run.mjs",
+    "content/development/seis-ai-pr-staging-dry-run.json",
+    "docs/ai/seis-ai-pr-staging-dry-run.md",
+    "reports/seis-model-scaling/seis-ai-pr-staging-dry-run.md"
+  ],
+  "excludedDirtyPatterns": [
+    "apps/web/*",
+    "docs/product/*",
+    "docs/reviews/*",
+    "reports/seis-public-demo/* except plugin-mcp-ten-year-continuity-map-latest.md/json",
+    "scripts/check-desktop-os*.mjs",
+    "scripts/check-seis-linux-replica-browser-smoke.mjs"
+  ],
+  "requiredValidation": [
+    "npm run report:seis-ai-github-pr-package",
+    "npm run check:seis-ai-github-pr-package",
+    "npm run report:seis-ai-pr-staging-dry-run",
+    "npm run check:seis-ai-pr-staging-dry-run",
+    "npm run check:seis-ai-github-readiness-chain",
+    "npm run check:seis-plugin-mcp-ten-year-continuity-map",
+    "npm run check:seis-public-ai-readiness",
+    "npm run check:seis-agi-github-fresh-clone-readiness-plan"
+  ],
+  "nextHumanReviewedSteps": [
+    "Move the selected AI files into a clean review branch or clean worktree.",
+    "Run npm run check:seis-ai-github-readiness-chain.",
+    "Confirm Plugin/MCP continuity artifacts match npm run check:seis-plugin-mcp-ten-year-continuity-map.",
+    "Confirm no selected file contains secrets or model artifacts.",
+    "Open a PR with protected-branch checks and human review.",
+    "Keep unrelated Desktop, product-demo, platform, and public-demo files out of the AI plus Plugin/MCP readiness PR."
+  ]
+}

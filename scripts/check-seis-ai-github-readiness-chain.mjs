@@ -58,6 +58,10 @@ const checks = [
   {
     id: "ai-github-pr-package",
     command: ["npm", "run", "check:seis-ai-github-pr-package"]
+  },
+  {
+    id: "ai-pr-staging-dry-run",
+    command: ["npm", "run", "check:seis-ai-pr-staging-dry-run"]
   }
 ];
 

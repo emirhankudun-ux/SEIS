@@ -130,10 +130,12 @@ function validatePackageScripts(pkg) {
   ensure(scripts["check:seis-ai-github-readiness-chain"] === "node scripts/check-seis-ai-github-readiness-chain.mjs", "package.json must expose check:seis-ai-github-readiness-chain");
   ensure(scripts["check:seis-ai-github-pr-package"] === "node scripts/create-seis-ai-github-pr-package.mjs", "package.json must expose check:seis-ai-github-pr-package");
   ensure(scripts["report:seis-ai-github-pr-package"] === "node scripts/create-seis-ai-github-pr-package.mjs --write", "package.json must expose report:seis-ai-github-pr-package");
+  ensure(scripts["check:seis-plugin-mcp-ten-year-continuity-map"] === "node scripts/create-seis-plugin-mcp-ten-year-continuity-map.mjs --check", "package.json must expose check:seis-plugin-mcp-ten-year-continuity-map");
   ensure(scripts["check:seis-512b-apex-model-program"] === "node scripts/check-seis-512b-apex-model-program.mjs", "package.json must expose 512B apex model program check");
   ensure(String(scripts["quality:governance"] || "").includes("check:seis-public-ai-readiness"), "quality:governance must include check:seis-public-ai-readiness");
   ensure(String(scripts["quality:governance"] || "").includes("check:seis-ai-github-readiness-chain"), "quality:governance must include check:seis-ai-github-readiness-chain");
   ensure(String(scripts["quality:governance"] || "").includes("check:seis-ai-github-pr-package"), "quality:governance must include check:seis-ai-github-pr-package");
+  ensure(String(scripts["quality:governance"] || "").includes("check:seis-plugin-mcp-ten-year-continuity-map"), "quality:governance must include check:seis-plugin-mcp-ten-year-continuity-map");
 }
 
 function validateCoreClaimStates(state) {
@@ -162,7 +164,7 @@ function validateCoreClaimStates(state) {
   }
 
   if (state.aiPrPackage) {
-    ensure(state.aiPrPackage.status === "ready-for-narrow-ai-pr-review-not-ready-for-push", "AI PR package status mismatch");
+    ensure(state.aiPrPackage.status === "ready-for-ai-plugin-mcp-pr-review-not-ready-for-push", "AI PR package status mismatch");
     ensure(state.aiPrPackage.currentDecision?.safeToPushNow === false, "AI PR package must keep safeToPushNow false");
     ensure(state.aiPrPackage.currentDecision?.safeToMergeNow === false, "AI PR package must keep safeToMergeNow false");
     ensure(state.aiPrPackage.publicClaimBoundary?.canClaimRealAgi === false, "AI PR package must block real AGI claim");
