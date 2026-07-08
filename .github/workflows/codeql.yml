@@ -55,18 +55,46 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          fetch-depth: 2
+
+      - name: Determine CodeQL lane scope
+        id: scope
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          should_run="true"
+
+          if [ "${{ matrix.language }}" = "swift" ] && [ "${{ github.event_name }}" = "pull_request" ]; then
+            should_run="false"
+            changed_files="$(git diff --name-only HEAD^ HEAD 2>/dev/null || true)"
+
+            if printf '%s\n' "$changed_files" | grep -E '^(packages/seis_platform_swift/|apps/(ios|macos)/|polyglot/.*\.swift$)' >/dev/null; then
+              should_run="true"
+            fi
+          fi
+
+          echo "should_run=${should_run}" >> "$GITHUB_OUTPUT"
+          echo "CodeQL lane ${{ matrix.language }} should_run=${should_run}"
+
+      - name: Skip CodeQL lane
+        if: steps.scope.outputs.should_run != 'true'
+        run: echo "Skipping ${{ matrix.language }} CodeQL because this pull request does not touch that language lane."
 
       - name: Initialize CodeQL
+        if: steps.scope.outputs.should_run == 'true'
         uses: github/codeql-action/init@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4.36.2
         with:
           languages: ${{ matrix.language }}
           build-mode: ${{ matrix.build-mode }}
 
       - name: Build for CodeQL
-        if: matrix.build_command != ''
+        if: steps.scope.outputs.should_run == 'true' && matrix.build_command != ''
         run: ${{ matrix.build_command }}
 
       - name: Perform CodeQL Analysis
+        if: steps.scope.outputs.should_run == 'true'
         id: analyze
         uses: github/codeql-action/analyze@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4.36.2
         with:
@@ -78,10 +106,11 @@ jobs:
           upload: never
 
       - name: Validate CodeQL SARIF output
+        if: steps.scope.outputs.should_run == 'true'
         run: node scripts/check-codeql-sarif.mjs "${{ steps.analyze.outputs.sarif-output }}"
 
       - name: Upload CodeQL SARIF artifact
-        if: always() && steps.analyze.outputs.sarif-output != ''
+        if: always() && steps.scope.outputs.should_run == 'true' && steps.analyze.outputs.sarif-output != ''
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: codeql-sarif-${{ matrix.language }}
