@@ -169,6 +169,11 @@ button{cursor:pointer}
 .metric{border:1px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(255,255,255,.055);padding:10px}
 .metric small{color:var(--muted);font-weight:850}
 .metric strong{display:block;margin-top:4px;font-size:20px}
+.security-decision-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px}
+.security-decision{border:1px solid rgba(245,158,82,.26);border-radius:10px;background:rgba(245,158,82,.08);padding:10px}
+.security-decision small{display:block;color:var(--warn);font-weight:900;text-transform:uppercase}
+.security-decision strong{display:block;margin:5px 0;color:var(--text)}
+.security-decision p{margin:0;color:var(--muted);line-height:1.4}
 .meter{height:7px;border-radius:999px;background:rgba(255,255,255,.09);overflow:hidden}
 .meter span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
 .store-list{display:grid;gap:8px}
@@ -673,25 +678,35 @@ function renderDemoReadiness(body){
     ["Static package","9 demo routes and 14 precache assets are covered by the static readiness checker.","Real"],
     ["Mobile fit","390 x 844 smoke viewport keeps windows, side rail, and taskbar inside the screen.","Real"],
     ["AI boundary","AI/provider output is Local Demo mode unless a backend key path is verified.","Local Demo"],
-    ["SSH boundary","SSH, sudo, deployment, and host shell execution stay disabled without approval.","Disabled"]
+    ["SSH boundary","SSH, sudo, deployment, and host shell execution stay disabled without approval.","Disabled"],
+    ["Security merge gate","Issue #129 tracks the historical Gitleaks generated-bundle blocker that holds PR #77, PR #126, and PR #130 until owner approval.","Blocked"]
+  ];
+  const securityPaths=[
+    ["Path A","Rotate and rewrite history","Use when any historical credential may have been real."],
+    ["Path B","Approve PR-range scan policy","Keep scheduled full-history scans while PR checks focus on new changes."],
+    ["Path C","Confirm synthetic or rotated evidence","Use only after private owner review without exposing values."]
   ];
   body.innerHTML="<div class=\"app grid\" data-demo-readiness>"+
     "<h2>Demo Readiness</h2><p class=\"muted\">A browser-local evidence board for the Linux-like SEIS demo. It shows what is verified, what is Local Demo, and what remains disabled until human approval.</p>"+
-    "<div class=\"toolbar\"><button class=\"primary\" data-readiness-action=\"tour\">Run verified tour</button><button class=\"secondary\" data-readiness-action=\"vault\">Open Reference Vault</button><button class=\"secondary\" data-readiness-action=\"terminal\">Open Terminal</button></div>"+
+    "<div class=\"toolbar\"><button class=\"primary\" data-readiness-action=\"tour\">Run verified tour</button><button class=\"secondary\" data-readiness-action=\"vault\">Open Reference Vault</button><button class=\"secondary\" data-readiness-action=\"terminal\">Open Terminal</button><button class=\"secondary\" data-readiness-action=\"issue\">Issue #129</button></div>"+
     "<div class=\"readiness-grid\">"+gates.map(gate=>"<div class=\"readiness-card\" data-readiness-gate><small>"+escapeHtml(gate[2])+"</small><strong>"+escapeHtml(gate[0])+"</strong><p class=\"muted\">"+escapeHtml(gate[1])+"</p></div>").join("")+"</div>"+
     "<div class=\"card\"><strong>Evidence snapshot</strong><div class=\"evidence-list\" data-readiness-evidence>"+
       "<div><span>Launcher apps</span><strong>"+APP_CATALOG.length+"</strong></div>"+
       "<div><span>Reference modules</span><strong>"+REFERENCE_APP_ENTRIES.length+"</strong></div>"+
       "<div><span>Reference sources</span><strong>"+escapeHtml(sourceRows.map(row=>row.count+" "+row.label).join(" / "))+"</strong></div>"+
+      "<div><span>Security owner tracker</span><strong>GitHub issue #129</strong></div>"+
+      "<div><span>Blocked PRs</span><strong>#77 / #126 / #130</strong></div>"+
       "<div><span>Static route checker</span><strong>scripts/check-seis-static-demo-routes.mjs</strong></div>"+
       "<div><span>Browser smoke checker</span><strong>scripts/check-seis-linux-replica-browser-smoke.mjs</strong></div>"+
       "<div><span>Screenshot output</span><strong>dist/qa/seis-linux-replica-smoke/</strong></div>"+
     "</div></div>"+
+    "<div class=\"card warn\"><strong>Security owner decision</strong><p>SEIS Guardian is intentionally blocking merge on historical generated-bundle findings. This Linux-like demo keeps showing product progress, but merge remains owner-gated.</p><div class=\"security-decision-grid\">"+securityPaths.map(path=>"<div class=\"security-decision\"><small>"+escapeHtml(path[0])+"</small><strong>"+escapeHtml(path[1])+"</strong><p>"+escapeHtml(path[2])+"</p></div>").join("")+"</div></div>"+
     "<div class=\"card warn\"><strong>Honesty boundary</strong><p>No live provider calls, SSH, deployment, API keys, private tokens, or host shell access are used by this route. Mock-safe panels are labeled Local Demo or Disabled.</p></div>"+
   "</div>";
   $("[data-readiness-action='tour']",body).onclick=openDemoTour;
   $("[data-readiness-action='vault']",body).onclick=()=>openApp("reference-vault");
   $("[data-readiness-action='terminal']",body).onclick=()=>openApp("terminal");
+  $("[data-readiness-action='issue']",body).onclick=()=>openReplicaRoute("https://github.com/emirhankudun-ux/SEIS/issues/129","Security owner tracker #129");
 }
 function renderLiveDemo(body){
   const steps=[
