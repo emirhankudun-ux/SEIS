@@ -30,6 +30,7 @@ const files = {
   githubPolicyScript: "scripts/create-seis-ssh-public-github-policy-doctor.mjs",
   signingGuideScript: "scripts/create-seis-ssh-public-signing-guide.mjs",
   reviewBundleScript: "scripts/create-seis-ssh-public-review-bundle.mjs",
+  aiMcpHandoffScript: "scripts/create-seis-ssh-ai-mcp-handoff-bundle.mjs",
   prTemplateScript: "scripts/check-seis-ssh-public-pr-template.mjs",
   ciWorkflowScript: "scripts/check-seis-ssh-public-ci-workflow.mjs",
   readinessMatrixScript: "scripts/check-seis-ssh-public-readiness-matrix.mjs",
@@ -73,6 +74,7 @@ ensure(contract?.githubExperience?.mergeReadinessReport === "npm run report:seis
 ensure(contract?.githubExperience?.policyDoctor === "npm run report:seis-ssh-public-github-policy", "public access contract must link GitHub policy doctor");
 ensure(contract?.githubExperience?.signingGuide === "npm run report:seis-ssh-public-signing-guide", "public access contract must link public signing guide");
 ensure(contract?.githubExperience?.reviewBundle === "npm run report:seis-ssh-public-review-bundle", "public access contract must link public review bundle");
+ensure(contract?.githubExperience?.aiMcpHandoff === "npm run report:seis-ssh-ai-mcp-handoff", "public access contract must link AI/MCP handoff");
 ensure((contract?.evidenceSurfaces || []).includes(files.issueTemplate), "public access contract must include support issue template evidence surface");
 ensure((contract?.evidenceSurfaces || []).includes(files.prTemplate), "public access contract must include pull request template evidence surface");
 ensure((contract?.evidenceSurfaces || []).includes(files.prTemplateScript), "public access contract must include pull request template checker evidence surface");
@@ -87,6 +89,8 @@ ensure((contract?.evidenceSurfaces || []).includes(files.signingGuideScript), "p
 ensure((contract?.evidenceSurfaces || []).includes("reports/seis-ssh-public-access/signing-guide-latest.md"), "public access contract must include public signing guide artifact surface");
 ensure((contract?.evidenceSurfaces || []).includes(files.reviewBundleScript), "public access contract must include public review bundle evidence surface");
 ensure((contract?.evidenceSurfaces || []).includes("reports/seis-ssh-public-access/review-bundle-latest.md"), "public access contract must include public review bundle artifact surface");
+ensure((contract?.evidenceSurfaces || []).includes(files.aiMcpHandoffScript), "public access contract must include AI/MCP handoff evidence surface");
+ensure((contract?.evidenceSurfaces || []).includes("reports/seis-ssh-public-access/ai-mcp-handoff-latest.md"), "public access contract must include AI/MCP handoff artifact surface");
 ensure((githubReader.allowedActions || []).includes("run the read-only contributor doctor"), "github-reader profile must allow contributor doctor");
 ensure((githubReader.allowedActions || []).includes("open the secret-safe GitHub issue form"), "github-reader profile must allow secret-safe issue form");
 ensure((githubReader.allowedActions || []).includes("complete the SEIS-SSH pull request checklist"), "github-reader profile must allow SEIS-SSH pull request checklist");
@@ -97,6 +101,7 @@ ensure((githubReader.allowedActions || []).includes("run the read-only merge rea
 ensure((githubReader.allowedActions || []).includes("run the read-only GitHub policy doctor"), "github-reader profile must allow GitHub policy doctor");
 ensure((githubReader.allowedActions || []).includes("run the read-only signed commit setup guide"), "github-reader profile must allow public signing guide");
 ensure((githubReader.allowedActions || []).includes("run the read-only public review bundle"), "github-reader profile must allow public review bundle");
+ensure((githubReader.allowedActions || []).includes("run the read-only AI/MCP handoff"), "github-reader profile must allow AI/MCP handoff");
 ensure((individualUser.requiredEvidence || []).includes("npm run check:seis-ssh-public-contributor-doctor"), "individual-user profile must require contributor doctor evidence");
 ensure((individualUser.requiredEvidence || []).includes("npm run check:seis-ssh-public-signing-guide"), "individual-user profile must require public signing guide evidence");
 
@@ -111,6 +116,7 @@ ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm r
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-github-policy"), "access model quality commands must include public GitHub policy doctor check");
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-signing-guide"), "access model quality commands must include public signing guide check");
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-review-bundle"), "access model quality commands must include public review bundle check");
+ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-ai-mcp-handoff"), "access model quality commands must include AI/MCP handoff check");
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-pr-template"), "access model quality commands must include public PR template check");
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-ci-workflow"), "access model quality commands must include public CI workflow check");
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-readiness-matrix"), "access model quality commands must include public readiness matrix check");
@@ -124,6 +130,7 @@ ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-publ
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-github-policy"), "roadmap validation commands must include public GitHub policy doctor check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-signing-guide"), "roadmap validation commands must include public signing guide check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-review-bundle"), "roadmap validation commands must include public review bundle check");
+ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-ai-mcp-handoff"), "roadmap validation commands must include AI/MCP handoff check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-pr-template"), "roadmap validation commands must include public PR template check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-ci-workflow"), "roadmap validation commands must include public CI workflow check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-readiness-matrix"), "roadmap validation commands must include public readiness matrix check");
@@ -156,6 +163,9 @@ ensure(scripts["run:seis-ssh-public-signing-guide"] === "npm run check:seis-ssh-
 ensure(scripts["check:seis-ssh-public-review-bundle"] === "node scripts/create-seis-ssh-public-review-bundle.mjs --check", "package script check:seis-ssh-public-review-bundle must be declared");
 ensure(scripts["report:seis-ssh-public-review-bundle"] === "node scripts/create-seis-ssh-public-review-bundle.mjs --write", "package script report:seis-ssh-public-review-bundle must be declared");
 ensure(scripts["run:seis-ssh-public-review-bundle"] === "npm run check:seis-ssh-public-review-bundle && npm run report:seis-ssh-public-review-bundle", "package script run:seis-ssh-public-review-bundle must be declared");
+ensure(scripts["check:seis-ssh-ai-mcp-handoff"] === "node scripts/create-seis-ssh-ai-mcp-handoff-bundle.mjs --check", "package script check:seis-ssh-ai-mcp-handoff must be declared");
+ensure(scripts["report:seis-ssh-ai-mcp-handoff"] === "node scripts/create-seis-ssh-ai-mcp-handoff-bundle.mjs --write", "package script report:seis-ssh-ai-mcp-handoff must be declared");
+ensure(scripts["run:seis-ssh-ai-mcp-handoff"] === "npm run check:seis-ssh-ai-mcp-handoff && npm run report:seis-ssh-ai-mcp-handoff", "package script run:seis-ssh-ai-mcp-handoff must be declared");
 ensure(scripts["check:seis-ssh-public-pr-template"] === "node scripts/check-seis-ssh-public-pr-template.mjs", "package script check:seis-ssh-public-pr-template must be declared");
 ensure(scripts["check:seis-ssh-public-ci-workflow"] === "node scripts/check-seis-ssh-public-ci-workflow.mjs", "package script check:seis-ssh-public-ci-workflow must be declared");
 ensure(scripts["check:seis-ssh-public-readiness-matrix"] === "node scripts/check-seis-ssh-public-readiness-matrix.mjs", "package script check:seis-ssh-public-readiness-matrix must be declared");
@@ -201,6 +211,8 @@ for (const command of [
   "npm run report:seis-ssh-public-signing-guide",
   "npm run check:seis-ssh-public-review-bundle",
   "npm run report:seis-ssh-public-review-bundle",
+  "npm run check:seis-ssh-ai-mcp-handoff",
+  "npm run report:seis-ssh-ai-mcp-handoff",
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-ci-workflow",
   "npm run check:seis-ssh-public-readiness-matrix",
@@ -270,6 +282,8 @@ for (const token of [
   "npm run report:seis-ssh-public-signing-guide",
   "npm run check:seis-ssh-public-review-bundle",
   "npm run report:seis-ssh-public-review-bundle",
+  "npm run check:seis-ssh-ai-mcp-handoff",
+  "npm run report:seis-ssh-ai-mcp-handoff",
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-ci-workflow",
   "npm run check:seis-ssh-public-readiness-matrix",

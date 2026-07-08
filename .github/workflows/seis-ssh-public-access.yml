@@ -15,6 +15,7 @@ on:
       - "docs/roadmap/NEXT_PR_QUEUE.md"
       - "scripts/check-seis-ssh-public-*.mjs"
       - "scripts/create-seis-ssh-public-*.mjs"
+      - "scripts/create-seis-ssh-ai-mcp-handoff-bundle.mjs"
       - "scripts/check-seis-ssh-live-readiness-evidence.mjs"
       - "package.json"
   push:
@@ -33,6 +34,7 @@ on:
       - "docs/roadmap/NEXT_PR_QUEUE.md"
       - "scripts/check-seis-ssh-public-*.mjs"
       - "scripts/create-seis-ssh-public-*.mjs"
+      - "scripts/create-seis-ssh-ai-mcp-handoff-bundle.mjs"
       - "scripts/check-seis-ssh-live-readiness-evidence.mjs"
       - "package.json"
 
@@ -63,6 +65,7 @@ jobs:
           npm run check:seis-ssh-public-github-policy
           npm run check:seis-ssh-public-signing-guide
           npm run check:seis-ssh-public-review-bundle
+          npm run check:seis-ssh-ai-mcp-handoff
           npm run check:seis-ssh-public-support-packet
           npm run check:seis-ssh-public-readiness-matrix
           npm run check:seis-ssh-public-artifact-hygiene

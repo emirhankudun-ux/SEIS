@@ -192,6 +192,8 @@ npm run check:seis-ssh-public-signing-guide
 npm run report:seis-ssh-public-signing-guide
 npm run check:seis-ssh-public-review-bundle
 npm run report:seis-ssh-public-review-bundle
+npm run check:seis-ssh-ai-mcp-handoff
+npm run report:seis-ssh-ai-mcp-handoff
 npm run check:seis-ssh-public-pr-template
 npm run check:seis-ssh-public-ci-workflow
 npm run check:seis-ssh-public-readiness-matrix
@@ -257,6 +259,14 @@ GitHub quickstart, merge readiness, policy doctor, signing guide, onboarding
 pack, and contributor doctor into one GitHub reviewer packet without contacting
 GitHub, opening SSH, writing SSH/git config, printing secrets, or changing the
 same server and port.
+
+`npm run run:seis-ssh-ai-mcp-handoff` creates a read-only AI/MCP handoff at
+`reports/seis-ssh-public-access/ai-mcp-handoff-latest.md`. It maps installed AI
+routes, the repo-local MCP runtime contract, personal SEIS plugin lanes,
+connector boundaries, NVIDIA catalog-only lanes, and safe review commands for
+`SEIS-SSH` without calling providers, executing MCP tools, contacting GitHub,
+opening SSH, writing config, printing secrets, or changing the same server and
+port.
 
 `npm run check:seis-ssh-public-pr-template` verifies that the GitHub pull
 request template includes the `SEIS-SSH` review checklist, same-server/port

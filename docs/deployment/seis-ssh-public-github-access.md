@@ -87,6 +87,8 @@ npm run check:seis-ssh-public-signing-guide
 npm run report:seis-ssh-public-signing-guide
 npm run check:seis-ssh-public-review-bundle
 npm run report:seis-ssh-public-review-bundle
+npm run check:seis-ssh-ai-mcp-handoff
+npm run report:seis-ssh-ai-mcp-handoff
 npm run check:seis-ssh-public-pr-template
 npm run check:seis-ssh-public-ci-workflow
 npm run check:seis-ssh-public-readiness-matrix
@@ -205,6 +207,15 @@ the SEIS-SSH public path: it summarizes access, first-run, troubleshooting,
 support, quickstart, merge policy, signing, onboarding, and contributor doctor
 evidence without raw SSH output, full hostnames, IP addresses, credentials, live
 SSH, config writes, GitHub auth calls, or a server/port change.
+
+`npm run report:seis-ssh-ai-mcp-handoff` writes the AI/MCP handoff to
+`reports/seis-ssh-public-access/ai-mcp-handoff-latest.md`. It is the safe
+artifact for an installed AI assistant, MCP reviewer, plugin-lane reviewer, or
+connector reviewer that needs the SEIS-SSH public context. It maps installed AI
+routes, repo-local MCP runtime counts, personal SEIS plugin lanes, connector
+boundaries, and NVIDIA catalog-only lanes without calling providers, executing
+MCP tools, contacting GitHub, opening SSH, writing config, printing secrets, or
+changing the same server and port.
 
 `npm run check:seis-ssh-public-pr-template` verifies that
 `.github/PULL_REQUEST_TEMPLATE.md` includes the `SEIS-SSH` review checklist,
@@ -326,6 +337,7 @@ npm run check:seis-ssh-public-merge-readiness
 npm run check:seis-ssh-public-github-policy
 npm run check:seis-ssh-public-signing-guide
 npm run check:seis-ssh-public-review-bundle
+npm run check:seis-ssh-ai-mcp-handoff
 npm run check:seis-ssh-public-pr-template
 npm run check:seis-ssh-public-ci-workflow
 npm run check:seis-ssh-public-artifact-hygiene

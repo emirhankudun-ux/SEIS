@@ -118,6 +118,17 @@ clean-runner setup-needed behavior, IPv4/IPv6 artifact hygiene, support issue ro
 dedicated GitHub Actions checks, and approval-gated live SSH claims visible for
 every SEIS-SSH pull request.
 
+### SEIS-SSH AI/MCP Handoff
+
+`SEIS-BL-052` also includes `scripts/create-seis-ssh-ai-mcp-handoff-bundle.mjs`
+and `reports/seis-ssh-public-access/ai-mcp-handoff-latest.md` as the read-only
+AI/MCP handoff for installed AI routes, MCP runtime counts, SEIS plugin lanes,
+connector context, and NVIDIA catalog-only lanes. Validate it with
+`npm run check:seis-ssh-ai-mcp-handoff` and generate it with
+`npm run report:seis-ssh-ai-mcp-handoff`. It must not call providers, execute
+MCP tools, contact GitHub auth, open live SSH, write config, print secrets, or
+change the same `SEIS-SSH` server and port.
+
 ## Deferred Dangerous Work
 
 - Push to `main`.
