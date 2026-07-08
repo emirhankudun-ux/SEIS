@@ -52,6 +52,10 @@ the SEIS plus XcodeBuildMCP project MCP servers as pending user approval. Kimi
 provider login, Kimi marketplace plugin installation, and Claude MCP approval
 remain explicit user-owned actions.
 
+Development-focus rules for using these plugin and MCP lanes without overclaiming
+authentication or live readiness are maintained in
+`docs/platform/mcp-plugin-development-focus.md`.
+
 ## Priority Categories
 
 | Category | Primary OpenAI/Codex plugins |
