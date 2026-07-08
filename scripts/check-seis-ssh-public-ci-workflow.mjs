@@ -37,6 +37,7 @@ for (const token of [
   "permissions:",
   "contents: read",
   "scripts/create-seis-ssh-ai-mcp-handoff-bundle.mjs",
+  "scripts/create-seis-ssh-public-client-compatibility.mjs",
   "SEIS SSH public access gates",
   "actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10",
   "actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e",
@@ -50,6 +51,7 @@ for (const token of [
   "npm run check:seis-ssh-public-signing-guide",
   "npm run check:seis-ssh-public-review-bundle",
   "npm run check:seis-ssh-ai-mcp-handoff",
+  "npm run check:seis-ssh-public-client-compatibility",
   "npm run check:seis-ssh-public-support-packet",
   "npm run check:seis-ssh-public-readiness-matrix",
   "npm run check:seis-ssh-public-artifact-hygiene",
@@ -82,6 +84,7 @@ ensure((contract?.evidenceSurfaces || []).includes("scripts/create-seis-ssh-publ
 ensure((contract?.evidenceSurfaces || []).includes("scripts/create-seis-ssh-public-signing-guide.mjs"), "contract evidence surfaces must include the public signing guide generator");
 ensure((contract?.evidenceSurfaces || []).includes("scripts/create-seis-ssh-public-review-bundle.mjs"), "contract evidence surfaces must include the public review bundle generator");
 ensure((contract?.evidenceSurfaces || []).includes("scripts/create-seis-ssh-ai-mcp-handoff-bundle.mjs"), "contract evidence surfaces must include the AI/MCP handoff generator");
+ensure((contract?.evidenceSurfaces || []).includes("scripts/create-seis-ssh-public-client-compatibility.mjs"), "contract evidence surfaces must include the client compatibility generator");
 ensure((contract?.requiredCommands || []).includes("npm run check:seis-ssh-public-ci-workflow"), "contract required commands must include the CI workflow checker");
 ensure((contract?.requiredCommands || []).includes("npm run check:seis-ssh-public-readiness-matrix"), "contract required commands must include the public readiness matrix checker");
 ensure((contract?.requiredCommands || []).includes("npm run check:seis-ssh-public-merge-readiness"), "contract required commands must include the merge readiness checker");
@@ -89,6 +92,7 @@ ensure((contract?.requiredCommands || []).includes("npm run check:seis-ssh-publi
 ensure((contract?.requiredCommands || []).includes("npm run check:seis-ssh-public-signing-guide"), "contract required commands must include the public signing guide checker");
 ensure((contract?.requiredCommands || []).includes("npm run check:seis-ssh-public-review-bundle"), "contract required commands must include the public review bundle checker");
 ensure((contract?.requiredCommands || []).includes("npm run check:seis-ssh-ai-mcp-handoff"), "contract required commands must include the AI/MCP handoff checker");
+ensure((contract?.requiredCommands || []).includes("npm run check:seis-ssh-public-client-compatibility"), "contract required commands must include the client compatibility checker");
 ensure(scripts["check:seis-ssh-public-ci-workflow"] === "node scripts/check-seis-ssh-public-ci-workflow.mjs", "package script check:seis-ssh-public-ci-workflow must be declared");
 ensure(scripts["check:seis-ssh-public-readiness-matrix"] === "node scripts/check-seis-ssh-public-readiness-matrix.mjs", "package script check:seis-ssh-public-readiness-matrix must be declared");
 ensure(scripts["check:seis-ssh-public-merge-readiness"] === "node scripts/create-seis-ssh-public-merge-readiness.mjs --check", "package script check:seis-ssh-public-merge-readiness must be declared");
@@ -96,6 +100,7 @@ ensure(scripts["check:seis-ssh-public-github-policy"] === "node scripts/create-s
 ensure(scripts["check:seis-ssh-public-signing-guide"] === "node scripts/create-seis-ssh-public-signing-guide.mjs --check", "package script check:seis-ssh-public-signing-guide must be declared");
 ensure(scripts["check:seis-ssh-public-review-bundle"] === "node scripts/create-seis-ssh-public-review-bundle.mjs --check", "package script check:seis-ssh-public-review-bundle must be declared");
 ensure(scripts["check:seis-ssh-ai-mcp-handoff"] === "node scripts/create-seis-ssh-ai-mcp-handoff-bundle.mjs --check", "package script check:seis-ssh-ai-mcp-handoff must be declared");
+ensure(scripts["check:seis-ssh-public-client-compatibility"] === "node scripts/create-seis-ssh-public-client-compatibility.mjs --check", "package script check:seis-ssh-public-client-compatibility must be declared");
 
 for (const file of Object.values(files)) {
   requireNotMatches(file, /sk-[A-Za-z0-9_-]{20,}/, "OpenAI-style API keys");

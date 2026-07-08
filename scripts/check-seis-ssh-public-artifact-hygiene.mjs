@@ -64,6 +64,11 @@ const artifacts = [
     expectedId: "seis-ssh-ai-mcp-handoff"
   },
   {
+    id: "client-compatibility",
+    script: "scripts/create-seis-ssh-public-client-compatibility.mjs",
+    expectedId: "seis-ssh-public-client-compatibility"
+  },
+  {
     id: "onboarding-pack",
     script: "scripts/create-seis-ssh-public-onboarding-pack.mjs",
     expectedId: "seis-ssh-public-onboarding-pack"
@@ -145,6 +150,8 @@ const report = {
     "reports/seis-ssh-public-access/review-bundle-latest.md",
     "reports/seis-ssh-public-access/ai-mcp-handoff-latest.json",
     "reports/seis-ssh-public-access/ai-mcp-handoff-latest.md",
+    "reports/seis-ssh-public-access/client-compatibility-latest.json",
+    "reports/seis-ssh-public-access/client-compatibility-latest.md",
     "reports/seis-ssh-public-access/onboarding-pack-latest.json",
     "reports/seis-ssh-public-access/onboarding-pack-latest.md",
     "reports/seis-ssh-public-access/contributor-doctor-latest.json",

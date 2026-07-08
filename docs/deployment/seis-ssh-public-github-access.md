@@ -89,6 +89,8 @@ npm run check:seis-ssh-public-review-bundle
 npm run report:seis-ssh-public-review-bundle
 npm run check:seis-ssh-ai-mcp-handoff
 npm run report:seis-ssh-ai-mcp-handoff
+npm run check:seis-ssh-public-client-compatibility
+npm run report:seis-ssh-public-client-compatibility
 npm run check:seis-ssh-public-pr-template
 npm run check:seis-ssh-public-ci-workflow
 npm run check:seis-ssh-public-readiness-matrix
@@ -217,6 +219,15 @@ boundaries, and NVIDIA catalog-only lanes without calling providers, executing
 MCP tools, contacting GitHub, opening SSH, writing config, printing secrets, or
 changing the same server and port.
 
+`npm run report:seis-ssh-public-client-compatibility` writes the client compatibility
+matrix to `reports/seis-ssh-public-access/client-compatibility-latest.md`. It
+is the safe artifact when a user asks whether SEIS-SSH is ready for GitHub
+Contributor / Clean Runner, Terminal OpenSSH, ChatGPT / Codex SSH Picker, VS
+Code / IDE Remote SSH, Installed AI / MCP / Plugin Reviewer, Company / Team VPN
+SSH, New Device / Mobile Continuity, or Maintainer Merge Review. It does not
+call providers, execute MCP tools, contact GitHub, open SSH, write config,
+print secrets, or change the same server and port.
+
 `npm run check:seis-ssh-public-pr-template` verifies that
 `.github/PULL_REQUEST_TEMPLATE.md` includes the `SEIS-SSH` review checklist,
 same-server/port invariant, no-secret boundary, public artifact hygiene gate,
@@ -338,6 +349,7 @@ npm run check:seis-ssh-public-github-policy
 npm run check:seis-ssh-public-signing-guide
 npm run check:seis-ssh-public-review-bundle
 npm run check:seis-ssh-ai-mcp-handoff
+npm run check:seis-ssh-public-client-compatibility
 npm run check:seis-ssh-public-pr-template
 npm run check:seis-ssh-public-ci-workflow
 npm run check:seis-ssh-public-artifact-hygiene

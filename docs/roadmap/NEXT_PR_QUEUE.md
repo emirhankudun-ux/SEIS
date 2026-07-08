@@ -44,6 +44,18 @@ NVIDIA catalog-only lanes. The handoff is validated by
 providers, execute MCP tools, contact GitHub auth, open live SSH, write config,
 print secrets, or change the same `SEIS-SSH` server and port.
 
+### SEIS-SSH Client Compatibility Addendum
+
+PR 1E now also includes a read-only client compatibility matrix for GitHub
+Contributor / Clean Runner, Terminal OpenSSH, ChatGPT / Codex SSH Picker, VS
+Code / IDE Remote SSH, Installed AI / MCP / Plugin Reviewer, Company / Team VPN
+SSH, New Device / Mobile Continuity, and Maintainer Merge Review. Validate it
+with `npm run check:seis-ssh-public-client-compatibility` and generate it with
+`npm run report:seis-ssh-public-client-compatibility` at
+`reports/seis-ssh-public-access/client-compatibility-latest.md`. It does not
+open live SSH, write config, call providers, execute MCP tools, contact GitHub
+auth, print secrets, or change the same `SEIS-SSH` server and port.
+
 ## PR 0: SEIS Integration And GitHub Development Spine
 
 | Field | Value |

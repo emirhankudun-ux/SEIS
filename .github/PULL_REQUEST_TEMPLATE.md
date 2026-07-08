@@ -67,6 +67,7 @@ Ayni sunucu ve baglanti noktasi korunur.
 - [ ] Verified signed commits are covered by the public signing guide when required signatures are active.
 - [ ] Public review bundle was generated or checked before requesting SEIS-SSH review.
 - [ ] AI/MCP handoff was checked when installed AI, MCP, plugin, or connector context is relevant.
+- [ ] Client compatibility matrix was checked when user, device, IDE, picker, AI, MCP, plugin, or VPN behavior is relevant.
 
 Relevant checks:
 
@@ -78,6 +79,7 @@ npm run check:seis-ssh-public-github-policy
 npm run check:seis-ssh-public-signing-guide
 npm run check:seis-ssh-public-review-bundle
 npm run check:seis-ssh-ai-mcp-handoff
+npm run check:seis-ssh-public-client-compatibility
 npm run check:seis-ssh-public-ci-workflow
 npm run check:seis-ssh-public-readiness-matrix
 npm run check:seis-ssh-public-artifact-hygiene
