@@ -361,26 +361,26 @@ button{cursor:pointer}
 
 <aside class="mission-strip" data-mission-strip aria-label="SEIS live demo mission strip">
   <div class="mission-strip-head">
-    <div class="mission-strip-title"><small>Live mission strip</small><strong>SEIS demo path</strong></div>
-    <button type="button" data-mission-strip-toggle aria-expanded="true">Collapse</button>
+    <div class="mission-strip-title"><small data-locale-text="missionStripLabel">Live mission strip</small><strong data-locale-text="missionStripTitle">SEIS demo path</strong></div>
+    <button type="button" data-mission-strip-toggle aria-expanded="true" data-locale-text="missionStripCollapse">Collapse</button>
   </div>
   <div class="mission-strip-body">
-    <p class="mission-strip-copy">Open the core SEIS surfaces from inside the Linux-like shell. State stays browser-local; No SSH, provider calls, host shell and deploys stay disabled.</p>
+    <p class="mission-strip-copy" data-locale-text="missionStripCopy">Open the core SEIS surfaces from inside the Linux-like shell. State stays browser-local; No SSH, provider calls, host shell and deploys stay disabled.</p>
     <div class="mission-strip-grid">
-      <button type="button" data-mission-strip-action="tour"><b>Live tour</b><span>Guided demo flow</span></button>
-      <button type="button" data-mission-strip-app="search"><b>Search</b><span>AI/Web/Code/Files</span></button>
-      <button type="button" data-mission-strip-app="reference-vault"><b>Reference Vault</b><span>219 supplied modules</span></button>
-      <button type="button" data-mission-strip-app="terminal"><b>Terminal</b><span>live/readiness/sources</span></button>
-      <button type="button" data-mission-strip-route="./seis-code.html"><b>SEIS Code</b><span>Full IDE route</span></button>
-      <button type="button" data-mission-strip-route="./website/seis-ai.html"><b>AI Core</b><span>Local Demo boundary</span></button>
+      <button type="button" data-mission-strip-action="tour"><b data-locale-text="missionStripTour">Live tour</b><span data-locale-text="missionStripTourSub">Guided demo flow</span></button>
+      <button type="button" data-mission-strip-app="search"><b data-locale-text="missionStripSearch">Search</b><span data-locale-text="missionStripSearchSub">AI/Web/Code/Files</span></button>
+      <button type="button" data-mission-strip-app="reference-vault"><b data-locale-text="missionStripReferences">Reference Vault</b><span data-locale-text="missionStripReferencesSub">219 supplied modules</span></button>
+      <button type="button" data-mission-strip-app="terminal"><b data-locale-text="missionStripTerminal">Terminal</b><span data-locale-text="missionStripTerminalSub">live/readiness/sources</span></button>
+      <button type="button" data-mission-strip-route="./seis-code.html"><b data-locale-text="missionStripCode">SEIS Code</b><span data-locale-text="missionStripCodeSub">Full IDE route</span></button>
+      <button type="button" data-mission-strip-route="./website/seis-ai.html"><b data-locale-text="missionStripAi">AI Core</b><span data-locale-text="missionStripAiSub">Local Demo boundary</span></button>
     </div>
     <div class="mission-strip-progress" aria-live="polite">
       <span data-mission-strip-progress>0 of 6 mission actions used</span>
       <div class="mission-strip-track" aria-hidden="true"><span class="mission-strip-bar" data-mission-strip-bar></span></div>
     </div>
     <div class="mission-strip-actions">
-      <button type="button" data-mission-strip-action="copy">Copy handoff</button>
-      <button type="button" data-mission-strip-action="reset">Reset strip</button>
+      <button type="button" data-mission-strip-action="copy" data-locale-text="missionStripCopyAction">Copy handoff</button>
+      <button type="button" data-mission-strip-action="reset" data-locale-text="missionStripReset">Reset strip</button>
     </div>
   </div>
 </aside>
@@ -403,6 +403,29 @@ const COPY={
     loginTip:"Ipucu: Reference Vault'u ac veya Terminal'de refs, refopen, tour calistir.",
     theme:"Tema",
     localDemo:"Local Demo",
+    missionStripLabel:"Canli gorev seridi",
+    missionStripTitle:"SEIS demo akisi",
+    missionStripCollapse:"Daralt",
+    missionStripExpand:"Genislet",
+    missionStripCopy:"Linux benzeri kabugun icinden ana SEIS yuzeylerini ac. Durum tarayici yereldir; No SSH, provider calls, host shell ve deploy kapali kalir.",
+    missionStripTour:"Canli tur",
+    missionStripTourSub:"Rehberli demo akisi",
+    missionStripSearch:"Arama",
+    missionStripSearchSub:"AI/Web/Code/Files",
+    missionStripReferences:"Reference Vault",
+    missionStripReferencesSub:"219 supplied modules",
+    missionStripTerminal:"Terminal",
+    missionStripTerminalSub:"live/readiness/sources",
+    missionStripCode:"SEIS Code",
+    missionStripCodeSub:"Tam IDE rotasi",
+    missionStripAi:"AI Core",
+    missionStripAiSub:"Local Demo siniri",
+    missionStripProgress:"{used} / {total} gorev eylemi kullanildi",
+    missionStripCopyAction:"Handoff kopyala",
+    missionStripReset:"Seridi sifirla",
+    missionStripCopied:"Handoff kopyalandi",
+    missionStripCopyUnavailable:"Bu tarayicida kopyalama kullanilamiyor",
+    missionStripResetToast:"Yerel serit ilerlemesi sifirlandi",
     welcome:"Hos geldin ",
     ready:"SEIS Linux Replica ",
     readySuffix:" uygulama ile hazir."
@@ -416,6 +439,29 @@ const COPY={
     loginTip:"Tip: open Reference Vault or run refs, refopen, tour in Terminal.",
     theme:"Theme",
     localDemo:"Local Demo",
+    missionStripLabel:"Live mission strip",
+    missionStripTitle:"SEIS demo path",
+    missionStripCollapse:"Collapse",
+    missionStripExpand:"Expand",
+    missionStripCopy:"Open the core SEIS surfaces from inside the Linux-like shell. State stays browser-local; No SSH, provider calls, host shell and deploys stay disabled.",
+    missionStripTour:"Live tour",
+    missionStripTourSub:"Guided demo flow",
+    missionStripSearch:"Search",
+    missionStripSearchSub:"AI/Web/Code/Files",
+    missionStripReferences:"Reference Vault",
+    missionStripReferencesSub:"219 supplied modules",
+    missionStripTerminal:"Terminal",
+    missionStripTerminalSub:"live/readiness/sources",
+    missionStripCode:"SEIS Code",
+    missionStripCodeSub:"Full IDE route",
+    missionStripAi:"AI Core",
+    missionStripAiSub:"Local Demo boundary",
+    missionStripProgress:"{used} of {total} mission actions used",
+    missionStripCopyAction:"Copy handoff",
+    missionStripReset:"Reset strip",
+    missionStripCopied:"Handoff copied",
+    missionStripCopyUnavailable:"Copy unavailable in this browser",
+    missionStripResetToast:"Local strip progress reset",
     welcome:"Welcome ",
     ready:"SEIS Linux Replica is ready with ",
     readySuffix:" apps."
@@ -755,9 +801,10 @@ function readMissionStripState(){try{return{used:[],collapsed:false,...JSON.pars
 function saveMissionStripState(next){try{localStorage.setItem(MISSION_STRIP_KEY,JSON.stringify(next))}catch{}}
 function missionStripNote(){const data=readMissionStripState();return["SEIS Linux Replica mission strip","Used actions: "+(data.used||[]).length+"/"+MISSION_STRIP_ACTIONS.length,"Real: live shell, Search, Reference Vault, Terminal, route opening","Local Demo: SEIS Code and AI Core routes remain no-key browser-local surfaces","Disabled: SSH, host shell, provider calls, deployment, credential storage"].join("\n")}
 function markMissionStripUsed(id){const data=readMissionStripState();data.used=Array.from(new Set([...(data.used||[]),id]));saveMissionStripState(data);renderMissionStrip(data)}
-function renderMissionStrip(data=readMissionStripState()){const strip=$("[data-mission-strip]");if(!strip)return;strip.classList.toggle("is-collapsed",Boolean(data.collapsed));const used=(data.used||[]).length,total=MISSION_STRIP_ACTIONS.length;$("[data-mission-strip-progress]",strip).textContent=used+" of "+total+" mission actions used";$("[data-mission-strip-bar]",strip).style.width=Math.round(used/total*100)+"%";$("[data-mission-strip-toggle]",strip).textContent=data.collapsed?"Expand":"Collapse";$("[data-mission-strip-toggle]",strip).setAttribute("aria-expanded",String(!data.collapsed))}
+function renderMissionStrip(data=readMissionStripState()){const strip=$("[data-mission-strip]");if(!strip)return;strip.classList.toggle("is-collapsed",Boolean(data.collapsed));const used=(data.used||[]).length,total=MISSION_STRIP_ACTIONS.length;$("[data-mission-strip-progress]",strip).textContent=t("missionStripProgress").replace("{used}",used).replace("{total}",total);$("[data-mission-strip-bar]",strip).style.width=Math.round(used/total*100)+"%";$("[data-mission-strip-toggle]",strip).textContent=data.collapsed?t("missionStripExpand"):t("missionStripCollapse");$("[data-mission-strip-toggle]",strip).setAttribute("aria-expanded",String(!data.collapsed))}
 async function copyMissionStripText(text){if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(text);return}const area=document.createElement("textarea");area.value=text;area.setAttribute("readonly","");area.style.position="fixed";area.style.opacity="0";document.body.appendChild(area);area.select();document.execCommand("copy");area.remove()}
-function wireMissionStrip(){const strip=$("[data-mission-strip]");if(!strip)return;strip.addEventListener("click",async e=>{const target=e.target.closest("button");if(!target)return;if(target.dataset.missionStripToggle!==undefined){const data=readMissionStripState();data.collapsed=!data.collapsed;saveMissionStripState(data);renderMissionStrip(data);return}if(target.dataset.missionStripApp){const id=target.dataset.missionStripApp;openApp(id);markMissionStripUsed(id);return}if(target.dataset.missionStripRoute){const route=target.dataset.missionStripRoute;openReplicaRoute(route,target.textContent.trim()||"SEIS route");markMissionStripUsed(route.includes("seis-code")?"seis-code":"ai-core");return}if(target.dataset.missionStripAction==="tour"){openDemoTour();markMissionStripUsed("tour");return}if(target.dataset.missionStripAction==="copy"){try{await copyMissionStripText(missionStripNote());toast("Mission Strip","Handoff copied")}catch{toast("Mission Strip","Copy unavailable in this browser")}return}if(target.dataset.missionStripAction==="reset"){saveMissionStripState({used:[],collapsed:false});renderMissionStrip();toast("Mission Strip","Local strip progress reset")}});renderMissionStrip()}
+function missionStripButtonTitle(button){return button.querySelector("b")?.textContent.trim()||button.getAttribute("aria-label")||"SEIS route"}
+function wireMissionStrip(){const strip=$("[data-mission-strip]");if(!strip)return;strip.addEventListener("click",async e=>{const target=e.target.closest("button");if(!target)return;if(target.dataset.missionStripToggle!==undefined){const data=readMissionStripState();data.collapsed=!data.collapsed;saveMissionStripState(data);renderMissionStrip(data);return}if(target.dataset.missionStripApp){const id=target.dataset.missionStripApp;openApp(id);markMissionStripUsed(id);return}if(target.dataset.missionStripRoute){const route=target.dataset.missionStripRoute;openReplicaRoute(route,missionStripButtonTitle(target));markMissionStripUsed(route.includes("seis-code")?"seis-code":"ai-core");return}if(target.dataset.missionStripAction==="tour"){openDemoTour();markMissionStripUsed("tour");return}if(target.dataset.missionStripAction==="copy"){try{await copyMissionStripText(missionStripNote());toast("Mission Strip",t("missionStripCopied"))}catch{toast("Mission Strip",t("missionStripCopyUnavailable"))}return}if(target.dataset.missionStripAction==="reset"){saveMissionStripState({used:[],collapsed:false});renderMissionStrip();toast("Mission Strip",t("missionStripResetToast"))}});renderMissionStrip()}
 wireMissionStrip();
 window.__SEIS_LINUX_REPLICA__={missionStripReady:()=>Boolean($("[data-mission-strip]")),missionStripState:readMissionStripState,appCount:APP_CATALOG.length,referenceCount:REFERENCE_APP_ENTRIES.length,referenceSources:()=>REFERENCE_SOURCES.map(source=>({source,count:REFERENCE_SOURCE_COUNTS[source]})),bridgeTargetCount:SEIS_BRIDGE_TARGETS.length,bridgeTargets:()=>SEIS_BRIDGE_TARGETS.map(target=>({title:target.title,scope:target.scope,state:target.state,route:target.route})),openApp,openDemoTour,windowCount:()=>state.windows.filter(w=>!w.closed).length,fileCount:()=>listFiles("/").length,terminalReady:()=>Boolean($("[data-terminal]")),locale:()=>state.locale,session:readSession,demoIntent:()=>DEMO_INTENT,route:"seis-linux-replica.html"};
 applyAccent();applyLocale(state.locale,false);renderSideRail();renderDesktopIcons();renderStartMenu();updateClock();setInterval(updateClock,1000);boot();

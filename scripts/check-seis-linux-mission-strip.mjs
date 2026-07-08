@@ -1,7 +1,8 @@
 import { existsSync, readFileSync } from "node:fs";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const root = process.cwd();
+const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const file = "apps/web/seis-linux-replica.html";
 const failures = [];
 
@@ -15,6 +16,10 @@ const html = existsSync(absolute) ? readFileSync(absolute, "utf8") : "";
 
 for (const marker of [
   "data-mission-strip",
+  "data-locale-text=\"missionStripLabel\"",
+  "data-locale-text=\"missionStripCopy\"",
+  "missionStripButtonTitle",
+  "missionStripProgress",
   "Live mission strip",
   "SEIS demo path",
   "seis.linuxMissionStrip.v1",
@@ -47,7 +52,7 @@ ensure(!/sk-[A-Za-z0-9]{20,}/.test(html), "Linux replica mission strip file cont
 
 ensure(html.includes("openDemoTour()"), "mission strip must open the guided live tour.");
 ensure(html.includes("openApp(id)"), "mission strip must use existing app opener for in-shell apps.");
-ensure(html.includes("openReplicaRoute(route"), "mission strip must use existing route opener for packaged pages.");
+ensure(html.includes("openReplicaRoute(route,missionStripButtonTitle(target))"), "mission strip must use existing route opener with a clean route title.");
 ensure(html.includes("localStorage.setItem(MISSION_STRIP_KEY"), "mission strip must persist only browser-local progress.");
 ensure(html.includes("aria-expanded"), "mission strip collapse control must expose aria-expanded.");
 ensure(html.includes("@media (max-width:860px){.mission-strip"), "mission strip must include mobile fallback CSS.");
