@@ -56,6 +56,17 @@ with `npm run check:seis-ssh-public-client-compatibility` and generate it with
 open live SSH, write config, call providers, execute MCP tools, contact GitHub
 auth, print secrets, or change the same `SEIS-SSH` server and port.
 
+### SEIS-SSH AI/Plugin Review Matrix Addendum
+
+PR 1E now also includes a read-only AI/plugin review matrix for installed AI
+routes, MCP runtime surfaces, SEIS plugin lanes, and platform plugin evidence.
+Validate it with `npm run check:seis-ssh-public-ai-plugin-review` and generate
+it with `npm run report:seis-ssh-public-ai-plugin-review` at
+`reports/seis-ssh-public-access/ai-plugin-review-latest.md`. It does not open
+live SSH, write config, call providers, mutate MCP surfaces, authorize
+connectors, contact GitHub auth, print secrets, or change the same `SEIS-SSH`
+server and port.
+
 ## PR 0: SEIS Integration And GitHub Development Spine
 
 | Field | Value |

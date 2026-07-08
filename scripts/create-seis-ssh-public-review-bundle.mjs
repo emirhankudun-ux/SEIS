@@ -130,7 +130,8 @@ function buildBundle() {
         "npm run check:seis-ssh-public-ci-workflow",
         "npm run check:seis-ssh-public-artifact-hygiene",
         "npm run check:seis-ssh-ai-mcp-handoff",
-        "npm run check:seis-ssh-public-client-compatibility"
+        "npm run check:seis-ssh-public-client-compatibility",
+        "npm run check:seis-ssh-public-ai-plugin-review"
       ],
       approvalGated: [
         "ssh SEIS-SSH",

@@ -143,6 +143,19 @@ Maintainer Merge Review. Validate it with
 SSH, write config, call providers, execute MCP tools, contact GitHub auth,
 print secrets, or change the same `SEIS-SSH` server and port.
 
+### SEIS-SSH AI/Plugin Review Matrix
+
+`SEIS-BL-052` also includes
+`scripts/create-seis-ssh-public-ai-plugin-review-matrix.mjs` and
+`reports/seis-ssh-public-access/ai-plugin-review-latest.md` as the read-only
+review matrix for installed AI routes, MCP runtime surfaces, SEIS plugin lanes,
+and platform plugin evidence. Validate it with
+`npm run check:seis-ssh-public-ai-plugin-review` and generate it with
+`npm run report:seis-ssh-public-ai-plugin-review`. It must not open live SSH,
+write config, call providers, mutate MCP surfaces, authorize connectors,
+contact GitHub auth, print secrets, or change the same `SEIS-SSH` server and
+port.
+
 ## Deferred Dangerous Work
 
 - Push to `main`.

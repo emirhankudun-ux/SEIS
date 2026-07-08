@@ -68,6 +68,7 @@ Ayni sunucu ve baglanti noktasi korunur.
 - [ ] Public review bundle was generated or checked before requesting SEIS-SSH review.
 - [ ] AI/MCP handoff was checked when installed AI, MCP, plugin, or connector context is relevant.
 - [ ] Client compatibility matrix was checked when user, device, IDE, picker, AI, MCP, plugin, or VPN behavior is relevant.
+- [ ] AI/plugin review matrix was checked when installed AI, MCP runtime, plugin lane, or connector evidence is relevant.
 
 Relevant checks:
 
@@ -80,6 +81,7 @@ npm run check:seis-ssh-public-signing-guide
 npm run check:seis-ssh-public-review-bundle
 npm run check:seis-ssh-ai-mcp-handoff
 npm run check:seis-ssh-public-client-compatibility
+npm run check:seis-ssh-public-ai-plugin-review
 npm run check:seis-ssh-public-ci-workflow
 npm run check:seis-ssh-public-readiness-matrix
 npm run check:seis-ssh-public-artifact-hygiene

@@ -56,6 +56,7 @@ ensure(scripts["check:seis-ssh-cloud-roadmap"] === "node scripts/check-seis-ssh-
 ensure(scripts["check:seis-ssh-picker-compatibility"] === "node scripts/check-seis-ssh-picker-compatibility.mjs", "missing check:seis-ssh-picker-compatibility script");
 ensure(scripts["check:seis-ssh-public-onboarding"] === "node scripts/create-seis-ssh-public-onboarding-pack.mjs --check", "missing check:seis-ssh-public-onboarding script");
 ensure(scripts["check:seis-ssh-public-contributor-doctor"] === "node scripts/check-seis-ssh-public-contributor-doctor.mjs --check", "missing check:seis-ssh-public-contributor-doctor script");
+ensure(scripts["check:seis-ssh-public-ai-plugin-review"] === "node scripts/create-seis-ssh-public-ai-plugin-review-matrix.mjs --check", "missing check:seis-ssh-public-ai-plugin-review script");
 ensure(scripts["check:seis-ssh-live-readiness-evidence"] === "node scripts/check-seis-ssh-live-readiness-evidence.mjs", "missing check:seis-ssh-live-readiness-evidence script");
 ensure(scripts["check:seis-ssh-closed-runtime"] === "node scripts/check-seis-ssh-closed-runtime.mjs", "missing check:seis-ssh-closed-runtime script");
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-cloud-roadmap"), "quality governance must include SSH cloud roadmap check");
@@ -103,6 +104,7 @@ for (const command of [
   "npm run check:seis-ssh-public-access",
   "npm run check:seis-ssh-public-onboarding",
   "npm run check:seis-ssh-public-contributor-doctor",
+  "npm run check:seis-ssh-public-ai-plugin-review",
   "npm run check:seis-ssh-live-readiness-evidence",
   "npm run check:seis-ssh-cloud-roadmap",
   "npm run check:seis-ssh-closed-runtime",

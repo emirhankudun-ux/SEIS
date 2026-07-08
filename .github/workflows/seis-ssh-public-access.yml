@@ -17,6 +17,7 @@ on:
       - "scripts/create-seis-ssh-public-*.mjs"
       - "scripts/create-seis-ssh-ai-mcp-handoff-bundle.mjs"
       - "scripts/create-seis-ssh-public-client-compatibility.mjs"
+      - "scripts/create-seis-ssh-public-ai-plugin-review-matrix.mjs"
       - "scripts/check-seis-ssh-live-readiness-evidence.mjs"
       - "package.json"
   push:
@@ -37,6 +38,7 @@ on:
       - "scripts/create-seis-ssh-public-*.mjs"
       - "scripts/create-seis-ssh-ai-mcp-handoff-bundle.mjs"
       - "scripts/create-seis-ssh-public-client-compatibility.mjs"
+      - "scripts/create-seis-ssh-public-ai-plugin-review-matrix.mjs"
       - "scripts/check-seis-ssh-live-readiness-evidence.mjs"
       - "package.json"
 
@@ -69,6 +71,7 @@ jobs:
           npm run check:seis-ssh-public-review-bundle
           npm run check:seis-ssh-ai-mcp-handoff
           npm run check:seis-ssh-public-client-compatibility
+          npm run check:seis-ssh-public-ai-plugin-review
           npm run check:seis-ssh-public-support-packet
           npm run check:seis-ssh-public-readiness-matrix
           npm run check:seis-ssh-public-artifact-hygiene

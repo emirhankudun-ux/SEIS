@@ -3995,6 +3995,7 @@ const SEIS_SSH_PUBLIC_ACCESS_CONTRACT = {
   reviewBundleCommand: "npm run run:seis-ssh-public-review-bundle",
   aiMcpHandoffCommand: "npm run run:seis-ssh-ai-mcp-handoff",
   clientCompatibilityCommand: "npm run run:seis-ssh-public-client-compatibility",
+  aiPluginReviewCommand: "npm run run:seis-ssh-public-ai-plugin-review",
   prTemplateCommand: "npm run check:seis-ssh-public-pr-template",
   ciWorkflowCommand: "npm run check:seis-ssh-public-ci-workflow",
   artifactHygieneCommand: "npm run check:seis-ssh-public-artifact-hygiene",
@@ -4012,6 +4013,7 @@ const SEIS_SSH_PUBLIC_ACCESS_CONTRACT = {
   reviewBundleArtifact: "/home/seis/Documents/seis-ssh-public-review-bundle.md",
   aiMcpHandoffArtifact: "/home/seis/Documents/seis-ssh-ai-mcp-handoff.md",
   clientCompatibilityArtifact: "/home/seis/Documents/seis-ssh-public-client-compatibility.md",
+  aiPluginReviewArtifact: "/home/seis/Documents/seis-ssh-public-ai-plugin-review.md",
   onboardingArtifact: "/home/seis/Documents/seis-ssh-public-onboarding.md",
   contributorDoctorArtifact: "/home/seis/Documents/seis-ssh-public-contributor-doctor.md",
   liveEvidenceArtifact: "docs/deployment/seis-ssh-live-readiness-evidence.md",
@@ -4027,6 +4029,7 @@ const SEIS_SSH_PUBLIC_ACCESS_CONTRACT = {
     ["review-bundle", "A public review bundle collects SEIS-SSH onboarding, support, policy, signing, and artifact evidence into one safe GitHub packet."],
     ["ai-mcp-handoff", "An AI/MCP handoff maps installed AI routes, MCP runtime, plugin lanes, connectors, and external platform surfaces to safe SEIS-SSH review commands."],
     ["client-compatibility", "A client compatibility matrix shows GitHub, terminal, Codex picker, IDE, AI/MCP, team VPN, mobile, and maintainer paths without changing server or port."],
+    ["ai-plugin-review", "An AI/plugin review matrix maps installed AI routes, MCP runtime surfaces, SEIS plugin lanes, and platform plugin evidence into status-only or plan-only SEIS-SSH review."],
     ["pr-template", "A pull request checklist keeps SEIS-SSH changes reviewable on GitHub without server/port drift or public secrets."],
     ["ci-workflow", "A GitHub Actions gate runs the public SEIS-SSH review checks on pull requests before merge review."],
     ["artifact-hygiene", "A read-only artifact hygiene gate scans generated public reports before GitHub issue or PR attachment."],
@@ -6682,6 +6685,7 @@ function renderSeisCloud() {
         <article class="metric-card"><strong>Review Bundle</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.reviewBundleCommand)}</p></article>
         <article class="metric-card"><strong>AI/MCP Handoff</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.aiMcpHandoffCommand)}</p></article>
         <article class="metric-card"><strong>Client Compatibility</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.clientCompatibilityCommand)}</p></article>
+        <article class="metric-card"><strong>AI/Plugin Review</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.aiPluginReviewCommand)}</p></article>
         <article class="metric-card"><strong>PR Template</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.prTemplateCommand)}</p></article>
         <article class="metric-card"><strong>CI Workflow</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.ciWorkflowCommand)}</p></article>
         <article class="metric-card"><strong>Artifact Hygiene</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.artifactHygieneCommand)}</p></article>
@@ -9250,6 +9254,8 @@ Public SSH AI/MCP handoff command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.aiMcpHandof
 Public SSH AI/MCP handoff artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.aiMcpHandoffArtifact}
 Public SSH client compatibility command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.clientCompatibilityCommand}
 Public SSH client compatibility artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.clientCompatibilityArtifact}
+Public SSH AI/plugin review command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.aiPluginReviewCommand}
+Public SSH AI/plugin review artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.aiPluginReviewArtifact}
 Public SSH PR template command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.prTemplateCommand}
 Public SSH CI workflow command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.ciWorkflowCommand}
 Public SSH artifact hygiene command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.artifactHygieneCommand}

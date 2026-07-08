@@ -6,6 +6,7 @@ import { join } from "node:path";
 import { tmpdir } from "node:os";
 
 const args = parseArgs(process.argv.slice(2));
+const generatorTimeoutMs = 120000;
 
 if (args.help) {
   printHelp();
@@ -69,6 +70,11 @@ const artifacts = [
     expectedId: "seis-ssh-public-client-compatibility"
   },
   {
+    id: "ai-plugin-review",
+    script: "scripts/create-seis-ssh-public-ai-plugin-review-matrix.mjs",
+    expectedId: "seis-ssh-public-ai-plugin-review"
+  },
+  {
     id: "onboarding-pack",
     script: "scripts/create-seis-ssh-public-onboarding-pack.mjs",
     expectedId: "seis-ssh-public-onboarding-pack"
@@ -98,7 +104,7 @@ for (const artifact of artifacts) {
 
   if (result.status !== 0) {
     failures.push(`${artifact.id}: generator exited with status ${result.status}`);
-    warnings.push(...sanitizeLines([result.stderr, result.stdout]));
+    warnings.push(...sanitizeLines([result.error, result.stderr, result.stdout]));
     continue;
   }
 
@@ -152,6 +158,8 @@ const report = {
     "reports/seis-ssh-public-access/ai-mcp-handoff-latest.md",
     "reports/seis-ssh-public-access/client-compatibility-latest.json",
     "reports/seis-ssh-public-access/client-compatibility-latest.md",
+    "reports/seis-ssh-public-access/ai-plugin-review-latest.json",
+    "reports/seis-ssh-public-access/ai-plugin-review-latest.md",
     "reports/seis-ssh-public-access/onboarding-pack-latest.json",
     "reports/seis-ssh-public-access/onboarding-pack-latest.md",
     "reports/seis-ssh-public-access/contributor-doctor-latest.json",
@@ -226,7 +234,7 @@ function validateTextArtifact({ artifact, jsonText, markdownText }) {
 function run(command, argv) {
   const result = spawnSync(command, argv, {
     encoding: "utf8",
-    timeout: 30000
+    timeout: generatorTimeoutMs
   });
   return {
     status: result.status ?? (result.error ? 1 : 0),

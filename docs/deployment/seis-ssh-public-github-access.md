@@ -91,6 +91,8 @@ npm run check:seis-ssh-ai-mcp-handoff
 npm run report:seis-ssh-ai-mcp-handoff
 npm run check:seis-ssh-public-client-compatibility
 npm run report:seis-ssh-public-client-compatibility
+npm run check:seis-ssh-public-ai-plugin-review
+npm run report:seis-ssh-public-ai-plugin-review
 npm run check:seis-ssh-public-pr-template
 npm run check:seis-ssh-public-ci-workflow
 npm run check:seis-ssh-public-readiness-matrix
@@ -228,6 +230,14 @@ SSH, New Device / Mobile Continuity, or Maintainer Merge Review. It does not
 call providers, execute MCP tools, contact GitHub, open SSH, write config,
 print secrets, or change the same server and port.
 
+`npm run report:seis-ssh-public-ai-plugin-review` writes the AI/plugin review matrix
+to `reports/seis-ssh-public-access/ai-plugin-review-latest.md`. It is the safe
+artifact when a reviewer asks how installed AI routes, MCP runtime, plugin lanes,
+and platform plugin evidence can participate in SEIS-SSH review. Every lane is
+status-only or plan-only until explicit human approval exists; the report does
+not call providers, execute MCP tools, authorize connectors, contact GitHub,
+open SSH, write config, print secrets, or change the same server and port.
+
 `npm run check:seis-ssh-public-pr-template` verifies that
 `.github/PULL_REQUEST_TEMPLATE.md` includes the `SEIS-SSH` review checklist,
 same-server/port invariant, no-secret boundary, public artifact hygiene gate,
@@ -350,6 +360,7 @@ npm run check:seis-ssh-public-signing-guide
 npm run check:seis-ssh-public-review-bundle
 npm run check:seis-ssh-ai-mcp-handoff
 npm run check:seis-ssh-public-client-compatibility
+npm run check:seis-ssh-public-ai-plugin-review
 npm run check:seis-ssh-public-pr-template
 npm run check:seis-ssh-public-ci-workflow
 npm run check:seis-ssh-public-artifact-hygiene

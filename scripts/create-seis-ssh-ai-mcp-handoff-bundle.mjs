@@ -173,6 +173,7 @@ function buildHandoff() {
         "npm run check:seis-ssh-public-review-bundle",
         "npm run check:seis-agent-plugin-integration",
         "npm run check:seis-plugin-bundle",
+        "npm run check:seis-ssh-public-ai-plugin-review",
         "npm run check:seis-specialist-plugins -- --include-legacy-personal",
         "npm run check:connector-activation-report",
         "npm run check:seis-nvidia-installed-integrations"

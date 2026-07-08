@@ -196,6 +196,8 @@ npm run check:seis-ssh-ai-mcp-handoff
 npm run report:seis-ssh-ai-mcp-handoff
 npm run check:seis-ssh-public-client-compatibility
 npm run report:seis-ssh-public-client-compatibility
+npm run check:seis-ssh-public-ai-plugin-review
+npm run report:seis-ssh-public-ai-plugin-review
 npm run check:seis-ssh-public-pr-template
 npm run check:seis-ssh-public-ci-workflow
 npm run check:seis-ssh-public-readiness-matrix
@@ -278,6 +280,13 @@ Plugin Reviewer, Company / Team VPN SSH, New Device / Mobile Continuity, and
 Maintainer Merge Review without calling providers, executing MCP tools,
 contacting GitHub, opening SSH, writing config, printing secrets, or changing
 the same server and port.
+
+`npm run run:seis-ssh-public-ai-plugin-review` creates a read-only AI/plugin review matrix
+at `reports/seis-ssh-public-access/ai-plugin-review-latest.md`. It shows how
+installed AI routes, MCP runtime surfaces, SEIS plugin lanes, and platform
+plugin evidence can review `SEIS-SSH` as status-only or plan-only context
+without provider calls, MCP mutation, connector auth, GitHub mutation, live SSH,
+config writes, secrets, or a server/port change.
 
 `npm run check:seis-ssh-public-pr-template` verifies that the GitHub pull
 request template includes the `SEIS-SSH` review checklist, same-server/port
