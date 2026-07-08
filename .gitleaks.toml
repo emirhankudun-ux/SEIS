@@ -23,12 +23,12 @@ paths = [
 ]
 
 [[allowlists]]
-description = "Technology stack label Spring Security is not a credential"
+description = "Technology stack labels around Spring Boot and REST APIs are not credentials"
 condition = "AND"
 paths = [
   '''content/development/seis-agent-fullstack-production-roadmap\.json''',
 ]
 regexTarget = "line"
 regexes = [
-  '''Spring Security''',
+  '''Spring Boot.*REST APIs.*microservices''',
 ]
