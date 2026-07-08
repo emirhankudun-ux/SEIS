@@ -100,6 +100,8 @@ Primary demo routes:
   demo gate instead of silently shipping broken cards. The focused review packet
   is maintained at
   [`docs/reviews/SEIS_LINUX_REPLICA_LIVE_DEMO_REVIEW.md`](./docs/reviews/SEIS_LINUX_REPLICA_LIVE_DEMO_REVIEW.md),
+  the public reviewer quickstart is maintained at
+  [`docs/demos/SEIS_PUBLIC_DEMO_REVIEWER_QUICKSTART.md`](./docs/demos/SEIS_PUBLIC_DEMO_REVIEWER_QUICKSTART.md),
   and the public operator walkthrough is maintained at
   [`docs/demos/SEIS_LINUX_REPLICA_PUBLIC_WALKTHROUGH.md`](./docs/demos/SEIS_LINUX_REPLICA_PUBLIC_WALKTHROUGH.md).
 - `seis-linux-replica-public-demo.html` - public reviewer entry route for the

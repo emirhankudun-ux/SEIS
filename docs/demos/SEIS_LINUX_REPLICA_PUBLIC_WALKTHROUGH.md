@@ -7,6 +7,9 @@ Replica demo. It exists so a reviewer can run the demo from GitHub/local files
 without needing SSH, API keys, provider accounts, deployment access, private
 vaults, or host shell execution.
 
+For the shorter GitHub reviewer entry path, use
+[`SEIS_PUBLIC_DEMO_REVIEWER_QUICKSTART.md`](./SEIS_PUBLIC_DEMO_REVIEWER_QUICKSTART.md).
+
 The walkthrough preserves the supplied ZIP/reference-bank material. It does not
 replace, delete, or rewrite the source assets under `apps/web/reference-banks/`.
 
