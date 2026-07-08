@@ -131,6 +131,9 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | Big Tech MCP and skill inventory | [../content/development/seis-big-tech-mcp-skill-inventory.json](../content/development/seis-big-tech-mcp-skill-inventory.json) |
 | SEIS Second Brain validator | `npm run check:seis-second-brain` |
 | SEIS Second Brain readiness contracts validator | `npm run check:seis-second-brain-readiness-contracts` |
+| SEIS Plugin/MCP Ten-Year Continuity Map | `npm run check:seis-plugin-mcp-ten-year-continuity-map` |
+| SEIS Plugin/MCP Ten-Year Continuity report | `npm run report:seis-plugin-mcp-ten-year-continuity-map` |
+| SEIS Plugin/MCP Ten-Year Continuity artifact | `reports/seis-public-demo/plugin-mcp-ten-year-continuity-map-latest.md` |
 | SEIS Second Brain browser smoke | `npm run check:seis-second-brain-browser-smoke` |
 | SEIS Linux Replica route | [../apps/web/seis-linux-replica.html](../apps/web/seis-linux-replica.html) |
 | SEIS Linux Replica browser smoke | `npm run check:seis-linux-replica-browser-smoke` |

@@ -102,6 +102,10 @@ if (failures.length === 0) {
   ensure(js.includes("SEIS_PERSONAL_PLUGIN_BRIDGE"), "desktop.js must define the personal SEIS plugin bridge.");
   ensure(js.includes("SEIS_PERSONAL_PLUGIN_AI_CORE_LANE_MATRIX"), "desktop.js must define the personal plugin AI Core lane matrix.");
   ensure(js.includes("SEIS_MCP_RUNTIME_CONTRACT"), "desktop.js must define the MCP runtime contract.");
+  ensure(js.includes("SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY"), "desktop.js must define the Plugin/MCP ten-year continuity map.");
+  ensure(js.includes("data-plugin-mcp-ten-year-continuity"), "desktop.js must render the Plugin/MCP ten-year continuity panel.");
+  ensure(js.includes("export-plugin-mcp-ten-year-continuity"), "desktop.js must expose the Plugin/MCP ten-year continuity export action.");
+  ensure(js.includes("seis-plugin-mcp-ten-year-continuity-map.md"), "desktop.js must save the Plugin/MCP ten-year continuity artifact.");
   ensure(js.includes("SEIS_V17_COMMAND_CENTER_MODULES"), "desktop.js must define the V17 Command Center module map.");
   ensure(js.includes("data-seis-command-center"), "desktop.js must render the V17 Command Center surface.");
   ensure(js.includes("data-v17-module"), "desktop.js must render V17 module rows.");
@@ -362,6 +366,7 @@ async function runRuntimeSmoke(html, js) {
     ensure(diagnostics.openWindows().includes("SEIS Command Center"), "SEIS Command Center route must open the Command Center window.");
     ensure(window.document.querySelector("[data-seis-command-center]"), "SEIS Command Center must render the V17 operating center surface.");
     const commandCenterCoverage = diagnostics.v17CommandCenter();
+    const pluginMcpTenYearContinuity = diagnostics.pluginMcpTenYearContinuity();
     ensure(commandCenterCoverage.moduleCount >= 16, `V17 Command Center expected at least 16 modules, got ${commandCenterCoverage.moduleCount}.`);
     ensure(commandCenterCoverage.appLinks >= 15, `V17 Command Center expected at least 15 app links, got ${commandCenterCoverage.appLinks}.`);
     ensure(commandCenterCoverage.routeLinks >= 7, `V17 Command Center expected at least 7 route links, got ${commandCenterCoverage.routeLinks}.`);
@@ -408,9 +413,20 @@ async function runRuntimeSmoke(html, js) {
     ensure(commandCenterCoverage.masterObjectiveCoverage.blockedUntil.includes("explicit human approval"), "V17 Command Center must keep 150B blocked until explicit human approval.");
     ensure(commandCenterCoverage.masterObjectiveCoverage.statusCounts.active >= 7, "V17 Command Center diagnostics must expose active master objective coverage counts.");
     ensure(commandCenterCoverage.modules.some((module) => module.id === "model-scaling" && module.state === "planned-gated"), "V17 Command Center must model scaling as planned/gated.");
+    ensure(pluginMcpTenYearContinuity.id === "plugin-mcp-ten-year-continuity-map", "Plugin/MCP ten-year continuity diagnostics must expose the canonical id.");
+    ensure(pluginMcpTenYearContinuity.phases.length === 10, "Plugin/MCP ten-year continuity diagnostics must expose ten yearly phases.");
+    ensure(pluginMcpTenYearContinuity.counts.length >= 6, "Plugin/MCP ten-year continuity diagnostics must expose continuity counts.");
+    ensure(pluginMcpTenYearContinuity.hardStops.includes("remote_mcp_trust"), "Plugin/MCP ten-year continuity diagnostics must keep remote MCP trust approval-gated.");
     ensure(window.document.querySelector("[data-seis-command-center] [data-master-objective-coverage]"), "V17 Command Center must render the master objective coverage panel.");
     ensure(window.document.querySelectorAll("[data-seis-command-center] [data-master-objective-coverage-item]").length === commandCenterCoverage.masterObjectiveCoverage.itemCount, "V17 Command Center must render every master objective coverage row.");
     ensure(window.document.querySelector("[data-seis-command-center] [data-master-objective-coverage-item='seis-ai-150b-frontier-boundary']"), "V17 Command Center must render the 150B master objective coverage row.");
+    ensure(window.document.querySelector("[data-seis-command-center] [data-plugin-mcp-ten-year-continuity]"), "V17 Command Center must render the Plugin/MCP ten-year continuity panel.");
+    ensure(window.document.querySelectorAll("[data-seis-command-center] [data-plugin-mcp-ten-year-phase]").length === 10, "V17 Command Center must render ten Plugin/MCP continuity phase rows.");
+    const pluginMcpTenYearExportButton = window.document.querySelector("[data-seis-command-center] [data-action=\"export-plugin-mcp-ten-year-continuity\"]");
+    ensure(pluginMcpTenYearExportButton, "SEIS Command Center must expose a Plugin/MCP ten-year continuity export action.");
+    pluginMcpTenYearExportButton?.click();
+    await delay(60);
+    ensure(diagnostics.filePaths().includes("/home/seis/Documents/seis-plugin-mcp-ten-year-continuity-map.md"), "SEIS Command Center Plugin/MCP continuity action must create a virtual filesystem artifact.");
     const modelPreflightButton = window.document.querySelector("[data-seis-command-center] [data-action='export-model-preflight']");
     ensure(modelPreflightButton, "SEIS Command Center must expose a 20B local preflight export action.");
     modelPreflightButton?.click();
@@ -583,7 +599,7 @@ async function runRuntimeSmoke(html, js) {
     ensure(diagnostics.installedAiSystems().length === 6, `Installed AI diagnostics expected six systems, got ${diagnostics.installedAiSystems().length}.`);
     ensure(diagnostics.installedAiCoreRouteMatrix().length === 6, `Installed AI Core route diagnostics expected six routes, got ${diagnostics.installedAiCoreRouteMatrix().length}.`);
     ensure(diagnostics.mcpRuntimeContract().toolCount === 34, `MCP Runtime Contract diagnostics expected 34 tools, got ${diagnostics.mcpRuntimeContract().toolCount}.`);
-    ensure(diagnostics.mcpRuntimeContract().resourceCount === 26, `MCP Runtime Contract diagnostics expected 26 resources, got ${diagnostics.mcpRuntimeContract().resourceCount}.`);
+    ensure(diagnostics.mcpRuntimeContract().resourceCount === 29, `MCP Runtime Contract diagnostics expected 29 resources, got ${diagnostics.mcpRuntimeContract().resourceCount}.`);
     ensure(diagnostics.mcpRuntimeContract().sourcePath === "content/development/seis-ai-core-mcp-runtime-contract.json", "MCP Runtime Contract diagnostics must expose the canonical source path.");
     ensure(diagnostics.mcpRuntimeContract().resourceUri === "seis://ai/mcp-runtime-contract.json", "MCP Runtime Contract diagnostics must expose the canonical MCP resource URI.");
     ensure(window.document.querySelector("[data-installed-ai-core-route-matrix]"), "Installed AI Systems must render the installed AI Core route matrix.");
@@ -600,7 +616,7 @@ async function runRuntimeSmoke(html, js) {
     ensure(window.document.querySelector("[data-mcp-runtime-contract]"), "Installed AI Systems must render the MCP runtime contract.");
     ensure(window.document.querySelectorAll("[data-mcp-runtime-surface]").length === 4, "MCP Runtime Contract must render four runtime surfaces.");
     ensure(window.document.querySelector("[data-mcp-runtime-contract]")?.textContent.includes("stdio JSON-RPC"), "MCP Runtime Contract must show the stdio JSON-RPC transport.");
-    ensure(window.document.querySelector("[data-mcp-runtime-contract]")?.textContent.includes("26"), "MCP Runtime Contract must show the 26-resource registry count.");
+    ensure(window.document.querySelector("[data-mcp-runtime-contract]")?.textContent.includes("29"), "MCP Runtime Contract must show the 29-resource registry count.");
     const mcpRuntimeContractExportButton = window.document.querySelector("[data-action=\"export-mcp-runtime-contract\"]");
     ensure(mcpRuntimeContractExportButton, "MCP Runtime Contract must expose a local export action.");
     mcpRuntimeContractExportButton?.click();

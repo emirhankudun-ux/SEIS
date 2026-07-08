@@ -1046,6 +1046,8 @@ function validatePluginMcpContinuity(report) {
   ensure(report.sourcePaths?.contract === paths.pluginMcpContinuityContract, "Plugin/MCP continuity contract source path mismatch.");
   ensure(report.sourcePaths?.secondBrain === paths.secondBrain, "Plugin/MCP continuity Second Brain source path mismatch.");
   ensure(report.sourcePaths?.mcpRuntime === "content/development/seis-ai-core-mcp-runtime-contract.json", "Plugin/MCP continuity MCP runtime source path mismatch.");
+  ensure(report.sourcePaths?.localAiRuntimeMatrix === "content/development/seis-local-ai-runtime-matrix.json", "Plugin/MCP continuity local AI runtime source path mismatch.");
+  ensure(report.sourcePaths?.freshCloneReadinessPlan === "content/development/seis-agi-github-fresh-clone-readiness-plan.json", "Plugin/MCP continuity fresh-clone readiness source path mismatch.");
   ensure(report.horizon?.years === 10, "Plugin/MCP continuity must cover ten years.");
   ensure(report.horizon?.reviewWindowMonths === 6, "Plugin/MCP continuity review window must be six months.");
   ensure(report.horizon?.reviewWindowCount === 20, "Plugin/MCP continuity must expose twenty review windows.");
@@ -1054,7 +1056,24 @@ function validatePluginMcpContinuity(report) {
   ensure(report.derivedCounts?.mcpPromptCount >= 3, "Plugin/MCP continuity must include current MCP prompt count.");
   ensure(report.derivedCounts?.installedAiProfileCount >= 24, "Plugin/MCP continuity must include installed AI profile count.");
   ensure(report.derivedCounts?.managedSubAgentLaneCount >= 6, "Plugin/MCP continuity must include managed sub-agent lanes.");
+  ensure(report.derivedCounts?.localAiRuntimeRowCount >= 9, "Plugin/MCP continuity must include local AI runtime rows.");
+  ensure(report.derivedCounts?.localAiHardwareRuntimeLaneCount >= 5, "Plugin/MCP continuity must include local AI hardware runtime lanes.");
+  ensure(report.derivedCounts?.freshCloneReadinessCheckCount >= 6, "Plugin/MCP continuity must include fresh-clone readiness checks.");
+  ensure(report.derivedCounts?.freshCloneEveryoneReadyBlockerCount >= 4, "Plugin/MCP continuity must keep everyone-ready blockers visible.");
   ensure(report.derivedCounts?.connectorCount >= 20, "Plugin/MCP continuity must include connector policy records.");
+  ensure(report.sourceSnapshot?.localAiRuntimeStatus === "runtime-matrix-ready-no-install", "Plugin/MCP continuity must keep local AI matrix in no-install status.");
+  ensure(report.sourceSnapshot?.localAiModelInstallAllowed === false, "Plugin/MCP continuity must block local AI model installs.");
+  ensure(report.sourceSnapshot?.localAiInferenceAllowed === false, "Plugin/MCP continuity must block local AI inference.");
+  ensure(report.sourceSnapshot?.localAiTrainingAllowed === false, "Plugin/MCP continuity must block local AI training.");
+  ensure(report.sourceSnapshot?.localAiAgiClaimAllowed === false, "Plugin/MCP continuity must block local AI AGI claims.");
+  ensure(report.sourceSnapshot?.freshClonePlanStatus === "fresh-clone-plan-ready-evidence-missing", "Plugin/MCP continuity must keep fresh-clone evidence missing until proven.");
+  ensure(report.sourceSnapshot?.freshCloneVerified === false, "Plugin/MCP continuity must not claim fresh-clone verification.");
+  ensure(report.sourceSnapshot?.everyoneReadyClaimAllowed === false, "Plugin/MCP continuity must not claim everyone-ready status.");
+  ensure(report.sourceSnapshot?.freshCloneAgiClaimAllowed === false, "Plugin/MCP continuity must not claim fresh-clone AGI readiness.");
+  ensure(report.sourceSnapshot?.aiGithubReadinessChain === "npm run check:seis-ai-github-readiness-chain", "Plugin/MCP continuity must expose the AI GitHub readiness chain command.");
+  ensure(report.sourceSnapshot?.aiGithubReadinessChainDownloadsModels === false, "Plugin/MCP continuity readiness chain must not download models.");
+  ensure(report.sourceSnapshot?.aiGithubReadinessChainTrainsModels === false, "Plugin/MCP continuity readiness chain must not train models.");
+  ensure(report.sourceSnapshot?.aiGithubReadinessChainCallsProviders === false, "Plugin/MCP continuity readiness chain must not call providers.");
   ensure(Array.isArray(report.phases) && report.phases.length === 10, "Plugin/MCP continuity must expose ten yearly phases.");
   ensureArrayMin(report.reviewEvidence, 7, "Plugin/MCP continuity review evidence cadence");
   for (const hardStop of [
@@ -1083,6 +1102,8 @@ function validatePluginMcpContinuity(report) {
   }
   ensure(report.validation?.qualityGate === "npm run check:seis-plugin-mcp-ten-year-continuity-map", "Plugin/MCP continuity quality gate mismatch.");
   ensure(report.validation?.reportCommand === "npm run report:seis-plugin-mcp-ten-year-continuity-map", "Plugin/MCP continuity report command mismatch.");
+  ensure(report.validation?.publicAiReadinessGate === "npm run check:seis-public-ai-readiness", "Plugin/MCP continuity public AI readiness gate mismatch.");
+  ensure(report.validation?.aiGithubReadinessChain === "npm run check:seis-ai-github-readiness-chain", "Plugin/MCP continuity AI GitHub readiness chain mismatch.");
   ensureIncludes(report.validation?.requiredEvidence, paths.pluginMcpContinuityJson, "Plugin/MCP continuity required evidence");
   ensureIncludes(report.validation?.requiredEvidence, paths.pluginMcpContinuityMarkdown, "Plugin/MCP continuity required evidence");
   ensureIncludes(report.validation?.requiredEvidence, paths.pluginMcpContinuityDoc, "Plugin/MCP continuity required evidence");

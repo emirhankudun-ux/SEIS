@@ -147,8 +147,11 @@ ios/
 !reports/seis-public-demo/second-brain-accessibility-focus-latest.json
 !reports/seis-public-demo/second-brain-agent-registry-latest.json
 !reports/seis-public-demo/second-brain-public-reviewer-pack-latest.json
+!reports/seis-public-demo/plugin-mcp-ten-year-continuity-map-latest.json
 !reports/seis-public-demo/security-gate-redacted-latest.json
 !reports/seis-public-demo/security-owner-handoff-latest.json
+!reports/seis-model-scaling/seis-local-ai-runtime-matrix.json
+!reports/seis-model-scaling/seis-agi-github-fresh-clone-readiness-plan.json
 !packages/seis-ai/data/permission-policy-seed.json
 !packages/seis-ai/models/permission-policy-seed-v0.json
 !packages/seis-ai/data/memory-ranker-seed-v0.json

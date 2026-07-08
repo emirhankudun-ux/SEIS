@@ -22,6 +22,14 @@ Validation:
 ```bash
 npm run check:seis-ai-workforce-training
 npm run check:seis-language-model-intake
+npm run report:seis-local-ai-runtime-matrix
+npm run check:seis-local-ai-runtime-matrix
+npm run report:seis-agi-github-fresh-clone-readiness-plan
+npm run check:seis-agi-github-fresh-clone-readiness-plan
+npm run check:seis-public-ai-readiness
+npm run check:seis-ai-github-readiness-chain
+npm run report:seis-ai-github-pr-package
+npm run check:seis-ai-github-pr-package
 npm run automation:seis-ai-workforce-training
 ```
 
@@ -74,6 +82,84 @@ This is retrieval first and model-install second:
   approved small/quantized experiments only;
 - keep 70B, 150B, 300B+, 405B, 512B, and larger models blocked until hardware,
   budget, evaluation, observability, rollback, and approval evidence exists.
+
+## Local AI Runtime Matrix
+
+16GB and larger machines use a separate local runtime matrix:
+
+```bash
+npm run report:seis-local-ai-runtime-matrix
+npm run check:seis-local-ai-runtime-matrix
+```
+
+Generated outputs:
+
+- `content/development/seis-local-ai-runtime-matrix.json`
+- `reports/seis-model-scaling/seis-local-ai-runtime-matrix.json`
+- `reports/seis-model-scaling/seis-local-ai-runtime-matrix.md`
+- `docs/ai/seis-local-ai-runtime-matrix.md`
+
+The matrix currently approves only Local Demo, deterministic seed-model
+artifacts, and metadata-first planning. Model downloads, Ollama pulls, local
+inference, embedding runtime, SFT, LoRA, full fine-tune, foundation
+pretraining, HF Jobs, cloud GPU, SSH, GitHub push/merge, route promotion, 20B
+runtime claims, 512B readiness claims, fully knowledgeable model claims, and
+AGI claims remain false.
+
+Future real model install or training requires exact model id, revision,
+license, checksum, hardware profile, dataset card, model card, benchmark or
+dry-run evidence, secret scan, rollback plan, and human approval. The operating
+model is not "download every model"; it is "queue every model family through a
+safe evidence gate".
+
+## AGI GitHub Fresh-Clone Readiness Plan
+
+The fresh-clone readiness plan turns the GitHub everyone-ready gap into a
+no-key Local Demo checklist. It is the safe path for broad public review before
+any claim that SEIS is easy for every GitHub user to run.
+
+```bash
+npm run report:seis-agi-github-fresh-clone-readiness-plan
+npm run check:seis-agi-github-fresh-clone-readiness-plan
+npm run check:seis-public-ai-readiness
+npm run check:seis-ai-github-readiness-chain
+npm run report:seis-ai-github-pr-package
+npm run check:seis-ai-github-pr-package
+```
+
+Generated outputs:
+
+- `content/development/seis-agi-github-fresh-clone-readiness-plan.json`
+- `reports/seis-model-scaling/seis-agi-github-fresh-clone-readiness-plan.json`
+- `reports/seis-model-scaling/seis-agi-github-fresh-clone-readiness-plan.md`
+- `docs/ai/seis-agi-github-fresh-clone-readiness-plan.md`
+
+This plan does not prove AGI, install models, run inference, train, fine-tune,
+call providers, provision cloud/GPU resources, execute SSH, push, merge, deploy,
+or approve release. It only defines the evidence required before the Local Demo
+path can be described as fresh-clone verified.
+
+## AI GitHub PR Package
+
+The AI GitHub PR package narrows the current AI readiness work into a reviewable
+PR slice. It exists because the active worktree may contain unrelated Desktop,
+product-demo, platform, SSH, or public-demo changes that must not be mixed into
+an AI-only review.
+
+```bash
+npm run report:seis-ai-github-pr-package
+npm run check:seis-ai-github-pr-package
+```
+
+Generated outputs:
+
+- `content/development/seis-ai-github-pr-package.json`
+- `docs/ai/seis-ai-github-pr-package.md`
+- `reports/seis-model-scaling/seis-ai-github-pr-package.md`
+
+The package keeps push and merge status false until selected AI files are staged
+in a clean branch, the AI GitHub readiness chain passes, and human review
+approves the PR.
 
 ## Model Targets
 

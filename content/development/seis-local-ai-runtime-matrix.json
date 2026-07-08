@@ -1,0 +1,320 @@
+{
+  "id": "seis-local-ai-runtime-matrix",
+  "version": "2026.07.08",
+  "generatedAt": "2026-07-08T11:55:43.716Z",
+  "status": "runtime-matrix-ready-no-install",
+  "qualityGate": "npm run check:seis-local-ai-runtime-matrix",
+  "reportCommand": "npm run report:seis-local-ai-runtime-matrix",
+  "purpose": "Define a safe local AI path for SEIS on 16GB+ machines without downloading checkpoints, running inference, training, submitting jobs, provisioning cloud/GPU, using SSH, or claiming AGI.",
+  "truthBoundary": [
+    "This matrix is planning evidence only.",
+    "It installs no models, downloads no checkpoints, runs no inference, calls no provider, trains no model, submits no job, provisions no cloud or GPU, executes no SSH, and pushes nothing to GitHub.",
+    "It does not approve SFT, LoRA, full fine-tuning, foundation pretraining, benchmark execution, route promotion, 512B readiness, fully knowledgeable AI, or AGI claims.",
+    "16GB+ support means Local Demo plus approval-gated candidate lanes, not verified 20B runtime compatibility."
+  ],
+  "officialResearchBaseline": [
+    {
+      "id": "hf-transformers-bitsandbytes",
+      "url": "https://huggingface.co/docs/transformers/quantization/bitsandbytes",
+      "observedDate": "2026-07-08",
+      "evidenceSummary": "Hugging Face documents 8-bit and 4-bit quantization, QLoRA, hardware compatibility, and memory-footprint checks.",
+      "seisImplication": "SEIS can plan quantized local lanes, but must block runtime/training claims until measured on approved hardware."
+    },
+    {
+      "id": "hf-peft",
+      "url": "https://huggingface.co/docs/peft/en/index",
+      "observedDate": "2026-07-08",
+      "evidenceSummary": "PEFT trains a small number of extra parameters instead of all model parameters.",
+      "seisImplication": "Small LoRA/adapters are a future research lane after dataset, model-card, and approval gates; they are not foundation-model training."
+    },
+    {
+      "id": "hf-trl-sft-trainer",
+      "url": "https://huggingface.co/docs/trl/en/sft_trainer",
+      "observedDate": "2026-07-08",
+      "evidenceSummary": "TRL exposes SFTTrainer for supervised fine-tuning workflows with model, datasets, processing class, and PEFT config inputs.",
+      "seisImplication": "SEIS can prepare an SFT approval packet later, but no SFT command is authorized by this matrix."
+    },
+    {
+      "id": "hf-jobs",
+      "url": "https://huggingface.co/docs/huggingface_hub/en/guides/jobs",
+      "observedDate": "2026-07-08",
+      "evidenceSummary": "HF Jobs require login, positive credit balance, hardware flavor selection, and environment/secrets handling.",
+      "seisImplication": "HF Jobs remain blocked until explicit cost, secret, monitoring, rollback, and human approval evidence exists."
+    },
+    {
+      "id": "ollama-library",
+      "url": "https://ollama.com/library",
+      "observedDate": "2026-07-08",
+      "evidenceSummary": "Ollama lists local model families and sizes, including Qwen, Gemma, Llama, Mistral, DeepSeek, code, and embedding families.",
+      "seisImplication": "SEIS can track model-family candidates, but every pull/run needs model-specific license, artifact, RAM, checksum, and rollback approval."
+    }
+  ],
+  "sourceOfTruth": {
+    "registry": "content/development/seis-language-model-intake-registry.json",
+    "hardwareProfile": "content/development/seis-model-scaling-hardware-profile.json",
+    "parameterLadder": "content/development/seis-model-parameter-ladder.json",
+    "docs": "docs/ai/seis-local-ai-runtime-matrix.md"
+  },
+  "currentState": {
+    "registryStatus": "active-intake-contract",
+    "hardwareProfileStatus": "planned-compatibility-contract",
+    "parameterLadderStatus": "planning-contract-not-runtime",
+    "current20bCompatibilityStatus": "planned-not-validated",
+    "apex512bStatus": "not-scoped",
+    "apexTrainingStatus": "not-started",
+    "agiCapabilityStatus": "not-demonstrated"
+  },
+  "approvedToday": {
+    "matrixGenerated": true,
+    "localDemoRuntime": true,
+    "deterministicSeedModels": true,
+    "modelInstall": false,
+    "checkpointDownload": false,
+    "ollamaPull": false,
+    "localInference": false,
+    "retrievalIndexRuntime": false,
+    "embeddingModelRuntime": false,
+    "sftTraining": false,
+    "loraTraining": false,
+    "fullFineTune": false,
+    "foundationPretraining": false,
+    "hfJobSubmission": false,
+    "providerCalls": false,
+    "cloudGpuProvisioning": false,
+    "sshExecution": false,
+    "githubPushOrMerge": false,
+    "routePromotion": false,
+    "agiClaim": false
+  },
+  "hardwareRuntimeLanes": [
+    {
+      "id": "local-demo-any-supported-machine",
+      "ramClass": "any-supported-local-demo-host",
+      "allowedToday": "SEIS Local Demo and deterministic seed-model artifacts",
+      "routeEligibleToday": true,
+      "installsModels": false,
+      "trainsModels": false
+    },
+    {
+      "id": "developer-16gb-no-gpu",
+      "ramClass": "16GB system RAM, no approved accelerator",
+      "allowedToday": "metadata, docs, runtime planning, deterministic seed-model lab",
+      "routeEligibleToday": false,
+      "installsModels": false,
+      "trainsModels": false
+    },
+    {
+      "id": "developer-16gb-gpu-approval-required",
+      "ramClass": "16GB RAM plus explicitly approved accelerator profile",
+      "allowedToday": "planning only",
+      "routeEligibleToday": false,
+      "installsModels": false,
+      "trainsModels": false
+    },
+    {
+      "id": "workstation-32gb-64gb",
+      "ramClass": "32GB-64GB+",
+      "allowedToday": "planning and future approved benchmark work only",
+      "routeEligibleToday": false,
+      "installsModels": false,
+      "trainsModels": false
+    },
+    {
+      "id": "frontier-distributed-70b-to-512b",
+      "ramClass": "approved distributed research cluster only",
+      "allowedToday": "disabled",
+      "routeEligibleToday": false,
+      "installsModels": false,
+      "trainsModels": false
+    }
+  ],
+  "runtimeRows": [
+    {
+      "id": "seis-local-demo",
+      "displayName": "SEIS Local Demo",
+      "status": "active",
+      "approvalRequirement": "none",
+      "allowedToday": true,
+      "installsModels": false,
+      "downloadsCheckpoints": false,
+      "runsInference": false,
+      "trainsModels": false,
+      "callsProviders": false,
+      "provisionsCloudOrGpu": false,
+      "routeEligibleToday": true,
+      "notes": "Planning row only; no runtime authority."
+    },
+    {
+      "id": "deterministic-seed-models",
+      "displayName": "SEIS deterministic seed models",
+      "status": "active-lab",
+      "approvalRequirement": "none",
+      "allowedToday": false,
+      "installsModels": false,
+      "downloadsCheckpoints": false,
+      "runsInference": false,
+      "trainsModels": false,
+      "callsProviders": false,
+      "provisionsCloudOrGpu": false,
+      "routeEligibleToday": false,
+      "notes": "Planning row only; no runtime authority."
+    },
+    {
+      "id": "small-embedding-reranker",
+      "displayName": "Small embedding/reranker candidate",
+      "status": "approval-required",
+      "approvalRequirement": "single-model approval",
+      "allowedToday": false,
+      "installsModels": false,
+      "downloadsCheckpoints": false,
+      "runsInference": false,
+      "trainsModels": false,
+      "callsProviders": false,
+      "provisionsCloudOrGpu": false,
+      "routeEligibleToday": false,
+      "notes": "Planning row only; no runtime authority."
+    },
+    {
+      "id": "ollama-small-llm-0_5b-8b",
+      "displayName": "Ollama small local LLM candidate",
+      "status": "approval-required",
+      "approvalRequirement": "model-specific approval",
+      "allowedToday": false,
+      "installsModels": false,
+      "downloadsCheckpoints": false,
+      "runsInference": false,
+      "trainsModels": false,
+      "callsProviders": false,
+      "provisionsCloudOrGpu": false,
+      "routeEligibleToday": false,
+      "notes": "Planning row only; no runtime authority."
+    },
+    {
+      "id": "ollama-14b-20b",
+      "displayName": "Ollama 14B/20B candidate",
+      "status": "benchmark-required",
+      "approvalRequirement": "model-specific approval plus benchmark",
+      "allowedToday": false,
+      "installsModels": false,
+      "downloadsCheckpoints": false,
+      "runsInference": false,
+      "trainsModels": false,
+      "callsProviders": false,
+      "provisionsCloudOrGpu": false,
+      "routeEligibleToday": false,
+      "notes": "Planning row only; no runtime authority."
+    },
+    {
+      "id": "small-sft-lora-pilot",
+      "displayName": "Small SFT/LoRA pilot",
+      "status": "approval-packet-required",
+      "approvalRequirement": "filled approval packet",
+      "allowedToday": false,
+      "installsModels": false,
+      "downloadsCheckpoints": false,
+      "runsInference": false,
+      "trainsModels": false,
+      "callsProviders": false,
+      "provisionsCloudOrGpu": false,
+      "routeEligibleToday": false,
+      "notes": "Planning row only; no runtime authority."
+    },
+    {
+      "id": "hf-jobs-small-training",
+      "displayName": "HF Jobs small training pilot",
+      "status": "blocked",
+      "approvalRequirement": "HF login/credit/secret/cost approval",
+      "allowedToday": false,
+      "installsModels": false,
+      "downloadsCheckpoints": false,
+      "runsInference": false,
+      "trainsModels": false,
+      "callsProviders": false,
+      "provisionsCloudOrGpu": false,
+      "routeEligibleToday": false,
+      "notes": "Planning row only; no runtime authority."
+    },
+    {
+      "id": "seis-70b-research",
+      "displayName": "SEIS 70B research lane",
+      "status": "research-roadmap",
+      "approvalRequirement": "frontier approval",
+      "allowedToday": false,
+      "installsModels": false,
+      "downloadsCheckpoints": false,
+      "runsInference": false,
+      "trainsModels": false,
+      "callsProviders": false,
+      "provisionsCloudOrGpu": false,
+      "routeEligibleToday": false,
+      "notes": "Planning row only; no runtime authority."
+    },
+    {
+      "id": "seis-512b-apex-agi",
+      "displayName": "SEIS 512B AGI apex lane",
+      "status": "apex-plan-only",
+      "approvalRequirement": "frontier cluster approval",
+      "allowedToday": false,
+      "installsModels": false,
+      "downloadsCheckpoints": false,
+      "runsInference": false,
+      "trainsModels": false,
+      "callsProviders": false,
+      "provisionsCloudOrGpu": false,
+      "routeEligibleToday": false,
+      "notes": "Planning row only; no runtime authority."
+    }
+  ],
+  "requiredBeforeModelInstall": [
+    "human approval for the specific model id and quantization",
+    "license and acceptable-use review",
+    "disk, RAM, GPU/CPU, and thermal budget estimate",
+    "checkpoint source, checksum, and provenance record",
+    "model card or model-card template",
+    "no-secret prompt and log boundary",
+    "local-only fallback plan",
+    "rollback and deletion plan"
+  ],
+  "requiredBeforeTraining": [
+    "completed dataset card with source inventory and license map",
+    "PII, secrets, credentials, and private-data scan",
+    "clean-room provenance statement",
+    "training objective and expected artifact type",
+    "eval suite and held-out benchmark definition",
+    "compute budget and stop condition",
+    "safety review and misuse review",
+    "checkpoint governance and model card",
+    "human approval recorded before execution"
+  ],
+  "requiredBeforeAnyRuntimePromotion": [
+    "exact model id, revision, file list, license, and checksum evidence",
+    "hardware profile with RAM/GPU/CPU/disk/thermal budget",
+    "no-secret logs and client bundle scan",
+    "local-only fallback verified",
+    "benchmark or dry-run evidence appropriate to the route",
+    "human approval recorded for that exact route"
+  ],
+  "publicClaims": {
+    "canClaimRuntimeMatrixExists": true,
+    "canClaim16gbLocalDemoSupported": true,
+    "canClaimAnyModelInstalled": false,
+    "canClaimOllamaModelPulled": false,
+    "canClaimLocalInferenceReady": false,
+    "canClaim20bRuntimeReady": false,
+    "canClaimTrainingExecuted": false,
+    "canClaimHFJobSubmitted": false,
+    "canClaimSEISOwnedFoundationModel": false,
+    "canClaimSEISFullyKnowledgeable": false,
+    "canClaim512BReady": false,
+    "canClaimAGI": false
+  },
+  "blockedBy": [
+    "no per-model human approval",
+    "no approved model artifact checksum",
+    "no measured runtime benchmark",
+    "no approved dataset card for training",
+    "no approved secret storage reference for HF Jobs",
+    "no training logs or checkpoints",
+    "no independent AGI evaluation evidence"
+  ]
+}

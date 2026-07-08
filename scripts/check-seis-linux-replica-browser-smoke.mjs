@@ -194,6 +194,28 @@ async function waitFor(client, expression, timeoutMs = 10000, intervalMs = 150) 
   return lastValue;
 }
 
+async function submitTerminalCommand(client, command) {
+  const commandLiteral = JSON.stringify(command);
+  const ready = await waitFor(client, `(() => {
+    if (!document.querySelector('[data-terminal] input')) {
+      window.__SEIS_LINUX_REPLICA__?.openApp?.('terminal');
+    }
+    return Boolean(document.querySelector('[data-terminal] input'));
+  })()`, 5000);
+  ensure(ready, `terminal input was not available for command: ${command}`);
+
+  const submitted = await evaluate(client, `(() => {
+    const input = document.querySelector('[data-terminal] input');
+    if (!input) return false;
+    input.focus();
+    input.value = ${commandLiteral};
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter', bubbles: true }));
+    return true;
+  })()`);
+  ensure(submitted, `terminal command did not submit: ${command}`);
+}
+
 async function goto(client, url) {
   await client.send("Page.navigate", { url }, 20000);
   const ready = await waitFor(client, "document.readyState === 'interactive' || document.readyState === 'complete'", 12000);
@@ -315,6 +337,22 @@ function validateStaticContract() {
   ensure(html.includes("data-design-studio"), "Linux Replica route must expose a mini SEIS Design Studio workspace.");
   ensure(html.includes("data-cloud-panel"), "Linux Replica route must expose a SEIS Cloud status workspace.");
   ensure(html.includes("data-store-panel"), "Linux Replica route must expose a SEIS Store workspace.");
+  ensure(html.includes("STORE_PACKAGES"), "Linux Replica Store must define a package manifest.");
+  ensure(html.includes("data-store-marketplace"), "Linux Replica Store must render a package marketplace surface.");
+  ensure(html.includes("data-store-package"), "Linux Replica Store must render package rows.");
+  ensure(html.includes("data-store-filter"), "Linux Replica Store must expose category filters.");
+  ensure(html.includes("data-store-action=\\\"cycle\\\""), "Linux Replica Store packages must expose install/enable/disable actions.");
+  ensure(html.includes("data-store-action=\\\"update\\\""), "Linux Replica Store packages must expose update actions.");
+  ensure(html.includes("seis-store-package-"), "Linux Replica Store package state must persist browser-local state.");
+  ensure(html.includes("Plugin/MCP Workbench"), "Linux Replica Store must expose the Plugin/MCP Workbench package.");
+  ensure(html.includes("Installed AI Lanes"), "Linux Replica Store must expose installed AI lane coverage as a package.");
+  ensure(html.includes("Connector Governance Pack"), "Linux Replica Store must expose connector governance boundaries as a package.");
+  ensure(html.includes("data-mcp-workbench"), "Linux Replica must expose the Plugin/MCP Workbench app surface.");
+  ensure(html.includes("MCP_WORKBENCH_LANES"), "Linux Replica must define Plugin/MCP/installed AI lane data.");
+  ensure(html.includes("data-installed-ai-lane"), "Linux Replica MCP Workbench must expose installed AI lane markers.");
+  ensure(html.includes("data-subagent-queue"), "Linux Replica MCP Workbench must expose a subagent dry-run queue.");
+  ensure(html.includes("data-mcp-permission-matrix"), "Linux Replica MCP Workbench must expose a permission matrix.");
+  ensure(html.includes("seis-mcp-workbench-focus"), "Linux Replica MCP Workbench must persist selected lane state.");
   ensure(html.includes("data-music-panel"), "Linux Replica route must expose a SEIS Music workspace.");
   ensure(html.includes("data-ai-core-panel"), "Linux Replica route must expose a SEIS AI Core workspace.");
   ensure(html.includes("bridgeTargetCount"), "Linux Replica diagnostics must expose bridge target count.");
@@ -387,37 +425,20 @@ async function smokeLinuxReplica(client, baseUrl) {
   await waitFor(client, "window.__SEIS_LINUX_REPLICA__?.terminalReady?.() === true", 5000);
   await waitFor(client, "Boolean(document.querySelector('[data-terminal] input'))", 5000);
 
-  await evaluate(client, `(() => {
-    const input = document.querySelector('[data-terminal] input');
-    input.value = 'neofetch';
-    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
-    return true;
-  })()`);
+  await submitTerminalCommand(client, "neofetch");
   await waitFor(client, "document.body.innerText.includes('Apps: ' + window.__SEIS_LINUX_REPLICA__.appCount) && document.body.innerText.includes('References: ' + window.__SEIS_LINUX_REPLICA__.referenceCount)", 5000);
 
-  await evaluate(client, `(() => {
-    const input = document.querySelector('[data-terminal] input');
-    input.value = 'sources';
-    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
-    return true;
-  })()`);
+  await submitTerminalCommand(client, "sources");
   await waitFor(client, "document.body.innerText.includes('Stitch Web Based Linux Desktop') && document.body.innerText.includes('Stitch Yapay Zeka Web Platformu')", 5000);
 
-  await evaluate(client, `(() => {
-    const input = document.querySelector('[data-terminal] input');
-    input.value = 'live';
-    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
-    return true;
-  })()`);
+  await submitTerminalCommand(client, "live");
   await waitFor(client, "document.querySelector('[data-live-demo-console]') && document.body.innerText.includes('opened Live Demo Console')", 5000);
 
-  await evaluate(client, `(() => {
-    const input = document.querySelector('[data-terminal] input');
-    input.value = 'seis';
-    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
-    return true;
-  })()`);
+  await submitTerminalCommand(client, "seis");
   await waitFor(client, "document.body.innerText.includes('SEIS Code IDE') && document.body.innerText.includes('SEIS Cloud Center')", 5000);
+
+  await submitTerminalCommand(client, "mcp");
+  await waitFor(client, "document.querySelector('[data-mcp-workbench]') && document.body.innerText.includes('Codex / ChatGPT')", 5000);
 
   await evaluate(client, "document.querySelector('#startButton').click()");
   await waitFor(client, "document.querySelector('#startMenu')?.classList.contains('is-active')", 3000);
@@ -435,6 +456,7 @@ async function smokeLinuxReplica(client, baseUrl) {
     window.__SEIS_LINUX_REPLICA__.openApp('code');
     window.__SEIS_LINUX_REPLICA__.openApp('paint');
     window.__SEIS_LINUX_REPLICA__.openApp('cloud');
+    window.__SEIS_LINUX_REPLICA__.openApp('mcp-workbench');
     window.__SEIS_LINUX_REPLICA__.openApp('store');
     window.__SEIS_LINUX_REPLICA__.openApp('music');
     window.__SEIS_LINUX_REPLICA__.openApp('demo');
@@ -443,7 +465,16 @@ async function smokeLinuxReplica(client, baseUrl) {
     document.querySelector('[data-design-swatch="#19c6d4"]')?.click();
     document.querySelector('[data-save-token]')?.click();
     document.querySelector('[data-cloud-refresh]')?.click();
-    document.querySelector('[data-store-install]')?.click();
+    document.querySelector('[data-mcp-filter="AI"]')?.click();
+    document.querySelector('[data-mcp-filter="All"]')?.click();
+    document.querySelector('[data-mcp-lane="codex-chatgpt"]')?.click();
+    document.querySelector('[data-subagent-task="security"]')?.click();
+    document.querySelector('[data-mcp-run-queue]')?.click();
+    document.querySelector('[data-mcp-export]')?.click();
+    document.querySelector('[data-store-filter="Plugins"]')?.click();
+    document.querySelector('[data-store-filter="All"]')?.click();
+    document.querySelector('[data-store-action="cycle"][data-store-id="seis-code-tools"]')?.click();
+    document.querySelector('[data-store-action="update"][data-store-id="seis-code-tools"]')?.click();
     document.querySelector('[data-music-play]')?.click();
     document.querySelector('[data-ai-agent="Security"]')?.click();
     document.querySelector('[data-ref-random]')?.click();
@@ -462,7 +493,25 @@ async function smokeLinuxReplica(client, baseUrl) {
     const codeWorkspace = document.querySelectorAll('[data-mini-code-ide]').length;
     const designStudio = document.querySelectorAll('[data-design-studio]').length;
     const cloudPanel = document.querySelectorAll('[data-cloud-panel]').length;
+    const mcpWorkbench = document.querySelectorAll('[data-mcp-workbench]').length;
+    const mcpLanes = document.querySelectorAll('[data-mcp-lane]').length;
+    const installedAiLanes = document.querySelectorAll('[data-installed-ai-lane]').length;
+    const mcpFilters = document.querySelectorAll('[data-mcp-filter]').length;
+    const subagentQueue = document.querySelectorAll('[data-subagent-queue]').length;
+    const subagentTasks = document.querySelectorAll('[data-subagent-task]').length;
+    const subagentDryRuns = document.querySelectorAll('[data-subagent-task][data-state="dry-run"]').length;
+    const mcpPermissionRows = document.querySelectorAll('[data-mcp-permission-row]').length;
+    const mcpOutput = document.querySelector('[data-mcp-output]')?.textContent || '';
+    const mcpFocusState = localStorage.getItem('seis-mcp-workbench-focus') || '';
+    const mcpSecurityTaskState = localStorage.getItem('seis-mcp-subagent-security') || '';
     const storePanel = document.querySelectorAll('[data-store-panel]').length;
+    const storeMarketplace = document.querySelectorAll('[data-store-marketplace]').length;
+    const storePackages = document.querySelectorAll('[data-store-package]').length;
+    const storeFilters = document.querySelectorAll('[data-store-filter]').length;
+    const storePackageActions = document.querySelectorAll('[data-store-action]').length;
+    const storeStatusBadges = document.querySelectorAll('[data-store-status]').length;
+    const storeOutput = document.querySelector('[data-store-output]')?.textContent || '';
+    const storeCodeToolsState = localStorage.getItem('seis-store-package-seis-code-tools') || '';
     const musicPanel = document.querySelectorAll('[data-music-panel]').length;
     const aiCorePanel = document.querySelectorAll('[data-ai-core-panel]').length;
     const liveDemoConsole = document.querySelectorAll('[data-live-demo-console]').length;
@@ -500,7 +549,25 @@ async function smokeLinuxReplica(client, baseUrl) {
       codeWorkspace,
       designStudio,
       cloudPanel,
+      mcpWorkbench,
+      mcpLanes,
+      installedAiLanes,
+      mcpFilters,
+      subagentQueue,
+      subagentTasks,
+      subagentDryRuns,
+      mcpPermissionRows,
+      mcpOutput,
+      mcpFocusState,
+      mcpSecurityTaskState,
       storePanel,
+      storeMarketplace,
+      storePackages,
+      storeFilters,
+      storePackageActions,
+      storeStatusBadges,
+      storeOutput,
+      storeCodeToolsState,
       musicPanel,
       aiCorePanel,
       liveDemoConsole,
@@ -521,11 +588,13 @@ async function smokeLinuxReplica(client, baseUrl) {
       neofetchVisible: bodyText.includes('Apps: ' + window.__SEIS_LINUX_REPLICA__.appCount) && bodyText.includes('References: ' + window.__SEIS_LINUX_REPLICA__.referenceCount),
       sourcesVisible: bodyText.includes('Stitch Web Based Linux Desktop') && bodyText.includes('Stitch Yapay Zeka Web Platformu'),
       liveCommandVisible: bodyText.includes('opened Live Demo Console'),
+      mcpCommandVisible: bodyText.includes('Codex / ChatGPT') && bodyText.includes('GitHub MCP'),
       liveConsoleVisible: bodyText.includes('SEIS Live Linux-like Demo'),
       codeCheckVisible: bodyText.includes('PASS local UI contract'),
       designSnapshotVisible: bodyText.includes('Snapshot saved to VFS') || bodyText.includes('design-token-'),
       cloudRefreshVisible: bodyText.includes('Mock health refreshed'),
-      storeInstallVisible: bodyText.includes('installed') || bodyText.includes('Enabled'),
+      mcpWorkbenchVisible: bodyText.includes('SEIS Plugin/MCP Workbench') && bodyText.includes('Dry-run queue staged'),
+      storeInstallVisible: bodyText.includes('updated in Local Demo state') || bodyText.includes('Store workspace ready'),
       musicPlayingVisible: bodyText.includes('Playing local track') || bodyText.includes('Pause'),
       aiAgentVisible: bodyText.includes('Security Agent is active in Local Demo mode.'),
       searchGatewayVisible: bodyText.includes('SEIS Search Gateway'),
@@ -555,7 +624,26 @@ async function smokeLinuxReplica(client, baseUrl) {
   ensure(summary.codeWorkspace >= 1, "mini SEIS Code workspace did not render.");
   ensure(summary.designStudio >= 1, "mini SEIS Design Studio workspace did not render.");
   ensure(summary.cloudPanel >= 1, "mini SEIS Cloud workspace did not render.");
+  ensure(summary.mcpWorkbench >= 1, "SEIS Plugin/MCP Workbench did not render.");
+  ensure(summary.mcpLanes >= 12, `expected at least twelve Plugin/MCP/AI lanes, found ${summary.mcpLanes}.`);
+  ensure(summary.installedAiLanes >= 6, `expected installed AI lane markers, found ${summary.installedAiLanes}.`);
+  ensure(summary.mcpFilters >= 5, `expected Plugin/MCP Workbench filters, found ${summary.mcpFilters}.`);
+  ensure(summary.subagentQueue >= 1, "subagent dry-run queue did not render.");
+  ensure(summary.subagentTasks >= 6, `expected subagent dry-run tasks, found ${summary.subagentTasks}.`);
+  ensure(summary.subagentDryRuns >= 6, `expected subagent dry-run queue to stage all tasks, found ${summary.subagentDryRuns}.`);
+  ensure(summary.mcpPermissionRows >= 6, `expected MCP permission rows, found ${summary.mcpPermissionRows}.`);
+  ensure(summary.mcpFocusState === "codex-chatgpt", `MCP lane focus did not persist, found ${summary.mcpFocusState || "empty"}.`);
+  ensure(summary.mcpSecurityTaskState === "dry-run", `Security subagent task did not persist dry-run state, found ${summary.mcpSecurityTaskState || "empty"}.`);
+  ensure(summary.mcpOutput.includes("Review note exported"), "MCP Workbench export action did not update visible output.");
   ensure(summary.storePanel >= 1, "mini SEIS Store workspace did not render.");
+  ensure(summary.storeMarketplace >= 1, "SEIS Store package marketplace did not render.");
+  ensure(summary.storePackages >= 10, `expected at least ten SEIS Store package rows, found ${summary.storePackages}.`);
+  ensure(summary.storeFilters >= 8, `expected SEIS Store category filters, found ${summary.storeFilters}.`);
+  ensure(summary.storePackageActions >= 16, `expected SEIS Store package install/update/enable actions, found ${summary.storePackageActions}.`);
+  ensure(summary.storeStatusBadges >= summary.storePackages, "SEIS Store package rows did not expose state badges.");
+  ensure(summary.storeCodeToolsState === "updated", `SEIS Store package state did not persist update flow, found ${summary.storeCodeToolsState || "empty"}.`);
+  ensure(summary.storeOutput.includes("updated in Local Demo state"), "SEIS Store package update action did not update visible output.");
+  ensure(summary.storeInstallVisible === true, "SEIS Store install/update interaction did not surface visible state.");
   ensure(summary.musicPanel >= 1, "mini SEIS Music workspace did not render.");
   ensure(summary.aiCorePanel >= 1, "mini SEIS AI Core workspace did not render.");
   ensure(summary.liveDemoConsole >= 1, "Live Demo Console did not render.");
@@ -579,7 +667,9 @@ async function smokeLinuxReplica(client, baseUrl) {
   ensure(summary.neofetchVisible === true, "terminal neofetch output did not show runtime app and reference counts.");
   ensure(summary.sourcesVisible === true, "terminal sources command did not show supplied ZIP source coverage.");
   ensure(summary.liveCommandVisible === true, "terminal live command did not report the live tour output.");
+  ensure(summary.mcpCommandVisible === true, "terminal mcp command did not report Plugin/MCP lanes.");
   ensure(summary.liveConsoleVisible === true, "Live Demo Console copy is not visible.");
+  ensure(summary.mcpWorkbenchVisible === true, "SEIS Plugin/MCP Workbench interaction output is not visible.");
   ensure(summary.searchGatewayVisible && summary.codeVisible && summary.designVisible && summary.cloudVisible && summary.websiteVisible, "connected SEIS bridge surfaces are not all visible.");
   ensure(summary.blockedCopy === true, "local-only SSH/host-shell boundary copy is missing.");
   ensure(summary.horizontalOverflow === false, "desktop has horizontal overflow at 1440 x 960.");
@@ -609,6 +699,8 @@ async function smokeLinuxReplicaMobile(client, baseUrl) {
     window.__SEIS_LINUX_REPLICA__.openApp('live-demo');
     window.__SEIS_LINUX_REPLICA__.openApp('reference-vault');
     window.__SEIS_LINUX_REPLICA__.openApp('terminal');
+    window.__SEIS_LINUX_REPLICA__.openApp('mcp-workbench');
+    window.__SEIS_LINUX_REPLICA__.openApp('store');
     document.querySelector('#startButton')?.click();
 
     const viewportWidth = window.innerWidth;
@@ -627,6 +719,20 @@ async function smokeLinuxReplicaMobile(client, baseUrl) {
     const overflowWindows = windows.filter((item) => item.width > viewportWidth + 2);
     const sideRail = document.querySelector('#sideRail')?.getBoundingClientRect();
     const taskbar = document.querySelector('.taskbar')?.getBoundingClientRect();
+    const topbar = document.querySelector('.topbar')?.getBoundingClientRect();
+    const launcherGrid = document.querySelector('#startApps');
+    const launcherHorizontalOverflow = launcherGrid ? launcherGrid.scrollWidth > launcherGrid.clientWidth + 2 : false;
+    const taskbarChildOverflow = Array.from(document.querySelectorAll('.taskbar-app')).filter((button) => {
+      const buttonRect = button.getBoundingClientRect();
+      return Array.from(button.children).some((child) => {
+        const rect = child.getBoundingClientRect();
+        return rect.left < buttonRect.left - 1 || rect.right > buttonRect.right + 1;
+      });
+    }).length;
+    const topbarChildOverflow = topbar ? Array.from(document.querySelectorAll('.topbar > *')).filter((child) => {
+      const rect = child.getBoundingClientRect();
+      return rect.left < topbar.left - 1 || rect.right > topbar.right + 1;
+    }).length : 0;
     const bodyText = document.body.innerText;
 
     return {
@@ -638,12 +744,20 @@ async function smokeLinuxReplicaMobile(client, baseUrl) {
       horizontalOverflow: document.documentElement.scrollWidth > viewportWidth + 2,
       liveDemoConsole: document.querySelectorAll('[data-live-demo-console]').length,
       referenceVault: document.querySelectorAll('[data-reference-vault]').length,
+      mcpWorkbench: document.querySelectorAll('[data-mcp-workbench]').length,
+      mcpLanes: document.querySelectorAll('[data-mcp-lane]').length,
+      subagentTasks: document.querySelectorAll('[data-subagent-task]').length,
+      storeMarketplace: document.querySelectorAll('[data-store-marketplace]').length,
+      storePackages: document.querySelectorAll('[data-store-package]').length,
       terminalReady: window.__SEIS_LINUX_REPLICA__.terminalReady(),
       launcherOpen: document.querySelector('#startMenu')?.classList.contains('is-active'),
       launcherTiles: document.querySelectorAll('.app-tile').length,
       sideRailButtons: document.querySelectorAll('#sideRail [data-side-app]').length,
       sideRailFits: sideRail ? sideRail.width <= viewportWidth + 2 : false,
       taskbarFits: taskbar ? taskbar.width <= viewportWidth + 2 : false,
+      taskbarChildOverflow,
+      topbarChildOverflow,
+      launcherHorizontalOverflow,
       liveConsoleVisible: bodyText.includes('SEIS Live Linux-like Demo'),
       referenceVisible: bodyText.includes('Reference Vault'),
       localBoundaryVisible: bodyText.includes('No SSH') || bodyText.includes('SSH disabled') || bodyText.includes('no host shell')
@@ -657,12 +771,20 @@ async function smokeLinuxReplicaMobile(client, baseUrl) {
   ensure(summary.horizontalOverflow === false, "mobile desktop has horizontal overflow.");
   ensure(summary.liveDemoConsole >= 1, "mobile Live Demo Console did not render.");
   ensure(summary.referenceVault >= 1, "mobile Reference Vault did not render.");
+  ensure(summary.mcpWorkbench >= 1, "mobile Plugin/MCP Workbench did not render.");
+  ensure(summary.mcpLanes >= 12, `mobile Plugin/MCP lanes did not render, found ${summary.mcpLanes}.`);
+  ensure(summary.subagentTasks >= 6, `mobile subagent dry-run queue did not render, found ${summary.subagentTasks}.`);
+  ensure(summary.storeMarketplace >= 1, "mobile SEIS Store package marketplace did not render.");
+  ensure(summary.storePackages >= 10, `mobile SEIS Store package rows did not render, found ${summary.storePackages}.`);
   ensure(summary.terminalReady === true, "mobile terminal did not initialize.");
   ensure(summary.launcherOpen === true, "mobile launcher did not open.");
   ensure(summary.launcherTiles >= summary.sideRailButtons, "mobile launcher did not expose app tiles.");
   ensure(summary.sideRailButtons >= 8, `expected mobile side rail buttons, found ${summary.sideRailButtons}.`);
   ensure(summary.sideRailFits === true, "mobile side rail does not fit the viewport.");
   ensure(summary.taskbarFits === true, "mobile taskbar does not fit the viewport.");
+  ensure(summary.taskbarChildOverflow === 0, `mobile taskbar has ${summary.taskbarChildOverflow} overflowing app label(s).`);
+  ensure(summary.topbarChildOverflow === 0, `mobile topbar has ${summary.topbarChildOverflow} overflowing item(s).`);
+  ensure(summary.launcherHorizontalOverflow === false, "mobile launcher grid has horizontal overflow.");
   ensure(summary.liveConsoleVisible === true, "mobile Live Demo Console copy is not visible.");
   ensure(summary.referenceVisible === true, "mobile Reference Vault copy is not visible.");
   ensure(summary.localBoundaryVisible === true, "mobile local-only boundary copy is missing.");

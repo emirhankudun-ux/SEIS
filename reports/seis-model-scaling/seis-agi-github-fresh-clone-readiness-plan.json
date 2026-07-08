@@ -1,0 +1,33 @@
+{
+  "id": "seis-agi-github-fresh-clone-readiness-plan-report",
+  "generatedAt": "2026-07-08T12:02:03.204Z",
+  "status": "fresh-clone-readiness-defined-everyone-ready-blocked",
+  "sourcePlan": "content/development/seis-agi-github-fresh-clone-readiness-plan.json",
+  "summary": {
+    "readinessChecks": 6,
+    "blockedEveryoneReadyChecks": 4,
+    "githubReadyForEveryone": false,
+    "publicReadyForLocalDemo": true,
+    "publicReadyAsAgi": false,
+    "routeEligibleToday": false,
+    "agiClaimAllowed": false
+  },
+  "publicClaimBoundary": {
+    "canClaimFreshClonePlanExists": true,
+    "canClaimFreshCloneVerified": false,
+    "canClaimEveryoneReady": false,
+    "canClaimLocalDemoReviewAllowed": true,
+    "canClaimAnyModelInstalled": false,
+    "canClaim512BRouteEligible": false,
+    "canClaimRealAgi": false
+  },
+  "blockersBeforeEveryoneReady": [
+    "fresh clone local demo path verified on a clean checkout",
+    "one-command AI readiness validator documented and passing in CI",
+    "cross-platform smoke evidence recorded",
+    "secret scan and no-model-download proof attached",
+    "human release approval recorded",
+    "protected branch or equivalent PR review policy confirmed",
+    "AGI and 512B claim boundaries preserved"
+  ]
+}
