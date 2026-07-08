@@ -585,7 +585,14 @@
 
       function loadState() {
         try {
-          return { ...initialState, ...JSON.parse(localStorage.getItem(storageKey) || "{}") };
+          const loaded = JSON.parse(localStorage.getItem(storageKey) || "{}");
+          const state = { ...initialState };
+          for (const key of Object.keys(initialState)) {
+            if (key in loaded) {
+              state[key] = Boolean(loaded[key]);
+            }
+          }
+          return state;
         } catch {
           return { ...initialState };
         }
@@ -632,7 +639,7 @@
       async function copyText(text) {
         if (navigator.clipboard && window.isSecureContext) {
           await navigator.clipboard.writeText(text);
-          return;
+          return true;
         }
         const textarea = document.createElement("textarea");
         textarea.value = text;
@@ -643,6 +650,7 @@
         textarea.select();
         document.execCommand("copy");
         textarea.remove();
+        return true;
       }
 
       document.addEventListener("click", async (event) => {
@@ -659,15 +667,16 @@
         }
 
         if (action === "copy-command") {
-          state.server = true;
-          await copyText(command);
-          persist("Copied local static server command.");
+          const copied = await copyText(command);
+          if (copied) {
+            render("Copied local static server command. Mark 'Start local server' when you have started it.");
+          }
           return;
         }
 
         if (action === "copy-note") {
-          await copyText(reviewNote());
-          render("Copied SEIS demo review note.");
+          const copied = await copyText(reviewNote());
+          render(copied ? "Copied SEIS demo review note." : "Copy command unavailable. Select and copy from terminal output.");
           return;
         }
 

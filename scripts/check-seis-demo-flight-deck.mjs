@@ -37,7 +37,8 @@ const packageJson = read(files.packageJson);
 
 let routes = [];
 try {
-  routes = JSON.parse(routesText).routes || [];
+  const parsed = JSON.parse(routesText);
+  routes = parsed && Array.isArray(parsed.routes) ? parsed.routes : [];
 } catch (error) {
   failures.push(`routes JSON could not be parsed: ${error.message}`);
 }
