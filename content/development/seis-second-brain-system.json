@@ -60,7 +60,8 @@
     "claude-review-profile",
     "qwen-review-profile",
     "gemini-validation-profile",
-    "ollama-local-profile"
+    "ollama-local-profile",
+    "xcode"
   ],
   "managedSubAgentLanes": [
     "SEIS Hub",

@@ -1,0 +1,169 @@
+{
+  "id": "seis-nvidia-aiq-runtime-allowlist-plan",
+  "version": 1,
+  "status": "planned-approval-gated-no-runtime-execution",
+  "updatedAt": "2026-06-30",
+  "qualityGate": "npm run check:seis-nvidia-aiq-runtime-allowlist-plan",
+  "purpose": "Select NVIDIA AI-Q as the first runtime candidate after the NVIDIA skill integration pass, while keeping every clone, backend start, endpoint call, credential, and research query blocked until a specific human-approved runtime window exists.",
+  "sourceRecords": {
+    "acceleratorCatalog": "content/development/seis-nvidia-accelerator-catalog.json",
+    "installedIntegrations": "content/development/seis-nvidia-installed-integrations.json",
+    "primaryDoc": "docs/ai/nvidia-aiq-runtime-allowlist-plan.md",
+    "reviewDoc": "docs/reviews/NVIDIA_AIQ_RUNTIME_ALLOWLIST_REVIEW.md"
+  },
+  "sourceSkills": [
+    {
+      "id": "aiq-deploy",
+      "displayName": "NVIDIA AI-Q Deploy",
+      "skillVersion": "2.1.0",
+      "blueprintCompatibility": "AI-Q Blueprint major version 2 with minor version 1 or newer",
+      "githubUrl": "https://github.com/NVIDIA-AI-Blueprints/aiq",
+      "currentSeisStatus": "installed-gated",
+      "plannedRole": "Own locate, clone, environment, runtime mode, health validation, troubleshooting, shutdown, and handoff after approval."
+    },
+    {
+      "id": "aiq-research",
+      "displayName": "NVIDIA AI-Q Research",
+      "skillVersion": "2.1.0",
+      "blueprintCompatibility": "AI-Q Blueprint or endpoint major version 2 with minor version 1 or newer",
+      "githubUrl": "https://github.com/NVIDIA-AI-Blueprints/aiq",
+      "currentSeisStatus": "installed-gated",
+      "plannedRole": "Run research only after a trusted reachable AIQ_SERVER_URL is verified and the user confirms the endpoint for the query."
+    }
+  ],
+  "currentAuthority": {
+    "metadataAndDocsAllowed": true,
+    "desktopUiAllowed": true,
+    "localValidatorAllowed": true,
+    "repoCloneAllowed": false,
+    "networkInstallAllowed": false,
+    "envFileWriteAllowed": false,
+    "secretReadAllowed": false,
+    "dockerAllowed": false,
+    "kubernetesAllowed": false,
+    "helmAllowed": false,
+    "nodeServiceAllowed": false,
+    "pythonServiceAllowed": false,
+    "portBindAllowed": false,
+    "aiqEndpointCallAllowed": false,
+    "researchQueryAllowed": false,
+    "nonLocalBackendAllowed": false,
+    "gpuRuntimeAllowed": false,
+    "sshAllowed": false,
+    "githubWriteAllowed": false,
+    "deploymentAllowed": false
+  },
+  "runtimeCandidate": {
+    "lane": "NVIDIA AI-Q",
+    "preferredFirstMode": "backend-only local Skill server",
+    "defaultServerUrl": "http://localhost:8000",
+    "frontendUi": "disabled for first approval window unless explicitly selected",
+    "seisCoreModeWithoutApproval": "Local Demo metadata only",
+    "credentialModel": "Credentials stay outside chat and outside committed files; presence-only checks are allowed only during an approved runtime window.",
+    "authBoundary": "REQUIRE_AUTH=false is acceptable only for trusted local single-user validation; shared or internet-facing deployments require authentication review first.",
+    "handoffRule": "Only hand AIQ_SERVER_URL to aiq-research after basic deploy validation passes and the endpoint is trusted for the requested query."
+  },
+  "approvalChecklist": [
+    "Confirm AI-Q is the selected lane for this runtime window.",
+    "Confirm target mode: backend-only, CLI, local web UI, Docker Compose, or Kubernetes/Helm.",
+    "Confirm the AI-Q checkout location is outside risky SEIS product source paths or is explicitly reviewed.",
+    "Confirm repo clone/update is allowed and network access is approved.",
+    "Confirm license and third-party dependency risk are acceptable for the selected checkout.",
+    "Confirm disk, port, Docker, Python, Node, Kubernetes, Helm, GPU, and cloud requirements for the selected mode.",
+    "Confirm deploy/.env is ignored before any secrets are written.",
+    "Confirm credentials are configured by the user outside chat and outside committed files.",
+    "Confirm any non-local AIQ_SERVER_URL is trusted before a query is sent.",
+    "Confirm whether shallow validation is enough or deep research completion validation is approved.",
+    "Confirm rollback and shutdown expectations before starting services.",
+    "Confirm no GitHub write, deployment, SSH, or public claim is included in this runtime window."
+  ],
+  "plannedRuntimePhases": [
+    {
+      "id": "phase-0-seis-record",
+      "status": "complete",
+      "description": "SEIS records AI-Q Deploy and AI-Q Research as installed-gated NVIDIA capabilities with Desktop, Store, Search, AI, Cloud, docs, and validator visibility.",
+      "allowedNow": true
+    },
+    {
+      "id": "phase-1-read-only-preflight",
+      "status": "planned",
+      "description": "Locate an existing AI-Q checkout or inspect whether one must be cloned, without changing files or contacting services.",
+      "allowedNow": false,
+      "approvalRequired": true
+    },
+    {
+      "id": "phase-2-checkout-and-env",
+      "status": "planned",
+      "description": "Clone or update the AI-Q repository if needed, then prepare deploy/.env only after ignore rules are confirmed and user-managed credentials are ready.",
+      "allowedNow": false,
+      "approvalRequired": true
+    },
+    {
+      "id": "phase-3-backend-start",
+      "status": "planned",
+      "description": "Start the selected backend-only AI-Q runtime path and keep frontend UI disabled unless separately requested.",
+      "allowedNow": false,
+      "approvalRequired": true
+    },
+    {
+      "id": "phase-4-basic-validation",
+      "status": "planned",
+      "description": "Run health checks and async-agent compatibility checks; run shallow chat only if credentials are present and the user approves.",
+      "allowedNow": false,
+      "approvalRequired": true
+    },
+    {
+      "id": "phase-5-research-handoff",
+      "status": "planned",
+      "description": "Use aiq-research only after the exact AIQ_SERVER_URL is stated and trusted for the request.",
+      "allowedNow": false,
+      "approvalRequired": true
+    },
+    {
+      "id": "phase-6-shutdown-and-review",
+      "status": "planned",
+      "description": "Stop services without destructive volume deletion unless separately approved; record validation limits and next work.",
+      "allowedNow": false,
+      "approvalRequired": true
+    }
+  ],
+  "blockedActions": [
+    "Clone or update https://github.com/NVIDIA-AI-Blueprints/aiq without approval.",
+    "Create or modify deploy/.env without approval and ignore-rule proof.",
+    "Read, print, store, or commit NVIDIA_API_KEY, search provider keys, cookies, bearer tokens, or private credentials.",
+    "Start Docker Compose, local Python, local Node, Helm, Kubernetes, PostgreSQL, or GPU-backed services.",
+    "Bind localhost ports for AI-Q backend or frontend without approval.",
+    "Call AI-Q health, chat, async-agent, polling, or report endpoints before a runtime window is approved.",
+    "Send a research query to a non-local backend without explicit trust confirmation.",
+    "Run deep research completion validation without approval for time, quota, and data exposure.",
+    "Use SSH, cloud, cluster, GitHub write, deployment, or public release actions."
+  ],
+  "safeCurrentCommands": [
+    "npm run check:seis-nvidia-aiq-runtime-allowlist-plan",
+    "npm run check:seis-nvidia-installed-integrations",
+    "npm run check:seis-nvidia-accelerator-catalog",
+    "npm run plan:nvidia-catalog-install"
+  ],
+  "runtimeValidationPlan": {
+    "notRunYet": true,
+    "basicHealth": "curl health checks only after approved runtime start.",
+    "asyncAgentCompatibility": "aiq-research helper health and agents commands only after AIQ_SERVER_URL is trusted.",
+    "shallowChat": "Allowed only when credentials are configured outside chat and approved for this validation.",
+    "deepResearch": "Optional and separately approved because it can take substantial time and quota.",
+    "successClaimBoundary": "Until runtime validation is actually run, SEIS may only claim AI-Q is planned and allowlisted, not deployed or reachable."
+  },
+  "desktopSurface": {
+    "appId": "nvidia-catalog",
+    "section": "NVIDIA AI-Q Runtime Allowlist",
+    "statusLabel": "Planned/Gated",
+    "realStatus": "metadata-only-no-runtime",
+    "primaryUserAction": "Review approval checklist before any runtime command."
+  },
+  "securityNotes": [
+    "Core SEIS still works without NVIDIA credentials.",
+    "Missing Key is not Error.",
+    "No provider key belongs in browser localStorage, IndexedDB, committed docs, or chat logs.",
+    "AI-Q backend URLs can receive prompt text and metadata; non-local endpoints require explicit trust confirmation.",
+    "Public demo claims must say planned/gated until runtime validation evidence exists."
+  ]
+}

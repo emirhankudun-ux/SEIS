@@ -1704,6 +1704,25 @@ const NVIDIA_ACCELERATOR_CATALOG = {
   installedIntegrationsGate: "npm run check:seis-nvidia-installed-integrations",
   planCommand: "npm run plan:nvidia-catalog-install",
   installedIntegrationsRegistry: "content/development/seis-nvidia-installed-integrations.json",
+  aiqRuntimeAllowlistPlan: {
+    id: "seis-nvidia-aiq-runtime-allowlist-plan",
+    title: "NVIDIA AI-Q Runtime Allowlist",
+    status: "Planned/Gated",
+    realStatus: "metadata-only-no-runtime",
+    sourcePath: "content/development/seis-nvidia-aiq-runtime-allowlist-plan.json",
+    docPath: "docs/ai/nvidia-aiq-runtime-allowlist-plan.md",
+    reviewPath: "docs/reviews/NVIDIA_AIQ_RUNTIME_ALLOWLIST_REVIEW.md",
+    qualityGate: "npm run check:seis-nvidia-aiq-runtime-allowlist-plan",
+    preferredMode: "backend-only local Skill server",
+    defaultServerUrl: "http://localhost:8000",
+    targetSkills: ["aiq-deploy", "aiq-research"],
+    gates: [
+      ["Runtime authority", "blocked", "No clone, backend start, endpoint call, or research query is allowed yet."],
+      ["Secrets", "blocked", "Credentials stay outside chat, browser state, and committed files."],
+      ["Validation", "not-run", "Runtime health and research validation need an approved execution window."],
+      ["Research handoff", "blocked", "AIQ_SERVER_URL must be reachable and trusted before any query is sent."]
+    ]
+  },
   githubOrg: "https://github.com/NVIDIA",
   buildSkills: "https://build.nvidia.com/skills",
   buildModels: "https://build.nvidia.com/models",
@@ -1740,12 +1759,14 @@ const NVIDIA_ACCELERATOR_CATALOG = {
     "Call NVIDIA Build/NIM APIs",
     "Provision GPU infrastructure",
     "Install dependencies or Docker images",
-    "Store NVIDIA credentials in browser state"
+    "Store NVIDIA credentials in browser state",
+    "Run AI-Q backend or research queries without allowlist approval"
   ],
   queue: [
     ["NVIDIA GitHub inventory", "dry-run-ready", "metadata and allowlist queue only"],
     ["NVIDIA Build skills", "catalog-link-only", "skill-specific install requires license review"],
     ["NVIDIA Build models", "catalog-link-only", "model-specific hardware, cost, and credential review"],
+    ["NVIDIA AI-Q runtime allowlist", "planned-gated", "first runtime candidate; no backend or query until approved"],
     ["SEIS AI router alignment", "planned-gated", "backend-only provider mediation required"],
     ["SEIS Cloud GPU readiness", "planned-gated", "explicit cloud/GPU/SSH approval required"]
   ]
@@ -5976,6 +5997,7 @@ function getSeisSearchTabResults(tab, context) {
       appResult(["ai-assistant", "SEIS AI", "AI Core", "Local Demo assistant, installed AI profiles, tool calls, and plugin awareness"]),
       appResult(["second-brain", "SEIS Second Brain", "AI knowledge cockpit", "Obsidian-style Local Demo context, bounded sub-agents, and GitHub review gates"]),
       appResult(["nvidia-catalog", "NVIDIA Catalog", "AI accelerator intake", "NVIDIA Build skills and models as catalog-only provenance, not live routing"]),
+      appResult(["nvidia-catalog", "NVIDIA AI-Q Runtime Allowlist", "Planned/Gated", `${NVIDIA_ACCELERATOR_CATALOG.aiqRuntimeAllowlistPlan.realStatus}; backend start and research handoff require approval.`]),
       routeResult(DEMO_ROUTES.find((route) => route.id === "seis-ai-core-3d-demo")),
       ...SEIS_INSTALLED_AI_SYSTEMS.slice(0, 3).map((system) => ({
         title: system.name,
@@ -6008,6 +6030,7 @@ function getSeisSearchTabResults(tab, context) {
     Apps: gatewayApps.map(appResult),
     Plugins: [
       appResult(["nvidia-catalog", "NVIDIA Accelerator Catalog", "Catalog-only", "Provider, skills, and model awareness without clone, download, NIM call, or credentials"]),
+      appResult(["nvidia-catalog", "NVIDIA AI-Q Runtime Plan", "metadata-only-no-runtime", "First AI-Q runtime candidate with clone, env, service start, endpoint calls, and research queries blocked."]),
       ...NVIDIA_ACCELERATOR_CATALOG.installedSkillIntegrations.map(nvidiaIntegrationResult),
       ...SEIS_AI_PLUGIN_LANES.map(pluginResult),
       ...SEIS_PERSONAL_PLUGIN_AI_CORE_LANE_MATRIX.slice(0, 4).map((plugin) => ({
@@ -6611,6 +6634,7 @@ function renderSeisCloud() {
     ["Public GitHub SSH", "Documented", "SEIS-SSH keeps the same server and port; validated by npm run check:seis-ssh-public-access."],
     ["Provider keys", "Missing Key", "Core demo remains functional without model-provider keys."],
     ["NVIDIA GPU/NIM", "Planned/Gated", "NVIDIA catalog is dry-run only; GPU, NIM, Docker, and model downloads require approval."],
+    ["NVIDIA AI-Q runtime allowlist", "Planned/Gated", "AI-Q backend start, endpoint checks, research handoff, and secrets remain blocked until approval."],
     ["Deployment", "Planned", "Use a reviewed PR and release gate before publishing."]
   ];
   return `<section class="app-main seis-cloud-app" data-seis-cloud-app>
@@ -6663,6 +6687,7 @@ function renderSeisCloud() {
 function renderNvidiaCatalog() {
   const data = getAppData("nvidia-catalog");
   const catalog = NVIDIA_ACCELERATOR_CATALOG;
+  const aiqPlan = catalog.aiqRuntimeAllowlistPlan;
   return `<section class="app-main nvidia-catalog-app" data-nvidia-catalog>
     <div class="toolbar">
       <button type="button" data-action="app-primary" data-app-id="nvidia-catalog">Save Dry-Run Plan</button>
@@ -6679,6 +6704,7 @@ function renderNvidiaCatalog() {
       <article class="metric-card"><strong>Mode</strong><p>${escapeHtml(catalog.mode)}</p></article>
       <article class="metric-card"><strong>Quality Gate</strong><p>${escapeHtml(catalog.qualityGate)}</p></article>
       <article class="metric-card"><strong>Installed Skills</strong><p>${catalog.installedSkillIntegrations.length}</p></article>
+      <article class="metric-card"><strong>AI-Q Plan</strong><p>${escapeHtml(aiqPlan.status)}</p></article>
       <article class="metric-card"><strong>Last Plan</strong><p>${data.lastPlan?.time || "Not saved yet"}</p></article>
     </div>
     <section class="subagent-panel">
@@ -6707,6 +6733,21 @@ function renderNvidiaCatalog() {
         <thead><tr><th>Item</th><th>Status</th><th>Next safe step</th></tr></thead>
         <tbody>${catalog.queue.map(([title, status, next]) => `<tr><td>${escapeHtml(title)}</td><td>${escapeHtml(status)}</td><td>${escapeHtml(next)}</td></tr>`).join("")}</tbody>
       </table>
+    </section>
+    <section class="subagent-panel" data-nvidia-aiq-runtime-allowlist>
+      <h3>${escapeHtml(aiqPlan.title)}</h3>
+      <p class="status-note">AI-Q is the first selected NVIDIA runtime candidate, but it remains ${escapeHtml(aiqPlan.realStatus)}. SEIS has not cloned AI-Q, started a backend, called health or chat endpoints, sent research queries, bound ports, installed dependencies, or stored credentials.</p>
+      <div class="metric-grid">
+        <article class="metric-card"><strong>Status</strong><p>${escapeHtml(aiqPlan.status)}</p></article>
+        <article class="metric-card"><strong>Preferred Mode</strong><p>${escapeHtml(aiqPlan.preferredMode)}</p></article>
+        <article class="metric-card"><strong>Default URL</strong><p>${escapeHtml(aiqPlan.defaultServerUrl)}</p></article>
+        <article class="metric-card"><strong>Quality Gate</strong><p>${escapeHtml(aiqPlan.qualityGate)}</p></article>
+      </div>
+      <table class="data-table">
+        <thead><tr><th>Gate</th><th>Status</th><th>Boundary</th></tr></thead>
+        <tbody>${aiqPlan.gates.map(([gate, status, boundary]) => `<tr><td>${escapeHtml(gate)}</td><td>${escapeHtml(status)}</td><td>${escapeHtml(boundary)}</td></tr>`).join("")}</tbody>
+      </table>
+      <p class="muted">Target skills: ${escapeHtml(aiqPlan.targetSkills.join(", "))}. Review docs: ${escapeHtml(aiqPlan.docPath)} and ${escapeHtml(aiqPlan.reviewPath)}.</p>
     </section>
     <section class="subagent-panel">
       <h3>NVIDIA Installed Integrations</h3>
@@ -6997,6 +7038,7 @@ function renderAiAssistantTab(activeTab, data) {
           <article class="metric-card"><strong>Build Models</strong><p>${NVIDIA_ACCELERATOR_CATALOG.buildModelsUrlStatus}</p></article>
           <article class="metric-card"><strong>Quality Gate</strong><p>${escapeHtml(NVIDIA_ACCELERATOR_CATALOG.qualityGate)}</p></article>
           <article class="metric-card"><strong>Installed Skills</strong><p>${NVIDIA_ACCELERATOR_CATALOG.installedSkillIntegrations.length}</p></article>
+          <article class="metric-card"><strong>AI-Q Plan</strong><p>${escapeHtml(NVIDIA_ACCELERATOR_CATALOG.aiqRuntimeAllowlistPlan.status)}</p></article>
         </div>
         <div class="toolbar compact-toolbar">
           <button type="button" data-action="open-app" data-app-id="nvidia-catalog">Open NVIDIA Catalog</button>
@@ -9096,6 +9138,7 @@ function defaultGenericText(app) {
 
 function buildNvidiaCatalogMarkdown(timestamp) {
   const catalog = NVIDIA_ACCELERATOR_CATALOG;
+  const aiqPlan = catalog.aiqRuntimeAllowlistPlan;
   return `# NVIDIA Accelerator Catalog Dry-Run
 
 Generated: ${timestamp}
@@ -9107,6 +9150,8 @@ Installed integrations registry: ${catalog.installedIntegrationsRegistry}
 Quality gate: ${catalog.qualityGate}
 Installed integrations gate: ${catalog.installedIntegrationsGate}
 Plan command: ${catalog.planCommand}
+AI-Q runtime plan: ${aiqPlan.sourcePath}
+AI-Q runtime plan gate: ${aiqPlan.qualityGate}
 
 ## Sources
 - GitHub org: ${catalog.githubOrg}
@@ -9116,6 +9161,15 @@ Plan command: ${catalog.planCommand}
 
 ## Dry-Run Queue
 ${catalog.queue.map(([title, status, next]) => `- ${title}: ${status} / ${next}`).join("\n")}
+
+## NVIDIA AI-Q Runtime Allowlist
+- Status: ${aiqPlan.status}
+- Real status: ${aiqPlan.realStatus}
+- Preferred mode: ${aiqPlan.preferredMode}
+- Default candidate URL: ${aiqPlan.defaultServerUrl}
+- Target skills: ${aiqPlan.targetSkills.join(", ")}
+- Runtime validation: not run
+${aiqPlan.gates.map(([gate, status, boundary]) => `- ${gate}: ${status} / ${boundary}`).join("\n")}
 
 ## NVIDIA Installed Integrations
 ${catalog.installedSkillIntegrations.map(([id, name, category, status, safeUse]) => `- ${name} (${id}): ${category} / ${status} / ${safeUse}`).join("\n")}

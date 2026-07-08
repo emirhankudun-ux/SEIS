@@ -9,6 +9,11 @@ runtime deployment.
 The source-of-truth record is
 `content/development/seis-nvidia-installed-integrations.json`.
 
+The first selected runtime candidate is documented separately at
+`content/development/seis-nvidia-aiq-runtime-allowlist-plan.json` and
+`docs/ai/nvidia-aiq-runtime-allowlist-plan.md`. That plan keeps AI-Q in
+`Planned/Gated` status and does not authorize a live backend.
+
 ## Installed Into SEIS
 
 - AI-Q Deploy
@@ -54,6 +59,7 @@ target. SEIS does not currently:
 ## Commands
 
 ```bash
+npm run check:seis-nvidia-aiq-runtime-allowlist-plan
 npm run check:seis-nvidia-installed-integrations
 npm run check:seis-nvidia-accelerator-catalog
 npm run plan:nvidia-catalog-install
@@ -67,3 +73,8 @@ npm run plan:nvidia-catalog-install
 3. Review license, cost, disk, credentials, network, cloud, rollback, and data
    provenance.
 4. Add an allowlisted plan before running any live install or deployment command.
+
+Current allowlist plan:
+
+- NVIDIA AI-Q runtime allowlist: planned/gated, metadata-only, no runtime
+  execution.

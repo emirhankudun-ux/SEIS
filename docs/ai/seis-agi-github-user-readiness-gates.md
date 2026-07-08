@@ -7,6 +7,10 @@ It depends on the AGI evaluation protocol
 `content/development/seis-agi-evaluation-protocol.json` and
 `seis://ai/agi-evaluation-protocol.json`.
 
+The AI-wide public readiness boundary is
+`content/development/seis-ai-public-readiness-program.json`, exposed as
+`seis://ai/public-readiness-program.json`.
+
 Status: `review-gated-local-demo-ready`.
 
 This is not a release approval and not an AGI claim. The gate pack separates
@@ -53,9 +57,29 @@ The gate pack keeps SEIS aligned with public risk and evaluation references:
 - Real AGI and 512B claims remain blocked until independent evaluation,
   training/inference, benchmark, safety, and external review evidence exists.
 
+**Hard requirement:** AGI and 512B claims stay blocked until independent
+evidence is collected and approved by human review.
+
+## One-Command AI Readiness Gate
+
+GitHub users and maintainers can run the AI-only public readiness gate with:
+
+```bash
+npm run check:seis-ai-public-readiness
+```
+
+This command runs the model intake, AI workforce, agent workforce, model scaling,
+512B apex, AGI evaluation, public readiness, GitHub user readiness, and
+independent evidence validators as a single local check.
+
+It does not install models, download checkpoints, train models, call providers,
+provision cloud/GPU capacity, execute SSH, push, merge, release, grant AGI
+status, or make the 512B route eligible.
+
 ## Validate
 
 ```bash
+npm run check:seis-ai-public-readiness
 node scripts/check-seis-agi-github-user-readiness-gates.mjs
 ```
 

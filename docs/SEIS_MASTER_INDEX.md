@@ -18,7 +18,7 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | Root architecture pointer | [../ARCHITECTURE.md](../ARCHITECTURE.md) |
 | Root roadmap pointer | [../ROADMAP.md](../ROADMAP.md) |
 | 10-year strategy roadmap | [../roadmap/seis-long-horizon-strategy.md](../roadmap/seis-long-horizon-strategy.md) |
-| Second Brain policy docs | [../SEIS_SECOND_BRAIN.md](../SEIS_SECOND_BRAIN.md), [../SEIS_OBSIDIAN_VAULT.md](../SEIS_OBSIDIAN_VAULT.md), [../SEIS_INSTALLED_AI_TOOLS.md](../SEIS_INSTALLED_AI_TOOLS.md), [../SEIS_SUB_AGENTS.md](../SEIS_SUB_AGENTS.md) |
+| Second Brain policy docs | [../SEIS_SECOND_BRAIN.md](../SEIS_SECOND_BRAIN.md), [../SEIS_OBSIDIAN_VAULT.md](../SEIS_OBSIDIAN_VAULT.md), [../SEIS_INSTALLED_AI_TOOLS.md](../SEIS_INSTALLED_AI_TOOLS.md), [../SEIS_SUB_AGENTS.md](../SEIS_SUB_AGENTS.md), [../SEIS_AGENT_WORKFORCE.md](../SEIS_AGENT_WORKFORCE.md), [../SEIS_LOCAL_AI_OLLAMA.md](../SEIS_LOCAL_AI_OLLAMA.md) |
 | SEIS-SSH docs | [../SEIS_SSH.md](../SEIS_SSH.md), [OBSIDIAN_SECOND_BRAIN.md](OBSIDIAN_SECOND_BRAIN.md), [SEIS_SSH_SETUP.md](SEIS_SSH_SETUP.md), [LOCAL_AI_SETUP.md](LOCAL_AI_SETUP.md) |
 | Current status | [STATUS.md](STATUS.md) |
 | Documentation index | [INDEX.md](INDEX.md) |
@@ -57,7 +57,7 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | Second Brain Accessibility Focus QA | [reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md](reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md) |
 | Shared VFS contract | [product/shared-vfs-contract.md](product/shared-vfs-contract.md) |
 | Getting started / onboarding | [GETTING_STARTED.md](GETTING_STARTED.md), [TROUBLESHOOTING.md](TROUBLESHOOTING.md), [PUBLIC_READINESS.md](PUBLIC_READINESS.md) |
-| Sub-agent system | [../SEIS_SUB_AGENTS.md](../SEIS_SUB_AGENTS.md) |
+| Sub-agent system | [../SEIS_SUB_AGENTS.md](../SEIS_SUB_AGENTS.md), [../SEIS_AGENT_WORKFORCE.md](../SEIS_AGENT_WORKFORCE.md) |
 | Installed AI tools | [../SEIS_INSTALLED_AI_TOOLS.md](../SEIS_INSTALLED_AI_TOOLS.md) |
 | SEIS Code browser foundation | [product/seis-code-foundation.md](product/seis-code-foundation.md) |
 | Video Hero showcase | [product/video-hero-showcase.md](product/video-hero-showcase.md) |
@@ -66,6 +66,8 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | NVIDIA accelerator catalog | [ai/nvidia-accelerator-catalog.md](ai/nvidia-accelerator-catalog.md) |
 | NVIDIA installed integrations | [ai/nvidia-installed-integrations.md](ai/nvidia-installed-integrations.md) |
 | NVIDIA installed integrations review | [reviews/NVIDIA_INSTALLED_INTEGRATIONS_REVIEW.md](reviews/NVIDIA_INSTALLED_INTEGRATIONS_REVIEW.md) |
+| NVIDIA AI-Q runtime allowlist | [ai/nvidia-aiq-runtime-allowlist-plan.md](ai/nvidia-aiq-runtime-allowlist-plan.md) |
+| NVIDIA AI-Q runtime allowlist review | [reviews/NVIDIA_AIQ_RUNTIME_ALLOWLIST_REVIEW.md](reviews/NVIDIA_AIQ_RUNTIME_ALLOWLIST_REVIEW.md) |
 | SEIS model scaling profile | [ai/seis-model-scaling.md](ai/seis-model-scaling.md) |
 | Model Router contract | [ai/model-router.md](ai/model-router.md) |
 | Read-Only Model Router Contract | [ai/read-only-model-router-contract.md](ai/read-only-model-router-contract.md) |
@@ -99,6 +101,7 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | SEIS read-only model-router decision | `npm run report:seis-read-only-model-router-decision` |
 | SEIS Second Brain accessibility/focus QA artifact | `npm run report:seis-second-brain-accessibility-focus-report` |
 | SEIS Second Brain agent registry | `npm run report:seis-second-brain-agent-registry` |
+| SEIS agent workforce | `npm run check:seis-agent-workforce` |
 | SEIS public demo go/no-go report | [../reports/seis-public-demo/go-no-go-latest.md](../reports/seis-public-demo/go-no-go-latest.md) |
 | SEIS public demo evidence manifest | [../reports/seis-public-demo/evidence-manifest-latest.json](../reports/seis-public-demo/evidence-manifest-latest.json) |
 | SEIS Obsidian safe-import dry-run JSON | [../reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json](../reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json) |
@@ -117,6 +120,8 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | NVIDIA installed integrations | [../content/development/seis-nvidia-installed-integrations.json](../content/development/seis-nvidia-installed-integrations.json) |
 | NVIDIA installed integrations validator | `npm run check:seis-nvidia-installed-integrations` |
 | NVIDIA installed integrations review | [reviews/NVIDIA_INSTALLED_INTEGRATIONS_REVIEW.md](reviews/NVIDIA_INSTALLED_INTEGRATIONS_REVIEW.md) |
+| NVIDIA AI-Q runtime allowlist | [../content/development/seis-nvidia-aiq-runtime-allowlist-plan.json](../content/development/seis-nvidia-aiq-runtime-allowlist-plan.json) |
+| NVIDIA AI-Q runtime allowlist validator | `npm run check:seis-nvidia-aiq-runtime-allowlist-plan` |
 | Big Tech MCP and skill inventory | [../content/development/seis-big-tech-mcp-skill-inventory.json](../content/development/seis-big-tech-mcp-skill-inventory.json) |
 | SEIS Second Brain validator | `npm run check:seis-second-brain` |
 | SEIS Second Brain readiness contracts validator | `npm run check:seis-second-brain-readiness-contracts` |
@@ -134,6 +139,7 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | SEIS full-stack contract | [../content/development/seis-fullstack-contract.json](../content/development/seis-fullstack-contract.json) |
 | SEIS model scaling hardware profile | [../content/development/seis-model-scaling-hardware-profile.json](../content/development/seis-model-scaling-hardware-profile.json) |
 | NVIDIA accelerator catalog contract | [../content/development/seis-nvidia-accelerator-catalog.json](../content/development/seis-nvidia-accelerator-catalog.json) |
+| NVIDIA AI-Q runtime allowlist contract | [../content/development/seis-nvidia-aiq-runtime-allowlist-plan.json](../content/development/seis-nvidia-aiq-runtime-allowlist-plan.json) |
 | SEIS model parameter ladder | [../content/development/seis-model-parameter-ladder.json](../content/development/seis-model-parameter-ladder.json) |
 | SEIS model frontier escalation policy | [../content/development/seis-model-frontier-escalation-policy.json](../content/development/seis-model-frontier-escalation-policy.json) |
 | SEIS 150B Frontier Model Program | [../content/development/seis-150b-frontier-model-program.json](../content/development/seis-150b-frontier-model-program.json) |

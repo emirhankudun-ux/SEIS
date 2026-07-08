@@ -235,7 +235,8 @@ function inferProfileStatus(profileId, assignments) {
     "claude-review-profile": "claude",
     "qwen-review-profile": "qwen",
     "gemini-validation-profile": "gemini",
-    "ollama-local-profile": "ollama"
+    "ollama-local-profile": "ollama",
+    "xcode": "xcode"
   };
   if (profileId === "seis-local-demo") return "local-demo";
   const match = assignments.find((assignment) => assignment.id === byProfile[profileId]);
