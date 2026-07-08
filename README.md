@@ -91,7 +91,10 @@ Primary demo routes:
   demo path. TR/EN locale persistence uses
   `seis.locale.v1`, and connected SEIS Search, Code, Design, Cloud, Store,
   Website, Music, AI Core, and Reference surfaces open mini workspaces or
-  iframe-backed local reference modules with browser-local state changes. The
+  iframe-backed local reference modules with browser-local state changes,
+  including a SEIS Store package marketplace for apps, plugins, MCP workbench
+  lanes, installed AI lanes, themes, developer tools, design tools, DevOps
+  guardrails, Reference Vault, and Search Gateway. The
   focused browser smoke check captures desktop, mobile, and deep-link evidence for the live
   demo console, Demo Readiness gates, source coverage, reference modules,
   terminal commands, and viewport-safe window sizing. It also validates every populated Reference
@@ -276,6 +279,12 @@ vault artifacts, AI council review pack, and GitHub gates without reading a
 private Obsidian vault, installing plugins, copying private note bodies,
 calling providers, executing agents, using SSH, deploying, mutating GitHub, or
 approving release.
+The browser-local `Build Training Drills` action writes Agent training drills at
+`/home/seis/SecondBrain/12-training/seis-agent-training-drills.md` so every
+registered AI profile and managed sub-agent lane has a repeatable Obsidian,
+graph, registry, and release-gate review exercise without API keys, provider
+login, private vault reads, plugin installs, autonomous writes, SSH,
+deployment, GitHub mutation, merge, or release approval.
 
 `npm run check:seis-public-demo-go-no-go -- --run-fast-checks` is the read-only
 public demo release gate. It is expected to report `NO-GO` until current browser

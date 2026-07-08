@@ -45,6 +45,7 @@ if (contract) {
   ensure(contract.obsidianStarterVaultGuidePath === "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md", "contract must declare browser-local Obsidian starter vault guide path");
   ensure(contract.aiCouncilReviewPackPath === "/home/seis/SecondBrain/10-ai-council/seis-ai-council-review-pack.md", "contract must declare browser-local AI council review pack path");
   ensure(contract.obsidianGraphMapPath === "/home/seis/SecondBrain/11-graph/seis-obsidian-graph-map.md", "contract must declare browser-local Obsidian graph map path");
+  ensure(contract.agentTrainingDrillsPath === "/home/seis/SecondBrain/12-training/seis-agent-training-drills.md", "contract must declare browser-local agent training drills path");
   ensure(contract.releaseReviewPacketPath === "reports/seis-public-demo/pr54-review-packet-latest.md", "contract must declare PR #54 release review packet path");
   ensure(contract.languageModelTrainingCurriculum?.status === "planned-training-contract", "contract must bind planned language model training curriculum");
   ensure(contract.languageModelTrainingCurriculum?.contractPath === trainingCurriculumPath, "contract language model training curriculum path mismatch");
@@ -80,13 +81,15 @@ if (contract) {
     "public contributor no-key onboarding",
     "Obsidian starter vault no-private-import export",
     "installed AI council review pack",
-    "Obsidian wikilink graph map"
+    "Obsidian wikilink graph map",
+    "agent training drills"
   ]) {
     ensure((contract.trainingCoverage?.requiredSections || []).includes(section), `trainingCoverage requiredSections missing ${section}`);
   }
   ensure(contract.trainingCoverage?.publicContributorPackPath === contract.publicContributorPackPath, "trainingCoverage public contributor pack path must match publicContributorPackPath");
   ensure(contract.trainingCoverage?.aiCouncilReviewPackPath === contract.aiCouncilReviewPackPath, "trainingCoverage AI council review pack path must match aiCouncilReviewPackPath");
   ensure(contract.trainingCoverage?.obsidianGraphMapPath === contract.obsidianGraphMapPath, "trainingCoverage Obsidian graph map path must match obsidianGraphMapPath");
+  ensure(contract.trainingCoverage?.agentTrainingDrillsPath === contract.agentTrainingDrillsPath, "trainingCoverage agent training drills path must match agentTrainingDrillsPath");
   ensure(contract.publicContributorOnboarding?.status === "local-demo-no-key", "public contributor onboarding must stay local-demo-no-key");
   for (const [field, expected] of [
     ["requiresApiKeys", false],
@@ -220,6 +223,23 @@ if (contract) {
   ]) {
     ensure(contract.obsidianGraphMap?.[field] === expected, `Obsidian graph map ${field} must be ${expected}`);
   }
+  ensure(contract.agentTrainingDrills?.status === "local-demo-no-key", "agent training drills must stay local-demo-no-key");
+  ensure(contract.agentTrainingDrills?.drillsPath === contract.agentTrainingDrillsPath, "agent training drills path mismatch");
+  for (const [field, expected] of [
+    ["requiresApiKeys", false],
+    ["requiresProviderLogin", false],
+    ["requiresPrivateObsidianVault", false],
+    ["requiresObsidianPlugin", false],
+    ["providerCalls", false],
+    ["credentialValidation", false],
+    ["autonomousWriteExecution", false],
+    ["sshExecution", false],
+    ["deployment", false],
+    ["githubMutation", false],
+    ["humanApprovalBeforeUse", true]
+  ]) {
+    ensure(contract.agentTrainingDrills?.[field] === expected, `agent training drills ${field} must be ${expected}`);
+  }
   for (const gate of [
     "node scripts/check-seis-second-brain.mjs",
     "node scripts/check-ai-workforce-assignments.mjs",
@@ -281,6 +301,7 @@ for (const phrase of [
   "Obsidian starter vault",
   "AI council review pack",
   "Obsidian graph map",
+  "Agent training drills",
   "Language model training curriculum",
   "without installing models",
   "Human review required",
@@ -309,6 +330,7 @@ for (const phrase of [
   "second-brain-obsidian-starter-vault",
   "second-brain-ai-council-pack",
   "second-brain-obsidian-graph-map",
+  "second-brain-agent-training-drills",
   "second-brain-review",
   "second-brain-export-github",
   "Save Vault Snapshot",
@@ -324,6 +346,7 @@ for (const phrase of [
   "seis-obsidian-starter-vault.md",
   "seis-ai-council-review-pack.md",
   "seis-obsidian-graph-map.md",
+  "seis-agent-training-drills.md",
   "releaseReviewPacketPath",
   "pr54-review-packet-latest.md",
   "seis-language-model-training-curriculum.json",
@@ -341,6 +364,8 @@ for (const phrase of [
   "buildSecondBrainAiCouncilReviewPackMarkdown",
   "exportSecondBrainObsidianGraphMap",
   "buildSecondBrainObsidianGraphMapMarkdown",
+  "exportSecondBrainAgentTrainingDrills",
+  "buildSecondBrainAgentTrainingDrillsMarkdown",
   "publicContributorPackPath",
   "publicContributorOnboarding",
   "obsidianStarterVaultManifestPath",
@@ -350,6 +375,8 @@ for (const phrase of [
   "aiCouncilReviewPack",
   "obsidianGraphMapPath",
   "obsidianGraphMap",
+  "agentTrainingDrillsPath",
+  "agentTrainingDrills",
   "SEIS_INSTALLED_AI_SYSTEMS.length",
   "registrySummary",
   "data-second-brain-launcher-evidence",

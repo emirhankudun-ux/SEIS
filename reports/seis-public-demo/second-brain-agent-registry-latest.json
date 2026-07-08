@@ -1,7 +1,7 @@
 {
   "id": "seis-second-brain-agent-registry-pr54",
   "title": "SEIS Second Brain Agent Registry",
-  "generatedAt": "2026-07-08T10:57:01.915Z",
+  "generatedAt": "2026-07-08T11:40:21.973Z",
   "status": "review-only-agent-registry",
   "mode": "repo-local-no-live-execution",
   "decision": "NO-GO-autonomous-execution-not-approved",
@@ -27,6 +27,7 @@
     "obsidianStarterVaultGuidePath": "browser-vfs/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md",
     "aiCouncilReviewPackPath": "browser-vfs/SecondBrain/10-ai-council/seis-ai-council-review-pack.md",
     "obsidianGraphMapPath": "browser-vfs/SecondBrain/11-graph/seis-obsidian-graph-map.md",
+    "agentTrainingDrillsPath": "browser-vfs/SecondBrain/12-training/seis-agent-training-drills.md",
     "obsidianBridgeStatus": "planned",
     "privateVaultImportEnabled": false,
     "hostVaultReadEnabled": false,
@@ -42,6 +43,7 @@
     "obsidianStarterVaultGuidePath": "browser-vfs/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md",
     "aiCouncilReviewPackPath": "browser-vfs/SecondBrain/10-ai-council/seis-ai-council-review-pack.md",
     "obsidianGraphMapPath": "browser-vfs/SecondBrain/11-graph/seis-obsidian-graph-map.md",
+    "agentTrainingDrillsPath": "browser-vfs/SecondBrain/12-training/seis-agent-training-drills.md",
     "requiredSections": [
       "installed AI launcher route coverage",
       "autonomous agent roster onboarding",
@@ -52,7 +54,8 @@
       "public contributor no-key onboarding",
       "Obsidian starter vault no-private-import export",
       "installed AI council review pack",
-      "Obsidian wikilink graph map"
+      "Obsidian wikilink graph map",
+      "agent training drills"
     ],
     "installedAiCoverage": {
       "sourceContract": "content/development/ai-workforce-assignments.json",

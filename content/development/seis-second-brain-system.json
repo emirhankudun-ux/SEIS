@@ -14,6 +14,7 @@
   "obsidianStarterVaultGuidePath": "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md",
   "aiCouncilReviewPackPath": "/home/seis/SecondBrain/10-ai-council/seis-ai-council-review-pack.md",
   "obsidianGraphMapPath": "/home/seis/SecondBrain/11-graph/seis-obsidian-graph-map.md",
+  "agentTrainingDrillsPath": "/home/seis/SecondBrain/12-training/seis-agent-training-drills.md",
   "releaseReviewPacketPath": "reports/seis-public-demo/pr54-review-packet-latest.md",
   "obsidianSafeImportDryRunPath": "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json",
   "obsidianSafeImportDryRunMarkdownPath": "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md",
@@ -44,6 +45,7 @@
       "generate browser-local Obsidian starter vault manifest from repo-owned seed notes",
       "generate browser-local installed AI council review pack",
       "generate browser-local Obsidian wikilink graph map",
+      "generate browser-local agent training drills",
       "record human-review-required GitHub readiness gates"
     ],
     "forbiddenToday": [
@@ -260,6 +262,7 @@
     "publicContributorPackPath": "/home/seis/SecondBrain/08-public/seis-public-contributor-onboarding.md",
     "aiCouncilReviewPackPath": "/home/seis/SecondBrain/10-ai-council/seis-ai-council-review-pack.md",
     "obsidianGraphMapPath": "/home/seis/SecondBrain/11-graph/seis-obsidian-graph-map.md",
+    "agentTrainingDrillsPath": "/home/seis/SecondBrain/12-training/seis-agent-training-drills.md",
     "requiredSections": [
       "installed AI launcher route coverage",
       "autonomous agent roster onboarding",
@@ -270,7 +273,8 @@
       "public contributor no-key onboarding",
       "Obsidian starter vault no-private-import export",
       "installed AI council review pack",
-      "Obsidian wikilink graph map"
+      "Obsidian wikilink graph map",
+      "agent training drills"
     ],
     "installedAiCoverage": {
       "sourceContract": "content/development/ai-workforce-assignments.json",
@@ -380,6 +384,22 @@
     "githubMutation": false,
     "humanApprovalBeforeImport": true
   },
+  "agentTrainingDrills": {
+    "status": "local-demo-no-key",
+    "drillsPath": "/home/seis/SecondBrain/12-training/seis-agent-training-drills.md",
+    "source": "Second Brain seed notes, installed AI profiles, managed sub-agent lanes, autonomous agent roster, and public-safe Obsidian graph map",
+    "requiresApiKeys": false,
+    "requiresProviderLogin": false,
+    "requiresPrivateObsidianVault": false,
+    "requiresObsidianPlugin": false,
+    "providerCalls": false,
+    "credentialValidation": false,
+    "autonomousWriteExecution": false,
+    "sshExecution": false,
+    "deployment": false,
+    "githubMutation": false,
+    "humanApprovalBeforeUse": true
+  },
   "pipeline": [
     {
       "step": "Capture",
@@ -420,6 +440,11 @@
       "step": "Obsidian Graph Map",
       "status": "local-demo-no-key",
       "detail": "Generate a browser-local Obsidian wikilink graph map that connects seed notes, AI council evidence, starter vault artifacts, and public demo gates without reading a private vault."
+    },
+    {
+      "step": "Agent Training Drills",
+      "status": "local-demo-no-key",
+      "detail": "Generate browser-local training drills for every registered AI profile and Second Brain agent lane so reviewers can rehearse Obsidian, graph, registry, and release-gate tasks without provider calls or external mutations."
     },
     {
       "step": "Publish",

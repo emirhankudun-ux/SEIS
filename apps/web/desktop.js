@@ -1191,7 +1191,7 @@ const SEIS_MCP_RUNTIME_CONTRACT = {
   officialSdk: "@modelcontextprotocol/sdk remains optional unless dependencies are installed",
   toolCount: 34,
   promptCount: 3,
-  resourceCount: 26,
+  resourceCount: 29,
   smokeTest: "node --test packages/seis-ai/test/mcp-smoke.test.mjs",
   pluginGate: "npm run check:seis-agent-plugin-integration",
   resourceRead: "seis://ai/mcp-runtime-contract.json",
@@ -1230,6 +1230,52 @@ const SEIS_MCP_RUNTIME_CONTRACT = {
       evidence: "No dependency install required for local smoke",
       duty: "Keep MCP available for local verification while official SDK compatibility remains a separate hardening path."
     }
+  ]
+};
+const SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY = {
+  id: "plugin-mcp-ten-year-continuity-map",
+  status: "Local Demo / planning-only",
+  sourcePath: "docs/platform/seis-plugin-mcp-ten-year-continuity-map.md",
+  reportPath: "reports/seis-public-demo/plugin-mcp-ten-year-continuity-map-latest.md",
+  validation: "npm run check:desktop-os",
+  safeInterpretation: "Use plugin, MCP, connector, and installed AI surfaces as supervised capability context over a ten-year development horizon without unapproved live activation.",
+  liveBoundary: "No connector write, remote MCP trust, provider credential use, external AI file/prompt send, plugin install, SSH, deployment, billing, push, merge, tag, or release is executed from this browser surface.",
+  counts: [
+    ["Years", "10", "Long-horizon phase map"],
+    ["Review windows", "20", "Six-month cadence"],
+    ["MCP tools", "34", "Local stdio contract"],
+    ["MCP resources", "29", "Read-only local resource map"],
+    ["MCP prompts", "3", "Bounded prompt registry"],
+    ["Installed AI mode", "Single writer", "Codex primary unless approved handoff"]
+  ],
+  phases: [
+    ["Year 1", "Working Demo", "Expose plugin/MCP/installed-AI states in Desktop, Search, Store, Second Brain, and Linux Replica with honest labels."],
+    ["Year 2", "Alpha", "Promote metadata-only capability lanes into dry-run workflows and review packets without live writes by default."],
+    ["Year 3", "Beta", "Add supervised plugin/task routing, connector readiness scoring, and public-safe Second Brain context packs."],
+    ["Year 4", "Platform", "Harden signed plugin manifests, remote MCP trust review, connector audit trails, and multi-agent approval gates."],
+    ["Year 5", "Full Ecosystem", "Stabilize marketplace, agent workbench, local/cloud AI routing, and enterprise policy surfaces."],
+    ["Year 6", "Ecosystem Scale", "Expand validated plugin families, contributor workflows, and cross-workspace MCP governance."],
+    ["Year 7", "Enterprise Operations", "Add observability, incident review, policy enforcement, and rollback drills for approved integrations."],
+    ["Year 8", "Knowledge Runtime", "Index plugin/MCP decisions, failures, approvals, and context packs as searchable public-safe memory."],
+    ["Year 9", "Autonomy Readiness", "Prepare bounded automation only where evidence, permissions, validation, and human review are complete."],
+    ["Year 10", "Public Platform Maturity", "Reach public ecosystem maturity without unsupported live AI, SSH, connector, or model ownership claims."]
+  ],
+  reviewEvidence: [
+    "updated_plugin_mcp_focus_audit",
+    "connector_activation_state_review",
+    "installed_ai_single_writer_review",
+    "mcp_secret_shape_guard",
+    "status_and_next_pr_queue_update"
+  ],
+  hardStops: [
+    "connector_write",
+    "remote_mcp_trust",
+    "provider_credential_use",
+    "external_ai_prompt_or_file_send",
+    "plugin_install_or_marketplace_publish",
+    "ssh_or_deployment",
+    "billing_or_cloud_spend",
+    "github_push_merge_tag_release"
   ]
 };
 const SEIS_INSTALLED_AI_SYSTEMS = [
@@ -1432,6 +1478,7 @@ const SEIS_SECOND_BRAIN_SYSTEM = {
   obsidianStarterVaultGuidePath: "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md",
   aiCouncilReviewPackPath: "/home/seis/SecondBrain/10-ai-council/seis-ai-council-review-pack.md",
   obsidianGraphMapPath: "/home/seis/SecondBrain/11-graph/seis-obsidian-graph-map.md",
+  agentTrainingDrillsPath: "/home/seis/SecondBrain/12-training/seis-agent-training-drills.md",
   releaseReviewPacketPath: "reports/seis-public-demo/pr54-review-packet-latest.md",
   languageModelTrainingCurriculum: {
     status: "planned-training-contract",
@@ -1462,7 +1509,8 @@ const SEIS_SECOND_BRAIN_SYSTEM = {
       "public contributor no-key onboarding",
       "Obsidian starter vault no-private-import export",
       "installed AI council review pack",
-      "Obsidian wikilink graph map"
+      "Obsidian wikilink graph map",
+      "agent training drills"
     ],
     launcherEvidence: [
       ["seis-agent", "installed", "seis-agent-policy-profile"],
@@ -1568,6 +1616,21 @@ const SEIS_SECOND_BRAIN_SYSTEM = {
     deployment: false,
     githubMutation: false,
     humanApprovalBeforeImport: true
+  },
+  agentTrainingDrills: {
+    status: "local-demo-no-key",
+    source: "Second Brain seed notes, installed AI profiles, managed sub-agent lanes, autonomous agent roster, and public-safe Obsidian graph map",
+    requiresApiKeys: false,
+    requiresProviderLogin: false,
+    requiresPrivateObsidianVault: false,
+    requiresObsidianPlugin: false,
+    providerCalls: false,
+    credentialValidation: false,
+    autonomousWriteExecution: false,
+    sshExecution: false,
+    deployment: false,
+    githubMutation: false,
+    humanApprovalBeforeUse: true
   },
   vaultNotes: [
     {
@@ -2833,6 +2896,9 @@ function handleClick(event) {
     case "second-brain-obsidian-graph-map":
       exportSecondBrainObsidianGraphMap();
       break;
+    case "second-brain-agent-training-drills":
+      exportSecondBrainAgentTrainingDrills();
+      break;
     case "second-brain-review":
       reviewSecondBrainVault();
       break;
@@ -2945,6 +3011,9 @@ function handleClick(event) {
       break;
     case "export-mcp-runtime-contract":
       exportMcpRuntimeContract();
+      break;
+    case "export-plugin-mcp-ten-year-continuity":
+      exportPluginMcpTenYearContinuity();
       break;
     case "export-personal-plugin-bridge":
       exportPersonalPluginBridge();
@@ -5180,6 +5249,7 @@ function renderSecondBrain() {
       <button type="button" data-action="second-brain-obsidian-starter-vault">Export Obsidian Starter Vault</button>
       <button type="button" data-action="second-brain-ai-council-pack">Build AI Council Pack</button>
       <button type="button" data-action="second-brain-obsidian-graph-map">Build Obsidian Graph Map</button>
+      <button type="button" data-action="second-brain-agent-training-drills">Build Training Drills</button>
       <button type="button" data-action="second-brain-review">Run Review Gate</button>
       <button type="button" data-action="second-brain-export-github">Export GitHub Readiness</button>
       <button type="button" data-action="open-app" data-app-id="ai-assistant">Open SEIS AI</button>
@@ -5213,6 +5283,7 @@ function renderSecondBrain() {
       <article class="metric-card"><strong>Last Obsidian Starter</strong><p>${data.lastObsidianStarterVault?.time || "Not exported yet"}</p></article>
       <article class="metric-card"><strong>Last AI Council Pack</strong><p>${data.lastAiCouncilReviewPack?.time || "Not built yet"}</p></article>
       <article class="metric-card"><strong>Last Obsidian Graph Map</strong><p>${data.lastObsidianGraphMap?.time || "Not built yet"}</p></article>
+      <article class="metric-card"><strong>Last Training Drills</strong><p>${data.lastAgentTrainingDrills?.time || "Not built yet"}</p></article>
       <article class="metric-card"><strong>Publish State</strong><p>Human review before GitHub</p></article>
     </div>
     <section class="second-brain-layout">
@@ -5979,6 +6050,55 @@ function renderSeisSystemOSApp() {
   </section>`;
 }
 
+function renderPluginMcpTenYearContinuityPanel() {
+  return `<section class="subagent-panel plugin-mcp-ten-year-continuity" data-plugin-mcp-ten-year-continuity>
+    <div class="section-heading-row">
+      <div>
+        <h3>Plugin / MCP / Installed AI Ten-Year Continuity</h3>
+        <p class="status-note">${escapeHtml(SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.safeInterpretation)}</p>
+      </div>
+      <span class="store-status is-planned">${escapeHtml(SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.status)}</span>
+    </div>
+    <div class="metric-grid">
+      ${SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.counts.map(([label, value, detail]) => `<article class="metric-card"><strong>${escapeHtml(label)}</strong><p>${escapeHtml(value)}</p><span class="muted">${escapeHtml(detail)}</span></article>`).join("")}
+    </div>
+    <div class="split-pane">
+      <div>
+        <h4>Ten-Year Phase Map</h4>
+        <table class="data-table compact-table">
+          <thead><tr><th>Window</th><th>Phase</th><th>Development focus</th></tr></thead>
+          <tbody>${SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.phases.map(([year, phase, focus]) => `<tr data-plugin-mcp-ten-year-phase="${escapeAttr(year)}">
+            <td><strong>${escapeHtml(year)}</strong></td>
+            <td>${escapeHtml(phase)}</td>
+            <td>${escapeHtml(focus)}</td>
+          </tr>`).join("")}</tbody>
+        </table>
+      </div>
+      <div>
+        <h4>Activation Hard Stops</h4>
+        <ul class="subagent-gate-list">
+          ${SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.hardStops.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+        <h4>Six-Month Evidence Cadence</h4>
+        <ul class="subagent-gate-list">
+          ${SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.reviewEvidence.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </div>
+    </div>
+    <div class="evolution-safety-grid">
+      <article><strong>Source</strong><p>${escapeHtml(SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.sourcePath)}</p></article>
+      <article><strong>Report</strong><p>${escapeHtml(SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.reportPath)}</p></article>
+      <article><strong>Validation</strong><p>${escapeHtml(SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.validation)}</p></article>
+      <article><strong>Boundary</strong><p>${escapeHtml(SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.liveBoundary)}</p></article>
+    </div>
+    <div class="toolbar compact-toolbar">
+      <button type="button" class="secondary-action" data-action="export-plugin-mcp-ten-year-continuity">Export Continuity Packet</button>
+      <button type="button" class="secondary-action" data-action="open-app" data-app-id="second-brain">Open Second Brain</button>
+      <button type="button" class="secondary-action" data-action="open-app" data-app-id="ai-assistant">Open SEIS AI</button>
+    </div>
+  </section>`;
+}
+
 function renderSeisSearchGateway() {
   const data = getAppData("search");
   const query = data.query || "SEIS";
@@ -6455,6 +6575,7 @@ function renderSeisCommandCenter() {
       </table>
       <p class="status-note">150B remains blocked until: ${coverage.masterObjectiveCoverage.blockedUntil.map((item) => escapeHtml(item)).join(", ")}.</p>
     </section>
+    ${renderPluginMcpTenYearContinuityPanel()}
     <section class="subagent-panel">
       <h3>20B to 512B AI / AGI Model Scaling Profile</h3>
       <div class="evolution-safety-grid">
@@ -7437,6 +7558,13 @@ function exposeDiagnostics() {
     mcpRuntimeContract: () => ({
       ...SEIS_MCP_RUNTIME_CONTRACT,
       surfaces: SEIS_MCP_RUNTIME_CONTRACT.surfaces.map((surface) => ({ ...surface }))
+    }),
+    pluginMcpTenYearContinuity: () => ({
+      ...SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY,
+      counts: SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.counts.map((row) => [...row]),
+      phases: SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.phases.map((row) => [...row]),
+      reviewEvidence: [...SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.reviewEvidence],
+      hardStops: [...SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.hardStops]
     }),
     personalPluginBridge: () => SEIS_PERSONAL_PLUGIN_BRIDGE.map((plugin) => ({ ...plugin })),
     aiCoreResourceBridge: () => ({ ...SEIS_AI_CORE_RESOURCE_BRIDGE }),
@@ -9198,6 +9326,99 @@ ${SEIS_SECOND_BRAIN_SYSTEM.runtimeBoundary}
 `;
 }
 
+function buildSecondBrainAgentTrainingDrillsMarkdown(timestamp) {
+  const registry = SEIS_SECOND_BRAIN_SYSTEM.registrySummary;
+  const profileDrills = SEIS_SECOND_BRAIN_SYSTEM.installedAiProfiles.map((profile, index) => {
+    const routeEvidence = registry.launcherEvidence.find(([, , profileId]) => profileId === profile);
+    const route = routeEvidence?.[0] || "review-only";
+    const status = routeEvidence?.[1] || (profile === "seis-local-demo" ? "local-demo" : "review-only");
+    const note = SEIS_SECOND_BRAIN_SYSTEM.vaultNotes[index % SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.length];
+    return `### ${index + 1}. ${profile}
+
+- Route evidence: ${route} / ${status}
+- Drill source note: [[${note.title}]]
+- Task: Summarize how ${profile} should review ${note.title} for SEIS Second Brain readiness.
+- Expected output: one concise review note with provenance, Obsidian wikilinks, mock/real/planned labels, and release-gate impact.
+- Forbidden: API keys, provider login, credential validation, private Obsidian import, autonomous writes, SSH, deployment, GitHub mutation, merge, or release approval.`;
+  });
+  const laneDrills = SUB_AGENT_DEMO.lanes.map(([name, lane, tool, scope], index) => `### ${index + 1}. ${name}
+
+- Lane: ${lane}
+- Tool surface: ${tool}
+- Scope: ${scope}
+- Drill: Review the Second Brain graph map and identify one safe local improvement proposal.
+- Expected output: status-plan-only proposal, touched artifact list, validation command list, and human approval boundary.
+- Forbidden: permission expansion, unrelated file edits, private vault reads, provider calls, SSH, deployment, GitHub mutation, merge, or release approval.`);
+  const rosterDrills = SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.map(([agent, status, duty], index) => `- ${index + 1}. ${agent}: ${status} / ${duty} / output must be review-only and local-demo-safe.`);
+  const artifactRows = [
+    ["Training pack", SEIS_SECOND_BRAIN_SYSTEM.trainingPackPath],
+    ["Public contributor pack", SEIS_SECOND_BRAIN_SYSTEM.publicContributorPackPath],
+    ["Obsidian starter manifest", SEIS_SECOND_BRAIN_SYSTEM.obsidianStarterVaultManifestPath],
+    ["AI council review pack", SEIS_SECOND_BRAIN_SYSTEM.aiCouncilReviewPackPath],
+    ["Obsidian graph map", SEIS_SECOND_BRAIN_SYSTEM.obsidianGraphMapPath],
+    ["GitHub readiness review", SEIS_SECOND_BRAIN_SYSTEM.githubReadinessPath]
+  ].map(([label, path]) => `- ${label}: ${path}`);
+
+  return `# SEIS Second Brain Agent Training Drills
+
+Generated: ${timestamp}
+Mode: ${SEIS_SECOND_BRAIN_SYSTEM.agentTrainingDrills.status}
+Drills path: ${SEIS_SECOND_BRAIN_SYSTEM.agentTrainingDrillsPath}
+Source contract: ${SEIS_SECOND_BRAIN_SYSTEM.sourcePath}
+
+## Purpose
+
+These drills train SEIS reviewers, installed AI profiles, and sub-agent lanes to use the browser-local Second Brain consistently. They are no-key Local Demo exercises for Obsidian-style graph thinking, agent registry review, and release-gate discipline. They do not grant runtime authority.
+
+## Core Training Loop
+
+1. Start from a repo-owned seed note.
+2. Add explicit Obsidian wikilinks to related SEIS surfaces.
+3. Label every claim as real, local-demo, planned, disabled, blocked, or human-review-required.
+4. Cross-check the AI council review pack, Obsidian graph map, and GitHub readiness gate.
+5. Return only public-safe review output.
+
+## Registered AI Profile Drills
+
+${profileDrills.join("\n\n")}
+
+## Managed Sub-Agent Lane Drills
+
+${laneDrills.join("\n\n")}
+
+## Autonomous Agent Roster Reminder
+
+${rosterDrills.join("\n")}
+
+## Required Local Artifacts
+
+${artifactRows.join("\n")}
+
+## Validation Commands
+
+- npm run check:seis-second-brain
+- npm run check:seis-second-brain-readiness-contracts
+- npm run check:seis-second-brain-agent-registry
+- npm run check:seis-second-brain-browser-smoke
+
+## Safety Boundary
+
+- Requires API keys: ${SEIS_SECOND_BRAIN_SYSTEM.agentTrainingDrills.requiresApiKeys}
+- Requires provider login: ${SEIS_SECOND_BRAIN_SYSTEM.agentTrainingDrills.requiresProviderLogin}
+- Requires private Obsidian vault: ${SEIS_SECOND_BRAIN_SYSTEM.agentTrainingDrills.requiresPrivateObsidianVault}
+- Requires Obsidian plugin: ${SEIS_SECOND_BRAIN_SYSTEM.agentTrainingDrills.requiresObsidianPlugin}
+- Provider calls: ${SEIS_SECOND_BRAIN_SYSTEM.agentTrainingDrills.providerCalls}
+- Credential validation: ${SEIS_SECOND_BRAIN_SYSTEM.agentTrainingDrills.credentialValidation}
+- Autonomous write execution: ${SEIS_SECOND_BRAIN_SYSTEM.agentTrainingDrills.autonomousWriteExecution}
+- SSH execution: ${SEIS_SECOND_BRAIN_SYSTEM.agentTrainingDrills.sshExecution}
+- Deployment: ${SEIS_SECOND_BRAIN_SYSTEM.agentTrainingDrills.deployment}
+- GitHub mutation: ${SEIS_SECOND_BRAIN_SYSTEM.agentTrainingDrills.githubMutation}
+- Human approval before use: ${SEIS_SECOND_BRAIN_SYSTEM.agentTrainingDrills.humanApprovalBeforeUse}
+
+${SEIS_SECOND_BRAIN_SYSTEM.runtimeBoundary}
+`;
+}
+
 const SEIS_READ_ONLY_MODEL_ROUTER_CONTRACT = {
   blockedModelClasses: [
     "20B planned-not-validated",
@@ -9368,6 +9589,33 @@ function exportSecondBrainObsidianGraphMap() {
     githubMutation: false
   };
   const message = `Second Brain Obsidian graph map saved to ${path}.`;
+  getAppStatus("second-brain").lastAction = message;
+  log("second-brain", message);
+  saveState();
+  renderOpenWindows("second-brain");
+  renderOpenWindows("files");
+  renderOpenWindows("system-logs");
+  toast("SEIS Second Brain", message);
+}
+
+function exportSecondBrainAgentTrainingDrills() {
+  const timestamp = new Date().toISOString();
+  const path = SEIS_SECOND_BRAIN_SYSTEM.agentTrainingDrillsPath;
+  upsertFile(path, buildSecondBrainAgentTrainingDrillsMarkdown(timestamp));
+  const data = addSecondBrainActivity("Agent Training Drills", "No-key Local Demo", `Agent Training Drills saved to ${path}.`);
+  data.lastAgentTrainingDrills = {
+    time: timestamp,
+    path,
+    installedAiProfiles: SEIS_SECOND_BRAIN_SYSTEM.installedAiProfiles.length,
+    managedSubAgentLanes: SUB_AGENT_DEMO.lanes.length,
+    autonomousAgentRoster: SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length,
+    requiresApiKeys: false,
+    requiresPrivateObsidianVault: false,
+    providerCalls: false,
+    autonomousWriteExecution: false,
+    githubMutation: false
+  };
+  const message = `Second Brain agent training drills saved to ${path}.`;
   getAppStatus("second-brain").lastAction = message;
   log("second-brain", message);
   saveState();
@@ -9656,6 +9904,27 @@ Generated: ${timestamp}
 
 ## Master Objective Coverage Matrix
 ${coverage.masterObjectiveCoverage.items.map((item) => `- ${item.id}: ${item.status} / ${item.check} / ${item.gap}`).join("\n")}
+
+## Plugin / MCP / Installed AI Ten-Year Continuity
+- Status: ${SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.status}
+- Source: ${SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.sourcePath}
+- Report: ${SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.reportPath}
+- Validation: ${SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.validation}
+- Export packet: /home/seis/Documents/seis-plugin-mcp-ten-year-continuity-map.md
+- Safe interpretation: ${SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.safeInterpretation}
+- Boundary: ${SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.liveBoundary}
+
+### Continuity Counts
+${SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.counts.map(([label, value, note]) => `- ${label}: ${value} / ${note}`).join("\n")}
+
+### Ten-Year Phases
+${SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.phases.map(([year, focus, output, boundary]) => `- ${year}: ${focus} / ${output} / ${boundary}`).join("\n")}
+
+### Six-Month Evidence Cadence
+${SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.reviewEvidence.map((item) => `- ${item}`).join("\n")}
+
+### Hard Stops
+${SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.hardStops.map((item) => `- ${item}`).join("\n")}
 
 ## Module Map
 ${coverage.modules.map((module) => `- ${module.label}: ${module.status} / ${module.evidence} / ${module.detail}`).join("\n")}
@@ -10882,6 +11151,65 @@ ${SEIS_MCP_RUNTIME_CONTRACT.boundary}
 ## Next Safe Action
 
 Keep this contract smoke-tested with ${SEIS_MCP_RUNTIME_CONTRACT.smokeTest}. Treat official SDK installation, remote MCP servers, write tools, SSH, deployment, and GitHub mutation as separate approval-gated hardening work.
+`;
+}
+
+function exportPluginMcpTenYearContinuity() {
+  const commandCenter = getAppData("seis-command-center");
+  const path = "/home/seis/Documents/seis-plugin-mcp-ten-year-continuity-map.md";
+  const timestamp = new Date().toISOString();
+  upsertFile(path, buildPluginMcpTenYearContinuityMarkdown(timestamp));
+  commandCenter.lastPluginMcpTenYearContinuityExport = {
+    time: timestamp,
+    path,
+    phases: SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.phases.length,
+    reviewWindows: 20,
+    hardStops: SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.hardStops.length
+  };
+  log("plugin-mcp-ten-year-continuity", `Exported Plugin/MCP ten-year continuity map to ${path}.`);
+  toast("Plugin/MCP Ten-Year Continuity", `Saved ${path}.`);
+  saveState();
+  renderOpenWindows("seis-command-center");
+  renderOpenWindows("files");
+  renderOpenWindows("system-logs");
+}
+
+function buildPluginMcpTenYearContinuityMarkdown(timestamp) {
+  return `# SEIS Plugin / MCP / Installed AI Ten-Year Continuity Map
+
+Generated: ${timestamp}
+
+This browser-local packet keeps the long-horizon objective visible inside SEIS Command Center. It uses plugin, MCP, connector, and installed-AI surfaces as supervised capability context only. It does not prove ten years of elapsed work, live connector authorization, remote MCP trust, provider credential validation, multi-AI autonomous writes, SSH execution, deployment, billing, GitHub mutation, push, merge, tag, or release.
+
+## Source Of Truth
+
+- Continuity ID: ${SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.id}
+- Status: ${SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.status}
+- Source: ${SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.sourcePath}
+- Report: ${SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.reportPath}
+- Validation: ${SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.validation}
+- Safe interpretation: ${SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.safeInterpretation}
+- Live boundary: ${SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.liveBoundary}
+
+## Counts
+
+${SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.counts.map(([label, value, detail]) => `- ${label}: ${value} / ${detail}`).join("\n")}
+
+## Ten-Year Phases
+
+${SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.phases.map(([year, phase, focus]) => `- ${year}: ${phase} / ${focus}`).join("\n")}
+
+## Six-Month Evidence Cadence
+
+${SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.reviewEvidence.map((item) => `- ${item}`).join("\n")}
+
+## Hard Stops
+
+${SEIS_PLUGIN_MCP_TEN_YEAR_CONTINUITY.hardStops.map((item) => `- ${item}`).join("\n")}
+
+## Next Safe Action
+
+Keep this map aligned with SEIS Second Brain, MCP runtime, installed AI profiles, Search, Store, and Command Center evidence. Promote live activation only after scoped auth, target, least-privilege, rollback, validation, and explicit human approval exist.
 `;
 }
 

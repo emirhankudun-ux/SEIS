@@ -38,6 +38,11 @@ const paths = {
   agentRegistryScript: "scripts/create-seis-second-brain-agent-registry.mjs",
   agentRegistryJson: "reports/seis-public-demo/second-brain-agent-registry-latest.json",
   agentRegistryMarkdown: "reports/seis-public-demo/second-brain-agent-registry-latest.md",
+  pluginMcpContinuityContract: "content/development/seis-plugin-mcp-ten-year-continuity-map.json",
+  pluginMcpContinuityScript: "scripts/create-seis-plugin-mcp-ten-year-continuity-map.mjs",
+  pluginMcpContinuityJson: "reports/seis-public-demo/plugin-mcp-ten-year-continuity-map-latest.json",
+  pluginMcpContinuityMarkdown: "reports/seis-public-demo/plugin-mcp-ten-year-continuity-map-latest.md",
+  pluginMcpContinuityDoc: "docs/platform/seis-plugin-mcp-ten-year-continuity-map.md",
   publicReviewerPackScript: "scripts/create-seis-second-brain-public-reviewer-pack.mjs",
   publicReviewerPackJson: "reports/seis-public-demo/second-brain-public-reviewer-pack-latest.json",
   publicReviewerPackMarkdown: "reports/seis-public-demo/second-brain-public-reviewer-pack-latest.md",
@@ -76,6 +81,7 @@ const obsidianDryRun = reportGenerating ? null : readJson(paths.obsidianDryRunJs
 const routerDecision = reportGenerating ? null : readJson(paths.routerDecisionJson, "read-only model-router decision artifact");
 const accessibilityFocus = reportGenerating ? null : readJson(paths.accessibilityFocusJson, "Second Brain accessibility/focus artifact");
 const agentRegistry = reportGenerating ? null : readJson(paths.agentRegistryJson, "Second Brain agent registry artifact");
+const pluginMcpContinuity = reportGenerating ? null : readJson(paths.pluginMcpContinuityJson, "Plugin/MCP ten-year continuity artifact");
 const publicReviewerPack = reportGenerating ? null : readJson(paths.publicReviewerPackJson, "Second Brain public reviewer pack artifact");
 const securityGate = reportGenerating ? null : readJson(paths.securityGateJson, "public demo security gate redacted artifact");
 const securityOwnerHandoff = reportGenerating ? null : readJson(paths.securityOwnerHandoffJson, "security owner handoff artifact");
@@ -93,6 +99,7 @@ if (obsidianDryRun) validateObsidianDryRun(obsidianDryRun);
 if (routerDecision && routerContract && secondBrain) validateRouterDecision(routerDecision, routerContract, secondBrain);
 if (accessibilityFocus && accessibilityContract && secondBrain) validateAccessibilityFocus(accessibilityFocus, accessibilityContract, secondBrain);
 if (agentRegistry && secondBrain) validateAgentRegistry(agentRegistry, secondBrain);
+if (pluginMcpContinuity) validatePluginMcpContinuity(pluginMcpContinuity);
 if (publicReviewerPack) validatePublicReviewerPack(publicReviewerPack);
 if (securityGate) validateSecurityGate(securityGate);
 if (securityOwnerHandoff) validateSecurityOwnerHandoff(securityOwnerHandoff);
@@ -317,6 +324,7 @@ function validateAgentRegistry(report, secondBrainContract) {
   ensure(!String(report.secondBrainBinding?.obsidianStarterVaultGuidePath || "").startsWith("/home/"), "Second Brain agent registry Obsidian starter guide path must be public-safe and repo-neutral.");
   ensure(!String(report.secondBrainBinding?.aiCouncilReviewPackPath || "").startsWith("/home/"), "Second Brain agent registry AI council review pack path must be public-safe and repo-neutral.");
   ensure(!String(report.secondBrainBinding?.obsidianGraphMapPath || "").startsWith("/home/"), "Second Brain agent registry Obsidian graph map path must be public-safe and repo-neutral.");
+  ensure(!String(report.secondBrainBinding?.agentTrainingDrillsPath || "").startsWith("/home/"), "Second Brain agent registry agent training drills path must be public-safe and repo-neutral.");
   ensure(report.trainingCoverage?.status === "local-demo-read-only", "Second Brain agent registry training coverage must stay local-demo-read-only.");
   ensure(report.trainingCoverage?.trainingPackPath === report.secondBrainBinding?.trainingPackPath, "Second Brain agent registry training coverage path mismatch.");
   ensure(report.trainingCoverage?.publicContributorPackPath === report.secondBrainBinding?.publicContributorPackPath, "Second Brain agent registry training coverage public contributor path mismatch.");
@@ -324,11 +332,13 @@ function validateAgentRegistry(report, secondBrainContract) {
   ensure(report.trainingCoverage?.obsidianStarterVaultGuidePath === report.secondBrainBinding?.obsidianStarterVaultGuidePath, "Second Brain agent registry training coverage Obsidian starter guide path mismatch.");
   ensure(report.trainingCoverage?.aiCouncilReviewPackPath === report.secondBrainBinding?.aiCouncilReviewPackPath, "Second Brain agent registry training coverage AI council review pack path mismatch.");
   ensure(report.trainingCoverage?.obsidianGraphMapPath === report.secondBrainBinding?.obsidianGraphMapPath, "Second Brain agent registry training coverage Obsidian graph map path mismatch.");
+  ensure(report.trainingCoverage?.agentTrainingDrillsPath === report.secondBrainBinding?.agentTrainingDrillsPath, "Second Brain agent registry training coverage agent training drills path mismatch.");
   ensureArrayMin(report.trainingCoverage?.requiredSections, 6, "Second Brain agent registry training coverage required sections");
   ensureIncludes(report.trainingCoverage?.requiredSections, "public contributor no-key onboarding", "Second Brain agent registry training coverage required sections");
   ensureIncludes(report.trainingCoverage?.requiredSections, "Obsidian starter vault no-private-import export", "Second Brain agent registry training coverage required sections");
   ensureIncludes(report.trainingCoverage?.requiredSections, "installed AI council review pack", "Second Brain agent registry training coverage required sections");
   ensureIncludes(report.trainingCoverage?.requiredSections, "Obsidian wikilink graph map", "Second Brain agent registry training coverage required sections");
+  ensureIncludes(report.trainingCoverage?.requiredSections, "agent training drills", "Second Brain agent registry training coverage required sections");
   ensure(report.trainingCoverage?.installedAiCoverage?.requireRegistryRequiredLauncherRoutes === true, "Second Brain agent registry training coverage must require launcher routes.");
   ensure(report.trainingCoverage?.installedAiCoverage?.requireSecondBrainProfileForEachLauncherRoute === true, "Second Brain agent registry training coverage must require Second Brain profiles.");
   ensure(report.trainingCoverage?.installedAiCoverage?.requireNoLiveProviderCalls === true, "Second Brain agent registry training coverage must forbid live provider calls.");
@@ -1027,6 +1037,62 @@ function validatePublicDemoArtifacts(report, manifest) {
   ensureListEntryContains((manifest.items || []).map((item) => `${item.id}:${item.status}`), "pr54-stage-plan:passed", "public demo evidence manifest items");
 }
 
+function validatePluginMcpContinuity(report) {
+  ensure(report.id === "seis-plugin-mcp-ten-year-continuity-map", "Plugin/MCP continuity artifact id mismatch.");
+  ensure(report.title === "SEIS Plugin/MCP Ten-Year Continuity Map", "Plugin/MCP continuity title mismatch.");
+  ensure(report.status === "repo-backed-planning-only", "Plugin/MCP continuity must stay repo-backed and planning-only.");
+  ensure(report.mode === "supervised-long-horizon-no-live-activation", "Plugin/MCP continuity mode mismatch.");
+  ensure(report.decision === "NO-GO-live-activation-not-approved", "Plugin/MCP continuity must block live activation.");
+  ensure(report.sourcePaths?.contract === paths.pluginMcpContinuityContract, "Plugin/MCP continuity contract source path mismatch.");
+  ensure(report.sourcePaths?.secondBrain === paths.secondBrain, "Plugin/MCP continuity Second Brain source path mismatch.");
+  ensure(report.sourcePaths?.mcpRuntime === "content/development/seis-ai-core-mcp-runtime-contract.json", "Plugin/MCP continuity MCP runtime source path mismatch.");
+  ensure(report.horizon?.years === 10, "Plugin/MCP continuity must cover ten years.");
+  ensure(report.horizon?.reviewWindowMonths === 6, "Plugin/MCP continuity review window must be six months.");
+  ensure(report.horizon?.reviewWindowCount === 20, "Plugin/MCP continuity must expose twenty review windows.");
+  ensure(report.derivedCounts?.mcpToolCount >= 34, "Plugin/MCP continuity must include current MCP tool count.");
+  ensure(report.derivedCounts?.mcpResourceCount >= 29, "Plugin/MCP continuity must include current MCP resource count.");
+  ensure(report.derivedCounts?.mcpPromptCount >= 3, "Plugin/MCP continuity must include current MCP prompt count.");
+  ensure(report.derivedCounts?.installedAiProfileCount >= 24, "Plugin/MCP continuity must include installed AI profile count.");
+  ensure(report.derivedCounts?.managedSubAgentLaneCount >= 6, "Plugin/MCP continuity must include managed sub-agent lanes.");
+  ensure(report.derivedCounts?.connectorCount >= 20, "Plugin/MCP continuity must include connector policy records.");
+  ensure(Array.isArray(report.phases) && report.phases.length === 10, "Plugin/MCP continuity must expose ten yearly phases.");
+  ensureArrayMin(report.reviewEvidence, 7, "Plugin/MCP continuity review evidence cadence");
+  for (const hardStop of [
+    "connector_write",
+    "remote_mcp_trust",
+    "provider_credential_use",
+    "external_ai_prompt_or_file_send",
+    "plugin_install_or_marketplace_publish",
+    "ssh_or_deployment",
+    "billing_or_cloud_spend",
+    "github_push_merge_tag_release"
+  ]) {
+    ensureIncludes(report.hardStops, hardStop, "Plugin/MCP continuity hard stops");
+  }
+  for (const [key, expected] of Object.entries({
+    liveConnectorWritesPerformed: false,
+    remoteMcpTrustGranted: false,
+    providerCredentialUsePerformed: false,
+    externalAiPromptOrFileSendPerformed: false,
+    pluginInstallOrPublishPerformed: false,
+    sshOrDeploymentPerformed: false,
+    billingOrCloudSpendPerformed: false,
+    githubMutationPerformed: false
+  })) {
+    ensure(report.runtimeActions?.[key] === expected, `Plugin/MCP continuity runtime action ${key} must be ${expected}.`);
+  }
+  ensure(report.validation?.qualityGate === "npm run check:seis-plugin-mcp-ten-year-continuity-map", "Plugin/MCP continuity quality gate mismatch.");
+  ensure(report.validation?.reportCommand === "npm run report:seis-plugin-mcp-ten-year-continuity-map", "Plugin/MCP continuity report command mismatch.");
+  ensureIncludes(report.validation?.requiredEvidence, paths.pluginMcpContinuityJson, "Plugin/MCP continuity required evidence");
+  ensureIncludes(report.validation?.requiredEvidence, paths.pluginMcpContinuityMarkdown, "Plugin/MCP continuity required evidence");
+  ensureIncludes(report.validation?.requiredEvidence, paths.pluginMcpContinuityDoc, "Plugin/MCP continuity required evidence");
+  const serialized = JSON.stringify(report);
+  ensure(!serialized.includes("file://"), "Plugin/MCP continuity artifact must not include file:// paths.");
+  ensure(!serialized.includes("/Users/"), "Plugin/MCP continuity artifact must not include absolute private /Users paths.");
+  ensure(!/sk-[A-Za-z0-9_-]{20,}/.test(serialized), "Plugin/MCP continuity artifact must not include OpenAI-style API keys.");
+  ensure(!/-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----/.test(serialized), "Plugin/MCP continuity artifact must not include private keys.");
+}
+
 function validatePackage(packageJson) {
   ensure(
     packageJson.scripts?.["check:seis-second-brain-readiness-contracts"] ===
@@ -1072,6 +1138,16 @@ function validatePackage(packageJson) {
     packageJson.scripts?.["report:seis-second-brain-agent-registry"] ===
       "node scripts/create-seis-second-brain-agent-registry.mjs --write",
     "package.json must expose report:seis-second-brain-agent-registry."
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-plugin-mcp-ten-year-continuity-map"] ===
+      "node scripts/create-seis-plugin-mcp-ten-year-continuity-map.mjs --check",
+    "package.json must expose check:seis-plugin-mcp-ten-year-continuity-map."
+  );
+  ensure(
+    packageJson.scripts?.["report:seis-plugin-mcp-ten-year-continuity-map"] ===
+      "node scripts/create-seis-plugin-mcp-ten-year-continuity-map.mjs --write",
+    "package.json must expose report:seis-plugin-mcp-ten-year-continuity-map."
   );
   ensure(
     packageJson.scripts?.["check:seis-second-brain-public-reviewer-pack"] ===
@@ -1146,14 +1222,14 @@ function validateDocsAndIndexes() {
     [paths.routerDoc, ["Read-Only Model Router Contract", "Missing Key is not Error", "backend-only provider mediation", "decision integrity", "report:seis-read-only-model-router-decision", "read-only-model-router-decision-latest", "npm run check:seis-second-brain-readiness-contracts"]],
     [paths.releaseDoc, ["Public Demo Release Checklist", "PR #54", "review-gated-not-released", "Do not merge", "check:seis-public-demo-go-no-go", "report:seis-public-demo-go-no-go", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "report:seis-second-brain-public-reviewer-pack", "report:seis-public-demo-security-gate", "report:seis-security-owner-handoff", "second-brain-public-reviewer-pack-latest", "security-gate-redacted-latest", "security-owner-handoff-latest", "PR #127 active security gate impact", "PR #127 security remediation plan", "Secret & Vulnerability Scan", "Security Summary", "PR #54 review packet", "worktree review", "stage plan", "NO-GO"]],
     [paths.securityRemediationPlanDoc, ["PR 127 Security Remediation Plan", "owner-approval-required", "plan-only-redacted-no-raw-values", "NO-GO", "Secret & Vulnerability Scan", "Security Summary", "Forbidden Without Owner Approval", "Post-Approval Runbook", "Validation Required After Remediation", "Safety Boundary"]],
-    [paths.secondBrainDoc, ["Obsidian bridge safe import contract", "Obsidian starter vault", "AI council review pack", "Obsidian graph map", "Obsidian safe-import dry-run artifact", "read-only model-router decision artifact", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "Second Brain public reviewer pack", "public demo security gate redacted evidence", "security owner handoff", "PR #127 security remediation plan", "Second Brain accessibility/focus QA", "npm run check:seis-second-brain-readiness-contracts", "check:seis-public-demo-go-no-go", "PR #54 review packet", "stage plan"]],
+    [paths.secondBrainDoc, ["Obsidian bridge safe import contract", "Obsidian starter vault", "AI council review pack", "Obsidian graph map", "Agent training drills", "Obsidian safe-import dry-run artifact", "read-only model-router decision artifact", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "Second Brain public reviewer pack", "public demo security gate redacted evidence", "security owner handoff", "PR #127 security remediation plan", "Second Brain accessibility/focus QA", "npm run check:seis-second-brain-readiness-contracts", "check:seis-public-demo-go-no-go", "PR #54 review packet", "stage plan"]],
     [paths.modelRouterDoc, ["read-only model-router contract", "Provider-neutral", "Missing Key is not Error", "decision integrity", "read-only model-router decision artifact"]],
-    [paths.status, ["SEIS Second Brain readiness contracts", "Obsidian bridge safe import", "Obsidian starter vault", "AI council review pack", "Obsidian graph map", "Obsidian safe-import dry-run", "read-only model-router decision", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "Second Brain public reviewer pack", "public demo security gate redacted evidence", "security owner handoff", "PR #127 security remediation plan", "PR #54 public demo release checklist"]],
-    [paths.index, ["SEIS Obsidian Bridge Safe Import", "Second Brain Accessibility Focus QA", "Read-Only Model Router Contract", "Public Demo Release Checklist PR54", "check-seis-public-demo-go-no-go.mjs", "create-seis-obsidian-safe-import-dry-run.mjs", "create-seis-read-only-model-router-decision.mjs", "create-seis-second-brain-accessibility-focus-report.mjs", "create-seis-second-brain-agent-registry.mjs", "create-seis-second-brain-public-reviewer-pack.mjs", "create-seis-public-demo-security-gate-report.mjs", "create-seis-security-owner-handoff.mjs", "reports/seis-public-demo/go-no-go-latest", "reports/seis-public-demo/evidence-manifest-latest", "reports/seis-public-demo/obsidian-safe-import-dry-run-latest", "reports/seis-public-demo/read-only-model-router-decision-latest", "reports/seis-public-demo/second-brain-accessibility-focus-latest", "reports/seis-public-demo/second-brain-agent-registry-latest", "reports/seis-public-demo/second-brain-public-reviewer-pack-latest", "reports/seis-public-demo/security-gate-redacted-latest", "reports/seis-public-demo/security-owner-handoff-latest", "PR127_SECURITY_REMEDIATION_PLAN", "seis-public-demo-security-remediation-plan-pr127", "reports/seis-public-demo/pr54-review-packet-latest", "reports/seis-public-demo/worktree-review-latest", "reports/seis-public-demo/pr54-stage-plan-latest"]],
-    [paths.masterIndex, ["SEIS Obsidian Bridge Safe Import", "Second Brain Accessibility Focus QA", "Read-Only Model Router Contract", "Public Demo Release Checklist PR54", "check:seis-public-demo-go-no-go", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "report:seis-second-brain-public-reviewer-pack", "report:seis-public-demo-security-gate", "report:seis-security-owner-handoff", "reports/seis-public-demo/go-no-go-latest", "reports/seis-public-demo/evidence-manifest-latest", "reports/seis-public-demo/obsidian-safe-import-dry-run-latest", "reports/seis-public-demo/read-only-model-router-decision-latest", "reports/seis-public-demo/second-brain-accessibility-focus-latest", "reports/seis-public-demo/second-brain-agent-registry-latest", "reports/seis-public-demo/second-brain-public-reviewer-pack-latest", "reports/seis-public-demo/security-gate-redacted-latest", "reports/seis-public-demo/security-owner-handoff-latest", "seis-public-demo-security-remediation-plan-pr127", "PR127_SECURITY_REMEDIATION_PLAN", "reports/seis-public-demo/pr54-review-packet-latest", "reports/seis-public-demo/worktree-review-latest", "reports/seis-public-demo/pr54-stage-plan-latest"]],
-    [paths.backlog, ["Obsidian bridge safe import", "Obsidian starter vault", "AI council review pack", "Obsidian graph map", "Obsidian safe-import dry-run artifact", "read-only model-router decision artifact", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "Second Brain public reviewer pack", "public demo security gate redacted evidence", "security owner handoff", "PR #127 security remediation plan", "Second Brain accessibility/focus QA", "read-only model-router contract", "PR #54 public demo release checklist", "SEIS public demo go/no-go gate", "PR #54 review packet", "worktree review", "stage plan"]],
-    [paths.nextQueue, ["Obsidian bridge safe import", "Obsidian starter vault", "AI council review pack", "Obsidian graph map", "Obsidian safe-import dry-run artifact", "read-only model-router decision artifact", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "Second Brain public reviewer pack", "public demo security gate redacted evidence", "security owner handoff", "PR #127 security remediation plan", "Second Brain accessibility/focus QA", "read-only model-router contract", "PR #54 public demo release checklist", "PR #127 active security gate impact", "Secret & Vulnerability Scan", "Security Summary", "PR #54 review packet", "worktree review", "stage plan"]],
-    [paths.readme, ["check:seis-second-brain-readiness-contracts", "Second Brain readiness contracts", "Obsidian starter vault", "AI council review pack", "Obsidian graph map", "check:seis-public-demo-go-no-go", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "report:seis-second-brain-public-reviewer-pack", "report:seis-public-demo-security-gate", "report:seis-security-owner-handoff", "PR #127 security remediation plan"]],
+    [paths.status, ["SEIS Second Brain readiness contracts", "Obsidian bridge safe import", "Obsidian starter vault", "AI council review pack", "Obsidian graph map", "Agent training drills", "Obsidian safe-import dry-run", "read-only model-router decision", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "Second Brain public reviewer pack", "public demo security gate redacted evidence", "security owner handoff", "PR #127 security remediation plan", "PR #54 public demo release checklist"]],
+    [paths.index, ["SEIS Obsidian Bridge Safe Import", "Second Brain Accessibility Focus QA", "Read-Only Model Router Contract", "Public Demo Release Checklist PR54", "SEIS Plugin/MCP Ten-Year Continuity Map", "check-seis-public-demo-go-no-go.mjs", "create-seis-obsidian-safe-import-dry-run.mjs", "create-seis-read-only-model-router-decision.mjs", "create-seis-second-brain-accessibility-focus-report.mjs", "create-seis-second-brain-agent-registry.mjs", "create-seis-plugin-mcp-ten-year-continuity-map.mjs", "create-seis-second-brain-public-reviewer-pack.mjs", "create-seis-public-demo-security-gate-report.mjs", "create-seis-security-owner-handoff.mjs", "reports/seis-public-demo/go-no-go-latest", "reports/seis-public-demo/evidence-manifest-latest", "reports/seis-public-demo/obsidian-safe-import-dry-run-latest", "reports/seis-public-demo/read-only-model-router-decision-latest", "reports/seis-public-demo/second-brain-accessibility-focus-latest", "reports/seis-public-demo/second-brain-agent-registry-latest", "reports/seis-public-demo/plugin-mcp-ten-year-continuity-map-latest", "reports/seis-public-demo/second-brain-public-reviewer-pack-latest", "reports/seis-public-demo/security-gate-redacted-latest", "reports/seis-public-demo/security-owner-handoff-latest", "PR127_SECURITY_REMEDIATION_PLAN", "seis-public-demo-security-remediation-plan-pr127", "reports/seis-public-demo/pr54-review-packet-latest", "reports/seis-public-demo/worktree-review-latest", "reports/seis-public-demo/pr54-stage-plan-latest"]],
+    [paths.masterIndex, ["SEIS Obsidian Bridge Safe Import", "Second Brain Accessibility Focus QA", "Read-Only Model Router Contract", "Public Demo Release Checklist PR54", "SEIS Plugin/MCP Ten-Year Continuity Map", "check:seis-public-demo-go-no-go", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "report:seis-plugin-mcp-ten-year-continuity-map", "report:seis-second-brain-public-reviewer-pack", "report:seis-public-demo-security-gate", "report:seis-security-owner-handoff", "reports/seis-public-demo/go-no-go-latest", "reports/seis-public-demo/evidence-manifest-latest", "reports/seis-public-demo/obsidian-safe-import-dry-run-latest", "reports/seis-public-demo/read-only-model-router-decision-latest", "reports/seis-public-demo/second-brain-accessibility-focus-latest", "reports/seis-public-demo/second-brain-agent-registry-latest", "reports/seis-public-demo/plugin-mcp-ten-year-continuity-map-latest", "reports/seis-public-demo/second-brain-public-reviewer-pack-latest", "reports/seis-public-demo/security-gate-redacted-latest", "reports/seis-public-demo/security-owner-handoff-latest", "seis-public-demo-security-remediation-plan-pr127", "PR127_SECURITY_REMEDIATION_PLAN", "reports/seis-public-demo/pr54-review-packet-latest", "reports/seis-public-demo/worktree-review-latest", "reports/seis-public-demo/pr54-stage-plan-latest"]],
+    [paths.backlog, ["Obsidian bridge safe import", "Obsidian starter vault", "AI council review pack", "Obsidian graph map", "Agent training drills", "Obsidian safe-import dry-run artifact", "read-only model-router decision artifact", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "Second Brain public reviewer pack", "public demo security gate redacted evidence", "security owner handoff", "PR #127 security remediation plan", "Second Brain accessibility/focus QA", "read-only model-router contract", "PR #54 public demo release checklist", "SEIS public demo go/no-go gate", "PR #54 review packet", "worktree review", "stage plan"]],
+    [paths.nextQueue, ["Obsidian bridge safe import", "Obsidian starter vault", "AI council review pack", "Obsidian graph map", "Agent training drills", "Obsidian safe-import dry-run artifact", "read-only model-router decision artifact", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "Second Brain public reviewer pack", "public demo security gate redacted evidence", "security owner handoff", "PR #127 security remediation plan", "Second Brain accessibility/focus QA", "read-only model-router contract", "PR #54 public demo release checklist", "PR #127 active security gate impact", "Secret & Vulnerability Scan", "Security Summary", "PR #54 review packet", "worktree review", "stage plan"]],
+    [paths.readme, ["check:seis-second-brain-readiness-contracts", "Second Brain readiness contracts", "Obsidian starter vault", "AI council review pack", "Obsidian graph map", "Agent training drills", "check:seis-public-demo-go-no-go", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "report:seis-second-brain-public-reviewer-pack", "report:seis-public-demo-security-gate", "report:seis-security-owner-handoff", "PR #127 security remediation plan"]],
     [paths.publicDemoGoNoGo, ["human-release-approval-missing", "current-browser-smoke-evidence-missing", "dirty-worktree", "security-full-history-remediation-needed", "obsidian-safe-import-dry-run", "read-only-router-decision", "accessibility-focus-qa-artifact", "second-brain-agent-registry", "second-brain-public-reviewer-pack", "security-gate-redacted-evidence", "security-owner-handoff", "NO-GO"]]
   ];
 
