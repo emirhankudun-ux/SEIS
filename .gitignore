@@ -140,6 +140,15 @@ ios/
 !apps/web/wow-pages/*.json
 !apps/web/wow-pages/imported/*/manifest.json
 !reports/seis-model-scaling/20b-benchmark-dry-run.json
+!reports/seis-public-demo/evidence-manifest-latest.json
+!reports/seis-public-demo/go-no-go-latest.json
+!reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json
+!reports/seis-public-demo/read-only-model-router-decision-latest.json
+!reports/seis-public-demo/second-brain-accessibility-focus-latest.json
+!reports/seis-public-demo/second-brain-agent-registry-latest.json
+!reports/seis-public-demo/second-brain-public-reviewer-pack-latest.json
+!reports/seis-public-demo/security-gate-redacted-latest.json
+!reports/seis-public-demo/security-owner-handoff-latest.json
 !packages/seis-ai/data/permission-policy-seed.json
 !packages/seis-ai/models/permission-policy-seed-v0.json
 !packages/seis-ai/data/memory-ranker-seed-v0.json

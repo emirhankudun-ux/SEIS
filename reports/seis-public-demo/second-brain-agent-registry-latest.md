@@ -1,6 +1,6 @@
 # SEIS Second Brain Agent Registry
 
-Generated: 2026-06-29T13:22:42.859Z
+Generated: 2026-07-01T16:17:53.918Z
 Status: review-only-agent-registry
 Mode: repo-local-no-live-execution
 Decision: NO-GO-autonomous-execution-not-approved
@@ -11,8 +11,8 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 
 | Metric | Count |
 | --- | ---: |
-| Installed AI profiles | 6 |
-| AI workforce assignments | 10 |
+| Installed AI profiles | 21 |
+| AI workforce assignments | 23 |
 | Managed sub-agent lanes | 6 |
 | Autonomous agent roster | 12 |
 | Role schema roles | 5 |
@@ -24,8 +24,8 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 ## Second Brain Binding
 
 - status: local-demo
-- vaultRoot: /home/seis/SecondBrain
-- trainingPackPath: /home/seis/SecondBrain/07-learning/seis-agent-training-pack.md
+- vaultRoot: browser-vfs/SecondBrain
+- trainingPackPath: browser-vfs/SecondBrain/07-learning/seis-agent-training-pack.md
 - obsidianBridgeStatus: planned
 - privateVaultImportEnabled: false
 - hostVaultReadEnabled: false
@@ -42,6 +42,21 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 | qwen-review-profile | installed | review-context-only | false |
 | gemini-validation-profile | route-defined-current-shell-missing-key | review-context-only | false |
 | ollama-local-profile | installed | review-context-only | false |
+| openai-general-profile | route-defined-current-shell-missing-key | review-context-only | false |
+| anthropic-claude-profile | route-defined-current-shell-missing-key | review-context-only | false |
+| chatgpt-review-profile | route-defined-current-shell-missing-key | review-context-only | false |
+| openrouter-provider-profile | planned | review-context-only | false |
+| cursor-ide-profile | installed | review-context-only | false |
+| github-copilot-profile | planned | review-context-only | false |
+| lm-studio-local-profile | planned | review-context-only | false |
+| open-design | installed | review-context-only | false |
+| antigravity | installed | review-context-only | false |
+| antigravity-ide | installed | review-context-only | false |
+| aider | route-defined-current-shell-missing-command | review-context-only | false |
+| interpreter | route-defined-current-shell-missing-command | review-context-only | false |
+| hermes | route-defined-current-shell-missing-command | review-context-only | false |
+| goose | route-defined-current-shell-missing-command | review-context-only | false |
+| kimi | route-defined-current-shell-missing-command | review-context-only | false |
 
 ## AI Workforce Assignments
 
@@ -54,9 +69,22 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 | coderabbit | CodeRabbit | pull-request-review | pr-dependent | review-or-plan-only |
 | ollama | Ollama / Local Model | local-private-draft | installed | review-or-plan-only |
 | open-design | OpenDesign / Design Agent | visual-system-review | installed | review-or-plan-only |
+| antigravity | Antigravity | creative-workflow-assistant | installed | review-or-plan-only |
+| antigravity-ide | Antigravity IDE | ide-assistant | installed | review-or-plan-only |
+| aider | Aider | bounded-terminal-coding-helper | route-defined-current-shell-missing-command | review-or-plan-only |
+| interpreter | Open Interpreter | local-code-execution-review | route-defined-current-shell-missing-command | review-or-plan-only |
+| hermes | Hermes | local-multi-agent-assistant | route-defined-current-shell-missing-command | review-or-plan-only |
+| goose | Goose | local-build-orchestration-review | route-defined-current-shell-missing-command | review-or-plan-only |
 | github-actions | GitHub Actions | automation-validation | remote-ci | review-or-plan-only |
 | kimi | Kimi / Kimi Code | conditional-code-and-localization-review | route-defined-current-shell-missing-command | review-or-plan-only |
 | opencode | OpenCode | bounded-terminal-coding-helper | installed | review-or-plan-only |
+| openai | OpenAI / General Provider | cloud-provider-review | route-defined-current-shell-missing-key | review-or-plan-only |
+| anthropic | Anthropic / Claude Provider | cloud-provider-review | route-defined-current-shell-missing-key | review-or-plan-only |
+| chatgpt | ChatGPT | planning-triage | route-defined-current-shell-missing-key | review-or-plan-only |
+| openrouter | OpenRouter | provider-gateway-review | planned | review-or-plan-only |
+| cursor | Cursor | editor-assistant | installed | review-or-plan-only |
+| github-copilot | GitHub Copilot | ide-assistant | planned | review-or-plan-only |
+| lm-studio | LM Studio | local-model-experiment | planned | review-or-plan-only |
 
 ## Autonomous Agent Roster
 

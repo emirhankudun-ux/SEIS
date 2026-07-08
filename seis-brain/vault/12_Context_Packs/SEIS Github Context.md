@@ -1,4 +1,14 @@
-# SEIS Github Context
+---
+type: context-pack
+module: seis-github
+status: reviewed
+visibility: public
+updated: 2026-06-29
+aliases:
+  - SEIS Github Context
+---
+
+# SEIS GitHub Context
 
 ## GitHub operating layer
 - Keep `SEIS` docs, governance, roadmap and PR evidence coherent.

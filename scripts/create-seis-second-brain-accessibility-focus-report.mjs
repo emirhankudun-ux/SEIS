@@ -119,6 +119,12 @@ function buildReport(accessibilityContract, secondBrainContract, js, css, smoke,
       evidence: markerChecks.mobileSmokeTargetAudit ? paths.browserSmoke : "Dedicated mobile target audit missing."
     },
     {
+      id: "mobile-assistive-technology-review",
+      requirement: "mobile assistive-technology review",
+      status: "blocked",
+      evidence: "Human mobile assistive-technology review required before public release."
+    },
+    {
       id: "reduced-motion-review-note",
       requirement: "reduced-motion review note",
       status: "blocked",
@@ -202,6 +208,7 @@ function validateReport(value, accessibilityContract, label) {
   }
   ensure((value.requiredEvidence || []).some((item) => item.id === "manual-keyboard-transcript" && item.status === "blocked"), `${label} must block manual keyboard transcript.`);
   ensure((value.requiredEvidence || []).some((item) => item.id === "screen-reader-transcript" && item.status === "blocked"), `${label} must block screen-reader transcript.`);
+  ensure((value.requiredEvidence || []).some((item) => item.id === "mobile-assistive-technology-review" && item.status === "blocked"), `${label} must block mobile assistive-technology review.`);
   ensure((value.requiredEvidence || []).some((item) => item.id === "human-accessibility-review-approval" && item.status === "blocked"), `${label} must block human accessibility approval.`);
   const serialized = JSON.stringify(value);
   ensure(!serialized.includes("file://"), `${label} must not include file:// paths.`);

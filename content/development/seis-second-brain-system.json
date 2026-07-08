@@ -60,7 +60,22 @@
     "claude-review-profile",
     "qwen-review-profile",
     "gemini-validation-profile",
-    "ollama-local-profile"
+    "ollama-local-profile",
+    "openai-general-profile",
+    "anthropic-claude-profile",
+    "chatgpt-review-profile",
+    "openrouter-provider-profile",
+    "cursor-ide-profile",
+    "github-copilot-profile",
+    "lm-studio-local-profile",
+    "open-design",
+    "antigravity",
+    "antigravity-ide",
+    "aider",
+    "interpreter",
+    "hermes",
+    "goose",
+    "kimi"
   ],
   "managedSubAgentLanes": [
     "SEIS Hub",

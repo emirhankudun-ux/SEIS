@@ -32,6 +32,9 @@ Current implementation lives in:
 - `scripts/create-seis-read-only-model-router-decision.mjs`
 - `scripts/create-seis-second-brain-accessibility-focus-report.mjs`
 - `scripts/create-seis-second-brain-agent-registry.mjs`
+- `scripts/create-seis-second-brain-public-reviewer-pack.mjs`
+- `scripts/create-seis-public-demo-security-gate-report.mjs`
+- `scripts/create-seis-security-owner-handoff.mjs`
 - `scripts/check-seis-agi-independent-evidence-ledger.mjs`
 - `docs/product/seis-obsidian-bridge-safe-import.md`
 - `docs/reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md`
@@ -52,6 +55,9 @@ Search, SEIS AI, Command Center, Launchpad, Favorites, and desktop shortcuts.
 | Installed AI bridge | Local Demo context only | SEIS AI exposes a Second Brain tab with all 6 current installed AI profiles: Codex, SEIS Local Demo Runtime, Claude Review Profile, Qwen Alternative Review, Gemini Secondary Validation, and Ollama Local Candidate. Missing Key and Disabled states remain explicit. |
 | read-only model-router decision artifact | Provider-neutral review-only | `npm run report:seis-read-only-model-router-decision` writes `reports/seis-public-demo/read-only-model-router-decision-latest.json` and `.md` with installed AI profile fixtures, blocked reasons, explicit fallback policy, `executionPerformed: false`, and no provider calls. |
 | Second Brain agent registry artifact | Review-only | `npm run report:seis-second-brain-agent-registry` writes `reports/seis-public-demo/second-brain-agent-registry-latest.json` and `.md` by joining installed AI profiles, AI workforce assignments, managed sub-agent lanes, the 12-agent roster, Obsidian bridge boundaries, plugin inventory, MCP surfaces, and connector activation policy without provider calls, credential validation, private vault reads, autonomous writes, SSH, deployment, GitHub mutation, or release approval. |
+| Second Brain public reviewer pack | No-key GitHub review | `npm run report:seis-second-brain-public-reviewer-pack` writes `reports/seis-public-demo/second-brain-public-reviewer-pack-latest.json` and `.md` with a GitHub reviewer quick start, review surfaces, no-key Local Demo boundary, blocked actions, and required confirmations without private Obsidian data, provider login, SSH, deployment, merge, or release approval. |
+| public demo security gate redacted evidence | Review-blocking | `npm run report:seis-public-demo-security-gate` writes `reports/seis-public-demo/security-gate-redacted-latest.json` and `.md` with redacted PR #104 security gate categories, paths, counts, and approval requirements. It records current-tree clean status while keeping full-history remediation blocked without storing raw secret values, changing `.gitleaks.toml`, rewriting history, force-pushing, or approving release. |
+| security owner handoff | Owner-action required | `npm run report:seis-security-owner-handoff` writes `reports/seis-public-demo/security-owner-handoff-latest.json` and `.md` with explicit human-owner security decisions, agent assignments, allowed local actions, and forbidden history/scanner/release actions. It keeps raw finding values, full CI logs, scanner policy changes, history rewrite, force push, private Obsidian import, provider calls, SSH, deployment, merge, and release approval disabled. |
 | Sub-agent lanes | Status/plan-only | All 6 current managed SEIS sub-agent lanes are indexed: SEIS Hub, SEIS Cloud, SEIS-Code, SEIS-Design, SEIS-DATA, and SEIS-Security. They can review/propose only; they cannot expand permissions or mutate external systems. |
 | Autonomous agent roster | Status/plan-only | The Second Brain maps the 12-agent target roster: Architect, Code, Design, UI/UX, Research, Search, Security, DevOps, Documentation, QA, Cloud, and Automation. |
 | GitHub readiness | Human review required | `Export GitHub Readiness` writes a blocked-by-review readiness note; the dedicated browser-smoke checks the export and reload persistence. Push, merge, release, Pages, and public launch still require approval. |
@@ -110,6 +116,12 @@ npm run report:seis-second-brain-accessibility-focus-report
 npm run check:seis-second-brain-accessibility-focus-report
 npm run report:seis-second-brain-agent-registry
 npm run check:seis-second-brain-agent-registry
+npm run report:seis-second-brain-public-reviewer-pack
+npm run check:seis-second-brain-public-reviewer-pack
+npm run report:seis-public-demo-security-gate
+npm run check:seis-public-demo-security-gate
+npm run report:seis-security-owner-handoff
+npm run check:seis-security-owner-handoff
 npm run check:seis-second-brain-readiness-contracts
 npm run check:seis-second-brain-browser-smoke
 npm run check:seis-public-demo-go-no-go -- --run-fast-checks

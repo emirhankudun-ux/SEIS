@@ -1,0 +1,233 @@
+{
+  "id": "seis-read-only-model-router-decision-pr54",
+  "title": "SEIS Read-Only Model Router Decision",
+  "generatedAt": "2026-06-30T21:17:58.965Z",
+  "status": "review-only-no-runtime-authority",
+  "mode": "provider-neutral-read-only",
+  "decision": "NO-GO-live-routing-not-approved",
+  "contractPath": "content/development/seis-read-only-model-router-contract.json",
+  "secondBrainPath": "content/development/seis-second-brain-system.json",
+  "installedAiProfiles": [
+    "codex-operator",
+    "seis-local-demo",
+    "claude-review-profile",
+    "qwen-review-profile",
+    "gemini-validation-profile",
+    "ollama-local-profile"
+  ],
+  "managedSubAgentLanes": [
+    "SEIS Hub",
+    "SEIS Cloud",
+    "SEIS-Code",
+    "SEIS-Design",
+    "SEIS-DATA",
+    "SEIS-Security"
+  ],
+  "autonomousAgentRoster": [
+    "Architect Agent",
+    "Code Agent",
+    "Design Agent",
+    "UI/UX Agent",
+    "Research Agent",
+    "Search Agent",
+    "Security Agent",
+    "DevOps Agent",
+    "Documentation Agent",
+    "QA Agent",
+    "Cloud Agent",
+    "Automation Agent"
+  ],
+  "providerFixtures": [
+    {
+      "profile": "seis-local-demo",
+      "provider": "SEIS Local Demo Runtime",
+      "model": "local-demo-fixture",
+      "providerState": "Local Demo",
+      "credentialRequired": false,
+      "providerCallsPerformed": false
+    },
+    {
+      "profile": "codex-operator",
+      "provider": "Codex / ChatGPT operator lane",
+      "model": "external-human-operated-codex-context",
+      "providerState": "Local Demo",
+      "credentialRequired": false,
+      "providerCallsPerformed": false
+    },
+    {
+      "profile": "claude-review-profile",
+      "provider": "Claude review profile",
+      "model": "review-profile-not-configured",
+      "providerState": "Missing Key",
+      "credentialRequired": true,
+      "providerCallsPerformed": false
+    },
+    {
+      "profile": "qwen-review-profile",
+      "provider": "Qwen review profile",
+      "model": "review-profile-not-configured",
+      "providerState": "Missing Key",
+      "credentialRequired": true,
+      "providerCallsPerformed": false
+    },
+    {
+      "profile": "gemini-validation-profile",
+      "provider": "Gemini validation profile",
+      "model": "validation-profile-not-configured",
+      "providerState": "Missing Key",
+      "credentialRequired": true,
+      "providerCallsPerformed": false
+    },
+    {
+      "profile": "ollama-local-profile",
+      "provider": "Ollama local candidate",
+      "model": "local-runtime-not-verified",
+      "providerState": "Unknown",
+      "credentialRequired": false,
+      "providerCallsPerformed": false
+    }
+  ],
+  "decisions": [
+    {
+      "id": "second-brain-local-context-review",
+      "taskType": "second-brain-context-review",
+      "capabilityLabel": "local context summary",
+      "privacyMode": "local-only",
+      "selectedProvider": "SEIS Local Demo Runtime",
+      "selectedModel": "local-demo-fixture",
+      "providerState": "Local Demo",
+      "fallbackPolicy": "no cloud fallback in local-only mode",
+      "blockedReasons": [
+        "read-only model-router contract only",
+        "executionPerformed must remain false",
+        "backend-only provider mediation is not implemented"
+      ],
+      "requiredApprovals": [
+        "human approval before live provider routing"
+      ],
+      "routeEligible": false,
+      "executionPerformed": false,
+      "fallbackUsed": false,
+      "promptBodyIncluded": false,
+      "credentialMaterialIncluded": false,
+      "decisionLogRedacted": true
+    },
+    {
+      "id": "private-obsidian-vault-content",
+      "taskType": "obsidian-private-content-routing",
+      "capabilityLabel": "private vault review",
+      "privacyMode": "review-gated",
+      "selectedProvider": "None",
+      "selectedModel": "none",
+      "providerState": "Disabled",
+      "fallbackPolicy": "blocked; no provider fallback",
+      "blockedReasons": [
+        "private Obsidian content is not routable",
+        "explicit user-selected source path is missing",
+        "human approval for private vault scan is missing",
+        "sending imported note content to AI providers is forbidden"
+      ],
+      "requiredApprovals": [
+        "explicit user-selected local vault path",
+        "human approval before scanning selected files",
+        "separate approval before any provider routing"
+      ],
+      "routeEligible": false,
+      "executionPerformed": false,
+      "fallbackUsed": false,
+      "promptBodyIncluded": false,
+      "credentialMaterialIncluded": false,
+      "decisionLogRedacted": true
+    },
+    {
+      "id": "cloud-review-provider-missing-key",
+      "taskType": "cloud-review-profile",
+      "capabilityLabel": "architecture review",
+      "privacyMode": "standard",
+      "selectedProvider": "Claude review profile",
+      "selectedModel": "review-profile-not-configured",
+      "providerState": "Missing Key",
+      "fallbackPolicy": "blocked; Missing Key is not Error and no silent fallback is allowed",
+      "blockedReasons": [
+        "Missing Key is not Error",
+        "credential validation is not performed",
+        "server-only provider mediation is missing",
+        "silent fallback is forbidden"
+      ],
+      "requiredApprovals": [
+        "backend-only provider mediation",
+        "typed environment validation",
+        "human approval before live provider routing"
+      ],
+      "routeEligible": false,
+      "executionPerformed": false,
+      "fallbackUsed": false,
+      "promptBodyIncluded": false,
+      "credentialMaterialIncluded": false,
+      "decisionLogRedacted": true
+    },
+    {
+      "id": "frontier-model-class-route",
+      "taskType": "frontier-model-class-review",
+      "capabilityLabel": "512B apex planning lane",
+      "privacyMode": "review-gated",
+      "selectedProvider": "None",
+      "selectedModel": "512B apex-program-plan-only",
+      "providerState": "Disabled",
+      "fallbackPolicy": "blocked; frontier classes are planning records only",
+      "blockedReasons": [
+        "512B apex-program-plan-only is not a routeable model",
+        "weights, runtime adapter, benchmark evidence, safety evals, and approval are missing",
+        "live execution stays blocked until backend-only provider mediation exists"
+      ],
+      "requiredApprovals": [
+        "model card and dataset card review",
+        "safety eval evidence",
+        "human approval before live routing"
+      ],
+      "routeEligible": false,
+      "executionPerformed": false,
+      "fallbackUsed": false,
+      "promptBodyIncluded": false,
+      "credentialMaterialIncluded": false,
+      "decisionLogRedacted": true
+    }
+  ],
+  "decisionIntegrity": {
+    "readOnlyOnly": true,
+    "executionPerformedAlwaysFalse": true,
+    "noPromptBodyInDecision": true,
+    "noCredentialMaterialInDecision": true,
+    "decisionLogsRedacted": true,
+    "providerStateMustBeNamed": true,
+    "selectedProviderMustBeExplicit": true,
+    "fallbackMustBeExplicit": true,
+    "blockedReasonsRequiredWhenIneligible": true,
+    "privateObsidianContentRoutable": false
+  },
+  "safetyBoundary": {
+    "runtimeAuthority": false,
+    "providerCallsPerformed": false,
+    "credentialValidationPerformed": false,
+    "browserSecretsExposed": false,
+    "promptBodiesStored": false,
+    "privateObsidianContentRouted": false,
+    "silentFallbackUsed": false,
+    "localOnlyCloudFallbackUsed": false,
+    "sshExecuted": false,
+    "deploymentPerformed": false,
+    "githubMutationPerformed": false
+  },
+  "requiredEvidenceBeforeLiveRouting": [
+    "server-only provider registry",
+    "typed environment validation",
+    "no-key startup fixture",
+    "local-only fallback fixture",
+    "rate-limit fixture",
+    "invalid credential fixture",
+    "redacted routing decision log",
+    "client bundle secret exposure check",
+    "safety eval evidence",
+    "human approval"
+  ]
+}
