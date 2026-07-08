@@ -1,7 +1,7 @@
 {
   "id": "seis-agi-github-fresh-clone-readiness-plan",
   "version": "2026.07.08",
-  "generatedAt": "2026-07-08T12:02:03.204Z",
+  "generatedAt": "2026-07-08T12:34:37.203Z",
   "status": "fresh-clone-plan-ready-evidence-missing",
   "qualityGate": "npm run check:seis-agi-github-fresh-clone-readiness-plan",
   "reportCommand": "npm run report:seis-agi-github-fresh-clone-readiness-plan",
@@ -17,7 +17,10 @@
     "publicReadinessEvidence": "content/development/seis-agi-public-readiness-evidence.json",
     "agiEvaluationProtocol": "content/development/seis-agi-evaluation-protocol.json",
     "localRuntimeMatrix": "content/development/seis-local-ai-runtime-matrix.json",
+    "modelEcosystemCatalog": "content/development/seis-ai-model-ecosystem-catalog.json",
     "pluginMcpContinuityMap": "content/development/seis-plugin-mcp-ten-year-continuity-map.json",
+    "freshCloneLocalSmoke": "content/development/seis-ai-github-fresh-clone-local-smoke.json",
+    "aiPrStagingDryRun": "content/development/seis-ai-pr-staging-dry-run.json",
     "aiGithubReadinessChainScript": "scripts/check-seis-ai-github-readiness-chain.mjs",
     "docs": "docs/ai/seis-agi-github-fresh-clone-readiness-plan.md"
   },
@@ -69,6 +72,7 @@
       "requiredEvidence": [
         "README command block",
         "docs/ai/seis-agi-github-fresh-clone-readiness-plan.md",
+        "docs/ai/seis-ai-github-fresh-clone-local-smoke.md",
         "human-readable no-key instructions"
       ],
       "blocksEveryoneReady": true,
@@ -83,6 +87,17 @@
         "check:seis-language-model-intake",
         "check:seis-agi-github-user-readiness-gates",
         "check:seis-plugin-mcp-ten-year-continuity-map"
+      ],
+      "blocksEveryoneReady": false,
+      "blocksAgiClaim": true
+    },
+    {
+      "id": "model-ecosystem-catalog",
+      "status": "defined",
+      "currentEvidence": "Major model families are cataloged as metadata-only candidates with no install, download, training, or AGI authority.",
+      "requiredEvidence": [
+        "check:seis-ai-model-ecosystem-catalog",
+        "content/development/seis-ai-model-ecosystem-catalog.json"
       ],
       "blocksEveryoneReady": false,
       "blocksAgiClaim": true
@@ -138,6 +153,7 @@
   ],
   "commandPlan": [
     "npm run check:seis-local-ai-runtime-matrix",
+    "npm run check:seis-ai-model-ecosystem-catalog",
     "npm run check:seis-plugin-mcp-ten-year-continuity-map",
     "npm run check:seis-language-model-intake",
     "npm run check:seis-ai-workforce-training",
@@ -146,8 +162,10 @@
     "npm run check:seis-agi-github-user-readiness-gates",
     "npm run check:seis-512b-apex-model-program",
     "npm run check:seis-agi-github-fresh-clone-readiness-plan",
+    "npm run check:seis-ai-github-fresh-clone-local-smoke",
     "npm run check:seis-public-ai-readiness",
     "npm run check:seis-ai-github-pr-package",
+    "npm run check:seis-ai-pr-staging-dry-run",
     "npm run check:seis-ai-github-readiness-chain"
   ],
   "publicClaimBoundary": {

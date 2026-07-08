@@ -1,6 +1,6 @@
 # SEIS AGI GitHub Fresh-Clone Readiness Plan
 
-Generated: 2026-07-08T12:02:03.204Z
+Generated: 2026-07-08T12:34:37.203Z
 
 Status: fresh-clone-readiness-defined-everyone-ready-blocked
 
@@ -8,7 +8,7 @@ Status: fresh-clone-readiness-defined-everyone-ready-blocked
 
 | Field | Value |
 | --- | --- |
-| Readiness checks | 6 |
+| Readiness checks | 7 |
 | Blocked everyone-ready checks | 4 |
 | GitHub ready for everyone | false |
 | Public ready for Local Demo | true |

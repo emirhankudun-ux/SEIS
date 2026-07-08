@@ -45,6 +45,8 @@ const paths = {
   githubUserGates: "content/development/seis-agi-github-user-readiness-gates.json",
   freshClonePlan: "content/development/seis-agi-github-fresh-clone-readiness-plan.json",
   aiPrPackage: "content/development/seis-ai-github-pr-package.json",
+  aiPrStagingDryRun: "content/development/seis-ai-pr-staging-dry-run.json",
+  modelEcosystemCatalog: "content/development/seis-ai-model-ecosystem-catalog.json",
   agiProtocol: "content/development/seis-agi-evaluation-protocol.json",
   independentLedger: "content/development/seis-agi-independent-evidence-ledger.json",
   apexProgram: "content/development/seis-512b-apex-model-program.json",
@@ -61,6 +63,8 @@ const jsonPaths = [
   paths.githubUserGates,
   paths.freshClonePlan,
   paths.aiPrPackage,
+  paths.aiPrStagingDryRun,
+  paths.modelEcosystemCatalog,
   paths.agiProtocol,
   paths.independentLedger,
   paths.apexProgram,
@@ -83,7 +87,9 @@ for (const relativePath of [
   paths.localRuntimeMatrix,
   paths.languageModelIntake,
   paths.scalingProfile,
-  paths.aiPrPackage
+  paths.aiPrPackage,
+  paths.aiPrStagingDryRun,
+  paths.modelEcosystemCatalog
 ]) {
   ensureFile(relativePath);
 }
@@ -95,6 +101,8 @@ const publicReadiness = readJson(paths.publicReadiness, "AGI public readiness ev
 const githubUserGates = readJson(paths.githubUserGates, "AGI GitHub user readiness gates");
 const freshClonePlan = readOptionalJson(paths.freshClonePlan);
 const aiPrPackage = readOptionalJson(paths.aiPrPackage);
+const aiPrStagingDryRun = readOptionalJson(paths.aiPrStagingDryRun);
+const modelEcosystemCatalog = readOptionalJson(paths.modelEcosystemCatalog);
 const agiProtocol = readJson(paths.agiProtocol, "AGI evaluation protocol");
 const independentLedger = readJson(paths.independentLedger, "AGI independent evidence ledger");
 const apexProgram = readJson(paths.apexProgram, "512B apex model program");
@@ -108,6 +116,8 @@ validateCoreClaimStates({
   githubUserGates,
   freshClonePlan,
   aiPrPackage,
+  aiPrStagingDryRun,
+  modelEcosystemCatalog,
   agiProtocol,
   independentLedger,
   apexProgram,
@@ -128,13 +138,21 @@ function validatePackageScripts(pkg) {
   ensure(scripts["check:seis-agi-github-user-readiness-gates"] === "node scripts/check-seis-agi-github-user-readiness-gates.mjs", "package.json must expose AGI GitHub user readiness check");
   ensure(scripts["check:seis-agi-github-fresh-clone-readiness-plan"] === "node scripts/create-seis-agi-github-fresh-clone-readiness-plan.mjs", "package.json must expose fresh-clone readiness check");
   ensure(scripts["check:seis-ai-github-readiness-chain"] === "node scripts/check-seis-ai-github-readiness-chain.mjs", "package.json must expose check:seis-ai-github-readiness-chain");
+  ensure(scripts["check:seis-ai-github-fresh-clone-local-smoke"] === "node scripts/create-seis-ai-github-fresh-clone-local-smoke.mjs", "package.json must expose check:seis-ai-github-fresh-clone-local-smoke");
   ensure(scripts["check:seis-ai-github-pr-package"] === "node scripts/create-seis-ai-github-pr-package.mjs", "package.json must expose check:seis-ai-github-pr-package");
   ensure(scripts["report:seis-ai-github-pr-package"] === "node scripts/create-seis-ai-github-pr-package.mjs --write", "package.json must expose report:seis-ai-github-pr-package");
+  ensure(scripts["check:seis-ai-pr-staging-dry-run"] === "node scripts/create-seis-ai-pr-staging-dry-run.mjs", "package.json must expose check:seis-ai-pr-staging-dry-run");
+  ensure(scripts["report:seis-ai-pr-staging-dry-run"] === "node scripts/create-seis-ai-pr-staging-dry-run.mjs --write", "package.json must expose report:seis-ai-pr-staging-dry-run");
+  ensure(scripts["check:seis-ai-model-ecosystem-catalog"] === "node scripts/create-seis-ai-model-ecosystem-catalog.mjs", "package.json must expose check:seis-ai-model-ecosystem-catalog");
+  ensure(scripts["report:seis-ai-model-ecosystem-catalog"] === "node scripts/create-seis-ai-model-ecosystem-catalog.mjs --write", "package.json must expose report:seis-ai-model-ecosystem-catalog");
   ensure(scripts["check:seis-plugin-mcp-ten-year-continuity-map"] === "node scripts/create-seis-plugin-mcp-ten-year-continuity-map.mjs --check", "package.json must expose check:seis-plugin-mcp-ten-year-continuity-map");
   ensure(scripts["check:seis-512b-apex-model-program"] === "node scripts/check-seis-512b-apex-model-program.mjs", "package.json must expose 512B apex model program check");
   ensure(String(scripts["quality:governance"] || "").includes("check:seis-public-ai-readiness"), "quality:governance must include check:seis-public-ai-readiness");
   ensure(String(scripts["quality:governance"] || "").includes("check:seis-ai-github-readiness-chain"), "quality:governance must include check:seis-ai-github-readiness-chain");
+  ensure(String(scripts["quality:governance"] || "").includes("check:seis-ai-github-fresh-clone-local-smoke"), "quality:governance must include check:seis-ai-github-fresh-clone-local-smoke");
   ensure(String(scripts["quality:governance"] || "").includes("check:seis-ai-github-pr-package"), "quality:governance must include check:seis-ai-github-pr-package");
+  ensure(String(scripts["quality:governance"] || "").includes("check:seis-ai-pr-staging-dry-run"), "quality:governance must include check:seis-ai-pr-staging-dry-run");
+  ensure(String(scripts["quality:governance"] || "").includes("check:seis-ai-model-ecosystem-catalog"), "quality:governance must include check:seis-ai-model-ecosystem-catalog");
   ensure(String(scripts["quality:governance"] || "").includes("check:seis-plugin-mcp-ten-year-continuity-map"), "quality:governance must include check:seis-plugin-mcp-ten-year-continuity-map");
 }
 
@@ -161,14 +179,41 @@ function validateCoreClaimStates(state) {
     ensure(state.freshClonePlan.publicClaimBoundary?.canClaimAnyModelInstalled === false, "fresh-clone plan must not claim model installation");
     ensure(state.freshClonePlan.publicClaimBoundary?.canClaim512BRouteEligible === false, "fresh-clone plan must not claim 512B route eligibility");
     ensure(state.freshClonePlan.publicClaimBoundary?.canClaimRealAgi === false, "fresh-clone plan must not claim real AGI");
+    ensure(state.freshClonePlan.sourceOfTruth?.freshCloneLocalSmoke === "content/development/seis-ai-github-fresh-clone-local-smoke.json", "fresh-clone plan must link local smoke evidence");
+    ensure(state.freshClonePlan.commandPlan?.includes("npm run check:seis-ai-github-fresh-clone-local-smoke"), "fresh-clone plan must include local smoke command");
   }
 
   if (state.aiPrPackage) {
     ensure(state.aiPrPackage.status === "ready-for-ai-plugin-mcp-pr-review-not-ready-for-push", "AI PR package status mismatch");
     ensure(state.aiPrPackage.currentDecision?.safeToPushNow === false, "AI PR package must keep safeToPushNow false");
     ensure(state.aiPrPackage.currentDecision?.safeToMergeNow === false, "AI PR package must keep safeToMergeNow false");
+    ensure(state.aiPrPackage.sourceOfTruth?.modelEcosystemCatalog === "content/development/seis-ai-model-ecosystem-catalog.json", "AI PR package must link model ecosystem catalog");
+    ensure(state.aiPrPackage.requiredValidation?.includes("npm run check:seis-ai-model-ecosystem-catalog"), "AI PR package must require model ecosystem catalog validation");
     ensure(state.aiPrPackage.publicClaimBoundary?.canClaimRealAgi === false, "AI PR package must block real AGI claim");
     ensure(state.aiPrPackage.publicClaimBoundary?.canClaim512bRouteEligible === false, "AI PR package must block 512B route eligibility claim");
+  }
+
+  if (state.aiPrStagingDryRun) {
+    ensure(state.aiPrStagingDryRun.status === "staging-plan-ready-push-blocked" || state.aiPrStagingDryRun.status === "staging-plan-ready-clean-ai-only", "AI PR staging dry-run status mismatch");
+    ensure(state.aiPrStagingDryRun.currentDecision?.dryRunOnly === true, "AI PR staging dry-run must remain dry-run only");
+    ensure(state.aiPrStagingDryRun.currentDecision?.gitAddExecuted === false, "AI PR staging dry-run must not claim git add");
+    ensure(state.aiPrStagingDryRun.currentDecision?.commitExecuted === false, "AI PR staging dry-run must not claim commit");
+    ensure(state.aiPrStagingDryRun.currentDecision?.pushExecuted === false, "AI PR staging dry-run must not claim push");
+    ensure(state.aiPrStagingDryRun.currentDecision?.mergeExecuted === false, "AI PR staging dry-run must not claim merge");
+    ensure(state.aiPrStagingDryRun.currentDecision?.safeToPushNow === false, "AI PR staging dry-run must keep safeToPushNow false");
+    ensure(state.aiPrStagingDryRun.publicClaimBoundary?.canClaimRealAgi === false, "AI PR staging dry-run must block real AGI claim");
+  }
+
+  if (state.modelEcosystemCatalog) {
+    ensure(state.modelEcosystemCatalog.status === "catalog-ready-no-install-no-training", "model ecosystem catalog status mismatch");
+    ensure(state.modelEcosystemCatalog.allowedToday?.modelInstall === false, "model ecosystem catalog must block model install");
+    ensure(state.modelEcosystemCatalog.allowedToday?.checkpointDownload === false, "model ecosystem catalog must block checkpoint download");
+    ensure(state.modelEcosystemCatalog.allowedToday?.providerCalls === false, "model ecosystem catalog must block provider calls");
+    ensure(state.modelEcosystemCatalog.allowedToday?.foundationPretraining === false, "model ecosystem catalog must block foundation pretraining");
+    ensure(state.modelEcosystemCatalog.publicClaimBoundary?.canClaimAllModelsInstalled === false, "model ecosystem catalog must block all-model install claim");
+    ensure(state.modelEcosystemCatalog.publicClaimBoundary?.canClaimTrainingExecuted === false, "model ecosystem catalog must block training claim");
+    ensure(state.modelEcosystemCatalog.publicClaimBoundary?.canClaim512bRouteEligible === false, "model ecosystem catalog must block 512B route claim");
+    ensure(state.modelEcosystemCatalog.publicClaimBoundary?.canClaimRealAgi === false, "model ecosystem catalog must block real AGI claim");
   }
 
   ensure(state.agiProtocol?.status === "protocol-draft-not-run", "AGI protocol must remain draft-not-run");

@@ -1,10 +1,10 @@
 {
   "id": "seis-agi-github-fresh-clone-readiness-plan-report",
-  "generatedAt": "2026-07-08T12:02:03.204Z",
+  "generatedAt": "2026-07-08T12:34:37.203Z",
   "status": "fresh-clone-readiness-defined-everyone-ready-blocked",
   "sourcePlan": "content/development/seis-agi-github-fresh-clone-readiness-plan.json",
   "summary": {
-    "readinessChecks": 6,
+    "readinessChecks": 7,
     "blockedEveryoneReadyChecks": 4,
     "githubReadyForEveryone": false,
     "publicReadyForLocalDemo": true,

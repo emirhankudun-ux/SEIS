@@ -1,11 +1,11 @@
 {
   "id": "seis-ai-pr-staging-dry-run",
   "version": "2026.07.08",
-  "generatedAt": "2026-07-08T12:08:54.886Z",
+  "generatedAt": "2026-07-08T12:34:59.629Z",
   "status": "staging-plan-ready-push-blocked",
   "qualityGate": "npm run check:seis-ai-pr-staging-dry-run",
   "reportCommand": "npm run report:seis-ai-pr-staging-dry-run",
-  "purpose": "Classify the current git status against the AI-only PR package without staging, committing, pushing, merging, or mutating GitHub.",
+  "purpose": "Classify the current git status against the AI plus Plugin/MCP PR package without staging, committing, pushing, merging, or mutating GitHub.",
   "sourceOfTruth": {
     "aiGithubPrPackage": "content/development/seis-ai-github-pr-package.json",
     "packageJson": "package.json",
@@ -21,20 +21,33 @@
     "safeToCommitNow": false,
     "safeToPushNow": false,
     "safeToMergeNow": false,
-    "reasonPushBlocked": "The worktree has dirty files outside the AI-only PR package."
+    "reasonPushBlocked": "The worktree has dirty files outside the AI plus Plugin/MCP PR package."
   },
   "selectedAiFiles": [
     "package.json",
+    ".gitignore",
+    "scripts/check-seis-language-model-intake.mjs",
     "scripts/create-seis-local-ai-runtime-matrix.mjs",
     "content/development/seis-local-ai-runtime-matrix.json",
     "docs/ai/seis-local-ai-runtime-matrix.md",
     "reports/seis-model-scaling/seis-local-ai-runtime-matrix.md",
+    "scripts/create-seis-ai-model-ecosystem-catalog.mjs",
+    "content/development/seis-ai-model-ecosystem-catalog.json",
+    "docs/ai/seis-ai-model-ecosystem-catalog.md",
+    "reports/seis-model-scaling/seis-ai-model-ecosystem-catalog.json",
+    "reports/seis-model-scaling/seis-ai-model-ecosystem-catalog.md",
     "scripts/check-seis-public-ai-readiness.mjs",
     "scripts/check-seis-ai-github-readiness-chain.mjs",
     "scripts/create-seis-agi-github-fresh-clone-readiness-plan.mjs",
     "content/development/seis-agi-github-fresh-clone-readiness-plan.json",
     "docs/ai/seis-agi-github-fresh-clone-readiness-plan.md",
+    "reports/seis-model-scaling/seis-agi-github-fresh-clone-readiness-plan.json",
     "reports/seis-model-scaling/seis-agi-github-fresh-clone-readiness-plan.md",
+    "scripts/create-seis-ai-github-fresh-clone-local-smoke.mjs",
+    "content/development/seis-ai-github-fresh-clone-local-smoke.json",
+    "docs/ai/seis-ai-github-fresh-clone-local-smoke.md",
+    "reports/seis-model-scaling/seis-ai-github-fresh-clone-local-smoke.json",
+    "reports/seis-model-scaling/seis-ai-github-fresh-clone-local-smoke.md",
     "scripts/create-seis-plugin-mcp-ten-year-continuity-map.mjs",
     "content/development/seis-plugin-mcp-ten-year-continuity-map.json",
     "docs/platform/seis-plugin-mcp-ten-year-continuity-map.md",
@@ -42,13 +55,16 @@
     "reports/seis-public-demo/plugin-mcp-ten-year-continuity-map-latest.md",
     "docs/ai/ai-workforce-training.md",
     "docs/ai/seis-agi-github-user-readiness-gates.md",
+    ".github/workflows/seis-ai.yml",
     "content/development/seis-ai-github-pr-package.json",
     "docs/ai/seis-ai-github-pr-package.md",
+    "reports/seis-model-scaling/seis-ai-github-pr-package.json",
     "reports/seis-model-scaling/seis-ai-github-pr-package.md",
     "scripts/create-seis-ai-github-pr-package.mjs",
     "scripts/create-seis-ai-pr-staging-dry-run.mjs",
     "content/development/seis-ai-pr-staging-dry-run.json",
     "docs/ai/seis-ai-pr-staging-dry-run.md",
+    "reports/seis-model-scaling/seis-ai-pr-staging-dry-run.json",
     "reports/seis-model-scaling/seis-ai-pr-staging-dry-run.md"
   ],
   "generatedOutputPaths": [
@@ -58,25 +74,129 @@
     "reports/seis-model-scaling/seis-ai-pr-staging-dry-run.md"
   ],
   "gitStatusSummary": {
-    "totalStatusRows": 12,
-    "selectedStatusRows": 7,
+    "totalStatusRows": 39,
+    "selectedStatusRows": 33,
     "selectedStagedRows": 0,
-    "selectedUnstagedOrUntrackedRows": 7,
-    "nonSelectedStatusRows": 5,
+    "selectedUnstagedOrUntrackedRows": 33,
+    "nonSelectedStatusRows": 6,
     "nonSelectedStagedRows": 0,
-    "nonSelectedDirtyRows": 5,
-    "missingSelectedFiles": [
-      "content/development/seis-ai-pr-staging-dry-run.json",
-      "docs/ai/seis-ai-pr-staging-dry-run.md",
-      "reports/seis-model-scaling/seis-ai-pr-staging-dry-run.md"
-    ]
+    "nonSelectedDirtyRows": 6,
+    "missingSelectedFiles": []
   },
   "selectedStatusRows": [
+    {
+      "path": ".github/workflows/seis-ai.yml",
+      "indexStatus": " ",
+      "worktreeStatus": "M",
+      "raw": " M .github/workflows/seis-ai.yml"
+    },
+    {
+      "path": ".gitignore",
+      "indexStatus": " ",
+      "worktreeStatus": "M",
+      "raw": " M .gitignore"
+    },
+    {
+      "path": "content/development/seis-agi-github-fresh-clone-readiness-plan.json",
+      "indexStatus": " ",
+      "worktreeStatus": "M",
+      "raw": " M content/development/seis-agi-github-fresh-clone-readiness-plan.json"
+    },
+    {
+      "path": "content/development/seis-ai-github-pr-package.json",
+      "indexStatus": " ",
+      "worktreeStatus": "M",
+      "raw": " M content/development/seis-ai-github-pr-package.json"
+    },
+    {
+      "path": "content/development/seis-ai-pr-staging-dry-run.json",
+      "indexStatus": " ",
+      "worktreeStatus": "M",
+      "raw": " M content/development/seis-ai-pr-staging-dry-run.json"
+    },
+    {
+      "path": "docs/ai/ai-workforce-training.md",
+      "indexStatus": " ",
+      "worktreeStatus": "M",
+      "raw": " M docs/ai/ai-workforce-training.md"
+    },
+    {
+      "path": "docs/ai/seis-agi-github-fresh-clone-readiness-plan.md",
+      "indexStatus": " ",
+      "worktreeStatus": "M",
+      "raw": " M docs/ai/seis-agi-github-fresh-clone-readiness-plan.md"
+    },
+    {
+      "path": "docs/ai/seis-agi-github-user-readiness-gates.md",
+      "indexStatus": " ",
+      "worktreeStatus": "M",
+      "raw": " M docs/ai/seis-agi-github-user-readiness-gates.md"
+    },
+    {
+      "path": "docs/ai/seis-ai-github-pr-package.md",
+      "indexStatus": " ",
+      "worktreeStatus": "M",
+      "raw": " M docs/ai/seis-ai-github-pr-package.md"
+    },
+    {
+      "path": "docs/ai/seis-ai-pr-staging-dry-run.md",
+      "indexStatus": " ",
+      "worktreeStatus": "M",
+      "raw": " M docs/ai/seis-ai-pr-staging-dry-run.md"
+    },
     {
       "path": "package.json",
       "indexStatus": " ",
       "worktreeStatus": "M",
       "raw": " M package.json"
+    },
+    {
+      "path": "reports/seis-model-scaling/seis-agi-github-fresh-clone-readiness-plan.json",
+      "indexStatus": " ",
+      "worktreeStatus": "M",
+      "raw": " M reports/seis-model-scaling/seis-agi-github-fresh-clone-readiness-plan.json"
+    },
+    {
+      "path": "reports/seis-model-scaling/seis-agi-github-fresh-clone-readiness-plan.md",
+      "indexStatus": " ",
+      "worktreeStatus": "M",
+      "raw": " M reports/seis-model-scaling/seis-agi-github-fresh-clone-readiness-plan.md"
+    },
+    {
+      "path": "reports/seis-model-scaling/seis-ai-github-pr-package.json",
+      "indexStatus": " ",
+      "worktreeStatus": "M",
+      "raw": " M reports/seis-model-scaling/seis-ai-github-pr-package.json"
+    },
+    {
+      "path": "reports/seis-model-scaling/seis-ai-github-pr-package.md",
+      "indexStatus": " ",
+      "worktreeStatus": "M",
+      "raw": " M reports/seis-model-scaling/seis-ai-github-pr-package.md"
+    },
+    {
+      "path": "reports/seis-model-scaling/seis-ai-pr-staging-dry-run.json",
+      "indexStatus": " ",
+      "worktreeStatus": "M",
+      "raw": " M reports/seis-model-scaling/seis-ai-pr-staging-dry-run.json"
+    },
+    {
+      "path": "reports/seis-model-scaling/seis-ai-pr-staging-dry-run.md",
+      "indexStatus": " ",
+      "worktreeStatus": "M",
+      "raw": " M reports/seis-model-scaling/seis-ai-pr-staging-dry-run.md"
+    },
+    {
+      "path": "scripts/check-seis-ai-github-readiness-chain.mjs",
+      "indexStatus": " ",
+      "worktreeStatus": "M",
+      "raw": " M scripts/check-seis-ai-github-readiness-chain.mjs"
+    },
+    {
+      "path": "scripts/check-seis-language-model-intake.mjs",
+      "indexStatus": " ",
+      "worktreeStatus": "M",
+      "raw": " M scripts/check-seis-language-model-intake.mjs"
     },
     {
       "path": "scripts/check-seis-public-ai-readiness.mjs",
@@ -85,34 +205,82 @@
       "raw": " M scripts/check-seis-public-ai-readiness.mjs"
     },
     {
-      "path": "content/development/seis-ai-github-pr-package.json",
-      "indexStatus": "?",
-      "worktreeStatus": "?",
-      "raw": "?? content/development/seis-ai-github-pr-package.json"
-    },
-    {
-      "path": "docs/ai/seis-ai-github-pr-package.md",
-      "indexStatus": "?",
-      "worktreeStatus": "?",
-      "raw": "?? docs/ai/seis-ai-github-pr-package.md"
-    },
-    {
-      "path": "reports/seis-model-scaling/seis-ai-github-pr-package.md",
-      "indexStatus": "?",
-      "worktreeStatus": "?",
-      "raw": "?? reports/seis-model-scaling/seis-ai-github-pr-package.md"
+      "path": "scripts/create-seis-agi-github-fresh-clone-readiness-plan.mjs",
+      "indexStatus": " ",
+      "worktreeStatus": "M",
+      "raw": " M scripts/create-seis-agi-github-fresh-clone-readiness-plan.mjs"
     },
     {
       "path": "scripts/create-seis-ai-github-pr-package.mjs",
-      "indexStatus": "?",
-      "worktreeStatus": "?",
-      "raw": "?? scripts/create-seis-ai-github-pr-package.mjs"
+      "indexStatus": " ",
+      "worktreeStatus": "M",
+      "raw": " M scripts/create-seis-ai-github-pr-package.mjs"
     },
     {
       "path": "scripts/create-seis-ai-pr-staging-dry-run.mjs",
+      "indexStatus": " ",
+      "worktreeStatus": "M",
+      "raw": " M scripts/create-seis-ai-pr-staging-dry-run.mjs"
+    },
+    {
+      "path": "content/development/seis-ai-github-fresh-clone-local-smoke.json",
       "indexStatus": "?",
       "worktreeStatus": "?",
-      "raw": "?? scripts/create-seis-ai-pr-staging-dry-run.mjs"
+      "raw": "?? content/development/seis-ai-github-fresh-clone-local-smoke.json"
+    },
+    {
+      "path": "content/development/seis-ai-model-ecosystem-catalog.json",
+      "indexStatus": "?",
+      "worktreeStatus": "?",
+      "raw": "?? content/development/seis-ai-model-ecosystem-catalog.json"
+    },
+    {
+      "path": "docs/ai/seis-ai-github-fresh-clone-local-smoke.md",
+      "indexStatus": "?",
+      "worktreeStatus": "?",
+      "raw": "?? docs/ai/seis-ai-github-fresh-clone-local-smoke.md"
+    },
+    {
+      "path": "docs/ai/seis-ai-model-ecosystem-catalog.md",
+      "indexStatus": "?",
+      "worktreeStatus": "?",
+      "raw": "?? docs/ai/seis-ai-model-ecosystem-catalog.md"
+    },
+    {
+      "path": "reports/seis-model-scaling/seis-ai-github-fresh-clone-local-smoke.json",
+      "indexStatus": "?",
+      "worktreeStatus": "?",
+      "raw": "?? reports/seis-model-scaling/seis-ai-github-fresh-clone-local-smoke.json"
+    },
+    {
+      "path": "reports/seis-model-scaling/seis-ai-github-fresh-clone-local-smoke.md",
+      "indexStatus": "?",
+      "worktreeStatus": "?",
+      "raw": "?? reports/seis-model-scaling/seis-ai-github-fresh-clone-local-smoke.md"
+    },
+    {
+      "path": "reports/seis-model-scaling/seis-ai-model-ecosystem-catalog.json",
+      "indexStatus": "?",
+      "worktreeStatus": "?",
+      "raw": "?? reports/seis-model-scaling/seis-ai-model-ecosystem-catalog.json"
+    },
+    {
+      "path": "reports/seis-model-scaling/seis-ai-model-ecosystem-catalog.md",
+      "indexStatus": "?",
+      "worktreeStatus": "?",
+      "raw": "?? reports/seis-model-scaling/seis-ai-model-ecosystem-catalog.md"
+    },
+    {
+      "path": "scripts/create-seis-ai-github-fresh-clone-local-smoke.mjs",
+      "indexStatus": "?",
+      "worktreeStatus": "?",
+      "raw": "?? scripts/create-seis-ai-github-fresh-clone-local-smoke.mjs"
+    },
+    {
+      "path": "scripts/create-seis-ai-model-ecosystem-catalog.mjs",
+      "indexStatus": "?",
+      "worktreeStatus": "?",
+      "raw": "?? scripts/create-seis-ai-model-ecosystem-catalog.mjs"
     }
   ],
   "nonSelectedStagedRows": [],
@@ -128,6 +296,12 @@
       "indexStatus": " ",
       "worktreeStatus": "M",
       "raw": " M apps/web/desktop.js"
+    },
+    {
+      "path": "apps/web/seis-linux-replica.html",
+      "indexStatus": " ",
+      "worktreeStatus": "M",
+      "raw": " M apps/web/seis-linux-replica.html"
     },
     {
       "path": "docs/roadmap/MASTER_BACKLOG.md",
@@ -150,7 +324,7 @@
   ],
   "recommendedDryRunCommands": [
     "# Dry-run only. Review the AI package before running any git command.",
-    "git add 'package.json' 'scripts/create-seis-local-ai-runtime-matrix.mjs' 'content/development/seis-local-ai-runtime-matrix.json' 'docs/ai/seis-local-ai-runtime-matrix.md' 'reports/seis-model-scaling/seis-local-ai-runtime-matrix.md' 'scripts/check-seis-public-ai-readiness.mjs' 'scripts/check-seis-ai-github-readiness-chain.mjs' 'scripts/create-seis-agi-github-fresh-clone-readiness-plan.mjs' 'content/development/seis-agi-github-fresh-clone-readiness-plan.json' 'docs/ai/seis-agi-github-fresh-clone-readiness-plan.md' 'reports/seis-model-scaling/seis-agi-github-fresh-clone-readiness-plan.md' 'scripts/create-seis-plugin-mcp-ten-year-continuity-map.mjs' 'content/development/seis-plugin-mcp-ten-year-continuity-map.json' 'docs/platform/seis-plugin-mcp-ten-year-continuity-map.md' 'reports/seis-public-demo/plugin-mcp-ten-year-continuity-map-latest.json' 'reports/seis-public-demo/plugin-mcp-ten-year-continuity-map-latest.md' 'docs/ai/ai-workforce-training.md' 'docs/ai/seis-agi-github-user-readiness-gates.md' 'content/development/seis-ai-github-pr-package.json' 'docs/ai/seis-ai-github-pr-package.md' 'reports/seis-model-scaling/seis-ai-github-pr-package.md' 'scripts/create-seis-ai-github-pr-package.mjs' 'scripts/create-seis-ai-pr-staging-dry-run.mjs' 'content/development/seis-ai-pr-staging-dry-run.json' 'docs/ai/seis-ai-pr-staging-dry-run.md' 'reports/seis-model-scaling/seis-ai-pr-staging-dry-run.md' 'content/development/seis-ai-pr-staging-dry-run.json' 'docs/ai/seis-ai-pr-staging-dry-run.md' 'reports/seis-model-scaling/seis-ai-pr-staging-dry-run.json' 'reports/seis-model-scaling/seis-ai-pr-staging-dry-run.md'"
+    "git add 'package.json' '.gitignore' 'scripts/check-seis-language-model-intake.mjs' 'scripts/create-seis-local-ai-runtime-matrix.mjs' 'content/development/seis-local-ai-runtime-matrix.json' 'docs/ai/seis-local-ai-runtime-matrix.md' 'reports/seis-model-scaling/seis-local-ai-runtime-matrix.md' 'scripts/create-seis-ai-model-ecosystem-catalog.mjs' 'content/development/seis-ai-model-ecosystem-catalog.json' 'docs/ai/seis-ai-model-ecosystem-catalog.md' 'reports/seis-model-scaling/seis-ai-model-ecosystem-catalog.json' 'reports/seis-model-scaling/seis-ai-model-ecosystem-catalog.md' 'scripts/check-seis-public-ai-readiness.mjs' 'scripts/check-seis-ai-github-readiness-chain.mjs' 'scripts/create-seis-agi-github-fresh-clone-readiness-plan.mjs' 'content/development/seis-agi-github-fresh-clone-readiness-plan.json' 'docs/ai/seis-agi-github-fresh-clone-readiness-plan.md' 'reports/seis-model-scaling/seis-agi-github-fresh-clone-readiness-plan.json' 'reports/seis-model-scaling/seis-agi-github-fresh-clone-readiness-plan.md' 'scripts/create-seis-ai-github-fresh-clone-local-smoke.mjs' 'content/development/seis-ai-github-fresh-clone-local-smoke.json' 'docs/ai/seis-ai-github-fresh-clone-local-smoke.md' 'reports/seis-model-scaling/seis-ai-github-fresh-clone-local-smoke.json' 'reports/seis-model-scaling/seis-ai-github-fresh-clone-local-smoke.md' 'scripts/create-seis-plugin-mcp-ten-year-continuity-map.mjs' 'content/development/seis-plugin-mcp-ten-year-continuity-map.json' 'docs/platform/seis-plugin-mcp-ten-year-continuity-map.md' 'reports/seis-public-demo/plugin-mcp-ten-year-continuity-map-latest.json' 'reports/seis-public-demo/plugin-mcp-ten-year-continuity-map-latest.md' 'docs/ai/ai-workforce-training.md' 'docs/ai/seis-agi-github-user-readiness-gates.md' '.github/workflows/seis-ai.yml' 'content/development/seis-ai-github-pr-package.json' 'docs/ai/seis-ai-github-pr-package.md' 'reports/seis-model-scaling/seis-ai-github-pr-package.json' 'reports/seis-model-scaling/seis-ai-github-pr-package.md' 'scripts/create-seis-ai-github-pr-package.mjs' 'scripts/create-seis-ai-pr-staging-dry-run.mjs' 'content/development/seis-ai-pr-staging-dry-run.json' 'docs/ai/seis-ai-pr-staging-dry-run.md' 'reports/seis-model-scaling/seis-ai-pr-staging-dry-run.json' 'reports/seis-model-scaling/seis-ai-pr-staging-dry-run.md'"
   ],
   "forbiddenActionsWithoutApproval": [
     "git add .",
@@ -165,9 +339,9 @@
     "deployment"
   ],
   "nextSafeActions": [
-    "Move this AI-only package into a clean review branch or clean worktree before staging.",
+    "Move this AI plus Plugin/MCP package into a clean review branch or clean worktree before staging.",
     "Do not run git add . in the current dirty worktree.",
-    "Keep non-selected staged files out of the AI-only PR.",
+    "Keep non-selected staged files out of the AI plus Plugin/MCP PR.",
     "Run npm run check:seis-ai-github-readiness-chain after the staging set is clean.",
     "Open a human-reviewed PR only after protected branch checks are available."
   ],

@@ -76,6 +76,8 @@ npm run check:seis-public-ai-readiness
 npm run check:seis-ai-github-readiness-chain
 npm run report:seis-ai-github-pr-package
 npm run check:seis-ai-github-pr-package
+npm run report:seis-ai-pr-staging-dry-run
+npm run check:seis-ai-pr-staging-dry-run
 ```
 
 The validator fails if this gate pack grants AGI status, 512B route eligibility,

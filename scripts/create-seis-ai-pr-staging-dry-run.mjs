@@ -48,6 +48,7 @@ if (mode === "write") {
   const existingReport = readJson(files.reportJson, "SEIS AI PR staging dry-run report");
   checkTextIncludes(files.docs, [
     "SEIS AI PR Staging Dry-Run",
+    "AI plus Plugin/MCP",
     "Dry-run only",
     "Safe to push now",
     "Reason push is blocked"
@@ -78,9 +79,10 @@ function buildDryRun() {
     files.reportMd
   ];
 
+  const selectedStagePaths = [...new Set([...selected, ...generatedOutputPaths])];
   const selectedStageCommands = [
     "# Dry-run only. Review the AI package before running any git command.",
-    `git add ${[...selected, ...generatedOutputPaths].map(shellQuote).join(" ")}`
+    `git add ${selectedStagePaths.map(shellQuote).join(" ")}`
   ];
 
   return {
@@ -90,7 +92,7 @@ function buildDryRun() {
     status: dirtyNonSelected.length > 0 || stagedNonSelected.length > 0 ? "staging-plan-ready-push-blocked" : "staging-plan-ready-clean-ai-only",
     qualityGate: "npm run check:seis-ai-pr-staging-dry-run",
     reportCommand: "npm run report:seis-ai-pr-staging-dry-run",
-    purpose: "Classify the current git status against the AI-only PR package without staging, committing, pushing, merging, or mutating GitHub.",
+    purpose: "Classify the current git status against the AI plus Plugin/MCP PR package without staging, committing, pushing, merging, or mutating GitHub.",
     sourceOfTruth: {
       aiGithubPrPackage: files.prPackage,
       packageJson: files.packageJson,
@@ -107,7 +109,7 @@ function buildDryRun() {
       safeToPushNow: false,
       safeToMergeNow: false,
       reasonPushBlocked: dirtyNonSelected.length > 0
-        ? "The worktree has dirty files outside the AI-only PR package."
+        ? "The worktree has dirty files outside the AI plus Plugin/MCP PR package."
         : "Human review and protected-branch checks are still required before push or merge."
     },
     selectedAiFiles: [...selected],
@@ -139,9 +141,9 @@ function buildDryRun() {
       "deployment"
     ],
     nextSafeActions: [
-      "Move this AI-only package into a clean review branch or clean worktree before staging.",
+      "Move this AI plus Plugin/MCP package into a clean review branch or clean worktree before staging.",
       "Do not run git add . in the current dirty worktree.",
-      "Keep non-selected staged files out of the AI-only PR.",
+      "Keep non-selected staged files out of the AI plus Plugin/MCP PR.",
       "Run npm run check:seis-ai-github-readiness-chain after the staging set is clean.",
       "Open a human-reviewed PR only after protected branch checks are available."
     ],
@@ -187,6 +189,8 @@ function validate(dryRun, report) {
   ensure(dryRun.currentDecision.safeToMergeNow === false, "safeToMergeNow must stay false");
   ensure(dryRun.selectedAiFiles.includes("scripts/check-seis-ai-github-readiness-chain.mjs"), "selected files must include AI readiness chain");
   ensure(dryRun.selectedAiFiles.includes("content/development/seis-ai-github-pr-package.json"), "selected files must include AI PR package");
+  ensure(dryRun.selectedAiFiles.includes(".github/workflows/seis-ai.yml"), "selected files must include AI plus Plugin/MCP CI workflow");
+  ensure(dryRun.selectedAiFiles.includes("scripts/create-seis-plugin-mcp-ten-year-continuity-map.mjs"), "selected files must include Plugin/MCP continuity generator");
   ensure(dryRun.generatedOutputPaths.includes(files.dryRun), "generated outputs must include dry-run source");
   ensureArrayIncludesAll(dryRun.forbiddenActionsWithoutApproval, [
     "git add .",
@@ -214,7 +218,7 @@ function validate(dryRun, report) {
 function renderDocs(dryRun, report) {
   return `# SEIS AI PR Staging Dry-Run
 
-This dry-run classifies the current Git status against the AI-only PR package.
+This dry-run classifies the current Git status against the AI plus Plugin/MCP PR package.
 It does not stage, commit, push, merge, deploy, call providers, run SSH, download
 models, or train models.
 

@@ -152,6 +152,8 @@ ios/
 !reports/seis-public-demo/security-owner-handoff-latest.json
 !reports/seis-model-scaling/seis-local-ai-runtime-matrix.json
 !reports/seis-model-scaling/seis-agi-github-fresh-clone-readiness-plan.json
+!reports/seis-model-scaling/seis-ai-github-fresh-clone-local-smoke.json
+!reports/seis-model-scaling/seis-ai-model-ecosystem-catalog.json
 !reports/seis-model-scaling/seis-ai-github-pr-package.json
 !reports/seis-model-scaling/seis-ai-pr-staging-dry-run.json
 !packages/seis-ai/data/permission-policy-seed.json

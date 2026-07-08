@@ -1,0 +1,341 @@
+{
+  "id": "seis-ai-model-ecosystem-catalog",
+  "version": "2026.07.08",
+  "generatedAt": "2026-07-08T12:34:31.049Z",
+  "status": "catalog-ready-no-install-no-training",
+  "qualityGate": "npm run check:seis-ai-model-ecosystem-catalog",
+  "reportCommand": "npm run report:seis-ai-model-ecosystem-catalog",
+  "purpose": "Track major local, open-weight, provider-routed, embedding, code, multimodal, and frontier model families for SEIS without bulk installation, blind downloads, unsafe training, or unsupported AGI claims.",
+  "truthBoundary": [
+    "This catalog does not install models, download weights, call providers, submit jobs, run inference, train, fine-tune, benchmark, push, merge, deploy, or prove AGI.",
+    "Model-family coverage is broad but not exhaustive; every concrete model id still requires license, checksum, hardware, dataset, benchmark, rollback, and human approval evidence.",
+    "A 512B SEIS target remains a research gate, not a trained checkpoint, routeable model, public benchmark, or AGI proof."
+  ],
+  "sourceOfTruth": {
+    "languageModelIntake": "content/development/seis-language-model-intake-registry.json",
+    "localRuntimeMatrix": "content/development/seis-local-ai-runtime-matrix.json",
+    "docs": "docs/ai/seis-ai-model-ecosystem-catalog.md"
+  },
+  "officialResearchBaseline": [
+    {
+      "id": "hf-transformers",
+      "url": "https://huggingface.co/docs/transformers/index",
+      "observedDate": "2026-07-08",
+      "evidenceSummary": "Transformers covers model definitions for text, vision, audio, video, and multimodal models plus inference and training surfaces."
+    },
+    {
+      "id": "hf-peft",
+      "url": "https://huggingface.co/docs/peft/index",
+      "observedDate": "2026-07-08",
+      "evidenceSummary": "PEFT documents adapter and LoRA-style parameter-efficient fine-tuning that trains only a small number of extra parameters."
+    },
+    {
+      "id": "ollama-library",
+      "url": "https://ollama.com/library",
+      "observedDate": "2026-07-08",
+      "evidenceSummary": "Ollama lists major local model families and sizes across Llama, Qwen, Gemma, DeepSeek, Mistral, Phi, embeddings, code, and gpt-oss."
+    },
+    {
+      "id": "google-gemma-docs",
+      "url": "https://ai.google.dev/gemma/docs",
+      "observedDate": "2026-07-08",
+      "evidenceSummary": "Google documents Gemma open models, variants such as EmbeddingGemma and ShieldGemma, local runtimes, and tuning routes."
+    },
+    {
+      "id": "qwen-blog",
+      "url": "https://qwenlm.github.io/",
+      "observedDate": "2026-07-08",
+      "evidenceSummary": "Qwen publishes model-family updates including Qwen3 safety, image, translation, and RL research posts."
+    },
+    {
+      "id": "mistral-models",
+      "url": "https://docs.mistral.ai/models/overview",
+      "observedDate": "2026-07-08",
+      "evidenceSummary": "Mistral documents model families, model selection, frontier models, specialist models, and self-deployment paths."
+    },
+    {
+      "id": "deepseek-r1",
+      "url": "https://github.com/deepseek-ai/DeepSeek-R1",
+      "observedDate": "2026-07-08",
+      "evidenceSummary": "DeepSeek-R1 documents 671B MoE reasoning models plus distilled Qwen/Llama checkpoints and local-use recommendations."
+    },
+    {
+      "id": "openai-gpt-oss-20b",
+      "url": "https://huggingface.co/openai/gpt-oss-20b",
+      "observedDate": "2026-07-08",
+      "evidenceSummary": "OpenAI gpt-oss-20b is tracked as an open-weight candidate with downloads and inference examples but remains blocked in SEIS until approved."
+    },
+    {
+      "id": "openai-gpt-oss-120b",
+      "url": "https://huggingface.co/openai/gpt-oss-120b",
+      "observedDate": "2026-07-08",
+      "evidenceSummary": "OpenAI gpt-oss-120b is tracked as a larger open-weight candidate, not a SEIS-owned model."
+    }
+  ],
+  "ecosystemScope": {
+    "coverageMode": "major-family-catalog-not-exhaustive",
+    "includesInstalledAiAssistants": true,
+    "includesLocalOpenWeightCandidates": true,
+    "includesProviderRoutedCandidates": true,
+    "includesEmbeddingAndRerankerCandidates": true,
+    "includesCodeSpecialistCandidates": true,
+    "includesMultimodalAndSafetyCandidates": true,
+    "includes512bResearchGate": true
+  },
+  "candidateFamilies": [
+    {
+      "id": "llama",
+      "displayName": "Meta Llama",
+      "representativeClasses": [
+        "1B-8B local",
+        "70B research",
+        "405B frontier"
+      ],
+      "licenseGate": "license-review-required",
+      "role": "local/provider candidate",
+      "installAuthorized": false,
+      "downloadAuthorized": false,
+      "inferenceAuthorized": false,
+      "providerCallAuthorized": false,
+      "trainingAuthorized": false,
+      "routeEligibleToday": false
+    },
+    {
+      "id": "qwen",
+      "displayName": "Qwen",
+      "representativeClasses": [
+        "0.6B-32B dense",
+        "30B/235B MoE",
+        "coder, VL, image, safety"
+      ],
+      "licenseGate": "license-review-required-per-checkpoint",
+      "role": "local/provider candidate",
+      "installAuthorized": false,
+      "downloadAuthorized": false,
+      "inferenceAuthorized": false,
+      "providerCallAuthorized": false,
+      "trainingAuthorized": false,
+      "routeEligibleToday": false
+    },
+    {
+      "id": "gemma",
+      "displayName": "Google Gemma",
+      "representativeClasses": [
+        "Gemma 4",
+        "EmbeddingGemma",
+        "ShieldGemma",
+        "PaliGemma"
+      ],
+      "licenseGate": "license-review-required",
+      "role": "local/edge candidate",
+      "installAuthorized": false,
+      "downloadAuthorized": false,
+      "inferenceAuthorized": false,
+      "providerCallAuthorized": false,
+      "trainingAuthorized": false,
+      "routeEligibleToday": false
+    },
+    {
+      "id": "mistral",
+      "displayName": "Mistral",
+      "representativeClasses": [
+        "Ministral",
+        "Devstral",
+        "Mistral Small",
+        "Mistral Large"
+      ],
+      "licenseGate": "license-review-required-per-model",
+      "role": "local/provider candidate",
+      "installAuthorized": false,
+      "downloadAuthorized": false,
+      "inferenceAuthorized": false,
+      "providerCallAuthorized": false,
+      "trainingAuthorized": false,
+      "routeEligibleToday": false
+    },
+    {
+      "id": "deepseek",
+      "displayName": "DeepSeek",
+      "representativeClasses": [
+        "R1 distilled",
+        "R1 671B MoE",
+        "V3/R1 research"
+      ],
+      "licenseGate": "license-review-required-per-checkpoint",
+      "role": "reasoning research candidate",
+      "installAuthorized": false,
+      "downloadAuthorized": false,
+      "inferenceAuthorized": false,
+      "providerCallAuthorized": false,
+      "trainingAuthorized": false,
+      "routeEligibleToday": false
+    },
+    {
+      "id": "phi",
+      "displayName": "Microsoft Phi",
+      "representativeClasses": [
+        "small local",
+        "reasoning",
+        "vision"
+      ],
+      "licenseGate": "license-review-required",
+      "role": "small local candidate",
+      "installAuthorized": false,
+      "downloadAuthorized": false,
+      "inferenceAuthorized": false,
+      "providerCallAuthorized": false,
+      "trainingAuthorized": false,
+      "routeEligibleToday": false
+    },
+    {
+      "id": "openai-gpt-oss",
+      "displayName": "OpenAI gpt-oss",
+      "representativeClasses": [
+        "20B",
+        "120B"
+      ],
+      "licenseGate": "license-and-model-card-review-required",
+      "role": "open-weight candidate",
+      "installAuthorized": false,
+      "downloadAuthorized": false,
+      "inferenceAuthorized": false,
+      "providerCallAuthorized": false,
+      "trainingAuthorized": false,
+      "routeEligibleToday": false
+    },
+    {
+      "id": "embedding-reranker",
+      "displayName": "Embeddings and rerankers",
+      "representativeClasses": [
+        "Nomic",
+        "mixedbread",
+        "EmbeddingGemma",
+        "Sentence Transformers"
+      ],
+      "licenseGate": "license-review-required",
+      "role": "retrieval-first candidate",
+      "installAuthorized": false,
+      "downloadAuthorized": false,
+      "inferenceAuthorized": false,
+      "providerCallAuthorized": false,
+      "trainingAuthorized": false,
+      "routeEligibleToday": false
+    },
+    {
+      "id": "code-specialist",
+      "displayName": "Code-specialist models",
+      "representativeClasses": [
+        "Qwen Coder",
+        "CodeLlama",
+        "Devstral",
+        "Codestral-style"
+      ],
+      "licenseGate": "license-review-required-per-checkpoint",
+      "role": "code assistant candidate",
+      "installAuthorized": false,
+      "downloadAuthorized": false,
+      "inferenceAuthorized": false,
+      "providerCallAuthorized": false,
+      "trainingAuthorized": false,
+      "routeEligibleToday": false
+    },
+    {
+      "id": "multimodal-safety",
+      "displayName": "Multimodal and safety models",
+      "representativeClasses": [
+        "Gemma variants",
+        "Shield models",
+        "OCR/VL/audio"
+      ],
+      "licenseGate": "license-and-safety-review-required",
+      "role": "safety/support candidate",
+      "installAuthorized": false,
+      "downloadAuthorized": false,
+      "inferenceAuthorized": false,
+      "providerCallAuthorized": false,
+      "trainingAuthorized": false,
+      "routeEligibleToday": false
+    },
+    {
+      "id": "provider-routed",
+      "displayName": "External provider models",
+      "representativeClasses": [
+        "OpenAI",
+        "Anthropic",
+        "Gemini",
+        "Qwen API",
+        "Mistral API"
+      ],
+      "licenseGate": "backend-secret-review-required",
+      "role": "server-only provider candidate",
+      "installAuthorized": false,
+      "downloadAuthorized": false,
+      "inferenceAuthorized": false,
+      "providerCallAuthorized": false,
+      "trainingAuthorized": false,
+      "routeEligibleToday": false
+    },
+    {
+      "id": "seis-512b-apex",
+      "displayName": "Future SEIS 512B AGI research target",
+      "representativeClasses": [
+        "512B",
+        "highest-future"
+      ],
+      "licenseGate": "research-gate-only",
+      "role": "not routeable",
+      "installAuthorized": false,
+      "downloadAuthorized": false,
+      "inferenceAuthorized": false,
+      "providerCallAuthorized": false,
+      "trainingAuthorized": false,
+      "routeEligibleToday": false
+    }
+  ],
+  "approvalStages": [
+    "family discovery",
+    "exact model id and revision selection",
+    "license and acceptable-use review",
+    "checkpoint checksum and provenance",
+    "hardware and cost estimate",
+    "dataset card and clean-room provenance for training",
+    "model card or adapter card",
+    "benchmark plan and stop condition",
+    "security review and no-secret logging",
+    "human approval before install, inference, fine-tune, push, merge, or release"
+  ],
+  "allowedToday": {
+    "metadataCatalog": true,
+    "localDemo": true,
+    "deterministicSeedModels": true,
+    "retrievalPlanning": true,
+    "modelInstall": false,
+    "checkpointDownload": false,
+    "inference": false,
+    "providerCalls": false,
+    "sft": false,
+    "lora": false,
+    "fullFineTune": false,
+    "foundationPretraining": false,
+    "benchmarkExecution": false,
+    "githubPushOrMerge": false,
+    "agiClaim": false
+  },
+  "publicClaimBoundary": {
+    "canClaimCatalogExists": true,
+    "canClaimAllModelsInstalled": false,
+    "canClaimTrainingExecuted": false,
+    "canClaimAnyCheckpointDownloaded": false,
+    "canClaimProviderAccessVerified": false,
+    "canClaim20bRuntimeReady": false,
+    "canClaim512bRouteEligible": false,
+    "canClaimSEISOwnedFoundationModel": false,
+    "canClaimRealAgi": false
+  },
+  "nextSafeActions": [
+    "Keep adding model families as metadata records only until exact model approval exists.",
+    "Prioritize retrieval/embedding evaluation before any LLM install.",
+    "Use the local runtime matrix to decide whether a model is only metadata, approval-required, benchmark-required, or blocked.",
+    "Create separate model cards, dataset cards, and benchmark manifests before any adapter or fine-tune experiment."
+  ]
+}

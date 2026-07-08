@@ -16,6 +16,10 @@ const checks = [
     command: ["npm", "run", "check:seis-language-model-intake"]
   },
   {
+    id: "ai-model-ecosystem-catalog",
+    command: ["npm", "run", "check:seis-ai-model-ecosystem-catalog"]
+  },
+  {
     id: "local-ai-runtime-matrix",
     command: ["npm", "run", "check:seis-local-ai-runtime-matrix"]
   },
@@ -50,6 +54,10 @@ const checks = [
   {
     id: "agi-fresh-clone-readiness-plan",
     command: ["npm", "run", "check:seis-agi-github-fresh-clone-readiness-plan"]
+  },
+  {
+    id: "ai-github-fresh-clone-local-smoke",
+    command: ["npm", "run", "check:seis-ai-github-fresh-clone-local-smoke"]
   },
   {
     id: "public-ai-readiness",

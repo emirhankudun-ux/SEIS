@@ -17,11 +17,16 @@ Machine-readable source:
 Language Model Intake Registry:
 `content/development/seis-language-model-intake-registry.json`.
 
+SEIS AI Model Ecosystem Catalog:
+`content/development/seis-ai-model-ecosystem-catalog.json`.
+
 Validation:
 
 ```bash
 npm run check:seis-ai-workforce-training
 npm run check:seis-language-model-intake
+npm run report:seis-ai-model-ecosystem-catalog
+npm run check:seis-ai-model-ecosystem-catalog
 npm run report:seis-local-ai-runtime-matrix
 npm run check:seis-local-ai-runtime-matrix
 npm run report:seis-agi-github-fresh-clone-readiness-plan
@@ -43,6 +48,7 @@ npm run automation:seis-ai-workforce-training
 | Workforce assignments | Documented | `content/development/ai-workforce-assignments.json` | Codex remains the only writer by default. | Keep secondary assistants in reviewer/draft mode. |
 | Training control plane | Active local contract | `content/development/seis-ai-workforce-training-plan.json` | No live provider calls, SSH, deployment, dataset download, or cloud fine-tuning. | Run the local validator and seed training runner. |
 | Language model intake | Active metadata-only contract | `content/development/seis-language-model-intake-registry.json` | This is not bulk installation and grants no download, fine-tune, training, runtime, or AGI authority. | Review one specific model family at a time with license, hardware, model-card, dataset-card, benchmark, and approval gates. |
+| Model ecosystem catalog | Active metadata-only catalog | `content/development/seis-ai-model-ecosystem-catalog.json` | Tracks Llama, Qwen, Gemma, Mistral, DeepSeek, Phi, gpt-oss, embeddings, code, multimodal/safety, provider-routed, and 512B research lanes without install, inference, training, or AGI claims. | Keep adding families as metadata, then promote only exact model ids through approval gates. |
 | Seed models | Local deterministic lab | `packages/seis-ai/data/*`, `packages/seis-ai/models/*` | Runtime authority remains false. | Rebuild artifacts and promotion policy after accepted case updates. |
 | Live providers | Disabled or missing key unless verified | `content/development/seis-ai-core-provider-registry.json` | Missing Key is not Error, and no browser secrets are allowed. | Add server-only adapters only after typed validation exists. |
 
@@ -74,6 +80,31 @@ The registry answers the request to evaluate broad model families without
 blindly installing everything. It tracks Llama, Qwen, Gemma, Mistral, DeepSeek,
 OpenAI open-weight candidates, embeddings/rerankers, and code-specialist
 families as metadata-only candidates.
+
+## SEIS AI Model Ecosystem Catalog
+
+The model ecosystem catalog is the broader GitHub-ready view of all major model
+lanes SEIS should care about. It records local/open-weight families, external
+provider-routed families, embedding/reranker candidates, code-specialist
+families, multimodal/safety helpers, and the future 512B SEIS AGI research gate.
+
+```bash
+npm run report:seis-ai-model-ecosystem-catalog
+npm run check:seis-ai-model-ecosystem-catalog
+```
+
+Generated outputs:
+
+- `content/development/seis-ai-model-ecosystem-catalog.json`
+- `docs/ai/seis-ai-model-ecosystem-catalog.md`
+- `reports/seis-model-scaling/seis-ai-model-ecosystem-catalog.json`
+- `reports/seis-model-scaling/seis-ai-model-ecosystem-catalog.md`
+
+The catalog is intentionally non-executable. It authorizes zero installs, zero
+checkpoint downloads, zero inference routes, zero provider calls, zero training
+runs, and zero AGI claims. Each exact model id still needs license review,
+checksum/provenance, hardware budget, dataset/model card, benchmark plan,
+rollback plan, security review, and human approval.
 
 This is retrieval first and model-install second:
 

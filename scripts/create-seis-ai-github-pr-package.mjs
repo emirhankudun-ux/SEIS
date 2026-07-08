@@ -13,10 +13,22 @@ const files = {
   docs: "docs/ai/seis-ai-github-pr-package.md",
   reportMd: "reports/seis-model-scaling/seis-ai-github-pr-package.md",
   reportJson: "reports/seis-model-scaling/seis-ai-github-pr-package.json",
+  gitignore: ".gitignore",
   packageJson: "package.json",
   aiWorkforceDoc: "docs/ai/ai-workforce-training.md",
   githubReadinessDoc: "docs/ai/seis-agi-github-user-readiness-gates.md",
+  languageModelIntakeCheck: "scripts/check-seis-language-model-intake.mjs",
+  modelEcosystemCatalog: "content/development/seis-ai-model-ecosystem-catalog.json",
+  modelEcosystemCatalogDocs: "docs/ai/seis-ai-model-ecosystem-catalog.md",
+  modelEcosystemCatalogReportJson: "reports/seis-model-scaling/seis-ai-model-ecosystem-catalog.json",
+  modelEcosystemCatalogReportMd: "reports/seis-model-scaling/seis-ai-model-ecosystem-catalog.md",
+  modelEcosystemCatalogScript: "scripts/create-seis-ai-model-ecosystem-catalog.mjs",
   freshClonePlan: "content/development/seis-agi-github-fresh-clone-readiness-plan.json",
+  freshCloneLocalSmoke: "content/development/seis-ai-github-fresh-clone-local-smoke.json",
+  freshCloneLocalSmokeDocs: "docs/ai/seis-ai-github-fresh-clone-local-smoke.md",
+  freshCloneLocalSmokeReportJson: "reports/seis-model-scaling/seis-ai-github-fresh-clone-local-smoke.json",
+  freshCloneLocalSmokeReportMd: "reports/seis-model-scaling/seis-ai-github-fresh-clone-local-smoke.md",
+  freshCloneLocalSmokeScript: "scripts/create-seis-ai-github-fresh-clone-local-smoke.mjs",
   publicReadiness: "content/development/seis-agi-public-readiness-evidence.json",
   pluginMcpContinuityMap: "content/development/seis-plugin-mcp-ten-year-continuity-map.json",
   pluginMcpContinuityReportJson: "reports/seis-public-demo/plugin-mcp-ten-year-continuity-map-latest.json",
@@ -27,7 +39,8 @@ const files = {
   stagingDryRun: "content/development/seis-ai-pr-staging-dry-run.json",
   stagingDryRunDocs: "docs/ai/seis-ai-pr-staging-dry-run.md",
   stagingDryRunReport: "reports/seis-model-scaling/seis-ai-pr-staging-dry-run.md",
-  stagingDryRunScript: "scripts/create-seis-ai-pr-staging-dry-run.mjs"
+  stagingDryRunScript: "scripts/create-seis-ai-pr-staging-dry-run.mjs",
+  ciWorkflow: ".github/workflows/seis-ai.yml"
 };
 
 const generatedOutputs = new Set([
@@ -35,6 +48,14 @@ const generatedOutputs = new Set([
   files.docs,
   files.reportMd,
   files.reportJson,
+  files.modelEcosystemCatalog,
+  files.modelEcosystemCatalogDocs,
+  files.modelEcosystemCatalogReportJson,
+  files.modelEcosystemCatalogReportMd,
+  files.freshCloneLocalSmoke,
+  files.freshCloneLocalSmokeDocs,
+  files.freshCloneLocalSmokeReportJson,
+  files.freshCloneLocalSmokeReportMd,
   files.stagingDryRun,
   files.stagingDryRunDocs,
   files.stagingDryRunReport
@@ -45,12 +66,14 @@ const generatedAt = existing?.generatedAt || new Date().toISOString();
 const packageJson = readJson(files.packageJson, "package.json");
 const freshClonePlan = readJson(files.freshClonePlan, "fresh-clone readiness plan");
 const publicReadiness = readJson(files.publicReadiness, "AGI public readiness evidence");
+const modelEcosystemCatalog = readJson(files.modelEcosystemCatalog, "AI model ecosystem catalog");
 const pluginMcpContinuityMap = readJson(files.pluginMcpContinuityMap, "Plugin/MCP ten-year continuity map");
 const pluginMcpContinuityReport = readJson(files.pluginMcpContinuityReportJson, "Plugin/MCP ten-year continuity report");
 const aiWorkforceDoc = readText(files.aiWorkforceDoc);
 const githubReadinessDoc = readText(files.githubReadinessDoc);
+const ciWorkflow = readText(files.ciWorkflow);
 
-if (!packageJson || !freshClonePlan || !publicReadiness || !pluginMcpContinuityMap || !pluginMcpContinuityReport) finish();
+if (!packageJson || !freshClonePlan || !publicReadiness || !modelEcosystemCatalog || !pluginMcpContinuityMap || !pluginMcpContinuityReport) finish();
 
 const prPackage = buildPackage();
 const report = buildReport(prPackage);
@@ -88,15 +111,22 @@ function buildPackage() {
     reportCommand: "npm run report:seis-ai-github-pr-package",
     purpose: "Define the AI plus Plugin/MCP readiness PR package needed to move SEIS toward GitHub-ready local-demo review without mixing unrelated dirty worktree changes.",
     sourceOfTruth: {
+      modelEcosystemCatalog: files.modelEcosystemCatalog,
       freshCloneReadinessPlan: files.freshClonePlan,
+      freshCloneLocalSmoke: files.freshCloneLocalSmoke,
+      gitignore: files.gitignore,
       publicReadinessEvidence: files.publicReadiness,
       pluginMcpContinuityMap: files.pluginMcpContinuityMap,
       pluginMcpContinuityReportJson: files.pluginMcpContinuityReportJson,
       pluginMcpContinuityDoc: files.pluginMcpContinuityDoc,
       stagingDryRun: files.stagingDryRun,
+      languageModelIntakeCheck: files.languageModelIntakeCheck,
       aiReadinessChain: files.readinessChain,
+      modelEcosystemCatalogScript: files.modelEcosystemCatalogScript,
       pluginMcpContinuityScript: files.pluginMcpContinuityScript,
       publicReadinessCheck: files.publicReadinessCheck,
+      freshCloneLocalSmokeScript: files.freshCloneLocalSmokeScript,
+      ciWorkflow: files.ciWorkflow,
       docs: files.docs
     },
     currentDecision: {
@@ -106,18 +136,31 @@ function buildPackage() {
       safeToMergeNow: false,
       reasonPushBlocked: "The worktree contains unrelated modified and untracked files. Stage only the selected AI files in a clean review branch before push."
     },
-    selectedAiFiles: [
+    selectedAiFiles: uniqueFileRows([
       fileRow("package.json", "script wiring for AI readiness checks"),
+      fileRow(".gitignore", "tracked report JSON allowlist for AI readiness evidence"),
+      fileRow("scripts/check-seis-language-model-intake.mjs", "language model intake guardrail linked to the model ecosystem catalog"),
       fileRow("scripts/create-seis-local-ai-runtime-matrix.mjs", "local AI runtime matrix generator"),
       fileRow("content/development/seis-local-ai-runtime-matrix.json", "local runtime matrix source record"),
       fileRow("docs/ai/seis-local-ai-runtime-matrix.md", "local runtime matrix docs"),
       fileRow("reports/seis-model-scaling/seis-local-ai-runtime-matrix.md", "local runtime matrix markdown report"),
+      fileRow("scripts/create-seis-ai-model-ecosystem-catalog.mjs", "AI model ecosystem catalog generator and validator"),
+      fileRow("content/development/seis-ai-model-ecosystem-catalog.json", "AI model ecosystem metadata catalog"),
+      fileRow("docs/ai/seis-ai-model-ecosystem-catalog.md", "AI model ecosystem catalog docs"),
+      fileRow("reports/seis-model-scaling/seis-ai-model-ecosystem-catalog.json", "AI model ecosystem catalog JSON report"),
+      fileRow("reports/seis-model-scaling/seis-ai-model-ecosystem-catalog.md", "AI model ecosystem catalog markdown report"),
       fileRow("scripts/check-seis-public-ai-readiness.mjs", "public AI claim and source-of-truth guardrail"),
       fileRow("scripts/check-seis-ai-github-readiness-chain.mjs", "one-command local AI GitHub readiness chain"),
       fileRow("scripts/create-seis-agi-github-fresh-clone-readiness-plan.mjs", "fresh-clone readiness plan generator"),
       fileRow("content/development/seis-agi-github-fresh-clone-readiness-plan.json", "fresh-clone readiness plan source record"),
       fileRow("docs/ai/seis-agi-github-fresh-clone-readiness-plan.md", "fresh-clone readiness docs"),
+      fileRow("reports/seis-model-scaling/seis-agi-github-fresh-clone-readiness-plan.json", "fresh-clone readiness JSON report"),
       fileRow("reports/seis-model-scaling/seis-agi-github-fresh-clone-readiness-plan.md", "fresh-clone readiness markdown report"),
+      fileRow("scripts/create-seis-ai-github-fresh-clone-local-smoke.mjs", "fresh-clone local smoke generator and validator"),
+      fileRow("content/development/seis-ai-github-fresh-clone-local-smoke.json", "fresh-clone local smoke source record"),
+      fileRow("docs/ai/seis-ai-github-fresh-clone-local-smoke.md", "fresh-clone local smoke docs"),
+      fileRow("reports/seis-model-scaling/seis-ai-github-fresh-clone-local-smoke.json", "fresh-clone local smoke JSON report"),
+      fileRow("reports/seis-model-scaling/seis-ai-github-fresh-clone-local-smoke.md", "fresh-clone local smoke markdown report"),
       fileRow("scripts/create-seis-plugin-mcp-ten-year-continuity-map.mjs", "Plugin/MCP ten-year continuity map generator"),
       fileRow("content/development/seis-plugin-mcp-ten-year-continuity-map.json", "Plugin/MCP continuity source contract"),
       fileRow("docs/platform/seis-plugin-mcp-ten-year-continuity-map.md", "Plugin/MCP continuity platform docs"),
@@ -125,15 +168,18 @@ function buildPackage() {
       fileRow("reports/seis-public-demo/plugin-mcp-ten-year-continuity-map-latest.md", "Plugin/MCP continuity markdown report"),
       fileRow("docs/ai/ai-workforce-training.md", "AI workforce docs with no-key readiness commands"),
       fileRow("docs/ai/seis-agi-github-user-readiness-gates.md", "GitHub user readiness docs with blocker commands"),
-      fileRow("content/development/seis-ai-github-pr-package.json", "this AI-only PR package contract"),
-      fileRow("docs/ai/seis-ai-github-pr-package.md", "human-readable AI-only PR package docs"),
-      fileRow("reports/seis-model-scaling/seis-ai-github-pr-package.md", "AI-only PR package markdown report"),
-      fileRow("scripts/create-seis-ai-github-pr-package.mjs", "AI-only PR package generator and validator"),
-      fileRow("scripts/create-seis-ai-pr-staging-dry-run.mjs", "AI-only staging dry-run generator and validator"),
-      fileRow("content/development/seis-ai-pr-staging-dry-run.json", "AI-only staging dry-run source record"),
-      fileRow("docs/ai/seis-ai-pr-staging-dry-run.md", "AI-only staging dry-run docs"),
-      fileRow("reports/seis-model-scaling/seis-ai-pr-staging-dry-run.md", "AI-only staging dry-run markdown report")
-    ],
+      fileRow(".github/workflows/seis-ai.yml", "no-key AI plus Plugin/MCP GitHub Actions readiness workflow"),
+      fileRow("content/development/seis-ai-github-pr-package.json", "this AI plus Plugin/MCP PR package contract"),
+      fileRow("docs/ai/seis-ai-github-pr-package.md", "human-readable AI plus Plugin/MCP PR package docs"),
+      fileRow("reports/seis-model-scaling/seis-ai-github-pr-package.json", "AI plus Plugin/MCP PR package JSON report"),
+      fileRow("reports/seis-model-scaling/seis-ai-github-pr-package.md", "AI plus Plugin/MCP PR package markdown report"),
+      fileRow("scripts/create-seis-ai-github-pr-package.mjs", "AI plus Plugin/MCP PR package generator and validator"),
+      fileRow("scripts/create-seis-ai-pr-staging-dry-run.mjs", "AI plus Plugin/MCP staging dry-run generator and validator"),
+      fileRow("content/development/seis-ai-pr-staging-dry-run.json", "AI plus Plugin/MCP staging dry-run source record"),
+      fileRow("docs/ai/seis-ai-pr-staging-dry-run.md", "AI plus Plugin/MCP staging dry-run docs"),
+      fileRow("reports/seis-model-scaling/seis-ai-pr-staging-dry-run.json", "AI plus Plugin/MCP staging dry-run JSON report"),
+      fileRow("reports/seis-model-scaling/seis-ai-pr-staging-dry-run.md", "AI plus Plugin/MCP staging dry-run markdown report")
+    ]),
     excludedDirtyPatterns: [
       "apps/web/*",
       "docs/product/*",
@@ -145,8 +191,11 @@ function buildPackage() {
     requiredValidation: [
       "npm run report:seis-ai-github-pr-package",
       "npm run check:seis-ai-github-pr-package",
+      "npm run report:seis-ai-model-ecosystem-catalog",
+      "npm run check:seis-ai-model-ecosystem-catalog",
       "npm run report:seis-ai-pr-staging-dry-run",
       "npm run check:seis-ai-pr-staging-dry-run",
+      "npm run check:seis-ai-github-fresh-clone-local-smoke",
       "npm run check:seis-ai-github-readiness-chain",
       "npm run check:seis-plugin-mcp-ten-year-continuity-map",
       "npm run check:seis-public-ai-readiness",
@@ -215,6 +264,12 @@ function fileRow(pathName, purpose) {
   };
 }
 
+function uniqueFileRows(rows) {
+  const byPath = new Map();
+  for (const row of rows) byPath.set(row.path, row);
+  return [...byPath.values()];
+}
+
 function buildReport(prPackage) {
   const missingSelectedFiles = prPackage.selectedAiFiles.filter((item) => !item.exists).map((item) => item.path);
   return {
@@ -248,28 +303,50 @@ function validate(prPackage, report) {
   ensure(prPackage.currentDecision.safeToMergeNow === false, "package must keep safeToMergeNow false");
   ensureArrayIncludesAll(prPackage.selectedAiFiles.map((item) => item.path), [
     "package.json",
+    ".gitignore",
+    "scripts/check-seis-language-model-intake.mjs",
     "scripts/check-seis-ai-github-readiness-chain.mjs",
     "scripts/check-seis-public-ai-readiness.mjs",
+    "scripts/create-seis-ai-model-ecosystem-catalog.mjs",
+    "content/development/seis-ai-model-ecosystem-catalog.json",
+    "docs/ai/seis-ai-model-ecosystem-catalog.md",
+    "reports/seis-model-scaling/seis-ai-model-ecosystem-catalog.json",
+    "reports/seis-model-scaling/seis-ai-model-ecosystem-catalog.md",
     "scripts/create-seis-agi-github-fresh-clone-readiness-plan.mjs",
     "content/development/seis-agi-github-fresh-clone-readiness-plan.json",
     "docs/ai/seis-agi-github-fresh-clone-readiness-plan.md",
+    "reports/seis-model-scaling/seis-agi-github-fresh-clone-readiness-plan.json",
+    "scripts/create-seis-ai-github-fresh-clone-local-smoke.mjs",
+    "content/development/seis-ai-github-fresh-clone-local-smoke.json",
+    "docs/ai/seis-ai-github-fresh-clone-local-smoke.md",
+    "reports/seis-model-scaling/seis-ai-github-fresh-clone-local-smoke.json",
+    "reports/seis-model-scaling/seis-ai-github-fresh-clone-local-smoke.md",
     "scripts/create-seis-plugin-mcp-ten-year-continuity-map.mjs",
     "content/development/seis-plugin-mcp-ten-year-continuity-map.json",
     "docs/platform/seis-plugin-mcp-ten-year-continuity-map.md",
     "reports/seis-public-demo/plugin-mcp-ten-year-continuity-map-latest.json",
     "reports/seis-public-demo/plugin-mcp-ten-year-continuity-map-latest.md",
+    ".github/workflows/seis-ai.yml",
     "docs/ai/ai-workforce-training.md",
     "docs/ai/seis-agi-github-user-readiness-gates.md",
+    "content/development/seis-ai-github-pr-package.json",
+    "docs/ai/seis-ai-github-pr-package.md",
+    "reports/seis-model-scaling/seis-ai-github-pr-package.md",
     "scripts/create-seis-ai-github-pr-package.mjs",
     "scripts/create-seis-ai-pr-staging-dry-run.mjs",
     "content/development/seis-ai-pr-staging-dry-run.json",
     "docs/ai/seis-ai-pr-staging-dry-run.md",
+    "reports/seis-model-scaling/seis-ai-github-pr-package.json",
+    "reports/seis-model-scaling/seis-ai-pr-staging-dry-run.json",
     "reports/seis-model-scaling/seis-ai-pr-staging-dry-run.md"
   ], "selectedAiFiles");
   ensure(prPackage.selectedAiFiles.every((item) => item.exists === true), "all selected AI files must exist");
   ensureArrayIncludesAll(prPackage.requiredValidation, [
     "npm run check:seis-ai-github-pr-package",
+    "npm run report:seis-ai-model-ecosystem-catalog",
     "npm run check:seis-ai-pr-staging-dry-run",
+    "npm run check:seis-ai-model-ecosystem-catalog",
+    "npm run check:seis-ai-github-fresh-clone-local-smoke",
     "npm run check:seis-ai-github-readiness-chain",
     "npm run check:seis-plugin-mcp-ten-year-continuity-map",
     "npm run check:seis-public-ai-readiness"
@@ -299,16 +376,37 @@ function validate(prPackage, report) {
   ensure(report.summary.realAgiClaimAllowed === false, "report must keep real AGI claim false");
   ensure(packageJson.scripts?.["check:seis-ai-github-pr-package"] === "node scripts/create-seis-ai-github-pr-package.mjs", "package.json must expose AI GitHub PR package check");
   ensure(packageJson.scripts?.["report:seis-ai-github-pr-package"] === "node scripts/create-seis-ai-github-pr-package.mjs --write", "package.json must expose AI GitHub PR package report");
+  ensure(packageJson.scripts?.["check:seis-ai-model-ecosystem-catalog"] === "node scripts/create-seis-ai-model-ecosystem-catalog.mjs", "package.json must expose model ecosystem catalog check");
+  ensure(packageJson.scripts?.["report:seis-ai-model-ecosystem-catalog"] === "node scripts/create-seis-ai-model-ecosystem-catalog.mjs --write", "package.json must expose model ecosystem catalog report");
   ensure(packageJson.scripts?.["check:seis-ai-pr-staging-dry-run"] === "node scripts/create-seis-ai-pr-staging-dry-run.mjs", "package.json must expose AI PR staging dry-run check");
+  ensure(packageJson.scripts?.["check:seis-ai-github-fresh-clone-local-smoke"] === "node scripts/create-seis-ai-github-fresh-clone-local-smoke.mjs", "package.json must expose fresh-clone local smoke check");
   ensure(packageJson.scripts?.["report:seis-ai-pr-staging-dry-run"] === "node scripts/create-seis-ai-pr-staging-dry-run.mjs --write", "package.json must expose AI PR staging dry-run report");
   ensure(packageJson.scripts?.["check:seis-plugin-mcp-ten-year-continuity-map"] === "node scripts/create-seis-plugin-mcp-ten-year-continuity-map.mjs --check", "package.json must expose Plugin/MCP continuity check");
   ensure(String(packageJson.scripts?.["quality:governance"] || "").includes("check:seis-ai-github-pr-package"), "quality:governance must include AI GitHub PR package check");
+  ensure(String(packageJson.scripts?.["quality:governance"] || "").includes("check:seis-ai-model-ecosystem-catalog"), "quality:governance must include model ecosystem catalog check");
   ensure(String(packageJson.scripts?.["quality:governance"] || "").includes("check:seis-ai-pr-staging-dry-run"), "quality:governance must include AI PR staging dry-run check");
+  ensure(String(packageJson.scripts?.["quality:governance"] || "").includes("check:seis-ai-github-fresh-clone-local-smoke"), "quality:governance must include fresh-clone local smoke check");
+  ensure(String(packageJson.scripts?.["quality:governance"] || "").includes("check:seis-ai-model-ecosystem-catalog"), "quality:governance must include model ecosystem catalog check");
   ensure(String(packageJson.scripts?.["quality:governance"] || "").includes("check:seis-plugin-mcp-ten-year-continuity-map"), "quality:governance must include Plugin/MCP continuity check");
   ensure(freshClonePlan.oneCommandCandidate?.command === "npm run check:seis-ai-github-readiness-chain", "fresh-clone plan must use AI GitHub readiness chain as one-command candidate");
+  ensure(freshClonePlan.sourceOfTruth?.modelEcosystemCatalog === files.modelEcosystemCatalog, "fresh-clone plan must link model ecosystem catalog");
+  ensure(freshClonePlan.commandPlan?.includes("npm run check:seis-ai-model-ecosystem-catalog"), "fresh-clone plan must include model ecosystem catalog in command plan");
+  ensure(modelEcosystemCatalog.qualityGate === "npm run check:seis-ai-model-ecosystem-catalog", "model ecosystem catalog quality gate mismatch");
+  ensure(modelEcosystemCatalog.publicClaimBoundary?.canClaimAllModelsInstalled === false, "model ecosystem catalog must block all-model install claims");
+  ensure(modelEcosystemCatalog.publicClaimBoundary?.canClaimTrainingExecuted === false, "model ecosystem catalog must block training claims");
+  ensure(modelEcosystemCatalog.publicClaimBoundary?.canClaim512bRouteEligible === false, "model ecosystem catalog must block 512B route claims");
+  ensure(modelEcosystemCatalog.publicClaimBoundary?.canClaimRealAgi === false, "model ecosystem catalog must block real AGI claims");
+  ensure(freshClonePlan.sourceOfTruth?.freshCloneLocalSmoke === files.freshCloneLocalSmoke, "fresh-clone plan must link fresh-clone local smoke");
   ensure(freshClonePlan.sourceOfTruth?.pluginMcpContinuityMap === files.pluginMcpContinuityMap, "fresh-clone plan must link Plugin/MCP continuity map");
+  ensure(freshClonePlan.sourceOfTruth?.aiPrStagingDryRun === files.stagingDryRun, "fresh-clone plan must link AI PR staging dry-run");
+  ensure(freshClonePlan.commandPlan?.includes("npm run check:seis-ai-pr-staging-dry-run"), "fresh-clone plan must include AI PR staging dry-run in command plan");
   ensure(pluginMcpContinuityMap.qualityGate === "npm run check:seis-plugin-mcp-ten-year-continuity-map", "Plugin/MCP continuity quality gate mismatch");
   ensure(pluginMcpContinuityReport.validation?.aiGithubReadinessChain === "npm run check:seis-ai-github-readiness-chain", "Plugin/MCP continuity must link AI GitHub readiness chain");
+  ensure(ciWorkflow.includes("check:seis-ai-github-readiness-chain"), "CI workflow must include AI GitHub readiness chain");
+  ensure(ciWorkflow.includes("check:seis-ai-model-ecosystem-catalog"), "CI workflow must include model ecosystem catalog check");
+  ensure(ciWorkflow.includes("check:seis-ai-github-fresh-clone-local-smoke"), "CI workflow must include fresh-clone local smoke check");
+  ensure(ciWorkflow.includes("check:seis-plugin-mcp-ten-year-continuity-map"), "CI workflow must include Plugin/MCP continuity check");
+  ensure(ciWorkflow.includes("check:seis-ai-pr-staging-dry-run"), "CI workflow must include staging dry-run check");
   ensure(publicReadiness.publicReadyAsAgi === false, "public readiness must keep AGI public-ready false");
   ensure(aiWorkforceDoc.includes("check:seis-ai-github-readiness-chain"), "AI workforce docs must mention readiness chain");
   ensure(githubReadinessDoc.includes("check:seis-ai-github-readiness-chain"), "GitHub readiness docs must mention readiness chain");

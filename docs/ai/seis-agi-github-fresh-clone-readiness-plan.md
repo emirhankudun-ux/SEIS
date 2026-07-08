@@ -19,6 +19,8 @@ SSH, deployment, push, merge, or release.
 ```bash
 npm run report:seis-agi-github-fresh-clone-readiness-plan
 npm run check:seis-agi-github-fresh-clone-readiness-plan
+npm run check:seis-ai-model-ecosystem-catalog
+npm run check:seis-ai-github-fresh-clone-local-smoke
 npm run check:seis-plugin-mcp-ten-year-continuity-map
 npm run check:seis-ai-github-readiness-chain
 ```
