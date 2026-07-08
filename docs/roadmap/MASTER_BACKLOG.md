@@ -9,6 +9,12 @@ browser-local, no-key starter vault manifest and guide generated from
 repo-owned seed notes only. It remains separate from private Obsidian import,
 plugin install, `.obsidian` workspace copy, provider routing, SSH, deployment,
 GitHub mutation, merge, and release approval.
+Second Brain AI council review note: `SEIS-BL-049` also covers the no-key AI
+council review pack, also called the AI council review pack, for all registered Second Brain AI profiles, launcher
+routes, managed sub-agent lanes, and the 12-agent roster. It remains review-only
+and cannot validate credentials, call providers, execute autonomous writes,
+import private Obsidian content, use SSH, deploy, mutate GitHub, merge, or
+approve release.
 
 | ID | Priority | Lane | Work | Acceptance evidence |
 | --- | --- | --- | --- | --- |

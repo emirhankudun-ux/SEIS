@@ -1430,6 +1430,7 @@ const SEIS_SECOND_BRAIN_SYSTEM = {
   publicContributorPackPath: "/home/seis/SecondBrain/08-public/seis-public-contributor-onboarding.md",
   obsidianStarterVaultManifestPath: "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json",
   obsidianStarterVaultGuidePath: "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md",
+  aiCouncilReviewPackPath: "/home/seis/SecondBrain/10-ai-council/seis-ai-council-review-pack.md",
   releaseReviewPacketPath: "reports/seis-public-demo/pr54-review-packet-latest.md",
   languageModelTrainingCurriculum: {
     status: "planned-training-contract",
@@ -1458,7 +1459,8 @@ const SEIS_SECOND_BRAIN_SYSTEM = {
       "human approval gates",
       "public demo release gates",
       "public contributor no-key onboarding",
-      "Obsidian starter vault no-private-import export"
+      "Obsidian starter vault no-private-import export",
+      "installed AI council review pack"
     ],
     launcherEvidence: [
       ["seis-agent", "installed", "seis-agent-policy-profile"],
@@ -1484,6 +1486,32 @@ const SEIS_SECOND_BRAIN_SYSTEM = {
   obsidianState: "Obsidian bridge planned",
   runtimeBoundary: "Browser-local Markdown vault and graph. No Obsidian plugin install, provider call, SSH, deployment, GitHub mutation, credential access, or autonomous write runtime.",
   labels: ["Local Demo", "Obsidian bridge planned", "No secrets", "Human review before GitHub"],
+  installedAiProfiles: [
+    "codex-operator",
+    "seis-local-demo",
+    "seis-agent-policy-profile",
+    "claude-review-profile",
+    "qwen-review-profile",
+    "gemini-validation-profile",
+    "ollama-local-profile",
+    "openai-general-profile",
+    "anthropic-claude-profile",
+    "chatgpt-review-profile",
+    "openrouter-provider-profile",
+    "cursor-ide-profile",
+    "xcode",
+    "github-copilot-profile",
+    "lm-studio-local-profile",
+    "open-design",
+    "antigravity",
+    "antigravity-ide",
+    "aider",
+    "interpreter",
+    "hermes",
+    "goose",
+    "kimi",
+    "opencode"
+  ],
   publicContributorOnboarding: {
     status: "local-demo-no-key",
     requiresApiKeys: false,
@@ -1509,6 +1537,20 @@ const SEIS_SECOND_BRAIN_SYSTEM = {
     providerCalls: false,
     githubMutation: false,
     humanApprovalBeforeImport: true
+  },
+  aiCouncilReviewPack: {
+    status: "local-demo-no-key",
+    source: "Second Brain installed AI profiles, launcher evidence, managed sub-agent lanes, and autonomous agent roster",
+    requiresApiKeys: false,
+    requiresProviderLogin: false,
+    requiresPrivateObsidianVault: false,
+    providerCalls: false,
+    credentialValidation: false,
+    autonomousWriteExecution: false,
+    sshExecution: false,
+    deployment: false,
+    githubMutation: false,
+    humanApprovalBeforeUse: true
   },
   vaultNotes: [
     {
@@ -2767,6 +2809,9 @@ function handleClick(event) {
       break;
     case "second-brain-obsidian-starter-vault":
       exportSecondBrainObsidianStarterVault();
+      break;
+    case "second-brain-ai-council-pack":
+      exportSecondBrainAiCouncilReviewPack();
       break;
     case "second-brain-review":
       reviewSecondBrainVault();
@@ -5113,6 +5158,7 @@ function renderSecondBrain() {
       <button type="button" data-action="second-brain-training-pack">Build Training Pack</button>
       <button type="button" data-action="second-brain-public-contributor-pack">Build Contributor Pack</button>
       <button type="button" data-action="second-brain-obsidian-starter-vault">Export Obsidian Starter Vault</button>
+      <button type="button" data-action="second-brain-ai-council-pack">Build AI Council Pack</button>
       <button type="button" data-action="second-brain-review">Run Review Gate</button>
       <button type="button" data-action="second-brain-export-github">Export GitHub Readiness</button>
       <button type="button" data-action="open-app" data-app-id="ai-assistant">Open SEIS AI</button>
@@ -5144,6 +5190,7 @@ function renderSecondBrain() {
       <article class="metric-card"><strong>Last Training Pack</strong><p>${data.lastTrainingPack?.time || "Not built yet"}</p></article>
       <article class="metric-card"><strong>Last Contributor Pack</strong><p>${data.lastContributorPack?.time || "Not built yet"}</p></article>
       <article class="metric-card"><strong>Last Obsidian Starter</strong><p>${data.lastObsidianStarterVault?.time || "Not exported yet"}</p></article>
+      <article class="metric-card"><strong>Last AI Council Pack</strong><p>${data.lastAiCouncilReviewPack?.time || "Not built yet"}</p></article>
       <article class="metric-card"><strong>Publish State</strong><p>Human review before GitHub</p></article>
     </div>
     <section class="second-brain-layout">
@@ -8962,6 +9009,101 @@ ${SEIS_SECOND_BRAIN_SYSTEM.runtimeBoundary}
 `;
 }
 
+function buildSecondBrainAiCouncilReviewPackMarkdown(timestamp) {
+  const registry = SEIS_SECOND_BRAIN_SYSTEM.registrySummary;
+  const profileRows = SEIS_SECOND_BRAIN_SYSTEM.installedAiProfiles.map((profile) => {
+    const routeEvidence = registry.launcherEvidence.find(([, , profileId]) => profileId === profile);
+    const route = routeEvidence?.[0] || "review-only";
+    const status = routeEvidence?.[1] || (profile === "seis-local-demo" ? "local-demo" : "review-only");
+    return `- ${profile}: ${status} / route=${route} / liveProviderRoute=false / credentialAccess=false`;
+  });
+  const launcherRows = registry.launcherEvidence.map(([route, status, profile]) => `- ${route}: ${status} / ${profile} / registryRequired=true / liveProviderRoute=false`);
+  const browserRows = SEIS_INSTALLED_AI_SYSTEMS.map((system) => `- ${system.name}: ${system.status} / ${system.role} / ${system.boundary}`);
+  const laneRows = SUB_AGENT_DEMO.lanes.map(([name, lane, tool, scope]) => `- ${name}: ${lane} / ${tool} / ${scope}`);
+  const agentRows = SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.map(([agent, status, duty]) => `- ${agent}: ${status} / ${duty}`);
+  const gates = [
+    "No private Obsidian vault import.",
+    "No provider call or credential validation.",
+    "No prompt body storage.",
+    "No autonomous write execution.",
+    "No SSH, deployment, GitHub mutation, merge, Pages publication, or release approval.",
+    "Human review is required before any external action."
+  ];
+
+  return `# SEIS Second Brain AI Council Review Pack
+
+Generated: ${timestamp}
+Mode: ${SEIS_SECOND_BRAIN_SYSTEM.aiCouncilReviewPack.status}
+Pack path: ${SEIS_SECOND_BRAIN_SYSTEM.aiCouncilReviewPackPath}
+Source contract: ${SEIS_SECOND_BRAIN_SYSTEM.sourcePath}
+Agent registry report: ${SEIS_SECOND_BRAIN_SYSTEM.agentRegistryReportPath}
+
+## Purpose
+
+This pack turns every registered SEIS Second Brain AI profile, launcher route, managed sub-agent lane, and autonomous agent duty into a browser-local review checklist. It is a no-key Local Demo artifact for GitHub reviewers and does not grant runtime authority.
+
+## Registered AI Profiles
+
+Observed registry AI profiles: ${registry.installedAiProfiles}
+
+${profileRows.join("\n")}
+
+## Launcher Evidence
+
+Launcher routes: ${registry.launcherRoutes}
+Installed launcher routes: ${registry.installedLauncherRoutes}
+Launcher command evidence: ${registry.launcherEvidenceCommand}
+
+${launcherRows.join("\n")}
+
+## Browser Runtime AI Fixtures
+
+Browser runtime AI fixtures: ${SEIS_INSTALLED_AI_SYSTEMS.length}
+
+${browserRows.join("\n")}
+
+## Managed Sub-Agent Lanes
+
+Managed sub-agent lanes: ${SUB_AGENT_DEMO.lanes.length}
+
+${laneRows.join("\n")}
+
+## Autonomous Agent Roster
+
+Autonomous agent roster: ${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length}
+
+${agentRows.join("\n")}
+
+## Obsidian And Second Brain Boundary
+
+- Obsidian bridge status: ${SEIS_SECOND_BRAIN_SYSTEM.obsidianState}.
+- Obsidian starter manifest: ${SEIS_SECOND_BRAIN_SYSTEM.obsidianStarterVaultManifestPath}
+- Obsidian starter guide: ${SEIS_SECOND_BRAIN_SYSTEM.obsidianStarterVaultGuidePath}
+- Private vault import: false
+- Obsidian plugin install: false
+- Private note body copy: false
+
+## Required Gates
+
+${gates.map((gate) => `- ${gate}`).join("\n")}
+
+## Safety Boundary
+
+- Requires API keys: ${SEIS_SECOND_BRAIN_SYSTEM.aiCouncilReviewPack.requiresApiKeys}
+- Requires provider login: ${SEIS_SECOND_BRAIN_SYSTEM.aiCouncilReviewPack.requiresProviderLogin}
+- Requires private Obsidian vault: ${SEIS_SECOND_BRAIN_SYSTEM.aiCouncilReviewPack.requiresPrivateObsidianVault}
+- Provider calls: ${SEIS_SECOND_BRAIN_SYSTEM.aiCouncilReviewPack.providerCalls}
+- Credential validation: ${SEIS_SECOND_BRAIN_SYSTEM.aiCouncilReviewPack.credentialValidation}
+- Autonomous write execution: ${SEIS_SECOND_BRAIN_SYSTEM.aiCouncilReviewPack.autonomousWriteExecution}
+- SSH execution: ${SEIS_SECOND_BRAIN_SYSTEM.aiCouncilReviewPack.sshExecution}
+- Deployment: ${SEIS_SECOND_BRAIN_SYSTEM.aiCouncilReviewPack.deployment}
+- GitHub mutation: ${SEIS_SECOND_BRAIN_SYSTEM.aiCouncilReviewPack.githubMutation}
+- Human approval before use: ${SEIS_SECOND_BRAIN_SYSTEM.aiCouncilReviewPack.humanApprovalBeforeUse}
+
+${SEIS_SECOND_BRAIN_SYSTEM.runtimeBoundary}
+`;
+}
+
 const SEIS_READ_ONLY_MODEL_ROUTER_CONTRACT = {
   blockedModelClasses: [
     "20B planned-not-validated",
@@ -9077,6 +9219,33 @@ function exportSecondBrainObsidianStarterVault() {
     copiesPrivateNoteBodies: false
   };
   const message = `Second Brain Obsidian starter vault saved to ${SEIS_SECOND_BRAIN_SYSTEM.obsidianStarterVaultManifestPath}.`;
+  getAppStatus("second-brain").lastAction = message;
+  log("second-brain", message);
+  saveState();
+  renderOpenWindows("second-brain");
+  renderOpenWindows("files");
+  renderOpenWindows("system-logs");
+  toast("SEIS Second Brain", message);
+}
+
+function exportSecondBrainAiCouncilReviewPack() {
+  const timestamp = new Date().toISOString();
+  const path = SEIS_SECOND_BRAIN_SYSTEM.aiCouncilReviewPackPath;
+  upsertFile(path, buildSecondBrainAiCouncilReviewPackMarkdown(timestamp));
+  const data = addSecondBrainActivity("AI Council Review Pack", "No-key Local Demo", `AI Council Review Pack saved to ${path}.`);
+  data.lastAiCouncilReviewPack = {
+    time: timestamp,
+    path,
+    installedAiProfiles: SEIS_SECOND_BRAIN_SYSTEM.registrySummary.installedAiProfiles,
+    launcherRoutes: SEIS_SECOND_BRAIN_SYSTEM.registrySummary.launcherRoutes,
+    installedLauncherRoutes: SEIS_SECOND_BRAIN_SYSTEM.registrySummary.installedLauncherRoutes,
+    managedSubAgentLanes: SUB_AGENT_DEMO.lanes.length,
+    autonomousAgentRoster: SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length,
+    providerCalls: false,
+    credentialValidation: false,
+    autonomousWriteExecution: false
+  };
+  const message = `Second Brain AI council review pack saved to ${path}.`;
   getAppStatus("second-brain").lastAction = message;
   log("second-brain", message);
   saveState();

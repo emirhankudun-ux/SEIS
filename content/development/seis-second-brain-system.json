@@ -12,6 +12,7 @@
   "publicContributorPackPath": "/home/seis/SecondBrain/08-public/seis-public-contributor-onboarding.md",
   "obsidianStarterVaultManifestPath": "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json",
   "obsidianStarterVaultGuidePath": "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md",
+  "aiCouncilReviewPackPath": "/home/seis/SecondBrain/10-ai-council/seis-ai-council-review-pack.md",
   "releaseReviewPacketPath": "reports/seis-public-demo/pr54-review-packet-latest.md",
   "obsidianSafeImportDryRunPath": "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json",
   "obsidianSafeImportDryRunMarkdownPath": "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md",
@@ -40,6 +41,7 @@
       "generate Second Brain agent registry artifacts under reports/seis-public-demo",
       "generate browser-local public contributor onboarding pack",
       "generate browser-local Obsidian starter vault manifest from repo-owned seed notes",
+      "generate browser-local installed AI council review pack",
       "record human-review-required GitHub readiness gates"
     ],
     "forbiddenToday": [
@@ -254,6 +256,7 @@
     "source": "repo-owned browser-local Second Brain records only",
     "trainingPackPath": "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md",
     "publicContributorPackPath": "/home/seis/SecondBrain/08-public/seis-public-contributor-onboarding.md",
+    "aiCouncilReviewPackPath": "/home/seis/SecondBrain/10-ai-council/seis-ai-council-review-pack.md",
     "requiredSections": [
       "installed AI launcher route coverage",
       "autonomous agent roster onboarding",
@@ -262,7 +265,8 @@
       "human approval gates",
       "public demo release gates",
       "public contributor no-key onboarding",
-      "Obsidian starter vault no-private-import export"
+      "Obsidian starter vault no-private-import export",
+      "installed AI council review pack"
     ],
     "installedAiCoverage": {
       "sourceContract": "content/development/ai-workforce-assignments.json",
@@ -337,6 +341,24 @@
     "githubMutation": false,
     "humanApprovalBeforeImport": true
   },
+  "aiCouncilReviewPack": {
+    "status": "local-demo-no-key",
+    "packPath": "/home/seis/SecondBrain/10-ai-council/seis-ai-council-review-pack.md",
+    "source": "Second Brain installed AI profiles, launcher evidence, managed sub-agent lanes, and autonomous agent roster",
+    "installedAiProfileCount": 24,
+    "managedSubAgentLaneCount": 6,
+    "autonomousAgentRosterCount": 12,
+    "requiresApiKeys": false,
+    "requiresProviderLogin": false,
+    "requiresPrivateObsidianVault": false,
+    "providerCalls": false,
+    "credentialValidation": false,
+    "autonomousWriteExecution": false,
+    "sshExecution": false,
+    "deployment": false,
+    "githubMutation": false,
+    "humanApprovalBeforeUse": true
+  },
   "pipeline": [
     {
       "step": "Capture",
@@ -367,6 +389,11 @@
       "step": "Obsidian Starter Vault",
       "status": "local-demo-no-key",
       "detail": "Generate a browser-local starter vault manifest and guide from repo-owned seed notes without reading private Obsidian vaults, installing plugins, or copying .obsidian state."
+    },
+    {
+      "step": "AI Council Review",
+      "status": "local-demo-no-key",
+      "detail": "Generate a browser-local installed AI council review pack covering every registered AI profile, launcher route, managed sub-agent lane, and autonomous agent duty without provider calls or external mutations."
     },
     {
       "step": "Publish",

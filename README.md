@@ -262,6 +262,13 @@ repo-owned seed notes only. This Obsidian starter vault is no-key and does not
 read a private vault, install plugins, copy `.obsidian` state, copy private
 note bodies, call providers, execute SSH, mutate GitHub, deploy, or approve
 publication.
+The browser-local `Build AI Council Pack` action writes the AI council review pack at
+`/home/seis/SecondBrain/10-ai-council/seis-ai-council-review-pack.md` so
+GitHub reviewers can inspect all registered Second Brain AI profiles, launcher
+routes, managed sub-agent lanes, browser AI fixtures, and the 12-agent roster
+without API keys, provider login, credential validation, private Obsidian
+import, autonomous writes, SSH, deployment, GitHub mutation, merge, or release
+approval.
 
 `npm run check:seis-public-demo-go-no-go -- --run-fast-checks` is the read-only
 public demo release gate. It is expected to report `NO-GO` until current browser

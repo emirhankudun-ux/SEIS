@@ -7,6 +7,11 @@ Second Brain readiness / agent registry lane. It produces only browser-local
 manifest and guide artifacts from repo-owned seed notes; it does not import
 private Obsidian vaults, install plugins, copy `.obsidian` state, call
 providers, execute SSH, mutate GitHub, deploy, merge, or approve release.
+The AI council review pack belongs in the same lane: it turns all registered
+Second Brain AI profiles, launcher routes, managed sub-agent lanes, and
+12-agent duties into a browser-local review artifact without provider
+credentials, private Obsidian import, autonomous writes, SSH, deployment,
+GitHub mutation, merge, or release approval.
 
 ## Current Recommended Product Demo Stack
 

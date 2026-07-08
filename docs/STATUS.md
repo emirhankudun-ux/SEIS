@@ -11,6 +11,11 @@ browser-local, no-key artifact path under
 notes only and does not import private Obsidian data, install plugins, copy
 `.obsidian` state, call providers, execute SSH, mutate GitHub, deploy, or
 approve release.
+The AI council review pack now adds a browser-local, no-key artifact under
+`/home/seis/SecondBrain/10-ai-council/` so reviewers can inspect every
+registered Second Brain AI profile, launcher route, managed sub-agent lane, and
+12-agent duty without provider credentials, private Obsidian import, autonomous
+writes, SSH, deployment, GitHub mutation, merge, or release approval.
 
 ## SEIS AI 512B Apex Status
 

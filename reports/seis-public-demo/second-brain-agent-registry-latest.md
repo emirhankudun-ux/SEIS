@@ -1,6 +1,6 @@
 # SEIS Second Brain Agent Registry
 
-Generated: 2026-07-08T10:25:49.578Z
+Generated: 2026-07-08T10:39:38.360Z
 Status: review-only-agent-registry
 Mode: repo-local-no-live-execution
 Decision: NO-GO-autonomous-execution-not-approved
@@ -31,6 +31,7 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 - publicContributorPackPath: browser-vfs/SecondBrain/08-public/seis-public-contributor-onboarding.md
 - obsidianStarterVaultManifestPath: browser-vfs/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json
 - obsidianStarterVaultGuidePath: browser-vfs/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md
+- aiCouncilReviewPackPath: browser-vfs/SecondBrain/10-ai-council/seis-ai-council-review-pack.md
 - obsidianBridgeStatus: planned
 - privateVaultImportEnabled: false
 - hostVaultReadEnabled: false
@@ -45,7 +46,8 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 - publicContributorPackPath: browser-vfs/SecondBrain/08-public/seis-public-contributor-onboarding.md
 - obsidianStarterVaultManifestPath: browser-vfs/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json
 - obsidianStarterVaultGuidePath: browser-vfs/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md
-- requiredSections: installed AI launcher route coverage, autonomous agent roster onboarding, Obsidian safe import boundary, provider-neutral read-only model router, human approval gates, public demo release gates, public contributor no-key onboarding, Obsidian starter vault no-private-import export
+- aiCouncilReviewPackPath: browser-vfs/SecondBrain/10-ai-council/seis-ai-council-review-pack.md
+- requiredSections: installed AI launcher route coverage, autonomous agent roster onboarding, Obsidian safe import boundary, provider-neutral read-only model router, human approval gates, public demo release gates, public contributor no-key onboarding, Obsidian starter vault no-private-import export, installed AI council review pack
 - installedAiCoverage: launcher routes=true, profiles=true, noLiveProviderCalls=true
 - autonomousAgentCoverage: requiredRosterCount=12, noWriteExecution=true, approvalBeforeExternalMutation=true
 - obsidianCoverage: bridgeStatus=planned, bodyImportPolicy=metadata-only-by-default, privateVaultReadAllowed=false, privateNoteBodyCopyAllowed=false, pluginInstallAllowed=false
