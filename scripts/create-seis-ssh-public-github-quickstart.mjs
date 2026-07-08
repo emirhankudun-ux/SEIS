@@ -145,6 +145,13 @@ function buildQuickstart() {
         claim: "Shows a secret-safe GitHub signing key path for verified signed commits without writing git config."
       },
       {
+        id: "review-bundle",
+        label: "Prepare public review bundle",
+        command: "npm run run:seis-ssh-public-review-bundle",
+        expectedSafeResult: "review-bundle-ready",
+        claim: "Collects the safe public SEIS-SSH evidence packet for GitHub review without raw SSH output."
+      },
+      {
         id: "live-ssh",
         label: "Live SSH only after approval",
         command: "ssh SEIS-SSH",
@@ -180,6 +187,7 @@ function buildQuickstart() {
         "npm run check:seis-ssh-public-merge-readiness",
         "npm run check:seis-ssh-public-github-policy",
         "npm run check:seis-ssh-public-signing-guide",
+        "npm run check:seis-ssh-public-review-bundle",
         "npm run check:seis-ssh-public-access",
         "npm run check:seis-ssh-public-support-packet"
       ],

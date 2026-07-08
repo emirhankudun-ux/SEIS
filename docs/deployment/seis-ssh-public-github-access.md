@@ -85,6 +85,8 @@ npm run check:seis-ssh-public-github-policy
 npm run report:seis-ssh-public-github-policy
 npm run check:seis-ssh-public-signing-guide
 npm run report:seis-ssh-public-signing-guide
+npm run check:seis-ssh-public-review-bundle
+npm run report:seis-ssh-public-review-bundle
 npm run check:seis-ssh-public-pr-template
 npm run check:seis-ssh-public-ci-workflow
 npm run check:seis-ssh-public-readiness-matrix
@@ -195,6 +197,14 @@ contributors a safe path to verified signed commits and GitHub signing key
 setup when required signatures are active. It does not contact GitHub, write
 git config, print signing keys, open live SSH, or change the same server and
 port.
+
+`npm run report:seis-ssh-public-review-bundle` writes the public review bundle
+to `reports/seis-ssh-public-access/review-bundle-latest.md`. This is the
+single best artifact for a GitHub reviewer or installed AI assistant to inspect
+the SEIS-SSH public path: it summarizes access, first-run, troubleshooting,
+support, quickstart, merge policy, signing, onboarding, and contributor doctor
+evidence without raw SSH output, full hostnames, IP addresses, credentials, live
+SSH, config writes, GitHub auth calls, or a server/port change.
 
 `npm run check:seis-ssh-public-pr-template` verifies that
 `.github/PULL_REQUEST_TEMPLATE.md` includes the `SEIS-SSH` review checklist,
@@ -314,6 +324,8 @@ npm run check:seis-ssh-public-support-packet
 npm run check:seis-ssh-public-github-quickstart
 npm run check:seis-ssh-public-merge-readiness
 npm run check:seis-ssh-public-github-policy
+npm run check:seis-ssh-public-signing-guide
+npm run check:seis-ssh-public-review-bundle
 npm run check:seis-ssh-public-pr-template
 npm run check:seis-ssh-public-ci-workflow
 npm run check:seis-ssh-public-artifact-hygiene

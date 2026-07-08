@@ -62,6 +62,7 @@ jobs:
           npm run check:seis-ssh-public-merge-readiness
           npm run check:seis-ssh-public-github-policy
           npm run check:seis-ssh-public-signing-guide
+          npm run check:seis-ssh-public-review-bundle
           npm run check:seis-ssh-public-support-packet
           npm run check:seis-ssh-public-readiness-matrix
           npm run check:seis-ssh-public-artifact-hygiene

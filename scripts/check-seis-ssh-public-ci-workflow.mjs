@@ -47,6 +47,7 @@ for (const token of [
   "npm run check:seis-ssh-public-merge-readiness",
   "npm run check:seis-ssh-public-github-policy",
   "npm run check:seis-ssh-public-signing-guide",
+  "npm run check:seis-ssh-public-review-bundle",
   "npm run check:seis-ssh-public-support-packet",
   "npm run check:seis-ssh-public-readiness-matrix",
   "npm run check:seis-ssh-public-artifact-hygiene",
@@ -77,16 +78,19 @@ ensure((contract?.evidenceSurfaces || []).includes("scripts/check-seis-ssh-publi
 ensure((contract?.evidenceSurfaces || []).includes("scripts/create-seis-ssh-public-merge-readiness.mjs"), "contract evidence surfaces must include the merge readiness report generator");
 ensure((contract?.evidenceSurfaces || []).includes("scripts/create-seis-ssh-public-github-policy-doctor.mjs"), "contract evidence surfaces must include the GitHub policy doctor generator");
 ensure((contract?.evidenceSurfaces || []).includes("scripts/create-seis-ssh-public-signing-guide.mjs"), "contract evidence surfaces must include the public signing guide generator");
+ensure((contract?.evidenceSurfaces || []).includes("scripts/create-seis-ssh-public-review-bundle.mjs"), "contract evidence surfaces must include the public review bundle generator");
 ensure((contract?.requiredCommands || []).includes("npm run check:seis-ssh-public-ci-workflow"), "contract required commands must include the CI workflow checker");
 ensure((contract?.requiredCommands || []).includes("npm run check:seis-ssh-public-readiness-matrix"), "contract required commands must include the public readiness matrix checker");
 ensure((contract?.requiredCommands || []).includes("npm run check:seis-ssh-public-merge-readiness"), "contract required commands must include the merge readiness checker");
 ensure((contract?.requiredCommands || []).includes("npm run check:seis-ssh-public-github-policy"), "contract required commands must include the GitHub policy doctor checker");
 ensure((contract?.requiredCommands || []).includes("npm run check:seis-ssh-public-signing-guide"), "contract required commands must include the public signing guide checker");
+ensure((contract?.requiredCommands || []).includes("npm run check:seis-ssh-public-review-bundle"), "contract required commands must include the public review bundle checker");
 ensure(scripts["check:seis-ssh-public-ci-workflow"] === "node scripts/check-seis-ssh-public-ci-workflow.mjs", "package script check:seis-ssh-public-ci-workflow must be declared");
 ensure(scripts["check:seis-ssh-public-readiness-matrix"] === "node scripts/check-seis-ssh-public-readiness-matrix.mjs", "package script check:seis-ssh-public-readiness-matrix must be declared");
 ensure(scripts["check:seis-ssh-public-merge-readiness"] === "node scripts/create-seis-ssh-public-merge-readiness.mjs --check", "package script check:seis-ssh-public-merge-readiness must be declared");
 ensure(scripts["check:seis-ssh-public-github-policy"] === "node scripts/create-seis-ssh-public-github-policy-doctor.mjs --check", "package script check:seis-ssh-public-github-policy must be declared");
 ensure(scripts["check:seis-ssh-public-signing-guide"] === "node scripts/create-seis-ssh-public-signing-guide.mjs --check", "package script check:seis-ssh-public-signing-guide must be declared");
+ensure(scripts["check:seis-ssh-public-review-bundle"] === "node scripts/create-seis-ssh-public-review-bundle.mjs --check", "package script check:seis-ssh-public-review-bundle must be declared");
 
 for (const file of Object.values(files)) {
   requireNotMatches(file, /sk-[A-Za-z0-9_-]{20,}/, "OpenAI-style API keys");

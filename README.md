@@ -190,6 +190,8 @@ npm run check:seis-ssh-public-github-policy
 npm run report:seis-ssh-public-github-policy
 npm run check:seis-ssh-public-signing-guide
 npm run report:seis-ssh-public-signing-guide
+npm run check:seis-ssh-public-review-bundle
+npm run report:seis-ssh-public-review-bundle
 npm run check:seis-ssh-public-pr-template
 npm run check:seis-ssh-public-ci-workflow
 npm run check:seis-ssh-public-readiness-matrix
@@ -246,6 +248,14 @@ GitHub, opening SSH, merging, or changing the same server and port.
 for verified signed commits when GitHub required signatures are active. It
 shows GitHub signing key setup paths for SSH or GPG signing without contacting
 GitHub, writing git config, printing private keys, opening SSH, or changing the
+same server and port.
+
+`npm run run:seis-ssh-public-review-bundle` creates a read-only public review
+bundle at `reports/seis-ssh-public-access/review-bundle-latest.md`. It collects
+the access report, first-run guide, troubleshooting guide, support packet,
+GitHub quickstart, merge readiness, policy doctor, signing guide, onboarding
+pack, and contributor doctor into one GitHub reviewer packet without contacting
+GitHub, opening SSH, writing SSH/git config, printing secrets, or changing the
 same server and port.
 
 `npm run check:seis-ssh-public-pr-template` verifies that the GitHub pull

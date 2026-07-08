@@ -29,6 +29,7 @@ const files = {
   mergeReadinessScript: "scripts/create-seis-ssh-public-merge-readiness.mjs",
   githubPolicyScript: "scripts/create-seis-ssh-public-github-policy-doctor.mjs",
   signingGuideScript: "scripts/create-seis-ssh-public-signing-guide.mjs",
+  reviewBundleScript: "scripts/create-seis-ssh-public-review-bundle.mjs",
   prTemplateScript: "scripts/check-seis-ssh-public-pr-template.mjs",
   ciWorkflowScript: "scripts/check-seis-ssh-public-ci-workflow.mjs",
   readinessMatrixScript: "scripts/check-seis-ssh-public-readiness-matrix.mjs",
@@ -71,6 +72,7 @@ ensure(contract?.githubExperience?.ciWorkflow === files.ciWorkflow, "public acce
 ensure(contract?.githubExperience?.mergeReadinessReport === "npm run report:seis-ssh-public-merge-readiness", "public access contract must link merge readiness report");
 ensure(contract?.githubExperience?.policyDoctor === "npm run report:seis-ssh-public-github-policy", "public access contract must link GitHub policy doctor");
 ensure(contract?.githubExperience?.signingGuide === "npm run report:seis-ssh-public-signing-guide", "public access contract must link public signing guide");
+ensure(contract?.githubExperience?.reviewBundle === "npm run report:seis-ssh-public-review-bundle", "public access contract must link public review bundle");
 ensure((contract?.evidenceSurfaces || []).includes(files.issueTemplate), "public access contract must include support issue template evidence surface");
 ensure((contract?.evidenceSurfaces || []).includes(files.prTemplate), "public access contract must include pull request template evidence surface");
 ensure((contract?.evidenceSurfaces || []).includes(files.prTemplateScript), "public access contract must include pull request template checker evidence surface");
@@ -83,6 +85,8 @@ ensure((contract?.evidenceSurfaces || []).includes(files.githubPolicyScript), "p
 ensure((contract?.evidenceSurfaces || []).includes("reports/seis-ssh-public-access/github-policy-latest.md"), "public access contract must include GitHub policy doctor artifact surface");
 ensure((contract?.evidenceSurfaces || []).includes(files.signingGuideScript), "public access contract must include public signing guide evidence surface");
 ensure((contract?.evidenceSurfaces || []).includes("reports/seis-ssh-public-access/signing-guide-latest.md"), "public access contract must include public signing guide artifact surface");
+ensure((contract?.evidenceSurfaces || []).includes(files.reviewBundleScript), "public access contract must include public review bundle evidence surface");
+ensure((contract?.evidenceSurfaces || []).includes("reports/seis-ssh-public-access/review-bundle-latest.md"), "public access contract must include public review bundle artifact surface");
 ensure((githubReader.allowedActions || []).includes("run the read-only contributor doctor"), "github-reader profile must allow contributor doctor");
 ensure((githubReader.allowedActions || []).includes("open the secret-safe GitHub issue form"), "github-reader profile must allow secret-safe issue form");
 ensure((githubReader.allowedActions || []).includes("complete the SEIS-SSH pull request checklist"), "github-reader profile must allow SEIS-SSH pull request checklist");
@@ -92,6 +96,7 @@ ensure((githubReader.allowedActions || []).includes("run the read-only public re
 ensure((githubReader.allowedActions || []).includes("run the read-only merge readiness report"), "github-reader profile must allow merge readiness report");
 ensure((githubReader.allowedActions || []).includes("run the read-only GitHub policy doctor"), "github-reader profile must allow GitHub policy doctor");
 ensure((githubReader.allowedActions || []).includes("run the read-only signed commit setup guide"), "github-reader profile must allow public signing guide");
+ensure((githubReader.allowedActions || []).includes("run the read-only public review bundle"), "github-reader profile must allow public review bundle");
 ensure((individualUser.requiredEvidence || []).includes("npm run check:seis-ssh-public-contributor-doctor"), "individual-user profile must require contributor doctor evidence");
 ensure((individualUser.requiredEvidence || []).includes("npm run check:seis-ssh-public-signing-guide"), "individual-user profile must require public signing guide evidence");
 
@@ -105,6 +110,7 @@ ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm r
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-merge-readiness"), "access model quality commands must include public merge readiness check");
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-github-policy"), "access model quality commands must include public GitHub policy doctor check");
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-signing-guide"), "access model quality commands must include public signing guide check");
+ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-review-bundle"), "access model quality commands must include public review bundle check");
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-pr-template"), "access model quality commands must include public PR template check");
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-ci-workflow"), "access model quality commands must include public CI workflow check");
 ensure((accessModel?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-readiness-matrix"), "access model quality commands must include public readiness matrix check");
@@ -117,6 +123,7 @@ ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-publ
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-merge-readiness"), "roadmap validation commands must include public merge readiness check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-github-policy"), "roadmap validation commands must include public GitHub policy doctor check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-signing-guide"), "roadmap validation commands must include public signing guide check");
+ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-review-bundle"), "roadmap validation commands must include public review bundle check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-pr-template"), "roadmap validation commands must include public PR template check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-ci-workflow"), "roadmap validation commands must include public CI workflow check");
 ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-public-readiness-matrix"), "roadmap validation commands must include public readiness matrix check");
@@ -146,6 +153,9 @@ ensure(scripts["run:seis-ssh-public-github-policy"] === "npm run check:seis-ssh-
 ensure(scripts["check:seis-ssh-public-signing-guide"] === "node scripts/create-seis-ssh-public-signing-guide.mjs --check", "package script check:seis-ssh-public-signing-guide must be declared");
 ensure(scripts["report:seis-ssh-public-signing-guide"] === "node scripts/create-seis-ssh-public-signing-guide.mjs --write", "package script report:seis-ssh-public-signing-guide must be declared");
 ensure(scripts["run:seis-ssh-public-signing-guide"] === "npm run check:seis-ssh-public-signing-guide && npm run report:seis-ssh-public-signing-guide", "package script run:seis-ssh-public-signing-guide must be declared");
+ensure(scripts["check:seis-ssh-public-review-bundle"] === "node scripts/create-seis-ssh-public-review-bundle.mjs --check", "package script check:seis-ssh-public-review-bundle must be declared");
+ensure(scripts["report:seis-ssh-public-review-bundle"] === "node scripts/create-seis-ssh-public-review-bundle.mjs --write", "package script report:seis-ssh-public-review-bundle must be declared");
+ensure(scripts["run:seis-ssh-public-review-bundle"] === "npm run check:seis-ssh-public-review-bundle && npm run report:seis-ssh-public-review-bundle", "package script run:seis-ssh-public-review-bundle must be declared");
 ensure(scripts["check:seis-ssh-public-pr-template"] === "node scripts/check-seis-ssh-public-pr-template.mjs", "package script check:seis-ssh-public-pr-template must be declared");
 ensure(scripts["check:seis-ssh-public-ci-workflow"] === "node scripts/check-seis-ssh-public-ci-workflow.mjs", "package script check:seis-ssh-public-ci-workflow must be declared");
 ensure(scripts["check:seis-ssh-public-readiness-matrix"] === "node scripts/check-seis-ssh-public-readiness-matrix.mjs", "package script check:seis-ssh-public-readiness-matrix must be declared");
@@ -163,6 +173,7 @@ ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-pu
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-public-merge-readiness"), "quality:governance must include public merge readiness check");
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-public-github-policy"), "quality:governance must include public GitHub policy doctor check");
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-public-signing-guide"), "quality:governance must include public signing guide check");
+ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-public-review-bundle"), "quality:governance must include public review bundle check");
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-public-pr-template"), "quality:governance must include public PR template check");
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-public-ci-workflow"), "quality:governance must include public CI workflow check");
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-public-readiness-matrix"), "quality:governance must include public readiness matrix check");
@@ -188,6 +199,8 @@ for (const command of [
   "npm run report:seis-ssh-public-github-policy",
   "npm run check:seis-ssh-public-signing-guide",
   "npm run report:seis-ssh-public-signing-guide",
+  "npm run check:seis-ssh-public-review-bundle",
+  "npm run report:seis-ssh-public-review-bundle",
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-ci-workflow",
   "npm run check:seis-ssh-public-readiness-matrix",
@@ -255,6 +268,8 @@ for (const token of [
   "npm run report:seis-ssh-public-github-policy",
   "npm run check:seis-ssh-public-signing-guide",
   "npm run report:seis-ssh-public-signing-guide",
+  "npm run check:seis-ssh-public-review-bundle",
+  "npm run report:seis-ssh-public-review-bundle",
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-ci-workflow",
   "npm run check:seis-ssh-public-readiness-matrix",
@@ -303,11 +318,13 @@ for (const token of [
   "No live SSH session was attempted for this PR unless explicit maintainer approval is linked.",
   "Signed commit setup, last-push approval, code owner review, and review-thread resolution requirements are acknowledged.",
   "Verified signed commits are covered by the public signing guide when required signatures are active.",
+  "Public review bundle was generated or checked before requesting SEIS-SSH review.",
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-access",
   "npm run check:seis-ssh-public-merge-readiness",
   "npm run check:seis-ssh-public-github-policy",
   "npm run check:seis-ssh-public-signing-guide",
+  "npm run check:seis-ssh-public-review-bundle",
   "npm run check:seis-ssh-public-ci-workflow",
   "npm run check:seis-ssh-public-readiness-matrix",
   "npm run check:seis-ssh-public-artifact-hygiene",
@@ -329,6 +346,7 @@ for (const token of [
   "npm run check:seis-ssh-public-merge-readiness",
   "npm run check:seis-ssh-public-github-policy",
   "npm run check:seis-ssh-public-signing-guide",
+  "npm run check:seis-ssh-public-review-bundle",
   "npm run check:seis-ssh-public-support-packet",
   "npm run check:seis-ssh-public-readiness-matrix",
   "npm run check:seis-ssh-public-artifact-hygiene",
@@ -361,10 +379,12 @@ for (const token of [
   "seis-ssh-public-merge-readiness.md",
   "seis-ssh-public-github-policy.md",
   "seis-ssh-public-signing-guide.md",
+  "seis-ssh-public-review-bundle.md",
   "GitHub Quickstart",
   "Merge Readiness",
   "GitHub Policy",
   "Signing Guide",
+  "Review Bundle",
   "PR Template",
   "CI Workflow",
   "Artifact Hygiene",
@@ -398,6 +418,7 @@ for (const token of [
   "npm run check:seis-ssh-public-merge-readiness",
   "npm run check:seis-ssh-public-github-policy",
   "npm run check:seis-ssh-public-signing-guide",
+  "npm run check:seis-ssh-public-review-bundle",
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-ci-workflow",
   "npm run check:seis-ssh-public-readiness-matrix",
@@ -440,6 +461,7 @@ for (const token of [
   "npm run check:seis-ssh-public-merge-readiness",
   "npm run check:seis-ssh-public-github-policy",
   "npm run check:seis-ssh-public-signing-guide",
+  "npm run check:seis-ssh-public-review-bundle",
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-ci-workflow",
   "npm run check:seis-ssh-public-readiness-matrix",
@@ -458,6 +480,7 @@ for (const token of [
   "npm run run:seis-ssh-public-github-quickstart",
   "npm run check:seis-ssh-public-github-policy",
   "npm run check:seis-ssh-public-signing-guide",
+  "npm run check:seis-ssh-public-review-bundle",
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-ci-workflow",
   "npm run check:seis-ssh-public-artifact-hygiene",
@@ -500,6 +523,20 @@ for (const token of [
   ensure(signingGuideScript.includes(token), `public signing guide script must include ${token}`);
 }
 
+const reviewBundleScript = read(files.reviewBundleScript);
+for (const token of [
+  "read-only-no-live-ssh-no-config-write-no-github-auth-no-secret-output",
+  "npm run check:seis-ssh-public-review-bundle",
+  "reports/seis-ssh-public-access/review-bundle-latest.md",
+  "public review bundle",
+  "review-bundle-ready",
+  "This bundle does not call gh auth status or contact GitHub.",
+  "This bundle does not open a live SSH session.",
+  "Ayni sunucu ve baglanti noktasi korunur."
+]) {
+  ensure(reviewBundleScript.includes(token), `public review bundle script must include ${token}`);
+}
+
 const prTemplateScript = read(files.prTemplateScript);
 for (const token of [
   "## SEIS-SSH Public Access Review",
@@ -521,6 +558,7 @@ for (const token of [
   "npm run check:seis-ssh-public-access",
   "npm run check:seis-ssh-public-github-policy",
   "npm run check:seis-ssh-public-signing-guide",
+  "npm run check:seis-ssh-public-review-bundle",
   "npm run check:seis-ssh-public-readiness-matrix",
   "npm run check:seis-ssh-public-artifact-hygiene",
   ".github/workflows/seis-ssh-public-access.yml",
@@ -552,6 +590,7 @@ for (const token of [
   "reports/seis-ssh-public-access/github-quickstart-latest",
   "reports/seis-ssh-public-access/github-policy-latest",
   "reports/seis-ssh-public-access/signing-guide-latest",
+  "reports/seis-ssh-public-access/review-bundle-latest",
   "This hygiene check does not write ~/.ssh/config.",
   "This hygiene check does not call gh auth status or contact GitHub.",
   "Ayni sunucu ve baglanti noktasi korunur.",
@@ -572,6 +611,7 @@ for (const token of [
   "npm run check:seis-ssh-public-merge-readiness",
   "npm run check:seis-ssh-public-github-policy",
   "npm run check:seis-ssh-public-signing-guide",
+  "npm run check:seis-ssh-public-review-bundle",
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-ci-workflow",
   "npm run check:seis-ssh-public-readiness-matrix",
@@ -604,6 +644,7 @@ for (const file of [
   files.mergeReadinessScript,
   files.githubPolicyScript,
   files.signingGuideScript,
+  files.reviewBundleScript,
   files.prTemplateScript,
   files.ciWorkflowScript,
   files.readinessMatrixScript,

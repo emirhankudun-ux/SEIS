@@ -45,11 +45,13 @@ for (const token of [
   "GitHub merge readiness is represented honestly when repository rules keep `mergeStateStatus: BLOCKED`.",
   "Signed commit setup, last-push approval, code owner review, and review-thread resolution requirements are acknowledged.",
   "Verified signed commits are covered by the public signing guide when required signatures are active.",
+  "Public review bundle was generated or checked before requesting SEIS-SSH review.",
   "npm run check:seis-ssh-public-pr-template",
   "npm run check:seis-ssh-public-access",
   "npm run check:seis-ssh-public-merge-readiness",
   "npm run check:seis-ssh-public-github-policy",
   "npm run check:seis-ssh-public-signing-guide",
+  "npm run check:seis-ssh-public-review-bundle",
   "npm run check:seis-ssh-public-ci-workflow",
   "npm run check:seis-ssh-public-readiness-matrix",
   "npm run check:seis-ssh-public-artifact-hygiene",
@@ -65,8 +67,10 @@ ensure((contract?.evidenceSurfaces || []).includes(files.prTemplate), "contract 
 ensure((contract?.evidenceSurfaces || []).includes("scripts/check-seis-ssh-public-pr-template.mjs"), "contract evidence surfaces must include the pull request template checker");
 ensure((contract?.requiredCommands || []).includes("npm run check:seis-ssh-public-pr-template"), "contract required commands must include the pull request template checker");
 ensure((contract?.requiredCommands || []).includes("npm run check:seis-ssh-public-signing-guide"), "contract required commands must include the public signing guide checker");
+ensure((contract?.requiredCommands || []).includes("npm run check:seis-ssh-public-review-bundle"), "contract required commands must include the public review bundle checker");
 ensure(scripts["check:seis-ssh-public-pr-template"] === "node scripts/check-seis-ssh-public-pr-template.mjs", "package script check:seis-ssh-public-pr-template must be declared");
 ensure(scripts["check:seis-ssh-public-signing-guide"] === "node scripts/create-seis-ssh-public-signing-guide.mjs --check", "package script check:seis-ssh-public-signing-guide must be declared");
+ensure(scripts["check:seis-ssh-public-review-bundle"] === "node scripts/create-seis-ssh-public-review-bundle.mjs --check", "package script check:seis-ssh-public-review-bundle must be declared");
 
 for (const file of Object.values(files)) {
   requireNotMatches(file, /sk-[A-Za-z0-9_-]{20,}/, "OpenAI-style API keys");
