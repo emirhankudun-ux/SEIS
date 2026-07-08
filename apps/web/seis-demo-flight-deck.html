@@ -411,6 +411,15 @@
       .status-pills {
         justify-content: flex-start;
       }
+
+      .topbar,
+      .hero,
+      .panel,
+      .mission,
+      .route-card,
+      .status-card {
+        backdrop-filter: blur(8px);
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -637,20 +646,24 @@
       }
 
       async function copyText(text) {
-        if (navigator.clipboard && window.isSecureContext) {
-          await navigator.clipboard.writeText(text);
-          return true;
+        try {
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(text);
+            return true;
+          }
+          const textarea = document.createElement("textarea");
+          textarea.value = text;
+          textarea.setAttribute("readonly", "");
+          textarea.style.position = "fixed";
+          textarea.style.opacity = "0";
+          document.body.appendChild(textarea);
+          textarea.select();
+          const copied = Boolean(document.execCommand("copy"));
+          textarea.remove();
+          return copied;
+        } catch {
+          return false;
         }
-        const textarea = document.createElement("textarea");
-        textarea.value = text;
-        textarea.setAttribute("readonly", "");
-        textarea.style.position = "fixed";
-        textarea.style.opacity = "0";
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand("copy");
-        textarea.remove();
-        return true;
       }
 
       document.addEventListener("click", async (event) => {

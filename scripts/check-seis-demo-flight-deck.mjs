@@ -58,7 +58,7 @@ for (const snippet of [
   "website/seis-cloud.html",
   "website/seis-store.html",
   "mythic-gacha.html",
-  "219",
+  "Reference-bank modules preserved as local demo inputs",
   "No API keys",
   "No SSH execution",
   "No deployment",
