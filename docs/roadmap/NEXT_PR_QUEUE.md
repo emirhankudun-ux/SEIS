@@ -2,6 +2,12 @@
 
 Date: 2026-06-23
 
+Second Brain queue note: the Obsidian starter vault slice should stay in the
+Second Brain readiness / agent registry lane. It produces only browser-local
+manifest and guide artifacts from repo-owned seed notes; it does not import
+private Obsidian vaults, install plugins, copy `.obsidian` state, call
+providers, execute SSH, mutate GitHub, deploy, merge, or approve release.
+
 ## Current Recommended Product Demo Stack
 
 | Order | Suggested PR title | Scope | Validation | Approval needed |

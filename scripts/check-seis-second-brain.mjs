@@ -41,6 +41,8 @@ if (contract) {
   ensure(contract.vaultRoot === "/home/seis/SecondBrain", "contract must declare browser-local vault root");
   ensure(contract.trainingPackPath === "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md", "contract must declare browser-local training pack path");
   ensure(contract.publicContributorPackPath === "/home/seis/SecondBrain/08-public/seis-public-contributor-onboarding.md", "contract must declare browser-local public contributor pack path");
+  ensure(contract.obsidianStarterVaultManifestPath === "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json", "contract must declare browser-local Obsidian starter vault manifest path");
+  ensure(contract.obsidianStarterVaultGuidePath === "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md", "contract must declare browser-local Obsidian starter vault guide path");
   ensure(contract.releaseReviewPacketPath === "reports/seis-public-demo/pr54-review-packet-latest.md", "contract must declare PR #54 release review packet path");
   ensure(contract.languageModelTrainingCurriculum?.status === "planned-training-contract", "contract must bind planned language model training curriculum");
   ensure(contract.languageModelTrainingCurriculum?.contractPath === trainingCurriculumPath, "contract language model training curriculum path mismatch");
@@ -73,7 +75,8 @@ if (contract) {
     "provider-neutral read-only model router",
     "human approval gates",
     "public demo release gates",
-    "public contributor no-key onboarding"
+    "public contributor no-key onboarding",
+    "Obsidian starter vault no-private-import export"
   ]) {
     ensure((contract.trainingCoverage?.requiredSections || []).includes(section), `trainingCoverage requiredSections missing ${section}`);
   }
@@ -148,6 +151,29 @@ if (contract) {
   ]) {
     ensure(contract.trainingCoverage?.obsidianCoverage?.[field] === expected, `trainingCoverage Obsidian ${field} must be ${expected}`);
   }
+  ensure(
+    contract.trainingCoverage?.obsidianCoverage?.starterVaultManifestPath === contract.obsidianStarterVaultManifestPath,
+    "trainingCoverage Obsidian starter vault manifest path must match the top-level contract path"
+  );
+  ensure(
+    contract.trainingCoverage?.obsidianCoverage?.starterVaultGuidePath === contract.obsidianStarterVaultGuidePath,
+    "trainingCoverage Obsidian starter vault guide path must match the top-level contract path"
+  );
+  ensure(contract.obsidianStarterVault?.status === "local-demo-no-key", "Obsidian starter vault must stay local-demo-no-key");
+  ensure(contract.obsidianStarterVault?.manifestPath === contract.obsidianStarterVaultManifestPath, "Obsidian starter vault manifest path mismatch");
+  ensure(contract.obsidianStarterVault?.guidePath === contract.obsidianStarterVaultGuidePath, "Obsidian starter vault guide path mismatch");
+  for (const [field, expected] of [
+    ["requiresPrivateObsidianVault", false],
+    ["requiresObsidianPlugin", false],
+    ["requiresHostFilesystemRead", false],
+    ["copiesDotObsidianState", false],
+    ["copiesPrivateNoteBodies", false],
+    ["providerCalls", false],
+    ["githubMutation", false],
+    ["humanApprovalBeforeImport", true]
+  ]) {
+    ensure(contract.obsidianStarterVault?.[field] === expected, `Obsidian starter vault ${field} must be ${expected}`);
+  }
   for (const gate of [
     "node scripts/check-seis-second-brain.mjs",
     "node scripts/check-ai-workforce-assignments.mjs",
@@ -206,6 +232,7 @@ for (const phrase of [
   "GitHub readiness",
   "Agent training pack",
   "Public contributor onboarding pack",
+  "Obsidian starter vault",
   "Language model training curriculum",
   "without installing models",
   "Human review required",
@@ -231,6 +258,7 @@ for (const phrase of [
   "second-brain-link",
   "second-brain-training-pack",
   "second-brain-public-contributor-pack",
+  "second-brain-obsidian-starter-vault",
   "second-brain-review",
   "second-brain-export-github",
   "Save Vault Snapshot",
@@ -242,6 +270,8 @@ for (const phrase of [
   "github-readiness-review.md",
   "seis-agent-training-pack.md",
   "seis-public-contributor-onboarding.md",
+  "seis-obsidian-starter-vault-manifest.json",
+  "seis-obsidian-starter-vault.md",
   "releaseReviewPacketPath",
   "pr54-review-packet-latest.md",
   "seis-language-model-training-curriculum.json",
@@ -252,8 +282,14 @@ for (const phrase of [
   "buildSecondBrainTrainingPackMarkdown",
   "exportSecondBrainPublicContributorPack",
   "buildSecondBrainPublicContributorPackMarkdown",
+  "exportSecondBrainObsidianStarterVault",
+  "buildSecondBrainObsidianStarterVaultManifest",
+  "buildSecondBrainObsidianStarterVaultGuideMarkdown",
   "publicContributorPackPath",
   "publicContributorOnboarding",
+  "obsidianStarterVaultManifestPath",
+  "obsidianStarterVaultGuidePath",
+  "obsidianStarterVault",
   "SEIS_INSTALLED_AI_SYSTEMS.length",
   "registrySummary",
   "data-second-brain-launcher-evidence",

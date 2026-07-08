@@ -255,6 +255,13 @@ The browser-local `Build Contributor Pack` action now writes
 `/home/seis/SecondBrain/08-public/seis-public-contributor-onboarding.md` so
 GitHub reviewers can inspect the Second Brain path without API keys, provider
 login, private Obsidian vault access, SSH, deployment, or GitHub write access.
+The browser-local `Export Obsidian Starter Vault` action writes
+`/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json`
+and `/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md` from
+repo-owned seed notes only. This Obsidian starter vault is no-key and does not
+read a private vault, install plugins, copy `.obsidian` state, copy private
+note bodies, call providers, execute SSH, mutate GitHub, deploy, or approve
+publication.
 
 `npm run check:seis-public-demo-go-no-go -- --run-fast-checks` is the read-only
 public demo release gate. It is expected to report `NO-GO` until current browser

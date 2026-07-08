@@ -1428,6 +1428,8 @@ const SEIS_SECOND_BRAIN_SYSTEM = {
   githubReadinessPath: "/home/seis/SecondBrain/github-readiness-review.md",
   trainingPackPath: "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md",
   publicContributorPackPath: "/home/seis/SecondBrain/08-public/seis-public-contributor-onboarding.md",
+  obsidianStarterVaultManifestPath: "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json",
+  obsidianStarterVaultGuidePath: "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md",
   releaseReviewPacketPath: "reports/seis-public-demo/pr54-review-packet-latest.md",
   languageModelTrainingCurriculum: {
     status: "planned-training-contract",
@@ -1455,7 +1457,8 @@ const SEIS_SECOND_BRAIN_SYSTEM = {
       "provider-neutral read-only model router",
       "human approval gates",
       "public demo release gates",
-      "public contributor no-key onboarding"
+      "public contributor no-key onboarding",
+      "Obsidian starter vault no-private-import export"
     ],
     launcherEvidence: [
       ["seis-agent", "installed", "seis-agent-policy-profile"],
@@ -1494,6 +1497,18 @@ const SEIS_SECOND_BRAIN_SYSTEM = {
       "npm run check:seis-second-brain-readiness-contracts",
       "npm run check:seis-second-brain-browser-smoke"
     ]
+  },
+  obsidianStarterVault: {
+    status: "local-demo-no-key",
+    source: "repo-owned seed note metadata and generated browser-local markdown only",
+    requiresPrivateObsidianVault: false,
+    requiresObsidianPlugin: false,
+    requiresHostFilesystemRead: false,
+    copiesDotObsidianState: false,
+    copiesPrivateNoteBodies: false,
+    providerCalls: false,
+    githubMutation: false,
+    humanApprovalBeforeImport: true
   },
   vaultNotes: [
     {
@@ -2749,6 +2764,9 @@ function handleClick(event) {
       break;
     case "second-brain-public-contributor-pack":
       exportSecondBrainPublicContributorPack();
+      break;
+    case "second-brain-obsidian-starter-vault":
+      exportSecondBrainObsidianStarterVault();
       break;
     case "second-brain-review":
       reviewSecondBrainVault();
@@ -5094,6 +5112,7 @@ function renderSecondBrain() {
       <button type="button" data-action="second-brain-link">Link Graph</button>
       <button type="button" data-action="second-brain-training-pack">Build Training Pack</button>
       <button type="button" data-action="second-brain-public-contributor-pack">Build Contributor Pack</button>
+      <button type="button" data-action="second-brain-obsidian-starter-vault">Export Obsidian Starter Vault</button>
       <button type="button" data-action="second-brain-review">Run Review Gate</button>
       <button type="button" data-action="second-brain-export-github">Export GitHub Readiness</button>
       <button type="button" data-action="open-app" data-app-id="ai-assistant">Open SEIS AI</button>
@@ -5124,6 +5143,7 @@ function renderSecondBrain() {
       <article class="metric-card"><strong>Last Snapshot</strong><p>${data.lastSnapshot?.time || "Not saved yet"}</p></article>
       <article class="metric-card"><strong>Last Training Pack</strong><p>${data.lastTrainingPack?.time || "Not built yet"}</p></article>
       <article class="metric-card"><strong>Last Contributor Pack</strong><p>${data.lastContributorPack?.time || "Not built yet"}</p></article>
+      <article class="metric-card"><strong>Last Obsidian Starter</strong><p>${data.lastObsidianStarterVault?.time || "Not exported yet"}</p></article>
       <article class="metric-card"><strong>Publish State</strong><p>Human review before GitHub</p></article>
     </div>
     <section class="second-brain-layout">
@@ -8842,6 +8862,106 @@ ${SEIS_SECOND_BRAIN_SYSTEM.runtimeBoundary}
 `;
 }
 
+function buildSecondBrainObsidianStarterVaultManifest(timestamp) {
+  return {
+    id: "seis-obsidian-starter-vault-local-demo",
+    title: "SEIS Obsidian Starter Vault",
+    generatedAt: timestamp,
+    mode: "browser-local-no-private-import",
+    status: SEIS_SECOND_BRAIN_SYSTEM.obsidianStarterVault.status,
+    manifestPath: SEIS_SECOND_BRAIN_SYSTEM.obsidianStarterVaultManifestPath,
+    guidePath: SEIS_SECOND_BRAIN_SYSTEM.obsidianStarterVaultGuidePath,
+    source: SEIS_SECOND_BRAIN_SYSTEM.obsidianStarterVault.source,
+    vaultRoot: SEIS_SECOND_BRAIN_SYSTEM.vaultRoot,
+    noteCount: SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.length,
+    notes: SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.map((note) => ({
+      id: note.id,
+      title: note.title,
+      path: note.path,
+      folder: note.folder,
+      status: note.status,
+      tags: note.tags,
+      links: note.links,
+      backlinks: getSecondBrainBacklinks(note.id).map((source) => source.id),
+      frontmatter: {
+        seis_status: note.status,
+        seis_source: "repo-owned-seed-note",
+        seis_public_safe: true,
+        seis_private_obsidian_import: false
+      }
+    })),
+    safetyBoundary: {
+      requiresPrivateObsidianVault: false,
+      requiresObsidianPlugin: false,
+      requiresHostFilesystemRead: false,
+      copiesDotObsidianState: false,
+      copiesPrivateNoteBodies: false,
+      providerCalls: false,
+      githubMutation: false,
+      sshExecuted: false,
+      deploymentPerformed: false,
+      humanApprovalBeforeImport: true
+    },
+    nextHumanSteps: [
+      "Review generated browser-local markdown before copying it into a user-selected Obsidian vault.",
+      "Do not copy .obsidian workspace state, plugins, private notes, attachments, or credentials.",
+      "Run npm run check:seis-second-brain and npm run check:seis-second-brain-browser-smoke before claiming public readiness."
+    ]
+  };
+}
+
+function buildSecondBrainObsidianStarterVaultGuideMarkdown(timestamp, manifest) {
+  const noteRows = manifest.notes.map((note) => `- [[${note.title}]] - ${note.path} (${note.status})`);
+  return `# SEIS Obsidian Starter Vault
+
+Generated: ${timestamp}
+Mode: ${manifest.mode}
+Status: ${manifest.status}
+Manifest path: ${SEIS_SECOND_BRAIN_SYSTEM.obsidianStarterVaultManifestPath}
+Guide path: ${SEIS_SECOND_BRAIN_SYSTEM.obsidianStarterVaultGuidePath}
+
+## Purpose
+
+This starter vault is a browser-local, public-safe export plan for SEIS Second Brain seed notes. It is compatible with plain Markdown and Obsidian-style links, but it does not read or import a private Obsidian vault.
+
+## Included Seed Notes
+
+${noteRows.join("\n")}
+
+## Safe Use
+
+- Review the generated Markdown files in the browser-local Files app.
+- Copy only reviewed public-safe Markdown into a user-selected Obsidian vault.
+- Keep Obsidian plugins optional; this starter pack does not require any plugin.
+- Do not copy .obsidian workspace state, private notes, private attachments, credentials, or host filesystem paths.
+- Keep GitHub publication blocked until provenance, no-secret review, accessibility evidence, and human approval are recorded.
+
+## Agent Registry Boundary
+
+- Registry report: ${SEIS_SECOND_BRAIN_SYSTEM.agentRegistryReportPath}
+- Registry status: ${SEIS_SECOND_BRAIN_SYSTEM.registrySummary.status}
+- Registry decision: ${SEIS_SECOND_BRAIN_SYSTEM.registrySummary.decision}
+- Installed AI profiles: ${SEIS_SECOND_BRAIN_SYSTEM.registrySummary.installedAiProfiles}
+- Managed sub-agent lanes: ${SUB_AGENT_DEMO.lanes.length}
+- Autonomous agent roster: ${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length}
+
+## Safety Boundary
+
+- Requires private Obsidian vault: ${manifest.safetyBoundary.requiresPrivateObsidianVault}
+- Requires Obsidian plugin: ${manifest.safetyBoundary.requiresObsidianPlugin}
+- Reads host filesystem: ${manifest.safetyBoundary.requiresHostFilesystemRead}
+- Copies .obsidian state: ${manifest.safetyBoundary.copiesDotObsidianState}
+- Copies private note bodies: ${manifest.safetyBoundary.copiesPrivateNoteBodies}
+- Provider calls: ${manifest.safetyBoundary.providerCalls}
+- GitHub mutation: ${manifest.safetyBoundary.githubMutation}
+- SSH executed: ${manifest.safetyBoundary.sshExecuted}
+- Deployment performed: ${manifest.safetyBoundary.deploymentPerformed}
+- Human approval before import: ${manifest.safetyBoundary.humanApprovalBeforeImport}
+
+${SEIS_SECOND_BRAIN_SYSTEM.runtimeBoundary}
+`;
+}
+
 const SEIS_READ_ONLY_MODEL_ROUTER_CONTRACT = {
   blockedModelClasses: [
     "20B planned-not-validated",
@@ -8930,6 +9050,33 @@ function exportSecondBrainPublicContributorPack() {
     requiresGitHubWriteAccess: false
   };
   const message = `Second Brain contributor pack saved to ${path}.`;
+  getAppStatus("second-brain").lastAction = message;
+  log("second-brain", message);
+  saveState();
+  renderOpenWindows("second-brain");
+  renderOpenWindows("files");
+  renderOpenWindows("system-logs");
+  toast("SEIS Second Brain", message);
+}
+
+function exportSecondBrainObsidianStarterVault() {
+  const timestamp = new Date().toISOString();
+  saveSecondBrainSnapshot("obsidian-starter-vault", { quiet: true });
+  const manifest = buildSecondBrainObsidianStarterVaultManifest(timestamp);
+  upsertFile(SEIS_SECOND_BRAIN_SYSTEM.obsidianStarterVaultManifestPath, JSON.stringify(manifest, null, 2));
+  upsertFile(SEIS_SECOND_BRAIN_SYSTEM.obsidianStarterVaultGuidePath, buildSecondBrainObsidianStarterVaultGuideMarkdown(timestamp, manifest));
+  const data = addSecondBrainActivity("Obsidian Starter Vault", "No-key Local Demo", `Obsidian Starter Vault manifest saved to ${SEIS_SECOND_BRAIN_SYSTEM.obsidianStarterVaultManifestPath}.`);
+  data.lastObsidianStarterVault = {
+    time: timestamp,
+    manifestPath: SEIS_SECOND_BRAIN_SYSTEM.obsidianStarterVaultManifestPath,
+    guidePath: SEIS_SECOND_BRAIN_SYSTEM.obsidianStarterVaultGuidePath,
+    noteCount: manifest.noteCount,
+    requiresPrivateObsidianVault: false,
+    requiresObsidianPlugin: false,
+    copiesDotObsidianState: false,
+    copiesPrivateNoteBodies: false
+  };
+  const message = `Second Brain Obsidian starter vault saved to ${SEIS_SECOND_BRAIN_SYSTEM.obsidianStarterVaultManifestPath}.`;
   getAppStatus("second-brain").lastAction = message;
   log("second-brain", message);
   saveState();

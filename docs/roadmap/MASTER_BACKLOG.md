@@ -4,6 +4,12 @@ Date: 2026-06-23
 
 Second Brain readiness contract note: public demo security gate redacted evidence, the security owner handoff, the PR #127 security remediation plan, and the Second Brain public reviewer pack are now part of `SEIS-BL-049`. `npm run report:seis-public-demo-security-gate`, `npm run check:seis-public-demo-security-gate`, `npm run report:seis-security-owner-handoff`, `npm run check:seis-security-owner-handoff`, `npm run report:seis-second-brain-public-reviewer-pack`, and `npm run check:seis-second-brain-public-reviewer-pack` keep PR #104 and PR #127 review evidence public-safe without raw secret values, private Obsidian data, provider keys, `.gitleaks.toml` changes, history rewrite, force push, SSH, deployment, or release approval.
 
+Second Brain Obsidian starter vault note: `SEIS-BL-049` also covers the
+browser-local, no-key starter vault manifest and guide generated from
+repo-owned seed notes only. It remains separate from private Obsidian import,
+plugin install, `.obsidian` workspace copy, provider routing, SSH, deployment,
+GitHub mutation, merge, and release approval.
+
 | ID | Priority | Lane | Work | Acceptance evidence |
 | --- | --- | --- | --- | --- |
 | `SEIS-BL-001` | P0 | Goal Tracking OS | Keep structured goal, evidence, and execution records valid. | `npm run check:goal-tracking` passes. |

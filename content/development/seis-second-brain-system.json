@@ -10,6 +10,8 @@
   "githubReadinessPath": "/home/seis/SecondBrain/github-readiness-review.md",
   "trainingPackPath": "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md",
   "publicContributorPackPath": "/home/seis/SecondBrain/08-public/seis-public-contributor-onboarding.md",
+  "obsidianStarterVaultManifestPath": "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json",
+  "obsidianStarterVaultGuidePath": "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md",
   "releaseReviewPacketPath": "reports/seis-public-demo/pr54-review-packet-latest.md",
   "obsidianSafeImportDryRunPath": "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json",
   "obsidianSafeImportDryRunMarkdownPath": "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md",
@@ -37,6 +39,7 @@
       "generate accessibility/focus QA artifacts under reports/seis-public-demo",
       "generate Second Brain agent registry artifacts under reports/seis-public-demo",
       "generate browser-local public contributor onboarding pack",
+      "generate browser-local Obsidian starter vault manifest from repo-owned seed notes",
       "record human-review-required GitHub readiness gates"
     ],
     "forbiddenToday": [
@@ -258,7 +261,8 @@
       "provider-neutral read-only model router",
       "human approval gates",
       "public demo release gates",
-      "public contributor no-key onboarding"
+      "public contributor no-key onboarding",
+      "Obsidian starter vault no-private-import export"
     ],
     "installedAiCoverage": {
       "sourceContract": "content/development/ai-workforce-assignments.json",
@@ -276,7 +280,9 @@
       "bodyImportPolicy": "metadata-only-by-default",
       "privateVaultReadAllowed": false,
       "privateNoteBodyCopyAllowed": false,
-      "pluginInstallAllowed": false
+      "pluginInstallAllowed": false,
+      "starterVaultManifestPath": "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json",
+      "starterVaultGuidePath": "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md"
     },
     "qualityGates": [
       "node scripts/check-seis-second-brain.mjs",
@@ -317,6 +323,20 @@
       "public release is approved"
     ]
   },
+  "obsidianStarterVault": {
+    "status": "local-demo-no-key",
+    "manifestPath": "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json",
+    "guidePath": "/home/seis/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md",
+    "source": "repo-owned seed note metadata and generated browser-local markdown only",
+    "requiresPrivateObsidianVault": false,
+    "requiresObsidianPlugin": false,
+    "requiresHostFilesystemRead": false,
+    "copiesDotObsidianState": false,
+    "copiesPrivateNoteBodies": false,
+    "providerCalls": false,
+    "githubMutation": false,
+    "humanApprovalBeforeImport": true
+  },
   "pipeline": [
     {
       "step": "Capture",
@@ -342,6 +362,11 @@
       "step": "Contributor Onboarding",
       "status": "local-demo-no-key",
       "detail": "Generate a no-key public contributor pack for GitHub reviewers without private Obsidian, provider login, SSH, deployment, or GitHub write access."
+    },
+    {
+      "step": "Obsidian Starter Vault",
+      "status": "local-demo-no-key",
+      "detail": "Generate a browser-local starter vault manifest and guide from repo-owned seed notes without reading private Obsidian vaults, installing plugins, or copying .obsidian state."
     },
     {
       "step": "Publish",

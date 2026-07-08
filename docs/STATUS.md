@@ -5,6 +5,13 @@ Date: 2026-06-24
 This status captures the current branch foundation state. It is not a release,
 deployment, public-readiness, or merge-readiness claim.
 
+Second Brain readiness update: the Obsidian starter vault export is now a
+browser-local, no-key artifact path under
+`/home/seis/SecondBrain/09-obsidian/`. It is generated from repo-owned seed
+notes only and does not import private Obsidian data, install plugins, copy
+`.obsidian` state, call providers, execute SSH, mutate GitHub, deploy, or
+approve release.
+
 ## SEIS AI 512B Apex Status
 
 SEIS AI now has a plan-only 512B apex model program for the SEIS AGI direction.

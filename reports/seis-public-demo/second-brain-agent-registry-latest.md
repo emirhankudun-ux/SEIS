@@ -1,6 +1,6 @@
 # SEIS Second Brain Agent Registry
 
-Generated: 2026-07-01T19:45:55.846Z
+Generated: 2026-07-08T10:25:49.578Z
 Status: review-only-agent-registry
 Mode: repo-local-no-live-execution
 Decision: NO-GO-autonomous-execution-not-approved
@@ -29,6 +29,8 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 - vaultRoot: browser-vfs/SecondBrain
 - trainingPackPath: browser-vfs/SecondBrain/07-learning/seis-agent-training-pack.md
 - publicContributorPackPath: browser-vfs/SecondBrain/08-public/seis-public-contributor-onboarding.md
+- obsidianStarterVaultManifestPath: browser-vfs/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json
+- obsidianStarterVaultGuidePath: browser-vfs/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md
 - obsidianBridgeStatus: planned
 - privateVaultImportEnabled: false
 - hostVaultReadEnabled: false
@@ -41,7 +43,9 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 - source: repo-owned browser-local Second Brain records only
 - trainingPackPath: browser-vfs/SecondBrain/07-learning/seis-agent-training-pack.md
 - publicContributorPackPath: browser-vfs/SecondBrain/08-public/seis-public-contributor-onboarding.md
-- requiredSections: installed AI launcher route coverage, autonomous agent roster onboarding, Obsidian safe import boundary, provider-neutral read-only model router, human approval gates, public demo release gates, public contributor no-key onboarding
+- obsidianStarterVaultManifestPath: browser-vfs/SecondBrain/09-obsidian/seis-obsidian-starter-vault-manifest.json
+- obsidianStarterVaultGuidePath: browser-vfs/SecondBrain/09-obsidian/seis-obsidian-starter-vault.md
+- requiredSections: installed AI launcher route coverage, autonomous agent roster onboarding, Obsidian safe import boundary, provider-neutral read-only model router, human approval gates, public demo release gates, public contributor no-key onboarding, Obsidian starter vault no-private-import export
 - installedAiCoverage: launcher routes=true, profiles=true, noLiveProviderCalls=true
 - autonomousAgentCoverage: requiredRosterCount=12, noWriteExecution=true, approvalBeforeExternalMutation=true
 - obsidianCoverage: bridgeStatus=planned, bodyImportPolicy=metadata-only-by-default, privateVaultReadAllowed=false, privateNoteBodyCopyAllowed=false, pluginInstallAllowed=false
@@ -184,6 +188,7 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 - current browser-smoke evidence and manual accessibility review
 - clean release-candidate worktree review before GitHub publication
 - public contributor onboarding pack generated from browser-local records
+- Obsidian starter vault manifest generated from repo-owned browser-local seed notes
 
 ## Safety Boundary
 
