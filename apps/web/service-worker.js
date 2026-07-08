@@ -2,7 +2,7 @@
 (function () {
   "use strict";
 
-  const CACHE_NAME = "seis-product-foundation-v13";
+  const CACHE_NAME = "seis-product-foundation-v14";
 
   const PRECACHE = [
     "./",
@@ -25,6 +25,7 @@
     "./seis-code.js",
     "./seis-linux-replica.html",
     "./seis-linux-replica-public-demo.html",
+    "./seis-demo-flight-deck.html",
     "./wow-gallery.html",
     "./wow-gallery.css",
     "./wow-gallery.js",

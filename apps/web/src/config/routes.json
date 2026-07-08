@@ -27,6 +27,11 @@
       "status": "public-demo-review-entry"
     },
     {
+      "path": "/seis-demo-flight-deck.html",
+      "sections": ["demo-flight-deck", "mission-checklist", "launch-routes", "operator-handoff", "safety-boundaries"],
+      "status": "public-demo-launch-deck"
+    },
+    {
       "path": "/mythic-gacha.html",
       "sections": ["ritual", "draw-system", "bestiary", "indexeddb"],
       "status": "playable-static-gacha"

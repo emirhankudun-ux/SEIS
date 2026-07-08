@@ -74,6 +74,13 @@ work.
 
 Primary demo routes:
 
+- `seis-demo-flight-deck.html` - browser-local demo package launch deck for
+  public reviewers and operators. It opens the live Linux-like shell, public
+  reviewer entry route, Desktop, SEIS Code, AI, Design, Search, Cloud, Store,
+  and creative routes from one mission board, persists only local checklist
+  state, and labels real, Local Demo, approval-gated, and disabled surfaces
+  without provider calls, SSH, deployment, credentials, or supplied-asset
+  mutation.
 - `desktop.html` - SEIS System OS, Second Brain, Demo Studio, Search,
   Launchpad, Files, Terminal, Store, Music, Design, Cloud, Agents, and local
   apps.
@@ -130,6 +137,7 @@ npm run check:seis-second-brain-readiness-contracts
 npm run check:seis-second-brain-browser-smoke
 npm run check:seis-public-demo-go-no-go -- --run-fast-checks
 npm run report:seis-public-demo-go-no-go
+npm run check:seis-demo-flight-deck
 npm run check:desktop-os-browser-smoke
 npm run check:seis-linux-replica-browser-smoke
 node scripts/check-seis-linux-replica-public-walkthrough.mjs

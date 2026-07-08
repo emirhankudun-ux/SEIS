@@ -12,6 +12,7 @@ const REQUIRED_ROUTES = [
   "/seis-code.html",
   "/seis-linux-replica.html",
   "/seis-linux-replica-public-demo.html",
+  "/seis-demo-flight-deck.html",
   "/mythic-gacha.html",
   "/showcase/nature.html",
   "/showcase/still-life.html",
@@ -25,6 +26,7 @@ const REQUIRED_PRECACHE = [
   "./seis-code.html",
   "./seis-linux-replica.html",
   "./seis-linux-replica-public-demo.html",
+  "./seis-demo-flight-deck.html",
   "./mythic-gacha.html",
   "./showcase/nature.html",
   "./showcase/still-life.html",
@@ -103,6 +105,7 @@ for (const marker of [
   "seis-code.html",
   "seis-linux-replica.html",
   "seis-linux-replica-public-demo.html",
+  "seis-demo-flight-deck.html",
   "mythic-gacha.html",
   "showcase/*.html"
 ]) {
@@ -114,6 +117,7 @@ ensure(readme.includes("No SSH") || readme.includes("SSH"), "README must documen
 ensure(readme.includes("provider keys") || readme.includes("provider key"), "README must document provider-key boundary.");
 ensure(readme.includes("docs/demos/SEIS_LINUX_REPLICA_PUBLIC_WALKTHROUGH.md"), "README must link the Linux Replica public walkthrough.");
 ensure(landing.includes("./seis-linux-replica.html?demo=live"), "landing page must expose the Linux Replica live demo deep link.");
+ensure(landing.includes("./seis-demo-flight-deck.html"), "landing page must expose the SEIS Demo Flight Deck.");
 ensure(websiteProducts.includes("../seis-linux-replica.html?demo=live"), "website product pages must expose the Linux Replica live demo deep link.");
 
 if (failures.length > 0) {
@@ -128,5 +132,6 @@ console.log(JSON.stringify({
   routeRegistry: "apps/web/src/config/routes.json",
   serviceWorker: "apps/web/service-worker.js",
   landingDeepLink: "apps/web/index.html -> ./seis-linux-replica.html?demo=live",
+  flightDeckLink: "apps/web/index.html -> ./seis-demo-flight-deck.html",
   productPageDeepLink: "apps/web/website/product-page.js -> ../seis-linux-replica.html?demo=live"
 }, null, 2));
