@@ -2,8 +2,10 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const root = process.cwd();
+const scriptDir = path.dirname(fileURLToPath(import.meta.url));
+const root = path.resolve(scriptDir, "..");
 const handoffPath = path.join(
   root,
   "docs/roadmap/SEIS_LIVE_DEMO_CONTINUITY_HANDOFF.md",
