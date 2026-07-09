@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="SEIS Universal Language Selector: searchable local catalog for GitHub-known programming, markup, data, prose, DevOps, AI, native, and reference languages.">
+    <meta name="theme-color" content="#07090f">
+    <meta name="color-scheme" content="dark">
+    <title>SEIS Universal Language Selector</title>
+    <style>
+      :root {
+        --bg: #07090f;
+        --surface: rgba(255, 255, 255, 0.075);
+        --surface-strong: rgba(255, 255, 255, 0.12);
+        --line: rgba(255, 255, 255, 0.14);
+        --text: #f7f8ff;
+        --muted: #a8b0c9;
+        --green: #39d98a;
+        --blue: #4da3ff;
+        --violet: #9b7cff;
+        --amber: #ffb454;
+        --red: #ff5c7a;
+        --radius: 24px;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 10% 2%, rgba(77, 163, 255, 0.24), transparent 32rem),
+          radial-gradient(circle at 82% 0%, rgba(155, 124, 255, 0.28), transparent 32rem),
+          radial-gradient(circle at 50% 92%, rgba(57, 217, 138, 0.14), transparent 30rem),
+          var(--bg);
+        min-height: 100vh;
+      }
+
+      a { color: inherit; }
+      button, input { font: inherit; }
+
+      .shell {
+        width: min(1240px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 24px 0 56px;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 12px;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 12px 14px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(7, 9, 15, 0.78);
+        backdrop-filter: blur(22px);
+        box-shadow: 0 20px 80px rgba(0, 0, 0, 0.34);
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--text);
+        font-weight: 850;
+        text-decoration: none;
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 36px;
+        height: 36px;
+        place-items: center;
+        border-radius: 14px;
+        background: linear-gradient(135deg, var(--blue), var(--green));
+        color: #07100d;
+        font-weight: 950;
+      }
+
+      .topbar nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 34px;
+        padding: 0 13px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.88rem;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.08fr) minmax(330px, 0.92fr);
+        gap: 18px;
+        padding: 48px 0 22px;
+      }
+
+      .panel, .hero-card, .language-card, .tier-card {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--surface);
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+        backdrop-filter: blur(20px);
+      }
+
+      .hero-card {
+        padding: clamp(28px, 5.5vw, 58px);
+        border-radius: 34px;
+      }
+
+      .eyebrow {
+        margin: 0 0 12px;
+        color: var(--green);
+        font-size: 0.78rem;
+        font-weight: 850;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+      }
+
+      h1, h2, h3 { margin: 0; letter-spacing: -0.045em; }
+      h1 { font-size: clamp(2.7rem, 8vw, 6.6rem); line-height: 0.9; }
+      h2 { font-size: clamp(1.9rem, 4vw, 3.2rem); line-height: 0.98; }
+      h3 { font-size: 1.08rem; }
+
+      p { color: var(--muted); line-height: 1.65; }
+      .lead { max-width: 740px; margin: 22px 0 0; font-size: clamp(1rem, 2vw, 1.22rem); }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 28px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 0 18px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: transparent;
+        color: var(--text);
+        text-decoration: none;
+        font-weight: 780;
+      }
+
+      .button.primary {
+        border: 0;
+        background: linear-gradient(135deg, var(--blue), var(--green));
+        color: #06100e;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        padding: 18px;
+      }
+
+      .stat {
+        min-height: 130px;
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .stat strong { display: block; margin-top: 12px; font-size: 2.35rem; letter-spacing: -0.06em; }
+      .stat span { color: var(--muted); font-size: 0.88rem; }
+
+      .toolbar {
+        display: grid;
+        grid-template-columns: minmax(260px, 1fr) auto;
+        gap: 12px;
+        align-items: center;
+        margin: 16px 0;
+      }
+
+      .search-box {
+        width: 100%;
+        min-height: 54px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        outline: none;
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--text);
+        padding: 0 18px;
+      }
+
+      .filter-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .filter-button {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--muted);
+        cursor: pointer;
+        min-height: 38px;
+        padding: 0 13px;
+        font-weight: 780;
+      }
+
+      .filter-button[aria-pressed="true"] {
+        background: linear-gradient(135deg, rgba(77, 163, 255, 0.35), rgba(57, 217, 138, 0.24));
+        color: var(--text);
+        border-color: rgba(77, 163, 255, 0.5);
+      }
+
+      .tier-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 10px;
+        margin: 18px 0;
+      }
+
+      .tier-card {
+        padding: 15px;
+        min-height: 150px;
+      }
+
+      .tier-card strong { display: block; margin-bottom: 8px; }
+      .tier-card p { margin: 0; font-size: 0.9rem; }
+
+      .catalog-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .language-card {
+        min-height: 154px;
+        padding: 16px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .language-card::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 4px;
+        background: var(--tier-color, var(--blue));
+      }
+
+      .language-card strong {
+        display: block;
+        font-size: 1.04rem;
+        line-height: 1.2;
+      }
+
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 14px;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 6px 9px;
+        color: #e8ecff;
+        background: rgba(255, 255, 255, 0.07);
+        font-size: 0.75rem;
+        font-weight: 780;
+      }
+
+      .notice {
+        margin-top: 18px;
+        padding: 18px;
+        border-color: rgba(255, 180, 84, 0.38);
+        background: rgba(255, 180, 84, 0.08);
+      }
+
+      .empty {
+        padding: 28px;
+        text-align: center;
+      }
+
+      @media (max-width: 1100px) {
+        .catalog-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .tier-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
+
+      @media (max-width: 850px) {
+        .hero, .toolbar { grid-template-columns: 1fr; }
+        .catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .topbar { align-items: flex-start; border-radius: 24px; flex-direction: column; }
+      }
+
+      @media (max-width: 560px) {
+        .shell { width: min(100% - 20px, 1240px); padding-top: 12px; }
+        .catalog-grid, .stats, .tier-grid { grid-template-columns: 1fr; }
+        .hero { padding-top: 24px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <a class="brand" href="./language-matrix.html" aria-label="Back to SEIS Language Matrix"><span class="brand-mark">S</span><span>Universal Language Selector</span></a>
+        <nav aria-label="Language selector navigation">
+          <a class="pill" href="./language-matrix.html">Purpose Matrix</a>
+          <a class="pill" href="./desktop.html#seis-ai">AI Center</a>
+          <a class="pill" href="./index.html">SEIS Home</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero" aria-labelledby="title">
+          <article class="hero-card">
+            <p class="eyebrow">GitHub Linguist style · SEIS governed</p>
+            <h1 id="title">Search every language. Activate only what is safe.</h1>
+            <p class="lead">This local selector turns the giant GitHub language list into SEIS governance: Active Core, Ready Extension, Contract Only, Reference Only, and Blocked Until Approval.</p>
+            <div class="hero-actions">
+              <a class="button primary" href="#catalog">Open catalog</a>
+              <a class="button" href="../content/development/seis-universal-language-atlas.json">Atlas policy</a>
+            </div>
+          </article>
+
+          <aside class="panel stats" aria-label="Language catalog summary">
+            <div class="stat"><span>Total local seed languages</span><strong data-total>0</strong></div>
+            <div class="stat"><span>Visible results</span><strong data-visible>0</strong></div>
+            <div class="stat"><span>Execution policy</span><strong>Gated</strong></div>
+            <div class="stat"><span>External calls</span><strong>0</strong></div>
+          </aside>
+        </section>
+
+        <section class="tier-grid" aria-label="Activation tier definitions">
+          <article class="tier-card"><strong>Active Core</strong><p>Used today in the local SEIS repo workflow.</p></article>
+          <article class="tier-card"><strong>Ready Extension</strong><p>Can enter through scoped PRs with checks and rollback.</p></article>
+          <article class="tier-card"><strong>Contract Only</strong><p>Allowed in docs and plans before runtime code.</p></article>
+          <article class="tier-card"><strong>Reference Only</strong><p>Search, catalog, import/export, and education only.</p></article>
+          <article class="tier-card"><strong>Blocked</strong><p>Needs explicit approval, sandbox, SDK/toolchain plan.</p></article>
+        </section>
+
+        <section id="catalog" class="panel" aria-labelledby="catalog-title">
+          <p class="eyebrow">Searchable catalog</p>
+          <h2 id="catalog-title">Universal language selector</h2>
+          <div class="toolbar">
+            <label>
+              <span class="eyebrow">Search</span>
+              <input class="search-box" type="search" placeholder="Search languages, families, tiers..." data-search autocomplete="off">
+            </label>
+            <div class="filter-row" role="group" aria-label="Filter by activation tier" data-filters></div>
+          </div>
+          <div class="catalog-grid" data-catalog></div>
+          <div class="empty" data-empty hidden>No matching languages. Try another search or filter.</div>
+        </section>
+
+        <article class="panel notice">
+          <p><strong>SEIS boundary:</strong> this selector recognizes and classifies languages locally. It does not install compilers, run code, call providers, deploy, open SSH, create databases, or activate risky toolchains.</p>
+        </article>
+      </main>
+    </div>
+
+    <script>
+      const tiers = {
+        active: { label: 'Active Core', color: '#39d98a', mode: 'recognize + current runtime' },
+        ready: { label: 'Ready Extension', color: '#4da3ff', mode: 'scoped PR required' },
+        contract: { label: 'Contract Only', color: '#9b7cff', mode: 'architecture first' },
+        reference: { label: 'Reference Only', color: '#a8b0c9', mode: 'catalog only' },
+        blocked: { label: 'Blocked', color: '#ff5c7a', mode: 'explicit approval' }
+      };
+
+      const familyByLanguage = new Map([
+        ['HTML', 'Web'], ['CSS', 'Web'], ['JavaScript', 'Web'], ['TypeScript', 'Web'], ['Astro', 'Web'], ['ASP.NET', 'Web'], ['Blade', 'Web'], ['Antlers', 'Web'], ['AsciiDoc', 'Docs'], ['Markdown', 'Docs'],
+        ['C', 'Systems'], ['C++', 'Systems'], ['Rust', 'Systems'], ['Zig', 'Systems'], ['Assembly', 'Systems'], ['Objective-C', 'Native'], ['Swift', 'Native'], ['Ada', 'Systems'],
+        ['Java', 'Backend'], ['C#', 'Backend'], ['Go', 'Backend'], ['Python', 'AI/Data'], ['Ruby', 'Backend'], ['PHP', 'Backend'], ['Scala', 'Backend'], ['Kotlin', 'Mobile'], ['Apex', 'Enterprise'], ['ABAP', 'Enterprise'],
+        ['SQL', 'Data'], ['R', 'Data'], ['Julia', 'Data'], ['MATLAB', 'Data'], ['CSV', 'Data'], ['JSON', 'Data'], ['Avro IDL', 'Data'], ['Common Workflow Language', 'Data'],
+        ['Shell', 'DevOps'], ['Bash', 'DevOps'], ['Batchfile', 'DevOps'], ['PowerShell', 'DevOps'], ['Dockerfile', 'DevOps'], ['HCL', 'Cloud'], ['Bicep', 'Cloud'], ['ApacheConf', 'Config'], ['Caddyfile', 'Config'], ['YAML', 'Config'],
+        ['B (Formal Method)', 'Formal'], ['Alloy', 'Formal'], ['Agda', 'Formal'], ['Coq', 'Formal'], ['Curry', 'Formal'], ['Answer Set Programming', 'Formal'], ['Prolog', 'Formal'],
+        ['Csound Document', 'Creative'], ['Csound Score', 'Creative'], ['Cue Sheet', 'Creative'], ['COLLADA', 'Creative'], ['GLSL', 'Creative'], ['WGSL', 'Creative'], ['Cuda', 'GPU'], ['Arduino', 'Hardware']
+      ]);
+
+      const active = ['HTML', 'CSS', 'JavaScript', 'Node.js', 'Python', 'Shell', 'JSON', 'Markdown', 'YAML'];
+      const ready = ['TypeScript', 'SQL', 'Swift', 'Kotlin', 'Java', 'Go', 'Rust', 'C#'];
+      const contract = ['C', 'C++', 'Assembly', 'R', 'Julia', 'Scala', 'Ruby', 'PHP', 'Lua'];
+      const reference = ['ABAP', 'Ada', 'ALGOL', 'APL', 'BASIC', 'COBOL', 'Common Lisp', 'Fortran', 'Pascal', 'Prolog'];
+      const blocked = ['Cuda', 'Unity', 'Unreal', 'Dockerfile', 'HCL', 'Solidity', 'Move', 'Cairo', 'Arduino', 'Bicep'];
+
+      const seedLanguages = [
+        'Go','JavaScript','Lua','Python','Rust','Shell','TypeScript','HTML','CSS','Node.js','JSON','Markdown','YAML','SQL','Swift','Kotlin','Java','C#','C','C++','R','Julia','Scala','Ruby','PHP','Assembly',
+        '1C Enterprise','2-Dimensional Array','4D','ABAP','ABAP CDS','ABNF','ActionScript','Ada','Adblock Filter List','Adobe Font Metrics','Agda','AGS Script','AIDL','Aiken','AL','AL Code','ALGOL','Alloy','Alpine Abuild','Altium Designer','AMPL','AngelScript','Answer Set Programming','Ant Build System','Antlers','ANTLR','ApacheConf','Apex','API Blueprint','APL','Apollo Guidance Computer','AppleScript','Arc','Arduino','AsciiDoc','ASL','ASN.1','ASP','ASP.NET','AspectJ','Astro','Asymptote','ATS','Augeas','AutoHotkey','AutoIt','Avro IDL','Awk','B (Formal Method)','B4X','Ballerina','BAML','BASIC','Batchfile','Beef','Befunge','Berry','BibTeX','BibTeX Style','Bicep','Bikeshed','Bison','BitBake','Blade','BlitzBasic','BlitzMax','Bluespec','Bluespec BH','Boo','Boogie','BQN','C-ObjDump','C2hs Haskell','C3','Cabal Config','Caddyfile','Cadence','Cairo','Cairo Zero','CamelIGO','CAP CDS','CODEOWNERS','CodeQL','CoffeeScript','ColdFusion','ColdFusion CFC','COLLADA','Common Lisp','Common Workflow Language','Component Pascal','CoNLL-U','Cooklang','Cool','Coq','COBOL','Csound Document','Csound Score','CSV','Cuda','CUE','Cue Sheet','cURL Config','Curry','CWeb','Cycript','Cylc','Cython','Dockerfile','HCL','PowerShell','Solidity','Move','GLSL','WGSL','Fortran','Pascal','Prolog','MATLAB','Jupyter Notebook','TLA','Lean','Zig','Objective-C','Dart','VB.NET','Perl','Groovy','Elixir','Erlang','Clojure','F#','GraphQL','OpenAPI','Protocol Buffers','TOML','XML','Nix','CUE','Rego','CEL','Mermaid','PlantUML','Dhall','Jsonnet','Starlark','Nim','Crystal','D','V','Forth','Smalltalk','Racket','Scheme','Tcl','AWK','sed'
+      ];
+
+      const uniqueNames = [...new Set(seedLanguages)].sort((a, b) => a.localeCompare(b));
+
+      function tierFor(name) {
+        if (active.includes(name)) return 'active';
+        if (ready.includes(name)) return 'ready';
+        if (contract.includes(name)) return 'contract';
+        if (reference.includes(name)) return 'reference';
+        if (blocked.includes(name)) return 'blocked';
+        return 'reference';
+      }
+
+      const languages = uniqueNames.map((name) => {
+        const tier = tierFor(name);
+        return {
+          name,
+          tier,
+          family: familyByLanguage.get(name) || 'Reference',
+          mode: tiers[tier].mode
+        };
+      });
+
+      const catalog = document.querySelector('[data-catalog]');
+      const search = document.querySelector('[data-search]');
+      const filters = document.querySelector('[data-filters]');
+      const empty = document.querySelector('[data-empty]');
+      const total = document.querySelector('[data-total]');
+      const visible = document.querySelector('[data-visible]');
+      let activeFilter = 'all';
+
+      total.textContent = String(languages.length);
+
+      function createFilterButtons() {
+        const options = [['all', 'All'], ...Object.entries(tiers).map(([key, tier]) => [key, tier.label])];
+        filters.innerHTML = options.map(([key, label]) => `<button class="filter-button" type="button" data-tier="${key}" aria-pressed="${key === activeFilter}">${label}</button>`).join('');
+        filters.querySelectorAll('button').forEach((button) => {
+          button.addEventListener('click', () => {
+            activeFilter = button.dataset.tier;
+            createFilterButtons();
+            render();
+          });
+        });
+      }
+
+      function render() {
+        const query = search.value.trim().toLowerCase();
+        const filtered = languages.filter((language) => {
+          const haystack = `${language.name} ${language.family} ${tiers[language.tier].label} ${language.mode}`.toLowerCase();
+          const matchesSearch = !query || haystack.includes(query);
+          const matchesFilter = activeFilter === 'all' || language.tier === activeFilter;
+          return matchesSearch && matchesFilter;
+        });
+
+        visible.textContent = String(filtered.length);
+        empty.hidden = filtered.length > 0;
+        catalog.innerHTML = filtered.map((language) => {
+          const tier = tiers[language.tier];
+          return `<article class="language-card" style="--tier-color:${tier.color}">
+            <strong>${language.name}</strong>
+            <p>${language.family} lane · ${tier.label}</p>
+            <div class="meta">
+              <span class="chip">${tier.label}</span>
+              <span class="chip">${language.mode}</span>
+              <span class="chip">no auto-run</span>
+            </div>
+          </article>`;
+        }).join('');
+      }
+
+      search.addEventListener('input', render);
+      createFilterButtons();
+      render();
+    </script>
+  </body>
+</html>
