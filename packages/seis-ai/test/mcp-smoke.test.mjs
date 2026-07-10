@@ -743,6 +743,9 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.ok, true);
     assert.equal(payload.laneId, "seis-cloud");
     assert.ok(payload.approvalBoundary.includes("explicit human approval"));
+    assert.equal(payload.sshBinding.alias, "SEIS-SSH");
+    assert.equal(payload.sshBinding.serverAndPortPolicy, "preserve-existing-server-and-port");
+    assert.equal(payload.sshBinding.liveClaimBlocked, true);
   });
 
   it("executes the SEIS AI Core provider status tool through the protocol", async () => {

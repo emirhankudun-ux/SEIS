@@ -217,6 +217,15 @@
     "versionRegistryTool": "seis_ai_core_version_status",
     "versionPromotionTool": "seis_ai_core_version_promotion_dry_run",
     "subagentOperatingModelTool": "seis_ai_core_subagent_model",
+    "sshTransportBinding": {
+      "alias": "SEIS-SSH",
+      "contract": "deploy/seis-ssh-public-access-contract.json",
+      "readinessEvidence": "content/development/seis-ssh-live-readiness-evidence.json",
+      "statusSurface": "seis_cloud_status",
+      "planSurface": "seis_cloud_plan",
+      "serverAndPortPolicy": "preserve-existing-server-and-port",
+      "runtimeBoundary": "status-and-plan-only"
+    },
     "mcpTool": "seis_plugin_integration",
     "mcpResource": "seis://agent/plugin-integration.json",
     "mcpResources": [
