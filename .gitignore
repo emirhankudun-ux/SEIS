@@ -140,6 +140,7 @@ ios/
 !apps/web/wow-pages/*.json
 !apps/web/wow-pages/imported/*/manifest.json
 !reports/seis-model-scaling/20b-benchmark-dry-run.json
+!reports/seis-model-scaling/seis-language-model-training-curriculum.json
 !packages/seis-ai/data/permission-policy-seed.json
 !packages/seis-ai/models/permission-policy-seed-v0.json
 !packages/seis-ai/data/memory-ranker-seed-v0.json

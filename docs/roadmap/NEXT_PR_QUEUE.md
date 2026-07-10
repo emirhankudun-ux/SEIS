@@ -276,6 +276,20 @@ owner explicitly requests removal.
 | Exclude | Live model training or inference claims, AGI ownership claims, real 512B benchmark/inference assertions, provider credential setup, deployment, push/merge/deploy actions, and secret changes. |
 | Validation | `npm run check:seis-agi-independent-evidence-ledger`, `npm run check:seis-agi-github-user-readiness-gates`, `npm run check:seis-agi-public-readiness-evidence`, `npm run check:seis-agi-evaluation-protocol`, `git diff --check`. |
 | Approval needed | None for local JSON/docs/validator updates; explicit approval required for real AGI/512B training or inference evidence claims, provider credential setup, and release/merge actions. |
+
+## PR 4I: SEIS AI public readiness program and GitHub handoff
+
+| Field | Value |
+| --- | --- |
+| Priority | P0 |
+| Active PR | `#100` - `docs(ai): add SEIS AI public readiness program` |
+| Active branch | `codex/seis-ai-public-readiness-20260630` |
+| Goal | Keep the SEIS AI public-readiness, agent-workforce, model-curriculum, and GitHub-user readiness gates reviewable from a freshly cloned machine without claiming AGI, 512B runtime capability, trained weights, benchmarks, or universal public availability. |
+| Include | `SEIS_AGENT_WORKFORCE.md`, `content/development/seis-ai-public-readiness-program.json`, `content/development/seis-agi-github-user-readiness-gates.json`, `docs/ai/seis-ai-public-readiness-program.md`, `docs/ai/seis-agi-github-user-readiness-gates.md`, `scripts/check-seis-ai-public-readiness.mjs`, `scripts/check-seis-ai-public-readiness-program.mjs`, `scripts/check-seis-agent-workforce.mjs`, `scripts/check-seis-agi-github-user-readiness-gates.mjs`, `reports/seis-model-scaling/seis-language-model-training-curriculum.json`, and docs/index references. |
+| Exclude | Live provider calls, API-key collection, model downloads, model training, fine-tuning, paid benchmarks, SSH execution, deployment, release publication, direct merge to `main`, security allowlist changes without approval, history rewrite, and any AGI/512B public-ready claim without independent evidence. |
+| Validation | `npm run check:seis-ai-public-readiness`, `npm run check:seis-agent-workforce`, `npm run check:seis-ai-public-readiness-program`, `npm run check:seis-agi-github-user-readiness-gates`, `npm run check:seis-language-model-training-curriculum`, `git diff --check`, and GitHub PR #100 checks. |
+| Current blocker | GitHub PR #100 currently has `Secret & Vulnerability Scan` and derived `Security Summary` failures from the full-history GitLeaks scan against an older generated aggregate bundle path, not from new secret material in this PR diff. Do not print or copy any secret value; remediation requires explicit human approval because a narrow allowlist, history cleanup, or rotation plan changes the security posture. |
+| Approval needed | None for docs/JSON/validator/handoff updates; explicit approval required for merge, deployment, release publication, provider credentials, model training/inference claims, benchmark claims, security allowlist push, history rewrite, or secret rotation. |
 ## PR 4E: SEIS Second Brain Foundation
 
 | Field | Value |
