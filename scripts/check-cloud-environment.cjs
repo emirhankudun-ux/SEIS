@@ -417,7 +417,16 @@ if (payload.sources?.thirdPartyAiToolInventory) {
   ensure(source.id === "seis-third-party-ai-tool-inventory", "thirdPartyAiToolInventory source id must match");
   ensure(source.path === "reports/third-party-ai-tool-inventory.json", "thirdPartyAiToolInventory path must point to report");
   ensure(source.candidateCount === candidates.length, "thirdPartyAiToolInventory candidateCount must match candidates");
-  ensure(source.detectedCount >= 1, "thirdPartyAiToolInventory must detect at least one source");
+  ensure(Number.isInteger(source.detectedCount) && source.detectedCount >= 0, "thirdPartyAiToolInventory detectedCount must be a non-negative integer");
+  ensure(source.detectedCount <= candidates.length, "thirdPartyAiToolInventory detectedCount cannot exceed candidates");
+
+  if (source.available) {
+    ensure(source.detectedCount >= 1, "thirdPartyAiToolInventory must detect at least one source when available");
+  } else {
+    ensure(source.detectedCount === 0, "thirdPartyAiToolInventory must report zero detections when unavailable");
+    ensure(candidates.every((candidate) => candidate.status === "missing"), "thirdPartyAiToolInventory unavailable candidates must be marked missing");
+  }
+
   for (const candidateId of REQUIRED_THIRD_PARTY_AI_HELPER_IDS) {
     ensure(candidatesById.has(candidateId), `thirdPartyAiToolInventory missing candidate ${candidateId}`);
   }
