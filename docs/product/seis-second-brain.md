@@ -46,7 +46,8 @@ Search, SEIS AI, Command Center, Launchpad, Favorites, and desktop shortcuts.
 | --- | --- | --- |
 | Markdown vault | Browser-local Local Demo | Seed notes render under `/home/seis/SecondBrain`; `Save Vault Snapshot` writes note files and `seis-second-brain-vault-snapshot.md` into the browser VFS. |
 | Knowledge graph | Browser-local Local Demo | Graph nodes and backlinks are generated from repo-owned seed records; `Link Graph` writes `graph-links.json`. |
-| Agent training pack | Local Demo read-only | `Build Training Pack` writes `/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md` with Obsidian, accessibility, router, PR #54 checklist, and language model training curriculum summaries. |
+| Agent training pack | Local Demo read-only | `Build Training Pack` writes `/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md` with the repo-owned Obsidian context pack, all 9 managed lanes, accessibility, router, PR #54 checklist, and language model training curriculum summaries. |
+| Repo-owned Obsidian context pack | Read-only local/MCP context | `seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md` is surfaced by `seis://brain/second-brain-system.json` as public-safe contract metadata; it is not a private vault import or model-weight training input. |
 | Language model training curriculum | Planned-training contract | `content/development/seis-language-model-training-curriculum.json` and `reports/seis-model-scaling/seis-language-model-training-curriculum.md` map candidate model families, local seed-model lanes, retrieval lanes, and approval gates without installing models, downloading checkpoints, training, benchmarking, calling providers, or claiming SEIS owns a foundation model. |
 | Independent AGI evidence ledger | Review-gated | `npm run check:seis-agi-independent-evidence-ledger` and `content/development/seis-agi-independent-evidence-ledger.json` keep AGI/512B public claims blocked until independent external evidence and explicit human approval are recorded. |
 | Installed AI bridge | Local Demo context only | SEIS AI exposes a Second Brain tab with all 6 current installed AI profiles: Codex, SEIS Local Demo Runtime, Claude Review Profile, Qwen Alternative Review, Gemini Secondary Validation, and Ollama Local Candidate. Missing Key and Disabled states remain explicit. |
@@ -72,6 +73,8 @@ Search, SEIS AI, Command Center, Launchpad, Favorites, and desktop shortcuts.
 - No API keys, tokens, cookies, private keys, service accounts, `.env` values,
   or private vault content are stored in the Second Brain records.
 - The browser app does not read host Obsidian folders.
+- `seis://brain/second-brain-system.json` exposes only repo-owned, read-only
+  Second Brain contract metadata; it does not read a private vault or train model weights.
 - The browser app does not execute SSH, deployment, Git push, Git merge, or
   live provider calls.
 - Public GitHub use is blocked until human review verifies provenance,

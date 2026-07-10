@@ -352,6 +352,7 @@ async function smokeSecondBrain(client, baseUrl) {
       subAgentRows: root?.querySelectorAll('[data-second-brain-subagents] tbody tr').length || 0,
       agentRosterRows: root?.querySelectorAll('[data-second-brain-agent-roster] tbody tr').length || 0,
       managedLaneMetric: root?.querySelector('[data-second-brain-managed-lanes] p')?.textContent?.trim() || '',
+      mcpContext: root?.querySelector('[data-second-brain-mcp-resource]')?.innerText || '',
       managedLaneText: root?.querySelector('[data-second-brain-subagents]')?.innerText || '',
       agentRosterText: root?.querySelector('[data-second-brain-agent-roster]')?.innerText || '',
       actionButtons: root?.querySelectorAll('[data-action="app-primary"], [data-action="second-brain-capture"], [data-action="second-brain-link"], [data-action="second-brain-training-pack"], [data-action="second-brain-review"], [data-action="second-brain-export-github"]').length || 0,
@@ -377,6 +378,7 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(initial.subAgentRows === 9, `expected nine managed lane rows, got ${initial.subAgentRows}`);
   ensure(initial.agentRosterRows === 13, `expected thirteen autonomous agent rows, got ${initial.agentRosterRows}`);
   ensure(initial.managedLaneMetric === "9", `expected managed lane metric 9, got ${initial.managedLaneMetric}`);
+  ensure(initial.mcpContext.includes("seis://brain/second-brain-system.json"), "Second Brain must render the read-only MCP context resource.");
   ensure(initial.managedLaneText.includes("SEIS Product") && initial.managedLaneText.includes("seis_product_status"), "Second Brain managed lane table must expose the SEIS Product MCP lane.");
   ensure(initial.agentRosterText.includes("Product Agent"), "Second Brain autonomous roster must expose Product Agent.");
   ensure(initial.actionButtons === 6, `expected six Second Brain actions, got ${initial.actionButtons}`);

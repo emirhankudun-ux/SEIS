@@ -18,6 +18,7 @@ const subAgentsPath = "SEIS_SUB_AGENTS.md";
 const vaultWorkforcePath = "seis-brain/vault/05_Agents/Agent Workforce.md";
 const vaultProductAgentPath = "seis-brain/vault/05_Agents/Product Agent.md";
 const obsidianContextPath = "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md";
+const secondBrainMcpResource = "seis://brain/second-brain-system.json";
 const demoStatusPath = "docs/product/seis-demo-status.md";
 const requiredManagedSubAgentLanes = [
   "SEIS Hub",
@@ -95,6 +96,12 @@ if (contract) {
   ensure(contract.routeId === "seis-second-brain-app", "contract must bind route id seis-second-brain-app");
   ensure(contract.vaultRoot === "/home/seis/SecondBrain", "contract must declare browser-local vault root");
   ensure(contract.trainingPackPath === "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md", "contract must declare browser-local training pack path");
+  ensure(contract.mcpResource === secondBrainMcpResource, "contract must declare the read-only Second Brain MCP resource");
+  ensure(contract.repositoryContextPack?.status === "repo-owned-public-safe", "contract repository context pack must remain repo-owned and public-safe");
+  ensure(contract.repositoryContextPack?.path === obsidianContextPath, "contract repository context pack path mismatch");
+  ensure(contract.repositoryContextPack?.access === "read-only local and MCP contract context", "contract repository context pack must stay read-only");
+  ensure(contract.repositoryContextPack?.privateVaultRead === false, "contract repository context pack must not read private vaults");
+  ensure(contract.repositoryContextPack?.modelWeightTraining === false, "contract repository context pack must not claim model-weight training");
   ensure(contract.releaseReviewPacketPath === "reports/seis-public-demo/pr54-review-packet-latest.md", "contract must declare PR #54 release review packet path");
   ensure(contract.languageModelTrainingCurriculum?.status === "planned-training-contract", "contract must bind planned language model training curriculum");
   ensure(contract.languageModelTrainingCurriculum?.contractPath === trainingCurriculumPath, "contract language model training curriculum path mismatch");
@@ -151,6 +158,8 @@ for (const phrase of [
   "all 6 current installed AI profiles",
   "All 9 current managed SEIS sub-agent lanes",
   "13-agent target roster",
+  "Repo-owned Obsidian context pack",
+  "seis://brain/second-brain-system.json",
   "GitHub readiness",
   "Agent training pack",
   "Language model training curriculum",
@@ -202,6 +211,9 @@ for (const phrase of [
   "seis-agent-training-pack.md",
   "releaseReviewPacketPath",
   "pr54-review-packet-latest.md",
+  "repositoryContextPack",
+  "seis://brain/second-brain-system.json",
+  "Repo-owned Obsidian context pack",
   "seis-language-model-training-curriculum.json",
   "seis-language-model-training-curriculum.md",
   "Language Model Training Curriculum",
@@ -219,6 +231,11 @@ for (const phrase of [
 ]) {
   ensure(desktopJs.includes(phrase), `desktop.js missing phrase: ${phrase}`);
 }
+
+ensure(desktopJs.includes("const laneRows = SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.map"), "Second Brain training pack must use the canonical managed sub-agent lanes");
+ensure(desktopJs.includes("Observed sub-agent lanes: ${SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.length}"), "Second Brain training pack must report the canonical managed-lane count");
+ensure(desktopJs.includes("managedSubAgentLanes: SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.length"), "Second Brain training-pack activity must record the canonical managed-lane count");
+ensure(!desktopJs.includes("Observed sub-agent lanes: ${SUB_AGENT_DEMO.lanes.length}"), "Second Brain training pack must not report the legacy six-lane demo count");
 
 for (const appId of [
   "seis-system-os",

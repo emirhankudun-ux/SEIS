@@ -9,6 +9,14 @@
   "snapshotPath": "/home/seis/SecondBrain/seis-second-brain-vault-snapshot.md",
   "githubReadinessPath": "/home/seis/SecondBrain/github-readiness-review.md",
   "trainingPackPath": "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md",
+  "mcpResource": "seis://brain/second-brain-system.json",
+  "repositoryContextPack": {
+    "status": "repo-owned-public-safe",
+    "path": "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md",
+    "access": "read-only local and MCP contract context",
+    "privateVaultRead": false,
+    "modelWeightTraining": false
+  },
   "releaseReviewPacketPath": "reports/seis-public-demo/pr54-review-packet-latest.md",
   "obsidianSafeImportDryRunPath": "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json",
   "obsidianSafeImportDryRunMarkdownPath": "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md",

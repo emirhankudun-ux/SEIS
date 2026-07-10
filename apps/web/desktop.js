@@ -1428,6 +1428,13 @@ const SEIS_SECOND_BRAIN_SYSTEM = {
   snapshotPath: "/home/seis/SecondBrain/seis-second-brain-vault-snapshot.md",
   githubReadinessPath: "/home/seis/SecondBrain/github-readiness-review.md",
   trainingPackPath: "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md",
+  mcpResource: "seis://brain/second-brain-system.json",
+  repositoryContextPack: {
+    status: "repo-owned-public-safe",
+    path: "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md",
+    access: "read-only local and MCP contract context",
+    boundary: "No private vault read or model-weight training."
+  },
   releaseReviewPacketPath: "reports/seis-public-demo/pr54-review-packet-latest.md",
   languageModelTrainingCurriculum: {
     status: "planned-training-contract",
@@ -5057,7 +5064,7 @@ function renderSecondBrain() {
     <section class="second-brain-hero">
       <div>
         <h2>SEIS Second Brain</h2>
-        <p>Obsidian-style Markdown vault, installed AI profiles, bounded sub-agent lanes, Search, Files, and GitHub governance are connected as one local knowledge cockpit.</p>
+        <p>Obsidian-style Markdown vault, a repo-owned public context pack, installed AI profiles, bounded sub-agent lanes, Search, Files, and GitHub governance are connected as one local knowledge cockpit.</p>
       </div>
       <aside>
         <strong>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.status)}</strong>
@@ -5071,6 +5078,7 @@ function renderSecondBrain() {
       <article class="metric-card" data-second-brain-managed-lanes><strong>Managed Lanes</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.length}</p></article>
       <article class="metric-card"><strong>Agent Roster</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length}</p></article>
       <article class="metric-card"><strong>Quality Gate</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.qualityGate)}</p></article>
+      <article class="metric-card" data-second-brain-mcp-resource><strong>MCP Context</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.mcpResource)}</p></article>
       <article class="metric-card"><strong>Last Snapshot</strong><p>${data.lastSnapshot?.time || "Not saved yet"}</p></article>
       <article class="metric-card"><strong>Last Training Pack</strong><p>${data.lastTrainingPack?.time || "Not built yet"}</p></article>
       <article class="metric-card"><strong>Publish State</strong><p>Human review before GitHub</p></article>
@@ -8544,6 +8552,9 @@ Vault root: ${SEIS_SECOND_BRAIN_SYSTEM.vaultRoot}
 Source contract: ${SEIS_SECOND_BRAIN_SYSTEM.sourcePath}
 Product doc: ${SEIS_SECOND_BRAIN_SYSTEM.productDoc}
 Quality gate: ${SEIS_SECOND_BRAIN_SYSTEM.qualityGate}
+MCP resource: ${SEIS_SECOND_BRAIN_SYSTEM.mcpResource}
+Repo-owned Obsidian context pack: ${SEIS_SECOND_BRAIN_SYSTEM.repositoryContextPack.path}
+Context access: ${SEIS_SECOND_BRAIN_SYSTEM.repositoryContextPack.access}
 
 ## Labels
 
@@ -8563,7 +8574,7 @@ ${SEIS_INSTALLED_AI_SYSTEMS.map((system) => `- ${system.name}: ${system.status} 
 
 ## Managed Sub-Agent Lanes
 
-${SUB_AGENT_DEMO.lanes.map(([name, lane, tool, scope]) => `- ${name}: ${lane} / ${tool} / ${scope}`).join("\n")}
+${SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.map(([name, lane, tool, scope]) => `- ${name}: ${lane} / ${tool} / ${scope}`).join("\n")}
 
 ## Autonomous Agent Roster
 
@@ -8581,7 +8592,7 @@ ${SEIS_SECOND_BRAIN_SYSTEM.runtimeBoundary}
 
 function buildSecondBrainTrainingPackMarkdown(timestamp) {
   const installedRows = SEIS_INSTALLED_AI_SYSTEMS.map((system) => `- ${system.name} | ${system.status} | ${system.role} | ${system.boundary}`);
-  const laneRows = SUB_AGENT_DEMO.lanes.map(([name, lane, tool, scope]) => `- ${name} | ${lane} | ${tool} | ${scope}`);
+  const laneRows = SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.map(([name, lane, tool, scope]) => `- ${name} | ${lane} | ${tool} | ${scope}`);
   const rosterRows = SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.map(([agent, status, duty]) => `- ${agent} | ${status} | ${duty}`);
 
   return `# SEIS Second Brain Agent Training Pack
@@ -8593,12 +8604,18 @@ Vault root: ${SEIS_SECOND_BRAIN_SYSTEM.vaultRoot}
 Snapshot path: ${SEIS_SECOND_BRAIN_SYSTEM.snapshotPath}
 GitHub readiness path: ${SEIS_SECOND_BRAIN_SYSTEM.githubReadinessPath}
 Training pack path: ${SEIS_SECOND_BRAIN_SYSTEM.trainingPackPath}
+Second Brain MCP resource: ${SEIS_SECOND_BRAIN_SYSTEM.mcpResource}
+Repo-owned Obsidian context pack: ${SEIS_SECOND_BRAIN_SYSTEM.repositoryContextPack.path}
+Context access: ${SEIS_SECOND_BRAIN_SYSTEM.repositoryContextPack.access}
 Observed AI profiles: ${SEIS_INSTALLED_AI_SYSTEMS.length}
-Observed sub-agent lanes: ${SUB_AGENT_DEMO.lanes.length}
+Observed sub-agent lanes: ${SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.length}
 Observed autonomous agent roster: ${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length}
 
-## 1) Obsidian Bridge Safe Import
+## 1) Obsidian Bridge Safe Import And Repo-Owned Context
 
+- Read-only MCP context: ${SEIS_SECOND_BRAIN_SYSTEM.mcpResource}
+- Repo-owned Markdown context: ${SEIS_SECOND_BRAIN_SYSTEM.repositoryContextPack.path}
+- Context boundary: ${SEIS_SECOND_BRAIN_SYSTEM.repositoryContextPack.boundary}
 - Contract source: content/development/seis-obsidian-bridge-safe-import-contract.json
 - Current mode: planned-gated, explicit user-selected import only.
 - Runtime boundary:
@@ -8773,8 +8790,10 @@ function exportSecondBrainTrainingPack() {
     path,
     contractsCovered: 4,
     installedAiProfiles: SEIS_INSTALLED_AI_SYSTEMS.length,
-    managedSubAgentLanes: SUB_AGENT_DEMO.lanes.length,
+    managedSubAgentLanes: SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.length,
     autonomousAgentRoster: SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length,
+    mcpResource: SEIS_SECOND_BRAIN_SYSTEM.mcpResource,
+    repositoryContextPack: SEIS_SECOND_BRAIN_SYSTEM.repositoryContextPack.path,
     artifactPath: path
   };
   const message = `Second Brain training pack saved to ${path}.`;
@@ -8912,7 +8931,8 @@ ${SEIS_SECOND_BRAIN_SYSTEM.githubGates.map((gate) => `- ${gate}`).join("\n")}
 - Browser-local Markdown vault export.
 - Knowledge graph and backlink display from repo-owned seed notes.
 - Installed AI profile index for ${SEIS_INSTALLED_AI_SYSTEMS.length} current systems as Local Demo/Missing Key/Disabled evidence.
-- Managed sub-agent lane index for ${SUB_AGENT_DEMO.lanes.length} current lanes as status/plan-only evidence.
+- Managed sub-agent lane index for ${SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.length} current lanes as status/plan-only evidence.
+- Read-only Second Brain MCP context at ${SEIS_SECOND_BRAIN_SYSTEM.mcpResource} with the repo-owned Obsidian context pack at ${SEIS_SECOND_BRAIN_SYSTEM.repositoryContextPack.path}.
 - Autonomous agent roster for ${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length} Second Brain duties as review-gated planning evidence.
 - Validator-backed product contract: ${SEIS_SECOND_BRAIN_SYSTEM.qualityGate}
 
