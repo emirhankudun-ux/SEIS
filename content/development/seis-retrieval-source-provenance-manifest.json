@@ -1,7 +1,7 @@
 {
   "id": "seis-retrieval-source-provenance-manifest",
   "version": "2026.07.01",
-  "generatedAt": "2026-06-30T23:32:19.443Z",
+  "generatedAt": "2026-07-01T03:28:35.562Z",
   "status": "manifest-defined-index-blocked",
   "qualityGate": "npm run check:seis-retrieval-source-provenance",
   "reportCommand": "npm run report:seis-retrieval-source-provenance",
@@ -239,10 +239,10 @@
     {
       "groupId": "root-governance-docs",
       "path": "README.md",
-      "sourceUri": "seis://retrieval/source/root-governance-docs/cfcb509648f37af4",
+      "sourceUri": "seis://retrieval/source/root-governance-docs/7ba3bb4849317d4b",
       "provenanceLabel": "repo-owned-governance",
-      "bytes": 39371,
-      "sha256": "cfcb509648f37af4088f9f3a2c2052767d4d758999bed7fcdb5d45c31b6a5e0b",
+      "bytes": 39823,
+      "sha256": "7ba3bb4849317d4b11106209401768576003ccd99c1e8246b049c5b80949ac97",
       "mediaType": "text/markdown",
       "indexApprovedToday": false
     },
@@ -399,10 +399,10 @@
     {
       "groupId": "ai-docs",
       "path": "docs/ai/seis-ai-public-readiness-program.md",
-      "sourceUri": "seis://retrieval/source/ai-docs/65baf7b6446e29c2",
+      "sourceUri": "seis://retrieval/source/ai-docs/e73f1aefef6d4aaf",
       "provenanceLabel": "repo-owned-ai-docs",
-      "bytes": 5995,
-      "sha256": "65baf7b6446e29c22521228881dd6cb41bc8098a189518a7502964d39cb1e1c2",
+      "bytes": 6503,
+      "sha256": "e73f1aefef6d4aafead92618c4580906dc1ddec5850abc87881cdd9b8fb6afee",
       "mediaType": "text/markdown",
       "indexApprovedToday": false
     },
@@ -619,10 +619,10 @@
     {
       "groupId": "ai-governance-json",
       "path": "content/development/seis-ai-public-readiness-program.json",
-      "sourceUri": "seis://retrieval/source/ai-governance-json/5e111d85e5a42c2e",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/82e4380bdaa4092d",
       "provenanceLabel": "repo-owned-ai-json",
-      "bytes": 11846,
-      "sha256": "5e111d85e5a42c2eb7df539ed7c94cf74987c52affe22b5ce072b6fafecbeed0",
+      "bytes": 12969,
+      "sha256": "82e4380bdaa4092dcb38c7f8e706be7d43cc32cfefa8fb28a0263756eb21fb51",
       "mediaType": "application/json",
       "indexApprovedToday": false
     },
@@ -709,20 +709,20 @@
     {
       "groupId": "ai-readiness-reports",
       "path": "reports/seis-ai-public-readiness/latest.json",
-      "sourceUri": "seis://retrieval/source/ai-readiness-reports/356391194e8ea19e",
+      "sourceUri": "seis://retrieval/source/ai-readiness-reports/d463e9ba08a7bbd2",
       "provenanceLabel": "generated-ai-readiness-report",
-      "bytes": 11309,
-      "sha256": "356391194e8ea19e0c2d3122031d5b6f98bbafdb07579a688a03b35a41edd96f",
+      "bytes": 11932,
+      "sha256": "d463e9ba08a7bbd2214be95cc96e1d5e33eb27a7f911b153eb039faca67b72b8",
       "mediaType": "application/json",
       "indexApprovedToday": false
     },
     {
       "groupId": "ai-readiness-reports",
       "path": "reports/seis-ai-public-readiness/latest.md",
-      "sourceUri": "seis://retrieval/source/ai-readiness-reports/6123e9272620e91b",
+      "sourceUri": "seis://retrieval/source/ai-readiness-reports/6c9ad8d44bc82368",
       "provenanceLabel": "generated-ai-readiness-report",
-      "bytes": 3890,
-      "sha256": "6123e9272620e91b6a2d1e8e25a4166a1e8d3c75b62388ae3738b3bf61417123",
+      "bytes": 4133,
+      "sha256": "6c9ad8d44bc823681fd5488e9f59643aa7c243f1f953f8965d640e3f9e8a18f6",
       "mediaType": "text/markdown",
       "indexApprovedToday": false
     }

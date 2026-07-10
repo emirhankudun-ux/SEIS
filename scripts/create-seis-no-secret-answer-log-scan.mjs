@@ -228,6 +228,7 @@ function buildReport(scan) {
     safeNextCommands: [
       "npm run report:seis-no-secret-answer-log-scan",
       "npm run check:seis-no-secret-answer-log-scan",
+      "npm run check:seis-redacted-answer-log-schema",
       "npm run check:seis-retrieval-citation-scorer-dry-run",
       "npm run check:seis-ai-public-readiness"
     ],

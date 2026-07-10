@@ -154,6 +154,8 @@ ios/
 !reports/seis-model-scaling/seis-retrieval-evaluation-dry-run.json
 !reports/seis-model-scaling/seis-retrieval-citation-scorer-dry-run.json
 !reports/seis-model-scaling/seis-no-secret-answer-log-scan.json
+!reports/seis-model-scaling/seis-redacted-answer-log-schema.json
+!reports/seis-model-scaling/seis-security-blocker-diagnostic.json
 !reports/seis-model-scaling/20b-benchmark-dry-run.json
 !reports/seis-model-scaling/seis-language-model-training-curriculum.json
 !packages/seis-ai/data/permission-policy-seed.json
