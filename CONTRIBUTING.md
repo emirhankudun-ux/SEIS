@@ -28,11 +28,14 @@ staging surfaces only. Every accepted change must merge back into `main`.
    security-sensitive design questions, or large generated output.
 2. Read the
    [`first-run quickstart`](./docs/development/first-run-quickstart.md),
-   [`AGENTS.md`](./AGENTS.md), and the relevant docs under [`docs`](./docs).
+   [`AGENTS.md`](./AGENTS.md),
+   [`goal tracking constitution`](./docs/SEIS_GOAL_TRACKING.md), and the
+   relevant docs under [`docs`](./docs).
 3. Run the lightest relevant checks:
 
 ```bash
 npm run check:open-source-governance
+npm run check:seis-governance-foundation
 npm run seis:check
 ```
 

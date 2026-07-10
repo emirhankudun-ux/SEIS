@@ -2,6 +2,13 @@
 
 The first Goal Tracking OS schema is intentionally lightweight and file-backed.
 
+Focused work has a public-safe execution-overlay JSON Schema at
+[`schemas/seis-goal-execution.schema.json`](../../schemas/seis-goal-execution.schema.json).
+It validates execution identity, requested/canonical goal mapping, agents,
+horizon, repository areas, definition of done, validation, risk, rollback, and
+GitHub output without adding a package dependency. Historical Goal Tracking OS
+records keep their established shape and remain the only canonical goal IDs.
+
 ## Goal Object
 
 | Field | Required | Notes |

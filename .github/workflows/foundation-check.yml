@@ -22,6 +22,7 @@ jobs:
 
       - name: Run lightweight checks
         run: |
+          npm run check:seis-governance-foundation
           npm run check:open-source-governance
           npm run seis:check
           npm run check:workspace

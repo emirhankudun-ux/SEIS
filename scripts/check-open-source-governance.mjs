@@ -71,7 +71,8 @@ for (const [file, required] of [
   ['CONTRIBUTING.md', 'Discussions'],
   ['CONTRIBUTING.md', 'AI tools are allowed'],
   ['AGENTS.md', 'Master Prompt'],
-  ['AGENTS.md', 'docs/governance/seis-master-prompt.md'],
+  ['AGENTS.md', 'Enterprise v4.0'],
+  ['AGENTS.md', 'docs/SEIS_GOAL_TRACKING.md'],
   ['CODEX.md', 'GitHub -> Codex Cloud -> Branch -> Commit -> Pull Request -> Review -> Merge'],
   ['CODEX.md', 'SEIS-Agent'],
   ['CODEX.md', 'Ed25519'],
@@ -106,14 +107,17 @@ for (const [file, required] of [
   ['CONTRIBUTORS.md', 'Claude'],
   ['CONTRIBUTORS.md', 'do not imply sponsorship'],
   ['ARCHITECTURE.md', '# SEIS Architecture'],
-  ['ARCHITECTURE.md', 'AI-native creative engineering operating system'],
-  ['ARCHITECTURE.md', 'Agent Orchestration Layer'],
-  ['ARCHITECTURE.md', 'Security Layer'],
-  ['ARCHITECTURE.md', 'Cloud and Environment Layer'],
+  ['ARCHITECTURE.md', 'docs/ARCHITECTURE.md'],
+  ['docs/ARCHITECTURE.md', 'Apple-first, Swift-first, AI-native creative engineering operating'],
+  ['docs/ARCHITECTURE.md', '## Boundaries'],
+  ['docs/ARCHITECTURE.md', '## Dependency Direction'],
+  ['docs/ARCHITECTURE.md', '## Product Surfaces'],
   ['ROADMAP.md', '# SEIS Roadmap'],
-  ['ROADMAP.md', 'Phase 1: Foundation'],
-  ['ROADMAP.md', 'Phase 10: Enterprise / Supreme Direction'],
-  ['ROADMAP.md', 'Roadmap Rule'],
+  ['ROADMAP.md', 'docs/ROADMAP.md'],
+  ['docs/ROADMAP.md', '## Status Vocabulary'],
+  ['docs/ROADMAP.md', '## Execution Order'],
+  ['docs/ROADMAP.md', '## Current Milestone'],
+  ['docs/ROADMAP.md', '## Five-Year Direction'],
   ['CHANGELOG.md', '# Changelog'],
   ['CHANGELOG.md', '## Unreleased'],
   ['CHANGELOG.md', 'Do not record secrets'],
@@ -159,8 +163,13 @@ for (const [file, required] of [
   ['.github/workflows/codeql.yml', 'python'],
   ['.github/workflows/codeql.yml', 'github/codeql-action/init'],
   ['.github/workflows/codeql.yml', 'github/codeql-action/analyze'],
-  ['.github/PULL_REQUEST_TEMPLATE.md', 'Architecture Fit'],
-  ['.github/PULL_REQUEST_TEMPLATE.md', 'Does not install unused SDKs'],
+  ['.github/PULL_REQUEST_TEMPLATE.md', 'Goal ID'],
+  ['.github/PULL_REQUEST_TEMPLATE.md', 'Architecture Impact'],
+  ['.github/PULL_REQUEST_TEMPLATE.md', 'Failed or Skipped Checks'],
+  ['.github/PULL_REQUEST_TEMPLATE.md', 'Preserves demo/live and public/private boundaries'],
+  ['.github/PULL_REQUEST_TEMPLATE.md', 'Adds no secrets, private data, or unreviewed credentials'],
+  ['.github/PULL_REQUEST_TEMPLATE.md', 'Adds no unexplained dependency or generated output'],
+  ['.github/PULL_REQUEST_TEMPLATE.md', 'Reports failed and skipped checks honestly'],
   ['.github/ISSUE_TEMPLATE/config.yml', 'blank_issues_enabled: false'],
   ['.github/ISSUE_TEMPLATE/config.yml', 'SUPPORT.md'],
   ['.github/ISSUE_TEMPLATE/config.yml', 'https://github.com/emirhankudun-ux/SEIS/discussions'],
@@ -183,6 +192,13 @@ if (!license.startsWith('MIT License')) {
 const packageJson = JSON.parse(read('package.json') || '{}');
 if (packageJson.name !== 'seis') {
   failures.push('package.json name must stay aligned with SEIS repository identity');
+}
+if (packageJson.license !== 'MIT') {
+  failures.push('package.json license must stay aligned with LICENSE');
+}
+const packageLock = JSON.parse(read('package-lock.json') || '{}');
+if (packageLock.packages?.['']?.license !== 'MIT') {
+  failures.push('package-lock.json root license must stay aligned with LICENSE');
 }
 if (
   packageJson.scripts?.['check:open-source-governance'] !==

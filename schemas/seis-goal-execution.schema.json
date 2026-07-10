@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seis.dev/schemas/seis-goal-execution.schema.json",
+  "title": "SEIS Goal Execution",
+  "description": "Public-safe machine-readable contract for a focused execution mapped to one canonical SEIS goal.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "execution_id",
+    "requested_goal_id",
+    "canonical_goal_id",
+    "title",
+    "category",
+    "priority",
+    "status",
+    "owner_agent",
+    "supporting_agents",
+    "time_horizon",
+    "repo_areas",
+    "dependencies",
+    "definition_of_done",
+    "validation",
+    "risks",
+    "rollback_plan",
+    "github_output",
+    "identity_note"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "../../schemas/seis-goal-execution.schema.json"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "execution_id": {
+      "type": "string",
+      "pattern": "^SEIS-EXEC-[0-9]{3,}$"
+    },
+    "requested_goal_id": {
+      "type": "string",
+      "pattern": "^SEIS-GOAL-[0-9]{3,}$"
+    },
+    "canonical_goal_id": {
+      "type": "string",
+      "pattern": "^SEIS-GOAL-[0-9]{3,}$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 8
+    },
+    "category": {
+      "enum": [
+        "architecture",
+        "apple",
+        "design",
+        "development",
+        "ai",
+        "llm",
+        "mcp",
+        "devops",
+        "security",
+        "testing",
+        "accessibility",
+        "performance",
+        "documentation",
+        "release"
+      ]
+    },
+    "priority": {
+      "enum": ["critical", "high", "medium", "low"]
+    },
+    "status": {
+      "enum": ["backlog", "planned", "in-progress", "review", "blocked", "completed", "archived"]
+    },
+    "owner_agent": {
+      "type": "string",
+      "minLength": 3
+    },
+    "supporting_agents": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 3
+      }
+    },
+    "time_horizon": {
+      "enum": ["now", "30-days", "90-days", "1-year", "3-years", "5-years"]
+    },
+    "repo_areas": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/repoPath"
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "definition_of_done": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 8
+      }
+    },
+    "validation": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 3
+      }
+    },
+    "risks": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 3
+      }
+    },
+    "rollback_plan": {
+      "type": "string",
+      "minLength": 12
+    },
+    "github_output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["issue", "branch", "pull_request", "commit"],
+      "properties": {
+        "issue": {
+          "type": "boolean"
+        },
+        "branch": {
+          "type": "boolean"
+        },
+        "pull_request": {
+          "type": "boolean"
+        },
+        "commit": {
+          "type": "boolean"
+        },
+        "branch_name": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._/-]+$"
+        },
+        "pr_title": {
+          "type": "string",
+          "minLength": 8
+        }
+      }
+    },
+    "identity_note": {
+      "type": "string",
+      "minLength": 20
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 3
+      }
+    }
+  },
+  "$defs": {
+    "repoPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+    }
+  }
+}

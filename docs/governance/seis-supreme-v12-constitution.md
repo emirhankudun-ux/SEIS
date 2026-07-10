@@ -1,10 +1,10 @@
 # SEIS Supreme V12 Ultra Enterprise — Constitution
 
-**Status:** Active — single source of truth for open source AI, agents, LLMs,
-skills, plugins, MCP, GitHub, mobile, web, cloud, design, research, deployment,
-and governance.
-**Supersedes:** ad-hoc operating notes. Complements `AGENTS.md` (calm-technology
-operating instructions) and `CLAUDE.md` (session-level project guide).
+**Status:** Historical implementation companion. Root `AGENTS.md` Enterprise
+v4.0 is the only highest-authority constitution.
+**Role:** Retains prior implementation detail and evidence links. It may expand
+the root constitution but cannot supersede it. `CLAUDE.md` remains a
+session-level project guide.
 
 ---
 
@@ -131,7 +131,7 @@ Enforcement in this repository today:
 | Gate | Enforced by |
 |------|-------------|
 | Site integrity (i18n, SEO, HTML↔JS contract, media, CSS, perf, a11y, security) | `seis-check` (8 sections) + `.github/workflows/seis-ai.yml` |
-| Unit + protocol tests | `node --test` suite (125 tests) in CI |
+| Unit + protocol tests | Current `node --test` suite in CI; counts are reported by each run |
 | Review | CodeRabbit on PRs |
 | Dependency security | Socket Security on PRs |
 | Path/write safety in AI tooling | `resolveInside()` guard + `--write` gating, covered by tests |
@@ -198,12 +198,12 @@ What the constitution already governs in `emirhankudun-ux/SEIS` today:
 
 | Pillar | Implemented as |
 |--------|----------------|
-| MCP | `packages/seis-ai` MCP server — 16 tools, 3 prompts, 2 resources, auto-registered via `.mcp.json`, stdio smoke-tested |
+| MCP | `packages/seis-ai` MCP server with tool, prompt, and resource surfaces validated by current direct checks; counts are not frozen in prose |
 | Agents | `seis-agent` CLI — streaming tool-use loop, adaptive thinking, `--session` persistence, `--write` gating, path-traversal guard |
-| LLMs | Model aliases fable/opus/sonnet/haiku (default `claude-opus-4-8`); injectable client for tests |
+| LLMs | Configurable model aliases and injectable clients; defaults are governed by current code, environment policy, and direct checks |
 | Skills | `.claude/skills/seis-ai/SKILL.md` + `.claude/skills/UIX-Apps/` |
 | Plugins / commands | `/seis-audit`, `/seis-i18n` slash commands in `.claude/commands/` |
-| Quality gates | `seis-check` (i18n · seo · contract · drawings · style · perf · a11y · security) + 125-test suite + `seis-ai.yml` CI |
+| Quality gates | `seis-check`, the current test suite, direct validators, and `seis-ai.yml` CI |
 | Polyglot | `polyglot/` executable suite — 17 tested toolchains (Python · Rust · Go · C · C++ · Ruby · PHP · Java · Perl · AWK · TypeScript · SQL/SQLite · jq · XML/xmllint · YAML/yq · Bash · bc) via `scripts/polyglot-check.sh` + `polyglot.yml` CI; TS typings in `packages/seis-ai/types/` |
 | GitHub governance | Main-only permanent branch policy, open source governance gate, CodeRabbit + Socket + ecc-tools bots, `docs/governance/branch-policy.md` |
 | Web | `apps/web` — 5-locale portfolio, PWA, service worker, SEO/JSON-LD |
@@ -214,10 +214,9 @@ What the constitution already governs in `emirhankudun-ux/SEIS` today:
 
 The constitution applies across two execution environments:
 
-**Local workstation (owner's Mac):** primary universe at
-`/Library/Mobile Documents/com~apple~CloudDocs/Github`; IDEs: Antigravity IDE,
-Xcode, Android Studio, JetBrains. Local agents (Ollama) permitted for
-experimentation.
+**Local workstation (owner's Mac):** use the owner-selected SEIS checkout
+without recording machine-specific paths in public documentation. IDEs and
+local agents may be used when present and appropriate for the task.
 
 **Remote AI sessions (Claude Code cloud, CI):** ephemeral container, fresh
 clone, repository-scoped GitHub access, MCP-based GitHub operations, no local

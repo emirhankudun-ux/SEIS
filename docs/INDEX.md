@@ -7,6 +7,21 @@ Date: 2026-06-23
 | Document | Purpose |
 | --- | --- |
 | [SEIS_MASTER_INDEX.md](SEIS_MASTER_INDEX.md) | Current master navigation for SEIS lanes, evidence, blockers, and next safe actions. |
+| [SEIS_GOAL_TRACKING.md](SEIS_GOAL_TRACKING.md) | Goal identity, execution overlays, five-year cadence, supervised swarm roles, and completion evidence. |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | Canonical system boundaries, dependency direction, and platform roles. |
+| [AI_CORE.md](AI_CORE.md) | Provider-neutral AI Core states, routing, prompt/memory boundaries, and safety. |
+| [MCP_REGISTRY.md](MCP_REGISTRY.md) | MCP status, permissions, current records, and rollback boundary. |
+| [AGENT_REGISTRY.md](AGENT_REGISTRY.md) | Supervised specialist roles, permissions, and handoff evidence. |
+| [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) | SEIS tokens, icon language, motion, and accessibility direction. |
+| [APPLE_PLATFORM_STRATEGY.md](APPLE_PLATFORM_STRATEGY.md) | macOS, iPadOS, iOS, visionOS research, and Swift package strategy. |
+| [SECURITY.md](SECURITY.md) | Focused secrets, permission, supply-chain, and public-review rules. |
+| [ROADMAP.md](ROADMAP.md) | Canonical milestone order, statuses, validation, and five-year direction. |
+| [ROLLBACK.md](ROLLBACK.md) | Revert, runtime disablement, and post-rollback validation policy. |
+| [TESTING.md](TESTING.md) | Test layers, evidence rules, and governance/Apple/UI baselines. |
+| [ACCESSIBILITY.md](ACCESSIBILITY.md) | Interaction, perception, motion, and validation requirements. |
+| [DEVOPS.md](DEVOPS.md) | CI, deployment, observability, and automation boundaries. |
+| [RELEASE.md](RELEASE.md) | Readiness, status integrity, approval, and release handoff. |
+| [PUBLIC_PRIVATE_BOUNDARY.md](PUBLIC_PRIVATE_BOUNDARY.md) | Public-safe and restricted content, state, archive, and review boundaries. |
 | [STATUS.md](STATUS.md) | Current branch status matrix. |
 | [../ARCHITECTURE.md](../ARCHITECTURE.md) | Root architecture pointer for agents and contributors. |
 | [../ROADMAP.md](../ROADMAP.md) | Root roadmap pointer for agents and contributors. |

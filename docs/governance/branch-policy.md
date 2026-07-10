@@ -28,6 +28,14 @@ Temporary branch names should make their purpose obvious:
 - `docs/<short-scope>`
 - `chore/<short-scope>`
 - `experiment/<short-scope>`
+- `architecture/<short-scope>`
+- `apple/<short-scope>`
+- `ai/<short-scope>`
+- `mcp/<short-scope>`
+- `security/<short-scope>`
+- `devops/<short-scope>`
+- `audit/<short-scope>`
+- `rollback/<short-scope>`
 - AI-managed branches such as `codex/*` or `claude/*`
 
 These branches should be merged, closed, or explicitly retained with a reason.

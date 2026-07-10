@@ -1,5 +1,10 @@
 # SEIS Roadmap
 
+Canonical milestone status and execution order are maintained in
+[docs/ROADMAP.md](docs/ROADMAP.md). The phase detail below remains a
+compatibility reference and may not supersede root `AGENTS.md` Enterprise v4.0
+or the canonical roadmap entry point.
+
 This roadmap defines the planned evolution of the SEIS ecosystem.
 
 SEIS should grow carefully from a clean foundation into a full AI-native
