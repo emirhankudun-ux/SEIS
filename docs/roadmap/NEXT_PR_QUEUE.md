@@ -2,6 +2,27 @@
 
 Date: 2026-06-23
 
+## Active GitHub Merge Queue Continuity - 2026-07-01
+
+This queue keeps current GitHub work resumable across local machine changes and
+new Codex sessions. The listed PRs may remain in auto-merge mode, but auto-merge
+must stay subordinate to branch protection, CI, code review, and the security
+gate tracked in issue #129.
+
+| Order | PR | Scope | Current gate | Approval needed |
+| --- | --- | --- | --- | --- |
+| 0 | #77 | Security owner decision pack for the historical gitleaks blocker | Issue #129 owner decision path must be completed without exposing secret values or weakening the scanner. | Required for secret rotation, history rewrite, or destructive cleanup. |
+| 1 | #126 | SEIS Search Center foundation | Repository security gate must clear before protected-branch merge. | None for queued feature review; approval required for security-history remediation. |
+| 2 | #133 | Search Center review fixes stacked on #126 | Depends on #126 plus the repository security gate. | None for review-comment fixes; approval required for force push, history rewrite, or bypassing checks. |
+| 3 | #132 | Linux-like demo Security Gate app | Repository security gate must clear before protected-branch merge. | None for local demo code/docs; approval required for live SSH, deployment, provider calls, or deleting supplied assets. |
+| 4 | #130 | Follow-up queued PR | Protected-branch checks and security gate. | Inspect review comments before any code change. |
+| 5 | #131 | Follow-up queued PR | Protected-branch checks and security gate. | Inspect review comments before any code change. |
+
+Do not merge these by force. Do not push directly to `main`. Do not rewrite
+history or rotate secrets from an automation agent without explicit owner
+approval. Keep supplied ZIP/folder-derived demo assets preserved unless the
+owner explicitly requests removal.
+
 ## Current Recommended Product Demo Stack
 
 | Order | Suggested PR title | Scope | Validation | Approval needed |
