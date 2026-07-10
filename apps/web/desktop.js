@@ -1575,6 +1575,27 @@ const SEIS_SECOND_BRAIN_SYSTEM = {
     "Human review before GitHub push, merge, release, or public Pages update"
   ]
 };
+const SEIS_SECOND_BRAIN_AGENT_REGISTRY = {
+  id: "seis-second-brain-agent-registry-pr54",
+  status: "review-only-agent-registry",
+  mode: "repo-local-no-live-execution",
+  decision: "NO-GO-autonomous-execution-not-approved",
+  decisionLabel: "NO-GO",
+  jsonPath: "reports/seis-public-demo/second-brain-agent-registry-latest.json",
+  markdownPath: "reports/seis-public-demo/second-brain-agent-registry-latest.md",
+  reportCommand: "npm run report:seis-second-brain-agent-registry",
+  checkCommand: "npm run check:seis-second-brain-agent-registry",
+  mcpResource: "seis://brain/second-brain-system.json",
+  contextProfileCount: SEIS_SECOND_BRAIN_SYSTEM.contextProfiles.length,
+  autonomousAgentCount: SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length,
+  safetyClaims: [
+    "providerCallsPerformed: false",
+    "privateObsidianVaultReadPerformed: false",
+    "credentialValidationPerformed: false",
+    "autonomousWriteExecutionPerformed: false",
+    "githubMutationPerformed: false"
+  ]
+};
 const AI_CORE_VERSION_TARGETS = [
   {
     id: "v0.1-foundation",
@@ -5096,6 +5117,7 @@ function renderSecondBrain() {
       <article class="metric-card" data-second-brain-managed-lanes><strong>Managed Lanes</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.length}</p></article>
       <article class="metric-card"><strong>Agent Roster</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length}</p></article>
       <article class="metric-card" data-second-brain-context-profile-count><strong>Context Profiles</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.contextProfiles.length}</p></article>
+      <article class="metric-card" data-second-brain-agent-registry-decision><strong>Agent Registry</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REGISTRY.decisionLabel)}</p></article>
       <article class="metric-card"><strong>Quality Gate</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.qualityGate)}</p></article>
       <article class="metric-card" data-second-brain-mcp-resource><strong>MCP Context</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.mcpResource)}</p></article>
       <article class="metric-card"><strong>Last Snapshot</strong><p>${data.lastSnapshot?.time || "Not saved yet"}</p></article>
@@ -5196,6 +5218,27 @@ function renderSecondBrain() {
           <td>${escapeHtml(profile.allowedOutput)}</td>
         </tr>`).join("")}</tbody>
       </table>
+      <div data-second-brain-agent-registry>
+        <h4>Agent Registry Evidence</h4>
+        <p class="status-note">The latest repo-local registry binds installed AI, Context Profiles, the 13-agent roster, plugin/MCP surfaces, Obsidian boundaries, and connector policy as review-only evidence. It does not approve autonomous execution or public GitHub use.</p>
+        <div class="metric-grid">
+          <article class="metric-card"><strong>Registry ID</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REGISTRY.id)}</p></article>
+          <article class="metric-card"><strong>Mode</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REGISTRY.mode)}</p></article>
+          <article class="metric-card"><strong>Decision</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REGISTRY.decision)}</p></article>
+          <article class="metric-card"><strong>Check</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REGISTRY.checkCommand)}</p></article>
+        </div>
+        <table class="data-table" data-second-brain-agent-registry-safety>
+          <thead><tr><th>Artifact</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>JSON</td><td>${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REGISTRY.jsonPath)}</td></tr>
+            <tr><td>Markdown</td><td>${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REGISTRY.markdownPath)}</td></tr>
+            <tr><td>MCP resource</td><td>${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REGISTRY.mcpResource)}</td></tr>
+            <tr><td>Context Profiles</td><td>${SEIS_SECOND_BRAIN_AGENT_REGISTRY.contextProfileCount}</td></tr>
+            <tr><td>Autonomous agents</td><td>${SEIS_SECOND_BRAIN_AGENT_REGISTRY.autonomousAgentCount}</td></tr>
+            <tr><td>Safety boundary</td><td>${SEIS_SECOND_BRAIN_AGENT_REGISTRY.safetyClaims.map(escapeHtml).join("<br>")}</td></tr>
+          </tbody>
+        </table>
+      </div>
     </section>
     <section class="subagent-panel" data-second-brain-github-gate>
       <h3>Capture -> Link -> Review -> GitHub Gate</h3>
@@ -7179,9 +7222,10 @@ function renderAiAssistantTab(activeTab, data) {
         <article class="metric-card"><strong>Installed AI</strong><p>${SEIS_INSTALLED_AI_SYSTEMS.length}</p></article>
         <article class="metric-card"><strong>Sub-Agent Lanes</strong><p>${SUB_AGENT_DEMO.lanes.length}</p></article>
         <article class="metric-card"><strong>Agent Roster</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length}</p></article>
+        <article class="metric-card" data-ai-second-brain-agent-registry><strong>Agent Registry</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REGISTRY.decisionLabel)}</p></article>
         <article class="metric-card"><strong>Quality Gate</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.qualityGate)}</p></article>
       </div>
-      <table class="data-table">
+      <table class="data-table" data-ai-second-brain-sources>
         <thead><tr><th>Second Brain Source</th><th>Status</th><th>AI/Sub-agent duty</th></tr></thead>
         <tbody>${SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.map((note) => `<tr>
           <td><strong>${escapeHtml(note.title)}</strong><br><span class="muted">${escapeHtml(note.path)}</span></td>
@@ -7189,6 +7233,18 @@ function renderAiAssistantTab(activeTab, data) {
           <td>${escapeHtml(note.summary)}</td>
         </tr>`).join("")}</tbody>
       </table>
+      <div class="split-pane" data-ai-second-brain-agent-registry-panel>
+        <article class="mini-card">
+          <strong>Registry Artifact</strong>
+          <p class="muted">${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REGISTRY.jsonPath)}</p>
+          <p>${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REGISTRY.decision)} · ${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REGISTRY.mode)}</p>
+        </article>
+        <article class="mini-card">
+          <strong>Read-only Boundary</strong>
+          <p class="muted">${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REGISTRY.checkCommand)}</p>
+          <p>${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REGISTRY.safetyClaims.join(" · "))}</p>
+        </article>
+      </div>
     </div>`;
   }
   if (activeTab === "Tool Calls") {

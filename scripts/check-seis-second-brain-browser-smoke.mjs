@@ -346,6 +346,7 @@ async function smokeSecondBrain(client, baseUrl) {
       hasGraph: Boolean(root?.querySelector('[data-second-brain-graph]')),
       hasInspector: Boolean(root?.querySelector('[data-second-brain-inspector]')),
       hasGithubGate: Boolean(root?.querySelector('[data-second-brain-github-gate]')),
+      hasAgentRegistry: Boolean(root?.querySelector('[data-second-brain-agent-registry]')),
       noteButtons: root?.querySelectorAll('[data-second-brain-vault] [data-action="second-brain-select-note"]').length || 0,
       graphNodes: root?.querySelectorAll('[data-second-brain-graph] [data-action="second-brain-select-note"]').length || 0,
       installedAiRows: root?.querySelectorAll('[data-second-brain-installed-ai] tbody tr').length || 0,
@@ -354,6 +355,8 @@ async function smokeSecondBrain(client, baseUrl) {
       contextProfileRows: root?.querySelectorAll('[data-second-brain-context-profiles] tbody tr').length || 0,
       managedLaneMetric: root?.querySelector('[data-second-brain-managed-lanes] p')?.textContent?.trim() || '',
       contextProfileMetric: root?.querySelector('[data-second-brain-context-profile-count] p')?.textContent?.trim() || '',
+      agentRegistryDecision: root?.querySelector('[data-second-brain-agent-registry-decision]')?.innerText || '',
+      agentRegistryText: root?.querySelector('[data-second-brain-agent-registry]')?.innerText || '',
       mcpContext: root?.querySelector('[data-second-brain-mcp-resource]')?.innerText || '',
       managedLaneText: root?.querySelector('[data-second-brain-subagents]')?.innerText || '',
       contextProfileText: root?.querySelector('[data-second-brain-context-profiles]')?.innerText || '',
@@ -375,6 +378,7 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(initial.hasGraph, "Second Brain graph panel missing.");
   ensure(initial.hasInspector, "Second Brain inspector missing.");
   ensure(initial.hasGithubGate, "Second Brain GitHub gate panel missing.");
+  ensure(initial.hasAgentRegistry, "Second Brain agent registry evidence panel missing.");
   ensure(initial.noteButtons === 6, `expected six vault notes, got ${initial.noteButtons}`);
   ensure(initial.graphNodes === 6, `expected six graph nodes, got ${initial.graphNodes}`);
   ensure(initial.installedAiRows === 6, `expected six installed AI rows, got ${initial.installedAiRows}`);
@@ -383,6 +387,8 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(initial.contextProfileRows === 9, `expected nine local context profiles, got ${initial.contextProfileRows}`);
   ensure(initial.managedLaneMetric === "9", `expected managed lane metric 9, got ${initial.managedLaneMetric}`);
   ensure(initial.contextProfileMetric === "9", `expected context profile metric 9, got ${initial.contextProfileMetric}`);
+  ensure(initial.agentRegistryDecision.includes("NO-GO"), "Second Brain must render the agent registry NO-GO decision.");
+  ensure(initial.agentRegistryText.includes("second-brain-agent-registry-latest.json") && initial.agentRegistryText.includes("NO-GO-autonomous-execution-not-approved"), "Second Brain must render the agent registry artifact and decision.");
   ensure(initial.mcpContext.includes("seis://brain/second-brain-system.json"), "Second Brain must render the read-only MCP context resource.");
   ensure(initial.managedLaneText.includes("SEIS Product") && initial.managedLaneText.includes("seis_product_status"), "Second Brain managed lane table must expose the SEIS Product MCP lane.");
   ensure(initial.contextProfileText.includes("@seis-data") && initial.contextProfileText.includes("seis_product_plan"), "Second Brain context profiles must expose the SEIS Data and Product planning lanes.");
@@ -445,7 +451,8 @@ async function smokeSecondBrain(client, baseUrl) {
     return {
       hasBridge: Boolean(bridge),
       metricCards: bridge?.querySelectorAll('.metric-card').length || 0,
-      rows: bridge?.querySelectorAll('tbody tr').length || 0,
+      rows: bridge?.querySelectorAll('[data-ai-second-brain-sources] tbody tr').length || 0,
+      registryText: bridge?.querySelector('[data-ai-second-brain-agent-registry-panel]')?.innerText || '',
       localOnlyCopy: text.includes('Local Demo context only'),
       noMutationCopy: text.includes('no private vault import') && text.includes('GitHub mutation') && text.includes('SSH')
     };
@@ -453,6 +460,7 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(aiBridge.hasBridge, "SEIS AI Second Brain bridge did not render.");
   ensure(aiBridge.metricCards >= 6, `SEIS AI Second Brain bridge expected six metric cards, got ${aiBridge.metricCards}`);
   ensure(aiBridge.rows === 6, `SEIS AI Second Brain bridge expected six note rows, got ${aiBridge.rows}`);
+  ensure(aiBridge.registryText.includes("second-brain-agent-registry-latest.json") && aiBridge.registryText.includes("NO-GO-autonomous-execution-not-approved"), "SEIS AI Second Brain bridge must render agent registry evidence.");
   ensure(aiBridge.localOnlyCopy, "SEIS AI Second Brain bridge must label local context only.");
   ensure(aiBridge.noMutationCopy, "SEIS AI Second Brain bridge must label private vault/GitHub/SSH boundary.");
 
