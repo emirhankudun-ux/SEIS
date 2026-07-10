@@ -44,6 +44,8 @@ function buildReport(targetAlias) {
 
   if (contract?.targetAlias !== "SEIS-SSH") failures.push("contract targetAlias must be SEIS-SSH");
   if (contract?.serverAndPortPolicy?.mode !== "preserve-existing-server-and-port") failures.push("contract must preserve existing server and port");
+  if (contract?.endpointContinuity?.mode !== "sanitized-runtime-snapshot") failures.push("contract must define sanitized endpoint continuity evidence");
+  if (packageJson?.scripts?.["check:seis-ssh-endpoint-continuity"] !== "node scripts/check-seis-ssh-endpoint-continuity.mjs") failures.push("endpoint continuity check script must be declared");
   if (accessModel?.publicAccessContract !== "deploy/seis-ssh-public-access-contract.json") failures.push("access model must link public access contract");
   if (roadmap?.publicAccessContract !== "deploy/seis-ssh-public-access-contract.json") failures.push("roadmap must link public access contract");
   if (packageJson?.scripts?.["report:seis-ssh-public-access"] !== "node scripts/create-seis-ssh-public-access-report.mjs --write") failures.push("package report script must be declared");
@@ -128,13 +130,16 @@ function inspectSshConfig(targetAlias) {
     transport,
     hostnameKind: classifyHostname(hostname, transport),
     hostnameSha256Prefix: hostname ? sha256Prefix(hostname) : null,
+    endpointFingerprintSha256Prefix: hostname ? endpointFingerprint(hostname, port, proxyCommand) : null,
+    proxyCommandShape: normalizeProxyCommandShape(proxyCommand),
     port,
     userPresent: Boolean(values.user),
     proxyCommandPresent: Boolean(proxyCommand),
     identityFileConfigured: Boolean(normalizeNone(values.identityfile)),
     pickerLikelyCompatible: transport === "direct-cloud",
     liveConnectionAttempted: false,
-    serverAndPortPreservedByPolicy: true
+    serverAndPortPreservedByPolicy: true,
+    continuityState: "sanitized-config-snapshot-no-committed-baseline"
   };
 }
 
@@ -180,6 +185,23 @@ function isLocalHost(host) {
 
 function sha256Prefix(value) {
   return createHash("sha256").update(String(value)).digest("hex").slice(0, 12);
+}
+
+function endpointFingerprint(hostname, port, proxyCommand) {
+  return createHash("sha256")
+    .update([hostname, port, proxyCommand || "none"].join("\0"))
+    .digest("hex")
+    .slice(0, 16);
+}
+
+function normalizeProxyCommandShape(value) {
+  if (!value) return null;
+  return String(value)
+    .replace(/^\S*\/gh(?=\s+cs\s+ssh)/, "gh")
+    .replace(/(\s-c\s+)\S+/g, "$1<codespace>")
+    .replace(/(\s-i\s+)\S+/g, "$1<identity-file>")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function sanitize(value) {

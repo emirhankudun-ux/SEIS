@@ -230,18 +230,22 @@ function collectRelevantIssues(events) {
 
 function validateStaticContract() {
   const routePath = "apps/web/seis-linux-replica.html";
+  const capabilityAtlasPath = "apps/web/seis-runtime-capability-atlas.js";
+  const capabilityAtlasSourcePath = "data/seis-runtime-capability-atlas.json";
   const referenceAppsPath = "apps/web/reference-banks/reference-apps.js";
   const routesPath = "apps/web/src/config/routes.json";
   const serviceWorkerPath = "apps/web/service-worker.js";
   const readmePath = "README.md";
 
-  for (const file of [routePath, referenceAppsPath, routesPath, serviceWorkerPath, readmePath]) {
+  for (const file of [routePath, capabilityAtlasPath, capabilityAtlasSourcePath, referenceAppsPath, routesPath, serviceWorkerPath, readmePath]) {
     ensure(existsSync(file), `missing required file: ${file}`);
   }
 
   if (failures.length > 0) return;
 
   const html = readFileSync(routePath, "utf8");
+  const capabilityAtlasAsset = readFileSync(capabilityAtlasPath, "utf8");
+  const capabilityAtlasSource = JSON.parse(readFileSync(capabilityAtlasSourcePath, "utf8"));
   const referenceApps = readFileSync(referenceAppsPath, "utf8");
   const routes = readFileSync(routesPath, "utf8");
   const serviceWorker = readFileSync(serviceWorkerPath, "utf8");
@@ -250,6 +254,8 @@ function validateStaticContract() {
   const baseAppCount = baseCatalogBlock ? (baseCatalogBlock[1].match(/^\s+\["/gm) || []).length : 0;
   const referenceCount = (referenceApps.match(/"id":"ref-/g) || []).length;
   let referenceManifest = [];
+  let capabilityAtlas = null;
+  let routeConfig = null;
 
   try {
     const sandbox = { window: {} };
@@ -260,8 +266,21 @@ function validateStaticContract() {
   } catch (error) {
     ensure(false, `reference app manifest could not be evaluated: ${error.message}`);
   }
+  try {
+    const sandbox = { window: {} };
+    vm.runInNewContext(capabilityAtlasAsset, sandbox, { timeout: 1000 });
+    capabilityAtlas = sandbox.window.SEIS_RUNTIME_CAPABILITY_ATLAS || null;
+  } catch (error) {
+    ensure(false, `capability atlas asset could not be evaluated: ${error.message}`);
+  }
+  try {
+    routeConfig = JSON.parse(routes);
+  } catch (error) {
+    ensure(false, `routes.json could not be parsed: ${error.message}`);
+  }
 
   ensure(html.includes("<title>SEIS Linux Replica</title>"), "Linux Replica route must expose a SEIS title.");
+  ensure(html.includes('<script src="./seis-runtime-capability-atlas.js"></script>'), "Linux Replica route must load the source-backed capability atlas asset.");
   ensure(html.includes("data-seis-linux-replica"), "Linux Replica route must expose a runtime marker.");
   ensure(html.includes("data-boot"), "Linux Replica route must expose a boot surface.");
   ensure(html.includes("id=\"loginButton\""), "Linux Replica route must expose a real login action.");
@@ -280,8 +299,16 @@ function validateStaticContract() {
   ensure(html.includes("data-quick-app"), "Linux Replica route must wire quick app launch controls.");
   ensure(html.includes("window.__SEIS_LINUX_REPLICA__"), "Linux Replica route must expose smoke diagnostics.");
   ensure(baseAppCount >= 65, `expected at least 65 Linux Replica core app targets, found ${baseAppCount}.`);
+  ensure(baseAppCount >= 66, `expected Capability Atlas to raise Linux Replica core app targets to at least 66, found ${baseAppCount}.`);
   ensure(referenceCount >= 219, `expected at least 219 supplied reference modules, found ${referenceCount}.`);
   ensure(referenceManifest.length >= 219, `expected at least 219 parsed reference manifest entries, found ${referenceManifest.length}.`);
+  ensure(JSON.stringify(capabilityAtlas) === JSON.stringify(capabilityAtlasSource), "capability atlas web asset must match the JSON source exactly.");
+  ensure(capabilityAtlas?.runtimeBoundary?.currentLevel === "status-and-plan-only", "capability atlas must expose status-and-plan-only boundary.");
+  ensure(capabilityAtlas?.runtimeBoundary?.liveMcpSession === "not-started-from-browser", "capability atlas must not claim a live browser MCP session.");
+  ensure(Array.isArray(capabilityAtlas?.lanes) && capabilityAtlas.lanes.length === 5, "capability atlas must expose the five embedded SEIS lanes.");
+  ensure(Array.isArray(capabilityAtlas?.agentRoster) && capabilityAtlas.agentRoster.length >= 13, "capability atlas must expose the source-backed agent roster.");
+  ensure(Array.isArray(capabilityAtlas?.productModules) && capabilityAtlas.productModules.length >= 15, "capability atlas must expose the SEIS product module set.");
+  ensure(Array.isArray(capabilityAtlas?.dryRunQueue) && capabilityAtlas.dryRunQueue.length >= capabilityAtlas.agentRoster.length, "capability atlas must expose one or more dry-run tasks per source-backed agent.");
   const missingReferenceAssets = referenceManifest.flatMap((entry) => {
     const checks = [];
     if (entry?.route) checks.push({ kind: "route", value: entry.route });
@@ -318,8 +345,13 @@ function validateStaticContract() {
   ensure(html.includes("data-music-panel"), "Linux Replica route must expose a SEIS Music workspace.");
   ensure(html.includes("data-ai-core-panel"), "Linux Replica route must expose a SEIS AI Core workspace.");
   ensure(html.includes("data-security-gate-app"), "Linux Replica route must expose a Security Gate app.");
+  ensure(html.includes("data-capability-atlas"), "Linux Replica route must render a source-backed Capability Atlas app.");
+  ensure(html.includes("data-capability-lane"), "Linux Replica route must render Capability Atlas lane cards.");
+  ensure(html.includes("data-capability-agent"), "Linux Replica route must render Capability Atlas agent cards.");
+  ensure(html.includes("data-capability-task"), "Linux Replica route must render Capability Atlas dry-run task cards.");
   ensure(html.includes("bridgeTargetCount"), "Linux Replica diagnostics must expose bridge target count.");
-  for (const marker of ["SEIS Search Gateway", "SEIS Code IDE", "SEIS Design Studio", "SEIS Cloud Center", "SEIS Store", "SEIS Website Hub", "SEIS AI Core"]) {
+  ensure(html.includes("capabilityAtlas:()=>capabilityStats()"), "Linux Replica diagnostics must expose Capability Atlas counts.");
+  for (const marker of ["SEIS Search Gateway", "SEIS Code IDE", "SEIS Design Studio", "SEIS Cloud Center", "SEIS Store", "SEIS Website Hub", "SEIS AI Core", "SEIS Capability Atlas"]) {
     ensure(html.includes(marker), `Linux Replica SEIS bridge missing marker: ${marker}`);
   }
   ensure(html.includes("No SSH") || html.includes("SSH disabled"), "Linux Replica route must keep SSH disabled and labeled.");
@@ -329,15 +361,22 @@ function validateStaticContract() {
   ensure(html.includes("SSH disabled. Human approval required."), "Linux Replica terminal must block SSH with approval copy.");
   ensure(html.includes("seis:()=>SEIS_BRIDGE_TARGETS"), "Linux Replica terminal must expose the SEIS bridge command.");
   ensure(html.includes("routes:()=>SEIS_BRIDGE_TARGETS"), "Linux Replica terminal must expose the route listing command.");
+  ensure(html.includes("capabilities:()=>"), "Linux Replica terminal must expose the source-backed Capability Atlas command.");
+  ensure(html.includes("atlas:()=>"), "Linux Replica terminal must expose the Capability Atlas launcher command.");
   ensure(html.includes("refs:(args)=>"), "Linux Replica terminal must expose the reference listing command.");
   ensure(html.includes("refopen:(args)=>"), "Linux Replica terminal must expose the reference opening command.");
   ensure(html.includes("sources:()=>referenceSourceRows"), "Linux Replica terminal must expose supplied ZIP source coverage.");
   ensure(html.includes("security:()=>"), "Linux Replica terminal must expose the security gate command.");
   ensure(html.includes("live:()=>"), "Linux Replica terminal must expose the live demo command.");
-  ensure(html.includes("[\"live-demo\",\"demo-readiness\",\"security-gate\",\"reference-vault\""), "Linux Replica live tour must open the Security Gate before the Reference Vault.");
+  ensure(html.includes("[\"live-demo\",\"demo-readiness\",\"capability-atlas\",\"security-gate\",\"reference-vault\""), "Linux Replica live tour must open the Capability Atlas and Security Gate before the Reference Vault.");
   ensure(html.includes("tour:()=>"), "Linux Replica terminal must expose the live demo tour command.");
   ensure(routes.includes("/seis-linux-replica.html"), "routes.json must register SEIS Linux Replica.");
+  ensure(
+    routeConfig?.routes?.find((route) => route.path === "/seis-linux-replica.html")?.sections?.includes("capability-atlas"),
+    "routes.json must register the Linux Replica Capability Atlas section."
+  );
   ensure(serviceWorker.includes("./seis-linux-replica.html"), "service worker must precache SEIS Linux Replica.");
+  ensure(serviceWorker.includes("./seis-runtime-capability-atlas.js"), "service worker must precache the Linux Replica Capability Atlas asset.");
   ensure(readme.includes("seis-linux-replica.html"), "README must document SEIS Linux Replica route.");
   ensure(readme.includes("Live Demo Console"), "README must document the SEIS Linux Replica Live Demo Console.");
   ensure(readme.includes("Security Gate") && readme.includes("Issue #129"), "README must document the Linux Replica Security Gate owner handoff.");
@@ -429,7 +468,15 @@ async function smokeLinuxReplica(client, baseUrl) {
     input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
     return true;
   })()`);
-  await waitFor(client, "document.body.innerText.includes('SEIS Code IDE') && document.body.innerText.includes('SEIS Cloud Center')", 5000);
+  await waitFor(client, "document.body.innerText.includes('SEIS Code IDE') && document.body.innerText.includes('SEIS Cloud Center') && document.body.innerText.includes('SEIS Capability Atlas')", 5000);
+
+  await evaluate(client, `(() => {
+    const input = document.querySelector('[data-terminal] input');
+    input.value = 'capabilities';
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    return true;
+  })()`);
+  await waitFor(client, "document.body.innerText.includes('SEIS Capability Atlas') && document.body.innerText.includes('lanes/agents/modules/tasks:') && document.body.innerText.includes('no live MCP session')", 5000);
 
   await evaluate(client, "document.querySelector('#startButton').click()");
   await waitFor(client, "document.querySelector('#startMenu')?.classList.contains('is-active')", 3000);
@@ -440,6 +487,7 @@ async function smokeLinuxReplica(client, baseUrl) {
     document.querySelector('#sideRail [data-side-app="search"]')?.click();
     window.__SEIS_LINUX_REPLICA__.openApp('live-demo');
     window.__SEIS_LINUX_REPLICA__.openApp('demo-readiness');
+    window.__SEIS_LINUX_REPLICA__.openApp('capability-atlas');
     window.__SEIS_LINUX_REPLICA__.openApp('calculator');
     window.__SEIS_LINUX_REPLICA__.openApp('settings');
     window.__SEIS_LINUX_REPLICA__.openApp('reference-vault');
@@ -450,6 +498,10 @@ async function smokeLinuxReplica(client, baseUrl) {
     window.__SEIS_LINUX_REPLICA__.openApp('store');
     window.__SEIS_LINUX_REPLICA__.openApp('music');
     window.__SEIS_LINUX_REPLICA__.openApp('demo');
+    document.querySelector('[data-capability-lane="seis-code"]')?.click();
+    document.querySelector('[data-capability-agent="code-agent"]')?.click();
+    document.querySelector('[data-capability-task="code-route-action-contract"]')?.click();
+    document.querySelector('[data-capability-query]')?.focus();
     document.querySelector('[data-code-tab="agent-runtime.json"]')?.click();
     document.querySelector('[data-run-code-check]')?.click();
     document.querySelector('[data-design-swatch="#19c6d4"]')?.click();
@@ -477,6 +529,12 @@ async function smokeLinuxReplica(client, baseUrl) {
     const storePanel = document.querySelectorAll('[data-store-panel]').length;
     const musicPanel = document.querySelectorAll('[data-music-panel]').length;
     const aiCorePanel = document.querySelectorAll('[data-ai-core-panel]').length;
+    const capabilityAtlas = window.__SEIS_LINUX_REPLICA__.capabilityAtlas();
+    const capabilityAtlasApp = document.querySelectorAll('[data-capability-atlas]').length;
+    const capabilityLanes = document.querySelectorAll('[data-capability-lane]').length;
+    const capabilityAgents = document.querySelectorAll('[data-capability-agent]').length;
+    const capabilityTasks = document.querySelectorAll('[data-capability-task]').length;
+    const capabilityModules = document.querySelectorAll('[data-capability-module]').length;
     const securityGateApp = document.querySelectorAll('[data-security-gate-app]').length;
     const securityPathCards = document.querySelectorAll('.security-path').length;
     const liveDemoConsole = document.querySelectorAll('[data-live-demo-console]').length;
@@ -519,6 +577,12 @@ async function smokeLinuxReplica(client, baseUrl) {
       storePanel,
       musicPanel,
       aiCorePanel,
+      capabilityAtlas,
+      capabilityAtlasApp,
+      capabilityLanes,
+      capabilityAgents,
+      capabilityTasks,
+      capabilityModules,
       securityGateApp,
       securityPathCards,
       liveDemoConsole,
@@ -541,6 +605,8 @@ async function smokeLinuxReplica(client, baseUrl) {
       liveCommandVisible: bodyText.includes('opened Live Demo Console'),
       securityGateVisible,
       securityTerminalVisible,
+      capabilitiesVisible: bodyText.includes('lanes/agents/modules/tasks:') && bodyText.includes('Browser catalog only'),
+      capabilityAtlasVisible: bodyText.includes('SEIS Capability Atlas') && bodyText.includes('status-and-plan-only') && bodyText.includes('Browser-local catalog'),
       liveConsoleVisible: bodyText.includes('SEIS Live Linux-like Demo'),
       codeCheckVisible: bodyText.includes('PASS local UI contract'),
       designSnapshotVisible: bodyText.includes('Snapshot saved to VFS') || bodyText.includes('design-token-'),
@@ -556,7 +622,7 @@ async function smokeLinuxReplica(client, baseUrl) {
     };
   })()`);
 
-  ensure(summary.appCount >= 284, `expected runtime appCount to include core apps plus supplied references, found ${summary.appCount}`);
+  ensure(summary.appCount >= 285, `expected runtime appCount to include core apps, Capability Atlas, and supplied references, found ${summary.appCount}`);
   ensure(summary.referenceCount >= 219, `expected at least 219 runtime reference modules, found ${summary.referenceCount}`);
   ensure(Array.isArray(summary.referenceSources) && summary.referenceSources.length >= 2, "expected at least two reference source groups.");
   ensure(summary.bridgeTargetCount >= 8, `expected at least eight connected SEIS bridge targets, found ${summary.bridgeTargetCount}`);
@@ -578,6 +644,16 @@ async function smokeLinuxReplica(client, baseUrl) {
   ensure(summary.storePanel >= 1, "mini SEIS Store workspace did not render.");
   ensure(summary.musicPanel >= 1, "mini SEIS Music workspace did not render.");
   ensure(summary.aiCorePanel >= 1, "mini SEIS AI Core workspace did not render.");
+  ensure(summary.capabilityAtlas?.lanes === 5, `expected five source-backed capability lanes, found ${summary.capabilityAtlas?.lanes}.`);
+  ensure(summary.capabilityAtlas?.agents >= 13, `expected source-backed agent roster, found ${summary.capabilityAtlas?.agents}.`);
+  ensure(summary.capabilityAtlas?.modules >= 15, `expected SEIS product module coverage, found ${summary.capabilityAtlas?.modules}.`);
+  ensure(summary.capabilityAtlas?.tasks >= summary.capabilityAtlas?.agents, `expected dry-run task coverage for every source-backed agent, found ${summary.capabilityAtlas?.tasks} tasks for ${summary.capabilityAtlas?.agents} agents.`);
+  ensure(summary.capabilityAtlas?.boundary === "status-and-plan-only", `expected plan-only capability boundary, found ${summary.capabilityAtlas?.boundary}.`);
+  ensure(summary.capabilityAtlasApp >= 1, "Capability Atlas app did not render.");
+  ensure(summary.capabilityLanes >= 1, `expected visible Capability Atlas lane cards, found ${summary.capabilityLanes}.`);
+  ensure(summary.capabilityAgents >= 1, `expected visible Capability Atlas agent cards, found ${summary.capabilityAgents}.`);
+  ensure(summary.capabilityTasks >= 1, `expected visible Capability Atlas dry-run task cards, found ${summary.capabilityTasks}.`);
+  ensure(summary.capabilityModules >= 1, `expected visible Capability Atlas module cards, found ${summary.capabilityModules}.`);
   ensure(summary.securityGateApp >= 1, "Security Gate app did not render.");
   ensure(summary.securityPathCards >= 3, `expected three Security Gate owner paths, found ${summary.securityPathCards}.`);
   ensure(summary.liveDemoConsole >= 1, "Live Demo Console did not render.");
@@ -602,6 +678,8 @@ async function smokeLinuxReplica(client, baseUrl) {
   ensure(summary.sourcesVisible === true, "terminal sources command did not show supplied ZIP source coverage.");
   ensure(summary.liveCommandVisible === true, "terminal live command did not report the live tour output.");
   ensure(summary.securityTerminalVisible === true, "terminal security command did not report the Security Gate output.");
+  ensure(summary.capabilitiesVisible === true, "terminal capabilities command did not show source-backed atlas output.");
+  ensure(summary.capabilityAtlasVisible === true, "Capability Atlas app copy is not visible.");
   ensure(summary.securityGateVisible === true, "Security Gate owner tracker copy is not visible.");
   ensure(summary.liveConsoleVisible === true, "Live Demo Console copy is not visible.");
   ensure(summary.searchGatewayVisible && summary.codeVisible && summary.designVisible && summary.cloudVisible && summary.websiteVisible, "connected SEIS bridge surfaces are not all visible.");
@@ -631,6 +709,7 @@ async function smokeLinuxReplicaMobile(client, baseUrl) {
 
   const summary = await evaluate(client, `(() => {
     window.__SEIS_LINUX_REPLICA__.openApp('live-demo');
+    window.__SEIS_LINUX_REPLICA__.openApp('capability-atlas');
     window.__SEIS_LINUX_REPLICA__.openApp('reference-vault');
     window.__SEIS_LINUX_REPLICA__.openApp('terminal');
     document.querySelector('#startButton')?.click();
@@ -661,6 +740,8 @@ async function smokeLinuxReplicaMobile(client, baseUrl) {
       overflowWindowCount: overflowWindows.length,
       horizontalOverflow: document.documentElement.scrollWidth > viewportWidth + 2,
       liveDemoConsole: document.querySelectorAll('[data-live-demo-console]').length,
+      capabilityAtlasApp: document.querySelectorAll('[data-capability-atlas]').length,
+      capabilityBoundary: window.__SEIS_LINUX_REPLICA__?.capabilityAtlas?.()?.boundary || "",
       referenceVault: document.querySelectorAll('[data-reference-vault]').length,
       terminalReady: window.__SEIS_LINUX_REPLICA__.terminalReady(),
       launcherOpen: document.querySelector('#startMenu')?.classList.contains('is-active'),
@@ -680,6 +761,8 @@ async function smokeLinuxReplicaMobile(client, baseUrl) {
   ensure(summary.overflowWindowCount === 0, `mobile viewport has ${summary.overflowWindowCount} oversized window(s).`);
   ensure(summary.horizontalOverflow === false, "mobile desktop has horizontal overflow.");
   ensure(summary.liveDemoConsole >= 1, "mobile Live Demo Console did not render.");
+  ensure(summary.capabilityAtlasApp >= 1, "mobile Capability Atlas did not render.");
+  ensure(summary.capabilityBoundary === "status-and-plan-only", `mobile Capability Atlas boundary changed: ${summary.capabilityBoundary}.`);
   ensure(summary.referenceVault >= 1, "mobile Reference Vault did not render.");
   ensure(summary.terminalReady === true, "mobile terminal did not initialize.");
   ensure(summary.launcherOpen === true, "mobile launcher did not open.");
@@ -706,7 +789,7 @@ async function smokeLinuxReplicaDeepLink(client, baseUrl) {
   await goto(client, `${baseUrl}/seis-linux-replica.html?demo=live`);
   await waitFor(client, "window.__SEIS_LINUX_REPLICA__?.demoIntent?.() === true", 10000);
   await waitFor(client, "document.querySelector('#shell')?.classList.contains('is-active')", 10000);
-  await waitFor(client, "document.querySelector('[data-live-demo-console]') && document.querySelector('[data-demo-readiness]')", 10000);
+  await waitFor(client, "document.querySelector('[data-live-demo-console]') && document.querySelector('[data-demo-readiness]') && document.querySelector('[data-capability-atlas]')", 10000);
   const summary = await evaluate(client, `(() => {
     const bodyText = document.body.innerText;
     return {
@@ -714,6 +797,7 @@ async function smokeLinuxReplicaDeepLink(client, baseUrl) {
       shellActive: document.querySelector('#shell')?.classList.contains('is-active') === true,
       liveDemoConsole: document.querySelectorAll('[data-live-demo-console]').length,
       demoReadiness: document.querySelectorAll('[data-demo-readiness]').length,
+      capabilityAtlasApp: document.querySelectorAll('[data-capability-atlas]').length,
       referenceVault: document.querySelectorAll('[data-reference-vault]').length,
       terminalReady: window.__SEIS_LINUX_REPLICA__?.terminalReady?.() === true,
       tourCopyVisible: bodyText.includes('SEIS Live Linux-like Demo'),
@@ -726,6 +810,7 @@ async function smokeLinuxReplicaDeepLink(client, baseUrl) {
   ensure(summary.shellActive === true, "deep-link did not auto-enter the desktop shell.");
   ensure(summary.liveDemoConsole >= 1, "deep-link did not open Live Demo Console.");
   ensure(summary.demoReadiness >= 1, "deep-link did not open Demo Readiness.");
+  ensure(summary.capabilityAtlasApp >= 1, "deep-link did not open Capability Atlas.");
   ensure(summary.referenceVault >= 1, "deep-link did not open Reference Vault.");
   ensure(summary.terminalReady === true, "deep-link did not leave terminal ready.");
   ensure(summary.tourCopyVisible === true, "deep-link live tour copy was not visible.");
