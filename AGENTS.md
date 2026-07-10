@@ -54,6 +54,9 @@ operational details without superseding or weakening it:
 - [Release](docs/RELEASE.md)
 - [Public / Private Boundary](docs/PUBLIC_PRIVATE_BOUNDARY.md)
 
+Existing product-specific contracts, including focus mode, remain subordinate
+implementation surfaces and must pass their dedicated checks.
+
 ---
 
 ## How To Use This File
