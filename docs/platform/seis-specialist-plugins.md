@@ -2,7 +2,7 @@
 
 Date: 2026-06-15
 
-SEIS now keeps four specialist lane packages plus a governance core and a
+SEIS now keeps eight specialist lane packages plus a governance core and a
 governance-operating lane as embedded skills inside the unified
 `seis-ai-agent@seis-repo` plugin. The repo marketplace
 publishes one user-facing plugin card: SEIS-Agent.
@@ -28,6 +28,10 @@ The canonical local marketplace is repo-contained at `.agents/plugins/marketplac
 | `seis-code` | Architecture-aware implementation, refactors, tests, CI, MCP/plugin code, and repo automation. | `plugins/seis-ai-agent/skills/seis-code/SKILL.md` | `plugins/seis-code` |
 | `seis-design` | Product design, UI/UX, design systems, accessibility, motion, visual QA, and design handoff. | `plugins/seis-ai-agent/skills/seis-design/SKILL.md` | `plugins/seis-design` |
 | `seis-data` | Data architecture, analytics, reports, schemas, knowledge registries, RAG/memory planning, and provenance. | `plugins/seis-ai-agent/skills/seis-data/SKILL.md` | `plugins/seis-data` |
+| `seis-security` | Threat modeling, secret safety, permission risk, SSH/VPN hardening, and release-blocking security review. | `plugins/seis-ai-agent/skills/seis-security/SKILL.md` | `plugins/seis-ai-agent` |
+| `seis-research` | Official-source review, standards and version checks, evidence synthesis, and research-backed decisions. | `plugins/seis-ai-agent/skills/seis-research/SKILL.md` | `plugins/seis-ai-agent` |
+| `seis-automation` | Repeatable checks, dry-runs, runbooks, CI workflows, and human-approved automation gates. | `plugins/seis-ai-agent/skills/seis-automation/SKILL.md` | `plugins/seis-ai-agent` |
+| `seis-product` | Requirements, roadmap slices, acceptance criteria, user outcomes, and launch-readiness evidence. | `plugins/seis-ai-agent/skills/seis-product/SKILL.md` | `plugins/seis-ai-agent` |
 
 ## Contract
 

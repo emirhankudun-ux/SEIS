@@ -16,6 +16,9 @@ const webIndexPath = path.join(root, "apps", "seis-demo-web", "index.html");
 const webScriptPath = path.join(root, "apps", "seis-demo-web", "script.js");
 const desktopScriptPath = path.join(root, "apps", "web", "desktop.js");
 const serviceWorkerPath = path.join(root, "apps", "seis-demo-web", "service-worker.js");
+const secondBrainPath = path.join(root, "content", "development", "seis-second-brain-system.json");
+const laneStatusPath = path.join(root, "content", "development", "seis-agent-lane-status.json");
+const seisCoreScriptPath = path.join(root, "apps", "seis-core", "script.js");
 
 const requiredPersonalPlugins = [
   "seis@personal",
@@ -48,6 +51,33 @@ const requiredDirectLaneTools = [
   "seis_data_status",
   "seis_data_plan",
 ];
+const requiredSecondBrainManagedLanes = [
+  "SEIS Hub",
+  "SEIS Cloud",
+  "SEIS-Code",
+  "SEIS-Design",
+  "SEIS-DATA",
+  "SEIS-Security",
+  "SEIS-Research",
+  "SEIS-Automation",
+  "SEIS-Product"
+];
+const requiredSecondBrainAgentRoster = [
+  "Architect Agent",
+  "Code Agent",
+  "Design Agent",
+  "UI/UX Agent",
+  "Research Agent",
+  "Search Agent",
+  "Security Agent",
+  "DevOps Agent",
+  "Documentation Agent",
+  "QA Agent",
+  "Cloud Agent",
+  "Automation Agent",
+  "Product Agent"
+];
+const requiredExpandedLaneIds = ["seis-security", "seis-research", "seis-automation", "seis-product"];
 
 for (const [filePath, label] of [
   [manifestPath, "plugin integration manifest"],
@@ -60,7 +90,10 @@ for (const [filePath, label] of [
   [webIndexPath, "SEIS demo index"],
   [webScriptPath, "SEIS demo script"],
   [desktopScriptPath, "SEIS desktop script"],
-  [serviceWorkerPath, "SEIS demo service worker"]
+  [serviceWorkerPath, "SEIS demo service worker"],
+  [secondBrainPath, "SEIS Second Brain contract"],
+  [laneStatusPath, "SEIS agent lane status contract"],
+  [seisCoreScriptPath, "SEIS Core script"]
 ]) {
   ensureFile(filePath, label);
 }
@@ -76,6 +109,9 @@ const webIndex = readText(webIndexPath, "SEIS demo index");
 const webScript = readText(webScriptPath, "SEIS demo script");
 const desktopScript = readText(desktopScriptPath, "SEIS desktop script");
 const serviceWorker = readText(serviceWorkerPath, "SEIS demo service worker");
+const secondBrain = readJson(secondBrainPath, "SEIS Second Brain contract");
+const laneStatus = readJson(laneStatusPath, "SEIS agent lane status contract");
+const seisCoreScript = readText(seisCoreScriptPath, "SEIS Core script");
 
 if (manifest) {
   ensure(manifest.id === "seis-agent-plugin-integration", "manifest id must be seis-agent-plugin-integration");
@@ -204,6 +240,23 @@ if (packageJson) {
     packageJson.scripts?.["check:seis-agent-plugin-integration"] === "node scripts/check-seis-agent-plugin-integration.mjs",
     "package.json must expose check:seis-agent-plugin-integration"
   );
+}
+
+if (secondBrain) {
+  ensureArrayIncludesAll(secondBrain.managedSubAgentLanes, requiredSecondBrainManagedLanes, "Second Brain managedSubAgentLanes");
+  ensureArrayIncludesAll(
+    (secondBrain.autonomousAgentRoster || []).map((agent) => agent.agent),
+    requiredSecondBrainAgentRoster,
+    "Second Brain autonomousAgentRoster"
+  );
+}
+
+if (laneStatus) {
+  ensureArrayIncludesAll((laneStatus.lanes || []).map((lane) => lane.id), requiredExpandedLaneIds, "agent lane status contract expanded lanes");
+}
+
+for (const laneId of requiredExpandedLaneIds) {
+  ensure(seisCoreScript.includes(`laneId: "${laneId}"`), `SEIS Core script missing expanded lane ${laneId}`);
 }
 
 for (const [text, label] of [

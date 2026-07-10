@@ -13,6 +13,43 @@ const desktopCssPath = "apps/web/desktop.css";
 const packagePath = "package.json";
 const trainingCurriculumPath = "content/development/seis-language-model-training-curriculum.json";
 const trainingCurriculumReportPath = "reports/seis-model-scaling/seis-language-model-training-curriculum.md";
+const requiredManagedSubAgentLanes = [
+  "SEIS Hub",
+  "SEIS Cloud",
+  "SEIS-Code",
+  "SEIS-Design",
+  "SEIS-DATA",
+  "SEIS-Security",
+  "SEIS-Research",
+  "SEIS-Automation",
+  "SEIS-Product"
+];
+const requiredSecondBrainAgentLanes = [
+  "Architect Agent",
+  "Code Agent",
+  "Design Agent",
+  "Search Agent",
+  "Security Agent",
+  "Documentation Agent",
+  "Research Agent",
+  "Automation Agent",
+  "Product Agent"
+];
+const requiredAutonomousAgentRoster = [
+  "Architect Agent",
+  "Code Agent",
+  "Design Agent",
+  "UI/UX Agent",
+  "Research Agent",
+  "Search Agent",
+  "Security Agent",
+  "DevOps Agent",
+  "Documentation Agent",
+  "QA Agent",
+  "Cloud Agent",
+  "Automation Agent",
+  "Product Agent"
+];
 
 for (const [filePath, label] of [
   [contractPath, "Second Brain contract"],
@@ -53,12 +90,15 @@ if (contract) {
   ensure(contract.securityBoundary?.githubMutation === false, "Second Brain must not mutate GitHub");
   ensure(contract.securityBoundary?.requiresHumanReviewBeforePublicUse === true, "Second Brain must require human review before public use");
   ensureArrayMin(contract.installedAiProfiles, 6, "installedAiProfiles");
-  ensureArrayMin(contract.managedSubAgentLanes, 6, "managedSubAgentLanes");
+  ensureArrayMin(contract.managedSubAgentLanes, 9, "managedSubAgentLanes");
   ensureArrayMin(contract.vaultNotes, 6, "vaultNotes");
-  ensureArrayMin(contract.agentLanes, 6, "agentLanes");
-  ensureArrayMin(contract.autonomousAgentRoster, 12, "autonomousAgentRoster");
+  ensureArrayMin(contract.agentLanes, 9, "agentLanes");
+  ensureArrayMin(contract.autonomousAgentRoster, 13, "autonomousAgentRoster");
   ensureArrayMin(contract.pipeline, 4, "pipeline");
   ensureArrayMin(contract.githubGates, 4, "githubGates");
+  ensureArrayIncludesAll(contract.managedSubAgentLanes, requiredManagedSubAgentLanes, "managedSubAgentLanes");
+  ensureArrayIncludesAll((contract.agentLanes || []).map((lane) => lane.agent), requiredSecondBrainAgentLanes, "agentLanes");
+  ensureArrayIncludesAll((contract.autonomousAgentRoster || []).map((agent) => agent.agent), requiredAutonomousAgentRoster, "autonomousAgentRoster");
 
   const noteIds = new Set((contract.vaultNotes || []).map((note) => note.id));
   for (const note of contract.vaultNotes || []) {
@@ -91,8 +131,8 @@ for (const phrase of [
   "installed AI profiles",
   "bounded sub-agent lanes",
   "all 6 current installed AI profiles",
-  "All 6 current managed SEIS sub-agent lanes",
-  "12-agent target roster",
+  "All 9 current managed SEIS sub-agent lanes",
+  "13-agent target roster",
   "GitHub readiness",
   "Agent training pack",
   "Language model training curriculum",
@@ -195,6 +235,14 @@ function ensureFile(filePath, label) {
 function ensureArrayMin(value, minimum, label) {
   ensure(Array.isArray(value), `${label} must be an array`);
   ensure(Array.isArray(value) && value.length >= minimum, `${label} must include at least ${minimum} records`);
+}
+
+function ensureArrayIncludesAll(candidate, required, label) {
+  ensure(Array.isArray(candidate), `${label} must be an array`);
+  const values = new Set(Array.isArray(candidate) ? candidate : []);
+  for (const item of required) {
+    ensure(values.has(item), `${label} missing ${item}`);
+  }
 }
 
 function readText(filePath, label) {

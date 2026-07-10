@@ -25,6 +25,32 @@ const paths = {
 };
 
 const failures = [];
+const requiredManagedSubAgentLanes = [
+  "SEIS Hub",
+  "SEIS Cloud",
+  "SEIS-Code",
+  "SEIS-Design",
+  "SEIS-DATA",
+  "SEIS-Security",
+  "SEIS-Research",
+  "SEIS-Automation",
+  "SEIS-Product"
+];
+const requiredAutonomousAgentRoster = [
+  "Architect Agent",
+  "Code Agent",
+  "Design Agent",
+  "UI/UX Agent",
+  "Research Agent",
+  "Search Agent",
+  "Security Agent",
+  "DevOps Agent",
+  "Documentation Agent",
+  "QA Agent",
+  "Cloud Agent",
+  "Automation Agent",
+  "Product Agent"
+];
 
 const secondBrain = readJson(paths.secondBrain, "Second Brain contract");
 const aiWorkforce = readJson(paths.aiWorkforce, "AI workforce assignments");
@@ -257,12 +283,20 @@ function validateReport(value, label) {
   ensure(value?.secondBrainBinding?.githubMutationEnabled === false, `${label} GitHub mutation must be disabled.`);
   ensureArrayMin(value?.providerProfiles, 6, `${label} providerProfiles`);
   ensureArrayMin(value?.workforceAssignments, 10, `${label} workforceAssignments`);
-  ensureArrayMin(value?.subAgentMesh?.managedSubAgentLanes, 6, `${label} managedSubAgentLanes`);
-  ensureArrayMin(value?.subAgentMesh?.autonomousAgentRoster, 12, `${label} autonomousAgentRoster`);
+  ensureArrayMin(value?.subAgentMesh?.managedSubAgentLanes, 9, `${label} managedSubAgentLanes`);
+  ensureArrayMin(value?.subAgentMesh?.autonomousAgentRoster, 13, `${label} autonomousAgentRoster`);
+  ensureArrayIncludesAll(value?.subAgentMesh?.managedSubAgentLanes, requiredManagedSubAgentLanes, `${label} managedSubAgentLanes`);
+  ensureArrayIncludesAll(
+    (value?.subAgentMesh?.autonomousAgentRoster || []).map((agent) => agent.agent),
+    requiredAutonomousAgentRoster,
+    `${label} autonomousAgentRoster`
+  );
   ensureArrayMin(value?.subAgentMesh?.roleSchemaRoles, 5, `${label} roleSchemaRoles`);
   ensureArrayMin(value?.subAgentMesh?.permissionLevels, 5, `${label} permissionLevels`);
   ensure(value?.summary?.installedAiProfileCount >= 6, `${label} installed AI profile count too low.`);
   ensure(value?.summary?.workforceAssignmentCount >= 10, `${label} workforce assignment count too low.`);
+  ensure(value?.summary?.managedSubAgentLaneCount === requiredManagedSubAgentLanes.length, `${label} managed sub-agent lane count mismatch.`);
+  ensure(value?.summary?.autonomousAgentRosterCount === requiredAutonomousAgentRoster.length, `${label} autonomous agent roster count mismatch.`);
   ensure(value?.summary?.mcpVendorSurfaceCount >= 10, `${label} MCP vendor surface count too low.`);
   ensure(value?.summary?.installedSkillCount >= 30, `${label} installed skill count too low.`);
   ensureArrayMin(value?.requiredEvidenceBeforeAutonomousUse, 8, `${label} requiredEvidenceBeforeAutonomousUse`);
@@ -434,6 +468,14 @@ function ensureFile(filePath, label) {
 function ensureArrayMin(value, minimum, label) {
   ensure(Array.isArray(value), `${label} must be an array.`);
   ensure(Array.isArray(value) && value.length >= minimum, `${label} must include at least ${minimum} records.`);
+}
+
+function ensureArrayIncludesAll(candidate, required, label) {
+  ensure(Array.isArray(candidate), `${label} must be an array.`);
+  const values = new Set(Array.isArray(candidate) ? candidate : []);
+  for (const item of required) {
+    ensure(values.has(item), `${label} missing ${item}.`);
+  }
 }
 
 function readText(filePath, label) {
