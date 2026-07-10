@@ -1852,6 +1852,88 @@ select:focus-visible,
   align-items: start;
 }
 
+.second-brain-search-panel {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.second-brain-search-heading,
+.second-brain-search-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.7rem;
+  align-items: end;
+}
+
+.second-brain-search-heading h3 {
+  margin: 0 0 0.25rem;
+}
+
+.second-brain-search-controls label {
+  display: grid;
+  gap: 0.32rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.second-brain-filter-strip {
+  overflow-x: auto;
+}
+
+.second-brain-source-counts {
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+}
+
+.second-brain-search-results {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 0.65rem;
+}
+
+.second-brain-search-result {
+  display: grid;
+  gap: 0.28rem;
+  min-height: 9rem;
+  justify-items: start;
+  border: 1px solid rgba(99, 198, 186, 0.18);
+  border-radius: 8px;
+  background: rgba(3, 8, 10, 0.28);
+  color: var(--text);
+  padding: 0.68rem;
+  text-align: left;
+}
+
+.second-brain-search-result:hover,
+.second-brain-search-result:focus-visible {
+  border-color: rgba(214, 154, 72, 0.5);
+  background: rgba(214, 154, 72, 0.11);
+}
+
+.second-brain-search-result span,
+.second-brain-search-result small,
+.second-brain-search-result em,
+.second-brain-search-result p {
+  color: var(--muted);
+  line-height: 1.38;
+}
+
+.second-brain-search-result strong {
+  font-size: 0.95rem;
+}
+
+.second-brain-search-result span {
+  color: rgba(99, 198, 186, 0.9);
+  font-size: 0.68rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.second-brain-search-result p {
+  margin: 0;
+}
+
 .second-brain-pipeline {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
@@ -4772,6 +4854,8 @@ select:focus-visible,
   .ai-core-orbit-panel,
   .ai-core-version-strip,
   .second-brain-hero,
+  .second-brain-search-heading,
+  .second-brain-search-controls,
   .second-brain-layout,
   .evolution-layout {
     grid-template-columns: 1fr;
@@ -5074,6 +5158,7 @@ select:focus-visible,
   .launchpad-grid,
   .store-grid,
   .music-track-list,
+  .second-brain-search-results,
   .second-brain-pipeline,
   .demo-proof-strip,
   .demo-journey-board,

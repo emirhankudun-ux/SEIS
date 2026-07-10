@@ -16,6 +16,7 @@ const REQUIRED_ARTIFACTS = [
   "/home/seis/SecondBrain/graph-links.json",
   "/home/seis/SecondBrain/second-brain-review-gate.md",
   "/home/seis/SecondBrain/github-readiness-review.md",
+  "/home/seis/SecondBrain/search-index-snapshot.md",
   "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md"
 ];
 
@@ -280,12 +281,21 @@ function validateStaticContract() {
     "data-second-brain-installed-ai",
     "data-second-brain-subagents",
     "data-second-brain-agent-roster",
+    "data-second-brain-search-panel",
+    "data-second-brain-search-results",
+    "data-second-brain-search-filters",
+    "data-second-brain-search-query",
     "second-brain-capture",
     "second-brain-link",
     "second-brain-training-pack",
     "second-brain-review",
     "second-brain-export-github",
+    "second-brain-run-search",
+    "second-brain-set-search-filter",
+    "second-brain-record-search",
+    "SEIS_SECOND_BRAIN_SEARCH_FILTERS",
     "seis-agent-training-pack.md",
+    "search-index-snapshot.md",
     "seis-language-model-training-curriculum.json",
     "Language Model Training Curriculum",
     "No model install",
@@ -300,7 +310,9 @@ function validateStaticContract() {
     ".second-brain-vault",
     ".second-brain-graph",
     ".second-brain-inspector",
-    ".second-brain-ai-index"
+    ".second-brain-ai-index",
+    ".second-brain-search-panel",
+    ".second-brain-search-result"
   ]) {
     ensure(desktopCss.includes(marker), `desktop.css missing marker: ${marker}`);
   }
@@ -347,8 +359,11 @@ async function smokeSecondBrain(client, baseUrl) {
       hasInspector: Boolean(root?.querySelector('[data-second-brain-inspector]')),
       hasGithubGate: Boolean(root?.querySelector('[data-second-brain-github-gate]')),
       hasAgentRegistry: Boolean(root?.querySelector('[data-second-brain-agent-registry]')),
+      hasSearchPanel: Boolean(root?.querySelector('[data-second-brain-search-panel]')),
       noteButtons: root?.querySelectorAll('[data-second-brain-vault] [data-action="second-brain-select-note"]').length || 0,
       graphNodes: root?.querySelectorAll('[data-second-brain-graph] [data-action="second-brain-select-note"]').length || 0,
+      searchFilters: root?.querySelectorAll('[data-second-brain-search-filters] [data-action="second-brain-set-search-filter"]').length || 0,
+      searchResults: root?.querySelectorAll('[data-second-brain-search-results] .second-brain-search-result').length || 0,
       installedAiRows: root?.querySelectorAll('[data-second-brain-installed-ai] tbody tr').length || 0,
       subAgentRows: root?.querySelectorAll('[data-second-brain-subagents] tbody tr').length || 0,
       agentRosterRows: root?.querySelectorAll('[data-second-brain-agent-roster] tbody tr').length || 0,
@@ -357,6 +372,8 @@ async function smokeSecondBrain(client, baseUrl) {
       contextProfileMetric: root?.querySelector('[data-second-brain-context-profile-count] p')?.textContent?.trim() || '',
       agentRegistryDecision: root?.querySelector('[data-second-brain-agent-registry-decision]')?.innerText || '',
       agentRegistryText: root?.querySelector('[data-second-brain-agent-registry]')?.innerText || '',
+      searchPanelText: root?.querySelector('[data-second-brain-search-panel]')?.innerText || '',
+      searchSourceCounts: root?.querySelector('[data-second-brain-search-source-counts]')?.innerText || '',
       mcpContext: root?.querySelector('[data-second-brain-mcp-resource]')?.innerText || '',
       managedLaneText: root?.querySelector('[data-second-brain-subagents]')?.innerText || '',
       contextProfileText: root?.querySelector('[data-second-brain-context-profiles]')?.innerText || '',
@@ -379,8 +396,11 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(initial.hasInspector, "Second Brain inspector missing.");
   ensure(initial.hasGithubGate, "Second Brain GitHub gate panel missing.");
   ensure(initial.hasAgentRegistry, "Second Brain agent registry evidence panel missing.");
+  ensure(initial.hasSearchPanel, "Second Brain local search panel missing.");
   ensure(initial.noteButtons === 6, `expected six vault notes, got ${initial.noteButtons}`);
   ensure(initial.graphNodes === 6, `expected six graph nodes, got ${initial.graphNodes}`);
+  ensure(initial.searchFilters === 9, `expected nine Second Brain search filters, got ${initial.searchFilters}`);
+  ensure(initial.searchResults >= 8, `expected at least eight Second Brain search results, got ${initial.searchResults}`);
   ensure(initial.installedAiRows === 6, `expected six installed AI rows, got ${initial.installedAiRows}`);
   ensure(initial.subAgentRows === 9, `expected nine managed lane rows, got ${initial.subAgentRows}`);
   ensure(initial.agentRosterRows === 13, `expected thirteen autonomous agent rows, got ${initial.agentRosterRows}`);
@@ -389,6 +409,8 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(initial.contextProfileMetric === "9", `expected context profile metric 9, got ${initial.contextProfileMetric}`);
   ensure(initial.agentRegistryDecision.includes("NO-GO"), "Second Brain must render the agent registry NO-GO decision.");
   ensure(initial.agentRegistryText.includes("second-brain-agent-registry-latest.json") && initial.agentRegistryText.includes("NO-GO-autonomous-execution-not-approved"), "Second Brain must render the agent registry artifact and decision.");
+  ensure(initial.searchPanelText.includes("notes, backlinks, tags, apps, routes, files, plugins, and agent duties"), "Second Brain search panel must describe all local index sources.");
+  ensure(["Notes", "Backlinks", "Tags", "Apps", "Routes", "Files", "Plugins", "Agents"].every((label) => initial.searchSourceCounts.includes(label)), "Second Brain search source counts must cover every local source type.");
   ensure(initial.mcpContext.includes("seis://brain/second-brain-system.json"), "Second Brain must render the read-only MCP context resource.");
   ensure(initial.managedLaneText.includes("SEIS Product") && initial.managedLaneText.includes("seis_product_status"), "Second Brain managed lane table must expose the SEIS Product MCP lane.");
   ensure(initial.contextProfileText.includes("@seis-data") && initial.contextProfileText.includes("seis_product_plan"), "Second Brain context profiles must expose the SEIS Data and Product planning lanes.");
@@ -408,6 +430,23 @@ async function smokeSecondBrain(client, baseUrl) {
   })()`);
   ensure(selected.value === "github-readiness", `expected GitHub Readiness note selection, got ${JSON.stringify(selected)}`);
   ensure(selected.inspector.includes("GitHub Readiness"), "Second Brain inspector did not follow selected note.");
+
+  await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-set-search-filter"][data-value="Plugins"]');
+  await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-run-search"]');
+  await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-record-search"]');
+  await waitFor(client, "window.__SEIS_DESKTOP__.filePaths().includes('/home/seis/SecondBrain/search-index-snapshot.md')", 5000);
+  const searchSnapshot = await evaluate(client, `(() => {
+    const root = document.querySelector('.app-window[data-app-id="second-brain"]:not([hidden]) [data-second-brain-app]');
+    const text = root?.innerText || '';
+    return {
+      filterText: root?.querySelector('[data-second-brain-search-source-counts]')?.innerText || '',
+      results: root?.querySelectorAll('[data-second-brain-search-results] .second-brain-search-result').length || 0,
+      snapshotVisible: text.includes('search-index-snapshot.md') || text.includes('Local search snapshot saved')
+    };
+  })()`);
+  ensure(searchSnapshot.filterText.includes("Plugins"), "Second Brain search filter did not switch to Plugins.");
+  ensure(searchSnapshot.results >= 1, `Second Brain plugin search should show results: ${JSON.stringify(searchSnapshot)}`);
+  ensure(searchSnapshot.snapshotVisible, "Second Brain search snapshot action did not update visible state.");
 
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="app-primary"][data-app-id="second-brain"]');
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-capture"]');
@@ -481,6 +520,7 @@ async function smokeSecondBrain(client, baseUrl) {
 
   return {
     initial,
+    searchSnapshot,
     artifacts,
     aiBridge,
     persistence,
@@ -522,6 +562,7 @@ async function smokeMobile(client, baseUrl) {
       hasVault: Boolean(root?.querySelector('[data-second-brain-vault]')),
       hasGraph: Boolean(root?.querySelector('[data-second-brain-graph]')),
       hasGithubGate: Boolean(root?.querySelector('[data-second-brain-github-gate]')),
+      hasSearchPanel: Boolean(root?.querySelector('[data-second-brain-search-panel]')),
       horizontalOverflow: document.documentElement.scrollWidth > window.innerWidth + 1,
       appHeading: (root?.querySelector('h2')?.textContent || '').trim(),
       secondBrainText: (root?.innerText || '').slice(0, 400)
@@ -533,6 +574,7 @@ async function smokeMobile(client, baseUrl) {
   ensure(mobile.hasVault, "Second Brain mobile vault panel missing.");
   ensure(mobile.hasGraph, "Second Brain mobile graph panel missing.");
   ensure(mobile.hasGithubGate, "Second Brain mobile GitHub gate missing.");
+  ensure(mobile.hasSearchPanel, "Second Brain mobile search panel missing.");
   ensure(mobile.targetCount >= 10, `Second Brain mobile expected interactive controls, got ${mobile.targetCount}`);
   ensure(mobile.crampedTargets <= 4, `Second Brain mobile has too many cramped targets: ${mobile.crampedTargets}; ${mobile.crampedSummary}`);
   ensure(!mobile.horizontalOverflow, "Second Brain mobile viewport has horizontal overflow.");

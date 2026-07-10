@@ -1596,6 +1596,7 @@ const SEIS_SECOND_BRAIN_AGENT_REGISTRY = {
     "githubMutationPerformed: false"
   ]
 };
+const SEIS_SECOND_BRAIN_SEARCH_FILTERS = ["All", "Notes", "Backlinks", "Tags", "Apps", "Routes", "Files", "Plugins", "Agents"];
 const AI_CORE_VERSION_TARGETS = [
   {
     id: "v0.1-foundation",
@@ -2757,6 +2758,15 @@ function handleClick(event) {
     case "second-brain-export-github":
       exportSecondBrainGithubReadiness();
       break;
+    case "second-brain-run-search":
+      runSecondBrainSearch(button.closest(".window-body"));
+      break;
+    case "second-brain-set-search-filter":
+      setSecondBrainSearchFilter(value);
+      break;
+    case "second-brain-record-search":
+      recordSecondBrainSearchSnapshot(button.closest(".window-body"));
+      break;
     case "app-primary":
       runAppPrimaryAction(appId, button.closest(".window-body"));
       break;
@@ -2896,6 +2906,9 @@ function handleInput(event) {
   }
   if (input.matches("[data-file-search]")) {
     getFileManagerState().query = input.value;
+  }
+  if (input.matches("[data-second-brain-search-query]")) {
+    getSecondBrainData().searchQuery = input.value;
   }
 }
 
@@ -5050,6 +5063,9 @@ function getSecondBrainData() {
   if (!data.activeNoteId || !SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.some((note) => note.id === data.activeNoteId)) {
     data.activeNoteId = SEIS_SECOND_BRAIN_SYSTEM.vaultNotes[0].id;
   }
+  if (typeof data.searchQuery !== "string") data.searchQuery = "SEIS";
+  if (!SEIS_SECOND_BRAIN_SEARCH_FILTERS.includes(data.searchFilter)) data.searchFilter = "All";
+  if (!Array.isArray(data.searchSnapshots)) data.searchSnapshots = [];
   if (!Array.isArray(data.activity)) {
     data.activity = [
       { id: "seed-capture", step: "Capture", status: "Ready", detail: "Browser-local Markdown vault is ready." },
@@ -5071,12 +5087,287 @@ function getSecondBrainBacklinks(noteId) {
   return SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.filter((note) => note.links.includes(noteId));
 }
 
+function normalizeSecondBrainSearch(value) {
+  return String(value || "").toLowerCase();
+}
+
+function scoreSecondBrainSearchResult(item, query) {
+  const trimmed = String(query || "").trim().toLowerCase();
+  if (!trimmed) return item.priority || 1;
+  const tokens = trimmed.split(/\s+/).filter(Boolean);
+  const title = normalizeSecondBrainSearch(item.title);
+  const detail = normalizeSecondBrainSearch(item.detail);
+  const source = normalizeSecondBrainSearch(item.source);
+  const tags = normalizeSecondBrainSearch((item.tags || []).join(" "));
+  const type = normalizeSecondBrainSearch(item.type);
+  let score = item.priority || 0;
+  for (const token of tokens) {
+    if (title.includes(token)) score += 12;
+    if (tags.includes(token)) score += 10;
+    if (source.includes(token)) score += 5;
+    if (detail.includes(token)) score += 4;
+    if (type.includes(token)) score += 3;
+  }
+  return score;
+}
+
+function getSecondBrainSearchIndex() {
+  const noteById = new Map(SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.map((note) => [note.id, note]));
+  const notes = SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.map((note) => ({
+    id: `note-${note.id}`,
+    type: "Notes",
+    title: note.title,
+    source: note.path,
+    detail: note.summary,
+    tags: note.tags,
+    noteId: note.id,
+    priority: 20
+  }));
+  const backlinks = getSecondBrainLinks().map(([sourceId, targetId]) => {
+    const source = noteById.get(sourceId);
+    const target = noteById.get(targetId);
+    return {
+      id: `backlink-${sourceId}-${targetId}`,
+      type: "Backlinks",
+      title: `${source?.title || sourceId} -> ${target?.title || targetId}`,
+      source: `${source?.path || sourceId} -> ${target?.path || targetId}`,
+      detail: `${source?.title || sourceId} links to ${target?.title || targetId}; this edge powers the repo-owned knowledge graph.`,
+      tags: ["#backlink", ...(source?.tags || []), ...(target?.tags || [])],
+      noteId: targetId,
+      priority: 17
+    };
+  });
+  const tags = [...new Set(SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.flatMap((note) => note.tags))].map((tag) => {
+    const taggedNotes = SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.filter((note) => note.tags.includes(tag));
+    return {
+      id: `tag-${tag.replace(/[^a-z0-9]+/gi, "-")}`,
+      type: "Tags",
+      title: tag,
+      source: "repo-owned Second Brain tag map",
+      detail: `${taggedNotes.length} note(s): ${taggedNotes.map((note) => note.title).join(", ")}`,
+      tags: [tag],
+      noteId: taggedNotes[0]?.id,
+      priority: 14
+    };
+  });
+  const apps = APPS.map((app) => ({
+    id: `app-${app.id}`,
+    type: "Apps",
+    title: app.name,
+    source: `desktop app: ${app.id}`,
+    detail: `${app.category} / ${app.type}. ${app.description}`,
+    tags: ["#app", `#${app.category.toLowerCase().replace(/\s+/g, "-")}`],
+    action: "open-app",
+    appId: app.id,
+    priority: app.id === "second-brain" ? 18 : 8
+  }));
+  const routes = DEMO_ROUTES.map((route) => ({
+    id: `route-${route.id}`,
+    type: "Routes",
+    title: route.label,
+    source: route.path,
+    detail: `${route.kind}. ${route.keywords || ""}`,
+    tags: ["#route", `#${String(route.kind || "route").toLowerCase().replace(/\s+/g, "-")}`],
+    action: "open-demo-route",
+    routeId: route.id,
+    priority: route.id.includes("second-brain") ? 18 : 7
+  }));
+  const files = state.fs
+    .filter((item) => !item.trashed && item.type === "file")
+    .map((item) => ({
+      id: `file-${item.path}`,
+      type: "Files",
+      title: baseName(item.path),
+      source: item.path,
+      detail: String(item.content || "").replace(/\s+/g, " ").slice(0, 180) || item.path,
+      tags: ["#file", item.path.endsWith(".md") ? "#markdown" : "#vfs"],
+      action: "open-file",
+      path: item.path,
+      priority: item.path.startsWith(SEIS_SECOND_BRAIN_SYSTEM.vaultRoot) ? 16 : 6
+    }));
+  const plugins = [
+    ...SEIS_AI_PLUGIN_LANES.map((plugin) => ({
+      id: `plugin-lane-${plugin.id}`,
+      title: plugin.name,
+      source: `${plugin.lane} plugin lane`,
+      detail: `${plugin.status}. ${plugin.capability}`,
+      tags: ["#plugin", `#${plugin.id}`],
+      priority: 15
+    })),
+    ...SEIS_PERSONAL_PLUGIN_BRIDGE.map((plugin) => ({
+      id: `plugin-bridge-${plugin.id}`,
+      title: plugin.displayName,
+      source: plugin.embeddedSkill,
+      detail: `${plugin.statusTool} / ${plugin.planTool}. ${plugin.defaultGate}`,
+      tags: ["#plugin", `#${plugin.embeddedAs}`],
+      priority: 16
+    })),
+    ...SEIS_MCP_RUNTIME_CONTRACT.surfaces.map((surface) => ({
+      id: `mcp-${surface.id}`,
+      title: surface.label,
+      source: `${SEIS_MCP_RUNTIME_CONTRACT.resourceUri} / ${surface.method}`,
+      detail: `${surface.evidence}. ${surface.duty}`,
+      tags: ["#mcp", "#plugin"],
+      priority: 13
+    }))
+  ].map((plugin) => ({
+    type: "Plugins",
+    action: "open-app",
+    appId: "ai-assistant",
+    ...plugin
+  }));
+  const agents = [
+    ...SEIS_SECOND_BRAIN_SYSTEM.agentLanes.map(([agent, permission, duty]) => ({
+      id: `agent-lane-${agent}`,
+      title: agent,
+      source: permission,
+      detail: duty,
+      tags: ["#agent", "#duty"],
+      priority: 15
+    })),
+    ...SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.map(([agent, status, duty]) => ({
+      id: `agent-roster-${agent}`,
+      title: agent,
+      source: status,
+      detail: duty,
+      tags: ["#autonomous-agent", "#status-plan-only"],
+      priority: 14
+    })),
+    ...SEIS_SECOND_BRAIN_SYSTEM.contextProfiles.map((profile) => ({
+      id: `context-profile-${profile.id}`,
+      title: profile.lane,
+      source: `${profile.plugin} / ${profile.statusTool} / ${profile.planTool}`,
+      detail: `${profile.focus} Agents: ${profile.relatedAgents.join(", ")}. Output: ${profile.allowedOutput}`,
+      tags: ["#context-profile", `#${profile.id}`],
+      priority: 17
+    }))
+  ].map((agent) => ({
+    type: "Agents",
+    action: "second-brain-select-note",
+    noteId: "sub-agent-council",
+    ...agent
+  }));
+  return [...notes, ...backlinks, ...tags, ...apps, ...routes, ...files, ...plugins, ...agents];
+}
+
+function getSecondBrainSearchSourceCounts(index) {
+  return SEIS_SECOND_BRAIN_SEARCH_FILTERS
+    .filter((filter) => filter !== "All")
+    .map((filter) => [filter, index.filter((item) => item.type === filter).length]);
+}
+
+function getSecondBrainSearchResults(index, data) {
+  const query = data.searchQuery || "";
+  const activeFilter = SEIS_SECOND_BRAIN_SEARCH_FILTERS.includes(data.searchFilter) ? data.searchFilter : "All";
+  return index
+    .filter((item) => activeFilter === "All" || item.type === activeFilter)
+    .map((item) => ({ ...item, score: scoreSecondBrainSearchResult(item, query) }))
+    .filter((item) => !String(query || "").trim() || item.score > (item.priority || 0))
+    .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
+    .slice(0, 12);
+}
+
+function renderSecondBrainSearchActionAttrs(result) {
+  if (result.action === "open-app") return `data-action="open-app" data-app-id="${escapeAttr(result.appId)}"`;
+  if (result.action === "open-demo-route") return `data-action="open-demo-route" data-value="${escapeAttr(result.routeId)}"`;
+  if (result.action === "open-file") return `data-action="open-file" data-path="${escapeAttr(result.path)}"`;
+  return `data-action="second-brain-select-note" data-value="${escapeAttr(result.noteId || SEIS_SECOND_BRAIN_SYSTEM.vaultNotes[0].id)}"`;
+}
+
+function runSecondBrainSearch(body) {
+  const data = getSecondBrainData();
+  const query = body?.querySelector("[data-second-brain-search-query]")?.value?.trim() || data.searchQuery || "SEIS";
+  data.searchQuery = query;
+  data.activity.unshift({
+    id: `search-${Date.now()}`,
+    step: "Search",
+    status: "Local index refreshed",
+    detail: `Second Brain search refreshed for "${query}" across notes, backlinks, tags, apps, routes, files, plugins, and agent duties.`
+  });
+  data.activity = data.activity.slice(0, 12);
+  log("second-brain", `Second Brain search refreshed for ${query}.`);
+  saveState();
+  renderOpenWindows("second-brain");
+}
+
+function setSecondBrainSearchFilter(filter) {
+  const data = getSecondBrainData();
+  data.searchFilter = SEIS_SECOND_BRAIN_SEARCH_FILTERS.includes(filter) ? filter : "All";
+  data.activity.unshift({
+    id: `search-filter-${Date.now()}`,
+    step: "Filter",
+    status: data.searchFilter,
+    detail: `Second Brain search filter set to ${data.searchFilter}.`
+  });
+  data.activity = data.activity.slice(0, 12);
+  log("second-brain", `Second Brain search filter set to ${data.searchFilter}.`);
+  saveState();
+  renderOpenWindows("second-brain");
+}
+
+function buildSecondBrainSearchSnapshotMarkdown(timestamp, data, results, counts) {
+  return `# SEIS Second Brain Local Search Snapshot
+
+Generated: ${timestamp}
+Query: ${data.searchQuery || ""}
+Filter: ${data.searchFilter || "All"}
+Mode: Browser-local Local Demo
+
+## Source Counts
+${counts.map(([type, count]) => `- ${type}: ${count}`).join("\n")}
+
+## Top Results
+${results.map((result) => `- ${result.type} / ${result.score}: ${result.title} - ${result.source}`).join("\n") || "- No local results."}
+
+## Boundary
+- No private Obsidian vault read.
+- No provider call.
+- No credential validation.
+- No SSH, deployment, GitHub push, merge, or release action.
+`;
+}
+
+function recordSecondBrainSearchSnapshot(body) {
+  const data = getSecondBrainData();
+  data.searchQuery = body?.querySelector("[data-second-brain-search-query]")?.value?.trim() || data.searchQuery || "SEIS";
+  const index = getSecondBrainSearchIndex();
+  const results = getSecondBrainSearchResults(index, data);
+  const counts = getSecondBrainSearchSourceCounts(index);
+  const timestamp = new Date().toISOString();
+  const path = "/home/seis/SecondBrain/search-index-snapshot.md";
+  upsertFile(path, buildSecondBrainSearchSnapshotMarkdown(timestamp, data, results, counts));
+  data.lastSearchSnapshot = {
+    time: new Date(timestamp).toLocaleTimeString(),
+    path,
+    query: data.searchQuery,
+    filter: data.searchFilter,
+    resultCount: results.length
+  };
+  data.searchSnapshots.unshift(data.lastSearchSnapshot);
+  data.searchSnapshots = data.searchSnapshots.slice(0, 8);
+  data.activity.unshift({
+    id: `search-snapshot-${Date.now()}`,
+    step: "Search",
+    status: "Snapshot saved",
+    detail: `Local search snapshot saved to ${path}.`
+  });
+  data.activity = data.activity.slice(0, 12);
+  getAppStatus("second-brain").lastAction = `Second Brain local search snapshot saved to ${path}.`;
+  log("second-brain", getAppStatus("second-brain").lastAction);
+  saveState();
+  renderOpenWindows("second-brain");
+  toast("Second Brain Search", "Local search snapshot saved.");
+}
+
 function renderSecondBrain() {
   const data = getSecondBrainData();
   const notes = SEIS_SECOND_BRAIN_SYSTEM.vaultNotes;
   const links = getSecondBrainLinks();
   const activeNote = notes.find((note) => note.id === data.activeNoteId) || notes[0];
   const backlinks = getSecondBrainBacklinks(activeNote.id);
+  const searchIndex = getSecondBrainSearchIndex();
+  const searchResults = getSecondBrainSearchResults(searchIndex, data);
+  const searchSourceCounts = getSecondBrainSearchSourceCounts(searchIndex);
   const nodePositions = [
     ["seis-os-map", "50%", "12%"],
     ["ai-core-router", "22%", "34%"],
@@ -5124,6 +5415,45 @@ function renderSecondBrain() {
       <article class="metric-card"><strong>Last Training Pack</strong><p>${data.lastTrainingPack?.time || "Not built yet"}</p></article>
       <article class="metric-card"><strong>Publish State</strong><p>Human review before GitHub</p></article>
     </div>
+    <section class="subagent-panel second-brain-search-panel" data-second-brain-search-panel>
+      <div class="second-brain-search-heading">
+        <div>
+          <h3>Local Search Intelligence</h3>
+          <p class="status-note">Scored browser-local index for notes, backlinks, tags, apps, routes, files, plugins, and agent duties. It uses repo-owned seed records and browser VFS state only; no private Obsidian vault or external search service is queried.</p>
+        </div>
+        <article class="metric-card" data-second-brain-search-summary>
+          <strong>Indexed Items</strong>
+          <p>${searchIndex.length}</p>
+        </article>
+      </div>
+      <div class="second-brain-search-controls">
+        <label>Search Second Brain
+          <input class="input" data-second-brain-search-query value="${escapeAttr(data.searchQuery)}" placeholder="SEIS Obsidian agents">
+        </label>
+        <button type="button" data-action="second-brain-run-search">Run Local Search</button>
+        <button type="button" data-action="second-brain-record-search">Record Search Snapshot</button>
+      </div>
+      <div class="tab-strip second-brain-filter-strip" role="tablist" aria-label="Second Brain local search filters" data-second-brain-search-filters>
+        ${SEIS_SECOND_BRAIN_SEARCH_FILTERS.map((filter) => `<button type="button" class="${filter === data.searchFilter ? "is-active" : ""}" data-action="second-brain-set-search-filter" data-value="${escapeAttr(filter)}" role="tab" aria-selected="${filter === data.searchFilter}" aria-pressed="${filter === data.searchFilter}">
+          ${escapeHtml(filter)}
+        </button>`).join("")}
+      </div>
+      <div class="metric-grid second-brain-source-counts" data-second-brain-search-source-counts>
+        <article class="metric-card"><strong>Active Filter</strong><p>${escapeHtml(data.searchFilter)}</p></article>
+        <article class="metric-card"><strong>Visible Results</strong><p>${searchResults.length}</p></article>
+        <article class="metric-card"><strong>Last Search Snapshot</strong><p>${data.lastSearchSnapshot?.time || "Not saved yet"}</p></article>
+        ${searchSourceCounts.map(([type, count]) => `<article class="metric-card"><strong>${escapeHtml(type)}</strong><p>${count}</p></article>`).join("")}
+      </div>
+      <div class="second-brain-search-results" data-second-brain-search-results>
+        ${searchResults.map((result) => `<button type="button" class="second-brain-search-result" ${renderSecondBrainSearchActionAttrs(result)} aria-label="${escapeAttr(`Open ${result.title} from ${result.type}`)}">
+          <span>${escapeHtml(result.type)} · score ${result.score}</span>
+          <strong>${escapeHtml(result.title)}</strong>
+          <small>${escapeHtml(result.source)}</small>
+          <p>${escapeHtml(result.detail)}</p>
+          <em>${escapeHtml((result.tags || []).join(" "))}</em>
+        </button>`).join("") || "<p class=\"muted\">No local Second Brain results match this filter.</p>"}
+      </div>
+    </section>
     <section class="second-brain-layout">
       <aside class="second-brain-vault" data-second-brain-vault aria-labelledby="second-brain-vault-heading">
         <h3 id="second-brain-vault-heading">Markdown Vault</h3>
