@@ -1,11 +1,11 @@
 # PR #54 Stage Plan
 
-Generated: 2026-07-10T19:04:19.712Z
+Generated: 2026-07-10T19:02:12.667Z
 Decision: NO-GO
 Status: review-gated-not-released
-Ready for human review: no
-Candidate paths: 0
-Excluded paths: 0
+Ready for human review: yes
+Candidate paths: 14
+Excluded paths: 1
 
 ## Scope
 
@@ -15,18 +15,32 @@ delete, reset, deploy, import Obsidian, execute SSH, or call model providers.
 
 ## Candidate Paths For One Review Slice
 
-- None
+- AM reports/seis-public-demo/evidence-manifest-latest.json
+- AM reports/seis-public-demo/go-no-go-latest.json
+- MM reports/seis-public-demo/go-no-go-latest.md
+- A reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json
+- M reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md
+- MM reports/seis-public-demo/pr54-review-packet-latest.md
+- MM reports/seis-public-demo/pr54-stage-plan-latest.md
+- A reports/seis-public-demo/read-only-model-router-decision-latest.json
+- M reports/seis-public-demo/read-only-model-router-decision-latest.md
+- AM reports/seis-public-demo/second-brain-accessibility-focus-latest.json
+- MM reports/seis-public-demo/second-brain-accessibility-focus-latest.md
+- A reports/seis-public-demo/second-brain-agent-registry-latest.json
+- M reports/seis-public-demo/second-brain-agent-registry-latest.md
+- MM reports/seis-public-demo/worktree-review-latest.md
 
 ## Excluded Separate Workstreams
 
-- None
+- M .gitignore (Unclassified Dirty Paths)
 
 ## Human-Run Git Add Commands
 
 Run only after reviewing the diff and confirming these paths belong in the same
 PR #54 readiness slice:
 
-- None
+- `git add -- 'reports/seis-public-demo/evidence-manifest-latest.json' 'reports/seis-public-demo/go-no-go-latest.json' 'reports/seis-public-demo/go-no-go-latest.md' 'reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json' 'reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md' 'reports/seis-public-demo/pr54-review-packet-latest.md' 'reports/seis-public-demo/pr54-stage-plan-latest.md' 'reports/seis-public-demo/read-only-model-router-decision-latest.json'`
+- `git add -- 'reports/seis-public-demo/read-only-model-router-decision-latest.md' 'reports/seis-public-demo/second-brain-accessibility-focus-latest.json' 'reports/seis-public-demo/second-brain-accessibility-focus-latest.md' 'reports/seis-public-demo/second-brain-agent-registry-latest.json' 'reports/seis-public-demo/second-brain-agent-registry-latest.md' 'reports/seis-public-demo/worktree-review-latest.md'`
 
 ## Required Validation Before Commit
 
