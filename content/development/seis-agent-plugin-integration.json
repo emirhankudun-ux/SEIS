@@ -217,12 +217,22 @@
     "versionRegistryTool": "seis_ai_core_version_status",
     "versionPromotionTool": "seis_ai_core_version_promotion_dry_run",
     "subagentOperatingModelTool": "seis_ai_core_subagent_model",
+    "sshTransportBinding": {
+      "alias": "SEIS-SSH",
+      "contract": "deploy/seis-ssh-public-access-contract.json",
+      "readinessEvidence": "content/development/seis-ssh-live-readiness-evidence.json",
+      "statusSurface": "seis_cloud_status",
+      "planSurface": "seis_cloud_plan",
+      "serverAndPortPolicy": "preserve-existing-server-and-port",
+      "runtimeBoundary": "status-and-plan-only"
+    },
     "mcpTool": "seis_plugin_integration",
     "mcpResource": "seis://agent/plugin-integration.json",
     "mcpResources": [
       "seis://agent/plugin-integration.json",
       "seis://ai/mcp-runtime-contract.json",
       "seis://ai/provider-registry.json",
+      "seis://ai/read-only-router-runtime.json",
       "seis://ai/model-scaling-hardware-profile.json",
       "seis://ai/model-parameter-ladder.json",
       "seis://ai/model-frontier-escalation-policy.json",
@@ -305,6 +315,7 @@
   "qualityCommands": [
     "npm run check:seis-agent-plugin-integration",
     "npm run check:seis-ai-core-provider-registry",
+    "npm run check:seis-ai-core-read-only-router",
     "npm run check:seis-model-frontier-escalation-policy",
     "npm run check:seis-150b-frontier-model-program",
     "npm run check:seis-512b-apex-model-program",

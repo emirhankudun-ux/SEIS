@@ -145,6 +145,12 @@ The status tools report manifest, skill, source-mirror, profile, quality-gate,
 and authentication-claim posture. The plan tools return lane-specific safe
 steps and approval boundaries for the request.
 
+The `seis-cloud` surfaces also carry a sanitized `sshBinding` record through
+`seis_cloud_status` and `seis_cloud_plan`. It identifies the single
+`SEIS-SSH` alias, the public access contract, the current server-and-port
+preservation policy, and the blocked live-readiness state without opening SSH,
+reading credentials, or changing local configuration.
+
 ## Embedded Personal Plugins
 
 The current personal SEIS plugin lanes are:
