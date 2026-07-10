@@ -47,7 +47,7 @@ Search, SEIS AI, Command Center, Launchpad, Favorites, and desktop shortcuts.
 | --- | --- | --- |
 | Markdown vault | Browser-local Local Demo | Seed notes render under `/home/seis/SecondBrain`; `Save Vault Snapshot` writes note files and `seis-second-brain-vault-snapshot.md` into the browser VFS. |
 | Knowledge graph | Browser-local Local Demo | Graph nodes and backlinks are generated from repo-owned seed records; `Link Graph` writes `graph-links.json`. |
-| Second Brain local search index | Browser-local Local Demo | The runtime Second Brain screen now scores and filters notes, backlinks, tags, apps, routes, files, plugins, and agent duties from repo-owned seed records and browser VFS state only. It uses roving-focus `listbox`/`option` semantics with ArrowUp/ArrowDown/Home/End keyboard navigation, can record `/home/seis/SecondBrain/search-index-snapshot.md`, and does not read a private Obsidian vault or call external search. |
+| Second Brain local search index | Browser-local Local Demo | The runtime Second Brain screen now scores and filters notes, backlinks, tags, apps, routes, files, plugins, and agent duties from repo-owned seed records and browser VFS state only. It uses compound tag matching, backlink/graph proximity boosts, source-type weighting, visible score explanations, and roving-focus `listbox`/`option` semantics with ArrowUp/ArrowDown/Home/End keyboard navigation. It can record `/home/seis/SecondBrain/search-index-snapshot.md` and does not read a private Obsidian vault or call external search. |
 | Agent training pack | Local Demo read-only | `Build Training Pack` writes `/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md` with the repo-owned Obsidian context pack, all 9 managed lanes, accessibility, router, PR #54 checklist, and language model training curriculum summaries. |
 | Repo-owned Obsidian context pack | Read-only local/MCP context | `seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md` is surfaced by `seis://brain/second-brain-system.json` as public-safe contract metadata; it is not a private vault import or model-weight training input. |
 | Language model training curriculum | Planned-training contract | `content/development/seis-language-model-training-curriculum.json` and `reports/seis-model-scaling/seis-language-model-training-curriculum.md` map candidate model families, local seed-model lanes, retrieval lanes, and approval gates without installing models, downloading checkpoints, training, benchmarking, calling providers, or claiming SEIS owns a foundation model. |
@@ -141,8 +141,8 @@ approval.
    vault notes, graph nodes, and inspector focus order.
 2. Keep the Obsidian bridge safe import contract review-only until a user
    explicitly selects a vault path and approves a dry-run manifest.
-3. Expand the Second Brain local search index with richer tag combinations,
-   screen-reader transcript evidence, and screenshot-backed accessibility notes.
+3. Add screen-reader transcript evidence and screenshot-backed accessibility
+   notes for the Second Brain search/import panels.
 4. Use the PR #54 public demo checklist before merge, Pages publication, live
    providers, SSH, deployment, or public demo release.
 5. Keep `npm run check:seis-public-demo-go-no-go -- --run-fast-checks` wired

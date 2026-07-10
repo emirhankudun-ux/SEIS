@@ -5306,28 +5306,80 @@ function normalizeSecondBrainSearch(value) {
   return String(value || "").toLowerCase();
 }
 
-function scoreSecondBrainSearchResult(item, query) {
+function getSecondBrainSearchTokens(value) {
+  return [...new Set(String(value || "").toLowerCase().split(/[^a-z0-9#@-]+/).filter(Boolean))];
+}
+
+function getSecondBrainSearchScoreBreakdown(item, query) {
   const trimmed = String(query || "").trim().toLowerCase();
-  if (!trimmed) return item.priority || 1;
-  const tokens = trimmed.split(/\s+/).filter(Boolean);
+  const base = item.priority || 0;
+  if (!trimmed) return { score: base || 1, reasons: ["base-priority"] };
+  const tokens = getSecondBrainSearchTokens(trimmed);
   const title = normalizeSecondBrainSearch(item.title);
   const detail = normalizeSecondBrainSearch(item.detail);
   const source = normalizeSecondBrainSearch(item.source);
   const tags = normalizeSecondBrainSearch((item.tags || []).join(" "));
+  const related = normalizeSecondBrainSearch((item.relatedText || ""));
   const type = normalizeSecondBrainSearch(item.type);
-  let score = item.priority || 0;
+  let score = base;
+  const fieldReasons = [];
+  const signalReasons = [];
   for (const token of tokens) {
-    if (title.includes(token)) score += 12;
-    if (tags.includes(token)) score += 10;
-    if (source.includes(token)) score += 5;
-    if (detail.includes(token)) score += 4;
-    if (type.includes(token)) score += 3;
+    if (title.includes(token)) {
+      score += 12;
+      fieldReasons.push(`title:${token}`);
+    }
+    if (tags.includes(token)) {
+      score += 10;
+      fieldReasons.push(`tag:${token}`);
+    }
+    if (source.includes(token)) {
+      score += 5;
+      fieldReasons.push(`source:${token}`);
+    }
+    if (detail.includes(token)) {
+      score += 4;
+      fieldReasons.push(`detail:${token}`);
+    }
+    if (type.includes(token)) {
+      score += 3;
+      fieldReasons.push(`type:${token}`);
+    }
+    if (related.includes(token)) {
+      score += 4;
+      fieldReasons.push(`related:${token}`);
+    }
   }
-  return score;
+  const tagMatches = tokens.filter((token) => tags.includes(token)).length;
+  if (tagMatches >= 2) {
+    score += 18;
+    signalReasons.push(`compound-tag-match:${tagMatches}`);
+  }
+  const graphSignal = Number(item.graphDegree || 0) + Number(item.backlinkCount || 0) + Number(item.outgoingLinkCount || 0);
+  const graphQuery = tokens.some((token) => ["backlink", "backlinks", "graph", "link", "links", "vault", "obsidian"].includes(token));
+  if (item.type === "Backlinks") {
+    score += 10;
+    signalReasons.push("direct-backlink-edge");
+  }
+  if (graphSignal > 0 && (graphQuery || tokens.some((token) => related.includes(token)))) {
+    const boost = Math.min(16, graphSignal * 2);
+    score += boost;
+    signalReasons.push(`graph-proximity:${graphSignal}`);
+  }
+  const sourceWeight = { Notes: 4, Backlinks: 6, Tags: 5, Plugins: 4, Agents: 4, Files: 2, Routes: 2, Apps: 2 }[item.type] || 1;
+  score += sourceWeight;
+  signalReasons.push(`source-weight:${item.type}`);
+  const reasons = [...signalReasons, ...fieldReasons];
+  return { score, reasons: reasons.length ? reasons.slice(0, 8) : ["base-priority"] };
+}
+
+function scoreSecondBrainSearchResult(item, query) {
+  return getSecondBrainSearchScoreBreakdown(item, query).score;
 }
 
 function getSecondBrainSearchIndex() {
   const noteById = new Map(SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.map((note) => [note.id, note]));
+  const backlinkMap = new Map(SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.map((note) => [note.id, getSecondBrainBacklinks(note.id)]));
   const notes = SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.map((note) => ({
     id: `note-${note.id}`,
     type: "Notes",
@@ -5335,6 +5387,13 @@ function getSecondBrainSearchIndex() {
     source: note.path,
     detail: note.summary,
     tags: note.tags,
+    relatedText: [
+      ...note.links.map((targetId) => noteById.get(targetId)?.title || targetId),
+      ...(backlinkMap.get(note.id) || []).map((sourceNote) => sourceNote.title)
+    ].join(" "),
+    backlinkCount: (backlinkMap.get(note.id) || []).length,
+    outgoingLinkCount: note.links.length,
+    graphDegree: note.links.length + (backlinkMap.get(note.id) || []).length,
     noteId: note.id,
     priority: 20
   }));
@@ -5348,6 +5407,8 @@ function getSecondBrainSearchIndex() {
       source: `${source?.path || sourceId} -> ${target?.path || targetId}`,
       detail: `${source?.title || sourceId} links to ${target?.title || targetId}; this edge powers the repo-owned knowledge graph.`,
       tags: ["#backlink", ...(source?.tags || []), ...(target?.tags || [])],
+      relatedText: `${source?.summary || ""} ${target?.summary || ""}`,
+      graphDegree: 1,
       noteId: targetId,
       priority: 17
     };
@@ -5361,6 +5422,8 @@ function getSecondBrainSearchIndex() {
       source: "repo-owned Second Brain tag map",
       detail: `${taggedNotes.length} note(s): ${taggedNotes.map((note) => note.title).join(", ")}`,
       tags: [tag],
+      relatedText: taggedNotes.flatMap((note) => [note.summary, ...note.tags]).join(" "),
+      graphDegree: taggedNotes.reduce((sum, note) => sum + note.links.length + (backlinkMap.get(note.id) || []).length, 0),
       noteId: taggedNotes[0]?.id,
       priority: 14
     };
@@ -5372,6 +5435,7 @@ function getSecondBrainSearchIndex() {
     source: `desktop app: ${app.id}`,
     detail: `${app.category} / ${app.type}. ${app.description}`,
     tags: ["#app", `#${app.category.toLowerCase().replace(/\s+/g, "-")}`],
+    relatedText: `${app.id} ${app.type}`,
     action: "open-app",
     appId: app.id,
     priority: app.id === "second-brain" ? 18 : 8
@@ -5383,6 +5447,7 @@ function getSecondBrainSearchIndex() {
     source: route.path,
     detail: `${route.kind}. ${route.keywords || ""}`,
     tags: ["#route", `#${String(route.kind || "route").toLowerCase().replace(/\s+/g, "-")}`],
+    relatedText: `${route.id} ${route.appId || ""}`,
     action: "open-demo-route",
     routeId: route.id,
     priority: route.id.includes("second-brain") ? 18 : 7
@@ -5396,6 +5461,7 @@ function getSecondBrainSearchIndex() {
       source: item.path,
       detail: String(item.content || "").replace(/\s+/g, " ").slice(0, 180) || item.path,
       tags: ["#file", item.path.endsWith(".md") ? "#markdown" : "#vfs"],
+      relatedText: item.path,
       action: "open-file",
       path: item.path,
       priority: item.path.startsWith(SEIS_SECOND_BRAIN_SYSTEM.vaultRoot) ? 16 : 6
@@ -5407,6 +5473,7 @@ function getSecondBrainSearchIndex() {
       source: `${plugin.lane} plugin lane`,
       detail: `${plugin.status}. ${plugin.capability}`,
       tags: ["#plugin", `#${plugin.id}`],
+      relatedText: `${plugin.id} ${plugin.lane} ${plugin.status}`,
       priority: 15
     })),
     ...SEIS_PERSONAL_PLUGIN_BRIDGE.map((plugin) => ({
@@ -5415,6 +5482,7 @@ function getSecondBrainSearchIndex() {
       source: plugin.embeddedSkill,
       detail: `${plugin.statusTool} / ${plugin.planTool}. ${plugin.defaultGate}`,
       tags: ["#plugin", `#${plugin.embeddedAs}`],
+      relatedText: `${plugin.id} ${plugin.lane} ${plugin.sourceMirror}`,
       priority: 16
     })),
     ...SEIS_MCP_RUNTIME_CONTRACT.surfaces.map((surface) => ({
@@ -5423,6 +5491,7 @@ function getSecondBrainSearchIndex() {
       source: `${SEIS_MCP_RUNTIME_CONTRACT.resourceUri} / ${surface.method}`,
       detail: `${surface.evidence}. ${surface.duty}`,
       tags: ["#mcp", "#plugin"],
+      relatedText: `${surface.id} ${surface.method}`,
       priority: 13
     }))
   ].map((plugin) => ({
@@ -5438,6 +5507,7 @@ function getSecondBrainSearchIndex() {
       source: permission,
       detail: duty,
       tags: ["#agent", "#duty"],
+      relatedText: permission,
       priority: 15
     })),
     ...SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.map(([agent, status, duty]) => ({
@@ -5446,6 +5516,7 @@ function getSecondBrainSearchIndex() {
       source: status,
       detail: duty,
       tags: ["#autonomous-agent", "#status-plan-only"],
+      relatedText: status,
       priority: 14
     })),
     ...SEIS_SECOND_BRAIN_SYSTEM.contextProfiles.map((profile) => ({
@@ -5454,6 +5525,7 @@ function getSecondBrainSearchIndex() {
       source: `${profile.plugin} / ${profile.statusTool} / ${profile.planTool}`,
       detail: `${profile.focus} Agents: ${profile.relatedAgents.join(", ")}. Output: ${profile.allowedOutput}`,
       tags: ["#context-profile", `#${profile.id}`],
+      relatedText: `${profile.plugin} ${profile.relatedAgents.join(" ")} ${profile.allowedOutput}`,
       priority: 17
     }))
   ].map((agent) => ({
@@ -5476,7 +5548,10 @@ function getSecondBrainSearchResults(index, data) {
   const activeFilter = SEIS_SECOND_BRAIN_SEARCH_FILTERS.includes(data.searchFilter) ? data.searchFilter : "All";
   return index
     .filter((item) => activeFilter === "All" || item.type === activeFilter)
-    .map((item) => ({ ...item, score: scoreSecondBrainSearchResult(item, query) }))
+    .map((item) => {
+      const breakdown = getSecondBrainSearchScoreBreakdown(item, query);
+      return { ...item, score: breakdown.score, scoreReasons: breakdown.reasons };
+    })
     .filter((item) => !String(query || "").trim() || item.score > (item.priority || 0))
     .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
     .slice(0, 12);
@@ -5572,7 +5647,7 @@ Mode: Browser-local Local Demo
 ${counts.map(([type, count]) => `- ${type}: ${count}`).join("\n")}
 
 ## Top Results
-${results.map((result) => `- ${result.type} / ${result.score}: ${result.title} - ${result.source}`).join("\n") || "- No local results."}
+${results.map((result) => `- ${result.type} / ${result.score}: ${result.title} - ${result.source} (${(result.scoreReasons || []).join(" / ")})`).join("\n") || "- No local results."}
 
 ## Boundary
 - No private Obsidian vault read.
@@ -5763,6 +5838,7 @@ function renderSecondBrain() {
           <strong>${escapeHtml(result.title)}</strong>
           <small>${escapeHtml(result.source)}</small>
           <p>${escapeHtml(result.detail)}</p>
+          <small data-second-brain-search-explanation>${escapeHtml((result.scoreReasons || []).join(" / "))}</small>
           <em>${escapeHtml((result.tags || []).join(" "))}</em>
         </button>`).join("") || "<p class=\"muted\">No local Second Brain results match this filter.</p>"}
         </div>

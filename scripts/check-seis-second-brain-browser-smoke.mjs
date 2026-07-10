@@ -288,6 +288,7 @@ function validateStaticContract() {
     "data-second-brain-search-query",
     "data-second-brain-search-result-list",
     "data-second-brain-search-result",
+    "data-second-brain-search-explanation",
     "data-result-id",
     "data-second-brain-obsidian-safe-import",
     "data-second-brain-obsidian-source-modes",
@@ -308,6 +309,11 @@ function validateStaticContract() {
     "second-brain-set-search-filter",
     "second-brain-record-search",
     "SEIS_SECOND_BRAIN_SEARCH_FILTERS",
+    "getSecondBrainSearchScoreBreakdown",
+    "getSecondBrainSearchTokens",
+    "compound-tag-match",
+    "graph-proximity",
+    "source-weight",
     "moveSecondBrainSearchFocus",
     "normalizeSecondBrainActiveSearchResult",
     "aria-activedescendant",
@@ -386,6 +392,7 @@ async function smokeSecondBrain(client, baseUrl) {
       searchFilters: root?.querySelectorAll('[data-second-brain-search-filters] [data-action="second-brain-set-search-filter"]').length || 0,
       obsidianSourceModes: root?.querySelectorAll('[data-second-brain-obsidian-source-modes] [data-action="second-brain-set-obsidian-source-mode"]').length || 0,
       searchResults: root?.querySelectorAll('[data-second-brain-search-results] .second-brain-search-result').length || 0,
+      searchExplanation: root?.querySelector('[data-second-brain-search-explanation]')?.innerText || '',
       searchRoleOptions: root?.querySelectorAll('[data-second-brain-search-result][role="option"]').length || 0,
       searchSelectedOptions: root?.querySelectorAll('[data-second-brain-search-result][aria-selected="true"]').length || 0,
       searchTabIndexZero: root?.querySelectorAll('[data-second-brain-search-result][tabindex="0"]').length || 0,
@@ -432,6 +439,7 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(initial.searchFilters === 9, `expected nine Second Brain search filters, got ${initial.searchFilters}`);
   ensure(initial.obsidianSourceModes === 3, `expected three Obsidian source modes, got ${initial.obsidianSourceModes}`);
   ensure(initial.searchResults >= 8, `expected at least eight Second Brain search results, got ${initial.searchResults}`);
+  ensure(initial.searchExplanation.includes("source-weight"), `Second Brain search result explanation missing source-weight: ${initial.searchExplanation}`);
   ensure(initial.searchRoleOptions === initial.searchResults, `Second Brain search results must use option roles: ${JSON.stringify(initial)}`);
   ensure(initial.searchSelectedOptions === 1, `Second Brain search must expose exactly one selected result, got ${initial.searchSelectedOptions}`);
   ensure(initial.searchTabIndexZero === 1, `Second Brain search must expose exactly one tabbable result, got ${initial.searchTabIndexZero}`);
@@ -488,6 +496,27 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(obsidianDryRun.lastAction.includes("obsidian-safe-import-ui-dry-run.md"), "Obsidian dry-run action did not update visible last action.");
   ensure(obsidianDryRun.visibleBoundary, "Obsidian safe-import selectedByUser boundary not visible.");
   ensure(obsidianDryRun.artifactVisible, "Obsidian safe-import artifact path not visible.");
+
+  await evaluate(client, `(() => {
+    const input = document.querySelector('.app-window[data-app-id="second-brain"]:not([hidden]) [data-second-brain-search-query]');
+    if (input) {
+      input.value = 'github review';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+  })()`);
+  await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-run-search"]');
+  const compoundSearch = await evaluate(client, `(() => {
+    const root = document.querySelector('.app-window[data-app-id="second-brain"]:not([hidden]) [data-second-brain-app]');
+    const first = root?.querySelector('[data-second-brain-search-result]');
+    const explanation = first?.querySelector('[data-second-brain-search-explanation]')?.innerText || '';
+    return {
+      title: first?.querySelector('strong')?.innerText || '',
+      explanation,
+      resultCount: root?.querySelectorAll('[data-second-brain-search-result]').length || 0
+    };
+  })()`);
+  ensure(compoundSearch.title.includes("GitHub Readiness"), `Compound Second Brain search should rank GitHub Readiness first: ${JSON.stringify(compoundSearch)}`);
+  ensure(compoundSearch.explanation.includes("compound-tag-match") && compoundSearch.explanation.includes("graph-proximity"), `Compound Second Brain search must explain tag and graph scoring: ${JSON.stringify(compoundSearch)}`);
 
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-set-search-filter"][data-value="Plugins"]');
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-run-search"]');
@@ -598,6 +627,7 @@ async function smokeSecondBrain(client, baseUrl) {
   return {
     initial,
     obsidianDryRun,
+    compoundSearch,
     searchSnapshot,
     keyboardSearch,
     artifacts,
