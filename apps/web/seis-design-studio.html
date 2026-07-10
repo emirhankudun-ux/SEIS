@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SEIS Design Studio</title>
+  <meta name="description" content="Browser-local SEIS Design Studio demo with canvas, design tokens, components, prototype preview, safe mock AI assistant, and export interactions." />
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #050607;
+      --panel: rgba(15, 20, 25, .8);
+      --panel-strong: rgba(23, 30, 36, .94);
+      --line: rgba(225, 238, 245, .13);
+      --line-strong: rgba(225, 238, 245, .26);
+      --text: #f4f0e8;
+      --muted: #aeb8bd;
+      --quiet: #6e7a81;
+      --cyan: #5ee7ff;
+      --violet: #b79bff;
+      --amber: #f8b95f;
+      --green: #7dffb2;
+      --red: #ff7182;
+      --radius-lg: 32px;
+      --radius-md: 21px;
+      --radius-sm: 14px;
+      --shadow: 0 26px 88px rgba(0,0,0,.44);
+      --ease: cubic-bezier(.2,.8,.2,1);
+      font-family: "Aptos", "SF Pro Display", "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { min-height: 100%; background: var(--bg); }
+    body { min-height: 100%; margin: 0; color: var(--text); background: radial-gradient(circle at 14% 6%, rgba(94,231,255,.18), transparent 34rem), radial-gradient(circle at 84% 4%, rgba(183,155,255,.16), transparent 30rem), radial-gradient(circle at 50% 100%, rgba(248,185,95,.08), transparent 32rem), linear-gradient(135deg, #050607 0%, #0b1114 52%, #11100b 100%); overflow-x: hidden; }
+    button, input, select { font: inherit; }
+    button { color: inherit; border: 1px solid var(--line); background: rgba(255,255,255,.055); cursor: pointer; transition: transform .18s var(--ease), border-color .18s var(--ease), background .18s var(--ease); }
+    button:hover { transform: translateY(-1px); border-color: rgba(94,231,255,.38); background: rgba(94,231,255,.1); }
+    button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+    .page { width: min(1500px, calc(100% - 32px)); margin: 0 auto; padding: 24px 0 42px; }
+    .grain { position: fixed; inset: 0; pointer-events: none; opacity: .25; background-image: linear-gradient(rgba(255,255,255,.026) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px); background-size: 52px 52px; mask-image: linear-gradient(to bottom, black, transparent 84%); z-index: -1; }
+    .topbar, .hero, .panel, .canvas-wrap, .component-card, .assistant-card, .toast { border: 1px solid var(--line); background: var(--panel); box-shadow: var(--shadow); backdrop-filter: blur(28px); }
+    .topbar { min-height: 74px; padding: 14px 18px; border-radius: 26px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
+    .mark { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 16px; color: #041014; font-weight: 900; letter-spacing: -.08em; background: linear-gradient(135deg, var(--cyan), #f5fbf8 54%, var(--amber)); box-shadow: 0 0 34px rgba(94,231,255,.24); }
+    h1, h2, h3, h4, p { margin-top: 0; }
+    .brand h1 { margin: 0; font-size: clamp(1.1rem, 2vw, 1.45rem); letter-spacing: -.045em; }
+    .brand p { margin: 3px 0 0; color: var(--muted); font-size: .84rem; }
+    .top-actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 10px; }
+    .pill, .state-pill { display: inline-flex; align-items: center; gap: 8px; min-height: 32px; padding: 7px 11px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); background: rgba(255,255,255,.045); font-size: .76rem; line-height: 1; white-space: nowrap; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; box-shadow: 0 0 18px currentColor; }
+    .local-demo { color: var(--green); } .mock { color: var(--cyan); } .planned { color: var(--violet); } .disabled { color: var(--amber); }
+    .hero { position: relative; margin-top: 18px; padding: clamp(24px, 4.2vw, 54px); border-radius: var(--radius-lg); overflow: hidden; display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 22px; align-items: end; }
+    .hero::after { content: ""; position: absolute; right: -12%; top: -20%; width: 520px; height: 520px; border-radius: 50%; background: radial-gradient(circle, rgba(94,231,255,.19), rgba(183,155,255,.1) 44%, transparent 70%); z-index: -1; }
+    .hero h2 { margin: 0; font-size: clamp(3.2rem, 8vw, 8rem); line-height: .84; letter-spacing: -.095em; }
+    .hero p { max-width: 780px; margin: 24px 0 0; color: #cad3d7; font-size: clamp(1rem, 1.7vw, 1.18rem); line-height: 1.7; }
+    .hero-card { border: 1px solid var(--line); border-radius: 24px; padding: 16px; background: rgba(255,255,255,.055); }
+    .hero-card strong { display: block; font-size: 2.4rem; letter-spacing: -.075em; }
+    .hero-card span { color: var(--muted); font-size: .86rem; line-height: 1.5; }
+    .studio { display: grid; grid-template-columns: 280px minmax(0, 1fr) 340px; gap: 16px; align-items: start; margin-top: 18px; }
+    .panel { border-radius: var(--radius-md); padding: 16px; }
+    .panel h3 { margin: 0; font-size: 1rem; letter-spacing: -.02em; }
+    .panel p { margin: 5px 0 0; color: var(--muted); font-size: .86rem; line-height: 1.55; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 14px; }
+    .tool-btn, .mini-btn, .layer-btn, .token-btn { min-height: 36px; padding: 0 11px; border-radius: 12px; color: var(--muted); font-size: .8rem; }
+    .tool-btn.is-active, .mini-btn.is-active, .layer-btn.is-active, .token-btn.is-active { color: var(--text); border-color: rgba(94,231,255,.42); background: rgba(94,231,255,.105); }
+    .layer-list, .token-list, .assistant-list { display: grid; gap: 10px; margin-top: 14px; }
+    .layer-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; text-align: left; }
+    .token-btn { display: grid; grid-template-columns: 34px 1fr auto; align-items: center; gap: 10px; width: 100%; text-align: left; min-height: 50px; }
+    .swatch { width: 30px; height: 30px; border-radius: 10px; border: 1px solid rgba(255,255,255,.18); background: var(--swatch, var(--cyan)); }
+    .token-btn small { color: var(--quiet); }
+    .canvas-wrap { border-radius: var(--radius-lg); padding: 16px; min-height: 720px; }
+    .canvas-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+    .canvas-top h3 { margin: 0; font-size: 1rem; letter-spacing: -.02em; }
+    .canvas { position: relative; min-height: 620px; border: 1px solid var(--line-strong); border-radius: 28px; background: radial-gradient(circle at 20% 10%, rgba(94,231,255,.14), transparent 24rem), linear-gradient(145deg, rgba(255,255,255,.07), rgba(255,255,255,.025)); overflow: hidden; }
+    .frame { position: absolute; inset: 46px; border-radius: 30px; border: 1px solid rgba(255,255,255,.16); background: linear-gradient(145deg, rgba(9,14,17,.92), rgba(17,21,26,.78)); box-shadow: 0 30px 90px rgba(0,0,0,.34); padding: 34px; display: grid; grid-template-rows: auto 1fr auto; gap: 24px; }
+    .frame-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .frame-title strong { display: block; font-size: clamp(2.2rem, 5vw, 5.3rem); line-height: .9; letter-spacing: -.08em; }
+    .frame-title span { display: block; margin-top: 12px; color: var(--muted); max-width: 540px; line-height: 1.55; }
+    .orb { width: 138px; height: 138px; border-radius: 42px; background: radial-gradient(circle at 28% 22%, #fff, var(--cyan) 22%, var(--violet) 55%, rgba(248,185,95,.9)); box-shadow: 0 0 70px rgba(94,231,255,.32); }
+    .frame-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .component-card { min-height: 150px; border-radius: 22px; padding: 16px; background: rgba(255,255,255,.055); box-shadow: none; }
+    .component-card strong { display: block; margin-bottom: 8px; }
+    .component-card span { display: block; color: var(--muted); font-size: .84rem; line-height: 1.48; }
+    .frame-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .primary { min-height: 44px; padding: 0 16px; border-radius: 14px; color: #041014; font-weight: 850; border-color: transparent; background: linear-gradient(135deg, var(--cyan), #f8faf4 55%, var(--amber)); }
+    .secondary { min-height: 44px; padding: 0 16px; border-radius: 14px; font-weight: 800; }
+    .right { display: grid; gap: 16px; }
+    .component-grid { display: grid; gap: 10px; margin-top: 14px; }
+    .component-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; min-height: 54px; padding: 10px; border: 1px solid var(--line); border-radius: 16px; background: rgba(255,255,255,.042); }
+    .component-row strong { font-size: .88rem; }
+    .component-row span { color: var(--muted); font-size: .76rem; }
+    .assistant-card { border-radius: 18px; padding: 13px; box-shadow: none; background: rgba(255,255,255,.045); }
+    .assistant-card strong { display: block; font-size: .88rem; }
+    .assistant-card span { display: block; margin-top: 5px; color: var(--muted); font-size: .78rem; line-height: 1.45; }
+    .field { display: grid; gap: 8px; margin-top: 14px; }
+    .field label { color: var(--muted); font-size: .76rem; letter-spacing: .11em; text-transform: uppercase; }
+    .field input, .field select { min-height: 42px; color: var(--text); border: 1px solid var(--line); border-radius: 14px; background: rgba(0,0,0,.22); padding: 0 12px; }
+    .toast { position: fixed; right: 22px; bottom: 22px; width: min(430px, calc(100vw - 44px)); padding: 16px; border-radius: 18px; transform: translateY(18px); opacity: 0; pointer-events: none; transition: opacity .22s var(--ease), transform .22s var(--ease); z-index: 10; }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast strong { display: block; margin-bottom: 4px; }
+    .toast span { color: var(--muted); font-size: .88rem; }
+    @media (max-width: 1180px) { .hero, .studio { grid-template-columns: 1fr; } .canvas-wrap { min-height: 660px; } .canvas { min-height: 560px; } }
+    @media (max-width: 760px) { .page { width: min(100% - 20px, 1500px); padding-top: 10px; } .topbar { align-items: flex-start; flex-direction: column; border-radius: 22px; } .top-actions { justify-content: flex-start; } .hero { padding: 24px; } .hero h2 { font-size: clamp(3rem, 18vw, 4.7rem); } .frame { inset: 18px; padding: 20px; } .frame-head { align-items: flex-start; flex-direction: column; } .orb { width: 92px; height: 92px; border-radius: 28px; } .frame-grid { grid-template-columns: 1fr; } .canvas { min-height: 740px; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .001ms !important; animation-duration: .001ms !important; } }
+  </style>
+</head>
+<body data-seis-design-studio-demo="browser-local">
+  <div class="grain" aria-hidden="true"></div>
+  <main class="page">
+    <header class="topbar">
+      <div class="brand"><div class="mark" aria-hidden="true">DS</div><div><h1>SEIS Design Studio</h1><p>Canvas, tokens, components, prototype preview, export and safe AI design support.</p></div></div>
+      <div class="top-actions" aria-label="Design Studio status"><span class="state-pill local-demo" data-state="local-demo"><i class="dot"></i>Canvas: local demo</span><span class="state-pill mock" data-state="mock"><i class="dot"></i>AI assistant: mock</span><span class="state-pill planned" data-state="planned"><i class="dot"></i>Cloud export: planned</span><span class="state-pill disabled" data-state="disabled"><i class="dot"></i>External assets: disabled</span></div>
+    </header>
+
+    <section class="hero" aria-labelledby="design-title">
+      <div><h2 id="design-title">Design the operating layer.</h2><p>A runnable SEIS design surface for premium tokens, component systems, prototype states and handoff discipline. Everything is browser-local; export, AI and cloud collaboration are clearly marked as mock or planned.</p></div>
+      <aside class="hero-card"><strong id="quality-score">94</strong><span>Design quality score is local demo state, updated by token and prototype interactions.</span></aside>
+    </section>
+
+    <section class="studio" aria-label="SEIS Design Studio workspace">
+      <aside class="panel" aria-label="Layers and tools">
+        <h3>Layers</h3><p>Select canvas regions and switch tools. Layer changes update local state only.</p>
+        <div class="toolbar" aria-label="Design tools"><button class="tool-btn is-active" type="button" data-tool="select">Select</button><button class="tool-btn" type="button" data-tool="frame">Frame</button><button class="tool-btn" type="button" data-tool="type">Type</button><button class="tool-btn" type="button" data-tool="token">Token</button></div>
+        <div class="layer-list" id="layer-list"></div>
+      </aside>
+
+      <section class="canvas-wrap" aria-label="Design canvas">
+        <div class="canvas-top"><h3>Prototype canvas</h3><div class="toolbar"><button class="mini-btn is-active" type="button" data-mode="design">Design</button><button class="mini-btn" type="button" data-mode="prototype">Prototype preview</button><button class="mini-btn" type="button" data-action="save">Save local draft</button><button class="mini-btn" type="button" data-action="export">Export mock handoff</button></div></div>
+        <div class="canvas">
+          <article class="frame" id="canvas-frame">
+            <div class="frame-head"><div class="frame-title"><strong id="frame-heading">Creative OS Control</strong><span id="frame-copy">A calm command layer for code, design, cloud, search, agents and local AI workflows.</span></div><div class="orb" aria-hidden="true"></div></div>
+            <div class="frame-grid"><div class="component-card"><strong>Command rail</strong><span>Keyboard-first navigation with clear module states.</span></div><div class="component-card"><strong>Agent review</strong><span>Mock assistant suggestions remain labeled and reviewable.</span></div><div class="component-card"><strong>Token sync</strong><span>Local tokens update the canvas without external assets.</span></div></div>
+            <div class="frame-actions"><button class="primary" type="button" data-action="preview">Preview prototype</button><button class="secondary" type="button" data-action="handoff">Prepare handoff note</button></div>
+          </article>
+        </div>
+      </section>
+
+      <aside class="right">
+        <section class="panel" aria-label="Design tokens"><h3>Design tokens</h3><p>Token changes persist in this browser under <code>seis.design.studio.v1</code>.</p><div class="token-list" id="token-list"></div><div class="field"><label for="type-scale">Type scale</label><select id="type-scale"><option>Editorial Large</option><option>Compact Tooling</option><option>Presentation Mode</option></select></div></section>
+        <section class="panel" aria-label="Components"><h3>Component cards</h3><p>Reusable SEIS UI parts for design and engineering surfaces.</p><div class="component-grid" id="component-grid"></div></section>
+        <section class="panel" aria-label="AI design assistant"><h3>AI design assistant</h3><p>Safe mock mode. No provider call, no asset upload, no prompt secrets.</p><div class="assistant-list" id="assistant-list"></div><button class="primary" type="button" data-action="ask-ai">Generate mock critique</button></section>
+      </aside>
+    </section>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite"><strong></strong><span></span></div>
+
+  <script>
+    const STORE_KEY = 'seis.design.studio.v1';
+    const layers = [['Hero frame', 'Selected'], ['Command rail', 'Ready'], ['Agent review card', 'Mock'], ['Token sync card', 'Local'], ['Prototype actions', 'Interactive']];
+    const tokens = [{ name: 'Cyan accent', value: '#5ee7ff' }, { name: 'Violet glow', value: '#b79bff' }, { name: 'Amber focus', value: '#f8b95f' }, { name: 'Graphite surface', value: '#171e24' }];
+    const components = [['StatusPill', 'States: local demo, mock, planned, disabled'], ['WindowFrame', 'Desktop OS and app shell container'], ['TokenCard', 'Design system token display'], ['PrototypeAction', 'Safe preview and handoff trigger']];
+    const assistant = [['Composition', 'Increase contrast between the orb and frame edge.'], ['Accessibility', 'Focus states are visible and reduced motion is supported.'], ['Handoff', 'Mark mock AI and planned cloud export in all specs.']];
+    const state = loadState();
+    function loadState() { try { return JSON.parse(localStorage.getItem(STORE_KEY)) || { layer: 'Hero frame', token: 'Cyan accent', mode: 'design', score: 94 }; } catch { return { layer: 'Hero frame', token: 'Cyan accent', mode: 'design', score: 94 }; } }
+    function saveState() { localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+    function toast(title, message) { const box = document.querySelector('#toast'); box.querySelector('strong').textContent = title; box.querySelector('span').textContent = message; box.classList.add('show'); window.clearTimeout(toast.timer); toast.timer = window.setTimeout(() => box.classList.remove('show'), 3200); }
+    function renderLayers() { document.querySelector('#layer-list').innerHTML = layers.map(([name, status]) => `<button class="layer-btn ${state.layer === name ? 'is-active' : ''}" type="button" data-layer="${name}"><span>${name}</span><small>${status}</small></button>`).join(''); }
+    function renderTokens() { document.querySelector('#token-list').innerHTML = tokens.map((token) => `<button class="token-btn ${state.token === token.name ? 'is-active' : ''}" type="button" data-token="${token.name}" data-value="${token.value}"><i class="swatch" style="--swatch:${token.value}"></i><span>${token.name}</span><small>${token.value}</small></button>`).join(''); }
+    function renderComponents() { document.querySelector('#component-grid').innerHTML = components.map(([name, body]) => `<div class="component-row"><div><strong>${name}</strong><br><span>${body}</span></div><span class="pill local-demo"><i class="dot"></i>ready</span></div>`).join(''); }
+    function renderAssistant() { document.querySelector('#assistant-list').innerHTML = assistant.map(([name, body]) => `<article class="assistant-card"><strong>${name}</strong><span>${body}</span></article>`).join(''); }
+    function applyToken(name, value) { state.token = name; state.score = Math.min(99, state.score + 1); document.documentElement.style.setProperty('--cyan', value); document.querySelector('#quality-score').textContent = String(state.score); saveState(); renderTokens(); toast('Token applied', `${name} updated the browser-local canvas.`); }
+    function setMode(mode) { state.mode = mode; saveState(); document.querySelectorAll('[data-mode]').forEach((button) => button.classList.toggle('is-active', button.dataset.mode === mode)); document.querySelector('#frame-heading').textContent = mode === 'prototype' ? 'Prototype Preview' : 'Creative OS Control'; document.querySelector('#frame-copy').textContent = mode === 'prototype' ? 'Preview mode simulates navigation and handoff without cloud sync or external assets.' : 'A calm command layer for code, design, cloud, search, agents and local AI workflows.'; toast('Mode changed', `${mode} mode is browser-local only.`); }
+    document.addEventListener('click', (event) => { const tool = event.target.closest('[data-tool]'); if (tool) { document.querySelectorAll('[data-tool]').forEach((button) => button.classList.toggle('is-active', button === tool)); toast('Tool selected', `${tool.dataset.tool} is active in local demo mode.`); } const layer = event.target.closest('[data-layer]'); if (layer) { state.layer = layer.dataset.layer; saveState(); renderLayers(); toast('Layer selected', state.layer); } const token = event.target.closest('[data-token]'); if (token) applyToken(token.dataset.token, token.dataset.value); const mode = event.target.closest('[data-mode]'); if (mode) setMode(mode.dataset.mode); const action = event.target.closest('[data-action]'); if (action?.dataset.action === 'save') { saveState(); toast('Local draft saved', 'Saved to localStorage only. No cloud write happened.'); } if (action?.dataset.action === 'export') toast('Mock export ready', 'A review handoff was simulated. No file was written or uploaded.'); if (action?.dataset.action === 'preview') setMode('prototype'); if (action?.dataset.action === 'handoff') toast('Handoff note prepared', 'Safe mock handoff labels AI and cloud as non-live.'); if (action?.dataset.action === 'ask-ai') toast('Mock critique generated', 'No provider call was made. The assistant is static demo data.'); });
+    document.querySelector('#type-scale').addEventListener('change', (event) => toast('Type scale changed', `${event.target.value} is stored as local demo state.`));
+    renderLayers(); renderTokens(); renderComponents(); renderAssistant(); document.querySelector('#quality-score').textContent = String(state.score); setMode(state.mode);
+  </script>
+</body>
+</html>
