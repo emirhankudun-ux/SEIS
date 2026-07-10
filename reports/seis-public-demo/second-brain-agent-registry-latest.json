@@ -1,0 +1,766 @@
+{
+  "id": "seis-second-brain-agent-registry-pr54",
+  "title": "SEIS Second Brain Agent Registry",
+  "generatedAt": "2026-07-10T18:57:40.467Z",
+  "status": "review-only-agent-registry",
+  "mode": "repo-local-no-live-execution",
+  "decision": "NO-GO-autonomous-execution-not-approved",
+  "sourcePaths": {
+    "secondBrain": "content/development/seis-second-brain-system.json",
+    "aiWorkforce": "content/development/ai-workforce-assignments.json",
+    "roleSchema": "content/development/seis-ai-core-agent-role-schema.json",
+    "permissionMatrix": "content/development/seis-ai-core-agent-permission-matrix.json",
+    "subagentOperatingModel": "content/development/seis-ai-core-subagent-operating-model.json",
+    "laneStatus": "content/development/seis-agent-lane-status.json",
+    "bigTechInventory": "content/development/seis-big-tech-mcp-skill-inventory.json",
+    "pluginSkillMap": "content/development/plugin-skill-capability-map.json",
+    "connectorRegistry": "content/development/connector-capability-registry.json",
+    "obsidianContract": "content/development/seis-obsidian-bridge-safe-import-contract.json",
+    "obsidianContextPack": "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md",
+    "routerContract": "content/development/seis-read-only-model-router-contract.json"
+  },
+  "secondBrainBinding": {
+    "status": "local-demo",
+    "vaultRoot": "/home/seis/SecondBrain",
+    "trainingPackPath": "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md",
+    "mcpResource": "seis://brain/second-brain-system.json",
+    "repositoryContextPack": {
+      "status": "repo-owned-public-safe",
+      "path": "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md",
+      "access": "read-only local and MCP contract context",
+      "privateVaultRead": false,
+      "modelWeightTraining": false
+    },
+    "obsidianBridgeStatus": "planned",
+    "privateVaultImportEnabled": false,
+    "hostVaultReadEnabled": false,
+    "bodyImportPolicy": "metadata-only-by-default",
+    "githubMutationEnabled": false
+  },
+  "providerProfiles": [
+    {
+      "profileId": "codex-operator",
+      "status": "installed",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "seis-local-demo",
+      "status": "local-demo",
+      "secondBrainUse": "local-demo-context",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "claude-review-profile",
+      "status": "route-defined-current-shell-missing-key",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "qwen-review-profile",
+      "status": "installed",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "gemini-validation-profile",
+      "status": "route-defined-current-shell-missing-key",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    },
+    {
+      "profileId": "ollama-local-profile",
+      "status": "installed",
+      "secondBrainUse": "review-context-only",
+      "liveProviderRouteEnabled": false,
+      "promptBodyStorageAllowed": false,
+      "credentialAccessAllowed": false
+    }
+  ],
+  "workforceAssignments": [
+    {
+      "id": "codex",
+      "displayName": "Codex",
+      "category": "primary-writer",
+      "route": "codex",
+      "status": "installed",
+      "allowedOutputs": [
+        "patches",
+        "validation logs",
+        "status reports",
+        "commit plans",
+        "PR descriptions"
+      ],
+      "writeAuthority": "primary-writer-human-supervised"
+    },
+    {
+      "id": "claude",
+      "displayName": "Claude",
+      "category": "architecture-review",
+      "route": "claude",
+      "status": "route-defined-current-shell-missing-key",
+      "allowedOutputs": [
+        "architecture review",
+        "product strategy memo",
+        "risk notes",
+        "PR review notes"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "qwen",
+      "displayName": "Qwen",
+      "category": "contradiction-review",
+      "route": "qwen",
+      "status": "installed",
+      "allowedOutputs": [
+        "contradiction report",
+        "duplicate analysis",
+        "risk matrix",
+        "archive summary"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "gemini",
+      "displayName": "Gemini",
+      "category": "external-readiness-review",
+      "route": "gemini",
+      "status": "route-defined-current-shell-missing-key",
+      "allowedOutputs": [
+        "public readiness notes",
+        "UX and accessibility review",
+        "documentation clarity review",
+        "source comparison notes"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "coderabbit",
+      "displayName": "CodeRabbit",
+      "category": "pull-request-review",
+      "route": "github-pr-review",
+      "status": "pr-dependent",
+      "allowedOutputs": [
+        "PR review comments",
+        "risk findings",
+        "follow-up suggestions"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "ollama",
+      "displayName": "Ollama / Local Model",
+      "category": "local-private-draft",
+      "route": "ollama",
+      "status": "installed",
+      "allowedOutputs": [
+        "private draft",
+        "offline summary",
+        "local-only analysis"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "open-design",
+      "displayName": "OpenDesign / Design Agent",
+      "category": "visual-system-review",
+      "route": "open-design",
+      "status": "installed",
+      "allowedOutputs": [
+        "design brief",
+        "visual-system proposal",
+        "component and motion recommendations"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "github-actions",
+      "displayName": "GitHub Actions",
+      "category": "automation-validation",
+      "route": "github-actions",
+      "status": "remote-ci",
+      "allowedOutputs": [
+        "check run",
+        "workflow log",
+        "artifact",
+        "annotation"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "kimi",
+      "displayName": "Kimi / Kimi Code",
+      "category": "conditional-code-and-localization-review",
+      "route": "kimi",
+      "status": "route-defined-current-shell-missing-command",
+      "allowedOutputs": [
+        "localization review",
+        "multilingual copy notes",
+        "bounded code review"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    },
+    {
+      "id": "opencode",
+      "displayName": "OpenCode",
+      "category": "bounded-terminal-coding-helper",
+      "route": "opencode",
+      "status": "installed",
+      "allowedOutputs": [
+        "patch suggestion",
+        "terminal-focused code review",
+        "debug hypothesis"
+      ],
+      "writeAuthority": "review-or-plan-only"
+    }
+  ],
+  "subAgentMesh": {
+    "managedSubAgentLanes": [
+      "SEIS Hub",
+      "SEIS Cloud",
+      "SEIS-Code",
+      "SEIS-Design",
+      "SEIS-DATA",
+      "SEIS-Security",
+      "SEIS-Research",
+      "SEIS-Automation",
+      "SEIS-Product"
+    ],
+    "autonomousAgentRoster": [
+      {
+        "agent": "Architect Agent",
+        "status": "status-plan-only",
+        "duty": "Architecture, module boundaries, and rollback-aware implementation plans."
+      },
+      {
+        "agent": "Code Agent",
+        "status": "status-plan-only",
+        "duty": "Scoped implementation notes, validators, and code review evidence."
+      },
+      {
+        "agent": "Design Agent",
+        "status": "status-plan-only",
+        "duty": "Visual system, product feel, design tokens, and interaction evidence."
+      },
+      {
+        "agent": "UI/UX Agent",
+        "status": "status-plan-only",
+        "duty": "Usability, mobile ergonomics, focus order, and accessibility notes."
+      },
+      {
+        "agent": "Research Agent",
+        "status": "status-plan-only",
+        "duty": "Source provenance, prior-art notes, and clean-room research summaries."
+      },
+      {
+        "agent": "Search Agent",
+        "status": "status-plan-only",
+        "duty": "Local vault, docs, route, file, and plugin indexing strategy."
+      },
+      {
+        "agent": "Security Agent",
+        "status": "blocking-review-gate",
+        "duty": "Secret hygiene, private vault boundaries, and approval requirements."
+      },
+      {
+        "agent": "DevOps Agent",
+        "status": "status-plan-only",
+        "duty": "CI, release, deployment, rollback, and no-live-action runbooks."
+      },
+      {
+        "agent": "Documentation Agent",
+        "status": "status-plan-only",
+        "duty": "README, status, index, backlog, and PR queue alignment."
+      },
+      {
+        "agent": "QA Agent",
+        "status": "status-plan-only",
+        "duty": "Validator, browser-smoke, regression, and acceptance evidence."
+      },
+      {
+        "agent": "Cloud Agent",
+        "status": "status-plan-only",
+        "duty": "Cloud, SSH, storage, sync, and provider readiness boundaries."
+      },
+      {
+        "agent": "Automation Agent",
+        "status": "status-plan-only",
+        "duty": "Safe recurring workflows, ledgers, and human-approved automation gates."
+      },
+      {
+        "agent": "Product Agent",
+        "status": "status-plan-only",
+        "duty": "Requirements, acceptance criteria, roadmap slices, launch readiness, and delivery evidence."
+      }
+    ],
+    "roleSchemaRoles": [
+      {
+        "id": "repository-governance-subagent",
+        "laneId": "seis",
+        "authority": "plan-only",
+        "networkScope": "none",
+        "maxSteps": 6,
+        "maxDelegationDepth": 1
+      },
+      {
+        "id": "cloud-readiness-subagent",
+        "laneId": "seis-cloud",
+        "authority": "plan-only",
+        "networkScope": "none",
+        "maxSteps": 6,
+        "maxDelegationDepth": 1
+      },
+      {
+        "id": "engineering-subagent",
+        "laneId": "seis-code",
+        "authority": "plan-only",
+        "networkScope": "none",
+        "maxSteps": 8,
+        "maxDelegationDepth": 1
+      },
+      {
+        "id": "product-design-subagent",
+        "laneId": "seis-design",
+        "authority": "plan-only",
+        "networkScope": "none",
+        "maxSteps": 6,
+        "maxDelegationDepth": 1
+      },
+      {
+        "id": "data-provenance-subagent",
+        "laneId": "seis-data",
+        "authority": "plan-only",
+        "networkScope": "none",
+        "maxSteps": 6,
+        "maxDelegationDepth": 1
+      }
+    ],
+    "permissionLevels": [
+      {
+        "level": "read-only",
+        "status": "enabled",
+        "approvalRequired": false
+      },
+      {
+        "level": "plan-only",
+        "status": "enabled",
+        "approvalRequired": false
+      },
+      {
+        "level": "write-gated",
+        "status": "planned",
+        "approvalRequired": "task-scoped"
+      },
+      {
+        "level": "external-gated",
+        "status": "planned",
+        "approvalRequired": true
+      },
+      {
+        "level": "forbidden",
+        "status": "active",
+        "approvalRequired": "separate security and recovery plan required"
+      }
+    ],
+    "operatingLanes": [
+      {
+        "laneId": "seis",
+        "status": "status-and-plan-only"
+      },
+      {
+        "laneId": "seis-cloud",
+        "status": "status-and-plan-only"
+      },
+      {
+        "laneId": "seis-code",
+        "status": "status-and-plan-only"
+      },
+      {
+        "laneId": "seis-design",
+        "status": "status-and-plan-only"
+      },
+      {
+        "laneId": "seis-data",
+        "status": "status-and-plan-only"
+      }
+    ],
+    "laneStatusCount": 14
+  },
+  "contextAccessMatrix": [
+    {
+      "agent": "Architect Agent",
+      "status": "status-plan-only",
+      "contextAccess": "read-only repo-local context and plan input",
+      "mcpResource": "seis://brain/second-brain-system.json",
+      "contextPackPath": "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md",
+      "privateVaultRead": false,
+      "autonomousWriteAllowed": false
+    },
+    {
+      "agent": "Code Agent",
+      "status": "status-plan-only",
+      "contextAccess": "read-only repo-local context and plan input",
+      "mcpResource": "seis://brain/second-brain-system.json",
+      "contextPackPath": "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md",
+      "privateVaultRead": false,
+      "autonomousWriteAllowed": false
+    },
+    {
+      "agent": "Design Agent",
+      "status": "status-plan-only",
+      "contextAccess": "read-only repo-local context and plan input",
+      "mcpResource": "seis://brain/second-brain-system.json",
+      "contextPackPath": "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md",
+      "privateVaultRead": false,
+      "autonomousWriteAllowed": false
+    },
+    {
+      "agent": "UI/UX Agent",
+      "status": "status-plan-only",
+      "contextAccess": "read-only repo-local context and plan input",
+      "mcpResource": "seis://brain/second-brain-system.json",
+      "contextPackPath": "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md",
+      "privateVaultRead": false,
+      "autonomousWriteAllowed": false
+    },
+    {
+      "agent": "Research Agent",
+      "status": "status-plan-only",
+      "contextAccess": "read-only repo-local context and plan input",
+      "mcpResource": "seis://brain/second-brain-system.json",
+      "contextPackPath": "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md",
+      "privateVaultRead": false,
+      "autonomousWriteAllowed": false
+    },
+    {
+      "agent": "Search Agent",
+      "status": "status-plan-only",
+      "contextAccess": "read-only repo-local context and plan input",
+      "mcpResource": "seis://brain/second-brain-system.json",
+      "contextPackPath": "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md",
+      "privateVaultRead": false,
+      "autonomousWriteAllowed": false
+    },
+    {
+      "agent": "Security Agent",
+      "status": "blocking-review-gate",
+      "contextAccess": "read-only repo-local context and plan input",
+      "mcpResource": "seis://brain/second-brain-system.json",
+      "contextPackPath": "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md",
+      "privateVaultRead": false,
+      "autonomousWriteAllowed": false
+    },
+    {
+      "agent": "DevOps Agent",
+      "status": "status-plan-only",
+      "contextAccess": "read-only repo-local context and plan input",
+      "mcpResource": "seis://brain/second-brain-system.json",
+      "contextPackPath": "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md",
+      "privateVaultRead": false,
+      "autonomousWriteAllowed": false
+    },
+    {
+      "agent": "Documentation Agent",
+      "status": "status-plan-only",
+      "contextAccess": "read-only repo-local context and plan input",
+      "mcpResource": "seis://brain/second-brain-system.json",
+      "contextPackPath": "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md",
+      "privateVaultRead": false,
+      "autonomousWriteAllowed": false
+    },
+    {
+      "agent": "QA Agent",
+      "status": "status-plan-only",
+      "contextAccess": "read-only repo-local context and plan input",
+      "mcpResource": "seis://brain/second-brain-system.json",
+      "contextPackPath": "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md",
+      "privateVaultRead": false,
+      "autonomousWriteAllowed": false
+    },
+    {
+      "agent": "Cloud Agent",
+      "status": "status-plan-only",
+      "contextAccess": "read-only repo-local context and plan input",
+      "mcpResource": "seis://brain/second-brain-system.json",
+      "contextPackPath": "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md",
+      "privateVaultRead": false,
+      "autonomousWriteAllowed": false
+    },
+    {
+      "agent": "Automation Agent",
+      "status": "status-plan-only",
+      "contextAccess": "read-only repo-local context and plan input",
+      "mcpResource": "seis://brain/second-brain-system.json",
+      "contextPackPath": "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md",
+      "privateVaultRead": false,
+      "autonomousWriteAllowed": false
+    },
+    {
+      "agent": "Product Agent",
+      "status": "status-plan-only",
+      "contextAccess": "read-only repo-local context and plan input",
+      "mcpResource": "seis://brain/second-brain-system.json",
+      "contextPackPath": "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md",
+      "privateVaultRead": false,
+      "autonomousWriteAllowed": false
+    }
+  ],
+  "pluginAndMcpSurface": {
+    "installedSkillCount": 38,
+    "installedSkills": [
+      "aspnet-core",
+      "chatgpt-apps",
+      "cli-creator",
+      "cloudflare-deploy",
+      "define-goal",
+      "figma",
+      "figma-code-connect-components",
+      "figma-create-design-system-rules",
+      "figma-create-new-file",
+      "figma-generate-design",
+      "figma-generate-library",
+      "figma-implement-design",
+      "figma-use",
+      "gh-address-comments",
+      "gh-fix-ci",
+      "jupyter-notebook",
+      "linear",
+      "migrate-to-codex",
+      "netlify-deploy",
+      "notion-knowledge-capture",
+      "notion-meeting-intelligence",
+      "notion-research-documentation",
+      "notion-spec-to-implementation",
+      "openai-docs",
+      "pdf",
+      "playwright",
+      "playwright-interactive",
+      "render-deploy",
+      "screenshot",
+      "security-best-practices",
+      "security-ownership-map",
+      "security-threat-model",
+      "sentry",
+      "speech",
+      "transcribe",
+      "vercel-deploy",
+      "winui-app",
+      "yeet"
+    ],
+    "localAppsDetected": [
+      {
+        "app": "Antigravity IDE.app",
+        "status": "local app detected"
+      },
+      {
+        "app": "Claude.app",
+        "status": "local app detected; Claude Code CLI is also installed and project MCP entries are pending user approval"
+      },
+      {
+        "app": "Codex.app",
+        "status": "local app detected"
+      },
+      {
+        "app": "Cursor.app",
+        "status": "local app detected"
+      },
+      {
+        "app": "Ollama.app",
+        "status": "local app detected"
+      },
+      {
+        "app": "Qwen.app",
+        "status": "local app detected"
+      },
+      {
+        "app": "Xcode.app",
+        "status": "local app detected"
+      },
+      {
+        "app": "Kimi",
+        "status": "no local app detected; official Kimi Code CLI installed and path verified"
+      }
+    ],
+    "mcpSurfaces": [
+      {
+        "vendor": "Google",
+        "surfaceCount": 6,
+        "status": "callable in current Codex session",
+        "liveActionGate": "Explicit user intent is required before mail, calendar, Drive, Docs, Sheets, or Slides mutations."
+      },
+      {
+        "vendor": "Apple",
+        "surfaceCount": 5,
+        "status": "callable for enabled simulator workflows; local Xcode.app detected; xcodebuildmcp also registered in Claude and Kimi project MCP configs",
+        "liveActionGate": "Project build/run/test actions must follow XcodeBuildMCP session-default rules; device, macOS, debugging, and UI automation capabilities may require separate configuration."
+      },
+      {
+        "vendor": "Moonshot AI / Kimi",
+        "surfaceCount": 4,
+        "status": "official CLI installed and path verified; no provider configured; official Kimi Datasource plugin requires OAuth login before installation",
+        "liveActionGate": "Do not run Kimi provider login, OAuth, API-key setup, or plugin installation without explicit user interaction and approval."
+      },
+      {
+        "vendor": "Anthropic / Claude",
+        "surfaceCount": 3,
+        "status": "local app and CLI detected; SEIS and xcodebuildmcp project MCP entries are pending user approval in Claude Code; no standalone Codex Anthropic connector was found",
+        "liveActionGate": "Claude MCP approval, provider auth, or plugin installation must be completed by the user inside Claude Code or an approved secure setup flow."
+      },
+      {
+        "vendor": "Microsoft and Windows",
+        "surfaceCount": 7,
+        "status": "local skills installed or available; connector installs require explicit user confirmation",
+        "liveActionGate": "Azure, Outlook, Teams, SharePoint, and Windows app mutations require exact target, credentials boundary, and approval."
+      },
+      {
+        "vendor": "OpenAI",
+        "surfaceCount": 2,
+        "status": "callable and approval-gated for secret creation",
+        "liveActionGate": "Use the secure key setup flow only; never print or commit API keys."
+      },
+      {
+        "vendor": "GitHub",
+        "surfaceCount": 4,
+        "status": "callable in current Codex session",
+        "liveActionGate": "PR, issue, reviewer, and repository mutations require explicit user intent."
+      },
+      {
+        "vendor": "Figma",
+        "surfaceCount": 3,
+        "status": "callable in current Codex session",
+        "liveActionGate": "Follow Figma skill guidance before file writes."
+      },
+      {
+        "vendor": "Cloudflare",
+        "surfaceCount": 3,
+        "status": "callable in current Codex session",
+        "liveActionGate": "Cloudflare account mutations require explicit target and approval."
+      },
+      {
+        "vendor": "Vercel",
+        "surfaceCount": 4,
+        "status": "callable in current Codex session",
+        "liveActionGate": "Deployments and project mutations require explicit approval."
+      },
+      {
+        "vendor": "Slack",
+        "surfaceCount": 3,
+        "status": "partially callable from current tool discovery",
+        "liveActionGate": "Sending messages or channel changes require explicit user intent."
+      },
+      {
+        "vendor": "Supabase",
+        "surfaceCount": 5,
+        "status": "callable in current Codex session",
+        "liveActionGate": "Project pause, restore, branch delete, and database changes require explicit approval."
+      },
+      {
+        "vendor": "Shopify",
+        "surfaceCount": 2,
+        "status": "partially callable from current tool discovery",
+        "liveActionGate": "Store mutations require explicit approval and schema validation first."
+      },
+      {
+        "vendor": "Notion",
+        "surfaceCount": 2,
+        "status": "callable in current Codex session",
+        "liveActionGate": "Workspace edits require explicit target and user intent."
+      },
+      {
+        "vendor": "Asana",
+        "surfaceCount": 2,
+        "status": "partially callable from current tool discovery",
+        "liveActionGate": "Task or project mutations require explicit approval."
+      },
+      {
+        "vendor": "Clay",
+        "surfaceCount": 3,
+        "status": "callable in current Codex session",
+        "liveActionGate": "Credit-costing enrichments must only be requested when the user explicitly asks for those data points."
+      },
+      {
+        "vendor": "Vantage",
+        "surfaceCount": 2,
+        "status": "partially callable from current tool discovery",
+        "liveActionGate": "Budget and alert mutations require explicit approval."
+      }
+    ],
+    "pluginCapabilityCount": 5,
+    "connectorCapabilityCount": 21
+  },
+  "governance": {
+    "writerPolicy": {
+      "primaryWriter": "codex",
+      "rule": "Exactly one assistant may hold writer role for a change package. Other assistants provide scoped review, research, design, or contradiction analysis unless explicitly handed off.",
+      "handoffRequirement": "A handoff must include objective, affected paths, context included, context excluded, risks, expected output, validation command, and approval boundary."
+    },
+    "credentialBoundary": {
+      "rule": "API keys may be available in the operator environment, but keys are never copied into prompts, docs, commits, browser storage, logs, handoff files, or review artifacts.",
+      "runtimePattern": "Live provider use must go through server-side environment variables or an approved backend gateway. The core SEIS product remains usable with zero cloud-provider keys.",
+      "forbiddenStorage": [
+        "repository files",
+        "IndexedDB",
+        "localStorage",
+        "browser cookies",
+        "agent memory",
+        "prompt transcripts",
+        "screenshots",
+        "GitHub issue or PR descriptions"
+      ]
+    },
+    "routerStatus": "planned-read-only-contract",
+    "routerRuntimeAuthority": false,
+    "permissionRuntimeBoundary": "status-and-plan-only",
+    "subagentRuntimeBoundary": "status-and-plan-only"
+  },
+  "requiredEvidenceBeforeAutonomousUse": [
+    "human approval for autonomous write execution",
+    "permission matrix enforced by executable tests",
+    "approval fixture enforced before write-gated actions",
+    "redaction fixture enforced before any provider or connector routing",
+    "explicit user-selected Obsidian source path before private vault dry-run",
+    "backend-only provider mediation before live model routing",
+    "current browser-smoke evidence and manual accessibility review",
+    "clean release-candidate worktree review before GitHub publication"
+  ],
+  "safetyBoundary": {
+    "privateObsidianVaultReadPerformed": false,
+    "privateNoteBodyCopied": false,
+    "providerCallsPerformed": false,
+    "credentialValidationPerformed": false,
+    "browserSecretsExposed": false,
+    "promptBodiesStored": false,
+    "autonomousWriteExecutionPerformed": false,
+    "backgroundRunnerEnabled": false,
+    "externalConnectorMutationPerformed": false,
+    "sshExecuted": false,
+    "deploymentPerformed": false,
+    "githubMutationPerformed": false,
+    "releaseApprovalGranted": false
+  },
+  "summary": {
+    "installedAiProfileCount": 6,
+    "workforceAssignmentCount": 10,
+    "managedSubAgentLaneCount": 9,
+    "autonomousAgentRosterCount": 13,
+    "contextAccessAgentCount": 13,
+    "roleSchemaRoleCount": 5,
+    "permissionLevelCount": 5,
+    "localAppDetectedCount": 8,
+    "mcpVendorSurfaceCount": 17,
+    "installedSkillCount": 38,
+    "pluginCapabilityCount": 5,
+    "connectorCapabilityCount": 21
+  }
+}

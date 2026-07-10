@@ -161,6 +161,12 @@ ios/
 !plugins/seis-ai-agent/assets/lanes/*.json
 !reports/seis-commit-packages.json
 !deploy/seis-ssh-public-access-contract.json
+!reports/seis-public-demo/go-no-go-latest.json
+!reports/seis-public-demo/evidence-manifest-latest.json
+!reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json
+!reports/seis-public-demo/read-only-model-router-decision-latest.json
+!reports/seis-public-demo/second-brain-accessibility-focus-latest.json
+!reports/seis-public-demo/second-brain-agent-registry-latest.json
 !.mcp.json
 !.kimi-code/
 !.kimi-code/mcp.json

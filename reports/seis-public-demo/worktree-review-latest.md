@@ -1,6 +1,6 @@
 # SEIS Public Demo Worktree Review
 
-Generated: 2026-06-29T13:14:56.803Z
+Generated: 2026-07-10T19:02:12.667Z
 Decision: NO-GO
 Release blocking: yes
 Dirty paths: 15
@@ -20,24 +20,24 @@ approval exists.
 
 Status: candidate-scope-needs-review
 
-- M README.md
-- M reports/seis-public-demo/go-no-go-latest.md
-- M reports/seis-public-demo/pr54-review-packet-latest.md
-- M reports/seis-public-demo/pr54-stage-plan-latest.md
-- M reports/seis-public-demo/worktree-review-latest.md
+- AM reports/seis-public-demo/evidence-manifest-latest.json
+- AM reports/seis-public-demo/go-no-go-latest.json
+- MM reports/seis-public-demo/go-no-go-latest.md
+- A reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json
+- M reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md
+- MM reports/seis-public-demo/pr54-review-packet-latest.md
+- MM reports/seis-public-demo/pr54-stage-plan-latest.md
+- A reports/seis-public-demo/read-only-model-router-decision-latest.json
+- M reports/seis-public-demo/read-only-model-router-decision-latest.md
+- AM reports/seis-public-demo/second-brain-accessibility-focus-latest.json
+- MM reports/seis-public-demo/second-brain-accessibility-focus-latest.md
+- A reports/seis-public-demo/second-brain-agent-registry-latest.json
+- M reports/seis-public-demo/second-brain-agent-registry-latest.md
+- MM reports/seis-public-demo/worktree-review-latest.md
 
 ## Unclassified Dirty Paths
 
 Status: needs-human-review
 
-- M AGENTS.md
-- M ROADMAP.md
-- M SEIS_INSTALLED_AI_TOOLS.md
-- M SEIS_OBSIDIAN_VAULT.md
-- M SEIS_SECOND_BRAIN.md
-- M SEIS_SSH.md
-- M SEIS_SUB_AGENTS.md
-- M roadmap/seis-long-horizon-strategy.md
-- M seis-brain/README.md
-- ?? roadmap/seis-61-120-month-long-horizon-ops-blueprint.md
+- M .gitignore
 

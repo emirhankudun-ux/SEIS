@@ -1,0 +1,198 @@
+{
+  "id": "seis-public-demo-evidence-manifest-pr54",
+  "title": "SEIS Public Demo Evidence Manifest After PR 54 Review",
+  "generatedAt": "2026-07-10T19:02:12.667Z",
+  "decision": "NO-GO",
+  "status": "review-gated-not-released",
+  "mode": "read-only",
+  "pullRequest": {
+    "number": 54,
+    "url": "https://github.com/emirhankudun-ux/SEIS/pull/54",
+    "base": "main",
+    "head": "codex/seis-demo-github-upload-20260624",
+    "requiredState": "reviewed before merge or public release"
+  },
+  "summary": {
+    "total": 23,
+    "passed": 21,
+    "blocked": 2,
+    "missingCurrentEvidence": 0,
+    "failed": 0,
+    "notRequested": 0
+  },
+  "items": [
+    {
+      "id": "second-brain-local-demo-boundary",
+      "type": "contract",
+      "requirement": "Second Brain remains browser-local Local Demo before public release.",
+      "status": "passed",
+      "evidence": "content/development/seis-second-brain-system.json"
+    },
+    {
+      "id": "obsidian-private-import-disabled",
+      "type": "contract",
+      "requirement": "Private Obsidian import and host vault reads remain disabled.",
+      "status": "passed",
+      "evidence": "content/development/seis-obsidian-bridge-safe-import-contract.json"
+    },
+    {
+      "id": "read-only-router-boundary",
+      "type": "contract",
+      "requirement": "Provider router remains read-only, provider-neutral, and no-secret.",
+      "status": "passed",
+      "evidence": "content/development/seis-read-only-model-router-contract.json"
+    },
+    {
+      "id": "accessibility-focus-contract-active",
+      "type": "contract",
+      "requirement": "Second Brain accessibility/focus QA contract stays active and linked to browser smoke.",
+      "status": "passed",
+      "evidence": "content/development/seis-second-brain-accessibility-focus-qa.json"
+    },
+    {
+      "id": "accessibility-focus-qa-artifact",
+      "type": "artifact",
+      "requirement": "Second Brain accessibility/focus QA artifact exists and keeps human review blockers visible.",
+      "status": "passed",
+      "evidence": "reports/seis-public-demo/second-brain-accessibility-focus-latest.json"
+    },
+    {
+      "id": "second-brain-agent-registry",
+      "type": "artifact",
+      "requirement": "Second Brain agent registry artifact exists and keeps installed AI, sub-agent, Obsidian, plugin, and MCP boundaries review-only.",
+      "status": "passed",
+      "evidence": "reports/seis-public-demo/second-brain-agent-registry-latest.json"
+    },
+    {
+      "id": "obsidian-safe-import-dry-run",
+      "type": "artifact",
+      "requirement": "Repo-owned Obsidian safe-import dry-run manifest exists and proves no private vault read.",
+      "status": "passed",
+      "evidence": "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json"
+    },
+    {
+      "id": "read-only-router-decision",
+      "type": "artifact",
+      "requirement": "Provider-neutral read-only router decision artifact exists and proves no live provider routing.",
+      "status": "passed",
+      "evidence": "reports/seis-public-demo/read-only-model-router-decision-latest.json"
+    },
+    {
+      "id": "go-no-go-report-json",
+      "type": "artifact",
+      "requirement": "Machine-readable go/no-go report exists for PR review.",
+      "status": "passed",
+      "evidence": "reports/seis-public-demo/go-no-go-latest.json"
+    },
+    {
+      "id": "go-no-go-report-markdown",
+      "type": "artifact",
+      "requirement": "Reader-facing go/no-go report exists for PR review.",
+      "status": "passed",
+      "evidence": "reports/seis-public-demo/go-no-go-latest.md"
+    },
+    {
+      "id": "pr54-review-packet",
+      "type": "artifact",
+      "requirement": "PR #54 review packet exists for public demo release review.",
+      "status": "passed",
+      "evidence": "reports/seis-public-demo/pr54-review-packet-latest.md"
+    },
+    {
+      "id": "worktree-review-packet",
+      "type": "artifact",
+      "requirement": "Dirty worktree is classified for PR #54 release-candidate review.",
+      "status": "passed",
+      "evidence": "reports/seis-public-demo/worktree-review-latest.md"
+    },
+    {
+      "id": "pr54-stage-plan",
+      "type": "artifact",
+      "requirement": "PR #54 stage plan separates the Second Brain readiness slice from unrelated workstreams.",
+      "status": "passed",
+      "evidence": "reports/seis-public-demo/pr54-stage-plan-latest.md"
+    },
+    {
+      "id": "current-browser-smoke",
+      "type": "runtime-evidence",
+      "requirement": "Current Second Brain browser smoke evidence exists for this release candidate.",
+      "status": "passed",
+      "evidence": "npm run check:seis-second-brain-browser-smoke"
+    },
+    {
+      "id": "release-worktree-review",
+      "type": "repository-state",
+      "requirement": "Release candidate worktree has been reviewed and is not carrying unrelated dirty files.",
+      "status": "blocked",
+      "evidence": "git status --short"
+    },
+    {
+      "id": "human-release-approval",
+      "type": "approval",
+      "requirement": "Human owner explicitly approves public demo release.",
+      "status": "blocked",
+      "evidence": "explicit approval required"
+    },
+    {
+      "id": "npm-run-check-seis-obsidian-safe-import-dry-run",
+      "type": "command",
+      "requirement": "npm run check:seis-obsidian-safe-import-dry-run",
+      "status": "passed",
+      "evidence": "Command exited 0 in the current run.",
+      "command": "npm run check:seis-obsidian-safe-import-dry-run"
+    },
+    {
+      "id": "npm-run-check-seis-read-only-model-router-decision",
+      "type": "command",
+      "requirement": "npm run check:seis-read-only-model-router-decision",
+      "status": "passed",
+      "evidence": "Command exited 0 in the current run.",
+      "command": "npm run check:seis-read-only-model-router-decision"
+    },
+    {
+      "id": "npm-run-check-seis-second-brain-accessibility-focus-report",
+      "type": "command",
+      "requirement": "npm run check:seis-second-brain-accessibility-focus-report",
+      "status": "passed",
+      "evidence": "Command exited 0 in the current run.",
+      "command": "npm run check:seis-second-brain-accessibility-focus-report"
+    },
+    {
+      "id": "npm-run-check-seis-second-brain-agent-registry",
+      "type": "command",
+      "requirement": "npm run check:seis-second-brain-agent-registry",
+      "status": "passed",
+      "evidence": "Command exited 0 in the current run.",
+      "command": "npm run check:seis-second-brain-agent-registry"
+    },
+    {
+      "id": "npm-run-check-seis-second-brain-readiness-contracts",
+      "type": "command",
+      "requirement": "npm run check:seis-second-brain-readiness-contracts",
+      "status": "passed",
+      "evidence": "Command exited 0 in the current run.",
+      "command": "npm run check:seis-second-brain-readiness-contracts"
+    },
+    {
+      "id": "npm-run-check-seis-second-brain",
+      "type": "command",
+      "requirement": "npm run check:seis-second-brain",
+      "status": "passed",
+      "evidence": "Command exited 0 in the current run.",
+      "command": "npm run check:seis-second-brain"
+    },
+    {
+      "id": "git-diff-check",
+      "type": "command",
+      "requirement": "git diff --check",
+      "status": "passed",
+      "evidence": "Command exited 0 in the current run.",
+      "command": "git diff --check"
+    }
+  ],
+  "safety": [
+    "This command is read-only.",
+    "It does not push, merge, tag, deploy, publish GitHub Pages, import an Obsidian vault, execute SSH, or call model providers.",
+    "Use --require-ready only after human approval and current browser-smoke evidence exist."
+  ]
+}
