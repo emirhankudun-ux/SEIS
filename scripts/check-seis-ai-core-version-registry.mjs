@@ -185,7 +185,7 @@ if (mcpRuntimeContract) {
   ensure(String(mcpRuntimeContract.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("AGI evaluation protocol"), "MCP runtime contract resource evidence must mention AGI evaluation protocol");
   ensure(String(mcpRuntimeContract.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("AGI public readiness evidence"), "MCP runtime contract resource evidence must mention AGI public readiness evidence");
   ensure(String(mcpRuntimeContract.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("AGI GitHub user readiness gates"), "MCP runtime contract resource evidence must mention AGI GitHub user readiness gates");
-  ensure(mcpRuntimeContract.promptCount === 3, "MCP runtime contract must record 3 prompts");
+  ensure(mcpRuntimeContract.promptCount === 4, "MCP runtime contract must record 4 prompts");
 }
 
 ensure(providerRegistry?.id === "seis-ai-core-provider-registry", "provider registry id mismatch");

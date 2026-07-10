@@ -1190,7 +1190,7 @@ const SEIS_MCP_RUNTIME_CONTRACT = {
   fallback: "LightweightMcpServer no-dependency fallback",
   officialSdk: "@modelcontextprotocol/sdk remains optional unless dependencies are installed",
   toolCount: 34,
-  promptCount: 3,
+  promptCount: 4,
   resourceCount: 30,
   smokeTest: "node --test packages/seis-ai/test/mcp-smoke.test.mjs",
   pluginGate: "npm run check:seis-agent-plugin-integration",
@@ -1218,10 +1218,10 @@ const SEIS_MCP_RUNTIME_CONTRACT = {
     {
       id: "prompts",
       label: "Prompt registry",
-      count: 3,
+      count: 4,
       method: "prompts/list + prompts/get",
-      evidence: "Prompt rendering is verified with arguments",
-      duty: "Provide bounded audit, i18n, and review prompts without embedding secrets."
+      evidence: "Prompt rendering is verified with arguments, including the Second Brain review prompt",
+      duty: "Provide bounded audit, i18n, locale, and Second Brain review prompts without embedding secrets."
     },
     {
       id: "transport",

@@ -598,6 +598,7 @@ async function runRuntimeSmoke(html, js) {
     ensure(diagnostics.installedAiCoreRouteMatrix().length === 6, `Installed AI Core route diagnostics expected six routes, got ${diagnostics.installedAiCoreRouteMatrix().length}.`);
     ensure(diagnostics.mcpRuntimeContract().toolCount === 34, `MCP Runtime Contract diagnostics expected 34 tools, got ${diagnostics.mcpRuntimeContract().toolCount}.`);
     ensure(diagnostics.mcpRuntimeContract().resourceCount === 30, `MCP Runtime Contract diagnostics expected 30 resources, got ${diagnostics.mcpRuntimeContract().resourceCount}.`);
+    ensure(diagnostics.mcpRuntimeContract().promptCount === 4, `MCP Runtime Contract diagnostics expected 4 prompts, got ${diagnostics.mcpRuntimeContract().promptCount}.`);
     ensure(diagnostics.mcpRuntimeContract().sourcePath === "content/development/seis-ai-core-mcp-runtime-contract.json", "MCP Runtime Contract diagnostics must expose the canonical source path.");
     ensure(diagnostics.mcpRuntimeContract().resourceUri === "seis://ai/mcp-runtime-contract.json", "MCP Runtime Contract diagnostics must expose the canonical MCP resource URI.");
     ensure(diagnostics.mcpRuntimeContract().secondBrainSystemResource === "seis://brain/second-brain-system.json", "MCP Runtime Contract diagnostics must expose the Second Brain MCP resource URI.");

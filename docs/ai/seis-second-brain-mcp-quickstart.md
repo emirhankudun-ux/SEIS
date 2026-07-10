@@ -80,6 +80,15 @@ The companion resources `seis://agent/plugin-integration.json` and
 `seis://ai/mcp-runtime-contract.json` describe plugin integration and the
 local MCP runtime boundary.
 
+## Optional Review Prompt
+
+Use `prompts/get` with `second_brain_review` when an MCP client needs a
+structured, evidence-backed proposal. The prompt requires the client to read
+the canonical Second Brain contract first, select only relevant lanes, and
+list validation plus human-approval requirements. It does not authorize a
+provider call, private vault read, SSH, deployment, GitHub mutation, or
+autonomous write.
+
 ## Managed Lane Tools
 
 The following tool pairs return status or plans only. They do not grant write,

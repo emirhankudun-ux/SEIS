@@ -839,6 +839,7 @@ async function smokeDesktopSharedVfs(client, baseUrl) {
   ensure(installedAiSystems.mcpRuntimeRows === 4, `Desktop MCP Runtime Contract expected four rows, got ${installedAiSystems.mcpRuntimeRows}`);
   ensure(installedAiSystems.mcpRuntimeDiagnostics.toolCount === 34, `Desktop MCP Runtime Contract diagnostics expected 34 tools, got ${installedAiSystems.mcpRuntimeDiagnostics.toolCount}`);
   ensure(installedAiSystems.mcpRuntimeDiagnostics.resourceCount === 30, `Desktop MCP Runtime Contract diagnostics expected 30 resources, got ${installedAiSystems.mcpRuntimeDiagnostics.resourceCount}`);
+  ensure(installedAiSystems.mcpRuntimeDiagnostics.promptCount === 4, `Desktop MCP Runtime Contract diagnostics expected 4 prompts, got ${installedAiSystems.mcpRuntimeDiagnostics.promptCount}`);
   ensure(installedAiSystems.mcpRuntimeDiagnostics.resourceUri === "seis://ai/mcp-runtime-contract.json", "Desktop MCP Runtime Contract diagnostics must expose the canonical MCP resource URI");
   ensure(installedAiSystems.mcpRuntimeDiagnostics.secondBrainSystemResource === "seis://brain/second-brain-system.json", "Desktop MCP Runtime Contract diagnostics must expose the Second Brain MCP resource URI");
   ensure(installedAiSystems.mcpRuntimeText.includes("stdio JSON-RPC"), "Desktop MCP Runtime Contract must show stdio JSON-RPC evidence");
@@ -971,14 +972,14 @@ async function smokeSubAgentFiveYearDemo(client, baseUrl) {
   ensure(initial.constellationInspector?.pluginLaneCount === 5, `SEIS demo constellation plugin lane count mismatch: ${initial.constellationInspector?.pluginLaneCount}`);
   ensure(initial.constellationInspector?.mcpRuntimeToolCount === 34, `SEIS demo constellation MCP tool count mismatch: ${initial.constellationInspector?.mcpRuntimeToolCount}`);
   ensure(Number(initial.constellationInspector?.mcpRuntimeResourceCount) === 30, `SEIS demo constellation MCP resource count mismatch: ${initial.constellationInspector?.mcpRuntimeResourceCount}`);
-  ensure(initial.constellationInspector?.mcpRuntimePromptCount === 3, `SEIS demo constellation MCP prompt count mismatch: ${initial.constellationInspector?.mcpRuntimePromptCount}`);
+  ensure(initial.constellationInspector?.mcpRuntimePromptCount === 4, `SEIS demo constellation MCP prompt count mismatch: ${initial.constellationInspector?.mcpRuntimePromptCount}`);
   ensure(initial.constellationInspector?.heroNodeCount >= 32, `SEIS demo constellation 3D node count too low: ${initial.constellationInspector?.heroNodeCount}`);
   ensure(initial.hero3dDiagnostics?.installedAiRouteCount === 6, `SEIS demo 3D route diagnostic count mismatch: ${initial.hero3dDiagnostics?.installedAiRouteCount}`);
   ensure(initial.hero3dDiagnostics?.personalPluginLaneCount === 5, `SEIS demo 3D plugin lane diagnostic count mismatch: ${initial.hero3dDiagnostics?.personalPluginLaneCount}`);
   ensure(initial.hero3dDiagnostics?.mcpRuntimeSurfaceCount === 4, `SEIS demo 3D MCP surface diagnostic count mismatch: ${initial.hero3dDiagnostics?.mcpRuntimeSurfaceCount}`);
   ensure(initial.hero3dDiagnostics?.mcpRuntimeToolCount === 34, `SEIS demo 3D MCP tool diagnostic count mismatch: ${initial.hero3dDiagnostics?.mcpRuntimeToolCount}`);
   ensure(Number(initial.hero3dDiagnostics?.mcpRuntimeResourceCount) === 30, `SEIS demo 3D MCP resource diagnostic count mismatch: ${initial.hero3dDiagnostics?.mcpRuntimeResourceCount}`);
-  ensure(initial.hero3dDiagnostics?.mcpRuntimePromptCount === 3, `SEIS demo 3D MCP prompt diagnostic count mismatch: ${initial.hero3dDiagnostics?.mcpRuntimePromptCount}`);
+  ensure(initial.hero3dDiagnostics?.mcpRuntimePromptCount === 4, `SEIS demo 3D MCP prompt diagnostic count mismatch: ${initial.hero3dDiagnostics?.mcpRuntimePromptCount}`);
   ensure(initial.hero3dStatus.includes("6 AI routes") && initial.hero3dStatus.includes("5 plugin lanes") && initial.hero3dStatus.includes("34 MCP tools"), `SEIS demo 3D hero status missing installed AI/plugin/MCP count: ${initial.hero3dStatus}`);
   ensure(initial.activeVersionTarget === "v0.1-foundation", `SEIS demo active version target mismatch: ${initial.activeVersionTarget}`);
   ensure(initial.detailText.includes("AI Core version"), "SEIS demo quarter detail missing AI Core version evidence");
@@ -1133,7 +1134,7 @@ async function smokeSubAgentFiveYearDemo(client, baseUrl) {
   ensure(afterExport.mcpRuntimeSurfaceCount === 4, `SEIS demo evidence report expected four MCP runtime surfaces, got ${afterExport.mcpRuntimeSurfaceCount}`);
   ensure(afterExport.mcpRuntimeToolCount === 34, `SEIS demo evidence report expected 34 MCP tools, got ${afterExport.mcpRuntimeToolCount}`);
   ensure(Number(afterExport.mcpRuntimeResourceCount) === 30, `SEIS demo evidence report expected 30 MCP resources, got ${afterExport.mcpRuntimeResourceCount}`);
-  ensure(afterExport.mcpRuntimePromptCount === 3, `SEIS demo evidence report expected three MCP prompts, got ${afterExport.mcpRuntimePromptCount}`);
+  ensure(afterExport.mcpRuntimePromptCount === 4, `SEIS demo evidence report expected four MCP prompts, got ${afterExport.mcpRuntimePromptCount}`);
   ensure(afterExport.mcpRuntimeTransport === "stdio JSON-RPC", `SEIS demo evidence report MCP transport mismatch: ${afterExport.mcpRuntimeTransport}`);
   ensure(afterExport.mcpRuntimeSurfaces === 4, `SEIS demo evidence report expected four MCP runtime surface records, got ${afterExport.mcpRuntimeSurfaces}`);
   ensure(afterExport.constellationInspectorStatus === "local-demo-integrated", `SEIS demo evidence constellation status mismatch: ${afterExport.constellationInspectorStatus}`);

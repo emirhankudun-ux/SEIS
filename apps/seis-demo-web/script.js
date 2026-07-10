@@ -401,7 +401,7 @@ function fallbackMcpRuntimeContract() {
     officialSdk: "@modelcontextprotocol/sdk remains optional unless dependencies are installed",
     toolCount: 34,
     resourceCount: 30,
-    promptCount: 3,
+    promptCount: 4,
     smokeTest: "node --test packages/seis-ai/test/mcp-smoke.test.mjs",
     pluginGate: "npm run check:seis-agent-plugin-integration",
     resourceRead: "seis://ai/mcp-runtime-contract.json",
@@ -430,11 +430,11 @@ function fallbackMcpRuntimeContract() {
       {
         id: "prompts",
         label: "Prompt registry",
-        count: 3,
+        count: 4,
         state: "verified",
         method: "prompts/list + prompts/get",
-        evidence: "Prompt rendering is verified with arguments",
-        duty: "Keep reusable agent prompts versioned and visible without copying secrets into browser state."
+        evidence: "Prompt rendering is verified with arguments, including the Second Brain review prompt",
+        duty: "Keep bounded audit, i18n, locale, and Second Brain review prompts versioned and visible without copying secrets into browser state."
       },
       {
         id: "transport",

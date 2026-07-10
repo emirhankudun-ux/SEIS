@@ -208,6 +208,7 @@ for (const phrase of [
   "SEIS Automation",
   "SEIS Product",
   "seis_product_status",
+  "second_brain_review",
   "No private Obsidian vault",
   "model-weight training"
 ]) {

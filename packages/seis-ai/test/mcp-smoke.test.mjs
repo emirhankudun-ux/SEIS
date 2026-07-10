@@ -66,7 +66,7 @@ function rpcSession(requests, { timeoutMs = 15000 } = {}) {
 }
 
 describe("seis-mcp stdio smoke", () => {
-  it("initializes and lists 34 tools, 3 prompts, 30 resources", async () => {
+  it("initializes and lists 34 tools, 4 prompts, 30 resources", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -160,7 +160,7 @@ describe("seis-mcp stdio smoke", () => {
     ]);
 
     const prompts = responses.get(4).result.prompts.map((p) => p.name).sort();
-    assert.deepEqual(prompts, ["add_i18n_key", "audit_and_fix", "review_locale"]);
+    assert.deepEqual(prompts, ["add_i18n_key", "audit_and_fix", "review_locale", "second_brain_review"]);
   });
 
   it("renders the add_i18n_key prompt with arguments", async () => {
@@ -193,6 +193,39 @@ describe("seis-mcp stdio smoke", () => {
     assert.ok(text.includes('"test.key"'));
     assert.ok(text.includes("a test string"));
     assert.ok(text.includes("i18n_add_key"));
+  });
+
+  it("renders the Second Brain review prompt with its safety boundary", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "prompts/get",
+        params: {
+          name: "second_brain_review",
+          arguments: {},
+        },
+      },
+    ]);
+
+    const prompt = responses.get(2);
+    assert.ok(!prompt.error, `prompts/get errored: ${JSON.stringify(prompt.error)}`);
+    const text = prompt.result.messages[0].content.text;
+    assert.ok(text.includes("seis://brain/second-brain-system.json"));
+    assert.ok(text.includes("SEIS Product"));
+    assert.ok(text.includes("private Obsidian vault"));
+    assert.ok(text.includes("GitHub mutation"));
   });
 
   it("reads the SEIS plugin integration resource through the protocol", async () => {
