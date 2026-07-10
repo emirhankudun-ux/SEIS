@@ -458,6 +458,16 @@ h3 {
   display: block;
 }
 
+.search-center-frame {
+  width: 100%;
+  min-height: 76vh;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface-solid);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+}
+
 .metric-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
