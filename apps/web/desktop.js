@@ -1464,7 +1464,7 @@ const SEIS_SECOND_BRAIN_SYSTEM = {
       folder: "03-agents",
       path: "/home/seis/SecondBrain/03-agents/sub-agent-council.md",
       status: "Status/plan-only",
-      summary: "Bounded Architect, Code, Design, Cloud, Security, Documentation, and Data lanes can plan and review, not run unapproved background work.",
+      summary: "Nine bounded SEIS Hub, Cloud, Code, Design, Data, Security, Research, Automation, and Product lanes can plan and review, not run unapproved background work.",
       tags: ["#agents", "#dry-run", "#approval-gated"],
       links: ["ai-core-router", "github-readiness", "security-review"]
     },
@@ -1499,13 +1499,27 @@ const SEIS_SECOND_BRAIN_SYSTEM = {
       links: ["ai-core-router", "obsidian-bridge", "github-readiness"]
     }
   ],
+  managedSubAgentLanes: [
+    ["SEIS Hub", "seis", "seis_hub_status / seis_hub_plan", "Repository governance, architecture, and source-of-truth planning."],
+    ["SEIS Cloud", "seis-cloud", "seis_cloud_status / seis_cloud_plan", "Provider-neutral cloud readiness, SSH/VPN boundaries, and rollback planning."],
+    ["SEIS-Code", "seis-code", "seis_code_status / seis_code_plan", "Scoped implementation, CI quality gates, MCP/plugin engineering, and safe automation."],
+    ["SEIS-Design", "seis-design", "seis_design_status / seis_design_plan", "Product design, UI/UX, accessibility, motion, and visual QA planning."],
+    ["SEIS-DATA", "seis-data", "seis_data_status / seis_data_plan", "Schemas, reports, knowledge registries, memory/RAG planning, and provenance."],
+    ["SEIS Security", "seis-security", "seis_security_status / seis_security_plan", "Threat review, secret safety, permission risk, and release-blocking gates."],
+    ["SEIS Research", "seis-research", "seis_research_status / seis_research_plan", "Official-source review, standards/version checks, and evidence synthesis."],
+    ["SEIS Automation", "seis-automation", "seis_automation_status / seis_automation_plan", "Dry-runs, repeatable checks, runbooks, rollback, and human-approved automation gates."],
+    ["SEIS Product", "seis-product", "seis_product_status / seis_product_plan", "Requirements, acceptance criteria, roadmap slices, user outcomes, and launch-readiness evidence."]
+  ],
   agentLanes: [
     ["Architect Agent", "read-only / plan-only", "Turn vault notes into architecture decisions and rollback-aware implementation slices."],
     ["Code Agent", "write-gated later", "Map notes to scoped code changes only after human-approved file scope exists."],
     ["Design Agent", "read-only / plan-only", "Extract product/design principles, screenshots, tokens, and UI review notes."],
     ["Search Agent", "read-only", "Index local notes, docs, routes, and files without external search calls."],
     ["Security Agent", "review-only", "Block secrets, private data, unsafe Obsidian exports, and unapproved GitHub/cloud actions."],
-    ["Documentation Agent", "plan-only", "Convert reviewed notes into README, docs, changelog, and PR-ready summaries."]
+    ["Documentation Agent", "plan-only", "Convert reviewed notes into README, docs, changelog, and PR-ready summaries."],
+    ["Research Agent", "read-only / cite-only", "Attach source provenance, validation evidence, and clean-room research summaries to the graph."],
+    ["Automation Agent", "dry-run / plan-only", "Design traceable, reversible workflows without enabling autonomous external mutations."],
+    ["Product Agent", "read-only / plan-only", "Link requirements, acceptance criteria, user outcomes, and roadmap slices to delivery evidence."]
   ],
   autonomousAgentRoster: [
     ["Architect Agent", "Status/plan-only", "architecture, module boundaries, rollback-aware implementation plans"],
@@ -1519,7 +1533,8 @@ const SEIS_SECOND_BRAIN_SYSTEM = {
     ["Documentation Agent", "Status/plan-only", "README, status, index, backlog, and PR queue alignment"],
     ["QA Agent", "Status/plan-only", "validator, browser-smoke, regression, and acceptance evidence"],
     ["Cloud Agent", "Status/plan-only", "cloud, SSH, storage, sync, and provider readiness boundaries"],
-    ["Automation Agent", "Status/plan-only", "safe recurring workflows, ledgers, and human-approved automation gates"]
+    ["Automation Agent", "Status/plan-only", "safe recurring workflows, ledgers, and human-approved automation gates"],
+    ["Product Agent", "Status/plan-only", "requirements, acceptance criteria, roadmap slices, launch readiness, and delivery evidence"]
   ],
   pipeline: [
     ["Capture", "Local Demo", "Save browser-local Markdown notes under /home/seis/SecondBrain."],
@@ -5052,7 +5067,7 @@ function renderSecondBrain() {
       <article class="metric-card"><strong>Vault Notes</strong><p>${notes.length}</p></article>
       <article class="metric-card"><strong>Graph Links</strong><p>${links.length}</p></article>
       <article class="metric-card"><strong>Installed AI</strong><p>${SEIS_INSTALLED_AI_SYSTEMS.length}</p></article>
-      <article class="metric-card"><strong>Managed Lanes</strong><p>${SUB_AGENT_DEMO.lanes.length}</p></article>
+      <article class="metric-card" data-second-brain-managed-lanes><strong>Managed Lanes</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.length}</p></article>
       <article class="metric-card"><strong>Agent Roster</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length}</p></article>
       <article class="metric-card"><strong>Quality Gate</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.qualityGate)}</p></article>
       <article class="metric-card"><strong>Last Snapshot</strong><p>${data.lastSnapshot?.time || "Not saved yet"}</p></article>
@@ -5129,7 +5144,7 @@ function renderSecondBrain() {
           <h4>Managed Sub-Agent Lanes</h4>
           <table class="data-table" data-second-brain-subagents>
             <thead><tr><th>Lane</th><th>Tool</th><th>Scope</th></tr></thead>
-            <tbody>${SUB_AGENT_DEMO.lanes.map(([name, lane, tool, scope]) => `<tr>
+            <tbody>${SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.map(([name, lane, tool, scope]) => `<tr>
               <td><strong>${escapeHtml(name)}</strong><br><span class="muted">${escapeHtml(lane)}</span></td>
               <td>${escapeHtml(tool)}</td>
               <td>${escapeHtml(scope)}</td>
