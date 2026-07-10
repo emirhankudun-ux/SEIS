@@ -215,17 +215,23 @@ button{cursor:pointer}
 .reference-stat small{display:block;color:var(--muted);font-weight:850}
 .reference-stat strong{display:block;margin-top:4px;font-size:22px}
 .reference-filters{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
-.reference-source-tabs{display:flex;flex-wrap:wrap;gap:7px}
+.reference-collection-tabs,.reference-source-tabs{display:flex;flex-wrap:wrap;gap:7px}
+.reference-collection-tabs{grid-column:1/-1;overflow:auto;padding-bottom:2px}
+.reference-collection-tabs button{border:1px solid rgba(124,92,255,.34);border-radius:999px;background:rgba(124,92,255,.06);color:#cfd7f1;padding:7px 11px;font-size:12px;font-weight:850;white-space:nowrap}
+.reference-collection-tabs button.is-active{border-color:var(--accent);background:rgba(124,92,255,.24);color:#fff}
 .reference-source-tabs button{border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.045);color:var(--muted);padding:7px 11px;font-size:12px;font-weight:850}
 .reference-source-tabs button.is-active{border-color:var(--accent-2);background:rgba(25,198,212,.16);color:#fff}
 .reference-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
 .reference-tile{display:grid;grid-template-rows:118px auto;overflow:hidden;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(255,255,255,.052)}
 .reference-preview{width:100%;height:118px;border:0;background:#070b13 center/cover no-repeat;color:#fff}
 .reference-meta{display:grid;gap:8px;padding:10px}
+.reference-meta-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
 .reference-meta strong{font-size:14px;line-height:1.25}
 .reference-meta small{color:var(--accent-2);font-weight:900;text-transform:uppercase}
-.reference-actions{display:flex;flex-wrap:wrap;gap:7px}
+.reference-actions{display:flex;flex-wrap:wrap;align-items:center;gap:7px}
 .reference-actions button{min-height:32px;padding:0 10px;font-size:12px}
+.reference-actions .reference-pin{min-height:30px;padding:0 9px;border-color:rgba(245,158,82,.38);color:#f7cf9b}
+.reference-actions .reference-pin.is-active{border-color:#f59e52;background:rgba(245,158,82,.2);color:#fff}
 .live-demo-panel{display:grid;gap:12px;align-content:start}
 .live-hero{position:relative;display:grid;gap:14px;overflow:hidden;border:1px solid rgba(255,255,255,.14);border-radius:14px;background:radial-gradient(circle at 18% 18%,rgba(124,92,255,.34),transparent 32%),radial-gradient(circle at 78% 22%,rgba(25,198,212,.22),transparent 28%),linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.035));padding:18px;box-shadow:0 26px 80px rgba(0,0,0,.28)}
 .live-hero::after{content:"";position:absolute;right:-80px;bottom:-130px;width:360px;height:360px;border-radius:50%;background:conic-gradient(from 130deg,rgba(25,198,212,.18),rgba(124,92,255,.28),rgba(245,158,82,.18),rgba(25,198,212,.18));filter:blur(4px);opacity:.82;pointer-events:none}
@@ -276,6 +282,8 @@ button{cursor:pointer}
   .mini-side,.mini-rail{border:0}
   .file-side{display:none}
   .window,.window.is-max{inset:0!important;width:100%!important;height:100%!important;border-radius:0}
+  .reference-filters{grid-template-columns:1fr}
+  .reference-source-tabs{overflow:auto;flex-wrap:nowrap;padding-bottom:2px}
   .taskbar{height:62px;margin:0;border-radius:0}
   .tray span:not(.clock){display:none}
 }
@@ -396,6 +404,11 @@ button{cursor:pointer}
 const VERSION="1.0.0-seis";
 const LOCALE_KEY="seis.locale.v1";
 const SESSION_KEY="seis-linux-replica-session.v1";
+const REFERENCE_FAVORITES_KEY="seis-linux-replica-reference-favorites.v1";
+const REFERENCE_RECENTS_KEY="seis-linux-replica-reference-recents.v1";
+const MAX_REFERENCE_FAVORITES=40;
+const MAX_REFERENCE_RECENTS=18;
+const FEATURED_REFERENCE_FALLBACK_COUNT=24;
 const DEFAULT_LOCALE="tr";
 const LOCALES=["tr","en"];
 const COPY={
@@ -617,11 +630,39 @@ const DEMO_INTENT=readDemoIntent();
 let demoIntentConsumed=false;
 function escapeHtml(value){return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));}
 function referenceSourceLabel(source){return String(source||"reference").replace(/[_-]+/g," ").replace(/\b\w/g,c=>c.toUpperCase())}
-function filteredReferenceApps(source="all",query=""){const q=String(query||"").toLowerCase().trim();return REFERENCE_APP_ENTRIES.filter(app=>(source==="all"||app.source===source)&&(!q||`${app.name} ${app.category} ${app.source}`.toLowerCase().includes(q)))}
+const REFERENCE_COLLECTIONS=[
+  ["featured","Featured"],
+  ["all","All"],
+  ["desktop","Desktop"],
+  ["ai","AI"],
+  ["build","Build"],
+  ["design","Design"],
+  ["cloud","Cloud"],
+  ["pinned","Pinned"],
+  ["recent","Recent"]
+];
+const REFERENCE_COLLECTION_PATTERNS={
+  desktop:/desktop|shell|workspace|launcher|file|finder|window|taskbar|boot|login/i,
+  ai:/\bai\b|agent|model|neural|inference|training|prompt|token/i,
+  build:/code|debug|git|api|database|docker|terminal|developer|schema|query/i,
+  design:/design|studio|canvas|component|motion|texture|icon|font|visual|prototype/i,
+  cloud:/cloud|ssh|network|dns|global|subnet|firewall|deploy|storage/i
+};
+const REFERENCE_SEARCH_TEXT=new Map(REFERENCE_APP_ENTRIES.map(app=>[app.id,(app.name+" "+app.category+" "+app.source+" "+app.description).toLowerCase()]));
+function readReferenceIds(key){try{const value=JSON.parse(localStorage.getItem(key)||"[]");return Array.isArray(value)?value.filter(Boolean):[]}catch{return[]}}
+function saveReferenceIds(key,ids){try{localStorage.setItem(key,JSON.stringify(ids))}catch{/* ignored */}}
+function isReferenceFavorite(id){return readReferenceIds(REFERENCE_FAVORITES_KEY).includes(id)}
+function toggleReferenceFavorite(id){const ids=readReferenceIds(REFERENCE_FAVORITES_KEY);const next=ids.includes(id)?ids.filter(item=>item!==id):[id,...ids];saveReferenceIds(REFERENCE_FAVORITES_KEY,next.slice(0,MAX_REFERENCE_FAVORITES));return next.includes(id)}
+function rememberReference(id){const next=[id,...readReferenceIds(REFERENCE_RECENTS_KEY).filter(item=>item!==id)];saveReferenceIds(REFERENCE_RECENTS_KEY,next.slice(0,MAX_REFERENCE_RECENTS))}
+function referenceFeaturedScore(app){const value=(app.name+" "+app.description).toLowerCase();let score=0;if(/seis os animated desktop shell|seis os desktop shell|seis command center|command center aether ai|seis ai workspace|seis code studio|seis design studio glacier|seis cloud dashboard/.test(value))score+=100;if(/desktop shell|command center|ai workspace|code studio|design studio|cloud dashboard/.test(value))score+=30;return score}
+function referenceCollectionMatches(app,collection="all"){if(collection==="all")return true;if(collection==="pinned")return isReferenceFavorite(app.id);if(collection==="recent")return readReferenceIds(REFERENCE_RECENTS_KEY).includes(app.id);if(collection==="featured")return referenceFeaturedScore(app)>0||REFERENCE_APP_ENTRIES.indexOf(app)<FEATURED_REFERENCE_FALLBACK_COUNT;const pattern=REFERENCE_COLLECTION_PATTERNS[collection];return pattern?pattern.test(app.name+" "+app.description+" "+app.category):true}
+function sortReferenceApps(apps,collection="all"){const recent=readReferenceIds(REFERENCE_RECENTS_KEY);return [...apps].sort((a,b)=>{const favoriteDelta=Number(isReferenceFavorite(b.id))-Number(isReferenceFavorite(a.id));if(favoriteDelta)return favoriteDelta;if(collection==="recent")return recent.indexOf(a.id)-recent.indexOf(b.id);const scoreDelta=referenceFeaturedScore(b)-referenceFeaturedScore(a);if(scoreDelta)return scoreDelta;return a.name.localeCompare(b.name)})}
+function featuredReferenceApps(limit=6){return sortReferenceApps(REFERENCE_APP_ENTRIES.filter(app=>referenceCollectionMatches(app,"featured")),"featured").slice(0,limit)}
+function filteredReferenceApps(source="all",query="",collection="all"){const q=String(query||"").toLowerCase().trim();return sortReferenceApps(REFERENCE_APP_ENTRIES.filter(app=>(source==="all"||app.source===source)&&referenceCollectionMatches(app,collection)&&(!q||REFERENCE_SEARCH_TEXT.get(app.id)?.includes(q))),collection)}
 function findReferenceApp(term){const value=String(term||"").toLowerCase().trim();if(!value)return null;const index=Number(value);if(Number.isInteger(index)&&index>0)return REFERENCE_APP_ENTRIES[index-1]||null;return REFERENCE_APP_ENTRIES.find(app=>app.id.toLowerCase()===value||app.name.toLowerCase().includes(value)||app.category.toLowerCase().includes(value)||app.source.toLowerCase().includes(value))||null}
 function referenceSourceRows(){const total=Math.max(REFERENCE_APP_ENTRIES.length,1);return REFERENCE_SOURCES.map(source=>({source,label:referenceSourceLabel(source),count:REFERENCE_SOURCE_COUNTS[source]||0,share:Math.round(((REFERENCE_SOURCE_COUNTS[source]||0)/total)*100)})).sort((a,b)=>b.count-a.count)}
 function renderSourceStack(limit=8){const rows=referenceSourceRows().slice(0,limit);return"<div class=\"source-stack\">"+rows.map(row=>"<div class=\"source-row\"><small>"+escapeHtml(row.label)+"</small><div class=\"source-bar\"><span style=\"width:"+row.share+"%\"></span></div><strong>"+row.count+"</strong></div>").join("")+"</div>"}
-function openDemoTour(){["live-demo","demo-readiness","security-gate","reference-vault","terminal","search","code","paint","cloud"].forEach((id,index)=>setTimeout(()=>openApp(id),index*150));toast("SEIS Demo","Live Linux-like tour opened");log("tour:live-demo-readiness-security-gate-reference-vault-terminal-search-code-design-cloud")}
+function openDemoTour(){openApp("live-demo");["demo-readiness","security-gate","reference-vault","terminal"].forEach((appId,index)=>setTimeout(()=>openApp(appId),180*(index+1)));setTimeout(()=>focusWindow("live-demo"),940);toast("SEIS Demo","Live Demo Console opened. Readiness, Security Gate, references and terminal are staged beside it.");log("tour:live-demo-console-security-gate")}
 function normalize(path){const parts=[];String(path||"/").split("/").forEach(part=>{if(!part||part===".")return;if(part==="..")parts.pop();else parts.push(part)});return"/"+parts.join("/");}
 function pathJoin(base,next){return normalize(String(next||"").startsWith("/")?next:base+"/"+next);}
 function nodeAt(path){const parts=normalize(path).split("/").filter(Boolean);let node=VFS["/"];for(const part of parts){if(!node.children||!node.children[part])return null;node=node.children[part]}return node;}
@@ -637,7 +678,7 @@ function t(key){return COPY[state.locale]?.[key]||COPY[DEFAULT_LOCALE][key]||key
 function applyLocale(locale=state.locale,persist=true){state.locale=LOCALES.includes(locale)?locale:DEFAULT_LOCALE;document.documentElement.lang=state.locale;document.title=t("title");$$("[data-locale-text]").forEach(node=>{const value=t(node.dataset.localeText);if(node.dataset.localeText==="bootSub")node.innerHTML=value;else node.textContent=value});$("[data-locale-value]").textContent=state.locale.toUpperCase();if(persist){try{localStorage.setItem(LOCALE_KEY,state.locale)}catch{/* ignored */}saveSession("locale")}}
 function toggleLocale(){applyLocale(state.locale==="tr"?"en":"tr",true);toast("Locale",state.locale.toUpperCase())}
 function boot(){let progress=0;const fill=$("#bootFill");const timer=setInterval(()=>{progress+=Math.ceil(Math.random()*18);fill.style.width=Math.min(progress,100)+"%";if(progress>=100){clearInterval(timer);setTimeout(()=>{$("#boot").classList.add("is-hidden");$("#login").classList.add("is-active");if(DEMO_INTENT&&!demoIntentConsumed){$("#loginUser").value="demo";setTimeout(()=>enterDesktop(),350)}},250)}},180)}
-function enterDesktop(){const user=$("#loginUser").value||"seis";$("#login").classList.remove("is-active");$("#shell").classList.add("is-active");toast(t("welcome")+user,t("ready")+APP_CATALOG.length+t("readySuffix"));log("login:"+user);restoreSessionApps();if(DEMO_INTENT&&!demoIntentConsumed){demoIntentConsumed=true;setTimeout(()=>{openDemoTour();toast("SEIS Demo","Deep-link live tour started")},300)}}
+function enterDesktop(){const user=$("#loginUser").value||"seis";$("#login").classList.remove("is-active");$("#shell").classList.add("is-active");toast(t("welcome")+user,t("ready")+APP_CATALOG.length+t("readySuffix"));log("login:"+user);if(DEMO_INTENT){openDemoTour()}else restoreSessionApps();if(DEMO_INTENT&&!demoIntentConsumed){demoIntentConsumed=true;setTimeout(()=>toast("SEIS Demo","Deep-link live tour started"),300)}}
 function updateClock(){const now=new Date();$("#clockTime").textContent=now.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});$("#clockDate").textContent=now.toLocaleDateString([], {weekday:"short",month:"short",day:"numeric"})}
 function restoreSessionApps(){const session=readSession();const restored=(Array.isArray(session.openApps)?session.openApps:[]).filter(id=>APP_CATALOG.some(app=>app.id===id)).slice(0,4);(restored.length?restored:["live-demo","reference-vault","terminal"]).forEach(openApp)}
 function updateSideRailState(){const focused=state.windows.find(w=>w.id===focusedId())?.appId||"";$$("[data-side-app]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.sideApp===focused))}
@@ -652,7 +693,7 @@ function renderStartMenu(){const host=$("#startApps");const query=state.query.to
 function toggleStart(force){$("#startMenu").classList.toggle("is-active",force)}
 function renderTaskbar(){const host=$("#taskbarApps");host.innerHTML="";state.windows.filter(w=>!w.closed).forEach(w=>{const app=APP_CATALOG.find(a=>a.id===w.appId)||{id:w.appId,name:w.appId,icon:"APP"};const b=document.createElement("button");b.className="taskbar-app"+(w.id===focusedId()?" is-active":"");b.innerHTML="<span>"+escapeHtml(app.icon)+"</span><span>"+escapeHtml(app.name)+"</span>";b.onclick=()=>{const node=$("#"+w.id);if(w.min){w.min=false;node?.classList.remove("is-min")}focusWindow(w.id)};host.appendChild(b)});updateSideRailState()}
 function focusedId(){return state.windows.filter(w=>!w.closed&&!w.min).sort((a,b)=>b.z-a.z)[0]?.id||""}
-function openApp(appId){const app=APP_CATALOG.find(a=>a.id===appId);if(!app)return;toggleStart(false);const existing=state.windows.find(w=>w.appId===appId&&!w.closed);if(existing){existing.min=false;$("#"+existing.id)?.classList.remove("is-min");focusWindow(existing.id);saveSession("focus");return}const id="win"+(++state.counter);const win={id,appId,z:++state.z,min:false,max:false,closed:false};state.windows.push(win);const node=document.createElement("section");node.className="window";node.id=id;node.dataset.appId=appId;const offset=(state.windows.length%7)*26;const size=defaultSize(app);node.style.left=Math.min(190+offset,innerWidth-360)+"px";node.style.top=Math.min(82+offset,innerHeight-320)+"px";node.style.width=Math.max(320,Math.min(size.w,innerWidth-24))+"px";node.style.height=Math.max(220,Math.min(size.h,innerHeight-120))+"px";node.style.zIndex=win.z;node.innerHTML="<header class=\"window-head\"><span class=\"window-mark\">"+escapeHtml(app.icon)+"</span><strong>"+escapeHtml(app.name)+"</strong><div class=\"window-controls\"><button data-win=\"min\">-</button><button data-win=\"max\">[]</button><button class=\"close\" data-win=\"close\">x</button></div></header><div class=\"window-body\"></div><span class=\"resize-handle\" data-resize=\""+escapeHtml(id)+"\" aria-hidden=\"true\"></span>";$("#windowLayer").appendChild(node);wireWindow(node,win);renderApp($(".window-body",node),app);focusWindow(id);renderTaskbar();log("open:"+app.name);saveSession("open")}
+function openApp(appId){const app=APP_CATALOG.find(a=>a.id===appId);if(!app)return;if(app.type==="reference")rememberReference(app.id);toggleStart(false);const existing=state.windows.find(w=>w.appId===appId&&!w.closed);if(existing){existing.min=false;$("#"+existing.id)?.classList.remove("is-min");focusWindow(existing.id);saveSession("focus");return}const id="win"+(++state.counter);const win={id,appId,z:++state.z,min:false,max:false,closed:false};state.windows.push(win);const node=document.createElement("section");node.className="window";node.id=id;node.dataset.appId=appId;const offset=(state.windows.length%7)*26;const size=defaultSize(app);node.style.left=Math.min(190+offset,innerWidth-360)+"px";node.style.top=Math.min(82+offset,innerHeight-320)+"px";node.style.width=Math.max(320,Math.min(size.w,innerWidth-24))+"px";node.style.height=Math.max(220,Math.min(size.h,innerHeight-120))+"px";node.style.zIndex=win.z;node.innerHTML="<header class=\"window-head\"><span class=\"window-mark\">"+escapeHtml(app.icon)+"</span><strong>"+escapeHtml(app.name)+"</strong><div class=\"window-controls\"><button data-win=\"min\">-</button><button data-win=\"max\">[]</button><button class=\"close\" data-win=\"close\">x</button></div></header><div class=\"window-body\"></div><span class=\"resize-handle\" data-resize=\""+escapeHtml(id)+"\" aria-hidden=\"true\"></span>";$("#windowLayer").appendChild(node);wireWindow(node,win);renderApp($(".window-body",node),app);focusWindow(id);renderTaskbar();log("open:"+app.name);saveSession("open")}
 function defaultSize(app){if(app.type==="terminal")return{w:760,h:460};if(app.type==="files")return{w:860,h:560};if(app.type==="editor")return{w:760,h:540};if(app.type==="search"||app.type==="seis-bridge")return{w:780,h:540};if(app.type==="live-demo")return{w:980,h:700};if(app.type==="readiness")return{w:860,h:620};if(app.type==="reference-vault")return{w:1120,h:720};if(app.type==="reference")return{w:980,h:680};return{w:620,h:430}}
 function wireWindow(node,win){node.addEventListener("pointerdown",()=>focusWindow(win.id));$(".window-head",node).addEventListener("pointerdown",e=>{if(e.target.closest(".window-controls")||win.max)return;const rect=node.getBoundingClientRect();const dx=e.clientX-rect.left,dy=e.clientY-rect.top;node.setPointerCapture(e.pointerId);function move(ev){node.style.left=Math.max(-rect.width+110,Math.min(innerWidth-120,ev.clientX-dx))+"px";node.style.top=Math.max(0,Math.min(innerHeight-110,ev.clientY-dy))+"px"}function up(){node.removeEventListener("pointermove",move);node.removeEventListener("pointerup",up);saveSession("drag")}node.addEventListener("pointermove",move);node.addEventListener("pointerup",up)});$("[data-resize]",node)?.addEventListener("pointerdown",e=>{if(win.max)return;e.preventDefault();e.stopPropagation();const rect=node.getBoundingClientRect();const startX=e.clientX,startY=e.clientY;node.setPointerCapture(e.pointerId);function move(ev){node.style.width=Math.max(320,Math.min(innerWidth-24,rect.width+ev.clientX-startX))+"px";node.style.height=Math.max(220,Math.min(innerHeight-120,rect.height+ev.clientY-startY))+"px"}function up(){node.removeEventListener("pointermove",move);node.removeEventListener("pointerup",up);saveSession("resize")}node.addEventListener("pointermove",move);node.addEventListener("pointerup",up)});$$("[data-win]",node).forEach(btn=>btn.onclick=()=>handleWin(win.id,btn.dataset.win))}
 function handleWin(id,action){const w=state.windows.find(item=>item.id===id);const node=$("#"+id);if(!w||!node)return;if(action==="close"){w.closed=true;node.remove()}if(action==="min"){w.min=true;node.classList.add("is-min")}if(action==="max"){w.max=!w.max;node.classList.toggle("is-max",w.max)}renderTaskbar();saveSession("window-"+action)}
@@ -711,7 +752,7 @@ function renderLiveDemo(body){
     ["Cloud","Mock-safe SSH boundary","cloud"],
     ["Security","Owner-gated merge blocker","security-gate"]
   ];
-  const sampleRefs=REFERENCE_APP_ENTRIES.slice(0,6);
+  const sampleRefs=featuredReferenceApps(6);
   body.innerHTML="<div class=\"app live-demo-panel\" data-live-demo-console>"+
     "<section class=\"live-hero\">"+
       "<div class=\"bridge-status\"><span>Runnable</span><span>Linux-like</span><span>Local Demo</span><span>No SSH / no keys</span></div>"+
@@ -733,9 +774,10 @@ function renderLiveDemo(body){
 }
 function renderReferenceVault(body){
   let activeSource="all";
+  let activeCollection="featured";
   let query="";
   function draw(){
-    const refs=filteredReferenceApps(activeSource,query);
+    const refs=filteredReferenceApps(activeSource,query,activeCollection);
     const visible=refs.slice(0,80);
     body.innerHTML="<div class=\"app reference-vault\" data-reference-vault>"+
       "<section class=\"reference-hero\"><div class=\"bridge-status\"><span>Local Demo</span><span>Uploaded ZIP references</span><span>No SSH</span></div><h2>Reference Vault</h2><p>Live catalog for the supplied web desktop and AI platform modules. Open any module inside a SEIS window, launch it in a separate tab, or run a quick Linux-like demo tour.</p><div class=\"reference-stats\"><div class=\"reference-stat\"><small>Total modules</small><strong>"+REFERENCE_APP_ENTRIES.length+"</strong></div>"+REFERENCE_SOURCES.map(source=>"<div class=\"reference-stat\"><small>"+escapeHtml(referenceSourceLabel(source))+"</small><strong>"+REFERENCE_SOURCE_COUNTS[source]+"</strong></div>").join("")+"</div><div class=\"bridge-actions\"><button class=\"primary\" data-ref-tour>Run demo tour</button><button class=\"secondary\" data-ref-random>Open random module</button><button class=\"secondary\" data-local-app=\"terminal\">Open Terminal</button><button class=\"secondary\" data-local-app=\"search\">Open Search</button></div></section>"+
@@ -743,11 +785,22 @@ function renderReferenceVault(body){
       "<section class=\"reference-list\">"+visible.map((app,index)=>"<article class=\"reference-tile\"><button class=\"reference-preview\" data-ref-id=\""+escapeHtml(app.id)+"\" style=\"background-image:url('"+escapeHtml(app.thumbnail||"")+"')\" aria-label=\"Open "+escapeHtml(app.name)+"\"></button><div class=\"reference-meta\"><small>"+escapeHtml(referenceSourceLabel(app.source))+" / "+escapeHtml(app.category)+"</small><strong>"+escapeHtml(app.name)+"</strong><span class=\"muted\">"+escapeHtml(app.description)+"</span><div class=\"reference-actions\"><button class=\"primary\" data-ref-id=\""+escapeHtml(app.id)+"\">Open</button><button class=\"secondary\" data-ref-route=\""+escapeHtml(app.route||"")+"\">Tab</button><span class=\"muted\">#"+(index+1)+"</span></div></div></article>").join("")+"</section>"+
       (refs.length>visible.length?"<div class=\"card muted\">Showing first "+visible.length+" of "+refs.length+" matches. Refine search for more.</div>":"")+
     "</div>";
+    const collectionHost=document.createElement("div");
+    collectionHost.className="reference-collection-tabs";
+    collectionHost.setAttribute("role","tablist");
+    collectionHost.innerHTML=REFERENCE_COLLECTIONS.map(([id,label])=>"<button type=\"button\" data-ref-collection=\""+id+"\">"+label+"</button>").join("");
+    $(".reference-filters",body).prepend(collectionHost);
+    $$("[data-ref-collection]",body).forEach(btn=>{btn.classList.toggle("is-active",btn.dataset.refCollection===activeCollection);btn.setAttribute("aria-selected",String(btn.dataset.refCollection===activeCollection));btn.onclick=()=>{activeCollection=btn.dataset.refCollection;draw()}});
+    const pinnedCount=REFERENCE_APP_ENTRIES.filter(app=>isReferenceFavorite(app.id)).length;
+    const recentCount=readReferenceIds(REFERENCE_RECENTS_KEY).filter(id=>REFERENCE_APP_ENTRIES.some(app=>app.id===id)).length;
+    $(".reference-stats",body)?.insertAdjacentHTML("beforeend","<div class=\"reference-stat\"><small>Pinned</small><strong>"+pinnedCount+"</strong></div><div class=\"reference-stat\"><small>Recent</small><strong>"+recentCount+"</strong></div>");
+    $$(".reference-actions",body).forEach(actions=>{const open=$("[data-ref-id]",actions);if(!open)return;const id=open.dataset.refId;const pin=document.createElement("button");pin.type="button";pin.className="secondary reference-pin"+(isReferenceFavorite(id)?" is-active":"");pin.dataset.refFavorite=id;pin.setAttribute("aria-pressed",String(isReferenceFavorite(id)));pin.textContent=isReferenceFavorite(id)?"Pinned":"Pin";actions.prepend(pin)});
     $("[data-ref-query]",body).oninput=e=>{query=e.target.value;draw();const input=$("[data-ref-query]",body);input?.focus();input?.setSelectionRange(query.length,query.length)};
     $$("[data-ref-source]",body).forEach(btn=>{btn.classList.toggle("is-active",btn.dataset.refSource===activeSource);btn.onclick=()=>{activeSource=btn.dataset.refSource;draw()}});
     $$("[data-ref-id]",body).forEach(btn=>btn.onclick=()=>openApp(btn.dataset.refId));
-    $$("[data-ref-route]",body).forEach(btn=>btn.onclick=()=>openReplicaRoute(btn.dataset.refRoute,btn.textContent.trim()||"Reference module"));
-    $("[data-ref-random]",body).onclick=()=>{const list=filteredReferenceApps(activeSource,query);const target=list[Math.floor(Math.random()*list.length)]||REFERENCE_APP_ENTRIES[0];if(target)openApp(target.id)};
+    $$("[data-ref-route]",body).forEach(btn=>{if(!btn.dataset.refRoute){btn.disabled=true;btn.textContent="No route"}else btn.onclick=()=>openReplicaRoute(btn.dataset.refRoute,btn.textContent.trim()||"Reference module")});
+    $$("[data-ref-favorite]",body).forEach(btn=>btn.onclick=()=>{const active=toggleReferenceFavorite(btn.dataset.refFavorite);toast("Reference Vault",active?"Pinned reference":"Removed pin");draw()});
+    $("[data-ref-random]",body).onclick=()=>{const list=filteredReferenceApps(activeSource,query,activeCollection);const target=list[Math.floor(Math.random()*list.length)]||featuredReferenceApps(1)[0]||REFERENCE_APP_ENTRIES[0];if(target)openApp(target.id)};
     $("[data-ref-tour]",body).onclick=openDemoTour;
     $$("[data-local-app]",body).forEach(btn=>btn.onclick=()=>openApp(btn.dataset.localApp));
   }
@@ -812,7 +865,7 @@ function buildSearchResults(scope,query){
   return[...routeResults,...referenceResults,...appResults,...fileResults].slice(0,36);
 }
 function renderSearch(body){let activeScope="All";body.innerHTML="<div class=\"app grid\" data-seis-search-gateway><h2>SEIS Search Gateway</h2><p class=\"muted\">Search AI, Web, Code, Design, Cloud, Apps, Plugins, Files, References, and local website routes from the Linux-like SEIS shell.</p><label class=\"field\">Search<input data-q placeholder=\"SEIS Code, Design, Cloud, reference, plugin, file\"></label><div class=\"search-scope-tabs\" role=\"tablist\">"+["All","AI","Web","Code","Design","Cloud","Apps","Plugins","Files","References"].map(scope=>"<button type=\"button\" data-seis-search-scope=\""+scope+"\">"+scope+"</button>").join("")+"</div><div class=\"search-results\" data-results></div></div>";const input=$("[data-q]",body),results=$("[data-results]",body);function draw(){const q=input.value||"";$$("[data-seis-search-scope]",body).forEach(btn=>btn.classList.toggle("is-active",btn.dataset.seisSearchScope===activeScope));const found=buildSearchResults(activeScope,q);results.innerHTML=found.map(item=>"<button class=\"bridge-card\" data-seis-connected-result data-kind=\""+escapeHtml(item.kind)+"\" data-app=\""+escapeHtml(item.appId||"")+"\" data-route=\""+escapeHtml(item.route||"")+"\" data-path=\""+escapeHtml(item.path||"")+"\"><small>"+escapeHtml(item.scope)+" / "+escapeHtml(item.state)+"</small><strong>"+escapeHtml(item.title)+"</strong><span class=\"muted\">"+escapeHtml(item.summary)+"</span></button>").join("")||"<div class=\"card muted\">No connected SEIS result found.</div>"}input.oninput=draw;$$("[data-seis-search-scope]",body).forEach(btn=>btn.onclick=()=>{activeScope=btn.dataset.seisSearchScope;draw()});results.onclick=e=>{const b=e.target.closest("[data-seis-connected-result]");if(!b)return;if(b.dataset.route)openReplicaRoute(b.dataset.route,b.textContent.trim());else if(b.dataset.app)openApp(b.dataset.app);else if(b.dataset.path)openEditorFile(b.dataset.path)};draw()}
-function renderLaunchpad(body){const coreApps=APP_CATALOG.filter(app=>app.type!=="reference");const referenceSample=REFERENCE_APP_ENTRIES.slice(0,24);body.innerHTML="<div class=\"app grid\"><h2>Launchpad</h2><div class=\"metric-strip\"><div class=\"metric\"><small>Core apps</small><strong>"+coreApps.length+"</strong></div><div class=\"metric\"><small>Reference modules</small><strong>"+REFERENCE_APP_ENTRIES.length+"</strong></div><div class=\"metric\"><small>Mode</small><strong>Local</strong></div></div><div class=\"toolbar\"><button class=\"primary\" data-app=\"reference-vault\">Open Reference Vault</button><button class=\"secondary\" data-tour>Demo Tour</button></div><h3>Core apps</h3><div class=\"grid cols\">"+coreApps.map(app=>"<button class=\"card\" data-app=\""+escapeHtml(app.id)+"\"><strong>"+escapeHtml(app.icon)+" "+escapeHtml(app.name)+"</strong><p class=\"muted\">"+escapeHtml(app.description)+"</p></button>").join("")+"</div><h3>Reference sample</h3><div class=\"grid cols\">"+referenceSample.map(app=>"<button class=\"card\" data-app=\""+escapeHtml(app.id)+"\"><strong>"+escapeHtml(app.icon)+" "+escapeHtml(app.name)+"</strong><p class=\"muted\">"+escapeHtml(referenceSourceLabel(app.source))+"</p></button>").join("")+"</div></div>";$$("[data-app]",body).forEach(b=>b.onclick=()=>openApp(b.dataset.app));$("[data-tour]",body).onclick=openDemoTour}
+function renderLaunchpad(body){const coreApps=APP_CATALOG.filter(app=>app.type!=="reference");const referenceSample=featuredReferenceApps(24);body.innerHTML="<div class=\"app grid\"><h2>Launchpad</h2><div class=\"metric-strip\"><div class=\"metric\"><small>Core apps</small><strong>"+coreApps.length+"</strong></div><div class=\"metric\"><small>Reference modules</small><strong>"+REFERENCE_APP_ENTRIES.length+"</strong></div><div class=\"metric\"><small>Mode</small><strong>Local</strong></div></div><div class=\"toolbar\"><button class=\"primary\" data-app=\"reference-vault\">Open Reference Vault</button><button class=\"secondary\" data-tour>Demo Tour</button></div><h3>Core apps</h3><div class=\"grid cols\">"+coreApps.map(app=>"<button class=\"card\" data-app=\""+escapeHtml(app.id)+"\"><strong>"+escapeHtml(app.icon)+" "+escapeHtml(app.name)+"</strong><p class=\"muted\">"+escapeHtml(app.description)+"</p></button>").join("")+"</div><h3>Featured references</h3><div class=\"grid cols\">"+referenceSample.map(app=>"<button class=\"card\" data-app=\""+escapeHtml(app.id)+"\"><strong>"+escapeHtml(app.icon)+" "+escapeHtml(app.name)+"</strong><p class=\"muted\">"+escapeHtml(referenceSourceLabel(app.source))+"</p></button>").join("")+"</div></div>";$$("[data-app]",body).forEach(b=>b.onclick=()=>openApp(b.dataset.app));$("[data-tour]",body).onclick=openDemoTour}
 function renderLogs(body){body.innerHTML="<div class=\"app grid\"><h2>Logs</h2>"+state.logs.map(l=>"<div class=\"card\"><strong>"+escapeHtml(l.time)+"</strong><p class=\"muted\">"+escapeHtml(l.event)+"</p></div>").join("")+"</div>"}
 function renderBrowser(body){body.innerHTML="<div class=\"app grid\"><label class=\"field\">URL<input value=\"seis://local-demo\"></label><button class=\"primary\">Load Local Page</button><div class=\"card\"><h3>Simulated Response</h3><p class=\"muted\">No external network request was made.</p></div></div>";$("button",body).onclick=()=>toast("Browser","Loaded local simulated response")}
 function renderGame(body,app){let score=0;body.innerHTML="<div class=\"app grid\"><h2>"+escapeHtml(app.name)+"</h2><div class=\"card\"><strong data-score>Score 0</strong><p class=\"muted\">Local playable shell. Controls update real state.</p></div><div class=\"toolbar\"><button class=\"primary\" data-play>Play Turn</button><button class=\"secondary\" data-reset>Reset</button></div></div>";$("[data-play]",body).onclick=()=>{$("[data-score]",body).textContent="Score "+(score+=Math.ceil(Math.random()*12))};$("[data-reset]",body).onclick=()=>{$("[data-score]",body).textContent="Score "+(score=0)}}
