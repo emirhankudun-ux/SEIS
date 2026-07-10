@@ -5,6 +5,20 @@ Date: 2026-06-24
 This status captures the current branch foundation state. It is not a release,
 deployment, public-readiness, or merge-readiness claim.
 
+## AGI GitHub Readiness Gates - 2026-07-10
+
+Status: blocked pending independent evidence.
+
+The new AGI GitHub readiness chain keeps Local Demo review available without
+provider keys. The 20B target on 16GB+ RAM remains a planned quantized
+evaluation only; 70B, 512B, foundation-model, and real-AGI claims remain
+blocked until independent evidence and explicit human approval are recorded.
+
+Run npm run check:seis-ai-github-readiness-chain to validate the new local-only
+claim boundary. A pass does not prove a model download, inference, training,
+benchmark, fresh clone, deployment, SSH connection, provider access, or
+external review.
+
 ## GitHub Merge Queue Continuity - 2026-07-01
 
 The current GitHub queue is being kept in PR-safe auto-merge mode so a machine

@@ -2,6 +2,17 @@
 
 Date: 2026-06-23
 
+## PR 4J: AGI GitHub Readiness Gates - 2026-07-10
+
+| Field | Value |
+| --- | --- |
+| Priority | P0 |
+| Goal | Keep Local Demo review available while blocking unsupported 20B runtime, 512B, foundation-model, and real-AGI claims until independent evidence exists. |
+| Include | feat(ai): add AGI GitHub readiness gates, the independent evidence ledger bridge, fresh-clone plan, local-only readiness chain, CI workflow, regression test, and documentation updates. |
+| Exclude | Model downloads, inference, training, fine-tuning, provider calls, SSH, deployment, automatic GitHub mutation, and any AGI or 512B readiness claim. |
+| Validation | npm run check:seis-ai-github-readiness-chain, node --test test/seis-agi-github-readiness-gates.test.mjs, and the read-only GitHub Actions workflow. |
+| Approval needed | Independent evidence and explicit human approval before any AGI, 20B runtime, 512B, model ownership, or public release claim changes. |
+
 ## Active GitHub Merge Queue Continuity - 2026-07-01
 
 This queue keeps current GitHub work resumable across local machine changes and

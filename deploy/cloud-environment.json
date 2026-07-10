@@ -9538,7 +9538,103 @@
       "available": false,
       "candidateCount": 6,
       "detectedCount": 0,
-      "candidates": []
+      "candidates": [
+        {
+          "id": "claude-code",
+          "label": "Claude Code",
+          "status": "missing",
+          "sourceRoot": null,
+          "aliases": [
+            "claude-code"
+          ],
+          "markerHints": [
+            ".claude",
+            ".claude-plugin",
+            ".git"
+          ],
+          "markerHits": []
+        },
+        {
+          "id": "gemini-cli",
+          "label": "Gemini CLI",
+          "status": "missing",
+          "sourceRoot": null,
+          "aliases": [
+            "gemini-cli"
+          ],
+          "markerHints": [
+            ".gemini",
+            ".github",
+            "packages"
+          ],
+          "markerHits": []
+        },
+        {
+          "id": "antigravity",
+          "label": "Antigravity IDE",
+          "status": "missing",
+          "sourceRoot": null,
+          "aliases": [
+            "antigravity"
+          ],
+          "markerHints": [
+            "Contents",
+            "Configuration",
+            "Plugins"
+          ],
+          "markerHits": []
+        },
+        {
+          "id": "deepseek-coder",
+          "label": "DeepSeek Coder",
+          "status": "missing",
+          "sourceRoot": null,
+          "aliases": [
+            "DeepSeek-Coder",
+            "deepseek-coder"
+          ],
+          "markerHints": [
+            ".github",
+            "finetune",
+            "Evaluation"
+          ],
+          "markerHits": []
+        },
+        {
+          "id": "awesome-deepseek-agent",
+          "label": "Awesome DeepSeek Agent",
+          "status": "missing",
+          "sourceRoot": null,
+          "aliases": [
+            "awesome-deepseek-agent",
+            "deepseek"
+          ],
+          "markerHints": [
+            ".github",
+            "docs",
+            "README.md"
+          ],
+          "markerHits": []
+        },
+        {
+          "id": "open-design",
+          "label": "Open Design",
+          "status": "missing",
+          "sourceRoot": null,
+          "aliases": [
+            "open-design",
+            "Open Design",
+            "opendesign"
+          ],
+          "markerHints": [
+            "apps",
+            "deploy",
+            "package.json",
+            "QUICKSTART.md"
+          ],
+          "markerHits": []
+        }
+      ]
     },
     "thirdPartyAdaptationPlan": {
       "id": "seis-third-party-adaptation-plan",

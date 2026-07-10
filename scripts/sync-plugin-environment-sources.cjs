@@ -305,9 +305,8 @@ function checkThirdPartyCandidate(root, definition) {
 
 function createThirdPartyAiToolInventorySource(existingSource) {
   const sourceRootExists = fs.existsSync(thirdPartySourceRoot);
-  const candidates = sourceRootExists
-    ? THIRD_PARTY_AI_HELPERS.map((definition) => checkThirdPartyCandidate(thirdPartySourceRoot, definition))
-    : [];
+  // Keep the declared candidate contract available when the optional source root is absent.
+  const candidates = THIRD_PARTY_AI_HELPERS.map((definition) => checkThirdPartyCandidate(thirdPartySourceRoot, definition));
 
   return {
     id: "seis-third-party-ai-tool-inventory",
