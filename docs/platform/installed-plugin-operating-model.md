@@ -39,6 +39,10 @@ project MCP configs. Kimi provider login, official Kimi marketplace plugin
 installation, and Claude MCP approval remain explicit user-owned actions.
 Restart Codex to pick up new skills.
 
+The safe development focus for applying installed plugins, MCP servers, skills,
+and connectors to SEIS work is documented in
+`docs/platform/mcp-plugin-development-focus.md`.
+
 ## OpenAI-First Rule
 
 For core SEIS work, use OpenAI/Codex plugin families first: `openai-curated`, `openai-bundled`, and `openai-primary-runtime`. Use external or non-installed plugin URI families only when the OpenAI/Codex route cannot satisfy the request or the user explicitly asks for that provider.

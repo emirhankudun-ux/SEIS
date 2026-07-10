@@ -5,8 +5,8 @@
   "helperCount": 17,
   "readyCount": 11,
   "missingCredentialCount": 2,
-  "missingCommandCount": 4,
-  "runtimeNotReadyCount": 0,
+  "missingCommandCount": 3,
+  "runtimeNotReadyCount": 1,
   "tools": [
     {
       "id": "codex",
@@ -153,17 +153,15 @@
       "id": "kimi",
       "label": "Kimi",
       "command": "kimi",
-      "commandPath": null,
+      "commandPath": "/Users/emirhankudun/.local/bin/kimi",
       "launcherCommandPath": null,
       "appPath": null,
-      "installed": false,
+      "installed": true,
       "credentialState": null,
       "runtimeOk": true,
       "offlineFallbackCapable": true,
-      "status": "missing-command",
-      "issueCodes": [
-        "command-not-found"
-      ]
+      "status": "ready",
+      "issueCodes": []
     },
     {
       "id": "ollama",
@@ -174,10 +172,12 @@
       "appPath": null,
       "installed": true,
       "credentialState": null,
-      "runtimeOk": true,
+      "runtimeOk": false,
       "offlineFallbackCapable": true,
-      "status": "ready",
-      "issueCodes": []
+      "status": "runtime-not-ready",
+      "issueCodes": [
+        "runtime-check-failed"
+      ]
     },
     {
       "id": "opencode",
