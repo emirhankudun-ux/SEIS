@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Press Kit | Aether AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=JetBrains+Mono:wght@100..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#111417",
+                        "error-container": "#93000a",
+                        "on-primary-fixed": "#002022",
+                        "surface-container-lowest": "#0c0e12",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "outline-variant": "#3b494b",
+                        "on-surface": "#e1e2e7",
+                        "on-tertiary-container": "#5d5f5f",
+                        "tertiary-container": "#d9d9d9",
+                        "on-secondary-container": "#fff6fc",
+                        "on-primary-container": "#006970",
+                        "surface-container-low": "#191c1f",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-primary": "#00363a",
+                        "surface-container-highest": "#323539",
+                        "surface-bright": "#37393d",
+                        "secondary-fixed": "#f8d8ff",
+                        "primary-container": "#00f0ff",
+                        "inverse-on-surface": "#2e3134",
+                        "tertiary-fixed": "#e2e2e2",
+                        "primary": "#dbfcff",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "outline": "#849495",
+                        "on-secondary": "#520072",
+                        "on-background": "#e1e2e7",
+                        "inverse-primary": "#006970",
+                        "surface-container": "#1d2023",
+                        "secondary-container": "#b600f8",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "error": "#ffb4ab",
+                        "primary-fixed": "#7df4ff",
+                        "surface-container-high": "#282a2e",
+                        "secondary": "#ebb2ff",
+                        "surface-variant": "#323539",
+                        "on-error": "#690005",
+                        "tertiary": "#f5f5f5",
+                        "surface": "#111417",
+                        "background": "#111417",
+                        "surface-tint": "#00dbe9",
+                        "on-tertiary": "#2f3131",
+                        "on-secondary-fixed": "#320047",
+                        "on-error-container": "#ffdad6",
+                        "on-surface-variant": "#b9cacb",
+                        "inverse-surface": "#e1e2e7",
+                        "primary-fixed-dim": "#00dbe9",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "on-primary-fixed-variant": "#004f54"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "margin-desktop": "64px",
+                        "section-gap": "120px",
+                        "margin-mobile": "20px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "mono-label": ["JetBrains Mono"],
+                        "mono-code": ["JetBrains Mono"],
+                        "display-lg-mobile": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "mono-label": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "mono-code": ["13px", { "lineHeight": "22px", "fontWeight": "400" }],
+                        "display-lg-mobile": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "display-lg": ["72px", { "lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800" }],
+                        "headline-md": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #020408;
+            color: #e1e2e7;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-card {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(125, 244, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(125, 244, 255, 0.4);
+            box-shadow: 0 0 40px rgba(0, 240, 255, 0.1);
+        }
+        .glow-button {
+            transition: all 0.2s ease;
+        }
+        .glow-button:active {
+            transform: scale(0.96);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .pulse-dot {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(0, 240, 255, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 240, 255, 0); }
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30">
+<div class="font-headline-md text-headline-md font-bold text-primary-fixed tracking-tight">Aether AI</div>
+<div class="hidden lg:flex items-center space-x-8">
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors font-body-md text-body-md" href="#">Models</a>
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors font-body-md text-body-md" href="#">Infrastructure</a>
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors font-body-md text-body-md" href="#">Compute</a>
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors font-body-md text-body-md" href="#">Enterprise</a>
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors font-body-md text-body-md" href="#">Pricing</a>
+</div>
+<div class="flex items-center space-x-4">
+<button class="hidden md:block text-on-surface font-body-md px-4 py-2 hover:opacity-80 transition-opacity">Sign In</button>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 rounded-full font-semibold hover:brightness-110 active:scale-95 transition-all">Get Started</button>
+</div>
+</nav>
+<!-- Hero Section -->
+<header class="relative pt-40 pb-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto overflow-hidden">
+
+<div class="max-w-3xl">
+<div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-primary-fixed/10 border border-primary-fixed/20 mb-8">
+<span class="w-2 h-2 rounded-full bg-primary-fixed pulse-dot"></span>
+<span class="font-mono-label text-mono-label text-primary-fixed">PRESS KIT 2024</span>
+</div>
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-8">Engineering the future of intelligence.</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl leading-relaxed">
+                Aether AI provides the core infrastructure for next-generation artificial intelligence. This press kit contains approved brand assets, executive biographies, and official company data for media use.
+            </p>
+</div>
+</header>
+<!-- Downloads Section: Bento Grid -->
+<section class="py-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2">High-Resolution Assets</h2>
+<p class="text-on-surface-variant font-body-md">Approved logos, photography, and brand guidelines.</p>
+</div>
+<button class="flex items-center space-x-2 text-primary-fixed font-mono-label text-mono-label hover:underline decoration-primary-fixed/50 underline-offset-4">
+<span class="material-symbols-outlined">download</span>
+<span>DOWNLOAD ALL ASSETS (.ZIP)</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Logos -->
+<div class="glass-card p-8 rounded-xl md:col-span-2 flex flex-col justify-between min-h-[320px]">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-4">Official Logos</h3>
+<p class="text-on-surface-variant mb-8 max-w-md">Our visual identity system in vector and high-res raster formats, including dark and light mode variations.</p>
+</div>
+<div class="flex flex-wrap gap-4">
+<button class="bg-surface-container-high px-4 py-3 rounded-lg border border-outline-variant/30 flex items-center space-x-3 hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-primary-fixed">description</span>
+<span class="font-mono-label text-mono-label">LOGOPACK_SVG.ZIP</span>
+</button>
+<button class="bg-surface-container-high px-4 py-3 rounded-lg border border-outline-variant/30 flex items-center space-x-3 hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-primary-fixed">image</span>
+<span class="font-mono-label text-mono-label">LOGOPACK_PNG.ZIP</span>
+</button>
+</div>
+</div>
+<!-- Brand Guidelines -->
+<div class="glass-card p-8 rounded-xl flex flex-col min-h-[320px] relative overflow-hidden group">
+<div class="relative z-10">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-4">Brand Guide</h3>
+<p class="text-on-surface-variant">Complete standards for typography, color, and spacing usage.</p>
+</div>
+<div class="mt-auto relative z-10">
+<button class="w-full bg-primary-fixed text-on-primary-fixed font-semibold py-3 rounded-lg flex justify-center items-center space-x-2">
+<span class="material-symbols-outlined">menu_book</span>
+<span>VIEW GUIDELINES</span>
+</button>
+</div>
+<div class="absolute -right-8 -bottom-8 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-[160px]">architecture</span>
+</div>
+</div>
+<!-- Headshots -->
+<div class="md:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mt-4">
+<div class="group relative aspect-[3/4] overflow-hidden rounded-xl border border-outline-variant/30">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A professional studio headshot of a CEO in a minimalist tech office setting. High-end professional photography with dramatic soft lighting and deep shadows. The aesthetic is clean, corporate-futuristic, with a cool-toned obsidian background and subtle cyan rim lighting on the subject." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHkec89zKe4clah0unDnO0Ol4vHcgv0L-fzF7CA71GH8RQWoOSFD6Xu8JsBR9-y3xJQJYBzbTN6G5flSPcI2So9vHe_p98F4mJOI9G1e-5WxO0qfKPzY8raDtlF23jcHhiPvdl5sPdJXcErIuEkrV7cMuBcj7xwuJGRVl9LPxMItyySGga8xmtL014OsLZheiYnrVWPJDPtVoFhxUlCSC-LvnvO9h6_x5WSUjvoZLM7FPcQC4nvfhLw2Alnlm330qc20mkGFJg9Q"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dim via-transparent to-transparent opacity-80"></div>
+<div class="absolute bottom-6 left-6">
+<p class="font-headline-md text-on-surface text-lg font-bold">Elena Vance</p>
+<p class="font-mono-label text-mono-label text-primary-fixed text-xs uppercase">CEO &amp; Founder</p>
+</div>
+<button class="absolute top-4 right-4 p-2 bg-surface/80 backdrop-blur-md rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-on-surface">download</span>
+</button>
+</div>
+<div class="group relative aspect-[3/4] overflow-hidden rounded-xl border border-outline-variant/30">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A professional headshot of a CTO in a modern high-tech server room environment. The lighting is crisp and technical with electric blue accents. The subject looks confident and visionary. Minimalist professional aesthetic consistent with a premium AI enterprise brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAk46ipVjf-nZ-A-CY8gZqIWy7jLL7i-8Pz_BtLMp7cHaI0sg42bqE3rLLoQLFdoUAbT0ZR9S_p47TTI-agXrPKGK0H45DWOjUnU10qrW3hwvJtDbBsGTDpsRaSR6Tmk2Ogk5op44WRSBvFsZTJv088lvykqithHfg1GRBbOJq_14aMJAAA8avXme7pByyEbd-Y5Iji84DVbEzB06eAFwybL7_f_cwyx5DsEUnMVt_4SQi7PhcjAPT09dkywpa2qTtZ7kkSf7YGdA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dim via-transparent to-transparent opacity-80"></div>
+<div class="absolute bottom-6 left-6">
+<p class="font-headline-md text-on-surface text-lg font-bold">Marcus Thorne</p>
+<p class="font-mono-label text-mono-label text-primary-fixed text-xs uppercase">Chief Technology Officer</p>
+</div>
+<button class="absolute top-4 right-4 p-2 bg-surface/80 backdrop-blur-md rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-on-surface">download</span>
+</button>
+</div>
+<div class="group relative aspect-[3/4] overflow-hidden rounded-xl border border-outline-variant/30">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A professional headshot of a female executive in a bright, modern architectural space with glass surfaces and high-key lighting. The style is Apple-esque, minimalist, and very clean. The subject has a warm but authoritative presence, reflecting professional reliability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLVGp4uVMowtLfiZiPi-Pg6TfYVreJBH_alPKU5QoedZZXNvnoXdNcqPqDllb0NZgR-BC7ZPQtgqxI7wiC72BaEHD_pldNboL-lte5p2K8HBQ-PdIhZv1fexnec3HayQbJ6D6VqMLN3hXhTLVZ0zIO9AhSIEZJf4rkzp-Laitz0Lz2KOk3KDCiCYG7GwlvSEZ5b0eyuFTvnGPJoL9iwPSPyvVvP5gegzg0FErQKGPaA6D7D_HpsLoNyRZaMVhpm_dWrpICyJ2wxQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dim via-transparent to-transparent opacity-80"></div>
+<div class="absolute bottom-6 left-6">
+<p class="font-headline-md text-on-surface text-lg font-bold">Sarah Chen</p>
+<p class="font-mono-label text-mono-label text-primary-fixed text-xs uppercase">Chief Product Officer</p>
+</div>
+<button class="absolute top-4 right-4 p-2 bg-surface/80 backdrop-blur-md rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-on-surface">download</span>
+</button>
+</div>
+<div class="group relative aspect-[3/4] overflow-hidden rounded-xl border border-outline-variant/30">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A professional headshot of a male executive against a sophisticated dark grey textured wall. Lighting is soft and directional. The overall feel is one of deep expertise and high-end tech consulting. Color palette includes obsidian, silver, and a hint of cyan." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVpttCMw3U2Y3XAjTH6mMi-RNz7k1rW2yCdVbd_DJ2PkfpN-JOJthIEYmBFgmgiodMRPLj9o8J7v_11s-sPSw3ZfCsG9U2-Kike2hZReB6JzUKUCrNKJH_bKosGOhEVjlq4b_CxyMXkUU83FYg1wZf71H3Agq6iL97SWiixEeMnOOjpvK56dzNJUFDR5b2ohROrq5wNZUTzOGd4DW3q3QEtTqB5wsfm5SuZ4yyVc6gICbAl88R_rmTh0LGYwA_dzz6wrCEXb9H9g"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dim via-transparent to-transparent opacity-80"></div>
+<div class="absolute bottom-6 left-6">
+<p class="font-headline-md text-on-surface text-lg font-bold">David Miller</p>
+<p class="font-mono-label text-mono-label text-primary-fixed text-xs uppercase">VP of Engineering</p>
+</div>
+<button class="absolute top-4 right-4 p-2 bg-surface/80 backdrop-blur-md rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-on-surface">download</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Fact Sheet Section -->
+<section class="bg-surface-container-lowest py-section-gap">
+<div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<div class="lg:col-span-5">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-6">Company Backgrounder</h2>
+<p class="text-on-surface-variant font-body-lg text-body-lg leading-relaxed mb-8">
+                        Founded in 2021 by veterans of OpenAI, DeepMind, and NVIDIA, Aether AI is on a mission to democratize elite-level computational intelligence. We provide the substrate upon which the world's most advanced AI models are built, trained, and deployed.
+                    </p>
+<div class="space-y-6">
+<div class="flex items-start space-x-4">
+<span class="material-symbols-outlined text-primary-fixed mt-1">location_on</span>
+<div>
+<h4 class="font-semibold text-on-surface">Headquarters</h4>
+<p class="text-on-surface-variant">Palo Alto, California, USA</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<span class="material-symbols-outlined text-primary-fixed mt-1">groups</span>
+<div>
+<h4 class="font-semibold text-on-surface">Team</h4>
+<p class="text-on-surface-variant">250+ Engineers, Researchers, and Product Experts</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<span class="material-symbols-outlined text-primary-fixed mt-1">payments</span>
+<div>
+<h4 class="font-semibold text-on-surface">Funding</h4>
+<p class="text-on-surface-variant">Series B, $420M Total Raised</p>
+</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-gutter">
+<div class="glass-card p-10 rounded-xl">
+<p class="font-mono-label text-mono-label text-primary-fixed mb-2">COMPUTE CAPACITY</p>
+<h3 class="font-display-lg-mobile text-display-lg-mobile text-on-surface mb-2">12.4<span class="text-primary-fixed">EF</span></h3>
+<p class="text-on-surface-variant">Total aggregate exaflops currently managed across our global infrastructure.</p>
+</div>
+<div class="glass-card p-10 rounded-xl">
+<p class="font-mono-label text-mono-label text-primary-fixed mb-2">RELIABILITY</p>
+<h3 class="font-display-lg-mobile text-display-lg-mobile text-on-surface mb-2">99.99<span class="text-primary-fixed">%</span></h3>
+<p class="text-on-surface-variant">Historical uptime for enterprise-grade compute clusters since launch.</p>
+</div>
+<div class="glass-card p-10 rounded-xl">
+<p class="font-mono-label text-mono-label text-primary-fixed mb-2">DATA THROUGHPUT</p>
+<h3 class="font-display-lg-mobile text-display-lg-mobile text-on-surface mb-2">800<span class="text-primary-fixed">Gbps</span></h3>
+<p class="text-on-surface-variant">Dedicated interconnect speeds for seamless large-model training cycles.</p>
+</div>
+<div class="glass-card p-10 rounded-xl">
+<p class="font-mono-label text-mono-label text-primary-fixed mb-2">CLIENTS</p>
+<h3 class="font-display-lg-mobile text-display-lg-mobile text-on-surface mb-2">40<span class="text-primary-fixed">+</span></h3>
+<p class="text-on-surface-variant">Fortune 500 partners leveraging Aether AI infrastructure for R&amp;D.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Press Releases Section -->
+<section class="py-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-12">Latest Press Releases</h2>
+<div class="space-y-4">
+<!-- Article 1 -->
+<a class="group block glass-card p-8 rounded-xl border-l-4 border-l-primary-fixed/30 hover:border-l-primary-fixed transition-all" href="#">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex-1">
+<div class="flex items-center space-x-3 mb-2">
+<span class="font-mono-label text-mono-label text-primary-fixed">JUNE 14, 2024</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="text-on-tertiary-container font-mono-label text-mono-label">PRODUCT NEWS</span>
+</div>
+<h3 class="font-headline-md text-headline-md group-hover:text-primary-fixed transition-colors">Aether AI Unveils 'Nova', the World's First Real-Time Adaptive Infrastructure</h3>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary-fixed group-hover:translate-x-2 transition-all">arrow_forward</span>
+</div>
+</a>
+<!-- Article 2 -->
+<a class="group block glass-card p-8 rounded-xl border-l-4 border-l-primary-fixed/10 hover:border-l-primary-fixed transition-all" href="#">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex-1">
+<div class="flex items-center space-x-3 mb-2">
+<span class="font-mono-label text-mono-label text-primary-fixed">MAY 22, 2024</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="text-on-tertiary-container font-mono-label text-mono-label">PARTNERSHIPS</span>
+</div>
+<h3 class="font-headline-md text-headline-md group-hover:text-primary-fixed transition-colors">Strategic Partnership with Stellar Cloud to Expand EU Presence</h3>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary-fixed group-hover:translate-x-2 transition-all">arrow_forward</span>
+</div>
+</a>
+<!-- Article 3 -->
+<a class="group block glass-card p-8 rounded-xl border-l-4 border-l-primary-fixed/10 hover:border-l-primary-fixed transition-all" href="#">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex-1">
+<div class="flex items-center space-x-3 mb-2">
+<span class="font-mono-label text-mono-label text-primary-fixed">APRIL 05, 2024</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="text-on-tertiary-container font-mono-label text-mono-label">CORPORATE</span>
+</div>
+<h3 class="font-headline-md text-headline-md group-hover:text-primary-fixed transition-colors">Aether AI Named 'AI Infrastructure Provider of the Year'</h3>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary-fixed group-hover:translate-x-2 transition-all">arrow_forward</span>
+</div>
+</a>
+</div>
+<div class="mt-12 text-center">
+<button class="font-mono-label text-mono-label text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center space-x-2 mx-auto">
+<span>VIEW ARCHIVE</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+</div>
+</section>
+<!-- Media Contact Section -->
+<section class="py-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto border-t border-outline-variant/20">
+<div class="glass-card p-12 rounded-2xl flex flex-col md:flex-row gap-12 items-center">
+<div class="flex-1 text-center md:text-left">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-4">Media Inquiries</h2>
+<p class="text-on-surface-variant font-body-lg text-body-lg mb-8">
+                    Our communications team is available to assist with interview requests, data verification, and speaking engagements.
+                </p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+<a class="bg-primary-container text-on-primary-container px-8 py-4 rounded-xl font-bold flex items-center justify-center space-x-3 hover:brightness-110 transition-all" href="mailto:press@aether.ai">
+<span class="material-symbols-outlined">mail</span>
+<span>PRESS@AETHER.AI</span>
+</a>
+<a class="border border-outline-variant px-8 py-4 rounded-xl font-bold flex items-center justify-center space-x-3 hover:bg-surface-variant transition-all" href="#">
+<span class="material-symbols-outlined">schedule</span>
+<span>REQUEST INTERVIEW</span>
+</a>
+</div>
+</div>
+<div class="w-full md:w-auto flex justify-center">
+<div class="relative w-48 h-48">
+<div class="absolute inset-0 bg-primary-fixed/20 blur-3xl rounded-full"></div>
+<div class="relative w-full h-full glass-card rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-fixed text-6xl">chat_bubble</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="w-full py-section-gap px-margin-mobile md:px-margin-desktop grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-gutter max-w-container-max mx-auto border-t border-outline-variant/20">
+<div class="col-span-2">
+<div class="font-headline-md text-headline-md text-on-surface mb-4 font-bold tracking-tight">Aether AI</div>
+<p class="font-mono-label text-mono-label text-on-tertiary-container max-w-xs">
+                © 2024 Aether AI. Engineering the future of intelligence.
+            </p>
+</div>
+<div class="flex flex-col space-y-4">
+<h5 class="font-mono-label text-mono-label text-on-surface font-bold">Resources</h5>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface hover:underline decoration-primary-fixed/50 underline-offset-4 transition-all" href="#">Documentation</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface hover:underline decoration-primary-fixed/50 underline-offset-4 transition-all" href="#">API Reference</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface hover:underline decoration-primary-fixed/50 underline-offset-4 transition-all" href="#">Status</a>
+</div>
+<div class="flex flex-col space-y-4">
+<h5 class="font-mono-label text-mono-label text-on-surface font-bold">Legal</h5>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface hover:underline decoration-primary-fixed/50 underline-offset-4 transition-all" href="#">Privacy Policy</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface hover:underline decoration-primary-fixed/50 underline-offset-4 transition-all" href="#">Terms of Service</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface hover:underline decoration-primary-fixed/50 underline-offset-4 transition-all" href="#">Security</a>
+</div>
+<div class="col-span-2 flex flex-col items-end justify-between">
+<div class="flex space-x-6">
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">
+<svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path></svg>
+</a>
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">
+<svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path></svg>
+</a>
+</div>
+<div class="text-right">
+<span class="font-mono-label text-mono-label text-on-tertiary-container">V. 2.4.0 (STABLE)</span>
+</div>
+</div>
+</footer>
+<script>
+        // Smooth reveal on scroll
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100');
+                    entry.target.classList.remove('opacity-0', 'translate-y-8');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section, .glass-card').forEach(el => {
+            el.classList.add('transition-all', 'duration-700', 'opacity-0', 'translate-y-8');
+            observer.observe(el);
+        });
+    </script>
+</body></html>

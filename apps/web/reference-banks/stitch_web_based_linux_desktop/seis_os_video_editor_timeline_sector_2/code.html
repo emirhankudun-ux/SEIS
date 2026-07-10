@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Media Engine — Video Editor</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#dbfcff",
+                    "on-tertiary": "#313030",
+                    "on-tertiary-fixed-variant": "#474646",
+                    "on-primary": "#00363a",
+                    "tertiary": "#f9f5f5",
+                    "surface-bright": "#37393a",
+                    "error": "#ffb4ab",
+                    "surface-variant": "#333535",
+                    "surface": "#121414",
+                    "secondary-fixed-dim": "#ebb2ff",
+                    "outline-variant": "#3b494b",
+                    "on-secondary": "#520071",
+                    "secondary-container": "#ce5dff",
+                    "on-secondary-fixed": "#320047",
+                    "on-primary-fixed-variant": "#004f54",
+                    "primary-fixed-dim": "#00dbe9",
+                    "tertiary-fixed": "#e5e2e1",
+                    "on-surface": "#e2e2e2",
+                    "error-container": "#93000a",
+                    "surface-tint": "#00dbe9",
+                    "secondary-fixed": "#f8d8ff",
+                    "on-surface-variant": "#b9cacb",
+                    "on-tertiary-container": "#605e5e",
+                    "on-primary-container": "#006970",
+                    "primary-container": "#00f0ff",
+                    "tertiary-container": "#dcd9d8",
+                    "surface-dim": "#121414",
+                    "on-secondary-container": "#480064",
+                    "surface-container-highest": "#333535",
+                    "surface-container-high": "#282a2b",
+                    "on-background": "#e2e2e2",
+                    "on-secondary-fixed-variant": "#74009f",
+                    "outline": "#849495",
+                    "primary-fixed": "#7df4ff",
+                    "on-error-container": "#ffdad6",
+                    "inverse-surface": "#e2e2e2",
+                    "background": "#121414",
+                    "surface-container-lowest": "#0c0f0f",
+                    "surface-container": "#1e2020",
+                    "tertiary-fixed-dim": "#c9c6c5",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "surface-container-low": "#1a1c1c",
+                    "on-error": "#690005",
+                    "inverse-primary": "#006970",
+                    "on-primary-fixed": "#002022",
+                    "inverse-on-surface": "#2f3131",
+                    "secondary": "#ebb2ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-page": "32px",
+                    "gap-sm": "8px",
+                    "gap-lg": "24px",
+                    "gap-md": "16px",
+                    "stroke-thick": "2px",
+                    "gap-xs": "4px",
+                    "stroke-thin": "1px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Space Mono"],
+                    "body-md": ["JetBrains Mono"],
+                    "headline-md": ["JetBrains Mono"],
+                    "headline-lg": ["JetBrains Mono"],
+                    "body-lg": ["JetBrains Mono"],
+                    "code-sm": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        /* Base styling for tiling wm feel */
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+        }
+        
+        /* Custom scrollbar for deep tech feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: theme('colors.surface-container-lowest'); 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: theme('colors.outline-variant'); 
+            border-radius: 0px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: theme('colors.primary-fixed-dim'); 
+        }
+        
+        /* Tiling Panel Base */
+        .wm-panel {
+            background-color: rgba(12, 15, 15, 0.85); /* surface-container-lowest */
+            border: 1px solid theme('colors.outline-variant');
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .wm-panel-header {
+            height: 24px;
+            background-color: theme('colors.surface-container-high');
+            border-bottom: 1px solid theme('colors.outline-variant');
+            display: flex;
+            align-items: center;
+            padding: 0 theme('spacing.gap-xs');
+        }
+        .wm-panel:focus-within {
+            border-color: theme('colors.primary');
+        }
+        .wm-panel:focus-within .wm-panel-header {
+            background-color: theme('colors.primary-fixed-dim');
+            color: theme('colors.on-primary-fixed');
+            border-bottom-color: theme('colors.primary');
+        }
+    </style>
+</head>
+<body class="h-screen w-screen overflow-hidden flex flex-col font-body-md text-body-md antialiased selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TopNavBar (Shared Component JSON logic applied) -->
+<header class="bg-surface-container-lowest/80 backdrop-blur-xl docked full-width top-0 border-b border-outline-variant/30 flat no shadows flex justify-between items-center w-full px-gap-md h-10 z-50 shrink-0">
+<!-- Brand -->
+<div class="font-label-sm text-label-sm tracking-widest text-primary-fixed-dim flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">adjust</span>
+            SEIS KERNEL OS
+        </div>
+<!-- Navigation Links -->
+<nav class="hidden md:flex items-center gap-gap-lg h-full pt-1">
+<a class="h-full flex items-center text-primary-fixed border-b-2 border-primary-fixed pb-1 font-label-sm text-label-sm cursor-pointer active:opacity-70" href="#">
+                WORKSPACES
+            </a>
+<a class="h-full flex items-center text-on-surface-variant font-label-sm text-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 border-b-2 border-transparent" href="#">
+                TELEMETRY
+            </a>
+<a class="h-full flex items-center text-on-surface-variant font-label-sm text-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 border-b-2 border-transparent" href="#">
+                AGENTS
+            </a>
+<a class="h-full flex items-center text-on-surface-variant font-label-sm text-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 border-b-2 border-transparent" href="#">
+                NETWORK
+            </a>
+</nav>
+<!-- Trailing Actions -->
+<div class="flex items-center gap-gap-sm text-on-surface-variant">
+<button class="hover:text-primary-fixed transition-colors duration-200 p-1 flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-[20px]">memory</span>
+</button>
+<button class="hover:text-primary-fixed transition-colors duration-200 p-1 flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-[20px]">terminal</span>
+</button>
+<button class="hover:text-primary-fixed transition-colors duration-200 p-1 flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden relative">
+<!-- SideNavBar (Shared Component JSON logic applied) -->
+<nav class="hidden md:flex bg-surface-container-lowest/90 backdrop-blur-2xl docked left-0 h-full w-20 hover:w-64 transition-all duration-300 border-r border-outline-variant/20 flat no shadows flex flex-col z-40 shrink-0 group">
+<div class="flex flex-col gap-1 py-4 flex-1 overflow-y-auto overflow-x-hidden">
+<!-- Active Item -->
+<a class="flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed w-full whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0 mr-4">folder_open</span>
+<span class="font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200">FILESYSTEM</span>
+</a>
+<!-- Inactive Items -->
+<a class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 border-l-2 border-transparent w-full whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0 mr-4">dashboard</span>
+<span class="font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200">DASHBOARD</span>
+</a>
+<a class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 border-l-2 border-transparent w-full whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0 mr-4">terminal</span>
+<span class="font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200">TERMINAL</span>
+</a>
+<a class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 border-l-2 border-transparent w-full whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0 mr-4">smart_toy</span>
+<span class="font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200">AI_AGENTS</span>
+</a>
+</div>
+<div class="mt-auto border-t border-outline-variant/20 py-2 flex flex-col">
+<a class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-error hover:bg-surface-variant/20 transition-all duration-150 border-l-2 border-transparent w-full whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0 mr-4">power_settings_new</span>
+<span class="font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200">POWER</span>
+</a>
+</div>
+</nav>
+<!-- Main Workspace Area - Fluid Grid Tiling Layout -->
+<main class="flex-1 p-gap-sm flex flex-col gap-gap-sm overflow-hidden bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-surface-container-low to-background">
+<!-- Top Section: Panels & Preview -->
+<div class="flex-1 flex gap-gap-sm min-h-[50%] overflow-hidden">
+<!-- Asset Bin (Left Panel) -->
+<div class="wm-panel w-1/4 min-w-[250px]">
+<div class="wm-panel-header">
+<span class="font-label-sm text-label-sm">ASSET_BIN // 8K_PROXIES</span>
+<div class="ml-auto flex gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px] cursor-pointer hover:text-primary">filter_list</span>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto p-2 flex flex-col gap-2">
+<!-- Asset Item -->
+<div class="flex items-center gap-2 p-1 bg-surface-variant/30 border border-outline-variant/50 hover:border-primary-fixed/50 cursor-pointer transition-colors">
+<div class="w-12 h-8 bg-surface-container-highest flex-shrink-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px] text-primary-fixed-dim">movie</span>
+</div>
+<div class="flex flex-col overflow-hidden">
+<span class="font-code-sm text-code-sm text-on-surface truncate w-full">SEQ_01_SCENE_A.mxf</span>
+<span class="font-code-sm text-[10px] text-on-surface-variant">00:01:24:12 • 8K RED</span>
+</div>
+</div>
+<!-- Asset Item -->
+<div class="flex items-center gap-2 p-1 bg-surface-variant/30 border border-outline-variant/50 hover:border-primary-fixed/50 cursor-pointer transition-colors">
+<div class="w-12 h-8 bg-surface-container-highest flex-shrink-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px] text-secondary">graphic_eq</span>
+</div>
+<div class="flex flex-col overflow-hidden">
+<span class="font-code-sm text-code-sm text-on-surface truncate w-full">AMB_CITY_NEON_v2.wav</span>
+<span class="font-code-sm text-[10px] text-on-surface-variant">00:05:00:00 • 48kHz</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Preview Monitor (Center Panel) -->
+<div class="wm-panel flex-1 relative" tabindex="0">
+<div class="wm-panel-header">
+<span class="font-label-sm text-label-sm">PREVIEW_MONITOR // RENDER_VIEW</span>
+<div class="ml-auto font-code-sm text-code-sm text-secondary">
+                            1080p • 24fps • REC.709
+                        </div>
+</div>
+<div class="flex-1 bg-black relative flex items-center justify-center overflow-hidden">
+<!-- Video Frame Placeholder -->
+<img class="absolute inset-0 w-full h-full object-cover opacity-80 mix-blend-screen" data-alt="A highly detailed cinematic still of a dark, rain-slicked cyberpunk street at night. Neon lights in stark cyan and deep purple reflect off puddles on the brutalist concrete ground. The lighting is moody, low-key, and high-contrast, evoking a gritty, hyper-technical dystopian atmosphere. High resolution, 8K, architectural precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAep7ZniTE9dZXdTfkxrpEJQnVvW_vDnn916Oa71Q3p64Xk5jtZWdoxsp2F6WjgVvKvNXcflOfBvF0r9_LEuz8ihRE256mTUUeejeMSf0oXveQEtLlB8HFciG4O0p3VrALGHL3ApS86gdWw7FAiR54JmYluIO6ejar705EVMT-W-ibQQzhCqUQ8RR0CHPh2JYfA1y8ORmqjnt90ECsexkrRFiM0Ds4dPmqLh-iC4xKZFq9PmdUbS1TBdPXMIOIIjmFSomDyUEgll1Ct"/>
+<!-- Overlay: Safe Margins -->
+<div class="absolute inset-4 border border-outline-variant/30 pointer-events-none"></div>
+<div class="absolute inset-10 border border-outline-variant/20 border-dashed pointer-events-none"></div>
+<!-- Overlay: Crosshair -->
+<div class="absolute w-[1px] h-4 bg-primary/50 pointer-events-none"></div>
+<div class="absolute h-[1px] w-4 bg-primary/50 pointer-events-none"></div>
+<!-- Telemetry Overlay Bottom Left -->
+<div class="absolute bottom-4 left-4 font-code-sm text-code-sm text-primary drop-shadow-md flex flex-col pointer-events-none">
+<span>TCR 01:04:22:18</span>
+<span class="text-secondary opacity-80">DROP_FRAME OFF</span>
+</div>
+</div>
+<!-- Transport Controls -->
+<div class="h-10 bg-surface-container flex items-center justify-center gap-4 border-t border-outline-variant px-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer">skip_previous</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer">fast_rewind</span>
+<span class="material-symbols-outlined text-primary text-[28px] cursor-pointer">play_arrow</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer">fast_forward</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer">skip_next</span>
+</div>
+</div>
+<!-- Render Queue / Technical Data (Right Panel) -->
+<div class="wm-panel w-1/4 min-w-[250px]">
+<div class="wm-panel-header">
+<span class="font-label-sm text-label-sm">TELEMETRY // RENDER</span>
+</div>
+<div class="flex-1 p-3 flex flex-col gap-4 overflow-y-auto">
+<!-- GPU Status -->
+<div>
+<div class="flex justify-between font-code-sm text-code-sm mb-1">
+<span class="text-on-surface-variant">GPU_COMPUTE</span>
+<span class="text-primary">84%</span>
+</div>
+<div class="h-2 w-full bg-surface-variant border border-outline-variant/50 overflow-hidden flex gap-[1px]">
+<div class="h-full w-4/5 bg-primary/80"></div>
+<div class="h-full w-1/5 bg-transparent"></div>
+</div>
+</div>
+<!-- Memory -->
+<div>
+<div class="flex justify-between font-code-sm text-code-sm mb-1">
+<span class="text-on-surface-variant">VRAM_ALLOC</span>
+<span class="text-secondary">18.4GB</span>
+</div>
+<div class="h-2 w-full bg-surface-variant border border-outline-variant/50 overflow-hidden flex gap-[1px]">
+<div class="h-full w-[90%] bg-secondary/80"></div>
+</div>
+</div>
+<div class="mt-auto">
+<span class="font-label-sm text-[10px] text-on-surface-variant mb-2 block">RENDER QUEUE</span>
+<div class="border border-outline-variant/50 bg-surface-container-lowest p-2 flex flex-col gap-1">
+<div class="flex justify-between font-code-sm text-[11px]">
+<span>VFX_PASS_04_FINAL</span>
+<span class="text-primary animate-pulse">ENCODING</span>
+</div>
+<div class="w-full bg-surface-variant h-1 mt-1">
+<div class="bg-primary h-full w-[45%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Section: Multi-track Timeline -->
+<div class="wm-panel h-1/3 min-h-[200px]" tabindex="0">
+<div class="wm-panel-header flex justify-between">
+<span class="font-label-sm text-label-sm">TIMELINE // SEQUENCE_01</span>
+<div class="flex gap-2 text-on-surface-variant font-code-sm text-[10px]">
+<span>SNAP <span class="text-primary">ON</span></span>
+<span>LINK <span class="text-secondary">OFF</span></span>
+</div>
+</div>
+<!-- Timeline Toolbar -->
+<div class="h-8 bg-surface-container-high border-b border-outline-variant flex items-center px-2 gap-2">
+<button class="text-on-surface hover:text-primary transition-colors"><span class="material-symbols-outlined text-[16px]">content_cut</span></button>
+<button class="text-on-surface hover:text-primary transition-colors"><span class="material-symbols-outlined text-[16px]">content_copy</span></button>
+<div class="w-[1px] h-4 bg-outline-variant mx-1"></div>
+<button class="text-primary transition-colors"><span class="material-symbols-outlined text-[16px] pointer-events-none" style="font-variation-settings: 'FILL' 1;">pan_tool</span></button>
+<button class="text-on-surface hover:text-primary transition-colors"><span class="material-symbols-outlined text-[16px]">zoom_in</span></button>
+</div>
+<!-- Timeline Tracks Area -->
+<div class="flex-1 flex flex-col relative overflow-hidden bg-surface-container-lowest">
+<!-- Time Ruler -->
+<div class="h-6 border-b border-outline-variant/30 flex items-end px-24 relative overflow-hidden bg-surface-container">
+<!-- Playhead Base (top part) -->
+<div class="absolute left-1/3 top-0 w-3 h-full bg-primary/20 border-l border-primary z-20 flex justify-center">
+<div class="w-2 h-2 bg-primary rounded-b-sm self-start"></div>
+</div>
+<!-- Tick Marks (Simulated) -->
+<div class="w-full flex justify-between font-code-sm text-[10px] text-on-surface-variant pb-1">
+<span>01:00:00:00</span>
+<span>01:01:00:00</span>
+<span>01:02:00:00</span>
+<span>01:03:00:00</span>
+<span>01:04:00:00</span>
+</div>
+</div>
+<!-- Track Canvas -->
+<div class="flex-1 overflow-y-auto relative flex flex-col">
+<!-- Playhead Line -->
+<div class="absolute left-[33.3%] top-0 bottom-0 w-[1px] bg-primary z-20 shadow-[0_0_4px_rgba(219,252,255,0.5)] pointer-events-none"></div>
+<!-- Video Track V2 -->
+<div class="h-12 border-b border-outline-variant/20 flex relative">
+<!-- Track Header -->
+<div class="w-24 shrink-0 bg-surface-container-high border-r border-outline-variant/50 flex flex-col justify-center px-2 z-10">
+<span class="font-code-sm text-[11px] text-on-surface">V2</span>
+</div>
+<!-- Track Content -->
+<div class="flex-1 relative flex items-center px-4">
+<div class="absolute left-[40%] w-32 h-8 bg-secondary/20 border border-secondary text-secondary font-code-sm text-[10px] px-1 flex items-center truncate cursor-ew-resize">
+                                    VFX_COMP_FINAL
+                                </div>
+</div>
+</div>
+<!-- Video Track V1 -->
+<div class="h-12 border-b border-outline-variant/20 flex relative">
+<div class="w-24 shrink-0 bg-surface-container-high border-r border-outline-variant/50 flex flex-col justify-center px-2 z-10">
+<span class="font-code-sm text-[11px] text-on-surface">V1</span>
+</div>
+<div class="flex-1 relative flex items-center px-4">
+<div class="absolute left-10 w-64 h-8 bg-primary/10 border border-primary/50 text-primary-fixed-dim font-code-sm text-[10px] px-1 flex items-center truncate cursor-ew-resize">
+                                    SCENE_01_TAKE_03
+                                </div>
+<div class="absolute left-[35%] w-48 h-8 bg-primary/20 border border-primary text-primary font-code-sm text-[10px] px-1 flex items-center truncate cursor-ew-resize">
+                                    SCENE_02_B_ROLL
+                                </div>
+</div>
+</div>
+<!-- Audio Track A1 -->
+<div class="h-14 border-b border-outline-variant/20 flex relative bg-surface-container-lowest/50">
+<div class="w-24 shrink-0 bg-surface-container-high border-r border-outline-variant/50 flex flex-col justify-center px-2 z-10">
+<span class="font-code-sm text-[11px] text-on-surface-variant">A1</span>
+<div class="flex gap-1 mt-1">
+<span class="w-3 h-3 bg-primary/20 text-primary flex items-center justify-center text-[8px] border border-primary/30">M</span>
+<span class="w-3 h-3 bg-surface-variant text-on-surface-variant flex items-center justify-center text-[8px] border border-outline-variant">S</span>
+</div>
+</div>
+<div class="flex-1 relative flex items-center px-4">
+<!-- Audio Clip with simulated waveform -->
+<div class="absolute left-10 w-64 h-10 bg-outline-variant/10 border border-outline-variant text-on-surface-variant font-code-sm text-[10px] p-1 flex flex-col cursor-ew-resize">
+<span>DIALOGUE_MIX</span>
+<div class="flex-1 w-full flex items-center gap-[1px] mt-1 opacity-50">
+<div class="w-1 h-1/3 bg-on-surface-variant"></div>
+<div class="w-1 h-2/3 bg-on-surface-variant"></div>
+<div class="w-1 h-full bg-on-surface-variant"></div>
+<div class="w-1 h-1/2 bg-on-surface-variant"></div>
+<div class="w-1 h-3/4 bg-on-surface-variant"></div>
+<div class="w-1 h-1/4 bg-on-surface-variant"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

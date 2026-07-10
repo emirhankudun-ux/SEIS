@@ -1,0 +1,86 @@
+{
+  "id": "seis-second-brain-accessibility-focus-qa",
+  "title": "SEIS Second Brain Accessibility And Focus QA",
+  "status": "contract-active",
+  "version": "2026-06-24",
+  "surface": "SEIS Second Brain",
+  "qualityGate": "npm run check:seis-second-brain-readiness-contracts",
+  "linkedSmoke": "npm run check:seis-second-brain-browser-smoke",
+  "linkedBrowserSmoke": "npm run check:seis-second-brain-browser-smoke",
+  "reviewArtifact": {
+    "status": "required-before-public-demo-review",
+    "json": "reports/seis-public-demo/second-brain-accessibility-focus-latest.json",
+    "markdown": "reports/seis-public-demo/second-brain-accessibility-focus-latest.md",
+    "qualityGate": "npm run check:seis-second-brain-accessibility-focus-report"
+  },
+  "focusOrder": [
+    "toolbar actions",
+    "Markdown vault note list",
+    "Knowledge Graph Search Vault action",
+    "Knowledge Graph node list",
+    "inspector panel",
+    "Installed AI table",
+    "Managed Sub-Agent table",
+    "Autonomous Agent roster",
+    "GitHub gate table",
+    "Recent activity cards"
+  ],
+  "selectors": {
+    "root": "[data-second-brain-app]",
+    "noteList": ".second-brain-note-list[role=\"listbox\"]",
+    "noteOption": ".second-brain-note-list [role=\"option\"]",
+    "graphList": ".second-brain-graph[role=\"listbox\"]",
+    "graphOption": ".second-brain-graph [role=\"option\"]",
+    "inspector": "#second-brain-inspector-panel[data-second-brain-inspector]",
+    "githubGate": "[data-second-brain-github-gate]"
+  },
+  "acceptanceCriteria": [
+    "role=listbox",
+    "role=option",
+    "aria-selected",
+    "aria-controls",
+    "aria-live polite",
+    "focus-visible",
+    "zero cramped or overlapping controls",
+    "all note buttons remain keyboard focusable native buttons",
+    "vault list exposes role=listbox and active descendant",
+    "vault note options expose role=option and aria-selected",
+    "graph exposes role=listbox and active descendant",
+    "graph nodes expose role=option, aria-selected, aria-controls, and accessible labels",
+    "inspector is focusable, labelled, and aria-live polite",
+    "focus-visible styling exists for buttons and tabindex targets",
+    "mobile target count stays above 10 with zero cramped targets in the dedicated smoke",
+    "screen-reader labels do not claim private Obsidian import or live AI access"
+  ],
+  "manualReviewChecklist": [
+    "Tab through toolbar, note list, graph, inspector, tables, and gate sections",
+    "Select every vault note with keyboard focus visible",
+    "Select every graph node with keyboard focus visible",
+    "Confirm inspector title/summary changes and receives a visible focus ring",
+    "Confirm reduced-motion users do not need animation to understand graph state",
+    "Confirm status copy preserves Local Demo, planned, disabled, and human-review labels"
+  ],
+  "wcagFocusChecks": [
+    "WCAG 2.2 visible focus indicator",
+    "keyboard-only path without pointer input",
+    "no keyboard trap",
+    "logical focus order matches visual reading order",
+    "focus target is not obscured by sticky bars or windows",
+    "reduced motion respected for graph state",
+    "screen-reader status names mock, planned, disabled, and local-demo states honestly"
+  ],
+  "evidenceRequiredBeforePublicDemo": [
+    "current browser smoke result",
+    "manual keyboard transcript",
+    "screen-reader transcript",
+    "mobile viewport target audit",
+    "reduced-motion review note",
+    "human accessibility review approval"
+  ],
+  "blockedUntil": [
+    "screen-reader transcript review",
+    "keyboard-only review on desktop",
+    "mobile assistive-technology review",
+    "public demo release approval"
+  ]
+}

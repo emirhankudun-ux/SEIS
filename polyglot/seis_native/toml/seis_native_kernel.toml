@@ -1,0 +1,31 @@
+version = "2026.07.next-wave"
+
+[[lanes]]
+name = "Apple First"
+score = 100
+language = "Swift"
+
+[[lanes]]
+name = "Data AI"
+score = 88
+language = "Python"
+
+[[lanes]]
+name = "Systems"
+score = 84
+language = "Rust"
+
+[[lanes]]
+name = "Android"
+score = 76
+language = "Kotlin"
+
+[[lanes]]
+name = "Windows"
+score = 72
+language = "CSharp"
+
+[[lanes]]
+name = "Infrastructure"
+score = 70
+language = "Go"

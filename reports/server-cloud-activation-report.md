@@ -7,7 +7,7 @@
 - Active target: not configured
 - Selected provider: not configured
 - Site URL: not configured
-- Release package: missing (dist/seis-static.zip)
+- Release package: present (dist/seis-static.zip)
 - Manifest: missing (dist/server-upload-manifest.json)
 
 ## Blockers
@@ -15,7 +15,6 @@
 - server activeTarget is not configured
 - SEIS_SITE_URL is missing
 - SEIS_CLOUD_PROVIDER is missing
-- release package is missing: dist/seis-static.zip
 - release manifest is missing: dist/server-upload-manifest.json
 
 ## Next Actions

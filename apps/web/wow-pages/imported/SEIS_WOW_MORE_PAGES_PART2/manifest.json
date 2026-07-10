@@ -1,0 +1,232 @@
+{
+  "name": "SEIS_WOW_MORE_PAGES_PART2",
+  "version": "1.0",
+  "page_count": 28,
+  "continues_from": "SEIS_WOW_EXTENDED_PAGES_18_HTML_PNG.zip",
+  "pages": [
+    {
+      "number": 19,
+      "id": "19_ai_control_center",
+      "title": "AI Control Center",
+      "description": "Provider status, model settings and local/demo mode.",
+      "png": "png/19_ai_control_center.png",
+      "html": "html/19_ai_control_center.html"
+    },
+    {
+      "number": 20,
+      "id": "20_provider_audit",
+      "title": "Provider Audit",
+      "description": "Sanitized provider and credential matrix.",
+      "png": "png/20_provider_audit.png",
+      "html": "html/20_provider_audit.html"
+    },
+    {
+      "number": 21,
+      "id": "21_model_router",
+      "title": "Model Router",
+      "description": "Capability-aware routing and fallback behavior.",
+      "png": "png/21_model_router.png",
+      "html": "html/21_model_router.html"
+    },
+    {
+      "number": 22,
+      "id": "22_prompt_engine",
+      "title": "Prompt Engine",
+      "description": "Versioned prompts and reusable prompt packs.",
+      "png": "png/22_prompt_engine.png",
+      "html": "html/22_prompt_engine.html"
+    },
+    {
+      "number": 23,
+      "id": "23_knowledge_graph",
+      "title": "Knowledge Graph",
+      "description": "Connected AI, code, docs, agents and evidence.",
+      "png": "png/23_knowledge_graph.png",
+      "html": "html/23_knowledge_graph.html"
+    },
+    {
+      "number": 24,
+      "id": "24_plugin_marketplace",
+      "title": "Plugin Marketplace",
+      "description": "Apps, plugins, agents and permission-aware installs.",
+      "png": "png/24_plugin_marketplace.png",
+      "html": "html/24_plugin_marketplace.html"
+    },
+    {
+      "number": 25,
+      "id": "25_extension_manager",
+      "title": "Extension Manager",
+      "description": "SEIS Code extensions and enabled states.",
+      "png": "png/25_extension_manager.png",
+      "html": "html/25_extension_manager.html"
+    },
+    {
+      "number": 26,
+      "id": "26_github_pr_rescue",
+      "title": "GitHub PR Rescue",
+      "description": "PR recovery, risk classification and safe actions.",
+      "png": "png/26_github_pr_rescue.png",
+      "html": "html/26_github_pr_rescue.html"
+    },
+    {
+      "number": 27,
+      "id": "27_security_center",
+      "title": "Security Center",
+      "description": "Secrets, SSH, provider keys and approvals.",
+      "png": "png/27_security_center.png",
+      "html": "html/27_security_center.html"
+    },
+    {
+      "number": 28,
+      "id": "28_ssh_center",
+      "title": "SSH Center",
+      "description": "Controlled remote execution and approval states.",
+      "png": "png/28_ssh_center.png",
+      "html": "html/28_ssh_center.html"
+    },
+    {
+      "number": 29,
+      "id": "29_ai_terminal_repl",
+      "title": "AI Terminal REPL",
+      "description": "Claude-style SEIS AI terminal workflow.",
+      "png": "png/29_ai_terminal_repl.png",
+      "html": "html/29_ai_terminal_repl.html"
+    },
+    {
+      "number": 30,
+      "id": "30_browser_search_home",
+      "title": "Browser Search",
+      "description": "SEIS browser with top links and stories.",
+      "png": "png/30_browser_search_home.png",
+      "html": "html/30_browser_search_home.html"
+    },
+    {
+      "number": 31,
+      "id": "31_notes_docs",
+      "title": "Notes and Docs",
+      "description": "Markdown writing and live preview.",
+      "png": "png/31_notes_docs.png",
+      "html": "html/31_notes_docs.html"
+    },
+    {
+      "number": 32,
+      "id": "32_calendar_tasks",
+      "title": "Calendar and Tasks",
+      "description": "Roadmap planning and task tracking.",
+      "png": "png/32_calendar_tasks.png",
+      "html": "html/32_calendar_tasks.html"
+    },
+    {
+      "number": 33,
+      "id": "33_mail_inbox",
+      "title": "Mail Inbox",
+      "description": "AI-assisted email communication.",
+      "png": "png/33_mail_inbox.png",
+      "html": "html/33_mail_inbox.html"
+    },
+    {
+      "number": 34,
+      "id": "34_photos_gallery",
+      "title": "Photos Gallery",
+      "description": "Visual assets and image gallery.",
+      "png": "png/34_photos_gallery.png",
+      "html": "html/34_photos_gallery.html"
+    },
+    {
+      "number": 35,
+      "id": "35_video_hero_gallery",
+      "title": "Video Hero Gallery",
+      "description": "Four cinematic brand/product story pages.",
+      "png": "png/35_video_hero_gallery.png",
+      "html": "html/35_video_hero_gallery.html"
+    },
+    {
+      "number": 36,
+      "id": "36_mythic_gacha_draw",
+      "title": "Mythic Gacha Draw",
+      "description": "Card reveal and lore-focused game screen.",
+      "png": "png/36_mythic_gacha_draw.png",
+      "html": "html/36_mythic_gacha_draw.html"
+    },
+    {
+      "number": 37,
+      "id": "37_bestiary",
+      "title": "Bestiary",
+      "description": "Unlocked creatures and filterable lore collection.",
+      "png": "png/37_bestiary.png",
+      "html": "html/37_bestiary.html"
+    },
+    {
+      "number": 38,
+      "id": "38_system_monitor",
+      "title": "System Monitor",
+      "description": "CPU, memory, disk and network visuals.",
+      "png": "png/38_system_monitor.png",
+      "html": "html/38_system_monitor.html"
+    },
+    {
+      "number": 39,
+      "id": "39_database_explorer",
+      "title": "Database Explorer",
+      "description": "Schema and data preview interface.",
+      "png": "png/39_database_explorer.png",
+      "html": "html/39_database_explorer.html"
+    },
+    {
+      "number": 40,
+      "id": "40_api_tester",
+      "title": "API Tester",
+      "description": "Local request/response testing screen.",
+      "png": "png/40_api_tester.png",
+      "html": "html/40_api_tester.html"
+    },
+    {
+      "number": 41,
+      "id": "41_web_playground",
+      "title": "Web Playground",
+      "description": "HTML/CSS/JS playground and preview.",
+      "png": "png/41_web_playground.png",
+      "html": "html/41_web_playground.html"
+    },
+    {
+      "number": 42,
+      "id": "42_onboarding",
+      "title": "Onboarding",
+      "description": "Workspace mode selection and first-run flow.",
+      "png": "png/42_onboarding.png",
+      "html": "html/42_onboarding.html"
+    },
+    {
+      "number": 43,
+      "id": "43_about_seis",
+      "title": "About SEIS",
+      "description": "Product explanation and identity screen.",
+      "png": "png/43_about_seis.png",
+      "html": "html/43_about_seis.html"
+    },
+    {
+      "number": 44,
+      "id": "44_release_readiness",
+      "title": "Release Readiness",
+      "description": "Demo readiness checklist.",
+      "png": "png/44_release_readiness.png",
+      "html": "html/44_release_readiness.html"
+    },
+    {
+      "number": 45,
+      "id": "45_mobile_views",
+      "title": "Mobile Views",
+      "description": "Responsive mobile adaptations.",
+      "png": "png/45_mobile_views.png",
+      "html": "html/45_mobile_views.html"
+    },
+    {
+      "number": 46,
+      "id": "46_final_showcase",
+      "title": "Final Showcase",
+      "description": "Visual overview poster for Codex.",
+      "png": "png/46_final_showcase.png",
+      "html": "html/46_final_showcase.html"
+    }
+  ]
+}

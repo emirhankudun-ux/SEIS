@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AETHER AI | Pricing</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .glass-card {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            padding: 1px;
+            border-radius: inherit;
+            background: linear-gradient(135deg, rgba(0, 219, 233, 0.3), transparent, rgba(182, 0, 248, 0.3));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        .glow-hover:hover {
+            filter: drop-shadow(0 0 15px rgba(0, 219, 233, 0.25));
+        }
+        .status-pulse {
+            width: 8px;
+            height: 8px;
+            background: #00dbe9;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00dbe9;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        /* Custom Scrollbar for the table */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#b9cacb",
+                        "on-surface": "#e1e2e7",
+                        "surface-bright": "#37393d",
+                        "primary-fixed": "#7df4ff",
+                        "on-tertiary": "#2f3131",
+                        "error-container": "#93000a",
+                        "outline-variant": "#3b494b",
+                        "tertiary": "#f5f5f5",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "surface-tint": "#00dbe9",
+                        "secondary-container": "#b600f8",
+                        "on-secondary-fixed": "#320047",
+                        "surface": "#111417",
+                        "surface-container-low": "#191c1f",
+                        "on-primary-container": "#006970",
+                        "surface-dim": "#111417",
+                        "on-tertiary-container": "#5d5f5f",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "inverse-primary": "#006970",
+                        "tertiary-fixed": "#e2e2e2",
+                        "primary": "#dbfcff",
+                        "primary-container": "#00f0ff",
+                        "on-secondary-container": "#fff6fc",
+                        "surface-container-lowest": "#0c0e12",
+                        "secondary-fixed": "#f8d8ff",
+                        "inverse-on-surface": "#2e3134",
+                        "surface-container-highest": "#323539",
+                        "primary-fixed-dim": "#00dbe9",
+                        "tertiary-container": "#d9d9d9",
+                        "surface-variant": "#323539",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "secondary": "#ebb2ff",
+                        "on-error": "#690005",
+                        "on-error-container": "#ffdad6",
+                        "outline": "#849495",
+                        "background": "#111417",
+                        "on-primary-fixed-variant": "#004f54",
+                        "surface-container-high": "#282a2e",
+                        "surface-container": "#1d2023",
+                        "on-secondary": "#520072",
+                        "on-primary": "#00363a",
+                        "on-background": "#e1e2e7",
+                        "inverse-surface": "#e1e2e7",
+                        "on-primary-fixed": "#002022",
+                        "on-secondary-fixed-variant": "#74009f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "section-gap": "120px",
+                        "margin-desktop": "64px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "mono-label": ["JetBrains Mono"],
+                        "headline-md": ["Inter"],
+                        "mono-code": ["JetBrains Mono"],
+                        "display-lg-mobile": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                        "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_30px_rgba(0,219,233,0.15)] transition-all duration-300 ease-out">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="font-display-lg text-display-lg-mobile tracking-tighter text-primary">AETHER AI</div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Platform</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Solutions</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Developers</a>
+<a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1" href="#">Pricing</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined md:hidden text-primary">menu</button>
+<button class="hidden md:block bg-primary-container text-on-primary-fixed px-6 py-2 font-mono-label text-mono-label rounded-lg hover:drop-shadow-[0_0_10px_#00dbe9] transition-all">Launch Console</button>
+</div>
+</div>
+</header>
+<main class="relative pt-32 pb-section-gap px-margin-mobile max-w-container-max mx-auto">
+<!-- Background Shader -->
+
+<!-- Hero Section -->
+<section class="text-center mb-16">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 border border-primary/20 rounded-full mb-6">
+<span class="status-pulse"></span>
+<span class="font-mono-label text-[12px] text-primary-fixed uppercase">Transparent Intelligence</span>
+</div>
+<h1 class="font-display-lg text-display-lg-mobile text-primary mb-4">Scalable Neural Compute.</h1>
+<p class="font-body-lg text-on-surface-variant max-w-lg mx-auto">Precision-engineered pricing for synthetic intelligence operations, from sandbox prototyping to global enterprise clusters.</p>
+</section>
+<!-- Pricing Cards (Mobile Stack) -->
+<div class="flex flex-col gap-6 md:grid md:grid-cols-3 md:gap-8 mb-24">
+<!-- Basic Plan -->
+<div class="glass-card p-8 rounded-xl flex flex-col h-full group">
+<div class="mb-8">
+<span class="font-mono-label text-mono-label text-primary-fixed block mb-2">PROTOTYPE</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Basic</h2>
+<div class="mt-4 flex items-baseline">
+<span class="font-display-lg text-4xl text-primary">$0</span>
+<span class="font-body-md text-on-surface-variant ml-2">/ month</span>
+</div>
+</div>
+<ul class="space-y-4 mb-10 flex-grow">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary-fixed text-lg">check_circle</span>
+<span class="text-on-surface-variant">100k Neural Tokens / mo</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary-fixed text-lg">check_circle</span>
+<span class="text-on-surface-variant">Community API Access</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary-fixed text-lg">check_circle</span>
+<span class="text-on-surface-variant">Standard Latency (Shared)</span>
+</li>
+</ul>
+<button class="w-full py-4 border border-primary-fixed text-primary-fixed font-mono-label text-mono-label rounded-lg group-hover:bg-primary-fixed group-hover:text-surface transition-all duration-300">Initialize Free</button>
+</div>
+<!-- Professional Plan -->
+<div class="glass-card p-8 rounded-xl flex flex-col h-full border-primary/40 relative transform md:-translate-y-4 shadow-[0_0_40px_rgba(0,219,233,0.1)] group">
+<div class="absolute top-0 right-0 bg-secondary-container text-on-secondary-container px-4 py-1 font-mono-label text-[10px] rounded-bl-lg uppercase tracking-widest">Most Deployed</div>
+<div class="mb-8">
+<span class="font-mono-label text-mono-label text-secondary-fixed block mb-2">PRODUCTION</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Professional</h2>
+<div class="mt-4 flex items-baseline">
+<span class="font-display-lg text-4xl text-primary">$499</span>
+<span class="font-body-md text-on-surface-variant ml-2">/ month</span>
+</div>
+</div>
+<ul class="space-y-4 mb-10 flex-grow">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary-fixed text-lg">check_circle</span>
+<span class="text-on-surface-variant">10M Neural Tokens / mo</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary-fixed text-lg">check_circle</span>
+<span class="text-on-surface-variant">Dedicated API Pipeline</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary-fixed text-lg">check_circle</span>
+<span class="text-on-surface-variant">Low-Latency Compute Nodes</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary-fixed text-lg">check_circle</span>
+<span class="text-on-surface-variant">Advanced Behavioral Tuning</span>
+</li>
+</ul>
+<button class="w-full py-4 bg-primary-container text-on-primary-fixed font-mono-label text-mono-label rounded-lg shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:scale-[1.02] transition-all">Scale Production</button>
+</div>
+<!-- Enterprise Plan -->
+<div class="glass-card p-8 rounded-xl flex flex-col h-full group">
+<div class="mb-8">
+<span class="font-mono-label text-mono-label text-primary-fixed block mb-2">AUTONOMOUS</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Enterprise</h2>
+<div class="mt-4 flex items-baseline">
+<span class="font-display-lg text-4xl text-primary">Custom</span>
+</div>
+</div>
+<ul class="space-y-4 mb-10 flex-grow">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary-fixed text-lg">check_circle</span>
+<span class="text-on-surface-variant">Unlimited Dynamic Scaling</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary-fixed text-lg">check_circle</span>
+<span class="text-on-surface-variant">Bare-Metal Edge Clusters</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary-fixed text-lg">check_circle</span>
+<span class="text-on-surface-variant">24/7 Cognitive Architect Support</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary-fixed text-lg">check_circle</span>
+<span class="text-on-surface-variant">Zero-Knowledge Security Tier</span>
+</li>
+</ul>
+<button class="w-full py-4 border border-outline text-on-surface-variant font-mono-label text-mono-label rounded-lg group-hover:border-primary group-hover:text-primary transition-all">Request Consultation</button>
+</div>
+</div>
+<!-- Comparison Table (Mobile Optimized) -->
+<section class="mb-24">
+<h3 class="font-headline-md text-headline-md text-primary mb-8 text-center">Protocol Comparison</h3>
+<div class="overflow-x-auto no-scrollbar glass-card rounded-xl">
+<table class="w-full min-w-[600px] border-collapse text-left">
+<thead>
+<tr class="border-b border-outline-variant/30">
+<th class="p-6 font-mono-label text-mono-label text-on-surface-variant uppercase tracking-wider">Features</th>
+<th class="p-6 font-mono-label text-mono-label text-primary uppercase text-center">Basic</th>
+<th class="p-6 font-mono-label text-mono-label text-secondary uppercase text-center">Pro</th>
+<th class="p-6 font-mono-label text-mono-label text-primary uppercase text-center">Ent</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-on-surface-variant">
+<tr class="border-b border-outline-variant/10">
+<td class="p-6">Max Context Window</td>
+<td class="p-6 text-center">8k</td>
+<td class="p-6 text-center">128k</td>
+<td class="p-6 text-center">1M+</td>
+</tr>
+<tr class="border-b border-outline-variant/10 bg-white/5">
+<td class="p-6">Inference Speed</td>
+<td class="p-6 text-center">Standard</td>
+<td class="p-6 text-center text-primary-fixed">Turbo</td>
+<td class="p-6 text-center text-primary-fixed">Real-time</td>
+</tr>
+<tr class="border-b border-outline-variant/10">
+<td class="p-6">Fine-tuning Slots</td>
+<td class="p-6 text-center">None</td>
+<td class="p-6 text-center">5</td>
+<td class="p-6 text-center">Unlimited</td>
+</tr>
+<tr class="border-b border-outline-variant/10 bg-white/5">
+<td class="p-6">Custom Guardrails</td>
+<td class="p-6 text-center"><span class="material-symbols-outlined text-error opacity-40">close</span></td>
+<td class="p-6 text-center"><span class="material-symbols-outlined text-primary-fixed">check</span></td>
+<td class="p-6 text-center"><span class="material-symbols-outlined text-primary-fixed">check</span></td>
+</tr>
+<tr>
+<td class="p-6">SSO / SAML</td>
+<td class="p-6 text-center"><span class="material-symbols-outlined text-error opacity-40">close</span></td>
+<td class="p-6 text-center"><span class="material-symbols-outlined text-error opacity-40">close</span></td>
+<td class="p-6 text-center"><span class="material-symbols-outlined text-primary-fixed">check</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="mt-4 flex items-center justify-center gap-2 md:hidden">
+<span class="material-symbols-outlined text-on-surface-variant text-sm animate-bounce-x">arrow_back</span>
+<p class="font-mono-label text-[10px] text-on-surface-variant uppercase">Swipe to compare specs</p>
+<span class="material-symbols-outlined text-on-surface-variant text-sm animate-bounce-x">arrow_forward</span>
+</div>
+</section>
+<!-- FAQ Section -->
+<section class="max-w-2xl mx-auto">
+<h3 class="font-headline-md text-headline-md text-primary mb-8">Intelligence FAQ</h3>
+<div class="space-y-4">
+<details class="glass-card rounded-lg group">
+<summary class="p-6 flex justify-between items-center cursor-pointer list-none">
+<span class="font-body-lg text-on-surface">What constitutes a 'Neural Token'?</span>
+<span class="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="px-6 pb-6 text-on-surface-variant font-body-md">
+                        Neural tokens are the atomic units of computation in our Aether core. On average, 1,000 tokens equal roughly 750 words of generated intelligence.
+                    </div>
+</details>
+<details class="glass-card rounded-lg group">
+<summary class="p-6 flex justify-between items-center cursor-pointer list-none">
+<span class="font-body-lg text-on-surface">Can I change tiers mid-cycle?</span>
+<span class="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="px-6 pb-6 text-on-surface-variant font-body-md">
+                        Yes. Our system automatically pro-rates your usage and applies the new computational resources to your environment within 120 seconds of activation.
+                    </div>
+</details>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full rounded-t-full bg-surface-container-lowest border-t border-outline-variant/20 py-16">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-mobile md:px-margin-desktop py-section-gap max-w-container-max mx-auto gap-8">
+<div class="font-display-lg text-headline-md text-primary">AETHER AI</div>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors" href="#">Privacy Policy</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors" href="#">Terms of Service</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors" href="#">Security</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors" href="#">System Status</a>
+</div>
+<div class="font-mono-label text-mono-label text-on-tertiary-container text-center md:text-right opacity-80">
+                © 2024 Aether Intelligence Systems. All rights reserved. Built for the synthetic era.
+            </div>
+</div>
+</footer>
+<!-- Micro-interaction Script -->
+<script>
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body></html>

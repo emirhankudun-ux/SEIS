@@ -1,0 +1,21 @@
+{
+  "id": "seis-ai-core-cancellation-fixture",
+  "version": "2026.06.23",
+  "status": "documented-fixture",
+  "purpose": "Define cancellation behavior for future bounded SEIS AI Core sub-agent tasks.",
+  "qualityGate": "npm run check:seis-ai-core-subagent-runtime-fixtures",
+  "cancellationTokenRequired": true,
+  "supportedSignals": ["operator-cancel", "timeout", "policy-deny", "validation-failure"],
+  "terminalStates": ["cancelled", "failed", "validated", "archived"],
+  "mustPreserve": ["draft plan", "validation output", "audit event", "rollback note"],
+  "forbiddenAfterCancellation": ["tool call", "file write", "external request", "GitHub write", "SSH command", "deployment"],
+  "sampleCancellation": {
+    "taskId": "dry-run-seis-code-patch-plan",
+    "fromState": "running",
+    "toState": "cancelled",
+    "reason": "operator-cancel",
+    "artifactsPreserved": true,
+    "externalMutationPerformed": false,
+    "laterToolCallsAllowed": false
+  }
+}

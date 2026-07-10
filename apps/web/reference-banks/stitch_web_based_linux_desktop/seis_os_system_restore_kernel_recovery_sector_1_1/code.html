@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS — SYSTEM RESTORE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #0c0f0f; }
+        ::-webkit-scrollbar-thumb { background: #3b494b; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00dbe9; }
+        
+        .glass-panel {
+            background: rgba(12, 15, 15, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(59, 73, 75, 0.5);
+        }
+        
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 240, 255, 0.1);
+            position: absolute;
+            animation: scan 4s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+
+        .cursor-blink {
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        .tiling-grid {
+            display: grid;
+            gap: 16px;
+            grid-template-columns: repeat(12, 1fr);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#f8d8ff",
+                        "tertiary-fixed": "#e5e2e1",
+                        "primary-container": "#00f0ff",
+                        "on-tertiary-container": "#605e5e",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "error": "#ffb4ab",
+                        "on-secondary": "#520071",
+                        "surface-container-low": "#1a1c1c",
+                        "on-primary-container": "#006970",
+                        "inverse-primary": "#006970",
+                        "on-background": "#e2e2e2",
+                        "outline-variant": "#3b494b",
+                        "inverse-on-surface": "#2f3131",
+                        "secondary-container": "#ce5dff",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "inverse-surface": "#e2e2e2",
+                        "background": "#121414",
+                        "on-tertiary": "#313030",
+                        "surface-container-lowest": "#0c0f0f",
+                        "tertiary": "#f9f5f5",
+                        "surface-bright": "#37393a",
+                        "error-container": "#93000a",
+                        "on-error": "#690005",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "surface-tint": "#00dbe9",
+                        "primary-fixed": "#7df4ff",
+                        "on-error-container": "#ffdad6",
+                        "surface-variant": "#333535",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-surface-variant": "#b9cacb",
+                        "on-primary-fixed": "#002022",
+                        "surface-container": "#1e2020",
+                        "on-primary-fixed-variant": "#004f54",
+                        "surface-dim": "#121414",
+                        "surface": "#121414",
+                        "surface-container-high": "#282a2b",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "primary-fixed-dim": "#00dbe9",
+                        "secondary": "#ebb2ff",
+                        "tertiary-container": "#dcd9d8",
+                        "primary": "#dbfcff",
+                        "on-secondary-fixed": "#320047",
+                        "outline": "#849495",
+                        "surface-container-highest": "#333535",
+                        "on-surface": "#e2e2e2",
+                        "on-secondary-container": "#480064",
+                        "on-primary": "#00363a"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "label-sm": ["Space Mono"],
+                        "label-caps": ["Space Mono"],
+                        "code-sm": ["JetBrains Mono"],
+                        "body-md": ["JetBrains Mono"],
+                        "headline-lg": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "label-caps": ["10px", {"lineHeight": "1", "letterSpacing": "0.2em", "fontWeight": "700"}],
+                        "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full h-10 flex justify-between items-center px-8 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 z-50">
+<div class="flex items-center gap-8">
+<span class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">WORKSPACES</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">TELEMETRY</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">AGENTS</a>
+<a class="font-label-caps text-label-caps text-primary-fixed border-b border-primary-fixed pb-1" href="#">NETWORK</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer active:opacity-70 text-[18px]">memory</span>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer active:opacity-70 text-[18px]">terminal</span>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer active:opacity-70 text-[18px]">settings</span>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-10 h-[calc(100vh-40px)] w-20 hover:w-64 transition-all duration-300 bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 z-40 flex flex-col group overflow-hidden">
+<div class="p-4 flex items-center gap-4 border-b border-outline-variant/10">
+<div class="w-10 h-10 bg-secondary-container/20 flex items-center justify-center border border-secondary-fixed/30 shrink-0">
+<span class="material-symbols-outlined text-secondary-fixed">person</span>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+<p class="font-label-caps text-label-caps text-secondary-fixed">ROOT_USER</p>
+<p class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</p>
+</div>
+</div>
+<nav class="flex-1 py-4">
+<div class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps whitespace-nowrap">DASHBOARD</span>
+</div>
+<div class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all">
+<span class="material-symbols-outlined">folder_open</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps whitespace-nowrap">FILESYSTEM</span>
+</div>
+<div class="flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed transition-all">
+<span class="material-symbols-outlined">terminal</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps whitespace-nowrap">TERMINAL</span>
+</div>
+<div class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps whitespace-nowrap">AI_AGENTS</span>
+</div>
+<div class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all">
+<span class="material-symbols-outlined">cloud_queue</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps whitespace-nowrap">INFRASTRUCTURE</span>
+</div>
+<div class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all">
+<span class="material-symbols-outlined">list_alt</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps whitespace-nowrap">LOGS</span>
+</div>
+</nav>
+<div class="p-4 flex flex-col gap-2 border-t border-outline-variant/10">
+<div class="flex items-center px-4 py-2 cursor-pointer text-on-surface-variant hover:text-error transition-all">
+<span class="material-symbols-outlined">power_settings_new</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps">POWER</span>
+</div>
+<div class="flex items-center px-4 py-2 cursor-pointer text-on-surface-variant hover:text-primary-fixed transition-all">
+<span class="material-symbols-outlined">lock</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps">LOCK</span>
+</div>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-20 mt-10 p-6 h-[calc(100vh-40px)] overflow-hidden flex flex-col gap-4">
+<!-- Header / Status Bar -->
+<div class="flex justify-between items-end border-b border-outline-variant pb-4">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-primary-fixed">SYSTEM_RESTORE_&amp;_KERNEL_RECOVERY</h1>
+<p class="font-code-sm text-code-sm text-outline tracking-tight">SECTOR_01 // SUBSYSTEM: KERNEL_CORE_V4 // STATUS: CRITICAL_MODE</p>
+</div>
+<div class="flex gap-8 text-right">
+<div>
+<p class="font-label-caps text-label-caps text-outline">UPTIME</p>
+<p class="font-code-sm text-code-sm text-on-surface">000:14:42:09</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-outline">INTEGRITY</p>
+<p class="font-code-sm text-code-sm text-primary-container">64.8% (DEGRADED)</p>
+</div>
+</div>
+</div>
+<!-- Tiling Content Grid -->
+<div class="flex-1 grid grid-cols-12 grid-rows-6 gap-4 min-h-0">
+<!-- Health Audit Panel -->
+<section class="col-span-3 row-span-4 flex flex-col glass-panel border-primary-container/30 relative overflow-hidden">
+<div class="scanline"></div>
+<div class="bg-primary-container h-6 flex items-center px-3 justify-between">
+<span class="font-label-caps text-label-caps text-background">HEALTH_AUDIT</span>
+<span class="material-symbols-outlined text-[14px] text-background">analytics</span>
+</div>
+<div class="p-4 flex flex-col gap-6 overflow-y-auto">
+<!-- Gauge Mockups -->
+<div class="space-y-4">
+<div>
+<div class="flex justify-between font-code-sm mb-1">
+<span class="text-outline">MEMORY_CONSISTENCY</span>
+<span class="text-primary-container">82%</span>
+</div>
+<div class="h-2 bg-surface-container-high flex gap-0.5">
+<div class="w-1/12 bg-primary-container"></div>
+<div class="w-1/12 bg-primary-container"></div>
+<div class="w-1/12 bg-primary-container"></div>
+<div class="w-1/12 bg-primary-container"></div>
+<div class="w-1/12 bg-primary-container"></div>
+<div class="w-1/12 bg-primary-container"></div>
+<div class="w-1/12 bg-primary-container"></div>
+<div class="w-1/12 bg-primary-container"></div>
+<div class="w-1/12 bg-surface-variant"></div>
+<div class="w-1/12 bg-surface-variant"></div>
+<div class="w-1/12 bg-surface-variant"></div>
+<div class="w-1/12 bg-surface-variant"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-code-sm mb-1">
+<span class="text-outline">SYSCALL_SECURITY</span>
+<span class="text-error">24%</span>
+</div>
+<div class="h-2 bg-surface-container-high flex gap-0.5">
+<div class="w-1/12 bg-error"></div>
+<div class="w-1/12 bg-error"></div>
+<div class="w-1/12 bg-surface-variant"></div>
+<div class="w-1/12 bg-surface-variant"></div>
+<div class="w-1/12 bg-surface-variant"></div>
+<div class="w-1/12 bg-surface-variant"></div>
+<div class="w-1/12 bg-surface-variant"></div>
+<div class="w-1/12 bg-surface-variant"></div>
+<div class="w-1/12 bg-surface-variant"></div>
+<div class="w-1/12 bg-surface-variant"></div>
+<div class="w-1/12 bg-surface-variant"></div>
+<div class="w-1/12 bg-surface-variant"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-code-sm mb-1">
+<span class="text-outline">I/O_STACK_STABILITY</span>
+<span class="text-primary-container">91%</span>
+</div>
+<div class="h-2 bg-surface-container-high flex gap-0.5">
+<div class="w-1/12 bg-primary-container"></div>
+<div class="w-1/12 bg-primary-container"></div>
+<div class="w-1/12 bg-primary-container"></div>
+<div class="w-1/12 bg-primary-container"></div>
+<div class="w-1/12 bg-primary-container"></div>
+<div class="w-1/12 bg-primary-container"></div>
+<div class="w-1/12 bg-primary-container"></div>
+<div class="w-1/12 bg-primary-container"></div>
+<div class="w-1/12 bg-primary-container"></div>
+<div class="w-1/12 bg-primary-container"></div>
+<div class="w-1/12 bg-primary-container"></div>
+<div class="w-1/12 bg-surface-variant"></div>
+</div>
+</div>
+</div>
+<div class="border-t border-outline-variant pt-4">
+<p class="font-label-caps text-[9px] text-outline mb-2">ANOMALY_DETECTION</p>
+<div class="space-y-2 font-code-sm">
+<div class="flex items-start gap-2 text-error">
+<span class="material-symbols-outlined text-[14px] mt-0.5">warning</span>
+<span>UNAUTHORIZED_SYSCALL_HOOK_IN_VTABLE_0x22F</span>
+</div>
+<div class="flex items-start gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px] mt-0.5">info</span>
+<span>LATENCY_SPIKE_IN_L2_CACHE_REPLENISHMENT</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Kernel Timeline Panel -->
+<section class="col-span-9 row-span-4 flex flex-col glass-panel">
+<div class="bg-outline-variant/20 h-6 flex items-center px-3 justify-between border-b border-outline-variant/30">
+<span class="font-label-caps text-label-caps text-on-surface">KERNEL_SNAPSHOT_HISTORY</span>
+<span class="font-code-sm text-code-sm text-outline">STORAGE: LOCAL_ARCHIVE_A</span>
+</div>
+<div class="flex-1 overflow-x-auto p-4 flex gap-4 items-stretch">
+<!-- Snapshot Card 1 (Active) -->
+<div class="w-72 shrink-0 border border-primary-container flex flex-col bg-primary-container/5">
+<div class="p-3 bg-primary-container text-background flex justify-between items-center">
+<span class="font-label-caps text-label-caps">LIVE_STATE</span>
+<span class="font-code-sm text-[10px]">CURRENT</span>
+</div>
+<div class="p-4 flex-1 flex flex-col gap-4">
+<div>
+<p class="text-outline font-label-caps text-[9px]">ID</p>
+<p class="font-code-sm text-primary-container">KS-992-DELTA</p>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div>
+<p class="text-outline font-label-caps text-[9px]">VERSION</p>
+<p class="font-code-sm text-on-surface">v4.2.1-rc</p>
+</div>
+<div>
+<p class="text-outline font-label-caps text-[9px]">ARCH</p>
+<p class="font-code-sm text-on-surface">X64_EXT</p>
+</div>
+</div>
+<div>
+<p class="text-outline font-label-caps text-[9px]">CHECKSUM_MD5</p>
+<p class="font-code-sm text-on-surface-variant break-all">f29e1c22d4f82a991</p>
+</div>
+<div class="mt-auto">
+<button class="w-full bg-surface-container-high border border-primary-container text-primary-container py-2 font-label-caps text-label-caps hover:bg-primary-container hover:text-background transition-all">LOCK_STATE</button>
+</div>
+</div>
+</div>
+<!-- Snapshot Card 2 -->
+<div class="w-72 shrink-0 border border-outline-variant flex flex-col bg-surface-container-lowest hover:border-primary-container/50 transition-colors">
+<div class="p-3 border-b border-outline-variant flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-on-surface-variant">STABLE_RESTORE</span>
+<span class="font-code-sm text-[10px] text-outline">T-12H</span>
+</div>
+<div class="p-4 flex-1 flex flex-col gap-4">
+<div>
+<p class="text-outline font-label-caps text-[9px]">ID</p>
+<p class="font-code-sm">KS-988-ALPHA</p>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div>
+<p class="text-outline font-label-caps text-[9px]">VERSION</p>
+<p class="font-code-sm">v4.1.9-stable</p>
+</div>
+<div>
+<p class="text-outline font-label-caps text-[9px]">ARCH</p>
+<p class="font-code-sm">X64_EXT</p>
+</div>
+</div>
+<div>
+<p class="text-outline font-label-caps text-[9px]">CHECKSUM_MD5</p>
+<p class="font-code-sm text-on-surface-variant break-all">d33f1c22a1b1b2c4e</p>
+</div>
+<div class="mt-auto">
+<button class="w-full bg-primary-container text-background py-2 font-label-caps text-label-caps hover:bg-secondary-container transition-all">RESTORE_TO</button>
+</div>
+</div>
+</div>
+<!-- Snapshot Card 3 -->
+<div class="w-72 shrink-0 border border-outline-variant flex flex-col bg-surface-container-lowest hover:border-primary-container/50 transition-colors">
+<div class="p-3 border-b border-outline-variant flex justify-between items-center text-on-surface-variant">
+<span class="font-label-caps text-label-caps">LEGACY_BOOT</span>
+<span class="font-code-sm text-[10px] text-outline">T-3D</span>
+</div>
+<div class="p-4 flex-1 flex flex-col gap-4 opacity-70">
+<div>
+<p class="text-outline font-label-caps text-[9px]">ID</p>
+<p class="font-code-sm">KS-812-ORIGIN</p>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div>
+<p class="text-outline font-label-caps text-[9px]">VERSION</p>
+<p class="font-code-sm">v4.0.0-gold</p>
+</div>
+<div>
+<p class="text-outline font-label-caps text-[9px]">ARCH</p>
+<p class="font-code-sm">X64_EXT</p>
+</div>
+</div>
+<div>
+<p class="text-outline font-label-caps text-[9px]">CHECKSUM_MD5</p>
+<p class="font-code-sm text-on-surface-variant break-all">a11b22c33d44e55f</p>
+</div>
+<div class="mt-auto">
+<button class="w-full border border-primary-container/30 text-primary-container py-2 font-label-caps text-label-caps hover:bg-primary-container hover:text-background transition-all">RESTORE_TO</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Recovery Terminal -->
+<section class="col-span-12 row-span-2 flex flex-col glass-panel bg-black/90 font-code-sm">
+<div class="bg-surface-container-high h-6 flex items-center px-3 justify-between">
+<div class="flex items-center gap-4">
+<span class="font-label-caps text-label-caps text-on-surface">RECOVERY_TERMINAL_V1.0</span>
+<span class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+<span class="text-[10px] text-primary-container">INIT_LOGS_STREAMING</span>
+</span>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-[14px] text-outline cursor-pointer">settings_ethernet</span>
+<span class="material-symbols-outlined text-[14px] text-outline cursor-pointer">close</span>
+</div>
+</div>
+<div class="flex-1 p-3 overflow-y-auto space-y-1 text-on-surface-variant text-[12px] leading-tight" id="terminal-content">
+<p class="text-primary-container">[ 0.000000] Linux version 4.2.1-rc (gcc version 12.2.0)</p>
+<p>[ 0.000004] Command line: BOOT_IMAGE=/vmlinuz-4.2.1-rc root=UUID=7df4ff ro quiet</p>
+<p>[ 0.124881] x86/fpu: Supporting XSAVE feature 0x001: 'x87 floating point registers'</p>
+<p>[ 0.452119] ACPI: Core revision 20230331</p>
+<p class="text-error">[ 1.092883] kernel: CRITICAL_ERROR: Failed to initialize hardware security module (HSM_0)</p>
+<p>[ 1.104221] kernel: Falling back to software-based kernel integrity monitoring...</p>
+<p>[ 1.105002] kernel: Initializing SEIS-SECURITY-SUITE v4.2...</p>
+<p>[ 1.109012] kernel: Ready for recovery session.</p>
+<p class="flex items-center">
+<span class="text-primary-container mr-2">seis_os@root:~$</span>
+<span class="text-on-surface">tail -f /var/log/recovery.log</span>
+<span class="w-2 h-4 bg-primary-container ml-1 cursor-blink"></span>
+</p>
+</div>
+</section>
+</div>
+</main>
+<!-- FAB (Suppressed based on logic but keeping placeholder style if needed elsewhere) -->
+<!-- Not rendered per rules: "suppress the FAB on Settings, Profile, Details, and Transactional screens" -->
+<script>
+        // Micro-interaction: Simulated Terminal Typing
+        const terminalContent = document.getElementById('terminal-content');
+        const logs = [
+            "[ 1.554231] net: initializing network stack...",
+            "[ 1.559902] net: socket layer v1.2.0 initialized",
+            "[ 1.623110] storage: mounting /dev/sda1 (ext4)... success",
+            "[ 1.701123] kernel: verifying snapshot KS-992-DELTA integrity...",
+            "[ 2.012399] kernel: check_failed: memory checksum mismatch at 0x00FF83",
+            "[ 2.015000] kernel: awaiting user input for manual restore sequence..."
+        ];
+
+        let logIndex = 0;
+        function addLog() {
+            if (logIndex < logs.length) {
+                const p = document.createElement('p');
+                p.textContent = logs[logIndex];
+                if (logs[logIndex].includes('failed')) p.classList.add('text-error');
+                
+                // Insert before the last input line
+                terminalContent.insertBefore(p, terminalContent.lastElementChild);
+                terminalContent.scrollTop = terminalContent.scrollHeight;
+                logIndex++;
+                setTimeout(addLog, Math.random() * 2000 + 1000);
+            }
+        }
+
+        setTimeout(addLog, 2000);
+    </script>
+</body></html>

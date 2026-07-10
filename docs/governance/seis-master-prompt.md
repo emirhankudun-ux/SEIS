@@ -1,6 +1,7 @@
 # SEIS Master Prompt
 
-Status: Active operating contract
+Status: Compatibility companion
+Authority: Root `AGENTS.md` Enterprise v4.0 is the active operating constitution.
 Supreme Vision: docs/governance/seis-supreme-vision.md
 
 ## Mission
@@ -40,7 +41,7 @@ SEIS prioritizes Apple-native platforms when practical while keeping strong web,
 
 GitHub is the source of truth. Main is treated as a protected, reviewable, rollback-ready branch. Use small commits, avoid dependency bloat, keep generated reports reproducible, and link governance changes to their validation scripts.
 
-Canonical governance surfaces:
+Companion governance surfaces:
 
 - docs/governance/seis-master-prompt-change-checklist.md
 - docs/governance/adr-0001-seis-master-prompt-operating-contract.md

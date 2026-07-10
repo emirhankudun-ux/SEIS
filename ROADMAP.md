@@ -1,5 +1,10 @@
 # SEIS Roadmap
 
+Canonical milestone status and execution order are maintained in
+[docs/ROADMAP.md](docs/ROADMAP.md). The phase detail below remains a
+compatibility reference and may not supersede root `AGENTS.md` Enterprise v4.0
+or the canonical roadmap entry point.
+
 This roadmap defines the planned evolution of the SEIS ecosystem.
 
 SEIS should grow carefully from a clean foundation into a full AI-native
@@ -254,6 +259,29 @@ Expected result:
 
 SEIS becomes a full AI-native command center and operating system for creative
 engineering.
+
+## 10-Year Continuity Mapping
+
+The long-horizon strategy maps phases to ten-year continuity:
+
+| Year | Phase | Focus |
+| --- | --- | --- |
+| 1 | Phase 1 | Foundation and repository hygiene. |
+| 2 | Phase 2 | Operating-system-like repository governance. |
+| 3 | Phase 3 | Command Center baseline and first usable modules. |
+| 4 | Phase 4 | Structured AI agent system and prompt governance. |
+| 5 | Phase 5 | Automation, validation, and release reliability. |
+| 6 | Phase 6 | MCP and plugin ecosystem readiness. |
+| 7 | Phase 7 | Cloud/SSH execution posture and deployment operations. |
+| 8 | Phase 8 | Knowledge system and second-brain continuity. |
+| 9 | Phase 9 | Professional platform hardening and enterprise-grade reliability. |
+| 10 | Phase 10 | Supreme direction: secure autonomous-ready ecosystem operation. |
+
+Reference:
+- [roadmap/seis-long-horizon-strategy.md](roadmap/seis-long-horizon-strategy.md)
+- [roadmap/seis-18-60-month-long-horizon-ops-blueprint.md](roadmap/seis-18-60-month-long-horizon-ops-blueprint.md)
+- [roadmap/seis-61-120-month-long-horizon-ops-blueprint.md](roadmap/seis-61-120-month-long-horizon-ops-blueprint.md)
+- [roadmap/seis-long-horizon-kpi-framework.md](roadmap/seis-long-horizon-kpi-framework.md)
 
 ## Version Levels
 

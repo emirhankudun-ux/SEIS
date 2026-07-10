@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS | NEURAL ARCADE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --cyber-lime: #00f0ff; /* Overriding with Primary Container from config */
+            --glow-color: rgba(0, 240, 255, 0.3);
+        }
+        body {
+            background-color: #0c0f0f;
+            color: #e2e2e2;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(12, 15, 15, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid #3b494b;
+        }
+        .window-header {
+            background: #00f0ff;
+            color: #002022;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 240, 255, 0.1);
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: scan 4s linear infinite;
+            z-index: 10;
+            pointer-events: none;
+        }
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+        .segmented-bar div {
+            height: 100%;
+            background: #00f0ff;
+            margin-right: 2px;
+        }
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: #00f0ff;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+        .nav-active {
+            color: #7df4ff;
+            border-bottom: 1px solid #7df4ff;
+            padding-bottom: 4px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-surface": "#e2e2e2",
+                      "primary-container": "#00f0ff",
+                      "outline-variant": "#3b494b",
+                      "surface-tint": "#00dbe9",
+                      "tertiary-fixed-dim": "#c9c6c5",
+                      "secondary": "#ebb2ff",
+                      "on-tertiary-fixed": "#1c1b1b",
+                      "on-background": "#e2e2e2",
+                      "on-secondary-fixed-variant": "#74009f",
+                      "surface-container-highest": "#333535",
+                      "surface-bright": "#37393a",
+                      "error": "#ffb4ab",
+                      "outline": "#849495",
+                      "tertiary-fixed": "#e5e2e1",
+                      "primary-fixed": "#7df4ff",
+                      "surface-container-lowest": "#0c0f0f",
+                      "primary": "#dbfcff",
+                      "on-surface": "#e2e2e2",
+                      "on-primary": "#00363a",
+                      "on-primary-fixed": "#002022",
+                      "tertiary": "#f9f5f5",
+                      "surface-container": "#1e2020",
+                      "inverse-on-surface": "#2f3131",
+                      "on-secondary-fixed": "#320047",
+                      "secondary-container": "#ce5dff",
+                      "on-primary-fixed-variant": "#004f54",
+                      "on-primary-container": "#006970",
+                      "surface-container-high": "#282a2b",
+                      "on-error-container": "#ffdad6",
+                      "on-surface-variant": "#b9cacb",
+                      "on-error": "#690005",
+                      "on-tertiary-fixed-variant": "#474646",
+                      "on-secondary-container": "#480064",
+                      "error-container": "#93000a",
+                      "secondary-fixed": "#f8d8ff",
+                      "on-tertiary-container": "#605e5e",
+                      "background": "#121414",
+                      "tertiary-container": "#dcd9d8",
+                      "surface-dim": "#121414",
+                      "secondary-fixed-dim": "#ebb2ff",
+                      "on-tertiary": "#313030",
+                      "surface": "#121414",
+                      "primary-fixed-dim": "#00dbe9",
+                      "inverse-primary": "#006970",
+                      "surface-variant": "#333535",
+                      "surface-container-low": "#1a1c1c",
+                      "on-secondary": "#520071"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gap-xs": "4px",
+                      "gap-md": "16px",
+                      "stroke-thick": "2px",
+                      "margin-page": "32px",
+                      "gap-lg": "24px",
+                      "stroke-thin": "1px",
+                      "gap-sm": "8px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "body-lg": ["JetBrains Mono"],
+                      "label-sm": ["Space Mono"],
+                      "headline-md": ["JetBrains Mono"],
+                      "body-md": ["JetBrains Mono"],
+                      "code-sm": ["JetBrains Mono"],
+                      "headline-lg": ["JetBrains Mono"],
+                      "label-caps": ["Space Mono"]
+              },
+              "fontSize": {
+                      "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-caps": ["10px", {"lineHeight": "1", "letterSpacing": "0.2em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- TopNavBar -->
+<nav class="bg-surface-container-lowest/80 backdrop-blur-xl fixed top-0 w-full flex justify-between items-center px-gutter h-10 border-b border-outline-variant/30 z-50">
+<div class="flex items-center gap-md">
+<span class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</span>
+<div class="h-4 w-px bg-outline-variant/50"></div>
+<div class="flex gap-lg">
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed transition-colors duration-200" href="#">WORKSPACES</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed transition-colors duration-200" href="#">TELEMETRY</a>
+<a class="font-label-caps text-label-caps text-primary-fixed border-b border-primary-fixed pb-1" href="#">AGENTS</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed transition-colors duration-200" href="#">NETWORK</a>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer active:opacity-70 text-[18px]">memory</span>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer active:opacity-70 text-[18px]">terminal</span>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer active:opacity-70 text-[18px]">settings</span>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 w-20 hover:w-64 transition-all duration-300 group overflow-hidden">
+<div class="p-4 mb-4 border-b border-outline-variant/10">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-secondary-container/20 border border-secondary-fixed-dim rounded-sm flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary-fixed">person</span>
+</div>
+<div class="hidden group-hover:block transition-opacity opacity-0 group-hover:opacity-100 whitespace-nowrap">
+<p class="font-label-caps text-label-caps text-secondary-fixed">ROOT_USER</p>
+<p class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</p>
+</div>
+</div>
+</div>
+<nav class="flex-1">
+<div class="group/item flex items-center px-4 py-3 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined text-on-surface-variant group-hover/item:text-secondary-fixed">dashboard</span>
+<span class="ml-6 hidden group-hover:block font-label-caps text-label-caps text-on-surface-variant group-hover/item:text-secondary-fixed">DASHBOARD</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+<span class="ml-6 hidden group-hover:block font-label-caps text-label-caps">AI_AGENTS</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined text-on-surface-variant group-hover/item:text-secondary-fixed">folder_open</span>
+<span class="ml-6 hidden group-hover:block font-label-caps text-label-caps text-on-surface-variant group-hover/item:text-secondary-fixed">FILESYSTEM</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined text-on-surface-variant group-hover/item:text-secondary-fixed">terminal</span>
+<span class="ml-6 hidden group-hover:block font-label-caps text-label-caps text-on-surface-variant group-hover/item:text-secondary-fixed">TERMINAL</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined text-on-surface-variant group-hover/item:text-secondary-fixed">cloud_queue</span>
+<span class="ml-6 hidden group-hover:block font-label-caps text-label-caps text-on-surface-variant group-hover/item:text-secondary-fixed">INFRASTRUCTURE</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined text-on-surface-variant group-hover/item:text-secondary-fixed">list_alt</span>
+<span class="ml-6 hidden group-hover:block font-label-caps text-label-caps text-on-surface-variant group-hover/item:text-secondary-fixed">LOGS</span>
+</div>
+</nav>
+<div class="p-4 mt-auto border-t border-outline-variant/10">
+<button class="w-full h-10 border border-secondary-fixed/50 text-secondary-fixed font-label-caps text-[10px] hidden group-hover:block mb-4 hover:bg-secondary-fixed/10 transition-colors">
+                NEW_SESSION
+            </button>
+<div class="flex flex-col gap-2">
+<div class="group/item flex items-center px-4 py-2 cursor-pointer text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined">power_settings_new</span>
+<span class="ml-6 hidden group-hover:block font-label-caps text-label-caps">POWER</span>
+</div>
+<div class="group/item flex items-center px-4 py-2 cursor-pointer text-on-surface-variant hover:text-primary-fixed transition-colors">
+<span class="material-symbols-outlined">lock</span>
+<span class="ml-6 hidden group-hover:block font-label-caps text-label-caps">LOCK</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-20 pt-14 pb-8 px-gutter min-h-screen">
+<!-- Header Section -->
+<header class="mb-gap-lg flex justify-between items-end">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-primary-fixed tracking-tight uppercase">Neural Arcade <span class="text-on-surface-variant font-light">// Sector 8</span></h1>
+<p class="font-code-sm text-code-sm text-on-surface-variant mt-2">SYS_LOAD: OPTIMAL | NEURAL_LINK: ACTIVE | LATENCY: 4ms</p>
+</div>
+<div class="flex gap-sm">
+<div class="glass-panel px-4 py-2 flex flex-col items-end">
+<span class="text-[10px] font-label-caps text-on-surface-variant">ACTIVE_PLAYERS</span>
+<span class="text-headline-md font-headline-md text-primary-container">12,408</span>
+</div>
+<div class="glass-panel px-4 py-2 flex flex-col items-end">
+<span class="text-[10px] font-label-caps text-on-surface-variant">SECTOR_RANK</span>
+<span class="text-headline-md font-headline-md text-secondary-fixed">#042</span>
+</div>
+</div>
+</header>
+<div class="grid grid-cols-12 gap-gap-md">
+<!-- Left Column: Neural Arcade (Featured) -->
+<section class="col-span-12 lg:col-span-8 flex flex-col gap-gap-md">
+<div class="glass-panel relative overflow-hidden h-[400px]">
+<div class="window-header justify-between">
+<span>NEURAL_ARCADE_LINK_FEATURED</span>
+<div class="flex gap-2">
+<span class="w-2 h-2 rounded-full bg-on-primary"></span>
+<span class="w-2 h-2 rounded-full bg-on-primary"></span>
+</div>
+</div>
+
+<div class="scanline"></div>
+<div class="absolute inset-0 p-gap-lg flex flex-col justify-end bg-gradient-to-t from-surface-container-lowest to-transparent pointer-events-none">
+<div class="pointer-events-auto">
+<div class="flex items-center gap-2 mb-2">
+<span class="bg-primary-container text-on-primary-fixed font-label-caps text-[10px] px-2 py-0.5">AI_POWERED</span>
+<span class="bg-surface-variant/50 border border-outline-variant text-on-surface font-label-caps text-[10px] px-2 py-0.5">CYBER_LIME_EDITION</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-white mb-4">NEURAL_VOID: ASCENSION</h2>
+<p class="max-w-md font-body-md text-on-surface-variant mb-6">Experience the first procedurally generated hyper-reality combat simulation, powered by the SEIS Kernel's proprietary Neural Bridge technology.</p>
+<div class="flex gap-sm">
+<button class="bg-primary-container text-on-primary-fixed px-6 py-2 font-label-caps text-[12px] flex items-center gap-2 hover:bg-secondary-fixed transition-colors">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+                                    INITIATE_SESSION
+                                </button>
+<button class="border border-primary-container text-primary-container px-6 py-2 font-label-caps text-[12px] flex items-center gap-2 hover:bg-primary-container/10 transition-colors">
+<span class="material-symbols-outlined text-[18px]">info</span>
+                                    DATA_LOGS
+                                </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Game Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gap-md">
+<div class="glass-panel group cursor-pointer hover:border-primary-fixed-dim transition-all">
+<div class="window-header">CORE_BREACH</div>
+<div class="h-32 bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A cinematic 3D render of a technical glitch art landscape, featuring neon cyan cubes exploding in a dark void. Digital artifacts and terminal text overlays create a high-tech hacker aesthetic. Lighting is sharp and high-contrast, dominated by deep blacks and vibrant cyber lime accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAf5N2K7_IR4Sj6mGY2hbYgwJnXRV-49H38NEj5JYDGwCn6TvStkzUSNTDX4sp2YUwk7oQ-N__2t5WLnfHZDKIxvXSlru-QPUZSkR7tjfGelBw0lSExY75BCMjWwtXBZQtcKWghTcOwumBoB0E5xKHZs-P3GZBCPJ_vsxHuoQaxoENsLeCYZKOsCNA4e-ISbLvZSjLFiiuTMfmfB8Acr5P62jBpM8C7qDDyEwPAPtH97vAiN5IcOfW8X0hmXjC8fvd_6SVAYaByP_9f"/>
+</div>
+<div class="p-3">
+<div class="flex justify-between items-center mb-2">
+<span class="text-on-surface-variant font-code-sm text-[10px]">VER_4.2.0</span>
+<span class="material-symbols-outlined text-primary-fixed text-[14px]">bolt</span>
+</div>
+<div class="flex justify-between items-end">
+<span class="font-label-caps text-label-caps text-white">SYSTEM_RUNNER</span>
+<span class="text-on-surface-variant text-[10px]">98% COMPAT</span>
+</div>
+</div>
+</div>
+<div class="glass-panel group cursor-pointer hover:border-primary-fixed-dim transition-all">
+<div class="window-header">PROTO_SYNTH</div>
+<div class="h-32 bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Intricate motherboard architecture visualization with pulsing electric pathways in bright cyan. Microscopic detail of futuristic computer chips glowing with internal light. The aesthetic is extremely detailed and technical, evoking a sense of deep hardware interaction within a dark, premium server environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMzJnKdK8nC_jpNIRK58njtkhqPdIvKOKdFxJ-QCdVsXpNxG4j1rsrYZeUwM1IYxaKwSlY_RI0dQR-fzTeCC2FM9HN4rp3o2zLGZ_NMVVf-c-wMo4X2LChbP_A0IYb9WHJDGnZpHAjImpkzC0Kb4f76Z0DVgyR6n7r0L8PBqO4gV76OF4zVV_81N9VRAsLrOr9fNjLlyOOSoh8aPMl2C8GJTecz5zU-AmGEajhDSMgjoPII0_0wi0KOkwLHRykLuMxL6fqyy71YC0N"/>
+</div>
+<div class="p-3">
+<div class="flex justify-between items-center mb-2">
+<span class="text-on-surface-variant font-code-sm text-[10px]">BETA_STAGE</span>
+<span class="material-symbols-outlined text-primary-fixed text-[14px]">memory</span>
+</div>
+<div class="flex justify-between items-end">
+<span class="font-label-caps text-label-caps text-white">NEURAL_DREAM</span>
+<span class="text-on-surface-variant text-[10px]">45ms LATENCY</span>
+</div>
+</div>
+</div>
+<div class="glass-panel group cursor-pointer hover:border-primary-fixed-dim transition-all">
+<div class="window-header">VECTOR_OPS</div>
+<div class="h-32 bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Abstract vector field visualization with thousands of fine lines forming a 3D topographic map of a digital brain. Glowing intersections pulse with cyan energy. The visual style is minimalist and mathematically precise, following the cinematic technical intelligence aesthetic of SEIS OS." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJrF388Pue1XVWzJ5QGd4PB0fNsRiJeUy2dfLVizI9dgEFn5bcCNFLv3I5Z-yhnDFpuof71Z-z1LP92LSd7DmlFZtCj59rsGnDzE1jf5yGZF8rUBAgp44W1IAoK3STIBv54Jjph5JlqIV86cuy4POyUC0ZMyORnLV9DPY0SkU2Tu7BWp65Fk8l41fIFNZyBdCbssZYNcf_yN-ghBTXaufnsHPzGJNiZ-SCZZl_xNsE_QRkemmyCQ1IBpqrOi49bH6XmGVp7B2xSPcW"/>
+</div>
+<div class="p-3">
+<div class="flex justify-between items-center mb-2">
+<span class="text-on-surface-variant font-code-sm text-[10px]">STABLE</span>
+<span class="material-symbols-outlined text-primary-fixed text-[14px]">grid_view</span>
+</div>
+<div class="flex justify-between items-end">
+<span class="font-label-caps text-label-caps text-white">GRID_CONTROLLER</span>
+<span class="text-on-surface-variant text-[10px]">120 FPS</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Column: Stats & Terminal -->
+<section class="col-span-12 lg:col-span-4 flex flex-col gap-gap-md">
+<!-- System Load Monitor -->
+<div class="glass-panel p-gap-md">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-label-caps text-label-caps text-primary-container">SYS_RESOURCE_MONITOR</h3>
+<span class="material-symbols-outlined text-primary-container text-[18px]">analytics</span>
+</div>
+<div class="space-y-4">
+<!-- NPU Allocation -->
+<div>
+<div class="flex justify-between text-[10px] font-code-sm text-on-surface-variant mb-1">
+<span>NPU_NEURAL_CORE</span>
+<span class="text-primary-fixed">78%</span>
+</div>
+<div class="h-3 bg-surface-container flex segmented-bar">
+<div style="width: 8%"></div><div style="width: 8%"></div><div style="width: 8%"></div><div style="width: 8%"></div><div style="width: 8%"></div><div style="width: 8%"></div><div style="width: 8%"></div><div style="width: 8%"></div><div style="width: 8%"></div><div style="width: 0%; background: #333"></div>
+</div>
+</div>
+<!-- GPU Allocation -->
+<div>
+<div class="flex justify-between text-[10px] font-code-sm text-on-surface-variant mb-1">
+<span>GPU_RENDER_THREADS</span>
+<span class="text-primary-fixed">92%</span>
+</div>
+<div class="h-3 bg-surface-container flex segmented-bar">
+<div style="width: 8%"></div><div style="width: 8%"></div><div style="width: 8%"></div><div style="width: 8%"></div><div style="width: 8%"></div><div style="width: 8%"></div><div style="width: 8%"></div><div style="width: 8%"></div><div style="width: 8%"></div><div style="width: 8%"></div><div style="width: 8%"></div><div style="width: 4%"></div>
+</div>
+</div>
+<!-- RAM Allocation -->
+<div>
+<div class="flex justify-between text-[10px] font-code-sm text-on-surface-variant mb-1">
+<span>CACHE_L3_BUFFERS</span>
+<span class="text-primary-fixed">34%</span>
+</div>
+<div class="h-3 bg-surface-container flex segmented-bar">
+<div style="width: 8%"></div><div style="width: 8%"></div><div style="width: 8%"></div><div style="width: 8%"></div><div style="width: 0%; background: #333"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Social Telemetry / Leaderboard -->
+<div class="glass-panel">
+<div class="window-header">HIGH_SCORES_GLOBAL</div>
+<div class="p-gap-md">
+<div class="space-y-3">
+<div class="flex items-center justify-between border-b border-outline-variant/20 pb-2">
+<div class="flex items-center gap-3">
+<span class="text-on-surface-variant font-code-sm">01.</span>
+<div class="w-6 h-6 bg-primary-container/20 border border-primary-container rounded-full flex items-center justify-center text-[10px] text-primary-container">K</div>
+<span class="font-label-caps text-[12px]">KRNL_GOD</span>
+</div>
+<span class="font-code-sm text-primary-fixed">1,894,220</span>
+</div>
+<div class="flex items-center justify-between border-b border-outline-variant/20 pb-2">
+<div class="flex items-center gap-3">
+<span class="text-on-surface-variant font-code-sm">02.</span>
+<div class="w-6 h-6 bg-secondary-container/20 border border-secondary-fixed rounded-full flex items-center justify-center text-[10px] text-secondary-fixed">S</div>
+<span class="font-label-caps text-[12px]">SYNTH_WAV</span>
+</div>
+<span class="font-code-sm text-on-surface-variant">1,542,100</span>
+</div>
+<div class="flex items-center justify-between border-b border-outline-variant/20 pb-2">
+<div class="flex items-center gap-3">
+<span class="text-on-surface-variant font-code-sm">03.</span>
+<div class="w-6 h-6 bg-surface-variant border border-outline rounded-full flex items-center justify-center text-[10px] text-on-surface">U</div>
+<span class="font-label-caps text-[12px]">USER_X9</span>
+</div>
+<span class="font-code-sm text-on-surface-variant">1,120,905</span>
+</div>
+</div>
+<button class="w-full mt-4 py-2 border border-outline-variant text-on-surface-variant font-label-caps text-[10px] hover:border-primary-fixed hover:text-primary-fixed transition-colors">VIEW_FULL_RANKINGS</button>
+</div>
+</div>
+<!-- Quick-Launch Terminal -->
+<div class="glass-panel flex-1 min-h-[200px] flex flex-col bg-black/40">
+<div class="window-header bg-surface-container-highest text-on-surface-variant">ARCADE_SHELL_v2.0</div>
+<div class="p-3 font-code-sm text-code-sm text-primary-container/80 flex-1 overflow-y-auto">
+<div class="mb-1 text-on-surface-variant opacity-50">[SYSTEM] Initialization sequence complete.</div>
+<div class="mb-1 text-on-surface-variant opacity-50">[SYSTEM] Direct Neural Link established via Port 8080.</div>
+<div class="mb-1"><span class="text-secondary-fixed">root@SEIS_OS:</span><span class="text-on-surface"> sector8 --arcade-status</span></div>
+<div class="mb-1 text-primary-fixed-dim">&gt; NEURAL_ARCADE: RUNNING</div>
+<div class="mb-1 text-primary-fixed-dim">&gt; ACTIVE_NODES: 4,092</div>
+<div class="mb-1 text-primary-fixed-dim">&gt; GPU_TEMP: 42°C</div>
+<div class="mb-1 flex items-center gap-2">
+<span class="text-secondary-fixed">root@SEIS_OS:</span>
+<span class="text-on-surface">launch --void</span>
+<span class="terminal-cursor"></span>
+</div>
+</div>
+<div class="px-3 py-2 border-t border-outline-variant/20 flex gap-2 items-center">
+<span class="text-primary-container text-[12px]">$</span>
+<input class="bg-transparent border-none focus:ring-0 p-0 text-code-sm text-on-surface w-full placeholder-outline-variant" placeholder="Enter kernel command..." type="text"/>
+</div>
+</div>
+</section>
+</div>
+<!-- Bottom Status Bar -->
+<footer class="mt-gap-lg flex justify-between items-center text-[10px] font-code-sm text-on-surface-variant uppercase tracking-widest border-t border-outline-variant/30 pt-4">
+<div class="flex gap-lg">
+<span>COORD: 52.3676° N, 4.9041° E</span>
+<span>ENC: AES-256-GCM</span>
+<span class="text-primary-fixed animate-pulse">● LIVE_SYNC</span>
+</div>
+<div class="flex gap-lg items-center">
+<span class="material-symbols-outlined text-[14px]">wifi_tethering</span>
+<span>BITRATE: 4.2 GB/S</span>
+<span>SEIS_KERNEL_v0.8.1-BETA</span>
+</div>
+</footer>
+</main>
+<script>
+        // Micro-interaction for the terminal and system bars
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        const val = input.value;
+                        const terminal = input.closest('.glass-panel').querySelector('.overflow-y-auto');
+                        const newEntry = document.createElement('div');
+                        newEntry.className = 'mb-1';
+                        newEntry.innerHTML = `<span class="text-secondary-fixed">root@SEIS_OS:</span> <span class="text-on-surface">${val}</span>`;
+                        terminal.appendChild(newEntry);
+                        
+                        const response = document.createElement('div');
+                        response.className = 'mb-1 text-error/80';
+                        response.innerHTML = `> ERROR: Command '${val.split(' ')[0]}' not found in SEIS Arcade manifest.`;
+                        terminal.appendChild(response);
+                        
+                        input.value = '';
+                        terminal.scrollTop = terminal.scrollHeight;
+                    }
+                });
+            });
+
+            // Randomize segmented bars slightly for visual flair
+            const bars = document.querySelectorAll('.segmented-bar');
+            setInterval(() => {
+                bars.forEach(bar => {
+                    const children = bar.children;
+                    const activeCount = Math.floor(Math.random() * 5) + 5;
+                    for(let i=0; i<children.length; i++) {
+                        if (i < activeCount) {
+                            children[i].style.background = '#00f0ff';
+                        } else {
+                            children[i].style.background = '#1a1c1c';
+                        }
+                    }
+                });
+            }, 3000);
+        });
+    </script>
+</body></html>

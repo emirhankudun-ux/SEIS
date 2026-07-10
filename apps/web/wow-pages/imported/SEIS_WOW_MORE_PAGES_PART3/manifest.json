@@ -1,0 +1,203 @@
+{
+  "name": "SEIS_WOW_MORE_PAGES_PART3",
+  "version": "1.0",
+  "page_count": 24,
+  "continues_from": [
+    "Part 1: 18 pages",
+    "Part 2: 28 pages"
+  ],
+  "pages": [
+    {
+      "number": 47,
+      "id": "47_command_palette",
+      "title": "Command Palette",
+      "description": "Raycast-style command system for SEIS.",
+      "png": "png/47_command_palette.png",
+      "html": "html/47_command_palette.html"
+    },
+    {
+      "number": 48,
+      "id": "48_workspace_switcher",
+      "title": "Workspace Switcher",
+      "description": "Switch between SEIS Core, UI/UX Lab, Cloud and Archive workspaces.",
+      "png": "png/48_workspace_switcher.png",
+      "html": "html/48_workspace_switcher.html"
+    },
+    {
+      "number": 49,
+      "id": "49_project_dashboard",
+      "title": "Project Dashboard",
+      "description": "Milestones, roadmap status and demo quality tracking.",
+      "png": "png/49_project_dashboard.png",
+      "html": "html/49_project_dashboard.html"
+    },
+    {
+      "number": 50,
+      "id": "50_component_library",
+      "title": "Component Library",
+      "description": "SEIS design-system components for Codex implementation.",
+      "png": "png/50_component_library.png",
+      "html": "html/50_component_library.html"
+    },
+    {
+      "number": 51,
+      "id": "51_typography_lab",
+      "title": "Typography Lab",
+      "description": "SEIS Sans display, UI and mono type direction.",
+      "png": "png/51_typography_lab.png",
+      "html": "html/51_typography_lab.html"
+    },
+    {
+      "number": 52,
+      "id": "52_icon_system",
+      "title": "Icon System",
+      "description": "Unified icon language across SEIS apps.",
+      "png": "png/52_icon_system.png",
+      "html": "html/52_icon_system.html"
+    },
+    {
+      "number": 53,
+      "id": "53_theme_studio",
+      "title": "Theme Studio",
+      "description": "Build and preview SEIS themes.",
+      "png": "png/53_theme_studio.png",
+      "html": "html/53_theme_studio.html"
+    },
+    {
+      "number": 54,
+      "id": "54_wallpaper_lab",
+      "title": "Wallpaper Lab",
+      "description": "Dynamic wallpaper gallery and cinematic wave visuals.",
+      "png": "png/54_wallpaper_lab.png",
+      "html": "html/54_wallpaper_lab.html"
+    },
+    {
+      "number": 55,
+      "id": "55_notification_center",
+      "title": "Notification Center",
+      "description": "System, AI, cloud and security notifications.",
+      "png": "png/55_notification_center.png",
+      "html": "html/55_notification_center.html"
+    },
+    {
+      "number": 56,
+      "id": "56_quick_settings",
+      "title": "Quick Settings",
+      "description": "Wi‑Fi, focus, privacy and appearance controls.",
+      "png": "png/56_quick_settings.png",
+      "html": "html/56_quick_settings.html"
+    },
+    {
+      "number": 57,
+      "id": "57_window_manager",
+      "title": "Window Manager",
+      "description": "Draggable, snappable and resizable app window system.",
+      "png": "png/57_window_manager.png",
+      "html": "html/57_window_manager.html"
+    },
+    {
+      "number": 58,
+      "id": "58_app_permissions",
+      "title": "App Permissions",
+      "description": "Capability-based permissions for apps and agents.",
+      "png": "png/58_app_permissions.png",
+      "html": "html/58_app_permissions.html"
+    },
+    {
+      "number": 59,
+      "id": "59_mcp_tools_center",
+      "title": "MCP Tools Center",
+      "description": "Governed tools, read-only modes and approval gates.",
+      "png": "png/59_mcp_tools_center.png",
+      "html": "html/59_mcp_tools_center.html"
+    },
+    {
+      "number": 60,
+      "id": "60_evidence_locker",
+      "title": "Evidence Locker",
+      "description": "Every readiness claim maps to evidence.",
+      "png": "png/60_evidence_locker.png",
+      "html": "html/60_evidence_locker.html"
+    },
+    {
+      "number": 61,
+      "id": "61_audit_log",
+      "title": "Audit Log",
+      "description": "Traceable event and action history.",
+      "png": "png/61_audit_log.png",
+      "html": "html/61_audit_log.html"
+    },
+    {
+      "number": 62,
+      "id": "62_public_readiness",
+      "title": "Public Readiness",
+      "description": "Pre-public checklist for SEIS demos.",
+      "png": "png/62_public_readiness.png",
+      "html": "html/62_public_readiness.html"
+    },
+    {
+      "number": 63,
+      "id": "63_release_notes",
+      "title": "Release Notes",
+      "description": "SEIS OS demo v0.1 changelog and known limits.",
+      "png": "png/63_release_notes.png",
+      "html": "html/63_release_notes.html"
+    },
+    {
+      "number": 64,
+      "id": "64_deployment_center",
+      "title": "Deployment Center",
+      "description": "Preview, staging and production approval gates.",
+      "png": "png/64_deployment_center.png",
+      "html": "html/64_deployment_center.html"
+    },
+    {
+      "number": 65,
+      "id": "65_storage_backup",
+      "title": "Storage & Backup",
+      "description": "SEIS Drive, backup snapshots and sync status.",
+      "png": "png/65_storage_backup.png",
+      "html": "html/65_storage_backup.html"
+    },
+    {
+      "number": 66,
+      "id": "66_team_collaboration",
+      "title": "Team Collaboration",
+      "description": "Humans and AI agents in one workspace.",
+      "png": "png/66_team_collaboration.png",
+      "html": "html/66_team_collaboration.html"
+    },
+    {
+      "number": 67,
+      "id": "67_profile_settings",
+      "title": "Profile Settings",
+      "description": "User profile, role and local-first preferences.",
+      "png": "png/67_profile_settings.png",
+      "html": "html/67_profile_settings.html"
+    },
+    {
+      "number": 68,
+      "id": "68_help_center",
+      "title": "Help Center",
+      "description": "Guides, help search and troubleshooting.",
+      "png": "png/68_help_center.png",
+      "html": "html/68_help_center.html"
+    },
+    {
+      "number": 69,
+      "id": "69_demo_storyboard",
+      "title": "Demo Storyboard",
+      "description": "A 90-second walkthrough flow for wow effect.",
+      "png": "png/69_demo_storyboard.png",
+      "html": "html/69_demo_storyboard.html"
+    },
+    {
+      "number": 70,
+      "id": "70_final_master_grid",
+      "title": "Final Master Grid",
+      "description": "Overview poster for the full visual set.",
+      "png": "png/70_final_master_grid.png",
+      "html": "html/70_final_master_grid.html"
+    }
+  ]
+}

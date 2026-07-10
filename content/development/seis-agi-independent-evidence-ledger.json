@@ -1,71 +1,121 @@
 {
   "id": "seis-agi-independent-evidence-ledger",
-  "version": "2026.07.10",
+  "version": "2026.06.29",
   "status": "planned-without-independent-evidence",
-  "qualityGate": "npm run check:seis-agi-independent-evidence-ledger",
-  "sourceOfTruth": "content/development/seis-agi-github-readiness-gates.json",
-  "purpose": "Keep public AGI, 20B runtime, and 512B claims blocked until external, reproducible, and reviewable evidence is attached.",
+  "targetCapability": "AGI-ready and 512B route-eligible public claim",
+  "defaultRuntimeMode": "seis-local-demo",
   "routeEligibleToday": false,
   "runtimeAuthority": false,
   "agiClaimAllowed": false,
   "publicReadyAsAgi": false,
   "publicReadyForLocalDemo": true,
   "githubReadyForEveryone": false,
-  "allIndependentEvidenceRecorded": false,
-  "evidenceRequirements": [
+  "sourceOfTruth": "content/development/seis-agi-public-readiness-evidence.json",
+  "truthBoundary": "This ledger is planning-only. It does not prove AGI or 512B readiness and does not authorize internet downloads, live training, inference, benchmark claims, or deployment.",
+  "researchBaseline": [
     {
-      "id": "independent-agi-evaluation",
-      "status": "missing",
-      "independentVerifierRequired": true,
-      "evidenceArtifacts": [],
-      "requiredBefore": "any AGI claim"
+      "id": "nist-ai-rmf",
+      "source": "NIST AI Risk Management Framework",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework"
     },
     {
-      "id": "seis-20b-runtime-evidence",
-      "status": "missing",
-      "independentVerifierRequired": true,
-      "evidenceArtifacts": [],
-      "requiredBefore": "a 20B local runtime claim"
+      "id": "nist-ai-600-1",
+      "source": "NIST AI 600-1 Generative AI Profile",
+      "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf"
     },
     {
-      "id": "seis-512b-training-inference-evidence",
-      "status": "missing",
-      "independentVerifierRequired": true,
-      "evidenceArtifacts": [],
-      "requiredBefore": "a 512B training, inference, or route claim"
+      "id": "arc-agi",
+      "source": "ARC-AGI benchmark",
+      "url": "https://arcprize.org/arc-agi"
     },
     {
-      "id": "independent-safety-security-review",
-      "status": "missing",
-      "independentVerifierRequired": true,
-      "evidenceArtifacts": [],
-      "requiredBefore": "a public safety or readiness claim"
-    },
-    {
-      "id": "external-reproducibility-review",
-      "status": "missing",
-      "independentVerifierRequired": true,
-      "evidenceArtifacts": [],
-      "requiredBefore": "a reproducible benchmark or performance claim"
+      "id": "metr-long-task-evaluations",
+      "source": "METR long-task measurement baseline",
+      "url": "https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/"
     }
   ],
-  "humanApproval": {
-    "status": "not-recorded",
-    "requiredBefore": [
-      "model installation",
-      "checkpoint download",
-      "inference execution",
-      "training or fine-tuning",
-      "cloud GPU provisioning",
-      "public release"
+  "pendingExternalInquiries": [
+    {
+      "id": "independent-agi-reviewer-report",
+      "status": "missing",
+      "requiredBeforePublicClaim": true,
+      "ownerAgents": ["external-reviewer", "human-owner"],
+      "requiredEvidence": [
+        "independent reviewer identity",
+        "review criteria",
+        "signed review findings",
+        "accepted remediations"
+      ]
+    },
+    {
+      "id": "independent-512b-training-evidence",
+      "status": "missing",
+      "requiredBeforePublicClaim": true,
+      "ownerAgents": ["architect-agent", "code-agent", "qa-agent", "external-reviewer"],
+      "requiredEvidence": [
+        "training or inference logs",
+        "clean-room governance",
+        "checkpoint release policy",
+        "public reproducibility summary"
+      ]
+    },
+    {
+      "id": "independent-long-horizon-evidence",
+      "status": "missing",
+      "requiredBeforePublicClaim": true,
+      "ownerAgents": ["research-agent", "automation-agent", "qa-agent"],
+      "requiredEvidence": [
+        "horizon benchmark runbook",
+        "artifact logs",
+        "failure taxonomy",
+        "human-reviewed summary"
+      ]
+    }
+  ],
+  "readinessChecks": {
+    "gateIds": [
+      "zero-key-local-demo",
+      "mcp-resource-contract",
+      "claim-boundary",
+      "fresh-clone-user-path",
+      "independent-agi-evaluations",
+      "512b-training-inference-evidence",
+      "public-release-approval"
+    ],
+    "requiredArtifacts": [
+      "content/development/seis-agi-github-user-readiness-gates.json",
+      "content/development/seis-agi-public-readiness-evidence.json",
+      "content/development/seis-agi-evaluation-protocol.json",
+      "content/development/seis-512b-apex-model-program.json",
+      "docs/ai/seis-agi-github-user-readiness-gates.md",
+      "docs/ai/seis-agi-public-readiness-evidence.md",
+      "docs/ai/seis-agi-evaluation-protocol.md"
     ]
   },
-  "truthBoundary": "This ledger is a planning and claim-control record. It does not prove AGI, model training, 20B runtime compatibility, 512B readiness, benchmark results, or provider access.",
+  "humanApprovalNeeded": {
+    "decision": "not-recorded",
+    "gates": [
+      "human-owner",
+      "security-agent",
+      "devops-agent"
+    ],
+    "conditions": [
+      "no premature AGI/512B public claims",
+      "evidence artifacts published",
+      "roll back plan approved",
+      "routeability decision documented"
+    ]
+  },
+  "nextSafeActions": [
+    "Collect and pin independent external evaluation reports for each gate before any AGI/512B readiness claim.",
+    "Require public documentation before changing any 512B route status.",
+    "Keep all 512B artifacts in plan-only mode until independent evidence is accepted by external review."
+  ],
   "forbiddenClaims": [
-    "Independent evidence exists when no artifact is attached.",
-    "A 20B model is locally runnable on 16GB+ hardware without measured evidence.",
-    "SEIS owns trained 20B or 512B foundation-model weights.",
-    "SEIS is a real AGI.",
-    "GitHub users can run 512B inference today."
+    "SEIS has achieved real AGI.",
+    "SEIS has trained a 512B foundation model.",
+    "GitHub users can run routeable 512B inference today.",
+    "CI or check scripts alone prove AGI.",
+    "Installed sub-agents prove AGI."
   ]
 }

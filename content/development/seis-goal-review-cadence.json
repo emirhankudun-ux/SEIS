@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-goal-review-cadence",
+  "updated": "2026-06-22",
+  "mode": "non_llm_goal_review_cadence",
+  "records": [
+    {
+      "id": "SEIS-REVIEW-001",
+      "title": "Daily Goal Tracking review",
+      "cadence": "daily",
+      "status": "planned",
+      "owner_role": "Program System",
+      "related_goal_ids": ["SEIS-GOAL-003", "SEIS-GOAL-020"],
+      "related_task_ids": ["SEIS-TASK-001"],
+      "evidence_ids": ["SEIS-EVID-007"],
+      "checklist": ["what changed", "what is blocked", "what needs validation", "next safe action"],
+      "completion_rule": "Only mark performed when a dated daily review record exists.",
+      "next_action": "Use docs/goals/daily-review-template.md when a real daily review is performed."
+    },
+    {
+      "id": "SEIS-REVIEW-002",
+      "title": "Weekly Goal Tracking review",
+      "cadence": "weekly",
+      "status": "planned",
+      "owner_role": "Program System",
+      "related_goal_ids": ["SEIS-GOAL-003", "SEIS-GOAL-007", "SEIS-GOAL-020"],
+      "related_task_ids": ["SEIS-TASK-002"],
+      "evidence_ids": ["SEIS-EVID-007"],
+      "checklist": ["active goals", "milestone progress", "next PR queue", "blockers", "completed work", "priorities"],
+      "completion_rule": "Only mark performed when current-week evidence exists.",
+      "next_action": "Use docs/goals/weekly-priorities-template.md for the next real weekly review."
+    },
+    {
+      "id": "SEIS-REVIEW-003",
+      "title": "Monthly Goal Tracking review",
+      "cadence": "monthly",
+      "status": "planned",
+      "owner_role": "Program System",
+      "related_goal_ids": ["SEIS-GOAL-001", "SEIS-GOAL-002", "SEIS-GOAL-003", "SEIS-GOAL-017", "SEIS-GOAL-018", "SEIS-GOAL-020"],
+      "related_task_ids": ["SEIS-TASK-003"],
+      "evidence_ids": ["SEIS-EVID-007"],
+      "checklist": ["long-term direction", "roadmap phases", "architecture alignment", "AI Core progress", "Command Center progress", "public readiness", "release readiness", "SEIS Universe research"],
+      "completion_rule": "Only mark performed when current-month evidence exists.",
+      "next_action": "Use docs/goals/monthly-review-template.md for the next real monthly review."
+    }
+  ]
+}

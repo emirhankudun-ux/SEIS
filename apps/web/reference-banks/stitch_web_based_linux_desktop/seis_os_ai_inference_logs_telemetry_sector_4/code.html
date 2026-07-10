@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Inference Logs - Sector 4</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary": "#f9f5f5",
+                        "on-tertiary": "#313030",
+                        "error-container": "#93000a",
+                        "outline-variant": "#3b494b",
+                        "on-surface": "#e2e2e2",
+                        "surface-bright": "#37393a",
+                        "primary-fixed": "#7df4ff",
+                        "on-surface-variant": "#b9cacb",
+                        "primary-container": "#00f0ff",
+                        "on-secondary-container": "#480064",
+                        "surface-container-lowest": "#0c0f0f",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "inverse-primary": "#006970",
+                        "tertiary-fixed": "#e5e2e1",
+                        "primary": "#dbfcff",
+                        "surface-container-low": "#1a1c1c",
+                        "on-primary-container": "#006970",
+                        "surface-dim": "#121414",
+                        "on-tertiary-container": "#605e5e",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "surface-tint": "#00dbe9",
+                        "secondary-container": "#ce5dff",
+                        "on-secondary-fixed": "#320047",
+                        "surface": "#121414",
+                        "secondary": "#ebb2ff",
+                        "on-error": "#690005",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "surface-container-highest": "#333535",
+                        "primary-fixed-dim": "#00dbe9",
+                        "tertiary-container": "#dcd9d8",
+                        "surface-variant": "#333535",
+                        "error": "#ffb4ab",
+                        "secondary-fixed": "#f8d8ff",
+                        "inverse-on-surface": "#2f3131",
+                        "on-primary-fixed": "#002022",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-primary": "#00363a",
+                        "on-background": "#e2e2e2",
+                        "inverse-surface": "#e2e2e2",
+                        "on-primary-fixed-variant": "#004f54",
+                        "surface-container-high": "#282a2b",
+                        "surface-container": "#1e2020",
+                        "on-secondary": "#520071",
+                        "outline": "#849495",
+                        "background": "#121414"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "stroke-thick": "2px",
+                        "gap-md": "16px",
+                        "gap-lg": "24px",
+                        "gap-sm": "8px",
+                        "margin-page": "32px",
+                        "stroke-thin": "1px",
+                        "gap-xs": "4px"
+                    },
+                    fontFamily: {
+                        "body-md": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "label-sm": ["Space Mono"],
+                        "headline-lg": ["JetBrains Mono"],
+                        "code-sm": ["JetBrains Mono"]
+                    },
+                    fontSize: {
+                        "body-md": ["14px", { lineHeight: "1.5", fontWeight: "400" }],
+                        "headline-md": ["24px", { lineHeight: "1.2", fontWeight: "700" }],
+                        "body-lg": ["16px", { lineHeight: "1.6", fontWeight: "400" }],
+                        "label-sm": ["12px", { lineHeight: "1", letterSpacing: "0.1em", fontWeight: "700" }],
+                        "headline-lg": ["32px", { lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "code-sm": ["13px", { lineHeight: "1.4", fontWeight: "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+            overflow: hidden;
+        }
+        
+        .cyber-panel {
+            background: rgba(26, 28, 28, 0.85);
+            border: 1px solid theme('colors.outline-variant');
+            backdrop-filter: blur(12px);
+        }
+        
+        .cyber-panel-header {
+            background: theme('colors.primary-fixed-dim');
+            color: theme('colors.surface-container-lowest');
+        }
+
+        .terminal-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+        .terminal-scroll::-webkit-scrollbar-track {
+            background: theme('colors.surface-container-low');
+        }
+        .terminal-scroll::-webkit-scrollbar-thumb {
+            background: theme('colors.outline-variant');
+        }
+
+        .blinking-cursor {
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .sparkline-path {
+            stroke: theme('colors.primary-container');
+            fill: none;
+            stroke-width: 1.5;
+            filter: drop-shadow(0 0 4px rgba(0, 240, 255, 0.4));
+        }
+
+        .heatmap-cell {
+            transition: all 0.2s ease;
+        }
+        .heatmap-cell:hover {
+            border: 1px solid theme('colors.primary-container');
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col font-body-md">
+<!-- TopNavBar -->
+<nav class="bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 flex justify-between items-center w-full px-gap-md h-10 docked full-width top-0 z-50">
+<div class="flex items-center gap-gap-md">
+<span class="font-label-caps text-label-sm tracking-widest text-primary-fixed-dim uppercase">SEIS KERNEL OS</span>
+<div class="hidden md:flex gap-gap-md ml-gap-lg">
+<a class="text-on-surface-variant font-label-sm uppercase hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-sm uppercase hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">TELEMETRY</a>
+<a class="text-on-surface-variant font-label-sm uppercase hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">AGENTS</a>
+<a class="text-on-surface-variant font-label-sm uppercase hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">NETWORK</a>
+<!-- Active State Example (Logs fits best under Telemetry/Logs context, but let's assume it's a specific view) -->
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 font-label-sm uppercase cursor-pointer active:opacity-70" href="#">LOGS</a>
+</div>
+</div>
+<div class="flex items-center gap-gap-sm">
+<!-- Search Bar placeholder -->
+<div class="hidden md:flex items-center bg-surface-container-low border border-outline-variant/50 px-2 py-1 rounded-none w-48 focus-within:border-primary-fixed focus-within:ring-1 focus-within:ring-primary-fixed transition-all">
+<span class="material-symbols-outlined text-on-surface-variant text-[16px] mr-2">search</span>
+<input class="bg-transparent border-none outline-none text-code-sm text-on-surface w-full p-0 focus:ring-0 placeholder-on-surface-variant/50" placeholder="Search..." type="text"/>
+</div>
+<button class="text-on-surface-variant hover:text-primary-fixed transition-colors p-1"><span class="material-symbols-outlined text-[20px]">memory</span></button>
+<button class="text-on-surface-variant hover:text-primary-fixed transition-colors p-1"><span class="material-symbols-outlined text-[20px]">terminal</span></button>
+<button class="text-on-surface-variant hover:text-primary-fixed transition-colors p-1"><span class="material-symbols-outlined text-[20px]">settings</span></button>
+</div>
+</nav>
+<div class="flex flex-1 h-[calc(100vh-40px)] overflow-hidden">
+<!-- SideNavBar -->
+<aside class="bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 docked left-0 h-full w-20 hover:w-64 transition-all duration-300 z-40 flex flex-col group overflow-hidden">
+<div class="flex items-center px-4 py-4 border-b border-outline-variant/20 shrink-0">
+<div class="w-8 h-8 bg-surface-variant rounded-full flex items-center justify-center shrink-0 border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface text-[18px]">person</span>
+</div>
+<div class="ml-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 overflow-hidden whitespace-nowrap">
+<div class="font-label-sm text-secondary-fixed">ROOT_USER</div>
+<div class="font-code-sm text-on-surface-variant text-[10px]">SEIS-01</div>
+</div>
+</div>
+<button class="m-4 bg-secondary-container/20 border border-secondary-fixed text-secondary-fixed font-label-sm py-2 px-2 flex items-center justify-center gap-2 hover:bg-secondary-container/40 transition-colors shrink-0">
+<span class="material-symbols-outlined text-[16px]">add</span>
+<span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-0 group-hover:w-auto overflow-hidden whitespace-nowrap">NEW_SESSION</span>
+</button>
+<div class="flex-1 overflow-y-auto py-2">
+<a class="text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150 flex items-center px-4 py-3 cursor-pointer" href="#">
+<span class="material-symbols-outlined shrink-0 text-[20px]">dashboard</span>
+<span class="ml-4 font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">DASHBOARD</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150 flex items-center px-4 py-3 cursor-pointer" href="#">
+<span class="material-symbols-outlined shrink-0 text-[20px]">folder_open</span>
+<span class="ml-4 font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">FILESYSTEM</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150 flex items-center px-4 py-3 cursor-pointer" href="#">
+<span class="material-symbols-outlined shrink-0 text-[20px]">terminal</span>
+<span class="ml-4 font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">TERMINAL</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150 flex items-center px-4 py-3 cursor-pointer" href="#">
+<span class="material-symbols-outlined shrink-0 text-[20px]">smart_toy</span>
+<span class="ml-4 font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">AI_AGENTS</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150 flex items-center px-4 py-3 cursor-pointer" href="#">
+<span class="material-symbols-outlined shrink-0 text-[20px]">cloud_queue</span>
+<span class="ml-4 font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">INFRASTRUCTURE</span>
+</a>
+<!-- Active Nav Item -->
+<a class="bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed hover:bg-surface-variant/20 transition-all duration-150 flex items-center px-4 py-3 cursor-pointer" href="#">
+<span class="material-symbols-outlined shrink-0 text-[20px]">list_alt</span>
+<span class="ml-4 font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">LOGS</span>
+</a>
+</div>
+<div class="border-t border-outline-variant/20 py-2 shrink-0">
+<a class="text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150 flex items-center px-4 py-3 cursor-pointer" href="#">
+<span class="material-symbols-outlined shrink-0 text-[20px]">power_settings_new</span>
+<span class="ml-4 font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">POWER</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150 flex items-center px-4 py-3 cursor-pointer" href="#">
+<span class="material-symbols-outlined shrink-0 text-[20px]">lock</span>
+<span class="ml-4 font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">LOCK</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 p-gap-md grid grid-cols-12 gap-gap-md overflow-hidden relative">
+<!-- Animated Shader Background Layer -->
+<div class="absolute inset-0 z-0 opacity-20 pointer-events-none mix-blend-screen">
+
+</div>
+<!-- Header Controls -->
+<div class="col-span-12 flex justify-between items-center z-10 h-10 shrink-0">
+<div class="flex items-center gap-gap-sm">
+<span class="material-symbols-outlined text-primary-fixed text-[24px]">troubleshoot</span>
+<h1 class="font-headline-md text-on-surface m-0 uppercase tracking-tight">Sector 4 // Inference Pipeline</h1>
+</div>
+<div class="flex items-center gap-gap-md">
+<!-- Model Switcher -->
+<div class="relative group">
+<select class="appearance-none bg-surface-container border border-outline-variant text-code-sm text-primary-fixed py-1 pl-3 pr-8 focus:outline-none focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed cursor-pointer min-w-[200px]">
+<option value="gpt4-triton">SEIS-GPT4-TRITON-v2</option>
+<option value="llama3-edge">LLAMA3-EDGE-QUANT</option>
+<option value="claude-opus">CLAUDE-OPUS-DEDICATED</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-primary-fixed pointer-events-none text-[16px]">arrow_drop_down</span>
+</div>
+<!-- Kill Switch -->
+<button class="bg-error-container/20 border border-error text-error font-label-sm uppercase px-4 py-1.5 flex items-center gap-2 hover:bg-error hover:text-on-error transition-colors">
+<span class="material-symbols-outlined text-[16px]">warning</span>
+                        KILL INFERENCE
+                    </button>
+</div>
+</div>
+<!-- Top Row: Telemetry & Heatmap -->
+<div class="col-span-12 md:col-span-8 cyber-panel flex flex-col z-10 min-h-[250px]">
+<div class="cyber-panel-header px-3 py-1 font-label-sm uppercase flex items-center justify-between">
+<span>Latency Telemetry (ms)</span>
+<span class="material-symbols-outlined text-[14px]">show_chart</span>
+</div>
+<div class="flex-1 p-gap-sm relative flex flex-col justify-end pb-4">
+<!-- Fake Chart Grid -->
+<div class="absolute inset-0 p-gap-sm pointer-events-none opacity-20">
+<div class="w-full h-full border-b border-l border-outline-variant flex flex-col justify-between">
+<div class="w-full border-t border-outline-variant border-dashed"></div>
+<div class="w-full border-t border-outline-variant border-dashed"></div>
+<div class="w-full border-t border-outline-variant border-dashed"></div>
+</div>
+</div>
+<!-- Sparkline SVG -->
+<svg class="w-full h-32 overflow-visible" preserveaspectratio="none" viewbox="0 0 1000 100">
+<path class="sparkline-path" d="M0,80 L50,85 L100,70 L150,90 L200,40 L250,50 L300,80 L350,85 L400,60 L450,70 L500,30 L550,45 L600,20 L650,40 L700,10 L750,25 L800,15 L850,5 L900,30 L950,20 L1000,10"></path>
+<!-- Gradient fill under path -->
+<path d="M0,80 L50,85 L100,70 L150,90 L200,40 L250,50 L300,80 L350,85 L400,60 L450,70 L500,30 L550,45 L600,20 L650,40 L700,10 L750,25 L800,15 L850,5 L900,30 L950,20 L1000,10 L1000,100 L0,100 Z" fill="url(#spark-grad)" opacity="0.2"></path>
+<defs>
+<lineargradient id="spark-grad" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#00f0ff"></stop>
+<stop offset="100%" stop-color="#00f0ff" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+</svg>
+<!-- Overlay Data -->
+<div class="absolute top-4 left-4 flex gap-6">
+<div>
+<div class="text-code-sm text-on-surface-variant">P99 Latency</div>
+<div class="font-headline-md text-primary-fixed">124.5<span class="text-[12px] ml-1">ms</span></div>
+</div>
+<div>
+<div class="text-code-sm text-on-surface-variant">Tokens/sec</div>
+<div class="font-headline-md text-secondary">8,432</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Heatmap Pane -->
+<div class="col-span-12 md:col-span-4 cyber-panel flex flex-col z-10 min-h-[250px]">
+<div class="cyber-panel-header px-3 py-1 font-label-sm uppercase flex items-center justify-between">
+<span>Node Load Distribution</span>
+<span class="material-symbols-outlined text-[14px]">grid_view</span>
+</div>
+<div class="flex-1 p-gap-sm grid grid-cols-4 grid-rows-4 gap-1">
+<!-- JS will populate this, but putting some static for visual -->
+<div class="heatmap-cell bg-primary-fixed/80"></div>
+<div class="heatmap-cell bg-primary-fixed/60"></div>
+<div class="heatmap-cell bg-primary-fixed/40"></div>
+<div class="heatmap-cell bg-primary-fixed/90"></div>
+<div class="heatmap-cell bg-primary-fixed/30"></div>
+<div class="heatmap-cell bg-error/70"></div> <!-- Hot node -->
+<div class="heatmap-cell bg-primary-fixed/50"></div>
+<div class="heatmap-cell bg-primary-fixed/20"></div>
+<div class="heatmap-cell bg-primary-fixed/80"></div>
+<div class="heatmap-cell bg-primary-fixed/40"></div>
+<div class="heatmap-cell bg-primary-fixed/60"></div>
+<div class="heatmap-cell bg-primary-fixed/50"></div>
+<div class="heatmap-cell bg-surface-container"></div> <!-- Offline node -->
+<div class="heatmap-cell bg-primary-fixed/30"></div>
+<div class="heatmap-cell bg-primary-fixed/70"></div>
+<div class="heatmap-cell bg-primary-fixed/80"></div>
+</div>
+</div>
+<!-- Multi-pane Terminal (Bottom Half) -->
+<div class="col-span-12 cyber-panel flex flex-col z-10 h-[calc(100vh-380px)]">
+<div class="cyber-panel-header px-3 py-1 font-label-sm uppercase flex items-center gap-4">
+<span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-primary-fixed animate-pulse"></span> STREAM_01: GEN_LOGS</span>
+<div class="h-3 w-px bg-surface-container-lowest/50"></div>
+<span class="text-surface-container-lowest/70">STREAM_02: ERRORS</span>
+</div>
+<div class="flex-1 p-gap-sm bg-[#050505]/90 text-code-sm text-on-surface font-code-sm overflow-y-auto terminal-scroll relative">
+<div class="pb-8">
+<div class="flex gap-2 text-surface-variant"><span class="w-20 text-right">00:00:01</span><span class="text-secondary">[INFO]</span> <span>Initializing distributed inference cluster... OK</span></div>
+<div class="flex gap-2 text-surface-variant"><span class="w-20 text-right">00:00:02</span><span class="text-secondary">[INFO]</span> <span>Loading weights for SEIS-GPT4-TRITON-v2... OK (24.5s)</span></div>
+<div class="flex gap-2 text-surface-variant"><span class="w-20 text-right">00:00:27</span><span class="text-primary-fixed">[READY]</span> <span>Listening on port 8080 (GRPC/REST)</span></div>
+<div class="my-2 border-b border-surface-container border-dashed"></div>
+<div class="flex gap-2"><span class="w-20 text-right text-surface-variant">14:32:10</span><span class="text-primary-fixed">[REQ_ID_A7F9]</span> <span>Received prompt (tok: 452) from Agent_Kimi</span></div>
+<div class="flex gap-2"><span class="w-20 text-right text-surface-variant">14:32:10</span><span class="text-outline-variant">[TRACE]</span> <span>KV Cache hit: false. Allocating new block on Node 4...</span></div>
+<div class="flex gap-2"><span class="w-20 text-right text-surface-variant">14:32:11</span><span class="text-secondary">[STREAM]</span> <span class="text-on-surface-variant">{"chunk": " The", "id": "A7F9", "created": 1716300000}</span></div>
+<div class="flex gap-2"><span class="w-20 text-right text-surface-variant">14:32:11</span><span class="text-secondary">[STREAM]</span> <span class="text-on-surface-variant">{"chunk": " fundamental", "id": "A7F9", "created": 1716300000}</span></div>
+<div class="flex gap-2"><span class="w-20 text-right text-surface-variant">14:32:11</span><span class="text-secondary">[STREAM]</span> <span class="text-on-surface-variant">{"chunk": " architecture", "id": "A7F9", "created": 1716300000}</span></div>
+<div class="flex gap-2 mt-2"><span class="w-20 text-right text-surface-variant">14:32:12</span><span class="text-error">[WARN]</span> <span>Node 6 thermal throttle detected (85C). Re-routing partial tensor calculations.</span></div>
+<div class="flex gap-2 mt-2"><span class="w-20 text-right text-surface-variant">14:32:14</span><span class="text-primary-fixed">[REQ_ID_B2C1]</span> <span>Received prompt (tok: 12) from Web_UI</span></div>
+<div class="flex gap-2"><span class="w-20 text-right text-surface-variant">14:32:14</span><span class="text-outline-variant">[TRACE]</span> <span>KV Cache hit: true (id: cache_992). Fast path enabled.</span></div>
+<div class="flex gap-2 mt-2 items-center">
+<span class="w-20 text-right text-surface-variant">14:32:15</span>
+<span class="text-primary-fixed">root@seis-inference-01:~#</span>
+<span class="blinking-cursor w-2 h-4 bg-primary-fixed inline-block ml-1"></span>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

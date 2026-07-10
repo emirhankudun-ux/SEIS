@@ -1,0 +1,284 @@
+{
+  "id": "seis-ai-workforce-training-plan",
+  "version": "2026.06.23",
+  "status": "active-local-seed-training-contract",
+  "updatedAt": "2026-06-23",
+  "purpose": "Let installed or locally available AI assistants improve SEIS AI through supervised review, synthetic training-case proposals, deterministic seed-model rebuilds, and promotion-gate evidence without live credential use or unsupported foundation-model claims.",
+  "qualityGate": "npm run check:seis-ai-workforce-training",
+  "automationCommand": "npm run automation:seis-ai-workforce-training",
+  "sourceOfTruth": {
+    "aiCoreDoc": "docs/ai/seis-ai-core.md",
+    "trainingDoc": "docs/ai/ai-workforce-training.md",
+    "workforceAssignments": "content/development/ai-workforce-assignments.json",
+    "providerRegistry": "content/development/seis-ai-core-provider-registry.json",
+    "modelFamilyRegistry": "packages/seis-ai/models/seis-model-family-registry.json",
+    "modelPromotionPolicy": "packages/seis-ai/models/seis-model-promotion-policy.json",
+    "modelBenchmarkSuite": "packages/seis-ai/models/seis-model-benchmark-suite.json",
+    "languageModelIntakeRegistry": "content/development/seis-language-model-intake-registry.json"
+  },
+  "truthBoundary": "Repository-local training control plane only. It performs no live provider calls, no credential validation, no SSH, no deployment, no external dataset download, no cloud fine-tuning, and no claim that SEIS owns a trained foundation model.",
+  "trainingMeaning": {
+    "currentMeaning": "Training means adding or reviewing SEIS-owned synthetic cases, rebuilding local deterministic seed-model artifacts, running benchmark and promotion gates, and recording evidence.",
+    "notMeaning": [
+      "cloud provider fine-tuning",
+      "foundation model ownership",
+      "autonomous background training",
+      "dataset scraping or download",
+      "secret-bearing prompt sharing",
+      "production runtime authority"
+    ]
+  },
+  "currentLauncherEvidence": {
+    "command": "npm run ai -- list",
+    "observedDate": "2026-06-23",
+    "notes": [
+      "The command checks route readiness only.",
+      "No provider prompt, repository upload, credential read, or live model verification was performed.",
+      "Missing key status means the current shell did not expose that provider credential."
+    ],
+    "installedRoutes": [
+      "seis-agent",
+      "codex",
+      "antigravity",
+      "antigravity-ide",
+      "cursor",
+      "xcode",
+      "qwen",
+      "ollama",
+      "opencode",
+      "hermes",
+      "goose",
+      "open-design"
+    ],
+    "missingOrDisabledRoutes": [
+      "openai",
+      "claude",
+      "gemini",
+      "kimi",
+      "aider",
+      "interpreter"
+    ]
+  },
+  "trainerRoles": [
+    {
+      "id": "codex",
+      "displayName": "Codex",
+      "routeStatus": "installed",
+      "trainingRole": "primary integrator and deterministic seed trainer",
+      "allowedContribution": "Convert accepted repository evidence into scoped synthetic cases and run local validators.",
+      "secretAccessAllowed": false,
+      "liveProviderCallAllowed": false,
+      "externalTrainingAllowed": false,
+      "outputStatus": "can be accepted after local validation"
+    },
+    {
+      "id": "seis-agent",
+      "displayName": "SEIS Agent",
+      "routeStatus": "installed",
+      "trainingRole": "local policy and lane-routing helper",
+      "allowedContribution": "Generate plan-only route and policy evidence from repo-local manifests.",
+      "secretAccessAllowed": false,
+      "liveProviderCallAllowed": false,
+      "externalTrainingAllowed": false,
+      "outputStatus": "local demo evidence only"
+    },
+    {
+      "id": "qwen",
+      "displayName": "Qwen",
+      "routeStatus": "installed",
+      "trainingRole": "contradiction and adversarial-case reviewer",
+      "allowedContribution": "Suggest bounded contradiction cases from sanitized snippets after Codex prepares context.",
+      "secretAccessAllowed": false,
+      "liveProviderCallAllowed": false,
+      "externalTrainingAllowed": false,
+      "outputStatus": "candidate only until Codex verifies"
+    },
+    {
+      "id": "ollama",
+      "displayName": "Ollama / Local Model",
+      "routeStatus": "installed",
+      "trainingRole": "local private draft generator",
+      "allowedContribution": "Draft local-only synthetic examples for sensitive summaries without cloud routing.",
+      "secretAccessAllowed": false,
+      "liveProviderCallAllowed": false,
+      "externalTrainingAllowed": false,
+      "outputStatus": "candidate only until Codex verifies"
+    },
+    {
+      "id": "opencode",
+      "displayName": "OpenCode",
+      "routeStatus": "installed",
+      "trainingRole": "bounded patch-hypothesis reviewer",
+      "allowedContribution": "Suggest narrow implementation or regression cases from a sanitized file scope.",
+      "secretAccessAllowed": false,
+      "liveProviderCallAllowed": false,
+      "externalTrainingAllowed": false,
+      "outputStatus": "candidate only until Codex verifies"
+    },
+    {
+      "id": "hermes",
+      "displayName": "Hermes",
+      "routeStatus": "installed",
+      "trainingRole": "automation hypothesis reviewer",
+      "allowedContribution": "Suggest dry-run automation cases and failure-handling prompts.",
+      "secretAccessAllowed": false,
+      "liveProviderCallAllowed": false,
+      "externalTrainingAllowed": false,
+      "outputStatus": "candidate only until Codex verifies"
+    },
+    {
+      "id": "goose",
+      "displayName": "Goose",
+      "routeStatus": "installed",
+      "trainingRole": "runbook and execution-safety reviewer",
+      "allowedContribution": "Suggest idempotent runbook and rollback cases without executing external mutation.",
+      "secretAccessAllowed": false,
+      "liveProviderCallAllowed": false,
+      "externalTrainingAllowed": false,
+      "outputStatus": "candidate only until Codex verifies"
+    },
+    {
+      "id": "open-design",
+      "displayName": "OpenDesign",
+      "routeStatus": "installed",
+      "trainingRole": "design-quality reviewer",
+      "allowedContribution": "Suggest UX, accessibility, and interaction-quality cases for future eval expansion.",
+      "secretAccessAllowed": false,
+      "liveProviderCallAllowed": false,
+      "externalTrainingAllowed": false,
+      "outputStatus": "candidate only until Codex verifies"
+    },
+    {
+      "id": "claude",
+      "displayName": "Claude",
+      "routeStatus": "missing-key-current-shell",
+      "trainingRole": "planned architecture reviewer",
+      "allowedContribution": "Only sanitized review notes after a server-side credential and approval path exist.",
+      "secretAccessAllowed": false,
+      "liveProviderCallAllowed": false,
+      "externalTrainingAllowed": false,
+      "outputStatus": "disabled until configured"
+    },
+    {
+      "id": "gemini",
+      "displayName": "Gemini",
+      "routeStatus": "missing-key-current-shell",
+      "trainingRole": "planned public-readiness reviewer",
+      "allowedContribution": "Only sanitized UX, accessibility, and documentation review after approval.",
+      "secretAccessAllowed": false,
+      "liveProviderCallAllowed": false,
+      "externalTrainingAllowed": false,
+      "outputStatus": "disabled until configured"
+    }
+  ],
+  "trainingLoops": [
+    {
+      "id": "intake_sanitization",
+      "owner": "codex",
+      "input": "User goal and repo-local evidence",
+      "output": "Bounded objective, excluded secrets, affected paths, risk class, and validation plan.",
+      "acceptanceGate": "No .env, private key, token, cookie, or credential material enters prompts or artifacts."
+    },
+    {
+      "id": "installed_ai_review",
+      "owner": "installed-ai-workforce",
+      "input": "Minimum sanitized context only",
+      "output": "Candidate training cases, contradiction notes, UX notes, or runbook cases.",
+      "acceptanceGate": "Candidate output stays untrusted until Codex checks it against repo evidence."
+    },
+    {
+      "id": "language_model_intake_review",
+      "owner": "codex",
+      "input": "Public model-family metadata, local hardware class, license status, and user-approved target model ids",
+      "output": "Metadata-only model intake decision with install, download, fine-tune, and foundation-training authority still blocked by default.",
+      "acceptanceGate": "No model family becomes installable or trainable until license, hardware, model-card, dataset-card, benchmark, and human approval gates exist."
+    },
+    {
+      "id": "dataset_candidate_review",
+      "owner": "codex",
+      "input": "Candidate cases from installed assistants or current session reasoning",
+      "output": "SEIS-owned synthetic examples with consent and provenance boundaries.",
+      "acceptanceGate": "Dataset source remains SEIS-owned synthetic and excludes user-private data."
+    },
+    {
+      "id": "deterministic_seed_rebuild",
+      "owner": "codex",
+      "input": "Accepted seed datasets",
+      "output": "Local model artifacts for permission policy, memory ranker, eval critic, and agent router.",
+      "acceptanceGate": "Artifacts are rebuilt by local deterministic scripts, not provider-side training."
+    },
+    {
+      "id": "promotion_gate_review",
+      "owner": "codex",
+      "input": "Model registry, benchmark suite, and promotion policy",
+      "output": "Lab-ready or blocked status with runtime authority still disabled.",
+      "acceptanceGate": "Promotion policy reports zero runtime-authority models."
+    },
+    {
+      "id": "human_handoff",
+      "owner": "codex",
+      "input": "Validation output and report artifacts",
+      "output": "Reviewable status, remaining approval queue, and next PR recommendation.",
+      "acceptanceGate": "Human approval is required before live provider calls, dataset downloads, paid benchmarks, deployment, SSH, or model publication."
+    }
+  ],
+  "modelTargets": [
+    {
+      "id": "permission-policy",
+      "purpose": "Classify local agent actions as allow, gate, approval_required, or deny.",
+      "datasetPath": "packages/seis-ai/data/permission-policy-seed.json",
+      "artifactPath": "packages/seis-ai/models/permission-policy-seed-v0.json",
+      "trainingCommand": "npm run automation:seis-permission-policy-model",
+      "validationCommand": "npm run check:seis-universe-seed-model",
+      "runtimeAuthority": false
+    },
+    {
+      "id": "memory-ranker",
+      "purpose": "Rank governance and evidence candidates for local retrieval.",
+      "datasetPath": "packages/seis-ai/data/memory-ranker-seed-v0.json",
+      "artifactPath": "packages/seis-ai/models/memory-ranker-seed-v0.json",
+      "trainingCommand": "npm run automation:seis-memory-ranker-model",
+      "validationCommand": "npm run check:seis-universe-memory-ranker-model",
+      "runtimeAuthority": false
+    },
+    {
+      "id": "eval-critic",
+      "purpose": "Classify review packages as pass, revise, or block.",
+      "datasetPath": "packages/seis-ai/data/eval-critic-seed-v0.json",
+      "artifactPath": "packages/seis-ai/models/eval-critic-seed-v0.json",
+      "trainingCommand": "npm run automation:seis-eval-critic-model",
+      "validationCommand": "npm run check:seis-universe-eval-critic-model",
+      "runtimeAuthority": false
+    },
+    {
+      "id": "agent-router",
+      "purpose": "Route SEIS user intents to the right specialist lane and gate.",
+      "datasetPath": "packages/seis-ai/data/agent-router-seed-v0.json",
+      "artifactPath": "packages/seis-ai/models/agent-router-seed-v0.json",
+      "trainingCommand": "npm run automation:seis-agent-router-model",
+      "validationCommand": "npm run check:seis-universe-agent-router-model",
+      "runtimeAuthority": false
+    }
+  ],
+  "safetyRules": [
+    "No secrets, .env values, private keys, cookies, or tokens may enter training prompts, datasets, logs, reports, or browser storage.",
+    "No browser code may receive provider credentials or unrestricted provider base URLs.",
+    "No cloud fine-tuning, external dataset download, paid benchmark, SSH, deployment, push, or merge may run without explicit human approval.",
+    "Installed AI output is untrusted candidate material until Codex validates it against repository evidence.",
+    "All accepted training cases must be SEIS-owned synthetic examples with no user-private data.",
+    "Core SEIS remains zero-key and Local Demo capable even when every live provider is unavailable.",
+    "Fallback identity must stay truthful; non-Anthropic output must not be called Claude output.",
+    "Seed models keep runtime authority false until independent benchmark, observability, rollback, and security gates pass."
+  ],
+  "acceptanceGates": [
+    "no-secret-material",
+    "no-live-provider-call",
+    "zero-key-core",
+    "seis-owned-synthetic-data-only",
+    "installed-route-inventory-recorded",
+    "seed-artifacts-rebuilt",
+    "benchmark-suite-passes",
+    "promotion-policy-no-runtime-authority",
+    "human-approval-boundaries-documented"
+  ]
+}

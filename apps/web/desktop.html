@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="SEIS System OS is an original browser-based Linux, macOS, and Windows-inspired operating surface with a persistent virtual workspace and 50+ functional apps.">
+    <meta name="theme-color" content="#12181b">
+    <meta name="color-scheme" content="dark light">
+    <meta name="robots" content="noindex, nofollow">
+    <title>SEIS System OS</title>
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="apple-touch-icon" href="./public/icons/apple-touch-icon.svg">
+    <link rel="stylesheet" href="./desktop.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#desktop-root">Skip to desktop</a>
+    <section class="boot-screen" data-boot-screen aria-label="SEIS boot sequence">
+      <div class="boot-card">
+        <span class="boot-mark" aria-hidden="true">S</span>
+        <strong>SEIS System OS</strong>
+        <div class="boot-progress" aria-hidden="true"><span></span></div>
+        <p>Preparing local desktop...</p>
+        <small>Browser-local demo · no host OS or SSH command is executed</small>
+      </div>
+    </section>
+    <main id="desktop-root" class="desktop-shell" aria-label="SEIS System OS">
+      <header class="topbar" aria-label="System bar">
+        <button class="topbar-brand" type="button" data-action="toggle-launcher" aria-label="Open applications">
+          <span class="brand-mark" aria-hidden="true">S</span>
+          <span>SEIS OS</span>
+        </button>
+        <nav class="workspace-switcher" aria-label="Workspaces">
+          <button type="button" class="workspace-button is-active" data-action="set-workspace" data-workspace="1" aria-pressed="true">1</button>
+          <button type="button" class="workspace-button" data-action="set-workspace" data-workspace="2" aria-pressed="false">2</button>
+          <button type="button" class="workspace-button" data-action="set-workspace" data-workspace="3" aria-pressed="false">3</button>
+        </nav>
+        <nav class="os-profile-switcher" aria-label="Desktop profile">
+          <button type="button" class="os-profile-button is-active" data-action="set-os-profile" data-value="linux">Linux</button>
+          <button type="button" class="os-profile-button" data-action="set-os-profile" data-value="macos">macOS</button>
+          <button type="button" class="os-profile-button" data-action="set-os-profile" data-value="windows">Windows</button>
+        </nav>
+        <button class="topbar-clock-center" type="button" data-action="toggle-status" aria-label="Open quick status">
+          <time data-clock>--:--</time>
+        </button>
+        <button class="topbar-search" type="button" data-action="open-search" aria-label="Search apps, files, commands">
+          <span aria-hidden="true">⌘</span>
+          <span>Search apps, files, commands</span>
+        </button>
+        <div class="topbar-status" aria-label="System status">
+          <button type="button" data-action="toggle-network" data-status-network aria-label="Network status">Wi-Fi</button>
+          <button type="button" data-action="toggle-audio" data-status-audio aria-label="Audio status">72%</button>
+          <button type="button" data-action="toggle-theme" data-status-theme aria-label="Toggle theme">Theme</button>
+          <button type="button" data-action="toggle-shortcuts" data-status-shortcuts aria-label="Open keyboard shortcuts" aria-expanded="false">Keys</button>
+          <button type="button" data-action="toggle-status" aria-label="Open quick status" aria-expanded="false">
+            <time data-clock>--:--</time>
+          </button>
+        </div>
+      </header>
+
+      <aside class="dock" aria-label="Favorite applications" data-dock></aside>
+
+      <section class="desktop-canvas" data-desktop-canvas data-drop-path="/home/seis/Desktop" aria-label="Desktop workspace">
+        <div class="wallpaper" aria-hidden="true">
+          <div class="wallpaper-grid"></div>
+          <div class="wallpaper-horizon"></div>
+        </div>
+
+        <section class="desktop-demo-guide" aria-label="SEIS runnable demo guide" hidden>
+          <div class="demo-guide-copy">
+            <p>SEIS System OS runnable demo</p>
+            <h1>Linux, macOS, and Windows-like workflows are unified here.</h1>
+            <span>Start with SEIS System OS, then open Search, Code, Design, Cloud, Store, Music, WOW Gallery, and sub-agent evidence from the same shell.</span>
+            <div class="demo-guide-ai-core-visual" aria-label="Animated SEIS AI Core system map">
+              <canvas data-desktop-ai-core-canvas width="720" height="280" aria-label="SEIS AI Core mini 3D orbit map"></canvas>
+              <div class="demo-guide-ai-core-meta">
+                <strong>SEIS AI Core mesh</strong>
+                <span data-desktop-ai-core-status>Initializing local agent map</span>
+              </div>
+              <div class="demo-guide-ai-core-badges" aria-label="Connected SEIS lanes">
+                <span>Code</span>
+                <span>Design</span>
+                <span>Cloud</span>
+                <span>SSH gated</span>
+                <span>5Y agents</span>
+              </div>
+            </div>
+            <div class="demo-guide-actions">
+              <button type="button" data-action="open-search">Open SEIS Search</button>
+              <button type="button" data-action="open-app" data-app-id="seis-system-os">Open System OS</button>
+              <button type="button" data-action="open-app" data-app-id="seis-code">Open SEIS Code</button>
+              <button type="button" data-action="open-demo-route" data-value="seis-ai-core-3d-demo">Open AI Core 3D</button>
+              <button type="button" data-action="open-app" data-app-id="seis-evolution">Screenshot Context</button>
+              <button type="button" data-action="dismiss-demo-guide">Hide Guide</button>
+            </div>
+          </div>
+          <aside class="demo-guide-reference" aria-label="Pinned SEIS context">
+            <h2>Sabitlenenler</h2>
+            <ul>
+              <li><span></span><strong>Define SEIS AI Core</strong><em>7 dk.</em></li>
+              <li><span></span><strong>Build Linux web replica</strong><em>active</em></li>
+              <li><span></span><strong>Build VS Code Web</strong><em>7 dk.</em></li>
+              <li><span></span><strong>SEIS AI integration</strong><em>active</em></li>
+            </ul>
+            <h2>Projeler</h2>
+            <div class="demo-guide-project is-active"><strong>Github 2</strong><span>SEIS demo masaustu olustur</span></div>
+            <div class="demo-guide-project"><strong>vscode</strong><span>SEIS-SSH ready indicator</span></div>
+          </aside>
+        </section>
+
+        <section class="desktop-icons" aria-label="Desktop shortcuts" data-desktop-icons></section>
+        <section class="windows-layer" aria-label="Open windows" data-window-layer></section>
+      </section>
+
+      <section class="launcher" data-launcher hidden aria-label="Applications launcher">
+        <div class="launcher-panel" role="dialog" aria-modal="false" aria-labelledby="launcher-title">
+          <aside class="launcher-rail" aria-label="Application categories" data-launcher-categories></aside>
+          <div class="launcher-main">
+            <div class="launcher-head">
+              <div>
+                <h1 id="launcher-title">Applications</h1>
+                <p><span data-app-count>0</span> apps installed · <span data-open-count>0</span> windows open</p>
+              </div>
+              <button type="button" class="icon-button" data-action="close-launcher" aria-label="Close launcher">×</button>
+            </div>
+            <label class="search-field">
+              <span aria-hidden="true">⌕</span>
+              <input type="search" data-launcher-search placeholder="Search apps, files, commands" autocomplete="off">
+            </label>
+            <section class="launcher-frequent" data-launcher-frequent aria-label="Frequently used applications"></section>
+            <nav class="launcher-tabs" data-launcher-tabs aria-label="Application categories"></nav>
+            <div class="launcher-grid" data-launcher-grid></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="command-palette" data-command-palette hidden aria-label="Command palette">
+        <div class="command-panel" role="dialog" aria-modal="false" aria-labelledby="command-title">
+          <div class="command-titlebar">
+            <h2 id="command-title">Run Command</h2>
+            <button type="button" class="icon-button" data-action="close-search" aria-label="Close search">×</button>
+          </div>
+          <label class="command-input">
+            <span aria-hidden="true">⌘</span>
+            <input type="search" data-command-input placeholder="Open app, find file, or run command">
+          </label>
+          <div class="command-results" data-command-results></div>
+        </div>
+      </section>
+
+      <section class="quick-status" data-quick-status hidden aria-label="Control Center">
+        <div class="quick-card control-center-panel" data-control-center>
+          <div>
+            <strong>Ready</strong>
+            <span>Local browser workspace active</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="shortcut-overlay" data-shortcut-overlay hidden aria-label="Keyboard shortcut overlay">
+        <div class="shortcut-panel" data-shortcut-panel role="dialog" aria-modal="false" aria-labelledby="shortcut-title">
+          <div class="shortcut-titlebar">
+            <div>
+              <h2 id="shortcut-title">Keyboard Shortcuts</h2>
+              <p>Local browser desktop shortcuts. Host OS commands are not executed.</p>
+            </div>
+            <button type="button" class="icon-button" data-action="close-shortcuts" aria-label="Close keyboard shortcuts">×</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="context-menu" data-context-menu hidden aria-label="Desktop context menu"></section>
+
+      <footer class="taskbar" aria-label="Taskbar">
+        <div class="taskbar-windows" data-taskbar-windows></div>
+        <button type="button" class="taskbar-button" data-action="toggle-launcher">Apps</button>
+      </footer>
+    </main>
+
+    <template id="window-template">
+      <article class="app-window" role="dialog" aria-modal="false">
+        <header class="window-titlebar">
+          <div class="window-identity">
+            <span class="window-icon" aria-hidden="true"></span>
+            <strong class="window-title"></strong>
+          </div>
+          <div class="window-controls">
+            <button type="button" data-window-action="minimize" aria-label="Minimize">−</button>
+            <button type="button" class="window-snap-button" data-window-action="snap-left" aria-label="Snap left"><span class="snap-icon snap-left-icon" aria-hidden="true"></span></button>
+            <button type="button" class="window-snap-button" data-window-action="snap-right" aria-label="Snap right"><span class="snap-icon snap-right-icon" aria-hidden="true"></span></button>
+            <button type="button" data-window-action="fullscreen" aria-label="Full screen">FS</button>
+            <button type="button" data-window-action="maximize" aria-label="Maximize">□</button>
+            <button type="button" data-window-action="close" aria-label="Close">×</button>
+          </div>
+        </header>
+        <div class="window-body"></div>
+        <span class="window-resize-handle" data-window-resize-handle aria-hidden="true"></span>
+      </article>
+    </template>
+
+    <script src="./desktop.js" type="module"></script>
+  </body>
+</html>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Documentation | AETHER AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Config Verbatim -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed": "#7df4ff",
+                    "surface": "#111417",
+                    "secondary": "#ebb2ff",
+                    "inverse-on-surface": "#2e3134",
+                    "tertiary-fixed": "#e2e2e2",
+                    "outline-variant": "#3b494b",
+                    "on-tertiary-container": "#5d5f5f",
+                    "on-tertiary": "#2f3131",
+                    "on-error-container": "#ffdad6",
+                    "surface-container-high": "#282a2e",
+                    "surface-dim": "#111417",
+                    "inverse-primary": "#006970",
+                    "on-primary-fixed": "#002022",
+                    "on-tertiary-fixed-variant": "#454747",
+                    "secondary-container": "#b600f8",
+                    "outline": "#849495",
+                    "surface-tint": "#00dbe9",
+                    "surface-container-highest": "#323539",
+                    "surface-variant": "#323539",
+                    "error": "#ffb4ab",
+                    "on-surface-variant": "#b9cacb",
+                    "surface-container-low": "#191c1f",
+                    "tertiary-fixed-dim": "#c6c6c7",
+                    "secondary-fixed-dim": "#ebb2ff",
+                    "on-error": "#690005",
+                    "on-secondary": "#520072",
+                    "on-surface": "#e1e2e7",
+                    "surface-container-lowest": "#0c0e12",
+                    "primary-fixed-dim": "#00dbe9",
+                    "on-secondary-container": "#fff6fc",
+                    "error-container": "#93000a",
+                    "primary": "#dbfcff",
+                    "on-primary-fixed-variant": "#004f54",
+                    "on-background": "#e1e2e7",
+                    "surface-bright": "#37393d",
+                    "secondary-fixed": "#f8d8ff",
+                    "primary-container": "#00f0ff",
+                    "on-primary-container": "#006970",
+                    "on-primary": "#00363a",
+                    "tertiary-container": "#d9d9d9",
+                    "on-secondary-fixed-variant": "#74009f",
+                    "surface-container": "#1d2023",
+                    "on-secondary-fixed": "#320047",
+                    "background": "#111417",
+                    "on-tertiary-fixed": "#1a1c1c",
+                    "inverse-surface": "#e1e2e7",
+                    "tertiary": "#f5f5f5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "gutter": "24px",
+                    "container-max": "1280px",
+                    "section-gap": "120px",
+                    "margin-mobile": "20px",
+                    "margin-desktop": "64px"
+            },
+            "fontFamily": {
+                    "mono-label": ["JetBrains Mono"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "mono-code": ["JetBrains Mono"],
+                    "display-lg-mobile": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #020408;
+            color: #e1e2e7;
+            scroll-behavior: smooth;
+        }
+
+        .glass-panel {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(125, 244, 255, 0.1);
+        }
+
+        .glass-border-gradient {
+            border: 1px solid transparent;
+            background: linear-gradient(to bottom right, rgba(0, 219, 233, 0.2), transparent) border-box;
+        }
+
+        .code-block {
+            background: #0c0e12;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 0.5rem;
+        }
+
+        .active-nav-indicator {
+            position: absolute;
+            left: 0;
+            width: 2px;
+            height: 100%;
+            background: #00dbe9;
+            box-shadow: 0 0 10px #00dbe9;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b494b;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00dbe9;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_30px_rgba(0,219,233,0.15)] transition-all duration-300 ease-out">
+<div class="flex justify-between items-center px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="flex items-center gap-8">
+<a class="font-display-lg text-headline-md tracking-tighter text-primary font-extrabold" href="#">AETHER AI</a>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:drop-shadow-[0_0_10px_#00dbe9]" href="#">Platform</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:drop-shadow-[0_0_10px_#00dbe9]" href="#">Solutions</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:drop-shadow-[0_0_10px_#00dbe9]" href="#">Developers</a>
+<a class="text-primary border-b-2 border-primary pb-1 font-medium" href="#">Documentation</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-6 py-2 rounded-lg bg-primary-container text-on-primary-container font-mono-label text-mono-label hover:brightness-110 transition-all">Launch Console</button>
+</div>
+</div>
+</header>
+<div class="pt-24 min-h-screen flex max-w-[1600px] mx-auto">
+<!-- Left Sidebar Navigation -->
+<aside class="hidden lg:block w-72 h-[calc(100vh-6rem)] sticky top-24 overflow-y-auto px-margin-desktop/2 py-4 border-r border-outline-variant/10">
+<div class="space-y-8">
+<div>
+<h3 class="font-mono-label text-mono-label text-primary-fixed uppercase tracking-widest mb-4">Introduction</h3>
+<ul class="space-y-2 border-l border-outline-variant/20 ml-2">
+<li class="relative group">
+<div class="active-nav-indicator"></div>
+<a class="block pl-4 py-1 text-primary transition-all" href="#welcome">Welcome</a>
+</li>
+<li class="group">
+<a class="block pl-4 py-1 text-on-surface-variant hover:text-primary transition-all" href="#quickstart">Quickstart</a>
+</li>
+<li class="group">
+<a class="block pl-4 py-1 text-on-surface-variant hover:text-primary transition-all" href="#architecture">Architecture</a>
+</li>
+</ul>
+</div>
+<div>
+<h3 class="font-mono-label text-mono-label text-primary-fixed uppercase tracking-widest mb-4">API Reference</h3>
+<ul class="space-y-2 border-l border-outline-variant/20 ml-2">
+<li class="group"><a class="block pl-4 py-1 text-on-surface-variant hover:text-primary transition-all" href="#authentication">Authentication</a></li>
+<li class="group"><a class="block pl-4 py-1 text-on-surface-variant hover:text-primary transition-all" href="#inference">Inference API</a></li>
+<li class="group"><a class="block pl-4 py-1 text-on-surface-variant hover:text-primary transition-all" href="#embeddings">Embeddings</a></li>
+<li class="group"><a class="block pl-4 py-1 text-on-surface-variant hover:text-primary transition-all" href="#rate-limits">Rate Limits</a></li>
+</ul>
+</div>
+<div>
+<h3 class="font-mono-label text-mono-label text-primary-fixed uppercase tracking-widest mb-4">SDKs</h3>
+<ul class="space-y-2 border-l border-outline-variant/20 ml-2">
+<li class="group"><a class="block pl-4 py-1 text-on-surface-variant hover:text-primary transition-all flex items-center gap-2" href="#python"><span class="material-symbols-outlined text-sm">code</span> Python</a></li>
+<li class="group"><a class="block pl-4 py-1 text-on-surface-variant hover:text-primary transition-all flex items-center gap-2" href="#typescript"><span class="material-symbols-outlined text-sm">terminal</span> TypeScript</a></li>
+<li class="group"><a class="block pl-4 py-1 text-on-surface-variant hover:text-primary transition-all flex items-center gap-2" href="#rust"><span class="material-symbols-outlined text-sm">settings</span> Rust</a></li>
+</ul>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 px-8 md:px-16 py-8 max-w-4xl mx-auto">
+<div class="mb-section-gap" id="welcome">
+<div class="flex items-center gap-2 mb-4">
+<span class="px-2 py-0.5 rounded bg-primary/10 border border-primary/20 text-primary font-mono-label text-[10px] tracking-widest">STABLE V2.4</span>
+</div>
+<h1 class="font-display-lg text-display-lg-mobile md:text-headline-md mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">The Aether AI Core</h1>
+<p class="text-body-lg text-on-surface-variant mb-8 leading-relaxed">
+                    Integrate state-of-the-art synthetic intelligence into your applications with our robust API and developer tools. Designed for high-concurrency, low-latency workloads across global clusters.
+                </p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+<div class="glass-panel p-6 rounded-xl hover:shadow-[0_0_20px_rgba(0,219,233,0.1)] transition-all cursor-pointer group">
+<span class="material-symbols-outlined text-primary mb-4">rocket_launch</span>
+<h4 class="font-bold text-lg mb-2 group-hover:text-primary transition-colors">Fast Integration</h4>
+<p class="text-sm text-on-surface-variant">Get running in under 5 minutes with our pre-built modules and edge-ready SDKs.</p>
+</div>
+<div class="glass-panel p-6 rounded-xl hover:shadow-[0_0_20px_rgba(235,178,255,0.1)] transition-all cursor-pointer group">
+<span class="material-symbols-outlined text-secondary mb-4">security</span>
+<h4 class="font-bold text-lg mb-2 group-hover:text-secondary transition-colors">Enterprise Security</h4>
+<p class="text-sm text-on-surface-variant">SOC2 Type II compliant with end-to-end encryption for all inference pathways.</p>
+</div>
+</div>
+</div>
+<section class="mb-section-gap" id="quickstart">
+<h2 class="font-headline-md text-primary mb-8 flex items-center gap-4">
+                    Quickstart Guide
+                    <div class="h-px flex-1 bg-outline-variant/30"></div>
+</h2>
+<div class="space-y-12">
+<div class="flex gap-6">
+<div class="flex-none w-10 h-10 rounded-full bg-surface-container-high border border-outline-variant/50 flex items-center justify-center font-mono-label text-primary shadow-[0_0_15px_rgba(0,219,233,0.2)]">1</div>
+<div class="flex-1">
+<h3 class="text-xl font-semibold mb-4">Install the Aether SDK</h3>
+<p class="text-on-surface-variant mb-4">Bootstrap your environment by installing the core package via your preferred package manager.</p>
+<div class="code-block p-4">
+<div class="flex justify-between mb-2 text-xs font-mono-label text-on-tertiary-container uppercase">
+<span>terminal</span>
+<button class="hover:text-primary transition-colors">Copy</button>
+</div>
+<code class="font-mono-code text-primary-fixed block">
+                                    npm install @aether-ai/core-sdk --save-dev
+                                </code>
+</div>
+</div>
+</div>
+<div class="flex gap-6">
+<div class="flex-none w-10 h-10 rounded-full bg-surface-container-high border border-outline-variant/50 flex items-center justify-center font-mono-label text-primary">2</div>
+<div class="flex-1">
+<h3 class="text-xl font-semibold mb-4">Initialize the Client</h3>
+<p class="text-on-surface-variant mb-4">Create a secure instance using your secret keys. Ensure these are stored in environment variables.</p>
+<div class="code-block p-4">
+<div class="flex justify-between mb-2 text-xs font-mono-label text-on-tertiary-container uppercase">
+<span>typescript</span>
+<button class="hover:text-primary transition-colors">Copy</button>
+</div>
+<pre class="font-mono-code text-sm leading-6 overflow-x-auto text-on-surface"><span class="text-secondary">import</span> { AetherClient } <span class="text-secondary">from</span> <span class="text-primary-fixed">'@aether-ai/sdk'</span>;
+
+<span class="text-on-tertiary-container">// Initialize with hardware-acceleration</span>
+<span class="text-secondary">const</span> client = <span class="text-secondary">new</span> <span class="text-primary-fixed">AetherClient</span>({
+  apiKey: process.env.AETHER_API_KEY,
+  region: <span class="text-primary-fixed">'us-east-shred'</span>,
+  acceleration: <span class="text-primary-fixed">'h100-tensor'</span>
+});</pre>
+</div>
+</div>
+</div>
+<div class="flex gap-6">
+<div class="flex-none w-10 h-10 rounded-full bg-surface-container-high border border-outline-variant/50 flex items-center justify-center font-mono-label text-primary">3</div>
+<div class="flex-1">
+<h3 class="text-xl font-semibold mb-4">Run Your First Inference</h3>
+<p class="text-on-surface-variant mb-4">Invoke the prediction engine. Response streams are supported via standard Web Streams API.</p>
+<div class="code-block p-4">
+<div class="flex justify-between mb-2 text-xs font-mono-label text-on-tertiary-container uppercase">
+<span>typescript</span>
+<button class="hover:text-primary transition-colors">Copy</button>
+</div>
+<pre class="font-mono-code text-sm leading-6 overflow-x-auto text-on-surface"><span class="text-secondary">const</span> response = <span class="text-secondary">await</span> client.inference.predict({
+  model: <span class="text-primary-fixed">'aether-titan-v3'</span>,
+  prompt: <span class="text-primary-fixed">'Synthesize a reactive UI kernel...'</span>,
+  temperature: <span class="text-primary-fixed">0.7</span>
+});
+
+<span class="text-on-tertiary-container">// Process the high-dimensional vector output</span>
+console.log(response.vectors);</pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="mb-section-gap" id="architecture">
+<h2 class="font-headline-md text-primary mb-8">System Architecture</h2>
+<div class="glass-panel p-8 rounded-2xl relative overflow-hidden mb-8">
+<div class="absolute top-0 right-0 p-4 opacity-20">
+<span class="material-symbols-outlined text-8xl text-primary">hub</span>
+</div>
+<div class="relative z-10">
+<p class="text-on-surface-variant mb-8 max-w-lg">Aether's architecture utilizes a distributed mesh of neural processing units (NPUs) that dynamically rebalance based on request complexity.</p>
+<div class="space-y-4">
+<div class="flex items-center gap-4">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="font-mono-label text-xs uppercase text-on-tertiary-container">L1: Load Balancing &amp; Gateway</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-2 h-2 rounded-full bg-secondary animate-pulse" style="animation-delay: 200ms"></div>
+<span class="font-mono-label text-xs uppercase text-on-tertiary-container">L2: Tokenization &amp; Quantization Mesh</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse" style="animation-delay: 400ms"></div>
+<span class="font-mono-label text-xs uppercase text-on-tertiary-container">L3: Core NPU Cluster</span>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low p-6 rounded-lg border border-outline-variant/30 flex items-start gap-4">
+<span class="material-symbols-outlined text-primary">info</span>
+<p class="text-sm text-on-surface-variant italic">Note: For workloads exceeding 50,000 requests/second, we recommend implementing a regional cluster pinning strategy to avoid cross-continental latency penalties.</p>
+</div>
+</section>
+</main>
+<!-- Right Side 'On this page' Navigation -->
+<aside class="hidden xl:block w-64 h-[calc(100vh-6rem)] sticky top-24 overflow-y-auto px-6 py-4">
+<h3 class="font-mono-label text-xs font-bold text-on-tertiary-container uppercase tracking-widest mb-6">On this page</h3>
+<ul class="space-y-4 text-sm">
+<li><a class="text-primary hover:text-primary-fixed transition-colors flex items-center gap-2" href="#welcome">Welcome <span class="material-symbols-outlined text-[10px]">north_east</span></a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#quickstart">Quickstart Guide</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#architecture">System Architecture</a></li>
+<li class="pt-4 border-t border-outline-variant/10">
+<button class="flex items-center gap-2 text-on-tertiary-container hover:text-primary transition-colors group">
+<span class="material-symbols-outlined text-sm group-hover:animate-bounce">chat</span>
+                        Support Forum
+                    </button>
+</li>
+<li>
+<button class="flex items-center gap-2 text-on-tertiary-container hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">edit</span>
+                        Edit this page
+                    </button>
+</li>
+</ul>
+<div class="mt-12 p-4 glass-panel rounded-lg border border-primary/20">
+<p class="text-[10px] font-mono-label text-primary uppercase mb-2">Service Status</p>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_#00dbe9]"></div>
+<span class="text-xs font-semibold">Systems Operational</span>
+</div>
+</div>
+</aside>
+</div>
+<!-- Footer -->
+<footer class="w-full rounded-t-full bg-surface-container-lowest border-t border-outline-variant/20 mt-24">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop py-section-gap max-w-container-max mx-auto">
+<div class="mb-8 md:mb-0">
+<div class="font-display-lg text-headline-md text-primary font-extrabold mb-2">AETHER AI</div>
+<p class="font-mono-label text-mono-label text-on-tertiary-container opacity-80 hover:opacity-100 transition-opacity">© 2024 Aether Intelligence Systems. All rights reserved. Built for the synthetic era.</p>
+</div>
+<div class="flex gap-8">
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-primary transition-colors" href="#">Security</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-primary transition-colors" href="#">System Status</a>
+</div>
+</div>
+</footer>
+<!-- Micro-interactions Script -->
+<script>
+        // Smooth scroll implementation and active section highlighting
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Simple intersection observer for navigation highlight
+        const sections = document.querySelectorAll('section, div[id]');
+        const navLinks = document.querySelectorAll('aside a');
+
+        const observerOptions = {
+            root: null,
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    navLinks.forEach(link => {
+                        if (link.getAttribute('href') === `#${id}`) {
+                            // Find parent li and handle indicator
+                            const li = link.closest('li');
+                            if (li) {
+                                // Manage active indicators logic here if needed dynamically
+                            }
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => observer.observe(section));
+
+        // Atmospheric effect for code blocks
+        document.querySelectorAll('.code-block').forEach(block => {
+            block.addEventListener('mousemove', (e) => {
+                const rect = block.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                block.style.setProperty('--x', `${x}px`);
+                block.style.setProperty('--y', `${y}px`);
+                block.style.boxShadow = `0 0 20px rgba(0, 219, 233, 0.05), inset 0 0 10px rgba(255,255,255,0.02)`;
+            });
+            block.addEventListener('mouseleave', () => {
+                block.style.boxShadow = 'none';
+            });
+        });
+    </script>
+</body></html>

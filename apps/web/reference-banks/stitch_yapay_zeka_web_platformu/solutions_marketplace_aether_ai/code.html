@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aether AI | Solutions Marketplace</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#111417",
+                        "outline": "#849495",
+                        "tertiary": "#f5f5f5",
+                        "surface-container-highest": "#323539",
+                        "on-primary-fixed-variant": "#004f54",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "inverse-on-surface": "#2e3134",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "surface-variant": "#323539",
+                        "on-tertiary": "#2f3131",
+                        "on-secondary-fixed": "#320047",
+                        "primary-fixed": "#7df4ff",
+                        "on-background": "#e1e2e7",
+                        "inverse-surface": "#e1e2e7",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "primary-container": "#00f0ff",
+                        "on-tertiary-container": "#5d5f5f",
+                        "on-surface-variant": "#b9cacb",
+                        "tertiary-fixed": "#e2e2e2",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-primary-container": "#006970",
+                        "surface-container-lowest": "#0c0e12",
+                        "tertiary-container": "#d9d9d9",
+                        "surface-bright": "#37393d",
+                        "on-secondary-container": "#fff6fc",
+                        "on-error": "#690005",
+                        "surface-container": "#1d2023",
+                        "secondary-fixed": "#f8d8ff",
+                        "inverse-primary": "#006970",
+                        "on-primary-fixed": "#002022",
+                        "surface-container-high": "#282a2e",
+                        "surface-container-low": "#191c1f",
+                        "on-surface": "#e1e2e7",
+                        "surface-tint": "#00dbe9",
+                        "error-container": "#93000a",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "on-primary": "#00363a",
+                        "error": "#ffb4ab",
+                        "surface-dim": "#111417",
+                        "secondary-container": "#b600f8",
+                        "primary": "#dbfcff",
+                        "on-secondary": "#520072",
+                        "background": "#111417",
+                        "primary-fixed-dim": "#00dbe9",
+                        "on-error-container": "#ffdad6",
+                        "secondary": "#ebb2ff",
+                        "outline-variant": "#3b494b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "section-gap": "120px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "unit": "8px",
+                        "margin-desktop": "64px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "mono-label": ["JetBrains Mono"],
+                        "body-md": ["Inter"],
+                        "mono-code": ["JetBrains Mono"],
+                        "headline-md": ["Inter"],
+                        "display-lg-mobile": ["Inter"],
+                        "display-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #020408;
+            color: #e1e2e7;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 219, 233, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(0, 219, 233, 0.4);
+            box-shadow: 0 0 30px rgba(0, 219, 233, 0.15);
+            transform: translateY(-4px);
+        }
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(0, 219, 233, 0.3);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0c0e12;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #3b494b;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md custom-scrollbar">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_40px_-15px_rgba(0,219,233,0.15)]">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-16">
+<div class="flex items-center gap-12">
+<span class="font-display-lg text-[24px] font-extrabold tracking-tighter text-primary-fixed-dim">AETHER AI</span>
+<div class="hidden lg:flex items-center gap-8">
+<a class="text-primary-fixed-dim font-semibold border-b-2 border-primary-fixed-dim pb-1 hover:text-primary-fixed transition-colors duration-300" href="#">Models</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Infrastructure</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Compute</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Enterprise</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Pricing</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative hidden md:block">
+<input class="bg-surface-container-low border border-outline-variant/30 rounded-full px-5 py-2 w-64 font-mono-label text-xs focus:ring-1 focus:ring-primary-fixed-dim outline-none transition-all placeholder:text-outline/50" placeholder="Search models..." type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-2.5 text-outline text-lg" data-icon="search">search</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant font-mono-label hover:text-primary-fixed transition-colors duration-300 text-xs">Sign In</button>
+<button class="bg-primary-container text-on-primary-container px-5 py-2 rounded-full font-bold text-xs active:scale-95 transition-transform">Get Started</button>
+</div>
+</div>
+</div>
+</nav>
+<main class="pt-32 pb-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<!-- Hero Section: Featured Model -->
+<section class="relative mb-section-gap">
+<div class="grid lg:grid-cols-2 gap-gutter items-center glass-card p-12 rounded-xl overflow-hidden relative border-none">
+<!-- Background Shader -->
+
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-6">
+<span class="bg-primary-fixed-dim/10 text-primary-fixed-dim px-3 py-1 font-mono-label text-[10px] border border-primary-fixed-dim/20 rounded-sm">FEATURED RELEASE</span>
+<span class="text-outline text-xs font-mono-label">v4.2.0</span>
+</div>
+<h1 class="font-display-lg text-5xl md:text-7xl text-white mb-6 leading-tight">Neural Core<br/><span class="text-primary-fixed-dim">Apex-9</span></h1>
+<p class="text-on-surface-variant text-body-lg mb-10 max-w-lg">
+                        The world's most advanced autonomous logistics optimizer. Deploy high-fidelity neural routing across global supply chains with sub-millisecond latency.
+                    </p>
+<div class="flex flex-wrap gap-4">
+<button class="bg-primary-fixed-dim text-black font-bold px-8 py-4 rounded-lg flex items-center gap-2 hover:brightness-110 transition-all">
+<span>Deploy to Infrastructure</span>
+<span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<button class="border border-outline-variant text-white font-bold px-8 py-4 rounded-lg hover:bg-surface-variant/30 transition-all">
+                            View Documentation
+                        </button>
+</div>
+</div>
+<div class="relative h-[400px] flex items-center justify-center">
+<!-- 3D Chip Visualization Reference -->
+
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest to-transparent opacity-20"></div>
+</div>
+</div>
+</section>
+<!-- Category Filter -->
+<section class="mb-12">
+<div class="flex items-center justify-between mb-8">
+<h2 class="font-headline-md text-white flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="category">category</span>
+                    Explore Marketplace
+                </h2>
+<div class="flex items-center gap-4">
+<button class="text-primary-fixed-dim font-mono-label text-xs underline underline-offset-8">All Categories</button>
+<button class="text-on-surface-variant font-mono-label text-xs hover:text-white transition-colors">Newly Published</button>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+<div class="glass-card p-6 flex flex-col items-center text-center gap-4 cursor-pointer group">
+<div class="w-12 h-12 rounded-lg bg-primary-fixed-dim/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="account_balance">account_balance</span>
+</div>
+<span class="font-mono-label text-[11px] uppercase tracking-wider text-on-surface">Financial Intelligence</span>
+</div>
+<div class="glass-card p-6 flex flex-col items-center text-center gap-4 cursor-pointer group border-primary-fixed-dim/40">
+<div class="w-12 h-12 rounded-lg bg-primary-fixed-dim/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="local_shipping">local_shipping</span>
+</div>
+<span class="font-mono-label text-[11px] uppercase tracking-wider text-primary-fixed-dim">Autonomous Logistics</span>
+</div>
+<div class="glass-card p-6 flex flex-col items-center text-center gap-4 cursor-pointer group">
+<div class="w-12 h-12 rounded-lg bg-primary-fixed-dim/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="medical_services">medical_services</span>
+</div>
+<span class="font-mono-label text-[11px] uppercase tracking-wider text-on-surface">Medical Synthesis</span>
+</div>
+<div class="glass-card p-6 flex flex-col items-center text-center gap-4 cursor-pointer group">
+<div class="w-12 h-12 rounded-lg bg-primary-fixed-dim/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="security">security</span>
+</div>
+<span class="font-mono-label text-[11px] uppercase tracking-wider text-on-surface">Threat Detection</span>
+</div>
+<div class="glass-card p-6 flex flex-col items-center text-center gap-4 cursor-pointer group">
+<div class="w-12 h-12 rounded-lg bg-primary-fixed-dim/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="language">language</span>
+</div>
+<span class="font-mono-label text-[11px] uppercase tracking-wider text-on-surface">NL Processing</span>
+</div>
+<div class="glass-card p-6 flex flex-col items-center text-center gap-4 cursor-pointer group">
+<div class="w-12 h-12 rounded-lg bg-primary-fixed-dim/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="robot_2">robot_2</span>
+</div>
+<span class="font-mono-label text-[11px] uppercase tracking-wider text-on-surface">Robotics OS</span>
+</div>
+</div>
+</section>
+<!-- Bento Grid: Top Models -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Big Model Card -->
+<div class="md:col-span-2 glass-card rounded-xl p-8 flex flex-col justify-between overflow-hidden relative group">
+<div class="absolute -right-20 -top-20 w-80 h-80 bg-primary-fixed-dim/5 rounded-full blur-3xl pointer-events-none group-hover:bg-primary-fixed-dim/10 transition-all"></div>
+<div>
+<div class="flex justify-between items-start mb-8">
+<div>
+<h3 class="text-2xl font-bold text-white mb-2">QuantAether Fin v9</h3>
+<p class="text-on-surface-variant max-w-sm">HFT-optimized predictive analysis for global equities and volatile derivatives.</p>
+</div>
+<div class="bg-surface-container-highest p-3 rounded-lg border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary-fixed-dim text-3xl" data-icon="monitoring">monitoring</span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-4 mb-8">
+<div class="bg-surface-container-lowest/50 p-4 rounded-lg border border-outline-variant/10">
+<span class="block text-outline text-[10px] font-mono-label mb-1">ACCURACY</span>
+<span class="text-primary-fixed-dim font-bold text-lg">99.82%</span>
+</div>
+<div class="bg-surface-container-lowest/50 p-4 rounded-lg border border-outline-variant/10">
+<span class="block text-outline text-[10px] font-mono-label mb-1">LATENCY</span>
+<span class="text-primary-fixed-dim font-bold text-lg">&lt;2ms</span>
+</div>
+<div class="bg-surface-container-lowest/50 p-4 rounded-lg border border-outline-variant/10">
+<span class="block text-outline text-[10px] font-mono-label mb-1">INSTANCES</span>
+<span class="text-primary-fixed-dim font-bold text-lg">4,200+</span>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between border-t border-outline-variant/20 pt-6">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-surface bg-surface-container-highest"></div>
+<div class="w-8 h-8 rounded-full border-2 border-surface bg-primary-fixed-dim/30"></div>
+<div class="w-8 h-8 rounded-full border-2 border-surface bg-surface-container-high"></div>
+<span class="pl-4 text-xs text-outline font-mono-label self-center">Used by JP Morgan, Goldman Sachs</span>
+</div>
+<button class="bg-white text-black font-bold px-6 py-2.5 rounded-lg active:scale-95 transition-all">Details</button>
+</div>
+</div>
+<!-- Small Cards -->
+<div class="space-y-gutter">
+<div class="glass-card rounded-xl p-6 h-full flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-center mb-4">
+<span class="material-symbols-outlined text-secondary-fixed-dim" data-icon="dna">dns</span>
+<span class="text-[10px] font-mono-label text-outline">MEDICAL</span>
+</div>
+<h4 class="text-lg font-bold text-white mb-2">BioSynthetics Pro</h4>
+<p class="text-sm text-on-surface-variant">Protein folding and synthetic sequence generator.</p>
+</div>
+<div class="mt-6 flex items-center justify-between">
+<span class="text-primary-fixed-dim font-mono-label text-sm">$0.45/req</span>
+<span class="material-symbols-outlined text-outline hover:text-white cursor-pointer" data-icon="favorite">favorite</span>
+</div>
+</div>
+<div class="glass-card rounded-xl p-6 h-full flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-center mb-4">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="satellite">satellite</span>
+<span class="text-[10px] font-mono-label text-outline">GEO-SPATIAL</span>
+</div>
+<h4 class="text-lg font-bold text-white mb-2">OrbitView Realtime</h4>
+<p class="text-sm text-on-surface-variant">Object detection for satellite and aerial imagery feeds.</p>
+</div>
+<div class="mt-6 flex items-center justify-between">
+<span class="text-primary-fixed-dim font-mono-label text-sm">$1.20/min</span>
+<span class="material-symbols-outlined text-outline hover:text-white cursor-pointer" data-icon="favorite">favorite</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Secondary Feed Section -->
+<section class="mt-section-gap">
+<h2 class="font-headline-md text-white mb-10 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="trending_up">trending_up</span>
+                Rising in Logistics
+            </h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Logistics Item 1 -->
+<div class="glass-card rounded-xl overflow-hidden group">
+<div class="h-40 relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A highly detailed 3D digital rendering of an automated futuristic warehouse with glowing cyan pathways and sleek robotic sorting arms in a dark obsidian environment. The lighting is focused and cinematic, creating high-end technical shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_qywh-s65Ks7pac-TLxPcosKT-ggFS1KB2nWRLXBAK_pxegRZjcMQQ_HqQ8-C89TmpdgfpKmnxUb23eCz78JQ__nBDLTkRgr_P5hm8P57Ko5a6MtWgMvGKlEFg8WiuR_zG181_wQY8LBz2BYevbM6CDjJvBMPcUBmherXoT5guH8LWqYR8MmPxP_2hysQtGVwMbCoArJKFkUYgWz-DP-QcAOmMZ9gMg4EN6ofya8p_OYv5mZwgtyKMCGqAEoAumudSJymjyF7Cg"/>
+<div class="absolute top-4 left-4 bg-surface/80 backdrop-blur-md border border-outline-variant/30 px-2 py-1 rounded">
+<span class="font-mono-label text-[9px] text-primary-fixed-dim">CERTIFIED</span>
+</div>
+</div>
+<div class="p-5">
+<h5 class="text-white font-bold mb-1">RouteOptima X</h5>
+<p class="text-xs text-outline mb-4">Last-mile delivery clustering algorithm for urban density.</p>
+<div class="flex items-center justify-between">
+<span class="text-xs font-mono-label text-primary-fixed-dim">Free Tier</span>
+<span class="material-symbols-outlined text-lg text-outline" data-icon="add_circle">add_circle</span>
+</div>
+</div>
+</div>
+<!-- Logistics Item 2 -->
+<div class="glass-card rounded-xl overflow-hidden group">
+<div class="h-40 relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A dark and sophisticated isometric view of a global supply chain map with neon purple and cyan data lines connecting major hubs. The visual style is high-fidelity technical glassmorphism with microscopic data details glowing on the surface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1ObMzUvt6rMuwx4JMiQCYATqwk9ftGabeJ8epuV4U52G55BSDHh2rForu4kK3hOnnJzoRFV4RiOtiyvDlxHoLXmztTEghUmjITYmrZ_qbQ5D4dZSJpFdt2PpBt0DtsH2heAipsqRRro8AYasmsRmSpNCyiLtThPDdRQsv7xgr2v5gX-2s4aYrx-4NP6sK_xwqE3UYTtYuLH14nALse0xZC-w8rthvriQI0xHBJ8dGveXCuZ7D1yjtczh2bdUd8v751k8Gp_ZAOw"/>
+</div>
+<div class="p-5">
+<h5 class="text-white font-bold mb-1">PortMaster AI</h5>
+<p class="text-xs text-outline mb-4">Maritime congestion predictor and vessel scheduling optimizer.</p>
+<div class="flex items-center justify-between">
+<span class="text-xs font-mono-label text-primary-fixed-dim">Enterprise Only</span>
+<span class="material-symbols-outlined text-lg text-outline" data-icon="add_circle">add_circle</span>
+</div>
+</div>
+</div>
+<!-- Logistics Item 3 -->
+<div class="glass-card rounded-xl overflow-hidden group">
+<div class="h-40 relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Abstract 3D digital art representing neural network connections in a logistics framework. Electric cyan pulses traveling through a dark transparent crystalline lattice structure, signifying high-speed data processing and efficiency in a futuristic aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoXVQDm6aNwcDKODW4Vl6fHyq0pE_wd6llIB0OUgiOWePD72vxZ-JGtVXWxXnPATw5um096o0ok8aWMh503xB6D9ZhZ7mvjK7vRBXCJ4dERcMRAl4KA9NzA1m_VNyVyW6r_5ALIFwKZEuTLpf4OmJj2LRjzBMTEau-nmA2a96xcuL32ms14R6-7z0BYZSWMIMAx9kru3fpZVU7j37-o1MCOeVwUCmVj3shJACRsFD9CwkZmN3I0HWKP43T4gO-9zEazmzZcgOBxg"/>
+</div>
+<div class="p-5">
+<h5 class="text-white font-bold mb-1">AeroFreight v3</h5>
+<p class="text-xs text-outline mb-4">Air cargo weight balancing and fuel efficiency engine.</p>
+<div class="flex items-center justify-between">
+<span class="text-xs font-mono-label text-primary-fixed-dim">$0.10/token</span>
+<span class="material-symbols-outlined text-lg text-outline" data-icon="add_circle">add_circle</span>
+</div>
+</div>
+</div>
+<!-- Logistics Item 4 -->
+<div class="glass-card rounded-xl overflow-hidden group">
+<div class="h-40 relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A high-tech digital control room interface with multiple holographic screens showing real-time logistics analytics. Deep blacks and vibrant cyan light create a futuristic command center atmosphere. Minimalist and professional UI design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGDHSogGYyCLDPWwtl_1VgKlcVlMh6hN2S5wtTRi-UBjXysjQ5t_WtUbhHfneJjZZhiIqKHy93CglSoi_LjSX_ChCTBcYjjtpGS1yhUY4rX3jrNPOSt3w1eQIqJv7Htw56vRhu5laN8L2TyLiZ4FDlNgH6t-rGHoVN4LEI3yowxyXYwuwylZBuEc1b6a6WkXZn1OwpnSXQlVVM4prdeBPKNzhUs4wx2Kgy7bihl4ezmBsqTzO9DBACbc95WxiLrQjEEUDWX1y2DA"/>
+</div>
+<div class="p-5">
+<h5 class="text-white font-bold mb-1">FleetPulse</h5>
+<p class="text-xs text-outline mb-4">Preventative maintenance predictor for heavy truck fleets.</p>
+<div class="flex items-center justify-between">
+<span class="text-xs font-mono-label text-primary-fixed-dim">Usage Based</span>
+<span class="material-symbols-outlined text-lg text-outline" data-icon="add_circle">add_circle</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant/10 w-full py-section-gap">
+<div class="max-w-container-max mx-auto px-margin-desktop grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-gutter">
+<div class="col-span-2">
+<span class="font-display-lg text-[24px] font-extrabold tracking-tighter text-primary-fixed-dim mb-6 block">AETHER AI</span>
+<p class="text-on-tertiary-fixed-variant font-mono-label text-xs mb-8 max-w-xs">
+                    Building the infrastructure for the next generation of autonomous enterprise intelligence.
+                </p>
+<p class="text-on-tertiary-fixed-variant font-mono-label text-[10px]">
+                    © 2024 Aether AI Infrastructure. All rights reserved.
+                </p>
+</div>
+<div>
+<h6 class="text-white font-bold mb-6 text-sm">Platform</h6>
+<ul class="space-y-4">
+<li><a class="text-on-tertiary-fixed-variant font-mono-label text-xs hover:text-primary-fixed transition-colors" href="#">Documentation</a></li>
+<li><a class="text-on-tertiary-fixed-variant font-mono-label text-xs hover:text-primary-fixed transition-colors" href="#">API Reference</a></li>
+<li><a class="text-on-tertiary-fixed-variant font-mono-label text-xs hover:text-primary-fixed transition-colors" href="#">System Status</a></li>
+</ul>
+</div>
+<div>
+<h6 class="text-white font-bold mb-6 text-sm">Governance</h6>
+<ul class="space-y-4">
+<li><a class="text-on-tertiary-fixed-variant font-mono-label text-xs hover:text-primary-fixed transition-colors" href="#">Security</a></li>
+<li><a class="text-on-tertiary-fixed-variant font-mono-label text-xs hover:text-primary-fixed transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="text-on-tertiary-fixed-variant font-mono-label text-xs hover:text-primary-fixed transition-colors" href="#">Terms of Service</a></li>
+</ul>
+</div>
+<div class="col-span-2 flex flex-col items-end justify-start">
+<div class="bg-surface-container p-6 rounded-lg border border-outline-variant/20 w-full">
+<h6 class="text-white font-bold mb-2 text-sm">Network Pulse</h6>
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary-fixed-dim animate-pulse shadow-[0_0_8px_rgba(0,219,233,1)]"></div>
+<span class="text-primary-fixed-dim font-mono-label text-[10px]">ALL SYSTEMS OPERATIONAL</span>
+</div>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for cards
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body></html>

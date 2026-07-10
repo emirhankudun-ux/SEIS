@@ -1,11 +1,33 @@
 # Web Lane
 
-The Web lane contains two browser surfaces:
+The Web lane contains the static browser product surfaces for the current SEIS
+product-experience suite:
 
 - `index.html`, `style.css`, and `script.js` power the public portfolio/site
   surface checked by `npm run seis:check`.
 - `seis-cockpit.html`, `styles.css`, and `app.js` power the SEIS cockpit/release
   shell checked by `npm run check:workspace` and copied into `release/web/`.
+- `desktop.html`, `desktop.css`, and `desktop.js` power the SEIS Desktop OS
+  foundation checked by `npm run check:desktop-os` and
+  `npm run check:desktop-os-browser-smoke`. Desktop-created `/home/seis`
+  files and folders are mirrored into the SEIS Code IndexedDB workspace under
+  `/workspace` for the current browser-local create/move/delete handoff.
+- `website/` contains the premium SEIS Website hub and product pages for SEIS
+  AI, OS, Code, Design, Search, Cloud, Store, and Agents. It is checked by
+  `npm run check:seis-website-pages` and copied into the static package.
+- `scripts/check-seis-ultimate-demo.mjs` verifies V17 demo coverage across the
+  required OS, AI, Search, Code, Design, Cloud, Store, Music, Launchpad, Files,
+  Terminal, Website, Agents, Plugins, Command Center, website pages, and
+  mock/real/planned labels.
+- `seis-code.html`, `seis-code.css`, and `seis-code.js` power the browser IDE
+  foundation checked by `npm run check:seis-code` and
+  `npm run check:product-experience-browser-smoke`.
+- `mythic-gacha.html`, `mythic-gacha.css`, and `mythic-gacha.js` power the
+  no-key gacha foundation checked by `npm run check:mythic-gacha`.
+- `showcase/*.html`, `video-hero.css`, and `video-hero.js` power the cinematic
+  Video Hero showcase checked by `npm run check:video-hero-showcase`,
+  `npm run check:video-hero-performance-budget`, and
+  `npm run check:video-hero-browser-smoke`.
 
 ## Initial Direction
 

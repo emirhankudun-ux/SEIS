@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS - Peripheral Hub</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary": "#f9f5f5",
+                        "on-tertiary": "#313030",
+                        "error-container": "#93000a",
+                        "outline-variant": "#3b494b",
+                        "on-surface": "#e2e2e2",
+                        "surface-bright": "#37393a",
+                        "primary-fixed": "#7df4ff",
+                        "on-surface-variant": "#b9cacb",
+                        "primary-container": "#00f0ff",
+                        "on-secondary-container": "#480064",
+                        "surface-container-lowest": "#0c0f0f",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "inverse-primary": "#006970",
+                        "tertiary-fixed": "#e5e2e1",
+                        "primary": "#dbfcff",
+                        "surface-container-low": "#1a1c1c",
+                        "on-primary-container": "#006970",
+                        "surface-dim": "#121414",
+                        "on-tertiary-container": "#605e5e",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "surface-tint": "#00dbe9",
+                        "secondary-container": "#ce5dff",
+                        "on-secondary-fixed": "#320047",
+                        "surface": "#121414",
+                        "secondary": "#ebb2ff",
+                        "on-error": "#690005",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "surface-container-highest": "#333535",
+                        "primary-fixed-dim": "#00dbe9",
+                        "tertiary-container": "#dcd9d8",
+                        "surface-variant": "#333535",
+                        "error": "#ffb4ab",
+                        "secondary-fixed": "#f8d8ff",
+                        "inverse-on-surface": "#2f3131",
+                        "on-primary-fixed": "#002022",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-primary": "#00363a",
+                        "on-background": "#e2e2e2",
+                        "inverse-surface": "#e2e2e2",
+                        "on-primary-fixed-variant": "#004f54",
+                        "surface-container-high": "#282a2b",
+                        "surface-container": "#1e2020",
+                        "on-secondary": "#520071",
+                        "outline": "#849495",
+                        "background": "#121414"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "stroke-thick": "2px",
+                        "gap-md": "16px",
+                        "gap-lg": "24px",
+                        "gap-sm": "8px",
+                        "margin-page": "32px",
+                        "stroke-thin": "1px",
+                        "gap-xs": "4px"
+                    },
+                    fontFamily: {
+                        "body-md": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "label-sm": ["Space Mono"],
+                        "headline-lg": ["JetBrains Mono"],
+                        "code-sm": ["JetBrains Mono"]
+                    },
+                    fontSize: {
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "code-sm": ["13px", { "lineHeight": "1.4", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Cyberpunk Minimalist Utilities */
+        body { background-color: theme('colors.background'); color: theme('colors.on-background'); }
+        .glass-panel { background-color: rgba(12, 15, 15, 0.85); backdrop-filter: blur(12px); border: 1px solid theme('colors.outline-variant'); }
+        .glass-panel:hover { border-color: theme('colors.primary-fixed-dim'); }
+        .grid-bg { background-image: linear-gradient(theme('colors.outline-variant') 1px, transparent 1px), linear-gradient(90deg, theme('colors.outline-variant') 1px, transparent 1px); background-size: 20px 20px; background-position: -1px -1px; opacity: 0.1; pointer-events: none; }
+        .scanline { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.25) 51%); background-size: 100% 4px; pointer-events: none; z-index: 10; opacity: 0.5; mix-blend-mode: overlay; }
+        .glow-text { text-shadow: 0 0 8px theme('colors.primary-fixed'); }
+        .blueprint-lines { border: 1px dashed theme('colors.outline-variant'); }
+    </style>
+</head>
+<body class="font-body-md text-body-md h-screen w-screen overflow-hidden flex bg-background selection:bg-secondary-container selection:text-on-secondary-container">
+<div class="fixed inset-0 grid-bg z-0"></div>
+<div class="scanline"></div>
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col bg-surface-container-lowest/90 backdrop-blur-2xl w-20 hover:w-64 transition-all duration-300 border-r border-outline-variant/20 group hidden md:flex">
+<div class="p-4 border-b border-outline-variant/20 mb-4 flex items-center gap-4 overflow-hidden">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex-shrink-0 flex items-center justify-center border border-primary-fixed-dim overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A highly detailed, ultra-realistic digital avatar of a cybernetic root user. The face is obscured by a sleek, glowing cyan visor against an obsidian black helmet. Soft, high-tech studio lighting illuminates the metallic textures and glowing circuitry. The overall mood is cold, authoritative, and distinctly cyberpunk." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEZihFx3r-gVbNdODJtiVVr6wzbHAopmWKxJ8NoAwVQnPQhmUb8fsQIzA9PmYDeiIoyNWPGTnwhVscA61t_S1KfZ0HPp-dPvcpszIc9YLDqDKfPIyD-I833XVn-QbsRYAyK-nA8jOC5Iw0h7m14Z48HN9mRJNg1Lj51xWzgUyV6m8C4nyoM41D7vzEl8nA7RUpwDVeDxuMGAoDCe7T7OFDNckK_0ND18F8sNDrvUX2VgnlGTTNOZu-NYh3ubp5fPQFcmOKjTEQdCAi"/>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+<div class="font-label-sm text-label-sm text-secondary-fixed">ROOT_USER</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</div>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto overflow-x-hidden flex flex-col gap-2 px-2">
+<a class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 rounded-DEFAULT" href="#">
+<span class="material-symbols-outlined flex-shrink-0" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">DASHBOARD</span>
+</a>
+<a class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 rounded-DEFAULT" href="#">
+<span class="material-symbols-outlined flex-shrink-0" style="font-variation-settings: 'FILL' 0;">folder_open</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">FILESYSTEM</span>
+</a>
+<a class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 rounded-DEFAULT" href="#">
+<span class="material-symbols-outlined flex-shrink-0" style="font-variation-settings: 'FILL' 0;">terminal</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">TERMINAL</span>
+</a>
+<a class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 rounded-DEFAULT" href="#">
+<span class="material-symbols-outlined flex-shrink-0" style="font-variation-settings: 'FILL' 0;">smart_toy</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">AI_AGENTS</span>
+</a>
+<!-- ACTIVE TAB -->
+<a class="flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed transition-all duration-150 rounded-r-DEFAULT" href="#">
+<span class="material-symbols-outlined flex-shrink-0" style="font-variation-settings: 'FILL' 1;">cloud_queue</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">INFRASTRUCTURE</span>
+</a>
+<a class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 rounded-DEFAULT" href="#">
+<span class="material-symbols-outlined flex-shrink-0" style="font-variation-settings: 'FILL' 0;">list_alt</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">LOGS</span>
+</a>
+</div>
+<div class="p-4 border-t border-outline-variant/20 mt-auto flex flex-col gap-2">
+<button class="w-full bg-primary-fixed text-on-primary-fixed hover:bg-secondary-fixed transition-colors duration-200 py-2 rounded-DEFAULT font-label-sm text-label-sm opacity-0 group-hover:opacity-100 overflow-hidden whitespace-nowrap flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[16px]">add</span> NEW_SESSION
+            </button>
+<div class="flex justify-between px-2 mt-2">
+<a class="text-on-surface-variant hover:text-error transition-colors duration-200" href="#" title="POWER">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">power_settings_new</span>
+</a>
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors duration-200" href="#" title="LOCK">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">lock</span>
+</a>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<div class="flex-1 flex flex-col h-full z-10 md:ml-20 transition-all duration-300">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center w-full px-4 h-10 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 top-0 sticky z-50">
+<div class="flex items-center gap-6">
+<div class="font-label-sm text-label-sm tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</div>
+<nav class="hidden md:flex gap-4">
+<a class="text-on-surface-variant font-label-sm text-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-sm text-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">TELEMETRY</a>
+<a class="text-on-surface-variant font-label-sm text-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">AGENTS</a>
+<a class="text-primary-fixed font-label-sm text-label-sm border-b border-primary-fixed pb-1 cursor-pointer active:opacity-70" href="#">NETWORK</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center bg-surface-dim border border-outline-variant rounded-DEFAULT px-2 py-1 focus-within:border-primary-fixed focus-within:shadow-[inset_0_0_2px_theme('colors.primary-fixed')]">
+<span class="material-symbols-outlined text-on-surface-variant text-[16px] mr-2">search</span>
+<input class="bg-transparent border-none text-code-sm text-white focus:ring-0 p-0 w-48 placeholder-on-surface-variant/50" placeholder="Search Kernel..." type="text"/>
+</div>
+<div class="flex gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed transition-colors text-[20px]" style="font-variation-settings: 'FILL' 0;">memory</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed transition-colors text-[20px]" style="font-variation-settings: 'FILL' 0;">terminal</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed transition-colors text-[20px]" style="font-variation-settings: 'FILL' 0;">settings</span>
+</div>
+</div>
+</header>
+<!-- Dashboard Canvas -->
+<main class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
+<div class="flex justify-between items-end mb-6">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-1">PERIPHERAL HUB</h1>
+<p class="font-code-sm text-code-sm text-primary-fixed-dim">SECTOR 7 // HARDWARE ACCELERATION CLUSTER</p>
+</div>
+<div class="flex gap-2">
+<div class="px-3 py-1 bg-surface-variant border border-outline-variant rounded-DEFAULT flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary-fixed animate-pulse"></div>
+<span class="font-code-sm text-code-sm text-on-surface">SYS_SYNC_OK</span>
+</div>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-12 gap-4 lg:gap-6">
+<!-- AI Keyboard Schematic -->
+<div class="glass-panel col-span-1 md:col-span-6 lg:col-span-8 flex flex-col h-full rounded-DEFAULT overflow-hidden group">
+<div class="h-6 bg-primary-fixed text-surface-container-lowest px-3 flex items-center justify-between font-label-sm text-label-sm">
+<span>DEV_01 // NEURAL_TYPER_V2</span>
+<span class="material-symbols-outlined text-[14px]">keyboard</span>
+</div>
+<div class="p-4 flex-1 flex flex-col md:flex-row gap-6 relative">
+<!-- Technical Drawing -->
+<div class="flex-1 border border-outline-variant/30 p-2 relative bg-surface-dim/50 rounded-DEFAULT blueprint-lines flex items-center justify-center min-h-[200px]">
+<div class="absolute inset-0 grid-bg opacity-20"></div>
+<img class="w-full h-full object-contain mix-blend-screen opacity-80 z-10" data-alt="A highly technical, blueprint-style schematic of an ergonomic, split mechanical keyboard. Rendered in glowing cyan wireframe lines against a deep obsidian background. Detailed annotations and connection nodes are visible. The style is strictly cyber-industrial, resembling a CAD rendering in a sci-fi interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYHvnDlO-kRiwbKJkjWksASJaceWrur1heY6cp4HpG5rhi7pIZl9cf21BclmtVK2dAaDSAPBJp4_-yd_eKGvpcIPs6f40Jei1_P7jDVJTOKPMz5CiSERIxtsqsRHn4lxAqtYsojwngGlory-EC7WRvR2RETNlzfymgCmOB-AD8a5367gwWsoODqCX5ckUQN9Hd0jneY-CG60lytifyNksVIYLSejBBGGP1uyw70ZfPtWvBrfx5Xa3Ec4nxtERkwReWM_78UrnNhIx8"/>
+<!-- Overlay nodes -->
+<div class="absolute top-1/4 left-1/4 w-3 h-3 border border-primary-fixed rounded-full flex items-center justify-center z-20">
+<div class="w-1 h-1 bg-primary-fixed rounded-full animate-ping"></div>
+</div>
+<div class="absolute bottom-1/3 right-1/4 w-3 h-3 border border-secondary-fixed rounded-full flex items-center justify-center z-20">
+<div class="w-1 h-1 bg-secondary-fixed rounded-full"></div>
+</div>
+</div>
+<!-- Telemetry -->
+<div class="w-full md:w-64 flex flex-col gap-4">
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant mb-1">CONNECTION STATUS</div>
+<div class="font-code-sm text-code-sm text-primary-fixed flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">wifi</span> QUANTUM_LINK_ACTIVE
+                                </div>
+</div>
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant mb-2">POLLING RATE</div>
+<div class="flex items-end gap-2">
+<span class="font-headline-md text-headline-md text-on-surface">8000</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant mb-1">Hz</span>
+</div>
+<div class="w-full h-1 bg-surface-variant mt-2 rounded-full overflow-hidden flex">
+<div class="h-full bg-primary-fixed w-[80%]"></div>
+</div>
+</div>
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant mb-2">AI PREDICTIVE BUFFER</div>
+<div class="flex justify-between font-code-sm text-code-sm mb-1">
+<span class="text-on-surface">Tokens</span>
+<span class="text-secondary-fixed">1024/2048</span>
+</div>
+<div class="flex gap-1 h-3">
+<div class="flex-1 bg-secondary-container/50 border border-secondary-container rounded-sm"></div>
+<div class="flex-1 bg-secondary-container/50 border border-secondary-container rounded-sm"></div>
+<div class="flex-1 bg-secondary-container/50 border border-secondary-container rounded-sm"></div>
+<div class="flex-1 bg-surface-variant border border-outline-variant rounded-sm"></div>
+<div class="flex-1 bg-surface-variant border border-outline-variant rounded-sm"></div>
+</div>
+</div>
+<button class="mt-auto border border-primary-fixed text-primary-fixed hover:bg-primary-fixed hover:text-surface-container-lowest py-2 px-4 rounded-DEFAULT font-label-sm text-label-sm transition-colors duration-200">
+                                CONFIGURE PROFILE
+                            </button>
+</div>
+</div>
+</div>
+<!-- Neural Link Mouse -->
+<div class="glass-panel col-span-1 md:col-span-3 lg:col-span-4 flex flex-col h-full rounded-DEFAULT overflow-hidden">
+<div class="h-6 bg-surface-variant border-b border-outline-variant text-on-surface px-3 flex items-center justify-between font-label-sm text-label-sm">
+<span>DEV_02 // NEURO_TRACKER</span>
+<span class="material-symbols-outlined text-[14px]">mouse</span>
+</div>
+<div class="p-4 flex flex-col h-full">
+<div class="flex justify-center mb-4 h-32 relative blueprint-lines bg-surface-dim/30 rounded-DEFAULT">
+<img class="w-full h-full object-contain p-2 opacity-70" data-alt="A minimalist, top-down schematic of an ergonomic computer mouse with cybernetic neural-link nodes. Rendered in monochromatic white and grey wireframes against a dark background. Subtle glowing accents indicate active sensor points. The design is sleek, functional, and hyper-modern." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBU79SiM3moSntdStaVONF9g7FdDSfR76QTHf42eD4J_q6ISMk8nnr6ntUgUBcdZlF4HwRz7QRdl5G0rndb6dxBYLqvjDwSYp1iS0ANZZWrcu2vBtrIe-tZBWAkDvdxDNhHwmw6ZMtyYGrCZNhMA2sv4YUienQSgES0UowfvZ8a6cHJ8wIz-_nHrPww4aXAvMof7WqIVZEgR9pOwq_g6I1Oxp_zP2OlLaw_Q668t077rbOd3xl-oNXWrlPnfN-nXQ-pfqipAtcUmCYy"/>
+</div>
+<div class="grid grid-cols-2 gap-4 mt-auto">
+<div class="bg-surface-dim p-2 border border-outline-variant/50 rounded-DEFAULT">
+<div class="font-label-sm text-label-sm text-on-surface-variant text-[10px] mb-1">DPI_MAPPING</div>
+<div class="font-code-sm text-code-sm text-on-surface">12,400</div>
+</div>
+<div class="bg-surface-dim p-2 border border-outline-variant/50 rounded-DEFAULT">
+<div class="font-label-sm text-label-sm text-on-surface-variant text-[10px] mb-1">LIFT_OFF</div>
+<div class="font-code-sm text-code-sm text-primary-fixed">0.8mm</div>
+</div>
+</div>
+<div class="mt-4">
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="text-on-surface-variant">BATTERY_CELL</span>
+<span class="text-on-surface">42%</span>
+</div>
+<div class="w-full h-2 bg-surface-variant rounded-sm overflow-hidden flex border border-outline-variant/50">
+<div class="h-full bg-secondary-fixed w-[42%]"></div>
+</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant mt-1 text-[11px] text-right">EST. 14H REMAINING</div>
+</div>
+</div>
+</div>
+<!-- eGPU Cluster Log -->
+<div class="glass-panel col-span-1 md:col-span-3 lg:col-span-4 flex flex-col h-[300px] rounded-DEFAULT overflow-hidden">
+<div class="h-6 bg-surface-variant border-b border-outline-variant text-on-surface px-3 flex items-center justify-between font-label-sm text-label-sm">
+<span>NODE_CLUSTER // THUNDERBOLT_0</span>
+<span class="material-symbols-outlined text-[14px]">developer_board</span>
+</div>
+<div class="p-4 bg-surface-container-lowest flex-1 font-code-sm text-code-sm overflow-y-auto relative">
+<div class="text-primary-fixed-dim opacity-70 mb-2">Initialize GPU Handshake... OK</div>
+<div class="text-on-surface mb-1">[00:12:44] PCI-E Bandwidth Check: 32Gbps</div>
+<div class="text-on-surface mb-1">[00:12:45] Allocating VRAM segments...</div>
+<div class="text-secondary-fixed mb-1">[00:12:45] VRAM Block 0x0A: ALLOCATED</div>
+<div class="text-secondary-fixed mb-1">[00:12:45] VRAM Block 0x0B: ALLOCATED</div>
+<div class="text-error mb-1">[00:12:48] WARN: Thermal threshold approaching limit.</div>
+<div class="text-on-surface mb-1">[00:12:50] Engaging secondary cooling loop.</div>
+<div class="text-primary-fixed mt-4 flex items-center gap-2">
+<span>&gt;</span>
+<span class="w-2 h-4 bg-primary-fixed animate-pulse block"></span>
+</div>
+</div>
+</div>
+<!-- System Topology -->
+<div class="glass-panel col-span-1 md:col-span-6 lg:col-span-8 flex flex-col h-[300px] rounded-DEFAULT overflow-hidden">
+<div class="h-6 bg-surface-variant border-b border-outline-variant text-on-surface px-3 flex items-center justify-between font-label-sm text-label-sm">
+<span>SIGNAL_ROUTING // TOPOLOGY</span>
+<span class="material-symbols-outlined text-[14px]">account_tree</span>
+</div>
+<div class="p-4 flex-1 relative flex items-center justify-center bg-surface-dim/20">
+<div class="absolute inset-0 grid-bg"></div>
+<!-- Abstract Topology Graphic using utility classes -->
+<div class="relative w-full max-w-lg h-full flex items-center justify-between z-10 px-8">
+<!-- Host Node -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-16 h-16 border-2 border-primary-fixed rounded-DEFAULT flex items-center justify-center bg-surface-container-lowest shadow-[0_0_15px_rgba(0,240,255,0.2)]">
+<span class="material-symbols-outlined text-primary-fixed text-[32px]">computer</span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface">HOST_SYS</span>
+</div>
+<!-- Lines -->
+<div class="flex-1 h-[2px] bg-outline-variant relative mx-4">
+<div class="absolute top-0 left-0 h-full w-1/3 bg-primary-fixed animate-[pulse_2s_ease-in-out_infinite]"></div>
+<div class="absolute top-0 right-0 h-full w-1/3 bg-secondary-fixed animate-[pulse_2s_ease-in-out_infinite_0.5s]"></div>
+</div>
+<!-- Peripherals Hub -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-4">
+<div class="w-8 h-[2px] bg-primary-fixed"></div>
+<div class="px-3 py-2 border border-outline-variant bg-surface-container-low rounded-DEFAULT font-code-sm text-code-sm text-on-surface min-w-[120px] text-center">
+                                        DEV_01
+                                    </div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-8 h-[2px] bg-secondary-fixed"></div>
+<div class="px-3 py-2 border border-outline-variant bg-surface-container-low rounded-DEFAULT font-code-sm text-code-sm text-on-surface min-w-[120px] text-center">
+                                        DEV_02
+                                    </div>
+</div>
+<div class="flex items-center gap-4 opacity-50">
+<div class="w-8 h-[2px] border-t border-dashed border-outline-variant"></div>
+<div class="px-3 py-2 border border-dashed border-outline-variant bg-transparent rounded-DEFAULT font-code-sm text-code-sm text-on-surface-variant min-w-[120px] text-center">
+                                        SLOT_EMPTY
+                                    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

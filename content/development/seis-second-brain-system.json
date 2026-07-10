@@ -1,0 +1,262 @@
+{
+  "id": "seis-second-brain-system",
+  "title": "SEIS Second Brain",
+  "status": "local-demo",
+  "qualityGate": "npm run check:seis-second-brain",
+  "desktopAppId": "second-brain",
+  "routeId": "seis-second-brain-app",
+  "vaultRoot": "/home/seis/SecondBrain",
+  "snapshotPath": "/home/seis/SecondBrain/seis-second-brain-vault-snapshot.md",
+  "githubReadinessPath": "/home/seis/SecondBrain/github-readiness-review.md",
+  "trainingPackPath": "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md",
+  "releaseReviewPacketPath": "reports/seis-public-demo/pr54-review-packet-latest.md",
+  "obsidianSafeImportDryRunPath": "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json",
+  "obsidianSafeImportDryRunMarkdownPath": "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md",
+  "readOnlyModelRouterDecisionPath": "reports/seis-public-demo/read-only-model-router-decision-latest.json",
+  "readOnlyModelRouterDecisionMarkdownPath": "reports/seis-public-demo/read-only-model-router-decision-latest.md",
+  "accessibilityFocusReportPath": "reports/seis-public-demo/second-brain-accessibility-focus-latest.json",
+  "accessibilityFocusReportMarkdownPath": "reports/seis-public-demo/second-brain-accessibility-focus-latest.md",
+  "agentRegistryReportPath": "reports/seis-public-demo/second-brain-agent-registry-latest.json",
+  "agentRegistryReportMarkdownPath": "reports/seis-public-demo/second-brain-agent-registry-latest.md",
+  "languageModelTrainingCurriculum": {
+    "status": "planned-training-contract",
+    "contractPath": "content/development/seis-language-model-training-curriculum.json",
+    "reportPath": "reports/seis-model-scaling/seis-language-model-training-curriculum.md",
+    "boundary": "Planning-only curriculum. No model install, checkpoint download, foundation pretraining, fine-tuning, benchmark execution, provider call, SSH, deployment, or foundation-model ownership claim is authorized."
+  },
+  "obsidianBridge": {
+    "status": "planned",
+    "currentMode": "browser-local Markdown vault only",
+    "allowedToday": [
+      "render repo-owned seed notes",
+      "export Markdown snapshots into browser-local VFS",
+      "generate repo-owned dry-run manifest artifacts under reports/seis-public-demo",
+      "show graph links and backlinks from static records",
+      "generate provider-neutral read-only router decision artifacts under reports/seis-public-demo",
+      "generate accessibility/focus QA artifacts under reports/seis-public-demo",
+      "generate Second Brain agent registry artifacts under reports/seis-public-demo",
+      "record human-review-required GitHub readiness gates"
+    ],
+    "forbiddenToday": [
+      "import private Obsidian vaults",
+      "install Obsidian plugins",
+      "read host filesystem vaults",
+      "push or merge GitHub changes",
+      "execute SSH or deployment commands",
+      "store provider secrets in browser state"
+    ]
+  },
+  "securityBoundary": {
+    "storesSecrets": false,
+    "providerCalls": false,
+    "sshExecution": false,
+    "deployment": false,
+    "githubMutation": false,
+    "requiresHumanReviewBeforePublicUse": true
+  },
+  "installedAiProfiles": [
+    "codex-operator",
+    "seis-local-demo",
+    "claude-review-profile",
+    "qwen-review-profile",
+    "gemini-validation-profile",
+    "ollama-local-profile"
+  ],
+  "managedSubAgentLanes": [
+    "SEIS Hub",
+    "SEIS Cloud",
+    "SEIS-Code",
+    "SEIS-Design",
+    "SEIS-DATA",
+    "SEIS-Security"
+  ],
+  "vaultNotes": [
+    {
+      "id": "seis-os-map",
+      "title": "SEIS OS Map",
+      "folder": "01-system",
+      "path": "/home/seis/SecondBrain/01-system/seis-os-map.md",
+      "status": "real-local-demo",
+      "summary": "Desktop OS, Search, Code, Design, Cloud, Store, Music, Files, Terminal, Agents, Plugins, Website, and Command Center appear as connected SEIS surfaces.",
+      "tags": ["#seis", "#desktop-os", "#system-map"],
+      "links": ["ai-core-router", "sub-agent-council", "github-readiness"]
+    },
+    {
+      "id": "ai-core-router",
+      "title": "AI Core Router",
+      "folder": "02-ai",
+      "path": "/home/seis/SecondBrain/02-ai/ai-core-router.md",
+      "status": "local-demo",
+      "summary": "Installed AI profiles, provider-neutral routing concepts, and Local Demo boundaries become queryable context without requiring provider keys.",
+      "tags": ["#ai-core", "#installed-ai", "#local-demo"],
+      "links": ["sub-agent-council", "security-review"]
+    },
+    {
+      "id": "sub-agent-council",
+      "title": "Sub-Agent Council",
+      "folder": "03-agents",
+      "path": "/home/seis/SecondBrain/03-agents/sub-agent-council.md",
+      "status": "status-plan-only",
+      "summary": "Architect, Code, Design, Search, Security, Documentation, and automation lanes can review notes, but cannot expand permissions or mutate external systems.",
+      "tags": ["#agents", "#subagents", "#approval-gates"],
+      "links": ["github-readiness", "security-review"]
+    },
+    {
+      "id": "obsidian-bridge",
+      "title": "Obsidian Bridge",
+      "folder": "04-vault",
+      "path": "/home/seis/SecondBrain/04-vault/obsidian-bridge.md",
+      "status": "planned",
+      "summary": "Future Obsidian compatibility should use explicit user-selected vault import, provenance checks, and no-secret filtering before any sync path exists.",
+      "tags": ["#obsidian", "#markdown", "#planned"],
+      "links": ["seis-os-map", "security-review"]
+    },
+    {
+      "id": "github-readiness",
+      "title": "GitHub Readiness",
+      "folder": "05-publish",
+      "path": "/home/seis/SecondBrain/05-publish/github-readiness.md",
+      "status": "human-review-required",
+      "summary": "Public use requires provenance review, no-secret scan, docs alignment, validation evidence, accessibility review, and explicit approval before push, merge, or Pages release.",
+      "tags": ["#github", "#public-readiness", "#human-review"],
+      "links": ["security-review", "obsidian-bridge"]
+    },
+    {
+      "id": "security-review",
+      "title": "Security Review",
+      "folder": "06-security",
+      "path": "/home/seis/SecondBrain/06-security/security-review.md",
+      "status": "active-guardrail",
+      "summary": "The Second Brain never stores API keys, private keys, env files, cookies, service accounts, SSH secrets, or private vault contents in repo-owned records.",
+      "tags": ["#security", "#no-secrets", "#review"],
+      "links": ["seis-os-map", "github-readiness"]
+    }
+  ],
+  "agentLanes": [
+    {
+      "agent": "Architect Agent",
+      "permission": "read and propose only",
+      "duty": "Keep the vault aligned with SEIS OS modules and long-term architecture."
+    },
+    {
+      "agent": "Code Agent",
+      "permission": "browser-local artifacts only",
+      "duty": "Connect notes to runnable demo surfaces and validators without external mutation."
+    },
+    {
+      "agent": "Design Agent",
+      "permission": "review and annotate only",
+      "duty": "Map visual, interaction, and accessibility evidence to the knowledge graph."
+    },
+    {
+      "agent": "Search Agent",
+      "permission": "local index only",
+      "duty": "Make SEIS Search return vault notes, files, apps, routes, and plugin records."
+    },
+    {
+      "agent": "Security Agent",
+      "permission": "blocking review gate",
+      "duty": "Block secrets, private vault imports, SSH execution, provider key storage, and unsafe GitHub publication."
+    },
+    {
+      "agent": "Documentation Agent",
+      "permission": "docs proposal only",
+      "duty": "Keep README, status, index, backlog, and PR queue aligned with the Second Brain contract."
+    }
+  ],
+  "autonomousAgentRoster": [
+    {
+      "agent": "Architect Agent",
+      "status": "status-plan-only",
+      "duty": "Architecture, module boundaries, and rollback-aware implementation plans."
+    },
+    {
+      "agent": "Code Agent",
+      "status": "status-plan-only",
+      "duty": "Scoped implementation notes, validators, and code review evidence."
+    },
+    {
+      "agent": "Design Agent",
+      "status": "status-plan-only",
+      "duty": "Visual system, product feel, design tokens, and interaction evidence."
+    },
+    {
+      "agent": "UI/UX Agent",
+      "status": "status-plan-only",
+      "duty": "Usability, mobile ergonomics, focus order, and accessibility notes."
+    },
+    {
+      "agent": "Research Agent",
+      "status": "status-plan-only",
+      "duty": "Source provenance, prior-art notes, and clean-room research summaries."
+    },
+    {
+      "agent": "Search Agent",
+      "status": "status-plan-only",
+      "duty": "Local vault, docs, route, file, and plugin indexing strategy."
+    },
+    {
+      "agent": "Security Agent",
+      "status": "blocking-review-gate",
+      "duty": "Secret hygiene, private vault boundaries, and approval requirements."
+    },
+    {
+      "agent": "DevOps Agent",
+      "status": "status-plan-only",
+      "duty": "CI, release, deployment, rollback, and no-live-action runbooks."
+    },
+    {
+      "agent": "Documentation Agent",
+      "status": "status-plan-only",
+      "duty": "README, status, index, backlog, and PR queue alignment."
+    },
+    {
+      "agent": "QA Agent",
+      "status": "status-plan-only",
+      "duty": "Validator, browser-smoke, regression, and acceptance evidence."
+    },
+    {
+      "agent": "Cloud Agent",
+      "status": "status-plan-only",
+      "duty": "Cloud, SSH, storage, sync, and provider readiness boundaries."
+    },
+    {
+      "agent": "Automation Agent",
+      "status": "status-plan-only",
+      "duty": "Safe recurring workflows, ledgers, and human-approved automation gates."
+    }
+  ],
+  "pipeline": [
+    {
+      "step": "Capture",
+      "status": "local-demo",
+      "detail": "Create browser-local Markdown capture notes under /home/seis/SecondBrain/00-inbox."
+    },
+    {
+      "step": "Link",
+      "status": "local-demo",
+      "detail": "Generate graph-links.json from repo-owned seed notes and backlinks."
+    },
+    {
+      "step": "Review",
+      "status": "human-review-required",
+      "detail": "Run no-secret, provenance, mock/real/planned, accessibility, and docs alignment review."
+    },
+    {
+      "step": "Training Pack",
+      "status": "local-demo",
+      "detail": "Generate deterministic Second Brain read-only onboarding pack covering Obsidian, accessibility, model-router, and PR #54 release checklist contracts."
+    },
+    {
+      "step": "Publish",
+      "status": "blocked-until-approved",
+      "detail": "GitHub push, merge, Pages publication, or public launch require explicit human approval."
+    }
+  ],
+  "githubGates": [
+    "no secrets or private vault content",
+    "mock, planned, disabled, and real labels are explicit",
+    "docs, app surface, content contract, and validator stay synchronized",
+    "human approval before push, merge, release, Pages publication, or public community launch"
+  ]
+}

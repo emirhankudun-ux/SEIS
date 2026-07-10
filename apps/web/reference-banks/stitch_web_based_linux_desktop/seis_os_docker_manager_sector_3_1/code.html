@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS - DOCKER_MANAGER</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Space+Mono:wght@400;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..900&family=Space+Mono:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .terminal-cursor { animation: blink 1s infinite; }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #3b494b; border-radius: 2px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #00dbe9; }
+
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            background: rgba(12, 15, 15, 0.85);
+            border: 1px solid rgba(59, 73, 75, 0.3);
+        }
+
+        .active-glow {
+            box-shadow: 0 0 8px rgba(0, 219, 233, 0.3);
+        }
+
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 240, 255, 0.1);
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            animation: scan 8s linear infinite;
+        }
+
+        @keyframes scan {
+            from { top: 0; }
+            to { top: 100%; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#690005",
+                        "inverse-primary": "#006970",
+                        "primary-container": "#00f0ff",
+                        "inverse-on-surface": "#2f3131",
+                        "primary-fixed-dim": "#00dbe9",
+                        "on-surface-variant": "#b9cacb",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "surface-container-highest": "#333535",
+                        "surface-container-high": "#282a2b",
+                        "secondary-container": "#ce5dff",
+                        "surface-bright": "#37393a",
+                        "on-primary-container": "#006970",
+                        "surface-tint": "#00dbe9",
+                        "error-container": "#93000a",
+                        "surface-dim": "#121414",
+                        "surface-container-low": "#1a1c1c",
+                        "surface-container-lowest": "#0c0f0f",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "tertiary": "#f9f5f5",
+                        "on-primary-fixed-variant": "#004f54",
+                        "primary-fixed": "#7df4ff",
+                        "on-tertiary-container": "#605e5e",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "tertiary-container": "#dcd9d8",
+                        "secondary-fixed": "#f8d8ff",
+                        "on-tertiary": "#313030",
+                        "on-secondary": "#520071",
+                        "surface-container": "#1e2020",
+                        "primary": "#dbfcff",
+                        "background": "#121414",
+                        "on-primary-fixed": "#002022",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "on-secondary-fixed": "#320047",
+                        "surface": "#121414",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "on-secondary-container": "#480064",
+                        "on-background": "#e2e2e2",
+                        "tertiary-fixed": "#e5e2e1",
+                        "outline-variant": "#3b494b",
+                        "inverse-surface": "#e2e2e2",
+                        "on-error-container": "#ffdad6",
+                        "on-primary": "#00363a",
+                        "surface-variant": "#333535",
+                        "secondary": "#ebb2ff",
+                        "outline": "#849495",
+                        "on-surface": "#e2e2e2",
+                        "error": "#ffb4ab"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gap-sm": "8px",
+                        "stroke-thick": "2px",
+                        "gap-md": "16px",
+                        "gap-lg": "24px",
+                        "margin-page": "32px",
+                        "gap-xs": "4px",
+                        "stroke-thin": "1px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Space Mono"],
+                        "headline-lg": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"],
+                        "code-sm": ["JetBrains Mono"],
+                        "body-md": ["JetBrains Mono"],
+                        "label-caps": ["Space Mono"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-hidden h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center w-full px-8 h-10 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 fixed top-0 z-50">
+<div class="flex items-center gap-6">
+<span class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200" href="#">TELEMETRY</a>
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 font-label-caps" href="#">AGENTS</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200" href="#">NETWORK</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="material-symbols-outlined text-primary-fixed cursor-pointer active:opacity-70 text-[18px]">memory</div>
+<div class="material-symbols-outlined text-primary-fixed cursor-pointer active:opacity-70 text-[18px]">terminal</div>
+<div class="material-symbols-outlined text-primary-fixed cursor-pointer active:opacity-70 text-[18px]">settings</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 w-20 hover:w-64 transition-all duration-300 group">
+<div class="p-4 mb-4 border-b border-outline-variant/10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-secondary-container/20 border border-secondary-fixed/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary-fixed text-[20px]">person</span>
+</div>
+<div class="hidden group-hover:block overflow-hidden whitespace-nowrap">
+<div class="font-label-caps text-secondary-fixed">ROOT_USER</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</div>
+</div>
+</div>
+</div>
+<nav class="flex-1">
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all">
+<span class="material-symbols-outlined mr-4">dashboard</span>
+<span class="hidden group-hover:inline font-label-caps">DASHBOARD</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed">
+<span class="material-symbols-outlined mr-4">folder_open</span>
+<span class="hidden group-hover:inline font-label-caps">FILESYSTEM</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all">
+<span class="material-symbols-outlined mr-4">terminal</span>
+<span class="hidden group-hover:inline font-label-caps">TERMINAL</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all">
+<span class="material-symbols-outlined mr-4">smart_toy</span>
+<span class="hidden group-hover:inline font-label-caps">AI_AGENTS</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all">
+<span class="material-symbols-outlined mr-4">cloud_queue</span>
+<span class="hidden group-hover:inline font-label-caps">INFRASTRUCTURE</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all">
+<span class="material-symbols-outlined mr-4">list_alt</span>
+<span class="hidden group-hover:inline font-label-caps">LOGS</span>
+</div>
+</nav>
+<div class="mt-auto border-t border-outline-variant/10">
+<button class="w-full p-4 flex items-center justify-center text-primary-fixed hover:bg-primary-container/10">
+<span class="material-symbols-outlined">add</span>
+<span class="hidden group-hover:inline ml-2 font-label-caps">NEW_SESSION</span>
+</button>
+<div class="flex border-t border-outline-variant/10">
+<div class="flex-1 p-4 flex items-center justify-center hover:bg-error-container/10 text-on-surface-variant hover:text-error transition-all">
+<span class="material-symbols-outlined">power_settings_new</span>
+</div>
+<div class="flex-1 p-4 flex items-center justify-center hover:bg-surface-variant/20 text-on-surface-variant hover:text-primary-fixed transition-all">
+<span class="material-symbols-outlined">lock</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-20 flex-1 mt-10 overflow-hidden relative flex flex-col p-4 gap-4">
+<div class="scanline"></div>
+<!-- Header Section -->
+<div class="flex justify-between items-end border-b border-outline-variant/30 pb-4">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tighter uppercase">Sector_03: Docker_Engine</h1>
+<p class="font-code-sm text-code-sm text-on-surface-variant uppercase">Runtime Status: <span class="text-primary-fixed">OPTIMAL</span> // Active_Nodes: 14 // Load: 2.14s</p>
+</div>
+<div class="flex gap-4">
+<div class="px-4 py-1 border border-outline-variant bg-surface-container-low font-code-sm text-on-surface flex items-center gap-2">
+<span class="w-2 h-2 bg-primary-fixed-dim rounded-full animate-pulse"></span>
+                    KERNEL_DAEMON: CONNECTED
+                </div>
+<button class="bg-primary-container text-on-primary-container font-label-caps px-4 py-1 flex items-center gap-2 hover:bg-secondary-container transition-all active:scale-95">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+                    PRUNE_ORPHANS
+                </button>
+</div>
+</div>
+<div class="flex-1 grid grid-cols-12 gap-4 min-h-0">
+<!-- Left Column: Active Containers Grid -->
+<div class="col-span-8 flex flex-col gap-4 overflow-hidden">
+<div class="flex items-center justify-between">
+<h2 class="font-label-caps text-on-surface-variant">ACTIVE_CONTAINERS (8)</h2>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary-fixed transition-all">grid_view</span>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary-fixed transition-all">view_list</span>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar grid grid-cols-2 gap-4 pr-2">
+<!-- Container Tile 1 -->
+<div class="glass-panel p-4 flex flex-col gap-3 relative overflow-hidden active-glow border-primary-fixed/40">
+<div class="absolute top-0 right-0 p-2 opacity-30">
+<span class="material-symbols-outlined text-[48px]">deployed_code</span>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<span class="bg-primary-fixed/20 text-primary-fixed-dim font-code-sm px-2 py-0.5 border border-primary-fixed/30">RUNNING</span>
+<h3 class="font-headline-md text-headline-md text-primary mt-2">v-proxy-edge</h3>
+<p class="font-code-sm text-on-surface-variant">IMAGE: nginx:alpine-v2</p>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-code-sm text-on-surface-variant">ID: 8a7c21</span>
+<span class="font-code-sm text-on-surface-variant">UP: 48h 12m</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mt-2">
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-[10px] font-label-caps text-on-surface-variant">
+<span>CPU_LOAD</span>
+<span>12.4%</span>
+</div>
+<div class="h-8 flex items-end gap-[1px]">
+<div class="bg-primary-fixed-dim w-full h-[20%] opacity-50"></div>
+<div class="bg-primary-fixed-dim w-full h-[40%] opacity-60"></div>
+<div class="bg-primary-fixed-dim w-full h-[30%] opacity-70"></div>
+<div class="bg-primary-fixed-dim w-full h-[60%] opacity-80"></div>
+<div class="bg-primary-fixed-dim w-full h-[100%]"></div>
+<div class="bg-primary-fixed-dim w-full h-[80%] opacity-90"></div>
+<div class="bg-primary-fixed-dim w-full h-[70%] opacity-70"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-[10px] font-label-caps text-on-surface-variant">
+<span>MEM_USAGE</span>
+<span>1.2 GB</span>
+</div>
+<div class="h-8 flex items-end gap-[1px]">
+<div class="bg-secondary-container w-full h-[50%] opacity-50"></div>
+<div class="bg-secondary-container w-full h-[52%] opacity-60"></div>
+<div class="bg-secondary-container w-full h-[55%] opacity-70"></div>
+<div class="bg-secondary-container w-full h-[53%] opacity-80"></div>
+<div class="bg-secondary-container w-full h-[58%]"></div>
+<div class="bg-secondary-container w-full h-[54%] opacity-90"></div>
+<div class="bg-secondary-container w-full h-[55%] opacity-70"></div>
+</div>
+</div>
+</div>
+<div class="flex justify-end gap-2 mt-2">
+<button class="material-symbols-outlined text-[20px] text-on-surface-variant hover:text-error transition-all">stop_circle</button>
+<button class="material-symbols-outlined text-[20px] text-on-surface-variant hover:text-primary-fixed transition-all">restart_alt</button>
+<button class="material-symbols-outlined text-[20px] text-on-surface-variant hover:text-primary-fixed transition-all">open_in_new</button>
+</div>
+</div>
+<!-- Container Tile 2 -->
+<div class="glass-panel p-4 flex flex-col gap-3">
+<div class="flex justify-between items-start">
+<div>
+<span class="bg-primary-fixed/20 text-primary-fixed-dim font-code-sm px-2 py-0.5 border border-primary-fixed/30">RUNNING</span>
+<h3 class="font-headline-md text-headline-md text-primary mt-2">db-main-shard</h3>
+<p class="font-code-sm text-on-surface-variant">IMAGE: postgres:15-opt</p>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-code-sm text-on-surface-variant">ID: 2b9e11</span>
+<span class="font-code-sm text-on-surface-variant">UP: 12d 04h</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mt-2">
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-[10px] font-label-caps text-on-surface-variant">
+<span>CPU_LOAD</span>
+<span>4.1%</span>
+</div>
+<div class="h-8 flex items-end gap-[1px]">
+<div class="bg-primary-fixed-dim w-full h-[10%] opacity-50"></div>
+<div class="bg-primary-fixed-dim w-full h-[15%] opacity-60"></div>
+<div class="bg-primary-fixed-dim w-full h-[12%] opacity-70"></div>
+<div class="bg-primary-fixed-dim w-full h-[18%] opacity-80"></div>
+<div class="bg-primary-fixed-dim w-full h-[25%]"></div>
+<div class="bg-primary-fixed-dim w-full h-[20%] opacity-90"></div>
+<div class="bg-primary-fixed-dim w-full h-[15%] opacity-70"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-[10px] font-label-caps text-on-surface-variant">
+<span>MEM_USAGE</span>
+<span>4.8 GB</span>
+</div>
+<div class="h-8 flex items-end gap-[1px]">
+<div class="bg-secondary-container w-full h-[80%] opacity-50"></div>
+<div class="bg-secondary-container w-full h-[82%] opacity-60"></div>
+<div class="bg-secondary-container w-full h-[85%] opacity-70"></div>
+<div class="bg-secondary-container w-full h-[83%] opacity-80"></div>
+<div class="bg-secondary-container w-full h-[88%]"></div>
+<div class="bg-secondary-container w-full h-[84%] opacity-90"></div>
+<div class="bg-secondary-container w-full h-[85%] opacity-70"></div>
+</div>
+</div>
+</div>
+<div class="flex justify-end gap-2 mt-2">
+<button class="material-symbols-outlined text-[20px] text-on-surface-variant hover:text-error transition-all">stop_circle</button>
+<button class="material-symbols-outlined text-[20px] text-on-surface-variant hover:text-primary-fixed transition-all">restart_alt</button>
+<button class="material-symbols-outlined text-[20px] text-on-surface-variant hover:text-primary-fixed transition-all">open_in_new</button>
+</div>
+</div>
+<!-- Container Tile 3 -->
+<div class="glass-panel p-4 flex flex-col gap-3">
+<div class="flex justify-between items-start">
+<div>
+<span class="bg-surface-variant/40 text-on-surface-variant font-code-sm px-2 py-0.5 border border-outline-variant/30">STOPPED</span>
+<h3 class="font-headline-md text-headline-md text-on-surface-variant mt-2">api-legacy-worker</h3>
+<p class="font-code-sm text-on-surface-variant">IMAGE: python:3.8-slim</p>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-code-sm text-on-surface-variant">ID: 1f0a21</span>
+<span class="font-code-sm text-on-surface-variant">OFF: 2h 44m</span>
+</div>
+</div>
+<div class="flex items-center justify-center h-8 text-[10px] font-label-caps text-on-surface-variant bg-surface-container-low/50 border border-outline-variant/10">
+                            RESOURCE_RELEASED_TO_KERNEL
+                        </div>
+<div class="flex justify-end gap-2 mt-2">
+<button class="material-symbols-outlined text-[20px] text-primary-fixed-dim hover:text-primary transition-all">play_circle</button>
+<button class="material-symbols-outlined text-[20px] text-on-surface-variant hover:text-error transition-all">delete_forever</button>
+</div>
+</div>
+<!-- Container Tile 4 -->
+<div class="glass-panel p-4 flex flex-col gap-3">
+<div class="flex justify-between items-start">
+<div>
+<span class="bg-error-container/20 text-error font-code-sm px-2 py-0.5 border border-error/30">ERROR [502]</span>
+<h3 class="font-headline-md text-headline-md text-error mt-2">auth-provider</h3>
+<p class="font-code-sm text-on-surface-variant">IMAGE: node:18-bullseye</p>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-code-sm text-on-surface-variant">ID: ff021e</span>
+<span class="font-code-sm text-on-surface-variant">EXITED: 12s ago</span>
+</div>
+</div>
+<div class="flex items-center gap-2 p-2 bg-error-container/10 border border-error/20 text-error text-[11px] font-code-sm">
+<span class="material-symbols-outlined text-[14px]">warning</span>
+                            SEGMENTATION FAULT AT 0x004F
+                        </div>
+<div class="flex justify-end gap-2 mt-2">
+<button class="material-symbols-outlined text-[20px] text-on-surface-variant hover:text-primary-fixed transition-all">restart_alt</button>
+<button class="material-symbols-outlined text-[20px] text-on-surface-variant hover:text-primary-fixed transition-all">bug_report</button>
+</div>
+</div>
+</div>
+<!-- Bottom Terminal Pane -->
+<div class="h-48 glass-panel border-t-2 border-primary-fixed flex flex-col overflow-hidden">
+<div class="bg-primary-fixed flex justify-between items-center px-4 h-6">
+<span class="text-[11px] font-label-caps text-background font-bold tracking-widest">LIVE_LOG_STREAM: [auth-provider]</span>
+<div class="flex gap-4">
+<span class="text-[10px] font-code-sm text-background">L_POS: 1044</span>
+<span class="material-symbols-outlined text-background text-[16px] cursor-pointer">close</span>
+</div>
+</div>
+<div class="flex-1 bg-surface-container-lowest p-3 overflow-y-auto custom-scrollbar font-code-sm text-on-surface-variant selection:bg-primary-fixed selection:text-background">
+<div class="flex gap-3 mb-1">
+<span class="text-on-surface-variant/40">14:22:01</span>
+<span class="text-primary-fixed-dim">[INFO]</span>
+<span>Initialization handshake for node_01 started...</span>
+</div>
+<div class="flex gap-3 mb-1">
+<span class="text-on-surface-variant/40">14:22:03</span>
+<span class="text-primary-fixed-dim">[INFO]</span>
+<span>Layer caching detected: valid for [sha256:7f01...]</span>
+</div>
+<div class="flex gap-3 mb-1">
+<span class="text-on-surface-variant/40">14:22:05</span>
+<span class="text-secondary-fixed">[WARN]</span>
+<span>Memory threshold approaching 85% on heap segment A</span>
+</div>
+<div class="flex gap-3 mb-1">
+<span class="text-on-surface-variant/40">14:22:09</span>
+<span class="text-error">[CRIT]</span>
+<span>Segmentation fault in worker process 144. Dumping core...</span>
+</div>
+<div class="flex gap-3">
+<span class="text-on-surface-variant/40">14:22:10</span>
+<span class="text-primary-fixed-dim">></span>
+<span>_ <span class="terminal-cursor bg-primary-fixed-dim inline-block w-2 h-4 align-middle"></span></span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Registry & Allocator -->
+<div class="col-span-4 flex flex-col gap-4 overflow-hidden">
+<!-- Image Registry Browser -->
+<div class="flex flex-col gap-3 overflow-hidden">
+<h2 class="font-label-caps text-on-surface-variant">IMAGE_REGISTRY_V1</h2>
+<div class="glass-panel overflow-hidden flex flex-col flex-1 max-h-80">
+<div class="p-3 border-b border-outline-variant/20 bg-surface-container-low flex gap-2">
+<input class="flex-1 bg-surface-container-lowest border border-outline-variant/30 text-code-sm font-code-sm px-2 py-1 focus:border-primary-fixed outline-none" placeholder="SEARCH_IMAGES..." type="text"/>
+<button class="material-symbols-outlined text-primary-fixed border border-primary-fixed/30 px-2">search</button>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<div class="p-3 border-b border-outline-variant/10 hover:bg-surface-variant/10 cursor-pointer group flex justify-between items-center">
+<div>
+<div class="font-code-sm text-on-surface group-hover:text-primary-fixed">nginx/stable</div>
+<div class="text-[10px] text-on-surface-variant">v1.23.4 • 42.1 MB • 2d ago</div>
+</div>
+<span class="material-symbols-outlined text-[18px] text-outline">download</span>
+</div>
+<div class="p-3 border-b border-outline-variant/10 hover:bg-surface-variant/10 cursor-pointer group flex justify-between items-center">
+<div>
+<div class="font-code-sm text-on-surface group-hover:text-primary-fixed">redis/alpine-6</div>
+<div class="text-[10px] text-on-surface-variant">v6.2.7 • 12.8 MB • 5d ago</div>
+</div>
+<span class="material-symbols-outlined text-[18px] text-outline">download</span>
+</div>
+<div class="p-3 border-b border-outline-variant/10 hover:bg-surface-variant/10 cursor-pointer group flex justify-between items-center">
+<div>
+<div class="font-code-sm text-on-surface group-hover:text-primary-fixed">postgres/15-main</div>
+<div class="text-[10px] text-on-surface-variant">v15.1 • 144.2 MB • 1w ago</div>
+</div>
+<span class="material-symbols-outlined text-[18px] text-outline">download</span>
+</div>
+<div class="p-3 border-b border-outline-variant/10 hover:bg-surface-variant/10 cursor-pointer group flex justify-between items-center">
+<div>
+<div class="font-code-sm text-on-surface group-hover:text-primary-fixed">python/3.11-slim</div>
+<div class="text-[10px] text-on-surface-variant">v3.11 • 68.2 MB • 3w ago</div>
+</div>
+<span class="material-symbols-outlined text-[18px] text-outline">download</span>
+</div>
+</div>
+<button class="bg-surface-variant/20 p-2 text-center font-label-caps text-[10px] text-primary-fixed-dim hover:bg-surface-variant/40">VIEW_ALL_REGISTRIES</button>
+</div>
+</div>
+<!-- Resource Allocator -->
+<div class="flex flex-col gap-3 flex-1 overflow-hidden">
+<h2 class="font-label-caps text-on-surface-variant">RESOURCE_ALLOCATOR</h2>
+<div class="glass-panel p-4 flex flex-col gap-4">
+<!-- Allocator Item 1 -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<span class="font-code-sm text-on-surface">DAEMON_PRIORITY</span>
+<span class="text-primary-fixed font-code-sm">HIGH</span>
+</div>
+<div class="flex gap-[2px]">
+<div class="h-3 flex-1 bg-primary-fixed"></div>
+<div class="h-3 flex-1 bg-primary-fixed"></div>
+<div class="h-3 flex-1 bg-primary-fixed"></div>
+<div class="h-3 flex-1 bg-primary-fixed"></div>
+<div class="h-3 flex-1 bg-primary-fixed"></div>
+<div class="h-3 flex-1 bg-primary-fixed"></div>
+<div class="h-3 flex-1 bg-outline-variant/30"></div>
+<div class="h-3 flex-1 bg-outline-variant/30"></div>
+</div>
+</div>
+<!-- Allocator Item 2 -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<span class="font-code-sm text-on-surface">KERNEL_BURST_MODE</span>
+<div class="w-10 h-4 bg-surface-container-highest border border-outline-variant relative cursor-pointer">
+<div class="absolute right-0 top-0 bottom-0 w-4 bg-primary-fixed"></div>
+</div>
+</div>
+</div>
+<!-- Allocator Item 3 -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<span class="font-code-sm text-on-surface">MEMORY_CEILING</span>
+<span class="text-secondary-fixed font-code-sm">32.0 GB</span>
+</div>
+<input class="accent-primary-fixed h-1 bg-outline-variant appearance-none rounded-none cursor-pointer" type="range"/>
+</div>
+<!-- Health Status -->
+<div class="mt-4 border-t border-outline-variant/20 pt-4 flex flex-col gap-3">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary-fixed-dim shadow-[0_0_8px_#00f0ff]"></div>
+<div class="flex-1">
+<div class="font-label-caps text-[10px] text-on-surface-variant">CONTAINERD_HEALTH</div>
+<div class="font-code-sm text-primary-fixed">99.8% STABLE</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-secondary-container shadow-[0_0_8px_#ce5dff]"></div>
+<div class="flex-1">
+<div class="font-label-caps text-[10px] text-on-surface-variant">SWAP_EFFICIENCY</div>
+<div class="font-code-sm text-secondary-fixed">OPTIMIZED</div>
+</div>
+</div>
+</div>
+<button class="mt-2 w-full border border-primary-fixed text-primary-fixed font-label-caps py-2 hover:bg-primary-fixed/10 transition-all text-[11px]">RESET_ALL_ALLOCATIONS</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer class="ml-20 h-8 bg-surface-container-low border-t border-outline-variant/20 flex items-center px-4 justify-between font-code-sm text-[10px] text-on-surface-variant">
+<div class="flex gap-6">
+<span>UPTIME: 144:12:09:55</span>
+<span class="text-primary-fixed-dim">CPU_TEMP: 42°C</span>
+<span class="text-primary-fixed-dim">NET_OUT: 214.5 KB/s</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">terminal</span>
+<span>SYSTEM_KERNEL_V6.12.0-SEIS</span>
+<div class="w-2 h-2 bg-primary-fixed rounded-full ml-2"></div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for the "scan" line or potential UI noise
+        document.addEventListener('mousemove', (e) => {
+            const canvas = document.querySelector('main');
+            const rect = canvas.getBoundingClientRect();
+            // Optional: Mouse tracking effects could be added here for higher-end feel
+        });
+
+        // Simulating log scroll
+        const terminal = document.querySelector('.custom-scrollbar');
+        if (terminal) {
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+    </script>
+</body></html>

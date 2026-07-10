@@ -46,6 +46,20 @@
       "lane": "premium-local-foundation",
       "mission": "Absorb the former codex/premium-local-foundation branch intent as a UIXAppTTR sub-agent workstream, not as a Git branch.",
       "allowedSurfaces": ["content/development", "docs/development", "apps/web", "polyglot", "scripts"]
+    },
+    {
+      "id": "memories-agent",
+      "title": "Memories Child-Agent Intake",
+      "lane": "knowledge-governance-source",
+      "mission": "Govern memory and knowledge-management source intake without mutating repository visibility or sensitive content.",
+      "allowedSurfaces": ["content/development", "docs/development", "docs/governance", "docs/provenance"],
+      "statusLabel": "planned child-agent intake",
+      "sourceRepository": "emirhankudun-ux/memories",
+      "canonicalSurface": "emirhankudun-ux/SEIS",
+      "rollbackOwner": "emirhankudun-ux",
+      "purpose": "`memories` is currently treated as a public non-SEIS source that must not stay as a separate public-facing surface without an explicit decision. Its future state should be one of: imported or snapshotted into SEIS as a verified source record; represented by a SEIS child agent with clear scope and commands; made private, archived, transferred, deleted, or explicitly retained only after maintainer confirmation.",
+      "scope": "The child agent should govern memory and knowledge-management workflows only after the source has been reviewed for sensitive content, provenance, and publication safety.",
+      "safetyGate": "No GitHub visibility mutation is allowed from this manifest. Archive, private, transfer, delete, or force-push actions require a dry-run plan, live GitHub evidence, rollback owner confirmation, and explicit maintainer approval."
     }
   ],
   "nextMove": "Use sub-agent workstreams inside UIXAppTTR instead of creating new long-lived feature branches, including codex/premium-local-foundation."

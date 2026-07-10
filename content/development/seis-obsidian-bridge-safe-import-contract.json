@@ -1,0 +1,160 @@
+{
+  "id": "seis-obsidian-bridge-safe-import-contract",
+  "title": "SEIS Obsidian Bridge Safe Import Contract",
+  "status": "planned-gated",
+  "mode": "explicit-user-selected-import-only",
+  "version": "2026-06-24",
+  "ownerSurface": "SEIS Second Brain",
+  "qualityGate": "npm run check:seis-second-brain-readiness-contracts",
+  "currentRuntime": {
+    "obsidianPluginInstalled": false,
+    "hostVaultReadEnabled": false,
+    "privateVaultImportEnabled": false,
+    "externalMutationEnabled": false,
+    "githubPublicationEnabled": false
+  },
+  "allowedToday": [
+    "document safe import requirements",
+    "render repo-owned browser-local seed notes",
+    "export browser-local Markdown snapshots under /home/seis/SecondBrain",
+    "generate repo-owned dry-run manifest artifacts under reports/seis-public-demo",
+    "validate no-secret and no-private-vault boundaries"
+  ],
+  "futureImportPhases": [
+    {
+      "id": "select-vault",
+      "status": "planned",
+      "requiredApproval": "explicit user-selected local vault path",
+      "output": "uncommitted local dry-run path reference only"
+    },
+    {
+      "id": "preflight-scan",
+      "status": "planned",
+      "requiredApproval": "human approval before scanning selected files",
+      "output": "redacted local scan summary without note body content"
+    },
+    {
+      "id": "provenance-review",
+      "status": "planned",
+      "requiredApproval": "human review before any repo-owned summary is created",
+      "output": "source category, license/provenance status, and publishability label"
+    },
+    {
+      "id": "sanitized-import-preview",
+      "status": "planned",
+      "requiredApproval": "human approval before generating a public-safe fixture",
+      "output": "reviewed title/tag/link metadata only; no private body text by default"
+    },
+    {
+      "id": "public-sync",
+      "status": "blocked",
+      "requiredApproval": "separate GitHub publication approval",
+      "output": "reviewed public fixture or docs patch only"
+    }
+  ],
+  "allowedFileTypes": [
+    ".md",
+    ".markdown",
+    ".txt",
+    ".json"
+  ],
+  "blockedFileTypes": [
+    ".env",
+    ".pem",
+    ".key",
+    ".p12",
+    ".pfx",
+    ".sqlite",
+    ".db",
+    ".zip",
+    ".7z",
+    ".tar",
+    ".gz",
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".webp",
+    ".pdf"
+  ],
+  "blockedPaths": [
+    ".obsidian/",
+    ".trash/",
+    ".git/",
+    "node_modules/",
+    "secrets/",
+    ".secrets/",
+    "credentials.local.json",
+    "service-account",
+    ".env"
+  ],
+  "requiredGates": [
+    "explicit user-selected source path",
+    "dry-run manifest before any import",
+    "no secret values copied",
+    "no private note body committed",
+    "provenance record for every imported note",
+    "mock-real-planned label review",
+    "accessibility review for imported navigation",
+    "human approval before GitHub publication"
+  ],
+  "forbiddenActions": [
+    "automatic home-directory vault discovery",
+    "automatic Obsidian plugin installation",
+    "committing private note body content",
+    "copying .obsidian workspace state",
+    "copying attachments without provenance review",
+    "storing absolute private vault paths in repo records",
+    "sending imported note content to AI providers",
+    "GitHub push, merge, release, or Pages publication without explicit approval"
+  ],
+  "safeOutputPolicy": {
+    "repoCommittedByDefault": false,
+    "defaultOutput": "local dry-run report only",
+    "publicFixtureAllowed": "only after no-secret, provenance, accessibility, and human-review gates pass",
+    "redactionRequired": true,
+    "hashPrivatePaths": true,
+    "storeSecrets": false
+  },
+  "dryRunManifestSchema": {
+    "requiredFields": [
+      "sourcePathFingerprint",
+      "selectedByUser",
+      "candidateNoteCount",
+      "blockedFileCount",
+      "blockedPathMatches",
+      "secretScanSummary",
+      "provenanceLabels",
+      "publishabilityLabels",
+      "redactionSummary",
+      "attachmentReviewSummary",
+      "bodyImportPolicy",
+      "humanApprovalState"
+    ],
+    "bodyImportPolicy": "metadata-only-by-default",
+    "privatePathPolicy": "hash-or-redact",
+    "approvalStateValues": [
+      "not-requested",
+      "dry-run-ready",
+      "approved-for-local-preview",
+      "approved-for-public-fixture",
+      "blocked"
+    ]
+  },
+  "importDecisionLabels": [
+    "public-safe-metadata-only",
+    "needs-redaction",
+    "needs-provenance-review",
+    "blocked-private",
+    "blocked-secret-risk",
+    "blocked-attachment-risk"
+  ],
+  "reviewPacketRequirements": [
+    "dry-run manifest path",
+    "repo-owned dry-run artifact JSON and Markdown path",
+    "no-secret scan result",
+    "provenance label summary",
+    "redaction summary",
+    "accessibility navigation review",
+    "explicit human approval state"
+  ]
+}

@@ -18,6 +18,9 @@ worktree isolation, but they are not long-lived product branches.
 - Do not let generated code, migrated archives, or AI-agent output bypass review.
 - Keep GitHub Actions, README, CONTRIBUTING, SECURITY, CODE_OF_CONDUCT, LICENSE,
   and CONTRIBUTORS aligned with the current open source platform direction.
+- Do not mark a PR ready when required signed commits are not GitHub-verified.
+- Do not bypass, hide, or weaken full-history security findings to make a branch
+  appear mergeable.
 
 ## Temporary Branch Naming
 
@@ -28,6 +31,14 @@ Temporary branch names should make their purpose obvious:
 - `docs/<short-scope>`
 - `chore/<short-scope>`
 - `experiment/<short-scope>`
+- `architecture/<short-scope>`
+- `apple/<short-scope>`
+- `ai/<short-scope>`
+- `mcp/<short-scope>`
+- `security/<short-scope>`
+- `devops/<short-scope>`
+- `audit/<short-scope>`
+- `rollback/<short-scope>`
 - AI-managed branches such as `codex/*` or `claude/*`
 
 These branches should be merged, closed, or explicitly retained with a reason.

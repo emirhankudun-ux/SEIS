@@ -1,0 +1,279 @@
+{
+  "id": "seis-agi-public-readiness-evidence",
+  "version": "2026.06.29",
+  "status": "blocked-missing-real-agi-evidence",
+  "resourceUri": "seis://ai/agi-public-readiness-evidence.json",
+  "qualityGate": "node scripts/check-seis-agi-public-readiness-evidence.mjs",
+  "coreCredentialRequirement": "none",
+  "defaultRuntimeMode": "seis-local-demo",
+  "routeEligibleToday": false,
+  "runtimeAuthority": false,
+  "agiClaimAllowed": false,
+  "publicReadyAsAgi": false,
+  "publicReadyAsLocalDemo": true,
+  "claimDecision": "not-ready-for-agi-or-512b-public-claim",
+  "sourceOfTruth": {
+    "agiEvaluationProtocol": "content/development/seis-agi-evaluation-protocol.json",
+    "apexModelProgram": "content/development/seis-512b-apex-model-program.json",
+    "modelScalingProfile": "content/development/seis-model-scaling-hardware-profile.json",
+    "modelScalingCouncil": "content/development/seis-model-scaling-subagent-council.json",
+    "githubUserReadinessGates": "content/development/seis-agi-github-user-readiness-gates.json",
+    "publicReadinessDoc": "docs/ai/seis-agi-public-readiness-evidence.md"
+  },
+  "truthBoundary": "This evidence matrix records what is missing before any public SEIS AGI or 512B claim. It does not run evaluations, train or download models, run inference, benchmark, call providers, provision GPU/cloud resources, execute SSH, deploy, or approve route eligibility.",
+  "readinessSummary": {
+    "protocolStatus": "protocol-draft-not-run",
+    "apexProgramStatus": "apex-program-plan-only",
+    "sourceDerivedGateCount": 4,
+    "evaluationDimensionCount": 11,
+    "minimumClaimEvidenceCount": 20,
+    "acceptedClaimEvidenceCount": 0,
+    "missingClaimEvidenceCount": 20,
+    "blockedReason": "All minimum AGI evidence remains missing, not-run, or approval-gated.",
+    "allowedPublicUse": "GitHub users may inspect and run the Local Demo and validators; they must not treat the repository as a trained 512B model or real AGI."
+  },
+  "sourceDerivedGateMatrix": [
+    {
+      "gateId": "generative-ai-risk-profile-gate",
+      "status": "not-run",
+      "evidenceStatus": "missing",
+      "requiredBeforePublicClaim": true,
+      "blockingReason": "No SEIS-specific generative AI risk profile, residual-risk decision, or human review exists."
+    },
+    {
+      "gateId": "long-task-autonomy-gate",
+      "status": "not-run",
+      "evidenceStatus": "missing",
+      "requiredBeforePublicClaim": true,
+      "blockingReason": "No time-horizon task suite, completion logs, or autonomy boundary evidence exists."
+    },
+    {
+      "gateId": "frontier-safety-threshold-gate",
+      "status": "not-run",
+      "evidenceStatus": "missing",
+      "requiredBeforePublicClaim": true,
+      "blockingReason": "No frontier capability threshold, deployment safeguard, escalation, rollback, or cost-stop evidence exists."
+    },
+    {
+      "gateId": "abstract-generalization-gate",
+      "status": "not-run",
+      "evidenceStatus": "missing",
+      "requiredBeforePublicClaim": true,
+      "blockingReason": "No novel abstract-reasoning task evidence, contamination review, or skill-acquisition baseline exists."
+    }
+  ],
+  "minimumClaimEvidenceMatrix": [
+    {
+      "id": "min-001-20b-gate",
+      "requirement": "20B gate evidence accepted",
+      "status": "missing",
+      "currentEvidence": "20B remains planned-not-validated with no accepted benchmark, model card, dataset card, or route eligibility.",
+      "requiredEvidence": ["20B model card", "20B dataset or benchmark-data card", "16GB+ memory benchmark", "human approval"],
+      "ownerAgents": ["architect-agent", "code-agent", "qa-agent"],
+      "routeEligibleIfMissing": false,
+      "claimAllowedIfMissing": false
+    },
+    {
+      "id": "min-002-70b-gate",
+      "requirement": "70B gate evidence accepted",
+      "status": "missing",
+      "currentEvidence": "70B remains research-roadmap only.",
+      "requiredEvidence": ["20B gate completion", "70B clean-room model card", "hardware and cost budget", "safety evaluation"],
+      "ownerAgents": ["research-agent", "devops-agent", "cloud-agent"],
+      "routeEligibleIfMissing": false,
+      "claimAllowedIfMissing": false
+    },
+    {
+      "id": "min-003-150b-gate",
+      "requirement": "150B gate evidence accepted",
+      "status": "missing",
+      "currentEvidence": "150B remains frontier-program-plan-only.",
+      "requiredEvidence": ["20B and 70B evidence", "distributed runtime budget", "privacy review", "rollback plan"],
+      "ownerAgents": ["architect-agent", "research-agent", "security-agent"],
+      "routeEligibleIfMissing": false,
+      "claimAllowedIfMissing": false
+    },
+    {
+      "id": "min-004-300b-feasibility",
+      "requirement": "300B+ feasibility accepted",
+      "status": "missing",
+      "currentEvidence": "300B+ remains an exploration boundary with no feasibility proof.",
+      "requiredEvidence": ["150B evidence", "hardware feasibility proof", "cost ceiling approval", "public safety review"],
+      "ownerAgents": ["architect-agent", "cloud-agent", "security-agent"],
+      "routeEligibleIfMissing": false,
+      "claimAllowedIfMissing": false
+    },
+    {
+      "id": "min-005-512b-evidence",
+      "requirement": "512B training or inference evidence independently verified",
+      "status": "missing",
+      "currentEvidence": "No 512B weights, training logs, inference adapter, benchmark, checkpoint, or independent verification exists.",
+      "requiredEvidence": ["training or inference logs", "checkpoint governance", "independent verification", "redacted runtime evidence"],
+      "ownerAgents": ["architect-agent", "code-agent", "qa-agent", "external-reviewer"],
+      "routeEligibleIfMissing": false,
+      "claimAllowedIfMissing": false
+    },
+    {
+      "id": "min-006-multi-domain",
+      "requirement": "independent multi-domain capability evaluation passed",
+      "status": "not-run",
+      "currentEvidence": "No independent multi-domain evaluation has run.",
+      "requiredEvidence": ["held-out task inventory", "contamination controls", "failure taxonomy", "external review"],
+      "ownerAgents": ["qa-agent", "research-agent", "external-reviewer"],
+      "routeEligibleIfMissing": false,
+      "claimAllowedIfMissing": false
+    },
+    {
+      "id": "min-007-long-horizon",
+      "requirement": "long-horizon planning evaluation passed",
+      "status": "not-run",
+      "currentEvidence": "No long-horizon planning environment or reviewed logs exist.",
+      "requiredEvidence": ["time-bounded objectives", "plan repair logs", "interruption handling", "failure examples"],
+      "ownerAgents": ["automation-agent", "qa-agent", "research-agent"],
+      "routeEligibleIfMissing": false,
+      "claimAllowedIfMissing": false
+    },
+    {
+      "id": "min-008-agentic-autonomy",
+      "requirement": "agentic autonomy time-horizon evaluation passed",
+      "status": "not-run",
+      "currentEvidence": "No autonomous time-horizon completion suite or no-background-autonomy proof exists.",
+      "requiredEvidence": ["task completion suite", "action boundary logs", "cancellation logs", "human-reviewed autonomy limits"],
+      "ownerAgents": ["automation-agent", "security-agent", "qa-agent"],
+      "routeEligibleIfMissing": false,
+      "claimAllowedIfMissing": false
+    },
+    {
+      "id": "min-009-tool-use",
+      "requirement": "tool-use reliability evaluation passed",
+      "status": "not-run",
+      "currentEvidence": "No sandboxed tool-use reliability trace set exists for a 512B model.",
+      "requiredEvidence": ["sandboxed traces", "permission-boundary report", "fallback and cancellation evidence"],
+      "ownerAgents": ["code-agent", "security-agent", "qa-agent"],
+      "routeEligibleIfMissing": false,
+      "claimAllowedIfMissing": false
+    },
+    {
+      "id": "min-010-ood",
+      "requirement": "out-of-distribution generalization report accepted",
+      "status": "missing",
+      "currentEvidence": "No OOD report exists.",
+      "requiredEvidence": ["novel task set", "provenance record", "distribution-shift analysis", "baseline comparison"],
+      "ownerAgents": ["research-agent", "qa-agent"],
+      "routeEligibleIfMissing": false,
+      "claimAllowedIfMissing": false
+    },
+    {
+      "id": "min-011-abstract-skill",
+      "requirement": "abstract skill-acquisition evaluation accepted",
+      "status": "missing",
+      "currentEvidence": "No abstract skill-acquisition evaluation exists.",
+      "requiredEvidence": ["novel abstract reasoning tasks", "contamination review", "skill acquisition trace", "baseline comparison"],
+      "ownerAgents": ["research-agent", "qa-agent", "external-reviewer"],
+      "routeEligibleIfMissing": false,
+      "claimAllowedIfMissing": false
+    },
+    {
+      "id": "min-012-safety-misuse",
+      "requirement": "safety and misuse evaluation accepted",
+      "status": "missing",
+      "currentEvidence": "No accepted safety and misuse evaluation exists.",
+      "requiredEvidence": ["red-team plan", "misuse refusal suite", "safe-completion evaluation", "safety regression report"],
+      "ownerAgents": ["security-agent", "qa-agent", "external-reviewer"],
+      "routeEligibleIfMissing": false,
+      "claimAllowedIfMissing": false
+    },
+    {
+      "id": "min-013-frontier-threshold",
+      "requirement": "frontier safety threshold review accepted",
+      "status": "missing",
+      "currentEvidence": "No accepted frontier threshold review exists.",
+      "requiredEvidence": ["capability thresholds", "deployment safeguards", "escalation path", "rollback and cost-stop review"],
+      "ownerAgents": ["security-agent", "devops-agent", "cloud-agent"],
+      "routeEligibleIfMissing": false,
+      "claimAllowedIfMissing": false
+    },
+    {
+      "id": "min-014-risk-profile",
+      "requirement": "generative AI risk profile accepted",
+      "status": "missing",
+      "currentEvidence": "No SEIS-specific generative AI risk profile has been accepted.",
+      "requiredEvidence": ["risk map", "misuse controls", "privacy and security controls", "residual-risk decision"],
+      "ownerAgents": ["security-agent", "documentation-agent", "human-owner"],
+      "routeEligibleIfMissing": false,
+      "claimAllowedIfMissing": false
+    },
+    {
+      "id": "min-015-rights",
+      "requirement": "privacy, data-rights, and clean-room review accepted",
+      "status": "missing",
+      "currentEvidence": "No accepted privacy, data-rights, and clean-room review exists.",
+      "requiredEvidence": ["training data rights map", "privacy review", "clean-room provenance", "license review"],
+      "ownerAgents": ["security-agent", "documentation-agent", "human-owner"],
+      "routeEligibleIfMissing": false,
+      "claimAllowedIfMissing": false
+    },
+    {
+      "id": "min-016-red-team",
+      "requirement": "red-team report accepted",
+      "status": "missing",
+      "currentEvidence": "No accepted red-team report exists.",
+      "requiredEvidence": ["red-team scope", "findings", "mitigations", "residual-risk signoff"],
+      "ownerAgents": ["security-agent", "qa-agent", "external-reviewer"],
+      "routeEligibleIfMissing": false,
+      "claimAllowedIfMissing": false
+    },
+    {
+      "id": "min-017-cards",
+      "requirement": "model card and system card published",
+      "status": "missing",
+      "currentEvidence": "No real 512B model card or system card exists.",
+      "requiredEvidence": ["model card", "system card", "known limitations", "evaluation summary"],
+      "ownerAgents": ["documentation-agent", "research-agent", "human-owner"],
+      "routeEligibleIfMissing": false,
+      "claimAllowedIfMissing": false
+    },
+    {
+      "id": "min-018-checkpoints",
+      "requirement": "training logs and checkpoint governance reviewed",
+      "status": "missing",
+      "currentEvidence": "No 512B training logs or checkpoint governance review exists.",
+      "requiredEvidence": ["training logs", "checkpoint access control", "release governance", "audit trail"],
+      "ownerAgents": ["devops-agent", "security-agent", "human-owner"],
+      "routeEligibleIfMissing": false,
+      "claimAllowedIfMissing": false
+    },
+    {
+      "id": "min-019-external-approval",
+      "requirement": "external review completed",
+      "status": "missing",
+      "currentEvidence": "No external AGI readiness review has been completed.",
+      "requiredEvidence": ["external reviewer record", "review findings", "mitigation record", "acceptance decision"],
+      "ownerAgents": ["external-reviewer", "human-owner"],
+      "routeEligibleIfMissing": false,
+      "claimAllowedIfMissing": false
+    },
+    {
+      "id": "min-020-human-approval",
+      "requirement": "explicit human approval recorded",
+      "status": "missing",
+      "currentEvidence": "No explicit human approval for AGI or 512B route eligibility exists.",
+      "requiredEvidence": ["dated human approval", "scope of approval", "rollback path", "public-claim decision"],
+      "ownerAgents": ["human-owner"],
+      "routeEligibleIfMissing": false,
+      "claimAllowedIfMissing": false
+    }
+  ],
+  "forbiddenGreenlights": [
+    "Passing CI alone cannot make SEIS AGI-ready.",
+    "Passing CodeQL cannot prove AGI, 512B training, route eligibility, or benchmark success.",
+    "A Local Demo, provider wrapper, RAG route, or prompt profile cannot satisfy 512B model evidence.",
+    "Installed AI or sub-agent consensus cannot replace external review and human approval."
+  ],
+  "nextSafeActions": [
+    "Keep SEIS public wording scoped to Local Demo and planning evidence.",
+    "Use this matrix to reject premature AGI, 512B, benchmark, route-eligibility, or public-readiness claims.",
+    "Add real evidence only through human-approved model, dataset, benchmark, safety, and external-review workflows.",
+    "Keep approval-gated model download, training, benchmark, GPU/cloud, SSH, deployment, and public release work documented rather than silently skipped."
+  ]
+}

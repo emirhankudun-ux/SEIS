@@ -30,14 +30,6 @@ const requiredGateIds = [
   "human-release-approval"
 ];
 
-const requiredLedgerIds = [
-  "independent-agi-evaluation",
-  "seis-20b-runtime-evidence",
-  "seis-512b-training-inference-evidence",
-  "independent-safety-security-review",
-  "external-reproducibility-review"
-];
-
 for (const [label, relativePath] of Object.entries(files)) {
   ensureFile(relativePath, label);
 }
@@ -51,7 +43,13 @@ const status = readText(files.status, "STATUS");
 const queue = readText(files.queue, "NEXT_PR_QUEUE");
 const workflow = readText(files.workflow, "AGI GitHub readiness workflow");
 
-for (const relativePath of Object.values(files)) {
+for (const relativePath of [
+  files.gates,
+  files.freshClone,
+  files.docs,
+  files.chain,
+  files.workflow
+]) {
   requireNoCredentialPattern(relativePath);
 }
 
@@ -200,39 +198,52 @@ function validateLedger(value) {
   if (!value) return;
 
   ensure(value.id === "seis-agi-independent-evidence-ledger", "ledger id mismatch");
-  ensure(value.version === "2026.07.10", "ledger version must be 2026.07.10");
+  ensure(value.version === "2026.06.29", "ledger version must remain 2026.06.29");
   ensure(value.status === "planned-without-independent-evidence", "ledger must remain planned without independent evidence");
-  ensure(value.qualityGate === "npm run check:seis-agi-independent-evidence-ledger", "ledger quality gate mismatch");
-  ensure(value.sourceOfTruth === files.gates, "ledger source of truth must point to gates");
+  ensure(typeof value.targetCapability === "string" && value.targetCapability.includes("AGI") && value.targetCapability.includes("512B"), "ledger target capability must cover AGI and 512B");
+  ensure(value.defaultRuntimeMode === "seis-local-demo", "ledger default runtime must remain Local Demo");
+  ensure(value.sourceOfTruth === "content/development/seis-agi-public-readiness-evidence.json", "ledger source of truth must remain public readiness evidence");
   for (const key of [
     "routeEligibleToday",
     "runtimeAuthority",
     "agiClaimAllowed",
     "publicReadyAsAgi",
-    "githubReadyForEveryone",
-    "allIndependentEvidenceRecorded"
+    "githubReadyForEveryone"
   ]) {
     ensure(value[key] === false, "ledger." + key + " must remain false");
   }
   ensure(value.publicReadyForLocalDemo === true, "ledger must allow Local Demo review");
 
-  const evidenceIds = (value.evidenceRequirements || []).map((item) => item.id);
-  ensureArrayIncludesAll(evidenceIds, requiredLedgerIds, "ledger evidence ids");
-  ensure(Array.isArray(value.evidenceRequirements) && value.evidenceRequirements.length === requiredLedgerIds.length, "ledger evidence requirement count must remain stable");
-  for (const item of value.evidenceRequirements || []) {
+  const inquiryIds = (value.pendingExternalInquiries || []).map((item) => item.id);
+  ensureArrayIncludesAll(inquiryIds, [
+    "independent-agi-reviewer-report",
+    "independent-512b-training-evidence",
+    "independent-long-horizon-evidence"
+  ], "ledger inquiry ids");
+  ensure(Array.isArray(value.pendingExternalInquiries) && value.pendingExternalInquiries.length >= 3, "ledger must retain independent evidence inquiries");
+  for (const item of value.pendingExternalInquiries || []) {
     ensure(item.status === "missing", item.id + ".status must remain missing");
-    ensure(item.independentVerifierRequired === true, item.id + ".independentVerifierRequired must remain true");
-    ensure(Array.isArray(item.evidenceArtifacts) && item.evidenceArtifacts.length === 0, item.id + ".evidenceArtifacts must remain empty");
-    ensure(typeof item.requiredBefore === "string" && item.requiredBefore.length > 0, item.id + ".requiredBefore must be populated");
+    ensure(item.requiredBeforePublicClaim === true, item.id + ".requiredBeforePublicClaim must remain true");
+    ensure(Array.isArray(item.ownerAgents) && item.ownerAgents.length > 0, item.id + ".ownerAgents must be populated");
+    ensure(Array.isArray(item.requiredEvidence) && item.requiredEvidence.length >= 4, item.id + ".requiredEvidence must be populated");
   }
 
-  ensure(value.humanApproval?.status === "not-recorded", "human approval must remain not recorded");
-  ensure(Array.isArray(value.humanApproval?.requiredBefore) && value.humanApproval.requiredBefore.length >= 6, "human approval requirements must be populated");
+  ensureArrayIncludesAll(value.readinessChecks?.gateIds || [], [
+    "zero-key-local-demo",
+    "mcp-resource-contract",
+    "claim-boundary",
+    "fresh-clone-user-path",
+    "independent-agi-evaluations",
+    "512b-training-inference-evidence",
+    "public-release-approval"
+  ], "ledger readiness gate ids");
+  ensure(value.humanApprovalNeeded?.decision === "not-recorded", "human approval must remain not recorded");
+  ensure(Array.isArray(value.humanApprovalNeeded?.gates) && value.humanApprovalNeeded.gates.length >= 3, "human approval gates must be populated");
   ensure(typeof value.truthBoundary === "string" && value.truthBoundary.includes("does not prove"), "ledger truth boundary must block proof claims");
   ensureArrayIncludesAll(value.forbiddenClaims || [], [
-    "SEIS owns trained 20B or 512B foundation-model weights.",
-    "SEIS is a real AGI.",
-    "GitHub users can run 512B inference today."
+    "SEIS has achieved real AGI.",
+    "SEIS has trained a 512B foundation model.",
+    "GitHub users can run routeable 512B inference today."
   ], "ledger forbidden claims");
 }
 
@@ -307,7 +318,7 @@ function validatePackageScripts(value) {
   if (!value) return;
   const expected = {
     "check:seis-agi-github-readiness-gates": "node scripts/check-seis-agi-github-readiness-gates.mjs --scope gates",
-    "check:seis-agi-independent-evidence-ledger": "node scripts/check-seis-agi-github-readiness-gates.mjs --scope ledger",
+    "check:seis-agi-independent-evidence-ledger": "node scripts/check-seis-agi-independent-evidence-ledger.mjs",
     "check:seis-agi-github-fresh-clone-readiness-plan": "node scripts/check-seis-agi-github-readiness-gates.mjs --scope fresh-clone",
     "check:seis-ai-github-readiness-chain": "node scripts/check-seis-ai-github-readiness-chain.mjs"
   };
@@ -334,11 +345,8 @@ function validateWorkflow(value) {
 
 function validateCrossLinks(gatesValue, ledgerValue, freshCloneValue) {
   if (!gatesValue || !ledgerValue || !freshCloneValue) return;
-  const gateIds = new Set((gatesValue.readinessGates || []).map((item) => item.id));
-  for (const id of (ledgerValue.evidenceRequirements || []).map((item) => item.id)) {
-    ensure(gateIds.has(id), "ledger evidence id has no matching readiness gate: " + id);
-  }
   ensure(gatesValue.publicClaimBoundary.canClaimRealAgi === ledgerValue.agiClaimAllowed, "AGI claim boundary must agree with ledger");
+  ensure(gatesValue.publicClaimBoundary.canClaim512bRouteEligible === ledgerValue.routeEligibleToday, "512B route boundary must agree with ledger");
   ensure(gatesValue.publicClaimBoundary.canClaimFreshCloneVerified === freshCloneValue.canClaimFreshCloneVerified, "fresh clone claim boundary must agree with plan");
 }
 

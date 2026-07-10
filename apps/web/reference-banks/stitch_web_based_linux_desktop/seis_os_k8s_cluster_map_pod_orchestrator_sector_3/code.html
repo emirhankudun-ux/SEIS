@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS | SECTOR 3 ORCHESTRATOR</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+        }
+        
+        /* Custom Scanline Effect */
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 219, 233, 0.1);
+            position: absolute;
+            top: 0;
+            z-index: 10;
+            pointer-events: none;
+            animation: scanline 8s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+
+        /* Terminal Cursor Blink */
+        .cursor-blink {
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            from, to { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .node-pulse {
+            animation: pulse-border 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-border {
+            0%, 100% { border-color: rgba(0, 219, 233, 0.3); }
+            50% { border-color: rgba(0, 219, 233, 1); }
+        }
+
+        /* Tiling Window Manager Aesthetic */
+        .tiling-grid {
+            display: grid;
+            gap: 8px;
+            grid-template-columns: 80px 1fr 380px;
+            grid-template-rows: 40px 1fr 220px;
+            height: 100vh;
+            width: 100vw;
+            padding: 8px;
+            background-color: #0c0f0f;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121414;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b494b;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00dbe9;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#1a1c1c",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-secondary-fixed": "#320047",
+                        "surface-container-lowest": "#0c0f0f",
+                        "on-error-container": "#ffdad6",
+                        "inverse-surface": "#e2e2e2",
+                        "secondary": "#ebb2ff",
+                        "tertiary-container": "#dcd9d8",
+                        "surface-bright": "#37393a",
+                        "error": "#ffb4ab",
+                        "primary": "#dbfcff",
+                        "surface-container-high": "#282a2b",
+                        "on-tertiary-container": "#605e5e",
+                        "on-error": "#690005",
+                        "surface-container-highest": "#333535",
+                        "inverse-primary": "#006970",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "surface-container": "#1e2020",
+                        "on-primary-fixed": "#002022",
+                        "primary-fixed-dim": "#00dbe9",
+                        "surface-tint": "#00dbe9",
+                        "primary-fixed": "#7df4ff",
+                        "tertiary": "#f9f5f5",
+                        "on-background": "#e2e2e2",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-secondary": "#520071",
+                        "secondary-fixed": "#f8d8ff",
+                        "on-secondary-container": "#480064",
+                        "on-surface-variant": "#b9cacb",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "on-surface": "#e2e2e2",
+                        "primary-container": "#00f0ff",
+                        "on-primary": "#00363a",
+                        "on-tertiary": "#313030",
+                        "secondary-container": "#ce5dff",
+                        "outline": "#849495",
+                        "surface": "#121414",
+                        "error-container": "#93000a",
+                        "outline-variant": "#3b494b",
+                        "surface-dim": "#121414",
+                        "on-primary-container": "#006970",
+                        "inverse-on-surface": "#2f3131",
+                        "background": "#121414",
+                        "surface-variant": "#333535",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "on-primary-fixed-variant": "#004f54"
+                    },
+                    "fontFamily": {
+                        "body-md": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "label-sm": ["Space Mono"],
+                        "headline-lg": ["JetBrains Mono"],
+                        "code-sm": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface overflow-hidden font-body-md">
+<!-- TOP NAVIGATION BAR (Fixed height 40px) -->
+<header class="fixed top-0 left-0 right-0 z-50 h-10 bg-surface-container-lowest/80 backdrop-blur-xl flex justify-between items-center px-4 border-b border-outline-variant/30">
+<div class="flex items-center gap-4">
+<span class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim text-[11px]">SEIS KERNEL OS</span>
+<div class="h-4 w-[1px] bg-outline-variant/50"></div>
+<nav class="flex gap-6">
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 font-label-caps text-[11px] cursor-pointer" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-caps text-[11px] hover:text-primary-fixed transition-colors duration-200 cursor-pointer" href="#">TELEMETRY</a>
+<a class="text-on-surface-variant font-label-caps text-[11px] hover:text-primary-fixed transition-colors duration-200 cursor-pointer" href="#">AGENTS</a>
+<a class="text-on-surface-variant font-label-caps text-[11px] hover:text-primary-fixed transition-colors duration-200 cursor-pointer" href="#">NETWORK</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container-high rounded border border-outline-variant/20">
+<span class="w-2 h-2 rounded-full bg-primary-fixed animate-pulse"></span>
+<span class="font-code-sm text-code-sm text-primary-fixed">SECTOR_03_ACTIVE</span>
+</div>
+<div class="flex gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px] cursor-pointer hover:text-primary-fixed transition-colors" data-icon="memory">memory</span>
+<span class="material-symbols-outlined text-[18px] cursor-pointer hover:text-primary-fixed transition-colors" data-icon="terminal">terminal</span>
+<span class="material-symbols-outlined text-[18px] cursor-pointer hover:text-primary-fixed transition-colors" data-icon="settings">settings</span>
+</div>
+</div>
+</header>
+<!-- SIDE NAVIGATION BAR -->
+<aside class="fixed left-0 top-10 h-[calc(100vh-40px)] z-40 w-20 hover:w-64 transition-all duration-300 bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 flex flex-col group">
+<div class="p-4 flex items-center gap-3 overflow-hidden">
+<div class="w-10 h-10 shrink-0 bg-secondary-container/20 border border-secondary-fixed flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-secondary-fixed" data-icon="account_tree">account_tree</span>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+<p class="font-label-caps text-secondary-fixed text-[11px] leading-none">ROOT_USER</p>
+<p class="font-code-sm text-code-sm text-on-surface-variant text-[10px]">SEIS-01</p>
+</div>
+</div>
+<nav class="flex-1 mt-4">
+<div class="group/item flex items-center px-4 py-4 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined text-on-surface-variant group-hover/item:text-secondary-fixed" data-icon="dashboard">dashboard</span>
+<span class="ml-6 font-label-caps text-[11px] text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">DASHBOARD</span>
+</div>
+<div class="group/item flex items-center px-4 py-4 cursor-pointer bg-secondary-container/10 border-l-2 border-secondary-fixed">
+<span class="material-symbols-outlined text-secondary-fixed" data-icon="folder_open">folder_open</span>
+<span class="ml-6 font-label-caps text-[11px] text-secondary-fixed opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">FILESYSTEM</span>
+</div>
+<div class="group/item flex items-center px-4 py-4 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined text-on-surface-variant group-hover/item:text-secondary-fixed" data-icon="terminal">terminal</span>
+<span class="ml-6 font-label-caps text-[11px] text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">TERMINAL</span>
+</div>
+<div class="group/item flex items-center px-4 py-4 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined text-on-surface-variant group-hover/item:text-secondary-fixed" data-icon="smart_toy">smart_toy</span>
+<span class="ml-6 font-label-caps text-[11px] text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">AI_AGENTS</span>
+</div>
+<div class="group/item flex items-center px-4 py-4 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined text-on-surface-variant group-hover/item:text-secondary-fixed" data-icon="cloud_queue">cloud_queue</span>
+<span class="ml-6 font-label-caps text-[11px] text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">INFRASTRUCTURE</span>
+</div>
+</nav>
+<div class="p-4 mt-auto border-t border-outline-variant/10">
+<div class="flex items-center gap-4 py-2 text-on-surface-variant cursor-pointer hover:text-error transition-colors">
+<span class="material-symbols-outlined" data-icon="power_settings_new">power_settings_new</span>
+<span class="font-label-caps text-[11px] opacity-0 group-hover:opacity-100 transition-opacity">POWER</span>
+</div>
+</div>
+</aside>
+<!-- MAIN CONTENT CANVAS (Tiling Grid) -->
+<main class="ml-20 mt-10 p-2 h-[calc(100vh-40px)] grid grid-cols-12 grid-rows-6 gap-2 overflow-hidden">
+<!-- CLUSTER MAP (Main Area) -->
+<div class="col-span-8 row-span-4 bg-surface-container-lowest border border-outline-variant/30 relative overflow-hidden group">
+<!-- Header Title Bar -->
+<div class="absolute top-0 left-0 right-0 h-6 bg-primary-fixed-dim/90 flex items-center px-3 justify-between z-20">
+<span class="font-label-caps text-[10px] text-on-primary-fixed font-bold">CLUSTER_MAP::SECTOR_03::TOPOLOGY</span>
+<div class="flex gap-2">
+<span class="w-2 h-2 bg-on-primary-fixed/30 rounded-full"></span>
+<span class="w-2 h-2 bg-on-primary-fixed/30 rounded-full"></span>
+<span class="w-2 h-2 bg-on-primary-fixed/60 rounded-full"></span>
+</div>
+</div>
+<div class="scanline"></div>
+<!-- Map Background Placeholder with Animation -->
+<div class="absolute inset-0 bg-[#0a0a0a] opacity-40">
+
+</div>
+<!-- SVG Grid Overlay -->
+<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-size: 40px 40px; background-image: radial-gradient(circle, #00dbe9 1px, transparent 1px);"></div>
+<!-- Technical Nodes (Interactive) -->
+<div class="absolute inset-0 p-8 flex items-center justify-center">
+<div class="relative w-full h-full">
+<!-- Node 1: Primary Control Plane -->
+<div class="absolute top-1/4 left-1/4 group/node cursor-pointer" onclick="togglePodPanel('CONTROL_PLANE_01')">
+<div class="w-16 h-16 border-2 border-primary-fixed-dim node-pulse bg-surface-container-lowest/80 backdrop-blur flex flex-col items-center justify-center">
+<span class="material-symbols-outlined text-primary-fixed text-[32px]" data-icon="hub">hub</span>
+</div>
+<div class="mt-2 text-center">
+<p class="font-code-sm text-[10px] text-primary-fixed-dim">CNTRL-01</p>
+<p class="font-code-sm text-[9px] text-on-surface-variant">10.0.0.1</p>
+</div>
+<!-- SVG Connection Line -->
+<svg class="absolute top-8 left-16 w-32 h-32 pointer-events-none opacity-40">
+<line stroke="#00dbe9" stroke-dasharray="4 2" stroke-width="1" x1="0" x2="100" y1="0" y2="50"></line>
+</svg>
+</div>
+<!-- Node 2: Worker Node Alpha -->
+<div class="absolute top-1/2 left-2/3 group/node cursor-pointer" onclick="togglePodPanel('WORKER_ALPHA')">
+<div class="w-14 h-14 border border-outline-variant hover:border-primary-fixed bg-surface-container-lowest/80 backdrop-blur flex flex-col items-center justify-center transition-all">
+<span class="material-symbols-outlined text-on-surface-variant group-hover/node:text-primary-fixed transition-colors" data-icon="developer_board">developer_board</span>
+</div>
+<div class="mt-2 text-center">
+<p class="font-code-sm text-[10px] text-on-surface">WRK-ALPHA</p>
+<p class="font-code-sm text-[9px] text-on-surface-variant text-primary-fixed-dim">HEALTHY</p>
+</div>
+</div>
+<!-- Node 3: Worker Node Beta (Warning) -->
+<div class="absolute bottom-1/4 left-1/2 group/node cursor-pointer" onclick="togglePodPanel('WORKER_BETA')">
+<div class="w-14 h-14 border border-error/50 hover:border-error bg-surface-container-lowest/80 backdrop-blur flex flex-col items-center justify-center transition-all">
+<span class="material-symbols-outlined text-error animate-pulse" data-icon="warning">warning</span>
+</div>
+<div class="mt-2 text-center">
+<p class="font-code-sm text-[10px] text-error">WRK-BETA</p>
+<p class="font-code-sm text-[9px] text-error/80">LATENCY_CRITICAL</p>
+</div>
+</div>
+<!-- Additional Decorative Points -->
+<div class="absolute top-[20%] right-[15%] w-2 h-2 bg-primary-fixed/20 rounded-full"></div>
+<div class="absolute bottom-[30%] left-[10%] w-2 h-2 bg-primary-fixed/20 rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- POD MANAGER PANEL (Right Sidebar) -->
+<div class="col-span-4 row-span-6 bg-surface-container-low border border-outline-variant/30 flex flex-col overflow-hidden" id="pod-panel">
+<div class="h-6 bg-secondary-container/80 flex items-center px-3 justify-between">
+<span class="font-label-caps text-[10px] text-on-secondary-container font-bold">POD_MANAGER::ORCHESTRATOR</span>
+<span class="material-symbols-outlined text-[14px] text-on-secondary-container cursor-pointer" data-icon="close">close</span>
+</div>
+<div class="p-4 border-b border-outline-variant/20">
+<h2 class="font-headline-md text-headline-md text-primary-fixed mb-1" id="selected-node-id">WORKER_ALPHA</h2>
+<div class="flex gap-4">
+<div class="flex-1 bg-surface-container-highest p-2 border border-outline-variant/20">
+<p class="text-[9px] font-label-caps text-on-surface-variant mb-1">CPU LOAD</p>
+<div class="flex items-end gap-[1px] h-8">
+<div class="bg-primary-fixed-dim w-[2px] h-[60%]"></div>
+<div class="bg-primary-fixed-dim w-[2px] h-[40%]"></div>
+<div class="bg-primary-fixed-dim w-[2px] h-[80%]"></div>
+<div class="bg-primary-fixed-dim w-[2px] h-[90%]"></div>
+<div class="bg-primary-fixed-dim w-[2px] h-[30%]"></div>
+<div class="bg-primary-fixed-dim w-[2px] h-[70%]"></div>
+<div class="bg-primary-fixed-dim w-[2px] h-[55%]"></div>
+</div>
+</div>
+<div class="flex-1 bg-surface-container-highest p-2 border border-outline-variant/20">
+<p class="text-[9px] font-label-caps text-on-surface-variant mb-1">MEM USAGE</p>
+<div class="flex items-end gap-[1px] h-8">
+<div class="bg-secondary-fixed-dim w-[2px] h-[20%]"></div>
+<div class="bg-secondary-fixed-dim w-[2px] h-[35%]"></div>
+<div class="bg-secondary-fixed-dim w-[2px] h-[40%]"></div>
+<div class="bg-secondary-fixed-dim w-[2px] h-[42%]"></div>
+<div class="bg-secondary-fixed-dim w-[2px] h-[40%]"></div>
+<div class="bg-secondary-fixed-dim w-[2px] h-[38%]"></div>
+<div class="bg-secondary-fixed-dim w-[2px] h-[41%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Pod List -->
+<div class="flex-1 overflow-y-auto p-4 space-y-3">
+<div class="group border border-outline-variant/20 bg-surface-container/50 p-3 hover:border-primary-fixed transition-colors">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="font-code-sm text-on-surface text-[12px]">nginx-ingress-v2-54ff</p>
+<p class="text-[10px] text-on-surface-variant">NAMESPACE: DEFAULT</p>
+</div>
+<span class="px-2 py-[2px] bg-primary-container/20 text-primary-fixed-dim text-[9px] font-bold border border-primary-fixed/30">RUNNING</span>
+</div>
+<div class="flex gap-2">
+<div class="flex-1 h-1 bg-outline-variant/20 rounded-full overflow-hidden">
+<div class="bg-primary-fixed h-full w-[65%]"></div>
+</div>
+<span class="text-[9px] text-on-surface-variant font-code-sm">65%</span>
+</div>
+</div>
+<div class="group border border-outline-variant/20 bg-surface-container/50 p-3 hover:border-primary-fixed transition-colors">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="font-code-sm text-on-surface text-[12px]">redis-cache-shard-0</p>
+<p class="text-[10px] text-on-surface-variant">NAMESPACE: SYSTEM</p>
+</div>
+<span class="px-2 py-[2px] bg-primary-container/20 text-primary-fixed-dim text-[9px] font-bold border border-primary-fixed/30">RUNNING</span>
+</div>
+<div class="flex gap-2">
+<div class="flex-1 h-1 bg-outline-variant/20 rounded-full overflow-hidden">
+<div class="bg-primary-fixed h-full w-[12%]"></div>
+</div>
+<span class="text-[9px] text-on-surface-variant font-code-sm">12%</span>
+</div>
+</div>
+<div class="group border border-error/30 bg-error-container/10 p-3 hover:border-error transition-colors">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="font-code-sm text-error text-[12px]">auth-api-gateway-3</p>
+<p class="text-[10px] text-error/60 font-bold tracking-tight">CRASH_LOOP_BACKOFF</p>
+</div>
+<span class="material-symbols-outlined text-error text-[18px]" data-icon="error">error</span>
+</div>
+<p class="text-[9px] text-error/80 font-code-sm">RESTART_COUNT: 14 | EXIT_CODE: 1</p>
+<div class="mt-2 flex gap-2">
+<button class="bg-error text-[#0a0a0a] text-[10px] px-3 py-1 font-bold uppercase hover:bg-white transition-colors">RESTART</button>
+<button class="border border-error text-error text-[10px] px-3 py-1 font-bold uppercase hover:bg-error/20 transition-colors">LOGS</button>
+</div>
+</div>
+<div class="group border border-outline-variant/20 bg-surface-container/50 p-3 opacity-60">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="font-code-sm text-on-surface text-[12px]">analytics-worker-v8</p>
+<p class="text-[10px] text-on-surface-variant">NAMESPACE: DATA</p>
+</div>
+<span class="px-2 py-[2px] bg-surface-variant/40 text-on-surface-variant text-[9px] font-bold">PENDING</span>
+</div>
+<div class="flex gap-2 animate-pulse">
+<div class="flex-1 h-1 bg-outline-variant/20 rounded-full overflow-hidden">
+<div class="bg-on-surface-variant h-full w-[0%]"></div>
+</div>
+<span class="text-[9px] text-on-surface-variant font-code-sm">W_ALLOC</span>
+</div>
+</div>
+</div>
+<!-- Panel CTA -->
+<div class="p-4 border-t border-outline-variant/20 bg-surface-container-high">
+<button class="w-full bg-primary-fixed text-[#0a0a0a] py-3 font-bold font-label-caps text-center hover:bg-secondary-fixed transition-all active:scale-95">
+                    DEPLOY_NEW_RESOURCE
+                </button>
+</div>
+</div>
+<!-- TERMINAL LOGS (Bottom Area) -->
+<div class="col-span-8 row-span-2 bg-surface-container-lowest border border-outline-variant/30 flex flex-col overflow-hidden">
+<div class="h-6 bg-surface-variant/50 flex items-center px-3 justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px] text-primary-fixed" data-icon="terminal">terminal</span>
+<span class="font-label-caps text-[10px] text-on-surface-variant">KERNEL_EVENT_STREAM::LOG_CONSOLE</span>
+</div>
+<div class="flex gap-3">
+<span class="text-[9px] text-on-surface-variant font-code-sm">FILTERS: ERROR, WARN</span>
+<span class="text-[9px] text-primary-fixed font-code-sm">LIVE_AUTO_SCROLL: ON</span>
+</div>
+</div>
+<div class="flex-1 p-3 font-code-sm text-[12px] bg-black/40 overflow-y-auto leading-relaxed" id="terminal-stream">
+<p class="text-on-surface-variant"><span class="text-primary-fixed-dim">[14:22:01]</span> initializing k8s.sector3.seis_os.api_server...</p>
+<p class="text-on-surface-variant"><span class="text-primary-fixed-dim">[14:22:02]</span> handshake established with node WRK-ALPHA (10.0.0.12)</p>
+<p class="text-on-surface-variant"><span class="text-primary-fixed-dim">[14:22:04]</span> checking pod stability index...</p>
+<p class="text-error"><span class="text-primary-fixed-dim">[14:22:05]</span> [CRIT] pod auth-api-gateway-3 transitioned to CrashLoopBackOff</p>
+<p class="text-on-surface-variant"><span class="text-primary-fixed-dim">[14:22:07]</span> allocating resources for pending job: analytics-worker-v8</p>
+<p class="text-on-surface-variant"><span class="text-primary-fixed-dim">[14:22:09]</span> node WRK-BETA reports 140ms latency spikes in storage plane</p>
+<p class="text-secondary-fixed"><span class="text-primary-fixed-dim">[14:22:12]</span> agent SEIS_BOT_01 performing automated health check...</p>
+<p class="text-on-surface"><span class="text-primary-fixed-dim">[14:22:14]</span> root@seis-01: system_diagnostics --full --no-prompt</p>
+<p class="text-on-surface-variant"><span class="text-primary-fixed-dim">[14:22:15]</span> <span class="bg-primary-fixed/20 px-1">SYSTEM_OK</span> | uptime: 412d 14h 22m</p>
+<p class="text-primary-fixed-dim">seis_os &gt; <span class="cursor-blink">_</span></p>
+</div>
+</div>
+</main>
+<!-- Overlay UI Assets (FAB) -->
+<button class="fixed bottom-8 right-8 w-14 h-14 bg-secondary-container rounded-full shadow-2xl flex items-center justify-center text-on-secondary-container hover:scale-110 transition-transform z-50 group">
+<span class="material-symbols-outlined text-[28px]" data-icon="add">add</span>
+<div class="absolute right-16 px-3 py-1 bg-surface-container-highest border border-outline-variant/40 rounded text-[10px] font-label-caps opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap">
+            NEW_SESSION_NODE
+        </div>
+</button>
+<script>
+        // Micro-interaction logic
+        function togglePodPanel(nodeId) {
+            const panelTitle = document.getElementById('selected-node-id');
+            panelTitle.innerText = nodeId;
+            
+            // Highlight effect for the selected node (visual feedback)
+            const flash = document.createElement('div');
+            flash.className = 'fixed inset-0 bg-primary-fixed/5 pointer-events-none z-[100] animate-pulse';
+            document.body.appendChild(flash);
+            setTimeout(() => flash.remove(), 500);
+
+            // In a real app, we would fetch data here
+            console.log(`Switching view to Node: ${nodeId}`);
+        }
+
+        // Fake Terminal Stream
+        const terminal = document.getElementById('terminal-stream');
+        const messages = [
+            "[INFO] heartbeat detected from region-west-1",
+            "[WARN] storage-node-04 capacity at 88%",
+            "[EXEC] kubectl rollout status deployment/web-frontend",
+            "[CRIT] connection refused from auth-db-internal",
+            "[INFO] automatic scaling: increasing replica count for 'search-engine' to 5",
+            "[SYSTEM] rotating security certificates for kernel session SEIS-01"
+        ];
+
+        setInterval(() => {
+            const lastLine = terminal.querySelector('.cursor-blink').parentElement;
+            const newLine = document.createElement('p');
+            const time = new Date().toLocaleTimeString('en-GB', { hour12: false });
+            const msg = messages[Math.floor(Math.random() * messages.length)];
+            
+            newLine.className = msg.includes('CRIT') ? 'text-error' : 'text-on-surface-variant';
+            newLine.innerHTML = `<span class="text-primary-fixed-dim">[${time}]</span> ${msg}`;
+            
+            terminal.insertBefore(newLine, lastLine);
+            terminal.scrollTop = terminal.scrollHeight;
+        }, 4000);
+    </script>
+</body></html>

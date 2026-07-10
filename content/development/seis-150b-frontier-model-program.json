@@ -1,0 +1,144 @@
+{
+  "id": "seis-150b-frontier-model-program",
+  "version": "2026.06.24",
+  "status": "frontier-program-plan-only",
+  "updatedAt": "2026-06-24",
+  "resourceUri": "seis://ai/150b-frontier-model-program.json",
+  "qualityGate": "npm run check:seis-150b-frontier-model-program",
+  "purpose": "Define the evidence-gated SEIS AI 150B frontier model program without claiming trained weights, routeable inference, benchmark results, provider access, cloud/GPU execution, SSH execution, or production readiness.",
+  "truthBoundary": "Program charter and validation contract only. It does not download models, download datasets, train, fine-tune, run inference, run benchmarks, publish checkpoints, call providers, provision cloud/GPU resources, execute SSH, deploy infrastructure, or claim SEIS owns a trained 150B foundation model.",
+  "coreCredentialRequirement": "none",
+  "defaultRuntimeMode": "seis-local-demo",
+  "routeEligibleToday": false,
+  "runtimeAuthority": false,
+  "trainingStatus": "not-started",
+  "weightsAvailable": false,
+  "inferenceAvailable": false,
+  "benchmarkStatus": "not-run",
+  "productionReady": false,
+  "sourceOfTruth": {
+    "modelScalingProfile": "content/development/seis-model-scaling-hardware-profile.json",
+    "parameterLadder": "content/development/seis-model-parameter-ladder.json",
+    "frontierEscalationPolicy": "content/development/seis-model-frontier-escalation-policy.json",
+    "modelScalingSubagentCouncil": "content/development/seis-model-scaling-subagent-council.json",
+    "modelScalingDoc": "docs/ai/seis-model-scaling.md",
+    "aiCoreDoc": "docs/ai/seis-ai-core.md",
+    "modelRouterDoc": "docs/ai/model-router.md"
+  },
+  "target": {
+    "id": "seis-150b-frontier-research-target",
+    "displayName": "SEIS AI 150B Frontier Program",
+    "parameterClass": "150B",
+    "parameterCountBillion": 150,
+    "horizon": "frontier-research",
+    "hardwareClass": "approved distributed, multi-accelerator, or cloud research runtime after review",
+    "allowedToday": "Local Demo status, planning, evidence mapping, and validator-backed documentation only",
+    "minimumPrerequisite": "20B and 70B evidence accepted before any 150B runtime or training scope"
+  },
+  "programStages": [
+    {
+      "id": "stage-0-charter",
+      "label": "Frontier charter",
+      "status": "planned",
+      "routeEligibleToday": false,
+      "requiredEvidence": ["human-approved 150B charter", "scope owner", "non-claim language review"]
+    },
+    {
+      "id": "stage-1-clean-room-data",
+      "label": "Clean-room data governance",
+      "status": "blocked-until-20b-70b-evidence",
+      "routeEligibleToday": false,
+      "requiredEvidence": ["dataset provenance", "license and rights review", "PII review", "contamination-control plan"]
+    },
+    {
+      "id": "stage-2-architecture-selection",
+      "label": "Architecture selection",
+      "status": "not-selected",
+      "routeEligibleToday": false,
+      "requiredEvidence": ["architecture search plan", "tokenizer plan", "context-length plan", "training objective review"]
+    },
+    {
+      "id": "stage-3-distributed-runtime",
+      "label": "Distributed runtime and budget",
+      "status": "not-provisioned",
+      "routeEligibleToday": false,
+      "requiredEvidence": ["hardware plan", "cost ceiling", "observability plan", "kill-switch plan", "rollback and cost-stop plan"]
+    },
+    {
+      "id": "stage-4-training-readiness",
+      "label": "Training readiness",
+      "status": "not-authorized",
+      "routeEligibleToday": false,
+      "requiredEvidence": ["training runbook", "redacted logging plan", "checkpoint governance", "approval record"]
+    },
+    {
+      "id": "stage-5-evaluation-and-safety",
+      "label": "Evaluation and safety",
+      "status": "not-run",
+      "routeEligibleToday": false,
+      "requiredEvidence": ["independent eval suite", "misuse and safety review", "privacy review", "regression suite", "model card"]
+    }
+  ],
+  "architecturePlan": {
+    "status": "not-selected",
+    "candidateFamilies": ["dense-transformer", "mixture-of-experts", "hybrid-retrieval-augmented"],
+    "selectionRule": "No architecture family can be selected until the 20B and 70B evidence gates, clean-room data review, hardware budget, safety review, and human approval are complete.",
+    "nonClaims": [
+      "No tokenizer has been selected.",
+      "No 150B checkpoint exists.",
+      "No 150B runtime adapter is approved.",
+      "No 150B benchmark has been run."
+    ]
+  },
+  "agentCouncil": {
+    "status": "plan-only",
+    "source": "content/development/seis-model-scaling-subagent-council.json",
+    "leadAgents": ["architect-agent", "research-agent", "cloud-agent", "security-agent", "qa-agent"],
+    "forbiddenActions": ["model download", "dataset download", "training run", "fine-tuning run", "benchmark execution", "provider credential setup", "GPU or cloud provisioning", "SSH execution", "deployment"]
+  },
+  "promotionGates": [
+    "20B evidence accepted",
+    "70B evidence accepted",
+    "clean-room frontier training plan accepted",
+    "dataset provenance and contamination-control accepted",
+    "distributed runtime budget accepted",
+    "observability, kill-switch, rollback, and cost-stop plan accepted",
+    "safety, misuse, privacy, and regression eval plan accepted",
+    "explicit human approval recorded"
+  ],
+  "fallbackPolicy": {
+    "fallbackRuntime": "seis-local-demo",
+    "silentCloudFallbackAllowed": false,
+    "missingKeyIsError": false,
+    "providerAndModelMustBeVisible": true,
+    "localOnlyModeMustBeRespected": true
+  },
+  "forbiddenClaimRules": [
+    "no-trained-150b-weights-claim",
+    "no-routeable-150b-inference-claim",
+    "no-150b-benchmark-claim",
+    "no-provider-wrapper-as-foundation-model-claim",
+    "no-subagent-approval-as-runtime-authority-claim"
+  ],
+  "humanApprovalRequiredFor": [
+    "model download",
+    "dataset download",
+    "runtime adapter execution",
+    "benchmark execution",
+    "training run",
+    "fine-tuning run",
+    "checkpoint publication",
+    "provider credential setup",
+    "GPU or cloud provisioning",
+    "SSH execution",
+    "deployment",
+    "public model or dataset release",
+    "route eligibility change"
+  ],
+  "nextSafeActions": [
+    "Keep 150B visible as a frontier program, not a routeable model.",
+    "Use this program to coordinate clean-room, safety, budget, observability, and rollback evidence.",
+    "Do not scope 150B runtime until 20B and 70B gates are accepted.",
+    "Validate with npm run check:seis-150b-frontier-model-program."
+  ]
+}

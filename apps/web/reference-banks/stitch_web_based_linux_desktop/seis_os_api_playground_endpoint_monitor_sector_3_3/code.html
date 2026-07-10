@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS - API Playground</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container": "#1e2020",
+                    "outline": "#849495",
+                    "primary-fixed": "#7df4ff",
+                    "on-secondary-fixed": "#320047",
+                    "on-tertiary-container": "#605e5e",
+                    "on-primary-fixed": "#002022",
+                    "inverse-surface": "#e2e2e2",
+                    "on-tertiary-fixed-variant": "#474646",
+                    "surface-container-highest": "#333535",
+                    "inverse-on-surface": "#2f3131",
+                    "on-primary-container": "#006970",
+                    "tertiary-container": "#dcd9d8",
+                    "surface-bright": "#37393a",
+                    "on-secondary-fixed-variant": "#74009f",
+                    "surface": "#121414",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "on-error": "#690005",
+                    "surface-tint": "#00dbe9",
+                    "on-primary-fixed-variant": "#004f54",
+                    "tertiary-fixed": "#e5e2e1",
+                    "surface-variant": "#333535",
+                    "outline-variant": "#3b494b",
+                    "on-background": "#e2e2e2",
+                    "error-container": "#93000a",
+                    "tertiary": "#f9f5f5",
+                    "surface-container-lowest": "#0c0f0f",
+                    "tertiary-fixed-dim": "#c9c6c5",
+                    "secondary": "#ebb2ff",
+                    "surface-dim": "#121414",
+                    "background": "#121414",
+                    "on-error-container": "#ffdad6",
+                    "surface-container-low": "#1a1c1c",
+                    "primary": "#dbfcff",
+                    "error": "#ffb4ab",
+                    "primary-fixed-dim": "#00dbe9",
+                    "on-tertiary": "#313030",
+                    "secondary-container": "#ce5dff",
+                    "secondary-fixed": "#f8d8ff",
+                    "primary-container": "#00f0ff",
+                    "on-surface-variant": "#b9cacb",
+                    "on-surface": "#e2e2e2",
+                    "inverse-primary": "#006970",
+                    "secondary-fixed-dim": "#ebb2ff",
+                    "on-primary": "#00363a",
+                    "surface-container-high": "#282a2b",
+                    "on-secondary-container": "#480064",
+                    "on-secondary": "#520071"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gap-lg": "24px",
+                    "stroke-thin": "1px",
+                    "gap-xs": "4px",
+                    "gap-md": "16px",
+                    "stroke-thick": "2px",
+                    "margin-page": "32px",
+                    "gap-sm": "8px"
+            },
+            "fontFamily": {
+                    "body-md": ["JetBrains Mono"],
+                    "headline-md": ["JetBrains Mono"],
+                    "body-lg": ["JetBrains Mono"],
+                    "headline-lg": ["JetBrains Mono"],
+                    "label-sm": ["Space Mono"],
+                    "label-caps": ["Space Mono"],
+                    "code-sm": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                    "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0c0f0f;
+            color: #e2e2e2;
+            overflow: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #849495;
+            border-radius: 2px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #7df4ff;
+        }
+        .glitch-text {
+            animation: glitch 2s infinite;
+        }
+        @keyframes glitch {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+        .scanline {
+            background: linear-gradient(to bottom, rgba(125, 244, 255, 0.03) 50%, rgba(0, 0, 0, 0) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+        .glass-obsidian {
+            background: linear-gradient(135deg, rgba(26, 28, 28, 0.8) 0%, rgba(12, 15, 15, 0.95) 100%);
+            backdrop-filter: blur(12px);
+        }
+        .endpoint-active {
+            box-shadow: 0 0 10px rgba(125, 244, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md selection:bg-secondary-container/30">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full h-10 flex justify-between items-center px-6 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 z-50">
+<div class="flex items-center gap-6">
+<span class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">WORKSPACES</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">TELEMETRY</a>
+<a class="font-label-caps text-label-caps text-primary-fixed border-b border-primary-fixed pb-1 cursor-pointer active:opacity-70" href="#">AGENTS</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">NETWORK</a>
+</nav>
+</div>
+<div class="flex items-center gap-4 text-primary-fixed">
+<span class="material-symbols-outlined text-sm cursor-pointer active:opacity-70">memory</span>
+<span class="material-symbols-outlined text-sm cursor-pointer active:opacity-70">terminal</span>
+<span class="material-symbols-outlined text-sm cursor-pointer active:opacity-70">settings</span>
+</div>
+</header>
+<!-- Side Navigation Bar -->
+<aside class="fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 w-20 hover:w-64 group transition-all duration-300">
+<div class="flex flex-col flex-grow py-4">
+<div class="px-4 mb-8 flex items-center gap-4">
+<div class="w-10 h-10 bg-outline-variant/30 rounded flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary-fixed">person</span>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 overflow-hidden whitespace-nowrap">
+<div class="font-label-caps text-secondary-fixed">ROOT_USER</div>
+<div class="font-code-sm text-code-sm text-outline">SEIS-01</div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed transition-all duration-150">
+<span class="material-symbols-outlined shrink-0" data-icon="dashboard">dashboard</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps whitespace-nowrap">DASHBOARD</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed transition-all duration-150">
+<span class="material-symbols-outlined shrink-0" data-icon="folder_open">folder_open</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps whitespace-nowrap">FILESYSTEM</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed transition-all duration-150">
+<span class="material-symbols-outlined shrink-0" data-icon="terminal">terminal</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps whitespace-nowrap">TERMINAL</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed transition-all duration-150">
+<span class="material-symbols-outlined shrink-0" data-icon="smart_toy">smart_toy</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps whitespace-nowrap">AI_AGENTS</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed transition-all duration-150">
+<span class="material-symbols-outlined shrink-0" data-icon="cloud_queue">cloud_queue</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps whitespace-nowrap">INFRASTRUCTURE</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed transition-all duration-150">
+<span class="material-symbols-outlined shrink-0" data-icon="list_alt">list_alt</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps whitespace-nowrap">LOGS</span>
+</div>
+</div>
+</div>
+<div class="p-4 border-t border-outline-variant/20">
+<button class="w-full bg-secondary-container/20 text-secondary-fixed py-2 rounded font-label-caps text-label-caps hover:bg-secondary-container/40 transition-colors hidden group-hover:block">
+                NEW_SESSION
+            </button>
+<div class="flex flex-col gap-4 mt-4">
+<div class="flex items-center px-4 py-2 cursor-pointer text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined" data-icon="power_settings_new">power_settings_new</span>
+</div>
+<div class="flex items-center px-4 py-2 cursor-pointer text-on-surface-variant hover:text-primary-fixed transition-colors">
+<span class="material-symbols-outlined" data-icon="lock">lock</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-20 mt-10 h-[calc(100vh-40px)] p-6 grid grid-cols-12 gap-4 relative">
+<div class="scanline absolute inset-0 z-0"></div>
+<!-- Left Pane: Request & Playground (8 columns) -->
+<div class="col-span-8 flex flex-col gap-4 z-10">
+<!-- Request Panel -->
+<section class="glass-obsidian border border-outline-variant/30 overflow-hidden flex flex-col h-1/2">
+<div class="h-8 bg-primary-fixed flex items-center justify-between px-4">
+<span class="font-label-caps text-label-caps text-surface-container-lowest">ENDPOINT_REQUEST_PANE</span>
+<div class="flex gap-2">
+<div class="w-2 h-2 rounded-full bg-surface-container-lowest/30"></div>
+<div class="w-2 h-2 rounded-full bg-surface-container-lowest/30"></div>
+</div>
+</div>
+<div class="flex-grow p-4 space-y-4">
+<div class="flex gap-2">
+<select class="bg-surface-container-high border border-outline-variant/50 text-primary-fixed font-code-sm text-code-sm rounded px-3 py-2 outline-none focus:border-primary-fixed transition-all">
+<option>POST</option>
+<option>GET</option>
+<option>PUT</option>
+<option>DELETE</option>
+</select>
+<input class="flex-grow bg-surface-container-high border border-outline-variant/50 text-white font-code-sm text-code-sm rounded px-3 py-2 focus:ring-0 focus:border-primary-fixed transition-all outline-none" type="text" value="https://api.seis-kernel.sys/v1/telemetry/sector-03/agents/deploy"/>
+<button class="bg-primary-fixed text-surface-container-lowest px-6 py-2 font-label-caps text-label-caps hover:bg-secondary-fixed transition-all active:scale-95">SEND_PACKET</button>
+</div>
+<div class="grid grid-cols-2 gap-4 h-full pb-8">
+<div class="flex flex-col gap-2">
+<span class="font-label-caps text-label-caps text-outline">HEADERS</span>
+<div class="flex-grow bg-surface-container-lowest border border-outline-variant/20 p-2 font-code-sm text-code-sm overflow-y-auto custom-scrollbar">
+<div class="text-secondary-fixed-dim">Authorization: <span class="text-on-surface">Bearer SEIS_PROT_9921...</span></div>
+<div class="text-secondary-fixed-dim">Content-Type: <span class="text-on-surface">application/json</span></div>
+<div class="text-secondary-fixed-dim">X-Sector-ID: <span class="text-on-surface">SECTOR_03</span></div>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<span class="font-label-caps text-label-caps text-outline">BODY_JSON</span>
+<div class="flex-grow bg-surface-container-lowest border border-outline-variant/20 p-2 font-code-sm text-code-sm overflow-y-auto custom-scrollbar">
+<pre class="text-on-surface-variant"><span class="text-primary-fixed">{</span>
+  <span class="text-secondary">"agent_id"</span>: <span class="text-on-surface">"X-9"</span>,
+  <span class="text-secondary">"action"</span>: <span class="text-on-surface">"SURVEILLANCE"</span>,
+  <span class="text-secondary">"parameters"</span>: <span class="text-primary-fixed">{</span>
+    <span class="text-secondary">"mode"</span>: <span class="text-on-surface">"STEALTH"</span>,
+    <span class="text-secondary">"priority"</span>: <span class="text-on-surface">1</span>
+  <span class="text-primary-fixed">}</span>
+<span class="text-primary-fixed">}</span></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Response Panel -->
+<section class="glass-obsidian border border-outline-variant/30 overflow-hidden flex flex-col h-1/2">
+<div class="h-8 bg-surface-container-high flex items-center justify-between px-4">
+<div class="flex items-center gap-4">
+<span class="font-label-caps text-label-caps text-outline">SYSTEM_RESPONSE</span>
+<span class="text-green-400 font-code-sm text-code-sm">200 OK [124ms]</span>
+</div>
+<span class="material-symbols-outlined text-outline text-sm cursor-pointer">content_copy</span>
+</div>
+<div class="flex-grow p-4 font-code-sm text-code-sm overflow-y-auto custom-scrollbar bg-[#080a0a]">
+<pre class="text-on-surface-variant"><span class="text-outline-variant">// RESPONSE DATA STREAM //</span>
+{
+  <span class="text-secondary">"status"</span>: <span class="text-primary-fixed">"success"</span>,
+  <span class="text-secondary">"transaction_id"</span>: <span class="text-on-surface">"77-XF-001"</span>,
+  <span class="text-secondary">"timestamp"</span>: <span class="text-on-surface">"2024-05-22T14:42:01Z"</span>,
+  <span class="text-secondary">"payload"</span>: {
+    <span class="text-secondary">"deployment_ready"</span>: <span class="text-primary-fixed">true</span>,
+    <span class="text-secondary">"agent_link"</span>: <span class="text-on-surface">"SYNC_ESTABLISHED"</span>,
+    <span class="text-secondary">"latency"</span>: <span class="text-on-surface">"2ms"</span>
+  }
+}
+<span class="animate-pulse">_</span></pre>
+</div>
+</section>
+</div>
+<!-- Right Pane: Health & Telemetry (4 columns) -->
+<div class="col-span-4 flex flex-col gap-4 z-10">
+<!-- Health Grid -->
+<section class="glass-obsidian border border-outline-variant/30 p-4 h-1/3">
+<h3 class="font-label-caps text-label-caps text-primary-fixed mb-4">ENDPOINT_HEALTH_MONITOR</h3>
+<div class="grid grid-cols-4 gap-2">
+<!-- Dynamic Health Blocks -->
+<script>
+                        const generateHealthGrid = () => {
+                            let html = '';
+                            for(let i=0; i<16; i++) {
+                                const status = Math.random() > 0.1 ? 'bg-primary-fixed/40' : 'bg-error/40';
+                                html += `<div class="aspect-square ${status} border border-outline-variant/30 relative group overflow-hidden">
+                                    <div class="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                    <div class="absolute bottom-1 right-1 text-[8px] font-code-sm text-white/50">${i.toString(16).toUpperCase()}</div>
+                                </div>`;
+                            }
+                            document.write(html);
+                        }
+                        generateHealthGrid();
+                    </script>
+</div>
+<div class="mt-4 flex justify-between text-[10px] font-code-sm text-outline">
+<div class="flex items-center gap-1">
+<div class="w-2 h-2 bg-primary-fixed/40"></div>
+<span>NOMINAL</span>
+</div>
+<div class="flex items-center gap-1">
+<div class="w-2 h-2 bg-error/40"></div>
+<span>FAULT</span>
+</div>
+<span>TOTAL_SYSTEM_UPTIME: 99.98%</span>
+</div>
+</section>
+<!-- Live Telemetry Stream -->
+<section class="glass-obsidian border border-outline-variant/30 flex-grow flex flex-col overflow-hidden">
+<div class="h-8 border-b border-outline-variant/20 flex items-center px-4 justify-between">
+<span class="font-label-caps text-label-caps text-outline">LIVE_TELEMETRY</span>
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-ping"></span>
+<span class="text-[10px] font-code-sm text-secondary">ACTIVE</span>
+</div>
+</div>
+<div class="flex-grow p-2 font-code-sm text-[11px] overflow-y-auto custom-scrollbar flex flex-col-reverse gap-1" id="telemetry-feed">
+<!-- Logs populated via JS -->
+</div>
+</section>
+<!-- Performance Visualizer -->
+<section class="glass-obsidian border border-outline-variant/30 p-4 h-48 relative overflow-hidden">
+<div class="absolute inset-0 opacity-20">
+
+</div>
+<div class="relative z-10 h-full flex flex-col">
+<div class="flex justify-between items-start">
+<div class="font-label-caps text-label-caps text-primary-fixed">CORE_TRAFFIC_IO</div>
+<div class="font-code-sm text-code-sm text-secondary">2.4 GB/s</div>
+</div>
+<div class="mt-auto space-y-2">
+<div class="flex justify-between items-end">
+<div class="flex gap-0.5">
+<script>
+                                    for(let i=0; i<32; i++) {
+                                        const h = Math.floor(Math.random() * 40) + 10;
+                                        document.write(`<div class="w-1 bg-primary-fixed/60" style="height: ${h}px"></div>`);
+                                    }
+                                </script>
+</div>
+</div>
+<div class="h-1 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary-fixed to-secondary-fixed w-3/4 animate-pulse"></div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Floating Action Indicators -->
+<div class="fixed bottom-6 right-6 flex flex-col gap-3 z-50">
+<button class="w-12 h-12 glass-obsidian border border-primary-fixed/40 rounded flex items-center justify-center text-primary-fixed hover:bg-primary-fixed hover:text-surface-container-lowest transition-all">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="w-12 h-12 glass-obsidian border border-secondary-fixed/40 rounded flex items-center justify-center text-secondary-fixed hover:bg-secondary-fixed hover:text-surface-container-lowest transition-all">
+<span class="material-symbols-outlined">history</span>
+</button>
+</div>
+<script>
+        // Simulated Telemetry Feed
+        const feed = document.getElementById('telemetry-feed');
+        const methods = ['POST', 'GET', 'PUT', 'PATCH', 'DELETE'];
+        const paths = ['/auth/login', '/users/profile', '/telemetry/sector-03', '/agents/deploy', '/logs/kernel'];
+        
+        function addLog() {
+            const method = methods[Math.floor(Math.random() * methods.length)];
+            const path = paths[Math.floor(Math.random() * paths.length)];
+            const status = Math.random() > 0.1 ? 200 : 500;
+            const time = Math.floor(Math.random() * 200) + 10;
+            
+            const logEntry = document.createElement('div');
+            logEntry.className = 'flex items-center gap-2 py-0.5 border-b border-white/5 opacity-0 transition-opacity duration-500';
+            logEntry.innerHTML = `
+                <span class="text-[9px] text-outline opacity-50">${new Date().toLocaleTimeString([], {hour12: false})}</span>
+                <span class="${method === 'POST' ? 'text-primary-fixed' : 'text-secondary-fixed'} font-bold w-10">${method}</span>
+                <span class="text-on-surface truncate flex-grow">${path}</span>
+                <span class="${status === 200 ? 'text-green-400' : 'text-error'}">${status}</span>
+                <span class="text-outline text-[9px]">${time}ms</span>
+            `;
+            
+            feed.prepend(logEntry);
+            setTimeout(() => logEntry.classList.remove('opacity-0'), 10);
+            
+            if (feed.children.length > 25) {
+                feed.removeChild(feed.lastChild);
+            }
+        }
+
+        setInterval(addLog, 1500);
+        addLog(); addLog(); addLog();
+
+        // Interactive micro-interaction for Health Grid
+        document.querySelectorAll('.aspect-square').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                el.classList.add('endpoint-active', 'scale-105', 'z-20');
+            });
+            el.addEventListener('mouseleave', () => {
+                el.classList.remove('endpoint-active', 'scale-105', 'z-20');
+            });
+        });
+    </script>
+</body></html>

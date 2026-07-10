@@ -1,0 +1,121 @@
+{
+  "id": "seis-public-demo-release-checklist-pr54",
+  "title": "SEIS Public Demo Release Checklist After PR 54 Review",
+  "status": "review-gated-not-released",
+  "version": "2026-06-24",
+  "pullRequest": {
+    "number": 54,
+    "url": "https://github.com/emirhankudun-ux/SEIS/pull/54",
+    "base": "main",
+    "head": "codex/seis-demo-github-upload-20260624",
+    "requiredState": "reviewed before merge or public release"
+  },
+  "qualityGate": "npm run check:seis-second-brain-readiness-contracts",
+  "releaseDecision": "not ready until checklist gates pass",
+  "requiredValidation": [
+    "npm run check:seis-public-demo-go-no-go -- --run-fast-checks",
+    "npm run report:seis-public-demo-go-no-go",
+    "npm run check:seis-obsidian-safe-import-dry-run",
+    "npm run report:seis-obsidian-safe-import-dry-run",
+    "npm run check:seis-read-only-model-router-decision",
+    "npm run report:seis-read-only-model-router-decision",
+    "npm run check:seis-second-brain-accessibility-focus-report",
+    "npm run report:seis-second-brain-accessibility-focus-report",
+    "npm run check:seis-second-brain-agent-registry",
+    "npm run report:seis-second-brain-agent-registry",
+    "npm run check:seis-second-brain",
+    "npm run check:seis-second-brain-browser-smoke",
+    "npm run check:seis-second-brain-readiness-contracts",
+    "npm run check:desktop-os",
+    "npm run check:desktop-os-browser-smoke",
+    "npm run check:seis-ultimate-demo",
+    "npm run check:product-experience-browser-smoke",
+    "npm run check:seis-fullstack-contract",
+    "npm run check:seis-fullstack-server-smoke",
+    "npm run check:seis-fullstack-no-server-fallback-smoke",
+    "npm run check:seis-model-scaling-hardware-profile",
+    "npm test",
+    "git diff --check"
+  ],
+  "requiredArtifacts": [
+    "reports/seis-public-demo/go-no-go-latest.json",
+    "reports/seis-public-demo/go-no-go-latest.md",
+    "reports/seis-public-demo/evidence-manifest-latest.json",
+    "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json",
+    "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md",
+    "reports/seis-public-demo/read-only-model-router-decision-latest.json",
+    "reports/seis-public-demo/read-only-model-router-decision-latest.md",
+    "reports/seis-public-demo/second-brain-accessibility-focus-latest.json",
+    "reports/seis-public-demo/second-brain-accessibility-focus-latest.md",
+    "reports/seis-public-demo/second-brain-agent-registry-latest.json",
+    "reports/seis-public-demo/second-brain-agent-registry-latest.md",
+    "reports/seis-public-demo/pr54-review-packet-latest.md",
+    "reports/seis-public-demo/worktree-review-latest.md",
+    "reports/seis-public-demo/pr54-stage-plan-latest.md"
+  ],
+  "postPr54ReviewPacket": {
+    "status": "required-before-release",
+    "artifact": "reports/seis-public-demo/pr54-review-packet-latest.md",
+    "mustAnswer": [
+      "Does the release candidate have current browser-smoke evidence?",
+      "Is the dirty worktree a coherent release-candidate slice?",
+      "Has the human owner explicitly approved public release?",
+      "Are Obsidian import, live provider routing, SSH, deployment, and GitHub publication still disabled unless separately approved?"
+    ],
+    "allowedOutcomes": [
+      "NO-GO review-gated-not-released",
+      "GO after strict gate, current browser evidence, clean review, and explicit approval"
+    ]
+  },
+  "stagePlan": {
+    "status": "required-before-commit",
+    "artifact": "reports/seis-public-demo/pr54-stage-plan-latest.md",
+    "purpose": "Separate the Second Brain readiness / PR #54 gate slice from NVIDIA, Google Workspace, reference-bank, and other unrelated dirty workstreams before any commit.",
+    "mustRemainReadOnly": true,
+    "requiresHumanRunGitCommands": true,
+    "blockedWithoutReview": [
+      "staging excluded separate-workstream paths",
+      "committing dirty tree without path review",
+      "push, merge, release, Pages publication, deployment, SSH, Obsidian import, or live provider routing"
+    ]
+  },
+  "requiredReviews": [
+    "PR 54 code review",
+    "Second Brain accessibility/focus QA",
+    "Obsidian safe import contract review",
+    "provider-neutral model-router boundary review",
+    "security/no-secret review",
+    "mock versus real status review",
+    "public docs clarity review",
+    "release rollback review"
+  ],
+  "blockedActions": [
+    "merge to main without approval",
+    "GitHub Pages publication without approval",
+    "public release tag without approval",
+    "Obsidian private vault import",
+    "live provider routing",
+    "SSH execution",
+    "deployment",
+    "claiming production readiness"
+  ],
+  "approvalNeeded": [
+    "merge PR 54",
+    "public demo release",
+    "GitHub Pages update",
+    "release tag",
+    "live provider enablement",
+    "private Obsidian import",
+    "SSH or deployment action"
+  ],
+  "goNoGoCriteria": [
+    "all required validation passes on the release candidate",
+    "npm run check:seis-public-demo-go-no-go:strict reports GO after human approval and current browser-smoke evidence",
+    "worktree has no unrelated release-blocking dirty files",
+    "no secret-like values or private vault content are committed",
+    "Second Brain import and accessibility gates are documented",
+    "router remains read-only and provider-neutral",
+    "all mock, local demo, planned, disabled, and real states are labelled",
+    "human owner approves release"
+  ]
+}

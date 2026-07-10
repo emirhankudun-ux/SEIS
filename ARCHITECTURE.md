@@ -1,5 +1,10 @@
 # SEIS Architecture
 
+Canonical operational boundaries are maintained in
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). The detail below remains a
+compatibility reference and may not supersede root `AGENTS.md` Enterprise v4.0
+or the canonical architecture entry point.
+
 SEIS is an AI-native creative engineering operating system and operating layer.
 Its architecture is organized around calm coordination: repository governance,
 command center experience, AI-agent workflows, documentation, automation, cloud

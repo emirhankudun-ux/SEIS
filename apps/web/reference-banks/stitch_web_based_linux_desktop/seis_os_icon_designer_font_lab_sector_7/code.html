@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS — Icon Designer &amp; Font Lab (Sector 7)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#282a2b",
+                        "surface-container": "#1e2020",
+                        "on-secondary": "#520071",
+                        "on-primary-fixed-variant": "#004f54",
+                        "background": "#121414",
+                        "outline": "#849495",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-primary-fixed": "#002022",
+                        "on-background": "#e2e2e2",
+                        "inverse-surface": "#e2e2e2",
+                        "on-primary": "#00363a",
+                        "tertiary-container": "#dcd9d8",
+                        "surface-variant": "#333535",
+                        "error": "#ffb4ab",
+                        "surface-container-highest": "#333535",
+                        "primary-fixed-dim": "#00dbe9",
+                        "secondary-fixed": "#f8d8ff",
+                        "inverse-on-surface": "#2f3131",
+                        "on-error-container": "#ffdad6",
+                        "secondary": "#ebb2ff",
+                        "on-error": "#690005",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "on-tertiary-container": "#605e5e",
+                        "surface-dim": "#121414",
+                        "on-primary-container": "#006970",
+                        "surface-container-low": "#1a1c1c",
+                        "surface": "#121414",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "surface-tint": "#00dbe9",
+                        "secondary-container": "#ce5dff",
+                        "on-secondary-fixed": "#320047",
+                        "surface-container-lowest": "#0c0f0f",
+                        "primary-container": "#00f0ff",
+                        "on-secondary-container": "#480064",
+                        "tertiary-fixed": "#e5e2e1",
+                        "primary": "#dbfcff",
+                        "inverse-primary": "#006970",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "surface-bright": "#37393a",
+                        "primary-fixed": "#7df4ff",
+                        "on-surface": "#e2e2e2",
+                        "on-surface-variant": "#b9cacb",
+                        "tertiary": "#f9f5f5",
+                        "outline-variant": "#3b494b",
+                        "on-tertiary": "#313030",
+                        "error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gap-sm": "8px",
+                        "stroke-thick": "2px",
+                        "gap-md": "16px",
+                        "gap-lg": "24px",
+                        "stroke-thin": "1px",
+                        "gap-xs": "4px",
+                        "margin-page": "32px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["JetBrains Mono"],
+                        "label-sm": ["Space Mono"],
+                        "headline-lg": ["JetBrains Mono"],
+                        "code-sm": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "code-sm": ["13px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Tiling Window Manager Feel */
+        body {
+            background-color: #0a0a0a; /* Deep black level 0 */
+            color: #e2e2e2;
+            overflow-x: hidden;
+        }
+
+        /* Tiling Gaps & Grid */
+        .tile-grid {
+            display: grid;
+            gap: 16px; /* Desktop standard gap */
+            padding: 16px;
+            grid-template-columns: repeat(12, minmax(0, 1fr));
+        }
+
+        /* Tile Style */
+        .tile {
+            background-color: rgba(18, 20, 20, 0.85); /* Level 1 Window/Tile */
+            border: 1px solid #333333;
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .tile:focus-within, .tile.focused {
+            border-color: #dbfcff; /* Primary Cyan */
+        }
+
+        /* Tile Header */
+        .tile-header {
+            height: 24px;
+            background-color: #dbfcff; /* Primary Cyan */
+            color: #0a0a0a; /* Black text */
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            font-family: "Space Mono", monospace;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* Terminal Panel Specific */
+        .terminal-panel {
+            background-color: #0c0f0f;
+            color: #b9cacb;
+        }
+
+        .blinking-cursor::after {
+            content: '█';
+            animation: blink 1s step-end infinite;
+            color: #dbfcff;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Scrollbar styling for that riced look */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121414;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333535;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #dbfcff;
+        }
+
+        /* Input specific styling overriding tailwind forms for consistency */
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 12px;
+            width: 4px;
+            background: #dbfcff;
+            cursor: pointer;
+            margin-top: -5px;
+        }
+
+        input[type="range"]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 2px;
+            cursor: pointer;
+            background: #333333;
+        }
+        
+        input[type="range"]:focus::-webkit-slider-runnable-track {
+            background: #dbfcff;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md h-screen flex flex-col overflow-hidden">
+<!-- TopNavBar (Shared Component) -->
+<nav class="bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 flex justify-between items-center w-full px-gap-md h-10 shrink-0 z-50">
+<div class="flex items-center gap-gap-md h-full">
+<span class="font-label-sm text-label-sm tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</span>
+<div class="hidden md:flex h-full ml-gap-lg">
+<div class="h-full px-gap-sm flex items-center justify-center cursor-pointer active:opacity-70 text-on-surface-variant font-label-sm hover:text-primary-fixed transition-colors duration-200">
+<span>WORKSPACES</span>
+</div>
+<div class="h-full px-gap-sm flex items-center justify-center cursor-pointer active:opacity-70 text-on-surface-variant font-label-sm hover:text-primary-fixed transition-colors duration-200">
+<span>TELEMETRY</span>
+</div>
+<!-- Assuming 'AGENTS' maps vaguely to this tool or it's a separate utility, but highlighting one. Let's not highlight any as it's a specific 'Sector 7' tool, hiding nav logic. Wait, instructions say: "If designing a user settings page, Profile is active. If search, Explore is active." We don't have a direct match. Let's leave inactive. -->
+<div class="h-full px-gap-sm flex items-center justify-center cursor-pointer active:opacity-70 text-primary-fixed border-b border-primary-fixed pb-1 font-label-sm hover:text-primary-fixed transition-colors duration-200">
+<span>AGENTS</span> <!-- Fallback highlight -->
+</div>
+<div class="h-full px-gap-sm flex items-center justify-center cursor-pointer active:opacity-70 text-on-surface-variant font-label-sm hover:text-primary-fixed transition-colors duration-200">
+<span>NETWORK</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-gap-md">
+<!-- Search bar right placeholder -->
+<div class="hidden md:flex border border-outline-variant/30 px-2 py-1 flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">search</span>
+<input class="bg-transparent border-none outline-none text-code-sm font-code-sm text-on-surface w-40 placeholder:text-outline focus:ring-0 p-0" placeholder="grep /system/assets..." type="text"/>
+</div>
+<div class="flex items-center gap-gap-sm">
+<button class="p-1 text-on-surface-variant hover:text-primary-fixed transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="memory">memory</span>
+</button>
+<button class="p-1 text-on-surface-variant hover:text-primary-fixed transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="terminal">terminal</span>
+</button>
+<button class="p-1 text-on-surface-variant hover:text-primary-fixed transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="settings">settings</span>
+</button>
+</div>
+</div>
+</nav>
+<!-- Main Workspace Area -->
+<div class="flex-1 flex overflow-hidden">
+<!-- SideNavBar (Shared Component) -->
+<aside class="hidden md:flex bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 flex-col justify-between w-20 hover:w-64 transition-all duration-300 shrink-0 z-40 group overflow-hidden">
+<div class="flex flex-col w-full">
+<!-- Header -->
+<div class="p-4 border-b border-outline-variant/20 whitespace-nowrap overflow-hidden">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-none border border-secondary-fixed flex items-center justify-center bg-surface-variant shrink-0">
+<span class="material-symbols-outlined text-secondary-fixed text-[18px]">person</span>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+<div class="font-label-sm text-secondary-fixed">ROOT_USER</div>
+<div class="font-code-sm text-on-surface-variant">SEIS-01</div>
+</div>
+</div>
+</div>
+<!-- Nav Links -->
+<nav class="flex flex-col py-2">
+<div class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 border-l-2 border-transparent">
+<span class="material-symbols-outlined text-[20px] shrink-0" data-icon="dashboard">dashboard</span>
+<span class="ml-4 font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">DASHBOARD</span>
+</div>
+<div class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 border-l-2 border-transparent">
+<span class="material-symbols-outlined text-[20px] shrink-0" data-icon="folder_open">folder_open</span>
+<span class="ml-4 font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">FILESYSTEM</span>
+</div>
+<div class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 border-l-2 border-transparent">
+<span class="material-symbols-outlined text-[20px] shrink-0" data-icon="terminal">terminal</span>
+<span class="ml-4 font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">TERMINAL</span>
+</div>
+<!-- Assuming this tool falls under AI_AGENTS based on prev guess, highlighting this one in sidebar for context -->
+<div class="flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined text-[20px] shrink-0" data-icon="smart_toy">smart_toy</span>
+<span class="ml-4 font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">AI_AGENTS</span>
+</div>
+<div class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 border-l-2 border-transparent">
+<span class="material-symbols-outlined text-[20px] shrink-0" data-icon="cloud_queue">cloud_queue</span>
+<span class="ml-4 font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">INFRASTRUCTURE</span>
+</div>
+<div class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 border-l-2 border-transparent">
+<span class="material-symbols-outlined text-[20px] shrink-0" data-icon="list_alt">list_alt</span>
+<span class="ml-4 font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">LOGS</span>
+</div>
+</nav>
+</div>
+<!-- Footer -->
+<div class="flex flex-col w-full border-t border-outline-variant/20 py-2">
+<div class="px-4 py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+<button class="w-full bg-surface-variant text-secondary-fixed font-label-sm py-1 border border-secondary-fixed hover:bg-secondary-fixed hover:text-[#0a0a0a] transition-colors">NEW_SESSION</button>
+</div>
+<div class="flex justify-around items-center py-2 px-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px] cursor-pointer hover:text-error transition-colors" data-icon="power_settings_new">power_settings_new</span>
+<span class="material-symbols-outlined text-[20px] cursor-pointer hover:text-secondary-fixed transition-colors" data-icon="lock">lock</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area - Grid Layout -->
+<main class="flex-1 overflow-y-auto tile-grid h-full relative">
+<!-- Watermark / Title -->
+<div class="col-span-12 flex justify-between items-end mb-2 h-8">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">SECTOR 7 // ASSET_LAB</h1>
+<span class="font-code-sm text-code-sm text-outline-variant">SYS_VER: 4.9.2-stable</span>
+</div>
+<!-- Left Column: Vector Grid & Controls (Span 5) -->
+<div class="col-span-12 lg:col-span-5 flex flex-col gap-4">
+<!-- Tile: Vector Canvas -->
+<div class="tile focused flex-1 min-h-[400px]">
+<div class="tile-header flex justify-between">
+<span>[CANVAS_01] ICON_VECTOR</span>
+<span class="text-[10px]">16x16 GRID</span>
+</div>
+<div class="p-4 flex-1 flex flex-col relative overflow-hidden bg-[#0c0f0f]">
+<!-- Grid Background Pattern -->
+<div class="absolute inset-0 z-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(#333333 1px, transparent 1px); background-size: 20px 20px;"></div>
+<!-- Toolbar -->
+<div class="flex gap-2 mb-4 z-10 border-b border-[#333333] pb-2">
+<button class="w-8 h-8 flex items-center justify-center border border-primary-fixed bg-primary-fixed/10 text-primary-fixed hover:bg-primary-fixed hover:text-[#0a0a0a] transition-colors">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center border border-[#333333] text-on-surface-variant hover:border-primary-fixed hover:text-primary-fixed transition-colors">
+<span class="material-symbols-outlined text-[16px]">pan_tool</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center border border-[#333333] text-on-surface-variant hover:border-primary-fixed hover:text-primary-fixed transition-colors">
+<span class="material-symbols-outlined text-[16px]">polyline</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center border border-[#333333] text-on-surface-variant hover:border-primary-fixed hover:text-primary-fixed transition-colors ml-auto">
+<span class="material-symbols-outlined text-[16px]">undo</span>
+</button>
+</div>
+<!-- Canvas Area (Simulated) -->
+<div class="flex-1 flex items-center justify-center relative z-10">
+<!-- Geometric Icon Construction Placeholder -->
+<div class="w-64 h-64 border border-[#333333] relative">
+<!-- Crosshairs -->
+<div class="absolute top-1/2 left-0 w-full h-[1px] bg-primary-fixed/30"></div>
+<div class="absolute top-0 left-1/2 w-[1px] h-full bg-primary-fixed/30"></div>
+<!-- Rendered Shape -->
+<svg class="absolute inset-0" height="100%" viewbox="0 0 100 100" width="100%">
+<path d="M 20 80 L 50 20 L 80 80 Z" fill="none" stroke="#dbfcff" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+<!-- Control Points -->
+<rect fill="#0a0a0a" height="4" stroke="#dbfcff" stroke-width="1" width="4" x="18" y="78"></rect>
+<rect fill="#dbfcff" height="4" stroke="#dbfcff" stroke-width="1" width="4" x="48" y="18"></rect>
+<rect fill="#0a0a0a" height="4" stroke="#dbfcff" stroke-width="1" width="4" x="78" y="78"></rect>
+</svg>
+</div>
+</div>
+<!-- Readout -->
+<div class="mt-4 flex justify-between text-code-sm font-code-sm text-outline-variant z-10">
+<span>X: 124.50</span>
+<span>Y: 89.00</span>
+<span>PATH: SELECTED</span>
+</div>
+</div>
+</div>
+<!-- Tile: Stroke & Geometry Controls -->
+<div class="tile">
+<div class="tile-header">
+<span>[PARAM_01] GEOMETRY_CFG</span>
+</div>
+<div class="p-4 flex flex-col gap-4">
+<!-- Control Row 1 -->
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-center text-code-sm font-code-sm">
+<label class="text-on-surface-variant">STROKE_WEIGHT</label>
+<span class="text-primary-fixed">2.0px</span>
+</div>
+<div class="flex items-center gap-2">
+<input class="flex-1" max="10" min="0" type="range" value="2"/>
+<input class="w-12 bg-transparent border border-[#333333] text-code-sm font-code-sm text-center text-on-surface focus:border-primary-fixed focus:outline-none focus:ring-1 focus:ring-primary-fixed/50 p-1" type="text" value="2.0"/>
+</div>
+</div>
+<!-- Control Row 2 -->
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-center text-code-sm font-code-sm">
+<label class="text-on-surface-variant">CORNER_RADIUS</label>
+<span class="text-primary-fixed">0.0px</span>
+</div>
+<div class="flex items-center gap-2">
+<input class="flex-1" max="20" min="0" type="range" value="0"/>
+<input class="w-12 bg-transparent border border-[#333333] text-code-sm font-code-sm text-center text-on-surface focus:border-primary-fixed focus:outline-none focus:ring-1 focus:ring-primary-fixed/50 p-1" type="text" value="0.0"/>
+</div>
+</div>
+<!-- Toggles -->
+<div class="flex justify-between items-center mt-2 border-t border-[#333333] pt-4">
+<span class="text-code-sm font-code-sm text-on-surface-variant">SNAP_TO_GRID</span>
+<button class="w-10 h-5 border border-primary-fixed bg-primary-fixed/20 relative cursor-pointer" onclick="this.classList.toggle('bg-transparent'); this.classList.toggle('border-[#333333]'); this.children[0].classList.toggle('translate-x-5'); this.children[0].classList.toggle('bg-[#333333]'); this.children[0].classList.toggle('bg-primary-fixed');">
+<div class="w-4 h-4 bg-primary-fixed absolute top-0.5 left-0.5 translate-x-5 transition-transform"></div>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Center Column: Font Lab & Palette (Span 4) -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-4">
+<!-- Tile: Font Character Map -->
+<div class="tile flex-1">
+<div class="tile-header">
+<span>[LAB_02] TYPOGRAPHY_MAP</span>
+</div>
+<div class="p-0 flex flex-col h-full">
+<!-- Font Selector -->
+<div class="p-3 border-b border-[#333333] flex items-center justify-between">
+<select class="bg-transparent border-none text-code-sm font-code-sm text-primary-fixed focus:ring-0 uppercase appearance-none cursor-pointer pr-4">
+<option>JETBRAINS MONO</option>
+<option>GEIST SANS</option>
+<option>SPACE MONO</option>
+</select>
+<span class="material-symbols-outlined text-[16px] text-primary-fixed">expand_more</span>
+</div>
+<!-- Type Specimen -->
+<div class="p-4 border-b border-[#333333] flex justify-center items-center h-32 bg-[#0c0f0f]">
+<span class="text-6xl font-headline-lg text-on-surface tracking-tighter" contenteditable="true">Aa</span>
+</div>
+<!-- Char Grid -->
+<div class="p-2 grid grid-cols-6 gap-1 overflow-y-auto flex-1 h-[200px]">
+<!-- Generating dummy characters -->
+<script>
+                                const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()".split('');
+                                chars.forEach((c, i) => {
+                                    const selected = i === 0 ? 'bg-secondary-fixed text-[#0a0a0a]' : 'text-on-surface-variant hover:bg-[#333333]';
+                                    document.write(`<div class="aspect-square flex items-center justify-center font-code-sm text-[16px] border border-[#333333] cursor-pointer ${selected}">${c}</div>`);
+                                });
+                            </script>
+</div>
+</div>
+</div>
+<!-- Tile: Variable Font Controls -->
+<div class="tile">
+<div class="tile-header">
+<span>[PARAM_02] AXIS_CTRL</span>
+</div>
+<div class="p-4 flex flex-col gap-4">
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-center text-code-sm font-code-sm">
+<label class="text-on-surface-variant">WGHT (Weight)</label>
+<span class="text-secondary-fixed">700</span>
+</div>
+<input class="w-full" max="900" min="100" type="range" value="700"/>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-center text-code-sm font-code-sm">
+<label class="text-on-surface-variant">ITAL (Italic)</label>
+<span class="text-secondary-fixed">0</span>
+</div>
+<input class="w-full" max="1" min="0" step="1" type="range" value="0"/>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-center text-code-sm font-code-sm">
+<label class="text-on-surface-variant">OPSZ (Optical Size)</label>
+<span class="text-secondary-fixed">14</span>
+</div>
+<input class="w-full" max="144" min="8" type="range" value="14"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Live Preview & Terminal (Span 3) -->
+<div class="col-span-12 lg:col-span-3 flex flex-col gap-4">
+<!-- Tile: Desktop Preview -->
+<div class="tile">
+<div class="tile-header">
+<span>[VIEW_01] RENDER_PREVIEW</span>
+</div>
+<div class="p-0 h-[250px] relative bg-background border-b border-[#333333] overflow-hidden">
+<!-- Simulated Desktop Environment -->
+<div class="absolute inset-2 border border-[#333333] bg-[#0c0f0f] flex flex-col">
+<!-- Simulated Topbar -->
+<div class="h-4 border-b border-[#333333] flex justify-between items-center px-1">
+<span class="text-[8px] font-label-sm text-primary-fixed">OS_VIEW</span>
+<div class="flex gap-1">
+<div class="w-1.5 h-1.5 bg-[#333333]"></div>
+<div class="w-1.5 h-1.5 bg-[#333333]"></div>
+</div>
+</div>
+<!-- Simulated Content -->
+<div class="p-2 flex gap-2">
+<div class="w-6 h-6 border border-primary-fixed flex justify-center items-center">
+<!-- The icon being designed -->
+<svg height="12" viewbox="0 0 100 100" width="12">
+<path d="M 20 80 L 50 20 L 80 80 Z" fill="none" stroke="#dbfcff" stroke-width="6"></path>
+</svg>
+</div>
+<div class="flex flex-col gap-1 justify-center">
+<div class="h-1.5 w-16 bg-on-surface"></div>
+<div class="h-1 w-10 bg-on-surface-variant"></div>
+</div>
+</div>
+<div class="p-2 flex gap-2">
+<div class="w-6 h-6 border border-[#333333] flex justify-center items-center">
+<span class="material-symbols-outlined text-[12px] text-on-surface-variant">folder</span>
+</div>
+<div class="flex flex-col gap-1 justify-center">
+<div class="h-1.5 w-12 bg-on-surface"></div>
+<div class="h-1 w-14 bg-on-surface-variant"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-2 flex justify-between items-center bg-[#0c0f0f]">
+<span class="text-code-sm font-code-sm text-outline-variant">THEME: DARK_VOID</span>
+<button class="px-2 py-1 bg-primary-fixed text-[#0a0a0a] font-label-sm hover:bg-secondary-fixed transition-colors">APPLY_SYS</button>
+</div>
+</div>
+<!-- Tile: Output Terminal -->
+<div class="tile terminal-panel flex-1 min-h-[200px]">
+<div class="tile-header !bg-[#333333] !text-[#e2e2e2]">
+<span>[TTY1] STDOUT</span>
+</div>
+<div class="p-3 font-code-sm text-code-sm flex flex-col gap-1 overflow-y-auto h-full">
+<div class="text-on-surface-variant">&gt; Loading vector module... OK</div>
+<div class="text-on-surface-variant">&gt; Initializing FreeType engine... OK</div>
+<div class="text-primary-fixed-dim">&gt; Workspace SEC-7 mounted.</div>
+<div class="text-on-surface-variant">&gt; Path data updated: M20,80 L50,20 L80,80 Z</div>
+<div class="text-secondary-fixed">&gt; Font axis changed: WGHT=700</div>
+<div class="blinking-cursor mt-1"></div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

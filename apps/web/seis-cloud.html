@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SEIS Cloud Control Panel</title>
+  <meta name="description" content="Browser-local SEIS Cloud control panel demo with honest mock, disabled, planned, unknown, and connected states." />
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #060708;
+      --panel: rgba(17, 22, 27, 0.78);
+      --panel-strong: rgba(24, 31, 37, 0.92);
+      --line: rgba(220, 235, 245, 0.13);
+      --line-strong: rgba(220, 235, 245, 0.24);
+      --text: #f3f0e8;
+      --muted: #aeb6bb;
+      --quiet: #6f7c83;
+      --cyan: #5ee7ff;
+      --violet: #b79bff;
+      --amber: #f8b95f;
+      --green: #7dffb2;
+      --red: #ff6f7d;
+      --radius-lg: 34px;
+      --radius-md: 22px;
+      --shadow: 0 28px 90px rgba(0, 0, 0, 0.42);
+      --ease: cubic-bezier(.2, .8, .2, 1);
+      font-family: "Aptos", "SF Pro Display", "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { min-height: 100%; background: var(--bg); }
+    body {
+      min-height: 100%;
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 18% 10%, rgba(94, 231, 255, .16), transparent 34rem),
+        radial-gradient(circle at 88% 2%, rgba(183, 155, 255, .14), transparent 30rem),
+        linear-gradient(135deg, #050608 0%, #0a0f12 48%, #12110d 100%);
+      overflow-x: hidden;
+    }
+
+    button, input, select { font: inherit; }
+    button {
+      color: inherit;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .06);
+      cursor: pointer;
+      transition: transform .2s var(--ease), border-color .2s var(--ease), background .2s var(--ease);
+    }
+    button:hover { transform: translateY(-1px); border-color: rgba(94, 231, 255, .38); background: rgba(94, 231, 255, .1); }
+    button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+
+    .page { position: relative; isolation: isolate; width: min(1480px, calc(100% - 32px)); margin: 0 auto; padding: 24px 0 42px; }
+    .noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .28;
+      background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: linear-gradient(to bottom, black, transparent 86%);
+      z-index: -1;
+    }
+
+    .topbar, .hero-panel, .glass-panel, .metric, .module, .timeline, .log-panel, .control-panel {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(28px);
+    }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 18px; min-height: 74px; padding: 14px 18px; border-radius: 26px; }
+    .brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
+    .mark { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 16px; color: #041014; font-weight: 900; letter-spacing: -.08em; background: linear-gradient(135deg, var(--cyan), #eefaf8 48%, var(--amber)); box-shadow: 0 0 34px rgba(94, 231, 255, .26); }
+    .brand h1 { margin: 0; font-size: clamp(1.1rem, 2vw, 1.45rem); letter-spacing: -.04em; }
+    .brand p { margin: 3px 0 0; color: var(--muted); font-size: .84rem; }
+    .top-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+
+    .pill, .status-pill { display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); background: rgba(255,255,255,.045); font-size: .78rem; letter-spacing: .01em; white-space: nowrap; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; box-shadow: 0 0 18px currentColor; }
+    .connected { color: var(--green); }
+    .mock { color: var(--cyan); }
+    .disabled { color: var(--amber); }
+    .planned { color: var(--violet); }
+    .unknown { color: #b7c1c7; }
+    .critical { color: var(--red); }
+
+    .hero { display: grid; grid-template-columns: minmax(0, 1.02fr) minmax(360px, .98fr); gap: 18px; margin-top: 18px; }
+    .hero-panel { position: relative; min-height: 440px; padding: clamp(26px, 4vw, 52px); border-radius: var(--radius-lg); overflow: hidden; }
+    .hero-panel::after { content: ""; position: absolute; right: -22%; bottom: -42%; width: 520px; height: 520px; border-radius: 50%; background: radial-gradient(circle, rgba(94, 231, 255, .2), rgba(183, 155, 255, .08) 40%, transparent 68%); filter: blur(4px); z-index: -1; }
+    .hero h2 { max-width: 820px; margin: 0; font-size: clamp(3.1rem, 8vw, 7.8rem); line-height: .83; letter-spacing: -.095em; }
+    .hero-copy { max-width: 660px; color: #c8d1d5; margin: 24px 0 0; font-size: clamp(1rem, 1.8vw, 1.22rem); line-height: 1.7; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .primary, .secondary { min-height: 48px; padding: 0 18px; border-radius: 16px; font-weight: 800; letter-spacing: -.015em; }
+    .primary { color: #031014; border-color: transparent; background: linear-gradient(135deg, var(--cyan), #f7fbf7 55%, var(--amber)); }
+    .secondary { background: rgba(255,255,255,.055); }
+
+    .system-card { padding: 22px; display: grid; gap: 16px; border-radius: var(--radius-lg); overflow: hidden; }
+    .system-card h3, .section-title h3 { margin: 0; font-size: 1.04rem; letter-spacing: -.02em; }
+    .system-card p, .section-title p { margin: 4px 0 0; color: var(--muted); line-height: 1.55; font-size: .92rem; }
+    .orbit { position: relative; min-height: 280px; border: 1px solid rgba(255,255,255,.09); border-radius: 28px; background: radial-gradient(circle at 50% 50%, rgba(94, 231, 255, .16), transparent 26%), linear-gradient(145deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); overflow: hidden; }
+    .orbit::before, .orbit::after { content: ""; position: absolute; inset: 16%; border: 1px solid rgba(220,235,245,.14); border-radius: 50%; transform: rotate(-12deg) scaleX(1.42); }
+    .orbit::after { inset: 28%; transform: rotate(25deg) scaleX(1.7); border-color: rgba(248,185,95,.18); }
+    .node { position: absolute; display: grid; place-items: center; width: 86px; height: 86px; border: 1px solid rgba(255,255,255,.15); border-radius: 28px; background: rgba(5, 8, 10, .74); box-shadow: 0 18px 45px rgba(0,0,0,.35); font-weight: 850; font-size: .78rem; text-align: center; color: var(--text); }
+    .node.local { left: 50%; top: 50%; transform: translate(-50%, -50%); background: linear-gradient(145deg, rgba(94,231,255,.28), rgba(255,255,255,.05)); }
+    .node.github { left: 11%; top: 14%; }
+    .node.deploy { right: 8%; top: 18%; }
+    .node.ssh { left: 15%; bottom: 13%; }
+    .node.backup { right: 14%; bottom: 11%; }
+
+    .metric-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin: 18px 0; }
+    .metric { padding: 18px; min-height: 128px; border-radius: var(--radius-md); }
+    .metric span { display: block; color: var(--muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .13em; }
+    .metric strong { display: block; margin-top: 14px; font-size: clamp(1.7rem, 3vw, 2.7rem); letter-spacing: -.07em; }
+    .metric small { display: block; margin-top: 8px; color: var(--quiet); line-height: 1.5; }
+
+    .workspace { display: grid; grid-template-columns: 300px minmax(0, 1fr) 360px; gap: 16px; align-items: start; }
+    .rail, .main, .right { display: grid; gap: 16px; }
+    .glass-panel.pad { padding: 18px; border-radius: var(--radius-lg); }
+    .nav-list { display: grid; gap: 10px; margin-top: 16px; }
+    .nav-btn { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; min-height: 46px; padding: 0 14px; border-radius: 15px; text-align: left; color: var(--muted); }
+    .nav-btn.is-active { color: var(--text); border-color: rgba(94,231,255,.42); background: rgba(94,231,255,.105); }
+    .section-title { display: flex; align-items: start; justify-content: space-between; gap: 14px; margin-bottom: 14px; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 9px; }
+    .mini-btn { min-height: 34px; padding: 0 11px; border-radius: 12px; color: var(--muted); font-size: .78rem; }
+    .mini-btn.is-active { color: var(--text); border-color: rgba(94,231,255,.36); background: rgba(94,231,255,.1); }
+    .module-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
+    .module { padding: 16px; display: grid; gap: 12px; min-height: 164px; border-radius: var(--radius-md); }
+    .module-head { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+    .module h4 { margin: 0; font-size: 1rem; letter-spacing: -.02em; }
+    .module p { margin: 0; color: var(--muted); line-height: 1.55; font-size: .86rem; }
+    .bar { height: 8px; border-radius: 999px; background: rgba(255,255,255,.08); overflow: hidden; }
+    .bar i { display: block; height: 100%; width: var(--value, 40%); border-radius: inherit; background: linear-gradient(90deg, var(--cyan), var(--violet)); }
+
+    .timeline, .control-panel { padding: 16px; display: grid; gap: 14px; border-radius: var(--radius-md); }
+    .step { display: grid; grid-template-columns: 24px 1fr; gap: 12px; align-items: start; }
+    .step-marker { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--line-strong); background: rgba(255,255,255,.07); margin-top: 2px; }
+    .step[data-state="connected"] .step-marker { background: var(--green); box-shadow: 0 0 22px rgba(125,255,178,.35); }
+    .step[data-state="mock"] .step-marker { background: var(--cyan); box-shadow: 0 0 22px rgba(94,231,255,.35); }
+    .step[data-state="planned"] .step-marker { background: var(--violet); box-shadow: 0 0 22px rgba(183,155,255,.3); }
+    .step[data-state="disabled"] .step-marker { background: var(--amber); box-shadow: 0 0 22px rgba(248,185,95,.3); }
+    .step strong { display: block; font-size: .92rem; }
+    .step span { display: block; color: var(--muted); margin-top: 4px; font-size: .82rem; line-height: 1.5; }
+
+    .log-panel { padding: 0; border-radius: var(--radius-md); overflow: hidden; }
+    .log-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+    .log-stream { display: grid; gap: 1px; max-height: 280px; overflow: auto; background: rgba(0,0,0,.2); }
+    .log-line { display: grid; grid-template-columns: 84px 92px 1fr; gap: 10px; padding: 10px 14px; color: #d7e0e4; font-family: "SFMono-Regular", Consolas, monospace; font-size: .78rem; background: rgba(255,255,255,.03); }
+    .log-line b { font-weight: 700; }
+    .log-line span { color: var(--muted); }
+    .field { display: grid; gap: 8px; }
+    .field label { color: var(--muted); font-size: .78rem; letter-spacing: .09em; text-transform: uppercase; }
+    .field input, .field select { width: 100%; min-height: 44px; padding: 0 12px; color: var(--text); border: 1px solid var(--line); border-radius: 14px; background: rgba(0,0,0,.22); }
+    .env-box { padding: 14px; border: 1px dashed rgba(94,231,255,.32); border-radius: 16px; color: #cfe8ee; background: rgba(94,231,255,.055); font-family: "SFMono-Regular", Consolas, monospace; font-size: .76rem; line-height: 1.7; overflow-x: auto; }
+    .toast { position: fixed; right: 22px; bottom: 22px; width: min(420px, calc(100vw - 44px)); padding: 16px; border: 1px solid rgba(94,231,255,.34); border-radius: 18px; color: var(--text); background: rgba(8, 12, 15, .92); box-shadow: var(--shadow); transform: translateY(18px); opacity: 0; pointer-events: none; transition: opacity .22s var(--ease), transform .22s var(--ease); z-index: 10; }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast strong { display: block; margin-bottom: 4px; }
+    .toast span { color: var(--muted); font-size: .88rem; }
+
+    @media (max-width: 1120px) {
+      .hero, .workspace { grid-template-columns: 1fr; }
+      .metric-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .rail { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+    @media (max-width: 720px) {
+      .page { width: min(100% - 20px, 1480px); padding-top: 10px; }
+      .topbar { align-items: flex-start; flex-direction: column; border-radius: 22px; }
+      .top-actions { justify-content: flex-start; }
+      .hero-panel { min-height: unset; padding: 24px; }
+      .hero h2 { font-size: clamp(3rem, 18vw, 4.7rem); }
+      .metric-grid, .module-grid, .rail { grid-template-columns: 1fr; }
+      .log-line { grid-template-columns: 1fr; gap: 3px; }
+      .orbit { min-height: 230px; }
+      .node { width: 74px; height: 74px; border-radius: 22px; font-size: .7rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .001ms !important; animation-duration: .001ms !important; }
+    }
+  </style>
+</head>
+<body data-seis-cloud-demo="browser-local">
+  <div class="noise" aria-hidden="true"></div>
+  <main class="page">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark" aria-hidden="true">SC</div>
+        <div>
+          <h1>SEIS Cloud Control</h1>
+          <p>Local-first cloud, deployment, GitHub, SSH and backup command room.</p>
+        </div>
+      </div>
+      <div class="top-actions" aria-label="Cloud status summary">
+        <span class="status-pill connected" data-state="connected"><i class="dot"></i>Browser Local: connected</span>
+        <span class="status-pill mock" data-state="mock"><i class="dot"></i>GitHub: mock</span>
+        <span class="status-pill disabled" data-state="disabled"><i class="dot"></i>SSH: disabled</span>
+        <span class="status-pill planned" data-state="planned"><i class="dot"></i>Deploy: planned</span>
+        <span class="status-pill unknown" data-state="unknown"><i class="dot"></i>Provider Health: unknown</span>
+      </div>
+    </header>
+
+    <section class="hero" aria-labelledby="cloud-title">
+      <article class="hero-panel">
+        <h2 id="cloud-title">Cloud without pretending.</h2>
+        <p class="hero-copy">This is a runnable SEIS Cloud demo that shows the real control surface without claiming live infrastructure. Browser-local state is connected. GitHub, CI, deployment, storage, provider health, and SSH are clearly marked as mock, disabled, planned, or unknown.</p>
+        <div class="hero-actions">
+          <button class="primary" type="button" data-action="run-checks">Run local readiness sweep</button>
+          <button class="secondary" type="button" data-action="dry-run-deploy">Create deployment dry run</button>
+          <button class="secondary" type="button" data-action="reset-state">Reset local demo state</button>
+        </div>
+      </article>
+
+      <aside class="glass-panel system-card" aria-label="SEIS Cloud topology">
+        <div>
+          <h3>Topology map</h3>
+          <p>No live tunnel or provider key is used. The map visualizes the intended operating model.</p>
+        </div>
+        <div class="orbit" aria-hidden="true">
+          <div class="node local">Local Demo</div>
+          <div class="node github">GitHub<br>Mock</div>
+          <div class="node deploy">Deploy<br>Planned</div>
+          <div class="node ssh">SSH<br>Disabled</div>
+          <div class="node backup">Backups<br>Mock</div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="metric-grid" aria-label="Cloud metrics">
+      <article class="metric"><span>Readiness</span><strong id="readiness-score">78%</strong><small>Local checks complete after the readiness sweep.</small></article>
+      <article class="metric"><span>Storage</span><strong id="storage-score">42GB</strong><small>Mock workspace storage allocation.</small></article>
+      <article class="metric"><span>Agents</span><strong id="agent-score">8</strong><small>Mock cloud-aware agents staged for review.</small></article>
+      <article class="metric"><span>Risk</span><strong id="risk-score">Low</strong><small>Low because live remote actions are disabled.</small></article>
+    </section>
+
+    <section class="workspace" aria-label="SEIS Cloud workspace">
+      <aside class="rail">
+        <article class="glass-panel pad">
+          <div class="section-title"><div><h3>Cloud surfaces</h3><p>Filter the module grid by state.</p></div></div>
+          <nav class="nav-list" aria-label="Cloud state filters">
+            <button class="nav-btn is-active" type="button" data-filter="all">All states <span>12</span></button>
+            <button class="nav-btn" type="button" data-filter="connected">Connected <span>1</span></button>
+            <button class="nav-btn" type="button" data-filter="mock">Mock <span>5</span></button>
+            <button class="nav-btn" type="button" data-filter="disabled">Disabled <span>2</span></button>
+            <button class="nav-btn" type="button" data-filter="planned">Planned <span>3</span></button>
+            <button class="nav-btn" type="button" data-filter="unknown">Unknown <span>1</span></button>
+          </nav>
+        </article>
+
+        <article class="control-panel" aria-label="Environment profile">
+          <div class="section-title"><div><h3>Environment</h3><p>Stored only in this browser.</p></div></div>
+          <div class="field"><label for="profile-name">Profile name</label><input id="profile-name" value="SEIS Local Demo Cloud" autocomplete="off" /></div>
+          <div class="field"><label for="release-mode">Release mode</label><select id="release-mode"><option>Local Demo</option><option>Review Dry Run</option><option>Planned Cloud</option></select></div>
+          <button class="primary" type="button" data-action="save-profile">Save browser profile</button>
+        </article>
+      </aside>
+
+      <section class="main">
+        <article class="glass-panel pad">
+          <div class="section-title">
+            <div><h3>Control surfaces</h3><p>Each module is explicitly marked real, mock, disabled, planned, or unknown.</p></div>
+            <div class="toolbar" aria-label="Quick actions"><button class="mini-btn is-active" type="button" data-view="modules">Modules</button><button class="mini-btn" type="button" data-view="timeline">Timeline</button><button class="mini-btn" type="button" data-view="logs">Logs</button></div>
+          </div>
+          <div class="module-grid" id="module-grid"></div>
+        </article>
+
+        <article class="timeline" aria-label="Deployment timeline">
+          <div class="section-title"><div><h3>Deployment runway</h3><p>Safe dry-run path from local demo to future cloud.</p></div></div>
+          <div class="step" data-state="connected"><div class="step-marker"></div><div><strong>Browser-local demo connected</strong><span>Verified in the current tab through local UI state and localStorage.</span></div></div>
+          <div class="step" data-state="mock"><div class="step-marker"></div><div><strong>GitHub review packet mocked</strong><span>PR metadata is represented as demo data unless queried through GitHub tooling.</span></div></div>
+          <div class="step" data-state="disabled"><div class="step-marker"></div><div><strong>SSH execution disabled</strong><span>Real SSH requires explicit human approval, host verification, and no private key exposure.</span></div></div>
+          <div class="step" data-state="planned"><div class="step-marker"></div><div><strong>Cloud deploy planned</strong><span>Future deployment must use backend-only secrets and explicit deploy approval.</span></div></div>
+        </article>
+      </section>
+
+      <aside class="right">
+        <article class="log-panel" aria-label="Safe cloud logs">
+          <div class="log-head"><div><strong>Safe activity stream</strong><br><span class="pill mock" data-state="mock"><i class="dot"></i>Mock logs</span></div><button class="mini-btn" type="button" data-action="add-log">Add demo log</button></div>
+          <div class="log-stream" id="log-stream" role="log" aria-live="polite"></div>
+        </article>
+
+        <article class="control-panel" aria-label="Secrets and environment policy">
+          <div class="section-title"><div><h3>Secret boundary</h3><p>Frontend receives no private provider keys.</p></div></div>
+          <div class="env-box" aria-label="Safe environment example"># backend-only future example\nSEIS_CLOUD_PROVIDER=planned\nSEIS_DEPLOY_MODE=approval_required\nSEIS_SSH_EXECUTION=disabled\n# no private keys in browser</div>
+          <button class="secondary" type="button" data-action="copy-env">Copy safe env example</button>
+        </article>
+      </aside>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"><strong></strong><span></span></div>
+
+  <script>
+    const STORE_KEY = 'seis.cloud.control.v1';
+    const modules = [
+      { title: 'Browser-local shell', state: 'connected', score: 100, body: 'Runnable static UI, localStorage persistence, no provider key required.' },
+      { title: 'GitHub source of truth', state: 'mock', score: 76, body: 'Represents PR and branch discipline as demo data unless GitHub is queried externally.' },
+      { title: 'CI readiness', state: 'mock', score: 72, body: 'Shows foundation, smoke, publish, and security gates as local demo lanes.' },
+      { title: 'SSH center', state: 'disabled', score: 18, body: 'Real SSH is blocked until human approval, host verification, and secret-safe runtime exist.' },
+      { title: 'Deployment control', state: 'planned', score: 34, body: 'Future cloud deploy requires backend secrets, approval gate, and rollback evidence.' },
+      { title: 'Storage sync', state: 'mock', score: 61, body: 'Shows backup and sync posture without touching real files or cloud buckets.' },
+      { title: 'Provider health', state: 'unknown', score: 20, body: 'No live AI/cloud providers are queried from the browser demo.' },
+      { title: 'Backups', state: 'mock', score: 58, body: 'Dry-run backup records are created locally and never uploaded.' },
+      { title: 'Observability', state: 'mock', score: 67, body: 'Safe log stream models future metrics without external telemetry.' },
+      { title: 'Codespaces lane', state: 'planned', score: 45, body: 'Documents the remote workspace concept without claiming an active Codespace.' },
+      { title: 'VPN / Tailscale lane', state: 'planned', score: 24, body: 'Future private networking option remains documented as planned.' },
+      { title: 'Remote command plane', state: 'disabled', score: 10, body: 'No remote shell, destructive command, or credential path exists in this page.' }
+    ];
+    const seedLogs = [
+      ['local', 'connected', 'Loaded SEIS Cloud browser-local profile.'],
+      ['github', 'mock', 'PR governance lane represented as demo metadata.'],
+      ['ssh', 'disabled', 'SSH execution remains approval-gated and inactive.'],
+      ['deploy', 'planned', 'Deployment dry run queued for future backend implementation.'],
+      ['security', 'mock', 'No private keys, tokens, cookies, or provider secrets are present.']
+    ];
+    const state = loadState();
+
+    function loadState() {
+      try { return JSON.parse(localStorage.getItem(STORE_KEY)) || { filter: 'all', logs: seedLogs, profile: 'SEIS Local Demo Cloud', mode: 'Local Demo', checks: 0 }; }
+      catch { return { filter: 'all', logs: seedLogs, profile: 'SEIS Local Demo Cloud', mode: 'Local Demo', checks: 0 }; }
+    }
+    function saveState() { localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+    function renderModules() {
+      const grid = document.querySelector('#module-grid');
+      const filtered = state.filter === 'all' ? modules : modules.filter((item) => item.state === state.filter);
+      grid.innerHTML = filtered.map((item) => `<article class="module" data-state="${item.state}"><div class="module-head"><h4>${item.title}</h4><span class="status-pill ${item.state}" data-state="${item.state}"><i class="dot"></i>${item.state}</span></div><p>${item.body}</p><div class="bar" aria-label="${item.title} readiness ${item.score} percent"><i style="--value: ${item.score}%"></i></div><button class="mini-btn" type="button" data-module-action="${item.title}">Open ${item.state} details</button></article>`).join('');
+    }
+    function renderLogs() {
+      const stream = document.querySelector('#log-stream');
+      stream.innerHTML = state.logs.slice(-10).map(([source, status, text]) => `<div class="log-line"><b>${source}</b><span>${status}</span><em>${text}</em></div>`).join('');
+      stream.scrollTop = stream.scrollHeight;
+    }
+    function setFilter(filter) {
+      state.filter = filter;
+      saveState();
+      document.querySelectorAll('[data-filter]').forEach((button) => button.classList.toggle('is-active', button.dataset.filter === filter));
+      renderModules();
+    }
+    function addLog(source, status, text) { state.logs.push([source, status, text]); saveState(); renderLogs(); }
+    function toast(title, message) {
+      const box = document.querySelector('#toast');
+      box.querySelector('strong').textContent = title;
+      box.querySelector('span').textContent = message;
+      box.classList.add('show');
+      window.clearTimeout(toast.timer);
+      toast.timer = window.setTimeout(() => box.classList.remove('show'), 3200);
+    }
+    function runChecks() {
+      state.checks += 1;
+      document.querySelector('#readiness-score').textContent = state.checks > 1 ? '86%' : '82%';
+      document.querySelector('#risk-score').textContent = 'Low';
+      addLog('readiness', 'connected', `Local readiness sweep ${state.checks} completed in browser.`);
+      toast('Readiness sweep complete', 'Only browser-local checks were simulated. No remote systems were contacted.');
+    }
+    function dryRunDeploy() {
+      addLog('deploy', 'planned', 'Deployment dry run created. Human approval still required for any live deploy.');
+      toast('Dry run created', 'The deployment plan is local demo data and does not deploy anything.');
+    }
+    function resetState() {
+      localStorage.removeItem(STORE_KEY);
+      Object.assign(state, { filter: 'all', logs: seedLogs.slice(), profile: 'SEIS Local Demo Cloud', mode: 'Local Demo', checks: 0 });
+      document.querySelector('#profile-name').value = state.profile;
+      document.querySelector('#release-mode').value = state.mode;
+      document.querySelector('#readiness-score').textContent = '78%';
+      setFilter('all');
+      renderLogs();
+      toast('Demo state reset', 'Browser-local SEIS Cloud data returned to the safe seed state.');
+    }
+    function saveProfile() {
+      state.profile = document.querySelector('#profile-name').value.trim() || 'SEIS Local Demo Cloud';
+      state.mode = document.querySelector('#release-mode').value;
+      saveState();
+      addLog('profile', 'connected', `Saved browser-only profile: ${state.profile} / ${state.mode}.`);
+      toast('Profile saved', 'The profile was saved only to localStorage in this browser.');
+    }
+    function copyEnv() {
+      const text = 'SEIS_CLOUD_PROVIDER=planned\nSEIS_DEPLOY_MODE=approval_required\nSEIS_SSH_EXECUTION=disabled\n';
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).catch(() => {});
+      addLog('security', 'mock', 'Safe environment example copied or prepared without secrets.');
+      toast('Safe env example ready', 'Contains placeholders only. No private keys or tokens were created.');
+    }
+    document.addEventListener('click', (event) => {
+      const filter = event.target.closest('[data-filter]');
+      if (filter) setFilter(filter.dataset.filter);
+      const action = event.target.closest('[data-action]');
+      if (action?.dataset.action === 'run-checks') runChecks();
+      if (action?.dataset.action === 'dry-run-deploy') dryRunDeploy();
+      if (action?.dataset.action === 'reset-state') resetState();
+      if (action?.dataset.action === 'save-profile') saveProfile();
+      if (action?.dataset.action === 'copy-env') copyEnv();
+      if (action?.dataset.action === 'add-log') { addLog('operator', 'mock', 'Manual demo log added from the browser UI.'); toast('Demo log added', 'The activity stream was updated locally.'); }
+      const moduleAction = event.target.closest('[data-module-action]');
+      if (moduleAction) { addLog('module', 'mock', `Opened local details for ${moduleAction.dataset.moduleAction}.`); toast('Module details opened', 'Details are represented in the local activity stream.'); }
+    });
+    document.querySelectorAll('[data-view]').forEach((button) => button.addEventListener('click', () => { document.querySelectorAll('[data-view]').forEach((item) => item.classList.toggle('is-active', item === button)); addLog('view', 'mock', `Switched cloud workspace focus to ${button.dataset.view}.`); }));
+    document.querySelector('#profile-name').value = state.profile;
+    document.querySelector('#release-mode').value = state.mode;
+    setFilter(state.filter);
+    renderLogs();
+  </script>
+</body>
+</html>

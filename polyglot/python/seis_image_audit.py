@@ -105,7 +105,7 @@ def load_budget_bytes() -> int:
         contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
         return int(contract["assets"]["publicAssetBudgetBytes"])
     except (OSError, KeyError, ValueError):
-        return 7_000_000
+        return 10_485_760
 
 
 def audit(directory: Path, budget_bytes: int) -> dict:

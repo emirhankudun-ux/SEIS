@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aether AI | Agent Swarm Orchestrator</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container": "#1d2023",
+                    "on-error": "#690005",
+                    "on-tertiary-container": "#5d5f5f",
+                    "surface-container-low": "#191c1f",
+                    "secondary-container": "#b600f8",
+                    "primary-fixed": "#7df4ff",
+                    "on-secondary-fixed": "#320047",
+                    "surface-bright": "#37393d",
+                    "secondary-fixed-dim": "#ebb2ff",
+                    "on-primary": "#00363a",
+                    "inverse-surface": "#e1e2e7",
+                    "surface-container-lowest": "#0c0e12",
+                    "on-background": "#e1e2e7",
+                    "surface": "#111417",
+                    "tertiary-fixed": "#e2e2e2",
+                    "tertiary-fixed-dim": "#c6c6c7",
+                    "surface-container-high": "#282a2e",
+                    "secondary-fixed": "#f8d8ff",
+                    "outline-variant": "#3b494b",
+                    "outline": "#849495",
+                    "on-tertiary-fixed-variant": "#454747",
+                    "primary": "#dbfcff",
+                    "tertiary-container": "#d9d9d9",
+                    "inverse-primary": "#006970",
+                    "tertiary": "#f5f5f5",
+                    "surface-dim": "#111417",
+                    "on-secondary": "#520072",
+                    "surface-container-highest": "#323539",
+                    "on-primary-fixed-variant": "#004f54",
+                    "error-container": "#93000a",
+                    "on-tertiary": "#2f3131",
+                    "on-secondary-fixed-variant": "#74009f",
+                    "on-surface-variant": "#b9cacb",
+                    "error": "#ffb4ab",
+                    "on-primary-container": "#006970",
+                    "background": "#111417",
+                    "surface-tint": "#00dbe9",
+                    "primary-container": "#00f0ff",
+                    "inverse-on-surface": "#2e3134",
+                    "secondary": "#ebb2ff",
+                    "on-primary-fixed": "#002022",
+                    "surface-variant": "#323539",
+                    "on-secondary-container": "#fff6fc",
+                    "on-error-container": "#ffdad6",
+                    "on-surface": "#e1e2e7",
+                    "primary-fixed-dim": "#00dbe9",
+                    "on-tertiary-fixed": "#1a1c1c"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "section-gap": "120px",
+                    "container-max": "1280px",
+                    "unit": "8px",
+                    "margin-desktop": "64px",
+                    "margin-mobile": "20px"
+            },
+            "fontFamily": {
+                    "mono-label": ["JetBrains Mono"],
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "mono-code": ["JetBrains Mono"],
+                    "headline-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "display-lg-mobile": ["Inter"]
+            },
+            "fontSize": {
+                    "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #020408;
+            color: #e1e2e7;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 219, 233, 0.1);
+            position: relative;
+        }
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 1px solid transparent;
+            border-image: linear-gradient(to bottom right, rgba(0, 219, 233, 0.2), transparent) 1;
+            pointer-events: none;
+        }
+        .glow-cyan {
+            box-shadow: 0 0 30px rgba(0, 219, 233, 0.1);
+        }
+        .glow-hover:hover {
+            box-shadow: 0 0 40px rgba(0, 219, 233, 0.2);
+            border-color: rgba(0, 219, 233, 0.4);
+        }
+        .scanline {
+            background: linear-gradient(to bottom, transparent 50%, rgba(0, 219, 233, 0.05) 50%);
+            background-size: 100% 4px;
+        }
+        @keyframes pulse-cyan {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        .animate-pulse-cyan {
+            animation: pulse-cyan 2s infinite ease-in-out;
+        }
+        .node-line {
+            stroke-dasharray: 5;
+            animation: dash 10s linear infinite;
+        }
+        @keyframes dash {
+            to { stroke-dashoffset: -100; }
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md">
+<!-- TopNavBar Navigation Shell -->
+<nav class="fixed top-0 w-full bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_40px_-15px_rgba(0,219,233,0.15)] z-50">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-16">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-[24px] tracking-tighter text-primary-fixed-dim font-extrabold">AETHER AI</span>
+<div class="hidden md:flex gap-6">
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Models</a>
+<a class="text-primary-fixed-dim font-semibold border-b-2 border-primary-fixed-dim pb-1 transition-colors duration-300" href="#">Infrastructure</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Compute</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Enterprise</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Pricing</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors">Sign In</button>
+<button class="bg-primary-container text-on-primary px-4 py-2 font-semibold active:scale-95 transition-transform">Get Started</button>
+</div>
+</div>
+</nav>
+<!-- SideNavBar - Only for desktop visualization -->
+<aside class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface-container-lowest/80 backdrop-blur-2xl border-r border-outline-variant/20 z-40 pt-20">
+<div class="px-6 mb-8">
+<h2 class="font-display-lg text-[18px] text-primary-fixed-dim">Aether Platform</h2>
+<p class="font-mono-label text-[10px] text-on-surface-variant uppercase tracking-widest">Enterprise Infrastructure</p>
+</div>
+<nav class="flex flex-col flex-grow">
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high/50 px-6 py-3 transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">terminal</span>
+<span class="font-mono-label">SEIS OS</span>
+</a>
+<a class="flex items-center gap-3 bg-secondary-container/20 text-secondary-fixed border-l-2 border-secondary-container px-6 py-3 transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">psychology</span>
+<span class="font-mono-label">SEIS AI</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high/50 px-6 py-3 transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">code</span>
+<span class="font-mono-label">SEIS Code</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high/50 px-6 py-3 transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">cloud_queue</span>
+<span class="font-mono-label">SEIS Cloud</span>
+</a>
+</nav>
+<div class="mt-auto p-6 flex flex-col gap-4 border-t border-outline-variant/10">
+<button class="bg-surface-container-highest text-primary-fixed-dim border border-primary-fixed-dim/30 py-2 w-full font-mono-label hover:bg-primary-fixed-dim hover:text-surface transition-all">Deploy Now</button>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">settings</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">contact_support</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 pt-24 pb-section-gap px-margin-mobile md:px-margin-desktop min-h-screen">
+<div class="max-w-container-max mx-auto">
+<!-- Header Section -->
+<header class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<div class="flex items-center gap-3 mb-2">
+<span class="inline-block w-2 h-2 rounded-full bg-primary-fixed-dim animate-pulse-cyan"></span>
+<span class="font-mono-label text-primary-fixed-dim uppercase tracking-[0.2em]">Live Orchestration Environment</span>
+</div>
+<h1 class="font-display-lg text-display-lg-mobile md:text-headline-md text-on-surface">Agent Swarm <span class="text-primary-fixed-dim">Orchestrator</span></h1>
+</div>
+<div class="flex items-center gap-4 bg-surface-container-high/40 p-1 rounded-lg border border-outline-variant/20 backdrop-blur-md">
+<div class="px-4 py-2 flex flex-col border-r border-outline-variant/20">
+<span class="text-[10px] uppercase text-on-surface-variant font-mono-label">Swarm Health</span>
+<span class="text-primary-fixed-dim font-bold">99.98%</span>
+</div>
+<div class="px-4 py-2 flex flex-col border-r border-outline-variant/20">
+<span class="text-[10px] uppercase text-on-surface-variant font-mono-label">Total Agents</span>
+<span class="text-on-surface font-bold">1,204</span>
+</div>
+<div class="px-4 py-2 flex flex-col">
+<span class="text-[10px] uppercase text-on-surface-variant font-mono-label">Tasks/Sec</span>
+<span class="text-on-surface font-bold">8.4k</span>
+</div>
+</div>
+</header>
+<!-- Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Main Visualization: Node-Link Diagram -->
+<section class="lg:col-span-8 flex flex-col gap-gutter">
+<div class="glass-panel rounded-xl h-[500px] overflow-hidden group">
+<div class="absolute top-4 left-6 z-10">
+<h3 class="font-mono-label text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed-dim text-sm">hub</span> Active Agent Topology
+                            </h3>
+</div>
+<div class="absolute top-4 right-6 z-10 flex gap-2">
+<button class="bg-surface-container-highest/80 px-2 py-1 rounded text-[10px] font-mono-label border border-outline-variant hover:border-primary-fixed-dim transition-all">2D VIEW</button>
+<button class="bg-primary-container text-on-primary px-2 py-1 rounded text-[10px] font-mono-label">3D SPATIAL</button>
+</div>
+<!-- Simulated Node-Link Content -->
+<div class="relative w-full h-full bg-[#050810] scanline">
+
+<!-- Static SVG Overlay for specific nodes -->
+<svg class="absolute inset-0 w-full h-full" viewbox="0 0 800 500">
+<defs>
+<filter id="glow">
+<fegaussianblur result="coloredBlur" stddeviation="2.5"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- Lines -->
+<line class="node-line" stroke="#00dbe9" stroke-opacity="0.3" x1="400" x2="200" y1="250" y2="150"></line>
+<line class="node-line" stroke="#00dbe9" stroke-opacity="0.3" x1="400" x2="600" y1="250" y2="150"></line>
+<line class="node-line" stroke="#00dbe9" stroke-opacity="0.3" x1="400" x2="300" y1="250" y2="400"></line>
+<line class="node-line" stroke="#00dbe9" stroke-opacity="0.3" x1="400" x2="500" y1="250" y2="400"></line>
+<!-- Central Hub -->
+<circle class="animate-pulse" cx="400" cy="250" fill="#00dbe9" filter="url(#glow)" r="12"></circle>
+<text fill="#00dbe9" font-family="JetBrains Mono" font-size="10" text-anchor="middle" x="400" y="280">ORCHESTRATOR-ALPHA</text>
+<!-- Sub Nodes -->
+<circle cx="200" cy="150" fill="#00dbe9" fill-opacity="0.6" r="6"></circle>
+<circle cx="600" cy="150" fill="#ebb2ff" fill-opacity="0.6" r="6"></circle>
+<circle cx="300" cy="400" fill="#00dbe9" fill-opacity="0.6" r="6"></circle>
+<circle cx="500" cy="400" fill="#00dbe9" fill-opacity="0.6" r="6"></circle>
+</svg>
+<!-- UI Overlays -->
+<div class="absolute bottom-6 left-6 max-w-xs p-4 bg-surface-container-lowest/80 border border-outline-variant/30 rounded-lg backdrop-blur-md">
+<p class="text-[11px] font-mono-code text-on-surface-variant">Cluster: US-EAST-01</p>
+<p class="text-[11px] font-mono-code text-on-surface-variant">Protocol: SWARM-NET v4.2</p>
+<div class="mt-2 h-1 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary-fixed-dim w-3/4 shadow-[0_0_10px_#00dbe9]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Task Queue Monitoring -->
+<div class="glass-panel rounded-xl p-6 glow-cyan">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-mono-label text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed-dim text-sm">list_alt</span> Global Task Queue
+                            </h3>
+<span class="text-[10px] text-on-surface-variant font-mono-label uppercase">Refreshing in 2s</span>
+</div>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-3 bg-surface-container-low/50 border border-outline-variant/10 rounded-lg hover:border-primary-fixed-dim/30 transition-all cursor-pointer group">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary-fixed-dim text-[18px]">verified</span>
+<div>
+<p class="text-sm font-mono-label text-on-surface">Vector Embed Optimization</p>
+<p class="text-[10px] text-on-surface-variant font-mono-code">ID: TSK-8821 | Agent: Lambda-4</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:block">
+<p class="text-[10px] text-on-surface-variant uppercase text-right">Progress</p>
+<div class="w-24 h-1.5 bg-surface-container-highest rounded-full mt-1">
+<div class="bg-primary-fixed-dim h-full w-[82%]"></div>
+</div>
+</div>
+<span class="bg-primary-fixed-dim/10 text-primary-fixed-dim px-2 py-1 text-[10px] font-mono-label border border-primary-fixed-dim/20">EXECUTING</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low/50 border border-outline-variant/10 rounded-lg group">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary text-[18px]">sync</span>
+<div>
+<p class="text-sm font-mono-label text-on-surface">Sentiment Extraction Swarm</p>
+<p class="text-[10px] text-on-surface-variant font-mono-code">ID: TSK-9012 | Agent: Delta-9</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:block">
+<p class="text-[10px] text-on-surface-variant uppercase text-right">Progress</p>
+<div class="w-24 h-1.5 bg-surface-container-highest rounded-full mt-1">
+<div class="bg-secondary h-full w-[45%]"></div>
+</div>
+</div>
+<span class="bg-secondary/10 text-secondary px-2 py-1 text-[10px] font-mono-label border border-secondary/20">PENDING</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low/50 border border-outline-variant/10 rounded-lg group">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">pause_circle</span>
+<div>
+<p class="text-sm font-mono-label text-on-surface">Data Ingestion (S3 Pipeline)</p>
+<p class="text-[10px] text-on-surface-variant font-mono-code">ID: TSK-7742 | Agent: Sigma-1</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:block">
+<p class="text-[10px] text-on-surface-variant uppercase text-right">Progress</p>
+<div class="w-24 h-1.5 bg-surface-container-highest rounded-full mt-1">
+<div class="bg-surface-container-highest h-full w-0"></div>
+</div>
+</div>
+<span class="bg-outline/10 text-outline px-2 py-1 text-[10px] font-mono-label border border-outline/20">QUEUED</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Sidebar Content: Metrics and Console -->
+<section class="lg:col-span-4 flex flex-col gap-gutter">
+<!-- Performance Heatmap -->
+<div class="glass-panel rounded-xl p-6">
+<h3 class="font-mono-label text-on-surface flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary-fixed-dim text-sm">grid_view</span> Heatmap Distribution
+                        </h3>
+<div class="grid grid-cols-10 gap-1 mb-4">
+<!-- Loop for 50 heatmap cells -->
+<script>
+                                for(let i=0; i<50; i++) {
+                                    const opacity = Math.random() * 0.8 + 0.1;
+                                    const color = Math.random() > 0.8 ? 'bg-secondary' : 'bg-primary-fixed-dim';
+                                    document.write(`<div class="aspect-square ${color} rounded-sm transition-all hover:scale-125 cursor-crosshair" style="opacity: ${opacity}"></div>`);
+                                }
+                            </script>
+</div>
+<div class="flex justify-between text-[10px] font-mono-label text-on-surface-variant uppercase">
+<span>Low Load</span>
+<span>Peak Saturation</span>
+</div>
+</div>
+<!-- Technical Metrics Bento -->
+<div class="grid grid-cols-2 gap-4">
+<div class="glass-panel rounded-xl p-4">
+<span class="text-[10px] text-on-surface-variant font-mono-label uppercase">Latency</span>
+<p class="text-xl font-bold text-on-surface">12ms</p>
+<div class="h-8 w-full mt-2 overflow-hidden">
+<svg class="w-full h-full stroke-primary-fixed-dim fill-none" viewbox="0 0 100 40">
+<path d="M0,20 Q10,5 20,25 T40,15 T60,20 T80,10 T100,25" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+<div class="glass-panel rounded-xl p-4">
+<span class="text-[10px] text-on-surface-variant font-mono-label uppercase">Throughput</span>
+<p class="text-xl font-bold text-on-surface">4.2 GB/s</p>
+<div class="h-8 w-full mt-2 overflow-hidden">
+<svg class="w-full h-full stroke-secondary fill-none" viewbox="0 0 100 40">
+<path d="M0,30 Q10,35 20,20 T40,25 T60,15 T80,30 T100,10" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Command Console -->
+<div class="glass-panel rounded-xl flex-grow min-h-[300px] flex flex-col overflow-hidden">
+<div class="bg-surface-container-high/50 px-4 py-2 border-b border-outline-variant/20 flex justify-between items-center">
+<span class="text-[10px] font-mono-label text-primary-fixed-dim">SYSTEM CONSOLE [SESSION: 0X8F2]</span>
+<div class="flex gap-1">
+<span class="w-2 h-2 rounded-full bg-red-500/50"></span>
+<span class="w-2 h-2 rounded-full bg-yellow-500/50"></span>
+<span class="w-2 h-2 rounded-full bg-green-500/50"></span>
+</div>
+</div>
+<div class="p-4 flex-grow font-mono-code text-[12px] text-on-surface-variant space-y-1 overflow-y-auto">
+<p><span class="text-primary-fixed-dim">[SYS]</span> Initializing swarm handshake...</p>
+<p><span class="text-primary-fixed-dim">[SYS]</span> Authentication successful. User: Admin_Root</p>
+<p><span class="text-secondary">[WRN]</span> Minor packet loss detected on Node Delta-4</p>
+<p><span class="text-primary-fixed-dim">[SYS]</span> Re-routing traffic through Sigma-Redundancy...</p>
+<p class="opacity-80">&gt;&gt; agent_cluster.deploy_v2 --target=US-EAST</p>
+<p class="text-green-400">Deploying cluster... [██████████] 100%</p>
+<p class="opacity-50 mt-4 animate-pulse">_</p>
+</div>
+<div class="p-4 border-t border-outline-variant/20 bg-surface/40 flex gap-2">
+<span class="text-primary-fixed-dim font-mono-label">&gt;</span>
+<input class="bg-transparent border-none p-0 focus:ring-0 text-sm font-mono-code w-full placeholder:text-on-surface-variant/30" placeholder="Enter orchestration command..." type="text"/>
+</div>
+</div>
+</section>
+</div>
+<!-- Bottom Action Bar / Secondary Metrics -->
+<section class="mt-gutter grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="glass-panel rounded-xl p-6 flex items-center gap-4 glow-hover transition-all">
+<div class="w-12 h-12 rounded-lg bg-primary-fixed-dim/10 border border-primary-fixed-dim/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-fixed-dim">security</span>
+</div>
+<div>
+<h4 class="font-mono-label text-on-surface text-sm">Security Matrix</h4>
+<p class="text-[11px] text-on-surface-variant">L7 Encryption Active</p>
+</div>
+</div>
+<div class="glass-panel rounded-xl p-6 flex items-center gap-4 glow-hover transition-all">
+<div class="w-12 h-12 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">memory</span>
+</div>
+<div>
+<h4 class="font-mono-label text-on-surface text-sm">Compute Load</h4>
+<p class="text-[11px] text-on-surface-variant">Optimal 64% utilization</p>
+</div>
+</div>
+<div class="glass-panel rounded-xl p-6 flex items-center gap-4 glow-hover transition-all">
+<div class="w-12 h-12 rounded-lg bg-on-tertiary-fixed-variant/10 border border-on-tertiary-fixed-variant/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-tertiary-fixed-variant">update</span>
+</div>
+<div>
+<h4 class="font-mono-label text-on-surface text-sm">Firmware Version</h4>
+<p class="text-[11px] text-on-surface-variant">v8.4.1-Stable Release</p>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-section-gap bg-surface-container-lowest border-t border-outline-variant/10">
+<div class="max-w-container-max mx-auto px-margin-desktop grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-gutter">
+<div class="lg:col-span-2">
+<span class="font-display-lg text-[20px] text-primary-fixed-dim mb-4 block">AETHER AI</span>
+<p class="font-mono-label text-[12px] text-on-tertiary-fixed-variant max-w-xs">
+                    © 2024 Aether AI Infrastructure. High-performance autonomous agent orchestration for the modern enterprise.
+                </p>
+</div>
+<div>
+<h5 class="font-mono-label text-on-surface text-[12px] mb-4 uppercase tracking-wider">Resources</h5>
+<ul class="space-y-2">
+<li><a class="font-mono-label text-[12px] text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Documentation</a></li>
+<li><a class="font-mono-label text-[12px] text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">API Reference</a></li>
+<li><a class="font-mono-label text-[12px] text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">System Status</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-mono-label text-on-surface text-[12px] mb-4 uppercase tracking-wider">Company</h5>
+<ul class="space-y-2">
+<li><a class="font-mono-label text-[12px] text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Security</a></li>
+<li><a class="font-mono-label text-[12px] text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="font-mono-label text-[12px] text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Terms of Service</a></li>
+</ul>
+</div>
+<div class="lg:col-span-2 flex justify-end items-end">
+<div class="flex gap-4">
+<div class="w-8 h-8 rounded border border-outline-variant/30 flex items-center justify-center cursor-pointer hover:bg-surface-container-high transition-colors">
+<svg class="w-4 h-4 fill-on-surface-variant" viewbox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path></svg>
+</div>
+<div class="w-8 h-8 rounded border border-outline-variant/30 flex items-center justify-center cursor-pointer hover:bg-surface-container-high transition-colors">
+<svg class="w-4 h-4 fill-on-surface-variant" viewbox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.841 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg>
+</div>
+</div>
+</div>
+</div>
+</footer>
+<!-- Interactive script for some light atmospheric effects -->
+<script>
+        document.addEventListener('mousemove', (e) => {
+            const panels = document.querySelectorAll('.glass-panel');
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+
+            panels.forEach(panel => {
+                const rect = panel.getBoundingClientRect();
+                const x = mouseX - rect.left;
+                const y = mouseY - rect.top;
+
+                if (x > 0 && x < rect.width && y > 0 && y < rect.height) {
+                    panel.style.setProperty('--mouse-x', `${x}px`);
+                    panel.style.setProperty('--mouse-y', `${y}px`);
+                }
+            });
+        });
+    </script>
+</body></html>

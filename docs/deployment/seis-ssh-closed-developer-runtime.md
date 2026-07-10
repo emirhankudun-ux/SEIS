@@ -36,6 +36,29 @@ npm run check:seis-ssh-closed-runtime
 - Direct public VPS access is not the default developer surface.
 - Private runtime state is never committed to the repo.
 
+## Remote Codex CLI Bridge
+
+Bridge runbook:
+
+```text
+docs/deployment/seis-remote-codex-cli-bridge.md
+```
+
+Read-only status command:
+
+```bash
+npm run cloud:ssh:remote-codex:status
+```
+
+Strict pass/fail command:
+
+```bash
+npm run cloud:ssh:remote-codex:strict
+```
+
+The bridge verifies `SEIS-SSH`, `/workspaces/SEIS`, `git`, and `codex --version`.
+It does not run Codex prompts or mutate the remote repo by default.
+
 ## Private Runtime State
 
 These belong outside the repo:
@@ -94,4 +117,5 @@ npm run check:seis-ssh-closed-runtime
 npm run check:seis-ssh-cloud-roadmap
 npm run check:seis-ssh-access-model
 npm run cloud:ssh:online:strict
+npm run cloud:ssh:remote-codex:strict
 ```

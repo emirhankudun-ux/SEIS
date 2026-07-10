@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS — Partition Manager</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-highest": "#333535",
+                      "on-error": "#690005",
+                      "inverse-surface": "#e2e2e2",
+                      "secondary": "#ebb2ff",
+                      "surface-container": "#1e2020",
+                      "on-primary": "#00363a",
+                      "inverse-primary": "#006970",
+                      "surface": "#121414",
+                      "on-secondary-container": "#480064",
+                      "surface-container-high": "#282a2b",
+                      "on-secondary-fixed-variant": "#74009f",
+                      "on-background": "#e2e2e2",
+                      "surface-dim": "#121414",
+                      "primary-fixed-dim": "#00dbe9",
+                      "outline-variant": "#3b494b",
+                      "primary": "#dbfcff",
+                      "secondary-fixed-dim": "#ebb2ff",
+                      "inverse-on-surface": "#2f3131",
+                      "surface-container-lowest": "#0c0f0f",
+                      "on-tertiary-fixed-variant": "#474646",
+                      "on-primary-fixed-variant": "#004f54",
+                      "on-primary-container": "#006970",
+                      "tertiary-fixed": "#e5e2e1",
+                      "background": "#121414",
+                      "error": "#ffb4ab",
+                      "tertiary-fixed-dim": "#c9c6c5",
+                      "on-secondary": "#520071",
+                      "primary-container": "#00f0ff",
+                      "on-tertiary": "#313030",
+                      "on-secondary-fixed": "#320047",
+                      "outline": "#849495",
+                      "primary-fixed": "#7df4ff",
+                      "on-tertiary-fixed": "#1c1b1b",
+                      "on-tertiary-container": "#605e5e",
+                      "error-container": "#93000a",
+                      "surface-variant": "#333535",
+                      "on-surface": "#e2e2e2",
+                      "surface-tint": "#00dbe9",
+                      "on-surface-variant": "#b9cacb",
+                      "on-primary-fixed": "#002022",
+                      "tertiary": "#f9f5f5",
+                      "surface-bright": "#37393a",
+                      "tertiary-container": "#dcd9d8",
+                      "secondary-fixed": "#f8d8ff",
+                      "surface-container-low": "#1a1c1c",
+                      "secondary-container": "#ce5dff",
+                      "on-error-container": "#ffdad6",
+                      "cyber-lime": "#ccff00" // Custom requested color
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gap-md": "16px",
+                      "stroke-thin": "1px",
+                      "stroke-thick": "2px",
+                      "gap-lg": "24px",
+                      "gap-sm": "8px",
+                      "gap-xs": "4px",
+                      "margin-page": "32px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["JetBrains Mono"],
+                      "headline-md": ["JetBrains Mono"],
+                      "code-sm": ["JetBrains Mono"],
+                      "body-md": ["JetBrains Mono"],
+                      "body-lg": ["JetBrains Mono"],
+                      "label-sm": ["Space Mono"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                      "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        body {
+            background-color: #0a0a0a;
+            color: #e2e2e2;
+        }
+        .crt-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            z-index: 100;
+            opacity: 0.15;
+        }
+        .blinking-cursor::after {
+            content: '█';
+            animation: blink 1s step-end infinite;
+            color: #7df4ff;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0c0f0f; }
+        ::-webkit-scrollbar-thumb { background: #333535; }
+        ::-webkit-scrollbar-thumb:hover { background: #7df4ff; }
+    </style>
+</head>
+<body class="font-body-md text-body-md h-screen overflow-hidden flex flex-col md:flex-row">
+<div class="crt-overlay"></div>
+<!-- TopNavBar (Mobile) - Hidden on md+ -->
+<nav class="md:hidden flex justify-between items-center w-full px-gap-md h-10 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 sticky top-0 z-50">
+<div class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim uppercase">SEIS KERNEL OS</div>
+<div class="flex gap-gap-sm">
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer">memory</span>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer">terminal</span>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer">settings</span>
+</div>
+</nav>
+<!-- SideNavBar (Desktop) -->
+<nav class="hidden md:flex fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex-col bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 w-20 hover:w-64 transition-all duration-300 group">
+<div class="p-gap-md border-b border-outline-variant/20 flex items-center gap-gap-md overflow-hidden whitespace-nowrap">
+<div class="w-8 h-8 bg-surface-variant rounded-full flex items-center justify-center shrink-0 border border-outline-variant">
+<span class="material-symbols-outlined text-secondary-fixed text-sm">person</span>
+</div>
+<div class="flex flex-col opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+<span class="font-label-caps text-label-caps text-secondary-fixed">ROOT_USER</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</span>
+</div>
+</div>
+<div class="flex-1 py-gap-sm overflow-y-auto overflow-x-hidden">
+<a class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 gap-gap-md whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0">dashboard</span>
+<span class="font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-300">DASHBOARD</span>
+</a>
+<a class="flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed gap-gap-md whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0">folder_open</span>
+<span class="font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-300">FILESYSTEM</span>
+</a>
+<a class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 gap-gap-md whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0">terminal</span>
+<span class="font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-300">TERMINAL</span>
+</a>
+<a class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 gap-gap-md whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0">smart_toy</span>
+<span class="font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-300">AI_AGENTS</span>
+</a>
+<a class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 gap-gap-md whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0">cloud_queue</span>
+<span class="font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-300">INFRASTRUCTURE</span>
+</a>
+<a class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 gap-gap-md whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0">list_alt</span>
+<span class="font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-300">LOGS</span>
+</a>
+</div>
+<div class="p-gap-md border-t border-outline-variant/20">
+<button class="w-full bg-primary-fixed text-[#0a0a0a] hover:bg-secondary-fixed-dim transition-colors py-2 flex justify-center items-center gap-2 overflow-hidden whitespace-nowrap">
+<span class="material-symbols-outlined text-sm shrink-0">add</span>
+<span class="font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-300">NEW_SESSION</span>
+</button>
+</div>
+<div class="flex flex-col border-t border-outline-variant/20 py-gap-sm">
+<a class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 gap-gap-md whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0">power_settings_new</span>
+<span class="font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-300">POWER</span>
+</a>
+<a class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 gap-gap-md whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0">lock</span>
+<span class="font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-300">LOCK</span>
+</a>
+</div>
+</nav>
+<!-- TopNavBar (Desktop) -->
+<div class="hidden md:flex fixed top-0 left-0 w-full justify-between items-center px-gap-md h-10 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 z-30 pl-[100px]">
+<div class="flex gap-gap-lg h-full">
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 flex items-center h-full cursor-pointer uppercase text-label-sm" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 flex items-center h-full cursor-pointer uppercase text-label-sm" href="#">TELEMETRY</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 flex items-center h-full cursor-pointer uppercase text-label-sm" href="#">AGENTS</a>
+<a class="text-primary-fixed border-b border-primary-fixed font-label-caps flex items-center h-full cursor-pointer uppercase text-label-sm" href="#">NETWORK</a>
+</div>
+<div class="flex gap-gap-sm">
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer">memory</span>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer">terminal</span>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer">settings</span>
+</div>
+</div>
+<!-- Main Canvas -->
+<main class="flex-1 flex flex-col md:pl-20 md:pt-10 h-full overflow-hidden relative">
+<div class="absolute inset-0 z-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(#3b494b 1px, transparent 1px); background-size: 32px 32px;"></div>
+<div class="flex-1 overflow-y-auto p-gap-md md:p-gap-lg z-10 flex flex-col gap-gap-md">
+<!-- Header -->
+<div class="flex justify-between items-end border-b border-outline-variant pb-gap-sm mb-gap-sm">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-primary-fixed uppercase">PARTITION_MANAGER</h1>
+<p class="font-code-sm text-code-sm text-on-surface-variant">/dev/mapper/seis-vg</p>
+</div>
+<div class="flex gap-gap-sm">
+<button class="bg-transparent border border-primary-fixed text-primary-fixed font-label-caps text-label-sm px-4 py-2 hover:bg-primary-fixed/10 uppercase">SCAN_BUS</button>
+<button class="bg-primary-fixed text-[#0a0a0a] font-label-caps text-label-sm px-4 py-2 hover:bg-secondary-fixed-dim uppercase">APPLY_CHANGES</button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gap-md flex-1">
+<!-- Disk Topology Map (Main View) -->
+<div class="md:col-span-8 flex flex-col gap-gap-md">
+<div class="bg-surface-container/85 border border-outline-variant backdrop-blur-xl flex-1 flex flex-col">
+<div class="h-6 bg-primary-fixed/20 border-b border-outline-variant px-gap-sm flex items-center">
+<span class="font-label-caps text-label-sm text-primary-fixed uppercase">BLOCK_DEVICE_TOPOLOGY</span>
+</div>
+<div class="p-gap-md flex-1 overflow-y-auto font-code-sm text-code-sm">
+<!-- Topology Visualization placeholder -->
+<div class="border border-outline-variant p-4 mb-4 relative overflow-hidden bg-surface-container-lowest">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary-fixed"></div>
+<div class="flex justify-between items-center mb-2">
+<span class="text-primary-fixed">nvme0n1</span>
+<span class="text-on-surface-variant">1.0 TB NVMe Gen4</span>
+</div>
+<div class="flex gap-1 h-8 w-full mt-4">
+<div class="bg-surface-variant border border-outline-variant h-full flex-shrink-0" style="width: 5%;" title="/boot (512MB)">
+<div class="w-full h-full bg-cyber-lime/20 flex items-center justify-center text-[10px] text-cyber-lime truncate">p1</div>
+</div>
+<div class="bg-surface-variant border border-outline-variant h-full flex-grow relative group" title="/root (999.5GB)">
+<div class="absolute inset-0 bg-primary-fixed/10"></div>
+<div class="w-full h-full flex items-center justify-center text-[10px] text-primary-fixed group-hover:bg-primary-fixed/30 cursor-pointer">LUKS_CRYPT (p2)</div>
+</div>
+</div>
+<div class="mt-4 pl-4 border-l border-outline-variant/50 relative">
+<div class="absolute top-0 left-[-1px] w-[2px] h-4 bg-outline-variant/50"></div>
+<div class="text-secondary-fixed mb-1">LVM: seis-vg</div>
+<div class="flex gap-1 h-6 w-full">
+<div class="bg-surface-variant border border-outline-variant h-full flex-grow relative group" style="flex: 2;">
+<div class="w-full h-full flex items-center justify-center text-[10px] text-on-surface group-hover:bg-secondary-fixed/20 cursor-pointer">root_lv</div>
+</div>
+<div class="bg-surface-variant border border-outline-variant h-full flex-grow relative group" style="flex: 1;">
+<div class="w-full h-full flex items-center justify-center text-[10px] text-on-surface group-hover:bg-secondary-fixed/20 cursor-pointer">home_lv</div>
+</div>
+<div class="bg-surface-variant border border-outline-variant h-full flex-grow relative group" style="flex: 0.5;">
+<div class="w-full h-full flex items-center justify-center text-[10px] text-on-surface group-hover:bg-secondary-fixed/20 cursor-pointer">swap_lv</div>
+</div>
+</div>
+</div>
+</div>
+<div class="border border-outline-variant p-4 relative overflow-hidden bg-surface-container-lowest opacity-70">
+<div class="flex justify-between items-center mb-2">
+<span class="text-on-surface">sda</span>
+<span class="text-on-surface-variant">4.0 TB HDD (SATA)</span>
+</div>
+<div class="flex gap-1 h-8 w-full mt-4">
+<div class="bg-surface-variant border border-outline-variant h-full w-full relative group">
+<div class="w-full h-full flex items-center justify-center text-[10px] text-on-surface">DATA_POOL (zfs)</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Telemetry & Mounts (Sidebar View) -->
+<div class="md:col-span-4 flex flex-col gap-gap-md h-full">
+<!-- Health & SMART -->
+<div class="bg-surface-container/85 border border-outline-variant backdrop-blur-xl h-1/2 flex flex-col">
+<div class="h-6 bg-cyber-lime/20 border-b border-outline-variant px-gap-sm flex justify-between items-center">
+<span class="font-label-caps text-label-sm text-cyber-lime uppercase">SMART_TELEMETRY</span>
+<span class="material-symbols-outlined text-[14px] text-cyber-lime" style="font-variation-settings: 'FILL' 1;">health_and_safety</span>
+</div>
+<div class="p-gap-sm flex-1 overflow-y-auto font-code-sm text-code-sm text-on-surface-variant">
+<div class="flex justify-between border-b border-outline-variant/30 py-1">
+<span>Temperature</span>
+<span class="text-cyber-lime">38°C</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant/30 py-1">
+<span>Health Status</span>
+<span class="text-cyber-lime">PASSED</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant/30 py-1">
+<span>Available Spare</span>
+<span class="text-on-surface">100%</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant/30 py-1">
+<span>Data Units Read</span>
+<span class="text-on-surface">1,432,109</span>
+</div>
+<div class="mt-4">
+<span class="text-[10px] uppercase text-outline">IOPS_Sparkline</span>
+<div class="flex items-end gap-[1px] h-8 mt-1 border-b border-outline-variant/50">
+<div class="w-2 bg-primary-fixed/40 h-[20%]"></div>
+<div class="w-2 bg-primary-fixed/40 h-[40%]"></div>
+<div class="w-2 bg-primary-fixed/60 h-[30%]"></div>
+<div class="w-2 bg-primary-fixed/40 h-[50%]"></div>
+<div class="w-2 bg-primary-fixed/80 h-[90%]"></div>
+<div class="w-2 bg-primary-fixed/40 h-[40%]"></div>
+<div class="w-2 bg-primary-fixed/40 h-[20%]"></div>
+<div class="w-2 bg-primary-fixed/60 h-[30%]"></div>
+<div class="w-2 bg-primary-fixed/40 h-[10%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Active Mount Points -->
+<div class="bg-surface-container/85 border border-outline-variant backdrop-blur-xl h-1/2 flex flex-col">
+<div class="h-6 bg-secondary-fixed/20 border-b border-outline-variant px-gap-sm flex items-center">
+<span class="font-label-caps text-label-sm text-secondary-fixed uppercase">ACTIVE_MOUNTS</span>
+</div>
+<div class="p-gap-sm flex-1 overflow-y-auto">
+<ul class="font-code-sm text-code-sm text-on-surface">
+<li class="border-b border-outline-variant py-1 flex justify-between group hover:bg-secondary-fixed/10 cursor-pointer">
+<span>/</span>
+<span class="text-outline">ext4</span>
+</li>
+<li class="border-b border-outline-variant py-1 flex justify-between group hover:bg-secondary-fixed/10 cursor-pointer bg-secondary-container/20">
+<span>/boot</span>
+<span class="text-outline">vfat</span>
+</li>
+<li class="border-b border-outline-variant py-1 flex justify-between group hover:bg-secondary-fixed/10 cursor-pointer">
+<span>/home</span>
+<span class="text-outline">ext4</span>
+</li>
+<li class="border-b border-outline-variant py-1 flex justify-between group hover:bg-secondary-fixed/10 cursor-pointer text-outline-variant">
+<span>/mnt/data</span>
+<span class="text-outline-variant">zfs</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<!-- Terminal Command Log -->
+<div class="bg-surface-container-lowest border border-outline-variant h-32 flex flex-col shrink-0">
+<div class="h-6 bg-surface-variant border-b border-outline-variant px-gap-sm flex items-center">
+<span class="font-label-caps text-label-sm text-on-surface-variant uppercase">KERNEL_LOG</span>
+</div>
+<div class="p-gap-sm overflow-y-auto font-code-sm text-code-sm text-on-surface-variant flex-1">
+<div><span class="text-cyber-lime">[  0.000000]</span> Linux version 6.1.x-seis-hardened</div>
+<div><span class="text-cyber-lime">[  1.234567]</span> nvme nvme0: pci function 0000:01:00.0</div>
+<div><span class="text-cyber-lime">[  1.300122]</span> nvme nvme0: 8/0/0 default/read/poll queues</div>
+<div><span class="text-primary-fixed">root@seis-01:~#</span> lsblk -f</div>
+<div><span class="text-primary-fixed">root@seis-01:~#</span> <span class="blinking-cursor"></span></div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

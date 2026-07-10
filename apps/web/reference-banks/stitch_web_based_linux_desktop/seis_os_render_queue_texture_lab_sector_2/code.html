@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS - Media Engine</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#121414",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "surface-tint": "#00dbe9",
+                        "secondary-container": "#ce5dff",
+                        "on-secondary-fixed": "#320047",
+                        "surface-dim": "#121414",
+                        "on-tertiary-container": "#605e5e",
+                        "surface-container-low": "#1a1c1c",
+                        "on-primary-container": "#006970",
+                        "inverse-primary": "#006970",
+                        "tertiary-fixed": "#e5e2e1",
+                        "primary": "#dbfcff",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "primary-container": "#00f0ff",
+                        "on-secondary-container": "#480064",
+                        "surface-container-lowest": "#0c0f0f",
+                        "on-surface-variant": "#b9cacb",
+                        "on-surface": "#e2e2e2",
+                        "surface-bright": "#37393a",
+                        "primary-fixed": "#7df4ff",
+                        "outline-variant": "#3b494b",
+                        "on-tertiary": "#313030",
+                        "error-container": "#93000a",
+                        "tertiary": "#f9f5f5",
+                        "outline": "#849495",
+                        "background": "#121414",
+                        "surface-container-high": "#282a2b",
+                        "surface-container": "#1e2020",
+                        "on-secondary": "#520071",
+                        "on-primary-fixed-variant": "#004f54",
+                        "on-primary": "#00363a",
+                        "on-background": "#e2e2e2",
+                        "inverse-surface": "#e2e2e2",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-primary-fixed": "#002022",
+                        "secondary-fixed": "#f8d8ff",
+                        "inverse-on-surface": "#2f3131",
+                        "tertiary-container": "#dcd9d8",
+                        "surface-variant": "#333535",
+                        "error": "#ffb4ab",
+                        "surface-container-highest": "#333535",
+                        "primary-fixed-dim": "#00dbe9",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "secondary": "#ebb2ff",
+                        "on-error": "#690005",
+                        "on-error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gap-sm": "8px",
+                        "stroke-thick": "2px",
+                        "gap-md": "16px",
+                        "gap-lg": "24px",
+                        "stroke-thin": "1px",
+                        "gap-xs": "4px",
+                        "margin-page": "32px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "label-sm": ["Space Mono"],
+                        "headline-lg": ["JetBrains Mono"],
+                        "code-sm": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "code-sm": ["13px", { "lineHeight": "1.4", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #0a0a0a; /* Deepest black for background */
+            color: #e2e2e2;
+        }
+        /* Custom scrollbar for terminal/lists */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #333535; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00f0ff; }
+        
+        .tile-border {
+            border: 1px solid #3b494b; /* outline-variant */
+        }
+        .tile-border:focus-within, .tile-border:hover {
+            border-color: #00dbe9; /* primary-fixed-dim */
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md flex flex-col h-screen overflow-hidden antialiased">
+<!-- TopNavBar (Shared Component) -->
+<header class="bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 w-full top-0 z-50">
+<div class="flex justify-between items-center w-full px-gap-md h-10">
+<!-- Brand Logo -->
+<div class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim font-bold">
+                SEIS KERNEL OS
+            </div>
+<!-- Navigation Links -->
+<nav class="hidden md:flex space-x-gap-md h-full">
+<a class="flex items-center h-full text-on-surface-variant font-label-caps text-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 px-2" href="#">
+                    WORKSPACES
+                </a>
+<a class="flex items-center h-full text-on-surface-variant font-label-caps text-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 px-2" href="#">
+                    TELEMETRY
+                </a>
+<a class="flex items-center h-full text-primary-fixed border-b border-primary-fixed pb-1 font-label-caps text-label-caps cursor-pointer active:opacity-70 px-2" href="#">
+                    AGENTS
+                </a>
+<a class="flex items-center h-full text-on-surface-variant font-label-caps text-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 px-2" href="#">
+                    NETWORK
+                </a>
+</nav>
+<!-- Trailing Icons -->
+<div class="flex space-x-gap-sm text-primary-fixed">
+<span class="material-symbols-outlined hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 text-[20px]" data-icon="memory">memory</span>
+<span class="material-symbols-outlined hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 text-[20px]" data-icon="terminal">terminal</span>
+<span class="material-symbols-outlined hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 text-[20px]" data-icon="settings">settings</span>
+</div>
+</div>
+</header>
+<!-- Main Content Area with SideNav and Workspace -->
+<div class="flex flex-1 overflow-hidden relative pt-gap-sm">
+<!-- SideNavBar (Shared Component) -->
+<nav class="bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 left-0 h-[calc(100vh-40px)] w-20 hover:w-64 transition-all duration-300 flex flex-col z-40 group shrink-0 hidden md:flex">
+<!-- Header/Profile -->
+<div class="flex items-center px-4 py-gap-md border-b border-outline-variant/20 mb-2 overflow-hidden whitespace-nowrap">
+<div class="w-10 h-10 rounded bg-surface-variant flex items-center justify-center shrink-0 tile-border">
+<span class="material-symbols-outlined text-secondary-fixed">person</span>
+</div>
+<div class="ml-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+<div class="font-label-caps text-label-caps text-secondary-fixed">ROOT_USER</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</div>
+</div>
+</div>
+<!-- Tabs -->
+<div class="flex-1 overflow-y-auto py-2">
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 overflow-hidden whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="dashboard">dashboard</span>
+<span class="ml-4 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-300">DASHBOARD</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 overflow-hidden whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="folder_open">folder_open</span>
+<span class="ml-4 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-300">FILESYSTEM</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 overflow-hidden whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="terminal">terminal</span>
+<span class="ml-4 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-300">TERMINAL</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed overflow-hidden whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="smart_toy">smart_toy</span>
+<span class="ml-4 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-300">AI_AGENTS</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 overflow-hidden whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="cloud_queue">cloud_queue</span>
+<span class="ml-4 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-300">INFRASTRUCTURE</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 overflow-hidden whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="list_alt">list_alt</span>
+<span class="ml-4 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-300">LOGS</span>
+</a>
+</div>
+<!-- CTA -->
+<div class="px-4 py-3 overflow-hidden whitespace-nowrap">
+<button class="w-full bg-secondary-fixed/10 text-secondary-fixed border border-secondary-fixed/50 hover:bg-secondary-fixed hover:text-on-secondary-fixed transition-colors duration-200 py-2 font-label-caps text-label-caps flex items-center justify-center">
+<span class="material-symbols-outlined mr-2 text-[18px]">add</span>
+<span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">NEW_SESSION</span>
+</button>
+</div>
+<!-- Footer Tabs -->
+<div class="border-t border-outline-variant/20 py-2">
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-error transition-all duration-150 overflow-hidden whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="power_settings_new">power_settings_new</span>
+<span class="ml-4 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-300">POWER</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 overflow-hidden whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="lock">lock</span>
+<span class="ml-4 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-300">LOCK</span>
+</a>
+</div>
+</nav>
+<!-- Workspace Canvas (Tiling Grid) -->
+<main class="flex-1 p-gap-md overflow-y-auto grid grid-cols-1 md:grid-cols-12 gap-gap-md content-start">
+<!-- Page Header -->
+<div class="col-span-1 md:col-span-12 flex justify-between items-end mb-gap-sm border-b border-outline-variant/30 pb-2">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-primary-fixed uppercase tracking-tight">Media Engine</h1>
+<p class="font-code-sm text-code-sm text-on-surface-variant mt-1">SECTOR_02 // 3D_RENDER_QUEUE &amp; TEX_GEN</p>
+</div>
+<div class="flex gap-2">
+<button class="bg-primary text-on-primary px-4 py-1 font-label-caps text-label-caps hover:bg-secondary-fixed hover:text-on-secondary-fixed transition-colors">ALLOCATE_GPU</button>
+<button class="border border-primary-fixed text-primary-fixed px-4 py-1 font-label-caps text-label-caps hover:bg-primary-fixed/10 transition-colors">HALT_QUEUE</button>
+</div>
+</div>
+<!-- Render Preview Viewport (Main Tile) -->
+<div class="col-span-1 md:col-span-8 bg-surface-container-lowest/85 tile-border backdrop-blur-md flex flex-col min-h-[500px] relative">
+<!-- Header -->
+<div class="h-6 bg-primary-fixed text-on-primary-fixed flex items-center justify-between px-2">
+<span class="font-label-caps text-label-caps">VIEWPORT_ALPHA // PREVIEW_LOD0</span>
+<div class="flex gap-2 text-[10px] items-center">
+<span>FPS: 144</span>
+<span>LAT: 4ms</span>
+<span class="w-2 h-2 rounded-full bg-secondary-fixed animate-pulse"></span>
+</div>
+</div>
+<!-- Content Canvas -->
+<div class="flex-1 relative overflow-hidden flex items-center justify-center bg-[#050505]">
+<!-- Placeholder for Image -->
+<div class="absolute inset-0 bg-cover bg-center w-full h-full opacity-60 mix-blend-screen" data-alt="A highly detailed, futuristic 3D rendered sphere floating in a minimal, pitch-black void. The sphere features intricate, hyper-realistic Obsidian Purple metallic textures with subtle cybernetic glowing circuits. The lighting is dramatic and directional, casting stark shadows and highlighting the high-end glassmorphism and technical brutalist aesthetic of the surrounding UI environment." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC-f0PE3kjLEgj8kNoozjV_nfP8gRLIdQAUN7dJYpSBhPfUAciAiC9cwqRfABMZq9a8ev8CFbaG4f6aONBBxQY-TLwkNIALZqyOqTGziPoI06QDHkJWmwdEOq3hh5Gf54l_Cm-Zy4qsMtW2AIUkW2FfO2ZTwkUjL0v6VN6Tvi2B2ZUCu_w_PruT6BRuECAMY2IJiYYD4m9_MZVXMXmmh62jGY8dTifykFD0t0z4e1fxzSekvsL1YjJJTQDMv0fgA6Xw0SKkcjDVJFt9')"></div>
+<!-- Viewport Overlay Info -->
+<div class="absolute top-4 left-4 font-code-sm text-code-sm text-primary-fixed/70">
+<div>[TEX_PASS]: ACTIVE</div>
+<div>[RAY_BOUNCES]: 128</div>
+<div>[NOISE_SEED]: 0x8F3A2B</div>
+</div>
+<!-- Center Reticle -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-30">
+<div class="w-32 h-32 border border-secondary-fixed/50 rounded-full flex items-center justify-center">
+<div class="w-1 h-1 bg-secondary-fixed rounded-full"></div>
+</div>
+<div class="absolute w-full h-[1px] bg-secondary-fixed/20"></div>
+<div class="absolute h-full w-[1px] bg-secondary-fixed/20"></div>
+</div>
+</div>
+<!-- Viewport Toolbar -->
+<div class="h-8 border-t border-outline-variant/30 flex items-center px-2 gap-4 bg-surface-container/50">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant cursor-pointer hover:text-primary-fixed">visibility</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant cursor-pointer hover:text-primary-fixed">3d_rotation</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant cursor-pointer hover:text-primary-fixed">layers</span>
+<div class="w-[1px] h-4 bg-outline-variant/50"></div>
+<span class="font-code-sm text-[11px] text-on-surface-variant">RES: 4096x4096</span>
+<span class="font-code-sm text-[11px] text-on-surface-variant">MEM: 12.4GB / 24GB</span>
+</div>
+</div>
+<!-- Texture Parameter Panel (Side Tile) -->
+<div class="col-span-1 md:col-span-4 bg-surface-container-lowest/85 tile-border backdrop-blur-md flex flex-col h-[500px]">
+<!-- Header -->
+<div class="h-6 bg-primary-fixed text-on-primary-fixed flex items-center justify-between px-2">
+<span class="font-label-caps text-label-caps">TEX_GEN_NODES // PARAMS</span>
+<span class="material-symbols-outlined text-[14px]">tune</span>
+</div>
+<!-- Content -->
+<div class="flex-1 p-3 overflow-y-auto space-y-4 font-code-sm text-code-sm">
+<!-- Parameter Block 1 -->
+<div class="space-y-1">
+<div class="flex justify-between text-on-surface">
+<span>ROUGHNESS_MAP</span>
+<span class="text-primary-fixed">0.42</span>
+</div>
+<div class="h-1 w-full bg-surface-variant relative">
+<div class="absolute top-0 left-0 h-full bg-primary-fixed w-[42%]"></div>
+</div>
+</div>
+<!-- Parameter Block 2 -->
+<div class="space-y-1">
+<div class="flex justify-between text-on-surface">
+<span>METALLIC_CORE</span>
+<span class="text-secondary-fixed">0.88</span>
+</div>
+<div class="h-1 w-full bg-surface-variant relative">
+<div class="absolute top-0 left-0 h-full bg-secondary-fixed w-[88%]"></div>
+</div>
+</div>
+<!-- Node Preview -->
+<div class="mt-4 border border-outline-variant/50 p-2">
+<div class="text-[10px] text-on-surface-variant mb-2">NODE_GRAPH_PREVIEW</div>
+<div class="flex gap-2">
+<div class="w-12 h-12 bg-surface-variant border border-primary-fixed/30 flex items-center justify-center relative">
+<span class="text-[10px] text-primary-fixed absolute bottom-1">ALBEDO</span>
+</div>
+<div class="flex flex-col justify-center text-outline-variant text-[10px]">&gt;</div>
+<div class="w-12 h-12 bg-surface-variant border border-secondary-fixed/30 flex items-center justify-center relative">
+<span class="text-[10px] text-secondary-fixed absolute bottom-1">NORMAL</span>
+</div>
+</div>
+</div>
+<!-- Toggle Switces -->
+<div class="space-y-2 mt-4 pt-4 border-t border-outline-variant/30">
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">ENABLE_DISPLACEMENT</span>
+<div class="w-8 h-4 bg-primary-fixed/20 border border-primary-fixed relative cursor-pointer">
+<div class="absolute right-0 top-0 w-4 h-full bg-primary-fixed"></div>
+</div>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">USE_GPU_ACCEL</span>
+<div class="w-8 h-4 bg-primary-fixed/20 border border-primary-fixed relative cursor-pointer">
+<div class="absolute right-0 top-0 w-4 h-full bg-primary-fixed"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Render Queue List (Bottom Spanning Tile) -->
+<div class="col-span-1 md:col-span-12 bg-surface-container-lowest/85 tile-border backdrop-blur-md flex flex-col mb-gap-lg">
+<!-- Header -->
+<div class="h-6 bg-primary-fixed text-on-primary-fixed flex items-center justify-between px-2">
+<span class="font-label-caps text-label-caps">RENDER_QUEUE // ACTIVE_TASKS</span>
+<span class="font-code-sm text-[10px]">TOTAL_THREADS: 64</span>
+</div>
+<!-- List Content -->
+<div class="flex-1 p-0 font-code-sm text-code-sm">
+<!-- Table Header -->
+<div class="grid grid-cols-12 gap-2 px-3 py-2 border-b border-outline-variant/50 text-on-surface-variant text-[11px] uppercase">
+<div class="col-span-2">TASK_ID</div>
+<div class="col-span-4">ASSET_NAME</div>
+<div class="col-span-2">STATUS</div>
+<div class="col-span-3">PROGRESS</div>
+<div class="col-span-1 text-right">ETC</div>
+</div>
+<!-- Queue Item 1 (Active) -->
+<div class="grid grid-cols-12 gap-2 px-3 py-2 border-b border-outline-variant/20 items-center bg-secondary-fixed/5 hover:bg-surface-variant/30 transition-colors">
+<div class="col-span-2 text-primary-fixed">RND-0892</div>
+<div class="col-span-4 text-on-surface truncate">OBSIDIAN_SPHERE_HIRES_LOD0.exr</div>
+<div class="col-span-2 flex items-center gap-1 text-[#a3ff00]"> <!-- Cyber Lime equivalent -->
+<span class="w-1.5 h-1.5 rounded-full bg-[#a3ff00] animate-pulse"></span>
+                            RENDERING
+                        </div>
+<div class="col-span-3 flex items-center gap-2">
+<span class="text-[10px] w-8">78%</span>
+<div class="flex-1 h-1 flex gap-[1px]">
+<div class="h-full bg-[#a3ff00] w-[10%]"></div>
+<div class="h-full bg-[#a3ff00] w-[10%]"></div>
+<div class="h-full bg-[#a3ff00] w-[10%]"></div>
+<div class="h-full bg-[#a3ff00] w-[10%]"></div>
+<div class="h-full bg-[#a3ff00] w-[10%]"></div>
+<div class="h-full bg-[#a3ff00] w-[10%]"></div>
+<div class="h-full bg-[#a3ff00] w-[10%]"></div>
+<div class="h-full bg-[#a3ff00]/50 w-[8%]"></div>
+<div class="h-full bg-surface-variant w-[2%]"></div>
+<div class="h-full bg-surface-variant w-[10%]"></div>
+<div class="h-full bg-surface-variant w-[10%]"></div>
+</div>
+</div>
+<div class="col-span-1 text-right text-on-surface-variant text-[11px]">02m:14s</div>
+</div>
+<!-- Queue Item 2 (Queued) -->
+<div class="grid grid-cols-12 gap-2 px-3 py-2 border-b border-outline-variant/20 items-center hover:bg-surface-variant/30 transition-colors">
+<div class="col-span-2 text-on-surface-variant">RND-0893</div>
+<div class="col-span-4 text-on-surface-variant truncate">CYBER_CHASSIS_BAKE_NORMALS.png</div>
+<div class="col-span-2 text-on-surface-variant">QUEUED</div>
+<div class="col-span-3 flex items-center gap-2">
+<span class="text-[10px] w-8 text-on-surface-variant">0%</span>
+<div class="flex-1 h-1 flex gap-[1px]">
+<div class="h-full bg-surface-variant w-full"></div>
+</div>
+</div>
+<div class="col-span-1 text-right text-on-surface-variant text-[11px]">--:--</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

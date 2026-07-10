@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS - SECTOR 8 ARCADE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..900&amp;family=Space+Mono:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #0c0f0f;
+            color: #e2e2e2;
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(12, 15, 15, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid #3b494b;
+        }
+        .active-window {
+            border-color: #00dbe9;
+            box-shadow: 0 0 15px rgba(0, 219, 233, 0.1);
+        }
+        .game-card:hover {
+            border-color: #ce5dff;
+            box-shadow: 0 0 20px rgba(206, 93, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1.2em;
+            background: #00dbe9;
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #0c0f0f; }
+        ::-webkit-scrollbar-thumb { background: #3b494b; }
+        ::-webkit-scrollbar-thumb:hover { background: #00dbe9; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#74009f",
+                        "tertiary-fixed": "#e5e2e1",
+                        "secondary-fixed": "#f8d8ff",
+                        "on-secondary": "#520071",
+                        "surface-dim": "#121414",
+                        "surface-container-highest": "#333535",
+                        "secondary": "#ebb2ff",
+                        "background": "#121414",
+                        "primary-fixed": "#7df4ff",
+                        "on-surface-variant": "#b9cacb",
+                        "surface-container-low": "#1a1c1c",
+                        "on-primary-fixed": "#002022",
+                        "error-container": "#93000a",
+                        "secondary-container": "#ce5dff",
+                        "on-tertiary-container": "#605e5e",
+                        "on-primary-fixed-variant": "#004f54",
+                        "primary": "#dbfcff",
+                        "tertiary-container": "#dcd9d8",
+                        "inverse-surface": "#e2e2e2",
+                        "surface": "#121414",
+                        "surface-container": "#1e2020",
+                        "on-secondary-container": "#480064",
+                        "primary-fixed-dim": "#00dbe9",
+                        "on-error": "#690005",
+                        "surface-container-lowest": "#0c0f0f",
+                        "outline-variant": "#3b494b",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "on-error-container": "#ffdad6",
+                        "surface-variant": "#333535",
+                        "primary-container": "#00f0ff",
+                        "outline": "#849495",
+                        "on-background": "#e2e2e2",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "on-secondary-fixed": "#320047",
+                        "on-surface": "#e2e2e2",
+                        "on-primary": "#00363a",
+                        "tertiary": "#f9f5f5",
+                        "surface-bright": "#37393a",
+                        "inverse-on-surface": "#2f3131",
+                        "on-primary-container": "#006970",
+                        "on-tertiary": "#313030",
+                        "inverse-primary": "#006970",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "surface-container-high": "#282a2b",
+                        "error": "#ffb4ab",
+                        "surface-tint": "#00dbe9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-page": "32px",
+                        "gap-xs": "4px",
+                        "gap-md": "16px",
+                        "stroke-thin": "1px",
+                        "gap-sm": "8px",
+                        "gap-lg": "24px",
+                        "stroke-thick": "2px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["JetBrains Mono"],
+                        "label-sm": ["Space Mono"],
+                        "headline-md": ["JetBrains Mono"],
+                        "code-sm": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "body-md": ["JetBrains Mono"],
+                        "label-caps": ["Space Mono"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.2em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface-container-lowest selection:bg-primary-container selection:text-on-primary-container">
+<!-- TOP NAVIGATION SHELL -->
+<nav class="fixed top-0 left-0 w-full h-10 flex justify-between items-center px-6 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 z-50">
+<div class="flex items-center gap-4">
+<span class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</span>
+<div class="h-4 w-px bg-outline-variant/30"></div>
+<div class="flex gap-6">
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200" href="#">TELEMETRY</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200" href="#">AGENTS</a>
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 font-label-caps" href="#">NETWORK</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer active:opacity-70 transition-colors hover:text-primary-fixed" style="font-size: 18px;">memory</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer active:opacity-70 transition-colors hover:text-primary-fixed" style="font-size: 18px;">terminal</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer active:opacity-70 transition-colors hover:text-primary-fixed" style="font-size: 18px;">settings</span>
+</div>
+</nav>
+<!-- SIDE NAVIGATION SHELL -->
+<aside class="fixed left-0 top-10 h-[calc(100vh-40px)] w-20 hover:w-64 transition-all duration-300 bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 z-40 group flex flex-col overflow-hidden">
+<div class="p-4 flex items-center gap-4">
+<div class="w-10 h-10 bg-secondary-container/20 rounded flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary-fixed">account_circle</span>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 overflow-hidden">
+<div class="font-label-caps text-secondary-fixed whitespace-nowrap">ROOT_USER</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant whitespace-nowrap">SEIS-01</div>
+</div>
+</div>
+<div class="mt-4 flex-1">
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined shrink-0">dashboard</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps">DASHBOARD</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined shrink-0">folder_open</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps">FILESYSTEM</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined shrink-0">terminal</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps">TERMINAL</span>
+</div>
+<!-- AI_AGENTS active -->
+<div class="group flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed transition-all duration-150">
+<span class="material-symbols-outlined shrink-0">smart_toy</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps">AI_AGENTS</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined shrink-0">cloud_queue</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps">INFRASTRUCTURE</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined shrink-0">list_alt</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps">LOGS</span>
+</div>
+</div>
+<div class="p-4 space-y-4">
+<div class="group flex items-center px-4 py-2 cursor-pointer text-error hover:bg-error/10 transition-all duration-150">
+<span class="material-symbols-outlined shrink-0">power_settings_new</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps">POWER</span>
+</div>
+</div>
+</aside>
+<!-- MAIN CANVAS -->
+<main class="ml-20 mt-10 p-6 h-[calc(100vh-40px)] overflow-y-auto bg-surface-container-lowest">
+<!-- HEADER GRID -->
+<div class="grid grid-cols-12 gap-4 mb-6">
+<div class="col-span-8 flex flex-col justify-end p-6 glass-panel active-window relative overflow-hidden">
+<!-- Background Shader Animation -->
+
+<div class="relative z-10">
+<span class="font-label-caps text-primary-fixed bg-primary-fixed/10 px-2 py-1">SECTOR 8 ARCADE</span>
+<h1 class="font-headline-lg text-headline-lg text-white mt-2">VIRTUAL ARCADE ENV_08</h1>
+<p class="text-on-surface-variant font-body-md mt-2 max-w-xl">Optimized for Kernel 1.4. High-performance gaming environment utilizing neuro-synaptic bypass for zero-latency feedback.</p>
+<div class="flex gap-4 mt-6">
+<button class="bg-primary-container text-on-primary-container px-6 py-2 font-label-caps hover:bg-secondary-container transition-all">LAUNCH_SESSION</button>
+<button class="border border-primary-fixed text-primary-fixed px-6 py-2 font-label-caps hover:bg-primary-fixed/10 transition-all">KERNEL_CONFIG</button>
+</div>
+</div>
+</div>
+<!-- NEURAL GAMING PROFILE -->
+<div class="col-span-4 glass-panel border-outline-variant/30 p-6 flex flex-col">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-label-caps text-secondary-fixed">NEURAL_PROFILE</h3>
+<span class="material-symbols-outlined text-secondary-fixed-dim" style="font-size: 20px;">neurology</span>
+</div>
+<div class="flex items-center gap-4 mb-6">
+<div class="relative w-16 h-16 border-2 border-secondary-fixed p-1">
+<img class="w-full h-full object-cover" data-alt="A futuristic portrait of a cybernetic human user with glowing purple ocular implants and circuitry visible on their temples, sharp lighting, moody cyberpunk tech style, deep blacks and vibrant neon violets." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFRZOursk04X-r3MTq2iH9OGNYGiwSrr1e7nze4PHyUHUQlhWBSkFZw4XRCg_XO0fR8ya_b2J-KmwxoWNgW1ZZ-LIUvArPiOOs_O4_Rru3EpUdhgWObTxfVFZS0nD3Of5A_DJ_6K2rfByKKTHKKE8Tl7--g5_0Wk-MTtF52lKgo6bXaXoLn1fTK6p8CRvBA0fVflp3fLr1kPXBKHAk5OntEt7LM9yVzh6kXjmn19r_6xuNmn7DLmwzdWNngpscGbyIgsj_HGDpF8ZE"/>
+</div>
+<div>
+<div class="font-headline-md text-white text-lg">HYPER_VOID</div>
+<div class="font-code-sm text-secondary-fixed-dim">RANK: KERNEL_MASTER</div>
+</div>
+</div>
+<div class="space-y-3 flex-1">
+<div class="flex justify-between font-code-sm">
+<span class="text-on-surface-variant">SYNC_RATE</span>
+<span class="text-secondary-fixed">98.4%</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest">
+<div class="h-full bg-secondary-container" style="width: 98.4%"></div>
+</div>
+<div class="flex justify-between font-code-sm">
+<span class="text-on-surface-variant">NEURAL_LATENCY</span>
+<span class="text-primary-fixed">1.2ms</span>
+</div>
+<div class="flex justify-between font-code-sm">
+<span class="text-on-surface-variant">XP_ACCUMULATION</span>
+<span class="text-white">45,820 / 50k</span>
+</div>
+</div>
+</div>
+</div>
+<!-- MAIN LAYOUT GRID -->
+<div class="grid grid-cols-12 gap-4">
+<!-- GAME LIBRARY -->
+<div class="col-span-9">
+<div class="flex justify-between items-center mb-4 px-2">
+<h2 class="font-label-caps text-white">LIBRARY_GRID.v3</h2>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-white">search</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-white">filter_list</span>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer">grid_view</span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-4">
+<!-- GAME 1 -->
+<div class="glass-panel game-card border-outline-variant/30 p-0 overflow-hidden flex flex-col transition-all duration-300">
+<div class="h-48 relative overflow-hidden">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="A cinematic game cover for a sci-fi racing game, high-speed streaks of cyan and magenta light in a rain-slicked futuristic city at night, low angle shot of a sleek floating vehicle, photorealistic textures, dramatic cyberpunk lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUk7EHmJGci1q8eiONc4-eLD_PCNyJnULYHHO-62o_SvfL1BxMsYBvtRQTiWXzeblPdelhlat2s20Ji2j5rkAt1E2IPeImzMt_NkeiBUrBAlIc1M4jbug9Vl2ySSPmcM7MF60iDoIBmm8QdgPf4xmmcR9cpKKsDiIF4XLnGQ4C0Mcb5RHjbHIiAaSuPlXp1IiQBTjxpupKKhfYx1vQe5Q28ZnAFZR3dvJ0nFRCxTj92rE2V3h1rZ5rH4-ZOmz2YJPeohWC8eMthhrR"/>
+<div class="absolute top-2 right-2 bg-black/60 backdrop-blur px-2 py-1 border border-primary-fixed/30 font-code-sm text-primary-fixed text-[10px]">
+                                240 FPS
+                            </div>
+</div>
+<div class="p-4 flex-1">
+<h4 class="font-headline-md text-base text-white">NEON_DRIFT_2099</h4>
+<p class="font-code-sm text-on-surface-variant text-xs mt-1">SIMULATION / RACING</p>
+<div class="flex gap-2 mt-4">
+<span class="px-2 py-0.5 bg-surface-container-highest text-[10px] font-label-caps text-on-surface">DIRECTX_14</span>
+<span class="px-2 py-0.5 bg-surface-container-highest text-[10px] font-label-caps text-on-surface">RTX_ULTRA</span>
+</div>
+</div>
+<div class="p-3 border-t border-outline-variant/20 flex justify-between items-center bg-black/20">
+<span class="font-code-sm text-primary-fixed text-[11px]">INSTALLED</span>
+<button class="bg-primary-fixed/10 hover:bg-primary-fixed/20 text-primary-fixed p-1 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 18px;">play_arrow</span>
+</button>
+</div>
+</div>
+<!-- GAME 2 -->
+<div class="glass-panel game-card border-outline-variant/30 p-0 overflow-hidden flex flex-col transition-all duration-300">
+<div class="h-48 relative overflow-hidden">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="Dark fantasy game art, a monolith standing in an ash-covered wasteland under a shattered moon, eerie green glow from the base, silhouettes of twisted creatures in the distance, high contrast, atmospheric fog, painterly but detailed style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJsdim8JY95S4RhSXXP2QFWMFuw8GX08Xf5E6OHpRVwDnr9jmjX7MdsYLCmhhTnCCuIG6FAGT-yq9q6enXbcKGwp-k0c0SL2nSLorU0NQiPxixMxxWqZmaoznJg1Fbz429k36Uhtt7QZDVbi20NnUY0ayWpo4qXSBGBRHzk2JibROGyzcZxLZ0CvWsbrmBAnzWMwWXfPK-6rrvnRJFgPK_vx_Ql5NZvbdonlUWSEcDdb3FBHYGD9a6UhitzU8sWOsfei58OsisER56"/>
+<div class="absolute top-2 right-2 bg-black/60 backdrop-blur px-2 py-1 border border-secondary-container/30 font-code-sm text-secondary-container text-[10px]">
+                                144 FPS
+                            </div>
+</div>
+<div class="p-4 flex-1">
+<h4 class="font-headline-md text-base text-white">VOID_WALKER</h4>
+<p class="font-code-sm text-on-surface-variant text-xs mt-1">RPG / ROGUELIKE</p>
+<div class="flex gap-2 mt-4">
+<span class="px-2 py-0.5 bg-surface-container-highest text-[10px] font-label-caps text-on-surface">VULKAN_X</span>
+<span class="px-2 py-0.5 bg-surface-container-highest text-[10px] font-label-caps text-on-surface">NPU_ENHANCED</span>
+</div>
+</div>
+<div class="p-3 border-t border-outline-variant/20 flex justify-between items-center bg-black/20">
+<span class="font-code-sm text-secondary-fixed text-[11px]">UPDATE_AVAIL</span>
+<button class="bg-secondary-container/10 hover:bg-secondary-container/20 text-secondary-fixed p-1 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 18px;">download</span>
+</button>
+</div>
+</div>
+<!-- GAME 3 -->
+<div class="glass-panel game-card border-outline-variant/30 p-0 overflow-hidden flex flex-col transition-all duration-300">
+<div class="h-48 relative overflow-hidden">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="Tactical espionage game art, a high-tech server room with glowing green terminals and intricate wire bundles, a figure in a black stealth suit hanging from the ceiling, cinematic shadows, high information density, tactical military tech aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGqj2icK0GRRTOZ2D5r3PcKFDMFy8Y8ibaH2pqKd_4iW0RmrJgiMq-Fl6pjkeStbKImAoXhZiymzbBQYRMndJhO2ciXag7-dr3uyGin5SRWhQFzdvOQqiLLvtxOJy668rGgds3BGqNodvQfmlo90hLhj4gogkvuuvhZhahf4hpcOk4e35p9zZOYRLCQP2LmuR5DsO6q02Jsqea-6XQXxvAyHCDpORpg1uZV3ja5ACcDLVz11nvKHcn5VRu8i5U3zmO-e5r2CSLSD3g"/>
+<div class="absolute top-2 right-2 bg-black/60 backdrop-blur px-2 py-1 border border-primary-fixed/30 font-code-sm text-primary-fixed text-[10px]">
+                                360 FPS
+                            </div>
+</div>
+<div class="p-4 flex-1">
+<h4 class="font-headline-md text-base text-white">SIGNAL_LOST</h4>
+<p class="font-code-sm text-on-surface-variant text-xs mt-1">TACTICAL / HACKING</p>
+<div class="flex gap-2 mt-4">
+<span class="px-2 py-0.5 bg-surface-container-highest text-[10px] font-label-caps text-on-surface">REFLEX_ON</span>
+<span class="px-2 py-0.5 bg-surface-container-highest text-[10px] font-label-caps text-on-surface">LOW_LATENCY</span>
+</div>
+</div>
+<div class="p-3 border-t border-outline-variant/20 flex justify-between items-center bg-black/20">
+<span class="font-code-sm text-primary-fixed text-[11px]">INSTALLED</span>
+<button class="bg-primary-fixed/10 hover:bg-primary-fixed/20 text-primary-fixed p-1 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 18px;">play_arrow</span>
+</button>
+</div>
+</div>
+</div>
+<!-- SYSTEM LOG / TERMINAL PANEL -->
+<div class="mt-4 glass-panel border-outline-variant/30 bg-black/40 p-3 h-32 overflow-hidden">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-caps text-[10px] text-on-surface-variant">KERNEL_MESSAGES</span>
+<div class="flex gap-1">
+<div class="w-2 h-2 rounded-full bg-primary-fixed"></div>
+<div class="w-2 h-2 rounded-full bg-secondary-fixed"></div>
+</div>
+</div>
+<div class="font-code-sm text-xs space-y-1 text-on-surface-variant">
+<div class="flex gap-4"><span class="text-primary-fixed">[INFO]</span> Initializing Game Engine Interface... [OK]</div>
+<div class="flex gap-4"><span class="text-primary-fixed">[INFO]</span> Mapping Neural Sync sectors to Game 1... [OK]</div>
+<div class="flex gap-4"><span class="text-secondary-fixed">[WARN]</span> Thermal sensors approaching threshold on GPU_0.</div>
+<div class="flex gap-4"><span class="text-primary-fixed">[INFO]</span> Ready for neural injection.<span class="terminal-cursor ml-1"></span></div>
+</div>
+</div>
+</div>
+<!-- PERFORMANCE SIDEBAR -->
+<div class="col-span-3 space-y-4">
+<div class="glass-panel border-outline-variant/30 p-4">
+<h3 class="font-label-caps text-white mb-4 text-xs">SYSTEM_PERFORMANCE</h3>
+<!-- NPU UTILIZATION -->
+<div class="mb-6">
+<div class="flex justify-between font-code-sm text-[11px] mb-1">
+<span class="text-on-surface-variant">NPU_ALLOCATION</span>
+<span class="text-primary-fixed">72%</span>
+</div>
+<div class="flex gap-[2px]">
+<div class="h-4 flex-1 bg-primary-fixed"></div>
+<div class="h-4 flex-1 bg-primary-fixed"></div>
+<div class="h-4 flex-1 bg-primary-fixed"></div>
+<div class="h-4 flex-1 bg-primary-fixed"></div>
+<div class="h-4 flex-1 bg-primary-fixed"></div>
+<div class="h-4 flex-1 bg-primary-fixed"></div>
+<div class="h-4 flex-1 bg-primary-fixed"></div>
+<div class="h-4 flex-1 bg-surface-container-highest"></div>
+<div class="h-4 flex-1 bg-surface-container-highest"></div>
+<div class="h-4 flex-1 bg-surface-container-highest"></div>
+</div>
+</div>
+<!-- GPU UTILIZATION -->
+<div class="mb-6">
+<div class="flex justify-between font-code-sm text-[11px] mb-1">
+<span class="text-on-surface-variant">GPU_CLOCK_SPEED</span>
+<span class="text-secondary-fixed">2450 MHz</span>
+</div>
+<div class="flex gap-[2px]">
+<div class="h-4 flex-1 bg-secondary-fixed"></div>
+<div class="h-4 flex-1 bg-secondary-fixed"></div>
+<div class="h-4 flex-1 bg-secondary-fixed"></div>
+<div class="h-4 flex-1 bg-secondary-fixed"></div>
+<div class="h-4 flex-1 bg-secondary-fixed"></div>
+<div class="h-4 flex-1 bg-secondary-fixed"></div>
+<div class="h-4 flex-1 bg-secondary-fixed"></div>
+<div class="h-4 flex-1 bg-secondary-fixed"></div>
+<div class="h-4 flex-1 bg-surface-container-highest"></div>
+<div class="h-4 flex-1 bg-surface-container-highest"></div>
+</div>
+</div>
+<!-- FPS MONITOR -->
+<div class="p-4 border border-outline-variant/30 bg-black/20 flex flex-col items-center">
+<div class="text-4xl font-headline-lg text-primary-fixed tracking-tight">164</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant">FRAMES_PER_SECOND</div>
+<div class="mt-4 w-full flex items-end gap-[1px] h-8">
+<div class="w-full bg-primary-fixed/40 h-[60%]"></div>
+<div class="w-full bg-primary-fixed/40 h-[70%]"></div>
+<div class="w-full bg-primary-fixed/40 h-[65%]"></div>
+<div class="w-full bg-primary-fixed/40 h-[80%]"></div>
+<div class="w-full bg-primary-fixed/40 h-[75%]"></div>
+<div class="w-full bg-primary-fixed/40 h-[90%]"></div>
+<div class="w-full bg-primary-fixed/40 h-[85%]"></div>
+<div class="w-full bg-primary-fixed/40 h-[95%]"></div>
+</div>
+</div>
+</div>
+<!-- THERMALS -->
+<div class="glass-panel border-outline-variant/30 p-4">
+<h3 class="font-label-caps text-white mb-4 text-xs">THERMAL_MONITOR</h3>
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<div class="font-code-sm text-xs text-on-surface-variant">CORE_TEMP</div>
+<div class="font-code-sm text-xs text-secondary-fixed">64°C</div>
+</div>
+<div class="flex justify-between items-center">
+<div class="font-code-sm text-xs text-on-surface-variant">MEM_TEMP</div>
+<div class="font-code-sm text-xs text-primary-fixed">52°C</div>
+</div>
+<div class="flex items-center gap-2 text-error text-[10px] font-label-caps bg-error/10 p-2 border border-error/20">
+<span class="material-symbols-outlined" style="font-size: 14px;">warning</span>
+                            THROTTLING_INACTIVE
+                        </div>
+</div>
+</div>
+<!-- QUICK ACTIONS -->
+<div class="glass-panel border-outline-variant/30 p-4 bg-secondary-container/5">
+<h3 class="font-label-caps text-white mb-4 text-xs">KERNEL_LIMITS</h3>
+<div class="space-y-2">
+<div class="flex justify-between items-center p-2 hover:bg-white/5 cursor-pointer">
+<span class="font-code-sm text-xs">FPS_LOCK</span>
+<span class="font-code-sm text-xs text-primary-fixed">240</span>
+</div>
+<div class="flex justify-between items-center p-2 hover:bg-white/5 cursor-pointer">
+<span class="font-code-sm text-xs">VSYNC</span>
+<span class="font-code-sm text-xs text-on-surface-variant">OFF</span>
+</div>
+<div class="flex justify-between items-center p-2 hover:bg-white/5 cursor-pointer">
+<span class="font-code-sm text-xs">LOW_LATENCY_MODE</span>
+<span class="font-code-sm text-xs text-primary-fixed">ULTRA</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- FLOATING STATUS -->
+<div class="fixed bottom-6 right-6 flex flex-col gap-4">
+<div class="p-3 bg-primary-container text-on-primary-container rounded-full shadow-lg cursor-pointer hover:scale-110 transition-transform active:scale-95">
+<span class="material-symbols-outlined" style="font-size: 24px;">sports_esports</span>
+</div>
+</div>
+<script>
+        // Simple visual interaction: randomized performance numbers
+        setInterval(() => {
+            const fpsDisplay = document.querySelector('.font-headline-lg');
+            if(fpsDisplay) {
+                const current = parseInt(fpsDisplay.innerText);
+                const jitter = Math.floor(Math.random() * 5) - 2;
+                fpsDisplay.innerText = Math.max(160, Math.min(170, current + jitter));
+            }
+        }, 1500);
+
+        // Hover sound/haptic effect simulation (logic only)
+        document.querySelectorAll('.game-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                console.log('Tactical feedback initialized for game selection.');
+            });
+        });
+    </script>
+</body></html>

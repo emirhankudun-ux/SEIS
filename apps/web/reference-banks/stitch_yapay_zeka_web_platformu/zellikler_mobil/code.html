@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aether AI | Features</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .glass-panel {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 219, 233, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(0, 219, 233, 0.3) 0%, transparent 40%, transparent 60%, rgba(182, 0, 248, 0.2) 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        .neon-glow-primary:hover {
+            box-shadow: 0 0 30px rgba(0, 219, 233, 0.15);
+            border-color: rgba(0, 219, 233, 0.5);
+        }
+        .pulse-dot {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .5; transform: scale(1.2); }
+        }
+        .text-glow {
+            text-shadow: 0 0 10px rgba(0, 219, 233, 0.5);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#b9cacb",
+                        "on-surface": "#e1e2e7",
+                        "surface-bright": "#37393d",
+                        "primary-fixed": "#7df4ff",
+                        "on-tertiary": "#2f3131",
+                        "error-container": "#93000a",
+                        "outline-variant": "#3b494b",
+                        "tertiary": "#f5f5f5",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "surface-tint": "#00dbe9",
+                        "secondary-container": "#b600f8",
+                        "on-secondary-fixed": "#320047",
+                        "surface": "#111417",
+                        "surface-container-low": "#191c1f",
+                        "on-primary-container": "#006970",
+                        "surface-dim": "#111417",
+                        "on-tertiary-container": "#5d5f5f",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "inverse-primary": "#006970",
+                        "tertiary-fixed": "#e2e2e2",
+                        "primary": "#dbfcff",
+                        "primary-container": "#00f0ff",
+                        "on-secondary-container": "#fff6fc",
+                        "surface-container-lowest": "#0c0e12",
+                        "secondary-fixed": "#f8d8ff",
+                        "inverse-on-surface": "#2e3134",
+                        "surface-container-highest": "#323539",
+                        "primary-fixed-dim": "#00dbe9",
+                        "tertiary-container": "#d9d9d9",
+                        "surface-variant": "#323539",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "secondary": "#ebb2ff",
+                        "on-error": "#690005",
+                        "on-error-container": "#ffdad6",
+                        "outline": "#849495",
+                        "background": "#111417",
+                        "on-primary-fixed-variant": "#004f54",
+                        "surface-container-high": "#282a2e",
+                        "surface-container": "#1d2023",
+                        "on-secondary": "#520072",
+                        "on-primary": "#00363a",
+                        "on-background": "#e1e2e7",
+                        "inverse-surface": "#e1e2e7",
+                        "on-primary-fixed": "#002022",
+                        "on-secondary-fixed-variant": "#74009f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "section-gap": "80px",
+                        "margin-desktop": "64px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "mono-label": ["JetBrains Mono"],
+                        "headline-md": ["Inter"],
+                        "mono-code": ["JetBrains Mono"],
+                        "display-lg-mobile": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                        "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md overflow-x-hidden">
+<!-- Top Navigation -->
+<nav class="fixed top-0 left-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 px-margin-mobile py-4 flex justify-between items-center shadow-[0_0_30px_rgba(0,219,233,0.15)]">
+<span class="font-display-lg text-display-lg-mobile tracking-tighter text-primary">AETHER AI</span>
+<button class="material-symbols-outlined text-primary text-3xl">menu</button>
+</nav>
+<main class="pt-24 pb-20 px-margin-mobile">
+<!-- Hero Section -->
+<header class="mb-section-gap text-center">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 mb-6">
+<span class="w-2 h-2 rounded-full bg-primary-fixed-dim pulse-dot"></span>
+<span class="font-mono-label text-primary text-[10px] uppercase tracking-widest">Platform Capabilities</span>
+</div>
+<h1 class="font-display-lg-mobile text-display-lg-mobile text-primary mb-4 leading-tight">Next-Gen Intelligence.</h1>
+<p class="text-on-surface-variant font-body-md max-w-sm mx-auto">Scalable foundation models, generative vision, and live neural insights for the synthetic era.</p>
+</header>
+<!-- Feature 1: LLM Engine -->
+<section class="mb-section-gap">
+<div class="glass-panel rounded-xl p-6 mb-6">
+<div class="flex justify-between items-start mb-8">
+<div>
+<span class="material-symbols-outlined text-primary-container text-4xl mb-4">neurology</span>
+<h2 class="font-headline-md text-headline-md text-primary-fixed-dim">Neural Language Core</h2>
+</div>
+<span class="font-mono-label text-[10px] text-outline px-2 py-1 border border-outline/30 rounded">V4.0</span>
+</div>
+<p class="text-on-surface-variant mb-8 leading-relaxed">Multi-modal reasoning with 1M+ context windows. Engineered for technical documentation, code synthesis, and complex strategic planning.</p>
+<div class="space-y-4 mb-8">
+<div class="flex items-center gap-4 p-3 bg-white/5 rounded-lg border border-white/10">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">terminal</span>
+<span class="font-mono-code text-mono-code text-on-surface">Auto-Optimized Scripting</span>
+</div>
+<div class="flex items-center gap-4 p-3 bg-white/5 rounded-lg border border-white/10">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">translate</span>
+<span class="font-mono-code text-mono-code text-on-surface">Semantic Translation Layers</span>
+</div>
+</div>
+<div class="relative h-48 rounded-lg overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent z-10"></div>
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A highly detailed cinematic shot of glowing blue neural network strands pulsating with light against a deep obsidian background. The visual style is futuristic glassmorphism with sharp mechanical details and vibrant cyan light-mode accents. Soft bokeh highlights create depth in a dark enterprise tech environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNfb542zRTIwceZhn2q9fP7OMW4svM3w22Vw5opO9W_yfapQEZh6kosotxHHIAQqWHVq-oSXyCZDhLJlQNtrZ5EZ4bQnRTB-esUWHYwcyWMzTeW92DOQ5aNtVR-yoIeYhHxSK0Jal2ls8HtDw2QlG-ijour8PSeMg8chUMa4qcWxcqAZsrSeBP9cmKt6O0Jle06eanrp7iO0Tb1j4RE5JaEaU_Wn56tXuklQCRPnU7spZMk15kVceHnTA9KjzwrIn0RhZyvS8F8w"/>
+</div>
+</div>
+</section>
+<!-- Feature 2: Image Generation -->
+<section class="mb-section-gap">
+<div class="glass-panel rounded-xl p-6 mb-6">
+<span class="material-symbols-outlined text-secondary-container text-4xl mb-4">burst_mode</span>
+<h2 class="font-headline-md text-headline-md text-secondary mb-4">Aether Synthesis</h2>
+<p class="text-on-surface-variant mb-8 leading-relaxed">Photorealistic latent diffusion models. Generate high-fidelity marketing assets and technical visualizations with temporal consistency.</p>
+<div class="grid grid-cols-2 gap-4 mb-8">
+<div class="glass-panel aspect-square rounded-lg flex flex-col items-center justify-center gap-2 p-4 text-center">
+<span class="material-symbols-outlined text-primary text-xl">high_quality</span>
+<span class="font-mono-label text-[10px] text-on-surface uppercase">8K Render</span>
+</div>
+<div class="glass-panel aspect-square rounded-lg flex flex-col items-center justify-center gap-2 p-4 text-center">
+<span class="material-symbols-outlined text-primary text-xl">architecture</span>
+<span class="font-mono-label text-[10px] text-on-surface uppercase">CAD Export</span>
+</div>
+</div>
+<div class="bg-surface-container-highest/30 border border-outline-variant/30 rounded-lg p-4 font-mono-code text-xs text-on-surface-variant">
+<div class="flex justify-between mb-2">
+<span>PROMPT_DEBUG</span>
+<span class="text-secondary">ACTIVE</span>
+</div>
+<div class="text-on-surface overflow-hidden whitespace-nowrap border-r-2 border-primary animate-pulse">
+                        Generating: isometric_industrial_server_array...
+                    </div>
+</div>
+</div>
+</section>
+<!-- Feature 3: Real-time Analytics -->
+<section class="mb-section-gap">
+<div class="glass-panel rounded-xl p-6">
+<span class="material-symbols-outlined text-primary-container text-4xl mb-4">query_stats</span>
+<h2 class="font-headline-md text-headline-md text-primary mb-4">Live Neural Metrics</h2>
+<p class="text-on-surface-variant mb-8 leading-relaxed">Instant telemetry from deployed models. Track inference speed, token efficiency, and semantic drift in real-time.</p>
+<div class="h-64 relative mb-6">
+
+<div class="absolute bottom-4 left-4 right-4 flex justify-between items-end z-20">
+<div class="flex flex-col">
+<span class="text-3xl font-display-lg text-primary text-glow">99.8%</span>
+<span class="font-mono-label text-[10px] uppercase text-on-surface-variant">Uptime SLA</span>
+</div>
+<div class="flex flex-col text-right">
+<span class="text-3xl font-display-lg text-secondary">14ms</span>
+<span class="font-mono-label text-[10px] uppercase text-on-surface-variant">Inference Latency</span>
+</div>
+</div>
+</div>
+<button class="w-full py-4 bg-primary text-on-primary font-bold rounded-lg flex items-center justify-center gap-2 transition-transform active:scale-95">
+                    Explore Dashboard
+                    <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</section>
+<!-- Technical Specs Bento -->
+<section class="mb-section-gap">
+<h3 class="font-headline-md text-headline-md text-primary mb-8 px-2">Core Infrastructure</h3>
+<div class="grid grid-cols-1 gap-4">
+<div class="glass-panel p-6 rounded-xl flex items-center gap-6">
+<div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-full">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">dns</span>
+</div>
+<div>
+<h4 class="font-bold text-on-surface">Global Edge Mesh</h4>
+<p class="text-sm text-on-surface-variant">Distributed GPU nodes across 40 regions.</p>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-xl flex items-center gap-6">
+<div class="w-12 h-12 flex items-center justify-center bg-secondary/10 rounded-full">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">security</span>
+</div>
+<div>
+<h4 class="font-bold text-on-surface">Zero-Knowledge Privacy</h4>
+<p class="text-sm text-on-surface-variant">End-to-end encrypted weights and training.</p>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-xl flex items-center gap-6">
+<div class="w-12 h-12 flex items-center justify-center bg-primary-fixed-dim/10 rounded-full">
+<span class="material-symbols-outlined text-primary-fixed-dim" style="font-variation-settings: 'FILL' 1;">api</span>
+</div>
+<div>
+<h4 class="font-bold text-on-surface">Universal SDK</h4>
+<p class="text-sm text-on-surface-variant">One-line integration for Python and Node.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="mb-12">
+<div class="glass-panel rounded-xl p-8 text-center bg-gradient-to-br from-primary/5 to-secondary/5">
+<h2 class="font-display-lg-mobile text-display-lg-mobile text-primary mb-4">Start Building.</h2>
+<p class="text-on-surface-variant mb-8">Deploy your first neural instance in under 60 seconds.</p>
+<div class="flex flex-col gap-4">
+<a class="px-8 py-4 bg-primary text-on-primary font-bold rounded-lg shadow-[0_0_20px_rgba(0,219,233,0.3)]" href="#">Get API Key</a>
+<a class="px-8 py-4 border border-primary/30 text-primary font-bold rounded-lg hover:bg-primary/5" href="#">Read Documentation</a>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full rounded-t-full bg-surface-container-lowest border-t border-outline-variant/20 px-margin-mobile pt-16 pb-24">
+<div class="max-w-container-max mx-auto flex flex-col items-center text-center">
+<span class="font-display-lg text-headline-md text-primary mb-8">AETHER AI</span>
+<div class="flex flex-wrap justify-center gap-6 mb-12">
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors" href="#">Privacy Policy</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors" href="#">Terms of Service</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors" href="#">Security</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors" href="#">System Status</a>
+</div>
+<p class="font-mono-label text-mono-label text-on-tertiary-container opacity-80">
+                © 2024 Aether Intelligence Systems. All rights reserved. Built for the synthetic era.
+            </p>
+</div>
+</footer>
+<!-- Mobile Bottom Navigation Shell (Suppressed as per rule: Features page is not a top-level home/dashboard in this context, or it serves as focused task navigation) -->
+<!-- However, providing a minimal floating navigation for internal feature switching -->
+<div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 glass-panel rounded-full px-6 py-3 flex items-center gap-8 shadow-2xl">
+<button class="material-symbols-outlined text-primary-fixed-dim" style="font-variation-settings: 'FILL' 1;">home</button>
+<button class="material-symbols-outlined text-on-surface-variant">search</button>
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center -mt-2 shadow-lg">
+<span class="material-symbols-outlined text-on-primary">add</span>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant">person</button>
+</div>
+<script>
+        // Micro-interaction for glass cards parallax effect or glow
+        document.querySelectorAll('.glass-panel').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body></html>

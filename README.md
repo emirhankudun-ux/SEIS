@@ -45,6 +45,289 @@ Root system documents:
 - [`docs/governance/seis-god-mode-developer.md`](./docs/governance/seis-god-mode-developer.md)
   defines the SEIS God Mode Developer lane for high-leverage, cross-layer work.
 
+## Runnable SEIS Demo
+
+The current browser demo starts from the SEIS System OS route:
+
+```bash
+cd apps/web
+python3 -m http.server 50951 --bind 127.0.0.1
+```
+
+Then open `http://127.0.0.1:50951/desktop.html`.
+
+The demo is local-first and requires zero cloud AI provider keys for the core
+experience. SEIS AI uses clearly labeled Local Demo mode unless a backend
+provider is configured and verified. SSH, deployment, provider keys, and live
+model routing remain disabled or planned where marked.
+
+For this demo, "full-stack" is treated as the complete product path rather than
+only a screen: frontend OS surfaces, browser-local data/state, route wiring,
+validator scripts, static packaging, security boundaries, and documented
+backend/API/data contracts. The first contract is
+`content/development/seis-fullstack-contract.json`, exposed read-only through
+the local `node:http` static server as `/_server/session`,
+`/_server/provider-status`, and related `/_server/*` Local Demo endpoints. The
+current runnable package stays zero-key and local-first; live AI, durable
+databases, deployment, auth, and SSH require separate approved backend-only
+work.
+
+Primary demo routes:
+
+- `seis-demo-flight-deck.html` - browser-local demo package launch deck for
+  public reviewers and operators. It opens the live Linux-like shell, public
+  reviewer entry route, Desktop, SEIS Code, AI, Design, Search, Cloud, Store,
+  and creative routes from one mission board, persists only local checklist
+  state, and labels real, Local Demo, approval-gated, and disabled surfaces
+  without provider calls, SSH, deployment, credentials, or supplied-asset
+  mutation.
+- `desktop.html` - SEIS System OS, Second Brain, Demo Studio, Search,
+  Launchpad, Files, Terminal, Store, Music, Design, Cloud, Agents, and local
+  apps.
+- `seis-linux-replica.html` - supplied-reference-inspired SEIS System OS /
+  Linux-like route with boot, login, top system bar, pinned side rail, live
+  activity strip, dock/taskbar, launcher, resizable/draggable windows,
+  browser-local VFS, terminal, session persistence, a Live Demo Console,
+  Demo Readiness evidence board, Security Gate owner handoff, source coverage
+  metrics, terminal `live` / `readiness` / `sources` / `security` commands, 65+ core app
+  launch targets, and the live Reference Vault for 219 supplied ZIP modules under
+  `apps/web/reference-banks/`. `seis-linux-replica.html?demo=live` is the
+  public-demo deep link that auto-enters the browser-local shell and starts the
+  live tour without SSH, deployment, provider calls, or host shell access; the
+  landing page primary OS CTAs and SEIS OS product page CTA route to this live
+  demo path. TR/EN locale persistence uses
+  `seis.locale.v1`, and connected SEIS Search, Code, Design, Cloud, Store,
+  Website, Music, AI Core, and Reference surfaces open mini workspaces or
+  iframe-backed local reference modules with browser-local state changes. The
+  focused browser smoke check captures desktop, mobile, and deep-link evidence for the live
+  demo console, Demo Readiness gates, source coverage, reference modules,
+  terminal commands, the Issue #129 security merge blocker handoff, and
+  viewport-safe window sizing. It also validates every populated Reference
+  Vault route and thumbnail path in `apps/web/reference-banks/reference-apps.js`
+  from the static web serving root, so missing supplied-module assets fail the
+  demo gate instead of silently shipping broken cards. The focused review packet
+  is maintained at
+  [`docs/reviews/SEIS_LINUX_REPLICA_LIVE_DEMO_REVIEW.md`](./docs/reviews/SEIS_LINUX_REPLICA_LIVE_DEMO_REVIEW.md),
+  the public reviewer quickstart is maintained at
+  [`docs/demos/SEIS_PUBLIC_DEMO_REVIEWER_QUICKSTART.md`](./docs/demos/SEIS_PUBLIC_DEMO_REVIEWER_QUICKSTART.md),
+  and the public operator walkthrough is maintained at
+  [`docs/demos/SEIS_LINUX_REPLICA_PUBLIC_WALKTHROUGH.md`](./docs/demos/SEIS_LINUX_REPLICA_PUBLIC_WALKTHROUGH.md).
+- `seis-linux-replica-public-demo.html` - public reviewer entry route for the
+  Linux-like demo. It summarizes the seven-minute walkthrough, current evidence,
+  supplied asset boundary, and real/local/mock/disabled states before opening
+  `seis-linux-replica.html?demo=live`.
+- `seis-code.html` - SEIS Code browser IDE route.
+- `website/index.html` - SEIS Website hub, with product pages for SEIS AI, OS,
+  Code, Design, Search, Cloud, Store, and Agents.
+- `wow-gallery.html` - imported SEIS_WOW visual reference catalog.
+- `mythic-gacha.html` - playable no-key Mythic Gacha and Bestiary route.
+- `showcase/*.html` - four cinematic Video Hero pages.
+
+Key local validation commands:
+
+```bash
+npm run check:desktop-os
+npm run check:seis-second-brain
+npm run report:seis-obsidian-safe-import-dry-run
+npm run check:seis-obsidian-safe-import-dry-run
+npm run report:seis-read-only-model-router-decision
+npm run check:seis-read-only-model-router-decision
+npm run report:seis-second-brain-accessibility-focus-report
+npm run check:seis-second-brain-accessibility-focus-report
+npm run report:seis-second-brain-agent-registry
+npm run check:seis-second-brain-agent-registry
+npm run check:seis-second-brain-readiness-contracts
+npm run check:seis-second-brain-browser-smoke
+npm run check:seis-public-demo-go-no-go -- --run-fast-checks
+npm run report:seis-public-demo-go-no-go
+npm run check:seis-demo-flight-deck
+npm run check:desktop-os-browser-smoke
+npm run check:seis-linux-replica-browser-smoke
+node scripts/check-seis-linux-replica-public-walkthrough.mjs
+node scripts/check-seis-static-demo-routes.mjs
+npm run check:seis-code
+npm run check:seis-website-pages
+npm run check:seis-sub-agent-5-year-plan
+npm run check:seis-agent-workforce
+npm run check:seis-ultimate-demo
+npm run check:seis-ssh-public-access
+npm run check:seis-fullstack-contract
+npm run check:seis-fullstack-server-smoke
+npm run check:seis-fullstack-no-server-fallback-smoke
+npm run check:seis-20b-benchmark-dry-run
+npm run check:seis-150b-frontier-model-program
+npm run check:seis-model-frontier-escalation-policy
+npm run check:seis-model-local-hardware-preflight
+npm run check:seis-model-scaling-hardware-profile
+npm run check:seis-512b-apex-model-program
+npm run check:seis-model-parameter-ladder
+npm run check:seis-model-scaling-subagent-council
+npm run check:mythic-gacha
+npm run check:video-hero-showcase
+npm run check:video-hero-browser-smoke
+npm run check:product-experience-browser-smoke
+npm run build:static
+npm run check:static-build
+```
+
+## SEIS SSH Public GitHub Access
+
+`SEIS-SSH` is the single public-facing SSH alias for SEIS. The public GitHub
+contract is:
+
+```text
+Keep the same server and port.
+Ayni sunucu ve baglanti noktasi korunur.
+```
+
+The source-of-truth contract is
+`deploy/seis-ssh-public-access-contract.json`, with the runbook at
+`docs/deployment/seis-ssh-public-github-access.md`.
+
+Codex GitHub SSH transport and SSH commit signing are tracked separately in
+`docs/deployment/seis-codex-git-ssh-handoff.md`. That handoff supports review
+branch, signed commit, push, and PR work without claiming the live `SEIS-SSH`
+cloud runtime is online.
+
+Remote Codex CLI bridging is tracked in
+`docs/deployment/seis-remote-codex-cli-bridge.md`. Use
+`npm run cloud:ssh:remote-codex:strict` to prove the cloud workspace can reach
+`/workspaces/SEIS` and `codex --version` without running prompts or mutating the
+remote repo.
+
+Use this static gate before claiming public SSH onboarding is wired:
+
+```bash
+npm run check:seis-ssh-public-access
+npm run report:seis-ssh-public-access
+npm run check:seis-ssh-public-onboarding
+npm run report:seis-ssh-public-onboarding
+npm run check:seis-ssh-public-contributor-doctor
+npm run report:seis-ssh-public-contributor-doctor
+npm run check:seis-ssh-live-readiness-evidence
+```
+
+This does not execute SSH. Live readiness still requires explicit approval and
+strict evidence such as `npm run cloud:ssh:online:strict`.
+
+`npm run report:seis-ssh-public-onboarding` writes a read-only GitHub review
+pack under `reports/seis-ssh-public-access/`. It does not write SSH config,
+does not open a live connection, and does not create shared credentials; it
+documents reviewer, maintainer, and new-contributor paths while preserving the
+existing `SEIS-SSH` server and port.
+
+`npm run report:seis-ssh-public-contributor-doctor` adds a local self-service
+doctor for GitHub users. It checks local tools and the sanitized `SEIS-SSH`
+snapshot without contacting GitHub, opening SSH, or writing SSH config.
+
+The latest approval-gated live probe is tracked in
+`content/development/seis-ssh-live-readiness-evidence.json` and
+`docs/deployment/seis-ssh-live-readiness-evidence.md`. As of 2026-06-29, live
+readiness is blocked by a GitHub Codespaces billing issue; the same server and
+port policy remains preserved, but online/mobile-ready claims are not allowed.
+
+## SEIS Brain and Obsidian Memory
+
+SEIS ships a markdown-first second-brain layer under `seis-brain/vault` for
+agent/context continuity and public-safe project memory.
+
+- `SEIS_SECOND_BRAIN.md` explains the memory model and operating rules.
+- `SEIS_OBSIDIAN_VAULT.md` explains folder structure and backlinks.
+- `SEIS_SUB_AGENTS.md` explains bounded agent roles, permissions, and handoff rules.
+- `SEIS_AGENT_WORKFORCE.md` stores the bounded agent registry and role map.
+- `docs/OBSIDIAN_SECOND_BRAIN.md` mirrors onboarding notes for contributors.
+- `seis-brain/vault/00_Index/SEIS Home.md` is the memory entry point.
+
+Do not store credentials, private keys, hostnames, raw secrets, or private data
+in these notes. Use `docs/PUBLIC_READINESS.md` for release-safe checks.
+
+## Installed AI / Local AI Registry
+
+SEIS tracks installed and available AI capabilities in:
+
+- `SEIS_INSTALLED_AI_TOOLS.md`
+- `seis-brain/vault/04_AI/`
+- `docs/LOCAL_AI_SETUP.md`
+- `docs/OBSIDIAN_SECOND_BRAIN.md`
+
+The repo does not require keys for core demo operation. Local or provider-based AI
+features are explicitly labeled by mode.
+
+## SEIS-SSH and Cloud Readiness
+
+SEIS remote-development and cloud-readiness concepts are documented in:
+
+- `SEIS_SSH.md`
+- `docs/SEIS_SSH_SETUP.md`
+- `seis-brain/vault/07_SSH_Cloud/`
+
+Real SSH credentials are never committed. SEIS-SSH docs provide sample-safe
+metadata and deployment readiness gate names.
+
+`npm run check:seis-second-brain-readiness-contracts` validates the Second
+Brain readiness contracts for the Obsidian bridge safe import plan,
+accessibility/focus QA, provider-neutral read-only model-router boundary, and
+PR #54 public demo release checklist without enabling private vault import,
+live provider routing, SSH, deployment, merge, or publication.
+
+`npm run check:seis-public-demo-go-no-go -- --run-fast-checks` is the read-only
+public demo release gate. It is expected to report `NO-GO` until current browser
+smoke evidence exists, the worktree is reviewed, and the human owner explicitly
+approves release. Second Brain readiness contracts stay review-gated until human
+approval.
+
+`npm run report:seis-obsidian-safe-import-dry-run` writes the repo-owned
+Obsidian safe-import dry-run artifacts under `reports/seis-public-demo/`.
+Those artifacts are generated from SEIS seed note metadata only; they do not
+scan a private Obsidian vault, copy note bodies, install plugins, call
+providers, execute SSH, mutate GitHub, deploy, or approve publication.
+
+`npm run report:seis-read-only-model-router-decision` writes the provider-neutral
+read-only router decision artifacts under `reports/seis-public-demo/`. Those
+artifacts include installed AI profile fixtures and blocked route decisions
+without validating credentials, storing prompt bodies, calling providers,
+routing private Obsidian content, using silent fallback, executing SSH,
+mutating GitHub, deploying, or approving live model routing.
+
+`npm run report:seis-second-brain-accessibility-focus-report` writes the
+Second Brain accessibility/focus QA artifacts under `reports/seis-public-demo/`.
+Those artifacts validate repo-static ARIA/focus markers and browser-smoke
+coverage while keeping manual keyboard transcript, screen-reader transcript,
+reduced-motion review, and human accessibility approval blocked until review.
+
+`npm run report:seis-second-brain-agent-registry` writes the Second Brain agent
+registry artifacts under `reports/seis-public-demo/`. Those artifacts join the
+installed AI profiles, supervised AI workforce assignments, bounded sub-agent
+roster, Obsidian bridge boundary, plugin inventory, MCP surfaces, and connector
+activation rules without reading a private Obsidian vault, validating
+credentials, calling providers, enabling autonomous writes, executing SSH,
+mutating GitHub, deploying, or approving release.
+
+`npm run report:seis-public-demo-go-no-go` writes PR/release-review artifacts
+under `reports/seis-public-demo/`, including the evidence manifest and
+`reports/seis-public-demo/pr54-review-packet-latest.md` plus the read-only
+`reports/seis-public-demo/worktree-review-latest.md` and
+`reports/seis-public-demo/pr54-stage-plan-latest.md`, without changing GitHub,
+importing Obsidian, calling providers, executing SSH, staging files, committing,
+pushing, or deploying.
+
+## Yeni Nesil AGI Araştırma Hedefi
+
+SEIS AGI hedefi şu an kanıt-gated bir araştırma ve uygulama mimarisi olarak
+tutulur. Bu repo gerçek AGI, eğitilmiş 512B ağırlık, benchmark sonucu,
+checkpoint veya canlı inference iddiası yapmaz.
+
+Bu hedefin kısa hali:
+
+- **Başlangıç hattı:** `16GB+ RAM` için `20B` yerel-uyumluluk hedefi (planlı, test edilmemiş).
+- **Sonraki merdiven:** `70B` araştırma yolu, ardından frontier/long-horizon yolları.
+- **Üst hedef:** `150B`, `300B+`, `512B` ve en yüksek (`highest-available`) parametre sınıfı için tek tek uygun güvenlik, bütçe ve onay kanıtları toplandıktan sonra yol haritası açılır.
+
+- **512B Apex Programı:** `content/development/seis-512b-apex-model-program.json` ile internet-araştırmalı, plan-only ve route-blocked tutulur; AGI tanımı `definition-only-not-demonstrated` durumundadır.
+- **Alt Ajan Konseyi:** Tüm kurulu AI/sub-agent rolleri 512B için ayrı görev matrisine sahiptir, ama yalnızca planlama, inceleme ve doğrulama görevleri alır.
+- **Güvenli AI Core:** Local Demo varsayılandır; provider key, cloud/GPU, SSH, benchmark ve training insan onayı olmadan kapalıdır.
+- **AGI Kanıt Kuralı:** Gerçek AGI iddiası için bağımsız evaluation, safety review, training logs, checkpoint governance, model card ve explicit approval gerekir.
+
 ## Core Scope
 
 | Area        | SEIS covers                                                                                                                                                                        |
@@ -374,3 +657,36 @@ TypeScript, Rust, design systems, DevOps, security, and GitHub Pages.
 SEIS is actively evolving. Some historical documents still record earlier
 private or consolidation phases. The current direction is open source,
 main-centered, AI-native, security-conscious, and architecture-led.
+
+## SEIS Brain
+
+SEIS is backed by a markdown-first, Obsidian-compatible second brain.
+
+- `SEIS_SECOND_BRAIN.md` and `SEIS_OBSIDIAN_VAULT.md` define the memory model.
+- `seis-brain/vault` stores public-safe memory, links, context packs, and ADRs.
+- The second brain helps AI agents and contributors get correct context quickly.
+
+## Obsidian Vault
+
+The vault path is `seis-brain/vault`.
+
+- Open in Obsidian directly.
+- No plugins are required.
+- Private/local-only material is intentionally not committed.
+
+## Local AI / Ollama
+
+- Local AI is optional.
+- Core demo works in no-key mode.
+- Ollama can help local summaries and documentation drafting.
+
+## SEIS-SSH
+
+- `SEIS_SSH.md` and `docs/SEIS_SSH_SETUP.md` document the safe remote-development concept.
+- `docs/deployment/seis-codex-git-ssh-handoff.md` documents the public-safe
+  Codex GitHub SSH clone and signing workflow.
+- Real credentials and live SSH are not included by default.
+
+## Public Readiness
+
+See `docs/PUBLIC_READINESS.md` for the readiness checklist and blockers.

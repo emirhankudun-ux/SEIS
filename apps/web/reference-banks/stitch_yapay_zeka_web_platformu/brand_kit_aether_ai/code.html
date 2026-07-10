@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AETHER AI | Brand Identity &amp; Kit</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#849495",
+                        "on-error": "#690005",
+                        "on-background": "#e1e2e7",
+                        "error": "#ffb4ab",
+                        "inverse-primary": "#006970",
+                        "outline-variant": "#3b494b",
+                        "secondary-container": "#b600f8",
+                        "tertiary": "#f5f5f5",
+                        "on-secondary-container": "#fff6fc",
+                        "surface-container-low": "#191c1f",
+                        "surface-container": "#1d2023",
+                        "on-tertiary": "#2f3131",
+                        "on-primary": "#00363a",
+                        "background": "#111417",
+                        "surface-container-highest": "#323539",
+                        "inverse-surface": "#e1e2e7",
+                        "primary-container": "#00f0ff",
+                        "on-secondary-fixed": "#320047",
+                        "primary-fixed-dim": "#00dbe9",
+                        "on-secondary": "#520072",
+                        "surface-dim": "#111417",
+                        "on-surface": "#e1e2e7",
+                        "on-surface-variant": "#b9cacb",
+                        "surface-variant": "#323539",
+                        "tertiary-fixed": "#e2e2e2",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "surface-container-high": "#282a2e",
+                        "surface": "#111417",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "primary-fixed": "#7df4ff",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "surface-bright": "#37393d",
+                        "error-container": "#93000a",
+                        "on-primary-fixed": "#002022",
+                        "secondary": "#ebb2ff",
+                        "surface-tint": "#00dbe9",
+                        "inverse-on-surface": "#2e3134",
+                        "on-tertiary-container": "#5d5f5f",
+                        "tertiary-container": "#d9d9d9",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-primary-container": "#006970",
+                        "primary": "#dbfcff",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#004f54",
+                        "surface-container-lowest": "#0c0e12",
+                        "secondary-fixed": "#f8d8ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "unit": "8px",
+                        "margin-desktop": "64px",
+                        "gutter": "24px",
+                        "margin-mobile": "20px",
+                        "section-gap": "120px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "mono-code": ["JetBrains Mono"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg-mobile": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "mono-label": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                        "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #020408;
+            color: #e1e2e7;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 219, 233, 0.1);
+            transition: all 0.3s ease-out;
+        }
+        .glass-card:hover {
+            border-color: rgba(0, 219, 233, 0.4);
+            box-shadow: 0 0 30px rgba(0, 219, 233, 0.15);
+        }
+        .glow-cyan {
+            box-shadow: 0 0 20px rgba(0, 219, 233, 0.3);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #00f0ff 0%, #ebb2ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 left-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_30px_rgba(0,219,233,0.15)]">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="font-display-lg text-display-lg-mobile md:text-[32px] tracking-tighter text-primary">AETHER AI</div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors transition-all duration-300 ease-out" href="#">Platform</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors transition-all duration-300 ease-out" href="#">Solutions</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors transition-all duration-300 ease-out" href="#">Developers</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors transition-all duration-300 ease-out" href="#">Pricing</a>
+</div>
+<div class="flex gap-4">
+<button class="px-6 py-2 rounded-lg font-body-md text-on-primary bg-primary-fixed-dim hover:glow-cyan transition-all">Launch Console</button>
+</div>
+</div>
+</nav>
+<main class="pt-32 pb-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto relative">
+<!-- Background Atmospheric Animation -->
+
+<!-- Hero Section -->
+<section class="mb-section-gap">
+<span class="font-mono-label text-mono-label text-primary uppercase tracking-widest px-3 py-1 border border-primary/20 bg-primary/5 rounded-sm inline-block mb-6">Identity System v2.0</span>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-8 max-w-3xl leading-tight">Crafting the visual language of <span class="gradient-text">Synthetic Intelligence.</span></h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Aether AI represents the convergence of fluid logic and crystalline precision. This kit provides the assets and guidelines to maintain consistency across our ecosystem.</p>
+</section>
+<!-- Logo Variations Bento Grid -->
+<section class="mb-section-gap">
+<div class="flex justify-between items-end mb-12">
+<h2 class="font-headline-md text-headline-md text-primary">Core Marks</h2>
+<button class="flex items-center gap-2 font-mono-label text-mono-label text-primary-fixed-dim hover:underline transition-all">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+                    Download Logo Pack (.SVG, .PNG)
+                </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Primary Logo -->
+<div class="glass-card p-12 rounded-xl flex flex-col items-center justify-center min-h-[300px]">
+<div class="mb-8 font-display-lg text-display-lg-mobile text-primary tracking-tighter">AETHER AI</div>
+<span class="font-mono-label text-mono-label opacity-50">Primary Branding (Light)</span>
+</div>
+<!-- Dark Background Logo -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 p-12 rounded-xl flex flex-col items-center justify-center min-h-[300px]">
+<div class="mb-8 font-display-lg text-display-lg-mobile text-primary-fixed-dim tracking-tighter drop-shadow-[0_0_8px_rgba(0,219,233,0.4)]">AETHER AI</div>
+<span class="font-mono-label text-mono-label opacity-50">High-Contrast (Cyber)</span>
+</div>
+<!-- Monochrome/Symbol -->
+<div class="glass-card p-12 rounded-xl flex flex-col items-center justify-center min-h-[300px] bg-white/5">
+<div class="w-24 h-24 rounded-full border-4 border-primary flex items-center justify-center mb-8">
+<div class="w-12 h-12 bg-primary rotate-45"></div>
+</div>
+<span class="font-mono-label text-mono-label opacity-50">Abstract Mark (Monochrome)</span>
+</div>
+</div>
+</section>
+<!-- Color Palette -->
+<section class="mb-section-gap">
+<h2 class="font-headline-md text-headline-md text-primary mb-12">Atmospheric Palette</h2>
+<div class="grid grid-cols-2 md:grid-cols-5 gap-gutter">
+<div class="group">
+<div class="h-48 w-full bg-[#00dbe9] rounded-xl mb-4 transition-transform group-hover:scale-105"></div>
+<p class="font-mono-label text-mono-label text-primary">Electric Cyan</p>
+<p class="font-mono-code text-mono-code text-on-surface-variant">HEX #00DBE9</p>
+</div>
+<div class="group">
+<div class="h-48 w-full bg-[#ebb2ff] rounded-xl mb-4 transition-transform group-hover:scale-105"></div>
+<p class="font-mono-label text-mono-label text-primary">Synth Purple</p>
+<p class="font-mono-code text-mono-code text-on-surface-variant">HEX #EBB2FF</p>
+</div>
+<div class="group">
+<div class="h-48 w-full bg-[#020408] border border-outline-variant/30 rounded-xl mb-4 transition-transform group-hover:scale-105"></div>
+<p class="font-mono-label text-mono-label text-primary">Obsidian</p>
+<p class="font-mono-code text-mono-code text-on-surface-variant">HEX #020408</p>
+</div>
+<div class="group">
+<div class="h-48 w-full bg-[#e1e2e7] rounded-xl mb-4 transition-transform group-hover:scale-105"></div>
+<p class="font-mono-label text-mono-label text-primary">Crystalline</p>
+<p class="font-mono-code text-mono-code text-on-surface-variant">HEX #E1E2E7</p>
+</div>
+<div class="group">
+<div class="h-48 w-full bg-gradient-to-br from-[#00dbe9] to-[#ebb2ff] rounded-xl mb-4 transition-transform group-hover:scale-105"></div>
+<p class="font-mono-label text-mono-label text-primary">Aether Aura</p>
+<p class="font-mono-code text-mono-code text-on-surface-variant">Gradient Mesh</p>
+</div>
+</div>
+</section>
+<!-- Typography -->
+<section class="mb-section-gap">
+<h2 class="font-headline-md text-headline-md text-primary mb-12">Typography Hierarchy</h2>
+<div class="glass-card p-10 rounded-xl divide-y divide-outline-variant/20">
+<div class="py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+<div>
+<p class="font-mono-label text-mono-label text-on-surface-variant mb-2">Display Font</p>
+<h3 class="font-headline-md text-headline-md text-primary">Inter Bold</h3>
+</div>
+<div class="md:col-span-2">
+<h4 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary tracking-tighter">ABCDEFGHIJKLM</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mt-4">Optimized for high-impact headlines and digital interfaces. Maximum legibility at extreme scales.</p>
+</div>
+</div>
+<div class="py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+<div>
+<p class="font-mono-label text-mono-label text-on-surface-variant mb-2">Technical Font</p>
+<h3 class="font-headline-md text-headline-md text-primary">JetBrains Mono</h3>
+</div>
+<div class="md:col-span-2">
+<h4 class="font-mono-code text-headline-md text-primary-fixed-dim">const aether = new AI_Core();</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mt-4">Used for documentation, code blocks, and metadata labels. Communicates precision and engineering integrity.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Brand in Action / Mockups -->
+<section class="mb-section-gap">
+<h2 class="font-headline-md text-headline-md text-primary mb-12">Visual Application</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="relative group overflow-hidden rounded-xl h-80">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A futuristic smartphone interface mockup showing a sleek, dark-mode dashboard with glowing blue and purple charts. The glass-like screen features translucent cards and sharp typography consistent with high-end tech branding. The lighting is moody and cinematic, highlighting the reflective surfaces of the device against a dark obsidian background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCKdmQRie7xncTf6wcu66G66zCy_xzzniwKRSF18-p7o9KY2SN4dZcjYVz3ZOgcrHgyluhB5LDVws072Sae4Okla3BZUB1kPlkkt0DhpkDXLJI3oVHTTtNd-vq-fxNEpYz3Mph-3NCMfXuq9gO-EyrzHreVGt01k1Pd9mwUrCUIYx8jc3-ZjtVnHQ7dgIqaBFRisf_WR6fdggDX5jylVrObT5XwwtPW7SAwNlaqgifTHmEoUCc3eFhd4TJ_rVfqpAz_p1vpZUqOw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-60"></div>
+<div class="absolute bottom-6 left-6">
+<p class="font-mono-label text-mono-label text-primary">Mobile Interface</p>
+</div>
+</div>
+<div class="relative group overflow-hidden rounded-xl h-80">
+<div class="bg-cover bg-center w-full h-full transition-transform duration-700 group-hover:scale-110" data-alt="A minimalist tech office interior featuring a wall-mounted glass display showing the AETHER AI logo in glowing cyan light. The room is modern with clean lines, metallic accents, and soft atmospheric lighting that creates a professional, futuristic atmosphere. The focus is on the corporate identity as integrated into a physical high-tech environment." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBuExjBJBX6KA13v4E6K7Eet3s7zyqJTSsWwHi8hiIvGXsaE448f_uIag0awfBzQzhLpE8XaL9yTRsOCaAdN13VSYI-1fOh0OL29qfFrZbotVPTJ8sfZYrkDg24_XpoNxA2FQnDUJLNQlxxgSQO-DaWJ55qy20QdbtM5c-wWXWICVeDg0mBwocM3VtiHpI1QPMKaFrVZr-hjig_Jj4Aei1z6tRPCMsT6ZOpbrSyRlEU7YNrUb_fJ0H7XSeJpYzV639OpKXGvextcg')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-60"></div>
+<div class="absolute bottom-6 left-6">
+<p class="font-mono-label text-mono-label text-primary">Physical Spaces</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Asset Downloads CTA -->
+<section class="glass-card p-12 md:p-20 rounded-full flex flex-col md:flex-row items-center justify-between gap-12 border-primary/20 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary/10 blur-[100px] rounded-full"></div>
+<div class="z-10 text-center md:text-left">
+<h2 class="font-headline-md text-headline-md text-primary mb-4">Complete Brand Kit</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Includes logos, icons, patterns, and style guide in PDF format.</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4 z-10">
+<button class="px-8 py-4 bg-primary-fixed-dim text-on-primary font-body-md font-bold rounded-lg hover:glow-cyan transition-all flex items-center gap-3">
+<span class="material-symbols-outlined" data-icon="cloud_download">cloud_download</span>
+                    Full Archive (.ZIP, 42MB)
+                </button>
+<button class="px-8 py-4 border border-outline-variant hover:border-primary text-primary font-body-md rounded-lg transition-all">
+                    Guidelines PDF
+                </button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full rounded-t-full bg-surface-container-lowest border-t border-outline-variant/20">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-mobile md:px-margin-desktop py-section-gap max-w-container-max mx-auto text-center md:text-left">
+<div class="mb-12 md:mb-0">
+<div class="font-display-lg text-headline-md text-primary mb-4">AETHER AI</div>
+<p class="font-mono-label text-mono-label opacity-60 max-w-sm">© 2024 Aether Intelligence Systems. All rights reserved. Built for the synthetic era.</p>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors" href="#">Privacy Policy</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors" href="#">Terms of Service</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors" href="#">Security</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors" href="#">System Status</a>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for hover effects on color swatches
+        document.querySelectorAll('.group').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                // Potential for adding hex code to clipboard or tooltip
+            });
+        });
+
+        // Sticky Navbar reveal/hide on scroll logic
+        let lastScroll = 0;
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            if (currentScroll <= 0) {
+                nav.classList.remove('shadow-none');
+                return;
+            }
+            if (currentScroll > lastScroll) {
+                nav.style.transform = 'translateY(-100%)';
+            } else {
+                nav.style.transform = 'translateY(0)';
+                nav.style.background = 'rgba(17, 20, 23, 0.85)';
+            }
+            lastScroll = currentScroll;
+        });
+    </script>
+</body></html>

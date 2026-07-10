@@ -7,9 +7,9 @@ This report is generated from:
 - `data/seis-master-prompt-github-controls.json`
 - `data/ssh-hardening-operation-contract.json`
 
-It tracks how the SEIS Master Prompt is represented in the repository. It is
-intentionally short, reviewable, and tied to a dedicated quality gate so the
-operating contract does not remain chat-only context.
+It tracks how the root SEIS Enterprise Constitution and its Master Prompt
+compatibility surfaces are represented in the repository. It is intentionally
+short, reviewable, and tied to a dedicated quality gate.
 
 ## Goal
 
@@ -20,7 +20,7 @@ product strategy aligned through a central SEIS operating contract.
 
 | Priority | Area | Evidence |
 | --- | --- | --- |
-| 1 | architecture | Architecture decisions are captured in ADR and Master Prompt surfaces. |
+| 1 | architecture | Root constitutional authority and compatibility decisions are captured in AGENTS and ADR surfaces. |
 | 2 | security | SSH hardening, secret handling, and readiness claims are checked by dedicated gates. |
 | 3 | documentation | Source data generates reviewable governance reports. |
 | 4 | ai-and-agent-systems | Plugin skills expose agent-facing governance instructions. |
@@ -31,8 +31,9 @@ product strategy aligned through a central SEIS operating contract.
 
 | Surface | Status | Evidence |
 | --- | --- | --- |
-| Master Prompt document | Active | docs/governance/seis-master-prompt.md |
-| Decision record | Active | docs/governance/adr-0001-seis-master-prompt-operating-contract.md |
+| Enterprise Constitution | Active | AGENTS.md |
+| Master Prompt companion | Compatibility | docs/governance/seis-master-prompt.md |
+| Decision record | Superseded | docs/governance/adr-0001-seis-master-prompt-operating-contract.md |
 | Change checklist | Active | docs/governance/seis-master-prompt-change-checklist.md |
 | Review ownership | Active | .github/CODEOWNERS |
 | GitHub controls manifest | Active | data/seis-master-prompt-github-controls.json |
@@ -41,7 +42,7 @@ product strategy aligned through a central SEIS operating contract.
 | SEIS GitHub workflow skill | Active | plugins/seis/skills/seis-github-workflow/SKILL.md |
 | SEIS Security Review skill | Active | plugins/seis/skills/seis-security-review/SKILL.md |
 | SEIS Master Prompt skill | Active | plugins/seis/skills/seis-master-prompt/SKILL.md |
-| Agent-facing instructions | Active | AGENTS.md links the active Master Prompt |
+| Agent-facing instructions | Active | AGENTS.md is the constitutional authority and links focused expansion documents |
 | README positioning | Active | README.md links the Master Prompt surfaces |
 | Implementation map | Active | data/seis-master-prompt-implementation-map.json |
 | Acceptance criteria | Active | data/seis-master-prompt-acceptance-criteria.json |
@@ -60,7 +61,7 @@ product strategy aligned through a central SEIS operating contract.
 
 | Domain | Repository surfaces | Evidence |
 | --- | --- | --- |
-| architecture | docs/governance/seis-master-prompt.md; docs/governance/adr-0001-seis-master-prompt-operating-contract.md | Architecture decisions are captured in ADR and Master Prompt surfaces. |
+| architecture | AGENTS.md; docs/governance/seis-master-prompt.md; docs/governance/adr-0001-seis-master-prompt-operating-contract.md | Root constitutional authority and compatibility decisions are captured in AGENTS and ADR surfaces. |
 | security | data/ssh-hardening-operation-contract.json; plugins/seis/skills/seis-security-review/SKILL.md | SSH hardening, secret handling, and readiness claims are checked by dedicated gates. |
 | documentation | docs/governance/seis-master-prompt-change-checklist.md; reports/seis-master-prompt-governance.md | Source data generates reviewable governance reports. |
 | ai-and-agent-systems | plugins/seis/.codex-plugin/plugin.json; plugins/seis/skills/seis-master-prompt/SKILL.md | Plugin skills expose agent-facing governance instructions. |
@@ -102,7 +103,7 @@ product strategy aligned through a central SEIS operating contract.
 | Risk | Mitigation |
 | --- | --- |
 | Governance text drifts away from implementation | Keep the implementation map, acceptance criteria, generated report, and dedicated check in the quality chain. |
-| Agent instructions become stale | Require `AGENTS.md` to link the active Master Prompt. |
+| Agent instructions become stale | Require root `AGENTS.md` authority markers and focused canonical-document links. |
 | Security principles stay aspirational | Check Master Prompt surfaces for private-key and inline credential patterns. |
 | SSH hardening causes lockout or unsafe host mutation | Keep mode isolation, lockout safety, rollback evidence, and fail-fast behavior tied to the SSH operation contract. |
 | Documentation becomes theater | Track concrete surfaces, evidence, validation, acceptance criteria, and next steps in this report. |

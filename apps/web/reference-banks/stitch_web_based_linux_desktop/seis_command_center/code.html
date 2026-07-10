@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS | Command Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Using Geist-like font via sans-serif fallback for demo, but sticking to config names -->
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        
+        :root {
+            --primary-fixed: #d2f000; /* Cyber Lime */
+        }
+
+        body {
+            background-color: #121414;
+            color: #e2e2e2;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .font-mono-code { font-family: 'JetBrains Mono', monospace; }
+        
+        .glass-panel {
+            background: rgba(12, 15, 15, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .cyber-glow {
+            box-shadow: 0 0 15px rgba(210, 240, 0, 0.15);
+        }
+
+        .scroll-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+
+        /* Scanline effect for atmosphere */
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, rgba(210, 240, 0, 0.05), transparent);
+            position: absolute;
+            animation: scan 8s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#313030",
+                        "surface": "#121414",
+                        "surface-container-lowest": "#0c0f0f",
+                        "surface-variant": "#333535",
+                        "surface-container": "#1e2020",
+                        "on-error-container": "#ffdad6",
+                        "on-primary": "#2c3400",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "on-primary-container": "#5d6b00",
+                        "surface-container-highest": "#333535",
+                        "tertiary-fixed": "#e5e2e1",
+                        "surface-bright": "#38393a",
+                        "secondary-container": "#474646",
+                        "background": "#121414",
+                        "on-secondary-container": "#b7b4b4",
+                        "inverse-primary": "#576500",
+                        "inverse-on-surface": "#2f3131",
+                        "primary": "#ffffff",
+                        "on-surface": "#e2e2e2",
+                        "on-tertiary-container": "#656464",
+                        "on-secondary-fixed-variant": "#474646",
+                        "secondary-fixed-dim": "#c9c6c5",
+                        "error": "#ffb4ab",
+                        "primary-fixed": "#d2f000",
+                        "outline": "#909378",
+                        "on-error": "#690005",
+                        "surface-container-low": "#1a1c1c",
+                        "surface-tint": "#b8d300",
+                        "surface-dim": "#121414",
+                        "secondary-fixed": "#e5e2e1",
+                        "on-tertiary": "#313030",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "tertiary-container": "#e5e2e1",
+                        "on-primary-fixed": "#191e00",
+                        "inverse-surface": "#e2e2e2",
+                        "on-primary-fixed-variant": "#414c00",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "primary-container": "#d2f000",
+                        "on-surface-variant": "#c6c9ab",
+                        "primary-fixed-dim": "#b8d300",
+                        "on-background": "#e2e2e2",
+                        "secondary": "#c9c6c5",
+                        "surface-container-high": "#282a2b",
+                        "outline-variant": "#454932",
+                        "tertiary": "#ffffff",
+                        "error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-desktop": "48px",
+                        "stack-md": "24px",
+                        "stack-lg": "48px",
+                        "gutter": "24px",
+                        "stack-sm": "12px",
+                        "unit": "8px",
+                        "stack-xs": "4px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter", "sans-serif"],
+                        "label-caps": ["Inter", "sans-serif"],
+                        "title-sm": ["Inter", "sans-serif"],
+                        "headline-md": ["Inter", "sans-serif"],
+                        "mono-code": ["JetBrains Mono", "monospace"],
+                        "body-md": ["Inter", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "600"}],
+                        "label-caps": ["11px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "title-sm": ["18px", {"lineHeight": "1.5", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                        "headline-md": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                        "mono-code": ["13px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background scroll-hide">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full flex justify-between items-center h-12 px-margin-desktop w-full z-50 border-b border-white/5 bg-background/80 backdrop-blur-xl">
+<div class="flex items-center gap-stack-md">
+<span class="font-display-lg text-headline-md tracking-tighter text-primary">SEIS</span>
+<div class="hidden md:flex gap-stack-sm ml-8">
+<a class="font-mono-code text-mono-code text-primary-fixed font-bold border-b-2 border-primary-fixed h-12 flex items-center px-4" href="#">HOME</a>
+<a class="font-mono-code text-mono-code text-on-surface-variant hover:text-primary-fixed transition-colors h-12 flex items-center px-4" href="#">EXPLORE</a>
+<a class="font-mono-code text-mono-code text-on-surface-variant hover:text-primary-fixed transition-colors h-12 flex items-center px-4" href="#">SYSTEM</a>
+</div>
+</div>
+<div class="flex items-center gap-gutter">
+<div class="flex gap-stack-sm text-on-surface-variant">
+<span class="material-symbols-outlined hover:text-primary-fixed transition-colors cursor-pointer">memory</span>
+<span class="material-symbols-outlined hover:text-primary-fixed transition-colors cursor-pointer">sensors</span>
+<span class="material-symbols-outlined hover:text-primary-fixed transition-colors cursor-pointer">offline_bolt</span>
+</div>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-white/10">
+<img class="w-full h-full object-cover" data-alt="A professional studio headshot of a creative technologist with minimalist aesthetic. The portrait has soft, moody rim lighting against a deep black background, highlighting sharp features and a sophisticated, futuristic look. The overall color palette is monochromatic with high-contrast shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYJ_gK9Cya8H376ak4Nn4eTndnxZyZd4BjVM5e57o8jpKXI3KuLzGPP3XIMk3DmhZsA_HJNd1dAOZkdAhz1Pmc8NikkK3zqiDe_NhvlC_u2aDI5MwkbRa0JtDJ9FOtRSCm5RWR_hbJfazu7U3enkBw7tOUF8X5PIZMhHaMiWBj210E57bO0vgwywfwW8dzQeU3UJRy8khIEUw0ChZrrPk9G8msauu7nGV1zKUVXG73SDMhlrEe4QOxff5G6rFyqS4BvaY8noVGNRpU"/>
+</div>
+</div>
+</header>
+<!-- Side Navigation -->
+<nav class="fixed left-0 h-full w-20 hover:w-64 transition-all duration-300 flex flex-col py-stack-md h-screen z-40 bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-white/5 group shadow-2xl pt-20">
+<div class="px-6 mb-stack-lg">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 bg-primary-fixed flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-on-primary-fixed">terminal</span>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity">
+<div class="font-label-caps text-label-caps text-primary">SEIS OS</div>
+<div class="text-[10px] text-on-surface-variant">v1.0.4-alpha</div>
+</div>
+</div>
+</div>
+<div class="flex-1 space-y-2">
+<a class="flex items-center h-12 text-on-primary-fixed bg-primary-fixed rounded-lg mx-2 px-3 gap-4" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-caps text-label-caps opacity-0 group-hover:opacity-100">Home</span>
+</a>
+<a class="flex items-center h-12 text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-all mx-2 px-3 gap-4" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="font-label-caps text-label-caps opacity-0 group-hover:opacity-100">AI Projects</span>
+</a>
+<a class="flex items-center h-12 text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-all mx-2 px-3 gap-4" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-label-caps text-label-caps opacity-0 group-hover:opacity-100">Code</span>
+</a>
+<a class="flex items-center h-12 text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-all mx-2 px-3 gap-4" href="#">
+<span class="material-symbols-outlined">account_tree</span>
+<span class="font-label-caps text-label-caps opacity-0 group-hover:opacity-100">GitHub</span>
+</a>
+</div>
+<div class="pb-stack-md space-y-2 border-t border-white/5 pt-stack-md">
+<a class="flex items-center h-12 text-on-surface-variant hover:text-on-surface mx-2 px-3 gap-4" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-caps text-label-caps opacity-0 group-hover:opacity-100">Settings</span>
+</a>
+<div class="mx-4 mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-full bg-primary-fixed text-on-primary-fixed h-10 font-label-caps text-label-caps rounded-lg active:scale-95 duration-100">NEW PROJECT</button>
+</div>
+</div>
+</nav>
+<!-- Activity Side Rail (Right) -->
+<aside class="fixed right-0 h-full w-12 flex flex-col items-center py-stack-md z-30 bg-background/50 backdrop-blur-md border-l border-white/5 pt-20">
+<div class="flex flex-col gap-stack-md text-on-surface-variant/40">
+<span class="material-symbols-outlined cursor-pointer hover:text-on-surface transition-colors">notifications</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-on-surface transition-colors text-primary-fixed">sync</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-on-surface transition-colors">psychology</span>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="pl-20 pr-12 pt-12 min-h-screen">
+<div class="scanline"></div>
+<!-- Hero Search Section -->
+<section class="max-w-6xl mx-auto pt-32 pb-16 px-stack-lg">
+<div class="text-center mb-stack-lg">
+<h1 class="font-display-lg text-display-lg text-primary tracking-tighter mb-4">Command Center</h1>
+<p class="font-body-md text-on-surface-variant max-w-xl mx-auto">Orchestrate your creative universe. Monitor system kernels, deploy neural models, and manage repositories from a single lens.</p>
+</div>
+<!-- Raycast Inspired Search -->
+<div class="relative max-w-2xl mx-auto group">
+<div class="absolute -inset-0.5 bg-primary-fixed/20 rounded-xl blur opacity-30 group-focus-within:opacity-100 transition duration-500"></div>
+<div class="relative glass-panel rounded-xl flex items-center px-6 py-4 border border-white/10 shadow-2xl">
+<span class="material-symbols-outlined text-primary-fixed mr-4">search</span>
+<input class="bg-transparent border-none focus:ring-0 w-full text-primary font-mono-code placeholder:text-on-surface-variant/50" placeholder="Search files, actions, or ask AI..." type="text"/>
+<div class="flex items-center gap-2">
+<kbd class="font-mono-code text-[10px] bg-surface-container-highest px-1.5 py-0.5 rounded text-on-surface-variant">⌘</kbd>
+<kbd class="font-mono-code text-[10px] bg-surface-container-highest px-1.5 py-0.5 rounded text-on-surface-variant">K</kbd>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid Dashboard -->
+<section class="max-w-7xl mx-auto px-stack-lg pb-stack-lg">
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Active AI Projects (Large) -->
+<div class="col-span-12 lg:col-span-8 glass-panel rounded-xl p-stack-md flex flex-col hover:border-primary-fixed/30 transition-colors">
+<div class="flex justify-between items-center mb-stack-md">
+<h3 class="font-label-caps text-label-caps text-primary tracking-widest flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary-fixed animate-pulse"></span>
+                            ACTIVE AI PROJECTS
+                        </h3>
+<span class="material-symbols-outlined text-on-surface-variant text-sm cursor-pointer">open_in_full</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
+<!-- Project Card 1 -->
+<div class="p-4 border border-white/5 rounded bg-surface-container-low hover:bg-surface-variant/20 transition-all group cursor-pointer">
+<div class="flex justify-between mb-3">
+<span class="font-mono-code text-xs text-primary-fixed">NEURAL_SYNAPSE_V2</span>
+<span class="text-[10px] text-on-surface-variant px-1.5 py-0.5 bg-background rounded">TRAINING</span>
+</div>
+<div class="h-1 bg-white/5 rounded-full mb-4 overflow-hidden">
+<div class="h-full bg-primary-fixed w-[72%]"></div>
+</div>
+<p class="text-xs text-on-surface-variant mb-4">Autonomous agent for multi-cloud deployment automation. Current Epoch: 42/100.</p>
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full border border-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-xs">bolt</span>
+</div>
+<span class="text-[10px] font-mono-code">8.4 TFLOPS</span>
+</div>
+</div>
+<!-- Project Card 2 -->
+<div class="p-4 border border-white/5 rounded bg-surface-container-low hover:bg-surface-variant/20 transition-all group cursor-pointer">
+<div class="flex justify-between mb-3">
+<span class="font-mono-code text-xs text-primary-fixed">QUANTUM_RENDERER</span>
+<span class="text-[10px] text-on-surface-variant px-1.5 py-0.5 bg-background rounded">READY</span>
+</div>
+<div class="h-1 bg-white/5 rounded-full mb-4 overflow-hidden">
+<div class="h-full bg-primary-fixed w-full"></div>
+</div>
+<p class="text-xs text-on-surface-variant mb-4">Generative shader engine for hyper-realistic obsidian textures. Asset batch 09 complete.</p>
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full border border-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-xs">image</span>
+</div>
+<span class="text-[10px] font-mono-code">4096 PX</span>
+</div>
+</div>
+</div>
+</div>
+<!-- System Health (Compact Vertical) -->
+<div class="col-span-12 lg:col-span-4 glass-panel rounded-xl p-stack-md flex flex-col">
+<h3 class="font-label-caps text-label-caps text-primary tracking-widest mb-stack-md">SYSTEM HEALTH</h3>
+<div class="space-y-6">
+<!-- CPU -->
+<div class="flex items-center justify-between">
+<div>
+<div class="font-mono-code text-xs text-on-surface-variant">CPU CORE CLUSTER</div>
+<div class="text-xl font-display-lg text-primary">14.2%</div>
+</div>
+<div class="w-24 h-12 relative">
+<div class="absolute inset-0 flex items-end gap-1">
+<div class="bg-primary-fixed/20 w-1 h-3"></div>
+<div class="bg-primary-fixed/20 w-1 h-5"></div>
+<div class="bg-primary-fixed w-1 h-8"></div>
+<div class="bg-primary-fixed/40 w-1 h-4"></div>
+<div class="bg-primary-fixed w-1 h-6"></div>
+<div class="bg-primary-fixed/10 w-1 h-2"></div>
+</div>
+</div>
+</div>
+<!-- Memory -->
+<div class="flex items-center justify-between">
+<div>
+<div class="font-mono-code text-xs text-on-surface-variant">UNIFIED MEMORY</div>
+<div class="text-xl font-display-lg text-primary">48.0 GB</div>
+</div>
+<div class="w-24 h-2 bg-white/5 rounded-full overflow-hidden self-center">
+<div class="w-2/3 h-full bg-primary-fixed"></div>
+</div>
+</div>
+<!-- Network -->
+<div class="flex items-center justify-between">
+<div>
+<div class="font-mono-code text-xs text-on-surface-variant">NETWORK TRAFFIC</div>
+<div class="text-xl font-display-lg text-primary">1.2 GBPS</div>
+</div>
+<span class="material-symbols-outlined text-primary-fixed animate-pulse">radar</span>
+</div>
+</div>
+</div>
+<!-- Recent Repositories (List) -->
+<div class="col-span-12 lg:col-span-5 glass-panel rounded-xl p-stack-md">
+<div class="flex justify-between items-center mb-stack-md">
+<h3 class="font-label-caps text-label-caps text-primary tracking-widest">RECENT REPOSITORIES</h3>
+<span class="text-[10px] font-mono-code text-primary-fixed cursor-pointer">VIEW ALL</span>
+</div>
+<div class="space-y-1">
+<div class="flex items-center justify-between py-3 border-b border-white/5 hover:bg-white/5 px-2 transition-colors cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">terminal</span>
+<span class="font-mono-code text-sm">seis-core-api</span>
+</div>
+<span class="text-[10px] text-on-surface-variant">2m ago</span>
+</div>
+<div class="flex items-center justify-between py-3 border-b border-white/5 hover:bg-white/5 px-2 transition-colors cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">folder</span>
+<span class="font-mono-code text-sm">ux-design-tokens</span>
+</div>
+<span class="text-[10px] text-on-surface-variant">4h ago</span>
+</div>
+<div class="flex items-center justify-between py-3 border-b border-white/5 hover:bg-white/5 px-2 transition-colors cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">cloud</span>
+<span class="font-mono-code text-sm">infra-terraform-v3</span>
+</div>
+<span class="text-[10px] text-on-surface-variant">1d ago</span>
+</div>
+<div class="flex items-center justify-between py-3 hover:bg-white/5 px-2 transition-colors cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">dataset</span>
+<span class="font-mono-code text-sm">training-data-luna</span>
+</div>
+<span class="text-[10px] text-on-surface-variant">3d ago</span>
+</div>
+</div>
+</div>
+<!-- Upcoming Automations (Timeline) -->
+<div class="col-span-12 lg:col-span-7 glass-panel rounded-xl p-stack-md relative overflow-hidden">
+<!-- Background texture -->
+<div class="absolute top-0 right-0 p-8 opacity-5">
+<span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'FILL' 1;">schedule</span>
+</div>
+<h3 class="font-label-caps text-label-caps text-primary tracking-widest mb-stack-md">UPCOMING AUTOMATIONS</h3>
+<div class="relative">
+<div class="absolute left-[7px] top-2 bottom-2 w-px bg-white/10"></div>
+<div class="space-y-6">
+<div class="relative pl-8">
+<div class="absolute left-0 top-1 w-4 h-4 bg-primary-fixed rounded-full border-4 border-background cyber-glow"></div>
+<div class="flex flex-col">
+<span class="font-mono-code text-xs text-primary-fixed">14:00 — NOW</span>
+<span class="text-sm text-primary font-medium">Backup local database to cold storage</span>
+<span class="text-[10px] text-on-surface-variant">Trigger: System Scheduler</span>
+</div>
+</div>
+<div class="relative pl-8">
+<div class="absolute left-0 top-1 w-4 h-4 bg-surface-container-highest rounded-full border-4 border-background"></div>
+<div class="flex flex-col">
+<span class="font-mono-code text-xs text-on-surface-variant">16:30</span>
+<span class="text-sm text-primary/80 font-medium">Auto-deploy Luna-7 branch to Staging</span>
+<span class="text-[10px] text-on-surface-variant">Trigger: Git Commit</span>
+</div>
+</div>
+<div class="relative pl-8">
+<div class="absolute left-0 top-1 w-4 h-4 bg-surface-container-highest rounded-full border-4 border-background"></div>
+<div class="flex flex-col">
+<span class="font-mono-code text-xs text-on-surface-variant">20:00</span>
+<span class="text-sm text-primary/80 font-medium">Daily AI performance summary generation</span>
+<span class="text-[10px] text-on-surface-variant">Trigger: Cron Task</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Large Aesthetic Asset Card -->
+<div class="col-span-12 glass-panel rounded-xl overflow-hidden group">
+<div class="grid grid-cols-1 md:grid-cols-2">
+<div class="p-stack-lg flex flex-col justify-center">
+<div class="mb-4">
+<span class="bg-primary-fixed/10 text-primary-fixed px-3 py-1 rounded-full text-[10px] font-mono-code border border-primary-fixed/20">NEW FEATURE</span>
+</div>
+<h2 class="font-display-lg text-headline-md text-primary mb-4 leading-tight">Architectural Visualization Engine</h2>
+<p class="text-on-surface-variant body-md mb-stack-md">Leverage our new GPU-accelerated ray tracing engine directly in the SEIS dashboard. Real-time path tracing for obsidian and glass shaders.</p>
+<button class="w-fit px-8 py-3 bg-primary text-background font-label-caps text-label-caps hover:bg-primary-fixed transition-colors">LAUNCH VIEWER</button>
+</div>
+<div class="h-[400px] relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A cinematic, high-detail 3D render of a futuristic architectural structure made of obsidian and frosted glass. The lighting is low-key, featuring soft Cyber Lime light leaks reflecting off the sharp, geometric surfaces. The atmosphere is filled with a light volumetric haze, creating a deep sense of digital space and premium minimalist aesthetics. Monochromatic black and grey tones dominate with sharp neon accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCF53mCFa0MjjssS1Y67M6feffV_kxudRSVL3B4-zqumOk4t4Q5PP04McOZQMABoOSQLqipxScT6M5img9mp1kEb-DPrNrMzVXoap6l79DFRsFu5W-fadxkGyUGTfTJ0lMVu6p8T3svbLaldzPLF1WKyymutmOgE5IRt9bh6VTC1BwuEjEM-eJEhbLaLcEG_Bx6J6cGRraEgTUhxThSQusuwLQElSk8pWcv8ieX5KyeuFyWOt8-YtjGWjphvgq46EFe1uKY2vH8FYPY"/>
+<div class="absolute inset-0 bg-gradient-to-r from-background to-transparent md:block hidden"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Status Bar -->
+<footer class="fixed bottom-0 w-full h-8 bg-surface-container-lowest/90 backdrop-blur-md border-t border-white/5 z-50 flex items-center justify-between px-margin-desktop">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-fixed"></span>
+<span class="font-mono-code text-[10px] text-on-surface-variant uppercase">All Systems Nominal</span>
+</div>
+<div class="font-mono-code text-[10px] text-on-surface-variant/50">CPU: 32°C</div>
+</div>
+<div class="flex items-center gap-4 font-mono-code text-[10px] text-on-surface-variant">
+<span>UTC 14:02:44</span>
+<span class="bg-primary-fixed/10 px-2 py-0.5 rounded text-primary-fixed">64-BIT ARCH</span>
+</div>
+</footer>
+<script>
+        // Micro-interaction for the search bar focus
+        const searchInput = document.querySelector('input');
+        const searchContainer = searchInput.parentElement.parentElement;
+        
+        searchInput.addEventListener('focus', () => {
+            searchContainer.querySelector('.blur').classList.add('opacity-100');
+        });
+        
+        searchInput.addEventListener('blur', () => {
+            searchContainer.querySelector('.blur').classList.remove('opacity-100');
+        });
+
+        // Add a parallax-ish movement to the background image on mouse move
+        document.addEventListener('mousemove', (e) => {
+            const amount = 5;
+            const x = (e.clientX / window.innerWidth - 0.5) * amount;
+            const y = (e.clientY / window.innerHeight - 0.5) * amount;
+            
+            const cards = document.querySelectorAll('.glass-panel');
+            cards.forEach(card => {
+                // Subtle tilt effect could go here
+            });
+        });
+    </script>
+</body></html>

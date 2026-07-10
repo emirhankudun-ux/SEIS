@@ -1,0 +1,1311 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SEIS Demo Runway</title>
+    <meta
+      name="description"
+      content="A browser-local SEIS demo runway for presenting the AI-native creative operating system flow without secrets or live provider claims."
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        --seis-ink: #f8f6ef;
+        --seis-muted: #a7acb8;
+        --seis-dim: #6f7787;
+        --seis-black: #050608;
+        --seis-graphite: #10141b;
+        --seis-panel: rgba(18, 23, 32, 0.74);
+        --seis-panel-strong: rgba(25, 31, 43, 0.92);
+        --seis-line: rgba(255, 255, 255, 0.12);
+        --seis-line-strong: rgba(255, 255, 255, 0.2);
+        --seis-cyan: #64e7ff;
+        --seis-blue: #7ca2ff;
+        --seis-violet: #b99cff;
+        --seis-amber: #ffbf6b;
+        --seis-green: #83e6ac;
+        --seis-red: #ff7a8a;
+        --seis-radius-xl: 28px;
+        --seis-radius-lg: 22px;
+        --seis-radius-md: 16px;
+        --seis-shadow: 0 28px 90px rgba(0, 0, 0, 0.48);
+        --seis-focus: 0 0 0 3px rgba(100, 231, 255, 0.3);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        min-height: 100%;
+        background: #050608;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        color: var(--seis-ink);
+        font-family:
+          ui-sans-serif,
+          -apple-system,
+          BlinkMacSystemFont,
+          "SF Pro Display",
+          "Segoe UI",
+          sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(100, 231, 255, 0.2), transparent 28rem),
+          radial-gradient(circle at 78% 12%, rgba(185, 156, 255, 0.18), transparent 24rem),
+          linear-gradient(135deg, #050608 0%, #111827 45%, #090b10 100%);
+        overflow-x: hidden;
+      }
+
+      body::before {
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        content: "";
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+        background-size: 64px 64px;
+        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), transparent 80%);
+      }
+
+      body::after {
+        position: fixed;
+        inset: auto -10% -22rem -10%;
+        z-index: -1;
+        height: 36rem;
+        content: "";
+        background: radial-gradient(ellipse at center, rgba(124, 162, 255, 0.18), transparent 68%);
+        filter: blur(20px);
+      }
+
+      a {
+        color: inherit;
+      }
+
+      button,
+      a.button-link {
+        min-height: 44px;
+      }
+
+      button {
+        border: 0;
+        font: inherit;
+      }
+
+      button:focus-visible,
+      a:focus-visible,
+      [tabindex]:focus-visible {
+        outline: none;
+        box-shadow: var(--seis-focus);
+      }
+
+      .shell {
+        width: min(1480px, calc(100vw - 28px));
+        margin: 0 auto;
+        padding: 26px 0 44px;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 14px;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 14px 16px;
+        border: 1px solid var(--seis-line);
+        border-radius: 999px;
+        background: rgba(5, 6, 8, 0.74);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.32);
+        backdrop-filter: blur(20px);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        place-items: center;
+        border: 1px solid rgba(100, 231, 255, 0.42);
+        border-radius: 14px;
+        background:
+          linear-gradient(135deg, rgba(100, 231, 255, 0.16), rgba(185, 156, 255, 0.12)),
+          rgba(255, 255, 255, 0.05);
+        color: var(--seis-cyan);
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+      }
+
+      .brand-copy {
+        min-width: 0;
+      }
+
+      .eyebrow {
+        margin: 0;
+        color: var(--seis-cyan);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .brand-copy strong {
+        display: block;
+        overflow: hidden;
+        color: var(--seis-ink);
+        font-size: 14px;
+        font-weight: 750;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .topbar-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+
+      .pill,
+      .ghost-button,
+      .primary-button,
+      .button-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border-radius: 999px;
+        text-decoration: none;
+        transition:
+          transform 160ms ease,
+          border-color 160ms ease,
+          background 160ms ease,
+          color 160ms ease;
+      }
+
+      .pill {
+        padding: 9px 12px;
+        border: 1px solid var(--seis-line);
+        color: var(--seis-muted);
+        font-size: 12px;
+      }
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--seis-green);
+        box-shadow: 0 0 18px rgba(131, 230, 172, 0.72);
+      }
+
+      .ghost-button,
+      .button-link {
+        padding: 10px 14px;
+        border: 1px solid var(--seis-line);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--seis-ink);
+        cursor: pointer;
+      }
+
+      .primary-button {
+        padding: 11px 17px;
+        background: linear-gradient(135deg, var(--seis-cyan), var(--seis-blue));
+        color: #061017;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .ghost-button:hover,
+      .button-link:hover,
+      .primary-button:hover {
+        transform: translateY(-1px);
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+        gap: 22px;
+        margin-top: 26px;
+      }
+
+      .hero-card,
+      .panel {
+        border: 1px solid var(--seis-line);
+        border-radius: var(--seis-radius-xl);
+        background:
+          linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.025)),
+          var(--seis-panel);
+        box-shadow: var(--seis-shadow);
+        backdrop-filter: blur(24px);
+      }
+
+      .hero-card {
+        padding: clamp(26px, 5vw, 58px);
+      }
+
+      .hero h1 {
+        max-width: 820px;
+        margin: 16px 0 18px;
+        font-size: clamp(44px, 7vw, 106px);
+        line-height: 0.88;
+        letter-spacing: -0.075em;
+      }
+
+      .hero p {
+        max-width: 760px;
+        margin: 0;
+        color: var(--seis-muted);
+        font-size: clamp(16px, 2vw, 21px);
+        line-height: 1.62;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 26px;
+      }
+
+      .proof-strip {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 30px;
+      }
+
+      .proof {
+        padding: 14px;
+        border: 1px solid var(--seis-line);
+        border-radius: var(--seis-radius-md);
+        background: rgba(255, 255, 255, 0.045);
+      }
+
+      .proof strong {
+        display: block;
+        font-size: 21px;
+      }
+
+      .proof span {
+        display: block;
+        margin-top: 4px;
+        color: var(--seis-muted);
+        font-size: 12px;
+        line-height: 1.35;
+      }
+
+      .control-deck {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        padding: 18px;
+      }
+
+      .progress-wrap {
+        padding: 18px;
+        border: 1px solid var(--seis-line);
+        border-radius: var(--seis-radius-lg);
+        background: rgba(0, 0, 0, 0.22);
+      }
+
+      .progress-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        color: var(--seis-muted);
+        font-size: 13px;
+      }
+
+      .progress-bar {
+        height: 10px;
+        margin-top: 12px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .progress-bar span {
+        display: block;
+        width: 0;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--seis-cyan), var(--seis-violet), var(--seis-amber));
+        transition: width 260ms ease;
+      }
+
+      .current-step {
+        display: grid;
+        gap: 12px;
+        min-height: 310px;
+        padding: 20px;
+        border: 1px solid var(--seis-line);
+        border-radius: var(--seis-radius-lg);
+        background:
+          radial-gradient(circle at 20% 0%, rgba(100, 231, 255, 0.12), transparent 22rem),
+          rgba(255, 255, 255, 0.045);
+      }
+
+      .step-kicker {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        color: var(--seis-muted);
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .step-title {
+        margin: 0;
+        font-size: clamp(28px, 3vw, 44px);
+        line-height: 0.98;
+        letter-spacing: -0.045em;
+      }
+
+      .step-copy {
+        margin: 0;
+        color: var(--seis-muted);
+        font-size: 15px;
+        line-height: 1.62;
+      }
+
+      .step-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: end;
+        gap: 10px;
+        margin-top: auto;
+      }
+
+      .keyboard-note {
+        color: var(--seis-dim);
+        font-size: 12px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: minmax(320px, 0.78fr) minmax(0, 1.22fr);
+        gap: 22px;
+        margin-top: 22px;
+      }
+
+      .panel {
+        padding: 18px;
+      }
+
+      .panel-heading {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 16px;
+      }
+
+      .panel-heading h2 {
+        margin: 0;
+        font-size: 20px;
+        letter-spacing: -0.03em;
+      }
+
+      .panel-heading p {
+        max-width: 680px;
+        margin: 6px 0 0;
+        color: var(--seis-muted);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .timeline {
+        display: grid;
+        gap: 8px;
+      }
+
+      .timeline button {
+        display: grid;
+        grid-template-columns: 34px minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--seis-line);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.035);
+        color: var(--seis-ink);
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .timeline button[aria-current="step"] {
+        border-color: rgba(100, 231, 255, 0.5);
+        background: linear-gradient(135deg, rgba(100, 231, 255, 0.14), rgba(185, 156, 255, 0.08));
+      }
+
+      .timeline-index {
+        display: grid;
+        width: 30px;
+        height: 30px;
+        place-items: center;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--seis-cyan);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .timeline-title {
+        overflow: hidden;
+        font-size: 13px;
+        font-weight: 750;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .timeline-label {
+        color: var(--seis-muted);
+        font-size: 11px;
+      }
+
+      .stage {
+        position: relative;
+        min-height: 650px;
+        overflow: hidden;
+        border: 1px solid var(--seis-line);
+        border-radius: var(--seis-radius-xl);
+        background:
+          radial-gradient(circle at 22% 10%, rgba(100, 231, 255, 0.14), transparent 20rem),
+          radial-gradient(circle at 74% 24%, rgba(185, 156, 255, 0.12), transparent 18rem),
+          linear-gradient(145deg, rgba(18, 23, 32, 0.94), rgba(5, 6, 8, 0.88));
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      }
+
+      .desktop-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--seis-line);
+        background: rgba(0, 0, 0, 0.22);
+      }
+
+      .desktop-top strong {
+        font-size: 13px;
+      }
+
+      .desktop-top span {
+        color: var(--seis-muted);
+        font-size: 12px;
+      }
+
+      .window {
+        position: absolute;
+        inset: 72px 26px 94px 26px;
+        display: grid;
+        grid-template-rows: auto 1fr;
+        overflow: hidden;
+        border: 1px solid var(--seis-line-strong);
+        border-radius: 24px;
+        background: rgba(8, 11, 17, 0.82);
+        box-shadow: 0 26px 70px rgba(0, 0, 0, 0.5);
+      }
+
+      .window-chrome {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--seis-line);
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .lights {
+        display: flex;
+        gap: 7px;
+      }
+
+      .lights span {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: var(--seis-red);
+      }
+
+      .lights span:nth-child(2) {
+        background: var(--seis-amber);
+      }
+
+      .lights span:nth-child(3) {
+        background: var(--seis-green);
+      }
+
+      .window-title {
+        flex: 1;
+        min-width: 0;
+        color: var(--seis-muted);
+        font-size: 12px;
+        text-align: center;
+      }
+
+      .window-body {
+        display: grid;
+        grid-template-columns: 0.92fr 1.08fr;
+        gap: 14px;
+        padding: 16px;
+      }
+
+      .app-card {
+        display: none;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 14px;
+        min-height: 390px;
+        padding: 18px;
+        border: 1px solid var(--seis-line);
+        border-radius: 20px;
+        background:
+          radial-gradient(circle at 24% 0%, rgba(100, 231, 255, 0.14), transparent 16rem),
+          rgba(255, 255, 255, 0.05);
+      }
+
+      .app-card.is-active {
+        display: flex;
+      }
+
+      .app-card h3 {
+        margin: 0;
+        font-size: 28px;
+        letter-spacing: -0.04em;
+      }
+
+      .app-card p {
+        margin: 10px 0 0;
+        color: var(--seis-muted);
+        line-height: 1.55;
+      }
+
+      .mini-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .mini-tile {
+        padding: 12px;
+        border: 1px solid var(--seis-line);
+        border-radius: 16px;
+        background: rgba(0, 0, 0, 0.18);
+      }
+
+      .mini-tile strong {
+        display: block;
+        font-size: 13px;
+      }
+
+      .mini-tile span {
+        display: block;
+        margin-top: 5px;
+        color: var(--seis-muted);
+        font-size: 12px;
+        line-height: 1.35;
+      }
+
+      .console {
+        min-height: 100%;
+        padding: 14px;
+        overflow: hidden;
+        border: 1px solid var(--seis-line);
+        border-radius: 20px;
+        background: rgba(0, 0, 0, 0.24);
+      }
+
+      .console h3 {
+        margin: 0 0 12px;
+        font-size: 14px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .log {
+        display: grid;
+        gap: 8px;
+      }
+
+      .log div {
+        padding: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.035);
+        color: var(--seis-muted);
+        font-family: "SFMono-Regular", Consolas, monospace;
+        font-size: 12px;
+        line-height: 1.4;
+      }
+
+      .dock {
+        position: absolute;
+        right: 24px;
+        bottom: 20px;
+        left: 24px;
+        display: grid;
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+        gap: 8px;
+        padding: 10px;
+        border: 1px solid var(--seis-line);
+        border-radius: 24px;
+        background: rgba(0, 0, 0, 0.35);
+        backdrop-filter: blur(18px);
+      }
+
+      .dock button {
+        display: grid;
+        gap: 5px;
+        min-height: 58px;
+        padding: 8px 6px;
+        border: 1px solid transparent;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.055);
+        color: var(--seis-ink);
+        cursor: pointer;
+      }
+
+      .dock button[aria-pressed="true"] {
+        border-color: rgba(100, 231, 255, 0.48);
+        background: rgba(100, 231, 255, 0.13);
+      }
+
+      .dock strong {
+        font-size: 11px;
+      }
+
+      .dock span {
+        color: var(--seis-muted);
+        font-size: 10px;
+      }
+
+      .status-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 22px;
+      }
+
+      .status-card {
+        padding: 16px;
+        border: 1px solid var(--seis-line);
+        border-radius: 20px;
+        background: var(--seis-panel);
+      }
+
+      .status-card strong {
+        display: block;
+        font-size: 15px;
+      }
+
+      .status-card span {
+        display: block;
+        margin-top: 7px;
+        color: var(--seis-muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .state-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        width: fit-content;
+        padding: 5px 9px;
+        border: 1px solid var(--seis-line);
+        border-radius: 999px;
+        color: var(--seis-muted);
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .state-label[data-state="real"] {
+        color: var(--seis-green);
+      }
+
+      .state-label[data-state="mock"] {
+        color: var(--seis-amber);
+      }
+
+      .state-label[data-state="planned"] {
+        color: var(--seis-violet);
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      @media (max-width: 1040px) {
+        .hero,
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .proof-strip,
+        .status-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 720px) {
+        .shell {
+          width: min(100% - 18px, 1480px);
+          padding-top: 10px;
+        }
+
+        .topbar {
+          position: static;
+          align-items: flex-start;
+          border-radius: 24px;
+        }
+
+        .topbar,
+        .topbar-actions,
+        .hero-actions,
+        .panel-heading {
+          flex-direction: column;
+        }
+
+        .topbar-actions,
+        .hero-actions {
+          align-items: stretch;
+          width: 100%;
+        }
+
+        .ghost-button,
+        .primary-button,
+        .button-link {
+          width: 100%;
+        }
+
+        .proof-strip,
+        .status-grid,
+        .window-body,
+        .mini-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .stage {
+          min-height: 860px;
+        }
+
+        .window {
+          inset: 66px 12px 190px 12px;
+        }
+
+        .dock {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body data-demo-runway>
+    <div class="shell">
+      <header class="topbar" aria-label="SEIS demo runway top bar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">S</div>
+          <div class="brand-copy">
+            <p class="eyebrow">SEIS Demo Runway</p>
+            <strong>AI-native creative operating system presentation controller</strong>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <span class="pill"><span class="status-dot" aria-hidden="true"></span> Browser local</span>
+          <a class="button-link" href="./seis-linux-replica.html" data-action="open-linux-replica">Open Linux Replica</a>
+          <button class="ghost-button" type="button" data-action="reset-runway">Reset runway</button>
+        </div>
+      </header>
+
+      <main>
+        <section class="hero" aria-labelledby="runway-title">
+          <div class="hero-card">
+            <p class="eyebrow">Working demo contract</p>
+            <h1 id="runway-title">Run SEIS like a product, not a slide deck.</h1>
+            <p>
+              This runway turns the required SEIS demo sequence into a browser-local, keyboard-friendly control surface.
+              It does not call GitHub, SSH, cloud AI, or provider APIs. Live claims stay separated from mock and planned
+              states so the presentation remains honest.
+            </p>
+            <div class="hero-actions">
+              <button class="primary-button" type="button" data-action="start-runway">Start live walkthrough</button>
+              <button class="ghost-button" type="button" data-action="next-step">Next step</button>
+              <button class="ghost-button" type="button" data-action="previous-step">Previous step</button>
+            </div>
+            <div class="proof-strip" aria-label="Runway proof points">
+              <div class="proof">
+                <strong data-total-steps>15</strong>
+                <span>Guided demo beats from landing to final showcase.</span>
+              </div>
+              <div class="proof">
+                <strong>0 keys</strong>
+                <span>No secrets, provider tokens, private keys, or live SSH.</span>
+              </div>
+              <div class="proof">
+                <strong>3 states</strong>
+                <span>Real, mock, and planned labels are visible in the UI.</span>
+              </div>
+              <div class="proof">
+                <strong>Local</strong>
+                <span>Progress persists in localStorage only on this browser.</span>
+              </div>
+            </div>
+          </div>
+
+          <aside class="panel control-deck" aria-label="Current demo control">
+            <div class="progress-wrap">
+              <div class="progress-meta">
+                <span id="progress-label">Step 1 of 15</span>
+                <span id="progress-state">Browser-local demo mode</span>
+              </div>
+              <div class="progress-bar" aria-hidden="true"><span id="progress-fill"></span></div>
+            </div>
+            <article class="current-step" aria-live="polite">
+              <div class="step-kicker">
+                <span id="step-module">Landing</span>
+                <span class="state-label" id="step-state" data-state="real">real</span>
+              </div>
+              <h2 class="step-title" id="step-title">Opening cinematic landing page</h2>
+              <p class="step-copy" id="step-copy">
+                Start with the premium SEIS identity, explain the OS-level product promise, then launch the Command Center.
+              </p>
+              <div class="step-actions">
+                <button class="primary-button" type="button" data-action="open-current-app">Open this module</button>
+                <button class="ghost-button" type="button" data-action="mark-reviewed">Mark reviewed</button>
+                <span class="keyboard-note">Keyboard: Left/Right to move, Home/End to jump.</span>
+              </div>
+            </article>
+          </aside>
+        </section>
+
+        <section class="grid" aria-label="Demo sequence and live stage">
+          <aside class="panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Runway sequence</h2>
+                <p>Every item is clickable and updates the stage, app focus, progress, and local review marker.</p>
+              </div>
+            </div>
+            <div class="timeline" id="timeline" data-runway-timeline></div>
+          </aside>
+
+          <section class="stage" aria-label="SEIS live demo stage" data-runway-stage>
+            <div class="desktop-top">
+              <strong>SEIS Desktop Session</strong>
+              <span id="session-note">Local Demo mode. No remote mutation.</span>
+            </div>
+            <div class="window" role="region" aria-label="Focused SEIS app window">
+              <div class="window-chrome">
+                <div class="lights" aria-hidden="true"><span></span><span></span><span></span></div>
+                <div class="window-title" id="window-title">Landing</div>
+                <span class="state-label" data-state="mock">demo safe</span>
+              </div>
+              <div class="window-body">
+                <div id="app-cards"></div>
+                <aside class="console">
+                  <h3>Runway audit log</h3>
+                  <div class="log" id="audit-log" data-runway-log></div>
+                </aside>
+              </div>
+            </div>
+            <nav class="dock" id="dock" aria-label="SEIS app dock"></nav>
+          </section>
+        </section>
+
+        <section class="status-grid" aria-label="Runway safety boundaries">
+          <div class="status-card">
+            <span class="state-label" data-state="real">real</span>
+            <strong>Static artifact</strong>
+            <span>This page is a real local HTML demo surface that runs without a build step.</span>
+          </div>
+          <div class="status-card">
+            <span class="state-label" data-state="mock">mock</span>
+            <strong>AI and cloud state</strong>
+            <span>Provider, agent, SSH, deployment, and CI rows are presentation-safe mock evidence unless verified elsewhere.</span>
+          </div>
+          <div class="status-card">
+            <span class="state-label" data-state="planned">planned</span>
+            <strong>Live integrations</strong>
+            <span>Backend-only GitHub, provider, SSH, deployment, and model-router writes remain future implementation work.</span>
+          </div>
+          <div class="status-card">
+            <span class="state-label" data-state="real">real</span>
+            <strong>Persistence boundary</strong>
+            <span>Only the active step and reviewed steps are stored, using localStorage on this browser.</span>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const runwaySteps = [
+        {
+          module: "Landing",
+          title: "Opening cinematic landing page",
+          state: "real",
+          summary: "Start with premium SEIS identity, explain the OS-level promise, then launch the Command Center.",
+          signals: ["Product identity", "No-key demo", "Premium visual direction", "Safe public showcase"]
+        },
+        {
+          module: "Command Center",
+          title: "Command Center appears",
+          state: "mock",
+          summary: "Show system health, module status, GitHub governance, CI gates, roadmap, and launch actions.",
+          signals: ["System health", "PR gates", "Agent status", "Demo launch flow"]
+        },
+        {
+          module: "Desktop OS",
+          title: "User opens SEIS Desktop",
+          state: "real",
+          summary: "Move into the Linux-like browser shell with app windows, dock, command surface, and session framing.",
+          signals: ["Desktop shell", "Dock", "Window focus", "Session persistence concept"]
+        },
+        {
+          module: "Desktop OS",
+          title: "Desktop shows apps and system status",
+          state: "mock",
+          summary: "Explain real, mock, disabled, and planned states before the viewer clicks deeper into apps.",
+          signals: ["App status labels", "Notifications", "Settings", "Responsive fallback"]
+        },
+        {
+          module: "AI Core",
+          title: "User opens SEIS AI Core",
+          state: "mock",
+          summary: "Show AI command center, local demo mode, agent planning, and provider-neutral orchestration.",
+          signals: ["Demo response engine", "Agent activity", "File awareness concept", "Safety notes"]
+        },
+        {
+          module: "Model Router",
+          title: "Provider registry and model router shown",
+          state: "mock",
+          summary: "Route by task type, privacy, cost, speed, fallback, provider state, and backend requirement.",
+          signals: ["Missing Key is not Error", "Ollama local option", "Backend-only cloud calls", "Fallback route"]
+        },
+        {
+          module: "SEIS Code",
+          title: "User opens SEIS Code",
+          state: "mock",
+          summary: "Present the IDE as an AI-native engineering cockpit with source control in safe/mock mode.",
+          signals: ["File explorer", "Editor tabs", "Terminal", "AI assistant"]
+        },
+        {
+          module: "SEIS Code",
+          title: "Browser IDE shows mock repo and AI panel",
+          state: "mock",
+          summary: "Walk through diff, preview, command palette, foundation check, and PR rescue panels.",
+          signals: ["Syntax-like display", "Command palette", "PR rescue", "Foundation check"]
+        },
+        {
+          module: "SEIS Design",
+          title: "User opens SEIS Design",
+          state: "mock",
+          summary: "Shift to the design studio with canvas, components, prototype preview, and token controls.",
+          signals: ["Canvas", "Component cards", "AI design assistant label", "Export safe mode"]
+        },
+        {
+          module: "Design System",
+          title: "Design tokens and premium components shown",
+          state: "real",
+          summary: "Explain colors, typography, spacing, motion, states, accessibility, and product-grade restraint.",
+          signals: ["Tokens", "Contrast", "Reduced motion", "Reusable components"]
+        },
+        {
+          module: "SEIS Search",
+          title: "User opens SEIS Search",
+          state: "mock",
+          summary: "Search across AI, web, code, design, cloud, apps, plugins, files, docs, and commands.",
+          signals: ["Filters", "Result cards", "Command suggestions", "Knowledge jump"]
+        },
+        {
+          module: "SEIS Search",
+          title: "Search finds modules/docs/agents",
+          state: "mock",
+          summary: "Demonstrate connected results and clearly label realistic demo data as mock evidence.",
+          signals: ["Modules", "Docs", "Agents", "Provider notes"]
+        },
+        {
+          module: "Cloud/SSH",
+          title: "User opens Cloud/SSH",
+          state: "mock",
+          summary: "Show GitHub, CI, SSH, deployments, logs, backups, environment boundaries, and remote workspace concept.",
+          signals: ["No real SSH", "No private keys", "CI status", "Deployment readiness"]
+        },
+        {
+          module: "Cloud/SSH",
+          title: "GitHub/CI/status logs shown",
+          state: "mock",
+          summary: "Surface branch protection, auto-merge queue, review gates, and publish readiness without mutation.",
+          signals: ["Protected branch", "Review required", "Checks pending", "No admin bypass"]
+        },
+        {
+          module: "Final Showcase",
+          title: "Final Showcase summarizes SEIS ecosystem",
+          state: "planned",
+          summary: "End with the connected OS, AI Core, Code, Design, Search, Cloud, Store, Music, Agents, and roadmap.",
+          signals: ["Ecosystem map", "5-year rail", "Next PR queue", "Review-ready close"]
+        }
+      ];
+
+      const dockApps = [
+        "Landing",
+        "Command Center",
+        "Desktop OS",
+        "AI Core",
+        "SEIS Code",
+        "SEIS Design",
+        "SEIS Search",
+        "Cloud/SSH"
+      ];
+
+      const storageKey = "seis-demo-runway-state-v1";
+      const timeline = document.querySelector("#timeline");
+      const dock = document.querySelector("#dock");
+      const appCards = document.querySelector("#app-cards");
+      const auditLog = document.querySelector("#audit-log");
+      const progressLabel = document.querySelector("#progress-label");
+      const progressState = document.querySelector("#progress-state");
+      const progressFill = document.querySelector("#progress-fill");
+      const stepModule = document.querySelector("#step-module");
+      const stepState = document.querySelector("#step-state");
+      const stepTitle = document.querySelector("#step-title");
+      const stepCopy = document.querySelector("#step-copy");
+      const windowTitle = document.querySelector("#window-title");
+      const sessionNote = document.querySelector("#session-note");
+      const totalSteps = document.querySelector("[data-total-steps]");
+
+      const readState = () => {
+        try {
+          return JSON.parse(localStorage.getItem(storageKey)) || { index: 0, reviewed: [] };
+        } catch (error) {
+          return { index: 0, reviewed: [] };
+        }
+      };
+
+      let runwayState = readState();
+
+      const persistState = () => {
+        localStorage.setItem(storageKey, JSON.stringify(runwayState));
+      };
+
+      const clampIndex = (index) => Math.max(0, Math.min(runwaySteps.length - 1, index));
+
+      const setActiveStep = (index) => {
+        runwayState.index = clampIndex(index);
+        persistState();
+        render();
+      };
+
+      const buildTimeline = () => {
+        timeline.innerHTML = runwaySteps
+          .map(
+            (step, index) => `
+              <button type="button" data-step="${index}" aria-current="false">
+                <span class="timeline-index">${String(index + 1).padStart(2, "0")}</span>
+                <span>
+                  <span class="timeline-title">${step.title}</span>
+                  <span class="timeline-label">${step.module}</span>
+                </span>
+                <span class="state-label" data-state="${step.state}">${step.state}</span>
+              </button>
+            `
+          )
+          .join("");
+      };
+
+      const buildDock = () => {
+        dock.innerHTML = dockApps
+          .map(
+            (app) => `
+              <button type="button" data-app="${app}" aria-pressed="false">
+                <strong>${app}</strong>
+                <span>Open</span>
+              </button>
+            `
+          )
+          .join("");
+      };
+
+      const buildAppCards = () => {
+        const uniqueModules = [...new Set(runwaySteps.map((step) => step.module))];
+        appCards.innerHTML = uniqueModules
+          .map((module) => {
+            const moduleSteps = runwaySteps.filter((step) => step.module === module);
+            const firstStep = moduleSteps[0];
+            const signals = moduleSteps.flatMap((step) => step.signals).slice(0, 4);
+            return `
+              <article class="app-card" data-app-card="${module}">
+                <div>
+                  <span class="state-label" data-state="${firstStep.state}">${firstStep.state}</span>
+                  <h3>${module}</h3>
+                  <p>${firstStep.summary}</p>
+                </div>
+                <div class="mini-grid">
+                  ${signals
+                    .map(
+                      (signal) => `
+                        <div class="mini-tile">
+                          <strong>${signal}</strong>
+                          <span>Demo evidence label is browser-local and review-safe.</span>
+                        </div>
+                      `
+                    )
+                    .join("")}
+                </div>
+              </article>
+            `;
+          })
+          .join("");
+      };
+
+      const appendLog = (message) => {
+        const row = document.createElement("div");
+        const time = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+        row.textContent = `[${time}] ${message}`;
+        auditLog.prepend(row);
+        [...auditLog.children].slice(6).forEach((child) => child.remove());
+      };
+
+      const focusModule = (module, source = "runway") => {
+        const card = document.querySelector(`[data-app-card="${CSS.escape(module)}"]`);
+        document.querySelectorAll("[data-app-card]").forEach((item) => item.classList.remove("is-active"));
+        if (card) {
+          card.classList.add("is-active");
+        }
+        document.querySelectorAll("[data-app]").forEach((button) => {
+          button.setAttribute("aria-pressed", String(button.dataset.app === module));
+        });
+        windowTitle.textContent = module;
+        sessionNote.textContent = `${module} focused by ${source}. Browser-local only.`;
+      };
+
+      const render = () => {
+        const active = runwaySteps[runwayState.index];
+        const percent = ((runwayState.index + 1) / runwaySteps.length) * 100;
+        totalSteps.textContent = String(runwaySteps.length);
+        progressLabel.textContent = `Step ${runwayState.index + 1} of ${runwaySteps.length}`;
+        progressState.textContent = `${active.module} | ${active.state} state`;
+        progressFill.style.width = `${percent}%`;
+        stepModule.textContent = active.module;
+        stepState.textContent = active.state;
+        stepState.dataset.state = active.state;
+        stepTitle.textContent = active.title;
+        stepCopy.textContent = active.summary;
+        document.querySelectorAll("[data-step]").forEach((button) => {
+          const isCurrent = Number(button.dataset.step) === runwayState.index;
+          button.setAttribute("aria-current", isCurrent ? "step" : "false");
+        });
+        focusModule(active.module);
+      };
+
+      buildTimeline();
+      buildDock();
+      buildAppCards();
+      render();
+      appendLog("Runway ready. No provider, SSH, GitHub, or deployment mutation is enabled.");
+
+      document.addEventListener("click", (event) => {
+        const stepButton = event.target.closest("[data-step]");
+        const actionButton = event.target.closest("[data-action]");
+        const dockButton = event.target.closest("[data-app]");
+
+        if (stepButton) {
+          setActiveStep(Number(stepButton.dataset.step));
+          appendLog(`Opened step ${Number(stepButton.dataset.step) + 1}: ${runwaySteps[runwayState.index].title}`);
+        }
+
+        if (dockButton) {
+          focusModule(dockButton.dataset.app, "dock");
+          appendLog(`Focused ${dockButton.dataset.app} from dock.`);
+        }
+
+        if (!actionButton) {
+          return;
+        }
+
+        const action = actionButton.dataset.action;
+        if (action === "start-runway") {
+          setActiveStep(0);
+          appendLog("Started live walkthrough from the beginning.");
+        }
+        if (action === "next-step") {
+          setActiveStep(runwayState.index + 1);
+          appendLog(`Advanced to step ${runwayState.index + 1}.`);
+        }
+        if (action === "previous-step") {
+          setActiveStep(runwayState.index - 1);
+          appendLog(`Returned to step ${runwayState.index + 1}.`);
+        }
+        if (action === "reset-runway") {
+          runwayState = { index: 0, reviewed: [] };
+          persistState();
+          render();
+          appendLog("Reset local runway state.");
+        }
+        if (action === "open-current-app") {
+          focusModule(runwaySteps[runwayState.index].module, "current step");
+          appendLog(`Opened module ${runwaySteps[runwayState.index].module}.`);
+        }
+        if (action === "mark-reviewed") {
+          const reviewed = new Set(runwayState.reviewed || []);
+          reviewed.add(runwayState.index);
+          runwayState.reviewed = [...reviewed].sort((a, b) => a - b);
+          persistState();
+          appendLog(`Marked step ${runwayState.index + 1} as reviewed locally.`);
+        }
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowRight") {
+          setActiveStep(runwayState.index + 1);
+          appendLog(`Keyboard advanced to step ${runwayState.index + 1}.`);
+        }
+        if (event.key === "ArrowLeft") {
+          setActiveStep(runwayState.index - 1);
+          appendLog(`Keyboard returned to step ${runwayState.index + 1}.`);
+        }
+        if (event.key === "Home") {
+          setActiveStep(0);
+          appendLog("Keyboard jumped to first step.");
+        }
+        if (event.key === "End") {
+          setActiveStep(runwaySteps.length - 1);
+          appendLog("Keyboard jumped to final step.");
+        }
+      });
+    </script>
+  </body>
+</html>

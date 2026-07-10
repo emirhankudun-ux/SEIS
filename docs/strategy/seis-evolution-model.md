@@ -25,11 +25,10 @@ SEIS should improve through modular layers instead of broad, irreversible pushes
 
 ## Development Loop
 
-1. **Sense** — Name the smallest GitHub-visible SEIS improvement that matters now.
-2. **Shape** — Choose the model layer that should change and keep the edit traceable.
-3. **Ship local** — Validate with the lightest local command that proves the change.
-4. **Publish gated** — Claim publication only when branch, remote, authentication, and deployment state are explicit.
-
+1. **Sense** - Name the smallest GitHub-visible SEIS improvement that matters now.
+2. **Shape** - Choose the model layer that should change and keep the edit traceable.
+3. **Ship local** - Validate with the lightest local command that proves the change.
+4. **Publish gated** - Claim publication only when branch, remote, authentication, and deployment state are explicit.
 
 ## Current Focus
 
@@ -37,11 +36,11 @@ The current evolution focus is **GitHub SEIS model hardening**: turn the model f
 
 Primary backlog links:
 
-- `SEIS-001` — refine development cockpit hierarchy.
-- `SEIS-002` — tune mobile motion timing.
-- `SEIS-003` — confirm production server target before upload claims.
-- `SEIS-005` — choose the mobile starting path.
-- `SEIS-006` — keep agent workstreams inside `UIXAppTTR`.
+- `SEIS-001` - refine development cockpit hierarchy.
+- `SEIS-002` - tune mobile motion timing.
+- `SEIS-003` - confirm production server target before upload claims.
+- `SEIS-005` - choose the mobile starting path.
+- `SEIS-006` - keep agent workstreams inside `UIXAppTTR`.
 
 ## Activation Queue
 

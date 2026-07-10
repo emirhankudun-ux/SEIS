@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Code Studio - Pull Request</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#121414",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "surface-tint": "#00dbe9",
+                        "secondary-container": "#ce5dff",
+                        "on-secondary-fixed": "#320047",
+                        "surface-dim": "#121414",
+                        "on-tertiary-container": "#605e5e",
+                        "surface-container-low": "#1a1c1c",
+                        "on-primary-container": "#006970",
+                        "inverse-primary": "#006970",
+                        "tertiary-fixed": "#e5e2e1",
+                        "primary": "#dbfcff",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "primary-container": "#00f0ff",
+                        "on-secondary-container": "#480064",
+                        "surface-container-lowest": "#0c0f0f",
+                        "on-surface-variant": "#b9cacb",
+                        "on-surface": "#e2e2e2",
+                        "surface-bright": "#37393a",
+                        "primary-fixed": "#7df4ff",
+                        "outline-variant": "#3b494b",
+                        "on-tertiary": "#313030",
+                        "error-container": "#93000a",
+                        "tertiary": "#f9f5f5",
+                        "outline": "#849495",
+                        "background": "#121414",
+                        "surface-container-high": "#282a2b",
+                        "surface-container": "#1e2020",
+                        "on-secondary": "#520071",
+                        "on-primary-fixed-variant": "#004f54",
+                        "on-primary": "#00363a",
+                        "on-background": "#e2e2e2",
+                        "inverse-surface": "#e2e2e2",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-primary-fixed": "#002022",
+                        "secondary-fixed": "#f8d8ff",
+                        "inverse-on-surface": "#2f3131",
+                        "tertiary-container": "#dcd9d8",
+                        "surface-variant": "#333535",
+                        "error": "#ffb4ab",
+                        "surface-container-highest": "#333535",
+                        "primary-fixed-dim": "#00dbe9",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "secondary": "#ebb2ff",
+                        "on-error": "#690005",
+                        "on-error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gap-sm": "8px",
+                        "stroke-thick": "2px",
+                        "gap-md": "16px",
+                        "gap-lg": "24px",
+                        "stroke-thin": "1px",
+                        "gap-xs": "4px",
+                        "margin-page": "32px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "label-sm": ["Space Mono"],
+                        "headline-lg": ["JetBrains Mono"],
+                        "code-sm": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "code-sm": ["13px", { "lineHeight": "1.4", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Base Styles for Tiling layout */
+        body {
+            background-color: #0a0a0a;
+            color: #e2e2e2;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .diff-added { background-color: rgba(125, 244, 255, 0.1); color: #7df4ff; }
+        .diff-removed { background-color: rgba(206, 93, 255, 0.1); color: #ce5dff; }
+        .diff-line-number { color: #849495; border-right: 1px solid #333333; padding-right: 8px; user-select: none; }
+        
+        .grid-layout {
+            display: grid;
+            grid-template-columns: auto 1fr 300px; /* Sidebar, Main content, PR Sidebar */
+            height: 100vh;
+        }
+        
+        /* Custom scrollbar to match terminal aesthetic */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #3b494b; border-radius: 0px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00dbe9; }
+    </style>
+</head>
+<body class="font-body-md text-body-md h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 flex justify-between items-center w-full px-gap-md h-10 shrink-0 z-50 fixed top-0 left-0">
+<div class="flex items-center gap-gap-md h-full">
+<span class="font-label-sm text-label-sm tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</span>
+<nav class="hidden md:flex h-full">
+<a class="text-on-surface-variant font-label-sm h-full flex items-center px-4 hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-sm h-full flex items-center px-4 hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">TELEMETRY</a>
+<a class="text-on-surface-variant font-label-sm h-full flex items-center px-4 hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">AGENTS</a>
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 font-label-sm h-full flex items-center px-4 hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">NETWORK</a>
+</nav>
+</div>
+<div class="flex items-center gap-gap-sm">
+<button class="text-on-surface-variant hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70"><span class="material-symbols-outlined text-[20px]">memory</span></button>
+<button class="text-on-surface-variant hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70"><span class="material-symbols-outlined text-[20px]">terminal</span></button>
+<button class="text-on-surface-variant hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70"><span class="material-symbols-outlined text-[20px]">settings</span></button>
+</div>
+</header>
+<div class="grid-layout mt-10">
+<!-- SideNavBar -->
+<aside class="bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 h-[calc(100vh-40px)] w-20 hover:w-64 transition-all duration-300 z-40 flex flex-col overflow-hidden group">
+<div class="p-4 border-b border-outline-variant/20 flex items-center gap-4 shrink-0">
+<img class="w-10 h-10 rounded-none border border-outline-variant/30 object-cover shrink-0" data-alt="A stylized, highly detailed avatar icon of a root user in a cyberpunk terminal setting. It features a stark, angular geometric face illuminated by harsh cyan and violet neon lights against a deep black void. The design is minimal yet aggressive, reflecting a high-tech, power-user status in a modern brutalist OS environment. 8k resolution, crisp vector art style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAB6SWTHOEZIWCuZLmYvLcRef3gh7X5VGl_W0uSvTeO8Aqf6YGYMyYHZbBfQ7vCZwiaF3_0RPl9QuwcDSuzq8I0wn7Qlil8udVZaci25tT8u7EkGGCG2TWPSW3_-wgmo5ACRPqDa5cVDwjAmrsK4ew2ShSGwe2sA92iwfQxqV9EAEWd0KDjvxh-yWO42H42DvcgjWOjG48YIO0sLRAhRvPiwwECAjIyMvqdyDbTsAQiLKuqVWoLyZOkHfcMypxaRkosihhTsybeLm77"/>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap overflow-hidden">
+<div class="font-label-sm text-secondary-fixed">ROOT_USER</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</div>
+</div>
+</div>
+<div class="p-4 shrink-0">
+<button class="w-full bg-primary text-[#0a0a0a] font-label-sm py-2 hover:bg-secondary transition-colors opacity-0 group-hover:opacity-100 overflow-hidden whitespace-nowrap">NEW_SESSION</button>
+</div>
+<nav class="flex-1 overflow-y-auto py-2">
+<a class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 flex items-center px-4 py-3 cursor-pointer" href="#">
+<span class="material-symbols-outlined shrink-0 text-[24px]">dashboard</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">DASHBOARD</span>
+</a>
+<a class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 flex items-center px-4 py-3 cursor-pointer" href="#">
+<span class="material-symbols-outlined shrink-0 text-[24px]">folder_open</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">FILESYSTEM</span>
+</a>
+<a class="bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed flex items-center px-4 py-3 cursor-pointer" href="#">
+<span class="material-symbols-outlined shrink-0 text-[24px]">terminal</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">TERMINAL</span>
+</a>
+<a class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 flex items-center px-4 py-3 cursor-pointer" href="#">
+<span class="material-symbols-outlined shrink-0 text-[24px]">smart_toy</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">AI_AGENTS</span>
+</a>
+<a class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 flex items-center px-4 py-3 cursor-pointer" href="#">
+<span class="material-symbols-outlined shrink-0 text-[24px]">cloud_queue</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">INFRASTRUCTURE</span>
+</a>
+<a class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 flex items-center px-4 py-3 cursor-pointer" href="#">
+<span class="material-symbols-outlined shrink-0 text-[24px]">list_alt</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">LOGS</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant/20 shrink-0">
+<a class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 flex items-center px-4 py-3 cursor-pointer" href="#">
+<span class="material-symbols-outlined shrink-0 text-[24px]">power_settings_new</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">POWER</span>
+</a>
+<a class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 flex items-center px-4 py-3 cursor-pointer" href="#">
+<span class="material-symbols-outlined shrink-0 text-[24px]">lock</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">LOCK</span>
+</a>
+</div>
+</aside>
+<!-- Main Content (Diff View) -->
+<main class="flex-1 flex flex-col h-full bg-background overflow-hidden p-gap-md gap-gap-md">
+<!-- PR Header -->
+<div class="flex flex-col gap-2 shrink-0">
+<div class="flex items-center justify-between">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Optimize Network Core Router</h1>
+<div class="bg-surface-variant px-3 py-1 text-primary-fixed font-label-sm border border-outline-variant/30 flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">merge</span>
+                        PR #4092
+                    </div>
+</div>
+<div class="flex gap-4 font-code-sm text-code-sm text-on-surface-variant items-center">
+<span class="text-secondary-fixed">feature/net-opt</span>
+<span class="material-symbols-outlined text-[16px]">arrow_right_alt</span>
+<span class="text-primary-fixed">main</span>
+</div>
+</div>
+<!-- Diff Container -->
+<div class="flex-1 bg-surface-container-low/85 border border-[#333333] flex flex-col overflow-hidden relative backdrop-blur-[12px]">
+<!-- Diff Header -->
+<div class="h-6 bg-primary-fixed flex items-center px-3 shrink-0">
+<span class="font-label-sm text-[#0a0a0a] uppercase tracking-wider text-[10px]">src/core/router.rs</span>
+</div>
+<!-- Split Diff Content -->
+<div class="flex-1 flex overflow-hidden">
+<!-- LEFT PANEL (Deletions) -->
+<div class="w-1/2 border-r border-[#333333] overflow-auto font-code-sm text-code-sm bg-surface-container-lowest">
+<table class="w-full border-collapse">
+<tbody>
+<tr class="hover:bg-surface-variant/30">
+<td class="w-8 text-right diff-line-number">102</td>
+<td class="px-3 text-on-surface-variant whitespace-pre">fn process_packet(packet: &amp;Packet) -&gt; Result&lt;(), Error&gt; {</td>
+</tr>
+<tr class="hover:bg-surface-variant/30">
+<td class="w-8 text-right diff-line-number">103</td>
+<td class="px-3 text-on-surface-variant whitespace-pre">    let header = packet.get_header();</td>
+</tr>
+<tr class="diff-removed">
+<td class="w-8 text-right diff-line-number text-secondary-fixed">104</td>
+<td class="px-3 whitespace-pre">-   if header.ttl == 0 {</td>
+</tr>
+<tr class="diff-removed">
+<td class="w-8 text-right diff-line-number text-secondary-fixed">105</td>
+<td class="px-3 whitespace-pre">-       return Err(Error::TtlExpired);</td>
+</tr>
+<tr class="diff-removed">
+<td class="w-8 text-right diff-line-number text-secondary-fixed">106</td>
+<td class="px-3 whitespace-pre">-   }</td>
+</tr>
+<tr class="diff-removed">
+<td class="w-8 text-right diff-line-number text-secondary-fixed">107</td>
+<td class="px-3 whitespace-pre">-   </td>
+</tr>
+<tr class="hover:bg-surface-variant/30">
+<td class="w-8 text-right diff-line-number">108</td>
+<td class="px-3 text-on-surface-variant whitespace-pre">    route_table.lookup(&amp;header.destination)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- RIGHT PANEL (Additions) -->
+<div class="w-1/2 overflow-auto font-code-sm text-code-sm bg-surface-container-lowest">
+<table class="w-full border-collapse">
+<tbody>
+<tr class="hover:bg-surface-variant/30">
+<td class="w-8 text-right diff-line-number">102</td>
+<td class="px-3 text-on-surface-variant whitespace-pre">fn process_packet(packet: &amp;Packet) -&gt; Result&lt;(), Error&gt; {</td>
+</tr>
+<tr class="hover:bg-surface-variant/30">
+<td class="w-8 text-right diff-line-number">103</td>
+<td class="px-3 text-on-surface-variant whitespace-pre">    let header = packet.get_header();</td>
+</tr>
+<tr class="diff-added">
+<td class="w-8 text-right diff-line-number text-primary-fixed">104</td>
+<td class="px-3 whitespace-pre">+   if header.ttl &lt;= 1 {</td>
+</tr>
+<tr class="diff-added">
+<td class="w-8 text-right diff-line-number text-primary-fixed">105</td>
+<td class="px-3 whitespace-pre">+       metrics::increment_dropped_ttl();</td>
+</tr>
+<tr class="diff-added">
+<td class="w-8 text-right diff-line-number text-primary-fixed">106</td>
+<td class="px-3 whitespace-pre">+       return Err(Error::TtlExpired(header.source));</td>
+</tr>
+<tr class="diff-added">
+<td class="w-8 text-right diff-line-number text-primary-fixed">107</td>
+<td class="px-3 whitespace-pre">+   }</td>
+</tr>
+<tr class="hover:bg-surface-variant/30">
+<td class="w-8 text-right diff-line-number">108</td>
+<td class="px-3 text-on-surface-variant whitespace-pre">    route_table.fast_lookup(&amp;header.destination)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<!-- Right Sidebar (PR Timeline & Controls) -->
+<aside class="bg-surface border-l border-[#333333] h-full flex flex-col pt-10">
+<div class="h-6 bg-surface-variant flex items-center px-3 border-b border-[#333333] shrink-0">
+<span class="font-label-sm text-on-surface uppercase text-[10px]">INSPECTOR</span>
+</div>
+<div class="flex-1 overflow-y-auto p-4 flex flex-col gap-6">
+<!-- Timeline -->
+<div class="flex flex-col gap-4 relative">
+<div class="absolute left-2.5 top-2 bottom-0 w-px bg-[#333333] z-0"></div>
+<div class="flex gap-3 relative z-10">
+<div class="w-5 h-5 rounded-full bg-surface border border-[#333333] flex items-center justify-center shrink-0 mt-1">
+<span class="material-symbols-outlined text-[12px] text-on-surface-variant">commit</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-on-surface text-[11px]">8f92a1c</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant mt-1">Refactor TTL handling in core router</span>
+</div>
+</div>
+<div class="flex gap-3 relative z-10">
+<img class="w-5 h-5 rounded-none border border-[#333333] shrink-0 mt-1 object-cover" data-alt="A small square avatar portrait of a cyberpunk developer. The person is wearing augmented reality glasses that glow slightly cyan. The lighting is dark and moody, typical of a hacker aesthetic in a minimal brutalist UI. 8k resolution, crisp details." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCk3b_X0ikJJPFCaX6v_rrWCtHSS-yVCuTGj8fCRL1BT-M561xHbJgEbMt6412nJaTWiyzvbiVNVVmYgFTApQ1xWrvl3RS060ROrKifQVy5PQNKSUIa0UnkkidAV31K_ZZLG1E02jdtGJhoJcJEUYW15elChfKZAdEOP_42UEdybDp5mgZDHLZ3WT3th4oVa_36lvk-wBn4rItGWbM6hn--sSOuenkMBw7O3EsNTqHD4TMUUzDsV1P1Nl_cyINqKxBJiHKLkLSDNgyW"/>
+<div class="flex flex-col bg-surface-container-low border border-[#333333] p-2 rounded-none">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-sm text-primary-fixed text-[10px]">@sys_admin</span>
+<span class="font-code-sm text-[10px] text-on-surface-variant">2h ago</span>
+</div>
+<p class="font-code-sm text-[12px] text-on-surface">Did you consider the edge case where TTL is exactly 1 before the hop?</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Merge Controls Footer -->
+<div class="p-4 border-t border-[#333333] bg-surface-container-low shrink-0 flex flex-col gap-3">
+<div class="flex items-center justify-between text-[11px] font-label-sm">
+<span class="text-on-surface-variant">CHECKS</span>
+<span class="text-primary-fixed">4/4 PASSED</span>
+</div>
+<button class="w-full bg-primary-fixed text-[#0a0a0a] font-label-sm py-2 hover:bg-secondary-fixed transition-colors flex justify-center items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">merge</span>
+                    SQUASH &amp; MERGE
+                </button>
+</div>
+</aside>
+</div>
+</body></html>

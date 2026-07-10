@@ -1,0 +1,1 @@
+document.querySelectorAll('.card,.button,.dock button,.nav-item').forEach(e=>e.onclick=()=>e.animate([{transform:'scale(1)'},{transform:'scale(.97)'},{transform:'scale(1)'}],{duration:180}));

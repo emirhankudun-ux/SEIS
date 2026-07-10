@@ -1,0 +1,72 @@
+{
+  "id": "seis-20b-model-card-template",
+  "version": "2026.06.24",
+  "status": "template-not-filled",
+  "targetId": "seis-20b-local-compatibility-target",
+  "profileId": "seis-model-scaling-hardware-profile",
+  "parameterClass": "20B",
+  "purpose": "Define the required model-card evidence before any future SEIS 20B local compatibility work can move beyond planning.",
+  "truthBoundary": "Template only. This file does not identify, download, train, fine-tune, benchmark, publish, or route a 20B model, and it does not claim SEIS owns trained foundation-model weights.",
+  "routeEligibleToday": false,
+  "runtimeAuthority": false,
+  "productionReady": false,
+  "weightsAvailable": false,
+  "trainingStatus": "not-started",
+  "benchmarkEvidenceAvailable": false,
+  "requiredBeforeFilled": [
+    "human approval for any model artifact selection",
+    "model artifact id and version",
+    "model artifact license and redistribution rights review",
+    "clean-room provenance statement",
+    "architecture summary",
+    "quantization profile",
+    "intended local-only use cases",
+    "known limitations",
+    "safety evaluation summary",
+    "memory benchmark reference",
+    "redacted runtime logs",
+    "reviewer identity and review timestamp"
+  ],
+  "templateFields": {
+    "modelArtifactId": null,
+    "modelArtifactVersion": null,
+    "modelArtifactLicense": null,
+    "provenanceStatus": "not-reviewed",
+    "architectureSummary": null,
+    "parameterCountBillion": 20,
+    "quantization": null,
+    "contextWindowTokens": null,
+    "intendedUse": [],
+    "outOfScopeUse": [
+      "production deployment",
+      "autonomous security-sensitive action",
+      "secret handling",
+      "medical, legal, or financial decisioning",
+      "unreviewed public model publication"
+    ],
+    "knownLimitations": [],
+    "safetyEvaluationSummary": null,
+    "benchmarkManifest": "reports/seis-model-scaling/20b-16gb-memory-benchmark.json",
+    "localOnlyFallback": "seis-local-demo",
+    "reviewedBy": null,
+    "reviewedAt": null
+  },
+  "approvalRequiredFor": [
+    "model download",
+    "runtime adapter setup",
+    "benchmark execution",
+    "training run",
+    "fine-tuning run",
+    "publication",
+    "route eligibility change"
+  ],
+  "forbiddenClaims": [
+    "SEIS has trained a 20B foundation model.",
+    "SEIS has downloaded 20B weights.",
+    "SEIS has run 20B inference.",
+    "SEIS has benchmarked 20B memory usage.",
+    "SEIS has verified 16GB+ compatibility.",
+    "SEIS has routeable 20B weights."
+  ],
+  "qualityGate": "npm run check:seis-model-scaling-hardware-profile"
+}

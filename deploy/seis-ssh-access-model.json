@@ -2,6 +2,7 @@
   "version": 1,
   "id": "seis-ssh-access-model",
   "defaultVisibleAlias": "SEIS-SSH",
+  "publicAccessContract": "deploy/seis-ssh-public-access-contract.json",
   "visibility": {
     "activeAliases": ["SEIS-SSH"],
     "forbiddenVisibleAliases": [
@@ -75,6 +76,7 @@
     "roadmapSource": "deploy/seis-ssh-cloud-roadmap.json",
     "closedRuntimeContract": "deploy/seis-ssh-closed-runtime-contract.json",
     "enterpriseBenchmarkSource": "deploy/seis-ssh-5-year-enterprise-benchmark.json",
+    "publicAccessContract": "deploy/seis-ssh-public-access-contract.json",
     "pickerCompatibilityCheck": "npm run check:seis-ssh-picker-compatibility",
     "operatingModel": "single-cloud-entrypoint-with-profile-specific-controls",
     "reviewCadence": "monthly-governance-review-plus-release-gate",
@@ -111,6 +113,10 @@
       "npm run cloud:ssh:ensure-online",
       "npm run check:seis-ssh-access-model",
       "npm run check:seis-ssh-picker-compatibility",
+      "npm run check:seis-ssh-public-access",
+      "npm run check:seis-ssh-public-onboarding",
+      "npm run check:seis-ssh-public-contributor-doctor",
+      "npm run check:seis-ssh-live-readiness-evidence",
       "npm run check:seis-ssh-enterprise-benchmark",
       "npm run check:seis-ssh-cloud-roadmap",
       "npm run check:seis-ssh-closed-runtime",

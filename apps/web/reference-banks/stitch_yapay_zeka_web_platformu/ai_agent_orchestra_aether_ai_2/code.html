@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AETHER AI - Autonomous Agent Swarm Orchestrator</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#f5f5f5",
+                    "on-background": "#e1e2e7",
+                    "surface-tint": "#00dbe9",
+                    "primary-fixed": "#7df4ff",
+                    "tertiary-fixed-dim": "#c6c6c7",
+                    "tertiary-fixed": "#e2e2e2",
+                    "on-secondary": "#520072",
+                    "secondary-fixed": "#f8d8ff",
+                    "surface-container": "#1d2023",
+                    "on-primary-fixed": "#002022",
+                    "primary-fixed-dim": "#00dbe9",
+                    "surface-bright": "#37393d",
+                    "error": "#ffb4ab",
+                    "tertiary-container": "#d9d9d9",
+                    "surface-container-high": "#282a2e",
+                    "on-tertiary-container": "#5d5f5f",
+                    "on-error": "#690005",
+                    "primary": "#dbfcff",
+                    "surface-container-highest": "#323539",
+                    "inverse-primary": "#006970",
+                    "on-tertiary-fixed-variant": "#454747",
+                    "surface-container-low": "#191c1f",
+                    "surface-container-lowest": "#0c0e12",
+                    "on-secondary-fixed-variant": "#74009f",
+                    "on-secondary-fixed": "#320047",
+                    "secondary": "#ebb2ff",
+                    "on-error-container": "#ffdad6",
+                    "inverse-surface": "#e1e2e7",
+                    "surface-dim": "#111417",
+                    "on-primary-container": "#006970",
+                    "inverse-on-surface": "#2e3134",
+                    "background": "#020408",
+                    "surface-variant": "#323539",
+                    "on-primary-fixed-variant": "#004f54",
+                    "on-tertiary-fixed": "#1a1c1c",
+                    "surface": "#111417",
+                    "secondary-container": "#b600f8",
+                    "outline": "#849495",
+                    "outline-variant": "#3b494b",
+                    "error-container": "#93000a",
+                    "secondary-fixed-dim": "#ebb2ff",
+                    "on-surface": "#e1e2e7",
+                    "primary-container": "#00f0ff",
+                    "on-primary": "#00363a",
+                    "on-tertiary": "#2f3131",
+                    "on-surface-variant": "#b9cacb",
+                    "on-secondary-container": "#fff6fc"
+            },
+            "borderRadius": {
+                    "DEFAULT": "2px",
+                    "lg": "4px",
+                    "xl": "8px",
+                    "full": "12px"
+            },
+            "spacing": {
+                    "margin-desktop": "64px",
+                    "gutter": "24px",
+                    "unit": "8px",
+                    "section-gap": "120px",
+                    "margin-mobile": "20px",
+                    "container-max": "1280px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "display-lg-mobile": ["Inter"],
+                    "mono-code": ["JetBrains Mono"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "mono-label": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 219, 233, 0.1);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05);
+        }
+        
+        .glass-panel:hover {
+            border: 1px solid rgba(0, 219, 233, 0.3);
+            box-shadow: 0 0 30px rgba(0, 219, 233, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .glow-cyan {
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+        }
+
+        .pulse-indicator {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .5; transform: scale(1.1); }
+        }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(0, 219, 233, 0.2); border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container overflow-hidden">
+<!-- NAVIGATION SHELL -->
+<header class="fixed top-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 h-16 flex justify-between items-center max-w-container-max mx-auto px-margin-desktop shadow-[0_0_40px_-15px_rgba(0,219,233,0.15)]">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-[24px] tracking-tighter text-primary-fixed-dim">AETHER AI</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="text-primary-fixed-dim font-semibold border-b-2 border-primary-fixed-dim pb-1 font-body-md text-body-md" href="#">Swarm</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md" href="#">Models</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md" href="#">Infrastructure</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md" href="#">Security</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container-low border border-outline-variant/30 rounded-full">
+<span class="w-2 h-2 rounded-full bg-primary-fixed-dim pulse-indicator"></span>
+<span class="font-mono-label text-[11px] uppercase tracking-widest text-primary-fixed-dim">System Live</span>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed transition-colors">notifications</button>
+<div class="w-8 h-8 rounded-full border border-primary-fixed-dim/30 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A futuristic professional avatar portrait of a lead AI system engineer, high-contrast dramatic side lighting in cyan and deep navy, sharp cinematic focus, highly detailed digital art style reflecting tech-savvy leadership." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzdH9SaGI2zg3dJdqzEhcfdej8ttQCT_fVNInVtF46UTJJtd3LeVEY-WPLUIT0K6yw5sjDqb8N33F3sPTj3cphiTi9F0Nki7m4alWlCgdAlIP3tCMAERwUU38NpT2J29x8Jn6fT-95wF9kjp4k4069hCnBVMx8CCWHYyVq5D3ThwBcukYD7O86vZi0Iig0LzBbw6G_MdIu3X6oKkUrtjFOKlIkFNg6HbhQIL-H5Q_RcodxFjT-_SZqouxnQMXk1NMZ8TZ9T1mNZA"/>
+</div>
+</div>
+</header>
+<!-- SIDEBAR -->
+<aside class="h-screen w-64 fixed left-0 top-0 pt-16 flex flex-col border-r border-outline-variant/10 bg-surface-container-lowest/80 backdrop-blur-2xl z-40 hidden md:flex">
+<div class="p-6 space-y-8 flex-1">
+<div class="space-y-4">
+<p class="font-mono-label text-[10px] text-on-surface-variant/60 uppercase tracking-[0.2em]">Platforms</p>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 bg-secondary-container/20 text-secondary-fixed border-l-2 border-secondary-container px-4 py-3 font-mono-label text-mono-label transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">terminal</span>
+                        SEIS OS
+                    </a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high/50 px-4 py-3 font-mono-label text-mono-label hover:text-on-surface transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">psychology</span>
+                        SEIS AI
+                    </a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high/50 px-4 py-3 font-mono-label text-mono-label hover:text-on-surface transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">code</span>
+                        SEIS Code
+                    </a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high/50 px-4 py-3 font-mono-label text-mono-label hover:text-on-surface transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">cloud_queue</span>
+                        SEIS Cloud
+                    </a>
+</nav>
+</div>
+<div class="glass-panel p-4 rounded-xl space-y-4">
+<p class="font-mono-label text-[11px] text-primary-fixed-dim">QUICK DEPLOY</p>
+<div class="space-y-2">
+<button class="w-full py-2 bg-primary-container text-on-primary font-mono-label text-[12px] font-bold rounded-lg active:scale-95 transition-transform">
+                        NEW AGENT
+                    </button>
+<button class="w-full py-2 border border-primary-fixed-dim/30 text-primary-fixed-dim font-mono-label text-[12px] rounded-lg hover:bg-primary-fixed-dim/10 transition-colors">
+                        SYNC NODES
+                    </button>
+</div>
+</div>
+</div>
+<div class="p-6 border-t border-outline-variant/10">
+<nav class="space-y-1">
+<a class="flex items-center gap-3 text-on-surface-variant hover:text-primary-fixed px-4 py-2 font-mono-label text-mono-label transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+                    Settings
+                </a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:text-primary-fixed px-4 py-2 font-mono-label text-mono-label transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">contact_support</span>
+                    Support
+                </a>
+</nav>
+</div>
+</aside>
+<!-- MAIN CONTENT -->
+<main class="md:pl-64 pt-16 h-screen overflow-hidden flex flex-col">
+<!-- DASHBOARD HEADER -->
+<div class="px-gutter py-6 flex justify-between items-end border-b border-outline-variant/10">
+<div>
+<h1 class="font-display-lg text-[32px] text-primary-fixed-dim tracking-tight">Swarm Orchestrator</h1>
+<p class="text-on-surface-variant font-body-md opacity-80">Managing 1,248 active autonomous intelligence units across global clusters.</p>
+</div>
+<div class="flex gap-4">
+<div class="text-right">
+<p class="font-mono-label text-[10px] text-on-surface-variant/60 uppercase">Aggregated Throughput</p>
+<p class="font-mono-label text-xl text-primary-fixed-dim">4.2 PB/s</p>
+</div>
+<div class="w-[1px] h-10 bg-outline-variant/30"></div>
+<div class="text-right">
+<p class="font-mono-label text-[10px] text-on-surface-variant/60 uppercase">Global Latency</p>
+<p class="font-mono-label text-xl text-secondary">14ms</p>
+</div>
+</div>
+</div>
+<!-- BENTO GRID CONTENT -->
+<div class="flex-1 p-gutter grid grid-cols-12 grid-rows-6 gap-gutter overflow-hidden">
+<!-- CENTRAL SWARM VISUALIZATION -->
+<div class="col-span-12 lg:col-span-8 row-span-4 glass-panel rounded-2xl relative overflow-hidden group">
+<div class="absolute inset-0 z-0">
+
+</div>
+<!-- HUD Overlay -->
+<div class="absolute top-6 left-6 z-10 flex flex-col gap-2">
+<span class="bg-primary-fixed-dim/20 text-primary-fixed-dim px-3 py-1 rounded-sm font-mono-label text-[11px] border border-primary-fixed-dim/30">VISUAL_MODE: NEURAL_MAPPING</span>
+<span class="text-on-surface-variant/50 font-mono-code text-[11px]">RENDERING LAYER: ALPHA-9</span>
+</div>
+<div class="absolute bottom-6 left-6 right-6 z-10 flex justify-between items-end">
+<div class="flex gap-8">
+<div class="space-y-1">
+<p class="font-mono-label text-[10px] text-on-surface-variant/60">NODE HEALTH</p>
+<div class="flex gap-1">
+<div class="w-1 h-3 bg-primary-fixed-dim"></div>
+<div class="w-1 h-3 bg-primary-fixed-dim"></div>
+<div class="w-1 h-3 bg-primary-fixed-dim"></div>
+<div class="w-1 h-3 bg-primary-fixed-dim"></div>
+<div class="w-1 h-3 bg-outline-variant/30"></div>
+</div>
+</div>
+<div class="space-y-1">
+<p class="font-mono-label text-[10px] text-on-surface-variant/60">PACKET FLOW</p>
+<p class="font-mono-code text-primary-fixed-dim text-[12px]">NOMINAL</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="p-2 glass-panel rounded hover:bg-primary-fixed-dim/10 transition-colors">
+<span class="material-symbols-outlined text-[20px] text-primary-fixed-dim">zoom_in</span>
+</button>
+<button class="p-2 glass-panel rounded hover:bg-primary-fixed-dim/10 transition-colors">
+<span class="material-symbols-outlined text-[20px] text-primary-fixed-dim">layers</span>
+</button>
+<button class="p-2 glass-panel rounded hover:bg-primary-fixed-dim/10 transition-colors">
+<span class="material-symbols-outlined text-[20px] text-primary-fixed-dim">share</span>
+</button>
+</div>
+</div>
+</div>
+<!-- OBJECTIVE ORCHESTRATOR -->
+<div class="col-span-12 lg:col-span-4 row-span-3 glass-panel rounded-2xl flex flex-col p-6 space-y-6">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">target</span>
+<h2 class="font-headline-md text-[20px] text-on-surface">Objective Orchestrator</h2>
+</div>
+<span class="font-mono-label text-[10px] text-secondary">ACTIVE</span>
+</div>
+<div class="space-y-4">
+<div class="p-4 bg-surface-container-high/40 rounded-xl border border-outline-variant/20">
+<label class="block font-mono-label text-[10px] text-on-surface-variant/60 mb-2 uppercase">Current Global Directive</label>
+<p class="text-on-surface font-medium mb-4">Optimize multi-region inference latency for Llama-3-70B clusters.</p>
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-3/4 shadow-[0_0_10px_rgba(235,178,255,0.4)]"></div>
+</div>
+<div class="mt-2 flex justify-between font-mono-code text-[11px]">
+<span class="text-on-surface-variant">Progress: 75.4%</span>
+<span class="text-secondary">Est. Completion: 2h 14m</span>
+</div>
+</div>
+<div class="space-y-3">
+<p class="font-mono-label text-[11px] text-on-surface-variant/40">QUEUEING NEW OBJECTIVES</p>
+<div class="relative">
+<textarea class="w-full bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-4 font-mono-code text-[13px] text-on-surface focus:border-primary-fixed-dim focus:ring-0 placeholder:text-on-surface-variant/20 min-h-[100px]" placeholder="Define new swarm objective via natural language..."></textarea>
+<button class="absolute bottom-4 right-4 p-2 bg-primary-container text-on-primary rounded-lg active:scale-95 transition-transform">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- AGENT STATUS MONITOR (Data Dense) -->
+<div class="col-span-12 lg:col-span-4 row-span-3 glass-panel rounded-2xl flex flex-col p-6">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim">monitoring</span>
+<h2 class="font-headline-md text-[20px] text-on-surface">Agent Status</h2>
+</div>
+<button class="text-on-surface-variant hover:text-primary-fixed transition-colors font-mono-label text-[11px]">VIEW ALL</button>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar space-y-4">
+<!-- Agent Row 1 -->
+<div class="flex items-center justify-between p-3 border border-outline-variant/10 rounded-lg bg-surface-container-low/30">
+<div class="flex items-center gap-4">
+<div class="w-2 h-2 rounded-full bg-primary-fixed-dim pulse-indicator"></div>
+<div>
+<p class="font-mono-label text-[12px] text-on-surface">AGENT_X-42</p>
+<p class="text-[10px] text-on-surface-variant">Task: Semantic Parsing</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-mono-code text-[12px] text-primary-fixed-dim">98.2% Depth</p>
+<p class="text-[10px] text-on-surface-variant">2.1ms Latency</p>
+</div>
+</div>
+<!-- Agent Row 2 -->
+<div class="flex items-center justify-between p-3 border border-outline-variant/10 rounded-lg bg-surface-container-low/30">
+<div class="flex items-center gap-4">
+<div class="w-2 h-2 rounded-full bg-primary-fixed-dim pulse-indicator"></div>
+<div>
+<p class="font-mono-label text-[12px] text-on-surface">AGENT_Y-109</p>
+<p class="text-[10px] text-on-surface-variant">Task: Logic Verification</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-mono-code text-[12px] text-primary-fixed-dim">92.4% Depth</p>
+<p class="text-[10px] text-on-surface-variant">4.8ms Latency</p>
+</div>
+</div>
+<!-- Agent Row 3 -->
+<div class="flex items-center justify-between p-3 border border-outline-variant/10 rounded-lg bg-surface-container-low/30">
+<div class="flex items-center gap-4">
+<div class="w-2 h-2 rounded-full bg-secondary pulse-indicator"></div>
+<div>
+<p class="font-mono-label text-[12px] text-on-surface">AGENT_Z-501</p>
+<p class="text-[10px] text-on-surface-variant">Task: Dynamic Re-routing</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-mono-code text-[12px] text-secondary">84.1% Depth</p>
+<p class="text-[10px] text-on-surface-variant">12.5ms Latency</p>
+</div>
+</div>
+<!-- Agent Row 4 -->
+<div class="flex items-center justify-between p-3 border border-outline-variant/10 rounded-lg bg-surface-container-low/30">
+<div class="flex items-center gap-4">
+<div class="w-2 h-2 rounded-full bg-primary-fixed-dim/30"></div>
+<div>
+<p class="font-mono-label text-[12px] text-on-surface opacity-50">AGENT_Ω-001</p>
+<p class="text-[10px] text-on-surface-variant/50">Task: Maintenance</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-mono-code text-[12px] text-on-surface-variant/40">SLEEPING</p>
+</div>
+</div>
+</div>
+</div>
+<!-- WORLD MAP DEPLOYMENT -->
+<div class="col-span-12 lg:col-span-8 row-span-2 glass-panel rounded-2xl p-6 relative flex items-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-50" data-alt="A cinematic dark world map visualization featuring glowing cyan crystal-like nodes representing AI data centers connected by arcing light trails. The background is a deep matte black obsidian surface with subtle reflections, high-tech aesthetic, futuristic corporate data visualization style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMYi_mrXXlpgTQJuIrYE4wRDUuIlE2bk-_tiVp5z6cW8IHEa7vz2R3kWI9jr-7gjopvpP_QgHh4QNGkA5vBIuKEDBFrB3Byb2Ls3euvSNW1Vohicx0El4cCGgFFdl_shN3Kii5mBp6i30g6DDo7mFTvueX98drlIoQZ2RcBL1-fnfJA5-ao58j7PvtWnSp_it5GC-Mt7X5GMsO8evFK_ObPBCjb3xDprG1uxu02KFvTWPy2KzEBOi2DVeSKCqKnr7Mm1A6lOtc3A"/>
+</div>
+<div class="relative z-10 w-full flex justify-between items-center pointer-events-none">
+<div class="space-y-2">
+<h3 class="font-mono-label text-[14px] text-primary-fixed-dim">GLOBAL DISTRIBUTION</h3>
+<div class="flex gap-6">
+<div>
+<p class="text-on-surface-variant text-[10px] uppercase">North America</p>
+<p class="font-mono-code text-lg">412 Nodes</p>
+</div>
+<div>
+<p class="text-on-surface-variant text-[10px] uppercase">EU Clusters</p>
+<p class="font-mono-code text-lg">388 Nodes</p>
+</div>
+<div>
+<p class="text-on-surface-variant text-[10px] uppercase">APAC Nodes</p>
+<p class="font-mono-code text-lg">448 Nodes</p>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest/80 backdrop-blur-md p-4 rounded-xl border border-outline-variant/20 pointer-events-auto">
+<div class="flex items-center gap-2 mb-2">
+<span class="w-1.5 h-1.5 rounded-full bg-error animate-pulse"></span>
+<span class="font-mono-label text-[10px] text-error">12 ANOMALIES DETECTED</span>
+</div>
+<button class="w-full text-center py-1 text-[11px] font-mono-label border border-error/30 text-error hover:bg-error/10 transition-colors rounded">ISOLATE NODES</button>
+</div>
+</div>
+</div>
+</div>
+<!-- FOOTER BAR -->
+<footer class="h-12 border-t border-outline-variant/10 bg-surface-container-lowest flex items-center justify-between px-gutter">
+<div class="flex gap-6 items-center">
+<span class="font-mono-label text-[11px] text-on-tertiary-fixed-variant">© 2024 Aether AI Infrastructure. All rights reserved.</span>
+<div class="flex gap-4">
+<a class="text-[11px] font-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Documentation</a>
+<a class="text-[11px] font-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">API Reference</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px] text-primary-fixed-dim">dns</span>
+<span class="font-mono-label text-[10px] text-on-surface-variant">CL-014-99</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px] text-secondary">security</span>
+<span class="font-mono-label text-[10px] text-on-surface-variant">E2E ENCRYPTED</span>
+</div>
+</div>
+</footer>
+</main>
+<!-- FLOATING ACTION BUTTON (Contextual - Swarm Control) -->
+<button class="fixed bottom-20 right-8 w-14 h-14 bg-primary-container text-on-primary rounded-full shadow-[0_0_20px_rgba(0,240,255,0.4)] flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50 md:hidden">
+<span class="material-symbols-outlined">add</span>
+</button>
+<script>
+        // Micro-interaction for hover effects on glass cards
+        document.querySelectorAll('.glass-panel').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        // Simulating data updates for Agent Status
+        setInterval(() => {
+            const depths = document.querySelectorAll('.font-mono-code.text-primary-fixed-dim');
+            depths.forEach(el => {
+                const current = parseFloat(el.innerText);
+                const variation = (Math.random() - 0.5) * 0.2;
+                el.innerText = `${(current + variation).toFixed(1)}% Depth`;
+            });
+        }, 3000);
+    </script>
+</body></html>

@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SEIS Search</title>
+  <meta name="description" content="Browser-local SEIS Search demo with filters, quick open, command suggestions, recent searches, and honest mock/local states." />
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #050607;
+      --panel: rgba(16, 21, 26, .78);
+      --line: rgba(224, 238, 245, .13);
+      --line-strong: rgba(224, 238, 245, .26);
+      --text: #f5f1e8;
+      --muted: #aeb8bd;
+      --quiet: #6f7c83;
+      --cyan: #5ee7ff;
+      --violet: #b79bff;
+      --amber: #f8b95f;
+      --green: #7dffb2;
+      --radius-lg: 34px;
+      --radius-md: 22px;
+      --shadow: 0 26px 88px rgba(0, 0, 0, .44);
+      --ease: cubic-bezier(.2, .8, .2, 1);
+      font-family: "Aptos", "SF Pro Display", "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { min-height: 100%; background: var(--bg); }
+    body { min-height: 100%; margin: 0; color: var(--text); background: radial-gradient(circle at 18% 6%, rgba(94,231,255,.18), transparent 34rem), radial-gradient(circle at 88% 10%, rgba(183,155,255,.14), transparent 30rem), radial-gradient(circle at 48% 92%, rgba(248,185,95,.09), transparent 28rem), linear-gradient(135deg, #050607 0%, #091014 52%, #11100b 100%); overflow-x: hidden; }
+    button, input { font: inherit; }
+    button { color: inherit; border: 1px solid var(--line); background: rgba(255,255,255,.055); cursor: pointer; transition: transform .18s var(--ease), border-color .18s var(--ease), background .18s var(--ease), color .18s var(--ease); }
+    button:hover { transform: translateY(-1px); border-color: rgba(94,231,255,.38); background: rgba(94,231,255,.1); }
+    button:focus-visible, input:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+    .page { width: min(1480px, calc(100% - 32px)); margin: 0 auto; padding: 24px 0 42px; }
+    .grid-noise { position: fixed; inset: 0; pointer-events: none; opacity: .26; background-image: linear-gradient(rgba(255,255,255,.026) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px); background-size: 54px 54px; mask-image: linear-gradient(to bottom, black, transparent 84%); z-index: -1; }
+    .topbar, .hero, .panel, .result, .command, .insight, .quick-card { border: 1px solid var(--line); background: var(--panel); box-shadow: var(--shadow); backdrop-filter: blur(28px); }
+    .topbar { min-height: 74px; padding: 14px 18px; border-radius: 26px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
+    .mark { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 16px; color: #041014; font-weight: 900; letter-spacing: -.08em; background: linear-gradient(135deg, var(--cyan), #f5fbf8 54%, var(--amber)); box-shadow: 0 0 34px rgba(94,231,255,.24); }
+    .brand h1 { margin: 0; font-size: clamp(1.1rem, 2vw, 1.45rem); letter-spacing: -.045em; }
+    .brand p { margin: 3px 0 0; color: var(--muted); font-size: .84rem; }
+    .top-actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 10px; }
+    .pill, .state-pill { display: inline-flex; align-items: center; gap: 8px; min-height: 32px; padding: 7px 11px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); background: rgba(255,255,255,.045); font-size: .76rem; line-height: 1; letter-spacing: .01em; white-space: nowrap; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; box-shadow: 0 0 18px currentColor; }
+    .local-demo { color: var(--green); }
+    .mock { color: var(--cyan); }
+    .planned { color: var(--violet); }
+    .disabled { color: var(--amber); }
+    .hero { position: relative; margin-top: 18px; padding: clamp(24px, 4.5vw, 56px); border-radius: var(--radius-lg); overflow: hidden; }
+    .hero::after { content: ""; position: absolute; right: -12%; top: -18%; width: 520px; height: 520px; border-radius: 50%; background: radial-gradient(circle, rgba(94,231,255,.2), rgba(183,155,255,.09) 44%, transparent 70%); z-index: -1; }
+    .hero h2 { max-width: 1040px; margin: 0; font-size: clamp(3.2rem, 8.4vw, 8.2rem); line-height: .84; letter-spacing: -.095em; }
+    .hero p { max-width: 760px; margin: 24px 0 0; color: #cad3d7; font-size: clamp(1rem, 1.8vw, 1.22rem); line-height: 1.7; }
+    .search-shell { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 16px; margin-top: 18px; align-items: start; }
+    .search-panel { padding: 16px; border-radius: var(--radius-lg); }
+    .search-box { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; min-height: 72px; padding: 12px 14px; border: 1px solid var(--line-strong); border-radius: 24px; background: rgba(255,255,255,.06); }
+    .search-icon { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 16px; color: #041014; background: linear-gradient(135deg, var(--cyan), #fbfaf2); font-weight: 900; }
+    #search-input { width: 100%; color: var(--text); border: 0; outline: 0; background: transparent; font-size: clamp(1.15rem, 2vw, 1.55rem); letter-spacing: -.035em; }
+    #search-input::placeholder { color: rgba(245,241,232,.42); }
+    .shortcut { color: var(--quiet); border: 1px solid var(--line); border-radius: 10px; padding: 7px 9px; font-family: "SFMono-Regular", Consolas, monospace; font-size: .76rem; background: rgba(0,0,0,.2); }
+    .filters { display: flex; flex-wrap: wrap; gap: 9px; margin: 14px 0 0; }
+    .filter-btn { min-height: 36px; padding: 0 12px; border-radius: 12px; color: var(--muted); font-size: .8rem; }
+    .filter-btn.is-active { color: var(--text); border-color: rgba(94,231,255,.42); background: rgba(94,231,255,.105); }
+    .status-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 16px 0 0; color: var(--muted); font-size: .86rem; }
+    .status-row strong { color: var(--text); }
+    .content-grid { display: grid; grid-template-columns: 290px minmax(0, 1fr); gap: 16px; margin-top: 16px; }
+    .panel { border-radius: var(--radius-md); padding: 16px; }
+    .panel h3, .insight h3 { margin: 0; font-size: 1rem; letter-spacing: -.02em; }
+    .panel p, .insight p { margin: 5px 0 0; color: var(--muted); font-size: .86rem; line-height: 1.55; }
+    .quick-list, .result-list, .command-list, .recent-list { display: grid; gap: 10px; margin-top: 14px; }
+    .quick-card, .command { border-radius: 18px; padding: 13px; display: grid; gap: 8px; text-align: left; }
+    .quick-card strong, .command strong { display: block; font-size: .88rem; }
+    .quick-card span, .command span { color: var(--muted); font-size: .78rem; line-height: 1.4; }
+    .quick-card.is-selected, .result.is-selected { border-color: rgba(94,231,255,.44); background: rgba(94,231,255,.09); }
+    .result { border-radius: 22px; padding: 16px; display: grid; gap: 12px; }
+    .result-head { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+    .result h4 { margin: 0; font-size: 1.06rem; letter-spacing: -.025em; }
+    .result p { margin: 0; color: var(--muted); line-height: 1.58; font-size: .9rem; }
+    .result-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 9px; }
+    .tag { display: inline-flex; align-items: center; min-height: 26px; padding: 0 9px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: .72rem; background: rgba(255,255,255,.035); }
+    .open-btn { justify-self: start; min-height: 36px; padding: 0 12px; border-radius: 12px; color: var(--text); }
+    .empty { display: none; padding: 32px; text-align: center; border: 1px dashed rgba(94,231,255,.3); border-radius: 24px; color: var(--muted); background: rgba(94,231,255,.045); }
+    .empty.show { display: block; }
+    .right-rail { display: grid; gap: 16px; }
+    .insight { border-radius: var(--radius-md); padding: 16px; }
+    .metric-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
+    .metric { min-height: 88px; padding: 12px; border: 1px solid var(--line); border-radius: 16px; background: rgba(255,255,255,.045); }
+    .metric span { display: block; color: var(--muted); font-size: .72rem; text-transform: uppercase; letter-spacing: .12em; }
+    .metric strong { display: block; margin-top: 9px; font-size: 1.55rem; letter-spacing: -.06em; }
+    .recent-chip { min-height: 34px; padding: 0 10px; border-radius: 12px; color: var(--muted); text-align: left; }
+    .toast { position: fixed; right: 22px; bottom: 22px; width: min(420px, calc(100vw - 44px)); padding: 16px; border: 1px solid rgba(94,231,255,.34); border-radius: 18px; background: rgba(8,12,15,.93); box-shadow: var(--shadow); transform: translateY(18px); opacity: 0; pointer-events: none; transition: opacity .22s var(--ease), transform .22s var(--ease); z-index: 10; }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast strong { display: block; margin-bottom: 4px; }
+    .toast span { color: var(--muted); font-size: .88rem; }
+    @media (max-width: 1120px) { .search-shell, .content-grid { grid-template-columns: 1fr; } .right-rail { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 720px) { .page { width: min(100% - 20px, 1480px); padding-top: 10px; } .topbar { align-items: flex-start; flex-direction: column; border-radius: 22px; } .top-actions { justify-content: flex-start; } .hero { padding: 24px; } .hero h2 { font-size: clamp(3rem, 18vw, 4.7rem); } .search-box { grid-template-columns: 1fr; align-items: stretch; } .shortcut { width: max-content; } .right-rail, .metric-grid { grid-template-columns: 1fr; } .result-head { flex-direction: column; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .001ms !important; animation-duration: .001ms !important; } }
+  </style>
+</head>
+<body data-seis-search-demo="browser-local">
+  <div class="grid-noise" aria-hidden="true"></div>
+  <main class="page">
+    <header class="topbar">
+      <div class="brand"><div class="mark" aria-hidden="true">SS</div><div><h1>SEIS Search</h1><p>Knowledge, code, agents, providers, files, prompts, GitHub, cloud and roadmap in one local command surface.</p></div></div>
+      <div class="top-actions" aria-label="Search status summary"><span class="state-pill local-demo" data-state="local-demo"><i class="dot"></i>Index: local demo</span><span class="state-pill mock" data-state="mock"><i class="dot"></i>Results: mock</span><span class="state-pill planned" data-state="planned"><i class="dot"></i>Live web: planned</span><span class="state-pill disabled" data-state="disabled"><i class="dot"></i>External fetch: disabled</span></div>
+    </header>
+
+    <section class="hero" aria-labelledby="search-title"><h2 id="search-title">Find the whole OS.</h2><p>Search across SEIS modules, docs, code surfaces, agents, prompts, provider metadata, GitHub governance, design tokens, cloud status and roadmap items. This page is browser-local: no web crawling, no provider calls, no external API, no secrets.</p></section>
+
+    <section class="search-shell" aria-label="SEIS Search workspace">
+      <section class="panel search-panel">
+        <div class="search-box" role="search"><div class="search-icon" aria-hidden="true">/</div><input id="search-input" autocomplete="off" value="ai core" aria-label="Search SEIS demo index" placeholder="Search modules, docs, code, agents, prompts..." /><span class="shortcut">Ctrl K</span></div>
+        <div class="filters" aria-label="Search filters" id="filters"></div>
+        <div class="status-row"><span><strong id="result-count">0</strong> local demo results</span><span id="active-hint">Use Arrow Up / Arrow Down, then Enter to quick open.</span></div>
+        <div class="content-grid">
+          <aside class="panel" aria-label="Quick open destinations"><h3>Quick open</h3><p>Jump to core SEIS surfaces without leaving the browser-local demo.</p><div class="quick-list" id="quick-list"></div></aside>
+          <section><div class="result-list" id="result-list"></div><div class="empty" id="empty-state">No local demo result matched this query. Try "cloud", "agent", "prompt", "roadmap", or "design".</div></section>
+        </div>
+      </section>
+      <aside class="right-rail">
+        <article class="insight" aria-label="Index metrics"><h3>Index coverage</h3><p>Representative demo data for the product surfaces named in the SEIS objective.</p><div class="metric-grid"><div class="metric"><span>Items</span><strong id="metric-items">0</strong></div><div class="metric"><span>Filters</span><strong>12</strong></div><div class="metric"><span>Mode</span><strong>Local</strong></div><div class="metric"><span>Risk</span><strong>Low</strong></div></div></article>
+        <article class="insight" aria-label="Command suggestions"><h3>Command suggestions</h3><p>Mock commands update local UI state only.</p><div class="command-list" id="command-list"></div></article>
+        <article class="insight" aria-label="Recent searches"><h3>Recent searches</h3><p>Stored only in this browser under <code>seis.search.demo.v1</code>.</p><div class="recent-list" id="recent-list"></div></article>
+      </aside>
+    </section>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite"><strong></strong><span></span></div>
+
+  <script>
+    const STORE_KEY = 'seis.search.demo.v1';
+    const filters = ['All', 'Modules', 'Docs', 'Code', 'Agents', 'Prompts', 'Providers', 'GitHub', 'Design', 'Cloud', 'Files', 'Roadmap'];
+    const quickOpen = [['Command Center', 'Open system status, roadmap, PR gates and launch flow.'], ['SEIS AI Core', 'Inspect provider registry, model router and agent activity.'], ['SEIS Code', 'Jump to the IDE surface and mock repo workspace.'], ['SEIS Design', 'Open tokens, components and prototype previews.'], ['SEIS Cloud', 'Review SSH, CI, deploy, logs and safety states.']];
+    const commands = [['open desktop', 'Open the browser-local Desktop OS route.'], ['open code', 'Jump to SEIS Code IDE mock route.'], ['inspect ai core', 'Filter results to AI Core, providers and agents.'], ['review pr queue', 'Show GitHub governance and PR rescue results.'], ['package demo', 'Show demo package and readiness results.']];
+    const items = [
+      { title: 'SEIS AI Core', type: 'Modules', state: 'local-demo', target: 'module jump', tags: ['model router', 'providers', 'agents'], body: 'Provider-neutral orchestration layer with Local Demo mode, model routing metadata, prompt engine concept, and safe agent status.' },
+      { title: 'Provider Registry', type: 'Providers', state: 'mock', target: 'metadata jump', tags: ['OpenAI', 'Ollama', 'backend-only'], body: 'Lists provider states as metadata only. Missing key, disabled, local-only and future backend requirements stay explicit.' },
+      { title: 'Model Router Decision', type: 'Prompts', state: 'mock', target: 'prompt jump', tags: ['task type', 'fallback', 'privacy'], body: 'Demo router explains task class, safety mode, provider type and fallback path without calling a live model.' },
+      { title: 'SEIS Code IDE', type: 'Code', state: 'local-demo', target: 'code jump', tags: ['editor', 'terminal', 'preview'], body: 'Browser IDE surface with file explorer, editor tabs, AI assistant, terminal and source-control safe mode.' },
+      { title: 'Search Engine Requirements', type: 'Docs', state: 'local-demo', target: 'doc jump', tags: ['filters', 'quick open', 'keyboard'], body: 'Search requirements for modules, docs, code, agents, prompts, providers, GitHub, design, cloud and roadmap.' },
+      { title: 'Architect Agent', type: 'Agents', state: 'mock', target: 'agent jump', tags: ['allowed actions', 'review', 'handoff'], body: 'Supervised agent role with explicit allowed actions, forbidden actions, context needs and escalation behavior.' },
+      { title: 'Security Agent', type: 'Agents', state: 'mock', target: 'agent jump', tags: ['secrets', 'frontend keys', 'P0'], body: 'Flags exposed secrets, live provider calls in frontend, direct main pushes and fake live AI claims.' },
+      { title: 'Design Tokens', type: 'Design', state: 'local-demo', target: 'design jump', tags: ['cyan', 'graphite', 'motion'], body: 'Premium dark design language: graphite surfaces, off-white text, cyan/violet accents and reduced-motion support.' },
+      { title: 'SEIS Cloud Control', type: 'Cloud', state: 'planned', target: 'cloud jump', tags: ['SSH disabled', 'deploy planned', 'logs'], body: 'Cloud/SSH command room concept with connected/mock/disabled/planned/unknown states and no credential exposure.' },
+      { title: 'GitHub Governance', type: 'GitHub', state: 'mock', target: 'github jump', tags: ['PR', 'branch', 'auto-merge'], body: 'Branch discipline, review gates, auto-merge status, rollback notes and PR-safe implementation rules.' },
+      { title: 'Demo Readiness Evidence', type: 'Roadmap', state: 'mock', target: 'roadmap jump', tags: ['smoke', 'coverage', 'review'], body: 'Evidence bundle for runnable demo routes, click-flow coverage, launchpad wiring and honest mock/real labels.' },
+      { title: 'Virtual README.md', type: 'Files', state: 'local-demo', target: 'file jump', tags: ['docs', 'run', 'security'], body: 'Representative file result for how SEIS documents run commands, demo mode, security and governance.' },
+      { title: 'Prompt Composer', type: 'Prompts', state: 'planned', target: 'prompt jump', tags: ['versioned', 'safe', 'reviewable'], body: 'Future prompt studio for reusable system, agent, review, coding, documentation and security prompts.' },
+      { title: 'Foundation Check', type: 'GitHub', state: 'mock', target: 'github jump', tags: ['CI', 'docs', 'quality'], body: 'Quality gate concept for required docs, demo honesty, provider registry, security docs and route readiness.' }
+    ];
+    const state = loadState();
+    let selectedIndex = 0;
+    function loadState() { try { return JSON.parse(localStorage.getItem(STORE_KEY)) || { query: 'ai core', filter: 'All', recent: ['ai core', 'cloud', 'agent'] }; } catch { return { query: 'ai core', filter: 'All', recent: ['ai core', 'cloud', 'agent'] }; } }
+    function saveState() { localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+    function normalized(value) { return String(value).toLowerCase().trim(); }
+    function matches(item) { const query = normalized(state.query); const filterOk = state.filter === 'All' || item.type === state.filter; if (!filterOk) return false; if (!query) return true; return [item.title, item.type, item.state, item.target, item.body, item.tags.join(' ')].some((part) => normalized(part).includes(query)); }
+    function renderFilters() { document.querySelector('#filters').innerHTML = filters.map((filter) => `<button class="filter-btn ${state.filter === filter ? 'is-active' : ''}" type="button" data-filter="${filter}">${filter}</button>`).join(''); }
+    function renderQuickOpen() { document.querySelector('#quick-list').innerHTML = quickOpen.map(([title, body], index) => `<button class="quick-card ${index === 0 ? 'is-selected' : ''}" type="button" data-quick="${title}"><strong>${title}</strong><span>${body}</span></button>`).join(''); }
+    function renderCommands() { document.querySelector('#command-list').innerHTML = commands.map(([title, body]) => `<button class="command" type="button" data-command="${title}"><strong>${title}</strong><span>${body}</span></button>`).join(''); }
+    function renderRecent() { document.querySelector('#recent-list').innerHTML = state.recent.map((item) => `<button class="recent-chip" type="button" data-recent="${item}">${item}</button>`).join(''); }
+    function renderResults() { const results = items.filter(matches); selectedIndex = Math.min(selectedIndex, Math.max(results.length - 1, 0)); document.querySelector('#result-count').textContent = String(results.length); document.querySelector('#metric-items').textContent = String(items.length); document.querySelector('#empty-state').classList.toggle('show', results.length === 0); document.querySelector('#result-list').innerHTML = results.map((item, index) => `<article class="result ${index === selectedIndex ? 'is-selected' : ''}" data-result-index="${index}"><div class="result-head"><div><h4>${item.title}</h4><div class="result-meta"><span class="tag">${item.type}</span><span class="tag">${item.target}</span>${item.tags.map((tag) => `<span class="tag">${tag}</span>`).join('')}</div></div><span class="state-pill ${item.state}" data-state="${item.state}"><i class="dot"></i>${item.state}</span></div><p>${item.body}</p><button class="open-btn" type="button" data-open="${item.title}">Quick open ${item.type}</button></article>`).join(''); }
+    function commitSearch(query) { const clean = query.trim(); state.query = clean; if (clean) state.recent = [clean, ...state.recent.filter((item) => item !== clean)].slice(0, 5); saveState(); renderRecent(); renderResults(); }
+    function toast(title, message) { const box = document.querySelector('#toast'); box.querySelector('strong').textContent = title; box.querySelector('span').textContent = message; box.classList.add('show'); window.clearTimeout(toast.timer); toast.timer = window.setTimeout(() => box.classList.remove('show'), 3200); }
+    function openSelected() { const results = items.filter(matches); const item = results[selectedIndex]; if (!item) return toast('No result', 'Try another local demo query.'); toast(`Opened ${item.title}`, `${item.target} handled inside browser-local demo mode.`); }
+    document.addEventListener('click', (event) => { const filter = event.target.closest('[data-filter]'); if (filter) { state.filter = filter.dataset.filter; saveState(); renderFilters(); renderResults(); } const recent = event.target.closest('[data-recent]'); if (recent) { document.querySelector('#search-input').value = recent.dataset.recent; commitSearch(recent.dataset.recent); } const quick = event.target.closest('[data-quick]'); if (quick) toast(`Opened ${quick.dataset.quick}`, 'Quick open is local demo navigation, not a remote route call.'); const command = event.target.closest('[data-command]'); if (command) { document.querySelector('#search-input').value = command.dataset.command; commitSearch(command.dataset.command); toast('Command suggestion applied', command.dataset.command); } const open = event.target.closest('[data-open]'); if (open) toast(`Opened ${open.dataset.open}`, 'Result opened in browser-local mock mode.'); });
+    document.querySelector('#search-input').addEventListener('input', (event) => { state.query = event.target.value; saveState(); renderResults(); });
+    document.querySelector('#search-input').addEventListener('keydown', (event) => { const results = items.filter(matches); if (event.key === 'ArrowDown') { event.preventDefault(); selectedIndex = Math.min(selectedIndex + 1, Math.max(results.length - 1, 0)); renderResults(); } if (event.key === 'ArrowUp') { event.preventDefault(); selectedIndex = Math.max(selectedIndex - 1, 0); renderResults(); } if (event.key === 'Enter') { event.preventDefault(); commitSearch(event.currentTarget.value); openSelected(); } });
+    document.addEventListener('keydown', (event) => { if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); document.querySelector('#search-input').focus(); document.querySelector('#search-input').select(); } });
+    document.querySelector('#search-input').value = state.query;
+    renderFilters(); renderQuickOpen(); renderCommands(); renderRecent(); renderResults();
+  </script>
+</body>
+</html>

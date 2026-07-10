@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SEIS Terminal / SSH Center Demo</title>
+    <meta
+      name="description"
+      content="A browser-local SEIS Terminal and SSH Center demo with allowlisted mock commands, disabled SSH state, safe logs, and repository sync planning."
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        --ink: #f8f6ef;
+        --muted: #abb3c2;
+        --dim: #758194;
+        --black: #050608;
+        --panel: rgba(16, 21, 30, 0.78);
+        --line: rgba(255, 255, 255, 0.13);
+        --cyan: #64e7ff;
+        --blue: #7ca2ff;
+        --violet: #b99cff;
+        --amber: #ffc06e;
+        --green: #83e6ac;
+        --red: #ff7a8a;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        color: var(--ink);
+        font-family:
+          ui-sans-serif,
+          -apple-system,
+          BlinkMacSystemFont,
+          "SF Pro Display",
+          "Segoe UI",
+          sans-serif;
+        background:
+          radial-gradient(circle at 12% 8%, rgba(100, 231, 255, 0.2), transparent 28rem),
+          radial-gradient(circle at 84% 12%, rgba(185, 156, 255, 0.18), transparent 26rem),
+          linear-gradient(135deg, #050608, #101724 48%, #07090d);
+      }
+
+      body::before {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        content: "";
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.032) 1px, transparent 1px);
+        background-size: 72px 72px;
+        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent 78%);
+      }
+
+      a,
+      button,
+      input {
+        min-height: 44px;
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      a:focus-visible,
+      button:focus-visible,
+      input:focus-visible {
+        outline: 0;
+        box-shadow: 0 0 0 3px rgba(100, 231, 255, 0.3);
+      }
+
+      .shell {
+        width: min(1440px, calc(100vw - 28px));
+        margin: 0 auto;
+        padding: 28px 0 44px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 12px 14px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(5, 6, 8, 0.72);
+        backdrop-filter: blur(18px);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .mark {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        place-items: center;
+        border: 1px solid rgba(100, 231, 255, 0.42);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.055);
+        color: var(--cyan);
+        font-weight: 900;
+      }
+
+      .eyebrow {
+        margin: 0;
+        color: var(--cyan);
+        font-size: 11px;
+        font-weight: 850;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .brand strong {
+        display: block;
+        overflow: hidden;
+        font-size: 14px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .top-actions,
+      .hero-actions,
+      .command-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(320px, 0.58fr);
+        gap: 18px;
+        margin-top: 22px;
+      }
+
+      .card,
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: 30px;
+        background:
+          linear-gradient(145deg, rgba(255, 255, 255, 0.095), rgba(255, 255, 255, 0.026)),
+          var(--panel);
+        box-shadow: 0 28px 92px rgba(0, 0, 0, 0.45);
+        backdrop-filter: blur(24px);
+      }
+
+      .hero-main {
+        padding: clamp(28px, 5vw, 62px);
+      }
+
+      h1 {
+        max-width: 900px;
+        margin: 14px 0 18px;
+        font-size: clamp(42px, 7vw, 100px);
+        line-height: 0.9;
+        letter-spacing: -0.078em;
+      }
+
+      .hero-main p {
+        max-width: 790px;
+        margin: 0;
+        color: var(--muted);
+        font-size: clamp(16px, 2vw, 20px);
+        line-height: 1.64;
+      }
+
+      .hero-actions {
+        margin-top: 24px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 11px 15px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--ink);
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .button.primary {
+        border-color: transparent;
+        background: linear-gradient(135deg, var(--cyan), var(--blue));
+        color: #061017;
+        font-weight: 850;
+      }
+
+      .summary {
+        display: grid;
+        gap: 10px;
+        padding: 18px;
+      }
+
+      .metric {
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background: rgba(0, 0, 0, 0.2);
+      }
+
+      .metric strong {
+        display: block;
+        font-size: 30px;
+        letter-spacing: -0.04em;
+      }
+
+      .metric span {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .workspace {
+        display: grid;
+        grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+        gap: 18px;
+        margin-top: 18px;
+      }
+
+      .panel {
+        padding: 18px;
+      }
+
+      .panel h2 {
+        margin: 0 0 14px;
+        font-size: 22px;
+        letter-spacing: -0.04em;
+      }
+
+      .terminal {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: rgba(0, 0, 0, 0.36);
+      }
+
+      .terminal-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.045);
+      }
+
+      .lights {
+        display: flex;
+        gap: 7px;
+      }
+
+      .lights span {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: var(--red);
+      }
+
+      .lights span:nth-child(2) {
+        background: var(--amber);
+      }
+
+      .lights span:nth-child(3) {
+        background: var(--green);
+      }
+
+      .output {
+        display: grid;
+        min-height: 420px;
+        max-height: 520px;
+        gap: 9px;
+        overflow: auto;
+        padding: 14px;
+      }
+
+      .line {
+        padding: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.035);
+        color: var(--muted);
+        font-family: "SFMono-Regular", Consolas, monospace;
+        font-size: 12px;
+        line-height: 1.45;
+        white-space: pre-wrap;
+      }
+
+      .line.command {
+        color: var(--cyan);
+      }
+
+      .input-row {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 10px;
+        padding: 12px;
+        border-top: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.035);
+      }
+
+      .prompt {
+        align-self: center;
+        color: var(--cyan);
+        font-family: "SFMono-Regular", Consolas, monospace;
+        font-size: 13px;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--ink);
+        padding: 11px 14px;
+      }
+
+      .chips,
+      .status-grid,
+      .log-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .chips {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .chip,
+      .status,
+      .log {
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.045);
+      }
+
+      .chip {
+        color: var(--ink);
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .status strong,
+      .log strong,
+      .chip strong {
+        display: block;
+        font-size: 13px;
+      }
+
+      .status span,
+      .log span,
+      .chip span {
+        display: block;
+        margin-top: 5px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.4;
+      }
+
+      .state {
+        display: inline-flex;
+        width: fit-content;
+        align-items: center;
+        gap: 7px;
+        margin-bottom: 10px;
+        padding: 6px 10px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--green);
+        font-size: 11px;
+        font-weight: 850;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .state[data-state="disabled"] {
+        color: var(--amber);
+      }
+
+      .state[data-state="planned"] {
+        color: var(--violet);
+      }
+
+      .notice {
+        margin-top: 18px;
+        padding: 16px;
+        border: 1px solid rgba(255, 192, 110, 0.34);
+        border-radius: 22px;
+        background: rgba(255, 192, 110, 0.08);
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      @media (max-width: 1120px) {
+        .hero,
+        .workspace {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .shell {
+          width: min(100% - 18px, 1440px);
+          padding-top: 10px;
+        }
+
+        .topbar,
+        .input-row {
+          align-items: stretch;
+          grid-template-columns: 1fr;
+        }
+
+        .topbar,
+        .top-actions,
+        .hero-actions,
+        .command-actions {
+          flex-direction: column;
+        }
+
+        .chips {
+          grid-template-columns: 1fr;
+        }
+
+        .button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body data-seis-terminal-demo>
+    <div class="shell">
+      <header class="topbar" aria-label="SEIS Terminal top bar">
+        <div class="brand">
+          <div class="mark" aria-hidden="true">T</div>
+          <div>
+            <p class="eyebrow">SEIS Terminal / SSH Center</p>
+            <strong>Browser-local terminal demo with SSH disabled until explicit approval</strong>
+          </div>
+        </div>
+        <nav class="top-actions" aria-label="Terminal related links">
+          <a class="button" href="./desktop.html">Desktop</a>
+          <a class="button" href="./seis-files.html">Files</a>
+          <a class="button" href="./index.html">Website</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero" aria-labelledby="terminal-title">
+          <div class="card hero-main">
+            <p class="eyebrow">Real demo artifact, no shell execution</p>
+            <h1 id="terminal-title">A terminal that demonstrates discipline before power.</h1>
+            <p>
+              SEIS Terminal models local command history, SSH state, repository sync planning, and safe logs without
+              executing real commands. SSH remains disabled/planned until explicit human approval and secure host/key setup.
+            </p>
+            <div class="hero-actions">
+              <button class="button primary" type="button" data-run-command="help">Run help</button>
+              <button class="button" type="button" data-run-command="status">Run status</button>
+              <button class="button" type="button" data-run-command="ssh status">SSH status</button>
+              <button class="button" type="button" data-run-command="sync plan">Sync plan</button>
+              <button class="button" type="button" data-action="reset-terminal">Reset terminal</button>
+            </div>
+          </div>
+          <aside class="card summary" aria-label="Terminal safety metrics">
+            <div class="metric">
+              <strong id="command-count">0</strong>
+              <span>Local demo commands recorded in this browser.</span>
+            </div>
+            <div class="metric">
+              <strong>0 SSH</strong>
+              <span>No real SSH connection, private key read, host mutation, or remote command.</span>
+            </div>
+            <div class="metric">
+              <strong>0 shell</strong>
+              <span>No local shell process, filesystem mutation, Git push, or deployment command.</span>
+            </div>
+          </aside>
+        </section>
+
+        <section class="workspace">
+          <section class="panel" aria-label="Terminal emulator">
+            <h2>Local demo terminal</h2>
+            <div class="terminal">
+              <div class="terminal-top">
+                <div class="lights" aria-hidden="true"><span></span><span></span><span></span></div>
+                <span class="state" data-state="real">browser-local</span>
+              </div>
+              <div class="output" id="output" aria-live="polite"></div>
+              <form class="input-row" id="command-form">
+                <span class="prompt">seis-demo$</span>
+                <input id="command-input" type="text" autocomplete="off" placeholder="Try: help, status, ssh status, git status, sync plan, clear" />
+                <button class="button primary" type="submit">Run</button>
+              </form>
+            </div>
+          </section>
+
+          <aside class="panel" aria-label="Terminal status panels">
+            <h2>Allowed demo commands</h2>
+            <div class="chips" id="chips"></div>
+            <h2 style="margin-top: 20px">Connection status</h2>
+            <div class="status-grid">
+              <div class="status">
+                <span class="state" data-state="disabled">disabled</span>
+                <strong>SSH execution</strong>
+                <span>Disabled in browser demo. Requires explicit approval, host verification, and private-key safety.</span>
+              </div>
+              <div class="status">
+                <span class="state" data-state="planned">planned</span>
+                <strong>Remote workspace</strong>
+                <span>Concept only. No remote command, sync, or deployment is performed.</span>
+              </div>
+              <div class="status">
+                <span class="state" data-state="real">real</span>
+                <strong>Local history</strong>
+                <span>Command history persists only in localStorage for this browser.</span>
+              </div>
+            </div>
+            <h2 style="margin-top: 20px">Safe logs</h2>
+            <div class="log-list" id="safe-logs"></div>
+          </aside>
+        </section>
+
+        <section class="notice" aria-label="Safety boundary">
+          Terminal actions are browser-local demo state only. This page does not execute shell commands, execute SSH,
+          read private keys, call GitHub, push commits, deploy, request credentials, store secrets, mutate files, or change
+          branch protection. Any real SSH workflow requires separate explicit approval and verified host/key handling.
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const storageKey = "seis-terminal-demo-state-v1";
+      const allowedCommands = {
+        help: "Allowed demo commands: help, status, ssh status, git status, sync plan, clear. These commands return mock/local text only.",
+        status: "SEIS local demo status: Desktop, Code, Store, Music, Files, and Terminal surfaces are tracked as browser artifacts when their PRs land. Live AI/SSH/cloud remain gated.",
+        "ssh status": "SSH status: disabled. No private key is read, no host is contacted, no remote shell is opened. Future state requires explicit approval and host fingerprint verification.",
+        "git status": "Git status: demo-only. Real git commands are not executed from this page. Use local terminal and protected PR workflow for real repository changes.",
+        "sync plan": "Sync plan: keep GitHub as source of truth, use PRs, avoid direct main pushes, preserve supplied assets, and wait for review gates before merge.",
+        clear: ""
+      };
+
+      const outputNode = document.querySelector("#output");
+      const formNode = document.querySelector("#command-form");
+      const inputNode = document.querySelector("#command-input");
+      const chipsNode = document.querySelector("#chips");
+      const logsNode = document.querySelector("#safe-logs");
+      const commandCountNode = document.querySelector("#command-count");
+
+      function loadState() {
+        try {
+          return JSON.parse(localStorage.getItem(storageKey)) || { history: [], logs: ["Terminal ready in browser-local safe mode."] };
+        } catch (error) {
+          return { history: [], logs: ["Terminal ready in browser-local safe mode."] };
+        }
+      }
+
+      let state = loadState();
+
+      function saveState() {
+        localStorage.setItem(storageKey, JSON.stringify(state));
+      }
+
+      function appendLog(message) {
+        state.logs = [message, ...state.logs].slice(0, 6);
+      }
+
+      function runCommand(rawCommand) {
+        const command = rawCommand.trim().toLowerCase();
+        if (!command) {
+          return;
+        }
+        if (command === "clear") {
+          state.history = [];
+          appendLog("Terminal output cleared locally.");
+          saveState();
+          render();
+          return;
+        }
+        const output = allowedCommands[command] || `Command '${command}' is not allowlisted in this browser demo. No shell process was started.`;
+        state.history = [...state.history, { command, output }].slice(-16);
+        appendLog(`Ran '${command}' in mock/local terminal.`);
+        saveState();
+        render();
+      }
+
+      function renderOutput() {
+        const boot = [{ command: "boot", output: "SEIS Terminal booted in safe browser demo mode. Type help for allowlisted commands." }];
+        outputNode.innerHTML = [...boot, ...state.history]
+          .map((entry) => `
+            <div class="line command">$ ${entry.command}</div>
+            <div class="line">${entry.output || "Output cleared."}</div>
+          `)
+          .join("");
+        outputNode.scrollTop = outputNode.scrollHeight;
+      }
+
+      function renderChips() {
+        chipsNode.innerHTML = Object.keys(allowedCommands)
+          .filter((command) => command !== "clear")
+          .map((command) => `
+            <button class="chip" type="button" data-run-command="${command}">
+              <strong>${command}</strong>
+              <span>Allowlisted mock/local command</span>
+            </button>
+          `)
+          .join("");
+      }
+
+      function renderLogs() {
+        logsNode.innerHTML = state.logs.map((entry) => `<div class="log"><strong>Safe event</strong><span>${entry}</span></div>`).join("");
+      }
+
+      function renderMetrics() {
+        commandCountNode.textContent = String(state.history.length);
+      }
+
+      function render() {
+        renderOutput();
+        renderChips();
+        renderLogs();
+        renderMetrics();
+      }
+
+      document.addEventListener("click", (event) => {
+        const command = event.target.closest("[data-run-command]");
+        const action = event.target.closest("[data-action]");
+        if (command) {
+          runCommand(command.dataset.runCommand);
+        }
+        if (action?.dataset.action === "reset-terminal") {
+          state = { history: [], logs: ["Terminal reset to safe browser demo mode."] };
+          saveState();
+          render();
+        }
+      });
+
+      formNode.addEventListener("submit", (event) => {
+        event.preventDefault();
+        runCommand(inputNode.value);
+        inputNode.value = "";
+      });
+
+      render();
+    </script>
+  </body>
+</html>

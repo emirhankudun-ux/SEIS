@@ -1,0 +1,42 @@
+{
+  "id": "seis-ai-core-redaction-fixture",
+  "version": "2026.06.23",
+  "status": "documented-fixture",
+  "purpose": "Define redaction and safe-output requirements for SEIS AI Core sub-agent dry-run and future write-gated tool output.",
+  "qualityGate": "npm run check:seis-ai-core-subagent-runtime-fixtures",
+  "runtimeBoundary": "status-and-plan-only",
+  "promptAndResponseLoggingDefault": "disabled",
+  "rawProviderErrorsExposed": false,
+  "sampleOutputContainsSecretValue": false,
+  "redactionRequiredFor": [
+    "api keys",
+    "bearer tokens",
+    "cookies",
+    "authorization headers",
+    "passwords",
+    "private keys",
+    "service-account fields",
+    "private URLs",
+    "personal data patterns"
+  ],
+  "forbiddenOutputs": [
+    "full credential value",
+    "partial credential prefix or suffix",
+    "reversible secret encoding",
+    "raw provider error body",
+    "private key material",
+    "unredacted authorization header"
+  ],
+  "sampleRecords": [
+    {
+      "id": "redaction-dry-run-tool-output",
+      "source": "dry-run-task-queue",
+      "containsSecretValue": false,
+      "usesPlaceholders": true,
+      "placeholderExamples": ["<REDACTED_API_KEY>", "<REDACTED_PRIVATE_KEY>", "<REDACTED_AUTH_HEADER>"],
+      "allowedDiagnosticFields": ["providerId", "errorCategory", "status", "retryAfterSeconds"],
+      "forbiddenDiagnosticFields": ["rawErrorBody", "authorizationHeader", "credentialValue"]
+    }
+  ],
+  "nextPromotionGate": "Add executable redacted-output tests before write-gated sub-agent execution is enabled."
+}

@@ -1,0 +1,294 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-universe-omega-phase-evidence",
+  "updated": "2026-06-23",
+  "status": "documented",
+  "mode": "phase_dependency_kpi_success_metric_foundation",
+  "sourceBasis": [
+    "content/development/seis-universe-omega-goal-system.json",
+    "docs/goals/seis-universe-omega-goal-system.md",
+    "content/development/seis-goal-tracking.json",
+    "content/development/seis-goal-command-center-view.json"
+  ],
+  "scope": "Phase 01 Foundation Layer, Phase 02 AI Core, Phase 03 Memory System, and Phase 10 Goal Execution Engine. Other Omega phases remain planned coverage records until their evidence slices are created.",
+  "rules": [
+    "Dependency records do not prove implementation.",
+    "KPI records are readiness measurements, not product performance claims.",
+    "Success metrics require evidence paths and validation gates before promotion.",
+    "No runtime autonomy, live provider, SSH, deployment, benchmark, model training, or public release is enabled by this record."
+  ],
+  "phaseEvidence": [
+    {
+      "phaseNumber": 1,
+      "phaseId": "omega-phase-01-foundation-layer",
+      "title": "Foundation Layer",
+      "status": "documented",
+      "goalCategory": "Security and Governance",
+      "dependencies": [
+        {
+          "id": "OMEGA-P01-DEP-001",
+          "title": "Source-of-truth governance documents",
+          "status": "partial",
+          "evidencePaths": ["AGENTS.md", "README.md", "docs/STATUS.md"],
+          "nextAction": "Keep source-of-truth documents aligned with Omega coverage and current-vs-planned language."
+        },
+        {
+          "id": "OMEGA-P01-DEP-002",
+          "title": "Environment and secret boundaries",
+          "status": "partial",
+          "evidencePaths": ["docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md", "docs/security/security-baseline.md"],
+          "nextAction": "Add typed provider and environment validation before live AI provider use."
+        },
+        {
+          "id": "OMEGA-P01-DEP-003",
+          "title": "Repository hygiene and CI alignment",
+          "status": "blocked",
+          "evidencePaths": ["docs/STATUS.md", "docs/roadmap/NEXT_PR_QUEUE.md"],
+          "nextAction": "Resolve dirty worktree and CI script alignment in dedicated PRs before readiness claims."
+        }
+      ],
+      "kpis": [
+        {
+          "id": "OMEGA-P01-KPI-001",
+          "metric": "Foundation validation availability",
+          "target": "At least one repeatable local foundation validator exists and passes.",
+          "currentEvidence": "npm run check:foundation passed in current task window.",
+          "status": "evidence-collected"
+        },
+        {
+          "id": "OMEGA-P01-KPI-002",
+          "metric": "Secret-safe documentation boundary",
+          "target": "Scoped changes contain no private paths, secret assignments, key blocks, or .env values.",
+          "currentEvidence": "Scoped sensitive-pattern scan returned no hits.",
+          "status": "evidence-collected"
+        },
+        {
+          "id": "OMEGA-P01-KPI-003",
+          "metric": "Repository readiness hygiene",
+          "target": "Worktree has no unrelated or unexplained dirty files before release or public claims.",
+          "currentEvidence": "Current worktree remains dirty from multiple existing files.",
+          "status": "blocked"
+        }
+      ],
+      "successMetrics": [
+        {
+          "id": "OMEGA-P01-SUCCESS-001",
+          "statement": "Foundation Layer can be promoted beyond documented only when source-of-truth docs, security baseline, workspace check, and foundation check all pass on a clean scoped branch.",
+          "requiredEvidence": ["npm run check:foundation", "npm run check:workspace", "git status --short"],
+          "promotionAllowed": false
+        },
+        {
+          "id": "OMEGA-P01-SUCCESS-002",
+          "statement": "Infrastructure readiness remains planned until backend, frontend, database, auth, logging, monitoring, backup, and disaster recovery have implementation evidence.",
+          "requiredEvidence": ["implementation records", "runtime tests", "security review"],
+          "promotionAllowed": false
+        }
+      ],
+      "nextSafeAction": "Finish repository hygiene and CI alignment before claiming Foundation Layer readiness."
+    },
+    {
+      "phaseNumber": 10,
+      "phaseId": "omega-phase-10-goal-execution-engine",
+      "title": "Goal Execution Engine",
+      "status": "documented",
+      "goalCategory": "Goal Tracking OS",
+      "dependencies": [
+        {
+          "id": "OMEGA-P10-DEP-001",
+          "title": "Goal registry and category coverage",
+          "status": "partial",
+          "evidencePaths": ["content/development/seis-goal-tracking.json", "scripts/check-goal-tracking.mjs"],
+          "nextAction": "Extend goal records with Omega phase references without inflating completion status."
+        },
+        {
+          "id": "OMEGA-P10-DEP-002",
+          "title": "Execution task and blocker records",
+          "status": "partial",
+          "evidencePaths": ["content/development/seis-goal-execution.json", "content/development/seis-goal-risk-register.json"],
+          "nextAction": "Add dependency and KPI panels after record schema is stabilized."
+        },
+        {
+          "id": "OMEGA-P10-DEP-003",
+          "title": "Command Center view model",
+          "status": "partial",
+          "evidencePaths": ["content/development/seis-goal-command-center-view.json", "apps/web/goal-tracking.html"],
+          "nextAction": "Keep Omega phase evidence source records, generated view JSON, and static page fresh after every evidence update."
+        }
+      ],
+      "kpis": [
+        {
+          "id": "OMEGA-P10-KPI-001",
+          "metric": "Goal registry validation",
+          "target": "Goal Tracking validator passes with required records and no completion overclaim.",
+          "currentEvidence": "npm run check:goal-tracking passed in current task window.",
+          "status": "evidence-collected"
+        },
+        {
+          "id": "OMEGA-P10-KPI-002",
+          "metric": "Omega phase coverage validation",
+          "target": "24 Omega phases are present and completionClaim is false.",
+          "currentEvidence": "npm run check:seis-universe-omega-goal-system passed in current task window.",
+          "status": "evidence-collected"
+        },
+        {
+          "id": "OMEGA-P10-KPI-003",
+          "metric": "Progress tracking runtime",
+          "target": "Command Center renders dependency, KPI, and success metric records from source data.",
+          "currentEvidence": "Goal Tracking Center generated view now includes Omega Phase Evidence sourced from content/development/seis-universe-omega-phase-evidence.json.",
+          "status": "evidence-collected"
+        }
+      ],
+      "successMetrics": [
+        {
+          "id": "OMEGA-P10-SUCCESS-001",
+          "statement": "Goal Execution Engine can be promoted beyond documented only when goals, milestones, tasks, dependencies, progress reports, KPI tracking, and success metrics are generated from source records and validated.",
+          "requiredEvidence": ["npm run check:goal-tracking", "npm run check:goal-command-center-view", "Omega phase evidence UI binding"],
+          "promotionAllowed": false
+        },
+        {
+          "id": "OMEGA-P10-SUCCESS-002",
+          "statement": "Goal intelligence remains planned until prioritization and optimization rules are deterministic, explainable, and human-reviewed.",
+          "requiredEvidence": ["prioritization policy", "optimization policy", "review evidence"],
+          "promotionAllowed": false
+        }
+      ],
+      "nextSafeAction": "Extend dependency, KPI, and success metric records to Phase 04 Knowledge Graph and Phase 05 Agent Civilization."
+    },
+    {
+      "phaseNumber": 2,
+      "phaseId": "omega-phase-02-ai-core",
+      "title": "AI Core",
+      "status": "documented",
+      "goalCategory": "SEIS AI Core",
+      "dependencies": [
+        {
+          "id": "OMEGA-P02-DEP-001",
+          "title": "Provider-neutral AI Core contracts",
+          "status": "partial",
+          "evidencePaths": ["docs/ai/seis-ai-core.md", "docs/ai/model-router.md", "docs/ai/agent-runtime.md"],
+          "nextAction": "Keep AI Core contracts provider-neutral and explicitly separated from model ownership claims."
+        },
+        {
+          "id": "OMEGA-P02-DEP-002",
+          "title": "Model router and provider audit boundary",
+          "status": "partial",
+          "evidencePaths": ["docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md", "content/development/seis-ai-core-version-registry.json"],
+          "nextAction": "Add typed provider configuration and status handling before live provider calls."
+        },
+        {
+          "id": "OMEGA-P02-DEP-003",
+          "title": "Agent execution and approval fixtures",
+          "status": "partial",
+          "evidencePaths": ["content/development/seis-ai-core-subagent-runtime-fixtures.json", "content/development/seis-ai-core-approval-fixture.json"],
+          "nextAction": "Keep agent execution dry-run and approval-gated until runtime tests prove safety."
+        }
+      ],
+      "kpis": [
+        {
+          "id": "OMEGA-P02-KPI-001",
+          "metric": "AI Core contract availability",
+          "target": "AI Core, model router, and agent runtime docs exist and avoid trained-model overclaims.",
+          "currentEvidence": "AI Core documentation paths are linked as evidence; runtime provider registry is not yet verified.",
+          "status": "evidence-collected"
+        },
+        {
+          "id": "OMEGA-P02-KPI-002",
+          "metric": "Provider safety posture",
+          "target": "Provider audit exists and live provider calls remain disabled until server-only credential handling is validated.",
+          "currentEvidence": "Static provider audit exists; typed provider environment validation remains future work.",
+          "status": "partial"
+        },
+        {
+          "id": "OMEGA-P02-KPI-003",
+          "metric": "No-key operation boundary",
+          "target": "Core SEIS surfaces remain usable without cloud provider keys.",
+          "currentEvidence": "No live provider call is introduced by this Omega evidence record.",
+          "status": "evidence-collected"
+        }
+      ],
+      "successMetrics": [
+        {
+          "id": "OMEGA-P02-SUCCESS-001",
+          "statement": "AI Core can be promoted beyond documented only when provider registry, capability routing, missing-key states, fallback transparency, redaction, and no-key startup tests are implemented and validated.",
+          "requiredEvidence": ["provider registry tests", "missing-key startup test", "redaction test", "fallback routing test"],
+          "promotionAllowed": false
+        },
+        {
+          "id": "OMEGA-P02-SUCCESS-002",
+          "statement": "Neural Core remains planned until execution, context, reasoning, and decision engines have deterministic contracts, test fixtures, and human approval gates.",
+          "requiredEvidence": ["execution engine contract", "context engine fixtures", "approval-gated agent tests"],
+          "promotionAllowed": false
+        }
+      ],
+      "nextSafeAction": "Add deterministic provider status and no-key startup records before live AI integration."
+    },
+    {
+      "phaseNumber": 3,
+      "phaseId": "omega-phase-03-memory-system",
+      "title": "Memory System",
+      "status": "documented",
+      "goalCategory": "Knowledge Graph",
+      "dependencies": [
+        {
+          "id": "OMEGA-P03-DEP-001",
+          "title": "Memory privacy boundary",
+          "status": "planned",
+          "evidencePaths": ["docs/ai/agent-runtime.md", "memories/README.md"],
+          "nextAction": "Define what may enter temporary, workspace, and user-approved persistent memory."
+        },
+        {
+          "id": "OMEGA-P03-DEP-002",
+          "title": "Context and session handoff records",
+          "status": "partial",
+          "evidencePaths": ["content/development/seis-ai-core-subagent-operating-model.json", "content/development/seis-ai-core-subagent-review-ledger.json"],
+          "nextAction": "Keep context handoff records least-context and free of credentials."
+        },
+        {
+          "id": "OMEGA-P03-DEP-003",
+          "title": "Memory ranking and retrieval policy",
+          "status": "planned",
+          "evidencePaths": ["content/development/seis-focus-mode-learning-contract.json", "content/development/seis-goal-command-center-view.json"],
+          "nextAction": "Add ranking, compression, retrieval, and deletion rules before memory runtime behavior."
+        }
+      ],
+      "kpis": [
+        {
+          "id": "OMEGA-P03-KPI-001",
+          "metric": "Memory boundary clarity",
+          "target": "Memory records distinguish temporary context, workspace context, approved memory, and sensitive content.",
+          "currentEvidence": "Boundary is planned; current records do not yet define a complete memory policy.",
+          "status": "planned"
+        },
+        {
+          "id": "OMEGA-P03-KPI-002",
+          "metric": "Credential exclusion",
+          "target": "Memory rules explicitly forbid storing provider credentials, SSH keys, private host data, and secret values.",
+          "currentEvidence": "General SEIS security rules exist; phase-specific memory exclusion policy remains planned.",
+          "status": "planned"
+        },
+        {
+          "id": "OMEGA-P03-KPI-003",
+          "metric": "Retrieval evidence readiness",
+          "target": "Memory retrieval and ranking must use evidence-linked records, not opaque model summaries.",
+          "currentEvidence": "Goal Tracking records are file-backed; memory retrieval runtime is not implemented.",
+          "status": "partial"
+        }
+      ],
+      "successMetrics": [
+        {
+          "id": "OMEGA-P03-SUCCESS-001",
+          "statement": "Memory System can be promoted beyond documented only when working memory, session context, long-term memory, ranking, compression, retrieval, deletion, and redaction policies are implemented with tests.",
+          "requiredEvidence": ["memory policy", "redaction tests", "retrieval tests", "delete/export tests"],
+          "promotionAllowed": false
+        },
+        {
+          "id": "OMEGA-P03-SUCCESS-002",
+          "statement": "User, project, team, strategic, and historical memory remain planned until consent, retention, and local-only controls are documented and validated.",
+          "requiredEvidence": ["consent policy", "retention policy", "local-only control tests"],
+          "promotionAllowed": false
+        }
+      ],
+      "nextSafeAction": "Create a memory privacy and retrieval policy before adding persistent memory runtime behavior."
+    }
+  ]
+}

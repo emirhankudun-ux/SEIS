@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-goal-hierarchy",
+  "updated": "2026-06-22",
+  "mode": "non_llm_goal_hierarchy_foundation",
+  "horizons": [
+    {
+      "id": "SEIS-HORIZON-001",
+      "level": "yearly",
+      "title": "2026 foundation operating layer",
+      "status": "active",
+      "supports_goal_ids": ["SEIS-GOAL-002", "SEIS-GOAL-003", "SEIS-GOAL-005", "SEIS-GOAL-020"],
+      "evidence_ids": ["SEIS-EVID-001", "SEIS-EVID-006", "SEIS-EVID-008"],
+      "related_paths": ["docs/goals/seis-vision.md", "docs/goals/long-term-goals.md", "docs/goals/horizon-map.md"],
+      "success_condition": "Goal Tracking OS, Command Center foundation, docs index, and evidence records remain validator-backed.",
+      "next_action": "Keep yearly foundation scope evidence-backed and avoid public/release overclaims."
+    },
+    {
+      "id": "SEIS-HORIZON-002",
+      "level": "quarterly",
+      "title": "Q3 foundation recovery and repository intelligence",
+      "status": "planned",
+      "supports_goal_ids": ["SEIS-GOAL-004", "SEIS-GOAL-007", "SEIS-GOAL-008", "SEIS-GOAL-009"],
+      "evidence_ids": ["SEIS-EVID-002", "SEIS-EVID-004", "SEIS-EVID-008"],
+      "related_paths": ["docs/roadmap/MASTER_BACKLOG.md", "docs/roadmap/NEXT_PR_QUEUE.md", "docs/goals/horizon-map.md"],
+      "success_condition": "Repository hygiene, read-only scanner planning, public dry-run, and release dry-run have current evidence.",
+      "next_action": "Resolve tracked deletion decisions in a dedicated repository hygiene PR before readiness claims."
+    },
+    {
+      "id": "SEIS-HORIZON-003",
+      "level": "monthly",
+      "title": "June 2026 Goal Tracking OS baseline",
+      "status": "active",
+      "supports_goal_ids": ["SEIS-GOAL-003", "SEIS-GOAL-006", "SEIS-GOAL-020"],
+      "evidence_ids": ["SEIS-EVID-005", "SEIS-EVID-007", "SEIS-EVID-008"],
+      "related_paths": ["docs/goals/progress-review.md", "docs/goals/review-cadence.md", "docs/goals/progress-ledger.md"],
+      "success_condition": "Goal registry, evidence, execution, cadence, ledger, hierarchy, validator, and generated view stay in sync.",
+      "next_action": "Run real monthly review only when current-month evidence is available."
+    },
+    {
+      "id": "SEIS-HORIZON-004",
+      "level": "weekly",
+      "title": "Current weekly validation and push queue",
+      "status": "active",
+      "supports_goal_ids": ["SEIS-GOAL-003", "SEIS-GOAL-007"],
+      "evidence_ids": ["SEIS-EVID-005", "SEIS-EVID-006", "SEIS-EVID-008"],
+      "related_paths": ["docs/goals/weekly-priorities-template.md", "docs/roadmap/NEXT_PR_QUEUE.md"],
+      "success_condition": "Scoped Goal Tracking changes validate, unrelated deletions remain unstaged, and branch pushes stay isolated.",
+      "next_action": "Keep weekly priorities as planned until a real dated weekly review is recorded."
+    }
+  ],
+  "activeProjects": [
+    {
+      "id": "SEIS-PROJECT-001",
+      "title": "Goal Tracking OS foundation",
+      "status": "active",
+      "owner_role": "Program System",
+      "supports_goal_ids": ["SEIS-GOAL-003", "SEIS-GOAL-020"],
+      "milestone_ids": ["SEIS-MS-001", "SEIS-MS-002", "SEIS-MS-003", "SEIS-MS-004"],
+      "evidence_ids": ["SEIS-EVID-001", "SEIS-EVID-005", "SEIS-EVID-006", "SEIS-EVID-007", "SEIS-EVID-008"],
+      "related_paths": ["docs/goals/goal-tracking-system.md", "docs/goals/project-epic-task-map.md"],
+      "next_action": "Keep foundation records validator-backed and scoped to non-LLM evidence."
+    },
+    {
+      "id": "SEIS-PROJECT-002",
+      "title": "Repository hygiene recovery",
+      "status": "blocked",
+      "owner_role": "GitHub Governance",
+      "supports_goal_ids": ["SEIS-GOAL-007", "SEIS-GOAL-008", "SEIS-GOAL-009"],
+      "milestone_ids": ["SEIS-MS-005"],
+      "evidence_ids": ["SEIS-EVID-004"],
+      "related_paths": ["docs/STATUS.md", "docs/roadmap/NEXT_PR_QUEUE.md"],
+      "next_action": "Decide restore, archive, replace, or approved removal for tracked deletions in a separate PR."
+    },
+    {
+      "id": "SEIS-PROJECT-003",
+      "title": "Repository intelligence scanner plan",
+      "status": "planned",
+      "owner_role": "Repository Intelligence",
+      "supports_goal_ids": ["SEIS-GOAL-004"],
+      "milestone_ids": ["SEIS-MS-006"],
+      "evidence_ids": ["SEIS-EVID-002"],
+      "related_paths": ["docs/roadmap/MASTER_BACKLOG.md", "docs/roadmap/NEXT_PR_QUEUE.md"],
+      "next_action": "Define read-only scanner outputs after repository hygiene decisions are isolated."
+    }
+  ],
+  "epics": [
+    {
+      "id": "SEIS-EPIC-001",
+      "project_id": "SEIS-PROJECT-001",
+      "title": "Structured source records",
+      "status": "active",
+      "supports_goal_ids": ["SEIS-GOAL-003"],
+      "evidence_ids": ["SEIS-EVID-005", "SEIS-EVID-008"],
+      "related_paths": ["content/development/seis-goal-tracking.json", "content/development/seis-goal-hierarchy.json"],
+      "next_action": "Keep JSON source records schema-valid."
+    },
+    {
+      "id": "SEIS-EPIC-002",
+      "project_id": "SEIS-PROJECT-001",
+      "title": "Generated Command Center view",
+      "status": "active",
+      "supports_goal_ids": ["SEIS-GOAL-002", "SEIS-GOAL-003"],
+      "evidence_ids": ["SEIS-EVID-006", "SEIS-EVID-008"],
+      "related_paths": ["scripts/create-goal-command-center-view.mjs", "apps/web/goal-tracking.html"],
+      "next_action": "Regenerate the view after every source record change."
+    },
+    {
+      "id": "SEIS-EPIC-003",
+      "project_id": "SEIS-PROJECT-002",
+      "title": "Tracked deletion triage",
+      "status": "blocked",
+      "supports_goal_ids": ["SEIS-GOAL-007", "SEIS-GOAL-008", "SEIS-GOAL-009"],
+      "evidence_ids": ["SEIS-EVID-004"],
+      "related_paths": ["docs/STATUS.md"],
+      "next_action": "Prepare a repository hygiene review before staging deletion changes."
+    }
+  ],
+  "subtasks": [
+    {
+      "id": "SEIS-SUBTASK-001",
+      "task_id": "SEIS-TASK-001",
+      "epic_id": "SEIS-EPIC-001",
+      "title": "Validate hierarchy source records",
+      "status": "active",
+      "supports_goal_ids": ["SEIS-GOAL-003"],
+      "evidence_ids": ["SEIS-EVID-008"],
+      "related_paths": ["content/development/seis-goal-hierarchy.json", "scripts/check-goal-tracking.mjs"],
+      "next_action": "Run npm run check:goal-tracking after hierarchy edits."
+    },
+    {
+      "id": "SEIS-SUBTASK-002",
+      "task_id": "SEIS-TASK-003",
+      "epic_id": "SEIS-EPIC-002",
+      "title": "Render hierarchy panels in static Goal Tracking Center",
+      "status": "active",
+      "supports_goal_ids": ["SEIS-GOAL-002", "SEIS-GOAL-003"],
+      "evidence_ids": ["SEIS-EVID-008"],
+      "related_paths": ["content/development/seis-goal-command-center-view.json", "apps/web/goal-tracking.html"],
+      "next_action": "Keep planning horizon, project, epic, and subtask panels generated from source records."
+    },
+    {
+      "id": "SEIS-SUBTASK-003",
+      "task_id": "SEIS-TASK-002",
+      "epic_id": "SEIS-EPIC-003",
+      "title": "Keep repository hygiene deletions out of Goal Tracking commits",
+      "status": "blocked",
+      "supports_goal_ids": ["SEIS-GOAL-007"],
+      "evidence_ids": ["SEIS-EVID-004"],
+      "related_paths": ["docs/STATUS.md"],
+      "next_action": "Do not stage tracked deletions in Goal Tracking OS commits."
+    }
+  ]
+}

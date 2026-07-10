@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aether AI | Autonomous Operations</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface": "#e1e2e7",
+                    "on-secondary-container": "#fff6fc",
+                    "on-primary": "#00363a",
+                    "tertiary-container": "#d9d9d9",
+                    "primary": "#dbfcff",
+                    "on-secondary-fixed": "#320047",
+                    "secondary": "#ebb2ff",
+                    "surface-container-highest": "#323539",
+                    "outline": "#849495",
+                    "surface-container-high": "#282a2e",
+                    "secondary-fixed-dim": "#ebb2ff",
+                    "primary-fixed-dim": "#00dbe9",
+                    "surface-container": "#1d2023",
+                    "on-primary-fixed": "#002022",
+                    "surface-dim": "#111417",
+                    "surface": "#111417",
+                    "on-primary-fixed-variant": "#004f54",
+                    "surface-variant": "#323539",
+                    "on-surface-variant": "#b9cacb",
+                    "on-secondary-fixed-variant": "#74009f",
+                    "on-error": "#690005",
+                    "tertiary-fixed-dim": "#c6c6c7",
+                    "surface-tint": "#00dbe9",
+                    "primary-fixed": "#7df4ff",
+                    "on-error-container": "#ffdad6",
+                    "error-container": "#93000a",
+                    "surface-container-lowest": "#0c0e12",
+                    "tertiary": "#f5f5f5",
+                    "surface-bright": "#37393d",
+                    "background": "#111417",
+                    "on-tertiary-fixed": "#1a1c1c",
+                    "inverse-surface": "#e1e2e7",
+                    "on-tertiary": "#2f3131",
+                    "outline-variant": "#3b494b",
+                    "secondary-container": "#b600f8",
+                    "inverse-on-surface": "#2e3134",
+                    "on-secondary": "#520072",
+                    "error": "#ffb4ab",
+                    "on-background": "#e1e2e7",
+                    "surface-container-low": "#191c1f",
+                    "on-primary-container": "#006970",
+                    "inverse-primary": "#006970",
+                    "on-tertiary-container": "#5d5f5f",
+                    "on-tertiary-fixed-variant": "#454747",
+                    "primary-container": "#00f0ff",
+                    "tertiary-fixed": "#e2e2e2",
+                    "secondary-fixed": "#f8d8ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "margin-mobile": "20px",
+                    "unit": "8px",
+                    "container-max": "1280px",
+                    "gutter": "24px",
+                    "section-gap": "120px",
+                    "margin-desktop": "64px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Inter"],
+                    "mono-code": ["JetBrains Mono"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "mono-label": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                    "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #020408;
+            color: #e1e2e7;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 219, 233, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 1px;
+            background: linear-gradient(90deg, rgba(0,219,233,0.3), transparent);
+        }
+        .glow-hover:hover {
+            box-shadow: 0 0 30px rgba(0, 219, 233, 0.15);
+            border-color: rgba(0, 219, 233, 0.4);
+        }
+        .pulsing-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #00dbe9;
+            border-radius: 50%;
+            position: relative;
+        }
+        .pulsing-dot::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background-color: #00dbe9;
+            opacity: 0.4;
+            animation: pulse 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+        .terminal-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .terminal-scroll::-webkit-scrollbar-thumb {
+            background: #3b494b;
+            border-radius: 2px;
+        }
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(0,219,233,0.05), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_40px_-15px_rgba(0,219,233,0.15)] h-16">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-full">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-[24px] leading-tight tracking-tighter text-primary-fixed-dim">AETHER AI</span>
+<div class="hidden md:flex gap-6">
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md" href="#">Models</a>
+<a class="text-primary-fixed-dim font-semibold border-b-2 border-primary-fixed-dim pb-1 font-body-md text-body-md" href="#">Infrastructure</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md" href="#">Compute</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md" href="#">Enterprise</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-4 py-2 text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md">Sign In</button>
+<button class="px-6 py-2 bg-primary-container text-on-primary-container font-semibold rounded-lg active:scale-95 transition-transform font-body-md text-body-md">Get Started</button>
+</div>
+</div>
+</nav>
+<!-- SideNavBar (Hidden on Mobile) -->
+<aside class="hidden lg:flex flex-col h-screen w-64 fixed left-0 top-0 pt-20 bg-surface-container-lowest/80 backdrop-blur-2xl border-r border-outline-variant/10 z-40">
+<div class="px-6 mb-8">
+<h3 class="font-mono-label text-mono-label text-primary-fixed-dim uppercase tracking-widest opacity-60">Operations</h3>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 bg-secondary-container/20 text-secondary-fixed border-l-2 border-secondary-container px-6 py-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">terminal</span>
+<span class="font-mono-label text-mono-label">SEIS OS</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high/50 px-6 py-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">psychology</span>
+<span class="font-mono-label text-mono-label">SEIS AI</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high/50 px-6 py-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">code</span>
+<span class="font-mono-label text-mono-label">SEIS Code</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high/50 px-6 py-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">cloud_queue</span>
+<span class="font-mono-label text-mono-label">SEIS Cloud</span>
+</a>
+</nav>
+<div class="p-6 border-t border-outline-variant/10">
+<button class="w-full py-3 bg-primary/10 border border-primary/20 text-primary-fixed-dim font-mono-label text-mono-label rounded hover:bg-primary/20 transition-all uppercase tracking-tighter">
+                Deploy Now
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:pl-64 pt-20 pb-12 min-h-screen relative">
+
+<div class="max-w-container-max mx-auto px-6 md:px-margin-desktop space-y-gutter relative z-10">
+<!-- Header Section -->
+<header class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-outline-variant/10 pb-8">
+<div>
+<div class="flex items-center gap-3 mb-2">
+<span class="pulsing-dot"></span>
+<span class="font-mono-label text-mono-label text-primary-fixed-dim uppercase tracking-widest">Live Autonomous Swarm</span>
+</div>
+<h1 class="font-display-lg text-display-lg-mobile md:text-headline-md tracking-tight">Mission Control Alpha</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="text-right">
+<p class="font-mono-label text-xs text-on-surface-variant uppercase">Global Uptime</p>
+<p class="font-mono-code text-primary-fixed-dim">99.9998%</p>
+</div>
+<div class="h-10 w-[1px] bg-outline-variant/30"></div>
+<div class="text-right">
+<p class="font-mono-label text-xs text-on-surface-variant uppercase">Total Agents</p>
+<p class="font-mono-code text-primary-fixed-dim">14,202</p>
+</div>
+</div>
+</header>
+<!-- Top Grid Metrics -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<div class="glass-card glow-hover p-6 rounded-xl flex flex-col justify-between h-32">
+<span class="font-mono-label text-xs text-on-surface-variant">ACTIVE TASKS</span>
+<div class="flex items-end justify-between">
+<span class="font-mono-code text-4xl text-primary">842</span>
+<span class="text-primary-fixed-dim material-symbols-outlined">trending_up</span>
+</div>
+</div>
+<div class="glass-card glow-hover p-6 rounded-xl flex flex-col justify-between h-32">
+<span class="font-mono-label text-xs text-on-surface-variant">RESOLUTION RATE</span>
+<div class="flex items-end justify-between">
+<span class="font-mono-code text-4xl text-primary">94.8%</span>
+<div class="w-20 h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="w-[94%] h-full bg-primary-fixed-dim"></div>
+</div>
+</div>
+</div>
+<div class="glass-card glow-hover p-6 rounded-xl flex flex-col justify-between h-32">
+<span class="font-mono-label text-xs text-on-surface-variant">AVG LATENCY</span>
+<div class="flex items-end justify-between">
+<span class="font-mono-code text-4xl text-primary">12ms</span>
+<span class="text-secondary material-symbols-outlined">bolt</span>
+</div>
+</div>
+<div class="glass-card glow-hover p-6 rounded-xl flex flex-col justify-between h-32">
+<span class="font-mono-label text-xs text-on-surface-variant">RESOURCES USED</span>
+<div class="flex items-end justify-between">
+<span class="font-mono-code text-4xl text-primary">62.1%</span>
+<span class="text-on-surface-variant material-symbols-outlined">database</span>
+</div>
+</div>
+</div>
+<!-- Dashboard Center: Map & Monitoring -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Live Map Section -->
+<div class="lg:col-span-2 glass-card rounded-xl overflow-hidden min-h-[450px] relative">
+<div class="absolute top-4 left-6 z-20">
+<div class="bg-surface-container-lowest/80 backdrop-blur px-3 py-1 rounded border border-outline-variant/30 flex items-center gap-2">
+<span class="pulsing-dot scale-75"></span>
+<span class="font-mono-label text-xs uppercase tracking-tighter">Global Edge Traffic</span>
+</div>
+</div>
+<!-- Map Placeholder -->
+<div class="absolute inset-0 grayscale opacity-40 mix-blend-screen" data-alt="A futuristic topographical world map showing glowing neural network connections across continents. The aesthetic is cyber-technical with neon cyan and deep purple data streams flowing between major cities. High contrast, sharp lines, dark obsidian background." data-location="San Francisco" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBWP7ZlXkSh2F4eO9Y9aobcfpz8XuUKeq_THd90-S6PhvFVfK8gEiit3QikChSwY9X4QwXV4ew-acNjPFGAM-lUy0eqHK0sw_uCNQL0-AvKXn6OBLL_5BU6OR6PHULFWpShll_ms7vg6qUEMj_JhBSexmbTkYy1nbdvv2rdPxkG64uYdRzhtAILxaRoFesPBTh7taR0CHs-fdjSVOk9zbKZiaYUTz3wLQr0SoLby0p9hHOVuBVMto8fDOoq9buv4UoS9uolgImD6A')"></div>
+<!-- SVG Overlay for Network Lines -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" viewbox="0 0 800 450">
+<circle cx="200" cy="150" fill="#00dbe9" r="2"></circle>
+<circle cx="450" cy="280" fill="#00dbe9" r="2"></circle>
+<circle cx="600" cy="120" fill="#00dbe9" r="2"></circle>
+<path d="M200 150 Q 325 215 450 280" fill="none" stroke="#00dbe9" stroke-dasharray="2,2" stroke-width="0.5"></path>
+<path d="M450 280 Q 525 200 600 120" fill="none" stroke="#00dbe9" stroke-dasharray="2,2" stroke-width="0.5"></path>
+</svg>
+<!-- Stats overlay bottom right -->
+<div class="absolute bottom-6 right-6 flex gap-4">
+<div class="glass-card px-4 py-3 border-none bg-surface/80">
+<p class="font-mono-label text-[10px] text-on-surface-variant">PEAK REGION</p>
+<p class="font-mono-code text-sm text-primary">USE-WEST-2</p>
+</div>
+<div class="glass-card px-4 py-3 border-none bg-surface/80">
+<p class="font-mono-label text-[10px] text-on-surface-variant">ACTIVE NODES</p>
+<p class="font-mono-code text-sm text-primary">12,842</p>
+</div>
+</div>
+</div>
+<!-- Decision Logs -->
+<div class="glass-card rounded-xl flex flex-col overflow-hidden h-[450px]">
+<div class="p-4 border-b border-outline-variant/10 flex justify-between items-center bg-surface-container-lowest/50">
+<span class="font-mono-label text-xs uppercase tracking-widest text-on-surface-variant">Decision Chain Logs</span>
+<span class="material-symbols-outlined text-sm text-on-surface-variant">terminal</span>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-4 font-mono-code text-[11px] terminal-scroll">
+<div class="space-y-1">
+<p class="text-outline-variant">[14:22:01] <span class="text-primary-fixed-dim">AGENT_042</span> initialized context_fetch.</p>
+<p class="text-on-surface">Target: db_cluster_alpha/query_opt</p>
+<p class="text-secondary-fixed-dim">Decision: Shift weights to Node-C (Reliability: 0.992)</p>
+</div>
+<div class="space-y-1 border-l border-primary-fixed-dim/30 pl-3">
+<p class="text-outline-variant">[14:22:03] <span class="text-primary-fixed-dim">AGENT_042</span> reasoning chain:</p>
+<p class="text-on-surface-variant">1. Detecting latency spike (+14ms) in primary path.</p>
+<p class="text-on-surface-variant">2. Calculating bypass via SEIS Mesh.</p>
+<p class="text-on-surface-variant">3. Cost-benefit analysis complete: Optimal.</p>
+</div>
+<div class="space-y-1">
+<p class="text-outline-variant">[14:22:05] <span class="text-primary-fixed-dim">SYSTEM</span> action_deployed: Routing updated.</p>
+</div>
+<div class="space-y-1">
+<p class="text-outline-variant">[14:22:12] <span class="text-primary-fixed-dim">AGENT_119</span> state: MONITORING</p>
+<p class="text-on-surface">Anomaly detected in packet header #88219</p>
+<p class="text-error">Trigger: Automated Quarantine Protocol</p>
+</div>
+<div class="shimmer h-4 w-3/4 rounded opacity-20"></div>
+<div class="shimmer h-4 w-1/2 rounded opacity-20"></div>
+</div>
+</div>
+</div>
+<!-- Bottom Section: Agent Swarm Detail -->
+<div class="glass-card rounded-xl overflow-hidden">
+<div class="p-6 border-b border-outline-variant/10 flex justify-between items-center">
+<h2 class="font-headline-md text-lg tracking-tight">Active Swarm Distribution</h2>
+<div class="flex gap-2">
+<span class="px-2 py-1 bg-surface-container rounded font-mono-label text-[10px] border border-outline-variant/20">VIEW ALL</span>
+<span class="px-2 py-1 bg-surface-container rounded font-mono-label text-[10px] border border-outline-variant/20">EXPORT</span>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-mono-label text-xs">
+<thead>
+<tr class="bg-surface-container-lowest/30 text-on-surface-variant border-b border-outline-variant/10">
+<th class="p-6 font-medium">AGENT ID</th>
+<th class="p-6 font-medium">MISSION PARAMETER</th>
+<th class="p-6 font-medium">STATUS</th>
+<th class="p-6 font-medium">PROCESSOR LOAD</th>
+<th class="p-6 font-medium">UPTIME</th>
+<th class="p-6 font-medium text-right">ACTIONS</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="p-6 font-mono-code text-primary-fixed-dim">λ-Aether-822</td>
+<td class="p-6">Dynamic Cache Invalidation</td>
+<td class="p-6">
+<span class="flex items-center gap-2 text-primary-fixed-dim">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-fixed-dim shadow-[0_0_8px_rgba(0,219,233,1)]"></span>
+                                        PROCESSING
+                                    </span>
+</td>
+<td class="p-6">
+<div class="flex items-center gap-3">
+<span class="w-16 h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="w-[42%] h-full bg-primary-fixed-dim"></div>
+</span>
+                                        42%
+                                    </div>
+</td>
+<td class="p-6 text-on-surface-variant">14d 02h 11m</td>
+<td class="p-6 text-right">
+<span class="material-symbols-outlined opacity-0 group-hover:opacity-100 cursor-pointer text-on-surface-variant hover:text-primary transition-opacity">more_vert</span>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="p-6 font-mono-code text-primary-fixed-dim">λ-Aether-914</td>
+<td class="p-6">Distributed Ledger Sync</td>
+<td class="p-6">
+<span class="flex items-center gap-2 text-secondary">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary shadow-[0_0_8px_rgba(235,178,255,1)]"></span>
+                                        OPTIMIZING
+                                    </span>
+</td>
+<td class="p-6">
+<div class="flex items-center gap-3">
+<span class="w-16 h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="w-[88%] h-full bg-secondary"></div>
+</span>
+                                        88%
+                                    </div>
+</td>
+<td class="p-6 text-on-surface-variant">02d 18h 44m</td>
+<td class="p-6 text-right">
+<span class="material-symbols-outlined opacity-0 group-hover:opacity-100 cursor-pointer text-on-surface-variant hover:text-primary transition-opacity">more_vert</span>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="p-6 font-mono-code text-primary-fixed-dim">λ-Aether-105</td>
+<td class="p-6">Edge Predictive Prefetching</td>
+<td class="p-6">
+<span class="flex items-center gap-2 text-primary-fixed-dim">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-fixed-dim shadow-[0_0_8px_rgba(0,219,233,1)]"></span>
+                                        IDLE
+                                    </span>
+</td>
+<td class="p-6">
+<div class="flex items-center gap-3">
+<span class="w-16 h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="w-[4%] h-full bg-primary-fixed-dim"></div>
+</span>
+                                        4%
+                                    </div>
+</td>
+<td class="p-6 text-on-surface-variant">41d 11h 02m</td>
+<td class="p-6 text-right">
+<span class="material-symbols-outlined opacity-0 group-hover:opacity-100 cursor-pointer text-on-surface-variant hover:text-primary transition-opacity">more_vert</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="lg:pl-64 bg-surface-container-lowest border-t border-outline-variant/10 w-full py-12 relative z-10">
+<div class="max-w-container-max mx-auto px-6 md:px-margin-desktop grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-gutter">
+<div class="col-span-2">
+<span class="font-display-lg text-[20px] text-primary-fixed-dim tracking-tighter">AETHER AI</span>
+<p class="font-mono-label text-[12px] text-on-tertiary-fixed-variant mt-2 max-w-xs">Autonomous infrastructure for the next generation of intelligence.</p>
+</div>
+<div class="flex flex-col gap-2">
+<span class="font-mono-label text-on-surface text-[10px] uppercase tracking-widest mb-2">Platform</span>
+<a class="font-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Documentation</a>
+<a class="font-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">API Reference</a>
+</div>
+<div class="flex flex-col gap-2">
+<span class="font-mono-label text-on-surface text-[10px] uppercase tracking-widest mb-2">System</span>
+<a class="font-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">System Status</a>
+<a class="font-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Security</a>
+</div>
+<div class="flex flex-col gap-2 col-span-2 md:col-span-1">
+<span class="font-mono-label text-on-surface text-[10px] uppercase tracking-widest mb-2">Legal</span>
+<a class="font-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Privacy Policy</a>
+<a class="font-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Terms of Service</a>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-6 md:px-margin-desktop mt-12 pt-8 border-t border-outline-variant/10">
+<p class="font-mono-label text-[11px] text-on-tertiary-fixed-variant">© 2024 Aether AI Infrastructure. All rights reserved.</p>
+</div>
+</footer>
+<script>
+        // Micro-interaction: Randomize some metrics occasionally for "live" feel
+        setInterval(() => {
+            const lat = document.querySelector('.grid-cols-4 div:nth-child(3) .font-mono-code');
+            if (lat) {
+                const current = parseInt(lat.innerText);
+                const variance = Math.floor(Math.random() * 3) - 1;
+                lat.innerText = (current + variance) + 'ms';
+            }
+        }, 3000);
+
+        // Terminal animation simulation
+        const terminal = document.querySelector('.terminal-scroll');
+        const lines = [
+            "[14:23:44] REBALANCE: Worker-7 deployed to Node-G",
+            "[14:23:48] ALERT: Low memory threshold in EU-CENTRAL",
+            "[14:23:51] RESOLVED: Agent_992 auto-scaling complete",
+            "[14:23:55] INFO: Security audit pass - 0 vulnerabilities",
+            "[14:23:59] SYNC: Block 9,842,102 validated across 12 regions"
+        ];
+        let lineIdx = 0;
+
+        setInterval(() => {
+            const p = document.createElement('p');
+            p.className = 'text-primary-fixed-dim opacity-0 transition-opacity duration-500';
+            p.innerText = lines[lineIdx];
+            terminal.appendChild(p);
+            setTimeout(() => p.classList.remove('opacity-0'), 100);
+            
+            terminal.scrollTop = terminal.scrollHeight;
+            lineIdx = (lineIdx + 1) % lines.length;
+            
+            if (terminal.children.length > 20) {
+                terminal.removeChild(terminal.firstChild);
+            }
+        }, 5000);
+    </script>
+</body></html>

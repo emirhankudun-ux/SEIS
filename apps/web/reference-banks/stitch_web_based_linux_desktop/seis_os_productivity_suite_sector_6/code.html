@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS - SECTOR 6</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..900&amp;family=Space+Mono:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .cursor-blink { animation: blink 1s infinite; }
+        .glass-surface { backdrop-filter: blur(12px); background-color: rgba(12, 15, 15, 0.85); border: 1px solid rgba(59, 73, 75, 0.3); }
+        .cyber-lime-glow { box-shadow: 0 0 15px rgba(0, 240, 255, 0.2); }
+        .obsidian-purple-glow { box-shadow: 0 0 15px rgba(206, 93, 255, 0.2); }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        body { background-color: #0c0f0f; color: #e2e2e2; overflow: hidden; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#121414",
+                        "on-primary-fixed": "#002022",
+                        "error-container": "#93000a",
+                        "surface-container-lowest": "#0c0f0f",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "outline-variant": "#3b494b",
+                        "on-surface": "#e2e2e2",
+                        "on-tertiary-container": "#605e5e",
+                        "tertiary-container": "#dcd9d8",
+                        "on-secondary-container": "#480064",
+                        "on-primary-container": "#006970",
+                        "surface-container-low": "#1a1c1c",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-primary": "#00363a",
+                        "surface-container-highest": "#333535",
+                        "inverse-on-surface": "#2f3131",
+                        "surface-bright": "#37393a",
+                        "secondary-fixed": "#f8d8ff",
+                        "primary-container": "#00f0ff",
+                        "outline": "#849495",
+                        "tertiary-fixed": "#e5e2e1",
+                        "primary": "#dbfcff",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "on-background": "#e2e2e2",
+                        "inverse-primary": "#006970",
+                        "on-secondary": "#520071",
+                        "surface-container": "#1e2020",
+                        "secondary-container": "#ce5dff",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "error": "#ffb4ab",
+                        "primary-fixed": "#7df4ff",
+                        "secondary": "#ebb2ff",
+                        "surface-container-high": "#282a2b",
+                        "surface-variant": "#333535",
+                        "on-error": "#690005",
+                        "surface": "#121414",
+                        "tertiary": "#f9f5f5",
+                        "surface-tint": "#00dbe9",
+                        "background": "#121414",
+                        "on-secondary-fixed": "#320047",
+                        "on-tertiary": "#313030",
+                        "on-error-container": "#ffdad6",
+                        "inverse-surface": "#e2e2e2",
+                        "on-surface-variant": "#b9cacb",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "on-primary-fixed-variant": "#004f54",
+                        "primary-fixed-dim": "#00dbe9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0px",
+                        "lg": "2px",
+                        "xl": "4px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stroke-thin": "1px",
+                        "stroke-thick": "2px",
+                        "gap-sm": "8px",
+                        "gap-lg": "24px",
+                        "margin-page": "32px",
+                        "gap-xs": "4px",
+                        "gap-md": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["JetBrains Mono"],
+                        "body-md": ["JetBrains Mono"],
+                        "headline-lg": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "label-sm": ["Space Mono"],
+                        "label-caps": ["Space Mono"],
+                        "code-sm": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "label-caps": ["10px", {"lineHeight": "1", "letterSpacing": "0.2em", "fontWeight": "700"}],
+                        "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="font-body-md text-on-surface select-none">
+<!-- TopNavBar Navigation Shell -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-10 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30">
+<div class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">
+            SEIS KERNEL OS
+        </div>
+<div class="hidden md:flex gap-8">
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 font-label-caps text-label-caps cursor-pointer" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-caps text-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer" href="#">TELEMETRY</a>
+<a class="text-on-surface-variant font-label-caps text-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer" href="#">AGENTS</a>
+<a class="text-on-surface-variant font-label-caps text-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer" href="#">NETWORK</a>
+</div>
+<div class="flex gap-4 items-center">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed cursor-pointer transition-colors duration-200" style="font-size: 18px;">memory</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed cursor-pointer transition-colors duration-200" style="font-size: 18px;">terminal</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed cursor-pointer transition-colors duration-200" style="font-size: 18px;">settings</span>
+</div>
+</nav>
+<!-- SideNavBar Navigation Shell -->
+<aside class="fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 w-20 hover:w-64 transition-all duration-300 group overflow-hidden">
+<div class="p-4 flex items-center gap-4">
+<div class="w-10 h-10 bg-primary-fixed-dim/20 flex items-center justify-center border border-primary-fixed/40">
+<span class="material-symbols-outlined text-primary-fixed" style="font-variation-settings: 'FILL' 1;">person</span>
+</div>
+<div class="hidden group-hover:block transition-opacity opacity-0 group-hover:opacity-100">
+<div class="font-label-caps text-label-caps text-secondary-fixed">ROOT_USER</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</div>
+</div>
+</div>
+<div class="flex-1 mt-4">
+<div class="group/nav flex items-center px-4 py-4 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="hidden group-hover:block ml-6 font-label-caps text-label-caps">DASHBOARD</span>
+</div>
+<div class="group/nav flex items-center px-4 py-4 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">folder_open</span>
+<span class="hidden group-hover:block ml-6 font-label-caps text-label-caps">FILESYSTEM</span>
+</div>
+<div class="group/nav flex items-center px-4 py-4 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">terminal</span>
+<span class="hidden group-hover:block ml-6 font-label-caps text-label-caps">TERMINAL</span>
+</div>
+<div class="group/nav flex items-center px-4 py-4 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="hidden group-hover:block ml-6 font-label-caps text-label-caps">AI_AGENTS</span>
+</div>
+</div>
+<div class="mt-auto border-t border-outline-variant/10">
+<div class="group/nav flex items-center px-4 py-4 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined">power_settings_new</span>
+<span class="hidden group-hover:block ml-6 font-label-caps text-label-caps">POWER</span>
+</div>
+<div class="group/nav flex items-center px-4 py-4 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined">lock</span>
+<span class="hidden group-hover:block ml-6 font-label-caps text-label-caps">LOCK</span>
+</div>
+</div>
+</aside>
+<!-- Main Workspace Content -->
+<main class="ml-20 pt-14 p-6 grid grid-cols-12 gap-4 h-screen max-h-screen overflow-hidden">
+<!-- HEADER TELEMETRY STRIP -->
+<div class="col-span-12 flex justify-between items-end mb-2">
+<div>
+<h1 class="font-headline-md text-headline-md text-primary-fixed tracking-tight">WORKSPACE // SECTOR 6</h1>
+<p class="font-code-sm text-code-sm text-on-surface-variant opacity-70">LATENCY: 14ms // UPTIME: 99.99% // KERNEL: SEIS_6.2.0</p>
+</div>
+<div class="flex gap-12 items-center">
+<div class="flex flex-col items-end">
+<span class="font-label-caps text-label-caps text-on-surface-variant">TEAM VELOCITY</span>
+<div class="flex gap-1 mt-1">
+<div class="w-6 h-2 bg-primary"></div>
+<div class="w-6 h-2 bg-primary"></div>
+<div class="w-6 h-2 bg-primary"></div>
+<div class="w-6 h-2 bg-primary"></div>
+<div class="w-6 h-2 bg-primary/30"></div>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label-caps text-label-caps text-on-surface-variant">ENCRYPTION STATUS</span>
+<div class="text-primary-fixed-dim font-code-sm flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary-fixed animate-pulse"></span>
+                        AES-4096_ACTIVE
+                    </div>
+</div>
+</div>
+</div>
+<!-- LEFT PANEL: KANBAN BOARD -->
+<div class="col-span-8 flex flex-col gap-4 overflow-hidden">
+<div class="flex gap-4 h-full overflow-x-auto pb-4 scrollbar-hide">
+<!-- Column: SPRINT BACKLOG -->
+<div class="flex-shrink-0 w-80 glass-surface flex flex-col h-full">
+<div class="h-8 bg-surface-container-high px-3 flex items-center justify-between border-b border-outline-variant/30">
+<span class="font-label-caps text-label-caps text-on-surface">SPRINT_BACKLOG</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">[04]</span>
+</div>
+<div class="flex-1 p-3 flex flex-col gap-3 overflow-y-auto scrollbar-hide">
+<!-- Task Card -->
+<div class="p-3 bg-surface-container-low border border-outline-variant/40 hover:border-primary-fixed/50 cursor-pointer transition-all">
+<div class="flex justify-between items-start mb-2">
+<span class="bg-surface-variant text-[10px] px-1 font-bold text-on-surface-variant">UI/UX</span>
+<span class="font-code-sm text-on-surface-variant">#S6-201</span>
+</div>
+<p class="font-body-md text-on-surface text-sm mb-3">Implement glassmorphic shader for Sector 6 main dashboard.</p>
+<div class="flex justify-between items-center">
+<div class="flex -space-x-2">
+<div class="w-6 h-6 border border-surface-dim bg-primary/20 rounded-full flex items-center justify-center text-[10px]">A</div>
+<div class="w-6 h-6 border border-surface-dim bg-secondary/20 rounded-full flex items-center justify-center text-[10px]">B</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-lg">attach_file</span>
+</div>
+</div>
+<div class="p-3 bg-surface-container-low border border-outline-variant/40 hover:border-primary-fixed/50 cursor-pointer transition-all">
+<div class="flex justify-between items-start mb-2">
+<span class="bg-surface-variant text-[10px] px-1 font-bold text-on-surface-variant">CORE</span>
+<span class="font-code-sm text-on-surface-variant">#S6-204</span>
+</div>
+<p class="font-body-md text-on-surface text-sm mb-3">Refactor telemetry data pipeline for real-time visualization.</p>
+</div>
+</div>
+</div>
+<!-- Column: ACTIVE PROCESSING (Cyber Lime Highlight) -->
+<div class="flex-shrink-0 w-80 glass-surface flex flex-col h-full border-t-2 border-primary-container cyber-lime-glow">
+<div class="h-8 bg-primary-container px-3 flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-on-primary-fixed">IN_PROCESSING</span>
+<span class="font-code-sm text-code-sm text-on-primary-fixed">[02]</span>
+</div>
+<div class="flex-1 p-3 flex flex-col gap-3 overflow-y-auto scrollbar-hide">
+<!-- Active Task -->
+<div class="p-3 bg-surface-container-low border border-primary-container/40 relative">
+<div class="absolute top-0 right-0 w-1 h-full bg-primary-container"></div>
+<div class="flex justify-between items-start mb-2">
+<span class="bg-primary-container/20 text-primary-container text-[10px] px-1 font-bold">DEV_OPS</span>
+<span class="font-code-sm text-primary-container">#S6-198</span>
+</div>
+<p class="font-body-md text-on-surface text-sm mb-3">Optimize neural link buffers for low-latency command execution.</p>
+<div class="w-full bg-surface-variant h-1 mt-2">
+<div class="bg-primary-container h-full w-[72%]"></div>
+</div>
+</div>
+<div class="p-3 bg-surface-container-low border border-outline-variant/40">
+<div class="flex justify-between items-start mb-2">
+<span class="bg-primary-container/20 text-primary-container text-[10px] px-1 font-bold">SECURITY</span>
+<span class="font-code-sm text-on-surface-variant">#S6-187</span>
+</div>
+<p class="font-body-md text-on-surface text-sm mb-3">Rotate quantum encryption keys across all active nodes.</p>
+</div>
+</div>
+</div>
+<!-- Column: VERIFICATION -->
+<div class="flex-shrink-0 w-80 glass-surface flex flex-col h-full">
+<div class="h-8 bg-surface-container-high px-3 flex items-center justify-between border-b border-outline-variant/30">
+<span class="font-label-caps text-label-caps text-on-surface">QA_VALIDATION</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">[01]</span>
+</div>
+<div class="flex-1 p-3 flex flex-col gap-3">
+<div class="p-3 bg-surface-container-low border border-outline-variant/40">
+<p class="font-body-md text-on-surface text-sm mb-3">Stress test the Sector 6 communication protocols under 80% load.</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container" style="font-size: 16px;">verified</span>
+<span class="font-code-sm text-on-surface-variant text-xs">Ready for review</span>
+</div>
+</div>
+<div class="border-2 border-dashed border-outline-variant/30 h-24 flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">add</span>
+<span class="font-label-caps text-[10px]">DROP_NEW_TASK</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT PANEL: SECURE MESSAGING (Obsidian Purple) -->
+<div class="col-span-4 glass-surface flex flex-col h-full relative overflow-hidden obsidian-purple-glow">
+<!-- AI Background Effect -->
+<div class="absolute inset-0 opacity-10 pointer-events-none">
+
+</div>
+<div class="h-10 bg-secondary-container/20 border-b border-secondary-container/30 px-4 flex items-center justify-between z-10">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-container" style="font-variation-settings: 'FILL' 1;">security</span>
+<span class="font-label-caps text-label-caps text-secondary-fixed">ENCRYPTED_COMMS</span>
+</div>
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-secondary-fixed cursor-pointer" style="font-size: 18px;">search</span>
+<span class="material-symbols-outlined text-secondary-fixed cursor-pointer" style="font-size: 18px;">more_vert</span>
+</div>
+</div>
+<!-- Messages List -->
+<div class="flex-1 p-4 flex flex-col gap-6 overflow-y-auto scrollbar-hide z-10">
+<!-- AI Agent Message -->
+<div class="flex flex-col gap-2 max-w-[90%]">
+<div class="flex items-center gap-2">
+<span class="font-label-caps text-[10px] text-secondary-fixed">AI_SYNTH_04</span>
+<span class="font-code-sm text-[10px] text-on-surface-variant">14:02:11</span>
+</div>
+<div class="p-3 bg-secondary-container/10 border-l-2 border-secondary-container text-sm text-on-surface font-body-md">
+                        Anomaly detected in Sector 6 power grid. Efficiency dropped by 4.2%. Recommending immediate reroute through auxiliary nodes. Shall I proceed with the redirection?
+                    </div>
+<div class="flex gap-2">
+<button class="px-3 py-1 bg-secondary-container text-on-secondary-container text-[10px] font-label-caps hover:bg-secondary transition-colors">APPROVE</button>
+<button class="px-3 py-1 border border-secondary-container text-secondary-container text-[10px] font-label-caps hover:bg-secondary-container/20 transition-colors">ANALYZE</button>
+</div>
+</div>
+<!-- User Message -->
+<div class="flex flex-col gap-2 max-w-[90%] self-end items-end">
+<div class="flex items-center gap-2">
+<span class="font-code-sm text-[10px] text-on-surface-variant">14:03:45</span>
+<span class="font-label-caps text-[10px] text-primary-fixed">ROOT_USER</span>
+</div>
+<div class="p-3 bg-surface-container-high border-r-2 border-primary text-sm text-on-surface font-body-md text-right">
+                        Negative. Maintain current load. I'll manually investigate the primary capacitor status. Stay on standby.
+                    </div>
+</div>
+<!-- AI Response -->
+<div class="flex flex-col gap-2 max-w-[90%]">
+<div class="flex items-center gap-2">
+<span class="font-label-caps text-[10px] text-secondary-fixed">AI_SYNTH_04</span>
+<span class="font-code-sm text-[10px] text-on-surface-variant">14:03:59</span>
+</div>
+<div class="p-3 bg-secondary-container/10 border-l-2 border-secondary-container text-sm text-on-surface font-body-md">
+                        Understood. Monitoring capacitor temperatures. Current status: 42°C and stable. <span class="inline-block w-2 h-4 bg-secondary-fixed ml-1 cursor-blink"></span>
+</div>
+</div>
+</div>
+<!-- Message Input Area -->
+<div class="p-4 bg-surface-container-low border-t border-outline-variant/30 z-10">
+<div class="relative flex items-center">
+<input class="w-full bg-surface-container-lowest border border-outline-variant/40 focus:border-secondary-container outline-none px-4 py-3 font-code-sm text-on-surface placeholder:text-on-surface-variant/40 pr-12" placeholder="TYPE SECURE MESSAGE..." type="text"/>
+<span class="material-symbols-outlined absolute right-3 text-secondary-container cursor-pointer">send</span>
+</div>
+<div class="mt-2 flex justify-between">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-on-surface-variant text-lg cursor-pointer hover:text-secondary-fixed">attach_file_add</span>
+<span class="material-symbols-outlined text-on-surface-variant text-lg cursor-pointer hover:text-secondary-fixed">mic</span>
+</div>
+<span class="font-code-sm text-[10px] text-on-surface-variant">SECURE_LINK: ENABLED</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Telemetry Footer Overlay (Simplified for Shell Context) -->
+<footer class="fixed bottom-0 left-0 w-full h-1 bg-surface-container-lowest z-50">
+<div class="h-full bg-primary-container/20 w-full overflow-hidden">
+<div class="h-full bg-primary-container animate-[progress_10s_linear_infinite]" style="width: 33%;"></div>
+</div>
+</footer>
+<script>
+        // Simple micro-interaction for the input field
+        const input = document.querySelector('input');
+        input.addEventListener('focus', () => {
+            input.parentElement.classList.add('obsidian-purple-glow');
+        });
+        input.addEventListener('blur', () => {
+            input.parentElement.classList.remove('obsidian-purple-glow');
+        });
+
+        // Dynamic timestamp update simulation
+        setInterval(() => {
+            const now = new Date();
+            const timeStr = now.getHours().toString().padStart(2, '0') + ':' + 
+                           now.getMinutes().toString().padStart(2, '0') + ':' + 
+                           now.getSeconds().toString().padStart(2, '0');
+            // Logic would go here to update any live timestamps
+        }, 1000);
+    </script>
+</body></html>

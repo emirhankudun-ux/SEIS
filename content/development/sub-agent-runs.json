@@ -39,6 +39,12 @@
       "focus": "Keep codex/premium-local-foundation absorbed as UIXAppTTR-local foundation intent, never as an independent branch.",
       "status": "active",
       "nextAction": "Port any future premium-local-foundation code through UIXAppTTR surfaces and document the migration in branch consolidation records."
+    },
+    {
+      "id": "memories-agent",
+      "focus": "Bring `emirhankudun-ux/memories` under SEIS as a child-agent or verified source before any visibility mutation.",
+      "status": "planned",
+      "nextAction": "Prepare source-intake review and provenance checklist before import, archive, transfer, delete, or retention decisions."
     }
   ]
 }

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS - SECTOR 5 LAB</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&amp;family=Space+Mono:wght@400;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..900&amp;family=Space+Mono:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #121414; }
+        ::-webkit-scrollbar-thumb { background: #3b494b; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00dbe9; }
+        
+        .glass-panel {
+            background: rgba(12, 15, 15, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(59, 73, 75, 0.5);
+        }
+        .cyan-glow {
+            text-shadow: 0 0 8px rgba(0, 219, 233, 0.4);
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 219, 233, 0.1);
+            position: absolute;
+            animation: scan 4s linear infinite;
+        }
+        @keyframes scan {
+            from { top: 0%; }
+            to { top: 100%; }
+        }
+        .pixel-grid {
+            background-image: radial-gradient(rgba(0, 219, 233, 0.1) 1px, transparent 0);
+            background-size: 20px 20px;
+        }
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: #00dbe9;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container-low": "#1a1c1c",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-secondary-fixed": "#320047",
+                        "surface-container-lowest": "#0c0f0f",
+                        "on-error-container": "#ffdad6",
+                        "inverse-surface": "#e2e2e2",
+                        "secondary": "#ebb2ff",
+                        "tertiary-container": "#dcd9d8",
+                        "surface-bright": "#37393a",
+                        "error": "#ffb4ab",
+                        "primary": "#dbfcff",
+                        "surface-container-high": "#282a2b",
+                        "on-tertiary-container": "#605e5e",
+                        "on-error": "#690005",
+                        "surface-container-highest": "#333535",
+                        "inverse-primary": "#006970",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "surface-container": "#1e2020",
+                        "on-primary-fixed": "#002022",
+                        "primary-fixed-dim": "#00dbe9",
+                        "surface-tint": "#00dbe9",
+                        "primary-fixed": "#7df4ff",
+                        "tertiary": "#f9f5f5",
+                        "on-background": "#e2e2e2",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-secondary": "#520071",
+                        "secondary-fixed": "#f8d8ff",
+                        "on-secondary-container": "#480064",
+                        "on-surface-variant": "#b9cacb",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "on-surface": "#e2e2e2",
+                        "primary-container": "#00f0ff",
+                        "on-primary": "#00363a",
+                        "on-tertiary": "#313030",
+                        "secondary-container": "#ce5dff",
+                        "outline": "#849495",
+                        "surface": "#121414",
+                        "error-container": "#93000a",
+                        "outline-variant": "#3b494b",
+                        "surface-dim": "#121414",
+                        "on-primary-container": "#006970",
+                        "inverse-on-surface": "#2f3131",
+                        "background": "#121414",
+                        "surface-variant": "#333535",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "on-primary-fixed-variant": "#004f54"
+                    },
+                    fontFamily: {
+                        "body-md": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "label-sm": ["Space Mono"],
+                        "headline-lg": ["JetBrains Mono"],
+                        "code-sm": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"]
+                    },
+                    fontSize: {
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 flex justify-between items-center w-full px-8 h-10">
+<div class="flex items-center gap-4">
+<span class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim font-bold">SEIS KERNEL OS</span>
+<div class="h-4 w-px bg-outline-variant/30"></div>
+<span class="font-code-sm text-code-sm text-on-surface-variant">SECTOR_05 // BILLING_LAB</span>
+</div>
+<nav class="hidden md:flex items-center gap-8 h-full">
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer text-[12px] tracking-[0.15em]" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer text-[12px] tracking-[0.15em]" href="#">TELEMETRY</a>
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 font-label-caps cursor-pointer text-[12px] tracking-[0.15em]" href="#">AGENTS</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer text-[12px] tracking-[0.15em]" href="#">NETWORK</a>
+</nav>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant hover:text-primary-fixed cursor-pointer transition-colors" data-icon="memory">memory</span>
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant hover:text-primary-fixed cursor-pointer transition-colors" data-icon="terminal">terminal</span>
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant hover:text-primary-fixed cursor-pointer transition-colors" data-icon="settings">settings</span>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 w-20 hover:w-64 transition-all duration-300 group">
+<div class="p-4 flex items-center gap-3 border-b border-outline-variant/10">
+<div class="w-10 h-10 flex-shrink-0 rounded-sm bg-secondary-container/20 flex items-center justify-center border border-secondary-fixed/30 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A futuristic profile portrait of a technician with digital interface glowing on their face, high-tech SEIS OS aesthetic, neon cyan and violet accents, minimalist dark background, professional cinematic lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDearNoXfyitVb-NMNASB4DxfsgoQr_yM4rFYsHzgoHaXj-LCXnwBXH08KhNGgU2cic2VlwfQNtv434SEhyt9dS2NY4THIjHyz7YwRtCZtPi-2olD_5g7vMmC6CdqPFoJmT3ph41dSNp-b8EsB1T1GFY8iJyrG8mm_PpNbSCABL2lU-7MmLyALlMtG5bKfWK9qkcjt1u1zuJBVMRaeCjaDP2gt5UxKwUa7bXz0t6aXvCnOUzbASoK7kcQQ1mzLlxTNfsAbTALs1dKW3"/>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 overflow-hidden whitespace-nowrap">
+<p class="font-label-caps text-secondary-fixed text-sm font-bold">ROOT_USER</p>
+<p class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</p>
+</div>
+</div>
+<nav class="flex-1 py-4 space-y-1">
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed transition-all duration-150">
+<span class="material-symbols-outlined w-12 text-center" data-icon="dashboard">dashboard</span>
+<span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-label-caps text-xs tracking-wider">DASHBOARD</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed">
+<span class="material-symbols-outlined w-12 text-center" data-icon="folder_open">folder_open</span>
+<span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-label-caps text-xs tracking-wider">FILESYSTEM</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed transition-all duration-150">
+<span class="material-symbols-outlined w-12 text-center" data-icon="terminal">terminal</span>
+<span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-label-caps text-xs tracking-wider">TERMINAL</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed transition-all duration-150">
+<span class="material-symbols-outlined w-12 text-center" data-icon="smart_toy">smart_toy</span>
+<span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-label-caps text-xs tracking-wider">AI_AGENTS</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed transition-all duration-150">
+<span class="material-symbols-outlined w-12 text-center" data-icon="cloud_queue">cloud_queue</span>
+<span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-label-caps text-xs tracking-wider">INFRASTRUCTURE</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed transition-all duration-150">
+<span class="material-symbols-outlined w-12 text-center" data-icon="list_alt">list_alt</span>
+<span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-label-caps text-xs tracking-wider">LOGS</span>
+</div>
+</nav>
+<div class="p-4 border-t border-outline-variant/10">
+<button class="w-full h-10 hidden group-hover:flex items-center justify-center bg-secondary-container text-on-secondary-container font-label-caps text-[10px] tracking-widest hover:bg-secondary hover:text-on-secondary transition-colors duration-200">
+                NEW_SESSION
+            </button>
+<div class="mt-4 flex flex-col gap-2">
+<div class="flex items-center px-4 py-2 cursor-pointer text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined w-12 text-center" data-icon="power_settings_new">power_settings_new</span>
+<span class="opacity-0 group-hover:opacity-100 font-label-caps text-[10px]">POWER</span>
+</div>
+<div class="flex items-center px-4 py-2 cursor-pointer text-on-surface-variant hover:text-primary-fixed transition-colors">
+<span class="material-symbols-outlined w-12 text-center" data-icon="lock">lock</span>
+<span class="opacity-0 group-hover:opacity-100 font-label-caps text-[10px]">LOCK</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-20 pt-10 h-screen overflow-hidden pixel-grid relative">
+<!-- Background Map Layer -->
+<div class="absolute inset-0 opacity-20 pointer-events-none">
+<div class="absolute inset-0 scanline"></div>
+<img class="w-full h-full object-cover" data-alt="A highly detailed global map with abstract data visualizations, representing a high-tech server network. The map uses neon cyan outlines on a deep charcoal background, with subtle glowing heatmaps indicating resource load density across continents. The aesthetic is purely technical, minimalist, and reminiscent of a sophisticated system dashboard." data-location="Global Cloud Infrastructure" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDVlWwQ2EMtXhlGmEoEpZpm3zw8QraKzGBkA083IoF84ttdSya9zoa3eLgzQlK91aM9PHyhLJEV0onnngcv_-ZrbwlmkwhC5z-89bPKBvfLNYcD3Z3bDQejhSyyJSLSzGWL-huK6cJLoTxlmZirwwcEyHjliT8-J6IQWdq3HySZJlZ0RVA1PHUM8lwalGDJ21ZZnaJeMdzl7AM8xr2o5aKkTxL_v7Pu2MTpAefAGzosqZ1LMd9m9GaEaNr9I4GLidWWNeVkBdsIqd1"/>
+</div>
+<div class="relative z-10 p-6 grid grid-cols-12 gap-4 h-full overflow-y-auto">
+<!-- Left Column: Resource Lab Controls -->
+<div class="col-span-12 lg:col-span-3 flex flex-col gap-4">
+<!-- Scaling Rules Card -->
+<div class="glass-panel rounded-sm flex flex-col">
+<div class="bg-primary-fixed px-3 py-1 flex justify-between items-center">
+<span class="text-[10px] font-bold text-on-primary-fixed tracking-widest uppercase">Scaling Rules</span>
+<span class="material-symbols-outlined text-[14px] text-on-primary-fixed" data-icon="tune">tune</span>
+</div>
+<div class="p-4 space-y-6">
+<div class="space-y-2">
+<div class="flex justify-between text-[11px] font-code-sm">
+<span class="text-on-surface-variant">CPU_THRESHOLD_MAX</span>
+<span class="text-primary-fixed-dim" id="cpu-val">85%</span>
+</div>
+<input class="w-full accent-primary-fixed bg-outline-variant/20 h-1 rounded-none appearance-none cursor-pointer" max="100" min="0" oninput="document.getElementById('cpu-val').innerText = this.value + '%'" type="range" value="85"/>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-[11px] font-code-sm">
+<span class="text-on-surface-variant">AUTO_INSTANCE_CEILING</span>
+<span class="text-primary-fixed-dim" id="inst-val">128</span>
+</div>
+<input class="w-full accent-primary-fixed bg-outline-variant/20 h-1 rounded-none appearance-none cursor-pointer" max="512" min="1" oninput="document.getElementById('inst-val').innerText = this.value" type="range" value="128"/>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-[11px] font-code-sm">
+<span class="text-on-surface-variant">LATENCY_SENSITIVITY</span>
+<span class="text-primary-fixed-dim" id="lat-val">25ms</span>
+</div>
+<input class="w-full accent-primary-fixed bg-outline-variant/20 h-1 rounded-none appearance-none cursor-pointer" max="200" min="5" oninput="document.getElementById('lat-val').innerText = this.value + 'ms'" type="range" value="25"/>
+</div>
+<div class="pt-2 border-t border-outline-variant/20">
+<button class="w-full py-2 bg-primary-fixed-dim text-background font-bold text-[11px] tracking-widest hover:bg-white transition-colors duration-200">DEVOPS_SYNC_UPDATE</button>
+</div>
+</div>
+</div>
+<!-- Active Clusters List -->
+<div class="glass-panel rounded-sm flex-1">
+<div class="bg-surface-container-highest px-3 py-1 flex justify-between items-center border-b border-outline-variant/20">
+<span class="text-[10px] font-bold text-on-surface tracking-widest uppercase">Active Clusters</span>
+<span class="text-[10px] text-primary-fixed-dim font-code-sm">LIVE_CONN: 05</span>
+</div>
+<div class="overflow-y-auto">
+<div class="p-3 border-b border-outline-variant/20 hover:bg-primary-container/10 cursor-pointer group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-code-sm text-[12px] text-primary-fixed">EU-WEST-01</span>
+<span class="text-[10px] px-1 bg-green-500/20 text-green-400 border border-green-500/30">OPTIMAL</span>
+</div>
+<div class="grid grid-cols-2 gap-2 text-[10px] text-on-surface-variant font-code-sm">
+<div>LOAD: <span class="text-on-surface">42.4%</span></div>
+<div>COST: <span class="text-on-surface">$0.04/s</span></div>
+</div>
+</div>
+<div class="p-3 border-b border-outline-variant/20 hover:bg-primary-container/10 cursor-pointer group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-code-sm text-[12px] text-primary-fixed">US-EAST-02</span>
+<span class="text-[10px] px-1 bg-yellow-500/20 text-yellow-400 border border-yellow-500/30">SCALING</span>
+</div>
+<div class="grid grid-cols-2 gap-2 text-[10px] text-on-surface-variant font-code-sm">
+<div>LOAD: <span class="text-on-surface">78.1%</span></div>
+<div>COST: <span class="text-on-surface">$1.12/s</span></div>
+</div>
+</div>
+<div class="p-3 border-b border-outline-variant/20 bg-error-container/5 border-l-2 border-error">
+<div class="flex justify-between items-start mb-2">
+<span class="font-code-sm text-[12px] text-error">AP-SOUTH-04</span>
+<span class="text-[10px] px-1 bg-error/20 text-error border border-error/30">THROTTLED</span>
+</div>
+<div class="grid grid-cols-2 gap-2 text-[10px] text-on-surface-variant font-code-sm">
+<div>LOAD: <span class="text-on-surface">99.8%</span></div>
+<div>COST: <span class="text-on-surface">$2.45/s</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Middle Column: Global Heatmap & Telemetry -->
+<div class="col-span-12 lg:col-span-6 flex flex-col gap-4">
+<!-- Heatmap Main Display -->
+<div class="glass-panel rounded-sm flex-1 relative overflow-hidden flex flex-col min-h-[400px]">
+<div class="absolute top-4 left-4 z-20 flex flex-col gap-1">
+<h1 class="font-headline-md text-headline-md text-primary-fixed tracking-tight cyan-glow">CLUSTER_HEATMAP</h1>
+<p class="font-code-sm text-code-sm text-on-surface-variant">REAL-TIME GLOBAL RESOURCE DISTRIBUTION</p>
+</div>
+<!-- Visualizer Integration -->
+<div class="absolute inset-0 z-0">
+
+</div>
+<!-- HUD Overlays -->
+<div class="absolute bottom-4 left-4 z-20 glass-panel p-3 border-primary-fixed/30 border-l-4">
+<div class="flex gap-6">
+<div class="flex flex-col">
+<span class="text-[9px] text-on-surface-variant font-label-caps">GLOBAL AVG LOAD</span>
+<span class="text-xl font-bold font-code-sm text-primary-fixed">64.2%</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[9px] text-on-surface-variant font-label-caps">PEAK REGION</span>
+<span class="text-xl font-bold font-code-sm text-secondary-fixed">ASIA-PAC</span>
+</div>
+</div>
+</div>
+<div class="absolute bottom-4 right-4 z-20 flex gap-2">
+<button class="w-10 h-10 glass-panel flex items-center justify-center text-primary-fixed hover:bg-primary-fixed hover:text-background transition-colors">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+<button class="w-10 h-10 glass-panel flex items-center justify-center text-primary-fixed hover:bg-primary-fixed hover:text-background transition-colors">
+<span class="material-symbols-outlined" data-icon="remove">remove</span>
+</button>
+</div>
+</div>
+<!-- Terminal Output -->
+<div class="glass-panel h-48 bg-black/90 font-code-sm p-4 text-[12px] overflow-hidden flex flex-col">
+<div class="flex justify-between items-center mb-2 border-b border-outline-variant/30 pb-1">
+<span class="text-primary-fixed-dim">SYSTEM_JOURNAL_DUMP</span>
+<span class="text-on-surface-variant">AUTO_REFRESH: ON</span>
+</div>
+<div class="flex-1 space-y-1 opacity-80 overflow-hidden" id="terminal-log">
+<p class="text-on-surface-variant">[14:02:11] <span class="text-primary-fixed">INFO:</span> Cluster EU-WEST-01 scaled to 12 nodes.</p>
+<p class="text-on-surface-variant">[14:02:45] <span class="text-secondary-fixed">WARN:</span> AP-SOUTH-04 resource saturation at 98%.</p>
+<p class="text-on-surface-variant">[14:03:02] <span class="text-primary-fixed-dim">DATA:</span> Predicting burn-rate spike in T-minus 120s.</p>
+<p class="text-on-surface-variant">[14:03:15] <span class="text-on-surface">SYS:</span> Executing automated load balancer re-routing...</p>
+<p class="text-on-surface-variant">[14:03:22] <span class="text-primary-fixed">INFO:</span> Traffic parity achieved in Sector 5.5.</p>
+<p class="text-on-surface">root@seis-sector-5:~$ <span class="terminal-cursor"></span></p>
+</div>
+</div>
+</div>
+<!-- Right Column: Billing & Predictive Analytics -->
+<div class="col-span-12 lg:col-span-3 flex flex-col gap-4">
+<!-- Billing Analytics Card -->
+<div class="glass-panel rounded-sm flex flex-col">
+<div class="bg-primary-container px-3 py-1 flex justify-between items-center">
+<span class="text-[10px] font-bold text-on-primary-container tracking-widest uppercase">Billing Analytics</span>
+<span class="material-symbols-outlined text-[14px] text-on-primary-container" data-icon="payments">payments</span>
+</div>
+<div class="p-4 space-y-4">
+<div class="flex flex-col items-center justify-center py-4 border-b border-outline-variant/20">
+<span class="text-[10px] text-on-surface-variant mb-1 font-label-caps">REAL-TIME COST / SEC</span>
+<div class="flex items-baseline gap-1">
+<span class="text-primary-fixed text-3xl font-extrabold font-code-sm tracking-tighter" id="cost-display">$4.821</span>
+<span class="text-primary-fixed-dim text-sm">USD</span>
+</div>
+</div>
+<!-- Mini Graph Container -->
+<div class="h-32 relative flex items-end gap-1 px-1">
+<!-- Simulated predictive graph -->
+<div class="flex-1 bg-primary-fixed/20 h-[30%] hover:bg-primary-fixed transition-all" title="Past"></div>
+<div class="flex-1 bg-primary-fixed/20 h-[35%] hover:bg-primary-fixed transition-all"></div>
+<div class="flex-1 bg-primary-fixed/20 h-[45%] hover:bg-primary-fixed transition-all"></div>
+<div class="flex-1 bg-primary-fixed/20 h-[40%] hover:bg-primary-fixed transition-all"></div>
+<div class="flex-1 bg-primary-fixed h-[55%] shadow-[0_0_10px_rgba(0,219,233,0.5)]"></div>
+<div class="flex-1 bg-secondary-container/40 h-[65%] border-t-2 border-secondary-fixed border-dashed" title="Predicted"></div>
+<div class="flex-1 bg-secondary-container/40 h-[75%] border-t-2 border-secondary-fixed border-dashed"></div>
+<div class="flex-1 bg-secondary-container/40 h-[90%] border-t-2 border-secondary-fixed border-dashed"></div>
+<div class="flex-1 bg-secondary-container/40 h-[85%] border-t-2 border-secondary-fixed border-dashed"></div>
+<div class="absolute top-0 left-0 text-[8px] text-secondary-fixed font-bold uppercase tracking-widest">Predictive Burn Rate ↑</div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-center text-[11px] font-code-sm">
+<span class="text-on-surface-variant">PROJECTED_DAILY</span>
+<span class="text-on-surface">$416,211.00</span>
+</div>
+<div class="flex justify-between items-center text-[11px] font-code-sm">
+<span class="text-on-surface-variant">BUDGET_REMAINING</span>
+<span class="text-error">12.4%</span>
+</div>
+<div class="w-full h-1 bg-outline-variant/30 relative">
+<div class="absolute inset-y-0 left-0 bg-error w-[87.6%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Resource Efficiency Gauge -->
+<div class="glass-panel rounded-sm p-4">
+<div class="flex justify-between items-center mb-4">
+<span class="text-[10px] font-bold text-on-surface tracking-widest uppercase">Efficiency Index</span>
+<div class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="relative w-32 h-32 flex items-center justify-center">
+<!-- Gauge Background SVG -->
+<svg class="w-full h-full rotate-[-90deg]" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="none" r="45" stroke="#3b494b" stroke-dasharray="283" stroke-dashoffset="70" stroke-width="8"></circle>
+<circle cx="50" cy="50" fill="none" r="45" stroke="#00dbe9" stroke-dasharray="283" stroke-dashoffset="120" stroke-linecap="butt" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-2xl font-bold font-code-sm text-on-surface">94.2</span>
+<span class="text-[9px] text-on-surface-variant uppercase tracking-tighter">Grade: A++</span>
+</div>
+</div>
+<p class="text-[10px] text-center text-on-surface-variant mt-2 px-4 font-code-sm">Current utilization-to-cost ratio exceeds baseline optimization by 14.2%.</p>
+</div>
+</div>
+<!-- Alerts / Action Center -->
+<div class="glass-panel rounded-sm flex-1 p-3">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-[16px] text-error" data-icon="warning">warning</span>
+<span class="text-[10px] font-bold tracking-widest">CRITICAL ALERTS</span>
+</div>
+<div class="space-y-2">
+<div class="bg-error/10 border border-error/20 p-2 text-[10px] font-code-sm text-error">
+                            DETECTED: Unusual latency spike in US-EAST-02. Check scaling script.
+                        </div>
+<div class="bg-primary-container/10 border border-primary-container/20 p-2 text-[10px] font-code-sm text-primary-fixed">
+                            RECAP: Auto-optimization saved $142 in the last 10 minutes.
+                        </div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Micro-interactions for live feeling
+        const costEl = document.getElementById('cost-display');
+        let currentCost = 4.821;
+        
+        setInterval(() => {
+            currentCost += (Math.random() * 0.05) - 0.02;
+            costEl.innerText = '$' + currentCost.toFixed(3);
+        }, 800);
+
+        // Simulated log updates
+        const logEl = document.getElementById('terminal-log');
+        const phrases = [
+            "INFO: Cache hit ratio 99.4%",
+            "SYS: Purging temp objects from storage-01",
+            "NETWORK: Handshake confirmed with Node-88",
+            "WARN: High memory pressure in zone-gamma",
+            "DATA: Synchronizing billing vectors..."
+        ];
+
+        setInterval(() => {
+            const p = document.createElement('p');
+            p.className = 'text-on-surface-variant animate-pulse';
+            const timestamp = new Date().toLocaleTimeString('en-GB', { hour12: false });
+            p.innerHTML = `[${timestamp}] <span class="text-primary-fixed-dim">ASYNC:</span> ${phrases[Math.floor(Math.random() * phrases.length)]}`;
+            logEl.insertBefore(p, logEl.lastElementChild);
+            if(logEl.children.length > 8) logEl.removeChild(logEl.firstChild.nextElementSibling);
+        }, 5000);
+    </script>
+</body></html>

@@ -2,17 +2,62 @@
 (function () {
   "use strict";
 
-  const CACHE_NAME = "ek-portfolio-v1";
+  const CACHE_NAME = "seis-product-foundation-v14";
 
   const PRECACHE = [
     "./",
     "./index.html",
     "./style.css",
+    "./styles.css",
     "./script.js",
+    "./app.js",
+    "./desktop.html",
+    "./desktop.css",
+    "./desktop.js",
     "./translations.json",
     "./manifest.json",
+    "./manifest.webmanifest",
     "./site-config.json",
-    "./favicon.svg"
+    "./favicon.svg",
+    "./favicon.ico",
+    "./seis-code.html",
+    "./seis-code.css",
+    "./seis-code.js",
+    "./seis-github-coding-lab.html",
+    "./seis-linux-replica.html",
+    "./seis-linux-replica-public-demo.html",
+    "./seis-demo-flight-deck.html",
+    "./wow-gallery.html",
+    "./wow-gallery.css",
+    "./wow-gallery.js",
+    "./website/index.html",
+    "./website/seis-ai.html",
+    "./website/seis-os.html",
+    "./website/seis-code.html",
+    "./website/seis-design.html",
+    "./website/seis-search.html",
+    "./website/seis-cloud.html",
+    "./website/seis-store.html",
+    "./website/seis-agents.html",
+    "./website/product-page.css",
+    "./website/product-page.js",
+    "./wow-pages/wow-catalog.json",
+    "./wow-pages/sub-agent-evidence-summary.json",
+    "./mythic-gacha.html",
+    "./mythic-gacha.css",
+    "./mythic-gacha.js",
+    "./showcase/nature.html",
+    "./showcase/still-life.html",
+    "./showcase/materials.html",
+    "./showcase/metal-parts.html",
+    "./showcase/video-hero.css",
+    "./showcase/video-hero.js",
+    "./showcase/video-heroes.json",
+    "./public/media/mythic/shan-hai-creature-atlas.png",
+    "./src/config/routes.json",
+    "./src/styles/base.css",
+    "./src/styles/motion.css",
+    "./src/styles/responsive.css"
   ];
 
   self.addEventListener("install", function (event) {

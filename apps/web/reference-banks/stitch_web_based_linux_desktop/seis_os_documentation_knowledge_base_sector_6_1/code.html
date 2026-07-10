@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS | Sector 6 Documentation</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --primary: #dbfcff;
+            --surface: #0c0f0f;
+        }
+        body {
+            background-color: var(--surface);
+            color: #e2e2e2;
+            font-family: 'JetBrains Mono', monospace;
+            overflow: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            font-size: 18px;
+        }
+        .glass-panel {
+            background: rgba(12, 15, 15, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(59, 73, 75, 0.3);
+        }
+        .active-row {
+            background: rgba(0, 219, 233, 0.1);
+            border-left: 2px solid #00dbe9;
+        }
+        .code-block {
+            background: #060808;
+            border: 1px solid #3b494b;
+            position: relative;
+        }
+        .code-block::before {
+            content: "CODE_EXEC";
+            position: absolute;
+            top: -10px;
+            right: 12px;
+            background: #00dbe9;
+            color: #002022;
+            font-size: 9px;
+            padding: 0 4px;
+            font-weight: 800;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #3b494b; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00dbe9; }
+
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 219, 233, 0.1);
+            position: absolute;
+            top: 0;
+            z-index: 50;
+            pointer-events: none;
+            animation: scan 8s linear infinite;
+        }
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#dbfcff",
+                        "surface-container-highest": "#333535",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "on-primary-fixed": "#002022",
+                        "inverse-primary": "#006970",
+                        "on-tertiary": "#313030",
+                        "surface-container-high": "#282a2b",
+                        "on-primary-fixed-variant": "#004f54",
+                        "outline-variant": "#3b494b",
+                        "on-tertiary-container": "#605e5e",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "on-error": "#690005",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "tertiary-container": "#dcd9d8",
+                        "secondary-container": "#ce5dff",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "background": "#121414",
+                        "surface-container": "#1e2020",
+                        "on-surface": "#e2e2e2",
+                        "on-error-container": "#ffdad6",
+                        "on-surface-variant": "#b9cacb",
+                        "on-secondary": "#520071",
+                        "inverse-on-surface": "#2f3131",
+                        "on-primary-container": "#006970",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "secondary-fixed": "#f8d8ff",
+                        "primary-fixed-dim": "#00dbe9",
+                        "inverse-surface": "#e2e2e2",
+                        "tertiary-fixed": "#e5e2e1",
+                        "surface-tint": "#00dbe9",
+                        "surface-bright": "#37393a",
+                        "on-secondary-container": "#480064",
+                        "tertiary": "#f9f5f5",
+                        "primary-fixed": "#7df4ff",
+                        "on-background": "#e2e2e2",
+                        "secondary": "#ebb2ff",
+                        "outline": "#849495",
+                        "on-secondary-fixed": "#320047",
+                        "surface": "#121414",
+                        "surface-dim": "#121414",
+                        "surface-container-lowest": "#0c0f0f",
+                        "primary-container": "#00f0ff",
+                        "surface-container-low": "#1a1c1c",
+                        "error": "#ffb4ab",
+                        "on-primary": "#00363a",
+                        "surface-variant": "#333535"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["JetBrains Mono"],
+                        "headline-lg": ["JetBrains Mono"],
+                        "body-md": ["JetBrains Mono"],
+                        "label-sm": ["Space Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "code-sm": ["JetBrains Mono"],
+                        "label-caps": ["Space Mono"]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="flex flex-col h-screen select-none">
+<div class="scanline"></div>
+<!-- TopNavBar -->
+<header class="bg-surface-container-lowest/80 backdrop-blur-xl flex justify-between items-center w-full px-8 h-10 border-b border-outline-variant/30 z-50 fixed top-0">
+<div class="flex items-center gap-4">
+<span class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</span>
+<span class="text-outline-variant text-[10px]">//</span>
+<span class="text-on-surface-variant font-label-caps text-[11px] tracking-tighter">SECTOR_06_DOCS</span>
+</div>
+<nav class="hidden md:flex gap-8 items-center h-full">
+<a class="text-on-surface-variant font-label-caps text-[11px] hover:text-primary-fixed transition-colors duration-200" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-caps text-[11px] hover:text-primary-fixed transition-colors duration-200" href="#">TELEMETRY</a>
+<a class="text-on-surface-variant font-label-caps text-[11px] hover:text-primary-fixed transition-colors duration-200" href="#">AGENTS</a>
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 font-label-caps text-[11px]" href="#">NETWORK</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant cursor-pointer active:opacity-70 hover:text-primary-fixed">memory</button>
+<button class="material-symbols-outlined text-on-surface-variant cursor-pointer active:opacity-70 hover:text-primary-fixed">terminal</button>
+<button class="material-symbols-outlined text-on-surface-variant cursor-pointer active:opacity-70 hover:text-primary-fixed">settings</button>
+</div>
+</header>
+<div class="flex flex-1 pt-10 h-screen overflow-hidden">
+<!-- SideNavBar (Minimal State) -->
+<aside class="bg-surface-container-lowest/90 backdrop-blur-2xl fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col border-r border-outline-variant/20 w-16 hover:w-64 transition-all duration-300 group overflow-hidden">
+<div class="flex flex-col flex-1 py-4">
+<div class="group flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed">
+<span class="material-symbols-outlined min-w-[32px]" data-icon="dashboard">dashboard</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-label-caps text-[11px]">DASHBOARD</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20">
+<span class="material-symbols-outlined min-w-[32px]" data-icon="folder_open">folder_open</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-label-caps text-[11px]">FILESYSTEM</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20">
+<span class="material-symbols-outlined min-w-[32px]" data-icon="terminal">terminal</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-label-caps text-[11px]">TERMINAL</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20">
+<span class="material-symbols-outlined min-w-[32px]" data-icon="smart_toy">smart_toy</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-label-caps text-[11px]">AI_AGENTS</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20">
+<span class="material-symbols-outlined min-w-[32px]" data-icon="cloud_queue">cloud_queue</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-label-caps text-[11px]">INFRASTRUCTURE</span>
+</div>
+</div>
+<div class="p-4 border-t border-outline-variant/10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary-container/20 flex items-center justify-center text-primary-fixed border border-primary-fixed/30 font-bold text-[10px]">R</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity overflow-hidden">
+<div class="font-label-caps text-[10px] text-secondary-fixed">ROOT_USER</div>
+<div class="font-code-sm text-[9px] text-on-surface-variant">SEIS-01</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Workspace (Three Pane) -->
+<main class="ml-16 w-full h-full flex overflow-hidden">
+<!-- Left Pane: File Tree -->
+<section class="w-64 glass-panel border-r border-outline-variant/30 flex flex-col flex-shrink-0">
+<div class="p-4 border-b border-outline-variant/20 bg-surface-container-low/50 flex justify-between items-center">
+<span class="font-label-caps text-[10px] tracking-wider text-outline">SYSTEM_DOCS</span>
+<span class="material-symbols-outlined text-[14px] text-outline cursor-pointer">filter_list</span>
+</div>
+<div class="flex-1 overflow-y-auto py-2">
+<!-- Directory: CORE -->
+<div class="px-4 py-1 flex items-center gap-2 text-primary-fixed cursor-pointer">
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+<span class="material-symbols-outlined text-[16px]">folder</span>
+<span class="text-[12px] font-medium">CORE</span>
+</div>
+<div class="ml-6 border-l border-outline-variant/20">
+<div class="pl-4 py-1 flex items-center gap-2 active-row text-primary-fixed cursor-pointer">
+<span class="material-symbols-outlined text-[16px]">description</span>
+<span class="text-[12px]">Kernel_Architecture_v4.md</span>
+</div>
+<div class="pl-4 py-1 flex items-center gap-2 text-on-surface-variant hover:text-on-surface cursor-pointer">
+<span class="material-symbols-outlined text-[16px]">description</span>
+<span class="text-[12px]">Entropy_Sync.md</span>
+</div>
+<div class="pl-4 py-1 flex items-center gap-2 text-on-surface-variant hover:text-on-surface cursor-pointer">
+<span class="material-symbols-outlined text-[16px]">description</span>
+<span class="text-[12px]">Process_Lifecycle.md</span>
+</div>
+</div>
+<!-- Directory: AGENTS -->
+<div class="px-4 py-2 mt-2 flex items-center gap-2 text-on-surface-variant cursor-pointer">
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="material-symbols-outlined text-[16px]">folder</span>
+<span class="text-[12px] font-medium">AGENTS</span>
+</div>
+<!-- Directory: NETWORK -->
+<div class="px-4 py-2 flex items-center gap-2 text-on-surface-variant cursor-pointer">
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="material-symbols-outlined text-[16px]">folder</span>
+<span class="text-[12px] font-medium">NETWORK</span>
+</div>
+</div>
+</section>
+<!-- Center Pane: Markdown Editor -->
+<section class="flex-1 glass-panel flex flex-col min-w-0">
+<!-- Editor Header -->
+<div class="h-10 px-6 border-b border-outline-variant/30 flex items-center justify-between bg-surface-container-lowest">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed text-[16px]">markdown</span>
+<span class="text-[12px] font-bold text-primary-fixed tracking-tight">Kernel_Architecture_v4.md</span>
+</div>
+<span class="bg-primary-fixed/10 text-primary-fixed-dim text-[9px] px-2 py-0.5 rounded border border-primary-fixed/20 font-bold">STABLE_BRANCH</span>
+</div>
+<div class="flex items-center gap-3">
+<button class="text-on-surface-variant hover:text-primary-fixed transition-colors"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+<button class="text-on-surface-variant hover:text-primary-fixed transition-colors"><span class="material-symbols-outlined text-[18px]">share</span></button>
+<button class="text-on-surface-variant hover:text-primary-fixed transition-colors"><span class="material-symbols-outlined text-[18px]">more_vert</span></button>
+</div>
+</div>
+<!-- Markdown Content -->
+<div class="flex-1 overflow-y-auto p-12 max-w-4xl mx-auto w-full">
+<h1 class="font-headline-lg text-headline-lg text-primary-fixed mb-6 border-b border-outline-variant/20 pb-4">Kernel Architecture v4.0</h1>
+<p class="font-body-lg text-on-surface mb-8 leading-relaxed opacity-90">
+                        The SEIS OS Kernel v4 utilizes a decentralized micro-kernel structure designed for extreme information density and sub-millisecond response times. It integrates a native entropy distribution layer and AI-aware scheduling.
+                    </p>
+<div class="grid grid-cols-2 gap-8 mb-10">
+<div class="border border-primary-fixed/20 bg-primary-fixed/5 p-4 rounded">
+<div class="flex items-center gap-2 mb-2 text-primary-fixed">
+<span class="material-symbols-outlined text-[16px]">bolt</span>
+<span class="text-[11px] font-bold">LATENCY_TARGET</span>
+</div>
+<div class="text-[24px] font-bold text-white">0.02ms</div>
+<div class="h-1 w-full bg-surface-container-highest mt-2 rounded-full overflow-hidden">
+<div class="h-full bg-primary-fixed w-[92%]"></div>
+</div>
+</div>
+<div class="border border-secondary-fixed/20 bg-secondary-fixed/5 p-4 rounded">
+<div class="flex items-center gap-2 mb-2 text-secondary-fixed">
+<span class="material-symbols-outlined text-[16px]">memory</span>
+<span class="text-[11px] font-bold">MEMORY_FOOTPRINT</span>
+</div>
+<div class="text-[24px] font-bold text-white">128MB</div>
+<div class="h-1 w-full bg-surface-container-highest mt-2 rounded-full overflow-hidden">
+<div class="h-full bg-secondary-fixed w-[35%]"></div>
+</div>
+</div>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-4">I. Core Subsystems</h2>
+<p class="font-body-md text-on-surface-variant mb-6">
+                        The system is divided into four critical quadrants that manage low-level abstractions and hardware interfaces.
+                    </p>
+<!-- Code Block -->
+<div class="code-block p-6 mb-8 rounded font-code-sm text-code-sm overflow-x-auto">
+<div class="flex flex-col gap-1">
+<div><span class="text-[#ce5dff]">struct</span> <span class="text-[#00dbe9]">KernelSubsystem</span> {</div>
+<div class="pl-4"><span class="text-[#849495]">uint64_t</span> subsystem_id;</div>
+<div class="pl-4"><span class="text-[#849495]">char*</span> name;</div>
+<div class="pl-4"><span class="text-[#849495]">void*</span> (*init_vector)(<span class="text-[#849495]">void</span>);</div>
+<div class="pl-4"><span class="text-[#849495]">bool</span> is_active;</div>
+<div>};</div>
+<div class="mt-4"><span class="text-[#849495]">/* Initialize the SECTOR_6 protocols */</span></div>
+<div><span class="text-[#ce5dff]">void</span> <span class="text-[#00dbe9]">boot_sector_6</span>() {</div>
+<div class="pl-4 text-[#7df4ff]">sys_log(<span class="text-[#ebb2ff]">"INITIATING_OS_HANDSHAKE..."</span>);</div>
+<div class="pl-4 text-[#7df4ff]">execute_hyper_jump(<span class="text-[#ebb2ff]">0xFFA01</span>);</div>
+<div>}</div>
+</div>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-4">II. Diagram: Process Flow</h2>
+<div class="relative w-full h-64 border border-outline-variant/30 mb-8 overflow-hidden rounded bg-surface-container-lowest">
+
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="flex flex-col items-center gap-4">
+<div class="w-32 h-10 border border-primary-fixed text-primary-fixed flex items-center justify-center font-bold text-[10px] bg-primary-fixed/5">USER_INPUT</div>
+<span class="material-symbols-outlined text-primary-fixed animate-bounce">south</span>
+<div class="w-48 h-12 border border-secondary-fixed text-secondary-fixed flex items-center justify-center font-bold text-[11px] bg-secondary-fixed/5">KERNEL_SCHEDULER</div>
+<span class="material-symbols-outlined text-secondary-fixed">south</span>
+<div class="w-32 h-10 border border-outline-variant text-outline flex items-center justify-center font-bold text-[10px] bg-outline-variant/5">HARDWARE</div>
+</div>
+</div>
+</div>
+<p class="font-body-md text-on-surface-variant mb-6 leading-relaxed">
+                        Data packets are routed through the scheduler with priority given to AI-Agent telemetry streams. Manual overrides are only permitted through the root terminal with level-7 clearance.
+                    </p>
+</div>
+</section>
+<!-- Right Pane: Metadata & TOC -->
+<section class="w-72 glass-panel border-l border-outline-variant/30 flex flex-col flex-shrink-0">
+<!-- Metadata Header -->
+<div class="p-4 border-b border-outline-variant/20">
+<div class="flex items-center justify-between mb-4">
+<span class="font-label-caps text-[10px] text-outline">METADATA_NODE</span>
+<span class="material-symbols-outlined text-primary-fixed text-[14px]">info</span>
+</div>
+<div class="space-y-4">
+<div>
+<div class="text-[9px] text-on-surface-variant font-bold mb-1">LAST_UPDATED</div>
+<div class="text-[12px] font-mono text-white">2024.08.21 — 04:32:11 UTC</div>
+</div>
+<div>
+<div class="text-[9px] text-on-surface-variant font-bold mb-1">CONTRIBUTORS</div>
+<div class="flex -space-x-2 mt-2">
+<div class="w-8 h-8 rounded-full border border-surface bg-surface-container-high overflow-hidden" data-alt="Avatar of a technical operator with glowing blue ocular implants and cybernetic facial enhancements, dark gritty cyberpunk style.">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of a futuristic hacker with neon blue glowing eye-enhancements, wearing a high-collared techwear jacket against a blurred background of data streams. The lighting is cold and clinical, emphasizing high-tech aesthetics and precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCygzHTOsZIsOhr1qBk1rjtZe4jceR6Oq4u-bJJIu5kn0RjxEqM6E0iFBiHIjH8uqqfbU9gPDdBKqo8HlffNw_iqiOgAAwakPFa2F2TA58_k97TXSdVA6Lyi6wDTvl_zqAfm0cdVcZT6VDoOEeq1PtM_RmCkO-makciD6tc1A6CVZa22Eg1bemLEcpyz2dHrD_bVRi1f9lW8SSQX52RAAHWASBqC8gYNCkP2-RxGN69Unql5GOICe9H6CwmiQMvu_d7IoLn_Hyy4hyP"/>
+</div>
+<div class="w-8 h-8 rounded-full border border-surface bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Futuristic cyborg character with silver hair and a tactical headset, glowing green elements on their neck. The image is hyper-detailed with a focus on mechanical textures and professional digital art style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL0aRvAHqd1w5Goy3sqQXUMe4hl6-kzSuPfLNzoR_4pGoSginjb1y5gHNK6-3iPO-ITEW2mdmWDrbWf_ZC0xNt_9oKNxGf_arKp98urB_-8c2xzI5u9_ChStxSehv5yh9NhK0EsIFOYg9JsOzdTcUpwEy1Gcrc9LFqKNbsexOaMG0vo5vNUwC842KSauny0Jq07h9tNYL1anyTf-gm_Kk8ThKb9SdkccKxzHtaLgxSyntSWpvOWL2sot7NmsD7L5sEAys_tako1ujk"/>
+</div>
+<div class="w-8 h-8 rounded-full border border-surface bg-surface-container-high flex items-center justify-center text-[10px] font-bold text-on-surface-variant bg-surface-container-highest">
+                                    +4
+                                </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Table of Contents -->
+<div class="flex-1 p-4">
+<span class="font-label-caps text-[10px] text-outline block mb-4">TABLE_OF_CONTENTS</span>
+<ul class="space-y-3">
+<li class="flex items-center gap-2 group cursor-pointer">
+<div class="w-1 h-1 bg-primary-fixed rounded-full"></div>
+<span class="text-[11px] text-primary-fixed group-hover:underline">Kernel Architecture</span>
+</li>
+<li class="flex items-center gap-2 group cursor-pointer ml-4">
+<div class="w-1 h-1 bg-outline-variant rounded-full"></div>
+<span class="text-[11px] text-on-surface-variant group-hover:text-primary-fixed transition-colors">I. Core Subsystems</span>
+</li>
+<li class="flex items-center gap-2 group cursor-pointer ml-4">
+<div class="w-1 h-1 bg-outline-variant rounded-full"></div>
+<span class="text-[11px] text-on-surface-variant group-hover:text-primary-fixed transition-colors">II. Process Flow</span>
+</li>
+<li class="flex items-center gap-2 group cursor-pointer ml-4">
+<div class="w-1 h-1 bg-outline-variant rounded-full"></div>
+<span class="text-[11px] text-on-surface-variant group-hover:text-primary-fixed transition-colors">III. Entropy Sink</span>
+</li>
+<li class="flex items-center gap-2 group cursor-pointer">
+<div class="w-1 h-1 bg-outline-variant rounded-full"></div>
+<span class="text-[11px] text-on-surface-variant group-hover:text-primary-fixed transition-colors">Memory Management</span>
+</li>
+<li class="flex items-center gap-2 group cursor-pointer">
+<div class="w-1 h-1 bg-outline-variant rounded-full"></div>
+<span class="text-[11px] text-on-surface-variant group-hover:text-primary-fixed transition-colors">Protocol Specs</span>
+</li>
+</ul>
+</div>
+<!-- Footer Stats -->
+<div class="p-4 border-t border-outline-variant/20 bg-surface-container-low/30 space-y-2">
+<div class="flex justify-between text-[10px]">
+<span class="text-on-surface-variant">WORDS:</span>
+<span class="text-white">2,481</span>
+</div>
+<div class="flex justify-between text-[10px]">
+<span class="text-on-surface-variant">READ_TIME:</span>
+<span class="text-white">14 MIN</span>
+</div>
+<div class="flex justify-between text-[10px]">
+<span class="text-on-surface-variant">REVISION:</span>
+<span class="text-white">v4.0.0-BETA</span>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Status Bar (Bottom) -->
+<footer class="h-6 bg-surface-container-lowest border-t border-outline-variant/30 px-6 flex items-center justify-between z-50">
+<div class="flex items-center gap-4 text-[9px] font-mono tracking-widest">
+<div class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
+<span class="text-on-surface-variant">OS_STABLE</span>
+</div>
+<span class="text-outline-variant">|</span>
+<span class="text-on-surface-variant">SEC_LVL: 7</span>
+<span class="text-outline-variant">|</span>
+<span class="text-on-surface-variant">SYNC_READY</span>
+</div>
+<div class="flex items-center gap-4 text-[9px] font-mono">
+<span class="text-primary-fixed">UTF-8</span>
+<span class="text-on-surface-variant">LN 128, COL 14</span>
+<span class="text-secondary-fixed">@ SECTOR_06</span>
+</div>
+</footer>
+<script>
+        // Simple interactive elements
+        document.querySelectorAll('.cursor-pointer').forEach(el => {
+            el.addEventListener('mousedown', () => el.style.opacity = '0.7');
+            el.addEventListener('mouseup', () => el.style.opacity = '1');
+        });
+
+        // Simulating some log movement in console
+        console.log("%c SEIS KERNEL OS %c DOCUMENTATION LOADED ", 
+            "background: #00dbe9; color: #002022; font-weight: bold; padding: 2px 4px;",
+            "background: #333535; color: #dbfcff; padding: 2px 4px;");
+    </script>
+</body></html>

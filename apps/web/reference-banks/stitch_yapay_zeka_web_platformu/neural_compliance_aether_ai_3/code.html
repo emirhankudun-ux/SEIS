@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Neural Compliance | Aether AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --obsidian: #020408;
+            --glass-bg: rgba(10, 14, 26, 0.6);
+            --cyan-glow: rgba(0, 219, 233, 0.25);
+        }
+        body {
+            background-color: var(--obsidian);
+            color: #e1e2e7;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 1px solid transparent;
+            background: linear-gradient(135px, rgba(0, 219, 233, 0.3), transparent 40%) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: destination-out;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        .glow-hover:hover {
+            box-shadow: 0 0 30px var(--cyan-glow);
+            border-color: #00dbe9;
+            transition: all 0.3s ease;
+        }
+        .grid-pattern {
+            background-image: radial-gradient(circle, #ffffff08 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        .pulse-dot {
+            box-shadow: 0 0 10px #00dbe9;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .meter-fill {
+            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#1d2023",
+                        "on-error": "#690005",
+                        "on-tertiary-container": "#5d5f5f",
+                        "surface-container-low": "#191c1f",
+                        "secondary-container": "#b600f8",
+                        "primary-fixed": "#7df4ff",
+                        "on-secondary-fixed": "#320047",
+                        "surface-bright": "#37393d",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "on-primary": "#00363a",
+                        "inverse-surface": "#e1e2e7",
+                        "surface-container-lowest": "#0c0e12",
+                        "on-background": "#e1e2e7",
+                        "surface": "#111417",
+                        "tertiary-fixed": "#e2e2e2",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "surface-container-high": "#282a2e",
+                        "secondary-fixed": "#f8d8ff",
+                        "outline-variant": "#3b494b",
+                        "outline": "#849495",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "primary": "#dbfcff",
+                        "tertiary-container": "#d9d9d9",
+                        "inverse-primary": "#006970",
+                        "tertiary": "#f5f5f5",
+                        "surface-dim": "#111417",
+                        "on-secondary": "#520072",
+                        "surface-container-highest": "#323539",
+                        "on-primary-fixed-variant": "#004f54",
+                        "error-container": "#93000a",
+                        "on-tertiary": "#2f3131",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-surface-variant": "#b9cacb",
+                        "error": "#ffb4ab",
+                        "on-primary-container": "#006970",
+                        "background": "#111417",
+                        "surface-tint": "#00dbe9",
+                        "primary-container": "#00f0ff",
+                        "inverse-on-surface": "#2e3134",
+                        "secondary": "#ebb2ff",
+                        "on-primary-fixed": "#002022",
+                        "surface-variant": "#323539",
+                        "on-secondary-container": "#fff6fc",
+                        "on-error-container": "#ffdad6",
+                        "on-surface": "#e1e2e7",
+                        "primary-fixed-dim": "#00dbe9",
+                        "on-tertiary-fixed": "#1a1c1c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "section-gap": "120px",
+                        "container-max": "1280px",
+                        "unit": "8px",
+                        "margin-desktop": "64px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "mono-label": ["JetBrains Mono"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "mono-code": ["JetBrains Mono"],
+                        "headline-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "display-lg-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="grid-pattern min-h-screen">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_40px_-15px_rgba(0,219,233,0.15)]">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-16">
+<div class="font-display-lg text-[24px] font-extrabold tracking-tighter text-primary-fixed-dim">
+                AETHER AI
+            </div>
+<div class="hidden md:flex items-center gap-8">
+<a class="font-body-md text-body-md text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Models</a>
+<a class="font-body-md text-body-md text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Infrastructure</a>
+<a class="font-body-md text-body-md text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Compute</a>
+<a class="font-body-md text-body-md text-primary-fixed-dim font-semibold border-b-2 border-primary-fixed-dim pb-1" href="#">Enterprise</a>
+<a class="font-body-md text-body-md text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Pricing</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="font-mono-label text-mono-label text-on-tertiary-fixed-variant px-4 py-2 hover:text-primary-fixed transition-colors duration-300">Sign In</button>
+<button class="bg-primary-container text-on-primary px-6 py-2 rounded-sm font-semibold active:scale-95 transition-transform">Get Started</button>
+</div>
+</div>
+</nav>
+<!-- SideNavBar (Suppressed for high-level dashboard intent as per Shell Visibility Rules, opting for centered canvas) -->
+<main class="pt-32 pb-section-gap max-w-container-max mx-auto px-margin-desktop">
+<!-- Header Section -->
+<header class="mb-16">
+<div class="flex items-center gap-3 mb-4">
+<div class="h-2 w-2 rounded-full bg-primary-fixed-dim pulse-dot"></div>
+<span class="font-mono-label text-mono-label text-primary-fixed-dim tracking-[0.2em] uppercase">System Integrity: Nominal</span>
+</div>
+<h1 class="font-display-lg text-display-lg mb-4 text-on-surface">Neural Compliance</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+                Global governance dashboard for Aether AI nodes. Monitor ethical guardrails, regional data sovereignty, and real-time risk telemetry across the neural infrastructure.
+            </p>
+</header>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Global Compliance Map (Large) -->
+<div class="col-span-12 lg:col-span-8 glass-card rounded-xl p-8 min-h-[500px] flex flex-col">
+<div class="flex justify-between items-center mb-8">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Sovereignty Nodes</h3>
+<p class="font-mono-label text-mono-label text-on-surface-variant">Active regional policy mapping</p>
+</div>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-primary-fixed-dim/10 text-primary-fixed-dim rounded-sm text-[11px] font-bold tracking-widest border border-primary-fixed-dim/20">LIVE DATA</span>
+</div>
+</div>
+<div class="flex-grow relative rounded-lg overflow-hidden bg-surface-container-lowest/50 group">
+<img class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-[10s] ease-linear" data-alt="A stylized high-tech digital world map appearing as a wireframe grid in glowing cyan lines against a deep obsidian background. Various nodes across Europe, North America, and Asia are highlighted with pulsating circular icons. The style is cinematic, futuristic data visualization, resembling a top-tier security dashboard with holographic depth and razor-sharp clarity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpdBxnezmRk-CvjWBdBuQUK7UT41YL9Oxoz0Z0VNOq3KC-pAifsEMtngyimV1jP1Yh34zRUMLs0FAZhSMNptqZ29gxVneM1Jgfca-d4-bjkHLyBuZ2Sk_kAYVgcnLcxzZvWvBsU9_nuIrX5SHppB6FvnNC-Bahrh461sU3ZSk6buVcq0jYa2aDV6YMwGdwPCEcB3QHzCKeLoXrMerLA4Z1IkAADoT-d-9Ll5wnlv24dpt_KliNFQSkQStrXe7CXzNMOnJCAoDf_w"/>
+<!-- UI Overlays for Map -->
+<div class="absolute top-4 left-4 flex flex-col gap-2">
+<div class="glass-card bg-surface/40 px-3 py-2 rounded-sm border-l-2 border-primary-fixed-dim">
+<p class="text-[10px] text-on-surface-variant uppercase font-bold">EU AI Act</p>
+<p class="text-xs text-primary-fixed-dim font-mono-label">COMPLIANT [98%]</p>
+</div>
+<div class="glass-card bg-surface/40 px-3 py-2 rounded-sm border-l-2 border-secondary-container">
+<p class="text-[10px] text-on-surface-variant uppercase font-bold">China DSC</p>
+<p class="text-xs text-secondary-fixed-dim font-mono-label">OVERSIGHT REQ</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Risk Assessment Meters -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<div class="glass-card rounded-xl p-6 glow-hover">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary-fixed-dim" style="font-variation-settings: 'FILL' 1;">security</span>
+<h4 class="font-headline-md text-[20px] font-bold text-on-surface">Ethical Alignment</h4>
+</div>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between text-xs mb-2 font-mono-label">
+<span class="text-on-surface-variant">Bias Mitigation</span>
+<span class="text-primary-fixed-dim">94%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="meter-fill h-full bg-primary-fixed-dim" style="width: 94%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs mb-2 font-mono-label">
+<span class="text-on-surface-variant">Toxicity Filtering</span>
+<span class="text-primary-fixed-dim">99.8%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="meter-fill h-full bg-primary-fixed-dim" style="width: 99.8%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs mb-2 font-mono-label">
+<span class="text-on-surface-variant">Hallucination Risk</span>
+<span class="text-secondary-fixed-dim">0.02%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="meter-fill h-full bg-secondary-container" style="width: 12%"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="glass-card rounded-xl p-6 flex flex-col justify-between flex-grow glow-hover">
+<div>
+<h4 class="font-headline-md text-[20px] font-bold text-on-surface mb-2">Neural Firewall</h4>
+<p class="font-mono-label text-xs text-on-surface-variant mb-6">Real-time prompt injection blocking</p>
+</div>
+<div class="flex items-center justify-center py-4">
+<div class="relative h-32 w-32 rounded-full border-4 border-dashed border-primary-fixed-dim/20 flex items-center justify-center">
+<div class="absolute inset-0 animate-spin-slow">
+<div class="h-4 w-4 bg-primary-fixed-dim rounded-full absolute -top-2 left-1/2 -translate-x-1/2"></div>
+</div>
+<span class="text-2xl font-display-lg text-primary-fixed-dim">OK</span>
+</div>
+</div>
+<div class="mt-4 text-center">
+<p class="text-[10px] text-on-surface-variant font-mono-label uppercase tracking-tighter">Last incident: 42ms ago (EU-West-1)</p>
+</div>
+</div>
+</div>
+<!-- Audit Logs (Full Width Bottom) -->
+<div class="col-span-12 glass-card rounded-xl p-8">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Compliance Audit Ledger</h3>
+<p class="font-mono-label text-mono-label text-on-surface-variant">Immutable block-signed governance records</p>
+</div>
+<div class="flex gap-4">
+<button class="bg-surface-container-high px-4 py-2 rounded-sm font-mono-label text-xs border border-outline-variant/30 hover:border-primary-fixed-dim transition-colors">EXPORT JSON</button>
+<button class="bg-primary-container text-on-primary px-4 py-2 rounded-sm font-mono-label text-xs">RESCAN ALL NODES</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-mono-label">
+<thead>
+<tr class="border-b border-outline-variant/20 text-[10px] text-on-surface-variant uppercase tracking-widest">
+<th class="pb-4 px-2">Timestamp</th>
+<th class="pb-4 px-2">Event Origin</th>
+<th class="pb-4 px-2">Verification Hash</th>
+<th class="pb-4 px-2 text-right">Status</th>
+</tr>
+</thead>
+<tbody class="text-xs divide-y divide-outline-variant/10">
+<tr class="hover:bg-primary-fixed-dim/5 transition-colors">
+<td class="py-4 px-2 text-on-surface">2024-05-24 14:22:01.004</td>
+<td class="py-4 px-2 text-on-surface">AETHER_CORE_DE_01</td>
+<td class="py-4 px-2 text-on-surface-variant">0x7d8...f42a</td>
+<td class="py-4 px-2 text-right">
+<span class="text-primary-fixed-dim bg-primary-fixed-dim/10 px-2 py-0.5 rounded-sm">SIGNED</span>
+</td>
+</tr>
+<tr class="hover:bg-primary-fixed-dim/5 transition-colors">
+<td class="py-4 px-2 text-on-surface">2024-05-24 14:21:58.892</td>
+<td class="py-4 px-2 text-on-surface">AETHER_UI_GLOBAL</td>
+<td class="py-4 px-2 text-on-surface-variant">0x9a2...33bc</td>
+<td class="py-4 px-2 text-right">
+<span class="text-primary-fixed-dim bg-primary-fixed-dim/10 px-2 py-0.5 rounded-sm">SIGNED</span>
+</td>
+</tr>
+<tr class="hover:bg-primary-fixed-dim/5 transition-colors">
+<td class="py-4 px-2 text-on-surface">2024-05-24 14:21:45.110</td>
+<td class="py-4 px-2 text-on-surface">NODE_HEALTH_US_EAST</td>
+<td class="py-4 px-2 text-on-surface-variant">0xcc4...88ef</td>
+<td class="py-4 px-2 text-right">
+<span class="text-secondary-fixed-dim bg-secondary-container/20 px-2 py-0.5 rounded-sm">OVERRIDDEN</span>
+</td>
+</tr>
+<tr class="hover:bg-primary-fixed-dim/5 transition-colors">
+<td class="py-4 px-2 text-on-surface">2024-05-24 14:20:12.677</td>
+<td class="py-4 px-2 text-on-surface">COMPLIANCE_AGENT_V4</td>
+<td class="py-4 px-2 text-on-surface-variant">0x111...aa99</td>
+<td class="py-4 px-2 text-right">
+<span class="text-primary-fixed-dim bg-primary-fixed-dim/10 px-2 py-0.5 rounded-sm">SIGNED</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-section-gap bg-surface-container-lowest border-t border-outline-variant/10">
+<div class="max-w-container-max mx-auto px-margin-desktop grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-gutter">
+<div class="col-span-2">
+<div class="font-display-lg text-[24px] font-extrabold text-primary-fixed-dim mb-4">AETHER AI</div>
+<p class="font-mono-label text-mono-label text-on-tertiary-fixed-variant leading-relaxed opacity-80">
+                    Advancing global intelligence through secure, ethical, and compliant neural infrastructure. Built for the sovereign future.
+                </p>
+</div>
+<div class="flex flex-col gap-2">
+<h5 class="font-mono-label text-mono-label text-on-surface font-bold mb-2">Platform</h5>
+<a class="font-mono-label text-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors opacity-80 hover:opacity-100" href="#">Documentation</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors opacity-80 hover:opacity-100" href="#">API Reference</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors opacity-80 hover:opacity-100" href="#">System Status</a>
+</div>
+<div class="flex flex-col gap-2">
+<h5 class="font-mono-label text-mono-label text-on-surface font-bold mb-2">Governance</h5>
+<a class="font-mono-label text-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors opacity-80 hover:opacity-100" href="#">Ethical Charter</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors opacity-80 hover:opacity-100" href="#">Compliance Map</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors opacity-80 hover:opacity-100" href="#">Audit Reports</a>
+</div>
+<div class="flex flex-col gap-2">
+<h5 class="font-mono-label text-mono-label text-on-surface font-bold mb-2">Legal</h5>
+<a class="font-mono-label text-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors opacity-80 hover:opacity-100" href="#">Security</a>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-margin-desktop mt-16 pt-8 border-t border-outline-variant/10 text-center">
+<p class="font-mono-label text-mono-label text-on-tertiary-fixed-variant opacity-60">© 2024 Aether AI Infrastructure. All rights reserved.</p>
+</div>
+</footer>
+<script>
+        // Micro-interactions for risk meters
+        document.addEventListener('DOMContentLoaded', () => {
+            const fills = document.querySelectorAll('.meter-fill');
+            fills.forEach(fill => {
+                const targetWidth = fill.style.width;
+                fill.style.width = '0%';
+                setTimeout(() => {
+                    fill.style.width = targetWidth;
+                }, 500);
+            });
+
+            // Random log highlights for atmospheric effect
+            setInterval(() => {
+                const rows = document.querySelectorAll('tbody tr');
+                const randomRow = rows[Math.floor(Math.random() * rows.length)];
+                randomRow.classList.add('bg-primary-fixed-dim/10');
+                setTimeout(() => {
+                    randomRow.classList.remove('bg-primary-fixed-dim/10');
+                }, 1000);
+            }, 3000);
+        });
+    </script>
+<style>
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin-slow 10s linear infinite;
+        }
+    </style>
+</body></html>

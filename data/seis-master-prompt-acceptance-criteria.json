@@ -1,6 +1,7 @@
 {
-  "contract": "SEIS Master Prompt",
-  "contractPath": "docs/governance/seis-master-prompt.md",
+  "contract": "SEIS Enterprise Constitution",
+  "contractPath": "AGENTS.md",
+  "companionContractPath": "docs/governance/seis-master-prompt.md",
   "criteria": [
     {
       "id": "user-work-protection",

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS - Quick Settings &amp; Notifications</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-dim": "#121414",
+                        "secondary-container": "#ce5dff",
+                        "primary": "#dbfcff",
+                        "on-secondary": "#520071",
+                        "background": "#121414",
+                        "primary-fixed-dim": "#00dbe9",
+                        "on-error-container": "#ffdad6",
+                        "secondary": "#ebb2ff",
+                        "outline-variant": "#3b494b",
+                        "surface-container-low": "#1a1c1c",
+                        "on-surface": "#e2e2e2",
+                        "surface-tint": "#00dbe9",
+                        "error-container": "#93000a",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "on-primary": "#00363a",
+                        "error": "#ffb4ab",
+                        "surface-container": "#1e2020",
+                        "secondary-fixed": "#f8d8ff",
+                        "inverse-primary": "#006970",
+                        "on-primary-fixed": "#002022",
+                        "surface-container-high": "#282a2b",
+                        "tertiary-container": "#dcd9d8",
+                        "surface-bright": "#37393a",
+                        "on-secondary-container": "#480064",
+                        "on-error": "#690005",
+                        "on-surface-variant": "#b9cacb",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-primary-container": "#006970",
+                        "surface-container-lowest": "#0c0f0f",
+                        "primary-fixed": "#7df4ff",
+                        "on-background": "#e2e2e2",
+                        "inverse-surface": "#e2e2e2",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "primary-container": "#00f0ff",
+                        "on-tertiary-container": "#605e5e",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "inverse-on-surface": "#2f3131",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "surface-variant": "#333535",
+                        "on-tertiary": "#313030",
+                        "on-secondary-fixed": "#320047",
+                        "surface": "#121414",
+                        "outline": "#849495",
+                        "tertiary": "#f9f5f5",
+                        "surface-container-highest": "#333535",
+                        "on-primary-fixed-variant": "#004f54"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "margin-page": "32px",
+                        "gap-sm": "8px",
+                        "gap-md": "16px",
+                        "gap-lg": "24px",
+                        "stroke-thin": "1px",
+                        "gap-xs": "4px",
+                        "stroke-thick": "2px"
+                    },
+                    fontFamily: {
+                        "body-md": ["JetBrains Mono"],
+                        "label-sm": ["Space Mono"],
+                        "code-sm": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"],
+                        "headline-lg": ["JetBrains Mono"]
+                    },
+                    fontSize: {
+                        "body-md": ["14px", { lineHeight: "1.5", fontWeight: "400" }],
+                        "label-sm": ["12px", { lineHeight: "1", letterSpacing: "0.1em", fontWeight: "700" }],
+                        "code-sm": ["13px", { lineHeight: "1.4", fontWeight: "500" }],
+                        "body-lg": ["16px", { lineHeight: "1.6", fontWeight: "400" }],
+                        "headline-md": ["24px", { lineHeight: "1.2", fontWeight: "700" }],
+                        "headline-lg": ["32px", { lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .cyber-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(59, 73, 75, 0.1) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(59, 73, 75, 0.1) 1px, transparent 1px);
+        }
+        
+        .sparkline {
+            display: flex;
+            align-items: flex-end;
+            height: 24px;
+            gap: 2px;
+        }
+        
+        .sparkline-bar {
+            width: 4px;
+            background-color: #00dbe9;
+            border-radius: 1px 1px 0 0;
+            opacity: 0.8;
+            transition: height 0.3s ease;
+        }
+
+        .sparkline-bar.danger {
+            background-color: #ffb4ab;
+        }
+
+        .sparkline-bar.warning {
+            background-color: #ebb2ff;
+        }
+
+        /* Custom Scrollbar for inner content */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b494b;
+            border-radius: 2px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00dbe9;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md h-screen w-full overflow-hidden cyber-grid relative">
+<!-- Top Navigation Bar (Shared Component) -->
+<nav class="bg-surface-container-lowest/80 backdrop-blur-xl docked full-width top-0 border-b border-outline-variant/30 flex justify-between items-center w-full px-4 h-10 fixed z-50">
+<div class="flex items-center gap-gap-md">
+<span class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</span>
+<div class="hidden md:flex gap-gap-sm ml-8">
+<div class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer px-3 py-2">WORKSPACES</div>
+<div class="text-primary-fixed border-b border-primary-fixed pb-1 font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer px-3 py-2">TELEMETRY</div>
+<div class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer px-3 py-2">AGENTS</div>
+<div class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer px-3 py-2">NETWORK</div>
+</div>
+</div>
+<div class="flex items-center gap-gap-md text-on-surface-variant">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed transition-colors" data-icon="memory">memory</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed transition-colors" data-icon="terminal">terminal</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed transition-colors text-primary-fixed" data-icon="settings">settings</span>
+</div>
+</nav>
+<!-- Side Navigation Bar (Shared Component) -->
+<aside class="bg-surface-container-lowest/90 backdrop-blur-2xl docked left-0 h-full w-20 hover:w-64 transition-all duration-300 border-r border-outline-variant/20 fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col group overflow-hidden">
+<div class="p-4 border-b border-outline-variant/20 mb-4 flex items-center gap-4 whitespace-nowrap">
+<div class="w-10 h-10 rounded-full bg-surface-variant border border-outline-variant flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary-fixed">person</span>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+<div class="font-label-caps text-secondary-fixed">ROOT_USER</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</div>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-1 overflow-y-auto overflow-x-hidden">
+<div class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 group flex items-center px-4 py-3 cursor-pointer">
+<span class="material-symbols-outlined shrink-0" data-icon="dashboard">dashboard</span>
+<span class="ml-4 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">DASHBOARD</span>
+</div>
+<div class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 group flex items-center px-4 py-3 cursor-pointer">
+<span class="material-symbols-outlined shrink-0" data-icon="folder_open">folder_open</span>
+<span class="ml-4 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">FILESYSTEM</span>
+</div>
+<div class="bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed group flex items-center px-4 py-3 cursor-pointer">
+<span class="material-symbols-outlined shrink-0" data-icon="terminal">terminal</span>
+<span class="ml-4 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">TERMINAL</span>
+</div>
+<div class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 group flex items-center px-4 py-3 cursor-pointer">
+<span class="material-symbols-outlined shrink-0" data-icon="smart_toy">smart_toy</span>
+<span class="ml-4 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">AI_AGENTS</span>
+</div>
+<div class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 group flex items-center px-4 py-3 cursor-pointer">
+<span class="material-symbols-outlined shrink-0" data-icon="cloud_queue">cloud_queue</span>
+<span class="ml-4 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">INFRASTRUCTURE</span>
+</div>
+<div class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 group flex items-center px-4 py-3 cursor-pointer">
+<span class="material-symbols-outlined shrink-0" data-icon="list_alt">list_alt</span>
+<span class="ml-4 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">LOGS</span>
+</div>
+</nav>
+<div class="p-4 border-t border-outline-variant/20 flex flex-col gap-2">
+<button class="w-full bg-primary-fixed/10 border border-primary-fixed text-primary-fixed font-label-caps text-label-caps py-2 hover:bg-primary-fixed/20 transition-colors opacity-0 group-hover:opacity-100 whitespace-nowrap">NEW_SESSION</button>
+<div class="flex justify-around mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-error transition-colors cursor-pointer" data-icon="power_settings_new">power_settings_new</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-secondary-fixed transition-colors cursor-pointer" data-icon="lock">lock</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas (Background Map Concept) -->
+<main class="ml-20 mt-10 p-gap-lg h-[calc(100vh-40px)] w-[calc(100vw-80px)] relative">
+<div class="absolute inset-0 z-0 opacity-20 pointer-events-none" data-alt="A sprawling, hyper-detailed futuristic cyberpunk city map from a top-down view, glowing with neon electric cyan and violet data lines. The aesthetic is extremely technical, terminal-like, with dark obsidian backgrounds and glowing grid overlays." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBb4yOadQNoiRfFIHJPtsY5UsIaTr3GYLFix6nFtRG4QtFLparZybe117r60-bElt7BIs66nKpPTB4T6LUJLJBed1Iu-0SNfXQga_lVVWI8-t4AxJSW57VgLD2EtCLTlGuxQAJmIxzbYgM7gU9jxR9DMFMT-Il49gqR3CXXibXkSv6LBdqch0mBMJXALubCcju1YeZiW49pWqzBZs_uOZXnrEHdCB0fajL7xNymJ4MfsBAyIhW0QMqEEdUJxld-_jpjUPxpHQKzdc4t')"></div>
+<div class="flex justify-center items-center h-full w-full z-10 relative">
+<!-- Empty space for main app content, the focus is the overlay -->
+<div class="text-center opacity-30">
+<span class="material-symbols-outlined text-[120px] mb-4" data-icon="public">public</span>
+<h1 class="font-headline-lg text-headline-lg">GLOBAL TELEMETRY ACTIVE</h1>
+</div>
+</div>
+</main>
+<!-- Right Overlay: Quick Settings & Notifications -->
+<div class="fixed top-10 right-0 w-[400px] h-[calc(100vh-40px)] bg-surface-container-lowest/85 backdrop-blur-[12px] border-l border-outline-variant/30 z-50 flex flex-col shadow-[-10px_0_30px_rgba(0,0,0,0.5)]">
+<!-- Header -->
+<div class="h-12 bg-primary-fixed flex items-center px-4 justify-between shrink-0">
+<span class="font-label-caps text-label-caps text-surface-container-lowest tracking-widest font-bold">SYSTEM OVERRIDE PANEL</span>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-surface-container-lowest text-[18px] cursor-pointer">minimize</span>
+<span class="material-symbols-outlined text-surface-container-lowest text-[18px] cursor-pointer">close</span>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto p-4 flex flex-col gap-gap-md">
+<!-- Quick Settings Grid -->
+<div class="grid grid-cols-2 gap-gap-sm">
+<!-- Toggle: NPU Acceleration -->
+<div class="bg-surface-container/50 border border-outline-variant p-3 cursor-pointer hover:border-primary-fixed transition-colors group relative overflow-hidden">
+<div class="absolute top-0 right-0 w-2 h-2 bg-primary-fixed rounded-bl-sm"></div>
+<div class="flex justify-between items-start mb-2">
+<span class="material-symbols-outlined text-primary-fixed group-hover:animate-pulse" data-icon="memory_alt">memory_alt</span>
+<!-- Custom Toggle Switch -->
+<div class="w-8 h-4 bg-primary-fixed/20 border border-primary-fixed rounded-full relative">
+<div class="absolute right-[2px] top-[1px] w-[12px] h-[12px] bg-primary-fixed rounded-full shadow-[0_0_5px_#00dbe9]"></div>
+</div>
+</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant mb-1">HARDWARE OVERRIDE</div>
+<div class="font-code-sm text-on-surface font-bold">NPU Accel</div>
+</div>
+<!-- Toggle: Quantum Link -->
+<div class="bg-surface-container/50 border border-outline-variant p-3 cursor-pointer hover:border-secondary-fixed transition-colors group relative overflow-hidden">
+<div class="flex justify-between items-start mb-2">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary-fixed transition-colors" data-icon="leak_add">leak_add</span>
+<div class="w-8 h-4 bg-surface-variant border border-outline-variant rounded-full relative">
+<div class="absolute left-[2px] top-[1px] w-[12px] h-[12px] bg-on-surface-variant rounded-full"></div>
+</div>
+</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant mb-1">NETWORK PROTOCOL</div>
+<div class="font-code-sm text-on-surface-variant group-hover:text-on-surface">Quantum Link</div>
+</div>
+<!-- Toggle: Kernel Shield -->
+<div class="bg-surface-container/50 border border-primary-fixed p-3 cursor-pointer relative overflow-hidden shadow-[inset_0_0_10px_rgba(0,219,233,0.1)]">
+<div class="absolute inset-0 bg-primary-fixed/5"></div>
+<div class="flex justify-between items-start mb-2 relative z-10">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="security">security</span>
+<div class="w-8 h-4 bg-primary-fixed/20 border border-primary-fixed rounded-full relative">
+<div class="absolute right-[2px] top-[1px] w-[12px] h-[12px] bg-primary-fixed rounded-full shadow-[0_0_5px_#00dbe9]"></div>
+</div>
+</div>
+<div class="font-label-caps text-[10px] text-primary-fixed mb-1 relative z-10">DEFENSE MATRIX</div>
+<div class="font-code-sm text-on-surface font-bold relative z-10">Kernel Shield</div>
+</div>
+<!-- Toggle: Stealth Mode -->
+<div class="bg-surface-container/50 border border-outline-variant p-3 cursor-pointer hover:border-primary-fixed transition-colors group relative overflow-hidden">
+<div class="flex justify-between items-start mb-2">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary-fixed transition-colors" data-icon="visibility_off">visibility_off</span>
+<div class="w-8 h-4 bg-surface-variant border border-outline-variant rounded-full relative">
+<div class="absolute left-[2px] top-[1px] w-[12px] h-[12px] bg-on-surface-variant rounded-full"></div>
+</div>
+</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant mb-1">PRESENCE</div>
+<div class="font-code-sm text-on-surface-variant group-hover:text-on-surface">Stealth Mode</div>
+</div>
+</div>
+<div class="h-px w-full bg-outline-variant/30 my-2"></div>
+<!-- Notifications Section -->
+<div class="flex justify-between items-end mb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant tracking-widest">SYSTEM ALERTS</span>
+<span class="font-code-sm text-[10px] text-primary-fixed cursor-pointer hover:underline">ACKNOWLEDGE ALL</span>
+</div>
+<div class="flex flex-col gap-2">
+<!-- Alert: Warning -->
+<div class="border border-error-container bg-error-container/10 p-3 relative flex gap-3 items-start group hover:bg-error-container/20 transition-colors">
+<div class="w-1 h-full bg-error absolute left-0 top-0"></div>
+<span class="material-symbols-outlined text-error mt-0.5" data-icon="warning">warning</span>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<span class="font-code-sm font-bold text-error">Node 4 Memory Spike</span>
+<span class="font-code-sm text-[10px] text-on-surface-variant">0.02ms ago</span>
+</div>
+<div class="text-[11px] text-on-error-container mt-1 font-body-md mb-2">
+                            Heap allocation exceeded 94% threshold. Initiating auto-GC routine.
+                        </div>
+<!-- Micro Telemetry -->
+<div class="sparkline w-full">
+<div class="sparkline-bar h-[4px]"></div>
+<div class="sparkline-bar h-[8px]"></div>
+<div class="sparkline-bar h-[12px]"></div>
+<div class="sparkline-bar h-[6px]"></div>
+<div class="sparkline-bar h-[14px]"></div>
+<div class="sparkline-bar h-[18px]"></div>
+<div class="sparkline-bar h-[22px] danger"></div>
+<div class="sparkline-bar h-[24px] danger animate-pulse"></div>
+</div>
+</div>
+</div>
+<!-- Alert: Info / Success -->
+<div class="border border-primary-fixed/30 bg-primary-fixed/5 p-3 relative flex gap-3 items-start hover:border-primary-fixed/60 transition-colors">
+<div class="w-1 h-full bg-primary-fixed absolute left-0 top-0"></div>
+<span class="material-symbols-outlined text-primary-fixed mt-0.5" data-icon="smart_toy">smart_toy</span>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<span class="font-code-sm font-bold text-primary-fixed">Agent Kimi: Task Complete</span>
+<span class="font-code-sm text-[10px] text-on-surface-variant">1.4s ago</span>
+</div>
+<div class="text-[11px] text-on-surface-variant mt-1 font-body-md">
+                            Model registry updated. 12 files parsed and summarized successfully.
+                        </div>
+<div class="mt-2 flex gap-2">
+<button class="bg-transparent border border-primary-fixed text-primary-fixed text-[10px] font-label-caps px-2 py-1 hover:bg-primary-fixed hover:text-surface-container-lowest transition-colors">VIEW LOGS</button>
+</div>
+</div>
+</div>
+<!-- Alert: System -->
+<div class="border border-outline-variant bg-surface-container/30 p-3 relative flex gap-3 items-start hover:border-secondary-fixed/50 transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant mt-0.5" data-icon="update">update</span>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<span class="font-code-sm font-bold text-on-surface">System Update Available</span>
+<span class="font-code-sm text-[10px] text-on-surface-variant">4m ago</span>
+</div>
+<div class="text-[11px] text-on-surface-variant mt-1 font-body-md">
+                            Kernel v4.2.1 ready for deployment. Requires reboot.
+                        </div>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-4 flex justify-between items-center text-[10px] font-code-sm text-on-surface-variant border-t border-outline-variant/30">
+<span>CPU: 23%</span>
+<span>MEM: 48%</span>
+<span>NET: 12.4 MB/s</span>
+</div>
+</div>
+</div>
+</body></html>

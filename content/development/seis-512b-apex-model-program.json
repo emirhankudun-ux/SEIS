@@ -1,0 +1,302 @@
+{
+  "id": "seis-512b-apex-model-program",
+  "version": "2026.06.24",
+  "status": "apex-program-plan-only",
+  "resourceUri": "seis://ai/512b-apex-model-program.json",
+  "qualityGate": "npm run check:seis-512b-apex-model-program",
+  "coreCredentialRequirement": "none",
+  "defaultRuntimeMode": "seis-local-demo",
+  "routeEligibleToday": false,
+  "runtimeAuthority": false,
+  "trainingStatus": "not-started",
+  "weightsAvailable": false,
+  "inferenceAvailable": false,
+  "benchmarkStatus": "not-run",
+  "productionReady": false,
+  "truthBoundary": "This source-of-truth record is a plan-only 512B apex AI program. It does not download models or datasets, train, fine-tune, run inference, benchmark memory, publish checkpoints, call providers, provision GPU/cloud capacity, execute SSH, deploy infrastructure, or claim SEIS owns a trained 512B foundation model.",
+  "sourceOfTruth": {
+    "modelScalingProfile": "content/development/seis-model-scaling-hardware-profile.json",
+    "parameterLadder": "content/development/seis-model-parameter-ladder.json",
+    "frontierEscalationPolicy": "content/development/seis-model-frontier-escalation-policy.json",
+    "frontierModelProgram": "content/development/seis-150b-frontier-model-program.json",
+    "modelScalingSubagentCouncil": "content/development/seis-model-scaling-subagent-council.json",
+    "agiEvaluationProtocol": "content/development/seis-agi-evaluation-protocol.json",
+    "agiPublicReadinessEvidence": "content/development/seis-agi-public-readiness-evidence.json",
+    "githubUserReadinessGates": "content/development/seis-agi-github-user-readiness-gates.json",
+    "aiCoreDoc": "docs/ai/seis-ai-core.md",
+    "modelScalingDoc": "docs/ai/seis-model-scaling.md",
+    "modelRouterDoc": "docs/ai/model-router.md"
+  },
+  "target": {
+    "id": "seis-512b-apex-frontier-target",
+    "displayName": "SEIS AI 512B Apex Program",
+    "parameterClass": "512B",
+    "parameterCountBillion": 512,
+    "horizon": "apex-frontier",
+    "hardwareClass": "approved frontier-scale distributed research cluster after review",
+    "allowedToday": "Local Demo status, planning, evidence mapping, and validator-backed documentation only",
+    "minimumPrerequisite": "20B, 70B, 150B, and 300B+ evidence accepted before any 512B runtime or training scope"
+  },
+  "programStages": [
+    {
+      "id": "stage-0-apex-charter",
+      "label": "512B apex charter",
+      "status": "planned",
+      "routeEligibleToday": false
+    },
+    {
+      "id": "stage-1-installed-ai-council",
+      "label": "Installed AI and sub-agent council alignment",
+      "status": "plan-only",
+      "routeEligibleToday": false
+    },
+    {
+      "id": "stage-2-clean-room-frontier-data",
+      "label": "Clean-room frontier data strategy",
+      "status": "blocked-until-provenance-plan",
+      "routeEligibleToday": false
+    },
+    {
+      "id": "stage-3-apex-architecture-selection",
+      "label": "Apex architecture selection",
+      "status": "not-selected",
+      "routeEligibleToday": false
+    },
+    {
+      "id": "stage-4-frontier-cluster-plan",
+      "label": "Frontier cluster, budget, and observability plan",
+      "status": "approval-needed",
+      "routeEligibleToday": false
+    },
+    {
+      "id": "stage-5-training-readiness",
+      "label": "512B training readiness",
+      "status": "not-authorized",
+      "routeEligibleToday": false
+    },
+    {
+      "id": "stage-6-evaluation-safety-and-release",
+      "label": "Evaluation, safety, red-team, and release governance",
+      "status": "not-run",
+      "routeEligibleToday": false
+    }
+  ],
+  "architecturePlan": {
+    "status": "not-selected",
+    "candidateFamilies": [
+      "dense-transformer",
+      "mixture-of-experts",
+      "hybrid-retrieval-augmented",
+      "modular-agentic-router",
+      "future-approved-frontier-architecture"
+    ],
+    "selectionBlockedUntil": [
+      "150B evidence accepted",
+      "300B+ feasibility proof accepted",
+      "clean-room data and contamination-control plan accepted",
+      "frontier cluster and budget plan accepted",
+      "independent safety review accepted"
+    ]
+  },
+  "internetResearchBaseline": {
+    "status": "current-public-evidence-reviewed",
+    "updatedAt": "2026-06-29",
+    "purpose": "Anchor the 512B SEIS AGI direction in public frontier-model and AI-risk-management evidence without claiming SEIS has trained, downloaded, benchmarked, or served a 512B model.",
+    "sources": [
+      {
+        "id": "meta-llama-3-1-405b",
+        "label": "Meta Llama 3.1 405B",
+        "url": "https://ai.meta.com/blog/meta-llama-3-1/",
+        "evidenceType": "frontier-scale open foundation model announcement",
+        "seisImplication": "405B-class systems are frontier-scale engineering programs, so 512B must stay a distributed research program rather than a laptop/runtime claim."
+      },
+      {
+        "id": "megatron-turing-nlg-530b",
+        "label": "Megatron-Turing NLG 530B",
+        "url": "https://arxiv.org/abs/2201.11990",
+        "evidenceType": "530B-scale distributed training report",
+        "seisImplication": "A 512B SEIS target requires distributed training architecture, model-parallel design, cost controls, observability, rollback, and independent review before any training scope."
+      },
+      {
+        "id": "deepseek-v3-671b-moe",
+        "label": "DeepSeek-V3 671B MoE",
+        "url": "https://github.com/deepseek-ai/DeepSeek-V3",
+        "evidenceType": "public MoE architecture reference",
+        "seisImplication": "Total parameters, active parameters, memory, routing, and evaluation must be tracked separately; SEIS must not equate headline parameter count with AGI capability."
+      },
+      {
+        "id": "qwen3-235b-a22b-instruct",
+        "label": "Qwen3-235B-A22B-Instruct-2507",
+        "url": "https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507",
+        "evidenceType": "public MoE model card",
+        "seisImplication": "SEIS model cards must record total parameters, activated parameters, context length, inference memory needs, license, and safety notes before any route eligibility."
+      },
+      {
+        "id": "nist-ai-risk-management-framework",
+        "label": "NIST AI Risk Management Framework",
+        "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+        "evidenceType": "AI risk management framework",
+        "seisImplication": "512B AGI readiness must include governance, risk mapping, measurement, management, safety, security, privacy, transparency, accountability, and fairness gates."
+      },
+      {
+        "id": "anthropic-responsible-scaling-policy",
+        "label": "Anthropic Responsible Scaling Policy",
+        "url": "https://www.anthropic.com/responsible-scaling-policy",
+        "evidenceType": "frontier model scaling safety policy",
+        "seisImplication": "SEIS must treat capability thresholds, deployment safeguards, security posture, and escalation reviews as promotion gates, not optional release notes."
+      },
+      {
+        "id": "nist-generative-ai-profile-ai-600-1",
+        "label": "NIST Generative AI Profile AI 600-1",
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+        "evidenceType": "generative AI risk profile",
+        "seisImplication": "A 512B SEIS target must include generative-AI misuse, privacy, security, transparency, and measurement controls before any public readiness claim."
+      },
+      {
+        "id": "metr-long-task-horizon-evaluation",
+        "label": "METR long-task horizon evaluation",
+        "url": "https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/",
+        "evidenceType": "agent autonomy and long-task evaluation",
+        "seisImplication": "512B AGI readiness must measure time-bounded autonomous task completion and failure modes rather than infer autonomy from demos."
+      },
+      {
+        "id": "google-deepmind-frontier-safety-framework",
+        "label": "Google DeepMind Frontier Safety Framework",
+        "url": "https://deepmind.google/blog/introducing-the-frontier-safety-framework/",
+        "evidenceType": "frontier safety threshold framework",
+        "seisImplication": "512B route eligibility must be blocked until capability thresholds, safeguards, escalation, rollback, and deployment limits are documented."
+      },
+      {
+        "id": "arc-agi-abstract-reasoning",
+        "label": "ARC-AGI abstract reasoning benchmark context",
+        "url": "https://arcprize.org/arc-agi",
+        "evidenceType": "novel abstract reasoning benchmark context",
+        "seisImplication": "SEIS AGI claims require novel skill-acquisition evidence and contamination controls, not broad benchmark or parameter-count shortcuts."
+      }
+    ]
+  },
+  "agiReadinessDefinition": {
+    "status": "definition-only-not-demonstrated",
+    "claimStatus": "real-agi-not-proven",
+    "protocol": "content/development/seis-agi-evaluation-protocol.json",
+    "resourceUri": "seis://ai/agi-evaluation-protocol.json",
+    "minimumEvidenceBeforeAnyAgiClaim": [
+      "independent multi-domain capability evaluation",
+      "robust out-of-distribution generalization report",
+      "tool-use reliability and recovery evaluation",
+      "long-horizon planning evaluation",
+      "agentic autonomy time-horizon evaluation",
+      "abstract skill-acquisition evaluation",
+      "frontier safety threshold review",
+      "generative AI risk profile",
+      "safety and misuse evaluation",
+      "privacy and data-rights review",
+      "red-team report",
+      "transparent model card and system card",
+      "training logs and checkpoint governance",
+      "human approval and external review"
+    ],
+    "requiredNegativeControls": [
+      "prompt/RAG/provider wrapper is not AGI",
+      "parameter count alone is not AGI evidence",
+      "installed AI presence is not training evidence",
+      "sub-agent council approval is not runtime authority",
+      "Local Demo behavior is not live model capability"
+    ]
+  },
+  "githubPublicReadinessGates": [
+    {
+      "id": "open-source-contract",
+      "status": "required-before-public-readiness",
+      "requiredEvidence": ["license review", "contribution guide", "security policy", "public issue templates", "reviewed README claims"]
+    },
+    {
+      "id": "reproducible-local-demo",
+      "status": "required-before-public-readiness",
+      "requiredEvidence": ["zero-key startup", "Local Demo fallback", "deterministic fixtures", "no live-provider dependency"]
+    },
+    {
+      "id": "frontier-non-claim-guard",
+      "status": "required-before-public-readiness",
+      "requiredEvidence": ["forbidden-claim scan", "512B plan-only validator", "AGI proof absent warning", "no trained-weight claim"]
+    },
+    {
+      "id": "ci-and-release-safety",
+      "status": "required-before-public-readiness",
+      "requiredEvidence": ["passing AI validators", "secret scan", "artifact provenance", "release checklist", "rollback note"]
+    }
+  ],
+  "agentCouncil": {
+    "status": "all-installed-ai-plan-only",
+    "source": "content/development/seis-model-scaling-subagent-council.json",
+    "leadAgents": [
+      "architect-agent",
+      "code-agent",
+      "design-agent",
+      "ui-ux-agent",
+      "research-agent",
+      "search-agent",
+      "security-agent",
+      "devops-agent",
+      "documentation-agent",
+      "qa-agent",
+      "cloud-agent",
+      "automation-agent"
+    ],
+    "rule": "All installed AI and sub-agent roles may plan, review, document, validate, and gate the 512B program, but none may train, download, benchmark, deploy, provision cloud/GPU, execute SSH, access credentials, or approve its own runtime promotion."
+  },
+  "promotionGates": [
+    "20B evidence accepted",
+    "70B evidence accepted",
+    "150B evidence accepted",
+    "300B+ feasibility accepted",
+    "clean-room 512B training plan accepted",
+    "frontier-scale distributed runtime budget accepted",
+    "dataset provenance and contamination-control plan accepted",
+    "privacy and data rights review accepted",
+    "AGI evaluation protocol accepted",
+    "generative AI risk profile accepted",
+    "agentic autonomy time-horizon evidence accepted",
+    "frontier safety threshold review accepted",
+    "abstract generalization evidence accepted",
+    "safety evaluation and red-team plan accepted",
+    "observability, kill-switch, rollback, and cost-stop plan accepted",
+    "all installed AI and sub-agent council review recorded",
+    "explicit human approval recorded"
+  ],
+  "fallbackPolicy": {
+    "fallbackRuntime": "seis-local-demo",
+    "silentCloudFallbackAllowed": false,
+    "missingKeyIsError": false,
+    "providerAndModelMustBeVisible": true,
+    "localOnlyModeMustBeRespected": true
+  },
+  "forbiddenClaimRules": [
+    "no-trained-512b-weights-claim",
+    "no-routeable-512b-inference-claim",
+    "no-512b-benchmark-claim",
+    "no-provider-wrapper-as-foundation-model-claim",
+    "no-subagent-approval-as-runtime-authority-claim",
+    "no-installed-ai-presence-as-training-evidence-claim"
+  ],
+  "humanApprovalRequiredFor": [
+    "model download",
+    "dataset download",
+    "runtime adapter execution",
+    "benchmark execution",
+    "training run",
+    "fine-tuning run",
+    "checkpoint publication",
+    "GPU or cloud provisioning",
+    "SSH execution",
+    "deployment",
+    "route eligibility change",
+    "public model or dataset release"
+  ],
+  "nextSafeActions": [
+    "Keep SEIS Local Demo as the default AI runtime.",
+    "Use 512B only as a plan-only apex program until lower-tier evidence exists.",
+    "Have every installed AI/sub-agent role review a bounded planning slice through the council.",
+    "Keep 512B blocked in the model router and MCP status payload."
+  ]
+}

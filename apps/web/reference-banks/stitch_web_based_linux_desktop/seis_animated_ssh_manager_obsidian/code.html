@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS_KERNEL_OS_v1.0 | SSH_MANAGER</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Geist:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-fixed": "#c3f400",
+                    "surface-container-lowest": "#0c0f0f",
+                    "on-primary-fixed-variant": "#004f54",
+                    "on-error-container": "#ffdad6",
+                    "tertiary-container": "#dbd8d9",
+                    "on-tertiary-fixed-variant": "#474647",
+                    "on-primary-container": "#006970",
+                    "on-tertiary-container": "#5f5e5f",
+                    "primary": "#dbfcff",
+                    "secondary": "#ffffff",
+                    "surface-tint": "#00dbe9",
+                    "inverse-on-surface": "#2f3131",
+                    "on-primary-fixed": "#002022",
+                    "surface-bright": "#38393a",
+                    "error-container": "#93000a",
+                    "surface-container-high": "#282a2b",
+                    "on-secondary-fixed-variant": "#3c4d00",
+                    "tertiary-fixed-dim": "#c8c6c7",
+                    "surface": "#121414",
+                    "secondary-fixed-dim": "#abd600",
+                    "primary-fixed": "#7df4ff",
+                    "on-tertiary-fixed": "#1c1b1c",
+                    "tertiary-fixed": "#e5e2e3",
+                    "surface-dim": "#121414",
+                    "on-surface": "#e2e2e2",
+                    "surface-variant": "#333535",
+                    "on-surface-variant": "#b9cacb",
+                    "on-secondary-fixed": "#161e00",
+                    "primary-fixed-dim": "#00dbe9",
+                    "on-secondary": "#283500",
+                    "surface-container-highest": "#333535",
+                    "inverse-surface": "#e2e2e2",
+                    "primary-container": "#00f0ff",
+                    "surface-container": "#1e2020",
+                    "on-primary": "#00363a",
+                    "background": "#121414",
+                    "on-tertiary": "#313031",
+                    "on-secondary-container": "#556d00",
+                    "tertiary": "#f8f5f6",
+                    "surface-container-low": "#1a1c1c",
+                    "outline-variant": "#3b494b",
+                    "secondary-container": "#c3f400",
+                    "inverse-primary": "#006970",
+                    "on-background": "#e2e2e2",
+                    "error": "#ffb4ab",
+                    "outline": "#849495",
+                    "on-error": "#690005"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "20px",
+                    "gutter": "16px",
+                    "max-width": "1440px",
+                    "unit": "4px",
+                    "margin-desktop": "40px"
+            },
+            "fontFamily": {
+                    "code-lg": ["JetBrains Mono"],
+                    "headline-md": ["Geist"],
+                    "label-caps": ["JetBrains Mono"],
+                    "code-sm": ["JetBrains Mono"],
+                    "body-main": ["Geist"],
+                    "display-lg-mobile": ["Geist"],
+                    "display-lg": ["Geist"]
+            },
+            "fontSize": {
+                    "code-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                    "body-main": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #000000;
+            color: #e2e2e2;
+            overflow-x: hidden;
+        }
+        .obsidian-glass {
+            background: rgba(18, 20, 20, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .glow-cyan {
+            box-shadow: 0 0 12px rgba(0, 219, 233, 0.2);
+        }
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: #00dbe9;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 219, 233, 0.3);
+        }
+    </style>
+</head>
+<body class="font-body-main selection:bg-primary-fixed-dim/30">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-10 h-12 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30">
+<div class="flex items-center gap-8">
+<span class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">SEIS_KERNEL_OS_v1.0</span>
+<nav class="hidden md:flex gap-6">
+<a class="font-code-sm text-code-sm text-primary-fixed-dim font-bold transition-all duration-150 ease-in-out hover:text-primary-fixed" href="#">THREADS</a>
+<a class="font-code-sm text-code-sm text-on-surface-variant transition-all duration-150 ease-in-out hover:text-primary-fixed hover:bg-surface-variant/50 px-2" href="#">NODES</a>
+<a class="font-code-sm text-code-sm text-on-surface-variant transition-all duration-150 ease-in-out hover:text-primary-fixed hover:bg-surface-variant/50 px-2" href="#">ENCRYPTION</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">terminal</span>
+<span class="material-symbols-outlined text-[18px]">sensors</span>
+<span class="material-symbols-outlined text-[18px]">power_settings_new</span>
+</div>
+<div class="h-4 w-px bg-outline-variant/30"></div>
+<span class="font-code-sm text-code-sm text-primary-fixed-dim uppercase">Active_Session: root@seis-prod-01</span>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-64 z-40 flex flex-col pt-16 pb-8 bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-8 h-8 rounded bg-primary-fixed-dim/10 border border-primary-fixed-dim/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-fixed-dim text-lg">memory</span>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-secondary-fixed">ROOT_USER</div>
+<div class="text-[10px] font-code-sm text-on-surface-variant">STATUS: OPTIMAL</div>
+</div>
+</div>
+<button class="w-full py-2 border border-secondary-fixed text-secondary-fixed font-code-sm text-code-sm uppercase tracking-wider hover:bg-secondary-fixed/10 transition-colors hover-shimmer">
+                INITIALIZE_THREAD
+            </button>
+</div>
+<nav class="flex-grow">
+<ul class="space-y-1">
+<li><a class="flex items-center gap-3 py-3 text-secondary-fixed border-l-2 border-secondary-fixed bg-secondary-fixed/5 pl-4 font-code-lg text-code-lg" href="#">
+<span class="material-symbols-outlined">memory</span> KERNEL
+                </a></li>
+<li><a class="flex items-center gap-3 py-3 text-on-surface-variant pl-4 font-code-lg text-code-lg hover:text-primary-fixed-dim hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined">psychology</span> LOGIC
+                </a></li>
+<li><a class="flex items-center gap-3 py-3 text-on-surface-variant pl-4 font-code-lg text-code-lg hover:text-primary-fixed-dim hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined">brush</span> VISUAL
+                </a></li>
+<li><a class="flex items-center gap-3 py-3 text-on-surface-variant pl-4 font-code-lg text-code-lg hover:text-primary-fixed-dim hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined">database</span> ASSETS
+                </a></li>
+<li><a class="flex items-center gap-3 py-3 text-on-surface-variant pl-4 font-code-lg text-code-lg hover:text-primary-fixed-dim hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined">settings</span> SYSTEM
+                </a></li>
+</ul>
+</nav>
+<div class="px-4 mt-auto">
+<div class="pt-4 border-t border-outline-variant/10 space-y-2">
+<a class="flex items-center gap-3 px-2 py-1 text-on-surface-variant font-code-sm text-code-sm hover:text-primary-fixed-dim" href="#">
+<span class="material-symbols-outlined text-[18px]">description</span> DOCS
+                </a>
+<a class="flex items-center gap-3 px-2 py-1 text-on-surface-variant font-code-sm text-code-sm hover:text-primary-fixed-dim" href="#">
+<span class="material-symbols-outlined text-[18px]">help_outline</span> HELP
+                </a>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="ml-64 pt-12 min-h-screen">
+<div class="p-10 max-w-[1440px] mx-auto">
+<!-- Dashboard Header -->
+<div class="flex justify-between items-end mb-12">
+<div>
+<h1 class="font-display-lg text-display-lg text-secondary mb-2 tracking-tighter">NODE_ORCHESTRATOR</h1>
+<p class="font-code-sm text-code-sm text-on-surface-variant max-w-xl">Active lifecycle management for distributed kernel clusters. Monitor, initialize, and terminate remote SSH instances across global regions with zero-latency overhead.</p>
+</div>
+<div class="flex gap-4">
+<div class="text-right">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-1">UPTIME</div>
+<div class="font-code-lg text-code-lg text-secondary-fixed">244D : 12H : 04M</div>
+</div>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-6">
+<!-- System Status Terminal (Large) -->
+<div class="col-span-8 row-span-2 obsidian-glass rounded-lg overflow-hidden flex flex-col">
+<div class="px-4 h-10 border-b border-outline-variant/30 flex items-center justify-between bg-surface-container-low">
+<div class="flex items-center gap-2">
+<div class="flex gap-1.5">
+<div class="w-2.5 h-2.5 rounded-full bg-error/40"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-secondary-fixed/40"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-primary-fixed-dim/40"></div>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant ml-4 uppercase tracking-widest">stdout — live_session</span>
+</div>
+<div class="flex gap-4">
+<span class="font-code-sm text-code-sm text-secondary-fixed">PID: 44092</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">UTF-8</span>
+</div>
+</div>
+<div class="flex-grow bg-black p-6 font-code-lg text-code-lg leading-relaxed custom-scrollbar overflow-y-auto">
+<div class="text-secondary-fixed mb-2">root@seis-prod-01:~$ systemctl status kernel-v1</div>
+<div class="text-on-surface mb-2">● kernel-v1.service - SEIS Kernel Core Interface</div>
+<div class="text-on-surface ml-4 mb-2">Loaded: loaded (/etc/systemd/system/kernel-v1.service; enabled; vendor preset: enabled)</div>
+<div class="text-on-surface ml-4 mb-2">Active: <span class="text-secondary-fixed">active (running)</span> since Mon 2023-10-23 09:12:44 UTC; 4h 22min ago</div>
+<div class="text-on-surface-variant/60 mb-2 mt-4">[LOG] 09:44:12 - Handshake established via RSA_4096_XOR</div>
+<div class="text-on-surface-variant/60 mb-2">[LOG] 09:45:01 - Node sync: 99.8% consistency achieved</div>
+<div class="text-on-surface-variant/60 mb-2">[LOG] 10:12:33 - Memory leak scan: 0 threats detected</div>
+<div class="text-primary-fixed-dim mb-2 mt-4">root@seis-prod-01:~$ <span class="terminal-cursor"></span></div>
+</div>
+</div>
+<!-- Server List (Right Side) -->
+<div class="col-span-4 obsidian-glass rounded-lg p-6">
+<h3 class="font-label-caps text-label-caps text-primary-fixed-dim mb-6 uppercase tracking-widest">Remote_Nodes</h3>
+<div class="space-y-4">
+<!-- Node Item -->
+<div class="p-4 bg-surface-container-high/40 border border-outline-variant/20 hover:border-primary-fixed-dim/40 transition-all cursor-pointer group hover:scale-105 vault-item-hover">
+<div class="flex justify-between items-start mb-2">
+<span class="font-code-lg text-code-lg group-hover:text-primary-fixed-dim transition-colors">SEIS-PRIME-NY</span>
+<div class="flex items-center gap-2">
+<span class="w-1 h-1 bg-secondary-fixed animate-pulse-green"></span>
+<span class="font-label-caps text-[9px] text-secondary-fixed">LIVE</span>
+</div>
+</div>
+<div class="text-xs font-code-sm text-on-surface-variant">IP: 192.168.1.104</div>
+</div>
+<!-- Node Item -->
+<div class="p-4 bg-surface-container-high/40 border border-outline-variant/20 hover:border-primary-fixed-dim/40 transition-all cursor-pointer group hover:scale-105 vault-item-hover">
+<div class="flex justify-between items-start mb-2">
+<span class="font-code-lg text-code-lg group-hover:text-primary-fixed-dim transition-colors">CORE-DE-FRANKFURT</span>
+<div class="flex items-center gap-2">
+<span class="w-1 h-1 bg-secondary-fixed animate-pulse-green"></span>
+<span class="font-label-caps text-[9px] text-secondary-fixed">LIVE</span>
+</div>
+</div>
+<div class="text-xs font-code-sm text-on-surface-variant">IP: 84.122.9.21</div>
+</div>
+<!-- Node Item -->
+<div class="p-4 bg-surface-container-high/40 border border-outline-variant/20 hover:border-primary-fixed-dim/40 transition-all cursor-pointer group opacity-60 hover:scale-105 vault-item-hover">
+<div class="flex justify-between items-start mb-2">
+<span class="font-code-lg text-code-lg">ARCH-SG-CENTRAL</span>
+<div class="flex items-center gap-2">
+<span class="w-1 h-1 bg-on-surface-variant"></span>
+<span class="font-label-caps text-[9px] text-on-surface-variant">OFF</span>
+</div>
+</div>
+<div class="text-xs font-code-sm text-on-surface-variant">IP: 202.11.45.92</div>
+</div>
+</div>
+<button class="w-full mt-6 py-2 border border-outline-variant/40 text-on-surface-variant font-code-sm text-code-sm uppercase tracking-wider hover:text-primary-fixed-dim hover:border-primary-fixed-dim/40 transition-all hover-shimmer">
+                        + ADD_REMOTE_NODE
+                    </button>
+</div>
+<!-- Encryption / Security Keys -->
+<div class="col-span-4 obsidian-glass rounded-lg p-6">
+<h3 class="font-label-caps text-label-caps text-primary-fixed-dim mb-6 uppercase tracking-widest">Vault_Access</h3>
+<div class="space-y-3">
+<div class="flex items-center justify-between py-2 border-b border-outline-variant/10 transition-all cursor-pointer vault-item-hover">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim">key</span>
+<span class="font-code-sm text-code-sm">id_rsa_seis_main</span>
+</div>
+<span class="text-[10px] font-label-caps text-on-surface-variant">SHA256</span>
+</div>
+<div class="flex items-center justify-between py-2 border-b border-outline-variant/10 transition-all cursor-pointer vault-item-hover">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim">key</span>
+<span class="font-code-sm text-code-sm">id_ed25519_deploy</span>
+</div>
+<span class="text-[10px] font-label-caps text-on-surface-variant">CURVE25519</span>
+</div>
+<div class="flex items-center justify-between py-2 border-b border-outline-variant/10 transition-all cursor-pointer vault-item-hover">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim">vpn_key</span>
+<span class="font-code-sm text-code-sm">kernel_auth_token</span>
+</div>
+<span class="text-[10px] font-label-caps text-on-surface-variant">AES-256</span>
+</div>
+</div>
+</div>
+<!-- Connection Logs (Table Data) -->
+<div class="col-span-12 obsidian-glass rounded-lg overflow-hidden">
+<div class="px-6 py-4 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low">
+<h3 class="font-label-caps text-label-caps text-primary-fixed-dim uppercase tracking-widest">Connection_Log_Cluster</h3>
+<div class="flex gap-4">
+<span class="font-code-sm text-code-sm text-secondary-fixed">TOTAL: 4092 EVENTS</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px] cursor-pointer hover:text-primary-fixed-dim">filter_list</span>
+</div>
+</div>
+<table class="w-full text-left font-code-sm text-code-sm border-collapse">
+<thead>
+<tr class="text-on-surface-variant border-b border-outline-variant/20">
+<th class="px-6 py-4 font-label-caps uppercase text-[10px]">Timestamp</th>
+<th class="px-6 py-4 font-label-caps uppercase text-[10px]">Source_IP</th>
+<th class="px-6 py-4 font-label-caps uppercase text-[10px]">Action</th>
+<th class="px-6 py-4 font-label-caps uppercase text-[10px]">Protocol</th>
+<th class="px-6 py-4 font-label-caps uppercase text-[10px]">Status</th>
+</tr>
+</thead>
+<tbody class="text-on-surface">
+<tr class="border-b border-outline-variant/10 hover:bg-white/5 transition-colors row-entry" style="animation-delay: 0.1s">
+<td class="px-6 py-4 text-on-surface-variant">2023-10-23 14:12:01</td>
+<td class="px-6 py-4">10.0.0.45</td>
+<td class="px-6 py-4 uppercase">SSH_HANDSHAKE</td>
+<td class="px-6 py-4">SFTP-v4</td>
+<td class="px-6 py-4"><span class="flex items-center gap-2"><span class="w-1 h-1 bg-secondary-fixed"></span> SUCCESS</span></td>
+</tr>
+<tr class="border-b border-outline-variant/10 bg-white/[0.02] hover:bg-white/5 transition-colors row-entry" style="animation-delay: 0.2s">
+<td class="px-6 py-4 text-on-surface-variant">2023-10-23 14:11:44</td>
+<td class="px-6 py-4">10.2.1.92</td>
+<td class="px-6 py-4 uppercase">PORT_FORWARD</td>
+<td class="px-6 py-4">TCP:8080</td>
+<td class="px-6 py-4"><span class="flex items-center gap-2"><span class="w-1 h-1 bg-secondary-fixed"></span> ACTIVE</span></td>
+</tr>
+<tr class="border-b border-outline-variant/10 hover:bg-white/5 transition-colors row-entry" style="animation-delay: 0.3s">
+<td class="px-6 py-4 text-on-surface-variant">2023-10-23 14:10:32</td>
+<td class="px-6 py-4">192.168.1.1</td>
+<td class="px-6 py-4 uppercase">AUTH_FAILURE</td>
+<td class="px-6 py-4">SSH-2.0</td>
+<td class="px-6 py-4 text-error"><span class="flex items-center gap-2"><span class="w-1 h-1 bg-error"></span> REJECTED</span></td>
+</tr>
+<tr class="border-b border-outline-variant/10 bg-white/[0.02] hover:bg-white/5 transition-colors row-entry" style="animation-delay: 0.4s">
+<td class="px-6 py-4 text-on-surface-variant">2023-10-23 13:58:12</td>
+<td class="px-6 py-4">127.0.0.1</td>
+<td class="px-6 py-4 uppercase">SUDO_INIT</td>
+<td class="px-6 py-4">PAM</td>
+<td class="px-6 py-4"><span class="flex items-center gap-2"><span class="w-1 h-1 bg-secondary-fixed"></span> GRANTED</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB for Quick Actions -->
+<button class="fixed bottom-10 right-10 w-14 h-14 bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center rounded shadow-lg glow-cyan hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">add</span>
+</button>
+<!-- System Visualizer Placeholder (Minimal Shader Decoration) -->
+<div class="fixed bottom-0 left-64 right-0 h-[2px] bg-outline-variant/10 overflow-hidden">
+<div class="h-full bg-primary-fixed-dim w-1/3 animate-[shuttle_3s_infinite_ease-in-out]"></div>
+</div>
+<style>
+        @keyframes shuttle {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(300%); }
+        }
+    </style>
+<script>
+        // Micro-interactions: Terminal type effect simulation
+        document.addEventListener('DOMContentLoaded', () => {
+            const terminal = document.querySelector('.custom-scrollbar');
+            const lines = [
+                "[SYSTEM] Scanning architectural integrity...",
+                "[SYSTEM] 4 active nodes connected to kernel.",
+                "[SYSTEM] Entropy levels stabilized at 0.002."
+            ];
+            
+            let i = 0;
+            const addLogLine = () => {
+                if(i < lines.length) {
+                    const lineDiv = document.createElement('div');
+                    lineDiv.className = 'text-on-surface-variant/40 mb-2 transition-opacity duration-1000 opacity-0';
+                    lineDiv.textContent = lines[i];
+                    terminal.insertBefore(lineDiv, terminal.lastElementChild);
+                    setTimeout(() => lineDiv.classList.add('opacity-100'), 50);
+                    i++;
+                    setTimeout(addLogLine, 2000);
+                }
+            };
+            
+            setTimeout(addLogLine, 1000);
+        });
+    </script>
+</body></html>

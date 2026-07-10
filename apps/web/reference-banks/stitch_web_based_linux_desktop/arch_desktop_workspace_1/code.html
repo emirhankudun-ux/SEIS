@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#f9f5f5",
+                    "on-secondary-container": "#480064",
+                    "surface-container-low": "#1a1c1c",
+                    "surface-container": "#1e2020",
+                    "on-tertiary": "#313030",
+                    "background": "#121414",
+                    "on-primary": "#00363a",
+                    "surface-container-highest": "#333535",
+                    "inverse-surface": "#e2e2e2",
+                    "primary-container": "#00f0ff",
+                    "on-secondary-fixed": "#320047",
+                    "primary-fixed-dim": "#00dbe9",
+                    "on-secondary": "#520071",
+                    "on-error": "#690005",
+                    "outline": "#849495",
+                    "on-background": "#e2e2e2",
+                    "error": "#ffb4ab",
+                    "inverse-primary": "#006970",
+                    "outline-variant": "#3b494b",
+                    "secondary-container": "#ce5dff",
+                    "secondary": "#ebb2ff",
+                    "inverse-on-surface": "#2f3131",
+                    "surface-tint": "#00dbe9",
+                    "on-tertiary-container": "#605e5e",
+                    "on-primary-container": "#006970",
+                    "tertiary-container": "#dcd9d8",
+                    "on-tertiary-fixed-variant": "#474646",
+                    "primary": "#dbfcff",
+                    "on-error-container": "#ffdad6",
+                    "on-primary-fixed-variant": "#004f54",
+                    "surface-container-lowest": "#0c0f0f",
+                    "secondary-fixed": "#f8d8ff",
+                    "surface-dim": "#121414",
+                    "on-surface": "#e2e2e2",
+                    "on-surface-variant": "#b9cacb",
+                    "surface-variant": "#333535",
+                    "tertiary-fixed": "#e5e2e1",
+                    "on-secondary-fixed-variant": "#74009f",
+                    "surface-container-high": "#282a2b",
+                    "surface": "#121414",
+                    "primary-fixed": "#7df4ff",
+                    "secondary-fixed-dim": "#ebb2ff",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "tertiary-fixed-dim": "#c9c6c5",
+                    "surface-bright": "#37393a",
+                    "error-container": "#93000a",
+                    "on-primary-fixed": "#002022"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gap-xs": "4px",
+                    "margin-page": "32px",
+                    "gap-md": "16px",
+                    "gap-sm": "8px",
+                    "stroke-thick": "2px",
+                    "stroke-thin": "1px",
+                    "gap-lg": "24px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["JetBrains Mono"],
+                    "body-md": ["JetBrains Mono"],
+                    "label-sm": ["Space Mono"],
+                    "headline-md": ["JetBrains Mono"],
+                    "code-sm": ["JetBrains Mono"],
+                    "body-lg": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                    "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0c0f0f;
+            color: #e2e2e2;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+        .window-glow {
+            box-shadow: 0 0 15px -5px rgba(0, 240, 255, 0.2);
+        }
+        .window-border-active {
+            border: 1px solid #00f0ff;
+        }
+        .window-border-inactive {
+            border: 1px solid #3b494b;
+        }
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: #00f0ff;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 240, 255, 0.05);
+            position: absolute;
+            animation: scan 4s linear infinite;
+        }
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+        .grid-bg {
+            background-image: linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md grid-bg">
+<!-- Top Bar (Waybar style) -->
+<header class="fixed top-0 w-full h-8 bg-background/85 backdrop-blur-xl border-b border-outline-variant flex justify-between items-center px-gap-md z-50">
+<!-- Workspaces -->
+<div class="flex items-center gap-gap-xs">
+<span class="font-headline-md text-headline-md text-primary-container tracking-tighter mr-4">HYPR_OS_01</span>
+<div class="flex gap-1">
+<button class="px-2 py-0.5 bg-secondary-container text-on-secondary-container font-bold text-[10px]">1</button>
+<button class="px-2 py-0.5 bg-surface-container-highest text-on-surface-variant font-medium text-[10px] hover:bg-primary-container/20">2</button>
+<button class="px-2 py-0.5 bg-surface-container-highest text-on-surface-variant font-medium text-[10px] hover:bg-primary-container/20">3</button>
+<button class="px-2 py-0.5 bg-surface-container-highest text-on-surface-variant font-medium text-[10px] hover:bg-primary-container/20">4</button>
+</div>
+</div>
+<!-- Window Title -->
+<div class="hidden md:block font-code-sm text-code-sm text-on-surface-variant opacity-60 italic">
+            user@arch_node_01: ~/projects/system_core
+        </div>
+<!-- Status Tray -->
+<div class="flex items-center gap-gap-md font-code-sm text-code-sm">
+<div class="flex items-center gap-1 text-primary-container">
+<span class="material-symbols-outlined text-[16px]">memory</span>
+<span>24%</span>
+</div>
+<div class="flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-[16px]">terminal</span>
+<span>1.2GiB</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface">
+<span class="material-symbols-outlined text-[16px]">lan</span>
+<span>124ms</span>
+</div>
+<div class="flex items-center gap-1 border-l border-outline-variant pl-gap-md">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+<span id="digital-clock">12:43:02</span>
+</div>
+<div class="flex items-center gap-2 ml-2">
+<span class="material-symbols-outlined text-[18px] opacity-70 cursor-pointer hover:text-primary-container">settings</span>
+<span class="material-symbols-outlined text-[18px] text-error cursor-pointer">power_settings_new</span>
+</div>
+</div>
+</header>
+<!-- Side Navigation (Anchored) -->
+<nav class="fixed left-0 top-8 h-[calc(100vh-32px)] w-20 bg-surface-container-lowest/90 backdrop-blur-md border-r border-outline-variant flex flex-col items-center py-gap-md space-y-gap-lg z-40">
+<div class="flex flex-col items-center gap-1 mb-4">
+<div class="w-10 h-10 bg-primary-container flex items-center justify-center rounded-none border border-primary">
+<span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">terminal</span>
+</div>
+<span class="text-[9px] font-label-sm uppercase opacity-50 tracking-widest text-center">Root</span>
+</div>
+<div class="flex flex-col w-full gap-4 items-center">
+<div class="w-full py-3 bg-secondary-container text-on-secondary-container rounded-none border-l-stroke-thick border-primary-container flex flex-col items-center justify-center cursor-pointer">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+<span class="text-[9px] font-bold mt-1">DASH</span>
+</div>
+<div class="w-full py-3 text-on-surface-variant opacity-60 hover:bg-surface-container-highest hover:opacity-100 flex flex-col items-center justify-center cursor-pointer transition-all">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="text-[9px] mt-1">SYS</span>
+</div>
+<div class="w-full py-3 text-on-surface-variant opacity-60 hover:bg-surface-container-highest hover:opacity-100 flex flex-col items-center justify-center cursor-pointer transition-all">
+<span class="material-symbols-outlined">lan</span>
+<span class="text-[9px] mt-1">NET</span>
+</div>
+<div class="w-full py-3 text-on-surface-variant opacity-60 hover:bg-surface-container-highest hover:opacity-100 flex flex-col items-center justify-center cursor-pointer transition-all">
+<span class="material-symbols-outlined">code</span>
+<span class="text-[9px] mt-1">DEV</span>
+</div>
+<div class="w-full py-3 text-on-surface-variant opacity-60 hover:bg-surface-container-highest hover:opacity-100 flex flex-col items-center justify-center cursor-pointer transition-all">
+<span class="material-symbols-outlined">terminal</span>
+<span class="text-[9px] mt-1">LOG</span>
+</div>
+</div>
+<div class="mt-auto pb-4">
+<button class="w-12 h-12 flex items-center justify-center border border-primary-container text-primary-container hover:bg-primary-container hover:text-black transition-colors duration-200">
+<span class="material-symbols-outlined">bolt</span>
+</button>
+</div>
+</nav>
+<!-- Main Desktop Canvas -->
+<main class="ml-20 mt-8 p-gap-md h-[calc(100vh-32px)] overflow-hidden relative">
+<!-- Background Animation -->
+
+<!-- Tiled Windows Grid -->
+<div class="grid grid-cols-12 grid-rows-12 gap-gap-md h-full w-full relative z-10">
+<!-- Window 1: Terminal (Neofetch) -->
+<section class="col-span-12 md:col-span-5 row-span-12 md:row-span-7 bg-surface-container-lowest/85 backdrop-blur-md border border-primary-container window-glow flex flex-col">
+<div class="h-8 bg-primary-container px-gap-md flex items-center justify-between shrink-0">
+<span class="font-code-sm text-code-sm text-black font-bold uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">terminal</span> term_01
+                    </span>
+<div class="flex gap-2">
+<div class="w-3 h-3 border border-black/30"></div>
+<div class="w-3 h-3 bg-black"></div>
+</div>
+</div>
+<div class="p-gap-md font-code-sm text-code-sm overflow-auto relative">
+<div class="scanline"></div>
+<div class="flex gap-gap-lg">
+<!-- ASCII Art -->
+<div class="text-primary-container leading-tight shrink-0">
+<pre class="font-bold">      /\
+     /  \
+    /    \
+   /  /\  \
+  /  /  \  \
+ /  /    \  \
+/__/______\__\
+ \ \      / /
+  \ \    / /
+   \ \  / /
+    \ \/ /
+     \  /
+      \/
+</pre>
+</div>
+<!-- Info -->
+<div class="space-y-1">
+<p class="text-secondary font-bold">root@arch_node_01</p>
+<p class="border-b border-outline-variant pb-1 w-full opacity-30"></p>
+<p><span class="text-primary-container">OS:</span> Arch Linux x86_64</p>
+<p><span class="text-primary-container">Host:</span> VirtualMachine Rev.A</p>
+<p><span class="text-primary-container">Kernel:</span> 6.8.9-arch1-1</p>
+<p><span class="text-primary-container">Uptime:</span> 12 hours, 43 mins</p>
+<p><span class="text-primary-container">Packages:</span> 842 (pacman)</p>
+<p><span class="text-primary-container">Shell:</span> zsh 5.9</p>
+<p><span class="text-primary-container">WM:</span> Hyprland</p>
+<p><span class="text-primary-container">CPU:</span> AMD Ryzen 9 (16) @ 4.2GHz</p>
+<p><span class="text-primary-container">Memory:</span> 1.2GiB / 32GiB</p>
+<div class="flex gap-2 mt-4">
+<div class="w-4 h-4 bg-background"></div>
+<div class="w-4 h-4 bg-error"></div>
+<div class="w-4 h-4 bg-primary-container"></div>
+<div class="w-4 h-4 bg-secondary-container"></div>
+<div class="w-4 h-4 bg-surface-container-highest"></div>
+<div class="w-4 h-4 bg-white"></div>
+</div>
+<p class="mt-4"><span class="text-secondary">$</span> <span class="terminal-cursor"></span></p>
+</div>
+</div>
+</div>
+</section>
+<!-- Window 2: System Monitor -->
+<section class="col-span-12 md:col-span-7 row-span-12 md:row-span-5 bg-surface-container-lowest/85 backdrop-blur-md border border-outline-variant flex flex-col group hover:border-primary-container transition-colors duration-300">
+<div class="h-8 bg-surface-container-highest group-hover:bg-primary-container transition-colors px-gap-md flex items-center justify-between shrink-0">
+<span class="font-code-sm text-code-sm text-on-surface-variant group-hover:text-black font-bold uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">monitoring</span> sys_monitor
+                    </span>
+</div>
+<div class="p-gap-md flex flex-col gap-gap-md overflow-hidden">
+<!-- CPU Usage -->
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] uppercase font-label-sm tracking-tighter">
+<span>CPU Core Performance</span>
+<span class="text-primary-container">Active: 16 Cores</span>
+</div>
+<div class="flex gap-1 h-8">
+<div class="flex-1 bg-primary-container opacity-20"></div>
+<div class="flex-1 bg-primary-container opacity-40"></div>
+<div class="flex-1 bg-primary-container opacity-10"></div>
+<div class="flex-1 bg-primary-container opacity-80"></div>
+<div class="flex-1 bg-primary-container opacity-50"></div>
+<div class="flex-1 bg-primary-container opacity-30"></div>
+<div class="flex-1 bg-primary-container opacity-60"></div>
+<div class="flex-1 bg-primary-container opacity-90"></div>
+<div class="flex-1 bg-primary-container opacity-40"></div>
+<div class="flex-1 bg-primary-container opacity-20"></div>
+<div class="flex-1 bg-primary-container opacity-70"></div>
+<div class="flex-1 bg-primary-container opacity-50"></div>
+</div>
+</div>
+<!-- Memory Usage -->
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] uppercase font-label-sm tracking-tighter">
+<span>V-RAM &amp; Buffer</span>
+<span class="text-secondary">Load: 4.2 GB</span>
+</div>
+<div class="w-full h-4 bg-surface-container-highest flex">
+<div class="h-full bg-secondary-container" style="width: 45%;"></div>
+<div class="h-full bg-secondary opacity-50" style="width: 15%;"></div>
+</div>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-3 gap-gap-sm mt-auto">
+<div class="border border-outline-variant p-2 flex flex-col">
+<span class="text-[9px] uppercase opacity-50">Temp</span>
+<span class="text-headline-md font-headline-md text-primary-container">42°C</span>
+</div>
+<div class="border border-outline-variant p-2 flex flex-col">
+<span class="text-[9px] uppercase opacity-50">Fan</span>
+<span class="text-headline-md font-headline-md text-secondary">2400 RPM</span>
+</div>
+<div class="border border-outline-variant p-2 flex flex-col">
+<span class="text-[9px] uppercase opacity-50">Power</span>
+<span class="text-headline-md font-headline-md text-on-surface">65W</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Window 3: Code Editor -->
+<section class="col-span-12 md:col-span-7 row-span-12 md:row-span-7 bg-surface-container-lowest/85 backdrop-blur-md border border-outline-variant flex flex-col group hover:border-primary-container transition-colors duration-300">
+<div class="h-8 bg-surface-container-highest group-hover:bg-primary-container transition-colors px-gap-md flex items-center justify-between shrink-0">
+<div class="flex items-center gap-4">
+<span class="font-code-sm text-code-sm text-on-surface-variant group-hover:text-black font-bold uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">code</span> editor_core.rs
+                        </span>
+<div class="flex gap-1">
+<span class="px-2 text-[10px] bg-background text-primary-container border border-primary-container/20">main.rs</span>
+<span class="px-2 text-[10px] text-on-surface-variant/50">config.json</span>
+</div>
+</div>
+</div>
+<div class="flex-1 flex overflow-hidden">
+<!-- Gutter -->
+<div class="w-10 bg-surface-container border-r border-outline-variant flex flex-col items-center py-4 font-code-sm text-[11px] text-on-surface-variant opacity-30 select-none">
+<span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span>
+</div>
+<!-- Code -->
+<div class="p-gap-md font-code-sm text-code-sm leading-relaxed overflow-auto whitespace-pre">
+<span class="text-secondary">use</span> std::process::Command;
+<span class="text-secondary">use</span> sys_info;
+
+<span class="text-primary-container">fn</span> <span class="text-secondary-container">main</span>() {
+    <span class="text-outline">let</span> kernel = sys_info::os_release().unwrap();
+    <span class="text-outline">let</span> mem = sys_info::mem_info().unwrap();
+    
+    <span class="text-primary-container">println!</span>(<span class="text-primary">"Initializing Arch Node..."</span>);
+    
+    <span class="text-secondary">match</span> kernel {
+        <span class="text-primary">"linux"</span> =&gt; <span class="text-secondary-container">init_subsystems</span>(),
+        _ =&gt; <span class="text-error">panic!</span>(<span class="text-primary">"Unsupported OS"</span>),
+    }
+}
+
+<span class="text-outline">// System initialization logic</span>
+<span class="text-primary-container">fn</span> <span class="text-secondary-container">init_subsystems</span>() {
+    <span class="text-primary-container">println!</span>(<span class="text-primary">"Status: OK"</span>);
+    <span class="terminal-cursor"></span>
+}
+                    </div>
+</div>
+</section>
+</div>
+<!-- System Notifications (Floating) -->
+<div class="fixed bottom-gap-md right-gap-md w-64 space-y-2 z-50">
+<div class="bg-background border border-primary-container/30 p-3 backdrop-blur-xl animate-pulse">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary-container text-[18px]">info</span>
+<span class="font-bold text-[10px] uppercase text-primary-container">System Sync</span>
+</div>
+<p class="text-[11px] opacity-70">Synchronizing kernel patches with node_01...</p>
+</div>
+</div>
+</main>
+<!-- UI Overlay Assets -->
+<div class="fixed inset-0 pointer-events-none border-[12px] border-background z-50 mix-blend-overlay opacity-20"></div>
+<script>
+        // Digital Clock Update
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.getHours().toString().padStart(2, '0') + ':' + 
+                           now.getMinutes().toString().padStart(2, '0') + ':' + 
+                           now.getSeconds().toString().padStart(2, '0');
+            document.getElementById('digital-clock').textContent = timeStr;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Subtle micro-interactions
+        document.querySelectorAll('section').forEach(window => {
+            window.addEventListener('mouseenter', () => {
+                window.classList.remove('border-outline-variant');
+                window.classList.add('window-border-active');
+            });
+            window.addEventListener('mouseleave', () => {
+                // Keep active if it was the main focus - simple mockup logic
+                if(!window.classList.contains('col-span-5')) {
+                    window.classList.add('border-outline-variant');
+                    window.classList.remove('window-border-active');
+                }
+            });
+        });
+    </script>
+</body></html>

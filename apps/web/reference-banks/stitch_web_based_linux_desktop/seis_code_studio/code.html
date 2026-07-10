@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS Code Studio | Professional IDE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Use Tailwind Config from Brand Anchors -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary": "#313030",
+                    "surface": "#121414",
+                    "surface-container-lowest": "#0c0f0f",
+                    "surface-variant": "#333535",
+                    "surface-container": "#1e2020",
+                    "on-error-container": "#ffdad6",
+                    "on-primary": "#2c3400",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "tertiary-fixed-dim": "#c8c6c5",
+                    "on-primary-container": "#5d6b00",
+                    "surface-container-highest": "#333535",
+                    "tertiary-fixed": "#e5e2e1",
+                    "surface-bright": "#38393a",
+                    "secondary-container": "#474646",
+                    "background": "#121414",
+                    "on-secondary-container": "#b7b4b4",
+                    "inverse-primary": "#576500",
+                    "inverse-on-surface": "#2f3131",
+                    "primary": "#ffffff",
+                    "on-surface": "#e2e2e2",
+                    "on-tertiary-container": "#656464",
+                    "on-secondary-fixed-variant": "#474646",
+                    "secondary-fixed-dim": "#c9c6c5",
+                    "error": "#ffb4ab",
+                    "primary-fixed": "#d2f000",
+                    "outline": "#909378",
+                    "on-error": "#690005",
+                    "surface-container-low": "#1a1c1c",
+                    "surface-tint": "#b8d300",
+                    "surface-dim": "#121414",
+                    "secondary-fixed": "#e5e2e1",
+                    "on-tertiary": "#313030",
+                    "on-tertiary-fixed-variant": "#474746",
+                    "tertiary-container": "#e5e2e1",
+                    "on-primary-fixed": "#191e00",
+                    "inverse-surface": "#e2e2e2",
+                    "on-primary-fixed-variant": "#414c00",
+                    "on-secondary-fixed": "#1c1b1b",
+                    "primary-container": "#d2f000",
+                    "on-surface-variant": "#c6c9ab",
+                    "primary-fixed-dim": "#b8d300",
+                    "on-background": "#e2e2e2",
+                    "secondary": "#c9c6c5",
+                    "surface-container-high": "#282a2b",
+                    "outline-variant": "#454932",
+                    "tertiary": "#ffffff",
+                    "error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "margin-desktop": "48px",
+                    "stack-md": "24px",
+                    "stack-lg": "48px",
+                    "gutter": "24px",
+                    "stack-sm": "12px",
+                    "unit": "8px",
+                    "stack-xs": "4px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Inter", "sans-serif"],
+                    "label-caps": ["Inter", "sans-serif"],
+                    "title-sm": ["Inter", "sans-serif"],
+                    "headline-md": ["Inter", "sans-serif"],
+                    "mono-code": ["JetBrains Mono", "monospace"],
+                    "body-md": ["Inter", "sans-serif"]
+            },
+            "fontSize": {
+                    "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "600"}],
+                    "label-caps": ["11px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                    "title-sm": ["18px", {"lineHeight": "1.5", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                    "headline-md": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                    "mono-code": ["13px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "body-md": ["14px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #121414;
+            color: #e2e2e2;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 18px;
+        }
+        .code-cursor {
+            border-left: 2px solid #d2f000;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+        
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .glass-panel {
+            background: rgba(18, 20, 20, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .active-tab {
+            border-bottom: 2px solid #d2f000;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.03);
+        }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col">
+<!-- Top Navigation Bar (Shared Component Reference) -->
+<header class="fixed top-0 w-full flex justify-between items-center h-12 px-unit w-full z-50 border-b border-white/5 bg-background/80 backdrop-blur-xl">
+<div class="flex items-center gap-stack-sm">
+<span class="font-display-lg text-title-sm tracking-tighter text-primary px-stack-sm">SEIS</span>
+<nav class="hidden md:flex gap-unit">
+<button class="px-3 py-1 font-mono-code text-mono-code text-primary-fixed font-bold border-b-2 border-primary-fixed active:scale-95 transition-all">main.ts</button>
+<button class="px-3 py-1 font-mono-code text-mono-code text-on-surface-variant hover:text-primary-fixed transition-colors active:scale-95">styles.css</button>
+<button class="px-3 py-1 font-mono-code text-mono-code text-on-surface-variant hover:text-primary-fixed transition-colors active:scale-95">package.json</button>
+</nav>
+</div>
+<div class="flex items-center gap-stack-sm pr-stack-sm">
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed cursor-pointer transition-colors" data-icon="memory">memory</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed cursor-pointer transition-colors" data-icon="sensors">sensors</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed cursor-pointer transition-colors" data-icon="offline_bolt">offline_bolt</span>
+</div>
+<div class="h-6 w-6 rounded-full bg-surface-container-highest overflow-hidden border border-white/10">
+<img class="w-full h-full object-cover" data-alt="A professional high-resolution headshot of a software engineer with neutral lighting, wearing a dark minimal hoodie, set against a dark architectural background with subtle cyan light leaks. The image style is cinematic, sharp, and high-contrast." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYZ0EwpkiMUhvuWmPoOIE3DV48MAMvQAs8UljUGOgleUkwC9ppQrVUG6fwjbUT02ftmN1MFMOFLL6iQbTjup3rQhSwbBhFid0bdiuFZF0F0-aLBfLqSGU5PEvvODfK9bZjIatqVBcKS6uZ-r0NSgRi9IYqa14cAe2vCd8VQilMGjcq43PDvF71CGHXNLQi6amcIxwWJUf1Etc_8ptvjAaNQVVNhKEWAr-W23PCp2DmWMEtbYZqwEluccIlHxuqcHnVsdeu9GyjqDs8"/>
+</div>
+</div>
+</header>
+<main class="flex-1 mt-12 flex overflow-hidden">
+<!-- Left Side Bar (Explorer & Activity) -->
+<aside class="w-16 md:w-64 flex flex-shrink-0 border-r border-white/5 bg-surface-container-lowest/90 backdrop-blur-2xl transition-all duration-300">
+<!-- Icon Rail -->
+<nav class="w-12 md:w-16 border-r border-white/5 flex flex-col items-center py-stack-md gap-stack-md z-40">
+<button class="text-on-primary-fixed bg-primary-fixed rounded-lg p-2 mx-2 transition-all">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+</button>
+<button class="text-on-surface-variant hover:text-on-surface p-2 transition-all">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+</button>
+<button class="text-on-surface-variant hover:text-on-surface p-2 transition-all">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+</button>
+<button class="text-on-surface-variant hover:text-on-surface p-2 transition-all">
+<span class="material-symbols-outlined" data-icon="cloud">cloud</span>
+</button>
+<div class="mt-auto flex flex-col gap-stack-md">
+<button class="text-on-surface-variant hover:text-on-surface p-2">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+</nav>
+<!-- Explorer Content -->
+<div class="hidden md:flex flex-col flex-1 overflow-y-auto scrollbar-hide py-stack-sm">
+<div class="px-stack-sm mb-4 flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-on-surface-variant opacity-60 uppercase">Explorer</span>
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant cursor-pointer" data-icon="more_horiz">more_horiz</span>
+</div>
+<div class="space-y-1">
+<details class="group" open="">
+<summary class="flex items-center gap-2 px-stack-sm py-1 hover:bg-surface-variant/30 cursor-pointer list-none text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[16px] transition-transform group-open:rotate-90" data-icon="keyboard_arrow_right">keyboard_arrow_right</span>
+<span class="font-body-md text-body-md">src</span>
+</summary>
+<div class="pl-8 space-y-1 py-1">
+<div class="flex items-center gap-2 py-1 hover:bg-surface-variant/30 cursor-pointer text-primary-fixed">
+<span class="material-symbols-outlined text-[16px]" data-icon="description">description</span>
+<span class="font-mono-code text-mono-code">main.ts</span>
+</div>
+<div class="flex items-center gap-2 py-1 hover:bg-surface-variant/30 cursor-pointer text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]" data-icon="css">css</span>
+<span class="font-mono-code text-mono-code">styles.css</span>
+</div>
+<div class="flex items-center gap-2 py-1 hover:bg-surface-variant/30 cursor-pointer text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]" data-icon="javascript">javascript</span>
+<span class="font-mono-code text-mono-code">utils.js</span>
+</div>
+</div>
+</details>
+<details class="group">
+<summary class="flex items-center gap-2 px-stack-sm py-1 hover:bg-surface-variant/30 cursor-pointer list-none text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[16px] transition-transform group-open:rotate-90" data-icon="keyboard_arrow_right">keyboard_arrow_right</span>
+<span class="font-body-md text-body-md">components</span>
+</summary>
+</details>
+<div class="flex items-center gap-2 px-stack-sm py-1 hover:bg-surface-variant/30 cursor-pointer text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]" data-icon="settings_suggest">settings_suggest</span>
+<span class="font-mono-code text-mono-code">package.json</span>
+</div>
+</div>
+<div class="mt-8 px-stack-sm border-t border-white/5 pt-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant opacity-60 uppercase mb-2 block">Git Status</span>
+<div class="flex items-center justify-between py-1">
+<div class="flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-[#ff8c00]" data-icon="circle">circle</span>
+<span class="font-mono-code text-mono-code text-[12px]">modified: main.ts</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Center Workspace: Code Editor -->
+<section class="flex-1 flex flex-col bg-background relative overflow-hidden">
+<!-- Code Area -->
+<div class="flex-1 overflow-y-auto scrollbar-hide font-mono-code text-mono-code p-stack-md leading-relaxed selection:bg-primary-fixed/20">
+<div class="flex gap-stack-md">
+<div class="text-on-surface-variant/30 text-right select-none w-8">
+                        1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13
+                    </div>
+<div class="flex-1 relative">
+<span class="text-[#c586c0]">import</span> { SEIS_Engine } <span class="text-[#c586c0]">from</span> <span class="text-[#ce9178]">"@seis/core"</span>;<br/>
+<br/>
+<span class="text-[#569cd6]">const</span> <span class="text-[#9cdcfe]">engine</span> = <span class="text-[#569cd6]">new</span> <span class="text-[#4ec9b0]">SEIS_Engine</span>({<br/>
+                          <span class="text-[#9cdcfe]">mode</span>: <span class="text-[#ce9178]">"autonomous"</span>,<br/>
+                          <span class="text-[#9cdcfe]">concurrency</span>: <span class="text-[#b5cea8]">16</span><br/>
+                        });<br/>
+<br/>
+<span class="text-[#569cd6]">async function</span> <span class="text-[#dcdcaa]">initializeWorkspace</span>() {<br/>
+                          <span class="text-[#c586c0]">try</span> {<br/>
+                            <span class="text-[#c586c0]">await</span> engine.<span class="text-[#dcdcaa]">start</span>();<br/>
+                            <span class="text-primary-fixed opacity-60 italic">// AI suggestion: </span><span class="text-primary-fixed bg-primary-fixed/10 px-1 border-b border-primary-fixed">console.log("Workspace operational: " + engine.id);</span><span class="code-cursor"></span><br/>
+                          } <span class="text-[#c586c0]">catch</span> (err) {<br/>
+                            <span class="text-[#4ec9b0]">Logger</span>.<span class="text-[#dcdcaa]">error</span>(err);<br/>
+                          }<br/>
+                        }
+                    </div>
+</div>
+</div>
+<!-- Integrated Terminal (Shared Component Reference) -->
+<footer class="h-64 border-t border-white/5 bg-surface-container-lowest/50 backdrop-blur-md flex flex-col">
+<div class="flex items-center px-stack-sm h-8 bg-surface-container/30 border-b border-white/5">
+<div class="flex gap-stack-sm">
+<button class="font-label-caps text-label-caps text-primary-fixed border-b border-primary-fixed pb-0.5">Terminal</button>
+<button class="font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface">Output</button>
+<button class="font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface">Debug Console</button>
+<button class="font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface">Problems</button>
+</div>
+<div class="ml-auto flex gap-2">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant cursor-pointer" data-icon="add">add</span>
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant cursor-pointer" data-icon="close">close</span>
+</div>
+</div>
+<div class="flex-1 p-stack-sm font-mono-code text-mono-code overflow-y-auto scrollbar-hide text-on-surface-variant">
+<div class="mb-1"><span class="text-primary-fixed">seis-dev:</span><span class="text-[#569cd6]">~/workspace</span>$ npm run build</div>
+<div class="mb-1 opacity-80">&gt; seis-studio@1.0.4 build</div>
+<div class="mb-1 opacity-80">&gt; vite build</div>
+<div class="mb-1 text-[#4ec9b0]">✓ 42 modules transformed.</div>
+<div class="mb-1 text-[#4ec9b0]">rendering chunks...</div>
+<div class="mb-1 text-[#4ec9b0]">dist/assets/index-D8S9x2.js   442.12 kB │ gzip: 120.45 kB</div>
+<div class="mb-1 text-[#4ec9b0]">dist/index.html                0.45 kB</div>
+<div class="mb-1"><span class="text-primary-fixed">seis-dev:</span><span class="text-[#569cd6]">~/workspace</span>$ <span class="code-cursor"></span></div>
+</div>
+</footer>
+</section>
+<!-- Right Side Bar (System & Memory) -->
+<aside class="hidden xl:flex w-12 border-l border-white/5 bg-background/50 backdrop-blur-md flex-col items-center py-stack-md z-30">
+<div class="flex flex-col gap-stack-md items-center h-full">
+<button class="text-primary-fixed">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant/40 hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="sync" style="animation: spin 10s linear infinite">sync</span>
+</button>
+<button class="text-on-surface-variant/40 hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+</button>
+<div class="mt-auto flex flex-col gap-unit items-center">
+<div class="w-1 h-12 bg-surface-container-highest rounded-full relative overflow-hidden">
+<div class="absolute bottom-0 w-full bg-primary-fixed h-3/4"></div>
+</div>
+<span class="font-label-caps text-[8px] text-on-surface-variant">CPU</span>
+</div>
+</div>
+</aside>
+</main>
+<!-- UI Overlay elements -->
+<div class="fixed bottom-12 right-12 z-50">
+<div class="glass-panel rounded-lg p-stack-sm flex items-center gap-3 border-primary-fixed/20">
+<span class="material-symbols-outlined text-primary-fixed animate-pulse" data-icon="bolt">bolt</span>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-primary-fixed">SEIS AI ACTIVE</span>
+<span class="text-[10px] text-on-surface-variant font-mono-code">Indexing 1,429 tokens...</span>
+</div>
+</div>
+</div>
+<!-- Background Atmospheric Effect -->
+<div class="fixed inset-0 pointer-events-none -z-10 opacity-20">
+
+</div>
+<style>
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+<script>
+        // Simple micro-interaction for tab switching simulation
+        document.querySelectorAll('nav button').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('nav button').forEach(b => {
+                    b.classList.remove('text-primary-fixed', 'font-bold', 'border-b-2', 'border-primary-fixed');
+                    b.classList.add('text-on-surface-variant');
+                });
+                button.classList.add('text-primary-fixed', 'font-bold', 'border-b-2', 'border-primary-fixed');
+                button.classList.remove('text-on-surface-variant');
+            });
+        });
+
+        // Simulating some terminal activity
+        const terminalOutput = document.querySelector('footer .overflow-y-auto');
+        const commands = [
+            "Analyzing codebase...",
+            "AI optimization: 3 paths identified.",
+            "Memory usage: 1.2GB / 16GB",
+            "Establishing neural link with GitHub..."
+        ];
+
+        let cmdIndex = 0;
+        setInterval(() => {
+            if (cmdIndex < commands.length) {
+                const div = document.createElement('div');
+                div.className = 'mb-1 text-on-surface-variant italic opacity-50';
+                div.textContent = `[SYSTEM]: ${commands[cmdIndex]}`;
+                terminalOutput.appendChild(div);
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                cmdIndex++;
+            }
+        }, 8000);
+    </script>
+</body></html>

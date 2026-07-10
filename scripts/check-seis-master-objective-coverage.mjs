@@ -9,12 +9,14 @@ const failures = [];
 const coveragePath = "data/seis-master-objective-coverage.json";
 const coverageReportPath = "reports/seis-master-objective-coverage.md";
 const coverageReportGeneratorPath = "scripts/create-seis-master-objective-coverage-report.mjs";
+const modelScalingProfilePath = "content/development/seis-model-scaling-hardware-profile.json";
 const trackerPath = "data/seis-operational-goal-tracker.json";
 const implementationMapPath = "data/seis-master-prompt-implementation-map.json";
 const acceptanceCriteriaPath = "data/seis-master-prompt-acceptance-criteria.json";
 const masterPromptPath = "docs/governance/seis-master-prompt.md";
 const readmePath = "README.md";
 const packagePath = "package.json";
+const desktopPath = "apps/web/desktop.js";
 
 const coverage = readJson(coveragePath);
 const packageJson = readJson(packagePath);
@@ -35,10 +37,20 @@ requireIncludes(coverageReportGeneratorPath, "SSH Hardening Operation Coverage",
 requireIncludes(coverageReportGeneratorPath, "Mode isolation", "objective coverage report generator must render mode isolation evidence");
 requireIncludes(coverageReportGeneratorPath, "Firewall and lockout safety", "objective coverage report generator must render firewall lockout evidence");
 requireIncludes(coverageReportGeneratorPath, "Idempotency and failure handling", "objective coverage report generator must render idempotency and failure-handling evidence");
+requireIncludes(coverageReportGeneratorPath, modelScalingProfilePath, "objective coverage report generator must include the SEIS model scaling profile");
+requireIncludes(coverageReportGeneratorPath, "AI Frontier Model Boundary", "objective coverage report generator must render AI frontier model coverage");
+requireIncludes(coverageReportPath, "## AI Frontier Model Boundary", "objective coverage report must include AI frontier model coverage");
+requireIncludes(coverageReportPath, "SEIS 150B Frontier Research Target", "objective coverage report must include the SEIS 150B frontier target");
 requireIncludes(coverageReportPath, "## SSH Hardening Operation Coverage", "objective coverage report must include SSH operation coverage");
 requireIncludes(coverageReportPath, "Mode isolation", "objective coverage report must include mode isolation evidence");
 requireIncludes(coverageReportPath, "Firewall and lockout safety", "objective coverage report must include firewall lockout evidence");
 requireIncludes(coverageReportPath, "Idempotency and failure handling", "objective coverage report must include idempotency and failure-handling evidence");
+requireIncludes(desktopPath, "SEIS_MASTER_OBJECTIVE_COVERAGE_UI", "Desktop Command Center must expose master objective coverage UI data");
+requireIncludes(desktopPath, "data-master-objective-coverage-matrix", "Desktop Command Center must render the master objective coverage matrix");
+requireIncludes(desktopPath, "data-master-objective-coverage-item", "Desktop Command Center must render per-item coverage rows");
+requireIncludes(desktopPath, "seis-20b-local-preflight.md", "Desktop Command Center must expose the 20B local preflight report");
+requireIncludes(desktopPath, "export-model-preflight", "Desktop Command Center must expose the 20B local preflight action");
+requireIncludes(desktopPath, "dry-run-only", "Desktop Command Center must keep model preflight as dry-run only");
 
 if (coverage) {
   ensure(coverage.contract === "SEIS Master Objective Coverage", `${coveragePath} must define the coverage contract`);
@@ -69,6 +81,7 @@ if (coverage) {
     "apple-first-platform",
     "design-accessibility-experience",
     "ai-data-cloud-automation",
+    "seis-ai-150b-frontier-boundary",
     "open-source-github-readiness",
     "god-mode-every-topic-feature-growth",
   ]) {
@@ -83,6 +96,7 @@ if (coverage) {
     "npm run check:seis-god-mode-work-package",
     "npm run check:seis-god-mode-completion-audit",
     "npm run check:seis-operational-goal-tracker",
+    "npm run check:seis-model-scaling-hardware-profile",
     "npm run check:seis-master-prompt-report",
     "npm run check:seis-master-prompt",
     "npm run quality",
@@ -108,6 +122,27 @@ if (coverage) {
     requireCoverageIncludes(cloudCoverage, "evidence", "data/ssh-hardening-operation-contract.json", "AI/data/cloud coverage must cite the SSH hardening operation contract");
     requireCoverageIncludes(cloudCoverage, "evidence", "docs/deployment/ssh-wireguard-vps-cloud-server.md", "AI/data/cloud coverage must cite the SSH/WireGuard deployment guide");
     requireCoverageIncludes(cloudCoverage, "checks", "npm run check:ssh-vpn-cloud-server", "AI/data/cloud coverage must require SSH/VPN cloud validation");
+  }
+
+  const ai150bCoverage = findCoverage(coverage, "seis-ai-150b-frontier-boundary");
+  if (ai150bCoverage) {
+    requireCoverageIncludes(ai150bCoverage, "evidence", modelScalingProfilePath, "150B AI coverage must cite the model scaling profile");
+    requireCoverageIncludes(ai150bCoverage, "evidence", "docs/ai/seis-model-scaling.md", "150B AI coverage must cite the model scaling docs");
+    requireCoverageIncludes(ai150bCoverage, "evidence", "packages/seis-ai/src/lib/plugin-integration.mjs", "150B AI coverage must cite the AI package integration payload");
+    requireCoverageIncludes(ai150bCoverage, "evidence", "apps/web/desktop.js", "150B AI coverage must cite the Desktop Command Center surface");
+    requireCoverageIncludes(ai150bCoverage, "checks", "npm run check:seis-model-scaling-hardware-profile", "150B AI coverage must require the model scaling hardware profile check");
+    requireCoverageIncludes(ai150bCoverage, "checks", "npm test --prefix packages/seis-ai", "150B AI coverage must require the SEIS AI package tests");
+    requireCoverageIncludes(ai150bCoverage, "checks", "npm run check:desktop-os", "150B AI coverage must require the Desktop OS check");
+    ensure(
+      String(ai150bCoverage.requirement || "").includes("150B") &&
+        String(ai150bCoverage.requirement || "").includes("evidence-gated") &&
+        String(ai150bCoverage.gap || "").includes("no trained or routeable 150B"),
+      `${coveragePath} seis-ai-150b-frontier-boundary must keep 150B evidence-gated and non-claim boundaries explicit`
+    );
+  }
+
+  for (const item of coverage.coverage || []) {
+    requireIncludes(desktopPath, item.id, `Desktop Command Center must expose objective coverage item ${item.id}`);
   }
 
   const godModeGrowthCoverage = findCoverage(coverage, "god-mode-every-topic-feature-growth");
@@ -211,7 +246,7 @@ if (acceptanceCriteria) {
   );
 }
 
-for (const file of [coveragePath, coverageReportPath, coverageReportGeneratorPath, trackerPath, implementationMapPath, acceptanceCriteriaPath, masterPromptPath, readmePath]) {
+for (const file of [coveragePath, coverageReportPath, coverageReportGeneratorPath, trackerPath, implementationMapPath, acceptanceCriteriaPath, masterPromptPath, readmePath, desktopPath]) {
   requireNotMatches(file, /sk-[A-Za-z0-9_-]{20,}/, "OpenAI-style API keys");
   requireNotMatches(file, /-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----/, "private keys");
   requireNotMatches(file, /\b(?:password|token|secret)\s*=\s*['"][^'"]+['"]/i, "inline credential assignments");

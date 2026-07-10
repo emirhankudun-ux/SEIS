@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS - DISPLAY_LAB_S7</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Mono:wght@400;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..900&family=Space+Mono:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #0c0f0f;
+            color: #e2e2e2;
+            overflow-x: hidden;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .grid-bg {
+            background-image: radial-gradient(circle at 1px 1px, #3b494b 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to bottom, transparent, rgba(125, 244, 255, 0.1), transparent);
+            position: absolute;
+            animation: scan 4s linear infinite;
+        }
+        @keyframes scan {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .terminal-glow {
+            text-shadow: 0 0 8px rgba(125, 244, 255, 0.4);
+        }
+        .crt-flicker {
+            animation: flicker 0.15s infinite;
+        }
+        @keyframes flicker {
+            0% { opacity: 0.98; }
+            50% { opacity: 1; }
+            100% { opacity: 0.99; }
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0c0f0f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b494b;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00dbe9;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#690005",
+                        "inverse-primary": "#006970",
+                        "primary-container": "#00f0ff",
+                        "inverse-on-surface": "#2f3131",
+                        "primary-fixed-dim": "#00dbe9",
+                        "on-surface-variant": "#b9cacb",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "surface-container-highest": "#333535",
+                        "surface-container-high": "#282a2b",
+                        "secondary-container": "#ce5dff",
+                        "surface-bright": "#37393a",
+                        "on-primary-container": "#006970",
+                        "surface-tint": "#00dbe9",
+                        "error-container": "#93000a",
+                        "surface-dim": "#121414",
+                        "surface-container-low": "#1a1c1c",
+                        "surface-container-lowest": "#0c0f0f",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "tertiary": "#f9f5f5",
+                        "on-primary-fixed-variant": "#004f54",
+                        "primary-fixed": "#7df4ff",
+                        "on-tertiary-container": "#605e5e",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "tertiary-container": "#dcd9d8",
+                        "secondary-fixed": "#f8d8ff",
+                        "on-tertiary": "#313030",
+                        "on-secondary": "#520071",
+                        "surface-container": "#1e2020",
+                        "primary": "#dbfcff",
+                        "background": "#121414",
+                        "on-primary-fixed": "#002022",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "on-secondary-fixed": "#320047",
+                        "surface": "#121414",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "on-secondary-container": "#480064",
+                        "on-background": "#e2e2e2",
+                        "tertiary-fixed": "#e5e2e1",
+                        "outline-variant": "#3b494b",
+                        "inverse-surface": "#e2e2e2",
+                        "on-error-container": "#ffdad6",
+                        "on-primary": "#00363a",
+                        "surface-variant": "#333535",
+                        "secondary": "#ebb2ff",
+                        "outline": "#849495",
+                        "on-surface": "#e2e2e2",
+                        "error": "#ffb4ab"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gap-sm": "8px",
+                        "stroke-thick": "2px",
+                        "gap-md": "16px",
+                        "gap-lg": "24px",
+                        "margin-page": "32px",
+                        "gap-xs": "4px",
+                        "stroke-thin": "1px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Space Mono"],
+                        "headline-lg": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"],
+                        "code-sm": ["JetBrains Mono"],
+                        "body-md": ["JetBrains Mono"],
+                        "label-caps": ["Space Mono"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "label-caps": ["10px", { "lineHeight": "1", "letterSpacing": "0.2em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "code-sm": ["13px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="grid-bg min-h-screen">
+<!-- TopNavBar -->
+<header class="bg-surface-container-lowest/80 backdrop-blur-xl fixed top-0 left-0 w-full h-10 px-6 flex justify-between items-center z-50 border-b border-outline-variant/30">
+<div class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim uppercase">
+            SEIS KERNEL OS <span class="text-primary-fixed ml-2 opacity-50">// SECTOR_07</span>
+</div>
+<nav class="hidden md:flex gap-8 items-center h-full">
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer text-label-caps" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer text-label-caps" href="#">TELEMETRY</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer text-label-caps" href="#">AGENTS</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer text-label-caps" href="#">NETWORK</a>
+</nav>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary-fixed text-[18px] cursor-pointer active:opacity-70">memory</span>
+<span class="material-symbols-outlined text-primary-fixed text-[18px] cursor-pointer active:opacity-70">terminal</span>
+<span class="material-symbols-outlined text-primary-fixed text-[18px] cursor-pointer active:opacity-70">settings</span>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-10 h-[calc(100vh-40px)] w-20 hover:w-64 bg-surface-container-lowest/90 backdrop-blur-2xl z-40 flex flex-col border-r border-outline-variant/20 transition-all duration-300 group overflow-hidden">
+<div class="p-4 flex items-center gap-4">
+<div class="w-10 h-10 bg-secondary-container/20 border border-secondary-fixed flex items-center justify-center overflow-hidden shrink-0">
+<img class="w-full h-full object-cover grayscale brightness-125" data-alt="A highly technical profile avatar for a root user in a cyberpunk OS, featuring a glowing holographic face mask with circuit patterns, set against an obsidian black background with faint code streams in secondary violet." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBoHyywij6x0CYx4wH_g23bzaEaxaBOUJU0vhNBl3WlGyscjRjRRTgxsouuqL69VuGd_WMJlf9ialTCjgQyOiT_lqqrsphXPaVrMj5MmyPa9QQb4rsEIoxX8QZnMkFhPFkj6nyUk0HIi0mydahFEAK_jD1wpevcuulOe9r7P_-T7BmNFY_9BVJnjbzkfeuMA71vRM6hEViH7F78nqoPiXIrgAAqPXldvw8dGVVXynFMyVl7U-xtIImacvETgvAmS3gMXKjaBJOXarn2"/>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+<div class="font-label-caps text-label-caps text-secondary-fixed">ROOT_USER</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</div>
+</div>
+</div>
+<nav class="mt-8 flex-grow">
+<div class="group/nav flex items-center px-6 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps tracking-widest">DASHBOARD</span>
+</div>
+<div class="group/nav flex items-center px-6 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed">
+<span class="material-symbols-outlined">nest_display</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps tracking-widest">DISPLAY</span>
+</div>
+<div class="group/nav flex items-center px-6 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">terminal</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps tracking-widest">TERMINAL</span>
+</div>
+<div class="group/nav flex items-center px-6 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps tracking-widest">AI_AGENTS</span>
+</div>
+<div class="group/nav flex items-center px-6 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">cloud_queue</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps tracking-widest">INFRASTRUCTURE</span>
+</div>
+</nav>
+<div class="p-4 border-t border-outline-variant/10">
+<div class="flex items-center px-2 py-3 cursor-pointer text-on-surface-variant hover:text-red-400">
+<span class="material-symbols-outlined">power_settings_new</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps">POWER</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-20 mt-10 p-6 lg:p-10 max-w-[1600px]">
+<!-- Header Section -->
+<div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-primary-fixed mb-2 terminal-glow">DISPLAY & GRAPHICS LAB</h1>
+<p class="font-code-sm text-code-sm text-on-surface-variant flex items-center gap-2">
+<span class="w-2 h-2 bg-primary-fixed-dim rounded-full animate-pulse"></span>
+                    SUBSYSTEM_ACTIVE: SECTOR_07_VISUAL_CORE [COMMIT: 0x3F9A1]
+                </p>
+</div>
+<div class="flex gap-4">
+<button class="bg-primary-container text-surface-container-lowest font-label-sm text-label-sm px-6 py-3 rounded-none hover:bg-secondary-fixed transition-colors">
+                    CALIBRATE_AUTO
+                </button>
+<button class="border border-primary-fixed text-primary-fixed font-label-sm text-label-sm px-6 py-3 rounded-none hover:bg-primary-fixed/10 transition-colors">
+                    EXPORT_PROFILE
+                </button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Technical Controls Column -->
+<div class="md:col-span-4 space-y-6">
+<!-- Resolution & Scaling -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 overflow-hidden">
+<div class="h-6 bg-primary-fixed px-3 flex items-center justify-between">
+<span class="text-[10px] font-bold text-surface-container-lowest uppercase tracking-widest">RESOLUTION_ARRAY</span>
+<span class="material-symbols-outlined text-[14px] text-surface-container-lowest">aspect_ratio</span>
+</div>
+<div class="p-4 space-y-4">
+<div class="space-y-1">
+<label class="text-label-caps text-on-surface-variant block">PHYSICAL_GRID</label>
+<select class="w-full bg-surface-container-low border border-outline-variant/30 text-on-surface font-code-sm text-code-sm py-2 px-3 focus:border-primary-fixed focus:ring-0 outline-none rounded-none appearance-none">
+<option>3840 x 2160 [UHD_NATIVE]</option>
+<option>2560 x 1440 [QHD]</option>
+<option>1920 x 1080 [FHD]</option>
+</select>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between">
+<label class="text-label-caps text-on-surface-variant block">REFRESH_FREQUENCY</label>
+<span class="text-primary-fixed font-code-sm">360Hz</span>
+</div>
+<input class="w-full h-1 bg-surface-container-highest appearance-none cursor-pointer accent-primary-fixed" max="360" min="60" type="range" value="360"/>
+<div class="flex justify-between text-[10px] text-on-surface-variant font-code-sm">
+<span>60HZ</span>
+<span>144HZ</span>
+<span>240HZ</span>
+<span>360HZ</span>
+</div>
+</div>
+</div>
+</div>
+<!-- GPU Acceleration -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 overflow-hidden">
+<div class="h-6 bg-primary-fixed px-3 flex items-center justify-between">
+<span class="text-[10px] font-bold text-surface-container-lowest uppercase tracking-widest">ACCELERATION_LOGIC</span>
+<span class="material-symbols-outlined text-[14px] text-surface-container-lowest">bolt</span>
+</div>
+<div class="p-4 space-y-3">
+<div class="flex items-center justify-between p-3 bg-surface-container-low border border-primary-fixed/20">
+<div>
+<div class="text-primary-fixed font-code-sm">KERNEL_OVERSAMPLING</div>
+<div class="text-[10px] text-on-surface-variant">2x DSR Integration</div>
+</div>
+<div class="w-10 h-5 bg-primary-fixed relative">
+<div class="absolute right-1 top-1 w-3 h-3 bg-surface-container-lowest"></div>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low border border-outline-variant/20 opacity-50">
+<div>
+<div class="text-on-surface font-code-sm">BUFFER_TRIPLING</div>
+<div class="text-[10px] text-on-surface-variant">Latency: +3ms</div>
+</div>
+<div class="w-10 h-5 bg-outline-variant relative">
+<div class="absolute left-1 top-1 w-3 h-3 bg-surface-container-lowest"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Color Space Calibration -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 overflow-hidden">
+<div class="h-6 bg-primary-fixed px-3 flex items-center justify-between">
+<span class="text-[10px] font-bold text-surface-container-lowest uppercase tracking-widest">CHROMATIC_ENGINE</span>
+<span class="material-symbols-outlined text-[14px] text-surface-container-lowest">palette</span>
+</div>
+<div class="p-4 grid grid-cols-2 gap-3">
+<button class="bg-secondary-container/10 border border-secondary-fixed text-secondary-fixed py-3 text-label-caps flex flex-col items-center gap-1">
+<span>DCI-P3</span>
+<span class="text-[8px] opacity-70">CINEMATIC_CURVE</span>
+</button>
+<button class="bg-surface-container-low border border-outline-variant/30 text-on-surface-variant py-3 text-label-caps flex flex-col items-center gap-1 hover:border-primary-fixed transition-colors">
+<span>REC.2020</span>
+<span class="text-[8px] opacity-70">WIDER_GAMUT</span>
+</button>
+<button class="bg-surface-container-low border border-outline-variant/30 text-on-surface-variant py-3 text-label-caps flex flex-col items-center gap-1 hover:border-primary-fixed transition-colors">
+<span>sRGB</span>
+<span class="text-[8px] opacity-70">LEGACY_COMPAT</span>
+</button>
+<button class="bg-surface-container-low border border-outline-variant/30 text-on-surface-variant py-3 text-label-caps flex flex-col items-center gap-1 hover:border-primary-fixed transition-colors">
+<span>ADOBE_RGB</span>
+<span class="text-[8px] opacity-70">MASTERING_S7</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Visual Preview Column -->
+<div class="md:col-span-8 flex flex-col gap-6">
+<!-- Large Real-time Preview Area -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 relative flex-grow min-h-[400px] flex flex-col overflow-hidden">
+<div class="h-6 bg-primary-fixed px-3 flex items-center justify-between shrink-0">
+<span class="text-[10px] font-bold text-surface-container-lowest uppercase tracking-widest">REALTIME_OUTPUT_PREVIEW</span>
+<div class="flex gap-4">
+<span class="text-[10px] font-bold text-surface-container-lowest">360 FPS</span>
+<span class="text-[10px] font-bold text-surface-container-lowest">2.7 MS</span>
+</div>
+</div>
+<div class="relative flex-grow flex items-center justify-center p-8 bg-black/40">
+<div class="scanline"></div>
+<!-- Mock Preview Graphics -->
+<div class="w-full h-full border border-primary-fixed/10 relative flex items-center justify-center crt-flicker">
+<div class="w-full h-full bg-cover bg-center grayscale brightness-50 contrast-125 opacity-40 absolute inset-0" data-alt="A macro cinematic visualization of a digital architecture grid shifting in 3D space, rendered in deep blacks and glowing cyan wireframes, with particles floating in a vacuum environment. High contrast, technical, and atmospheric lighting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDmWeiX0LMhuh_CZb2hMSlzG5NrPB6Kki9LvprRHdr4Rqu9c4Gky637hPop9HHdHHQ0lN-AWEX3OMr-30fsiEZm8Cmtd79RmSre1jieyaD5vaTVKZcN8ec_8meVl5qQh_DC5w4xZoeqFCpANf8xlT1cWQyrB0OgDa_eN2tSSqsFU6Ar1gwrVKh7Zwt8aVNi6Y7x5Q3DVjEjOanB2vzOoArjWGx7qqx0mvh859RLZVEV7f8IOHMIpy-lcLsmNLma0nbU9tVnuWDONq6Y')"></div>
+<!-- Overlay Telemetry Data -->
+<div class="z-10 w-full max-w-2xl grid grid-cols-2 gap-12">
+<div class="space-y-4">
+<div class="flex justify-between items-end">
+<span class="text-label-caps text-primary-fixed text-[10px]">FRAME_CONSISTENCY</span>
+<span class="text-code-sm text-primary-fixed">STABLE</span>
+</div>
+<div class="h-24 flex items-end gap-[2px]">
+<!-- Animated Bars -->
+<div class="bg-primary-fixed-dim/40 w-full h-[70%]"></div>
+<div class="bg-primary-fixed-dim/60 w-full h-[65%]"></div>
+<div class="bg-primary-fixed-dim/80 w-full h-[75%]"></div>
+<div class="bg-primary-fixed w-full h-[80%]"></div>
+<div class="bg-primary-fixed-dim/90 w-full h-[72%]"></div>
+<div class="bg-primary-fixed-dim/50 w-full h-[68%]"></div>
+<div class="bg-primary-fixed-dim/70 w-full h-[74%]"></div>
+<div class="bg-primary-fixed w-full h-[78%]"></div>
+<div class="bg-primary-fixed-dim/40 w-full h-[70%]"></div>
+<div class="bg-primary-fixed-dim/60 w-full h-[65%]"></div>
+<div class="bg-primary-fixed-dim/80 w-full h-[75%]"></div>
+<div class="bg-primary-fixed w-full h-[80%]"></div>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-end">
+<span class="text-label-caps text-secondary-fixed text-[10px]">COLOR_ACCURACY_HISTOGRAM</span>
+<span class="text-code-sm text-secondary-fixed">99.8%</span>
+</div>
+<div class="h-24 relative overflow-hidden border-b border-secondary-fixed/30">
+<svg class="w-full h-full preserve-3d" viewbox="0 0 200 100">
+<path class="text-secondary-fixed/50" d="M0,100 Q20,20 40,80 T80,40 T120,60 T160,20 T200,80 L200,100 L0,100 Z" fill="none" stroke="currentColor" stroke-width="2"></path>
+<path class="text-secondary-fixed/10" d="M0,100 Q10,10 30,70 T70,30 T110,50 T150,10 T200,70 L200,100 L0,100 Z" fill="currentColor"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Decorative Corners -->
+<div class="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-primary-fixed"></div>
+<div class="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-primary-fixed"></div>
+<div class="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-primary-fixed"></div>
+<div class="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-primary-fixed"></div>
+</div>
+</div>
+<!-- Bottom Status Bar for Preview -->
+<div class="h-12 bg-surface-container-low px-4 flex items-center justify-between border-t border-outline-variant/30">
+<div class="flex gap-6">
+<div class="flex flex-col">
+<span class="text-[8px] text-on-surface-variant font-label-caps">GPU_TEMPERATURE</span>
+<span class="text-code-sm text-primary-fixed">54°C</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[8px] text-on-surface-variant font-label-caps">VRAM_LOAD</span>
+<span class="text-code-sm text-primary-fixed">32%</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-32 h-2 bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-primary-fixed w-[85%]"></div>
+</div>
+<span class="text-[10px] text-primary-fixed font-code-sm">SIGNAL_STRENGTH</span>
+</div>
+</div>
+</div>
+<!-- Secondary Control Row -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+<div class="bg-surface-container-lowest border border-outline-variant/30 p-4 flex items-center gap-4">
+<div class="w-12 h-12 bg-primary-fixed/10 border border-primary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary-fixed">hdr_on</span>
+</div>
+<div class="flex-grow">
+<div class="text-primary-fixed font-label-sm text-label-sm mb-1 uppercase tracking-wider">ULTRA_HDR_MASTERING</div>
+<div class="text-[10px] text-on-surface-variant leading-tight">Peak Luminance: 1200 nits. Dynamic mapping enabled.</div>
+</div>
+<input checked="" class="w-5 h-5 bg-surface-container-low border-outline-variant text-primary-fixed rounded-none focus:ring-0" type="checkbox"/>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant/30 p-4 flex items-center gap-4">
+<div class="w-12 h-12 bg-secondary-container/10 border border-secondary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary-fixed">speed</span>
+</div>
+<div class="flex-grow">
+<div class="text-secondary-fixed font-label-sm text-label-sm mb-1 uppercase tracking-wider">LOW_LATENCY_REFLEX</div>
+<div class="text-[10px] text-on-surface-variant leading-tight">Bypass kernel queues for immediate frame injection.</div>
+</div>
+<input checked="" class="w-5 h-5 bg-surface-container-low border-outline-variant text-secondary-fixed rounded-none focus:ring-0" type="checkbox"/>
+</div>
+</div>
+</div>
+</div>
+<!-- System Logs Footer -->
+<div class="mt-8 bg-surface-container-lowest border border-outline-variant/30 font-code-sm text-code-sm">
+<div class="p-3 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-primary-fixed rounded-full"></span>
+<span class="text-label-caps text-[10px] tracking-widest text-primary-fixed">OS_TELEMETRY_STREAM</span>
+</div>
+<span class="text-[10px] text-on-surface-variant">NODE: 00-7F-D1</span>
+</div>
+<div class="p-4 h-32 overflow-y-auto space-y-1 opacity-70">
+<div class="flex gap-4">
+<span class="text-primary-fixed-dim">[14:22:01]</span>
+<span class="text-on-surface">DRV_INIT: Loading Display_Driver_S7_v4.2.sys...</span>
+</div>
+<div class="flex gap-4">
+<span class="text-primary-fixed-dim">[14:22:03]</span>
+<span class="text-on-surface">SYS_CHECK: Refresh rate locked at 360Hz. Signal integrity optimal.</span>
+</div>
+<div class="flex gap-4">
+<span class="text-primary-fixed-dim">[14:22:04]</span>
+<span class="text-secondary-fixed">WARN: Color calibration offset detected (+0.02 Delta-E). Correcting...</span>
+</div>
+<div class="flex gap-4">
+<span class="text-primary-fixed-dim">[14:22:05]</span>
+<span class="text-on-surface">AUTH: Handshake complete. Sector 7 GPU tunnel established.</span>
+</div>
+<div class="flex gap-4 opacity-100">
+<span class="text-primary-fixed-dim">[14:22:06]</span>
+<span class="text-primary-fixed animate-pulse">_</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Action Element -->
+<div class="fixed bottom-6 right-6">
+<button class="w-14 h-14 bg-primary-container text-on-primary-container flex items-center justify-center shadow-[0_0_20px_rgba(0,240,255,0.4)] active:scale-95 transition-transform">
+<span class="material-symbols-outlined">save</span>
+</button>
+</div>
+<script>
+        // Micro-interactions for range inputs and sliders
+        const range = document.querySelector('input[type="range"]');
+        const rangeVal = document.querySelector('.text-primary-fixed.font-code-sm');
+        
+        range?.addEventListener('input', (e) => {
+            rangeVal.textContent = e.target.value + 'Hz';
+        });
+
+        // Add random "glitch" to telemetry bars
+        const bars = document.querySelectorAll('.h-24.flex div');
+        setInterval(() => {
+            const randomBar = bars[Math.floor(Math.random() * bars.length)];
+            const height = Math.floor(Math.random() * 40) + 40;
+            randomBar.style.height = height + '%';
+        }, 150);
+    </script>
+</body></html>

@@ -1,0 +1,50 @@
+{
+  "id": "seis-ai-core-approval-fixture",
+  "version": "2026.06.23",
+  "status": "documented-fixture",
+  "purpose": "Fixture explicit human approval records for future write-gated or external-gated SEIS AI Core sub-agent actions.",
+  "qualityGate": "npm run check:seis-ai-core-subagent-runtime-fixtures",
+  "approvalModel": "scoped-action-specific-expiring",
+  "blanketApprovalAllowed": false,
+  "approvalRequiredFor": [
+    "write outside approved scope",
+    "GitHub push or merge",
+    "deployment",
+    "SSH or VPN operation",
+    "credential access or rotation",
+    "dependency installation",
+    "dataset download",
+    "benchmark spending",
+    "model training or publishing",
+    "destructive file or branch operation"
+  ],
+  "statuses": ["pending-human-approval", "approved", "denied", "expired"],
+  "sampleRequests": [
+    {
+      "id": "approval-cloud-deploy-preview",
+      "action": "cloud-deploy",
+      "status": "pending-human-approval",
+      "actor": "human-operator-required",
+      "targetScope": ["deploy/**"],
+      "expiresAfterMinutes": 60,
+      "executionBlocked": true,
+      "requiredEvidence": ["target", "rollback plan", "credential boundary", "dry-run result"]
+    },
+    {
+      "id": "approval-write-gated-local-patch",
+      "action": "write-gated-file-edit",
+      "status": "pending-human-approval",
+      "actor": "human-operator-required",
+      "targetScope": ["explicit file list only"],
+      "expiresAfterMinutes": 60,
+      "executionBlocked": true,
+      "requiredEvidence": ["file scope", "test plan", "rollback note"]
+    }
+  ],
+  "forbiddenApprovalShortcuts": [
+    "approval by another autonomous agent",
+    "approval inferred from previous conversation",
+    "approval stored in prompt text only",
+    "approval without action, actor, target, expiry, and rollback evidence"
+  ]
+}

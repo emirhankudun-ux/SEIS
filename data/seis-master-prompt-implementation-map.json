@@ -1,6 +1,7 @@
 {
-  "contract": "SEIS Master Prompt",
-  "contractPath": "docs/governance/seis-master-prompt.md",
+  "contract": "SEIS Enterprise Constitution",
+  "contractPath": "AGENTS.md",
+  "companionContractPath": "docs/governance/seis-master-prompt.md",
   "decisionRecordPath": "docs/governance/adr-0001-seis-master-prompt-operating-contract.md",
   "changeChecklistPath": "docs/governance/seis-master-prompt-change-checklist.md",
   "reviewOwnershipPath": ".github/CODEOWNERS",
@@ -37,8 +38,8 @@
     {
       "name": "architecture",
       "priority": 1,
-      "surfaces": ["docs/governance/seis-master-prompt.md", "docs/governance/adr-0001-seis-master-prompt-operating-contract.md"],
-      "evidence": ["Architecture decisions are captured in ADR and Master Prompt surfaces."]
+      "surfaces": ["AGENTS.md", "docs/governance/seis-master-prompt.md", "docs/governance/adr-0001-seis-master-prompt-operating-contract.md"],
+      "evidence": ["Root constitutional authority and compatibility decisions are captured in AGENTS and ADR surfaces."]
     },
     {
       "name": "security",

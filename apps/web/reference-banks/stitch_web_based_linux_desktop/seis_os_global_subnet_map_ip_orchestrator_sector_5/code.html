@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HYPR_OS_01 // SEIS_SUBNET_MAP</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @keyframes pulse-cyan {
+            0%, 100% { opacity: 1; border-color: #00dbe9; box-shadow: 0 0 8px rgba(0, 219, 233, 0.3); }
+            50% { opacity: 0.6; border-color: #004f54; box-shadow: 0 0 2px rgba(0, 219, 233, 0.1); }
+        }
+        .node-pulse { animation: pulse-cyan 2s infinite ease-in-out; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #3b494b; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #00dbe9; }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to bottom, transparent, rgba(0, 219, 233, 0.1), transparent);
+            position: absolute;
+            top: -2px;
+            left: 0;
+            animation: scan 8s linear infinite;
+            z-index: 10;
+            pointer-events: none;
+        }
+        @keyframes scan {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+        .blinking-cursor::after {
+            content: '_';
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            background: rgba(12, 15, 15, 0.85);
+            border: 1px solid #3b494b;
+        }
+        .tiling-border { border: 1px solid #3b494b; }
+        .header-accent { background: #00f0ff; color: #0c0f0f; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#00dbe9",
+                        "surface-container-high": "#282a2b",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "surface-dim": "#121414",
+                        "surface": "#121414",
+                        "on-primary-fixed-variant": "#004f54",
+                        "surface-container": "#1e2020",
+                        "on-primary-fixed": "#002022",
+                        "on-surface-variant": "#b9cacb",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "surface-variant": "#333535",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "surface-tint": "#00dbe9",
+                        "primary-fixed": "#7df4ff",
+                        "on-error-container": "#ffdad6",
+                        "on-error": "#690005",
+                        "on-surface": "#e2e2e2",
+                        "on-secondary-container": "#480064",
+                        "on-primary": "#00363a",
+                        "surface-container-highest": "#333535",
+                        "outline": "#849495",
+                        "tertiary-container": "#dcd9d8",
+                        "primary": "#dbfcff",
+                        "on-secondary-fixed": "#320047",
+                        "secondary": "#ebb2ff",
+                        "on-background": "#e2e2e2",
+                        "surface-container-low": "#1a1c1c",
+                        "on-primary-container": "#006970",
+                        "inverse-primary": "#006970",
+                        "on-secondary": "#520071",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "on-tertiary-container": "#605e5e",
+                        "primary-container": "#00f0ff",
+                        "tertiary-fixed": "#e5e2e1",
+                        "secondary-fixed": "#f8d8ff",
+                        "error-container": "#93000a",
+                        "tertiary": "#f9f5f5",
+                        "surface-bright": "#37393a",
+                        "surface-container-lowest": "#0c0f0f",
+                        "on-tertiary": "#313030",
+                        "background": "#121414",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "inverse-surface": "#e2e2e2",
+                        "secondary-container": "#ce5dff",
+                        "inverse-on-surface": "#2f3131",
+                        "outline-variant": "#3b494b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gap-lg": "24px",
+                        "stroke-thick": "2px",
+                        "gap-sm": "8px",
+                        "stroke-thin": "1px",
+                        "gap-md": "16px",
+                        "margin-page": "32px",
+                        "gap-xs": "4px"
+                    },
+                    "fontFamily": {
+                        "code-sm": ["JetBrains Mono"],
+                        "body-md": ["JetBrains Mono"],
+                        "label-sm": ["Space Mono"],
+                        "headline-lg": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface overflow-hidden font-body-md select-none">
+<!-- Top AppBar Execution -->
+<header class="fixed top-0 w-full h-8 bg-background/85 backdrop-blur-xl border-b border-outline-variant flex justify-between items-center px-gap-md z-50">
+<div class="font-headline-md text-headline-md text-primary-container tracking-tighter flex items-center gap-gap-sm">
+<span class="material-symbols-outlined text-[20px]">hub</span>
+            HYPR_OS_01
+        </div>
+<div class="flex items-center gap-gap-lg">
+<nav class="hidden md:flex gap-gap-md font-code-sm text-code-sm">
+<a class="text-on-surface-variant font-medium hover:bg-surface-container-highest hover:text-primary transition-colors duration-150 px-2 py-0.5" href="#">DASHBOARD</a>
+<a class="text-primary-container font-bold border-b-stroke-thick border-primary-container px-2 py-0.5" href="#">SUBNET_MAP</a>
+<a class="text-on-surface-variant font-medium hover:bg-surface-container-highest hover:text-primary transition-colors duration-150 px-2 py-0.5" href="#">METRICS</a>
+</nav>
+<div class="flex items-center gap-gap-sm text-primary-container opacity-80">
+<span class="material-symbols-outlined cursor-pointer hover:opacity-100 transition-all duration-75">memory</span>
+<span class="material-symbols-outlined cursor-pointer hover:opacity-100 transition-all duration-75">terminal</span>
+<span class="material-symbols-outlined cursor-pointer hover:opacity-100 transition-all duration-75">settings</span>
+<span class="material-symbols-outlined cursor-pointer hover:opacity-100 transition-all duration-75">power_settings_new</span>
+</div>
+</div>
+</header>
+<!-- SideNavBar Execution -->
+<aside class="fixed left-0 top-8 h-[calc(100vh-32px)] w-20 bg-surface-container-lowest/90 backdrop-blur-md border-r border-outline-variant flex flex-col items-center py-gap-md space-y-gap-lg z-40">
+<div class="flex flex-col items-center mb-gap-lg">
+<div class="w-10 h-10 bg-primary-container/20 border border-primary-container flex items-center justify-center mb-1">
+<span class="material-symbols-outlined text-primary-container">dns</span>
+</div>
+<div class="font-code-sm text-[10px] text-primary-container leading-none">NODE_01</div>
+</div>
+<div class="flex flex-col w-full gap-gap-xs px-2">
+<button class="flex flex-col items-center py-2 text-on-surface-variant opacity-60 hover:bg-surface-container-highest hover:opacity-100 active:scale-95 duration-75 transition-all">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-code-sm text-[9px] mt-1">DASH</span>
+</button>
+<button class="flex flex-col items-center py-2 bg-secondary-container text-on-secondary-container rounded-none border-l-stroke-thick border-primary-container active:scale-95 duration-75 transition-all">
+<span class="material-symbols-outlined">lan</span>
+<span class="font-code-sm text-[9px] mt-1">NET</span>
+</button>
+<button class="flex flex-col items-center py-2 text-on-surface-variant opacity-60 hover:bg-surface-container-highest hover:opacity-100 active:scale-95 duration-75 transition-all">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-code-sm text-[9px] mt-1">SYS</span>
+</button>
+<button class="flex flex-col items-center py-2 text-on-surface-variant opacity-60 hover:bg-surface-container-highest hover:opacity-100 active:scale-95 duration-75 transition-all">
+<span class="material-symbols-outlined">code</span>
+<span class="font-code-sm text-[9px] mt-1">DEV</span>
+</button>
+<button class="flex flex-col items-center py-2 text-on-surface-variant opacity-60 hover:bg-surface-container-highest hover:opacity-100 active:scale-95 duration-75 transition-all">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-code-sm text-[9px] mt-1">LOG</span>
+</button>
+</div>
+<div class="mt-auto pb-4 px-2">
+<button class="bg-primary-container text-background font-label-sm text-[10px] py-2 w-full text-center hover:bg-secondary-fixed transition-colors">EXECUTE</button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-20 mt-8 h-[calc(100vh-32px)] grid grid-cols-12 grid-rows-6 gap-gap-sm p-gap-sm overflow-hidden bg-background">
+<!-- Central Map Section -->
+<section class="col-span-12 lg:col-span-9 row-span-4 relative overflow-hidden glass-panel border border-outline-variant group">
+<div class="scanline"></div>
+<!-- Map Header Bar -->
+<div class="absolute top-0 left-0 w-full h-8 bg-primary-container/10 border-b border-outline-variant px-gap-md flex items-center justify-between z-20">
+<div class="flex items-center gap-gap-sm">
+<span class="material-symbols-outlined text-primary-container text-[18px]">explore</span>
+<span class="font-code-sm text-primary-container">TOPOLOGICAL_SUBNET_VIEW // SECTOR_05</span>
+</div>
+<div class="flex items-center gap-gap-md font-code-sm text-[11px] text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span> SYSTEM_HEALTH: 98%</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">public</span> UPTIME: 12:43:02</span>
+</div>
+</div>
+<!-- Interactive Network Map Canvas (Placeholder for Shader/Graphic) -->
+<div class="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
+
+<!-- Mock Node Cluster -->
+<div class="relative w-[600px] h-[400px] pointer-events-auto">
+<!-- Central Node -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-background border-2 border-primary-container flex items-center justify-center cursor-pointer hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary-container">router</span>
+<div class="absolute -bottom-6 text-[10px] font-code-sm text-primary-container whitespace-nowrap">GW_PRIMARY_05</div>
+</div>
+<!-- Branch Nodes -->
+<div class="absolute top-1/4 left-1/4 w-8 h-8 bg-background border border-secondary-fixed-dim node-pulse flex items-center justify-center cursor-pointer hover:bg-secondary-fixed-dim/20">
+<span class="material-symbols-outlined text-secondary-fixed-dim text-[16px]">storage</span>
+<div class="absolute -top-6 text-[10px] font-code-sm text-secondary-fixed-dim whitespace-nowrap">NODE_STORAGE_A</div>
+</div>
+<div class="absolute bottom-1/4 right-1/4 w-8 h-8 bg-background border border-primary-fixed-dim flex items-center justify-center cursor-pointer hover:bg-primary-fixed-dim/20">
+<span class="material-symbols-outlined text-primary-fixed-dim text-[16px]">terminal</span>
+<div class="absolute -bottom-6 text-[10px] font-code-sm text-primary-fixed-dim whitespace-nowrap">NODE_TERMINAL_C</div>
+</div>
+<div class="absolute top-1/3 right-1/3 w-8 h-8 bg-background border border-primary-container flex items-center justify-center cursor-pointer">
+<span class="material-symbols-outlined text-primary-container text-[16px]">memory</span>
+</div>
+<!-- Connection Lines SVG -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" style="filter: drop-shadow(0 0 2px #00dbe955);">
+<line stroke="#3b494b" stroke-width="1" x1="300" x2="150" y1="200" y2="100"></line>
+<line stroke="#3b494b" stroke-width="1" x1="300" x2="450" y1="200" y2="300"></line>
+<line stroke="#00f0ff" stroke-dasharray="4" stroke-width="1" x1="300" x2="400" y1="200" y2="133"></line>
+</svg>
+</div>
+</div>
+<!-- Floating UI Overlays -->
+<div class="absolute bottom-gap-md left-gap-md z-30 flex flex-col gap-gap-xs">
+<div class="glass-panel p-gap-sm border-primary-container/30 w-48">
+<div class="font-label-sm text-primary-container mb-2">QUICK_INFO</div>
+<div class="space-y-1 font-code-sm text-[11px]">
+<div class="flex justify-between"><span class="opacity-60">ACTIVE_CONNS</span> <span class="text-primary-fixed-dim">1,402</span></div>
+<div class="flex justify-between"><span class="opacity-60">LATENCY</span> <span class="text-primary-fixed-dim">12ms</span></div>
+<div class="flex justify-between"><span class="opacity-60">PACKET_LOSS</span> <span class="text-error">0.002%</span></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Right-hand Analytics Sidebar -->
+<section class="col-span-12 lg:col-span-3 row-span-6 glass-panel flex flex-col border border-outline-variant">
+<div class="h-8 bg-primary-container text-background font-label-sm flex items-center px-gap-md">
+                ANALYTICS_TELEMETRY
+            </div>
+<div class="flex-1 p-gap-md space-y-gap-lg overflow-y-auto custom-scrollbar">
+<!-- Gauge Cluster -->
+<div class="space-y-gap-md">
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-end">
+<span class="font-label-sm text-[10px] opacity-70">CPU_CORE_LOAD</span>
+<span class="font-code-sm text-primary-container">42%</span>
+</div>
+<div class="h-4 bg-surface-container flex gap-1 p-[2px]">
+<div class="h-full bg-primary-container w-[10%]"></div>
+<div class="h-full bg-primary-container w-[10%]"></div>
+<div class="h-full bg-primary-container w-[10%]"></div>
+<div class="h-full bg-primary-container w-[10%]"></div>
+<div class="h-full bg-surface-variant w-[10%]"></div>
+<div class="h-full bg-surface-variant w-[10%]"></div>
+<div class="h-full bg-surface-variant w-[10%]"></div>
+<div class="h-full bg-surface-variant w-[10%]"></div>
+<div class="h-full bg-surface-variant w-[10%]"></div>
+<div class="h-full bg-surface-variant w-[10%]"></div>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-end">
+<span class="font-label-sm text-[10px] opacity-70">MEM_ALLOCATION</span>
+<span class="font-code-sm text-secondary-fixed-dim">84.2 GB</span>
+</div>
+<div class="h-4 bg-surface-container flex gap-1 p-[2px]">
+<div class="h-full bg-secondary-fixed-dim w-[10%]"></div>
+<div class="h-full bg-secondary-fixed-dim w-[10%]"></div>
+<div class="h-full bg-secondary-fixed-dim w-[10%]"></div>
+<div class="h-full bg-secondary-fixed-dim w-[10%]"></div>
+<div class="h-full bg-secondary-fixed-dim w-[10%]"></div>
+<div class="h-full bg-secondary-fixed-dim w-[10%]"></div>
+<div class="h-full bg-secondary-fixed-dim w-[10%]"></div>
+<div class="h-full bg-secondary-fixed-dim w-[10%]"></div>
+<div class="h-full bg-surface-variant w-[10%]"></div>
+<div class="h-full bg-surface-variant w-[10%]"></div>
+</div>
+</div>
+</div>
+<!-- IP Allocation List -->
+<div class="pt-gap-md border-t border-outline-variant">
+<div class="font-label-sm text-primary-container mb-gap-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">list_alt</span>
+                        IP_RESOURCE_POOL
+                    </div>
+<div class="space-y-1 font-code-sm text-[12px]">
+<div class="flex justify-between items-center p-2 bg-surface-container-high/50 border border-outline-variant hover:border-primary-container transition-colors cursor-pointer group">
+<span class="text-on-surface">192.168.1.1</span>
+<span class="text-primary-container group-hover:underline">ACTIVE</span>
+</div>
+<div class="flex justify-between items-center p-2 border border-outline-variant/30 opacity-60">
+<span>192.168.1.2</span>
+<span>IDLE</span>
+</div>
+<div class="flex justify-between items-center p-2 bg-secondary-container/10 border border-secondary-container/50">
+<span class="text-secondary-fixed-dim">10.0.5.244</span>
+<span class="text-secondary-fixed-dim font-bold">TUNNEL</span>
+</div>
+<div class="flex justify-between items-center p-2 border border-outline-variant/30 opacity-60">
+<span>172.16.25.1</span>
+<span>IDLE</span>
+</div>
+</div>
+</div>
+<!-- Live Traffic Chart Area -->
+<div class="pt-gap-md border-t border-outline-variant">
+<div class="font-label-sm text-primary-container mb-gap-sm">THROUGHPUT_HISTORY</div>
+<div class="h-32 bg-surface-container-lowest/50 border border-outline-variant relative overflow-hidden">
+<svg class="absolute inset-0 w-full h-full" preserveaspectratio="none" viewbox="0 0 100 50">
+<path d="M0 50 L0 30 L10 35 L20 15 L30 25 L40 10 L50 40 L60 20 L70 25 L80 5 L90 15 L100 10 L100 50 Z" fill="rgba(0, 219, 233, 0.1)" stroke="#00f0ff" stroke-width="1"></path>
+</svg>
+<div class="absolute top-2 right-2 text-[10px] text-primary-container font-code-sm">1.2 Gbps</div>
+</div>
+</div>
+</div>
+<!-- Sidebar Footer -->
+<div class="p-gap-md border-t border-outline-variant">
+<button class="w-full h-10 border border-primary-container text-primary-container font-label-sm hover:bg-primary-container hover:text-background transition-all active:scale-95">
+                    EXPORT_REPORT_JSON
+                </button>
+</div>
+</section>
+<!-- Bottom Panel for Packet Sniffer Logs -->
+<section class="col-span-12 lg:col-span-9 row-span-2 glass-panel flex flex-col border border-outline-variant">
+<div class="h-8 bg-surface-container-highest flex items-center justify-between px-gap-md border-b border-outline-variant">
+<div class="flex items-center gap-gap-sm">
+<span class="material-symbols-outlined text-primary-container text-[18px]">bug_report</span>
+<span class="font-code-sm text-[11px]">ACTIVE_PACKET_SNIFFER [INTERFACE: eth0]</span>
+</div>
+<div class="flex gap-gap-md text-[10px] font-code-sm">
+<span class="text-error">DROPPED: 0</span>
+<span class="text-primary-container">PROCESSED: 294,231</span>
+</div>
+</div>
+<div class="flex-1 p-gap-md font-code-sm text-[12px] overflow-y-auto custom-scrollbar bg-surface-container-lowest/80 text-on-surface-variant" id="terminal-output">
+<div class="mb-1"><span class="text-secondary-fixed-dim">[12:43:01]</span> <span class="text-primary-container">INFO:</span> Initializing promiscuous mode on eth0...</div>
+<div class="mb-1"><span class="text-secondary-fixed-dim">[12:43:02]</span> <span class="text-primary-container">INFO:</span> Listening for inbound TCP traffic on Segment 5...</div>
+<div class="mb-1 opacity-80"><span class="text-secondary-fixed-dim">[12:43:04]</span> SRC: 192.168.1.15 | DST: 10.0.0.1 | PROTO: TCP | LEN: 54 | FLAGS: [S]</div>
+<div class="mb-1 opacity-80"><span class="text-secondary-fixed-dim">[12:43:04]</span> SRC: 10.0.0.1 | DST: 192.168.1.15 | PROTO: TCP | LEN: 60 | FLAGS: [S.A]</div>
+<div class="mb-1"><span class="text-error">[12:43:05]</span> WARN: Unauthorized port scan detected from 185.22.41.112</div>
+<div class="mb-1 opacity-80"><span class="text-secondary-fixed-dim">[12:43:07]</span> SRC: 172.16.5.4 | DST: 8.8.8.8 | PROTO: UDP | LEN: 72 | DNS: PTR? 4.5.16.172.in-addr.arpa</div>
+<div class="mb-1 opacity-80"><span class="text-secondary-fixed-dim">[12:43:08]</span> SRC: 192.168.1.1 | DST: 192.168.1.255 | PROTO: UDP | LEN: 242 | DHCP: Request</div>
+<div class="mb-1 blinking-cursor">Executing background sequence analysis</div>
+</div>
+</section>
+</main>
+<!-- Contextual FAB - Restricted visibility -->
+<button class="fixed bottom-gap-lg right-[calc(25%+24px)] w-14 h-14 bg-primary-container text-background shadow-[0_0_20px_rgba(0,240,255,0.4)] flex items-center justify-center hover:scale-105 active:scale-95 transition-all z-50">
+<span class="material-symbols-outlined text-[28px]">add</span>
+</button>
+<script>
+        // Micro-interactions for terminal log simulation
+        const terminalOutput = document.getElementById('terminal-output');
+        const protocols = ['TCP', 'UDP', 'ICMP', 'HTTP', 'TLS'];
+        const states = ['[S]', '[S.A]', '[.A]', '[F.A]', '[R]'];
+
+        function addLogEntry() {
+            const time = new Date().toLocaleTimeString('en-GB', { hour12: false });
+            const proto = protocols[Math.floor(Math.random() * protocols.length)];
+            const state = states[Math.floor(Math.random() * states.length)];
+            const len = Math.floor(Math.random() * 1000) + 40;
+            const src = `192.168.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`;
+            const dst = `10.0.5.${Math.floor(Math.random()*255)}`;
+
+            const entry = document.createElement('div');
+            entry.className = 'mb-1 opacity-0 transition-opacity duration-300';
+            entry.innerHTML = `<span class="text-secondary-fixed-dim">[${time}]</span> SRC: ${src} | DST: ${dst} | PROTO: ${proto} | LEN: ${len} | FLAGS: ${state}`;
+            
+            terminalOutput.insertBefore(entry, terminalOutput.lastElementChild);
+            setTimeout(() => entry.classList.remove('opacity-0'), 10);
+
+            if (terminalOutput.children.length > 20) {
+                terminalOutput.removeChild(terminalOutput.children[0]);
+            }
+            
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        }
+
+        setInterval(addLogEntry, 2000);
+    </script>
+</body></html>

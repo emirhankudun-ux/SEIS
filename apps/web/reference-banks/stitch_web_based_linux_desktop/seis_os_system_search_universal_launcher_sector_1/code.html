@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS — System Search</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..900&amp;family=Space+Mono:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .blinking-cursor::after {
+            content: '|';
+            animation: blink 1s infinite;
+            color: #dbfcff;
+            margin-left: 2px;
+        }
+        .glass-pane {
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+        }
+        .cyber-border {
+            box-shadow: inset 0 0 0 1px rgba(219, 252, 255, 0.1);
+        }
+        .cyber-border-focus {
+            box-shadow: 0 0 15px rgba(0, 219, 233, 0.2), inset 0 0 0 1px rgba(0, 219, 233, 0.5);
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        body {
+            background-color: #0a0a0a;
+            overflow: hidden;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "primary": "#dbfcff",
+                "surface-container-highest": "#333535",
+                "error-container": "#93000a",
+                "on-tertiary-fixed-variant": "#474646",
+                "on-primary-fixed": "#002022",
+                "inverse-primary": "#006970",
+                "on-tertiary": "#313030",
+                "surface-container-high": "#282a2b",
+                "on-primary-fixed-variant": "#004f54",
+                "outline-variant": "#3b494b",
+                "on-tertiary-container": "#605e5e",
+                "tertiary-fixed-dim": "#c9c6c5",
+                "on-error": "#690005",
+                "on-tertiary-fixed": "#1c1b1b",
+                "tertiary-container": "#dcd9d8",
+                "secondary-container": "#ce5dff",
+                "secondary-fixed-dim": "#ebb2ff",
+                "background": "#121414",
+                "surface-container": "#1e2020",
+                "on-surface": "#e2e2e2",
+                "on-error-container": "#ffdad6",
+                "on-surface-variant": "#b9cacb",
+                "on-secondary": "#520071",
+                "inverse-on-surface": "#2f3131",
+                "on-primary-container": "#006970",
+                "on-secondary-fixed-variant": "#74009f",
+                "secondary-fixed": "#f8d8ff",
+                "primary-fixed-dim": "#00dbe9",
+                "inverse-surface": "#e2e2e2",
+                "tertiary-fixed": "#e5e2e1",
+                "surface-tint": "#00dbe9",
+                "surface-bright": "#37393a",
+                "on-secondary-container": "#480064",
+                "tertiary": "#f9f5f5",
+                "primary-fixed": "#7df4ff",
+                "on-background": "#e2e2e2",
+                "secondary": "#ebb2ff",
+                "outline": "#849495",
+                "on-secondary-fixed": "#320047",
+                "surface": "#121414",
+                "surface-dim": "#121414",
+                "surface-container-lowest": "#0c0f0f",
+                "primary-container": "#00f0ff",
+                "surface-container-low": "#1a1c1c",
+                "error": "#ffb4ab",
+                "on-primary": "#00363a",
+                "surface-variant": "#333535"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+              },
+              "spacing": {
+                "margin-page": "32px",
+                "stroke-thick": "2px",
+                "gap-lg": "24px",
+                "gap-sm": "8px",
+                "gap-md": "16px",
+                "stroke-thin": "1px",
+                "gap-xs": "4px"
+              },
+              "fontFamily": {
+                "headline-md": ["JetBrains Mono"],
+                "headline-lg": ["JetBrains Mono"],
+                "body-md": ["JetBrains Mono"],
+                "label-sm": ["Space Mono"],
+                "body-lg": ["JetBrains Mono"],
+                "code-sm": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}]
+              }
+            }
+          }
+        }
+    </script>
+</head>
+<body class="text-on-surface selection:bg-secondary-container/30">
+<!-- Desktop Background with Shader -->
+<div class="fixed inset-0 z-0">
+
+<div class="absolute inset-0 w-full h-full" data-alt="A cinematic, ultra-high-definition desktop wallpaper for a high-end Linux distribution. The scene features deep obsidian textures and abstract, sharp geometric mountains glowing with faint cyan lines under a starry, dark indigo sky. The lighting is moody and atmospheric, focusing on sharp edges and technological minimalism. The overall aesthetic is clean, technical, and reminiscent of a high-end developer environment." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAiWxg3Ww0LmD3Wg3LQeXl873Xlgik2FHr55JGRTRNXBwxNK2h96HMPID0AYsFnJkqVbJMW7d6f-JdGydCYI4dZJeVhCZV2QBC9QRvg9AAseK21r_TCQqBqil_TWR0S_Z8h5t6ROwMQRjQ-o6tuAjmZ1jj4YZYSOkuhLK2TybtmSgO2e5JtIW-GKJcJaDRM_BRCZYwqpqHjhtnLC1B-7VviW5bWP0864FHyhrrAhfV3CiA6gnT4ylzna7by2EIJ3xliyBHyy-E5R8ME')"></div>
+<div class="absolute inset-0 bg-background/60 backdrop-blur-sm"></div>
+</div>
+<!-- Top App Bar (Shared Component) -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center h-12 px-margin-page w-full border-b border-white/5 bg-background/80 backdrop-blur-xl">
+<div class="flex items-center gap-md">
+<span class="font-headline-lg text-headline-lg tracking-tighter text-primary font-bold">SEIS</span>
+<nav class="hidden md:flex gap-md ml-lg">
+<a class="text-primary-fixed font-bold border-b-2 border-primary-fixed font-mono-code text-mono-code" href="#">Search</a>
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors font-mono-code text-mono-code" href="#">Network</a>
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors font-mono-code text-mono-code" href="#">Status</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">memory</span>
+<span class="material-symbols-outlined text-[18px]">sensors</span>
+<span class="material-symbols-outlined text-[18px]">offline_bolt</span>
+</div>
+<div class="w-6 h-6 rounded-full bg-surface-variant border border-primary/20 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close up portrait of a futuristic cybernetic character with minimalist neon visor, soft focus, high-end digital art style, matching the cyan and black aesthetic of the SEIS operating system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeVjddoyTclEAQ4WOMNl2NAOSLz26iQKtO4DqX-Vk1xatXos6j2JSIL2gQ6ovO7EfrUNBC1us_UkHC4h_zne2FML765vXy-leQQfDz2gtBh34me40zKWtaCuXWpIlBHt5T-jpQ2rU35cVMToerhgLoKF409Cc0YqlFWE6RDYA2tChK-pVe6rdzu1bXq1lbYJiJENkry7Ysck3YskRuNVL9SiM4PHqVxllNDuoJeKKLu2vweUC4_BPPBawi9dUjnb_AJyO7ZjVW_qaV"/>
+</div>
+</div>
+</header>
+<!-- Side Navigation (Shared Component - Reduced for focused view) -->
+<aside class="fixed left-0 h-full w-20 hover:w-64 transition-all duration-300 flex flex-col py-stack-md h-screen z-40 bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-white/5 group">
+<div class="flex flex-col items-center group-hover:items-start px-4 mt-16 mb-8 overflow-hidden">
+<div class="w-10 h-10 bg-primary/10 rounded flex items-center justify-center mb-2">
+<span class="material-symbols-outlined text-primary text-[24px]">terminal</span>
+</div>
+<span class="hidden group-hover:block font-label-caps text-label-caps text-primary whitespace-nowrap">SEIS OS</span>
+</div>
+<nav class="flex-1 flex flex-col gap-2">
+<div class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/50 transition-all cursor-pointer">
+<span class="material-symbols-outlined">home</span>
+<span class="hidden group-hover:block font-label-caps text-label-caps">Home</span>
+</div>
+<div class="flex items-center gap-4 px-4 py-3 text-on-primary-fixed bg-primary-fixed rounded-lg mx-2 transition-all cursor-pointer">
+<span class="material-symbols-outlined">search</span>
+<span class="hidden group-hover:block font-label-caps text-label-caps">Search</span>
+</div>
+<div class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/50 transition-all cursor-pointer">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="hidden group-hover:block font-label-caps text-label-caps">AI Assistant</span>
+</div>
+<div class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/50 transition-all cursor-pointer">
+<span class="material-symbols-outlined">account_tree</span>
+<span class="hidden group-hover:block font-label-caps text-label-caps">Workflow</span>
+</div>
+</nav>
+<div class="p-4 border-t border-white/5">
+<div class="flex items-center gap-4 text-on-surface-variant hover:text-on-surface cursor-pointer">
+<span class="material-symbols-outlined">settings</span>
+<span class="hidden group-hover:block font-label-caps text-label-caps">Config</span>
+</div>
+</div>
+</aside>
+<!-- Right Activity Bar (Shared Component) -->
+<aside class="fixed right-0 h-full w-12 flex flex-col items-center py-8 z-30 bg-background/50 backdrop-blur-md border-l border-white/5">
+<div class="flex flex-col gap-6 text-on-surface-variant/40">
+<span class="material-symbols-outlined text-primary-fixed" style="font-variation-settings: 'FILL' 1;">notifications</span>
+<span class="material-symbols-outlined hover:text-on-surface transition-opacity">sync</span>
+<span class="material-symbols-outlined hover:text-on-surface transition-opacity">psychology</span>
+</div>
+</aside>
+<!-- Main Universal Search Overlay -->
+<main class="fixed inset-0 z-[60] flex items-start justify-center pt-[153px] px-4 pointer-events-none">
+<!-- Spotlight Container -->
+<div class="w-full max-w-2xl bg-surface-container-lowest/80 glass-pane border border-primary/20 rounded-xl cyber-border-focus overflow-hidden pointer-events-auto shadow-2xl flex flex-col">
+<!-- Search Input Area -->
+<div class="relative flex items-center p-6 border-b border-white/10">
+<span class="material-symbols-outlined text-primary text-[32px] mr-4">terminal</span>
+<div class="flex-1">
+<div class="flex items-center">
+<span class="font-headline-md text-headline-md text-primary blinking-cursor">exec</span>
+<input autofocus="" class="bg-transparent border-none focus:ring-0 text-headline-md font-headline-md text-on-surface w-full ml-2 p-0 placeholder-on-surface-variant/30" id="search-input" placeholder="search system..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-xs px-2 py-1 bg-surface-variant/50 rounded border border-white/10">
+<span class="font-label-sm text-label-sm text-on-surface-variant">ESC</span>
+</div>
+</div>
+<!-- Results Section -->
+<div class="flex-1 overflow-y-auto max-h-[614px] scrollbar-hide">
+<!-- Category: AI Actions -->
+<section class="py-4">
+<header class="px-6 py-2 flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-primary tracking-widest uppercase">AI Actions</span>
+<div class="flex-1 h-[1px] bg-primary/20"></div>
+</header>
+<div class="space-y-[1px]">
+<div class="group flex items-center px-6 py-3 hover:bg-primary/10 cursor-pointer transition-colors border-l-2 border-transparent hover:border-primary">
+<span class="material-symbols-outlined text-secondary mr-4">auto_awesome</span>
+<div class="flex-1">
+<p class="font-body-md text-body-md text-on-surface">Summarize latest logs</p>
+<p class="font-code-sm text-code-sm text-on-surface-variant/60">Analyze system events from last 24h</p>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant/40 group-hover:text-primary">⌘L</span>
+</div>
+<div class="group flex items-center px-6 py-3 hover:bg-primary/10 cursor-pointer transition-colors border-l-2 border-transparent hover:border-primary">
+<span class="material-symbols-outlined text-secondary mr-4">psychology</span>
+<div class="flex-1">
+<p class="font-body-md text-body-md text-on-surface">Optimize Memory Cache</p>
+<p class="font-code-sm text-code-sm text-on-surface-variant/60">Identify and prune inactive sectors</p>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant/40 group-hover:text-primary">⌘O</span>
+</div>
+</div>
+</section>
+<!-- Category: System Apps -->
+<section class="py-4">
+<header class="px-6 py-2 flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-primary tracking-widest uppercase">System Apps</span>
+<div class="flex-1 h-[1px] bg-primary/20"></div>
+</header>
+<div class="space-y-[1px]">
+<div class="group flex items-center px-6 py-3 bg-secondary/5 border-l-2 border-secondary">
+<span class="material-symbols-outlined text-primary mr-4" style="font-variation-settings: 'FILL' 1;">terminal</span>
+<div class="flex-1">
+<p class="font-body-md text-body-md text-on-surface">Terminal Emulation Cluster</p>
+<p class="font-code-sm text-code-sm text-on-surface-variant/60">/usr/bin/seis-term</p>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">RETURN</span>
+</div>
+<div class="group flex items-center px-6 py-3 hover:bg-primary/10 cursor-pointer transition-colors border-l-2 border-transparent hover:border-primary">
+<span class="material-symbols-outlined text-primary mr-4">database</span>
+<div class="flex-1">
+<p class="font-body-md text-body-md text-on-surface">Data Weaver</p>
+<p class="font-code-sm text-code-sm text-on-surface-variant/60">Visual database explorer and query engine</p>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant/40 group-hover:text-primary">⌘D</span>
+</div>
+</div>
+</section>
+<!-- Category: Terminal Commands -->
+<section class="py-4">
+<header class="px-6 py-2 flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-primary tracking-widest uppercase">Terminal Commands</span>
+<div class="flex-1 h-[1px] bg-primary/20"></div>
+</header>
+<div class="px-6 space-y-2">
+<div class="flex items-center gap-2 p-3 bg-surface-container-highest/40 border border-white/5 rounded font-code-sm text-code-sm text-primary/80">
+<span class="text-secondary">$</span>
+<span>sudo pacman -Syu --noconfirm</span>
+<span class="ml-auto material-symbols-outlined text-[16px]">keyboard_return</span>
+</div>
+<div class="flex items-center gap-2 p-3 bg-surface-container-highest/40 border border-white/5 rounded font-code-sm text-code-sm text-on-surface-variant">
+<span class="text-secondary">$</span>
+<span>systemctl restart seis-ui.service</span>
+<span class="ml-auto material-symbols-outlined text-[16px]">keyboard_return</span>
+</div>
+</div>
+</section>
+<!-- Category: Recent Files -->
+<section class="py-4">
+<header class="px-6 py-2 flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-primary tracking-widest uppercase">Files</span>
+<div class="flex-1 h-[1px] bg-primary/20"></div>
+</header>
+<div class="space-y-[1px]">
+<div class="group flex items-center px-6 py-3 hover:bg-primary/10 cursor-pointer transition-colors border-l-2 border-transparent hover:border-primary">
+<span class="material-symbols-outlined text-on-surface-variant/60 mr-4">description</span>
+<div class="flex-1">
+<p class="font-body-md text-body-md text-on-surface">kernel_config.yaml</p>
+<p class="font-code-sm text-code-sm text-on-surface-variant/60">Modified 2m ago in ~/.config/seis/</p>
+</div>
+</div>
+<div class="group flex items-center px-6 py-3 hover:bg-primary/10 cursor-pointer transition-colors border-l-2 border-transparent hover:border-primary">
+<span class="material-symbols-outlined text-on-surface-variant/60 mr-4">folder_zip</span>
+<div class="flex-1">
+<p class="font-body-md text-body-md text-on-surface">sector_1_backup.tar.gz</p>
+<p class="font-code-sm text-code-sm text-on-surface-variant/60">System backup archive</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer Toolbar -->
+<footer class="bg-surface-container-high/40 p-3 px-6 flex justify-between items-center border-t border-white/10">
+<div class="flex gap-4 items-center">
+<div class="flex items-center gap-1">
+<span class="font-label-sm text-[10px] text-on-surface-variant bg-surface-variant/50 px-1 rounded">TAB</span>
+<span class="font-label-sm text-[11px] text-on-surface-variant">Categories</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="font-label-sm text-[10px] text-on-surface-variant bg-surface-variant/50 px-1 rounded">↑↓</span>
+<span class="font-label-sm text-[11px] text-on-surface-variant">Navigate</span>
+</div>
+</div>
+<div class="flex gap-2 items-center text-primary/40 font-code-sm text-[11px]">
+<span class="material-symbols-outlined text-[14px]">bolt</span>
+<span>SECTOR 1_AUTH_VERIFIED</span>
+</div>
+</footer>
+</div>
+</main>
+<!-- Background Elements / Atmosphere -->
+<div class="fixed bottom-12 right-12 z-10 pointer-events-none opacity-20">
+<div class="font-headline-lg text-[120px] text-primary select-none opacity-10 leading-none">01</div>
+</div>
+<script>
+        // Micro-interactions for search feel
+        const searchInput = document.getElementById('search-input');
+        
+        // Typing effect simulation
+        const placeholderText = "search system...";
+        let i = 0;
+        
+        function typeWriter() {
+            if (i < placeholderText.length) {
+                // We keep placeholder behavior for actual input, this is just visual fluff if needed
+            }
+        }
+
+        // Focus management
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '/') {
+                e.preventDefault();
+                searchInput.focus();
+            }
+            if (e.key === 'Escape') {
+                searchInput.blur();
+                // In a real app, this would close the modal
+                console.log('Close launcher');
+            }
+        });
+
+        // Search highlight behavior
+        const results = document.querySelectorAll('.group');
+        results.forEach(res => {
+            res.addEventListener('mouseenter', () => {
+                // Focus styling handled by Tailwind 'group-hover'
+            });
+        });
+    </script>
+</body></html>

@@ -80,10 +80,10 @@
         "runtime-observability-present"
       ],
       "metrics": {
-        "trainingCaseCount": 12,
-        "evalCaseCount": 8,
-        "evalPassed": 8,
-        "trainMetricCount": 12,
+        "trainingCaseCount": 13,
+        "evalCaseCount": 9,
+        "evalPassed": 9,
+        "trainMetricCount": 13,
         "benchmarkCaseCount": 5,
         "benchmarkPassed": 5
       },
@@ -218,10 +218,10 @@
         "runtime-observability-present"
       ],
       "metrics": {
-        "trainingCaseCount": 8,
-        "evalCaseCount": 5,
-        "evalPassed": 5,
-        "trainMetricCount": 8,
+        "trainingCaseCount": 9,
+        "evalCaseCount": 6,
+        "evalPassed": 6,
+        "trainMetricCount": 9,
         "benchmarkCaseCount": 5,
         "benchmarkPassed": 5
       },
@@ -287,10 +287,10 @@
         "runtime-observability-present"
       ],
       "metrics": {
-        "trainingCaseCount": 12,
-        "evalCaseCount": 10,
-        "evalPassed": 10,
-        "trainMetricCount": 12,
+        "trainingCaseCount": 13,
+        "evalCaseCount": 11,
+        "evalPassed": 11,
+        "trainMetricCount": 13,
         "benchmarkCaseCount": 5,
         "benchmarkPassed": 5
       },

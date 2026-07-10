@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#07090f">
+  <meta name="description" content="Browse NVIDIA Build skills by domain and audience — AI &amp; Machine Learning, Physical AI, Accelerated Computing, Infrastructure, and Developer Tools.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta property="og:title" content="NVIDIA Skills — SEIS">
+  <meta property="og:description" content="Filter GPU-accelerated skills by domain and role from the NVIDIA Build catalog.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="NVIDIA Skills — SEIS">
+  <meta name="twitter:description" content="Filter GPU-accelerated skills by domain and role from the NVIDIA Build catalog.">
+  <title>NVIDIA Skills — SEIS</title>
+  <link rel="canonical" href="https://emirhankudun.com/nvidia-skills.html">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="nvidia-skills.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" id="site-header">
+    <a class="brand" href="./index.html" aria-label="Back to SEIS home">
+      <span class="brand-mark" aria-hidden="true">S</span>
+      <span>SEIS</span>
+    </a>
+    <nav class="primary-nav" aria-label="Primary navigation">
+      <a href="./index.html">Home</a>
+      <a href="./desktop.html">Desktop</a>
+      <a href="./seis-code.html">Code</a>
+    </nav>
+    <div class="header-actions">
+      <a class="primary-link" href="https://build.nvidia.com/skills" target="_blank" rel="noopener noreferrer">NVIDIA Build</a>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="ns-hero" aria-labelledby="ns-title">
+      <p class="eyebrow">NVIDIA Build Catalog</p>
+      <h1 id="ns-title">NVIDIA Skills</h1>
+      <p class="ns-hero-sub">GPU-accelerated skills across AI, robotics, computing, and infrastructure. Filter by domain or role — filters from the URL are applied automatically.</p>
+      <p class="ns-stats" id="ns-stats" aria-live="polite">
+        <span id="ns-count">0</span> skills
+      </p>
+    </section>
+
+    <section class="ns-filters" aria-label="Filter skills">
+      <div class="ns-filter-group">
+        <h2 class="ns-filter-label">Domain</h2>
+        <div class="ns-chips" id="domain-filters" role="group" aria-label="Filter by domain"></div>
+      </div>
+      <div class="ns-filter-group">
+        <h2 class="ns-filter-label">Audience</h2>
+        <div class="ns-chips" id="audience-filters" role="group" aria-label="Filter by audience"></div>
+      </div>
+      <button type="button" class="ns-clear" id="ns-clear" hidden>Clear all filters</button>
+    </section>
+
+    <section aria-label="Skills results" aria-live="polite">
+      <div class="ns-grid" id="ns-grid"></div>
+      <p class="ns-empty" id="ns-empty" hidden>
+        No skills match the current filters.
+        <button type="button" class="ns-text-btn" id="ns-clear-2">Clear filters</button>
+      </p>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <span>SEIS</span>
+    <p>Skill data sourced from <a href="https://build.nvidia.com" target="_blank" rel="noopener noreferrer">build.nvidia.com</a>. Filter state is encoded in the URL query string.</p>
+  </footer>
+
+  <script src="nvidia-skills.js" defer></script>
+</body>
+</html>

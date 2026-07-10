@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AETHER AI | Showcase</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --obsidian: #020408;
+            --glass-stroke: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            background-color: var(--obsidian);
+            color: #e1e2e7;
+            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .glass-card {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-stroke);
+            transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(0, 219, 233, 0.4);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 219, 233, 0.1);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero-gradient {
+            background: radial-gradient(circle at 50% 50%, rgba(0, 219, 233, 0.08) 0%, transparent 70%);
+        }
+
+        .shimmer-text {
+            background: linear-gradient(90deg, #ffffff 0%, #00dbe9 50%, #ffffff 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 5s linear infinite;
+        }
+
+        @keyframes shimmer {
+            to { background-position: 200% center; }
+        }
+
+        .custom-cursor {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #00dbe9;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease, width 0.3s ease, height 0.3s ease;
+            mix-blend-mode: difference;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#7df4ff",
+                        "surface": "#111417",
+                        "secondary": "#ebb2ff",
+                        "inverse-on-surface": "#2e3134",
+                        "tertiary-fixed": "#e2e2e2",
+                        "outline-variant": "#3b494b",
+                        "on-tertiary-container": "#5d5f5f",
+                        "on-tertiary": "#2f3131",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-high": "#282a2e",
+                        "surface-dim": "#111417",
+                        "inverse-primary": "#006970",
+                        "on-primary-fixed": "#002022",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "secondary-container": "#b600f8",
+                        "outline": "#849495",
+                        "surface-tint": "#00dbe9",
+                        "surface-container-highest": "#323539",
+                        "surface-variant": "#323539",
+                        "error": "#ffb4ab",
+                        "on-surface-variant": "#b9cacb",
+                        "surface-container-low": "#191c1f",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "on-error": "#690005",
+                        "on-secondary": "#520072",
+                        "on-surface": "#e1e2e7",
+                        "surface-container-lowest": "#0c0e12",
+                        "primary-fixed-dim": "#00dbe9",
+                        "on-secondary-container": "#fff6fc",
+                        "error-container": "#93000a",
+                        "primary": "#dbfcff",
+                        "on-primary-fixed-variant": "#004f54",
+                        "on-background": "#e1e2e7",
+                        "surface-bright": "#37393d",
+                        "secondary-fixed": "#f8d8ff",
+                        "primary-container": "#00f0ff",
+                        "on-primary-container": "#006970",
+                        "on-primary": "#00363a",
+                        "tertiary-container": "#d9d9d9",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "surface-container": "#1d2023",
+                        "on-secondary-fixed": "#320047",
+                        "background": "#111417",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "inverse-surface": "#e1e2e7",
+                        "tertiary": "#f5f5f5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "section-gap": "120px",
+                        "margin-mobile": "20px",
+                        "margin-desktop": "64px"
+                    },
+                    "fontFamily": {
+                        "mono-label": ["JetBrains Mono"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "mono-code": ["JetBrains Mono"],
+                        "display-lg-mobile": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface selection:bg-primary-container selection:text-on-primary-container">
+<div class="custom-cursor hidden md:block" id="cursor"></div>
+<!-- Navigation Shell -->
+<nav class="fixed top-0 left-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_30px_rgba(0,219,233,0.15)] transition-all duration-300 ease-out">
+<div class="flex justify-between items-center px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="font-display-lg text-[24px] md:text-display-lg-mobile tracking-tighter text-primary font-extrabold">AETHER AI</div>
+<div class="hidden md:flex items-center gap-8 font-body-md text-body-md">
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:drop-shadow-[0_0_10px_#00dbe9]" href="#">Platform</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:drop-shadow-[0_0_10px_#00dbe9]" href="#">Solutions</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:drop-shadow-[0_0_10px_#00dbe9]" href="#">Developers</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:drop-shadow-[0_0_10px_#00dbe9]" href="#">Pricing</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden lg:block font-mono-label text-mono-label text-on-surface-variant hover:text-primary transition-colors">Documentation</button>
+<button class="bg-primary-fixed text-on-primary px-6 py-2 rounded-full font-bold text-sm hover:shadow-[0_0_20px_rgba(0,219,233,0.4)] transition-all">Launch Console</button>
+</div>
+</div>
+</nav>
+<main class="pt-32 relative">
+
+<!-- Hero Section -->
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-20 text-center relative z-10">
+<div class="reveal">
+<span class="font-mono-label text-mono-label text-primary uppercase tracking-[0.2em] mb-6 block">The Synthetic Era</span>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface leading-tight mb-8">
+                    Intelligence in <span class="shimmer-text">Motion.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-12">
+                    Showcasing how the world's leading organizations leverage Aether's computational core to solve impossible problems.
+                </p>
+</div>
+</section>
+<!-- Showcase Bento Grid -->
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pb-section-gap">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Project 1: Large Featured -->
+<div class="md:col-span-12 reveal">
+<div class="glass-card rounded-[2rem] overflow-hidden group relative h-[600px]">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="A sprawling futuristic city at night, with glowing cyan and purple neural networks overlaying the architecture, representing advanced urban AI integration. The lighting is cinematic and high-contrast, emphasizing deep obsidian shadows and vibrant neon light trails. The overall aesthetic is ultra-modern and sophisticated, embodying the future of smart infrastructure." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBl-Z3CiVGbxN5IAvuWccIFRLfBpRCrlWdRS_8EuxU-moy5ZmeRH1Et3sH4Bxm0Az57DbLZ2ZwovsL8Mg4iWO1uT4Np2EnjsYZUGsVU4kCjcr8zchqLHQ2XO8WbgsBhnaCmbFf954QhIlgTHrfRcBQqa_nqn5dzX27a5mt7dKNQ0erRl6AVRuRMLt0d8_fh9_Vn6AMy8XJjLbWbV_mmp0-6psPd60yygq7XM97M0NFYKdXMk55DESA-NYX3NxaYajzUX4c-XnLINA')">
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/40 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-12 w-full flex flex-col md:flex-row justify-between items-end gap-8">
+<div class="max-w-xl">
+<div class="flex gap-2 mb-4">
+<span class="bg-primary/10 text-primary border border-primary/20 px-3 py-1 rounded-sm text-[10px] font-mono-label">INFRASTRUCTURE</span>
+<span class="bg-secondary/10 text-secondary border border-secondary/20 px-3 py-1 rounded-sm text-[10px] font-mono-label">PREDICTIVE</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-4">Metropolis Core 2.0</h2>
+<p class="text-on-surface-variant font-body-md line-clamp-2">Optimizing logistics and energy distribution for 14 mega-cities through real-time autonomous routing and swarm intelligence.</p>
+</div>
+<a class="group/link flex items-center gap-3 font-mono-label text-primary border-b border-primary/0 hover:border-primary/100 transition-all pb-1 whitespace-nowrap" href="#">
+                                Case Study
+                                <span class="material-symbols-outlined text-[18px] group-hover/link:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Project 2: Medium -->
+<div class="md:col-span-7 reveal" style="transition-delay: 100ms;">
+<div class="glass-card rounded-[2rem] overflow-hidden group relative h-[500px]">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="A macro close-up of a human eye with digital data streams and microscopic circuit patterns reflected in the iris, glowing with a soft purple and electric cyan light. The image captures extreme detail and precision, suggesting biotechnology and human-machine interface. Dark, cinematic shadows frame the composition to create a mysterious and high-tech atmosphere." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCfi23e1_O1HkM4CbrGXUqxN1O8_n1-qp5t-KmodrvFhkR_Z5dzqSpRa7jVlW6uTMrOENVJ-pkxvCHJXmNG3d2w6DTDf9YEDd1bNh015PvqOmhrGPlW0zHRlgPQJQFynEdIrtWl5mdWkZmoki6_I2C5DCvJagOejtaXs6Jh8mY9xET31WyBt2IVOawOjlt2cC9TZC9DN4mn3W9im2Mt6IzGi086vvEhfTY-y2qwEetHR-inT4WZeiCuvlIBZ-AAVZ_etvOszIOYSQ')">
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-transparent to-transparent"></div>
+<div class="absolute inset-0 bg-surface-container-lowest/20"></div>
+<div class="absolute bottom-0 left-0 p-8">
+<span class="bg-primary/10 text-primary border border-primary/20 px-3 py-1 rounded-sm text-[10px] font-mono-label mb-4 inline-block">BIOTECH</span>
+<h3 class="font-headline-md text-[24px] text-on-surface mb-2">Neural Synthesis</h3>
+<a class="text-primary font-mono-label text-sm flex items-center gap-2" href="#">View Project <span class="material-symbols-outlined text-sm">east</span></a>
+</div>
+</div>
+</div>
+<!-- Project 3: Small Vertical -->
+<div class="md:col-span-5 reveal" style="transition-delay: 200ms;">
+<div class="glass-card rounded-[2rem] overflow-hidden group relative h-[500px] p-8 flex flex-col justify-between">
+<div class="relative h-48 mb-8 rounded-xl overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="An abstract visualization of financial markets represented as a 3D landscape of glowing cyan light spikes and data waves. The scene is set against an obsidian black void, with micro-particles of silver light swirling in the background. The visual style is mathematical and precise, emphasizing speed and real-time computation in a high-end corporate aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAwrkeSZRRIGFd2Nh5bOjAZ6MXs-jrBpfqjte-GcF9YE_LZY_UsqQqMTCwzhEy2yLP1NvZS2CJopBZ_uHZ_zzd853h267A3udd80L2RkmIQySZSmSe4xNPHZGa038wpSMMTCP3dsLdbb-luX3OqTOECisK1Wz7Hp_1aAtY7ccSy0WSIcyk4haWS59gRe2DjKSj0UqSprmNMPhCeBDV0g3yMLTQIu2rueZuBsW2Iseq6plLa4WVSYNrUDLmTknwp-j2FNUUPwNkxkQ')">
+</div>
+</div>
+<div>
+<span class="bg-secondary/10 text-secondary border border-secondary/20 px-3 py-1 rounded-sm text-[10px] font-mono-label mb-4 inline-block">FINTECH</span>
+<h3 class="font-headline-md text-[24px] text-on-surface mb-4">Arbitrage AI</h3>
+<p class="text-on-surface-variant font-body-md text-sm mb-6">High-frequency market analysis processing 1.2 billion events per second with sub-millisecond latency.</p>
+<a class="w-full text-center block bg-white/5 hover:bg-white/10 py-3 rounded-full border border-white/10 transition-colors font-mono-label text-sm" href="#">Case Study</a>
+</div>
+</div>
+</div>
+<!-- Project 4: Full Grid Width Text / Detail -->
+<div class="md:col-span-12 py-10 reveal">
+<div class="border-t border-outline-variant/30 pt-10 flex flex-col md:flex-row justify-between items-start gap-8">
+<h4 class="font-display-lg text-[48px] text-on-surface/20 uppercase tracking-tighter">Beyond Scale</h4>
+<div class="max-w-xl">
+<p class="text-on-surface-variant text-lg leading-relaxed">
+                                Our applications aren't just tools; they are the architectural foundations of the next industrial revolution. From quantum chemistry to creative generation, Aether is the ghost in the machine.
+                            </p>
+</div>
+</div>
+</div>
+<!-- Project 5: Creative Grid -->
+<div class="md:col-span-4 reveal" style="transition-delay: 100ms;">
+<div class="glass-card rounded-[2rem] overflow-hidden group relative h-[400px]">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A robotic arm performing precise surgical procedures on a glowing synthetic heart model, illuminated by focused beams of sterile blue light. The background is a dark, high-tech laboratory environment. The visual style emphasizes mechanical accuracy and clean, medical technology with a futuristic, obsidian-toned color palette." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDWNMVAhZ3KI8-Hut-TXx8uNfql4cnTq7b7ttqBVCG44DmpfQyJ4W9wYfljj7byJhPu3akYIYp9uOEXC3IMbW5g61MpNQKRIY59-VfAtGmevYT7ypfDzfOCobLGnQyeEB3kAeCbP7AwYDXNahAl17MuyUVM6ACi88jgvgFkD2TDVApDBtjWn71a8yDBvJIEjexZO3jwIxN2a7tHY3OU9_wX9sYiXBaku4uQUESHfTRE4arIR6PnmEuj1N2gSuJAOWeUUEmvs2meqQ')">
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest/80 to-transparent"></div>
+<div class="absolute bottom-0 p-8">
+<h3 class="text-white font-bold text-xl">Precision Med</h3>
+</div>
+</div>
+</div>
+<div class="md:col-span-8 reveal" style="transition-delay: 200ms;">
+<div class="glass-card rounded-[2rem] overflow-hidden group relative h-[400px]">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A wide cinematic shot of a fleet of autonomous electric vehicles driving in a perfectly coordinated formation on a multi-lane highway of the future. The sky is a deep twilight purple, and the vehicles have integrated cyan light strips. The composition is dynamic and clean, illustrating the seamless efficiency of AI-driven transportation systems in a sleek, modern world." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC_Ql4WELZV7G_DTSas7lIE4oI87-Rej3q0deh3wqUhGGguc3uxhlAyRYjgJQSKtht7cSwbFzdYr2kxfjkC2HhXUCPRTozCjtV_2aQufW4cU1hBojuIskpWYzCUF-kV8fI-8Mh2MsB_XFzWVi1iq-tAeDV78-cKYHkRllJ1TeQ8e5epeqsbwzZqJlRR53qTYNUX2wHxo_Ukx5qiP7m-vLtWovyVLW7V13btC0KJ_Qr12dZMPIfgmHLG6r2Hcbes7SXPAyokUtr9zw')">
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest/80 to-transparent"></div>
+<div class="absolute bottom-0 p-8">
+<h3 class="text-white font-bold text-2xl">Logistics Cloud</h3>
+<p class="text-on-surface-variant text-sm max-w-sm mt-2">Zero-intervention supply chain management for global retail ecosystems.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="relative py-section-gap overflow-hidden">
+<div class="absolute inset-0 bg-primary/5 blur-[120px] rounded-full translate-y-1/2"></div>
+<div class="max-w-container-max mx-auto px-margin-mobile text-center relative z-10 reveal">
+<h2 class="font-display-lg text-display-lg-mobile md:text-[64px] mb-8">Ready to Build?</h2>
+<div class="flex flex-col md:flex-row justify-center gap-6">
+<button class="bg-primary text-on-primary px-10 py-5 rounded-full font-bold text-lg hover:scale-105 transition-transform">Get Started Now</button>
+<button class="bg-surface border border-outline-variant px-10 py-5 rounded-full font-bold text-lg hover:bg-white/5 transition-all">Schedule a Demo</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Shell -->
+<footer class="w-full rounded-t-full bg-surface-container-lowest border-t border-outline-variant/20 pt-20 pb-10">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop max-w-container-max mx-auto gap-10">
+<div class="flex flex-col items-center md:items-start">
+<div class="font-display-lg text-headline-md text-primary mb-2">AETHER AI</div>
+<p class="font-mono-label text-mono-label text-on-tertiary-container text-center md:text-left max-w-xs">
+                    © 2024 Aether Intelligence Systems. All rights reserved. Built for the synthetic era.
+                </p>
+</div>
+<div class="flex gap-10 font-mono-label text-mono-label">
+<div class="flex flex-col gap-3">
+<span class="text-on-surface font-bold opacity-40">LEGAL</span>
+<a class="text-on-tertiary-container hover:text-on-surface transition-colors" href="#">Privacy Policy</a>
+<a class="text-on-tertiary-container hover:text-on-surface transition-colors" href="#">Terms of Service</a>
+</div>
+<div class="flex flex-col gap-3">
+<span class="text-on-surface font-bold opacity-40">SYSTEM</span>
+<a class="text-on-tertiary-container hover:text-on-surface transition-colors" href="#">Security</a>
+<a class="text-on-tertiary-container hover:text-on-surface transition-colors" href="#">System Status</a>
+</div>
+</div>
+</div>
+<div class="mt-20 text-center text-[10px] uppercase tracking-[0.5em] text-outline opacity-30">
+            Precision • Power • Performance
+        </div>
+</footer>
+<script>
+        // Custom Cursor Logic
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        document.querySelectorAll('a, button, .glass-card').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'scale(2.5)';
+                cursor.style.backgroundColor = 'rgba(0, 219, 233, 0.1)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'scale(1)';
+                cursor.style.backgroundColor = 'transparent';
+            });
+        });
+
+        // Intersection Observer for Reveal Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Sticky Nav Blur Effect on Scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 20) {
+                nav.classList.add('py-2');
+                nav.classList.remove('py-4');
+            } else {
+                nav.classList.add('py-4');
+                nav.classList.remove('py-2');
+            }
+        });
+    </script>
+</body></html>

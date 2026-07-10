@@ -63,6 +63,7 @@ ensure((accessPolicy?.teamVpnCloud?.rules || []).some((rule) => rule.includes("0
 ensure(model?.longTermDevelopment?.roadmapSource === "deploy/seis-ssh-cloud-roadmap.json", "access model must link long-term roadmap source");
 ensure(model?.longTermDevelopment?.closedRuntimeContract === "deploy/seis-ssh-closed-runtime-contract.json", "access model must link closed runtime contract");
 ensure(model?.longTermDevelopment?.enterpriseBenchmarkSource === "deploy/seis-ssh-5-year-enterprise-benchmark.json", "access model must link enterprise benchmark source");
+ensure(model?.longTermDevelopment?.publicAccessContract === "deploy/seis-ssh-public-access-contract.json", "access model must link public access contract");
 ensure(model?.longTermDevelopment?.operatingModel === "single-cloud-entrypoint-with-profile-specific-controls", "access model must define single cloud entrypoint operating model");
 ensure(roadmap?.id === "seis-ssh-cloud-roadmap", "roadmap id must be seis-ssh-cloud-roadmap");
 ensure(roadmap?.targetAlias === "SEIS-SSH", "roadmap target alias must be SEIS-SSH");
@@ -73,6 +74,10 @@ ensure(closedRuntime?.targetAlias === "SEIS-SSH", "closed runtime contract targe
 ensure(closedRuntime?.runtimeType === "closed-cloud-development-system", "closed runtime contract must require closed cloud development system");
 ensure(enterpriseBenchmark?.targetControlPlane?.year5Default === "identity-aware-ssh-broker", "enterprise benchmark must target identity-aware SSH broker");
 ensure((model?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-enterprise-benchmark"), "qualityCommands must include enterprise benchmark check");
+ensure((model?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-access"), "qualityCommands must include public access check");
+ensure((model?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-onboarding"), "qualityCommands must include public onboarding check");
+ensure((model?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-contributor-doctor"), "qualityCommands must include public contributor doctor check");
+ensure((model?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-live-readiness-evidence"), "qualityCommands must include live readiness evidence check");
 ensure((roadmap?.tracks || []).some((track) => track.profile === "individual-cloud" && track.vpnRequired === false), "roadmap must preserve individual normal cloud SSH");
 ensure((roadmap?.tracks || []).some((track) => track.profile === "organization-vpn-cloud" && track.vpnRequired === true), "roadmap must preserve organization VPN SSH");
 ensure((roadmap?.tracks || []).some((track) => track.profile === "developer-closed-system" && track.currentProvider === "cloud-isolated-workspace"), "roadmap must preserve developer closed cloud system");
@@ -82,6 +87,10 @@ ensure(packageJson?.scripts?.["cloud:ssh:ensure-online"] === "node scripts/ensur
 ensure(packageJson?.scripts?.["cloud:ssh:direct-cloud:switch"] === "node scripts/switch-seis-ssh-direct-cloud.mjs", "missing cloud:ssh:direct-cloud:switch script");
 ensure(packageJson?.scripts?.["check:seis-ssh-access-model"] === "node scripts/check-seis-ssh-access-model.mjs", "missing check:seis-ssh-access-model script");
 ensure(packageJson?.scripts?.["check:seis-ssh-picker-compatibility"] === "node scripts/check-seis-ssh-picker-compatibility.mjs", "missing check:seis-ssh-picker-compatibility script");
+ensure(packageJson?.scripts?.["check:seis-ssh-public-access"] === "node scripts/check-seis-ssh-public-access.mjs", "missing check:seis-ssh-public-access script");
+ensure(packageJson?.scripts?.["check:seis-ssh-public-onboarding"] === "node scripts/create-seis-ssh-public-onboarding-pack.mjs --check", "missing check:seis-ssh-public-onboarding script");
+ensure(packageJson?.scripts?.["check:seis-ssh-public-contributor-doctor"] === "node scripts/check-seis-ssh-public-contributor-doctor.mjs --check", "missing check:seis-ssh-public-contributor-doctor script");
+ensure(packageJson?.scripts?.["check:seis-ssh-live-readiness-evidence"] === "node scripts/check-seis-ssh-live-readiness-evidence.mjs", "missing check:seis-ssh-live-readiness-evidence script");
 ensure(packageJson?.scripts?.["check:seis-ssh-cloud-roadmap"] === "node scripts/check-seis-ssh-cloud-roadmap.mjs", "missing check:seis-ssh-cloud-roadmap script");
 ensure(packageJson?.scripts?.["check:seis-ssh-closed-runtime"] === "node scripts/check-seis-ssh-closed-runtime.mjs", "missing check:seis-ssh-closed-runtime script");
 
@@ -105,6 +114,9 @@ ensure(docs.includes("SEIS SSH Cloud Roadmap"), "docs must document SEIS SSH Clo
 ensure(docs.includes("SEIS SSH New Device Bootstrap"), "docs must document SEIS SSH New Device Bootstrap");
 ensure(docs.includes("SEIS SSH Closed Developer Runtime"), "docs must document SEIS SSH Closed Developer Runtime");
 ensure(docs.includes("Picker Compatibility"), "docs must document picker compatibility");
+ensure(docs.includes("read-only onboarding pack"), "docs must document read-only public onboarding pack");
+ensure(docs.includes("read-only contributor doctor"), "docs must document read-only contributor doctor");
+ensure(docs.includes("live readiness evidence"), "docs must document live readiness evidence");
 ensure(docs.includes("Phase 3: Closed Developer Runtime"), "docs must document long-term closed developer runtime phase");
 
 if (sshConfig) {

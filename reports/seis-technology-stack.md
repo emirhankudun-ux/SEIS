@@ -14,10 +14,10 @@ Only real source languages belong in the GitHub language surface; frameworks, cl
 
 | # | language | layer | GitHub bytes | entrypoints |
 | ---: | --- | --- | ---: | --- |
-| 1 | JavaScript | frontend-and-experience | 2310662 | apps/web/src/scripts/motion-system.js, apps/web/src/scripts/gallery-system.js, apps/web/src/scripts/i18n-system.js, polyglot/javascript/plugin-source-runtime.js |
+| 1 | JavaScript | frontend-and-experience | 2993076 | apps/web/src/scripts/motion-system.js, apps/web/src/scripts/gallery-system.js, apps/web/src/scripts/i18n-system.js, polyglot/javascript/plugin-source-runtime.js |
 | 2 | TypeScript | frontend-and-experience | 424439 | polyglot/typescript/seis_config_validator.ts, polyglot/typescript/language-split-contract.ts, packages/seis-ai/types/seis-ai.d.ts |
 | 3 | Objective-C | mobile-and-native | 8447 | polyglot/objective-c/SEISReleasePolicy.h, polyglot/objective-c/SEISLanguageDistributionContract.h, polyglot/objective-c/SEISLanguageDistributionContract.m |
-| 4 | Python | backend-and-api | 508621 | polyglot/python/seis_manifest.py, polyglot/python/seis_image_audit.py, polyglot/python/seis_icon_gen.py, polyglot/python/seis_color_contrast.py, polyglot/python/seis_sw_cache_audit.py, server/python/verify_release.py |
+| 4 | Python | backend-and-api | 513980 | polyglot/python/seis_manifest.py, polyglot/python/seis_image_audit.py, polyglot/python/seis_icon_gen.py, polyglot/python/seis_color_contrast.py, polyglot/python/seis_sw_cache_audit.py, server/python/verify_release.py |
 | 5 | Swift | mobile-and-native | 574078 | polyglot/swift/SEISMotionPolicy.swift |
 | 6 | Go | backend-and-api | 16806 | polyglot/go/health_contract.go, polyglot/go/cmd/seis-serve/main.go, polyglot/go/cmd/seis-jsonld/main.go |
 | 7 | Rust | mobile-and-native | 12286 | polyglot/rust/performance_budget.rs, polyglot/rust/seis-link-audit/src/main.rs |
@@ -30,7 +30,7 @@ Only real source languages belong in the GitHub language surface; frameworks, cl
 | 14 | C++ | mobile-and-native | 11206 | polyglot/cpp/readiness_contract.hpp, polyglot/cpp/seis_translations_lint.cpp |
 | 15 | C# | backend-and-api | 2973 | polyglot/csharp/SeisReleaseContract.cs |
 | 16 | SQL | database-and-data | 8752 | polyglot/sql/audit_ledger.sqlite.sql |
-| 17 | Shell | cloud-devops-and-config | 97489 | polyglot/bash/deploy_guard.sh, scripts/polyglot-check.sh |
+| 17 | Shell | cloud-devops-and-config | 98373 | polyglot/bash/deploy_guard.sh, scripts/polyglot-check.sh |
 | 18 | PowerShell | cloud-devops-and-config | 2427 | polyglot/powershell/SeisReleasePolicy.ps1 |
 | 19 | Lua | security-policy-and-governance | 6948 | polyglot/lua/seis_i18n_attr_audit.lua |
 | 20 | R | database-and-data | 7953 | polyglot/r/seis_translation_stats.R |
@@ -44,10 +44,10 @@ Only real source languages belong in the GitHub language surface; frameworks, cl
 | 28 | F# | backend-and-api | 1592 | polyglot/fsharp/SeisReleasePolicy.fs |
 | 29 | OCaml | research-legacy-and-lab | 7550 | polyglot/ocaml/release_policy.ml, polyglot/ocaml/seis_css_selector_stats.ml |
 | 30 | Nim | mobile-and-native | 5452 | polyglot/nim/readiness_policy.nim, polyglot/nim/seis_html_img_audit.nim |
-| 31 | Zig | mobile-and-native | 711 | polyglot/zig/readiness_contract.zig |
+| 31 | Zig | mobile-and-native | 712 | polyglot/zig/readiness_contract.zig |
 | 32 | Groovy | backend-and-api | 5362 | polyglot/groovy/SeisReleasePolicy.groovy, polyglot/groovy/seis_json_files_check.groovy |
 | 33 | Crystal | mobile-and-native | 594 | polyglot/crystal/readiness_policy.cr |
-| 34 | D | mobile-and-native | 455 | polyglot/d/readiness_policy.d |
+| 34 | D | mobile-and-native | 456 | polyglot/d/readiness_policy.d |
 | 35 | V | mobile-and-native | 572 | polyglot/v/readiness_policy.v |
 | 36 | Fortran | research-legacy-and-lab | 528 | polyglot/fortran/readiness_policy.f90 |
 | 37 | COBOL | research-legacy-and-lab | 723 | polyglot/cobol/readiness-policy.cob |
@@ -64,8 +64,8 @@ Only real source languages belong in the GitHub language surface; frameworks, cl
 | 48 | Visual Basic | research-legacy-and-lab | 992 | polyglot/vb/SeisReleasePolicy.vb |
 | 49 | Batchfile | cloud-devops-and-config | 282 | polyglot/windows/scripting/seis_windows_platform.bat |
 | 50 | MATLAB | database-and-data | 365 | polyglot/matlab/readiness_policy.m |
-| 51 | HTML | frontend-and-experience | 161998 | apps/web/index.html, apps/web/seis-cockpit.html |
-| 52 | CSS | frontend-and-experience | 325296 | apps/web/style.css, apps/web/styles.css |
+| 51 | HTML | frontend-and-experience | 262365 | apps/web/index.html, apps/web/seis-cockpit.html |
+| 52 | CSS | frontend-and-experience | 398393 | apps/web/style.css, apps/web/styles.css |
 | 53 | Solidity | security-policy-and-governance | 869 | polyglot/solidity/SeisReleasePolicy.sol |
 | 54 | Move | security-policy-and-governance | 843 | polyglot/move/release_policy.move |
 | 55 | Cairo | security-policy-and-governance | 649 | polyglot/cairo/release_policy.cairo |

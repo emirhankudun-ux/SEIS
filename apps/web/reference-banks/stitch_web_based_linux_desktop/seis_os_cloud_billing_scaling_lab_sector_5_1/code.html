@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS — Cloud Billing &amp; Scaling Lab (Sector 5)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Style Guidance & Theme Overrides -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "secondary-fixed-dim": "#ebb2ff",
+                "error": "#ffb4ab",
+                "on-secondary-fixed-variant": "#74009f",
+                "on-surface": "#e2e2e2",
+                "on-tertiary-container": "#605e5e",
+                "primary": "#dbfcff",
+                "inverse-on-surface": "#2f3131",
+                "inverse-primary": "#006970",
+                "surface-bright": "#37393a",
+                "secondary-container": "#ce5dff",
+                "on-secondary-container": "#480064",
+                "background": "#121414",
+                "tertiary-fixed": "#e5e2e1",
+                "tertiary-fixed-dim": "#c9c6c5",
+                "on-tertiary-fixed": "#1c1b1b",
+                "on-primary": "#00363a",
+                "surface-container-highest": "#333535",
+                "on-primary-container": "#006970",
+                "on-error-container": "#ffdad6",
+                "surface-container": "#1e2020",
+                "on-secondary": "#520071",
+                "surface-variant": "#333535",
+                "surface-container-lowest": "#0c0f0f",
+                "surface": "#121414",
+                "error-container": "#93000a",
+                "tertiary": "#f9f5f5",
+                "surface-container-high": "#282a2b",
+                "secondary": "#ebb2ff",
+                "outline-variant": "#3b494b",
+                "on-secondary-fixed": "#320047",
+                "on-primary-fixed-variant": "#004f54",
+                "primary-fixed-dim": "#00dbe9",
+                "primary-container": "#00f0ff",
+                "on-surface-variant": "#b9cacb",
+                "on-background": "#e2e2e2",
+                "inverse-surface": "#e2e2e2",
+                "on-primary-fixed": "#002022",
+                "tertiary-container": "#dcd9d8",
+                "on-tertiary": "#313030",
+                "on-tertiary-fixed-variant": "#474646",
+                "surface-tint": "#00dbe9",
+                "surface-dim": "#121414",
+                "secondary-fixed": "#f8d8ff",
+                "on-error": "#690005",
+                "surface-container-low": "#1a1c1c",
+                "primary-fixed": "#7df4ff",
+                "outline": "#849495"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "fontFamily": {
+                "label-sm": ["Space Mono"],
+                "headline-lg": ["JetBrains Mono"],
+                "body-lg": ["JetBrains Mono"],
+                "body-md": ["JetBrains Mono"],
+                "headline-md": ["JetBrains Mono"],
+                "code-sm": ["JetBrains Mono"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body {
+            background-color: #0a0a0a;
+            color: #e2e2e2;
+            font-family: 'JetBrains Mono', monospace;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(26, 28, 28, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid #333333;
+        }
+        .glass-panel:hover {
+            border-color: #00dbe9;
+        }
+        .header-title-bar {
+            height: 24px;
+            background: #00dbe9;
+            color: #0a0a0a;
+            font-size: 10px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            text-transform: uppercase;
+        }
+        .terminal-scroll::-webkit-scrollbar { width: 4px; }
+        .terminal-scroll::-webkit-scrollbar-track { background: transparent; }
+        .terminal-scroll::-webkit-scrollbar-thumb { background: #333333; }
+        .terminal-scroll::-webkit-scrollbar-thumb:hover { background: #00dbe9; }
+        .cursor-blink { animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .segmented-progress { display: flex; gap: 2px; }
+        .segment { height: 8px; flex: 1; background: #333333; }
+        .segment.active { background: #00dbe9; }
+    </style>
+</head>
+<body class="bg-background selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- Top Navigation Bar (Shared Component: TopAppBar) -->
+<header class="bg-[#1A1C1C]/70 backdrop-blur-3xl border-b border-white/10 flex justify-between items-center w-full px-10 h-12 fixed top-0 z-50">
+<div class="font-headline-md text-headline-md font-bold text-primary">SEIS OS</div>
+<nav class="hidden md:flex gap-8">
+<a class="font-body-md text-body-md text-primary border-b-2 border-primary hover:bg-white/5 transition-colors px-2" href="#">Activities</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:bg-white/5 transition-colors px-2" href="#">Files</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:bg-white/5 transition-colors px-2" href="#">Network</a>
+</nav>
+<div class="flex items-center gap-4 text-primary">
+<span class="material-symbols-outlined text-body-md">signal_cellular_4_bar</span>
+<span class="material-symbols-outlined text-body-md">battery_charging_full</span>
+<span class="material-symbols-outlined text-body-md">schedule</span>
+</div>
+</header>
+<!-- Side Navigation (Shared Component: SideNavBar) -->
+<aside class="bg-[#1A1C1C]/70 backdrop-blur-3xl border-r border-white/10 fixed left-0 top-12 bottom-0 flex flex-col items-center py-8 z-40 w-20">
+<div class="flex flex-col gap-8 w-full">
+<button class="w-full flex flex-col items-center py-4 text-primary bg-white/5 border-l-4 border-primary transition-all duration-300">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-sm text-[8px] mt-1">Workspace</span>
+</button>
+<button class="w-full flex flex-col items-center py-4 text-on-surface-variant hover:bg-white/10 transition-all duration-300">
+<span class="material-symbols-outlined">insights</span>
+<span class="font-label-sm text-[8px] mt-1">Analytics</span>
+</button>
+<button class="w-full flex flex-col items-center py-4 text-on-surface-variant hover:bg-white/10 transition-all duration-300">
+<span class="material-symbols-outlined">hub</span>
+<span class="font-label-sm text-[8px] mt-1">Nodes</span>
+</button>
+<button class="w-full flex flex-col items-center py-4 text-on-surface-variant hover:bg-white/10 transition-all duration-300">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-sm text-[8px] mt-1">Settings</span>
+</button>
+</div>
+<div class="mt-auto pb-6">
+<div class="w-10 h-10 rounded-full border border-primary/30 p-1">
+<img class="w-full h-full rounded-full object-cover grayscale brightness-125" data-alt="A professional close-up headshot of a cyber-security expert with short cropped hair wearing high-tech tactical gear, illuminated by teal and violet rim lighting in a dark, high-density server room environment. The aesthetic is clean, cinematic, and sharply detailed with a cyberpunk minimalist feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-U-Yjgtctpm6gMdO0iqtTHerljAFbPqFPxvPS1sv6d7P8aFfebhVc62crc9vvAVX1_nPOm_bXxi3iTdWCWFULyAqx8pi8K_HZzom0A2Noj0N_lQTjhIPWbuuZ-3ZgN1NyjvGxRHNYdDi-C0ojq_KbJ4A3NrmYoSyWGOqAc1PT2ECqfK4kafgCIoUsqLwpEd8rmT4zMHoe9X_UllkVbWd-9hk1n4fofKQC2nraIcbLI0Ag4w6tLWdTb9hH6popLkYqOFfOMrG_yInk"/>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-20 mt-12 p-8 grid grid-cols-12 gap-4">
+<!-- Header Banner Section -->
+<div class="col-span-12 mb-4">
+<h1 class="font-headline-lg text-headline-lg text-primary uppercase tracking-tighter">Sector 5 — Billing &amp; Scaling Lab</h1>
+<p class="font-body-md text-on-surface-variant opacity-70">Surgical resource oversight and tactical financial modeling for decentralized clusters.</p>
+</div>
+<!-- Left Column: Billing Analytics Chart (Bento Style) -->
+<div class="col-span-12 lg:col-span-8 flex flex-col gap-4">
+<div class="glass-panel flex flex-col h-[400px]">
+<div class="header-title-bar">
+<span class="material-symbols-outlined text-[14px] mr-2">finance</span>
+                    BILLING_ANALYTICS_V4.0 // COST_PROJECTIONS
+                </div>
+<div class="flex-1 p-6 flex flex-col">
+<div class="flex justify-between items-end mb-8">
+<div>
+<div class="text-[32px] font-bold text-primary font-headline-lg">$14,204.82</div>
+<div class="text-on-surface-variant font-label-sm">MTD SPEND | +4.2% VS PREV</div>
+</div>
+<div class="flex gap-2">
+<button class="bg-primary text-background px-3 py-1 font-label-sm text-[10px] hover:bg-secondary-fixed-dim transition-colors">EXPORT_CSV</button>
+<button class="border border-primary text-primary px-3 py-1 font-label-sm text-[10px] hover:bg-white/5 transition-colors">TIME_FILTER</button>
+</div>
+</div>
+<!-- Mock Chart -->
+<div class="flex-1 flex items-end gap-1 relative">
+<div class="absolute inset-0 border-b border-white/5 flex flex-col justify-between">
+<div class="border-t border-white/5 w-full h-0"></div>
+<div class="border-t border-white/5 w-full h-0"></div>
+<div class="border-t border-white/5 w-full h-0"></div>
+</div>
+<!-- Bars -->
+<div class="flex-1 bg-primary/20 h-[40%] border-t border-primary/50 relative group">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-primary text-black text-[10px] px-1 font-bold">2.4k</div>
+</div>
+<div class="flex-1 bg-primary/20 h-[55%] border-t border-primary/50 relative group">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-primary text-black text-[10px] px-1 font-bold">3.1k</div>
+</div>
+<div class="flex-1 bg-primary/20 h-[45%] border-t border-primary/50 relative group">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-primary text-black text-[10px] px-1 font-bold">2.8k</div>
+</div>
+<div class="flex-1 bg-primary/40 h-[70%] border-t border-primary relative group">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-primary text-black text-[10px] px-1 font-bold">4.2k</div>
+</div>
+<div class="flex-1 bg-primary/20 h-[60%] border-t border-primary/50 relative group">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-primary text-black text-[10px] px-1 font-bold">3.8k</div>
+</div>
+<div class="flex-1 bg-secondary/40 h-[85%] border-t border-secondary relative group">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-secondary text-black text-[10px] px-1 font-bold">PROJ</div>
+</div>
+</div>
+<div class="flex justify-between mt-2 font-label-sm text-[10px] text-on-surface-variant opacity-50">
+<span>W1_JAN</span><span>W2_JAN</span><span>W3_JAN</span><span>W4_JAN</span><span>W1_FEB</span><span>PROJECTION</span>
+</div>
+</div>
+</div>
+<!-- Resource Scaling Lab -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="glass-panel">
+<div class="header-title-bar">SCALING_LAB // COMPUTE_INSTANCES</div>
+<div class="p-4 space-y-6">
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-primary">INSTANCE_COUNT</span>
+<span class="text-xl font-bold">128</span>
+</div>
+<input class="w-full accent-primary bg-[#333333] h-1 appearance-none rounded-none cursor-pointer" type="range"/>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-2 border border-white/10">
+<div class="text-[10px] text-on-surface-variant">MIN_NODES</div>
+<div class="font-bold">12</div>
+</div>
+<div class="p-2 border border-white/10">
+<div class="text-[10px] text-on-surface-variant">MAX_NODES</div>
+<div class="font-bold">512</div>
+</div>
+</div>
+<button class="w-full bg-primary text-background py-2 font-bold hover:bg-secondary-fixed-dim transition-colors text-[12px]">COMMIT_SCALE_REQS</button>
+</div>
+</div>
+<div class="glass-panel">
+<div class="header-title-bar">SCALING_LAB // OBJECT_STORAGE_HEALTH</div>
+<div class="p-4 flex flex-col h-full">
+<div class="flex items-center justify-between mb-4">
+<span class="font-label-sm text-primary">S3_CLUSTER_S5</span>
+<span class="text-xs text-secondary-fixed-dim flex items-center">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed-dim mr-2 cursor-blink"></span>
+                                NOMINAL
+                            </span>
+</div>
+<div class="space-y-3 flex-1">
+<div>
+<div class="flex justify-between text-[10px] mb-1">
+<span>IOPS_UTILIZATION</span>
+<span>72%</span>
+</div>
+<div class="segmented-progress">
+<div class="segment active"></div><div class="segment active"></div><div class="segment active"></div>
+<div class="segment active"></div><div class="segment active"></div><div class="segment active"></div>
+<div class="segment active"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-[10px] mb-1">
+<span>LATENCY_THRESHOLD</span>
+<span>12ms</span>
+</div>
+<div class="segmented-progress">
+<div class="segment active"></div><div class="segment active"></div><div class="segment"></div>
+<div class="segment"></div><div class="segment"></div><div class="segment"></div>
+<div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-white/10 text-[10px] text-on-surface-variant italic">
+                            LAST REBALANCE: 02:14:09 UTC
+                        </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Map & Telemetry -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-4">
+<!-- Region Selector Map -->
+<div class="glass-panel flex flex-col">
+<div class="header-title-bar">GEO_LOCATOR // REGION_SELECTOR</div>
+<div class="relative h-64 overflow-hidden group">
+<div class="absolute inset-0 bg-cover bg-center grayscale opacity-50 group-hover:scale-110 transition-transform duration-[2000ms]" data-alt="A high-contrast, technical satellite view map of a futuristic urban megalopolis at night, rendered in deep blacks and glowing cyan outlines for streets and data corridors. The aesthetic is inspired by tactical radar displays, featuring sharp vector grid overlays and pulsing markers for data centers. Monochrome dark mode styling with neon cyan accents." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCfoBYZ0kliyN6eofPQ_TI0rQgAA-zNF2Or5XESMt9EjZh53IPOxUFsy3Ozmx7I-kLNk1iR8Ueo61GcAJutZs45A5qwtdMjNZHiMxON__X9oqxOkYGSLMPM29Gh346Usvb0Dh-dTyzKACHB98WCw5nZ3XfkmC3sLPkVtRnea6xlpgf5y_vfOJVgyvSKupAIlEWOPGjAOEzwjuizBlHYmV6D-v2Rf7cu4UzEuNnRNppF7PO21XuSWIsj069ftJK-0LHgxHySo24GXUP5')">
+</div>
+<!-- UI Overlays on Map -->
+<div class="absolute top-4 left-4 flex flex-col gap-2">
+<div class="bg-black/80 border border-primary px-2 py-1 text-[10px] font-bold text-primary">S5-ALPHA: ACTIVE</div>
+<div class="bg-black/80 border border-white/20 px-2 py-1 text-[10px] font-bold">S5-BETA: STANDBY</div>
+</div>
+<div class="absolute inset-0 pointer-events-none border-[12px] border-black/20 backdrop-blur-[1px]"></div>
+</div>
+<div class="p-4">
+<select class="w-full bg-background border border-[#333333] text-primary font-label-sm py-2 px-3 focus:border-primary outline-none appearance-none rounded-none">
+<option>SECTOR_5_US_EAST_01</option>
+<option>SECTOR_5_EU_WEST_04</option>
+<option>SECTOR_5_ASIA_SO_02</option>
+</select>
+</div>
+</div>
+<!-- Terminal Panel -->
+<div class="glass-panel flex-1 min-h-[300px] flex flex-col">
+<div class="header-title-bar">SYSTEM_LOGS // REAL_TIME_STREAM</div>
+<div class="p-4 font-code-sm text-primary/80 overflow-y-auto terminal-scroll text-[11px] leading-relaxed flex-1">
+<div class="mb-1 text-on-surface-variant opacity-40">-- SYSTEM INITIALIZED SECTOR 5 --</div>
+<div class="flex gap-2">
+<span class="text-secondary">[08:45:21]</span>
+<span>AUTH: TOKEN_VALIDATED - ADM_99</span>
+</div>
+<div class="flex gap-2">
+<span class="text-secondary">[08:45:22]</span>
+<span class="text-primary-fixed-dim">POLLING: Billing_API v4.1... SUCCESS</span>
+</div>
+<div class="flex gap-2">
+<span class="text-secondary">[08:45:25]</span>
+<span>MONITOR: Latency spike detected in US-EAST (+4ms)</span>
+</div>
+<div class="flex gap-2">
+<span class="text-secondary">[08:45:30]</span>
+<span class="text-error">WARN: Cache hit ratio below 85% in node_04</span>
+</div>
+<div class="flex gap-2">
+<span class="text-secondary">[08:45:34]</span>
+<span>SCALING: Auto-scaling protocol engaged for Cluster_B</span>
+</div>
+<div class="flex gap-2">
+<span class="text-secondary">[08:45:38]</span>
+<span>SYS: Syncing resource states across 4 regions...</span>
+</div>
+<div class="mt-2 flex">
+<span class="text-primary mr-2">&gt;</span>
+<span class="text-primary cursor-blink">_</span>
+</div>
+</div>
+</div>
+<!-- Telemetry Summary -->
+<div class="glass-panel">
+<div class="header-title-bar">TELEMETRY_SUMMARY // SECTOR_5</div>
+<div class="p-4 grid grid-cols-2 gap-2">
+<div class="bg-white/5 p-3">
+<div class="text-[10px] text-on-surface-variant mb-1">AGGREGATE_LATENCY</div>
+<div class="text-lg font-bold text-primary">14.2ms</div>
+</div>
+<div class="bg-white/5 p-3">
+<div class="text-[10px] text-on-surface-variant mb-1">TOTAL_STORAGE</div>
+<div class="text-lg font-bold text-primary">8.4 PB</div>
+</div>
+<div class="bg-white/5 p-3">
+<div class="text-[10px] text-on-surface-variant mb-1">NODE_UPTIME</div>
+<div class="text-lg font-bold text-primary">99.998%</div>
+</div>
+<div class="bg-white/5 p-3">
+<div class="text-[10px] text-on-surface-variant mb-1">ACTIVE_SESSIONS</div>
+<div class="text-lg font-bold text-primary">1,402</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Dock (Shared Component: BottomNavBar) -->
+<footer class="fixed bottom-4 left-1/2 -translate-x-1/2 flex gap-4 px-6 py-3 z-50 bg-[#1A1C1C]/60 backdrop-blur-[64px] border border-white/20 rounded-xl shadow-2xl shadow-primary/10">
+<button class="text-on-surface-variant p-2 hover:scale-125 transition-transform duration-300 ease-out">
+<span class="material-symbols-outlined">folder</span>
+</button>
+<button class="text-on-surface-variant p-2 hover:scale-125 transition-transform duration-300 ease-out">
+<span class="material-symbols-outlined">terminal</span>
+</button>
+<button class="bg-primary-container text-on-primary-container rounded-lg p-2 scale-110 hover:scale-125 transition-transform duration-300 ease-out">
+<span class="material-symbols-outlined">language</span>
+</button>
+<button class="text-on-surface-variant p-2 hover:scale-125 transition-transform duration-300 ease-out">
+<span class="material-symbols-outlined">code</span>
+</button>
+<button class="text-on-surface-variant p-2 hover:scale-125 transition-transform duration-300 ease-out">
+<span class="material-symbols-outlined">play_circle</span>
+</button>
+</footer>
+<script>
+        // Micro-interaction for simulated real-time telemetry
+        setInterval(() => {
+            const latencies = document.querySelectorAll('.text-lg.font-bold.text-primary');
+            latencies.forEach(el => {
+                if(el.innerText.includes('ms')) {
+                    const current = parseFloat(el.innerText);
+                    const change = (Math.random() - 0.5) * 0.5;
+                    el.innerText = (current + change).toFixed(1) + 'ms';
+                }
+            });
+        }, 3000);
+    </script>
+</body></html>

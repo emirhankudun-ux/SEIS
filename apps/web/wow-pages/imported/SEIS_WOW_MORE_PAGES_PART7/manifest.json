@@ -1,0 +1,248 @@
+{
+  "name": "SEIS_WOW_MORE_PAGES_PART7",
+  "version": "1.0",
+  "page_count": 30,
+  "total_visual_set_after_this_pack": 190,
+  "pages": [
+    {
+      "number": 161,
+      "id": "161_home_widget_gallery",
+      "title": "Home Widget Gallery",
+      "description": "More desktop widgets for weather, AI, files, focus and system health.",
+      "png": "png/161_home_widget_gallery.png",
+      "html": "html/161_home_widget_gallery.html"
+    },
+    {
+      "number": 162,
+      "id": "162_dynamic_island_bar",
+      "title": "Dynamic Island Bar",
+      "description": "Floating system status, media and AI activity strip.",
+      "png": "png/162_dynamic_island_bar.png",
+      "html": "html/162_dynamic_island_bar.html"
+    },
+    {
+      "number": 163,
+      "id": "163_live_activity_cards",
+      "title": "Live Activity Cards",
+      "description": "Persistent activity cards for long-running SEIS tasks.",
+      "png": "png/163_live_activity_cards.png",
+      "html": "html/163_live_activity_cards.html"
+    },
+    {
+      "number": 164,
+      "id": "164_app_switcher",
+      "title": "App Switcher",
+      "description": "Visual task switcher for open SEIS apps and windows.",
+      "png": "png/164_app_switcher.png",
+      "html": "html/164_app_switcher.html"
+    },
+    {
+      "number": 165,
+      "id": "165_multiscreen_workspace",
+      "title": "Multi-Screen Workspace",
+      "description": "Desktop layout for multiple monitors and large presentations.",
+      "png": "png/165_multiscreen_workspace.png",
+      "html": "html/165_multiscreen_workspace.html"
+    },
+    {
+      "number": 166,
+      "id": "166_terminal_theme_store",
+      "title": "Terminal Theme Store",
+      "description": "Install and preview terminal color themes.",
+      "png": "png/166_terminal_theme_store.png",
+      "html": "html/166_terminal_theme_store.html"
+    },
+    {
+      "number": 167,
+      "id": "167_terminal_multiplexer",
+      "title": "Terminal Multiplexer",
+      "description": "Split terminal sessions for logs, AI REPL and virtual commands.",
+      "png": "png/167_terminal_multiplexer.png",
+      "html": "html/167_terminal_multiplexer.html"
+    },
+    {
+      "number": 168,
+      "id": "168_code_project_wizard",
+      "title": "Code Project Wizard",
+      "description": "Create SEIS projects with templates and safe defaults.",
+      "png": "png/168_code_project_wizard.png",
+      "html": "html/168_code_project_wizard.html"
+    },
+    {
+      "number": 169,
+      "id": "169_code_template_gallery",
+      "title": "Code Template Gallery",
+      "description": "Starter templates for desktop apps, AI panels and widgets.",
+      "png": "png/169_code_template_gallery.png",
+      "html": "html/169_code_template_gallery.html"
+    },
+    {
+      "number": 170,
+      "id": "170_code_review_assistant",
+      "title": "Code Review Assistant",
+      "description": "AI-assisted review with exact mock/live status labels.",
+      "png": "png/170_code_review_assistant.png",
+      "html": "html/170_code_review_assistant.html"
+    },
+    {
+      "number": 171,
+      "id": "171_visual_code_mapper",
+      "title": "Visual Code Mapper",
+      "description": "Map files, routes and components as a visual system graph.",
+      "png": "png/171_visual_code_mapper.png",
+      "html": "html/171_visual_code_mapper.html"
+    },
+    {
+      "number": 172,
+      "id": "172_design_handoff_page",
+      "title": "Design Handoff Page",
+      "description": "Bridge PNG references, HTML pages and implementation notes.",
+      "png": "png/172_design_handoff_page.png",
+      "html": "html/172_design_handoff_page.html"
+    },
+    {
+      "number": 173,
+      "id": "173_design_quality_score",
+      "title": "Design Quality Score",
+      "description": "Visual readiness scorecard for wow-level demo polish.",
+      "png": "png/173_design_quality_score.png",
+      "html": "html/173_design_quality_score.html"
+    },
+    {
+      "number": 174,
+      "id": "174_ui_density_modes",
+      "title": "UI Density Modes",
+      "description": "Compact, comfortable and cinematic UI density presets.",
+      "png": "png/174_ui_density_modes.png",
+      "html": "html/174_ui_density_modes.html"
+    },
+    {
+      "number": 175,
+      "id": "175_cloud_billing_mock",
+      "title": "Cloud Billing Mock",
+      "description": "Honest mock billing and usage dashboard for future cloud mode.",
+      "png": "png/175_cloud_billing_mock.png",
+      "html": "html/175_cloud_billing_mock.html"
+    },
+    {
+      "number": 176,
+      "id": "176_cloud_region_map",
+      "title": "Cloud Region Map",
+      "description": "Global region map for deploy preview and latency story.",
+      "png": "png/176_cloud_region_map.png",
+      "html": "html/176_cloud_region_map.html"
+    },
+    {
+      "number": 177,
+      "id": "177_cloud_incident_center",
+      "title": "Cloud Incident Center",
+      "description": "Incident status, timeline and postmortem-ready UI.",
+      "png": "png/177_cloud_incident_center.png",
+      "html": "html/177_cloud_incident_center.html"
+    },
+    {
+      "number": 178,
+      "id": "178_store_theme_detail",
+      "title": "Store Theme Detail",
+      "description": "Theme product page with preview, permissions and install state.",
+      "png": "png/178_store_theme_detail.png",
+      "html": "html/178_store_theme_detail.html"
+    },
+    {
+      "number": 179,
+      "id": "179_store_update_center",
+      "title": "Store Update Center",
+      "description": "Pending updates for apps, plugins, themes and agents.",
+      "png": "png/179_store_update_center.png",
+      "html": "html/179_store_update_center.html"
+    },
+    {
+      "number": 180,
+      "id": "180_store_plugin_permissions",
+      "title": "Store Plugin Permissions",
+      "description": "Permission review before installing plugins.",
+      "png": "png/180_store_plugin_permissions.png",
+      "html": "html/180_store_plugin_permissions.html"
+    },
+    {
+      "number": 181,
+      "id": "181_ai_research_dashboard",
+      "title": "AI Research Dashboard",
+      "description": "SEIS Universe research overview without fake model claims.",
+      "png": "png/181_ai_research_dashboard.png",
+      "html": "html/181_ai_research_dashboard.html"
+    },
+    {
+      "number": 182,
+      "id": "182_ai_eval_run_detail",
+      "title": "AI Eval Run Detail",
+      "description": "Prompt regression and agent evaluation run screen.",
+      "png": "png/182_ai_eval_run_detail.png",
+      "html": "html/182_ai_eval_run_detail.html"
+    },
+    {
+      "number": 183,
+      "id": "183_ai_cost_budget",
+      "title": "AI Cost Budget",
+      "description": "Budget guardrails for providers, agents and image generation.",
+      "png": "png/183_ai_cost_budget.png",
+      "html": "html/183_ai_cost_budget.html"
+    },
+    {
+      "number": 184,
+      "id": "184_ai_provider_setup_wizard",
+      "title": "AI Provider Setup Wizard",
+      "description": "Safe setup flow for optional provider keys.",
+      "png": "png/184_ai_provider_setup_wizard.png",
+      "html": "html/184_ai_provider_setup_wizard.html"
+    },
+    {
+      "number": 185,
+      "id": "185_seis_browser_reader_mode",
+      "title": "Browser Reader Mode",
+      "description": "Minimal reader, summarize option and saved clips.",
+      "png": "png/185_seis_browser_reader_mode.png",
+      "html": "html/185_seis_browser_reader_mode.html"
+    },
+    {
+      "number": 186,
+      "id": "186_seis_browser_devtools",
+      "title": "Browser DevTools",
+      "description": "Inspector, console, network and performance panels.",
+      "png": "png/186_seis_browser_devtools.png",
+      "html": "html/186_seis_browser_devtools.html"
+    },
+    {
+      "number": 187,
+      "id": "187_search_knowledge_filters",
+      "title": "Search Knowledge Filters",
+      "description": "Advanced filters for apps, files, code, docs and lore.",
+      "png": "png/187_search_knowledge_filters.png",
+      "html": "html/187_search_knowledge_filters.html"
+    },
+    {
+      "number": 188,
+      "id": "188_search_command_results",
+      "title": "Search Command Results",
+      "description": "Search results that can execute safe commands.",
+      "png": "png/188_search_command_results.png",
+      "html": "html/188_search_command_results.html"
+    },
+    {
+      "number": 189,
+      "id": "189_seis_education_mode",
+      "title": "Education Mode",
+      "description": "Explain SEIS to beginners with guided lessons.",
+      "png": "png/189_seis_education_mode.png",
+      "html": "html/189_seis_education_mode.html"
+    },
+    {
+      "number": 190,
+      "id": "190_final_part7_index",
+      "title": "Final Part 7 Index",
+      "description": "Part 7 extends the full SEIS visual reference set to 190 screens.",
+      "png": "png/190_final_part7_index.png",
+      "html": "html/190_final_part7_index.html"
+    }
+  ]
+}

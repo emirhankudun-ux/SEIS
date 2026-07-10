@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS | PACKAGE MANAGER</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..900&amp;family=Space+Mono:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0c0f0f;
+            color: #e2e2e2;
+            overflow-x: hidden;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .glass-panel {
+            background: rgba(12, 15, 15, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid #3b494b;
+        }
+        .terminal-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .terminal-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .terminal-scroll::-webkit-scrollbar-thumb {
+            background: #3b494b;
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 219, 233, 0.1);
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: scan 8s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes scan {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+        .blinking-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 14px;
+            background-color: #7df4ff;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+            margin-left: 4px;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        .block-segment {
+            height: 8px;
+            width: 4px;
+            margin-right: 2px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#74009f",
+                        "tertiary-fixed": "#e5e2e1",
+                        "secondary-fixed": "#f8d8ff",
+                        "on-secondary": "#520071",
+                        "surface-dim": "#121414",
+                        "surface-container-highest": "#333535",
+                        "secondary": "#ebb2ff",
+                        "background": "#121414",
+                        "primary-fixed": "#7df4ff",
+                        "on-surface-variant": "#b9cacb",
+                        "surface-container-low": "#1a1c1c",
+                        "on-primary-fixed": "#002022",
+                        "error-container": "#93000a",
+                        "secondary-container": "#ce5dff",
+                        "on-tertiary-container": "#605e5e",
+                        "on-primary-fixed-variant": "#004f54",
+                        "primary": "#dbfcff",
+                        "tertiary-container": "#dcd9d8",
+                        "inverse-surface": "#e2e2e2",
+                        "surface": "#121414",
+                        "surface-container": "#1e2020",
+                        "on-secondary-container": "#480064",
+                        "primary-fixed-dim": "#00dbe9",
+                        "on-error": "#690005",
+                        "surface-container-lowest": "#0c0f0f",
+                        "outline-variant": "#3b494b",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "on-error-container": "#ffdad6",
+                        "surface-variant": "#333535",
+                        "primary-container": "#00f0ff",
+                        "outline": "#849495",
+                        "on-background": "#e2e2e2",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "on-secondary-fixed": "#320047",
+                        "on-surface": "#e2e2e2",
+                        "on-primary": "#00363a",
+                        "tertiary": "#f9f5f5",
+                        "surface-bright": "#37393a",
+                        "inverse-on-surface": "#2f3131",
+                        "on-primary-container": "#006970",
+                        "on-tertiary": "#313030",
+                        "inverse-primary": "#006970",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "surface-container-high": "#282a2b",
+                        "error": "#ffb4ab",
+                        "surface-tint": "#00dbe9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-page": "32px",
+                        "gap-xs": "4px",
+                        "gap-md": "16px",
+                        "stroke-thin": "1px",
+                        "gap-sm": "8px",
+                        "gap-lg": "24px",
+                        "stroke-thick": "2px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["JetBrains Mono"],
+                        "label-sm": ["Space Mono"],
+                        "headline-md": ["JetBrains Mono"],
+                        "code-sm": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "body-md": ["JetBrains Mono"],
+                        "label-caps": ["Space Mono"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface-container-lowest text-on-surface">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full h-10 flex justify-between items-center px-8 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 z-50">
+<div class="flex items-center gap-6">
+<span class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</span>
+<nav class="hidden md:flex gap-8 items-center h-full">
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">TELEMETRY</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">AGENTS</a>
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 font-label-caps cursor-pointer active:opacity-70" href="#">NETWORK</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer hover:text-primary-fixed-dim" data-icon="memory">memory</span>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer hover:text-primary-fixed-dim" data-icon="terminal">terminal</span>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer hover:text-primary-fixed-dim" data-icon="settings">settings</span>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-10 h-[calc(100vh-40px)] w-20 hover:w-64 transition-all duration-300 bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 z-40 group flex flex-col overflow-hidden">
+<div class="p-4 mb-4 flex items-center gap-4 border-b border-outline-variant/10">
+<div class="w-10 h-10 bg-secondary-container/20 border border-secondary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary-fixed" data-icon="person">person</span>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+<p class="font-label-caps text-secondary-fixed whitespace-nowrap">ROOT_USER</p>
+<p class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed-dim transition-all duration-150">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps transition-opacity">DASHBOARD</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed-dim transition-all duration-150">
+<span class="material-symbols-outlined" data-icon="folder_open">folder_open</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps transition-opacity">FILESYSTEM</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed-dim transition-all duration-150">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps transition-opacity">TERMINAL</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps transition-opacity">AI_AGENTS</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed-dim transition-all duration-150">
+<span class="material-symbols-outlined" data-icon="cloud_queue">cloud_queue</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps transition-opacity">INFRASTRUCTURE</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed-dim transition-all duration-150">
+<span class="material-symbols-outlined" data-icon="list_alt">list_alt</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps transition-opacity">LOGS</span>
+</div>
+</nav>
+<div class="p-4 border-t border-outline-variant/10">
+<button class="w-full h-10 border border-secondary-fixed text-secondary-fixed hover:bg-secondary-fixed hover:text-surface-container-lowest transition-colors flex items-center justify-center gap-2 overflow-hidden">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+<span class="opacity-0 group-hover:opacity-100 font-label-caps transition-opacity">NEW_SESSION</span>
+</button>
+<div class="mt-4 flex gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-error cursor-pointer" data-icon="power_settings_new">power_settings_new</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed cursor-pointer" data-icon="lock">lock</span>
+</div>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-20 mt-10 p-8 min-h-screen">
+<!-- Dashboard Header -->
+<div class="flex justify-between items-end mb-8 border-b border-outline-variant/30 pb-4">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-primary-fixed">SECTOR_08_PACKAGE_MANAGER</h1>
+<p class="font-code-sm text-code-sm text-on-surface-variant mt-1">SEIS-KERNEL STABLE_CHANNEL REL_22.4.9</p>
+</div>
+<div class="flex gap-4">
+<div class="text-right">
+<p class="font-label-caps text-label-caps text-outline">SYS_UPTIME</p>
+<p class="font-code-sm text-code-sm text-primary-fixed">142:22:11:04</p>
+</div>
+<div class="text-right">
+<p class="font-label-caps text-label-caps text-outline">REPO_STATUS</p>
+<p class="font-code-sm text-code-sm text-primary-fixed-dim">SYNCHRONIZED</p>
+</div>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-6 items-stretch">
+<!-- Repository Health Dashboard -->
+<div class="col-span-12 lg:col-span-4 glass-panel relative overflow-hidden flex flex-col">
+<div class="scanline"></div>
+<div class="bg-primary-fixed h-6 flex items-center px-3 justify-between">
+<span class="font-label-caps text-label-caps text-surface-container-lowest">REPOSITORY_HEALTH</span>
+<span class="material-symbols-outlined text-surface-container-lowest text-xs" data-icon="query_stats">query_stats</span>
+</div>
+<div class="p-6 flex-1 space-y-6">
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-on-surface-variant">MIRROR_LATENCY</span>
+<span class="font-code-sm text-code-sm text-primary-fixed">12ms</span>
+</div>
+<!-- Segmented Bar -->
+<div class="flex gap-1 h-3">
+<div class="flex-1 bg-primary-fixed"></div>
+<div class="flex-1 bg-primary-fixed"></div>
+<div class="flex-1 bg-primary-fixed"></div>
+<div class="flex-1 bg-primary-fixed"></div>
+<div class="flex-1 bg-primary-fixed/30"></div>
+<div class="flex-1 bg-primary-fixed/30"></div>
+<div class="flex-1 bg-primary-fixed/30"></div>
+</div>
+<div class="grid grid-cols-2 gap-4 mt-8">
+<div class="p-4 border border-outline-variant/20 bg-surface-container/30">
+<p class="font-label-caps text-label-caps text-outline text-[9px]">GPG_VALIDATION</p>
+<p class="font-headline-md text-headline-md text-primary-fixed mt-1">100%</p>
+</div>
+<div class="p-4 border border-outline-variant/20 bg-surface-container/30">
+<p class="font-label-caps text-label-caps text-outline text-[9px]">CACHED_OBJECTS</p>
+<p class="font-headline-md text-headline-md text-primary-fixed mt-1">4.2 GB</p>
+</div>
+</div>
+<div class="mt-4 p-4 border border-primary-fixed/20 bg-primary-fixed/5">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary-fixed text-sm" data-icon="notifications_active">notifications_active</span>
+<span class="font-label-caps text-label-caps text-primary-fixed">UPGRADE_AVAILABLE</span>
+</div>
+<p class="font-code-sm text-code-sm text-on-surface">Kernel v6.4.12 → v6.5.0-seis_ext</p>
+<button class="mt-4 w-full py-2 bg-primary-fixed text-surface-container-lowest font-label-caps text-label-caps hover:bg-secondary-fixed transition-colors">INITIATE_UPGRADE</button>
+</div>
+</div>
+</div>
+<!-- Kernel Update Sequence Visualizer -->
+<div class="col-span-12 lg:col-span-8 glass-panel flex flex-col">
+<div class="bg-primary-fixed h-6 flex items-center px-3 justify-between">
+<span class="font-label-caps text-label-caps text-surface-container-lowest">KERNEL_UPDATE_VISUALIZER</span>
+<span class="font-code-sm text-code-sm text-surface-container-lowest">ID: SEQ-4011-BK</span>
+</div>
+<div class="relative flex-1 bg-surface-container-lowest min-h-[300px]">
+
+<div class="absolute inset-0 p-8 flex flex-col justify-between">
+<div class="flex justify-between">
+<div class="space-y-1">
+<p class="font-label-caps text-label-caps text-primary-fixed">STAGE: STAGING_FILESYSTEM</p>
+<p class="font-code-sm text-code-sm text-on-surface-variant">Allocating shadow blocks...</p>
+</div>
+<div class="text-right">
+<p class="font-headline-md text-headline-md text-primary-fixed">74.2%</p>
+</div>
+</div>
+<!-- Progress Visualization -->
+<div class="grid grid-cols-12 gap-2">
+<div class="h-1 bg-primary-fixed shadow-[0_0_8px_rgba(125,244,255,0.5)]"></div>
+<div class="h-1 bg-primary-fixed shadow-[0_0_8px_rgba(125,244,255,0.5)]"></div>
+<div class="h-1 bg-primary-fixed shadow-[0_0_8px_rgba(125,244,255,0.5)]"></div>
+<div class="h-1 bg-primary-fixed shadow-[0_0_8px_rgba(125,244,255,0.5)]"></div>
+<div class="h-1 bg-primary-fixed shadow-[0_0_8px_rgba(125,244,255,0.5)]"></div>
+<div class="h-1 bg-primary-fixed shadow-[0_0_8px_rgba(125,244,255,0.5)]"></div>
+<div class="h-1 bg-primary-fixed shadow-[0_0_8px_rgba(125,244,255,0.5)]"></div>
+<div class="h-1 bg-primary-fixed shadow-[0_0_8px_rgba(125,244,255,0.5)]"></div>
+<div class="h-1 bg-primary-fixed/20"></div>
+<div class="h-1 bg-primary-fixed/20"></div>
+<div class="h-1 bg-primary-fixed/20"></div>
+<div class="h-1 bg-primary-fixed/20"></div>
+</div>
+<div class="flex justify-between items-center border-t border-outline-variant/30 pt-4">
+<div class="flex gap-8">
+<div>
+<p class="font-label-caps text-[9px] text-outline">TEMP_ZONE</p>
+<p class="font-code-sm text-code-sm text-on-surface">32.4°C</p>
+</div>
+<div>
+<p class="font-label-caps text-[9px] text-outline">I/O_THROUGHPUT</p>
+<p class="font-code-sm text-code-sm text-on-surface">1.2 GB/s</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-1 border border-outline-variant/50 font-label-caps text-[10px] text-on-surface-variant hover:text-error hover:border-error transition-all">ABORT_SEQ</button>
+<button class="px-4 py-1 border border-primary-fixed font-label-caps text-[10px] text-primary-fixed hover:bg-primary-fixed hover:text-surface-container-lowest transition-all">PAUSE</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Installed Packages Table -->
+<div class="col-span-12 lg:col-span-7 glass-panel">
+<div class="bg-surface-variant/40 h-8 flex items-center px-3 border-b border-outline-variant/30">
+<span class="font-label-caps text-[10px] text-on-surface">INSTALLED_PACKAGES_QUERY</span>
+<div class="ml-auto flex items-center gap-4">
+<div class="flex items-center gap-2 border-r border-outline-variant/30 pr-4">
+<span class="material-symbols-outlined text-xs" data-icon="search">search</span>
+<input class="bg-transparent border-none p-0 focus:ring-0 font-code-sm text-code-sm w-32 placeholder:text-outline/50" placeholder="FILTER_PKGS..." type="text"/>
+</div>
+<span class="material-symbols-outlined text-xs cursor-pointer hover:text-primary-fixed" data-icon="filter_list">filter_list</span>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-code-sm text-code-sm">
+<thead>
+<tr class="bg-surface-container/50 border-b border-outline-variant/20">
+<th class="px-4 py-2 font-label-caps text-[10px] text-outline">PACKAGE_NAME</th>
+<th class="px-4 py-2 font-label-caps text-[10px] text-outline">VERSION</th>
+<th class="px-4 py-2 font-label-caps text-[10px] text-outline">STATUS</th>
+<th class="px-4 py-2 font-label-caps text-[10px] text-outline">ACTIONS</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr class="hover:bg-primary-fixed/5 group transition-colors">
+<td class="px-4 py-3 text-primary-fixed">seis-core-utils</td>
+<td class="px-4 py-3">2.1.4-stable</td>
+<td class="px-4 py-3">
+<span class="px-2 py-0.5 rounded-full bg-green-900/30 text-green-400 text-[10px] border border-green-400/30">NOMINAL</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex gap-2 opacity-30 group-hover:opacity-100 transition-opacity">
+<button class="hover:text-primary-fixed underline underline-offset-4">ROLLBACK</button>
+<button class="hover:text-error underline underline-offset-4">PURGE</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-primary-fixed/5 group transition-colors">
+<td class="px-4 py-3 text-primary-fixed">neural-engine-runtime</td>
+<td class="px-4 py-3">0.9.12-beta</td>
+<td class="px-4 py-3">
+<span class="px-2 py-0.5 rounded-full bg-yellow-900/30 text-yellow-400 text-[10px] border border-yellow-400/30">UPDATE_AVAIL</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex gap-2 opacity-30 group-hover:opacity-100 transition-opacity">
+<button class="hover:text-primary-fixed underline underline-offset-4 text-primary-fixed">UPGRADE</button>
+<button class="hover:text-error underline underline-offset-4">PURGE</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-primary-fixed/5 group transition-colors">
+<td class="px-4 py-3 text-primary-fixed">libc-seis-optimized</td>
+<td class="px-4 py-3">14.0.1-rel</td>
+<td class="px-4 py-3">
+<span class="px-2 py-0.5 rounded-full bg-green-900/30 text-green-400 text-[10px] border border-green-400/30">NOMINAL</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex gap-2 opacity-30 group-hover:opacity-100 transition-opacity">
+<button class="hover:text-primary-fixed underline underline-offset-4">ROLLBACK</button>
+<button class="hover:text-error underline underline-offset-4">PURGE</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-primary-fixed/5 group transition-colors">
+<td class="px-4 py-3 text-primary-fixed">wayland-seis-compositor</td>
+<td class="px-4 py-3">1.2.0-main</td>
+<td class="px-4 py-3">
+<span class="px-2 py-0.5 rounded-full bg-blue-900/30 text-blue-400 text-[10px] border border-blue-400/30">PINNED</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex gap-2 opacity-30 group-hover:opacity-100 transition-opacity">
+<button class="hover:text-primary-fixed underline underline-offset-4">UNPIN</button>
+<button class="hover:text-error underline underline-offset-4">PURGE</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-primary-fixed/5 group transition-colors">
+<td class="px-4 py-3 text-primary-fixed">rust-toolchain-seis</td>
+<td class="px-4 py-3">1.72.0-ext</td>
+<td class="px-4 py-3">
+<span class="px-2 py-0.5 rounded-full bg-green-900/30 text-green-400 text-[10px] border border-green-400/30">NOMINAL</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex gap-2 opacity-30 group-hover:opacity-100 transition-opacity">
+<button class="hover:text-primary-fixed underline underline-offset-4">ROLLBACK</button>
+<button class="hover:text-error underline underline-offset-4">PURGE</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Dependency Resolution Live Log -->
+<div class="col-span-12 lg:col-span-5 glass-panel bg-black/40 flex flex-col min-h-[400px]">
+<div class="bg-surface-variant/60 h-8 flex items-center px-3 border-b border-outline-variant/30">
+<span class="font-label-caps text-[10px] text-on-surface">DEPENDENCY_RESOLUTION_LOG</span>
+<span class="ml-auto flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary-fixed animate-pulse"></span>
+<span class="font-code-sm text-[10px] text-primary-fixed">LIVE_OUTPUT</span>
+</span>
+</div>
+<div class="p-4 flex-1 font-code-sm text-code-sm terminal-scroll overflow-y-auto space-y-1">
+<p class="text-outline">[09:22:11] Initializing dependency solver: SAT-Solver-v4</p>
+<p class="text-on-surface">[09:22:11] Fetching metadata for 14 remote repositories...</p>
+<p class="text-primary-fixed-dim">[09:22:12] Found 3 upgradeable candidates.</p>
+<p class="text-on-surface">[09:22:12] Resolving conflicts for: kernel-seis-headers-6.5</p>
+<p class="text-on-surface">[09:22:13] → Conflict found: libssl-v1.1 vs libssl-v3.0</p>
+<p class="text-secondary-fixed">[09:22:13] Auto-resolving using compatibility layer [SSL_PROXY_V1]</p>
+<p class="text-on-surface">[09:22:14] Preparing transaction for 108 objects...</p>
+<p class="text-on-surface">[09:22:15] Pre-calculated download size: 844.22 MiB</p>
+<p class="text-on-surface">[09:22:15] Pre-calculated install size: 2.11 GiB</p>
+<div class="pt-4 flex items-center gap-2">
+<span class="text-primary-fixed">seis@root:~$</span>
+<span class="text-on-surface">exec --commit-all</span>
+<span class="blinking-cursor"></span>
+</div>
+</div>
+<div class="p-4 border-t border-outline-variant/20 grid grid-cols-3 gap-2">
+<button class="bg-surface-container-high py-2 font-label-caps text-[10px] text-on-surface hover:bg-primary-fixed/20 transition-all">CLEAR_LOG</button>
+<button class="bg-surface-container-high py-2 font-label-caps text-[10px] text-on-surface hover:bg-primary-fixed/20 transition-all">EXPORT_JSON</button>
+<button class="bg-primary-container text-on-primary-container py-2 font-label-caps text-[10px] hover:opacity-90 transition-all">RESOLVE_ALL</button>
+</div>
+</div>
+<!-- System Snapshots (Rollback Center) -->
+<div class="col-span-12 glass-panel border-dashed border-outline-variant/50">
+<div class="p-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 border border-secondary-fixed/30 flex items-center justify-center bg-secondary-fixed/5">
+<span class="material-symbols-outlined text-secondary-fixed" data-icon="history">history</span>
+</div>
+<div>
+<h3 class="font-headline-md text-[18px] text-secondary-fixed">SYSTEM_SNAPSHOT_MANAGER</h3>
+<p class="font-code-sm text-code-sm text-on-surface-variant">Last snapshot created 4 hours ago: AUTO_UPGRADE_RECOVERY_POINT</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="flex flex-col items-end">
+<span class="font-label-caps text-[9px] text-outline">STORAGE_ALLOCATED</span>
+<span class="font-code-sm text-code-sm">12.4 GB / 50 GB</span>
+</div>
+<button class="bg-secondary-fixed text-on-secondary-fixed px-6 py-2 font-label-caps text-label-caps hover:bg-secondary-container transition-all">CREATE_MANUAL_SNAPSHOT</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual Status Footer (Floating) -->
+<footer class="fixed bottom-6 right-6 flex flex-col gap-2 pointer-events-none">
+<div class="bg-surface-container-highest/90 backdrop-blur-md border border-primary-fixed/30 p-3 flex items-center gap-4 pointer-events-auto">
+<div class="flex flex-col">
+<span class="font-label-caps text-[9px] text-outline">DOWNLOAD_RATE</span>
+<span class="font-code-sm text-code-sm text-primary-fixed">45.2 MB/s</span>
+</div>
+<div class="w-px h-8 bg-outline-variant/30"></div>
+<div class="flex flex-col">
+<span class="font-label-caps text-[9px] text-outline">TASKS_PENDING</span>
+<span class="font-code-sm text-code-sm text-secondary-fixed">08</span>
+</div>
+<div class="w-px h-8 bg-outline-variant/30"></div>
+<span class="material-symbols-outlined text-primary-fixed animate-spin" data-icon="sync">sync</span>
+</div>
+</footer>
+<script>
+        // Micro-interactions for terminal logging
+        const terminalLog = document.querySelector('.terminal-scroll');
+        const logs = [
+            "[09:22:16] Verifying integrity of download...",
+            "[09:22:17] checksum: e3b0c44298fc1c149afbf4c8996fb924",
+            "[09:22:17] Signature verified successfully.",
+            "[09:22:18] Extracting kernel-seis-headers-6.5.tar.gz",
+            "[09:22:19] Rebuilding initramfs..."
+        ];
+        let logIndex = 0;
+
+        function addLog() {
+            if (logIndex < logs.length) {
+                const p = document.createElement('p');
+                p.className = 'text-on-surface opacity-0 transition-opacity duration-300';
+                p.textContent = logs[logIndex];
+                terminalLog.insertBefore(p, terminalLog.lastElementChild);
+                setTimeout(() => p.classList.remove('opacity-0'), 10);
+                logIndex++;
+                terminalLog.scrollTop = terminalLog.scrollHeight;
+                setTimeout(addLog, Math.random() * 2000 + 1000);
+            }
+        }
+
+        setTimeout(addLog, 2000);
+    </script>
+</body></html>

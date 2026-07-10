@@ -9,6 +9,7 @@ const root = resolve(scriptDir, "..");
 
 const coveragePath = "data/seis-master-objective-coverage.json";
 const sshHardeningOperationContractPath = "data/ssh-hardening-operation-contract.json";
+const modelScalingProfilePath = "content/development/seis-model-scaling-hardware-profile.json";
 const reportPath = "reports/seis-master-objective-coverage.md";
 
 function read(relativePath) {
@@ -34,6 +35,7 @@ function renderList(values) {
 function renderReport() {
   const coverage = readJson(coveragePath);
   const sshHardeningOperationContract = readJson(sshHardeningOperationContractPath);
+  const modelScalingProfile = readJson(modelScalingProfilePath);
   const items = Array.isArray(coverage.coverage) ? coverage.coverage : [];
   const requiredCommands = Array.isArray(coverage.requiredCommands) ? coverage.requiredCommands : [];
   const modeIsolation = sshHardeningOperationContract.modeIsolation || {};
@@ -58,6 +60,7 @@ function renderReport() {
     ["Status", coverage.status],
     ["Coverage source", coveragePath],
     ["SSH hardening operation contract", sshHardeningOperationContractPath],
+    ["SEIS model scaling profile", modelScalingProfilePath],
     ["Coverage report", reportPath],
     ["Coverage items", items.length],
     ["Completion rule", coverage.completionRule],
@@ -88,6 +91,19 @@ function renderReport() {
     ]
   ].map(tableRow).join("\n");
 
+  const currentTarget = modelScalingProfile.currentTarget || {};
+  const frontierTarget = modelScalingProfile.frontierTarget || {};
+  const frontierRows = [
+    ["Profile status", modelScalingProfile.status, "Coverage contract only"],
+    ["Current target", `${currentTarget.displayName || "missing"} / ${currentTarget.parameterClass || "missing"}`, currentTarget.compatibilityStatus || "missing"],
+    ["Frontier target", `${frontierTarget.displayName || "missing"} / ${frontierTarget.parameterClass || "missing"}`, frontierTarget.compatibilityStatus || "missing"],
+    ["Router eligibility", frontierTarget.routerEligibility || "missing", "Must remain blocked until evidence exists"],
+    ["Weights available", frontierTarget.weightsAvailable === true, "False required before any trained-weight claim"],
+    ["Inference available", frontierTarget.inferenceAvailable === true, "False required before any routeability claim"],
+    ["Runtime authority", frontierTarget.runtimeAuthority === true, "False required before cloud, SSH, or distributed runtime use"],
+    ["Forbidden claims", Array.isArray(modelScalingProfile.forbiddenClaims) ? modelScalingProfile.forbiddenClaims.join("; ") : "missing forbidden claims", "Non-claim boundary"]
+  ].map(tableRow).join("\n");
+
   return `# SEIS Master Objective Coverage Report
 
 This report is generated from \`${coveragePath}\`.
@@ -97,6 +113,8 @@ focused checks, coverage status, and remaining gaps. It does not claim
 completion; it makes incompleteness reviewable.
 It also summarizes \`${sshHardeningOperationContractPath}\` because SSH and
 firewall changes are lockout-sensitive security operations.
+It summarizes \`${modelScalingProfilePath}\` because the 150B SEIS AI direction
+is a frontier research boundary, not trained-weight or inference evidence.
 
 ## Status
 
@@ -109,6 +127,12 @@ ${statusRows}
 | ID | Status | Requirement | Evidence | Checks | Gap |
 | --- | --- | --- | --- | --- | --- |
 ${coverageRows}
+
+## AI Frontier Model Boundary
+
+| Area | Evidence | Boundary |
+| --- | --- | --- |
+${frontierRows}
 
 ## SSH Hardening Operation Coverage
 

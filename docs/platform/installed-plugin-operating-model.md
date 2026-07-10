@@ -19,6 +19,30 @@ not treated as active unless they appear as installed and enabled in
 - Primary plugin policy: OpenAI-first
 - Governance registry closure is `npm run quality:governance`.
 
+## 2026-06-29 Skill Install Pass
+
+The Google, Kimi, Claude, Apple, Windows, and major-platform install pass added
+curated local Codex skills for
+OpenAI, GitHub, Figma, Cloudflare, Vercel, Netlify, Render, Linear, Sentry,
+Microsoft app frameworks, Jupyter, Notion, PDF/screenshot/speech/transcription,
+Playwright, and security review support. The detailed inventory is recorded in
+`docs/platform/big-tech-mcp-skill-inventory.md` and
+`content/development/seis-big-tech-mcp-skill-inventory.json`.
+
+This pass did not install project dependencies, execute SSH, deploy, call live
+providers, create secrets, mutate Google Workspace data, or change GitHub.
+BigQuery appeared as a Google connector candidate, but the user did not confirm
+the connector install/auth flow. The follow-up pass installed and verified the
+official Kimi Code CLI, added SEIS project-local Kimi MCP and Skill config,
+verified Claude Code CLI, and registered XcodeBuildMCP in Claude and Kimi
+project MCP configs. Kimi provider login, official Kimi marketplace plugin
+installation, and Claude MCP approval remain explicit user-owned actions.
+Restart Codex to pick up new skills.
+
+The safe development focus for applying installed plugins, MCP servers, skills,
+and connectors to SEIS work is documented in
+`docs/platform/mcp-plugin-development-focus.md`.
+
 ## OpenAI-First Rule
 
 For core SEIS work, use OpenAI/Codex plugin families first: `openai-curated`, `openai-bundled`, and `openai-primary-runtime`. Use external or non-installed plugin URI families only when the OpenAI/Codex route cannot satisfy the request or the user explicitly asks for that provider.

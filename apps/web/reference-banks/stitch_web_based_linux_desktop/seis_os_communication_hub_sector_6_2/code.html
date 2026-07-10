@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS - SECTOR 6 HUB</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #0c0f0f;
+            color: #e2e2e2;
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .glass-panel {
+            background: rgba(12, 15, 15, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(59, 73, 75, 0.3);
+        }
+        .neural-stream::-webkit-scrollbar {
+            width: 4px;
+        }
+        .neural-stream::-webkit-scrollbar-thumb {
+            background: #3b494b;
+        }
+        .glow-cyan {
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+        }
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1.2em;
+            background: #00f0ff;
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        .tiling-gap {
+            gap: 8px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#690005",
+                        "inverse-primary": "#006970",
+                        "primary-container": "#00f0ff",
+                        "inverse-on-surface": "#2f3131",
+                        "primary-fixed-dim": "#00dbe9",
+                        "on-surface-variant": "#b9cacb",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "surface-container-highest": "#333535",
+                        "surface-container-high": "#282a2b",
+                        "secondary-container": "#ce5dff",
+                        "surface-bright": "#37393a",
+                        "on-primary-container": "#006970",
+                        "surface-tint": "#00dbe9",
+                        "error-container": "#93000a",
+                        "surface-dim": "#121414",
+                        "surface-container-low": "#1a1c1c",
+                        "surface-container-lowest": "#0c0f0f",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "tertiary": "#f9f5f5",
+                        "on-primary-fixed-variant": "#004f54",
+                        "primary-fixed": "#7df4ff",
+                        "on-tertiary-container": "#605e5e",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "tertiary-container": "#dcd9d8",
+                        "secondary-fixed": "#f8d8ff",
+                        "on-tertiary": "#313030",
+                        "on-secondary": "#520071",
+                        "surface-container": "#1e2020",
+                        "primary": "#dbfcff",
+                        "background": "#121414",
+                        "on-primary-fixed": "#002022",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "on-secondary-fixed": "#320047",
+                        "surface": "#121414",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "on-secondary-container": "#480064",
+                        "on-background": "#e2e2e2",
+                        "tertiary-fixed": "#e5e2e1",
+                        "outline-variant": "#3b494b",
+                        "inverse-surface": "#e2e2e2",
+                        "on-error-container": "#ffdad6",
+                        "on-primary": "#00363a",
+                        "surface-variant": "#333535",
+                        "secondary": "#ebb2ff",
+                        "outline": "#849495",
+                        "on-surface": "#e2e2e2",
+                        "error": "#ffb4ab"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Space Mono"],
+                        "headline-lg": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"],
+                        "code-sm": ["JetBrains Mono"],
+                        "body-md": ["JetBrains Mono"],
+                        "label-caps": ["Space Mono"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "label-caps": ["10px", {"lineHeight": "1", "letterSpacing": "0.2em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface-container-lowest h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center w-full px-8 h-10 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 fixed top-0 z-50">
+<div class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim uppercase">SEIS KERNEL OS</div>
+<nav class="hidden md:flex gap-8 items-center h-full">
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer">TELEMETRY</a>
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 font-label-caps cursor-pointer">AGENTS</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer">NETWORK</a>
+</nav>
+<div class="flex items-center gap-4 text-primary-fixed">
+<span class="material-symbols-outlined text-[18px] cursor-pointer hover:opacity-70">memory</span>
+<span class="material-symbols-outlined text-[18px] cursor-pointer hover:opacity-70">terminal</span>
+<span class="material-symbols-outlined text-[18px] cursor-pointer hover:opacity-70">settings</span>
+</div>
+</header>
+<!-- Main Shell -->
+<div class="flex flex-1 pt-10 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 w-20 hover:w-64 transition-all duration-300 group overflow-hidden">
+<div class="p-4 flex items-center gap-4 mb-4">
+<div class="w-10 h-10 rounded-sm bg-secondary-container/20 border border-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary-fixed">person</span>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+<div class="font-label-caps text-secondary-fixed text-label-caps">ROOT_USER</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</div>
+</div>
+</div>
+<nav class="flex-1">
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps whitespace-nowrap">DASHBOARD</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">folder_open</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps whitespace-nowrap">FILESYSTEM</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">terminal</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps whitespace-nowrap">TERMINAL</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps whitespace-nowrap">AI_AGENTS</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">cloud_queue</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps whitespace-nowrap">INFRASTRUCTURE</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">list_alt</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps whitespace-nowrap">LOGS</span>
+</div>
+</nav>
+<div class="p-4 border-t border-outline-variant/10">
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-error transition-all duration-150">
+<span class="material-symbols-outlined">power_settings_new</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps">POWER</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 ml-20 flex gap-2 p-2 h-full">
+<!-- Channel Sidebar (High Density) -->
+<div class="w-64 glass-panel flex flex-col border border-outline-variant/20">
+<div class="p-3 bg-primary-container text-on-primary-container font-label-caps text-label-caps flex justify-between items-center">
+<span>SECTOR_6_CHANNELS</span>
+<span class="material-symbols-outlined text-sm">add</span>
+</div>
+<div class="flex-1 overflow-y-auto neural-stream p-2 space-y-1">
+<div class="text-[10px] text-outline px-2 py-1">PROJECTS</div>
+<div class="p-2 bg-primary/5 border-l-2 border-primary text-primary flex items-center gap-2 cursor-pointer">
+<span class="material-symbols-outlined text-[16px]">tag</span>
+<span class="font-code-sm text-code-sm">kernel-panic-revive</span>
+</div>
+<div class="p-2 hover:bg-surface-variant/10 text-on-surface-variant flex items-center gap-2 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-[16px]">tag</span>
+<span class="font-code-sm text-code-sm">neural-mesh-sync</span>
+</div>
+<div class="p-2 hover:bg-surface-variant/10 text-on-surface-variant flex items-center gap-2 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-[16px]">tag</span>
+<span class="font-code-sm text-code-sm">encryption-void</span>
+</div>
+<div class="text-[10px] text-outline px-2 py-1 mt-4">NEURAL_THREADS</div>
+<div class="p-2 hover:bg-surface-variant/10 text-on-surface-variant flex items-center gap-2 cursor-pointer transition-colors">
+<div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+<span class="font-code-sm text-code-sm">AGENT_77_UPLINK</span>
+</div>
+<div class="p-2 hover:bg-surface-variant/10 text-on-surface-variant flex items-center gap-2 cursor-pointer transition-colors">
+<div class="w-2 h-2 rounded-full bg-surface-container-highest"></div>
+<span class="font-code-sm text-code-sm">SYS_ADMIN_0</span>
+</div>
+</div>
+<div class="p-4 border-t border-outline-variant/20">
+<button class="w-full bg-primary-container text-on-primary-container py-2 text-label-caps font-label-caps hover:bg-secondary-container hover:text-on-secondary-container transition-all">
+                        NEW_ENCRYPTED_LINK
+                    </button>
+</div>
+</div>
+<!-- Central Chat Workspace -->
+<div class="flex-1 flex flex-col glass-panel relative overflow-hidden">
+<!-- Chat Header -->
+<div class="p-3 border-b border-outline-variant/20 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="font-headline-md text-headline-md text-primary tracking-tight">#kernel-panic-revive</div>
+<span class="px-2 py-0.5 bg-outline-variant/20 text-outline text-[10px] rounded font-code-sm">SECURE_TUNNEL_ESTABLISHED</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<div class="text-right">
+<div class="text-[9px] font-code-sm opacity-50 uppercase">Active Agents</div>
+<div class="text-primary-fixed text-[11px] font-bold tracking-widest">3 ONLINE</div>
+</div>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary">info</span>
+</div>
+</div>
+<!-- Neural Chat Stream -->
+<div class="flex-1 overflow-y-auto neural-stream p-6 space-y-6">
+<!-- Message Block: System -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2 text-[10px] font-code-sm text-outline">
+<span class="text-secondary">SYSTEM_ANNOUNCEMENT</span>
+<span>•</span>
+<span>UUID: 000-FF-812</span>
+<span>•</span>
+<span>LATENCY: 4ms</span>
+</div>
+<div class="bg-secondary-container/5 border border-secondary-container/20 p-3 text-secondary-fixed font-code-sm text-code-sm">
+                            NODE_01_SYNCHRONIZATION COMPLETE. AI AGENT 'ARGUS' IS NOW OBSERVING THIS CHANNEL.
+                        </div>
+</div>
+<!-- Message Block: User -->
+<div class="flex gap-4 group">
+<div class="w-10 h-10 bg-surface-container-highest border border-outline-variant/30 shrink-0">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all" data-alt="A futuristic portrait of a cybernetic human operator with glowing optical implants, styled in a dark monochromatic palette with sharp neon cyan highlights. Professional and technical character design for a cyberpunk OS." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjmL0FIvoUdIWROfixaSM10m5_g9q7RLxoTa3Tpu6qqde36OU58xF8dsJF34B1ZD6hOiuwyty6gc5_jnKTvOa3u3bLdXW3CYJhgp0MeUytzOrFvnVJ5P77c7f4Wl-UnjtbAQwMrxgrIi8W-1DWqTgD3Y1MdeWaXOifcyuimJvkXPS1y_3Vx20jjSvGSaJM2fvoW6LSMaiRtYAy3XWCJUF7URQktxQhlVNy6HJJXYmn2zEJHBPb6xGSPbW7Ol_C53mb-yH40q05WVFn"/>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-3 mb-1">
+<span class="font-label-caps text-label-caps text-primary">ROOT_USER</span>
+<span class="text-[9px] font-code-sm text-outline">14:02:11 UTC</span>
+<span class="material-symbols-outlined text-[12px] text-green-500" title="AES-256 Encrypted">lock</span>
+</div>
+<div class="text-body-md text-on-surface leading-relaxed max-w-2xl">
+                                We've hit a recursive loop in the memory allocation of the Sector 6 buffer. @ARGUS, can you run a trace on the pointer overflow?
+                            </div>
+</div>
+</div>
+<!-- Message Block: AI Agent -->
+<div class="flex gap-4 group bg-primary/5 -mx-6 px-6 py-4 border-y border-primary/10">
+<div class="w-10 h-10 bg-primary-container/20 border border-primary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary-container animate-pulse">psychology</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-3 mb-1">
+<span class="font-label-caps text-label-caps text-primary-container">AGENT_ARGUS</span>
+<span class="text-[9px] font-code-sm text-outline">14:02:12 UTC</span>
+<span class="px-1 bg-primary/20 text-primary-fixed text-[9px] font-bold">NEURAL_CORE_ACTIVE</span>
+</div>
+<div class="text-body-md text-primary font-medium mb-3">
+                                TRACE_REPORT_S6: Buffer overflow detected at 0x004F32. The leak originates from the telemetry agent's heartbeat interval.
+                            </div>
+<div class="grid grid-cols-2 gap-2 max-w-sm">
+<div class="bg-surface-container-lowest border border-outline-variant/30 p-2 font-code-sm text-[11px]">
+<div class="text-outline mb-1">STACK_SIZE</div>
+<div class="text-on-surface">128.4 MB</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant/30 p-2 font-code-sm text-[11px]">
+<div class="text-outline mb-1">LEAK_PROBABILITY</div>
+<div class="text-secondary">94.2%</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Message Block: Other User -->
+<div class="flex gap-4 group">
+<div class="w-10 h-10 bg-surface-container-highest border border-outline-variant/30 shrink-0">
+<img class="w-full h-full object-cover grayscale" data-alt="A portrait of a tech-specialist with high-tech visor glasses, surrounded by floating holographic data arrays. The lighting is moody and dark with soft violet backlighting. 8k cinematic render for a premium UI context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAquO5v_5zUmu0-QG4zmCompifd9i2wFmsnSYyTEk0qIUZi57sW-8PnvHzyXhO24_Reo1QGUzBYVLNnny4koABEI79Namr7lMhM9xOdJ7eomjN77lYqKa_GBBepmK2r_XoJgwhO5Vc7IQ19n4s7uCPJd9jqpY40WqLttrk4ko67xDcYpfVU3sugda55r2fHZjggkJPvV3q1ddO3mYTAr-1PG89e4_QvvxoQaeJOR_ZEeo0YMIQsnSexKvJ-dvky_yk4Q6dcPHHySe81"/>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-3 mb-1">
+<span class="font-label-caps text-label-caps text-secondary-fixed">DEV_LEAD_09</span>
+<span class="text-[9px] font-code-sm text-outline">14:05:44 UTC</span>
+<span class="material-symbols-outlined text-[12px] text-green-500">lock</span>
+</div>
+<div class="text-body-md text-on-surface leading-relaxed">
+                                Patched. Pulling the telemetry agent for a quick reset. Expect a 200ms latency spike in this channel.
+                            </div>
+</div>
+</div>
+<div class="pt-4 opacity-50 flex items-center gap-2">
+<span class="text-[10px] font-code-sm">NEW MESSAGES</span>
+<div class="h-[1px] flex-1 bg-outline-variant/30"></div>
+</div>
+</div>
+<!-- Input Zone -->
+<div class="p-4 bg-surface-container-low border-t border-outline-variant/20">
+<div class="relative">
+<div class="absolute left-3 top-3 text-primary-fixed material-symbols-outlined">alternate_email</div>
+<textarea class="w-full bg-surface-container-lowest border border-outline-variant/50 focus:border-primary-container focus:ring-0 text-on-surface font-code-sm p-3 pl-10 pr-24 min-h-[48px] resize-none" placeholder="Type a secure message or command..."></textarea>
+<div class="absolute right-2 top-2 flex gap-2">
+<button class="p-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg">attach_file</span>
+</button>
+<button class="bg-primary-container text-on-primary-container px-4 py-1 font-label-caps text-label-caps flex items-center gap-2">
+                                SEND <span class="material-symbols-outlined text-sm">send</span>
+</button>
+</div>
+</div>
+<div class="flex justify-between items-center mt-2 px-1">
+<div class="text-[9px] text-outline font-code-sm flex gap-4">
+<span>ENCRYPTION: AES_GCM_256</span>
+<span>NODE: CORE_PRIMARY_0</span>
+<span class="text-primary-fixed">LATENCY: 12ms</span>
+</div>
+<div class="text-[9px] text-outline font-code-sm italic">
+                            Press / for command list
+                        </div>
+</div>
+</div>
+</div>
+<!-- Activity Feed (Surgical Sidebar) -->
+<div class="w-72 glass-panel border border-outline-variant/20 flex flex-col">
+<div class="p-3 border-b border-outline-variant/20 bg-surface-container-high font-label-caps text-label-caps">
+                    REALTIME_ACTIVITY
+                </div>
+<div class="flex-1 overflow-y-auto neural-stream">
+<!-- Activity Items -->
+<div class="p-3 border-b border-outline-variant/10 hover:bg-surface-variant/5">
+<div class="flex justify-between text-[10px] font-code-sm text-outline mb-1">
+<span>AUTH_SERVICE</span>
+<span>0.2s ago</span>
+</div>
+<div class="text-[11px] text-on-surface">New session initiated by <span class="text-primary">UID:9921</span> from Sector 4 Gateway.</div>
+</div>
+<div class="p-3 border-b border-outline-variant/10 hover:bg-surface-variant/5">
+<div class="flex justify-between text-[10px] font-code-sm text-outline mb-1">
+<span>FILE_SYSTEM</span>
+<span>1.4s ago</span>
+</div>
+<div class="text-[11px] text-on-surface">Encrypted blob 'revive_proto.v2' uploaded to repository.</div>
+</div>
+<div class="p-3 border-b border-outline-variant/10 hover:bg-surface-variant/5">
+<div class="flex justify-between text-[10px] font-code-sm text-outline mb-1">
+<span>AI_CORE</span>
+<span>5.1s ago</span>
+</div>
+<div class="text-[11px] text-on-surface text-secondary-fixed">Agent 'ARGUS' analyzed 4,202 packets in 12ms.</div>
+</div>
+<div class="p-3 border-b border-outline-variant/10 bg-error/5">
+<div class="flex justify-between text-[10px] font-code-sm text-error/80 mb-1">
+<span>SECURITY_ALERT</span>
+<span>12.4s ago</span>
+</div>
+<div class="text-[11px] text-error font-bold">Unauthorized ping attempt detected from external IP range.</div>
+</div>
+</div>
+<!-- System Graph Placeholder -->
+<div class="h-40 p-4 bg-surface-container-lowest border-t border-outline-variant/20">
+<div class="text-[10px] font-label-caps text-outline mb-2">NETWORK_LOAD</div>
+<div class="h-20 flex items-end gap-[2px]">
+<!-- Simple visual graph -->
+<div class="bg-primary/20 w-full h-[20%]"></div>
+<div class="bg-primary/40 w-full h-[40%]"></div>
+<div class="bg-primary/20 w-full h-[30%]"></div>
+<div class="bg-primary/60 w-full h-[60%]"></div>
+<div class="bg-primary/80 w-full h-[80%]"></div>
+<div class="bg-primary-container w-full h-[100%]"></div>
+<div class="bg-primary/60 w-full h-[55%]"></div>
+<div class="bg-primary/40 w-full h-[35%]"></div>
+<div class="bg-primary/20 w-full h-[25%]"></div>
+<div class="bg-primary/10 w-full h-[15%]"></div>
+</div>
+<div class="flex justify-between mt-2 text-[9px] font-code-sm text-outline">
+<span>TX: 452 MB/s</span>
+<span>RX: 1.2 GB/s</span>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Micro-interaction Scripts -->
+<script>
+        // Simple ambient cursor flicker
+        const cursors = document.querySelectorAll('.terminal-cursor');
+        setInterval(() => {
+            cursors.forEach(c => {
+                c.style.opacity = Math.random() > 0.1 ? '1' : '0.5';
+            });
+        }, 500);
+
+        // Neural Stream Scroll behavior
+        const chatStream = document.querySelector('.neural-stream');
+        if (chatStream) {
+            chatStream.scrollTop = chatStream.scrollHeight;
+        }
+    </script>
+</body></html>

@@ -13,6 +13,8 @@ for (const file of [
   "release.json",
   "health.json",
   "sitemap.xml",
+  "favicon.ico",
+  "favicon.svg",
   "manifest.webmanifest",
   "content/lab/operating-system.json",
   "content/lab/development-process.json",

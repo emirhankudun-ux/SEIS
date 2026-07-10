@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS AI Workspace</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Config and Styles -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary": "#313030",
+                    "surface": "#121414",
+                    "surface-container-lowest": "#0c0f0f",
+                    "surface-variant": "#333535",
+                    "surface-container": "#1e2020",
+                    "on-error-container": "#ffdad6",
+                    "on-primary": "#2c3400",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "tertiary-fixed-dim": "#c8c6c5",
+                    "on-primary-container": "#5d6b00",
+                    "surface-container-highest": "#333535",
+                    "tertiary-fixed": "#e5e2e1",
+                    "surface-bright": "#38393a",
+                    "secondary-container": "#474646",
+                    "background": "#121414",
+                    "on-secondary-container": "#b7b4b4",
+                    "inverse-primary": "#576500",
+                    "inverse-on-surface": "#2f3131",
+                    "primary": "#ffffff",
+                    "on-surface": "#e2e2e2",
+                    "on-tertiary-container": "#656464",
+                    "on-secondary-fixed-variant": "#474646",
+                    "secondary-fixed-dim": "#c9c6c5",
+                    "error": "#ffb4ab",
+                    "primary-fixed": "#d2f000",
+                    "outline": "#909378",
+                    "on-error": "#690005",
+                    "surface-container-low": "#1a1c1c",
+                    "surface-tint": "#b8d300",
+                    "surface-dim": "#121414",
+                    "secondary-fixed": "#e5e2e1",
+                    "on-tertiary": "#313030",
+                    "on-tertiary-fixed-variant": "#474746",
+                    "tertiary-container": "#e5e2e1",
+                    "on-primary-fixed": "#191e00",
+                    "inverse-surface": "#e2e2e2",
+                    "on-primary-fixed-variant": "#414c00",
+                    "on-secondary-fixed": "#1c1b1b",
+                    "primary-container": "#d2f000",
+                    "on-surface-variant": "#c6c9ab",
+                    "primary-fixed-dim": "#b8d300",
+                    "on-background": "#e2e2e2",
+                    "secondary": "#c9c6c5",
+                    "surface-container-high": "#282a2b",
+                    "outline-variant": "#454932",
+                    "tertiary": "#ffffff",
+                    "error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "margin-desktop": "48px",
+                    "stack-md": "24px",
+                    "stack-lg": "48px",
+                    "gutter": "24px",
+                    "stack-sm": "12px",
+                    "unit": "8px",
+                    "stack-xs": "4px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Geist", "sans-serif"],
+                    "label-caps": ["Geist", "sans-serif"],
+                    "display-lg-mobile": ["Geist", "sans-serif"],
+                    "title-sm": ["Geist", "sans-serif"],
+                    "headline-md": ["Geist", "sans-serif"],
+                    "mono-code": ["JetBrains Mono", "monospace"],
+                    "headline-md-mobile": ["Geist", "sans-serif"],
+                    "body-md": ["Geist", "sans-serif"]
+            },
+            "fontSize": {
+                    "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "600"}],
+                    "label-caps": ["11px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "1.1", "letterSpacing": "-0.03em", "fontWeight": "600"}],
+                    "title-sm": ["18px", {"lineHeight": "1.5", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                    "headline-md": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                    "mono-code": ["13px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "headline-md-mobile": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                    "body-md": ["14px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #121414;
+            color: #e2e2e2;
+            overflow: hidden;
+            font-family: 'Geist', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            font-size: 20px;
+        }
+        .glass-panel {
+            background: rgba(12, 15, 15, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #333535;
+            border-radius: 10px;
+        }
+        .code-syntax {
+            font-family: 'JetBrains Mono', monospace;
+        }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full flex justify-between items-center h-12 px-margin-desktop w-full z-50 border-b border-white/5 bg-background/80 backdrop-blur-xl">
+<div class="flex items-center gap-stack-md">
+<span class="font-display-lg text-display-lg tracking-tighter text-primary">SEIS</span>
+<div class="flex items-center ml-10 gap-stack-sm h-full">
+<nav class="flex h-full items-center gap-6">
+<a class="font-mono-code text-mono-code text-primary-fixed font-bold border-b-2 border-primary-fixed h-full flex items-center px-2" href="#">WORKSPACE</a>
+<a class="font-mono-code text-mono-code text-on-surface-variant hover:text-primary-fixed transition-colors h-full flex items-center px-2" href="#">ENGINES</a>
+<a class="font-mono-code text-mono-code text-on-surface-variant hover:text-primary-fixed transition-colors h-full flex items-center px-2" href="#">RESOURCES</a>
+</nav>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined hover:text-primary-fixed transition-colors cursor-pointer">memory</span>
+<span class="material-symbols-outlined hover:text-primary-fixed transition-colors cursor-pointer">sensors</span>
+<span class="material-symbols-outlined hover:text-primary-fixed transition-colors cursor-pointer">offline_bolt</span>
+</div>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-white/10">
+<img class="w-full h-full object-cover" data-alt="A hyper-realistic studio portrait of a futuristic AI developer with cybernetic facial augmentations, shot in dramatic low-key lighting with deep obsidian tones and sharp cyber lime accents. The aesthetic is clean, professional, and high-tech, reflecting an elite software engineer persona." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNaX8FFDA1CXxIbcK75IpUcQLTg0RfxLL84m_G_onxmeK72HHBSBTHm7qOQelHkqXQ79oKgLx0RlhjGUhtsSQGQEAkT3CNFG2uH_hV_5lJ7q51TFzLL3Z0_TRLGHFVhgilnVI68bufjAisBcp4vnAcx8G0fiHJp_92QJPhWrtzLtP4t-HU2Hvm9R3KL6XRcaGlr8LriXoQ6LUxY4Mo1T96vILtSJk1BjDFpdzJ2n65oWV4NP4iWZMLyId7Zwj18TlJ7OubcfFe3MGE"/>
+</div>
+</div>
+</header>
+<!-- Main Workspace Container -->
+<main class="flex flex-1 pt-12 overflow-hidden">
+<!-- SideNavBar (Left Rail) -->
+<aside class="fixed left-0 h-full w-20 hover:w-64 transition-all duration-300 flex flex-col py-stack-md h-screen z-40 bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-white/5 shadow-2xl group">
+<div class="flex flex-col gap-2 px-4 mb-stack-lg">
+<div class="flex items-center gap-4 h-10 overflow-hidden">
+<div class="min-w-[48px] h-8 flex items-center justify-center bg-primary-fixed rounded text-on-primary-fixed">
+<span class="material-symbols-outlined">terminal</span>
+</div>
+<div class="whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
+<p class="font-display-lg text-primary text-sm">SEIS OS</p>
+<p class="font-label-caps text-[10px] text-on-surface-variant">v1.0.4-alpha</p>
+</div>
+</div>
+</div>
+<nav class="flex flex-col flex-1 px-2 gap-1">
+<button class="flex items-center gap-4 h-12 w-full text-on-primary-fixed bg-primary-fixed rounded-lg mx-0 px-4 group-hover:translate-x-1 duration-200">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-caps opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest text-[10px]">Home</span>
+</button>
+<button class="flex items-center gap-4 h-12 w-full text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 rounded-lg px-4 transition-all group-hover:translate-x-1 duration-200">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="font-label-caps opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest text-[10px]">AI</span>
+</button>
+<button class="flex items-center gap-4 h-12 w-full text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 rounded-lg px-4 transition-all group-hover:translate-x-1 duration-200">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-label-caps opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest text-[10px]">Code</span>
+</button>
+<button class="flex items-center gap-4 h-12 w-full text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 rounded-lg px-4 transition-all group-hover:translate-x-1 duration-200">
+<span class="material-symbols-outlined">potted_plant</span>
+<span class="font-label-caps opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest text-[10px]">Design</span>
+</button>
+<button class="flex items-center gap-4 h-12 w-full text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 rounded-lg px-4 transition-all group-hover:translate-x-1 duration-200">
+<span class="material-symbols-outlined">cloud</span>
+<span class="font-label-caps opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest text-[10px]">Cloud</span>
+</button>
+<button class="flex items-center gap-4 h-12 w-full text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 rounded-lg px-4 transition-all group-hover:translate-x-1 duration-200">
+<span class="material-symbols-outlined">account_tree</span>
+<span class="font-label-caps opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest text-[10px]">GitHub</span>
+</button>
+</nav>
+<div class="mt-auto px-2 pb-16">
+<button class="flex items-center gap-4 h-12 w-full text-on-surface-variant hover:text-on-surface rounded-lg px-4">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-caps opacity-0 group-hover:opacity-100 transition-opacity uppercase text-[10px]">Settings</span>
+</button>
+<button class="mt-4 flex items-center justify-center gap-2 h-10 w-full bg-surface-variant/30 hover:bg-surface-variant border border-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="font-label-caps text-[10px] uppercase">New Project</span>
+</button>
+</div>
+</aside>
+<!-- Dynamic Content Area -->
+<div class="flex-1 ml-20 mr-12 h-full flex">
+<!-- Context Viewer (Left Pane) -->
+<section class="w-72 flex flex-col border-r border-white/5 bg-surface-container-lowest overflow-hidden">
+<div class="h-12 flex items-center px-4 justify-between border-b border-white/5">
+<span class="font-label-caps text-[10px] uppercase tracking-widest text-on-surface-variant">Project Context</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">filter_alt</span>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar p-4">
+<div class="mb-stack-md">
+<p class="font-label-caps text-[9px] text-primary-fixed mb-stack-sm opacity-60">FILE SYSTEM</p>
+<ul class="space-y-1">
+<li class="flex items-center gap-2 text-on-surface text-xs py-1.5 px-2 hover:bg-surface-variant/20 rounded cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">folder</span>
+<span>src/engines</span>
+</li>
+<li class="flex items-center gap-2 text-on-surface text-xs py-1.5 px-2 hover:bg-surface-variant/20 rounded cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-sm text-primary-fixed">terminal</span>
+<span class="text-primary">main.seis</span>
+</li>
+<li class="flex items-center gap-2 text-on-surface text-xs py-1.5 px-2 hover:bg-surface-variant/20 rounded cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">schema</span>
+<span>architecture.json</span>
+</li>
+</ul>
+</div>
+<div class="mb-stack-md">
+<p class="font-label-caps text-[9px] text-primary-fixed mb-stack-sm opacity-60">MEMORY SNIPPETS</p>
+<div class="glass-panel p-3 rounded-lg mb-2">
+<p class="text-[11px] leading-relaxed text-on-surface-variant italic">"Remember to optimize the token throughput for the real-time telemetry visualizer..."</p>
+</div>
+<div class="glass-panel p-3 rounded-lg">
+<p class="text-[11px] leading-relaxed text-on-surface-variant italic">"Session key: alpha-293-delta"</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Sophisticated Prompt Editor & Response Viewer (Center) -->
+<section class="flex-1 flex flex-col bg-surface relative">
+<!-- Model Header -->
+<div class="h-12 flex items-center px-6 justify-between border-b border-white/5 bg-background/50">
+<div class="flex items-center gap-stack-md">
+<div class="flex items-center gap-2 bg-surface-container px-3 py-1 rounded border border-white/10 cursor-pointer hover:border-primary-fixed/50 transition-all">
+<span class="w-2 h-2 rounded-full bg-primary-fixed animate-pulse"></span>
+<span class="font-mono-code text-[11px]">CLAUDE 3.5 SONNET</span>
+<span class="material-symbols-outlined text-xs">expand_more</span>
+</div>
+<span class="text-on-surface-variant text-[11px] font-mono-code opacity-50">LATENCY: 24ms</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors">history</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors">share</span>
+</div>
+</div>
+<!-- Chat/Response Scroll Area -->
+<div class="flex-1 overflow-y-auto custom-scrollbar p-stack-lg space-y-10">
+<!-- User Prompt Representative -->
+<div class="max-w-3xl mx-auto flex flex-col items-end">
+<div class="bg-surface-container-high p-4 rounded-xl rounded-tr-none border border-white/5 max-w-xl">
+<p class="font-body-md text-on-surface leading-relaxed">Implement a generative shader that reacts to frequency data from the system telemetry buffer. Use GLSL and ensure it's optimized for mobile webview.</p>
+</div>
+</div>
+<!-- AI Response Representative -->
+<div class="max-w-3xl mx-auto">
+<div class="flex gap-4 mb-4">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-fixed text-sm" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+</div>
+<div class="flex-1">
+<p class="font-label-caps text-[10px] text-primary-fixed mb-2 tracking-widest uppercase">SYSAgent Response</p>
+<div class="space-y-6">
+<p class="font-body-md text-on-surface leading-relaxed">I've generated a high-performance fragment shader optimized for the SEIS architecture. It utilizes the `u_telemetry` sampler for real-time visualization.</p>
+<!-- Code Block -->
+<div class="rounded-xl overflow-hidden border border-white/10 bg-black/40">
+<div class="bg-white/5 px-4 py-2 flex justify-between items-center">
+<span class="font-mono-code text-[10px] text-on-surface-variant uppercase">fragment_shader.glsl</span>
+<span class="material-symbols-outlined text-sm cursor-pointer hover:text-primary-fixed">content_copy</span>
+</div>
+<div class="p-4 overflow-x-auto custom-scrollbar">
+<pre class="font-mono-code text-[12px] leading-6"><span class="text-primary-fixed">#version 300 es</span>
+precision mediump float;
+uniform float u_time;
+uniform sampler2D u_telemetry;
+
+void main() {
+    vec2 uv = gl_FragCoord.xy / u_resolution;
+    <span class="text-outline">// Frequency mapping</span>
+    float freq = texture(u_telemetry, vec2(uv.x, 0.5)).r;
+    vec3 color = vec3(0.8, 1.0, 0.0) * freq;
+    gl_FragColor = vec4(color, 1.0);
+}</pre>
+</div>
+</div>
+<!-- Embedded Visualization Preview -->
+<div class="relative h-64 rounded-xl border border-white/5 overflow-hidden group">
+
+<div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-all pointer-events-none"></div>
+<div class="absolute top-4 left-4 bg-black/60 backdrop-blur px-3 py-1 rounded text-[10px] font-mono-code border border-white/10">PREVIEW: SYSTEM_TELEMETRY_DASH</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Input Field Area -->
+<div class="p-stack-md border-t border-white/5 bg-background/50 backdrop-blur-md">
+<div class="max-w-3xl mx-auto relative flex items-end gap-3">
+<div class="flex-1 glass-panel rounded-xl border-white/10 focus-within:border-primary-fixed/50 transition-all p-3 min-h-[56px] flex flex-col">
+<textarea class="bg-transparent border-none focus:ring-0 w-full resize-none font-mono-code text-sm py-1 placeholder:text-on-surface-variant/40" placeholder="Execute new directive..." rows="1"></textarea>
+<div class="flex items-center justify-between mt-2 pt-2 border-t border-white/5">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary-fixed text-lg">attach_file</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary-fixed text-lg">image</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary-fixed text-lg">data_object</span>
+</div>
+<span class="font-mono-code text-[10px] text-on-surface-variant opacity-40">24/4096 TOKENS</span>
+</div>
+</div>
+<button class="bg-primary-fixed text-on-primary-fixed w-14 h-14 rounded-xl flex items-center justify-center hover:scale-[1.02] active:scale-95 transition-all shadow-[0_0_20px_-5px_rgba(210,240,0,0.4)]">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Tool Integration Panel (Right Rail) -->
+<aside class="fixed right-0 h-full w-12 flex flex-col items-center py-stack-md z-30 bg-background/50 backdrop-blur-md border-l border-white/5">
+<div class="flex flex-col items-center gap-6 text-on-surface-variant">
+<div class="group relative">
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer">notifications</span>
+<span class="absolute -top-1 -right-1 w-2 h-2 bg-error rounded-full"></span>
+</div>
+<span class="material-symbols-outlined hover:text-on-surface cursor-pointer">sync</span>
+<span class="material-symbols-outlined hover:text-on-surface cursor-pointer">psychology</span>
+<div class="h-[1px] w-6 bg-white/10 my-2"></div>
+<span class="material-symbols-outlined hover:text-on-surface cursor-pointer">analytics</span>
+<span class="material-symbols-outlined hover:text-on-surface cursor-pointer">grid_view</span>
+<span class="material-symbols-outlined hover:text-on-surface cursor-pointer">dns</span>
+</div>
+</aside>
+<!-- Agent Monitor Sidebar (Optional but implied by prompt) -->
+<section class="w-64 border-l border-white/5 bg-surface-container-low flex flex-col">
+<div class="h-12 flex items-center px-4 justify-between border-b border-white/5 bg-background/30">
+<span class="font-label-caps text-[10px] uppercase tracking-widest text-on-surface-variant">Active Agents</span>
+<div class="w-2 h-2 rounded-full bg-primary-fixed animate-pulse"></div>
+</div>
+<div class="p-4 flex-1 overflow-y-auto custom-scrollbar space-y-4">
+<!-- Agent Card -->
+<div class="glass-panel p-3 rounded-lg border-l-2 border-primary-fixed">
+<div class="flex justify-between items-center mb-2">
+<p class="text-[11px] font-bold text-primary">REFACTOR_BOT</p>
+<span class="text-[9px] px-1.5 py-0.5 bg-primary-fixed/10 text-primary-fixed rounded">ACTIVE</span>
+</div>
+<p class="text-[10px] text-on-surface-variant mb-3">Analyzing dependency graphs in <span class="font-mono-code text-primary">/src/utils</span></p>
+<div class="w-full bg-white/5 h-1 rounded-full overflow-hidden">
+<div class="bg-primary-fixed h-full" style="width: 65%;"></div>
+</div>
+</div>
+<!-- Agent Card 2 -->
+<div class="glass-panel p-3 rounded-lg border-l-2 border-white/10">
+<div class="flex justify-between items-center mb-2">
+<p class="text-[11px] font-bold text-on-surface">UI_ENGINE</p>
+<span class="text-[9px] px-1.5 py-0.5 bg-white/5 text-on-surface-variant rounded">IDLE</span>
+</div>
+<p class="text-[10px] text-on-surface-variant mb-3">Awaiting next UI directive or component request.</p>
+</div>
+<!-- System Performance Monitor -->
+<div class="mt-8">
+<p class="font-label-caps text-[9px] text-on-surface-variant mb-4 uppercase tracking-[0.2em]">Telemetry Monitor</p>
+<div class="h-24 w-full bg-black/40 rounded-lg relative overflow-hidden flex items-end gap-[1px] p-2">
+<!-- Visual noise/bars simulating data -->
+<div class="flex-1 bg-primary-fixed/20 h-4 rounded-t"></div>
+<div class="flex-1 bg-primary-fixed/40 h-12 rounded-t"></div>
+<div class="flex-1 bg-primary-fixed/30 h-8 rounded-t"></div>
+<div class="flex-1 bg-primary-fixed/60 h-16 rounded-t"></div>
+<div class="flex-1 bg-primary-fixed/20 h-10 rounded-t"></div>
+<div class="flex-1 bg-primary-fixed/40 h-14 rounded-t"></div>
+<div class="flex-1 bg-primary-fixed/80 h-20 rounded-t"></div>
+<div class="flex-1 bg-primary-fixed/40 h-12 rounded-t"></div>
+<div class="flex-1 bg-primary-fixed/20 h-6 rounded-t"></div>
+</div>
+<div class="flex justify-between mt-2 text-[9px] font-mono-code text-on-surface-variant">
+<span>MEM: 14.2GB</span>
+<span>CPU: 18%</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Floating Command Bar -->
+<div class="fixed bottom-8 left-1/2 -translate-x-1/2 z-[60] group">
+<div class="glass-panel px-6 py-3 rounded-full flex items-center gap-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-white/10 hover:border-primary-fixed/30 transition-all">
+<div class="flex items-center gap-2 pr-6 border-r border-white/10">
+<span class="material-symbols-outlined text-primary-fixed">terminal</span>
+<span class="font-mono-code text-[12px] text-on-surface">COMMAND_MODE</span>
+</div>
+<div class="flex gap-4">
+<kbd class="px-2 py-1 bg-white/5 border border-white/10 rounded text-[10px] text-on-surface-variant font-mono-code">⌘</kbd>
+<kbd class="px-2 py-1 bg-white/5 border border-white/10 rounded text-[10px] text-on-surface-variant font-mono-code">K</kbd>
+</div>
+<span class="text-[11px] text-on-surface-variant font-body-md opacity-40">Quick search or command...</span>
+</div>
+</div>
+<!-- Background Atmospheric Effect -->
+<div class="fixed inset-0 -z-10 pointer-events-none opacity-20">
+
+</div>
+<script>
+        // Micro-interaction: Auto-resize textarea
+        const textarea = document.querySelector('textarea');
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+
+        // Simple panel collapse toggle simulation (visual only)
+        document.addEventListener('keydown', (e) => {
+            if (e.metaKey && e.key === 'b') {
+                e.preventDefault();
+                console.log('Sidebar toggle shortcut');
+            }
+        });
+    </script>
+</body></html>

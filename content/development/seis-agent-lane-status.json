@@ -1,6 +1,6 @@
 {
   "id": "seis-agent-lane-status",
-  "version": "2026.06.18",
+  "version": "2026.06.23",
   "status": "active",
   "purpose": "Track safe, observable, source-controlled SEIS agent lanes for God Mode development.",
   "qualityGate": "npm run check:seis-agent-lane-status",
@@ -66,6 +66,61 @@
       "toolBoundary": "Branch, commit, CI, PR, release, and repository hygiene workflows.",
       "safetyBoundary": "Do not discard user work, rewrite unrelated history, or push unverified release claims.",
       "validationDuty": "Run or request repository health and CI governance checks before push or release."
+    },
+    {
+      "id": "seis-hub",
+      "displayName": "SEIS Hub Sub-Agent Lane",
+      "status": "active",
+      "skillPath": "plugins/seis-ai-agent/skills/seis-hub/SKILL.md",
+      "agentManifest": "plugins/seis-ai-agent/assets/agent-profile.json",
+      "autonomyLevel": "supervised-repository-governance-planning",
+      "toolBoundary": "Read-only status and plan-only routing through seis_hub_status, seis_hub_plan, and the canonical plugin integration manifest.",
+      "safetyBoundary": "No repository deletion, branch deletion, publishing, force-push, or history rewrite without explicit approval.",
+      "validationDuty": "Run or request SEIS-Agent plugin integration, operating identity, and repository governance checks."
+    },
+    {
+      "id": "seis-cloud",
+      "displayName": "SEIS Cloud Sub-Agent Lane",
+      "status": "active",
+      "skillPath": "plugins/seis-ai-agent/skills/seis-cloud/SKILL.md",
+      "agentManifest": "plugins/seis-ai-agent/skills/seis-cloud/agents/openai.yaml",
+      "autonomyLevel": "supervised-cloud-readiness-planning",
+      "toolBoundary": "Read-only status and plan-only routing through seis_cloud_status, seis_cloud_plan, cloud records, and deployment readiness docs.",
+      "safetyBoundary": "No deployment, SSH, VPN, firewall, provider mutation, credential access, or infrastructure apply without explicit approval.",
+      "validationDuty": "Run or request cloud access policy, cloud environment, server target, and rollback readiness checks."
+    },
+    {
+      "id": "seis-code",
+      "displayName": "SEIS-Code Sub-Agent Lane",
+      "status": "active",
+      "skillPath": "plugins/seis-ai-agent/skills/seis-code/SKILL.md",
+      "agentManifest": "plugins/seis-ai-agent/skills/seis-code/agents/openai.yaml",
+      "autonomyLevel": "supervised-engineering-execution-planning",
+      "toolBoundary": "Read-only status, plan-only routing, and explicitly scoped implementation work through SEIS-Code quality gates.",
+      "safetyBoundary": "No dependency installation, unrelated edits, destructive commands, or validation claims without observed evidence.",
+      "validationDuty": "Run or request package-local tests, SEIS plugin bundle checks, platform kernel checks, and SEIS AI checks."
+    },
+    {
+      "id": "seis-design",
+      "displayName": "SEIS-Design Sub-Agent Lane",
+      "status": "active",
+      "skillPath": "plugins/seis-ai-agent/skills/seis-design/SKILL.md",
+      "agentManifest": "plugins/seis-ai-agent/skills/seis-design/agents/openai.yaml",
+      "autonomyLevel": "supervised-product-design-planning",
+      "toolBoundary": "Read-only status and plan-only routing for UI, UX, design systems, accessibility, responsive ergonomics, and motion checks.",
+      "safetyBoundary": "No decorative-only controls, inaccessible UI claims, external asset generation, or visual readiness claims without validation.",
+      "validationDuty": "Run or request motion, mobile ergonomics, web, accessibility, and screenshot checks when UI surfaces change."
+    },
+    {
+      "id": "seis-data",
+      "displayName": "SEIS-DATA Sub-Agent Lane",
+      "status": "active",
+      "skillPath": "plugins/seis-ai-agent/skills/seis-data/SKILL.md",
+      "agentManifest": "plugins/seis-ai-agent/skills/seis-data/agents/openai.yaml",
+      "autonomyLevel": "supervised-data-provenance-planning",
+      "toolBoundary": "Read-only status and plan-only routing for structured records, schema governance, generated reports, memory, context, and provenance.",
+      "safetyBoundary": "No invented data, private data exposure, credential export, unsafe dataset handling, or hand-edited generated reports when a generator owns them.",
+      "validationDuty": "Run or request plugin capability lane, technology stack, AGI system, universal capability kernel, JSON, and report parity checks."
     }
   ]
 }

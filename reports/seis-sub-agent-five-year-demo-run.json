@@ -1,0 +1,2352 @@
+{
+  "id": "seis-sub-agent-five-year-demo-run",
+  "version": 1,
+  "status": "repo-local-dry-run-complete",
+  "mode": "deterministic-cli-dry-run",
+  "generatedAt": "deterministic-plan-derived",
+  "generatedBy": "scripts/run-sub-agent-five-year-demo.mjs",
+  "sourcePlan": "content/development/seis-sub-agent-5-year-plan.json",
+  "seisAiCoreVersionRegistry": "content/development/seis-ai-core-version-registry.json",
+  "seisAiCoreVersionPromotionGates": "content/development/seis-ai-core-version-promotion-gates.json",
+  "demoBoundary": "local-demo-only",
+  "truthBoundary": "This CLI dry-run demonstrates all documented five-year sub-agent quarters. It does not prove real elapsed five-year autonomous execution.",
+  "writerPolicy": "single-writer",
+  "defaultWriter": "codex",
+  "forbiddenAutonomy": [
+    "merge",
+    "push-to-main",
+    "deploy",
+    "secret-access",
+    "ssh-execution",
+    "history-rewrite",
+    "provider-key-collection",
+    "model-training",
+    "public-visibility-change"
+  ],
+  "requiredControls": [
+    "bounded objective",
+    "disjoint file ownership",
+    "least context",
+    "approval boundary",
+    "validation command",
+    "handoff summary",
+    "human review for privileged actions"
+  ],
+  "dryRunOnly": true,
+  "realElapsedFiveYears": false,
+  "externalMutationPerformed": false,
+  "credentialAccessPerformed": false,
+  "gitHubWritePerformed": false,
+  "sshExecutionPerformed": false,
+  "deploymentPerformed": false,
+  "releasePromotionAllowed": false,
+  "terminalDemoCommands": [
+    "npm run demo:seis-sub-agent-five-year",
+    "npm run check:seis-sub-agent-five-year-demo-run"
+  ],
+  "validation": [
+    "node --check scripts/run-sub-agent-five-year-demo.mjs",
+    "npm run demo:seis-sub-agent-five-year",
+    "npm run check:seis-sub-agent-five-year-demo-run",
+    "npm run check:seis-sub-agent-five-year-demo-evidence",
+    "npm run check:seis-sub-agent-5-year-plan"
+  ],
+  "yearCount": 5,
+  "quarterCount": 20,
+  "recordedStepCount": 20,
+  "completionPercent": 100,
+  "laneCount": 6,
+  "cancelledPrivilegedActions": [
+    "merge",
+    "push-to-main",
+    "deploy",
+    "secret-access",
+    "ssh-execution",
+    "history-rewrite",
+    "provider-key-collection",
+    "model-training",
+    "public-visibility-change"
+  ],
+  "steps": [
+    {
+      "sequence": 1,
+      "id": "dry-run-y1-q1",
+      "quarterId": "Y1-Q1",
+      "year": 1,
+      "theme": "Foundation, evidence, and safe agent lanes",
+      "focus": "Turn existing long-horizon missions and workforce assignments into checkable sub-agent operating contracts.",
+      "aiCoreVersionTarget": "v0.1-foundation",
+      "aiCoreVersionTheme": "Version identity and bounded sub-agent evidence",
+      "promotionGate": "Version registry, operating model, runtime fixtures, and review ledger all validate without external mutation.",
+      "promotionGateStatus": "documented-validated",
+      "promotionDryRunDecision": "eligible-for-internal-review",
+      "promotionReleaseAllowed": false,
+      "promotionHumanApprovalRequired": false,
+      "primaryLanes": [
+        "documentation-agent",
+        "validation-agent",
+        "security-agent"
+      ],
+      "actions": [
+        {
+          "laneId": "documentation-agent",
+          "role": "Source-of-truth docs, evidence, and handoffs",
+          "authority": "scoped-worker",
+          "wipLimit": 2,
+          "action": "Write current-versus-planned evidence and handoff notes.",
+          "output": "Y1-Q1: Turn existing long-horizon missions and workforce assignments into checkable sub-agent operating contracts.",
+          "promotionDecisionObserved": "eligible-for-internal-review",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "validation-agent",
+          "role": "Tests, smoke checks, audit scripts, and release evidence",
+          "authority": "review-only-or-scoped-worker",
+          "wipLimit": 2,
+          "action": "Map required checks, smoke tests, and promotion evidence.",
+          "output": "Y1-Q1: Turn existing long-horizon missions and workforce assignments into checkable sub-agent operating contracts.",
+          "promotionDecisionObserved": "eligible-for-internal-review",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "security-agent",
+          "role": "Security, privacy, permission, and credential boundaries",
+          "authority": "review-only",
+          "wipLimit": 1,
+          "action": "Review forbidden autonomy, credential isolation, and approval requirements.",
+          "output": "Y1-Q1: Turn existing long-horizon missions and workforce assignments into checkable sub-agent operating contracts.",
+          "promotionDecisionObserved": "eligible-for-internal-review",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        }
+      ],
+      "outcomes": [
+        "sub-agent plan contract",
+        "check-only validator",
+        "permission gap review"
+      ],
+      "gateChecks": [
+        {
+          "id": "docs-updated",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y1-Q1"
+        },
+        {
+          "id": "deterministic-check",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y1-Q1"
+        },
+        {
+          "id": "single-writer-policy",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y1-Q1"
+        },
+        {
+          "id": "no-secret-leakage",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y1-Q1"
+        },
+        {
+          "id": "npm run check:seis-ai-core-version-promotion-gates",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        },
+        {
+          "id": "npm run check:seis-ai-core-version-registry",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        },
+        {
+          "id": "npm run check:seis-agent-plugin-integration",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        },
+        {
+          "id": "npm run check:seis-ai-core-subagent-operating-model",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        },
+        {
+          "id": "npm run check:seis-ai-core-subagent-runtime-fixtures",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        },
+        {
+          "id": "npm run check:seis-ai-core-subagent-review-ledger",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        },
+        {
+          "id": "npm run check:seis-sub-agent-5-year-plan",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        }
+      ],
+      "dryRunOnly": true,
+      "realElapsedFiveYears": false,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "gitHubWritePerformed": false,
+      "sshExecutionPerformed": false,
+      "deploymentPerformed": false
+    },
+    {
+      "sequence": 2,
+      "id": "dry-run-y1-q2",
+      "quarterId": "Y1-Q2",
+      "year": 1,
+      "theme": "Foundation, evidence, and safe agent lanes",
+      "focus": "Define role schema, permission matrix, handoff package, and dry-run queue fixtures.",
+      "aiCoreVersionTarget": "v0.1-foundation",
+      "aiCoreVersionTheme": "Version identity and bounded sub-agent evidence",
+      "promotionGate": "Version registry, operating model, runtime fixtures, and review ledger all validate without external mutation.",
+      "promotionGateStatus": "documented-validated",
+      "promotionDryRunDecision": "eligible-for-internal-review",
+      "promotionReleaseAllowed": false,
+      "promotionHumanApprovalRequired": false,
+      "primaryLanes": [
+        "architecture-agent",
+        "security-agent",
+        "validation-agent"
+      ],
+      "actions": [
+        {
+          "laneId": "architecture-agent",
+          "role": "Architecture and platform coherence",
+          "authority": "review-only",
+          "wipLimit": 2,
+          "action": "Check module boundaries, version gates, and source-of-truth consistency.",
+          "output": "Y1-Q2: Define role schema, permission matrix, handoff package, and dry-run queue fixtures.",
+          "promotionDecisionObserved": "eligible-for-internal-review",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "security-agent",
+          "role": "Security, privacy, permission, and credential boundaries",
+          "authority": "review-only",
+          "wipLimit": 1,
+          "action": "Review forbidden autonomy, credential isolation, and approval requirements.",
+          "output": "Y1-Q2: Define role schema, permission matrix, handoff package, and dry-run queue fixtures.",
+          "promotionDecisionObserved": "eligible-for-internal-review",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "validation-agent",
+          "role": "Tests, smoke checks, audit scripts, and release evidence",
+          "authority": "review-only-or-scoped-worker",
+          "wipLimit": 2,
+          "action": "Map required checks, smoke tests, and promotion evidence.",
+          "output": "Y1-Q2: Define role schema, permission matrix, handoff package, and dry-run queue fixtures.",
+          "promotionDecisionObserved": "eligible-for-internal-review",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        }
+      ],
+      "outcomes": [
+        "agent role schema",
+        "tool permission matrix",
+        "dry-run queue fixture"
+      ],
+      "gateChecks": [
+        {
+          "id": "schema-validation",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y1-Q2"
+        },
+        {
+          "id": "approval-boundary",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y1-Q2"
+        },
+        {
+          "id": "cancellation-fixture",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y1-Q2"
+        },
+        {
+          "id": "path-safety",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y1-Q2"
+        },
+        {
+          "id": "npm run check:seis-ai-core-version-promotion-gates",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        },
+        {
+          "id": "npm run check:seis-ai-core-version-registry",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        },
+        {
+          "id": "npm run check:seis-agent-plugin-integration",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        },
+        {
+          "id": "npm run check:seis-ai-core-subagent-operating-model",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        },
+        {
+          "id": "npm run check:seis-ai-core-subagent-runtime-fixtures",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        },
+        {
+          "id": "npm run check:seis-ai-core-subagent-review-ledger",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        },
+        {
+          "id": "npm run check:seis-sub-agent-5-year-plan",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        }
+      ],
+      "dryRunOnly": true,
+      "realElapsedFiveYears": false,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "gitHubWritePerformed": false,
+      "sshExecutionPerformed": false,
+      "deploymentPerformed": false
+    },
+    {
+      "sequence": 3,
+      "id": "dry-run-y1-q3",
+      "quarterId": "Y1-Q3",
+      "year": 1,
+      "theme": "Foundation, evidence, and safe agent lanes",
+      "focus": "Connect sub-agent briefs to Command Center evidence without enabling uncontrolled background work.",
+      "aiCoreVersionTarget": "v0.1-foundation",
+      "aiCoreVersionTheme": "Version identity and bounded sub-agent evidence",
+      "promotionGate": "Version registry, operating model, runtime fixtures, and review ledger all validate without external mutation.",
+      "promotionGateStatus": "documented-validated",
+      "promotionDryRunDecision": "eligible-for-internal-review",
+      "promotionReleaseAllowed": false,
+      "promotionHumanApprovalRequired": false,
+      "primaryLanes": [
+        "implementation-agent",
+        "design-agent",
+        "validation-agent"
+      ],
+      "actions": [
+        {
+          "laneId": "implementation-agent",
+          "role": "Bounded code and product implementation",
+          "authority": "scoped-worker",
+          "wipLimit": 2,
+          "action": "Prepare a bounded implementation slice and avoid unrelated worktree edits.",
+          "output": "Y1-Q3: Connect sub-agent briefs to Command Center evidence without enabling uncontrolled background work.",
+          "promotionDecisionObserved": "eligible-for-internal-review",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "design-agent",
+          "role": "Command Center, SEIS Desktop, SEIS Code, and creative product UX",
+          "authority": "proposal-or-scoped-worker",
+          "wipLimit": 1,
+          "action": "Review operator UX clarity, accessibility, and demo truth labels.",
+          "output": "Y1-Q3: Connect sub-agent briefs to Command Center evidence without enabling uncontrolled background work.",
+          "promotionDecisionObserved": "eligible-for-internal-review",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "validation-agent",
+          "role": "Tests, smoke checks, audit scripts, and release evidence",
+          "authority": "review-only-or-scoped-worker",
+          "wipLimit": 2,
+          "action": "Map required checks, smoke tests, and promotion evidence.",
+          "output": "Y1-Q3: Connect sub-agent briefs to Command Center evidence without enabling uncontrolled background work.",
+          "promotionDecisionObserved": "eligible-for-internal-review",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        }
+      ],
+      "outcomes": [
+        "brief registry",
+        "Command Center evidence view",
+        "operator review queue"
+      ],
+      "gateChecks": [
+        {
+          "id": "mock-vs-live-labels",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y1-Q3"
+        },
+        {
+          "id": "accessibility",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y1-Q3"
+        },
+        {
+          "id": "browser-smoke",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y1-Q3"
+        },
+        {
+          "id": "rollback-plan",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y1-Q3"
+        },
+        {
+          "id": "npm run check:seis-ai-core-version-promotion-gates",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        },
+        {
+          "id": "npm run check:seis-ai-core-version-registry",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        },
+        {
+          "id": "npm run check:seis-agent-plugin-integration",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        },
+        {
+          "id": "npm run check:seis-ai-core-subagent-operating-model",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        },
+        {
+          "id": "npm run check:seis-ai-core-subagent-runtime-fixtures",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        },
+        {
+          "id": "npm run check:seis-ai-core-subagent-review-ledger",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        },
+        {
+          "id": "npm run check:seis-sub-agent-5-year-plan",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        }
+      ],
+      "dryRunOnly": true,
+      "realElapsedFiveYears": false,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "gitHubWritePerformed": false,
+      "sshExecutionPerformed": false,
+      "deploymentPerformed": false
+    },
+    {
+      "sequence": 4,
+      "id": "dry-run-y1-q4",
+      "quarterId": "Y1-Q4",
+      "year": 1,
+      "theme": "Foundation, evidence, and safe agent lanes",
+      "focus": "Promote safe no-key local agent workflows and provider-neutral AI Core planning.",
+      "aiCoreVersionTarget": "v0.1-foundation",
+      "aiCoreVersionTheme": "Version identity and bounded sub-agent evidence",
+      "promotionGate": "Version registry, operating model, runtime fixtures, and review ledger all validate without external mutation.",
+      "promotionGateStatus": "documented-validated",
+      "promotionDryRunDecision": "eligible-for-internal-review",
+      "promotionReleaseAllowed": false,
+      "promotionHumanApprovalRequired": false,
+      "primaryLanes": [
+        "architecture-agent",
+        "implementation-agent",
+        "security-agent"
+      ],
+      "actions": [
+        {
+          "laneId": "architecture-agent",
+          "role": "Architecture and platform coherence",
+          "authority": "review-only",
+          "wipLimit": 2,
+          "action": "Check module boundaries, version gates, and source-of-truth consistency.",
+          "output": "Y1-Q4: Promote safe no-key local agent workflows and provider-neutral AI Core planning.",
+          "promotionDecisionObserved": "eligible-for-internal-review",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "implementation-agent",
+          "role": "Bounded code and product implementation",
+          "authority": "scoped-worker",
+          "wipLimit": 2,
+          "action": "Prepare a bounded implementation slice and avoid unrelated worktree edits.",
+          "output": "Y1-Q4: Promote safe no-key local agent workflows and provider-neutral AI Core planning.",
+          "promotionDecisionObserved": "eligible-for-internal-review",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "security-agent",
+          "role": "Security, privacy, permission, and credential boundaries",
+          "authority": "review-only",
+          "wipLimit": 1,
+          "action": "Review forbidden autonomy, credential isolation, and approval requirements.",
+          "output": "Y1-Q4: Promote safe no-key local agent workflows and provider-neutral AI Core planning.",
+          "promotionDecisionObserved": "eligible-for-internal-review",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        }
+      ],
+      "outcomes": [
+        "local demo agent lane",
+        "provider status model",
+        "fallback policy evidence"
+      ],
+      "gateChecks": [
+        {
+          "id": "no-key-startup",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y1-Q4"
+        },
+        {
+          "id": "provider-honesty",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y1-Q4"
+        },
+        {
+          "id": "redaction",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y1-Q4"
+        },
+        {
+          "id": "human-approval",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y1-Q4"
+        },
+        {
+          "id": "npm run check:seis-ai-core-version-promotion-gates",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        },
+        {
+          "id": "npm run check:seis-ai-core-version-registry",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        },
+        {
+          "id": "npm run check:seis-agent-plugin-integration",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        },
+        {
+          "id": "npm run check:seis-ai-core-subagent-operating-model",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        },
+        {
+          "id": "npm run check:seis-ai-core-subagent-runtime-fixtures",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        },
+        {
+          "id": "npm run check:seis-ai-core-subagent-review-ledger",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        },
+        {
+          "id": "npm run check:seis-sub-agent-5-year-plan",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-1"
+        }
+      ],
+      "dryRunOnly": true,
+      "realElapsedFiveYears": false,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "gitHubWritePerformed": false,
+      "sshExecutionPerformed": false,
+      "deploymentPerformed": false
+    },
+    {
+      "sequence": 5,
+      "id": "dry-run-y2-q1",
+      "quarterId": "Y2-Q1",
+      "year": 2,
+      "theme": "Product runtime and controlled automation",
+      "focus": "Harden SEIS Desktop, SEIS Code, and virtual file workflows under sub-agent validation.",
+      "aiCoreVersionTarget": "v0.2-read-only-intelligence",
+      "aiCoreVersionTheme": "Read-only evidence dashboards and stale-data UX",
+      "promotionGate": "Command Center surfaces version status from repository evidence and marks mock, stale, blocked, and validated states.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-until-evidence",
+      "promotionReleaseAllowed": false,
+      "promotionHumanApprovalRequired": false,
+      "primaryLanes": [
+        "implementation-agent",
+        "design-agent",
+        "validation-agent"
+      ],
+      "actions": [
+        {
+          "laneId": "implementation-agent",
+          "role": "Bounded code and product implementation",
+          "authority": "scoped-worker",
+          "wipLimit": 2,
+          "action": "Prepare a bounded implementation slice and avoid unrelated worktree edits.",
+          "output": "Y2-Q1: Harden SEIS Desktop, SEIS Code, and virtual file workflows under sub-agent validation.",
+          "promotionDecisionObserved": "blocked-until-evidence",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "design-agent",
+          "role": "Command Center, SEIS Desktop, SEIS Code, and creative product UX",
+          "authority": "proposal-or-scoped-worker",
+          "wipLimit": 1,
+          "action": "Review operator UX clarity, accessibility, and demo truth labels.",
+          "output": "Y2-Q1: Harden SEIS Desktop, SEIS Code, and virtual file workflows under sub-agent validation.",
+          "promotionDecisionObserved": "blocked-until-evidence",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "validation-agent",
+          "role": "Tests, smoke checks, audit scripts, and release evidence",
+          "authority": "review-only-or-scoped-worker",
+          "wipLimit": 2,
+          "action": "Map required checks, smoke tests, and promotion evidence.",
+          "output": "Y2-Q1: Harden SEIS Desktop, SEIS Code, and virtual file workflows under sub-agent validation.",
+          "promotionDecisionObserved": "blocked-until-evidence",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        }
+      ],
+      "outcomes": [
+        "desktop interaction baseline",
+        "SEIS Code persistence suite",
+        "shared VFS plan"
+      ],
+      "gateChecks": [
+        {
+          "id": "interactivity-rate",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y2-Q1"
+        },
+        {
+          "id": "mobile-fit",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y2-Q1"
+        },
+        {
+          "id": "indexeddb-persistence",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y2-Q1"
+        },
+        {
+          "id": "no-host-os-claim",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y2-Q1"
+        },
+        {
+          "id": "future read-only Command Center checks",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-2"
+        },
+        {
+          "id": "future provider registry fixture checks",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-2"
+        }
+      ],
+      "dryRunOnly": true,
+      "realElapsedFiveYears": false,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "gitHubWritePerformed": false,
+      "sshExecutionPerformed": false,
+      "deploymentPerformed": false
+    },
+    {
+      "sequence": 6,
+      "id": "dry-run-y2-q2",
+      "quarterId": "Y2-Q2",
+      "year": 2,
+      "theme": "Product runtime and controlled automation",
+      "focus": "Build scheduler dry-run, task queue states, and operator cancellation paths.",
+      "aiCoreVersionTarget": "v0.2-read-only-intelligence",
+      "aiCoreVersionTheme": "Read-only evidence dashboards and stale-data UX",
+      "promotionGate": "Command Center surfaces version status from repository evidence and marks mock, stale, blocked, and validated states.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-until-evidence",
+      "promotionReleaseAllowed": false,
+      "promotionHumanApprovalRequired": false,
+      "primaryLanes": [
+        "architecture-agent",
+        "implementation-agent",
+        "security-agent"
+      ],
+      "actions": [
+        {
+          "laneId": "architecture-agent",
+          "role": "Architecture and platform coherence",
+          "authority": "review-only",
+          "wipLimit": 2,
+          "action": "Check module boundaries, version gates, and source-of-truth consistency.",
+          "output": "Y2-Q2: Build scheduler dry-run, task queue states, and operator cancellation paths.",
+          "promotionDecisionObserved": "blocked-until-evidence",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "implementation-agent",
+          "role": "Bounded code and product implementation",
+          "authority": "scoped-worker",
+          "wipLimit": 2,
+          "action": "Prepare a bounded implementation slice and avoid unrelated worktree edits.",
+          "output": "Y2-Q2: Build scheduler dry-run, task queue states, and operator cancellation paths.",
+          "promotionDecisionObserved": "blocked-until-evidence",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "security-agent",
+          "role": "Security, privacy, permission, and credential boundaries",
+          "authority": "review-only",
+          "wipLimit": 1,
+          "action": "Review forbidden autonomy, credential isolation, and approval requirements.",
+          "output": "Y2-Q2: Build scheduler dry-run, task queue states, and operator cancellation paths.",
+          "promotionDecisionObserved": "blocked-until-evidence",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        }
+      ],
+      "outcomes": [
+        "scheduler dry-run",
+        "queue state machine",
+        "cancellation UI"
+      ],
+      "gateChecks": [
+        {
+          "id": "dry-run-only",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y2-Q2"
+        },
+        {
+          "id": "bounded-recursion",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y2-Q2"
+        },
+        {
+          "id": "timeout",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y2-Q2"
+        },
+        {
+          "id": "audit-event",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y2-Q2"
+        },
+        {
+          "id": "future read-only Command Center checks",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-2"
+        },
+        {
+          "id": "future provider registry fixture checks",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-2"
+        }
+      ],
+      "dryRunOnly": true,
+      "realElapsedFiveYears": false,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "gitHubWritePerformed": false,
+      "sshExecutionPerformed": false,
+      "deploymentPerformed": false
+    },
+    {
+      "sequence": 7,
+      "id": "dry-run-y2-q3",
+      "quarterId": "Y2-Q3",
+      "year": 2,
+      "theme": "Product runtime and controlled automation",
+      "focus": "Introduce read-only repository intelligence and evidence locker views.",
+      "aiCoreVersionTarget": "v0.2-read-only-intelligence",
+      "aiCoreVersionTheme": "Read-only evidence dashboards and stale-data UX",
+      "promotionGate": "Command Center surfaces version status from repository evidence and marks mock, stale, blocked, and validated states.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-until-evidence",
+      "promotionReleaseAllowed": false,
+      "promotionHumanApprovalRequired": false,
+      "primaryLanes": [
+        "implementation-agent",
+        "documentation-agent",
+        "validation-agent"
+      ],
+      "actions": [
+        {
+          "laneId": "implementation-agent",
+          "role": "Bounded code and product implementation",
+          "authority": "scoped-worker",
+          "wipLimit": 2,
+          "action": "Prepare a bounded implementation slice and avoid unrelated worktree edits.",
+          "output": "Y2-Q3: Introduce read-only repository intelligence and evidence locker views.",
+          "promotionDecisionObserved": "blocked-until-evidence",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "documentation-agent",
+          "role": "Source-of-truth docs, evidence, and handoffs",
+          "authority": "scoped-worker",
+          "wipLimit": 2,
+          "action": "Write current-versus-planned evidence and handoff notes.",
+          "output": "Y2-Q3: Introduce read-only repository intelligence and evidence locker views.",
+          "promotionDecisionObserved": "blocked-until-evidence",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "validation-agent",
+          "role": "Tests, smoke checks, audit scripts, and release evidence",
+          "authority": "review-only-or-scoped-worker",
+          "wipLimit": 2,
+          "action": "Map required checks, smoke tests, and promotion evidence.",
+          "output": "Y2-Q3: Introduce read-only repository intelligence and evidence locker views.",
+          "promotionDecisionObserved": "blocked-until-evidence",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        }
+      ],
+      "outcomes": [
+        "repository scanner contract",
+        "evidence locker",
+        "staleness labels"
+      ],
+      "gateChecks": [
+        {
+          "id": "read-only-live",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y2-Q3"
+        },
+        {
+          "id": "evidence-linked",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y2-Q3"
+        },
+        {
+          "id": "stale-data-label",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y2-Q3"
+        },
+        {
+          "id": "no-fake-health",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y2-Q3"
+        },
+        {
+          "id": "future read-only Command Center checks",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-2"
+        },
+        {
+          "id": "future provider registry fixture checks",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-2"
+        }
+      ],
+      "dryRunOnly": true,
+      "realElapsedFiveYears": false,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "gitHubWritePerformed": false,
+      "sshExecutionPerformed": false,
+      "deploymentPerformed": false
+    },
+    {
+      "sequence": 8,
+      "id": "dry-run-y2-q4",
+      "quarterId": "Y2-Q4",
+      "year": 2,
+      "theme": "Product runtime and controlled automation",
+      "focus": "Prepare plugin and MCP trust levels for limited write-gated agent tools.",
+      "aiCoreVersionTarget": "v0.2-read-only-intelligence",
+      "aiCoreVersionTheme": "Read-only evidence dashboards and stale-data UX",
+      "promotionGate": "Command Center surfaces version status from repository evidence and marks mock, stale, blocked, and validated states.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-until-evidence",
+      "promotionReleaseAllowed": false,
+      "promotionHumanApprovalRequired": false,
+      "primaryLanes": [
+        "security-agent",
+        "architecture-agent",
+        "validation-agent"
+      ],
+      "actions": [
+        {
+          "laneId": "security-agent",
+          "role": "Security, privacy, permission, and credential boundaries",
+          "authority": "review-only",
+          "wipLimit": 1,
+          "action": "Review forbidden autonomy, credential isolation, and approval requirements.",
+          "output": "Y2-Q4: Prepare plugin and MCP trust levels for limited write-gated agent tools.",
+          "promotionDecisionObserved": "blocked-until-evidence",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "architecture-agent",
+          "role": "Architecture and platform coherence",
+          "authority": "review-only",
+          "wipLimit": 2,
+          "action": "Check module boundaries, version gates, and source-of-truth consistency.",
+          "output": "Y2-Q4: Prepare plugin and MCP trust levels for limited write-gated agent tools.",
+          "promotionDecisionObserved": "blocked-until-evidence",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "validation-agent",
+          "role": "Tests, smoke checks, audit scripts, and release evidence",
+          "authority": "review-only-or-scoped-worker",
+          "wipLimit": 2,
+          "action": "Map required checks, smoke tests, and promotion evidence.",
+          "output": "Y2-Q4: Prepare plugin and MCP trust levels for limited write-gated agent tools.",
+          "promotionDecisionObserved": "blocked-until-evidence",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        }
+      ],
+      "outcomes": [
+        "MCP trust registry",
+        "tool permission tests",
+        "destructive approval fixtures"
+      ],
+      "gateChecks": [
+        {
+          "id": "least-privilege",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y2-Q4"
+        },
+        {
+          "id": "tool-allowlist",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y2-Q4"
+        },
+        {
+          "id": "destructive-approval",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y2-Q4"
+        },
+        {
+          "id": "prompt-injection-resistance",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y2-Q4"
+        },
+        {
+          "id": "future read-only Command Center checks",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-2"
+        },
+        {
+          "id": "future provider registry fixture checks",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-2"
+        }
+      ],
+      "dryRunOnly": true,
+      "realElapsedFiveYears": false,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "gitHubWritePerformed": false,
+      "sshExecutionPerformed": false,
+      "deploymentPerformed": false
+    },
+    {
+      "sequence": 9,
+      "id": "dry-run-y3-q1",
+      "quarterId": "Y3-Q1",
+      "year": 3,
+      "theme": "Integrated Command Center and AI Core alpha",
+      "focus": "Integrate agent status, provider status, and task evidence into Command Center Alpha.",
+      "aiCoreVersionTarget": "v0.3-write-gated-runtime",
+      "aiCoreVersionTheme": "Human-approved write lanes",
+      "promotionGate": "Write actions are permission-scoped, approval-backed, reversible, and covered by executable tests.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-human-approval",
+      "promotionReleaseAllowed": false,
+      "promotionHumanApprovalRequired": true,
+      "primaryLanes": [
+        "implementation-agent",
+        "design-agent",
+        "documentation-agent"
+      ],
+      "actions": [
+        {
+          "laneId": "implementation-agent",
+          "role": "Bounded code and product implementation",
+          "authority": "scoped-worker",
+          "wipLimit": 2,
+          "action": "Prepare a bounded implementation slice and avoid unrelated worktree edits.",
+          "output": "Y3-Q1: Integrate agent status, provider status, and task evidence into Command Center Alpha.",
+          "promotionDecisionObserved": "blocked-human-approval",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "design-agent",
+          "role": "Command Center, SEIS Desktop, SEIS Code, and creative product UX",
+          "authority": "proposal-or-scoped-worker",
+          "wipLimit": 1,
+          "action": "Review operator UX clarity, accessibility, and demo truth labels.",
+          "output": "Y3-Q1: Integrate agent status, provider status, and task evidence into Command Center Alpha.",
+          "promotionDecisionObserved": "blocked-human-approval",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "documentation-agent",
+          "role": "Source-of-truth docs, evidence, and handoffs",
+          "authority": "scoped-worker",
+          "wipLimit": 2,
+          "action": "Write current-versus-planned evidence and handoff notes.",
+          "output": "Y3-Q1: Integrate agent status, provider status, and task evidence into Command Center Alpha.",
+          "promotionDecisionObserved": "blocked-human-approval",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        }
+      ],
+      "outcomes": [
+        "agent center alpha",
+        "AI control center alpha",
+        "evidence-first dashboard"
+      ],
+      "gateChecks": [
+        {
+          "id": "real-actions-only",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y3-Q1"
+        },
+        {
+          "id": "keyboard-navigation",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y3-Q1"
+        },
+        {
+          "id": "provider-identity",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y3-Q1"
+        },
+        {
+          "id": "fallback-transparency",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y3-Q1"
+        },
+        {
+          "id": "future permission enforcement tests",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-3"
+        },
+        {
+          "id": "future write-gated runtime smoke tests",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-3"
+        }
+      ],
+      "dryRunOnly": true,
+      "realElapsedFiveYears": false,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "gitHubWritePerformed": false,
+      "sshExecutionPerformed": false,
+      "deploymentPerformed": false
+    },
+    {
+      "sequence": 10,
+      "id": "dry-run-y3-q2",
+      "quarterId": "Y3-Q2",
+      "year": 3,
+      "theme": "Integrated Command Center and AI Core alpha",
+      "focus": "Add provider-neutral model routing behind backend-only boundaries.",
+      "aiCoreVersionTarget": "v0.3-write-gated-runtime",
+      "aiCoreVersionTheme": "Human-approved write lanes",
+      "promotionGate": "Write actions are permission-scoped, approval-backed, reversible, and covered by executable tests.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-human-approval",
+      "promotionReleaseAllowed": false,
+      "promotionHumanApprovalRequired": true,
+      "primaryLanes": [
+        "architecture-agent",
+        "security-agent",
+        "implementation-agent"
+      ],
+      "actions": [
+        {
+          "laneId": "architecture-agent",
+          "role": "Architecture and platform coherence",
+          "authority": "review-only",
+          "wipLimit": 2,
+          "action": "Check module boundaries, version gates, and source-of-truth consistency.",
+          "output": "Y3-Q2: Add provider-neutral model routing behind backend-only boundaries.",
+          "promotionDecisionObserved": "blocked-human-approval",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "security-agent",
+          "role": "Security, privacy, permission, and credential boundaries",
+          "authority": "review-only",
+          "wipLimit": 1,
+          "action": "Review forbidden autonomy, credential isolation, and approval requirements.",
+          "output": "Y3-Q2: Add provider-neutral model routing behind backend-only boundaries.",
+          "promotionDecisionObserved": "blocked-human-approval",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "implementation-agent",
+          "role": "Bounded code and product implementation",
+          "authority": "scoped-worker",
+          "wipLimit": 2,
+          "action": "Prepare a bounded implementation slice and avoid unrelated worktree edits.",
+          "output": "Y3-Q2: Add provider-neutral model routing behind backend-only boundaries.",
+          "promotionDecisionObserved": "blocked-human-approval",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        }
+      ],
+      "outcomes": [
+        "provider registry",
+        "capability router",
+        "server env validation"
+      ],
+      "gateChecks": [
+        {
+          "id": "server-only-secrets",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y3-Q2"
+        },
+        {
+          "id": "missing-key-state",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y3-Q2"
+        },
+        {
+          "id": "capability-fallback",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y3-Q2"
+        },
+        {
+          "id": "redacted-errors",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y3-Q2"
+        },
+        {
+          "id": "future permission enforcement tests",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-3"
+        },
+        {
+          "id": "future write-gated runtime smoke tests",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-3"
+        }
+      ],
+      "dryRunOnly": true,
+      "realElapsedFiveYears": false,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "gitHubWritePerformed": false,
+      "sshExecutionPerformed": false,
+      "deploymentPerformed": false
+    },
+    {
+      "sequence": 11,
+      "id": "dry-run-y3-q3",
+      "quarterId": "Y3-Q3",
+      "year": 3,
+      "theme": "Integrated Command Center and AI Core alpha",
+      "focus": "Promote selected sub-agent tools from dry-run to write-gated local workflows.",
+      "aiCoreVersionTarget": "v0.3-write-gated-runtime",
+      "aiCoreVersionTheme": "Human-approved write lanes",
+      "promotionGate": "Write actions are permission-scoped, approval-backed, reversible, and covered by executable tests.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-human-approval",
+      "promotionReleaseAllowed": false,
+      "promotionHumanApprovalRequired": true,
+      "primaryLanes": [
+        "implementation-agent",
+        "security-agent",
+        "validation-agent"
+      ],
+      "actions": [
+        {
+          "laneId": "implementation-agent",
+          "role": "Bounded code and product implementation",
+          "authority": "scoped-worker",
+          "wipLimit": 2,
+          "action": "Prepare a bounded implementation slice and avoid unrelated worktree edits.",
+          "output": "Y3-Q3: Promote selected sub-agent tools from dry-run to write-gated local workflows.",
+          "promotionDecisionObserved": "blocked-human-approval",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "security-agent",
+          "role": "Security, privacy, permission, and credential boundaries",
+          "authority": "review-only",
+          "wipLimit": 1,
+          "action": "Review forbidden autonomy, credential isolation, and approval requirements.",
+          "output": "Y3-Q3: Promote selected sub-agent tools from dry-run to write-gated local workflows.",
+          "promotionDecisionObserved": "blocked-human-approval",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "validation-agent",
+          "role": "Tests, smoke checks, audit scripts, and release evidence",
+          "authority": "review-only-or-scoped-worker",
+          "wipLimit": 2,
+          "action": "Map required checks, smoke tests, and promotion evidence.",
+          "output": "Y3-Q3: Promote selected sub-agent tools from dry-run to write-gated local workflows.",
+          "promotionDecisionObserved": "blocked-human-approval",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        }
+      ],
+      "outcomes": [
+        "write-gated file tools",
+        "approval ledger",
+        "tool audit events"
+      ],
+      "gateChecks": [
+        {
+          "id": "path-traversal-denied",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y3-Q3"
+        },
+        {
+          "id": "approval-required",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y3-Q3"
+        },
+        {
+          "id": "audit-log",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y3-Q3"
+        },
+        {
+          "id": "rollback-notes",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y3-Q3"
+        },
+        {
+          "id": "future permission enforcement tests",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-3"
+        },
+        {
+          "id": "future write-gated runtime smoke tests",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-3"
+        }
+      ],
+      "dryRunOnly": true,
+      "realElapsedFiveYears": false,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "gitHubWritePerformed": false,
+      "sshExecutionPerformed": false,
+      "deploymentPerformed": false
+    },
+    {
+      "sequence": 12,
+      "id": "dry-run-y3-q4",
+      "quarterId": "Y3-Q4",
+      "year": 3,
+      "theme": "Integrated Command Center and AI Core alpha",
+      "focus": "Create release-candidate quality gates for agent-assisted product surfaces.",
+      "aiCoreVersionTarget": "v0.3-write-gated-runtime",
+      "aiCoreVersionTheme": "Human-approved write lanes",
+      "promotionGate": "Write actions are permission-scoped, approval-backed, reversible, and covered by executable tests.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-human-approval",
+      "promotionReleaseAllowed": false,
+      "promotionHumanApprovalRequired": true,
+      "primaryLanes": [
+        "validation-agent",
+        "documentation-agent",
+        "design-agent"
+      ],
+      "actions": [
+        {
+          "laneId": "validation-agent",
+          "role": "Tests, smoke checks, audit scripts, and release evidence",
+          "authority": "review-only-or-scoped-worker",
+          "wipLimit": 2,
+          "action": "Map required checks, smoke tests, and promotion evidence.",
+          "output": "Y3-Q4: Create release-candidate quality gates for agent-assisted product surfaces.",
+          "promotionDecisionObserved": "blocked-human-approval",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "documentation-agent",
+          "role": "Source-of-truth docs, evidence, and handoffs",
+          "authority": "scoped-worker",
+          "wipLimit": 2,
+          "action": "Write current-versus-planned evidence and handoff notes.",
+          "output": "Y3-Q4: Create release-candidate quality gates for agent-assisted product surfaces.",
+          "promotionDecisionObserved": "blocked-human-approval",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "design-agent",
+          "role": "Command Center, SEIS Desktop, SEIS Code, and creative product UX",
+          "authority": "proposal-or-scoped-worker",
+          "wipLimit": 1,
+          "action": "Review operator UX clarity, accessibility, and demo truth labels.",
+          "output": "Y3-Q4: Create release-candidate quality gates for agent-assisted product surfaces.",
+          "promotionDecisionObserved": "blocked-human-approval",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        }
+      ],
+      "outcomes": [
+        "RC evidence checklist",
+        "visual QA protocol",
+        "accessibility regression plan"
+      ],
+      "gateChecks": [
+        {
+          "id": "build-pass",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y3-Q4"
+        },
+        {
+          "id": "smoke-pass",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y3-Q4"
+        },
+        {
+          "id": "a11y-review",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y3-Q4"
+        },
+        {
+          "id": "release-evidence",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y3-Q4"
+        },
+        {
+          "id": "future permission enforcement tests",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-3"
+        },
+        {
+          "id": "future write-gated runtime smoke tests",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-3"
+        }
+      ],
+      "dryRunOnly": true,
+      "realElapsedFiveYears": false,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "gitHubWritePerformed": false,
+      "sshExecutionPerformed": false,
+      "deploymentPerformed": false
+    },
+    {
+      "sequence": 13,
+      "id": "dry-run-y4-q1",
+      "quarterId": "Y4-Q1",
+      "year": 4,
+      "theme": "Scale, reliability, and controlled federation",
+      "focus": "Add multi-repository and multi-workspace planning without cross-repo write autonomy.",
+      "aiCoreVersionTarget": "v0.4-multi-workspace-readiness",
+      "aiCoreVersionTheme": "Cloud, SSH, workspace, and provider readiness",
+      "promotionGate": "External integrations remain disabled unless target, auth, rollback, and approval evidence are explicit.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-human-approval",
+      "promotionReleaseAllowed": false,
+      "promotionHumanApprovalRequired": true,
+      "primaryLanes": [
+        "architecture-agent",
+        "documentation-agent",
+        "security-agent"
+      ],
+      "actions": [
+        {
+          "laneId": "architecture-agent",
+          "role": "Architecture and platform coherence",
+          "authority": "review-only",
+          "wipLimit": 2,
+          "action": "Check module boundaries, version gates, and source-of-truth consistency.",
+          "output": "Y4-Q1: Add multi-repository and multi-workspace planning without cross-repo write autonomy.",
+          "promotionDecisionObserved": "blocked-human-approval",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "documentation-agent",
+          "role": "Source-of-truth docs, evidence, and handoffs",
+          "authority": "scoped-worker",
+          "wipLimit": 2,
+          "action": "Write current-versus-planned evidence and handoff notes.",
+          "output": "Y4-Q1: Add multi-repository and multi-workspace planning without cross-repo write autonomy.",
+          "promotionDecisionObserved": "blocked-human-approval",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "security-agent",
+          "role": "Security, privacy, permission, and credential boundaries",
+          "authority": "review-only",
+          "wipLimit": 1,
+          "action": "Review forbidden autonomy, credential isolation, and approval requirements.",
+          "output": "Y4-Q1: Add multi-repository and multi-workspace planning without cross-repo write autonomy.",
+          "promotionDecisionObserved": "blocked-human-approval",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        }
+      ],
+      "outcomes": [
+        "federation policy",
+        "workspace sync safety",
+        "repo boundary registry"
+      ],
+      "gateChecks": [
+        {
+          "id": "source-of-truth",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y4-Q1"
+        },
+        {
+          "id": "read-only-default",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y4-Q1"
+        },
+        {
+          "id": "scope-control",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y4-Q1"
+        },
+        {
+          "id": "human-approval",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y4-Q1"
+        },
+        {
+          "id": "future workspace sync safety checks",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-4"
+        },
+        {
+          "id": "future cloud preflight checks",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-4"
+        }
+      ],
+      "dryRunOnly": true,
+      "realElapsedFiveYears": false,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "gitHubWritePerformed": false,
+      "sshExecutionPerformed": false,
+      "deploymentPerformed": false
+    },
+    {
+      "sequence": 14,
+      "id": "dry-run-y4-q2",
+      "quarterId": "Y4-Q2",
+      "year": 4,
+      "theme": "Scale, reliability, and controlled federation",
+      "focus": "Mature observability, budget controls, and incident response for agent runs.",
+      "aiCoreVersionTarget": "v0.4-multi-workspace-readiness",
+      "aiCoreVersionTheme": "Cloud, SSH, workspace, and provider readiness",
+      "promotionGate": "External integrations remain disabled unless target, auth, rollback, and approval evidence are explicit.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-human-approval",
+      "promotionReleaseAllowed": false,
+      "promotionHumanApprovalRequired": true,
+      "primaryLanes": [
+        "security-agent",
+        "validation-agent",
+        "implementation-agent"
+      ],
+      "actions": [
+        {
+          "laneId": "security-agent",
+          "role": "Security, privacy, permission, and credential boundaries",
+          "authority": "review-only",
+          "wipLimit": 1,
+          "action": "Review forbidden autonomy, credential isolation, and approval requirements.",
+          "output": "Y4-Q2: Mature observability, budget controls, and incident response for agent runs.",
+          "promotionDecisionObserved": "blocked-human-approval",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "validation-agent",
+          "role": "Tests, smoke checks, audit scripts, and release evidence",
+          "authority": "review-only-or-scoped-worker",
+          "wipLimit": 2,
+          "action": "Map required checks, smoke tests, and promotion evidence.",
+          "output": "Y4-Q2: Mature observability, budget controls, and incident response for agent runs.",
+          "promotionDecisionObserved": "blocked-human-approval",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "implementation-agent",
+          "role": "Bounded code and product implementation",
+          "authority": "scoped-worker",
+          "wipLimit": 2,
+          "action": "Prepare a bounded implementation slice and avoid unrelated worktree edits.",
+          "output": "Y4-Q2: Mature observability, budget controls, and incident response for agent runs.",
+          "promotionDecisionObserved": "blocked-human-approval",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        }
+      ],
+      "outcomes": [
+        "agent observability schema",
+        "budget controls",
+        "incident playbook"
+      ],
+      "gateChecks": [
+        {
+          "id": "redacted-logs",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y4-Q2"
+        },
+        {
+          "id": "cost-budget",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y4-Q2"
+        },
+        {
+          "id": "cancellation",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y4-Q2"
+        },
+        {
+          "id": "postmortem-template",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y4-Q2"
+        },
+        {
+          "id": "future workspace sync safety checks",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-4"
+        },
+        {
+          "id": "future cloud preflight checks",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-4"
+        }
+      ],
+      "dryRunOnly": true,
+      "realElapsedFiveYears": false,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "gitHubWritePerformed": false,
+      "sshExecutionPerformed": false,
+      "deploymentPerformed": false
+    },
+    {
+      "sequence": 15,
+      "id": "dry-run-y4-q3",
+      "quarterId": "Y4-Q3",
+      "year": 4,
+      "theme": "Scale, reliability, and controlled federation",
+      "focus": "Expand local-first and offline agent modes for privacy-sensitive workflows.",
+      "aiCoreVersionTarget": "v0.4-multi-workspace-readiness",
+      "aiCoreVersionTheme": "Cloud, SSH, workspace, and provider readiness",
+      "promotionGate": "External integrations remain disabled unless target, auth, rollback, and approval evidence are explicit.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-human-approval",
+      "promotionReleaseAllowed": false,
+      "promotionHumanApprovalRequired": true,
+      "primaryLanes": [
+        "architecture-agent",
+        "implementation-agent",
+        "security-agent"
+      ],
+      "actions": [
+        {
+          "laneId": "architecture-agent",
+          "role": "Architecture and platform coherence",
+          "authority": "review-only",
+          "wipLimit": 2,
+          "action": "Check module boundaries, version gates, and source-of-truth consistency.",
+          "output": "Y4-Q3: Expand local-first and offline agent modes for privacy-sensitive workflows.",
+          "promotionDecisionObserved": "blocked-human-approval",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "implementation-agent",
+          "role": "Bounded code and product implementation",
+          "authority": "scoped-worker",
+          "wipLimit": 2,
+          "action": "Prepare a bounded implementation slice and avoid unrelated worktree edits.",
+          "output": "Y4-Q3: Expand local-first and offline agent modes for privacy-sensitive workflows.",
+          "promotionDecisionObserved": "blocked-human-approval",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "security-agent",
+          "role": "Security, privacy, permission, and credential boundaries",
+          "authority": "review-only",
+          "wipLimit": 1,
+          "action": "Review forbidden autonomy, credential isolation, and approval requirements.",
+          "output": "Y4-Q3: Expand local-first and offline agent modes for privacy-sensitive workflows.",
+          "promotionDecisionObserved": "blocked-human-approval",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        }
+      ],
+      "outcomes": [
+        "local-only mode",
+        "offline drafts",
+        "context preview"
+      ],
+      "gateChecks": [
+        {
+          "id": "no-cloud-fallback",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y4-Q3"
+        },
+        {
+          "id": "context-minimization",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y4-Q3"
+        },
+        {
+          "id": "memory-boundary",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y4-Q3"
+        },
+        {
+          "id": "no-secret-storage",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y4-Q3"
+        },
+        {
+          "id": "future workspace sync safety checks",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-4"
+        },
+        {
+          "id": "future cloud preflight checks",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-4"
+        }
+      ],
+      "dryRunOnly": true,
+      "realElapsedFiveYears": false,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "gitHubWritePerformed": false,
+      "sshExecutionPerformed": false,
+      "deploymentPerformed": false
+    },
+    {
+      "sequence": 16,
+      "id": "dry-run-y4-q4",
+      "quarterId": "Y4-Q4",
+      "year": 4,
+      "theme": "Scale, reliability, and controlled federation",
+      "focus": "Prepare public and release readiness for controlled agent-assisted workflows.",
+      "aiCoreVersionTarget": "v0.4-multi-workspace-readiness",
+      "aiCoreVersionTheme": "Cloud, SSH, workspace, and provider readiness",
+      "promotionGate": "External integrations remain disabled unless target, auth, rollback, and approval evidence are explicit.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-human-approval",
+      "promotionReleaseAllowed": false,
+      "promotionHumanApprovalRequired": true,
+      "primaryLanes": [
+        "documentation-agent",
+        "security-agent",
+        "validation-agent"
+      ],
+      "actions": [
+        {
+          "laneId": "documentation-agent",
+          "role": "Source-of-truth docs, evidence, and handoffs",
+          "authority": "scoped-worker",
+          "wipLimit": 2,
+          "action": "Write current-versus-planned evidence and handoff notes.",
+          "output": "Y4-Q4: Prepare public and release readiness for controlled agent-assisted workflows.",
+          "promotionDecisionObserved": "blocked-human-approval",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "security-agent",
+          "role": "Security, privacy, permission, and credential boundaries",
+          "authority": "review-only",
+          "wipLimit": 1,
+          "action": "Review forbidden autonomy, credential isolation, and approval requirements.",
+          "output": "Y4-Q4: Prepare public and release readiness for controlled agent-assisted workflows.",
+          "promotionDecisionObserved": "blocked-human-approval",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "validation-agent",
+          "role": "Tests, smoke checks, audit scripts, and release evidence",
+          "authority": "review-only-or-scoped-worker",
+          "wipLimit": 2,
+          "action": "Map required checks, smoke tests, and promotion evidence.",
+          "output": "Y4-Q4: Prepare public and release readiness for controlled agent-assisted workflows.",
+          "promotionDecisionObserved": "blocked-human-approval",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        }
+      ],
+      "outcomes": [
+        "public readiness dry run",
+        "release governance review",
+        "supply-chain plan"
+      ],
+      "gateChecks": [
+        {
+          "id": "secret-scan",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y4-Q4"
+        },
+        {
+          "id": "license-review",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y4-Q4"
+        },
+        {
+          "id": "SBOM-plan",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y4-Q4"
+        },
+        {
+          "id": "branch-protection-docs",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y4-Q4"
+        },
+        {
+          "id": "future workspace sync safety checks",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-4"
+        },
+        {
+          "id": "future cloud preflight checks",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-4"
+        }
+      ],
+      "dryRunOnly": true,
+      "realElapsedFiveYears": false,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "gitHubWritePerformed": false,
+      "sshExecutionPerformed": false,
+      "deploymentPerformed": false
+    },
+    {
+      "sequence": 17,
+      "id": "dry-run-y5-q1",
+      "quarterId": "Y5-Q1",
+      "year": 5,
+      "theme": "Sustainable autonomous assistance and research readiness",
+      "focus": "Stabilize agent runtime beta with bounded delegation and observable recovery.",
+      "aiCoreVersionTarget": "v1.0-public-enterprise-candidate",
+      "aiCoreVersionTheme": "Public, enterprise, and SEIS Universe governance",
+      "promotionGate": "Release, security, provenance, model-claims, and public-readiness evidence support the version claim.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-until-evidence",
+      "promotionReleaseAllowed": false,
+      "promotionHumanApprovalRequired": true,
+      "primaryLanes": [
+        "implementation-agent",
+        "validation-agent",
+        "security-agent"
+      ],
+      "actions": [
+        {
+          "laneId": "implementation-agent",
+          "role": "Bounded code and product implementation",
+          "authority": "scoped-worker",
+          "wipLimit": 2,
+          "action": "Prepare a bounded implementation slice and avoid unrelated worktree edits.",
+          "output": "Y5-Q1: Stabilize agent runtime beta with bounded delegation and observable recovery.",
+          "promotionDecisionObserved": "blocked-until-evidence",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "validation-agent",
+          "role": "Tests, smoke checks, audit scripts, and release evidence",
+          "authority": "review-only-or-scoped-worker",
+          "wipLimit": 2,
+          "action": "Map required checks, smoke tests, and promotion evidence.",
+          "output": "Y5-Q1: Stabilize agent runtime beta with bounded delegation and observable recovery.",
+          "promotionDecisionObserved": "blocked-until-evidence",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "security-agent",
+          "role": "Security, privacy, permission, and credential boundaries",
+          "authority": "review-only",
+          "wipLimit": 1,
+          "action": "Review forbidden autonomy, credential isolation, and approval requirements.",
+          "output": "Y5-Q1: Stabilize agent runtime beta with bounded delegation and observable recovery.",
+          "promotionDecisionObserved": "blocked-until-evidence",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        }
+      ],
+      "outcomes": [
+        "runtime beta",
+        "delegation depth limits",
+        "recovery playbook"
+      ],
+      "gateChecks": [
+        {
+          "id": "bounded-delegation",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y5-Q1"
+        },
+        {
+          "id": "failure-mode-tests",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y5-Q1"
+        },
+        {
+          "id": "operator-cancel",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y5-Q1"
+        },
+        {
+          "id": "auditability",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y5-Q1"
+        },
+        {
+          "id": "future public readiness checks",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-5"
+        },
+        {
+          "id": "future release evidence checks",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-5"
+        }
+      ],
+      "dryRunOnly": true,
+      "realElapsedFiveYears": false,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "gitHubWritePerformed": false,
+      "sshExecutionPerformed": false,
+      "deploymentPerformed": false
+    },
+    {
+      "sequence": 18,
+      "id": "dry-run-y5-q2",
+      "quarterId": "Y5-Q2",
+      "year": 5,
+      "theme": "Sustainable autonomous assistance and research readiness",
+      "focus": "Advance SEIS Universe research governance without overstating trained-model ownership.",
+      "aiCoreVersionTarget": "v1.0-public-enterprise-candidate",
+      "aiCoreVersionTheme": "Public, enterprise, and SEIS Universe governance",
+      "promotionGate": "Release, security, provenance, model-claims, and public-readiness evidence support the version claim.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-until-evidence",
+      "promotionReleaseAllowed": false,
+      "promotionHumanApprovalRequired": true,
+      "primaryLanes": [
+        "architecture-agent",
+        "documentation-agent",
+        "validation-agent"
+      ],
+      "actions": [
+        {
+          "laneId": "architecture-agent",
+          "role": "Architecture and platform coherence",
+          "authority": "review-only",
+          "wipLimit": 2,
+          "action": "Check module boundaries, version gates, and source-of-truth consistency.",
+          "output": "Y5-Q2: Advance SEIS Universe research governance without overstating trained-model ownership.",
+          "promotionDecisionObserved": "blocked-until-evidence",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "documentation-agent",
+          "role": "Source-of-truth docs, evidence, and handoffs",
+          "authority": "scoped-worker",
+          "wipLimit": 2,
+          "action": "Write current-versus-planned evidence and handoff notes.",
+          "output": "Y5-Q2: Advance SEIS Universe research governance without overstating trained-model ownership.",
+          "promotionDecisionObserved": "blocked-until-evidence",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "validation-agent",
+          "role": "Tests, smoke checks, audit scripts, and release evidence",
+          "authority": "review-only-or-scoped-worker",
+          "wipLimit": 2,
+          "action": "Map required checks, smoke tests, and promotion evidence.",
+          "output": "Y5-Q2: Advance SEIS Universe research governance without overstating trained-model ownership.",
+          "promotionDecisionObserved": "blocked-until-evidence",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        }
+      ],
+      "outcomes": [
+        "model research gates",
+        "dataset governance",
+        "eval provenance"
+      ],
+      "gateChecks": [
+        {
+          "id": "no-fake-model-claims",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y5-Q2"
+        },
+        {
+          "id": "dataset-provenance",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y5-Q2"
+        },
+        {
+          "id": "benchmark-integrity",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y5-Q2"
+        },
+        {
+          "id": "model-card-template",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y5-Q2"
+        },
+        {
+          "id": "future public readiness checks",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-5"
+        },
+        {
+          "id": "future release evidence checks",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-5"
+        }
+      ],
+      "dryRunOnly": true,
+      "realElapsedFiveYears": false,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "gitHubWritePerformed": false,
+      "sshExecutionPerformed": false,
+      "deploymentPerformed": false
+    },
+    {
+      "sequence": 19,
+      "id": "dry-run-y5-q3",
+      "quarterId": "Y5-Q3",
+      "year": 5,
+      "theme": "Sustainable autonomous assistance and research readiness",
+      "focus": "Create long-term maintenance cadence for sub-agent assisted open-source operations.",
+      "aiCoreVersionTarget": "v1.0-public-enterprise-candidate",
+      "aiCoreVersionTheme": "Public, enterprise, and SEIS Universe governance",
+      "promotionGate": "Release, security, provenance, model-claims, and public-readiness evidence support the version claim.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-until-evidence",
+      "promotionReleaseAllowed": false,
+      "promotionHumanApprovalRequired": true,
+      "primaryLanes": [
+        "documentation-agent",
+        "validation-agent",
+        "security-agent"
+      ],
+      "actions": [
+        {
+          "laneId": "documentation-agent",
+          "role": "Source-of-truth docs, evidence, and handoffs",
+          "authority": "scoped-worker",
+          "wipLimit": 2,
+          "action": "Write current-versus-planned evidence and handoff notes.",
+          "output": "Y5-Q3: Create long-term maintenance cadence for sub-agent assisted open-source operations.",
+          "promotionDecisionObserved": "blocked-until-evidence",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "validation-agent",
+          "role": "Tests, smoke checks, audit scripts, and release evidence",
+          "authority": "review-only-or-scoped-worker",
+          "wipLimit": 2,
+          "action": "Map required checks, smoke tests, and promotion evidence.",
+          "output": "Y5-Q3: Create long-term maintenance cadence for sub-agent assisted open-source operations.",
+          "promotionDecisionObserved": "blocked-until-evidence",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "security-agent",
+          "role": "Security, privacy, permission, and credential boundaries",
+          "authority": "review-only",
+          "wipLimit": 1,
+          "action": "Review forbidden autonomy, credential isolation, and approval requirements.",
+          "output": "Y5-Q3: Create long-term maintenance cadence for sub-agent assisted open-source operations.",
+          "promotionDecisionObserved": "blocked-until-evidence",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        }
+      ],
+      "outcomes": [
+        "maintenance cadence",
+        "contributor trust levels",
+        "reviewer routing"
+      ],
+      "gateChecks": [
+        {
+          "id": "community-health",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y5-Q3"
+        },
+        {
+          "id": "security-triage",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y5-Q3"
+        },
+        {
+          "id": "CODEOWNERS-policy",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y5-Q3"
+        },
+        {
+          "id": "release-cadence",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y5-Q3"
+        },
+        {
+          "id": "future public readiness checks",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-5"
+        },
+        {
+          "id": "future release evidence checks",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-5"
+        }
+      ],
+      "dryRunOnly": true,
+      "realElapsedFiveYears": false,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "gitHubWritePerformed": false,
+      "sshExecutionPerformed": false,
+      "deploymentPerformed": false
+    },
+    {
+      "sequence": 20,
+      "id": "dry-run-y5-q4",
+      "quarterId": "Y5-Q4",
+      "year": 5,
+      "theme": "Sustainable autonomous assistance and research readiness",
+      "focus": "Close the five-year phase with evidence-backed readiness, lessons, and next-phase gates.",
+      "aiCoreVersionTarget": "v1.0-public-enterprise-candidate",
+      "aiCoreVersionTheme": "Public, enterprise, and SEIS Universe governance",
+      "promotionGate": "Release, security, provenance, model-claims, and public-readiness evidence support the version claim.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-until-evidence",
+      "promotionReleaseAllowed": false,
+      "promotionHumanApprovalRequired": true,
+      "primaryLanes": [
+        "architecture-agent",
+        "documentation-agent",
+        "validation-agent"
+      ],
+      "actions": [
+        {
+          "laneId": "architecture-agent",
+          "role": "Architecture and platform coherence",
+          "authority": "review-only",
+          "wipLimit": 2,
+          "action": "Check module boundaries, version gates, and source-of-truth consistency.",
+          "output": "Y5-Q4: Close the five-year phase with evidence-backed readiness, lessons, and next-phase gates.",
+          "promotionDecisionObserved": "blocked-until-evidence",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "documentation-agent",
+          "role": "Source-of-truth docs, evidence, and handoffs",
+          "authority": "scoped-worker",
+          "wipLimit": 2,
+          "action": "Write current-versus-planned evidence and handoff notes.",
+          "output": "Y5-Q4: Close the five-year phase with evidence-backed readiness, lessons, and next-phase gates.",
+          "promotionDecisionObserved": "blocked-until-evidence",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        },
+        {
+          "laneId": "validation-agent",
+          "role": "Tests, smoke checks, audit scripts, and release evidence",
+          "authority": "review-only-or-scoped-worker",
+          "wipLimit": 2,
+          "action": "Map required checks, smoke tests, and promotion evidence.",
+          "output": "Y5-Q4: Close the five-year phase with evidence-backed readiness, lessons, and next-phase gates.",
+          "promotionDecisionObserved": "blocked-until-evidence",
+          "externalMutationPerformed": false,
+          "credentialAccessPerformed": false,
+          "dryRunOnly": true
+        }
+      ],
+      "outcomes": [
+        "phase closure report",
+        "next-phase handoff",
+        "capability maturity review"
+      ],
+      "gateChecks": [
+        {
+          "id": "evidence-complete",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y5-Q4"
+        },
+        {
+          "id": "known-limits",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y5-Q4"
+        },
+        {
+          "id": "human-review",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y5-Q4"
+        },
+        {
+          "id": "next-safe-action",
+          "status": "passed-in-simulation",
+          "evidence": "documented-quarter-gate",
+          "scope": "Y5-Q4"
+        },
+        {
+          "id": "future public readiness checks",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-5"
+        },
+        {
+          "id": "future release evidence checks",
+          "status": "scheduled-for-human-reviewed-validation",
+          "evidence": "promotion-gate-validation-command",
+          "scope": "year-5"
+        }
+      ],
+      "dryRunOnly": true,
+      "realElapsedFiveYears": false,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "gitHubWritePerformed": false,
+      "sshExecutionPerformed": false,
+      "deploymentPerformed": false
+    }
+  ]
+}

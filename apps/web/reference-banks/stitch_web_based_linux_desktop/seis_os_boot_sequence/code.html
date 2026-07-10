@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS - Boot Screen</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed-variant": "#92002a",
+                      "tertiary-container": "#ff516a",
+                      "primary-fixed": "#f0dbff",
+                      "on-secondary-fixed-variant": "#842500",
+                      "on-primary-fixed-variant": "#6900b3",
+                      "surface-container-high": "#282a2a",
+                      "tertiary-fixed": "#ffdadb",
+                      "on-error": "#690005",
+                      "inverse-surface": "#e1e3e2",
+                      "on-tertiary-container": "#5b0017",
+                      "surface-container": "#1d2020",
+                      "tertiary-fixed-dim": "#ffb2b7",
+                      "secondary-fixed": "#ffdbd0",
+                      "on-surface-variant": "#cfc2d6",
+                      "outline": "#988d9f",
+                      "secondary-fixed-dim": "#ffb59e",
+                      "on-surface": "#e1e3e2",
+                      "surface-bright": "#373a3a",
+                      "on-tertiary-fixed": "#40000d",
+                      "secondary-container": "#fc5b1f",
+                      "on-background": "#e1e3e2",
+                      "surface-variant": "#323535",
+                      "background": "#111414",
+                      "surface-container-low": "#191c1c",
+                      "on-primary": "#490080",
+                      "on-primary-container": "#400071",
+                      "error-container": "#93000a",
+                      "surface-container-highest": "#323535",
+                      "tertiary": "#ffb2b7",
+                      "surface": "#111414",
+                      "on-tertiary": "#67001b",
+                      "surface-tint": "#ddb7ff",
+                      "on-secondary-fixed": "#390b00",
+                      "secondary": "#ffb59e",
+                      "inverse-on-surface": "#2e3131",
+                      "on-primary-fixed": "#2c0051",
+                      "error": "#ffb4ab",
+                      "primary-container": "#b76dff",
+                      "primary": "#ddb7ff",
+                      "outline-variant": "#4d4354",
+                      "inverse-primary": "#842bd2",
+                      "primary-fixed-dim": "#ddb7ff",
+                      "on-secondary": "#5d1800",
+                      "on-secondary-container": "#521400",
+                      "surface-dim": "#111414",
+                      "surface-container-lowest": "#0c0f0f",
+                      "on-error-container": "#ffdad6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "8px",
+                      "container-padding": "32px",
+                      "gutter": "24px",
+                      "safe-area": "40px"
+              },
+              "fontFamily": {
+                      "body-md": [
+                              "Geist"
+                      ],
+                      "label-sm": [
+                              "JetBrains Mono"
+                      ],
+                      "headline-lg": [
+                              "Geist"
+                      ],
+                      "display": [
+                              "Geist"
+                      ],
+                      "code-md": [
+                              "JetBrains Mono"
+                      ],
+                      "body-lg": [
+                              "Geist"
+                      ],
+                      "headline-md": [
+                              "Geist"
+                      ]
+              },
+              "fontSize": {
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "code-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "500"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.8; filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.4)); }
+            50% { opacity: 1; filter: drop-shadow(0 0 40px rgba(168, 85, 247, 0.8)); }
+        }
+        @keyframes load-bar {
+            0% { width: 0%; }
+            20% { width: 10%; }
+            50% { width: 45%; }
+            80% { width: 70%; }
+            100% { width: 85%; }
+        }
+        @keyframes text-flicker {
+            0% { opacity: 0.1; }
+            2% { opacity: 1; }
+            8% { opacity: 0.1; }
+            9% { opacity: 1; }
+            12% { opacity: 0.1; }
+            20% { opacity: 1; }
+            25% { opacity: 0.3; }
+            30% { opacity: 1; }
+            70% { opacity: 0.7; }
+            72% { opacity: 0.2; }
+            77% { opacity: 0.9; }
+            100% { opacity: 1; }
+        }
+        
+        .logo-glow {
+            animation: pulse-glow 4s ease-in-out infinite;
+        }
+        .progress-fill {
+            animation: load-bar 8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        .flicker-text {
+            animation: text-flicker 3s linear;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen w-full overflow-hidden flex flex-col items-center justify-center relative select-none">
+<!-- Background Shader -->
+<!-- STITCH_SHADER_START:ANIMATION_21 class="absolute inset-0 w-full h-full z-0 opacity-40 mix-blend-screen pointer-events-none" -->
+<div class="absolute inset-0 w-full h-full z-0 opacity-40 mix-blend-screen pointer-events-none" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_21" style="display:block;width:100%;height:100%"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_21');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+uniform float u_time;
+uniform vec2 u_resolution;
+
+void main() {
+    vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+    float time = u_time * 0.2;
+    
+    // Abstract fluid motion with purple and orange tones
+    vec3 color1 = vec3(0.66, 0.33, 0.97); // Electric Purple
+    vec3 color2 = vec3(0.97, 0.45, 0.25); // Cinematic Orange
+    vec3 color3 = vec3(0.05, 0.06, 0.06); // Deep Obsidian
+    
+    float noise = sin(uv.x * 3.0 + time) * cos(uv.y * 2.0 - time);
+    noise += sin(uv.y * 5.0 + time * 1.5) * 0.5;
+    
+    vec3 finalColor = mix(color3, color1, clamp(noise + uv.y * 0.5, 0.0, 1.0));
+    finalColor = mix(finalColor, color2, clamp(sin(time + uv.x * 2.0) * 0.3, 0.0, 1.0));
+    
+    gl_FragColor = vec4(finalColor * 0.8, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_21 -->
+<!-- Radial Vignette overlay to focus center -->
+<div class="absolute inset-0 z-0 pointer-events-none" style="background: radial-gradient(circle at center, transparent 0%, rgba(17,20,20,0.8) 70%, #111414 100%);"></div>
+<!-- Main Content Container -->
+<main class="z-10 flex flex-col items-center justify-center w-full max-w-[600px] px-container-padding">
+<!-- Logo Area -->
+<div class="mb-16 flex flex-col items-center relative">
+<!-- Subtle luminous shadow behind logo -->
+<div class="absolute inset-0 rounded-full bg-primary blur-[80px] opacity-20 transform scale-150 z-0"></div>
+<h1 class="font-display text-display text-on-surface tracking-widest uppercase z-10 logo-glow">SEIS<span class="text-primary font-bold">OS</span></h1>
+<div class="h-1 w-12 bg-primary mt-4 opacity-50 rounded-full"></div>
+</div>
+<!-- Loading Interface -->
+<div class="w-full max-w-md flex flex-col gap-6">
+<!-- Loading Bar Container -->
+<div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden border border-white/5 relative">
+<div class="h-full bg-primary progress-fill relative shadow-[0_0_15px_rgba(221,183,255,0.6)]">
+<!-- Loading bar glare -->
+<div class="absolute top-0 left-0 w-full h-1/2 bg-white/20"></div>
+</div>
+</div>
+<!-- Terminal Status Text -->
+<div class="font-code-md text-code-md text-on-surface-variant flex flex-col gap-2 w-full mt-8 opacity-80 border-t border-white/5 pt-6 bg-surface-container/30 backdrop-blur-md rounded-lg p-4 font-label-sm border border-white/5">
+<div class="flex justify-between items-center w-full">
+<span class="opacity-60">&gt; CORE_INITIALIZATION:</span>
+<span class="text-on-surface flicker-text">[OK]</span>
+</div>
+<div class="flex justify-between items-center w-full">
+<span class="opacity-60">&gt; MEMORY_MOUNT:</span>
+<span class="text-on-surface flicker-text" style="animation-delay: 0.5s;">[SUCCESS]</span>
+</div>
+<div class="flex justify-between items-center w-full relative">
+<span class="opacity-60">&gt; AI_ENGINE:</span>
+<span class="text-primary font-bold animate-pulse">[LOADING...]</span>
+<!-- AI processing pulse effect -->
+<div class="absolute right-0 -mr-4 w-2 h-2 rounded-full bg-primary animate-ping"></div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer subtle branding -->
+<div class="absolute bottom-safe-area font-label-sm text-label-sm text-on-surface-variant/40 tracking-widest z-10">
+        V 2.0.4.88 // KERNEL ONLINE
+    </div>
+<script>
+        // Simple script to update the loading text occasionally for effect
+        setTimeout(() => {
+            const aiLoading = document.querySelector('span.text-primary.animate-pulse');
+            if(aiLoading) {
+                aiLoading.textContent = '[SYNTHESIZING]';
+            }
+        }, 4000);
+    </script>
+</body></html>

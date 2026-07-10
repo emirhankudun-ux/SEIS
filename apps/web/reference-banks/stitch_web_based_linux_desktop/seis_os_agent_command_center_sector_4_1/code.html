@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS - Agent Command Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#121414",
+                        "secondary-container": "#ce5dff",
+                        "primary": "#dbfcff",
+                        "on-secondary": "#520071",
+                        "background": "#121414",
+                        "primary-fixed-dim": "#00dbe9",
+                        "on-error-container": "#ffdad6",
+                        "secondary": "#ebb2ff",
+                        "outline-variant": "#3b494b",
+                        "surface-container-low": "#1a1c1c",
+                        "on-surface": "#e2e2e2",
+                        "surface-tint": "#00dbe9",
+                        "error-container": "#93000a",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "on-primary": "#00363a",
+                        "error": "#ffb4ab",
+                        "surface-container": "#1e2020",
+                        "secondary-fixed": "#f8d8ff",
+                        "inverse-primary": "#006970",
+                        "on-primary-fixed": "#002022",
+                        "surface-container-high": "#282a2b",
+                        "tertiary-container": "#dcd9d8",
+                        "surface-bright": "#37393a",
+                        "on-secondary-container": "#480064",
+                        "on-error": "#690005",
+                        "on-surface-variant": "#b9cacb",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-primary-container": "#006970",
+                        "surface-container-lowest": "#0c0f0f",
+                        "primary-fixed": "#7df4ff",
+                        "on-background": "#e2e2e2",
+                        "inverse-surface": "#e2e2e2",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "primary-container": "#00f0ff",
+                        "on-tertiary-container": "#605e5e",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "inverse-on-surface": "#2f3131",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "surface-variant": "#333535",
+                        "on-tertiary": "#313030",
+                        "on-secondary-fixed": "#320047",
+                        "surface": "#121414",
+                        "outline": "#849495",
+                        "tertiary": "#f9f5f5",
+                        "surface-container-highest": "#333535",
+                        "on-primary-fixed-variant": "#004f54"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-page": "32px",
+                        "gap-sm": "8px",
+                        "gap-md": "16px",
+                        "gap-lg": "24px",
+                        "stroke-thin": "1px",
+                        "gap-xs": "4px",
+                        "stroke-thick": "2px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["JetBrains Mono"],
+                        "label-sm": ["Space Mono"],
+                        "code-sm": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"],
+                        "headline-lg": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "code-sm": ["13px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #0a0a0a; color: #e2e2e2; }
+        .glass-panel {
+            background-color: rgba(18, 20, 20, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid #333333;
+        }
+        .glass-panel:hover, .glass-panel:focus-within {
+            border-color: #7df4ff;
+        }
+        .terminal-blink {
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .glow-text-primary {
+            text-shadow: 0 0 8px rgba(125, 244, 255, 0.5);
+        }
+        .glow-border-primary {
+            box-shadow: 0 0 8px rgba(125, 244, 255, 0.3) inset;
+        }
+        /* Custom Scrollbar for Terminal */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121414; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333535; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7df4ff; 
+        }
+    </style>
+</head>
+<body class="font-body-md h-screen w-screen overflow-hidden flex flex-col relative">
+<!-- TopNavBar component -->
+<nav class="bg-surface-container-lowest/80 backdrop-blur-xl docked full-width top-0 border-b border-outline-variant/30 flat no shadows flex justify-between items-center w-full px-gap-md h-10 z-50 shrink-0">
+<div class="flex items-center gap-gap-md">
+<span class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim uppercase">SEIS KERNEL OS</span>
+<div class="flex gap-gap-md ml-gap-lg">
+<a class="text-on-surface-variant font-label-caps uppercase hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 text-label-sm" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-caps uppercase hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 text-label-sm" href="#">TELEMETRY</a>
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 uppercase hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 text-label-sm" href="#">AGENTS</a>
+<a class="text-on-surface-variant font-label-caps uppercase hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 text-label-sm" href="#">NETWORK</a>
+</div>
+</div>
+<div class="flex items-center gap-gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed transition-colors duration-200 cursor-pointer text-xl">memory</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed transition-colors duration-200 cursor-pointer text-xl">terminal</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed transition-colors duration-200 cursor-pointer text-xl">settings</span>
+</div>
+</nav>
+<div class="flex flex-1 overflow-hidden relative">
+<!-- SideNavBar component -->
+<aside class="bg-surface-container-lowest/90 backdrop-blur-2xl docked left-0 h-full w-20 hover:w-64 transition-all duration-300 border-r border-outline-variant/20 flat no shadows fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col group overflow-hidden shrink-0">
+<div class="p-gap-md border-b border-outline-variant/20 flex items-center gap-gap-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-64">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-surface text-sm">person</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-secondary-fixed text-label-sm uppercase truncate">ROOT_USER</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant truncate">SEIS-01</span>
+</div>
+</div>
+<div class="flex flex-col py-gap-sm flex-1">
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 relative" href="#">
+<span class="material-symbols-outlined text-xl w-6 flex justify-center shrink-0">dashboard</span>
+<span class="font-label-caps text-label-sm uppercase ml-gap-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute left-14 whitespace-nowrap">DASHBOARD</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 relative" href="#">
+<span class="material-symbols-outlined text-xl w-6 flex justify-center shrink-0">folder_open</span>
+<span class="font-label-caps text-label-sm uppercase ml-gap-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute left-14 whitespace-nowrap">FILESYSTEM</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 relative" href="#">
+<span class="material-symbols-outlined text-xl w-6 flex justify-center shrink-0">terminal</span>
+<span class="font-label-caps text-label-sm uppercase ml-gap-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute left-14 whitespace-nowrap">TERMINAL</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed hover:bg-surface-variant/20 transition-all duration-150 relative" href="#">
+<span class="material-symbols-outlined text-xl w-6 flex justify-center shrink-0">smart_toy</span>
+<span class="font-label-caps text-label-sm uppercase ml-gap-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute left-14 whitespace-nowrap">AI_AGENTS</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 relative" href="#">
+<span class="material-symbols-outlined text-xl w-6 flex justify-center shrink-0">cloud_queue</span>
+<span class="font-label-caps text-label-sm uppercase ml-gap-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute left-14 whitespace-nowrap">INFRASTRUCTURE</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 relative" href="#">
+<span class="material-symbols-outlined text-xl w-6 flex justify-center shrink-0">list_alt</span>
+<span class="font-label-caps text-label-sm uppercase ml-gap-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute left-14 whitespace-nowrap">LOGS</span>
+</a>
+</div>
+<div class="p-gap-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-64">
+<button class="w-full bg-surface-variant hover:bg-primary-fixed hover:text-on-primary-fixed text-on-surface transition-colors duration-200 py-2 font-label-caps text-label-sm uppercase">NEW_SESSION</button>
+</div>
+<div class="mt-auto border-t border-outline-variant/20 flex flex-col py-gap-sm">
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 relative" href="#">
+<span class="material-symbols-outlined text-xl w-6 flex justify-center shrink-0">power_settings_new</span>
+<span class="font-label-caps text-label-sm uppercase ml-gap-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute left-14 whitespace-nowrap">POWER</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 relative" href="#">
+<span class="material-symbols-outlined text-xl w-6 flex justify-center shrink-0">lock</span>
+<span class="font-label-caps text-label-sm uppercase ml-gap-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute left-14 whitespace-nowrap">LOCK</span>
+</a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="flex-1 ml-20 p-gap-md flex flex-col gap-gap-md overflow-y-auto bg-background relative z-10">
+<!-- Header -->
+<header class="flex justify-between items-center shrink-0">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-primary-fixed uppercase tracking-tight">Agent Command Center</h1>
+<p class="font-code-sm text-code-sm text-on-surface-variant mt-1">// SECTOR_4_TELEMETRY_ACTIVE</p>
+</div>
+<div class="flex gap-gap-sm">
+<button class="bg-primary-fixed text-on-primary-fixed px-4 py-2 font-label-caps text-label-sm uppercase hover:bg-secondary hover:text-on-secondary transition-colors duration-200">Deploy Agent</button>
+<button class="border border-primary-fixed text-primary-fixed px-4 py-2 font-label-caps text-label-sm uppercase hover:bg-primary-fixed/10 transition-colors duration-200 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">pause_circle</span> Halt All
+                    </button>
+</div>
+</header>
+<!-- Tiling Grid Layout -->
+<div class="grid grid-cols-12 grid-rows-[auto_1fr_auto] gap-gap-md flex-1 min-h-[600px]">
+<!-- Agents Roster (Left Column) -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-gap-md h-full">
+<!-- Agent Card 1 -->
+<div class="glass-panel rounded flex flex-col overflow-hidden">
+<div class="bg-primary-fixed h-6 px-3 flex items-center justify-between">
+<span class="font-code-sm text-code-sm text-on-primary-fixed font-bold">Agent_Alpha [ID:0x7A]</span>
+<span class="flex h-2 w-2 rounded-full bg-on-primary-fixed animate-pulse"></span>
+</div>
+<div class="p-gap-sm flex flex-col gap-gap-sm">
+<div class="flex justify-between items-end border-b border-outline-variant/30 pb-2">
+<span class="font-label-caps text-label-sm text-on-surface-variant">Objective</span>
+<span class="font-code-sm text-code-sm text-on-surface text-right truncate w-48">Data_Scrape_Node_B</span>
+</div>
+<div class="grid grid-cols-2 gap-gap-sm">
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-label-sm text-on-surface-variant">CPU</span>
+<span class="font-code-sm text-code-sm text-primary-fixed">78%</span>
+</div>
+<div class="flex gap-[1px] h-2">
+<div class="flex-1 bg-primary-fixed"></div>
+<div class="flex-1 bg-primary-fixed"></div>
+<div class="flex-1 bg-primary-fixed"></div>
+<div class="flex-1 bg-primary-fixed"></div>
+<div class="flex-1 bg-surface-variant"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-label-sm text-on-surface-variant">TKN/s</span>
+<span class="font-code-sm text-code-sm text-secondary-container">1.2k</span>
+</div>
+<div class="flex gap-[1px] h-2">
+<div class="flex-1 bg-secondary-container"></div>
+<div class="flex-1 bg-secondary-container"></div>
+<div class="flex-1 bg-surface-variant"></div>
+<div class="flex-1 bg-surface-variant"></div>
+<div class="flex-1 bg-surface-variant"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Agent Card 2 -->
+<div class="glass-panel rounded flex flex-col overflow-hidden">
+<div class="bg-surface-variant h-6 px-3 flex items-center justify-between border-b border-outline-variant/30">
+<span class="font-code-sm text-code-sm text-on-surface font-bold">Agent_Beta [ID:0x2F]</span>
+<span class="flex h-2 w-2 rounded-full bg-secondary"></span>
+</div>
+<div class="p-gap-sm flex flex-col gap-gap-sm">
+<div class="flex justify-between items-end border-b border-outline-variant/30 pb-2">
+<span class="font-label-caps text-label-sm text-on-surface-variant">Objective</span>
+<span class="font-code-sm text-code-sm text-on-surface text-right truncate w-48">Synthesize_Report_X</span>
+</div>
+<div class="grid grid-cols-2 gap-gap-sm">
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-label-sm text-on-surface-variant">CPU</span>
+<span class="font-code-sm text-code-sm text-primary-fixed">22%</span>
+</div>
+<div class="flex gap-[1px] h-2">
+<div class="flex-1 bg-primary-fixed"></div>
+<div class="flex-1 bg-surface-variant"></div>
+<div class="flex-1 bg-surface-variant"></div>
+<div class="flex-1 bg-surface-variant"></div>
+<div class="flex-1 bg-surface-variant"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-label-sm text-on-surface-variant">TKN/s</span>
+<span class="font-code-sm text-code-sm text-secondary-container">0.3k</span>
+</div>
+<div class="flex gap-[1px] h-2">
+<div class="flex-1 bg-secondary-container"></div>
+<div class="flex-1 bg-surface-variant"></div>
+<div class="flex-1 bg-surface-variant"></div>
+<div class="flex-1 bg-surface-variant"></div>
+<div class="flex-1 bg-surface-variant"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Agent Card 3 (Idle) -->
+<div class="glass-panel rounded flex flex-col overflow-hidden opacity-60">
+<div class="bg-surface-variant h-6 px-3 flex items-center justify-between border-b border-outline-variant/30">
+<span class="font-code-sm text-code-sm text-on-surface font-bold">Agent_Gamma [ID:0x9C]</span>
+<span class="flex h-2 w-2 rounded-full bg-outline-variant"></span>
+</div>
+<div class="p-gap-sm flex flex-col gap-gap-sm">
+<div class="flex justify-between items-end border-b border-outline-variant/30 pb-2">
+<span class="font-label-caps text-label-sm text-on-surface-variant">Objective</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant text-right italic">Awaiting_Orders</span>
+</div>
+<div class="grid grid-cols-2 gap-gap-sm">
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-label-sm text-on-surface-variant">CPU</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">0%</span>
+</div>
+<div class="flex gap-[1px] h-2">
+<div class="flex-1 bg-surface-variant"></div>
+<div class="flex-1 bg-surface-variant"></div>
+<div class="flex-1 bg-surface-variant"></div>
+<div class="flex-1 bg-surface-variant"></div>
+<div class="flex-1 bg-surface-variant"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-label-sm text-on-surface-variant">TKN/s</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">0.0k</span>
+</div>
+<div class="flex gap-[1px] h-2">
+<div class="flex-1 bg-surface-variant"></div>
+<div class="flex-1 bg-surface-variant"></div>
+<div class="flex-1 bg-surface-variant"></div>
+<div class="flex-1 bg-surface-variant"></div>
+<div class="flex-1 bg-surface-variant"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Neural Map & Telemetry (Center/Right Column) -->
+<div class="col-span-12 lg:col-span-8 flex flex-col gap-gap-md h-full row-span-2">
+<!-- Neural Map Visualization -->
+<div class="glass-panel rounded flex flex-col flex-1 relative overflow-hidden min-h-[400px]">
+<div class="bg-primary-fixed h-6 px-3 flex items-center justify-between z-10 relative">
+<span class="font-code-sm text-code-sm text-on-primary-fixed font-bold">NEURAL_TOPOLOGY_MAP</span>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-on-primary-fixed text-sm cursor-pointer hover:opacity-70">zoom_in</span>
+<span class="material-symbols-outlined text-on-primary-fixed text-sm cursor-pointer hover:opacity-70">zoom_out</span>
+</div>
+</div>
+<!-- Map Canvas Area -->
+<div class="flex-1 relative bg-surface-container-lowest/50" style="background-image: radial-gradient(#333535 1px, transparent 1px); background-size: 20px 20px;">
+<!-- Placeholder for complex WebGL/SVG visualization. For now, simulating nodes with CSS -->
+<!-- Node Alpha -->
+<div class="absolute top-[20%] left-[30%] flex flex-col items-center gap-1 group cursor-crosshair z-20">
+<div class="w-4 h-4 rounded-full bg-primary-fixed shadow-[0_0_15px_rgba(125,244,255,0.8)] border border-primary relative">
+<div class="absolute inset-0 rounded-full bg-primary-fixed animate-ping opacity-75"></div>
+</div>
+<span class="font-code-sm text-code-sm text-primary-fixed bg-background/80 px-1 rounded border border-primary-fixed/30 hidden group-hover:block absolute top-6 whitespace-nowrap">Agent_Alpha</span>
+</div>
+<!-- Node Beta -->
+<div class="absolute top-[60%] left-[60%] flex flex-col items-center gap-1 group cursor-crosshair z-20">
+<div class="w-3 h-3 rounded-full bg-secondary border border-secondary shadow-[0_0_10px_rgba(235,178,255,0.6)]"></div>
+<span class="font-code-sm text-code-sm text-secondary bg-background/80 px-1 rounded border border-secondary/30 hidden group-hover:block absolute top-5 whitespace-nowrap">Agent_Beta</span>
+</div>
+<!-- Node Target/Data -->
+<div class="absolute top-[30%] left-[70%] flex flex-col items-center gap-1 group cursor-crosshair z-20">
+<div class="w-6 h-6 rotate-45 border-2 border-outline-variant bg-surface flex items-center justify-center">
+<div class="w-2 h-2 bg-on-surface-variant"></div>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant bg-background/80 px-1 rounded border border-outline-variant/30 hidden group-hover:block absolute top-8 whitespace-nowrap">Node_B_Data</span>
+</div>
+<!-- Connecting Lines (SVG overlay simulation) -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none z-10" xmlns="http://www.w3.org/2000/svg">
+<line class="opacity-50 animate-[dash_2s_linear_infinite]" stroke="#7df4ff" stroke-dasharray="4" stroke-width="1" x1="30%" x2="70%" y1="20%" y2="30%">
+<animate attributename="stroke-dashoffset" dur="2s" from="100" repeatcount="indefinite" to="0"></animate>
+</line>
+<line class="opacity-30" stroke="#ebb2ff" stroke-width="1" x1="60%" x2="70%" y1="60%" y2="30%"></line>
+</svg>
+<style>
+                                @keyframes dash { to { stroke-dashoffset: -20; } }
+                            </style>
+</div>
+</div>
+<!-- System Telemetry Bar -->
+<div class="glass-panel rounded p-gap-sm flex justify-between items-center shrink-0">
+<div class="flex gap-gap-lg">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-sm text-on-surface-variant">Global TKN Rate</span>
+<span class="font-headline-md text-headline-md text-primary-fixed">1.5k<span class="text-body-md text-on-surface-variant">/s</span></span>
+</div>
+<div class="w-[1px] bg-outline-variant/30 h-8 self-center"></div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-sm text-on-surface-variant">Active Nodes</span>
+<span class="font-headline-md text-headline-md text-on-surface">12</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline-variant">public</span>
+<span class="font-code-sm text-code-sm text-outline-variant">SYS_OK</span>
+</div>
+</div>
+</div>
+<!-- Terminal Sudo Command Panel (Spans bottom) -->
+<div class="col-span-12 glass-panel rounded flex flex-col h-48 bg-[#080909]">
+<div class="bg-surface-variant h-6 px-3 flex items-center justify-between border-b border-outline-variant/30 shrink-0">
+<span class="font-code-sm text-code-sm text-on-surface font-bold">ROOT_TERMINAL // SUDO</span>
+<div class="flex gap-1">
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+</div>
+</div>
+<div class="p-gap-sm flex-1 overflow-y-auto font-code-sm text-code-sm text-on-surface-variant flex flex-col gap-1">
+<div><span class="text-secondary-container">seis@kernel</span><span class="text-primary-fixed">:</span><span class="text-on-surface">~</span>$ init_agent_protocol --sector 4</div>
+<div>[OK] Protocol initialized. Listening for commands...</div>
+<div><span class="text-secondary-container">seis@kernel</span><span class="text-primary-fixed">:</span><span class="text-on-surface">~</span>$ get_status Agent_Alpha</div>
+<div><span class="text-primary-fixed">Agent_Alpha</span> [ID:0x7A] | CPU: 78% | MEM: 412MB | OBJ: Data_Scrape_Node_B</div>
+<div class="mt-auto flex items-center group relative">
+<span class="text-secondary-container mr-2 shrink-0">seis@kernel</span><span class="text-primary-fixed mr-2 shrink-0">:</span><span class="text-on-surface mr-2 shrink-0">~</span>$ 
+                            <input autofocus="" class="bg-transparent border-none outline-none text-primary-fixed flex-1 font-code-sm text-code-sm focus:ring-0 p-0 m-0 w-full glow-border-primary" placeholder="Enter SUDO command..." type="text"/>
+<span class="w-2 h-4 bg-primary-fixed terminal-blink absolute right-0 pointer-events-none opacity-0 group-focus-within:opacity-100 hidden"></span>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

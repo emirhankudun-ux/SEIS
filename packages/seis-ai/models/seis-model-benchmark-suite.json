@@ -231,9 +231,9 @@
       "actual": "pass",
       "ok": true,
       "details": {
-        "learnedDecision": "pass",
+        "learnedDecision": "revise",
         "safetyDecision": "pass",
-        "safetyAdjusted": false,
+        "safetyAdjusted": true,
         "reasons": [
           "evidence and sources present",
           "validation evidence present"
@@ -263,9 +263,9 @@
       "actual": "block",
       "ok": true,
       "details": {
-        "learnedDecision": "block",
+        "learnedDecision": "revise",
         "safetyDecision": "block",
-        "safetyAdjusted": false,
+        "safetyAdjusted": true,
         "reasons": [
           "evidence and sources present",
           "validation evidence present",
@@ -280,9 +280,9 @@
       "actual": "block",
       "ok": true,
       "details": {
-        "learnedDecision": "block",
+        "learnedDecision": "revise",
         "safetyDecision": "block",
-        "safetyAdjusted": false,
+        "safetyAdjusted": true,
         "reasons": [
           "evidence and sources present",
           "passed validation missing",

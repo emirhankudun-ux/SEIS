@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS — Archive Manager</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-container": "#dcd9d8",
+                    "surface-dim": "#121414",
+                    "on-secondary-container": "#480064",
+                    "on-tertiary-container": "#605e5e",
+                    "on-primary-container": "#006970",
+                    "primary-container": "#00f0ff",
+                    "on-surface-variant": "#b9cacb",
+                    "secondary-fixed": "#f8d8ff",
+                    "outline": "#849495",
+                    "on-background": "#e2e2e2",
+                    "on-secondary-fixed-variant": "#74009f",
+                    "surface-container-highest": "#333535",
+                    "surface-container-high": "#282a2b",
+                    "surface-container": "#1e2020",
+                    "inverse-surface": "#e2e2e2",
+                    "background": "#121414",
+                    "surface-container-lowest": "#0c0f0f",
+                    "primary-fixed": "#7df4ff",
+                    "on-error-container": "#ffdad6",
+                    "secondary": "#ebb2ff",
+                    "on-primary-fixed": "#002022",
+                    "inverse-on-surface": "#2f3131",
+                    "tertiary-fixed-dim": "#c9c6c5",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "surface-container-low": "#1a1c1c",
+                    "on-error": "#690005",
+                    "inverse-primary": "#006970",
+                    "on-tertiary": "#313030",
+                    "primary": "#dbfcff",
+                    "secondary-container": "#ce5dff",
+                    "error": "#ffb4ab",
+                    "surface-variant": "#333535",
+                    "surface": "#121414",
+                    "secondary-fixed-dim": "#ebb2ff",
+                    "outline-variant": "#3b494b",
+                    "on-secondary": "#520071",
+                    "tertiary": "#f9f5f5",
+                    "surface-bright": "#37393a",
+                    "on-tertiary-fixed-variant": "#474646",
+                    "on-primary": "#00363a",
+                    "tertiary-fixed": "#e5e2e1",
+                    "primary-fixed-dim": "#00dbe9",
+                    "on-secondary-fixed": "#320047",
+                    "on-primary-fixed-variant": "#004f54",
+                    "error-container": "#93000a",
+                    "surface-tint": "#00dbe9",
+                    "on-surface": "#e2e2e2"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gap-sm": "8px",
+                    "gap-lg": "24px",
+                    "margin-page": "32px",
+                    "stroke-thick": "2px",
+                    "gap-xs": "4px",
+                    "stroke-thin": "1px",
+                    "gap-md": "16px"
+            },
+            "fontFamily": {
+                    "code-sm": [
+                            "JetBrains Mono"
+                    ],
+                    "body-lg": [
+                            "JetBrains Mono"
+                    ],
+                    "headline-md": [
+                            "JetBrains Mono"
+                    ],
+                    "headline-lg": [
+                            "JetBrains Mono"
+                    ],
+                    "body-md": [
+                            "JetBrains Mono"
+                    ],
+                    "label-sm": [
+                            "Space Mono"
+                    ]
+            },
+            "fontSize": {
+                    "code-sm": [
+                            "13px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "body-lg": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "1.5",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-sm": [
+                            "12px",
+                            {
+                                    "lineHeight": "1",
+                                    "letterSpacing": "0.1em",
+                                    "fontWeight": "700"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        /* Terminal Cursor Blink */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .cursor-blink {
+            animation: blink 1s step-end infinite;
+        }
+        
+        /* Subtle scanline effect for terminal panels */
+        .scanlines {
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0,0,0,0.1) 50%,
+                rgba(0,0,0,0.1)
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+        
+        /* Scrollbar styling for that riced feel */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121414;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b494b;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f0ff;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen overflow-hidden selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TopNavBar -->
+<header class="bg-surface-container-lowest/80 backdrop-blur-xl docked full-width top-0 border-b border-outline-variant/30 flex justify-between items-center w-full px-gap-md h-10 z-50">
+<div class="flex items-center gap-gap-md h-full">
+<span class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</span>
+<nav class="hidden md:flex h-full items-end gap-gap-md ml-gap-lg">
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 pb-1" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 pb-1" href="#">TELEMETRY</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 pb-1" href="#">AGENTS</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 pb-1" href="#">NETWORK</a>
+</nav>
+</div>
+<div class="flex items-center gap-gap-sm text-primary-fixed">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed transition-colors duration-200" data-icon="memory">memory</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed transition-colors duration-200" data-icon="terminal">terminal</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed transition-colors duration-200" data-icon="settings">settings</span>
+</div>
+</header>
+<div class="flex h-[calc(100vh-40px)] w-full">
+<!-- SideNavBar -->
+<nav class="bg-surface-container-lowest/90 backdrop-blur-2xl docked left-0 h-full w-20 hover:w-64 transition-all duration-300 border-r border-outline-variant/20 flex flex-col z-40 group shrink-0 hidden md:flex overflow-hidden">
+<div class="px-4 py-6 border-b border-outline-variant/20 flex items-center gap-gap-md w-64">
+<div class="w-10 h-10 rounded bg-surface-variant flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="account_circle">account_circle</span>
+</div>
+<div class="flex flex-col opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+<span class="font-label-caps text-label-caps text-secondary-fixed">ROOT_USER</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</span>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto py-gap-sm flex flex-col gap-1 w-64">
+<a class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="dashboard">dashboard</span>
+<span class="font-label-caps text-label-caps ml-gap-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">DASHBOARD</span>
+</a>
+<a class="flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="folder_open">folder_open</span>
+<span class="font-label-caps text-label-caps ml-gap-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">FILESYSTEM</span>
+</a>
+<a class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="terminal">terminal</span>
+<span class="font-label-caps text-label-caps ml-gap-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">TERMINAL</span>
+</a>
+<a class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="smart_toy">smart_toy</span>
+<span class="font-label-caps text-label-caps ml-gap-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">AI_AGENTS</span>
+</a>
+<a class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="cloud_queue">cloud_queue</span>
+<span class="font-label-caps text-label-caps ml-gap-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">INFRASTRUCTURE</span>
+</a>
+<a class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="list_alt">list_alt</span>
+<span class="font-label-caps text-label-caps ml-gap-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">LOGS</span>
+</a>
+</div>
+<div class="px-4 py-gap-sm mt-auto border-t border-outline-variant/20 w-64">
+<button class="w-full bg-surface-variant/50 border border-outline-variant hover:border-secondary-fixed text-secondary-fixed font-label-caps text-label-caps py-2 px-4 transition-colors duration-200 opacity-0 group-hover:opacity-100 whitespace-nowrap mb-4">
+                    NEW_SESSION
+                </button>
+<div class="flex items-center gap-gap-sm mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-on-surface-variant font-label-caps text-label-caps cursor-pointer hover:text-error transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="power_settings_new">power_settings_new</span>
+<span>POWER</span>
+</div>
+<div class="flex items-center gap-gap-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-on-surface-variant font-label-caps text-label-caps cursor-pointer hover:text-secondary-fixed transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="lock">lock</span>
+<span>LOCK</span>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col md:flex-row p-gap-md gap-gap-md overflow-hidden bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjQiIGZpbGw9IiMxMjE0MTQiPjwvcmVjdD48cmVjdCB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSIjMWExYzFjIj48L3JlY3Q+PC9zdmc+')] relative">
+<!-- Vault List Section (Center) -->
+<section class="flex-1 flex flex-col gap-gap-sm h-full overflow-hidden bg-surface-container-highest/85 border border-outline-variant/30 backdrop-blur-xl relative">
+<!-- Header -->
+<div class="h-6 bg-primary-container shrink-0 flex items-center px-gap-sm justify-between">
+<span class="font-label-caps text-label-caps text-on-primary-container">ARCHIVE_INDEX_DB</span>
+<span class="font-code-sm text-[10px] text-on-primary-container/70">SEC_1</span>
+</div>
+<!-- Filters/Controls -->
+<div class="px-gap-sm py-2 border-b border-outline-variant/30 flex items-center justify-between shrink-0">
+<div class="flex items-center gap-gap-sm">
+<button class="bg-surface-variant px-2 py-1 border border-outline-variant text-on-surface-variant font-code-sm text-code-sm hover:border-primary-fixed hover:text-primary-fixed transition-colors">ALL</button>
+<button class="px-2 py-1 border border-transparent text-on-surface-variant font-code-sm text-code-sm hover:border-outline-variant hover:text-primary-fixed transition-colors">.TAR.GZ</button>
+<button class="px-2 py-1 border border-transparent text-on-surface-variant font-code-sm text-code-sm hover:border-outline-variant hover:text-primary-fixed transition-colors">.ZSTD</button>
+<button class="px-2 py-1 border border-transparent text-on-surface-variant font-code-sm text-code-sm hover:border-outline-variant hover:text-primary-fixed transition-colors">.VAULT</button>
+</div>
+<div class="flex items-center gap-gap-xs bg-surface-container-low border border-outline-variant/50 px-2 py-1 focus-within:border-primary-fixed focus-within:shadow-[inset_0_0_4px_rgba(0,240,255,0.3)] transition-all">
+<span class="material-symbols-outlined text-sm text-on-surface-variant" data-icon="search">search</span>
+<input class="bg-transparent border-none text-code-sm font-code-sm text-on-background placeholder:text-on-tertiary-container focus:ring-0 p-0 w-32 md:w-48 outline-none" placeholder="grep archive..." type="text"/>
+</div>
+</div>
+<!-- Archive List -->
+<div class="flex-1 overflow-y-auto font-code-sm text-code-sm">
+<div class="absolute inset-0 bg-primary-container/5 w-1/3 z-0 pointer-events-none border-r border-primary-fixed/50"></div><table class="w-full text-left border-collapse">
+<thead class="sticky top-0 bg-surface-container-highest border-b border-outline-variant/30 z-10">
+<tr>
+<th class="py-2 px-gap-sm text-on-surface-variant font-normal w-8"></th>
+<th class="py-2 px-gap-sm text-on-surface-variant font-normal">FILENAME</th>
+<th class="py-2 px-gap-sm text-on-surface-variant font-normal hidden lg:table-cell">SIZE</th>
+<th class="py-2 px-gap-sm text-on-surface-variant font-normal hidden xl:table-cell">CREATED</th>
+<th class="py-2 px-gap-sm text-on-surface-variant font-normal">STATUS</th>
+</tr>
+</thead>
+<tbody>
+<!-- Item 1 (Selected) -->
+<tr class="border-b border-outline-variant/20 bg-secondary-container/20 text-secondary-fixed hover:bg-secondary-container/30 cursor-pointer group transition-colors">
+<td class="py-2 px-gap-sm"><span class="material-symbols-outlined text-sm" data-icon="folder_zip">folder_zip</span></td>
+<td class="py-2 px-gap-sm group-hover:text-primary-fixed transition-colors">sys_backup_20231024.tar.gz</td>
+<td class="py-2 px-gap-sm hidden lg:table-cell">4.2 GB</td>
+<td class="py-2 px-gap-sm hidden xl:table-cell">2023-10-24 08:14</td>
+<td class="py-2 px-gap-sm">
+<span class="inline-block px-1 bg-surface-dim border border-secondary-fixed/50 text-[10px] uppercase">READY</span>
+</td>
+</tr>
+<!-- Item 2 -->
+<tr class="border-b border-outline-variant/20 hover:bg-surface-variant/30 cursor-pointer group transition-colors">
+<td class="py-2 px-gap-sm text-on-surface-variant"><span class="material-symbols-outlined text-sm" data-icon="lock">lock</span></td>
+<td class="py-2 px-gap-sm group-hover:text-primary-fixed transition-colors text-on-background">project_x_classified.vault</td>
+<td class="py-2 px-gap-sm hidden lg:table-cell text-on-surface-variant">850 MB</td>
+<td class="py-2 px-gap-sm hidden xl:table-cell text-on-surface-variant">2023-10-22 14:30</td>
+<td class="py-2 px-gap-sm">
+<span class="inline-block px-1 bg-surface-dim border border-outline-variant text-[10px] uppercase text-on-surface-variant">ENCRYPTED</span>
+</td>
+</tr>
+<!-- Item 3 -->
+<tr class="border-b border-outline-variant/20 hover:bg-surface-variant/30 cursor-pointer group transition-colors">
+<td class="py-2 px-gap-sm text-on-surface-variant"><span class="material-symbols-outlined text-sm" data-icon="folder_zip">folder_zip</span></td>
+<td class="py-2 px-gap-sm group-hover:text-primary-fixed transition-colors text-on-background">node_modules_hell.zstd</td>
+<td class="py-2 px-gap-sm hidden lg:table-cell text-on-surface-variant">1.1 GB</td>
+<td class="py-2 px-gap-sm hidden xl:table-cell text-on-surface-variant">2023-10-20 09:00</td>
+<td class="py-2 px-gap-sm">
+<span class="inline-block px-1 bg-surface-dim border border-outline-variant text-[10px] uppercase text-on-surface-variant">READY</span>
+</td>
+</tr>
+<!-- Item 4 (Extracting) -->
+<tr class="border-b border-outline-variant/20 hover:bg-surface-variant/30 cursor-pointer group transition-colors relative overflow-hidden">
+<td class="py-2 px-gap-sm text-primary-fixed relative z-10"><span class="material-symbols-outlined text-sm animate-spin" data-icon="sync">sync</span></td>
+<td class="py-2 px-gap-sm group-hover:text-primary-fixed transition-colors text-on-background relative z-10">legacy_db_dump.tar.gz</td>
+<td class="py-2 px-gap-sm hidden lg:table-cell text-on-surface-variant relative z-10">12.8 GB</td>
+<td class="py-2 px-gap-sm hidden xl:table-cell text-on-surface-variant relative z-10">2023-10-15 22:45</td>
+<td class="py-2 px-gap-sm relative z-10">
+<span class="inline-block px-1 bg-surface-dim border border-primary-fixed text-[10px] uppercase text-primary-fixed">EXTRACTING 33%</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Status Bar -->
+<div class="h-6 bg-surface-container-low shrink-0 border-t border-outline-variant/30 flex items-center px-gap-sm justify-between font-code-sm text-[10px] text-on-surface-variant">
+<span>TOTAL: 142 ITEMS (1.2 TB)</span>
+<span class="text-primary-fixed">IO_WAIT: 0.2%</span>
+</div>
+</section>
+<!-- Side Panel (Encryption & Integrity) -->
+<section class="w-full md:w-72 lg:w-80 flex flex-col gap-gap-md h-full shrink-0">
+<!-- Integrity Check Card -->
+<div class="flex-1 bg-surface-container-highest/85 border border-outline-variant/30 backdrop-blur-xl flex flex-col overflow-hidden">
+<div class="h-6 bg-surface-container-low shrink-0 border-b border-outline-variant/30 flex items-center px-gap-sm">
+<span class="font-label-caps text-label-caps text-on-background">INTEGRITY_MATRIX</span>
+</div>
+<div class="p-gap-sm flex flex-col gap-gap-sm flex-1 overflow-y-auto">
+<div class="font-code-sm text-code-sm">
+<div class="text-on-surface-variant mb-1">TARGET:</div>
+<div class="text-primary-fixed truncate">sys_backup_20231024.tar.gz</div>
+</div>
+<!-- Progress / Gauge -->
+<div class="mt-2">
+<div class="flex justify-between font-code-sm text-[10px] mb-1">
+<span class="text-on-surface-variant">SHA-256 HASH CHECK</span>
+<span class="text-primary-fixed">100%</span>
+</div>
+<div class="h-2 w-full flex gap-[1px]">
+<div class="h-full bg-primary-fixed flex-1"></div>
+<div class="h-full bg-primary-fixed flex-1"></div>
+<div class="h-full bg-primary-fixed flex-1"></div>
+<div class="h-full bg-primary-fixed flex-1"></div>
+<div class="h-full bg-primary-fixed flex-1"></div>
+<div class="h-full bg-primary-fixed flex-1"></div>
+<div class="h-full bg-primary-fixed flex-1"></div>
+<div class="h-full bg-primary-fixed flex-1"></div>
+<div class="h-full bg-primary-fixed flex-1"></div>
+<div class="h-full bg-primary-fixed flex-1"></div>
+</div>
+</div>
+<div class="bg-surface-dim border border-outline-variant/30 p-2 font-code-sm text-[10px] break-all text-on-tertiary-container mt-2">
+<span class="text-secondary-fixed">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</span>
+</div>
+<div class="mt-auto grid grid-cols-2 gap-gap-sm">
+<button class="bg-primary-container text-surface-container-lowest font-label-caps text-label-caps py-2 hover:bg-secondary-container hover:text-on-secondary-container transition-colors text-center cursor-pointer">
+                                VERIFY
+                            </button>
+<button class="bg-transparent border border-primary-container text-primary-container font-label-caps text-label-caps py-2 hover:bg-primary-container/10 transition-colors text-center cursor-pointer">
+                                FIX
+                            </button>
+</div>
+</div>
+</div>
+<!-- Encryption Settings Card -->
+<div class="h-48 bg-surface-container-highest/85 border border-outline-variant/30 backdrop-blur-xl flex flex-col overflow-hidden">
+<div class="h-6 bg-surface-container-low shrink-0 border-b border-outline-variant/30 flex items-center px-gap-sm">
+<span class="font-label-caps text-label-caps text-on-background">VAULT_SETTINGS</span>
+</div>
+<div class="p-gap-sm flex flex-col gap-gap-sm flex-1">
+<div class="flex items-center justify-between font-code-sm text-code-sm">
+<span class="text-on-surface-variant">ALGORITHM</span>
+<span class="text-secondary-fixed">AES-256-GCM</span>
+</div>
+<div class="flex items-center justify-between font-code-sm text-code-sm">
+<span class="text-on-surface-variant">KEY_SIZE</span>
+<span class="text-on-background">4096 BIT</span>
+</div>
+<div class="flex items-center justify-between font-code-sm text-code-sm">
+<span class="text-on-surface-variant">COMPRESSION</span>
+<span class="text-on-background">ZSTD (L9)</span>
+</div>
+<div class="mt-auto">
+<div class="relative focus-within:ring-1 focus-within:ring-secondary-fixed">
+<input class="w-full bg-surface-dim border border-outline-variant/50 p-2 font-code-sm text-code-sm text-on-background placeholder:text-on-tertiary-container focus:outline-none focus:border-secondary-fixed" placeholder="ENTER PASSPHRASE TO DECRYPT..." type="password"/>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-sm text-on-surface-variant cursor-pointer" data-icon="visibility">visibility</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Extraction Terminal (Bottom Panel - Collapsed state implied, but expanded for visual) -->
+<div class="fixed bottom-0 left-0 w-full md:left-20 md:w-[calc(100%-80px)] h-48 bg-surface-dim border-t border-primary-fixed/50 z-30 flex flex-col shadow-[0_-4px_20px_rgba(0,240,255,0.05)]">
+<div class="h-6 bg-surface-container-highest shrink-0 border-b border-outline-variant/30 flex items-center justify-between px-gap-sm">
+<div class="flex items-center gap-gap-xs">
+<span class="material-symbols-outlined text-[14px] text-primary-fixed" data-icon="terminal">terminal</span>
+<span class="font-label-caps text-label-caps text-primary-fixed">EXTRACTION_TERMINAL_tty1</span>
+</div>
+<div class="flex gap-2">
+<span class="w-2 h-2 rounded-full bg-error cursor-pointer"></span>
+<span class="w-2 h-2 rounded-full bg-secondary-fixed cursor-pointer"></span>
+</div>
+</div>
+<div class="flex-1 p-gap-sm font-code-sm text-code-sm text-on-tertiary-container overflow-y-auto scanlines relative bg-surface-container-lowest">
+<div class="mb-1 text-on-surface-variant">[22:45:01] SEIS Init: Starting extraction routine for target 'legacy_db_dump.tar.gz'</div>
+<div class="mb-1 text-on-surface-variant">[22:45:02] Allocating memory buffer... <span class="text-primary-fixed">OK (2048 MB)</span></div>
+<div class="mb-1 text-on-surface-variant">[22:45:03] Spawning worker threads (16)... <span class="text-primary-fixed">OK</span></div>
+<div class="mb-1 text-on-surface-variant">[22:45:05] Analyzing block headers...</div>
+<div class="mb-1">  -&gt; Block 0x000A: <span class="text-on-background">public/assets/images/</span></div>
+<div class="mb-1">  -&gt; Block 0x000B: <span class="text-on-background">src/components/core/</span></div>
+<div class="mb-1">  -&gt; Block 0x000C: <span class="text-on-background">data/archives/2021/</span></div>
+<div class="mb-1 text-error">[22:45:08] WARN: Permissions mismatch on block 0x000D. Applying default ACL.</div>
+<div class="mb-1 text-primary-fixed">[22:45:10] Extracting data blocks (33% complete)</div>
+<div class="flex items-center text-primary-container mt-2">
+<span>root@seis-01:/var/archives/extract#</span>
+<span class="w-2 h-4 bg-primary-container ml-2 cursor-blink inline-block"></span>
+</div>
+</div>
+</div>
+</body></html>

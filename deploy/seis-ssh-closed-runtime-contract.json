@@ -31,6 +31,15 @@
     "remote user is not a local Mac account",
     "no local Mac or LAN host is required for the SSH picker"
   ],
+  "remoteCodexBridge": {
+    "runbook": "docs/deployment/seis-remote-codex-cli-bridge.md",
+    "statusCommand": "npm run cloud:ssh:remote-codex:status",
+    "strictCommand": "npm run cloud:ssh:remote-codex:strict",
+    "script": "scripts/check-seis-remote-codex-bridge.mjs",
+    "mode": "read-only-no-prompt-execution",
+    "promptExecutionAllowedByDefault": false,
+    "remoteMutationAllowedByDefault": false
+  },
   "handoffManifestSpec": {
     "artifactPolicy": "write-only-sanitized-status",
     "requiredFields": [
@@ -98,6 +107,7 @@
     "npm run check:seis-ssh-closed-runtime",
     "npm run check:seis-ssh-cloud-roadmap",
     "npm run check:seis-ssh-access-model",
-    "npm run cloud:ssh:online:strict"
+    "npm run cloud:ssh:online:strict",
+    "npm run cloud:ssh:remote-codex:strict"
   ]
 }

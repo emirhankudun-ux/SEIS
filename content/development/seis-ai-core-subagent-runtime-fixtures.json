@@ -1,0 +1,128 @@
+{
+  "id": "seis-ai-core-subagent-runtime-fixtures",
+  "version": "2026.06.23",
+  "status": "documented-fixture",
+  "purpose": "Provide one bounded fixture pack for SEIS AI Core sub-agent roles, permissions, dry-run queue, cancellation, approvals, redaction, and execution ledger without enabling autonomous write execution.",
+  "qualityGate": "npm run check:seis-ai-core-subagent-runtime-fixtures",
+  "sourceOfTruth": {
+    "operatingModel": "content/development/seis-ai-core-subagent-operating-model.json",
+    "fiveYearPlan": "content/development/seis-sub-agent-5-year-plan.json",
+    "roleSchema": "content/development/seis-ai-core-agent-role-schema.json",
+    "permissionMatrix": "content/development/seis-ai-core-agent-permission-matrix.json",
+    "dryRunTaskQueue": "content/development/seis-ai-core-dry-run-task-queue.json",
+    "cancellationFixture": "content/development/seis-ai-core-cancellation-fixture.json",
+    "approvalFixture": "content/development/seis-ai-core-approval-fixture.json",
+    "redactionFixture": "content/development/seis-ai-core-redaction-fixture.json",
+    "executionLedgerFixture": "content/development/seis-ai-core-execution-ledger-fixture.json",
+    "reviewLedger": "content/development/seis-ai-core-subagent-review-ledger.json",
+    "versionRegistry": "content/development/seis-ai-core-version-registry.json",
+    "versionPromotionGates": "content/development/seis-ai-core-version-promotion-gates.json",
+    "aiCoreDoc": "docs/ai/seis-ai-core.md",
+    "agentRuntimeDoc": "docs/ai/agent-runtime.md"
+  },
+  "runtimeBoundary": {
+    "currentLevel": "status-and-plan-only",
+    "backgroundAutomation": "disabled",
+    "writeExecution": "disabled",
+    "credentialAccess": "forbidden",
+    "externalMutation": "requires-explicit-human-approval"
+  },
+  "fixtures": [
+    {
+      "id": "role-schema",
+      "path": "content/development/seis-ai-core-agent-role-schema.json",
+      "summary": "Five plan-only lane roles with bounded tool, file, network, time, and approval scopes."
+    },
+    {
+      "id": "permission-matrix",
+      "path": "content/development/seis-ai-core-agent-permission-matrix.json",
+      "summary": "Read-only and plan-only are enabled; write-gated and external-gated remain planned and approval-bound."
+    },
+    {
+      "id": "dry-run-task-queue",
+      "path": "content/development/seis-ai-core-dry-run-task-queue.json",
+      "summary": "Single-writer dry-run queue with explicit states, approval waiting, validators, and rollback notes."
+    },
+    {
+      "id": "cancellation-fixture",
+      "path": "content/development/seis-ai-core-cancellation-fixture.json",
+      "summary": "Cancellation tokens preserve artifacts and block later tool calls, file writes, and external requests."
+    },
+    {
+      "id": "approval-fixture",
+      "path": "content/development/seis-ai-core-approval-fixture.json",
+      "summary": "Scoped, action-specific, expiring human approval records; blanket autonomous approval is disallowed."
+    },
+    {
+      "id": "redaction-fixture",
+      "path": "content/development/seis-ai-core-redaction-fixture.json",
+      "summary": "Redaction and safe-output requirements for dry-run tool output, provider diagnostics, and future write-gated records."
+    },
+    {
+      "id": "execution-ledger-fixture",
+      "path": "content/development/seis-ai-core-execution-ledger-fixture.json",
+      "summary": "Append-only planned audit ledger shape for dry-run decisions and future approval-gated execution evidence."
+    }
+  ],
+  "roleSchema": {
+    "path": "content/development/seis-ai-core-agent-role-schema.json",
+    "requiredRoleIds": [
+      "repository-governance-subagent",
+      "cloud-readiness-subagent",
+      "engineering-subagent",
+      "product-design-subagent",
+      "data-provenance-subagent"
+    ],
+    "requiredLaneIds": ["seis", "seis-cloud", "seis-code", "seis-design", "seis-data"],
+    "authority": "plan-only",
+    "maxDelegationDepth": 1
+  },
+  "permissionMatrixFixture": {
+    "path": "content/development/seis-ai-core-agent-permission-matrix.json",
+    "requiredLevels": ["read-only", "plan-only", "write-gated", "external-gated", "forbidden"],
+    "enabledNow": ["read-only", "plan-only"],
+    "approvalGated": ["write-gated", "external-gated"]
+  },
+  "taskQueueFixture": {
+    "path": "content/development/seis-ai-core-dry-run-task-queue.json",
+    "mode": "dry-run-only",
+    "writerPolicy": "single-writer",
+    "states": ["queued", "assigned", "running", "awaiting-approval", "cancelled", "failed", "validated", "archived"],
+    "approvalStateRequired": true
+  },
+  "cancellationFixture": {
+    "path": "content/development/seis-ai-core-cancellation-fixture.json",
+    "cancellationTokenRequired": true,
+    "supportedSignals": ["operator-cancel", "timeout", "policy-deny", "validation-failure"]
+  },
+  "approvalFixture": {
+    "path": "content/development/seis-ai-core-approval-fixture.json",
+    "approvalRequiredFor": [
+      "GitHub push or merge",
+      "deployment",
+      "SSH or VPN operation",
+      "credential access or rotation",
+      "model training or publishing"
+    ],
+    "blanketApprovalAllowed": false
+  },
+  "redactionFixture": {
+    "path": "content/development/seis-ai-core-redaction-fixture.json",
+    "sampleOutputContainsSecretValue": false,
+    "rawProviderErrorsExposed": false,
+    "promptAndResponseLoggingDefault": "disabled",
+    "requiredBeforePromotion": true
+  },
+  "executionLedgerFixture": {
+    "path": "content/development/seis-ai-core-execution-ledger-fixture.json",
+    "mode": "append-only-planned",
+    "reviewLedger": "content/development/seis-ai-core-subagent-review-ledger.json",
+    "recordsForbidden": ["secret values", "private keys", "raw provider errors"],
+    "sampleRecord": {
+      "id": "ledger-dry-run-seis-code-patch-plan",
+      "secretValuesStored": false,
+      "externalMutationPerformed": false,
+      "status": "cancelled"
+    }
+  }
+}
