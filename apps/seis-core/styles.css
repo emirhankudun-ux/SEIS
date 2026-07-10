@@ -58,6 +58,10 @@ a {
   color: inherit;
 }
 
+.secondary-button:is(a) {
+  text-decoration: none;
+}
+
 .skip-link,
 .sr-only {
   position: absolute;
@@ -258,6 +262,88 @@ kbd {
 .content-surface,
 .inspector {
   min-width: 0;
+}
+
+.security-merge-gate-panel {
+  border-color: rgba(184, 60, 53, 0.28);
+  background:
+    linear-gradient(135deg, rgba(184, 60, 53, 0.08), rgba(255, 255, 255, 0.88) 42%),
+    var(--surface-solid);
+}
+
+.security-gate-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: start;
+}
+
+.security-gate-primary {
+  display: grid;
+  gap: 8px;
+}
+
+.security-gate-primary strong {
+  font-size: 20px;
+  line-height: 1.18;
+}
+
+.security-gate-primary p {
+  max-width: 760px;
+  margin: 0;
+  color: var(--muted);
+}
+
+.security-gate-primary code {
+  color: var(--ink);
+  font-size: 0.95em;
+}
+
+.security-gate-label {
+  margin: 0;
+  color: var(--bad);
+  font-size: 12px;
+  font-weight: 760;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.security-gate-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.security-gate-rail {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.security-gate-rail span {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(17, 17, 17, 0.1);
+  border-radius: var(--radius);
+  padding: 9px 10px;
+  background: rgba(255, 255, 255, 0.68);
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+@media (max-width: 760px) {
+  .security-gate-layout,
+  .security-gate-rail {
+    grid-template-columns: 1fr;
+  }
+
+  .security-gate-actions {
+    justify-content: flex-start;
+  }
 }
 
 .inspector {
