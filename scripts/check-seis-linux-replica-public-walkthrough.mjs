@@ -44,6 +44,9 @@ const requiredWalkthroughSnippets = [
   'Live Demo Console',
   'Demo Readiness',
   'Reference Vault',
+  'Interactive Reviewer Console',
+  'seis.publicDemoReviewerConsole.v1',
+  'Export reviewer note',
   'live',
   'readiness',
   'sources',
@@ -101,6 +104,13 @@ check(
 
 for (const snippet of [
   'Open Live Demo',
+  'Interactive reviewer console',
+  'data-reviewer-console',
+  'seis.publicDemoReviewerConsole.v1',
+  'copy-server-command',
+  'export-reviewer-note',
+  'aria-pressed',
+  'localStorage',
   'seis-linux-replica.html?demo=live',
   'No API keys',
   'No SSH execution',

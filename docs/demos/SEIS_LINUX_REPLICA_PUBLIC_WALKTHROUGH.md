@@ -37,17 +37,41 @@ Use this route when a public reviewer needs a concise entry page before opening
 the live shell. It summarizes the demo flow, safety boundaries, current evidence,
 and supplied asset contract from inside the static `apps/web` site.
 
+## Interactive Reviewer Console
+
+The public route includes an Interactive Reviewer Console before the seven-minute
+script. It is a browser-local helper for reviewers, not a release approval gate.
+It persists only the local checklist state in
+`seis.publicDemoReviewerConsole.v1`.
+
+Console actions:
+
+- `Open live SEIS shell` opens `seis-linux-replica.html?demo=live` in a new tab
+  and marks that reviewer step complete.
+- `Copy local server command` copies
+  `python3 -m http.server 50951 --bind 127.0.0.1 --directory apps/web`.
+- `Verify Reference Vault`, `Run terminal commands`, and `Read safety boundary`
+  toggle reviewer evidence steps without touching repository files.
+- `Export reviewer note` copies a compact note that separates real, Local Demo,
+  mock-safe, and disabled surfaces.
+- `Reset local checklist` clears only the browser-local reviewer checklist.
+
+The console does not execute SSH, call AI providers, approve public release,
+deploy, mutate supplied assets, write to GitHub, or validate host credentials.
+
 ## Seven Minute Demo Script
 
-1. Open the live deep link and wait for the SEIS boot/login sequence.
-2. Confirm the shell opens with the top system bar, pinned side rail, taskbar,
+1. Open the reviewer landing route and use the Interactive Reviewer Console to
+   copy the local server command, open the live shell, and track progress.
+2. Open the live deep link and wait for the SEIS boot/login sequence.
+3. Confirm the shell opens with the top system bar, pinned side rail, taskbar,
    launcher, and multiple app windows.
-3. Start in `Live Demo Console` and use the step buttons to open the connected
+4. Start in `Live Demo Console` and use the step buttons to open the connected
    SEIS surfaces.
-4. Open `Demo Readiness` and review the evidence gates, source coverage, local
+5. Open `Demo Readiness` and review the evidence gates, source coverage, local
    mode boundaries, and remaining safe actions.
-5. Open `Reference Vault` and launch at least one iframe-backed supplied module.
-6. Open `Terminal` and run the browser-local demo commands:
+6. Open `Reference Vault` and launch at least one iframe-backed supplied module.
+7. Open `Terminal` and run the browser-local demo commands:
 
 ```text
 live
@@ -55,11 +79,13 @@ readiness
 sources
 ```
 
-7. Open `Search`, `Code`, `Design`, `Cloud`, `Store`, `Music`, and `AI Core`
+8. Open `Search`, `Code`, `Design`, `Cloud`, `Store`, `Music`, and `AI Core`
    from the dock, side rail, launcher, or Live Demo Console.
-8. Resize or move windows on desktop. On mobile, verify the shell keeps windows
+9. Resize or move windows on desktop. On mobile, verify the shell keeps windows
    within the viewport.
-9. Close with the local-only statement: no SSH, no provider calls, no secrets,
+10. Export the reviewer note from the public route if a compact handoff is
+   needed.
+11. Close with the local-only statement: no SSH, no provider calls, no secrets,
    no deployment, and no host shell access are enabled by this route.
 
 ## What Reviewers Should See
@@ -88,6 +114,7 @@ Real in this route:
 - Demo Readiness
 - Reference Vault catalog and iframe-backed local module opening
 - browser-local terminal UI and demo command history
+- Interactive Reviewer Console progress and reviewer note export
 - desktop and mobile browser smoke evidence
 
 Local demo or mock-safe:
@@ -146,6 +173,8 @@ require local execution permissions that simple syntax checks do not require.
 - Landing and SEIS OS product CTAs route to `seis-linux-replica.html?demo=live`.
 - Mobile smoke evidence shows no horizontal overflow.
 - The demo states local/mock/disabled boundaries clearly.
+- The Interactive Reviewer Console works without backend services and labels
+  its state as browser-local reviewer progress, not release approval.
 - No real credentials, provider calls, SSH commands, or deployment actions are
   required.
 
