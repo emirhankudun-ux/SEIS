@@ -14,6 +14,7 @@ const runbook = readText(runbookPath);
 const codeowners = readText(codeownersPath);
 const contract = readJson(contractPath);
 const packageJson = readJson(packagePath);
+const workflowPathPatterns = [...workflow.matchAll(/^\s+- '([^']+)'$/gm)].map((match) => match[1]);
 
 const requiredWorkflowText = [
   "name: SEIS-SSH Public Access Contract",
@@ -46,8 +47,14 @@ for (const pathPattern of [
   ".github/workflows/seis-ssh-public-access.yml",
   "deploy/seis-ssh-*.json",
   "docs/deployment/seis-ssh-*.md",
+  "docs/deployment/seis-codex-git-ssh-handoff.md",
   "scripts/check-seis-ssh-*.mjs",
   "scripts/create-seis-ssh-public-*.mjs",
+  "content/development/seis-ssh-*.json",
+  "apps/web/desktop.js",
+  "docs/STATUS.md",
+  "docs/roadmap/MASTER_BACKLOG.md",
+  "docs/roadmap/NEXT_PR_QUEUE.md",
   "package.json"
 ]) {
   ensure(workflow.includes(`- '${pathPattern}'`), `${workflowPath} must trigger on ${pathPattern}`);
@@ -77,6 +84,12 @@ ensure(Array.isArray(prWorkflow.triggers) && prWorkflow.triggers.includes("pull_
 ensure(prWorkflow.permissions?.contents === "read", "SSH GitHub PR workflow must request contents: read only");
 ensure(Array.isArray(prWorkflow.forbiddenActions) && prWorkflow.forbiddenActions.includes("live SSH"), "public access contract must forbid live SSH in the PR workflow");
 ensure((contract?.requiredCommands || []).includes("npm run check:seis-ssh-github-pr-contract"), "public access contract requiredCommands must include the GitHub PR contract check");
+for (const evidenceSurface of contract?.evidenceSurfaces || []) {
+  ensure(
+    workflowPathPatterns.some((pattern) => pathPatternMatches(pattern, evidenceSurface)),
+    `${workflowPath} must trigger when evidence surface changes: ${evidenceSurface}`
+  );
+}
 
 for (const token of [
   "## GitHub Pull Request Guard",
@@ -143,4 +156,11 @@ function readJson(file) {
 
 function ensure(condition, message) {
   if (!condition) failures.push(message);
+}
+
+function pathPatternMatches(pattern, value) {
+  const expression = pattern
+    .replace(/[.+?^${}()|[\]\\]/g, "\\$&")
+    .replace(/\*/g, ".*");
+  return new RegExp(`^${expression}$`).test(value);
 }
