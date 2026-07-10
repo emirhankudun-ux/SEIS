@@ -53,6 +53,28 @@ const requiredAutonomousAgentRoster = [
   "Product Agent"
 ];
 const secondBrainMcpResource = "seis://brain/second-brain-system.json";
+const requiredContextProfileIds = [
+  "seis-hub",
+  "seis-cloud",
+  "seis-code",
+  "seis-design",
+  "seis-data",
+  "seis-security",
+  "seis-research",
+  "seis-automation",
+  "seis-product"
+];
+const requiredContextProfileLaneById = {
+  "seis-hub": "SEIS Hub",
+  "seis-cloud": "SEIS Cloud",
+  "seis-code": "SEIS-Code",
+  "seis-design": "SEIS-Design",
+  "seis-data": "SEIS-DATA",
+  "seis-security": "SEIS-Security",
+  "seis-research": "SEIS-Research",
+  "seis-automation": "SEIS-Automation",
+  "seis-product": "SEIS-Product"
+};
 
 const secondBrain = readJson(paths.secondBrain, "Second Brain contract");
 const aiWorkforce = readJson(paths.aiWorkforce, "AI workforce assignments");
@@ -72,6 +94,7 @@ ensure(obsidianContextText.includes("Public/private separation mandatory"), "rep
 
 const report = buildReport(new Date().toISOString());
 validateReport(report, "generated Second Brain agent registry");
+validateContextProfiles(report, "generated Second Brain agent registry");
 
 if (shouldWrite) {
   writeJson(paths.outputJson, report);
@@ -83,13 +106,18 @@ if (shouldCheck) {
   ensureFile(paths.outputMarkdown, "Second Brain agent registry Markdown artifact");
   const existingJson = readJson(paths.outputJson, "Second Brain agent registry JSON artifact");
   const existingMarkdown = readText(paths.outputMarkdown, "Second Brain agent registry Markdown artifact");
-  if (existingJson) validateReport(existingJson, "existing Second Brain agent registry artifact");
+  if (existingJson) {
+    validateReport(existingJson, "existing Second Brain agent registry artifact");
+    validateContextProfiles(existingJson, "existing Second Brain agent registry artifact");
+  }
   for (const phrase of [
     "SEIS Second Brain Agent Registry",
     "NO-GO-autonomous-execution-not-approved",
     "providerCallsPerformed: false",
     "privateObsidianVaultReadPerformed: false",
     "autonomousWriteExecutionPerformed: false",
+    "Lane Context Profiles",
+    "seis_product_plan",
     "No private Obsidian import, provider call, credential validation, SSH, GitHub mutation, or deployment is performed"
   ]) {
     ensure(existingMarkdown.includes(phrase), `Markdown artifact missing phrase: ${phrase}.`);
@@ -109,6 +137,41 @@ if (shouldWrite) {
   console.log("SEIS Second Brain agent registry check passed.");
 } else {
   console.log(JSON.stringify(report, null, 2));
+}
+
+function validateContextProfiles(report, label) {
+  const policy = report?.secondBrainBinding?.contextProfilePolicy;
+  ensure(policy?.status === "local-demo-read-only", label + " must preserve the local-demo read-only Context Profile policy.");
+  ensure(policy?.mcpResource === secondBrainMcpResource, label + " must preserve the canonical Second Brain MCP resource for Context Profiles.");
+  ensure(policy?.privateVaultRead === false, label + " must keep private vault reads disabled for Context Profiles.");
+  ensure(policy?.autonomousWriteAllowed === false, label + " must keep autonomous writes disabled for Context Profiles.");
+
+  const profiles = report?.laneContextProfiles || [];
+  ensure(profiles.length === requiredContextProfileIds.length, label + " must contain all nine lane Context Profiles.");
+
+  const coveredAgents = new Set();
+  for (const profileId of requiredContextProfileIds) {
+    const profile = profiles.find((candidate) => candidate.id === profileId);
+    ensure(profile, label + " must include Context Profile " + profileId + ".");
+    ensure(
+      normalizeLaneId(profile?.lane) === normalizeLaneId(requiredContextProfileLaneById[profileId]),
+      label + " Context Profile " + profileId + " must target " + requiredContextProfileLaneById[profileId] + "."
+    );
+    ensure(typeof profile?.plugin === "string" && profile.plugin.length > 0, label + " Context Profile " + profileId + " must name its plugin or embedded surface.");
+    ensure(typeof profile?.statusTool === "string" && profile.statusTool.endsWith("_status"), label + " Context Profile " + profileId + " must expose a status tool.");
+    ensure(typeof profile?.planTool === "string" && profile.planTool.endsWith("_plan"), label + " Context Profile " + profileId + " must expose a plan tool.");
+    ensure(Array.isArray(profile?.relatedAgents) && profile.relatedAgents.length > 0, label + " Context Profile " + profileId + " must list related agents.");
+    ensure(typeof profile?.allowedOutput === "string" && profile.allowedOutput.length > 0, label + " Context Profile " + profileId + " must define an allowed output.");
+    for (const agent of profile?.relatedAgents || []) coveredAgents.add(agent);
+  }
+
+  for (const agentName of requiredAutonomousAgentRoster) {
+    ensure(coveredAgents.has(agentName), label + " Context Profiles must cover " + agentName + ".");
+  }
+}
+
+function normalizeLaneId(value) {
+  return String(value || "").toLowerCase().replace(/[^a-z0-9]+/g, "");
 }
 
 function buildReport(generatedAt) {
@@ -133,6 +196,17 @@ function buildReport(generatedAt) {
 
   const managedSubAgentLanes = secondBrain?.managedSubAgentLanes || [];
   const autonomousAgentRoster = secondBrain?.autonomousAgentRoster || [];
+  const contextProfilePolicy = secondBrain?.contextProfilePolicy || {};
+  const laneContextProfiles = (secondBrain?.contextProfiles || []).map((profile) => ({
+    id: profile.id,
+    lane: profile.lane,
+    plugin: profile.plugin || "embedded",
+    statusTool: profile.statusTool,
+    planTool: profile.planTool,
+    focus: profile.focus,
+    relatedAgents: profile.relatedAgents || [],
+    allowedOutput: profile.allowedOutput
+  }));
   const roleSchemaRoles = roleSchema?.roles || [];
   const permissionLevels = permissionMatrix?.levels || [];
   const operatingLanes = subagentOperatingModel?.lanes || [];
@@ -187,7 +261,15 @@ function buildReport(generatedAt) {
       privateVaultImportEnabled: obsidianContract?.currentRuntime?.privateVaultImportEnabled ?? false,
       hostVaultReadEnabled: obsidianContract?.currentRuntime?.hostVaultReadEnabled ?? false,
       bodyImportPolicy: obsidianContract?.dryRunManifestSchema?.bodyImportPolicy || "metadata-only-by-default",
-      githubMutationEnabled: secondBrain?.securityBoundary?.githubMutation ?? false
+      githubMutationEnabled: secondBrain?.securityBoundary?.githubMutation ?? false,
+      contextProfilePolicy: {
+        status: contextProfilePolicy.status || "unknown",
+        mcpResource: contextProfilePolicy.mcpResource || null,
+        obsidianContextPath: contextProfilePolicy.obsidianContextPath || null,
+        installedAiProfileAccess: contextProfilePolicy.installedAiProfileAccess || "unknown",
+        privateVaultRead: contextProfilePolicy.privateVaultRead ?? false,
+        autonomousWriteAllowed: contextProfilePolicy.autonomousWriteAllowed ?? false
+      }
     },
     providerProfiles,
     workforceAssignments,
@@ -222,6 +304,7 @@ function buildReport(generatedAt) {
       privateVaultRead: false,
       autonomousWriteAllowed: false
     })),
+    laneContextProfiles,
     pluginAndMcpSurface: {
       installedSkillCount: bigTechInventory?.installed_skill_pass?.installed_skill_count || 0,
       installedSkills: bigTechInventory?.installed_skill_pass?.skills || [],
@@ -269,6 +352,7 @@ function buildReport(generatedAt) {
       managedSubAgentLaneCount: managedSubAgentLanes.length,
       autonomousAgentRosterCount: autonomousAgentRoster.length,
       contextAccessAgentCount: autonomousAgentRoster.length,
+      contextProfileCount: laneContextProfiles.length,
       roleSchemaRoleCount: roleSchemaRoles.length,
       permissionLevelCount: permissionLevels.length,
       localAppDetectedCount: localAppsDetected.length,
@@ -464,6 +548,26 @@ ${agentRows}
 | Agent | Status | Context access | Private vault read | Autonomous write allowed |
 | --- | --- | --- | --- | --- |
 ${contextRows}
+
+## Lane Context Profiles
+
+- Policy status: ${report.secondBrainBinding.contextProfilePolicy.status}
+- MCP resource: ${report.secondBrainBinding.contextProfilePolicy.mcpResource}
+- Repo-owned context pack: ${report.secondBrainBinding.contextProfilePolicy.obsidianContextPath}
+- Private vault read: ${report.secondBrainBinding.contextProfilePolicy.privateVaultRead}
+- Autonomous write allowed: ${report.secondBrainBinding.contextProfilePolicy.autonomousWriteAllowed}
+
+| Lane | Plugin | Status tool | Plan tool | Related agents | Allowed output |
+| --- | --- | --- | --- | --- | --- |
+${report.laneContextProfiles.map((profile) => [
+  "|",
+  profile.lane,
+  profile.plugin,
+  profile.statusTool,
+  profile.planTool,
+  profile.relatedAgents.join(", "),
+  profile.allowedOutput
+].join(" | ") + " |").join("\n")}
 
 ## MCP And Plugin Surface
 

@@ -1,7 +1,7 @@
 {
   "id": "seis-second-brain-agent-registry-pr54",
   "title": "SEIS Second Brain Agent Registry",
-  "generatedAt": "2026-07-10T18:57:40.467Z",
+  "generatedAt": "2026-07-10T19:36:40.871Z",
   "status": "review-only-agent-registry",
   "mode": "repo-local-no-live-execution",
   "decision": "NO-GO-autonomous-execution-not-approved",
@@ -35,7 +35,15 @@
     "privateVaultImportEnabled": false,
     "hostVaultReadEnabled": false,
     "bodyImportPolicy": "metadata-only-by-default",
-    "githubMutationEnabled": false
+    "githubMutationEnabled": false,
+    "contextProfilePolicy": {
+      "status": "local-demo-read-only",
+      "mcpResource": "seis://brain/second-brain-system.json",
+      "obsidianContextPath": "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md",
+      "installedAiProfileAccess": "All six recorded profiles use repo-owned review context only; Missing Key and Disabled profiles remain non-routable.",
+      "privateVaultRead": false,
+      "autonomousWriteAllowed": false
+    }
   },
   "providerProfiles": [
     {
@@ -516,6 +524,131 @@
       "autonomousWriteAllowed": false
     }
   ],
+  "laneContextProfiles": [
+    {
+      "id": "seis-hub",
+      "lane": "SEIS Hub",
+      "plugin": "@seis",
+      "statusTool": "seis_hub_status",
+      "planTool": "seis_hub_plan",
+      "focus": "Repository governance, architecture, and source-of-truth planning.",
+      "relatedAgents": [
+        "Architect Agent",
+        "Documentation Agent",
+        "Product Agent"
+      ],
+      "allowedOutput": "Reviewable repository governance plan."
+    },
+    {
+      "id": "seis-cloud",
+      "lane": "SEIS Cloud",
+      "plugin": "@seis-cloud",
+      "statusTool": "seis_cloud_status",
+      "planTool": "seis_cloud_plan",
+      "focus": "Provider-neutral cloud readiness, SSH/VPN boundaries, and rollback planning.",
+      "relatedAgents": [
+        "Cloud Agent",
+        "DevOps Agent",
+        "Security Agent"
+      ],
+      "allowedOutput": "Readiness and rollback proposal."
+    },
+    {
+      "id": "seis-code",
+      "lane": "SEIS-Code",
+      "plugin": "@seis-code",
+      "statusTool": "seis_code_status",
+      "planTool": "seis_code_plan",
+      "focus": "Scoped implementation, CI quality gates, MCP/plugin engineering, and safe automation.",
+      "relatedAgents": [
+        "Code Agent",
+        "QA Agent",
+        "Automation Agent"
+      ],
+      "allowedOutput": "Scoped implementation and validation plan."
+    },
+    {
+      "id": "seis-design",
+      "lane": "SEIS-Design",
+      "plugin": "@seis-design",
+      "statusTool": "seis_design_status",
+      "planTool": "seis_design_plan",
+      "focus": "Product design, UI/UX, accessibility, motion, and visual QA planning.",
+      "relatedAgents": [
+        "Design Agent",
+        "UI/UX Agent"
+      ],
+      "allowedOutput": "UI/UX and accessibility review brief."
+    },
+    {
+      "id": "seis-data",
+      "lane": "SEIS-DATA",
+      "plugin": "@seis-data",
+      "statusTool": "seis_data_status",
+      "planTool": "seis_data_plan",
+      "focus": "Schemas, reports, knowledge registries, memory/RAG planning, and provenance.",
+      "relatedAgents": [
+        "Search Agent",
+        "Research Agent",
+        "Documentation Agent"
+      ],
+      "allowedOutput": "Schema, context, and provenance proposal."
+    },
+    {
+      "id": "seis-security",
+      "lane": "SEIS Security",
+      "plugin": "SEIS-Agent embedded lane",
+      "statusTool": "seis_security_status",
+      "planTool": "seis_security_plan",
+      "focus": "Threat review, secret safety, permission risk, and release-blocking gates.",
+      "relatedAgents": [
+        "Security Agent",
+        "QA Agent"
+      ],
+      "allowedOutput": "Blocking risk review and remediation proposal."
+    },
+    {
+      "id": "seis-research",
+      "lane": "SEIS Research",
+      "plugin": "SEIS-Agent embedded lane",
+      "statusTool": "seis_research_status",
+      "planTool": "seis_research_plan",
+      "focus": "Official-source review, standards/version checks, and evidence synthesis.",
+      "relatedAgents": [
+        "Research Agent",
+        "Search Agent"
+      ],
+      "allowedOutput": "Source-backed research summary."
+    },
+    {
+      "id": "seis-automation",
+      "lane": "SEIS Automation",
+      "plugin": "SEIS-Agent embedded lane",
+      "statusTool": "seis_automation_status",
+      "planTool": "seis_automation_plan",
+      "focus": "Dry-runs, repeatable checks, runbooks, rollback, and human-approved automation gates.",
+      "relatedAgents": [
+        "Automation Agent",
+        "DevOps Agent",
+        "QA Agent"
+      ],
+      "allowedOutput": "Dry-run workflow and rollback plan."
+    },
+    {
+      "id": "seis-product",
+      "lane": "SEIS Product",
+      "plugin": "SEIS-Agent embedded lane",
+      "statusTool": "seis_product_status",
+      "planTool": "seis_product_plan",
+      "focus": "Requirements, acceptance criteria, roadmap slices, user outcomes, and launch-readiness evidence.",
+      "relatedAgents": [
+        "Product Agent",
+        "Architect Agent",
+        "Design Agent"
+      ],
+      "allowedOutput": "Requirements and acceptance-criteria brief."
+    }
+  ],
   "pluginAndMcpSurface": {
     "installedSkillCount": 38,
     "installedSkills": [
@@ -755,6 +888,7 @@
     "managedSubAgentLaneCount": 9,
     "autonomousAgentRosterCount": 13,
     "contextAccessAgentCount": 13,
+    "contextProfileCount": 9,
     "roleSchemaRoleCount": 5,
     "permissionLevelCount": 5,
     "localAppDetectedCount": 8,

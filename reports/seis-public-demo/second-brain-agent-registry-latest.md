@@ -1,6 +1,6 @@
 # SEIS Second Brain Agent Registry
 
-Generated: 2026-07-10T18:57:40.467Z
+Generated: 2026-07-10T19:36:40.871Z
 Status: review-only-agent-registry
 Mode: repo-local-no-live-execution
 Decision: NO-GO-autonomous-execution-not-approved
@@ -106,6 +106,26 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 | Cloud Agent | status-plan-only | read-only repo-local context and plan input | false | false |
 | Automation Agent | status-plan-only | read-only repo-local context and plan input | false | false |
 | Product Agent | status-plan-only | read-only repo-local context and plan input | false | false |
+
+## Lane Context Profiles
+
+- Policy status: local-demo-read-only
+- MCP resource: seis://brain/second-brain-system.json
+- Repo-owned context pack: seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md
+- Private vault read: false
+- Autonomous write allowed: false
+
+| Lane | Plugin | Status tool | Plan tool | Related agents | Allowed output |
+| --- | --- | --- | --- | --- | --- |
+| | SEIS Hub | @seis | seis_hub_status | seis_hub_plan | Architect Agent, Documentation Agent, Product Agent | Reviewable repository governance plan. |
+| | SEIS Cloud | @seis-cloud | seis_cloud_status | seis_cloud_plan | Cloud Agent, DevOps Agent, Security Agent | Readiness and rollback proposal. |
+| | SEIS-Code | @seis-code | seis_code_status | seis_code_plan | Code Agent, QA Agent, Automation Agent | Scoped implementation and validation plan. |
+| | SEIS-Design | @seis-design | seis_design_status | seis_design_plan | Design Agent, UI/UX Agent | UI/UX and accessibility review brief. |
+| | SEIS-DATA | @seis-data | seis_data_status | seis_data_plan | Search Agent, Research Agent, Documentation Agent | Schema, context, and provenance proposal. |
+| | SEIS Security | SEIS-Agent embedded lane | seis_security_status | seis_security_plan | Security Agent, QA Agent | Blocking risk review and remediation proposal. |
+| | SEIS Research | SEIS-Agent embedded lane | seis_research_status | seis_research_plan | Research Agent, Search Agent | Source-backed research summary. |
+| | SEIS Automation | SEIS-Agent embedded lane | seis_automation_status | seis_automation_plan | Automation Agent, DevOps Agent, QA Agent | Dry-run workflow and rollback plan. |
+| | SEIS Product | SEIS-Agent embedded lane | seis_product_status | seis_product_plan | Product Agent, Architect Agent, Design Agent | Requirements and acceptance-criteria brief. |
 
 ## MCP And Plugin Surface
 
