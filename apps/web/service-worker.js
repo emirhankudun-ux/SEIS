@@ -23,6 +23,7 @@
     "./seis-code.html",
     "./seis-code.css",
     "./seis-code.js",
+    "./seis-github-coding-lab.html",
     "./seis-linux-replica.html",
     "./seis-linux-replica-public-demo.html",
     "./seis-demo-flight-deck.html",
