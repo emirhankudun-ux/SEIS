@@ -1,6 +1,6 @@
 {
   "id": "seis-ai-public-readiness-report",
-  "generatedAt": "2026-06-30T23:32:12.755Z",
+  "generatedAt": "2026-07-01T03:28:29.848Z",
   "status": "local-demo-public-review-ready-not-agi",
   "sourceOfTruth": {
     "program": "content/development/seis-ai-public-readiness-program.json",
@@ -70,6 +70,8 @@
     "npm run check:seis-retrieval-evaluation-dry-run passes on the target commit",
     "npm run check:seis-retrieval-citation-scorer-dry-run passes on the target commit",
     "npm run check:seis-no-secret-answer-log-scan passes on the target commit",
+    "npm run check:seis-redacted-answer-log-schema passes on the target commit",
+    "npm run check:seis-security-blocker-diagnostic passes on the target commit",
     "npm run check:seis-ai-public-readiness passes on the target commit",
     "required CI checks green on the target commit",
     "public README claim boundary reviewed",
@@ -94,6 +96,17 @@
     "explicit human approval recorded"
   ],
   "blockers": [
+    {
+      "source": "public-readiness-program",
+      "id": "security-blocker-diagnostic",
+      "status": "approval-gated",
+      "blocksGithubReadyForEveryone": true,
+      "blocksAgiClaim": true,
+      "evidence": [
+        "npm run check:seis-security-blocker-diagnostic",
+        "PR #100 security blocker diagnostic without secret value output, allowlist mutation, history rewrite, rotation, merge, release, or AGI/512B claim promotion"
+      ]
+    },
     {
       "source": "public-readiness-program",
       "id": "fresh-clone-release-path",
