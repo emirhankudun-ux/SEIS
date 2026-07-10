@@ -17,6 +17,9 @@ Machine-readable source:
 Language Model Intake Registry:
 `content/development/seis-language-model-intake-registry.json`.
 
+Installed AI collaboration protocol:
+[`installed-ai-collaboration-protocol.md`](installed-ai-collaboration-protocol.md).
+
 Validation:
 
 ```bash
@@ -119,6 +122,7 @@ Gemini, OpenAI, or any cloud provider.
 
 ## Related Documents
 
+- [Installed AI Collaboration Protocol](installed-ai-collaboration-protocol.md)
 - [SEIS AI Core](seis-ai-core.md)
 - [Model Router](model-router.md)
 - [Agent Runtime](agent-runtime.md)

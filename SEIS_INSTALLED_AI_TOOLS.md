@@ -5,6 +5,10 @@
 Track installed and usable AI tools with explicit status, safety rules, and
 assignment guidance.
 
+Collaboration rules for using all installed AI surfaces without unsafe writes,
+fake readiness claims, or secret exposure are maintained in
+[`docs/ai/installed-ai-collaboration-protocol.md`](docs/ai/installed-ai-collaboration-protocol.md).
+
 ## Tool categories
 
 - Local model runners
@@ -45,3 +49,6 @@ assignment guidance.
 - No live provider credentials in frontend or committed prompt outputs.
 - Use `status`/`mode` metadata for every tool-dependent action (demo/planned/mock).
 - Any live provider claim must be backed by backend checks, not mock text.
+- Exactly one assistant may hold the repo writer role at a time; all other
+  installed AI tools stay reviewer, draft, metadata-only, local-demo,
+  approval-gated, or disabled until a documented handoff changes that role.
