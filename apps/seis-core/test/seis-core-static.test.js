@@ -133,6 +133,32 @@ test("SEIS Command Center supports multi-model orchestration", async () => {
   }
 });
 
+test("SEIS Command Center binds specialist lanes and Store through a local control plane", async () => {
+  const html = await readFile(new URL("index.html", root), "utf8");
+  const script = await readFile(new URL("script.js", root), "utf8");
+  const css = await readFile(new URL("styles.css", root), "utf8");
+  const registry = JSON.parse(await readFile(new URL("data/seis-core-ecosystem-registry.json", root), "utf8"));
+
+  for (const id of ["ecosystem-control-state", "ecosystem-control-summary", "ecosystem-control-grid", "ecosystem-control-feedback"]) {
+    assert.match(html, new RegExp(`id="${id}"`));
+  }
+  for (const signal of ["fallbackSeisCoreEcosystemRegistry", "renderEcosystemControlPlane", "loadSeisCoreEcosystemRegistry", "copyEcosystemGate"]) {
+    assert.match(script, new RegExp(signal));
+  }
+  for (const selector of ["ecosystem-control-plane", "ecosystem-lane-card", "ecosystem-facts", "ecosystem-lane-actions"]) {
+    assert.match(css, new RegExp(selector));
+  }
+  assert.equal(registry.id, "seis-core-ecosystem-registry");
+  assert.equal(registry.store.status, "Local Demo");
+  assert.match(registry.runtimeBoundary, /does not authenticate connectors/);
+  for (const lane of ["seis", "seis-cloud", "seis-code", "seis-design", "seis-data", "seis-store"]) {
+    const record = registry.lanes.find((candidate) => candidate.id === lane);
+    assert.ok(record, `${lane} should have a Core control-plane record`);
+    assert.match(record.qualityGate, /^npm run check:/);
+    assert.equal(record.status === "Connected", false, `${lane} must not claim a live connection`);
+  }
+});
+
 
 test("SEIS Command Center covers the required ecosystem operating domains", async () => {
   const script = await readFile(new URL("script.js", root), "utf8");

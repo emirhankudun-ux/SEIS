@@ -20,6 +20,7 @@
     "check:seis-master-prompt": "node scripts/check-seis-master-prompt.mjs",
     "check:seis-focus-mode": "node scripts/check-seis-focus-mode.mjs",
     "check:seis-command-center": "node scripts/check-seis-command-center.mjs",
+    "check:seis-core-ecosystem-registry": "node scripts/check-seis-core-ecosystem-registry.mjs",
     "check:seis-search-center": "node --test apps/seis-core/test/seis-search-center-static.test.js",
     "check:seis-command-center-operations-readiness": "node scripts/check-seis-command-center-operations-readiness.mjs",
     "check:seis-command-center-knowledge-system": "node scripts/check-seis-command-center-knowledge-system.mjs",
