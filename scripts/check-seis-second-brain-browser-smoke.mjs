@@ -285,6 +285,9 @@ function validateStaticContract() {
     "data-second-brain-search-results",
     "data-second-brain-search-filters",
     "data-second-brain-search-query",
+    "data-second-brain-search-result-list",
+    "data-second-brain-search-result",
+    "data-result-id",
     "second-brain-capture",
     "second-brain-link",
     "second-brain-training-pack",
@@ -294,6 +297,9 @@ function validateStaticContract() {
     "second-brain-set-search-filter",
     "second-brain-record-search",
     "SEIS_SECOND_BRAIN_SEARCH_FILTERS",
+    "moveSecondBrainSearchFocus",
+    "normalizeSecondBrainActiveSearchResult",
+    "aria-activedescendant",
     "seis-agent-training-pack.md",
     "search-index-snapshot.md",
     "seis-language-model-training-curriculum.json",
@@ -312,7 +318,9 @@ function validateStaticContract() {
     ".second-brain-inspector",
     ".second-brain-ai-index",
     ".second-brain-search-panel",
-    ".second-brain-search-result"
+    ".second-brain-search-result",
+    ".second-brain-search-result-list",
+    ".second-brain-search-result.is-active"
   ]) {
     ensure(desktopCss.includes(marker), `desktop.css missing marker: ${marker}`);
   }
@@ -364,6 +372,10 @@ async function smokeSecondBrain(client, baseUrl) {
       graphNodes: root?.querySelectorAll('[data-second-brain-graph] [data-action="second-brain-select-note"]').length || 0,
       searchFilters: root?.querySelectorAll('[data-second-brain-search-filters] [data-action="second-brain-set-search-filter"]').length || 0,
       searchResults: root?.querySelectorAll('[data-second-brain-search-results] .second-brain-search-result').length || 0,
+      searchRoleOptions: root?.querySelectorAll('[data-second-brain-search-result][role="option"]').length || 0,
+      searchSelectedOptions: root?.querySelectorAll('[data-second-brain-search-result][aria-selected="true"]').length || 0,
+      searchTabIndexZero: root?.querySelectorAll('[data-second-brain-search-result][tabindex="0"]').length || 0,
+      searchActiveDescendant: root?.querySelector('[data-second-brain-search-result-list]')?.getAttribute('aria-activedescendant') || '',
       installedAiRows: root?.querySelectorAll('[data-second-brain-installed-ai] tbody tr').length || 0,
       subAgentRows: root?.querySelectorAll('[data-second-brain-subagents] tbody tr').length || 0,
       agentRosterRows: root?.querySelectorAll('[data-second-brain-agent-roster] tbody tr').length || 0,
@@ -401,6 +413,10 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(initial.graphNodes === 6, `expected six graph nodes, got ${initial.graphNodes}`);
   ensure(initial.searchFilters === 9, `expected nine Second Brain search filters, got ${initial.searchFilters}`);
   ensure(initial.searchResults >= 8, `expected at least eight Second Brain search results, got ${initial.searchResults}`);
+  ensure(initial.searchRoleOptions === initial.searchResults, `Second Brain search results must use option roles: ${JSON.stringify(initial)}`);
+  ensure(initial.searchSelectedOptions === 1, `Second Brain search must expose exactly one selected result, got ${initial.searchSelectedOptions}`);
+  ensure(initial.searchTabIndexZero === 1, `Second Brain search must expose exactly one tabbable result, got ${initial.searchTabIndexZero}`);
+  ensure(initial.searchActiveDescendant.startsWith("second-brain-search-result-"), `Second Brain search listbox missing active descendant: ${initial.searchActiveDescendant}`);
   ensure(initial.installedAiRows === 6, `expected six installed AI rows, got ${initial.installedAiRows}`);
   ensure(initial.subAgentRows === 9, `expected nine managed lane rows, got ${initial.subAgentRows}`);
   ensure(initial.agentRosterRows === 13, `expected thirteen autonomous agent rows, got ${initial.agentRosterRows}`);
@@ -447,6 +463,25 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(searchSnapshot.filterText.includes("Plugins"), "Second Brain search filter did not switch to Plugins.");
   ensure(searchSnapshot.results >= 1, `Second Brain plugin search should show results: ${JSON.stringify(searchSnapshot)}`);
   ensure(searchSnapshot.snapshotVisible, "Second Brain search snapshot action did not update visible state.");
+
+  await evaluate(client, `document.querySelector('.app-window[data-app-id="second-brain"]:not([hidden]) [data-second-brain-search-query]')?.focus()`);
+  await client.send("Input.dispatchKeyEvent", { type: "keyDown", key: "ArrowDown", code: "ArrowDown", windowsVirtualKeyCode: 40, nativeVirtualKeyCode: 40 });
+  await client.send("Input.dispatchKeyEvent", { type: "keyUp", key: "ArrowDown", code: "ArrowDown", windowsVirtualKeyCode: 40, nativeVirtualKeyCode: 40 });
+  const keyboardSearch = await evaluate(client, `(() => {
+    const root = document.querySelector('.app-window[data-app-id="second-brain"]:not([hidden]) [data-second-brain-app]');
+    const list = root?.querySelector('[data-second-brain-search-result-list]');
+    const focused = document.activeElement?.matches?.('[data-second-brain-search-result]') ? document.activeElement : null;
+    return {
+      activeDescendant: list?.getAttribute('aria-activedescendant') || '',
+      focusedResultId: focused?.dataset?.resultId || '',
+      selectedCount: root?.querySelectorAll('[data-second-brain-search-result][aria-selected="true"]').length || 0,
+      tabIndexZero: root?.querySelectorAll('[data-second-brain-search-result][tabindex="0"]').length || 0
+    };
+  })()`);
+  ensure(keyboardSearch.focusedResultId, `Second Brain ArrowDown did not focus a search result: ${JSON.stringify(keyboardSearch)}`);
+  ensure(keyboardSearch.activeDescendant.includes(keyboardSearch.focusedResultId.replace(/[^a-z0-9_-]+/gi, "-")), `Second Brain active descendant did not track keyboard focus: ${JSON.stringify(keyboardSearch)}`);
+  ensure(keyboardSearch.selectedCount === 1, `Second Brain keyboard search should keep one selected result: ${JSON.stringify(keyboardSearch)}`);
+  ensure(keyboardSearch.tabIndexZero === 1, `Second Brain keyboard search should keep one tabbable result: ${JSON.stringify(keyboardSearch)}`);
 
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="app-primary"][data-app-id="second-brain"]');
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-capture"]');
@@ -521,6 +556,7 @@ async function smokeSecondBrain(client, baseUrl) {
   return {
     initial,
     searchSnapshot,
+    keyboardSearch,
     artifacts,
     aiBridge,
     persistence,

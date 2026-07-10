@@ -2918,6 +2918,34 @@ function handleGlobalKeys(event) {
     submitTerminalInput(event.target);
     return;
   }
+  const secondBrainSearchPanel = event.target?.closest?.("[data-second-brain-search-panel]");
+  if (secondBrainSearchPanel) {
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      moveSecondBrainSearchFocus("next");
+      return;
+    }
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
+      moveSecondBrainSearchFocus("previous");
+      return;
+    }
+    if (event.key === "Home") {
+      event.preventDefault();
+      moveSecondBrainSearchFocus("first");
+      return;
+    }
+    if (event.key === "End") {
+      event.preventDefault();
+      moveSecondBrainSearchFocus("last");
+      return;
+    }
+    if (event.key === "Enter" && event.target?.matches?.("[data-second-brain-search-query]")) {
+      event.preventDefault();
+      runSecondBrainSearch(secondBrainSearchPanel.closest(".window-body"));
+      return;
+    }
+  }
   const mod = event.metaKey || event.ctrlKey;
   const key = event.key.toLowerCase();
   if (mod && event.altKey && ["1", "2", "3"].includes(event.key)) {
@@ -5065,6 +5093,7 @@ function getSecondBrainData() {
   }
   if (typeof data.searchQuery !== "string") data.searchQuery = "SEIS";
   if (!SEIS_SECOND_BRAIN_SEARCH_FILTERS.includes(data.searchFilter)) data.searchFilter = "All";
+  if (typeof data.activeSearchResultId !== "string") data.activeSearchResultId = "";
   if (!Array.isArray(data.searchSnapshots)) data.searchSnapshots = [];
   if (!Array.isArray(data.activity)) {
     data.activity = [
@@ -5267,6 +5296,46 @@ function getSecondBrainSearchResults(index, data) {
     .slice(0, 12);
 }
 
+function getSecondBrainSearchDomId(resultId) {
+  return `second-brain-search-result-${String(resultId || "none").replace(/[^a-z0-9_-]+/gi, "-")}`;
+}
+
+function normalizeSecondBrainActiveSearchResult(data, results) {
+  if (!results.length) {
+    data.activeSearchResultId = "";
+    return "";
+  }
+  if (!results.some((result) => result.id === data.activeSearchResultId)) {
+    data.activeSearchResultId = results[0].id;
+  }
+  return data.activeSearchResultId;
+}
+
+function focusSecondBrainSearchResult(resultId) {
+  if (!resultId) return;
+  requestAnimationFrame(() => {
+    const target = document.getElementById(getSecondBrainSearchDomId(resultId));
+    target?.focus();
+  });
+}
+
+function moveSecondBrainSearchFocus(direction) {
+  const data = getSecondBrainData();
+  const results = getSecondBrainSearchResults(getSecondBrainSearchIndex(), data);
+  if (!results.length) return;
+  const activeId = normalizeSecondBrainActiveSearchResult(data, results);
+  const currentIndex = Math.max(0, results.findIndex((result) => result.id === activeId));
+  let nextIndex = currentIndex;
+  if (direction === "next") nextIndex = Math.min(results.length - 1, currentIndex + 1);
+  if (direction === "previous") nextIndex = Math.max(0, currentIndex - 1);
+  if (direction === "first") nextIndex = 0;
+  if (direction === "last") nextIndex = results.length - 1;
+  data.activeSearchResultId = results[nextIndex].id;
+  saveState();
+  renderOpenWindows("second-brain");
+  focusSecondBrainSearchResult(data.activeSearchResultId);
+}
+
 function renderSecondBrainSearchActionAttrs(result) {
   if (result.action === "open-app") return `data-action="open-app" data-app-id="${escapeAttr(result.appId)}"`;
   if (result.action === "open-demo-route") return `data-action="open-demo-route" data-value="${escapeAttr(result.routeId)}"`;
@@ -5368,6 +5437,8 @@ function renderSecondBrain() {
   const searchIndex = getSecondBrainSearchIndex();
   const searchResults = getSecondBrainSearchResults(searchIndex, data);
   const searchSourceCounts = getSecondBrainSearchSourceCounts(searchIndex);
+  const activeSearchResultId = normalizeSecondBrainActiveSearchResult(data, searchResults);
+  const activeSearchResultDomId = getSecondBrainSearchDomId(activeSearchResultId);
   const nodePositions = [
     ["seis-os-map", "50%", "12%"],
     ["ai-core-router", "22%", "34%"],
@@ -5445,13 +5516,15 @@ function renderSecondBrain() {
         ${searchSourceCounts.map(([type, count]) => `<article class="metric-card"><strong>${escapeHtml(type)}</strong><p>${count}</p></article>`).join("")}
       </div>
       <div class="second-brain-search-results" data-second-brain-search-results>
-        ${searchResults.map((result) => `<button type="button" class="second-brain-search-result" ${renderSecondBrainSearchActionAttrs(result)} aria-label="${escapeAttr(`Open ${result.title} from ${result.type}`)}">
+        <div class="second-brain-search-result-list" role="listbox" aria-label="Second Brain local search results" aria-activedescendant="${escapeAttr(activeSearchResultDomId)}" data-second-brain-search-result-list>
+        ${searchResults.map((result) => `<button type="button" id="${escapeAttr(getSecondBrainSearchDomId(result.id))}" class="second-brain-search-result ${result.id === activeSearchResultId ? "is-active" : ""}" ${renderSecondBrainSearchActionAttrs(result)} data-second-brain-search-result data-result-id="${escapeAttr(result.id)}" role="option" aria-selected="${result.id === activeSearchResultId}" tabindex="${result.id === activeSearchResultId ? "0" : "-1"}" aria-label="${escapeAttr(`Open ${result.title} from ${result.type}`)}">
           <span>${escapeHtml(result.type)} · score ${result.score}</span>
           <strong>${escapeHtml(result.title)}</strong>
           <small>${escapeHtml(result.source)}</small>
           <p>${escapeHtml(result.detail)}</p>
           <em>${escapeHtml((result.tags || []).join(" "))}</em>
         </button>`).join("") || "<p class=\"muted\">No local Second Brain results match this filter.</p>"}
+        </div>
       </div>
     </section>
     <section class="second-brain-layout">

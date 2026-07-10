@@ -1886,7 +1886,8 @@ select:focus-visible,
   grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
 }
 
-.second-brain-search-results {
+.second-brain-search-results,
+.second-brain-search-result-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
   gap: 0.65rem;
@@ -1906,9 +1907,14 @@ select:focus-visible,
 }
 
 .second-brain-search-result:hover,
-.second-brain-search-result:focus-visible {
+.second-brain-search-result:focus-visible,
+.second-brain-search-result.is-active {
   border-color: rgba(214, 154, 72, 0.5);
   background: rgba(214, 154, 72, 0.11);
+}
+
+.second-brain-search-result.is-active {
+  box-shadow: 0 0 0 1px rgba(214, 154, 72, 0.2) inset;
 }
 
 .second-brain-search-result span,
@@ -5159,6 +5165,7 @@ select:focus-visible,
   .store-grid,
   .music-track-list,
   .second-brain-search-results,
+  .second-brain-search-result-list,
   .second-brain-pipeline,
   .demo-proof-strip,
   .demo-journey-board,
