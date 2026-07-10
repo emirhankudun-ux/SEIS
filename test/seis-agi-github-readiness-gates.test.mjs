@@ -20,7 +20,7 @@ const fixtureFiles = [
   ".github/workflows/seis-agi-github-readiness.yml"
 ];
 
-test("AGI GitHub readiness checker rejects an enabled AGI claim", () => {
+function runFixture(mutate) {
   const fixture = mkdtempSync(path.join(os.tmpdir(), "seis-agi-readiness-"));
   try {
     for (const relativePath of fixtureFiles) {
@@ -29,19 +29,63 @@ test("AGI GitHub readiness checker rejects an enabled AGI claim", () => {
       cpSync(path.join(root, relativePath), target);
     }
 
-    const gatesPath = path.join(fixture, "content/development/seis-agi-github-readiness-gates.json");
-    const gates = JSON.parse(readFileSync(gatesPath, "utf8"));
-    gates.publicClaimBoundary.canClaimRealAgi = true;
-    writeFileSync(gatesPath, JSON.stringify(gates, null, 2) + "\n");
-
-    const result = spawnSync(process.execPath, [checker, "--scope", "all"], {
+    mutate(fixture);
+    return spawnSync(process.execPath, [checker, "--scope", "all"], {
       cwd: fixture,
       encoding: "utf8"
     });
-
-    assert.notEqual(result.status, 0);
-    assert.match((result.stdout || "") + (result.stderr || ""), /canClaimRealAgi must remain false/);
   } finally {
     rmSync(fixture, { recursive: true, force: true });
   }
+}
+
+function updateJson(fixture, relativePath, mutate) {
+  const filePath = path.join(fixture, relativePath);
+  const value = JSON.parse(readFileSync(filePath, "utf8"));
+  mutate(value);
+  writeFileSync(filePath, JSON.stringify(value, null, 2) + "\n");
+}
+
+test("AGI GitHub readiness checker rejects an enabled AGI claim", () => {
+  const result = runFixture((fixture) => {
+    updateJson(fixture, "content/development/seis-agi-github-readiness-gates.json", (gates) => {
+      gates.publicClaimBoundary.canClaimRealAgi = true;
+    });
+  });
+
+  assert.notEqual(result.status, 0);
+  assert.match((result.stdout || "") + (result.stderr || ""), /canClaimRealAgi must remain false/);
+});
+
+test("AGI GitHub readiness checker reports malformed gate arrays", () => {
+  const result = runFixture((fixture) => {
+    updateJson(fixture, "content/development/seis-agi-github-readiness-gates.json", (gates) => {
+      gates.readinessGates = {};
+    });
+  });
+
+  assert.notEqual(result.status, 0);
+  assert.match((result.stdout || "") + (result.stderr || ""), /readinessGates must be an array/);
+});
+
+test("AGI GitHub readiness checker reports malformed fresh clone commands", () => {
+  const result = runFixture((fixture) => {
+    updateJson(fixture, "content/development/seis-agi-github-fresh-clone-readiness-plan.json", (plan) => {
+      plan.safeCommands = {};
+    });
+  });
+
+  assert.notEqual(result.status, 0);
+  assert.match((result.stdout || "") + (result.stderr || ""), /safeCommands must be an array/);
+});
+
+test("AGI GitHub readiness checker reports malformed ledger inquiries", () => {
+  const result = runFixture((fixture) => {
+    updateJson(fixture, "content/development/seis-agi-independent-evidence-ledger.json", (ledger) => {
+      ledger.pendingExternalInquiries = {};
+    });
+  });
+
+  assert.notEqual(result.status, 0);
+  assert.match((result.stdout || "") + (result.stderr || ""), /pendingExternalInquiries must be an array/);
 });

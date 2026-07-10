@@ -161,10 +161,12 @@ function validateGates(value) {
     status: "independent-evidence-gate-only"
   });
 
-  const gateIds = (value.readinessGates || []).map((gate) => gate.id);
+  const readinessGates = Array.isArray(value.readinessGates) ? value.readinessGates : [];
+  ensure(Array.isArray(value.readinessGates), "readinessGates must be an array");
+  const gateIds = readinessGates.map((gate) => gate.id);
   ensureArrayIncludesAll(gateIds, requiredGateIds, "readiness gate ids");
-  ensure(Array.isArray(value.readinessGates) && value.readinessGates.length === requiredGateIds.length, "readiness gate count must remain stable");
-  for (const gate of value.readinessGates || []) {
+  ensure(readinessGates.length === requiredGateIds.length, "readiness gate count must remain stable");
+  for (const gate of readinessGates) {
     ensure(gate.status === "missing", gate.id + " must remain missing until evidence is attached");
     ensure(Array.isArray(gate.unlocks) && gate.unlocks.length > 0, gate.id + ".unlocks must be populated");
     ensure(typeof gate.independentEvidenceRequired === "boolean", gate.id + ".independentEvidenceRequired must be boolean");
@@ -214,14 +216,16 @@ function validateLedger(value) {
   }
   ensure(value.publicReadyForLocalDemo === true, "ledger must allow Local Demo review");
 
-  const inquiryIds = (value.pendingExternalInquiries || []).map((item) => item.id);
+  const pendingExternalInquiries = Array.isArray(value.pendingExternalInquiries) ? value.pendingExternalInquiries : [];
+  ensure(Array.isArray(value.pendingExternalInquiries), "pendingExternalInquiries must be an array");
+  const inquiryIds = pendingExternalInquiries.map((item) => item.id);
   ensureArrayIncludesAll(inquiryIds, [
     "independent-agi-reviewer-report",
     "independent-512b-training-evidence",
     "independent-long-horizon-evidence"
   ], "ledger inquiry ids");
-  ensure(Array.isArray(value.pendingExternalInquiries) && value.pendingExternalInquiries.length >= 3, "ledger must retain independent evidence inquiries");
-  for (const item of value.pendingExternalInquiries || []) {
+  ensure(pendingExternalInquiries.length >= 3, "ledger must retain independent evidence inquiries");
+  for (const item of pendingExternalInquiries) {
     ensure(item.status === "missing", item.id + ".status must remain missing");
     ensure(item.requiredBeforePublicClaim === true, item.id + ".requiredBeforePublicClaim must remain true");
     ensure(Array.isArray(item.ownerAgents) && item.ownerAgents.length > 0, item.id + ".ownerAgents must be populated");
@@ -270,8 +274,10 @@ function validateFreshClonePlan(value) {
     ["validate-ledger", "npm run check:seis-agi-independent-evidence-ledger"],
     ["run-readiness-chain", "npm run check:seis-ai-github-readiness-chain"]
   ]);
-  ensure(Array.isArray(value.safeCommands) && value.safeCommands.length === expectedCommands.size, "fresh clone safe command count must remain stable");
-  for (const item of value.safeCommands || []) {
+  const safeCommands = Array.isArray(value.safeCommands) ? value.safeCommands : [];
+  ensure(Array.isArray(value.safeCommands), "safeCommands must be an array");
+  ensure(safeCommands.length === expectedCommands.size, "fresh clone safe command count must remain stable");
+  for (const item of safeCommands) {
     ensure(expectedCommands.get(item.id) === item.command, "unexpected fresh clone command: " + item.id);
     for (const key of ["downloadsModelWeights", "callsProvider", "trainsModel", "mutatesGitHub"]) {
       ensure(item[key] === false, item.id + "." + key + " must remain false");
@@ -334,6 +340,7 @@ function validateWorkflow(value) {
     "push:",
     "branches: [main]",
     "contents: read",
+    "persist-credentials: false",
     "npm ci",
     "npm run check:seis-ai-github-readiness-chain"
   ];

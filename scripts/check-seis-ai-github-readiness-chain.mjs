@@ -46,6 +46,7 @@ for (const check of checks) {
 
   if (result.stdout) process.stdout.write(result.stdout);
   if (result.stderr) process.stderr.write(result.stderr);
+  if (result.error) console.error(result.error);
 
   const passed = result.status === 0;
   results.push({ id: check.id, scope: check.scope, status: passed ? "passed" : "failed", exitCode: result.status });
