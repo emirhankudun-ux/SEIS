@@ -34,6 +34,7 @@ Current implementation lives in:
 - `scripts/create-seis-second-brain-agent-registry.mjs`
 - `scripts/check-seis-agi-independent-evidence-ledger.mjs`
 - `docs/product/seis-obsidian-bridge-safe-import.md`
+- `docs/ai/seis-second-brain-mcp-quickstart.md`
 - `docs/reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md`
 - `docs/releases/PUBLIC_DEMO_RELEASE_CHECKLIST_PR54.md`
 

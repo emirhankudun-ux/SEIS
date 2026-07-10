@@ -19,6 +19,9 @@ const vaultWorkforcePath = "seis-brain/vault/05_Agents/Agent Workforce.md";
 const vaultProductAgentPath = "seis-brain/vault/05_Agents/Product Agent.md";
 const obsidianContextPath = "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md";
 const secondBrainMcpResource = "seis://brain/second-brain-system.json";
+const mcpQuickstartPath = "docs/ai/seis-second-brain-mcp-quickstart.md";
+const docsIndexPath = "docs/INDEX.md";
+const readmePath = "README.md";
 const demoStatusPath = "docs/product/seis-demo-status.md";
 const requiredManagedSubAgentLanes = [
   "SEIS Hub",
@@ -71,6 +74,9 @@ for (const [filePath, label] of [
   [vaultWorkforcePath, "Obsidian vault workforce note"],
   [vaultProductAgentPath, "Obsidian vault Product Agent note"],
   [obsidianContextPath, "Obsidian context pack"],
+  [mcpQuickstartPath, "Second Brain MCP quickstart"],
+  [docsIndexPath, "documentation index"],
+  [readmePath, "repository README"],
   [demoStatusPath, "SEIS demo status docs"]
 ]) {
   ensureFile(filePath, label);
@@ -86,6 +92,9 @@ const subAgents = readText(subAgentsPath, "SEIS sub-agent contract");
 const vaultWorkforce = readText(vaultWorkforcePath, "Obsidian vault workforce note");
 const vaultProductAgent = readText(vaultProductAgentPath, "Obsidian vault Product Agent note");
 const obsidianContext = readText(obsidianContextPath, "Obsidian context pack");
+const mcpQuickstart = readText(mcpQuickstartPath, "Second Brain MCP quickstart");
+const docsIndex = readText(docsIndexPath, "documentation index");
+const readme = readText(readmePath, "repository README");
 const demoStatus = readText(demoStatusPath, "SEIS demo status docs");
 
 if (contract) {
@@ -186,6 +195,29 @@ for (const [text, label, phrases] of [
 }
 
 for (const phrase of [
+  "SEIS Second Brain MCP Quickstart",
+  "packages/seis-ai/bin/seis-mcp.mjs",
+  secondBrainMcpResource,
+  "SEIS Hub",
+  "SEIS Cloud",
+  "SEIS-Code",
+  "SEIS-Design",
+  "SEIS-DATA",
+  "SEIS Security",
+  "SEIS Research",
+  "SEIS Automation",
+  "SEIS Product",
+  "seis_product_status",
+  "No private Obsidian vault",
+  "model-weight training"
+]) {
+  ensure(mcpQuickstart.includes(phrase), `Second Brain MCP quickstart missing phrase: ${phrase}`);
+}
+
+ensure(docsIndex.includes("ai/seis-second-brain-mcp-quickstart.md"), "documentation index must link the Second Brain MCP quickstart");
+ensure(readme.includes("./docs/ai/seis-second-brain-mcp-quickstart.md"), "README must link the Second Brain MCP quickstart");
+
+for (const phrase of [
   "SEIS_SECOND_BRAIN_SYSTEM",
   "second-brain",
   "seis-second-brain-app",
@@ -271,6 +303,7 @@ for (const filePath of [
   vaultWorkforcePath,
   vaultProductAgentPath,
   obsidianContextPath,
+  mcpQuickstartPath,
   demoStatusPath
 ]) {
   requireNotMatches(filePath, /sk-[A-Za-z0-9_-]{20,}/, "OpenAI-style API keys");

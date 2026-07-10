@@ -47,6 +47,7 @@ Date: 2026-06-23
 | [reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md](reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md) | Repeatable browser-smoke evidence for SEIS Code, Mythic Gacha, SEIS Linux Replica, Second Brain, and the browser-local export bridge. |
 | [product/seis-demo-status.md](product/seis-demo-status.md) | Current-vs-planned boundary for the single-entry SEIS Desktop demo, launcher routes, AI App, SEIS Code, and shared VFS bridge. |
 | [product/seis-second-brain.md](product/seis-second-brain.md) | Local Demo Second Brain contract and browser-smoke gate for installed AI profiles, sub-agent lanes, Obsidian-style Markdown vault notes, graph/backlinks, AI bridge, mobile surface, and GitHub readiness gates. |
+| [ai/seis-second-brain-mcp-quickstart.md](ai/seis-second-brain-mcp-quickstart.md) | Zero-key local stdio MCP quickstart for the repo-owned SEIS Second Brain context and nine managed status/plan lanes. |
 | [product/seis-obsidian-bridge-safe-import.md](product/seis-obsidian-bridge-safe-import.md) | SEIS Obsidian Bridge Safe Import plan and no-private-note-body publication contract. |
 | [reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md](reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md) | Second Brain Accessibility Focus QA for listbox/option roles, inspector focus, mobile targets, and release review. |
 | [ai/read-only-model-router-contract.md](ai/read-only-model-router-contract.md) | Read-Only Model Router Contract for provider-neutral, no-secret, no-live-routing decisions. |
@@ -95,7 +96,8 @@ Date: 2026-06-23
 | [product/command-center-foundation.md](product/command-center-foundation.md) | Command Center module contract and evidence rules. |
 | [product/plugin-interface-suite.md](product/plugin-interface-suite.md) | Read-only interface foundation for `@seis`, `@seis-cloud`, `@seis-code`, `@seis-design`, and `@seis-data`. |
 | [product/seis-demo-status.md](product/seis-demo-status.md) | Working demo boundary for SEIS Desktop as the single entry point, SEIS Search routes, AI Plugin Center tabs, and shared browser-local VFS. |
-| [product/seis-second-brain.md](product/seis-second-brain.md) | Browser-local knowledge OS foundation for all current installed AI profiles, managed sub-agent lanes, the 12-agent target roster, Obsidian-style Markdown vault notes, and GitHub readiness review. |
+| [product/seis-second-brain.md](product/seis-second-brain.md) | Browser-local knowledge OS foundation for all current installed AI profiles, managed sub-agent lanes, the 13-agent target roster, Obsidian-style Markdown vault notes, and GitHub readiness review. |
+| [ai/seis-second-brain-mcp-quickstart.md](ai/seis-second-brain-mcp-quickstart.md) | Zero-key local stdio MCP quickstart for the repo-owned SEIS Second Brain context and nine managed status/plan lanes. |
 | [product/seis-obsidian-bridge-safe-import.md](product/seis-obsidian-bridge-safe-import.md) | Obsidian bridge safe import gates for explicit user-selected source path, dry-run manifest, no secrets, provenance, accessibility, and approval before GitHub publication. |
 | [reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md](reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md) | Second Brain Accessibility Focus QA for keyboard focus, ARIA roles, inspector focus, and mobile target safety. |
 | [reviews/NVIDIA_INSTALLED_INTEGRATIONS_REVIEW.md](reviews/NVIDIA_INSTALLED_INTEGRATIONS_REVIEW.md) | Review packet for NVIDIA installed skill integrations, Store/Search/AI surfaces, runtime boundary, and validation commands. |
