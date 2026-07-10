@@ -1,0 +1,59 @@
+{
+  "id": "seis-agi-github-fresh-clone-readiness-plan",
+  "version": "2026.07.10",
+  "status": "planned-not-verified",
+  "qualityGate": "npm run check:seis-agi-github-fresh-clone-readiness-plan",
+  "sourceOfTruth": "content/development/seis-agi-github-readiness-gates.json",
+  "purpose": "Define a reviewable clean-clone verification path for the AGI readiness gate package without claiming that the path has already been run.",
+  "freshCloneEvidenceRecorded": false,
+  "canClaimFreshCloneVerified": false,
+  "canClaimEveryoneReady": false,
+  "canClaimRealAgi": false,
+  "safeCommands": [
+    {
+      "id": "install-dependencies",
+      "command": "npm ci",
+      "downloadsModelWeights": false,
+      "callsProvider": false,
+      "trainsModel": false,
+      "mutatesGitHub": false
+    },
+    {
+      "id": "validate-gates",
+      "command": "npm run check:seis-agi-github-readiness-gates",
+      "downloadsModelWeights": false,
+      "callsProvider": false,
+      "trainsModel": false,
+      "mutatesGitHub": false
+    },
+    {
+      "id": "validate-ledger",
+      "command": "npm run check:seis-agi-independent-evidence-ledger",
+      "downloadsModelWeights": false,
+      "callsProvider": false,
+      "trainsModel": false,
+      "mutatesGitHub": false
+    },
+    {
+      "id": "run-readiness-chain",
+      "command": "npm run check:seis-ai-github-readiness-chain",
+      "downloadsModelWeights": false,
+      "callsProvider": false,
+      "trainsModel": false,
+      "mutatesGitHub": false
+    }
+  ],
+  "requiredHumanEvidence": [
+    "clean checkout commit SHA",
+    "Node and npm version record",
+    "command output for each safe command",
+    "reviewer identity",
+    "explicit statement that no model runtime or AGI claim was tested"
+  ],
+  "truthBoundary": "This plan is not a completed smoke test. It does not prove a clean clone works, install a model, download weights, run inference, train, call a provider, execute SSH, deploy, push, merge, or prove AGI.",
+  "nextSafeActions": [
+    "Run the plan in an actual clean checkout and attach the resulting logs.",
+    "Keep freshCloneEvidenceRecorded false until a reviewer attaches reproducible evidence.",
+    "Keep all AGI, 20B runtime, and 512B claim fields false after the smoke test because a smoke test alone is insufficient evidence."
+  ]
+}

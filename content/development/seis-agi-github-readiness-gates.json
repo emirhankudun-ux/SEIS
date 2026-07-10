@@ -1,0 +1,158 @@
+{
+  "id": "seis-agi-github-readiness-gates",
+  "version": "2026.07.10",
+  "status": "blocked-pending-independent-evidence",
+  "qualityGate": "npm run check:seis-agi-github-readiness-gates",
+  "chainCommand": "npm run check:seis-ai-github-readiness-chain",
+  "purpose": "Define the evidence and human approval required before SEIS can claim AGI capability, a runnable 20B local model, 512B model readiness, or a public GitHub release beyond Local Demo review.",
+  "defaultRuntimeMode": "seis-local-demo",
+  "claimDecision": "github-users-can-review-local-demo-not-agi-or-model-runtime",
+  "allowedToday": {
+    "localDemoReview": true,
+    "metadataPlanning": true,
+    "deterministicSeedArtifacts": true,
+    "modelInstall": false,
+    "modelWeightDownload": false,
+    "localInference": false,
+    "providerCall": false,
+    "training": false,
+    "fineTune": false,
+    "benchmarkExecution": false,
+    "cloudGpuProvisioning": false,
+    "sshExecution": false,
+    "deployment": false,
+    "githubMutationByGate": false
+  },
+  "publicClaimBoundary": {
+    "canClaimLocalDemoReview": true,
+    "canClaimFreshCloneVerified": false,
+    "canClaim20bRuntimeReady": false,
+    "canClaim70bRuntimeReady": false,
+    "canClaim512bRouteEligible": false,
+    "canClaimTrainingExecuted": false,
+    "canClaimSEISOwnedFoundationModel": false,
+    "canClaimIndependentAgiEvaluation": false,
+    "canClaimRealAgi": false
+  },
+  "modelPlan": {
+    "seis20b": {
+      "parameterClass": "20B",
+      "hardwareClass": "16GB+ RAM",
+      "status": "planned-quantized-evaluation-only",
+      "modelInstalled": false,
+      "runtimeVerified": false,
+      "trainingExecuted": false,
+      "claimReady": false,
+      "truthBoundary": "A 20B target on 16GB+ hardware is a compatibility and quantization evaluation plan only. It is not a downloaded checkpoint, trained SEIS model, verified local runtime, or public performance claim.",
+      "minimumEvidence": [
+        "exact checkpoint and license approval",
+        "hardware and memory measurement",
+        "local inference benchmark with reproducible logs",
+        "security and privacy review",
+        "human release approval"
+      ]
+    },
+    "seis70b": {
+      "parameterClass": "70B",
+      "hardwareClass": "approved high-memory or distributed evaluation environment",
+      "status": "research-gate-only",
+      "modelInstalled": false,
+      "runtimeVerified": false,
+      "trainingExecuted": false,
+      "claimReady": false,
+      "truthBoundary": "The 70B lane is a future research gate. It has no approved hardware allocation, model artifact, runtime, benchmark, or public readiness claim."
+    },
+    "seis512b": {
+      "parameterClass": "512B and higher future classes",
+      "hardwareClass": "approved distributed research environment",
+      "status": "independent-evidence-gate-only",
+      "modelInstalled": false,
+      "runtimeVerified": false,
+      "trainingExecuted": false,
+      "claimReady": false,
+      "truthBoundary": "The 512B lane remains blocked until independent evaluation, training or inference evidence, safety review, reproducibility evidence, and explicit human approval are recorded."
+    }
+  },
+  "readinessGates": [
+    {
+      "id": "independent-agi-evaluation",
+      "status": "missing",
+      "independentEvidenceRequired": true,
+      "unlocks": [
+        "independent AGI evaluation claim"
+      ]
+    },
+    {
+      "id": "seis-20b-runtime-evidence",
+      "status": "missing",
+      "independentEvidenceRequired": true,
+      "unlocks": [
+        "20B local runtime claim"
+      ]
+    },
+    {
+      "id": "seis-512b-training-inference-evidence",
+      "status": "missing",
+      "independentEvidenceRequired": true,
+      "unlocks": [
+        "512B training or inference claim"
+      ]
+    },
+    {
+      "id": "independent-safety-security-review",
+      "status": "missing",
+      "independentEvidenceRequired": true,
+      "unlocks": [
+        "public safety posture claim"
+      ]
+    },
+    {
+      "id": "fresh-clone-user-smoke",
+      "status": "missing",
+      "independentEvidenceRequired": false,
+      "unlocks": [
+        "fresh clone path claim"
+      ]
+    },
+    {
+      "id": "external-reproducibility-review",
+      "status": "missing",
+      "independentEvidenceRequired": true,
+      "unlocks": [
+        "reproducible evaluation claim"
+      ]
+    },
+    {
+      "id": "human-release-approval",
+      "status": "missing",
+      "independentEvidenceRequired": false,
+      "unlocks": [
+        "release decision"
+      ]
+    }
+  ],
+  "requiredEvidence": [
+    "versioned model card and data provenance record",
+    "independent evaluator identity and signed result",
+    "reproducible evaluation configuration and raw metrics",
+    "negative-control and failure-case evidence",
+    "security review with no-secret confirmation",
+    "rollback and incident owner",
+    "human release approval"
+  ],
+  "forbiddenClaims": [
+    "SEIS has achieved real AGI.",
+    "SEIS has a verified 20B local runtime on every 16GB machine.",
+    "SEIS has trained or owns a 20B foundation model.",
+    "SEIS has trained a 512B foundation model.",
+    "SEIS can route 512B inference for GitHub users today.",
+    "A CI check, plugin inventory, or model catalog proves AGI.",
+    "A provider wrapper or assistant name proves a model capability."
+  ],
+  "nextSafeActions": [
+    "Keep Local Demo review available without provider keys or model downloads.",
+    "Record clean-clone smoke output before changing fresh-clone status.",
+    "Obtain independent evaluation, safety, and reproducibility evidence before changing any AGI or 512B claim field.",
+    "Require human review before installing a checkpoint, executing inference, training, deployment, push, merge, or release."
+  ]
+}
