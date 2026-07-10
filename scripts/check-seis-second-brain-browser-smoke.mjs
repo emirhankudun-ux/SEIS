@@ -389,6 +389,9 @@ async function smokeSecondBrain(client, baseUrl) {
       hasObsidianSafeImport: Boolean(root?.querySelector('[data-second-brain-obsidian-safe-import]')),
       noteButtons: root?.querySelectorAll('[data-second-brain-vault] [data-action="second-brain-select-note"]').length || 0,
       graphNodes: root?.querySelectorAll('[data-second-brain-graph] [data-action="second-brain-select-note"]').length || 0,
+      pluginGraphNodes: root?.querySelectorAll('[data-second-brain-plugin-node]').length || 0,
+      pluginGraphEdges: root?.querySelectorAll('[data-second-brain-plugin-graph-edge]').length || 0,
+      pluginGraphText: root?.querySelector('[data-second-brain-graph]')?.innerText || '',
       searchFilters: root?.querySelectorAll('[data-second-brain-search-filters] [data-action="second-brain-set-search-filter"]').length || 0,
       obsidianSourceModes: root?.querySelectorAll('[data-second-brain-obsidian-source-modes] [data-action="second-brain-set-obsidian-source-mode"]').length || 0,
       searchResults: root?.querySelectorAll('[data-second-brain-search-results] .second-brain-search-result').length || 0,
@@ -439,6 +442,9 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(initial.hasObsidianSafeImport, "Second Brain Obsidian safe import selector missing.");
   ensure(initial.noteButtons === 6, `expected six vault notes, got ${initial.noteButtons}`);
   ensure(initial.graphNodes === 6, `expected six graph nodes, got ${initial.graphNodes}`);
+  ensure(initial.pluginGraphNodes === 5, `expected five plugin/skill graph nodes, got ${initial.pluginGraphNodes}`);
+  ensure(initial.pluginGraphEdges === 5, `expected five plugin/skill graph edge markers, got ${initial.pluginGraphEdges}`);
+  ensure(initial.pluginGraphText.includes("@seis-cloud") && initial.pluginGraphText.includes("@seis-data"), "Second Brain graph must render plugin/skill readiness nodes.");
   ensure(initial.searchFilters === 9, `expected nine Second Brain search filters, got ${initial.searchFilters}`);
   ensure(initial.obsidianSourceModes === 3, `expected three Obsidian source modes, got ${initial.obsidianSourceModes}`);
   ensure(initial.searchResults >= 8, `expected at least eight Second Brain search results, got ${initial.searchResults}`);

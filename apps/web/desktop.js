@@ -5731,7 +5731,15 @@ function renderSecondBrain() {
     ["github-readiness", "35%", "72%"],
     ["security-review", "68%", "72%"]
   ];
+  const pluginSkillNodePositions = [
+    ["seis", "10%", "14%"],
+    ["seis-cloud", "90%", "16%"],
+    ["seis-code", "14%", "86%"],
+    ["seis-design", "86%", "86%"],
+    ["seis-data", "50%", "92%"]
+  ];
   const positionFor = (id) => nodePositions.find(([nodeId]) => nodeId === id) || [id, "50%", "50%"];
+  const pluginPositionFor = (id) => pluginSkillNodePositions.find(([nodeId]) => nodeId === id) || [id, "50%", "50%"];
 
   return `<section class="app-main second-brain-app" data-second-brain-app>
     <div class="toolbar">
@@ -5882,18 +5890,27 @@ function renderSecondBrain() {
         <div class="second-brain-graph-header">
           <div>
             <h3 id="second-brain-graph-heading">Knowledge Graph</h3>
-            <p class="status-note">Nodes and backlinks are generated from repo-owned local demo records.</p>
+            <p class="status-note">Nodes, backlinks, and plugin/skill readiness graph nodes are generated from repo-owned local demo records.</p>
           </div>
           <button type="button" class="secondary-action" data-action="open-app" data-app-id="search">Search Vault</button>
         </div>
         <div class="second-brain-graph" role="listbox" aria-label="Second Brain knowledge graph" aria-activedescendant="second-brain-node-${escapeAttr(activeNote.id)}">
           ${links.map((_link, index) => `<span class="second-brain-edge edge-${index % 6}" aria-hidden="true"></span>`).join("")}
+          ${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.map((_lane, index) => `<span class="second-brain-edge edge-${(index + links.length) % 6}" data-second-brain-plugin-graph-edge aria-hidden="true"></span>`).join("")}
           ${notes.map((note) => {
             const [, x, y] = positionFor(note.id);
             return `<button type="button" id="second-brain-node-${escapeAttr(note.id)}" role="option" aria-selected="${note.id === activeNote.id}" aria-controls="second-brain-inspector-panel" aria-label="${escapeAttr(`Open ${note.title} note in Second Brain inspector`)}" class="second-brain-node ${note.id === activeNote.id ? "is-active" : ""}" style="--node-x:${escapeAttr(x)};--node-y:${escapeAttr(y)}" data-action="second-brain-select-note" data-value="${escapeAttr(note.id)}">
               <span>${escapeHtml(note.title.split(" ").map((part) => part[0]).join("").slice(0, 3))}</span>
               <strong>${escapeHtml(note.title)}</strong>
               <small>${escapeHtml(note.status)}</small>
+            </button>`;
+          }).join("")}
+          ${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.map((lane) => {
+            const [, x, y] = pluginPositionFor(lane.id);
+            return `<button type="button" role="option" aria-selected="false" aria-label="${escapeAttr(`Open SEIS AI for ${lane.plugin} plugin skill readiness`)}" class="second-brain-node second-brain-plugin-node" style="--node-x:${escapeAttr(x)};--node-y:${escapeAttr(y)}" data-action="open-app" data-app-id="ai-assistant" data-second-brain-plugin-node data-plugin-id="${escapeAttr(lane.id)}">
+              <span>${escapeHtml(lane.plugin.replace("@", "").split("-").map((part) => part[0]).join("").toUpperCase().slice(0, 3))}</span>
+              <strong>${escapeHtml(lane.plugin)}</strong>
+              <small>${escapeHtml(lane.readiness)}</small>
             </button>`;
           }).join("")}
         </div>
@@ -9456,6 +9473,10 @@ MCP resource: ${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.mcpResource}
 Boundary: ${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.boundary}
 
 ${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.map((lane) => `- ${lane.plugin}: ${lane.statusTool} / ${lane.planTool} | skill: ${lane.skill} | readiness: ${lane.readiness} | training: ${lane.trainingUse} | providerExecution: ${lane.providerExecution} | externalMutation: ${lane.externalMutation}`).join("\n")}
+
+## Plugin + Skill Graph Nodes
+
+${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.map((lane) => `- ${lane.plugin}: graph node ${lane.id} links ${lane.skill} to ${lane.statusTool} / ${lane.planTool} and SEIS AI Second Brain bridge.`).join("\n")}
 
 ## Autonomous Agent Roster
 
