@@ -1,0 +1,91 @@
+{
+  "$schema": "../../schemas/seis-goal-execution.schema.json",
+  "schemaVersion": 1,
+  "execution_id": "SEIS-EXEC-001",
+  "requested_goal_id": "SEIS-GOAL-001",
+  "canonical_goal_id": "SEIS-GOAL-003",
+  "title": "Repository Governance and Goal Tracking Foundation",
+  "category": "documentation",
+  "priority": "critical",
+  "status": "review",
+  "owner_agent": "Lead Architect Agent",
+  "supporting_agents": [
+    "Governance Agent",
+    "Documentation Agent",
+    "Security Agent",
+    "Repository Hygiene Agent",
+    "GitHub Workflow Agent"
+  ],
+  "time_horizon": "now",
+  "repo_areas": [
+    "AGENTS.md",
+    "docs/SEIS_GOAL_TRACKING.md",
+    "docs/ARCHITECTURE.md",
+    "docs/AI_CORE.md",
+    "docs/MCP_REGISTRY.md",
+    "docs/AGENT_REGISTRY.md",
+    "docs/DESIGN_SYSTEM.md",
+    "docs/APPLE_PLATFORM_STRATEGY.md",
+    "docs/SECURITY.md",
+    "docs/ROADMAP.md",
+    "docs/ROLLBACK.md",
+    "docs/TESTING.md",
+    "docs/ACCESSIBILITY.md",
+    "docs/DEVOPS.md",
+    "docs/RELEASE.md",
+    "docs/PUBLIC_PRIVATE_BOUNDARY.md",
+    "schemas/seis-goal-execution.schema.json",
+    "scripts/check-seis-governance-foundation.mjs",
+    "package.json",
+    "package-lock.json",
+    ".github/workflows/foundation-check.yml"
+  ],
+  "dependencies": [
+    "Existing public-safe SEIS-GOAL-003 Goal Tracking OS record",
+    "Repository owner review before merge"
+  ],
+  "definition_of_done": [
+    "Root AGENTS.md preserves the owner-provided Enterprise v4.0 constitution and links every focused canonical governance document.",
+    "Canonical roadmap, architecture, AI, MCP, agent, design, Apple, security, testing, DevOps, release, rollback, accessibility, and public/private entry points exist.",
+    "A public-safe machine-readable execution schema and focused execution record validate without new dependencies.",
+    "Existing contribution, security, ownership, issue, PR, and branch guidance is present and aligned.",
+    "The governance validator runs locally and in the existing foundation CI workflow.",
+    "No unrelated application code, web demo code, supplied archive, dependency graph change, or secret is included.",
+    "A focused branch, commit, validation report, rollback plan, and draft pull request are prepared."
+  ],
+  "validation": [
+    "npm run check:seis-governance-foundation",
+    "npm run check:goal-tracking",
+    "npm run check:seis-master-prompt-report",
+    "npm run check:seis-master-prompt",
+    "npm run check:open-source-governance",
+    "npm run check:foundation",
+    "node --check scripts/check-seis-governance-foundation.mjs",
+    "node --check scripts/check-open-source-governance.mjs",
+    "npm run check:workspace",
+    "npm run seis:check",
+    "npm test",
+    "npm run test:web",
+    "git diff --check"
+  ],
+  "risks": [
+    "The historical registry assigns SEIS-GOAL-001 to AI Core, so the requested milestone label cannot be reused as a second canonical goal id.",
+    "Canonical entry points can drift from deeper historical documents without validation and ownership.",
+    "The owner's primary checkout contains unrelated changes and must stay outside this PR.",
+    "Enterprise v4.0 is intentionally comprehensive and supersedes the earlier compact-root requirement."
+  ],
+  "rollback_plan": "Revert the focused governance commit to restore the previous constitution, compatibility pointers, templates, workflow, and documentation; no application data migration or remote runtime rollback is required.",
+  "github_output": {
+    "issue": false,
+    "branch": true,
+    "pull_request": true,
+    "commit": true,
+    "branch_name": "architecture/seis-governance-v1",
+    "pr_title": "docs(governance): establish SEIS enterprise goal tracking foundation"
+  },
+  "identity_note": "SEIS-EXEC-001 implements the owner-requested SEIS-GOAL-001 milestone against canonical Goal Tracking OS record SEIS-GOAL-003 without duplicating either goal identity.",
+  "notes": [
+    "Review status means implementation is ready for repository-owner review; it does not claim merge or release.",
+    "The public demo, Swift package, MCP runtime, SSH runtime, and supplied archives are outside this PR."
+  ]
+}

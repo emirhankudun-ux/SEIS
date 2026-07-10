@@ -3,6 +3,16 @@ name: SEIS Master Prompt Governance
 on:
   pull_request:
     paths:
+      - "AGENTS.md"
+      - "docs/SEIS_GOAL_TRACKING.md"
+      - "docs/ARCHITECTURE.md"
+      - "docs/ROADMAP.md"
+      - "docs/AI_CORE.md"
+      - "docs/MCP_REGISTRY.md"
+      - "docs/AGENT_REGISTRY.md"
+      - "docs/PUBLIC_PRIVATE_BOUNDARY.md"
+      - "schemas/seis-goal-execution.schema.json"
+      - "content/development/seis-governance-foundation-execution.json"
       - "docs/governance/**"
       - "data/seis-master-*.json"
       - "data/seis-operational-goal-tracker.json"
@@ -18,6 +28,16 @@ on:
   push:
     branches: [main]
     paths:
+      - "AGENTS.md"
+      - "docs/SEIS_GOAL_TRACKING.md"
+      - "docs/ARCHITECTURE.md"
+      - "docs/ROADMAP.md"
+      - "docs/AI_CORE.md"
+      - "docs/MCP_REGISTRY.md"
+      - "docs/AGENT_REGISTRY.md"
+      - "docs/PUBLIC_PRIVATE_BOUNDARY.md"
+      - "schemas/seis-goal-execution.schema.json"
+      - "content/development/seis-governance-foundation-execution.json"
       - "docs/governance/**"
       - "data/seis-master-*.json"
       - "data/seis-operational-goal-tracker.json"

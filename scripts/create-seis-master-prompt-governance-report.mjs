@@ -27,10 +27,6 @@ function tableRow(cells) {
   return `| ${cells.map(cell => String(cell).replaceAll("|", "\\|")).join(" | ")} |`;
 }
 
-function renderList(values) {
-  return values.map(value => `- ${value}`).join("\n");
-}
-
 function renderReport() {
   const implementationMap = readJson(implementationMapPath);
   const acceptanceCriteria = readJson(acceptanceCriteriaPath);
@@ -56,8 +52,9 @@ function renderReport() {
     .join("\n");
 
   const statusRows = [
-    ["Master Prompt document", "Active", implementationMap.contractPath],
-    ["Decision record", "Active", implementationMap.decisionRecordPath],
+    ["Enterprise Constitution", "Active", implementationMap.contractPath],
+    ["Master Prompt companion", "Compatibility", implementationMap.companionContractPath],
+    ["Decision record", "Superseded", implementationMap.decisionRecordPath],
     ["Change checklist", "Active", implementationMap.changeChecklistPath],
     ["Review ownership", "Active", implementationMap.reviewOwnershipPath],
     ["GitHub controls manifest", "Active", implementationMap.githubControlsPath],
@@ -66,7 +63,7 @@ function renderReport() {
     ["SEIS GitHub workflow skill", "Active", implementationMap.githubWorkflowSkillPath],
     ["SEIS Security Review skill", "Active", implementationMap.securityReviewSkillPath],
     ["SEIS Master Prompt skill", "Active", implementationMap.skillPath],
-    ["Agent-facing instructions", "Active", "AGENTS.md links the active Master Prompt"],
+    ["Agent-facing instructions", "Active", "AGENTS.md is the constitutional authority and links focused expansion documents"],
     ["README positioning", "Active", "README.md links the Master Prompt surfaces"],
     ["Implementation map", "Active", implementationMapPath],
     ["Acceptance criteria", "Active", acceptanceCriteriaPath],
@@ -161,9 +158,9 @@ This report is generated from:
 - \`${githubControlsPath}\`
 - \`${sshHardeningOperationContractPath}\`
 
-It tracks how the SEIS Master Prompt is represented in the repository. It is
-intentionally short, reviewable, and tied to a dedicated quality gate so the
-operating contract does not remain chat-only context.
+It tracks how the root SEIS Enterprise Constitution and its Master Prompt
+compatibility surfaces are represented in the repository. It is intentionally
+short, reviewable, and tied to a dedicated quality gate.
 
 ## Goal
 
@@ -211,7 +208,7 @@ ${sshOperationRows}
 | Risk | Mitigation |
 | --- | --- |
 | Governance text drifts away from implementation | Keep the implementation map, acceptance criteria, generated report, and dedicated check in the quality chain. |
-| Agent instructions become stale | Require \`AGENTS.md\` to link the active Master Prompt. |
+| Agent instructions become stale | Require root \`AGENTS.md\` authority markers and focused canonical-document links. |
 | Security principles stay aspirational | Check Master Prompt surfaces for private-key and inline credential patterns. |
 | SSH hardening causes lockout or unsafe host mutation | Keep mode isolation, lockout safety, rollback evidence, and fail-fast behavior tied to the SSH operation contract. |
 | Documentation becomes theater | Track concrete surfaces, evidence, validation, acceptance criteria, and next steps in this report. |

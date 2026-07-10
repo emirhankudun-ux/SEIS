@@ -176,6 +176,21 @@ apps/web/content/
 
 # Documentation
 docs/*
+!docs/SEIS_GOAL_TRACKING.md
+!docs/ARCHITECTURE.md
+!docs/AI_CORE.md
+!docs/MCP_REGISTRY.md
+!docs/AGENT_REGISTRY.md
+!docs/DESIGN_SYSTEM.md
+!docs/APPLE_PLATFORM_STRATEGY.md
+!docs/SECURITY.md
+!docs/ROADMAP.md
+!docs/ROLLBACK.md
+!docs/TESTING.md
+!docs/ACCESSIBILITY.md
+!docs/DEVOPS.md
+!docs/RELEASE.md
+!docs/PUBLIC_PRIVATE_BOUNDARY.md
 !docs/STATUS.md
 !docs/GETTING_STARTED.md
 !docs/TROUBLESHOOTING.md
@@ -208,6 +223,11 @@ docs/*
 !docs/adr/*.md
 !docs/decisions/
 !docs/decisions/*.md
+
+# Focused governance schemas
+!schemas/
+schemas/*
+!schemas/seis-goal-execution.schema.json
 
 # Local accidental artifacts from monorepo preparation
 SEİS/

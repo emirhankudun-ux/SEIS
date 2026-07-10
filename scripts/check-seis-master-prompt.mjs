@@ -29,6 +29,7 @@ function requireNotMatches(file, pattern, reason) {
   }
 }
 
+const constitutionalPath = "AGENTS.md";
 const masterPromptPath = "docs/governance/seis-master-prompt.md";
 const supremeVisionPath = "docs/governance/seis-supreme-vision.md";
 const decisionRecordPath = "docs/governance/adr-0001-seis-master-prompt-operating-contract.md";
@@ -118,10 +119,10 @@ for (const [file, required] of [
   ["README.md", "npm run check:seis-master-prompt"],
   ["README.md", "npm run check:seis-master-prompt-report"],
   ["AGENTS.md", "Master Prompt"],
-  ["AGENTS.md", masterPromptPath],
-  ["AGENTS.md", "Supreme Vision"],
-  ["AGENTS.md", supremeVisionPath],
-  ["AGENTS.md", "focus mode"],
+  ["AGENTS.md", "Enterprise v4.0"],
+  ["AGENTS.md", "Apple-First Constitution"],
+  ["AGENTS.md", "docs/SEIS_GOAL_TRACKING.md"],
+  ["AGENTS.md", "Final Execution Protocol"],
   ["plugins/seis/README.md", "skills/seis-master-prompt/SKILL.md"],
   ["plugins/seis/README.md", "skills/seis-security-review/SKILL.md"],
   ["plugins/seis/README.md", "npm run check:seis-master-prompt-report"],
@@ -173,12 +174,11 @@ for (const [file, required] of [
   [skillPath, "Verify GitHub settings or check runs before claiming external readiness"],
   [skillAgentPath, "display_name: \"SEIS Master Prompt\""],
   [skillAgentPath, "short_description: \"Govern SEIS Master Prompt workflows.\""],
-  [".github/PULL_REQUEST_TEMPLATE.md", "Master Prompt Alignment"],
-  [".github/PULL_REQUEST_TEMPLATE.md", masterPromptPath],
-  [".github/PULL_REQUEST_TEMPLATE.md", changeChecklistPath],
-  [".github/PULL_REQUEST_TEMPLATE.md", "npm run check:seis-master-prompt-report"],
-  [".github/PULL_REQUEST_TEMPLATE.md", "npm run check:seis-master-prompt"],
-  [".github/PULL_REQUEST_TEMPLATE.md", "Does not claim validation that was not actually run"],
+  [".github/PULL_REQUEST_TEMPLATE.md", "Goal ID"],
+  [".github/PULL_REQUEST_TEMPLATE.md", "Architecture Impact"],
+  [".github/PULL_REQUEST_TEMPLATE.md", "Failed or Skipped Checks"],
+  [".github/PULL_REQUEST_TEMPLATE.md", "Preserves demo/live and public/private boundaries"],
+  [".github/PULL_REQUEST_TEMPLATE.md", "Reports failed and skipped checks honestly"],
   [issueTemplatePath, "SEIS Master Prompt governance"],
   [issueTemplatePath, "docs/governance/seis-master-prompt.md"],
   [issueTemplatePath, "docs/governance/seis-master-prompt-change-checklist.md"],
@@ -207,8 +207,11 @@ for (const [file, required] of [
   [ciWorkflowPath, "contents: read"],
   ["scripts/check-open-source-governance.mjs", masterPromptPath],
   [decisionRecordPath, "# ADR 0001: SEIS Master Prompt as Operating Contract"],
-  [decisionRecordPath, "Status: Accepted"],
-  [decisionRecordPath, "SEIS treats the Master Prompt as an active repository operating contract"],
+  [decisionRecordPath, "Status: Superseded"],
+  [decisionRecordPath, "Root `AGENTS.md` Enterprise v4.0"],
+  [masterPromptPath, "Status: Compatibility companion"],
+  [masterPromptPath, "Root `AGENTS.md` Enterprise v4.0"],
+  [decisionRecordPath, "Root `AGENTS.md` Enterprise v4.0 is the active repository operating"],
   [decisionRecordPath, "npm run check:seis-master-prompt"],
   [decisionRecordPath, "Validation must not be claimed unless these commands are actually run"],
   [masterPromptPath, supremeVisionPath],
@@ -511,11 +514,14 @@ try {
   failures.push(`${githubControlsPath} must contain valid JSON: ${error.message}`);
 }
 
-if (githubControls.contract !== "SEIS Master Prompt") {
-  failures.push(`${githubControlsPath} must identify the SEIS Master Prompt contract`);
+if (githubControls.contract !== "SEIS Enterprise Constitution") {
+  failures.push(`${githubControlsPath} must identify the SEIS Enterprise Constitution`);
 }
-if (githubControls.contractPath !== masterPromptPath) {
-  failures.push(`${githubControlsPath} must point to ${masterPromptPath}`);
+if (githubControls.contractPath !== constitutionalPath) {
+  failures.push(`${githubControlsPath} must point to ${constitutionalPath}`);
+}
+if (githubControls.companionContractPath !== masterPromptPath) {
+  failures.push(`${githubControlsPath} must retain ${masterPromptPath} as a companion`);
 }
 const requiredControls = [
   "main-branch-protection",
@@ -541,11 +547,14 @@ for (const control of requiredControls) {
   }
 }
 
-if (acceptanceCriteria.contract !== "SEIS Master Prompt") {
-  failures.push(`${acceptanceCriteriaPath} must identify the SEIS Master Prompt contract`);
+if (acceptanceCriteria.contract !== "SEIS Enterprise Constitution") {
+  failures.push(`${acceptanceCriteriaPath} must identify the SEIS Enterprise Constitution`);
 }
-if (acceptanceCriteria.contractPath !== masterPromptPath) {
-  failures.push(`${acceptanceCriteriaPath} must point to ${masterPromptPath}`);
+if (acceptanceCriteria.contractPath !== constitutionalPath) {
+  failures.push(`${acceptanceCriteriaPath} must point to ${constitutionalPath}`);
+}
+if (acceptanceCriteria.companionContractPath !== masterPromptPath) {
+  failures.push(`${acceptanceCriteriaPath} must retain ${masterPromptPath} as a companion`);
 }
 
 const requiredCriteria = [
@@ -585,11 +594,14 @@ for (const command of [
   }
 }
 
-if (implementationMap.contract !== "SEIS Master Prompt") {
-  failures.push(`${implementationMapPath} must identify the SEIS Master Prompt contract`);
+if (implementationMap.contract !== "SEIS Enterprise Constitution") {
+  failures.push(`${implementationMapPath} must identify the SEIS Enterprise Constitution`);
 }
-if (implementationMap.contractPath !== masterPromptPath) {
-  failures.push(`${implementationMapPath} must point to ${masterPromptPath}`);
+if (implementationMap.contractPath !== constitutionalPath) {
+  failures.push(`${implementationMapPath} must point to ${constitutionalPath}`);
+}
+if (implementationMap.companionContractPath !== masterPromptPath) {
+  failures.push(`${implementationMapPath} must retain ${masterPromptPath} as a companion`);
 }
 if (implementationMap.decisionRecordPath !== decisionRecordPath) {
   failures.push(`${implementationMapPath} must point to ${decisionRecordPath}`);
