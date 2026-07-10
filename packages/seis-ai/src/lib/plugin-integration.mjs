@@ -4,6 +4,8 @@ import path from "node:path";
 export const PLUGIN_INTEGRATION_PATH = "content/development/seis-agent-plugin-integration.json";
 export const MCP_RUNTIME_CONTRACT_PATH = "content/development/seis-ai-core-mcp-runtime-contract.json";
 export const AI_CORE_PROVIDER_REGISTRY_PATH = "content/development/seis-ai-core-provider-registry.json";
+export const AI_CORE_READ_ONLY_ROUTER_RUNTIME_PATH = "content/development/seis-ai-core-read-only-router-runtime.json";
+export const AI_CORE_READ_ONLY_ROUTER_RUNTIME_RESOURCE_URI = "seis://ai/read-only-router-runtime.json";
 export const AI_CORE_MODEL_SCALING_PROFILE_PATH = "content/development/seis-model-scaling-hardware-profile.json";
 export const AI_CORE_MODEL_PARAMETER_LADDER_PATH = "content/development/seis-model-parameter-ladder.json";
 export const AI_CORE_MODEL_PARAMETER_LADDER_RESOURCE_URI = "seis://ai/model-parameter-ladder.json";

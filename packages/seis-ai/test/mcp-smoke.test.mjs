@@ -66,7 +66,7 @@ function rpcSession(requests, { timeoutMs = 15000 } = {}) {
 }
 
 describe("seis-mcp stdio smoke", () => {
-  it("initializes and lists 34 tools, 3 prompts, 29 resources", async () => {
+  it("initializes and lists 35 tools, 3 prompts, 30 resources", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -101,6 +101,7 @@ describe("seis-mcp stdio smoke", () => {
       "security_audit",
       "seis_ai_core_model_scaling_status",
       "seis_ai_core_provider_status",
+      "seis_ai_core_read_only_route",
       "seis_ai_core_subagent_dry_run",
       "seis_ai_core_subagent_model",
       "seis_ai_core_subagent_review_ledger",
@@ -146,6 +147,7 @@ describe("seis-mcp stdio smoke", () => {
       "seis://ai/model-parameter-ladder.json",
       "seis://ai/model-scaling-hardware-profile.json",
       "seis://ai/provider-registry.json",
+      "seis://ai/read-only-router-runtime.json",
       "seis://ai/redaction-fixture.json",
       "seis://ai/sub-agent-5-year-plan-view.json",
       "seis://ai/sub-agent-5-year-plan.json",
@@ -251,7 +253,7 @@ describe("seis-mcp stdio smoke", () => {
     assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
     const payload = JSON.parse(resource.result.contents[0].text);
     assert.equal(payload.id, "seis-ai-core-mcp-runtime-contract");
-    assert.equal(payload.resourceCount, 29);
+    assert.equal(payload.resourceCount, 30);
     assert.equal(payload.transport, "stdio JSON-RPC");
   });
 
