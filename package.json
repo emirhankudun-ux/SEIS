@@ -167,6 +167,8 @@
     "check:seis-ssh-public-access": "node scripts/check-seis-ssh-public-access.mjs",
     "check:seis-ssh-public-access-report": "node scripts/create-seis-ssh-public-access-report.mjs --check",
     "report:seis-ssh-public-access": "node scripts/create-seis-ssh-public-access-report.mjs --write",
+    "check:seis-ssh-endpoint-continuity": "node scripts/check-seis-ssh-endpoint-continuity.mjs",
+    "record:seis-ssh-endpoint-continuity": "node scripts/check-seis-ssh-endpoint-continuity.mjs --record --write",
     "check:seis-ssh-public-onboarding": "node scripts/create-seis-ssh-public-onboarding-pack.mjs --check",
     "report:seis-ssh-public-onboarding": "node scripts/create-seis-ssh-public-onboarding-pack.mjs --write",
     "check:seis-ssh-public-contributor-doctor": "node scripts/check-seis-ssh-public-contributor-doctor.mjs --check",

@@ -123,6 +123,26 @@ source of truth. The installer or docs may read:
 If no `Port` is configured, OpenSSH default `22` is treated as the preserved
 port. A new port is not introduced silently.
 
+## Endpoint Continuity Evidence
+
+The public report exposes a sanitized endpoint fingerprint so a maintainer can
+compare the resolved `SEIS-SSH` target without publishing the host name,
+Codespace identifier, identity-file path, or raw `ProxyCommand`. The fingerprint
+covers the resolved host, port, and normalized transport shape.
+
+Record a local baseline once after reviewing the current endpoint:
+
+```bash
+npm run record:seis-ssh-endpoint-continuity
+npm run check:seis-ssh-endpoint-continuity
+```
+
+The baseline and result stay under the ignored `reports/` directory. Recording
+the baseline does not write `~/.ssh/config` or open SSH. A missing baseline is
+reported as `baseline-required`; a fingerprint or port mismatch fails closed
+and cannot overwrite the baseline automatically. Endpoint migration still
+requires explicit owner approval and a reviewed change.
+
 ## State Labels
 
 | State | Meaning | Allowed claim |
@@ -153,5 +173,6 @@ npm run check:seis-ssh-public-onboarding
 npm run check:seis-ssh-public-contributor-doctor
 npm run check:seis-ssh-live-readiness-evidence
 npm run check:seis-ssh-enterprise-benchmark
+npm run check:seis-ssh-endpoint-continuity
 git diff --check
 ```
