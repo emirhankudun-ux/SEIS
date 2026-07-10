@@ -4,10 +4,31 @@
 import { spawnSync } from "node:child_process";
 
 const checks = [
-  { id: "gate-manifest", scope: "gates" },
-  { id: "independent-evidence-ledger", scope: "ledger" },
-  { id: "fresh-clone-plan", scope: "fresh-clone" },
-  { id: "cross-artifact-contract", scope: "all" }
+  {
+    id: "gate-manifest",
+    scope: "gates",
+    command: [process.execPath, "scripts/check-seis-agi-github-readiness-gates.mjs", "--scope", "gates"]
+  },
+  {
+    id: "ledger-manifest",
+    scope: "ledger",
+    command: [process.execPath, "scripts/check-seis-agi-github-readiness-gates.mjs", "--scope", "ledger"]
+  },
+  {
+    id: "independent-evidence-ledger",
+    scope: "canonical-ledger",
+    command: [process.execPath, "scripts/check-seis-agi-independent-evidence-ledger.mjs"]
+  },
+  {
+    id: "fresh-clone-plan",
+    scope: "fresh-clone",
+    command: [process.execPath, "scripts/check-seis-agi-github-readiness-gates.mjs", "--scope", "fresh-clone"]
+  },
+  {
+    id: "cross-artifact-contract",
+    scope: "all",
+    command: [process.execPath, "scripts/check-seis-agi-github-readiness-gates.mjs", "--scope", "all"]
+  }
 ];
 
 const forbiddenFragments = [
@@ -27,7 +48,7 @@ const forbiddenFragments = [
 
 const results = [];
 for (const check of checks) {
-  const command = [process.execPath, "scripts/check-seis-agi-github-readiness-gates.mjs", "--scope", check.scope];
+  const command = check.command;
   const rendered = command.join(" ");
   for (const forbidden of forbiddenFragments) {
     if (rendered.includes(forbidden)) {

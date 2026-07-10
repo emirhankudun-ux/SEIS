@@ -17,6 +17,7 @@ const files = {
   queue: "docs/roadmap/NEXT_PR_QUEUE.md",
   package: "package.json",
   chain: "scripts/check-seis-ai-github-readiness-chain.mjs",
+  independentLedgerCheck: "scripts/check-seis-agi-independent-evidence-ledger.mjs",
   workflow: ".github/workflows/seis-agi-github-readiness.yml"
 };
 
@@ -30,6 +31,52 @@ const requiredGateIds = [
   "human-release-approval"
 ];
 
+const expectedIndependentEvidenceByGate = new Map([
+  ["independent-agi-evaluation", true],
+  ["seis-20b-runtime-evidence", true],
+  ["seis-512b-training-inference-evidence", true],
+  ["independent-safety-security-review", true],
+  ["fresh-clone-user-smoke", false],
+  ["external-reproducibility-review", true],
+  ["human-release-approval", false]
+]);
+
+const requiredReleaseEvidence = [
+  "versioned model card and data provenance record",
+  "independent evaluator identity and signed result",
+  "reproducible evaluation configuration and raw metrics",
+  "negative-control and failure-case evidence",
+  "security review with no-secret confirmation",
+  "rollback and incident owner",
+  "human release approval"
+];
+
+const requiredForbiddenClaims = [
+  "SEIS has achieved real AGI.",
+  "SEIS has a verified 20B local runtime on every 16GB machine.",
+  "SEIS has trained or owns a 20B foundation model.",
+  "SEIS has trained a 512B foundation model.",
+  "SEIS can route 512B inference for GitHub users today.",
+  "A CI check, plugin inventory, or model catalog proves AGI.",
+  "A provider wrapper or assistant name proves a model capability."
+];
+
+const requiredWorkflowPaths = [
+  "content/development/seis-agi-*.json",
+  "docs/STATUS.md",
+  "docs/ai/seis-agi-github-readiness-gates.md",
+  "docs/ai/seis-agi-github-user-readiness-gates.md",
+  "docs/ai/seis-agi-public-readiness-evidence.md",
+  "docs/roadmap/NEXT_PR_QUEUE.md",
+  "package.json",
+  "package-lock.json",
+  "scripts/check-seis-agi-github-readiness-gates.mjs",
+  "scripts/check-seis-agi-independent-evidence-ledger.mjs",
+  "scripts/check-seis-ai-github-readiness-chain.mjs",
+  "test/seis-agi-github-readiness-gates.test.mjs",
+  ".github/workflows/seis-agi-github-readiness.yml"
+];
+
 for (const [label, relativePath] of Object.entries(files)) {
   ensureFile(relativePath, label);
 }
@@ -41,6 +88,7 @@ const packageJson = readJson(files.package, "package.json");
 const docs = readText(files.docs, "AGI GitHub readiness documentation");
 const status = readText(files.status, "STATUS");
 const queue = readText(files.queue, "NEXT_PR_QUEUE");
+const chain = readText(files.chain, "AGI GitHub readiness chain");
 const workflow = readText(files.workflow, "AGI GitHub readiness workflow");
 
 for (const relativePath of [
@@ -57,6 +105,7 @@ if (scope === "all" || scope === "gates") {
   validateGates(gates);
   validateDocumentation(docs, status, queue);
   validatePackageScripts(packageJson);
+  validateReadinessChain(chain);
   validateWorkflow(workflow);
 }
 
@@ -163,21 +212,26 @@ function validateGates(value) {
 
   const readinessGates = Array.isArray(value.readinessGates) ? value.readinessGates : [];
   ensure(Array.isArray(value.readinessGates), "readinessGates must be an array");
-  const gateIds = readinessGates.map((gate) => gate.id);
-  ensureArrayIncludesAll(gateIds, requiredGateIds, "readiness gate ids");
-  ensure(readinessGates.length === requiredGateIds.length, "readiness gate count must remain stable");
+  const gateIds = readinessGates.map((gate) => (isRecord(gate) ? gate.id : null));
+  ensureExactStringSet(gateIds, requiredGateIds, "readiness gate ids");
   for (const gate of readinessGates) {
+    if (!isRecord(gate)) {
+      ensure(false, "every readiness gate must be an object");
+      continue;
+    }
     ensure(gate.status === "missing", gate.id + " must remain missing until evidence is attached");
     ensure(Array.isArray(gate.unlocks) && gate.unlocks.length > 0, gate.id + ".unlocks must be populated");
-    ensure(typeof gate.independentEvidenceRequired === "boolean", gate.id + ".independentEvidenceRequired must be boolean");
+    ensure(expectedIndependentEvidenceByGate.has(gate.id), "unexpected readiness gate id: " + gate.id);
+    if (expectedIndependentEvidenceByGate.has(gate.id)) {
+      ensure(
+        gate.independentEvidenceRequired === expectedIndependentEvidenceByGate.get(gate.id),
+        gate.id + ".independentEvidenceRequired must remain " + expectedIndependentEvidenceByGate.get(gate.id)
+      );
+    }
   }
 
-  ensure(Array.isArray(value.requiredEvidence) && value.requiredEvidence.length >= 7, "requiredEvidence must list the release evidence package");
-  ensureArrayIncludesAll(value.forbiddenClaims || [], [
-    "SEIS has achieved real AGI.",
-    "SEIS has trained a 512B foundation model.",
-    "SEIS can route 512B inference for GitHub users today."
-  ], "forbidden claims");
+  ensureExactStringSet(value.requiredEvidence, requiredReleaseEvidence, "requiredEvidence");
+  ensureExactStringSet(value.forbiddenClaims, requiredForbiddenClaims, "forbidden claims");
   ensure(Array.isArray(value.nextSafeActions) && value.nextSafeActions.length >= 4, "nextSafeActions must be populated");
 }
 
@@ -276,8 +330,13 @@ function validateFreshClonePlan(value) {
   ]);
   const safeCommands = Array.isArray(value.safeCommands) ? value.safeCommands : [];
   ensure(Array.isArray(value.safeCommands), "safeCommands must be an array");
-  ensure(safeCommands.length === expectedCommands.size, "fresh clone safe command count must remain stable");
+  const safeCommandIds = safeCommands.map((item) => (isRecord(item) ? item.id : null));
+  ensureExactStringSet(safeCommandIds, [...expectedCommands.keys()], "fresh clone safe command ids");
   for (const item of safeCommands) {
+    if (!isRecord(item)) {
+      ensure(false, "every fresh clone safe command must be an object");
+      continue;
+    }
     ensure(expectedCommands.get(item.id) === item.command, "unexpected fresh clone command: " + item.id);
     for (const key of ["downloadsModelWeights", "callsProvider", "trainsModel", "mutatesGitHub"]) {
       ensure(item[key] === false, item.id + "." + key + " must remain false");
@@ -333,11 +392,15 @@ function validatePackageScripts(value) {
   }
 }
 
+function validateReadinessChain(value) {
+  for (const phrase of ["scripts/check-seis-agi-github-readiness-gates.mjs", "scripts/check-seis-agi-independent-evidence-ledger.mjs"]) {
+    ensure(value.includes(phrase), "AGI GitHub readiness chain missing " + phrase);
+  }
+}
+
 function validateWorkflow(value) {
   const requiredPhrases = [
     "name: SEIS AGI GitHub Readiness",
-    "pull_request:",
-    "push:",
     "branches: [main]",
     "contents: read",
     "persist-credentials: false",
@@ -346,6 +409,14 @@ function validateWorkflow(value) {
   ];
   for (const phrase of requiredPhrases) {
     ensure(value.includes(phrase), "AGI GitHub readiness workflow missing " + phrase);
+  }
+  for (const trigger of ["pull_request", "push"]) {
+    const section = workflowTriggerSection(value, trigger);
+    ensure(section.length > 0, "AGI GitHub readiness workflow missing " + trigger + " trigger");
+    ensure(section.includes("paths:"), "AGI GitHub readiness workflow " + trigger + " trigger must define paths");
+    for (const relativePath of requiredWorkflowPaths) {
+      ensure(section.includes('- "' + relativePath + '"'), "AGI GitHub readiness workflow " + trigger + " paths missing " + relativePath);
+    }
   }
   ensure(!containsForbiddenExecution(value), "AGI GitHub readiness workflow contains a forbidden execution command");
 }
@@ -420,6 +491,33 @@ function ensureArrayIncludesAll(values, required, label) {
   if (!Array.isArray(values)) return;
   const available = new Set(values);
   for (const item of required) ensure(available.has(item), label + " missing " + item);
+}
+
+function ensureExactStringSet(values, required, label) {
+  ensure(Array.isArray(values), label + " must be an array");
+  if (!Array.isArray(values)) return;
+  ensure(values.length === required.length, label + " count must remain stable");
+  const available = new Set(values);
+  ensure(available.size === values.length, label + " must not contain duplicates");
+  for (const item of required) ensure(available.has(item), label + " missing " + item);
+}
+
+function workflowTriggerSection(value, trigger) {
+  const lines = value.split(/\r?\n/);
+  const start = lines.findIndex((line) => line === "  " + trigger + ":");
+  if (start < 0) return "";
+  let end = lines.length;
+  for (let index = start + 1; index < lines.length; index += 1) {
+    if (/^ {2}[A-Za-z][A-Za-z0-9_-]*:$/.test(lines[index])) {
+      end = index;
+      break;
+    }
+  }
+  return lines.slice(start, end).join("\n");
+}
+
+function isRecord(value) {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
 function ensure(condition, message) {
