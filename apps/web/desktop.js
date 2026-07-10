@@ -1525,6 +1525,18 @@ const SEIS_SECOND_BRAIN_SYSTEM = {
     installedAiProfileAccess: "All six recorded profiles use repo-owned review context only; Missing Key and Disabled profiles remain non-routable.",
     boundary: "No private vault read or autonomous write."
   },
+  pluginSkillReadiness: {
+    status: "local-demo-readiness-matrix",
+    mcpResource: "seis://brain/second-brain-system.json",
+    boundary: "Repository-owned skill and MCP metadata only. No plugin install, provider call, credential validation, SSH, deployment, GitHub mutation, or autonomous execution is approved.",
+    lanes: [
+      { id: "seis", plugin: "@seis", skill: "plugins/seis-ai-agent/skills/seis-hub/SKILL.md", statusTool: "seis_hub_status", planTool: "seis_hub_plan", readiness: "review-ready-local-context", trainingUse: "governance, architecture, roadmap, and source-of-truth memory", providerExecution: false, externalMutation: false },
+      { id: "seis-cloud", plugin: "@seis-cloud", skill: "plugins/seis-ai-agent/skills/seis-cloud/SKILL.md", statusTool: "seis_cloud_status", planTool: "seis_cloud_plan", readiness: "review-ready-local-context", trainingUse: "cloud readiness, SSH boundaries, rollback, and deployment approval gates", providerExecution: false, externalMutation: false },
+      { id: "seis-code", plugin: "@seis-code", skill: "plugins/seis-ai-agent/skills/seis-code/SKILL.md", statusTool: "seis_code_status", planTool: "seis_code_plan", readiness: "review-ready-local-context", trainingUse: "implementation slices, validation gates, MCP/plugin engineering, and QA loops", providerExecution: false, externalMutation: false },
+      { id: "seis-design", plugin: "@seis-design", skill: "plugins/seis-ai-agent/skills/seis-design/SKILL.md", statusTool: "seis_design_status", planTool: "seis_design_plan", readiness: "review-ready-local-context", trainingUse: "product feel, UI/UX evidence, accessibility, and visual QA", providerExecution: false, externalMutation: false },
+      { id: "seis-data", plugin: "@seis-data", skill: "plugins/seis-ai-agent/skills/seis-data/SKILL.md", statusTool: "seis_data_status", planTool: "seis_data_plan", readiness: "review-ready-local-context", trainingUse: "knowledge schemas, memory/RAG planning, provenance, and deterministic reports", providerExecution: false, externalMutation: false }
+    ]
+  },
   contextProfiles: [
     { id: "seis-hub", lane: "SEIS Hub", plugin: "@seis", statusTool: "seis_hub_status", planTool: "seis_hub_plan", focus: "Repository governance, architecture, and source-of-truth planning.", relatedAgents: ["Architect Agent", "Documentation Agent", "Product Agent"], allowedOutput: "Reviewable repository governance plan." },
     { id: "seis-cloud", lane: "SEIS Cloud", plugin: "@seis-cloud", statusTool: "seis_cloud_status", planTool: "seis_cloud_plan", focus: "Provider-neutral cloud readiness, SSH/VPN boundaries, and rollback planning.", relatedAgents: ["Cloud Agent", "DevOps Agent", "Security Agent"], allowedOutput: "Readiness and rollback proposal." },
@@ -5493,6 +5505,15 @@ function getSecondBrainSearchIndex() {
       tags: ["#mcp", "#plugin"],
       relatedText: `${surface.id} ${surface.method}`,
       priority: 13
+    })),
+    ...SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.map((lane) => ({
+      id: `skill-readiness-${lane.id}`,
+      title: `${lane.plugin} skill readiness`,
+      source: lane.skill,
+      detail: `${lane.statusTool} / ${lane.planTool}. ${lane.readiness}. ${lane.trainingUse}. ${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.boundary}`,
+      tags: ["#plugin", "#skill", "#mcp", `#${lane.id}`],
+      relatedText: `${lane.plugin} ${lane.skill} ${lane.statusTool} ${lane.planTool} ${lane.trainingUse}`,
+      priority: 18
     }))
   ].map((plugin) => ({
     type: "Plugins",
@@ -5742,6 +5763,7 @@ function renderSecondBrain() {
       <article class="metric-card" data-second-brain-managed-lanes><strong>Managed Lanes</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.length}</p></article>
       <article class="metric-card"><strong>Agent Roster</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length}</p></article>
       <article class="metric-card" data-second-brain-context-profile-count><strong>Context Profiles</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.contextProfiles.length}</p></article>
+      <article class="metric-card" data-second-brain-plugin-skill-readiness><strong>Plugin Skills</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.length}</p></article>
       <article class="metric-card" data-second-brain-agent-registry-decision><strong>Agent Registry</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REGISTRY.decisionLabel)}</p></article>
       <article class="metric-card"><strong>Quality Gate</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.qualityGate)}</p></article>
       <article class="metric-card" data-second-brain-mcp-resource><strong>MCP Context</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.mcpResource)}</p></article>
@@ -5938,6 +5960,25 @@ function renderSecondBrain() {
           <td>${escapeHtml(profile.allowedOutput)}</td>
         </tr>`).join("")}</tbody>
       </table>
+      <div data-second-brain-plugin-skill-readiness-panel>
+        <h4>Plugin + Skill Readiness Matrix</h4>
+        <p class="status-note">Skill/MCP readiness stays ${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.status)}. It records all installed SEIS personal plugin lanes as repo-owned context for agent training and review; it does not install plugins, call providers, validate credentials, run SSH, deploy, mutate GitHub, or approve autonomous execution.</p>
+        <div class="metric-grid">
+          <article class="metric-card"><strong>Status</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.status)}</p></article>
+          <article class="metric-card"><strong>Readiness lanes</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.length}</p></article>
+          <article class="metric-card"><strong>MCP resource</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.mcpResource)}</p></article>
+        </div>
+        <table class="data-table" data-second-brain-plugin-skill-table>
+          <thead><tr><th>Plugin</th><th>Skill/MCP hook</th><th>Training use</th><th>Boundary</th></tr></thead>
+          <tbody>${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.map((lane) => `<tr>
+            <td><strong>${escapeHtml(lane.plugin)}</strong><br><span class="muted">${escapeHtml(lane.readiness)}</span></td>
+            <td>${escapeHtml(lane.statusTool)} / ${escapeHtml(lane.planTool)}<br><span class="muted">${escapeHtml(lane.skill)}</span></td>
+            <td>${escapeHtml(lane.trainingUse)}</td>
+            <td>providerExecution ${String(lane.providerExecution)}; externalMutation ${String(lane.externalMutation)}</td>
+          </tr>`).join("")}</tbody>
+        </table>
+        <p class="status-note">${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.boundary)}</p>
+      </div>
       <div data-second-brain-agent-registry>
         <h4>Agent Registry Evidence</h4>
         <p class="status-note">The latest repo-local registry binds installed AI, Context Profiles, the 13-agent roster, plugin/MCP surfaces, Obsidian boundaries, and connector policy as review-only evidence. It does not approve autonomous execution or public GitHub use.</p>
@@ -9386,6 +9427,14 @@ ${SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.map(([name, lane, tool, scope]) 
 
 ${SEIS_SECOND_BRAIN_SYSTEM.contextProfiles.map((profile) => `- ${profile.lane} (${profile.plugin}): ${profile.statusTool} / ${profile.planTool} | agents: ${profile.relatedAgents.join(", ")} | output: ${profile.allowedOutput}`).join("\n")}
 
+## Plugin + Skill Readiness Matrix
+
+Status: ${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.status}
+MCP resource: ${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.mcpResource}
+Boundary: ${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.boundary}
+
+${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.map((lane) => `- ${lane.plugin}: ${lane.statusTool} / ${lane.planTool} | skill: ${lane.skill} | readiness: ${lane.readiness} | training: ${lane.trainingUse} | providerExecution: ${lane.providerExecution} | externalMutation: ${lane.externalMutation}`).join("\n")}
+
 ## Autonomous Agent Roster
 
 ${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.map(([agent, status, duty]) => `- ${agent}: ${status} / ${duty}`).join("\n")}
@@ -9405,6 +9454,7 @@ function buildSecondBrainTrainingPackMarkdown(timestamp) {
   const laneRows = SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.map(([name, lane, tool, scope]) => `- ${name} | ${lane} | ${tool} | ${scope}`);
   const rosterRows = SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.map(([agent, status, duty]) => `- ${agent} | ${status} | ${duty}`);
   const contextProfileRows = SEIS_SECOND_BRAIN_SYSTEM.contextProfiles.map((profile) => `- ${profile.lane} | ${profile.plugin} | ${profile.statusTool} / ${profile.planTool} | agents: ${profile.relatedAgents.join(", ")} | output: ${profile.allowedOutput}`);
+  const pluginSkillRows = SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.map((lane) => `- ${lane.plugin} | ${lane.skill} | ${lane.statusTool} / ${lane.planTool} | ${lane.readiness} | training: ${lane.trainingUse} | providerExecution=${lane.providerExecution} | externalMutation=${lane.externalMutation}`);
 
   return `# SEIS Second Brain Agent Training Pack
 
@@ -9422,6 +9472,7 @@ Observed AI profiles: ${SEIS_INSTALLED_AI_SYSTEMS.length}
 Observed sub-agent lanes: ${SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.length}
 Observed autonomous agent roster: ${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length}
 Observed local context profiles: ${SEIS_SECOND_BRAIN_SYSTEM.contextProfiles.length}
+Observed plugin/skill lanes: ${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.length}
 
 ## 1) Obsidian Bridge Safe Import And Repo-Owned Context
 
@@ -9454,6 +9505,14 @@ ${SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.map((note) => `- ${note.title} (${note.id}
 - Boundary: ${SEIS_SECOND_BRAIN_SYSTEM.contextProfilePolicy.boundary}
 
 ${contextProfileRows.join("\n")}
+
+## Plugin + Skill Readiness Matrix
+
+- Status: ${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.status}
+- MCP resource: ${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.mcpResource}
+- Boundary: ${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.boundary}
+
+${pluginSkillRows.join("\n")}
 
 ## 2) Second Brain Accessibility / Focus QA
 

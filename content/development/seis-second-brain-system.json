@@ -89,6 +89,68 @@
     "privateVaultRead": false,
     "autonomousWriteAllowed": false
   },
+  "pluginSkillReadiness": {
+    "status": "local-demo-readiness-matrix",
+    "mcpResource": "seis://brain/second-brain-system.json",
+    "boundary": "Repository-owned skill and MCP metadata only. No plugin install, provider call, credential validation, SSH, deployment, GitHub mutation, or autonomous execution is approved.",
+    "lanes": [
+      {
+        "id": "seis",
+        "plugin": "@seis",
+        "skill": "plugins/seis-ai-agent/skills/seis-hub/SKILL.md",
+        "statusTool": "seis_hub_status",
+        "planTool": "seis_hub_plan",
+        "readiness": "review-ready-local-context",
+        "trainingUse": "governance, architecture, roadmap, and source-of-truth memory",
+        "providerExecution": false,
+        "externalMutation": false
+      },
+      {
+        "id": "seis-cloud",
+        "plugin": "@seis-cloud",
+        "skill": "plugins/seis-ai-agent/skills/seis-cloud/SKILL.md",
+        "statusTool": "seis_cloud_status",
+        "planTool": "seis_cloud_plan",
+        "readiness": "review-ready-local-context",
+        "trainingUse": "cloud readiness, SSH boundaries, rollback, and deployment approval gates",
+        "providerExecution": false,
+        "externalMutation": false
+      },
+      {
+        "id": "seis-code",
+        "plugin": "@seis-code",
+        "skill": "plugins/seis-ai-agent/skills/seis-code/SKILL.md",
+        "statusTool": "seis_code_status",
+        "planTool": "seis_code_plan",
+        "readiness": "review-ready-local-context",
+        "trainingUse": "implementation slices, validation gates, MCP/plugin engineering, and QA loops",
+        "providerExecution": false,
+        "externalMutation": false
+      },
+      {
+        "id": "seis-design",
+        "plugin": "@seis-design",
+        "skill": "plugins/seis-ai-agent/skills/seis-design/SKILL.md",
+        "statusTool": "seis_design_status",
+        "planTool": "seis_design_plan",
+        "readiness": "review-ready-local-context",
+        "trainingUse": "product feel, UI/UX evidence, accessibility, and visual QA",
+        "providerExecution": false,
+        "externalMutation": false
+      },
+      {
+        "id": "seis-data",
+        "plugin": "@seis-data",
+        "skill": "plugins/seis-ai-agent/skills/seis-data/SKILL.md",
+        "statusTool": "seis_data_status",
+        "planTool": "seis_data_plan",
+        "readiness": "review-ready-local-context",
+        "trainingUse": "knowledge schemas, memory/RAG planning, provenance, and deterministic reports",
+        "providerExecution": false,
+        "externalMutation": false
+      }
+    ]
+  },
   "contextProfiles": [
     {
       "id": "seis-hub",

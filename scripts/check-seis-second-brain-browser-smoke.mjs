@@ -401,10 +401,13 @@ async function smokeSecondBrain(client, baseUrl) {
       subAgentRows: root?.querySelectorAll('[data-second-brain-subagents] tbody tr').length || 0,
       agentRosterRows: root?.querySelectorAll('[data-second-brain-agent-roster] tbody tr').length || 0,
       contextProfileRows: root?.querySelectorAll('[data-second-brain-context-profiles] tbody tr').length || 0,
+      pluginSkillRows: root?.querySelectorAll('[data-second-brain-plugin-skill-table] tbody tr').length || 0,
       managedLaneMetric: root?.querySelector('[data-second-brain-managed-lanes] p')?.textContent?.trim() || '',
       contextProfileMetric: root?.querySelector('[data-second-brain-context-profile-count] p')?.textContent?.trim() || '',
+      pluginSkillMetric: root?.querySelector('[data-second-brain-plugin-skill-readiness] p')?.textContent?.trim() || '',
       agentRegistryDecision: root?.querySelector('[data-second-brain-agent-registry-decision]')?.innerText || '',
       agentRegistryText: root?.querySelector('[data-second-brain-agent-registry]')?.innerText || '',
+      pluginSkillText: root?.querySelector('[data-second-brain-plugin-skill-readiness-panel]')?.innerText || '',
       obsidianText: root?.querySelector('[data-second-brain-obsidian-safe-import]')?.innerText || '',
       obsidianDecision: root?.querySelector('[data-second-brain-obsidian-decision]')?.innerText || '',
       obsidianManifestText: root?.querySelector('[data-second-brain-obsidian-manifest]')?.innerText || '',
@@ -448,8 +451,11 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(initial.subAgentRows === 9, `expected nine managed lane rows, got ${initial.subAgentRows}`);
   ensure(initial.agentRosterRows === 13, `expected thirteen autonomous agent rows, got ${initial.agentRosterRows}`);
   ensure(initial.contextProfileRows === 9, `expected nine local context profiles, got ${initial.contextProfileRows}`);
+  ensure(initial.pluginSkillRows === 5, `expected five plugin/skill readiness lanes, got ${initial.pluginSkillRows}`);
   ensure(initial.managedLaneMetric === "9", `expected managed lane metric 9, got ${initial.managedLaneMetric}`);
   ensure(initial.contextProfileMetric === "9", `expected context profile metric 9, got ${initial.contextProfileMetric}`);
+  ensure(initial.pluginSkillMetric === "5", `expected plugin/skill readiness metric 5, got ${initial.pluginSkillMetric}`);
+  ensure(initial.pluginSkillText.includes("@seis-cloud") && initial.pluginSkillText.includes("local-demo-readiness-matrix"), "Second Brain plugin/skill readiness matrix must render personal plugin lanes and status.");
   ensure(initial.agentRegistryDecision.includes("NO-GO"), "Second Brain must render the agent registry NO-GO decision.");
   ensure(initial.agentRegistryText.includes("second-brain-agent-registry-latest.json") && initial.agentRegistryText.includes("NO-GO-autonomous-execution-not-approved"), "Second Brain must render the agent registry artifact and decision.");
   ensure(initial.obsidianDecision.includes("NO-GO-private-vault-import-not-approved"), "Second Brain must render the Obsidian safe-import NO-GO decision.");

@@ -72,6 +72,13 @@ const requiredContextProfileIds = [
   "seis-automation",
   "seis-product"
 ];
+const requiredPluginSkillReadinessPlugins = [
+  "@seis",
+  "@seis-cloud",
+  "@seis-code",
+  "@seis-design",
+  "@seis-data"
+];
 
 for (const [filePath, label] of [
   [contractPath, "Second Brain contract"],
@@ -130,6 +137,19 @@ if (contract) {
   ensure(contract.contextProfilePolicy?.obsidianContextPath === obsidianContextPath, "contract context profile policy must bind the repo-owned Obsidian context pack");
   ensure(contract.contextProfilePolicy?.privateVaultRead === false, "contract context profile policy must not read private vaults");
   ensure(contract.contextProfilePolicy?.autonomousWriteAllowed === false, "contract context profile policy must not allow autonomous writes");
+  ensure(contract.pluginSkillReadiness?.status === "local-demo-readiness-matrix", "contract plugin skill readiness matrix must stay local-demo-readiness-matrix");
+  ensure(contract.pluginSkillReadiness?.mcpResource === secondBrainMcpResource, "contract plugin skill readiness matrix must bind the Second Brain MCP resource");
+  ensure(String(contract.pluginSkillReadiness?.boundary || "").includes("No plugin install"), "contract plugin skill readiness boundary must block plugin installs");
+  ensureArrayMin(contract.pluginSkillReadiness?.lanes, 5, "pluginSkillReadiness.lanes");
+  ensureArrayIncludesAll((contract.pluginSkillReadiness?.lanes || []).map((lane) => lane.plugin), requiredPluginSkillReadinessPlugins, "pluginSkillReadiness.plugins");
+  for (const lane of contract.pluginSkillReadiness?.lanes || []) {
+    ensure(typeof lane.skill === "string" && lane.skill.endsWith("/SKILL.md"), `plugin skill lane ${lane.id} must point to a SKILL.md path`);
+    ensure(typeof lane.statusTool === "string" && lane.statusTool.endsWith("_status"), `plugin skill lane ${lane.id} must declare a status tool`);
+    ensure(typeof lane.planTool === "string" && lane.planTool.endsWith("_plan"), `plugin skill lane ${lane.id} must declare a plan tool`);
+    ensure(typeof lane.trainingUse === "string" && lane.trainingUse.length > 0, `plugin skill lane ${lane.id} must declare training use`);
+    ensure(lane.providerExecution === false, `plugin skill lane ${lane.id} must not perform provider execution`);
+    ensure(lane.externalMutation === false, `plugin skill lane ${lane.id} must not mutate external systems`);
+  }
   ensure(contract.releaseReviewPacketPath === "reports/seis-public-demo/pr54-review-packet-latest.md", "contract must declare PR #54 release review packet path");
   ensure(contract.languageModelTrainingCurriculum?.status === "planned-training-contract", "contract must bind planned language model training curriculum");
   ensure(contract.languageModelTrainingCurriculum?.contractPath === trainingCurriculumPath, "contract language model training curriculum path mismatch");
@@ -200,6 +220,10 @@ for (const phrase of [
   "All 9 current managed SEIS sub-agent lanes",
   "13-agent target roster",
   "Repo-owned Obsidian context pack",
+  "Plugin + skill readiness matrix",
+  "Skill/MCP readiness stays local-demo-readiness-matrix",
+  "providerExecution: false",
+  "externalMutation: false",
   "Second Brain local search index",
   "notes, backlinks, tags, apps, routes, files, plugins, and agent duties",
   "compound tag matching",
@@ -318,8 +342,12 @@ for (const phrase of [
   "managedSubAgentLanes",
   "contextProfilePolicy",
   "contextProfiles",
+  "pluginSkillReadiness",
   "data-second-brain-context-profiles",
   "data-second-brain-context-profile-count",
+  "data-second-brain-plugin-skill-readiness",
+  "data-second-brain-plugin-skill-readiness-panel",
+  "data-second-brain-plugin-skill-table",
   "data-second-brain-agent-registry",
   "data-second-brain-agent-registry-decision",
   "data-second-brain-agent-registry-safety",
@@ -360,6 +388,10 @@ for (const phrase of [
   "compound-tag-match",
   "graph-proximity",
   "source-weight",
+  "skill-readiness",
+  "Plugin + Skill Readiness Matrix",
+  "local-demo-readiness-matrix",
+  "Observed plugin/skill lanes: ${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.length}",
   "moveSecondBrainSearchFocus",
   "normalizeSecondBrainActiveSearchResult",
   "getSecondBrainSearchDomId",
@@ -385,7 +417,9 @@ for (const phrase of [
 }
 
 ensure(desktopJs.includes("const laneRows = SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.map"), "Second Brain training pack must use the canonical managed sub-agent lanes");
+ensure(desktopJs.includes("const pluginSkillRows = SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.map"), "Second Brain training pack must use the canonical plugin/skill readiness lanes");
 ensure(desktopJs.includes("Observed sub-agent lanes: ${SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.length}"), "Second Brain training pack must report the canonical managed-lane count");
+ensure(desktopJs.includes("Observed plugin/skill lanes: ${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.length}"), "Second Brain training pack must report the canonical plugin/skill lane count");
 ensure(desktopJs.includes("managedSubAgentLanes: SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.length"), "Second Brain training-pack activity must record the canonical managed-lane count");
 ensure(!desktopJs.includes("Observed sub-agent lanes: ${SUB_AGENT_DEMO.lanes.length}"), "Second Brain training pack must not report the legacy six-lane demo count");
 
