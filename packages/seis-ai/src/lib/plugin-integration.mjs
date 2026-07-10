@@ -2,8 +2,12 @@ import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 
 export const PLUGIN_INTEGRATION_PATH = "content/development/seis-agent-plugin-integration.json";
+export const SEIS_SSH_PUBLIC_ACCESS_CONTRACT_PATH = "deploy/seis-ssh-public-access-contract.json";
+export const SEIS_SSH_LIVE_READINESS_EVIDENCE_PATH = "content/development/seis-ssh-live-readiness-evidence.json";
 export const MCP_RUNTIME_CONTRACT_PATH = "content/development/seis-ai-core-mcp-runtime-contract.json";
 export const AI_CORE_PROVIDER_REGISTRY_PATH = "content/development/seis-ai-core-provider-registry.json";
+export const AI_CORE_READ_ONLY_ROUTER_RUNTIME_PATH = "content/development/seis-ai-core-read-only-router-runtime.json";
+export const AI_CORE_READ_ONLY_ROUTER_RUNTIME_RESOURCE_URI = "seis://ai/read-only-router-runtime.json";
 export const AI_CORE_MODEL_SCALING_PROFILE_PATH = "content/development/seis-model-scaling-hardware-profile.json";
 export const AI_CORE_MODEL_PARAMETER_LADDER_PATH = "content/development/seis-model-parameter-ladder.json";
 export const AI_CORE_MODEL_PARAMETER_LADDER_RESOURCE_URI = "seis://ai/model-parameter-ladder.json";
@@ -92,6 +96,8 @@ const LANE_PLAN_STEPS = {
     "Inspect git status, branch, remote, and current cloud target records.",
     "Classify the access audience as public cloud or team/workplace VPN cloud.",
     "Identify provider, server target, secrets boundary, public URL, rollback owner, and authentication scope.",
+    "Read the sanitized SEIS-SSH contract and live-readiness evidence before making any SSH or cloud claim.",
+    "Preserve the single SEIS-SSH alias and current server and port; do not create a migration shortcut.",
     "Run or update provider-neutral preflight records before any provider-specific mutation.",
     "Keep apply, deploy, SSH, firewall, VPN, and credential changes behind explicit human approval.",
   ],
@@ -1447,6 +1453,7 @@ export function personalPluginLaneStatus(repoRoot, laneId) {
     const sourceMirrorExists = sourceMirror ? existsSync(path.join(repoRoot, sourceMirror)) : false;
     const embeddedSkillExists = embeddedSkill ? existsSync(path.join(repoRoot, embeddedSkill)) : false;
     const mcpTools = Array.isArray(lane.mcpTools) ? lane.mcpTools : [];
+    const sshBinding = lane.id === "seis-cloud" ? buildSeisSshBinding(repoRoot) : null;
 
     return {
       ok: true,
@@ -1472,6 +1479,7 @@ export function personalPluginLaneStatus(repoRoot, laneId) {
       mcpTools,
       defaultGate: lane.defaultGate || null,
       qualityCommands: sourceProfile?.qualityCommands || [lane.defaultGate].filter(Boolean),
+      sshBinding,
     };
   } catch (error) {
     return {
@@ -1519,6 +1527,7 @@ export function personalPluginLanePlan(repoRoot, laneId, request) {
       "validate before completion",
     ],
     defaultChecks: status.qualityCommands,
+    sshBinding: status.sshBinding,
     approvalBoundary: status.externalMutationRequiresUserConfirmation
       ? "External mutation, deployment, SSH, credential, destructive, or GitHub write actions require explicit human approval."
       : "Use repository governance and task scope to determine approval requirements.",
@@ -1528,6 +1537,46 @@ export function personalPluginLanePlan(repoRoot, laneId, request) {
 
 function findLane(manifest, laneId) {
   return (Array.isArray(manifest.lanes) ? manifest.lanes : []).find((lane) => lane.id === laneId);
+}
+
+function buildSeisSshBinding(repoRoot) {
+  const contract = readJsonIfExists(repoRoot, SEIS_SSH_PUBLIC_ACCESS_CONTRACT_PATH);
+  const evidence = readJsonIfExists(repoRoot, SEIS_SSH_LIVE_READINESS_EVIDENCE_PATH);
+  if (!contract) return null;
+
+  const policy = contract.serverAndPortPolicy || {};
+  const endpoint = contract.endpointContinuity || {};
+  const probe = evidence?.liveProbe || {};
+  return {
+    alias: contract.targetAlias || "SEIS-SSH",
+    contractPath: SEIS_SSH_PUBLIC_ACCESS_CONTRACT_PATH,
+    readinessEvidencePath: SEIS_SSH_LIVE_READINESS_EVIDENCE_PATH,
+    contractStatus: contract.status || "unknown",
+    liveReadinessStatus: evidence?.status || "unknown",
+    transport: probe.transport || "unknown",
+    hostnameKind: probe.hostnameKind || null,
+    port: String(endpoint.currentObservedPort || probe.port || "22"),
+    serverAndPortPolicy: policy.mode || "preserve-existing-server-and-port",
+    statusCommand: "npm run check:seis-ssh-public-access-report",
+    guardCommand: "npm run check:seis-ssh-github-pr-contract",
+    runtimeMode: "static-read-only",
+    strictReady: probe.strictReady === true,
+    pickerLikelyCompatible: probe.pickerLikelyCompatible === true,
+    liveSshAttempted: probe.liveSshAttempted === true,
+    liveClaimBlocked: probe.strictReady !== true,
+    blockers: (evidence?.blockers || []).map((blocker) => ({
+      id: blocker.id,
+      severity: blocker.severity,
+      summary: blocker.summary,
+      safeNextAction: blocker.safeNextAction,
+    })),
+    approvalGates: contract.approvalGates || [],
+    safety: [
+      "Status reads repository contract and sanitized readiness evidence only.",
+      "This surface does not open SSH, read credentials, mutate ~/.ssh/config, or change the server or port.",
+      "Live-ready and mobile-24x7 claims remain blocked until strict evidence passes.",
+    ],
+  };
 }
 
 function readJsonIfExists(repoRoot, relativePath) {
