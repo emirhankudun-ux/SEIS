@@ -604,14 +604,20 @@ async function smokeSecondBrain(client, baseUrl) {
       metricCards: bridge?.querySelectorAll('.metric-card').length || 0,
       rows: bridge?.querySelectorAll('[data-ai-second-brain-sources] tbody tr').length || 0,
       registryText: bridge?.querySelector('[data-ai-second-brain-agent-registry-panel]')?.innerText || '',
+      pluginSkillRows: bridge?.querySelectorAll('[data-ai-second-brain-plugin-skill-table] tbody tr').length || 0,
+      pluginSkillMetric: bridge?.querySelector('[data-ai-second-brain-plugin-skill-readiness] p')?.innerText || '',
+      pluginSkillText: bridge?.querySelector('[data-ai-second-brain-plugin-skill-panel]')?.innerText || '',
       localOnlyCopy: text.includes('Local Demo context only'),
       noMutationCopy: text.includes('no private vault import') && text.includes('GitHub mutation') && text.includes('SSH')
     };
   })()`);
   ensure(aiBridge.hasBridge, "SEIS AI Second Brain bridge did not render.");
-  ensure(aiBridge.metricCards >= 6, `SEIS AI Second Brain bridge expected six metric cards, got ${aiBridge.metricCards}`);
+  ensure(aiBridge.metricCards >= 8, `SEIS AI Second Brain bridge expected eight metric cards, got ${aiBridge.metricCards}`);
   ensure(aiBridge.rows === 6, `SEIS AI Second Brain bridge expected six note rows, got ${aiBridge.rows}`);
   ensure(aiBridge.registryText.includes("second-brain-agent-registry-latest.json") && aiBridge.registryText.includes("NO-GO-autonomous-execution-not-approved"), "SEIS AI Second Brain bridge must render agent registry evidence.");
+  ensure(aiBridge.pluginSkillRows === 5, `SEIS AI Second Brain bridge expected five plugin/skill rows, got ${aiBridge.pluginSkillRows}`);
+  ensure(aiBridge.pluginSkillMetric === "5", `SEIS AI Second Brain bridge plugin/skill metric should be 5, got ${aiBridge.pluginSkillMetric}`);
+  ensure(aiBridge.pluginSkillText.includes("@seis-code") && aiBridge.pluginSkillText.includes("local-demo-readiness-matrix"), "SEIS AI Second Brain bridge must render plugin/skill readiness.");
   ensure(aiBridge.localOnlyCopy, "SEIS AI Second Brain bridge must label local context only.");
   ensure(aiBridge.noMutationCopy, "SEIS AI Second Brain bridge must label private vault/GitHub/SSH boundary.");
 

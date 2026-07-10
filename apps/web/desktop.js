@@ -7984,6 +7984,7 @@ function renderAiAssistantTab(activeTab, data) {
         <article class="metric-card"><strong>Sub-Agent Lanes</strong><p>${SUB_AGENT_DEMO.lanes.length}</p></article>
         <article class="metric-card"><strong>Agent Roster</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length}</p></article>
         <article class="metric-card" data-ai-second-brain-agent-registry><strong>Agent Registry</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REGISTRY.decisionLabel)}</p></article>
+        <article class="metric-card" data-ai-second-brain-plugin-skill-readiness><strong>Plugin Skills</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.length}</p></article>
         <article class="metric-card"><strong>Quality Gate</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.qualityGate)}</p></article>
       </div>
       <table class="data-table" data-ai-second-brain-sources>
@@ -7992,6 +7993,27 @@ function renderAiAssistantTab(activeTab, data) {
           <td><strong>${escapeHtml(note.title)}</strong><br><span class="muted">${escapeHtml(note.path)}</span></td>
           <td>${escapeHtml(note.status)}</td>
           <td>${escapeHtml(note.summary)}</td>
+        </tr>`).join("")}</tbody>
+      </table>
+      <div class="split-pane" data-ai-second-brain-plugin-skill-panel>
+        <article class="mini-card">
+          <strong>Plugin + Skill Readiness</strong>
+          <p class="muted">${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.status)} · ${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.mcpResource)}</p>
+          <p>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.boundary)}</p>
+        </article>
+        <article class="mini-card">
+          <strong>AI Training Use</strong>
+          <p class="muted">Repo-owned review context only</p>
+          <p>${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.map((lane) => escapeHtml(`${lane.plugin}: ${lane.trainingUse}`)).join("<br>")}</p>
+        </article>
+      </div>
+      <table class="data-table" data-ai-second-brain-plugin-skill-table>
+        <thead><tr><th>Plugin</th><th>Status/plan tools</th><th>Skill path</th><th>Execution boundary</th></tr></thead>
+        <tbody>${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.map((lane) => `<tr>
+          <td><strong>${escapeHtml(lane.plugin)}</strong><br><span class="muted">${escapeHtml(lane.readiness)}</span></td>
+          <td>${escapeHtml(lane.statusTool)} / ${escapeHtml(lane.planTool)}</td>
+          <td>${escapeHtml(lane.skill)}</td>
+          <td>providerExecution ${String(lane.providerExecution)}; externalMutation ${String(lane.externalMutation)}</td>
         </tr>`).join("")}</tbody>
       </table>
       <div class="split-pane" data-ai-second-brain-agent-registry-panel>
