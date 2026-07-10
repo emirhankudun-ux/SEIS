@@ -66,6 +66,17 @@ It is not a private Obsidian import. It does not scan a host vault, store an
 absolute private path, copy private note bodies, copy attachments, install a
 plugin, call providers, execute SSH, mutate GitHub, deploy, or approve release.
 
+## Runtime Review Selector
+
+SEIS Second Brain also renders an Obsidian Safe Import Selector as a
+browser-local review surface. The selector can switch between planned source
+modes, preview the dry-run manifest fields, and write
+`/home/seis/SecondBrain/obsidian-safe-import-ui-dry-run.md` into the browser
+VFS only.
+
+This UI keeps `selectedByUser: false`, `bodyImportPolicy:
+metadata-only-by-default`, and `humanApprovalState: not-requested`. It does not open a native file picker, discover vaults, scan host folders, import private note bodies, copy attachments, install plugins, call providers, execute SSH, mutate GitHub, deploy, or approve publication.
+
 ## Forbidden By Default
 
 - Automatic Obsidian plugin install.

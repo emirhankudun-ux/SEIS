@@ -1852,6 +1852,16 @@ select:focus-visible,
   align-items: start;
 }
 
+.second-brain-obsidian-import {
+  display: grid;
+  gap: 0.8rem;
+  overflow-x: auto;
+}
+
+.second-brain-obsidian-import h4 {
+  margin: 0 0 0.45rem;
+}
+
 .second-brain-search-panel {
   display: grid;
   gap: 0.8rem;

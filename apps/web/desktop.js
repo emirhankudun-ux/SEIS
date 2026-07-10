@@ -1597,6 +1597,53 @@ const SEIS_SECOND_BRAIN_AGENT_REGISTRY = {
   ]
 };
 const SEIS_SECOND_BRAIN_SEARCH_FILTERS = ["All", "Notes", "Backlinks", "Tags", "Apps", "Routes", "Files", "Plugins", "Agents"];
+const SEIS_OBSIDIAN_SAFE_IMPORT_UI = {
+  id: "seis-obsidian-safe-import-ui",
+  status: "planned-gated",
+  contractPath: "content/development/seis-obsidian-bridge-safe-import-contract.json",
+  productDoc: "docs/product/seis-obsidian-bridge-safe-import.md",
+  reportJsonPath: "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json",
+  reportMarkdownPath: "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md",
+  browserArtifactPath: "/home/seis/SecondBrain/obsidian-safe-import-ui-dry-run.md",
+  qualityGate: "npm run check:seis-obsidian-safe-import-dry-run",
+  bodyImportPolicy: "metadata-only-by-default",
+  approvalState: "not-requested",
+  blockedPathExamples: [".obsidian/", ".env", "secrets/", "service-account", "*.pem", "*.key"],
+  forbiddenActions: [
+    "automatic home-directory vault discovery",
+    "private note body commit",
+    "Obsidian plugin install",
+    "attachment copy without provenance review",
+    "provider call",
+    "GitHub mutation"
+  ],
+  sourceModes: [
+    {
+      id: "repo-owned-seed",
+      label: "Repo-owned seed metadata",
+      status: "available-local-dry-run",
+      selectedByUser: false,
+      decision: "NO-GO-private-vault-import-not-approved",
+      detail: "Uses SEIS Second Brain seed note metadata already in the repo. No host vault is read."
+    },
+    {
+      id: "awaiting-user-selection",
+      label: "User-selected private vault",
+      status: "blocked-awaiting-explicit-selection",
+      selectedByUser: false,
+      decision: "BLOCKED-explicit-user-selection-required",
+      detail: "A real Obsidian vault path must be selected by the user outside this browser-local demo before any scan."
+    },
+    {
+      id: "public-fixture-review",
+      label: "Public fixture review",
+      status: "blocked-human-review-required",
+      selectedByUser: false,
+      decision: "BLOCKED-public-fixture-review-required",
+      detail: "Public fixture generation needs provenance, redaction, accessibility, and human approval."
+    }
+  ]
+};
 const AI_CORE_VERSION_TARGETS = [
   {
     id: "v0.1-foundation",
@@ -2766,6 +2813,12 @@ function handleClick(event) {
       break;
     case "second-brain-record-search":
       recordSecondBrainSearchSnapshot(button.closest(".window-body"));
+      break;
+    case "second-brain-set-obsidian-source-mode":
+      setSecondBrainObsidianSourceMode(value);
+      break;
+    case "second-brain-prepare-obsidian-dry-run":
+      prepareSecondBrainObsidianDryRun();
       break;
     case "app-primary":
       runAppPrimaryAction(appId, button.closest(".window-body"));
@@ -5094,6 +5147,8 @@ function getSecondBrainData() {
   if (typeof data.searchQuery !== "string") data.searchQuery = "SEIS";
   if (!SEIS_SECOND_BRAIN_SEARCH_FILTERS.includes(data.searchFilter)) data.searchFilter = "All";
   if (typeof data.activeSearchResultId !== "string") data.activeSearchResultId = "";
+  if (!SEIS_OBSIDIAN_SAFE_IMPORT_UI.sourceModes.some((mode) => mode.id === data.obsidianSourceMode)) data.obsidianSourceMode = "repo-owned-seed";
+  if (!data.obsidianDryRunManifest || typeof data.obsidianDryRunManifest !== "object") data.obsidianDryRunManifest = null;
   if (!Array.isArray(data.searchSnapshots)) data.searchSnapshots = [];
   if (!Array.isArray(data.activity)) {
     data.activity = [
@@ -5114,6 +5169,137 @@ function getSecondBrainLinks() {
 
 function getSecondBrainBacklinks(noteId) {
   return SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.filter((note) => note.links.includes(noteId));
+}
+
+function getSecondBrainObsidianMode(modeId) {
+  return SEIS_OBSIDIAN_SAFE_IMPORT_UI.sourceModes.find((mode) => mode.id === modeId) || SEIS_OBSIDIAN_SAFE_IMPORT_UI.sourceModes[0];
+}
+
+function getSecondBrainObsidianFingerprint(modeId) {
+  const seed = `seis-obsidian-safe-import:${modeId}:repo-owned-seed-metadata-only`;
+  let acc = 0;
+  for (const char of seed) acc = (acc * 31 + char.charCodeAt(0)) % 0xffffffff;
+  const alphabet = "0123456789abcdef";
+  let hex = "";
+  for (let index = 0; index < 64; index += 1) {
+    hex += alphabet[(acc + index * 11 + seed.length) % alphabet.length];
+  }
+  return `sha256:${hex}`;
+}
+
+function buildSecondBrainObsidianDryRunManifest(data) {
+  const mode = getSecondBrainObsidianMode(data.obsidianSourceMode);
+  const candidateNoteCount = SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.length;
+  return {
+    id: "seis-obsidian-safe-import-ui-dry-run",
+    status: "browser-local-review-only",
+    decision: mode.decision,
+    selectedSourceMode: mode.id,
+    sourceLabel: mode.label,
+    sourcePathFingerprint: getSecondBrainObsidianFingerprint(mode.id),
+    selectedByUser: false,
+    candidateNoteCount,
+    blockedFileCount: 0,
+    blockedPathMatches: [],
+    secretScanSummary: {
+      scannedPrivateVault: false,
+      hostFilesystemScanned: false,
+      findings: 0
+    },
+    provenanceLabels: { "repo-owned-seed": candidateNoteCount },
+    publishabilityLabels: { "public-safe-metadata-only": candidateNoteCount },
+    redactionSummary: {
+      privatePathStored: false,
+      privateBodyTextCopied: false,
+      sourcePathPolicy: "hash-or-redact"
+    },
+    attachmentReviewSummary: {
+      attachmentsCopied: 0,
+      attachmentReviewRequired: true
+    },
+    bodyImportPolicy: SEIS_OBSIDIAN_SAFE_IMPORT_UI.bodyImportPolicy,
+    humanApprovalState: SEIS_OBSIDIAN_SAFE_IMPORT_UI.approvalState,
+    safetyBoundary: {
+      privateVaultReadPerformed: false,
+      providerCallsPerformed: false,
+      sshExecuted: false,
+      githubMutationPerformed: false,
+      deploymentPerformed: false
+    }
+  };
+}
+
+function buildSecondBrainObsidianDryRunMarkdown(timestamp, manifest) {
+  return `# SEIS Obsidian Safe Import UI Dry-Run
+
+Generated: ${timestamp}
+Decision: ${manifest.decision}
+Source mode: ${manifest.selectedSourceMode}
+Source label: ${manifest.sourceLabel}
+Source fingerprint: ${manifest.sourcePathFingerprint}
+Selected by user: ${manifest.selectedByUser}
+Candidate notes: ${manifest.candidateNoteCount}
+Body import policy: ${manifest.bodyImportPolicy}
+Human approval state: ${manifest.humanApprovalState}
+
+## Required Gates
+- Explicit user-selected source path before any real vault scan.
+- Dry-run manifest before any import.
+- No secret values copied.
+- No private note body committed.
+- Provenance record for every imported note.
+- Human approval before GitHub publication.
+
+## Safety Boundary
+- Private vault read performed: ${manifest.safetyBoundary.privateVaultReadPerformed}
+- Host filesystem scanned: ${manifest.secretScanSummary.hostFilesystemScanned}
+- Provider calls performed: ${manifest.safetyBoundary.providerCallsPerformed}
+- SSH executed: ${manifest.safetyBoundary.sshExecuted}
+- GitHub mutation performed: ${manifest.safetyBoundary.githubMutationPerformed}
+`;
+}
+
+function setSecondBrainObsidianSourceMode(modeId) {
+  const data = getSecondBrainData();
+  const mode = getSecondBrainObsidianMode(modeId);
+  data.obsidianSourceMode = mode.id;
+  data.obsidianDryRunManifest = buildSecondBrainObsidianDryRunManifest(data);
+  data.activity.unshift({
+    id: `obsidian-mode-${Date.now()}`,
+    step: "Obsidian",
+    status: mode.status,
+    detail: `Safe import source mode set to ${mode.label}.`
+  });
+  data.activity = data.activity.slice(0, 12);
+  log("second-brain", `Obsidian safe import mode set to ${mode.label}.`);
+  saveState();
+  renderOpenWindows("second-brain");
+}
+
+function prepareSecondBrainObsidianDryRun() {
+  const data = getSecondBrainData();
+  const manifest = buildSecondBrainObsidianDryRunManifest(data);
+  const timestamp = new Date().toISOString();
+  upsertFile(SEIS_OBSIDIAN_SAFE_IMPORT_UI.browserArtifactPath, buildSecondBrainObsidianDryRunMarkdown(timestamp, manifest));
+  data.obsidianDryRunManifest = manifest;
+  data.lastObsidianDryRun = {
+    time: new Date(timestamp).toLocaleTimeString(),
+    path: SEIS_OBSIDIAN_SAFE_IMPORT_UI.browserArtifactPath,
+    decision: manifest.decision,
+    selectedSourceMode: manifest.selectedSourceMode
+  };
+  data.activity.unshift({
+    id: `obsidian-dry-run-${Date.now()}`,
+    step: "Obsidian",
+    status: "Dry-run manifest saved",
+    detail: `Obsidian safe import dry-run saved to ${SEIS_OBSIDIAN_SAFE_IMPORT_UI.browserArtifactPath}.`
+  });
+  data.activity = data.activity.slice(0, 12);
+  getAppStatus("second-brain").lastAction = `Obsidian safe import dry-run saved to ${SEIS_OBSIDIAN_SAFE_IMPORT_UI.browserArtifactPath}.`;
+  log("second-brain", getAppStatus("second-brain").lastAction);
+  saveState();
+  renderOpenWindows("second-brain");
+  toast("Obsidian Safe Import", "Dry-run manifest saved locally.");
 }
 
 function normalizeSecondBrainSearch(value) {
@@ -5439,6 +5625,8 @@ function renderSecondBrain() {
   const searchSourceCounts = getSecondBrainSearchSourceCounts(searchIndex);
   const activeSearchResultId = normalizeSecondBrainActiveSearchResult(data, searchResults);
   const activeSearchResultDomId = getSecondBrainSearchDomId(activeSearchResultId);
+  const activeObsidianMode = getSecondBrainObsidianMode(data.obsidianSourceMode);
+  const obsidianManifest = data.obsidianDryRunManifest || buildSecondBrainObsidianDryRunManifest(data);
   const nodePositions = [
     ["seis-os-map", "50%", "12%"],
     ["ai-core-router", "22%", "34%"],
@@ -5486,6 +5674,59 @@ function renderSecondBrain() {
       <article class="metric-card"><strong>Last Training Pack</strong><p>${data.lastTrainingPack?.time || "Not built yet"}</p></article>
       <article class="metric-card"><strong>Publish State</strong><p>Human review before GitHub</p></article>
     </div>
+    <section class="subagent-panel second-brain-obsidian-import" data-second-brain-obsidian-safe-import>
+      <div class="second-brain-search-heading">
+        <div>
+          <h3>Obsidian Safe Import Selector</h3>
+          <p class="status-note">Planned-gated bridge preview for explicit user-selected imports. This runtime panel prepares metadata-only dry-run evidence from repo-owned seed notes and does not scan host folders, read private note bodies, install plugins, call providers, or mutate GitHub.</p>
+        </div>
+        <article class="metric-card" data-second-brain-obsidian-decision>
+          <strong>Decision</strong>
+          <p>${escapeHtml(obsidianManifest.decision)}</p>
+        </article>
+      </div>
+      <div class="tab-strip second-brain-filter-strip" role="tablist" aria-label="Obsidian safe import source modes" data-second-brain-obsidian-source-modes>
+        ${SEIS_OBSIDIAN_SAFE_IMPORT_UI.sourceModes.map((mode) => `<button type="button" class="${mode.id === activeObsidianMode.id ? "is-active" : ""}" data-action="second-brain-set-obsidian-source-mode" data-value="${escapeAttr(mode.id)}" role="tab" aria-selected="${mode.id === activeObsidianMode.id}" aria-pressed="${mode.id === activeObsidianMode.id}">
+          ${escapeHtml(mode.label)}
+        </button>`).join("")}
+      </div>
+      <div class="metric-grid" data-second-brain-obsidian-manifest>
+        <article class="metric-card"><strong>Status</strong><p>${escapeHtml(activeObsidianMode.status)}</p></article>
+        <article class="metric-card"><strong>Selected by user</strong><p>${String(obsidianManifest.selectedByUser)}</p></article>
+        <article class="metric-card"><strong>Candidate notes</strong><p>${obsidianManifest.candidateNoteCount}</p></article>
+        <article class="metric-card"><strong>Body policy</strong><p>${escapeHtml(obsidianManifest.bodyImportPolicy)}</p></article>
+        <article class="metric-card"><strong>Approval</strong><p>${escapeHtml(obsidianManifest.humanApprovalState)}</p></article>
+        <article class="metric-card"><strong>Artifact</strong><p>${escapeHtml(SEIS_OBSIDIAN_SAFE_IMPORT_UI.browserArtifactPath)}</p></article>
+      </div>
+      <div class="split-pane">
+        <div>
+          <h4>Dry-Run Manifest Preview</h4>
+          <table class="data-table" data-second-brain-obsidian-manifest-table>
+            <tbody>
+              <tr><th>Contract</th><td>${escapeHtml(SEIS_OBSIDIAN_SAFE_IMPORT_UI.contractPath)}</td></tr>
+              <tr><th>Source fingerprint</th><td>${escapeHtml(obsidianManifest.sourcePathFingerprint)}</td></tr>
+              <tr><th>Secret scan</th><td>findings ${obsidianManifest.secretScanSummary.findings}; hostFilesystemScanned ${obsidianManifest.secretScanSummary.hostFilesystemScanned}</td></tr>
+              <tr><th>Redaction</th><td>privatePathStored ${obsidianManifest.redactionSummary.privatePathStored}; privateBodyTextCopied ${obsidianManifest.redactionSummary.privateBodyTextCopied}</td></tr>
+              <tr><th>Attachments</th><td>copied ${obsidianManifest.attachmentReviewSummary.attachmentsCopied}; reviewRequired ${obsidianManifest.attachmentReviewSummary.attachmentReviewRequired}</td></tr>
+              <tr><th>Report artifacts</th><td>${escapeHtml(SEIS_OBSIDIAN_SAFE_IMPORT_UI.reportJsonPath)}<br>${escapeHtml(SEIS_OBSIDIAN_SAFE_IMPORT_UI.reportMarkdownPath)}</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <h4>Blocked By Default</h4>
+          <div class="second-brain-pipeline" data-second-brain-obsidian-boundary>
+            ${SEIS_OBSIDIAN_SAFE_IMPORT_UI.forbiddenActions.map((item) => `<article><strong>${escapeHtml(item)}</strong><span>blocked</span><p>No approval or runtime capability is granted from this browser panel.</p></article>`).join("")}
+          </div>
+          <p class="status-note">Blocked path examples: ${SEIS_OBSIDIAN_SAFE_IMPORT_UI.blockedPathExamples.map(escapeHtml).join(", ")}.</p>
+        </div>
+      </div>
+      <div class="toolbar">
+        <button type="button" data-action="second-brain-prepare-obsidian-dry-run">Prepare Safe Import Dry-Run</button>
+        <button type="button" data-action="open-app" data-app-id="files">Open Files</button>
+        <button type="button" data-action="open-app" data-app-id="search">Open Search</button>
+      </div>
+      <p class="status-note" data-second-brain-obsidian-last-action>Last Obsidian dry-run: ${data.lastObsidianDryRun ? `${escapeHtml(data.lastObsidianDryRun.time)} / ${escapeHtml(data.lastObsidianDryRun.path)} / ${escapeHtml(data.lastObsidianDryRun.decision)}` : "Not prepared yet"}.</p>
+    </section>
     <section class="subagent-panel second-brain-search-panel" data-second-brain-search-panel>
       <div class="second-brain-search-heading">
         <div>

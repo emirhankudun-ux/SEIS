@@ -18,6 +18,7 @@ const subAgentsPath = "SEIS_SUB_AGENTS.md";
 const vaultWorkforcePath = "seis-brain/vault/05_Agents/Agent Workforce.md";
 const vaultProductAgentPath = "seis-brain/vault/05_Agents/Product Agent.md";
 const obsidianContextPath = "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md";
+const obsidianSafeImportDocPath = "docs/product/seis-obsidian-bridge-safe-import.md";
 const secondBrainMcpResource = "seis://brain/second-brain-system.json";
 const mcpQuickstartPath = "docs/ai/seis-second-brain-mcp-quickstart.md";
 const docsIndexPath = "docs/INDEX.md";
@@ -85,6 +86,7 @@ for (const [filePath, label] of [
   [vaultWorkforcePath, "Obsidian vault workforce note"],
   [vaultProductAgentPath, "Obsidian vault Product Agent note"],
   [obsidianContextPath, "Obsidian context pack"],
+  [obsidianSafeImportDocPath, "Obsidian safe import docs"],
   [mcpQuickstartPath, "Second Brain MCP quickstart"],
   [docsIndexPath, "documentation index"],
   [readmePath, "repository README"],
@@ -103,6 +105,7 @@ const subAgents = readText(subAgentsPath, "SEIS sub-agent contract");
 const vaultWorkforce = readText(vaultWorkforcePath, "Obsidian vault workforce note");
 const vaultProductAgent = readText(vaultProductAgentPath, "Obsidian vault Product Agent note");
 const obsidianContext = readText(obsidianContextPath, "Obsidian context pack");
+const obsidianSafeImportDoc = readText(obsidianSafeImportDocPath, "Obsidian safe import docs");
 const mcpQuickstart = readText(mcpQuickstartPath, "Second Brain MCP quickstart");
 const docsIndex = readText(docsIndexPath, "documentation index");
 const readme = readText(readmePath, "repository README");
@@ -201,6 +204,9 @@ for (const phrase of [
   "notes, backlinks, tags, apps, routes, files, plugins, and agent duties",
   "ArrowUp/ArrowDown/Home/End keyboard navigation",
   "search-index-snapshot.md",
+  "Obsidian Safe Import Selector",
+  "obsidian-safe-import-ui-dry-run.md",
+  "selectedByUser: false",
   "Local Context Profiles",
   "@seis-cloud",
   "@seis-data",
@@ -216,6 +222,18 @@ for (const phrase of [
   "does not execute SSH"
 ]) {
   ensure(docs.includes(phrase), `docs missing phrase: ${phrase}`);
+}
+
+for (const phrase of [
+  "Runtime Review Selector",
+  "/home/seis/SecondBrain/obsidian-safe-import-ui-dry-run.md",
+  "selectedByUser: false",
+  "metadata-only-by-default",
+  "not-requested",
+  "does not open a native file picker",
+  "does not scan a host vault"
+]) {
+  ensure(obsidianSafeImportDoc.includes(phrase), `Obsidian safe import docs missing phrase: ${phrase}`);
 }
 
 for (const [text, label, phrases] of [
@@ -259,6 +277,7 @@ for (const phrase of [
   "SEIS_SECOND_BRAIN_SYSTEM",
   "SEIS_SECOND_BRAIN_AGENT_REGISTRY",
   "SEIS_SECOND_BRAIN_SEARCH_FILTERS",
+  "SEIS_OBSIDIAN_SAFE_IMPORT_UI",
   "second-brain",
   "seis-second-brain-app",
   "data-second-brain-app",
@@ -311,6 +330,22 @@ for (const phrase of [
   "data-second-brain-search-result-list",
   "data-second-brain-search-result",
   "data-result-id",
+  "data-second-brain-obsidian-safe-import",
+  "data-second-brain-obsidian-source-modes",
+  "data-second-brain-obsidian-manifest",
+  "data-second-brain-obsidian-manifest-table",
+  "data-second-brain-obsidian-boundary",
+  "data-second-brain-obsidian-decision",
+  "data-second-brain-obsidian-last-action",
+  "second-brain-set-obsidian-source-mode",
+  "second-brain-prepare-obsidian-dry-run",
+  "buildSecondBrainObsidianDryRunManifest",
+  "prepareSecondBrainObsidianDryRun",
+  "obsidian-safe-import-ui-dry-run.md",
+  "NO-GO-private-vault-import-not-approved",
+  "BLOCKED-explicit-user-selection-required",
+  "metadata-only-by-default",
+  "selectedByUser: false",
   "second-brain-run-search",
   "second-brain-set-search-filter",
   "second-brain-record-search",
@@ -363,6 +398,7 @@ for (const selector of [
   ".second-brain-graph",
   ".second-brain-node",
   ".second-brain-inspector",
+  ".second-brain-obsidian-import",
   ".second-brain-search-panel",
   ".second-brain-search-result",
   ".second-brain-search-result-list",
@@ -383,6 +419,7 @@ for (const filePath of [
   vaultWorkforcePath,
   vaultProductAgentPath,
   obsidianContextPath,
+  obsidianSafeImportDocPath,
   mcpQuickstartPath,
   demoStatusPath
 ]) {

@@ -17,6 +17,7 @@ const REQUIRED_ARTIFACTS = [
   "/home/seis/SecondBrain/second-brain-review-gate.md",
   "/home/seis/SecondBrain/github-readiness-review.md",
   "/home/seis/SecondBrain/search-index-snapshot.md",
+  "/home/seis/SecondBrain/obsidian-safe-import-ui-dry-run.md",
   "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md"
 ];
 
@@ -288,6 +289,16 @@ function validateStaticContract() {
     "data-second-brain-search-result-list",
     "data-second-brain-search-result",
     "data-result-id",
+    "data-second-brain-obsidian-safe-import",
+    "data-second-brain-obsidian-source-modes",
+    "data-second-brain-obsidian-manifest",
+    "data-second-brain-obsidian-boundary",
+    "second-brain-set-obsidian-source-mode",
+    "second-brain-prepare-obsidian-dry-run",
+    "SEIS_OBSIDIAN_SAFE_IMPORT_UI",
+    "obsidian-safe-import-ui-dry-run.md",
+    "NO-GO-private-vault-import-not-approved",
+    "metadata-only-by-default",
     "second-brain-capture",
     "second-brain-link",
     "second-brain-training-pack",
@@ -317,6 +328,7 @@ function validateStaticContract() {
     ".second-brain-graph",
     ".second-brain-inspector",
     ".second-brain-ai-index",
+    ".second-brain-obsidian-import",
     ".second-brain-search-panel",
     ".second-brain-search-result",
     ".second-brain-search-result-list",
@@ -368,9 +380,11 @@ async function smokeSecondBrain(client, baseUrl) {
       hasGithubGate: Boolean(root?.querySelector('[data-second-brain-github-gate]')),
       hasAgentRegistry: Boolean(root?.querySelector('[data-second-brain-agent-registry]')),
       hasSearchPanel: Boolean(root?.querySelector('[data-second-brain-search-panel]')),
+      hasObsidianSafeImport: Boolean(root?.querySelector('[data-second-brain-obsidian-safe-import]')),
       noteButtons: root?.querySelectorAll('[data-second-brain-vault] [data-action="second-brain-select-note"]').length || 0,
       graphNodes: root?.querySelectorAll('[data-second-brain-graph] [data-action="second-brain-select-note"]').length || 0,
       searchFilters: root?.querySelectorAll('[data-second-brain-search-filters] [data-action="second-brain-set-search-filter"]').length || 0,
+      obsidianSourceModes: root?.querySelectorAll('[data-second-brain-obsidian-source-modes] [data-action="second-brain-set-obsidian-source-mode"]').length || 0,
       searchResults: root?.querySelectorAll('[data-second-brain-search-results] .second-brain-search-result').length || 0,
       searchRoleOptions: root?.querySelectorAll('[data-second-brain-search-result][role="option"]').length || 0,
       searchSelectedOptions: root?.querySelectorAll('[data-second-brain-search-result][aria-selected="true"]').length || 0,
@@ -384,6 +398,9 @@ async function smokeSecondBrain(client, baseUrl) {
       contextProfileMetric: root?.querySelector('[data-second-brain-context-profile-count] p')?.textContent?.trim() || '',
       agentRegistryDecision: root?.querySelector('[data-second-brain-agent-registry-decision]')?.innerText || '',
       agentRegistryText: root?.querySelector('[data-second-brain-agent-registry]')?.innerText || '',
+      obsidianText: root?.querySelector('[data-second-brain-obsidian-safe-import]')?.innerText || '',
+      obsidianDecision: root?.querySelector('[data-second-brain-obsidian-decision]')?.innerText || '',
+      obsidianManifestText: root?.querySelector('[data-second-brain-obsidian-manifest]')?.innerText || '',
       searchPanelText: root?.querySelector('[data-second-brain-search-panel]')?.innerText || '',
       searchSourceCounts: root?.querySelector('[data-second-brain-search-source-counts]')?.innerText || '',
       mcpContext: root?.querySelector('[data-second-brain-mcp-resource]')?.innerText || '',
@@ -409,9 +426,11 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(initial.hasGithubGate, "Second Brain GitHub gate panel missing.");
   ensure(initial.hasAgentRegistry, "Second Brain agent registry evidence panel missing.");
   ensure(initial.hasSearchPanel, "Second Brain local search panel missing.");
+  ensure(initial.hasObsidianSafeImport, "Second Brain Obsidian safe import selector missing.");
   ensure(initial.noteButtons === 6, `expected six vault notes, got ${initial.noteButtons}`);
   ensure(initial.graphNodes === 6, `expected six graph nodes, got ${initial.graphNodes}`);
   ensure(initial.searchFilters === 9, `expected nine Second Brain search filters, got ${initial.searchFilters}`);
+  ensure(initial.obsidianSourceModes === 3, `expected three Obsidian source modes, got ${initial.obsidianSourceModes}`);
   ensure(initial.searchResults >= 8, `expected at least eight Second Brain search results, got ${initial.searchResults}`);
   ensure(initial.searchRoleOptions === initial.searchResults, `Second Brain search results must use option roles: ${JSON.stringify(initial)}`);
   ensure(initial.searchSelectedOptions === 1, `Second Brain search must expose exactly one selected result, got ${initial.searchSelectedOptions}`);
@@ -425,6 +444,9 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(initial.contextProfileMetric === "9", `expected context profile metric 9, got ${initial.contextProfileMetric}`);
   ensure(initial.agentRegistryDecision.includes("NO-GO"), "Second Brain must render the agent registry NO-GO decision.");
   ensure(initial.agentRegistryText.includes("second-brain-agent-registry-latest.json") && initial.agentRegistryText.includes("NO-GO-autonomous-execution-not-approved"), "Second Brain must render the agent registry artifact and decision.");
+  ensure(initial.obsidianDecision.includes("NO-GO-private-vault-import-not-approved"), "Second Brain must render the Obsidian safe-import NO-GO decision.");
+  ensure(initial.obsidianText.includes("metadata-only dry-run") && initial.obsidianText.includes("does not scan host folders"), "Second Brain must render Obsidian safe-import local-only boundary.");
+  ensure(initial.obsidianManifestText.includes("metadata-only-by-default") && initial.obsidianManifestText.includes("false"), "Second Brain Obsidian manifest preview must render metadata-only false-read state.");
   ensure(initial.searchPanelText.includes("notes, backlinks, tags, apps, routes, files, plugins, and agent duties"), "Second Brain search panel must describe all local index sources.");
   ensure(["Notes", "Backlinks", "Tags", "Apps", "Routes", "Files", "Plugins", "Agents"].every((label) => initial.searchSourceCounts.includes(label)), "Second Brain search source counts must cover every local source type.");
   ensure(initial.mcpContext.includes("seis://brain/second-brain-system.json"), "Second Brain must render the read-only MCP context resource.");
@@ -446,6 +468,26 @@ async function smokeSecondBrain(client, baseUrl) {
   })()`);
   ensure(selected.value === "github-readiness", `expected GitHub Readiness note selection, got ${JSON.stringify(selected)}`);
   ensure(selected.inspector.includes("GitHub Readiness"), "Second Brain inspector did not follow selected note.");
+
+  await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-set-obsidian-source-mode"][data-value="awaiting-user-selection"]');
+  await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-prepare-obsidian-dry-run"]');
+  await waitFor(client, "window.__SEIS_DESKTOP__.filePaths().includes('/home/seis/SecondBrain/obsidian-safe-import-ui-dry-run.md')", 5000);
+  const obsidianDryRun = await evaluate(client, `(() => {
+    const root = document.querySelector('.app-window[data-app-id="second-brain"]:not([hidden]) [data-second-brain-app]');
+    const text = root?.innerText || '';
+    return {
+      decision: root?.querySelector('[data-second-brain-obsidian-decision]')?.innerText || '',
+      manifest: root?.querySelector('[data-second-brain-obsidian-manifest-table]')?.innerText || '',
+      lastAction: root?.querySelector('[data-second-brain-obsidian-last-action]')?.innerText || '',
+      visibleBoundary: text.includes('selectedByUser') || text.includes('Selected by user'),
+      artifactVisible: text.includes('obsidian-safe-import-ui-dry-run.md') || text.includes('Obsidian safe import dry-run saved')
+    };
+  })()`);
+  ensure(obsidianDryRun.decision.includes("BLOCKED-explicit-user-selection-required"), `Obsidian source mode did not switch to blocked user selection: ${JSON.stringify(obsidianDryRun)}`);
+  ensure(obsidianDryRun.manifest.includes("hostFilesystemScanned false") && obsidianDryRun.manifest.includes("privateBodyTextCopied false"), `Obsidian dry-run manifest must keep host/private reads false: ${JSON.stringify(obsidianDryRun)}`);
+  ensure(obsidianDryRun.lastAction.includes("obsidian-safe-import-ui-dry-run.md"), "Obsidian dry-run action did not update visible last action.");
+  ensure(obsidianDryRun.visibleBoundary, "Obsidian safe-import selectedByUser boundary not visible.");
+  ensure(obsidianDryRun.artifactVisible, "Obsidian safe-import artifact path not visible.");
 
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-set-search-filter"][data-value="Plugins"]');
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-run-search"]');
@@ -555,6 +597,7 @@ async function smokeSecondBrain(client, baseUrl) {
 
   return {
     initial,
+    obsidianDryRun,
     searchSnapshot,
     keyboardSearch,
     artifacts,
@@ -599,6 +642,7 @@ async function smokeMobile(client, baseUrl) {
       hasGraph: Boolean(root?.querySelector('[data-second-brain-graph]')),
       hasGithubGate: Boolean(root?.querySelector('[data-second-brain-github-gate]')),
       hasSearchPanel: Boolean(root?.querySelector('[data-second-brain-search-panel]')),
+      hasObsidianSafeImport: Boolean(root?.querySelector('[data-second-brain-obsidian-safe-import]')),
       horizontalOverflow: document.documentElement.scrollWidth > window.innerWidth + 1,
       appHeading: (root?.querySelector('h2')?.textContent || '').trim(),
       secondBrainText: (root?.innerText || '').slice(0, 400)
@@ -611,6 +655,7 @@ async function smokeMobile(client, baseUrl) {
   ensure(mobile.hasGraph, "Second Brain mobile graph panel missing.");
   ensure(mobile.hasGithubGate, "Second Brain mobile GitHub gate missing.");
   ensure(mobile.hasSearchPanel, "Second Brain mobile search panel missing.");
+  ensure(mobile.hasObsidianSafeImport, "Second Brain mobile Obsidian safe-import panel missing.");
   ensure(mobile.targetCount >= 10, `Second Brain mobile expected interactive controls, got ${mobile.targetCount}`);
   ensure(mobile.crampedTargets <= 4, `Second Brain mobile has too many cramped targets: ${mobile.crampedTargets}; ${mobile.crampedSummary}`);
   ensure(!mobile.horizontalOverflow, "Second Brain mobile viewport has horizontal overflow.");
