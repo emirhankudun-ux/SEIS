@@ -30,6 +30,14 @@ The canonical bounded-agent roster is maintained in
 - Security Agent
 - PR Rescue Agent
 - Public Readiness Agent
+- Product Agent
+
+## Product Agent boundary
+
+Product Agent may turn an approved objective into requirements, acceptance
+criteria, user outcomes, non-goals, and a review-ready roadmap slice. It stays
+status/plan-only and does not approve releases, publish changes, expand scope,
+or make customer-impact claims without evidence and human review.
 
 ## Responsibilities
 

@@ -13,6 +13,12 @@ const desktopCssPath = "apps/web/desktop.css";
 const packagePath = "package.json";
 const trainingCurriculumPath = "content/development/seis-language-model-training-curriculum.json";
 const trainingCurriculumReportPath = "reports/seis-model-scaling/seis-language-model-training-curriculum.md";
+const workforcePath = "SEIS_AGENT_WORKFORCE.md";
+const subAgentsPath = "SEIS_SUB_AGENTS.md";
+const vaultWorkforcePath = "seis-brain/vault/05_Agents/Agent Workforce.md";
+const vaultProductAgentPath = "seis-brain/vault/05_Agents/Product Agent.md";
+const obsidianContextPath = "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md";
+const demoStatusPath = "docs/product/seis-demo-status.md";
 const requiredManagedSubAgentLanes = [
   "SEIS Hub",
   "SEIS Cloud",
@@ -58,7 +64,13 @@ for (const [filePath, label] of [
   [desktopCssPath, "Desktop styles"],
   [packagePath, "package.json"],
   [trainingCurriculumPath, "language model training curriculum"],
-  [trainingCurriculumReportPath, "language model training curriculum report"]
+  [trainingCurriculumReportPath, "language model training curriculum report"],
+  [workforcePath, "SEIS Agent Workforce roster"],
+  [subAgentsPath, "SEIS sub-agent contract"],
+  [vaultWorkforcePath, "Obsidian vault workforce note"],
+  [vaultProductAgentPath, "Obsidian vault Product Agent note"],
+  [obsidianContextPath, "Obsidian context pack"],
+  [demoStatusPath, "SEIS demo status docs"]
 ]) {
   ensureFile(filePath, label);
 }
@@ -68,6 +80,12 @@ const docs = readText(docsPath, "Second Brain product docs");
 const desktopJs = readText(desktopJsPath, "Desktop runtime");
 const desktopCss = readText(desktopCssPath, "Desktop styles");
 const packageJson = readJson(packagePath, "package.json");
+const workforce = readText(workforcePath, "SEIS Agent Workforce roster");
+const subAgents = readText(subAgentsPath, "SEIS sub-agent contract");
+const vaultWorkforce = readText(vaultWorkforcePath, "Obsidian vault workforce note");
+const vaultProductAgent = readText(vaultProductAgentPath, "Obsidian vault Product Agent note");
+const obsidianContext = readText(obsidianContextPath, "Obsidian context pack");
+const demoStatus = readText(demoStatusPath, "SEIS demo status docs");
 
 if (contract) {
   ensure(contract.id === "seis-second-brain-system", "contract id must be seis-second-brain-system");
@@ -145,6 +163,19 @@ for (const phrase of [
   ensure(docs.includes(phrase), `docs missing phrase: ${phrase}`);
 }
 
+for (const [text, label, phrases] of [
+  [workforce, "SEIS Agent Workforce roster", ["`Product Agent`", "Product Agent boundary", "status/plan-only"]],
+  [subAgents, "SEIS sub-agent contract", ["- Product Agent", "Product Agent boundary", "does not approve releases"]],
+  [vaultWorkforce, "Obsidian vault workforce note", ["`Product Agent`", "[[Product Agent]]", "status/plan-only"]],
+  [vaultProductAgent, "Obsidian vault Product Agent note", ["# Product Agent", "module: seis-product", "status: draft", "visibility: public", "Status/plan-only"]],
+  [obsidianContext, "Obsidian context pack", ["[[Product Agent]]", "status/plan-only"]],
+  [demoStatus, "SEIS demo status docs", ["all 9 current managed sub-agent lanes", "13-agent target roster"]]
+]) {
+  for (const phrase of phrases) {
+    ensure(text.includes(phrase), `${label} missing phrase: ${phrase}`);
+  }
+}
+
 for (const phrase of [
   "SEIS_SECOND_BRAIN_SYSTEM",
   "second-brain",
@@ -210,7 +241,19 @@ for (const selector of [
   ensure(desktopCss.includes(selector), `desktop.css missing selector ${selector}`);
 }
 
-for (const filePath of [contractPath, docsPath, desktopJsPath, trainingCurriculumPath, trainingCurriculumReportPath]) {
+for (const filePath of [
+  contractPath,
+  docsPath,
+  desktopJsPath,
+  trainingCurriculumPath,
+  trainingCurriculumReportPath,
+  workforcePath,
+  subAgentsPath,
+  vaultWorkforcePath,
+  vaultProductAgentPath,
+  obsidianContextPath,
+  demoStatusPath
+]) {
   requireNotMatches(filePath, /sk-[A-Za-z0-9_-]{20,}/, "OpenAI-style API keys");
   requireNotMatches(filePath, /-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----/, "private keys");
   requireNotMatches(filePath, /\b(?:password|token|secret|api[_-]?key)\s*=\s*['"][^'"]+['"]/i, "inline credential assignments");

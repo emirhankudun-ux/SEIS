@@ -33,6 +33,14 @@ Agents are bounded, task-scoped, and reviewed. They operate as:
 - `PR Rescue Agent`
 - `Demo Packaging Agent`
 - `UI UX Agent`
+- `Product Agent`
+
+## Product Agent boundary
+
+`Product Agent` turns approved goals into scoped requirements, acceptance
+criteria, user outcomes, and review-ready roadmap slices. It remains
+status/plan-only: it cannot approve releases, publish changes, expand scope,
+or make customer-impact claims without evidence and human review.
 
 ## Runtime assumptions
 
