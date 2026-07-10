@@ -1,0 +1,787 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SEIS Store Demo</title>
+    <meta
+      name="description"
+      content="A browser-local SEIS Store demo with apps, plugins, agents, themes, and safe install state persistence."
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        --ink: #f8f6ef;
+        --muted: #aeb5c3;
+        --dim: #758093;
+        --black: #050608;
+        --panel: rgba(16, 21, 30, 0.78);
+        --panel-strong: rgba(25, 31, 43, 0.92);
+        --line: rgba(255, 255, 255, 0.13);
+        --cyan: #64e7ff;
+        --blue: #7ca2ff;
+        --violet: #b99cff;
+        --amber: #ffc06e;
+        --green: #83e6ac;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        color: var(--ink);
+        font-family:
+          ui-sans-serif,
+          -apple-system,
+          BlinkMacSystemFont,
+          "SF Pro Display",
+          "Segoe UI",
+          sans-serif;
+        background:
+          radial-gradient(circle at 14% 6%, rgba(100, 231, 255, 0.22), transparent 28rem),
+          radial-gradient(circle at 86% 16%, rgba(185, 156, 255, 0.18), transparent 26rem),
+          linear-gradient(135deg, #050608, #101724 48%, #07090d);
+      }
+
+      body::before {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        content: "";
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.032) 1px, transparent 1px);
+        background-size: 72px 72px;
+        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent 78%);
+      }
+
+      a,
+      button,
+      input {
+        min-height: 44px;
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      a:focus-visible,
+      button:focus-visible,
+      input:focus-visible {
+        outline: 0;
+        box-shadow: 0 0 0 3px rgba(100, 231, 255, 0.3);
+      }
+
+      .shell {
+        width: min(1440px, calc(100vw - 28px));
+        margin: 0 auto;
+        padding: 28px 0 44px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 12px 14px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(5, 6, 8, 0.72);
+        backdrop-filter: blur(18px);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .mark {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        place-items: center;
+        border: 1px solid rgba(100, 231, 255, 0.42);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.055);
+        color: var(--cyan);
+        font-weight: 900;
+      }
+
+      .eyebrow {
+        margin: 0;
+        color: var(--cyan);
+        font-size: 11px;
+        font-weight: 850;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .brand strong {
+        display: block;
+        overflow: hidden;
+        font-size: 14px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.62fr);
+        gap: 18px;
+        margin-top: 22px;
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 30px;
+        background:
+          linear-gradient(145deg, rgba(255, 255, 255, 0.095), rgba(255, 255, 255, 0.026)),
+          var(--panel);
+        box-shadow: 0 28px 92px rgba(0, 0, 0, 0.45);
+        backdrop-filter: blur(24px);
+      }
+
+      .hero-main {
+        padding: clamp(28px, 5vw, 62px);
+      }
+
+      h1 {
+        max-width: 940px;
+        margin: 14px 0 18px;
+        font-size: clamp(42px, 7vw, 104px);
+        line-height: 0.88;
+        letter-spacing: -0.078em;
+      }
+
+      .hero-main p {
+        max-width: 790px;
+        margin: 0;
+        color: var(--muted);
+        font-size: clamp(16px, 2vw, 20px);
+        line-height: 1.64;
+      }
+
+      .hero-actions,
+      .top-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+      }
+
+      .hero-actions {
+        margin-top: 24px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 11px 15px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--ink);
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .button.primary {
+        border-color: transparent;
+        background: linear-gradient(135deg, var(--cyan), var(--blue));
+        color: #061017;
+        font-weight: 850;
+      }
+
+      .proof {
+        display: grid;
+        gap: 10px;
+        padding: 18px;
+      }
+
+      .metric {
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background: rgba(0, 0, 0, 0.2);
+      }
+
+      .metric strong {
+        display: block;
+        font-size: 30px;
+        letter-spacing: -0.04em;
+      }
+
+      .metric span {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .toolbar {
+        position: sticky;
+        top: 12px;
+        z-index: 5;
+        display: grid;
+        grid-template-columns: minmax(220px, 1fr) auto;
+        gap: 10px;
+        margin: 18px 0;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: rgba(5, 6, 8, 0.74);
+        backdrop-filter: blur(18px);
+      }
+
+      input[type="search"] {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--ink);
+        padding: 12px 15px;
+      }
+
+      .filters {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+
+      .filter {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--muted);
+        padding: 10px 13px;
+        cursor: pointer;
+      }
+
+      .filter[aria-pressed="true"] {
+        border-color: rgba(100, 231, 255, 0.46);
+        color: var(--ink);
+        background: rgba(100, 231, 255, 0.12);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .listing {
+        display: flex;
+        min-height: 310px;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background:
+          radial-gradient(circle at 20% 0%, rgba(100, 231, 255, 0.11), transparent 14rem),
+          var(--panel);
+      }
+
+      .listing h2 {
+        margin: 12px 0 10px;
+        font-size: 24px;
+        letter-spacing: -0.04em;
+      }
+
+      .listing p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.55;
+      }
+
+      .listing-footer {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 14px;
+      }
+
+      .tag,
+      .state {
+        display: inline-flex;
+        width: fit-content;
+        align-items: center;
+        gap: 7px;
+        padding: 6px 10px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 850;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .state[data-state="real"] {
+        color: var(--green);
+      }
+
+      .state[data-state="mock"] {
+        color: var(--amber);
+      }
+
+      .state[data-state="planned"] {
+        color: var(--violet);
+      }
+
+      .state::before {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        content: "";
+        background: currentColor;
+      }
+
+      .empty {
+        display: none;
+        margin-top: 14px;
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: var(--panel);
+        color: var(--muted);
+      }
+
+      .activity {
+        margin-top: 18px;
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: var(--panel);
+      }
+
+      .activity h2 {
+        margin: 0 0 12px;
+        font-size: 18px;
+      }
+
+      .log {
+        display: grid;
+        gap: 8px;
+      }
+
+      .log div {
+        padding: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--muted);
+        font-family: "SFMono-Regular", Consolas, monospace;
+        font-size: 12px;
+      }
+
+      .notice {
+        margin-top: 18px;
+        padding: 16px;
+        border: 1px solid rgba(255, 192, 110, 0.34);
+        border-radius: 22px;
+        background: rgba(255, 192, 110, 0.08);
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      @media (max-width: 1120px) {
+        .hero,
+        .grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .hero-main {
+          grid-column: 1 / -1;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .shell {
+          width: min(100% - 18px, 1440px);
+          padding-top: 10px;
+        }
+
+        .topbar,
+        .toolbar {
+          align-items: stretch;
+          grid-template-columns: 1fr;
+        }
+
+        .topbar,
+        .filters,
+        .top-actions,
+        .hero-actions {
+          flex-direction: column;
+        }
+
+        .grid,
+        .hero {
+          grid-template-columns: 1fr;
+        }
+
+        .button,
+        .filter {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body data-seis-store-demo>
+    <div class="shell">
+      <header class="topbar" aria-label="SEIS Store top bar">
+        <div class="brand">
+          <div class="mark" aria-hidden="true">S</div>
+          <div>
+            <p class="eyebrow">SEIS Store</p>
+            <strong>Browser-local marketplace for apps, agents, plugins, themes, and tools</strong>
+          </div>
+        </div>
+        <nav class="top-actions" aria-label="Store related links">
+          <a class="button" href="./desktop.html">Desktop</a>
+          <a class="button" href="./seis-code.html">SEIS Code</a>
+          <a class="button" href="./index.html">Website</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero" aria-labelledby="store-title">
+          <div class="card hero-main">
+            <p class="eyebrow">Real demo artifact, local-only state</p>
+            <h1 id="store-title">Install the SEIS ecosystem without pretending to mutate the real system.</h1>
+            <p>
+              This standalone Store demo turns a previously planned module into an interactive browser surface. Install,
+              update, and enable actions persist in localStorage only. No package manager, GitHub, cloud, SSH, or provider
+              mutation is performed.
+            </p>
+            <div class="hero-actions">
+              <button class="button primary" type="button" data-action="install-featured">Install featured set</button>
+              <button class="button" type="button" data-action="clear-state">Reset local store state</button>
+            </div>
+          </div>
+          <aside class="card proof" aria-label="Store metrics">
+            <div class="metric">
+              <strong id="total-count">0</strong>
+              <span>Catalog entries across apps, agents, plugins, themes, and tools.</span>
+            </div>
+            <div class="metric">
+              <strong id="installed-count">0</strong>
+              <span>Installed entries stored only in this browser.</span>
+            </div>
+            <div class="metric">
+              <strong>0 keys</strong>
+              <span>No credentials, tokens, provider keys, SSH keys, or deployment secrets.</span>
+            </div>
+          </aside>
+        </section>
+
+        <section class="toolbar" aria-label="Store filters">
+          <input id="search" type="search" placeholder="Search apps, agents, plugins, themes, tools..." />
+          <div class="filters" id="filters"></div>
+        </section>
+
+        <section class="grid" id="catalog" aria-label="SEIS Store catalog"></section>
+        <p class="empty" id="empty">No Store item matched the current filter.</p>
+
+        <section class="activity" aria-label="Store activity">
+          <h2>Local activity log</h2>
+          <div class="log" id="log"></div>
+        </section>
+
+        <section class="notice" aria-label="Safety boundary">
+          Store actions are browser-local demo state only. This page does not install packages, call GitHub, execute SSH,
+          deploy, call AI providers, request credentials, store secrets, or change branch protection. Mock and planned
+          marketplace capabilities stay labeled until verified.
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const catalog = [
+        {
+          id: "ai-core",
+          name: "SEIS AI Core",
+          category: "app",
+          state: "mock",
+          featured: true,
+          summary: "Command center for provider-neutral orchestration, agents, local demo mode, and safety rules.",
+          tags: ["AI", "Agents", "Router"]
+        },
+        {
+          id: "seis-code",
+          name: "SEIS Code IDE",
+          category: "app",
+          state: "real",
+          featured: true,
+          summary: "Browser IDE artifact for file exploration, editor previews, PR rescue, and AI coding workflows.",
+          tags: ["IDE", "Code", "PR"]
+        },
+        {
+          id: "design-studio",
+          name: "SEIS Design Studio",
+          category: "app",
+          state: "mock",
+          featured: true,
+          summary: "Canvas, component cards, tokens, prototype previews, and AI design assistant safe mode.",
+          tags: ["Design", "Tokens", "Canvas"]
+        },
+        {
+          id: "search",
+          name: "SEIS Search",
+          category: "app",
+          state: "mock",
+          featured: false,
+          summary: "Unified search across AI, code, design, cloud, apps, plugins, files, docs, and commands.",
+          tags: ["Search", "Knowledge", "Files"]
+        },
+        {
+          id: "store",
+          name: "SEIS Store",
+          category: "app",
+          state: "real",
+          featured: true,
+          summary: "This browser-local marketplace surface with safe install, update, enable, and category state.",
+          tags: ["Marketplace", "Apps", "Local"]
+        },
+        {
+          id: "music",
+          name: "SEIS Music",
+          category: "app",
+          state: "planned",
+          featured: false,
+          summary: "Player, playlists, album cards, waveform, and AI recommendation safe mode planned next.",
+          tags: ["Music", "Player", "Creative"]
+        },
+        {
+          id: "architect-agent",
+          name: "Architect Agent",
+          category: "agent",
+          state: "mock",
+          featured: true,
+          summary: "Plans safe architecture changes, module boundaries, review checklists, and rollback strategy.",
+          tags: ["Agent", "Architecture", "Review"]
+        },
+        {
+          id: "security-agent",
+          name: "Security Agent",
+          category: "agent",
+          state: "mock",
+          featured: true,
+          summary: "Flags secrets, unsafe provider calls, SSH risks, branch bypasses, and fake live AI claims.",
+          tags: ["Security", "Secrets", "Policy"]
+        },
+        {
+          id: "theme-graphite",
+          name: "Graphite Cinema Theme",
+          category: "theme",
+          state: "real",
+          featured: false,
+          summary: "Premium dark SEIS visual language with graphite panels, cyan highlights, and restrained motion.",
+          tags: ["Theme", "Dark", "Design"]
+        },
+        {
+          id: "github-governance-plugin",
+          name: "GitHub Governance Plugin",
+          category: "plugin",
+          state: "mock",
+          featured: false,
+          summary: "Read-only PR gate awareness, branch policy labels, review reminders, and rollback notes.",
+          tags: ["GitHub", "Governance", "PR"]
+        },
+        {
+          id: "ollama-local-toolkit",
+          name: "Ollama Local Toolkit",
+          category: "tool",
+          state: "planned",
+          featured: false,
+          summary: "Future local model helper for endpoint checks, model inventory, prompt trials, and fallback routing.",
+          tags: ["Local AI", "Ollama", "Tools"]
+        },
+        {
+          id: "demo-readiness-tool",
+          name: "Demo Readiness Tool",
+          category: "tool",
+          state: "real",
+          featured: true,
+          summary: "Local validation concept for demo artifacts, route evidence, state labels, and safety boundaries.",
+          tags: ["Validation", "Demo", "Readiness"]
+        }
+      ];
+
+      const storageKey = "seis-store-demo-state-v1";
+      const catalogNode = document.querySelector("#catalog");
+      const filtersNode = document.querySelector("#filters");
+      const searchNode = document.querySelector("#search");
+      const emptyNode = document.querySelector("#empty");
+      const logNode = document.querySelector("#log");
+      const categories = ["all", "app", "agent", "plugin", "theme", "tool", "real", "mock", "planned", "installed"];
+      let activeFilter = "all";
+
+      function loadState() {
+        try {
+          return JSON.parse(localStorage.getItem(storageKey)) || {};
+        } catch (error) {
+          return {};
+        }
+      }
+
+      let installState = loadState();
+
+      function saveState() {
+        localStorage.setItem(storageKey, JSON.stringify(installState));
+      }
+
+      function appendLog(message) {
+        const row = document.createElement("div");
+        const time = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+        row.textContent = `[${time}] ${message}`;
+        logNode.prepend(row);
+        [...logNode.children].slice(6).forEach((child) => child.remove());
+      }
+
+      function renderFilters() {
+        filtersNode.innerHTML = categories
+          .map((category) => `<button class="filter" type="button" data-filter="${category}" aria-pressed="${category === activeFilter}">${category}</button>`)
+          .join("");
+      }
+
+      function itemMatches(item, query) {
+        const installed = Boolean(installState[item.id]?.installed);
+        const normalized = query.trim().toLowerCase();
+        const haystack = [item.id, item.name, item.category, item.state, item.summary, item.tags.join(" ")].join(" ").toLowerCase();
+        const matchesQuery = !normalized || haystack.includes(normalized);
+        const matchesFilter =
+          activeFilter === "all" ||
+          item.category === activeFilter ||
+          item.state === activeFilter ||
+          (activeFilter === "installed" && installed);
+        return matchesQuery && matchesFilter;
+      }
+
+      function renderCatalog() {
+        const visible = catalog.filter((item) => itemMatches(item, searchNode.value));
+        catalogNode.innerHTML = visible
+          .map((item) => {
+            const itemState = installState[item.id] || {};
+            const installed = Boolean(itemState.installed);
+            const enabled = Boolean(itemState.enabled);
+            const version = itemState.version || "1.0";
+            return `
+              <article class="listing" data-store-item="${item.id}" data-category="${item.category}" data-state="${item.state}">
+                <div>
+                  <span class="state" data-state="${item.state}">${item.state}</span>
+                  <h2>${item.name}</h2>
+                  <p>${item.summary}</p>
+                  <div class="tag-row">
+                    <span class="tag">${item.category}</span>
+                    <span class="tag">${installed ? "installed" : "not installed"}</span>
+                    <span class="tag">${enabled ? "enabled" : "disabled"}</span>
+                    <span class="tag">v${version}</span>
+                    ${item.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}
+                  </div>
+                </div>
+                <div class="listing-footer">
+                  <button class="button primary" type="button" data-action="install" data-id="${item.id}">
+                    ${installed ? "Update" : "Install"}
+                  </button>
+                  <button class="button" type="button" data-action="toggle" data-id="${item.id}">
+                    ${enabled ? "Disable" : "Enable"}
+                  </button>
+                </div>
+              </article>
+            `;
+          })
+          .join("");
+        emptyNode.style.display = visible.length ? "none" : "block";
+        document.querySelector("#total-count").textContent = catalog.length;
+        document.querySelector("#installed-count").textContent = Object.values(installState).filter((item) => item.installed).length;
+      }
+
+      filtersNode.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-filter]");
+        if (!button) {
+          return;
+        }
+        activeFilter = button.dataset.filter;
+        renderFilters();
+        renderCatalog();
+      });
+
+      catalogNode.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-action][data-id]");
+        if (!button) {
+          return;
+        }
+        const item = catalog.find((entry) => entry.id === button.dataset.id);
+        const current = installState[item.id] || {};
+        if (button.dataset.action === "install") {
+          installState[item.id] = {
+            ...current,
+            installed: true,
+            enabled: current.enabled || false,
+            version: current.version === "1.0" ? "1.1" : "1.0"
+          };
+          appendLog(`${item.name} ${current.installed ? "updated" : "installed"} locally.`);
+        }
+        if (button.dataset.action === "toggle") {
+          installState[item.id] = {
+            ...current,
+            installed: current.installed || false,
+            enabled: !current.enabled,
+            version: current.version || "1.0"
+          };
+          appendLog(`${item.name} ${installState[item.id].enabled ? "enabled" : "disabled"} locally.`);
+        }
+        saveState();
+        renderCatalog();
+      });
+
+      document.addEventListener("click", (event) => {
+        const action = event.target.closest("[data-action]");
+        if (!action) {
+          return;
+        }
+        if (action.dataset.action === "install-featured") {
+          catalog
+            .filter((item) => item.featured)
+            .forEach((item) => {
+              installState[item.id] = { installed: true, enabled: true, version: "1.0" };
+            });
+          saveState();
+          renderCatalog();
+          appendLog("Featured SEIS set installed and enabled locally.");
+        }
+        if (action.dataset.action === "clear-state") {
+          installState = {};
+          saveState();
+          renderCatalog();
+          appendLog("Local Store demo state reset.");
+        }
+      });
+
+      searchNode.addEventListener("input", renderCatalog);
+      renderFilters();
+      renderCatalog();
+      appendLog("SEIS Store ready. Local demo state only; no external mutation.");
+    </script>
+  </body>
+</html>
