@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SEIS Agents</title>
+  <meta name="description" content="Browser-local SEIS Agents workforce demo with safe roles, permissions, handoff queue, approval gates, and mock activity." />
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #050607;
+      --panel: rgba(15, 20, 25, .8);
+      --line: rgba(225, 238, 245, .13);
+      --line-strong: rgba(225, 238, 245, .26);
+      --text: #f4f0e8;
+      --muted: #aeb8bd;
+      --quiet: #6e7a81;
+      --cyan: #5ee7ff;
+      --violet: #b79bff;
+      --amber: #f8b95f;
+      --green: #7dffb2;
+      --red: #ff7182;
+      --radius-lg: 32px;
+      --radius-md: 21px;
+      --shadow: 0 26px 88px rgba(0,0,0,.44);
+      --ease: cubic-bezier(.2,.8,.2,1);
+      font-family: "Aptos", "SF Pro Display", "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { min-height: 100%; background: var(--bg); }
+    body { min-height: 100%; margin: 0; color: var(--text); background: radial-gradient(circle at 14% 6%, rgba(94,231,255,.18), transparent 34rem), radial-gradient(circle at 84% 4%, rgba(183,155,255,.16), transparent 30rem), radial-gradient(circle at 50% 100%, rgba(248,185,95,.08), transparent 32rem), linear-gradient(135deg, #050607 0%, #0b1114 52%, #11100b 100%); overflow-x: hidden; }
+    button, input, select { font: inherit; }
+    button { color: inherit; border: 1px solid var(--line); background: rgba(255,255,255,.055); cursor: pointer; transition: transform .18s var(--ease), border-color .18s var(--ease), background .18s var(--ease); }
+    button:hover { transform: translateY(-1px); border-color: rgba(94,231,255,.38); background: rgba(94,231,255,.1); }
+    button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+    .page { width: min(1500px, calc(100% - 32px)); margin: 0 auto; padding: 24px 0 42px; }
+    .grid { position: fixed; inset: 0; pointer-events: none; opacity: .25; background-image: linear-gradient(rgba(255,255,255,.026) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px); background-size: 52px 52px; mask-image: linear-gradient(to bottom, black, transparent 84%); z-index: -1; }
+    .topbar, .hero, .panel, .agent-card, .activity-line, .toast { border: 1px solid var(--line); background: var(--panel); box-shadow: var(--shadow); backdrop-filter: blur(28px); }
+    .topbar { min-height: 74px; padding: 14px 18px; border-radius: 26px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
+    .mark { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 16px; color: #041014; font-weight: 900; letter-spacing: -.08em; background: linear-gradient(135deg, var(--cyan), #f5fbf8 54%, var(--amber)); box-shadow: 0 0 34px rgba(94,231,255,.24); }
+    h1, h2, h3, h4, p { margin-top: 0; }
+    .brand h1 { margin: 0; font-size: clamp(1.1rem, 2vw, 1.45rem); letter-spacing: -.045em; }
+    .brand p { margin: 3px 0 0; color: var(--muted); font-size: .84rem; }
+    .top-actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 10px; }
+    .pill, .state-pill { display: inline-flex; align-items: center; gap: 8px; min-height: 32px; padding: 7px 11px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); background: rgba(255,255,255,.045); font-size: .76rem; line-height: 1; white-space: nowrap; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; box-shadow: 0 0 18px currentColor; }
+    .local-demo { color: var(--green); } .mock { color: var(--cyan); } .approval-needed { color: var(--amber); } .planned { color: var(--violet); } .blocked { color: var(--red); }
+    .hero { position: relative; margin-top: 18px; padding: clamp(24px, 4.2vw, 54px); border-radius: var(--radius-lg); overflow: hidden; display: grid; grid-template-columns: minmax(0, 1fr) 390px; gap: 22px; align-items: end; }
+    .hero::after { content: ""; position: absolute; right: -12%; top: -20%; width: 520px; height: 520px; border-radius: 50%; background: radial-gradient(circle, rgba(94,231,255,.19), rgba(183,155,255,.1) 44%, transparent 70%); z-index: -1; }
+    .hero h2 { margin: 0; font-size: clamp(3.2rem, 8vw, 8rem); line-height: .84; letter-spacing: -.095em; }
+    .hero p { max-width: 800px; margin: 24px 0 0; color: #cad3d7; font-size: clamp(1rem, 1.7vw, 1.18rem); line-height: 1.7; }
+    .hero-card { border: 1px solid var(--line); border-radius: 24px; padding: 16px; background: rgba(255,255,255,.055); }
+    .hero-card strong { display: block; font-size: 2.55rem; letter-spacing: -.075em; }
+    .hero-card span { color: var(--muted); font-size: .86rem; line-height: 1.5; }
+    .workspace { display: grid; grid-template-columns: 292px minmax(0, 1fr) 360px; gap: 16px; align-items: start; margin-top: 18px; }
+    .panel { border-radius: var(--radius-md); padding: 16px; }
+    .panel h3 { margin: 0; font-size: 1rem; letter-spacing: -.02em; }
+    .panel p { margin: 5px 0 0; color: var(--muted); font-size: .86rem; line-height: 1.55; }
+    .filters, .toolbar { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 14px; }
+    .filter-btn, .mini-btn, .lane-btn { min-height: 36px; padding: 0 11px; border-radius: 12px; color: var(--muted); font-size: .8rem; }
+    .filter-btn.is-active, .mini-btn.is-active, .lane-btn.is-active { color: var(--text); border-color: rgba(94,231,255,.42); background: rgba(94,231,255,.105); }
+    .field { display: grid; gap: 8px; margin-top: 14px; }
+    .field label { color: var(--muted); font-size: .76rem; letter-spacing: .11em; text-transform: uppercase; }
+    .field input, .field select { min-height: 42px; color: var(--text); border: 1px solid var(--line); border-radius: 14px; background: rgba(0,0,0,.22); padding: 0 12px; width: 100%; }
+    .agent-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
+    .agent-card { border-radius: 22px; padding: 16px; box-shadow: 0 16px 50px rgba(0,0,0,.18); background: rgba(255,255,255,.045); display: grid; gap: 12px; }
+    .agent-head { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+    .agent-card h4 { margin: 0; font-size: 1rem; letter-spacing: -.02em; }
+    .agent-card p { margin: 0; color: var(--muted); font-size: .86rem; line-height: 1.55; }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag { display: inline-flex; align-items: center; min-height: 26px; padding: 0 9px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: .72rem; background: rgba(255,255,255,.035); }
+    .rule-box { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .rule { border: 1px solid var(--line); border-radius: 15px; padding: 10px; background: rgba(0,0,0,.18); }
+    .rule strong { display: block; font-size: .76rem; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 6px; }
+    .rule span { color: var(--muted); font-size: .76rem; line-height: 1.42; }
+    .lane-list, .activity-list, .handoff-list { display: grid; gap: 10px; margin-top: 14px; }
+    .lane-btn { display: flex; align-items: center; justify-content: space-between; width: 100%; text-align: left; min-height: 46px; }
+    .activity-line { border-radius: 16px; padding: 12px; box-shadow: none; background: rgba(255,255,255,.04); }
+    .activity-line strong { display: block; font-size: .84rem; }
+    .activity-line span { display: block; margin-top: 5px; color: var(--muted); font-size: .76rem; line-height: 1.45; }
+    .matrix { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; margin-top: 14px; }
+    .metric { min-height: 90px; padding: 12px; border: 1px solid var(--line); border-radius: 16px; background: rgba(255,255,255,.045); }
+    .metric span { display: block; color: var(--muted); font-size: .72rem; text-transform: uppercase; letter-spacing: .12em; }
+    .metric strong { display: block; margin-top: 9px; font-size: 1.55rem; letter-spacing: -.06em; }
+    .toast { position: fixed; right: 22px; bottom: 22px; width: min(430px, calc(100vw - 44px)); padding: 16px; border-radius: 18px; transform: translateY(18px); opacity: 0; pointer-events: none; transition: opacity .22s var(--ease), transform .22s var(--ease); z-index: 10; }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast strong { display: block; margin-bottom: 4px; }
+    .toast span { color: var(--muted); font-size: .88rem; }
+    @media (max-width: 1180px) { .hero, .workspace { grid-template-columns: 1fr; } .agent-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 720px) { .page { width: min(100% - 20px, 1500px); padding-top: 10px; } .topbar { align-items: flex-start; flex-direction: column; border-radius: 22px; } .top-actions { justify-content: flex-start; } .hero { padding: 24px; } .hero h2 { font-size: clamp(3rem, 18vw, 4.7rem); } .rule-box, .matrix { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .001ms !important; animation-duration: .001ms !important; } }
+  </style>
+</head>
+<body data-seis-agents-demo="browser-local">
+  <div class="grid" aria-hidden="true"></div>
+  <main class="page">
+    <header class="topbar">
+      <div class="brand"><div class="mark" aria-hidden="true">SA</div><div><h1>SEIS Agents</h1><p>Supervised AI workforce, permissions, handoff lanes and approval gates.</p></div></div>
+      <div class="top-actions" aria-label="Agent runtime states"><span class="state-pill local-demo" data-state="local-demo"><i class="dot"></i>Runtime: local demo</span><span class="state-pill mock" data-state="mock"><i class="dot"></i>Activity: mock</span><span class="state-pill approval-needed" data-state="approval-needed"><i class="dot"></i>Destructive actions: approval needed</span><span class="state-pill planned" data-state="planned"><i class="dot"></i>Live tools: planned</span></div>
+    </header>
+
+    <section class="hero" aria-labelledby="agents-title">
+      <div><h2 id="agents-title">Agents with boundaries.</h2><p>A runnable browser-local workforce console for SEIS Architect, Code, Design, Security, DevOps, Documentation, QA, Search, Cloud, Marketplace and Clean-Room agents. Every role shows purpose, allowed actions, forbidden actions and failure behavior. No real tools are executed.</p></div>
+      <aside class="hero-card"><strong id="agent-count">18</strong><span>Supervised demo agents with explicit local/mock/planned/approval states.</span></aside>
+    </section>
+
+    <section class="workspace" aria-label="SEIS Agent workforce">
+      <aside class="panel" aria-label="Agent filters and assignment">
+        <h3>Workforce lanes</h3><p>Filter by responsibility lane and create browser-local mock assignments.</p>
+        <div class="filters" id="filters"></div>
+        <div class="field"><label for="assignment-title">Mock assignment</label><input id="assignment-title" value="Review demo route readiness" autocomplete="off" /></div>
+        <div class="field"><label for="assignment-agent">Assign to</label><select id="assignment-agent"></select></div>
+        <div class="toolbar"><button class="mini-btn" type="button" data-action="assign">Create local assignment</button><button class="mini-btn" type="button" data-action="reset">Reset demo state</button></div>
+        <div class="matrix"><div class="metric"><span>Agents</span><strong>18</strong></div><div class="metric"><span>Writes</span><strong>0</strong></div><div class="metric"><span>Mode</span><strong>Local</strong></div><div class="metric"><span>Risk</span><strong>Low</strong></div></div>
+      </aside>
+
+      <section class="panel" aria-label="Agent cards">
+        <h3>Agent registry</h3><p>Each card exposes purpose, responsibilities, allowed actions, forbidden actions, required approval and failure behavior.</p>
+        <div class="agent-grid" id="agent-grid"></div>
+      </section>
+
+      <aside class="panel" aria-label="Activity and handoff">
+        <h3>Activity and handoff</h3><p>Mock activity stream; no delegation, no repo edits, no external tool calls.</p>
+        <div class="activity-list" id="activity-list"></div>
+        <div class="handoff-list"><button class="lane-btn is-active" type="button" data-action="handoff"><span>Prepare handoff packet</span><small>mock</small></button><button class="lane-btn" type="button" data-action="approval"><span>Request human approval</span><small>required</small></button><button class="lane-btn" type="button" data-action="audit"><span>Run local policy audit</span><small>local</small></button></div>
+      </aside>
+    </section>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite"><strong></strong><span></span></div>
+
+  <script>
+    const STORE_KEY = 'seis.agents.demo.v1';
+    const filters = ['All', 'Architecture', 'Code', 'Design', 'Research', 'Security', 'DevOps', 'Docs', 'QA', 'Cloud', 'Automation'];
+    const agents = [
+      ['Architect Agent', 'Architecture', 'Maps system boundaries, module contracts and review paths.', 'Draft architecture notes; identify dependencies.', 'No direct main pushes; no broad rewrites.', 'Escalates when scope crosses product boundaries.'],
+      ['Code Agent', 'Code', 'Implements small reversible code changes in approved branches.', 'Edit scoped files; run focused checks.', 'No destructive commands; no unrelated edits.', 'Stops when tests contradict assumptions.'],
+      ['Design Agent', 'Design', 'Maintains premium SEIS UI language and accessibility.', 'Draft tokens; critique layouts; label mock states.', 'No copied proprietary UI; no inaccessible contrast.', 'Escalates unclear visual provenance.'],
+      ['UI/UX Agent', 'Design', 'Keeps workflows clear, calm, keyboard-friendly and responsive.', 'Review flows; propose states; improve hierarchy.', 'No dark patterns; no fake buttons.', 'Flags unclear interaction intent.'],
+      ['Research Agent', 'Research', 'Collects evidence and separates source-backed facts from assumptions.', 'Summarize sources; mark uncertainty.', 'No unverifiable claims; no invented citations.', 'Escalates when primary evidence is missing.'],
+      ['Search Agent', 'Research', 'Maintains SEIS searchable knowledge, commands and result taxonomy.', 'Index demo data; tag docs; test empty states.', 'No live crawling without backend permission.', 'Falls back to local demo index.'],
+      ['Security Agent', 'Security', 'Protects secrets, provider boundaries and approval gates.', 'Audit markers; flag P0 risks; write safety notes.', 'No secret printing; no frontend private keys.', 'Blocks unsafe credential or SSH paths.'],
+      ['DevOps Agent', 'DevOps', 'Plans CI, deploy, rollback and environment readiness.', 'Create dry-run plans; inspect gates.', 'No live deploys; no force push.', 'Requires human approval for production actions.'],
+      ['Documentation Agent', 'Docs', 'Turns decisions into durable docs and runbooks.', 'Update scoped docs; write PR notes.', 'No empty docs; no hype-only claims.', 'Flags undocumented behavior changes.'],
+      ['QA Agent', 'QA', 'Defines checks for routes, smoke flows and regressions.', 'Run focused validators; document gaps.', 'No claiming unrun tests passed.', 'Escalates uncovered critical flows.'],
+      ['Cloud Agent', 'Cloud', 'Models SSH/cloud readiness with honest states.', 'Document local/remote modes; plan rollback.', 'No real SSH; no private keys.', 'Blocks until host and approval are verified.'],
+      ['Automation Agent', 'Automation', 'Keeps repetitive checks bounded and reviewable.', 'Create local scripts; summarize output.', 'No infinite loops; no permission expansion.', 'Stops on repeated failures.'],
+      ['Local AI Agent', 'Research', 'Plans Ollama/local model fallback without provider secrets.', 'Document local endpoints; draft prompts.', 'No model ownership claims without evidence.', 'Marks outputs untrusted until reviewed.'],
+      ['Marketplace Agent', 'Automation', 'Frames plugins, apps and install states safely.', 'Catalog plugins; mark planned/disabled.', 'No hidden installs; no unapproved downloads.', 'Escalates unclear license or provenance.'],
+      ['Clean-Room Agent', 'Security', 'Separates inspiration from implementation provenance.', 'Document source boundaries; flag risky assets.', 'No leaked code; no unauthorized assets.', 'Blocks unclear-license material.'],
+      ['Accessibility Agent', 'QA', 'Reviews focus, contrast, labels and reduced motion.', 'Flag P1 accessibility issues; propose fixes.', 'No color-only status; no keyboard traps.', 'Escalates unusable mobile states.'],
+      ['Product Strategy Agent', 'Architecture', 'Aligns roadmap, demo value and honest release scope.', 'Prioritize PR queue; map phases.', 'No fake readiness claims.', 'Escalates scope mismatch.'],
+      ['PR Rescue Agent', 'DevOps', 'Summarizes failing gates and safe rollback paths.', 'Triage PRs; draft fix plan.', 'No admin bypass; no force merge.', 'Escalates review-required blockers.']
+    ];
+    const seedActivity = [['Security Agent', 'mock', 'Confirmed no browser secrets or live tool execution in this demo.'], ['QA Agent', 'local-demo', 'Prepared focused validator coverage for required role markers.'], ['PR Rescue Agent', 'approval-needed', 'Review gate remains human-controlled; auto-merge cannot bypass it.']];
+    const state = loadState();
+    function loadState() { try { return JSON.parse(localStorage.getItem(STORE_KEY)) || { filter: 'All', activity: seedActivity }; } catch { return { filter: 'All', activity: seedActivity }; } }
+    function saveState() { localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+    function toast(title, body) { const box = document.querySelector('#toast'); box.querySelector('strong').textContent = title; box.querySelector('span').textContent = body; box.classList.add('show'); window.clearTimeout(toast.timer); toast.timer = window.setTimeout(() => box.classList.remove('show'), 3200); }
+    function renderFilters() { document.querySelector('#filters').innerHTML = filters.map((filter) => `<button class="filter-btn ${state.filter === filter ? 'is-active' : ''}" type="button" data-filter="${filter}">${filter}</button>`).join(''); }
+    function renderSelect() { document.querySelector('#assignment-agent').innerHTML = agents.map(([name]) => `<option>${name}</option>`).join(''); }
+    function renderAgents() { const filtered = state.filter === 'All' ? agents : agents.filter((agent) => agent[1] === state.filter); document.querySelector('#agent-grid').innerHTML = filtered.map(([name, lane, purpose, allowed, forbidden, failure]) => `<article class="agent-card"><div class="agent-head"><div><h4>${name}</h4><div class="meta"><span class="tag">${lane}</span><span class="tag">required input</span><span class="tag">expected output</span></div></div><span class="state-pill mock" data-state="mock"><i class="dot"></i>mock</span></div><p>${purpose}</p><div class="rule-box"><div class="rule"><strong>Allowed</strong><span>${allowed}</span></div><div class="rule"><strong>Forbidden</strong><span>${forbidden}</span></div></div><div class="rule"><strong>Failure behavior</strong><span>${failure}</span></div><button class="mini-btn" type="button" data-agent="${name}">Open agent brief</button></article>`).join(''); }
+    function renderActivity() { document.querySelector('#activity-list').innerHTML = state.activity.slice(-7).map(([name, status, body]) => `<article class="activity-line"><strong>${name} <span class="state-pill ${status}" data-state="${status}"><i class="dot"></i>${status}</span></strong><span>${body}</span></article>`).join(''); }
+    function addActivity(name, status, body) { state.activity.push([name, status, body]); saveState(); renderActivity(); }
+    document.addEventListener('click', (event) => { const filter = event.target.closest('[data-filter]'); if (filter) { state.filter = filter.dataset.filter; saveState(); renderFilters(); renderAgents(); } const agent = event.target.closest('[data-agent]'); if (agent) { addActivity(agent.dataset.agent, 'mock', 'Opened browser-local role brief; no tools were invoked.'); toast('Agent brief opened', `${agent.dataset.agent} is mock/local only.`); } const action = event.target.closest('[data-action]'); if (action?.dataset.action === 'assign') { const assignee = document.querySelector('#assignment-agent').value; const title = document.querySelector('#assignment-title').value.trim() || 'Untitled assignment'; addActivity(assignee, 'local-demo', `Created local assignment: ${title}.`); toast('Local assignment created', 'Stored in browser-local activity only.'); } if (action?.dataset.action === 'reset') { state.filter = 'All'; state.activity = seedActivity.slice(); saveState(); renderFilters(); renderAgents(); renderActivity(); toast('Demo reset', 'Agent activity returned to seed state.'); } if (action?.dataset.action === 'handoff') { addActivity('Documentation Agent', 'mock', 'Prepared mock handoff packet with review checklist.'); toast('Handoff prepared', 'No files were written.'); } if (action?.dataset.action === 'approval') { addActivity('Security Agent', 'approval-needed', 'Human approval required before destructive or live tool actions.'); toast('Approval required', 'This demo cannot approve itself.'); } if (action?.dataset.action === 'audit') { addActivity('QA Agent', 'local-demo', 'Ran local policy audit simulation for agent boundaries.'); toast('Local audit simulated', 'No external checks were called.'); } });
+    renderFilters(); renderSelect(); renderAgents(); renderActivity();
+  </script>
+</body>
+</html>
