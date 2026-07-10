@@ -70,7 +70,23 @@
       "a second visible SEIS SSH alias is added",
       "the public docs imply SSH is live without strict evidence",
       "a private key or token appears in repo artifacts"
-    ]
+    ],
+    "pullRequestWorkflow": {
+      "workflow": ".github/workflows/seis-ssh-public-access.yml",
+      "mode": "static-contract-only-no-live-ssh",
+      "triggers": ["pull_request", "workflow_dispatch"],
+      "permissions": {
+        "contents": "read"
+      },
+      "reviewOutcome": "status-check-before-human-merge",
+      "forbiddenActions": [
+        "live SSH",
+        "GitHub authentication",
+        "credential access",
+        "deployment",
+        "server or port mutation"
+      ]
+    }
   },
   "profiles": [
     {
@@ -155,6 +171,7 @@
     "npm run check:seis-ssh-public-onboarding",
     "npm run report:seis-ssh-public-onboarding",
     "npm run check:seis-ssh-public-contributor-doctor",
+    "npm run check:seis-ssh-github-pr-contract",
     "npm run report:seis-ssh-public-contributor-doctor",
     "npm run check:seis-ssh-live-readiness-evidence",
     "npm run check:seis-ssh-access-model",

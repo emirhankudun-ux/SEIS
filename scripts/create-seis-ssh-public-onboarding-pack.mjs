@@ -123,6 +123,7 @@ function buildOnboardingPack(report) {
           "npm run check:seis-ssh-public-access-report",
           "npm run check:seis-ssh-public-onboarding",
           "npm run check:seis-ssh-public-contributor-doctor",
+          "npm run check:seis-ssh-github-pr-contract",
           "npm run report:seis-ssh-public-onboarding",
           "npm run report:seis-ssh-public-contributor-doctor"
         ],
@@ -173,6 +174,7 @@ function buildOnboardingPack(report) {
         "npm run check:seis-ssh-public-access-report",
         "npm run check:seis-ssh-public-onboarding",
         "npm run check:seis-ssh-public-contributor-doctor",
+        "npm run check:seis-ssh-github-pr-contract",
         "npm run report:seis-ssh-public-onboarding",
         "npm run report:seis-ssh-public-contributor-doctor"
       ],
@@ -185,6 +187,7 @@ function buildOnboardingPack(report) {
         "npm run check:seis-ssh-access-model",
         "npm run check:seis-ssh-picker-compatibility",
         "npm run check:seis-ssh-enterprise-benchmark",
+        "npm run check:seis-ssh-github-pr-contract",
         "git diff --check"
       ]
     },

@@ -88,6 +88,31 @@ separates three audiences:
 The onboarding pack is not anonymous shell access and not a shared private-key
 path.
 
+## GitHub Pull Request Guard
+
+Every pull request that changes the SEIS-SSH contract, runbooks, checks, or
+workflow is covered by
+`.github/workflows/seis-ssh-public-access.yml`. The workflow is a fast,
+static-only GitHub status check for contributors and maintainers. It runs the
+public contract, onboarding, contributor doctor, live-readiness evidence,
+access-model, cloud-roadmap, closed-runtime, and enterprise checks before
+review.
+
+Run the same local gate before opening a PR:
+
+```bash
+npm run check:seis-ssh-github-pr-contract
+```
+
+The workflow requests `contents: read` only. It does not run `gh auth`,
+`gh cs ssh`, `ssh -T`, a live SSH session, deployment, credential access, or
+server/port mutation. A passing status check proves repository wiring and
+honest boundaries, not that the remote endpoint is online.
+
+The SSH contract and its workflow are owner-reviewed through `.github/CODEOWNERS`.
+GitHub contributors can therefore use the same visible `SEIS-SSH` alias and
+receive deterministic feedback without sharing maintainer credentials.
+
 `npm run report:seis-ssh-public-contributor-doctor` writes a self-service
 doctor report to
 `reports/seis-ssh-public-access/contributor-doctor-latest.md`. It checks local
