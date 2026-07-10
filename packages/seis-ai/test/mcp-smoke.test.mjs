@@ -287,6 +287,10 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.id, "seis-second-brain-system");
     assert.equal(payload.status, "local-demo");
     assert.equal(payload.managedSubAgentLanes.length, 9);
+    assert.equal(payload.contextProfilePolicy.status, "local-demo-read-only");
+    assert.equal(payload.contextProfilePolicy.privateVaultRead, false);
+    assert.equal(payload.contextProfiles.length, 9);
+    assert.ok(payload.contextProfiles.some((profile) => profile.id === "seis-product" && profile.planTool === "seis_product_plan"));
     assert.equal(payload.autonomousAgentRoster.length, 13);
     assert.equal(payload.securityBoundary.githubMutation, false);
   });

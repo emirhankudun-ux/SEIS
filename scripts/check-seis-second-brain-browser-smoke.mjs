@@ -351,9 +351,12 @@ async function smokeSecondBrain(client, baseUrl) {
       installedAiRows: root?.querySelectorAll('[data-second-brain-installed-ai] tbody tr').length || 0,
       subAgentRows: root?.querySelectorAll('[data-second-brain-subagents] tbody tr').length || 0,
       agentRosterRows: root?.querySelectorAll('[data-second-brain-agent-roster] tbody tr').length || 0,
+      contextProfileRows: root?.querySelectorAll('[data-second-brain-context-profiles] tbody tr').length || 0,
       managedLaneMetric: root?.querySelector('[data-second-brain-managed-lanes] p')?.textContent?.trim() || '',
+      contextProfileMetric: root?.querySelector('[data-second-brain-context-profile-count] p')?.textContent?.trim() || '',
       mcpContext: root?.querySelector('[data-second-brain-mcp-resource]')?.innerText || '',
       managedLaneText: root?.querySelector('[data-second-brain-subagents]')?.innerText || '',
+      contextProfileText: root?.querySelector('[data-second-brain-context-profiles]')?.innerText || '',
       agentRosterText: root?.querySelector('[data-second-brain-agent-roster]')?.innerText || '',
       actionButtons: root?.querySelectorAll('[data-action="app-primary"], [data-action="second-brain-capture"], [data-action="second-brain-link"], [data-action="second-brain-training-pack"], [data-action="second-brain-review"], [data-action="second-brain-export-github"]').length || 0,
       localDemoCopy: text.includes('Local Demo'),
@@ -377,9 +380,12 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(initial.installedAiRows === 6, `expected six installed AI rows, got ${initial.installedAiRows}`);
   ensure(initial.subAgentRows === 9, `expected nine managed lane rows, got ${initial.subAgentRows}`);
   ensure(initial.agentRosterRows === 13, `expected thirteen autonomous agent rows, got ${initial.agentRosterRows}`);
+  ensure(initial.contextProfileRows === 9, `expected nine local context profiles, got ${initial.contextProfileRows}`);
   ensure(initial.managedLaneMetric === "9", `expected managed lane metric 9, got ${initial.managedLaneMetric}`);
+  ensure(initial.contextProfileMetric === "9", `expected context profile metric 9, got ${initial.contextProfileMetric}`);
   ensure(initial.mcpContext.includes("seis://brain/second-brain-system.json"), "Second Brain must render the read-only MCP context resource.");
   ensure(initial.managedLaneText.includes("SEIS Product") && initial.managedLaneText.includes("seis_product_status"), "Second Brain managed lane table must expose the SEIS Product MCP lane.");
+  ensure(initial.contextProfileText.includes("@seis-data") && initial.contextProfileText.includes("seis_product_plan"), "Second Brain context profiles must expose the SEIS Data and Product planning lanes.");
   ensure(initial.agentRosterText.includes("Product Agent"), "Second Brain autonomous roster must expose Product Agent.");
   ensure(initial.actionButtons === 6, `expected six Second Brain actions, got ${initial.actionButtons}`);
   ensure(initial.localDemoCopy, "Second Brain must label Local Demo mode.");

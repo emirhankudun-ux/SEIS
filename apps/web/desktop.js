@@ -1518,6 +1518,24 @@ const SEIS_SECOND_BRAIN_SYSTEM = {
     ["SEIS Automation", "seis-automation", "seis_automation_status / seis_automation_plan", "Dry-runs, repeatable checks, runbooks, rollback, and human-approved automation gates."],
     ["SEIS Product", "seis-product", "seis_product_status / seis_product_plan", "Requirements, acceptance criteria, roadmap slices, user outcomes, and launch-readiness evidence."]
   ],
+  contextProfilePolicy: {
+    status: "local-demo-read-only",
+    mcpResource: "seis://brain/second-brain-system.json",
+    obsidianContextPath: "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md",
+    installedAiProfileAccess: "All six recorded profiles use repo-owned review context only; Missing Key and Disabled profiles remain non-routable.",
+    boundary: "No private vault read or autonomous write."
+  },
+  contextProfiles: [
+    { id: "seis-hub", lane: "SEIS Hub", plugin: "@seis", statusTool: "seis_hub_status", planTool: "seis_hub_plan", focus: "Repository governance, architecture, and source-of-truth planning.", relatedAgents: ["Architect Agent", "Documentation Agent", "Product Agent"], allowedOutput: "Reviewable repository governance plan." },
+    { id: "seis-cloud", lane: "SEIS Cloud", plugin: "@seis-cloud", statusTool: "seis_cloud_status", planTool: "seis_cloud_plan", focus: "Provider-neutral cloud readiness, SSH/VPN boundaries, and rollback planning.", relatedAgents: ["Cloud Agent", "DevOps Agent", "Security Agent"], allowedOutput: "Readiness and rollback proposal." },
+    { id: "seis-code", lane: "SEIS-Code", plugin: "@seis-code", statusTool: "seis_code_status", planTool: "seis_code_plan", focus: "Scoped implementation, CI quality gates, MCP/plugin engineering, and safe automation.", relatedAgents: ["Code Agent", "QA Agent", "Automation Agent"], allowedOutput: "Scoped implementation and validation plan." },
+    { id: "seis-design", lane: "SEIS-Design", plugin: "@seis-design", statusTool: "seis_design_status", planTool: "seis_design_plan", focus: "Product design, UI/UX, accessibility, motion, and visual QA planning.", relatedAgents: ["Design Agent", "UI/UX Agent"], allowedOutput: "UI/UX and accessibility review brief." },
+    { id: "seis-data", lane: "SEIS-DATA", plugin: "@seis-data", statusTool: "seis_data_status", planTool: "seis_data_plan", focus: "Schemas, reports, knowledge registries, memory/RAG planning, and provenance.", relatedAgents: ["Search Agent", "Research Agent", "Documentation Agent"], allowedOutput: "Schema, context, and provenance proposal." },
+    { id: "seis-security", lane: "SEIS Security", plugin: "SEIS-Agent embedded lane", statusTool: "seis_security_status", planTool: "seis_security_plan", focus: "Threat review, secret safety, permission risk, and release-blocking gates.", relatedAgents: ["Security Agent", "QA Agent"], allowedOutput: "Blocking risk review and remediation proposal." },
+    { id: "seis-research", lane: "SEIS Research", plugin: "SEIS-Agent embedded lane", statusTool: "seis_research_status", planTool: "seis_research_plan", focus: "Official-source review, standards/version checks, and evidence synthesis.", relatedAgents: ["Research Agent", "Search Agent"], allowedOutput: "Source-backed research summary." },
+    { id: "seis-automation", lane: "SEIS Automation", plugin: "SEIS-Agent embedded lane", statusTool: "seis_automation_status", planTool: "seis_automation_plan", focus: "Dry-runs, repeatable checks, runbooks, rollback, and human-approved automation gates.", relatedAgents: ["Automation Agent", "DevOps Agent", "QA Agent"], allowedOutput: "Dry-run workflow and rollback plan." },
+    { id: "seis-product", lane: "SEIS Product", plugin: "SEIS-Agent embedded lane", statusTool: "seis_product_status", planTool: "seis_product_plan", focus: "Requirements, acceptance criteria, roadmap slices, user outcomes, and launch-readiness evidence.", relatedAgents: ["Product Agent", "Architect Agent", "Design Agent"], allowedOutput: "Requirements and acceptance-criteria brief." }
+  ],
   agentLanes: [
     ["Architect Agent", "read-only / plan-only", "Turn vault notes into architecture decisions and rollback-aware implementation slices."],
     ["Code Agent", "write-gated later", "Map notes to scoped code changes only after human-approved file scope exists."],
@@ -5077,6 +5095,7 @@ function renderSecondBrain() {
       <article class="metric-card"><strong>Installed AI</strong><p>${SEIS_INSTALLED_AI_SYSTEMS.length}</p></article>
       <article class="metric-card" data-second-brain-managed-lanes><strong>Managed Lanes</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.length}</p></article>
       <article class="metric-card"><strong>Agent Roster</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length}</p></article>
+      <article class="metric-card" data-second-brain-context-profile-count><strong>Context Profiles</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.contextProfiles.length}</p></article>
       <article class="metric-card"><strong>Quality Gate</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.qualityGate)}</p></article>
       <article class="metric-card" data-second-brain-mcp-resource><strong>MCP Context</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.mcpResource)}</p></article>
       <article class="metric-card"><strong>Last Snapshot</strong><p>${data.lastSnapshot?.time || "Not saved yet"}</p></article>
@@ -5165,6 +5184,17 @@ function renderSecondBrain() {
       <table class="data-table" data-second-brain-agent-roster>
         <thead><tr><th>Agent</th><th>Status</th><th>Second Brain duty</th></tr></thead>
         <tbody>${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.map(([agent, status, duty]) => `<tr><td>${escapeHtml(agent)}</td><td>${escapeHtml(status)}</td><td>${escapeHtml(duty)}</td></tr>`).join("")}</tbody>
+      </table>
+      <h4>Local Context Profiles</h4>
+      <p class="status-note">${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.contextProfilePolicy.installedAiProfileAccess)} ${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.contextProfilePolicy.boundary)}</p>
+      <table class="data-table" data-second-brain-context-profiles>
+        <thead><tr><th>Lane</th><th>Context</th><th>Agents</th><th>Allowed output</th></tr></thead>
+        <tbody>${SEIS_SECOND_BRAIN_SYSTEM.contextProfiles.map((profile) => `<tr>
+          <td><strong>${escapeHtml(profile.lane)}</strong><br><span class="muted">${escapeHtml(profile.plugin)}</span></td>
+          <td>${escapeHtml(profile.statusTool)} / ${escapeHtml(profile.planTool)}<br><span class="muted">${escapeHtml(profile.focus)}</span></td>
+          <td>${escapeHtml(profile.relatedAgents.join(", "))}</td>
+          <td>${escapeHtml(profile.allowedOutput)}</td>
+        </tr>`).join("")}</tbody>
       </table>
     </section>
     <section class="subagent-panel" data-second-brain-github-gate>
@@ -8576,6 +8606,10 @@ ${SEIS_INSTALLED_AI_SYSTEMS.map((system) => `- ${system.name}: ${system.status} 
 
 ${SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.map(([name, lane, tool, scope]) => `- ${name}: ${lane} / ${tool} / ${scope}`).join("\n")}
 
+## Local Context Profiles
+
+${SEIS_SECOND_BRAIN_SYSTEM.contextProfiles.map((profile) => `- ${profile.lane} (${profile.plugin}): ${profile.statusTool} / ${profile.planTool} | agents: ${profile.relatedAgents.join(", ")} | output: ${profile.allowedOutput}`).join("\n")}
+
 ## Autonomous Agent Roster
 
 ${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.map(([agent, status, duty]) => `- ${agent}: ${status} / ${duty}`).join("\n")}
@@ -8594,6 +8628,7 @@ function buildSecondBrainTrainingPackMarkdown(timestamp) {
   const installedRows = SEIS_INSTALLED_AI_SYSTEMS.map((system) => `- ${system.name} | ${system.status} | ${system.role} | ${system.boundary}`);
   const laneRows = SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.map(([name, lane, tool, scope]) => `- ${name} | ${lane} | ${tool} | ${scope}`);
   const rosterRows = SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.map(([agent, status, duty]) => `- ${agent} | ${status} | ${duty}`);
+  const contextProfileRows = SEIS_SECOND_BRAIN_SYSTEM.contextProfiles.map((profile) => `- ${profile.lane} | ${profile.plugin} | ${profile.statusTool} / ${profile.planTool} | agents: ${profile.relatedAgents.join(", ")} | output: ${profile.allowedOutput}`);
 
   return `# SEIS Second Brain Agent Training Pack
 
@@ -8610,6 +8645,7 @@ Context access: ${SEIS_SECOND_BRAIN_SYSTEM.repositoryContextPack.access}
 Observed AI profiles: ${SEIS_INSTALLED_AI_SYSTEMS.length}
 Observed sub-agent lanes: ${SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.length}
 Observed autonomous agent roster: ${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length}
+Observed local context profiles: ${SEIS_SECOND_BRAIN_SYSTEM.contextProfiles.length}
 
 ## 1) Obsidian Bridge Safe Import And Repo-Owned Context
 
@@ -8632,6 +8668,16 @@ Observed autonomous agent roster: ${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRost
 ### Runtime artifact summary
 
 ${SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.map((note) => `- ${note.title} (${note.id}) → ${note.path}`).join("\n")}
+
+## Local Context Profiles
+
+- Policy: ${SEIS_SECOND_BRAIN_SYSTEM.contextProfilePolicy.status}
+- MCP resource: ${SEIS_SECOND_BRAIN_SYSTEM.contextProfilePolicy.mcpResource}
+- Obsidian context path: ${SEIS_SECOND_BRAIN_SYSTEM.contextProfilePolicy.obsidianContextPath}
+- Installed AI access: ${SEIS_SECOND_BRAIN_SYSTEM.contextProfilePolicy.installedAiProfileAccess}
+- Boundary: ${SEIS_SECOND_BRAIN_SYSTEM.contextProfilePolicy.boundary}
+
+${contextProfileRows.join("\n")}
 
 ## 2) Second Brain Accessibility / Focus QA
 

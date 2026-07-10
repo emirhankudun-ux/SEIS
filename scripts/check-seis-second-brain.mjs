@@ -60,6 +60,17 @@ const requiredAutonomousAgentRoster = [
   "Automation Agent",
   "Product Agent"
 ];
+const requiredContextProfileIds = [
+  "seis-hub",
+  "seis-cloud",
+  "seis-code",
+  "seis-design",
+  "seis-data",
+  "seis-security",
+  "seis-research",
+  "seis-automation",
+  "seis-product"
+];
 
 for (const [filePath, label] of [
   [contractPath, "Second Brain contract"],
@@ -111,6 +122,11 @@ if (contract) {
   ensure(contract.repositoryContextPack?.access === "read-only local and MCP contract context", "contract repository context pack must stay read-only");
   ensure(contract.repositoryContextPack?.privateVaultRead === false, "contract repository context pack must not read private vaults");
   ensure(contract.repositoryContextPack?.modelWeightTraining === false, "contract repository context pack must not claim model-weight training");
+  ensure(contract.contextProfilePolicy?.status === "local-demo-read-only", "contract context profile policy must remain local-demo and read-only");
+  ensure(contract.contextProfilePolicy?.mcpResource === secondBrainMcpResource, "contract context profile policy must bind the Second Brain MCP resource");
+  ensure(contract.contextProfilePolicy?.obsidianContextPath === obsidianContextPath, "contract context profile policy must bind the repo-owned Obsidian context pack");
+  ensure(contract.contextProfilePolicy?.privateVaultRead === false, "contract context profile policy must not read private vaults");
+  ensure(contract.contextProfilePolicy?.autonomousWriteAllowed === false, "contract context profile policy must not allow autonomous writes");
   ensure(contract.releaseReviewPacketPath === "reports/seis-public-demo/pr54-review-packet-latest.md", "contract must declare PR #54 release review packet path");
   ensure(contract.languageModelTrainingCurriculum?.status === "planned-training-contract", "contract must bind planned language model training curriculum");
   ensure(contract.languageModelTrainingCurriculum?.contractPath === trainingCurriculumPath, "contract language model training curriculum path mismatch");
@@ -125,14 +141,27 @@ if (contract) {
   ensure(contract.securityBoundary?.requiresHumanReviewBeforePublicUse === true, "Second Brain must require human review before public use");
   ensureArrayMin(contract.installedAiProfiles, 6, "installedAiProfiles");
   ensureArrayMin(contract.managedSubAgentLanes, 9, "managedSubAgentLanes");
+  ensureArrayMin(contract.contextProfiles, 9, "contextProfiles");
   ensureArrayMin(contract.vaultNotes, 6, "vaultNotes");
   ensureArrayMin(contract.agentLanes, 9, "agentLanes");
   ensureArrayMin(contract.autonomousAgentRoster, 13, "autonomousAgentRoster");
   ensureArrayMin(contract.pipeline, 4, "pipeline");
   ensureArrayMin(contract.githubGates, 4, "githubGates");
   ensureArrayIncludesAll(contract.managedSubAgentLanes, requiredManagedSubAgentLanes, "managedSubAgentLanes");
+  ensureArrayIncludesAll((contract.contextProfiles || []).map((profile) => profile.id), requiredContextProfileIds, "contextProfiles");
   ensureArrayIncludesAll((contract.agentLanes || []).map((lane) => lane.agent), requiredSecondBrainAgentLanes, "agentLanes");
   ensureArrayIncludesAll((contract.autonomousAgentRoster || []).map((agent) => agent.agent), requiredAutonomousAgentRoster, "autonomousAgentRoster");
+
+  const contextProfileAgents = new Set();
+  for (const profile of contract.contextProfiles || []) {
+    ensure(typeof profile.plugin === "string" && profile.plugin.length > 0, `context profile ${profile.id} must name its plugin or embedded lane`);
+    ensure(typeof profile.statusTool === "string" && profile.statusTool.endsWith("_status"), `context profile ${profile.id} must declare a status tool`);
+    ensure(typeof profile.planTool === "string" && profile.planTool.endsWith("_plan"), `context profile ${profile.id} must declare a plan tool`);
+    ensure(Array.isArray(profile.relatedAgents) && profile.relatedAgents.length > 0, `context profile ${profile.id} must declare related agents`);
+    ensure(typeof profile.allowedOutput === "string" && profile.allowedOutput.length > 0, `context profile ${profile.id} must declare an allowed output`);
+    for (const agent of profile.relatedAgents || []) contextProfileAgents.add(agent);
+  }
+  ensureArrayIncludesAll([...contextProfileAgents], requiredAutonomousAgentRoster, "context profile related agents");
 
   const noteIds = new Set((contract.vaultNotes || []).map((note) => note.id));
   for (const note of contract.vaultNotes || []) {
@@ -168,6 +197,9 @@ for (const phrase of [
   "All 9 current managed SEIS sub-agent lanes",
   "13-agent target roster",
   "Repo-owned Obsidian context pack",
+  "Local Context Profiles",
+  "@seis-cloud",
+  "@seis-data",
   "seis://brain/second-brain-system.json",
   "GitHub readiness",
   "Agent training pack",
@@ -255,6 +287,11 @@ for (const phrase of [
   "buildSecondBrainTrainingPackMarkdown",
   "SEIS_INSTALLED_AI_SYSTEMS.length",
   "managedSubAgentLanes",
+  "contextProfilePolicy",
+  "contextProfiles",
+  "data-second-brain-context-profiles",
+  "data-second-brain-context-profile-count",
+  "Local Context Profiles",
   "data-second-brain-managed-lanes",
   "seis_product_status",
   "autonomousAgentRoster",

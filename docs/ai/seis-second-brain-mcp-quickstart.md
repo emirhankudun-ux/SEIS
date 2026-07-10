@@ -106,6 +106,16 @@ provider, SSH, deployment, or GitHub authority.
 | SEIS Automation | `seis_automation_status` | `seis_automation_plan` |
 | SEIS Product | `seis_product_status` | `seis_product_plan` |
 
+## Local Context Profiles
+
+The Second Brain resource also contains nine Local Context Profiles. Each ties
+a lane to its status/plan tools, related autonomous agents, repo-owned
+Obsidian context, and an allowed review/plan output. The profiles keep
+`@seis`, `@seis-cloud`, `@seis-code`, `@seis-design`, and `@seis-data`
+explicit while keeping Security, Research, Automation, and Product as
+SEIS-Agent embedded lanes. They do not grant private-vault, provider, SSH,
+GitHub, deployment, or autonomous-write authority.
+
 ## Safety Boundary
 
 - No private Obsidian vault is imported or read.
