@@ -1,0 +1,69 @@
+{
+  "id": "seis-ai-core-read-only-router-runtime",
+  "version": "1.0.0",
+  "status": "local-read-only-runtime",
+  "purpose": "Execute the provider-neutral SEIS AI Core routing contract as a deterministic, no-key, review-only decision evaluator.",
+  "qualityGate": "npm run check:seis-ai-core-read-only-router",
+  "sourceOfTruth": {
+    "contract": "content/development/seis-read-only-model-router-contract.json",
+    "providerRegistry": "content/development/seis-ai-core-provider-registry.json",
+    "subagentOperatingModel": "content/development/seis-ai-core-subagent-operating-model.json",
+    "runtimeModule": "packages/seis-ai/src/model/read-only-router.mjs",
+    "runtimeCli": "packages/seis-ai/bin/seis-router.mjs",
+    "agentTool": "seis_ai_core_read_only_route",
+    "mcpResource": "seis://ai/read-only-router-runtime.json",
+    "runtimeTests": "packages/seis-ai/test/read-only-router.test.mjs"
+  },
+  "runtimeBoundary": {
+    "runtimeAuthority": false,
+    "routeEligible": false,
+    "providerCalls": false,
+    "credentialRead": false,
+    "promptBodyRead": false,
+    "privateObsidianContentRead": false,
+    "agentExecution": false,
+    "externalMutation": false,
+    "coreRequiresCloudApiKey": false
+  },
+  "inputs": [
+    "task type metadata",
+    "capability label metadata",
+    "privacy mode",
+    "local-only flag",
+    "cost preference",
+    "speed preference",
+    "context size requirement",
+    "tool support requirement",
+    "explicit fallback policy"
+  ],
+  "forbiddenInputs": [
+    "prompt bodies",
+    "API keys and tokens",
+    "private Obsidian vault contents",
+    "SSH credentials",
+    "cookies",
+    "service accounts",
+    "unredacted provider errors"
+  ],
+  "providerStateRules": [
+    "Missing Key is not Error",
+    "Disabled, Rate Limited, Error, and Unknown providers are never selected",
+    "local-only mode never routes to cloud providers",
+    "fallback selection is explicit and fallbackUsed remains false until execution exists",
+    "selected provider, selected model, provider state, and blocked reasons are always present"
+  ],
+  "agentLaneCoverage": [
+    "seis",
+    "seis-cloud",
+    "seis-code",
+    "seis-design",
+    "seis-data"
+  ],
+  "modelClaimBoundary": {
+    "isTrainedModel": false,
+    "isFoundationModel": false,
+    "isAgi": false,
+    "512BRouteEligible": false,
+    "parameterCountEvidence": "not provided by this evaluator"
+  }
+}

@@ -114,13 +114,16 @@ if (registry) {
 ensure(versionRegistry?.sourceOfTruth?.providerRegistry === paths.registry, "version registry must point to provider registry");
 ensure(promotionGates?.sourceOfTruth?.providerRegistry === paths.registry, "promotion gates must point to provider registry");
 ensure(pluginIntegration?.runtimeIntegration?.providerRegistryTool === "seis_ai_core_provider_status", "plugin integration must expose provider registry tool");
-ensureArrayIncludesAll(pluginIntegration?.runtimeIntegration?.mcpResources, ["seis://ai/provider-registry.json"], "runtimeIntegration.mcpResources");
+ensureArrayIncludesAll(pluginIntegration?.runtimeIntegration?.mcpResources, [
+  "seis://ai/provider-registry.json",
+  "seis://ai/read-only-router-runtime.json",
+], "runtimeIntegration.mcpResources");
 ensure(pluginIntegration?.fiveYearSubagentDevelopment?.providerRegistry === paths.registry, "five-year subagent development must point to provider registry");
 ensureArrayIncludesAll(pluginIntegration?.qualityCommands, ["npm run check:seis-ai-core-provider-registry"], "pluginIntegration.qualityCommands");
 
 if (mcpRuntimeContract) {
-  ensure(mcpRuntimeContract.toolCount === 34, "MCP runtime contract must record 34 tools");
-  ensure(mcpRuntimeContract.resourceCount === 29, "MCP runtime contract must record 29 resources");
+  ensure(mcpRuntimeContract.toolCount === 35, "MCP runtime contract must record 35 tools");
+  ensure(mcpRuntimeContract.resourceCount === 30, "MCP runtime contract must record 30 resources");
   ensure(String(mcpRuntimeContract.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("AGI evaluation protocol"), "MCP runtime contract resource evidence must mention AGI evaluation protocol");
   ensure(String(mcpRuntimeContract.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("AGI public readiness evidence"), "MCP runtime contract resource evidence must mention AGI public readiness evidence");
   ensure(String(mcpRuntimeContract.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("AGI GitHub user readiness gates"), "MCP runtime contract resource evidence must mention AGI GitHub user readiness gates");
@@ -146,11 +149,14 @@ for (const [text, label] of [
 ]) {
   ensure(text.includes("AI_CORE_PROVIDER_STATUS_TOOL"), `${label} must expose AI_CORE_PROVIDER_STATUS_TOOL`);
   ensure(text.includes("aiCoreProviderStatus"), `${label} must reference aiCoreProviderStatus`);
+  ensure(text.includes("READ_ONLY_ROUTER_TOOL"), `${label} must expose READ_ONLY_ROUTER_TOOL`);
+  ensure(text.includes("buildReadOnlyRouteDecision"), `${label} must reference buildReadOnlyRouteDecision`);
 }
 ensure(helper.includes("AI_CORE_PROVIDER_STATUS_TOOL"), "helper must expose AI_CORE_PROVIDER_STATUS_TOOL");
 ensure(helper.includes("aiCoreProviderStatus"), "helper must define aiCoreProviderStatus");
 ensure(helper.includes("seis-ai-core-provider-registry.json"), "helper must reference provider registry path");
 ensure(mcp.includes("seis://ai/provider-registry.json"), "MCP server must expose provider registry resource");
+ensure(mcp.includes("seis://ai/read-only-router-runtime.json"), "MCP server must expose read-only router resource");
 
 if (packageJson) {
   ensure(
