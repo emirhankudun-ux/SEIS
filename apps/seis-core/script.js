@@ -808,6 +808,15 @@ const fallbackSeisCoreEcosystemRegistry = {
       mode: "Mock Safe",
       coreBinding: "No live provider claim in fallback mode.",
       role: "Cloud and SSH readiness boundaries.",
+      sshBinding: {
+        alias: "SEIS-SSH",
+        contract: "deploy/seis-ssh-public-access-contract.json",
+        statusCommand: "npm run check:seis-ssh-public-access-report",
+        guardCommand: "npm run check:seis-ssh-github-pr-contract",
+        serverAndPortPolicy: "preserve-existing-server-and-port",
+        runtimeMode: "static-read-only",
+        liveClaim: "blocked-until-strict-online-evidence"
+      },
       mcpTools: ["seis_cloud_status", "seis_cloud_plan"],
       qualityGate: "npm run check:cloud-access-policy",
       storeBinding: "Local demo catalog item only.",
@@ -2421,6 +2430,11 @@ function renderEcosystemControlPlane() {
           <dt>Store binding</dt>
           <dd>${escapeHtml(lane.storeBinding)}</dd>
         </div>
+        ${lane.sshBinding ? `
+        <div>
+          <dt>SSH binding</dt>
+          <dd>${escapeHtml(`${lane.sshBinding.alias} · ${lane.sshBinding.serverAndPortPolicy} · ${lane.sshBinding.runtimeMode}`)}</dd>
+        </div>` : ""}
       </dl>
       <div class="ecosystem-lane-actions">
         <a class="secondary-button ecosystem-link" href="${escapeHtml(lane.demoHref)}" target="_blank" rel="noreferrer">${escapeHtml(lane.demoLabel)}</a>

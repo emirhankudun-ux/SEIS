@@ -106,6 +106,18 @@ if (registry) {
     const lane = lanes.find((candidate) => candidate.id === laneId);
     if (!lane || lane.mcpTools.length !== 2) fail(`${laneId} must retain its status and plan MCP tools`);
   }
+  const cloudLane = lanes.find((candidate) => candidate.id === "seis-cloud");
+  if (cloudLane) {
+    const sshBinding = cloudLane.sshBinding;
+    if (!sshBinding) fail("seis-cloud must expose the SEIS-SSH Core transport binding");
+    if (sshBinding?.alias !== "SEIS-SSH") fail("seis-cloud SSH binding must use the SEIS-SSH alias");
+    if (sshBinding?.contract !== "deploy/seis-ssh-public-access-contract.json") fail("seis-cloud SSH binding must point to the public access contract");
+    if (sshBinding?.statusCommand !== "npm run check:seis-ssh-public-access-report") fail("seis-cloud SSH binding must expose the sanitized status command");
+    if (sshBinding?.guardCommand !== "npm run check:seis-ssh-github-pr-contract") fail("seis-cloud SSH binding must expose the PR guard command");
+    if (sshBinding?.serverAndPortPolicy !== "preserve-existing-server-and-port") fail("seis-cloud SSH binding must preserve the existing server and port");
+    if (sshBinding?.runtimeMode !== "static-read-only") fail("seis-cloud SSH binding must remain static-read-only");
+    if (sshBinding?.liveClaim !== "blocked-until-strict-online-evidence") fail("seis-cloud SSH binding must block live claims until strict evidence");
+  }
   const storeLane = lanes.find((candidate) => candidate.id === "seis-store");
   if (storeLane && storeLane.mcpTools.length !== 0) fail("SEIS Store must not claim a remote MCP execution path");
 }

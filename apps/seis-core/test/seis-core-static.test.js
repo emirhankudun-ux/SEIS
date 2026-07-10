@@ -157,6 +157,13 @@ test("SEIS Command Center binds specialist lanes and Store through a local contr
     assert.match(record.qualityGate, /^npm run check:/);
     assert.equal(record.status === "Connected", false, `${lane} must not claim a live connection`);
   }
+  const sshBinding = registry.lanes.find((candidate) => candidate.id === "seis-cloud")?.sshBinding;
+  assert.equal(sshBinding?.alias, "SEIS-SSH");
+  assert.equal(sshBinding?.contract, "deploy/seis-ssh-public-access-contract.json");
+  assert.equal(sshBinding?.serverAndPortPolicy, "preserve-existing-server-and-port");
+  assert.equal(sshBinding?.runtimeMode, "static-read-only");
+  assert.match(script, /sshBinding/);
+  assert.match(script, /SSH binding/);
 });
 
 
