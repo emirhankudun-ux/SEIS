@@ -9,12 +9,13 @@
   "fallback": "LightweightMcpServer no-dependency fallback",
   "officialSdk": "@modelcontextprotocol/sdk remains optional unless dependencies are installed",
   "toolCount": 34,
-  "resourceCount": 29,
+  "resourceCount": 30,
   "promptCount": 3,
   "smokeTest": "node --test packages/seis-ai/test/mcp-smoke.test.mjs",
   "pluginGate": "npm run check:seis-agent-plugin-integration",
   "resourceRead": "seis://ai/mcp-runtime-contract.json",
   "pluginIntegrationResource": "seis://agent/plugin-integration.json",
+  "secondBrainSystemResource": "seis://brain/second-brain-system.json",
   "boundary": "Browser demo and MCP smoke do not call remote MCP servers, store credentials, execute SSH, deploy, mutate GitHub, or run unrestricted shell tools.",
   "credentialBoundary": "No provider keys, SSH credentials, browser secrets, live deploys, GitHub mutation, or external mutation; local MCP smoke contract only.",
   "surfaces": [
@@ -30,7 +31,7 @@
     {
       "id": "resources",
       "label": "Resource registry",
-      "count": 29,
+      "count": 30,
       "state": "verified",
       "method": "resources/list + resources/read",
       "evidence": "Plugin integration, provider registry, model scaling profile, model parameter ladder, frontier escalation policy, 150B frontier model program, 512B apex AGI program, AGI evaluation protocol, AGI public readiness evidence, AGI GitHub user readiness gates, 20B model/dataset card templates, and MCP runtime contract resources are read through the protocol",

@@ -400,12 +400,13 @@ function fallbackMcpRuntimeContract() {
     fallback: "LightweightMcpServer no-dependency fallback",
     officialSdk: "@modelcontextprotocol/sdk remains optional unless dependencies are installed",
     toolCount: 34,
-    resourceCount: 26,
+    resourceCount: 30,
     promptCount: 3,
     smokeTest: "node --test packages/seis-ai/test/mcp-smoke.test.mjs",
     pluginGate: "npm run check:seis-agent-plugin-integration",
     resourceRead: "seis://ai/mcp-runtime-contract.json",
     pluginIntegrationResource: "seis://agent/plugin-integration.json",
+    secondBrainSystemResource: "seis://brain/second-brain-system.json",
     credentialBoundary: "No provider keys, SSH credentials, browser secrets, live deploys, GitHub mutation, or external mutation; local MCP smoke contract only.",
     surfaces: [
       {
@@ -420,11 +421,11 @@ function fallbackMcpRuntimeContract() {
       {
         id: "resources",
         label: "Resource registry",
-        count: 26,
+        count: 30,
         state: "verified",
         method: "resources/list + resources/read",
-        evidence: "Plugin integration, provider registry, model scaling profile, model parameter ladder, frontier escalation policy, 150B frontier model program, 20B model/dataset card templates, and MCP runtime contract resources are read through the protocol",
-        duty: "Expose source-of-truth JSON resources for plugin integration, provider states, planned model scaling, parameter ladder boundaries, no-skip-20B frontier policy, 150B frontier program, 20B clean-room evidence templates, MCP runtime, version gates, fixtures, and generated plan views."
+        evidence: "Plugin integration, Second Brain system contract, provider registry, model scaling profile, model parameter ladder, frontier escalation policy, 150B frontier model program, 20B model/dataset card templates, and MCP runtime contract resources are read through the protocol",
+        duty: "Expose source-of-truth JSON resources for plugin integration, the local-demo Second Brain system contract, provider states, planned model scaling, parameter ladder boundaries, no-skip-20B frontier policy, 150B frontier program, 20B clean-room evidence templates, MCP runtime, version gates, fixtures, and generated plan views."
       },
       {
         id: "prompts",

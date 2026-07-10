@@ -1,6 +1,6 @@
 # Product Experience Browser Smoke
 
-Date: 2026-06-24
+Date: 2026-07-10
 
 ## Purpose
 
@@ -47,10 +47,10 @@ system, live AI provider readiness, or full visual-regression coverage.
 | SEIS AI Core spatial command surface | Passed | Dedicated Chrome smoke verified five AI Core version targets, six lane nodes, interactive orbit rotation, local snapshot evidence at `/home/seis/Documents/seis-ai-core-orbit-snapshot.md`, promotion preview to `v0.2-read-only-intelligence`, and five-year completion to `v1.0-public-enterprise-candidate`. |
 | SEIS AI Plugin Center | Passed | Dedicated Chrome smoke opened the SEIS AI App, verified Plugin Center and Sub-Agent Plan tabs and controls, toggled a local plugin lane, and observed the generated tool-call history. |
 | SEIS Installed AI Systems | Passed | Dedicated Chrome smoke verified six supervised AI/operator profiles, the Local Demo runtime profile, no-key provider language, the read-only AI Core Resource Bridge, the diagnostics API, `/home/seis/Documents/installed-ai-systems-audit.md`, and `/home/seis/Documents/seis-ai-core-resource-bridge.md` evidence. |
-| SEIS Second Brain | Passed | Dedicated Chrome smoke opened the SEIS Second Brain desktop window, verified 6 vault notes, 6 graph nodes, 6 installed AI rows, 6 managed sub-agent rows, 12 autonomous-agent rows, and 5 real actions; saved snapshot, capture, graph, review, and GitHub-readiness artifacts under `/home/seis/SecondBrain`; verified reload persistence, SEIS AI Second Brain bridge rendering, mobile no-overflow, 21 mobile controls, and zero cramped mobile targets. |
+| SEIS Second Brain | Passed | Dedicated Chrome smoke opened the SEIS Second Brain desktop window, verified 6 vault notes, 6 graph nodes, 6 installed AI rows, 9 managed sub-agent rows, 13 autonomous-agent rows, and 6 real actions; saved snapshot, capture, graph, review, and GitHub-readiness artifacts under `/home/seis/SecondBrain`; verified reload persistence, SEIS AI Second Brain bridge rendering, mobile no-overflow, 22 mobile controls, and zero cramped mobile targets. |
 | SEIS Desktop to SEIS Code handoff | Passed | Dedicated Chrome smoke opened SEIS Code after Desktop terminal operations, found created folders/files, verified moved paths, confirmed removed paths were absent, and read `browser-smoke` plus `moved-smoke` through the SEIS Code terminal. |
 | SEIS Desktop mobile | Passed | Dedicated Chrome smoke loaded 390 x 844 mobile layout with 80 launcher apps, no horizontal overflow, and zero cramped targets. |
-| SEIS demo 3D hero and AI Core constellation | Passed | Product smoke verified the standalone SEIS demo hero canvas is ready, animated, nonblank, exposes 32 graph nodes / 53 edges, records Rotate, Sync, Pause, and constellation Sync interactions, and surfaces six AI routes, five personal plugin lanes, 34 MCP tools, 26 MCP resources, and three MCP prompts without provider keys. |
+| SEIS demo 3D hero and AI Core constellation | Passed | Product smoke verified the standalone SEIS demo hero canvas is ready, animated, nonblank, exposes 32 graph nodes / 53 edges, records Rotate, Sync, Pause, and constellation Sync interactions, and surfaces six AI routes, five personal plugin lanes, 34 MCP tools, 30 MCP resources, and three MCP prompts without provider keys. |
 | SEIS Code shell | Passed | Headless Chrome loaded the route, found 8 top menus, 5 activity views, 4 bottom panels, and no horizontal overflow. |
 | SEIS Code interactivity | Passed | Browser smoke now measures the SEIS Code clickable-response rate against the 80% acceptance floor before and after core interactions. |
 | SEIS Code editor | Passed with Monaco | Headless Chrome loaded Monaco, kept the fallback editor visually hidden, and accepted the SEIS Code editor surface as ready. |
@@ -187,7 +187,7 @@ Latest observed summary:
 - Standalone SEIS demo: AI Core 3D hero canvas ready, animated, nonblank, 32
   graph nodes, 53 edges, three hero controls, AI Core constellation Sync,
   6 installed AI routes, 5 personal plugin lanes, 34 MCP tools,
-  26 MCP resources, 3 MCP prompts, 20-quarter sub-agent run, and v0.1-to-v1.0
+  30 MCP resources, 3 MCP prompts, 20-quarter sub-agent run, and v0.1-to-v1.0
   local evidence export.
 - Screenshots were written under ignored `dist/qa/product-experience-smoke/`.
 

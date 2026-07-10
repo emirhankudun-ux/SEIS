@@ -137,8 +137,10 @@ if (manifest) {
   ensure(manifest.runtimeIntegration?.subagentOperatingModelTool === "seis_ai_core_subagent_model", "runtimeIntegration must expose the SEIS AI Core sub-agent model tool");
   ensure(manifest.runtimeIntegration?.mcpTool === "seis_plugin_integration", "runtimeIntegration must expose the MCP tool");
   ensure(manifest.runtimeIntegration?.mcpResource === "seis://agent/plugin-integration.json", "runtimeIntegration must expose the MCP resource");
+  ensure(manifest.runtimeIntegration?.secondBrainSystemResource === "seis://brain/second-brain-system.json", "runtimeIntegration must expose the Second Brain system resource");
   ensureArrayIncludesAll(manifest.runtimeIntegration?.mcpResources, [
     "seis://agent/plugin-integration.json",
+    "seis://brain/second-brain-system.json",
     "seis://ai/version-registry.json",
     "seis://ai/provider-registry.json",
     "seis://ai/model-scaling-hardware-profile.json",

@@ -66,7 +66,7 @@ function rpcSession(requests, { timeoutMs = 15000 } = {}) {
 }
 
 describe("seis-mcp stdio smoke", () => {
-  it("initializes and lists 34 tools, 3 prompts, 29 resources", async () => {
+  it("initializes and lists 34 tools, 3 prompts, 30 resources", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -154,6 +154,7 @@ describe("seis-mcp stdio smoke", () => {
       "seis://ai/subagent-runtime-fixtures.json",
       "seis://ai/version-promotion-gates.json",
       "seis://ai/version-registry.json",
+      "seis://brain/second-brain-system.json",
       "seis://web/site-config.json",
       "seis://web/translations.json",
     ]);
@@ -224,6 +225,39 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.primaryInstallId, "seis-ai-agent@seis-repo");
   });
 
+  it("reads the SEIS Second Brain system contract through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "resources/read",
+        params: {
+          uri: "seis://brain/second-brain-system.json",
+        },
+      },
+    ]);
+
+    const resource = responses.get(2);
+    assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
+    const payload = JSON.parse(resource.result.contents[0].text);
+    assert.equal(payload.id, "seis-second-brain-system");
+    assert.equal(payload.status, "local-demo");
+    assert.equal(payload.managedSubAgentLanes.length, 9);
+    assert.equal(payload.autonomousAgentRoster.length, 13);
+    assert.equal(payload.securityBoundary.githubMutation, false);
+  });
+
   it("reads the SEIS AI Core MCP runtime contract resource through the protocol", async () => {
     const responses = await rpcSession([
       {
@@ -251,7 +285,7 @@ describe("seis-mcp stdio smoke", () => {
     assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
     const payload = JSON.parse(resource.result.contents[0].text);
     assert.equal(payload.id, "seis-ai-core-mcp-runtime-contract");
-    assert.equal(payload.resourceCount, 29);
+    assert.equal(payload.resourceCount, 30);
     assert.equal(payload.transport, "stdio JSON-RPC");
   });
 

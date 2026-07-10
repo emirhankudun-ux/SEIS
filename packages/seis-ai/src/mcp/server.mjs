@@ -41,6 +41,8 @@ import {
   MCP_RUNTIME_CONTRACT_PATH,
   PERSONAL_PLUGIN_LANE_TOOLS,
   PLUGIN_INTEGRATION_PATH,
+  SECOND_BRAIN_SYSTEM_PATH,
+  SECOND_BRAIN_SYSTEM_RESOURCE_URI,
   SUBAGENT_APPROVAL_FIXTURE_PATH,
   SUBAGENT_CANCELLATION_FIXTURE_PATH,
   SUBAGENT_DRY_RUN_QUEUE_PATH,
@@ -816,6 +818,21 @@ Steps:
           uri: "seis://agent/plugin-integration.json",
           mimeType: "application/json",
           text: readFileSync(path.join(repoRoot, ...PLUGIN_INTEGRATION_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "second-brain-system",
+    SECOND_BRAIN_SYSTEM_RESOURCE_URI,
+    { description: "SEIS Second Brain local-demo system contract and bounded agent roster", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: SECOND_BRAIN_SYSTEM_RESOURCE_URI,
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...SECOND_BRAIN_SYSTEM_PATH.split("/")), "utf8"),
         },
       ],
     })
