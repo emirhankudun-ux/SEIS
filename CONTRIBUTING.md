@@ -60,6 +60,9 @@ how the check behaves when the tool is missing.
 - The change is aligned with SEIS mission and architecture.
 - The PR explains the problem, the solution, and the affected paths.
 - Security and privacy risks were considered.
+- Required signed commits are GitHub-verified before the PR is marked ready.
+- Full-history security failures are reported honestly and kept draft when they
+  need owner remediation.
 - Documentation was updated when behavior, policy, or user workflow changed.
 - Tests or manual validation are listed.
 - No unrelated formatting churn or bulk rewrites were included.

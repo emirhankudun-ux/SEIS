@@ -18,6 +18,9 @@ worktree isolation, but they are not long-lived product branches.
 - Do not let generated code, migrated archives, or AI-agent output bypass review.
 - Keep GitHub Actions, README, CONTRIBUTING, SECURITY, CODE_OF_CONDUCT, LICENSE,
   and CONTRIBUTORS aligned with the current open source platform direction.
+- Do not mark a PR ready when required signed commits are not GitHub-verified.
+- Do not bypass, hide, or weaken full-history security findings to make a branch
+  appear mergeable.
 
 ## Temporary Branch Naming
 
