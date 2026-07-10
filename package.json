@@ -35,6 +35,7 @@
     "check:seis-public-demo-go-no-go": "node scripts/check-seis-public-demo-go-no-go.mjs",
     "check:seis-public-demo-go-no-go:strict": "node scripts/check-seis-public-demo-go-no-go.mjs --require-ready",
     "report:seis-public-demo-go-no-go": "node scripts/check-seis-public-demo-go-no-go.mjs --run-fast-checks --output reports/seis-public-demo/go-no-go-latest.json --markdown reports/seis-public-demo/go-no-go-latest.md --manifest reports/seis-public-demo/evidence-manifest-latest.json --review-packet reports/seis-public-demo/pr54-review-packet-latest.md --worktree-review reports/seis-public-demo/worktree-review-latest.md --stage-plan reports/seis-public-demo/pr54-stage-plan-latest.md",
+    "check:seis-demo-flight-deck": "node scripts/check-seis-demo-flight-deck.mjs",
     "check:seis-fullstack-contract": "node scripts/check-seis-fullstack-contract.mjs",
     "check:seis-fullstack-server-smoke": "node scripts/check-seis-fullstack-server-smoke.mjs",
     "check:seis-fullstack-no-server-fallback-smoke": "node scripts/check-seis-fullstack-no-server-fallback-smoke.mjs",
