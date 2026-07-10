@@ -9,6 +9,14 @@
   "snapshotPath": "/home/seis/SecondBrain/seis-second-brain-vault-snapshot.md",
   "githubReadinessPath": "/home/seis/SecondBrain/github-readiness-review.md",
   "trainingPackPath": "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md",
+  "mcpResource": "seis://brain/second-brain-system.json",
+  "repositoryContextPack": {
+    "status": "repo-owned-public-safe",
+    "path": "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md",
+    "access": "read-only local and MCP contract context",
+    "privateVaultRead": false,
+    "modelWeightTraining": false
+  },
   "releaseReviewPacketPath": "reports/seis-public-demo/pr54-review-packet-latest.md",
   "obsidianSafeImportDryRunPath": "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json",
   "obsidianSafeImportDryRunMarkdownPath": "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md",
@@ -68,7 +76,110 @@
     "SEIS-Code",
     "SEIS-Design",
     "SEIS-DATA",
-    "SEIS-Security"
+    "SEIS-Security",
+    "SEIS-Research",
+    "SEIS-Automation",
+    "SEIS-Product"
+  ],
+  "contextProfilePolicy": {
+    "status": "local-demo-read-only",
+    "mcpResource": "seis://brain/second-brain-system.json",
+    "obsidianContextPath": "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md",
+    "installedAiProfileAccess": "All six recorded profiles use repo-owned review context only; Missing Key and Disabled profiles remain non-routable.",
+    "privateVaultRead": false,
+    "autonomousWriteAllowed": false
+  },
+  "contextProfiles": [
+    {
+      "id": "seis-hub",
+      "lane": "SEIS Hub",
+      "plugin": "@seis",
+      "statusTool": "seis_hub_status",
+      "planTool": "seis_hub_plan",
+      "focus": "Repository governance, architecture, and source-of-truth planning.",
+      "relatedAgents": ["Architect Agent", "Documentation Agent", "Product Agent"],
+      "allowedOutput": "Reviewable repository governance plan."
+    },
+    {
+      "id": "seis-cloud",
+      "lane": "SEIS Cloud",
+      "plugin": "@seis-cloud",
+      "statusTool": "seis_cloud_status",
+      "planTool": "seis_cloud_plan",
+      "focus": "Provider-neutral cloud readiness, SSH/VPN boundaries, and rollback planning.",
+      "relatedAgents": ["Cloud Agent", "DevOps Agent", "Security Agent"],
+      "allowedOutput": "Readiness and rollback proposal."
+    },
+    {
+      "id": "seis-code",
+      "lane": "SEIS-Code",
+      "plugin": "@seis-code",
+      "statusTool": "seis_code_status",
+      "planTool": "seis_code_plan",
+      "focus": "Scoped implementation, CI quality gates, MCP/plugin engineering, and safe automation.",
+      "relatedAgents": ["Code Agent", "QA Agent", "Automation Agent"],
+      "allowedOutput": "Scoped implementation and validation plan."
+    },
+    {
+      "id": "seis-design",
+      "lane": "SEIS-Design",
+      "plugin": "@seis-design",
+      "statusTool": "seis_design_status",
+      "planTool": "seis_design_plan",
+      "focus": "Product design, UI/UX, accessibility, motion, and visual QA planning.",
+      "relatedAgents": ["Design Agent", "UI/UX Agent"],
+      "allowedOutput": "UI/UX and accessibility review brief."
+    },
+    {
+      "id": "seis-data",
+      "lane": "SEIS-DATA",
+      "plugin": "@seis-data",
+      "statusTool": "seis_data_status",
+      "planTool": "seis_data_plan",
+      "focus": "Schemas, reports, knowledge registries, memory/RAG planning, and provenance.",
+      "relatedAgents": ["Search Agent", "Research Agent", "Documentation Agent"],
+      "allowedOutput": "Schema, context, and provenance proposal."
+    },
+    {
+      "id": "seis-security",
+      "lane": "SEIS Security",
+      "plugin": "SEIS-Agent embedded lane",
+      "statusTool": "seis_security_status",
+      "planTool": "seis_security_plan",
+      "focus": "Threat review, secret safety, permission risk, and release-blocking gates.",
+      "relatedAgents": ["Security Agent", "QA Agent"],
+      "allowedOutput": "Blocking risk review and remediation proposal."
+    },
+    {
+      "id": "seis-research",
+      "lane": "SEIS Research",
+      "plugin": "SEIS-Agent embedded lane",
+      "statusTool": "seis_research_status",
+      "planTool": "seis_research_plan",
+      "focus": "Official-source review, standards/version checks, and evidence synthesis.",
+      "relatedAgents": ["Research Agent", "Search Agent"],
+      "allowedOutput": "Source-backed research summary."
+    },
+    {
+      "id": "seis-automation",
+      "lane": "SEIS Automation",
+      "plugin": "SEIS-Agent embedded lane",
+      "statusTool": "seis_automation_status",
+      "planTool": "seis_automation_plan",
+      "focus": "Dry-runs, repeatable checks, runbooks, rollback, and human-approved automation gates.",
+      "relatedAgents": ["Automation Agent", "DevOps Agent", "QA Agent"],
+      "allowedOutput": "Dry-run workflow and rollback plan."
+    },
+    {
+      "id": "seis-product",
+      "lane": "SEIS Product",
+      "plugin": "SEIS-Agent embedded lane",
+      "statusTool": "seis_product_status",
+      "planTool": "seis_product_plan",
+      "focus": "Requirements, acceptance criteria, roadmap slices, user outcomes, and launch-readiness evidence.",
+      "relatedAgents": ["Product Agent", "Architect Agent", "Design Agent"],
+      "allowedOutput": "Requirements and acceptance-criteria brief."
+    }
   ],
   "vaultNotes": [
     {
@@ -162,6 +273,21 @@
       "agent": "Documentation Agent",
       "permission": "docs proposal only",
       "duty": "Keep README, status, index, backlog, and PR queue aligned with the Second Brain contract."
+    },
+    {
+      "agent": "Research Agent",
+      "permission": "read, cite, and propose only",
+      "duty": "Attach source provenance, validation evidence, and clean-room research summaries to the knowledge graph."
+    },
+    {
+      "agent": "Automation Agent",
+      "permission": "dry-run and proposal only",
+      "duty": "Design traceable, reversible workflows without enabling autonomous external mutations."
+    },
+    {
+      "agent": "Product Agent",
+      "permission": "read and propose only",
+      "duty": "Keep requirements, acceptance criteria, user outcomes, and roadmap slices linked to delivery evidence."
     }
   ],
   "autonomousAgentRoster": [
@@ -224,6 +350,11 @@
       "agent": "Automation Agent",
       "status": "status-plan-only",
       "duty": "Safe recurring workflows, ledgers, and human-approved automation gates."
+    },
+    {
+      "agent": "Product Agent",
+      "status": "status-plan-only",
+      "duty": "Requirements, acceptance criteria, roadmap slices, launch readiness, and delivery evidence."
     }
   ],
   "pipeline": [

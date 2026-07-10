@@ -209,8 +209,8 @@ if (evidenceReport) {
   ensure(evidenceReport.versionTargetCount === 5, "evidence report must include five AI Core version targets");
   ensure(evidenceReport.promotionGateCount === 5, "evidence report must include five AI Core promotion gates");
   ensure(evidenceReport.mcpRuntimeToolCount === 34, "evidence report must include 34 MCP tools");
-  ensure(evidenceReport.mcpRuntimeResourceCount === 29, "evidence report must include 29 MCP resources");
-  ensure(evidenceReport.mcpRuntimePromptCount === 3, "evidence report must include 3 MCP prompts");
+  ensure(evidenceReport.mcpRuntimeResourceCount === 30, "evidence report must include 30 MCP resources");
+  ensure(evidenceReport.mcpRuntimePromptCount === 4, "evidence report must include 4 MCP prompts");
   ensure(evidenceReport.providerRegistryProviderCount >= 7, "evidence report must include provider registry provider count");
   ensure(evidenceReport.providerRegistryRequiredForCoreCount === 0, "evidence report must keep provider registry core key count at zero");
   ensure(
@@ -297,7 +297,7 @@ if (demoPlanView) {
   ensure(demoPlanView.yearCount === 5, "demo plan view must cover five years");
   ensure(demoPlanView.quarterCount === 20, "demo plan view must cover 20 quarters");
   ensure(demoPlanView.laneCount >= 6, "demo plan view must include at least six lanes");
-  ensure(demoPlanView.mcpRuntimeResourceCount === 29, "demo plan view must include 29 MCP resources");
+  ensure(demoPlanView.mcpRuntimeResourceCount === 30, "demo plan view must include 30 MCP resources");
   ensure(
     demoPlanView.seisAiCoreProviderRegistry === "content/development/seis-ai-core-provider-registry.json",
     "demo plan view must link the AI Core provider registry"

@@ -41,6 +41,8 @@ import {
   MCP_RUNTIME_CONTRACT_PATH,
   PERSONAL_PLUGIN_LANE_TOOLS,
   PLUGIN_INTEGRATION_PATH,
+  SECOND_BRAIN_SYSTEM_PATH,
+  SECOND_BRAIN_SYSTEM_RESOURCE_URI,
   SUBAGENT_APPROVAL_FIXTURE_PATH,
   SUBAGENT_CANCELLATION_FIXTURE_PATH,
   SUBAGENT_DRY_RUN_QUEUE_PATH,
@@ -776,6 +778,31 @@ Steps:
     })
   );
 
+  server.prompt(
+    "second_brain_review",
+    "Review the SEIS Second Brain contract and draft a safe cross-lane plan",
+    {},
+    async () => ({
+      messages: [
+        {
+          role: "user",
+          content: {
+            type: "text",
+            text: `Read seis://brain/second-brain-system.json first, then read seis://agent/plugin-integration.json when lane or tool details are relevant. Treat the result as repo-owned, Local Demo, read-only context.
+
+Prepare a Second Brain review with these sections:
+1. Current facts: identify the relevant installed AI profiles, managed lanes, and autonomous-agent duties. Keep Missing Key, Disabled, planned, and Local Demo states explicit.
+2. Scope: map the request to the smallest relevant lanes, including SEIS Hub, SEIS Cloud, SEIS-Code, SEIS-Design, SEIS-DATA, SEIS Security, SEIS Research, SEIS Automation, or SEIS Product when applicable.
+3. Evidence-backed plan: propose reversible repository-local steps, validation commands, and the exact human approvals needed before any external action.
+4. Boundary review: state why the plan does not access a private Obsidian vault, provider credential, SSH target, deployment target, GitHub mutation, or autonomous write runtime.
+
+Do not invent live provider access, connector authentication, model-weight training, external execution, or publication approval. Do not read or request private vault contents unless the user explicitly selects a source and approves the separate safe-import workflow.`,
+          },
+        },
+      ],
+    })
+  );
+
   server.resource(
     "translations",
     "seis://web/translations.json",
@@ -816,6 +843,21 @@ Steps:
           uri: "seis://agent/plugin-integration.json",
           mimeType: "application/json",
           text: readFileSync(path.join(repoRoot, ...PLUGIN_INTEGRATION_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "second-brain-system",
+    SECOND_BRAIN_SYSTEM_RESOURCE_URI,
+    { description: "SEIS Second Brain local-demo system contract and bounded agent roster", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: SECOND_BRAIN_SYSTEM_RESOURCE_URI,
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...SECOND_BRAIN_SYSTEM_PATH.split("/")), "utf8"),
         },
       ],
     })

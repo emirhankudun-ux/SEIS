@@ -1,6 +1,6 @@
 # SEIS Second Brain Agent Registry
 
-Generated: 2026-06-29T13:22:42.859Z
+Generated: 2026-07-10T19:36:40.871Z
 Status: review-only-agent-registry
 Mode: repo-local-no-live-execution
 Decision: NO-GO-autonomous-execution-not-approved
@@ -13,8 +13,9 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 | --- | ---: |
 | Installed AI profiles | 6 |
 | AI workforce assignments | 10 |
-| Managed sub-agent lanes | 6 |
-| Autonomous agent roster | 12 |
+| Managed sub-agent lanes | 9 |
+| Autonomous agent roster | 13 |
+| Read-only context access entries | 13 |
 | Role schema roles | 5 |
 | Permission levels | 5 |
 | Local apps detected in inventory | 8 |
@@ -26,6 +27,12 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 - status: local-demo
 - vaultRoot: /home/seis/SecondBrain
 - trainingPackPath: /home/seis/SecondBrain/07-learning/seis-agent-training-pack.md
+- mcpResource: seis://brain/second-brain-system.json
+- repositoryContextPack.status: repo-owned-public-safe
+- repositoryContextPack.path: seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md
+- repositoryContextPack.access: read-only local and MCP contract context
+- repositoryContextPack.privateVaultRead: false
+- repositoryContextPack.modelWeightTraining: false
 - obsidianBridgeStatus: planned
 - privateVaultImportEnabled: false
 - hostVaultReadEnabled: false
@@ -74,6 +81,51 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 | QA Agent | status-plan-only | Validator, browser-smoke, regression, and acceptance evidence. |
 | Cloud Agent | status-plan-only | Cloud, SSH, storage, sync, and provider readiness boundaries. |
 | Automation Agent | status-plan-only | Safe recurring workflows, ledgers, and human-approved automation gates. |
+| Product Agent | status-plan-only | Requirements, acceptance criteria, roadmap slices, launch readiness, and delivery evidence. |
+
+## Read-Only Context Access
+
+- MCP resource: seis://brain/second-brain-system.json
+- Repo-owned Obsidian context pack: seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md
+- Access mode: read-only local and MCP contract context
+- Private vault read: false
+- Model-weight training: false
+
+| Agent | Status | Context access | Private vault read | Autonomous write allowed |
+| --- | --- | --- | --- | --- |
+| Architect Agent | status-plan-only | read-only repo-local context and plan input | false | false |
+| Code Agent | status-plan-only | read-only repo-local context and plan input | false | false |
+| Design Agent | status-plan-only | read-only repo-local context and plan input | false | false |
+| UI/UX Agent | status-plan-only | read-only repo-local context and plan input | false | false |
+| Research Agent | status-plan-only | read-only repo-local context and plan input | false | false |
+| Search Agent | status-plan-only | read-only repo-local context and plan input | false | false |
+| Security Agent | blocking-review-gate | read-only repo-local context and plan input | false | false |
+| DevOps Agent | status-plan-only | read-only repo-local context and plan input | false | false |
+| Documentation Agent | status-plan-only | read-only repo-local context and plan input | false | false |
+| QA Agent | status-plan-only | read-only repo-local context and plan input | false | false |
+| Cloud Agent | status-plan-only | read-only repo-local context and plan input | false | false |
+| Automation Agent | status-plan-only | read-only repo-local context and plan input | false | false |
+| Product Agent | status-plan-only | read-only repo-local context and plan input | false | false |
+
+## Lane Context Profiles
+
+- Policy status: local-demo-read-only
+- MCP resource: seis://brain/second-brain-system.json
+- Repo-owned context pack: seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md
+- Private vault read: false
+- Autonomous write allowed: false
+
+| Lane | Plugin | Status tool | Plan tool | Related agents | Allowed output |
+| --- | --- | --- | --- | --- | --- |
+| | SEIS Hub | @seis | seis_hub_status | seis_hub_plan | Architect Agent, Documentation Agent, Product Agent | Reviewable repository governance plan. |
+| | SEIS Cloud | @seis-cloud | seis_cloud_status | seis_cloud_plan | Cloud Agent, DevOps Agent, Security Agent | Readiness and rollback proposal. |
+| | SEIS-Code | @seis-code | seis_code_status | seis_code_plan | Code Agent, QA Agent, Automation Agent | Scoped implementation and validation plan. |
+| | SEIS-Design | @seis-design | seis_design_status | seis_design_plan | Design Agent, UI/UX Agent | UI/UX and accessibility review brief. |
+| | SEIS-DATA | @seis-data | seis_data_status | seis_data_plan | Search Agent, Research Agent, Documentation Agent | Schema, context, and provenance proposal. |
+| | SEIS Security | SEIS-Agent embedded lane | seis_security_status | seis_security_plan | Security Agent, QA Agent | Blocking risk review and remediation proposal. |
+| | SEIS Research | SEIS-Agent embedded lane | seis_research_status | seis_research_plan | Research Agent, Search Agent | Source-backed research summary. |
+| | SEIS Automation | SEIS-Agent embedded lane | seis_automation_status | seis_automation_plan | Automation Agent, DevOps Agent, QA Agent | Dry-run workflow and rollback plan. |
+| | SEIS Product | SEIS-Agent embedded lane | seis_product_status | seis_product_plan | Product Agent, Architect Agent, Design Agent | Requirements and acceptance-criteria brief. |
 
 ## MCP And Plugin Surface
 

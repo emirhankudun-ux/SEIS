@@ -20,6 +20,7 @@ SEIS is a project memory-first AI-native ecosystem.
 - [[Architecture Overview]]
 - [[SEIS AI Core]]
 - [[Agent Workforce]]
+- [[Product Agent]]
 - [[SEIS SSH Vision]]
 - [[Public Readiness]]
 - [[SEIS Codex Context]]

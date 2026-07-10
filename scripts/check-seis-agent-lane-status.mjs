@@ -19,6 +19,10 @@ const requiredLanes = [
   "seis-code",
   "seis-design",
   "seis-data",
+  "seis-security",
+  "seis-research",
+  "seis-automation",
+  "seis-product",
 ];
 
 ensureFile(contractPath, "agent lane status contract");
@@ -54,7 +58,19 @@ if (contract) {
 }
 
 if (docs) {
-  for (const phrase of ["Observable", "Controllable", "Least privilege", "Secret-safe", "Evidence-bound", "SEIS God Mode Developer", "npm run check:seis-agent-lane-status"]) {
+  for (const phrase of [
+    "Observable",
+    "Controllable",
+    "Least privilege",
+    "Secret-safe",
+    "Evidence-bound",
+    "SEIS God Mode Developer",
+    "SEIS Security Sub-Agent Lane",
+    "SEIS Research Sub-Agent Lane",
+    "SEIS Automation Sub-Agent Lane",
+    "SEIS Product Sub-Agent Lane",
+    "npm run check:seis-agent-lane-status"
+  ]) {
     ensure(docs.includes(phrase), `docs missing phrase: ${phrase}`);
   }
 }

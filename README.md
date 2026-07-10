@@ -303,6 +303,11 @@ activation rules without reading a private Obsidian vault, validating
 credentials, calling providers, enabling autonomous writes, executing SSH,
 mutating GitHub, deploying, or approving release.
 
+For zero-key local use, the [SEIS Second Brain MCP quickstart](./docs/ai/seis-second-brain-mcp-quickstart.md)
+shows how to start `packages/seis-ai/bin/seis-mcp.mjs`, read the public-safe
+`seis://brain/second-brain-system.json` resource, and use the nine managed
+status/plan lanes without private-vault, provider, SSH, GitHub, or write access.
+
 `npm run report:seis-public-demo-go-no-go` writes PR/release-review artifacts
 under `reports/seis-public-demo/`, including the evidence manifest and
 `reports/seis-public-demo/pr54-review-packet-latest.md` plus the read-only

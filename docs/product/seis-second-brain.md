@@ -34,6 +34,7 @@ Current implementation lives in:
 - `scripts/create-seis-second-brain-agent-registry.mjs`
 - `scripts/check-seis-agi-independent-evidence-ledger.mjs`
 - `docs/product/seis-obsidian-bridge-safe-import.md`
+- `docs/ai/seis-second-brain-mcp-quickstart.md`
 - `docs/reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md`
 - `docs/releases/PUBLIC_DEMO_RELEASE_CHECKLIST_PR54.md`
 
@@ -46,14 +47,16 @@ Search, SEIS AI, Command Center, Launchpad, Favorites, and desktop shortcuts.
 | --- | --- | --- |
 | Markdown vault | Browser-local Local Demo | Seed notes render under `/home/seis/SecondBrain`; `Save Vault Snapshot` writes note files and `seis-second-brain-vault-snapshot.md` into the browser VFS. |
 | Knowledge graph | Browser-local Local Demo | Graph nodes and backlinks are generated from repo-owned seed records; `Link Graph` writes `graph-links.json`. |
-| Agent training pack | Local Demo read-only | `Build Training Pack` writes `/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md` with Obsidian, accessibility, router, PR #54 checklist, and language model training curriculum summaries. |
+| Agent training pack | Local Demo read-only | `Build Training Pack` writes `/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md` with the repo-owned Obsidian context pack, all 9 managed lanes, accessibility, router, PR #54 checklist, and language model training curriculum summaries. |
+| Repo-owned Obsidian context pack | Read-only local/MCP context | `seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md` is surfaced by `seis://brain/second-brain-system.json` as public-safe contract metadata; it is not a private vault import or model-weight training input. |
 | Language model training curriculum | Planned-training contract | `content/development/seis-language-model-training-curriculum.json` and `reports/seis-model-scaling/seis-language-model-training-curriculum.md` map candidate model families, local seed-model lanes, retrieval lanes, and approval gates without installing models, downloading checkpoints, training, benchmarking, calling providers, or claiming SEIS owns a foundation model. |
 | Independent AGI evidence ledger | Review-gated | `npm run check:seis-agi-independent-evidence-ledger` and `content/development/seis-agi-independent-evidence-ledger.json` keep AGI/512B public claims blocked until independent external evidence and explicit human approval are recorded. |
 | Installed AI bridge | Local Demo context only | SEIS AI exposes a Second Brain tab with all 6 current installed AI profiles: Codex, SEIS Local Demo Runtime, Claude Review Profile, Qwen Alternative Review, Gemini Secondary Validation, and Ollama Local Candidate. Missing Key and Disabled states remain explicit. |
 | read-only model-router decision artifact | Provider-neutral review-only | `npm run report:seis-read-only-model-router-decision` writes `reports/seis-public-demo/read-only-model-router-decision-latest.json` and `.md` with installed AI profile fixtures, blocked reasons, explicit fallback policy, `executionPerformed: false`, and no provider calls. |
-| Second Brain agent registry artifact | Review-only | `npm run report:seis-second-brain-agent-registry` writes `reports/seis-public-demo/second-brain-agent-registry-latest.json` and `.md` by joining installed AI profiles, AI workforce assignments, managed sub-agent lanes, the 12-agent roster, Obsidian bridge boundaries, plugin inventory, MCP surfaces, and connector activation policy without provider calls, credential validation, private vault reads, autonomous writes, SSH, deployment, GitHub mutation, or release approval. |
-| Sub-agent lanes | Status/plan-only | All 6 current managed SEIS sub-agent lanes are indexed: SEIS Hub, SEIS Cloud, SEIS-Code, SEIS-Design, SEIS-DATA, and SEIS-Security. They can review/propose only; they cannot expand permissions or mutate external systems. |
-| Autonomous agent roster | Status/plan-only | The Second Brain maps the 12-agent target roster: Architect, Code, Design, UI/UX, Research, Search, Security, DevOps, Documentation, QA, Cloud, and Automation. |
+| Second Brain agent registry artifact | Review-only | `npm run report:seis-second-brain-agent-registry` writes `reports/seis-public-demo/second-brain-agent-registry-latest.json` and `.md` by joining installed AI profiles, AI workforce assignments, managed sub-agent lanes, the 13-agent roster, a read-only context access matrix for `seis://brain/second-brain-system.json`, Obsidian bridge boundaries, plugin inventory, MCP surfaces, and connector activation policy without provider calls, credential validation, private vault reads, autonomous writes, SSH, deployment, GitHub mutation, or release approval. |
+| Sub-agent lanes | Status/plan-only | All 9 current managed SEIS sub-agent lanes are indexed: SEIS Hub, SEIS Cloud, SEIS-Code, SEIS-Design, SEIS-DATA, SEIS-Security, SEIS-Research, SEIS-Automation, and SEIS-Product. They can review/propose only; they cannot expand permissions or mutate external systems. |
+| Local Context Profiles | Read-only Local Demo | The same canonical MCP resource maps all 9 lanes to their status/plan tools, related autonomous agents, repo-owned Obsidian context, and allowed review/plan output. `@seis`, `@seis-cloud`, `@seis-code`, `@seis-design`, and `@seis-data` remain explicit; embedded lanes stay within SEIS-Agent. |
+| Autonomous agent roster | Status/plan-only | The Second Brain maps the 13-agent target roster: Architect, Code, Design, UI/UX, Research, Search, Security, DevOps, Documentation, QA, Cloud, Automation, and Product. |
 | GitHub readiness | Human review required | `Export GitHub Readiness` writes a blocked-by-review readiness note; the dedicated browser-smoke checks the export and reload persistence. Push, merge, release, Pages, and public launch still require approval. |
 | Obsidian bridge | Planned | Future bridge must use explicit user-selected import, provenance review, no-secret filtering, and approval before sync. |
 | Obsidian bridge safe import contract | Planned-gated | `content/development/seis-obsidian-bridge-safe-import-contract.json` and `docs/product/seis-obsidian-bridge-safe-import.md` require explicit user-selected source path, dry-run manifest, no private note body commits, provenance, accessibility review, and human approval before GitHub publication. |
@@ -72,6 +75,8 @@ Search, SEIS AI, Command Center, Launchpad, Favorites, and desktop shortcuts.
 - No API keys, tokens, cookies, private keys, service accounts, `.env` values,
   or private vault content are stored in the Second Brain records.
 - The browser app does not read host Obsidian folders.
+- `seis://brain/second-brain-system.json` exposes only repo-owned, read-only
+  Second Brain contract metadata; it does not read a private vault or train model weights.
 - The browser app does not execute SSH, deployment, Git push, Git merge, or
   live provider calls.
 - Public GitHub use is blocked until human review verifies provenance,

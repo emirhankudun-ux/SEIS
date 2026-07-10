@@ -26,6 +26,10 @@ Agent lanes are source-controlled operating capabilities. They are not decorativ
 | SEIS-Code Sub-Agent Lane | Architecture-aware implementation planning, tests, CI gates, MCP/plugin code, and repository automation. |
 | SEIS-Design Sub-Agent Lane | Product design, UI/UX, design systems, accessibility, motion, and visual QA planning. |
 | SEIS-DATA Sub-Agent Lane | Data architecture, analytics, generated reports, schema governance, memory/context, and provenance planning. |
+| SEIS Security Sub-Agent Lane | Threat modeling, secret safety, permission risk, SSH/VPN hardening, and release-blocking review. |
+| SEIS Research Sub-Agent Lane | Official-source review, standards and version checks, provenance, and evidence-led decisions. |
+| SEIS Automation Sub-Agent Lane | Dry-runs, repeatable workflows, CI/runbook planning, rollback, and human-approved automation gates. |
+| SEIS Product Sub-Agent Lane | Requirements, roadmap slices, acceptance criteria, launch readiness, and user outcome evidence. |
 
 ## SEIS AI Core Lane Tools
 

@@ -3,6 +3,8 @@ import path from "node:path";
 
 export const PLUGIN_INTEGRATION_PATH = "content/development/seis-agent-plugin-integration.json";
 export const MCP_RUNTIME_CONTRACT_PATH = "content/development/seis-ai-core-mcp-runtime-contract.json";
+export const SECOND_BRAIN_SYSTEM_PATH = "content/development/seis-second-brain-system.json";
+export const SECOND_BRAIN_SYSTEM_RESOURCE_URI = "seis://brain/second-brain-system.json";
 export const AI_CORE_PROVIDER_REGISTRY_PATH = "content/development/seis-ai-core-provider-registry.json";
 export const AI_CORE_MODEL_SCALING_PROFILE_PATH = "content/development/seis-model-scaling-hardware-profile.json";
 export const AI_CORE_MODEL_PARAMETER_LADDER_PATH = "content/development/seis-model-parameter-ladder.json";
