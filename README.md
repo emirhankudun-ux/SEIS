@@ -184,6 +184,17 @@ The source-of-truth contract is
 `deploy/seis-ssh-public-access-contract.json`, with the runbook at
 `docs/deployment/seis-ssh-public-github-access.md`.
 
+Codex GitHub SSH transport and SSH commit signing are tracked separately in
+`docs/deployment/seis-codex-git-ssh-handoff.md`. That handoff supports review
+branch, signed commit, push, and PR work without claiming the live `SEIS-SSH`
+cloud runtime is online.
+
+Remote Codex CLI bridging is tracked in
+`docs/deployment/seis-remote-codex-cli-bridge.md`. Use
+`npm run cloud:ssh:remote-codex:strict` to prove the cloud workspace can reach
+`/workspaces/SEIS` and `codex --version` without running prompts or mutating the
+remote repo.
+
 Use this static gate before claiming public SSH onboarding is wired:
 
 ```bash
@@ -672,6 +683,8 @@ The vault path is `seis-brain/vault`.
 ## SEIS-SSH
 
 - `SEIS_SSH.md` and `docs/SEIS_SSH_SETUP.md` document the safe remote-development concept.
+- `docs/deployment/seis-codex-git-ssh-handoff.md` documents the public-safe
+  Codex GitHub SSH clone and signing workflow.
 - Real credentials and live SSH are not included by default.
 
 ## Public Readiness

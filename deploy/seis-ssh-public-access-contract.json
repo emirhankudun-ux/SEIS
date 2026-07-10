@@ -110,6 +110,7 @@
   ],
   "evidenceSurfaces": [
     "docs/deployment/seis-ssh-public-github-access.md",
+    "docs/deployment/seis-codex-git-ssh-handoff.md",
     "docs/deployment/seis-ssh-access-model.md",
     "docs/deployment/seis-ssh-cloud-roadmap.md",
     "deploy/seis-ssh-access-model.json",
