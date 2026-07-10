@@ -223,6 +223,7 @@ function buildReport(scorer) {
     safeNextCommands: [
       "npm run report:seis-retrieval-citation-scorer-dry-run",
       "npm run check:seis-retrieval-citation-scorer-dry-run",
+      "npm run check:seis-no-secret-answer-log-scan",
       "npm run check:seis-retrieval-evaluation-dry-run",
       "npm run check:seis-ai-public-readiness"
     ],

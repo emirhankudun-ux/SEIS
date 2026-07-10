@@ -1,6 +1,6 @@
 # SEIS AI Public Readiness Report
 
-Generated: 2026-06-30T23:15:57.664Z
+Generated: 2026-07-01T03:28:29.848Z
 
 Status: `local-demo-public-review-ready-not-agi`
 
@@ -36,6 +36,7 @@ release, grant AGI status, or make the 512B route eligible.
 
 | Source | Gate | Status | Blocks GitHub Everyone | Blocks AGI Claim |
 | --- | --- | --- | --- | --- |
+| public-readiness-program | security-blocker-diagnostic | approval-gated | true | true |
 | public-readiness-program | fresh-clone-release-path | partial | true | true |
 | public-readiness-program | human-release-approval | approval-gated | true | true |
 | public-readiness-program | real-512b-evidence | missing | false | true |
@@ -57,6 +58,9 @@ release, grant AGI status, or make the 512B route eligible.
 - npm run check:seis-retrieval-evaluation-fixtures passes on the target commit
 - npm run check:seis-retrieval-evaluation-dry-run passes on the target commit
 - npm run check:seis-retrieval-citation-scorer-dry-run passes on the target commit
+- npm run check:seis-no-secret-answer-log-scan passes on the target commit
+- npm run check:seis-redacted-answer-log-schema passes on the target commit
+- npm run check:seis-security-blocker-diagnostic passes on the target commit
 - npm run check:seis-ai-public-readiness passes on the target commit
 - required CI checks green on the target commit
 - public README claim boundary reviewed

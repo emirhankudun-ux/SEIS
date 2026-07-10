@@ -1,6 +1,6 @@
 # SEIS Retrieval Citation Scorer Dry-Run Report
 
-Generated: 2026-06-30T23:18:24.745Z
+Generated: 2026-07-01T03:28:55.187Z
 
 Status: citation-scorer-dry-run-passed-not-measured
 
@@ -23,6 +23,7 @@ Status: citation-scorer-dry-run-passed-not-measured
 
 - `npm run report:seis-retrieval-citation-scorer-dry-run`
 - `npm run check:seis-retrieval-citation-scorer-dry-run`
+- `npm run check:seis-no-secret-answer-log-scan`
 - `npm run check:seis-retrieval-evaluation-dry-run`
 - `npm run check:seis-ai-public-readiness`
 

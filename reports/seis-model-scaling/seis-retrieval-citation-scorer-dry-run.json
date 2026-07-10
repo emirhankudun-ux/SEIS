@@ -1,6 +1,6 @@
 {
   "id": "seis-retrieval-citation-scorer-dry-run-report",
-  "generatedAt": "2026-06-30T23:18:24.745Z",
+  "generatedAt": "2026-07-01T03:28:55.187Z",
   "status": "citation-scorer-dry-run-passed-not-measured",
   "sourceScorer": "content/development/seis-retrieval-citation-scorer-dry-run.json",
   "summary": {
@@ -18,6 +18,7 @@
   "safeNextCommands": [
     "npm run report:seis-retrieval-citation-scorer-dry-run",
     "npm run check:seis-retrieval-citation-scorer-dry-run",
+    "npm run check:seis-no-secret-answer-log-scan",
     "npm run check:seis-retrieval-evaluation-dry-run",
     "npm run check:seis-ai-public-readiness"
   ],

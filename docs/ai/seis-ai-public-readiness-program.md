@@ -87,6 +87,9 @@ trained, downloaded, benchmarked, or served a 512B model.
 - `npm run check:seis-retrieval-evaluation-fixtures` passes on the target commit.
 - `npm run check:seis-retrieval-evaluation-dry-run` passes on the target commit.
 - `npm run check:seis-retrieval-citation-scorer-dry-run` passes on the target commit.
+- `npm run check:seis-no-secret-answer-log-scan` passes on the target commit.
+- `npm run check:seis-redacted-answer-log-schema` passes on the target commit.
+- `npm run check:seis-security-blocker-diagnostic` passes on the target commit.
 - `npm run check:seis-ai-public-readiness` passes on the target commit.
 - Required CI checks green on the target commit.
 - Public README claim boundary reviewed.
@@ -134,10 +137,16 @@ trained, downloaded, benchmarked, or served a 512B model.
 - `content/development/seis-retrieval-evaluation-fixtures.json`
 - `content/development/seis-retrieval-evaluation-dry-run.json`
 - `content/development/seis-retrieval-citation-scorer-dry-run.json`
+- `content/development/seis-no-secret-answer-log-scan.json`
+- `content/development/seis-redacted-answer-log-schema.json`
+- `content/development/seis-security-blocker-diagnostic.json`
 - `reports/seis-model-scaling/seis-retrieval-source-provenance-manifest.md`
 - `reports/seis-model-scaling/seis-retrieval-evaluation-fixtures.md`
 - `reports/seis-model-scaling/seis-retrieval-evaluation-dry-run.md`
 - `reports/seis-model-scaling/seis-retrieval-citation-scorer-dry-run.md`
+- `reports/seis-model-scaling/seis-no-secret-answer-log-scan.md`
+- `reports/seis-model-scaling/seis-redacted-answer-log-schema.md`
+- `reports/seis-model-scaling/seis-security-blocker-diagnostic.md`
 
 ## Validate
 
@@ -149,6 +158,9 @@ npm run check:seis-retrieval-source-provenance
 npm run check:seis-retrieval-evaluation-fixtures
 npm run check:seis-retrieval-evaluation-dry-run
 npm run check:seis-retrieval-citation-scorer-dry-run
+npm run check:seis-no-secret-answer-log-scan
+npm run check:seis-redacted-answer-log-schema
+npm run check:seis-security-blocker-diagnostic
 npm run check:seis-ai-public-readiness
 npm run check:seis-ai-public-readiness-report
 ```
