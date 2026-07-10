@@ -305,9 +305,17 @@ function checkThirdPartyCandidate(root, definition) {
 
 function createThirdPartyAiToolInventorySource(existingSource) {
   const sourceRootExists = fs.existsSync(thirdPartySourceRoot);
-  const candidates = sourceRootExists
-    ? THIRD_PARTY_AI_HELPERS.map((definition) => checkThirdPartyCandidate(thirdPartySourceRoot, definition))
-    : [];
+  const candidates = THIRD_PARTY_AI_HELPERS.map((definition) => sourceRootExists
+    ? checkThirdPartyCandidate(thirdPartySourceRoot, definition)
+    : {
+        id: definition.id,
+        label: definition.label,
+        status: "source-unavailable",
+        sourceRoot: null,
+        aliases: definition.aliases,
+        markerHints: definition.markerHints || [],
+        markerHits: []
+      });
 
   return {
     id: "seis-third-party-ai-tool-inventory",

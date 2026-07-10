@@ -114,7 +114,8 @@ function buildDoctor() {
         "npm run check:seis-ssh-public-access",
         "npm run check:seis-ssh-public-access-report",
         "npm run check:seis-ssh-public-onboarding",
-        "npm run check:seis-ssh-public-contributor-doctor"
+        "npm run check:seis-ssh-public-contributor-doctor",
+        "npm run check:seis-ssh-github-pr-contract"
       ],
       generatedReports: [
         "npm run report:seis-ssh-public-access",

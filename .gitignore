@@ -249,3 +249,5 @@ reports/seis-ssh-public-access/onboarding-pack-latest.json
 reports/seis-ssh-public-access/onboarding-pack-latest.md
 reports/seis-ssh-public-access/contributor-doctor-latest.json
 reports/seis-ssh-public-access/contributor-doctor-latest.md
+reports/seis-ssh-public-access/endpoint-continuity-baseline.json
+reports/seis-ssh-public-access/endpoint-continuity-latest.json

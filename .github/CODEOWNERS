@@ -17,3 +17,8 @@
 /plugins/seis/skills/seis-master-prompt/agents/openai.yaml @emirhankudun-ux
 /plugins/seis/skills/seis-security-review/SKILL.md @emirhankudun-ux
 /plugins/seis/skills/seis-security-review/agents/openai.yaml @emirhankudun-ux
+/deploy/seis-ssh-*.json @emirhankudun-ux
+/docs/deployment/seis-ssh-*.md @emirhankudun-ux
+/scripts/check-seis-ssh-*.mjs @emirhankudun-ux
+/scripts/create-seis-ssh-public-*.mjs @emirhankudun-ux
+/.github/workflows/seis-ssh-public-access.yml @emirhankudun-ux
