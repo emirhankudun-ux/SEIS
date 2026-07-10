@@ -1,0 +1,14 @@
+---
+description: SEIS-SSH safe workflow policy
+globs:
+  - "SEIS_SSH.md"
+  - "docs/SEIS_SSH_SETUP.md"
+  - "seis-brain/vault/07_SSH_Cloud/**"
+alwaysApply: true
+---
+# SEIS-SSH Rule
+- Do not include real private keys, hostnames, usernames, or tokens in committed files.
+- Do not create or suggest destructive remote commands by default.
+- Treat SEIS-SSH as planning/readiness documentation first.
+- Any live SSH action must remain approval-gated and explicitly documented.
+- Keep deployment/readiness claims tied to evidence, not assumptions.

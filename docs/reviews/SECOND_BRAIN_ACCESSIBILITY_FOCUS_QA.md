@@ -74,6 +74,11 @@ The readiness contract validates ARIA/focus markers statically. The browser
 smoke validates the working app surface, mobile control count, zero cramped
 targets, and VFS persistence.
 
+In non-GUI CI agents that cannot bind `127.0.0.1`, `npm run
+check:seis-second-brain-browser-smoke` exits cleanly with an explicit skip
+message. Set `SEIS_BROWSER_SMOKE_STRICT=1` when a hard failure is required in
+strict environments.
+
 The automated smoke is not enough for public release by itself. Required manual
 evidence still includes a current browser smoke result, manual keyboard
 transcript, screen-reader transcript, mobile viewport target audit,

@@ -61,7 +61,12 @@ Use `[[...]]` links for all note-to-note dependencies, including:
 ## Local-only notes
 
 Private notes stay outside repository scope. Use local ignore-safe directories when
-capturing personal notes.
+capturing personal notes, such as:
+
+- `seis-brain/private/`
+- `seis-brain/local-only/`
+
+These paths are not committed and excluded from public seed evidence.
 
 ## Context packs
 

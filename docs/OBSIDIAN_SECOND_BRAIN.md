@@ -40,6 +40,9 @@ data, or real infrastructure secrets.
 
 Private continuation notes, personal context, and credentials should remain outside
 Git history.
+- Keep private/local notes in untracked directories such as `seis-brain/private/` and
+  `seis-brain/local-only/`.
+- Do not commit private metadata outside the public vault contract.
 
 ## Context packs
 

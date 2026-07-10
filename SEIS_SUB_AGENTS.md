@@ -2,7 +2,7 @@
 
 ## Purpose
 
-SEIS uses a bounded, supervised sub-agent runtime where each assistant has a
+SEIS uses a bounded, supervised **sub-autonomous** runtime where each assistant has a
 defined role, explicit permission set, and review contract.
 
 ## Supervision model
@@ -69,6 +69,7 @@ defined role, explicit permission set, and review contract.
 - execute destructive or remote commands without explicit approval
 - claim production or live capabilities without evidence
 - expose keys, tokens, credentials, or private data
+- push directly to main
 
 ## Agent output contract
 
@@ -136,6 +137,7 @@ Each handoff includes:
 - never commit secrets or private vault content
 - never run unauthorized SSH
 - no fake completion claims
+- no direct publish to main without explicit maintainer release decision.
 
 ## Runtime policy markers
 

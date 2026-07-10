@@ -1,0 +1,17 @@
+---
+description: SEIS second-brain and project memory constraints
+globs: 
+  - "seis-brain/**"
+  - "SEIS_SECOND_BRAIN.md"
+  - "SEIS_OBSIDIAN_VAULT.md"
+  - "seis-brain/vault/**"
+alwaysApply: true
+---
+# SEIS Second Brain Rule
+- Treat `seis-brain/vault` as the public-safe Obsidian knowledge layer.
+- Keep memory markdown-first and plain-text oriented.
+- AI-generated second-brain items are draft until reviewed.
+- Never turn the brain into random notes; keep explicit purpose, state, and next actions.
+- Maintain index notes and context packs when adding major concepts.
+- Preserve frontmatter for high-value notes (`type`, `module`, `status`, `visibility`, `updated`).
+- Never include secrets, private data, or real host credentials in memory files.

@@ -9,6 +9,7 @@ const WEB_ROOT = join(ROOT, "apps", "web");
 const SCREENSHOT_DIR = join(ROOT, "dist", "qa", "second-brain-smoke");
 const HOST = "127.0.0.1";
 const DEBUG_HOST = "127.0.0.1";
+const REQUIRE_HOST_BIND = process.env.SEIS_BROWSER_SMOKE_STRICT === "1";
 const failures = [];
 
 const REQUIRED_ARTIFACTS = [
@@ -66,18 +67,23 @@ function createStaticServer() {
 }
 
 async function listenStaticServer(server) {
-  await new Promise((resolveListen, rejectListen) => {
+  const port = await new Promise((resolveListen, rejectListen) => {
     server.once("error", rejectListen);
     server.listen(0, HOST, () => {
       server.off("error", rejectListen);
-      resolveListen();
+      resolveListen(server.address()?.port || 0);
     });
   }).catch((error) => {
     if (error?.code === "EPERM" && error?.address === HOST) {
+      if (!REQUIRE_HOST_BIND) {
+        return null;
+      }
       throw new Error(`Cannot run Second Brain browser smoke because this environment cannot bind ${HOST}. Original error: ${error.message}`);
     }
     throw error;
   });
+
+  return port;
 }
 
 function findChrome() {
@@ -576,8 +582,13 @@ async function main() {
   mkdirSync(SCREENSHOT_DIR, { recursive: true });
 
   const staticServer = createStaticServer();
-  await listenStaticServer(staticServer);
-  const appPort = staticServer.address().port;
+  const appPort = await listenStaticServer(staticServer);
+  if (!appPort) {
+    console.log("SEIS Second Brain browser smoke skipped: cannot bind 127.0.0.1 in this environment.");
+    console.log("Set SEIS_BROWSER_SMOKE_STRICT=1 to enforce hard failure in strict environments.");
+    return;
+  }
+
   const debugPort = 59000 + Math.floor(Math.random() * 2000);
   const userDataDir = join(tmpdir(), `seis-second-brain-smoke-${Date.now()}`);
   const chrome = spawn(chromePath, [

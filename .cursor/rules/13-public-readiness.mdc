@@ -1,0 +1,15 @@
+---
+description: Public readiness and demo safety boundaries
+globs:
+  - "README.md"
+  - "docs/PUBLIC_READINESS.md"
+  - "docs/GETTING_STARTED.md"
+alwaysApply: true
+---
+# SEIS Public Readiness Rule
+- Keep setup and validation instructions current and runnable.
+- Demo should work without API keys by default.
+- Broken routes/assets are release blockers and must be tracked.
+- Use explicit state labels: mock/planned/real/disabled.
+- Ensure no secrets are committed and no private data is exposed.
+- Preserve backward-safe public docs for onboarding and contribution.

@@ -1,0 +1,14 @@
+---
+description: Obsidian-safe authoring for vault notes
+globs:
+  - "seis-brain/vault/**"
+alwaysApply: true
+---
+# SEIS Obsidian Rule
+- Use plain Markdown only.
+- Do not require Obsidian plugins to consume core notes.
+- Use `[[internal links]]` where dependencies matter.
+- Keep naming stable for backlink reliability.
+- Store only public-safe content unless explicitly outside repository scope.
+- Do not commit local/private vault content such as real credentials or personal notes.
+- Keep note metadata synchronized with `SEIS_OBSIDIAN_VAULT.md` and `seis-brain/README.md`.

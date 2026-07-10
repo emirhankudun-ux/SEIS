@@ -6,6 +6,7 @@ import path from "node:path";
 const root = process.cwd();
 const failures = [];
 const reportGenerating = process.env.SEIS_PUBLIC_DEMO_REPORT_GENERATING === "1";
+const OPENAI_STYLE_KEY_PATTERN = /\bsk-(?=[a-zA-Z0-9_-]{20,}\b)(?=.*\d)[a-zA-Z0-9_-]+\b/;
 
 const paths = {
   obsidianContract: "content/development/seis-obsidian-bridge-safe-import-contract.json",
@@ -43,6 +44,10 @@ const paths = {
   pluginMcpContinuityJson: "reports/seis-public-demo/plugin-mcp-ten-year-continuity-map-latest.json",
   pluginMcpContinuityMarkdown: "reports/seis-public-demo/plugin-mcp-ten-year-continuity-map-latest.md",
   pluginMcpContinuityDoc: "docs/platform/seis-plugin-mcp-ten-year-continuity-map.md",
+  codexSnapshotJson: "content/development/codex-installed-ecosystem-snapshot.json",
+  codexSnapshotDoc: "docs/platform/codex-installed-ecosystem-snapshot.md",
+  codexSnapshotScript: "scripts/check-codex-installed-ecosystem-snapshot.mjs",
+  modelEcosystemCatalog: "content/development/seis-ai-model-ecosystem-catalog.json",
   publicReviewerPackScript: "scripts/create-seis-second-brain-public-reviewer-pack.mjs",
   publicReviewerPackJson: "reports/seis-public-demo/second-brain-public-reviewer-pack-latest.json",
   publicReviewerPackMarkdown: "reports/seis-public-demo/second-brain-public-reviewer-pack-latest.md",
@@ -82,6 +87,7 @@ const routerDecision = reportGenerating ? null : readJson(paths.routerDecisionJs
 const accessibilityFocus = reportGenerating ? null : readJson(paths.accessibilityFocusJson, "Second Brain accessibility/focus artifact");
 const agentRegistry = reportGenerating ? null : readJson(paths.agentRegistryJson, "Second Brain agent registry artifact");
 const pluginMcpContinuity = reportGenerating ? null : readJson(paths.pluginMcpContinuityJson, "Plugin/MCP ten-year continuity artifact");
+const codexSnapshot = reportGenerating ? null : readJson(paths.codexSnapshotJson, "Codex installed ecosystem snapshot");
 const publicReviewerPack = reportGenerating ? null : readJson(paths.publicReviewerPackJson, "Second Brain public reviewer pack artifact");
 const securityGate = reportGenerating ? null : readJson(paths.securityGateJson, "public demo security gate redacted artifact");
 const securityOwnerHandoff = reportGenerating ? null : readJson(paths.securityOwnerHandoffJson, "security owner handoff artifact");
@@ -100,6 +106,7 @@ if (routerDecision && routerContract && secondBrain) validateRouterDecision(rout
 if (accessibilityFocus && accessibilityContract && secondBrain) validateAccessibilityFocus(accessibilityFocus, accessibilityContract, secondBrain);
 if (agentRegistry && secondBrain) validateAgentRegistry(agentRegistry, secondBrain);
 if (pluginMcpContinuity) validatePluginMcpContinuity(pluginMcpContinuity);
+if (codexSnapshot) validateCodexSnapshot(codexSnapshot);
 if (publicReviewerPack) validatePublicReviewerPack(publicReviewerPack);
 if (securityGate) validateSecurityGate(securityGate);
 if (securityOwnerHandoff) validateSecurityOwnerHandoff(securityOwnerHandoff);
@@ -299,7 +306,7 @@ function validateAccessibilityFocus(report, contract, secondBrainContract) {
   const serialized = JSON.stringify(report);
   ensure(!serialized.includes("file://"), "Accessibility focus artifact must not include file:// paths.");
   ensure(!serialized.includes("/Users/"), "Accessibility focus artifact must not include absolute private /Users paths.");
-  ensure(!/sk-[A-Za-z0-9_-]{20,}/.test(serialized), "Accessibility focus artifact must not include OpenAI-style API keys.");
+  ensure(!OPENAI_STYLE_KEY_PATTERN.test(serialized), "Accessibility focus artifact must not include OpenAI-style API keys.");
   ensure(!/-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----/.test(serialized), "Accessibility focus artifact must not include private keys.");
   ensure(!/\b(?:password|token|secret|api[_-]?key)\s*=\s*['"][^'"]+['"]/i.test(serialized), "Accessibility focus artifact must not include inline credential assignments.");
 }
@@ -406,7 +413,7 @@ function validateAgentRegistry(report, secondBrainContract) {
   const serialized = JSON.stringify(report);
   ensure(!serialized.includes("file://"), "Second Brain agent registry must not include file:// paths.");
   ensure(!serialized.includes("/Users/"), "Second Brain agent registry must not include absolute private /Users paths.");
-  ensure(!/sk-[A-Za-z0-9_-]{20,}/.test(serialized), "Second Brain agent registry must not include OpenAI-style API keys.");
+  ensure(!OPENAI_STYLE_KEY_PATTERN.test(serialized), "Second Brain agent registry must not include OpenAI-style API keys.");
   ensure(!/-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----/.test(serialized), "Second Brain agent registry must not include private keys.");
   ensure(!/\b(?:password|token|secret|api[_-]?key)\s*=\s*['"][^'"]+['"]/i.test(serialized), "Second Brain agent registry must not include inline credential assignments.");
   ensure(!/"(?:promptBodyText|promptText|messages|conversation)"\s*:/i.test(serialized), "Second Brain agent registry must not include prompt body fields.");
@@ -478,7 +485,7 @@ function validatePublicReviewerPack(report) {
   const serialized = JSON.stringify(report);
   ensure(!serialized.includes("file://"), "Second Brain public reviewer pack must not include file:// paths.");
   ensure(!serialized.includes("/Users/"), "Second Brain public reviewer pack must not include absolute private /Users paths.");
-  ensure(!/sk-[A-Za-z0-9_-]{20,}/.test(serialized), "Second Brain public reviewer pack must not include OpenAI-style API keys.");
+  ensure(!OPENAI_STYLE_KEY_PATTERN.test(serialized), "Second Brain public reviewer pack must not include OpenAI-style API keys.");
   ensure(!/-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----/.test(serialized), "Second Brain public reviewer pack must not include private key bodies.");
   ensure(!/\b(?:password|token|secret|api[_-]?key)\s*=\s*['"][^'"]+['"]/i.test(serialized), "Second Brain public reviewer pack must not include inline credential assignments.");
 }
@@ -555,7 +562,7 @@ function validateSecurityGate(report) {
   ensure(!serialized.includes("REDACTED"), "Security gate must store categories, not redacted value placeholders.");
   ensure(!serialized.includes("file://"), "Security gate must not include file:// paths.");
   ensure(!serialized.includes("/Users/"), "Security gate must not include absolute private /Users paths.");
-  ensure(!/sk-[A-Za-z0-9_-]{20,}/.test(serialized), "Security gate must not include OpenAI-style API keys.");
+  ensure(!OPENAI_STYLE_KEY_PATTERN.test(serialized), "Security gate must not include OpenAI-style API keys.");
   ensure(!/-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----/.test(serialized), "Security gate must not include private key bodies.");
   ensure(!/\b(?:password|token|secret|api[_-]?key)\s*=\s*['"][^'"]+['"]/i.test(serialized), "Security gate must not include inline credential assignments.");
 }
@@ -629,7 +636,7 @@ function validateSecurityOwnerHandoff(report) {
   const serialized = JSON.stringify(report);
   ensure(!serialized.includes("file://"), "Security owner handoff must not include file:// paths.");
   ensure(!serialized.includes("/Users/"), "Security owner handoff must not include absolute private /Users paths.");
-  ensure(!/sk-[A-Za-z0-9_-]{20,}/.test(serialized), "Security owner handoff must not include OpenAI-style API keys.");
+  ensure(!OPENAI_STYLE_KEY_PATTERN.test(serialized), "Security owner handoff must not include OpenAI-style API keys.");
   ensure(!/-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----/.test(serialized), "Security owner handoff must not include private key bodies.");
   ensure(!/\b(?:password|token|secret|api[_-]?key)\s*=\s*['"][^'"]+['"]/i.test(serialized), "Security owner handoff must not include inline credential assignments.");
 }
@@ -752,7 +759,7 @@ function validateSecurityRemediationPlan(plan) {
   const serialized = JSON.stringify(plan);
   ensure(!serialized.includes("file://"), "Security remediation plan must not include file:// paths.");
   ensure(!serialized.includes("/Users/"), "Security remediation plan must not include absolute private /Users paths.");
-  ensure(!/sk-[A-Za-z0-9_-]{20,}/.test(serialized), "Security remediation plan must not include OpenAI-style API keys.");
+  ensure(!OPENAI_STYLE_KEY_PATTERN.test(serialized), "Security remediation plan must not include OpenAI-style API keys.");
   ensure(!/-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----/.test(serialized), "Security remediation plan must not include private key bodies.");
   ensure(!/\b(?:password|token|secret|api[_-]?key)\s*=\s*['"][^'"]+['"]/i.test(serialized), "Security remediation plan must not include inline credential assignments.");
 }
@@ -890,7 +897,7 @@ function validateRouterDecision(report, contract, secondBrainContract) {
   const serialized = JSON.stringify(report);
   ensure(!serialized.includes("file://"), "Router decision artifact must not include file:// paths.");
   ensure(!serialized.includes("/Users/"), "Router decision artifact must not include absolute private /Users paths.");
-  ensure(!/sk-[A-Za-z0-9_-]{20,}/.test(serialized), "Router decision artifact must not include OpenAI-style API keys.");
+  ensure(!OPENAI_STYLE_KEY_PATTERN.test(serialized), "Router decision artifact must not include OpenAI-style API keys.");
   ensure(!/-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----/.test(serialized), "Router decision artifact must not include private keys.");
   ensure(!/\b(?:password|token|secret|api[_-]?key)\s*=\s*['"][^'"]+['"]/i.test(serialized), "Router decision artifact must not include inline credential assignments.");
   ensure(!/promptBodyText|promptText|messages|conversation/i.test(serialized), "Router decision artifact must not include prompt bodies.");
@@ -1048,6 +1055,7 @@ function validatePluginMcpContinuity(report) {
   ensure(report.sourcePaths?.mcpRuntime === "content/development/seis-ai-core-mcp-runtime-contract.json", "Plugin/MCP continuity MCP runtime source path mismatch.");
   ensure(report.sourcePaths?.localAiRuntimeMatrix === "content/development/seis-local-ai-runtime-matrix.json", "Plugin/MCP continuity local AI runtime source path mismatch.");
   ensure(report.sourcePaths?.freshCloneReadinessPlan === "content/development/seis-agi-github-fresh-clone-readiness-plan.json", "Plugin/MCP continuity fresh-clone readiness source path mismatch.");
+  ensure(report.sourcePaths?.modelEcosystemCatalog === paths.modelEcosystemCatalog, "Plugin/MCP continuity model ecosystem source path mismatch.");
   ensure(report.horizon?.years === 10, "Plugin/MCP continuity must cover ten years.");
   ensure(report.horizon?.reviewWindowMonths === 6, "Plugin/MCP continuity review window must be six months.");
   ensure(report.horizon?.reviewWindowCount === 20, "Plugin/MCP continuity must expose twenty review windows.");
@@ -1060,6 +1068,12 @@ function validatePluginMcpContinuity(report) {
   ensure(report.derivedCounts?.localAiHardwareRuntimeLaneCount >= 5, "Plugin/MCP continuity must include local AI hardware runtime lanes.");
   ensure(report.derivedCounts?.freshCloneReadinessCheckCount >= 6, "Plugin/MCP continuity must include fresh-clone readiness checks.");
   ensure(report.derivedCounts?.freshCloneEveryoneReadyBlockerCount >= 4, "Plugin/MCP continuity must keep everyone-ready blockers visible.");
+  ensure(report.derivedCounts?.modelEcosystemFamilyCount >= 12, "Plugin/MCP continuity must include the model ecosystem family catalog.");
+  ensure(report.derivedCounts?.modelEcosystemResearchSourceCount >= 9, "Plugin/MCP continuity must include model ecosystem research sources.");
+  ensure(report.derivedCounts?.modelEcosystemInstallAuthorizedCount === 0, "Plugin/MCP continuity must not authorize model installs.");
+  ensure(report.derivedCounts?.modelEcosystemDownloadAuthorizedCount === 0, "Plugin/MCP continuity must not authorize checkpoint downloads.");
+  ensure(report.derivedCounts?.modelEcosystemTrainingAuthorizedCount === 0, "Plugin/MCP continuity must not authorize model training.");
+  ensure(report.derivedCounts?.modelEcosystemRouteEligibleCount === 0, "Plugin/MCP continuity must not mark model routes eligible.");
   ensure(report.derivedCounts?.connectorCount >= 20, "Plugin/MCP continuity must include connector policy records.");
   ensure(report.sourceSnapshot?.localAiRuntimeStatus === "runtime-matrix-ready-no-install", "Plugin/MCP continuity must keep local AI matrix in no-install status.");
   ensure(report.sourceSnapshot?.localAiModelInstallAllowed === false, "Plugin/MCP continuity must block local AI model installs.");
@@ -1074,6 +1088,16 @@ function validatePluginMcpContinuity(report) {
   ensure(report.sourceSnapshot?.aiGithubReadinessChainDownloadsModels === false, "Plugin/MCP continuity readiness chain must not download models.");
   ensure(report.sourceSnapshot?.aiGithubReadinessChainTrainsModels === false, "Plugin/MCP continuity readiness chain must not train models.");
   ensure(report.sourceSnapshot?.aiGithubReadinessChainCallsProviders === false, "Plugin/MCP continuity readiness chain must not call providers.");
+  ensure(report.sourceSnapshot?.modelEcosystemStatus === "catalog-ready-no-install-no-training", "Plugin/MCP continuity must keep model ecosystem catalog in no-install/no-training status.");
+  ensure(report.sourceSnapshot?.modelEcosystemCoverageMode === "major-family-catalog-not-exhaustive", "Plugin/MCP continuity must keep model ecosystem coverage bounded.");
+  ensure(report.sourceSnapshot?.modelEcosystemMetadataCatalogAllowed === true, "Plugin/MCP continuity must allow metadata-only model cataloging.");
+  ensure(report.sourceSnapshot?.modelEcosystemInstallAllowed === false, "Plugin/MCP continuity must block model installs.");
+  ensure(report.sourceSnapshot?.modelEcosystemDownloadAllowed === false, "Plugin/MCP continuity must block checkpoint downloads.");
+  ensure(report.sourceSnapshot?.modelEcosystemInferenceAllowed === false, "Plugin/MCP continuity must block model inference.");
+  ensure(report.sourceSnapshot?.modelEcosystemProviderCallsAllowed === false, "Plugin/MCP continuity must block provider calls.");
+  ensure(report.sourceSnapshot?.modelEcosystemTrainingAllowed === false, "Plugin/MCP continuity must block model training.");
+  ensure(report.sourceSnapshot?.modelEcosystemAgiClaimAllowed === false, "Plugin/MCP continuity must block model ecosystem AGI claims.");
+  ensure(report.sourceSnapshot?.modelEcosystemAllModelsInstalledClaimAllowed === false, "Plugin/MCP continuity must block all-models-installed claims.");
   ensure(Array.isArray(report.phases) && report.phases.length === 10, "Plugin/MCP continuity must expose ten yearly phases.");
   ensureArrayMin(report.reviewEvidence, 7, "Plugin/MCP continuity review evidence cadence");
   for (const hardStop of [
@@ -1103,6 +1127,7 @@ function validatePluginMcpContinuity(report) {
   ensure(report.validation?.qualityGate === "npm run check:seis-plugin-mcp-ten-year-continuity-map", "Plugin/MCP continuity quality gate mismatch.");
   ensure(report.validation?.reportCommand === "npm run report:seis-plugin-mcp-ten-year-continuity-map", "Plugin/MCP continuity report command mismatch.");
   ensure(report.validation?.publicAiReadinessGate === "npm run check:seis-public-ai-readiness", "Plugin/MCP continuity public AI readiness gate mismatch.");
+  ensure(report.validation?.modelEcosystemGate === "npm run check:seis-ai-model-ecosystem-catalog", "Plugin/MCP continuity model ecosystem gate mismatch.");
   ensure(report.validation?.aiGithubReadinessChain === "npm run check:seis-ai-github-readiness-chain", "Plugin/MCP continuity AI GitHub readiness chain mismatch.");
   ensureIncludes(report.validation?.requiredEvidence, paths.pluginMcpContinuityJson, "Plugin/MCP continuity required evidence");
   ensureIncludes(report.validation?.requiredEvidence, paths.pluginMcpContinuityMarkdown, "Plugin/MCP continuity required evidence");
@@ -1110,8 +1135,44 @@ function validatePluginMcpContinuity(report) {
   const serialized = JSON.stringify(report);
   ensure(!serialized.includes("file://"), "Plugin/MCP continuity artifact must not include file:// paths.");
   ensure(!serialized.includes("/Users/"), "Plugin/MCP continuity artifact must not include absolute private /Users paths.");
-  ensure(!/sk-[A-Za-z0-9_-]{20,}/.test(serialized), "Plugin/MCP continuity artifact must not include OpenAI-style API keys.");
+  ensure(!OPENAI_STYLE_KEY_PATTERN.test(serialized), "Plugin/MCP continuity artifact must not include OpenAI-style API keys.");
   ensure(!/-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----/.test(serialized), "Plugin/MCP continuity artifact must not include private keys.");
+}
+
+function validateCodexSnapshot(snapshot) {
+  ensure(snapshot.id === "codex-installed-ecosystem-snapshot", "Codex snapshot id mismatch.");
+  ensure(snapshot.version, "Codex snapshot must include a version.");
+  ensure(snapshot.status === "review-only-session-inventory", "Codex snapshot must stay review-only.");
+  ensure(snapshot.updatedAt, "Codex snapshot must include updatedAt.");
+  ensure(snapshot.source, "Codex snapshot must include source.");
+  ensure(snapshot.counts?.extensions === 177, "Codex snapshot must record 177 extensions.");
+  ensure(snapshot.counts?.apps === 56, "Codex snapshot must record 56 apps.");
+  ensure(snapshot.counts?.mcpServers === 3, "Codex snapshot must record 3 MCP servers.");
+  ensure(snapshot.counts?.skills === 72, "Codex snapshot must record 72 skills.");
+  ensure(Array.isArray(snapshot.mcpServers) && snapshot.mcpServers.length === 3, "Codex snapshot must include exactly 3 MCP servers.");
+  ensure(Array.isArray(snapshot.capabilityFamilies) && snapshot.capabilityFamilies.length >= 8, "Codex snapshot must include at least 8 capability families.");
+  ensure(Array.isArray(snapshot.visiblePluginSamples) && snapshot.visiblePluginSamples.length >= 60, "Codex snapshot must include visible plugin samples.");
+  ensure(Array.isArray(snapshot.visibleSkillSamples) && snapshot.visibleSkillSamples.length >= 40, "Codex snapshot must include visible skill samples.");
+  ensure(Array.isArray(snapshot.notClaims) && snapshot.notClaims.length >= 6, "Codex snapshot must include explicit non-claims.");
+  ensure(snapshot.activationPolicy?.authenticationClaim === "not-claimed", "Codex snapshot must not claim authentication.");
+  ensure(snapshot.activationPolicy?.blanketActivation === "forbidden", "Codex snapshot must forbid blanket activation.");
+  ensure(snapshot.activationPolicy?.externalMutationRequiresApproval === true, "Codex snapshot must require approval for external mutation.");
+  ensure(snapshot.activationPolicy?.liveConnectorUseRequiresApproval === true, "Codex snapshot must require approval for live connector use.");
+  ensure(snapshot.activationPolicy?.secretsInRepo === "forbidden", "Codex snapshot must forbid secrets in repo.");
+  ensure(snapshot.repoBindings?.desktopSurface === paths.desktopJs, "Codex snapshot must bind desktop surface to apps/web/desktop.js.");
+  ensure(snapshot.repoBindings?.linuxReplicaSurface === "apps/web/seis-linux-replica.html", "Codex snapshot must bind Linux replica surface.");
+  ensure(snapshot.repoBindings?.docs === paths.codexSnapshotDoc, "Codex snapshot must bind docs.");
+  ensure(snapshot.repoBindings?.checker === "scripts/check-codex-installed-ecosystem-snapshot.mjs", "Codex snapshot checker binding must be scripts/check-codex-installed-ecosystem-snapshot.mjs.");
+  ensure(snapshot.repoBindings?.packageScript === "check:codex-installed-ecosystem-snapshot", "Codex snapshot package script binding mismatch.");
+  for (const [key, relativePath] of Object.entries(snapshot.repoBindings || {})) {
+    if (key === "packageScript") continue;
+    ensure(!String(relativePath).startsWith("/"), `${key} binding must be repository-relative.`);
+    ensure(fs.existsSync(path.join(root, relativePath)), `${key} binding path must exist: ${relativePath}`);
+  }
+  const serialized = JSON.stringify(snapshot);
+  ensure(!serialized.includes("file://"), "Codex snapshot must not include file:// paths.");
+  ensure(!serialized.includes("/Users/"), "Codex snapshot must not include absolute private paths.");
+  ensure(!serialized.includes("private-key"), "Codex snapshot must not include private-key text.");
 }
 
 function validatePackage(packageJson) {
@@ -1169,6 +1230,11 @@ function validatePackage(packageJson) {
     packageJson.scripts?.["report:seis-plugin-mcp-ten-year-continuity-map"] ===
       "node scripts/create-seis-plugin-mcp-ten-year-continuity-map.mjs --write",
     "package.json must expose report:seis-plugin-mcp-ten-year-continuity-map."
+  );
+  ensure(
+    packageJson.scripts?.["check:codex-installed-ecosystem-snapshot"] ===
+      "node scripts/check-codex-installed-ecosystem-snapshot.mjs",
+    "package.json must expose check:codex-installed-ecosystem-snapshot."
   );
   ensure(
     packageJson.scripts?.["check:seis-second-brain-public-reviewer-pack"] ===
@@ -1248,6 +1314,7 @@ function validateDocsAndIndexes() {
     [paths.status, ["SEIS Second Brain readiness contracts", "Obsidian bridge safe import", "Obsidian starter vault", "AI council review pack", "Obsidian graph map", "Agent training drills", "Obsidian safe-import dry-run", "read-only model-router decision", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "Second Brain public reviewer pack", "public demo security gate redacted evidence", "security owner handoff", "PR #127 security remediation plan", "PR #54 public demo release checklist"]],
     [paths.index, ["SEIS Obsidian Bridge Safe Import", "Second Brain Accessibility Focus QA", "Read-Only Model Router Contract", "Public Demo Release Checklist PR54", "SEIS Plugin/MCP Ten-Year Continuity Map", "check-seis-public-demo-go-no-go.mjs", "create-seis-obsidian-safe-import-dry-run.mjs", "create-seis-read-only-model-router-decision.mjs", "create-seis-second-brain-accessibility-focus-report.mjs", "create-seis-second-brain-agent-registry.mjs", "create-seis-plugin-mcp-ten-year-continuity-map.mjs", "create-seis-second-brain-public-reviewer-pack.mjs", "create-seis-public-demo-security-gate-report.mjs", "create-seis-security-owner-handoff.mjs", "reports/seis-public-demo/go-no-go-latest", "reports/seis-public-demo/evidence-manifest-latest", "reports/seis-public-demo/obsidian-safe-import-dry-run-latest", "reports/seis-public-demo/read-only-model-router-decision-latest", "reports/seis-public-demo/second-brain-accessibility-focus-latest", "reports/seis-public-demo/second-brain-agent-registry-latest", "reports/seis-public-demo/plugin-mcp-ten-year-continuity-map-latest", "reports/seis-public-demo/second-brain-public-reviewer-pack-latest", "reports/seis-public-demo/security-gate-redacted-latest", "reports/seis-public-demo/security-owner-handoff-latest", "PR127_SECURITY_REMEDIATION_PLAN", "seis-public-demo-security-remediation-plan-pr127", "reports/seis-public-demo/pr54-review-packet-latest", "reports/seis-public-demo/worktree-review-latest", "reports/seis-public-demo/pr54-stage-plan-latest"]],
     [paths.masterIndex, ["SEIS Obsidian Bridge Safe Import", "Second Brain Accessibility Focus QA", "Read-Only Model Router Contract", "Public Demo Release Checklist PR54", "SEIS Plugin/MCP Ten-Year Continuity Map", "check:seis-public-demo-go-no-go", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "report:seis-plugin-mcp-ten-year-continuity-map", "report:seis-second-brain-public-reviewer-pack", "report:seis-public-demo-security-gate", "report:seis-security-owner-handoff", "reports/seis-public-demo/go-no-go-latest", "reports/seis-public-demo/evidence-manifest-latest", "reports/seis-public-demo/obsidian-safe-import-dry-run-latest", "reports/seis-public-demo/read-only-model-router-decision-latest", "reports/seis-public-demo/second-brain-accessibility-focus-latest", "reports/seis-public-demo/second-brain-agent-registry-latest", "reports/seis-public-demo/plugin-mcp-ten-year-continuity-map-latest", "reports/seis-public-demo/second-brain-public-reviewer-pack-latest", "reports/seis-public-demo/security-gate-redacted-latest", "reports/seis-public-demo/security-owner-handoff-latest", "seis-public-demo-security-remediation-plan-pr127", "PR127_SECURITY_REMEDIATION_PLAN", "reports/seis-public-demo/pr54-review-packet-latest", "reports/seis-public-demo/worktree-review-latest", "reports/seis-public-demo/pr54-stage-plan-latest"]],
+    [paths.codexSnapshotDoc, ["Codex Installed Ecosystem Snapshot", "177", "56", "3", "72", "review-only", "npm run check:codex-installed-ecosystem-snapshot", "scripts/check-codex-installed-ecosystem-snapshot.mjs", "apps/web/desktop.js", "apps/web/seis-linux-replica.html"]],
     [paths.backlog, ["Obsidian bridge safe import", "Obsidian starter vault", "AI council review pack", "Obsidian graph map", "Agent training drills", "Obsidian safe-import dry-run artifact", "read-only model-router decision artifact", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "Second Brain public reviewer pack", "public demo security gate redacted evidence", "security owner handoff", "PR #127 security remediation plan", "Second Brain accessibility/focus QA", "read-only model-router contract", "PR #54 public demo release checklist", "SEIS public demo go/no-go gate", "PR #54 review packet", "worktree review", "stage plan"]],
     [paths.nextQueue, ["Obsidian bridge safe import", "Obsidian starter vault", "AI council review pack", "Obsidian graph map", "Agent training drills", "Obsidian safe-import dry-run artifact", "read-only model-router decision artifact", "accessibility/focus QA artifact", "Second Brain agent registry artifact", "Second Brain public reviewer pack", "public demo security gate redacted evidence", "security owner handoff", "PR #127 security remediation plan", "Second Brain accessibility/focus QA", "read-only model-router contract", "PR #54 public demo release checklist", "PR #127 active security gate impact", "Secret & Vulnerability Scan", "Security Summary", "PR #54 review packet", "worktree review", "stage plan"]],
     [paths.readme, ["check:seis-second-brain-readiness-contracts", "Second Brain readiness contracts", "Obsidian starter vault", "AI council review pack", "Obsidian graph map", "Agent training drills", "check:seis-public-demo-go-no-go", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "report:seis-second-brain-public-reviewer-pack", "report:seis-public-demo-security-gate", "report:seis-security-owner-handoff", "PR #127 security remediation plan"]],
@@ -1293,6 +1360,7 @@ function validateNoSecrets() {
     paths.accessibilityFocusJson,
     paths.accessibilityFocusMarkdown,
     paths.agentRegistryScript,
+    paths.codexSnapshotScript,
     paths.agentRegistryJson,
     paths.agentRegistryMarkdown,
     paths.publicReviewerPackScript,
@@ -1307,13 +1375,15 @@ function validateNoSecrets() {
     paths.status,
     paths.index,
     paths.masterIndex,
+    paths.codexSnapshotDoc,
+    paths.codexSnapshotJson,
     paths.backlog,
     paths.nextQueue,
     paths.readme,
     "scripts/check-seis-second-brain-readiness-contracts.mjs"
   ]) {
     if (reportGenerating && isGeneratedPublicDemoArtifact(filePath)) continue;
-    requireNotMatches(filePath, /sk-[A-Za-z0-9_-]{20,}/, "OpenAI-style API keys");
+    requireNotMatches(filePath, OPENAI_STYLE_KEY_PATTERN, "OpenAI-style API keys");
     requireNotMatches(filePath, /-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----/, "private keys");
     requireNotMatches(filePath, /\b(?:password|token|secret|api[_-]?key)\s*=\s*['"][^'"]+['"]/i, "inline credential assignments");
   }
