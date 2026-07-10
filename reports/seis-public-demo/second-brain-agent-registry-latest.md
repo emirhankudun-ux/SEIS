@@ -1,6 +1,6 @@
 # SEIS Second Brain Agent Registry
 
-Generated: 2026-07-10T18:10:46.981Z
+Generated: 2026-07-10T18:49:54.402Z
 Status: review-only-agent-registry
 Mode: repo-local-no-live-execution
 Decision: NO-GO-autonomous-execution-not-approved
@@ -15,6 +15,7 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 | AI workforce assignments | 10 |
 | Managed sub-agent lanes | 9 |
 | Autonomous agent roster | 13 |
+| Read-only context access entries | 13 |
 | Role schema roles | 5 |
 | Permission levels | 5 |
 | Local apps detected in inventory | 8 |
@@ -26,6 +27,12 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 - status: local-demo
 - vaultRoot: /home/seis/SecondBrain
 - trainingPackPath: /home/seis/SecondBrain/07-learning/seis-agent-training-pack.md
+- mcpResource: seis://brain/second-brain-system.json
+- repositoryContextPack.status: repo-owned-public-safe
+- repositoryContextPack.path: seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md
+- repositoryContextPack.access: read-only local and MCP contract context
+- repositoryContextPack.privateVaultRead: false
+- repositoryContextPack.modelWeightTraining: false
 - obsidianBridgeStatus: planned
 - privateVaultImportEnabled: false
 - hostVaultReadEnabled: false
@@ -75,6 +82,30 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 | Cloud Agent | status-plan-only | Cloud, SSH, storage, sync, and provider readiness boundaries. |
 | Automation Agent | status-plan-only | Safe recurring workflows, ledgers, and human-approved automation gates. |
 | Product Agent | status-plan-only | Requirements, acceptance criteria, roadmap slices, launch readiness, and delivery evidence. |
+
+## Read-Only Context Access
+
+- MCP resource: seis://brain/second-brain-system.json
+- Repo-owned Obsidian context pack: seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md
+- Access mode: read-only local and MCP contract context
+- Private vault read: false
+- Model-weight training: false
+
+| Agent | Status | Context access | Private vault read | Autonomous write allowed |
+| --- | --- | --- | --- | --- |
+| Architect Agent | status-plan-only | read-only repo-local context and plan input | false | false |
+| Code Agent | status-plan-only | read-only repo-local context and plan input | false | false |
+| Design Agent | status-plan-only | read-only repo-local context and plan input | false | false |
+| UI/UX Agent | status-plan-only | read-only repo-local context and plan input | false | false |
+| Research Agent | status-plan-only | read-only repo-local context and plan input | false | false |
+| Search Agent | status-plan-only | read-only repo-local context and plan input | false | false |
+| Security Agent | blocking-review-gate | read-only repo-local context and plan input | false | false |
+| DevOps Agent | status-plan-only | read-only repo-local context and plan input | false | false |
+| Documentation Agent | status-plan-only | read-only repo-local context and plan input | false | false |
+| QA Agent | status-plan-only | read-only repo-local context and plan input | false | false |
+| Cloud Agent | status-plan-only | read-only repo-local context and plan input | false | false |
+| Automation Agent | status-plan-only | read-only repo-local context and plan input | false | false |
+| Product Agent | status-plan-only | read-only repo-local context and plan input | false | false |
 
 ## MCP And Plugin Surface
 

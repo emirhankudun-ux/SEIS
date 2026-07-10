@@ -19,6 +19,7 @@ const paths = {
   pluginSkillMap: "content/development/plugin-skill-capability-map.json",
   connectorRegistry: "content/development/connector-capability-registry.json",
   obsidianContract: "content/development/seis-obsidian-bridge-safe-import-contract.json",
+  obsidianContextPack: "seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md",
   routerContract: "content/development/seis-read-only-model-router-contract.json",
   outputJson: typeof args.output === "string" ? args.output : "reports/seis-public-demo/second-brain-agent-registry-latest.json",
   outputMarkdown: typeof args.markdown === "string" ? args.markdown : "reports/seis-public-demo/second-brain-agent-registry-latest.md"
@@ -51,6 +52,7 @@ const requiredAutonomousAgentRoster = [
   "Automation Agent",
   "Product Agent"
 ];
+const secondBrainMcpResource = "seis://brain/second-brain-system.json";
 
 const secondBrain = readJson(paths.secondBrain, "Second Brain contract");
 const aiWorkforce = readJson(paths.aiWorkforce, "AI workforce assignments");
@@ -62,7 +64,11 @@ const bigTechInventory = readJson(paths.bigTechInventory, "Big Tech MCP and skil
 const pluginSkillMap = readJson(paths.pluginSkillMap, "plugin skill capability map");
 const connectorRegistry = readJson(paths.connectorRegistry, "connector capability registry");
 const obsidianContract = readJson(paths.obsidianContract, "Obsidian bridge safe import contract");
+const obsidianContextText = readText(paths.obsidianContextPack, "repo-owned Obsidian context pack");
 const routerContract = readJson(paths.routerContract, "read-only model-router contract");
+
+ensure(obsidianContextText.includes("Vault-first structure"), "repo-owned Obsidian context pack must retain vault-first guidance.");
+ensure(obsidianContextText.includes("Public/private separation mandatory"), "repo-owned Obsidian context pack must retain public/private separation guidance.");
 
 const report = buildReport(new Date().toISOString());
 validateReport(report, "generated Second Brain agent registry");
@@ -162,12 +168,21 @@ function buildReport(generatedAt) {
       pluginSkillMap: paths.pluginSkillMap,
       connectorRegistry: paths.connectorRegistry,
       obsidianContract: paths.obsidianContract,
+      obsidianContextPack: paths.obsidianContextPack,
       routerContract: paths.routerContract
     },
     secondBrainBinding: {
       status: secondBrain?.status,
       vaultRoot: secondBrain?.vaultRoot,
       trainingPackPath: secondBrain?.trainingPackPath,
+      mcpResource: secondBrain?.mcpResource,
+      repositoryContextPack: {
+        status: secondBrain?.repositoryContextPack?.status || "unknown",
+        path: secondBrain?.repositoryContextPack?.path || null,
+        access: secondBrain?.repositoryContextPack?.access || "unknown",
+        privateVaultRead: secondBrain?.repositoryContextPack?.privateVaultRead ?? false,
+        modelWeightTraining: secondBrain?.repositoryContextPack?.modelWeightTraining ?? false
+      },
       obsidianBridgeStatus: secondBrain?.obsidianBridge?.status,
       privateVaultImportEnabled: obsidianContract?.currentRuntime?.privateVaultImportEnabled ?? false,
       hostVaultReadEnabled: obsidianContract?.currentRuntime?.hostVaultReadEnabled ?? false,
@@ -198,6 +213,15 @@ function buildReport(generatedAt) {
       })),
       laneStatusCount: laneStatusRecords.length
     },
+    contextAccessMatrix: autonomousAgentRoster.map((agent) => ({
+      agent: agent.agent,
+      status: agent.status,
+      contextAccess: "read-only repo-local context and plan input",
+      mcpResource: secondBrain?.mcpResource || null,
+      contextPackPath: secondBrain?.repositoryContextPack?.path || null,
+      privateVaultRead: false,
+      autonomousWriteAllowed: false
+    })),
     pluginAndMcpSurface: {
       installedSkillCount: bigTechInventory?.installed_skill_pass?.installed_skill_count || 0,
       installedSkills: bigTechInventory?.installed_skill_pass?.skills || [],
@@ -244,6 +268,7 @@ function buildReport(generatedAt) {
       workforceAssignmentCount: workforceAssignments.length,
       managedSubAgentLaneCount: managedSubAgentLanes.length,
       autonomousAgentRosterCount: autonomousAgentRoster.length,
+      contextAccessAgentCount: autonomousAgentRoster.length,
       roleSchemaRoleCount: roleSchemaRoles.length,
       permissionLevelCount: permissionLevels.length,
       localAppDetectedCount: localAppsDetected.length,
@@ -277,7 +302,14 @@ function validateReport(value, label) {
   ensure(value?.sourcePaths?.secondBrain === paths.secondBrain, `${label} Second Brain source path mismatch.`);
   ensure(value?.sourcePaths?.aiWorkforce === paths.aiWorkforce, `${label} AI workforce source path mismatch.`);
   ensure(value?.sourcePaths?.roleSchema === paths.roleSchema, `${label} role schema source path mismatch.`);
+  ensure(value?.sourcePaths?.obsidianContextPack === paths.obsidianContextPack, `${label} Obsidian context pack source path mismatch.`);
   ensure(value?.secondBrainBinding?.status === "local-demo", `${label} Second Brain binding must stay local-demo.`);
+  ensure(value?.secondBrainBinding?.mcpResource === secondBrainMcpResource, `${label} Second Brain MCP resource mismatch.`);
+  ensure(value?.secondBrainBinding?.repositoryContextPack?.status === "repo-owned-public-safe", `${label} repository context pack must remain repo-owned and public-safe.`);
+  ensure(value?.secondBrainBinding?.repositoryContextPack?.path === paths.obsidianContextPack, `${label} repository context pack path mismatch.`);
+  ensure(value?.secondBrainBinding?.repositoryContextPack?.access === "read-only local and MCP contract context", `${label} repository context pack must stay read-only.`);
+  ensure(value?.secondBrainBinding?.repositoryContextPack?.privateVaultRead === false, `${label} repository context pack must not read private vaults.`);
+  ensure(value?.secondBrainBinding?.repositoryContextPack?.modelWeightTraining === false, `${label} repository context pack must not claim model-weight training.`);
   ensure(value?.secondBrainBinding?.privateVaultImportEnabled === false, `${label} private vault import must be disabled.`);
   ensure(value?.secondBrainBinding?.hostVaultReadEnabled === false, `${label} host vault reads must be disabled.`);
   ensure(value?.secondBrainBinding?.githubMutationEnabled === false, `${label} GitHub mutation must be disabled.`);
@@ -285,6 +317,7 @@ function validateReport(value, label) {
   ensureArrayMin(value?.workforceAssignments, 10, `${label} workforceAssignments`);
   ensureArrayMin(value?.subAgentMesh?.managedSubAgentLanes, 9, `${label} managedSubAgentLanes`);
   ensureArrayMin(value?.subAgentMesh?.autonomousAgentRoster, 13, `${label} autonomousAgentRoster`);
+  ensureArrayMin(value?.contextAccessMatrix, 13, `${label} contextAccessMatrix`);
   ensureArrayIncludesAll(value?.subAgentMesh?.managedSubAgentLanes, requiredManagedSubAgentLanes, `${label} managedSubAgentLanes`);
   ensureArrayIncludesAll(
     (value?.subAgentMesh?.autonomousAgentRoster || []).map((agent) => agent.agent),
@@ -297,6 +330,7 @@ function validateReport(value, label) {
   ensure(value?.summary?.workforceAssignmentCount >= 10, `${label} workforce assignment count too low.`);
   ensure(value?.summary?.managedSubAgentLaneCount === requiredManagedSubAgentLanes.length, `${label} managed sub-agent lane count mismatch.`);
   ensure(value?.summary?.autonomousAgentRosterCount === requiredAutonomousAgentRoster.length, `${label} autonomous agent roster count mismatch.`);
+  ensure(value?.summary?.contextAccessAgentCount === requiredAutonomousAgentRoster.length, `${label} context access agent count mismatch.`);
   ensure(value?.summary?.mcpVendorSurfaceCount >= 10, `${label} MCP vendor surface count too low.`);
   ensure(value?.summary?.installedSkillCount >= 30, `${label} installed skill count too low.`);
   ensureArrayMin(value?.requiredEvidenceBeforeAutonomousUse, 8, `${label} requiredEvidenceBeforeAutonomousUse`);
@@ -304,6 +338,18 @@ function validateReport(value, label) {
     ensure(profile.liveProviderRouteEnabled === false, `${label} provider profile ${profile.profileId} must not enable live routing.`);
     ensure(profile.promptBodyStorageAllowed === false, `${label} provider profile ${profile.profileId} must not allow prompt body storage.`);
     ensure(profile.credentialAccessAllowed === false, `${label} provider profile ${profile.profileId} must not allow credential access.`);
+  }
+  ensureArrayIncludesAll(
+    (value?.contextAccessMatrix || []).map((entry) => entry.agent),
+    requiredAutonomousAgentRoster,
+    `${label} contextAccessMatrix`
+  );
+  for (const entry of value?.contextAccessMatrix || []) {
+    ensure(entry.contextAccess === "read-only repo-local context and plan input", `${label} context entry ${entry.agent} must remain read-only.`);
+    ensure(entry.mcpResource === secondBrainMcpResource, `${label} context entry ${entry.agent} MCP resource mismatch.`);
+    ensure(entry.contextPackPath === paths.obsidianContextPack, `${label} context entry ${entry.agent} context pack path mismatch.`);
+    ensure(entry.privateVaultRead === false, `${label} context entry ${entry.agent} must not read private vaults.`);
+    ensure(entry.autonomousWriteAllowed === false, `${label} context entry ${entry.agent} must not allow autonomous writes.`);
   }
   for (const [key, expected] of [
     ["privateObsidianVaultReadPerformed", false],
@@ -341,6 +387,9 @@ function renderMarkdown(value) {
   const agentRows = value.subAgentMesh.autonomousAgentRoster
     .map((item) => `| ${item.agent} | ${item.status} | ${item.duty} |`)
     .join("\n");
+  const contextRows = value.contextAccessMatrix
+    .map((item) => `| ${item.agent} | ${item.status} | ${item.contextAccess} | ${item.privateVaultRead} | ${item.autonomousWriteAllowed} |`)
+    .join("\n");
   const surfaceRows = value.pluginAndMcpSurface.mcpSurfaces
     .map((item) => `| ${item.vendor} | ${item.surfaceCount} | ${item.status} | ${item.liveActionGate} |`)
     .join("\n");
@@ -362,6 +411,7 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 | AI workforce assignments | ${value.summary.workforceAssignmentCount} |
 | Managed sub-agent lanes | ${value.summary.managedSubAgentLaneCount} |
 | Autonomous agent roster | ${value.summary.autonomousAgentRosterCount} |
+| Read-only context access entries | ${value.summary.contextAccessAgentCount} |
 | Role schema roles | ${value.summary.roleSchemaRoleCount} |
 | Permission levels | ${value.summary.permissionLevelCount} |
 | Local apps detected in inventory | ${value.summary.localAppDetectedCount} |
@@ -373,6 +423,12 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 - status: ${value.secondBrainBinding.status}
 - vaultRoot: ${value.secondBrainBinding.vaultRoot}
 - trainingPackPath: ${value.secondBrainBinding.trainingPackPath}
+- mcpResource: ${value.secondBrainBinding.mcpResource}
+- repositoryContextPack.status: ${value.secondBrainBinding.repositoryContextPack.status}
+- repositoryContextPack.path: ${value.secondBrainBinding.repositoryContextPack.path}
+- repositoryContextPack.access: ${value.secondBrainBinding.repositoryContextPack.access}
+- repositoryContextPack.privateVaultRead: ${value.secondBrainBinding.repositoryContextPack.privateVaultRead}
+- repositoryContextPack.modelWeightTraining: ${value.secondBrainBinding.repositoryContextPack.modelWeightTraining}
 - obsidianBridgeStatus: ${value.secondBrainBinding.obsidianBridgeStatus}
 - privateVaultImportEnabled: ${value.secondBrainBinding.privateVaultImportEnabled}
 - hostVaultReadEnabled: ${value.secondBrainBinding.hostVaultReadEnabled}
@@ -396,6 +452,18 @@ ${workforceRows}
 | Agent | Status | Duty |
 | --- | --- | --- |
 ${agentRows}
+
+## Read-Only Context Access
+
+- MCP resource: ${value.secondBrainBinding.mcpResource}
+- Repo-owned Obsidian context pack: ${value.secondBrainBinding.repositoryContextPack.path}
+- Access mode: ${value.secondBrainBinding.repositoryContextPack.access}
+- Private vault read: ${value.secondBrainBinding.repositoryContextPack.privateVaultRead}
+- Model-weight training: ${value.secondBrainBinding.repositoryContextPack.modelWeightTraining}
+
+| Agent | Status | Context access | Private vault read | Autonomous write allowed |
+| --- | --- | --- | --- | --- |
+${contextRows}
 
 ## MCP And Plugin Surface
 
