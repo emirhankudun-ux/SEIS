@@ -49,5 +49,6 @@ console.log(JSON.stringify(buildReadOnlyRouteDecision(input, { root }), null, 2)
 
 function readOption(name) {
   const index = args.indexOf(name);
-  return index === -1 ? null : args[index + 1];
+  const value = index === -1 ? null : args[index + 1];
+  return value && !value.startsWith("-") ? value : null;
 }

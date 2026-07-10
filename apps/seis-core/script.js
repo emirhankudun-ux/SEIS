@@ -2379,7 +2379,7 @@ function renderEcosystemControlPlane() {
   const lanes = Array.isArray(seisCoreEcosystemRegistry.lanes) ? seisCoreEcosystemRegistry.lanes : [];
   const readyCount = lanes.filter((lane) => lane.status === "Ready").length;
   const localCount = lanes.filter((lane) => /local|mock|registry|contract/i.test(lane.mode || "")).length;
-  const mcpToolCount = lanes.reduce((total, lane) => total + (lane.mcpTools || []).length, 0);
+  const mcpToolCount = lanes.reduce((total, lane) => total + (Array.isArray(lane.mcpTools) ? lane.mcpTools : []).length, 0);
   const statePill = $("#ecosystem-control-state");
   const summary = $("#ecosystem-control-summary");
   const grid = $("#ecosystem-control-grid");
@@ -2403,7 +2403,9 @@ function renderEcosystemControlPlane() {
     </article>
   `).join("");
 
-  grid.innerHTML = lanes.map((lane) => `
+  grid.innerHTML = lanes.map((lane) => {
+    const mcpTools = Array.isArray(lane.mcpTools) ? lane.mcpTools : [];
+    return `
     <article class="ecosystem-lane-card">
       <div class="card-topline">
         <div>
@@ -2420,7 +2422,7 @@ function renderEcosystemControlPlane() {
         </div>
         <div>
           <dt>MCP</dt>
-          <dd>${lane.mcpTools.length ? escapeHtml(lane.mcpTools.join(", ")) : "No remote MCP"}</dd>
+          <dd>${mcpTools.length ? escapeHtml(mcpTools.join(", ")) : "No remote MCP"}</dd>
         </div>
         <div>
           <dt>Core binding</dt>
@@ -2441,7 +2443,8 @@ function renderEcosystemControlPlane() {
         <button class="secondary-button" type="button" data-copy-ecosystem-gate="${escapeHtml(lane.qualityGate)}">Copy gate</button>
       </div>
     </article>
-  `).join("");
+  `;
+  }).join("");
   feedback.textContent = ecosystemControlNotice;
 }
 

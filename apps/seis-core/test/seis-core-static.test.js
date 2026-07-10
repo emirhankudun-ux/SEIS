@@ -164,6 +164,7 @@ test("SEIS Command Center binds specialist lanes and Store through a local contr
   assert.equal(sshBinding?.runtimeMode, "static-read-only");
   assert.match(script, /sshBinding/);
   assert.match(script, /SSH binding/);
+  assert.match(script, /Array\.isArray\(lane\.mcpTools\)/);
 });
 
 
