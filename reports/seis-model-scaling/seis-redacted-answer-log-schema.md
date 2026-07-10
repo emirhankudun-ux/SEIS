@@ -1,6 +1,6 @@
 # SEIS Redacted Answer Log Schema Report
 
-Generated: 2026-07-01T03:17:31.184Z
+Generated: 2026-07-01T03:29:05.582Z
 
 Status: redacted-answer-log-schema-ready-no-real-logs
 
@@ -23,6 +23,7 @@ Status: redacted-answer-log-schema-ready-no-real-logs
 
 - `npm run report:seis-redacted-answer-log-schema`
 - `npm run check:seis-redacted-answer-log-schema`
+- `npm run check:seis-security-blocker-diagnostic`
 - `npm run check:seis-no-secret-answer-log-scan`
 - `npm run check:seis-ai-public-readiness`
 

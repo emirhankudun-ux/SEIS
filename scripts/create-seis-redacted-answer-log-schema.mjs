@@ -246,6 +246,7 @@ function buildReport(schema) {
     safeNextCommands: [
       "npm run report:seis-redacted-answer-log-schema",
       "npm run check:seis-redacted-answer-log-schema",
+      "npm run check:seis-security-blocker-diagnostic",
       "npm run check:seis-no-secret-answer-log-scan",
       "npm run check:seis-ai-public-readiness"
     ],

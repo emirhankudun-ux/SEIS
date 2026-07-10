@@ -1,6 +1,6 @@
 {
   "id": "seis-redacted-answer-log-schema-report",
-  "generatedAt": "2026-07-01T03:17:31.184Z",
+  "generatedAt": "2026-07-01T03:29:05.582Z",
   "status": "redacted-answer-log-schema-ready-no-real-logs",
   "sourceSchema": "content/development/seis-redacted-answer-log-schema.json",
   "summary": {
@@ -18,6 +18,7 @@
   "safeNextCommands": [
     "npm run report:seis-redacted-answer-log-schema",
     "npm run check:seis-redacted-answer-log-schema",
+    "npm run check:seis-security-blocker-diagnostic",
     "npm run check:seis-no-secret-answer-log-scan",
     "npm run check:seis-ai-public-readiness"
   ],

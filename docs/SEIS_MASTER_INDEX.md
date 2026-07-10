@@ -113,6 +113,8 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | SEIS no-secret answer log scan report command | `npm run report:seis-no-secret-answer-log-scan` |
 | SEIS redacted answer log schema gate | `npm run check:seis-redacted-answer-log-schema` |
 | SEIS redacted answer log schema report command | `npm run report:seis-redacted-answer-log-schema` |
+| SEIS security blocker diagnostic gate | `npm run check:seis-security-blocker-diagnostic` |
+| SEIS security blocker diagnostic report command | `npm run report:seis-security-blocker-diagnostic` |
 | SEIS knowledge retrieval training gate | `npm run check:seis-knowledge-retrieval-training` |
 | SEIS knowledge retrieval training report command | `npm run report:seis-knowledge-retrieval-training` |
 | Foundation check alias | `npm run foundation:check` |
@@ -145,6 +147,7 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | SEIS retrieval citation scorer dry-run report | [../reports/seis-model-scaling/seis-retrieval-citation-scorer-dry-run.md](../reports/seis-model-scaling/seis-retrieval-citation-scorer-dry-run.md) |
 | SEIS no-secret answer log scan report | [../reports/seis-model-scaling/seis-no-secret-answer-log-scan.md](../reports/seis-model-scaling/seis-no-secret-answer-log-scan.md) |
 | SEIS redacted answer log schema report | [../reports/seis-model-scaling/seis-redacted-answer-log-schema.md](../reports/seis-model-scaling/seis-redacted-answer-log-schema.md) |
+| SEIS security blocker diagnostic report | [../reports/seis-model-scaling/seis-security-blocker-diagnostic.md](../reports/seis-model-scaling/seis-security-blocker-diagnostic.md) |
 | SEIS knowledge retrieval training report | [../reports/seis-model-scaling/seis-knowledge-retrieval-training-contract.md](../reports/seis-model-scaling/seis-knowledge-retrieval-training-contract.md) |
 | NVIDIA accelerator catalog | [../content/development/seis-nvidia-accelerator-catalog.json](../content/development/seis-nvidia-accelerator-catalog.json) |
 | NVIDIA accelerator catalog validator | `npm run check:seis-nvidia-accelerator-catalog` |
