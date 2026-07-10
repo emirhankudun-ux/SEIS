@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="SEIS God Mode Command Center is a governed local-demo workspace for agent orchestration, language routing, production readiness, evidence, validation, rollback, and human approval.">
+    <meta name="theme-color" content="#07090f">
+    <meta name="color-scheme" content="dark">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+    <title>SEIS God Mode Command Center</title>
+    <link rel="stylesheet" href="./god-mode-command-center.css">
+    <script src="./god-mode-command-center.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to command center</a>
+
+    <div class="app-shell">
+      <header class="topbar" aria-label="SEIS God Mode navigation">
+        <a class="brand" href="./index.html" aria-label="Back to SEIS home">
+          <span class="brand-mark" aria-hidden="true">S</span>
+          <span>
+            <strong>SEIS God Mode</strong>
+            <small>Human-gated local demo</small>
+          </span>
+        </a>
+        <nav aria-label="Command center sections">
+          <a href="#mission">Mission</a>
+          <a href="#pipeline">Pipeline</a>
+          <a href="#readiness">Readiness</a>
+          <a href="#language-router">Languages</a>
+          <a href="#evidence">Evidence</a>
+        </nav>
+        <div class="topbar-actions">
+          <a class="ghost-button" href="./universal-language-selector.html">Language Atlas</a>
+          <a class="primary-button" href="./desktop.html#seis-ai">Open SEIS OS</a>
+        </div>
+      </header>
+
+      <main id="main">
+        <section class="hero-section" aria-labelledby="hero-title">
+          <article class="hero-copy glass-card">
+            <p class="eyebrow">High leverage · explicit evidence · human gate</p>
+            <h1 id="hero-title">God Mode without chaos.</h1>
+            <p class="hero-lead">
+              Plan ambitious SEIS work across product, agents, languages, full-stack architecture, security, validation, and handoff—while live provider calls, SSH, deployment, database writes, untrusted code execution, and autonomous merge remain disabled.
+            </p>
+            <div class="hero-actions">
+              <a class="primary-button large" href="#mission">Create a mission plan</a>
+              <button class="ghost-button large" type="button" data-action="export-latest" disabled>Export latest plan</button>
+            </div>
+            <div class="safety-chips" aria-label="God Mode safety boundaries">
+              <span>0 external calls</span>
+              <span>0 secrets required</span>
+              <span>no auto-deploy</span>
+              <span>no autonomous merge</span>
+            </div>
+          </article>
+
+          <aside class="hero-metrics glass-card" aria-label="Command center metrics">
+            <div class="metric-card">
+              <span>Pipeline</span>
+              <strong data-metric="pipeline">9</strong>
+              <small>governed stages</small>
+            </div>
+            <div class="metric-card">
+              <span>Agent team</span>
+              <strong data-metric="roles">8</strong>
+              <small>specialist roles</small>
+            </div>
+            <div class="metric-card">
+              <span>Production stack</span>
+              <strong data-metric="readiness">13</strong>
+              <small>visible layers</small>
+            </div>
+            <div class="metric-card">
+              <span>Live actions</span>
+              <strong>0</strong>
+              <small>human approval required</small>
+            </div>
+            <div class="source-status" role="status" aria-live="polite">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span data-contract-status>Loading governed contract…</span>
+            </div>
+          </aside>
+        </section>
+
+        <section class="section" id="mission" aria-labelledby="mission-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Mission planner</p>
+              <h2 id="mission-title">Turn a broad goal into a narrow, testable slice.</h2>
+            </div>
+            <p>Every plan includes agent roles, language lanes, checks, blocked actions, evidence targets, rollback, and a final human approval gate.</p>
+          </div>
+
+          <div class="mission-layout">
+            <form class="mission-form glass-card" data-mission-form>
+              <label>
+                <span>Mission goal</span>
+                <textarea name="goal" rows="5" required maxlength="600" placeholder="Example: Add a governed Apple-first native planning lane and connect it to the SEIS Language Atlas without installing SDKs."></textarea>
+              </label>
+
+              <div class="form-grid">
+                <label>
+                  <span>Mission template</span>
+                  <select name="template" data-template-select></select>
+                </label>
+                <label>
+                  <span>Priority</span>
+                  <select name="priority">
+                    <option value="P0">P0 · critical foundation</option>
+                    <option value="P1" selected>P1 · high leverage</option>
+                    <option value="P2">P2 · planned improvement</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Risk posture</span>
+                  <select name="risk">
+                    <option value="low">Low · docs, JSON, local UI</option>
+                    <option value="moderate" selected>Moderate · scoped code + validators</option>
+                    <option value="high">High · runtime or infrastructure proposal</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Target horizon</span>
+                  <select name="horizon">
+                    <option value="current-pr">Current PR</option>
+                    <option value="next-pr" selected>Next focused PR</option>
+                    <option value="quarter">Quarter roadmap</option>
+                    <option value="five-year">Five-year program</option>
+                  </select>
+                </label>
+              </div>
+
+              <fieldset>
+                <legend>Optional constraints</legend>
+                <div class="constraint-grid">
+                  <label><input type="checkbox" name="constraint" value="zero-dependencies" checked> Zero new dependencies</label>
+                  <label><input type="checkbox" name="constraint" value="local-first" checked> Local-first fallback</label>
+                  <label><input type="checkbox" name="constraint" value="apple-first"> Apple-first direction</label>
+                  <label><input type="checkbox" name="constraint" value="accessibility" checked> Accessibility gate</label>
+                  <label><input type="checkbox" name="constraint" value="security-review" checked> Security review</label>
+                  <label><input type="checkbox" name="constraint" value="no-live-actions" checked disabled> No live actions</label>
+                </div>
+              </fieldset>
+
+              <div class="form-actions">
+                <button class="primary-button" type="submit">Generate governed plan</button>
+                <button class="ghost-button" type="reset">Reset</button>
+              </div>
+            </form>
+
+            <aside class="plan-output glass-card" aria-labelledby="plan-output-title">
+              <div class="panel-header">
+                <div>
+                  <p class="eyebrow">Dry-run output</p>
+                  <h3 id="plan-output-title">Mission plan</h3>
+                </div>
+                <span class="state-badge state-local">local only</span>
+              </div>
+              <div class="empty-state" data-plan-empty>
+                <strong>No plan generated yet.</strong>
+                <p>Describe a goal and SEIS will create a browser-local, exportable plan. It will not execute commands or make external changes.</p>
+              </div>
+              <div class="generated-plan" data-plan-output hidden></div>
+              <div class="plan-actions" data-plan-actions hidden>
+                <button class="ghost-button" type="button" data-action="copy-plan">Copy summary</button>
+                <button class="primary-button" type="button" data-action="export-plan">Export JSON</button>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="section" id="pipeline" aria-labelledby="pipeline-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Agent operating system</p>
+              <h2 id="pipeline-title">Nine stages. No silent escalation.</h2>
+            </div>
+            <p>The pipeline moves from intent to human approval with explicit allowed actions, blocked actions, and evidence at every handoff.</p>
+          </div>
+          <div class="pipeline-grid" data-pipeline></div>
+        </section>
+
+        <section class="section" aria-labelledby="team-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Specialist swarm</p>
+              <h2 id="team-title">Eight roles, one shared mission.</h2>
+            </div>
+            <p>Roles collaborate through deterministic handoffs; no role can approve its own high-risk escalation.</p>
+          </div>
+          <div class="agent-grid" data-agent-roles></div>
+        </section>
+
+        <section class="section" id="readiness" aria-labelledby="readiness-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Full-stack production reality</p>
+              <h2 id="readiness-title">Every layer has a state and a next gate.</h2>
+            </div>
+            <p>Working, local-demo, planned, blocked, and not-applicable states remain visibly separate so the interface never overclaims readiness.</p>
+          </div>
+          <div class="readiness-board glass-card" data-readiness></div>
+        </section>
+
+        <section class="section" id="language-router" aria-labelledby="language-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Language router</p>
+              <h2 id="language-title">Choose the smallest stack that fits.</h2>
+            </div>
+            <p>Describe a target layer. The router recommends a restrained language set and shows activation tiers instead of installing every toolchain.</p>
+          </div>
+
+          <div class="router-layout">
+            <form class="router-form glass-card" data-router-form>
+              <label>
+                <span>Target layer or feature</span>
+                <input type="text" name="target" maxlength="180" placeholder="Example: Apple-first macOS command center">
+              </label>
+              <label>
+                <span>Primary surface</span>
+                <select name="surface">
+                  <option value="auto">Auto-detect</option>
+                  <option value="web">Web / product UI</option>
+                  <option value="backend">Backend / API</option>
+                  <option value="ai-data">AI / data</option>
+                  <option value="apple">Apple native</option>
+                  <option value="android">Android native</option>
+                  <option value="system">Systems / performance</option>
+                  <option value="game">Game / 3D</option>
+                  <option value="devops">DevOps / cloud</option>
+                </select>
+              </label>
+              <button class="primary-button" type="submit">Route languages</button>
+            </form>
+
+            <div class="router-result glass-card" data-router-result>
+              <div class="empty-state">
+                <strong>No language route selected.</strong>
+                <p>The router returns recommendations only. Compiler, interpreter, SDK, engine, and dependency installation remain blocked.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="evidence" aria-labelledby="evidence-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Evidence and hard gates</p>
+              <h2 id="evidence-title">Power is measured by proof, not claims.</h2>
+            </div>
+            <p>Every mission must identify what changed, what was checked, what remains uncertain, and who owns the final approval.</p>
+          </div>
+          <div class="evidence-layout">
+            <div class="gate-list glass-card" data-hard-gates></div>
+            <aside class="activity-log glass-card">
+              <div class="panel-header">
+                <div>
+                  <p class="eyebrow">Local evidence log</p>
+                  <h3>Recent planner events</h3>
+                </div>
+                <button class="text-button" type="button" data-action="clear-log">Clear</button>
+              </div>
+              <ol data-activity-log></ol>
+            </aside>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <p>SEIS God Mode is a governed local-demo planning surface. It does not execute shell commands, access secrets, deploy infrastructure, call AI providers, write databases, or merge pull requests.</p>
+      </footer>
+    </div>
+  </body>
+</html>
