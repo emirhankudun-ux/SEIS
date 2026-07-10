@@ -1,0 +1,10 @@
+type NativeRoadmapItem {
+  lane: String!
+  score: Int!
+  language: String!
+}
+
+type Query {
+  nativeRoadmap: [NativeRoadmapItem!]!
+  topLane: NativeRoadmapItem!
+}
