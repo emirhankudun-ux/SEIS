@@ -33,7 +33,7 @@ body {
     radial-gradient(circle at 16% 14%, rgba(108, 231, 255, 0.18), transparent 28rem),
     radial-gradient(circle at 84% 4%, rgba(167, 139, 250, 0.16), transparent 24rem),
     radial-gradient(circle at 50% 96%, rgba(247, 196, 109, 0.1), transparent 30rem),
-    linear-gradient(130deg, #090b10 0%, #0d1118 42%, #0b0d13 100%);
+    linear-gradient(130deg, var(--bg) 0%, #0d1118 42%, #0b0d13 100%);
   color: var(--text);
   font-family: var(--font);
   line-height: 1.55;
@@ -91,6 +91,7 @@ button {
   gap: 1rem;
   align-items: center;
   padding: 1rem 0;
+  background: linear-gradient(180deg, var(--surface-strong), rgba(15, 20, 30, 0.42));
   backdrop-filter: blur(10px);
 }
 
@@ -190,7 +191,7 @@ p {
   min-width: min(430px, 54vw);
   height: 46px;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: var(--radius-sm);
   padding: 0 0.9rem;
   background: var(--surface-soft);
   color: var(--text);
@@ -207,7 +208,7 @@ button:focus-visible {
 
 #searchButton {
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: var(--radius-sm);
   padding: 0 1rem;
   background: linear-gradient(120deg, rgba(108, 231, 255, 0.22), rgba(132, 255, 184, 0.16));
   color: var(--text);
@@ -355,7 +356,7 @@ button:focus-visible {
   border: 1px solid var(--line);
   border-radius: 12px;
   padding: 0.8rem;
-  background: rgba(0, 0, 0, 0.45);
+  background: var(--surface-strong);
   color: #e3eeff;
   white-space: pre-wrap;
   min-height: 120px;
@@ -459,8 +460,64 @@ button:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   * {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+html.reduce-motion {
+  scroll-behavior: auto;
+}
+
+.reduce-motion * {
+  animation: none !important;
+  transition: none !important;
+}
+
+@media print {
+  html {
+    scroll-behavior: auto;
+  }
+
+  body {
+    background: #fff;
+    color: #111;
+  }
+
+  .topbar,
+  .search-shell {
+    width: 100%;
+  }
+
+  .topbar {
+    position: static;
+    background: transparent;
+    backdrop-filter: none;
+  }
+
+  .search-hero,
+  .runtime-strip,
+  .result-panel,
+  .preview-panel,
+  .results-ledger {
+    background: #fff;
+    border-color: #999;
+    box-shadow: none;
+  }
+
+  .search-tabs,
+  .command-row,
+  .preview-actions {
+    display: none;
+  }
+
+  .workspace-grid,
+  .ledger-grid {
+    grid-template-columns: 1fr;
   }
 }

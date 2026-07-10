@@ -68,6 +68,12 @@ test("Search Center JS keeps browser-local state and safe flags", () => {
   }
 });
 
+test("Search Center keeps direct-file compatible startup", () => {
+  assert.ok(html.includes('src="./search-center.js"'), "Search Center HTML must reference the classic browser entrypoint.");
+  assert.equal(html.includes('type="module"'), false, "Search Center must not require module script loading for direct-file startup.");
+  assert.equal(html.includes("search-center.mjs"), false, "Search Center must not reference the HTTP-only module entrypoint.");
+});
+
 test("Search Center does not include provider or network access patterns", () => {
   const forbiddenPatterns = [
     /fetch\s*\(/i,
@@ -82,6 +88,11 @@ test("Search Center does not include provider or network access patterns", () =>
     /new\s+File\s*\(/i,
     /new\s+Blob\s*\(/i,
     /window\.open\(/i,
+    /\binnerHTML\b/i,
+    /\beval\s*\(/i,
+    /document\.write/i,
+    /console\.log/i,
+    /\bTODO\b/i,
   ];
 
   for (const pattern of forbiddenPatterns) {
@@ -99,6 +110,9 @@ test("Search Center CSS provides responsive and accessible layout", () => {
     "preview-panel",
     "status-pill",
     "prefers-reduced-motion",
+    "html.reduce-motion",
+    "scroll-behavior: auto",
+    "@media print",
     "@media (max-width: 1080px)",
     "@media (max-width: 640px)",
     ".skip-link",

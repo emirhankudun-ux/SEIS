@@ -256,10 +256,9 @@ const fallbackState = {
   activeTab: "AI",
   selectedResultId: "ai-routing",
   recentQueries: [],
-  selectedType: "Real",
 };
 
-let state = loadState();
+const state = loadState();
 
 const dom = {
   searchInput: document.querySelector("#searchInput"),
@@ -293,21 +292,36 @@ function persistState() {
   localStorage.setItem(STORE_KEY, JSON.stringify(state));
 }
 
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+function makeElement(tagName, options = {}) {
+  const element = document.createElement(tagName);
+  if (options.className) element.className = options.className;
+  if (options.text !== undefined) element.textContent = options.text;
+  if (options.type) element.type = options.type;
+  if (options.role) element.setAttribute("role", options.role);
+  if (options.ariaLabel) element.setAttribute("aria-label", options.ariaLabel);
+  if (options.ariaSelected !== undefined) element.setAttribute("aria-selected", String(options.ariaSelected));
+  for (const [key, value] of Object.entries(options.dataset || {})) {
+    element.dataset[key] = value;
+  }
+  return element;
+}
+
+function makeStatusPill(statusClass, status) {
+  return makeElement("span", {
+    className: `status-pill ${statusClass}`,
+    text: status,
+  });
 }
 
 function updateRecentQueries() {
-  dom.recentQueries.innerHTML = state.recentQueries
-    .map((query) => `
-      <button class="command-chip" type="button" data-query="${escapeHtml(query)}" aria-label="Repeat query ${escapeHtml(query)}">${escapeHtml(query)}</button>
-    `.trim())
-    .join("");
+  const buttons = state.recentQueries.map((query) => makeElement("button", {
+    className: "command-chip",
+    text: query,
+    type: "button",
+    ariaLabel: `Repeat query ${query}`,
+    dataset: { query },
+  }));
+  dom.recentQueries.replaceChildren(...buttons);
 }
 
 function recordQuery(query) {
@@ -326,14 +340,15 @@ function activeResults() {
   });
 }
 
-function resultBadge(statusClass, status) {
-  return `<span class="status-pill ${statusClass}">${escapeHtml(status)}</span>`;
-}
-
 function renderResults() {
   const results = activeResults();
   if (!results.length) {
-    dom.resultList.innerHTML = `<div class="result-item"><p class="result-summary">No results match this query. Try one of the quick commands.</p></div>`;
+    const empty = makeElement("div", { className: "result-item" });
+    empty.append(makeElement("p", {
+      className: "result-summary",
+      text: "No results match this query. Try one of the quick commands.",
+    }));
+    dom.resultList.replaceChildren(empty);
     state.selectedResultId = "";
     dom.resultCount.textContent = "0";
     renderPreview();
@@ -348,21 +363,26 @@ function renderResults() {
   dom.resultCount.textContent = `${results.length} result${results.length > 1 ? "s" : ""}`;
   dom.resultHeading.textContent = `${state.activeTab} results`;
 
-  dom.resultList.innerHTML = results
-    .map((result) => {
-      const selected = result.id === state.selectedResultId ? " is-selected" : "";
-      return `
-        <button class="result-item${selected}" type="button" data-result="${escapeHtml(result.id)}">
-          <div class="result-title">
-            <h3>${escapeHtml(result.title)}</h3>
-            ${resultBadge(result.statusClass, result.status)}
-          </div>
-          <p class="result-summary">${escapeHtml(result.summary)}</p>
-          <div class="result-meta">${escapeHtml(result.source)} • ${escapeHtml(result.type)}</div>
-        </button>
-      `;
-    })
-    .join("");
+  const nodes = results.map((result) => {
+    const selected = result.id === state.selectedResultId ? " is-selected" : "";
+    const button = makeElement("button", {
+      className: `result-item${selected}`,
+      type: "button",
+      dataset: { result: result.id },
+    });
+    const title = makeElement("div", { className: "result-title" });
+    title.append(
+      makeElement("h3", { text: result.title }),
+      makeStatusPill(result.statusClass, result.status),
+    );
+    button.append(
+      title,
+      makeElement("p", { className: "result-summary", text: result.summary }),
+      makeElement("div", { className: "result-meta", text: `${result.source} - ${result.type}` }),
+    );
+    return button;
+  });
+  dom.resultList.replaceChildren(...nodes);
 
   renderPreview();
   persistState();
@@ -375,9 +395,9 @@ function renderPreview() {
   if (!result) {
     dom.previewTitle.textContent = "No result selected.";
     dom.previewSummary.textContent = "Use search, tab switch, or command chips to load a result.";
-    dom.previewMeta.textContent = "";
+    dom.previewMeta.replaceChildren();
     dom.previewBody.textContent = "No preview loaded.";
-    dom.previewActions.innerHTML = "";
+    dom.previewActions.replaceChildren();
     dom.selectedSource.textContent = "No result";
     dom.selectedSource.className = "status-pill mock";
     return;
@@ -387,14 +407,18 @@ function renderPreview() {
 
   dom.previewTitle.textContent = `${result.source}: ${result.title}`;
   dom.previewSummary.textContent = result.summary;
-  dom.previewMeta.innerHTML = `
-    <div>Type: ${escapeHtml(result.type)}</div>
-    <div>Status: ${escapeHtml(result.status)}</div>
-    <div>Scope: ${escapeHtml(state.activeTab)} search tab</div>
-    <div>Safety flags: networkRequested=${safetyFlags.networkRequested}, liveWebSearch=${safetyFlags.liveWebSearch}, providerCalled=${safetyFlags.providerCalled}, filesystemRead=${safetyFlags.filesystemRead}</div>
-  `;
+  dom.previewMeta.replaceChildren(
+    makeElement("div", { text: `Type: ${result.type}` }),
+    makeElement("div", { text: `Status: ${result.status}` }),
+    makeElement("div", { text: `Scope: ${state.activeTab} search tab` }),
+    makeElement("div", { text: `Safety flags: networkRequested=${safetyFlags.networkRequested}, liveWebSearch=${safetyFlags.liveWebSearch}, providerCalled=${safetyFlags.providerCalled}, filesystemRead=${safetyFlags.filesystemRead}` }),
+  );
   dom.previewBody.textContent = result.detail.map((line) => `• ${line}`).join("\n");
-  dom.previewActions.innerHTML = `<button type="button" data-action="${escapeHtml(result.id)}">${escapeHtml(result.action)}</button>`;
+  dom.previewActions.replaceChildren(makeElement("button", {
+    text: result.action,
+    type: "button",
+    dataset: { action: result.id },
+  }));
 
   dom.selectedSource.textContent = result.status;
   dom.selectedSource.className = `status-pill ${result.statusClass}`;
@@ -408,11 +432,15 @@ function updateAriaSelection() {
 }
 
 function renderTabs() {
-  dom.tabs.innerHTML = tabsOrder
-    .map((tab) => `
-      <button class="search-tab${tab === state.activeTab ? " is-active" : ""}" data-tab="${tab}" type="button" role="tab" aria-selected="${tab === state.activeTab}">${tab}</button>
-    `)
-    .join("");
+  const buttons = tabsOrder.map((tab) => makeElement("button", {
+    className: `search-tab${tab === state.activeTab ? " is-active" : ""}`,
+    text: tab,
+    type: "button",
+    role: "tab",
+    ariaSelected: tab === state.activeTab,
+    dataset: { tab },
+  }));
+  dom.tabs.replaceChildren(...buttons);
 }
 
 function applySearch(query) {
@@ -424,6 +452,8 @@ function applySearch(query) {
 
 function setActiveTab(tab) {
   state.activeTab = tab;
+  state.query = "";
+  dom.searchInput.value = "";
   state.selectedResultId = resultData[tab]?.[0]?.id || "";
   renderTabs();
   renderResults();
@@ -476,9 +506,6 @@ function handleKeyboardShortcuts(event) {
     return;
   }
 
-  if (event.key === "Enter" && document.activeElement?.id === "searchInput") {
-    applySearch(dom.searchInput.value);
-  }
 }
 
 function runBootstrap() {
@@ -493,11 +520,6 @@ function renderRecentQueryEvents() {
 }
 
 
-dom.searchButton.addEventListener("click", (event) => {
-  event.preventDefault();
-  applySearch(dom.searchInput.value);
-});
-
 dom.searchInput.addEventListener("input", (event) => {
   state.query = event.target.value;
   renderResults();
@@ -508,17 +530,6 @@ dom.searchInput.addEventListener("keydown", handleKeyboardShortcuts);
 dom.tabs.addEventListener("click", handleTabClick);
 
 dom.resultList.addEventListener("click", handleResultClick);
-dom.resultList.addEventListener("click", (event) => {
-  if (event.target.closest(".result-item")) {
-    renderResults();
-  }
-});
-
-dom.resultList.addEventListener("dblclick", handleResultClick);
-
-dom.resultList.addEventListener("focusin", () => {
-  // intentful for screen reader flow only
-});
 
 dom.previewActions.addEventListener("click", (event) => {
   if (event.target.closest("[data-action]")) {
@@ -526,12 +537,6 @@ dom.previewActions.addEventListener("click", (event) => {
   }
 });
 dom.recentQueries.addEventListener("click", handleCommandClick);
-dom.tabs.addEventListener("mousedown", (event) => {
-  const tab = event.target.closest("[data-tab]");
-  if (tab) {
-    applySearch("");
-  }
-});
 
 dom.searchButton.closest(".search-form").addEventListener("submit", (event) => {
   event.preventDefault();
