@@ -30,7 +30,7 @@ const ROUTER_LANES = Object.freeze([
 const PRIVATE_CONTENT_PATTERN = /\b(private|personal|obsidian|vault|note[- ]content|journal)\b/i;
 const FRONTIER_MODEL_PATTERN = /\b(20b|70b|150b|300b|512b|frontier|apex|foundation[- ]model|model[- ]weights)\b/i;
 const SECRET_KEY_PATTERN = /(api[_-]?key|access[_-]?token|auth[_-]?token|credential|password|cookie|private[_-]?key|service[_-]?account|secret|ssh)/i;
-const FORBIDDEN_VALUE_PATTERN = /(sk-[a-z0-9_-]{8,}|sk-ant-[a-z0-9_-]{8,}|ghp_[a-z0-9_-]{12,}|github_pat_[a-z0-9_-]{12,}|xox[baprs]-[a-z0-9-]{12,}|AIza[a-z0-9_-]{12,}|AKIA[a-z0-9]{12,}|bearer\s+[a-z0-9._-]{20,}|-----begin [a-z ]+private key-----)/i;
+const FORBIDDEN_VALUE_PATTERN = /(sk-ant-[a-z0-9_-]{24,}|sk-[a-z0-9_-]{24,}|ghp_[a-z0-9_-]{12,}|github_pat_[a-z0-9_-]{12,}|xox[baprs]-[a-z0-9-]{12,}|AIza[a-z0-9_-]{12,}|AKIA[a-z0-9]{12,}|bearer\s+[a-z0-9._-]{20,}|-----begin [a-z ]+private key-----)/i;
 
 const DEFAULT_INPUT = Object.freeze({
   taskType: "general-assistant-task",
