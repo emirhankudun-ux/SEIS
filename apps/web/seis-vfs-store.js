@@ -30,21 +30,21 @@
     return databasePromise;
   }
 
-  function readRecord(database) {
+  function readRecord(database, key = RECORD_KEY) {
     return new Promise((resolve, reject) => {
       const transaction = database.transaction(STORE_NAME, "readonly");
-      const request = transaction.objectStore(STORE_NAME).get(RECORD_KEY);
+      const request = transaction.objectStore(STORE_NAME).get(key);
       request.onsuccess = () => resolve(request.result || null);
       request.onerror = () => reject(request.error || new Error("IndexedDB read failed"));
       transaction.onerror = () => reject(transaction.error || new Error("IndexedDB read transaction failed"));
     });
   }
 
-  function writeRecord(database, root, reason) {
+  function writeRecord(database, root, reason, key = RECORD_KEY) {
     return new Promise((resolve, reject) => {
       const transaction = database.transaction(STORE_NAME, "readwrite");
       transaction.objectStore(STORE_NAME).put({
-        key: RECORD_KEY,
+        key,
         root,
         reason: String(reason || "mutation"),
         updatedAt: new Date().toISOString()
@@ -55,9 +55,9 @@
     });
   }
 
-  function readFallback() {
+  function readFallback(key = FALLBACK_KEY) {
     try {
-      const raw = window.localStorage.getItem(FALLBACK_KEY);
+      const raw = window.localStorage.getItem(key);
       if (!raw) return null;
       const record = JSON.parse(raw);
       return record && record.root ? record : { root: record };
@@ -114,5 +114,74 @@
     }
   }
 
-  window.SEIS_VFS_STORE = { load, save, version: 1, maxBytes: MAX_BYTES };
+  function scopeKey(scope) {
+    const safeScope = String(scope || "workspace").replace(/[^a-z0-9._-]/gi, "-").slice(0, 80) || "workspace";
+    return `vfs-scope:${safeScope}:v1`;
+  }
+
+  function scopeFallbackKey(scope) {
+    const safeScope = String(scope || "workspace").replace(/[^a-z0-9._-]/gi, "-").slice(0, 80) || "workspace";
+    return `seis-shared-vfs.${safeScope}.v1`;
+  }
+
+  async function loadScope(scope) {
+    const recordKey = scopeKey(scope);
+    const fallbackKey = scopeFallbackKey(scope);
+    let indexedDbAvailable = false;
+    try {
+      const database = await openDatabase();
+      indexedDbAvailable = Boolean(database);
+      if (database) {
+        const record = await readRecord(database, recordKey);
+        if (record?.root) return { root: record.root, mode: "indexeddb", restored: true };
+      }
+    } catch {
+      indexedDbAvailable = false;
+    }
+    const fallback = readFallback(fallbackKey);
+    if (fallback?.root) return { root: fallback.root, mode: "localstorage", restored: true };
+    return { root: null, mode: indexedDbAvailable ? "indexeddb" : "memory", restored: false };
+  }
+
+  async function saveScope(scope, root, reason) {
+    let snapshot;
+    try {
+      snapshot = clone(root);
+      if (JSON.stringify(snapshot).length > MAX_BYTES) {
+        return { mode: "memory", error: "vfs-size-limit" };
+      }
+    } catch {
+      return { mode: "memory", error: "vfs-serialization-failed" };
+    }
+    const recordKey = scopeKey(scope);
+    const fallbackKey = scopeFallbackKey(scope);
+    try {
+      const database = await openDatabase();
+      if (database) {
+        await writeRecord(database, snapshot, reason, recordKey);
+        return { mode: "indexeddb", savedAt: new Date().toISOString() };
+      }
+    } catch {
+      // Fall through to the bounded localStorage fallback.
+    }
+    try {
+      window.localStorage.setItem(fallbackKey, JSON.stringify({
+        root: snapshot,
+        reason: String(reason || "mutation"),
+        updatedAt: new Date().toISOString()
+      }));
+      return { mode: "localstorage", savedAt: new Date().toISOString() };
+    } catch {
+      return { mode: "memory", error: "browser-storage-unavailable" };
+    }
+  }
+
+  window.SEIS_VFS_STORE = {
+    load,
+    save,
+    loadScope,
+    saveScope,
+    version: 1,
+    maxBytes: MAX_BYTES
+  };
 })();

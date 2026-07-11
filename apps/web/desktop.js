@@ -1873,6 +1873,7 @@ const CODE_WORKSPACE_DB_NAME = "seis-code-workspace-v1";
 const CODE_WORKSPACE_DB_VERSION = 1;
 const CODE_WORKSPACE_ROOT = "/workspace";
 const CODE_WORKSPACE_CHANNEL = "seis-code-workspace";
+const SHARED_VFS_ROOT = "/workspace";
 const DESKTOP_HOME = "/home/seis";
 const WORKSPACE_IDS = ["1", "2", "3"];
 const SESSION_WINDOW_LIMIT = 96;
@@ -1930,6 +1931,10 @@ let state = createDefaultState();
 let activeWindowId = null;
 let launcherCategory = "All";
 let codeWorkspaceSyncQueue = Promise.resolve();
+let sharedVfsSaveQueue = Promise.resolve();
+let sharedVfsMode = "unavailable";
+let sharedVfsLastSavedAt = "";
+let sharedVfsError = "";
 let contextMenuState = null;
 let terminalSession = {
   cwd: "/home/seis",
@@ -1962,6 +1967,7 @@ init();
 async function init() {
   db = await withTimeout(openDatabase(), 300).catch(() => null);
   state = await loadState();
+  await loadSharedWorkspace("shared-vfs-startup");
   ensureAiPluginInventory();
   applyTheme();
   renderDock();
@@ -2210,6 +2216,7 @@ function saveState() {
   const payload = JSON.stringify({ ...state, windows: [], sessionWindows: serializeSessionWindows() });
   localStorage.setItem(STORAGE_KEY, payload);
   idbSet("state", JSON.parse(payload)).catch(() => {});
+  void persistSharedWorkspace("desktop-state");
 }
 
 function serializeSessionWindows() {
@@ -2410,6 +2417,8 @@ function readCodeWorkspaceEntries(database) {
 }
 
 async function syncDesktopFromCodeWorkspace(source = "seis-code-workspace") {
+  const shared = await loadSharedWorkspace(source);
+  if (shared.restored) return shared;
   const database = await openCodeWorkspaceDatabase();
   if (!database) return { imported: 0 };
   let imported = 0;
@@ -2445,7 +2454,98 @@ async function syncDesktopFromCodeWorkspace(source = "seis-code-workspace") {
     renderOpenWindows("terminal");
     renderOpenWindows("seis-code");
   }
+  await persistSharedWorkspace(`desktop-import:${source}`);
   return { imported };
+}
+
+function sharedEntryToDesktopNode(entry) {
+  const workspacePath = normalizePath(entry.path || SHARED_VFS_ROOT);
+  const desktopPath = codeWorkspacePathToDesktopPath(workspacePath);
+  if (!desktopPath || desktopPath === DESKTOP_HOME) return null;
+  const type = entry.type === "folder" ? "dir" : "file";
+  return {
+    path: desktopPath,
+    type,
+    content: type === "file" ? String(entry.content || "") : "",
+    createdAt: entry.createdAt || new Date().toISOString(),
+    updatedAt: entry.updatedAt || new Date().toISOString(),
+    trashed: Boolean(entry.trashed)
+  };
+}
+
+function desktopNodeToSharedEntry(node) {
+  const workspacePath = desktopPathToCodeWorkspacePath(node.path);
+  if (!workspacePath || node.trashed) return null;
+  return {
+    path: workspacePath,
+    type: node.type === "dir" ? "folder" : "file",
+    content: node.type === "file" ? String(node.content || "") : "",
+    createdAt: node.createdAt,
+    updatedAt: node.updatedAt,
+    baseContent: node.type === "file" ? String(node.content || "") : ""
+  };
+}
+
+function sharedEntriesFromDesktop() {
+  return state.fs.map(desktopNodeToSharedEntry).filter(Boolean);
+}
+
+async function loadSharedWorkspace(source = "shared-vfs") {
+  const adapter = window.SEIS_SHARED_VFS;
+  if (!adapter?.load) return { restored: false, imported: 0, mode: "unavailable" };
+  try {
+    const result = await adapter.load();
+    sharedVfsMode = result.mode || "memory";
+    sharedVfsError = "";
+    if (!result.restored) return { ...result, imported: 0 };
+    let imported = 0;
+    for (const entry of result.entries) {
+      const node = sharedEntryToDesktopNode(entry);
+      if (!node) continue;
+      const existing = getNode(node.path);
+      if (existing) {
+        if (existing.type !== node.type) continue;
+        existing.content = node.content;
+        existing.updatedAt = node.updatedAt;
+        existing.trashed = node.trashed;
+      } else {
+        ensureDirectory(dirName(node.path));
+        state.fs.push(node);
+      }
+      imported += 1;
+    }
+    if (imported) {
+      saveState();
+      renderOpenWindows("files");
+      renderOpenWindows("terminal");
+      renderOpenWindows("seis-code");
+      log("vfs", `Restored ${imported} shared workspace item(s) from ${source}.`);
+    }
+    return { ...result, imported };
+  } catch (error) {
+    sharedVfsMode = "memory";
+    sharedVfsError = error.message || String(error);
+    return { restored: false, imported: 0, mode: "memory", error: sharedVfsError };
+  }
+}
+
+function persistSharedWorkspace(reason = "desktop-mutation") {
+  const adapter = window.SEIS_SHARED_VFS;
+  if (!adapter?.save) return Promise.resolve({ mode: "unavailable" });
+  sharedVfsSaveQueue = sharedVfsSaveQueue.then(async () => {
+    try {
+      const result = await adapter.save(sharedEntriesFromDesktop(), reason);
+      sharedVfsMode = result.mode || sharedVfsMode;
+      sharedVfsLastSavedAt = result.savedAt || sharedVfsLastSavedAt;
+      sharedVfsError = result.error || "";
+      return result;
+    } catch (error) {
+      sharedVfsMode = "memory";
+      sharedVfsError = error.message || String(error);
+      return { mode: sharedVfsMode, error: sharedVfsError };
+    }
+  });
+  return sharedVfsSaveQueue;
 }
 
 function parseJSON(value) {
@@ -7305,6 +7405,14 @@ function exposeDiagnostics() {
       mode: desktopAiCoreCanvas?.dataset.aiCoreMiniMapMode || "unknown"
     }),
     activeWorkspace: () => currentWorkspace(),
+    sharedVfs: () => ({
+      available: Boolean(window.SEIS_SHARED_VFS),
+      scope: window.SEIS_SHARED_VFS?.scope || "",
+      mode: sharedVfsMode,
+      lastSavedAt: sharedVfsLastSavedAt,
+      error: sharedVfsError,
+      itemCount: sharedEntriesFromDesktop().length
+    }),
     workspaceWindows: () => state.windows.map((win) => ({
       id: win.id,
       appId: win.appId,
