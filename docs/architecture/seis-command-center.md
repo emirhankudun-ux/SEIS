@@ -68,7 +68,7 @@ The first implementation stays static and credential-free. Future live knowledge
 
 ## Ecosystem Control Plane
 
-The Command Center is the local source-backed control plane for ecosystem status and planning. Its `seis-cloud` lane exposes a sanitized `SEIS-SSH` binding from the repository contract and readiness evidence, preserving the existing server and port (`github.codespaces:22`) without executing SSH, reading credentials, or mutating external systems. Status and plan surfaces remain read-only until strict online evidence and explicit human approval are available.
+The Command Center is the local source-backed control plane for ecosystem status and planning. Its `seis-cloud` lane exposes a sanitized `SEIS-SSH` binding from the repository contract and readiness evidence, preserving the existing server and port (`github.codespaces:22`) without executing SSH, reading credentials, or mutating external systems. The Core surface now renders four explicit SSH facts from those source records: public GitHub contract status, current transport posture, contributor-doctor readiness, and live-readiness blocker state. Status and plan surfaces remain read-only until strict online evidence and explicit human approval are available.
 
 The same control plane exposes the source-visible plugin universe from `content/development/requested-plugin-inventory.json` and `content/development/plugin-capability-lanes.json`: 300 unique plugins, 301 submitted links, and 12 activation lanes. These totals are rendered as Core metrics and checked for parity with the source registries. They describe capability coverage, not blanket activation; authentication, task scope, least privilege, validation, and human approval remain required before any external connector or mutation.
 

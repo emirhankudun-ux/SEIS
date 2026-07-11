@@ -824,7 +824,32 @@ const fallbackSeisCoreEcosystemRegistry = {
         guardCommand: "npm run check:seis-ssh-github-pr-contract",
         serverAndPortPolicy: "preserve-existing-server-and-port",
         runtimeMode: "static-read-only",
-        liveClaim: "blocked-until-strict-online-evidence"
+        liveClaim: "blocked-until-strict-online-evidence",
+        githubExperience: {
+          status: "review-ready-contract",
+          visibleName: "SEIS-SSH",
+          publicPromise: "One memorable SEIS-SSH entrypoint, no secrets in git, no fake online status, no local Mac dependency, and a contributor-friendly runbook."
+        },
+        transport: {
+          provider: "github-codespaces",
+          mode: "codespace",
+          hostnameKind: "github.codespaces",
+          port: "22",
+          terminalCompatibility: "ready",
+          pickerCompatibility: "warning"
+        },
+        contributorDoctor: {
+          status: "review-ready-with-warning",
+          mode: "read-only-no-live-ssh-no-config-write",
+          command: "npm run check:seis-ssh-public-contributor-doctor",
+          warning: "Picker-compatible direct-cloud mode is not proven."
+        },
+        liveReadiness: {
+          status: "blocked-provider-billing",
+          strictReady: false,
+          command: "npm run check:seis-ssh-live-readiness-evidence",
+          blocker: "GitHub Codespaces billing issue blocks live online proof."
+        }
       },
       mcpTools: ["seis_cloud_status", "seis_cloud_plan"],
       qualityGate: "npm run check:cloud-access-policy",
@@ -2392,6 +2417,10 @@ function renderEcosystemControlPlane() {
   const pluginUniverse = seisCoreEcosystemRegistry.pluginUniverse || {};
   const pluginCount = Number(pluginUniverse.uniquePlugins || 0);
   const pluginLaneCount = Number(pluginUniverse.laneCount || 0);
+  const cloudLane = lanes.find((lane) => lane.id === "seis-cloud");
+  const sshBinding = cloudLane?.sshBinding || {};
+  const sshTransport = sshBinding.transport || {};
+  const sshLiveReadiness = sshBinding.liveReadiness || {};
   const statePill = $("#ecosystem-control-state");
   const summary = $("#ecosystem-control-summary");
   const grid = $("#ecosystem-control-grid");
@@ -2408,7 +2437,9 @@ function renderEcosystemControlPlane() {
     ["Local boundaries", localCount, "no live connector claims"],
     ["MCP tools", mcpToolCount, "status and plan tools only"],
     ["Plugins", pluginCount, "source-visible inventory"],
-    ["Plugin lanes", pluginLaneCount, "task-scoped activation lanes"]
+    ["Plugin lanes", pluginLaneCount, "task-scoped activation lanes"],
+    ["SSH public", sshBinding.githubExperience?.status || "review", "same server/port preserved"],
+    ["SSH live", sshLiveReadiness.status || "review", sshTransport.provider ? `${sshTransport.provider} · ${sshTransport.port || "22"}` : "strict evidence required"]
   ].map(([label, value, detail]) => `
     <article class="ecosystem-summary-card">
       <span>${label}</span>
@@ -2419,6 +2450,10 @@ function renderEcosystemControlPlane() {
 
   grid.innerHTML = lanes.map((lane) => {
     const mcpTools = Array.isArray(lane.mcpTools) ? lane.mcpTools : [];
+    const laneSshBinding = lane.sshBinding || null;
+    const laneSshTransport = laneSshBinding?.transport || {};
+    const laneSshDoctor = laneSshBinding?.contributorDoctor || {};
+    const laneSshLiveReadiness = laneSshBinding?.liveReadiness || {};
     return `
     <article class="ecosystem-lane-card">
       <div class="card-topline">
@@ -2446,10 +2481,26 @@ function renderEcosystemControlPlane() {
           <dt>Store binding</dt>
           <dd>${escapeHtml(lane.storeBinding)}</dd>
         </div>
-        ${lane.sshBinding ? `
+        ${laneSshBinding ? `
         <div>
           <dt>SSH binding</dt>
-          <dd>${escapeHtml(`${lane.sshBinding.alias} · ${lane.sshBinding.serverAndPortPolicy} · ${lane.sshBinding.runtimeMode}`)}</dd>
+          <dd>${escapeHtml(`${laneSshBinding.alias} · ${laneSshBinding.serverAndPortPolicy} · ${laneSshBinding.runtimeMode}`)}</dd>
+        </div>
+        <div>
+          <dt>SSH public</dt>
+          <dd>${escapeHtml(`${laneSshBinding.githubExperience?.status || "review"} · ${laneSshBinding.githubExperience?.visibleName || laneSshBinding.alias}`)}</dd>
+        </div>
+        <div>
+          <dt>SSH transport</dt>
+          <dd>${escapeHtml(`${laneSshTransport.provider || "unknown"} · ${laneSshTransport.mode || "review"} · ${laneSshTransport.pickerCompatibility || "unknown"}`)}</dd>
+        </div>
+        <div>
+          <dt>SSH doctor</dt>
+          <dd>${escapeHtml(`${laneSshDoctor.status || "review"} · ${laneSshDoctor.mode || "read-only"}`)}</dd>
+        </div>
+        <div>
+          <dt>SSH live</dt>
+          <dd>${escapeHtml(`${laneSshLiveReadiness.status || laneSshBinding.liveClaim || "review"} · ${laneSshLiveReadiness.strictReady === true ? "strict-ready" : "gated"}`)}</dd>
         </div>` : ""}
       </dl>
       <div class="ecosystem-lane-actions">

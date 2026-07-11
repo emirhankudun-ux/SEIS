@@ -171,7 +171,16 @@ test("SEIS Command Center binds specialist lanes and Store through a local contr
   assert.equal(sshBinding?.contract, "deploy/seis-ssh-public-access-contract.json");
   assert.equal(sshBinding?.serverAndPortPolicy, "preserve-existing-server-and-port");
   assert.equal(sshBinding?.runtimeMode, "static-read-only");
+  assert.equal(sshBinding?.githubExperience?.status, "review-ready-contract");
+  assert.equal(sshBinding?.transport?.provider, "github-codespaces");
+  assert.equal(sshBinding?.transport?.port, "22");
+  assert.equal(sshBinding?.contributorDoctor?.status, "review-ready-with-warning");
+  assert.equal(sshBinding?.liveReadiness?.status, "blocked-provider-billing");
   assert.match(script, /sshBinding/);
+  assert.match(script, /SSH public/);
+  assert.match(script, /SSH transport/);
+  assert.match(script, /SSH doctor/);
+  assert.match(script, /SSH live/);
   assert.match(script, /SSH binding/);
   assert.match(script, /Array\.isArray\(lane\.mcpTools\)/);
 });

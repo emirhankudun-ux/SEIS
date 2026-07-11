@@ -84,6 +84,7 @@ if (registry) {
   if (registry.schemaVersion !== "1.0.0") fail("registry schemaVersion must be 1.0.0");
   if (registry.status !== "active") fail("registry status must be active");
   if (!Array.isArray(registry.sources) || registry.sources.length < 3) fail("registry must name its source records");
+  if (!registry.sources?.includes("content/development/seis-ssh-live-readiness-evidence.json")) fail("registry must include SSH live readiness evidence as a source");
   if (!registry.runtimeBoundary?.includes("does not authenticate connectors")) fail("registry must keep the no-authentication runtime boundary explicit");
   if (registry.store?.id !== "seis-store") fail("registry must bind the Store by id");
   if (registry.store?.status !== "Local Demo") fail("Store must remain labeled Local Demo");
@@ -134,6 +135,13 @@ if (registry) {
     if (sshBinding?.serverAndPortPolicy !== "preserve-existing-server-and-port") fail("seis-cloud SSH binding must preserve the existing server and port");
     if (sshBinding?.runtimeMode !== "static-read-only") fail("seis-cloud SSH binding must remain static-read-only");
     if (sshBinding?.liveClaim !== "blocked-until-strict-online-evidence") fail("seis-cloud SSH binding must block live claims until strict evidence");
+    if (sshBinding?.githubExperience?.status !== "review-ready-contract") fail("seis-cloud SSH binding must expose public GitHub contract status");
+    if (sshBinding?.transport?.provider !== "github-codespaces") fail("seis-cloud SSH binding must expose the current provider evidence");
+    if (sshBinding?.transport?.port !== "22") fail("seis-cloud SSH binding must preserve port 22 evidence");
+    if (sshBinding?.contributorDoctor?.status !== "review-ready-with-warning") fail("seis-cloud SSH binding must expose contributor doctor review status");
+    if (sshBinding?.contributorDoctor?.command !== "npm run check:seis-ssh-public-contributor-doctor") fail("seis-cloud SSH binding must expose the contributor doctor command");
+    if (sshBinding?.liveReadiness?.status !== "blocked-provider-billing") fail("seis-cloud SSH binding must expose the current live-readiness blocker");
+    if (sshBinding?.liveReadiness?.command !== "npm run check:seis-ssh-live-readiness-evidence") fail("seis-cloud SSH binding must expose the live-readiness check command");
   }
   const storeLane = lanes.find((candidate) => candidate.id === "seis-store");
   if (storeLane && (!Array.isArray(storeLane.mcpTools) || storeLane.mcpTools.length !== 0)) fail("SEIS Store must not claim a remote MCP execution path");

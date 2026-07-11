@@ -2,7 +2,7 @@
   "id": "seis-core-ecosystem-registry",
   "schemaVersion": "1.0.0",
   "status": "active",
-  "updatedAt": "2026-07-10",
+  "updatedAt": "2026-07-11",
   "purpose": "Expose the SEIS specialist lanes and SEIS Store through one local-first, source-backed Command Center control plane.",
   "runtimeBoundary": "This registry renders local source evidence and browser-local demo entry points. It does not authenticate connectors, execute MCP tools, install packages, deploy cloud resources, execute SSH, or mutate GitHub.",
   "sources": [
@@ -10,6 +10,7 @@
     "content/development/seis-agent-plugin-integration.json",
     "apps/web/desktop.js",
     "deploy/seis-ssh-public-access-contract.json",
+    "content/development/seis-ssh-live-readiness-evidence.json",
     "content/development/requested-plugin-inventory.json",
     "content/development/plugin-capability-lanes.json"
   ],
@@ -73,7 +74,32 @@
         "guardCommand": "npm run check:seis-ssh-github-pr-contract",
         "serverAndPortPolicy": "preserve-existing-server-and-port",
         "runtimeMode": "static-read-only",
-        "liveClaim": "blocked-until-strict-online-evidence"
+        "liveClaim": "blocked-until-strict-online-evidence",
+        "githubExperience": {
+          "status": "review-ready-contract",
+          "visibleName": "SEIS-SSH",
+          "publicPromise": "One memorable SEIS-SSH entrypoint, no secrets in git, no fake online status, no local Mac dependency, and a contributor-friendly runbook."
+        },
+        "transport": {
+          "provider": "github-codespaces",
+          "mode": "codespace",
+          "hostnameKind": "github.codespaces",
+          "port": "22",
+          "terminalCompatibility": "ready",
+          "pickerCompatibility": "warning"
+        },
+        "contributorDoctor": {
+          "status": "review-ready-with-warning",
+          "mode": "read-only-no-live-ssh-no-config-write",
+          "command": "npm run check:seis-ssh-public-contributor-doctor",
+          "warning": "Picker-compatible direct-cloud mode is not proven."
+        },
+        "liveReadiness": {
+          "status": "blocked-provider-billing",
+          "strictReady": false,
+          "command": "npm run check:seis-ssh-live-readiness-evidence",
+          "blocker": "GitHub Codespaces billing issue blocks live online proof."
+        }
       },
       "mcpTools": [
         "seis_cloud_status",
