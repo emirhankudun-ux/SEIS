@@ -21,6 +21,9 @@ const files = {
   desktop: "apps/web/desktop.js",
   reportScript: "scripts/create-seis-ssh-public-access-report.mjs",
   endpointContinuityScript: "scripts/check-seis-ssh-endpoint-continuity.mjs",
+  pickerCompatibilityScript: "scripts/check-seis-ssh-picker-compatibility.mjs",
+  mobileReadinessScript: "scripts/check-seis-ssh-mobile-24x7.mjs",
+  onlineReadinessScript: "scripts/ensure-seis-ssh-online.mjs",
   onboardingScript: "scripts/create-seis-ssh-public-onboarding-pack.mjs",
   contributorDoctorScript: "scripts/check-seis-ssh-public-contributor-doctor.mjs",
   liveEvidence: "content/development/seis-ssh-live-readiness-evidence.json",
@@ -189,6 +192,39 @@ for (const token of [
   "Changing HostName or Port remains approval-gated."
 ]) {
   ensure(endpointContinuityScript.includes(token), `endpoint continuity script must include ${token}`);
+}
+
+const pickerCompatibilityScript = read(files.pickerCompatibilityScript);
+for (const token of [
+  "proxyCommandShape",
+  "identityFileConfigured",
+  "hostnameSha256Prefix",
+  "classifyProbeError",
+  "redacted-direct-cloud-host"
+]) {
+  ensure(pickerCompatibilityScript.includes(token), `picker compatibility script must include sanitized ${token}`);
+}
+
+const mobileReadinessScript = read(files.mobileReadinessScript);
+for (const token of [
+  "proxyCommandShape",
+  "identityFileConfigured",
+  "classifyRemoteError",
+  "hostnameKind",
+  "identity-file-missing"
+]) {
+  ensure(mobileReadinessScript.includes(token), `mobile readiness script must include sanitized ${token}`);
+}
+
+const onlineReadinessScript = read(files.onlineReadinessScript);
+for (const token of [
+  "codespaceConfigured",
+  "proxyCommandShape",
+  "hostnameKind",
+  "userPresent",
+  "remote-check-failed"
+]) {
+  ensure(onlineReadinessScript.includes(token), `online readiness script must include sanitized ${token}`);
 }
 
 const onboardingScript = read(files.onboardingScript);
