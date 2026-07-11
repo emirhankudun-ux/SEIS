@@ -321,6 +321,9 @@ function validateStaticContract() {
   ensure(html.includes("data-evolution-console"), "Linux Replica route must expose the five-year Evolution Console.");
   ensure(html.includes("SEIS_FIVE_YEAR_PLAN_VIEW"), "Linux Replica route must load the five-year plan adapter.");
   ensure(html.includes("human approval required"), "Linux Replica Evolution Console must keep the approval boundary visible.");
+  ensure(html.includes("seis-vfs-store.js"), "Linux Replica route must load the browser-local VFS store.");
+  ensure(html.includes("loadPersistentVfs().finally(boot)"), "Linux Replica boot must wait for VFS restore.");
+  ensure(html.includes("vfsPersistence:()=>"), "Linux Replica diagnostics must expose VFS persistence state.");
   ensure(html.includes("bridgeTargetCount"), "Linux Replica diagnostics must expose bridge target count.");
   for (const marker of ["SEIS Search Gateway", "SEIS Code IDE", "SEIS Design Studio", "SEIS Cloud Center", "SEIS Store", "SEIS Website Hub", "SEIS AI Core"]) {
     ensure(html.includes(marker), `Linux Replica SEIS bridge missing marker: ${marker}`);
@@ -633,6 +636,42 @@ async function smokeLinuxReplica(client, baseUrl) {
   return { ...summary, title, locale: { initial: initialLocale, toggled: toggledLocale }, screenshot: screenshotPath, relevantIssueCount: issues.length };
 }
 
+async function smokeLinuxReplicaVfsPersistence(client, baseUrl) {
+  await client.send("Emulation.setDeviceMetricsOverride", {
+    width: 1280,
+    height: 860,
+    deviceScaleFactor: 1,
+    mobile: false
+  });
+
+  const filename = "year2-vfs-persistence-smoke.txt";
+  await goto(client, baseUrl + "/seis-linux-replica.html?vfs-persistence=write");
+  await waitFor(client, "Boolean(window.__SEIS_LINUX_REPLICA__)", 10000);
+  await waitFor(client, "document.querySelector('#login')?.classList.contains('is-active')", 9000);
+  await evaluate(client, "document.querySelector('#loginButton').click()");
+  await waitFor(client, "document.querySelector('#shell')?.classList.contains('is-active')", 5000);
+  await waitFor(client, "window.__SEIS_LINUX_REPLICA__?.vfsPersistence?.().ready === true", 5000);
+  await waitFor(client, "Boolean(document.querySelector('[data-terminal] input'))", 5000);
+  await evaluate(client, "(() => { const input=document.querySelector('[data-terminal] input'); input.value='touch /home/seis/" + filename + "'; input.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true})); return true; })()");
+  await waitFor(client, "Boolean(window.__SEIS_LINUX_REPLICA__?.vfsPersistence?.().lastSavedAt)", 5000);
+  const afterWrite = await evaluate(client, "window.__SEIS_LINUX_REPLICA__.vfsPersistence()");
+
+  await goto(client, baseUrl + "/seis-linux-replica.html?vfs-persistence=reload");
+  await waitFor(client, "Boolean(window.__SEIS_LINUX_REPLICA__)", 10000);
+  await waitFor(client, "document.querySelector('#login')?.classList.contains('is-active')", 9000);
+  await evaluate(client, "document.querySelector('#loginButton').click()");
+  await waitFor(client, "document.querySelector('#shell')?.classList.contains('is-active')", 5000);
+  await waitFor(client, "window.__SEIS_LINUX_REPLICA__?.vfsPersistence?.().ready === true", 5000);
+  await evaluate(client, "window.__SEIS_LINUX_REPLICA__.openApp('files')");
+  await waitFor(client, "document.body.innerText.includes('" + filename + "')", 5000);
+  const afterReload = await evaluate(client, "(() => ({ persistence: window.__SEIS_LINUX_REPLICA__.vfsPersistence(), fileVisible: document.body.innerText.includes('" + filename + "') }))()");
+
+  ensure(afterWrite.mode === "indexeddb", "VFS smoke write did not use IndexedDB.");
+  ensure(afterReload.persistence.mode === "indexeddb", "VFS smoke reload did not restore from IndexedDB.");
+  ensure(afterReload.fileVisible === true, "VFS smoke file was not visible after route reload.");
+  return { filename, afterWrite, afterReload };
+}
+
 async function smokeLinuxReplicaMobile(client, baseUrl) {
   await client.send("Emulation.setDeviceMetricsOverride", {
     width: 390,
@@ -895,6 +934,7 @@ async function main() {
 
     client = await newTab(debugPort);
     const summary = await smokeLinuxReplica(client, baseUrl);
+    const vfsPersistenceSummary = await smokeLinuxReplicaVfsPersistence(client, baseUrl);
     const mobileSummary = await smokeLinuxReplicaMobile(client, baseUrl);
     const deepLinkSummary = await smokeLinuxReplicaDeepLink(client, baseUrl);
     const productPageCtaSummary = await smokeWebsiteProductCta(client, baseUrl);
@@ -907,6 +947,7 @@ async function main() {
       screenshotDir: SCREENSHOT_DIR,
       reportFile: REPORT_FILE,
       seisLinuxReplica: summary,
+      seisLinuxReplicaVfsPersistence: vfsPersistenceSummary,
       seisLinuxReplicaMobile: mobileSummary,
       seisLinuxReplicaDeepLink: deepLinkSummary,
       seisLinuxReplicaProductPageCta: productPageCtaSummary,

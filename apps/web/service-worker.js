@@ -25,6 +25,8 @@
     "./seis-code.js",
     "./seis-github-coding-lab.html",
     "./seis-linux-replica.html",
+    "./seis-five-year-plan.js",
+    "./seis-vfs-store.js",
     "./seis-linux-replica-public-demo.html",
     "./seis-demo-flight-deck.html",
     "./wow-gallery.html",
