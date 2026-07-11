@@ -23,6 +23,7 @@ import { i18nAddKey, i18nRenameKey } from "../lib/i18n-write.mjs";
 import {
   AI_CORE_150B_FRONTIER_MODEL_PROGRAM_PATH,
   AI_CORE_512B_APEX_MODEL_PROGRAM_PATH,
+  AI_CORE_FRONTIER_TRAINING_STATUS_TOOL,
   AI_CORE_AGI_EVALUATION_PROTOCOL_PATH,
   AI_CORE_AGI_GITHUB_USER_READINESS_GATES_PATH,
   AI_CORE_AGI_PUBLIC_READINESS_EVIDENCE_PATH,
@@ -57,6 +58,7 @@ import {
   SUBAGENT_REVIEW_LEDGER_TOOL,
   SUBAGENT_ROLE_SCHEMA_PATH,
   SUBAGENT_RUNTIME_FIXTURES_PATH,
+  aiCoreFrontierTrainingStatus,
   aiCoreProviderStatus,
   aiCoreModelScalingStatus,
   aiCoreVersionPromotionDryRun,
@@ -567,6 +569,21 @@ export function buildServer() {
   );
 
   server.tool(
+    AI_CORE_FRONTIER_TRAINING_STATUS_TOOL,
+    "Read the fail-closed SEIS 20B/70B/150B/300B+/512B frontier training launch plan, official research references, evidence gaps, installed-AI council coverage, and approval boundaries. Read-only; never downloads models or datasets, submits jobs, trains, benchmarks, calls providers, accesses credentials, provisions compute, executes SSH, deploys, publishes checkpoints, mutates GitHub, or proves AGI.",
+    {
+      includeFullPlan: z.boolean().optional().describe("Return the full machine-readable frontier training launch plan"),
+    },
+    async ({ includeFullPlan }) => {
+      try {
+        return jsonResult(aiCoreFrontierTrainingStatus(repoRoot, { includeFullPlan: includeFullPlan === true }));
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
+
+  server.tool(
     AI_CORE_VERSION_STATUS_TOOL,
     "Read the SEIS AI Core version registry for SEIS AI Core v0.1, SEIS Language v0.1, model-router, prompt-engine, agent-runtime, sub-agent lane bindings, truth boundaries, and five-year promotion gates. Read-only; never claims trained model ownership or live autonomous execution.",
     {
@@ -904,6 +921,29 @@ Steps:
         },
       ],
     })
+  );
+
+  server.resource(
+    "ai-core-frontier-training-launch-plan",
+    "seis://ai/frontier-training-launch-plan.json",
+    {
+      description:
+        "SEIS AI Core read-only fail-closed frontier training launch plan for 20B, 70B, 150B, 300B+, and 512B; not training, checkpoint, benchmark, route, or AGI evidence",
+      mimeType: "application/json",
+    },
+    async () => {
+      const status = aiCoreFrontierTrainingStatus(repoRoot, { includeFullPlan: true });
+      if (!status.ok) throw new Error(status.error || "SEIS frontier training launch plan failed closed");
+      return {
+        contents: [
+          {
+            uri: "seis://ai/frontier-training-launch-plan.json",
+            mimeType: "application/json",
+            text: `${JSON.stringify(status.plan, null, 2)}\n`,
+          },
+        ],
+      };
+    }
   );
 
   server.resource(

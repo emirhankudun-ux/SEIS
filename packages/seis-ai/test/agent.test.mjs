@@ -67,6 +67,7 @@ describe("toolDefinitions", () => {
     assert.ok(names.includes("seis_ai_core_provider_status"));
     assert.ok(names.includes("seis_ai_core_read_only_route"));
     assert.ok(names.includes("seis_ai_core_model_scaling_status"));
+    assert.ok(names.includes("seis_ai_core_frontier_training_status"));
     assert.ok(names.includes("seis_ai_core_version_status"));
     assert.ok(names.includes("seis_ai_core_version_promotion_dry_run"));
     assert.ok(names.includes("seis_ai_core_subagent_model"));
@@ -955,6 +956,22 @@ describe("executeTool", () => {
     return { repoRoot, webRoot: path.join(repoRoot, "apps", "web"), ...extra };
   }
 
+  function installFrontierTrainingFixture(mutator = () => {}) {
+    const planPath = "content/development/seis-frontier-training-launch-plan.json";
+    const councilPath = "content/development/seis-model-scaling-subagent-council.json";
+    const plan = JSON.parse(readFileSync(path.join(workspaceRoot, planPath), "utf8"));
+    const council = JSON.parse(readFileSync(path.join(workspaceRoot, councilPath), "utf8"));
+    mutator(plan);
+    for (const [relativePath, value] of [
+      [planPath, plan],
+      [councilPath, council],
+    ]) {
+      const filePath = path.join(repoRoot, relativePath);
+      mkdirSync(path.dirname(filePath), { recursive: true });
+      writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
+    }
+  }
+
   it("list_files lists entries with directory suffix", () => {
     const out = executeTool("list_files", { dir: "." }, ctx());
     assert.ok(out.includes("apps/"));
@@ -1276,6 +1293,100 @@ describe("executeTool", () => {
     assert.equal(payload.benchmarkEvidence.routeEligibleToday, false);
     assert.equal(payload.benchmarkEvidence.measuredBenchmark, false);
     assert.equal(payload.benchmarkEvidence.modelCompatibilityVerified, false);
+  });
+
+  it("seis_ai_core_frontier_training_status keeps every scale lane denied", () => {
+    const out = executeTool(
+      "seis_ai_core_frontier_training_status",
+      { includeFullPlan: true },
+      { repoRoot: workspaceRoot, webRoot: path.join(workspaceRoot, "apps", "web") },
+    );
+    const payload = JSON.parse(out);
+    assert.equal(payload.ok, true);
+    assert.equal(payload.id, "seis-frontier-training-launch-plan");
+    assert.equal(payload.status, "preflight-only-not-authorized");
+    assert.equal(payload.resourceUri, "seis://ai/frontier-training-launch-plan.json");
+    assert.equal(payload.coreCredentialRequirement, "none");
+    assert.equal(payload.executionMode, "dry-run-only");
+    assert.equal(payload.trainingAuthorized, false);
+    assert.equal(payload.externalJobAuthorized, false);
+    assert.equal(payload.routeEligibleToday, false);
+    assert.equal(payload.runtimeAuthority, false);
+    assert.equal(payload.checkpointExists, false);
+    assert.equal(payload.benchmarkEvidenceAvailable, false);
+    assert.equal(payload.agiClaimAllowed, false);
+    assert.equal(payload.laneCount, 5);
+    assert.equal(payload.launchableLaneCount, 0);
+    assert.equal(payload.deniedLaneCount, 5);
+    assert.equal(payload.allLaunchesDenied, true);
+    assert.deepEqual(payload.lanes.map((lane) => lane.parameterClass), ["20B", "70B", "150B", "300B+", "512B"]);
+    assert.ok(payload.lanes.every((lane) => lane.launchDecision === "deny"));
+    assert.ok(payload.lanes.every((lane) => lane.trainingLogCount === 0));
+    assert.ok(payload.lanes.every((lane) => lane.checkpointCount === 0));
+    assert.ok(payload.lanes.every((lane) => lane.approvalRecorded === false));
+    assert.equal(payload.lanes.find((lane) => lane.parameterClass === "512B")?.agiCapabilityStatus, "not-demonstrated");
+    assert.equal(payload.missingGlobalGateCount, 8);
+    assert.equal(payload.selectedExecutionBackendCount, 0);
+    assert.equal(payload.installedAiCouncil.requiredAgentCount, 12);
+    assert.equal(payload.installedAiCouncil.runtimeAuthority, false);
+    assert.equal(payload.installedAiCouncil.selfApprovalAllowed, false);
+    assert.deepEqual(payload.installedAiCouncil.unresolvedCouncilAgentIds, []);
+    assert.equal(payload.evidenceCounts.completedTrainingRuns, 0);
+    assert.equal(payload.evidenceCounts.acceptedCheckpoints, 0);
+    assert.equal(payload.executionEvidence.remoteJobSubmitted, false);
+    assert.equal(payload.executionEvidence.trainingRunPerformed, false);
+    assert.equal(payload.executionEvidence.providerCalled, false);
+    assert.equal(payload.executionEvidence.githubMutated, false);
+    assert.equal(payload.runtimeValidation.valid, true);
+    assert.equal(payload.runtimeValidation.failClosed, true);
+    assert.deepEqual(payload.runtimeValidation.issues, []);
+    assert.equal(payload.plan.id, "seis-frontier-training-launch-plan");
+  });
+
+  it("seis_ai_core_frontier_training_status denies a tampered authorization manifest at runtime", () => {
+    installFrontierTrainingFixture((plan) => {
+      plan.trainingAuthorized = true;
+      plan.lanes[0].launchDecision = "allow";
+    });
+
+    const payload = JSON.parse(executeTool("seis_ai_core_frontier_training_status", {}, ctx()));
+    assert.equal(payload.ok, false);
+    assert.equal(payload.status, "invalid-fail-closed");
+    assert.equal(payload.trainingAuthorized, false);
+    assert.equal(payload.routeEligibleToday, false);
+    assert.equal(payload.launchableLaneCount, 0);
+    assert.equal(payload.allLaunchesDenied, true);
+    assert.equal(payload.runtimeValidation.valid, false);
+    assert.equal(payload.runtimeValidation.failClosed, true);
+    assert.match(payload.error, /trainingAuthorized must be false/);
+    assert.equal(payload.executionEvidence.trainingRunPerformed, false);
+    assert.equal(payload.executionEvidence.githubMutated, false);
+  });
+
+  it("seis_ai_core_frontier_training_status rejects credential-valued manifest fields", () => {
+    installFrontierTrainingFixture((plan) => {
+      plan.securityProbe = { token: "synthetic-secret-value" };
+    });
+
+    const payload = JSON.parse(executeTool("seis_ai_core_frontier_training_status", {}, ctx()));
+    assert.equal(payload.ok, false);
+    assert.equal(payload.status, "invalid-fail-closed");
+    assert.equal(payload.runtimeValidation.failClosed, true);
+    assert.match(payload.error, /blocked credential field: token/);
+    assert.equal(payload.executionEvidence.providerCalled, false);
+  });
+
+  it("seis_ai_core_frontier_training_status rejects a council source outside the allowlist", () => {
+    installFrontierTrainingFixture((plan) => {
+      plan.installedAiCouncil.source = "../../outside-council.json";
+    });
+
+    const payload = JSON.parse(executeTool("seis_ai_core_frontier_training_status", {}, ctx()));
+    assert.equal(payload.ok, false);
+    assert.equal(payload.status, "invalid-fail-closed");
+    assert.equal(payload.runtimeValidation.failClosed, true);
+    assert.match(payload.error, /council source path is not allowlisted/);
+    assert.equal(payload.executionEvidence.remoteJobSubmitted, false);
   });
 
   it("seis_ai_core_version_status returns the bounded AI Core version identity", () => {

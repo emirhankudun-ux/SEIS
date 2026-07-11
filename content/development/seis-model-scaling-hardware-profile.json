@@ -13,6 +13,7 @@
     "apexModelProgram": "content/development/seis-512b-apex-model-program.json",
     "frontierEscalationPolicy": "content/development/seis-model-frontier-escalation-policy.json",
     "modelScalingSubagentCouncil": "content/development/seis-model-scaling-subagent-council.json",
+    "frontierTrainingLaunchPlan": "content/development/seis-frontier-training-launch-plan.json",
     "benchmarkManifest": "reports/seis-model-scaling/20b-16gb-memory-benchmark.json",
     "benchmarkDryRun": "reports/seis-model-scaling/20b-benchmark-dry-run.json",
     "localHardwarePreflightCheck": "scripts/check-seis-model-local-hardware-preflight.mjs",
@@ -445,6 +446,7 @@
     "redacted logs and client-bundle secret scan",
     "independent benchmark suite",
     "150B frontier research plan with distributed runtime budget, privacy review, safety eval, observability, rollback plan, and explicit human approval",
+    "fail-closed frontier training launch plan accepted before any real training job",
     "512B apex AGI research plan with frontier cluster budget, AGI capability evaluation protocol, safety red-team, observability, rollback, cost-stop, all-agent review, and explicit human approval",
     "human approval before download, training, fine-tuning, publication, deployment, SSH, or paid benchmark"
   ],

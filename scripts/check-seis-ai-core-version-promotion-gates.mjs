@@ -181,7 +181,7 @@ ensure(Array.isArray(fiveYearPlan?.years) && fiveYearPlan.years.length === 5, "f
 
 if (mcpRuntimeContract) {
   ensure(mcpRuntimeContract.resourceUri === "seis://ai/mcp-runtime-contract.json", "MCP runtime contract resource URI mismatch");
-  ensure(mcpRuntimeContract.resourceCount === 30, "MCP runtime contract must record 30 resources");
+  ensure(mcpRuntimeContract.resourceCount === 31, "MCP runtime contract must record 31 resources");
   ensure(String(mcpRuntimeContract.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("AGI evaluation protocol"), "MCP runtime contract resource evidence must mention AGI evaluation protocol");
   ensure(String(mcpRuntimeContract.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("AGI public readiness evidence"), "MCP runtime contract resource evidence must mention AGI public readiness evidence");
   ensure(String(mcpRuntimeContract.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("AGI GitHub user readiness gates"), "MCP runtime contract resource evidence must mention AGI GitHub user readiness gates");

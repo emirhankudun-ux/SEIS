@@ -31,7 +31,9 @@ The foundation includes:
 | Agent runtime | Documented fixture, not implemented runtime orchestration | `docs/ai/agent-runtime.md`, `scripts/ai-launcher.cjs`, `content/development/seis-ai-core-subagent-review-ledger.json`, `content/development/seis-ai-core-subagent-runtime-fixtures.json`, `content/development/seis-ai-core-agent-role-schema.json`, `content/development/seis-ai-core-agent-permission-matrix.json`, `content/development/seis-ai-core-dry-run-task-queue.json`, `content/development/seis-ai-core-cancellation-fixture.json`, `content/development/seis-ai-core-approval-fixture.json`, `content/development/seis-ai-core-redaction-fixture.json`, `content/development/seis-ai-core-execution-ledger-fixture.json` | No write-gated or background runtime exists. | Keep automation dry-run until fixture validation, approval gates, redaction, and ledger evidence are proven. |
 | Version registry | Documented fixture | `content/development/seis-ai-core-version-registry.json`, `seis_ai_core_version_status` | No live release channel, live provider adapter, or model ownership evidence exists. | Keep SEIS AI Core v0.1 as a zero-key application-layer profile until provider and runtime gates exist. |
 | Provider registry | Documented fixture | `content/development/seis-ai-core-provider-registry.json`, `seis_ai_core_provider_status`, `seis://ai/provider-registry.json` | This is repo-local status evidence only; it performs no provider calls or credential validation. | Use it for SEIS AI status surfaces before live provider adapters. |
+| Provider routing and data policy | Documented, not live | `docs/ai/provider-routing-policy.md`, `docs/security/model-provider-data-policy.md` | No backend provider mediation, live health check, retention verification, or credential validation exists. | Keep cloud routes disabled until server-only adapters and privacy tests pass. |
 | Model scaling hardware profile | Planned compatibility contract | `content/development/seis-model-scaling-hardware-profile.json`, `docs/ai/seis-model-scaling.md`, `seis_ai_core_model_scaling_status` | The 20B target for 16GB+ RAM plus future 70B, 150B, and 512B apex lanes are not trained weights, live inference, downloads, AGI proof, or benchmark evidence. | Keep the profile blocked until clean-room model cards, dataset cards, quantized/distributed runtime plans, safety evals, and memory benchmarks exist. |
+| Frontier training launch plan | Fail-closed preflight contract | `content/development/seis-frontier-training-launch-plan.json`, `seis://ai/frontier-training-launch-plan.json`, `seis_ai_core_frontier_training_status`, `npm run check:seis-frontier-training-launch-plan` | All 20B through 512B lanes are denied; no job, checkpoint, benchmark, provider, paid compute, route, or AGI evidence exists. | Complete the 20B data, model, compute, checkpoint, evaluation, council, and explicit approval evidence before requesting any real execution. |
 | 150B frontier model program | Plan-only frontier program record | `content/development/seis-150b-frontier-model-program.json`, `seis://ai/150b-frontier-model-program.json`, `npm run check:seis-150b-frontier-model-program` | The 150B lane is a charter, stage plan, and promotion-gate record only; it is not trained weights, inference, benchmark evidence, provider access, cloud/GPU provisioning, SSH execution, or production readiness. | Keep it blocked until 20B and 70B evidence, clean-room training plan, distributed runtime budget, privacy/safety review, observability, rollback, cost-stop, and human approval exist. |
 | 512B apex model program | Plan-only SEIS AGI readiness record with public research baseline | `content/development/seis-512b-apex-model-program.json`, `seis://ai/512b-apex-model-program.json`, `npm run check:seis-512b-apex-model-program` | The 512B lane is an apex charter, internet-researched frontier-model baseline, AGI-readiness definition, and GitHub-public-readiness gate only; it is not AGI, trained weights, inference, benchmark evidence, provider access, cloud/GPU provisioning, SSH execution, or production readiness. | Keep it blocked until 20B, 70B, 150B, and 300B+ evidence, clean-room training plan, independent AGI eval protocol, all installed AI/sub-agent council review, public readiness evidence, and human approval exist. |
 | Model scaling sub-agent council | Active plan-only coordination contract | `content/development/seis-model-scaling-subagent-council.json`, `docs/ai/seis-model-scaling.md`, `seis_ai_core_model_scaling_status` | Twelve agents coordinate 20B evidence preparation and 70B/150B/512B review duties, with explicit 512B duties for architecture, validator sync, honest UI, research, provenance, security, DevOps, docs, QA, cloud gating, and automation boundaries; they do not run models, benchmarks, training, SSH, providers, GitHub mutation, or cloud/GPU provisioning. | Keep all council agents plan-only until human-reviewed runtime, benchmark, safety, public-readiness, and approval evidence exists. |
@@ -42,8 +44,8 @@ The foundation includes:
 | AI Core constellation inspector | Browser-smoke verified Local Demo surface | `apps/seis-demo-web/index.html`, `apps/seis-demo-web/script.js`, `scripts/check-product-experience-browser-smoke.mjs` | This proves only local UI integration of installed AI routes, personal plugin lanes, and the MCP runtime contract. | Keep the inspector backed by generated plan-view data and product browser smoke before claiming broader runtime integration. |
 | AI Workforce Training | Active local seed training contract | `docs/ai/ai-workforce-training.md`, `content/development/seis-ai-workforce-training-plan.json`, `scripts/check-seis-ai-workforce-training.mjs`, `scripts/run-seis-ai-workforce-training.mjs` | No live provider calls, credential reads, cloud fine-tuning, dataset downloads, SSH, deployment, or runtime authority are performed. | Use installed assistants only as supervised candidate reviewers; rebuild deterministic local seed artifacts with `npm run automation:seis-ai-workforce-training`. |
 | Provider credentials | Statically audited | `docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md` | No runtime verification was performed. | Keep keys optional, server-only, and disabled until adapter tests exist. |
-| Local model mode | Planned | No local model adapter found in this branch. | No runtime integration. | Define Ollama/localhost as optional zero-key future mode. |
-| Evaluation | Planned | Goal validation exists; AI evals do not. | No eval suite. | Add prompt/model evaluation strategy later. |
+| Local model mode | Strategy documented | `docs/ai/local-model-strategy.md` | No approved LLM download, measured local runtime, or routeable model adapter exists. | Keep Local Demo active and approve one allowlisted model pilot only after license, hash, RAM, safety, and rollback review. |
+| Evaluation | Strategy documented; seed evals only | `docs/evals/evaluation-strategy.md`, `docs/evals/benchmark-integrity.md`, existing deterministic seed-model tests | No measured 20B+ model benchmark or independent frontier eval exists. | Add versioned eval manifests and held-out datasets before any model promotion claim. |
 
 ## Rules / Policy
 
@@ -99,6 +101,10 @@ Version promotion gates:
 MCP runtime contract:
 `content/development/seis-ai-core-mcp-runtime-contract.json`.
 
+Frontier training launch plan:
+`content/development/seis-frontier-training-launch-plan.json` and
+`seis://ai/frontier-training-launch-plan.json`.
+
 Browser Local Demo surface:
 `apps/seis-demo-web/index.html` and `apps/seis-demo-web/script.js`.
 
@@ -109,13 +115,17 @@ The standalone SEIS demo now includes an AI Core constellation inspector that
 joins the installed AI route mesh, personal plugin lane mesh, MCP runtime
 contract, selected five-year quarter, and 3D hero diagnostics into one local
 read-only surface. Product browser smoke verifies the inspector exposes six AI
-routes, five personal plugin lanes, 34 MCP tools, 29 MCP resources, three MCP
-prompts, and a 32-node / 53-edge AI Core 3D graph without requiring provider
+routes, five personal plugin lanes, and a 32-node / 53-edge AI Core 3D graph
+without requiring provider
 keys, SSH, deployment, GitHub mutation, or external connector authentication.
+The protocol-level MCP contract now exposes 36 tools, 31 resources, and three
+prompts. The browser inspector must be refreshed and browser-smoked before it
+may claim those updated protocol counts.
 
 Runtime inspection tools:
 `seis_ai_core_provider_status`,
 `seis_ai_core_model_scaling_status`,
+`seis_ai_core_frontier_training_status`,
 `seis_ai_core_version_status`,
 `seis_ai_core_version_promotion_dry_run`,
 `seis_ai_core_subagent_model`, and

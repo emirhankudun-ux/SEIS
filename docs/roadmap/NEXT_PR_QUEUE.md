@@ -23,6 +23,39 @@ history or rotate secrets from an automation agent without explicit owner
 approval. Keep supplied ZIP/folder-derived demo assets preserved unless the
 owner explicitly requests removal.
 
+## PR AI-1: Fail-Closed Frontier Training Launch Plan
+
+| Field | Value |
+| --- | --- |
+| Suggested branch | `ai/frontier-training-launch-plan-20260711` |
+| Priority | P0 |
+| Goal | Connect the 20B, 70B, 150B, 300B+, and 512B research ladder to one fail-closed launch contract, the twelve-agent review council, official primary-source research, checkpoint governance, a deterministic validator, and read-only AI Core/MCP status. |
+| Include | `content/development/seis-frontier-training-launch-plan.json`, the required AI/model/eval/provider foundation documents, runtime fail-closed invariant and credential/path controls, `scripts/check-seis-frontier-training-launch-plan.mjs`, AI Core helper/tool/MCP wiring, MCP runtime contract, negative tests, status, docs index, scaling docs, and package scripts. |
+| Exclude | Model or dataset downloads, dependency installation, provider authentication, remote jobs, paid compute, training, fine-tuning, inference, benchmarks, checkpoint publication, SSH, deployment, route promotion, AGI claims, GitHub push, PR creation, or merge. |
+| Validation | `npm run check:seis-frontier-training-launch-plan`, `npm test --prefix packages/seis-ai`, `node --test packages/seis-ai/test/mcp-smoke.test.mjs`, `npm run seis:check`, `git diff --check`. |
+| Approval needed | None for local contracts, docs, validator, read-only MCP integration, tests, or a focused local commit. Explicit approval is required for every excluded action, including push, PR creation, and merge. |
+
+### Human Approval Needed
+
+- Select the first real 20B experiment only after model and dataset cards,
+  license/provenance review, compute budget, checkpoint plan, evaluation
+  baseline, council review, rollback owner, and an exact run manifest exist.
+- Approve any model or dataset download, provider authentication, paid compute,
+  remote job, benchmark, checkpoint publication, push, PR creation, or merge as
+  a separate action.
+
+## PR AI-2: Training Evidence Schemas And Immutable Run Chain
+
+| Field | Value |
+| --- | --- |
+| Suggested branch | `ai/training-evidence-schemas` |
+| Priority | P0 after AI-1 |
+| Goal | Add repository-owned JSON Schemas for dataset manifests, compute approvals, training runs, checkpoints, eval reports, and release decisions; connect them through immutable ids and hashes without running training. |
+| Include | Schema files, valid/invalid fixtures, deterministic validators, evidence-chain contract, docs, and tests. |
+| Exclude | Dataset/model download, provider authentication, paid compute, training/fine-tuning, benchmark execution, checkpoint creation/publication, SSH, deployment, push, PR creation, or merge. |
+| Validation | JSON Schema fixture tests, `npm run check:seis-frontier-training-launch-plan`, AI package tests, secret scan, and `git diff --check`. |
+| Approval needed | None for local schemas, fixtures, docs, and validators; explicit approval for every excluded action. |
+
 ## Current Recommended Product Demo Stack
 
 | Order | Suggested PR title | Scope | Validation | Approval needed |

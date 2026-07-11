@@ -281,7 +281,7 @@ ensureArrayIncludesAll(pluginIntegration?.runtimeIntegration?.mcpResources, ["se
 ensureArrayIncludesAll(pluginIntegration?.runtimeIntegration?.mcpResources, ["seis://ai/agi-github-user-readiness-gates.json"], "pluginIntegration.runtimeIntegration.mcpResources");
 ensureArrayIncludesAll(pluginIntegration?.qualityCommands, ["npm run check:seis-512b-apex-model-program"], "pluginIntegration.qualityCommands");
 ensureArrayIncludesAll(pluginIntegration?.qualityCommands, ["node scripts/check-seis-agi-evaluation-protocol.mjs"], "pluginIntegration.qualityCommands");
-ensure(mcpRuntime?.resourceCount === 30, "MCP runtime contract must record 30 resources");
+ensure(mcpRuntime?.resourceCount === 31, "MCP runtime contract must record 31 resources");
 
 if (packageJson) {
   ensure(packageJson.scripts?.["check:seis-512b-apex-model-program"] === "node scripts/check-seis-512b-apex-model-program.mjs", "package.json must expose check:seis-512b-apex-model-program");

@@ -103,6 +103,18 @@ Date: 2026-06-23
 | [product/video-hero-showcase.md](product/video-hero-showcase.md) | Four-page cinematic Video Hero showcase contract and validation notes. |
 | [product/mythic-gacha.md](product/mythic-gacha.md) | Playable no-key Shan Hai Jing inspired gacha and bestiary foundation. |
 | [ai/seis-ai-core.md](ai/seis-ai-core.md) | Provider-neutral SEIS AI Core foundation. |
+| [ai/local-model-strategy.md](ai/local-model-strategy.md) | Zero-key Local Demo, onaylı yerel runtime ve 16GB+ donanım gerçekliği stratejisi. |
+| [ai/provider-routing-policy.md](ai/provider-routing-policy.md) | Gizlilik modu, provider durumu, görünür fallback ve backend-only credential politikası. |
+| [ai/seis-universe-research.md](ai/seis-universe-research.md) | SEIS Universe veri, tokenizer, küçük model, adapter ve eval araştırma programı. |
+| [ai/model-development-roadmap.md](ai/model-development-roadmap.md) | Kanıta bağlı beş yıllık model geliştirme ve ölçek terfi yol haritası. |
+| [ai/fine-tuning-strategy.md](ai/fine-tuning-strategy.md) | RAG, SFT, LoRA, DPO ve pretraining ayrımı ile onay kapılı fine-tune stratejisi. |
+| [ai/model-card-template.md](ai/model-card-template.md) | Sahte model veya benchmark iddiasını engelleyen doldurulmamış model kartı şablonu. |
+| [ai/model-training-execution.md](ai/model-training-execution.md) | Gerçek training öncesi veri, compute, checkpoint, eval ve approval yürütme sırası. |
+| [ai/checkpoint-governance.md](ai/checkpoint-governance.md) | Checkpoint kimliği, hash, lifecycle, recovery ve publication governance. |
+| [evals/evaluation-strategy.md](evals/evaluation-strategy.md) | Prompt, retrieval, agent, capability, safety ve operations eval stratejisi. |
+| [evals/benchmark-integrity.md](evals/benchmark-integrity.md) | Ön kayıt, kontaminasyon, tekrar üretilebilirlik ve benchmark iddia sınırı. |
+| [security/model-provider-data-policy.md](security/model-provider-data-policy.md) | Model provider veri sınıfları, minimum veri, redaksiyon, retention ve olay politikası. |
+| [reviews/SEIS_AI_MODEL_APPLICATION_REVIEW.md](reviews/SEIS_AI_MODEL_APPLICATION_REVIEW.md) | AI uygulama katmanı ile model sahipliği/araştırma sınırının foundation incelemesi. |
 | [ai/installed-ai-collaboration-protocol.md](ai/installed-ai-collaboration-protocol.md) | One-writer, reviewer, draft, metadata-only, local-demo, approval-gated, and disabled collaboration protocol for all installed AI tools. |
 | [ai/ai-workforce-training.md](ai/ai-workforce-training.md) | Installed AI workforce training contract for supervised seed-model improvement without cloud fine-tuning claims. |
 | [ai/nvidia-accelerator-catalog.md](ai/nvidia-accelerator-catalog.md) | NVIDIA GitHub, Build skills, and run-anywhere model catalog intake with dry-run install queue and no-clone/no-download/no-NIM boundary. |

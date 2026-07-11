@@ -3,6 +3,7 @@ import { execFileSync } from "node:child_process";
 import path from "node:path";
 
 import {
+  AI_CORE_FRONTIER_TRAINING_STATUS_TOOL,
   AI_CORE_MODEL_SCALING_STATUS_TOOL,
   AI_CORE_PROVIDER_STATUS_TOOL,
   AI_CORE_VERSION_PROMOTION_TOOL,
@@ -11,6 +12,7 @@ import {
   SUBAGENT_DRY_RUN_TASK_TOOL,
   SUBAGENT_OPERATING_MODEL_TOOL,
   SUBAGENT_REVIEW_LEDGER_TOOL,
+  aiCoreFrontierTrainingStatus,
   aiCoreModelScalingStatus,
   aiCoreProviderStatus,
   aiCoreVersionPromotionDryRun,
@@ -146,6 +148,17 @@ export function toolDefinitions({ allowWrite = false } = {}) {
         type: "object",
         properties: {
           includeFullProfile: { type: "boolean", description: "Return the full machine-readable model scaling profile." },
+        },
+      },
+    },
+    {
+      name: AI_CORE_FRONTIER_TRAINING_STATUS_TOOL,
+      description:
+        "Read the fail-closed SEIS 20B/70B/150B/300B+/512B frontier training launch plan, official research references, evidence gaps, council coverage, and approval boundaries. Read-only; never downloads models or datasets, submits jobs, trains, benchmarks, calls providers, accesses credentials, provisions compute, executes SSH, deploys, publishes checkpoints, mutates GitHub, or proves AGI.",
+      input_schema: {
+        type: "object",
+        properties: {
+          includeFullPlan: { type: "boolean", description: "Return the full machine-readable launch plan." },
         },
       },
     },
@@ -367,6 +380,13 @@ export function executeTool(name, input, { repoRoot, webRoot, allowWrite = false
     case AI_CORE_MODEL_SCALING_STATUS_TOOL: {
       return JSON.stringify(
         aiCoreModelScalingStatus(repoRoot, { includeFullProfile: input?.includeFullProfile === true }),
+        null,
+        2
+      );
+    }
+    case AI_CORE_FRONTIER_TRAINING_STATUS_TOOL: {
+      return JSON.stringify(
+        aiCoreFrontierTrainingStatus(repoRoot, { includeFullPlan: input?.includeFullPlan === true }),
         null,
         2
       );

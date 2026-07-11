@@ -1,12 +1,16 @@
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 
+import { resolveInside } from "./repo.mjs";
+
 export const PLUGIN_INTEGRATION_PATH = "content/development/seis-agent-plugin-integration.json";
 export const MCP_RUNTIME_CONTRACT_PATH = "content/development/seis-ai-core-mcp-runtime-contract.json";
 export const AI_CORE_PROVIDER_REGISTRY_PATH = "content/development/seis-ai-core-provider-registry.json";
 export const AI_CORE_READ_ONLY_ROUTER_RUNTIME_PATH = "content/development/seis-ai-core-read-only-router-runtime.json";
 export const AI_CORE_READ_ONLY_ROUTER_RUNTIME_RESOURCE_URI = "seis://ai/read-only-router-runtime.json";
 export const AI_CORE_MODEL_SCALING_PROFILE_PATH = "content/development/seis-model-scaling-hardware-profile.json";
+export const AI_CORE_FRONTIER_TRAINING_LAUNCH_PLAN_PATH = "content/development/seis-frontier-training-launch-plan.json";
+export const AI_CORE_FRONTIER_TRAINING_LAUNCH_PLAN_RESOURCE_URI = "seis://ai/frontier-training-launch-plan.json";
 export const AI_CORE_MODEL_PARAMETER_LADDER_PATH = "content/development/seis-model-parameter-ladder.json";
 export const AI_CORE_MODEL_PARAMETER_LADDER_RESOURCE_URI = "seis://ai/model-parameter-ladder.json";
 export const AI_CORE_MODEL_FRONTIER_ESCALATION_POLICY_PATH = "content/development/seis-model-frontier-escalation-policy.json";
@@ -47,8 +51,55 @@ export const SUBAGENT_DRY_RUN_TASK_TOOL = "seis_ai_core_subagent_dry_run";
 export const SUBAGENT_REVIEW_LEDGER_TOOL = "seis_ai_core_subagent_review_ledger";
 export const AI_CORE_PROVIDER_STATUS_TOOL = "seis_ai_core_provider_status";
 export const AI_CORE_MODEL_SCALING_STATUS_TOOL = "seis_ai_core_model_scaling_status";
+export const AI_CORE_FRONTIER_TRAINING_STATUS_TOOL = "seis_ai_core_frontier_training_status";
 export const AI_CORE_VERSION_STATUS_TOOL = "seis_ai_core_version_status";
 export const AI_CORE_VERSION_PROMOTION_TOOL = "seis_ai_core_version_promotion_dry_run";
+const FRONTIER_TRAINING_REQUIRED_AGENT_IDS = [
+  "architect-agent",
+  "code-agent",
+  "design-agent",
+  "ui-ux-agent",
+  "research-agent",
+  "search-agent",
+  "security-agent",
+  "devops-agent",
+  "documentation-agent",
+  "qa-agent",
+  "cloud-agent",
+  "automation-agent",
+];
+const FRONTIER_TRAINING_FALSE_FIELDS = [
+  "trainingAuthorized",
+  "externalJobAuthorized",
+  "routeEligibleToday",
+  "runtimeAuthority",
+  "checkpointExists",
+  "benchmarkEvidenceAvailable",
+  "agiClaimAllowed",
+];
+const CREDENTIAL_VALUE_PATTERNS = [
+  {
+    id: "private-key",
+    pattern: /-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----/,
+  },
+  {
+    id: "provider-or-platform-token",
+    pattern:
+      /\b(?:hf_[A-Za-z0-9]{20,}|sk-(?:proj-|ant-)?[A-Za-z0-9_-]{20,}|github_pat_[A-Za-z0-9_]{20,}|gh[pousr]_[A-Za-z0-9_]{20,}|(?:AKIA|ASIA)[0-9A-Z]{16}|AIza[0-9A-Za-z_-]{35}|xox[baprs]-[A-Za-z0-9-]{20,})\b/,
+  },
+  {
+    id: "bearer-token",
+    pattern: /\bBearer\s+[A-Za-z0-9._~+/-]{20,}={0,2}\b/i,
+  },
+  {
+    id: "jwt",
+    pattern: /\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\b/,
+  },
+  {
+    id: "credential-uri",
+    pattern: /[a-z][a-z0-9+.-]*:\/\/[^/\s:@]+:[^/\s@]+@/i,
+  },
+];
 export const PERSONAL_PLUGIN_LANE_TOOLS = [
   {
     laneId: "seis",
@@ -174,6 +225,39 @@ export function readAiCoreModelScalingProfile(repoRoot) {
     throw new Error(`SEIS model scaling hardware profile is missing: ${AI_CORE_MODEL_SCALING_PROFILE_PATH}`);
   }
   return JSON.parse(readFileSync(filePath, "utf8"));
+}
+
+export function readAiCoreFrontierTrainingLaunchPlan(repoRoot) {
+  const filePath = path.join(repoRoot, ...AI_CORE_FRONTIER_TRAINING_LAUNCH_PLAN_PATH.split("/"));
+  if (!existsSync(filePath)) {
+    throw new Error(`SEIS frontier training launch plan is missing: ${AI_CORE_FRONTIER_TRAINING_LAUNCH_PLAN_PATH}`);
+  }
+  const raw = readFileSync(filePath, "utf8");
+  const plan = JSON.parse(raw);
+  assertNoCredentialLikeManifestContent(raw, plan);
+  return plan;
+}
+
+export function assertNoCredentialLikeManifestContent(rawContent, parsedContent) {
+  const raw = String(rawContent || "");
+  for (const candidate of CREDENTIAL_VALUE_PATTERNS) {
+    if (candidate.pattern.test(raw)) {
+      throw new Error(`SEIS frontier training launch plan contains a blocked credential category: ${candidate.id}`);
+    }
+  }
+
+  const sensitiveKeyPattern = /^(?:api[-_]?key|access[-_]?key|private[-_]?key|token|password|secret)$/i;
+  const queue = [parsedContent];
+  while (queue.length > 0) {
+    const value = queue.pop();
+    if (!value || typeof value !== "object") continue;
+    for (const [key, child] of Object.entries(value)) {
+      if (sensitiveKeyPattern.test(key) && typeof child === "string" && child.trim()) {
+        throw new Error(`SEIS frontier training launch plan contains a value in blocked credential field: ${key}`);
+      }
+      if (child && typeof child === "object") queue.push(child);
+    }
+  }
 }
 
 export function readAiCoreModelParameterLadder(repoRoot) {
@@ -729,6 +813,254 @@ export function aiCoreModelScalingStatus(repoRoot, options = {}) {
       error: error.message,
     };
   }
+}
+
+export function aiCoreFrontierTrainingStatus(repoRoot, options = {}) {
+  try {
+    const plan = readAiCoreFrontierTrainingLaunchPlan(repoRoot);
+    const lanes = Array.isArray(plan.lanes) ? plan.lanes : [];
+    const launchGates = Array.isArray(plan.globalLaunchGates) ? plan.globalLaunchGates : [];
+    const backends = Array.isArray(plan.executionBackends) ? plan.executionBackends : [];
+    const research = Array.isArray(plan.officialResearchBaseline) ? plan.officialResearchBaseline : [];
+    const requiredAgentIds = Array.isArray(plan.installedAiCouncil?.requiredAgentIds)
+      ? plan.installedAiCouncil.requiredAgentIds
+      : [];
+    const councilPath = plan.installedAiCouncil?.source || AI_CORE_MODEL_SCALING_SUBAGENT_COUNCIL_PATH;
+    const councilPathAllowed = councilPath === AI_CORE_MODEL_SCALING_SUBAGENT_COUNCIL_PATH;
+    const council = councilPathAllowed ? readJsonIfExists(repoRoot, councilPath) || {} : {};
+    const councilAgentIds = Array.isArray(council.agents) ? council.agents.map((agent) => agent.id) : [];
+    const unresolvedCouncilAgentIds = requiredAgentIds.filter((agentId) => !councilAgentIds.includes(agentId));
+    const runtimeIssues = validateFrontierTrainingRuntime({
+      plan,
+      lanes,
+      launchGates,
+      backends,
+      requiredAgentIds,
+      council,
+      councilPathAllowed,
+      unresolvedCouncilAgentIds,
+    });
+    if (runtimeIssues.length > 0) {
+      throw new Error(`SEIS frontier training launch plan failed runtime validation: ${runtimeIssues.join("; ")}`);
+    }
+
+    const payload = {
+      ok: true,
+      tool: AI_CORE_FRONTIER_TRAINING_STATUS_TOOL,
+      planPath: AI_CORE_FRONTIER_TRAINING_LAUNCH_PLAN_PATH,
+      councilPath,
+      id: plan.id,
+      version: plan.version,
+      status: plan.status,
+      resourceUri: plan.resourceUri || AI_CORE_FRONTIER_TRAINING_LAUNCH_PLAN_RESOURCE_URI,
+      qualityGate: plan.qualityGate,
+      truthBoundary: plan.truthBoundary,
+      coreCredentialRequirement: plan.coreCredentialRequirement,
+      executionMode: plan.executionMode,
+      trainingAuthorized: plan.trainingAuthorized === true,
+      externalJobAuthorized: plan.externalJobAuthorized === true,
+      routeEligibleToday: plan.routeEligibleToday === true,
+      runtimeAuthority: plan.runtimeAuthority === true,
+      checkpointExists: plan.checkpointExists === true,
+      benchmarkEvidenceAvailable: plan.benchmarkEvidenceAvailable === true,
+      agiClaimAllowed: plan.agiClaimAllowed === true,
+      launchableLaneCount: lanes.filter((lane) => lane.launchDecision === "allow").length,
+      deniedLaneCount: lanes.filter((lane) => lane.launchDecision === "deny").length,
+      allLaunchesDenied: lanes.length > 0 && lanes.every((lane) => lane.launchDecision === "deny"),
+      laneCount: lanes.length,
+      lanes: lanes.map((lane) => ({
+        id: lane.id,
+        parameterClass: lane.parameterClass,
+        parameterCountBillion: lane.parameterCountBillion,
+        status: lane.status,
+        launchDecision: lane.launchDecision,
+        trainingAuthorized: lane.trainingAuthorized === true,
+        routeEligibleToday: lane.routeEligibleToday === true,
+        runtimeAuthority: lane.runtimeAuthority === true,
+        agiCapabilityStatus: lane.agiCapabilityStatus ?? null,
+        blockedBy: lane.blockedBy || [],
+        trainingLogCount: Array.isArray(lane.evidence?.trainingLogs) ? lane.evidence.trainingLogs.length : 0,
+        checkpointCount: Array.isArray(lane.evidence?.checkpoints) ? lane.evidence.checkpoints.length : 0,
+        evaluationReportCount: Array.isArray(lane.evidence?.evaluationReports)
+          ? lane.evidence.evaluationReports.length
+          : 0,
+        approvalRecorded: Boolean(lane.evidence?.approvalRecord),
+      })),
+      globalLaunchGates: launchGates.map((gate) => ({
+        id: gate.id,
+        status: gate.status,
+        requiredBeforeLaunch: gate.requiredBeforeLaunch === true,
+      })),
+      missingGlobalGateCount: launchGates.filter((gate) => gate.status !== "accepted").length,
+      executionBackends: backends.map((backend) => ({
+        id: backend.id,
+        status: backend.status,
+        selected: backend.selected === true,
+      })),
+      selectedExecutionBackendCount: backends.filter((backend) => backend.selected === true).length,
+      installedAiCouncil: {
+        status: plan.installedAiCouncil?.status,
+        reviewState: plan.installedAiCouncil?.reviewState,
+        runtimeAuthority: plan.installedAiCouncil?.runtimeAuthority === true,
+        selfApprovalAllowed: plan.installedAiCouncil?.selfApprovalAllowed === true,
+        requiredAgentCount: requiredAgentIds.length,
+        availableCouncilAgentCount: councilAgentIds.length,
+        unresolvedCouncilAgentIds,
+      },
+      evidenceCounts: plan.evidenceCounts || {},
+      officialResearchBaseline: research.map((source) => ({
+        id: source.id,
+        url: source.url,
+        type: source.type,
+      })),
+      decisionPolicy: plan.decisionPolicy || {},
+      secretBoundary: plan.secretBoundary || {},
+      forbiddenClaims: plan.forbiddenClaims || [],
+      humanApprovalRequiredFor: plan.humanApprovalRequiredFor || [],
+      nextSafeActions: plan.nextSafeActions || [],
+      runtimeValidation: {
+        valid: true,
+        failClosed: true,
+        issueCount: 0,
+        issues: [],
+      },
+      executionEvidence: frontierTrainingDeniedExecutionEvidence(),
+    };
+
+    if (options.includeFullPlan === true) payload.plan = plan;
+    return payload;
+  } catch (error) {
+    return {
+      ok: false,
+      tool: AI_CORE_FRONTIER_TRAINING_STATUS_TOOL,
+      planPath: AI_CORE_FRONTIER_TRAINING_LAUNCH_PLAN_PATH,
+      status: "invalid-fail-closed",
+      trainingAuthorized: false,
+      externalJobAuthorized: false,
+      routeEligibleToday: false,
+      runtimeAuthority: false,
+      checkpointExists: false,
+      benchmarkEvidenceAvailable: false,
+      agiClaimAllowed: false,
+      launchableLaneCount: 0,
+      allLaunchesDenied: true,
+      runtimeValidation: {
+        valid: false,
+        failClosed: true,
+        issueCount: 1,
+        issues: [error.message],
+      },
+      executionEvidence: frontierTrainingDeniedExecutionEvidence(),
+      error: error.message,
+    };
+  }
+}
+
+function validateFrontierTrainingRuntime({
+  plan,
+  lanes,
+  launchGates,
+  backends,
+  requiredAgentIds,
+  council,
+  councilPathAllowed,
+  unresolvedCouncilAgentIds,
+}) {
+  const issues = [];
+  if (plan.id !== "seis-frontier-training-launch-plan") issues.push("plan id mismatch");
+  if (plan.status !== "preflight-only-not-authorized") issues.push("plan status is not preflight-only");
+  if (plan.executionMode !== "dry-run-only") issues.push("execution mode is not dry-run-only");
+  for (const field of FRONTIER_TRAINING_FALSE_FIELDS) {
+    if (plan[field] !== false) issues.push(`${field} must be false`);
+  }
+  if (plan.decisionPolicy?.defaultDecision !== "deny" || plan.decisionPolicy?.failClosed !== true) {
+    issues.push("decision policy must fail closed");
+  }
+  if (lanes.length !== 5) issues.push("exactly five scale lanes are required");
+  const expectedLaneOrder = ["20B", "70B", "150B", "300B+", "512B"];
+  if (JSON.stringify(lanes.map((lane) => lane.parameterClass)) !== JSON.stringify(expectedLaneOrder)) {
+    issues.push("scale lane order mismatch");
+  }
+  for (const lane of lanes) {
+    if (
+      lane.launchDecision !== "deny" ||
+      lane.trainingAuthorized !== false ||
+      lane.routeEligibleToday !== false ||
+      lane.runtimeAuthority !== false
+    ) {
+      issues.push(`${lane.id || lane.parameterClass || "unknown lane"} is not denied`);
+    }
+    if (
+      lane.evidence?.datasetManifest !== null ||
+      lane.evidence?.runManifest !== null ||
+      !Array.isArray(lane.evidence?.trainingLogs) ||
+      lane.evidence.trainingLogs.length !== 0 ||
+      !Array.isArray(lane.evidence?.checkpoints) ||
+      lane.evidence.checkpoints.length !== 0 ||
+      !Array.isArray(lane.evidence?.evaluationReports) ||
+      lane.evidence.evaluationReports.length !== 0 ||
+      lane.evidence?.approvalRecord !== null
+    ) {
+      issues.push(`${lane.id || lane.parameterClass || "unknown lane"} contains unaccepted execution evidence`);
+    }
+  }
+  if (
+    launchGates.length < 8 ||
+    launchGates.some((gate) => gate.requiredBeforeLaunch !== true || gate.status !== "missing")
+  ) {
+    issues.push("global launch gates are incomplete or not missing");
+  }
+  if (backends.some((backend) => backend.selected === true)) issues.push("an execution backend is selected");
+  if (!councilPathAllowed) issues.push("council source path is not allowlisted");
+  if (
+    requiredAgentIds.length !== FRONTIER_TRAINING_REQUIRED_AGENT_IDS.length ||
+    FRONTIER_TRAINING_REQUIRED_AGENT_IDS.some((agentId) => !requiredAgentIds.includes(agentId))
+  ) {
+    issues.push("required council roster mismatch");
+  }
+  if (
+    plan.installedAiCouncil?.runtimeAuthority !== false ||
+    plan.installedAiCouncil?.selfApprovalAllowed !== false ||
+    plan.installedAiCouncil?.reviewState !== "not-recorded"
+  ) {
+    issues.push("council authority boundary mismatch");
+  }
+  if (unresolvedCouncilAgentIds.length > 0) issues.push("required council agents are unresolved");
+  if (
+    !Array.isArray(council.agents) ||
+    council.agents.some((agent) => agent.authority !== "plan-only")
+  ) {
+    issues.push("council agents must remain plan-only");
+  }
+  const zeroEvidenceFields = [
+    "authorizedTrainingRuns",
+    "completedTrainingRuns",
+    "acceptedCheckpoints",
+    "acceptedBenchmarkReports",
+    "acceptedAgiEvaluations",
+    "recordedCouncilReviews",
+    "activeHumanApprovals",
+  ];
+  if (zeroEvidenceFields.some((field) => plan.evidenceCounts?.[field] !== 0)) {
+    issues.push("execution evidence counters must remain zero");
+  }
+  return issues;
+}
+
+function frontierTrainingDeniedExecutionEvidence() {
+  return {
+    modelDownloaded: false,
+    datasetDownloaded: false,
+    remoteJobSubmitted: false,
+    trainingRunPerformed: false,
+    inferenceRunPerformed: false,
+    benchmarkRunPerformed: false,
+    checkpointPublished: false,
+    providerCalled: false,
+    sshExecuted: false,
+    deploymentPerformed: false,
+    githubMutated: false,
+  };
 }
 
 export function aiCoreVersionStatus(repoRoot, options = {}) {
@@ -1534,7 +1866,12 @@ function findLane(manifest, laneId) {
 
 function readJsonIfExists(repoRoot, relativePath) {
   if (!relativePath) return null;
-  const filePath = path.join(repoRoot, ...relativePath.split("/"));
+  let filePath;
+  try {
+    filePath = resolveInside(repoRoot, relativePath);
+  } catch {
+    return null;
+  }
   if (!existsSync(filePath)) return null;
   try {
     return JSON.parse(readFileSync(filePath, "utf8"));

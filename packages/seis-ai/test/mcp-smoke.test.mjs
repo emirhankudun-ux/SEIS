@@ -66,7 +66,7 @@ function rpcSession(requests, { timeoutMs = 15000 } = {}) {
 }
 
 describe("seis-mcp stdio smoke", () => {
-  it("initializes and lists 35 tools, 3 prompts, 30 resources", async () => {
+  it("initializes and lists 36 tools, 3 prompts, 31 resources", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -99,6 +99,7 @@ describe("seis-mcp stdio smoke", () => {
       "i18n_unreferenced",
       "run_all_checks",
       "security_audit",
+      "seis_ai_core_frontier_training_status",
       "seis_ai_core_model_scaling_status",
       "seis_ai_core_provider_status",
       "seis_ai_core_read_only_route",
@@ -142,6 +143,7 @@ describe("seis-mcp stdio smoke", () => {
       "seis://ai/cancellation-fixture.json",
       "seis://ai/dry-run-task-queue.json",
       "seis://ai/execution-ledger-fixture.json",
+      "seis://ai/frontier-training-launch-plan.json",
       "seis://ai/mcp-runtime-contract.json",
       "seis://ai/model-frontier-escalation-policy.json",
       "seis://ai/model-parameter-ladder.json",
@@ -253,8 +255,43 @@ describe("seis-mcp stdio smoke", () => {
     assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
     const payload = JSON.parse(resource.result.contents[0].text);
     assert.equal(payload.id, "seis-ai-core-mcp-runtime-contract");
-    assert.equal(payload.resourceCount, 30);
+    assert.equal(payload.toolCount, 36);
+    assert.equal(payload.resourceCount, 31);
     assert.equal(payload.transport, "stdio JSON-RPC");
+  });
+
+  it("reads the fail-closed SEIS frontier training launch plan through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "resources/read",
+        params: {
+          uri: "seis://ai/frontier-training-launch-plan.json",
+        },
+      },
+    ]);
+
+    const resource = responses.get(2);
+    assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
+    const payload = JSON.parse(resource.result.contents[0].text);
+    assert.equal(payload.id, "seis-frontier-training-launch-plan");
+    assert.equal(payload.status, "preflight-only-not-authorized");
+    assert.equal(payload.trainingAuthorized, false);
+    assert.equal(payload.externalJobAuthorized, false);
+    assert.equal(payload.routeEligibleToday, false);
+    assert.equal(payload.agiClaimAllowed, false);
   });
 
   it("reads the SEIS AI Core provider registry resource through the protocol", async () => {
@@ -810,6 +847,48 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.agentLane.id, "seis-code");
     assert.equal(payload.executionPerformed, false);
     assert.equal(payload.providerCallsPerformed, false);
+  });
+
+  it("executes the fail-closed SEIS frontier training status tool through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "tools/call",
+        params: {
+          name: "seis_ai_core_frontier_training_status",
+          arguments: {},
+        },
+      },
+    ]);
+
+    const call = responses.get(2);
+    assert.ok(!call.error, `tools/call errored: ${JSON.stringify(call.error)}`);
+    const payload = JSON.parse(call.result.content[0].text);
+    assert.equal(payload.ok, true);
+    assert.equal(payload.id, "seis-frontier-training-launch-plan");
+    assert.equal(payload.status, "preflight-only-not-authorized");
+    assert.equal(payload.trainingAuthorized, false);
+    assert.equal(payload.externalJobAuthorized, false);
+    assert.equal(payload.launchableLaneCount, 0);
+    assert.equal(payload.deniedLaneCount, 5);
+    assert.equal(payload.allLaunchesDenied, true);
+    assert.equal(payload.installedAiCouncil.requiredAgentCount, 12);
+    assert.equal(payload.installedAiCouncil.runtimeAuthority, false);
+    assert.equal(payload.executionEvidence.trainingRunPerformed, false);
+    assert.equal(payload.executionEvidence.remoteJobSubmitted, false);
+    assert.equal(payload.executionEvidence.githubMutated, false);
   });
 
   it("executes the SEIS AI Core model scaling status tool through the protocol", async () => {

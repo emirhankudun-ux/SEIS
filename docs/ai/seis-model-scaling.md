@@ -50,6 +50,7 @@ Validation:
 npm run check:seis-model-frontier-escalation-policy
 npm run check:seis-150b-frontier-model-program
 npm run check:seis-512b-apex-model-program
+npm run check:seis-frontier-training-launch-plan
 npm run check:seis-model-scaling-hardware-profile
 npm run check:seis-model-scaling-subagent-council
 npm run check:seis-language-model-intake
@@ -73,6 +74,13 @@ MCP resource:
 MCP resource:
 `seis://ai/512b-apex-model-program.json`.
 
+Frontier training launch plan:
+`content/development/seis-frontier-training-launch-plan.json`.
+
+MCP resource and status tool:
+`seis://ai/frontier-training-launch-plan.json` and
+`seis_ai_core_frontier_training_status`.
+
 Model scaling sub-agent council:
 `content/development/seis-model-scaling-subagent-council.json`.
 
@@ -91,6 +99,29 @@ approval exist.
 
 Until then, SEIS AI Core continues to use Local Demo mode and the deterministic
 local seed-model lab.
+
+## Frontier Training Launch Plan
+
+SEIS now has one fail-closed launch contract spanning 20B, 70B, 150B, 300B+,
+and 512B:
+
+`content/development/seis-frontier-training-launch-plan.json`
+
+Every lane currently returns `launchDecision: deny`,
+`trainingAuthorized: false`, and `routeEligibleToday: false`. The contract
+records zero completed training runs, zero accepted checkpoints, zero accepted
+benchmarks, zero council reviews, and zero active human approvals. Missing,
+expired, or self-issued approval always fails closed.
+
+The launch plan separates full pretraining from SFT, DPO, LoRA/adapters, and
+application-layer prompting/RAG. It also records Hugging Face Jobs, PyTorch
+FSDP2, and NVIDIA Megatron Core as research candidates only. No backend is
+selected, installed, authenticated, or executed.
+
+The full evidence and execution sequence is documented in
+`docs/ai/model-training-execution.md`; checkpoint identity, lineage,
+quarantine, retention, restore, promotion, and publication rules are in
+`docs/ai/checkpoint-governance.md`.
 
 ## What SEIS 20B Means Right Now
 
@@ -598,5 +629,7 @@ Before 20B can move from planned target to validated local profile, SEIS needs:
 - [SEIS AI Core](seis-ai-core.md)
 - [Model Router](model-router.md)
 - [AI Workforce Training](ai-workforce-training.md)
+- [Model Training Execution](model-training-execution.md)
+- [Checkpoint Governance](checkpoint-governance.md)
 - [Agent Runtime](agent-runtime.md)
 - [Security Policy](../../SECURITY.md)

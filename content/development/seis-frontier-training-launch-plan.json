@@ -1,0 +1,485 @@
+{
+  "id": "seis-frontier-training-launch-plan",
+  "version": "2026.07.11",
+  "status": "preflight-only-not-authorized",
+  "updatedAt": "2026-07-11",
+  "resourceUri": "seis://ai/frontier-training-launch-plan.json",
+  "qualityGate": "npm run check:seis-frontier-training-launch-plan",
+  "purpose": "Define one fail-closed launch contract for the SEIS 20B, 70B, 150B, 300B+, and 512B research lanes while keeping model training, downloads, paid compute, provider credentials, checkpoint publication, route promotion, and AGI claims blocked until evidence and explicit human approval exist.",
+  "truthBoundary": "Planning, review, and deterministic preflight evidence only. This contract does not download a model or dataset, train or fine-tune weights, submit a remote job, run inference or a benchmark, provision GPU or cloud capacity, execute SSH, publish a checkpoint, mutate GitHub, make a model route eligible, or demonstrate AGI.",
+  "coreCredentialRequirement": "none",
+  "executionMode": "dry-run-only",
+  "trainingAuthorized": false,
+  "externalJobAuthorized": false,
+  "routeEligibleToday": false,
+  "runtimeAuthority": false,
+  "checkpointExists": false,
+  "benchmarkEvidenceAvailable": false,
+  "agiClaimAllowed": false,
+  "sourceOfTruth": {
+    "modelScalingProfile": "content/development/seis-model-scaling-hardware-profile.json",
+    "parameterLadder": "content/development/seis-model-parameter-ladder.json",
+    "frontierEscalationPolicy": "content/development/seis-model-frontier-escalation-policy.json",
+    "frontier150bProgram": "content/development/seis-150b-frontier-model-program.json",
+    "apex512bProgram": "content/development/seis-512b-apex-model-program.json",
+    "modelScalingCouncil": "content/development/seis-model-scaling-subagent-council.json",
+    "agiEvaluationProtocol": "content/development/seis-agi-evaluation-protocol.json",
+    "modelCardTemplate": "content/development/seis-20b-model-card-template.json",
+    "datasetCardTemplate": "content/development/seis-20b-dataset-card-template.json",
+    "checkpointGovernance": "docs/ai/checkpoint-governance.md",
+    "trainingExecutionDoc": "docs/ai/model-training-execution.md",
+    "localModelStrategy": "docs/ai/local-model-strategy.md",
+    "providerRoutingPolicy": "docs/ai/provider-routing-policy.md",
+    "universeResearch": "docs/ai/seis-universe-research.md",
+    "modelDevelopmentRoadmap": "docs/ai/model-development-roadmap.md",
+    "fineTuningStrategy": "docs/ai/fine-tuning-strategy.md",
+    "modelCardTemplateDoc": "docs/ai/model-card-template.md",
+    "evaluationStrategy": "docs/evals/evaluation-strategy.md",
+    "benchmarkIntegrity": "docs/evals/benchmark-integrity.md",
+    "providerDataPolicy": "docs/security/model-provider-data-policy.md",
+    "foundationReview": "docs/reviews/SEIS_AI_MODEL_APPLICATION_REVIEW.md"
+  },
+  "officialResearchBaseline": [
+    {
+      "id": "hugging-face-trl-sft",
+      "url": "https://huggingface.co/docs/trl/main/en/sft_trainer",
+      "type": "official-post-training-documentation",
+      "seisUse": "SFT is a post-training candidate only after dataset format, provenance, license, privacy, evaluation, and approval gates pass; SFT is not evidence that SEIS trained a foundation model."
+    },
+    {
+      "id": "hugging-face-trl-dpo",
+      "url": "https://huggingface.co/docs/trl/main/en/dpo_trainer",
+      "type": "official-preference-training-documentation",
+      "seisUse": "DPO is a preference post-training candidate only after a reviewed preference dataset and baseline evaluation exist; DPO is not pretraining or AGI evidence."
+    },
+    {
+      "id": "hugging-face-jobs",
+      "url": "https://huggingface.co/docs/huggingface_hub/en/guides/jobs",
+      "type": "official-managed-job-documentation",
+      "seisUse": "A future managed job must declare hardware, timeout, encrypted secrets, persistence, budget, cancellation, and result ownership. No job is selected or submitted by this plan."
+    },
+    {
+      "id": "pytorch-fsdp2",
+      "url": "https://docs.pytorch.org/docs/stable/distributed.fsdp.fully_shard.html",
+      "type": "official-distributed-training-documentation",
+      "seisUse": "FSDP2 is a distributed execution candidate for approved research; it is not a selected architecture, capacity proof, or training result."
+    },
+    {
+      "id": "nvidia-megatron-core-parallelism",
+      "url": "https://docs.nvidia.com/megatron-core/developer-guide/latest/user-guide/parallelism-guide.html",
+      "type": "official-frontier-parallelism-documentation",
+      "seisUse": "Tensor, pipeline, context, expert, and sharded data parallelism remain architecture candidates for 70B+ research and require measured topology, checkpoint, reliability, and cost evidence."
+    },
+    {
+      "id": "nist-ai-risk-management-framework",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "type": "official-ai-risk-framework",
+      "seisUse": "Govern, map, measure, and manage controls must remain part of every training and release decision."
+    },
+    {
+      "id": "nist-generative-ai-profile-ai-600-1",
+      "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+      "type": "official-generative-ai-risk-profile",
+      "seisUse": "Data rights, privacy, information security, misuse, transparency, value-chain, and incident controls are mandatory before public model readiness."
+    }
+  ],
+  "methodBoundaries": [
+    {
+      "id": "pretraining",
+      "meaning": "Training a model from initialized weights or a formally documented continuation checkpoint with complete data, tokenizer, architecture, optimizer, distributed-runtime, checkpoint, and evaluation evidence.",
+      "ownershipClaimAllowedToday": false
+    },
+    {
+      "id": "sft",
+      "meaning": "Supervised post-training on reviewed prompt-completion, conversational, or language-modeling data.",
+      "ownershipClaimAllowedToday": false
+    },
+    {
+      "id": "dpo",
+      "meaning": "Preference post-training on reviewed prompt, chosen, and rejected examples.",
+      "ownershipClaimAllowedToday": false
+    },
+    {
+      "id": "lora-adapter",
+      "meaning": "Parameter-efficient adaptation documented separately from the base model and foundation-model ownership.",
+      "ownershipClaimAllowedToday": false
+    },
+    {
+      "id": "retrieval-or-prompting",
+      "meaning": "Application-layer context and prompt behavior; never model training or model ownership evidence.",
+      "ownershipClaimAllowedToday": false
+    }
+  ],
+  "executionBackends": [
+    {
+      "id": "local-16gb-plus",
+      "status": "local-demo-and-seed-lab-only",
+      "selected": false,
+      "allowedToday": "Deterministic seed-model lab, static validation, dataset-card drafting, and future quantized inference preflight only.",
+      "blockedToday": "Full 20B training, unapproved model downloads, runtime promotion, compatibility claims, and paid compute."
+    },
+    {
+      "id": "hugging-face-jobs",
+      "status": "candidate-not-authorized",
+      "selected": false,
+      "allowedToday": "Documentation and offline launch-plan validation only.",
+      "blockedToday": "Authentication checks, job submission, paid hardware use, model or dataset download, and Hub publication."
+    },
+    {
+      "id": "pytorch-fsdp2",
+      "status": "candidate-not-selected",
+      "selected": false,
+      "allowedToday": "Architecture research and contract review only.",
+      "blockedToday": "Distributed execution, cluster allocation, and checkpoint generation."
+    },
+    {
+      "id": "nvidia-megatron-core",
+      "status": "candidate-not-selected",
+      "selected": false,
+      "allowedToday": "Parallelism and checkpoint architecture research only.",
+      "blockedToday": "Cluster provisioning, distributed training, and checkpoint generation."
+    }
+  ],
+  "evidenceSchema": [
+    {
+      "id": "data",
+      "required": [
+        "dataset manifest",
+        "source and license map",
+        "rights and privacy review",
+        "PII and secret scan",
+        "deduplication and contamination report",
+        "train validation and test split manifest"
+      ]
+    },
+    {
+      "id": "model",
+      "required": [
+        "architecture specification",
+        "tokenizer specification",
+        "parameter accounting",
+        "base checkpoint provenance when applicable",
+        "model card draft"
+      ]
+    },
+    {
+      "id": "compute",
+      "required": [
+        "hardware topology",
+        "memory and throughput estimate",
+        "cost ceiling",
+        "timeout and cancellation plan",
+        "capacity owner approval"
+      ]
+    },
+    {
+      "id": "training",
+      "required": [
+        "immutable run manifest",
+        "dependency and container lock",
+        "random seeds",
+        "optimizer and schedule",
+        "redacted logs",
+        "checkpoint persistence and recovery plan"
+      ]
+    },
+    {
+      "id": "evaluation",
+      "required": [
+        "baseline report",
+        "regression suite",
+        "contamination-aware benchmark report",
+        "safety and misuse evaluation",
+        "independent reviewer sign-off"
+      ]
+    },
+    {
+      "id": "operations",
+      "required": [
+        "observability plan",
+        "kill switch",
+        "rollback plan",
+        "cost stop",
+        "incident owner",
+        "artifact retention policy"
+      ]
+    }
+  ],
+  "globalLaunchGates": [
+    {
+      "id": "dataset-and-rights",
+      "status": "missing",
+      "requiredBeforeLaunch": true
+    },
+    {
+      "id": "architecture-and-tokenizer",
+      "status": "missing",
+      "requiredBeforeLaunch": true
+    },
+    {
+      "id": "compute-budget-and-capacity",
+      "status": "missing",
+      "requiredBeforeLaunch": true
+    },
+    {
+      "id": "checkpoint-and-recovery",
+      "status": "missing",
+      "requiredBeforeLaunch": true
+    },
+    {
+      "id": "evaluation-safety-and-red-team",
+      "status": "missing",
+      "requiredBeforeLaunch": true
+    },
+    {
+      "id": "observability-rollback-and-cost-stop",
+      "status": "missing",
+      "requiredBeforeLaunch": true
+    },
+    {
+      "id": "council-review",
+      "status": "missing",
+      "requiredBeforeLaunch": true
+    },
+    {
+      "id": "explicit-human-approval",
+      "status": "missing",
+      "requiredBeforeLaunch": true
+    }
+  ],
+  "installedAiCouncil": {
+    "status": "plan-only-review-required",
+    "source": "content/development/seis-model-scaling-subagent-council.json",
+    "runtimeAuthority": false,
+    "selfApprovalAllowed": false,
+    "requiredAgentIds": [
+      "architect-agent",
+      "code-agent",
+      "design-agent",
+      "ui-ux-agent",
+      "research-agent",
+      "search-agent",
+      "security-agent",
+      "devops-agent",
+      "documentation-agent",
+      "qa-agent",
+      "cloud-agent",
+      "automation-agent"
+    ],
+    "reviewState": "not-recorded",
+    "rule": "Council members may inspect, challenge, validate, and document a launch packet. No member may grant its own permissions, satisfy missing evidence by assertion, or authorize execution."
+  },
+  "lanes": [
+    {
+      "id": "seis-20b",
+      "parameterClass": "20B",
+      "parameterCountBillion": 20,
+      "status": "preflight-not-ready",
+      "launchDecision": "deny",
+      "trainingAuthorized": false,
+      "routeEligibleToday": false,
+      "runtimeAuthority": false,
+      "localRamBoundary": "16GB+ is a Local Demo, seed-lab, and future quantized inference compatibility target. It is not sufficient evidence or capacity for full 20B training.",
+      "methodCandidates": [
+        "clean-room pretraining research after approval",
+        "SFT or DPO post-training after a separately documented base model and dataset review",
+        "LoRA or adapter experiments documented separately from foundation-model ownership"
+      ],
+      "blockedBy": [
+        "unfilled model card",
+        "unfilled dataset card",
+        "no approved model architecture or tokenizer",
+        "no approved compute budget",
+        "no training run manifest",
+        "no training logs",
+        "no checkpoint",
+        "no evaluation baseline",
+        "no council review",
+        "no human approval"
+      ],
+      "evidence": {
+        "datasetManifest": null,
+        "runManifest": null,
+        "trainingLogs": [],
+        "checkpoints": [],
+        "evaluationReports": [],
+        "approvalRecord": null
+      }
+    },
+    {
+      "id": "seis-70b",
+      "parameterClass": "70B",
+      "parameterCountBillion": 70,
+      "status": "blocked-by-20b-evidence",
+      "launchDecision": "deny",
+      "trainingAuthorized": false,
+      "routeEligibleToday": false,
+      "runtimeAuthority": false,
+      "executionCandidates": ["PyTorch FSDP2", "NVIDIA Megatron Core parallelism"],
+      "blockedBy": [
+        "20B evidence not accepted",
+        "no 70B architecture and tokenizer review",
+        "no distributed compute topology",
+        "no cost ceiling",
+        "no safety and regression baseline",
+        "no human approval"
+      ],
+      "evidence": {
+        "datasetManifest": null,
+        "runManifest": null,
+        "trainingLogs": [],
+        "checkpoints": [],
+        "evaluationReports": [],
+        "approvalRecord": null
+      }
+    },
+    {
+      "id": "seis-150b",
+      "parameterClass": "150B",
+      "parameterCountBillion": 150,
+      "status": "blocked-by-20b-and-70b-evidence",
+      "launchDecision": "deny",
+      "trainingAuthorized": false,
+      "routeEligibleToday": false,
+      "runtimeAuthority": false,
+      "executionCandidates": [
+        "PyTorch FSDP2",
+        "NVIDIA Megatron Core tensor pipeline context and expert parallelism"
+      ],
+      "blockedBy": [
+        "20B evidence not accepted",
+        "70B evidence not accepted",
+        "no frontier architecture decision",
+        "no distributed checkpoint plan",
+        "no observability kill-switch rollback or cost-stop plan",
+        "no human approval"
+      ],
+      "evidence": {
+        "datasetManifest": null,
+        "runManifest": null,
+        "trainingLogs": [],
+        "checkpoints": [],
+        "evaluationReports": [],
+        "approvalRecord": null
+      }
+    },
+    {
+      "id": "seis-300b-plus",
+      "parameterClass": "300B+",
+      "parameterCountBillion": 300,
+      "status": "not-scoped",
+      "launchDecision": "deny",
+      "trainingAuthorized": false,
+      "routeEligibleToday": false,
+      "runtimeAuthority": false,
+      "blockedBy": [
+        "150B evidence not accepted",
+        "dense versus mixture-of-experts decision absent",
+        "hardware feasibility not proven",
+        "public safety and governance review absent",
+        "no human approval"
+      ],
+      "evidence": {
+        "datasetManifest": null,
+        "runManifest": null,
+        "trainingLogs": [],
+        "checkpoints": [],
+        "evaluationReports": [],
+        "approvalRecord": null
+      }
+    },
+    {
+      "id": "seis-512b",
+      "parameterClass": "512B",
+      "parameterCountBillion": 512,
+      "status": "apex-plan-only-not-authorized",
+      "launchDecision": "deny",
+      "trainingAuthorized": false,
+      "routeEligibleToday": false,
+      "runtimeAuthority": false,
+      "agiCapabilityStatus": "not-demonstrated",
+      "blockedBy": [
+        "20B evidence not accepted",
+        "70B evidence not accepted",
+        "150B evidence not accepted",
+        "300B+ feasibility not accepted",
+        "no clean-room frontier dataset and contamination report",
+        "no frontier cluster budget or capacity owner approval",
+        "no AGI evaluation evidence",
+        "no safety threshold or red-team acceptance",
+        "no all-agent council review",
+        "no human approval"
+      ],
+      "evidence": {
+        "datasetManifest": null,
+        "runManifest": null,
+        "trainingLogs": [],
+        "checkpoints": [],
+        "evaluationReports": [],
+        "approvalRecord": null
+      }
+    }
+  ],
+  "decisionPolicy": {
+    "defaultDecision": "deny",
+    "failClosed": true,
+    "missingEvidenceDecision": "deny",
+    "expiredApprovalDecision": "deny",
+    "selfApprovalDecision": "deny",
+    "secretInManifestDecision": "deny-and-report-path-only",
+    "lowerTierGateFailureDecision": "deny",
+    "manualFinalApprovalRequired": true,
+    "silentProviderFallbackAllowed": false,
+    "localOnlyModeMustBeRespected": true
+  },
+  "secretBoundary": {
+    "secretsAllowedInPlan": false,
+    "credentialValuesAllowedInLogs": false,
+    "providerKeysBackendOnly": true,
+    "browserStorageAllowed": false,
+    "approvedSecretTransportRequiredForFutureJobs": true,
+    "reportingRule": "Report only the affected path and secret category; never print or copy the value."
+  },
+  "evidenceCounts": {
+    "laneCount": 5,
+    "authorizedTrainingRuns": 0,
+    "completedTrainingRuns": 0,
+    "acceptedCheckpoints": 0,
+    "acceptedBenchmarkReports": 0,
+    "acceptedAgiEvaluations": 0,
+    "recordedCouncilReviews": 0,
+    "activeHumanApprovals": 0
+  },
+  "forbiddenClaims": [
+    "SEIS has trained a 20B, 70B, 150B, 300B+, or 512B foundation model.",
+    "SEIS has achieved AGI.",
+    "A prompt, RAG system, provider route, installed AI, SFT run, DPO run, LoRA, adapter, or dry-run plan proves SEIS foundation-model ownership.",
+    "A green validator proves model quality, training completion, checkpoint integrity, AGI capability, or public readiness.",
+    "16GB+ RAM proves full 20B training or verified 20B inference compatibility.",
+    "Council review replaces explicit human approval."
+  ],
+  "humanApprovalRequiredFor": [
+    "model download",
+    "dataset download",
+    "dataset upload",
+    "provider authentication",
+    "paid GPU or cloud provisioning",
+    "training job submission",
+    "fine-tuning job submission",
+    "benchmark execution",
+    "checkpoint publication",
+    "route eligibility change",
+    "SSH execution",
+    "deployment",
+    "GitHub push or pull request creation",
+    "public model or dataset release",
+    "AGI claim"
+  ],
+  "nextSafeActions": [
+    "Complete and review the 20B model-card and dataset-card templates without downloading data or weights.",
+    "Create a sanitized dataset manifest and license map for a small local seed experiment before any frontier dataset is selected.",
+    "Use the twelve-agent council to review disjoint evidence categories and record unresolved objections.",
+    "Keep every lane launch decision at deny until all required evidence and an explicit unexpired human approval record exist.",
+    "Validate this contract with npm run check:seis-frontier-training-launch-plan."
+  ]
+}

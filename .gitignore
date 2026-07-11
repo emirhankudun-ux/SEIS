@@ -209,6 +209,10 @@ docs/*
 !docs/releases/*.md
 !docs/ai/
 !docs/ai/*.md
+!docs/evals/
+!docs/evals/*.md
+!docs/security/
+!docs/security/*.md
 !docs/goals/
 !docs/goals/*.md
 !docs/development/
