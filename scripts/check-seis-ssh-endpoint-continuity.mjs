@@ -3,7 +3,8 @@
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname } from "node:path";
+import { homedir } from "node:os";
+import { dirname, join } from "node:path";
 
 const args = parseArgs(process.argv.slice(2));
 const alias = args.alias || "SEIS-SSH";
@@ -129,8 +130,13 @@ function buildResult() {
 }
 
 function inspectSshConfig(targetAlias) {
+  const configText = safeRead(join(homedir(), ".ssh", "config"));
+  if (!hasExplicitHostBlock(configText, targetAlias)) {
+    return { configured: false, explicitHostBlock: false, alias: targetAlias, reason: "explicit-host-block-missing" };
+  }
+
   const result = spawnSync("ssh", ["-G", targetAlias], { encoding: "utf8", timeout: 10000 });
-  if (result.status !== 0) return { configured: false, alias: targetAlias };
+  if (result.status !== 0) return { configured: false, explicitHostBlock: true, alias: targetAlias };
 
   const values = parseSshConfig(result.stdout || "");
   const hostname = values.hostname || "";
@@ -139,6 +145,7 @@ function inspectSshConfig(targetAlias) {
   const transport = detectTransport(hostname, proxyCommand);
   return {
     configured: true,
+    explicitHostBlock: true,
     alias: targetAlias,
     transport,
     hostnameKind: classifyHostname(hostname, transport),
@@ -146,6 +153,21 @@ function inspectSshConfig(targetAlias) {
     proxyCommandShape: normalizeProxyCommandShape(proxyCommand),
     port
   };
+}
+
+function hasExplicitHostBlock(configText, targetAlias) {
+  return configText.split(/\r?\n/).some((line) => {
+    const match = /^\s*Host\s+(.+)$/.exec(line);
+    return Boolean(match && match[1].trim().split(/\s+/).includes(targetAlias));
+  });
+}
+
+function safeRead(file) {
+  try {
+    return readFileSync(file, "utf8");
+  } catch {
+    return "";
+  }
 }
 
 function parseSshConfig(output) {
@@ -196,7 +218,18 @@ function classifyHostname(hostname, transport) {
 }
 
 function isLocalHost(host) {
-  return host === "localhost" || host === "127.0.0.1" || host === "::1" || host.endsWith(".local");
+  const value = String(host || "").toLowerCase();
+  const ipv4 = value.split(".").map(Number);
+  const privateIpv4 = ipv4.length === 4 && ipv4.every(Number.isInteger) && ipv4.every((part) => part >= 0 && part <= 255)
+    && (ipv4[0] === 10 || (ipv4[0] === 172 && ipv4[1] >= 16 && ipv4[1] <= 31) || (ipv4[0] === 192 && ipv4[1] === 168) || (ipv4[0] === 169 && ipv4[1] === 254));
+  const ipv6 = value.replace(/^\[|\]$/g, "").split("%")[0];
+  const privateIpv6 = /^(?:fc|fd)[0-9a-f]{2}:|^fe[89ab][0-9a-f]:/i.test(ipv6);
+  return value === "localhost"
+    || value === "127.0.0.1"
+    || value === "::1"
+    || value.endsWith(".local")
+    || privateIpv4
+    || privateIpv6;
 }
 
 function nextActions(status) {

@@ -280,7 +280,7 @@ function validateStaticContract() {
   }
 
   ensure(html.includes("<title>SEIS Linux Replica</title>"), "Linux Replica route must expose a SEIS title.");
-  ensure(html.includes('<script src="./seis-runtime-capability-atlas.js"></script>'), "Linux Replica route must load the source-backed capability atlas asset.");
+  ensure(/<script src="\.\/seis-runtime-capability-atlas\.js"(?: defer)?><\/script>/.test(html), "Linux Replica route must load the source-backed capability atlas asset.");
   ensure(html.includes("data-seis-linux-replica"), "Linux Replica route must expose a runtime marker.");
   ensure(html.includes("data-boot"), "Linux Replica route must expose a boot surface.");
   ensure(html.includes("id=\"loginButton\""), "Linux Replica route must expose a real login action.");

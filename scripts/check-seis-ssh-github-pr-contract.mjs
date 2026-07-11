@@ -24,6 +24,7 @@ const requiredWorkflowText = [
   "contents: read",
   "timeout-minutes: 10",
   "actions/checkout@",
+  "persist-credentials: false",
   "actions/setup-node@",
   "node-version: 20",
   "npm run check:seis-ssh-github-pr-contract",

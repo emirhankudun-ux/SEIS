@@ -171,8 +171,8 @@ for (const token of [
 const reportScript = read(files.reportScript);
 for (const token of [
   "read-only-no-live-ssh",
-  "hostnameSha256Prefix",
   "endpointFingerprintSha256Prefix",
+  "explicitHostBlock",
   "proxyCommandShape",
   "continuityState",
   "liveConnectionAttempted: false",
@@ -198,7 +198,7 @@ const pickerCompatibilityScript = read(files.pickerCompatibilityScript);
 for (const token of [
   "proxyCommandShape",
   "identityFileConfigured",
-  "hostnameSha256Prefix",
+  "explicitHostBlock",
   "classifyProbeError",
   "redacted-direct-cloud-host"
 ]) {

@@ -60,6 +60,16 @@ describe("SEIS provider-neutral read-only router", () => {
     assert.equal(decision.safetyBoundary.privateContentRead, false);
   });
 
+  it("routes personal plugin lane status without reading personal content", () => {
+    const decision = buildReadOnlyRouteDecision(
+      { taskType: "personal-plugin-lane-status-demo", capability: "personal plugin lane status", privacyMode: "local-only" },
+      { root: packageRoot },
+    );
+
+    assert.notEqual(decision.selectedProvider, "none");
+    assert.equal(decision.safetyBoundary.privateContentRead, false);
+  });
+
   it("blocks 512B/frontier route requests without making an AGI claim", () => {
     const decision = buildReadOnlyRouteDecision(
       { taskType: "512B apex model route", capability: "frontier inference", privacyMode: "review-gated" },

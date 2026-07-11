@@ -323,7 +323,7 @@ function validateHtmlWiring(atlas) {
   const serviceWorker = exists(SERVICE_WORKER_PATH) ? readText(SERVICE_WORKER_PATH) : "";
   const routes = exists(ROUTES_PATH) ? readJson(ROUTES_PATH) : null;
 
-  ensure(html.includes('<script src="./seis-runtime-capability-atlas.js"></script>'), "Linux Replica must load the runtime capability atlas asset");
+  ensure(/<script src="\.\/seis-runtime-capability-atlas\.js"(?: defer)?><\/script>/.test(html), "Linux Replica must load the runtime capability atlas asset");
   ensure(serviceWorker.includes("./seis-runtime-capability-atlas.js"), "service worker must precache the runtime capability atlas asset");
   ensure(
     routes?.routes?.find((route) => route.path === "/seis-linux-replica.html")?.sections?.includes("capability-atlas"),

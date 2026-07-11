@@ -73,7 +73,8 @@ function buildDoctor() {
     id: "seis-ssh-public-contributor-doctor",
     generatedAt: new Date().toISOString(),
     ok,
-    status: ok ? "review-ready" : "blocked",
+    status: ok && localUseReady ? "review-ready" : "blocked",
+    readinessReady: ok && localUseReady,
     mode: "read-only-no-live-ssh-no-config-write",
     alias: "SEIS-SSH",
     repo: {
@@ -89,7 +90,6 @@ function buildDoctor() {
         configured: access.localSshConfig?.configured === true,
         transport: access.localSshConfig?.transport || "unknown",
         hostnameKind: access.localSshConfig?.hostnameKind || "unknown",
-        hostnameSha256Prefix: access.localSshConfig?.hostnameSha256Prefix || null,
         port: access.localSshConfig?.port || "22",
         pickerLikelyCompatible: access.localSshConfig?.pickerLikelyCompatible === true,
         liveConnectionAttempted: false
@@ -237,7 +237,6 @@ Alias: ${doctor.alias}
 - Preservation mode: ${doctor.serverAndPortPolicy.preservationMode}
 - Current transport: ${snapshot.transport}
 - Hostname kind: ${snapshot.hostnameKind}
-- Host fingerprint: ${snapshot.hostnameSha256Prefix || "none"}
 - Port: ${snapshot.port}
 - Live SSH attempted: no
 

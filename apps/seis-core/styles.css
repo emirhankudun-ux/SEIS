@@ -1283,7 +1283,7 @@ select {
 }
 
 .ecosystem-summary-card strong {
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 
 .ecosystem-lane-card {
@@ -1317,7 +1317,7 @@ select {
 
 .ecosystem-facts dt {
   color: var(--ink);
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -1326,7 +1326,7 @@ select {
 .ecosystem-facts dd {
   margin: 0;
   overflow-wrap: anywhere;
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.4;
 }
 
@@ -1343,7 +1343,7 @@ select {
 .ecosystem-control-feedback {
   min-height: 20px;
   margin: 12px 0 0;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .goal-card,

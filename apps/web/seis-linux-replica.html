@@ -208,10 +208,10 @@ button{cursor:pointer}
 .capability-card{display:grid;gap:8px;min-height:132px;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(255,255,255,.052);color:var(--text);padding:12px;text-align:left}
 .capability-card:hover,.capability-card:focus-visible,.capability-card.is-active{border-color:rgba(25,198,212,.62);background:rgba(25,198,212,.09);outline:none}
 .capability-card small{color:var(--accent-2);font-weight:900;text-transform:uppercase;letter-spacing:.04em}
-.capability-card strong{font-size:15px;line-height:1.25}
+.capability-card strong{font-size:.9375rem;line-height:1.25}
 .capability-card p{margin:0;color:var(--muted);line-height:1.4}
 .capability-chipline{display:flex;flex-wrap:wrap;gap:6px}
-.capability-chipline span{border:1px solid rgba(255,255,255,.1);border-radius:999px;background:rgba(255,255,255,.055);padding:5px 8px;color:#dce6ff;font-size:11px;font-weight:850}
+.capability-chipline span{border:1px solid rgba(255,255,255,.1);border-radius:999px;background:rgba(255,255,255,.055);padding:5px 8px;color:#dce6ff;font-size:.6875rem;font-weight:850}
 .capability-detail{display:grid;gap:8px;border:1px solid rgba(255,255,255,.1);border-radius:12px;background:rgba(5,7,13,.42);padding:12px}
 .capability-detail code{white-space:normal;color:#d7ecff}
 .capability-search{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}
@@ -408,7 +408,7 @@ button{cursor:pointer}
 <script src="./reference-banks/reference-apps.js"></script>
 <script src="./seis-five-year-plan.js"></script>
 <script src="./seis-vfs-store.js"></script>
-<script src="./seis-runtime-capability-atlas.js"></script>
+<script src="./seis-runtime-capability-atlas.js" defer></script>
 
 <aside class="mission-strip" data-mission-strip aria-label="SEIS live demo mission strip">
   <div class="mission-strip-head">
@@ -437,7 +437,11 @@ button{cursor:pointer}
 </aside>
 
 <script>
-(function(){
+(async function(){
+await new Promise((resolve)=>{
+  if(window.SEIS_RUNTIME_CAPABILITY_ATLAS){resolve();return}
+  document.addEventListener("DOMContentLoaded",resolve,{once:true})
+});
 "use strict";
 const VERSION="1.0.0-seis";
 const LOCALE_KEY="seis.locale.v1";

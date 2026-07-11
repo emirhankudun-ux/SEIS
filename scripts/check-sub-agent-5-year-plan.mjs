@@ -55,6 +55,7 @@ const evidenceScript = readText(EVIDENCE_SCRIPT_PATH);
 const evidenceReport = readJson(EVIDENCE_REPORT_JSON_PATH);
 const evidenceReportMarkdown = readText(EVIDENCE_REPORT_MD_PATH);
 const mcpRuntimeContract = readJson(MCP_RUNTIME_CONTRACT_PATH);
+ensure(mcpRuntimeContract, "MCP runtime contract must be valid JSON and loadable");
 const demoPromotionMap = readJson(DEMO_PROMOTION_MAP_PATH);
 const demoPlanView = readJson(DEMO_PLAN_VIEW_PATH);
 const runScript = readText(RUN_SCRIPT_PATH);

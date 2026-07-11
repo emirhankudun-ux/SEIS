@@ -3,7 +3,8 @@
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname } from "node:path";
+import { homedir } from "node:os";
+import { dirname, join } from "node:path";
 
 const args = parseArgs(process.argv.slice(2));
 const write = Boolean(args.write);
@@ -59,11 +60,13 @@ function buildReport(targetAlias) {
   if (sshConfig.alias !== "SEIS-SSH") failures.push("public report must inspect SEIS-SSH");
 
   const ok = failures.length === 0;
+  const readinessReady = ok && sshConfig.configured === true;
   return {
     id: "seis-ssh-public-access-report",
     generatedAt: new Date().toISOString(),
     ok,
-    status: ok ? "review-ready" : "blocked",
+    status: readinessReady ? "review-ready" : "blocked",
+    readinessReady,
     mode: "read-only-no-live-ssh",
     alias: targetAlias,
     contract: "deploy/seis-ssh-public-access-contract.json",
@@ -97,13 +100,24 @@ function buildReport(targetAlias) {
     safety: [
       "This report does not open a live SSH session.",
       "This report does not print private keys, tokens, cookies, or provider credentials.",
-      "Direct hostnames are redacted; a short SHA-256 prefix is included only to compare endpoint continuity.",
+      "Direct hostnames are redacted; endpoint continuity is checked separately from this public report.",
       "Changing HostName or Port remains approval-gated."
     ]
   };
 }
 
 function inspectSshConfig(targetAlias) {
+  const configText = safeRead(join(homedir(), ".ssh", "config"));
+  if (!hasExplicitHostBlock(configText, targetAlias)) {
+    return {
+      checked: true,
+      configured: false,
+      explicitHostBlock: false,
+      alias: targetAlias,
+      error: "explicit-host-block-missing"
+    };
+  }
+
   const result = spawnSync("ssh", ["-G", targetAlias], {
     encoding: "utf8",
     timeout: 10000
@@ -112,6 +126,7 @@ function inspectSshConfig(targetAlias) {
     return {
       checked: true,
       configured: false,
+      explicitHostBlock: true,
       alias: targetAlias,
       error: sanitize(result.stderr || "ssh -G failed")
     };
@@ -126,10 +141,10 @@ function inspectSshConfig(targetAlias) {
   return {
     checked: true,
     configured: true,
+    explicitHostBlock: true,
     alias: targetAlias,
     transport,
     hostnameKind: classifyHostname(hostname, transport),
-    hostnameSha256Prefix: hostname ? sha256Prefix(hostname) : null,
     endpointFingerprintSha256Prefix: hostname ? endpointFingerprint(hostname, port, proxyCommand) : null,
     proxyCommandShape: normalizeProxyCommandShape(proxyCommand),
     port,
@@ -141,6 +156,21 @@ function inspectSshConfig(targetAlias) {
     serverAndPortPreservedByPolicy: true,
     continuityState: "sanitized-config-snapshot-no-committed-baseline"
   };
+}
+
+function hasExplicitHostBlock(configText, targetAlias) {
+  return configText.split(/\r?\n/).some((line) => {
+    const match = /^\s*Host\s+(.+)$/.exec(line);
+    return Boolean(match && match[1].trim().split(/\s+/).includes(targetAlias));
+  });
+}
+
+function safeRead(file) {
+  try {
+    return readFileSync(file, "utf8");
+  } catch {
+    return "";
+  }
 }
 
 function parseSshConfig(output) {
@@ -177,14 +207,17 @@ function classifyHostname(hostname, transport) {
 
 function isLocalHost(host) {
   const value = String(host || "").toLowerCase();
+  const ipv4 = value.split(".").map(Number);
+  const privateIpv4 = ipv4.length === 4 && ipv4.every(Number.isInteger) && ipv4.every((part) => part >= 0 && part <= 255)
+    && (ipv4[0] === 10 || (ipv4[0] === 172 && ipv4[1] >= 16 && ipv4[1] <= 31) || (ipv4[0] === 192 && ipv4[1] === 168) || (ipv4[0] === 169 && ipv4[1] === 254));
+  const ipv6 = value.replace(/^\[|\]$/g, "").split("%")[0];
+  const privateIpv6 = /^(?:fc|fd)[0-9a-f]{2}:|^fe[89ab][0-9a-f]:/i.test(ipv6);
   return value === "localhost"
     || value === "127.0.0.1"
     || value === "::1"
-    || value.endsWith(".local");
-}
-
-function sha256Prefix(value) {
-  return createHash("sha256").update(String(value)).digest("hex").slice(0, 12);
+    || value.endsWith(".local")
+    || privateIpv4
+    || privateIpv6;
 }
 
 function endpointFingerprint(hostname, port, proxyCommand) {
@@ -243,7 +276,6 @@ Alias: ${report.alias}
 - Configured: ${report.localSshConfig.configured ? "yes" : "no"}
 - Transport: ${report.localSshConfig.transport || "unknown"}
 - Hostname kind: ${report.localSshConfig.hostnameKind || "unknown"}
-- Host fingerprint: ${report.localSshConfig.hostnameSha256Prefix || "none"}
 - Port: ${report.localSshConfig.port || "unknown"}
 - ProxyCommand present: ${report.localSshConfig.proxyCommandPresent ? "yes" : "no"}
 - Identity file configured: ${report.localSshConfig.identityFileConfigured ? "yes" : "no"}

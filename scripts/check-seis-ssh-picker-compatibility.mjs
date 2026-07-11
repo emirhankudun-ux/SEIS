@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
@@ -41,8 +40,8 @@ const checks = {
     host: visibleHost,
     hostAliases: [],
     duplicateSeisAliases: [],
+    explicitHostBlock: false,
     hostnameKind: null,
-    hostnameSha256Prefix: null,
     userPresent: false,
     proxyCommandShape: null,
     identityFileConfigured: false,
@@ -54,7 +53,6 @@ const checks = {
   directEndpointProbe: {
     checked: false,
     hostKind: directHost ? "redacted-direct-cloud-host" : null,
-    hostSha256Prefix: directHost ? sha256Prefix(directHost) : null,
     port: directPort,
     reachable: false,
     error: null
@@ -64,10 +62,12 @@ const checks = {
 const sshConfigText = safeRead(join(homedir(), ".ssh", "config"));
 const managedHostEntries = extractManagedHostEntries(sshConfigText);
 checks.sshConfig.hostAliases = managedHostEntries.map((entry) => entry.host);
+checks.sshConfig.explicitHostBlock = managedHostEntries.some((entry) => entry.host === "SEIS-SSH");
 checks.sshConfig.duplicateSeisAliases = managedHostEntries
   .filter((entry) => entry.host !== "SEIS-SSH")
   .map((entry) => entry.host);
 if (checks.sshConfig.duplicateSeisAliases.length > 0) blockers.push("duplicate-seis-ssh-aliases");
+if (!checks.sshConfig.explicitHostBlock) blockers.push("explicit-seis-ssh-host-block-required");
 
 const config = run("ssh", ["-G", sshHost]);
 checks.sshConfig.checked = true;
@@ -78,7 +78,6 @@ if (config.status !== 0) {
   const values = parseSshConfig(config.stdout);
   checks.sshConfig.transport = detectTransport(values);
   checks.sshConfig.hostnameKind = classifyHostname(values.hostname, checks.sshConfig.transport);
-  checks.sshConfig.hostnameSha256Prefix = values.hostname ? sha256Prefix(values.hostname) : null;
   checks.sshConfig.userPresent = Boolean(values.user);
   checks.sshConfig.proxyCommandShape = normalizeProxyCommandShape(values.proxycommand);
   checks.sshConfig.identityFileConfigured = Boolean(values.identityfile && values.identityfile !== "none");
@@ -213,10 +212,6 @@ function classifyHostname(hostname, transport) {
   return "redacted-unknown-host";
 }
 
-function sha256Prefix(value) {
-  return createHash("sha256").update(String(value)).digest("hex").slice(0, 12);
-}
-
 function detectTransport(values) {
   const hostname = values.hostname || "";
   const proxyCommand = normalizeProxyCommand(values.proxycommand);
@@ -233,10 +228,17 @@ function compatibilityReason(transport) {
 
 function isLocalHost(host) {
   const value = String(host || "").toLowerCase();
+  const ipv4 = value.split(".").map(Number);
+  const privateIpv4 = ipv4.length === 4 && ipv4.every(Number.isInteger) && ipv4.every((part) => part >= 0 && part <= 255)
+    && (ipv4[0] === 10 || (ipv4[0] === 172 && ipv4[1] >= 16 && ipv4[1] <= 31) || (ipv4[0] === 192 && ipv4[1] === 168) || (ipv4[0] === 169 && ipv4[1] === 254));
+  const ipv6 = value.replace(/^\[|\]$/g, "").split("%")[0];
+  const privateIpv6 = /^(?:fc|fd)[0-9a-f]{2}:|^fe[89ab][0-9a-f]:/i.test(ipv6);
   return value === "localhost"
     || value === "127.0.0.1"
     || value === "::1"
-    || value.endsWith(".local");
+    || value.endsWith(".local")
+    || privateIpv4
+    || privateIpv6;
 }
 
 function probeTcp(host, port, timeout) {

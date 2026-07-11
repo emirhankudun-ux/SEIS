@@ -86,7 +86,8 @@ function buildOnboardingPack(report) {
     id: "seis-ssh-public-onboarding-pack",
     generatedAt: new Date().toISOString(),
     ok,
-    status: ok ? "review-ready" : "blocked",
+    status: ok && report.readinessReady === true ? "review-ready" : "blocked",
+    readinessReady: ok && report.readinessReady === true,
     mode: "read-only-no-live-ssh-no-config-write",
     alias: "SEIS-SSH",
     publicPromise: "One memorable GitHub-facing SSH entrypoint with no shared secrets, no fake online status, and no unapproved server or port change.",
@@ -105,7 +106,6 @@ function buildOnboardingPack(report) {
         configured: ssh.configured === true,
         transport: ssh.transport || "unknown",
         hostnameKind: ssh.hostnameKind || "unknown",
-        hostnameSha256Prefix: ssh.hostnameSha256Prefix || null,
         port: ssh.port || "22",
         proxyCommandPresent: ssh.proxyCommandPresent === true,
         pickerLikelyCompatible: ssh.pickerLikelyCompatible === true,
@@ -204,7 +204,7 @@ function buildOnboardingPack(report) {
       "This pack does not open a live SSH session.",
       "This pack does not write ~/.ssh/config.",
       "This pack does not print private keys, tokens, cookies, or provider credentials.",
-      "Direct hostnames remain redacted; endpoint continuity is represented only by a short SHA-256 prefix.",
+      "Direct hostnames remain redacted; endpoint continuity is checked separately from this public pack.",
       "Changing HostName or Port remains approval-gated."
     ]
   };
@@ -250,7 +250,6 @@ ${pack.publicPromise}
 | Configured | ${snapshot.configured ? "yes" : "no"} |
 | Transport | ${snapshot.transport} |
 | Hostname kind | ${snapshot.hostnameKind} |
-| Host fingerprint | ${snapshot.hostnameSha256Prefix || "none"} |
 | Port | ${snapshot.port} |
 | ProxyCommand present | ${snapshot.proxyCommandPresent ? "yes" : "no"} |
 | Picker likely compatible | ${snapshot.pickerLikelyCompatible ? "yes" : "no"} |
