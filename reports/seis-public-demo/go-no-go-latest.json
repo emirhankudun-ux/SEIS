@@ -10,7 +10,7 @@
     "head": "codex/seis-demo-github-upload-20260624",
     "requiredState": "reviewed before merge or public release"
   },
-  "checkedAt": "2026-07-11T06:11:11.081Z",
+  "checkedAt": "2026-07-11T06:28:04.820Z",
   "checks": {
     "checklist": {
       "id": "seis-public-demo-release-checklist-pr54",
@@ -143,7 +143,7 @@
       "present": true,
       "artifactPath": "reports/seis-public-demo/second-brain-browser-smoke-evidence-latest.json",
       "status": "passed-local-browser-smoke",
-      "generatedAt": "2026-07-11T06:07:13.788Z",
+      "generatedAt": "2026-07-11T06:26:41.721Z",
       "sourceDigestMatches": true,
       "fresh": true,
       "sourcePathsCleanBeforeRun": true,
