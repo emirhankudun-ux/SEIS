@@ -10,7 +10,7 @@
     "head": "codex/seis-demo-github-upload-20260624",
     "requiredState": "reviewed before merge or public release"
   },
-  "checkedAt": "2026-07-11T07:42:15.630Z",
+  "checkedAt": "2026-07-11T07:49:50.022Z",
   "checks": {
     "checklist": {
       "id": "seis-public-demo-release-checklist-pr54",
@@ -92,8 +92,11 @@
     },
     "git": {
       "commandStatus": 0,
-      "dirtyCount": 0,
-      "dirtyPaths": []
+      "dirtyCount": 2,
+      "dirtyPaths": [
+        " M reports/seis-public-demo/second-brain-browser-smoke-evidence-latest.json",
+        " M reports/seis-public-demo/second-brain-browser-smoke-evidence-latest.md"
+      ]
     },
     "fastValidation": [
       {
@@ -143,7 +146,7 @@
       "present": true,
       "artifactPath": "reports/seis-public-demo/second-brain-browser-smoke-evidence-latest.json",
       "status": "passed-local-browser-smoke",
-      "generatedAt": "2026-07-11T07:41:30.773Z",
+      "generatedAt": "2026-07-11T07:49:25.602Z",
       "sourceDigestMatches": true,
       "fresh": true,
       "sourcePathsCleanBeforeRun": true,
@@ -167,10 +170,12 @@
   },
   "failures": [],
   "blockers": [
+    "dirty-worktree",
     "human-release-approval-missing"
   ],
   "warnings": [],
   "nextActions": [
+    "Review and stage only coherent release-candidate changes, or rerun with --allow-dirty-worktree for a planning-only report.",
     "Get explicit human owner approval before merge, Pages publication, release tag, deployment, SSH, live providers, or public launch."
   ],
   "safety": [
@@ -180,21 +185,21 @@
   ],
   "evidenceManifest": {
     "itemCount": 24,
-    "passedCount": 23,
-    "blockedCount": 1,
+    "passedCount": 22,
+    "blockedCount": 2,
     "missingEvidenceCount": 0,
     "artifactPath": "reports/seis-public-demo/evidence-manifest-latest.json"
   },
   "worktreeReview": {
     "artifactPath": "reports/seis-public-demo/worktree-review-latest.md",
-    "dirtyCount": 0,
-    "workstreamCount": 0,
-    "releaseBlocking": false
+    "dirtyCount": 2,
+    "workstreamCount": 1,
+    "releaseBlocking": true
   },
   "stagePlan": {
     "artifactPath": "reports/seis-public-demo/pr54-stage-plan-latest.md",
-    "candidatePathCount": 0,
+    "candidatePathCount": 2,
     "excludedPathCount": 0,
-    "readyForHumanReview": false
+    "readyForHumanReview": true
   }
 }
