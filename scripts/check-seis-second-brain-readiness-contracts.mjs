@@ -515,7 +515,12 @@ function validatePublicDemoArtifacts(report, manifest) {
   ensure(report.mode === "read-only", "public demo go/no-go report must stay read-only.");
   ensure(report.pullRequest?.number === 54, "public demo go/no-go report must bind PR #54.");
   ensure(Array.isArray(report.blockers), "public demo go/no-go report blockers must be an array.");
-  ensure(report.blockers.includes("dirty-worktree"), "public demo go/no-go report must block dirty worktree.");
+  const dirtyCount = report.checks?.git?.dirtyCount;
+  ensure(Number.isInteger(dirtyCount) && dirtyCount >= 0, "public demo go/no-go report must record a valid worktree dirty count.");
+  ensure(
+    report.blockers.includes("dirty-worktree") === (dirtyCount > 0),
+    "public demo go/no-go report dirty-worktree blocker must match its recorded worktree state."
+  );
   ensure(report.blockers.includes("human-release-approval-missing"), "public demo go/no-go report must block missing human approval.");
   ensure(
     !report.blockers.includes("current-browser-smoke-evidence-missing"),
@@ -530,7 +535,7 @@ function validatePublicDemoArtifacts(report, manifest) {
   ensure(manifest.status === "review-gated-not-released", "public demo evidence manifest status mismatch.");
   ensure(manifest.pullRequest?.number === 54, "public demo evidence manifest must bind PR #54.");
   ensure(manifest.summary?.failed === 0, "public demo evidence manifest must have zero failed evidence items.");
-  ensure(manifest.summary?.blocked >= 2, "public demo evidence manifest must include release blockers.");
+  ensure(manifest.summary?.blocked >= 1, "public demo evidence manifest must include the human release-approval blocker.");
   ensure(manifest.summary?.missingCurrentEvidence === 0, "public demo evidence manifest should have current browser evidence after the escalated smoke passes.");
   ensureListEntryContains((manifest.items || []).map((item) => `${item.id}:${item.status}`), "current-browser-smoke:passed", "public demo evidence manifest items");
   ensureListEntryContains((manifest.items || []).map((item) => `${item.id}:${item.status}`), "accessibility-focus-qa-artifact:passed", "public demo evidence manifest items");
