@@ -1,6 +1,6 @@
 {
   "name": "seis-ai-agent",
-  "version": "0.1.0+codex.20260615102011",
+  "version": "0.1.0+codex.20260711065237",
   "description": "Unified SEIS-AI Agent that orchestrates SEIS, SEIS Cloud, SEIS-Code, SEIS-Design, SEIS-DATA, security, research, automation, and product lanes as one repo-contained development system.",
   "author": {
     "name": "emirhankudun-ux",
@@ -19,6 +19,9 @@
     "code",
     "design",
     "data",
+    "second-brain",
+    "obsidian",
+    "agent-runtime",
     "security",
     "research",
     "automation",
@@ -40,6 +43,8 @@
       "SEIS-Code engineering governance",
       "SEIS-Design cinematic product direction",
       "SEIS-DATA knowledge and analytics governance",
+      "SEIS Second Brain knowledge orchestration",
+      "Browser-local Obsidian and agent handoff safety",
       "SEIS Security threat, secret, and release-risk review",
       "SEIS Research evidence and source evaluation",
       "SEIS Automation repeatable workflow and runbook design",
@@ -54,6 +59,7 @@
     "defaultPrompt": [
       "Use SEIS-AI Agent to route this work across cloud, code, design, and data.",
       "Use SEIS-AI Agent to route security, research, automation, and product work to the right embedded lane.",
+      "Build or review a browser-local SEIS Second Brain handoff without private-vault, provider, SSH, deployment, or GitHub mutation.",
       "Plan the next SEIS-AI Agent milestone without publishing prematurely.",
       "Prepare a cross-platform terminal install path for this SEIS capability.",
       "Shape the cinematic website and product experience roadmap for SEIS-AI Agent."
