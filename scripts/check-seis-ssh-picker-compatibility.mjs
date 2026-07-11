@@ -27,6 +27,9 @@ const managedAliases = new Set([
 
 const sshHost = args.host || "SEIS-SSH";
 const requirePickerCompatible = Boolean(args["require-picker-compatible"]);
+const allowUnconfiguredEnvironment = Boolean(args["allow-unconfigured"])
+  || process.env.CI === "true"
+  || process.env.GITHUB_ACTIONS === "true";
 const directHost = args["probe-direct-host"] || process.env.SEIS_CLOUD_DIRECT_HOST || "";
 const directPort = Number(args["probe-direct-port"] || process.env.SEIS_CLOUD_DIRECT_PORT || "22");
 const timeoutMs = Number(args["timeout-ms"] || "8000");
@@ -67,14 +70,16 @@ checks.sshConfig.duplicateSeisAliases = managedHostEntries
   .filter((entry) => entry.host !== "SEIS-SSH")
   .map((entry) => entry.host);
 if (checks.sshConfig.duplicateSeisAliases.length > 0) blockers.push("duplicate-seis-ssh-aliases");
-if (!checks.sshConfig.explicitHostBlock) blockers.push("explicit-seis-ssh-host-block-required");
-
-const config = run("ssh", ["-G", sshHost]);
 checks.sshConfig.checked = true;
-if (config.status !== 0) {
-  blockers.push("ssh-config-unavailable");
-  checks.sshConfig.error = "ssh-config-unavailable";
+if (!checks.sshConfig.explicitHostBlock) {
+  blockers.push("explicit-seis-ssh-host-block-required");
+  checks.sshConfig.error = "explicit-host-block-missing";
 } else {
+  const config = run("ssh", ["-G", sshHost]);
+  if (config.status !== 0) {
+    blockers.push("ssh-config-unavailable");
+    checks.sshConfig.error = "ssh-config-unavailable";
+  } else {
   const values = parseSshConfig(config.stdout);
   checks.sshConfig.transport = detectTransport(values);
   checks.sshConfig.hostnameKind = classifyHostname(values.hostname, checks.sshConfig.transport);
@@ -88,6 +93,7 @@ if (config.status !== 0) {
   if (!checks.sshConfig.terminalCompatible) blockers.push("ssh-config-not-cloud-only");
   if (checks.sshConfig.transport === "codespace") warnings.push("codespaces-proxycommand-may-render-offline-in-some-pickers");
   if (requirePickerCompatible && !checks.sshConfig.pickerCompatible) blockers.push("ssh-picker-not-compatible");
+  }
 }
 
 if (directHost) {
@@ -99,11 +105,15 @@ if (directHost) {
 }
 
 const ok = blockers.length === 0;
+const ciTolerated = allowUnconfiguredEnvironment
+  && blockers.length > 0
+  && blockers.every((blocker) => blocker === "explicit-seis-ssh-host-block-required");
 const result = {
   ok,
-  status: ok ? "ready" : "blocked",
+  status: ok ? "ready" : ciTolerated ? "unconfigured-environment" : "blocked",
   mode: "read-only",
   host: visibleHost,
+  ciTolerated,
   checks,
   blockers,
   warnings,
@@ -116,7 +126,7 @@ const result = {
 };
 
 console.log(JSON.stringify(result, null, 2));
-if (!ok) process.exit(1);
+if (!ok && !ciTolerated) process.exit(1);
 
 function parseArgs(tokens) {
   const parsed = {};
@@ -125,7 +135,7 @@ function parseArgs(tokens) {
     if (token === "--") continue;
     if (!token.startsWith("--")) continue;
     const key = token.slice(2);
-    if (key === "help" || key === "require-picker-compatible") {
+    if (key === "help" || key === "require-picker-compatible" || key === "allow-unconfigured") {
       parsed[key] = true;
       continue;
     }
