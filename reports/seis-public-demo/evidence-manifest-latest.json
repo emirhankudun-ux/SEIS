@@ -1,7 +1,7 @@
 {
   "id": "seis-public-demo-evidence-manifest-pr54",
   "title": "SEIS Public Demo Evidence Manifest After PR 54 Review",
-  "generatedAt": "2026-07-11T06:10:25.012Z",
+  "generatedAt": "2026-07-11T06:11:11.081Z",
   "decision": "NO-GO",
   "status": "review-gated-not-released",
   "mode": "read-only",
@@ -14,10 +14,10 @@
   },
   "summary": {
     "total": 24,
-    "passed": 21,
-    "blocked": 2,
+    "passed": 23,
+    "blocked": 1,
     "missingCurrentEvidence": 0,
-    "failed": 1,
+    "failed": 0,
     "notRequested": 0
   },
   "items": [
@@ -130,7 +130,7 @@
       "id": "release-worktree-review",
       "type": "repository-state",
       "requirement": "Release candidate worktree has been reviewed and is not carrying unrelated dirty files.",
-      "status": "blocked",
+      "status": "passed",
       "evidence": "git status --short"
     },
     {
@@ -192,8 +192,8 @@
       "id": "git-diff-check",
       "type": "command",
       "requirement": "git diff --check",
-      "status": "failed",
-      "evidence": "Command failed in the current run.",
+      "status": "passed",
+      "evidence": "Command exited 0 in the current run.",
       "command": "git diff --check"
     }
   ],
