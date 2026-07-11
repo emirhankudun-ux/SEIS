@@ -1611,6 +1611,8 @@ const SEIS_SECOND_BRAIN_AGENT_REGISTRY = {
 const SEIS_SECOND_BRAIN_SEARCH_FILTERS = ["All", "Notes", "Backlinks", "Tags", "Apps", "Routes", "Files", "Plugins", "Agents"];
 const SEIS_SECOND_BRAIN_AGENT_REVIEW_QUEUE = {
   path: "/home/seis/SecondBrain/09-review/agent-review-queue.md",
+  jsonPath: "/home/seis/SecondBrain/09-review/agent-review-queue.json",
+  schemaVersion: "seis-second-brain-agent-review-queue/v1",
   mode: "browser-local-review-only",
   decision: "NO-GO-autonomous-execution-not-approved",
   boundary: "Queue entries are review prompts only. They do not inspect private sources, call providers, or execute agent actions.",
@@ -6001,7 +6003,7 @@ function renderSecondBrain() {
       <article class="metric-card" data-second-brain-mcp-resource><strong>MCP Context</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.mcpResource)}</p></article>
       <article class="metric-card"><strong>Last Snapshot</strong><p>${data.lastSnapshot?.time || "Not saved yet"}</p></article>
       <article class="metric-card"><strong>Last Training Pack</strong><p>${data.lastTrainingPack?.time || "Not built yet"}</p></article>
-      <article class="metric-card" data-second-brain-agent-review-queue><strong>Agent Review Queue</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length} plan-only</p></article>
+      <article class="metric-card" data-second-brain-agent-review-queue><strong>Agent Review Queue</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length} plan-only / JSON</p></article>
       <article class="metric-card"><strong>Publish State</strong><p>Human review before GitHub</p></article>
     </div>
     <section class="subagent-panel second-brain-obsidian-import" data-second-brain-obsidian-safe-import>
@@ -6195,7 +6197,7 @@ function renderSecondBrain() {
         </div>
       </div>
       <h4>Autonomous Agent Roster</h4>
-      <p class="status-note">Build Agent Review Queue writes a browser-local, plan-only Markdown queue for all ${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length} roles. It references evidence paths without reading private sources or authorizing execution.</p>
+      <p class="status-note">Build Agent Review Queue writes paired browser-local Markdown and JSON records for all ${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length} roles. It references evidence paths without reading private sources or authorizing execution.</p>
       <table class="data-table" data-second-brain-agent-roster>
         <thead><tr><th>Agent</th><th>Status</th><th>Second Brain duty</th></tr></thead>
         <tbody>${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.map(([agent, status, duty]) => `<tr><td>${escapeHtml(agent)}</td><td>${escapeHtml(status)}</td><td>${escapeHtml(duty)}</td></tr>`).join("")}</tbody>
@@ -10109,23 +10111,65 @@ function selectSecondBrainPluginSkill(pluginId) {
   toast("SEIS Second Brain", `${lane.plugin} readiness context is open in SEIS AI.`);
 }
 
-function buildSecondBrainAgentReviewQueueMarkdown(timestamp) {
-  const aiProfiles = SEIS_INSTALLED_AI_SYSTEMS.map((system) => `- ${system.name} | ${system.status} | ${system.role} | ${system.boundary}`);
-  const artifactReferences = SEIS_SECOND_BRAIN_AGENT_REVIEW_QUEUE.requiredArtifacts.map((path) => `- ${path} | Review reference only; this action does not inspect its contents or availability.`);
-  const agentQueue = SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.map(([agent, status, duty], index) => `- ${index + 1}. ${agent} | ${status} | ${duty} | Required response: evidence-linked, review-only finding and scoped plan.`);
+function buildSecondBrainAgentReviewQueueRecord(timestamp) {
+  return {
+    schemaVersion: SEIS_SECOND_BRAIN_AGENT_REVIEW_QUEUE.schemaVersion,
+    generatedAt: timestamp,
+    mode: SEIS_SECOND_BRAIN_AGENT_REVIEW_QUEUE.mode,
+    decision: SEIS_SECOND_BRAIN_AGENT_REVIEW_QUEUE.decision,
+    queuePath: SEIS_SECOND_BRAIN_AGENT_REVIEW_QUEUE.path,
+    jsonPath: SEIS_SECOND_BRAIN_AGENT_REVIEW_QUEUE.jsonPath,
+    boundary: SEIS_SECOND_BRAIN_AGENT_REVIEW_QUEUE.boundary,
+    execution: {
+      providerCallsPerformed: false,
+      mcpInvocationsPerformed: false,
+      hostFilesystemScanned: false,
+      privateVaultReadPerformed: false,
+      sshExecuted: false,
+      deploymentPerformed: false,
+      githubMutationPerformed: false,
+      autonomousWriteExecutionPerformed: false
+    },
+    artifactReferences: SEIS_SECOND_BRAIN_AGENT_REVIEW_QUEUE.requiredArtifacts.map((path) => ({
+      path,
+      status: "review-reference-not-inspected",
+      note: "This action does not inspect contents or availability."
+    })),
+    installedAiProfiles: SEIS_INSTALLED_AI_SYSTEMS.map((system) => ({
+      name: system.name,
+      status: system.status,
+      role: system.role,
+      boundary: system.boundary
+    })),
+    agentQueue: SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.map(([agent, status, duty], index) => ({
+      position: index + 1,
+      agent,
+      status,
+      duty,
+      requiredResponse: "evidence-linked, review-only finding and scoped plan"
+    }))
+  };
+}
+
+function buildSecondBrainAgentReviewQueueMarkdown(record) {
+  const aiProfiles = record.installedAiProfiles.map((system) => `- ${system.name} | ${system.status} | ${system.role} | ${system.boundary}`);
+  const artifactReferences = record.artifactReferences.map((artifact) => `- ${artifact.path} | ${artifact.status}; ${artifact.note}`);
+  const agentQueue = record.agentQueue.map((entry) => `- ${entry.position}. ${entry.agent} | ${entry.status} | ${entry.duty} | Required response: ${entry.requiredResponse}.`);
 
   return `# SEIS Second Brain Agent Review Queue
 
-Generated: ${timestamp}
-Mode: ${SEIS_SECOND_BRAIN_AGENT_REVIEW_QUEUE.mode}
-Decision: ${SEIS_SECOND_BRAIN_AGENT_REVIEW_QUEUE.decision}
-Queue path: ${SEIS_SECOND_BRAIN_AGENT_REVIEW_QUEUE.path}
-Observed installed AI profiles: ${SEIS_INSTALLED_AI_SYSTEMS.length}
-Observed autonomous agents: ${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length}
+Generated: ${record.generatedAt}
+Schema: ${record.schemaVersion}
+Mode: ${record.mode}
+Decision: ${record.decision}
+Queue path: ${record.queuePath}
+Structured record: ${record.jsonPath}
+Observed installed AI profiles: ${record.installedAiProfiles.length}
+Observed autonomous agents: ${record.agentQueue.length}
 
 ## Review Boundary
 
-- ${SEIS_SECOND_BRAIN_AGENT_REVIEW_QUEUE.boundary}
+- ${record.boundary}
 - No provider call, MCP invocation, host filesystem scan, private-vault read, SSH command, deployment, GitHub mutation, or autonomous write was performed.
 - Artifact references below are known review inputs, not proof that a source exists, was read, or was approved.
 
@@ -10152,17 +10196,21 @@ ${agentQueue.join("\n")}
 function buildSecondBrainAgentReviewQueue() {
   const timestamp = new Date().toISOString();
   const path = SEIS_SECOND_BRAIN_AGENT_REVIEW_QUEUE.path;
-  upsertFile(path, buildSecondBrainAgentReviewQueueMarkdown(timestamp));
-  const activity = addSecondBrainActivity("Agent Review Queue", "Browser-local review-only", `Saved ${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length} plan-only review entries to ${path}.`);
+  const record = buildSecondBrainAgentReviewQueueRecord(timestamp);
+  upsertFile(path, buildSecondBrainAgentReviewQueueMarkdown(record));
+  upsertFile(SEIS_SECOND_BRAIN_AGENT_REVIEW_QUEUE.jsonPath, `${JSON.stringify(record, null, 2)}\n`);
+  const activity = addSecondBrainActivity("Agent Review Queue", "Browser-local review-only", `Saved ${record.agentQueue.length} plan-only review entries and a structured record to ${path}.`);
   activity.lastAgentReviewQueue = {
     time: timestamp,
     path,
-    agentCount: SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length,
-    aiProfileCount: SEIS_INSTALLED_AI_SYSTEMS.length,
-    decision: SEIS_SECOND_BRAIN_AGENT_REVIEW_QUEUE.decision,
-    requiredArtifactReferences: SEIS_SECOND_BRAIN_AGENT_REVIEW_QUEUE.requiredArtifacts.length
+    jsonPath: SEIS_SECOND_BRAIN_AGENT_REVIEW_QUEUE.jsonPath,
+    schemaVersion: record.schemaVersion,
+    agentCount: record.agentQueue.length,
+    aiProfileCount: record.installedAiProfiles.length,
+    decision: record.decision,
+    requiredArtifactReferences: record.artifactReferences.length
   };
-  const message = `Second Brain agent review queue saved to ${path}.`;
+  const message = `Second Brain agent review queue saved to ${path} and ${SEIS_SECOND_BRAIN_AGENT_REVIEW_QUEUE.jsonPath}.`;
   getAppStatus("second-brain").lastAction = message;
   log("second-brain", message);
   saveState();
@@ -10170,7 +10218,7 @@ function buildSecondBrainAgentReviewQueue() {
   renderOpenWindows("ai-assistant");
   renderOpenWindows("files");
   renderOpenWindows("system-logs");
-  toast("SEIS Second Brain", `${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length} plan-only agent reviews are ready for human assignment.`);
+  toast("SEIS Second Brain", `${record.agentQueue.length} plan-only agent reviews and one structured local record are ready for human assignment.`);
 }
 
 function createSecondBrainPluginReviewBundle() {

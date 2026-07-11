@@ -19,7 +19,8 @@ const REQUIRED_ARTIFACTS = [
   "/home/seis/SecondBrain/search-index-snapshot.md",
   "/home/seis/SecondBrain/obsidian-safe-import-ui-dry-run.md",
   "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md",
-  "/home/seis/SecondBrain/09-review/agent-review-queue.md"
+  "/home/seis/SecondBrain/09-review/agent-review-queue.md",
+  "/home/seis/SecondBrain/09-review/agent-review-queue.json"
 ];
 
 function ensure(condition, message) {
@@ -472,7 +473,7 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(initial.pluginSkillMetric === "5", `expected plugin/skill readiness metric 5, got ${initial.pluginSkillMetric}`);
   ensure(initial.pluginSkillText.includes("@seis-cloud") && initial.pluginSkillText.includes("local-demo-readiness-matrix"), "Second Brain plugin/skill readiness matrix must render personal plugin lanes and status.");
   ensure(initial.agentRegistryDecision.includes("NO-GO"), "Second Brain must render the agent registry NO-GO decision.");
-  ensure(initial.agentReviewQueueMetric === "13 plan-only", `Second Brain agent review queue metric mismatch: ${initial.agentReviewQueueMetric}`);
+  ensure(initial.agentReviewQueueMetric === "13 plan-only / JSON", `Second Brain agent review queue metric mismatch: ${initial.agentReviewQueueMetric}`);
   ensure(initial.agentRegistryText.includes("second-brain-agent-registry-latest.json") && initial.agentRegistryText.includes("NO-GO-autonomous-execution-not-approved"), "Second Brain must render the agent registry artifact and decision.");
   ensure(initial.obsidianDecision.includes("NO-GO-private-vault-import-not-approved"), "Second Brain must render the Obsidian safe-import NO-GO decision.");
   ensure(initial.obsidianText.includes("metadata-only dry-run") && initial.obsidianText.includes("does not scan host folders"), "Second Brain must render Obsidian safe-import local-only boundary.");
@@ -724,6 +725,7 @@ async function smokeSecondBrain(client, baseUrl) {
       handoffBriefPersisted: paths.includes('/home/seis/SecondBrain/07-learning/plugin-handoff-seis-code-latest.md'),
       reviewBundlePersisted: paths.includes('/home/seis/SecondBrain/07-learning/plugin-review-bundle-latest.md'),
       agentReviewQueuePersisted: paths.includes('/home/seis/SecondBrain/09-review/agent-review-queue.md'),
+      agentReviewQueueJsonPersisted: paths.includes('/home/seis/SecondBrain/09-review/agent-review-queue.json'),
       obsidianSelectionReceiptPersisted: paths.includes('/home/seis/SecondBrain/obsidian-explicit-selection-receipt.md'),
       obsidianPreflightRequestPersisted: paths.includes('/home/seis/SecondBrain/obsidian-preflight-approval-request.md')
     };
@@ -734,6 +736,7 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(persistence.handoffBriefPersisted, `Second Brain local handoff brief did not persist after reload: ${JSON.stringify(persistence)}`);
   ensure(persistence.reviewBundlePersisted, `Second Brain all-lane review bundle did not persist after reload: ${JSON.stringify(persistence)}`);
   ensure(persistence.agentReviewQueuePersisted, `Second Brain agent review queue did not persist after reload: ${JSON.stringify(persistence)}`);
+  ensure(persistence.agentReviewQueueJsonPersisted, `Second Brain structured agent review queue did not persist after reload: ${JSON.stringify(persistence)}`);
   ensure(persistence.obsidianSelectionReceiptPersisted, `Obsidian explicit selection receipt did not persist after reload: ${JSON.stringify(persistence)}`);
   ensure(persistence.obsidianPreflightRequestPersisted, `Obsidian preflight approval request did not persist after reload: ${JSON.stringify(persistence)}`);
 
