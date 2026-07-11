@@ -641,7 +641,7 @@ async function smokeSecondBrain(client, baseUrl) {
     };
   })()`);
   ensure(reviewBundle.pathExists, `Second Brain all-lane review bundle was not written: ${JSON.stringify(reviewBundle)}`);
-  ensure(reviewBundle.bridgeText.includes("plugin-review-bundle-latest.md") && reviewBundle.bridgeText.includes("5 lanes"), `Second Brain all-lane bundle state is not visible in SEIS AI: ${JSON.stringify(reviewBundle)}`);
+  ensure(reviewBundle.bridgeText.includes("plugin-review-bundle-latest.md") && reviewBundle.bridgeText.includes("5 lanes") && reviewBundle.bridgeText.includes("6 AI profiles") && reviewBundle.bridgeText.includes("13 agents"), `Second Brain all-lane bundle state is not visible in SEIS AI: ${JSON.stringify(reviewBundle)}`);
   ensure(reviewBundle.status?.lastAction?.includes("all-lane review bundle saved"), `Second Brain status should record the all-lane review bundle: ${JSON.stringify(reviewBundle)}`);
 
   await evaluate(client, "window.__SEIS_DESKTOP__.openApp('ai-assistant')");

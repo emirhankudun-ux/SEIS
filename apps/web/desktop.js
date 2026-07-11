@@ -8068,7 +8068,7 @@ function renderAiAssistantTab(activeTab, data) {
         <button type="button" data-action="second-brain-create-plugin-handoff-brief"${selectedPluginSkill ? "" : " disabled"}>Save Local Handoff Brief</button>
         <button type="button" data-action="second-brain-create-plugin-review-bundle">Save All-Lane Review Bundle</button>
         <button type="button" data-action="open-app" data-app-id="files">Open Files</button>
-        <p class="muted">${selectedPluginSkill ? `Writes browser-local review context for ${escapeHtml(selectedPluginSkill.plugin)} only. ${secondBrainData.lastPluginHandoffBrief?.path ? `Last local brief: ${escapeHtml(secondBrainData.lastPluginHandoffBrief.path)}` : "Not saved yet."}` : "Select a plugin/skill lane before creating a local review brief."} ${secondBrainData.lastPluginReviewBundle?.path ? `All-lane bundle (${secondBrainData.lastPluginReviewBundle.laneCount} lanes): ${escapeHtml(secondBrainData.lastPluginReviewBundle.path)}.` : "The all-lane bundle keeps every installed SEIS plugin context browser-local."}</p>
+        <p class="muted">${selectedPluginSkill ? `Writes browser-local review context for ${escapeHtml(selectedPluginSkill.plugin)} only. ${secondBrainData.lastPluginHandoffBrief?.path ? `Last local brief: ${escapeHtml(secondBrainData.lastPluginHandoffBrief.path)}` : "Not saved yet."}` : "Select a plugin/skill lane before creating a local review brief."} ${secondBrainData.lastPluginReviewBundle?.path ? `All-lane bundle (${secondBrainData.lastPluginReviewBundle.laneCount} lanes, ${secondBrainData.lastPluginReviewBundle.aiProfileCount || 0} AI profiles, ${secondBrainData.lastPluginReviewBundle.agentCount || 0} agents): ${escapeHtml(secondBrainData.lastPluginReviewBundle.path)}.` : "The all-lane bundle keeps every installed SEIS plugin, AI profile, and agent context browser-local."}</p>
       </div>
       <table class="data-table" data-ai-second-brain-plugin-skill-table>
         <thead><tr><th>Plugin</th><th>Status/plan tools</th><th>Skill path</th><th>Execution boundary</th></tr></thead>
@@ -9706,6 +9706,8 @@ ${rosterRows.join("\n")}
 
 function buildSecondBrainPluginReviewBundleMarkdown(timestamp) {
   const lanes = SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes;
+  const aiProfiles = SEIS_INSTALLED_AI_SYSTEMS;
+  const agentRoster = SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster;
   const laneSections = lanes
     .map((lane) => {
       const profile = getSecondBrainPluginContextProfile(lane.id);
@@ -9734,6 +9736,12 @@ ${profile?.allowedOutput || "Review-only local context."}
 - externalMutation: ${lane.externalMutation}`;
     })
     .join("\n\n");
+  const aiProfileSection = aiProfiles
+    .map((profile) => `- ${profile.name} | ${profile.status} | ${profile.role} | ${profile.boundary}`)
+    .join("\n");
+  const agentRosterSection = agentRoster
+    .map(([agent, status, duty]) => `- ${agent} (${status}): ${duty}`)
+    .join("\n");
 
   return `# SEIS Second Brain All-Lane Plugin Review Bundle
 
@@ -9741,8 +9749,18 @@ Generated: ${timestamp}
 Mode: Browser-local Local Demo review-only
 MCP resource: ${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.mcpResource}
 Lanes: ${lanes.length}
+Installed AI profiles: ${aiProfiles.length}
+Autonomous agents: ${agentRoster.length}
 
 This bundle is repository-owned review context only. It does not install plugins, call providers, validate credentials, execute SSH, deploy, mutate GitHub, or run autonomous actions.
+
+## Installed AI Profiles
+
+${aiProfileSection}
+
+## Autonomous Agent Roster
+
+${agentRosterSection}
 
 ${laneSections}
 `;
@@ -9892,6 +9910,8 @@ function createSecondBrainPluginReviewBundle() {
     time: timestamp,
     path,
     laneCount: lanes.length,
+    aiProfileCount: SEIS_INSTALLED_AI_SYSTEMS.length,
+    agentCount: SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length,
     plugins: lanes.map((lane) => lane.plugin)
   };
   const message = `Second Brain all-lane review bundle saved to ${path}.`;
