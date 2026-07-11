@@ -1,0 +1,31 @@
+import fs from "node:fs";
+import path from "node:path";
+import vm from "node:vm";
+
+const ROOT=process.cwd();
+const planPath=path.join(ROOT,"content","development","seis-sub-agent-5-year-plan.json");
+const viewPath=path.join(ROOT,"apps","web","seis-five-year-plan.js");
+const htmlPath=path.join(ROOT,"apps","web","seis-linux-replica.html");
+const failures=[];
+const ensure=(condition,message)=>{if(!condition)failures.push(message)};
+const plan=JSON.parse(fs.readFileSync(planPath,"utf8"));
+const context={window:{}};
+vm.runInNewContext(fs.readFileSync(viewPath,"utf8"),context,{filename:viewPath});
+const view=context.window.SEIS_FIVE_YEAR_PLAN_VIEW;
+const html=fs.readFileSync(htmlPath,"utf8");
+ensure(view?.id===plan.id,"roadmap view id must match canonical plan");
+ensure(view?.source==="content/development/seis-sub-agent-5-year-plan.json","roadmap view must name the canonical source");
+ensure(view?.status==="documented","roadmap view must remain documented until runtime evidence exists");
+ensure(view?.truthBoundary?.includes("does not prove five years"),"roadmap view must keep the elapsed-time truth boundary");
+ensure(Array.isArray(view?.guardrails)&&view.guardrails.includes("human approval for privileged actions"),"roadmap view must expose human approval guardrail");
+ensure(view?.years?.length===plan.years.length&&view.years.length===5,"roadmap view must expose all five years");
+const canonicalQuarterIds=plan.years.flatMap(year=>year.quarters.map(quarter=>quarter.id));
+const viewQuarterIds=view.years.flatMap(year=>year.quarters.map(quarter=>quarter.id));
+ensure(viewQuarterIds.length===20,"roadmap view must expose all 20 canonical quarters");
+ensure(JSON.stringify(viewQuarterIds)===JSON.stringify(canonicalQuarterIds),"roadmap quarter ids must stay aligned with canonical plan");
+ensure(view.years.every((year,index)=>year.year===plan.years[index].year&&year.theme===plan.years[index].theme),"roadmap year themes must stay aligned with canonical plan");
+ensure(html.includes('<script src="./seis-five-year-plan.js"></script>'),"Linux Replica must load the five-year plan view");
+ensure(html.includes("data-evolution-console")&&html.includes("renderEvolutionConsole"),"Linux Replica must render Evolution Console");
+ensure(html.includes('"evolution-console"'),"Linux Replica must register Evolution Console in its app catalog");
+if(failures.length){console.error(JSON.stringify({ok:false,failures},null,2));process.exit(1)}
+console.log(JSON.stringify({ok:true,years:view.years.length,quarters:viewQuarterIds.length,source:view.source,app:"evolution-console"},null,2));
