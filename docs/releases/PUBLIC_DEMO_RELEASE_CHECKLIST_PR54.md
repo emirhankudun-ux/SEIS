@@ -145,6 +145,8 @@ npm run check:seis-second-brain-agent-registry
 npm run report:seis-public-demo-go-no-go
 npm run check:seis-second-brain
 npm run check:seis-second-brain-browser-smoke
+npm run report:seis-second-brain-browser-smoke-evidence
+npm run check:seis-second-brain-browser-smoke-evidence
 npm run check:seis-second-brain-readiness-contracts
 npm run check:desktop-os
 npm run check:desktop-os-browser-smoke
@@ -157,6 +159,12 @@ npm run check:seis-model-scaling-hardware-profile
 npm test
 git diff --check
 ```
+
+The current Second Brain runtime proof is the paired
+`reports/seis-public-demo/second-brain-browser-smoke-evidence-latest.json` and
+`second-brain-browser-smoke-evidence-latest.md` artifact. It is generated only
+by a successful local Chrome smoke run and stays current only while its runtime
+source digest matches the release candidate.
 
 ## Required Reviews
 

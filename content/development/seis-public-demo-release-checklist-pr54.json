@@ -25,6 +25,8 @@
     "npm run report:seis-second-brain-agent-registry",
     "npm run check:seis-second-brain",
     "npm run check:seis-second-brain-browser-smoke",
+    "npm run report:seis-second-brain-browser-smoke-evidence",
+    "npm run check:seis-second-brain-browser-smoke-evidence",
     "npm run check:seis-second-brain-readiness-contracts",
     "npm run check:desktop-os",
     "npm run check:desktop-os-browser-smoke",
@@ -41,6 +43,8 @@
     "reports/seis-public-demo/go-no-go-latest.json",
     "reports/seis-public-demo/go-no-go-latest.md",
     "reports/seis-public-demo/evidence-manifest-latest.json",
+    "reports/seis-public-demo/second-brain-browser-smoke-evidence-latest.json",
+    "reports/seis-public-demo/second-brain-browser-smoke-evidence-latest.md",
     "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json",
     "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md",
     "reports/seis-public-demo/read-only-model-router-decision-latest.json",
@@ -58,6 +62,7 @@
     "artifact": "reports/seis-public-demo/pr54-review-packet-latest.md",
     "mustAnswer": [
       "Does the release candidate have current browser-smoke evidence?",
+      "Does the browser-smoke evidence artifact match the current runtime source digest?",
       "Is the dirty worktree a coherent release-candidate slice?",
       "Has the human owner explicitly approved public release?",
       "Does the release candidate show plugin/skill graph evidence in Second Brain and bridge it into SEIS AI?",
@@ -112,6 +117,7 @@
   ],
   "goNoGoCriteria": [
     "all required validation passes on the release candidate",
+    "current browser-smoke evidence artifact matches the runtime source digest",
     "npm run check:seis-public-demo-go-no-go:strict reports GO after human approval and current browser-smoke evidence",
     "worktree has no unrelated release-blocking dirty files",
     "no secret-like values or private vault content are committed",

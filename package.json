@@ -26,6 +26,8 @@
     "check:seis-second-brain": "node scripts/check-seis-second-brain.mjs",
     "check:seis-second-brain-readiness-contracts": "node scripts/check-seis-second-brain-readiness-contracts.mjs",
     "check:seis-second-brain-browser-smoke": "node scripts/check-seis-second-brain-browser-smoke.mjs",
+    "check:seis-second-brain-browser-smoke-evidence": "node scripts/create-seis-second-brain-browser-smoke-evidence.mjs --check",
+    "report:seis-second-brain-browser-smoke-evidence": "node scripts/create-seis-second-brain-browser-smoke-evidence.mjs --write",
     "check:seis-obsidian-safe-import-dry-run": "node scripts/create-seis-obsidian-safe-import-dry-run.mjs --check",
     "report:seis-obsidian-safe-import-dry-run": "node scripts/create-seis-obsidian-safe-import-dry-run.mjs --write",
     "check:seis-read-only-model-router-decision": "node scripts/create-seis-read-only-model-router-decision.mjs --check",

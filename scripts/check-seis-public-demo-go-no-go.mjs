@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -17,6 +18,16 @@ const manifestPath = typeof args.manifest === "string" ? args.manifest : "";
 const reviewPacketPath = typeof args["review-packet"] === "string" ? args["review-packet"] : "";
 const worktreeReviewPath = typeof args["worktree-review"] === "string" ? args["worktree-review"] : "";
 const stagePlanPath = typeof args["stage-plan"] === "string" ? args["stage-plan"] : "";
+const browserSmokeEvidencePaths = {
+  json: "reports/seis-public-demo/second-brain-browser-smoke-evidence-latest.json",
+  markdown: "reports/seis-public-demo/second-brain-browser-smoke-evidence-latest.md"
+};
+const browserSmokeEvidenceSourcePaths = [
+  "apps/web/desktop.js",
+  "content/development/seis-second-brain-system.json",
+  "scripts/check-seis-second-brain-browser-smoke.mjs"
+];
+const browserSmokeEvidenceMaxAgeMs = 36 * 60 * 60 * 1000;
 
 if (args.help) {
   printHelp();
@@ -40,6 +51,7 @@ const files = {
   releaseDoc: "docs/releases/PUBLIC_DEMO_RELEASE_CHECKLIST_PR54.md",
   secondBrainDoc: "docs/product/seis-second-brain.md",
   desktopJs: "apps/web/desktop.js",
+  browserSmokeEvidenceScript: "scripts/create-seis-second-brain-browser-smoke-evidence.mjs",
   statusDoc: "docs/STATUS.md",
   nextQueue: "docs/roadmap/NEXT_PR_QUEUE.md",
   packageJson: "package.json"
@@ -64,15 +76,18 @@ const routerDecision = readJson(files.routerDecisionJson, "read-only model-route
 const accessibilityFocus = readJson(files.accessibilityFocusJson, "Second Brain accessibility/focus artifact");
 const agentRegistry = readJson(files.agentRegistryJson, "Second Brain agent registry artifact");
 const packageJson = readJson(files.packageJson, "package.json");
+const browserSmokeEvidence = readOptionalJson(browserSmokeEvidencePaths.json, "Second Brain browser-smoke evidence artifact");
 
 validateContracts();
 validateDocs();
 validateNoSecrets();
 validateGitState();
 if (runFastChecks) runFastValidation();
+const browserSmokeEvidenceState = inspectBrowserSmokeEvidence(browserSmokeEvidence);
 
 if (!approved) blockers.push("human-release-approval-missing");
-if (!browserSmokeCurrentRun) blockers.push("current-browser-smoke-evidence-missing");
+if (!browserSmokeEvidenceState.current) blockers.push("current-browser-smoke-evidence-missing");
+if (browserSmokeCurrentRun) warnings.push("--browser-smoke-current-run is legacy metadata only; a current browser-smoke evidence artifact is required.");
 
 const ready = failures.length === 0 && blockers.length === 0;
 const report = {
@@ -373,9 +388,11 @@ function validateContracts() {
       routerDecisionReport: packageJson.scripts?.["report:seis-read-only-model-router-decision"] || null,
       accessibilityFocus: packageJson.scripts?.["check:seis-second-brain-accessibility-focus-report"] || null,
       accessibilityFocusReport: packageJson.scripts?.["report:seis-second-brain-accessibility-focus-report"] || null,
-      agentRegistry: packageJson.scripts?.["check:seis-second-brain-agent-registry"] || null,
-      agentRegistryReport: packageJson.scripts?.["report:seis-second-brain-agent-registry"] || null,
-      goNoGo: packageJson.scripts?.["check:seis-public-demo-go-no-go"] || null,
+    agentRegistry: packageJson.scripts?.["check:seis-second-brain-agent-registry"] || null,
+    agentRegistryReport: packageJson.scripts?.["report:seis-second-brain-agent-registry"] || null,
+    browserSmokeEvidence: packageJson.scripts?.["check:seis-second-brain-browser-smoke-evidence"] || null,
+    browserSmokeEvidenceReport: packageJson.scripts?.["report:seis-second-brain-browser-smoke-evidence"] || null,
+    goNoGo: packageJson.scripts?.["check:seis-public-demo-go-no-go"] || null,
       goNoGoStrict: packageJson.scripts?.["check:seis-public-demo-go-no-go:strict"] || null
     };
     ensure(
@@ -411,6 +428,14 @@ function validateContracts() {
       "package.json must expose report:seis-second-brain-agent-registry."
     );
     ensure(
+      packageJson.scripts?.["check:seis-second-brain-browser-smoke-evidence"] === "node scripts/create-seis-second-brain-browser-smoke-evidence.mjs --check",
+      "package.json must expose check:seis-second-brain-browser-smoke-evidence."
+    );
+    ensure(
+      packageJson.scripts?.["report:seis-second-brain-browser-smoke-evidence"] === "node scripts/create-seis-second-brain-browser-smoke-evidence.mjs --write",
+      "package.json must expose report:seis-second-brain-browser-smoke-evidence."
+    );
+    ensure(
       packageJson.scripts?.["check:seis-public-demo-go-no-go"] === "node scripts/check-seis-public-demo-go-no-go.mjs",
       "package.json must expose check:seis-public-demo-go-no-go."
     );
@@ -423,8 +448,8 @@ function validateContracts() {
 
 function validateDocs() {
   const required = [
-    [files.releaseDoc, ["Public Demo Release Checklist", "check:seis-public-demo-go-no-go", "plugin/skill graph evidence", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "obsidian-safe-import-dry-run-latest", "read-only-model-router-decision-latest", "second-brain-accessibility-focus-latest", "second-brain-agent-registry-latest", "NO-GO", "Do not merge PR #54"]],
-    [files.secondBrainDoc, ["Agent training pack", "Second Brain agent registry artifact", "Plugin + skill graph nodes", "check:seis-public-demo-go-no-go", "Build Training Pack"]],
+    [files.releaseDoc, ["Public Demo Release Checklist", "check:seis-public-demo-go-no-go", "plugin/skill graph evidence", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "report:seis-second-brain-browser-smoke-evidence", "second-brain-browser-smoke-evidence-latest", "obsidian-safe-import-dry-run-latest", "read-only-model-router-decision-latest", "second-brain-accessibility-focus-latest", "second-brain-agent-registry-latest", "NO-GO", "Do not merge PR #54"]],
+    [files.secondBrainDoc, ["Agent training pack", "Second Brain agent registry artifact", "Second Brain browser-smoke evidence artifact", "Plugin + skill graph nodes", "check:seis-public-demo-go-no-go", "Build Training Pack"]],
     [files.statusDoc, ["SEIS public demo go/no-go gate", "check:seis-public-demo-go-no-go"]],
     [files.nextQueue, ["SEIS public demo go/no-go gate", "check:seis-public-demo-go-no-go"]]
   ];
@@ -452,6 +477,61 @@ function validateGitState() {
   }
 
   if (dirtyLines.length > 0 && !allowDirtyWorktree) blockers.push("dirty-worktree");
+}
+
+function inspectBrowserSmokeEvidence(evidence) {
+  const generatedAt = Date.parse(evidence?.generatedAt || "");
+  const sourceDigest = createBrowserSmokeEvidenceSourceDigest();
+  const sourceStatus = run("git", ["status", "--short", "--", ...browserSmokeEvidenceSourcePaths]);
+  const sourcePathsCleanNow = sourceStatus.status === 0 && !(sourceStatus.stdout || "").trim();
+  const state = {
+    present: Boolean(evidence),
+    artifactPath: browserSmokeEvidencePaths.json,
+    status: evidence?.status || "missing",
+    generatedAt: evidence?.generatedAt || null,
+    sourceDigestMatches: evidence?.source?.sourceDigest === sourceDigest,
+    fresh: Number.isFinite(generatedAt) && Date.now() - generatedAt <= browserSmokeEvidenceMaxAgeMs,
+    sourcePathsCleanBeforeRun: evidence?.source?.sourcePathsCleanBeforeRun === true,
+    sourcePathsCleanNow,
+    pluginGraphActions: evidence?.result?.pluginGraphActions || 0,
+    pluginHandoff: evidence?.result?.pluginHandoff || null,
+    persistedPluginHandoff: evidence?.result?.persistedPluginHandoff || null,
+    mobileCrampedTargets: evidence?.result?.mobileCrampedTargets ?? null,
+    mobileHorizontalOverflow: evidence?.result?.mobileHorizontalOverflow ?? null,
+    safetyBoundary: evidence?.safetyBoundary || null,
+    current: false
+  };
+  state.current = state.present
+    && evidence?.id === "seis-second-brain-browser-smoke-evidence-pr54"
+    && evidence?.mode === "repo-local-chrome-smoke-evidence"
+    && evidence?.ok === true
+    && state.sourceDigestMatches
+    && state.fresh
+    && state.sourcePathsCleanBeforeRun
+    && state.sourcePathsCleanNow
+    && state.pluginGraphActions === 5
+    && state.pluginHandoff === "seis-code"
+    && state.persistedPluginHandoff === "seis-code"
+    && state.mobileCrampedTargets === 0
+    && state.mobileHorizontalOverflow === false
+    && state.safetyBoundary?.privateObsidianVaultReadPerformed === false
+    && state.safetyBoundary?.providerCallsPerformed === false
+    && state.safetyBoundary?.credentialValidationPerformed === false
+    && state.safetyBoundary?.sshExecuted === false
+    && state.safetyBoundary?.deploymentPerformed === false
+    && state.safetyBoundary?.githubMutationPerformed === false
+    && state.safetyBoundary?.autonomousWriteExecutionPerformed === false;
+  checks.browserSmokeEvidence = state;
+  return state;
+}
+
+function createBrowserSmokeEvidenceSourceDigest() {
+  const hash = createHash("sha256");
+  for (const filePath of browserSmokeEvidenceSourcePaths) {
+    const text = readText(filePath, `browser-smoke evidence source ${filePath}`);
+    hash.update(`${filePath}\n${text}\n`);
+  }
+  return `sha256:${hash.digest("hex")}`;
 }
 
 function runFastValidation() {
@@ -490,7 +570,7 @@ function nextActions(items, validationFailures) {
   const actions = [];
   if (validationFailures.length > 0) actions.push("Fix release gate contract failures before reviewing public demo readiness.");
   if (items.includes("dirty-worktree")) actions.push("Review and stage only coherent release-candidate changes, or rerun with --allow-dirty-worktree for a planning-only report.");
-  if (items.includes("current-browser-smoke-evidence-missing")) actions.push("Run current browser-smoke evidence in an environment that can bind localhost and launch Chrome.");
+  if (items.includes("current-browser-smoke-evidence-missing")) actions.push("Run npm run report:seis-second-brain-browser-smoke-evidence, then npm run check:seis-second-brain-browser-smoke-evidence.");
   if (items.includes("human-release-approval-missing")) actions.push("Get explicit human owner approval before merge, Pages publication, release tag, deployment, SSH, live providers, or public launch.");
   return actions;
 }
@@ -510,7 +590,9 @@ function printHelp() {
   npm run check:seis-public-demo-go-no-go
   npm run check:seis-public-demo-go-no-go -- --run-fast-checks
   npm run check:seis-public-demo-go-no-go -- --run-fast-checks --output reports/seis-public-demo/go-no-go-latest.json --markdown reports/seis-public-demo/go-no-go-latest.md --manifest reports/seis-public-demo/evidence-manifest-latest.json --review-packet reports/seis-public-demo/pr54-review-packet-latest.md --worktree-review reports/seis-public-demo/worktree-review-latest.md --stage-plan reports/seis-public-demo/pr54-stage-plan-latest.md
-  npm run check:seis-public-demo-go-no-go:strict -- --run-fast-checks --approved --browser-smoke-current-run
+  npm run report:seis-second-brain-browser-smoke-evidence
+  npm run check:seis-second-brain-browser-smoke-evidence
+  npm run check:seis-public-demo-go-no-go:strict -- --run-fast-checks --approved
 
 This gate is read-only. Normal mode validates that the release decision is
 accurately classified. Strict mode exits 1 until every public demo blocker is
@@ -1073,8 +1155,8 @@ function buildEvidenceManifest(value) {
       id: "current-browser-smoke",
       type: "runtime-evidence",
       requirement: "Current Second Brain browser smoke evidence exists for this release candidate.",
-      status: value.blockers.includes("current-browser-smoke-evidence-missing") ? "missing-current-evidence" : "passed",
-      evidence: "npm run check:seis-second-brain-browser-smoke"
+      status: value.checks.browserSmokeEvidence?.current ? "passed" : "missing-current-evidence",
+      evidence: browserSmokeEvidencePaths.json
     },
     {
       id: "release-worktree-review",
@@ -1165,6 +1247,17 @@ function readJson(filePath, label) {
     return JSON.parse(text);
   } catch (error) {
     failures.push(`invalid JSON in ${label}: ${error.message}`);
+    return null;
+  }
+}
+
+function readOptionalJson(filePath, label) {
+  const absolutePath = path.join(root, filePath);
+  if (!fs.existsSync(absolutePath)) return null;
+  try {
+    return JSON.parse(fs.readFileSync(absolutePath, "utf8"));
+  } catch (error) {
+    warnings.push(`unable to read ${label}: ${error.message}`);
     return null;
   }
 }

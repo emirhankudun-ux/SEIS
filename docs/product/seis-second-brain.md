@@ -28,6 +28,7 @@ Current implementation lives in:
 - `scripts/check-seis-second-brain.mjs`
 - `scripts/check-seis-second-brain-readiness-contracts.mjs`
 - `scripts/check-seis-second-brain-browser-smoke.mjs`
+- `scripts/create-seis-second-brain-browser-smoke-evidence.mjs`
 - `scripts/create-seis-obsidian-safe-import-dry-run.mjs`
 - `scripts/create-seis-read-only-model-router-decision.mjs`
 - `scripts/create-seis-second-brain-accessibility-focus-report.mjs`
@@ -48,6 +49,7 @@ Search, SEIS AI, Command Center, Launchpad, Favorites, and desktop shortcuts.
 | Markdown vault | Browser-local Local Demo | Seed notes render under `/home/seis/SecondBrain`; `Save Vault Snapshot` writes note files and `seis-second-brain-vault-snapshot.md` into the browser VFS. |
 | Knowledge graph | Browser-local Local Demo | Graph nodes and backlinks are generated from repo-owned seed records; `Link Graph` writes `graph-links.json`. |
 | Plugin + skill graph nodes | Browser-local Local Demo | The Second Brain graph renders 5 plugin/skill readiness nodes for `@seis`, `@seis-cloud`, `@seis-code`, `@seis-design`, and `@seis-data`, plus local graph-edge markers that connect the readiness matrix back to SEIS AI. Selecting a node persists the local readiness lane and focuses its status/plan tools, skill path, related agents, and allowed review output in the SEIS AI bridge. No plugin, MCP, provider, SSH, deployment, or GitHub action is executed. |
+| Second Brain browser-smoke evidence artifact | Repo-local Chrome evidence | `npm run report:seis-second-brain-browser-smoke-evidence` reruns the real Chrome smoke and writes paired JSON/Markdown evidence with a SHA-256 digest of the Desktop, Second Brain contract, and smoke sources. The go/no-go gate accepts current evidence only when that digest, the `@seis-code` handoff, reload persistence, mobile ergonomics, and no-mutation safety boundary all match. |
 | Second Brain local search index | Browser-local Local Demo | The runtime Second Brain screen now scores and filters notes, backlinks, tags, apps, routes, files, plugins, and agent duties from repo-owned seed records and browser VFS state only. It uses compound tag matching, backlink/graph proximity boosts, source-type weighting, visible score explanations, and roving-focus `listbox`/`option` semantics with ArrowUp/ArrowDown/Home/End keyboard navigation. It can record `/home/seis/SecondBrain/search-index-snapshot.md` and does not read a private Obsidian vault or call external search. |
 | Agent training pack | Local Demo read-only | `Build Training Pack` writes `/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md` with the repo-owned Obsidian context pack, all 9 managed lanes, accessibility, router, PR #54 checklist, and language model training curriculum summaries. |
 | Repo-owned Obsidian context pack | Read-only local/MCP context | `seis-brain/vault/12_Context_Packs/SEIS Obsidian Context.md` is surfaced by `seis://brain/second-brain-system.json` as public-safe contract metadata; it is not a private vault import or model-weight training input. |
@@ -124,6 +126,8 @@ npm run report:seis-second-brain-accessibility-focus-report
 npm run check:seis-second-brain-accessibility-focus-report
 npm run report:seis-second-brain-agent-registry
 npm run check:seis-second-brain-agent-registry
+npm run report:seis-second-brain-browser-smoke-evidence
+npm run check:seis-second-brain-browser-smoke-evidence
 npm run check:seis-second-brain-readiness-contracts
 npm run check:seis-second-brain-browser-smoke
 npm run check:seis-public-demo-go-no-go -- --run-fast-checks
@@ -138,7 +142,8 @@ runs all six vault/training-pack/review/GitHub-readiness actions, selects the
 browser-local reload persistence, then checks the mobile viewport for usable
 controls and no horizontal overflow. The
 public demo go/no-go gate is read-only and should return `NO-GO` until the
-current release candidate has fresh browser evidence and explicit human
+current release candidate has a fresh source-digest-matched browser evidence
+artifact and explicit human
 approval.
 
 ## Next Safe Work

@@ -1,0 +1,42 @@
+{
+  "id": "seis-second-brain-browser-smoke-evidence-pr54",
+  "title": "SEIS Second Brain Browser Smoke Evidence",
+  "generatedAt": "2026-07-11T06:07:13.788Z",
+  "status": "passed-local-browser-smoke",
+  "mode": "repo-local-chrome-smoke-evidence",
+  "ok": true,
+  "source": {
+    "paths": [
+      "apps/web/desktop.js",
+      "content/development/seis-second-brain-system.json",
+      "scripts/check-seis-second-brain-browser-smoke.mjs"
+    ],
+    "sourceDigest": "sha256:74a14d6be9da133f00b3d3b469a8d1fb1e022d4febacf318f68fa1643a37ba5c",
+    "sourceRevision": "40ce855618777ae0990cccb9d38ca8324751cf3c",
+    "sourcePathsCleanBeforeRun": true
+  },
+  "runtime": {
+    "browser": "Google Chrome",
+    "desktopScreenshot": "dist/qa/second-brain-smoke/second-brain-desktop.png",
+    "mobileScreenshot": "dist/qa/second-brain-smoke/second-brain-mobile.png"
+  },
+  "result": {
+    "appCount": 82,
+    "pluginGraphActions": 5,
+    "pluginHandoff": "seis-code",
+    "persistedPluginHandoff": "seis-code",
+    "desktopHorizontalOverflow": false,
+    "mobileAppCount": 82,
+    "mobileCrampedTargets": 0,
+    "mobileHorizontalOverflow": false
+  },
+  "safetyBoundary": {
+    "privateObsidianVaultReadPerformed": false,
+    "providerCallsPerformed": false,
+    "credentialValidationPerformed": false,
+    "sshExecuted": false,
+    "deploymentPerformed": false,
+    "githubMutationPerformed": false,
+    "autonomousWriteExecutionPerformed": false
+  }
+}
