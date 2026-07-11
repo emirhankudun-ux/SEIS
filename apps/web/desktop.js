@@ -2802,6 +2802,9 @@ function handleClick(event) {
     case "second-brain-select-note":
       selectSecondBrainNote(value);
       break;
+    case "second-brain-select-plugin-skill":
+      selectSecondBrainPluginSkill(value);
+      break;
     case "second-brain-capture":
       captureSecondBrainNote();
       break;
@@ -5156,6 +5159,9 @@ function getSecondBrainData() {
   if (!data.activeNoteId || !SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.some((note) => note.id === data.activeNoteId)) {
     data.activeNoteId = SEIS_SECOND_BRAIN_SYSTEM.vaultNotes[0].id;
   }
+  if (!SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.some((lane) => lane.id === data.activePluginSkillId)) {
+    data.activePluginSkillId = "";
+  }
   if (typeof data.searchQuery !== "string") data.searchQuery = "SEIS";
   if (!SEIS_SECOND_BRAIN_SEARCH_FILTERS.includes(data.searchFilter)) data.searchFilter = "All";
   if (typeof data.activeSearchResultId !== "string") data.activeSearchResultId = "";
@@ -5169,6 +5175,14 @@ function getSecondBrainData() {
     ];
   }
   return data;
+}
+
+function getSecondBrainPluginSkill(pluginId) {
+  return SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.find((lane) => lane.id === pluginId) || null;
+}
+
+function getSecondBrainPluginContextProfile(pluginId) {
+  return SEIS_SECOND_BRAIN_SYSTEM.contextProfiles.find((profile) => profile.id === pluginId) || null;
 }
 
 function getSecondBrainLinks() {
@@ -5513,7 +5527,9 @@ function getSecondBrainSearchIndex() {
       detail: `${lane.statusTool} / ${lane.planTool}. ${lane.readiness}. ${lane.trainingUse}. ${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.boundary}`,
       tags: ["#plugin", "#skill", "#mcp", `#${lane.id}`],
       relatedText: `${lane.plugin} ${lane.skill} ${lane.statusTool} ${lane.planTool} ${lane.trainingUse}`,
-      priority: 18
+      priority: 18,
+      action: "second-brain-select-plugin-skill",
+      pluginId: lane.id
     }))
   ].map((plugin) => ({
     type: "Plugins",
@@ -5619,6 +5635,7 @@ function moveSecondBrainSearchFocus(direction) {
 }
 
 function renderSecondBrainSearchActionAttrs(result) {
+  if (result.action === "second-brain-select-plugin-skill") return `data-action="second-brain-select-plugin-skill" data-value="${escapeAttr(result.pluginId)}"`;
   if (result.action === "open-app") return `data-action="open-app" data-app-id="${escapeAttr(result.appId)}"`;
   if (result.action === "open-demo-route") return `data-action="open-demo-route" data-value="${escapeAttr(result.routeId)}"`;
   if (result.action === "open-file") return `data-action="open-file" data-path="${escapeAttr(result.path)}"`;
@@ -5715,6 +5732,7 @@ function renderSecondBrain() {
   const notes = SEIS_SECOND_BRAIN_SYSTEM.vaultNotes;
   const links = getSecondBrainLinks();
   const activeNote = notes.find((note) => note.id === data.activeNoteId) || notes[0];
+  const activePluginSkill = getSecondBrainPluginSkill(data.activePluginSkillId);
   const backlinks = getSecondBrainBacklinks(activeNote.id);
   const searchIndex = getSecondBrainSearchIndex();
   const searchResults = getSecondBrainSearchResults(searchIndex, data);
@@ -5894,7 +5912,7 @@ function renderSecondBrain() {
           </div>
           <button type="button" class="secondary-action" data-action="open-app" data-app-id="search">Search Vault</button>
         </div>
-        <div class="second-brain-graph" role="listbox" aria-label="Second Brain knowledge graph" aria-activedescendant="second-brain-node-${escapeAttr(activeNote.id)}">
+        <div class="second-brain-graph" role="listbox" aria-multiselectable="true" aria-label="Second Brain knowledge graph" aria-activedescendant="second-brain-node-${escapeAttr(activeNote.id)}">
           ${links.map((_link, index) => `<span class="second-brain-edge edge-${index % 6}" aria-hidden="true"></span>`).join("")}
           ${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.map((_lane, index) => `<span class="second-brain-edge edge-${(index + links.length) % 6}" data-second-brain-plugin-graph-edge aria-hidden="true"></span>`).join("")}
           ${notes.map((note) => {
@@ -5907,7 +5925,8 @@ function renderSecondBrain() {
           }).join("")}
           ${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.map((lane) => {
             const [, x, y] = pluginPositionFor(lane.id);
-            return `<button type="button" role="option" aria-selected="false" aria-label="${escapeAttr(`Open SEIS AI for ${lane.plugin} plugin skill readiness`)}" class="second-brain-node second-brain-plugin-node" style="--node-x:${escapeAttr(x)};--node-y:${escapeAttr(y)}" data-action="open-app" data-app-id="ai-assistant" data-second-brain-plugin-node data-plugin-id="${escapeAttr(lane.id)}">
+            const isSelected = lane.id === activePluginSkill?.id;
+            return `<button type="button" role="option" aria-selected="${isSelected}" aria-controls="ai-second-brain-selected-plugin" aria-label="${escapeAttr(`${isSelected ? "Selected" : "Open"} SEIS AI readiness context for ${lane.plugin} plugin skill`)}" class="second-brain-node second-brain-plugin-node${isSelected ? " is-active" : ""}" style="--node-x:${escapeAttr(x)};--node-y:${escapeAttr(y)}" data-action="second-brain-select-plugin-skill" data-value="${escapeAttr(lane.id)}" data-second-brain-plugin-node data-plugin-id="${escapeAttr(lane.id)}">
               <span>${escapeHtml(lane.plugin.replace("@", "").split("-").map((part) => part[0]).join("").toUpperCase().slice(0, 3))}</span>
               <strong>${escapeHtml(lane.plugin)}</strong>
               <small>${escapeHtml(lane.readiness)}</small>
@@ -7987,6 +8006,8 @@ function renderAiAssistantTab(activeTab, data) {
     </div>`;
   }
   if (activeTab === "Second Brain") {
+    const selectedPluginSkill = getSecondBrainPluginSkill(getSecondBrainData().activePluginSkillId);
+    const selectedPluginProfile = getSecondBrainPluginContextProfile(selectedPluginSkill?.id);
     return `<div class="subagent-ai-plan" data-ai-second-brain-bridge>
       <div class="toolbar">
         <button type="button" data-action="open-app" data-app-id="second-brain">Open SEIS Second Brain</button>
@@ -8022,6 +8043,18 @@ function renderAiAssistantTab(activeTab, data) {
           <strong>AI Training Use</strong>
           <p class="muted">Repo-owned review context only</p>
           <p>${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.map((lane) => escapeHtml(`${lane.plugin}: ${lane.trainingUse}`)).join("<br>")}</p>
+        </article>
+      </div>
+      <div class="split-pane" id="ai-second-brain-selected-plugin" data-ai-second-brain-selected-plugin>
+        <article class="mini-card">
+          <strong>Focused Readiness Lane</strong>
+          <p class="muted">${selectedPluginSkill ? escapeHtml(selectedPluginSkill.plugin) : "No plugin/skill graph node selected"}</p>
+          <p>${selectedPluginSkill ? escapeHtml(`${selectedPluginSkill.statusTool} / ${selectedPluginSkill.planTool}. ${selectedPluginSkill.trainingUse}`) : "Select a plugin/skill node from SEIS Second Brain or its local search results to pass review context into this bridge."}</p>
+        </article>
+        <article class="mini-card">
+          <strong>Agent Handoff</strong>
+          <p class="muted">${selectedPluginProfile ? escapeHtml(selectedPluginProfile.relatedAgents.join(", ")) : "Review-only local context"}</p>
+          <p>${selectedPluginProfile ? escapeHtml(`${selectedPluginProfile.allowedOutput} ${selectedPluginProfile.focus}`) : "No lane has been selected, so no agent-specific proposal is prepared."}</p>
         </article>
       </div>
       <table class="data-table" data-ai-second-brain-plugin-skill-table>
@@ -9737,6 +9770,27 @@ function selectSecondBrainNote(noteId) {
   saveState();
   renderOpenWindows("second-brain");
   focusSecondBrainInspector();
+}
+
+function selectSecondBrainPluginSkill(pluginId) {
+  const lane = getSecondBrainPluginSkill(pluginId);
+  if (!lane) return;
+  const profile = getSecondBrainPluginContextProfile(lane.id);
+  const data = getSecondBrainData();
+  data.activePluginSkillId = lane.id;
+  addSecondBrainActivity(
+    "Plugin Skill",
+    `${lane.plugin} readiness selected`,
+    `${lane.statusTool} / ${lane.planTool} is now focused in the SEIS AI Second Brain bridge. ${profile?.allowedOutput || "Review-only local context."}`
+  );
+  getAppData("ai-assistant").activeTab = "Second Brain";
+  const message = `Second Brain selected ${lane.plugin} plugin/skill readiness for local AI review.`;
+  getAppStatus("second-brain").lastAction = message;
+  log("second-brain", message);
+  saveState();
+  renderOpenWindows("second-brain");
+  openApp("ai-assistant");
+  toast("SEIS Second Brain", `${lane.plugin} readiness context is open in SEIS AI.`);
 }
 
 function focusSecondBrainInspector() {

@@ -391,6 +391,7 @@ async function smokeSecondBrain(client, baseUrl) {
       graphNodes: root?.querySelectorAll('[data-second-brain-graph] [data-action="second-brain-select-note"]').length || 0,
       pluginGraphNodes: root?.querySelectorAll('[data-second-brain-plugin-node]').length || 0,
       pluginGraphEdges: root?.querySelectorAll('[data-second-brain-plugin-graph-edge]').length || 0,
+      pluginGraphActions: root?.querySelectorAll('[data-second-brain-plugin-node][data-action="second-brain-select-plugin-skill"]').length || 0,
       pluginGraphText: root?.querySelector('[data-second-brain-graph]')?.innerText || '',
       searchFilters: root?.querySelectorAll('[data-second-brain-search-filters] [data-action="second-brain-set-search-filter"]').length || 0,
       obsidianSourceModes: root?.querySelectorAll('[data-second-brain-obsidian-source-modes] [data-action="second-brain-set-obsidian-source-mode"]').length || 0,
@@ -444,6 +445,7 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(initial.graphNodes === 6, `expected six graph nodes, got ${initial.graphNodes}`);
   ensure(initial.pluginGraphNodes === 5, `expected five plugin/skill graph nodes, got ${initial.pluginGraphNodes}`);
   ensure(initial.pluginGraphEdges === 5, `expected five plugin/skill graph edge markers, got ${initial.pluginGraphEdges}`);
+  ensure(initial.pluginGraphActions === 5, `expected five plugin/skill graph handoff actions, got ${initial.pluginGraphActions}`);
   ensure(initial.pluginGraphText.includes("@seis-cloud") && initial.pluginGraphText.includes("@seis-data"), "Second Brain graph must render plugin/skill readiness nodes.");
   ensure(initial.searchFilters === 9, `expected nine Second Brain search filters, got ${initial.searchFilters}`);
   ensure(initial.obsidianSourceModes === 3, `expected three Obsidian source modes, got ${initial.obsidianSourceModes}`);
@@ -599,6 +601,19 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(artifacts.trainingPackVisible, "Second Brain training pack action did not update visible state.");
   ensure(artifacts.status?.lastAction?.includes("GitHub readiness export saved"), `Second Brain app status should record the readiness export: ${JSON.stringify(artifacts.status)}`);
 
+  await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-second-brain-plugin-node][data-value="seis-code"]');
+  await waitFor(client, "Boolean(document.querySelector('.app-window[data-app-id=\"ai-assistant\"]:not([hidden]) [data-ai-second-brain-selected-plugin]'))", 5000);
+  const pluginHandoff = await evaluate(client, `(() => {
+    const graph = document.querySelector('.app-window[data-app-id="second-brain"]:not([hidden]) [data-second-brain-graph]');
+    const bridge = document.querySelector('.app-window[data-app-id="ai-assistant"]:not([hidden]) [data-ai-second-brain-bridge]');
+    return {
+      graphPlugin: graph?.querySelector('[data-second-brain-plugin-node][aria-selected="true"]')?.dataset?.value || '',
+      bridgeText: bridge?.querySelector('[data-ai-second-brain-selected-plugin]')?.innerText || ''
+    };
+  })()`);
+  ensure(pluginHandoff.graphPlugin === "seis-code", `Second Brain graph selection should focus @seis-code: ${JSON.stringify(pluginHandoff)}`);
+  ensure(pluginHandoff.bridgeText.includes("@seis-code") && pluginHandoff.bridgeText.includes("seis_code_status") && pluginHandoff.bridgeText.includes("Code Agent"), `Second Brain plugin handoff must expose skill, plan, and agent context: ${JSON.stringify(pluginHandoff)}`);
+
   await evaluate(client, "window.__SEIS_DESKTOP__.openApp('ai-assistant')");
   await waitFor(client, "Boolean(document.querySelector('.app-window[data-app-id=\"ai-assistant\"]:not([hidden]) [data-ai-app]'))", 5000);
   await clickSelector(client, '.app-window[data-app-id="ai-assistant"]:not([hidden]) [data-ai-plugin-tab="Second Brain"]');
@@ -613,6 +628,7 @@ async function smokeSecondBrain(client, baseUrl) {
       pluginSkillRows: bridge?.querySelectorAll('[data-ai-second-brain-plugin-skill-table] tbody tr').length || 0,
       pluginSkillMetric: bridge?.querySelector('[data-ai-second-brain-plugin-skill-readiness] p')?.innerText || '',
       pluginSkillText: bridge?.querySelector('[data-ai-second-brain-plugin-skill-panel]')?.innerText || '',
+      selectedPluginText: bridge?.querySelector('[data-ai-second-brain-selected-plugin]')?.innerText || '',
       localOnlyCopy: text.includes('Local Demo context only'),
       noMutationCopy: text.includes('no private vault import') && text.includes('GitHub mutation') && text.includes('SSH')
     };
@@ -624,6 +640,7 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(aiBridge.pluginSkillRows === 5, `SEIS AI Second Brain bridge expected five plugin/skill rows, got ${aiBridge.pluginSkillRows}`);
   ensure(aiBridge.pluginSkillMetric === "5", `SEIS AI Second Brain bridge plugin/skill metric should be 5, got ${aiBridge.pluginSkillMetric}`);
   ensure(aiBridge.pluginSkillText.includes("@seis-code") && aiBridge.pluginSkillText.includes("local-demo-readiness-matrix"), "SEIS AI Second Brain bridge must render plugin/skill readiness.");
+  ensure(aiBridge.selectedPluginText.includes("@seis-code") && aiBridge.selectedPluginText.includes("Code Agent"), "SEIS AI Second Brain bridge must retain the selected plugin/skill handoff.");
   ensure(aiBridge.localOnlyCopy, "SEIS AI Second Brain bridge must label local context only.");
   ensure(aiBridge.noMutationCopy, "SEIS AI Second Brain bridge must label private vault/GitHub/SSH boundary.");
 
@@ -631,16 +648,20 @@ async function smokeSecondBrain(client, baseUrl) {
 
   await goto(client, `${baseUrl}/desktop.html`);
   await waitFor(client, "Boolean(window.__SEIS_DESKTOP__)", 10000);
+  await evaluate(client, "window.__SEIS_DESKTOP__.openApp('second-brain')");
+  await waitFor(client, "Boolean(document.querySelector('.app-window[data-app-id=\"second-brain\"]:not([hidden]) [data-second-brain-app]'))", 5000);
   const persistence = await evaluate(client, `(() => {
     const paths = window.__SEIS_DESKTOP__.filePaths();
     return {
       fixedArtifacts: ${JSON.stringify(REQUIRED_ARTIFACTS)}.filter((path) => paths.includes(path)),
       capturePaths: paths.filter((path) => path.startsWith('/home/seis/SecondBrain/00-inbox/capture-')),
-      openWindows: window.__SEIS_DESKTOP__.openWindows()
+      openWindows: window.__SEIS_DESKTOP__.openWindows(),
+      selectedPluginId: document.querySelector('.app-window[data-app-id="second-brain"]:not([hidden]) [data-second-brain-plugin-node][aria-selected="true"]')?.dataset?.value || ''
     };
   })()`);
   ensure(persistence.fixedArtifacts.length === REQUIRED_ARTIFACTS.length, `Second Brain VFS artifacts did not persist after reload: ${JSON.stringify(persistence)}`);
   ensure(persistence.capturePaths.length >= 1, "Second Brain inbox capture did not persist after reload.");
+  ensure(persistence.selectedPluginId === "seis-code", `Second Brain selected plugin/skill context did not persist after reload: ${JSON.stringify(persistence)}`);
 
   return {
     initial,
@@ -649,6 +670,7 @@ async function smokeSecondBrain(client, baseUrl) {
     searchSnapshot,
     keyboardSearch,
     artifacts,
+    pluginHandoff,
     aiBridge,
     persistence,
     screenshot: screenshotPath
