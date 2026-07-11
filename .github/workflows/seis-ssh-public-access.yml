@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - '.github/workflows/seis-ssh-public-access.yml'
+      - '.github/CODEOWNERS'
       - 'deploy/seis-ssh-*.json'
       - 'docs/deployment/seis-ssh-*.md'
       - 'docs/deployment/seis-codex-git-ssh-handoff.md'
