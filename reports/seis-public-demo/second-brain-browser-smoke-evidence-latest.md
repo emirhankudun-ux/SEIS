@@ -1,10 +1,10 @@
 # SEIS Second Brain Browser Smoke Evidence
 
-Generated: 2026-07-11T06:07:13.788Z
+Generated: 2026-07-11T06:26:41.721Z
 Status: passed-local-browser-smoke
 Mode: repo-local-chrome-smoke-evidence
-sourceDigest: sha256:74a14d6be9da133f00b3d3b469a8d1fb1e022d4febacf318f68fa1643a37ba5c
-sourceRevision: 40ce855618777ae0990cccb9d38ca8324751cf3c
+sourceDigest: sha256:9dbbe442c993e21139091db5ec9010674fc3291391a5652dfb2bd06cb32eaf33
+sourceRevision: dfecf6bcb90a3797903f3e7144d3e6a8b23a2bab
 sourcePathsCleanBeforeRun: true
 
 ## Runtime Result
