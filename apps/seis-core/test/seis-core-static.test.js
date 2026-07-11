@@ -151,6 +151,15 @@ test("SEIS Command Center binds specialist lanes and Store through a local contr
   assert.equal(registry.id, "seis-core-ecosystem-registry");
   assert.equal(registry.store.status, "Local Demo");
   assert.match(registry.runtimeBoundary, /does not authenticate connectors/);
+  assert.equal(registry.pluginUniverse.mode, "source-visible-read-only");
+  assert.equal(registry.pluginUniverse.uniquePlugins, 300);
+  assert.equal(registry.pluginUniverse.totalLinks, 301);
+  assert.equal(registry.pluginUniverse.laneCount, 12);
+  assert.equal(registry.pluginUniverse.mcpBoundary, "status-and-plan-only");
+  assert.equal(registry.pluginUniverse.personalPlugins.length, 5);
+  assert.match(script, /pluginUniverse/);
+  assert.match(script, /pluginCount/);
+  assert.match(script, /pluginLaneCount/);
   for (const lane of ["seis", "seis-cloud", "seis-code", "seis-design", "seis-data", "seis-store"]) {
     const record = registry.lanes.find((candidate) => candidate.id === lane);
     assert.ok(record, `${lane} should have a Core control-plane record`);

@@ -9,8 +9,28 @@
     "data/seis-operating-identities.json",
     "content/development/seis-agent-plugin-integration.json",
     "apps/web/desktop.js",
-    "deploy/seis-ssh-public-access-contract.json"
+    "deploy/seis-ssh-public-access-contract.json",
+    "content/development/requested-plugin-inventory.json",
+    "content/development/plugin-capability-lanes.json"
   ],
+  "pluginUniverse": {
+    "mode": "source-visible-read-only",
+    "inventory": "content/development/requested-plugin-inventory.json",
+    "capabilityLanes": "content/development/plugin-capability-lanes.json",
+    "uniquePlugins": 300,
+    "totalLinks": 301,
+    "laneCount": 12,
+    "remotePluginCount": 6,
+    "personalPlugins": [
+      "seis@personal",
+      "seis-cloud@personal",
+      "seis-code@personal",
+      "seis-design@personal",
+      "seis-data@personal"
+    ],
+    "coreBinding": "SEIS Core renders the submitted plugin universe and capability-lane totals while activation remains task-scoped, authenticated, least-privilege, and human-approved.",
+    "mcpBoundary": "status-and-plan-only"
+  },
   "store": {
     "id": "seis-store",
     "status": "Local Demo",

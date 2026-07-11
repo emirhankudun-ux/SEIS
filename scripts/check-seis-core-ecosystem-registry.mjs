@@ -15,6 +15,8 @@ const scriptPath = path.join(root, "apps", "seis-core", "script.js");
 const cssPath = path.join(root, "apps", "seis-core", "styles.css");
 const docsPath = path.join(root, "docs", "architecture", "seis-command-center.md");
 const packagePath = path.join(root, "package.json");
+const pluginInventoryPath = path.join(root, "content", "development", "requested-plugin-inventory.json");
+const pluginCapabilityLanesPath = path.join(root, "content", "development", "plugin-capability-lanes.json");
 
 function fail(message) {
   failures.push(message);
@@ -47,12 +49,14 @@ for (const [filePath, label] of [
   [scriptPath, "SEIS Core script"],
   [cssPath, "SEIS Core CSS"],
   [docsPath, "SEIS Core architecture docs"],
-  [packagePath, "package.json"]
+  [packagePath, "package.json"],
+  [pluginInventoryPath, "requested plugin inventory"],
+  [pluginCapabilityLanesPath, "plugin capability lanes"]
 ]) {
   if (!existsSync(filePath)) fail(`missing ${label}: ${path.relative(root, filePath)}`);
 }
 
-const [registry, identities, integration, desktop, html, script, css, docs, packageJson] = await Promise.all([
+const [registry, identities, integration, desktop, html, script, css, docs, packageJson, pluginInventory, pluginCapabilityLanes] = await Promise.all([
   readJson(registryPath, "SEIS Core ecosystem registry"),
   readJson(identitiesPath, "SEIS operating identities"),
   readJson(integrationPath, "SEIS-Agent plugin integration"),
@@ -61,7 +65,9 @@ const [registry, identities, integration, desktop, html, script, css, docs, pack
   readText(scriptPath, "SEIS Core script"),
   readText(cssPath, "SEIS Core CSS"),
   readText(docsPath, "SEIS Core architecture docs"),
-  readJson(packagePath, "package.json")
+  readJson(packagePath, "package.json"),
+  readJson(pluginInventoryPath, "requested plugin inventory"),
+  readJson(pluginCapabilityLanesPath, "plugin capability lanes")
 ]);
 
 const expectedLanes = ["seis", "seis-cloud", "seis-code", "seis-design", "seis-data", "seis-store"];
@@ -83,6 +89,17 @@ if (registry) {
   if (registry.store?.status !== "Local Demo") fail("Store must remain labeled Local Demo");
   if (!registry.store?.contract?.includes("browser-local")) fail("Store contract must be browser-local");
   if (!registry.store?.approvalBoundary?.includes("does not download packages")) fail("Store approval boundary must reject remote installation claims");
+  const pluginUniverse = registry.pluginUniverse;
+  if (pluginUniverse?.mode !== "source-visible-read-only") fail("registry plugin universe must remain source-visible and read-only");
+  if (pluginUniverse?.inventory !== "content/development/requested-plugin-inventory.json") fail("registry plugin universe must point to the requested plugin inventory");
+  if (pluginUniverse?.capabilityLanes !== "content/development/plugin-capability-lanes.json") fail("registry plugin universe must point to the capability-lane registry");
+  if (pluginUniverse?.mcpBoundary !== "status-and-plan-only") fail("registry plugin universe must retain the status-and-plan-only MCP boundary");
+  if (!Array.isArray(pluginUniverse?.personalPlugins) || pluginUniverse.personalPlugins.length !== 5) fail("registry plugin universe must expose all five personal SEIS plugins");
+  if (pluginUniverse?.uniquePlugins !== pluginInventory?.summary?.uniquePlugins) fail("registry plugin count must match the requested inventory");
+  if (pluginUniverse?.totalLinks !== pluginInventory?.summary?.totalLinks) fail("registry plugin link count must match the requested inventory");
+  if (pluginUniverse?.uniquePlugins !== pluginCapabilityLanes?.source?.uniquePlugins) fail("registry plugin count must match capability lanes");
+  if (pluginUniverse?.totalLinks !== pluginCapabilityLanes?.source?.totalLinks) fail("registry link count must match capability lanes");
+  if (pluginUniverse?.laneCount !== pluginCapabilityLanes?.summary?.laneCount) fail("registry plugin lane count must match capability lanes");
 
   const lanes = Array.isArray(registry.lanes) ? registry.lanes : [];
   if (lanes.length !== expectedLanes.length) fail(`registry must expose exactly ${expectedLanes.length} core lanes`);

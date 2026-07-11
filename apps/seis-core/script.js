@@ -783,6 +783,15 @@ const fallbackSeisCoreEcosystemRegistry = {
     status: "Local Demo",
     contract: "Browser-local catalog state only."
   },
+  pluginUniverse: {
+    mode: "source-visible-read-only",
+    uniquePlugins: 300,
+    totalLinks: 301,
+    laneCount: 12,
+    remotePluginCount: 6,
+    personalPlugins: ["seis@personal", "seis-cloud@personal", "seis-code@personal", "seis-design@personal", "seis-data@personal"],
+    mcpBoundary: "status-and-plan-only"
+  },
   lanes: [
     {
       id: "seis",
@@ -2380,6 +2389,9 @@ function renderEcosystemControlPlane() {
   const readyCount = lanes.filter((lane) => lane.status === "Ready").length;
   const localCount = lanes.filter((lane) => /local|mock|registry|contract/i.test(lane.mode || "")).length;
   const mcpToolCount = lanes.reduce((total, lane) => total + (Array.isArray(lane.mcpTools) ? lane.mcpTools : []).length, 0);
+  const pluginUniverse = seisCoreEcosystemRegistry.pluginUniverse || {};
+  const pluginCount = Number(pluginUniverse.uniquePlugins || 0);
+  const pluginLaneCount = Number(pluginUniverse.laneCount || 0);
   const statePill = $("#ecosystem-control-state");
   const summary = $("#ecosystem-control-summary");
   const grid = $("#ecosystem-control-grid");
@@ -2394,7 +2406,9 @@ function renderEcosystemControlPlane() {
     ["Lanes", lanes.length, "Core-bound modules"],
     ["Ready", readyCount, "visible local gates"],
     ["Local boundaries", localCount, "no live connector claims"],
-    ["MCP tools", mcpToolCount, "status and plan tools only"]
+    ["MCP tools", mcpToolCount, "status and plan tools only"],
+    ["Plugins", pluginCount, "source-visible inventory"],
+    ["Plugin lanes", pluginLaneCount, "task-scoped activation lanes"]
   ].map(([label, value, detail]) => `
     <article class="ecosystem-summary-card">
       <span>${label}</span>
