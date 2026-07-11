@@ -196,12 +196,11 @@ function endpointFingerprint(hostname, port, proxyCommand) {
 
 function normalizeProxyCommandShape(value) {
   if (!value) return null;
-  return String(value)
-    .replace(/^\S*\/gh(?=\s+cs\s+ssh)/, "gh")
-    .replace(/(\s-c\s+)\S+/g, "$1<codespace>")
-    .replace(/(\s-i\s+)\S+/g, "$1<identity-file>")
-    .replace(/\s+/g, " ")
-    .trim();
+  const normalized = String(value).replace(/\s+/g, " ").trim();
+  if (/(?:^|\s)(?:\S+\/)?gh\s+cs\s+ssh(?:\s|$)/.test(normalized)) {
+    return "gh cs ssh <codespace-endpoint>";
+  }
+  return "proxy-command-present";
 }
 
 function sanitize(value) {
