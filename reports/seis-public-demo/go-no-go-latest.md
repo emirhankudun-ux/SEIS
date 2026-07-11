@@ -1,6 +1,6 @@
 # SEIS Public Demo Go/No-Go Report
 
-Generated: 2026-07-11T07:20:00.774Z
+Generated: 2026-07-11T07:29:30.314Z
 Decision: NO-GO
 Status: review-gated-not-released
 Mode: read-only
