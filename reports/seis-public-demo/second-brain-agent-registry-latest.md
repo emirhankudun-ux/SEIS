@@ -1,6 +1,6 @@
 # SEIS Second Brain Agent Registry
 
-Generated: 2026-06-29T13:22:42.859Z
+Generated: 2026-07-11T05:33:14.159Z
 Status: review-only-agent-registry
 Mode: repo-local-no-live-execution
 Decision: NO-GO-autonomous-execution-not-approved
@@ -14,7 +14,7 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 | Installed AI profiles | 6 |
 | AI workforce assignments | 10 |
 | Managed sub-agent lanes | 6 |
-| Autonomous agent roster | 12 |
+| Autonomous agent roster | 13 |
 | Role schema roles | 5 |
 | Permission levels | 5 |
 | Local apps detected in inventory | 8 |
@@ -74,6 +74,7 @@ No private Obsidian import, provider call, credential validation, SSH, GitHub mu
 | QA Agent | status-plan-only | Validator, browser-smoke, regression, and acceptance evidence. |
 | Cloud Agent | status-plan-only | Cloud, SSH, storage, sync, and provider readiness boundaries. |
 | Automation Agent | status-plan-only | Safe recurring workflows, ledgers, and human-approved automation gates. |
+| Product Agent | status-plan-only | Requirements, acceptance criteria, roadmap slices, launch readiness, and delivery evidence. |
 
 ## MCP And Plugin Surface
 
