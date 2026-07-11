@@ -224,6 +224,11 @@
       "agent": "Automation Agent",
       "status": "status-plan-only",
       "duty": "Safe recurring workflows, ledgers, and human-approved automation gates."
+    },
+    {
+      "agent": "Product Agent",
+      "status": "status-plan-only",
+      "duty": "Requirements, acceptance criteria, roadmap slices, launch readiness, and delivery evidence."
     }
   ],
   "pipeline": [
