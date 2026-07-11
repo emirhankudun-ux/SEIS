@@ -1,10 +1,10 @@
 # SEIS Public Demo Worktree Review
 
-Generated: 2026-07-10T19:02:12.667Z
+Generated: 2026-07-11T06:10:25.012Z
 Decision: NO-GO
 Release blocking: yes
-Dirty paths: 15
-Workstreams: 2
+Dirty paths: 7
+Workstreams: 1
 
 ## Review Rule
 
@@ -20,24 +20,10 @@ approval exists.
 
 Status: candidate-scope-needs-review
 
-- AM reports/seis-public-demo/evidence-manifest-latest.json
-- AM reports/seis-public-demo/go-no-go-latest.json
-- MM reports/seis-public-demo/go-no-go-latest.md
-- A reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json
-- M reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md
-- MM reports/seis-public-demo/pr54-review-packet-latest.md
-- MM reports/seis-public-demo/pr54-stage-plan-latest.md
-- A reports/seis-public-demo/read-only-model-router-decision-latest.json
-- M reports/seis-public-demo/read-only-model-router-decision-latest.md
-- AM reports/seis-public-demo/second-brain-accessibility-focus-latest.json
-- MM reports/seis-public-demo/second-brain-accessibility-focus-latest.md
-- A reports/seis-public-demo/second-brain-agent-registry-latest.json
-- M reports/seis-public-demo/second-brain-agent-registry-latest.md
-- MM reports/seis-public-demo/worktree-review-latest.md
-
-## Unclassified Dirty Paths
-
-Status: needs-human-review
-
-- M .gitignore
-
+- M reports/seis-public-demo/evidence-manifest-latest.json
+- M reports/seis-public-demo/go-no-go-latest.json
+- M reports/seis-public-demo/go-no-go-latest.md
+- M reports/seis-public-demo/pr54-review-packet-latest.md
+- M reports/seis-public-demo/pr54-stage-plan-latest.md
+- M reports/seis-public-demo/worktree-review-latest.md
+- M scripts/check-seis-public-demo-go-no-go.mjs

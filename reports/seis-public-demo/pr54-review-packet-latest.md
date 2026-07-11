@@ -1,6 +1,6 @@
 # PR #54 Public Demo Review Packet
 
-Generated: 2026-07-10T19:02:12.667Z
+Generated: 2026-07-11T06:10:25.012Z
 Decision: NO-GO
 Status: review-gated-not-released
 Mode: read-only
@@ -17,6 +17,7 @@ Obsidian import, live provider routing, or production-readiness claims.
 - Confirm whether the dirty worktree is a coherent release-candidate slice.
 - Confirm whether current browser-smoke evidence exists for this exact release candidate.
 - Confirm whether the human owner explicitly approves public demo release.
+- Confirm whether plugin/skill graph evidence is visible in Second Brain and bridged into SEIS AI.
 - Confirm that Obsidian import, model routing, SSH, deployment, and GitHub publication remain disabled until separately approved.
 
 ## Fast Validation
@@ -27,7 +28,7 @@ Obsidian import, live provider routing, or production-readiness claims.
 - npm run check:seis-second-brain-agent-registry: passed
 - npm run check:seis-second-brain-readiness-contracts: passed
 - npm run check:seis-second-brain: passed
-- git diff --check: passed
+- git diff --check: failed
 
 ## Current Blockers
 
@@ -38,11 +39,11 @@ Obsidian import, live provider routing, or production-readiness claims.
 
 | Metric | Count |
 | --- | ---: |
-| Total | 23 |
+| Total | 24 |
 | Passed | 21 |
 | Blocked | 2 |
 | Missing current evidence | 0 |
-| Failed | 0 |
+| Failed | 1 |
 
 ## Evidence Items
 
@@ -54,6 +55,7 @@ Obsidian import, live provider routing, or production-readiness claims.
 | accessibility-focus-contract-active | passed | content/development/seis-second-brain-accessibility-focus-qa.json |
 | accessibility-focus-qa-artifact | passed | reports/seis-public-demo/second-brain-accessibility-focus-latest.json |
 | second-brain-agent-registry | passed | reports/seis-public-demo/second-brain-agent-registry-latest.json |
+| second-brain-plugin-skill-graph-evidence | passed | apps/web/desktop.js; npm run check:seis-second-brain-browser-smoke |
 | obsidian-safe-import-dry-run | passed | reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json |
 | read-only-router-decision | passed | reports/seis-public-demo/read-only-model-router-decision-latest.json |
 | go-no-go-report-json | passed | reports/seis-public-demo/go-no-go-latest.json |
@@ -61,7 +63,7 @@ Obsidian import, live provider routing, or production-readiness claims.
 | pr54-review-packet | passed | reports/seis-public-demo/pr54-review-packet-latest.md |
 | worktree-review-packet | passed | reports/seis-public-demo/worktree-review-latest.md |
 | pr54-stage-plan | passed | reports/seis-public-demo/pr54-stage-plan-latest.md |
-| current-browser-smoke | passed | npm run check:seis-second-brain-browser-smoke |
+| current-browser-smoke | passed | reports/seis-public-demo/second-brain-browser-smoke-evidence-latest.json |
 | release-worktree-review | blocked | git status --short |
 | human-release-approval | blocked | explicit approval required |
 | npm-run-check-seis-obsidian-safe-import-dry-run | passed | Command exited 0 in the current run. |
@@ -70,7 +72,7 @@ Obsidian import, live provider routing, or production-readiness claims.
 | npm-run-check-seis-second-brain-agent-registry | passed | Command exited 0 in the current run. |
 | npm-run-check-seis-second-brain-readiness-contracts | passed | Command exited 0 in the current run. |
 | npm-run-check-seis-second-brain | passed | Command exited 0 in the current run. |
-| git-diff-check | passed | Command exited 0 in the current run. |
+| git-diff-check | failed | Command failed in the current run. |
 
 ## Final Gate
 

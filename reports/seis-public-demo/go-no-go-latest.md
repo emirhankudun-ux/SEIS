@@ -1,6 +1,6 @@
 # SEIS Public Demo Go/No-Go Report
 
-Generated: 2026-07-10T19:02:12.667Z
+Generated: 2026-07-11T06:10:25.012Z
 Decision: NO-GO
 Status: review-gated-not-released
 Mode: read-only
@@ -15,7 +15,7 @@ Evidence manifest: reports/seis-public-demo/evidence-manifest-latest.json
 - npm run check:seis-second-brain-agent-registry: passed
 - npm run check:seis-second-brain-readiness-contracts: passed
 - npm run check:seis-second-brain: passed
-- git diff --check: passed
+- git diff --check: failed
 
 ## Blockers
 
@@ -24,7 +24,7 @@ Evidence manifest: reports/seis-public-demo/evidence-manifest-latest.json
 
 ## Failures
 
-- None
+- fast validation failed: git diff --check
 
 ## Warnings
 
@@ -32,6 +32,7 @@ Evidence manifest: reports/seis-public-demo/evidence-manifest-latest.json
 
 ## Next Actions
 
+- Fix release gate contract failures before reviewing public demo readiness.
 - Review and stage only coherent release-candidate changes, or rerun with --allow-dirty-worktree for a planning-only report.
 - Get explicit human owner approval before merge, Pages publication, release tag, deployment, SSH, live providers, or public launch.
 

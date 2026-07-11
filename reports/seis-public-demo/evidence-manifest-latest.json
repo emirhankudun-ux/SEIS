@@ -1,7 +1,7 @@
 {
   "id": "seis-public-demo-evidence-manifest-pr54",
   "title": "SEIS Public Demo Evidence Manifest After PR 54 Review",
-  "generatedAt": "2026-07-10T19:02:12.667Z",
+  "generatedAt": "2026-07-11T06:10:25.012Z",
   "decision": "NO-GO",
   "status": "review-gated-not-released",
   "mode": "read-only",
@@ -13,11 +13,11 @@
     "requiredState": "reviewed before merge or public release"
   },
   "summary": {
-    "total": 23,
+    "total": 24,
     "passed": 21,
     "blocked": 2,
     "missingCurrentEvidence": 0,
-    "failed": 0,
+    "failed": 1,
     "notRequested": 0
   },
   "items": [
@@ -62,6 +62,13 @@
       "requirement": "Second Brain agent registry artifact exists and keeps installed AI, sub-agent, Obsidian, plugin, and MCP boundaries review-only.",
       "status": "passed",
       "evidence": "reports/seis-public-demo/second-brain-agent-registry-latest.json"
+    },
+    {
+      "id": "second-brain-plugin-skill-graph-evidence",
+      "type": "runtime-contract",
+      "requirement": "Second Brain plugin/skill graph nodes and AI bridge plugin-skill table are wired for public-demo review.",
+      "status": "passed",
+      "evidence": "apps/web/desktop.js; npm run check:seis-second-brain-browser-smoke"
     },
     {
       "id": "obsidian-safe-import-dry-run",
@@ -117,7 +124,7 @@
       "type": "runtime-evidence",
       "requirement": "Current Second Brain browser smoke evidence exists for this release candidate.",
       "status": "passed",
-      "evidence": "npm run check:seis-second-brain-browser-smoke"
+      "evidence": "reports/seis-public-demo/second-brain-browser-smoke-evidence-latest.json"
     },
     {
       "id": "release-worktree-review",
@@ -185,8 +192,8 @@
       "id": "git-diff-check",
       "type": "command",
       "requirement": "git diff --check",
-      "status": "passed",
-      "evidence": "Command exited 0 in the current run.",
+      "status": "failed",
+      "evidence": "Command failed in the current run.",
       "command": "git diff --check"
     }
   ],

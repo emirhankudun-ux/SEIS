@@ -775,8 +775,7 @@ Dirty paths remain release-blocking until a human reviews the slice, unrelated
 work is separated or approved, current browser evidence is present, and release
 approval exists.
 
-${groups}
-`;
+${groups}`.trimEnd() + "\n";
 }
 
 function renderStagePlan(value) {
