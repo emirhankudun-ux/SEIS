@@ -318,6 +318,9 @@ function validateStaticContract() {
   ensure(html.includes("data-music-panel"), "Linux Replica route must expose a SEIS Music workspace.");
   ensure(html.includes("data-ai-core-panel"), "Linux Replica route must expose a SEIS AI Core workspace.");
   ensure(html.includes("data-security-gate-app"), "Linux Replica route must expose a Security Gate app.");
+  ensure(html.includes("data-evolution-console"), "Linux Replica route must expose the five-year Evolution Console.");
+  ensure(html.includes("SEIS_FIVE_YEAR_PLAN_VIEW"), "Linux Replica route must load the five-year plan adapter.");
+  ensure(html.includes("human approval required"), "Linux Replica Evolution Console must keep the approval boundary visible.");
   ensure(html.includes("bridgeTargetCount"), "Linux Replica diagnostics must expose bridge target count.");
   for (const marker of ["SEIS Search Gateway", "SEIS Code IDE", "SEIS Design Studio", "SEIS Cloud Center", "SEIS Store", "SEIS Website Hub", "SEIS AI Core"]) {
     ensure(html.includes(marker), `Linux Replica SEIS bridge missing marker: ${marker}`);
@@ -450,6 +453,9 @@ async function smokeLinuxReplica(client, baseUrl) {
     window.__SEIS_LINUX_REPLICA__.openApp('store');
     window.__SEIS_LINUX_REPLICA__.openApp('music');
     window.__SEIS_LINUX_REPLICA__.openApp('demo');
+    window.__SEIS_LINUX_REPLICA__.openApp('evolution-console');
+    document.querySelector('[data-evolution-year="5"]')?.click();
+    document.querySelector('[data-evolution-quarter="Y5-Q4"]')?.click();
     document.querySelector('[data-code-tab="agent-runtime.json"]')?.click();
     document.querySelector('[data-run-code-check]')?.click();
     document.querySelector('[data-design-swatch="#19c6d4"]')?.click();
@@ -478,6 +484,10 @@ async function smokeLinuxReplica(client, baseUrl) {
     const musicPanel = document.querySelectorAll('[data-music-panel]').length;
     const aiCorePanel = document.querySelectorAll('[data-ai-core-panel]').length;
     const securityGateApp = document.querySelectorAll('[data-security-gate-app]').length;
+    const evolutionConsole = document.querySelectorAll('[data-evolution-console]').length;
+    const evolutionYearButtons = document.querySelectorAll('[data-evolution-year]').length;
+    const evolutionQuarterButtons = document.querySelectorAll('[data-evolution-quarter]').length;
+    const evolutionSelected = document.querySelector('[data-evolution-quarter="Y5-Q4"].is-active') !== null;
     const securityPathCards = document.querySelectorAll('.security-path').length;
     const liveDemoConsole = document.querySelectorAll('[data-live-demo-console]').length;
     const liveStepButtons = document.querySelectorAll('[data-live-step]').length;
@@ -520,6 +530,10 @@ async function smokeLinuxReplica(client, baseUrl) {
       musicPanel,
       aiCorePanel,
       securityGateApp,
+      evolutionConsole,
+      evolutionYearButtons,
+      evolutionQuarterButtons,
+      evolutionSelected,
       securityPathCards,
       liveDemoConsole,
       liveStepButtons,
@@ -579,6 +593,10 @@ async function smokeLinuxReplica(client, baseUrl) {
   ensure(summary.musicPanel >= 1, "mini SEIS Music workspace did not render.");
   ensure(summary.aiCorePanel >= 1, "mini SEIS AI Core workspace did not render.");
   ensure(summary.securityGateApp >= 1, "Security Gate app did not render.");
+  ensure(summary.evolutionConsole >= 1, "Evolution Console did not render.");
+  ensure(summary.evolutionYearButtons === 5, "expected five Evolution Console year buttons, found " + summary.evolutionYearButtons + ".");
+  ensure(summary.evolutionQuarterButtons === 4, "expected four Evolution Console quarter buttons, found " + summary.evolutionQuarterButtons + ".");
+  ensure(summary.evolutionSelected === true, "Evolution Console did not select Y5-Q4.");
   ensure(summary.securityPathCards >= 3, `expected three Security Gate owner paths, found ${summary.securityPathCards}.`);
   ensure(summary.liveDemoConsole >= 1, "Live Demo Console did not render.");
   ensure(summary.demoReadiness >= 1, "Demo Readiness did not render.");
@@ -633,6 +651,7 @@ async function smokeLinuxReplicaMobile(client, baseUrl) {
     window.__SEIS_LINUX_REPLICA__.openApp('live-demo');
     window.__SEIS_LINUX_REPLICA__.openApp('reference-vault');
     window.__SEIS_LINUX_REPLICA__.openApp('terminal');
+    window.__SEIS_LINUX_REPLICA__.openApp('evolution-console');
     document.querySelector('#startButton')?.click();
 
     const viewportWidth = window.innerWidth;
@@ -662,6 +681,7 @@ async function smokeLinuxReplicaMobile(client, baseUrl) {
       horizontalOverflow: document.documentElement.scrollWidth > viewportWidth + 2,
       liveDemoConsole: document.querySelectorAll('[data-live-demo-console]').length,
       referenceVault: document.querySelectorAll('[data-reference-vault]').length,
+      evolutionConsole: document.querySelectorAll('[data-evolution-console]').length,
       terminalReady: window.__SEIS_LINUX_REPLICA__.terminalReady(),
       launcherOpen: document.querySelector('#startMenu')?.classList.contains('is-active'),
       launcherTiles: document.querySelectorAll('.app-tile').length,
@@ -681,6 +701,7 @@ async function smokeLinuxReplicaMobile(client, baseUrl) {
   ensure(summary.horizontalOverflow === false, "mobile desktop has horizontal overflow.");
   ensure(summary.liveDemoConsole >= 1, "mobile Live Demo Console did not render.");
   ensure(summary.referenceVault >= 1, "mobile Reference Vault did not render.");
+  ensure(summary.evolutionConsole >= 1, "mobile Evolution Console did not render.");
   ensure(summary.terminalReady === true, "mobile terminal did not initialize.");
   ensure(summary.launcherOpen === true, "mobile launcher did not open.");
   ensure(summary.launcherTiles >= summary.sideRailButtons, "mobile launcher did not expose app tiles.");
@@ -715,6 +736,7 @@ async function smokeLinuxReplicaDeepLink(client, baseUrl) {
       liveDemoConsole: document.querySelectorAll('[data-live-demo-console]').length,
       demoReadiness: document.querySelectorAll('[data-demo-readiness]').length,
       referenceVault: document.querySelectorAll('[data-reference-vault]').length,
+      evolutionConsole: document.querySelectorAll('[data-evolution-console]').length,
       terminalReady: window.__SEIS_LINUX_REPLICA__?.terminalReady?.() === true,
       tourCopyVisible: bodyText.includes('SEIS Live Linux-like Demo'),
       readinessCopyVisible: bodyText.includes('Demo Readiness'),
@@ -727,6 +749,7 @@ async function smokeLinuxReplicaDeepLink(client, baseUrl) {
   ensure(summary.liveDemoConsole >= 1, "deep-link did not open Live Demo Console.");
   ensure(summary.demoReadiness >= 1, "deep-link did not open Demo Readiness.");
   ensure(summary.referenceVault >= 1, "deep-link did not open Reference Vault.");
+  ensure(summary.evolutionConsole >= 1, "deep-link did not open Evolution Console.");
   ensure(summary.terminalReady === true, "deep-link did not leave terminal ready.");
   ensure(summary.tourCopyVisible === true, "deep-link live tour copy was not visible.");
   ensure(summary.readinessCopyVisible === true, "deep-link readiness copy was not visible.");
