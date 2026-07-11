@@ -27,6 +27,7 @@ const REQUIRED_PRECACHE = [
   "./seis-linux-replica.html",
   "./seis-five-year-plan.js",
   "./seis-vfs-store.js",
+  "./seis-shared-vfs.js",
   "./seis-linux-replica-public-demo.html",
   "./seis-demo-flight-deck.html",
   "./mythic-gacha.html",

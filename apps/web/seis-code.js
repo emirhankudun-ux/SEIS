@@ -1,6 +1,7 @@
 const DB_NAME = "seis-code-workspace-v1";
 const DB_VERSION = 1;
 const WORKSPACE = "/workspace";
+const SHARED_VFS_ROOT = "/workspace";
 const WORKSPACE_CHANNEL = "seis-code-workspace";
 const MONACO_LOADER_URL = "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/loader.js";
 
@@ -309,7 +310,11 @@ const app = {
   monaco: null,
   editor: null,
   monacoReady: false,
-  fallbackReady: false
+  fallbackReady: false,
+  sharedVfsQueue: Promise.resolve(),
+  sharedVfsMode: "unavailable",
+  sharedVfsLastSavedAt: "",
+  sharedVfsError: ""
 };
 
 const $ = (selector, root = document) => root.querySelector(selector);
@@ -430,6 +435,7 @@ async function saveFile(entry) {
   entry.language = entry.type === "file" ? getLanguage(entry.path) : "";
   app.files.set(entry.path, entry);
   await put("files", entry);
+  void saveSharedWorkspace("code-file-save");
   renderAll();
 }
 
@@ -485,6 +491,66 @@ async function reloadState() {
   if (!app.openTabs.includes(app.activePath) && app.files.has(app.activePath)) app.openTabs.unshift(app.activePath);
 }
 
+function sharedEntriesFromCode() {
+  return Array.from(app.files.values())
+    .filter((entry) => entry?.path === SHARED_VFS_ROOT || entry?.path?.startsWith(`${SHARED_VFS_ROOT}/`))
+    .map((entry) => ({
+      ...entry,
+      type: entry.type === "folder" ? "folder" : "file",
+      content: entry.type === "folder" ? "" : String(entry.content || "")
+    }));
+}
+
+async function loadSharedWorkspace(source = "shared-vfs") {
+  const adapter = window.SEIS_SHARED_VFS;
+  if (!adapter?.load) return { restored: false, imported: 0, mode: "unavailable" };
+  try {
+    const result = await adapter.load();
+    app.sharedVfsMode = result.mode || "memory";
+    app.sharedVfsError = "";
+    if (!result.restored) {
+      await saveSharedWorkspace(`code-seed:${source}`);
+      return { ...result, imported: 0 };
+    }
+    let imported = 0;
+    for (const entry of result.entries) {
+      const safePath = normalizePath(entry.path);
+      const existing = app.files.get(safePath);
+      const normalized = createFileEntry(safePath, entry.content || "", entry.type === "folder" ? "folder" : "file");
+      normalized.createdAt = entry.createdAt || normalized.createdAt;
+      normalized.updatedAt = entry.updatedAt || normalized.updatedAt;
+      normalized.baseContent = entry.baseContent ?? normalized.content;
+      app.files.set(safePath, existing?.type === normalized.type ? { ...existing, ...normalized } : normalized);
+      await put("files", app.files.get(safePath));
+      imported += 1;
+    }
+    return { ...result, imported };
+  } catch (error) {
+    app.sharedVfsMode = "memory";
+    app.sharedVfsError = error.message || String(error);
+    return { restored: false, imported: 0, mode: "memory", error: app.sharedVfsError };
+  }
+}
+
+function saveSharedWorkspace(reason = "code-mutation") {
+  const adapter = window.SEIS_SHARED_VFS;
+  if (!adapter?.save) return Promise.resolve({ mode: "unavailable" });
+  app.sharedVfsQueue = app.sharedVfsQueue.then(async () => {
+    try {
+      const result = await adapter.save(sharedEntriesFromCode(), reason);
+      app.sharedVfsMode = result.mode || app.sharedVfsMode;
+      app.sharedVfsLastSavedAt = result.savedAt || app.sharedVfsLastSavedAt;
+      app.sharedVfsError = result.error || "";
+      return result;
+    } catch (error) {
+      app.sharedVfsMode = "memory";
+      app.sharedVfsError = error.message || String(error);
+      return { mode: app.sharedVfsMode, error: app.sharedVfsError };
+    }
+  });
+  return app.sharedVfsQueue;
+}
+
 function renderAll() {
   renderFileTree();
   renderTabs();
@@ -497,7 +563,7 @@ function renderAll() {
 
 function renderStatus() {
   const persistence = $("[data-persistence-status]");
-  if (persistence) persistence.textContent = `IndexedDB ready - ${app.files.size} nodes`;
+  if (persistence) persistence.textContent = `IndexedDB ready - shared ${app.sharedVfsMode} - ${app.files.size} nodes`;
   const breadcrumbs = $("[data-breadcrumbs]");
   if (breadcrumbs) breadcrumbs.textContent = app.activePath;
   const provider = $("[data-provider-status]");
@@ -2325,6 +2391,7 @@ function setupWorkspaceBridge() {
       return;
     }
     await reloadState();
+    await loadSharedWorkspace(event.data.source || "workspace-bridge");
     renderAll();
     appendOutput(`Workspace updated from ${event.data.source || "external app"}: ${safePath}`);
   });
@@ -2345,6 +2412,14 @@ function exposeDiagnostics() {
     installedExtensionCount: () => app.extensions.filter((item) => item.installed).length,
     monacoReady: () => app.monacoReady,
     fallbackReady: () => app.fallbackReady,
+    sharedVfs: () => ({
+      available: Boolean(window.SEIS_SHARED_VFS),
+      scope: window.SEIS_SHARED_VFS?.scope || "",
+      mode: app.sharedVfsMode,
+      lastSavedAt: app.sharedVfsLastSavedAt,
+      error: app.sharedVfsError,
+      itemCount: sharedEntriesFromCode().length
+    }),
     providerText: () => $("[data-provider-status]")?.textContent || "",
     terminalText: () => $("[data-terminal-output]")?.textContent || "",
     outputText: () => $("[data-output-log]")?.textContent || "",
@@ -2394,6 +2469,7 @@ async function init() {
   app.db = await openDb();
   await seedWorkspace();
   await reloadState();
+  await loadSharedWorkspace("startup");
   setupMenus();
   setupActions();
   setupWorkspaceBridge();

@@ -28,6 +28,7 @@
     "./seis-five-year-plan.js",
     "./seis-vfs-store.js",
     "./seis-runtime-capability-atlas.js",
+    "./seis-shared-vfs.js",
     "./seis-linux-replica-public-demo.html",
     "./seis-demo-flight-deck.html",
     "./wow-gallery.html",

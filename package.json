@@ -55,6 +55,8 @@
     "check:seis-linux-five-year-roadmap": "node scripts/check-seis-linux-five-year-roadmap.mjs",
     "check:seis-linux-vfs-persistence": "node scripts/check-seis-linux-vfs-persistence.mjs",
     "check:seis-runtime-capability-atlas": "node scripts/check-seis-runtime-capability-atlas.mjs",
+    "check:seis-shared-vfs": "node scripts/check-seis-shared-vfs.mjs",
+    "check:seis-shared-vfs-browser-smoke": "node scripts/check-seis-shared-vfs-browser-smoke.mjs",
     "check:seis-code": "node scripts/check-seis-code.mjs",
     "check:seis-website-pages": "node scripts/check-seis-website-pages.mjs",
     "check:seis-ultimate-demo": "node scripts/check-seis-ultimate-demo.mjs",

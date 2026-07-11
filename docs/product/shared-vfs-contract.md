@@ -99,3 +99,23 @@ human approval before implementation.
 Keep Desktop, SEIS Code, Terminal, and Mythic export smoke coverage passing,
 then add browser-restart persistence and conflict-resolution tests before any
 production storage or cloud-sync claim.
+
+## Year 2 Q1 Shared Snapshot
+
+The current coherence slice adds one browser-local `workspace` snapshot behind
+`apps/web/seis-shared-vfs.js`. Its canonical root is `/workspace`; Desktop
+maps `/home/seis/...` into that namespace and SEIS Code already uses it.
+
+- Storage uses scoped IndexedDB records through `apps/web/seis-vfs-store.js`.
+- A bounded `localStorage` fallback is used when IndexedDB is unavailable.
+- `window.__SEIS_DESKTOP__.sharedVfs()` and
+  `window.__SEIS_CODE__.sharedVfs()` expose honest diagnostics.
+- `npm run check:seis-shared-vfs` checks the static contract.
+- `npm run check:seis-shared-vfs-browser-smoke` writes in Desktop, reads in
+  SEIS Code, and confirms both routes restore the marker after reload.
+
+The existing `seis-linux-replica`, `seis-desktop-os`, and
+`seis-code-workspace-v1` databases remain intact. A missing shared snapshot
+uses the existing seed or legacy mirror as a non-destructive migration source;
+no supplied reference module, screenshot, browser database, host file, or
+credential is deleted.
