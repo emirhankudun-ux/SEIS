@@ -775,6 +775,120 @@ const pluginFamilies = [
   }
 ];
 
+const fallbackSeisCoreEcosystemRegistry = {
+  id: "seis-core-ecosystem-registry-fallback",
+  status: "fallback",
+  runtimeBoundary: "Fallback is local-only and does not authenticate or execute remote actions.",
+  store: {
+    status: "Local Demo",
+    contract: "Browser-local catalog state only."
+  },
+  lanes: [
+    {
+      id: "seis",
+      label: "SEIS",
+      identity: "SEIS-Agent",
+      kind: "Ecosystem governance",
+      status: "Ready",
+      mode: "Fallback contract",
+      coreBinding: "Unified Core control plane fallback.",
+      role: "Governance and ecosystem coordination.",
+      mcpTools: ["seis_hub_status", "seis_hub_plan"],
+      qualityGate: "npm run check:seis-ai-agent",
+      storeBinding: "Single published agent catalog policy.",
+      demoHref: "../web/desktop.html",
+      demoLabel: "Open desktop demo"
+    },
+    {
+      id: "seis-cloud",
+      label: "SEIS Cloud",
+      identity: "SEIS-Cloud",
+      kind: "Cloud readiness lane",
+      status: "Review",
+      mode: "Mock Safe",
+      coreBinding: "No live provider claim in fallback mode.",
+      role: "Cloud and SSH readiness boundaries.",
+      sshBinding: {
+        alias: "SEIS-SSH",
+        contract: "deploy/seis-ssh-public-access-contract.json",
+        statusCommand: "npm run check:seis-ssh-public-access-report",
+        guardCommand: "npm run check:seis-ssh-github-pr-contract",
+        serverAndPortPolicy: "preserve-existing-server-and-port",
+        runtimeMode: "static-read-only",
+        liveClaim: "blocked-until-strict-online-evidence"
+      },
+      mcpTools: ["seis_cloud_status", "seis_cloud_plan"],
+      qualityGate: "npm run check:cloud-access-policy",
+      storeBinding: "Local demo catalog item only.",
+      demoHref: "../web/desktop.html",
+      demoLabel: "Open desktop demo"
+    },
+    {
+      id: "seis-code",
+      label: "SEIS Code",
+      identity: "SEIS-Code",
+      kind: "Engineering lane",
+      status: "Ready",
+      mode: "Browser Local",
+      coreBinding: "Core exposes the Code quality gate.",
+      role: "Implementation and validation work.",
+      mcpTools: ["seis_code_status", "seis_code_plan"],
+      qualityGate: "npm run check:seis-code",
+      storeBinding: "Browser-local Code listing.",
+      demoHref: "../web/seis-code.html",
+      demoLabel: "Open Code demo"
+    },
+    {
+      id: "seis-design",
+      label: "SEIS Design",
+      identity: "SEIS-Design",
+      kind: "Design system lane",
+      status: "Ready",
+      mode: "Browser Local",
+      coreBinding: "Core exposes accessible design evidence.",
+      role: "Design systems and visual QA.",
+      mcpTools: ["seis_design_status", "seis_design_plan"],
+      qualityGate: "npm run check:design-component-inventory",
+      storeBinding: "Local design surface listing.",
+      demoHref: "../web/desktop.html",
+      demoLabel: "Open desktop demo"
+    },
+    {
+      id: "seis-data",
+      label: "SEIS Data",
+      identity: "SEIS-Data",
+      kind: "Data and knowledge lane",
+      status: "Ready",
+      mode: "Registry-backed",
+      coreBinding: "Core exposes schema and provenance evidence.",
+      role: "Data, reports, memory, and provenance.",
+      mcpTools: ["seis_data_status", "seis_data_plan"],
+      qualityGate: "npm run check:data-schema-registry",
+      storeBinding: "No private dataset export from the catalog.",
+      demoHref: "../web/desktop.html",
+      demoLabel: "Open desktop demo"
+    },
+    {
+      id: "seis-store",
+      label: "SEIS Store",
+      identity: "SEIS Store",
+      kind: "Browser-local marketplace",
+      status: "Ready",
+      mode: "Local Demo",
+      coreBinding: "Core exposes the Store catalog boundary.",
+      role: "Local catalog and install-state surface.",
+      mcpTools: [],
+      qualityGate: "npm run check:desktop-os",
+      storeBinding: "No remote installer or MCP execution path.",
+      demoHref: "../web/desktop.html",
+      demoLabel: "Open Store desktop"
+    }
+  ]
+};
+
+let seisCoreEcosystemRegistry = fallbackSeisCoreEcosystemRegistry;
+let ecosystemControlNotice = "Using a local fallback until the source-backed registry loads.";
+
 const automationWorkflows = [
   {
     name: "Quality Governance",
@@ -1501,6 +1615,7 @@ function render() {
   renderRepositories();
   renderDocumentation();
   renderAgents();
+  renderEcosystemControlPlane();
   renderPlugins();
   renderAutomation();
   renderSecurity();
@@ -2260,6 +2375,106 @@ function renderPlugins() {
   `).join("");
 }
 
+function renderEcosystemControlPlane() {
+  const lanes = Array.isArray(seisCoreEcosystemRegistry.lanes) ? seisCoreEcosystemRegistry.lanes : [];
+  const readyCount = lanes.filter((lane) => lane.status === "Ready").length;
+  const localCount = lanes.filter((lane) => /local|mock|registry|contract/i.test(lane.mode || "")).length;
+  const mcpToolCount = lanes.reduce((total, lane) => total + (Array.isArray(lane.mcpTools) ? lane.mcpTools : []).length, 0);
+  const statePill = $("#ecosystem-control-state");
+  const summary = $("#ecosystem-control-summary");
+  const grid = $("#ecosystem-control-grid");
+  const feedback = $("#ecosystem-control-feedback");
+
+  if (!statePill || !summary || !grid || !feedback) return;
+
+  const sourceBacked = seisCoreEcosystemRegistry.status === "active";
+  statePill.textContent = sourceBacked ? "Source-backed" : "Fallback";
+  statePill.className = `status-pill ${sourceBacked ? "ready" : "attention"}`;
+  summary.innerHTML = [
+    ["Lanes", lanes.length, "Core-bound modules"],
+    ["Ready", readyCount, "visible local gates"],
+    ["Local boundaries", localCount, "no live connector claims"],
+    ["MCP tools", mcpToolCount, "status and plan tools only"]
+  ].map(([label, value, detail]) => `
+    <article class="ecosystem-summary-card">
+      <span>${label}</span>
+      <strong>${value}</strong>
+      <small>${detail}</small>
+    </article>
+  `).join("");
+
+  grid.innerHTML = lanes.map((lane) => {
+    const mcpTools = Array.isArray(lane.mcpTools) ? lane.mcpTools : [];
+    return `
+    <article class="ecosystem-lane-card">
+      <div class="card-topline">
+        <div>
+          <h4>${escapeHtml(lane.label)}</h4>
+          <small>${escapeHtml(lane.identity)}</small>
+        </div>
+        <span class="status-pill ${statusClass(lane.status)}">${escapeHtml(lane.status)}</span>
+      </div>
+      <p>${escapeHtml(lane.role)}</p>
+      <dl class="ecosystem-facts">
+        <div>
+          <dt>Mode</dt>
+          <dd>${escapeHtml(lane.mode)}</dd>
+        </div>
+        <div>
+          <dt>MCP</dt>
+          <dd>${mcpTools.length ? escapeHtml(mcpTools.join(", ")) : "No remote MCP"}</dd>
+        </div>
+        <div>
+          <dt>Core binding</dt>
+          <dd>${escapeHtml(lane.coreBinding)}</dd>
+        </div>
+        <div>
+          <dt>Store binding</dt>
+          <dd>${escapeHtml(lane.storeBinding)}</dd>
+        </div>
+        ${lane.sshBinding ? `
+        <div>
+          <dt>SSH binding</dt>
+          <dd>${escapeHtml(`${lane.sshBinding.alias} · ${lane.sshBinding.serverAndPortPolicy} · ${lane.sshBinding.runtimeMode}`)}</dd>
+        </div>` : ""}
+      </dl>
+      <div class="ecosystem-lane-actions">
+        <a class="secondary-button ecosystem-link" href="${escapeHtml(lane.demoHref)}" target="_blank" rel="noreferrer">${escapeHtml(lane.demoLabel)}</a>
+        <button class="secondary-button" type="button" data-copy-ecosystem-gate="${escapeHtml(lane.qualityGate)}">Copy gate</button>
+      </div>
+    </article>
+  `;
+  }).join("");
+  feedback.textContent = ecosystemControlNotice;
+}
+
+async function loadSeisCoreEcosystemRegistry() {
+  try {
+    const response = await fetch("data/seis-core-ecosystem-registry.json", { cache: "no-store" });
+    if (!response.ok) throw new Error(`registry request failed with ${response.status}`);
+    const registry = await response.json();
+    if (!Array.isArray(registry.lanes) || registry.lanes.length === 0) throw new Error("registry has no lanes");
+    seisCoreEcosystemRegistry = registry;
+    ecosystemControlNotice = "Source-backed registry loaded. Remote actions remain disabled in this local Control Plane.";
+  } catch (error) {
+    seisCoreEcosystemRegistry = fallbackSeisCoreEcosystemRegistry;
+    ecosystemControlNotice = `Fallback active: ${error.message}. Remote actions remain disabled.`;
+  }
+  renderEcosystemControlPlane();
+}
+
+async function copyEcosystemGate(gate) {
+  const feedback = $("#ecosystem-control-feedback");
+  try {
+    if (!navigator.clipboard?.writeText) throw new Error("clipboard access is unavailable");
+    await navigator.clipboard.writeText(gate);
+    ecosystemControlNotice = `Copied validation gate: ${gate}`;
+  } catch {
+    ecosystemControlNotice = `Validation gate: ${gate}`;
+  }
+  if (feedback) feedback.textContent = ecosystemControlNotice;
+}
+
 function renderAutomation() {
   $("#automation-grid").innerHTML = automationWorkflows.map((workflow) => `
     <article class="automation-card">
@@ -2587,6 +2802,11 @@ function bindEvents() {
       render();
     }
 
+    const ecosystemGateButton = event.target.closest("[data-copy-ecosystem-gate]");
+    if (ecosystemGateButton) {
+      void copyEcosystemGate(ecosystemGateButton.dataset.copyEcosystemGate);
+    }
+
     const closeButton = event.target.closest("[data-close-dialog]");
     if (closeButton) {
       closeButton.closest("dialog").close();
@@ -2744,3 +2964,4 @@ $("#motion-toggle").checked = state.settings.reduceMotion;
 bindEvents();
 render();
 loadSeisRouterArtifact();
+loadSeisCoreEcosystemRegistry();
