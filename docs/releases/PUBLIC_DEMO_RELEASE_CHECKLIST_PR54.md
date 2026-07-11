@@ -86,6 +86,12 @@ connector activation policy while keeping live provider routing, private vault
 reads, autonomous writes, credential validation, SSH, deployment, GitHub
 mutation, and release approval disabled.
 
+The go/no-go evidence manifest also checks plugin/skill graph evidence in the
+runtime Desktop source: five Second Brain plugin/skill graph nodes, five graph
+edge markers, and the SEIS AI plugin/skill bridge table must stay wired before
+public-demo review. This evidence is review-only and does not install plugins,
+execute MCP calls, call providers, deploy, run SSH, or mutate GitHub.
+
 This writes `reports/seis-public-demo/go-no-go-latest.json`,
 `reports/seis-public-demo/go-no-go-latest.md`, and
 `reports/seis-public-demo/evidence-manifest-latest.json` with the current
@@ -100,8 +106,10 @@ stage plan at `reports/seis-public-demo/pr54-stage-plan-latest.md`.
 The PR #54 review packet is required before release. It must answer whether the
 candidate has current browser-smoke evidence, whether the dirty worktree is a
 coherent release-candidate slice, whether the human owner explicitly approved
-public release, and whether Obsidian import, live provider routing, SSH,
-deployment, and GitHub publication remain disabled unless separately approved.
+public release, whether plugin/skill graph evidence is visible in Second Brain
+and bridged into SEIS AI, and whether Obsidian import, live provider routing,
+SSH, deployment, and GitHub publication remain disabled unless separately
+approved.
 
 The allowed outcomes are `NO-GO review-gated-not-released` or `GO after strict
 gate, current browser evidence, clean review, and explicit approval`.
@@ -156,6 +164,7 @@ git diff --check
 - Second Brain accessibility/focus QA.
 - Obsidian safe import contract review.
 - Provider-neutral read-only model-router boundary review.
+- Second Brain plugin/skill graph evidence review.
 - Security/no-secret review.
 - Mock versus real status review.
 - Public docs clarity review.
@@ -181,5 +190,6 @@ Release can move forward only when:
 - no secret-like values or private vault content are committed,
 - Second Brain import and accessibility gates are documented,
 - router remains read-only and provider-neutral,
+- Second Brain plugin/skill graph evidence is visible and browser-smoke covered,
 - mock, local demo, planned, disabled, and real states are labelled,
 - human owner approves release.

@@ -60,6 +60,7 @@
       "Does the release candidate have current browser-smoke evidence?",
       "Is the dirty worktree a coherent release-candidate slice?",
       "Has the human owner explicitly approved public release?",
+      "Does the release candidate show plugin/skill graph evidence in Second Brain and bridge it into SEIS AI?",
       "Are Obsidian import, live provider routing, SSH, deployment, and GitHub publication still disabled unless separately approved?"
     ],
     "allowedOutcomes": [
@@ -84,6 +85,7 @@
     "Second Brain accessibility/focus QA",
     "Obsidian safe import contract review",
     "provider-neutral model-router boundary review",
+    "Second Brain plugin/skill graph evidence review",
     "security/no-secret review",
     "mock versus real status review",
     "public docs clarity review",
@@ -115,6 +117,7 @@
     "no secret-like values or private vault content are committed",
     "Second Brain import and accessibility gates are documented",
     "router remains read-only and provider-neutral",
+    "Second Brain plugin/skill graph evidence is visible and browser-smoke covered",
     "all mock, local demo, planned, disabled, and real states are labelled",
     "human owner approves release"
   ]

@@ -39,6 +39,7 @@ const files = {
   agentRegistryMarkdown: "reports/seis-public-demo/second-brain-agent-registry-latest.md",
   releaseDoc: "docs/releases/PUBLIC_DEMO_RELEASE_CHECKLIST_PR54.md",
   secondBrainDoc: "docs/product/seis-second-brain.md",
+  desktopJs: "apps/web/desktop.js",
   statusDoc: "docs/STATUS.md",
   nextQueue: "docs/roadmap/NEXT_PR_QUEUE.md",
   packageJson: "package.json"
@@ -186,15 +187,35 @@ function validateContracts() {
   }
 
   if (secondBrain) {
+    const desktopJs = readText(files.desktopJs, "Desktop runtime");
+    const pluginSkillGraphMarkers = [
+      "data-second-brain-plugin-node",
+      "data-second-brain-plugin-graph-edge",
+      "second-brain-plugin-node",
+      "Plugin + Skill Graph Nodes",
+      "data-ai-second-brain-plugin-skill-table"
+    ];
     checks.secondBrain = {
       status: secondBrain.status,
       privateVaultImportForbidden: secondBrain.obsidianBridge?.forbiddenToday?.includes("import private Obsidian vaults"),
       githubMutation: secondBrain.securityBoundary?.githubMutation
     };
+    checks.secondBrainPluginSkillGraph = {
+      nodeMarker: desktopJs.includes("data-second-brain-plugin-node"),
+      edgeMarker: desktopJs.includes("data-second-brain-plugin-graph-edge"),
+      aiBridgeTable: desktopJs.includes("data-ai-second-brain-plugin-skill-table"),
+      readinessLaneCount: secondBrain.pluginSkillReadiness?.lanes?.length || 0,
+      missingMarkers: pluginSkillGraphMarkers.filter((marker) => !desktopJs.includes(marker))
+    };
     ensure(secondBrain.status === "local-demo", "Second Brain must remain local-demo before public release.");
     ensure(secondBrain.securityBoundary?.githubMutation === false, "Second Brain must not mutate GitHub.");
     ensure(secondBrain.securityBoundary?.providerCalls === false, "Second Brain must not call providers.");
     ensure(secondBrain.trainingPackPath === "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md", "Second Brain training pack path mismatch.");
+    ensure(secondBrain.pluginSkillReadiness?.status === "local-demo-readiness-matrix", "Second Brain plugin/skill readiness must remain local-demo.");
+    ensure((secondBrain.pluginSkillReadiness?.lanes || []).length === 5, "Second Brain plugin/skill readiness must expose five personal plugin lanes.");
+    for (const marker of pluginSkillGraphMarkers) {
+      ensure(desktopJs.includes(marker), `Desktop runtime missing plugin/skill graph marker: ${marker}.`);
+    }
   }
 
   if (obsidian) {
@@ -402,8 +423,8 @@ function validateContracts() {
 
 function validateDocs() {
   const required = [
-    [files.releaseDoc, ["Public Demo Release Checklist", "check:seis-public-demo-go-no-go", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "obsidian-safe-import-dry-run-latest", "read-only-model-router-decision-latest", "second-brain-accessibility-focus-latest", "second-brain-agent-registry-latest", "NO-GO", "Do not merge PR #54"]],
-    [files.secondBrainDoc, ["Agent training pack", "Second Brain agent registry artifact", "check:seis-public-demo-go-no-go", "Build Training Pack"]],
+    [files.releaseDoc, ["Public Demo Release Checklist", "check:seis-public-demo-go-no-go", "plugin/skill graph evidence", "report:seis-obsidian-safe-import-dry-run", "report:seis-read-only-model-router-decision", "report:seis-second-brain-accessibility-focus-report", "report:seis-second-brain-agent-registry", "obsidian-safe-import-dry-run-latest", "read-only-model-router-decision-latest", "second-brain-accessibility-focus-latest", "second-brain-agent-registry-latest", "NO-GO", "Do not merge PR #54"]],
+    [files.secondBrainDoc, ["Agent training pack", "Second Brain agent registry artifact", "Plugin + skill graph nodes", "check:seis-public-demo-go-no-go", "Build Training Pack"]],
     [files.statusDoc, ["SEIS public demo go/no-go gate", "check:seis-public-demo-go-no-go"]],
     [files.nextQueue, ["SEIS public demo go/no-go gate", "check:seis-public-demo-go-no-go"]]
   ];
@@ -608,6 +629,7 @@ Obsidian import, live provider routing, or production-readiness claims.
 - Confirm whether the dirty worktree is a coherent release-candidate slice.
 - Confirm whether current browser-smoke evidence exists for this exact release candidate.
 - Confirm whether the human owner explicitly approves public demo release.
+- Confirm whether plugin/skill graph evidence is visible in Second Brain and bridged into SEIS AI.
 - Confirm that Obsidian import, model routing, SSH, deployment, and GitHub publication remain disabled until separately approved.
 
 ## Fast Validation
@@ -974,6 +996,19 @@ function buildEvidenceManifest(value) {
           ? "passed"
           : "failed",
       evidence: files.agentRegistryJson
+    },
+    {
+      id: "second-brain-plugin-skill-graph-evidence",
+      type: "runtime-contract",
+      requirement: "Second Brain plugin/skill graph nodes and AI bridge plugin-skill table are wired for public-demo review.",
+      status:
+        value.checks.secondBrainPluginSkillGraph?.nodeMarker === true
+        && value.checks.secondBrainPluginSkillGraph?.edgeMarker === true
+        && value.checks.secondBrainPluginSkillGraph?.aiBridgeTable === true
+        && value.checks.secondBrainPluginSkillGraph?.readinessLaneCount === 5
+          ? "passed"
+          : "failed",
+      evidence: `${files.desktopJs}; npm run check:seis-second-brain-browser-smoke`
     },
     {
       id: "obsidian-safe-import-dry-run",
