@@ -104,7 +104,7 @@ if (registry) {
 
   for (const laneId of ["seis", "seis-cloud", "seis-code", "seis-design", "seis-data"]) {
     const lane = lanes.find((candidate) => candidate.id === laneId);
-    if (!lane || lane.mcpTools.length !== 2) fail(`${laneId} must retain its status and plan MCP tools`);
+    if (!lane || !Array.isArray(lane.mcpTools) || lane.mcpTools.length !== 2) fail(`${laneId} must retain its status and plan MCP tools`);
   }
   const cloudLane = lanes.find((candidate) => candidate.id === "seis-cloud");
   if (cloudLane) {
@@ -119,7 +119,7 @@ if (registry) {
     if (sshBinding?.liveClaim !== "blocked-until-strict-online-evidence") fail("seis-cloud SSH binding must block live claims until strict evidence");
   }
   const storeLane = lanes.find((candidate) => candidate.id === "seis-store");
-  if (storeLane && storeLane.mcpTools.length !== 0) fail("SEIS Store must not claim a remote MCP execution path");
+  if (storeLane && (!Array.isArray(storeLane.mcpTools) || storeLane.mcpTools.length !== 0)) fail("SEIS Store must not claim a remote MCP execution path");
 }
 
 if (identities) {
