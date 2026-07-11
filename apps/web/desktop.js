@@ -2808,6 +2808,9 @@ function handleClick(event) {
     case "second-brain-create-plugin-handoff-brief":
       createSecondBrainPluginHandoffBrief();
       break;
+    case "second-brain-create-plugin-review-bundle":
+      createSecondBrainPluginReviewBundle();
+      break;
     case "second-brain-capture":
       captureSecondBrainNote();
       break;
@@ -8063,8 +8066,9 @@ function renderAiAssistantTab(activeTab, data) {
       </div>
       <div class="toolbar" data-ai-second-brain-handoff-brief>
         <button type="button" data-action="second-brain-create-plugin-handoff-brief"${selectedPluginSkill ? "" : " disabled"}>Save Local Handoff Brief</button>
+        <button type="button" data-action="second-brain-create-plugin-review-bundle">Save All-Lane Review Bundle</button>
         <button type="button" data-action="open-app" data-app-id="files">Open Files</button>
-        <p class="muted">${selectedPluginSkill ? `Writes browser-local review context for ${escapeHtml(selectedPluginSkill.plugin)} only. ${secondBrainData.lastPluginHandoffBrief?.path ? `Last local brief: ${escapeHtml(secondBrainData.lastPluginHandoffBrief.path)}` : "Not saved yet."}` : "Select a plugin/skill lane before creating a local review brief."}</p>
+        <p class="muted">${selectedPluginSkill ? `Writes browser-local review context for ${escapeHtml(selectedPluginSkill.plugin)} only. ${secondBrainData.lastPluginHandoffBrief?.path ? `Last local brief: ${escapeHtml(secondBrainData.lastPluginHandoffBrief.path)}` : "Not saved yet."}` : "Select a plugin/skill lane before creating a local review brief."} ${secondBrainData.lastPluginReviewBundle?.path ? `All-lane bundle (${secondBrainData.lastPluginReviewBundle.laneCount} lanes): ${escapeHtml(secondBrainData.lastPluginReviewBundle.path)}.` : "The all-lane bundle keeps every installed SEIS plugin context browser-local."}</p>
       </div>
       <table class="data-table" data-ai-second-brain-plugin-skill-table>
         <thead><tr><th>Plugin</th><th>Status/plan tools</th><th>Skill path</th><th>Execution boundary</th></tr></thead>
@@ -9700,6 +9704,50 @@ ${rosterRows.join("\n")}
 `;
 }
 
+function buildSecondBrainPluginReviewBundleMarkdown(timestamp) {
+  const lanes = SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes;
+  const laneSections = lanes
+    .map((lane) => {
+      const profile = getSecondBrainPluginContextProfile(lane.id);
+      return `## ${lane.plugin}
+
+Skill: ${lane.skill}
+Status tool: ${lane.statusTool}
+Plan tool: ${lane.planTool}
+Readiness: ${lane.readiness}
+
+### Training And Review Context
+
+${lane.trainingUse}
+
+### Related Agents
+
+${(profile?.relatedAgents || []).map((agent) => `- ${agent}`).join("\n") || "- No related agents recorded."}
+
+### Allowed Output
+
+${profile?.allowedOutput || "Review-only local context."}
+
+### Boundary
+
+- providerExecution: ${lane.providerExecution}
+- externalMutation: ${lane.externalMutation}`;
+    })
+    .join("\n\n");
+
+  return `# SEIS Second Brain All-Lane Plugin Review Bundle
+
+Generated: ${timestamp}
+Mode: Browser-local Local Demo review-only
+MCP resource: ${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.mcpResource}
+Lanes: ${lanes.length}
+
+This bundle is repository-owned review context only. It does not install plugins, call providers, validate credentials, execute SSH, deploy, mutate GitHub, or run autonomous actions.
+
+${laneSections}
+`;
+}
+
 function buildSecondBrainPluginHandoffBriefMarkdown(lane, profile, timestamp) {
   return `# SEIS Second Brain Plugin Handoff Brief
 
@@ -9832,6 +9880,29 @@ function selectSecondBrainPluginSkill(pluginId) {
   renderOpenWindows("second-brain");
   openApp("ai-assistant");
   toast("SEIS Second Brain", `${lane.plugin} readiness context is open in SEIS AI.`);
+}
+
+function createSecondBrainPluginReviewBundle() {
+  const lanes = SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes;
+  const timestamp = new Date().toISOString();
+  const path = "/home/seis/SecondBrain/07-learning/plugin-review-bundle-latest.md";
+  upsertFile(path, buildSecondBrainPluginReviewBundleMarkdown(timestamp));
+  const activity = addSecondBrainActivity("Plugin Review Bundle", "Local Demo review-only", `Saved ${lanes.length} installed plugin lanes to ${path}.`);
+  activity.lastPluginReviewBundle = {
+    time: timestamp,
+    path,
+    laneCount: lanes.length,
+    plugins: lanes.map((lane) => lane.plugin)
+  };
+  const message = `Second Brain all-lane review bundle saved to ${path}.`;
+  getAppStatus("second-brain").lastAction = message;
+  log("second-brain", message);
+  saveState();
+  renderOpenWindows("second-brain");
+  renderOpenWindows("ai-assistant");
+  renderOpenWindows("files");
+  renderOpenWindows("system-logs");
+  toast("SEIS Second Brain", `${lanes.length} local plugin lanes saved as one review bundle.`);
 }
 
 function createSecondBrainPluginHandoffBrief() {

@@ -629,6 +629,21 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(handoffBrief.bridgeText.includes("plugin-handoff-seis-code-latest.md") && handoffBrief.bridgeText.includes("browser-local review context"), `Second Brain handoff brief state is not visible in SEIS AI: ${JSON.stringify(handoffBrief)}`);
   ensure(handoffBrief.status?.lastAction?.includes("local handoff brief saved"), `Second Brain status should record the local handoff brief: ${JSON.stringify(handoffBrief)}`);
 
+  await clickSelector(client, '.app-window[data-app-id="ai-assistant"]:not([hidden]) [data-action="second-brain-create-plugin-review-bundle"]');
+  await waitFor(client, "window.__SEIS_DESKTOP__.filePaths().includes('/home/seis/SecondBrain/07-learning/plugin-review-bundle-latest.md')", 5000);
+  const reviewBundle = await evaluate(client, `(() => {
+    const bridge = document.querySelector('.app-window[data-app-id="ai-assistant"]:not([hidden]) [data-ai-second-brain-bridge]');
+    const paths = window.__SEIS_DESKTOP__.filePaths();
+    return {
+      pathExists: paths.includes('/home/seis/SecondBrain/07-learning/plugin-review-bundle-latest.md'),
+      bridgeText: bridge?.querySelector('[data-ai-second-brain-handoff-brief]')?.innerText || '',
+      status: window.__SEIS_DESKTOP__.appStatus('second-brain')
+    };
+  })()`);
+  ensure(reviewBundle.pathExists, `Second Brain all-lane review bundle was not written: ${JSON.stringify(reviewBundle)}`);
+  ensure(reviewBundle.bridgeText.includes("plugin-review-bundle-latest.md") && reviewBundle.bridgeText.includes("5 lanes"), `Second Brain all-lane bundle state is not visible in SEIS AI: ${JSON.stringify(reviewBundle)}`);
+  ensure(reviewBundle.status?.lastAction?.includes("all-lane review bundle saved"), `Second Brain status should record the all-lane review bundle: ${JSON.stringify(reviewBundle)}`);
+
   await evaluate(client, "window.__SEIS_DESKTOP__.openApp('ai-assistant')");
   await waitFor(client, "Boolean(document.querySelector('.app-window[data-app-id=\"ai-assistant\"]:not([hidden]) [data-ai-app]'))", 5000);
   await clickSelector(client, '.app-window[data-app-id="ai-assistant"]:not([hidden]) [data-ai-plugin-tab="Second Brain"]');
@@ -645,6 +660,7 @@ async function smokeSecondBrain(client, baseUrl) {
       pluginSkillText: bridge?.querySelector('[data-ai-second-brain-plugin-skill-panel]')?.innerText || '',
       selectedPluginText: bridge?.querySelector('[data-ai-second-brain-selected-plugin]')?.innerText || '',
       handoffBriefText: bridge?.querySelector('[data-ai-second-brain-handoff-brief]')?.innerText || '',
+      reviewBundleText: bridge?.querySelector('[data-ai-second-brain-handoff-brief]')?.innerText || '',
       localOnlyCopy: text.includes('Local Demo context only'),
       noMutationCopy: text.includes('no private vault import') && text.includes('GitHub mutation') && text.includes('SSH')
     };
@@ -658,6 +674,7 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(aiBridge.pluginSkillText.includes("@seis-code") && aiBridge.pluginSkillText.includes("local-demo-readiness-matrix"), "SEIS AI Second Brain bridge must render plugin/skill readiness.");
   ensure(aiBridge.selectedPluginText.includes("@seis-code") && aiBridge.selectedPluginText.includes("Code Agent"), "SEIS AI Second Brain bridge must retain the selected plugin/skill handoff.");
   ensure(aiBridge.handoffBriefText.includes("plugin-handoff-seis-code-latest.md"), "SEIS AI Second Brain bridge must retain the local handoff brief state.");
+  ensure(aiBridge.reviewBundleText.includes("plugin-review-bundle-latest.md"), "SEIS AI Second Brain bridge must retain the all-lane review bundle state.");
   ensure(aiBridge.localOnlyCopy, "SEIS AI Second Brain bridge must label local context only.");
   ensure(aiBridge.noMutationCopy, "SEIS AI Second Brain bridge must label private vault/GitHub/SSH boundary.");
 
@@ -674,13 +691,15 @@ async function smokeSecondBrain(client, baseUrl) {
       capturePaths: paths.filter((path) => path.startsWith('/home/seis/SecondBrain/00-inbox/capture-')),
       openWindows: window.__SEIS_DESKTOP__.openWindows(),
       selectedPluginId: document.querySelector('.app-window[data-app-id="second-brain"]:not([hidden]) [data-second-brain-plugin-node][aria-selected="true"]')?.dataset?.value || '',
-      handoffBriefPersisted: paths.includes('/home/seis/SecondBrain/07-learning/plugin-handoff-seis-code-latest.md')
+      handoffBriefPersisted: paths.includes('/home/seis/SecondBrain/07-learning/plugin-handoff-seis-code-latest.md'),
+      reviewBundlePersisted: paths.includes('/home/seis/SecondBrain/07-learning/plugin-review-bundle-latest.md')
     };
   })()`);
   ensure(persistence.fixedArtifacts.length === REQUIRED_ARTIFACTS.length, `Second Brain VFS artifacts did not persist after reload: ${JSON.stringify(persistence)}`);
   ensure(persistence.capturePaths.length >= 1, "Second Brain inbox capture did not persist after reload.");
   ensure(persistence.selectedPluginId === "seis-code", `Second Brain selected plugin/skill context did not persist after reload: ${JSON.stringify(persistence)}`);
   ensure(persistence.handoffBriefPersisted, `Second Brain local handoff brief did not persist after reload: ${JSON.stringify(persistence)}`);
+  ensure(persistence.reviewBundlePersisted, `Second Brain all-lane review bundle did not persist after reload: ${JSON.stringify(persistence)}`);
 
   return {
     initial,
@@ -691,6 +710,7 @@ async function smokeSecondBrain(client, baseUrl) {
     artifacts,
     pluginHandoff,
     handoffBrief,
+    reviewBundle,
     aiBridge,
     persistence,
     screenshot: screenshotPath
