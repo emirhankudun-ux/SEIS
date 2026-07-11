@@ -91,6 +91,16 @@ describe("SEIS provider-neutral read-only router", () => {
     );
   });
 
+  it("does not treat ordinary sk-prefixed metadata as a credential", () => {
+    assert.doesNotThrow(
+      () => buildReadOnlyRouteDecision({ metadata: { label: "sk-platform" } }, { root: packageRoot }),
+    );
+    assert.throws(
+      () => buildReadOnlyRouteDecision({ metadata: { label: `sk-${"a".repeat(24)}` } }, { root: packageRoot }),
+      /credential-like material/,
+    );
+  });
+
   it("produces deterministic, secret-free decisions across all five SEIS lanes", () => {
     const inputs = [
       ["seis", "governance release review"],
