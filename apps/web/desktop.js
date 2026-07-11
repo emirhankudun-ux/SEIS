@@ -1619,6 +1619,8 @@ const SEIS_OBSIDIAN_SAFE_IMPORT_UI = {
   browserArtifactPath: "/home/seis/SecondBrain/obsidian-safe-import-ui-dry-run.md",
   selectionReceiptPath: "/home/seis/SecondBrain/obsidian-explicit-selection-receipt.md",
   selectionReceiptStatus: "explicit-selection-recorded-metadata-only",
+  preflightApprovalRequestPath: "/home/seis/SecondBrain/obsidian-preflight-approval-request.md",
+  preflightApprovalRequestStatus: "human-approval-requested-no-scan",
   qualityGate: "npm run check:seis-obsidian-safe-import-dry-run",
   bodyImportPolicy: "metadata-only-by-default",
   approvalState: "not-requested",
@@ -2845,6 +2847,9 @@ function handleClick(event) {
       break;
     case "second-brain-record-obsidian-selection":
       recordSecondBrainObsidianSelection(button);
+      break;
+    case "second-brain-prepare-obsidian-preflight-request":
+      prepareSecondBrainObsidianPreflightApprovalRequest();
       break;
     case "app-primary":
       runAppPrimaryAction(appId, button.closest(".window-body"));
@@ -5179,6 +5184,7 @@ function getSecondBrainData() {
   if (!SEIS_OBSIDIAN_SAFE_IMPORT_UI.sourceModes.some((mode) => mode.id === data.obsidianSourceMode)) data.obsidianSourceMode = "repo-owned-seed";
   if (!data.obsidianDryRunManifest || typeof data.obsidianDryRunManifest !== "object") data.obsidianDryRunManifest = null;
   if (!data.obsidianSelectionReceipt || typeof data.obsidianSelectionReceipt !== "object") data.obsidianSelectionReceipt = null;
+  if (!data.obsidianPreflightApprovalRequest || typeof data.obsidianPreflightApprovalRequest !== "object") data.obsidianPreflightApprovalRequest = null;
   if (!Array.isArray(data.searchSnapshots)) data.searchSnapshots = [];
   if (!Array.isArray(data.activity)) {
     data.activity = [
@@ -5396,6 +5402,91 @@ function recordSecondBrainObsidianSelection(button) {
   renderOpenWindows("files");
   renderOpenWindows("system-logs");
   toast("SEIS Second Brain", "Explicit metadata-only Obsidian selection recorded. Preflight remains approval-gated.");
+}
+
+function buildSecondBrainObsidianPreflightApprovalRequestMarkdown(timestamp, request) {
+  return `# SEIS Obsidian Preflight Approval Request
+
+Prepared: ${timestamp}
+Status: ${request.status}
+Decision: ${request.decision}
+Selection receipt: ${request.selectionReceiptPath}
+Source fingerprint: ${request.sourcePathFingerprint}
+Selected by user: ${request.selectedByUser}
+
+## Requested Human Decision
+
+Approve or reject a metadata-only preflight scan scope. Approval must name the selected source, reviewer, redaction policy, expiration, and rollback/no-op owner before any scan can run.
+
+## Proposed Review Owners
+
+${request.reviewOwners.map(([agent, status, duty]) => `- ${agent} (${status}): ${duty}`).join("\n")}
+
+## Safety Boundary
+
+- Preflight scan authorized: ${request.preflightScanAuthorized}
+- Host filesystem scanned: ${request.hostFilesystemScanned}
+- Private path stored: ${request.privatePathStored}
+- Private body text copied: ${request.privateBodyTextCopied}
+- Attachments copied: ${request.attachmentsCopied}
+- Provider calls performed: ${request.providerCallsPerformed}
+- SSH executed: ${request.sshExecuted}
+- GitHub mutation performed: ${request.githubMutationPerformed}
+
+This is an approval request only. It does not scan, import, classify, transmit, publish, or otherwise process private vault content.
+`;
+}
+
+function prepareSecondBrainObsidianPreflightApprovalRequest() {
+  const data = getSecondBrainData();
+  const mode = getSecondBrainObsidianMode(data.obsidianSourceMode);
+  const receipt = data.obsidianSelectionReceipt?.sourceMode === mode.id && data.obsidianSelectionReceipt?.selectedByUser ? data.obsidianSelectionReceipt : null;
+  if (!receipt) {
+    toast("SEIS Second Brain", "Record an explicit metadata-only selection receipt before preparing a preflight approval request.");
+    return;
+  }
+  const timestamp = new Date().toISOString();
+  const reviewOwnerNames = new Set(["Security Agent", "Research Agent", "Documentation Agent", "QA Agent", "Cloud Agent"]);
+  const request = {
+    id: "seis-obsidian-preflight-approval-request",
+    status: SEIS_OBSIDIAN_SAFE_IMPORT_UI.preflightApprovalRequestStatus,
+    decision: "NO-GO-human-approval-required-before-preflight-scan",
+    path: SEIS_OBSIDIAN_SAFE_IMPORT_UI.preflightApprovalRequestPath,
+    selectionReceiptPath: receipt.path,
+    sourcePathFingerprint: receipt.sourcePathFingerprint,
+    selectedByUser: true,
+    reviewOwners: SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.filter(([agent]) => reviewOwnerNames.has(agent)),
+    preflightScanAuthorized: false,
+    hostFilesystemScanned: false,
+    privatePathStored: false,
+    privateBodyTextCopied: false,
+    attachmentsCopied: 0,
+    providerCallsPerformed: false,
+    sshExecuted: false,
+    githubMutationPerformed: false
+  };
+  upsertFile(request.path, buildSecondBrainObsidianPreflightApprovalRequestMarkdown(timestamp, request));
+  data.obsidianPreflightApprovalRequest = request;
+  data.lastObsidianPreflightRequest = {
+    time: new Date(timestamp).toLocaleTimeString(),
+    path: request.path,
+    status: request.status
+  };
+  data.activity.unshift({
+    id: `obsidian-preflight-request-${Date.now()}`,
+    step: "Obsidian",
+    status: request.status,
+    detail: `Obsidian preflight approval request saved to ${request.path}; no scan was performed.`
+  });
+  data.activity = data.activity.slice(0, 12);
+  const message = `Obsidian preflight approval request saved to ${request.path}; no scan was performed.`;
+  getAppStatus("second-brain").lastAction = message;
+  log("second-brain", message);
+  saveState();
+  renderOpenWindows("second-brain");
+  renderOpenWindows("files");
+  renderOpenWindows("system-logs");
+  toast("SEIS Second Brain", "Preflight approval request saved. Human approval is still required before any scan.");
 }
 
 function prepareSecondBrainObsidianDryRun() {
@@ -5944,11 +6035,13 @@ function renderSecondBrain() {
       <div class="toolbar">
         <label class="checkbox-row"><input type="checkbox" data-second-brain-obsidian-selection-confirmed${activeObsidianMode.id === "awaiting-user-selection" ? "" : " disabled"}> I explicitly selected a local source; record metadata only.</label>
         <button type="button" data-action="second-brain-record-obsidian-selection"${activeObsidianMode.id === "awaiting-user-selection" ? "" : " disabled"}>Record Explicit Selection</button>
+        <button type="button" data-action="second-brain-prepare-obsidian-preflight-request"${obsidianManifest.selectedByUser ? "" : " disabled"}>Prepare Preflight Approval Request</button>
         <button type="button" data-action="second-brain-prepare-obsidian-dry-run">Prepare Safe Import Dry-Run</button>
         <button type="button" data-action="open-app" data-app-id="files">Open Files</button>
         <button type="button" data-action="open-app" data-app-id="search">Open Search</button>
       </div>
       <p class="status-note" data-second-brain-obsidian-selection-action>Last explicit selection: ${data.lastObsidianSelection ? `${escapeHtml(data.lastObsidianSelection.time)} / ${escapeHtml(data.lastObsidianSelection.path)} / ${escapeHtml(data.lastObsidianSelection.status)}` : "Not recorded"}.</p>
+      <p class="status-note" data-second-brain-obsidian-preflight-action>Last preflight approval request: ${data.lastObsidianPreflightRequest ? `${escapeHtml(data.lastObsidianPreflightRequest.time)} / ${escapeHtml(data.lastObsidianPreflightRequest.path)} / ${escapeHtml(data.lastObsidianPreflightRequest.status)}` : "Not prepared"}.</p>
       <p class="status-note" data-second-brain-obsidian-last-action>Last Obsidian dry-run: ${data.lastObsidianDryRun ? `${escapeHtml(data.lastObsidianDryRun.time)} / ${escapeHtml(data.lastObsidianDryRun.path)} / ${escapeHtml(data.lastObsidianDryRun.decision)}` : "Not prepared yet"}.</p>
     </section>
     <section class="subagent-panel second-brain-search-panel" data-second-brain-search-panel>

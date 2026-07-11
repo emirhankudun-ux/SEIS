@@ -78,6 +78,12 @@ In `User-selected private vault` mode, the user can explicitly acknowledge a loc
 
 The receipt does not open a native file picker and is not a native file-picker read, vault discovery, preflight scan, import, provider call, SSH command, GitHub mutation, deployment, or publication approval. Host folder scanning and private note-body intake remain blocked until separate explicit human approval is recorded.
 
+## Browser-Local Preflight Approval Request
+
+After a matching explicit-selection receipt exists, `Prepare Preflight Approval Request` writes `/home/seis/SecondBrain/obsidian-preflight-approval-request.md` to browser VFS. It lists the Security, Research, Documentation, QA, and Cloud review roles, the selection fingerprint, required human decision, and false no-scan/no-import/no-provider/no-SSH/no-GitHub flags.
+
+This request is not a preflight scan. It cannot inspect a host vault, classify note content, copy an attachment, call an AI provider, execute SSH, or publish anything. A separate human approval must scope the source, redaction policy, review owner, expiration, and rollback/no-op plan before any future preflight scan can be considered.
+
 ## Forbidden By Default
 
 - Automatic Obsidian plugin install.

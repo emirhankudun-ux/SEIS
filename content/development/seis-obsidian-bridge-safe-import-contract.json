@@ -18,6 +18,7 @@
     "render repo-owned browser-local seed notes",
     "export browser-local Markdown snapshots under /home/seis/SecondBrain",
     "record a browser-local explicit-selection receipt without storing a host path or note body",
+    "prepare a browser-local preflight approval request without scanning or importing private vault content",
     "generate repo-owned dry-run manifest artifacts under reports/seis-public-demo",
     "validate no-secret and no-private-vault boundaries"
   ],
@@ -41,6 +42,30 @@
       "private vault import",
       "provider call",
       "GitHub publication"
+    ]
+  },
+  "runtimePreflightApprovalRequest": {
+    "status": "available-browser-local-approval-request-only",
+    "requires": "matching explicit-selection receipt",
+    "reviewOwners": [
+      "Security Agent",
+      "Research Agent",
+      "Documentation Agent",
+      "QA Agent",
+      "Cloud Agent"
+    ],
+    "neverPerforms": [
+      "host vault scan",
+      "private note import",
+      "attachment copy",
+      "provider call",
+      "SSH execution",
+      "GitHub publication"
+    ],
+    "requiresHumanApprovalBefore": [
+      "preflight scan",
+      "provenance classification",
+      "sanitized import preview"
     ]
   },
   "futureImportPhases": [
@@ -173,6 +198,7 @@
   ],
   "reviewPacketRequirements": [
     "dry-run manifest path",
+    "browser-local preflight approval request path",
     "repo-owned dry-run artifact JSON and Markdown path",
     "no-secret scan result",
     "provenance label summary",
