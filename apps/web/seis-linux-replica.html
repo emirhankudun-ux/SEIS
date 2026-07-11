@@ -947,10 +947,10 @@ function renderCapabilityAtlas(body){
   results.addEventListener("click",event=>{
     const btn=event.target.closest("button");
     if(!btn||!results.contains(btn))return;
-    if(btn.dataset.capabilityLane){const lane=laneById[btn.dataset.capabilityLane];detail=lane.displayName+" uses "+lane.mcpServer+" with tools "+(lane.tools||[]).join(", ")+". Source mirror: "+lane.sourceMirror+".";activeLane=lane.laneId;draw()}
-    else if(btn.dataset.capabilityAgent){const agent=agentById[btn.dataset.capabilityAgent];detail=agent.name+" remains "+agent.status+". Duty: "+agent.duty;draw()}
-    else if(btn.dataset.capabilityTask){const task=(atlas.dryRunQueue||[]).find(item=>item.id===btn.dataset.capabilityTask);detail=task.id+" is "+task.executionMode+" / "+task.permissionLevel+". Evidence: "+(task.evidence||[]).join(", ");draw()}
-    else if(btn.dataset.capabilityModule){const module=moduleById[btn.dataset.capabilityModule];detail=module.name+" state: "+module.state+". Evidence: "+(module.evidence||[]).join(", ");openApp(btn.dataset.moduleApp||"capability-atlas")}
+    if(btn.dataset.capabilityLane){const lane=laneById[btn.dataset.capabilityLane];if(lane){detail=lane.displayName+" uses "+lane.mcpServer+" with tools "+(lane.tools||[]).join(", ")+". Source mirror: "+lane.sourceMirror+".";activeLane=lane.laneId;draw()}}
+    else if(btn.dataset.capabilityAgent){const agent=agentById[btn.dataset.capabilityAgent];if(agent){detail=agent.name+" remains "+agent.status+". Duty: "+agent.duty;draw()}}
+    else if(btn.dataset.capabilityTask){const task=(atlas.dryRunQueue||[]).find(item=>item.id===btn.dataset.capabilityTask);if(task){detail=task.id+" is "+task.executionMode+" / "+task.permissionLevel+". Evidence: "+(task.evidence||[]).join(", ");draw()}}
+    else if(btn.dataset.capabilityModule){const module=moduleById[btn.dataset.capabilityModule];if(module){detail=module.name+" state: "+module.state+". Evidence: "+(module.evidence||[]).join(", ");openApp(btn.dataset.moduleApp||"capability-atlas")}}
   });
   $("[data-open-terminal-capabilities]",body)?.addEventListener("click",()=>{openApp("terminal");toast("Capability Atlas","Terminal command: capabilities")});
   draw();

@@ -64,6 +64,7 @@ function exists(relativePath) {
 }
 
 function pathKind(relativePath) {
+  if (typeof relativePath !== "string") return "missing";
   try {
     const stats = fs.statSync(path.join(ROOT, relativePath));
     if (stats.isFile()) return "file";
