@@ -1191,7 +1191,7 @@ const SEIS_MCP_RUNTIME_CONTRACT = {
   officialSdk: "@modelcontextprotocol/sdk remains optional unless dependencies are installed",
   toolCount: 34,
   promptCount: 3,
-  resourceCount: 26,
+  resourceCount: 29,
   smokeTest: "node --test packages/seis-ai/test/mcp-smoke.test.mjs",
   pluginGate: "npm run check:seis-agent-plugin-integration",
   resourceRead: "seis://ai/mcp-runtime-contract.json",
@@ -1209,7 +1209,7 @@ const SEIS_MCP_RUNTIME_CONTRACT = {
     {
       id: "resources",
       label: "Resource registry",
-      count: 26,
+      count: 29,
       method: "resources/list + resources/read",
       evidence: "Plugin integration, provider registry, model scaling profile, model parameter ladder, frontier escalation policy, 150B frontier model program, 512B apex AGI program, 20B model/dataset card templates, and MCP runtime contract resources are read through the protocol",
       duty: "Expose source-of-truth JSON resources for plugin integration, provider states, planned model scaling, parameter ladder boundaries, no-skip-20B frontier policy, 150B frontier program, 512B apex AGI program, 20B clean-room evidence templates, MCP runtime, version gates, fixtures, and generated plan views."
@@ -2418,17 +2418,18 @@ function readCodeWorkspaceEntries(database) {
 
 async function syncDesktopFromCodeWorkspace(source = "seis-code-workspace") {
   const shared = await loadSharedWorkspace(source);
-  if (shared.restored) return shared;
   const database = await openCodeWorkspaceDatabase();
-  if (!database) return { imported: 0 };
-  let imported = 0;
+  if (!database) return shared;
+  let imported = shared.imported || 0;
   try {
     const entries = await readCodeWorkspaceEntries(database);
     for (const entry of entries) {
       const desktopPath = codeWorkspacePathToDesktopPath(entry.path);
       if (!desktopPath || desktopPath === DESKTOP_HOME) continue;
       if (entry.type === "folder") {
+        const existed = Boolean(getNode(desktopPath));
         ensureDirectory(desktopPath);
+        if (!existed) imported += 1;
       } else {
         ensureDirectory(dirName(desktopPath));
         const existing = getNode(desktopPath);
@@ -2436,13 +2437,16 @@ async function syncDesktopFromCodeWorkspace(source = "seis-code-workspace") {
         if (existing) {
           if (existing.type !== "file") continue;
           if (existing.content === content) continue;
+          const existingUpdatedAt = Date.parse(existing.updatedAt || "") || 0;
+          const entryUpdatedAt = Date.parse(entry.updatedAt || "") || 0;
+          if (shared.restored && entryUpdatedAt <= existingUpdatedAt) continue;
           existing.content = content;
           existing.updatedAt = entry.updatedAt || new Date().toISOString();
         } else {
           state.fs.push(file(desktopPath, content));
         }
+        imported += 1;
       }
-      imported += 1;
     }
   } finally {
     database.close();
@@ -5813,6 +5817,15 @@ function renderAssistant() {
   </section>`;
 }
 
+function renderReferencePreview(image, title, detail = "") {
+  const source = String(image || "").replace(/^\.\//, "");
+  return `<span class="wow-reference-preview" role="img" aria-label="${escapeAttr(`${title} preview unavailable`)}">
+    <strong>Preview unavailable</strong>
+    <small>Supplied PNG is not present in this checkout.</small>
+    <code>${escapeHtml(detail || source)}</code>
+  </span>`;
+}
+
 function renderSeisSystemOSApp() {
   const data = getAppData("seis-system-os");
   const activeProfile = ["linux", "macos", "windows"].includes(state.osProfile) ? state.osProfile : "linux";
@@ -5871,7 +5884,7 @@ function renderSeisSystemOSApp() {
       </div>
       <div class="wow-fusion-grid compact">
         ${fusionPreview.map((item) => `<button type="button" class="wow-fusion-card" data-action="open-demo-route" data-value="wow-gallery-web">
-          <img src="${escapeAttr(item.image)}" alt="${escapeAttr(item.title)} reference preview" loading="lazy">
+          ${renderReferencePreview(item.image, item.title, `${item.source} · ${item.tag}`)}
           <span>${escapeHtml(item.title)}</span>
           <small>${escapeHtml(item.source)} · ${escapeHtml(item.tag)}</small>
         </button>`).join("")}
@@ -6361,7 +6374,7 @@ function renderSeisCommandCenter() {
     </section>
     <section class="wow-reference-ribbon" aria-label="WOW source previews">
       ${commandReferences.map((item) => `<button type="button" class="wow-reference-chip" data-action="open-demo-route" data-value="wow-gallery-web">
-        <img src="${escapeAttr(item.image)}" alt="${escapeAttr(item.title)} preview" loading="lazy">
+        ${renderReferencePreview(item.image, item.title, `${item.source} · ${item.tag}`)}
         <span>${escapeHtml(item.title)}</span>
         <small>${escapeHtml(item.tag)}</small>
       </button>`).join("")}
@@ -6667,7 +6680,7 @@ function renderWowGalleryApp() {
       </div>
       <div class="wow-fusion-grid">
         ${fusionDesign.map((item) => `<button type="button" class="wow-fusion-card" data-action="open-demo-route" data-value="wow-gallery-web">
-          <img src="${escapeAttr(item.image)}" alt="${escapeAttr(item.title)} reference preview" loading="lazy">
+          ${renderReferencePreview(item.image, item.title, `${item.source} · ${item.tag}`)}
           <span>${escapeHtml(item.title)}</span>
           <small>${escapeHtml(item.source)} · ${escapeHtml(item.tag)}</small>
           <em>${escapeHtml(item.motif)}</em>
@@ -6698,7 +6711,7 @@ function renderWowGalleryApp() {
       <h3>Highlighted Imported Screens</h3>
       <div class="wow-highlight-grid">
         ${highlights.map(([title, src, tag]) => `<button type="button" class="wow-highlight-card" data-action="open-demo-route" data-value="wow-gallery-web">
-          <img src="${escapeAttr(src)}" alt="${escapeAttr(title)} preview" loading="lazy">
+          ${renderReferencePreview(src, title, tag)}
           <span>${escapeHtml(title)}</span>
           <small>${escapeHtml(tag)}</small>
         </button>`).join("")}
