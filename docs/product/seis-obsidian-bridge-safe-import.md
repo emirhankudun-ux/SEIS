@@ -74,8 +74,9 @@ modes, preview the dry-run manifest fields, and write
 `/home/seis/SecondBrain/obsidian-safe-import-ui-dry-run.md` into the browser
 VFS only.
 
-This UI keeps `selectedByUser: false`, `bodyImportPolicy:
-metadata-only-by-default`, and `humanApprovalState: not-requested`. It does not open a native file picker, discover vaults, scan host folders, import private note bodies, copy attachments, install plugins, call providers, execute SSH, mutate GitHub, deploy, or approve publication.
+In `User-selected private vault` mode, the user can explicitly acknowledge a local source selection and write `/home/seis/SecondBrain/obsidian-explicit-selection-receipt.md` into browser VFS. The receipt stores only the mode, timestamp, a deterministic redacted fingerprint, and false safety-boundary flags. It stores no host path, note title, private body text, attachment content, or secret value. The resulting dry-run changes to `selectedByUser: true` and `humanApprovalState: dry-run-ready`, but remains `NO-GO-human-approval-required-before-preflight-scan`.
+
+The receipt does not open a native file picker and is not a native file-picker read, vault discovery, preflight scan, import, provider call, SSH command, GitHub mutation, deployment, or publication approval. Host folder scanning and private note-body intake remain blocked until separate explicit human approval is recorded.
 
 ## Forbidden By Default
 

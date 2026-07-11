@@ -296,6 +296,7 @@ function validateStaticContract() {
     "data-second-brain-obsidian-boundary",
     "second-brain-set-obsidian-source-mode",
     "second-brain-prepare-obsidian-dry-run",
+    "second-brain-record-obsidian-selection",
     "SEIS_OBSIDIAN_SAFE_IMPORT_UI",
     "obsidian-safe-import-ui-dry-run.md",
     "NO-GO-private-vault-import-not-approved",
@@ -492,6 +493,15 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(selected.inspector.includes("GitHub Readiness"), "Second Brain inspector did not follow selected note.");
 
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-set-obsidian-source-mode"][data-value="awaiting-user-selection"]');
+  await evaluate(client, `(() => {
+    const acknowledgement = document.querySelector('.app-window[data-app-id="second-brain"]:not([hidden]) [data-second-brain-obsidian-selection-confirmed]');
+    if (acknowledgement) {
+      acknowledgement.checked = true;
+      acknowledgement.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  })()`);
+  await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-record-obsidian-selection"]');
+  await waitFor(client, "window.__SEIS_DESKTOP__.filePaths().includes('/home/seis/SecondBrain/obsidian-explicit-selection-receipt.md')", 5000);
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-prepare-obsidian-dry-run"]');
   await waitFor(client, "window.__SEIS_DESKTOP__.filePaths().includes('/home/seis/SecondBrain/obsidian-safe-import-ui-dry-run.md')", 5000);
   const obsidianDryRun = await evaluate(client, `(() => {
@@ -500,16 +510,21 @@ async function smokeSecondBrain(client, baseUrl) {
     return {
       decision: root?.querySelector('[data-second-brain-obsidian-decision]')?.innerText || '',
       manifest: root?.querySelector('[data-second-brain-obsidian-manifest-table]')?.innerText || '',
+      selectionAction: root?.querySelector('[data-second-brain-obsidian-selection-action]')?.innerText || '',
       lastAction: root?.querySelector('[data-second-brain-obsidian-last-action]')?.innerText || '',
       visibleBoundary: text.includes('selectedByUser') || text.includes('Selected by user'),
-      artifactVisible: text.includes('obsidian-safe-import-ui-dry-run.md') || text.includes('Obsidian safe import dry-run saved')
+      artifactVisible: text.includes('obsidian-safe-import-ui-dry-run.md') || text.includes('Obsidian safe import dry-run saved'),
+      selectionReceiptVisible: text.includes('obsidian-explicit-selection-receipt.md')
     };
   })()`);
-  ensure(obsidianDryRun.decision.includes("BLOCKED-explicit-user-selection-required"), `Obsidian source mode did not switch to blocked user selection: ${JSON.stringify(obsidianDryRun)}`);
+  ensure(obsidianDryRun.decision.includes("NO-GO-human-approval-required-before-preflight-scan"), `Obsidian explicit selection did not stay preflight-scan gated: ${JSON.stringify(obsidianDryRun)}`);
   ensure(obsidianDryRun.manifest.includes("hostFilesystemScanned false") && obsidianDryRun.manifest.includes("privateBodyTextCopied false"), `Obsidian dry-run manifest must keep host/private reads false: ${JSON.stringify(obsidianDryRun)}`);
+  ensure(obsidianDryRun.manifest.includes("SELECTION RECEIPT") && obsidianDryRun.manifest.includes("explicit-selection-recorded-metadata-only"), `Obsidian dry-run manifest must record the metadata-only selection receipt: ${JSON.stringify(obsidianDryRun)}`);
+  ensure(obsidianDryRun.selectionAction.includes("obsidian-explicit-selection-receipt.md"), `Obsidian explicit selection did not update visible state: ${JSON.stringify(obsidianDryRun)}`);
   ensure(obsidianDryRun.lastAction.includes("obsidian-safe-import-ui-dry-run.md"), "Obsidian dry-run action did not update visible last action.");
   ensure(obsidianDryRun.visibleBoundary, "Obsidian safe-import selectedByUser boundary not visible.");
   ensure(obsidianDryRun.artifactVisible, "Obsidian safe-import artifact path not visible.");
+  ensure(obsidianDryRun.selectionReceiptVisible, "Obsidian explicit selection receipt path not visible.");
 
   await evaluate(client, `(() => {
     const input = document.querySelector('.app-window[data-app-id="second-brain"]:not([hidden]) [data-second-brain-search-query]');
@@ -692,7 +707,8 @@ async function smokeSecondBrain(client, baseUrl) {
       openWindows: window.__SEIS_DESKTOP__.openWindows(),
       selectedPluginId: document.querySelector('.app-window[data-app-id="second-brain"]:not([hidden]) [data-second-brain-plugin-node][aria-selected="true"]')?.dataset?.value || '',
       handoffBriefPersisted: paths.includes('/home/seis/SecondBrain/07-learning/plugin-handoff-seis-code-latest.md'),
-      reviewBundlePersisted: paths.includes('/home/seis/SecondBrain/07-learning/plugin-review-bundle-latest.md')
+      reviewBundlePersisted: paths.includes('/home/seis/SecondBrain/07-learning/plugin-review-bundle-latest.md'),
+      obsidianSelectionReceiptPersisted: paths.includes('/home/seis/SecondBrain/obsidian-explicit-selection-receipt.md')
     };
   })()`);
   ensure(persistence.fixedArtifacts.length === REQUIRED_ARTIFACTS.length, `Second Brain VFS artifacts did not persist after reload: ${JSON.stringify(persistence)}`);
@@ -700,6 +716,7 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(persistence.selectedPluginId === "seis-code", `Second Brain selected plugin/skill context did not persist after reload: ${JSON.stringify(persistence)}`);
   ensure(persistence.handoffBriefPersisted, `Second Brain local handoff brief did not persist after reload: ${JSON.stringify(persistence)}`);
   ensure(persistence.reviewBundlePersisted, `Second Brain all-lane review bundle did not persist after reload: ${JSON.stringify(persistence)}`);
+  ensure(persistence.obsidianSelectionReceiptPersisted, `Obsidian explicit selection receipt did not persist after reload: ${JSON.stringify(persistence)}`);
 
   return {
     initial,

@@ -1617,6 +1617,8 @@ const SEIS_OBSIDIAN_SAFE_IMPORT_UI = {
   reportJsonPath: "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json",
   reportMarkdownPath: "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md",
   browserArtifactPath: "/home/seis/SecondBrain/obsidian-safe-import-ui-dry-run.md",
+  selectionReceiptPath: "/home/seis/SecondBrain/obsidian-explicit-selection-receipt.md",
+  selectionReceiptStatus: "explicit-selection-recorded-metadata-only",
   qualityGate: "npm run check:seis-obsidian-safe-import-dry-run",
   bodyImportPolicy: "metadata-only-by-default",
   approvalState: "not-requested",
@@ -2840,6 +2842,9 @@ function handleClick(event) {
       break;
     case "second-brain-prepare-obsidian-dry-run":
       prepareSecondBrainObsidianDryRun();
+      break;
+    case "second-brain-record-obsidian-selection":
+      recordSecondBrainObsidianSelection(button);
       break;
     case "app-primary":
       runAppPrimaryAction(appId, button.closest(".window-body"));
@@ -5173,6 +5178,7 @@ function getSecondBrainData() {
   if (typeof data.activeSearchResultId !== "string") data.activeSearchResultId = "";
   if (!SEIS_OBSIDIAN_SAFE_IMPORT_UI.sourceModes.some((mode) => mode.id === data.obsidianSourceMode)) data.obsidianSourceMode = "repo-owned-seed";
   if (!data.obsidianDryRunManifest || typeof data.obsidianDryRunManifest !== "object") data.obsidianDryRunManifest = null;
+  if (!data.obsidianSelectionReceipt || typeof data.obsidianSelectionReceipt !== "object") data.obsidianSelectionReceipt = null;
   if (!Array.isArray(data.searchSnapshots)) data.searchSnapshots = [];
   if (!Array.isArray(data.activity)) {
     data.activity = [
@@ -5221,15 +5227,19 @@ function getSecondBrainObsidianFingerprint(modeId) {
 
 function buildSecondBrainObsidianDryRunManifest(data) {
   const mode = getSecondBrainObsidianMode(data.obsidianSourceMode);
+  const selectionReceipt = data.obsidianSelectionReceipt?.sourceMode === mode.id && data.obsidianSelectionReceipt?.selectedByUser ? data.obsidianSelectionReceipt : null;
+  const selectedByUser = Boolean(selectionReceipt);
   const candidateNoteCount = SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.length;
   return {
     id: "seis-obsidian-safe-import-ui-dry-run",
     status: "browser-local-review-only",
-    decision: mode.decision,
+    decision: selectedByUser ? "NO-GO-human-approval-required-before-preflight-scan" : mode.decision,
     selectedSourceMode: mode.id,
     sourceLabel: mode.label,
-    sourcePathFingerprint: getSecondBrainObsidianFingerprint(mode.id),
-    selectedByUser: false,
+    sourcePathFingerprint: selectionReceipt?.sourcePathFingerprint || getSecondBrainObsidianFingerprint(mode.id),
+    selectedByUser,
+    selectionReceiptPath: selectionReceipt?.path || null,
+    sourceSelectionStatus: selectionReceipt?.status || "not-recorded",
     candidateNoteCount,
     blockedFileCount: 0,
     blockedPathMatches: [],
@@ -5238,7 +5248,7 @@ function buildSecondBrainObsidianDryRunManifest(data) {
       hostFilesystemScanned: false,
       findings: 0
     },
-    provenanceLabels: { "repo-owned-seed": candidateNoteCount },
+    provenanceLabels: { "repo-owned-seed": candidateNoteCount, "explicit-user-selection-receipt": selectedByUser ? 1 : 0 },
     publishabilityLabels: { "public-safe-metadata-only": candidateNoteCount },
     redactionSummary: {
       privatePathStored: false,
@@ -5250,7 +5260,7 @@ function buildSecondBrainObsidianDryRunManifest(data) {
       attachmentReviewRequired: true
     },
     bodyImportPolicy: SEIS_OBSIDIAN_SAFE_IMPORT_UI.bodyImportPolicy,
-    humanApprovalState: SEIS_OBSIDIAN_SAFE_IMPORT_UI.approvalState,
+    humanApprovalState: selectedByUser ? "dry-run-ready" : SEIS_OBSIDIAN_SAFE_IMPORT_UI.approvalState,
     safetyBoundary: {
       privateVaultReadPerformed: false,
       providerCallsPerformed: false,
@@ -5270,6 +5280,8 @@ Source mode: ${manifest.selectedSourceMode}
 Source label: ${manifest.sourceLabel}
 Source fingerprint: ${manifest.sourcePathFingerprint}
 Selected by user: ${manifest.selectedByUser}
+Selection status: ${manifest.sourceSelectionStatus}
+Selection receipt: ${manifest.selectionReceiptPath || "Not recorded"}
 Candidate notes: ${manifest.candidateNoteCount}
 Body import policy: ${manifest.bodyImportPolicy}
 Human approval state: ${manifest.humanApprovalState}
@@ -5291,6 +5303,29 @@ Human approval state: ${manifest.humanApprovalState}
 `;
 }
 
+function buildSecondBrainObsidianSelectionReceiptMarkdown(timestamp, receipt) {
+  return `# SEIS Obsidian Explicit Selection Receipt
+
+Recorded: ${timestamp}
+Status: ${receipt.status}
+Source mode: ${receipt.sourceMode}
+Source label: ${receipt.sourceLabel}
+Source fingerprint: ${receipt.sourcePathFingerprint}
+Selected by user: ${receipt.selectedByUser}
+
+## Metadata-Only Boundary
+- Host filesystem scanned: ${receipt.hostFilesystemScanned}
+- Private path stored: ${receipt.privatePathStored}
+- Private body text copied: ${receipt.privateBodyTextCopied}
+- Attachments copied: ${receipt.attachmentsCopied}
+- Provider calls performed: ${receipt.providerCallsPerformed}
+- SSH executed: ${receipt.sshExecuted}
+- GitHub mutation performed: ${receipt.githubMutationPerformed}
+
+This receipt records a user acknowledgement only. It is not a vault scan, file import, native file-picker read, provider request, or publication approval.
+`;
+}
+
 function setSecondBrainObsidianSourceMode(modeId) {
   const data = getSecondBrainData();
   const mode = getSecondBrainObsidianMode(modeId);
@@ -5306,6 +5341,61 @@ function setSecondBrainObsidianSourceMode(modeId) {
   log("second-brain", `Obsidian safe import mode set to ${mode.label}.`);
   saveState();
   renderOpenWindows("second-brain");
+}
+
+function recordSecondBrainObsidianSelection(button) {
+  const data = getSecondBrainData();
+  const mode = getSecondBrainObsidianMode(data.obsidianSourceMode);
+  if (mode.id !== "awaiting-user-selection") {
+    toast("SEIS Second Brain", "Choose User-selected private vault mode before recording a metadata-only selection receipt.");
+    return;
+  }
+  const root = button.closest("[data-second-brain-obsidian-safe-import]");
+  const acknowledgement = root?.querySelector("[data-second-brain-obsidian-selection-confirmed]");
+  if (!acknowledgement?.checked) {
+    toast("SEIS Second Brain", "Confirm the explicit local selection acknowledgement before recording the receipt.");
+    return;
+  }
+  const timestamp = new Date().toISOString();
+  const receipt = {
+    id: "seis-obsidian-explicit-selection-receipt",
+    status: SEIS_OBSIDIAN_SAFE_IMPORT_UI.selectionReceiptStatus,
+    sourceMode: mode.id,
+    sourceLabel: mode.label,
+    sourcePathFingerprint: getSecondBrainObsidianFingerprint(`${mode.id}:explicit-selection-receipt`),
+    selectedByUser: true,
+    path: SEIS_OBSIDIAN_SAFE_IMPORT_UI.selectionReceiptPath,
+    hostFilesystemScanned: false,
+    privatePathStored: false,
+    privateBodyTextCopied: false,
+    attachmentsCopied: 0,
+    providerCallsPerformed: false,
+    sshExecuted: false,
+    githubMutationPerformed: false
+  };
+  upsertFile(receipt.path, buildSecondBrainObsidianSelectionReceiptMarkdown(timestamp, receipt));
+  data.obsidianSelectionReceipt = receipt;
+  data.obsidianDryRunManifest = buildSecondBrainObsidianDryRunManifest(data);
+  data.lastObsidianSelection = {
+    time: new Date(timestamp).toLocaleTimeString(),
+    path: receipt.path,
+    status: receipt.status
+  };
+  data.activity.unshift({
+    id: `obsidian-selection-${Date.now()}`,
+    step: "Obsidian",
+    status: receipt.status,
+    detail: `Explicit metadata-only selection receipt saved to ${receipt.path}.`
+  });
+  data.activity = data.activity.slice(0, 12);
+  const message = `Obsidian explicit metadata-only selection receipt saved to ${receipt.path}.`;
+  getAppStatus("second-brain").lastAction = message;
+  log("second-brain", message);
+  saveState();
+  renderOpenWindows("second-brain");
+  renderOpenWindows("files");
+  renderOpenWindows("system-logs");
+  toast("SEIS Second Brain", "Explicit metadata-only Obsidian selection recorded. Preflight remains approval-gated.");
 }
 
 function prepareSecondBrainObsidianDryRun() {
@@ -5825,6 +5915,7 @@ function renderSecondBrain() {
         <article class="metric-card"><strong>Candidate notes</strong><p>${obsidianManifest.candidateNoteCount}</p></article>
         <article class="metric-card"><strong>Body policy</strong><p>${escapeHtml(obsidianManifest.bodyImportPolicy)}</p></article>
         <article class="metric-card"><strong>Approval</strong><p>${escapeHtml(obsidianManifest.humanApprovalState)}</p></article>
+        <article class="metric-card"><strong>Selection receipt</strong><p>${escapeHtml(obsidianManifest.selectionReceiptPath || "Not recorded")}</p></article>
         <article class="metric-card"><strong>Artifact</strong><p>${escapeHtml(SEIS_OBSIDIAN_SAFE_IMPORT_UI.browserArtifactPath)}</p></article>
       </div>
       <div class="split-pane">
@@ -5837,6 +5928,7 @@ function renderSecondBrain() {
               <tr><th>Secret scan</th><td>findings ${obsidianManifest.secretScanSummary.findings}; hostFilesystemScanned ${obsidianManifest.secretScanSummary.hostFilesystemScanned}</td></tr>
               <tr><th>Redaction</th><td>privatePathStored ${obsidianManifest.redactionSummary.privatePathStored}; privateBodyTextCopied ${obsidianManifest.redactionSummary.privateBodyTextCopied}</td></tr>
               <tr><th>Attachments</th><td>copied ${obsidianManifest.attachmentReviewSummary.attachmentsCopied}; reviewRequired ${obsidianManifest.attachmentReviewSummary.attachmentReviewRequired}</td></tr>
+              <tr><th>Selection receipt</th><td>${escapeHtml(obsidianManifest.selectionReceiptPath || "Not recorded")}<br>${escapeHtml(obsidianManifest.sourceSelectionStatus)}</td></tr>
               <tr><th>Report artifacts</th><td>${escapeHtml(SEIS_OBSIDIAN_SAFE_IMPORT_UI.reportJsonPath)}<br>${escapeHtml(SEIS_OBSIDIAN_SAFE_IMPORT_UI.reportMarkdownPath)}</td></tr>
             </tbody>
           </table>
@@ -5850,10 +5942,13 @@ function renderSecondBrain() {
         </div>
       </div>
       <div class="toolbar">
+        <label class="checkbox-row"><input type="checkbox" data-second-brain-obsidian-selection-confirmed${activeObsidianMode.id === "awaiting-user-selection" ? "" : " disabled"}> I explicitly selected a local source; record metadata only.</label>
+        <button type="button" data-action="second-brain-record-obsidian-selection"${activeObsidianMode.id === "awaiting-user-selection" ? "" : " disabled"}>Record Explicit Selection</button>
         <button type="button" data-action="second-brain-prepare-obsidian-dry-run">Prepare Safe Import Dry-Run</button>
         <button type="button" data-action="open-app" data-app-id="files">Open Files</button>
         <button type="button" data-action="open-app" data-app-id="search">Open Search</button>
       </div>
+      <p class="status-note" data-second-brain-obsidian-selection-action>Last explicit selection: ${data.lastObsidianSelection ? `${escapeHtml(data.lastObsidianSelection.time)} / ${escapeHtml(data.lastObsidianSelection.path)} / ${escapeHtml(data.lastObsidianSelection.status)}` : "Not recorded"}.</p>
       <p class="status-note" data-second-brain-obsidian-last-action>Last Obsidian dry-run: ${data.lastObsidianDryRun ? `${escapeHtml(data.lastObsidianDryRun.time)} / ${escapeHtml(data.lastObsidianDryRun.path)} / ${escapeHtml(data.lastObsidianDryRun.decision)}` : "Not prepared yet"}.</p>
     </section>
     <section class="subagent-panel second-brain-search-panel" data-second-brain-search-panel>

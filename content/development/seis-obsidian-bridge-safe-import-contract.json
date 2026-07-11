@@ -3,7 +3,7 @@
   "title": "SEIS Obsidian Bridge Safe Import Contract",
   "status": "planned-gated",
   "mode": "explicit-user-selected-import-only",
-  "version": "2026-06-24",
+  "version": "2026-07-11",
   "ownerSurface": "SEIS Second Brain",
   "qualityGate": "npm run check:seis-second-brain-readiness-contracts",
   "currentRuntime": {
@@ -17,9 +17,32 @@
     "document safe import requirements",
     "render repo-owned browser-local seed notes",
     "export browser-local Markdown snapshots under /home/seis/SecondBrain",
+    "record a browser-local explicit-selection receipt without storing a host path or note body",
     "generate repo-owned dry-run manifest artifacts under reports/seis-public-demo",
     "validate no-secret and no-private-vault boundaries"
   ],
+  "runtimeSelectionReceipt": {
+    "status": "available-browser-local-metadata-only",
+    "requires": "user acknowledgement in User-selected private vault mode",
+    "stores": [
+      "selection mode",
+      "redacted deterministic source fingerprint",
+      "timestamp",
+      "false safety-boundary flags"
+    ],
+    "neverStores": [
+      "host vault path",
+      "private note body",
+      "attachment content",
+      "secret values"
+    ],
+    "doesNotApprove": [
+      "preflight scan",
+      "private vault import",
+      "provider call",
+      "GitHub publication"
+    ]
+  },
   "futureImportPhases": [
     {
       "id": "select-vault",
