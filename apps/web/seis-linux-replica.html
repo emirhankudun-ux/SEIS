@@ -390,6 +390,7 @@ button{cursor:pointer}
 <div class="toast-wrap" id="toasts"></div>
 <script src="./reference-banks/reference-apps.js"></script>
 <script src="./seis-five-year-plan.js"></script>
+<script src="./seis-vfs-store.js"></script>
 
 <aside class="mission-strip" data-mission-strip aria-label="SEIS live demo mission strip">
   <div class="mission-strip-head">
@@ -623,6 +624,15 @@ const COPY={
     tmp:{type:"dir",children:{}}
   }}
 };
+let vfsPersistenceMode="memory";
+let vfsPersistenceReady=false;
+let vfsLastSavedAt=null;
+let vfsPersistenceError="";
+let vfsLastFingerprint="";
+let vfsPersistQueue=Promise.resolve();
+function isSafeVfsRoot(root){return Boolean(root&&root.type==="dir"&&root.children&&typeof root.children==="object"&&!Array.isArray(root.children))}
+async function loadPersistentVfs(){try{const result=await window.SEIS_VFS_STORE?.load?.();vfsPersistenceMode=result?.mode||"memory";if(isSafeVfsRoot(result?.root))VFS["/"].children=result.root.children;vfsLastFingerprint=JSON.stringify(VFS["/"])}catch(error){vfsPersistenceMode="memory";vfsPersistenceError=String(error?.message||"restore-failed")}vfsPersistenceReady=true}
+function persistVfs(reason="interaction"){if(!vfsPersistenceReady||!window.SEIS_VFS_STORE?.save)return;const fingerprint=JSON.stringify(VFS["/"]);if(fingerprint===vfsLastFingerprint)return;vfsPersistQueue=vfsPersistQueue.then(async()=>{const result=await window.SEIS_VFS_STORE.save(VFS["/"],reason);vfsPersistenceMode=result?.mode||vfsPersistenceMode;vfsLastSavedAt=result?.savedAt||vfsLastSavedAt;vfsPersistenceError=result?.error||"";if(result?.mode&&result.mode!=="memory")vfsLastFingerprint=fingerprint}).catch(error=>{vfsPersistenceMode="memory";vfsPersistenceError=String(error?.message||"save-failed")})}
 const SEIS_BRIDGE_TARGETS=[
   {appId:"search",title:"SEIS Search Gateway",glyph:"SRH",scope:"Search",state:"Working",route:"./desktop.html#search",summary:"AI, Web, Code, Design, Cloud, Apps, Plugins, and Files result scopes inside the main SEIS Desktop OS.",primary:"Open Desktop Search",local:"Open local search"},
   {appId:"code",title:"SEIS Code IDE",glyph:"IDE",scope:"Code",state:"Working",route:"./seis-code.html",summary:"VS Code-like browser IDE with explorer, multi-tabs, terminal, extensions, source-control safe/mock mode, preview, and Local Demo assistant.",primary:"Open SEIS Code Web",local:"Open local editor"},
@@ -920,6 +930,8 @@ function renderGame(body,app){let score=0;body.innerHTML="<div class=\"app grid\
 function renderGeneric(body,app){body.innerHTML="<div class=\"app grid\"><h2>"+escapeHtml(app.name)+"</h2><p class=\"muted\">"+escapeHtml(app.description)+"</p><label class=\"field\">Local input<input data-input value=\"SEIS local demo\"></label><div class=\"toolbar\"><button class=\"primary\" data-run>Run Local Action</button><button class=\"secondary\" data-save>Save Snapshot</button></div><div class=\"card\"><strong data-output>Ready</strong><p class=\"muted\">Controls update browser-local state. Mock or planned integrations stay labeled.</p></div></div>";$("[data-run]",body).onclick=()=>{$("[data-output]",body).textContent="Ran: "+$("[data-input]",body).value;log(app.name+":run")};$("[data-save]",body).onclick=()=>{nodeAt("/home/seis").children[app.id+"-"+Date.now()+".txt"]={type:"file",content:app.name+" snapshot"};toast(app.name,"Snapshot saved to VFS")}}
 $("#loginButton").onclick=enterDesktop;$("#startButton").onclick=()=>toggleStart();$("#closeStart").onclick=()=>toggleStart(false);$("#lockButton").onclick=()=>{$("#shell").classList.remove("is-active");$("#login").classList.add("is-active");toggleStart(false);saveSession("lock")};$("#themeButton").onclick=()=>{state.accent=state.accent==="#7c5cff"?"#19c6d4":"#7c5cff";applyAccent()};$("#localeButton").onclick=toggleLocale;$("#startSearch").oninput=e=>{state.query=e.target.value;renderStartMenu()};$$("[data-quick-app]").forEach(btn=>btn.onclick=()=>openApp(btn.dataset.quickApp));document.addEventListener("keydown",e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();toggleStart(true);$("#startSearch").focus()}if(e.key==="Escape")toggleStart(false)});
 
+document.addEventListener("click",()=>persistVfs("interaction"));
+document.addEventListener("keydown",()=>persistVfs("interaction"));
 const MISSION_STRIP_KEY="seis.linuxMissionStrip.v1";
 const MISSION_STRIP_ACTIONS=["tour","search","reference-vault","terminal","seis-code","ai-core"];
 function readMissionStripState(){try{return{used:[],collapsed:false,...JSON.parse(localStorage.getItem(MISSION_STRIP_KEY)||"{}")}}catch{return{used:[],collapsed:false}}}
@@ -931,8 +943,8 @@ async function copyMissionStripText(text){if(navigator.clipboard&&window.isSecur
 function missionStripButtonTitle(button){return button.querySelector("b")?.textContent.trim()||button.getAttribute("aria-label")||"SEIS route"}
 function wireMissionStrip(){const strip=$("[data-mission-strip]");if(!strip)return;strip.addEventListener("click",async e=>{const target=e.target.closest("button");if(!target)return;if(target.dataset.missionStripToggle!==undefined){const data=readMissionStripState();data.collapsed=!data.collapsed;saveMissionStripState(data);renderMissionStrip(data);return}if(target.dataset.missionStripApp){const id=target.dataset.missionStripApp;openApp(id);markMissionStripUsed(id);return}if(target.dataset.missionStripRoute){const route=target.dataset.missionStripRoute;openReplicaRoute(route,missionStripButtonTitle(target));markMissionStripUsed(route.includes("seis-code")?"seis-code":"ai-core");return}if(target.dataset.missionStripAction==="tour"){openDemoTour();markMissionStripUsed("tour");return}if(target.dataset.missionStripAction==="copy"){try{await copyMissionStripText(missionStripNote());toast("Mission Strip",t("missionStripCopied"))}catch{toast("Mission Strip",t("missionStripCopyUnavailable"))}return}if(target.dataset.missionStripAction==="reset"){saveMissionStripState({used:[],collapsed:false});renderMissionStrip();toast("Mission Strip",t("missionStripResetToast"))}});renderMissionStrip()}
 wireMissionStrip();
-window.__SEIS_LINUX_REPLICA__={missionStripReady:()=>Boolean($("[data-mission-strip]")),missionStripState:readMissionStripState,appCount:APP_CATALOG.length,referenceCount:REFERENCE_APP_ENTRIES.length,referenceSources:()=>REFERENCE_SOURCES.map(source=>({source,count:REFERENCE_SOURCE_COUNTS[source]})),bridgeTargetCount:SEIS_BRIDGE_TARGETS.length,bridgeTargets:()=>SEIS_BRIDGE_TARGETS.map(target=>({title:target.title,scope:target.scope,state:target.state,route:target.route})),openApp,openDemoTour,windowCount:()=>state.windows.filter(w=>!w.closed).length,fileCount:()=>listFiles("/").length,terminalReady:()=>Boolean($("[data-terminal]")),locale:()=>state.locale,session:readSession,demoIntent:()=>DEMO_INTENT,route:"seis-linux-replica.html"};
-applyAccent();applyLocale(state.locale,false);renderSideRail();renderDesktopIcons();renderStartMenu();updateClock();setInterval(updateClock,1000);boot();
+window.__SEIS_LINUX_REPLICA__={missionStripReady:()=>Boolean($("[data-mission-strip]")),missionStripState:readMissionStripState,appCount:APP_CATALOG.length,referenceCount:REFERENCE_APP_ENTRIES.length,referenceSources:()=>REFERENCE_SOURCES.map(source=>({source,count:REFERENCE_SOURCE_COUNTS[source]})),bridgeTargetCount:SEIS_BRIDGE_TARGETS.length,bridgeTargets:()=>SEIS_BRIDGE_TARGETS.map(target=>({title:target.title,scope:target.scope,state:target.state,route:target.route})),openApp,openDemoTour,windowCount:()=>state.windows.filter(w=>!w.closed).length,fileCount:()=>listFiles("/").length,terminalReady:()=>Boolean($("[data-terminal]")),vfsPersistence:()=>({ready:vfsPersistenceReady,mode:vfsPersistenceMode,lastSavedAt:vfsLastSavedAt,error:vfsPersistenceError}),locale:()=>state.locale,session:readSession,demoIntent:()=>DEMO_INTENT,route:"seis-linux-replica.html"};
+applyAccent();applyLocale(state.locale,false);renderSideRail();renderDesktopIcons();renderStartMenu();updateClock();setInterval(updateClock,1000);loadPersistentVfs().finally(boot);
 })();
 </script>
 </body>
