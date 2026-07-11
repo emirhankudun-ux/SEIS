@@ -1,6 +1,6 @@
 # SEIS Public Demo Worktree Review
 
-Generated: 2026-07-11T07:05:48.143Z
+Generated: 2026-07-11T07:20:00.774Z
 Decision: NO-GO
 Release blocking: no
 Dirty paths: 0
