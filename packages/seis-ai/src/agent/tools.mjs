@@ -23,6 +23,7 @@ import {
   subagentOperatingModelStatus,
   subagentReviewLedgerStatus,
 } from "../lib/plugin-integration.mjs";
+import { buildReadOnlyRouteDecision, READ_ONLY_ROUTER_TOOL } from "../model/read-only-router.mjs";
 import { resolveInside } from "../lib/repo.mjs";
 import { runAllChecks, i18nStatus, seoAudit, contractCheck, drawingsCatalog, styleAudit, perfAudit, a11yAudit, securityAudit } from "../lib/checks.mjs";
 
@@ -115,6 +116,25 @@ export function toolDefinitions({ allowWrite = false } = {}) {
         type: "object",
         properties: {
           includeFullRegistry: { type: "boolean", description: "Return the full machine-readable provider registry." },
+        },
+      },
+    },
+    {
+      name: READ_ONLY_ROUTER_TOOL,
+      description:
+        "Evaluate a provider-neutral SEIS AI Core route from metadata only. Read-only; rejects prompts, credentials, private vault contents, and secret-like material, and never calls providers or executes agents.",
+      input_schema: {
+        type: "object",
+        properties: {
+          taskType: { type: "string", description: "Metadata-only task type." },
+          capability: { type: "string", description: "Metadata-only capability label." },
+          privacyMode: { type: "string", enum: ["local-only", "standard", "review-gated"] },
+          localOnly: { type: "boolean", description: "Force the local-only boundary." },
+          costPreference: { type: "string" },
+          speedPreference: { type: "string" },
+          contextSizeRequired: { type: "number" },
+          toolSupportRequired: { type: "boolean" },
+          fallbackPolicy: { type: "string" },
         },
       },
     },
@@ -340,6 +360,9 @@ export function executeTool(name, input, { repoRoot, webRoot, allowWrite = false
         null,
         2
       );
+    }
+    case READ_ONLY_ROUTER_TOOL: {
+      return JSON.stringify(buildReadOnlyRouteDecision(input, { root: repoRoot }), null, 2);
     }
     case AI_CORE_MODEL_SCALING_STATUS_TOOL: {
       return JSON.stringify(

@@ -29,6 +29,7 @@ import {
   AI_CORE_20B_DATASET_CARD_TEMPLATE_PATH,
   AI_CORE_20B_MODEL_CARD_TEMPLATE_PATH,
   AI_CORE_PROVIDER_REGISTRY_PATH,
+  AI_CORE_READ_ONLY_ROUTER_RUNTIME_PATH,
   AI_CORE_PROVIDER_STATUS_TOOL,
   AI_CORE_MODEL_FRONTIER_ESCALATION_POLICY_PATH,
   AI_CORE_MODEL_PARAMETER_LADDER_PATH,
@@ -67,6 +68,7 @@ import {
   subagentOperatingModelStatus,
   subagentReviewLedgerStatus,
 } from "../lib/plugin-integration.mjs";
+import { buildReadOnlyRouteDecision, READ_ONLY_ROUTER_TOOL } from "../model/read-only-router.mjs";
 
 const repoRoot = resolveRepoRoot();
 const webRoot = resolveWebRoot(repoRoot);
@@ -527,6 +529,29 @@ export function buildServer() {
   );
 
   server.tool(
+    READ_ONLY_ROUTER_TOOL,
+    "Evaluate a provider-neutral SEIS AI Core route from metadata only. Read-only; rejects prompts, credentials, private vault contents, and secret-like material, and never calls providers or executes agents.",
+    {
+      taskType: z.string().optional().describe("Metadata-only task type."),
+      capability: z.string().optional().describe("Metadata-only capability label."),
+      privacyMode: z.enum(["local-only", "standard", "review-gated"]).optional().describe("Privacy boundary for the route decision."),
+      localOnly: z.boolean().optional().describe("Force the local-only boundary."),
+      costPreference: z.string().optional().describe("Cost preference metadata."),
+      speedPreference: z.string().optional().describe("Speed preference metadata."),
+      contextSizeRequired: z.number().optional().describe("Required context size metadata."),
+      toolSupportRequired: z.boolean().optional().describe("Whether tool support is required."),
+      fallbackPolicy: z.string().optional().describe("Explicit fallback policy metadata."),
+    },
+    async (input) => {
+      try {
+        return jsonResult(buildReadOnlyRouteDecision(input, { root: repoRoot }));
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
+
+  server.tool(
     AI_CORE_MODEL_SCALING_STATUS_TOOL,
     "Read the SEIS AI Core model scaling hardware profile, parameter ladder, and model-scaling sub-agent council for the planned 20B target on 16GB+ RAM, compatibility profiles, benchmark manifest contract, memory budget contract, quantization lanes, local runtime candidates, future 70B ladder, 150B frontier research lane, 300B+ exploration boundary, and highest-future parameter boundary. Read-only; performs no training, inference, download, benchmark, provider call, SSH, deployment, or credential access.",
     {
@@ -846,6 +871,21 @@ Steps:
           uri: "seis://ai/provider-registry.json",
           mimeType: "application/json",
           text: readFileSync(path.join(repoRoot, ...AI_CORE_PROVIDER_REGISTRY_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "ai-core-read-only-router-runtime",
+    "seis://ai/read-only-router-runtime.json",
+    { description: "SEIS AI Core executable provider-neutral read-only router contract", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/read-only-router-runtime.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...AI_CORE_READ_ONLY_ROUTER_RUNTIME_PATH.split("/")), "utf8"),
         },
       ],
     })
