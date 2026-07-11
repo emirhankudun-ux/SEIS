@@ -917,35 +917,44 @@ function renderCapabilityAtlas(body){
   const moduleById=Object.fromEntries((atlas.productModules||[]).map(module=>[module.id,module]));
   const laneById=Object.fromEntries((atlas.lanes||[]).map(lane=>[lane.laneId,lane]));
   const agentById=Object.fromEntries((atlas.agentRoster||[]).map(agent=>[agent.id,agent]));
+  const stats=capabilityStats();
+  const laneOptions=["all",...(atlas.lanes||[]).map(lane=>lane.laneId)];
   function matchesText(values,q){const haystack=values.flatMap(value=>Array.isArray(value)?value:[value]).filter(Boolean).join(" ").toLowerCase();return !q||haystack.includes(q)}
   function chips(values,limit=8){return"<div class=\"capability-chipline\">"+(values||[]).slice(0,limit).map(value=>"<span>"+escapeHtml(value)+"</span>").join("")+"</div>"}
+  body.innerHTML="<div class=\"app capability-atlas\" data-capability-atlas>"+
+    "<section class=\"capability-hero\"><div class=\"bridge-status\"><span>"+escapeHtml(stats.mode)+"</span><span>"+escapeHtml(stats.boundary)+"</span><span>Browser-local catalog</span><span>No live MCP / SSH / provider call</span></div><h2>SEIS Capability Atlas</h2><p>Source-backed map for SEIS plugins, MCP tools, skills, product modules, permission boundaries, and plan-only subagent tasks. It reads packaged repository records and keeps external mutations approval-gated.</p><div class=\"metric-strip\"><div class=\"metric\"><small>Lanes</small><strong>"+stats.lanes+"</strong></div><div class=\"metric\"><small>Agents</small><strong>"+stats.agents+"</strong></div><div class=\"metric\"><small>Modules</small><strong>"+stats.modules+"</strong></div><div class=\"metric\"><small>Dry-run tasks</small><strong>"+stats.tasks+"</strong></div></div></section>"+
+    "<section class=\"capability-search\"><label class=\"field\">Filter<input data-capability-query placeholder=\"agent, module, mcp, skill, validation, cloud, design\"></label><button class=\"secondary\" data-open-terminal-capabilities>Terminal command</button></section>"+
+    "<div class=\"search-scope-tabs\">"+laneOptions.map(id=>"<button type=\"button\" data-capability-lane-filter=\""+escapeHtml(id)+"\" class=\""+(id===activeLane?"is-active":"")+"\">"+escapeHtml(id==="all"?"All lanes":id)+"</button>").join("")+"</div>"+
+    "<section class=\"capability-detail\" data-capability-detail><strong>Runtime boundary</strong><p class=\"muted\">"+escapeHtml(detail)+"</p><code>"+escapeHtml(JSON.stringify(atlas.runtimeBoundary||{}))+"</code>"+chips(atlas.approvalRequiredFor||[],7)+"</section>"+
+    "<div data-capability-results></div>"+
+  "</div>";
+  const input=$("[data-capability-query]",body);
+  const results=$("[data-capability-results]",body);
   function draw(){
-    const q=($("[data-capability-query]",body)?.value||"").toLowerCase().trim();
-    const stats=capabilityStats();
-    const laneOptions=["all",...(atlas.lanes||[]).map(lane=>lane.laneId)];
+    const q=(input.value||"").toLowerCase().trim();
     const lanes=(atlas.lanes||[]).filter(lane=>(activeLane==="all"||lane.laneId===activeLane)&&matchesText([lane.laneId,lane.displayName,lane.pluginName,lane.mcpServer,lane.tools,lane.capabilities,lane.moduleIds],q));
     const agents=(atlas.agentRoster||[]).filter(agent=>(activeLane==="all"||agent.laneId===activeLane||(laneById[activeLane]?.agentIds||[]).includes(agent.id))&&matchesText([agent.id,agent.name,agent.status,agent.duty],q));
     const modules=(atlas.productModules||[]).filter(module=>(activeLane==="all"||(laneById[activeLane]?.moduleIds||[]).includes(module.id))&&matchesText([module.id,module.name,module.state,module.evidence],q));
     const tasks=(atlas.dryRunQueue||[]).filter(task=>(activeLane==="all"||task.laneId===activeLane)&&matchesText([task.id,task.agentId,task.laneId,task.task,task.permissionLevel,task.state,task.modules,task.evidence],q));
-    body.innerHTML="<div class=\"app capability-atlas\" data-capability-atlas>"+
-      "<section class=\"capability-hero\"><div class=\"bridge-status\"><span>"+escapeHtml(stats.mode)+"</span><span>"+escapeHtml(stats.boundary)+"</span><span>Browser-local catalog</span><span>No live MCP / SSH / provider call</span></div><h2>SEIS Capability Atlas</h2><p>Source-backed map for SEIS plugins, MCP tools, skills, product modules, permission boundaries, and plan-only subagent tasks. It reads packaged repository records and keeps external mutations approval-gated.</p><div class=\"metric-strip\"><div class=\"metric\"><small>Lanes</small><strong>"+stats.lanes+"</strong></div><div class=\"metric\"><small>Agents</small><strong>"+stats.agents+"</strong></div><div class=\"metric\"><small>Modules</small><strong>"+stats.modules+"</strong></div><div class=\"metric\"><small>Dry-run tasks</small><strong>"+stats.tasks+"</strong></div></div></section>"+
-      "<section class=\"capability-search\"><label class=\"field\">Filter<input data-capability-query value=\""+escapeHtml(q)+"\" placeholder=\"agent, module, mcp, skill, validation, cloud, design\"></label><button class=\"secondary\" data-open-terminal-capabilities>Terminal command</button></section>"+
-      "<div class=\"search-scope-tabs\">"+laneOptions.map(id=>"<button type=\"button\" data-capability-lane-filter=\""+escapeHtml(id)+"\" class=\""+(id===activeLane?"is-active":"")+"\">"+escapeHtml(id==="all"?"All lanes":id)+"</button>").join("")+"</div>"+
-      "<section class=\"capability-detail\" data-capability-detail><strong>Runtime boundary</strong><p class=\"muted\">"+escapeHtml(detail)+"</p><code>"+escapeHtml(JSON.stringify(atlas.runtimeBoundary||{}))+"</code>"+chips(atlas.approvalRequiredFor||[],7)+"</section>"+
+    results.innerHTML=
       "<section class=\"grid\"><h3>Embedded lanes</h3><div class=\"capability-grid\">"+lanes.map(lane=>"<button class=\"capability-card\" data-capability-lane=\""+escapeHtml(lane.laneId)+"\"><small>"+escapeHtml(lane.pluginName)+" / "+escapeHtml(lane.mcpServer)+"</small><strong>"+escapeHtml(lane.displayName)+"</strong><p>"+escapeHtml((lane.capabilities||[]).slice(0,3).join(" / "))+"</p>"+chips(lane.tools,3)+"</button>").join("")+"</div></section>"+
       "<section class=\"grid\"><h3>Source-backed agents</h3><div class=\"capability-grid\">"+agents.map(agent=>"<button class=\"capability-card\" data-capability-agent=\""+escapeHtml(agent.id)+"\"><small>"+escapeHtml(agent.laneId)+" / "+escapeHtml(agent.status)+"</small><strong>"+escapeHtml(agent.name)+"</strong><p>"+escapeHtml(agent.duty)+"</p></button>").join("")+"</div></section>"+
       "<section class=\"grid\"><h3>Product modules</h3><div class=\"capability-grid\">"+modules.map(module=>"<button class=\"capability-card\" data-capability-module=\""+escapeHtml(module.id)+"\" data-module-app=\""+escapeHtml(capabilityFindApp(module))+"\"><small>"+escapeHtml(module.state)+" / "+escapeHtml(module.appId||"atlas")+"</small><strong>"+escapeHtml(module.name)+"</strong><p>"+escapeHtml((module.evidence||[]).slice(0,2).join(" / "))+"</p></button>").join("")+"</div></section>"+
-      "<section class=\"grid\"><h3>Dry-run task queue</h3><div class=\"capability-grid\">"+tasks.map(task=>"<button class=\"capability-card\" data-capability-task=\""+escapeHtml(task.id)+"\"><small>"+escapeHtml(task.laneId)+" / "+escapeHtml(task.permissionLevel)+" / "+escapeHtml(task.state)+"</small><strong>"+escapeHtml(agentById[task.agentId]?.name||task.agentId)+"</strong><p>"+escapeHtml(task.task)+"</p>"+chips(task.modules,5)+"</button>").join("")+"</div></section>"+
-    "</div>";
-    const input=$("[data-capability-query]",body);
-    if(input){input.oninput=()=>draw();input.focus();input.setSelectionRange(input.value.length,input.value.length)}
-    $$("[data-capability-lane-filter]",body).forEach(btn=>btn.onclick=()=>{activeLane=btn.dataset.capabilityLaneFilter;detail=activeLane==="all"?"Showing every lane from the single SEIS-Agent embedded-lane registry.":"Filtered to "+activeLane+" from the specialist plugin registry.";draw()});
-    $$("[data-capability-lane]",body).forEach(btn=>btn.onclick=()=>{const lane=laneById[btn.dataset.capabilityLane];detail=lane.displayName+" uses "+lane.mcpServer+" with tools "+(lane.tools||[]).join(", ")+". Source mirror: "+lane.sourceMirror+".";activeLane=lane.laneId;draw()});
-    $$("[data-capability-agent]",body).forEach(btn=>btn.onclick=()=>{const agent=agentById[btn.dataset.capabilityAgent];detail=agent.name+" remains "+agent.status+". Duty: "+agent.duty;draw()});
-    $$("[data-capability-task]",body).forEach(btn=>btn.onclick=()=>{const task=(atlas.dryRunQueue||[]).find(item=>item.id===btn.dataset.capabilityTask);detail=task.id+" is "+task.executionMode+" / "+task.permissionLevel+". Evidence: "+(task.evidence||[]).join(", ");draw()});
-    $$("[data-capability-module]",body).forEach(btn=>btn.onclick=()=>{const module=moduleById[btn.dataset.capabilityModule];detail=module.name+" state: "+module.state+". Evidence: "+(module.evidence||[]).join(", ");openApp(btn.dataset.moduleApp||"capability-atlas")});
-    $("[data-open-terminal-capabilities]",body)?.addEventListener("click",()=>{openApp("terminal");toast("Capability Atlas","Terminal command: capabilities")});
+      "<section class=\"grid\"><h3>Dry-run task queue</h3><div class=\"capability-grid\">"+tasks.map(task=>"<button class=\"capability-card\" data-capability-task=\""+escapeHtml(task.id)+"\"><small>"+escapeHtml(task.laneId)+" / "+escapeHtml(task.permissionLevel)+" / "+escapeHtml(task.state)+"</small><strong>"+escapeHtml(agentById[task.agentId]?.name||task.agentId)+"</strong><p>"+escapeHtml(task.task)+"</p>"+chips(task.modules,5)+"</button>").join("")+"</div></section>";
+    $("[data-capability-detail] p",body).textContent=detail;
+    $$("[data-capability-lane-filter]",body).forEach(btn=>btn.classList.toggle("is-active",btn.dataset.capabilityLaneFilter===activeLane));
   }
+  input.oninput=draw;
+  $$("[data-capability-lane-filter]",body).forEach(btn=>btn.onclick=()=>{activeLane=btn.dataset.capabilityLaneFilter;detail=activeLane==="all"?"Showing every lane from the single SEIS-Agent embedded-lane registry.":"Filtered to "+activeLane+" from the specialist plugin registry.";draw()});
+  results.addEventListener("click",event=>{
+    const btn=event.target.closest("button");
+    if(!btn||!results.contains(btn))return;
+    if(btn.dataset.capabilityLane){const lane=laneById[btn.dataset.capabilityLane];detail=lane.displayName+" uses "+lane.mcpServer+" with tools "+(lane.tools||[]).join(", ")+". Source mirror: "+lane.sourceMirror+".";activeLane=lane.laneId;draw()}
+    else if(btn.dataset.capabilityAgent){const agent=agentById[btn.dataset.capabilityAgent];detail=agent.name+" remains "+agent.status+". Duty: "+agent.duty;draw()}
+    else if(btn.dataset.capabilityTask){const task=(atlas.dryRunQueue||[]).find(item=>item.id===btn.dataset.capabilityTask);detail=task.id+" is "+task.executionMode+" / "+task.permissionLevel+". Evidence: "+(task.evidence||[]).join(", ");draw()}
+    else if(btn.dataset.capabilityModule){const module=moduleById[btn.dataset.capabilityModule];detail=module.name+" state: "+module.state+". Evidence: "+(module.evidence||[]).join(", ");openApp(btn.dataset.moduleApp||"capability-atlas")}
+  });
+  $("[data-open-terminal-capabilities]",body)?.addEventListener("click",()=>{openApp("terminal");toast("Capability Atlas","Terminal command: capabilities")});
   draw();
 }
 function renderStore(body){body.innerHTML="<div class=\"app grid\"><h2>Installed Apps</h2><div class=\"grid cols\">"+APP_CATALOG.map(app=>"<button class=\"card\" data-app=\""+escapeHtml(app.id)+"\"><strong>"+escapeHtml(app.name)+"</strong><p class=\"muted\">"+escapeHtml(app.category)+"</p></button>").join("")+"</div></div>";$$("[data-app]",body).forEach(b=>b.onclick=()=>openApp(b.dataset.app))}

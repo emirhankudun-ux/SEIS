@@ -96,7 +96,7 @@ if (registry) {
       if (!String(lane[field] || "").trim()) fail(`${laneId} missing ${field}`);
     }
     if (!Array.isArray(lane.mcpTools)) fail(`${laneId} mcpTools must be an array`);
-    if (!lane.qualityGate.startsWith("npm run check:")) fail(`${laneId} qualityGate must be a package check command`);
+    if (typeof lane.qualityGate !== "string" || !lane.qualityGate.startsWith("npm run check:")) fail(`${laneId} qualityGate must be a package check command`);
     if (["Connected", "Live", "Deployed"].includes(lane.status) || /\bconnected\b/i.test(lane.mode)) {
       fail(`${laneId} must not claim an externally connected runtime`);
     }
