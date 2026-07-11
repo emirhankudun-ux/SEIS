@@ -2805,6 +2805,9 @@ function handleClick(event) {
     case "second-brain-select-plugin-skill":
       selectSecondBrainPluginSkill(value);
       break;
+    case "second-brain-create-plugin-handoff-brief":
+      createSecondBrainPluginHandoffBrief();
+      break;
     case "second-brain-capture":
       captureSecondBrainNote();
       break;
@@ -8006,7 +8009,8 @@ function renderAiAssistantTab(activeTab, data) {
     </div>`;
   }
   if (activeTab === "Second Brain") {
-    const selectedPluginSkill = getSecondBrainPluginSkill(getSecondBrainData().activePluginSkillId);
+    const secondBrainData = getSecondBrainData();
+    const selectedPluginSkill = getSecondBrainPluginSkill(secondBrainData.activePluginSkillId);
     const selectedPluginProfile = getSecondBrainPluginContextProfile(selectedPluginSkill?.id);
     return `<div class="subagent-ai-plan" data-ai-second-brain-bridge>
       <div class="toolbar">
@@ -8056,6 +8060,11 @@ function renderAiAssistantTab(activeTab, data) {
           <p class="muted">${selectedPluginProfile ? escapeHtml(selectedPluginProfile.relatedAgents.join(", ")) : "Review-only local context"}</p>
           <p>${selectedPluginProfile ? escapeHtml(`${selectedPluginProfile.allowedOutput} ${selectedPluginProfile.focus}`) : "No lane has been selected, so no agent-specific proposal is prepared."}</p>
         </article>
+      </div>
+      <div class="toolbar" data-ai-second-brain-handoff-brief>
+        <button type="button" data-action="second-brain-create-plugin-handoff-brief"${selectedPluginSkill ? "" : " disabled"}>Save Local Handoff Brief</button>
+        <button type="button" data-action="open-app" data-app-id="files">Open Files</button>
+        <p class="muted">${selectedPluginSkill ? `Writes browser-local review context for ${escapeHtml(selectedPluginSkill.plugin)} only. ${secondBrainData.lastPluginHandoffBrief?.path ? `Last local brief: ${escapeHtml(secondBrainData.lastPluginHandoffBrief.path)}` : "Not saved yet."}` : "Select a plugin/skill lane before creating a local review brief."}</p>
       </div>
       <table class="data-table" data-ai-second-brain-plugin-skill-table>
         <thead><tr><th>Plugin</th><th>Status/plan tools</th><th>Skill path</th><th>Execution boundary</th></tr></thead>
@@ -9691,6 +9700,38 @@ ${rosterRows.join("\n")}
 `;
 }
 
+function buildSecondBrainPluginHandoffBriefMarkdown(lane, profile, timestamp) {
+  return `# SEIS Second Brain Plugin Handoff Brief
+
+Generated: ${timestamp}
+Mode: Browser-local Local Demo review-only
+Plugin: ${lane.plugin}
+Skill: ${lane.skill}
+Status tool: ${lane.statusTool}
+Plan tool: ${lane.planTool}
+Readiness: ${lane.readiness}
+MCP resource: ${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.mcpResource}
+
+## Training And Review Context
+
+${lane.trainingUse}
+
+## Related Agents
+
+${(profile?.relatedAgents || []).map((agent) => `- ${agent}`).join("\n") || "- No related agents recorded."}
+
+## Allowed Output
+
+${profile?.allowedOutput || "Review-only local context."}
+
+## Boundary
+
+- providerExecution: ${lane.providerExecution}
+- externalMutation: ${lane.externalMutation}
+- No plugin install, provider call, credential validation, SSH, deployment, GitHub mutation, or autonomous execution.
+`;
+}
+
 const SEIS_READ_ONLY_MODEL_ROUTER_CONTRACT = {
   blockedModelClasses: [
     "20B planned-not-validated",
@@ -9791,6 +9832,36 @@ function selectSecondBrainPluginSkill(pluginId) {
   renderOpenWindows("second-brain");
   openApp("ai-assistant");
   toast("SEIS Second Brain", `${lane.plugin} readiness context is open in SEIS AI.`);
+}
+
+function createSecondBrainPluginHandoffBrief() {
+  const data = getSecondBrainData();
+  const lane = getSecondBrainPluginSkill(data.activePluginSkillId);
+  if (!lane) {
+    toast("SEIS Second Brain", "Select a plugin/skill readiness lane before saving a local brief.");
+    return;
+  }
+  const profile = getSecondBrainPluginContextProfile(lane.id);
+  const timestamp = new Date().toISOString();
+  const path = `/home/seis/SecondBrain/07-learning/plugin-handoff-${lane.id}-latest.md`;
+  upsertFile(path, buildSecondBrainPluginHandoffBriefMarkdown(lane, profile, timestamp));
+  const activity = addSecondBrainActivity("Plugin Handoff Brief", "Local Demo review-only", `Saved ${lane.plugin} review context to ${path}.`);
+  activity.lastPluginHandoffBrief = {
+    time: timestamp,
+    path,
+    plugin: lane.plugin,
+    relatedAgents: profile?.relatedAgents || [],
+    allowedOutput: profile?.allowedOutput || "Review-only local context."
+  };
+  const message = `Second Brain local handoff brief saved to ${path}.`;
+  getAppStatus("second-brain").lastAction = message;
+  log("second-brain", message);
+  saveState();
+  renderOpenWindows("second-brain");
+  renderOpenWindows("ai-assistant");
+  renderOpenWindows("files");
+  renderOpenWindows("system-logs");
+  toast("SEIS Second Brain", `${lane.plugin} local handoff brief saved.`);
 }
 
 function focusSecondBrainInspector() {
