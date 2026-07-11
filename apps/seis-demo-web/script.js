@@ -400,7 +400,7 @@ function fallbackMcpRuntimeContract() {
     fallback: "LightweightMcpServer no-dependency fallback",
     officialSdk: "@modelcontextprotocol/sdk remains optional unless dependencies are installed",
     toolCount: 34,
-    resourceCount: 26,
+    resourceCount: 29,
     promptCount: 3,
     smokeTest: "node --test packages/seis-ai/test/mcp-smoke.test.mjs",
     pluginGate: "npm run check:seis-agent-plugin-integration",
@@ -420,7 +420,7 @@ function fallbackMcpRuntimeContract() {
       {
         id: "resources",
         label: "Resource registry",
-        count: 26,
+        count: 29,
         state: "verified",
         method: "resources/list + resources/read",
         evidence: "Plugin integration, provider registry, model scaling profile, model parameter ladder, frontier escalation policy, 150B frontier model program, 20B model/dataset card templates, and MCP runtime contract resources are read through the protocol",

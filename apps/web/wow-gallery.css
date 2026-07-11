@@ -346,6 +346,36 @@ h3 {
   border-bottom: 1px solid var(--line);
 }
 
+.reference-preview-fallback {
+  display: grid;
+  min-height: 10rem;
+  gap: 0.45rem;
+  align-content: center;
+  padding: 1rem;
+  background: linear-gradient(145deg, #122119, #080b0a);
+  color: var(--text);
+  text-align: left;
+}
+
+.reference-preview-fallback strong {
+  color: #d9ffb8;
+  font-size: 0.9rem;
+}
+
+.reference-preview-fallback small {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.reference-preview-fallback code {
+  overflow: hidden;
+  color: #a9ff68;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.68rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .gallery-card-body {
   display: grid;
   gap: 10px;
@@ -404,9 +434,39 @@ h3 {
 #preview-image {
   display: block;
   width: 100%;
+  min-height: 16rem;
   max-height: 68vh;
+  box-sizing: border-box;
+  padding: 2rem;
   object-fit: contain;
-  background: #050505;
+  background: linear-gradient(145deg, #122119, #080b0a);
+  color: var(--text);
+  text-align: left;
+}
+
+#preview-image strong,
+#preview-image small,
+#preview-image code {
+  display: block;
+  margin-bottom: 0.55rem;
+}
+
+#preview-image strong {
+  color: #d9ffb8;
+  font-size: 1rem;
+}
+
+#preview-image small {
+  color: var(--muted);
+}
+
+#preview-image code {
+  overflow: hidden;
+  color: #a9ff68;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .preview-note {

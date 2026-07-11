@@ -41,6 +41,12 @@
     return [...new Set(pages.flatMap((page) => page.tags || []))].sort();
   }
 
+  function unavailablePreviewMarkup(title, source) {
+    return `<strong>Preview unavailable</strong>
+      <small>Supplied PNG is not present in this checkout.</small>
+      <code>${escapeHtml(source || `${title} PNG`)}</code>`;
+  }
+
   function renderKimiReferences() {
     els.kimiGrid.innerHTML = state.kimiReferences.map((ref) => `<article class="reference-card">
       <p class="eyebrow">${escapeHtml(ref.status)}</p>
@@ -91,7 +97,7 @@
     els.resultCount.textContent = `${pages.length} of ${state.pages.length} shown`;
     els.galleryGrid.innerHTML = pages.map((page) => `<article class="gallery-card">
       <button type="button" class="gallery-thumb-button" data-action="preview-page" data-page-id="${escapeHtml(page.id)}">
-        <img src="${escapeHtml(page.image)}" alt="${escapeHtml(page.title)} preview" loading="lazy">
+        <span class="reference-preview-fallback" role="img" aria-label="${escapeHtml(`${page.title} preview unavailable`)}">${unavailablePreviewMarkup(page.title, page.image)}</span>
       </button>
       <div class="gallery-card-body">
         <div>
@@ -113,12 +119,13 @@
   function showPreview(pageId) {
     const page = state.pages.find((item) => item.id === pageId);
     if (!page) return;
-    els.previewImage.src = page.image;
-    els.previewImage.alt = `${page.title} preview`;
+    els.previewImage.innerHTML = unavailablePreviewMarkup(page.title, page.image);
+    els.previewImage.setAttribute("aria-label", `${page.title} preview unavailable`);
     els.previewTitle.textContent = page.title;
     els.previewCollection.textContent = page.collection;
-    els.previewNote.textContent = "Imported visual reference. Use it for SEIS design comparison, not as evidence of live implementation.";
-    els.previewImageLink.href = page.image;
+    els.previewNote.textContent = "The supplied PNG is not present in this checkout. The imported HTML reference remains available for comparison and is not proof of live implementation.";
+    els.previewImageLink.removeAttribute("href");
+    els.previewImageLink.classList.add("is-hidden");
     if (page.html) {
       els.previewHtml.href = page.html;
       els.previewHtml.classList.remove("is-hidden");
