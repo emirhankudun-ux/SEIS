@@ -145,7 +145,9 @@ prefers `SEIS_REPO_ROOT` while retaining `SEIS_REPOSITORY_ROOT` and `SEIS_ROOT`
 as compatibility overrides. Its UI
 shows the plan's Local Demo result, declared MCP tools, quality gate, approval
 boundary, the 13 managed agent status-and-plan controls, and the latest bounded
-execution-evidence records. The
+execution-evidence records. It also exposes a local task planner whose purpose
+input is sent only to the validated plan runtime and is not persisted in the
+evidence ledger. The
 `SeisAIExecutionEvidenceLedger` stores only redacted metadata: sequence,
 registry subject ID, action IDs, state, provider/model identity, approval counts,
 input-reference counts, and execution truth flags. It never stores a purpose,

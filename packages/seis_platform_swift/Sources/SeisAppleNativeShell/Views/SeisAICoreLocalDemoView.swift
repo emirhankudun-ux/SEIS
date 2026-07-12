@@ -75,6 +75,33 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         }
     }
 
+    func planArchitectTask(purpose: String) {
+        guard let runtime else {
+            statusMessage = "Load a validated snapshot before planning a task."
+            return
+        }
+
+        isPlanning = true
+        let request = SeisAIAgentTaskRequest(
+            id: "apple-architect-task-plan",
+            agentID: "architect-agent",
+            purpose: purpose,
+            requestedActions: [.inspectRepositoryMetadata, .producePlan],
+            inputReferences: ["apps/seis-core/data/seis-ai-core-runtime-snapshot.json"]
+        )
+
+        Task {
+            let plan = await runtime.planAgentTask(request)
+            lastAgentPlan = plan
+            evidence = await runtime.evidenceSnapshot(limit: 8)
+            evidencePersistenceState = await runtime.evidencePersistenceState()
+            isPlanning = false
+            statusMessage = plan.outcome == .planned
+                ? "Architect task plan prepared locally; purpose text was not persisted to evidence."
+                : "Architect task plan was blocked by the Local Demo boundary."
+        }
+    }
+
     func plan(for lane: SeisAICorePersonalLane) {
         guard let runtime else {
             statusMessage = "Load a validated snapshot before planning a lane."
@@ -125,6 +152,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
 
 struct SeisAICoreLocalDemoView: View {
     @StateObject private var model: SeisAICoreLocalDemoModel
+    @State private var taskPurpose = "Prepare a bounded repository readiness plan."
 
     init(repositoryPath: String) {
         _model = StateObject(wrappedValue: SeisAICoreLocalDemoModel(repositoryPath: repositoryPath))
@@ -137,6 +165,7 @@ struct SeisAICoreLocalDemoView: View {
             if let snapshot = model.snapshot {
                 metrics(snapshot: snapshot)
                 providerList(snapshot: snapshot)
+                taskPlanner
                 laneList(snapshot: snapshot)
                 agentList(snapshot: snapshot)
 
@@ -262,6 +291,34 @@ struct SeisAICoreLocalDemoView: View {
         case .missingKey, .disabled, .rateLimited, .error:
             .orange
         }
+    }
+
+    private var taskPlanner: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Label("Local task planner", systemImage: "text.badge.checkmark")
+                .font(.subheadline.weight(.semibold))
+            TextField("Task purpose", text: $taskPurpose)
+                .textFieldStyle(.roundedBorder)
+                .onSubmit { model.planArchitectTask(purpose: taskPurpose) }
+            HStack {
+                Text("Purpose is sent only to the local plan runtime and is not persisted in evidence.")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                Spacer(minLength: 8)
+                Button {
+                    model.planArchitectTask(purpose: taskPurpose)
+                } label: {
+                    Label("Plan", systemImage: "list.clipboard")
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.small)
+                .disabled(model.isPlanning)
+            }
+        }
+        .padding(10)
+        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 8))
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Local task planner. Purpose is sent only to the local plan runtime and is not persisted in evidence.")
     }
 
     private func metric(_ title: String, value: String, image: String) -> some View {
