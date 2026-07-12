@@ -329,6 +329,8 @@ for (const phrase of [
   "data-second-brain-agent-review-assignment",
   "data-second-brain-agent-review-options",
   "data-second-brain-active-review-agent",
+  "data-second-brain-agent-review-ledger",
+  "data-ai-second-brain-agent-review-ledger",
   "second-brain-capture",
   "second-brain-link",
   "second-brain-training-pack",
@@ -366,6 +368,11 @@ for (const phrase of [
   "agent-review-queue.json",
   "agent-review-assignment.md",
   "agent-review-assignment.json",
+  "agent-review-ledger.md",
+  "agent-review-ledger.json",
+  "buildSecondBrainAgentReviewLedgerRecord",
+  "buildSecondBrainAgentReviewLedgerMarkdown",
+  "browser-local-plan-only-history",
   "human-selected-plan-only-review",
   "NO-GO-agent-execution-requires-separate-approval",
   "agentExecuted: false",
@@ -471,6 +478,8 @@ ensure(desktopJs.includes("providerCallsPerformed: false") && desktopJs.includes
 ensure(desktopJs.includes("agentExecuted ${agentReviewAssignment.execution.agentExecuted}") && desktopJs.includes("mcpInvocationsPerformed ${agentReviewAssignment.execution.mcpInvocationsPerformed}"), "SEIS AI bridge must expose the plan-only assignment execution boundary");
 ensure(desktopJs.includes("function getSecondBrainSearchIndex(data = getSecondBrainData())"), "Second Brain search index must accept current browser-local data for assignment results");
 ensure(desktopJs.includes("assignment.markdownPath") && desktopJs.includes("#agent-review"), "Second Brain search must expose the local plan-only assignment path and tags");
+ensure(desktopJs.includes("data.agentReviewAssignments = [record, ...data.agentReviewAssignments]") && desktopJs.includes("maxLedgerEntries"), "Second Brain must append explicit assignments to a bounded local ledger");
+ensure(desktopJs.includes("Ledger entries are browser-local assignment receipts"), "Second Brain review ledger must keep the browser-local, no-execution boundary");
 
 for (const appId of [
   "seis-system-os",

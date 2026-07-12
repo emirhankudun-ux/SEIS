@@ -23,7 +23,9 @@ const REQUIRED_ARTIFACTS = [
   "/home/seis/SecondBrain/09-review/agent-review-queue.md",
   "/home/seis/SecondBrain/09-review/agent-review-queue.json",
   "/home/seis/SecondBrain/09-review/agent-review-assignment.md",
-  "/home/seis/SecondBrain/09-review/agent-review-assignment.json"
+  "/home/seis/SecondBrain/09-review/agent-review-assignment.json",
+  "/home/seis/SecondBrain/09-review/agent-review-ledger.md",
+  "/home/seis/SecondBrain/09-review/agent-review-ledger.json"
 ];
 
 function ensure(condition, message) {
@@ -307,6 +309,8 @@ function validateStaticContract() {
     "data-second-brain-agent-review-assignment",
     "data-second-brain-agent-review-options",
     "data-second-brain-active-review-agent",
+    "data-second-brain-agent-review-ledger",
+    "data-ai-second-brain-agent-review-ledger",
     "data-second-brain-search-panel",
     "data-second-brain-search-results",
     "data-second-brain-search-filters",
@@ -414,6 +418,7 @@ async function smokeSecondBrain(client, baseUrl) {
       hasAgentRegistry: Boolean(root?.querySelector('[data-second-brain-agent-registry]')),
       hasAgentReviewQueue: Boolean(root?.querySelector('[data-second-brain-agent-review-queue]')),
       hasAgentReviewAssignment: Boolean(root?.querySelector('[data-second-brain-agent-review-assignment]')),
+      agentReviewLedgerRows: root?.querySelectorAll('[data-second-brain-agent-review-ledger] tbody tr').length || 0,
       hasSearchPanel: Boolean(root?.querySelector('[data-second-brain-search-panel]')),
       hasObsidianSafeImport: Boolean(root?.querySelector('[data-second-brain-obsidian-safe-import]')),
       noteButtons: root?.querySelectorAll('[data-second-brain-vault] [data-action="second-brain-select-note"]').length || 0,
@@ -473,6 +478,7 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(initial.hasAgentRegistry, "Second Brain agent registry evidence panel missing.");
   ensure(initial.hasAgentReviewQueue, "Second Brain agent review queue metric missing.");
   ensure(initial.hasAgentReviewAssignment, "Second Brain human-selected agent review assignment panel missing.");
+  ensure(initial.agentReviewLedgerRows === 1, `Second Brain review ledger should render its empty-state row, got ${initial.agentReviewLedgerRows}`);
   ensure(initial.hasSearchPanel, "Second Brain local search panel missing.");
   ensure(initial.hasObsidianSafeImport, "Second Brain Obsidian safe import selector missing.");
   ensure(initial.noteButtons === 6, `expected six vault notes, got ${initial.noteButtons}`);
@@ -549,6 +555,7 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(agentReviewAssignment.selectedAgent === "Security Agent", `Second Brain selected review role did not update: ${JSON.stringify(agentReviewAssignment)}`);
   ensure(agentReviewAssignment.assignmentText.includes("human-selected-plan-only-review") && agentReviewAssignment.assignmentText.includes("agent-review-assignment.md"), `Second Brain plan-only assignment state was not visible: ${JSON.stringify(agentReviewAssignment)}`);
   ensure(agentReviewAssignment.paths.includes('/home/seis/SecondBrain/09-review/agent-review-assignment.md') && agentReviewAssignment.paths.includes('/home/seis/SecondBrain/09-review/agent-review-assignment.json'), `Second Brain paired assignment artifacts were not written: ${JSON.stringify(agentReviewAssignment)}`);
+  ensure(agentReviewAssignment.paths.includes('/home/seis/SecondBrain/09-review/agent-review-ledger.md') && agentReviewAssignment.paths.includes('/home/seis/SecondBrain/09-review/agent-review-ledger.json'), `Second Brain paired assignment ledger artifacts were not written: ${JSON.stringify(agentReviewAssignment)}`);
 
   await evaluate(client, `(() => {
     const input = document.querySelector('.app-window[data-app-id="second-brain"]:not([hidden]) [data-second-brain-search-query]');
@@ -762,6 +769,7 @@ async function smokeSecondBrain(client, baseUrl) {
       handoffBriefText: bridge?.querySelector('[data-ai-second-brain-handoff-brief]')?.innerText || '',
       reviewBundleText: bridge?.querySelector('[data-ai-second-brain-handoff-brief]')?.innerText || '',
       agentReviewAssignmentText: bridge?.querySelector('[data-ai-second-brain-agent-review-assignment-panel]')?.innerText || '',
+      agentReviewLedgerMetric: bridge?.querySelector('[data-ai-second-brain-agent-review-ledger] p')?.textContent?.trim() || '',
       localOnlyCopy: text.includes('Local Demo context only'),
       noMutationCopy: text.includes('no private vault import') && text.includes('GitHub mutation') && text.includes('SSH')
     };
@@ -777,6 +785,7 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(aiBridge.handoffBriefText.includes("plugin-handoff-seis-code-latest.md"), "SEIS AI Second Brain bridge must retain the local handoff brief state.");
   ensure(aiBridge.reviewBundleText.includes("plugin-review-bundle-latest.md"), "SEIS AI Second Brain bridge must retain the all-lane review bundle state.");
   ensure(aiBridge.agentReviewAssignmentText.includes("Security Agent") && aiBridge.agentReviewAssignmentText.includes("human-selected-plan-only-review") && aiBridge.agentReviewAssignmentText.includes("agentExecuted false"), "SEIS AI Second Brain bridge must render the human-selected plan-only assignment without execution authority.");
+  ensure(aiBridge.agentReviewLedgerMetric === "1", `SEIS AI Second Brain bridge must expose one recorded assignment ledger entry, got ${aiBridge.agentReviewLedgerMetric}`);
   ensure(aiBridge.localOnlyCopy, "SEIS AI Second Brain bridge must label local context only.");
   ensure(aiBridge.noMutationCopy, "SEIS AI Second Brain bridge must label private vault/GitHub/SSH boundary.");
 
@@ -799,6 +808,8 @@ async function smokeSecondBrain(client, baseUrl) {
       agentReviewQueueJsonPersisted: paths.includes('/home/seis/SecondBrain/09-review/agent-review-queue.json'),
       agentReviewAssignmentPersisted: paths.includes('/home/seis/SecondBrain/09-review/agent-review-assignment.md'),
       agentReviewAssignmentJsonPersisted: paths.includes('/home/seis/SecondBrain/09-review/agent-review-assignment.json'),
+      agentReviewLedgerPersisted: paths.includes('/home/seis/SecondBrain/09-review/agent-review-ledger.md'),
+      agentReviewLedgerJsonPersisted: paths.includes('/home/seis/SecondBrain/09-review/agent-review-ledger.json'),
       obsidianSelectionReceiptPersisted: paths.includes('/home/seis/SecondBrain/obsidian-explicit-selection-receipt.md'),
       obsidianPreflightRequestPersisted: paths.includes('/home/seis/SecondBrain/obsidian-preflight-approval-request.md')
     };
@@ -812,6 +823,8 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(persistence.agentReviewQueueJsonPersisted, `Second Brain structured agent review queue did not persist after reload: ${JSON.stringify(persistence)}`);
   ensure(persistence.agentReviewAssignmentPersisted, `Second Brain plan-only agent review assignment did not persist after reload: ${JSON.stringify(persistence)}`);
   ensure(persistence.agentReviewAssignmentJsonPersisted, `Second Brain structured agent review assignment did not persist after reload: ${JSON.stringify(persistence)}`);
+  ensure(persistence.agentReviewLedgerPersisted, `Second Brain plan-only agent review ledger did not persist after reload: ${JSON.stringify(persistence)}`);
+  ensure(persistence.agentReviewLedgerJsonPersisted, `Second Brain structured agent review ledger did not persist after reload: ${JSON.stringify(persistence)}`);
   ensure(persistence.obsidianSelectionReceiptPersisted, `Obsidian explicit selection receipt did not persist after reload: ${JSON.stringify(persistence)}`);
   ensure(persistence.obsidianPreflightRequestPersisted, `Obsidian preflight approval request did not persist after reload: ${JSON.stringify(persistence)}`);
 

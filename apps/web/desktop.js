@@ -1629,6 +1629,9 @@ const SEIS_SECOND_BRAIN_AGENT_REVIEW_QUEUE = {
 const SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT = {
   markdownPath: "/home/seis/SecondBrain/09-review/agent-review-assignment.md",
   jsonPath: "/home/seis/SecondBrain/09-review/agent-review-assignment.json",
+  ledgerMarkdownPath: "/home/seis/SecondBrain/09-review/agent-review-ledger.md",
+  ledgerJsonPath: "/home/seis/SecondBrain/09-review/agent-review-ledger.json",
+  maxLedgerEntries: 24,
   schemaVersion: "seis-second-brain-agent-review-assignment/v1",
   status: "human-selected-plan-only-review",
   decision: "NO-GO-agent-execution-requires-separate-approval",
@@ -5222,6 +5225,7 @@ function getSecondBrainData() {
   if (!data.obsidianPreflightApprovalRequest || typeof data.obsidianPreflightApprovalRequest !== "object") data.obsidianPreflightApprovalRequest = null;
   if (!SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.some(([agent]) => agent === data.activeAgentReviewAgent)) data.activeAgentReviewAgent = SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster[0][0];
   if (!data.agentReviewAssignment || typeof data.agentReviewAssignment !== "object") data.agentReviewAssignment = null;
+  if (!Array.isArray(data.agentReviewAssignments)) data.agentReviewAssignments = data.agentReviewAssignment ? [data.agentReviewAssignment] : [];
   if (!Array.isArray(data.searchSnapshots)) data.searchSnapshots = [];
   if (!Array.isArray(data.activity)) {
     data.activity = [
@@ -5816,8 +5820,9 @@ function getSecondBrainSearchIndex(data = getSecondBrainData()) {
     ...agent
   }));
   const assignment = data.agentReviewAssignment;
-  const assignments = assignment ? [{
-    id: `agent-review-assignment-${assignment.agent.name}`,
+  const assignmentRecords = data.agentReviewAssignments.length ? data.agentReviewAssignments : assignment ? [assignment] : [];
+  const assignments = assignmentRecords.map((assignment) => ({
+    id: `agent-review-assignment-${assignment.agent.name}-${assignment.recordedAt}`,
     type: "Agents",
     title: `Plan-only assignment: ${assignment.agent.name}`,
     source: assignment.markdownPath,
@@ -5827,7 +5832,7 @@ function getSecondBrainSearchIndex(data = getSecondBrainData()) {
     action: "open-file",
     path: assignment.markdownPath,
     priority: 28
-  }] : [];
+  }));
   return [...notes, ...backlinks, ...tags, ...apps, ...routes, ...files, ...plugins, ...agents, ...assignments];
 }
 
@@ -6268,6 +6273,7 @@ function renderSecondBrain() {
           <article class="metric-card"><strong>Role status</strong><p>${escapeHtml(getSecondBrainAgentReviewDefinition(data.activeAgentReviewAgent)[1])}</p></article>
           <article class="metric-card"><strong>Assignment decision</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.decision)}</p></article>
           <article class="metric-card"><strong>Assignment state</strong><p>${escapeHtml(data.agentReviewAssignment?.status || "not-recorded")}</p></article>
+          <article class="metric-card"><strong>Recorded assignments</strong><p>${data.agentReviewAssignments.length}</p></article>
         </div>
         <p class="status-note">Selected duty: ${escapeHtml(getSecondBrainAgentReviewDefinition(data.activeAgentReviewAgent)[2])}</p>
         <div class="toolbar">
@@ -6276,7 +6282,11 @@ function renderSecondBrain() {
           <button type="button" data-action="open-app" data-app-id="files">Open Files</button>
         </div>
         <p class="status-note" data-second-brain-agent-review-assignment-action>Last assignment: ${data.lastAgentReviewAssignment ? `${escapeHtml(data.lastAgentReviewAssignment.time)} / ${escapeHtml(data.lastAgentReviewAssignment.agent)} / ${escapeHtml(data.lastAgentReviewAssignment.status)} / ${escapeHtml(data.lastAgentReviewAssignment.path)}` : "Not recorded"}.</p>
-        <p class="status-note">Outputs: ${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.markdownPath)} and ${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.jsonPath)}.</p>
+        <p class="status-note">Outputs: ${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.markdownPath)} and ${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.jsonPath)}. Ledger: ${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.ledgerMarkdownPath)} and ${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.ledgerJsonPath)}.</p>
+        <table class="data-table" data-second-brain-agent-review-ledger>
+          <thead><tr><th>Recorded</th><th>Agent</th><th>Status</th><th>Local context</th></tr></thead>
+          <tbody>${data.agentReviewAssignments.map((assignment) => `<tr><td>${escapeHtml(new Date(assignment.recordedAt).toLocaleTimeString())}</td><td>${escapeHtml(assignment.agent.name)}</td><td>${escapeHtml(assignment.status)}</td><td>${escapeHtml(assignment.contextProfiles.map((profile) => profile.lane).join(", ") || "No mapped lane")}</td></tr>`).join("") || "<tr><td colspan=\"4\">No plan-only assignments recorded.</td></tr>"}</tbody>
+        </table>
       </section>
       <h4>Local Context Profiles</h4>
       <p class="status-note">${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.contextProfilePolicy.installedAiProfileAccess)} ${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.contextProfilePolicy.boundary)}</p>
@@ -8303,6 +8313,7 @@ function renderAiAssistantTab(activeTab, data) {
     const selectedPluginSkill = getSecondBrainPluginSkill(secondBrainData.activePluginSkillId);
     const selectedPluginProfile = getSecondBrainPluginContextProfile(selectedPluginSkill?.id);
     const agentReviewAssignment = secondBrainData.agentReviewAssignment;
+    const agentReviewAssignments = secondBrainData.agentReviewAssignments;
     return `<div class="subagent-ai-plan" data-ai-second-brain-bridge>
       <div class="toolbar">
         <button type="button" data-action="open-app" data-app-id="second-brain">Open SEIS Second Brain</button>
@@ -8317,6 +8328,7 @@ function renderAiAssistantTab(activeTab, data) {
         <article class="metric-card"><strong>Sub-Agent Lanes</strong><p>${SUB_AGENT_DEMO.lanes.length}</p></article>
         <article class="metric-card"><strong>Agent Roster</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length}</p></article>
         <article class="metric-card" data-ai-second-brain-agent-review-assignment><strong>Agent Assignment</strong><p>${escapeHtml(agentReviewAssignment?.agent?.name || "Not recorded")}</p></article>
+        <article class="metric-card" data-ai-second-brain-agent-review-ledger><strong>Assignment Ledger</strong><p>${agentReviewAssignments.length}</p></article>
         <article class="metric-card" data-ai-second-brain-agent-registry><strong>Agent Registry</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REGISTRY.decisionLabel)}</p></article>
         <article class="metric-card" data-ai-second-brain-plugin-skill-readiness><strong>Plugin Skills</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.length}</p></article>
         <article class="metric-card"><strong>Quality Gate</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.qualityGate)}</p></article>
@@ -8388,8 +8400,8 @@ function renderAiAssistantTab(activeTab, data) {
         </article>
         <article class="mini-card">
           <strong>Local Assignment Context</strong>
-          <p class="muted">${agentReviewAssignment ? escapeHtml(agentReviewAssignment.contextProfiles.map((profile) => profile.lane).join(", ") || "No related local context profile") : "No context handoff"}</p>
-          <p>${agentReviewAssignment ? escapeHtml(`agentExecuted ${agentReviewAssignment.execution.agentExecuted}; providerCallsPerformed ${agentReviewAssignment.execution.providerCallsPerformed}; mcpInvocationsPerformed ${agentReviewAssignment.execution.mcpInvocationsPerformed}`) : "No agent execution, provider call, MCP invocation, SSH, deployment, or GitHub mutation is enabled from this bridge."}</p>
+          <p class="muted">${agentReviewAssignment ? escapeHtml(`${agentReviewAssignment.contextProfiles.map((profile) => profile.lane).join(", ") || "No related local context profile"} · ${agentReviewAssignments.length} local ledger entries`) : "No context handoff"}</p>
+          <p>${agentReviewAssignment ? escapeHtml(`agentExecuted ${agentReviewAssignment.execution.agentExecuted}; providerCallsPerformed ${agentReviewAssignment.execution.providerCallsPerformed}; mcpInvocationsPerformed ${agentReviewAssignment.execution.mcpInvocationsPerformed}. Ledger: ${SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.ledgerMarkdownPath}`) : "No agent execution, provider call, MCP invocation, SSH, deployment, or GitHub mutation is enabled from this bridge."}</p>
         </article>
       </div>
     </div>`;
@@ -10400,6 +10412,48 @@ This receipt is not an agent run, approval to mutate data, provider request, con
 `;
 }
 
+function buildSecondBrainAgentReviewLedgerRecord(assignments) {
+  return {
+    schemaVersion: "seis-second-brain-agent-review-ledger/v1",
+    generatedAt: new Date().toISOString(),
+    status: "browser-local-plan-only-history",
+    decision: SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.decision,
+    markdownPath: SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.ledgerMarkdownPath,
+    jsonPath: SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.ledgerJsonPath,
+    maxEntries: SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.maxLedgerEntries,
+    assignments: assignments.map((assignment) => ({
+      recordedAt: assignment.recordedAt,
+      status: assignment.status,
+      agent: assignment.agent,
+      contextProfiles: assignment.contextProfiles,
+      execution: assignment.execution
+    })),
+    boundary: "Ledger entries are browser-local assignment receipts. They do not prove agent execution or authorize any external action."
+  };
+}
+
+function buildSecondBrainAgentReviewLedgerMarkdown(ledger) {
+  return `# SEIS Second Brain Plan-Only Agent Review Ledger
+
+Generated: ${ledger.generatedAt}
+Schema: ${ledger.schemaVersion}
+Status: ${ledger.status}
+Decision: ${ledger.decision}
+Ledger path: ${ledger.markdownPath}
+Structured record: ${ledger.jsonPath}
+Entries: ${ledger.assignments.length} of ${ledger.maxEntries}
+
+## Assignment History
+
+${ledger.assignments.map((assignment, index) => `- ${index + 1}. ${assignment.recordedAt} | ${assignment.agent.name} | ${assignment.status} | Context: ${assignment.contextProfiles.map((profile) => profile.lane).join(", ") || "none"} | agentExecuted=${assignment.execution.agentExecuted}; providerCallsPerformed=${assignment.execution.providerCallsPerformed}; mcpInvocationsPerformed=${assignment.execution.mcpInvocationsPerformed}`).join("\n") || "- No plan-only assignments recorded."}
+
+## Boundary
+
+- ${ledger.boundary}
+- No provider call, MCP invocation, private-vault read, SSH command, deployment, GitHub mutation, or autonomous write was performed.
+`;
+}
+
 function recordSecondBrainAgentReviewAssignment(button) {
   const data = getSecondBrainData();
   const root = button.closest("[data-second-brain-agent-review-assignment]");
@@ -10413,27 +10467,32 @@ function recordSecondBrainAgentReviewAssignment(button) {
   upsertFile(record.markdownPath, buildSecondBrainAgentReviewAssignmentMarkdown(record));
   upsertFile(record.jsonPath, `${JSON.stringify(record, null, 2)}\n`);
   data.agentReviewAssignment = record;
+  data.agentReviewAssignments = [record, ...data.agentReviewAssignments].slice(0, SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.maxLedgerEntries);
+  const ledger = buildSecondBrainAgentReviewLedgerRecord(data.agentReviewAssignments);
+  upsertFile(ledger.markdownPath, buildSecondBrainAgentReviewLedgerMarkdown(ledger));
+  upsertFile(ledger.jsonPath, `${JSON.stringify(ledger, null, 2)}\n`);
   data.lastAgentReviewAssignment = {
     time: new Date(timestamp).toLocaleTimeString(),
     agent: record.agent.name,
     status: record.status,
-    path: record.markdownPath
+    path: record.markdownPath,
+    ledgerEntryCount: ledger.assignments.length
   };
   data.activity.unshift({
     id: `agent-review-assignment-${Date.now()}`,
     step: "Agent Review",
     status: record.status,
-    detail: `Human-selected plan-only assignment for ${record.agent.name} saved to ${record.markdownPath}.`
+    detail: `Human-selected plan-only assignment for ${record.agent.name} saved to ${record.markdownPath}; ledger now has ${ledger.assignments.length} entries.`
   });
   data.activity = data.activity.slice(0, 12);
-  const message = `Plan-only agent review assignment saved for ${record.agent.name} at ${record.markdownPath}.`;
+  const message = `Plan-only agent review assignment saved for ${record.agent.name} at ${record.markdownPath}; ledger updated at ${ledger.markdownPath}.`;
   getAppStatus("second-brain").lastAction = message;
   log("second-brain", message);
   saveState();
   renderOpenWindows("second-brain");
   renderOpenWindows("files");
   renderOpenWindows("system-logs");
-  toast("SEIS Second Brain", `${record.agent.name} has a local plan-only assignment. No agent execution was started.`);
+  toast("SEIS Second Brain", `${record.agent.name} has a local plan-only assignment. Ledger entries: ${ledger.assignments.length}. No agent execution was started.`);
 }
 
 function createSecondBrainPluginReviewBundle() {
