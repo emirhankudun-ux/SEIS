@@ -1,0 +1,30 @@
+{
+  "schemaRef": "packages/evals/schemas/model-training-run.schema.json",
+  "schemaVersion": 1,
+  "recordType": "training-run",
+  "id": "training-run:synthetic-test-fixture:v1",
+  "recordStatus": "fixture-only-not-evidence",
+  "fixtureOnly": true,
+  "recordHash": "sha256:2f26e14a2f540ad5cd358616e6a4d80e6bfa7994dc31b7b550b4e5d991b36a0d",
+  "previousRecordHash": "sha256:0690cb96cb714667759957ea84dcc9dc6fec628347545b361d40b2d9b7ad614e",
+  "method": "sft",
+  "modelClass": "seed",
+  "datasetManifestId": "dataset:synthetic-test-fixture:v1",
+  "computeApprovalId": "compute-approval:synthetic-test-fixture:v1",
+  "baseModel": {
+    "id": "unselected-fixture-base",
+    "owner": "unknown",
+    "license": "not-reviewed",
+    "artifactHash": null
+  },
+  "configHash": "sha256:9b5027a6ec17ddc8a62e4fd555efb65262949a9fa7137948bd1c38d00265aee8",
+  "codeCommit": null,
+  "createdAt": null,
+  "startedAt": null,
+  "completedAt": null,
+  "trainingPerformed": false,
+  "logs": [],
+  "checkpointIds": [],
+  "cancellationReason": null,
+  "truthBoundary": "Synthetic schema fixture only; no model, dataset, code revision, log, or training run exists."
+}

@@ -68,6 +68,7 @@ describe("toolDefinitions", () => {
     assert.ok(names.includes("seis_ai_core_read_only_route"));
     assert.ok(names.includes("seis_ai_core_model_scaling_status"));
     assert.ok(names.includes("seis_ai_core_frontier_training_status"));
+    assert.ok(names.includes("seis_ai_core_training_evidence_status"));
     assert.ok(names.includes("seis_ai_core_version_status"));
     assert.ok(names.includes("seis_ai_core_version_promotion_dry_run"));
     assert.ok(names.includes("seis_ai_core_subagent_model"));
@@ -1387,6 +1388,26 @@ describe("executeTool", () => {
     assert.equal(payload.runtimeValidation.failClosed, true);
     assert.match(payload.error, /council source path is not allowlisted/);
     assert.equal(payload.executionEvidence.remoteJobSubmitted, false);
+  });
+
+  it("seis_ai_core_training_evidence_status validates schemas while keeping real evidence empty", () => {
+    const payload = JSON.parse(
+      executeTool("seis_ai_core_training_evidence_status", {}, {
+        repoRoot: workspaceRoot,
+        webRoot: path.join(workspaceRoot, "apps", "web"),
+      })
+    );
+    assert.equal(payload.ok, true);
+    assert.equal(payload.id, "seis-model-training-evidence-chain");
+    assert.equal(payload.schemaCount, 6);
+    assert.equal(payload.currentEvidenceRecordCount, 0);
+    assert.equal(payload.releaseDecision, "deny");
+    assert.equal(payload.trainingAuthorized, false);
+    assert.equal(payload.routeEligibleToday, false);
+    assert.equal(payload.fixtureValidation.validRecordCount, 6);
+    assert.equal(payload.fixtureValidation.invalidCaseCount, 8);
+    assert.equal(payload.fixtureValidation.allValidFixturesPassed, true);
+    assert.equal(payload.fixtureValidation.allInvalidFixturesRejected, true);
   });
 
   it("seis_ai_core_version_status returns the bounded AI Core version identity", () => {

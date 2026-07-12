@@ -10,6 +10,10 @@ the read-only MCP resource
 `seis://ai/frontier-training-launch-plan.json` and the read-only status tool
 `seis_ai_core_frontier_training_status`.
 
+The immutable evidence schema chain is
+`content/development/seis-model-training-evidence-chain.json` and is documented
+in `docs/ai/training-evidence-chain.md`.
+
 This foundation does not submit a job, authenticate a provider, download a
 model or dataset, allocate paid compute, train weights, run a benchmark,
 publish a checkpoint, or demonstrate AGI.

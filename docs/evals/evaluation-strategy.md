@@ -8,6 +8,9 @@ Prompt, retrieval, agent, adapter ve model değişikliklerini aynı kanıt düze
 Yürütme kaynağı:
 `content/development/seis-frontier-training-launch-plan.json`.
 
+Evaluation report ve release bağlantı şemaları:
+`content/development/seis-model-training-evidence-chain.json`.
+
 ## Gerçeklik Sınırı
 
 Mevcut seed-model testleri yerel ve deterministiktir. Bunlar 20B+ LLM
@@ -89,6 +92,12 @@ Her eval run şunları kaydeder:
 
 Prompt veya sır değeri loglara ham yazılmaz.
 
+`packages/evals/schemas/model-evaluation-report.schema.json` bu tekrar
+üretilebilirlik sınırını `codeCommit`, `configHash`, `randomSeeds`,
+`hardwareProfile`, `runtimeVersion`, `rawOutputUri` ve `rawOutputHash`
+alanlarıyla zorunlu kılar. `benchmarkExecuted: true` olduğunda rapor ve ham
+çıktı hashleri ile kod commit'i eksik bırakılamaz.
+
 ## Terfi Politikası
 
 Bir sürüm ancak:
@@ -101,6 +110,16 @@ Bir sürüm ancak:
 6. İnsan incelemesi ve release onayı alır.
 
 Bu koşullar route veya deployment onayını otomatik vermez.
+
+## Doğrulama
+
+```bash
+npm run check:seis-model-training-evidence-chain
+npm run check:data-schema-registry
+```
+
+Bu komutlar şema, fixture, hash ve referans sözleşmesini doğrular; çalıştırılmış
+bir frontier benchmark veya model kalitesi kanıtı üretmez.
 
 ## Raporlama
 

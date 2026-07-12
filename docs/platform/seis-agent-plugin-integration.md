@@ -16,6 +16,8 @@ The primary install id is `seis-ai-agent@seis-repo`. Specialist SEIS plugin surf
 
 The runtime integration tools are `seis_plugin_integration`,
 `seis_ai_core_provider_status`, `seis_ai_core_model_scaling_status`,
+`seis_ai_core_frontier_training_status`,
+`seis_ai_core_training_evidence_status`,
 `seis_ai_core_version_status`, `seis_ai_core_version_promotion_dry_run`,
 `seis_ai_core_subagent_model`, `seis_ai_core_subagent_dry_run`, and
 `seis_ai_core_subagent_review_ledger`.
@@ -31,6 +33,8 @@ connector claims.
 The MCP resource set includes `seis://agent/plugin-integration.json`,
 `seis://ai/provider-registry.json`,
 `seis://ai/model-scaling-hardware-profile.json`,
+`seis://ai/frontier-training-launch-plan.json`,
+`seis://ai/model-training-evidence-chain.json`,
 `seis://ai/150b-frontier-model-program.json`,
 `seis://ai/agi-github-user-readiness-gates.json`,
 `seis://ai/version-registry.json`,
@@ -70,12 +74,17 @@ panels:
   `plan-only` permission boundaries.
 - `MCP Runtime Contract` in Installed AI displays the local stdio JSON-RPC
   contract from `content/development/seis-ai-core-mcp-runtime-contract.json`,
-  34 tools, 29 resources, 3 prompts, the no-dependency fallback transport, and
-  the smoke-test gate that proves SEIS AI Core can read plugin/provider/model-scaling
+  a browser-local historical snapshot of 34 tools, 26 resources, 3 prompts,
+  the no-dependency fallback transport, and the smoke-test gate that proves
+  SEIS AI Core can read plugin/provider/model-scaling
   resources, including `seis://ai/model-parameter-ladder.json` and
   `seis://ai/model-frontier-escalation-policy.json`, read
   `seis://ai/mcp-runtime-contract.json`, and execute repo-backed tools without
-  external servers.
+external servers.
+
+The canonical protocol-level contract is now 37 tools, 32 resources, and 3
+prompts. The browser snapshot must be updated and browser-smoked separately
+before the Installed AI panel can claim those current protocol counts.
 
 Both panels are evidence views. They do not store credentials, authenticate
 connectors, call live model providers, execute SSH, mutate GitHub, deploy, or
@@ -107,6 +116,14 @@ The model-scaling source is
 compatibility, future 70B roadmap, and 150B frontier research evidence only. It does not create
 weights, run inference, download models, run benchmarks, call providers, train
 models, or grant runtime authority.
+
+The immutable training-evidence source is
+`content/development/seis-model-training-evidence-chain.json`; it exposes
+`seis_ai_core_training_evidence_status` and
+`seis://ai/model-training-evidence-chain.json` as a read-only, fail-closed
+schema and synthetic-fixture boundary. The six fixture records prove validator
+behavior only. They do not prove a real dataset, compute approval, training run,
+checkpoint, benchmark, release, route, model ownership, or AGI capability.
 
 The 150B Frontier Model Program source is
 `content/development/seis-150b-frontier-model-program.json`; it exposes

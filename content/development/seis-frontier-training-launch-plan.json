@@ -26,6 +26,7 @@
     "agiEvaluationProtocol": "content/development/seis-agi-evaluation-protocol.json",
     "modelCardTemplate": "content/development/seis-20b-model-card-template.json",
     "datasetCardTemplate": "content/development/seis-20b-dataset-card-template.json",
+    "trainingEvidenceChain": "content/development/seis-model-training-evidence-chain.json",
     "checkpointGovernance": "docs/ai/checkpoint-governance.md",
     "trainingExecutionDoc": "docs/ai/model-training-execution.md",
     "localModelStrategy": "docs/ai/local-model-strategy.md",
@@ -477,6 +478,7 @@
   ],
   "nextSafeActions": [
     "Complete and review the 20B model-card and dataset-card templates without downloading data or weights.",
+    "Keep the model training evidence chain valid with zero real evidence records until independently verified artifacts exist.",
     "Create a sanitized dataset manifest and license map for a small local seed experiment before any frontier dataset is selected.",
     "Use the twelve-agent council to review disjoint evidence categories and record unresolved objections.",
     "Keep every lane launch decision at deny until all required evidence and an explicit unexpired human approval record exist.",

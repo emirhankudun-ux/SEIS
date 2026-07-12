@@ -1,0 +1,32 @@
+{
+  "schemaRef": "packages/data/schemas/model-dataset-manifest.schema.json",
+  "schemaVersion": 1,
+  "recordType": "dataset-manifest",
+  "id": "dataset:synthetic-test-fixture:v1",
+  "recordStatus": "fixture-only-not-evidence",
+  "fixtureOnly": true,
+  "recordHash": "sha256:c16b6f6e87e13105be4f730cc98067c12d263af9c6fba4b15994c228d807765f",
+  "previousRecordHash": null,
+  "version": 1,
+  "createdAt": null,
+  "ownerRole": "data-agent",
+  "datasetCard": {
+    "id": "dataset-card:synthetic-test-fixture:v1",
+    "contentHash": "sha256:e80914eb3639432258f01d78f3718a99117f71c5a62764c152f887f2cd8f55a0",
+    "status": "fixture-only-not-evidence"
+  },
+  "datasetReady": false,
+  "provenanceStatus": "not-reviewed",
+  "licenseStatus": "not-reviewed",
+  "containsPrivateData": false,
+  "sourceCount": 0,
+  "sources": [],
+  "splits": {
+    "train": { "sampleCount": 0, "manifestSha256": null },
+    "dev": { "sampleCount": 0, "manifestSha256": null },
+    "test": { "sampleCount": 0, "manifestSha256": null }
+  },
+  "contaminationReview": { "status": "not-run", "reportPath": null, "reviewedAt": null },
+  "humanApproval": { "required": true, "status": "missing", "approvalId": null },
+  "truthBoundary": "Synthetic schema fixture only; no dataset was collected, downloaded, approved, or used for training."
+}

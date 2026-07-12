@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-import { assertNoCredentialLikeManifestContent } from '../packages/seis-ai/src/lib/plugin-integration.mjs';
+import { assertNoCredentialLikeJsonContent } from '../packages/seis-ai/src/lib/credential-safety.mjs';
 
 const root = process.cwd();
 const failures = [];
@@ -19,13 +19,16 @@ const paths = {
   agiEvaluation: 'content/development/seis-agi-evaluation-protocol.json',
   modelCard: 'content/development/seis-20b-model-card-template.json',
   datasetCard: 'content/development/seis-20b-dataset-card-template.json',
+  trainingEvidence: 'content/development/seis-model-training-evidence-chain.json',
   mcpContract: 'content/development/seis-ai-core-mcp-runtime-contract.json',
+  credentialSafety: 'packages/seis-ai/src/lib/credential-safety.mjs',
   helper: 'packages/seis-ai/src/lib/plugin-integration.mjs',
   agentTools: 'packages/seis-ai/src/agent/tools.mjs',
   mcpServer: 'packages/seis-ai/src/mcp/server.mjs',
   agentTests: 'packages/seis-ai/test/agent.test.mjs',
   mcpTests: 'packages/seis-ai/test/mcp-smoke.test.mjs',
   trainingDoc: 'docs/ai/model-training-execution.md',
+  trainingEvidenceDoc: 'docs/ai/training-evidence-chain.md',
   checkpointDoc: 'docs/ai/checkpoint-governance.md',
   localModelDoc: 'docs/ai/local-model-strategy.md',
   providerRoutingDoc: 'docs/ai/provider-routing-policy.md',
@@ -57,6 +60,7 @@ const mcpContract = readJson(paths.mcpContract, 'MCP runtime contract');
 const packageJson = readJson(paths.packageJson, 'package.json');
 
 const helper = readText(paths.helper);
+const credentialSafety = readText(paths.credentialSafety);
 const agentTools = readText(paths.agentTools);
 const mcpServer = readText(paths.mcpServer);
 const agentTests = readText(paths.agentTests);
@@ -130,6 +134,7 @@ if (plan) {
       paths.agiEvaluation,
       paths.modelCard,
       paths.datasetCard,
+      paths.trainingEvidence,
       paths.checkpointDoc,
       paths.trainingDoc,
       paths.localModelDoc,
@@ -337,7 +342,9 @@ if (plan) {
 
   const serialized = JSON.stringify(plan);
   try {
-    assertNoCredentialLikeManifestContent(serialized, plan);
+    assertNoCredentialLikeJsonContent(serialized, plan, {
+      label: 'SEIS frontier training launch plan',
+    });
   } catch (error) {
     failures.push(error.message);
   }
@@ -385,15 +392,15 @@ if (council) {
 }
 
 if (mcpContract) {
-  ensure(mcpContract.toolCount === 36, 'MCP toolCount must be 36');
-  ensure(mcpContract.resourceCount === 31, 'MCP resourceCount must be 31');
+  ensure(mcpContract.toolCount === 37, 'MCP toolCount must be 37');
+  ensure(mcpContract.resourceCount === 32, 'MCP resourceCount must be 32');
   ensure(
-    (mcpContract.surfaces || []).find(surface => surface.id === 'tools')?.count === 36,
-    'MCP tool surface count must be 36',
+    (mcpContract.surfaces || []).find(surface => surface.id === 'tools')?.count === 37,
+    'MCP tool surface count must be 37',
   );
   ensure(
-    (mcpContract.surfaces || []).find(surface => surface.id === 'resources')?.count === 31,
-    'MCP resource surface count must be 31',
+    (mcpContract.surfaces || []).find(surface => surface.id === 'resources')?.count === 32,
+    'MCP resource surface count must be 32',
   );
   ensure(
     String(
@@ -423,6 +430,22 @@ ensure(
   mcpTests.includes('seis_ai_core_frontier_training_status'),
   'MCP smoke tests must reference the frontier training status tool',
 );
+for (const [text, label] of [
+  [agentTools, 'agent tools'],
+  [mcpServer, 'MCP server'],
+  [agentTests, 'agent tests'],
+  [mcpTests, 'MCP smoke tests'],
+]) {
+  ensure(
+    text.includes('seis_ai_core_training_evidence_status') ||
+      text.includes('TRAINING_EVIDENCE_STATUS_TOOL'),
+    `${label} must reference the training evidence status tool`,
+  );
+}
+ensure(
+  mcpServer.includes('TRAINING_EVIDENCE_RESOURCE_URI'),
+  'MCP server must expose the training evidence resource constant',
+);
 ensure(
   helper.includes('resolveInside(repoRoot, relativePath)'),
   'AI Core helper must keep manifest-controlled JSON reads inside the repository',
@@ -432,7 +455,10 @@ ensure(
   'AI Core helper must expose an invalid-fail-closed runtime state',
 );
 for (const marker of ['github_pat_', 'AKIA', 'AIza', 'Bearer']) {
-  ensure(helper.includes(marker), `AI Core credential scanner missing ${marker} coverage`);
+  ensure(
+    credentialSafety.includes(marker),
+    `AI Core credential scanner missing ${marker} coverage`,
+  );
 }
 for (const marker of [
   'trainingAuthorized must be false',
@@ -472,6 +498,7 @@ for (const relativePath of [
   paths.fineTuningDoc,
   paths.modelCardDoc,
   paths.trainingDoc,
+  paths.trainingEvidenceDoc,
   paths.checkpointDoc,
   paths.evaluationDoc,
   paths.benchmarkIntegrityDoc,
@@ -486,6 +513,7 @@ for (const relativePath of [
 
 for (const [text, label] of [
   [trainingDoc, 'training execution docs'],
+  [readText(paths.trainingEvidenceDoc), 'training evidence docs'],
   [checkpointDoc, 'checkpoint governance docs'],
   [scalingDoc, 'model scaling docs'],
   [aiCoreDoc, 'AI Core docs'],

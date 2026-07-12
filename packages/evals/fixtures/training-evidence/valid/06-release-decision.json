@@ -1,0 +1,46 @@
+{
+  "schemaRef": "packages/evals/schemas/model-release-decision.schema.json",
+  "schemaVersion": 1,
+  "recordType": "release-decision",
+  "id": "release-decision:synthetic-test-fixture:v1",
+  "recordStatus": "fixture-only-not-evidence",
+  "fixtureOnly": true,
+  "recordHash": "sha256:5c9aed3846f94fe31ca02989497ce792156db1c77338fdaa9f64987650d5facc",
+  "previousRecordHash": "sha256:f4947c364a6cc533990f4d515e415132e2fb5cd5e07a2d4715c11f7dd9abb5f1",
+  "subjectType": "checkpoint",
+  "subjectId": "checkpoint:synthetic-test-fixture:v1",
+  "decision": "deny",
+  "datasetManifestIds": ["dataset:synthetic-test-fixture:v1"],
+  "computeApprovalId": "compute-approval:synthetic-test-fixture:v1",
+  "trainingRunId": "training-run:synthetic-test-fixture:v1",
+  "checkpointIds": ["checkpoint:synthetic-test-fixture:v1"],
+  "evaluationReportIds": ["evaluation:synthetic-test-fixture:v1"],
+  "modelCard": {
+    "id": "model-card:synthetic-test-fixture:v1",
+    "contentHash": "sha256:b92b07e988962e59053389b994f3567edd03cda9b7b35914cc5d73aa5dc2d786",
+    "status": "fixture-only-not-evidence"
+  },
+  "datasetCards": [
+    {
+      "id": "dataset-card:synthetic-test-fixture:v1",
+      "datasetManifestId": "dataset:synthetic-test-fixture:v1",
+      "contentHash": "sha256:e80914eb3639432258f01d78f3718a99117f71c5a62764c152f887f2cd8f55a0",
+      "status": "fixture-only-not-evidence"
+    }
+  ],
+  "allRequiredEvidenceAccepted": false,
+  "humanApprovalId": null,
+  "approvalAttestation": {
+    "verificationStatus": "not-verified",
+    "keyId": null,
+    "algorithm": null,
+    "signature": null,
+    "verifiedAt": null,
+    "verifierId": null
+  },
+  "published": false,
+  "routeEligible": false,
+  "reasons": ["Synthetic fixture cannot authorize release or routing."],
+  "createdAt": null,
+  "truthBoundary": "Synthetic schema fixture only; no release, publication, route promotion, model ownership, or AGI claim is allowed."
+}

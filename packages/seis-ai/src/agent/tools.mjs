@@ -26,6 +26,10 @@ import {
   subagentReviewLedgerStatus,
 } from "../lib/plugin-integration.mjs";
 import { buildReadOnlyRouteDecision, READ_ONLY_ROUTER_TOOL } from "../model/read-only-router.mjs";
+import {
+  TRAINING_EVIDENCE_STATUS_TOOL,
+  trainingEvidenceStatus,
+} from "../model/training-evidence.mjs";
 import { resolveInside } from "../lib/repo.mjs";
 import { runAllChecks, i18nStatus, seoAudit, contractCheck, drawingsCatalog, styleAudit, perfAudit, a11yAudit, securityAudit } from "../lib/checks.mjs";
 
@@ -159,6 +163,17 @@ export function toolDefinitions({ allowWrite = false } = {}) {
         type: "object",
         properties: {
           includeFullPlan: { type: "boolean", description: "Return the full machine-readable launch plan." },
+        },
+      },
+    },
+    {
+      name: TRAINING_EVIDENCE_STATUS_TOOL,
+      description:
+        "Validate the SEIS model training evidence schemas, immutable synthetic fixture chain, and zero-real-evidence release boundary. Read-only and fail-closed; fixtures never prove a dataset, training run, checkpoint, benchmark, release, route, model ownership, or AGI capability.",
+      input_schema: {
+        type: "object",
+        properties: {
+          includeContract: { type: "boolean", description: "Return the full machine-readable evidence-chain contract." },
         },
       },
     },
@@ -387,6 +402,15 @@ export function executeTool(name, input, { repoRoot, webRoot, allowWrite = false
     case AI_CORE_FRONTIER_TRAINING_STATUS_TOOL: {
       return JSON.stringify(
         aiCoreFrontierTrainingStatus(repoRoot, { includeFullPlan: input?.includeFullPlan === true }),
+        null,
+        2
+      );
+    }
+    case TRAINING_EVIDENCE_STATUS_TOOL: {
+      return JSON.stringify(
+        trainingEvidenceStatus(repoRoot, {
+          includeContract: input?.includeContract === true,
+        }),
         null,
         2
       );

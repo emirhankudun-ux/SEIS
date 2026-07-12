@@ -71,6 +71,11 @@ import {
   subagentReviewLedgerStatus,
 } from "../lib/plugin-integration.mjs";
 import { buildReadOnlyRouteDecision, READ_ONLY_ROUTER_TOOL } from "../model/read-only-router.mjs";
+import {
+  TRAINING_EVIDENCE_RESOURCE_URI,
+  TRAINING_EVIDENCE_STATUS_TOOL,
+  trainingEvidenceStatus,
+} from "../model/training-evidence.mjs";
 
 const repoRoot = resolveRepoRoot();
 const webRoot = resolveWebRoot(repoRoot);
@@ -584,6 +589,25 @@ export function buildServer() {
   );
 
   server.tool(
+    TRAINING_EVIDENCE_STATUS_TOOL,
+    "Validate the SEIS model training evidence schemas, immutable synthetic fixture chain, and zero-real-evidence release boundary. Read-only and fail-closed; fixtures never prove a dataset, training run, checkpoint, benchmark, release, route, model ownership, or AGI capability.",
+    {
+      includeContract: z.boolean().optional().describe("Return the full machine-readable evidence-chain contract"),
+    },
+    async ({ includeContract }) => {
+      try {
+        const status = trainingEvidenceStatus(repoRoot, {
+          includeContract: includeContract === true,
+        });
+        if (!status.ok) throw new Error(status.error || "SEIS model training evidence chain failed closed");
+        return jsonResult(status);
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
+
+  server.tool(
     AI_CORE_VERSION_STATUS_TOOL,
     "Read the SEIS AI Core version registry for SEIS AI Core v0.1, SEIS Language v0.1, model-router, prompt-engine, agent-runtime, sub-agent lane bindings, truth boundaries, and five-year promotion gates. Read-only; never claims trained model ownership or live autonomous execution.",
     {
@@ -940,6 +964,31 @@ Steps:
             uri: "seis://ai/frontier-training-launch-plan.json",
             mimeType: "application/json",
             text: `${JSON.stringify(status.plan, null, 2)}\n`,
+          },
+        ],
+      };
+    }
+  );
+
+  server.resource(
+    "ai-core-model-training-evidence-chain",
+    TRAINING_EVIDENCE_RESOURCE_URI,
+    {
+      description:
+        "SEIS AI Core read-only training evidence schema and synthetic-fixture contract; not dataset, training, checkpoint, benchmark, release, route, model ownership, or AGI evidence",
+      mimeType: "application/json",
+    },
+    async () => {
+      const status = trainingEvidenceStatus(repoRoot, {
+        includeContract: true,
+      });
+      if (!status.ok) throw new Error(status.error || "SEIS model training evidence chain failed closed");
+      return {
+        contents: [
+          {
+            uri: TRAINING_EVIDENCE_RESOURCE_URI,
+            mimeType: "application/json",
+            text: `${JSON.stringify(status.contract, null, 2)}\n`,
           },
         ],
       };

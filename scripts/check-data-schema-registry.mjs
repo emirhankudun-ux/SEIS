@@ -82,6 +82,14 @@ function validateRecord(record) {
   for (const key of record.requiredTopLevelKeys || []) {
     ensure(Object.prototype.hasOwnProperty.call(parsed, key), `${label} missing required top-level key: ${key}`);
   }
+
+  if (record.sourceType === "training-evidence-json-schema") {
+    ensure(
+      parsed.$schema === "https://json-schema.org/draft/2020-12/schema",
+      `${label} must use JSON Schema Draft 2020-12`,
+    );
+    ensure(parsed.additionalProperties === false, `${label} must reject unknown top-level fields`);
+  }
 }
 
 if (registry) {
@@ -95,6 +103,17 @@ if (registry) {
     ensure(!ids.has(record?.id), `duplicate registry id: ${record?.id}`);
     ids.add(record?.id);
     validateRecord(record);
+  }
+
+  for (const requiredId of [
+    "model-dataset-manifest-schema",
+    "model-compute-approval-schema",
+    "model-training-run-schema",
+    "checkpoint-record-schema",
+    "model-evaluation-report-schema",
+    "model-release-decision-schema",
+  ]) {
+    ensure(ids.has(requiredId), `registry missing training evidence schema: ${requiredId}`);
   }
 }
 

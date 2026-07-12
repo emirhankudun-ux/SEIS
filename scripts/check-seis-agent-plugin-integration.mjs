@@ -93,6 +93,8 @@ if (manifest) {
   ensure(manifest.runtimeIntegration?.toolLoopTool === "seis_plugin_integration", "runtimeIntegration must expose the tool-loop tool");
   ensure(manifest.runtimeIntegration?.providerRegistryTool === "seis_ai_core_provider_status", "runtimeIntegration must expose the SEIS AI Core provider status tool");
   ensure(manifest.runtimeIntegration?.modelScalingTool === "seis_ai_core_model_scaling_status", "runtimeIntegration must expose the SEIS AI Core model scaling status tool");
+  ensure(manifest.runtimeIntegration?.frontierTrainingTool === "seis_ai_core_frontier_training_status", "runtimeIntegration must expose the fail-closed frontier training status tool");
+  ensure(manifest.runtimeIntegration?.trainingEvidenceTool === "seis_ai_core_training_evidence_status", "runtimeIntegration must expose the read-only training evidence status tool");
   ensure(manifest.runtimeIntegration?.versionRegistryTool === "seis_ai_core_version_status", "runtimeIntegration must expose the SEIS AI Core version status tool");
   ensure(
     manifest.runtimeIntegration?.versionPromotionTool === "seis_ai_core_version_promotion_dry_run",
@@ -106,6 +108,8 @@ if (manifest) {
     "seis://ai/version-registry.json",
     "seis://ai/provider-registry.json",
     "seis://ai/model-scaling-hardware-profile.json",
+    "seis://ai/frontier-training-launch-plan.json",
+    "seis://ai/model-training-evidence-chain.json",
     "seis://ai/model-parameter-ladder.json",
     "seis://ai/model-frontier-escalation-policy.json",
     "seis://ai/150b-frontier-model-program.json",
@@ -177,6 +181,8 @@ if (manifest) {
     "npm run check:seis-model-parameter-ladder",
     "npm run check:seis-150b-frontier-model-program",
     "npm run check:seis-512b-apex-model-program",
+    "npm run check:seis-frontier-training-launch-plan",
+    "npm run check:seis-model-training-evidence-chain",
     "node scripts/check-seis-agi-evaluation-protocol.mjs",
     "npm run check:seis-ai-core-version-registry",
     "npm run check:seis-ai-core-version-promotion-gates",
@@ -247,11 +253,22 @@ ensure(mcp.includes("LightweightMcpServer"), "MCP server must keep a no-dependen
 ensure(mcp.includes("resources/read"), "MCP server fallback must support resource reads");
 ensure(mcp.includes("seis://ai/mcp-runtime-contract.json"), "MCP server must expose the AI Core MCP runtime contract resource");
 ensure(mcp.includes("seis://ai/model-scaling-hardware-profile.json"), "MCP server must expose the AI Core model scaling resource");
+ensure(mcp.includes("seis://ai/frontier-training-launch-plan.json"), "MCP server must expose the fail-closed frontier training launch resource");
+ensure(mcp.includes("TRAINING_EVIDENCE_RESOURCE_URI"), "MCP server must expose the immutable training evidence resource constant");
 ensure(mcp.includes("seis://ai/model-parameter-ladder.json"), "MCP server must expose the AI Core model parameter ladder resource");
 ensure(mcp.includes("seis://ai/model-frontier-escalation-policy.json"), "MCP server must expose the AI Core frontier escalation policy resource");
 ensure(mcp.includes("seis://ai/150b-frontier-model-program.json"), "MCP server must expose the AI Core 150B frontier model program resource");
 ensure(mcp.includes("seis://ai/20b-model-card-template.json"), "MCP server must expose the AI Core 20B model card template resource");
 ensure(mcp.includes("seis://ai/20b-dataset-card-template.json"), "MCP server must expose the AI Core 20B dataset card template resource");
+for (const [text, label] of [
+  [docs, "docs"],
+  [loop, "agent loop"],
+]) {
+  ensure(text.includes("seis_ai_core_training_evidence_status"), `${label} must reference seis_ai_core_training_evidence_status`);
+  ensure(text.includes("seis://ai/model-training-evidence-chain.json") || label === "agent loop", `${label} must reference the training evidence resource`);
+}
+ensure(tools.includes("TRAINING_EVIDENCE_STATUS_TOOL"), "tool loop must consume TRAINING_EVIDENCE_STATUS_TOOL");
+ensure(mcp.includes("TRAINING_EVIDENCE_STATUS_TOOL"), "MCP server must consume TRAINING_EVIDENCE_STATUS_TOOL");
 
 for (const token of [
   "seis-agent-plugin-integration.json",
@@ -267,6 +284,8 @@ for (const token of [
   "seis://ai/mcp-runtime-contract.json",
   "seis://ai/provider-registry.json",
   "seis://ai/model-scaling-hardware-profile.json",
+  "seis://ai/frontier-training-launch-plan.json",
+  "seis://ai/model-training-evidence-chain.json",
   "seis://ai/model-parameter-ladder.json",
   "seis://ai/model-frontier-escalation-policy.json",
   "seis://ai/150b-frontier-model-program.json",

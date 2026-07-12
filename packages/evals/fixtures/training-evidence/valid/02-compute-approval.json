@@ -1,0 +1,27 @@
+{
+  "schemaRef": "packages/shared-types/schemas/model-compute-approval.schema.json",
+  "schemaVersion": 1,
+  "recordType": "compute-approval",
+  "id": "compute-approval:synthetic-test-fixture:v1",
+  "recordStatus": "fixture-only-not-evidence",
+  "fixtureOnly": true,
+  "recordHash": "sha256:0690cb96cb714667759957ea84dcc9dc6fec628347545b361d40b2d9b7ad614e",
+  "previousRecordHash": "sha256:c16b6f6e87e13105be4f730cc98067c12d263af9c6fba4b15994c228d807765f",
+  "createdAt": null,
+  "approved": false,
+  "executionAllowed": false,
+  "scope": {
+    "modelClass": "seed",
+    "methods": ["sft"],
+    "provider": null,
+    "hardwareClass": "not-selected",
+    "region": null,
+    "maxBudgetUsd": 0,
+    "maxGpuHours": 0
+  },
+  "costStop": { "enabled": false, "hardLimitUsd": 0, "ownerRole": "cloud-agent" },
+  "expiresAt": null,
+  "approverRole": null,
+  "approvalId": null,
+  "truthBoundary": "Synthetic schema fixture only; no compute, provider, budget, GPU, or execution was approved."
+}

@@ -66,7 +66,7 @@ function rpcSession(requests, { timeoutMs = 15000 } = {}) {
 }
 
 describe("seis-mcp stdio smoke", () => {
-  it("initializes and lists 36 tools, 3 prompts, 31 resources", async () => {
+  it("initializes and lists 37 tools, 3 prompts, 32 resources", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -106,6 +106,7 @@ describe("seis-mcp stdio smoke", () => {
       "seis_ai_core_subagent_dry_run",
       "seis_ai_core_subagent_model",
       "seis_ai_core_subagent_review_ledger",
+      "seis_ai_core_training_evidence_status",
       "seis_ai_core_version_promotion_dry_run",
       "seis_ai_core_version_status",
       "seis_cloud_plan",
@@ -148,6 +149,7 @@ describe("seis-mcp stdio smoke", () => {
       "seis://ai/model-frontier-escalation-policy.json",
       "seis://ai/model-parameter-ladder.json",
       "seis://ai/model-scaling-hardware-profile.json",
+      "seis://ai/model-training-evidence-chain.json",
       "seis://ai/provider-registry.json",
       "seis://ai/read-only-router-runtime.json",
       "seis://ai/redaction-fixture.json",
@@ -255,8 +257,8 @@ describe("seis-mcp stdio smoke", () => {
     assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
     const payload = JSON.parse(resource.result.contents[0].text);
     assert.equal(payload.id, "seis-ai-core-mcp-runtime-contract");
-    assert.equal(payload.toolCount, 36);
-    assert.equal(payload.resourceCount, 31);
+    assert.equal(payload.toolCount, 37);
+    assert.equal(payload.resourceCount, 32);
     assert.equal(payload.transport, "stdio JSON-RPC");
   });
 
@@ -292,6 +294,39 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.externalJobAuthorized, false);
     assert.equal(payload.routeEligibleToday, false);
     assert.equal(payload.agiClaimAllowed, false);
+  });
+
+  it("reads the fail-closed SEIS model training evidence chain through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "resources/read",
+        params: {
+          uri: "seis://ai/model-training-evidence-chain.json",
+        },
+      },
+    ]);
+
+    const resource = responses.get(2);
+    assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
+    const payload = JSON.parse(resource.result.contents[0].text);
+    assert.equal(payload.id, "seis-model-training-evidence-chain");
+    assert.equal(payload.status, "schema-foundation-no-execution");
+    assert.equal(payload.releasePolicy.defaultDecision, "deny");
+    assert.equal(payload.evidenceCounts.trainingRuns, 0);
+    assert.equal(payload.executionEvidence.trainingRunPerformed, false);
   });
 
   it("reads the SEIS AI Core provider registry resource through the protocol", async () => {
@@ -889,6 +924,43 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.executionEvidence.trainingRunPerformed, false);
     assert.equal(payload.executionEvidence.remoteJobSubmitted, false);
     assert.equal(payload.executionEvidence.githubMutated, false);
+  });
+
+  it("executes the fail-closed SEIS training evidence status tool through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "tools/call",
+        params: {
+          name: "seis_ai_core_training_evidence_status",
+          arguments: {},
+        },
+      },
+    ]);
+
+    const call = responses.get(2);
+    assert.ok(!call.error, `tools/call errored: ${JSON.stringify(call.error)}`);
+    const payload = JSON.parse(call.result.content[0].text);
+    assert.equal(payload.ok, true);
+    assert.equal(payload.id, "seis-model-training-evidence-chain");
+    assert.equal(payload.schemaCount, 6);
+    assert.equal(payload.currentEvidenceRecordCount, 0);
+    assert.equal(payload.releaseDecision, "deny");
+    assert.equal(payload.fixtureValidation.validRecordCount, 6);
+    assert.equal(payload.fixtureValidation.invalidCaseCount, 8);
+    assert.equal(payload.executionEvidence.trainingRunPerformed, false);
   });
 
   it("executes the SEIS AI Core model scaling status tool through the protocol", async () => {

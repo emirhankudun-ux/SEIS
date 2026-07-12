@@ -1,0 +1,310 @@
+{
+  "id": "seis-training-evidence-invalid-cases",
+  "status": "synthetic-test-fixtures-not-evidence",
+  "cases": [
+    {
+      "id": "dataset-unknown-property",
+      "recordType": "dataset-manifest",
+      "record": {
+        "schemaRef": "packages/data/schemas/model-dataset-manifest.schema.json",
+        "schemaVersion": 1,
+        "recordType": "dataset-manifest",
+        "id": "dataset:synthetic-test-fixture:v1",
+        "recordStatus": "fixture-only-not-evidence",
+        "fixtureOnly": true,
+        "recordHash": "sha256:f5666097689aa4236759bbbc7f6c913c6be083a1d39462ec6cdcfe137830227b",
+        "previousRecordHash": null,
+        "version": 1,
+        "createdAt": null,
+        "ownerRole": "data-agent",
+        "datasetCard": {
+          "id": "dataset-card:synthetic-test-fixture:v1",
+          "contentHash": "sha256:e80914eb3639432258f01d78f3718a99117f71c5a62764c152f887f2cd8f55a0",
+          "status": "fixture-only-not-evidence"
+        },
+        "datasetReady": false,
+        "provenanceStatus": "not-reviewed",
+        "licenseStatus": "not-reviewed",
+        "containsPrivateData": false,
+        "sourceCount": 0,
+        "sources": [],
+        "splits": {
+          "train": { "sampleCount": 0, "manifestSha256": null },
+          "dev": { "sampleCount": 0, "manifestSha256": null },
+          "test": { "sampleCount": 0, "manifestSha256": null }
+        },
+        "contaminationReview": { "status": "not-run", "reportPath": null, "reviewedAt": null },
+        "humanApproval": { "required": true, "status": "missing", "approvalId": null },
+        "truthBoundary": "Synthetic schema fixture only; no dataset was collected, downloaded, approved, or used for training.",
+        "unexpectedField": true
+      },
+      "expectedErrorIncludes": ["additional properties"]
+    },
+    {
+      "id": "dataset-ready-without-review",
+      "recordType": "dataset-manifest",
+      "record": {
+        "schemaRef": "packages/data/schemas/model-dataset-manifest.schema.json",
+        "schemaVersion": 1,
+        "recordType": "dataset-manifest",
+        "id": "dataset:synthetic-test-fixture:v1",
+        "recordStatus": "fixture-only-not-evidence",
+        "fixtureOnly": true,
+        "recordHash": "sha256:1f37ba3d9f47f4c2638675d218ba13d57ada7c32946fa713b7ad477e005e66d7",
+        "previousRecordHash": null,
+        "version": 1,
+        "createdAt": null,
+        "ownerRole": "data-agent",
+        "datasetCard": {
+          "id": "dataset-card:synthetic-test-fixture:v1",
+          "contentHash": "sha256:e80914eb3639432258f01d78f3718a99117f71c5a62764c152f887f2cd8f55a0",
+          "status": "fixture-only-not-evidence"
+        },
+        "datasetReady": true,
+        "provenanceStatus": "not-reviewed",
+        "licenseStatus": "not-reviewed",
+        "containsPrivateData": false,
+        "sourceCount": 0,
+        "sources": [],
+        "splits": {
+          "train": { "sampleCount": 0, "manifestSha256": null },
+          "dev": { "sampleCount": 0, "manifestSha256": null },
+          "test": { "sampleCount": 0, "manifestSha256": null }
+        },
+        "contaminationReview": { "status": "not-run", "reportPath": null, "reviewedAt": null },
+        "humanApproval": { "required": true, "status": "missing", "approvalId": null },
+        "truthBoundary": "Synthetic schema fixture only; no dataset was collected, downloaded, approved, or used for training."
+      },
+      "expectedErrorIncludes": ["ready dataset must be accepted"]
+    },
+    {
+      "id": "compute-approval-state-mismatch",
+      "recordType": "compute-approval",
+      "record": {
+        "schemaRef": "packages/shared-types/schemas/model-compute-approval.schema.json",
+        "schemaVersion": 1,
+        "recordType": "compute-approval",
+        "id": "compute-approval:synthetic-test-fixture:v1",
+        "recordStatus": "fixture-only-not-evidence",
+        "fixtureOnly": true,
+        "recordHash": "sha256:879a2c959bbfda58e01743f46d4cbbba9c4ef10bf5bba0a6998d94ff95702b8a",
+        "previousRecordHash": "sha256:c16b6f6e87e13105be4f730cc98067c12d263af9c6fba4b15994c228d807765f",
+        "createdAt": null,
+        "approved": true,
+        "executionAllowed": false,
+        "scope": {
+          "modelClass": "seed",
+          "methods": ["sft"],
+          "provider": null,
+          "hardwareClass": "not-selected",
+          "region": null,
+          "maxBudgetUsd": 0,
+          "maxGpuHours": 0
+        },
+        "costStop": { "enabled": false, "hardLimitUsd": 0, "ownerRole": "cloud-agent" },
+        "expiresAt": null,
+        "approverRole": null,
+        "approvalId": null,
+        "truthBoundary": "Synthetic schema fixture only; no compute, provider, budget, GPU, or execution was approved."
+      },
+      "expectedErrorIncludes": ["must match approved state"]
+    },
+    {
+      "id": "training-run-without-evidence",
+      "recordType": "training-run",
+      "record": {
+        "schemaRef": "packages/evals/schemas/model-training-run.schema.json",
+        "schemaVersion": 1,
+        "recordType": "training-run",
+        "id": "training-run:synthetic-test-fixture:v1",
+        "recordStatus": "completed",
+        "fixtureOnly": false,
+        "recordHash": "sha256:2fc3892b421a6b8de9ea77254b93363a10c3937e7d9420830cb8dded8a7a18f9",
+        "previousRecordHash": "sha256:0690cb96cb714667759957ea84dcc9dc6fec628347545b361d40b2d9b7ad614e",
+        "method": "sft",
+        "modelClass": "seed",
+        "datasetManifestId": "dataset:synthetic-test-fixture:v1",
+        "computeApprovalId": "compute-approval:synthetic-test-fixture:v1",
+        "baseModel": {
+          "id": "unselected-fixture-base",
+          "owner": "unknown",
+          "license": "not-reviewed",
+          "artifactHash": null
+        },
+        "configHash": "sha256:9b5027a6ec17ddc8a62e4fd555efb65262949a9fa7137948bd1c38d00265aee8",
+        "codeCommit": null,
+        "createdAt": null,
+        "startedAt": null,
+        "completedAt": null,
+        "trainingPerformed": true,
+        "logs": [],
+        "checkpointIds": [],
+        "cancellationReason": null,
+        "truthBoundary": "Synthetic schema fixture only; no model, dataset, code revision, log, or training run exists."
+      },
+      "expectedErrorIncludes": ["performed training requires", "completed run requires"]
+    },
+    {
+      "id": "checkpoint-missing-artifact-hash",
+      "recordType": "checkpoint-record",
+      "record": {
+        "schemaRef": "packages/evals/schemas/checkpoint-record.schema.json",
+        "schemaVersion": 1,
+        "recordType": "checkpoint-record",
+        "id": "checkpoint:synthetic-test-fixture:v1",
+        "recordStatus": "accepted",
+        "fixtureOnly": false,
+        "recordHash": "sha256:25674b78221c1cea36b7268aa8cef7284833aecf53e8b782d565e3eec279a8a8",
+        "previousRecordHash": "sha256:2f26e14a2f540ad5cd358616e6a4d80e6bfa7994dc31b7b550b4e5d991b36a0d",
+        "trainingRunId": "training-run:synthetic-test-fixture:v1",
+        "modelClass": "seed",
+        "architectureId": "unselected-fixture-architecture",
+        "tokenizerId": "unselected-fixture-tokenizer",
+        "datasetManifestId": "dataset:synthetic-test-fixture:v1",
+        "dependencyLockHash": null,
+        "containerImageDigest": null,
+        "hardwareProfile": "not-selected-fixture",
+        "runtimeVersion": "not-executed-fixture",
+        "verificationStatus": "not-run",
+        "safetyReviewStatus": "not-reviewed",
+        "privacyReviewStatus": "not-reviewed",
+        "modelCard": {
+          "id": "model-card:synthetic-test-fixture:v1",
+          "contentHash": "sha256:b92b07e988962e59053389b994f3567edd03cda9b7b35914cc5d73aa5dc2d786",
+          "status": "fixture-only-not-evidence"
+        },
+        "step": 0,
+        "artifactExists": true,
+        "artifactUri": null,
+        "artifactHash": null,
+        "parentCheckpointId": null,
+        "createdAt": null,
+        "evaluationReportIds": ["evaluation:synthetic-test-fixture:v1"],
+        "published": false,
+        "routeEligible": false,
+        "truthBoundary": "Synthetic schema fixture only; no checkpoint artifact, model weights, publication, or route exists."
+      },
+      "expectedErrorIncludes": ["existing checkpoint requires"]
+    },
+    {
+      "id": "evaluation-missing-report",
+      "recordType": "evaluation-report",
+      "record": {
+        "schemaRef": "packages/evals/schemas/model-evaluation-report.schema.json",
+        "schemaVersion": 1,
+        "recordType": "evaluation-report",
+        "id": "evaluation:synthetic-test-fixture:v1",
+        "recordStatus": "completed",
+        "fixtureOnly": false,
+        "recordHash": "sha256:d8bc8fe0a176fef3caa0d1933fea24d7ba097a332f66904fe6534110cdd6b46d",
+        "previousRecordHash": "sha256:0889520355408bd282b28ce572d6a632df93d9121ed056ebbbf1494775932396",
+        "trainingRunId": "training-run:synthetic-test-fixture:v1",
+        "checkpointId": "checkpoint:synthetic-test-fixture:v1",
+        "benchmarkExecuted": true,
+        "codeCommit": null,
+        "configHash": "sha256:9b5027a6ec17ddc8a62e4fd555efb65262949a9fa7137948bd1c38d00265aee8",
+        "randomSeeds": [0],
+        "hardwareProfile": "not-selected-fixture",
+        "runtimeVersion": "not-executed-fixture",
+        "datasetManifestIds": ["dataset:synthetic-test-fixture:v1"],
+        "metrics": [],
+        "safetyCriticalFailureCount": 0,
+        "contaminationStatus": "not-run",
+        "independentReviewStatus": "not-reviewed",
+        "reportUri": null,
+        "reportHash": null,
+        "rawOutputUri": null,
+        "rawOutputHash": null,
+        "createdAt": null,
+        "truthBoundary": "Synthetic schema fixture only; no benchmark, metric, safety evaluation, or independent review was run."
+      },
+      "expectedErrorIncludes": ["executed benchmark requires"]
+    },
+    {
+      "id": "release-allow-without-approval",
+      "recordType": "release-decision",
+      "record": {
+        "schemaRef": "packages/evals/schemas/model-release-decision.schema.json",
+        "schemaVersion": 1,
+        "recordType": "release-decision",
+        "id": "release-decision:synthetic-test-fixture:v1",
+        "recordStatus": "accepted",
+        "fixtureOnly": false,
+        "recordHash": "sha256:bca85013a8031e727b2c08a92cdf5c11768cdc8cb5247f64dea25928cba681b9",
+        "previousRecordHash": "sha256:f4947c364a6cc533990f4d515e415132e2fb5cd5e07a2d4715c11f7dd9abb5f1",
+        "subjectType": "checkpoint",
+        "subjectId": "checkpoint:synthetic-test-fixture:v1",
+        "decision": "allow",
+        "datasetManifestIds": ["dataset:synthetic-test-fixture:v1"],
+        "computeApprovalId": "compute-approval:synthetic-test-fixture:v1",
+        "trainingRunId": "training-run:synthetic-test-fixture:v1",
+        "checkpointIds": ["checkpoint:synthetic-test-fixture:v1"],
+        "evaluationReportIds": ["evaluation:synthetic-test-fixture:v1"],
+        "modelCard": {
+          "id": "model-card:synthetic-test-fixture:v1",
+          "contentHash": "sha256:b92b07e988962e59053389b994f3567edd03cda9b7b35914cc5d73aa5dc2d786",
+          "status": "fixture-only-not-evidence"
+        },
+        "datasetCards": [
+          {
+            "id": "dataset-card:synthetic-test-fixture:v1",
+            "datasetManifestId": "dataset:synthetic-test-fixture:v1",
+            "contentHash": "sha256:e80914eb3639432258f01d78f3718a99117f71c5a62764c152f887f2cd8f55a0",
+            "status": "fixture-only-not-evidence"
+          }
+        ],
+        "allRequiredEvidenceAccepted": false,
+        "humanApprovalId": null,
+        "approvalAttestation": {
+          "verificationStatus": "not-verified",
+          "keyId": null,
+          "algorithm": null,
+          "signature": null,
+          "verifiedAt": null,
+          "verifierId": null
+        },
+        "published": false,
+        "routeEligible": false,
+        "reasons": ["Synthetic fixture cannot authorize release or routing."],
+        "createdAt": null,
+        "truthBoundary": "Synthetic schema fixture only; no release, publication, route promotion, model ownership, or AGI claim is allowed."
+      },
+      "expectedErrorIncludes": ["allow requires accepted evidence"]
+    },
+    {
+      "id": "tampered-record-hash",
+      "recordType": "training-run",
+      "record": {
+        "schemaRef": "packages/evals/schemas/model-training-run.schema.json",
+        "schemaVersion": 1,
+        "recordType": "training-run",
+        "id": "training-run:synthetic-test-fixture:v1",
+        "recordStatus": "fixture-only-not-evidence",
+        "fixtureOnly": true,
+        "recordHash": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "previousRecordHash": "sha256:0690cb96cb714667759957ea84dcc9dc6fec628347545b361d40b2d9b7ad614e",
+        "method": "sft",
+        "modelClass": "seed",
+        "datasetManifestId": "dataset:synthetic-test-fixture:v1",
+        "computeApprovalId": "compute-approval:synthetic-test-fixture:v1",
+        "baseModel": {
+          "id": "unselected-fixture-base",
+          "owner": "unknown",
+          "license": "not-reviewed",
+          "artifactHash": null
+        },
+        "configHash": "sha256:9b5027a6ec17ddc8a62e4fd555efb65262949a9fa7137948bd1c38d00265aee8",
+        "codeCommit": null,
+        "createdAt": null,
+        "startedAt": null,
+        "completedAt": null,
+        "trainingPerformed": false,
+        "logs": [],
+        "checkpointIds": [],
+        "cancellationReason": null,
+        "truthBoundary": "Synthetic schema fixture only; no model, dataset, code revision, log, or training run exists."
+      },
+      "expectedErrorIncludes": ["does not match canonical record content"]
+    }
+  ]
+}

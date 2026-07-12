@@ -1,0 +1,148 @@
+{
+  "id": "seis-model-training-evidence-chain",
+  "version": "2026.07.11",
+  "status": "schema-foundation-no-execution",
+  "resourceUri": "seis://ai/model-training-evidence-chain.json",
+  "qualityGate": "npm run check:seis-model-training-evidence-chain",
+  "truthBoundary": "This contract defines schemas, synthetic test fixtures, and fail-closed linkage rules. It is not a dataset, compute approval, training run, checkpoint, benchmark, release, route, or AGI evidence record.",
+  "schemaDialect": "https://json-schema.org/draft/2020-12/schema",
+  "validator": {
+    "structural": "Ajv 8 Draft 2020-12",
+    "formats": "ajv-formats",
+    "semantic": "packages/seis-ai/src/model/training-evidence.mjs",
+    "dependencyOwnedBy": "packages/seis-ai/package.json"
+  },
+  "officialStandards": [
+    {
+      "id": "json-schema-2020-12",
+      "url": "https://json-schema.org/draft/2020-12",
+      "use": "Schema dialect and validation vocabulary"
+    },
+    {
+      "id": "nist-provenance",
+      "url": "https://csrc.nist.gov/glossary/term/Provenance",
+      "use": "Origin, development, ownership, location, and change chronology"
+    },
+    {
+      "id": "nist-ai-rmf",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "use": "Risk, evaluation, documentation, and governance baseline"
+    }
+  ],
+  "schemas": {
+    "dataset-manifest": "packages/data/schemas/model-dataset-manifest.schema.json",
+    "compute-approval": "packages/shared-types/schemas/model-compute-approval.schema.json",
+    "training-run": "packages/evals/schemas/model-training-run.schema.json",
+    "checkpoint-record": "packages/evals/schemas/checkpoint-record.schema.json",
+    "evaluation-report": "packages/evals/schemas/model-evaluation-report.schema.json",
+    "release-decision": "packages/evals/schemas/model-release-decision.schema.json"
+  },
+  "cardTemplates": {
+    "modelCard": "content/development/seis-20b-model-card-template.json",
+    "datasetCard": "content/development/seis-20b-dataset-card-template.json"
+  },
+  "recordOrder": [
+    "dataset-manifest",
+    "compute-approval",
+    "training-run",
+    "checkpoint-record",
+    "evaluation-report",
+    "release-decision"
+  ],
+  "immutability": {
+    "algorithm": "sha256",
+    "canonicalization": "seis-sorted-json-v1",
+    "hashField": "recordHash",
+    "previousHashField": "previousRecordHash",
+    "hashInput": "Every record field except recordHash, recursively sorted by object key",
+    "claimBoundary": "The deterministic fixture chain demonstrates validator behavior only. It is not an RFC 8785 claim and is not model artifact evidence."
+  },
+  "trustRoot": {
+    "status": "not-configured",
+    "attestationVerification": "not-implemented",
+    "trustedApprovalKeyIds": [],
+    "releaseAllowWithoutVerifiedAttestation": false,
+    "truthBoundary": "Repository-authored hashes and approval ids are not an external trust root. Every allow decision remains invalid until a separately governed verifier checks a trusted-key attestation."
+  },
+  "linkRules": [
+    "training-run.datasetManifestId resolves to dataset-manifest.id",
+    "training-run.computeApprovalId resolves to compute-approval.id",
+    "checkpoint-record.trainingRunId resolves to training-run.id",
+    "evaluation-report resolves its run, checkpoint, and dataset ids",
+    "dataset-manifest binds an immutable dataset-card id and content hash",
+    "checkpoint-record binds an immutable model-card id and content hash",
+    "release-decision resolves dataset, compute, run, checkpoint, evaluation, model-card, and dataset-card ids and hashes",
+    "every recordHash matches canonical content and every previousRecordHash matches the prior record",
+    "an allow release requires accepted evidence and explicit human approval",
+    "an allow release also requires an externally verified attestation from a configured trusted approval key"
+  ],
+  "fixtures": {
+    "status": "synthetic-test-fixtures-not-evidence",
+    "generator": "scripts/create-seis-training-evidence-fixtures.mjs",
+    "validRecords": [
+      "packages/evals/fixtures/training-evidence/valid/01-dataset-manifest.json",
+      "packages/evals/fixtures/training-evidence/valid/02-compute-approval.json",
+      "packages/evals/fixtures/training-evidence/valid/03-training-run.json",
+      "packages/evals/fixtures/training-evidence/valid/04-checkpoint-record.json",
+      "packages/evals/fixtures/training-evidence/valid/05-evaluation-report.json",
+      "packages/evals/fixtures/training-evidence/valid/06-release-decision.json"
+    ],
+    "invalidCases": "packages/evals/fixtures/training-evidence/invalid/invalid-cases.json"
+  },
+  "currentEvidence": {
+    "datasetManifests": [],
+    "computeApprovals": [],
+    "trainingRuns": [],
+    "checkpoints": [],
+    "evaluationReports": [],
+    "releaseApprovals": []
+  },
+  "evidenceCounts": {
+    "datasetManifests": 0,
+    "computeApprovals": 0,
+    "trainingRuns": 0,
+    "checkpoints": 0,
+    "evaluationReports": 0,
+    "releaseApprovals": 0
+  },
+  "releasePolicy": {
+    "defaultDecision": "deny",
+    "failClosed": true,
+    "humanFinalApprovalRequired": true,
+    "fixtureCanAuthorize": false,
+    "missingReferenceDecision": "deny",
+    "invalidHashDecision": "deny",
+    "schemaFailureDecision": "deny"
+  },
+  "executionEvidence": {
+    "datasetDownloaded": false,
+    "modelDownloaded": false,
+    "providerAuthenticated": false,
+    "paidComputeProvisioned": false,
+    "trainingRunPerformed": false,
+    "checkpointCreated": false,
+    "benchmarkRunPerformed": false,
+    "releasePublished": false,
+    "routePromoted": false,
+    "githubMutated": false
+  },
+  "humanApprovalRequiredFor": [
+    "dataset or model download",
+    "provider authentication or upload",
+    "compute approval",
+    "paid compute provisioning",
+    "training or fine-tuning run",
+    "checkpoint acceptance or publication",
+    "benchmark execution",
+    "release allow decision",
+    "route promotion",
+    "GitHub push, pull request, merge, or release"
+  ],
+  "nextSafeActions": [
+    "Validate the six schemas with Ajv 8 and semantic domain rules.",
+    "Keep model-card and dataset-card template hashes null until reviewed immutable card artifacts exist.",
+    "Keep all currentEvidence arrays empty until real independently verified records exist.",
+    "Use only synthetic fixture records under packages/evals/fixtures for regression tests.",
+    "Require an exact human-approved run manifest before any real compute request."
+  ]
+}

@@ -18,6 +18,15 @@ Yürütme kaynağı:
 - Durum: research / internal / candidate / released / withdrawn
 - Model artifact hash:
 - Kaynak commit:
+- Immutable model-card id:
+- Immutable model-card content hash:
+- Bağlı dataset-card id/hash:
+
+`content/development/seis-20b-model-card-template.json` ve
+`content/development/seis-20b-dataset-card-template.json` doldurulmadan önce
+`immutableIdentity.contentHash: null` taşır. Gerçek release kararı bu alanları
+accepted kart içeriklerinin SHA-256 hashleriyle bağlamak zorundadır; şablon id'si
+veya sentetik fixture hash'i release kanıtı değildir.
 
 ## 2. Doğruluk Beyanı
 

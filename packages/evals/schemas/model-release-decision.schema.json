@@ -1,0 +1,234 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seis.dev/schemas/ai/model-release-decision.schema.json",
+  "title": "SEIS Model Release Decision",
+  "description": "Final human-controlled allow or deny record linking every accepted evidence class. Schema validity alone never grants release authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaRef",
+    "schemaVersion",
+    "recordType",
+    "id",
+    "recordStatus",
+    "fixtureOnly",
+    "recordHash",
+    "previousRecordHash",
+    "subjectType",
+    "subjectId",
+    "decision",
+    "datasetManifestIds",
+    "computeApprovalId",
+    "trainingRunId",
+    "checkpointIds",
+    "evaluationReportIds",
+    "modelCard",
+    "datasetCards",
+    "allRequiredEvidenceAccepted",
+    "humanApprovalId",
+    "approvalAttestation",
+    "published",
+    "routeEligible",
+    "reasons",
+    "createdAt",
+    "truthBoundary"
+  ],
+  "properties": {
+    "schemaRef": {
+      "const": "packages/evals/schemas/model-release-decision.schema.json"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "recordType": {
+      "const": "release-decision"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^release-decision:[a-z0-9][a-z0-9._-]{2,}:v[0-9]+$"
+    },
+    "recordStatus": {
+      "enum": ["fixture-only-not-evidence", "draft", "accepted", "denied", "withdrawn"]
+    },
+    "fixtureOnly": {
+      "type": "boolean"
+    },
+    "recordHash": {
+      "$ref": "#/$defs/hash"
+    },
+    "previousRecordHash": {
+      "$ref": "#/$defs/nullableHash"
+    },
+    "subjectType": {
+      "enum": ["model", "adapter", "checkpoint"]
+    },
+    "subjectId": {
+      "type": "string",
+      "minLength": 3
+    },
+    "decision": {
+      "enum": ["allow", "deny"]
+    },
+    "datasetManifestIds": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^dataset:[a-z0-9][a-z0-9._-]{2,}:v[0-9]+$"
+      }
+    },
+    "computeApprovalId": {
+      "type": "string",
+      "pattern": "^compute-approval:[a-z0-9][a-z0-9._-]{2,}:v[0-9]+$"
+    },
+    "trainingRunId": {
+      "type": "string",
+      "pattern": "^training-run:[a-z0-9][a-z0-9._-]{2,}:v[0-9]+$"
+    },
+    "checkpointIds": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^checkpoint:[a-z0-9][a-z0-9._-]{2,}:v[0-9]+$"
+      }
+    },
+    "evaluationReportIds": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^evaluation:[a-z0-9][a-z0-9._-]{2,}:v[0-9]+$"
+      }
+    },
+    "modelCard": {
+      "$ref": "#/$defs/modelCardReference"
+    },
+    "datasetCards": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/datasetCardReference"
+      }
+    },
+    "allRequiredEvidenceAccepted": {
+      "type": "boolean"
+    },
+    "humanApprovalId": {
+      "type": ["string", "null"],
+      "pattern": "^approval:[a-z0-9][a-z0-9._-]{2,}:v[0-9]+$"
+    },
+    "approvalAttestation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "verificationStatus",
+        "keyId",
+        "algorithm",
+        "signature",
+        "verifiedAt",
+        "verifierId"
+      ],
+      "properties": {
+        "verificationStatus": {
+          "enum": ["not-verified", "verified", "failed"]
+        },
+        "keyId": {
+          "type": ["string", "null"],
+          "pattern": "^approval-key:[a-z0-9][a-z0-9._-]{2,}:v[0-9]+$"
+        },
+        "algorithm": {
+          "enum": [null, "ed25519", "ecdsa-p256", "rsa-pss-sha256"]
+        },
+        "signature": {
+          "type": ["string", "null"],
+          "pattern": "^[A-Za-z0-9_-]{43,}$"
+        },
+        "verifiedAt": {
+          "$ref": "#/$defs/nullableTimestamp"
+        },
+        "verifierId": {
+          "type": ["string", "null"],
+          "minLength": 3
+        }
+      }
+    },
+    "published": {
+      "type": "boolean"
+    },
+    "routeEligible": {
+      "type": "boolean"
+    },
+    "reasons": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 8
+      }
+    },
+    "createdAt": {
+      "$ref": "#/$defs/nullableTimestamp"
+    },
+    "truthBoundary": {
+      "type": "string",
+      "minLength": 24
+    }
+  },
+  "$defs": {
+    "hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "nullableHash": {
+      "type": ["string", "null"],
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "nullableTimestamp": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]{3})?Z$"
+    },
+    "modelCardReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "contentHash", "status"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^model-card:[a-z0-9][a-z0-9._-]{2,}:v[0-9]+$"
+        },
+        "contentHash": {
+          "$ref": "#/$defs/nullableHash"
+        },
+        "status": {
+          "enum": ["fixture-only-not-evidence", "draft", "accepted", "rejected", "withdrawn"]
+        }
+      }
+    },
+    "datasetCardReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "datasetManifestId", "contentHash", "status"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^dataset-card:[a-z0-9][a-z0-9._-]{2,}:v[0-9]+$"
+        },
+        "datasetManifestId": {
+          "type": "string",
+          "pattern": "^dataset:[a-z0-9][a-z0-9._-]{2,}:v[0-9]+$"
+        },
+        "contentHash": {
+          "$ref": "#/$defs/nullableHash"
+        },
+        "status": {
+          "enum": ["fixture-only-not-evidence", "draft", "accepted", "rejected", "withdrawn"]
+        }
+      }
+    }
+  }
+}

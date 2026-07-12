@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seis.dev/schemas/ai/model-training-run.schema.json",
+  "title": "SEIS Model Training Run",
+  "description": "Immutable run record linking dataset, compute approval, code, configuration, logs, and output checkpoint identifiers.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaRef",
+    "schemaVersion",
+    "recordType",
+    "id",
+    "recordStatus",
+    "fixtureOnly",
+    "recordHash",
+    "previousRecordHash",
+    "method",
+    "modelClass",
+    "datasetManifestId",
+    "computeApprovalId",
+    "baseModel",
+    "configHash",
+    "codeCommit",
+    "createdAt",
+    "startedAt",
+    "completedAt",
+    "trainingPerformed",
+    "logs",
+    "checkpointIds",
+    "cancellationReason",
+    "truthBoundary"
+  ],
+  "properties": {
+    "schemaRef": {
+      "const": "packages/evals/schemas/model-training-run.schema.json"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "recordType": {
+      "const": "training-run"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^training-run:[a-z0-9][a-z0-9._-]{2,}:v[0-9]+$"
+    },
+    "recordStatus": {
+      "enum": [
+        "fixture-only-not-evidence",
+        "planned",
+        "authorized",
+        "running",
+        "completed",
+        "failed",
+        "cancelled"
+      ]
+    },
+    "fixtureOnly": {
+      "type": "boolean"
+    },
+    "recordHash": {
+      "$ref": "#/$defs/hash"
+    },
+    "previousRecordHash": {
+      "$ref": "#/$defs/nullableHash"
+    },
+    "method": {
+      "enum": ["pretraining", "sft", "dpo", "lora-adapter"]
+    },
+    "modelClass": {
+      "enum": ["seed", "small", "20B", "70B", "150B", "300B+", "512B"]
+    },
+    "datasetManifestId": {
+      "type": "string",
+      "pattern": "^dataset:[a-z0-9][a-z0-9._-]{2,}:v[0-9]+$"
+    },
+    "computeApprovalId": {
+      "type": "string",
+      "pattern": "^compute-approval:[a-z0-9][a-z0-9._-]{2,}:v[0-9]+$"
+    },
+    "baseModel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "owner", "license", "artifactHash"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 3
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 2
+        },
+        "license": {
+          "type": "string",
+          "minLength": 2
+        },
+        "artifactHash": {
+          "$ref": "#/$defs/nullableHash"
+        }
+      }
+    },
+    "configHash": {
+      "$ref": "#/$defs/hash"
+    },
+    "codeCommit": {
+      "type": ["string", "null"],
+      "pattern": "^[a-f0-9]{40}$"
+    },
+    "createdAt": {
+      "$ref": "#/$defs/nullableTimestamp"
+    },
+    "startedAt": {
+      "$ref": "#/$defs/nullableTimestamp"
+    },
+    "completedAt": {
+      "$ref": "#/$defs/nullableTimestamp"
+    },
+    "trainingPerformed": {
+      "type": "boolean"
+    },
+    "logs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/repoPath"
+      }
+    },
+    "checkpointIds": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^checkpoint:[a-z0-9][a-z0-9._-]{2,}:v[0-9]+$"
+      }
+    },
+    "cancellationReason": {
+      "type": ["string", "null"],
+      "minLength": 3
+    },
+    "truthBoundary": {
+      "type": "string",
+      "minLength": 24
+    }
+  },
+  "$defs": {
+    "hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "nullableHash": {
+      "type": ["string", "null"],
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "nullableTimestamp": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]{3})?Z$"
+    },
+    "repoPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+    }
+  }
+}

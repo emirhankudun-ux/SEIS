@@ -10,6 +10,16 @@ completed training runs and zero accepted checkpoints. A template, seed-model
 artifact, provider route, adapter plan, dry-run, or green validator must never
 be presented as a frontier checkpoint.
 
+The checkpoint schema and hash-linkage contract are
+`packages/evals/schemas/checkpoint-record.schema.json` and
+`content/development/seis-model-training-evidence-chain.json`.
+
+The current strict schema requires architecture/tokenizer identifiers, dataset
+manifest linkage, dependency-lock and container digests, hardware/runtime
+identity, verifier state, safety/privacy review states, and an immutable
+model-card id/hash. A syntactically valid record with missing accepted evidence
+still fails the semantic release gate.
+
 ## Required Checkpoint Record
 
 Every future checkpoint must have an immutable record containing:
@@ -82,6 +92,7 @@ SEIS must not:
 
 ```bash
 npm run check:seis-frontier-training-launch-plan
+npm run check:seis-model-training-evidence-chain
 npm run check:seis-512b-apex-model-program
 ```
 

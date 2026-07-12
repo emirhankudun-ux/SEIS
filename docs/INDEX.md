@@ -110,6 +110,7 @@ Date: 2026-06-23
 | [ai/fine-tuning-strategy.md](ai/fine-tuning-strategy.md) | RAG, SFT, LoRA, DPO ve pretraining ayrımı ile onay kapılı fine-tune stratejisi. |
 | [ai/model-card-template.md](ai/model-card-template.md) | Sahte model veya benchmark iddiasını engelleyen doldurulmamış model kartı şablonu. |
 | [ai/model-training-execution.md](ai/model-training-execution.md) | Gerçek training öncesi veri, compute, checkpoint, eval ve approval yürütme sırası. |
+| [ai/training-evidence-chain.md](ai/training-evidence-chain.md) | Draft 2020-12 şemaları, immutable fixture hash zinciri ve sıfır gerçek-evidence release kapısı. |
 | [ai/checkpoint-governance.md](ai/checkpoint-governance.md) | Checkpoint kimliği, hash, lifecycle, recovery ve publication governance. |
 | [evals/evaluation-strategy.md](evals/evaluation-strategy.md) | Prompt, retrieval, agent, capability, safety ve operations eval stratejisi. |
 | [evals/benchmark-integrity.md](evals/benchmark-integrity.md) | Ön kayıt, kontaminasyon, tekrar üretilebilirlik ve benchmark iddia sınırı. |

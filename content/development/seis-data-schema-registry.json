@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "seis-data-schema-registry",
-  "updated": "2026-06-22",
+  "updated": "2026-07-11",
   "mode": "static_repository_data_contract",
   "statusVocabulary": [
     "documented",
@@ -365,6 +365,78 @@
       ],
       "freshness": "review after visual system changes",
       "secretPolicy": "must not contain secrets"
+    },
+    {
+      "id": "model-dataset-manifest-schema",
+      "path": "packages/data/schemas/model-dataset-manifest.schema.json",
+      "lane": "@seis-data",
+      "currentStatus": "validated",
+      "sourceType": "training-evidence-json-schema",
+      "expectedShape": "object",
+      "requiredTopLevelKeys": ["$schema", "$id", "title", "type", "required", "properties"],
+      "validationCommands": ["npm run check:seis-model-training-evidence-chain"],
+      "freshness": "review after dataset provenance, card, privacy, or approval contract changes",
+      "secretPolicy": "schema only; must not contain dataset rows, credentials, or private source values"
+    },
+    {
+      "id": "model-compute-approval-schema",
+      "path": "packages/shared-types/schemas/model-compute-approval.schema.json",
+      "lane": "@seis-cloud",
+      "currentStatus": "validated",
+      "sourceType": "training-evidence-json-schema",
+      "expectedShape": "object",
+      "requiredTopLevelKeys": ["$schema", "$id", "title", "type", "required", "properties"],
+      "validationCommands": ["npm run check:seis-model-training-evidence-chain"],
+      "freshness": "review after compute scope, budget stop, provider, or approval policy changes",
+      "secretPolicy": "schema only; must not contain provider credentials, billing identifiers, or private hosts"
+    },
+    {
+      "id": "model-training-run-schema",
+      "path": "packages/evals/schemas/model-training-run.schema.json",
+      "lane": "@seis-data",
+      "currentStatus": "validated",
+      "sourceType": "training-evidence-json-schema",
+      "expectedShape": "object",
+      "requiredTopLevelKeys": ["$schema", "$id", "title", "type", "required", "properties"],
+      "validationCommands": ["npm run check:seis-model-training-evidence-chain"],
+      "freshness": "review after training method, run lineage, log, or checkpoint linkage changes",
+      "secretPolicy": "schema only; runtime logs and provider secrets must never be embedded"
+    },
+    {
+      "id": "checkpoint-record-schema",
+      "path": "packages/evals/schemas/checkpoint-record.schema.json",
+      "lane": "@seis-data",
+      "currentStatus": "validated",
+      "sourceType": "training-evidence-json-schema",
+      "expectedShape": "object",
+      "requiredTopLevelKeys": ["$schema", "$id", "title", "type", "required", "properties"],
+      "validationCommands": ["npm run check:seis-model-training-evidence-chain"],
+      "freshness": "review after checkpoint lineage, runtime, model-card, safety, or privacy policy changes",
+      "secretPolicy": "schema only; must not contain checkpoint bytes, credentials, or private artifact URLs"
+    },
+    {
+      "id": "model-evaluation-report-schema",
+      "path": "packages/evals/schemas/model-evaluation-report.schema.json",
+      "lane": "@seis-data",
+      "currentStatus": "validated",
+      "sourceType": "training-evidence-json-schema",
+      "expectedShape": "object",
+      "requiredTopLevelKeys": ["$schema", "$id", "title", "type", "required", "properties"],
+      "validationCommands": ["npm run check:seis-model-training-evidence-chain"],
+      "freshness": "review after benchmark reproducibility, contamination, safety, or raw-output policy changes",
+      "secretPolicy": "schema only; raw benchmark outputs and private prompts must not be embedded"
+    },
+    {
+      "id": "model-release-decision-schema",
+      "path": "packages/evals/schemas/model-release-decision.schema.json",
+      "lane": "@seis",
+      "currentStatus": "validated",
+      "sourceType": "training-evidence-json-schema",
+      "expectedShape": "object",
+      "requiredTopLevelKeys": ["$schema", "$id", "title", "type", "required", "properties"],
+      "validationCommands": ["npm run check:seis-model-training-evidence-chain"],
+      "freshness": "review after release evidence, human approval, model-card, dataset-card, or route policy changes",
+      "secretPolicy": "schema only; approval evidence may reference identifiers but must not embed credentials or personal data"
     }
   ]
 }

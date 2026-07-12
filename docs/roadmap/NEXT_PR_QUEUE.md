@@ -1,6 +1,6 @@
 # SEIS Next PR Queue
 
-Date: 2026-06-23
+Date: 2026-07-11
 
 ## Active GitHub Merge Queue Continuity - 2026-07-01
 
@@ -48,13 +48,16 @@ owner explicitly requests removal.
 
 | Field | Value |
 | --- | --- |
-| Suggested branch | `ai/training-evidence-schemas` |
+| Suggested branch | `ai/training-evidence-schemas-20260711` |
 | Priority | P0 after AI-1 |
 | Goal | Add repository-owned JSON Schemas for dataset manifests, compute approvals, training runs, checkpoints, eval reports, and release decisions; connect them through immutable ids and hashes without running training. |
-| Include | Schema files, valid/invalid fixtures, deterministic validators, evidence-chain contract, docs, and tests. |
+| Include | Six Draft 2020-12 schemas, Ajv 8 and semantic validation, valid/invalid synthetic fixtures, immutable hash/reference chain, model-card/dataset-card release links, read-only AI Core/MCP status, schema registry, docs, and tests. |
 | Exclude | Dataset/model download, provider authentication, paid compute, training/fine-tuning, benchmark execution, checkpoint creation/publication, SSH, deployment, push, PR creation, or merge. |
-| Validation | JSON Schema fixture tests, `npm run check:seis-frontier-training-launch-plan`, AI package tests, secret scan, and `git diff --check`. |
+| Validation | `npm run check:seis-model-training-evidence-chain`, `npm run check:data-schema-registry`, `npm run check:seis-agent-plugin-integration`, `npm run check:seis-frontier-training-launch-plan`, AI package tests, security gate, and `git diff --check`. |
 | Approval needed | None for local schemas, fixtures, docs, and validators; explicit approval for every excluded action. |
+
+Current local state: implemented and validated on the suggested branch; not
+pushed, opened as a PR, merged, deployed, or used for real model training.
 
 ## Current Recommended Product Demo Stack
 

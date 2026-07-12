@@ -2,6 +2,13 @@
   "id": "seis-20b-model-card-template",
   "version": "2026.06.24",
   "status": "template-not-filled",
+  "immutableIdentity": {
+    "id": "model-card:seis-20b-template:v1",
+    "contentHash": null,
+    "status": "template-not-filled",
+    "hashAlgorithm": "sha256",
+    "canonicalization": "seis-sorted-json-v1"
+  },
   "targetId": "seis-20b-local-compatibility-target",
   "profileId": "seis-model-scaling-hardware-profile",
   "parameterClass": "20B",
@@ -68,5 +75,6 @@
     "SEIS has verified 16GB+ compatibility.",
     "SEIS has routeable 20B weights."
   ],
-  "qualityGate": "npm run check:seis-model-scaling-hardware-profile"
+  "qualityGate": "npm run check:seis-model-scaling-hardware-profile",
+  "evidenceQualityGate": "npm run check:seis-model-training-evidence-chain"
 }

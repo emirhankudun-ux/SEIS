@@ -34,6 +34,7 @@ The foundation includes:
 | Provider routing and data policy | Documented, not live | `docs/ai/provider-routing-policy.md`, `docs/security/model-provider-data-policy.md` | No backend provider mediation, live health check, retention verification, or credential validation exists. | Keep cloud routes disabled until server-only adapters and privacy tests pass. |
 | Model scaling hardware profile | Planned compatibility contract | `content/development/seis-model-scaling-hardware-profile.json`, `docs/ai/seis-model-scaling.md`, `seis_ai_core_model_scaling_status` | The 20B target for 16GB+ RAM plus future 70B, 150B, and 512B apex lanes are not trained weights, live inference, downloads, AGI proof, or benchmark evidence. | Keep the profile blocked until clean-room model cards, dataset cards, quantized/distributed runtime plans, safety evals, and memory benchmarks exist. |
 | Frontier training launch plan | Fail-closed preflight contract | `content/development/seis-frontier-training-launch-plan.json`, `seis://ai/frontier-training-launch-plan.json`, `seis_ai_core_frontier_training_status`, `npm run check:seis-frontier-training-launch-plan` | All 20B through 512B lanes are denied; no job, checkpoint, benchmark, provider, paid compute, route, or AGI evidence exists. | Complete the 20B data, model, compute, checkpoint, evaluation, council, and explicit approval evidence before requesting any real execution. |
+| Training evidence chain | Ajv 8 validated schema foundation; no real evidence | `content/development/seis-model-training-evidence-chain.json`, `docs/ai/training-evidence-chain.md`, `seis://ai/model-training-evidence-chain.json`, `seis_ai_core_training_evidence_status`, `npm run check:seis-model-training-evidence-chain` | Six synthetic fixture records prove schema/hash/reference validation only; all real dataset, compute, run, checkpoint, eval, and release arrays remain empty. | Keep release at `deny` until independently verified non-fixture records and explicit human approval exist. |
 | 150B frontier model program | Plan-only frontier program record | `content/development/seis-150b-frontier-model-program.json`, `seis://ai/150b-frontier-model-program.json`, `npm run check:seis-150b-frontier-model-program` | The 150B lane is a charter, stage plan, and promotion-gate record only; it is not trained weights, inference, benchmark evidence, provider access, cloud/GPU provisioning, SSH execution, or production readiness. | Keep it blocked until 20B and 70B evidence, clean-room training plan, distributed runtime budget, privacy/safety review, observability, rollback, cost-stop, and human approval exist. |
 | 512B apex model program | Plan-only SEIS AGI readiness record with public research baseline | `content/development/seis-512b-apex-model-program.json`, `seis://ai/512b-apex-model-program.json`, `npm run check:seis-512b-apex-model-program` | The 512B lane is an apex charter, internet-researched frontier-model baseline, AGI-readiness definition, and GitHub-public-readiness gate only; it is not AGI, trained weights, inference, benchmark evidence, provider access, cloud/GPU provisioning, SSH execution, or production readiness. | Keep it blocked until 20B, 70B, 150B, and 300B+ evidence, clean-room training plan, independent AGI eval protocol, all installed AI/sub-agent council review, public readiness evidence, and human approval exist. |
 | Model scaling sub-agent council | Active plan-only coordination contract | `content/development/seis-model-scaling-subagent-council.json`, `docs/ai/seis-model-scaling.md`, `seis_ai_core_model_scaling_status` | Twelve agents coordinate 20B evidence preparation and 70B/150B/512B review duties, with explicit 512B duties for architecture, validator sync, honest UI, research, provenance, security, DevOps, docs, QA, cloud gating, and automation boundaries; they do not run models, benchmarks, training, SSH, providers, GitHub mutation, or cloud/GPU provisioning. | Keep all council agents plan-only until human-reviewed runtime, benchmark, safety, public-readiness, and approval evidence exists. |
@@ -118,7 +119,7 @@ read-only surface. Product browser smoke verifies the inspector exposes six AI
 routes, five personal plugin lanes, and a 32-node / 53-edge AI Core 3D graph
 without requiring provider
 keys, SSH, deployment, GitHub mutation, or external connector authentication.
-The protocol-level MCP contract now exposes 36 tools, 31 resources, and three
+The protocol-level MCP contract now exposes 37 tools, 32 resources, and three
 prompts. The browser inspector must be refreshed and browser-smoked before it
 may claim those updated protocol counts.
 
@@ -126,6 +127,7 @@ Runtime inspection tools:
 `seis_ai_core_provider_status`,
 `seis_ai_core_model_scaling_status`,
 `seis_ai_core_frontier_training_status`,
+`seis_ai_core_training_evidence_status`,
 `seis_ai_core_version_status`,
 `seis_ai_core_version_promotion_dry_run`,
 `seis_ai_core_subagent_model`, and

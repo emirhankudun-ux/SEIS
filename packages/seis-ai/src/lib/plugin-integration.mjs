@@ -1,6 +1,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 
+import { assertNoCredentialLikeJsonContent } from "./credential-safety.mjs";
 import { resolveInside } from "./repo.mjs";
 
 export const PLUGIN_INTEGRATION_PATH = "content/development/seis-agent-plugin-integration.json";
@@ -76,29 +77,6 @@ const FRONTIER_TRAINING_FALSE_FIELDS = [
   "checkpointExists",
   "benchmarkEvidenceAvailable",
   "agiClaimAllowed",
-];
-const CREDENTIAL_VALUE_PATTERNS = [
-  {
-    id: "private-key",
-    pattern: /-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----/,
-  },
-  {
-    id: "provider-or-platform-token",
-    pattern:
-      /\b(?:hf_[A-Za-z0-9]{20,}|sk-(?:proj-|ant-)?[A-Za-z0-9_-]{20,}|github_pat_[A-Za-z0-9_]{20,}|gh[pousr]_[A-Za-z0-9_]{20,}|(?:AKIA|ASIA)[0-9A-Z]{16}|AIza[0-9A-Za-z_-]{35}|xox[baprs]-[A-Za-z0-9-]{20,})\b/,
-  },
-  {
-    id: "bearer-token",
-    pattern: /\bBearer\s+[A-Za-z0-9._~+/-]{20,}={0,2}\b/i,
-  },
-  {
-    id: "jwt",
-    pattern: /\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\b/,
-  },
-  {
-    id: "credential-uri",
-    pattern: /[a-z][a-z0-9+.-]*:\/\/[^/\s:@]+:[^/\s@]+@/i,
-  },
 ];
 export const PERSONAL_PLUGIN_LANE_TOOLS = [
   {
@@ -239,25 +217,9 @@ export function readAiCoreFrontierTrainingLaunchPlan(repoRoot) {
 }
 
 export function assertNoCredentialLikeManifestContent(rawContent, parsedContent) {
-  const raw = String(rawContent || "");
-  for (const candidate of CREDENTIAL_VALUE_PATTERNS) {
-    if (candidate.pattern.test(raw)) {
-      throw new Error(`SEIS frontier training launch plan contains a blocked credential category: ${candidate.id}`);
-    }
-  }
-
-  const sensitiveKeyPattern = /^(?:api[-_]?key|access[-_]?key|private[-_]?key|token|password|secret)$/i;
-  const queue = [parsedContent];
-  while (queue.length > 0) {
-    const value = queue.pop();
-    if (!value || typeof value !== "object") continue;
-    for (const [key, child] of Object.entries(value)) {
-      if (sensitiveKeyPattern.test(key) && typeof child === "string" && child.trim()) {
-        throw new Error(`SEIS frontier training launch plan contains a value in blocked credential field: ${key}`);
-      }
-      if (child && typeof child === "object") queue.push(child);
-    }
-  }
+  assertNoCredentialLikeJsonContent(rawContent, parsedContent, {
+    label: "SEIS frontier training launch plan",
+  });
 }
 
 export function readAiCoreModelParameterLadder(repoRoot) {
@@ -1730,6 +1692,9 @@ export function pluginIntegrationStatus(repoRoot, options = {}) {
         mcpTool: manifest.runtimeIntegration?.mcpTool ?? null,
         mcpResource: manifest.runtimeIntegration?.mcpResource ?? null,
         mcpResources: manifest.runtimeIntegration?.mcpResources ?? [],
+        modelScalingTool: manifest.runtimeIntegration?.modelScalingTool ?? null,
+        frontierTrainingTool: manifest.runtimeIntegration?.frontierTrainingTool ?? null,
+        trainingEvidenceTool: manifest.runtimeIntegration?.trainingEvidenceTool ?? null,
         versionRegistryTool: manifest.runtimeIntegration?.versionRegistryTool ?? null,
         versionPromotionTool: manifest.runtimeIntegration?.versionPromotionTool ?? null,
         subagentOperatingModelTool: manifest.runtimeIntegration?.subagentOperatingModelTool ?? null,
