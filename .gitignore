@@ -20,6 +20,9 @@ apps/web/wow-pages/imported/**/png/*.png
 .env.*
 !.env.example
 .seis-secrets/
+.seis/conversations/
+.seis/exports/
+.seis/sessions/
 
 # Secret and SSH key material
 *.pem
@@ -152,6 +155,7 @@ ios/
 !packages/data/schemas/model-dataset-manifest.schema.json
 !packages/shared-types/schemas/model-compute-approval.schema.json
 !packages/shared-types/schemas/model-release-trust-root.schema.json
+!packages/shared-types/schemas/seis-conversation-session.schema.json
 !packages/evals/schemas/model-training-run.schema.json
 !packages/evals/schemas/checkpoint-record.schema.json
 !packages/evals/schemas/model-evaluation-report.schema.json

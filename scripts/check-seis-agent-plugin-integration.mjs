@@ -95,6 +95,10 @@ if (manifest) {
   ensure(manifest.runtimeIntegration?.modelScalingTool === "seis_ai_core_model_scaling_status", "runtimeIntegration must expose the SEIS AI Core model scaling status tool");
   ensure(manifest.runtimeIntegration?.frontierTrainingTool === "seis_ai_core_frontier_training_status", "runtimeIntegration must expose the fail-closed frontier training status tool");
   ensure(manifest.runtimeIntegration?.trainingEvidenceTool === "seis_ai_core_training_evidence_status", "runtimeIntegration must expose the read-only training evidence status tool");
+  ensure(manifest.runtimeIntegration?.conversationStatusTool === "seis_ai_core_conversation_status", "runtimeIntegration must expose the Conversation Nexus status tool");
+  ensure(manifest.runtimeIntegration?.conversationSearchTool === "seis_ai_core_conversation_search", "runtimeIntegration must expose the Conversation Nexus search tool");
+  ensure(manifest.runtimeIntegration?.conversationMetadataEnabledByDefault === false, "Conversation Nexus MCP metadata must remain disabled by default");
+  ensure(manifest.runtimeIntegration?.cloudAgentConversationTools === false, "Conversation Nexus tools must remain absent from the cloud-provider agent loop");
   ensure(manifest.runtimeIntegration?.versionRegistryTool === "seis_ai_core_version_status", "runtimeIntegration must expose the SEIS AI Core version status tool");
   ensure(
     manifest.runtimeIntegration?.versionPromotionTool === "seis_ai_core_version_promotion_dry_run",
@@ -110,6 +114,7 @@ if (manifest) {
     "seis://ai/model-scaling-hardware-profile.json",
     "seis://ai/frontier-training-launch-plan.json",
     "seis://ai/model-training-evidence-chain.json",
+    "seis://ai/conversation-nexus.json",
     "seis://ai/model-parameter-ladder.json",
     "seis://ai/model-frontier-escalation-policy.json",
     "seis://ai/150b-frontier-model-program.json",
@@ -184,6 +189,7 @@ if (manifest) {
     "npm run check:seis-frontier-training-launch-plan",
     "npm run check:seis-model-release-attestation",
     "npm run check:seis-model-training-evidence-chain",
+    "npm run check:seis-conversation-nexus",
     "node scripts/check-seis-agi-evaluation-protocol.mjs",
     "npm run check:seis-ai-core-version-registry",
     "npm run check:seis-ai-core-version-promotion-gates",
@@ -256,6 +262,7 @@ ensure(mcp.includes("seis://ai/mcp-runtime-contract.json"), "MCP server must exp
 ensure(mcp.includes("seis://ai/model-scaling-hardware-profile.json"), "MCP server must expose the AI Core model scaling resource");
 ensure(mcp.includes("seis://ai/frontier-training-launch-plan.json"), "MCP server must expose the fail-closed frontier training launch resource");
 ensure(mcp.includes("TRAINING_EVIDENCE_RESOURCE_URI"), "MCP server must expose the immutable training evidence resource constant");
+ensure(mcp.includes("CONVERSATION_NEXUS_RESOURCE_URI"), "MCP server must expose the Conversation Nexus resource constant");
 ensure(mcp.includes("seis://ai/model-parameter-ladder.json"), "MCP server must expose the AI Core model parameter ladder resource");
 ensure(mcp.includes("seis://ai/model-frontier-escalation-policy.json"), "MCP server must expose the AI Core frontier escalation policy resource");
 ensure(mcp.includes("seis://ai/150b-frontier-model-program.json"), "MCP server must expose the AI Core 150B frontier model program resource");
@@ -268,8 +275,17 @@ for (const [text, label] of [
   ensure(text.includes("seis_ai_core_training_evidence_status"), `${label} must reference seis_ai_core_training_evidence_status`);
   ensure(text.includes("seis://ai/model-training-evidence-chain.json") || label === "agent loop", `${label} must reference the training evidence resource`);
 }
+ensure(docs.includes("seis_ai_core_conversation_status"), "docs must reference seis_ai_core_conversation_status");
+ensure(docs.includes("seis_ai_core_conversation_search"), "docs must reference seis_ai_core_conversation_search");
+ensure(!loop.includes("seis_ai_core_conversation_status"), "cloud agent loop must not reference the Conversation Nexus status tool");
+ensure(!loop.includes("seis_ai_core_conversation_search"), "cloud agent loop must not reference the Conversation Nexus search tool");
 ensure(tools.includes("TRAINING_EVIDENCE_STATUS_TOOL"), "tool loop must consume TRAINING_EVIDENCE_STATUS_TOOL");
 ensure(mcp.includes("TRAINING_EVIDENCE_STATUS_TOOL"), "MCP server must consume TRAINING_EVIDENCE_STATUS_TOOL");
+ensure(!tools.includes("CONVERSATION_STATUS_TOOL"), "cloud tool loop must not consume CONVERSATION_STATUS_TOOL");
+ensure(!tools.includes("CONVERSATION_SEARCH_TOOL"), "cloud tool loop must not consume CONVERSATION_SEARCH_TOOL");
+ensure(mcp.includes("CONVERSATION_STATUS_TOOL"), "MCP server must consume CONVERSATION_STATUS_TOOL");
+ensure(mcp.includes("CONVERSATION_SEARCH_TOOL"), "MCP server must consume CONVERSATION_SEARCH_TOOL");
+ensure(mcp.includes("SEIS_CONVERSATION_MCP_METADATA"), "MCP server must require explicit Conversation Nexus metadata opt-in");
 
 for (const token of [
   "seis-agent-plugin-integration.json",
@@ -287,6 +303,7 @@ for (const token of [
   "seis://ai/model-scaling-hardware-profile.json",
   "seis://ai/frontier-training-launch-plan.json",
   "seis://ai/model-training-evidence-chain.json",
+  "seis://ai/conversation-nexus.json",
   "seis://ai/model-parameter-ladder.json",
   "seis://ai/model-frontier-escalation-policy.json",
   "seis://ai/150b-frontier-model-program.json",

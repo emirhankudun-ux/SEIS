@@ -76,6 +76,23 @@ Bu pass içinde:
 
 Gerçek credential bulunmadı; taramalarda değerler yazdırılmadı.
 
+### Conversation Nexus Güvenlik Düzeltmesi
+
+AI-4 güvenlik incelemesi, repo/iCloud içindeki `.seis` state'inin local-only
+sayılamayacağını ve Conversation araçlarının cloud-agent tool loop içinde
+kalmasının metadata'yı provider'a taşıyabileceğini belirledi. Uygulama bu
+nedenle repo ve bilinen sync kökleri dışındaki OS-private state'e taşındı;
+kalıcı projection görünür user/assistant metniyle sınırlandı; tool payload,
+thinking, signature ve attachment blokları atıldı. Cloud-agent tool kaydı
+kaldırıldı, MCP metadata erişimi varsayılan kapatıldı ve mevcut history upload'u
+exact session-name onayına bağlandı. Expiry read/search/resume/export sırasında
+uygulanıyor ve confirmed delete yerel session/export/temp/legacy kopyalarını
+kapsıyor.
+
+Bu owner-only bir yerel state foundation'ıdır. Keychain/DPAPI/libsecret destekli
+AEAD henüz yoktur; encrypted-at-rest iddiası kurulmaz. ChatGPT, Codex, Claude ve
+Qwen arşiv importları uygulanmamıştır.
+
 ## Model Sahipliği Kararı
 
 | İddia                                     | Bugünkü karar                           |
@@ -107,6 +124,9 @@ Gerçek credential bulunmadı; taramalarda değerler yazdırılmadı.
 ```bash
 npm run check:seis-frontier-training-launch-plan
 npm run check:seis-agent-plugin-integration
+npm run check:seis-conversation-nexus
+node --test packages/seis-ai/test/conversation-store.test.mjs
+node --test packages/seis-ai/test/conversation-cli.test.mjs
 node --test packages/seis-ai/test/agent.test.mjs
 node --test packages/seis-ai/test/mcp-smoke.test.mjs
 npm test --prefix packages/seis-ai
@@ -121,6 +141,7 @@ git diff --check
 - Onaylı yerel LLM runtime pilotu yok.
 - Formal Draft 2020-12 training/checkpoint/compute/eval/release şemaları ve sentetik fixture hash zinciri eklendi; gerçek kabul edilmiş evidence kayıtları hâlâ yok.
 - Ed25519 release attestation verifier ve RFC 7638 public-key kimliği eklendi; trust-root hâlâ anahtarsız ve `not-configured`, dolayısıyla release `deny` kalıyor.
+- Conversation Nexus at-rest encryption ve external archive import adaptörleri yok; MCP metadata yalnız explicit local opt-in ile açılabilir.
 - Gerçek dataset provenance ve contamination raporu yok.
 - Ölçülmüş memory/latency/cost benchmark yok.
 - Bağımsız insan safety review yapılmadı.

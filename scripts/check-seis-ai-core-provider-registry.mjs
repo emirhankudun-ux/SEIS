@@ -122,8 +122,8 @@ ensure(pluginIntegration?.fiveYearSubagentDevelopment?.providerRegistry === path
 ensureArrayIncludesAll(pluginIntegration?.qualityCommands, ["npm run check:seis-ai-core-provider-registry"], "pluginIntegration.qualityCommands");
 
 if (mcpRuntimeContract) {
-  ensure(mcpRuntimeContract.toolCount === 37, "MCP runtime contract must record 37 tools");
-  ensure(mcpRuntimeContract.resourceCount === 32, "MCP runtime contract must record 32 resources");
+  ensure(mcpRuntimeContract.toolCount === 39, "MCP runtime contract must record 39 tools");
+  ensure(mcpRuntimeContract.resourceCount === 33, "MCP runtime contract must record 33 resources");
   ensure(String(mcpRuntimeContract.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("AGI evaluation protocol"), "MCP runtime contract resource evidence must mention AGI evaluation protocol");
   ensure(String(mcpRuntimeContract.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("AGI public readiness evidence"), "MCP runtime contract resource evidence must mention AGI public readiness evidence");
   ensure(String(mcpRuntimeContract.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("AGI GitHub user readiness gates"), "MCP runtime contract resource evidence must mention AGI GitHub user readiness gates");

@@ -1,0 +1,349 @@
+{
+  "id": "seis-conversation-nexus",
+  "title": "SEIS AI-4 Conversation Nexus Local/Private Session Contract",
+  "version": "2026.07.12",
+  "status": "local-private-runtime",
+  "sourcePath": "content/development/seis-conversation-nexus.json",
+  "schemaRef": "packages/shared-types/schemas/seis-conversation-session.schema.json",
+  "documentationRef": "docs/ai/conversation-nexus.md",
+  "implementationRef": "packages/seis-ai/src/memory/conversation-store.mjs",
+  "runtime": {
+    "mode": "local-private",
+    "sessionRuntimeStatus": "implemented-local-runtime",
+    "persistenceDefault": "off-unless-session-flag-is-explicit",
+    "networkAccessAllowed": false,
+    "providerCallsPerformedByStore": false,
+    "externalMutationAllowed": false,
+    "repositoryConversationWriteAllowed": false,
+    "implicitConversationDiscoveryAllowed": false,
+    "legacyMigration": "explicit-only-source-preserved",
+    "runtimeAuthority": false
+  },
+  "storage": {
+    "storageClass": "os-private-state-root",
+    "macOSDefault": "~/Library/Application Support/SEIS/private/conversation-nexus-v1",
+    "linuxDefault": "~/.local/state/seis/private/conversation-nexus-v1",
+    "windowsDefault": "~/AppData/Local/SEIS/private/conversation-nexus-v1",
+    "conversationDirectory": "conversations",
+    "exportDirectory": "exports",
+    "legacyRelativePath": ".seis/sessions",
+    "repositoryStorageAllowed": false,
+    "knownSynchronizedFolderAllowed": false,
+    "repositoryTracked": false,
+    "repositoryIgnoredLegacyPaths": true,
+    "atRestEncryptionImplemented": false,
+    "atRestEncryptionBoundary": "owner-only permissions and out-of-repository placement are implemented; OS keychain-backed AEAD remains required before a stronger encrypted-at-rest claim",
+    "directoryModeOctal": "0700",
+    "fileModeOctal": "0600",
+    "temporaryFileModeOctal": "0600",
+    "symlinkPolicy": "reject-store-and-record-symlinks",
+    "limits": {
+      "maxSessions": 512,
+      "maxMessagesPerSession": 2048,
+      "maxSessionFileBytes": 8388608,
+      "maxStringBytes": 262144,
+      "maxProviderContentBlocks": 256
+    },
+    "writeProtocol": {
+      "temporaryCreateFlag": "wx",
+      "steps": [
+        "create a same-directory unique temporary file with mode 0600",
+        "write the complete JSON payload",
+        "flush the temporary file descriptor with fsyncSync",
+        "close the temporary file descriptor",
+        "replace the destination with same-directory renameSync",
+        "enforce final destination mode 0600",
+        "flush the parent directory on POSIX",
+        "remove the temporary file if the write fails"
+      ],
+      "perRecordExclusiveLock": true,
+      "sameDirectoryRename": true,
+      "parentDirectoryFsyncImplementedOnPosix": true,
+      "atomicityClaim": "exclusive per-record lock plus same-directory temporary-file rename; no distributed lock, Windows directory-fsync, or universal crash-durability guarantee",
+      "permissionPortability": "0700/0600 are POSIX owner-only targets; the host filesystem and operating-system ACL semantics remain authoritative"
+    }
+  },
+  "consent": {
+    "explicitLocalSessionConsentRequired": true,
+    "currentCaptureValue": "explicit-cli-session",
+    "futureApprovedImportValue": "explicit-approved-local-import",
+    "implicitCaptureAllowed": false,
+    "backgroundHomeDirectoryDiscoveryAllowed": false,
+    "consentCanBeWithdrawnByConfirmedLocalDelete": true,
+    "automaticProviderUploadConsentPathExists": false,
+    "agentResumeUploadRequiresExactSessionConfirmation": true,
+    "githubPublicationConsentPathExists": false
+  },
+  "privacy": {
+    "classification": "local-private",
+    "providerUploadAllowed": false,
+    "githubPublicationAllowed": false,
+    "externalSyncAllowed": false,
+    "apiKeysAllowedInSession": false,
+    "credentialMaterialAllowedInRepository": false,
+    "privateConversationContentAllowedInRepository": false,
+    "messageContentAllowedInMcpResults": false,
+    "trainingUseAllowed": false,
+    "dataMinimizationPolicy": "persist only redacted visible user/assistant text; drop tool inputs, tool results, thinking, signatures, attachments, and structured provider payloads; MCP metadata access is disabled by default",
+    "nistPrivacyFrameworkAlignment": {
+      "reference": "NIST Privacy Framework 1.0",
+      "outcomes": [
+        "CT.DM-P1 review access",
+        "CT.DM-P4 deletion access",
+        "CT.DM-P5 policy-based destruction",
+        "CT.DM-P8 minimized audit records",
+        "CT.DP-P1 local processing to limit observability and linkability",
+        "CT.DP-P4 selective collection and disclosure"
+      ],
+      "complianceCertificationClaimed": false
+    }
+  },
+  "redaction": {
+    "policyId": "seis-conversation-redaction-v1",
+    "beforePersistenceRequired": true,
+    "structuredProviderPayloadsPersisted": false,
+    "visibleTextOnly": true,
+    "strongSecretPatternsReplaced": true,
+    "genericKeyValueAndHeaderCredentialPatternsReplaced": true,
+    "homeDirectoryPathRedacted": true,
+    "replacementTokens": ["[REDACTED_SECRET]"],
+    "summaryFields": ["applied", "replacementCount", "policy"],
+    "rawSecretValueInSummaryAllowed": false,
+    "boundary": "Redaction is defense in depth and is not a guarantee that arbitrary private content is safe to publish."
+  },
+  "integrity": {
+    "recordIdPattern": "conversation:seis-agent-<normalized-session-name>:v1",
+    "recordHashAlgorithm": "sha256 over canonical JSON with recordHash omitted",
+    "messageHashAlgorithm": "sha256 over canonical JSON containing sequence, role, and content",
+    "messageSequenceStartsAt": 0,
+    "messageSequenceContiguous": true,
+    "authenticatedSignatureProvided": false,
+    "boundary": "Hashes support deterministic integrity checks; they do not authenticate the user, provider, or publication authority."
+  },
+  "provenance": {
+    "vocabulary": "W3C PROV-O",
+    "namespace": "http://www.w3.org/ns/prov#",
+    "mapping": {
+      "entityId": "prov:Entity for the local conversation record",
+      "activityId": "prov:Activity for explicit capture or an approval-gated local import",
+      "agentId": "prov:Agent for the responsible provider profile or software agent",
+      "sourceType": "local source classification",
+      "sourceSessionName": "normalized local alias, never a raw private source path"
+    },
+    "rdfSerializationRequired": false,
+    "fullProvConformanceClaimed": false
+  },
+  "retention": {
+    "mode": "user-controlled",
+    "expiresAtSupported": true,
+    "expiresAtDefault": null,
+    "automaticDeletion": false,
+    "expiredStateReported": true,
+    "expiredReadSearchResumeExportAllowed": false,
+    "existingExpiryPreservedOnUpdate": true,
+    "deleteSupported": true,
+    "deleteRequiresExactSessionNameConfirmation": true,
+    "deleteLocalSessionExportsLegacyAndTemps": true,
+    "deleteRemoteProviderCopy": false,
+    "deleteLegacySourceOnConfirmedDelete": true,
+    "exportSupported": true,
+    "exportRequiresExactSessionNameConfirmation": true,
+    "exportDestination": "os-private-state-root/exports",
+    "exportOwnerOnly": true,
+    "exportEncryptionAtRestImplemented": false,
+    "exportProviderUploadAllowed": false,
+    "exportGithubPublicationAllowed": false
+  },
+  "importBoundary": {
+    "externalImportRuntimeEnabled": false,
+    "allChatsAlreadyImportedClaimed": false,
+    "verifiedCoverage": "not-measured",
+    "automaticAccountDiscoveryAllowed": false,
+    "automaticProviderExportDownloadAllowed": false,
+    "userSelectedLocalExportRequired": true,
+    "explicitImportApprovalRequired": true,
+    "dryRunAndRedactionReviewRequired": true,
+    "provenanceReviewRequired": true,
+    "repositoryImportOutputAllowed": false
+  },
+  "sourceAdapters": [
+    {
+      "id": "seis-agent-cli-session",
+      "sourceProvider": "seis-agent",
+      "status": "local-private-runtime",
+      "runtimeEnabled": true,
+      "explicitConsentRequired": true,
+      "providerUploadAllowed": false,
+      "githubPublicationAllowed": false
+    },
+    {
+      "id": "chatgpt-export-import",
+      "sourceProvider": "openai-chatgpt",
+      "status": "planned-approval-gated",
+      "runtimeEnabled": false,
+      "automaticDiscoveryAllowed": false,
+      "explicitLocalImportConsentRequired": true,
+      "providerUploadAllowed": false,
+      "githubPublicationAllowed": false,
+      "completionClaim": "not-made"
+    },
+    {
+      "id": "codex-session-import",
+      "sourceProvider": "openai-codex",
+      "status": "planned-approval-gated",
+      "runtimeEnabled": false,
+      "automaticDiscoveryAllowed": false,
+      "explicitLocalImportConsentRequired": true,
+      "providerUploadAllowed": false,
+      "githubPublicationAllowed": false,
+      "completionClaim": "not-made"
+    },
+    {
+      "id": "claude-export-import",
+      "sourceProvider": "anthropic-claude",
+      "status": "planned-approval-gated",
+      "runtimeEnabled": false,
+      "automaticDiscoveryAllowed": false,
+      "explicitLocalImportConsentRequired": true,
+      "providerUploadAllowed": false,
+      "githubPublicationAllowed": false,
+      "completionClaim": "not-made"
+    },
+    {
+      "id": "qwen-export-import",
+      "sourceProvider": "qwen",
+      "status": "planned-approval-gated",
+      "runtimeEnabled": false,
+      "automaticDiscoveryAllowed": false,
+      "explicitLocalImportConsentRequired": true,
+      "providerUploadAllowed": false,
+      "githubPublicationAllowed": false,
+      "completionClaim": "not-made"
+    }
+  ],
+  "mcpBoundary": {
+    "status": "registered-disabled-by-default-read-only-metadata-only",
+    "transport": "local-stdio",
+    "registrationVerified": true,
+    "enabledByDefault": false,
+    "explicitLocalOptInEnvironment": "SEIS_CONVERSATION_MCP_METADATA=1",
+    "cloudAgentToolRegistration": false,
+    "contentReturned": false,
+    "messageBodiesReturned": false,
+    "sessionContentResourceExposed": false,
+    "providerCallsAllowed": false,
+    "networkAccessAllowed": false,
+    "externalMutationAllowed": false,
+    "writeToolsExposed": false,
+    "writeTools": [],
+    "tools": [
+      {
+        "id": "conversation-status",
+        "name": "seis_ai_core_conversation_status",
+        "status": "registered-disabled-by-default-read-only",
+        "purpose": "Return aggregate local store health, counts, privacy state, and migration state without message bodies.",
+        "annotations": {
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "taskSupport": "forbidden"
+      },
+      {
+        "id": "conversation-search",
+        "name": "seis_ai_core_conversation_search",
+        "status": "registered-disabled-by-default-read-only",
+        "purpose": "Search locally and return matching session metadata only; opening content remains an explicit local user action.",
+        "annotations": {
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "taskSupport": "forbidden",
+        "inputLimits": {
+          "queryMinCharacters": 2,
+          "queryMaxCharacters": 200,
+          "maxTerms": 8,
+          "resultLimitMin": 1,
+          "resultLimitMax": 50
+        }
+      }
+    ],
+    "resources": [
+      {
+        "id": "conversation-nexus-contract",
+        "uri": "seis://ai/conversation-nexus.json",
+        "status": "registered-read-only",
+        "contentClass": "repository-safe-policy-contract"
+      }
+    ],
+    "forbiddenCapabilities": [
+      "capture conversation",
+      "write or edit session",
+      "import external conversation",
+      "export conversation",
+      "delete conversation",
+      "upload to provider",
+      "publish to GitHub",
+      "sync to external storage",
+      "return message bodies"
+    ],
+    "boundary": "MCP annotations are advisory metadata; server-side implementation must independently enforce the read-only, local-only, and metadata-only boundary."
+  },
+  "localUserControls": {
+    "status": "npm run seis:conversations -- status",
+    "search": "npm run seis:conversations -- search --query <local-query>",
+    "export": "npm run seis:conversations -- export --session <name> --confirm <name>",
+    "delete": "npm run seis:conversations -- delete --session <name> --confirm <name>",
+    "legacyMigration": "npm run seis:conversations -- migrate --session <name>",
+    "cloudResume": "node packages/seis-ai/bin/seis-agent.mjs --session <name> --approve-session-upload <name> <task>",
+    "boundary": "Export, delete, and migration are explicit local CLI controls and are not exposed as MCP tools."
+  },
+  "forbiddenActions": [
+    "store API keys, tokens, private keys, cookies, passwords, or service-account secrets in a session",
+    "commit .seis conversation or export content",
+    "send session content to any provider",
+    "publish session content to GitHub",
+    "discover external chat archives without explicit user selection",
+    "claim all ChatGPT, Codex, Claude, or Qwen chats are imported",
+    "register an MCP write, import, export, delete, upload, sync, or publication tool under this contract",
+    "treat a record hash as user authentication, provider attestation, or publication approval"
+  ],
+  "nonClaims": [
+    "all external conversations are already imported",
+    "external ChatGPT, Codex, Claude, or Qwen import is implemented",
+    "redaction makes private content public-safe",
+    "local retention deletes provider-side copies",
+    "MCP read-only annotations alone enforce security",
+    "conversation records are training data or public repository memory"
+  ],
+  "references": [
+    {
+      "id": "json-schema-2020-12",
+      "url": "https://json-schema.org/draft/2020-12"
+    },
+    {
+      "id": "w3c-prov-o",
+      "url": "https://www.w3.org/TR/prov-o/"
+    },
+    {
+      "id": "nist-privacy-framework-1.0",
+      "url": "https://www.nist.gov/system/files/documents/2020/01/16/NIST%20Privacy%20Framework_V1.0.pdf"
+    },
+    {
+      "id": "node-fs",
+      "url": "https://nodejs.org/api/fs.html"
+    },
+    {
+      "id": "mcp-tools-2025-11-25",
+      "url": "https://modelcontextprotocol.io/specification/2025-11-25/server/tools"
+    },
+    {
+      "id": "mcp-resources-2025-11-25",
+      "url": "https://modelcontextprotocol.io/specification/2025-11-25/server/resources"
+    }
+  ],
+  "truthBoundary": "The bounded out-of-repository OS-private SEIS session store, visible-text-only projection, explicit local CLI controls, two disabled-by-default metadata-only MCP tools, and one repository-safe policy resource are implemented. At-rest encryption is not implemented, so no encrypted-storage claim is made. External imports remain planned and approval-gated; no automatic provider upload, GitHub publication, known synchronized-folder storage, message-body MCP exposure, or all-chats-imported claim is authorized."
+}

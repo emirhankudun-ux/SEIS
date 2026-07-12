@@ -187,15 +187,15 @@ ensure(
 ensure(launchPlan?.trainingAuthorized === false, 'frontier launch plan must remain unauthorized');
 
 const mcpContract = readJson(paths.mcpContract);
-ensure(mcpContract?.toolCount === 37, 'MCP contract must record 37 tools');
-ensure(mcpContract?.resourceCount === 32, 'MCP contract must record 32 resources');
+ensure(mcpContract?.toolCount === 39, 'MCP contract must record 39 tools');
+ensure(mcpContract?.resourceCount === 33, 'MCP contract must record 33 resources');
 ensure(
-  mcpContract?.surfaces?.find(surface => surface.id === 'tools')?.count === 37,
-  'MCP tool surface count must be 37',
+  mcpContract?.surfaces?.find(surface => surface.id === 'tools')?.count === 39,
+  'MCP tool surface count must be 39',
 );
 ensure(
-  mcpContract?.surfaces?.find(surface => surface.id === 'resources')?.count === 32,
-  'MCP resource surface count must be 32',
+  mcpContract?.surfaces?.find(surface => surface.id === 'resources')?.count === 33,
+  'MCP resource surface count must be 33',
 );
 
 const schemaRegistry = readJson(paths.schemaRegistry);

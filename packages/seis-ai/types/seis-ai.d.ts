@@ -678,3 +678,128 @@ export declare function runEvalCriticModelEval(
   options?: { enforceSafetyFloor?: boolean },
 ): EvalCriticModelEvalReport;
 export declare function buildEvalCriticModelArtifact(dataset: EvalCriticDataset): EvalCriticArtifact;
+
+/* ------------------------------------------------------------------ */
+/* Local-private Conversation Nexus                                   */
+/* ------------------------------------------------------------------ */
+
+export type ConversationInputContent =
+  | string
+  | Array<{ type: string; text?: string; [key: string]: unknown }>;
+
+export interface ConversationMessageRecord {
+  sequence: number;
+  role: 'user' | 'assistant';
+  content: string;
+  contentHash: string;
+}
+
+export interface ConversationSessionRecord {
+  schemaRef: string;
+  schemaVersion: 1;
+  recordType: 'conversation-session';
+  id: string;
+  sessionName: string;
+  status: 'local-private';
+  privacyMode: 'local-only';
+  consent: {
+    capture: 'explicit-cli-session';
+    providerUploadAllowed: false;
+    githubPublicationAllowed: false;
+    externalSyncAllowed: false;
+  };
+  provenance: {
+    entityId: string;
+    activityId: string;
+    agentId: string;
+    sourceType: string;
+    sourceSessionName: string;
+  };
+  provider: {
+    id: string;
+    model: string;
+    liveProviderUsed: boolean;
+  };
+  retention: {
+    mode: 'user-controlled';
+    expiresAt: string | null;
+    deletionSupported: true;
+    automaticDeletion: false;
+    policyReviewedAt: string;
+  };
+  redaction: {
+    applied: boolean;
+    replacementCount: number;
+    policy: 'seis-conversation-redaction-v1';
+  };
+  messageCount: number;
+  messages: ConversationMessageRecord[];
+  createdAt: string;
+  updatedAt: string;
+  recordHash: string;
+  truthBoundary: string;
+}
+
+export interface ConversationSessionSummary {
+  sessionId: string;
+  sessionName: string;
+  status: 'local-private';
+  privacyMode: 'local-only';
+  providerId: string;
+  model: string;
+  messageCount: number;
+  redactionApplied: boolean;
+  redactionReplacementCount: number;
+  createdAt: string;
+  updatedAt: string;
+  expiresAt: string | null;
+  recordHash: string;
+  contentReturned: false;
+}
+
+export declare function conversationNexusStatus(
+  repoRoot: string,
+  options?: { stateRoot?: string; now?: string | Date; includeSessions?: boolean; includeContract?: boolean },
+): Record<string, unknown>;
+export declare function conversationNexusContract(repoRoot: string): Record<string, unknown>;
+export declare function resolveConversationStateRoot(options?: {
+  repoRoot?: string;
+  stateRoot?: string;
+}): string;
+export declare function searchConversationSessions(
+  repoRoot: string,
+  options: { stateRoot?: string; now?: string | Date; query: string; limit?: number },
+): Record<string, unknown>;
+export declare function readConversationHistory(
+  repoRoot: string,
+  sessionName: string,
+  options?: { stateRoot?: string; now?: string | Date; allowLegacy?: boolean },
+): { source: string; messages: { role: 'user' | 'assistant'; content: string }[] } | null;
+export declare function saveConversationSession(
+  repoRoot: string,
+  input: {
+    sessionName: string;
+    providerId?: string;
+    model?: string;
+    liveProviderUsed?: boolean;
+    stateRoot?: string;
+    messages: { role: 'user' | 'assistant'; content: ConversationInputContent }[];
+    retention?: { expiresAt?: string | null };
+    now?: string | Date;
+  },
+): ConversationSessionSummary;
+export declare function migrateLegacyConversationSession(
+  repoRoot: string,
+  sessionName: string,
+  options?: { stateRoot?: string; providerId?: string; now?: string | Date },
+): ConversationSessionSummary;
+export declare function exportConversationSession(
+  repoRoot: string,
+  sessionName: string,
+  options: { stateRoot?: string; now?: string | Date; confirmation: string },
+): Record<string, unknown>;
+export declare function deleteConversationSession(
+  repoRoot: string,
+  sessionName: string,
+  options: { stateRoot?: string; confirmation: string },
+): Record<string, unknown>;

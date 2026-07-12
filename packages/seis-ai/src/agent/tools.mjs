@@ -1,4 +1,12 @@
-import { readFileSync, readdirSync, statSync, writeFileSync, mkdirSync } from "node:fs";
+import {
+  lstatSync,
+  readFileSync,
+  readdirSync,
+  realpathSync,
+  statSync,
+  writeFileSync,
+  mkdirSync,
+} from "node:fs";
 import { execFileSync } from "node:child_process";
 import path from "node:path";
 
@@ -35,7 +43,19 @@ import { runAllChecks, i18nStatus, seoAudit, contractCheck, drawingsCatalog, sty
 
 const MAX_READ_BYTES = 64 * 1024;
 const MAX_GREP_HITS = 60;
-const SKIP_DIRS = new Set(["node_modules", ".git", "dist", "build", "coverage", "releases", "polyglot"]);
+const SKIP_DIRS = new Set([
+  "node_modules",
+  ".git",
+  ".seis",
+  ".secrets",
+  "secrets",
+  "dist",
+  "build",
+  "coverage",
+  "releases",
+  "polyglot",
+]);
+const PRIVATE_PATH_SEGMENTS = new Set([".git", ".seis", ".secrets", "secrets", ".ssh", ".aws"]);
 
 /**
  * Tool definitions sent to the Messages API. `write_file` is appended only
@@ -71,11 +91,11 @@ export function toolDefinitions({ allowWrite = false } = {}) {
     {
       name: "grep_repo",
       description:
-        "Search file contents with a JavaScript regular expression. Returns matching lines with file:line locations. Scope with dir to keep results focused.",
+        "Search file contents for bounded literal text. Returns matching lines with file:line locations. Scope with dir to keep results focused.",
       input_schema: {
         type: "object",
         properties: {
-          pattern: { type: "string", description: "JavaScript regex source, e.g. data-i18n=\"hero" },
+          pattern: { type: "string", description: "Literal text up to 200 characters, e.g. data-i18n=\"hero" },
           dir: { type: "string", description: "Directory to search, relative to repo root (default apps/web)" },
         },
         required: ["pattern"],
@@ -323,15 +343,16 @@ export function executeTool(name, input, { repoRoot, webRoot, allowWrite = false
 
   switch (name) {
     case "list_files": {
-      const abs = resolveInside(repoRoot, input.dir ?? ".");
+      const abs = resolveSafeExistingRepoPath(repoRoot, input.dir ?? ".", "directory");
       const entries = readdirSync(abs)
-        .filter((e) => !SKIP_DIRS.has(e))
-        .map((e) => (statSync(path.join(abs, e)).isDirectory() ? `${e}/` : e))
+        .filter((entry) => !SKIP_DIRS.has(entry) && !isPrivateFileName(entry))
+        .filter((entry) => !lstatSync(path.join(abs, entry)).isSymbolicLink())
+        .map((entry) => (statSync(path.join(abs, entry)).isDirectory() ? `${entry}/` : entry))
         .sort();
       return entries.join("\n") || "(empty)";
     }
     case "read_file": {
-      const abs = resolveInside(repoRoot, input.file);
+      const abs = resolveSafeExistingRepoPath(repoRoot, input.file, "file");
       const offset = Math.max(0, input.offset ?? 0);
       const buf = readFileSync(abs);
       const slice = buf.subarray(offset, offset + MAX_READ_BYTES);
@@ -342,10 +363,13 @@ export function executeTool(name, input, { repoRoot, webRoot, allowWrite = false
       );
     }
     case "grep_repo": {
-      const dir = resolveInside(repoRoot, input.dir ?? "apps/web");
-      const re = new RegExp(input.pattern);
+      const dir = resolveSafeExistingRepoPath(repoRoot, input.dir ?? "apps/web", "directory");
+      const needle = String(input.pattern ?? "");
+      if (needle.length === 0 || needle.length > 200) {
+        throw new Error("grep_repo pattern must contain 1-200 literal characters");
+      }
       const hits = [];
-      grepWalk(dir, re, repoRoot, hits);
+      grepWalk(dir, needle, repoRoot, hits);
       if (!hits.length) return "(no matches)";
       const shown = hits.slice(0, MAX_GREP_HITS);
       const suffix = hits.length > shown.length ? `\n[... ${hits.length - shown.length} more matches]` : "";
@@ -353,6 +377,17 @@ export function executeTool(name, input, { repoRoot, webRoot, allowWrite = false
     }
     case "git_diff": {
       const args = input.staged === true ? ["diff", "--staged"] : ["diff", "HEAD"];
+      args.push(
+        "--",
+        ".",
+        ":(exclude).seis/**",
+        ":(exclude).env",
+        ":(exclude).env.*",
+        ":(exclude)**/*.pem",
+        ":(exclude)**/*.key",
+        ":(exclude)**/*.p12",
+        ":(exclude)**/*.pfx",
+      );
       let out;
       try {
         out = execFileSync("git", args, { cwd: repoRoot, maxBuffer: 512 * 1024, encoding: "utf8" });
@@ -468,7 +503,7 @@ export function executeTool(name, input, { repoRoot, webRoot, allowWrite = false
       if (!allowWrite) {
         throw new Error("edit_file is disabled — re-run the agent with --write to allow file writes");
       }
-      const abs = resolveInside(repoRoot, input.file);
+      const abs = resolveSafeExistingRepoPath(repoRoot, input.file, "file");
       const content = readFileSync(abs, "utf8");
       const count = content.split(input.old_string).length - 1;
       if (count === 0) {
@@ -485,7 +520,9 @@ export function executeTool(name, input, { repoRoot, webRoot, allowWrite = false
       if (!allowWrite) {
         throw new Error("write_file is disabled — re-run the agent with --write to allow file writes");
       }
+      assertSafeRepoRelativePath(input.file);
       const abs = resolveInside(repoRoot, input.file);
+      assertSafeWriteTarget(repoRoot, abs);
       mkdirSync(path.dirname(abs), { recursive: true });
       writeFileSync(abs, input.content);
       return `Wrote ${Buffer.byteLength(input.content)} bytes to ${input.file}`;
@@ -495,17 +532,95 @@ export function executeTool(name, input, { repoRoot, webRoot, allowWrite = false
   }
 }
 
-function grepWalk(dir, re, repoRoot, hits) {
+function assertSafeRepoRelativePath(userPath) {
+  if (typeof userPath !== "string" || userPath.length === 0) {
+    throw new Error("Repository path must be a non-empty string");
+  }
+  const normalized = userPath.replaceAll("\\", "/");
+  const segments = normalized.split("/").filter(Boolean).map((segment) => segment.toLowerCase());
+  if (segments.some((segment) => PRIVATE_PATH_SEGMENTS.has(segment))) {
+    throw new Error("Private repository paths are unavailable to agent filesystem tools");
+  }
+  if (isPrivateFileName(segments.at(-1) || "")) {
+    throw new Error("Credential-like files are unavailable to agent filesystem tools");
+  }
+}
+
+function isPrivateFileName(fileName) {
+  const normalized = String(fileName).toLowerCase();
+  if (normalized.startsWith(".env") && normalized.endsWith(".example")) return false;
+  return (
+    normalized === ".env" ||
+    normalized.startsWith(".env.") ||
+    normalized === "credentials.local.json" ||
+    (normalized.startsWith("service-account") && normalized.endsWith(".json")) ||
+    [".pem", ".key", ".p12", ".pfx"].some((extension) => normalized.endsWith(extension))
+  );
+}
+
+function resolveSafeExistingRepoPath(repoRoot, userPath, expectedType) {
+  assertSafeRepoRelativePath(userPath);
+  const abs = resolveInside(repoRoot, userPath);
+  assertNoSymlinkComponents(repoRoot, abs);
+  const fileStat = lstatSync(abs);
+  if (fileStat.isSymbolicLink()) {
+    throw new Error("Symbolic links are unavailable to agent filesystem tools");
+  }
+  if (expectedType === "file" && !fileStat.isFile()) throw new Error("Expected a regular file");
+  if (expectedType === "directory" && !fileStat.isDirectory()) {
+    throw new Error("Expected a directory");
+  }
+  resolveInside(realpathSync(repoRoot), realpathSync(abs));
+  return abs;
+}
+
+function assertSafeWriteTarget(repoRoot, target) {
+  let cursor = path.dirname(target);
+  while (!statExists(cursor)) cursor = path.dirname(cursor);
+  const cursorStat = lstatSync(cursor);
+  assertNoSymlinkComponents(repoRoot, cursor);
+  if (cursorStat.isSymbolicLink() || !cursorStat.isDirectory()) {
+    throw new Error("Agent write parent must be a regular non-symlink directory");
+  }
+  resolveInside(realpathSync(repoRoot), realpathSync(cursor));
+  if (statExists(target) && lstatSync(target).isSymbolicLink()) {
+    throw new Error("Agent writes through symbolic links are forbidden");
+  }
+}
+
+function assertNoSymlinkComponents(repoRoot, target) {
+  const relative = path.relative(path.resolve(repoRoot), path.resolve(target));
+  let cursor = path.resolve(repoRoot);
+  for (const segment of relative.split(path.sep).filter(Boolean)) {
+    cursor = path.join(cursor, segment);
+    if (lstatSync(cursor).isSymbolicLink()) {
+      throw new Error("Symbolic links are unavailable to agent filesystem tools");
+    }
+  }
+}
+
+function statExists(candidate) {
+  try {
+    lstatSync(candidate);
+    return true;
+  } catch (error) {
+    if (error?.code === "ENOENT") return false;
+    throw error;
+  }
+}
+
+function grepWalk(dir, needle, repoRoot, hits) {
   for (const entry of readdirSync(dir)) {
-    if (SKIP_DIRS.has(entry) || entry.startsWith(".")) continue;
+    if (SKIP_DIRS.has(entry) || entry.startsWith(".") || isPrivateFileName(entry)) continue;
     const abs = path.join(dir, entry);
-    const st = statSync(abs);
+    const st = lstatSync(abs);
+    if (st.isSymbolicLink()) continue;
     if (st.isDirectory()) {
-      grepWalk(abs, re, repoRoot, hits);
+      grepWalk(abs, needle, repoRoot, hits);
     } else if (st.size < 1024 * 1024 && /\.(m?js|cjs|ts|json|html?|css|md|txt|xml|ya?ml|svg)$/i.test(entry)) {
       const lines = readFileSync(abs, "utf8").split("\n");
       for (let i = 0; i < lines.length; i += 1) {
-        if (re.test(lines[i])) {
+        if (lines[i].includes(needle)) {
           const rel = path.relative(repoRoot, abs).split(path.sep).join("/");
           hits.push(`${rel}:${i + 1}: ${lines[i].trim().slice(0, 200)}`);
           if (hits.length > MAX_GREP_HITS * 3) return;

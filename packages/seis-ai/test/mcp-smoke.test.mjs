@@ -1,10 +1,13 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const pkgRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const workspaceRoot = path.resolve(pkgRoot, "..", "..");
 const serverBin = path.join(pkgRoot, "bin", "seis-mcp.mjs");
 
 /**
@@ -12,12 +15,15 @@ const serverBin = path.join(pkgRoot, "bin", "seis-mcp.mjs");
  * the initialize handshake, then list tools/resources. Catches wiring
  * regressions (bad imports, schema errors) that unit tests cannot see.
  */
-function rpcSession(requests, { timeoutMs = 15000 } = {}) {
+function rpcSession(
+  requests,
+  { timeoutMs = 15000, repoRoot = workspaceRoot, environment = {} } = {},
+) {
   return new Promise((resolve, reject) => {
     const child = spawn(process.execPath, [serverBin], {
       cwd: pkgRoot,
       stdio: ["pipe", "pipe", "pipe"],
-      env: { ...process.env, SEIS_REPO_ROOT: path.resolve(pkgRoot, "..", "..") },
+      env: { ...process.env, ...environment, SEIS_REPO_ROOT: repoRoot },
     });
 
     const responses = new Map();
@@ -65,8 +71,25 @@ function rpcSession(requests, { timeoutMs = 15000 } = {}) {
   });
 }
 
+function makeConversationRepo() {
+  const temporaryRoot = mkdtempSync(path.join(tmpdir(), "seis-mcp-conversation-"));
+  const repoRoot = path.join(temporaryRoot, "repo");
+  const stateRoot = path.join(temporaryRoot, "private-state");
+  const contractPath = path.join(repoRoot, "content/development/seis-conversation-nexus.json");
+  mkdirSync(path.dirname(contractPath), { recursive: true });
+  writeFileSync(
+    contractPath,
+    readFileSync(
+      path.join(workspaceRoot, "content/development/seis-conversation-nexus.json"),
+      "utf8"
+    ),
+    "utf8"
+  );
+  return { temporaryRoot, repoRoot, stateRoot };
+}
+
 describe("seis-mcp stdio smoke", () => {
-  it("initializes and lists 37 tools, 3 prompts, 32 resources", async () => {
+  it("initializes and lists 39 tools, 3 prompts, 33 resources", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -99,6 +122,8 @@ describe("seis-mcp stdio smoke", () => {
       "i18n_unreferenced",
       "run_all_checks",
       "security_audit",
+      "seis_ai_core_conversation_search",
+      "seis_ai_core_conversation_status",
       "seis_ai_core_frontier_training_status",
       "seis_ai_core_model_scaling_status",
       "seis_ai_core_provider_status",
@@ -142,6 +167,7 @@ describe("seis-mcp stdio smoke", () => {
       "seis://ai/agi-public-readiness-evidence.json",
       "seis://ai/approval-fixture.json",
       "seis://ai/cancellation-fixture.json",
+      "seis://ai/conversation-nexus.json",
       "seis://ai/dry-run-task-queue.json",
       "seis://ai/execution-ledger-fixture.json",
       "seis://ai/frontier-training-launch-plan.json",
@@ -257,8 +283,8 @@ describe("seis-mcp stdio smoke", () => {
     assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
     const payload = JSON.parse(resource.result.contents[0].text);
     assert.equal(payload.id, "seis-ai-core-mcp-runtime-contract");
-    assert.equal(payload.toolCount, 37);
-    assert.equal(payload.resourceCount, 32);
+    assert.equal(payload.toolCount, 39);
+    assert.equal(payload.resourceCount, 33);
     assert.equal(payload.transport, "stdio JSON-RPC");
   });
 
@@ -330,6 +356,37 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.trustRoot.attestationVerification, "implemented");
     assert.equal(payload.trustRoot.trustedApprovalKeyCount, 0);
     assert.equal(payload.replayProtection.executorLedgerRequired, true);
+  });
+
+  it("reads the local-private SEIS Conversation Nexus contract without message bodies", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "resources/read",
+        params: { uri: "seis://ai/conversation-nexus.json" },
+      },
+    ]);
+
+    const resource = responses.get(2);
+    assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
+    const payload = JSON.parse(resource.result.contents[0].text);
+    assert.equal(payload.id, "seis-conversation-nexus");
+    assert.equal(payload.status, "local-private-runtime");
+    assert.equal(payload.privacy.providerUploadAllowed, false);
+    assert.equal(payload.mcpBoundary.contentReturned, false);
+    assert.equal("messages" in payload, false);
   });
 
   it("reads the SEIS AI Core provider registry resource through the protocol", async () => {
@@ -973,6 +1030,108 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.fixtureValidation.validRecordCount, 6);
     assert.equal(payload.fixtureValidation.invalidCaseCount, 8);
     assert.equal(payload.executionEvidence.trainingRunPerformed, false);
+  });
+
+  it("executes Conversation Nexus metadata-only status and search tools", async () => {
+    const isolated = makeConversationRepo();
+    const requests = [
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "tools/call",
+        params: {
+          name: "seis_ai_core_conversation_status",
+          arguments: { includeSessions: true },
+        },
+      },
+      {
+        jsonrpc: "2.0",
+        id: 3,
+        method: "tools/call",
+        params: {
+          name: "seis_ai_core_conversation_search",
+          arguments: { query: "architecture", limit: 5 },
+        },
+      },
+    ];
+    let responses;
+    try {
+      responses = await rpcSession(requests, {
+        repoRoot: isolated.repoRoot,
+        environment: {
+          SEIS_CONVERSATION_MCP_METADATA: "1",
+          SEIS_CONVERSATION_STATE_DIR: isolated.stateRoot,
+        },
+      });
+    } finally {
+      rmSync(isolated.temporaryRoot, { recursive: true, force: true });
+    }
+
+    const statusCall = responses.get(2);
+    assert.ok(!statusCall.error, `tools/call errored: ${JSON.stringify(statusCall.error)}`);
+    const status = JSON.parse(statusCall.result.content[0].text);
+    assert.equal(status.ok, true);
+    assert.equal(status.status, "local-private-runtime");
+    assert.equal(status.privacy.providerUploadAllowed, false);
+    assert.equal(status.providerCallsPerformed, false);
+    assert.ok(status.sessions.every((session) => session.contentReturned === false));
+
+    const searchCall = responses.get(3);
+    assert.ok(!searchCall.error, `tools/call errored: ${JSON.stringify(searchCall.error)}`);
+    const search = JSON.parse(searchCall.result.content[0].text);
+    assert.equal(search.ok, true);
+    assert.equal(search.contentReturned, false);
+    assert.equal(search.privacyMode, "local-only-metadata");
+    assert.ok(search.results.every((result) => !("messages" in result)));
+  });
+
+  it("keeps Conversation Nexus metadata tools disabled without explicit local opt-in", async () => {
+    const isolated = makeConversationRepo();
+    let responses;
+    try {
+      responses = await rpcSession(
+        [
+          {
+            jsonrpc: "2.0",
+            id: 1,
+            method: "initialize",
+            params: {
+              protocolVersion: "2024-11-05",
+              capabilities: {},
+              clientInfo: { name: "seis-smoke", version: "0.0.0" },
+            },
+          },
+          { jsonrpc: "2.0", method: "notifications/initialized" },
+          {
+            jsonrpc: "2.0",
+            id: 2,
+            method: "tools/call",
+            params: { name: "seis_ai_core_conversation_status", arguments: {} },
+          },
+        ],
+        { repoRoot: isolated.repoRoot },
+      );
+    } finally {
+      rmSync(isolated.temporaryRoot, { recursive: true, force: true });
+    }
+    const call = responses.get(2);
+    assert.ok(!call.error, `tools/call errored: ${JSON.stringify(call.error)}`);
+    const payload = JSON.parse(call.result.content[0].text);
+    assert.equal(payload.ok, false);
+    assert.equal(payload.status, "disabled-requires-explicit-local-opt-in");
+    assert.equal(payload.contentReturned, false);
+    assert.equal(payload.messageBodiesReturned, false);
   });
 
   it("executes the SEIS AI Core model scaling status tool through the protocol", async () => {

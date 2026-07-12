@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "seis-data-schema-registry",
-  "updated": "2026-07-11",
+  "updated": "2026-07-12",
   "mode": "static_repository_data_contract",
   "statusVocabulary": [
     "documented",
@@ -475,6 +475,39 @@
       ],
       "freshness": "human review required before any key is configured, revoked, disabled, or rotated",
       "secretPolicy": "public Ed25519 JWK values only; private d members, private keys, credentials, and signing operations are forbidden"
+    },
+    {
+      "id": "seis-conversation-session-schema",
+      "path": "packages/shared-types/schemas/seis-conversation-session.schema.json",
+      "lane": "@seis-data",
+      "currentStatus": "validated",
+      "sourceType": "conversation-session-json-schema",
+      "expectedShape": "object",
+      "requiredTopLevelKeys": ["$schema", "$id", "title", "type", "required", "properties"],
+      "validationCommands": ["npm run check:seis-conversation-nexus"],
+      "freshness": "review after conversation privacy, provenance, retention, redaction, or integrity changes",
+      "secretPolicy": "schema only; must not contain message bodies, credentials, private paths, or provider exports"
+    },
+    {
+      "id": "seis-conversation-nexus",
+      "path": "content/development/seis-conversation-nexus.json",
+      "lane": "@seis",
+      "currentStatus": "validated",
+      "sourceType": "conversation-nexus-runtime-contract",
+      "expectedShape": "object",
+      "requiredTopLevelKeys": [
+        "id",
+        "version",
+        "status",
+        "storage",
+        "privacy",
+        "sourceAdapters",
+        "mcpBoundary",
+        "truthBoundary"
+      ],
+      "validationCommands": ["npm run check:seis-conversation-nexus"],
+      "freshness": "review after store, CLI, MCP, external import, retention, or provider boundary changes",
+      "secretPolicy": "repository-safe policy only; session content, exports, credentials, and private source paths are forbidden"
     }
   ]
 }

@@ -8,7 +8,8 @@
     "seis-mcp": "bin/seis-mcp.mjs",
     "seis-agent": "bin/seis-agent.mjs",
     "seis-check": "bin/seis-check.mjs",
-    "seis-router": "bin/seis-router.mjs"
+    "seis-router": "bin/seis-router.mjs",
+    "seis-conversations": "bin/seis-conversations.mjs"
   },
   "scripts": {
     "test": "node --test test/**/*.test.mjs",
@@ -16,6 +17,7 @@
     "mcp": "node bin/seis-mcp.mjs",
     "agent": "node bin/seis-agent.mjs",
     "router": "node bin/seis-router.mjs",
+    "conversations": "node bin/seis-conversations.mjs",
     "check:router": "node bin/seis-router.mjs --check"
   },
   "dependencies": {

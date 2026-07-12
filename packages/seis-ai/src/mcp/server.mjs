@@ -76,8 +76,18 @@ import {
   TRAINING_EVIDENCE_STATUS_TOOL,
   trainingEvidenceStatus,
 } from "../model/training-evidence.mjs";
+import {
+  CONVERSATION_NEXUS_RESOURCE_URI,
+  CONVERSATION_SEARCH_TOOL,
+  CONVERSATION_STATUS_TOOL,
+  conversationNexusContract,
+  conversationNexusStatus,
+  searchConversationSessions,
+} from "../memory/conversation-store.mjs";
 
 const repoRoot = resolveRepoRoot();
+const conversationMetadataEnabled = process.env.SEIS_CONVERSATION_MCP_METADATA === "1";
+const conversationStateRoot = process.env.SEIS_CONVERSATION_STATE_DIR || undefined;
 const webRoot = resolveWebRoot(repoRoot);
 
 const z = createSchemaHelpers();
@@ -290,7 +300,19 @@ function jsonResult(payload) {
 function errorResult(error) {
   return {
     isError: true,
-    content: [{ type: "text", text: `Error: ${error.message}` }],
+    content: [{ type: "text", text: `Error: request rejected (${error?.name || "Error"})` }],
+  };
+}
+
+function conversationMcpDisabled() {
+  return {
+    ok: false,
+    status: "disabled-requires-explicit-local-opt-in",
+    requiredEnvironment: "SEIS_CONVERSATION_MCP_METADATA=1",
+    contentReturned: false,
+    providerCallsPerformed: false,
+    externalMutationPerformed: false,
+    messageBodiesReturned: false,
   };
 }
 
@@ -601,6 +623,52 @@ export function buildServer() {
         });
         if (!status.ok) throw new Error(status.error || "SEIS model training evidence chain failed closed");
         return jsonResult(status);
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
+
+  server.tool(
+    CONVERSATION_STATUS_TOOL,
+    "Disabled by default. With explicit local SEIS_CONVERSATION_MCP_METADATA=1 opt-in, read Conversation Nexus counts, retention posture, migration state, and source-adapter readiness. Metadata-only; never returns message bodies, calls providers, imports chats, mutates sessions, or grants runtime authority.",
+    {
+      includeSessions: z.boolean().optional().describe("Return session metadata summaries without message content"),
+      includeContract: z.boolean().optional().describe("Return the machine-readable privacy and provenance contract"),
+    },
+    async ({ includeSessions, includeContract }) => {
+      try {
+        if (!conversationMetadataEnabled) return jsonResult(conversationMcpDisabled());
+        const status = conversationNexusStatus(repoRoot, {
+          stateRoot: conversationStateRoot,
+          includeSessions: includeSessions === true,
+          includeContract: includeContract === true,
+        });
+        if (!status.ok) throw new Error(status.error || "SEIS Conversation Nexus failed closed");
+        return jsonResult(status);
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
+
+  server.tool(
+    CONVERSATION_SEARCH_TOOL,
+    "Disabled by default. With explicit local SEIS_CONVERSATION_MCP_METADATA=1 opt-in, search redacted Conversation Nexus records while returning matching session metadata only. Message bodies and excerpts are never returned; performs no provider call, import, session mutation, external sync, or GitHub publication.",
+    {
+      query: z.string().describe("Local search terms; credential-like input is rejected"),
+      limit: z.number().int().min(1).max(50).optional().describe("Result limit from 1 to 50"),
+    },
+    async (input) => {
+      try {
+        if (!conversationMetadataEnabled) return jsonResult(conversationMcpDisabled());
+        return jsonResult(
+          searchConversationSessions(repoRoot, {
+            stateRoot: conversationStateRoot,
+            query: input.query,
+            limit: input.limit,
+          }),
+        );
       } catch (error) {
         return errorResult(error);
       }
@@ -989,6 +1057,28 @@ Steps:
             uri: TRAINING_EVIDENCE_RESOURCE_URI,
             mimeType: "application/json",
             text: `${JSON.stringify(status.contract, null, 2)}\n`,
+          },
+        ],
+      };
+    }
+  );
+
+  server.resource(
+    "ai-core-conversation-nexus",
+    CONVERSATION_NEXUS_RESOURCE_URI,
+    {
+      description:
+        "SEIS AI Core local-private Conversation Nexus privacy, provenance, retention, import, and metadata-only MCP boundary; contains no private conversation bodies",
+      mimeType: "application/json",
+    },
+    async () => {
+      const contract = conversationNexusContract(repoRoot);
+      return {
+        contents: [
+          {
+            uri: CONVERSATION_NEXUS_RESOURCE_URI,
+            mimeType: "application/json",
+            text: `${JSON.stringify(contract, null, 2)}\n`,
           },
         ],
       };

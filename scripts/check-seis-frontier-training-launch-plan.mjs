@@ -392,15 +392,15 @@ if (council) {
 }
 
 if (mcpContract) {
-  ensure(mcpContract.toolCount === 37, 'MCP toolCount must be 37');
-  ensure(mcpContract.resourceCount === 32, 'MCP resourceCount must be 32');
+  ensure(mcpContract.toolCount === 39, 'MCP toolCount must be 39');
+  ensure(mcpContract.resourceCount === 33, 'MCP resourceCount must be 33');
   ensure(
-    (mcpContract.surfaces || []).find(surface => surface.id === 'tools')?.count === 37,
-    'MCP tool surface count must be 37',
+    (mcpContract.surfaces || []).find(surface => surface.id === 'tools')?.count === 39,
+    'MCP tool surface count must be 39',
   );
   ensure(
-    (mcpContract.surfaces || []).find(surface => surface.id === 'resources')?.count === 32,
-    'MCP resource surface count must be 32',
+    (mcpContract.surfaces || []).find(surface => surface.id === 'resources')?.count === 33,
+    'MCP resource surface count must be 33',
   );
   ensure(
     String(

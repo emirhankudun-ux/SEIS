@@ -79,10 +79,19 @@ panels:
   SEIS AI Core can read plugin/provider/model-scaling
   resources, including `seis://ai/model-parameter-ladder.json` and
   `seis://ai/model-frontier-escalation-policy.json`, read
-  `seis://ai/mcp-runtime-contract.json`, and execute repo-backed tools without
-external servers.
+  `seis://ai/mcp-runtime-contract.json` and the repository-safe
+  `seis://ai/conversation-nexus.json` policy contract, and execute repo-backed
+  tools without external servers.
 
-The canonical protocol-level contract is now 37 tools, 32 resources, and 3
+Conversation Nexus `seis_ai_core_conversation_status` and
+`seis_ai_core_conversation_search` tools are registered only on the local MCP
+surface, disabled by default, and require
+`SEIS_CONVERSATION_MCP_METADATA=1`. They are intentionally absent from the
+cloud-provider agent tool list. Even when enabled they return metadata only;
+message bodies, excerpts, writes, imports, exports, deletes, provider uploads,
+and GitHub publication are not exposed.
+
+The canonical protocol-level contract is now 39 tools, 33 resources, and 3
 prompts. The browser snapshot must be updated and browser-smoked separately
 before the Installed AI panel can claim those current protocol counts.
 

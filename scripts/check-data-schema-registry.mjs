@@ -85,7 +85,8 @@ function validateRecord(record) {
 
   if (
     record.sourceType === "training-evidence-json-schema" ||
-    record.sourceType === "model-release-trust-root-json-schema"
+    record.sourceType === "model-release-trust-root-json-schema" ||
+    record.sourceType === "conversation-session-json-schema"
   ) {
     ensure(
       parsed.$schema === "https://json-schema.org/draft/2020-12/schema",
@@ -117,8 +118,10 @@ if (registry) {
     "model-release-decision-schema",
     "model-release-trust-root-schema",
     "seis-model-release-trust-root",
+    "seis-conversation-session-schema",
+    "seis-conversation-nexus",
   ]) {
-    ensure(ids.has(requiredId), `registry missing training evidence schema: ${requiredId}`);
+    ensure(ids.has(requiredId), `registry missing required AI data contract: ${requiredId}`);
   }
 }
 

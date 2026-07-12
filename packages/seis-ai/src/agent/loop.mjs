@@ -51,6 +51,9 @@ Working rules:
   seis@personal, seis-cloud@personal, seis-code@personal, seis-design@personal,
   and seis-data@personal as embedded lanes under seis-ai-agent@seis-repo unless
   the manifest says otherwise.
+- Conversation Nexus metadata tools are intentionally absent from this cloud-provider
+  agent loop. Never enumerate, search, or infer private sessions through another tool,
+  and never send stored session history without the CLI's exact local approval gate.
 - Translation edits must cover all five locales — never add a key to only one.
 - Keep edits minimal and consistent with the existing code style; the site must keep
   working without a build step.

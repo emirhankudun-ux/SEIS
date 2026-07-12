@@ -1,6 +1,13 @@
 import { describe, it, beforeEach, afterEach } from "node:test";
 import assert from "node:assert/strict";
-import { mkdirSync, writeFileSync, readFileSync, rmSync, existsSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  rmSync,
+  symlinkSync,
+  writeFileSync,
+} from "node:fs";
 import path from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
@@ -69,6 +76,8 @@ describe("toolDefinitions", () => {
     assert.ok(names.includes("seis_ai_core_model_scaling_status"));
     assert.ok(names.includes("seis_ai_core_frontier_training_status"));
     assert.ok(names.includes("seis_ai_core_training_evidence_status"));
+    assert.equal(names.includes("seis_ai_core_conversation_status"), false);
+    assert.equal(names.includes("seis_ai_core_conversation_search"), false);
     assert.ok(names.includes("seis_ai_core_version_status"));
     assert.ok(names.includes("seis_ai_core_version_promotion_dry_run"));
     assert.ok(names.includes("seis_ai_core_subagent_model"));
@@ -997,6 +1006,39 @@ describe("executeTool", () => {
     );
   });
 
+  it("filesystem tools deny private roots, credential-like files, and symlinks", () => {
+    mkdirSync(path.join(repoRoot, ".seis", "sessions"), { recursive: true });
+    writeFileSync(path.join(repoRoot, ".seis", "sessions", "private.json"), "private");
+    writeFileSync(path.join(repoRoot, ".env"), "SYNTHETIC_SECRET=value");
+    symlinkSync(path.join(repoRoot, "notes.md"), path.join(repoRoot, "linked-notes.md"));
+    symlinkSync(path.join(repoRoot, "apps"), path.join(repoRoot, "linked-apps"));
+
+    assert.throws(
+      () => executeTool("read_file", { file: ".seis/sessions/private.json" }, ctx()),
+      /Private repository paths/,
+    );
+    assert.throws(
+      () => executeTool("read_file", { file: ".env" }, ctx()),
+      /Credential-like files/,
+    );
+    assert.throws(
+      () => executeTool("read_file", { file: "linked-notes.md" }, ctx()),
+      /Symbolic links/,
+    );
+    assert.throws(
+      () => executeTool("read_file", { file: "linked-apps/web/index.html" }, ctx()),
+      /Symbolic links/,
+    );
+    assert.throws(
+      () => executeTool("grep_repo", { pattern: "private", dir: ".seis" }, ctx()),
+      /Private repository paths/,
+    );
+    const listing = executeTool("list_files", { dir: "." }, ctx());
+    assert.equal(listing.includes(".seis"), false);
+    assert.equal(listing.includes(".env"), false);
+    assert.equal(listing.includes("linked-notes.md"), false);
+  });
+
   it("grep_repo finds matches with file:line locations", () => {
     const out = executeTool("grep_repo", { pattern: "needle", dir: "." }, ctx());
     assert.ok(out.includes("notes.md:2"));
@@ -1030,6 +1072,22 @@ describe("executeTool", () => {
       /escapes repository root/
     );
     assert.ok(!existsSync(path.join(path.dirname(repoRoot), "outside.txt")));
+  });
+
+  it("write_file refuses private and credential-like targets", () => {
+    assert.throws(
+      () =>
+        executeTool(
+          "write_file",
+          { file: ".seis/conversations/private.json", content: "x" },
+          ctx({ allowWrite: true }),
+        ),
+      /Private repository paths/,
+    );
+    assert.throws(
+      () => executeTool("write_file", { file: ".env", content: "x" }, ctx({ allowWrite: true })),
+      /Credential-like files/,
+    );
   });
 
   it("edit_file replaces a unique string", () => {

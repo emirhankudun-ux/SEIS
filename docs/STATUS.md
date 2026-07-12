@@ -1,6 +1,6 @@
 # SEIS Status
 
-Date: 2026-06-24
+Date: 2026-07-12
 
 This status captures the current branch foundation state. It is not a release,
 deployment, public-readiness, or merge-readiness claim.
@@ -44,8 +44,9 @@ benchmark, not a provider claim, and not production readiness. The 512B target
 stays blocked until 20B, 70B, 150B, and 300B+ evidence exists, clean-room
 model/dataset cards are accepted, all installed AI and sub-agent council reviews
 are recorded, safety/privacy/observability/rollback gates pass, and explicit
-human approval exists. The local MCP runtime contract currently tracks 32
-resources including the 512B apex program.
+human approval exists. The local MCP runtime contract currently tracks 33
+resources including the 512B apex program and the repository-safe Conversation
+Nexus policy contract.
 
 ## Frontier Training Launch Control - 2026-07-11
 
@@ -111,6 +112,31 @@ governed external startup boundary. A future release executor also requires an
 atomic replay ledger. This work does not authorize a release, route, deployment,
 training run, model download, provider call, GitHub mutation, 512B claim, or AGI
 claim.
+
+## Conversation Nexus - 2026-07-12
+
+AI-4 replaces raw repo-local `.seis/sessions` persistence with a strict Draft
+2020-12 record under an OS-private state root outside the repository. New
+persistence is off unless `--session` is explicitly selected. Stored records
+contain only redacted visible user/assistant text; tool inputs/results,
+thinking, signatures, attachments, and structured provider payloads are
+dropped. Known iCloud, Dropbox, OneDrive, Google Drive, and Syncthing paths are
+rejected, while POSIX state directories/files target `0700`/`0600`.
+
+The MCP runtime registers `seis_ai_core_conversation_status` and
+`seis_ai_core_conversation_search`, but both are disabled by default and require
+the explicit local `SEIS_CONVERSATION_MCP_METADATA=1` opt-in. They are absent
+from the Anthropic/cloud-agent tool loop and never return message bodies. The
+repository-safe `seis://ai/conversation-nexus.json` policy resource remains
+readable without touching private state.
+
+Existing-history resume requires exact `--approve-session-upload <name>`
+confirmation before history is sent to Anthropic. Expired records cannot be
+read, searched, resumed, or exported; confirmed deletion removes session,
+local exports, matching temporary files, and the selected legacy copy. At-rest
+encryption is not implemented, so no encrypted-storage claim is made. External
+ChatGPT, Codex, Claude, and Qwen imports remain disabled and approval-gated; no
+claim is made that all SEIS conversations have been imported.
 
 ## Current Repository Condition
 
