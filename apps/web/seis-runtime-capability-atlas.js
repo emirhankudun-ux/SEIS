@@ -94,6 +94,18 @@
       ]
     },
     {
+      "id": "seis-data",
+      "name": "SEIS Data",
+      "state": "working-local",
+      "appId": "seis-data",
+      "evidence": [
+        "apps/web/desktop.js",
+        "apps/web/website/seis-data.html",
+        "content/development/seis-data-schema-registry.json",
+        "docs/data/seis-data-foundation.md"
+      ]
+    },
+    {
       "id": "cloud",
       "name": "SEIS Cloud",
       "state": "mock-safe",
@@ -449,6 +461,7 @@
         "product-agent"
       ],
       "moduleIds": [
+        "seis-data",
         "search",
         "agents",
         "plugins",
@@ -648,6 +661,7 @@
       "executionMode": "dry-run-only",
       "state": "validated",
       "modules": [
+        "seis-data",
         "agents",
         "plugins",
         "documentation",
@@ -656,6 +670,7 @@
       "evidence": [
         "data/seis-specialist-plugins-2026-06-12.json",
         "plugins/seis-ai-agent/.mcp.json",
+        "content/development/seis-data-schema-registry.json",
         "content/development/seis-second-brain-system.json"
       ]
     },

@@ -49,6 +49,8 @@ Use this read-only sequence for a GitHub review:
 ```bash
 npm run check:seis-ssh-public-access
 npm run check:seis-ssh-public-access-report
+npm run check:seis-ssh-public-access-report-fixtures
+npm run check:seis-ssh-network-boundaries
 npm run check:seis-ssh-public-onboarding
 npm run check:seis-ssh-public-contributor-doctor
 npm run check:seis-ssh-live-readiness-evidence
@@ -60,8 +62,9 @@ npm run check:seis-ssh-picker-compatibility
 npm run check:seis-ssh-cloud-roadmap
 ```
 
-These commands prove repo governance and public-access wiring. They do not
-prove a live SSH session.
+These commands prove repo governance and public-access wiring. The report,
+onboarding, and contributor-doctor checks fail closed when the local config has
+no explicit `Host SEIS-SSH` block. They still do not prove a live SSH session.
 
 The latest approval-gated live probe is recorded in
 [`seis-ssh-live-readiness-evidence.md`](./seis-ssh-live-readiness-evidence.md).
@@ -94,9 +97,16 @@ Every pull request that changes the SEIS-SSH contract, runbooks, checks, or
 workflow is covered by
 `.github/workflows/seis-ssh-public-access.yml`. The workflow is a fast,
 static-only GitHub status check for contributors and maintainers. It runs the
-public contract, onboarding, contributor doctor, live-readiness evidence,
-access-model, cloud-roadmap, closed-runtime, and enterprise checks before
-review.
+public contract, missing-alias regression fixture, shared network-boundary
+tests, onboarding, contributor doctor, live-readiness evidence, access-model,
+cloud-roadmap, closed-runtime, and enterprise checks before review.
+
+GitHub-hosted runners use the tracked
+`scripts/fixtures/seis-ssh-public-access.conf` parser fixture. It contains an
+explicit `Host SEIS-SSH`, preserves `github.codespaces` and port `22`, and never
+opens a connection. Fixture output is labeled `static-fixture-verified` with
+`readinessReady: false`; it cannot be used as live endpoint evidence. A
+separate negative fixture proves that a missing alias exits non-zero.
 
 Run the same local gate before opening a PR:
 

@@ -34,6 +34,38 @@ describe("SEIS provider-neutral read-only router", () => {
     assert.equal(decision.providerCallsPerformed, false);
   });
 
+  it("normalizes natural capability labels before provider matching", () => {
+    const decision = buildReadOnlyRouteDecision(
+      { taskType: "repository review", capability: "repository review", privacyMode: "local-only" },
+      { root: packageRoot },
+    );
+
+    assert.equal(decision.selectedProvider, "codex-operator");
+    assert.equal(decision.agentLane.id, "seis-code");
+    assert.equal(decision.providerCandidates.find((candidate) => candidate.id === "codex-operator")?.capabilityMatch, true);
+  });
+
+  it("uses word boundaries when matching lane metadata", () => {
+    const decision = buildReadOnlyRouteDecision(
+      { taskType: "repository build", capability: "build code package", privacyMode: "local-only" },
+      { root: packageRoot },
+    );
+
+    assert.equal(decision.agentLane.id, "seis-code");
+  });
+
+  it("makes local-only privacy authoritative over a contradictory flag", () => {
+    const decision = buildReadOnlyRouteDecision(
+      { taskType: "repository review", capability: "repository review", privacyMode: "local-only", localOnly: false },
+      { root: packageRoot },
+    );
+
+    assert.equal(decision.localOnly, true);
+    assert.ok(decision.providerCandidates
+      .filter((candidate) => candidate.category === "cloud-model-provider")
+      .every((candidate) => candidate.privacyCompatible === false));
+  });
+
   it("keeps Missing Key distinct from Error and never silently selects it", () => {
     const decision = buildReadOnlyRouteDecision(
       { taskType: "architecture-review", capability: "architecture-review", privacyMode: "standard" },
@@ -98,6 +130,14 @@ describe("SEIS provider-neutral read-only router", () => {
     assert.throws(
       () => buildReadOnlyRouteDecision({ metadata: { note: "bearer abcdefghijklmnopqrstuvwxyz" } }, { root: packageRoot }),
       /credential-like material/,
+    );
+    assert.throws(
+      () => buildReadOnlyRouteDecision({ messages: [{ role: "user", content: "private text" }] }, { root: packageRoot }),
+      /forbidden/,
+    );
+    assert.throws(
+      () => buildReadOnlyRouteDecision({ content: "private text" }, { root: packageRoot }),
+      /forbidden/,
     );
   });
 

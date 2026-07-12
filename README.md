@@ -199,6 +199,9 @@ Use this static gate before claiming public SSH onboarding is wired:
 
 ```bash
 npm run check:seis-ssh-public-access
+npm run check:seis-ssh-public-access-report
+npm run check:seis-ssh-public-access-report-fixtures
+npm run check:seis-ssh-network-boundaries
 npm run report:seis-ssh-public-access
 npm run check:seis-ssh-public-onboarding
 npm run report:seis-ssh-public-onboarding
@@ -207,8 +210,11 @@ npm run report:seis-ssh-public-contributor-doctor
 npm run check:seis-ssh-live-readiness-evidence
 ```
 
-This does not execute SSH. Live readiness still requires explicit approval and
-strict evidence such as `npm run cloud:ssh:online:strict`.
+These checks do not execute SSH. The local report fails closed when an explicit
+`Host SEIS-SSH` block is missing. CI uses a tracked `github.codespaces:22`
+parser fixture whose output remains `readinessReady: false`; it is not live
+endpoint evidence. Live readiness still requires explicit approval and strict
+evidence such as `npm run cloud:ssh:online:strict`.
 
 `npm run report:seis-ssh-public-onboarding` writes a read-only GitHub review
 pack under `reports/seis-ssh-public-access/`. It does not write SSH config,

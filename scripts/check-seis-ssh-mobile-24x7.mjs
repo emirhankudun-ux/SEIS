@@ -6,6 +6,8 @@ import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import net from "node:net";
 
+import { isLocalOrLanHost as isLocalHost } from "./lib/seis-ssh-network.mjs";
+
 const args = parseArgs(process.argv.slice(2));
 
 if (args.help) {
@@ -346,14 +348,6 @@ function nextActions(value) {
     actions.push("SEIS-SSH is mobile 24/7 ready. Keep this strict check in release and device-bootstrap handoff.");
   }
   return actions;
-}
-
-function isLocalHost(host) {
-  const value = String(host || "").toLowerCase();
-  return value === "localhost"
-    || value === "127.0.0.1"
-    || value === "::1"
-    || value.endsWith(".local");
 }
 
 function expandHome(value) {

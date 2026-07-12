@@ -837,8 +837,8 @@ async function smokeDesktopSharedVfs(client, baseUrl) {
   ensure(installedAiSystems.personalPluginLaneMatrixText.includes("seis-cloud@personal"), "Desktop Personal Plugin AI Core Lane Matrix must show seis-cloud@personal");
   ensure(installedAiSystems.personalPluginLaneMatrixText.includes("v0.4-multi-workspace-readiness"), "Desktop Personal Plugin AI Core Lane Matrix must show canonical version targets");
   ensure(installedAiSystems.mcpRuntimeRows === 4, `Desktop MCP Runtime Contract expected four rows, got ${installedAiSystems.mcpRuntimeRows}`);
-  ensure(installedAiSystems.mcpRuntimeDiagnostics.toolCount === 34, `Desktop MCP Runtime Contract diagnostics expected 34 tools, got ${installedAiSystems.mcpRuntimeDiagnostics.toolCount}`);
-  ensure(installedAiSystems.mcpRuntimeDiagnostics.resourceCount === 29, `Desktop MCP Runtime Contract diagnostics expected 29 resources, got ${installedAiSystems.mcpRuntimeDiagnostics.resourceCount}`);
+  ensure(installedAiSystems.mcpRuntimeDiagnostics.toolCount === 35, `Desktop MCP Runtime Contract diagnostics expected 35 tools, got ${installedAiSystems.mcpRuntimeDiagnostics.toolCount}`);
+  ensure(installedAiSystems.mcpRuntimeDiagnostics.resourceCount === 30, `Desktop MCP Runtime Contract diagnostics expected 30 resources, got ${installedAiSystems.mcpRuntimeDiagnostics.resourceCount}`);
   ensure(installedAiSystems.mcpRuntimeDiagnostics.resourceUri === "seis://ai/mcp-runtime-contract.json", "Desktop MCP Runtime Contract diagnostics must expose the canonical MCP resource URI");
   ensure(installedAiSystems.mcpRuntimeText.includes("stdio JSON-RPC"), "Desktop MCP Runtime Contract must show stdio JSON-RPC evidence");
   await clickSelector(client, "[data-action='export-personal-plugin-ai-core-lane-matrix']");

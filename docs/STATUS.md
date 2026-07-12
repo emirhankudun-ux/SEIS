@@ -5,6 +5,29 @@ Date: 2026-06-24
 This status captures the current branch foundation state. It is not a release,
 deployment, public-readiness, or merge-readiness claim.
 
+## PR 165 Integration Checkpoint - 2026-07-12
+
+The current SEIS-SSH mainline branch keeps the existing `SEIS-SSH`
+`github.codespaces` transport and port `22`. No live SSH, credential read,
+deployment, endpoint migration, or server/port mutation was performed.
+
+| Surface | Current evidence | Boundary |
+| --- | --- | --- |
+| SSH public checks | Missing explicit `Host SEIS-SSH` now fails closed; the CI-only config fixture is labeled `static-fixture-verified`, keeps `readinessReady: false`, and is covered by positive/negative fixture tests. | The fixture proves parser and contract behavior only, never endpoint availability. |
+| SSH network policy | One shared helper rejects all IPv4 `127/8` loopback addresses, RFC1918, link-local, unspecified, `.local`, IPv6 loopback, unique-local, and link-local targets across public report, continuity, picker, online, installer, bridge, and direct-cloud scripts. | Public host shape remains eligible; live reachability still requires approval-gated strict evidence. |
+| AI Core router | Executable provider-neutral read-only decisions normalize capability labels, match lanes on word boundaries, make `local-only` authoritative, and reject prompt bodies such as `messages` and `content`. | Provider calls, runtime authority, credential reads, SSH, deployment, and GitHub mutation remain disabled. |
+| MCP runtime | Stdio smoke proves 35 tools, 30 resources, and 3 prompts; Desktop diagnostics and browser checks now show the same counts. | This is a local MCP contract, not a live external provider or unrestricted tool runtime. |
+| SEIS Data | Capability Atlas now has a first-class `seis-data` product module, SEIS Data lane membership, dry-run provenance task coverage, Linux Replica app/bridge, and Desktop route evidence. | Schema, provenance, export, and SSH evidence remain browser-local/read-only with no secrets. |
+
+Focused validation currently includes
+`npm run check:seis-ssh-public-access-report-fixtures`,
+`npm run check:seis-ssh-network-boundaries`,
+`npm run check:seis-ssh-github-pr-contract`,
+`npm run check:seis-ai-core-read-only-router`,
+`node --test packages/seis-ai/test/read-only-router.test.mjs`,
+`node --test packages/seis-ai/test/mcp-smoke.test.mjs`, and
+`npm run check:seis-runtime-capability-atlas`.
+
 ## GitHub Merge Queue Continuity - 2026-07-01
 
 The current GitHub queue is being kept in PR-safe auto-merge mode so a machine

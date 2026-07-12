@@ -75,6 +75,13 @@
       "evidence": ["apps/web/seis-linux-replica.html", "plugins/seis-design/.codex-plugin/plugin.json"]
     },
     {
+      "id": "seis-data",
+      "name": "SEIS Data",
+      "state": "working-local",
+      "appId": "seis-data",
+      "evidence": ["apps/web/desktop.js", "apps/web/website/seis-data.html", "content/development/seis-data-schema-registry.json", "docs/data/seis-data-foundation.md"]
+    },
+    {
       "id": "cloud",
       "name": "SEIS Cloud",
       "state": "mock-safe",
@@ -302,7 +309,7 @@
         "Privacy-aware validation"
       ],
       "agentIds": ["research-agent", "search-agent", "documentation-agent", "qa-agent", "product-agent"],
-      "moduleIds": ["search", "agents", "plugins", "documentation", "command-center", "ai-core"],
+      "moduleIds": ["seis-data", "search", "agents", "plugins", "documentation", "command-center", "ai-core"],
       "qualityGates": ["npm run check:plugin-capability-lanes", "npm run check:seis-technology-stack", "npm run check:language-distribution"]
     }
   ],
@@ -452,8 +459,8 @@
       "permissionLevel": "read-only",
       "executionMode": "dry-run-only",
       "state": "validated",
-      "modules": ["agents", "plugins", "documentation", "github-governance"],
-      "evidence": ["data/seis-specialist-plugins-2026-06-12.json", "plugins/seis-ai-agent/.mcp.json", "content/development/seis-second-brain-system.json"]
+      "modules": ["seis-data", "agents", "plugins", "documentation", "github-governance"],
+      "evidence": ["data/seis-specialist-plugins-2026-06-12.json", "plugins/seis-ai-agent/.mcp.json", "content/development/seis-data-schema-registry.json", "content/development/seis-second-brain-system.json"]
     },
     {
       "id": "search-full-surface-discoverability",

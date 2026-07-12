@@ -20,6 +20,10 @@ const files = {
   queue: "docs/roadmap/NEXT_PR_QUEUE.md",
   desktop: "apps/web/desktop.js",
   reportScript: "scripts/create-seis-ssh-public-access-report.mjs",
+  reportFixtureScript: "scripts/check-seis-ssh-public-access-report-fixtures.mjs",
+  networkBoundary: "scripts/lib/seis-ssh-network.mjs",
+  networkBoundaryTest: "scripts/tests/seis-ssh-network.test.mjs",
+  staticConfigFixture: "scripts/fixtures/seis-ssh-public-access.conf",
   endpointContinuityScript: "scripts/check-seis-ssh-endpoint-continuity.mjs",
   pickerCompatibilityScript: "scripts/check-seis-ssh-picker-compatibility.mjs",
   mobileReadinessScript: "scripts/check-seis-ssh-mobile-24x7.mjs",
@@ -75,6 +79,8 @@ ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-publ
 
 ensure(scripts["check:seis-ssh-public-access"] === "node scripts/check-seis-ssh-public-access.mjs", "package script check:seis-ssh-public-access must be declared");
 ensure(scripts["check:seis-ssh-public-access-report"] === "node scripts/create-seis-ssh-public-access-report.mjs --check", "package script check:seis-ssh-public-access-report must be declared");
+ensure(scripts["check:seis-ssh-public-access-report-fixtures"] === "node scripts/check-seis-ssh-public-access-report-fixtures.mjs", "package script check:seis-ssh-public-access-report-fixtures must be declared");
+ensure(scripts["check:seis-ssh-network-boundaries"] === "node --test scripts/tests/seis-ssh-network.test.mjs", "package script check:seis-ssh-network-boundaries must be declared");
 ensure(scripts["report:seis-ssh-public-access"] === "node scripts/create-seis-ssh-public-access-report.mjs --write", "package script report:seis-ssh-public-access must be declared");
 ensure(scripts["check:seis-ssh-public-onboarding"] === "node scripts/create-seis-ssh-public-onboarding-pack.mjs --check", "package script check:seis-ssh-public-onboarding must be declared");
 ensure(scripts["report:seis-ssh-public-onboarding"] === "node scripts/create-seis-ssh-public-onboarding-pack.mjs --write", "package script report:seis-ssh-public-onboarding must be declared");
@@ -90,6 +96,8 @@ ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-li
 for (const command of [
   "npm run check:seis-ssh-public-access",
   "npm run check:seis-ssh-public-access-report",
+  "npm run check:seis-ssh-public-access-report-fixtures",
+  "npm run check:seis-ssh-network-boundaries",
   "npm run report:seis-ssh-public-access",
   "npm run check:seis-ssh-public-onboarding",
   "npm run report:seis-ssh-public-onboarding",
@@ -137,6 +145,8 @@ for (const token of [
   "Keep the same server and port.",
   "Ayni sunucu ve baglanti noktasi korunur.",
   "npm run check:seis-ssh-public-access",
+  "npm run check:seis-ssh-public-access-report-fixtures",
+  "npm run check:seis-ssh-network-boundaries",
   "npm run report:seis-ssh-public-access",
   "npm run report:seis-ssh-public-onboarding",
   "npm run report:seis-ssh-public-contributor-doctor",
@@ -193,6 +203,20 @@ for (const token of [
 ]) {
   ensure(reportScript.includes(token), `report script must include ${token}`);
 }
+
+const reportFixtureScript = read(files.reportFixtureScript);
+for (const token of ["missingAliasFailsClosed", "static-fixture-verified", "liveSshExecuted: false", "serverAndPortChanged: false"]) {
+  ensure(reportFixtureScript.includes(token), `report fixture check must include ${token}`);
+}
+
+const networkBoundary = read(files.networkBoundary);
+const networkBoundaryTest = read(files.networkBoundaryTest);
+const staticConfigFixture = read(files.staticConfigFixture);
+ensure(networkBoundary.includes("ipv4[0] === 127"), "network boundary must block the complete 127/8 loopback range");
+ensure(networkBoundaryTest.includes('"127.0.0.2"'), "network boundary test must cover non-default 127/8 loopback addresses");
+ensure(staticConfigFixture.includes("Host SEIS-SSH"), "static config fixture must include an explicit Host SEIS-SSH block");
+ensure(staticConfigFixture.includes("HostName github.codespaces"), "static config fixture must retain github.codespaces transport");
+ensure(/^\s*Port 22\s*$/m.test(staticConfigFixture), "static config fixture must retain port 22");
 
 const endpointContinuityScript = read(files.endpointContinuityScript);
 for (const token of [

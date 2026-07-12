@@ -19,6 +19,12 @@
 /plugins/seis/skills/seis-security-review/agents/openai.yaml @emirhankudun-ux
 /deploy/seis-ssh-*.json @emirhankudun-ux
 /docs/deployment/seis-ssh-*.md @emirhankudun-ux
+/docs/deployment/seis-codex-git-ssh-handoff.md @emirhankudun-ux
+/content/development/seis-ssh-*.json @emirhankudun-ux
 /scripts/check-seis-ssh-*.mjs @emirhankudun-ux
 /scripts/create-seis-ssh-public-*.mjs @emirhankudun-ux
+/scripts/ensure-seis-ssh-online.mjs @emirhankudun-ux
+/scripts/lib/seis-ssh-network.mjs @emirhankudun-ux
+/scripts/tests/seis-ssh-network.test.mjs @emirhankudun-ux
+/scripts/fixtures/seis-ssh-public-access.conf @emirhankudun-ux
 /.github/workflows/seis-ssh-public-access.yml @emirhankudun-ux

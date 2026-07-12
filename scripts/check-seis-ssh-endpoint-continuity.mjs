@@ -6,6 +6,8 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 
+import { isLocalOrLanHost as isLocalHost } from "./lib/seis-ssh-network.mjs";
+
 const args = parseArgs(process.argv.slice(2));
 const alias = args.alias || "SEIS-SSH";
 const baselinePath = args.baseline || "reports/seis-ssh-public-access/endpoint-continuity-baseline.json";
@@ -215,21 +217,6 @@ function classifyHostname(hostname, transport) {
   if (transport === "local-or-lan") return "blocked-local-or-lan";
   if (transport === "direct-cloud") return "redacted-direct-cloud-host";
   return "redacted-unknown-host";
-}
-
-function isLocalHost(host) {
-  const value = String(host || "").toLowerCase();
-  const ipv4 = value.split(".").map(Number);
-  const privateIpv4 = ipv4.length === 4 && ipv4.every(Number.isInteger) && ipv4.every((part) => part >= 0 && part <= 255)
-    && (ipv4[0] === 10 || (ipv4[0] === 172 && ipv4[1] >= 16 && ipv4[1] <= 31) || (ipv4[0] === 192 && ipv4[1] === 168) || (ipv4[0] === 169 && ipv4[1] === 254));
-  const ipv6 = value.replace(/^\[|\]$/g, "").split("%")[0];
-  const privateIpv6 = /^(?:fc|fd)[0-9a-f]{2}:|^fe[89ab][0-9a-f]:/i.test(ipv6);
-  return value === "localhost"
-    || value === "127.0.0.1"
-    || value === "::1"
-    || value.endsWith(".local")
-    || privateIpv4
-    || privateIpv6;
 }
 
 function nextActions(status) {

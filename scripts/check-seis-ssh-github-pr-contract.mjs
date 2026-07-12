@@ -8,10 +8,12 @@ const contractPath = "deploy/seis-ssh-public-access-contract.json";
 const runbookPath = "docs/deployment/seis-ssh-public-github-access.md";
 const codeownersPath = ".github/CODEOWNERS";
 const packagePath = "package.json";
+const staticFixturePath = "scripts/fixtures/seis-ssh-public-access.conf";
 
 const workflow = readText(workflowPath);
 const runbook = readText(runbookPath);
 const codeowners = readText(codeownersPath);
+const staticFixture = readText(staticFixturePath);
 const contract = readJson(contractPath);
 const packageJson = readJson(packagePath);
 const workflowPathPatterns = [...workflow.matchAll(/^\s+- '([^']+)'$/gm)].map((match) => match[1]);
@@ -29,6 +31,8 @@ const requiredWorkflowText = [
   "node-version: 20",
   "npm run check:seis-ssh-github-pr-contract",
   "npm run check:seis-ssh-public-access",
+  "npm run check:seis-ssh-public-access-report-fixtures",
+  "npm run check:seis-ssh-network-boundaries",
   "npm run check:seis-ssh-public-access-report",
   "npm run check:seis-ssh-public-onboarding",
   "npm run check:seis-ssh-public-contributor-doctor",
@@ -37,6 +41,7 @@ const requiredWorkflowText = [
   "npm run check:seis-ssh-cloud-roadmap",
   "npm run check:seis-ssh-closed-runtime",
   "npm run check:seis-ssh-enterprise-benchmark",
+  "SEIS_SSH_CONFIG_PATH: scripts/fixtures/seis-ssh-public-access.conf",
   "git diff --check"
 ];
 
@@ -51,6 +56,10 @@ for (const pathPattern of [
   "docs/deployment/seis-codex-git-ssh-handoff.md",
   "scripts/check-seis-ssh-*.mjs",
   "scripts/create-seis-ssh-public-*.mjs",
+  "scripts/ensure-seis-ssh-online.mjs",
+  "scripts/lib/seis-ssh-network.mjs",
+  "scripts/tests/seis-ssh-network.test.mjs",
+  "scripts/fixtures/seis-ssh-public-access.conf",
   "content/development/seis-ssh-*.json",
   "apps/web/desktop.js",
   "docs/STATUS.md",
@@ -77,6 +86,8 @@ for (const forbidden of [
 ensure(/^\s*uses:\s+actions\/checkout@[0-9a-f]{40}\s+#/m.test(workflow), `${workflowPath} must pin actions/checkout to a commit SHA`);
 ensure(/^\s*uses:\s+actions\/setup-node@[0-9a-f]{40}\s+#/m.test(workflow), `${workflowPath} must pin actions/setup-node to a commit SHA`);
 ensure(packageJson?.scripts?.["check:seis-ssh-github-pr-contract"] === "node scripts/check-seis-ssh-github-pr-contract.mjs", "package.json must expose the GitHub PR contract check");
+ensure(packageJson?.scripts?.["check:seis-ssh-public-access-report-fixtures"] === "node scripts/check-seis-ssh-public-access-report-fixtures.mjs", "package.json must expose the report fixture check");
+ensure(packageJson?.scripts?.["check:seis-ssh-network-boundaries"] === "node --test scripts/tests/seis-ssh-network.test.mjs", "package.json must expose the SSH network boundary check");
 
 const prWorkflow = contract?.githubExperience?.pullRequestWorkflow || {};
 ensure(prWorkflow.workflow === workflowPath, "public access contract must point to the SSH GitHub PR workflow");
@@ -85,6 +96,8 @@ ensure(Array.isArray(prWorkflow.triggers) && prWorkflow.triggers.includes("pull_
 ensure(prWorkflow.permissions?.contents === "read", "SSH GitHub PR workflow must request contents: read only");
 ensure(Array.isArray(prWorkflow.forbiddenActions) && prWorkflow.forbiddenActions.includes("live SSH"), "public access contract must forbid live SSH in the PR workflow");
 ensure((contract?.requiredCommands || []).includes("npm run check:seis-ssh-github-pr-contract"), "public access contract requiredCommands must include the GitHub PR contract check");
+ensure((contract?.requiredCommands || []).includes("npm run check:seis-ssh-public-access-report-fixtures"), "public access contract must require report fixture validation");
+ensure((contract?.requiredCommands || []).includes("npm run check:seis-ssh-network-boundaries"), "public access contract must require SSH network boundary validation");
 for (const evidenceSurface of contract?.evidenceSurfaces || []) {
   ensure(
     workflowPathPatterns.some((pattern) => pathPatternMatches(pattern, evidenceSurface)),
@@ -105,14 +118,24 @@ for (const token of [
 for (const pattern of [
   "/deploy/seis-ssh-*.json @emirhankudun-ux",
   "/docs/deployment/seis-ssh-*.md @emirhankudun-ux",
+  "/docs/deployment/seis-codex-git-ssh-handoff.md @emirhankudun-ux",
+  "/content/development/seis-ssh-*.json @emirhankudun-ux",
   "/scripts/check-seis-ssh-*.mjs @emirhankudun-ux",
   "/scripts/create-seis-ssh-public-*.mjs @emirhankudun-ux",
+  "/scripts/ensure-seis-ssh-online.mjs @emirhankudun-ux",
+  "/scripts/lib/seis-ssh-network.mjs @emirhankudun-ux",
+  "/scripts/tests/seis-ssh-network.test.mjs @emirhankudun-ux",
+  "/scripts/fixtures/seis-ssh-public-access.conf @emirhankudun-ux",
   "/.github/workflows/seis-ssh-public-access.yml @emirhankudun-ux"
 ]) {
   ensure(codeowners.includes(pattern), `${codeownersPath} must require owner review for ${pattern}`);
 }
 
-for (const [file, content] of [[workflowPath, workflow], [runbookPath, runbook], [codeownersPath, codeowners]]) {
+ensure(staticFixture.includes("Host SEIS-SSH"), `${staticFixturePath} must contain an explicit Host SEIS-SSH block`);
+ensure(staticFixture.includes("HostName github.codespaces"), `${staticFixturePath} must retain github.codespaces`);
+ensure(/^\s*Port 22\s*$/m.test(staticFixture), `${staticFixturePath} must retain port 22`);
+
+for (const [file, content] of [[workflowPath, workflow], [runbookPath, runbook], [codeownersPath, codeowners], [staticFixturePath, staticFixture]]) {
   ensure(!/-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----/.test(content), `${file} must not contain private keys`);
   ensure(!/(?:ghp_|github_pat_)[A-Za-z0-9_]+/.test(content), `${file} must not contain GitHub tokens`);
   ensure(!/sk-[A-Za-z0-9_-]{20,}/.test(content), `${file} must not contain provider API keys`);

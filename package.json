@@ -176,6 +176,8 @@
     "check:seis-ssh-mobile-direct-cloud": "node scripts/check-seis-ssh-mobile-direct-cloud.mjs",
     "check:seis-ssh-public-access": "node scripts/check-seis-ssh-public-access.mjs",
     "check:seis-ssh-public-access-report": "node scripts/create-seis-ssh-public-access-report.mjs --check",
+    "check:seis-ssh-public-access-report-fixtures": "node scripts/check-seis-ssh-public-access-report-fixtures.mjs",
+    "check:seis-ssh-network-boundaries": "node --test scripts/tests/seis-ssh-network.test.mjs",
     "report:seis-ssh-public-access": "node scripts/create-seis-ssh-public-access-report.mjs --write",
     "check:seis-ssh-endpoint-continuity": "node scripts/check-seis-ssh-endpoint-continuity.mjs",
     "record:seis-ssh-endpoint-continuity": "node scripts/check-seis-ssh-endpoint-continuity.mjs --record --write",

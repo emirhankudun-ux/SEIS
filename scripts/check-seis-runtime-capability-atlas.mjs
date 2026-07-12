@@ -22,6 +22,7 @@ const requiredProductModules = [
   "search",
   "code-ide",
   "design-studio",
+  "seis-data",
   "cloud",
   "store",
   "music",
@@ -260,6 +261,8 @@ function validateAtlasShape(atlas) {
   for (const moduleId of coveredLaneModuleIds) {
     ensure(moduleIds.includes(moduleId), `lane module coverage references unknown module ${moduleId}`);
   }
+  const dataLane = (atlas.lanes || []).find((lane) => lane.laneId === "seis-data");
+  ensure(dataLane?.moduleIds?.includes("seis-data"), "SEIS Data lane must include the seis-data product module");
 
   const permissionLevels = ["read-only", "plan-only", "write-gated", "external-gated", "forbidden"];
   const states = ["queued", "assigned", "running", "awaiting-approval", "cancelled", "failed", "validated", "archived"];
@@ -275,6 +278,10 @@ function validateAtlasShape(atlas) {
   for (const moduleId of moduleIds) {
     ensure(taskModuleIds.includes(moduleId), `dryRunQueue does not cover product module ${moduleId}`);
   }
+  ensure(
+    (atlas.dryRunQueue || []).some((task) => task.laneId === "seis-data" && task.modules?.includes("seis-data")),
+    "SEIS Data product module must be covered by a seis-data dry-run task"
+  );
   for (const task of atlas.dryRunQueue || []) {
     ensure(agentIds.includes(task.agentId), `task ${task.id} references unknown agent ${task.agentId}`);
     ensure(laneIds.includes(task.laneId), `task ${task.id} references unknown lane ${task.laneId}`);
@@ -330,6 +337,8 @@ function validateHtmlWiring(atlas) {
     "routes.json must register the Linux Replica capability-atlas section"
   );
   ensure(html.includes('["capability-atlas"'), "BASE_APP_ENTRIES must register capability-atlas");
+  ensure(html.includes('["seis-data"'), "BASE_APP_ENTRIES must register the SEIS Data product app");
+  ensure(html.includes("data-seis-data-panel"), "Linux Replica must render the SEIS Data bridge workspace");
   ensure(html.includes("renderCapabilityAtlas"), "Linux Replica must define renderCapabilityAtlas");
   ensure(html.includes("data-capability-atlas"), "Capability Atlas app must expose a data-capability-atlas marker");
   ensure(html.includes("data-capability-lane"), "Capability Atlas app must render source-backed lane cards");
@@ -343,8 +352,8 @@ function validateHtmlWiring(atlas) {
   ensure(browserSmoke.includes("data-capability-atlas"), "browser smoke must check capability atlas UI markers");
   ensure(browserSmoke.includes("capabilityAtlas"), "browser smoke must check capability atlas diagnostics");
 
-  const expectedMinimumApps = 65 + 219 + 1;
-  ensure(expectedMinimumApps > 284, "capability atlas should raise the minimum expected app count above the prior 284 app floor");
+  const expectedMinimumApps = 65 + 219 + 2;
+  ensure(expectedMinimumApps > 285, "Capability Atlas and SEIS Data should raise the minimum expected app count above the prior 285 app floor");
   ensure((atlas.lanes || []).length === 5, "atlas should expose exactly five runtime lanes to the UI");
 }
 

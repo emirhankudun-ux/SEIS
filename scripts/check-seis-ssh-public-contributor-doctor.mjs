@@ -59,11 +59,13 @@ function buildDoctor() {
   if (!tools.git.available) warnings.push("Git is not available; GitHub review and repo workflows need git.");
   if (access.localSshConfig?.transport === "codespace") warnings.push("Current transport is Codespaces; terminal-compatible but some GUI pickers may show it offline.");
   if (access.localSshConfig?.pickerLikelyCompatible !== true) warnings.push("Picker-compatible direct-cloud mode is not proven.");
+  if (access.localSshConfig?.configSource === "explicit-static-fixture") warnings.push("Static SSH config fixture verified parser behavior only; contributor readiness remains unproven.");
 
   const localUseReady = tools.gh.available
     && tools.ssh.available
     && tools.git.available
     && access.localSshConfig?.configured === true
+    && access.localSshConfig?.configSource === "user-home"
     && access.localSshConfig?.transport !== "local-or-lan";
 
   if (requireLocalUse && !localUseReady) blockers.push("local contributor prerequisites are incomplete");
@@ -88,6 +90,7 @@ function buildDoctor() {
       preservationMode: contract?.serverAndPortPolicy?.mode || "unknown",
       currentSnapshot: {
         configured: access.localSshConfig?.configured === true,
+        configSource: access.localSshConfig?.configSource || "unknown",
         transport: access.localSshConfig?.transport || "unknown",
         hostnameKind: access.localSshConfig?.hostnameKind || "unknown",
         port: access.localSshConfig?.port || "22",

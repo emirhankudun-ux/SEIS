@@ -31,6 +31,7 @@ const PRIVATE_CONTENT_PATTERN = /\b(private[- ]+(?:obsidian|notes?|vault|content
 const FRONTIER_MODEL_PATTERN = /\b(20b|70b|150b|300b|512b|frontier|apex|foundation[- ]model|model[- ]weights)\b/i;
 const SECRET_KEY_PATTERN = /(api[_-]?key|access[_-]?token|auth[_-]?token|credential|password|cookie|private[_-]?key|service[_-]?account|secret|ssh)/i;
 const FORBIDDEN_VALUE_PATTERN = /(sk-ant-[a-z0-9_-]{24,}|sk-[a-z0-9_-]{24,}|ghp_[a-z0-9_-]{12,}|github_pat_[a-z0-9_-]{12,}|xox[baprs]-[a-z0-9-]{12,}|AIza[a-z0-9_-]{12,}|AKIA[a-z0-9]{12,}|bearer\s+[a-z0-9._-]{20,}|-----begin [a-z ]+private key-----)/i;
+const PROMPT_BODY_KEY_PATTERN = /^(prompt|prompts|message|messages|content|contents|conversation|chat(?:history)?|instruction|instructions)$/i;
 
 const DEFAULT_INPUT = Object.freeze({
   taskType: "general-assistant-task",
@@ -242,6 +243,18 @@ export function runReadOnlyRouterSmokeChecks(root = process.cwd()) {
       assertions: (decision) => decision.selectedProvider === "codex-operator" && decision.agentLane.id === "seis-code",
     },
     {
+      id: "local-only-privacy-precedence",
+      input: { taskType: "repository-review", capability: "repository review", privacyMode: "local-only", localOnly: false },
+      assertions: (decision) => decision.localOnly === true
+        && decision.selectedProvider === "codex-operator"
+        && decision.providerCandidates.filter((candidate) => candidate.category === "cloud-model-provider").every((candidate) => candidate.privacyCompatible === false),
+    },
+    {
+      id: "word-boundary-code-lane",
+      input: { taskType: "repository build", capability: "build code package", privacyMode: "local-only" },
+      assertions: (decision) => decision.agentLane.id === "seis-code",
+    },
+    {
       id: "missing-key-is-not-error",
       input: { taskType: "architecture-review", capability: "architecture-review", privacyMode: "standard" },
       assertions: (decision) => decision.providerCandidates.some((candidate) => candidate.publicStatus === "Missing Key")
@@ -291,7 +304,7 @@ function normalizeRouterInput(input) {
     taskType: boundedString(input.taskType ?? DEFAULT_INPUT.taskType, "taskType"),
     capability: boundedString(input.capability ?? DEFAULT_INPUT.capability, "capability"),
     privacyMode,
-    localOnly: input.localOnly === undefined ? privacyMode === "local-only" : Boolean(input.localOnly),
+    localOnly: privacyMode === "local-only" || Boolean(input.localOnly),
     costPreference: boundedString(input.costPreference ?? DEFAULT_INPUT.costPreference, "costPreference"),
     speedPreference: boundedString(input.speedPreference ?? DEFAULT_INPUT.speedPreference, "speedPreference"),
     contextSizeRequired: boundedNumber(input.contextSizeRequired ?? DEFAULT_INPUT.contextSizeRequired, "contextSizeRequired"),
@@ -329,13 +342,14 @@ function describeCandidate(provider, input) {
 }
 
 function providerSupportsCapability(provider, capability, taskType) {
-  const requested = `${capability} ${taskType}`.toLowerCase();
-  const capabilities = new Set((provider.capabilities || []).map((value) => String(value).toLowerCase()));
+  const requested = normalizeSearchText(`${capability} ${taskType}`);
+  const normalizedCapability = normalizeSearchText(capability);
+  const capabilities = new Set((provider.capabilities || []).map(normalizeSearchText).filter(Boolean));
   if (provider.id === "seis-local-demo") {
-    return capabilities.has(capability.toLowerCase())
+    return capabilities.has(normalizedCapability)
       || /\b(general|chat|planning|status|demo|repository|tool|plugin)\b/.test(requested);
   }
-  return [...capabilities].some((value) => requested.includes(value) || value.includes(capability.toLowerCase()));
+  return [...capabilities].some((value) => hasPhrase(requested, value) || hasPhrase(value, normalizedCapability));
 }
 
 function isPrivacyCompatible(provider, input) {
@@ -358,8 +372,8 @@ function compareCandidates(left, right) {
 }
 
 function selectLane(input, operatingModel) {
-  const text = `${input.taskType} ${input.capability}`.toLowerCase();
-  const matched = ROUTER_LANES.find((lane) => lane.keywords.some((keyword) => text.includes(keyword)));
+  const text = normalizeSearchText(`${input.taskType} ${input.capability}`);
+  const matched = ROUTER_LANES.find((lane) => lane.keywords.some((keyword) => hasPhrase(text, keyword)));
   const sourceLane = (operatingModel?.lanes || []).find((lane) => lane.id === (matched?.id || "seis")) || {};
   return {
     id: sourceLane.id || matched?.id || "seis",
@@ -404,11 +418,25 @@ function assertSafeInput(value, location = "input") {
   if (!value || typeof value !== "object") return;
 
   for (const [key, child] of Object.entries(value)) {
-    if (SECRET_KEY_PATTERN.test(key) || /^(prompt|vault|obsidian|privatecontent)$/i.test(key)) {
+    if (SECRET_KEY_PATTERN.test(key) || PROMPT_BODY_KEY_PATTERN.test(key) || /^(vault|obsidian|privatecontent)$/i.test(key)) {
       throw new TypeError(`${location}.${key} is forbidden; provide metadata only`);
     }
     assertSafeInput(child, `${location}.${key}`);
   }
+}
+
+function normalizeSearchText(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function hasPhrase(text, phrase) {
+  const normalizedText = normalizeSearchText(text);
+  const normalizedPhrase = normalizeSearchText(phrase);
+  if (!normalizedText || !normalizedPhrase) return false;
+  return ` ${normalizedText} `.includes(` ${normalizedPhrase} `);
 }
 
 function containsForbiddenKey(value) {

@@ -357,7 +357,7 @@ function validateStaticContract() {
   ensure(html.includes("data-capability-task"), "Linux Replica route must render Capability Atlas dry-run task cards.");
   ensure(html.includes("bridgeTargetCount"), "Linux Replica diagnostics must expose bridge target count.");
   ensure(html.includes("capabilityAtlas:()=>capabilityStats()"), "Linux Replica diagnostics must expose Capability Atlas counts.");
-  for (const marker of ["SEIS Search Gateway", "SEIS Code IDE", "SEIS Design Studio", "SEIS Cloud Center", "SEIS Store", "SEIS Website Hub", "SEIS AI Core", "SEIS Capability Atlas"]) {
+  for (const marker of ["SEIS Search Gateway", "SEIS Code IDE", "SEIS Design Studio", "SEIS Data", "SEIS Cloud Center", "SEIS Store", "SEIS Website Hub", "SEIS AI Core", "SEIS Capability Atlas"]) {
     ensure(html.includes(marker), `Linux Replica SEIS bridge missing marker: ${marker}`);
   }
   ensure(html.includes("No SSH") || html.includes("SSH disabled"), "Linux Replica route must keep SSH disabled and labeled.");
@@ -639,10 +639,10 @@ async function smokeLinuxReplica(client, baseUrl) {
     };
   })()`);
 
-  ensure(summary.appCount >= 285, `expected runtime appCount to include core apps, Capability Atlas, and supplied references, found ${summary.appCount}`);
+  ensure(summary.appCount >= 286, `expected runtime appCount to include core apps, Capability Atlas, SEIS Data, and supplied references, found ${summary.appCount}`);
   ensure(summary.referenceCount >= 219, `expected at least 219 runtime reference modules, found ${summary.referenceCount}`);
   ensure(Array.isArray(summary.referenceSources) && summary.referenceSources.length >= 2, "expected at least two reference source groups.");
-  ensure(summary.bridgeTargetCount >= 8, `expected at least eight connected SEIS bridge targets, found ${summary.bridgeTargetCount}`);
+  ensure(summary.bridgeTargetCount >= 10, `expected ten connected SEIS bridge targets including SEIS Data and Music, found ${summary.bridgeTargetCount}`);
   ensure(summary.terminalReady === true, "terminal did not initialize.");
   ensure(summary.launcherTiles >= summary.appCount, `expected launcher tiles to include all runtime apps, found ${summary.launcherTiles} for ${summary.appCount} apps.`);
   ensure(summary.openWindows >= 9, `expected at least nine open windows after smoke, found ${summary.openWindows}`);
