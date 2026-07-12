@@ -24,6 +24,8 @@
     "check:seis-command-center-operations-readiness": "node scripts/check-seis-command-center-operations-readiness.mjs",
     "check:seis-command-center-knowledge-system": "node scripts/check-seis-command-center-knowledge-system.mjs",
     "check:seis-second-brain": "node scripts/check-seis-second-brain.mjs",
+    "check:seis-second-brain-agent-review-safety": "node scripts/check-seis-second-brain-agent-review-safety.mjs",
+    "check:seis-second-brain:full": "npm run check:seis-second-brain && npm run check:seis-second-brain-agent-review-safety",
     "check:seis-second-brain-readiness-contracts": "node scripts/check-seis-second-brain-readiness-contracts.mjs",
     "check:seis-second-brain-browser-smoke": "node scripts/check-seis-second-brain-browser-smoke.mjs",
     "check:seis-second-brain-browser-smoke-evidence": "node scripts/create-seis-second-brain-browser-smoke-evidence.mjs --check",
