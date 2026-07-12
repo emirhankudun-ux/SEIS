@@ -24,6 +24,7 @@ const mcpQuickstartPath = "docs/ai/seis-second-brain-mcp-quickstart.md";
 const docsIndexPath = "docs/INDEX.md";
 const readmePath = "README.md";
 const demoStatusPath = "docs/product/seis-demo-status.md";
+const secondBrainReviewSkillPath = "plugins/seis-ai-agent/skills/seis-second-brain-review/SKILL.md";
 const requiredManagedSubAgentLanes = [
   "SEIS Hub",
   "SEIS Cloud",
@@ -95,6 +96,7 @@ for (const [filePath, label] of [
   [obsidianContextPath, "Obsidian context pack"],
   [obsidianSafeImportDocPath, "Obsidian safe import docs"],
   [mcpQuickstartPath, "Second Brain MCP quickstart"],
+  [secondBrainReviewSkillPath, "Second Brain review skill"],
   [docsIndexPath, "documentation index"],
   [readmePath, "repository README"],
   [demoStatusPath, "SEIS demo status docs"]
@@ -114,6 +116,7 @@ const vaultProductAgent = readText(vaultProductAgentPath, "Obsidian vault Produc
 const obsidianContext = readText(obsidianContextPath, "Obsidian context pack");
 const obsidianSafeImportDoc = readText(obsidianSafeImportDocPath, "Obsidian safe import docs");
 const mcpQuickstart = readText(mcpQuickstartPath, "Second Brain MCP quickstart");
+const secondBrainReviewSkill = readText(secondBrainReviewSkillPath, "Second Brain review skill");
 const docsIndex = readText(docsIndexPath, "documentation index");
 const readme = readText(readmePath, "repository README");
 const demoStatus = readText(demoStatusPath, "SEIS demo status docs");
@@ -302,6 +305,21 @@ for (const phrase of [
   "model-weight training"
 ]) {
   ensure(mcpQuickstart.includes(phrase), `Second Brain MCP quickstart missing phrase: ${phrase}`);
+}
+
+for (const phrase of [
+  "name: seis-second-brain-review",
+  "browser-local, human-confirmed",
+  "@seis-cloud",
+  "@seis-code",
+  "@seis-design",
+  "@seis-data",
+  "agent-review-ledger.md",
+  "seis://brain/second-brain-system.json",
+  "Never scan host folders",
+  "Do not call providers"
+]) {
+  ensure(secondBrainReviewSkill.includes(phrase), `Second Brain review skill missing phrase: ${phrase}`);
 }
 
 ensure(docsIndex.includes("ai/seis-second-brain-mcp-quickstart.md"), "documentation index must link the Second Brain MCP quickstart");
@@ -522,6 +540,7 @@ for (const filePath of [
   obsidianContextPath,
   obsidianSafeImportDocPath,
   mcpQuickstartPath,
+  secondBrainReviewSkillPath,
   demoStatusPath
 ]) {
   requireNotMatches(filePath, /sk-[A-Za-z0-9_-]{20,}/, "OpenAI-style API keys");

@@ -1,0 +1,4 @@
+interface:
+  display_name: "SEIS Second Brain Review"
+  short_description: "Run bounded, browser-local Second Brain review workflows."
+  default_prompt: "Prepare a plan-only SEIS Second Brain review assignment and ledger without external execution."
