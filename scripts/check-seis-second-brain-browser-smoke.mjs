@@ -297,6 +297,8 @@ function validateStaticContract() {
     "SEIS_SECOND_BRAIN_SYSTEM",
     "data-second-brain-app",
     "data-ai-second-brain-bridge",
+    "data-ai-second-brain-agent-review-assignment",
+    "data-ai-second-brain-agent-review-assignment-panel",
     "data-second-brain-installed-ai",
     "data-second-brain-subagents",
     "data-second-brain-agent-roster",
@@ -739,6 +741,7 @@ async function smokeSecondBrain(client, baseUrl) {
       selectedPluginText: bridge?.querySelector('[data-ai-second-brain-selected-plugin]')?.innerText || '',
       handoffBriefText: bridge?.querySelector('[data-ai-second-brain-handoff-brief]')?.innerText || '',
       reviewBundleText: bridge?.querySelector('[data-ai-second-brain-handoff-brief]')?.innerText || '',
+      agentReviewAssignmentText: bridge?.querySelector('[data-ai-second-brain-agent-review-assignment-panel]')?.innerText || '',
       localOnlyCopy: text.includes('Local Demo context only'),
       noMutationCopy: text.includes('no private vault import') && text.includes('GitHub mutation') && text.includes('SSH')
     };
@@ -753,6 +756,7 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(aiBridge.selectedPluginText.includes("@seis-code") && aiBridge.selectedPluginText.includes("Code Agent"), "SEIS AI Second Brain bridge must retain the selected plugin/skill handoff.");
   ensure(aiBridge.handoffBriefText.includes("plugin-handoff-seis-code-latest.md"), "SEIS AI Second Brain bridge must retain the local handoff brief state.");
   ensure(aiBridge.reviewBundleText.includes("plugin-review-bundle-latest.md"), "SEIS AI Second Brain bridge must retain the all-lane review bundle state.");
+  ensure(aiBridge.agentReviewAssignmentText.includes("Security Agent") && aiBridge.agentReviewAssignmentText.includes("human-selected-plan-only-review") && aiBridge.agentReviewAssignmentText.includes("agentExecuted false"), "SEIS AI Second Brain bridge must render the human-selected plan-only assignment without execution authority.");
   ensure(aiBridge.localOnlyCopy, "SEIS AI Second Brain bridge must label local context only.");
   ensure(aiBridge.noMutationCopy, "SEIS AI Second Brain bridge must label private vault/GitHub/SSH boundary.");
 

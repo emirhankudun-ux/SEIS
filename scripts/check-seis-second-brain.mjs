@@ -318,6 +318,8 @@ for (const phrase of [
   "seis-second-brain-app",
   "data-second-brain-app",
   "data-ai-second-brain-bridge",
+  "data-ai-second-brain-agent-review-assignment",
+  "data-ai-second-brain-agent-review-assignment-panel",
   "data-second-brain-github-gate",
   "data-second-brain-ai-index",
   "data-second-brain-installed-ai",
@@ -358,6 +360,8 @@ for (const phrase of [
   "buildSecondBrainAgentReviewAssignmentRecord",
   "buildSecondBrainAgentReviewAssignmentMarkdown",
   "recordSecondBrainAgentReviewAssignment",
+  "Human-Selected Agent Review",
+  "Local Assignment Context",
   "agent-review-queue.md",
   "agent-review-queue.json",
   "agent-review-assignment.md",
@@ -460,6 +464,7 @@ ensure(desktopJs.includes("managedSubAgentLanes: SEIS_SECOND_BRAIN_SYSTEM.manage
 ensure(!desktopJs.includes("Observed sub-agent lanes: ${SUB_AGENT_DEMO.lanes.length}"), "Second Brain training pack must not report the legacy six-lane demo count");
 ensure(desktopJs.includes("This receipt is not an agent run"), "Second Brain agent review assignment must state that no agent run is performed");
 ensure(desktopJs.includes("providerCallsPerformed: false") && desktopJs.includes("githubMutationPerformed: false"), "Second Brain agent review assignment must keep provider and GitHub execution false");
+ensure(desktopJs.includes("agentExecuted ${agentReviewAssignment.execution.agentExecuted}") && desktopJs.includes("mcpInvocationsPerformed ${agentReviewAssignment.execution.mcpInvocationsPerformed}"), "SEIS AI bridge must expose the plan-only assignment execution boundary");
 
 for (const appId of [
   "seis-system-os",

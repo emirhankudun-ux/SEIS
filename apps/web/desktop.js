@@ -8289,6 +8289,7 @@ function renderAiAssistantTab(activeTab, data) {
     const secondBrainData = getSecondBrainData();
     const selectedPluginSkill = getSecondBrainPluginSkill(secondBrainData.activePluginSkillId);
     const selectedPluginProfile = getSecondBrainPluginContextProfile(selectedPluginSkill?.id);
+    const agentReviewAssignment = secondBrainData.agentReviewAssignment;
     return `<div class="subagent-ai-plan" data-ai-second-brain-bridge>
       <div class="toolbar">
         <button type="button" data-action="open-app" data-app-id="second-brain">Open SEIS Second Brain</button>
@@ -8302,6 +8303,7 @@ function renderAiAssistantTab(activeTab, data) {
         <article class="metric-card"><strong>Installed AI</strong><p>${SEIS_INSTALLED_AI_SYSTEMS.length}</p></article>
         <article class="metric-card"><strong>Sub-Agent Lanes</strong><p>${SUB_AGENT_DEMO.lanes.length}</p></article>
         <article class="metric-card"><strong>Agent Roster</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length}</p></article>
+        <article class="metric-card" data-ai-second-brain-agent-review-assignment><strong>Agent Assignment</strong><p>${escapeHtml(agentReviewAssignment?.agent?.name || "Not recorded")}</p></article>
         <article class="metric-card" data-ai-second-brain-agent-registry><strong>Agent Registry</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REGISTRY.decisionLabel)}</p></article>
         <article class="metric-card" data-ai-second-brain-plugin-skill-readiness><strong>Plugin Skills</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.length}</p></article>
         <article class="metric-card"><strong>Quality Gate</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.qualityGate)}</p></article>
@@ -8363,6 +8365,18 @@ function renderAiAssistantTab(activeTab, data) {
           <strong>Read-only Boundary</strong>
           <p class="muted">${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REGISTRY.checkCommand)}</p>
           <p>${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REGISTRY.safetyClaims.join(" · "))}</p>
+        </article>
+      </div>
+      <div class="split-pane" data-ai-second-brain-agent-review-assignment-panel>
+        <article class="mini-card">
+          <strong>Human-Selected Agent Review</strong>
+          <p class="muted">${agentReviewAssignment ? escapeHtml(`${agentReviewAssignment.agent.name} · ${agentReviewAssignment.status}`) : "Not recorded"}</p>
+          <p>${agentReviewAssignment ? escapeHtml(agentReviewAssignment.agent.duty) : "Open SEIS Second Brain, select a role, and explicitly record a plan-only assignment before SEIS AI receives review context."}</p>
+        </article>
+        <article class="mini-card">
+          <strong>Local Assignment Context</strong>
+          <p class="muted">${agentReviewAssignment ? escapeHtml(agentReviewAssignment.contextProfiles.map((profile) => profile.lane).join(", ") || "No related local context profile") : "No context handoff"}</p>
+          <p>${agentReviewAssignment ? escapeHtml(`agentExecuted ${agentReviewAssignment.execution.agentExecuted}; providerCallsPerformed ${agentReviewAssignment.execution.providerCallsPerformed}; mcpInvocationsPerformed ${agentReviewAssignment.execution.mcpInvocationsPerformed}`) : "No agent execution, provider call, MCP invocation, SSH, deployment, or GitHub mutation is enabled from this bridge."}</p>
         </article>
       </div>
     </div>`;
