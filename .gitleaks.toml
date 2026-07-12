@@ -37,9 +37,9 @@ regexes = [
 description = "The historical SEIS local-only ledger namespace is not a credential"
 condition = "AND"
 paths = [
-  '''apps/web/seis-five-year-ledger\\.js''',
+  '''apps/web/seis-five-year-ledger\.js''',
 ]
 regexTarget = "line"
 regexes = [
-  '''const STORAGE_KEY = "seis\\.evolution-ledger\\.v1"''',
+  '''const STORAGE_KEY = "seis\.evolution-ledger\.v1"''',
 ]
