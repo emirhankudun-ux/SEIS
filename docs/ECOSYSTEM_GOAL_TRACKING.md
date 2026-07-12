@@ -106,15 +106,15 @@ git diff --check
 ```
 
 These commands validate the local bootstrap contracts and negative fixtures.
-On 2026-07-13, pull request 177 at review-hardening commit
-`f89918fcaf453d2f0ebf538d540efe14851e5f52` supplied successful
-[Foundation Check](https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101121),
-[CI](https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101180),
-[CodeQL](https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101128),
-[Guardian Security Scan](https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101164),
-[System Gates](https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101125),
-[Open Source Governance](https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101119),
-and [Master Prompt Governance](https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101132)
+On 2026-07-13, pull request 177 at substantive implementation commit
+`cf972f6f9275fec305019fdc33b0bf5cda2d5cbe` supplied successful
+[Foundation Check](https://github.com/emirhankudun-ux/SEIS/actions/runs/29212360711),
+[CI](https://github.com/emirhankudun-ux/SEIS/actions/runs/29212360734),
+[CodeQL](https://github.com/emirhankudun-ux/SEIS/actions/runs/29212360739),
+[Guardian Security Scan](https://github.com/emirhankudun-ux/SEIS/actions/runs/29212360709),
+[System Gates](https://github.com/emirhankudun-ux/SEIS/actions/runs/29212360727),
+[Open Source Governance](https://github.com/emirhankudun-ux/SEIS/actions/runs/29212360716),
+and [Master Prompt Governance](https://github.com/emirhankudun-ux/SEIS/actions/runs/29212360706)
 evidence. These dated runs prove the named commit passed those workflows; they
 do not prove private-repository contents, deployments, provider connections,
 or ecosystem-wide publication readiness.
