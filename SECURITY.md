@@ -45,6 +45,22 @@ unless a maintainer explicitly announces another supported release line.
   surfaces.
 - Prefer small, auditable fixes with clear validation.
 
+## Repository Secret Boundary
+
+The public-safe repository rules are defined in
+[`docs/SECURITY.md`](docs/SECURITY.md) and
+[`docs/PUBLIC_PRIVATE_BOUNDARY.md`](docs/PUBLIC_PRIVATE_BOUNDARY.md). Store
+credentials only as described by
+[`docs/security/SECRET_STORAGE.md`](docs/security/SECRET_STORAGE.md), and follow
+[`docs/security/CREDENTIAL_INCIDENT_RESPONSE.md`](docs/security/CREDENTIAL_INCIDENT_RESPONSE.md)
+for suspected exposure. The current scanner scope, evidence limits, and open
+historical exception are recorded in
+[`docs/security/security-baseline.md`](docs/security/security-baseline.md).
+
+These documents never authorize printing a secret, rotating a credential,
+changing provider access, or rewriting Git history without the accountable
+owner's explicit approval.
+
 ## SSH Hardening Contract
 
 SSH and firewall hardening is safety-critical because a bad sequence can lock

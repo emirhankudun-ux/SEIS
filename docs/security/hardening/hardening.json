@@ -1,0 +1,374 @@
+{
+  "documentType": "codex-security.hardening-analysis",
+  "schemaVersion": "1.0",
+  "analysisId": "hardening_20260713_seis_local_secret_controls",
+  "sourceEvidence": {
+    "kind": "document_collection",
+    "label": "SEIS local secret-boundary control audit at db817330",
+    "collectionSha256": "16a96299ac3736a1d96920187b19203656a1e77e2803323debdabae9985ca743",
+    "artifactCount": 10,
+    "targetRevision": "db81733053c94a28c1d404d76ca37c152f783c07",
+    "sourceDrift": "present",
+    "driftScope": "Derived documentation and parallel implementation work were added after the evidence snapshot; executable controls must be refreshed before implementation."
+  },
+  "assessment": {
+    "outcome": "opportunities_identified",
+    "summary": "The audit supports one cross-cutting opportunity to replace convention-based secret safeguards with deterministic local controls; no proposal is implemented by this analysis."
+  },
+  "constraints": {
+    "profile": "balanced",
+    "changeHorizons": ["incremental", "medium_term"],
+    "nonNegotiables": [
+      "Never print, store, or reproduce a secret value.",
+      "Do not install tools or elevate privileges from the local scan wrapper.",
+      "Do not rotate credentials, broaden allowlists, rewrite history, or close issue 129 without human approval.",
+      "Keep public demo and repository validation usable without credentials.",
+      "Use explicit least-privilege permissions and integrity-verifiable tool acquisition."
+    ],
+    "assumptions": [
+      "No measured latency or memory budget was supplied.",
+      "The immediate implementation remains repository-local.",
+      "A formal Codex Security scan was not run.",
+      "The open historical exception remains unresolved until the accountable human records a disposition."
+    ]
+  },
+  "opportunities": [
+    {
+      "opportunityId": "deterministic-local-secret-controls",
+      "title": "Make local secret-boundary enforcement deterministic",
+      "summary": "Consolidate placeholder, ignore, scanner, workflow, policy, and incident invariants into locally owned executable gates.",
+      "diagnosis": "Important secret-handling invariants are distributed across conventions and documents, while the local scanner can mutate the workstation and the remote pass remains conditional on an unresolved historical exception.",
+      "evidence": [
+        {
+          "claimType": "observed",
+          "sourceKind": "source",
+          "evidenceId": "E001",
+          "path": ".gitignore",
+          "claim": "Broad ignore rules can hide new workflow, security-script, and security-document controls from ordinary untracked-file inspection."
+        },
+        {
+          "claimType": "observed",
+          "sourceKind": "source",
+          "evidenceId": "E002",
+          "path": ".env.example",
+          "claim": "A public-safe environment template exists, but no deterministic check owns placeholder-only secret fields."
+        },
+        {
+          "claimType": "observed",
+          "sourceKind": "source",
+          "evidenceId": "E003",
+          "path": ".gitleaks.toml",
+          "claim": "The scanner configuration includes a path-level exception for the historical generated aggregation tracked by open issue 129."
+        },
+        {
+          "claimType": "observed",
+          "sourceKind": "source",
+          "evidenceId": "E004",
+          "path": ".github/workflows/security-guardian.yml",
+          "claim": "The Guardian workflow scans with redaction but uses implicit permissions and a versioned scanner download without recorded digest verification."
+        },
+        {
+          "claimType": "observed",
+          "sourceKind": "source",
+          "evidenceId": "E005",
+          "path": "scripts/security/scan-secrets.sh",
+          "claim": "The local wrapper can install tools or elevate privileges, omits a redaction flag in its scan invocation, and suggests destructive history cleanup without an approval workflow."
+        },
+        {
+          "claimType": "observed",
+          "sourceKind": "document",
+          "evidenceId": "E006-E010",
+          "path": "docs/SECURITY.md",
+          "claim": "Repository policies establish strong intent but did not provide one complete storage lifecycle, incident runbook, and executable ownership boundary at the evidence revision."
+        },
+        {
+          "claimType": "observed",
+          "sourceKind": "document",
+          "evidenceId": "E011-E012",
+          "path": ".gitleaks.toml",
+          "claim": "The configured scan passed for the evidence revision while the owner decision for excluded historical content remained open."
+        },
+        {
+          "claimType": "inferred",
+          "sourceKind": "source",
+          "evidenceId": "E001-E012",
+          "path": "docs/security/hardening/context.md",
+          "claim": "Control ownership is convention-based enough that a future contributor can preserve one layer while weakening or bypassing another."
+        }
+      ],
+      "desiredInvariants": [
+        "Every secret-named field in a public environment template is deterministically classified as a public-safe placeholder without printing its value.",
+        "Every local secret scan is redacted, non-installing, non-privileged, and side-effect free apart from its documented exit status.",
+        "Every remote secret scan runs with explicit least-privilege permissions and an integrity-verifiable scanner distribution.",
+        "Every configured exception has a narrow rationale, owner, evidence link, review state, and explicit effect on security claims.",
+        "Every suspected credential exposure enters one path-only incident process that requires owner authority for revocation, rotation, or history recovery.",
+        "A passing check reports its revision, scope, exceptions, and skipped surfaces rather than implying universal absence of secrets."
+      ],
+      "proposalPath": "proposals/deterministic-local-secret-controls.md",
+      "options": [
+        {
+          "optionId": "local-deterministic-controls",
+          "title": "Deterministic repository-local controls",
+          "kind": "incremental",
+          "summary": "Own storage, placeholder, ignore, scanner, workflow, incident, and evidence invariants in focused local validation and CI gates.",
+          "diagramPaths": {
+            "before": "diagrams/deterministic-local-secret-controls-before.mmd",
+            "after": "diagrams/deterministic-local-secret-controls-local-deterministic-controls-after.mmd"
+          },
+          "evidenceCoverage": [
+            {
+              "evidenceId": "E001",
+              "effect": "addresses",
+              "tacticalFixRequired": true,
+              "rationale": "Focused ignore rules and regression checks make control paths visible."
+            },
+            {
+              "evidenceId": "E002",
+              "effect": "addresses",
+              "tacticalFixRequired": true,
+              "rationale": "A value-redacting template validator owns the placeholder invariant."
+            },
+            {
+              "evidenceId": "E003-E005",
+              "effect": "addresses",
+              "tacticalFixRequired": true,
+              "rationale": "The scanner wrapper and workflow require focused source changes even after the structural local boundary is chosen."
+            },
+            {
+              "evidenceId": "E006-E010",
+              "effect": "addresses",
+              "tacticalFixRequired": false,
+              "rationale": "Canonical policy and incident links give the executable checks one documented owner."
+            },
+            {
+              "evidenceId": "E011-E012",
+              "effect": "mitigates",
+              "tacticalFixRequired": true,
+              "rationale": "The option makes conditional evidence explicit but cannot decide or remediate the historical exception without its owner."
+            }
+          ],
+          "tradeoffs": [
+            {
+              "dimension": "security",
+              "direction": "improves",
+              "confidence": "high",
+              "basis": "source-derived",
+              "assessment": "Deterministic checks close the observed local bypass and redaction gaps, while the historical exception remains owner-gated.",
+              "validationPlan": "Run negative fixtures for unsafe placeholders, ignored control paths, non-redacted invocation, implicit permissions, and misleading summary states."
+            },
+            {
+              "dimension": "performance",
+              "direction": "neutral",
+              "confidence": "medium",
+              "basis": "source-derived",
+              "assessment": "Local metadata checks add bounded repository validation work; full-history Gitleaks already exists in CI.",
+              "validationPlan": "Record validator wall time and Guardian job duration before and after the change; fail review if local validation becomes materially disruptive."
+            },
+            {
+              "dimension": "memory",
+              "direction": "neutral",
+              "confidence": "medium",
+              "basis": "source-derived",
+              "assessment": "The validator needs only small path and configuration records and introduces no retained service state.",
+              "validationPlan": "Run the validator against the repository and confirm it does not construct or serialize file contents beyond bounded template lines."
+            },
+            {
+              "dimension": "reliability",
+              "direction": "improves",
+              "confidence": "medium",
+              "basis": "source-derived",
+              "assessment": "A missing local tool fails safely instead of initiating an unreviewed installation, and CI status semantics become explicit.",
+              "validationPlan": "Exercise missing-tool, cancelled-job, scanner-failure, and invalid-template cases and verify deterministic nonzero exits."
+            },
+            {
+              "dimension": "operability",
+              "direction": "improves",
+              "confidence": "medium",
+              "basis": "source-derived",
+              "assessment": "One command and one incident handoff reduce ambiguity without adding a service, though maintainers must review scanner pins and exceptions.",
+              "validationPlan": "Perform a credential-free tabletop and confirm a contributor can locate the policy, run the check, and interpret every status."
+            },
+            {
+              "dimension": "migration",
+              "direction": "neutral",
+              "confidence": "high",
+              "basis": "source-derived",
+              "assessment": "The approach preserves repository layout and current CI while replacing unsafe behavior in focused files.",
+              "validationPlan": "Land work packages independently, run compatibility checks after each, and verify rollback by reverting one package at a time."
+            }
+          ],
+          "residualRisks": [
+            "The historical exception remains unresolved until the accountable human records a disposition.",
+            "Repository-local controls can diverge across future canonical repositories.",
+            "No scanner proves absence outside its configured scope or retained downstream copies."
+          ],
+          "implementationReadiness": {
+            "affectedComponents": [
+              ".gitignore",
+              ".env.example",
+              ".gitleaks.toml",
+              ".github/workflows/security-guardian.yml",
+              ".github/workflows/foundation-check.yml",
+              "scripts/security/scan-secrets.sh",
+              "scripts/check-security-boundary.mjs",
+              "package.json",
+              "docs/security"
+            ],
+            "workPackages": [
+              "Add deterministic secret-boundary validation and negative fixtures.",
+              "Make the local scanner redacted, non-installing, and incident-aware.",
+              "Apply explicit workflow permissions and integrity-verifiable scanner acquisition.",
+              "Replace broad control-path ignore rules with focused secret and local-artifact rules.",
+              "Record remote evidence and retain issue 129 as an owner decision gate."
+            ],
+            "acceptanceCriteria": [
+              "Unsafe template, ignore, scanner, workflow, and summary fixtures fail without printing values.",
+              "Local validation performs no installation, elevation, provider call, or external write.",
+              "Guardian CI passes at the implementation revision with redaction and explicit permissions.",
+              "Issue 129 remains open or has an owner-approved disposition with redacted evidence."
+            ],
+            "migrationNotes": [
+              "Preserve current redacted CI scanning while local controls are introduced.",
+              "Do not change the historical allowlist in the implementation slice without a separate owner decision."
+            ],
+            "rollback": "Revert each focused validator, wrapper, workflow, ignore, and documentation package independently while retaining redaction and the incident boundary."
+          }
+        },
+        {
+          "optionId": "central-enforcement",
+          "title": "Centralized ecosystem security enforcement",
+          "kind": "structural",
+          "summary": "Move policy, scanner acquisition, validation, exception ownership, and evidence formatting into a versioned shared security control package or isolated runner.",
+          "diagramPaths": {
+            "before": "diagrams/deterministic-local-secret-controls-before.mmd",
+            "after": "diagrams/deterministic-local-secret-controls-central-enforcement-after.mmd"
+          },
+          "evidenceCoverage": [
+            {
+              "evidenceId": "E001-E010",
+              "effect": "addresses",
+              "tacticalFixRequired": true,
+              "rationale": "Central ownership reduces repository-local drift, but the current unsafe wrapper and workflow still need tactical correction during migration."
+            },
+            {
+              "evidenceId": "E011-E012",
+              "effect": "mitigates",
+              "tacticalFixRequired": true,
+              "rationale": "A central exception register improves governance but cannot make the historical owner decision."
+            }
+          ],
+          "tradeoffs": [
+            {
+              "dimension": "security",
+              "direction": "improves",
+              "confidence": "medium",
+              "basis": "analogous",
+              "assessment": "Central policy and scanner ownership reduce cross-repository drift but introduce a new highly trusted package or runner.",
+              "validationPlan": "Threat-model package publication, runner authority, update channels, rollback, and consumer pinning before adoption."
+            },
+            {
+              "dimension": "performance",
+              "direction": "regresses",
+              "confidence": "low",
+              "basis": "hypothetical",
+              "assessment": "A reusable action or remote runner may add setup, download, or invocation overhead not present in local metadata checks.",
+              "validationPlan": "Prototype one consumer and compare cold and warm job duration against the local option."
+            },
+            {
+              "dimension": "memory",
+              "direction": "unknown",
+              "confidence": "low",
+              "basis": "hypothetical",
+              "assessment": "A packaged action is likely bounded, while a persistent service would add process and queue state; no design has been selected.",
+              "validationPlan": "Choose the delivery model first, then measure peak runner memory and retained evidence size."
+            },
+            {
+              "dimension": "reliability",
+              "direction": "regresses",
+              "confidence": "medium",
+              "basis": "analogous",
+              "assessment": "Consumers gain consistent behavior but depend on a shared release or runner whose outage or bad update can block every repository.",
+              "validationPlan": "Test pinned-version operation, unavailable-central-control behavior, rollback, and last-known-good recovery."
+            },
+            {
+              "dimension": "operability",
+              "direction": "regresses",
+              "confidence": "high",
+              "basis": "source-derived",
+              "assessment": "The ecosystem must own package releases, compatibility, exception governance, observability, and incident response for a new trusted component.",
+              "validationPlan": "Define an owner, release SLO, supported consumer matrix, signing or digest policy, and emergency rollback before implementation."
+            },
+            {
+              "dimension": "migration",
+              "direction": "regresses",
+              "confidence": "high",
+              "basis": "source-derived",
+              "assessment": "Existing repository-local controls must remain active until every consumer pins and validates the shared contract.",
+              "validationPlan": "Migrate one repository at a time with parity fixtures and preserve dual enforcement until results match."
+            }
+          ],
+          "residualRisks": [
+            "Compromise or drift in the central control can affect every consumer.",
+            "Repository-specific exceptions may be flattened into unsafe generic policy.",
+            "Issue 129 still requires an accountable human decision."
+          ],
+          "implementationReadiness": {
+            "affectedComponents": [
+              "future ecosystem security package or isolated runner",
+              "consumer workflows",
+              "exception registry",
+              "release and rollback governance"
+            ],
+            "workPackages": [
+              "Define canonical ownership and a versioned policy contract.",
+              "Threat-model the distribution and execution boundary.",
+              "Prototype one read-only consumer with pinned integrity.",
+              "Validate parity before migrating additional repositories."
+            ],
+            "acceptanceCriteria": [
+              "A consumer can pin, validate, and roll back the central control without ambient write authority.",
+              "Repository-specific exceptions remain explicit and reviewable.",
+              "An unavailable central control fails closed with a documented recovery path."
+            ],
+            "migrationNotes": [
+              "Do not remove local controls until parity and rollback evidence exist.",
+              "Do not centralize private credential material; centralize policy and enforcement only."
+            ],
+            "rollback": "Pin consumers to the last-known-good version or restore repository-local enforcement while the central control is disabled."
+          }
+        }
+      ],
+      "recommendedOptionId": "local-deterministic-controls",
+      "recommendation": "Select deterministic repository-local controls now because they address observed gaps without adding a new trusted service; revisit central enforcement when multiple canonical repositories require the same stable contract."
+    }
+  ],
+  "selectedOptionId": "local-deterministic-controls",
+  "selectionBasis": "The user requested autonomous development under least privilege, and the local option is the smallest reversible design that directly addresses the inspected controls.",
+  "implementationStatus": {
+    "state": "implemented_locally_remote_evidence_pending",
+    "commitSha": null,
+    "remoteRun": null,
+    "localEvidence": [
+      "npm run check:security-boundary",
+      "npm run test:security-boundary",
+      "npm run check:ecosystem-foundation",
+      "npm run test:ecosystem-foundation",
+      "bash -n scripts/security/scan-secrets.sh",
+      "npm run check:foundation",
+      "npm run check:goal-tracking",
+      "npm run seis:check",
+      "git diff --check"
+    ],
+    "limitations": [
+      "Gitleaks was unavailable locally, so the local repository and history scan was not executed.",
+      "The previous remote Guardian run applies to source evidence revision db817330, not the implementation working tree.",
+      "Issue 129 remains open and the configured historical exception remains unresolved."
+    ]
+  },
+  "implementationPlanPath": "implementation/local-deterministic-controls.md",
+  "openQuestions": [
+    "Which integrity-verifiable Gitleaks distribution mechanism should become canonical?",
+    "What owner-approved disposition will close or narrow the historical exception tracked by issue 129?",
+    "At what number of canonical consumer repositories should central enforcement be reconsidered?"
+  ]
+}

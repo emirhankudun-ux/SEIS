@@ -20,6 +20,11 @@ apps/web/wow-pages/imported/**/png/*.png
 .env.*
 !.env.example
 .seis-secrets/
+secrets/
+.private/
+local-data/
+credentials.json
+tokens.json
 
 # Secret and SSH key material
 *.pem
@@ -118,12 +123,8 @@ coverage/
 # Prettier
 .prettierignore
 
-# GitHub
-.github/
-
 # Scripts
 scripts/hooks/
-scripts/security/
 
 # Edge workers
 edge-workers/
@@ -134,6 +135,7 @@ ios/
 # Configuration and data files (non-source)
 *.json
 *.config.json
+!package-lock.json
 !content/development/seis-*.json
 !apps/seis-demo-web/data/seis-ai-core-version-promotion-map.json
 !apps/seis-demo-web/data/seis-sub-agent-five-year-plan-view.json
@@ -165,9 +167,6 @@ ios/
 !.kimi-code/
 !.kimi-code/mcp.json
 .kimi-code/local.toml
-
-# Package lock files
-package-lock.json
 
 # Test files
 apps/web/test/
@@ -219,6 +218,10 @@ docs/*
 !docs/deployment/seis-ssh-public-github-access.md
 !docs/platform/
 !docs/platform/*.md
+!docs/security/
+!docs/security/*.md
+!docs/security/**/*.md
+!docs/security/hardening/hardening.json
 !docs/governance/
 !docs/governance/*.md
 !docs/governance/**/*.md
