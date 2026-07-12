@@ -2,6 +2,7 @@
   "use strict";
 
   const Bus = window.SEISConversationBus;
+  const Approvals = window.SEISClientApprovalBus;
   const ContextAdapters = window.SEISConversationContextAdapters;
   const sources = Bus.listSources();
   const requestedSource = new URLSearchParams(window.location.search).get("source");
@@ -68,6 +69,19 @@
     el.input.focus();
   }
 
+  function requestApproval() {
+    const currentSource = source();
+    const currentSession = session();
+    const request = Approvals.create({
+      sourceId: currentSource.id,
+      threadId: currentSession.id,
+      title: "Approve next " + currentSource.label + " milestone",
+      summary: "Client review requested for the next agency-delivered " + currentSource.label + " scope. Current source state: " + currentSource.state + ".",
+      risk: currentSource.state === "planned" || currentSource.state === "disabled" ? "approval-gated" : "local-scope"
+    });
+    window.location.href = "seis-client-approval-desk.html?request=" + encodeURIComponent(request.id);
+  }
+
   function renderSource() {
     const currentSource = source();
     el.sourceSelect.value = currentSource.id;
@@ -126,6 +140,7 @@
   document.addEventListener("click", function (event) {
     const action = event.target.closest("[data-action]");
     if (action && action.dataset.action === "send") send();
+    if (action && action.dataset.action === "request-approval") requestApproval();
     if (action && action.dataset.action === "new-thread") {
       Bus.createSession(state, sourceId);
       save();
