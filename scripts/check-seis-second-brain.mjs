@@ -245,6 +245,8 @@ for (const phrase of [
   "seis://brain/second-brain-system.json",
   "GitHub readiness",
   "Agent training pack",
+  "Agent review queue",
+  "Human-selected agent review assignment",
   "Agent Registry Evidence panel",
   "Language model training curriculum",
   "without installing models",
@@ -308,6 +310,8 @@ ensure(readme.includes("./docs/ai/seis-second-brain-mcp-quickstart.md"), "README
 for (const phrase of [
   "SEIS_SECOND_BRAIN_SYSTEM",
   "SEIS_SECOND_BRAIN_AGENT_REGISTRY",
+  "SEIS_SECOND_BRAIN_AGENT_REVIEW_QUEUE",
+  "SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT",
   "SEIS_SECOND_BRAIN_SEARCH_FILTERS",
   "SEIS_OBSIDIAN_SAFE_IMPORT_UI",
   "second-brain",
@@ -319,9 +323,16 @@ for (const phrase of [
   "data-second-brain-installed-ai",
   "data-second-brain-subagents",
   "data-second-brain-agent-roster",
+  "data-second-brain-agent-review-queue",
+  "data-second-brain-agent-review-assignment",
+  "data-second-brain-agent-review-options",
+  "data-second-brain-active-review-agent",
   "second-brain-capture",
   "second-brain-link",
   "second-brain-training-pack",
+  "second-brain-build-agent-review-queue",
+  "second-brain-set-agent-review-agent",
+  "second-brain-record-agent-review-assignment",
   "second-brain-review",
   "second-brain-export-github",
   "Save Vault Snapshot",
@@ -343,6 +354,18 @@ for (const phrase of [
   "No model install",
   "exportSecondBrainTrainingPack",
   "buildSecondBrainTrainingPackMarkdown",
+  "buildSecondBrainAgentReviewQueueRecord",
+  "buildSecondBrainAgentReviewAssignmentRecord",
+  "buildSecondBrainAgentReviewAssignmentMarkdown",
+  "recordSecondBrainAgentReviewAssignment",
+  "agent-review-queue.md",
+  "agent-review-queue.json",
+  "agent-review-assignment.md",
+  "agent-review-assignment.json",
+  "human-selected-plan-only-review",
+  "NO-GO-agent-execution-requires-separate-approval",
+  "agentExecuted: false",
+  "mcpInvocationsPerformed: false",
   "SEIS_INSTALLED_AI_SYSTEMS.length",
   "managedSubAgentLanes",
   "contextProfilePolicy",
@@ -435,6 +458,8 @@ ensure(desktopJs.includes("Observed sub-agent lanes: ${SEIS_SECOND_BRAIN_SYSTEM.
 ensure(desktopJs.includes("Observed plugin/skill lanes: ${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.length}"), "Second Brain training pack must report the canonical plugin/skill lane count");
 ensure(desktopJs.includes("managedSubAgentLanes: SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.length"), "Second Brain training-pack activity must record the canonical managed-lane count");
 ensure(!desktopJs.includes("Observed sub-agent lanes: ${SUB_AGENT_DEMO.lanes.length}"), "Second Brain training pack must not report the legacy six-lane demo count");
+ensure(desktopJs.includes("This receipt is not an agent run"), "Second Brain agent review assignment must state that no agent run is performed");
+ensure(desktopJs.includes("providerCallsPerformed: false") && desktopJs.includes("githubMutationPerformed: false"), "Second Brain agent review assignment must keep provider and GitHub execution false");
 
 for (const appId of [
   "seis-system-os",
