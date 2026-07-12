@@ -4122,6 +4122,71 @@ select:focus-visible,
   font-size: 0.78rem;
 }
 
+.command-center-five-year-lane {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.command-center-five-year-lane .panel-heading-row {
+  align-items: start;
+}
+
+.command-center-five-year-lane .panel-heading-row p {
+  max-width: 58rem;
+  margin: 0.35rem 0 0;
+}
+
+.five-year-lane-metrics {
+  grid-template-columns: repeat(4, minmax(9rem, 1fr));
+}
+
+.five-year-lane-progress {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.progress-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  color: var(--muted);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.progress-label strong {
+  color: var(--text);
+  font-size: 0.82rem;
+}
+
+.command-center-year-strip {
+  margin-top: 0;
+}
+
+.command-center-year-strip article {
+  display: grid;
+  gap: 0.35rem;
+  min-height: 8.8rem;
+}
+
+.command-center-year-strip article.is-active {
+  border-color: rgba(99, 198, 186, 0.5);
+  background: rgba(99, 198, 186, 0.1);
+}
+
+.command-center-year-strip article.is-complete {
+  border-color: rgba(144, 222, 164, 0.42);
+  background: rgba(144, 222, 164, 0.08);
+}
+
+.command-center-year-strip small {
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1.35;
+}
+
 .subagent-os-grid {
   display: grid;
   grid-template-columns: minmax(16rem, 1.35fr) minmax(14rem, 0.8fr);
@@ -4808,6 +4873,10 @@ select:focus-visible,
   .second-brain-hero,
   .second-brain-layout,
   .evolution-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .five-year-lane-metrics {
     grid-template-columns: 1fr;
   }
 

@@ -17,6 +17,11 @@
       "status": "browser-ide-foundation"
     },
     {
+      "path": "/seis-workspace-recovery.html",
+      "sections": ["snapshot-export", "merge-only-import", "browser-local-recovery", "safety-boundaries"],
+      "status": "browser-workspace-recovery"
+    },
+    {
       "path": "/seis-github-coding-lab.html",
       "sections": ["idea-intake", "branch-plan", "validation", "pull-request-brief", "safety-boundaries"],
       "status": "github-coding-lab-local-demo"

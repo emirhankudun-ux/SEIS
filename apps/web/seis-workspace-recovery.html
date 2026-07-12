@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="SEIS browser-local workspace backup and recovery surface.">
+    <meta name="theme-color" content="#071217">
+    <meta name="robots" content="noindex, nofollow">
+    <title>SEIS Workspace Recovery</title>
+    <link rel="stylesheet" href="./seis-workspace-recovery.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#recovery-main">Skip to workspace recovery</a>
+    <main id="recovery-main" class="recovery-shell">
+      <header class="recovery-header">
+        <nav class="recovery-nav" aria-label="SEIS navigation">
+          <a href="./desktop.html">SEIS Desktop</a>
+          <a href="./seis-code.html">SEIS Code</a>
+          <a href="./seis-files.html">SEIS Files</a>
+        </nav>
+        <div class="recovery-hero">
+          <div>
+            <p class="eyebrow">Year 2 / Recovery plane</p>
+            <h1>Keep the workspace portable.</h1>
+            <p class="hero-copy">Export a browser-local snapshot, move it with your own workflow, and merge it back without deleting newer files.</p>
+          </div>
+          <div class="boundary-card">
+            <span>Boundary</span>
+            <strong>Browser-local only</strong>
+            <small>No host filesystem, SSH, cloud, or provider access.</small>
+          </div>
+        </div>
+      </header>
+
+      <section class="metric-grid" aria-label="Workspace status">
+        <article class="metric-card"><span>Scope</span><strong data-scope>/workspace</strong></article>
+        <article class="metric-card"><span>Storage</span><strong data-storage>Loading</strong></article>
+        <article class="metric-card"><span>Items</span><strong data-item-count>0</strong></article>
+        <article class="metric-card"><span>Last load</span><strong data-loaded-at>Not loaded</strong></article>
+      </section>
+
+      <section class="recovery-grid" aria-label="Workspace snapshot controls">
+        <article class="panel action-panel">
+          <p class="eyebrow">Snapshot actions</p>
+          <h2>Export or merge recovery data</h2>
+          <p>Imports are merge-only. Existing entries remain; a newer incoming entry can update the same path, while a newer local entry wins.</p>
+          <div class="action-row">
+            <button type="button" class="primary-button" data-action="export-snapshot">Export Snapshot</button>
+            <label class="file-button secondary-button">
+              <span>Select Snapshot JSON</span>
+              <input type="file" accept="application/json,.json" data-snapshot-input>
+            </label>
+            <button type="button" class="secondary-button" data-action="import-snapshot" disabled>Merge Snapshot</button>
+          </div>
+          <p class="status-line" data-status aria-live="polite">Loading browser-local workspace...</p>
+        </article>
+
+        <article class="panel preview-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Selected file</p>
+              <h2 data-selected-name>No snapshot selected</h2>
+            </div>
+            <span class="state-pill" data-selected-state>Idle</span>
+          </div>
+          <pre data-snapshot-preview>Choose a JSON snapshot to inspect it before merging.</pre>
+        </article>
+      </section>
+
+      <section class="panel inventory-panel" aria-labelledby="inventory-title">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Current browser state</p>
+            <h2 id="inventory-title">Workspace inventory</h2>
+          </div>
+          <button type="button" class="secondary-button" data-action="refresh">Refresh</button>
+        </div>
+        <div class="inventory-list" data-inventory></div>
+      </section>
+    </main>
+    <script src="./seis-vfs-store.js"></script>
+    <script src="./seis-shared-vfs.js"></script>
+    <script src="./seis-workspace-recovery.js"></script>
+  </body>
+</html>

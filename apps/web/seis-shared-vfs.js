@@ -20,6 +20,33 @@
       .filter((entry) => entry.path === ROOT || entry.path.startsWith(`${ROOT}/`));
   }
 
+  function snapshotEntries(snapshot) {
+    if (Array.isArray(snapshot)) return normalizeEntries(snapshot);
+    if (Array.isArray(snapshot?.entries)) return normalizeEntries(snapshot.entries);
+    if (Array.isArray(snapshot?.root?.entries)) return normalizeEntries(snapshot.root.entries);
+    return [];
+  }
+
+  function entryTimestamp(entry) {
+    return Date.parse(entry?.updatedAt || entry?.createdAt || "") || 0;
+  }
+
+  function mergeEntries(currentEntries, incomingEntries) {
+    const merged = new Map(normalizeEntries(currentEntries).map((entry) => [entry.path, entry]));
+    let imported = 0;
+    let skipped = 0;
+    for (const incoming of normalizeEntries(incomingEntries)) {
+      const current = merged.get(incoming.path);
+      if (!current || entryTimestamp(incoming) >= entryTimestamp(current)) {
+        merged.set(incoming.path, incoming);
+        imported += 1;
+      } else {
+        skipped += 1;
+      }
+    }
+    return { entries: Array.from(merged.values()), imported, skipped };
+  }
+
   async function load() {
     const store = window.SEIS_VFS_STORE;
     if (!store?.loadScope) return { entries: [], mode: "memory", restored: false };
@@ -44,11 +71,37 @@
     return store.saveScope(SCOPE, snapshot, reason);
   }
 
+  async function exportSnapshot() {
+    const current = await load();
+    return {
+      type: "seis-shared-vfs-snapshot",
+      version: VERSION,
+      scope: SCOPE,
+      root: ROOT,
+      exportedAt: new Date().toISOString(),
+      storageMode: current.mode,
+      entries: current.entries
+    };
+  }
+
+  async function importSnapshot(snapshot, reason = "recovery-import") {
+    if (snapshot?.scope && snapshot.scope !== SCOPE) return { mode: "memory", error: "snapshot-scope-mismatch" };
+    if (typeof snapshot?.root === "string" && snapshot.root !== ROOT) return { mode: "memory", error: "snapshot-root-mismatch" };
+    const incoming = snapshotEntries(snapshot);
+    if (!incoming.length) return { mode: "memory", error: "snapshot-empty" };
+    const current = await load();
+    const merged = mergeEntries(current.entries, incoming);
+    const saved = await save(merged.entries, reason);
+    return { ...saved, imported: merged.imported, skipped: merged.skipped, itemCount: merged.entries.length };
+  }
+
   window.SEIS_SHARED_VFS = {
     scope: SCOPE,
     root: ROOT,
     version: VERSION,
     load,
-    save
+    save,
+    exportSnapshot,
+    importSnapshot
   };
 })();

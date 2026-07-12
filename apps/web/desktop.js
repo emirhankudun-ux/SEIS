@@ -6159,6 +6159,26 @@ function getV17CommandCenterCoverage() {
     counts[module.state] = (counts[module.state] || 0) + 1;
     return counts;
   }, {});
+  const fiveYearQuarters = getSubAgentQuarters();
+  const fiveYearSimulation = getSubAgentSimulationState();
+  const completedQuarters = clamp(Number(fiveYearSimulation.completedQuarters || 0), 0, fiveYearQuarters.length);
+  const completedQuarterIds = new Set(Array.isArray(fiveYearSimulation.completedQuarterIds)
+    ? fiveYearSimulation.completedQuarterIds
+    : fiveYearQuarters.slice(0, completedQuarters).map((quarter) => quarter.id));
+  const activeQuarter = fiveYearQuarters[Math.min(completedQuarters, fiveYearQuarters.length - 1)] || null;
+  const fiveYearYears = SUB_AGENT_DEMO.years.map(([year, title, scope], yearIndex) => {
+    const yearQuarters = fiveYearQuarters.slice(yearIndex * 4, yearIndex * 4 + 4);
+    const completed = yearQuarters.filter((quarter) => completedQuarterIds.has(quarter.id)).length;
+    const active = yearQuarters.find((quarter) => quarter.id === activeQuarter?.id);
+    return {
+      year,
+      title,
+      scope,
+      completed,
+      total: yearQuarters.length,
+      activeFocus: active?.focus || null
+    };
+  });
   const masterObjectiveCoverageItems = SEIS_MASTER_OBJECTIVE_COVERAGE_UI.items.map((item) => ({ ...item }));
   const masterObjectiveCoverageStatusCounts = masterObjectiveCoverageItems.reduce((counts, item) => {
     counts[item.status] = (counts[item.status] || 0) + 1;
@@ -6251,6 +6271,17 @@ function getV17CommandCenterCoverage() {
       runtimeBoundary: "status-and-plan-only",
       assignments: SEIS_MODEL_SCALING_UI_PROFILE.subagentCouncilAssignments.slice()
     },
+    fiveYearLane: {
+      completedQuarters,
+      totalQuarters: fiveYearQuarters.length,
+      progressPercent: fiveYearQuarters.length ? Math.round((completedQuarters / fiveYearQuarters.length) * 100) : 0,
+      activeQuarter: activeQuarter ? { ...activeQuarter } : null,
+      lastMode: fiveYearSimulation.lastMode || "not-started",
+      updatedAt: fiveYearSimulation.updatedAt || null,
+      fileMutation: fiveYearSimulation.fileMutation || "browser-vfs-only",
+      externalMutation: Boolean(fiveYearSimulation.externalMutation),
+      years: fiveYearYears
+    },
     githubMergeGates: {
       currentState: "auto-merge-enabled / protected-branch-blocked",
       evidenceSource: "GitHub protected-branch rules observed on 2026-06-29; browser UI is local evidence only",
@@ -6304,6 +6335,7 @@ function renderSeisCommandCenter() {
   const data = getAppData("seis-command-center");
   const coverage = getV17CommandCenterCoverage();
   const validationRows = SEIS_V17_COMMAND_CENTER_VALIDATION_QUEUE;
+  const fiveYearLane = coverage.fiveYearLane;
   const stateLegend = [
     ["Working", "Runs in the browser demo and has validator evidence."],
     ["Local Demo", "Interactive and file-backed, with live provider or external mutation disabled."],
@@ -6390,6 +6422,47 @@ function renderSeisCommandCenter() {
       <article class="metric-card"><strong>Frontier Tier</strong><p>512B gated</p></article>
       <article class="metric-card"><strong>Last Snapshot</strong><p>${data.lastSnapshot?.time || "Not saved yet"}</p></article>
     </div>
+    <section class="subagent-panel command-center-five-year-lane" data-five-year-lane>
+      <div class="panel-heading-row">
+        <div>
+          <span class="wow-section-kicker">Long-horizon execution lane</span>
+          <h3>Five-Year Evolution Lane</h3>
+          <p class="muted">A bounded 20-quarter browser-local plan. It records status and VFS evidence only; it never runs in the background or mutates GitHub, SSH, cloud, or providers.</p>
+        </div>
+        <span class="state-tag local-demo">${fiveYearLane.externalMutation ? "Boundary error" : "Browser-local"}</span>
+      </div>
+      <div class="metric-grid five-year-lane-metrics">
+        <article class="metric-card"><strong>Progress</strong><p>${fiveYearLane.completedQuarters}/${fiveYearLane.totalQuarters} quarters</p></article>
+        <article class="metric-card"><strong>Active Quarter</strong><p>${escapeHtml(fiveYearLane.activeQuarter?.id || "Not started")}</p></article>
+        <article class="metric-card"><strong>Last Mode</strong><p>${escapeHtml(fiveYearLane.lastMode)}</p></article>
+        <article class="metric-card"><strong>File Boundary</strong><p>${escapeHtml(fiveYearLane.fileMutation)}</p></article>
+      </div>
+      <div class="five-year-lane-progress" role="progressbar" aria-label="Five-year local progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${fiveYearLane.progressPercent}">
+        <div class="progress-label"><span>Quarter evidence</span><strong>${fiveYearLane.progressPercent}%</strong></div>
+        <div class="progress-track"><div class="progress-fill" style="width:${fiveYearLane.progressPercent}%"></div></div>
+      </div>
+      <div class="toolbar compact-toolbar">
+        <button type="button" data-action="run-next-agent-cycle">Record Next Cycle</button>
+        <button type="button" data-action="advance-subagent-quarter">Advance Quarter</button>
+        <button type="button" data-action="run-subagent-simulation">Run 20-Quarter Preview</button>
+        <button type="button" data-action="open-app" data-app-id="sub-agent-control">Open Sub-Agent Control</button>
+      </div>
+      <div class="subagent-year-strip command-center-year-strip" aria-label="Five-year phase progress">
+        ${fiveYearLane.years.map((year) => {
+          const complete = year.completed === year.total;
+          const active = Boolean(year.activeFocus);
+          const phaseState = complete ? "Complete" : active ? `Active · ${year.activeFocus}` : year.completed ? "In progress" : "Queued";
+          return `<article class="${complete ? "is-complete" : active ? "is-active" : ""}">
+            <span>${escapeHtml(year.year)}</span>
+            <strong>${escapeHtml(year.title)}</strong>
+            <p>${year.completed}/${year.total} quarters · ${escapeHtml(phaseState)}</p>
+            <div class="progress-track"><div class="progress-fill" style="width:${year.total ? Math.round((year.completed / year.total) * 100) : 0}%"></div></div>
+            <small>${escapeHtml(year.scope)}</small>
+          </article>`;
+        }).join("")}
+      </div>
+      <p class="status-note">${fiveYearLane.updatedAt ? `Last local update: ${escapeHtml(new Date(fiveYearLane.updatedAt).toLocaleTimeString())}.` : "No quarter has been recorded in this browser session yet."} The lane is a planning/evidence surface, not proof that five calendar years have elapsed.</p>
+    </section>
     <section class="subagent-panel">
       <h3>Unified V17 Module Map</h3>
       <table class="data-table">
@@ -9113,6 +9186,15 @@ Generated: ${timestamp}
 - Route launch actions: ${coverage.routeLinks}
 - Target interactivity: ${coverage.interactionTarget}
 
+## Five-Year Evolution Lane
+- Progress: ${coverage.fiveYearLane.completedQuarters}/${coverage.fiveYearLane.totalQuarters} quarters (${coverage.fiveYearLane.progressPercent}%)
+- Active quarter: ${coverage.fiveYearLane.activeQuarter?.id || "not-started"}
+- Last mode: ${coverage.fiveYearLane.lastMode}
+- Updated at: ${coverage.fiveYearLane.updatedAt || "not-started"}
+- File mutation: ${coverage.fiveYearLane.fileMutation}
+- External mutation: ${coverage.fiveYearLane.externalMutation ? "yes" : "no"}
+${coverage.fiveYearLane.years.map((year) => `- ${year.year}: ${year.completed}/${year.total} quarters / ${year.title} / ${year.scope}`).join("\n")}
+
 ## GitHub Merge Gates
 - Current state: ${coverage.githubMergeGates.currentState}
 - Required approvals: ${coverage.githubMergeGates.requiredApprovals}
@@ -9731,6 +9813,7 @@ function runNextSubAgentCycle() {
   log("sub-agent-cycle", `${message} No external execution changed.`);
   saveState();
   renderOpenWindows("sub-agent-control");
+  renderOpenWindows("seis-command-center");
   renderOpenWindows("system-monitor");
   renderOpenWindows("task-manager");
   renderOpenWindows("files");
@@ -9817,6 +9900,7 @@ function updateSubAgentSimulation(completedQuarters, mode) {
   log("sub-agent-control", message);
   saveState();
   renderOpenWindows("sub-agent-control");
+  renderOpenWindows("seis-command-center");
   renderOpenWindows("files");
   renderOpenWindows("system-logs");
   toast("Sub-Agent Control", message);
