@@ -6283,6 +6283,7 @@ function renderSecondBrain() {
           <article class="metric-card"><strong>Assignment decision</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.decision)}</p></article>
           <article class="metric-card"><strong>Assignment state</strong><p>${escapeHtml(data.agentReviewAssignment?.status || "not-recorded")}</p></article>
           <article class="metric-card"><strong>Recorded assignments</strong><p>${data.agentReviewAssignments.length}</p></article>
+          <article class="metric-card"><strong>Outcome summary</strong><p>${escapeHtml(getSecondBrainReviewOutcomeSummary(data))}</p></article>
         </div>
         <p class="status-note">Selected duty: ${escapeHtml(getSecondBrainAgentReviewDefinition(data.activeAgentReviewAgent)[2])}</p>
         <label class="second-brain-review-brief">
@@ -10357,6 +10358,16 @@ function buildSecondBrainAgentReviewQueue() {
   renderOpenWindows("files");
   renderOpenWindows("system-logs");
   toast("SEIS Second Brain", `${record.agentQueue.length} plan-only agent reviews and one structured local record are ready for human assignment.`);
+}
+
+function getSecondBrainReviewOutcomeSummary(data = getSecondBrainData()) {
+  const counts = Object.fromEntries(SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.reviewOutcomeOptions.map((outcome) => [outcome, 0]));
+  for (const assignment of data.agentReviewAssignments || []) {
+    if (Object.prototype.hasOwnProperty.call(counts, assignment.reviewOutcome?.id)) counts[assignment.reviewOutcome.id] += 1;
+  }
+  return SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.reviewOutcomeOptions
+    .map((outcome) => `${SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.reviewOutcomeLabels[outcome]}: ${counts[outcome]}`)
+    .join(" · ");
 }
 
 function buildSecondBrainAgentReviewAssignmentRecord(timestamp, agentName, reviewBrief, reviewOutcome) {
