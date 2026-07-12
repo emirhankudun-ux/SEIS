@@ -315,6 +315,7 @@
     "npm run check:seis-150b-frontier-model-program",
     "npm run check:seis-512b-apex-model-program",
     "npm run check:seis-frontier-training-launch-plan",
+    "npm run check:seis-model-release-attestation",
     "npm run check:seis-model-training-evidence-chain",
     "node scripts/check-seis-agi-evaluation-protocol.mjs",
     "npm run check:seis-model-scaling-hardware-profile",

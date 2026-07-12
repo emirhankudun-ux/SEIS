@@ -130,7 +130,7 @@ const records = [
     completedAt: null,
     trainingPerformed: false,
     logs: [],
-    checkpointIds: [],
+    checkpointIds: [ids.checkpoint],
     cancellationReason: null,
     truthBoundary:
       'Synthetic schema fixture only; no model, dataset, code revision, log, or training run exists.',
@@ -205,7 +205,7 @@ const records = [
   },
   {
     schemaRef: 'packages/evals/schemas/model-release-decision.schema.json',
-    schemaVersion: 1,
+    schemaVersion: 2,
     recordType: 'release-decision',
     id: ids.release,
     recordStatus: 'fixture-only-not-evidence',
@@ -237,8 +237,15 @@ const records = [
     humanApprovalId: null,
     approvalAttestation: {
       verificationStatus: 'not-verified',
+      attestationId: null,
+      profile: null,
+      trustDomain: null,
+      audience: null,
+      policyVersion: null,
+      approvedAt: null,
       keyId: null,
       algorithm: null,
+      payloadDigest: null,
       signature: null,
       verifiedAt: null,
       verifierId: null,

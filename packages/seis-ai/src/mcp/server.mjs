@@ -590,7 +590,7 @@ export function buildServer() {
 
   server.tool(
     TRAINING_EVIDENCE_STATUS_TOOL,
-    "Validate the SEIS model training evidence schemas, immutable synthetic fixture chain, and zero-real-evidence release boundary. Read-only and fail-closed; fixtures never prove a dataset, training run, checkpoint, benchmark, release, route, model ownership, or AGI capability.",
+    "Validate the SEIS model training evidence schemas, immutable synthetic fixture chain, built-in Ed25519 approval verifier, empty external trust-root boundary, and zero-real-evidence release state. Read-only and fail-closed; it cannot sign, configure keys, execute releases, or prove a dataset, training run, checkpoint, benchmark, route, model ownership, or AGI capability.",
     {
       includeContract: z.boolean().optional().describe("Return the full machine-readable evidence-chain contract"),
     },
@@ -975,7 +975,7 @@ Steps:
     TRAINING_EVIDENCE_RESOURCE_URI,
     {
       description:
-        "SEIS AI Core read-only training evidence schema and synthetic-fixture contract; not dataset, training, checkpoint, benchmark, release, route, model ownership, or AGI evidence",
+        "SEIS AI Core read-only training evidence schema, synthetic-fixture contract, and implemented-but-unconfigured Ed25519 release-verifier boundary; not dataset, training, checkpoint, benchmark, release, route, model ownership, or AGI evidence",
       mimeType: "application/json",
     },
     async () => {

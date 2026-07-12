@@ -5,7 +5,7 @@
   "id": "training-run:synthetic-test-fixture:v1",
   "recordStatus": "fixture-only-not-evidence",
   "fixtureOnly": true,
-  "recordHash": "sha256:2f26e14a2f540ad5cd358616e6a4d80e6bfa7994dc31b7b550b4e5d991b36a0d",
+  "recordHash": "sha256:fb64be22cd820dcce4523fc10fc82b9569c5f32acead3e4dbbc5c22edc7a3286",
   "previousRecordHash": "sha256:0690cb96cb714667759957ea84dcc9dc6fec628347545b361d40b2d9b7ad614e",
   "method": "sft",
   "modelClass": "seed",
@@ -24,7 +24,7 @@
   "completedAt": null,
   "trainingPerformed": false,
   "logs": [],
-  "checkpointIds": [],
+  "checkpointIds": ["checkpoint:synthetic-test-fixture:v1"],
   "cancellationReason": null,
   "truthBoundary": "Synthetic schema fixture only; no model, dataset, code revision, log, or training run exists."
 }

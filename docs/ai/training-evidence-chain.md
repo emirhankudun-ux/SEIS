@@ -97,10 +97,11 @@ hashini taşır.
 Bu `seis-sorted-json-v1` iç sözleşmesidir; RFC 8785 uyumluluğu iddia edilmez.
 Model artifact hashleri bu fixture zincirinden tamamen ayrıdır.
 
-Repo içindeki hashler tek başına güven kökü değildir. Bugünkü sözleşmede
-`trustRoot.status: not-configured`, trusted approval key listesi boş ve
-attestation verifier `not-implemented` durumundadır. Bu nedenle içerik olarak
+Repo içindeki hashler tek başına güven kökü değildir. Ed25519 attestation
+verifier uygulanmıştır; ancak bugünkü sözleşmede `trustRoot.status:
+not-configured` ve trusted approval key listesi boştur. Bu nedenle içerik olarak
 tutarlı görünse bile hiçbir `allow` zinciri geçerli release kanıtı sayılamaz.
+Detay: `docs/ai/release-attestation.md`.
 
 ## Çalıştırma
 
@@ -123,8 +124,10 @@ bulunduğunda değerlendirilebilir. Şema geçerliliği tek başına execution v
 release yetkisi vermez.
 
 Bunlara ek olarak ayrı yönetilen bir trusted approval key ile doğrulanmış
-attestation zorunludur. Bu verifier bu foundation pass içinde uygulanmadığı
-için release kararı koşulsuz olarak `deny` kalır.
+attestation zorunludur. Verifier uygulanmıştır fakat repoda trusted public key
+yoktur; bu yüzden release kararı koşulsuz olarak `deny` kalır. Release
+kaydındaki self-asserted verification alanları veya callback sonucu kabul
+edilmez.
 
 Altı şema ayrıca
 `content/development/seis-data-schema-registry.json` içinde kayıtlıdır; bu

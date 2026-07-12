@@ -111,6 +111,7 @@ Date: 2026-06-23
 | [ai/model-card-template.md](ai/model-card-template.md) | Sahte model veya benchmark iddiasını engelleyen doldurulmamış model kartı şablonu. |
 | [ai/model-training-execution.md](ai/model-training-execution.md) | Gerçek training öncesi veri, compute, checkpoint, eval ve approval yürütme sırası. |
 | [ai/training-evidence-chain.md](ai/training-evidence-chain.md) | Draft 2020-12 şemaları, immutable fixture hash zinciri ve sıfır gerçek-evidence release kapısı. |
+| [ai/release-attestation.md](ai/release-attestation.md) | Ed25519 release approval verifier, RFC 7638 public-key identity, empty trust-root and fail-closed key lifecycle boundary. |
 | [ai/checkpoint-governance.md](ai/checkpoint-governance.md) | Checkpoint kimliği, hash, lifecycle, recovery ve publication governance. |
 | [evals/evaluation-strategy.md](evals/evaluation-strategy.md) | Prompt, retrieval, agent, capability, safety ve operations eval stratejisi. |
 | [evals/benchmark-integrity.md](evals/benchmark-integrity.md) | Ön kayıt, kontaminasyon, tekrar üretilebilirlik ve benchmark iddia sınırı. |

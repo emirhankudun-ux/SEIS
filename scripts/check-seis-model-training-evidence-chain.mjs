@@ -28,6 +28,7 @@ const paths = {
   agentLoop: 'packages/seis-ai/src/agent/loop.mjs',
   mcpServer: 'packages/seis-ai/src/mcp/server.mjs',
   tests: 'packages/seis-ai/test/training-evidence.test.mjs',
+  attestationTests: 'packages/seis-ai/test/release-attestation.test.mjs',
   docs: 'docs/ai/training-evidence-chain.md',
   docsIndex: 'docs/INDEX.md',
   gitignore: '.gitignore',
@@ -63,6 +64,11 @@ ensure(
   'external trust root must remain unconfigured',
 );
 ensure(
+  status.trustRoot?.attestationVerification === 'implemented' &&
+    status.trustRoot?.trustedApprovalKeyCount === 0,
+  'external Ed25519 verifier must be implemented with zero trusted keys',
+);
+ensure(
   status.trustRoot?.releaseAllowWithoutVerifiedAttestation === false,
   'release allow must require verified external attestation',
 );
@@ -84,9 +90,15 @@ ensure(
 const contract = status.contract || {};
 ensure(contract.status === 'schema-foundation-no-execution', 'contract status mismatch');
 ensure(
-  contract.trustRoot?.attestationVerification === 'not-implemented' &&
-    contract.trustRoot?.trustedApprovalKeyIds?.length === 0,
-  'trust-root verifier and trusted keys must remain unavailable in this foundation pass',
+  contract.trustRoot?.attestationVerification === 'implemented' &&
+    contract.trustRoot?.trustedApprovalKeyCount === 0,
+  'trust-root verifier must be implemented while trusted keys remain unavailable',
+);
+ensure(
+  contract.replayProtection?.attestationIdSigned === true &&
+    contract.replayProtection?.executorLedgerRequired === true &&
+    contract.replayProtection?.executorLedgerStatus === 'not-implemented-no-release-executor',
+  'release replay protection must remain executor-gated',
 );
 ensure(
   Object.values(contract.currentEvidence || {}).every(
@@ -199,6 +211,7 @@ const sourceChecks = [
   [paths.agentLoop, TRAINING_EVIDENCE_STATUS_TOOL],
   [paths.mcpServer, 'TRAINING_EVIDENCE_RESOURCE_URI'],
   [paths.tests, 'allInvalidFixturesRejected'],
+  [paths.attestationTests, 'signature replay across a different release id'],
   [paths.docs, TRAINING_EVIDENCE_RESOURCE_URI],
   [paths.docsIndex, 'ai/training-evidence-chain.md'],
 ];
@@ -209,9 +222,12 @@ for (const [relativePath, marker] of sourceChecks) {
 const gitignore = readText(paths.gitignore);
 for (const trackedJsonPath of [
   ...Object.values(TRAINING_EVIDENCE_SCHEMA_PATHS),
-  ...contract.fixtures.validRecords,
-  contract.fixtures.invalidCases,
+  contract.trustRoot?.schemaPath,
+  contract.trustRoot?.configPath,
+  ...(contract.fixtures?.validRecords || []),
+  contract.fixtures?.invalidCases,
 ]) {
+  if (!trackedJsonPath) continue;
   ensure(
     gitignore.includes(`!${trackedJsonPath}`),
     `.gitignore missing targeted exception ${trackedJsonPath}`,

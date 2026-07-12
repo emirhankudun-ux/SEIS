@@ -83,7 +83,10 @@ function validateRecord(record) {
     ensure(Object.prototype.hasOwnProperty.call(parsed, key), `${label} missing required top-level key: ${key}`);
   }
 
-  if (record.sourceType === "training-evidence-json-schema") {
+  if (
+    record.sourceType === "training-evidence-json-schema" ||
+    record.sourceType === "model-release-trust-root-json-schema"
+  ) {
     ensure(
       parsed.$schema === "https://json-schema.org/draft/2020-12/schema",
       `${label} must use JSON Schema Draft 2020-12`,
@@ -112,6 +115,8 @@ if (registry) {
     "checkpoint-record-schema",
     "model-evaluation-report-schema",
     "model-release-decision-schema",
+    "model-release-trust-root-schema",
+    "seis-model-release-trust-root",
   ]) {
     ensure(ids.has(requiredId), `registry missing training evidence schema: ${requiredId}`);
   }

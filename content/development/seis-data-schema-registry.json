@@ -437,6 +437,44 @@
       "validationCommands": ["npm run check:seis-model-training-evidence-chain"],
       "freshness": "review after release evidence, human approval, model-card, dataset-card, or route policy changes",
       "secretPolicy": "schema only; approval evidence may reference identifiers but must not embed credentials or personal data"
+    },
+    {
+      "id": "model-release-trust-root-schema",
+      "path": "packages/shared-types/schemas/model-release-trust-root.schema.json",
+      "lane": "@seis",
+      "currentStatus": "validated",
+      "sourceType": "model-release-trust-root-json-schema",
+      "expectedShape": "object",
+      "requiredTopLevelKeys": ["$schema", "$id", "title", "type", "required", "properties"],
+      "validationCommands": [
+        "npm run check:seis-model-release-attestation",
+        "npm run check:seis-model-training-evidence-chain"
+      ],
+      "freshness": "review after signature profile, key lifecycle, scope, or release approval policy changes",
+      "secretPolicy": "public-key schema only; private JWK members and signing keys are forbidden"
+    },
+    {
+      "id": "seis-model-release-trust-root",
+      "path": "content/development/seis-model-release-trust-root.json",
+      "lane": "@seis",
+      "currentStatus": "validated",
+      "sourceType": "public-key-trust-root-config",
+      "expectedShape": "object",
+      "requiredTopLevelKeys": [
+        "schemaRef",
+        "schemaVersion",
+        "id",
+        "version",
+        "status",
+        "trustedApprovalKeys",
+        "runtimeAuthority"
+      ],
+      "validationCommands": [
+        "npm run check:seis-model-release-attestation",
+        "npm run check:seis-model-training-evidence-chain"
+      ],
+      "freshness": "human review required before any key is configured, revoked, disabled, or rotated",
+      "secretPolicy": "public Ed25519 JWK values only; private d members, private keys, credentials, and signing operations are forbidden"
     }
   ]
 }

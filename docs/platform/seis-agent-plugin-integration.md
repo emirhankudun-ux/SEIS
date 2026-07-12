@@ -124,6 +124,12 @@ The immutable training-evidence source is
 schema and synthetic-fixture boundary. The six fixture records prove validator
 behavior only. They do not prove a real dataset, compute approval, training run,
 checkpoint, benchmark, release, route, model ownership, or AGI capability.
+The same status surface reports the repository-owned
+`seis-ed25519-release-v1` verifier, the empty public-key trust-root state, and
+the unimplemented replay-ledger boundary. The verifier is implemented, but the
+trust root has zero keys and remains `not-configured`; MCP cannot sign, add keys,
+approve a release, consume an attestation, or grant runtime authority. Validation
+is provided by `npm run check:seis-model-release-attestation`.
 
 The 150B Frontier Model Program source is
 `content/development/seis-150b-frontier-model-program.json`; it exposes

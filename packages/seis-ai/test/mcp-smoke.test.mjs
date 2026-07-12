@@ -327,6 +327,9 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.releasePolicy.defaultDecision, "deny");
     assert.equal(payload.evidenceCounts.trainingRuns, 0);
     assert.equal(payload.executionEvidence.trainingRunPerformed, false);
+    assert.equal(payload.trustRoot.attestationVerification, "implemented");
+    assert.equal(payload.trustRoot.trustedApprovalKeyCount, 0);
+    assert.equal(payload.replayProtection.executorLedgerRequired, true);
   });
 
   it("reads the SEIS AI Core provider registry resource through the protocol", async () => {
@@ -958,6 +961,15 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.schemaCount, 6);
     assert.equal(payload.currentEvidenceRecordCount, 0);
     assert.equal(payload.releaseDecision, "deny");
+    assert.equal(payload.trustRoot.attestationVerification, "implemented");
+    assert.equal(payload.trustRoot.status, "not-configured");
+    assert.equal(payload.trustRoot.trustedApprovalKeyCount, 0);
+    assert.equal(payload.trustRoot.runtimeAuthority, false);
+    assert.equal(payload.replayProtection.executorLedgerRequired, true);
+    assert.equal(
+      payload.replayProtection.executorLedgerStatus,
+      "not-implemented-no-release-executor"
+    );
     assert.equal(payload.fixtureValidation.validRecordCount, 6);
     assert.equal(payload.fixtureValidation.invalidCaseCount, 8);
     assert.equal(payload.executionEvidence.trainingRunPerformed, false);

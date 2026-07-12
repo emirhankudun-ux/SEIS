@@ -151,6 +151,7 @@ ios/
 !packages/seis-ai/models/agent-router-seed-v0.json
 !packages/data/schemas/model-dataset-manifest.schema.json
 !packages/shared-types/schemas/model-compute-approval.schema.json
+!packages/shared-types/schemas/model-release-trust-root.schema.json
 !packages/evals/schemas/model-training-run.schema.json
 !packages/evals/schemas/checkpoint-record.schema.json
 !packages/evals/schemas/model-evaluation-report.schema.json
@@ -162,6 +163,7 @@ ios/
 !packages/evals/fixtures/training-evidence/valid/05-evaluation-report.json
 !packages/evals/fixtures/training-evidence/valid/06-release-decision.json
 !packages/evals/fixtures/training-evidence/invalid/invalid-cases.json
+!content/development/seis-model-release-trust-root.json
 !apps/seis-core/data/seis-router-routes.json
 !reports/seis-sub-agent-five-year-demo-evidence.json
 !reports/seis-sub-agent-five-year-demo-run.json

@@ -1,0 +1,241 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seis.dev/schemas/ai/model-release-trust-root.schema.json",
+  "title": "SEIS Model Release Trust Root",
+  "description": "Public Ed25519 verification-key policy for model release approvals. This file never contains private key material and never grants runtime authority by itself.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaRef",
+    "schemaVersion",
+    "id",
+    "version",
+    "status",
+    "attestationVerification",
+    "signatureProfile",
+    "signatureAlgorithm",
+    "keyIdScheme",
+    "trustDomain",
+    "audience",
+    "policyVersion",
+    "maxApprovalAgeSeconds",
+    "provenance",
+    "trustedApprovalKeys",
+    "releaseAllowWithoutVerifiedAttestation",
+    "runtimeAuthority",
+    "updatedAt",
+    "truthBoundary"
+  ],
+  "properties": {
+    "schemaRef": {
+      "const": "packages/shared-types/schemas/model-release-trust-root.schema.json"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "id": {
+      "const": "seis-model-release-trust-root"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]{4}\\.[0-9]{2}\\.[0-9]{2}$"
+    },
+    "status": {
+      "enum": ["not-configured", "configured", "disabled"]
+    },
+    "attestationVerification": {
+      "const": "implemented"
+    },
+    "signatureProfile": {
+      "const": "seis-ed25519-release-v1"
+    },
+    "signatureAlgorithm": {
+      "const": "ed25519"
+    },
+    "keyIdScheme": {
+      "const": "rfc7638-jwk-thumbprint-sha256"
+    },
+    "trustDomain": {
+      "const": "seis-model-release"
+    },
+    "audience": {
+      "const": "seis-public-model-registry"
+    },
+    "policyVersion": {
+      "const": "2026.07.12"
+    },
+    "maxApprovalAgeSeconds": {
+      "type": "integer",
+      "minimum": 60,
+      "maximum": 3600
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "sourceId", "truthBoundary"],
+      "properties": {
+        "source": {
+          "enum": ["repository-default", "external-startup"]
+        },
+        "sourceId": {
+          "type": "string",
+          "minLength": 8
+        },
+        "truthBoundary": {
+          "type": "string",
+          "minLength": 32
+        }
+      }
+    },
+    "trustedApprovalKeys": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {
+        "$ref": "#/$defs/trustedApprovalKey"
+      }
+    },
+    "releaseAllowWithoutVerifiedAttestation": {
+      "const": false
+    },
+    "runtimeAuthority": {
+      "const": false
+    },
+    "updatedAt": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "truthBoundary": {
+      "type": "string",
+      "minLength": 32
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "configured"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "source": {
+                "const": "external-startup"
+              }
+            }
+          },
+          "trustedApprovalKeys": {
+            "type": "array",
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "not-configured"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "source": {
+                "const": "repository-default"
+              }
+            }
+          },
+          "trustedApprovalKeys": {
+            "type": "array",
+            "maxItems": 0
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "timestamp": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]{3})?Z$"
+    },
+    "nullableTimestamp": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]{3})?Z$"
+    },
+    "publicEd25519Jwk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kty", "crv", "x"],
+      "properties": {
+        "kty": {
+          "const": "OKP"
+        },
+        "crv": {
+          "const": "Ed25519"
+        },
+        "x": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{43}$"
+        }
+      }
+    },
+    "trustedApprovalKey": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "keyId",
+        "status",
+        "authorityId",
+        "publicKeyJwk",
+        "validFrom",
+        "validUntil",
+        "approvalScopes",
+        "truthBoundary"
+      ],
+      "properties": {
+        "keyId": {
+          "type": "string",
+          "pattern": "^jkt-sha256:[A-Za-z0-9_-]{43}$"
+        },
+        "status": {
+          "enum": ["active", "revoked", "disabled"]
+        },
+        "authorityId": {
+          "type": "string",
+          "pattern": "^approval-authority:[a-z0-9][a-z0-9._-]{2,}:v[0-9]+$"
+        },
+        "publicKeyJwk": {
+          "$ref": "#/$defs/publicEd25519Jwk"
+        },
+        "validFrom": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "validUntil": {
+          "$ref": "#/$defs/nullableTimestamp"
+        },
+        "approvalScopes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "contains": {
+            "const": "model-release"
+          },
+          "items": {
+            "enum": ["model-release"]
+          }
+        },
+        "truthBoundary": {
+          "type": "string",
+          "minLength": 32
+        }
+      }
+    }
+  }
+}

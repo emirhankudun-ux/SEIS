@@ -125,7 +125,9 @@ describe('SEIS model training evidence chain', () => {
       ),
     );
     assert.ok(
-      result.errors.includes('release allow requires a successful external attestation verifier'),
+      result.errors.some(error =>
+        error.startsWith('release allow requires a successful external attestation verifier:'),
+      ),
     );
   });
 
@@ -148,11 +150,18 @@ describe('SEIS model training evidence chain', () => {
     });
     release.approvalAttestation = {
       verificationStatus: 'verified',
-      keyId: 'approval-key:synthetic-test:v1',
+      attestationId: 'release-attestation:synthetic-self-assertion:v1',
+      profile: 'seis-ed25519-release-v1',
+      trustDomain: 'seis-model-release',
+      audience: 'seis-public-model-registry',
+      policyVersion: '2026.07.12',
+      approvedAt: '2026-07-11T00:00:00Z',
+      keyId: `jkt-sha256:${'A'.repeat(43)}`,
       algorithm: 'ed25519',
-      signature: 'sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+      payloadDigest: 'sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+      signature: 'A'.repeat(86),
       verifiedAt: '2026-07-11T00:00:00Z',
-      verifierId: 'synthetic-self-assertion',
+      verifierId: 'seis-ed25519-release-verifier-v1',
     };
     release.recordHash = computeEvidenceRecordHash(release);
 
@@ -160,13 +169,30 @@ describe('SEIS model training evidence chain', () => {
       trustRoot: {
         status: 'configured',
         attestationVerification: 'implemented',
-        trustedApprovalKeyIds: ['approval-key:synthetic-test:v1'],
+        signatureProfile: 'seis-ed25519-release-v1',
+        signatureAlgorithm: 'ed25519',
+        keyIdScheme: 'rfc7638-jwk-thumbprint-sha256',
+        trustDomain: 'seis-model-release',
+        audience: 'seis-public-model-registry',
+        policyVersion: '2026.07.12',
+        maxApprovalAgeSeconds: 900,
+        provenance: {
+          source: 'external-startup',
+          sourceId: 'synthetic-self-assertion-test',
+          truthBoundary:
+            'Synthetic test-only trust-root provenance; no external authority is configured.',
+        },
+        trustedApprovalKeys: [],
+        releaseAllowWithoutVerifiedAttestation: false,
+        runtimeAuthority: false,
       },
     });
 
     assert.equal(result.ok, false);
     assert.ok(
-      result.errors.includes('release allow requires a successful external attestation verifier'),
+      result.errors.some(error =>
+        error.startsWith('release allow requires a successful external attestation verifier:'),
+      ),
     );
   });
 
@@ -180,6 +206,11 @@ describe('SEIS model training evidence chain', () => {
     assert.equal(status.releaseDecision, 'deny');
     assert.equal(status.trainingAuthorized, false);
     assert.equal(status.routeEligibleToday, false);
+    assert.equal(status.replayProtection.executorLedgerRequired, true);
+    assert.equal(
+      status.replayProtection.executorLedgerStatus,
+      'not-implemented-no-release-executor',
+    );
     assert.equal(status.fixtureValidation.validRecordCount, 6);
     assert.equal(status.fixtureValidation.invalidCaseCount, 8);
     assert.equal(status.fixtureValidation.allValidFixturesPassed, true);
@@ -242,6 +273,7 @@ describe('SEIS model training evidence chain', () => {
 function copyEvidenceWorkspace(targetRoot) {
   for (const relativePath of [
     'content/development/seis-model-training-evidence-chain.json',
+    'content/development/seis-model-release-trust-root.json',
     'content/development/seis-20b-model-card-template.json',
     'content/development/seis-20b-dataset-card-template.json',
     'packages/data/schemas',

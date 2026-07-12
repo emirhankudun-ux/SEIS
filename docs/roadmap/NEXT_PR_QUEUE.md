@@ -59,6 +59,22 @@ owner explicitly requests removal.
 Current local state: implemented and validated on the suggested branch; not
 pushed, opened as a PR, merged, deployed, or used for real model training.
 
+## PR AI-3: Model Release Ed25519 Attestation Verifier
+
+| Field | Value |
+| --- | --- |
+| Suggested branch | `ai/release-attestation-verifier-20260712` |
+| Priority | P0 after AI-2 |
+| Goal | Replace self-asserted/callback release approval with one built-in Ed25519 verifier, RFC 7638 public-key identity, strict public JWK trust-root policy, domain-separated payload binding, exact evidence references, and fail-closed key lifecycle checks. |
+| Include | Trust-root schema and empty config, Node crypto verifier, canonical payload digest, signed approval metadata, key status/scope/validity checks, private-JWK rejection, stale/replay/tamper/wrong-key tests, checker, ADR, docs, data registry, and existing training-evidence/MCP status integration. |
+| Exclude | Private/signing keys, authority activation, release executor, replay ledger side effects, provider authentication, model/dataset download, paid compute, training, benchmark, checkpoint, route promotion, deployment, GitHub push, PR creation, or merge. |
+| Validation | `npm run check:seis-model-release-attestation`, `npm run check:seis-model-training-evidence-chain`, AI package tests, data schema registry, security checks, and `git diff --check`. |
+| Approval needed | None for verifier code, empty public-key config, docs, tests, and local commit. Explicit owner approval plus security review is required before an external startup trust root, trusted public key, release executor, or any excluded action. |
+
+Current local state: implemented and validated locally. The release decision
+remains `deny` because the repo trust root is empty and no release executor or
+atomic replay ledger exists.
+
 ## Current Recommended Product Demo Stack
 
 | Order | Suggested PR title | Scope | Validation | Approval needed |

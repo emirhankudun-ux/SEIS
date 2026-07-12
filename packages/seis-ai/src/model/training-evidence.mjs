@@ -1,9 +1,21 @@
 import { createHash } from 'node:crypto';
-import { existsSync, lstatSync, readFileSync, realpathSync } from 'node:fs';
 
-import { assertNoCredentialLikeJsonContent } from '../lib/credential-safety.mjs';
-import { resolveInside } from '../lib/repo.mjs';
+import { canonicalJsonStringify } from '../lib/canonical-json.mjs';
+import { readSafeJsonInside } from '../lib/safe-json-file.mjs';
 import { assertValidJsonSchema, validateJsonSchema } from './json-schema-validation.mjs';
+import {
+  MODEL_RELEASE_TRUST_ROOT_PATH,
+  MODEL_RELEASE_TRUST_ROOT_SCHEMA_PATH,
+  RELEASE_ATTESTATION_ALGORITHM,
+  RELEASE_ATTESTATION_AUDIENCE,
+  RELEASE_ATTESTATION_POLICY_VERSION,
+  RELEASE_ATTESTATION_PROFILE,
+  RELEASE_ATTESTATION_TRUST_DOMAIN,
+  RELEASE_ATTESTATION_VERIFIER_ID,
+  readModelReleaseTrustRoot,
+  summarizeModelReleaseTrustRoot,
+  verifyReleaseApprovalAttestation,
+} from './release-attestation.mjs';
 
 export const TRAINING_EVIDENCE_CHAIN_PATH =
   'content/development/seis-model-training-evidence-chain.json';
@@ -40,8 +52,6 @@ const ZERO_EVIDENCE_FIELDS = [
   'evaluationReports',
   'releaseApprovals',
 ];
-const MAX_EVIDENCE_JSON_BYTES = 2 * 1024 * 1024;
-
 export function readTrainingEvidenceChain(repoRoot) {
   return readJsonInside(repoRoot, TRAINING_EVIDENCE_CHAIN_PATH, 'SEIS training evidence chain');
 }
@@ -58,7 +68,7 @@ export function loadTrainingEvidenceSchemas(repoRoot) {
 export function computeEvidenceRecordHash(record) {
   const canonical = { ...record };
   delete canonical.recordHash;
-  const digest = createHash('sha256').update(stableStringify(canonical)).digest('hex');
+  const digest = createHash('sha256').update(canonicalJsonStringify(canonical)).digest('hex');
   return `sha256:${digest}`;
 }
 
@@ -165,7 +175,8 @@ export function trainingEvidenceStatus(repoRoot, options = {}) {
   try {
     const contract = readTrainingEvidenceChain(repoRoot);
     const schemas = loadTrainingEvidenceSchemas(repoRoot);
-    const issues = validateEvidenceContract(contract, schemas, repoRoot);
+    const trustRoot = readModelReleaseTrustRoot(repoRoot);
+    const issues = validateEvidenceContract(contract, schemas, repoRoot, trustRoot);
 
     const validRecords = contract.fixtures.validRecords.map(relativePath =>
       readJsonInside(repoRoot, relativePath, 'SEIS training evidence valid fixture'),
@@ -176,7 +187,7 @@ export function trainingEvidenceStatus(repoRoot, options = {}) {
       'SEIS training evidence invalid fixture cases',
     );
     const validFixtureResult = validateTrainingEvidenceChain(validRecords, schemas, {
-      trustRoot: contract.trustRoot,
+      trustRoot,
     });
     const invalidFixtureResult = validateInvalidEvidenceCases(invalidCases.cases, schemas);
     if (!validFixtureResult.ok) issues.push(...validFixtureResult.errors);
@@ -196,7 +207,8 @@ export function trainingEvidenceStatus(repoRoot, options = {}) {
       schemaCount: Object.keys(schemas).length,
       schemaPaths: contract.schemas,
       cardTemplatePaths: contract.cardTemplates,
-      trustRoot: contract.trustRoot,
+      trustRoot: summarizeModelReleaseTrustRoot(trustRoot),
+      replayProtection: contract.replayProtection,
       evidenceCounts: contract.evidenceCounts,
       currentEvidenceRecordCount: countCurrentEvidence(contract.currentEvidence),
       releaseDecision: contract.releasePolicy.defaultDecision,
@@ -233,7 +245,7 @@ export function trainingEvidenceStatus(repoRoot, options = {}) {
   }
 }
 
-function validateEvidenceContract(contract, schemas, repoRoot) {
+function validateEvidenceContract(contract, schemas, repoRoot, trustRoot) {
   const issues = [];
   if (contract.id !== 'seis-model-training-evidence-chain') issues.push('contract id mismatch');
   if (contract.status !== 'schema-foundation-no-execution') issues.push('contract status mismatch');
@@ -245,13 +257,30 @@ function validateEvidenceContract(contract, schemas, repoRoot) {
     issues.push('human final approval must be required');
   }
   if (
-    contract.trustRoot?.status !== 'not-configured' ||
-    contract.trustRoot?.attestationVerification !== 'not-implemented' ||
+    contract.trustRoot?.configPath !== MODEL_RELEASE_TRUST_ROOT_PATH ||
+    contract.trustRoot?.schemaPath !== MODEL_RELEASE_TRUST_ROOT_SCHEMA_PATH ||
+    contract.trustRoot?.status !== trustRoot.status ||
+    contract.trustRoot?.attestationVerification !== 'implemented' ||
+    contract.trustRoot?.signatureProfile !== RELEASE_ATTESTATION_PROFILE ||
+    contract.trustRoot?.signatureAlgorithm !== RELEASE_ATTESTATION_ALGORITHM ||
+    contract.trustRoot?.trustDomain !== trustRoot.trustDomain ||
+    contract.trustRoot?.audience !== trustRoot.audience ||
+    contract.trustRoot?.policyVersion !== trustRoot.policyVersion ||
+    contract.trustRoot?.maxApprovalAgeSeconds !== trustRoot.maxApprovalAgeSeconds ||
+    contract.trustRoot?.provenanceSource !== trustRoot.provenance.source ||
     contract.trustRoot?.releaseAllowWithoutVerifiedAttestation !== false ||
-    !Array.isArray(contract.trustRoot?.trustedApprovalKeyIds) ||
-    contract.trustRoot.trustedApprovalKeyIds.length !== 0
+    contract.trustRoot?.trustedApprovalKeyCount !== trustRoot.trustedApprovalKeys.length ||
+    trustRoot.status !== 'not-configured' ||
+    trustRoot.trustedApprovalKeys.length !== 0
   ) {
-    issues.push('external approval trust root must remain unconfigured and fail closed');
+    issues.push('external approval verifier must be implemented while trust root remains empty');
+  }
+  if (
+    contract.replayProtection?.attestationIdSigned !== true ||
+    contract.replayProtection?.executorLedgerRequired !== true ||
+    contract.replayProtection?.executorLedgerStatus !== 'not-implemented-no-release-executor'
+  ) {
+    issues.push('release replay protection must remain signed and executor-gated');
   }
 
   for (const [recordType, expectedPath] of Object.entries(TRAINING_EVIDENCE_SCHEMA_PATHS)) {
@@ -430,9 +459,7 @@ function validateTrainingRun(record, errors) {
     if (record.startedAt !== null || record.completedAt !== null) {
       errors.push('$.startedAt: fixture timestamps must be null');
     }
-    if (record.logs?.length !== 0 || record.checkpointIds?.length !== 0) {
-      errors.push('$.logs: fixture cannot claim logs or checkpoints');
-    }
+    if (record.logs?.length !== 0) errors.push('$.logs: fixture cannot claim training logs');
     if (record.codeCommit !== null || record.baseModel?.artifactHash !== null) {
       errors.push('$.baseModel: fixture cannot claim code or base-model artifact evidence');
     }
@@ -554,6 +581,7 @@ function validateReleaseDecision(record, errors) {
       record.allRequiredEvidenceAccepted ||
       record.humanApprovalId !== null ||
       record.approvalAttestation?.verificationStatus !== 'not-verified' ||
+      record.approvalAttestation?.profile !== null ||
       record.published ||
       record.routeEligible
     ) {
@@ -567,7 +595,13 @@ function validateReleaseDecision(record, errors) {
     }
     if (
       record.approvalAttestation?.keyId !== null ||
+      record.approvalAttestation?.attestationId !== null ||
+      record.approvalAttestation?.trustDomain !== null ||
+      record.approvalAttestation?.audience !== null ||
+      record.approvalAttestation?.policyVersion !== null ||
+      record.approvalAttestation?.approvedAt !== null ||
       record.approvalAttestation?.algorithm !== null ||
+      record.approvalAttestation?.payloadDigest !== null ||
       record.approvalAttestation?.signature !== null ||
       record.approvalAttestation?.verifiedAt !== null ||
       record.approvalAttestation?.verifierId !== null
@@ -588,11 +622,18 @@ function validateReleaseDecision(record, errors) {
       record.recordStatus !== 'accepted' ||
       !record.createdAt ||
       record.approvalAttestation?.verificationStatus !== 'verified' ||
+      !record.approvalAttestation?.attestationId ||
+      record.approvalAttestation?.profile !== RELEASE_ATTESTATION_PROFILE ||
+      record.approvalAttestation?.trustDomain !== RELEASE_ATTESTATION_TRUST_DOMAIN ||
+      record.approvalAttestation?.audience !== RELEASE_ATTESTATION_AUDIENCE ||
+      record.approvalAttestation?.policyVersion !== RELEASE_ATTESTATION_POLICY_VERSION ||
+      !record.approvalAttestation?.approvedAt ||
       !record.approvalAttestation?.keyId ||
-      !record.approvalAttestation?.algorithm ||
+      record.approvalAttestation?.algorithm !== RELEASE_ATTESTATION_ALGORITHM ||
+      !record.approvalAttestation?.payloadDigest ||
       !record.approvalAttestation?.signature ||
       !record.approvalAttestation?.verifiedAt ||
-      !record.approvalAttestation?.verifierId
+      record.approvalAttestation?.verifierId !== RELEASE_ATTESTATION_VERIFIER_ID
     ) {
       errors.push(
         '$.decision: allow requires accepted evidence, immutable cards, and human approval',
@@ -622,15 +663,19 @@ function validateReferences(byType, errors, options = {}) {
   if (evaluation?.trainingRunId !== run?.id) errors.push('evaluation run reference mismatch');
   if (evaluation?.checkpointId !== checkpoint?.id)
     errors.push('evaluation checkpoint reference mismatch');
-  if (!evaluation?.datasetManifestIds?.includes(dataset?.id))
+  if (!hasExactMembers(evaluation?.datasetManifestIds, [dataset?.id]))
     errors.push('evaluation dataset reference mismatch');
-  if (!release?.datasetManifestIds?.includes(dataset?.id))
+  if (!hasExactMembers(release?.datasetManifestIds, [dataset?.id]))
     errors.push('release dataset reference mismatch');
   if (release?.computeApprovalId !== compute?.id) errors.push('release compute reference mismatch');
   if (release?.trainingRunId !== run?.id) errors.push('release run reference mismatch');
-  if (!release?.checkpointIds?.includes(checkpoint?.id))
+  if (!hasExactMembers(run?.checkpointIds, [checkpoint?.id]))
+    errors.push('training run checkpoint reference mismatch');
+  if (!hasExactMembers(checkpoint?.evaluationReportIds, [evaluation?.id]))
+    errors.push('checkpoint evaluation reference mismatch');
+  if (!hasExactMembers(release?.checkpointIds, [checkpoint?.id]))
     errors.push('release checkpoint reference mismatch');
-  if (!release?.evaluationReportIds?.includes(evaluation?.id))
+  if (!hasExactMembers(release?.evaluationReportIds, [evaluation?.id]))
     errors.push('release evaluation reference mismatch');
   if (
     release?.modelCard?.id !== checkpoint?.modelCard?.id ||
@@ -643,12 +688,16 @@ function validateReferences(byType, errors, options = {}) {
   );
   if (
     !releaseDatasetCard ||
+    release?.datasetCards?.length !== 1 ||
     releaseDatasetCard.id !== dataset?.datasetCard?.id ||
     releaseDatasetCard.contentHash !== dataset?.datasetCard?.contentHash
   ) {
     errors.push('release dataset card reference mismatch');
   }
   if (release?.decision === 'allow') {
+    if (release.subjectType !== 'checkpoint' || release.subjectId !== checkpoint?.id) {
+      errors.push('release allow subject must bind the accepted checkpoint');
+    }
     const linkedEvidenceAccepted =
       dataset?.fixtureOnly === false &&
       dataset?.recordStatus === 'accepted' &&
@@ -680,26 +729,20 @@ function validateReferences(byType, errors, options = {}) {
     if (
       trustRoot?.status !== 'configured' ||
       trustRoot?.attestationVerification !== 'implemented' ||
-      !Array.isArray(trustRoot?.trustedApprovalKeyIds) ||
-      trustRoot.trustedApprovalKeyIds.length === 0 ||
+      !Array.isArray(trustRoot?.trustedApprovalKeys) ||
+      trustRoot.trustedApprovalKeys.length === 0 ||
       release.approvalAttestation?.verificationStatus !== 'verified' ||
-      !trustRoot.trustedApprovalKeyIds.includes(release.approvalAttestation?.keyId)
+      !trustRoot.trustedApprovalKeys.some(key => key.keyId === release.approvalAttestation?.keyId)
     ) {
       errors.push(
         'release allow requires a configured external trust root and verified attestation',
       );
     }
-    let externalAttestationVerified = false;
-    if (typeof options.verifyApprovalAttestation === 'function') {
-      try {
-        externalAttestationVerified =
-          options.verifyApprovalAttestation({ release, trustRoot }) === true;
-      } catch {
-        externalAttestationVerified = false;
-      }
-    }
-    if (!externalAttestationVerified) {
-      errors.push('release allow requires a successful external attestation verifier');
+    const attestationResult = verifyReleaseApprovalAttestation({ release, trustRoot });
+    if (!attestationResult.ok) {
+      errors.push(
+        `release allow requires a successful external attestation verifier: ${attestationResult.code}`,
+      );
     }
   }
 }
@@ -708,6 +751,12 @@ function requireFixtureStatus(record, errors) {
   if (record.recordStatus !== 'fixture-only-not-evidence') {
     errors.push('$.recordStatus: fixture must be fixture-only-not-evidence');
   }
+}
+
+function hasExactMembers(actual, expected) {
+  if (!Array.isArray(actual) || actual.length !== expected.length) return false;
+  const actualSet = new Set(actual);
+  return actualSet.size === expected.length && expected.every(value => actualSet.has(value));
 }
 
 function countCurrentEvidence(currentEvidence) {
@@ -734,30 +783,5 @@ function deniedExecutionEvidence() {
 }
 
 function readJsonInside(repoRoot, relativePath, label) {
-  const filePath = resolveInside(repoRoot, relativePath);
-  if (!existsSync(filePath)) throw new Error(`${label} missing: ${relativePath}`);
-  const fileStat = lstatSync(filePath);
-  if (fileStat.isSymbolicLink()) throw new Error(`${label} must not be a symbolic link`);
-  if (!fileStat.isFile()) throw new Error(`${label} must be a regular file`);
-  if (fileStat.size > MAX_EVIDENCE_JSON_BYTES) {
-    throw new Error(`${label} exceeds the ${MAX_EVIDENCE_JSON_BYTES} byte safety limit`);
-  }
-  const realRoot = realpathSync(repoRoot);
-  const realFile = realpathSync(filePath);
-  resolveInside(realRoot, realFile);
-  const raw = readFileSync(filePath, 'utf8');
-  const parsed = JSON.parse(raw);
-  assertNoCredentialLikeJsonContent(raw, parsed, { label });
-  return parsed;
-}
-
-function stableStringify(value) {
-  if (Array.isArray(value)) return `[${value.map(entry => stableStringify(entry)).join(',')}]`;
-  if (value && typeof value === 'object') {
-    return `{${Object.keys(value)
-      .sort()
-      .map(key => `${JSON.stringify(key)}:${stableStringify(value[key])}`)
-      .join(',')}}`;
-  }
-  return JSON.stringify(value);
+  return readSafeJsonInside(repoRoot, relativePath, { label });
 }

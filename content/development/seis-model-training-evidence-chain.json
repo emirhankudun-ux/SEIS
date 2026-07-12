@@ -10,6 +10,7 @@
     "structural": "Ajv 8 Draft 2020-12",
     "formats": "ajv-formats",
     "semantic": "packages/seis-ai/src/model/training-evidence.mjs",
+    "releaseAttestation": "packages/seis-ai/src/model/release-attestation.mjs",
     "dependencyOwnedBy": "packages/seis-ai/package.json"
   },
   "officialStandards": [
@@ -27,6 +28,21 @@
       "id": "nist-ai-rmf",
       "url": "https://www.nist.gov/itl/ai-risk-management-framework",
       "use": "Risk, evaluation, documentation, and governance baseline"
+    },
+    {
+      "id": "rfc-7638",
+      "url": "https://www.rfc-editor.org/rfc/rfc7638",
+      "use": "SHA-256 JWK thumbprint derivation for trusted Ed25519 public-key ids"
+    },
+    {
+      "id": "rfc-8037",
+      "url": "https://www.rfc-editor.org/rfc/rfc8037",
+      "use": "OKP Ed25519 public JWK representation and public-key-only boundary"
+    },
+    {
+      "id": "node-crypto-verify",
+      "url": "https://nodejs.org/api/crypto.html#cryptoverifyalgorithm-data-key-signature-callback",
+      "use": "Built-in Ed25519 signature verification with a null algorithm parameter"
     }
   ],
   "schemas": {
@@ -58,11 +74,29 @@
     "claimBoundary": "The deterministic fixture chain demonstrates validator behavior only. It is not an RFC 8785 claim and is not model artifact evidence."
   },
   "trustRoot": {
+    "configPath": "content/development/seis-model-release-trust-root.json",
+    "schemaPath": "packages/shared-types/schemas/model-release-trust-root.schema.json",
     "status": "not-configured",
-    "attestationVerification": "not-implemented",
-    "trustedApprovalKeyIds": [],
+    "attestationVerification": "implemented",
+    "signatureProfile": "seis-ed25519-release-v1",
+    "signatureAlgorithm": "ed25519",
+    "trustDomain": "seis-model-release",
+    "audience": "seis-public-model-registry",
+    "policyVersion": "2026.07.12",
+    "maxApprovalAgeSeconds": 900,
+    "provenanceSource": "repository-default",
+    "trustedApprovalKeyCount": 0,
     "releaseAllowWithoutVerifiedAttestation": false,
-    "truthBoundary": "Repository-authored hashes and approval ids are not an external trust root. Every allow decision remains invalid until a separately governed verifier checks a trusted-key attestation."
+    "truthBoundary": "The verifier is implemented with Node crypto, but no public approval key is configured. The repository file is an empty default only; an active root must enter through a separately governed external startup boundary. Repository-authored hashes, self-asserted verification fields, fixtures, and callback results cannot authorize a release."
+  },
+  "replayProtection": {
+    "attestationIdSigned": true,
+    "trustDomainSigned": true,
+    "audienceSigned": true,
+    "policyVersionSigned": true,
+    "executorLedgerRequired": true,
+    "executorLedgerStatus": "not-implemented-no-release-executor",
+    "truthBoundary": "Cryptographic verification binds one approval envelope but does not execute a release. A future release executor must atomically reject reused attestation ids and stale release versions before side effects."
   },
   "linkRules": [
     "training-run.datasetManifestId resolves to dataset-manifest.id",
@@ -74,7 +108,8 @@
     "release-decision resolves dataset, compute, run, checkpoint, evaluation, model-card, and dataset-card ids and hashes",
     "every recordHash matches canonical content and every previousRecordHash matches the prior record",
     "an allow release requires accepted evidence and explicit human approval",
-    "an allow release also requires an externally verified attestation from a configured trusted approval key"
+    "an allow release also requires an Ed25519 signature over the domain-separated release payload from an active RFC 7638-identified trusted public key",
+    "release/evaluation/checkpoint/dataset reference arrays must exactly equal the records in the six-record chain and an allow subject must be the accepted checkpoint"
   ],
   "fixtures": {
     "status": "synthetic-test-fixtures-not-evidence",
@@ -143,6 +178,8 @@
     "Keep model-card and dataset-card template hashes null until reviewed immutable card artifacts exist.",
     "Keep all currentEvidence arrays empty until real independently verified records exist.",
     "Use only synthetic fixture records under packages/evals/fixtures for regression tests.",
+    "Keep the public-key trust root empty until the human owner approves an external release authority and key lifecycle policy.",
+    "Implement an atomic attestation-id and latest-release ledger before any release executor is introduced.",
     "Require an exact human-approved run manifest before any real compute request."
   ]
 }

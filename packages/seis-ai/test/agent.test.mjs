@@ -1401,6 +1401,15 @@ describe("executeTool", () => {
     assert.equal(payload.id, "seis-model-training-evidence-chain");
     assert.equal(payload.schemaCount, 6);
     assert.equal(payload.currentEvidenceRecordCount, 0);
+    assert.equal(payload.trustRoot.attestationVerification, "implemented");
+    assert.equal(payload.trustRoot.status, "not-configured");
+    assert.equal(payload.trustRoot.trustedApprovalKeyCount, 0);
+    assert.equal(payload.trustRoot.runtimeAuthority, false);
+    assert.equal(payload.replayProtection.executorLedgerRequired, true);
+    assert.equal(
+      payload.replayProtection.executorLedgerStatus,
+      "not-implemented-no-release-executor"
+    );
     assert.equal(payload.releaseDecision, "deny");
     assert.equal(payload.trainingAuthorized, false);
     assert.equal(payload.routeEligibleToday, false);

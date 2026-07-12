@@ -25,7 +25,7 @@
       "state": "verified",
       "method": "tools/list + tools/call",
       "evidence": "MCP smoke suite passes through stdio JSON-RPC",
-      "duty": "Expose repo-backed SEIS AI checks, provider-neutral read-only route decisions, personal plugin lane tools, provider registry status, model scaling status, fail-closed frontier training launch status, immutable training-evidence schema status, and AI Core version/sub-agent tools."
+      "duty": "Expose repo-backed SEIS AI checks, provider-neutral read-only route decisions, personal plugin lane tools, provider registry status, model scaling status, fail-closed frontier training launch status, immutable training-evidence schema status including the implemented-but-unconfigured Ed25519 release verifier, and AI Core version/sub-agent tools."
     },
     {
       "id": "resources",
@@ -34,7 +34,7 @@
       "state": "verified",
       "method": "resources/list + resources/read",
       "evidence": "Plugin integration, provider registry, executable read-only router runtime, model scaling profile, fail-closed frontier training launch plan, immutable training evidence schema chain, model parameter ladder, frontier escalation policy, 150B frontier model program, 512B apex AGI program, AGI evaluation protocol, AGI public readiness evidence, AGI GitHub user readiness gates, 20B model/dataset card templates, and MCP runtime contract resources are read through the protocol",
-      "duty": "Expose source-of-truth JSON resources for plugin integration, provider states, executable read-only route policy, planned model scaling, fail-closed frontier training launch decisions, immutable schema/fixture evidence-chain boundaries, parameter ladder boundaries, no-skip-20B frontier policy, 150B frontier program, 512B apex AGI program, AGI evidence protocol, AGI public-readiness claim gates, AGI GitHub user-readiness gates, 20B clean-room evidence templates, MCP runtime, version gates, fixtures, and generated plan views."
+      "duty": "Expose source-of-truth JSON resources for plugin integration, provider states, executable read-only route policy, planned model scaling, fail-closed frontier training launch decisions, immutable schema/fixture evidence-chain and empty public-key trust-root boundaries, parameter ladder boundaries, no-skip-20B frontier policy, 150B frontier program, 512B apex AGI program, AGI evidence protocol, AGI public-readiness claim gates, AGI GitHub user-readiness gates, 20B clean-room evidence templates, MCP runtime, version gates, fixtures, and generated plan views."
     },
     {
       "id": "prompts",

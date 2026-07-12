@@ -1,0 +1,25 @@
+{
+  "schemaRef": "packages/shared-types/schemas/model-release-trust-root.schema.json",
+  "schemaVersion": 1,
+  "id": "seis-model-release-trust-root",
+  "version": "2026.07.12",
+  "status": "not-configured",
+  "attestationVerification": "implemented",
+  "signatureProfile": "seis-ed25519-release-v1",
+  "signatureAlgorithm": "ed25519",
+  "keyIdScheme": "rfc7638-jwk-thumbprint-sha256",
+  "trustDomain": "seis-model-release",
+  "audience": "seis-public-model-registry",
+  "policyVersion": "2026.07.12",
+  "maxApprovalAgeSeconds": 900,
+  "provenance": {
+    "source": "repository-default",
+    "sourceId": "repo-empty-trust-root",
+    "truthBoundary": "This repository file is an empty fail-closed default. A configured trust root must be injected by a separately governed startup boundary."
+  },
+  "trustedApprovalKeys": [],
+  "releaseAllowWithoutVerifiedAttestation": false,
+  "runtimeAuthority": false,
+  "updatedAt": "2026-07-12T00:00:00Z",
+  "truthBoundary": "The verifier implementation exists, but no approval public key is configured. This file contains no private key and cannot authorize a release, route, deployment, training run, or GitHub action by itself."
+}

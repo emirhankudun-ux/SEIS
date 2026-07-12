@@ -92,8 +92,25 @@ decision remains `deny`. Dataset/checkpoint/release records bind immutable
 dataset-card and model-card ids/hashes, while evaluation records require
 commit/config/seed/hardware/runtime/raw-output reproducibility fields. The
 unfilled card templates retain null content hashes and cannot authorize a
-release. The external approval trust root and attestation verifier are not
-configured, so even an internally consistent `allow` record fails closed.
+release. The Ed25519 attestation verifier is implemented and regression-tested,
+but the external approval trust root contains zero public keys. Therefore even
+an internally consistent or self-asserted `allow` record fails closed.
+
+## Model Release Attestation - 2026-07-12
+
+AI-3 adds the repository-owned `seis-ed25519-release-v1` verifier using Node's
+built-in Ed25519 support, RFC 7638-derived public-key ids, an RFC 8037 public
+JWK-only boundary, domain-separated canonical payloads, key status/scope/time
+checks, and replay/tamper regression tests. No private key is stored or loaded by
+runtime code.
+
+`content/development/seis-model-release-trust-root.json` remains
+`not-configured` with zero trusted keys and `runtimeAuthority: false`. The repo
+loader rejects configured roots; any future active root requires a separately
+governed external startup boundary. A future release executor also requires an
+atomic replay ledger. This work does not authorize a release, route, deployment,
+training run, model download, provider call, GitHub mutation, 512B claim, or AGI
+claim.
 
 ## Current Repository Condition
 

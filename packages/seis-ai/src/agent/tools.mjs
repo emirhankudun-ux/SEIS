@@ -169,7 +169,7 @@ export function toolDefinitions({ allowWrite = false } = {}) {
     {
       name: TRAINING_EVIDENCE_STATUS_TOOL,
       description:
-        "Validate the SEIS model training evidence schemas, immutable synthetic fixture chain, and zero-real-evidence release boundary. Read-only and fail-closed; fixtures never prove a dataset, training run, checkpoint, benchmark, release, route, model ownership, or AGI capability.",
+        "Validate the SEIS model training evidence schemas, immutable synthetic fixture chain, built-in Ed25519 approval verifier, empty external trust-root boundary, and zero-real-evidence release state. Read-only and fail-closed; it cannot sign, configure keys, execute releases, or prove a dataset, training run, checkpoint, benchmark, route, model ownership, or AGI capability.",
       input_schema: {
         type: "object",
         properties: {

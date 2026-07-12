@@ -38,7 +38,7 @@
       "const": "packages/evals/schemas/model-release-decision.schema.json"
     },
     "schemaVersion": {
-      "const": 1
+      "const": 2
     },
     "recordType": {
       "const": "release-decision"
@@ -127,8 +127,15 @@
       "additionalProperties": false,
       "required": [
         "verificationStatus",
+        "attestationId",
+        "profile",
+        "trustDomain",
+        "audience",
+        "policyVersion",
+        "approvedAt",
         "keyId",
         "algorithm",
+        "payloadDigest",
         "signature",
         "verifiedAt",
         "verifierId"
@@ -137,25 +144,98 @@
         "verificationStatus": {
           "enum": ["not-verified", "verified", "failed"]
         },
+        "attestationId": {
+          "type": ["string", "null"],
+          "pattern": "^release-attestation:[a-z0-9][a-z0-9._-]{2,}:v[0-9]+$"
+        },
+        "profile": {
+          "enum": [null, "seis-ed25519-release-v1"]
+        },
+        "trustDomain": {
+          "enum": [null, "seis-model-release"]
+        },
+        "audience": {
+          "enum": [null, "seis-public-model-registry"]
+        },
+        "policyVersion": {
+          "enum": [null, "2026.07.12"]
+        },
+        "approvedAt": {
+          "$ref": "#/$defs/nullableTimestamp"
+        },
         "keyId": {
           "type": ["string", "null"],
-          "pattern": "^approval-key:[a-z0-9][a-z0-9._-]{2,}:v[0-9]+$"
+          "pattern": "^jkt-sha256:[A-Za-z0-9_-]{43}$"
         },
         "algorithm": {
-          "enum": [null, "ed25519", "ecdsa-p256", "rsa-pss-sha256"]
+          "enum": [null, "ed25519"]
+        },
+        "payloadDigest": {
+          "$ref": "#/$defs/nullableHash"
         },
         "signature": {
           "type": ["string", "null"],
-          "pattern": "^[A-Za-z0-9_-]{43,}$"
+          "pattern": "^[A-Za-z0-9_-]{86}$"
         },
         "verifiedAt": {
           "$ref": "#/$defs/nullableTimestamp"
         },
         "verifierId": {
-          "type": ["string", "null"],
-          "minLength": 3
+          "enum": [null, "seis-ed25519-release-verifier-v1"]
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "verificationStatus": {
+                "const": "not-verified"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "attestationId": { "const": null },
+              "profile": { "const": null },
+              "trustDomain": { "const": null },
+              "audience": { "const": null },
+              "policyVersion": { "const": null },
+              "approvedAt": { "const": null },
+              "keyId": { "const": null },
+              "algorithm": { "const": null },
+              "payloadDigest": { "const": null },
+              "signature": { "const": null },
+              "verifiedAt": { "const": null },
+              "verifierId": { "const": null }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "verificationStatus": {
+                "const": "verified"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "attestationId": { "type": "string" },
+              "profile": { "const": "seis-ed25519-release-v1" },
+              "trustDomain": { "const": "seis-model-release" },
+              "audience": { "const": "seis-public-model-registry" },
+              "policyVersion": { "const": "2026.07.12" },
+              "approvedAt": { "$ref": "#/$defs/timestamp" },
+              "keyId": { "type": "string" },
+              "algorithm": { "const": "ed25519" },
+              "payloadDigest": { "$ref": "#/$defs/hash" },
+              "signature": { "type": "string" },
+              "verifiedAt": { "$ref": "#/$defs/timestamp" },
+              "verifierId": { "const": "seis-ed25519-release-verifier-v1" }
+            }
+          }
+        }
+      ]
     },
     "published": {
       "type": "boolean"
@@ -190,6 +270,10 @@
     },
     "nullableTimestamp": {
       "type": ["string", "null"],
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]{3})?Z$"
+    },
+    "timestamp": {
+      "type": "string",
       "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]{3})?Z$"
     },
     "modelCardReference": {

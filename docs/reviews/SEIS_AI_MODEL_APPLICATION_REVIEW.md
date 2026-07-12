@@ -120,6 +120,7 @@ git diff --check
 - Live provider adapter ve server-only credential validation yok.
 - Onaylı yerel LLM runtime pilotu yok.
 - Formal Draft 2020-12 training/checkpoint/compute/eval/release şemaları ve sentetik fixture hash zinciri eklendi; gerçek kabul edilmiş evidence kayıtları hâlâ yok.
+- Ed25519 release attestation verifier ve RFC 7638 public-key kimliği eklendi; trust-root hâlâ anahtarsız ve `not-configured`, dolayısıyla release `deny` kalıyor.
 - Gerçek dataset provenance ve contamination raporu yok.
 - Ölçülmüş memory/latency/cost benchmark yok.
 - Bağımsız insan safety review yapılmadı.
