@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 import { spawnSync } from "node:child_process";
-import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
+import { createSourceDigest as createSharedSourceDigest, sourcePaths as browserSmokeEvidenceSourcePaths } from "./lib/browser-smoke-evidence-digest.mjs";
 
 const root = process.cwd();
 const args = parseArgs(process.argv.slice(2));
@@ -22,11 +22,6 @@ const browserSmokeEvidencePaths = {
   json: "reports/seis-public-demo/second-brain-browser-smoke-evidence-latest.json",
   markdown: "reports/seis-public-demo/second-brain-browser-smoke-evidence-latest.md"
 };
-const browserSmokeEvidenceSourcePaths = [
-  "apps/web/desktop.js",
-  "content/development/seis-second-brain-system.json",
-  "scripts/check-seis-second-brain-browser-smoke.mjs"
-];
 const browserSmokeEvidenceMaxAgeMs = 36 * 60 * 60 * 1000;
 
 if (args.help) {
@@ -532,12 +527,7 @@ function inspectBrowserSmokeEvidence(evidence) {
 }
 
 function createBrowserSmokeEvidenceSourceDigest() {
-  const hash = createHash("sha256");
-  for (const filePath of browserSmokeEvidenceSourcePaths) {
-    const text = readText(filePath, `browser-smoke evidence source ${filePath}`);
-    hash.update(`${filePath}\n${text}\n`);
-  }
-  return `sha256:${hash.digest("hex")}`;
+  return createSharedSourceDigest((filePath) => readText(filePath, `browser-smoke evidence source ${filePath}`));
 }
 
 function runFastValidation() {
