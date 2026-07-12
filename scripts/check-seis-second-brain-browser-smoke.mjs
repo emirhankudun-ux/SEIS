@@ -550,6 +550,25 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(agentReviewAssignment.assignmentText.includes("human-selected-plan-only-review") && agentReviewAssignment.assignmentText.includes("agent-review-assignment.md"), `Second Brain plan-only assignment state was not visible: ${JSON.stringify(agentReviewAssignment)}`);
   ensure(agentReviewAssignment.paths.includes('/home/seis/SecondBrain/09-review/agent-review-assignment.md') && agentReviewAssignment.paths.includes('/home/seis/SecondBrain/09-review/agent-review-assignment.json'), `Second Brain paired assignment artifacts were not written: ${JSON.stringify(agentReviewAssignment)}`);
 
+  await evaluate(client, `(() => {
+    const input = document.querySelector('.app-window[data-app-id="second-brain"]:not([hidden]) [data-second-brain-search-query]');
+    if (input) {
+      input.value = 'security assignment';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+  })()`);
+  await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-run-search"]');
+  const assignmentSearch = await evaluate(client, `(() => {
+    const root = document.querySelector('.app-window[data-app-id="second-brain"]:not([hidden]) [data-second-brain-app]');
+    const first = root?.querySelector('[data-second-brain-search-result]');
+    return {
+      title: first?.querySelector('strong')?.innerText || '',
+      source: first?.querySelector('.muted')?.innerText || '',
+      text: first?.innerText || ''
+    };
+  })()`);
+  ensure(assignmentSearch.title.includes("Plan-only assignment: Security Agent") && assignmentSearch.source.includes("agent-review-assignment.md") && assignmentSearch.text.includes("human-selected-plan-only-review"), `Second Brain local search must surface the human-selected agent assignment: ${JSON.stringify(assignmentSearch)}`);
+
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-set-obsidian-source-mode"][data-value="awaiting-user-selection"]');
   await evaluate(client, `(() => {
     const acknowledgement = document.querySelector('.app-window[data-app-id="second-brain"]:not([hidden]) [data-second-brain-obsidian-selection-confirmed]');

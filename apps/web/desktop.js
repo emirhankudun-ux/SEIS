@@ -5647,7 +5647,7 @@ function scoreSecondBrainSearchResult(item, query) {
   return getSecondBrainSearchScoreBreakdown(item, query).score;
 }
 
-function getSecondBrainSearchIndex() {
+function getSecondBrainSearchIndex(data = getSecondBrainData()) {
   const noteById = new Map(SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.map((note) => [note.id, note]));
   const backlinkMap = new Map(SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.map((note) => [note.id, getSecondBrainBacklinks(note.id)]));
   const notes = SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.map((note) => ({
@@ -5815,7 +5815,20 @@ function getSecondBrainSearchIndex() {
     noteId: "sub-agent-council",
     ...agent
   }));
-  return [...notes, ...backlinks, ...tags, ...apps, ...routes, ...files, ...plugins, ...agents];
+  const assignment = data.agentReviewAssignment;
+  const assignments = assignment ? [{
+    id: `agent-review-assignment-${assignment.agent.name}`,
+    type: "Agents",
+    title: `Plan-only assignment: ${assignment.agent.name}`,
+    source: assignment.markdownPath,
+    detail: `${assignment.status}. ${assignment.agent.duty} Local context: ${assignment.contextProfiles.map((profile) => profile.lane).join(", ") || "none"}.`,
+    tags: ["#agent-review", "#plan-only", "#human-selected", `#${assignment.agent.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`],
+    relatedText: `${assignment.decision} ${assignment.contextProfiles.map((profile) => `${profile.lane} ${profile.plugin} ${profile.tools}`).join(" ")} ${assignment.installedAiProfiles.map((profile) => `${profile.name} ${profile.status}`).join(" ")}`,
+    action: "open-file",
+    path: assignment.markdownPath,
+    priority: 28
+  }] : [];
+  return [...notes, ...backlinks, ...tags, ...apps, ...routes, ...files, ...plugins, ...agents, ...assignments];
 }
 
 function getSecondBrainSearchSourceCounts(index) {

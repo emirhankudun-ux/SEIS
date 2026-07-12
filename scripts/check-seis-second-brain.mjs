@@ -422,6 +422,10 @@ for (const phrase of [
   "second-brain-set-search-filter",
   "second-brain-record-search",
   "getSecondBrainSearchIndex",
+  "Plan-only assignment: ${assignment.agent.name}",
+  "agent-review-assignment-${assignment.agent.name}",
+  "#human-selected",
+  "action: \"open-file\"",
   "getSecondBrainSearchTokens",
   "getSecondBrainSearchScoreBreakdown",
   "scoreSecondBrainSearchResult",
@@ -465,6 +469,8 @@ ensure(!desktopJs.includes("Observed sub-agent lanes: ${SUB_AGENT_DEMO.lanes.len
 ensure(desktopJs.includes("This receipt is not an agent run"), "Second Brain agent review assignment must state that no agent run is performed");
 ensure(desktopJs.includes("providerCallsPerformed: false") && desktopJs.includes("githubMutationPerformed: false"), "Second Brain agent review assignment must keep provider and GitHub execution false");
 ensure(desktopJs.includes("agentExecuted ${agentReviewAssignment.execution.agentExecuted}") && desktopJs.includes("mcpInvocationsPerformed ${agentReviewAssignment.execution.mcpInvocationsPerformed}"), "SEIS AI bridge must expose the plan-only assignment execution boundary");
+ensure(desktopJs.includes("function getSecondBrainSearchIndex(data = getSecondBrainData())"), "Second Brain search index must accept current browser-local data for assignment results");
+ensure(desktopJs.includes("assignment.markdownPath") && desktopJs.includes("#agent-review"), "Second Brain search must expose the local plan-only assignment path and tags");
 
 for (const appId of [
   "seis-system-os",
