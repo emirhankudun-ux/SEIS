@@ -72,8 +72,9 @@ has been inventoried, or that remote GitHub CI accepted the change.
   their canonical repositories.
 - Inventory shared modules and consumers across all three valid repositories,
   then accept the final ownership map through review.
-- Run the foundation gate in remote CI; local command success is not remote CI
-  evidence.
+- Preserve the successful pull-request CI evidence while completing the private
+  manifests and ownership review; CI success does not prove those missing
+  cross-repository artifacts.
 
 ## Rollback
 

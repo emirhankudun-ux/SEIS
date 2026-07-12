@@ -198,9 +198,9 @@ npm run test:ecosystem-foundation
 Existing SEIS JSON goal registries remain historical and operational SEIS
 records. This bootstrap does not rewrite their identifiers or claim that they
 already satisfy the ecosystem Goal schema v2. The local checks are wired into
-the foundation workflow, but remote CI remains unverified until a pull-request
-run exists. Cross-project migration remains follow-up work after the missing
-canonical manifests and ownership inventory are reviewed.
+the foundation workflow, and all seven workflows for pull request 177 passed.
+Cross-project migration remains follow-up work after the missing canonical
+manifests and ownership inventory are reviewed.
 
 ## Definition Of Done
 

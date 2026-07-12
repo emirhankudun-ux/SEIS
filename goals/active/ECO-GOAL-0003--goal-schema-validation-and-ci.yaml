@@ -19,7 +19,7 @@ category:
   - documentation
 
 priority: critical
-status: in-progress
+status: review
 maturity: prototype
 confidence: medium
 
@@ -76,7 +76,7 @@ non_goals:
   - Adding third-party runtime dependencies.
 
 acceptance_criteria:
-  - The validator rejects verified repositories with unknown metadata.
+  - The validator rejects session-observed repositories with unknown metadata.
   - The validator rejects dangling Goal references and invalid status-directory mappings.
   - Blocked goals require blockers and completed goals require passed evidence and GitHub state.
   - Negative fixtures prove the high-risk rejection paths.
@@ -112,8 +112,9 @@ validation:
   evidence:
     - validator output
     - negative fixture output
-    - workflow diff
-    - pull request checks URL
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29210762538
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29210762555
+    - https://github.com/emirhankudun-ux/SEIS/pull/177
 
 status_history:
   - status: planned
@@ -125,6 +126,15 @@ status_history:
     reason: Schema hardening, negative tests, and CI integration started on the focused SEIS branch.
     evidence_refs:
       - ECO3-EVIDENCE-001
+  - status: review
+    at: '2026-07-13'
+    reason: The focused branch, issue, draft pull request, Foundation Check, CI, CodeQL, security, and governance workflows are present and successful; architecture review remains required before completion.
+    evidence_refs:
+      - ECO3-EVIDENCE-005
+      - ECO3-EVIDENCE-006
+      - ECO3-EVIDENCE-007
+      - ECO3-EVIDENCE-008
+      - ECO3-EVIDENCE-009
 
 evidence_records:
   - id: ECO3-EVIDENCE-001
@@ -156,21 +166,49 @@ evidence_records:
     exit_code: 0
     artifact: scripts/check-goal-tracking.mjs
   - id: ECO3-EVIDENCE-005
-    type: workflow-lint
-    description: Dedicated GitHub Actions lint was not available in the local environment; workflow YAML formatting and manual review passed, but this is not remote CI evidence.
-    status: skipped
-    command: actionlint .github/workflows/foundation-check.yml
+    type: remote-ci
+    description: Foundation Check run 781 executed the pull-request workflow and passed, including the ecosystem validator and negative fixtures.
+    status: passed
+    command: null
     exit_code: null
-    artifact: .github/workflows/foundation-check.yml
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29210762538
+  - id: ECO3-EVIDENCE-006
+    type: remote-ci
+    description: Core CI run 733 passed for the focused pull-request commit.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29210762555
+  - id: ECO3-EVIDENCE-007
+    type: security-validation
+    description: CodeQL run 452 passed for the focused pull-request commit.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29210762548
+  - id: ECO3-EVIDENCE-008
+    type: security-validation
+    description: SEIS Guardian Security Scan run 540 passed for the focused pull-request commit.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29210762578
+  - id: ECO3-EVIDENCE-009
+    type: github-handoff
+    description: Issue 176 and draft pull request 177 map the Goal to the focused branch and commit without merging or deploying.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/pull/177
 
 quality_gates:
   architecture: required
   design: not-applicable
-  security: required
+  security: passed
   accessibility: not-applicable
   performance: not-applicable
-  documentation: required
-  testing: required
+  documentation: passed
+  testing: passed
 
 risks:
   - id: ECO3-RISK-001
@@ -190,7 +228,7 @@ risks:
     mitigation: Distinguish local workflow validation from remote GitHub Actions evidence.
     trigger: Documentation says CI passed without a checks URL.
     contingency: Retain required gates and CI evidence as pending until the remote run exists.
-    status: open
+    status: closed
 
 rollback:
   strategy: revert
@@ -207,10 +245,10 @@ github:
   release_note_required: false
   suggested_branch: architecture/ecosystem-goal-tracking-v1
   suggested_commit: 'test(governance): enforce ecosystem goal validation in ci'
-  issue_url: null
+  issue_url: https://github.com/emirhankudun-ux/SEIS/issues/176
   branch_name: architecture/ecosystem-goal-tracking-v1
-  commit_sha: null
-  pull_request_url: null
+  commit_sha: f772b6f364e49d438113b2d51f2e20027ae9f6b4
+  pull_request_url: https://github.com/emirhankudun-ux/SEIS/pull/177
 
 observability:
   metrics:
@@ -227,5 +265,7 @@ outputs:
   - canonical pull-request template
 
 notes:
-  - This goal can reach review after local checks pass, but completion requires remote CI and GitHub evidence.
+  - The Goal reached review after all seven pull-request workflows passed; completion still requires the architecture gate and review decision.
+  - Local actionlint was unavailable, but GitHub parsed and executed the changed workflow successfully; the skipped local check remains disclosed in the pull request.
+  - Branch publication reported administrative bypasses for branch-creation and signature rules; no protected default-branch write occurred.
   - Existing SEIS JSON goal checks remain valid only for their legacy registry scope.

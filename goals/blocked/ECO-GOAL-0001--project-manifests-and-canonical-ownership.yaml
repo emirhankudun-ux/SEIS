@@ -128,6 +128,8 @@ validation:
   evidence:
     - validator output
     - focused branch diff
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29210762538
+    - https://github.com/emirhankudun-ux/SEIS/pull/177
 
 status_history:
   - status: planned
@@ -141,7 +143,7 @@ status_history:
       - ECO-EVIDENCE-001
   - status: blocked
     at: '2026-07-13'
-    reason: The SEIS bootstrap slice is validated, but the two private manifests, repository-specific publication authorization, full shared-module inventory, accepted ADR, and remote CI evidence are still required.
+    reason: The SEIS bootstrap slice and remote CI are validated, but the two private manifests, repository-specific publication authorization, full shared-module inventory, and accepted ADR are still required.
     evidence_refs:
       - ECO-EVIDENCE-001
       - ECO-EVIDENCE-004
@@ -169,21 +171,28 @@ evidence_records:
     exit_code: 0
     artifact: scripts/test-ecosystem-foundation.rb
   - id: ECO-EVIDENCE-004
-    type: ci-configuration
-    description: The existing Foundation Check workflow invokes both ecosystem foundation commands; remote execution remains unverified.
+    type: remote-ci
+    description: Foundation Check run 781 invoked both ecosystem foundation commands on pull request 177 and passed.
     status: passed
     command: null
     exit_code: null
-    artifact: .github/workflows/foundation-check.yml
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29210762538
+  - id: ECO-EVIDENCE-005
+    type: github-handoff
+    description: Issue 176 and draft pull request 177 map the blocked ownership Goal and its active CI dependency to the focused branch and commit.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/pull/177
 
 quality_gates:
   architecture: required
   design: not-applicable
-  security: required
+  security: passed
   accessibility: not-applicable
   performance: not-applicable
-  documentation: required
-  testing: required
+  documentation: passed
+  testing: passed
 
 risks:
   - id: ECO-RISK-001
@@ -229,10 +238,10 @@ github:
   release_note_required: false
   suggested_branch: architecture/ecosystem-goal-tracking-v1
   suggested_commit: 'feat(governance): bootstrap ecosystem ownership foundation'
-  issue_url: null
+  issue_url: https://github.com/emirhankudun-ux/SEIS/issues/176
   branch_name: architecture/ecosystem-goal-tracking-v1
-  commit_sha: null
-  pull_request_url: null
+  commit_sha: f772b6f364e49d438113b2d51f2e20027ae9f6b4
+  pull_request_url: https://github.com/emirhankudun-ux/SEIS/pull/177
 
 observability:
   metrics:
@@ -254,3 +263,4 @@ notes:
   - This first slice does not claim ecosystem-wide completion.
   - Eleni-Neferi and Pantechnoesis remotes were observed through an authenticated read-only connector and are canonical by repository identity, but their manifests are still missing.
   - Scope expanded to CI and an ADR because both are explicit Definition of Done and ownership-decision requirements.
+  - All seven pull-request workflows passed; the Goal remains blocked only on the private manifests, publication authorization, complete ownership inventory, and architecture decision.

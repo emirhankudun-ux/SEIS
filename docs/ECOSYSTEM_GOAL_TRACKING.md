@@ -34,7 +34,7 @@ another project's identity.
 | [`schemas/repository-ownership.schema.json`](../schemas/repository-ownership.schema.json)                                                                       | Ownership contract                       | Bootstrap schema with semantic checks in the validator.                     |
 | [`schemas/ecosystem-goal.schema.json`](../schemas/ecosystem-goal.schema.json)                                                                                   | Goal YAML contract                       | Schema version 2 bootstrap.                                                 |
 | [`goals/blocked/ECO-GOAL-0001--project-manifests-and-canonical-ownership.yaml`](../goals/blocked/ECO-GOAL-0001--project-manifests-and-canonical-ownership.yaml) | Blocked ownership record                 | Blocked on private-repository manifests, authorization, and full inventory. |
-| [`goals/active/ECO-GOAL-0003--goal-schema-validation-and-ci.yaml`](../goals/active/ECO-GOAL-0003--goal-schema-validation-and-ci.yaml)                           | Active validation and CI record          | In progress; remote pull-request evidence remains pending.                  |
+| [`goals/active/ECO-GOAL-0003--goal-schema-validation-and-ci.yaml`](../goals/active/ECO-GOAL-0003--goal-schema-validation-and-ci.yaml)                           | Active validation and CI record          | In review; all seven pull-request workflows passed.                         |
 | [`adr/0002-ecosystem-governance-bootstrap-ownership.md`](adr/0002-ecosystem-governance-bootstrap-ownership.md)                                                  | Coordination and ownership decision      | Proposed; requires review before promotion.                                 |
 
 Existing SEIS JSON goal records remain valid SEIS operational history. They are
@@ -94,9 +94,10 @@ git diff --check
 ```
 
 These commands validate the local bootstrap contracts and negative fixtures.
-They do not prove remote CI, private-repository contents, deployments, provider
-connections, or publication readiness. Remote CI remains unverified until a
-GitHub workflow run exists and is reviewed.
+Pull request 177 supplied successful Foundation Check, CI, CodeQL, security, and
+governance workflow evidence. Those runs do not prove private-repository
+contents, deployments, provider connections, or ecosystem-wide publication
+readiness.
 
 ## Current blockers
 
