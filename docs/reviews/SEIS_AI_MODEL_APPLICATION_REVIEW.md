@@ -141,7 +141,7 @@ git diff --check
 - Onaylı yerel LLM runtime pilotu yok.
 - Formal Draft 2020-12 training/checkpoint/compute/eval/release şemaları ve sentetik fixture hash zinciri eklendi; gerçek kabul edilmiş evidence kayıtları hâlâ yok.
 - Ed25519 release attestation verifier ve RFC 7638 public-key kimliği eklendi; trust-root hâlâ anahtarsız ve `not-configured`, dolayısıyla release `deny` kalıyor.
-- Conversation Nexus at-rest encryption ve external archive import adaptörleri yok; MCP metadata yalnız explicit local opt-in ile açılabilir.
+- Conversation Nexus local-keyfile AES-256-GCM encryption uygulandı; OS Keychain/DPAPI/libsecret ve external archive import adaptörleri yok; MCP metadata yalnız explicit local opt-in ile açılabilir.
 - Gerçek dataset provenance ve contamination raporu yok.
 - Ölçülmüş memory/latency/cost benchmark yok.
 - Bağımsız insan safety review yapılmadı.

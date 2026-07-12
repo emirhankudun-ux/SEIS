@@ -22,6 +22,7 @@ import {
   CONVERSATION_NEXUS_CONTRACT_PATH,
   CONVERSATION_SESSION_SCHEMA_PATH,
   CONVERSATION_STORE_DIRECTORY,
+  CONVERSATION_VAULT_KEY_FILENAME,
   computeConversationRecordHash,
   conversationNexusStatus,
   deleteConversationSession,
@@ -54,6 +55,8 @@ describe('SEIS Conversation Nexus local-private store', () => {
       CONVERSATION_STORE_DIRECTORY,
       'architecture.json',
     );
+    const keyPath = path.join(temporaryStateRoot, CONVERSATION_VAULT_KEY_FILENAME);
+    const raw = readFileSync(recordPath, 'utf8');
 
     assert.equal(summary.messageCount, 3);
     assert.equal(loaded.source, 'conversation-nexus');
@@ -65,8 +68,12 @@ describe('SEIS Conversation Nexus local-private store', () => {
     assert.equal(loaded.record.recordHash, computeConversationRecordHash(loaded.record));
     assert.equal(loaded.record.consent.providerUploadAllowed, false);
     assert.equal(loaded.record.consent.githubPublicationAllowed, false);
+    assert.match(raw, /seis-encrypted-conversation-envelope/);
+    assert.equal(raw.includes('Prepare architecture evidence'), false);
+    assert.equal(raw.includes('Architecture evidence is ready'), false);
     if (process.platform !== 'win32') {
       assert.equal(statSync(recordPath).mode & 0o777, 0o600);
+      assert.equal(statSync(keyPath).mode & 0o777, 0o600);
       assert.equal(statSync(path.dirname(recordPath)).mode & 0o777, 0o700);
     }
     assert.deepEqual(
@@ -92,6 +99,7 @@ describe('SEIS Conversation Nexus local-private store', () => {
       path.join(temporaryStateRoot, CONVERSATION_STORE_DIRECTORY, 'architecture.json'),
       'utf8',
     );
+    const resumed = readConversationHistory(root, 'architecture', stateOptions());
 
     assert.equal(summary.redactionApplied, true);
     assert.ok(summary.redactionReplacementCount >= 2);
@@ -101,8 +109,8 @@ describe('SEIS Conversation Nexus local-private store', () => {
     assert.equal(raw.includes('synthetic-visible-value'), false);
     assert.equal(raw.includes('Z'.repeat(24)), false);
     assert.equal(raw.includes('toolu_test'), false);
-    assert.match(raw, /REDACTED/);
-    const resumed = readConversationHistory(root, 'architecture', stateOptions());
+    assert.equal(raw.includes('REDACTED'), false);
+    assert.equal(JSON.stringify(resumed).includes('[REDACTED_SECRET]'), true);
     assert.equal(
       resumed.messages.every(message => typeof message.content === 'string'),
       true,
@@ -218,14 +226,12 @@ describe('SEIS Conversation Nexus local-private store', () => {
     const exportPath = path.join(temporaryStateRoot, exported.relativeStatePath);
 
     assert.equal(exported.relativeStatePath.startsWith(`${CONVERSATION_EXPORT_DIRECTORY}/`), true);
+    assert.equal(exported.encryptedAtRest, true);
     assert.equal(existsSync(exportPath), true);
     const exportEnvelope = JSON.parse(readFileSync(exportPath, 'utf8'));
-    assert.equal(exportEnvelope.recordType, 'conversation-session-local-export');
-    assert.equal(
-      exportEnvelope.session.recordHash,
-      computeConversationRecordHash(exportEnvelope.session),
-    );
-    assert.equal(exportEnvelope.localExport.githubPublicationAllowed, false);
+    assert.equal(exportEnvelope.recordType, 'seis-encrypted-conversation-envelope');
+    assert.equal(exportEnvelope.encryption.algorithm, 'aes-256-gcm');
+    assert.equal(readFileSync(exportPath, 'utf8').includes('conversation-session-local-export'), false);
     if (process.platform !== 'win32') assert.equal(statSync(exportPath).mode & 0o777, 0o600);
     assert.throws(
       () => deleteConversationSession(root, 'architecture', { confirmation: 'wrong' }),
@@ -260,12 +266,12 @@ describe('SEIS Conversation Nexus local-private store', () => {
       CONVERSATION_STORE_DIRECTORY,
       'architecture.json',
     );
-    const record = JSON.parse(readFileSync(recordPath, 'utf8'));
-    record.messages[0].content = 'tampered';
-    writeFileSync(recordPath, `${JSON.stringify(record, null, 2)}\n`, 'utf8');
+    const envelope = JSON.parse(readFileSync(recordPath, 'utf8'));
+    envelope.ciphertext = `${envelope.ciphertext.slice(0, -4)}AAAA`;
+    writeFileSync(recordPath, `${JSON.stringify(envelope, null, 2)}\n`, 'utf8');
     assert.throws(
       () => readConversationHistory(root, 'architecture', stateOptions()),
-      /failed closed/,
+      /authentication failed/,
     );
   });
 

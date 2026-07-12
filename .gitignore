@@ -156,6 +156,7 @@ ios/
 !packages/shared-types/schemas/model-compute-approval.schema.json
 !packages/shared-types/schemas/model-release-trust-root.schema.json
 !packages/shared-types/schemas/seis-conversation-session.schema.json
+!packages/shared-types/schemas/seis-conversation-envelope.schema.json
 !packages/evals/schemas/model-training-run.schema.json
 !packages/evals/schemas/checkpoint-record.schema.json
 !packages/evals/schemas/model-evaluation-report.schema.json

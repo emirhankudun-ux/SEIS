@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seis.dev/schemas/ai/seis-conversation-envelope.schema.json",
+  "title": "SEIS Encrypted Conversation Envelope",
+  "description": "Encrypted local/private SEIS conversation envelope for session and export files. The ciphertext requires the owner-only local vault key and never grants provider upload, GitHub publication, or training authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "recordType",
+    "encryption",
+    "ciphertext",
+    "truthBoundary"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "recordType": {
+      "const": "seis-encrypted-conversation-envelope"
+    },
+    "encryption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "keySource", "keyId", "iv", "authTag"],
+      "properties": {
+        "algorithm": {
+          "const": "aes-256-gcm"
+        },
+        "keySource": {
+          "const": "owner-only-local-key-file"
+        },
+        "keyId": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "iv": {
+          "type": "string",
+          "contentEncoding": "base64",
+          "minLength": 16,
+          "maxLength": 16
+        },
+        "authTag": {
+          "type": "string",
+          "contentEncoding": "base64",
+          "minLength": 24,
+          "maxLength": 24
+        }
+      }
+    },
+    "ciphertext": {
+      "type": "string",
+      "contentEncoding": "base64",
+      "minLength": 1
+    },
+    "truthBoundary": {
+      "const": "Encrypted local SEIS conversation envelope. The local key file remains required for decryption and is not provider upload, GitHub publication, or training approval."
+    }
+  }
+}

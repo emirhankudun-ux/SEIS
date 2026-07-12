@@ -489,6 +489,18 @@
       "secretPolicy": "schema only; must not contain message bodies, credentials, private paths, or provider exports"
     },
     {
+      "id": "seis-conversation-envelope-schema",
+      "path": "packages/shared-types/schemas/seis-conversation-envelope.schema.json",
+      "lane": "@seis-data",
+      "currentStatus": "validated",
+      "sourceType": "conversation-envelope-json-schema",
+      "expectedShape": "object",
+      "requiredTopLevelKeys": ["$schema", "$id", "title", "type", "required", "properties"],
+      "validationCommands": ["npm run check:seis-conversation-nexus"],
+      "freshness": "review after conversation encryption algorithm, key-source, envelope, or export storage changes",
+      "secretPolicy": "schema only; must not contain plaintext messages, key material, credentials, private paths, or provider exports"
+    },
+    {
       "id": "seis-conversation-nexus",
       "path": "content/development/seis-conversation-nexus.json",
       "lane": "@seis",

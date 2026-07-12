@@ -31,8 +31,17 @@
     "knownSynchronizedFolderAllowed": false,
     "repositoryTracked": false,
     "repositoryIgnoredLegacyPaths": true,
-    "atRestEncryptionImplemented": false,
-    "atRestEncryptionBoundary": "owner-only permissions and out-of-repository placement are implemented; OS keychain-backed AEAD remains required before a stronger encrypted-at-rest claim",
+    "atRestEncryptionImplemented": true,
+    "atRestEncryption": {
+      "status": "implemented-local-keyfile-aead",
+      "algorithm": "aes-256-gcm",
+      "keySource": "owner-only-local-key-file",
+      "keyFile": "conversation-vault.key",
+      "keyFileModeOctal": "0600",
+      "envelopeRecordType": "seis-encrypted-conversation-envelope",
+      "plaintextSessionFilesAllowed": false
+    },
+    "atRestEncryptionBoundary": "Conversation session and export files are AES-256-GCM encrypted with an owner-only local key file in the OS-private state root. This is not OS Keychain, DPAPI, libsecret, hardware-backed key storage, remote backup encryption, or publication approval.",
     "directoryModeOctal": "0700",
     "fileModeOctal": "0600",
     "temporaryFileModeOctal": "0600",
@@ -150,7 +159,7 @@
     "exportRequiresExactSessionNameConfirmation": true,
     "exportDestination": "os-private-state-root/exports",
     "exportOwnerOnly": true,
-    "exportEncryptionAtRestImplemented": false,
+    "exportEncryptionAtRestImplemented": true,
     "exportProviderUploadAllowed": false,
     "exportGithubPublicationAllowed": false
   },
@@ -345,5 +354,5 @@
       "url": "https://modelcontextprotocol.io/specification/2025-11-25/server/resources"
     }
   ],
-  "truthBoundary": "The bounded out-of-repository OS-private SEIS session store, visible-text-only projection, explicit local CLI controls, two disabled-by-default metadata-only MCP tools, and one repository-safe policy resource are implemented. At-rest encryption is not implemented, so no encrypted-storage claim is made. External imports remain planned and approval-gated; no automatic provider upload, GitHub publication, known synchronized-folder storage, message-body MCP exposure, or all-chats-imported claim is authorized."
+  "truthBoundary": "The bounded out-of-repository OS-private SEIS session store, visible-text-only projection, AES-256-GCM local-keyfile encrypted session/export envelopes, explicit local CLI controls, two disabled-by-default metadata-only MCP tools, and one repository-safe policy resource are implemented. This is not OS keychain-backed or hardware-backed encryption. External imports remain planned and approval-gated; no automatic provider upload, GitHub publication, known synchronized-folder storage, message-body MCP exposure, or all-chats-imported claim is authorized."
 }

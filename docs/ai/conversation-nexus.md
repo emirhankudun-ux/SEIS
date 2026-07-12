@@ -27,6 +27,8 @@ Kaynaklar:
 
 - Session schema:
   `packages/shared-types/schemas/seis-conversation-session.schema.json`
+- Encrypted envelope schema:
+  `packages/shared-types/schemas/seis-conversation-envelope.schema.json`
 - Makine-okunur contract:
   `content/development/seis-conversation-nexus.json`
 - Yerel runtime:
@@ -66,9 +68,16 @@ Yerel runtime hedefleri:
 ve dosya sistemi ACL semantiğine bağlıdır; bu kipler her platform için tek
 başına evrensel bir gizlilik garantisi değildir.
 
-At-rest encryption henüz uygulanmış değildir. Owner-only izinler ve repo/sync
-dışı konum gerçek kontrollerdir; fakat Keychain/DPAPI/libsecret destekli AEAD
-eklenmeden “encrypted at rest” iddiası kurulamaz. Persistence varsayılan olarak
+At-rest encryption artık local-keyfile AEAD katmanıyla uygulanır. Session ve
+export dosyaları plaintext kayıt olarak değil,
+`seis-encrypted-conversation-envelope` record type'ına sahip AES-256-GCM
+envelope olarak yazılır. Key dosyası OS-private state kökünde
+`conversation-vault.key` adıyla oluşturulur ve owner-only `0600` hedefiyle
+korunur.
+
+Bu, Keychain/DPAPI/libsecret veya hardware-backed key storage değildir. Aynı
+makinedeki state root ve key file birlikte korunmalıdır. Key file kaybolursa
+mevcut conversation envelope'ları çözülemez. Persistence varsayılan olarak
 kapalıdır ve yalnız `--session` açıkça seçildiğinde çalışır.
 
 ## Açık yerel rıza
@@ -214,7 +223,8 @@ Retention kullanıcı kontrollüdür:
 - Confirmed delete session dosyasını, eşleşen OS-private export/temp kopyalarını
   ve seçili legacy dosyayı siler; provider veya backup kopyasını silemez.
 - Export OS-private state kökündeki `exports` dizisinde yeni owner-only JSON
-  üretir ve session adının birebir confirmation olarak tekrar verilmesini ister.
+  üretir; JSON gövdesi encrypted envelope'tur ve session adının birebir
+  confirmation olarak tekrar verilmesini ister.
 - Export, provider upload veya GitHub publication izni vermez.
 
 Yerel kontroller:

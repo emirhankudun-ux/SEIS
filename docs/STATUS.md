@@ -133,10 +133,12 @@ readable without touching private state.
 Existing-history resume requires exact `--approve-session-upload <name>`
 confirmation before history is sent to Anthropic. Expired records cannot be
 read, searched, resumed, or exported; confirmed deletion removes session,
-local exports, matching temporary files, and the selected legacy copy. At-rest
-encryption is not implemented, so no encrypted-storage claim is made. External
-ChatGPT, Codex, Claude, and Qwen imports remain disabled and approval-gated; no
-claim is made that all SEIS conversations have been imported.
+local exports, matching temporary files, and the selected legacy copy. Session
+and export files are AES-256-GCM encrypted with an owner-only local key file in
+the OS-private state root; this is not OS keychain-backed or hardware-backed
+encryption. External ChatGPT, Codex, Claude, and Qwen imports remain disabled
+and approval-gated; no claim is made that all SEIS conversations have been
+imported.
 
 ## Current Repository Condition
 

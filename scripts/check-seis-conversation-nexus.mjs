@@ -7,6 +7,7 @@ import path from 'node:path';
 import {
   CONVERSATION_NEXUS_CONTRACT_PATH,
   CONVERSATION_NEXUS_RESOURCE_URI,
+  CONVERSATION_ENVELOPE_SCHEMA_PATH,
   CONVERSATION_SEARCH_TOOL,
   CONVERSATION_SESSION_SCHEMA_PATH,
   CONVERSATION_STATUS_TOOL,
@@ -43,6 +44,7 @@ const paths = {
 for (const relativePath of [
   CONVERSATION_NEXUS_CONTRACT_PATH,
   CONVERSATION_SESSION_SCHEMA_PATH,
+  CONVERSATION_ENVELOPE_SCHEMA_PATH,
   ...Object.values(paths),
 ]) {
   ensureFile(relativePath);
@@ -91,8 +93,24 @@ ensure(
   'known synchronized-folder storage must remain forbidden',
 );
 ensure(
-  contract.storage?.atRestEncryptionImplemented === false,
-  'at-rest encryption status must remain honest',
+  contract.storage?.atRestEncryptionImplemented === true,
+  'at-rest encryption must be implemented for Conversation Nexus',
+);
+ensure(
+  contract.storage?.atRestEncryption?.algorithm === 'aes-256-gcm',
+  'conversation encryption algorithm must be aes-256-gcm',
+);
+ensure(
+  contract.storage?.atRestEncryption?.keySource === 'owner-only-local-key-file',
+  'conversation encryption key source must be owner-only local key file',
+);
+ensure(
+  contract.storage?.atRestEncryption?.plaintextSessionFilesAllowed === false,
+  'plaintext conversation session files must remain forbidden',
+);
+ensure(
+  contract.retention?.exportEncryptionAtRestImplemented === true,
+  'conversation exports must be encrypted at rest',
 );
 ensure(
   contract.retention?.expiredReadSearchResumeExportAllowed === false,
@@ -161,6 +179,29 @@ ensure(
 ensure(schema?.properties?.messages?.maxItems === 2048, 'conversation message limit mismatch');
 ensure(schema?.$defs?.hash?.pattern === '^sha256:[a-f0-9]{64}$', 'record hash pattern mismatch');
 ensure(schema?.$defs?.contentValue?.type === 'string', 'only visible text may be persisted');
+
+const envelopeSchema = readJson(CONVERSATION_ENVELOPE_SCHEMA_PATH);
+try {
+  assertValidJsonSchema(envelopeSchema);
+} catch (error) {
+  failures.push(`invalid conversation envelope schema: ${error.message}`);
+}
+ensure(
+  envelopeSchema?.$schema === 'https://json-schema.org/draft/2020-12/schema',
+  'envelope schema dialect mismatch',
+);
+ensure(
+  envelopeSchema?.additionalProperties === false,
+  'conversation envelope schema must reject extra root properties',
+);
+ensure(
+  envelopeSchema?.properties?.recordType?.const === 'seis-encrypted-conversation-envelope',
+  'conversation envelope record type mismatch',
+);
+ensure(
+  envelopeSchema?.properties?.encryption?.properties?.algorithm?.const === 'aes-256-gcm',
+  'conversation envelope algorithm mismatch',
+);
 
 const packageJson = readJson(paths.packageJson);
 const aiPackageJson = readJson(paths.aiPackageJson);
@@ -242,9 +283,16 @@ ensure(
   registeredPaths.has(CONVERSATION_SESSION_SCHEMA_PATH),
   'data schema registry missing conversation schema',
 );
+ensure(
+  registeredPaths.has(CONVERSATION_ENVELOPE_SCHEMA_PATH),
+  'data schema registry missing conversation envelope schema',
+);
 
 const sourceChecks = [
   [paths.runtime, 'writeOwnerOnlyJson'],
+  [paths.runtime, 'seis-encrypted-conversation-envelope'],
+  [paths.runtime, 'aes-256-gcm'],
+  [paths.runtime, 'conversation-vault.key'],
   [paths.runtime, 'projectVisibleText'],
   [paths.runtime, 'known synchronized folder'],
   [paths.runtime, 'fsyncDirectory'],
@@ -337,6 +385,6 @@ function finish() {
     process.exit(1);
   }
   console.log(
-    'SEIS Conversation Nexus check passed: out-of-repo visible-text store, cloud-agent tools absent, 2 opt-in metadata-only MCP tools, external imports disabled.',
+    'SEIS Conversation Nexus check passed: out-of-repo encrypted visible-text store, cloud-agent tools absent, 2 opt-in metadata-only MCP tools, external imports disabled.',
   );
 }

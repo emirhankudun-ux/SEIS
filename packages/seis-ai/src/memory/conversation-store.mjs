@@ -1,4 +1,10 @@
-import { createHash, randomBytes } from 'node:crypto';
+import {
+  createCipheriv,
+  createDecipheriv,
+  createHash,
+  randomBytes,
+  timingSafeEqual,
+} from 'node:crypto';
 import {
   chmodSync,
   closeSync,
@@ -28,18 +34,23 @@ import { assertValidJsonSchema, validateJsonSchema } from '../model/json-schema-
 export const CONVERSATION_NEXUS_CONTRACT_PATH = 'content/development/seis-conversation-nexus.json';
 export const CONVERSATION_SESSION_SCHEMA_PATH =
   'packages/shared-types/schemas/seis-conversation-session.schema.json';
+export const CONVERSATION_ENVELOPE_SCHEMA_PATH =
+  'packages/shared-types/schemas/seis-conversation-envelope.schema.json';
 export const CONVERSATION_NEXUS_RESOURCE_URI = 'seis://ai/conversation-nexus.json';
 export const CONVERSATION_STATUS_TOOL = 'seis_ai_core_conversation_status';
 export const CONVERSATION_SEARCH_TOOL = 'seis_ai_core_conversation_search';
 export const CONVERSATION_STORE_DIRECTORY = 'conversations';
 export const LEGACY_SESSION_RELATIVE_PATH = '.seis/sessions';
 export const CONVERSATION_EXPORT_DIRECTORY = 'exports';
+export const CONVERSATION_VAULT_KEY_FILENAME = 'conversation-vault.key';
 
 const MAX_SESSION_FILE_BYTES = 8 * 1024 * 1024;
 const MAX_SESSION_COUNT = 512;
 const MAX_MESSAGE_COUNT = 2048;
 const MAX_STRING_BYTES = 256 * 1024;
 const MAX_CONTENT_BLOCKS = 256;
+const ENCRYPTED_ENVELOPE_RECORD_TYPE = 'seis-encrypted-conversation-envelope';
+const ENCRYPTION_ALGORITHM = 'aes-256-gcm';
 const SESSION_NAME_PATTERN = /^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/;
 const SYNCED_PATH_PATTERNS = [
   /\/Library\/Mobile Documents\//i,
@@ -93,7 +104,9 @@ export function conversationNexusStatus(repoRoot, options = {}) {
         directory: CONVERSATION_STORE_DIRECTORY,
         repositoryStorageAllowed: false,
         knownSynchronizedFolderAllowed: false,
-        encryptionAtRest: 'not-implemented',
+        encryptionAtRest: 'implemented-aes-256-gcm-local-keyfile',
+        encryptionAlgorithm: ENCRYPTION_ALGORITHM,
+        keySource: 'owner-only-local-key-file',
         ownerOnlyTargetMode: '0700-directory/0600-file',
       },
       sessionCount: scan.sessions.length,
@@ -348,6 +361,8 @@ export function exportConversationSession(repoRoot, sessionName, options = {}) {
     sessionName: normalizedName,
     relativeStatePath,
     contentExported: true,
+    encryptedAtRest: true,
+    encryptionAlgorithm: ENCRYPTION_ALGORITHM,
     localOnly: true,
     providerUploadAllowed: false,
     githubPublicationAllowed: false,
@@ -423,6 +438,7 @@ function readConversationNexusContract(repoRoot) {
     contract.storage?.storageClass !== 'os-private-state-root' ||
     contract.storage?.repositoryStorageAllowed !== false ||
     contract.storage?.knownSynchronizedFolderAllowed !== false ||
+    contract.storage?.atRestEncryptionImplemented !== true ||
     contract.privacy?.providerUploadAllowed !== false ||
     contract.privacy?.githubPublicationAllowed !== false ||
     contract.mcpBoundary?.contentReturned !== false
@@ -724,7 +740,11 @@ function writeOwnerOnlyJson(stateRoot, relativePath, value) {
     directory,
     `.${path.basename(filePath)}.${process.pid}.${randomBytes(8).toString('hex')}.tmp`,
   );
-  const serialized = `${JSON.stringify(value, null, 2)}\n`;
+  const plaintext = `${JSON.stringify(value, null, 2)}\n`;
+  assertNoCredentialLikeJsonContent(plaintext, value, {
+    label: 'SEIS private conversation plaintext',
+  });
+  const serialized = `${JSON.stringify(encryptPrivateJsonEnvelope(stateRoot, value), null, 2)}\n`;
   if (Buffer.byteLength(serialized, 'utf8') > MAX_SESSION_FILE_BYTES) {
     throw new Error(`conversation output exceeds ${MAX_SESSION_FILE_BYTES} bytes`);
   }
@@ -749,6 +769,29 @@ function writeOwnerOnlyJson(stateRoot, relativePath, value) {
       closeSync(lockDescriptor);
       if (existsSync(lockPath)) rmSync(lockPath, { force: true });
     }
+  }
+}
+
+function writeOwnerOnlyBytes(stateRoot, relativePath, value) {
+  ensurePrivateDirectory(stateRoot, path.dirname(relativePath));
+  const filePath = resolveStatePath(stateRoot, relativePath);
+  if (existsSync(filePath)) {
+    assertRegularPrivateFile(filePath, 'conversation private byte target');
+    throw new Error('conversation private byte target already exists');
+  }
+  let descriptor = null;
+  try {
+    descriptor = openSync(filePath, 'wx', 0o600);
+    writeFileSync(descriptor, value);
+    fsyncSync(descriptor);
+    closeSync(descriptor);
+    descriptor = null;
+    chmodSync(filePath, 0o600);
+    fsyncDirectory(path.dirname(filePath));
+  } catch (error) {
+    if (descriptor !== null) closeSync(descriptor);
+    if (existsSync(filePath)) rmSync(filePath, { force: true });
+    throw error;
   }
 }
 
@@ -790,8 +833,92 @@ function readPrivateJson(stateRoot, relativePath, options = {}) {
   } catch {
     throw new Error(`${label} contains invalid JSON`);
   }
-  assertNoCredentialLikeJsonContent(raw, parsed, { label });
-  return parsed;
+  assertNoCredentialLikeJsonContent(raw, parsed, { label: `${label} encrypted envelope` });
+  const decrypted = decryptPrivateJsonEnvelope(stateRoot, parsed, label);
+  assertNoCredentialLikeJsonContent(JSON.stringify(decrypted), decrypted, { label });
+  return decrypted;
+}
+
+function encryptPrivateJsonEnvelope(stateRoot, value) {
+  const key = loadOrCreateConversationVaultKey(stateRoot);
+  const plaintext = Buffer.from(`${JSON.stringify(value, null, 2)}\n`, 'utf8');
+  const iv = randomBytes(12);
+  const cipher = createCipheriv(ENCRYPTION_ALGORITHM, key, iv);
+  const ciphertext = Buffer.concat([cipher.update(plaintext), cipher.final()]);
+  const authTag = cipher.getAuthTag();
+  return {
+    schemaVersion: 1,
+    recordType: ENCRYPTED_ENVELOPE_RECORD_TYPE,
+    encryption: {
+      algorithm: ENCRYPTION_ALGORITHM,
+      keySource: 'owner-only-local-key-file',
+      keyId: conversationVaultKeyId(key),
+      iv: iv.toString('base64'),
+      authTag: authTag.toString('base64'),
+    },
+    ciphertext: ciphertext.toString('base64'),
+    truthBoundary:
+      'Encrypted local SEIS conversation envelope. The local key file remains required for decryption and is not provider upload, GitHub publication, or training approval.',
+  };
+}
+
+function decryptPrivateJsonEnvelope(stateRoot, envelope, label) {
+  if (
+    !envelope ||
+    typeof envelope !== 'object' ||
+    Array.isArray(envelope) ||
+    envelope.recordType !== ENCRYPTED_ENVELOPE_RECORD_TYPE ||
+    envelope.encryption?.algorithm !== ENCRYPTION_ALGORITHM ||
+    envelope.encryption?.keySource !== 'owner-only-local-key-file' ||
+    typeof envelope.encryption?.iv !== 'string' ||
+    typeof envelope.encryption?.authTag !== 'string' ||
+    typeof envelope.encryption?.keyId !== 'string' ||
+    typeof envelope.ciphertext !== 'string'
+  ) {
+    throw new Error(`${label} must be an encrypted SEIS conversation envelope`);
+  }
+  const key = loadOrCreateConversationVaultKey(stateRoot);
+  const keyId = conversationVaultKeyId(key);
+  if (!safeEqualText(envelope.encryption.keyId, keyId)) {
+    throw new Error(`${label} encrypted envelope key mismatch`);
+  }
+  try {
+    const decipher = createDecipheriv(
+      ENCRYPTION_ALGORITHM,
+      key,
+      Buffer.from(envelope.encryption.iv, 'base64'),
+    );
+    decipher.setAuthTag(Buffer.from(envelope.encryption.authTag, 'base64'));
+    const plaintext = Buffer.concat([
+      decipher.update(Buffer.from(envelope.ciphertext, 'base64')),
+      decipher.final(),
+    ]).toString('utf8');
+    return JSON.parse(plaintext);
+  } catch {
+    throw new Error(`${label} encrypted envelope authentication failed`);
+  }
+}
+
+function loadOrCreateConversationVaultKey(stateRoot) {
+  ensurePrivateDirectory(stateRoot, '.');
+  const keyPath = resolveStatePath(stateRoot, CONVERSATION_VAULT_KEY_FILENAME);
+  if (!existsSync(keyPath)) {
+    writeOwnerOnlyBytes(stateRoot, CONVERSATION_VAULT_KEY_FILENAME, randomBytes(32));
+  }
+  assertRegularPrivateFile(keyPath, 'SEIS conversation vault key');
+  const key = readFileSync(keyPath);
+  if (key.length !== 32) throw new Error('SEIS conversation vault key must be 32 bytes');
+  return key;
+}
+
+function conversationVaultKeyId(key) {
+  return `sha256:${createHash('sha256').update(key).digest('hex')}`;
+}
+
+function safeEqualText(left, right) {
+  const leftBuffer = Buffer.from(String(left));
+  const rightBuffer = Buffer.from(String(right));
+  return leftBuffer.length === rightBuffer.length && timingSafeEqual(leftBuffer, rightBuffer);
 }
 
 function resolveStatePath(stateRoot, relativePath) {

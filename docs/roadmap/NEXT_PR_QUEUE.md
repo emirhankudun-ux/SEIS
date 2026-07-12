@@ -83,13 +83,14 @@ atomic replay ledger exists.
 | Priority | P0 after AI-3 |
 | Goal | Replace raw repo-local sessions with a strict, redacted, provenance-aware, user-controlled Conversation Nexus while preventing private state or metadata from silently entering cloud-agent/provider flows. |
 | Include | Draft 2020-12 visible-text-only schema, repo/sync-external OS-private state root, owner-only locked temporary-write/rename flow, record/message hashes, explicit legacy migration, confirmed export/delete, enforced expiry, exact stored-history upload approval, private-path denylist for agent filesystem tools, disabled-by-default metadata-only MCP status/search, repository-safe policy resource, registry, docs, and negative tests. |
-| Exclude | At-rest encryption claims, automatic account/archive discovery, ChatGPT/Codex/Claude/Qwen import, automatic provider upload, GitHub publication of conversation content, training-data use, MCP message-body/write tools, cloud-agent Conversation tools, live provider validation, SSH, deployment, push, PR creation, or merge. |
+| Exclude | Automatic account/archive discovery, ChatGPT/Codex/Claude/Qwen import, automatic provider upload, GitHub publication of conversation content, training-data use, MCP message-body/write tools, cloud-agent Conversation tools, live provider validation, SSH, deployment, push, PR creation, or merge. |
 | Validation | `npm run check:seis-conversation-nexus`, conversation store/CLI tests, AI package tests, MCP smoke, data schema registry, plugin integration, security checks, and `git diff --check`. |
 | Approval needed | None for local code, schema, read-only policy resource, tests, docs, and focused local commit. Explicit user approval and security review are required for external import adapters, Keychain/DPAPI/libsecret integration choices, and every excluded external action. |
 
-Current local state: implementation hardened after security review. At-rest
-encryption and external archive imports remain intentionally deferred; no
-conversation-content publication is authorized.
+Current local state: implementation hardened after security review. Local-keyfile
+AES-256-GCM encrypted session/export envelopes are implemented; OS
+Keychain/DPAPI/libsecret and external archive imports remain intentionally
+deferred. No conversation-content publication is authorized.
 
 ## Current Recommended Product Demo Stack
 
