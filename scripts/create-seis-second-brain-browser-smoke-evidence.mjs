@@ -170,6 +170,8 @@ function validateReport(report, label) {
   }
   const serialized = JSON.stringify(report);
   ensure(!serialized.includes("/Users/"), `${label} must not contain absolute private paths.`);
+  ensure(!/\/home\/(?!seis\/)[^"/]+/.test(serialized), `${label} must not contain Linux absolute private home paths.`);
+  ensure(!/[A-Za-z]:\\+Users\\+/.test(serialized), `${label} must not contain Windows absolute private paths.`);
   ensure(!/sk-[A-Za-z0-9_-]{20,}/.test(serialized), `${label} must not contain OpenAI-style API keys.`);
   ensure(!/-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----/.test(serialized), `${label} must not contain private keys.`);
 }
