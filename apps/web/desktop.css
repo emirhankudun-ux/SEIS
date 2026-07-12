@@ -2157,6 +2157,40 @@ select:focus-visible,
   color: var(--muted);
 }
 
+.wow-reference-preview {
+  display: grid;
+  min-height: 7.4rem;
+  gap: 0.35rem;
+  align-content: center;
+  padding: 0.85rem;
+  border: 1px dashed rgba(117, 214, 255, 0.38);
+  border-radius: 0.55rem;
+  background: linear-gradient(145deg, rgba(19, 34, 47, 0.94), rgba(8, 15, 24, 0.96));
+  color: #d9f4ff;
+  text-align: left;
+}
+
+.wow-reference-preview strong {
+  color: #f4fbff;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.wow-reference-preview small {
+  color: #9fc3d6;
+  font-size: 0.68rem;
+  line-height: 1.35;
+}
+
+.wow-reference-preview code {
+  overflow: hidden;
+  color: #6ed7ff;
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 0.62rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .system-os-app {
   gap: 0.9rem;
 }

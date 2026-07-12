@@ -24,6 +24,7 @@ ensure(files.desktop.includes('<script src="./seis-shared-vfs.js"></script>'), "
 ensure(files.code.includes('<script src="./seis-vfs-store.js"></script>'), "SEIS Code must load the shared store before its module.");
 ensure(files.code.includes('<script src="./seis-shared-vfs.js"></script>'), "SEIS Code must load the shared VFS adapter before its module.");
 ensure(files.desktopJs.includes("SEIS_SHARED_VFS") && files.desktopJs.includes("persistSharedWorkspace"), "Desktop must persist through the shared VFS adapter.");
+ensure(files.desktopJs.includes("readCodeWorkspaceEntries") && files.desktopJs.includes("entryUpdatedAt <= existingUpdatedAt"), "Desktop must merge legacy Code workspace entries without letting stale records overwrite the shared snapshot.");
 ensure(files.codeJs.includes("SEIS_SHARED_VFS") && files.codeJs.includes("loadSharedWorkspace"), "SEIS Code must hydrate through the shared VFS adapter.");
 ensure(files.desktopJs.includes("sharedVfs"), "Desktop diagnostics must expose shared VFS state.");
 ensure(files.codeJs.includes("sharedVfs"), "SEIS Code diagnostics must expose shared VFS state.");

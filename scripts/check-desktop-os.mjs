@@ -80,8 +80,6 @@ if (failures.length === 0) {
   ensure(js.includes("seis-command-center-app"), "desktop.js must expose the SEIS Command Center route.");
   ensure(js.includes("sub-agent-os-demo"), "desktop.js must expose the Sub-Agent OS demo route.");
   ensure(js.includes("renderLauncherRoutes"), "desktop.js must surface SEIS routes in the launcher/search UI.");
-  ensure(js.includes("resolveWowPreviewImage"), "desktop.js must normalize missing imported WOW preview images.");
-  ensure(js.includes("PNG preview missing in import"), "desktop.js must surface truthful imported WOW preview fallback copy.");
   ensure(js.includes("SEIS_SEARCH_TABS"), "desktop.js must define SEIS Search result tabs.");
   ensure(js.includes('data-action="set-search-tab"'), "desktop.js must render actionable SEIS Search tab buttons.");
   ensure(js.includes("data-search-tab-panel"), "desktop.js must render the active SEIS Search tab panel.");
@@ -599,7 +597,7 @@ async function runRuntimeSmoke(html, js) {
     ensure(diagnostics.installedAiSystems().length === 6, `Installed AI diagnostics expected six systems, got ${diagnostics.installedAiSystems().length}.`);
     ensure(diagnostics.installedAiCoreRouteMatrix().length === 6, `Installed AI Core route diagnostics expected six routes, got ${diagnostics.installedAiCoreRouteMatrix().length}.`);
     ensure(diagnostics.mcpRuntimeContract().toolCount === 34, `MCP Runtime Contract diagnostics expected 34 tools, got ${diagnostics.mcpRuntimeContract().toolCount}.`);
-    ensure(diagnostics.mcpRuntimeContract().resourceCount === 26, `MCP Runtime Contract diagnostics expected 26 resources, got ${diagnostics.mcpRuntimeContract().resourceCount}.`);
+    ensure(diagnostics.mcpRuntimeContract().resourceCount === 29, `MCP Runtime Contract diagnostics expected 29 resources, got ${diagnostics.mcpRuntimeContract().resourceCount}.`);
     ensure(diagnostics.mcpRuntimeContract().sourcePath === "content/development/seis-ai-core-mcp-runtime-contract.json", "MCP Runtime Contract diagnostics must expose the canonical source path.");
     ensure(diagnostics.mcpRuntimeContract().resourceUri === "seis://ai/mcp-runtime-contract.json", "MCP Runtime Contract diagnostics must expose the canonical MCP resource URI.");
     ensure(window.document.querySelector("[data-installed-ai-core-route-matrix]"), "Installed AI Systems must render the installed AI Core route matrix.");
@@ -616,7 +614,7 @@ async function runRuntimeSmoke(html, js) {
     ensure(window.document.querySelector("[data-mcp-runtime-contract]"), "Installed AI Systems must render the MCP runtime contract.");
     ensure(window.document.querySelectorAll("[data-mcp-runtime-surface]").length === 4, "MCP Runtime Contract must render four runtime surfaces.");
     ensure(window.document.querySelector("[data-mcp-runtime-contract]")?.textContent.includes("stdio JSON-RPC"), "MCP Runtime Contract must show the stdio JSON-RPC transport.");
-    ensure(window.document.querySelector("[data-mcp-runtime-contract]")?.textContent.includes("26"), "MCP Runtime Contract must show the 26-resource registry count.");
+    ensure(window.document.querySelector("[data-mcp-runtime-contract]")?.textContent.includes("29"), "MCP Runtime Contract must show the 29-resource registry count.");
     const mcpRuntimeContractExportButton = window.document.querySelector("[data-action=\"export-mcp-runtime-contract\"]");
     ensure(mcpRuntimeContractExportButton, "MCP Runtime Contract must expose a local export action.");
     mcpRuntimeContractExportButton?.click();

@@ -1191,7 +1191,7 @@ const SEIS_MCP_RUNTIME_CONTRACT = {
   officialSdk: "@modelcontextprotocol/sdk remains optional unless dependencies are installed",
   toolCount: 34,
   promptCount: 3,
-  resourceCount: 26,
+  resourceCount: 29,
   smokeTest: "node --test packages/seis-ai/test/mcp-smoke.test.mjs",
   pluginGate: "npm run check:seis-agent-plugin-integration",
   resourceRead: "seis://ai/mcp-runtime-contract.json",
@@ -1209,7 +1209,7 @@ const SEIS_MCP_RUNTIME_CONTRACT = {
     {
       id: "resources",
       label: "Resource registry",
-      count: 26,
+      count: 29,
       method: "resources/list + resources/read",
       evidence: "Plugin integration, provider registry, model scaling profile, model parameter ladder, frontier escalation policy, 150B frontier model program, 512B apex AGI program, 20B model/dataset card templates, and MCP runtime contract resources are read through the protocol",
       duty: "Expose source-of-truth JSON resources for plugin integration, provider states, planned model scaling, parameter ladder boundaries, no-skip-20B frontier policy, 150B frontier program, 512B apex AGI program, 20B clean-room evidence templates, MCP runtime, version gates, fixtures, and generated plan views."
@@ -1660,72 +1660,6 @@ const SEIS_WOW_REFERENCES = [
   { id: "kimi-linuxos-reference", title: "Kimi LinuxOS", role: "Linux-like OS reference", url: "https://dwfcctyh2o6me.ok.kimi.link/?id=2045932438926155776&share_id=19d9fdbd-d7d2-8a19-8000-00001d7799f6" },
   { id: "kimi-vscode-web-reference", title: "Kimi VS Code Web", role: "VS Code Web reference", url: "https://gmzousbtqpx5w.kimi.page/?id=2057731079068581888&share_id=19e4e6a6-9342-8f07-8000-0000296a37dd" }
 ];
-
-function isImportedWowPngPath(path) {
-  return typeof path === "string"
-    && path.startsWith("./wow-pages/imported/")
-    && path.includes("/png/")
-    && path.endsWith(".png");
-}
-
-function inferWowHtmlReference(path) {
-  return isImportedWowPngPath(path)
-    ? path.replace("/png/", "/html/").replace(/\.png$/u, ".html")
-    : "";
-}
-
-function escapeWowSvgText(value) {
-  return String(value || "").replace(/[&<>"']/g, (char) => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  })[char]);
-}
-
-function buildWowPlaceholderDataUri(title, lines = []) {
-  const safeTitle = String(title || "SEIS WOW");
-  const detailLines = lines.map((line) => String(line || "").trim()).filter(Boolean).slice(0, 3);
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-label="${escapeWowSvgText(safeTitle)} reference placeholder">
-    <defs>
-      <linearGradient id="wow-bg" x1="0%" x2="100%" y1="0%" y2="100%">
-        <stop offset="0%" stop-color="#020617" />
-        <stop offset="50%" stop-color="#111827" />
-        <stop offset="100%" stop-color="#1e293b" />
-      </linearGradient>
-      <linearGradient id="wow-panel" x1="0%" x2="100%" y1="0%" y2="0%">
-        <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.28" />
-        <stop offset="100%" stop-color="#a855f7" stop-opacity="0.12" />
-      </linearGradient>
-    </defs>
-    <rect width="1280" height="720" fill="url(#wow-bg)" />
-    <rect x="52" y="52" width="1176" height="616" rx="28" fill="#0f172a" stroke="#94a3b8" stroke-opacity="0.35" />
-    <rect x="88" y="88" width="320" height="18" rx="9" fill="#38bdf8" fill-opacity="0.72" />
-    <rect x="88" y="138" width="1104" height="210" rx="22" fill="url(#wow-panel)" stroke="#38bdf8" stroke-opacity="0.35" />
-    <rect x="88" y="384" width="348" height="228" rx="22" fill="#0f172a" fill-opacity="0.88" stroke="#94a3b8" stroke-opacity="0.16" />
-    <rect x="466" y="384" width="348" height="228" rx="22" fill="#0f172a" fill-opacity="0.88" stroke="#94a3b8" stroke-opacity="0.16" />
-    <rect x="844" y="384" width="348" height="228" rx="22" fill="#0f172a" fill-opacity="0.88" stroke="#94a3b8" stroke-opacity="0.16" />
-    <text x="88" y="190" fill="#38bdf8" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="700">SEIS WOW imported reference</text>
-    <text x="88" y="258" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="58" font-weight="800">${escapeWowSvgText(safeTitle)}</text>
-    ${detailLines.map((line, index) => `<text x="88" y="${318 + (index * 42)}" fill="#cbd5e1" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="500">${escapeWowSvgText(line)}</text>`).join("")}
-  </svg>`;
-  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
-}
-
-function resolveWowPreviewImage(item) {
-  const image = typeof item === "string" ? item : item?.image;
-  if (!isImportedWowPngPath(image)) return image || "";
-  const htmlReference = typeof item === "object" && item?.html ? item.html : inferWowHtmlReference(image);
-  const secondaryLabel = typeof item === "object"
-    ? item?.collection || item?.source || item?.tag || item?.status || ""
-    : "";
-  return buildWowPlaceholderDataUri(typeof item === "object" ? item?.title : "SEIS WOW", [
-    secondaryLabel,
-    "PNG preview missing in import",
-    htmlReference ? "HTML reference preserved" : "Imported visual reference"
-  ]);
-}
 
 const SEIS_WOW_DESIGN_FUSION = [
   { title: "Desktop Overview", source: "Part 1 / 03", tag: "OS shell", image: "./wow-pages/imported/SEIS_WOW_EXTENDED_PAGES/png/03_desktop_overview.png", motif: "dark wallpaper, top system bar, left activity rail, bottom dock" },
@@ -2485,17 +2419,18 @@ function readCodeWorkspaceEntries(database) {
 
 async function syncDesktopFromCodeWorkspace(source = "seis-code-workspace") {
   const shared = await loadSharedWorkspace(source);
-  if (shared.restored) return shared;
   const database = await openCodeWorkspaceDatabase();
-  if (!database) return { imported: 0 };
-  let imported = 0;
+  if (!database) return shared;
+  let imported = shared.imported || 0;
   try {
     const entries = await readCodeWorkspaceEntries(database);
     for (const entry of entries) {
       const desktopPath = codeWorkspacePathToDesktopPath(entry.path);
       if (!desktopPath || desktopPath === DESKTOP_HOME) continue;
       if (entry.type === "folder") {
+        const existed = Boolean(getNode(desktopPath));
         ensureDirectory(desktopPath);
+        if (!existed) imported += 1;
       } else {
         ensureDirectory(dirName(desktopPath));
         const existing = getNode(desktopPath);
@@ -2503,13 +2438,16 @@ async function syncDesktopFromCodeWorkspace(source = "seis-code-workspace") {
         if (existing) {
           if (existing.type !== "file") continue;
           if (existing.content === content) continue;
+          const existingUpdatedAt = Date.parse(existing.updatedAt || "") || 0;
+          const entryUpdatedAt = Date.parse(entry.updatedAt || "") || 0;
+          if (shared.restored && entryUpdatedAt <= existingUpdatedAt) continue;
           existing.content = content;
           existing.updatedAt = entry.updatedAt || new Date().toISOString();
         } else {
           state.fs.push(file(desktopPath, content));
         }
+        imported += 1;
       }
-      imported += 1;
     }
   } finally {
     database.close();
@@ -5899,6 +5837,15 @@ function renderAssistant() {
   </section>`;
 }
 
+function renderReferencePreview(image, title, detail = "") {
+  const source = String(image || "").replace(/^\.\//, "");
+  return `<span class="wow-reference-preview" role="img" aria-label="${escapeAttr(`${title} preview unavailable`)}">
+    <strong>Preview unavailable</strong>
+    <small>Supplied PNG is not present in this checkout.</small>
+    <code>${escapeHtml(detail || source)}</code>
+  </span>`;
+}
+
 function renderSeisSystemOSApp() {
   const data = getAppData("seis-system-os");
   const activeProfile = ["linux", "macos", "windows"].includes(state.osProfile) ? state.osProfile : "linux";
@@ -5957,7 +5904,7 @@ function renderSeisSystemOSApp() {
       </div>
       <div class="wow-fusion-grid compact">
         ${fusionPreview.map((item) => `<button type="button" class="wow-fusion-card" data-action="open-demo-route" data-value="wow-gallery-web">
-          <img src="${escapeAttr(resolveWowPreviewImage(item))}" alt="${escapeAttr(item.title)} reference preview" loading="lazy">
+          ${renderReferencePreview(item.image, item.title, `${item.source} · ${item.tag}`)}
           <span>${escapeHtml(item.title)}</span>
           <small>${escapeHtml(item.source)} · ${escapeHtml(item.tag)}</small>
         </button>`).join("")}
@@ -6447,7 +6394,7 @@ function renderSeisCommandCenter() {
     </section>
     <section class="wow-reference-ribbon" aria-label="WOW source previews">
       ${commandReferences.map((item) => `<button type="button" class="wow-reference-chip" data-action="open-demo-route" data-value="wow-gallery-web">
-        <img src="${escapeAttr(resolveWowPreviewImage(item))}" alt="${escapeAttr(item.title)} preview" loading="lazy">
+        ${renderReferencePreview(item.image, item.title, `${item.source} · ${item.tag}`)}
         <span>${escapeHtml(item.title)}</span>
         <small>${escapeHtml(item.tag)}</small>
       </button>`).join("")}
@@ -6753,7 +6700,7 @@ function renderWowGalleryApp() {
       </div>
       <div class="wow-fusion-grid">
         ${fusionDesign.map((item) => `<button type="button" class="wow-fusion-card" data-action="open-demo-route" data-value="wow-gallery-web">
-          <img src="${escapeAttr(resolveWowPreviewImage(item))}" alt="${escapeAttr(item.title)} reference preview" loading="lazy">
+          ${renderReferencePreview(item.image, item.title, `${item.source} · ${item.tag}`)}
           <span>${escapeHtml(item.title)}</span>
           <small>${escapeHtml(item.source)} · ${escapeHtml(item.tag)}</small>
           <em>${escapeHtml(item.motif)}</em>
@@ -6784,7 +6731,7 @@ function renderWowGalleryApp() {
       <h3>Highlighted Imported Screens</h3>
       <div class="wow-highlight-grid">
         ${highlights.map(([title, src, tag]) => `<button type="button" class="wow-highlight-card" data-action="open-demo-route" data-value="wow-gallery-web">
-          <img src="${escapeAttr(resolveWowPreviewImage({ title, image: src, tag }))}" alt="${escapeAttr(title)} preview" loading="lazy">
+          ${renderReferencePreview(src, title, tag)}
           <span>${escapeHtml(title)}</span>
           <small>${escapeHtml(tag)}</small>
         </button>`).join("")}
