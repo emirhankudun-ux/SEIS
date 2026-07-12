@@ -125,6 +125,12 @@ public struct SeisAppleShellRuntimeDiagnostics: Codable, Equatable, Sendable {
             qualityGate: "ai_core_snapshot_validation"
         ),
         SeisAppleShellRuntimeSurface(
+            id: "apple-product-surface-atlas",
+            title: "Apple Product Surface Atlas",
+            relativePath: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleProductSurfaceCatalog.swift",
+            qualityGate: "apple_product_surface_catalog"
+        ),
+        SeisAppleShellRuntimeSurface(
             id: "specialist-plugin-manifest",
             title: "Specialist Plugin Manifest",
             relativePath: "data/seis-specialist-plugins-2026-06-12.json",

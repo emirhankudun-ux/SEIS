@@ -243,6 +243,7 @@ import Testing
     #expect(runtime.probes.contains { $0.id == "ai-core-runtime-contract" && $0.qualityGate == "ai_core_snapshot_validation" })
     #expect(runtime.probes.contains { $0.id == "ai-core-personal-lane-runtime" && $0.qualityGate == "ai_core_snapshot_validation" })
     #expect(runtime.probes.contains { $0.id == "ai-core-runtime-snapshot" && $0.qualityGate == "ai_core_snapshot_validation" })
+    #expect(runtime.probes.contains { $0.id == "apple-product-surface-atlas" && $0.qualityGate == "apple_product_surface_catalog" })
     #expect(runtime.probes.contains { $0.id == "specialist-plugin-manifest" && $0.qualityGate == "plugin_governance" })
     #expect(runtime.probes.contains { $0.id == "specialist-plugin-check" && $0.qualityGate == "mcp_smoke_test" })
     #expect(runtime.probes.contains { $0.id == "specialist-code-plugin" && $0.qualityGate == "plugin_governance" })
