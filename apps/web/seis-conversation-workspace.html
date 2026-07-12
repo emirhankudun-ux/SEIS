@@ -6,6 +6,7 @@
     <meta name="theme-color" content="#080f19" />
     <title>SEIS Conversation Workspace</title>
     <link rel="stylesheet" href="seis-conversation-workspace.css" />
+    <link rel="stylesheet" href="seis-conversation-context-adapters.css" />
   </head>
   <body>
     <div class="workspace-app">
@@ -27,6 +28,7 @@
             <span id="source-kind">Orchestration</span>
             <strong id="source-name">Command Center</strong>
             <em id="source-state">local-only</em>
+            <em class="adapter-state is-pending" id="adapter-state">adapter pending</em>
           </div>
           <div class="mobile-tabs" role="group" aria-label="Workspace panel">
             <button class="is-active" type="button" data-panel="preview">Surface</button>
@@ -40,7 +42,7 @@
             <div class="panel-bar"><span><i class="preview-dot"></i> Sandboxed product preview</span><small id="preview-route">seis-linux-replica.html?demo=live</small></div>
             <div class="preview-frame-wrap">
               <iframe id="source-preview" title="SEIS source preview" sandbox="allow-scripts allow-same-origin allow-forms allow-downloads" referrerpolicy="no-referrer"></iframe>
-              <div class="preview-boundary"><strong>Preview boundary</strong><span id="preview-boundary-copy">No host, provider, cloud, or SSH permissions are added by this shell.</span></div>
+              <div class="preview-boundary"><strong>Preview boundary</strong><span id="preview-boundary-copy">No host, provider, cloud, or SSH permissions are added by this shell.</span><small id="adapter-detail">Waiting for read-only context adapter.</small></div>
             </div>
           </div>
 
@@ -71,6 +73,7 @@
       <footer><span>SEIS V17 / Conversation Workspace</span><span>Agency delivery slice / browser-local context</span></footer>
     </div>
     <script src="seis-conversation-bus.js" defer></script>
+    <script src="seis-conversation-context-adapters.js" defer></script>
     <script src="seis-conversation-workspace.js" defer></script>
   </body>
 </html>
