@@ -136,6 +136,7 @@ struct SeisAICoreLocalDemoView: View {
 
             if let snapshot = model.snapshot {
                 metrics(snapshot: snapshot)
+                providerList(snapshot: snapshot)
                 laneList(snapshot: snapshot)
                 agentList(snapshot: snapshot)
 
@@ -213,6 +214,53 @@ struct SeisAICoreLocalDemoView: View {
             metric("Resources", value: "\(metrics.mcpResourceCount)", image: "folder")
             metric("Boundary", value: metrics.runtimeBoundarySafe ? "safe" : "watch", image: "checkmark.shield")
             metric("Evidence", value: model.evidencePersistenceState.displayLabel, image: "externaldrive")
+        }
+    }
+
+    private func providerList(snapshot: SeisAICoreRuntimeSnapshotContract) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 7) {
+                Text("Source-backed status only; no credential validation or provider call is performed.")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+
+                ForEach(snapshot.providerRegistry.providers) { provider in
+                    HStack(alignment: .top, spacing: 9) {
+                        Image(systemName: provider.publicStatus == .available ? "checkmark.shield" : "exclamationmark.shield")
+                            .foregroundStyle(providerStatusColor(provider.publicStatus))
+                            .frame(width: 20)
+
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(provider.displayName)
+                                .font(.caption.weight(.semibold))
+                            Text("\(provider.publicStatus.rawValue) · \(provider.actualModel)")
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                            Text("Credential: \(provider.credentialRequirement) · Backend-only: \(provider.backendOnly ? "yes" : "no") · Routing: \(provider.routingEligible ? "eligible" : "blocked")")
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                        }
+
+                        Spacer(minLength: 0)
+                    }
+                    .padding(8)
+                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 8))
+                }
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Provider status (\(snapshot.providerRegistry.providers.count))", systemImage: "cpu")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Provider status list with \(snapshot.providerRegistry.providers.count) source-backed providers. No credential validation or provider call is performed.")
+    }
+
+    private func providerStatusColor(_ status: SeisAICoreProviderState) -> Color {
+        switch status {
+        case .available:
+            .green
+        case .missingKey, .disabled, .rateLimited, .error:
+            .orange
         }
     }
 
