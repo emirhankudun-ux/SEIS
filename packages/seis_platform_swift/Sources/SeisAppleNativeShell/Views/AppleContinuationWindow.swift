@@ -74,6 +74,8 @@ struct AppleContinuationWindow: View {
 
                     SeisAICoreLocalDemoView(repositoryPath: repositoryRoot)
 
+                    SeisAppleProductSurfaceCatalogView()
+
                     #if os(macOS)
                     SeisDesktopDemoCommandCenterView(workspacePath: repositoryRoot)
                     #endif
