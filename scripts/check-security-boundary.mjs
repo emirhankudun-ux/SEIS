@@ -314,6 +314,30 @@ function checkoutStepsUseNoCredentials(contents) {
   );
 }
 
+function checkoutStepsUseFullHistory(contents) {
+  const lines = contents.split(/\r?\n/u);
+  const checkoutLines = lines
+    .map((line, index) => ({ index, line }))
+    .filter(({ line }) => /uses:\s*actions\/checkout@/u.test(line));
+
+  return (
+    checkoutLines.length > 0 &&
+    checkoutLines.every(({ index, line }) => {
+      const usesIndent = line.match(/^\s*/u)?.[0].length ?? 0;
+      const stepIndent = Math.max(0, usesIndent - 2);
+      let end = lines.length;
+      for (let cursor = index + 1; cursor < lines.length; cursor += 1) {
+        const match = lines[cursor].match(/^(\s*)-\s+/u);
+        if (match && match[1].length === stepIndent) {
+          end = cursor;
+          break;
+        }
+      }
+      return lines.slice(index, end).some(candidate => /fetch-depth:\s*0\b/u.test(candidate));
+    })
+  );
+}
+
 if (!topLevelContentsRead(workflowContents)) {
   fail(workflowPath, 'top-level permissions must set contents to read');
 }
@@ -420,6 +444,9 @@ const foundationWorkflowPath = '.github/workflows/foundation-check.yml';
 const foundationWorkflow = read(foundationWorkflowPath);
 if (!checkoutStepsUseNoCredentials(foundationWorkflow)) {
   fail(foundationWorkflowPath, 'every checkout step must disable persisted credentials');
+}
+if (!checkoutStepsUseFullHistory(foundationWorkflow)) {
+  fail(foundationWorkflowPath, 'checkout must fetch full history for evidence verification');
 }
 const foundationInstallLines = shellLogicalLines(foundationWorkflow).filter(line =>
   /\bnpm\s+ci\b/u.test(line),

@@ -283,6 +283,17 @@ withFixture('foundation persisted checkout credentials', fixture => {
   );
 });
 
+withFixture('foundation shallow checkout', fixture => {
+  update(fixture, '.github/workflows/foundation-check.yml', contents =>
+    contents.replace('fetch-depth: 0', 'fetch-depth: 1'),
+  );
+  assertRejected(
+    'foundation shallow checkout',
+    runChecker(fixture),
+    'checkout must fetch full history for evidence verification',
+  );
+});
+
 withFixture('non-redacted scanner', fixture => {
   update(fixture, 'scripts/security/scan-secrets.sh', contents =>
     contents.replace(/(?:^|\s)--redact(?=\s|$)/u, ''),
