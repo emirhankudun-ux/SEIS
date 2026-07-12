@@ -16,6 +16,9 @@ Date: 2026-06-23
 | [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) | SEIS tokens, icon language, motion, and accessibility direction. |
 | [APPLE_PLATFORM_STRATEGY.md](APPLE_PLATFORM_STRATEGY.md) | macOS, iPadOS, iOS, visionOS research, and Swift package strategy. |
 | [SECURITY.md](SECURITY.md) | Focused secrets, permission, supply-chain, and public-review rules. |
+| [security/SECRET_STORAGE.md](security/SECRET_STORAGE.md) | Approved secret stores, runtime injection boundaries, redaction, rotation ownership, and local/CI/server rules. |
+| [security/CREDENTIAL_INCIDENT_RESPONSE.md](security/CREDENTIAL_INCIDENT_RESPONSE.md) | Path-only credential exposure containment, revocation, recovery, disclosure, and closure runbook. |
+| [security/hardening/hardening.md](security/hardening/hardening.md) | Evidence-backed security hardening options and the selected deterministic local-controls direction. |
 | [ROADMAP.md](ROADMAP.md) | Canonical milestone order, statuses, validation, and five-year direction. |
 | [ROLLBACK.md](ROLLBACK.md) | Revert, runtime disablement, and post-rollback validation policy. |
 | [TESTING.md](TESTING.md) | Test layers, evidence rules, and governance/Apple/UI baselines. |
@@ -114,6 +117,9 @@ Date: 2026-06-23
 | [ai/prompt-engine.md](ai/prompt-engine.md) | Versioned prompt-pack contract and prompt safety rules. |
 | [ai/agent-runtime.md](ai/agent-runtime.md) | Human-supervised agent runtime contract and permission boundaries. |
 | [security/security-baseline.md](security/security-baseline.md) | Current security baseline and blockers. |
+| [security/SECRET_STORAGE.md](security/SECRET_STORAGE.md) | Local, CI, server, Apple-client, SSH, and public-demo secret storage policy. |
+| [security/CREDENTIAL_INCIDENT_RESPONSE.md](security/CREDENTIAL_INCIDENT_RESPONSE.md) | Credential incident response and owner-approval boundaries. |
+| [security/hardening/hardening.md](security/hardening/hardening.md) | Derived control-hardening portfolio; not a vulnerability scan or implementation claim. |
 | [audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md](audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md) | Redacted static provider and credential audit. |
 
 ## Goal Tracking OS

@@ -79,7 +79,7 @@ const checks = {
   ],
   security: [
     { file: "SECURITY.md", token: "Do not open a public issue for a vulnerability", label: "SECURITY.md has missing vulnerability reporting policy" },
-    { file: files.securityWorkflow, token: "gitleaks detect", label: "security workflow missing gitleaks invocation" },
+    { file: files.securityWorkflow, token: "bash scripts/security/scan-secrets.sh", label: "security workflow missing repository scanner invocation" },
     { file: files.codeqlWorkflow, token: "github/codeql-action/analyze", label: "CodeQL analyze step missing" },
     { file: files.qualityGates, token: "## Güvenlik Kapısı", label: "Security gate section missing" },
     { file: files.qualityGatesRoot, token: ["## Kapı 2 — Güvenlik", "## Kapı 2 — Güvenlik Kapısı"], label: "root quality gates missing security section" },
