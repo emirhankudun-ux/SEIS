@@ -1,0 +1,2 @@
+.adapter-state{color:var(--blue)!important;border-color:rgba(122,169,255,.28)!important}.adapter-state.is-connected{color:var(--lime)!important;border-color:rgba(183,227,107,.3)!important}.adapter-state.is-unavailable{color:var(--orange)!important;border-color:rgba(255,174,105,.3)!important}.preview-boundary small{display:block;margin-top:3px;color:var(--blue);font-size:.55rem;line-height:1.35}.adapter-state.is-pending{color:var(--faint)!important;border-color:var(--line)!important}
+@media(max-width:1100px){.source-contract .adapter-state{display:none}}
