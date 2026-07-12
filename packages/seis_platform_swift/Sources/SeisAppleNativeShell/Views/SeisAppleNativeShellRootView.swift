@@ -113,7 +113,7 @@ struct SeisAppleNativeShellRootView: View {
                                     AppleContinuationWindow()
                                         .transition(.opacity.combined(with: .move(edge: .leading)))
                                 case .secondBrain:
-                                    SeisSecondBrainReviewOutcomeView()
+            SeisSecondBrainReviewOutcomeRepositoryView()
                                         .transition(.opacity.combined(with: .move(edge: .trailing)))
                                 }
                             }
