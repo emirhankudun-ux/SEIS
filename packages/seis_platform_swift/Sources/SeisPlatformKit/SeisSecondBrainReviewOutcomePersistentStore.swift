@@ -1,11 +1,11 @@
 import Foundation
 
-#if canImport(CoreData)
-import CoreData
-
 public enum SeisSecondBrainReviewOutcomePersistenceError: Error, Equatable, Sendable {
     case invalidRecord
 }
+
+#if canImport(CoreData)
+import CoreData
 
 public final class SeisSecondBrainReviewOutcomePersistentStore {
     nonisolated public static let containerName = "SEISSecondBrainReviewOutcomes"
