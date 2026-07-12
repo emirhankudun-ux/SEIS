@@ -24,6 +24,7 @@ const packageJson = readJson(paths.packageJson, "package.json");
 for (const marker of [
   "SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT",
   "maxLedgerEntries: 24",
+  "maxBriefCharacters: 600",
   "buildSecondBrainAgentReviewLedgerRecord",
   "buildSecondBrainAgentReviewLedgerMarkdown",
   "agent-review-assignment.md",
@@ -34,6 +35,9 @@ for (const marker of [
   "providerCallsPerformed: false",
   "mcpInvocationsPerformed: false",
   "Plan-only assignment: ${assignment.agent.name}",
+  "data-second-brain-agent-review-brief",
+  "humanReviewBrief",
+  "human-authored-browser-local",
   "#human-selected"
 ]) {
   ensure(desktop.includes(marker), `SEIS Desktop must retain the plan-only review safety marker: ${marker}.`);

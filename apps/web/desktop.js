@@ -1632,6 +1632,7 @@ const SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT = {
   ledgerMarkdownPath: "/home/seis/SecondBrain/09-review/agent-review-ledger.md",
   ledgerJsonPath: "/home/seis/SecondBrain/09-review/agent-review-ledger.json",
   maxLedgerEntries: 24,
+  maxBriefCharacters: 600,
   schemaVersion: "seis-second-brain-agent-review-assignment/v1",
   status: "human-selected-plan-only-review",
   decision: "NO-GO-agent-execution-requires-separate-approval",
@@ -5827,9 +5828,9 @@ function getSecondBrainSearchIndex(data = getSecondBrainData()) {
     type: "Agents",
     title: `Plan-only assignment: ${assignment.agent.name}`,
     source: assignment.markdownPath,
-    detail: `${assignment.status}. ${assignment.agent.duty} Local context: ${assignment.contextProfiles.map((profile) => profile.lane).join(", ") || "none"}.`,
+    detail: `${assignment.status}. Brief: ${assignment.humanReviewBrief?.text || "No brief recorded."} ${assignment.agent.duty} Local context: ${assignment.contextProfiles.map((profile) => profile.lane).join(", ") || "none"}.`,
     tags: ["#agent-review", "#plan-only", "#human-selected", `#${assignment.agent.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`],
-    relatedText: `${assignment.decision} ${assignment.contextProfiles.map((profile) => `${profile.lane} ${profile.plugin} ${profile.tools}`).join(" ")} ${assignment.installedAiProfiles.map((profile) => `${profile.name} ${profile.status}`).join(" ")}`,
+    relatedText: `${assignment.humanReviewBrief?.text || ""} ${assignment.decision} ${assignment.contextProfiles.map((profile) => `${profile.lane} ${profile.plugin} ${profile.tools}`).join(" ")} ${assignment.installedAiProfiles.map((profile) => `${profile.name} ${profile.status}`).join(" ")}`,
     action: "open-file",
     path: assignment.markdownPath,
     priority: 28
@@ -6277,6 +6278,10 @@ function renderSecondBrain() {
           <article class="metric-card"><strong>Recorded assignments</strong><p>${data.agentReviewAssignments.length}</p></article>
         </div>
         <p class="status-note">Selected duty: ${escapeHtml(getSecondBrainAgentReviewDefinition(data.activeAgentReviewAgent)[2])}</p>
+        <label class="second-brain-review-brief">
+          <span>Human-authored review brief</span>
+          <textarea rows="3" maxlength="${SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.maxBriefCharacters}" data-second-brain-agent-review-brief placeholder="Describe the bounded review objective and expected evidence. This stays browser-local and does not start an agent."></textarea>
+        </label>
         <div class="toolbar">
           <label class="checkbox-row"><input type="checkbox" data-second-brain-agent-review-assignment-confirmed> I explicitly assign this role to prepare a plan-only review.</label>
           <button type="button" data-action="second-brain-record-agent-review-assignment">Record Plan-Only Assignment</button>
@@ -6285,8 +6290,8 @@ function renderSecondBrain() {
         <p class="status-note" data-second-brain-agent-review-assignment-action>Last assignment: ${data.lastAgentReviewAssignment ? `${escapeHtml(data.lastAgentReviewAssignment.time)} / ${escapeHtml(data.lastAgentReviewAssignment.agent)} / ${escapeHtml(data.lastAgentReviewAssignment.status)} / ${escapeHtml(data.lastAgentReviewAssignment.path)}` : "Not recorded"}.</p>
         <p class="status-note">Outputs: ${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.markdownPath)} and ${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.jsonPath)}. Ledger: ${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.ledgerMarkdownPath)} and ${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.ledgerJsonPath)}.</p>
         <table class="data-table" data-second-brain-agent-review-ledger>
-          <thead><tr><th>Recorded</th><th>Agent</th><th>Status</th><th>Local context</th></tr></thead>
-          <tbody>${data.agentReviewAssignments.map((assignment) => `<tr><td>${escapeHtml(new Date(assignment.recordedAt).toLocaleTimeString())}</td><td>${escapeHtml(assignment.agent.name)}</td><td>${escapeHtml(assignment.status)}</td><td>${escapeHtml(assignment.contextProfiles.map((profile) => profile.lane).join(", ") || "No mapped lane")}</td></tr>`).join("") || "<tr><td colspan=\"4\">No plan-only assignments recorded.</td></tr>"}</tbody>
+          <thead><tr><th>Recorded</th><th>Agent</th><th>Status</th><th>Brief</th><th>Local context</th></tr></thead>
+          <tbody>${data.agentReviewAssignments.map((assignment) => `<tr><td>${escapeHtml(new Date(assignment.recordedAt).toLocaleTimeString())}</td><td>${escapeHtml(assignment.agent.name)}</td><td>${escapeHtml(assignment.status)}</td><td>${escapeHtml((assignment.humanReviewBrief?.text || "No brief recorded.").slice(0, 120))}</td><td>${escapeHtml(assignment.contextProfiles.map((profile) => profile.lane).join(", ") || "No mapped lane")}</td></tr>`).join("") || "<tr><td colspan=\"5\">No plan-only assignments recorded.</td></tr>"}</tbody>
         </table>
       </section>
       <h4>Local Context Profiles</h4>
@@ -9859,7 +9864,7 @@ function buildSecondBrainTrainingPackMarkdown(timestamp, data = getSecondBrainDa
   const contextProfileRows = SEIS_SECOND_BRAIN_SYSTEM.contextProfiles.map((profile) => `- ${profile.lane} | ${profile.plugin} | ${profile.statusTool} / ${profile.planTool} | agents: ${profile.relatedAgents.join(", ")} | output: ${profile.allowedOutput}`);
   const pluginSkillRows = SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.map((lane) => `- ${lane.plugin} | ${lane.skill} | ${lane.statusTool} / ${lane.planTool} | ${lane.readiness} | training: ${lane.trainingUse} | providerExecution=${lane.providerExecution} | externalMutation=${lane.externalMutation}`);
   const reviewAssignments = data.agentReviewAssignments || [];
-  const reviewAssignmentRows = reviewAssignments.map((assignment) => `- ${assignment.recordedAt} | ${assignment.agent.name} | ${assignment.status} | lanes: ${assignment.contextProfiles.map((profile) => profile.lane).join(", ") || "none"} | agentExecuted=${assignment.execution.agentExecuted}; providerCallsPerformed=${assignment.execution.providerCallsPerformed}; mcpInvocationsPerformed=${assignment.execution.mcpInvocationsPerformed}`);
+  const reviewAssignmentRows = reviewAssignments.map((assignment) => `- ${assignment.recordedAt} | ${assignment.agent.name} | ${assignment.status} | brief: ${assignment.humanReviewBrief?.text || "not recorded"} | lanes: ${assignment.contextProfiles.map((profile) => profile.lane).join(", ") || "none"} | agentExecuted=${assignment.execution.agentExecuted}; providerCallsPerformed=${assignment.execution.providerCallsPerformed}; mcpInvocationsPerformed=${assignment.execution.mcpInvocationsPerformed}`);
 
   return `# SEIS Second Brain Agent Training Pack
 
@@ -10338,7 +10343,7 @@ function buildSecondBrainAgentReviewQueue() {
   toast("SEIS Second Brain", `${record.agentQueue.length} plan-only agent reviews and one structured local record are ready for human assignment.`);
 }
 
-function buildSecondBrainAgentReviewAssignmentRecord(timestamp, agentName) {
+function buildSecondBrainAgentReviewAssignmentRecord(timestamp, agentName, reviewBrief) {
   const [agent, status, duty] = getSecondBrainAgentReviewDefinition(agentName);
   const contextProfiles = SEIS_SECOND_BRAIN_SYSTEM.contextProfiles
     .filter((profile) => profile.relatedAgents.includes(agent))
@@ -10356,6 +10361,11 @@ function buildSecondBrainAgentReviewAssignmentRecord(timestamp, agentName) {
     markdownPath: SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.markdownPath,
     jsonPath: SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.jsonPath,
     selectedByUser: true,
+    humanReviewBrief: {
+      text: reviewBrief,
+      source: "human-authored-browser-local",
+      characterCount: reviewBrief.length
+    },
     agent: { name: agent, status, duty },
     contextProfiles,
     installedAiProfiles: SEIS_INSTALLED_AI_SYSTEMS.map((system) => ({ name: system.name, status: system.status, role: system.role })),
@@ -10391,6 +10401,12 @@ Decision: ${record.decision}
 Selected by user: ${record.selectedByUser}
 Markdown path: ${record.markdownPath}
 Structured record: ${record.jsonPath}
+
+## Human-Authored Review Brief
+
+${record.humanReviewBrief?.text || "No brief recorded."}
+
+This brief was entered by a human and remains browser-local. It is not an agent instruction, provider prompt, or authorization to inspect files or perform an external action.
 
 ## Assigned Review Role
 
@@ -10441,6 +10457,7 @@ function buildSecondBrainAgentReviewLedgerRecord(assignments) {
       status: assignment.status,
       agent: assignment.agent,
       contextProfiles: assignment.contextProfiles,
+      humanReviewBrief: assignment.humanReviewBrief,
       execution: assignment.execution
     })),
     boundary: "Ledger entries are browser-local assignment receipts. They do not prove agent execution or authorize any external action."
@@ -10460,7 +10477,7 @@ Entries: ${ledger.assignments.length} of ${ledger.maxEntries}
 
 ## Assignment History
 
-${ledger.assignments.map((assignment, index) => `- ${index + 1}. ${assignment.recordedAt} | ${assignment.agent.name} | ${assignment.status} | Context: ${assignment.contextProfiles.map((profile) => profile.lane).join(", ") || "none"} | agentExecuted=${assignment.execution.agentExecuted}; providerCallsPerformed=${assignment.execution.providerCallsPerformed}; mcpInvocationsPerformed=${assignment.execution.mcpInvocationsPerformed}`).join("\n") || "- No plan-only assignments recorded."}
+${ledger.assignments.map((assignment, index) => `- ${index + 1}. ${assignment.recordedAt} | ${assignment.agent.name} | ${assignment.status} | Brief: ${assignment.humanReviewBrief?.text || "not recorded"} | Context: ${assignment.contextProfiles.map((profile) => profile.lane).join(", ") || "none"} | agentExecuted=${assignment.execution.agentExecuted}; providerCallsPerformed=${assignment.execution.providerCallsPerformed}; mcpInvocationsPerformed=${assignment.execution.mcpInvocationsPerformed}`).join("\n") || "- No plan-only assignments recorded."}
 
 ## Boundary
 
@@ -10477,8 +10494,17 @@ function recordSecondBrainAgentReviewAssignment(button) {
     toast("SEIS Second Brain", "Confirm the explicit plan-only assignment before recording the review receipt.");
     return;
   }
+  const reviewBrief = root?.querySelector("[data-second-brain-agent-review-brief]")?.value?.trim() || "";
+  if (!reviewBrief) {
+    toast("SEIS Second Brain", "Add a human-authored review brief before recording the plan-only assignment.");
+    return;
+  }
+  if (reviewBrief.length > SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.maxBriefCharacters) {
+    toast("SEIS Second Brain", `Keep the review brief within ${SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.maxBriefCharacters} characters.`);
+    return;
+  }
   const timestamp = new Date().toISOString();
-  const record = buildSecondBrainAgentReviewAssignmentRecord(timestamp, data.activeAgentReviewAgent);
+  const record = buildSecondBrainAgentReviewAssignmentRecord(timestamp, data.activeAgentReviewAgent, reviewBrief);
   upsertFile(record.markdownPath, buildSecondBrainAgentReviewAssignmentMarkdown(record));
   upsertFile(record.jsonPath, `${JSON.stringify(record, null, 2)}\n`);
   data.agentReviewAssignment = record;
