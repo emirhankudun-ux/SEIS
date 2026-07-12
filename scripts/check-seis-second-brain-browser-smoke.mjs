@@ -103,12 +103,17 @@ async function fetchJsonWithRetry(url, options = {}, timeoutMs = 15000) {
   let lastError;
 
   while (Date.now() < deadline) {
+    const controller = new AbortController();
+    const remainingMs = Math.max(250, deadline - Date.now());
+    const requestTimeout = setTimeout(() => controller.abort(), Math.min(1500, remainingMs));
     try {
-      const response = await fetch(url, options);
+      const response = await fetch(url, { ...options, signal: controller.signal });
       if (response.ok) return await response.json();
       lastError = new Error(`HTTP ${response.status}`);
     } catch (error) {
       lastError = error;
+    } finally {
+      clearTimeout(requestTimeout);
     }
     await delay(150);
   }
@@ -125,10 +130,19 @@ class CdpClient {
     this.ws = new WebSocket(wsUrl);
   }
 
-  async open() {
+  async open(timeoutMs = 10000) {
     await new Promise((resolveOpen, rejectOpen) => {
-      this.ws.addEventListener("open", resolveOpen, { once: true });
-      this.ws.addEventListener("error", rejectOpen, { once: true });
+      const connectionTimeout = setTimeout(() => {
+        rejectOpen(new Error(`CDP WebSocket connection timed out after ${timeoutMs}ms`));
+      }, timeoutMs);
+      this.ws.addEventListener("open", () => {
+        clearTimeout(connectionTimeout);
+        resolveOpen();
+      }, { once: true });
+      this.ws.addEventListener("error", (error) => {
+        clearTimeout(connectionTimeout);
+        rejectOpen(error instanceof Error ? error : new Error("CDP WebSocket connection failed"));
+      }, { once: true });
     });
 
     this.ws.addEventListener("message", (event) => {
