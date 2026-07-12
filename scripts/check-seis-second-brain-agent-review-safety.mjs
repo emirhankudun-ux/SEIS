@@ -36,6 +36,7 @@ for (const marker of [
   "mcpInvocationsPerformed: false",
   "Plan-only assignment: ${assignment.agent.name}",
   "data-second-brain-agent-review-brief",
+  "data-ai-second-brain-agent-review-brief",
   "humanReviewBrief",
   "human-authored-browser-local",
   "#human-selected"

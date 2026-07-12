@@ -8335,6 +8335,7 @@ function renderAiAssistantTab(activeTab, data) {
         <article class="metric-card"><strong>Agent Roster</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length}</p></article>
         <article class="metric-card" data-ai-second-brain-agent-review-assignment><strong>Agent Assignment</strong><p>${escapeHtml(agentReviewAssignment?.agent?.name || "Not recorded")}</p></article>
         <article class="metric-card" data-ai-second-brain-agent-review-ledger><strong>Assignment Ledger</strong><p>${agentReviewAssignments.length}</p></article>
+        <article class="metric-card" data-ai-second-brain-agent-review-brief><strong>Review Brief</strong><p>${escapeHtml(String(agentReviewAssignment?.humanReviewBrief?.text || "Not recorded").slice(0, 120))}</p></article>
         <article class="metric-card" data-ai-second-brain-agent-registry><strong>Agent Registry</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REGISTRY.decisionLabel)}</p></article>
         <article class="metric-card" data-ai-second-brain-plugin-skill-readiness><strong>Plugin Skills</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.length}</p></article>
         <article class="metric-card"><strong>Quality Gate</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.qualityGate)}</p></article>
