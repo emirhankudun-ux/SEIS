@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b111c" />
+    <title>SEIS Client Approval Desk</title>
+    <link rel="stylesheet" href="seis-client-approval-desk.css" />
+  </head>
+  <body>
+    <div class="desk-shell">
+      <header class="topbar">
+        <a class="brand" href="seis-conversation-hub.html"><span class="brand-mark">S</span><span><strong>SEIS</strong><small>Client Approval Desk</small></span></a>
+        <div class="top-actions"><span class="local-badge"><i></i> Decision log / local only</span><button class="ghost" type="button" data-action="export">Export log</button><label class="ghost" for="approval-import">Import log</label><input id="approval-import" type="file" accept="application/json,.json" hidden /><a class="primary-link" href="seis-conversation-hub.html">Conversation Hub</a></div>
+      </header>
+
+      <main>
+        <section class="hero"><div><p class="eyebrow">Agency work, client decisions</p><h1>Nothing external moves<br /><em>without your call.</em></h1><p>Review every SEIS conversation request in one append-only local decision ledger. Approval records scope; it never executes cloud, provider, deployment, file, or SSH actions.</p></div><div class="decision-orbit" aria-hidden="true"><span class="orbit-core">&#10003;</span><i class="ring one"></i><i class="ring two"></i><b class="dot a"></b><b class="dot b"></b></div></section>
+
+        <section class="metrics"><article><span>Awaiting client</span><strong id="awaiting-count">0</strong></article><article><span>Approved local scope</span><strong id="approved-count">0</strong></article><article><span>Changes requested</span><strong id="changes-count">0</strong></article><article class="accent"><span>Total audit records</span><strong id="total-count">0</strong></article></section>
+
+        <section class="desk-grid">
+          <aside class="request-panel panel">
+            <div class="panel-head"><div><p class="eyebrow">Decision queue</p><h2>Requests</h2></div><span id="queue-count">0</span></div>
+            <div class="filters" role="group" aria-label="Filter approval requests"><button class="is-active" type="button" data-filter="all">All</button><button type="button" data-filter="awaiting-client">Awaiting</button><button type="button" data-filter="approved-local">Approved</button><button type="button" data-filter="changes-requested">Changes</button></div>
+            <div class="request-list" id="request-list"></div>
+          </aside>
+
+          <section class="detail-panel panel">
+            <div class="empty-state" id="empty-state"><span>&#9670;</span><h2>No client request selected</h2><p>Create a request from any SEIS Conversation Workspace. Existing conversations and files remain unchanged.</p></div>
+            <div class="request-detail" id="request-detail" hidden>
+              <div class="detail-head"><div><p class="eyebrow" id="detail-source">Command Center</p><h2 id="detail-title">Approval request</h2></div><span class="status" id="detail-state">awaiting-client</span></div>
+              <p class="summary" id="detail-summary"></p>
+              <dl class="request-meta"><div><dt>Risk boundary</dt><dd id="detail-risk"></dd></div><div><dt>Requested</dt><dd id="detail-created"></dd></div><div><dt>Thread</dt><dd id="detail-thread"></dd></div></dl>
+              <label class="decision-note"><span>Client decision note</span><textarea id="decision-note" rows="4" placeholder="Record the reason, requested change, or approval boundary..."></textarea></label>
+              <div class="decision-actions"><button class="approve" type="button" data-decision="approve">Approve local scope</button><button type="button" data-decision="changes">Request changes</button><button class="decline" type="button" data-decision="decline">Decline</button></div>
+              <p class="execution-boundary">A decision updates this local audit trail only. It does not run code, merge a PR, call a provider, deploy, or execute SSH.</p>
+              <div class="timeline-head"><p class="eyebrow">Append-only timeline</p><a id="related-workspace" href="seis-conversation-workspace.html?source=command-center">Open related workspace &#8599;</a></div>
+              <ol class="timeline" id="timeline"></ol>
+            </div>
+          </section>
+        </section>
+      </main>
+      <footer><span>SEIS V17 / Client Approval Desk</span><span>Client decision evidence / no execution authority</span></footer>
+    </div>
+    <script src="seis-client-approval-bus.js" defer></script>
+    <script src="seis-client-approval-desk.js" defer></script>
+  </body>
+</html>
