@@ -13,6 +13,7 @@ const NATIVE_CONTRACT_PATH = path.join(ROOT, "packages", "seis_platform_swift", 
 const EVIDENCE_SCRIPT_PATH = path.join(ROOT, "scripts", "create-sub-agent-five-year-demo-evidence.mjs");
 const EVIDENCE_REPORT_JSON_PATH = path.join(ROOT, "reports", "seis-sub-agent-five-year-demo-evidence.json");
 const EVIDENCE_REPORT_MD_PATH = path.join(ROOT, "reports", "seis-sub-agent-five-year-demo-evidence.md");
+const MCP_RUNTIME_CONTRACT_PATH = path.join(ROOT, "content", "development", "seis-ai-core-mcp-runtime-contract.json");
 const DEMO_PROMOTION_MAP_PATH = path.join(ROOT, "apps", "seis-demo-web", "data", "seis-ai-core-version-promotion-map.json");
 const DEMO_PLAN_VIEW_PATH = path.join(ROOT, "apps", "seis-demo-web", "data", "seis-sub-agent-five-year-plan-view.json");
 const RUN_SCRIPT_PATH = path.join(ROOT, "scripts", "run-sub-agent-five-year-demo.mjs");
@@ -53,6 +54,8 @@ const nativeContract = readJson(NATIVE_CONTRACT_PATH);
 const evidenceScript = readText(EVIDENCE_SCRIPT_PATH);
 const evidenceReport = readJson(EVIDENCE_REPORT_JSON_PATH);
 const evidenceReportMarkdown = readText(EVIDENCE_REPORT_MD_PATH);
+const mcpRuntimeContract = readJson(MCP_RUNTIME_CONTRACT_PATH);
+ensure(mcpRuntimeContract, "MCP runtime contract must be valid JSON and loadable");
 const demoPromotionMap = readJson(DEMO_PROMOTION_MAP_PATH);
 const demoPlanView = readJson(DEMO_PLAN_VIEW_PATH);
 const runScript = readText(RUN_SCRIPT_PATH);
@@ -208,8 +211,14 @@ if (evidenceReport) {
   ensure(evidenceReport.completionPercent === 100, "evidence report must show 100% deterministic demo completion");
   ensure(evidenceReport.versionTargetCount === 5, "evidence report must include five AI Core version targets");
   ensure(evidenceReport.promotionGateCount === 5, "evidence report must include five AI Core promotion gates");
-  ensure(evidenceReport.mcpRuntimeToolCount === 34, "evidence report must include 34 MCP tools");
-  ensure(evidenceReport.mcpRuntimeResourceCount === 29, "evidence report must include 29 MCP resources");
+  ensure(
+    evidenceReport.mcpRuntimeToolCount === mcpRuntimeContract?.toolCount,
+    `evidence report MCP tool count must match the runtime contract (${mcpRuntimeContract?.toolCount ?? "unknown"})`
+  );
+  ensure(
+    evidenceReport.mcpRuntimeResourceCount === mcpRuntimeContract?.resourceCount,
+    `evidence report MCP resource count must match the runtime contract (${mcpRuntimeContract?.resourceCount ?? "unknown"})`
+  );
   ensure(evidenceReport.mcpRuntimePromptCount === 3, "evidence report must include 3 MCP prompts");
   ensure(evidenceReport.providerRegistryProviderCount >= 7, "evidence report must include provider registry provider count");
   ensure(evidenceReport.providerRegistryRequiredForCoreCount === 0, "evidence report must keep provider registry core key count at zero");
@@ -297,7 +306,14 @@ if (demoPlanView) {
   ensure(demoPlanView.yearCount === 5, "demo plan view must cover five years");
   ensure(demoPlanView.quarterCount === 20, "demo plan view must cover 20 quarters");
   ensure(demoPlanView.laneCount >= 6, "demo plan view must include at least six lanes");
-  ensure(demoPlanView.mcpRuntimeResourceCount === 29, "demo plan view must include 29 MCP resources");
+  ensure(
+    demoPlanView.mcpRuntimeToolCount === mcpRuntimeContract?.toolCount,
+    `demo plan view MCP tool count must match the runtime contract (${mcpRuntimeContract?.toolCount ?? "unknown"})`
+  );
+  ensure(
+    demoPlanView.mcpRuntimeResourceCount === mcpRuntimeContract?.resourceCount,
+    `demo plan view MCP resource count must match the runtime contract (${mcpRuntimeContract?.resourceCount ?? "unknown"})`
+  );
   ensure(
     demoPlanView.seisAiCoreProviderRegistry === "content/development/seis-ai-core-provider-registry.json",
     "demo plan view must link the AI Core provider registry"

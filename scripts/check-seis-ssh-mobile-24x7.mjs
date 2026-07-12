@@ -6,6 +6,8 @@ import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import net from "node:net";
 
+import { isLocalOrLanHost as isLocalHost } from "./lib/seis-ssh-network.mjs";
+
 const args = parseArgs(process.argv.slice(2));
 
 if (args.help) {
@@ -14,6 +16,7 @@ if (args.help) {
 }
 
 const hostAlias = args.host || "SEIS-SSH";
+const visibleHost = hostAlias === "SEIS-SSH" ? "SEIS-SSH" : "custom-ssh-target";
 const requireReady = Boolean(args["require-ready"]);
 const connectTimeout = Number(args["connect-timeout"] || "12");
 const identityFile = expandHome(args["identity-file"] || "");
@@ -22,17 +25,17 @@ const result = {
   ok: false,
   status: "blocked",
   mode: "read-only",
-  host: hostAlias,
+  host: visibleHost,
   target: "chatgpt-mobile-24x7-ssh",
   checks: {
     sshConfig: {
       checked: false,
       transport: "unknown",
-      hostname: null,
-      user: null,
+      hostnameKind: "missing",
+      userPresent: false,
       port: "22",
-      proxyCommand: null,
-      identityFile: identityFile || null,
+      proxyCommandShape: null,
+      identityFileConfigured: Boolean(identityFile),
       pickerCompatible: false,
       mobile24x7Compatible: false
     },
@@ -69,22 +72,24 @@ const result = {
 };
 
 const config = run("ssh", ["-G", hostAlias]);
+let sshValues = {};
 result.checks.sshConfig.checked = true;
 if (config.status !== 0) {
   result.blockers.push("ssh-config-unavailable");
   result.checks.sshConfig.error = sanitize(config.stderr);
 } else {
   const values = parseSshConfig(config.stdout);
+  sshValues = values;
   const transport = detectTransport(values);
   const configuredIdentity = normalizeIdentityFile(values.identityfile);
   result.checks.sshConfig = {
     checked: true,
     transport,
-    hostname: values.hostname || null,
-    user: values.user || null,
+    hostnameKind: classifyHostname(values.hostname, transport),
+    userPresent: Boolean(values.user),
     port: values.port || "22",
-    proxyCommand: normalizeProxyCommand(values.proxycommand),
-    identityFile: identityFile || configuredIdentity || null,
+    proxyCommandShape: normalizeProxyCommandShape(values.proxycommand),
+    identityFileConfigured: Boolean(identityFile || configuredIdentity),
     pickerCompatible: transport === "direct-cloud",
     mobile24x7Compatible: transport === "direct-cloud"
   };
@@ -97,35 +102,35 @@ if (config.status !== 0) {
   }
 }
 
-const directHost = result.checks.sshConfig.hostname;
+const directHost = sshValues.hostname || "";
 const directPort = Number(result.checks.sshConfig.port || "22");
-const directUser = result.checks.sshConfig.user || "root";
-const directIdentity = identityFile || result.checks.sshConfig.identityFile || "";
+const directUser = sshValues.user || "root";
+const directIdentity = identityFile || normalizeIdentityFile(sshValues.identityfile) || "";
 
-if (result.blockers.length === 0 && directHost) {
+  if (result.blockers.length === 0 && directHost) {
   const tcp = await probeTcp(directHost, directPort, connectTimeout * 1000);
   result.checks.tcp = {
     checked: true,
     reachable: tcp.reachable,
-    error: tcp.error
+    error: classifyProbeError(tcp.error)
   };
   if (!tcp.reachable) {
-    result.blockers.push(`direct-cloud-endpoint-unreachable: ${tcp.error || "unknown"}`);
+    result.blockers.push("direct-cloud-endpoint-unreachable");
   }
 }
 
 if (result.blockers.length === 0) {
   if (!directIdentity || !existsSync(directIdentity)) {
-    result.blockers.push(`identity-file-missing: ${directIdentity || "<not-set>"}`);
+    result.blockers.push("identity-file-missing");
   } else {
     const auth = probeSshAuth(directHost, directPort, directUser, directIdentity, connectTimeout);
     result.checks.sshAuth = {
       checked: true,
       authenticated: auth.ok,
-      error: auth.error || null
+      error: classifyRemoteError(auth.error)
     };
     if (!auth.ok) {
-      result.blockers.push(`direct-cloud-ssh-auth-unavailable: ${auth.error || "unknown"}`);
+      result.blockers.push("direct-cloud-ssh-auth-unavailable");
     }
   }
 }
@@ -194,6 +199,13 @@ function normalizeProxyCommand(value) {
   return value;
 }
 
+function normalizeProxyCommandShape(value) {
+  const normalized = normalizeProxyCommand(value);
+  if (!normalized) return null;
+  if (/(?:^|\s)(?:\S+\/)?gh\s+cs\s+ssh(?:\s|$)/.test(normalized)) return "gh cs ssh <codespace-endpoint>";
+  return "proxy-command-present";
+}
+
 function normalizeIdentityFile(value) {
   if (!value || value === "none") return null;
   return expandHome(String(value).split(/\s+/)[0]);
@@ -205,6 +217,14 @@ function detectTransport(values) {
   if (hostname === "github.codespaces" && (proxyCommand || "").includes("gh cs ssh")) return "codespace";
   if (!proxyCommand && hostname && !isLocalHost(hostname)) return "direct-cloud";
   return "unknown";
+}
+
+function classifyHostname(hostname, transport) {
+  if (!hostname) return "missing";
+  if (transport === "codespace") return "github.codespaces";
+  if (transport === "local-or-lan") return "blocked-local-or-lan";
+  if (transport === "direct-cloud") return "redacted-direct-cloud-host";
+  return "redacted-unknown-host";
 }
 
 function probeTcp(host, port, timeoutMs) {
@@ -223,6 +243,19 @@ function probeTcp(host, port, timeoutMs) {
     socket.once("error", (error) => finish({ reachable: false, error: error.message }));
     socket.connect(port, host);
   });
+}
+
+function classifyProbeError(error) {
+  if (!error) return null;
+  if (error === "timeout" || /timeout/i.test(error)) return "timeout";
+  return "unreachable";
+}
+
+function classifyRemoteError(error) {
+  if (!error) return null;
+  if (/permission denied|authentication/i.test(error)) return "authentication-failed";
+  if (/timeout/i.test(error)) return "timeout";
+  return "remote-check-failed";
 }
 
 function probeSshAuth(host, port, user, keyFile, timeoutSeconds) {
@@ -300,7 +333,7 @@ function nextActions(value) {
     actions.push(`Run: npm run cloud:ssh:direct-cloud:switch -- --public-ip <PUBLIC_IP> --direct-user root --apply`);
   }
   if (value.blockers.some((item) => item.startsWith("direct-cloud-endpoint-unreachable"))) {
-    actions.push(`Generate host-fix plan and rerun mobile check:\n  npm run cloud:ssh:host-fix-plan -- --public-ip ${quote(value.checks?.sshConfig?.hostname || "<direct-host>")} --user ${quote(value.checks?.sshConfig?.user || "root")} --live --json`);
+    actions.push("Generate the host-fix plan with the approved direct-cloud endpoint and rerun the mobile check; do not include the endpoint in public reports.");
   }
   if (value.blockers.some((item) => item.startsWith("direct-cloud-ssh-auth-unavailable"))) {
     actions.push("Install the local public key in root authorized_keys or provision aiuser, then rerun the mobile 24/7 check.");
@@ -317,20 +350,6 @@ function nextActions(value) {
   return actions;
 }
 
-function quote(value) {
-  const text = String(value || "");
-  if (!text) return "''";
-  return `'${text.replaceAll("'", "'\"'\"'")}'`;
-}
-
-function isLocalHost(host) {
-  const value = String(host || "").toLowerCase();
-  return value === "localhost"
-    || value === "127.0.0.1"
-    || value === "::1"
-    || value.endsWith(".local");
-}
-
 function expandHome(value) {
   const text = String(value || "");
   if (text === "~") return homedir();
@@ -339,10 +358,11 @@ function expandHome(value) {
 }
 
 function sanitize(value) {
-  return String(value || "")
-    .replace(/gho_[A-Za-z0-9_]+/g, "gho_************************************")
-    .replace(/sk-[A-Za-z0-9_-]+/g, "sk-************************************")
-    .trim();
+  const text = String(value || "").trim();
+  if (!text) return null;
+  if (/permission denied|authentication/i.test(text)) return "authentication-failed";
+  if (/timeout/i.test(text)) return "timeout";
+  return "remote-check-failed";
 }
 
 function printHelp() {

@@ -3,7 +3,10 @@
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname } from "node:path";
+import { homedir } from "node:os";
+import { dirname, join } from "node:path";
+
+import { isLocalOrLanHost as isLocalHost } from "./lib/seis-ssh-network.mjs";
 
 const args = parseArgs(process.argv.slice(2));
 const write = Boolean(args.write);
@@ -11,13 +14,16 @@ const check = Boolean(args.check);
 const alias = args.host || "SEIS-SSH";
 const outputJson = args.output || "reports/seis-ssh-public-access/latest.json";
 const outputMarkdown = args.markdown || "reports/seis-ssh-public-access/latest.md";
+const explicitSshConfigPath = args["ssh-config"] || process.env.SEIS_SSH_CONFIG_PATH || null;
+const sshConfigPath = explicitSshConfigPath || join(homedir(), ".ssh", "config");
+const sshConfigSource = explicitSshConfigPath ? "explicit-static-fixture" : "user-home";
 
 if (args.help) {
   printHelp();
   process.exit(0);
 }
 
-const report = buildReport(alias);
+const report = buildReport(alias, { sshConfigPath, sshConfigSource });
 
 if (write) {
   writeFile(outputJson, `${JSON.stringify(report, null, 2)}\n`);
@@ -32,7 +38,7 @@ if (check && !report.ok) {
   process.exit(1);
 }
 
-function buildReport(targetAlias) {
+function buildReport(targetAlias, config) {
   const failures = [];
   const warnings = [];
   const contract = readJson("deploy/seis-ssh-public-access-contract.json", failures);
@@ -44,6 +50,8 @@ function buildReport(targetAlias) {
 
   if (contract?.targetAlias !== "SEIS-SSH") failures.push("contract targetAlias must be SEIS-SSH");
   if (contract?.serverAndPortPolicy?.mode !== "preserve-existing-server-and-port") failures.push("contract must preserve existing server and port");
+  if (contract?.endpointContinuity?.mode !== "sanitized-runtime-snapshot") failures.push("contract must define sanitized endpoint continuity evidence");
+  if (packageJson?.scripts?.["check:seis-ssh-endpoint-continuity"] !== "node scripts/check-seis-ssh-endpoint-continuity.mjs") failures.push("endpoint continuity check script must be declared");
   if (accessModel?.publicAccessContract !== "deploy/seis-ssh-public-access-contract.json") failures.push("access model must link public access contract");
   if (roadmap?.publicAccessContract !== "deploy/seis-ssh-public-access-contract.json") failures.push("roadmap must link public access contract");
   if (packageJson?.scripts?.["report:seis-ssh-public-access"] !== "node scripts/create-seis-ssh-public-access-report.mjs --write") failures.push("package report script must be declared");
@@ -51,18 +59,22 @@ function buildReport(targetAlias) {
   if (!runbook.includes("npm run report:seis-ssh-public-access")) failures.push("runbook must document report command");
   if (!desktop.includes("report:seis-ssh-public-access")) warnings.push("Desktop surface does not mention the report command");
 
-  const sshConfig = inspectSshConfig(targetAlias);
-  if (!sshConfig.configured) warnings.push("local SEIS-SSH config was not resolved by ssh -G");
-  if (sshConfig.transport === "local-or-lan") failures.push("SEIS-SSH must not resolve to localhost or .local");
+  const sshConfig = inspectSshConfig(targetAlias, config);
+  if (!sshConfig.configured) failures.push(sshConfig.error || "ssh-config-unavailable");
+  if (sshConfig.transport === "local-or-lan") failures.push("SEIS-SSH must not resolve to loopback, private, link-local, or LAN transport");
+  if (sshConfig.configured && !["codespace", "direct-cloud"].includes(sshConfig.transport)) failures.push("SEIS-SSH must resolve to an approved cloud transport");
   if (sshConfig.alias !== "SEIS-SSH") failures.push("public report must inspect SEIS-SSH");
 
   const ok = failures.length === 0;
+  const staticFixture = config.sshConfigSource === "explicit-static-fixture";
+  const readinessReady = ok && sshConfig.configured === true && !staticFixture;
   return {
     id: "seis-ssh-public-access-report",
     generatedAt: new Date().toISOString(),
     ok,
-    status: ok ? "review-ready" : "blocked",
-    mode: "read-only-no-live-ssh",
+    status: staticFixture && ok ? "static-fixture-verified" : readinessReady ? "review-ready" : "blocked",
+    readinessReady,
+    mode: staticFixture ? "static-fixture-no-live-ssh" : "read-only-no-live-ssh",
     alias: targetAlias,
     contract: "deploy/seis-ssh-public-access-contract.json",
     runbook: "docs/deployment/seis-ssh-public-github-access.md",
@@ -95,14 +107,30 @@ function buildReport(targetAlias) {
     safety: [
       "This report does not open a live SSH session.",
       "This report does not print private keys, tokens, cookies, or provider credentials.",
-      "Direct hostnames are redacted; a short SHA-256 prefix is included only to compare endpoint continuity.",
+      "An explicit static fixture can verify parser behavior but never proves contributor or endpoint readiness.",
+      "Direct hostnames are redacted; endpoint continuity is checked separately from this public report.",
       "Changing HostName or Port remains approval-gated."
     ]
   };
 }
 
-function inspectSshConfig(targetAlias) {
-  const result = spawnSync("ssh", ["-G", targetAlias], {
+function inspectSshConfig(targetAlias, config) {
+  const configText = safeRead(config.sshConfigPath);
+  if (!hasExplicitHostBlock(configText, targetAlias)) {
+    return {
+      checked: true,
+      configured: false,
+      explicitHostBlock: false,
+      alias: targetAlias,
+      configSource: config.sshConfigSource,
+      error: "explicit-host-block-missing"
+    };
+  }
+
+  const sshArgs = config.sshConfigSource === "explicit-static-fixture"
+    ? ["-F", config.sshConfigPath, "-G", targetAlias]
+    : ["-G", targetAlias];
+  const result = spawnSync("ssh", sshArgs, {
     encoding: "utf8",
     timeout: 10000
   });
@@ -110,7 +138,9 @@ function inspectSshConfig(targetAlias) {
     return {
       checked: true,
       configured: false,
+      explicitHostBlock: true,
       alias: targetAlias,
+      configSource: config.sshConfigSource,
       error: sanitize(result.stderr || "ssh -G failed")
     };
   }
@@ -124,18 +154,37 @@ function inspectSshConfig(targetAlias) {
   return {
     checked: true,
     configured: true,
+    explicitHostBlock: true,
     alias: targetAlias,
+    configSource: config.sshConfigSource,
     transport,
     hostnameKind: classifyHostname(hostname, transport),
-    hostnameSha256Prefix: hostname ? sha256Prefix(hostname) : null,
+    endpointFingerprintSha256Prefix: hostname ? endpointFingerprint(hostname, port, proxyCommand) : null,
+    proxyCommandShape: normalizeProxyCommandShape(proxyCommand),
     port,
     userPresent: Boolean(values.user),
     proxyCommandPresent: Boolean(proxyCommand),
     identityFileConfigured: Boolean(normalizeNone(values.identityfile)),
     pickerLikelyCompatible: transport === "direct-cloud",
     liveConnectionAttempted: false,
-    serverAndPortPreservedByPolicy: true
+    serverAndPortPreservedByPolicy: true,
+    continuityState: "sanitized-config-snapshot-no-committed-baseline"
   };
+}
+
+function hasExplicitHostBlock(configText, targetAlias) {
+  return configText.split(/\r?\n/).some((line) => {
+    const match = /^\s*Host\s+(.+)$/.exec(line);
+    return Boolean(match && match[1].trim().split(/\s+/).includes(targetAlias));
+  });
+}
+
+function safeRead(file) {
+  try {
+    return readFileSync(file, "utf8");
+  } catch {
+    return "";
+  }
 }
 
 function parseSshConfig(output) {
@@ -170,16 +219,20 @@ function classifyHostname(hostname, transport) {
   return "redacted-unknown-host";
 }
 
-function isLocalHost(host) {
-  const value = String(host || "").toLowerCase();
-  return value === "localhost"
-    || value === "127.0.0.1"
-    || value === "::1"
-    || value.endsWith(".local");
+function endpointFingerprint(hostname, port, proxyCommand) {
+  return createHash("sha256")
+    .update([hostname, port, proxyCommand || "none"].join("\0"))
+    .digest("hex")
+    .slice(0, 16);
 }
 
-function sha256Prefix(value) {
-  return createHash("sha256").update(String(value)).digest("hex").slice(0, 12);
+function normalizeProxyCommandShape(value) {
+  if (!value) return null;
+  const normalized = String(value).replace(/\s+/g, " ").trim();
+  if (/(?:^|\s)(?:\S+\/)?gh\s+cs\s+ssh(?:\s|$)/.test(normalized)) {
+    return "gh cs ssh <codespace-endpoint>";
+  }
+  return "proxy-command-present";
 }
 
 function sanitize(value) {
@@ -220,9 +273,9 @@ Alias: ${report.alias}
 ## Local SSH Config Snapshot
 
 - Configured: ${report.localSshConfig.configured ? "yes" : "no"}
+- Config source: ${report.localSshConfig.configSource || "unknown"}
 - Transport: ${report.localSshConfig.transport || "unknown"}
 - Hostname kind: ${report.localSshConfig.hostnameKind || "unknown"}
-- Host fingerprint: ${report.localSshConfig.hostnameSha256Prefix || "none"}
 - Port: ${report.localSshConfig.port || "unknown"}
 - ProxyCommand present: ${report.localSshConfig.proxyCommandPresent ? "yes" : "no"}
 - Identity file configured: ${report.localSshConfig.identityFileConfigured ? "yes" : "no"}
@@ -294,8 +347,9 @@ function printHelp() {
 
 Options:
   --host HOST        SSH alias to inspect with ssh -G. Default: SEIS-SSH.
+  --ssh-config PATH  Explicit config fixture for static validation; never proves live readiness.
   --write            Write JSON and Markdown reports.
-  --check            Exit non-zero if static contract/report wiring is blocked.
+  --check            Exit non-zero if contract wiring or the explicit SEIS-SSH alias is blocked.
   --output PATH      JSON output path. Default: reports/seis-ssh-public-access/latest.json.
   --markdown PATH    Markdown output path. Default: reports/seis-ssh-public-access/latest.md.
 `);

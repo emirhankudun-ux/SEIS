@@ -6,6 +6,8 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 import net from "node:net";
 
+import { isLocalOrLanHost as isLocalHost } from "./lib/seis-ssh-network.mjs";
+
 const args = parseArgs(process.argv.slice(2));
 
 if (args.help) {
@@ -33,7 +35,7 @@ const resolvedHost = resolveDirectHost(directHost, directPublicIp, provider, pro
 const host = resolvedHost.value;
 const blockers = [];
 if (!host) blockers.push("--direct-host or --public-ip is required for --transport direct-cloud.");
-if (host && isLocalHost(host)) blockers.push("direct host must be a public cloud host, not localhost or .local.");
+if (host && isLocalHost(host)) blockers.push("direct host must be a public cloud host, not loopback, private, link-local, or LAN transport.");
 if (!/^[A-Za-z_][A-Za-z0-9_.-]*$/.test(user)) blockers.push("--direct-user is invalid.");
 if (!/^[0-9]+$/.test(port) || Number(port) < 1 || Number(port) > 65535) blockers.push("--direct-port must be 1-65535.");
 if (!identityFile || !existsSync(identityFile)) blockers.push(`direct-cloud-identity-file-missing: ${identityFile}`);
@@ -272,14 +274,6 @@ function probeTcp(hostToProbe, portToProbe, timeout) {
     socket.once("error", (error) => finish({ reachable: false, error: error.message }));
     socket.connect(portToProbe, hostToProbe);
   });
-}
-
-function isLocalHost(targetHost) {
-  const value = String(targetHost || "").toLowerCase();
-  return value === "localhost"
-    || value === "127.0.0.1"
-    || value === "::1"
-    || value.endsWith(".local");
 }
 
 function expandHome(value) {

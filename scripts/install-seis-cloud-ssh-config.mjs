@@ -5,6 +5,8 @@ import { spawnSync } from "node:child_process";
 import { dirname, join } from "node:path";
 import { homedir } from "node:os";
 
+import { isLocalOrLanHost as isLocalHost } from "./lib/seis-ssh-network.mjs";
+
 const START = "# BEGIN SEIS CLOUD REMOTE SSH";
 const END = "# END SEIS CLOUD REMOTE SSH";
 const args = parseArgs(process.argv.slice(2));
@@ -31,7 +33,7 @@ if (!/^[A-Za-z0-9_.-]+$/.test(codespace)) failures.push("Invalid --codespace.");
 if (!["codespace", "direct-cloud"].includes(transport)) failures.push("Unsupported transport. Use codespace or direct-cloud.");
 if (transport === "direct-cloud") {
   if (!directHost) failures.push("--direct-host is required for --transport direct-cloud.");
-  if (isLocalHost(directHost)) failures.push("--direct-host must be a cloud host, not localhost or a LAN .local hostname.");
+  if (isLocalHost(directHost)) failures.push("--direct-host must be a public cloud host, not loopback, private, link-local, or LAN transport.");
   if (!/^[A-Za-z_][A-Za-z0-9_.-]*$/.test(directUser)) failures.push("Invalid --direct-user.");
   if (!/^[0-9]+$/.test(directPort) || Number(directPort) < 1 || Number(directPort) > 65535) failures.push("Invalid --direct-port.");
 }
@@ -177,14 +179,6 @@ function commandPath(command) {
     encoding: "utf8"
   });
   return result.status === 0 ? result.stdout.trim() : "";
-}
-
-function isLocalHost(host) {
-  const value = String(host || "").toLowerCase();
-  return value === "localhost"
-    || value === "127.0.0.1"
-    || value === "::1"
-    || value.endsWith(".local");
 }
 
 function printHelp() {

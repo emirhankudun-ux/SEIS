@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { mkdirSync, writeFileSync, readFileSync, rmSync, existsSync } from "node:fs";
 import path from "node:path";
 import { tmpdir } from "node:os";
+import { fileURLToPath } from "node:url";
 
 import { toolDefinitions, executeTool } from "../src/agent/tools.mjs";
 import { runAgent, resolveModel, MODEL_ALIASES, DEFAULT_MODEL } from "../src/agent/loop.mjs";
@@ -12,6 +13,7 @@ import { runAgent, resolveModel, MODEL_ALIASES, DEFAULT_MODEL } from "../src/age
 /* ------------------------------------------------------------------ */
 
 let repoRoot;
+const workspaceRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 
 function makeRepo(files = {}) {
   repoRoot = path.join(tmpdir(), `seis-agent-test-${process.pid}-${Date.now()}`);
@@ -63,6 +65,7 @@ describe("toolDefinitions", () => {
     assert.ok(names.includes("seis_design_status"));
     assert.ok(names.includes("seis_data_plan"));
     assert.ok(names.includes("seis_ai_core_provider_status"));
+    assert.ok(names.includes("seis_ai_core_read_only_route"));
     assert.ok(names.includes("seis_ai_core_model_scaling_status"));
     assert.ok(names.includes("seis_ai_core_version_status"));
     assert.ok(names.includes("seis_ai_core_version_promotion_dry_run"));
@@ -912,6 +915,34 @@ describe("executeTool", () => {
         ],
         nextSafeActions: ["Expose this ledger in SEIS AI Core and Command Center as read-only evidence."]
       }),
+      "deploy/seis-ssh-public-access-contract.json": JSON.stringify({
+        id: "seis-ssh-public-access-contract",
+        status: "active",
+        targetAlias: "SEIS-SSH",
+        serverAndPortPolicy: { mode: "preserve-existing-server-and-port" },
+        endpointContinuity: { currentObservedPort: "22" },
+        approvalGates: ["execute-live-ssh", "change-server-or-port"]
+      }),
+      "content/development/seis-ssh-live-readiness-evidence.json": JSON.stringify({
+        id: "seis-ssh-live-readiness-evidence",
+        status: "blocked-provider-billing",
+        liveProbe: {
+          transport: "codespace",
+          hostnameKind: "github.codespaces",
+          port: "22",
+          strictReady: false,
+          pickerLikelyCompatible: false,
+          liveSshAttempted: true
+        },
+        blockers: [
+          {
+            id: "github-codespaces-billing-issue",
+            severity: "P0",
+            summary: "Codespaces billing is not ready in this fixture.",
+            safeNextAction: "Resolve billing before a strict live probe."
+          }
+        ]
+      }),
       "content/development/seis-sub-agent-5-year-plan.json": JSON.stringify({
         id: "sub-agent-5-year-plan",
         status: "documented",
@@ -1145,6 +1176,20 @@ describe("executeTool", () => {
     assert.ok(payload.publicStates.includes("Rate Limited"));
     assert.ok(payload.providers.some((provider) => provider.id === "seis-local-demo" && provider.routingEligible === true));
     assert.ok(payload.providers.some((provider) => provider.id === "anthropic-claude" && provider.publicStatus === "Missing Key"));
+  });
+
+  it("seis_ai_core_read_only_route returns a bounded provider and lane decision", () => {
+    const out = executeTool(
+      "seis_ai_core_read_only_route",
+      { taskType: "repository-validation", capability: "validation", localOnly: true, privacyMode: "local-only" },
+      { repoRoot: workspaceRoot, webRoot: path.join(workspaceRoot, "apps", "web") },
+    );
+    const payload = JSON.parse(out);
+    assert.equal(payload.selectedProvider, "codex-operator");
+    assert.equal(payload.agentLane.id, "seis-code");
+    assert.equal(payload.routeEligible, false);
+    assert.equal(payload.executionPerformed, false);
+    assert.equal(payload.safetyBoundary.networkCalled, false);
   });
 
   it("seis_ai_core_model_scaling_status returns the 20B local compatibility target", () => {
@@ -1398,6 +1443,20 @@ describe("executeTool", () => {
     assert.deepEqual(payload.mcpTools, ["seis_code_status", "seis_code_plan"]);
   });
 
+  it("SEIS Cloud status exposes the safe SEIS-SSH binding", () => {
+    const out = executeTool("seis_cloud_status", {}, ctx());
+    const payload = JSON.parse(out);
+    assert.equal(payload.ok, true);
+    assert.equal(payload.laneId, "seis-cloud");
+    assert.equal(payload.sshBinding.alias, "SEIS-SSH");
+    assert.equal(payload.sshBinding.port, "22");
+    assert.equal(payload.sshBinding.serverAndPortPolicy, "preserve-existing-server-and-port");
+    assert.equal(payload.sshBinding.runtimeMode, "static-read-only");
+    assert.equal(payload.sshBinding.liveClaimBlocked, true);
+    assert.equal(payload.sshBinding.liveSshAttempted, true);
+    assert.equal(payload.sshBinding.safety.length, 3);
+  });
+
   it("personal SEIS lane plan tools return plan-only execution guidance", () => {
     const out = executeTool("seis_cloud_plan", { request: "prepare deployment readiness" }, ctx());
     const payload = JSON.parse(out);
@@ -1407,6 +1466,8 @@ describe("executeTool", () => {
     assert.ok(payload.steps.some((step) => step.includes("provider-neutral preflight")));
     assert.ok(payload.approvalBoundary.includes("explicit human approval"));
     assert.deepEqual(payload.defaultChecks, ["npm run check:cloud-access-policy"]);
+    assert.equal(payload.sshBinding.alias, "SEIS-SSH");
+    assert.ok(payload.steps.some((step) => step.includes("SEIS-SSH")));
   });
 
   it("run_checks accepts the a11y scope", () => {

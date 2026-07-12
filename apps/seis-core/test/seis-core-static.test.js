@@ -133,6 +133,58 @@ test("SEIS Command Center supports multi-model orchestration", async () => {
   }
 });
 
+test("SEIS Command Center binds specialist lanes and Store through a local control plane", async () => {
+  const html = await readFile(new URL("index.html", root), "utf8");
+  const script = await readFile(new URL("script.js", root), "utf8");
+  const css = await readFile(new URL("styles.css", root), "utf8");
+  const registry = JSON.parse(await readFile(new URL("data/seis-core-ecosystem-registry.json", root), "utf8"));
+
+  for (const id of ["ecosystem-control-state", "ecosystem-control-summary", "ecosystem-control-grid", "ecosystem-control-feedback"]) {
+    assert.match(html, new RegExp(`id="${id}"`));
+  }
+  for (const signal of ["fallbackSeisCoreEcosystemRegistry", "renderEcosystemControlPlane", "loadSeisCoreEcosystemRegistry", "copyEcosystemGate"]) {
+    assert.match(script, new RegExp(signal));
+  }
+  for (const selector of ["ecosystem-control-plane", "ecosystem-lane-card", "ecosystem-facts", "ecosystem-lane-actions"]) {
+    assert.match(css, new RegExp(selector));
+  }
+  assert.equal(registry.id, "seis-core-ecosystem-registry");
+  assert.equal(registry.store.status, "Local Demo");
+  assert.match(registry.runtimeBoundary, /does not authenticate connectors/);
+  assert.equal(registry.pluginUniverse.mode, "source-visible-read-only");
+  assert.equal(registry.pluginUniverse.uniquePlugins, 300);
+  assert.equal(registry.pluginUniverse.totalLinks, 301);
+  assert.equal(registry.pluginUniverse.laneCount, 12);
+  assert.equal(registry.pluginUniverse.mcpBoundary, "status-and-plan-only");
+  assert.equal(registry.pluginUniverse.personalPlugins.length, 5);
+  assert.match(script, /pluginUniverse/);
+  assert.match(script, /pluginCount/);
+  assert.match(script, /pluginLaneCount/);
+  for (const lane of ["seis", "seis-cloud", "seis-code", "seis-design", "seis-data", "seis-store"]) {
+    const record = registry.lanes.find((candidate) => candidate.id === lane);
+    assert.ok(record, `${lane} should have a Core control-plane record`);
+    assert.match(record.qualityGate, /^npm run check:/);
+    assert.equal(record.status === "Connected", false, `${lane} must not claim a live connection`);
+  }
+  const sshBinding = registry.lanes.find((candidate) => candidate.id === "seis-cloud")?.sshBinding;
+  assert.equal(sshBinding?.alias, "SEIS-SSH");
+  assert.equal(sshBinding?.contract, "deploy/seis-ssh-public-access-contract.json");
+  assert.equal(sshBinding?.serverAndPortPolicy, "preserve-existing-server-and-port");
+  assert.equal(sshBinding?.runtimeMode, "static-read-only");
+  assert.equal(sshBinding?.githubExperience?.status, "review-ready-contract");
+  assert.equal(sshBinding?.transport?.provider, "github-codespaces");
+  assert.equal(sshBinding?.transport?.port, "22");
+  assert.equal(sshBinding?.contributorDoctor?.status, "review-ready-with-warning");
+  assert.equal(sshBinding?.liveReadiness?.status, "blocked-provider-billing");
+  assert.match(script, /sshBinding/);
+  assert.match(script, /SSH public/);
+  assert.match(script, /SSH transport/);
+  assert.match(script, /SSH doctor/);
+  assert.match(script, /SSH live/);
+  assert.match(script, /SSH binding/);
+  assert.match(script, /Array\.isArray\(lane\.mcpTools\)/);
+});
+
 
 test("SEIS Command Center covers the required ecosystem operating domains", async () => {
   const script = await readFile(new URL("script.js", root), "utf8");

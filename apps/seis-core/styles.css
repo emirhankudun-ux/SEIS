@@ -1240,6 +1240,112 @@ select {
   gap: 12px;
 }
 
+.ecosystem-control-plane {
+  margin-bottom: 14px;
+  background:
+    linear-gradient(135deg, rgba(64, 120, 255, 0.1), rgba(0, 163, 163, 0.08)),
+    var(--surface);
+}
+
+.ecosystem-control-summary,
+.ecosystem-lane-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.ecosystem-control-summary {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 12px;
+}
+
+.ecosystem-lane-grid {
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+}
+
+.ecosystem-summary-card,
+.ecosystem-lane-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.68);
+  box-shadow: none;
+}
+
+.ecosystem-summary-card {
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+}
+
+.ecosystem-summary-card span,
+.ecosystem-summary-card small,
+.ecosystem-control-feedback {
+  color: var(--muted);
+}
+
+.ecosystem-summary-card strong {
+  font-size: 1.25rem;
+}
+
+.ecosystem-lane-card {
+  display: grid;
+  gap: 12px;
+  padding: 15px;
+}
+
+.ecosystem-lane-card h4,
+.ecosystem-lane-card p,
+.ecosystem-facts {
+  margin: 0;
+}
+
+.ecosystem-lane-card p,
+.ecosystem-facts dd {
+  color: var(--muted);
+}
+
+.ecosystem-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.ecosystem-facts div {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.ecosystem-facts dt {
+  color: var(--ink);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ecosystem-facts dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.ecosystem-lane-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ecosystem-link {
+  text-decoration: none;
+}
+
+.ecosystem-control-feedback {
+  min-height: 20px;
+  margin: 12px 0 0;
+  font-size: 0.75rem;
+}
+
 .goal-card,
 .repo-card,
 .agent-card,
@@ -1838,6 +1944,8 @@ select {
   .automation-ops-layout,
   .architecture-ops-layout,
   .security-ops-layout,
+  .ecosystem-control-summary,
+  .ecosystem-facts,
   .readiness-summary-grid,
   .operations-readiness-layout,
   .knowledge-map-layout,

@@ -223,7 +223,7 @@ function formatLocalAiToolState(tool) {
     id: tool.id,
     label: tool.label,
     command: tool.command,
-    commandPath: tool.appPath || commandState.path,
+    commandPath: tool.appPath || redactPublicCommandPath(commandState.path),
     launcherCommandPath: tool.appPath ? commandState.path : null,
     appPath: tool.appPath || null,
     installed: commandState.installed && appInstalled,
@@ -236,6 +236,11 @@ function formatLocalAiToolState(tool) {
     status,
     issueCodes: issues
   };
+}
+
+function redactPublicCommandPath(value) {
+  if (!value) return value;
+  return /^\/Users\/[^/]+(?:\/|$)/.test(String(value)) ? null : value;
 }
 
 function createLocalAiToolReadinessSource(existingSource) {
@@ -305,9 +310,17 @@ function checkThirdPartyCandidate(root, definition) {
 
 function createThirdPartyAiToolInventorySource(existingSource) {
   const sourceRootExists = fs.existsSync(thirdPartySourceRoot);
-  const candidates = sourceRootExists
-    ? THIRD_PARTY_AI_HELPERS.map((definition) => checkThirdPartyCandidate(thirdPartySourceRoot, definition))
-    : [];
+  const candidates = THIRD_PARTY_AI_HELPERS.map((definition) => sourceRootExists
+    ? checkThirdPartyCandidate(thirdPartySourceRoot, definition)
+    : {
+        id: definition.id,
+        label: definition.label,
+        status: "source-unavailable",
+        sourceRoot: null,
+        aliases: definition.aliases,
+        markerHints: definition.markerHints || [],
+        markerHits: []
+      });
 
   return {
     id: "seis-third-party-ai-tool-inventory",

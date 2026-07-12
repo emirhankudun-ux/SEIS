@@ -9266,14 +9266,14 @@
       "helperCount": 17,
       "readyCount": 11,
       "missingCredentialCount": 2,
-      "missingCommandCount": 4,
-      "runtimeNotReadyCount": 0,
+      "missingCommandCount": 3,
+      "runtimeNotReadyCount": 1,
       "tools": [
         {
           "id": "codex",
           "label": "Codex",
           "command": "codex",
-          "commandPath": "/Users/emirhankudun/.local/bin/codex",
+          "commandPath": null,
           "launcherCommandPath": null,
           "appPath": null,
           "installed": true,
@@ -9362,7 +9362,7 @@
           "id": "claude",
           "label": "Claude",
           "command": "claude",
-          "commandPath": "/Users/emirhankudun/.local/bin/claude",
+          "commandPath": null,
           "launcherCommandPath": null,
           "appPath": null,
           "installed": true,
@@ -9381,7 +9381,7 @@
           "id": "gemini",
           "label": "Gemini",
           "command": "gemini",
-          "commandPath": "/Users/emirhankudun/.local/bin/gemini",
+          "commandPath": null,
           "launcherCommandPath": null,
           "appPath": null,
           "installed": true,
@@ -9400,7 +9400,7 @@
           "id": "qwen",
           "label": "Qwen",
           "command": "qwen",
-          "commandPath": "/Users/emirhankudun/.local/bin/qwen",
+          "commandPath": null,
           "launcherCommandPath": null,
           "appPath": null,
           "installed": true,
@@ -9417,14 +9417,12 @@
           "commandPath": null,
           "launcherCommandPath": null,
           "appPath": null,
-          "installed": false,
+          "installed": true,
           "credentialState": null,
           "runtimeOk": true,
           "offlineFallbackCapable": true,
-          "status": "missing-command",
-          "issueCodes": [
-            "command-not-found"
-          ]
+          "status": "ready",
+          "issueCodes": []
         },
         {
           "id": "ollama",
@@ -9435,16 +9433,18 @@
           "appPath": null,
           "installed": true,
           "credentialState": null,
-          "runtimeOk": true,
+          "runtimeOk": false,
           "offlineFallbackCapable": true,
-          "status": "ready",
-          "issueCodes": []
+          "status": "runtime-not-ready",
+          "issueCodes": [
+            "runtime-check-failed"
+          ]
         },
         {
           "id": "opencode",
           "label": "OpenCode",
           "command": "opencode",
-          "commandPath": "/Users/emirhankudun/.local/bin/opencode",
+          "commandPath": null,
           "launcherCommandPath": null,
           "appPath": null,
           "installed": true,
@@ -9490,7 +9490,7 @@
           "id": "hermes",
           "label": "Hermes Agent",
           "command": "hermes",
-          "commandPath": "/Users/emirhankudun/.local/bin/hermes",
+          "commandPath": null,
           "launcherCommandPath": null,
           "appPath": null,
           "installed": true,
@@ -9504,7 +9504,7 @@
           "id": "goose",
           "label": "Goose",
           "command": "goose",
-          "commandPath": "/Users/emirhankudun/.local/bin/goose",
+          "commandPath": null,
           "launcherCommandPath": null,
           "appPath": null,
           "installed": true,
@@ -9535,15 +9535,15 @@
       "sourceRoot": "../3.taraf kodlar",
       "path": "reports/third-party-ai-tool-inventory.json",
       "generatedAt": "2026-06-10T06:28:42.102Z",
-      "available": true,
+      "available": false,
       "candidateCount": 6,
-      "detectedCount": 5,
+      "detectedCount": 0,
       "candidates": [
         {
           "id": "claude-code",
           "label": "Claude Code",
-          "status": "detected",
-          "sourceRoot": "../3.taraf kodlar/claude-code",
+          "status": "source-unavailable",
+          "sourceRoot": null,
           "aliases": [
             "claude-code"
           ],
@@ -9552,17 +9552,13 @@
             ".claude-plugin",
             ".git"
           ],
-          "markerHits": [
-            ".claude",
-            ".claude-plugin",
-            ".git"
-          ]
+          "markerHits": []
         },
         {
           "id": "gemini-cli",
           "label": "Gemini CLI",
-          "status": "detected",
-          "sourceRoot": "../3.taraf kodlar/gemini-cli",
+          "status": "source-unavailable",
+          "sourceRoot": null,
           "aliases": [
             "gemini-cli"
           ],
@@ -9571,17 +9567,13 @@
             ".github",
             "packages"
           ],
-          "markerHits": [
-            ".gemini",
-            ".github",
-            "packages"
-          ]
+          "markerHits": []
         },
         {
           "id": "antigravity",
           "label": "Antigravity IDE",
-          "status": "detected",
-          "sourceRoot": "../3.taraf kodlar/antigravity",
+          "status": "source-unavailable",
+          "sourceRoot": null,
           "aliases": [
             "antigravity"
           ],
@@ -9590,16 +9582,13 @@
             "Configuration",
             "Plugins"
           ],
-          "markerHits": [
-            "Contents",
-            "Configuration"
-          ]
+          "markerHits": []
         },
         {
           "id": "deepseek-coder",
           "label": "DeepSeek Coder",
-          "status": "detected",
-          "sourceRoot": "../3.taraf kodlar/DeepSeek-Coder",
+          "status": "source-unavailable",
+          "sourceRoot": null,
           "aliases": [
             "DeepSeek-Coder",
             "deepseek-coder"
@@ -9609,17 +9598,13 @@
             "finetune",
             "Evaluation"
           ],
-          "markerHits": [
-            ".github",
-            "finetune",
-            "Evaluation"
-          ]
+          "markerHits": []
         },
         {
           "id": "awesome-deepseek-agent",
           "label": "Awesome DeepSeek Agent",
-          "status": "detected",
-          "sourceRoot": "../3.taraf kodlar/awesome-deepseek-agent",
+          "status": "source-unavailable",
+          "sourceRoot": null,
           "aliases": [
             "awesome-deepseek-agent",
             "deepseek"
@@ -9629,15 +9614,12 @@
             "docs",
             "README.md"
           ],
-          "markerHits": [
-            ".github",
-            "docs"
-          ]
+          "markerHits": []
         },
         {
           "id": "open-design",
           "label": "Open Design",
-          "status": "missing",
+          "status": "source-unavailable",
           "sourceRoot": null,
           "aliases": [
             "open-design",

@@ -49,6 +49,8 @@ Use this read-only sequence for a GitHub review:
 ```bash
 npm run check:seis-ssh-public-access
 npm run check:seis-ssh-public-access-report
+npm run check:seis-ssh-public-access-report-fixtures
+npm run check:seis-ssh-network-boundaries
 npm run check:seis-ssh-public-onboarding
 npm run check:seis-ssh-public-contributor-doctor
 npm run check:seis-ssh-live-readiness-evidence
@@ -60,8 +62,9 @@ npm run check:seis-ssh-picker-compatibility
 npm run check:seis-ssh-cloud-roadmap
 ```
 
-These commands prove repo governance and public-access wiring. They do not
-prove a live SSH session.
+These commands prove repo governance and public-access wiring. The report,
+onboarding, and contributor-doctor checks fail closed when the local config has
+no explicit `Host SEIS-SSH` block. They still do not prove a live SSH session.
 
 The latest approval-gated live probe is recorded in
 [`seis-ssh-live-readiness-evidence.md`](./seis-ssh-live-readiness-evidence.md).
@@ -87,6 +90,41 @@ separates three audiences:
 
 The onboarding pack is not anonymous shell access and not a shared private-key
 path.
+
+## GitHub Pull Request Guard
+
+Every pull request that changes the SEIS-SSH contract, runbooks, checks, or
+workflow is covered by
+`.github/workflows/seis-ssh-public-access.yml`. The workflow is a fast,
+static-only GitHub status check for contributors and maintainers. It runs the
+public contract, missing-alias regression fixture, shared network-boundary
+tests, onboarding, contributor doctor, live-readiness evidence, access-model,
+cloud-roadmap, closed-runtime, and enterprise checks before review.
+
+GitHub-hosted runners use the tracked
+`scripts/fixtures/seis-ssh-public-access.conf` parser fixture. It contains an
+explicit `Host SEIS-SSH`, preserves `github.codespaces` and port `22`, and never
+opens a connection. Fixture output is labeled `static-fixture-verified` with
+`readinessReady: false`; it cannot be used as live endpoint evidence. A
+separate negative fixture proves that a missing alias exits non-zero.
+The contributor doctor selects this fixture automatically only when
+`GITHUB_ACTIONS=true` and no explicit config path was supplied; its CI result stays
+`blocked` with `readinessReady: false`.
+
+Run the same local gate before opening a PR:
+
+```bash
+npm run check:seis-ssh-github-pr-contract
+```
+
+The workflow requests `contents: read` only. It does not run `gh auth`,
+`gh cs ssh`, `ssh -T`, a live SSH session, deployment, credential access, or
+server/port mutation. A passing status check proves repository wiring and
+honest boundaries, not that the remote endpoint is online.
+
+The SSH contract and its workflow are owner-reviewed through `.github/CODEOWNERS`.
+GitHub contributors can therefore use the same visible `SEIS-SSH` alias and
+receive deterministic feedback without sharing maintainer credentials.
 
 `npm run report:seis-ssh-public-contributor-doctor` writes a self-service
 doctor report to
@@ -123,6 +161,26 @@ source of truth. The installer or docs may read:
 If no `Port` is configured, OpenSSH default `22` is treated as the preserved
 port. A new port is not introduced silently.
 
+## Endpoint Continuity Evidence
+
+The public report exposes a sanitized endpoint fingerprint so a maintainer can
+compare the resolved `SEIS-SSH` target without publishing the host name,
+Codespace identifier, identity-file path, or raw `ProxyCommand`. The fingerprint
+covers the resolved host, port, and normalized transport shape.
+
+Record a local baseline once after reviewing the current endpoint:
+
+```bash
+npm run record:seis-ssh-endpoint-continuity
+npm run check:seis-ssh-endpoint-continuity
+```
+
+The baseline and result stay under the ignored `reports/` directory. Recording
+the baseline does not write `~/.ssh/config` or open SSH. A missing baseline is
+reported as `baseline-required`; a fingerprint or port mismatch fails closed
+and cannot overwrite the baseline automatically. Endpoint migration still
+requires explicit owner approval and a reviewed change.
+
 ## State Labels
 
 | State | Meaning | Allowed claim |
@@ -153,5 +211,6 @@ npm run check:seis-ssh-public-onboarding
 npm run check:seis-ssh-public-contributor-doctor
 npm run check:seis-ssh-live-readiness-evidence
 npm run check:seis-ssh-enterprise-benchmark
+npm run check:seis-ssh-endpoint-continuity
 git diff --check
 ```

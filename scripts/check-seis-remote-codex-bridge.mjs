@@ -2,6 +2,8 @@
 
 import { spawnSync } from "node:child_process";
 
+import { isLocalOrLanHost as isLocalHost } from "./lib/seis-ssh-network.mjs";
+
 const args = parseArgs(process.argv.slice(2));
 
 if (args.help) {
@@ -202,14 +204,6 @@ function detectTransport(values) {
   if (hostname === "github.codespaces" && (proxyCommand || "").includes("gh cs ssh")) return "codespace";
   if (!proxyCommand && hostname && !isLocalHost(hostname)) return "direct-cloud";
   return "unknown";
-}
-
-function isLocalHost(host) {
-  const value = String(host || "").toLowerCase();
-  return value === "localhost"
-    || value === "127.0.0.1"
-    || value === "::1"
-    || value.endsWith(".local");
 }
 
 function shellQuote(value) {

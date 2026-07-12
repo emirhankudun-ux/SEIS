@@ -20,6 +20,14 @@ const files = {
   queue: "docs/roadmap/NEXT_PR_QUEUE.md",
   desktop: "apps/web/desktop.js",
   reportScript: "scripts/create-seis-ssh-public-access-report.mjs",
+  reportFixtureScript: "scripts/check-seis-ssh-public-access-report-fixtures.mjs",
+  networkBoundary: "scripts/lib/seis-ssh-network.mjs",
+  networkBoundaryTest: "scripts/tests/seis-ssh-network.test.mjs",
+  staticConfigFixture: "scripts/fixtures/seis-ssh-public-access.conf",
+  endpointContinuityScript: "scripts/check-seis-ssh-endpoint-continuity.mjs",
+  pickerCompatibilityScript: "scripts/check-seis-ssh-picker-compatibility.mjs",
+  mobileReadinessScript: "scripts/check-seis-ssh-mobile-24x7.mjs",
+  onlineReadinessScript: "scripts/ensure-seis-ssh-online.mjs",
   onboardingScript: "scripts/create-seis-ssh-public-onboarding-pack.mjs",
   contributorDoctorScript: "scripts/check-seis-ssh-public-contributor-doctor.mjs",
   liveEvidence: "content/development/seis-ssh-live-readiness-evidence.json",
@@ -51,6 +59,14 @@ ensure(serverPolicy.turkishInvariant === "Ayni sunucu ve baglanti noktasi korunu
 ensure((serverPolicy.forbiddenActions || []).includes("change-port-without-owner-approval"), "contract must forbid port changes without owner approval");
 ensure((serverPolicy.forbiddenActions || []).includes("change-host-to-localhost"), "contract must forbid localhost migration");
 ensure((serverPolicy.forbiddenActions || []).includes("create-new-visible-alias-for-same-target"), "contract must forbid duplicate visible aliases");
+const endpointContinuity = contract?.endpointContinuity || {};
+ensure(endpointContinuity.mode === "sanitized-runtime-snapshot", "contract must define sanitized endpoint continuity evidence");
+ensure(endpointContinuity.checkCommand === "npm run check:seis-ssh-endpoint-continuity", "contract must expose endpoint continuity check");
+ensure(endpointContinuity.recordCommand === "npm run record:seis-ssh-endpoint-continuity", "contract must expose endpoint baseline recording command");
+ensure(endpointContinuity.currentObservedPort === "22", "contract must preserve the currently observed port 22");
+ensure(endpointContinuity.missingBaselineState === "baseline-required", "endpoint continuity must fail closed when no baseline exists");
+ensure(endpointContinuity.migrationRequiresApproval === true, "endpoint migration must require owner approval");
+ensure(endpointContinuity.autoMigration === false, "endpoint continuity must not auto-migrate");
 const githubReader = (contract?.profiles || []).find((profile) => profile.id === "github-reader") || {};
 const individualUser = (contract?.profiles || []).find((profile) => profile.id === "individual-user") || {};
 ensure((githubReader.allowedActions || []).includes("run the read-only contributor doctor"), "github-reader profile must allow contributor doctor");
@@ -63,12 +79,16 @@ ensure((roadmap?.validationCommands || []).includes("npm run check:seis-ssh-publ
 
 ensure(scripts["check:seis-ssh-public-access"] === "node scripts/check-seis-ssh-public-access.mjs", "package script check:seis-ssh-public-access must be declared");
 ensure(scripts["check:seis-ssh-public-access-report"] === "node scripts/create-seis-ssh-public-access-report.mjs --check", "package script check:seis-ssh-public-access-report must be declared");
+ensure(scripts["check:seis-ssh-public-access-report-fixtures"] === "node scripts/check-seis-ssh-public-access-report-fixtures.mjs", "package script check:seis-ssh-public-access-report-fixtures must be declared");
+ensure(scripts["check:seis-ssh-network-boundaries"] === "node --test scripts/tests/seis-ssh-network.test.mjs", "package script check:seis-ssh-network-boundaries must be declared");
 ensure(scripts["report:seis-ssh-public-access"] === "node scripts/create-seis-ssh-public-access-report.mjs --write", "package script report:seis-ssh-public-access must be declared");
 ensure(scripts["check:seis-ssh-public-onboarding"] === "node scripts/create-seis-ssh-public-onboarding-pack.mjs --check", "package script check:seis-ssh-public-onboarding must be declared");
 ensure(scripts["report:seis-ssh-public-onboarding"] === "node scripts/create-seis-ssh-public-onboarding-pack.mjs --write", "package script report:seis-ssh-public-onboarding must be declared");
 ensure(scripts["check:seis-ssh-public-contributor-doctor"] === "node scripts/check-seis-ssh-public-contributor-doctor.mjs --check", "package script check:seis-ssh-public-contributor-doctor must be declared");
 ensure(scripts["report:seis-ssh-public-contributor-doctor"] === "node scripts/check-seis-ssh-public-contributor-doctor.mjs --write", "package script report:seis-ssh-public-contributor-doctor must be declared");
 ensure(scripts["check:seis-ssh-live-readiness-evidence"] === "node scripts/check-seis-ssh-live-readiness-evidence.mjs", "package script check:seis-ssh-live-readiness-evidence must be declared");
+ensure(scripts["check:seis-ssh-endpoint-continuity"] === "node scripts/check-seis-ssh-endpoint-continuity.mjs", "package script check:seis-ssh-endpoint-continuity must be declared");
+ensure(scripts["record:seis-ssh-endpoint-continuity"] === "node scripts/check-seis-ssh-endpoint-continuity.mjs --record --write", "package script record:seis-ssh-endpoint-continuity must be declared");
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-public-access"), "quality:governance must include public access check");
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-public-contributor-doctor"), "quality:governance must include public contributor doctor check");
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-live-readiness-evidence"), "quality:governance must include live readiness evidence check");
@@ -76,12 +96,15 @@ ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-li
 for (const command of [
   "npm run check:seis-ssh-public-access",
   "npm run check:seis-ssh-public-access-report",
+  "npm run check:seis-ssh-public-access-report-fixtures",
+  "npm run check:seis-ssh-network-boundaries",
   "npm run report:seis-ssh-public-access",
   "npm run check:seis-ssh-public-onboarding",
   "npm run report:seis-ssh-public-onboarding",
   "npm run check:seis-ssh-public-contributor-doctor",
   "npm run report:seis-ssh-public-contributor-doctor",
   "npm run check:seis-ssh-live-readiness-evidence",
+  "npm run check:seis-ssh-endpoint-continuity",
   "npm run check:seis-ssh-access-model",
   "npm run check:seis-ssh-picker-compatibility",
   "npm run check:seis-ssh-cloud-roadmap",
@@ -122,10 +145,13 @@ for (const token of [
   "Keep the same server and port.",
   "Ayni sunucu ve baglanti noktasi korunur.",
   "npm run check:seis-ssh-public-access",
+  "npm run check:seis-ssh-public-access-report-fixtures",
+  "npm run check:seis-ssh-network-boundaries",
   "npm run report:seis-ssh-public-access",
   "npm run report:seis-ssh-public-onboarding",
   "npm run report:seis-ssh-public-contributor-doctor",
   "npm run check:seis-ssh-live-readiness-evidence",
+  "npm run check:seis-ssh-endpoint-continuity",
   "deploy/seis-ssh-public-access-contract.json",
   "docs/deployment/seis-ssh-public-github-access.md",
   "docs/deployment/seis-codex-git-ssh-handoff.md",
@@ -140,6 +166,7 @@ for (const token of [
 const desktop = read(files.desktop);
 for (const token of [
   "SEIS_SSH_PUBLIC_ACCESS_CONTRACT",
+  "SEIS_SSH_PUBLIC_ACCESS_EVIDENCE",
   "Public GitHub SSH",
   "Keep same server and port",
   "seis-ssh-public-access.md",
@@ -147,7 +174,18 @@ for (const token of [
   "seis-ssh-public-contributor-doctor.md",
   "check:seis-ssh-live-readiness-evidence",
   "GitHub Codespaces billing",
-  "npm run check:seis-ssh-public-access"
+  "blocked-provider-billing",
+  "review-ready-with-warning",
+  "github.codespaces",
+  "npm run check:seis-ssh-public-access",
+  "SEIS_DATA_FOUNDATION_SURFACE",
+  "renderSeisData",
+  "SEIS Data",
+  "seis-data-app",
+  "Data and SSH Evidence Flow",
+  "seis-data-registry-snapshot.md",
+  "content/development/seis-data-schema-registry.json",
+  "npm run check:data-schema-registry"
 ]) {
   ensure(desktop.includes(token), `desktop demo must include ${token}`);
 }
@@ -155,12 +193,74 @@ for (const token of [
 const reportScript = read(files.reportScript);
 for (const token of [
   "read-only-no-live-ssh",
-  "hostnameSha256Prefix",
+  "endpointFingerprintSha256Prefix",
+  "explicitHostBlock",
+  "proxyCommandShape",
+  "continuityState",
   "liveConnectionAttempted: false",
   "Keep the same server and port.",
   "reports/seis-ssh-public-access/latest.md"
 ]) {
   ensure(reportScript.includes(token), `report script must include ${token}`);
+}
+
+const reportFixtureScript = read(files.reportFixtureScript);
+for (const token of ["missingAliasFailsClosed", "static-fixture-verified", "githubActionsFixtureReadinessBlocked", "liveSshExecuted: false", "serverAndPortChanged: false"]) {
+  ensure(reportFixtureScript.includes(token), `report fixture check must include ${token}`);
+}
+
+const networkBoundary = read(files.networkBoundary);
+const networkBoundaryTest = read(files.networkBoundaryTest);
+const staticConfigFixture = read(files.staticConfigFixture);
+ensure(networkBoundary.includes("ipv4[0] === 127"), "network boundary must block the complete 127/8 loopback range");
+ensure(networkBoundaryTest.includes('"127.0.0.2"'), "network boundary test must cover non-default 127/8 loopback addresses");
+ensure(staticConfigFixture.includes("Host SEIS-SSH"), "static config fixture must include an explicit Host SEIS-SSH block");
+ensure(staticConfigFixture.includes("HostName github.codespaces"), "static config fixture must retain github.codespaces transport");
+ensure(/^\s*Port 22\s*$/m.test(staticConfigFixture), "static config fixture must retain port 22");
+
+const endpointContinuityScript = read(files.endpointContinuityScript);
+for (const token of [
+  "seis-ssh-endpoint-continuity-check",
+  "endpointFingerprintSha256Prefix",
+  "proxyCommandShape",
+  "baseline-mismatch-requires-explicit-endpoint-migration-approval",
+  "This check runs ssh -G only",
+  "Changing HostName or Port remains approval-gated."
+]) {
+  ensure(endpointContinuityScript.includes(token), `endpoint continuity script must include ${token}`);
+}
+
+const pickerCompatibilityScript = read(files.pickerCompatibilityScript);
+for (const token of [
+  "proxyCommandShape",
+  "identityFileConfigured",
+  "explicitHostBlock",
+  "classifyProbeError",
+  "redacted-direct-cloud-host"
+]) {
+  ensure(pickerCompatibilityScript.includes(token), `picker compatibility script must include sanitized ${token}`);
+}
+
+const mobileReadinessScript = read(files.mobileReadinessScript);
+for (const token of [
+  "proxyCommandShape",
+  "identityFileConfigured",
+  "classifyRemoteError",
+  "hostnameKind",
+  "identity-file-missing"
+]) {
+  ensure(mobileReadinessScript.includes(token), `mobile readiness script must include sanitized ${token}`);
+}
+
+const onlineReadinessScript = read(files.onlineReadinessScript);
+for (const token of [
+  "codespaceConfigured",
+  "proxyCommandShape",
+  "hostnameKind",
+  "userPresent",
+  "remote-check-failed"
+]) {
+  ensure(onlineReadinessScript.includes(token), `online readiness script must include sanitized ${token}`);
 }
 
 const onboardingScript = read(files.onboardingScript);

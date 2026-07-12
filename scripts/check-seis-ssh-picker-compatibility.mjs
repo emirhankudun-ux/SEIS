@@ -6,6 +6,8 @@ import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import net from "node:net";
 
+import { isLocalOrLanHost as isLocalHost } from "./lib/seis-ssh-network.mjs";
+
 const args = parseArgs(process.argv.slice(2));
 
 if (args.help) {
@@ -27,22 +29,27 @@ const managedAliases = new Set([
 
 const sshHost = args.host || "SEIS-SSH";
 const requirePickerCompatible = Boolean(args["require-picker-compatible"]);
+const allowUnconfiguredEnvironment = Boolean(args["allow-unconfigured"])
+  || process.env.CI === "true"
+  || process.env.GITHUB_ACTIONS === "true";
 const directHost = args["probe-direct-host"] || process.env.SEIS_CLOUD_DIRECT_HOST || "";
 const directPort = Number(args["probe-direct-port"] || process.env.SEIS_CLOUD_DIRECT_PORT || "22");
 const timeoutMs = Number(args["timeout-ms"] || "8000");
+const visibleHost = sshHost === "SEIS-SSH" ? "SEIS-SSH" : "custom-ssh-target";
 
 const blockers = [];
 const warnings = [];
 const checks = {
   sshConfig: {
     checked: false,
-    host: sshHost,
+    host: visibleHost,
     hostAliases: [],
     duplicateSeisAliases: [],
-    hostname: null,
-    user: null,
-    proxyCommand: null,
-    identityFile: null,
+    explicitHostBlock: false,
+    hostnameKind: null,
+    userPresent: false,
+    proxyCommandShape: null,
+    identityFileConfigured: false,
     transport: "unknown",
     terminalCompatible: false,
     pickerCompatible: false,
@@ -50,7 +57,7 @@ const checks = {
   },
   directEndpointProbe: {
     checked: false,
-    host: directHost || null,
+    hostKind: directHost ? "redacted-direct-cloud-host" : null,
     port: directPort,
     reachable: false,
     error: null
@@ -60,23 +67,27 @@ const checks = {
 const sshConfigText = safeRead(join(homedir(), ".ssh", "config"));
 const managedHostEntries = extractManagedHostEntries(sshConfigText);
 checks.sshConfig.hostAliases = managedHostEntries.map((entry) => entry.host);
+checks.sshConfig.explicitHostBlock = managedHostEntries.some((entry) => entry.host === "SEIS-SSH");
 checks.sshConfig.duplicateSeisAliases = managedHostEntries
   .filter((entry) => entry.host !== "SEIS-SSH")
   .map((entry) => entry.host);
 if (checks.sshConfig.duplicateSeisAliases.length > 0) blockers.push("duplicate-seis-ssh-aliases");
-
-const config = run("ssh", ["-G", sshHost]);
 checks.sshConfig.checked = true;
-if (config.status !== 0) {
-  blockers.push("ssh-config-unavailable");
-  checks.sshConfig.error = config.stderr.trim();
+if (!checks.sshConfig.explicitHostBlock) {
+  blockers.push("explicit-seis-ssh-host-block-required");
+  checks.sshConfig.error = "explicit-host-block-missing";
 } else {
+  const config = run("ssh", ["-G", sshHost]);
+  if (config.status !== 0) {
+    blockers.push("ssh-config-unavailable");
+    checks.sshConfig.error = "ssh-config-unavailable";
+  } else {
   const values = parseSshConfig(config.stdout);
-  checks.sshConfig.hostname = values.hostname || null;
-  checks.sshConfig.user = values.user || null;
-  checks.sshConfig.proxyCommand = normalizeProxyCommand(values.proxycommand);
-  checks.sshConfig.identityFile = values.identityfile || null;
   checks.sshConfig.transport = detectTransport(values);
+  checks.sshConfig.hostnameKind = classifyHostname(values.hostname, checks.sshConfig.transport);
+  checks.sshConfig.userPresent = Boolean(values.user);
+  checks.sshConfig.proxyCommandShape = normalizeProxyCommandShape(values.proxycommand);
+  checks.sshConfig.identityFileConfigured = Boolean(values.identityfile && values.identityfile !== "none");
   checks.sshConfig.terminalCompatible = checks.sshConfig.transport === "codespace"
     || checks.sshConfig.transport === "direct-cloud";
   checks.sshConfig.pickerCompatible = checks.sshConfig.transport === "direct-cloud";
@@ -84,26 +95,31 @@ if (config.status !== 0) {
   if (!checks.sshConfig.terminalCompatible) blockers.push("ssh-config-not-cloud-only");
   if (checks.sshConfig.transport === "codespace") warnings.push("codespaces-proxycommand-may-render-offline-in-some-pickers");
   if (requirePickerCompatible && !checks.sshConfig.pickerCompatible) blockers.push("ssh-picker-not-compatible");
+  }
 }
 
 if (directHost) {
   checks.directEndpointProbe.checked = true;
   const probe = await probeTcp(directHost, directPort, timeoutMs);
   checks.directEndpointProbe.reachable = probe.reachable;
-  checks.directEndpointProbe.error = probe.error;
+  checks.directEndpointProbe.error = classifyProbeError(probe.error);
   if (!probe.reachable) warnings.push("direct-cloud-endpoint-not-reachable");
 }
 
 const ok = blockers.length === 0;
+const ciTolerated = allowUnconfiguredEnvironment
+  && blockers.length > 0
+  && blockers.every((blocker) => blocker === "explicit-seis-ssh-host-block-required");
 const result = {
   ok,
-  status: ok ? "ready" : "blocked",
+  status: ok ? "ready" : ciTolerated ? "unconfigured-environment" : "blocked",
   mode: "read-only",
-  host: sshHost,
+  host: visibleHost,
+  ciTolerated,
   checks,
   blockers,
   warnings,
-  nextActions: nextActions(blockers, warnings, directHost),
+  nextActions: nextActions(blockers, warnings, Boolean(directHost)),
   safety: [
     "This check does not print SSH private keys or GitHub tokens.",
     "SEIS-SSH remains the only visible SEIS SSH alias.",
@@ -112,7 +128,7 @@ const result = {
 };
 
 console.log(JSON.stringify(result, null, 2));
-if (!ok) process.exit(1);
+if (!ok && !ciTolerated) process.exit(1);
 
 function parseArgs(tokens) {
   const parsed = {};
@@ -121,7 +137,7 @@ function parseArgs(tokens) {
     if (token === "--") continue;
     if (!token.startsWith("--")) continue;
     const key = token.slice(2);
-    if (key === "help" || key === "require-picker-compatible") {
+    if (key === "help" || key === "require-picker-compatible" || key === "allow-unconfigured") {
       parsed[key] = true;
       continue;
     }
@@ -193,6 +209,21 @@ function normalizeProxyCommand(value) {
   return value;
 }
 
+function normalizeProxyCommandShape(value) {
+  const normalized = normalizeProxyCommand(value);
+  if (!normalized) return null;
+  if (/(?:^|\s)(?:\S+\/)?gh\s+cs\s+ssh(?:\s|$)/.test(normalized)) return "gh cs ssh <codespace-endpoint>";
+  return "proxy-command-present";
+}
+
+function classifyHostname(hostname, transport) {
+  if (!hostname) return "missing";
+  if (transport === "codespace") return "github.codespaces";
+  if (transport === "local-or-lan") return "blocked-local-or-lan";
+  if (transport === "direct-cloud") return "redacted-direct-cloud-host";
+  return "redacted-unknown-host";
+}
+
 function detectTransport(values) {
   const hostname = values.hostname || "";
   const proxyCommand = normalizeProxyCommand(values.proxycommand);
@@ -205,14 +236,6 @@ function compatibilityReason(transport) {
   if (transport === "direct-cloud") return "direct-cloud SSH avoids ProxyCommand and is the most picker-compatible mode";
   if (transport === "codespace") return "Codespaces SSH is terminal-compatible, but some pickers may show ProxyCommand targets as offline";
   return "unknown or local SSH transport";
-}
-
-function isLocalHost(host) {
-  const value = String(host || "").toLowerCase();
-  return value === "localhost"
-    || value === "127.0.0.1"
-    || value === "::1"
-    || value.endsWith(".local");
 }
 
 function probeTcp(host, port, timeout) {
@@ -233,24 +256,24 @@ function probeTcp(host, port, timeout) {
   });
 }
 
-function nextActions(blockerItems, warningItems, host) {
+function classifyProbeError(error) {
+  if (!error) return null;
+  if (error === "timeout" || /timeout/i.test(error)) return "timeout";
+  return "unreachable";
+}
+
+function nextActions(blockerItems, warningItems, hasDirectHost) {
   const actions = [];
   if (blockerItems.includes("duplicate-seis-ssh-aliases")) actions.push("Run npm run cloud:ssh-config:install to remove stale SEIS aliases.");
   if (blockerItems.includes("ssh-config-unavailable")) actions.push("Run npm run cloud:ssh-config:install to recreate SEIS-SSH.");
   if (blockerItems.includes("ssh-config-not-cloud-only")) actions.push("Reinstall SEIS-SSH with codespace or direct-cloud transport.");
   if (blockerItems.includes("ssh-picker-not-compatible")) actions.push("Switch SEIS-SSH to --transport direct-cloud after the cloud endpoint is reachable.");
   if (warningItems.includes("codespaces-proxycommand-may-render-offline-in-some-pickers")) actions.push("If the UI picker shows offline while terminal SSH works, use a reachable direct-cloud endpoint for SEIS-SSH.");
-  if (warningItems.includes("direct-cloud-endpoint-not-reachable") && host) actions.push(`Fix cloud firewall/sshd for ${host}:22 before installing direct-cloud mode.`);
-  if (warningItems.includes("direct-cloud-endpoint-not-reachable") && host) {
-    actions.push(`Run host remediation plan now:\n  npm run cloud:ssh:host-fix-plan -- --public-ip ${shellQuote(host)} --user root --live --json`);
+  if (warningItems.includes("direct-cloud-endpoint-not-reachable") && hasDirectHost) actions.push("Fix cloud firewall/sshd for the approved direct-cloud endpoint on port 22 before installing direct-cloud mode.");
+  if (warningItems.includes("direct-cloud-endpoint-not-reachable") && hasDirectHost) {
+    actions.push("Run the host remediation plan with the approved direct-cloud endpoint; do not include the endpoint in public reports.");
   }
   return actions;
-}
-
-function shellQuote(value) {
-  const text = String(value || "");
-  if (!text) return "''";
-  return `'${text.replaceAll("'", "'\\''")}'`;
 }
 
 function printHelp() {

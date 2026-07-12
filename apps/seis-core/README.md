@@ -8,6 +8,7 @@ SEIS Command Center is the central operating interface for the SEIS ecosystem. P
 - `styles.css`: design tokens, responsive layout, component variants, density mode, and reduced-motion support.
 - `script.js`: local state, goal creation, repository filtering, agent mode switching, generated 10-lane SEIS router artifact loading, architecture evidence, automation evidence, security evidence, knowledge graph evidence, command palette, settings, and dashboard rendering.
 - `data/seis-router-routes.json`: generated Command Center router artifact produced from `scripts/ai-routing-policy.cjs#chooseAutoRoute`.
+- `data/seis-core-ecosystem-registry.json`: source-backed SEIS, Cloud, Code, Design, Data, and Store control-plane contract with local-demo boundaries and quality gates.
 - `manifest.webmanifest` and `icon.svg`: installable app metadata and SEIS Core visual identity.
 
 ## Folder Structure
@@ -49,7 +50,7 @@ apps/seis-core/
 - Repositories: filter chips, health cards, documentation coverage, security posture, testing status, and dependency overview.
 - Documentation: index and coverage plan.
 - Agents: mode cards, capabilities, tasks, logs, outputs, AI system support, orchestration lanes, 10-lane routing matrix, handoff audit, and inspector sync.
-- Plugins & Extensions: plugin family health, permission posture, update gates, and activation policy.
+- Plugins & Extensions: Ecosystem Control Plane for SEIS, Cloud, Code, Design, Data, and Store; plus plugin family health, permission posture, update gates, and activation policy.
 - Automation Center: workflows, triggers, run history, approval gates, rollback evidence, and execution gates.
 - Security Center: risk reports, permission reviews, dependency scans, security audits, access model, and no-secret policy.
 - Architecture Center: system map, module relationships, dependency graph, technical debt register, and platform phases.
@@ -78,6 +79,7 @@ apps/seis-core/
 - Inspect architecture dependency graph, module contracts, and technical debt register.
 - Inspect knowledge graph nodes, memory freshness, decision history, and reusable implementation patterns.
 - Inspect the unified SEIS operating model across repositories, AI agents, MCP systems, plugins, automation, cloud, security, and knowledge.
+- Inspect the source-backed Ecosystem Control Plane, open browser-local demo surfaces, and copy the visible quality gate for each specialist lane without activating remote tools.
 - Use command palette with `Command/Ctrl + K`.
 - Persist state in `localStorage`.
 - Support desktop and mobile layouts.
@@ -115,4 +117,5 @@ Open `http://127.0.0.1:4174/`.
 ```bash
 node --test apps/seis-core/test/*.test.js
 npm run check:seis-command-center-router
+npm run check:seis-core-ecosystem-registry
 ```

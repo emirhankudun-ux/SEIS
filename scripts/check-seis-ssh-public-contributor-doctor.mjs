@@ -8,6 +8,9 @@ const args = parseArgs(process.argv.slice(2));
 const write = Boolean(args.write);
 const check = Boolean(args.check);
 const requireLocalUse = Boolean(args["require-local-use"]);
+if (process.env.GITHUB_ACTIONS === "true" && !process.env.SEIS_SSH_CONFIG_PATH) {
+  process.env.SEIS_SSH_CONFIG_PATH = "scripts/fixtures/seis-ssh-public-access.conf";
+}
 const outputJson = args.output || "reports/seis-ssh-public-access/contributor-doctor-latest.json";
 const outputMarkdown = args.markdown || "reports/seis-ssh-public-access/contributor-doctor-latest.md";
 
@@ -59,11 +62,13 @@ function buildDoctor() {
   if (!tools.git.available) warnings.push("Git is not available; GitHub review and repo workflows need git.");
   if (access.localSshConfig?.transport === "codespace") warnings.push("Current transport is Codespaces; terminal-compatible but some GUI pickers may show it offline.");
   if (access.localSshConfig?.pickerLikelyCompatible !== true) warnings.push("Picker-compatible direct-cloud mode is not proven.");
+  if (access.localSshConfig?.configSource === "explicit-static-fixture") warnings.push("Static SSH config fixture verified parser behavior only; contributor readiness remains unproven.");
 
   const localUseReady = tools.gh.available
     && tools.ssh.available
     && tools.git.available
     && access.localSshConfig?.configured === true
+    && access.localSshConfig?.configSource === "user-home"
     && access.localSshConfig?.transport !== "local-or-lan";
 
   if (requireLocalUse && !localUseReady) blockers.push("local contributor prerequisites are incomplete");
@@ -73,7 +78,8 @@ function buildDoctor() {
     id: "seis-ssh-public-contributor-doctor",
     generatedAt: new Date().toISOString(),
     ok,
-    status: ok ? "review-ready" : "blocked",
+    status: ok && localUseReady ? "review-ready" : "blocked",
+    readinessReady: ok && localUseReady,
     mode: "read-only-no-live-ssh-no-config-write",
     alias: "SEIS-SSH",
     repo: {
@@ -87,9 +93,9 @@ function buildDoctor() {
       preservationMode: contract?.serverAndPortPolicy?.mode || "unknown",
       currentSnapshot: {
         configured: access.localSshConfig?.configured === true,
+        configSource: access.localSshConfig?.configSource || "unknown",
         transport: access.localSshConfig?.transport || "unknown",
         hostnameKind: access.localSshConfig?.hostnameKind || "unknown",
-        hostnameSha256Prefix: access.localSshConfig?.hostnameSha256Prefix || null,
         port: access.localSshConfig?.port || "22",
         pickerLikelyCompatible: access.localSshConfig?.pickerLikelyCompatible === true,
         liveConnectionAttempted: false
@@ -114,7 +120,8 @@ function buildDoctor() {
         "npm run check:seis-ssh-public-access",
         "npm run check:seis-ssh-public-access-report",
         "npm run check:seis-ssh-public-onboarding",
-        "npm run check:seis-ssh-public-contributor-doctor"
+        "npm run check:seis-ssh-public-contributor-doctor",
+        "npm run check:seis-ssh-github-pr-contract"
       ],
       generatedReports: [
         "npm run report:seis-ssh-public-access",
@@ -236,7 +243,6 @@ Alias: ${doctor.alias}
 - Preservation mode: ${doctor.serverAndPortPolicy.preservationMode}
 - Current transport: ${snapshot.transport}
 - Hostname kind: ${snapshot.hostnameKind}
-- Host fingerprint: ${snapshot.hostnameSha256Prefix || "none"}
 - Port: ${snapshot.port}
 - Live SSH attempted: no
 

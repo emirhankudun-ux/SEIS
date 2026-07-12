@@ -2,6 +2,8 @@
 
 import { spawnSync } from "node:child_process";
 
+import { isLocalOrLanHost as isLocalHost } from "./lib/seis-ssh-network.mjs";
+
 const args = parseArgs(process.argv.slice(2));
 
 if (args.help) {
@@ -10,6 +12,7 @@ if (args.help) {
 }
 
 const host = args.host || "SEIS-SSH";
+const visibleHost = host === "SEIS-SSH" ? "SEIS-SSH" : "custom-ssh-target";
 const codespace = args.codespace || process.env.SEIS_CLOUD_CODESPACE || "seis-cloud-primary-q75g47p769j6hxrv";
 const connectTimeout = args["connect-timeout"] || "20";
 const requirePickerCompatible = Boolean(args["require-picker-compatible"]);
@@ -17,9 +20,9 @@ const requirePickerCompatible = Boolean(args["require-picker-compatible"]);
 const result = {
   ok: false,
   mode: "ensure-online",
-  host,
+  host: visibleHost,
   transport: null,
-  codespace,
+  codespaceConfigured: Boolean(codespace),
   steps: [],
   blockers: [],
   warnings: [],
@@ -51,9 +54,9 @@ if (sshConfig.status !== 0) {
     name: "ssh-config-read",
     ok: true,
     transport: result.transport,
-    hostname: values.hostname || null,
-    user: values.user || null,
-    proxyCommand: normalizeProxyCommand(values.proxycommand)
+    hostnameKind: classifyHostname(values.hostname, result.transport),
+    userPresent: Boolean(values.user),
+    proxyCommandShape: normalizeProxyCommandShape(values.proxycommand)
   });
 }
 
@@ -73,7 +76,7 @@ if (result.blockers.length === 0 && result.transport === "codespace") {
       result.codespaceState = match?.state || "missing";
       if (!match) {
         result.blockers.push("codespace-missing");
-        result.nextActions.push(`Create or select a Codespace named ${codespace} for emirhankudun-ux/SEIS.`);
+        result.nextActions.push("Create or select the approved Codespace for the SEIS repository.");
       }
     } catch {
       result.warnings.push("codespace-list-json-parse-failed");
@@ -117,8 +120,8 @@ if (result.blockers.length === 0) {
     const codexAvailable = parsed.codex === "yes";
     result.remote = {
       online: remoteOnline,
-      hostname: parsed.remote_hostname || null,
-      user: parsed.remote_user || null,
+      hostnameKind: parsed.remote_hostname ? "redacted-remote-host" : "missing",
+      userPresent: Boolean(parsed.remote_user),
       repoPresent,
       codexAvailable,
       codexVersion: parsed.codex_version ? parsed.codex_version.replace(/_/g, " ") : null
@@ -228,6 +231,13 @@ function normalizeProxyCommand(value) {
   return value;
 }
 
+function normalizeProxyCommandShape(value) {
+  const normalized = normalizeProxyCommand(value);
+  if (!normalized) return null;
+  if (/(?:^|\s)(?:\S+\/)?gh\s+cs\s+ssh(?:\s|$)/.test(normalized)) return "gh cs ssh <codespace-endpoint>";
+  return "proxy-command-present";
+}
+
 function detectTransport(values) {
   const hostname = values.hostname || "";
   const proxyCommand = normalizeProxyCommand(values.proxycommand);
@@ -236,18 +246,20 @@ function detectTransport(values) {
   return "unknown";
 }
 
-function sanitize(value) {
-  return String(value || "")
-    .replace(/gho_[A-Za-z0-9_]+/g, "gho_************************************")
-    .trim();
+function classifyHostname(hostname, transport) {
+  if (!hostname) return "missing";
+  if (transport === "codespace") return "github.codespaces";
+  if (transport === "direct-cloud") return "redacted-direct-cloud-host";
+  if (isLocalHost(hostname)) return "blocked-local-or-lan";
+  return "redacted-unknown-host";
 }
 
-function isLocalHost(host) {
-  const value = String(host || "").toLowerCase();
-  return value === "localhost"
-    || value === "127.0.0.1"
-    || value === "::1"
-    || value.endsWith(".local");
+function sanitize(value) {
+  const text = String(value || "").trim();
+  if (!text) return null;
+  if (/permission denied|authentication/i.test(text)) return "authentication-failed";
+  if (/timeout/i.test(text)) return "timeout";
+  return "remote-check-failed";
 }
 
 function printHelp() {

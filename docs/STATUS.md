@@ -5,6 +5,29 @@ Date: 2026-06-24
 This status captures the current branch foundation state. It is not a release,
 deployment, public-readiness, or merge-readiness claim.
 
+## PR 165 Integration Checkpoint - 2026-07-12
+
+The current SEIS-SSH mainline branch keeps the existing `SEIS-SSH`
+`github.codespaces` transport and port `22`. No live SSH, credential read,
+deployment, endpoint migration, or server/port mutation was performed.
+
+| Surface | Current evidence | Boundary |
+| --- | --- | --- |
+| SSH public checks | Missing explicit `Host SEIS-SSH` now fails closed; the CI-only config fixture is labeled `static-fixture-verified`, keeps `readinessReady: false`, and is covered by positive/negative fixture tests. | The fixture proves parser and contract behavior only, never endpoint availability. |
+| SSH network policy | One shared helper rejects all IPv4 `127/8` loopback addresses, RFC1918, link-local, unspecified, `.local`, IPv6 loopback, unique-local, and link-local targets across public report, continuity, picker, online, installer, bridge, and direct-cloud scripts. | Public host shape remains eligible; live reachability still requires approval-gated strict evidence. |
+| AI Core router | Executable provider-neutral read-only decisions normalize capability labels, match lanes on word boundaries, make `local-only` authoritative, and reject prompt bodies such as `messages` and `content`. | Provider calls, runtime authority, credential reads, SSH, deployment, and GitHub mutation remain disabled. |
+| MCP runtime | Stdio smoke proves 35 tools, 30 resources, and 3 prompts; Desktop diagnostics and browser checks now show the same counts. | This is a local MCP contract, not a live external provider or unrestricted tool runtime. |
+| SEIS Data | Capability Atlas now has a first-class `seis-data` product module, SEIS Data lane membership, dry-run provenance task coverage, Linux Replica app/bridge, and Desktop route evidence. | Schema, provenance, export, and SSH evidence remain browser-local/read-only with no secrets. |
+
+Focused validation currently includes
+`npm run check:seis-ssh-public-access-report-fixtures`,
+`npm run check:seis-ssh-network-boundaries`,
+`npm run check:seis-ssh-github-pr-contract`,
+`npm run check:seis-ai-core-read-only-router`,
+`node --test packages/seis-ai/test/read-only-router.test.mjs`,
+`node --test packages/seis-ai/test/mcp-smoke.test.mjs`, and
+`npm run check:seis-runtime-capability-atlas`.
+
 ## GitHub Merge Queue Continuity - 2026-07-01
 
 The current GitHub queue is being kept in PR-safe auto-merge mode so a machine
@@ -145,7 +168,7 @@ resources including the 512B apex program.
 | `npm run check:seis-fullstack-contract` | Passed | Validates `seis-fullstack-contract`, the read-only `/_server/session`, `/_server/capabilities`, `/_server/projects`, `/_server/app-installs`, `/_server/provider-status`, `/_server/audit-log`, `/_server/agent-tasks`, and `/_server/fullstack-contract` server bindings, data-schema registry coverage, backend-only provider secret boundaries, Local Demo fallback, approval gates, docs/index/status/backlog links, and secret-like value guards. |
 | `npm run check:seis-fullstack-server-smoke` | Passed | Starts the local `node:http` static server with `apps/web` as the static root, verifies `seis-linux-replica.html`, fetches every read-only `/_server/*` full-stack contract endpoint, checks JSON source/contract ids/data groups, and shuts the server down without external network, database, provider, SSH, deployment, or credential use. |
 | `npm run check:seis-fullstack-no-server-fallback-smoke` | Passed | Starts a static-only local server that returns 404 for `/_server/*`, opens Chrome through DevTools, verifies Linux Replica boot/login/64 apps/terminal, Desktop boot/50+ apps/12+ commands, Website hub rendering, no horizontal overflow, no forbidden `/_server/*` requests, and no relevant browser errors. |
-| `npm run check:seis-ultimate-demo` | Passed | Verifies V17 demo coverage across Desktop OS, AI Core, Search, Code IDE, Design Studio, Cloud, Store, Music, Launchpad, Files, Terminal/SSH Center, Website, Agents, Plugin System, Command Center, eight SEIS Search tabs, nine website pages, mock/real/planned labels, Local Demo/no-key boundaries, service-worker website precache, docs coverage, responsive CSS, reduced-motion support, and safe diagnostics. |
+| `npm run check:seis-ultimate-demo` | Passed | Verifies V17 demo coverage across Desktop OS, AI Core, Search, Code IDE, Design Studio, Cloud, Store, Music, Launchpad, Files, Terminal/SSH Center, Website, Agents, Plugin System, Command Center, eight SEIS Search tabs, ten website pages, mock/real/planned labels, Local Demo/no-key boundaries, service-worker website precache, docs coverage, responsive CSS, reduced-motion support, and safe diagnostics. |
 | `npm run check:seis-code` | Passed | Validates SEIS Code route, runtime script, Monaco hook, 8 top menus, 5 activity views, bottom panels, IndexedDB, 25 language modes, terminal commands, Local Demo REPL slash commands, workspace path-boundary marker, route/cache/sitemap bindings. |
 | `npm run check:product-experience-browser-smoke` | Passed | Starts a local static server and system Chrome through DevTools; verifies SEIS Code menus/activity views/bottom panels, Monaco readiness, virtual terminal writes and reload persistence, Local Demo REPL identity, Mythic Gacha draw/favorite/export/detail, SEIS Code terminal visibility for exported MythicArchive files, Desktop `/home/seis/MythicArchive` import visibility, route cards, V17 SEIS Command Center module map/actions/snapshot artifact with 20B / 16GB+ and 70B+ boundaries, 20B dry-run preflight VFS artifact, AI Plugin Center tabs/tool-call history, Installed AI Systems profile/audit evidence, read-only AI Core Resource Bridge evidence, SEIS Demo Studio coverage through the Desktop smoke gate, standalone SEIS demo 3D hero readiness/nonblank/interactions, five-year sub-agent evidence export, and desktop/mobile overflow. |
 | `npm run check:video-hero-showcase` | Passed | Validates four themed Video Hero pages, manifest provenance, controls, reduced-motion/runtime hooks, and route/cache/sitemap bindings. |

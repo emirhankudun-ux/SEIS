@@ -1,0 +1,183 @@
+{
+  "id": "seis-core-ecosystem-registry",
+  "schemaVersion": "1.0.0",
+  "status": "active",
+  "updatedAt": "2026-07-11",
+  "purpose": "Expose the SEIS specialist lanes and SEIS Store through one local-first, source-backed Command Center control plane.",
+  "runtimeBoundary": "This registry renders local source evidence and browser-local demo entry points. It does not authenticate connectors, execute MCP tools, install packages, deploy cloud resources, execute SSH, or mutate GitHub.",
+  "sources": [
+    "data/seis-operating-identities.json",
+    "content/development/seis-agent-plugin-integration.json",
+    "apps/web/desktop.js",
+    "deploy/seis-ssh-public-access-contract.json",
+    "content/development/seis-ssh-live-readiness-evidence.json",
+    "content/development/requested-plugin-inventory.json",
+    "content/development/plugin-capability-lanes.json"
+  ],
+  "pluginUniverse": {
+    "mode": "source-visible-read-only",
+    "inventory": "content/development/requested-plugin-inventory.json",
+    "capabilityLanes": "content/development/plugin-capability-lanes.json",
+    "uniquePlugins": 300,
+    "totalLinks": 301,
+    "laneCount": 12,
+    "remotePluginCount": 6,
+    "personalPlugins": [
+      "seis@personal",
+      "seis-cloud@personal",
+      "seis-code@personal",
+      "seis-design@personal",
+      "seis-data@personal"
+    ],
+    "coreBinding": "SEIS Core renders the submitted plugin universe and capability-lane totals while activation remains task-scoped, authenticated, least-privilege, and human-approved.",
+    "mcpBoundary": "status-and-plan-only"
+  },
+  "store": {
+    "id": "seis-store",
+    "status": "Local Demo",
+    "surface": "apps/web/desktop.js#renderSeisStore",
+    "contract": "SEIS Store records catalog and install state in browser-local storage only.",
+    "approvalBoundary": "It does not download packages, install dependencies, call external services, or approve remote actions."
+  },
+  "lanes": [
+    {
+      "id": "seis",
+      "label": "SEIS",
+      "identity": "SEIS-Agent",
+      "kind": "Ecosystem governance",
+      "status": "Ready",
+      "mode": "Core contract",
+      "coreBinding": "SEIS Core owns the visible operating map and routes governed work through the unified SEIS-Agent contract.",
+      "role": "Repository governance, architecture, documentation, quality, and ecosystem coordination.",
+      "mcpTools": [
+        "seis_hub_status",
+        "seis_hub_plan"
+      ],
+      "qualityGate": "npm run check:seis-ai-agent",
+      "storeBinding": "The Store catalogs the unified agent as one published plugin rather than a standalone lane install.",
+      "demoHref": "../web/desktop.html",
+      "demoLabel": "Open desktop demo"
+    },
+    {
+      "id": "seis-cloud",
+      "label": "SEIS Cloud",
+      "identity": "SEIS-Cloud",
+      "kind": "Cloud readiness lane",
+      "status": "Review",
+      "mode": "Mock Safe",
+      "coreBinding": "SEIS Core exposes provider preflight, rollback, and approval facts without claiming a live cloud connection.",
+      "role": "Cloud readiness, public cloud planning, team VPN cloud planning, SSH boundaries, rollback, and secret-safe infrastructure work.",
+      "sshBinding": {
+        "alias": "SEIS-SSH",
+        "contract": "deploy/seis-ssh-public-access-contract.json",
+        "statusCommand": "npm run check:seis-ssh-public-access-report",
+        "guardCommand": "npm run check:seis-ssh-github-pr-contract",
+        "serverAndPortPolicy": "preserve-existing-server-and-port",
+        "runtimeMode": "static-read-only",
+        "liveClaim": "blocked-until-strict-online-evidence",
+        "githubExperience": {
+          "status": "review-ready-contract",
+          "visibleName": "SEIS-SSH",
+          "publicPromise": "One memorable SEIS-SSH entrypoint, no secrets in git, no fake online status, no local Mac dependency, and a contributor-friendly runbook."
+        },
+        "transport": {
+          "provider": "github-codespaces",
+          "mode": "codespace",
+          "hostnameKind": "github.codespaces",
+          "port": "22",
+          "terminalCompatibility": "ready",
+          "pickerCompatibility": "warning"
+        },
+        "contributorDoctor": {
+          "status": "review-ready-with-warning",
+          "mode": "read-only-no-live-ssh-no-config-write",
+          "command": "npm run check:seis-ssh-public-contributor-doctor",
+          "warning": "Picker-compatible direct-cloud mode is not proven."
+        },
+        "liveReadiness": {
+          "status": "blocked-provider-billing",
+          "strictReady": false,
+          "command": "npm run check:seis-ssh-live-readiness-evidence",
+          "blocker": "GitHub Codespaces billing issue blocks live online proof."
+        }
+      },
+      "mcpTools": [
+        "seis_cloud_status",
+        "seis_cloud_plan"
+      ],
+      "qualityGate": "npm run check:cloud-access-policy",
+      "storeBinding": "The Store can surface Cloud as a local demo item; provider activation remains separately approved.",
+      "demoHref": "../web/desktop.html",
+      "demoLabel": "Open desktop demo"
+    },
+    {
+      "id": "seis-code",
+      "label": "SEIS Code",
+      "identity": "SEIS-Code",
+      "kind": "Engineering lane",
+      "status": "Ready",
+      "mode": "Browser Local",
+      "coreBinding": "SEIS Core binds implementation, validation, and plugin engineering work to the Code lane and its visible quality gate.",
+      "role": "Architecture-aware implementation, tests, CI, MCP and plugin code, and repository automation.",
+      "mcpTools": [
+        "seis_code_status",
+        "seis_code_plan"
+      ],
+      "qualityGate": "npm run check:seis-code",
+      "storeBinding": "The Store exposes the browser-local Code surface without claiming host-shell or package installation access.",
+      "demoHref": "../web/seis-code.html",
+      "demoLabel": "Open Code demo"
+    },
+    {
+      "id": "seis-design",
+      "label": "SEIS Design",
+      "identity": "SEIS-Design",
+      "kind": "Design system lane",
+      "status": "Ready",
+      "mode": "Browser Local",
+      "coreBinding": "SEIS Core keeps design-system, accessibility, motion, and visual-QA work visible beside its implementation and evidence boundaries.",
+      "role": "Premium product design, UI and UX systems, accessibility, motion, and visual QA.",
+      "mcpTools": [
+        "seis_design_status",
+        "seis_design_plan"
+      ],
+      "qualityGate": "npm run check:design-component-inventory",
+      "storeBinding": "The Store exposes Design as a local product surface, not a remote design-tool integration claim.",
+      "demoHref": "../web/desktop.html",
+      "demoLabel": "Open desktop demo"
+    },
+    {
+      "id": "seis-data",
+      "label": "SEIS Data",
+      "identity": "SEIS-Data",
+      "kind": "Data and knowledge lane",
+      "status": "Ready",
+      "mode": "Registry-backed",
+      "coreBinding": "SEIS Core uses Data to govern schemas, reports, memory, provenance, and safe knowledge intake before automation expands.",
+      "role": "Data architecture, analytics, generated reports, schemas, memory, context, RAG planning, and provenance.",
+      "mcpTools": [
+        "seis_data_status",
+        "seis_data_plan"
+      ],
+      "qualityGate": "npm run check:data-schema-registry",
+      "storeBinding": "The Store catalogs Data-facing local experiences without exporting private datasets or connector credentials.",
+      "demoHref": "../web/desktop.html",
+      "demoLabel": "Open desktop demo"
+    },
+    {
+      "id": "seis-store",
+      "label": "SEIS Store",
+      "identity": "SEIS Store",
+      "kind": "Browser-local marketplace",
+      "status": "Ready",
+      "mode": "Local Demo",
+      "coreBinding": "SEIS Core treats the Store as the local catalog and install-state surface for apps, plugins, themes, tools, and specialist-lane discovery.",
+      "role": "Browser-local app, plugin, theme, tool, install, update, and enable state catalog.",
+      "mcpTools": [],
+      "qualityGate": "npm run check:desktop-os",
+      "storeBinding": "This lane is the catalog authority for browser-local Store state; it has no remote installer or MCP execution path.",
+      "demoHref": "../web/desktop.html",
+      "demoLabel": "Open Store desktop"
+    }
+  ]
+}

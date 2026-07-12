@@ -70,7 +70,7 @@ panels:
   `plan-only` permission boundaries.
 - `MCP Runtime Contract` in Installed AI displays the local stdio JSON-RPC
   contract from `content/development/seis-ai-core-mcp-runtime-contract.json`,
-  34 tools, 29 resources, 3 prompts, the no-dependency fallback transport, and
+  35 tools, 30 resources, 3 prompts, the no-dependency fallback transport, and
   the smoke-test gate that proves SEIS AI Core can read plugin/provider/model-scaling
   resources, including `seis://ai/model-parameter-ladder.json` and
   `seis://ai/model-frontier-escalation-policy.json`, read
@@ -144,6 +144,12 @@ providers, credentials, or local files.
 The status tools report manifest, skill, source-mirror, profile, quality-gate,
 and authentication-claim posture. The plan tools return lane-specific safe
 steps and approval boundaries for the request.
+
+The `seis-cloud` surfaces also carry a sanitized `sshBinding` record through
+`seis_cloud_status` and `seis_cloud_plan`. It identifies the single
+`SEIS-SSH` alias, the public access contract, the current server-and-port
+preservation policy, and the blocked live-readiness state without opening SSH,
+reading credentials, or changing local configuration.
 
 ## Embedded Personal Plugins
 
