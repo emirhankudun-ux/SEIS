@@ -68,11 +68,13 @@
         <section class="client-gate">
           <span class="gate-mark">&#9670;</span>
           <div><p class="eyebrow">Client acceptance gate</p><h2>Context can move. Permissions do not.</h2><p>The workspace carries local conversation state beside each product surface. Live providers, remote files, cloud operations, deployment and SSH remain separate client approvals.</p></div>
+          <button class="button" type="button" data-action="request-approval">Request client approval</button>
         </section>
       </main>
       <footer><span>SEIS V17 / Conversation Workspace</span><span>Agency delivery slice / browser-local context</span></footer>
     </div>
     <script src="seis-conversation-bus.js" defer></script>
+    <script src="seis-client-approval-bus.js" defer></script>
     <script src="seis-conversation-context-adapters.js" defer></script>
     <script src="seis-conversation-workspace.js" defer></script>
   </body>
