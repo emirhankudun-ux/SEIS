@@ -26,9 +26,9 @@ source-derived or hypothetical rather than measured.
 
 The user's autonomous-development direction selected deterministic local
 controls. The selected controls are now implemented and validated in the local
-working tree under the same focused Goal slice; no commit SHA or remote CI run
-exists yet. This portfolio remains a design artifact rather than proof of
-remote operation.
+working tree under the same focused Goal slice and committed at `785c346d`;
+remote CI evidence remains pending on pull request #179. This portfolio remains
+a design artifact rather than proof of remote operation.
 
 ## Opportunity Portfolio
 

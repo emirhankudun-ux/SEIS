@@ -346,7 +346,7 @@
   "selectionBasis": "The user requested autonomous development under least privilege, and the local option is the smallest reversible design that directly addresses the inspected controls.",
   "implementationStatus": {
     "state": "implemented_locally_remote_evidence_pending",
-    "commitSha": null,
+    "commitSha": "785c346deee8f70f8c6ea45a684deb960a1ecf2d",
     "remoteRun": null,
     "localEvidence": [
       "npm run check:security-boundary",
@@ -354,13 +354,14 @@
       "npm run check:ecosystem-foundation",
       "npm run test:ecosystem-foundation",
       "bash -n scripts/security/scan-secrets.sh",
+      "bash scripts/security/scan-secrets.sh",
       "npm run check:foundation",
       "npm run check:goal-tracking",
       "npm run seis:check",
       "git diff --check"
     ],
     "limitations": [
-      "Gitleaks was unavailable locally, so the local repository and history scan was not executed.",
+      "The local redacted Gitleaks scan passed under configured exceptions and does not resolve the historical content tracked by issue 129.",
       "The previous remote Guardian run applies to source evidence revision db817330, not the implementation working tree.",
       "Issue 129 remains open and the configured historical exception remains unresolved."
     ]
