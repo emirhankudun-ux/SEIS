@@ -2,19 +2,23 @@
   "use strict";
 
   const Bus = window.SEISConversationBus;
+  const ContextAdapters = window.SEISConversationContextAdapters;
   const sources = Bus.listSources();
   const requestedSource = new URLSearchParams(window.location.search).get("source");
   let sourceId = Bus.sourceById(requestedSource || "command-center").id;
   let state = Bus.read();
+  let capturedContext = null;
   const el = {
     sourceSelect: document.getElementById("workspace-source"),
     sourceKind: document.getElementById("source-kind"),
     sourceName: document.getElementById("source-name"),
     sourceState: document.getElementById("source-state"),
+    adapterState: document.getElementById("adapter-state"),
     openDirect: document.getElementById("open-direct"),
     preview: document.getElementById("source-preview"),
     previewRoute: document.getElementById("preview-route"),
     boundary: document.getElementById("preview-boundary-copy"),
+    adapterDetail: document.getElementById("adapter-detail"),
     grid: document.getElementById("workspace-grid"),
     threadTitle: document.getElementById("thread-title"),
     chatState: document.getElementById("chat-state"),
@@ -45,7 +49,10 @@
   function localReply(currentSource, text) {
     const intent = text.toLowerCase();
     if (intent.includes("plan") || intent.includes("milestone")) return "Agency Local Demo plan for " + currentSource.label + ": capture the client outcome, define acceptance evidence, preserve existing work, and keep live permissions behind a separate approval.";
-    if (intent.includes("summar") || intent.includes("context")) return "Local context summary for " + currentSource.label + ": " + currentSource.description + " Current contract state is " + currentSource.state + ".";
+    if (intent.includes("summar") || intent.includes("context")) {
+      const evidence = capturedContext && capturedContext.state === "connected-readonly" ? " Read-only adapter evidence: " + capturedContext.title + ", " + capturedContext.interactiveControls + " interactive controls and " + capturedContext.landmarks + " structural landmarks." : " Read-only adapter evidence is not available yet.";
+      return "Local context summary for " + currentSource.label + ": " + currentSource.description + " Current contract state is " + currentSource.state + "." + evidence;
+    }
     return "Message recorded beside " + currentSource.label + ". The preview and thread share browser-local context; no provider or remote action was invoked.";
   }
 
@@ -67,6 +74,9 @@
     el.sourceKind.textContent = currentSource.kind;
     el.sourceName.textContent = currentSource.label;
     el.sourceState.textContent = currentSource.state;
+    el.adapterState.textContent = "adapter pending";
+    el.adapterState.className = "adapter-state is-pending";
+    el.adapterDetail.textContent = "Waiting for read-only context adapter.";
     el.chatState.textContent = currentSource.state + " / browser-local";
     el.openDirect.href = currentSource.href;
     el.previewRoute.textContent = currentSource.href;
@@ -76,6 +86,15 @@
     const url = new URL(window.location.href);
     url.searchParams.set("source", currentSource.id);
     window.history.replaceState({}, "", url);
+  }
+
+  function captureContext() {
+    capturedContext = ContextAdapters.capture(el.preview, source());
+    el.adapterState.textContent = capturedContext.state;
+    el.adapterState.className = "adapter-state " + (capturedContext.state === "connected-readonly" ? "is-connected" : "is-unavailable");
+    el.adapterDetail.textContent = capturedContext.state === "connected-readonly"
+      ? capturedContext.title + " / " + capturedContext.interactiveControls + " controls / " + capturedContext.landmarks + " landmarks"
+      : capturedContext.reason;
   }
 
   function renderThread() {
@@ -103,6 +122,7 @@
     save();
     render();
   });
+  el.preview.addEventListener("load", captureContext);
   document.addEventListener("click", function (event) {
     const action = event.target.closest("[data-action]");
     if (action && action.dataset.action === "send") send();
