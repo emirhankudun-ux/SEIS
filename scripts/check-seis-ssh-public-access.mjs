@@ -156,6 +156,7 @@ for (const token of [
 const desktop = read(files.desktop);
 for (const token of [
   "SEIS_SSH_PUBLIC_ACCESS_CONTRACT",
+  "SEIS_SSH_PUBLIC_ACCESS_EVIDENCE",
   "Public GitHub SSH",
   "Keep same server and port",
   "seis-ssh-public-access.md",
@@ -163,6 +164,9 @@ for (const token of [
   "seis-ssh-public-contributor-doctor.md",
   "check:seis-ssh-live-readiness-evidence",
   "GitHub Codespaces billing",
+  "blocked-provider-billing",
+  "review-ready-with-warning",
+  "github.codespaces",
   "npm run check:seis-ssh-public-access"
 ]) {
   ensure(desktop.includes(token), `desktop demo must include ${token}`);

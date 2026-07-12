@@ -1660,6 +1660,73 @@ const SEIS_WOW_REFERENCES = [
   { id: "kimi-linuxos-reference", title: "Kimi LinuxOS", role: "Linux-like OS reference", url: "https://dwfcctyh2o6me.ok.kimi.link/?id=2045932438926155776&share_id=19d9fdbd-d7d2-8a19-8000-00001d7799f6" },
   { id: "kimi-vscode-web-reference", title: "Kimi VS Code Web", role: "VS Code Web reference", url: "https://gmzousbtqpx5w.kimi.page/?id=2057731079068581888&share_id=19e4e6a6-9342-8f07-8000-0000296a37dd" }
 ];
+
+function isImportedWowPngPath(path) {
+  return typeof path === "string"
+    && path.startsWith("./wow-pages/imported/")
+    && path.includes("/png/")
+    && path.endsWith(".png");
+}
+
+function inferWowHtmlReference(path) {
+  return isImportedWowPngPath(path)
+    ? path.replace("/png/", "/html/").replace(/\.png$/u, ".html")
+    : "";
+}
+
+function escapeWowSvgText(value) {
+  return String(value || "").replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]);
+}
+
+function buildWowPlaceholderDataUri(title, lines = []) {
+  const safeTitle = String(title || "SEIS WOW");
+  const detailLines = lines.map((line) => String(line || "").trim()).filter(Boolean).slice(0, 3);
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-label="${escapeWowSvgText(safeTitle)} reference placeholder">
+    <defs>
+      <linearGradient id="wow-bg" x1="0%" x2="100%" y1="0%" y2="100%">
+        <stop offset="0%" stop-color="#020617" />
+        <stop offset="50%" stop-color="#111827" />
+        <stop offset="100%" stop-color="#1e293b" />
+      </linearGradient>
+      <linearGradient id="wow-panel" x1="0%" x2="100%" y1="0%" y2="0%">
+        <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.28" />
+        <stop offset="100%" stop-color="#a855f7" stop-opacity="0.12" />
+      </linearGradient>
+    </defs>
+    <rect width="1280" height="720" fill="url(#wow-bg)" />
+    <rect x="52" y="52" width="1176" height="616" rx="28" fill="#0f172a" stroke="#94a3b8" stroke-opacity="0.35" />
+    <rect x="88" y="88" width="320" height="18" rx="9" fill="#38bdf8" fill-opacity="0.72" />
+    <rect x="88" y="138" width="1104" height="210" rx="22" fill="url(#wow-panel)" stroke="#38bdf8" stroke-opacity="0.35" />
+    <rect x="88" y="384" width="348" height="228" rx="22" fill="#0f172a" fill-opacity="0.88" stroke="#94a3b8" stroke-opacity="0.16" />
+    <rect x="466" y="384" width="348" height="228" rx="22" fill="#0f172a" fill-opacity="0.88" stroke="#94a3b8" stroke-opacity="0.16" />
+    <rect x="844" y="384" width="348" height="228" rx="22" fill="#0f172a" fill-opacity="0.88" stroke="#94a3b8" stroke-opacity="0.16" />
+    <text x="88" y="190" fill="#38bdf8" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="700">SEIS WOW imported reference</text>
+    <text x="88" y="258" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="58" font-weight="800">${escapeWowSvgText(safeTitle)}</text>
+    ${detailLines.map((line, index) => `<text x="88" y="${318 + (index * 42)}" fill="#cbd5e1" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="500">${escapeWowSvgText(line)}</text>`).join("")}
+  </svg>`;
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
+function resolveWowPreviewImage(item) {
+  const image = typeof item === "string" ? item : item?.image;
+  if (!isImportedWowPngPath(image)) return image || "";
+  const htmlReference = typeof item === "object" && item?.html ? item.html : inferWowHtmlReference(image);
+  const secondaryLabel = typeof item === "object"
+    ? item?.collection || item?.source || item?.tag || item?.status || ""
+    : "";
+  return buildWowPlaceholderDataUri(typeof item === "object" ? item?.title : "SEIS WOW", [
+    secondaryLabel,
+    "PNG preview missing in import",
+    htmlReference ? "HTML reference preserved" : "Imported visual reference"
+  ]);
+}
+
 const SEIS_WOW_DESIGN_FUSION = [
   { title: "Desktop Overview", source: "Part 1 / 03", tag: "OS shell", image: "./wow-pages/imported/SEIS_WOW_EXTENDED_PAGES/png/03_desktop_overview.png", motif: "dark wallpaper, top system bar, left activity rail, bottom dock" },
   { title: "Launchpad All Apps", source: "Part 1 / 04", tag: "Launcher", image: "./wow-pages/imported/SEIS_WOW_EXTENDED_PAGES/png/04_launchpad_all_apps.png", motif: "centered search, tabbed categories, dense app grid" },
@@ -4110,6 +4177,25 @@ const SEIS_SSH_PUBLIC_ACCESS_CONTRACT = {
   ]
 };
 
+const SEIS_SSH_PUBLIC_ACCESS_EVIDENCE = {
+  publicStatus: "review-ready-contract",
+  transportProvider: "github-codespaces",
+  transportMode: "codespace",
+  hostnameKind: "github.codespaces",
+  port: "22",
+  terminalCompatibility: "ready",
+  pickerCompatibility: "warning",
+  contributorDoctorStatus: "review-ready-with-warning",
+  contributorDoctorMode: "read-only-no-live-ssh-no-config-write",
+  contributorDoctorWarning: "Picker-compatible direct-cloud mode is not proven.",
+  liveStatus: "blocked-provider-billing",
+  strictReady: false,
+  liveBlocker: "GitHub Codespaces billing issue blocks live online proof.",
+  liveProviderError: "GitHub Codespaces start was blocked by an HTTP 402 billing issue.",
+  sourceContract: "deploy/seis-ssh-public-access-contract.json",
+  sourceLiveEvidence: "content/development/seis-ssh-live-readiness-evidence.json"
+};
+
 function getFileManagerState() {
   const data = getAppData("files");
   if (!["grid", "list"].includes(data.viewMode)) data.viewMode = "grid";
@@ -5871,7 +5957,7 @@ function renderSeisSystemOSApp() {
       </div>
       <div class="wow-fusion-grid compact">
         ${fusionPreview.map((item) => `<button type="button" class="wow-fusion-card" data-action="open-demo-route" data-value="wow-gallery-web">
-          <img src="${escapeAttr(item.image)}" alt="${escapeAttr(item.title)} reference preview" loading="lazy">
+          <img src="${escapeAttr(resolveWowPreviewImage(item))}" alt="${escapeAttr(item.title)} reference preview" loading="lazy">
           <span>${escapeHtml(item.title)}</span>
           <small>${escapeHtml(item.source)} · ${escapeHtml(item.tag)}</small>
         </button>`).join("")}
@@ -6361,7 +6447,7 @@ function renderSeisCommandCenter() {
     </section>
     <section class="wow-reference-ribbon" aria-label="WOW source previews">
       ${commandReferences.map((item) => `<button type="button" class="wow-reference-chip" data-action="open-demo-route" data-value="wow-gallery-web">
-        <img src="${escapeAttr(item.image)}" alt="${escapeAttr(item.title)} preview" loading="lazy">
+        <img src="${escapeAttr(resolveWowPreviewImage(item))}" alt="${escapeAttr(item.title)} preview" loading="lazy">
         <span>${escapeHtml(item.title)}</span>
         <small>${escapeHtml(item.tag)}</small>
       </button>`).join("")}
@@ -6667,7 +6753,7 @@ function renderWowGalleryApp() {
       </div>
       <div class="wow-fusion-grid">
         ${fusionDesign.map((item) => `<button type="button" class="wow-fusion-card" data-action="open-demo-route" data-value="wow-gallery-web">
-          <img src="${escapeAttr(item.image)}" alt="${escapeAttr(item.title)} reference preview" loading="lazy">
+          <img src="${escapeAttr(resolveWowPreviewImage(item))}" alt="${escapeAttr(item.title)} reference preview" loading="lazy">
           <span>${escapeHtml(item.title)}</span>
           <small>${escapeHtml(item.source)} · ${escapeHtml(item.tag)}</small>
           <em>${escapeHtml(item.motif)}</em>
@@ -6698,7 +6784,7 @@ function renderWowGalleryApp() {
       <h3>Highlighted Imported Screens</h3>
       <div class="wow-highlight-grid">
         ${highlights.map(([title, src, tag]) => `<button type="button" class="wow-highlight-card" data-action="open-demo-route" data-value="wow-gallery-web">
-          <img src="${escapeAttr(src)}" alt="${escapeAttr(title)} preview" loading="lazy">
+          <img src="${escapeAttr(resolveWowPreviewImage({ title, image: src, tag }))}" alt="${escapeAttr(title)} preview" loading="lazy">
           <span>${escapeHtml(title)}</span>
           <small>${escapeHtml(tag)}</small>
         </button>`).join("")}
@@ -6765,10 +6851,14 @@ function renderSeisDesign() {
 function renderSeisCloud() {
   const data = getAppData("seis-cloud");
   const runtimeTools = LOCAL_ECOSYSTEM_INVENTORY.apps.filter(([, lane]) => ["Runtime", "Local AI", "Local/Secondary AI", "Agent IDE", "Implementation", "Apple Native", "Development"].includes(lane));
+  const sshEvidence = SEIS_SSH_PUBLIC_ACCESS_EVIDENCE;
   const checks = [
     ["Core demo", "Available", "Static web app runs without cloud credentials."],
     ["SSH execution", "Disabled", "Requires explicit approval and audited target host."],
-    ["Public GitHub SSH", "Documented", "SEIS-SSH keeps the same server and port; validated by npm run check:seis-ssh-public-access."],
+    ["Public GitHub SSH", sshEvidence.publicStatus, `SEIS-SSH keeps the same server and port; validated by ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.qualityGate}.`],
+    ["SSH transport", `${sshEvidence.transportProvider} / ${sshEvidence.transportMode}`, `${sshEvidence.hostnameKind}:${sshEvidence.port} · terminal ${sshEvidence.terminalCompatibility} · picker ${sshEvidence.pickerCompatibility}`],
+    ["Contributor doctor", sshEvidence.contributorDoctorStatus, `${sshEvidence.contributorDoctorMode}. ${sshEvidence.contributorDoctorWarning}`],
+    ["Live readiness", sshEvidence.liveStatus, sshEvidence.liveBlocker],
     ["Provider keys", "Missing Key", "Core demo remains functional without model-provider keys."],
     ["NVIDIA GPU/NIM", "Planned/Gated", "NVIDIA catalog is dry-run only; GPU, NIM, Docker, and model downloads require approval."],
     ["Deployment", "Planned", "Use a reviewed PR and release gate before publishing."]
@@ -6789,10 +6879,16 @@ function renderSeisCloud() {
     </div>
     <section class="subagent-panel local-inventory-panel">
       <h3>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.label)}</h3>
-      <p class="muted">${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.alias)} is the single public-facing alias. ${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.invariant)}. Live SSH is disabled until strict evidence and owner approval exist.</p>
+      <p class="muted">${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.alias)} is the single public-facing alias. ${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.invariant)}. Public review is contract-ready, but live SSH remains blocked until strict evidence and owner approval exist.</p>
       <div class="metric-grid">
         <article class="metric-card"><strong>Alias</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.alias)}</p></article>
-        <article class="metric-card"><strong>Status</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.status)}</p></article>
+        <article class="metric-card"><strong>SSH Public</strong><p>${escapeHtml(sshEvidence.publicStatus)}</p></article>
+        <article class="metric-card"><strong>SSH Transport</strong><p>${escapeHtml(`${sshEvidence.transportProvider} / ${sshEvidence.transportMode}`)}</p></article>
+        <article class="metric-card"><strong>Host Kind</strong><p>${escapeHtml(sshEvidence.hostnameKind)}</p></article>
+        <article class="metric-card"><strong>Terminal</strong><p>${escapeHtml(sshEvidence.terminalCompatibility)}</p></article>
+        <article class="metric-card"><strong>Picker</strong><p>${escapeHtml(sshEvidence.pickerCompatibility)}</p></article>
+        <article class="metric-card"><strong>SSH Doctor</strong><p>${escapeHtml(sshEvidence.contributorDoctorStatus)}</p></article>
+        <article class="metric-card"><strong>SSH Live</strong><p>${escapeHtml(sshEvidence.liveStatus)}</p></article>
         <article class="metric-card"><strong>Contract</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.contract)}</p></article>
         <article class="metric-card"><strong>Gate</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.qualityGate)}</p></article>
         <article class="metric-card"><strong>Report</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.reportCommand)}</p></article>
@@ -6800,6 +6896,15 @@ function renderSeisCloud() {
         <article class="metric-card"><strong>Doctor</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.contributorDoctorCommand)}</p></article>
         <article class="metric-card"><strong>Live Evidence</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.liveEvidenceCommand)}</p></article>
       </div>
+      <table class="data-table">
+        <thead><tr><th>Evidence</th><th>Status</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>Public contract</td><td>${escapeHtml(sshEvidence.publicStatus)}</td><td>${escapeHtml(`${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.alias} stays on ${sshEvidence.hostnameKind}:${sshEvidence.port} without changing the public endpoint.`)}</td></tr>
+          <tr><td>Transport posture</td><td>${escapeHtml(`${sshEvidence.transportProvider} / ${sshEvidence.transportMode}`)}</td><td>${escapeHtml(`Terminal is ${sshEvidence.terminalCompatibility}; picker compatibility remains ${sshEvidence.pickerCompatibility}.`)}</td></tr>
+          <tr><td>Contributor doctor</td><td>${escapeHtml(sshEvidence.contributorDoctorStatus)}</td><td>${escapeHtml(`${sshEvidence.contributorDoctorMode}. ${sshEvidence.contributorDoctorWarning}`)}</td></tr>
+          <tr><td>Live readiness</td><td>${escapeHtml(sshEvidence.liveStatus)}</td><td>${escapeHtml(`${sshEvidence.liveBlocker} ${sshEvidence.liveProviderError}`)}</td></tr>
+        </tbody>
+      </table>
       <table class="data-table">
         <thead><tr><th>State</th><th>Meaning</th></tr></thead>
         <tbody>${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.states.map(([stateLabel, meaning]) => `<tr><td>${escapeHtml(stateLabel)}</td><td>${escapeHtml(meaning)}</td></tr>`).join("")}</tbody>
@@ -9348,6 +9453,7 @@ ${creativeWorkspaces.map(([folder, type, use, status]) => `- ${folder}: ${type} 
 
 function buildSeisCloudPreflightMarkdown(timestamp) {
   const runtimeTools = LOCAL_ECOSYSTEM_INVENTORY.apps.filter(([, lane]) => ["Runtime", "Local AI", "Local/Secondary AI", "Agent IDE", "Implementation", "Apple Native", "Development"].includes(lane));
+  const sshEvidence = SEIS_SSH_PUBLIC_ACCESS_EVIDENCE;
   return `# SEIS Cloud Local Preflight
 
 Generated: ${timestamp}
@@ -9367,6 +9473,19 @@ Public SSH contributor doctor command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.contrib
 Public SSH contributor doctor artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.contributorDoctorArtifact}
 Public SSH live evidence command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.liveEvidenceCommand}
 Public SSH live evidence artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.liveEvidenceArtifact}
+Public SSH status: ${sshEvidence.publicStatus}
+Public SSH transport: ${sshEvidence.transportProvider} / ${sshEvidence.transportMode}
+Public SSH hostname kind: ${sshEvidence.hostnameKind}
+Public SSH port: ${sshEvidence.port}
+Public SSH terminal compatibility: ${sshEvidence.terminalCompatibility}
+Public SSH picker compatibility: ${sshEvidence.pickerCompatibility}
+Public SSH contributor doctor status: ${sshEvidence.contributorDoctorStatus}
+Public SSH contributor doctor mode: ${sshEvidence.contributorDoctorMode}
+Public SSH contributor doctor warning: ${sshEvidence.contributorDoctorWarning}
+Public SSH live status: ${sshEvidence.liveStatus}
+Public SSH live blocker: ${sshEvidence.liveBlocker}
+Public SSH live provider error: ${sshEvidence.liveProviderError}
+Public SSH strict ready: ${sshEvidence.strictReady ? "yes" : "no"}
 Server/port invariant: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.invariant}
 
 ## Boundary
@@ -9383,6 +9502,19 @@ ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.states.map(([stateLabel, meaning]) => `- ${sta
 
 ## Approval Gates
 ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.approvalGates.map((gate) => `- ${gate}`).join("\n")}
+
+## Latest SSH Evidence
+- Public contract: ${sshEvidence.publicStatus} / ${sshEvidence.sourceContract}
+- Transport posture: ${sshEvidence.transportProvider} / ${sshEvidence.transportMode} / ${sshEvidence.hostnameKind}:${sshEvidence.port}
+- Terminal compatibility: ${sshEvidence.terminalCompatibility}
+- Picker compatibility: ${sshEvidence.pickerCompatibility}
+- Contributor doctor: ${sshEvidence.contributorDoctorStatus} / ${sshEvidence.contributorDoctorMode}
+- Contributor doctor warning: ${sshEvidence.contributorDoctorWarning}
+- Live readiness: ${sshEvidence.liveStatus}
+- Live blocker: ${sshEvidence.liveBlocker}
+- Live provider error: ${sshEvidence.liveProviderError}
+- Live evidence source: ${sshEvidence.sourceLiveEvidence}
+- Strict ready: ${sshEvidence.strictReady ? "yes" : "no"}
 
 ## Local Runtime Tool Map
 ${runtimeTools.map(([tool, role, use, status]) => `- ${tool}: ${role} / ${use} / ${status}`).join("\n")}

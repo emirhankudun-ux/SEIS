@@ -37,6 +37,63 @@
       .replace(/'/g, "&#039;");
   }
 
+  function isImportedWowPngPath(path) {
+    return typeof path === "string"
+      && path.startsWith("./wow-pages/imported/")
+      && path.includes("/png/")
+      && path.endsWith(".png");
+  }
+
+  function inferWowHtmlReference(path) {
+    return isImportedWowPngPath(path)
+      ? path.replace("/png/", "/html/").replace(/\.png$/u, ".html")
+      : "";
+  }
+
+  function buildWowPlaceholderDataUri(title, lines) {
+    const safeTitle = escapeHtml(title || "SEIS WOW");
+    const detailLines = (lines || []).map((line) => escapeHtml(String(line || "").trim())).filter(Boolean).slice(0, 3);
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-label="${safeTitle} reference placeholder">
+      <defs>
+        <linearGradient id="wow-bg" x1="0%" x2="100%" y1="0%" y2="100%">
+          <stop offset="0%" stop-color="#020617" />
+          <stop offset="50%" stop-color="#111827" />
+          <stop offset="100%" stop-color="#1e293b" />
+        </linearGradient>
+        <linearGradient id="wow-panel" x1="0%" x2="100%" y1="0%" y2="0%">
+          <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.28" />
+          <stop offset="100%" stop-color="#a855f7" stop-opacity="0.12" />
+        </linearGradient>
+      </defs>
+      <rect width="1280" height="720" fill="url(#wow-bg)" />
+      <rect x="52" y="52" width="1176" height="616" rx="28" fill="#0f172a" stroke="#94a3b8" stroke-opacity="0.35" />
+      <rect x="88" y="88" width="320" height="18" rx="9" fill="#38bdf8" fill-opacity="0.72" />
+      <rect x="88" y="138" width="1104" height="210" rx="22" fill="url(#wow-panel)" stroke="#38bdf8" stroke-opacity="0.35" />
+      <rect x="88" y="384" width="348" height="228" rx="22" fill="#0f172a" fill-opacity="0.88" stroke="#94a3b8" stroke-opacity="0.16" />
+      <rect x="466" y="384" width="348" height="228" rx="22" fill="#0f172a" fill-opacity="0.88" stroke="#94a3b8" stroke-opacity="0.16" />
+      <rect x="844" y="384" width="348" height="228" rx="22" fill="#0f172a" fill-opacity="0.88" stroke="#94a3b8" stroke-opacity="0.16" />
+      <text x="88" y="190" fill="#38bdf8" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="700">SEIS WOW imported reference</text>
+      <text x="88" y="258" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="58" font-weight="800">${safeTitle}</text>
+      ${detailLines.map((line, index) => `<text x="88" y="${318 + (index * 42)}" fill="#cbd5e1" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="500">${line}</text>`).join("")}
+    </svg>`;
+    return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+  }
+
+  function normalizeWowPage(page) {
+    const htmlReference = page.html || inferWowHtmlReference(page.image);
+    const hasImagePreviewAsset = !isImportedWowPngPath(page.image);
+    return {
+      ...page,
+      html: htmlReference,
+      previewImage: hasImagePreviewAsset ? page.image : buildWowPlaceholderDataUri(page.title, [
+        page.collection,
+        "PNG preview missing in import",
+        htmlReference ? "HTML reference preserved" : "Imported visual reference"
+      ]),
+      hasImagePreviewAsset
+    };
+  }
+
   function uniqueTags(pages) {
     return [...new Set(pages.flatMap((page) => page.tags || []))].sort();
   }
@@ -91,7 +148,7 @@
     els.resultCount.textContent = `${pages.length} of ${state.pages.length} shown`;
     els.galleryGrid.innerHTML = pages.map((page) => `<article class="gallery-card">
       <button type="button" class="gallery-thumb-button" data-action="preview-page" data-page-id="${escapeHtml(page.id)}">
-        <img src="${escapeHtml(page.image)}" alt="${escapeHtml(page.title)} preview" loading="lazy">
+        <img src="${escapeHtml(page.previewImage)}" alt="${escapeHtml(page.title)} preview" loading="lazy">
       </button>
       <div class="gallery-card-body">
         <div>
@@ -113,12 +170,19 @@
   function showPreview(pageId) {
     const page = state.pages.find((item) => item.id === pageId);
     if (!page) return;
-    els.previewImage.src = page.image;
+    els.previewImage.src = page.previewImage;
     els.previewImage.alt = `${page.title} preview`;
     els.previewTitle.textContent = page.title;
     els.previewCollection.textContent = page.collection;
-    els.previewNote.textContent = "Imported visual reference. Use it for SEIS design comparison, not as evidence of live implementation.";
-    els.previewImageLink.href = page.image;
+    els.previewNote.textContent = page.hasImagePreviewAsset
+      ? "Imported visual reference. Use it for SEIS design comparison, not as evidence of live implementation."
+      : "PNG preview is missing in the imported pack. The HTML reference remains preserved for SEIS design comparison.";
+    if (page.hasImagePreviewAsset) {
+      els.previewImageLink.href = page.image;
+      els.previewImageLink.classList.remove("is-hidden");
+    } else {
+      els.previewImageLink.classList.add("is-hidden");
+    }
     if (page.html) {
       els.previewHtml.href = page.html;
       els.previewHtml.classList.remove("is-hidden");
@@ -184,7 +248,7 @@
       const response = await fetch("./wow-pages/wow-catalog.json", { cache: "no-cache" });
       if (!response.ok) throw new Error(`Catalog HTTP ${response.status}`);
       const catalog = await response.json();
-      state.pages = Array.isArray(catalog.pages) ? catalog.pages : [];
+      state.pages = Array.isArray(catalog.pages) ? catalog.pages.map(normalizeWowPage) : [];
       state.collections = Array.isArray(catalog.collections) ? catalog.collections : [];
       state.kimiReferences = Array.isArray(catalog.kimiReferences) ? catalog.kimiReferences : [];
       renderKimiReferences();

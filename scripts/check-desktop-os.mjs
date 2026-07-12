@@ -80,6 +80,8 @@ if (failures.length === 0) {
   ensure(js.includes("seis-command-center-app"), "desktop.js must expose the SEIS Command Center route.");
   ensure(js.includes("sub-agent-os-demo"), "desktop.js must expose the Sub-Agent OS demo route.");
   ensure(js.includes("renderLauncherRoutes"), "desktop.js must surface SEIS routes in the launcher/search UI.");
+  ensure(js.includes("resolveWowPreviewImage"), "desktop.js must normalize missing imported WOW preview images.");
+  ensure(js.includes("PNG preview missing in import"), "desktop.js must surface truthful imported WOW preview fallback copy.");
   ensure(js.includes("SEIS_SEARCH_TABS"), "desktop.js must define SEIS Search result tabs.");
   ensure(js.includes('data-action="set-search-tab"'), "desktop.js must render actionable SEIS Search tab buttons.");
   ensure(js.includes("data-search-tab-panel"), "desktop.js must render the active SEIS Search tab panel.");
