@@ -222,7 +222,8 @@
     "secondBrainSystemResource": "seis://brain/second-brain-system.json",
     "mcpResources": [
       "seis://agent/plugin-integration.json",
-      "seis://brain/second-brain-system.json",
+      "seis://web/translations.json",
+      "seis://web/site-config.json",
       "seis://ai/mcp-runtime-contract.json",
       "seis://ai/provider-registry.json",
       "seis://ai/model-scaling-hardware-profile.json",

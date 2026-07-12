@@ -140,7 +140,8 @@ if (manifest) {
   ensure(manifest.runtimeIntegration?.secondBrainSystemResource === "seis://brain/second-brain-system.json", "runtimeIntegration must expose the Second Brain system resource");
   ensureArrayIncludesAll(manifest.runtimeIntegration?.mcpResources, [
     "seis://agent/plugin-integration.json",
-    "seis://brain/second-brain-system.json",
+    "seis://web/translations.json",
+    "seis://web/site-config.json",
     "seis://ai/version-registry.json",
     "seis://ai/provider-registry.json",
     "seis://ai/model-scaling-hardware-profile.json",
