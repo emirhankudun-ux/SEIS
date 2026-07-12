@@ -493,6 +493,9 @@ function inspectBrowserSmokeEvidence(evidence) {
     fresh: Number.isFinite(generatedAt) && Date.now() - generatedAt <= browserSmokeEvidenceMaxAgeMs,
     sourcePathsCleanBeforeRun: evidence?.source?.sourcePathsCleanBeforeRun === true,
     sourcePathsCleanNow,
+    appCount: evidence?.result?.appCount || 0,
+    desktopHorizontalOverflow: evidence?.result?.desktopHorizontalOverflow ?? null,
+    mobileAppCount: evidence?.result?.mobileAppCount || 0,
     pluginGraphActions: evidence?.result?.pluginGraphActions || 0,
     pluginHandoff: evidence?.result?.pluginHandoff || null,
     persistedPluginHandoff: evidence?.result?.persistedPluginHandoff || null,
@@ -509,6 +512,9 @@ function inspectBrowserSmokeEvidence(evidence) {
     && state.fresh
     && state.sourcePathsCleanBeforeRun
     && state.sourcePathsCleanNow
+    && state.appCount >= 50
+    && state.desktopHorizontalOverflow === false
+    && state.mobileAppCount >= 50
     && state.pluginGraphActions === 5
     && state.pluginHandoff === "seis-code"
     && state.persistedPluginHandoff === "seis-code"
