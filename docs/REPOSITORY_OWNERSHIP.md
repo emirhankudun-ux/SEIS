@@ -52,7 +52,7 @@ npm run check:ecosystem-foundation
 npm run test:ecosystem-foundation
 ```
 
-The check validates the SEIS manifest, ownership registry, and active
+The check validates the SEIS manifest, ownership registry, and blocked
 `ECO-GOAL-0001` record. It rejects duplicate repository ids, duplicate module
 ids, duplicate owned paths, unknown canonical owners, invalid status-directory
 mappings, and canonical claims for repositories without dated observed metadata.

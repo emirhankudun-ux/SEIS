@@ -187,12 +187,25 @@ evidence_records:
 
 quality_gates:
   architecture: required
-  design: not-applicable
+  product: not-applicable
+  brand_creative_direction: not-applicable
+  design_system: not-applicable
+  ui_ux: not-applicable
+  engineering: passed
+  ai_integrity: not-applicable
+  model_provider_routing: not-applicable
+  agent_permission: not-applicable
+  mcp_plugin_tool: not-applicable
   security: passed
+  privacy: required
   accessibility: not-applicable
   performance: not-applicable
+  data: not-applicable
   documentation: passed
+  devops: not-applicable
   testing: passed
+  release: not-applicable
+  public_readiness: required
 
 risks:
   - id: ECO-RISK-001
@@ -242,6 +255,7 @@ github:
   branch_name: architecture/ecosystem-goal-tracking-v1
   commit_sha: f772b6f364e49d438113b2d51f2e20027ae9f6b4
   pull_request_url: https://github.com/emirhankudun-ux/SEIS/pull/177
+  release_note_url: null
 
 observability:
   metrics:
@@ -260,6 +274,7 @@ outputs:
   - ownership documentation
 
 notes:
+  - github.commit_sha records the substantive ECO-GOAL-0001 bootstrap implementation commit; later evidence-only or ECO-GOAL-0003 hardening commits may be newer.
   - This first slice does not claim ecosystem-wide completion.
   - Eleni-Neferi and Pantechnoesis remotes were observed through an authenticated read-only connector and are canonical by repository identity, but their manifests are still missing.
   - Scope expanded to CI and an ADR because both are explicit Definition of Done and ownership-decision requirements.

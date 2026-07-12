@@ -112,8 +112,13 @@ validation:
   evidence:
     - validator output
     - negative fixture output
-    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29210762538
-    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29210762555
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101121
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101180
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101128
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101164
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101125
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101119
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101132
     - https://github.com/emirhankudun-ux/SEIS/pull/177
 
 status_history:
@@ -136,6 +141,10 @@ status_history:
       - ECO3-EVIDENCE-008
       - ECO3-EVIDENCE-009
       - ECO3-EVIDENCE-010
+      - ECO3-EVIDENCE-011
+      - ECO3-EVIDENCE-012
+      - ECO3-EVIDENCE-013
+      - ECO3-EVIDENCE-014
 
 evidence_records:
   - id: ECO3-EVIDENCE-001
@@ -168,35 +177,35 @@ evidence_records:
     artifact: scripts/check-goal-tracking.mjs
   - id: ECO3-EVIDENCE-005
     type: remote-ci
-    description: Foundation Check run 781 executed the pull-request workflow and passed, including the ecosystem validator and negative fixtures.
+    description: Foundation Check run 783 executed the pull-request workflow on review-hardening commit f89918fc and passed, including the ecosystem validator and negative fixtures.
     status: passed
     command: null
     exit_code: null
-    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29210762538
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101121
   - id: ECO3-EVIDENCE-006
     type: remote-ci
-    description: Core CI run 733 passed for the focused pull-request commit.
+    description: Core CI run 735 passed for review-hardening commit f89918fc.
     status: passed
     command: null
     exit_code: null
-    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29210762555
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101180
   - id: ECO3-EVIDENCE-007
     type: security-validation
-    description: CodeQL run 452 passed for the focused pull-request commit.
+    description: CodeQL run 454 passed for review-hardening commit f89918fc.
     status: passed
     command: null
     exit_code: null
-    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29210762548
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101128
   - id: ECO3-EVIDENCE-008
     type: security-validation
-    description: SEIS Guardian Security Scan run 540 passed for the focused pull-request commit.
+    description: SEIS Guardian Security Scan run 542 passed for review-hardening commit f89918fc.
     status: passed
     command: null
     exit_code: null
-    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29210762578
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101164
   - id: ECO3-EVIDENCE-009
     type: github-handoff
-    description: Issue 176 and draft pull request 177 map the Goal to the focused branch and commit without merging or deploying.
+    description: Issue 176 and ready-for-review pull request 177 map the Goal to the focused branch and commits without merging or deploying.
     status: passed
     command: null
     exit_code: null
@@ -208,15 +217,56 @@ evidence_records:
     command: npm run test:ecosystem-foundation
     exit_code: 0
     artifact: https://github.com/emirhankudun-ux/SEIS/pull/177
+  - id: ECO3-EVIDENCE-011
+    type: remote-ci
+    description: SEIS System Gates run 282 passed for review-hardening commit f89918fc.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101125
+  - id: ECO3-EVIDENCE-012
+    type: remote-ci
+    description: Open Source Governance run 605 passed for review-hardening commit f89918fc.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101119
+  - id: ECO3-EVIDENCE-013
+    type: remote-ci
+    description: Master Prompt Governance run 83 passed for review-hardening commit f89918fc.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101132
+  - id: ECO3-EVIDENCE-014
+    type: review
+    description: CodeRabbit completed its review of commit f89918fc with commented findings rather than a changes-requested decision.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/pull/177#pullrequestreview-4680890797
 
 quality_gates:
   architecture: required
-  design: not-applicable
-  security: passed
+  product: not-applicable
+  brand_creative_direction: not-applicable
+  design_system: not-applicable
+  ui_ux: not-applicable
+  engineering: required
+  ai_integrity: not-applicable
+  model_provider_routing: not-applicable
+  agent_permission: not-applicable
+  mcp_plugin_tool: not-applicable
+  security: required
+  privacy: required
   accessibility: not-applicable
   performance: not-applicable
-  documentation: passed
-  testing: passed
+  data: not-applicable
+  documentation: required
+  devops: required
+  testing: required
+  release: not-applicable
+  public_readiness: required
 
 risks:
   - id: ECO3-RISK-001
@@ -255,8 +305,9 @@ github:
   suggested_commit: 'test(governance): enforce ecosystem goal validation in ci'
   issue_url: https://github.com/emirhankudun-ux/SEIS/issues/176
   branch_name: architecture/ecosystem-goal-tracking-v1
-  commit_sha: f772b6f364e49d438113b2d51f2e20027ae9f6b4
+  commit_sha: null
   pull_request_url: https://github.com/emirhankudun-ux/SEIS/pull/177
+  release_note_url: null
 
 observability:
   metrics:
@@ -273,6 +324,7 @@ outputs:
   - canonical pull-request template
 
 notes:
+  - github.commit_sha is pending until the current substantive hardening is committed; a follow-up evidence-only commit will record that implementation SHA.
   - The Goal reached review after all seven pull-request workflows passed; completion still requires the architecture gate and review decision.
   - Local actionlint was unavailable, but GitHub parsed and executed the changed workflow successfully; the skipped local check remains disclosed in the pull request.
   - Branch publication reported administrative bypasses for branch-creation and signature rules; no protected default-branch write occurred.

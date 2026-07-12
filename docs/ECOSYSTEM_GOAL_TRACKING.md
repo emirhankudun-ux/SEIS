@@ -34,7 +34,7 @@ another project's identity.
 | [`schemas/repository-ownership.schema.json`](../schemas/repository-ownership.schema.json)                                                                       | Ownership contract                       | Bootstrap schema with semantic checks in the validator.                     |
 | [`schemas/ecosystem-goal.schema.json`](../schemas/ecosystem-goal.schema.json)                                                                                   | Goal YAML contract                       | Schema version 2 bootstrap.                                                 |
 | [`goals/blocked/ECO-GOAL-0001--project-manifests-and-canonical-ownership.yaml`](../goals/blocked/ECO-GOAL-0001--project-manifests-and-canonical-ownership.yaml) | Blocked ownership record                 | Blocked on private-repository manifests, authorization, and full inventory. |
-| [`goals/active/ECO-GOAL-0003--goal-schema-validation-and-ci.yaml`](../goals/active/ECO-GOAL-0003--goal-schema-validation-and-ci.yaml)                           | Active validation and CI record          | In review; all seven pull-request workflows passed.                         |
+| [`goals/active/ECO-GOAL-0003--goal-schema-validation-and-ci.yaml`](../goals/active/ECO-GOAL-0003--goal-schema-validation-and-ci.yaml)                           | Active validation and CI record          | In review; dated workflow evidence is recorded below.                       |
 | [`adr/0002-ecosystem-governance-bootstrap-ownership.md`](adr/0002-ecosystem-governance-bootstrap-ownership.md)                                                  | Coordination and ownership decision      | Proposed; requires review before promotion.                                 |
 
 Existing SEIS JSON goal records remain valid SEIS operational history. They are
@@ -68,6 +68,13 @@ Use project-aware immutable IDs such as `ECO-GOAL-*`, `SEIS-GOAL-*`,
 under `goals/backlog`, `goals/active`, `goals/blocked`, `goals/completed`, or
 `goals/archived`. Empty lifecycle directories are retained explicitly.
 
+Every schema-v2 Goal records the canonical architecture, product, brand and
+creative direction, design-system, UI/UX, engineering, AI integrity,
+model/provider routing, agent permission, MCP/plugin/tool, security, privacy,
+accessibility, performance, data, documentation, DevOps, testing, release, and
+public-readiness gates. Each gate is explicitly passed, failed, blocked,
+required, optional, or not applicable; omission is not treated as approval.
+
 For each meaningful task:
 
 1. confirm the canonical owner, scope, non-goals, dependencies, security class,
@@ -83,6 +90,11 @@ A Goal is not complete because files exist or a branch was pushed. Acceptance
 criteria, Definition of Done, required gates, evidence, rollback, and repository
 state must agree.
 
+`github.commit_sha` records the latest substantive implementation commit whose
+evidence belongs to that Goal. A metadata-only follow-up commit may be newer so
+that the Goal can record the immutable implementation SHA without attempting an
+impossible self-reference.
+
 ## Validation
 
 Run from the SEIS repository root:
@@ -94,10 +106,18 @@ git diff --check
 ```
 
 These commands validate the local bootstrap contracts and negative fixtures.
-Pull request 177 supplied successful Foundation Check, CI, CodeQL, security, and
-governance workflow evidence. Those runs do not prove private-repository
-contents, deployments, provider connections, or ecosystem-wide publication
-readiness.
+On 2026-07-13, pull request 177 at review-hardening commit
+`f89918fcaf453d2f0ebf538d540efe14851e5f52` supplied successful
+[Foundation Check](https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101121),
+[CI](https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101180),
+[CodeQL](https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101128),
+[Guardian Security Scan](https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101164),
+[System Gates](https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101125),
+[Open Source Governance](https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101119),
+and [Master Prompt Governance](https://github.com/emirhankudun-ux/SEIS/actions/runs/29211101132)
+evidence. These dated runs prove the named commit passed those workflows; they
+do not prove private-repository contents, deployments, provider connections,
+or ecosystem-wide publication readiness.
 
 ## Current blockers
 

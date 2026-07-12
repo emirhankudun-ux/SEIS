@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 
 require "json"
+require "pathname"
+require "uri"
 require "yaml"
 
 ROOT = File.expand_path("..", __dir__)
@@ -44,6 +46,42 @@ def read_json(relative_path)
 rescue JSON::ParserError => error
   ERRORS << "invalid JSON in #{relative_path}: #{error.message}"
   nil
+end
+
+def valid_https_url?(value)
+  return false unless value.is_a?(String) && !value.strip.empty?
+
+  uri = URI.parse(value)
+  uri.is_a?(URI::HTTPS) && !uri.host.to_s.empty? && uri.userinfo.nil?
+rescue URI::InvalidURIError
+  false
+end
+
+def existing_repository_artifact?(value)
+  return false unless value.is_a?(String) && !value.strip.empty?
+  return false if value.start_with?(File::SEPARATOR)
+
+  candidate = File.expand_path(value, ROOT)
+  return false unless candidate.start_with?("#{ROOT}#{File::SEPARATOR}") && File.file?(candidate)
+
+  real_root = File.realpath(ROOT)
+  real_candidate = File.realpath(candidate)
+  real_candidate.start_with?("#{real_root}#{File::SEPARATOR}") && File.file?(real_candidate)
+rescue Errno::ENOENT, Errno::EACCES
+  false
+end
+
+def normalized_repository_path(value)
+  return nil unless value.is_a?(String) && !value.strip.empty?
+  return nil if value.match?(/\A[A-Za-z]:/) || value.start_with?("\\", "//")
+
+  path = Pathname.new(value)
+  return nil if path.absolute?
+
+  normalized = path.cleanpath.to_s.tr("\\", "/")
+  return nil if normalized == "." || normalized == ".." || normalized.start_with?("../")
+
+  normalized
 end
 
 def schema_type?(value, type)
@@ -142,8 +180,8 @@ goal_schema = read_json("schemas/ecosystem-goal.schema.json")
 manifest = read_yaml(MANIFEST_PATH)
 ownership = read_yaml(OWNERSHIP_PATH)
 
-validate_schema(manifest, manifest_schema, manifest_schema, MANIFEST_PATH) if manifest && manifest_schema
-validate_schema(ownership, ownership_schema, ownership_schema, OWNERSHIP_PATH) if ownership && ownership_schema
+validate_schema(manifest, manifest_schema, manifest_schema, MANIFEST_PATH) if manifest_schema
+validate_schema(ownership, ownership_schema, ownership_schema, OWNERSHIP_PATH) if ownership_schema
 
 repositories = ownership.is_a?(Hash) ? Array(ownership["repositories"]) : []
 modules = ownership.is_a?(Hash) ? Array(ownership["modules"]) : []
@@ -153,14 +191,26 @@ module_ids = modules.map { |mod| mod["id"] if mod.is_a?(Hash) }.compact
 duplicates(repository_ids).each { |id| ERRORS << "#{OWNERSHIP_PATH}: duplicate repository id #{id}" }
 duplicates(module_ids).each { |id| ERRORS << "#{OWNERSHIP_PATH}: duplicate module id #{id}" }
 
-coordinator = ownership.dig("registry", "canonical_coordinator_repo") if ownership.is_a?(Hash)
+registry = ownership.is_a?(Hash) ? ownership["registry"] : nil
+coordinator = registry["canonical_coordinator_repo"] if registry.is_a?(Hash)
 observed_repository_states = ["observed-local-and-remote", "observed-remote"]
+verification_methods_by_state = {
+  "observed-local-and-remote" => ["local-git-and-authenticated-github-connector"],
+  "observed-remote" => ["authenticated-github-connector"],
+  "repository-metadata-invalid" => ["local-git", "not-observed"],
+  "proposed" => ["not-observed"]
+}.freeze
 
 repositories.each do |repository|
   next unless repository.is_a?(Hash)
 
   repository_id = repository["id"]
   verification = repository["verification"]
+  verification_method = repository["verification_method"]
+  allowed_verification_methods = verification_methods_by_state[verification]
+  if allowed_verification_methods && !allowed_verification_methods.include?(verification_method)
+    ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} verification #{verification.inspect} cannot use method #{verification_method.inspect}"
+  end
   if observed_repository_states.include?(verification)
     ["remote", "default_branch"].each do |field|
       value = repository[field]
@@ -168,12 +218,12 @@ repositories.each do |repository|
         ERRORS << "#{OWNERSHIP_PATH}: observed repository #{repository_id} has unknown #{field} metadata"
       end
     end
-    if repository["observed_at"].nil? || repository["verification_method"] == "not-observed"
+    if repository["observed_at"].nil? || verification_method == "not-observed"
       ERRORS << "#{OWNERSHIP_PATH}: observed repository #{repository_id} must record observation date and method"
     end
     evidence_path = repository["verification_evidence"]
-    unless evidence_path.is_a?(String) && File.file?(absolute(evidence_path))
-      ERRORS << "#{OWNERSHIP_PATH}: observed repository #{repository_id} evidence #{evidence_path.inspect} does not exist"
+    unless existing_repository_artifact?(evidence_path)
+      ERRORS << "#{OWNERSHIP_PATH}: observed repository #{repository_id} evidence #{evidence_path.inspect} is missing or outside the repository"
     end
   end
   if repository["canonical"] == true && !observed_repository_states.include?(verification)
@@ -182,11 +232,40 @@ repositories.each do |repository|
   if verification == "observed-local-and-remote" && repository["local_worktree"] != "valid"
     ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} marked observed-local-and-remote must have a valid local worktree"
   end
+  if repository["manifest_status"] == "present-validated"
+    manifest_path = repository["manifest_path"]
+    manifest_is_local = repository["local_worktree"] == "valid" && existing_repository_artifact?(manifest_path)
+    unless manifest_is_local
+      ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} present-validated manifest #{manifest_path.inspect} must be an existing file in a valid local worktree"
+    end
+    if manifest_is_local
+      claimed_manifest = read_yaml(manifest_path)
+      validate_schema(claimed_manifest, manifest_schema, manifest_schema, manifest_path) if manifest_schema
+      if claimed_manifest.is_a?(Hash)
+        claimed_project = claimed_manifest["project"]
+        claimed_ecosystem = claimed_manifest["ecosystem"]
+        claimed_security = claimed_manifest["security"]
+        claimed_project_id = claimed_project["id"] if claimed_project.is_a?(Hash)
+        claimed_owner_id = claimed_ecosystem["canonical_owner_repo"] if claimed_ecosystem.is_a?(Hash)
+        claimed_visibility = claimed_project["visibility"] if claimed_project.is_a?(Hash)
+        claimed_public_repo = claimed_security["public_repo"] if claimed_security.is_a?(Hash)
+        expected_visibilities = repository["visibility"] == "public" ? ["public-safe"] : ["private", "mixed"]
+        expected_public_repo = repository["visibility"] == "public"
+
+        unless claimed_project_id == repository_id && claimed_owner_id == repository_id
+          ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} manifest identity must match its canonical repository id"
+        end
+        unless expected_visibilities.include?(claimed_visibility) && claimed_public_repo == expected_public_repo
+          ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} manifest visibility must match repository visibility #{repository["visibility"].inspect}"
+        end
+      end
+    end
+  end
 end
 
 canonical_repository_ids = repositories
   .select do |repository|
-    repository["canonical"] == true && observed_repository_states.include?(repository["verification"])
+    repository.is_a?(Hash) && repository["canonical"] == true && observed_repository_states.include?(repository["verification"])
   end
   .map { |repository| repository["id"] }
 
@@ -195,13 +274,16 @@ unless canonical_repository_ids.include?(coordinator)
 end
 
 if manifest.is_a?(Hash)
-  project_id = manifest.dig("project", "id")
-  owner_id = manifest.dig("ecosystem", "canonical_owner_repo")
+  project = manifest["project"]
+  ecosystem = manifest["ecosystem"]
+  security = manifest["security"]
+  project_id = project["id"] if project.is_a?(Hash)
+  owner_id = ecosystem["canonical_owner_repo"] if ecosystem.is_a?(Hash)
   ERRORS << "#{MANIFEST_PATH}: project id must be an observed canonical repository" unless canonical_repository_ids.include?(project_id)
   ERRORS << "#{MANIFEST_PATH}: canonical_owner_repo must match project.id in this repository" unless owner_id == project_id
-  repository = repositories.find { |candidate| candidate["id"] == project_id }
+  repository = repositories.find { |candidate| candidate.is_a?(Hash) && candidate["id"] == project_id }
   if repository
-    public_repo = manifest.dig("security", "public_repo")
+    public_repo = security["public_repo"] if security.is_a?(Hash)
     expected_public_repo = repository["visibility"] == "public"
     unless public_repo == expected_public_repo
       ERRORS << "#{MANIFEST_PATH}: security.public_repo must match repository visibility #{repository["visibility"].inspect}"
@@ -215,15 +297,23 @@ modules.each do |mod|
   owner = mod["canonical_repo"]
   ERRORS << "#{OWNERSHIP_PATH}: #{mod["id"]} owner #{owner.inspect} is not an observed canonical repository" unless canonical_repository_ids.include?(owner)
   decision_record = mod["decision_record"]
-  decision_record_path = File.expand_path(decision_record, ROOT) if decision_record.is_a?(String)
-  decision_record_is_local = decision_record_path&.start_with?("#{ROOT}#{File::SEPARATOR}")
-  unless decision_record_is_local && File.file?(decision_record_path)
-    ERRORS << "#{OWNERSHIP_PATH}: #{mod["id"]} decision record #{decision_record.inspect} does not exist"
+  unless existing_repository_artifact?(decision_record)
+    ERRORS << "#{OWNERSHIP_PATH}: #{mod["id"]} decision record #{decision_record.inspect} is missing or outside the repository"
   end
   Array(mod["consumers"]).each do |consumer|
     ERRORS << "#{OWNERSHIP_PATH}: #{mod["id"]} has unknown consumer #{consumer}" unless repository_ids.include?(consumer)
   end
-  Array(mod["paths"]).each { |path| owned_paths << [owner, path, mod["id"]] }
+  Array(mod["paths"]).each do |path|
+    normalized_path = normalized_repository_path(path)
+    if normalized_path.nil?
+      ERRORS << "#{OWNERSHIP_PATH}: #{mod["id"]} path #{path.inspect} must remain a nonempty repository-relative path"
+      next
+    end
+    if normalized_path != path
+      ERRORS << "#{OWNERSHIP_PATH}: #{mod["id"]} path #{path.inspect} must be normalized as #{normalized_path.inspect}"
+    end
+    owned_paths << [owner, normalized_path, mod["id"]]
+  end
 end
 owned_paths.group_by { |owner, path, _module_id| [owner, path] }.each do |(owner, path), entries|
   next if entries.length == 1
@@ -264,7 +354,6 @@ allowed_status_transitions = {
 goal_paths.each do |absolute_goal_path|
   relative_goal_path = absolute_goal_path.delete_prefix("#{ROOT}/")
   goal = read_yaml(relative_goal_path)
-  next if goal.nil?
   unless goal.is_a?(Hash)
     ERRORS << "#{relative_goal_path}: expected YAML object/hash at root"
     next
@@ -294,6 +383,27 @@ goal_paths.each do |absolute_goal_path|
   if status == "blocked" && blockers.empty?
     ERRORS << "#{relative_goal_path}: blocked Goal must identify at least one blocker"
   end
+
+  evidence_records = Array(goal["evidence_records"])
+  evidence_records.each do |record|
+    next unless record.is_a?(Hash) && record["status"] == "passed"
+
+    artifact = record["artifact"]
+    command = record["command"]
+    exit_code = record["exit_code"]
+    command_present = command.is_a?(String) && !command.strip.empty?
+    if command_present && exit_code != 0
+      ERRORS << "#{relative_goal_path}: passed evidence #{record["id"]} command exit code must equal 0"
+    elsif !command_present && !exit_code.nil?
+      ERRORS << "#{relative_goal_path}: passed evidence #{record["id"]} exit code requires a command"
+    end
+    reproducible_command = command_present && exit_code == 0
+    durable_artifact = valid_https_url?(artifact) || existing_repository_artifact?(artifact)
+    unless reproducible_command || durable_artifact
+      ERRORS << "#{relative_goal_path}: passed evidence #{record["id"]} must include an existing repository artifact, a valid HTTPS artifact, or a successful command with exit code 0"
+    end
+  end
+
   if status == "completed"
     ERRORS << "#{relative_goal_path}: completed Goal must not retain blockers" unless blockers.empty?
 
@@ -306,7 +416,6 @@ goal_paths.each do |absolute_goal_path|
       end
     end
 
-    evidence_records = Array(goal["evidence_records"])
     if evidence_records.empty?
       ERRORS << "#{relative_goal_path}: completed Goal must contain passed evidence records"
     elsif evidence_records.any? { |record| !record.is_a?(Hash) || record["status"] != "passed" }
@@ -319,11 +428,14 @@ goal_paths.each do |absolute_goal_path|
         "issue_required" => "issue_url",
         "branch_required" => "branch_name",
         "commit_required" => "commit_sha",
-        "pull_request_required" => "pull_request_url"
+        "pull_request_required" => "pull_request_url",
+        "release_note_required" => "release_note_url"
       }.each do |required_field, evidence_field|
         next unless github[required_field] == true
         value = github[evidence_field]
-        if !value.is_a?(String) || value.strip.empty?
+        if required_field == "release_note_required" && !valid_https_url?(value)
+          ERRORS << "#{relative_goal_path}: completed Goal requires a valid HTTPS GitHub field #{evidence_field}"
+        elsif required_field != "release_note_required" && (!value.is_a?(String) || value.strip.empty?)
           ERRORS << "#{relative_goal_path}: completed Goal requires GitHub field #{evidence_field}"
         end
       end
@@ -369,6 +481,10 @@ goals.each do |relative_goal_path, goal|
   references << ["parent_goal", goal["parent_goal"]] if goal["parent_goal"]
   Array(goal["dependencies"]).each { |reference| references << ["dependencies", reference] }
   Array(goal["related_goals"]).each { |reference| references << ["related_goals", reference] }
+  Array(goal["blocked_by"]).each do |blocker|
+    next unless blocker.is_a?(Hash) && blocker["type"] == "goal"
+    references << ["blocked_by", blocker["reference"]]
+  end
   references.each do |field, reference|
     unless goal_ids_set.include?(reference)
       ERRORS << "#{relative_goal_path}: #{field} references unknown Goal #{reference}"
