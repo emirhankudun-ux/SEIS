@@ -25,10 +25,12 @@ if (shouldWrite && failures.length === 0) {
     const report = buildReport(smoke);
     validateReport(report, "generated browser-smoke evidence");
     if (failures.length === 0) {
-      writeJson(paths.outputJson, report);
-      writeText(paths.outputMarkdown, renderMarkdown(report));
-      console.log(`Wrote ${paths.outputJson}`);
-      console.log(`Wrote ${paths.outputMarkdown}`);
+      const jsonWritten = writeJson(paths.outputJson, report);
+      const markdownWritten = jsonWritten && writeText(paths.outputMarkdown, renderMarkdown(report));
+      if (jsonWritten && markdownWritten && failures.length === 0) {
+        console.log(`Wrote ${paths.outputJson}`);
+        console.log(`Wrote ${paths.outputMarkdown}`);
+      }
     }
   }
 }
@@ -256,15 +258,38 @@ function safeOutputPath(filePath) {
 }
 
 function writeJson(filePath, value) {
+  if (failures.length > 0) return false;
+  const failureCount = failures.length;
   const absolutePath = safeOutputPath(filePath);
-  fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
-  fs.writeFileSync(absolutePath, `${JSON.stringify(value, null, 2)}\n`);
+  if (failures.length > failureCount) return false;
+  try {
+    fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
+    fs.writeFileSync(absolutePath, `${JSON.stringify(value, null, 2)}\n`);
+    return true;
+  } catch (error) {
+    recordWriteFailure("JSON", absolutePath, error);
+    return false;
+  }
 }
 
 function writeText(filePath, value) {
+  if (failures.length > 0) return false;
+  const failureCount = failures.length;
   const absolutePath = safeOutputPath(filePath);
-  fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
-  fs.writeFileSync(absolutePath, value);
+  if (failures.length > failureCount) return false;
+  try {
+    fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
+    fs.writeFileSync(absolutePath, value);
+    return true;
+  } catch (error) {
+    recordWriteFailure("Markdown", absolutePath, error);
+    return false;
+  }
+}
+
+function recordWriteFailure(kind, absolutePath, error) {
+  const code = error && typeof error === "object" ? error.code || error.name || "unknown" : "unknown";
+  failures.push(`${kind} evidence write failed for ${path.relative(root, absolutePath)} (${code}).`);
 }
 
 function ensureFile(filePath, label) {
