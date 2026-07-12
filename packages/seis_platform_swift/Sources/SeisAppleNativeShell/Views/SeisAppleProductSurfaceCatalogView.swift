@@ -3,8 +3,8 @@ import SwiftUI
 
 struct SeisAppleProductSurfaceCatalogView: View {
     private let catalog: SeisAppleProductSurfaceCatalog
-    @State private var query = ""
-    @State private var selectedSurfaceID: SeisAppleProductSurfaceID?
+    @SceneStorage("seis.apple.product-surface.query") private var query = ""
+    @SceneStorage("seis.apple.product-surface.selected") private var selectedSurfaceRawValue: String?
 
     init(catalog: SeisAppleProductSurfaceCatalog = .defaultCatalog) {
         self.catalog = catalog
@@ -12,7 +12,9 @@ struct SeisAppleProductSurfaceCatalogView: View {
 
     private var filteredSurfaces: [SeisAppleProductSurface] { catalog.filtered(by: query) }
     private var selectedSurface: SeisAppleProductSurface? {
-        guard let selectedSurfaceID else { return nil }
+        guard let selectedSurfaceRawValue,
+              let selectedSurfaceID = SeisAppleProductSurfaceID(rawValue: selectedSurfaceRawValue)
+        else { return nil }
         return catalog.surfaces.first { $0.id == selectedSurfaceID }
     }
 
@@ -37,7 +39,7 @@ struct SeisAppleProductSurfaceCatalogView: View {
 
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
                 ForEach(filteredSurfaces) { surface in
-                    Button { selectedSurfaceID = surface.id } label: { surfaceTile(surface) }
+                    Button { selectedSurfaceRawValue = surface.id.rawValue } label: { surfaceTile(surface) }
                         .buttonStyle(.plain)
                         .accessibilityLabel("Inspect \(surface.title), \(surface.state.displayLabel)")
                 }
