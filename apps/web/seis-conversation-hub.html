@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b111d" />
+    <title>SEIS Conversation Hub</title>
+    <link rel="stylesheet" href="seis-conversation-hub.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="seis-linux-replica.html?demo=live" aria-label="Open SEIS Desktop"><span class="brand-mark" aria-hidden="true">S</span><span><strong>SEIS</strong><small>Conversation Hub</small></span></a>
+        <div class="topbar-actions"><span class="local-badge"><i aria-hidden="true"></i> Browser-local</span><button class="quiet-button" type="button" data-action="export">Export all chats</button><label class="quiet-button" for="conversation-import">Import snapshot</label><input id="conversation-import" type="file" accept="application/json,.json" hidden /><a class="desktop-link" href="seis-linux-replica.html?demo=live">Open Desktop &#8599;</a></div>
+      </header>
+
+      <main>
+        <section class="hero"><div><p class="eyebrow">One context rail for every SEIS surface</p><h1>All SEIS conversations.<br /><em>One honest thread.</em></h1><p class="hero-copy">Move between AI Core, Command Center, Code, Design, Search, Agents and workspace surfaces without losing the local context that belongs to you.</p></div><div class="hero-orb" aria-hidden="true"><span class="orb-center">S</span><span class="orb-ring ring-a"></span><span class="orb-ring ring-b"></span><span class="orb-dot dot-a"></span><span class="orb-dot dot-b"></span><span class="orb-dot dot-c"></span></div></section>
+
+        <section class="metrics" aria-label="Conversation Hub summary"><article class="metric-card"><span>Sources in rail</span><strong id="source-count">12</strong><small>SEIS surfaces indexed</small></article><article class="metric-card"><span>Local sessions</span><strong id="session-count">0</strong><small>Persisted on this browser</small></article><article class="metric-card"><span>Messages</span><strong id="message-count">0</strong><small>Merge-only conversation history</small></article><article class="metric-card accent"><span>Provider status</span><strong>Local Demo</strong><small>No keys or remote calls</small></article></section>
+
+        <section class="hub-layout" aria-label="Conversation workspace">
+          <aside class="source-panel panel"><div class="panel-heading"><div><p class="eyebrow">Context rail</p><h2>SEIS surfaces</h2></div><button class="icon-button" type="button" data-action="new-session" aria-label="Start a new conversation">+</button></div><label class="search-field"><span aria-hidden="true">&#8981;</span><input id="source-filter" type="search" placeholder="Filter sources" autocomplete="off" /></label><div class="source-list" id="source-list" role="list"></div><p class="panel-note"><span class="note-dot"></span> States are explicit. A source is never shown as live unless it is verified.</p></aside>
+
+          <section class="conversation-panel panel" aria-labelledby="conversation-title"><div class="conversation-header"><div class="source-heading"><span class="source-avatar" id="source-avatar">CC</span><div><p class="eyebrow" id="source-kind">Orchestration</p><h2 id="conversation-title">Command Center</h2><span class="state-label" id="conversation-state">local-only</span></div></div><div class="conversation-actions"><a class="quiet-button" id="open-source" href="seis-linux-replica.html?demo=live">Open source</a><button class="icon-button" type="button" data-action="new-session" aria-label="Start a new conversation">+</button></div></div><div class="thread-strip"><span id="thread-title">Command Center thread</span><span id="thread-updated">Local state</span></div><div class="message-list" id="message-list" aria-live="polite"></div><div class="composer-wrap"><div class="suggestions" aria-label="Conversation starters"><button type="button" data-suggestion="Summarize the current local SEIS context.">Summarize context</button><button type="button" data-suggestion="Plan the next safe milestone.">Plan next milestone</button><button type="button" data-suggestion="Which capabilities are still planned?">Show boundaries</button></div><div class="composer"><textarea id="message-input" rows="2" placeholder="Ask the Local Demo thread..." aria-label="Write a message"></textarea><button class="send-button" type="button" data-action="send">Send &#8594;</button></div><p class="composer-note">Local Demo replies are deterministic UI responses. No provider, host filesystem, SSH or cloud request is made.</p></div></section>
+
+          <aside class="context-panel panel"><div class="panel-heading"><div><p class="eyebrow">Source contract</p><h2>Context</h2></div><span class="context-pulse" aria-hidden="true"></span></div><div class="context-summary"><span class="source-avatar large" id="context-avatar">CC</span><h3 id="context-title">Command Center</h3><p id="context-description">Planning and agent coordination in the browser.</p></div><dl class="context-list"><div><dt>State</dt><dd id="context-state">local-only</dd></div><div><dt>Mode</dt><dd>metadata + local state</dd></div><div><dt>Permissions</dt><dd id="context-permissions">No external writes</dd></div></dl><div class="context-divider"></div><p class="eyebrow">Shared boundaries</p><ul class="boundary-list"><li><span class="check">&#10003;</span> Browser-local persistence</li><li><span class="check">&#10003;</span> Merge-only snapshots</li><li><span class="lock">&#8226;</span> Provider keys never enter the browser</li><li><span class="lock">&#8226;</span> SSH remains disabled</li></ul></aside>
+        </section>
+
+        <section class="integration-note"><div class="integration-mark" aria-hidden="true">&#8594;</div><div><p class="eyebrow">Integration contract</p><h2>Every source can join without pretending to be live.</h2><p>The Hub is the shared conversation boundary. Existing surfaces can publish metadata and local context through the bus while real providers, remote files and SSH remain approval-gated.</p></div><a class="quiet-button" href="../docs/ai/seis-conversation-hub.md">Read contract</a></section>
+      </main>
+      <footer class="footer"><span>SEIS V17 / Conversation Hub</span><span>12 sources indexed / Local Demo / No credentials stored</span></footer>
+    </div>
+    <script src="seis-conversation-bus.js" defer></script><script src="seis-conversation-hub.js" defer></script>
+  </body>
+</html>
