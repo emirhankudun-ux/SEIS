@@ -93,7 +93,7 @@
 
   function ensureSession(state, sourceId) {
     const source = sourceById(sourceId);
-    const existing = state.sessions.find(function (session) { return session.sourceId === source.id; });
+    const existing = state.sessions.slice().reverse().find(function (session) { return session.sourceId === source.id; });
     if (existing) {
       state.activeSourceId = source.id;
       return existing;

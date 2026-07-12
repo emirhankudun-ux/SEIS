@@ -123,7 +123,9 @@
     el.contextDescription.textContent = currentSource.description;
     el.contextState.textContent = currentSource.state;
     el.contextPermissions.textContent = currentSource.state === "planned" || currentSource.state === "disabled" ? "No external actions" : "No external writes";
-    el.openSource.href = currentSource.href;
+    const workspaceUrl = new URL("seis-conversation-workspace.html", window.location.href);
+    workspaceUrl.searchParams.set("source", currentSource.id);
+    el.openSource.href = workspaceUrl.href;
   }
 
   function render() {

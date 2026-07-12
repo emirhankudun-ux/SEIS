@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#080f19" />
+    <title>SEIS Conversation Workspace</title>
+    <link rel="stylesheet" href="seis-conversation-workspace.css" />
+  </head>
+  <body>
+    <div class="workspace-app">
+      <header class="workspace-header">
+        <a class="brand" href="seis-conversation-hub.html"><span class="brand-mark">S</span><span><strong>SEIS</strong><small>Conversation Workspace</small></span></a>
+        <div class="header-actions">
+          <span class="local-state"><i></i> Local Demo</span>
+          <a class="button secondary" href="seis-conversation-hub.html">Return to Hub</a>
+        </div>
+      </header>
+
+      <main>
+        <section class="workspace-toolbar">
+          <div class="source-control">
+            <label for="workspace-source">Active SEIS surface</label>
+            <select id="workspace-source"></select>
+          </div>
+          <div class="source-contract">
+            <span id="source-kind">Orchestration</span>
+            <strong id="source-name">Command Center</strong>
+            <em id="source-state">local-only</em>
+          </div>
+          <div class="mobile-tabs" role="group" aria-label="Workspace panel">
+            <button class="is-active" type="button" data-panel="preview">Surface</button>
+            <button type="button" data-panel="chat">Conversation</button>
+          </div>
+          <a class="button" id="open-direct" href="seis-linux-replica.html?demo=live" target="_blank" rel="noopener">Open direct &#8599;</a>
+        </section>
+
+        <section class="workspace-grid" id="workspace-grid" data-mobile-panel="preview">
+          <div class="preview-panel">
+            <div class="panel-bar"><span><i class="preview-dot"></i> Sandboxed product preview</span><small id="preview-route">seis-linux-replica.html?demo=live</small></div>
+            <div class="preview-frame-wrap">
+              <iframe id="source-preview" title="SEIS source preview" sandbox="allow-scripts allow-same-origin allow-forms allow-downloads" referrerpolicy="no-referrer"></iframe>
+              <div class="preview-boundary"><strong>Preview boundary</strong><span id="preview-boundary-copy">No host, provider, cloud, or SSH permissions are added by this shell.</span></div>
+            </div>
+          </div>
+
+          <aside class="chat-panel">
+            <div class="chat-header">
+              <div><p class="eyebrow">Persistent source thread</p><h1 id="thread-title">Command Center thread</h1></div>
+              <button class="new-thread" type="button" data-action="new-thread" aria-label="Start a new source thread">+</button>
+            </div>
+            <div class="chat-meta"><span id="chat-state">local-only</span><span id="message-total">0 messages</span></div>
+            <div class="messages" id="messages" aria-live="polite"></div>
+            <div class="quick-prompts">
+              <button type="button" data-prompt="Summarize this source context.">Summarize</button>
+              <button type="button" data-prompt="Plan the next client-approved milestone.">Plan milestone</button>
+            </div>
+            <div class="composer">
+              <textarea id="composer-input" rows="3" placeholder="Write to the local source thread..." aria-label="Conversation message"></textarea>
+              <button type="button" data-action="send">Send &#8594;</button>
+            </div>
+            <p class="composer-note">Deterministic Local Demo response. No external model request is made.</p>
+          </aside>
+        </section>
+
+        <section class="client-gate">
+          <span class="gate-mark">&#9670;</span>
+          <div><p class="eyebrow">Client acceptance gate</p><h2>Context can move. Permissions do not.</h2><p>The workspace carries local conversation state beside each product surface. Live providers, remote files, cloud operations, deployment and SSH remain separate client approvals.</p></div>
+        </section>
+      </main>
+      <footer><span>SEIS V17 / Conversation Workspace</span><span>Agency delivery slice / browser-local context</span></footer>
+    </div>
+    <script src="seis-conversation-bus.js" defer></script>
+    <script src="seis-conversation-workspace.js" defer></script>
+  </body>
+</html>
