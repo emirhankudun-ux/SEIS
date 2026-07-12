@@ -10,6 +10,7 @@ const SCREENSHOT_DIR = join(ROOT, "dist", "qa", "second-brain-smoke");
 const HOST = "127.0.0.1";
 const DEBUG_HOST = "127.0.0.1";
 const failures = [];
+const SMOKE_RUN_TIMEOUT_MS = 90000;
 
 const REQUIRED_ARTIFACTS = [
   "/home/seis/SecondBrain/seis-second-brain-vault-snapshot.md",
@@ -932,7 +933,14 @@ async function main() {
   }
 }
 
-main().catch((error) => {
-  console.error(error.stack || error.message);
+const smokeDeadline = setTimeout(() => {
+  console.error(`SEIS Second Brain browser smoke timed out after ${SMOKE_RUN_TIMEOUT_MS}ms.`);
   process.exit(1);
-});
+}, SMOKE_RUN_TIMEOUT_MS);
+
+main()
+  .catch((error) => {
+    console.error(error.stack || error.message);
+    process.exit(1);
+  })
+  .finally(() => clearTimeout(smokeDeadline));
