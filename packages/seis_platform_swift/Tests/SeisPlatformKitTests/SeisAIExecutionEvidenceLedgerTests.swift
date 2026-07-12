@@ -107,6 +107,47 @@ struct SeisAIExecutionEvidenceLedgerTests {
         #expect(evidence[0].respectsSecretBoundary)
     }
 
+    @Test func ledgerPersistsOnlyRedactedEvidenceAcrossInstances() async throws {
+        let storageURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent("seis-evidence-\(UUID().uuidString)")
+            .appendingPathComponent("evidence.json")
+        defer { try? FileManager.default.removeItem(at: storageURL.deletingLastPathComponent()) }
+
+        let plan = SeisAIPersonalLaneTaskPlan(
+            id: "persistent-plan",
+            taskID: "user-provided-task-id",
+            laneID: "seis-design",
+            outcome: .blocked,
+            plannedActions: [],
+            blockedActions: [.invokeMCP],
+            declaredMCPToolIDs: ["seis_design_plan"],
+            requestedMCPToolIDs: ["seis_design_plan"],
+            qualityGate: "plugin_governance",
+            validationRules: ["no-live-mcp-invocation"],
+            requiredApprovals: ["human approval"],
+            blockedReasons: ["user private content must never be copied into evidence"]
+        )
+        let firstLedger = SeisAIExecutionEvidenceLedger(storageURL: storageURL)
+        let firstState = await firstLedger.persistenceState
+        _ = await firstLedger.recordPersonalLanePlan(plan, inputReferenceCount: 1)
+
+        let restoredLedger = SeisAIExecutionEvidenceLedger(storageURL: storageURL)
+        let restoredState = await restoredLedger.persistenceState
+        let restoredEvidence = await restoredLedger.snapshot()
+        let encoded = try JSONEncoder().encode(restoredEvidence)
+        let encodedText = String(decoding: encoded, as: UTF8.self)
+
+        #expect(firstState == .localFile)
+        #expect(restoredState == .localFile)
+        #expect(restoredEvidence.count == 1)
+        #expect(restoredEvidence[0].subjectID == "lane:seis-design")
+        #expect(!encodedText.contains("user-provided-task-id"))
+        #expect(!encodedText.contains("user private content"))
+
+        await restoredLedger.clear()
+        #expect(await restoredLedger.snapshot().isEmpty)
+    }
+
     private func runtimeSnapshotData() throws -> Data {
         let root = URL(fileURLWithPath: #filePath)
             .deletingLastPathComponent()

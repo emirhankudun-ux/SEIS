@@ -263,6 +263,10 @@ public actor SeisAIRuntime {
         await evidenceLedger.clear()
     }
 
+    public func evidencePersistenceState() async -> SeisAIExecutionEvidencePersistenceState {
+        await evidenceLedger.persistenceState
+    }
+
     public func execute(_ request: SeisAIProviderExecutionRequest) async -> SeisAIExecutionResult {
         let decision = route(request.routing)
         var preflightIssues = request.validationIssues

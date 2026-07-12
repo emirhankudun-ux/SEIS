@@ -15,6 +15,27 @@ public enum SeisAIExecutionEvidenceOutcome: String, CaseIterable, Codable, Equat
     case failed
 }
 
+public enum SeisAIExecutionEvidencePersistenceState: String, CaseIterable, Codable, Equatable, Sendable {
+    case memoryOnly = "memory-only"
+    case localFile = "local-file"
+    case localFileUnavailable = "local-file-unavailable"
+
+    public var displayLabel: String {
+        switch self {
+        case .memoryOnly:
+            "memory only"
+        case .localFile:
+            "local file"
+        case .localFileUnavailable:
+            "local file unavailable"
+        }
+    }
+
+    public var isPersistent: Bool {
+        self == .localFile
+    }
+}
+
 /// A redacted, deterministic audit envelope. It intentionally has no prompt or output field.
 public struct SeisAIExecutionEvidence: Codable, Equatable, Identifiable, Sendable {
     public let id: String
@@ -91,11 +112,40 @@ public actor SeisAIExecutionEvidenceLedger {
     public static let defaultCapacity = 256
 
     public let capacity: Int
+    public private(set) var persistenceState: SeisAIExecutionEvidencePersistenceState
+    private let storageURL: URL?
     private var nextSequence = 1
     private var records: [SeisAIExecutionEvidence] = []
 
-    public init(capacity: Int = Self.defaultCapacity) {
-        self.capacity = max(1, capacity)
+    public init(capacity: Int = Self.defaultCapacity, storageURL: URL? = nil) {
+        let resolvedCapacity = max(1, capacity)
+        var loadedRecords: [SeisAIExecutionEvidence] = []
+        var resolvedPersistenceState: SeisAIExecutionEvidencePersistenceState = storageURL == nil
+            ? .memoryOnly
+            : .localFile
+
+        if let storageURL {
+            do {
+                try FileManager.default.createDirectory(
+                    at: storageURL.deletingLastPathComponent(),
+                    withIntermediateDirectories: true
+                )
+                if FileManager.default.fileExists(atPath: storageURL.path) {
+                    let data = try Data(contentsOf: storageURL)
+                    loadedRecords = try JSONDecoder().decode([SeisAIExecutionEvidence].self, from: data)
+                }
+            } catch {
+                resolvedPersistenceState = .localFileUnavailable
+            }
+        }
+
+        let boundedRecords = Array(loadedRecords.sorted { $0.sequence < $1.sequence }.suffix(resolvedCapacity))
+        let resolvedNextSequence = (boundedRecords.map(\.sequence).max() ?? 0) + 1
+        self.capacity = resolvedCapacity
+        self.storageURL = storageURL
+        self.persistenceState = resolvedPersistenceState
+        self.records = boundedRecords
+        self.nextSequence = resolvedNextSequence
     }
 
     @discardableResult
@@ -185,6 +235,7 @@ public actor SeisAIExecutionEvidenceLedger {
 
     public func clear() {
         records.removeAll(keepingCapacity: true)
+        persist()
     }
 
     @discardableResult
@@ -232,6 +283,18 @@ public actor SeisAIExecutionEvidenceLedger {
         if records.count > capacity {
             records.removeFirst(records.count - capacity)
         }
+        persist()
         return evidence
+    }
+
+    private func persist() {
+        guard let storageURL, persistenceState == .localFile else { return }
+
+        do {
+            let data = try JSONEncoder().encode(records)
+            try data.write(to: storageURL, options: [.atomic])
+        } catch {
+            persistenceState = .localFileUnavailable
+        }
     }
 }

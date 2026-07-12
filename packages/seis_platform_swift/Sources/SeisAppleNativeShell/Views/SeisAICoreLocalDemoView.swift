@@ -9,31 +9,41 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var lastPlan: SeisAIPersonalLaneTaskPlan?
     @Published private(set) var lastAgentPlan: SeisAIAgentTaskPlan?
     @Published private(set) var evidence: [SeisAIExecutionEvidence] = []
+    @Published private(set) var evidencePersistenceState: SeisAIExecutionEvidencePersistenceState = .memoryOnly
     @Published private(set) var isPlanning = false
 
     private let repositoryPath: String
+    private let evidenceLedger: SeisAIExecutionEvidenceLedger
     private var runtime: SeisAIRuntime?
 
     init(repositoryPath: String) {
         self.repositoryPath = repositoryPath
+        self.evidenceLedger = SeisAIExecutionEvidenceLedger(storageURL: Self.evidenceStorageURL())
     }
 
     func load() {
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
-            runtime = try SeisAIRuntime.localDemo(snapshotData: data)
+            let loadedRuntime = try SeisAIRuntime.localDemo(snapshotData: data, evidenceLedger: evidenceLedger)
+            runtime = loadedRuntime
             snapshot = nextSnapshot
             lastPlan = nil
             lastAgentPlan = nil
-            evidence = []
             statusMessage = "Local Demo ready: \(nextSnapshot.pluginMesh.personalLanes.count) lanes are linked to the typed runtime."
+            Task {
+                evidence = await loadedRuntime.evidenceSnapshot(limit: 8)
+                evidencePersistenceState = await loadedRuntime.evidencePersistenceState()
+            }
         } catch {
             runtime = nil
             snapshot = nil
             lastPlan = nil
             lastAgentPlan = nil
             evidence = []
+            Task {
+                evidencePersistenceState = await evidenceLedger.persistenceState
+            }
             statusMessage = "AI Core Local Demo is unavailable because the tracked snapshot did not validate."
         }
     }
@@ -57,6 +67,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             let plan = await runtime.planAgentTask(request)
             lastAgentPlan = plan
             evidence = await runtime.evidenceSnapshot(limit: 8)
+            evidencePersistenceState = await runtime.evidencePersistenceState()
             isPlanning = false
             statusMessage = plan.outcome == .planned
                 ? "\(agent.displayName) plan prepared without runtime authority."
@@ -88,6 +99,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             let plan = await runtime.planPersonalLaneTask(request)
             lastPlan = plan
             evidence = await runtime.evidenceSnapshot(limit: 8)
+            evidencePersistenceState = await runtime.evidencePersistenceState()
             isPlanning = false
             statusMessage = plan.outcome == .planned
                 ? "\(lane.displayName) plan prepared without invoking MCP or a provider."
@@ -101,6 +113,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-core")
             .appendingPathComponent("data")
             .appendingPathComponent("seis-ai-core-runtime-snapshot.json")
+    }
+
+    private static func evidenceStorageURL() -> URL? {
+        FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
+            .first?
+            .appendingPathComponent("SEIS", isDirectory: true)
+            .appendingPathComponent("ai-core-execution-evidence.json")
     }
 }
 
@@ -193,6 +212,7 @@ struct SeisAICoreLocalDemoView: View {
             metric("MCP tools", value: "\(metrics.mcpToolCount)", image: "wrench.and.screwdriver")
             metric("Resources", value: "\(metrics.mcpResourceCount)", image: "folder")
             metric("Boundary", value: metrics.runtimeBoundarySafe ? "safe" : "watch", image: "checkmark.shield")
+            metric("Evidence", value: model.evidencePersistenceState.displayLabel, image: "externaldrive")
         }
     }
 
@@ -383,6 +403,10 @@ struct SeisAICoreLocalDemoView: View {
         VStack(alignment: .leading, spacing: 8) {
             Label("Execution evidence", systemImage: "list.bullet.rectangle.portrait")
                 .font(.subheadline.weight(.semibold))
+
+            Text("Persistence: \(model.evidencePersistenceState.displayLabel)")
+                .font(.caption2.monospaced())
+                .foregroundStyle(model.evidencePersistenceState.isPersistent ? .secondary : .orange)
 
             ForEach(model.evidence.reversed()) { entry in
                 HStack(alignment: .top, spacing: 8) {

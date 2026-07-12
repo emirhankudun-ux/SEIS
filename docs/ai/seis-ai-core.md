@@ -153,8 +153,10 @@ prompt, provider output, blocked-reason text, secret, or private file content.
 The panel does not open a remote MCP session, call a model provider, or execute
 a tool merely because it is listed.
 
-The ledger is capped at 256 records by default and is in-memory only in this
-Local Demo slice. It is evidence of bounded local behavior, not a durable
+The ledger is capped at 256 records by default. The native shell persists only
+the redacted evidence envelope in the app's local Application Support directory;
+if that location is unavailable, the UI reports `memory-only` or
+`local-file-unavailable` instead of implying persistence. This is not a durable
 audit database, authenticated provider access, or autonomous agent execution.
 
 Validation:
