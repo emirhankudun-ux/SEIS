@@ -167,7 +167,13 @@ for (const token of [
   "blocked-provider-billing",
   "review-ready-with-warning",
   "github.codespaces",
-  "npm run check:seis-ssh-public-access"
+  "npm run check:seis-ssh-public-access",
+  "SEIS_DATA_FOUNDATION_SURFACE",
+  "renderSeisData",
+  "SEIS Data",
+  "seis-data-registry-snapshot.md",
+  "content/development/seis-data-schema-registry.json",
+  "npm run check:data-schema-registry"
 ]) {
   ensure(desktop.includes(token), `desktop demo must include ${token}`);
 }

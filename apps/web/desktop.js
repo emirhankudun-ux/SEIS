@@ -115,6 +115,7 @@ const APPS = [
   ["downloads", "Downloads", "Connected", "DL", "Review exported files and virtual download records.", "downloads"],
   ["ai-assistant", "AI Assistant", "Connected", "AI", "Use local demo assistance with truthful no-key status.", "ai"],
   ["seis-cloud", "SEIS Cloud", "Connected", "CLD", "Inspect local cloud readiness, SSH boundaries, deployment handoff, and no-key status.", "seis-cloud"],
+  ["seis-data", "SEIS Data", "Connected", "DAT", "Inspect registry-backed records, schema evidence, and SSH/public provenance without live data mutation.", "seis-data"],
   ["seis-evolution", "SEIS Evolution", "Connected", "EVO", "Unify pinned SEIS AI work, desktop demo scope, websites, and SEIS-SSH boundaries.", "seis-evolution"],
   ["sub-agent-control", "Sub-Agent Control", "Connected", "5Y", "Inspect the five-year bounded sub-agent plan, dry-run queue, redaction gates, and ledger evidence.", "subagent-control"],
   ["nvidia-catalog", "NVIDIA Catalog", "Connected", "NV", "Review the NVIDIA GitHub org, Build skills, and run-anywhere model catalog as an approval-gated accelerator intake.", "nvidia-catalog"],
@@ -956,6 +957,15 @@ const SEIS_V17_COMMAND_CENTER_MODULES = [
     detail: "Canvas, tokens, component cards, website handoff, prototype preview, and safe design assistant mode."
   },
   {
+    id: "data",
+    label: "SEIS Data",
+    status: "Working",
+    state: "working",
+    appId: "seis-data",
+    evidence: "npm run check:data-schema-registry",
+    detail: "Registry-backed schemas, provenance, goal evidence, SSH/public access artifacts, and deterministic local exports."
+  },
+  {
     id: "cloud",
     label: "SEIS Cloud",
     status: "Mock Safe",
@@ -1594,6 +1604,7 @@ const SEIS_EVOLUTION_REFERENCE = {
     ["Desktop OS", "Linux/macOS/Windows profiles", "Switchable browser desktop styles"],
     ["SEIS Code", "Desktop app + full-page IDE", "Monaco-style workspace and VFS bridge"],
     ["SEIS Design", "Website/demo handoff", "Video Hero, Mythic Gacha, SEIS Code Web"],
+    ["SEIS Data", "Registry + evidence surface", "Schema-backed, SSH-aware, and exportable without live mutation"],
     ["SEIS Cloud", "SSH/cloud readiness", "Approval-gated, no private key in browser"],
     ["SEIS Search", "Gateway route board", "Finds Code, Design, Cloud, Evolution, and websites"]
   ]
@@ -1636,6 +1647,7 @@ const LOCAL_ECOSYSTEM_INVENTORY = {
     ["SEIS Search", "Gateway for local apps, folders, and demo routes"],
     ["SEIS Code", "Code and repository workspace"],
     ["SEIS Design", "Creative/web/demo handoff"],
+    ["SEIS Data", "Registry-backed schemas, evidence, and provenance surface"],
     ["SEIS Cloud", "Runtime, local provider, SSH, and deployment boundary"],
     ["SEIS Evolution", "Pinned tasks, local inventory, and long-horizon map"]
   ]
@@ -1839,6 +1851,7 @@ const SEIS_STORE_ITEMS = [
   { id: "code-ide", name: "Code IDE", category: "Developer", status: "Installed", target: "app", targetId: "code-ide", detail: "Dedicated IDE cockpit linking SEIS Code, terminal, extensions, and projects." },
   { id: "seis-design", name: "SEIS Design", category: "Creative", status: "Installed", target: "app", targetId: "seis-design", detail: "Website, product polish, motion, and design handoff cockpit." },
   { id: "seis-cloud", name: "SEIS Cloud", category: "Cloud", status: "Installed", target: "app", targetId: "seis-cloud", detail: "SSH/cloud safety, local runtime inventory, and deployment boundary." },
+  { id: "seis-data", name: "SEIS Data", category: "Data", status: "Installed", target: "app", targetId: "seis-data", detail: "Schema registry, provenance records, goal evidence, and SEIS-SSH public access artifacts." },
   { id: "music", name: "Music", category: "Creative", status: "Installed", target: "app", targetId: "music", detail: "Local soundtrack surface for the SEIS demo experience." },
   { id: "seis-website", name: "SEIS Website", category: "Website", status: "Installed", target: "app", targetId: "seis-website", detail: "Premium product website hub and eight focused product pages." },
   ...SEIS_WEBSITE_PAGE_ROUTES.map((route) => ({
@@ -4058,6 +4071,8 @@ function renderApp(app) {
       return renderWowGalleryApp();
     case "seis-design":
       return renderSeisDesign();
+    case "seis-data":
+      return renderSeisData();
     case "seis-cloud":
       return renderSeisCloud();
     case "seis-evolution":
@@ -4132,6 +4147,61 @@ const SEIS_SSH_PUBLIC_ACCESS_EVIDENCE = {
   liveProviderError: "GitHub Codespaces start was blocked by an HTTP 402 billing issue.",
   sourceContract: "deploy/seis-ssh-public-access-contract.json",
   sourceLiveEvidence: "content/development/seis-ssh-live-readiness-evidence.json"
+};
+
+const SEIS_DATA_FOUNDATION_SURFACE = {
+  id: "seis-data-foundation-surface",
+  label: "SEIS Data Registry",
+  status: "validated",
+  mode: "registry-backed-read-only",
+  sourcePath: "content/development/seis-data-schema-registry.json",
+  foundationDoc: "docs/data/seis-data-foundation.md",
+  registryDoc: "docs/data/schema-registry.md",
+  qualityGate: "npm run check:data-schema-registry",
+  exportArtifact: "/home/seis/Documents/seis-data-registry-snapshot.md",
+  pluginBridgeId: "seis-data@personal",
+  statusTool: "seis_data_status",
+  planTool: "seis_data_plan",
+  records: [
+    {
+      id: "seis-data-schema-registry",
+      lane: "@seis-data",
+      status: "validated",
+      sourceType: "registry",
+      path: "content/development/seis-data-schema-registry.json",
+      validation: "npm run check:data-schema-registry"
+    },
+    {
+      id: "seis-fullstack-contract",
+      lane: "@seis",
+      status: "validated",
+      sourceType: "full-stack-api-data-contract",
+      path: "content/development/seis-fullstack-contract.json",
+      validation: "npm run check:seis-fullstack-contract"
+    },
+    {
+      id: "seis-goal-evidence",
+      lane: "@seis-data",
+      status: "validated",
+      sourceType: "evidence-ledger",
+      path: "content/development/seis-goal-evidence.json",
+      validation: "npm run check:goal-tracking"
+    },
+    {
+      id: "plugin-skill-capability-map",
+      lane: "@seis",
+      status: "validated",
+      sourceType: "static-interface-capability-map",
+      path: "content/development/plugin-skill-capability-map.json",
+      validation: "npm run check:data-schema-registry"
+    }
+  ],
+  policies: [
+    "Unknown data status stays unknown until validation exists.",
+    "Evidence must not contain secrets or personal data.",
+    "Generated reports must name their source and validation command.",
+    "Mock records cannot prove live readiness."
+  ]
 };
 
 function getFileManagerState() {
@@ -6872,6 +6942,88 @@ function renderSeisCloud() {
   </section>`;
 }
 
+function renderSeisData() {
+  const data = getAppData("seis-data");
+  const foundation = SEIS_DATA_FOUNDATION_SURFACE;
+  const sshEvidence = SEIS_SSH_PUBLIC_ACCESS_EVIDENCE;
+  const commandCenterModule = SEIS_V17_COMMAND_CENTER_MODULES.find((module) => module.id === "data");
+  const pluginBridge = SEIS_PERSONAL_PLUGIN_BRIDGE.find((plugin) => plugin.id === foundation.pluginBridgeId);
+  const sshArtifacts = [
+    {
+      label: "Public access contract",
+      path: SEIS_SSH_PUBLIC_ACCESS_CONTRACT.contract,
+      status: sshEvidence.publicStatus,
+      detail: `${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.alias} remains ${sshEvidence.hostnameKind}:${sshEvidence.port}. ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.invariant}.`
+    },
+    {
+      label: "Contributor doctor",
+      path: SEIS_SSH_PUBLIC_ACCESS_CONTRACT.contributorDoctorArtifact,
+      status: sshEvidence.contributorDoctorStatus,
+      detail: `${sshEvidence.contributorDoctorMode}. ${sshEvidence.contributorDoctorWarning}`
+    },
+    {
+      label: "Live readiness evidence",
+      path: sshEvidence.sourceLiveEvidence,
+      status: sshEvidence.liveStatus,
+      detail: `${sshEvidence.liveBlocker} ${sshEvidence.liveProviderError}`
+    }
+  ];
+  return `<section class="app-main seis-data-app" data-seis-data-app>
+    <div class="toolbar">
+      <button type="button" data-action="app-primary" data-app-id="seis-data">Save Registry Snapshot</button>
+      <button type="button" data-action="open-app" data-app-id="seis-cloud">Open SEIS Cloud</button>
+      <button type="button" data-action="open-app" data-app-id="second-brain">Open Second Brain</button>
+      <button type="button" data-action="generic-export" data-app-id="seis-data">Export Data Handoff</button>
+    </div>
+    <p class="status-note">SEIS Data is a read-only registry and provenance surface. It exposes repository-backed records, SSH/public access evidence, and deterministic local exports without opening live SSH, mutating GitHub, or connecting to external databases.</p>
+    <div class="metric-grid">
+      <article class="metric-card"><strong>Mode</strong><p>${escapeHtml(foundation.mode)}</p></article>
+      <article class="metric-card"><strong>Status</strong><p>${escapeHtml(foundation.status)}</p></article>
+      <article class="metric-card"><strong>Curated Records</strong><p>${foundation.records.length}</p></article>
+      <article class="metric-card"><strong>Quality Gate</strong><p>${escapeHtml(foundation.qualityGate)}</p></article>
+      <article class="metric-card"><strong>SSH Public</strong><p>${escapeHtml(sshEvidence.publicStatus)}</p></article>
+      <article class="metric-card"><strong>Last Snapshot</strong><p>${data.lastSnapshot?.time || "Not saved in this session"}</p></article>
+    </div>
+    <section class="subagent-panel local-inventory-panel">
+      <h3>${escapeHtml(foundation.label)}</h3>
+      <p class="muted">The desktop app surfaces the governed records behind <code>@seis-data</code>, the source-backed schema registry, and the data-side evidence that supports SEIS-SSH public GitHub review without changing the public endpoint.</p>
+      <table class="data-table">
+        <thead><tr><th>Record</th><th>Lane</th><th>Status</th><th>Validation</th><th>Path</th></tr></thead>
+        <tbody>${foundation.records.map((record) => `<tr><td>${escapeHtml(record.id)}<br><span class="muted">${escapeHtml(record.sourceType)}</span></td><td>${escapeHtml(record.lane)}</td><td>${escapeHtml(record.status)}</td><td>${escapeHtml(record.validation)}</td><td>${escapeHtml(record.path)}</td></tr>`).join("")}</tbody>
+      </table>
+    </section>
+    <section class="subagent-panel local-inventory-panel">
+      <h3>SSH and Public Review Evidence</h3>
+      <p class="muted">These records bridge SEIS Data and SEIS Cloud. They keep the public review pack honest: contract-ready for GitHub contributors, but still blocked from claiming live SSH until strict evidence passes.</p>
+      <div class="metric-grid">
+        <article class="metric-card"><strong>Alias</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.alias)}</p></article>
+        <article class="metric-card"><strong>Host Kind</strong><p>${escapeHtml(sshEvidence.hostnameKind)}</p></article>
+        <article class="metric-card"><strong>Port</strong><p>${escapeHtml(sshEvidence.port)}</p></article>
+        <article class="metric-card"><strong>Terminal</strong><p>${escapeHtml(sshEvidence.terminalCompatibility)}</p></article>
+        <article class="metric-card"><strong>Picker</strong><p>${escapeHtml(sshEvidence.pickerCompatibility)}</p></article>
+        <article class="metric-card"><strong>Strict Ready</strong><p>${sshEvidence.strictReady ? "yes" : "no"}</p></article>
+      </div>
+      <table class="data-table">
+        <thead><tr><th>Artifact</th><th>Status</th><th>Path</th><th>Meaning</th></tr></thead>
+        <tbody>${sshArtifacts.map((artifact) => `<tr><td>${escapeHtml(artifact.label)}</td><td>${escapeHtml(artifact.status)}</td><td>${escapeHtml(artifact.path)}</td><td>${escapeHtml(artifact.detail)}</td></tr>`).join("")}</tbody>
+      </table>
+    </section>
+    <section class="subagent-panel local-inventory-panel">
+      <h3>Plugin and Command Center Binding</h3>
+      <p class="muted">SEIS Data stays tied to the personal plugin bridge and the desktop command center so schema/provenance work remains deterministic, validation-backed, and clearly labeled.</p>
+      <table class="data-table">
+        <thead><tr><th>Binding</th><th>Status</th><th>Evidence</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>${escapeHtml(pluginBridge?.id || foundation.pluginBridgeId)}</td><td>Installed personal bridge</td><td>${escapeHtml(pluginBridge?.defaultGate || foundation.qualityGate)}</td><td>${escapeHtml(`${foundation.statusTool} / ${foundation.planTool}`)}</td></tr>
+          <tr><td>${escapeHtml(commandCenterModule?.label || "SEIS Data")}</td><td>${escapeHtml(commandCenterModule?.status || "Working")}</td><td>${escapeHtml(commandCenterModule?.evidence || foundation.qualityGate)}</td><td>${escapeHtml(commandCenterModule?.detail || "Registry-backed data surface for the SEIS desktop.")}</td></tr>
+          <tr><td>${escapeHtml(foundation.foundationDoc)}</td><td>Documentation</td><td>${escapeHtml(foundation.registryDoc)}</td><td>${escapeHtml(foundation.sourcePath)}</td></tr>
+        </tbody>
+      </table>
+      <ul>${foundation.policies.map((policy) => `<li>${escapeHtml(policy)}</li>`).join("")}</ul>
+    </section>
+  </section>`;
+}
+
 function renderNvidiaCatalog() {
   const data = getAppData("nvidia-catalog");
   const catalog = NVIDIA_ACCELERATOR_CATALOG;
@@ -8545,6 +8697,25 @@ function runAppPrimaryAction(appId, body) {
       done: true
     });
     message = `SEIS Design handoff saved to ${path}.`;
+  } else if (app.type === "seis-data") {
+    const data = getAppData(appId);
+    const timestamp = new Date().toISOString();
+    const path = SEIS_DATA_FOUNDATION_SURFACE.exportArtifact;
+    data.lastSnapshot = {
+      time: timestamp,
+      curatedRecords: SEIS_DATA_FOUNDATION_SURFACE.records.length,
+      qualityGate: SEIS_DATA_FOUNDATION_SURFACE.qualityGate,
+      sshPublicStatus: SEIS_SSH_PUBLIC_ACCESS_EVIDENCE.publicStatus,
+      sshLiveStatus: SEIS_SSH_PUBLIC_ACCESS_EVIDENCE.liveStatus
+    };
+    upsertFile(path, buildSeisDataSnapshotMarkdown(timestamp));
+    getListData(appId).unshift({
+      id: `seis-data-${Date.now()}`,
+      title: "SEIS Data snapshot saved",
+      body: path,
+      done: true
+    });
+    message = `SEIS Data snapshot saved to ${path}.`;
   } else if (app.type === "seis-cloud") {
     const data = getAppData(appId);
     const timestamp = new Date().toISOString();
@@ -9320,6 +9491,7 @@ function defaultGenericText(app) {
   if (app.type === "seis-website") return `SEIS Website\n\n${SEIS_WEBSITE_PAGE_ROUTES.map((route) => `- ${route.label}: ${route.path}`).join("\n")}\n`;
   if (app.type === "subagent-control") return buildSubAgentDryRunMarkdown(new Date().toISOString());
   if (app.type === "seis-design") return buildSeisDesignHandoffMarkdown(new Date().toISOString());
+  if (app.type === "seis-data") return buildSeisDataSnapshotMarkdown(new Date().toISOString());
   if (app.type === "seis-cloud") return buildSeisCloudPreflightMarkdown(new Date().toISOString());
   if (app.type === "nvidia-catalog") return buildNvidiaCatalogMarkdown(new Date().toISOString());
   if (app.type === "seis-evolution") return buildSeisEvolutionSnapshotMarkdown(new Date().toISOString());
@@ -9395,6 +9567,60 @@ ${creativeWorkspaces.map(([folder, type, use, status]) => `- ${folder}: ${type} 
 - Video Hero pages are immersive website showcases.
 - Runtime card/game/showcase use does not require live image-generation keys.
 - Local application bundles, private files, unclear archives, and licensed assets are not copied into the demo.
+`;
+}
+
+function buildSeisDataSnapshotMarkdown(timestamp) {
+  const foundation = SEIS_DATA_FOUNDATION_SURFACE;
+  const sshEvidence = SEIS_SSH_PUBLIC_ACCESS_EVIDENCE;
+  const commandCenterModule = SEIS_V17_COMMAND_CENTER_MODULES.find((module) => module.id === "data");
+  const pluginBridge = SEIS_PERSONAL_PLUGIN_BRIDGE.find((plugin) => plugin.id === foundation.pluginBridgeId);
+  return `# SEIS Data Registry Snapshot
+
+Generated: ${timestamp}
+Mode: ${foundation.mode}
+Status: ${foundation.status}
+Source registry: ${foundation.sourcePath}
+Foundation doc: ${foundation.foundationDoc}
+Schema doc: ${foundation.registryDoc}
+Quality gate: ${foundation.qualityGate}
+
+## Curated Records
+${foundation.records.map((record) => `- ${record.id}: ${record.lane} / ${record.status} / ${record.validation} / ${record.path}`).join("\n")}
+
+## SSH and Public Review Evidence
+- Alias: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.alias}
+- Contract: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.contract}
+- Public status: ${sshEvidence.publicStatus}
+- Transport: ${sshEvidence.transportProvider} / ${sshEvidence.transportMode}
+- Host kind: ${sshEvidence.hostnameKind}
+- Port: ${sshEvidence.port}
+- Terminal compatibility: ${sshEvidence.terminalCompatibility}
+- Picker compatibility: ${sshEvidence.pickerCompatibility}
+- Contributor doctor: ${sshEvidence.contributorDoctorStatus} / ${sshEvidence.contributorDoctorMode}
+- Contributor doctor warning: ${sshEvidence.contributorDoctorWarning}
+- Live readiness: ${sshEvidence.liveStatus}
+- Live blocker: ${sshEvidence.liveBlocker}
+- Live provider error: ${sshEvidence.liveProviderError}
+- Live evidence source: ${sshEvidence.sourceLiveEvidence}
+- Server/port invariant: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.invariant}
+
+## Plugin and Command Center Binding
+- Personal plugin bridge: ${pluginBridge?.id || foundation.pluginBridgeId}
+- Status tool: ${foundation.statusTool}
+- Plan tool: ${foundation.planTool}
+- Personal plugin gate: ${pluginBridge?.defaultGate || foundation.qualityGate}
+- Command Center module: ${commandCenterModule?.label || "SEIS Data"}
+- Command Center evidence: ${commandCenterModule?.evidence || foundation.qualityGate}
+- Command Center detail: ${commandCenterModule?.detail || "Registry-backed data surface for the SEIS desktop."}
+
+## Data Policies
+${foundation.policies.map((policy) => `- ${policy}`).join("\n")}
+
+## Boundary
+- This snapshot is browser-local and exportable without live SSH, GitHub mutation, or external database access.
+- Public review remains contract-ready while live SSH stays blocked until strict evidence passes.
+- Schema and evidence work stays deterministic, documented, and validation-backed.
 `;
 }
 
