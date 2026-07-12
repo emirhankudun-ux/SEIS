@@ -6,6 +6,7 @@ Date: 2026-06-23
 
 | Document | Purpose |
 | --- | --- |
+| [ECOSYSTEM_GOAL_TRACKING.md](ECOSYSTEM_GOAL_TRACKING.md) | Operational entrypoint for ecosystem goal records, ownership evidence, validation, and current blockers. |
 | [SEIS_MASTER_INDEX.md](SEIS_MASTER_INDEX.md) | Current master navigation for SEIS lanes, evidence, blockers, and next safe actions. |
 | [SEIS_GOAL_TRACKING.md](SEIS_GOAL_TRACKING.md) | Goal identity, execution overlays, five-year cadence, supervised swarm roles, and completion evidence. |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Canonical system boundaries, dependency direction, and platform roles. |
@@ -119,6 +120,12 @@ Date: 2026-06-23
 
 | Document | Purpose |
 | --- | --- |
+| [ECOSYSTEM_GOAL_TRACKING.md](ECOSYSTEM_GOAL_TRACKING.md) | Ecosystem goal execution order, evidence boundaries, lifecycle, and bootstrap state. |
+| [SEIS_GOAL_TRACKING.md](SEIS_GOAL_TRACKING.md) | Active SEIS goal-tracking constitution and cross-project bootstrap boundary. |
+| [REPOSITORY_OWNERSHIP.md](REPOSITORY_OWNERSHIP.md) | Evidence-bound canonical repository and module ownership map. |
+| [adr/0002-ecosystem-governance-bootstrap-ownership.md](adr/0002-ecosystem-governance-bootstrap-ownership.md) | Proposed decision keeping SEIS coordination separate from Eleni and Pantechnoesis product ownership. |
+| [../goals/blocked/ECO-GOAL-0001--project-manifests-and-canonical-ownership.yaml](../goals/blocked/ECO-GOAL-0001--project-manifests-and-canonical-ownership.yaml) | Blocked ecosystem manifest and ownership goal with explicit unblock conditions. |
+| [../goals/active/ECO-GOAL-0003--goal-schema-validation-and-ci.yaml](../goals/active/ECO-GOAL-0003--goal-schema-validation-and-ci.yaml) | Active Goal schema, semantic validation, negative-test, and CI-enforcement goal. |
 | [goals/seis-vision.md](goals/seis-vision.md) | Long-term SEIS vision and guardrails. |
 | [goals/long-term-goals.md](goals/long-term-goals.md) | Strategic category goal matrix. |
 | [goals/goal-tracking-system.md](goals/goal-tracking-system.md) | Goal Tracking OS rules and storage model. |

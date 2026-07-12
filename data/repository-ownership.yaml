@@ -1,0 +1,105 @@
+schema_version: 1
+
+registry:
+  id: ecosystem-repository-ownership
+  status: bootstrap
+  canonical_coordinator_repo: seis
+  source_of_truth: data/repository-ownership.yaml
+
+repositories:
+  - id: seis
+    display_name: SEIS
+    canonical: true
+    verification: observed-local-and-remote
+    verification_method: local-git-and-authenticated-github-connector
+    observed_at: '2026-07-13'
+    verification_evidence: docs/REPOSITORY_OWNERSHIP.md
+    remote: emirhankudun-ux/SEIS
+    default_branch: main
+    visibility: public
+    local_worktree: valid
+    manifest_status: present-validated
+    manifest_path: project.ecosystem.yaml
+  - id: eleni-neferi
+    display_name: Eleni-Neferi
+    canonical: true
+    verification: observed-remote
+    verification_method: authenticated-github-connector
+    observed_at: '2026-07-13'
+    verification_evidence: docs/REPOSITORY_OWNERSHIP.md
+    remote: emirhankudun-ux/Eleni-Neferi-
+    default_branch: main
+    visibility: private
+    local_worktree: invalid
+    manifest_status: missing
+    manifest_path: project.ecosystem.yaml
+  - id: pantechnoesis
+    display_name: Pantechnoesis
+    canonical: true
+    verification: observed-remote
+    verification_method: authenticated-github-connector
+    observed_at: '2026-07-13'
+    verification_evidence: docs/REPOSITORY_OWNERSHIP.md
+    remote: emirhankudun-ux/Pantechnoepistemonoesis
+    default_branch: main
+    visibility: private
+    local_worktree: invalid
+    manifest_status: missing
+    manifest_path: project.ecosystem.yaml
+
+modules:
+  - id: seis-product-platform
+    canonical_repo: seis
+    decision_status: accepted
+    decision_record: docs/seis-canonical-github-hub.md
+    paths:
+      - apps
+      - packages
+    consumers: []
+    sync_direction: canonical-only
+  - id: ecosystem-governance-bootstrap
+    canonical_repo: seis
+    decision_status: proposed
+    decision_record: docs/adr/0002-ecosystem-governance-bootstrap-ownership.md
+    paths:
+      - AGENTS.md
+      - project.ecosystem.yaml
+      - data/repository-ownership.yaml
+      - docs/REPOSITORY_OWNERSHIP.md
+      - goals
+    consumers:
+      - eleni-neferi
+      - pantechnoesis
+    sync_direction: canonical-to-consumers-after-approval
+  - id: eleni-identity-platform
+    canonical_repo: eleni-neferi
+    decision_status: proposed
+    decision_record: docs/adr/0002-ecosystem-governance-bootstrap-ownership.md
+    paths:
+      - docs/identity
+      - neferi-brain
+    consumers: []
+    sync_direction: canonical-only
+  - id: pantechno-ai-knowledge-platform
+    canonical_repo: pantechnoesis
+    decision_status: proposed
+    decision_record: docs/adr/0002-ecosystem-governance-bootstrap-ownership.md
+    paths:
+      - content/ai
+      - docs/ai
+    consumers: []
+    sync_direction: canonical-only
+
+pending_decisions:
+  - id: eleni-manifest-publication
+    description: Add and validate the Eleni-Neferi project manifest in its canonical private repository.
+    reason: The remote repository is verified, but project.ecosystem.yaml is absent and the local candidate is not a valid Git worktree.
+    unblock_condition: Use a valid non-default branch in the canonical repository, preserve private visibility, and validate the manifest before review.
+  - id: pantechno-manifest-publication
+    description: Add and validate the Pantechnoesis project manifest in its canonical private repository.
+    reason: The remote repository is verified, but project.ecosystem.yaml is absent and the local candidates are not valid Git worktrees.
+    unblock_condition: Obtain the repository-required publication authorization, use a valid non-default branch, and validate the manifest before review.
+  - id: shared-module-inventory
+    description: Complete the cross-repository shared-module and consumer mapping inventory.
+    reason: This bootstrap records each product family and the SEIS governance coordinator, but does not yet prove full shared-contract coverage.
+    unblock_condition: Review canonical paths and consumer mappings in all three valid repositories and accept them through an ADR.

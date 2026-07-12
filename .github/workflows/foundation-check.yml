@@ -33,6 +33,8 @@ jobs:
           npm run check:seis-platform-language-policy
           npm run check:foundation
           npm run check:goal-tracking
+          npm run check:ecosystem-foundation
+          npm run test:ecosystem-foundation
           npm run check:plugin-interface-roadmap
           npm run check:seis-code
           npm run check:mythic-gacha

@@ -1,0 +1,45 @@
+schema_version: 1
+
+project:
+  id: seis
+  display_name: SEIS
+  symbolic_name: null
+  aliases:
+    - seis-core
+  kind: creative-engineering-operating-system
+  lifecycle: active
+  visibility: public-safe
+  horizon: 5-years
+
+ecosystem:
+  role:
+    - creative-engineering-operating-system
+    - command-center
+    - ecosystem-coordinator
+  related_projects:
+    - eleni-neferi
+    - pantechnoesis
+  canonical_owner_repo: seis
+
+platforms:
+  primary:
+    - macos
+    - web
+  planned:
+    - ipados
+    - ios
+
+architecture:
+  mode: modular-monolith
+  shared_packages: []
+
+security:
+  secrets_policy: local-or-managed-only
+  public_repo: true
+
+commands:
+  install: npm ci
+  lint: npm run lint
+  test: npm test
+  build: npm run build:static
+  validate: npm run check:ecosystem-foundation

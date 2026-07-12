@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/project-ecosystem.schema.json",
+  "title": "Ecosystem project manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project",
+    "ecosystem",
+    "platforms",
+    "architecture",
+    "security",
+    "commands"
+  ],
+  "properties": {
+    "schema_version": { "type": "integer", "const": 1 },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "display_name",
+        "symbolic_name",
+        "aliases",
+        "kind",
+        "lifecycle",
+        "visibility",
+        "horizon"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "display_name": { "type": "string", "minLength": 1 },
+        "symbolic_name": { "type": ["string", "null"] },
+        "aliases": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "kind": { "type": "string", "minLength": 1 },
+        "lifecycle": {
+          "type": "string",
+          "enum": ["proposed", "active", "paused", "deprecated", "archived"]
+        },
+        "visibility": { "type": "string", "enum": ["public-safe", "private", "mixed"] },
+        "horizon": { "type": "string", "enum": ["1-year", "3-years", "5-years"] }
+      }
+    },
+    "ecosystem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "related_projects", "canonical_owner_repo"],
+      "properties": {
+        "role": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "related_projects": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "canonical_owner_repo": { "type": "string", "minLength": 1 }
+      }
+    },
+    "platforms": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primary", "planned"],
+      "properties": {
+        "primary": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "planned": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "architecture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "shared_packages"],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["modular-monolith", "monorepo", "multi-repo", "hybrid"]
+        },
+        "shared_packages": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "security": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["secrets_policy", "public_repo"],
+      "properties": {
+        "secrets_policy": { "type": "string", "enum": ["local-or-managed-only", "managed-only"] },
+        "public_repo": { "type": "boolean" }
+      }
+    },
+    "commands": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["install", "lint", "test", "build", "validate"],
+      "properties": {
+        "install": { "type": ["string", "null"] },
+        "lint": { "type": ["string", "null"] },
+        "test": { "type": ["string", "null"] },
+        "build": { "type": ["string", "null"] },
+        "validate": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

@@ -38,7 +38,10 @@ Treat this file as the only canonical master prompt for Codex, Claude Code, Curs
 The constitution remains the highest authority. These focused documents expand
 operational details without superseding or weakening it:
 
-- [Goal Tracking](docs/SEIS_GOAL_TRACKING.md)
+- [Ecosystem Goal Tracking](docs/ECOSYSTEM_GOAL_TRACKING.md)
+- [SEIS Goal Tracking](docs/SEIS_GOAL_TRACKING.md)
+- [Repository Ownership](docs/REPOSITORY_OWNERSHIP.md)
+- [Ecosystem Governance Bootstrap ADR](docs/adr/0002-ecosystem-governance-bootstrap-ownership.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [AI Core](docs/AI_CORE.md)
 - [MCP Registry](docs/MCP_REGISTRY.md)

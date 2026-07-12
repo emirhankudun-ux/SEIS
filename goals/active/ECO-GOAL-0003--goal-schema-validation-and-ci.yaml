@@ -1,0 +1,231 @@
+schema_version: 2
+
+id: ECO-GOAL-0003
+project: ecosystem
+program: governance
+initiative: goal-validation-ci
+parent_goal: null
+
+title: Establish Goal schema validation and CI enforcement
+summary: >-
+  Make ecosystem Goal YAML, project manifests, repository ownership, lifecycle
+  rules, evidence, and GitHub handoff fields deterministically validatable in a
+  least-privilege pull-request gate.
+
+category:
+  - governance
+  - testing
+  - devops
+  - documentation
+
+priority: critical
+status: in-progress
+maturity: prototype
+confidence: medium
+
+owner_agent: goal-tracking
+accountable_human: project-owner
+supporting_agents:
+  - testing
+  - devops
+  - documentation
+  - security
+
+horizon: now
+start_after: null
+target_window:
+  start: '2026-07-13'
+  end: null
+
+scope:
+  repositories:
+    - seis
+  paths:
+    - schemas/ecosystem-goal.schema.json
+    - schemas/project-ecosystem.schema.json
+    - schemas/repository-ownership.schema.json
+    - scripts/validate-ecosystem-foundation.rb
+    - scripts/test-ecosystem-foundation.rb
+    - .github/workflows/foundation-check.yml
+    - .github/PULL_REQUEST_TEMPLATE.md
+    - goals
+
+canonical_owner_repo: seis
+
+platforms:
+  - repository
+  - github
+
+architecture_layers:
+  - governance
+  - integration
+
+security_classification: public-safe
+privacy_impact: none
+
+requirements:
+  - Goal schema v2 records validate structurally and semantically.
+  - Invalid ownership, lifecycle, evidence, blocker, and Goal-reference states fail deterministically.
+  - Pull requests and main-branch pushes run real foundation checks.
+  - Legacy SEIS JSON goals remain explicitly separate until migrated.
+
+non_goals:
+  - Migrating every historical SEIS JSON goal in this slice.
+  - Marking ECO-GOAL-0001 completed.
+  - Creating or publishing branches in other canonical repositories.
+  - Adding third-party runtime dependencies.
+
+acceptance_criteria:
+  - The validator rejects verified repositories with unknown metadata.
+  - The validator rejects dangling Goal references and invalid status-directory mappings.
+  - Blocked goals require blockers and completed goals require passed evidence and GitHub state.
+  - Negative fixtures prove the high-risk rejection paths.
+  - The existing foundation workflow invokes both the validator and its negative tests.
+  - The pull-request template contains every canonical reporting section.
+
+definition_of_ready:
+  - ECO-GOAL-0001 bootstrap files exist.
+  - A non-default SEIS branch is active.
+  - Validation can run without network access or new dependencies.
+
+definition_of_done:
+  - Schema, semantic validator, and negative fixtures pass locally.
+  - CI workflow syntax is reviewed and the checks run successfully on a pull request.
+  - Required quality gates record passed or not-applicable outcomes.
+  - Issue, branch, commit, pull request, validation, risk, and rollback evidence is recorded.
+
+dependencies: []
+blocked_by: []
+related_goals:
+  - ECO-GOAL-0001
+
+validation:
+  commands:
+    - npm run check:ecosystem-foundation
+    - npm run test:ecosystem-foundation
+    - npm run check:goal-tracking
+    - git diff --check
+  manual:
+    - lifecycle invariant review
+    - pull-request workflow review
+    - public-private boundary review
+  evidence:
+    - validator output
+    - negative fixture output
+    - workflow diff
+    - pull request checks URL
+
+status_history:
+  - status: planned
+    at: '2026-07-13'
+    reason: ECO-GOAL-0001 identified deterministic validation and CI as a required dependency.
+    evidence_refs: []
+  - status: in-progress
+    at: '2026-07-13'
+    reason: Schema hardening, negative tests, and CI integration started on the focused SEIS branch.
+    evidence_refs:
+      - ECO3-EVIDENCE-001
+
+evidence_records:
+  - id: ECO3-EVIDENCE-001
+    type: audit
+    description: A read-only audit identified CI, lifecycle, evidence, blocker, and Goal-reference gaps in the bootstrap validator.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: goals/active/ECO-GOAL-0003--goal-schema-validation-and-ci.yaml
+  - id: ECO3-EVIDENCE-002
+    type: validation
+    description: Ecosystem foundation validation after schema hardening.
+    status: passed
+    command: npm run check:ecosystem-foundation
+    exit_code: 0
+    artifact: scripts/validate-ecosystem-foundation.rb
+  - id: ECO3-EVIDENCE-003
+    type: validation
+    description: Negative lifecycle, ownership, and evidence fixtures.
+    status: passed
+    command: npm run test:ecosystem-foundation
+    exit_code: 0
+    artifact: scripts/test-ecosystem-foundation.rb
+  - id: ECO3-EVIDENCE-004
+    type: compatibility-validation
+    description: The legacy SEIS goal registry check remained green after the additive Goal v2 work.
+    status: passed
+    command: npm run check:goal-tracking
+    exit_code: 0
+    artifact: scripts/check-goal-tracking.mjs
+  - id: ECO3-EVIDENCE-005
+    type: workflow-lint
+    description: Dedicated GitHub Actions lint was not available in the local environment; workflow YAML formatting and manual review passed, but this is not remote CI evidence.
+    status: skipped
+    command: actionlint .github/workflows/foundation-check.yml
+    exit_code: null
+    artifact: .github/workflows/foundation-check.yml
+
+quality_gates:
+  architecture: required
+  design: not-applicable
+  security: required
+  accessibility: not-applicable
+  performance: not-applicable
+  documentation: required
+  testing: required
+
+risks:
+  - id: ECO3-RISK-001
+    description: A permissive partial JSON Schema implementation may accept unsupported schema keywords silently.
+    likelihood: medium
+    impact: high
+    owner: testing
+    mitigation: Pair structural validation with explicit semantic checks and negative fixtures for every enforced invariant.
+    trigger: A malformed fixture exits successfully.
+    contingency: Keep the goal in progress, add the missing semantic rule, and add a regression fixture.
+    status: open
+  - id: ECO3-RISK-002
+    description: CI integration may appear complete before a remote pull-request run supplies evidence.
+    likelihood: medium
+    impact: medium
+    owner: devops
+    mitigation: Distinguish local workflow validation from remote GitHub Actions evidence.
+    trigger: Documentation says CI passed without a checks URL.
+    contingency: Retain required gates and CI evidence as pending until the remote run exists.
+    status: open
+
+rollback:
+  strategy: revert
+  steps:
+    - Revert the focused schema, validator, fixture, workflow, and template commit.
+    - Restore ECO-GOAL-0001 validation to the last passing bootstrap contract.
+  data_migration_required: false
+
+github:
+  issue_required: true
+  branch_required: true
+  commit_required: true
+  pull_request_required: true
+  release_note_required: false
+  suggested_branch: architecture/ecosystem-goal-tracking-v1
+  suggested_commit: 'test(governance): enforce ecosystem goal validation in ci'
+  issue_url: null
+  branch_name: architecture/ecosystem-goal-tracking-v1
+  commit_sha: null
+  pull_request_url: null
+
+observability:
+  metrics:
+    - ecosystem_goal_validation_success
+    - invalid_goal_reference_count
+    - invalid_completed_goal_count
+  logs: []
+
+outputs:
+  - Goal schema v2 lifecycle and evidence contract
+  - deterministic semantic validator
+  - negative fixture suite
+  - pull-request CI gate
+  - canonical pull-request template
+
+notes:
+  - This goal can reach review after local checks pass, but completion requires remote CI and GitHub evidence.
+  - Existing SEIS JSON goal checks remain valid only for their legacy registry scope.

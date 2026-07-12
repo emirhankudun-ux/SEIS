@@ -178,6 +178,8 @@ apps/web/content/
 # Documentation
 docs/*
 !docs/SEIS_GOAL_TRACKING.md
+!docs/ECOSYSTEM_GOAL_TRACKING.md
+!docs/REPOSITORY_OWNERSHIP.md
 !docs/ARCHITECTURE.md
 !docs/AI_CORE.md
 !docs/MCP_REGISTRY.md
@@ -229,6 +231,9 @@ docs/*
 !schemas/
 schemas/*
 !schemas/seis-goal-execution.schema.json
+!schemas/project-ecosystem.schema.json
+!schemas/repository-ownership.schema.json
+!schemas/ecosystem-goal.schema.json
 
 # Local accidental artifacts from monorepo preparation
 SEİS/
