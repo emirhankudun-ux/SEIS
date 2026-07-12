@@ -139,17 +139,6 @@ struct SeisAppleNativeShellApp: App {
     }
 
     private var repositoryRoot: String {
-        #if os(macOS)
-        FileManager.default.homeDirectoryForCurrentUser
-            .appendingPathComponent("Library")
-            .appendingPathComponent("Mobile Documents")
-            .appendingPathComponent("com~apple~CloudDocs")
-            .appendingPathComponent("Github")
-            .appendingPathComponent("SEIS")
-            .path
-        #else
-        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-            .first?.path ?? ""
-        #endif
+        SeisAppleShellRuntimeDiagnostics.current().repositoryRootPath
     }
 }

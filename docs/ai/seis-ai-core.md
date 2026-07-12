@@ -26,9 +26,9 @@ The foundation includes:
 
 | Area | Status | Evidence | Blocker | Next Safe Action |
 | --- | --- | --- | --- | --- |
-| Model router | Documented, not implemented | `docs/ai/model-router.md`, `content/development/seis-ai-core-provider-registry.json`, `seis_ai_core_provider_status` | No typed environment validation, health checks, or live adapter tests exist. | Keep routing disabled until server-only adapter tests exist. |
+| Model router | Implemented as Local Demo contract in Swift | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAIModelRouter.swift`, `docs/ai/model-router.md`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAIRuntimeTests.swift` | No backend provider test harness, server-only adapter validation, or credential-bound routing to external services exists. | Keep live provider adapters disabled until typed server validation, gateway hardening, and explicit approval evidence exist. |
 | Prompt engine | Documented, not implemented | `docs/ai/prompt-engine.md` | No versioned prompt registry or regression suite exists. | Define prompt-pack schema and fixtures. |
-| Agent runtime | Documented fixture, not implemented runtime orchestration | `docs/ai/agent-runtime.md`, `scripts/ai-launcher.cjs`, `content/development/seis-ai-core-subagent-review-ledger.json`, `content/development/seis-ai-core-subagent-runtime-fixtures.json`, `content/development/seis-ai-core-agent-role-schema.json`, `content/development/seis-ai-core-agent-permission-matrix.json`, `content/development/seis-ai-core-dry-run-task-queue.json`, `content/development/seis-ai-core-cancellation-fixture.json`, `content/development/seis-ai-core-approval-fixture.json`, `content/development/seis-ai-core-redaction-fixture.json`, `content/development/seis-ai-core-execution-ledger-fixture.json` | No write-gated or background runtime exists. | Keep automation dry-run until fixture validation, approval gates, redaction, and ledger evidence are proven. |
+| Agent runtime | Implemented as status-and-plan only | `docs/ai/agent-runtime.md`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAIAgentPlanRuntime.swift`, `content/development/seis-ai-core-subagent-runtime-fixtures.json`, `content/development/seis-ai-core-subagent-review-ledger.json` | No write authority, background automation, or live mutation exists in Swift. | Keep runtime authority gated and dry-run before provider, deployment, SSH, GitHub, or storage write approvals exist. |
 | Version registry | Documented fixture | `content/development/seis-ai-core-version-registry.json`, `seis_ai_core_version_status` | No live release channel, live provider adapter, or model ownership evidence exists. | Keep SEIS AI Core v0.1 as a zero-key application-layer profile until provider and runtime gates exist. |
 | Provider registry | Documented fixture | `content/development/seis-ai-core-provider-registry.json`, `seis_ai_core_provider_status`, `seis://ai/provider-registry.json` | This is repo-local status evidence only; it performs no provider calls or credential validation. | Use it for SEIS AI status surfaces before live provider adapters. |
 | Model scaling hardware profile | Planned compatibility contract | `content/development/seis-model-scaling-hardware-profile.json`, `docs/ai/seis-model-scaling.md`, `seis_ai_core_model_scaling_status` | The 20B target for 16GB+ RAM plus future 70B, 150B, and 512B apex lanes are not trained weights, live inference, downloads, AGI proof, or benchmark evidence. | Keep the profile blocked until clean-room model cards, dataset cards, quantized/distributed runtime plans, safety evals, and memory benchmarks exist. |
@@ -109,7 +109,7 @@ The standalone SEIS demo now includes an AI Core constellation inspector that
 joins the installed AI route mesh, personal plugin lane mesh, MCP runtime
 contract, selected five-year quarter, and 3D hero diagnostics into one local
 read-only surface. Product browser smoke verifies the inspector exposes six AI
-routes, five personal plugin lanes, 34 MCP tools, 29 MCP resources, three MCP
+routes, five personal plugin lanes, 35 MCP tools, 30 MCP resources, three MCP
 prompts, and a 32-node / 53-edge AI Core 3D graph without requiring provider
 keys, SSH, deployment, GitHub mutation, or external connector authentication.
 
@@ -120,6 +120,45 @@ Runtime inspection tools:
 `seis_ai_core_version_promotion_dry_run`,
 `seis_ai_core_subagent_model`, and
 `seis_ai_core_subagent_review_ledger`.
+
+### Apple-native personal lane runtime
+
+`packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAIPersonalLaneRuntime.swift`
+turns the same five snapshot-backed personal lanes into typed, fail-closed
+Swift plans for `seis`, `seis-cloud`, `seis-code`, `seis-design`, and
+`seis-data`. The runtime accepts only capability inspection, read-only plan,
+and quality-gate review actions. Plan inputs are allow-listed to the tracked
+runtime snapshot and returned as auditable provenance. It returns the lane's declared MCP tool IDs
+and quality gate as evidence, but does not invoke an MCP server.
+
+`SeisAIRuntime.localDemo(snapshotData:)` now injects this lane runtime beside
+the 13-agent status-and-plan runtime. A plan is blocked when its lane is
+unknown, a tool is not declared by that lane, the request includes an MCP
+invocation, or it crosses the network, workspace, private-content, secret,
+SSH, deployment, or GitHub mutation boundary. This is a working local plan
+runtime, not evidence of authenticated plugin activation or autonomous agent
+execution.
+
+On macOS, `SeisAICoreLocalDemoView` loads the tracked snapshot from the
+resolved repository root and calls that typed runtime for each lane. The shell
+prefers `SEIS_REPO_ROOT` while retaining `SEIS_REPOSITORY_ROOT` and `SEIS_ROOT`
+as compatibility overrides. Its UI
+shows the plan's Local Demo result, declared MCP tools, quality gate, approval
+boundary, the 13 managed agent status-and-plan controls, and the latest bounded
+execution-evidence records. The
+`SeisAIExecutionEvidenceLedger` stores only redacted metadata: sequence,
+registry subject ID, action IDs, state, provider/model identity, approval counts,
+input-reference counts, and execution truth flags. It never stores a purpose,
+prompt, provider output, blocked-reason text, secret, or private file content.
+The panel does not open a remote MCP session, call a model provider, or execute
+a tool merely because it is listed.
+
+The ledger is capped at 256 records by default and is in-memory only in this
+Local Demo slice. It is evidence of bounded local behavior, not a durable
+audit database, authenticated provider access, or autonomous agent execution.
+
+Validation:
+`swift test --package-path packages/seis_platform_swift`.
 
 GitHub user readiness gates:
 `content/development/seis-agi-github-user-readiness-gates.json`,

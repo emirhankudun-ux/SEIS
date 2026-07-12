@@ -6,9 +6,13 @@ SEIS Command Center is the central operating interface for the SEIS ecosystem. P
 
 - `index.html`: semantic app shell, sidebar navigation, command-center modules, dialogs, and accessible landmarks.
 - `styles.css`: design tokens, responsive layout, component variants, density mode, and reduced-motion support.
-- `script.js`: local state, goal creation, repository filtering, agent mode switching, generated 10-lane SEIS router artifact loading, architecture evidence, automation evidence, security evidence, knowledge graph evidence, command palette, settings, and dashboard rendering.
+- `script.js`: local state, goal creation, repository filtering, agent mode switching, generated 10-lane SEIS router artifact loading, source-backed AI Core runtime snapshot loading, architecture evidence, automation evidence, security evidence, knowledge graph evidence, command palette, settings, and dashboard rendering.
 - `data/seis-router-routes.json`: generated Command Center router artifact produced from `scripts/ai-routing-policy.cjs#chooseAutoRoute`.
-- `data/seis-core-ecosystem-registry.json`: source-backed SEIS, Cloud, Code, Design, Data, and Store control-plane contract with local-demo boundaries and quality gates.
+- `data/seis-core-ecosystem-registry.json`: generated schema v2 projection of SEIS, Cloud, Code, Design, Data, Store, repository plugin/skill sources, provider/MCP inventory, local routes, and fail-closed runtime boundaries.
+- `data/seis-ai-core-runtime-snapshot.json`: deterministic bridge from the provider registry, executable read-only router, public 9-lane/13-agent registry, unified SEIS-Agent plugin audit, five personal lanes, and local MCP smoke contract into SEIS Core and the typed Swift consumer.
+- `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAIPersonalLaneRuntime.swift`: typed Swift Local Demo plan runtime for `seis`, `seis-cloud`, `seis-code`, `seis-design`, and `seis-data`; it exposes declared lane tools and quality gates without invoking MCP, providers, SSH, deployment, or GitHub mutation. Plan input is allow-listed to the tracked AI Core runtime snapshot and is returned as auditable plan provenance.
+- `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAIExecutionEvidenceLedger.swift`: bounded, in-memory, metadata-only evidence ledger for agent plans, personal-lane plans, and provider execution results. It records no prompt, purpose, raw output, secret, or private-content text.
+- `packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/SeisAICoreLocalDemoView.swift`: Apple-native Local Demo controls for all five personal lanes and all 13 managed agents; every action is status-and-plan-only and refreshes the redacted evidence ledger.
 - `manifest.webmanifest` and `icon.svg`: installable app metadata and SEIS Core visual identity.
 
 ## Folder Structure
@@ -21,9 +25,22 @@ apps/seis-core/
   icon.svg
   manifest.webmanifest
   README.md
+  data/
+    seis-ai-core-runtime-snapshot.json
+    seis-core-ecosystem-registry.json
+    seis-router-routes.json
   test/
+    seis-core-runtime.test.js
     seis-core-static.test.js
 ```
+
+## Ecosystem Capability Snapshot
+
+`packages/seis-ai/src/model/ecosystem-capability-snapshot.mjs` builds the browser artifact from canonical identities, capability, plugin, provider, MCP, agent, design, data, SSH, and Desktop sources. `npm run automation:seis-core-ecosystem-registry` regenerates it; `npm run check:seis-core-ecosystem-registry` fails when the tracked artifact drifts.
+
+The current projection contains six Core lanes, six bundled plugin sources, 25 repository skills, seven providers, MCP coverage of 35 tools / 30 resources / three prompts, 18 product modules, 18 data contracts, 12 design components, and 13 managed agent roles. The 185 installed-enabled plugin value is a dated source audit, while the 300 helper-plugin value is only a catalogued universe. Neither value means every plugin is authenticated, active for the current task, or permitted to mutate an external system.
+
+Lane selection is browser-local and opens a source-evidence detail view. Routes lead to verified local surfaces, including allow-listed Desktop app deep links. Every lane and MCP record remains execution-disabled; no provider calls, credentials, frontend secrets, live MCP sessions, background agents, SSH, deployment, package installation, private-content reads, or GitHub mutation occur from this panel.
 
 ## UI Wireframe Plan
 
@@ -44,12 +61,12 @@ apps/seis-core/
 
 - App shell: sidebar, topbar, workspace grid, inspector.
 - Dashboard: metrics, operations readiness, active goals, recent activity, repository health, architecture alerts, and recommended actions.
-- God Mode: mission composer, live route preview, SEIS AI setup matrix, 10-lane router ledger, execution protocol, run timeline, guardrails, artifacts, and feature growth ledger for controlled custom AI development.
+- God Mode: mission composer, live route preview, SEIS AI setup matrix, source-backed AI Core Runtime Snapshot, 10-lane router ledger, execution protocol, run timeline, guardrails, artifacts, and feature growth ledger for controlled custom AI development.
 - Operating Model: ecosystem domains for repositories, AI agents, MCP systems, plugins, docs, roadmap, goals, automation, cloud, knowledge, and security.
 - Goals: creation form, editable status actions, risk and next-action fields.
 - Repositories: filter chips, health cards, documentation coverage, security posture, testing status, and dependency overview.
 - Documentation: index and coverage plan.
-- Agents: mode cards, capabilities, tasks, logs, outputs, AI system support, orchestration lanes, 10-lane routing matrix, handoff audit, and inspector sync.
+- Agents: mode cards, capabilities, tasks, logs, outputs, AI system support, orchestration lanes, 10-lane routing matrix, public 9-lane/13-agent managed registry, handoff audit, and inspector sync.
 - Plugins & Extensions: Ecosystem Control Plane for SEIS, Cloud, Code, Design, Data, and Store; plus plugin family health, permission posture, update gates, and activation policy.
 - Automation Center: workflows, triggers, run history, approval gates, rollback evidence, and execution gates.
 - Security Center: risk reports, permission reviews, dependency scans, security audits, access model, and no-secret policy.
@@ -66,6 +83,14 @@ apps/seis-core/
 - Persist `tool`, `laneId`, `defaultGate`, and `routeSource` on each God Mode run timeline entry.
 - Regenerate the router ledger with `npm run automation:seis-command-center-router` when CLI routing policy changes.
 - Inspect SEIS AI setup for permission policy, memory ranking, agent routing, and local draft model work.
+- Inspect all seven provider profiles as `Available`, `Missing Key`, or `Disabled` without reading credentials or starting provider traffic.
+- Switch among seven source-generated read-only route scenarios covering all five personal SEIS lanes plus private-vault and frontier-model blocks.
+- Copy the selected decision handoff with provider, model, lane, gate, opaque decision trace, and blocked reasons; route execution remains false. The trace is correlation metadata, not integrity or authenticity proof.
+- Inspect the unified plugin/MCP mesh as 185 installed-enabled audit records, 300 helper plugins, five embedded personal lanes, 35 MCP tools, 30 resources, and three prompts.
+- Inspect and select all 13 public managed agents across nine SEIS lanes while execution authority, background runners, private content, provider calls, SSH, deployment, and GitHub mutation remain disabled.
+- See the same provider state, selected provider/model, eligibility, fallback, and no-execution boundary in the live Mission Composer route preview and each new run record.
+- Recover safely to Dashboard when an older browser session contains an unknown view, agent, lane, goal list, or run list.
+- Use each view-specific primary action without being redirected to the unrelated Goals form.
 - Inspect feature growth coverage across Dashboard, Goals, Repositories, Docs, Agents, Security, AI Policy, Rollback, Validation, and Handoff before any completion claim.
 - Inspect Operations Readiness across release, CI, security, rollback, and handoff evidence before treating work as shippable.
 - Update goal status to Review or Done.
@@ -79,7 +104,7 @@ apps/seis-core/
 - Inspect architecture dependency graph, module contracts, and technical debt register.
 - Inspect knowledge graph nodes, memory freshness, decision history, and reusable implementation patterns.
 - Inspect the unified SEIS operating model across repositories, AI agents, MCP systems, plugins, automation, cloud, security, and knowledge.
-- Inspect the source-backed Ecosystem Control Plane, open browser-local demo surfaces, and copy the visible quality gate for each specialist lane without activating remote tools.
+- Select and persist each source-backed Ecosystem Control Plane lane, inspect its capabilities, skills, MCP inventory, quality gates, and source evidence, open its verified browser-local route, and copy the primary gate without activating remote tools.
 - Use command palette with `Command/Ctrl + K`.
 - Persist state in `localStorage`.
 - Support desktop and mobile layouts.
@@ -107,15 +132,19 @@ apps/seis-core/
 ## Run
 
 ```bash
-python3 -m http.server 4174 --directory apps/seis-core
+python3 -m http.server 4174 --directory apps
 ```
 
-Open `http://127.0.0.1:4174/`.
+Open `http://127.0.0.1:4174/seis-core/`. Serving the shared `apps` root keeps the
+source-backed routes to SEIS Desktop, Cloud, Code, Design, Data, and Store live.
 
 ## Validate
 
 ```bash
 node --test apps/seis-core/test/*.test.js
+node --test packages/seis-ai/test/ecosystem-capability-snapshot.test.mjs
+npm run check:seis-core-ai-runtime-snapshot
 npm run check:seis-command-center-router
 npm run check:seis-core-ecosystem-registry
+swift test --package-path packages/seis_platform_swift
 ```

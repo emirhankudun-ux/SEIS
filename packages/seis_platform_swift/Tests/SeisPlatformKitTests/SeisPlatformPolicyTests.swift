@@ -240,6 +240,9 @@ import Testing
     #expect(runtime.probes.contains { $0.id == "agi-research-automation-runtime" && $0.qualityGate == "primary_source_first" })
     #expect(runtime.probes.contains { $0.id == "agi-agent-handoff-store" && $0.qualityGate == "coredata_cloudkit_sync_review" })
     #expect(runtime.probes.contains { $0.id == "specialist-plugin-readiness" && $0.qualityGate == "plugin_governance" })
+    #expect(runtime.probes.contains { $0.id == "ai-core-runtime-contract" && $0.qualityGate == "ai_core_snapshot_validation" })
+    #expect(runtime.probes.contains { $0.id == "ai-core-personal-lane-runtime" && $0.qualityGate == "ai_core_snapshot_validation" })
+    #expect(runtime.probes.contains { $0.id == "ai-core-runtime-snapshot" && $0.qualityGate == "ai_core_snapshot_validation" })
     #expect(runtime.probes.contains { $0.id == "specialist-plugin-manifest" && $0.qualityGate == "plugin_governance" })
     #expect(runtime.probes.contains { $0.id == "specialist-plugin-check" && $0.qualityGate == "mcp_smoke_test" })
     #expect(runtime.probes.contains { $0.id == "specialist-code-plugin" && $0.qualityGate == "plugin_governance" })
@@ -258,6 +261,56 @@ import Testing
     )
     #expect(!partial.isReady)
     #expect(partial.probes.first { $0.id == "run-script" }?.state == .watch)
+}
+
+@Test func appleShellRuntimeDiagnosticsFindsTheRepositoryFromANestedPackagePath() {
+    let root = repositoryRoot()
+    let nestedPackagePath = root
+        .appending(path: "packages/seis_platform_swift/Sources/SeisPlatformKit")
+
+    #expect(SeisAppleShellRuntimeDiagnostics.repositoryRoot(containing: nestedPackagePath) == root)
+}
+
+@Test func appleShellRuntimeDiagnosticsPrefersTheCanonicalRepositoryRootOverride() {
+    let canonical = URL(fileURLWithPath: "/tmp/seis-canonical-root")
+    let legacy = URL(fileURLWithPath: "/tmp/seis-legacy-root")
+
+    #expect(
+        SeisAppleShellRuntimeDiagnostics.repositoryRootOverride(
+            from: [
+                "SEIS_REPO_ROOT": canonical.path,
+                "SEIS_REPOSITORY_ROOT": legacy.path
+            ]
+        ) == canonical.standardizedFileURL
+    )
+    #expect(
+        SeisAppleShellRuntimeDiagnostics.repositoryRootOverride(
+            from: ["SEIS_REPOSITORY_ROOT": legacy.path]
+        ) == legacy.standardizedFileURL
+    )
+    #expect(
+        SeisAppleShellRuntimeDiagnostics.repositoryRootOverride(
+            from: ["SEIS_REPO_ROOT": "   ", "SEIS_ROOT": canonical.path]
+        ) == canonical.standardizedFileURL
+    )
+}
+
+@Test func appleShellRuntimeDiagnosticsFailClosedForInvalidAiCoreSnapshot() throws {
+    let fileManager = FileManager.default
+    let root = fileManager.temporaryDirectory
+        .appending(path: "seis-ai-core-runtime-diagnostics-\(UUID().uuidString)")
+    let snapshotDirectory = root.appending(path: "apps/seis-core/data")
+    try fileManager.createDirectory(at: snapshotDirectory, withIntermediateDirectories: true)
+    defer { try? fileManager.removeItem(at: root) }
+
+    try Data("{\"id\":\"unsafe-incomplete-snapshot\"}".utf8)
+        .write(to: snapshotDirectory.appending(path: "seis-ai-core-runtime-snapshot.json"))
+
+    let runtime = SeisAppleShellRuntimeDiagnostics.current(repositoryRoot: root)
+    let snapshotProbe = try #require(runtime.probes.first { $0.id == "ai-core-runtime-snapshot" })
+    #expect(snapshotProbe.state == .watch)
+    #expect(snapshotProbe.evidence.contains("typed validator"))
+    #expect(!snapshotProbe.evidence.contains("unsafe-incomplete-snapshot"))
 }
 
 @MainActor
@@ -521,6 +574,13 @@ private func writeSpecialistMarketplaceFixture(
     let persistence = SeisApplePersistenceReadinessContract.coreDataCloudKit
     let root = repositoryRoot()
     let runtime = SeisAppleShellRuntimeDiagnostics.current(repositoryRoot: root)
+    #expect(
+        runtime.probes.contains {
+            $0.id == "ai-core-runtime-snapshot" &&
+                $0.state == .ready &&
+                $0.evidence.contains("fail-closed Swift validation")
+        }
+    )
     let view = try String(
         contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/AppleShellDiagnosticsView.swift"),
         encoding: .utf8

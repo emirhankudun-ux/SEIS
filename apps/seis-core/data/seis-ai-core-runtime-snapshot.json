@@ -1,0 +1,938 @@
+{
+  "id": "seis-ai-core-runtime-snapshot",
+  "schemaVersion": "1.0.0",
+  "status": "local-readiness-linked",
+  "mode": "Local Demo",
+  "purpose": "Bind provider, read-only router, unified plugin, managed agent, personal lane, and local MCP evidence directly into the static SEIS Core Command Center.",
+  "sourceOfTruth": {
+    "providerRegistry": "content/development/seis-ai-core-provider-registry.json",
+    "routerContract": "content/development/seis-read-only-model-router-contract.json",
+    "pluginIntegration": "content/development/seis-agent-plugin-integration.json",
+    "mcpRuntimeContract": "content/development/seis-ai-core-mcp-runtime-contract.json",
+    "applicationIntegration": "content/development/seis-ai-core-application-integration.json",
+    "agentRegistry": "content/development/seis-second-brain-system.json",
+    "generator": "scripts/create-seis-core-ai-runtime-snapshot.mjs",
+    "output": "apps/seis-core/data/seis-ai-core-runtime-snapshot.json"
+  },
+  "applicationIntegration": {
+    "id": "seis-ai-core-application-integration",
+    "status": "active-read-only",
+    "consumer": {
+      "id": "seis-core-command-center",
+      "root": "apps/seis-core",
+      "panel": "AI Core Runtime",
+      "panelSelector": "[data-ai-core-runtime]",
+      "loadPath": "data/seis-ai-core-runtime-snapshot.json",
+      "interaction": "browser-local-scenario-selection-and-decision-copy"
+    },
+    "nativeConsumer": {
+      "id": "seis-platform-kit",
+      "root": "packages/seis_platform_swift",
+      "contract": "Sources/SeisPlatformKit/SeisAICoreRuntimeSnapshotContract.swift",
+      "tests": "Tests/SeisPlatformKitTests/SeisAICoreRuntimeSnapshotContractTests.swift",
+      "decodeMode": "injected-data-read-only-validation",
+      "runtimeAuthority": false,
+      "sourceArtifact": "apps/seis-core/data/seis-ai-core-runtime-snapshot.json"
+    },
+    "delivery": {
+      "builder": "packages/seis-ai/src/model/core-runtime-snapshot.mjs",
+      "generator": "scripts/create-seis-core-ai-runtime-snapshot.mjs",
+      "trackedArtifact": "apps/seis-core/data/seis-ai-core-runtime-snapshot.json",
+      "artifactTracked": true,
+      "gitignoreException": "!apps/seis-core/data/seis-ai-core-runtime-snapshot.json",
+      "failureState": "Local Demo / snapshot unavailable",
+      "networkFallback": false,
+      "mcpFallback": false,
+      "providerFallback": false
+    },
+    "providerStateSemantics": {
+      "Available": "Repository fixture availability inside its declared supervised or local boundary; not proof of browser connectivity.",
+      "Missing Key": "A backend-only credential is absent or unverified; this is not an Error state and is not routeable.",
+      "Disabled": "The provider or profile is intentionally unavailable for this demo slice.",
+      "Rate Limited": "Reserved redacted live-adapter state; not currently asserted by the offline fixture.",
+      "Error": "Reserved redacted live-adapter failure state; raw provider errors must never reach the browser."
+    },
+    "runtimeBoundary": {
+      "routeEligible": false,
+      "executionPerformed": false,
+      "providerCallsPerformed": false,
+      "fallbackUsed": false,
+      "credentialsRead": false,
+      "promptBodiesIncluded": false,
+      "privateContentRead": false,
+      "liveMcpSessionStarted": false,
+      "sshExecuted": false,
+      "deploymentPerformed": false,
+      "githubMutationPerformed": false,
+      "humanApprovalRequiredForLiveActions": true
+    }
+  },
+  "providerRegistry": {
+    "id": "seis-ai-core-provider-registry",
+    "status": "documented-fixture",
+    "truthBoundary": "Repository-local provider status fixture only. It performs no live provider calls, no credential validation, no network health checks, no SSH checks, no deployment, and no GitHub mutation.",
+    "coreCredentialRequirement": "none",
+    "defaultRoutingMode": "local-demo",
+    "localOnlyRespected": true,
+    "providerCount": 7,
+    "availableProviderCount": 2,
+    "routingEligibleProviderCount": 2,
+    "missingKeyProviderCount": 3,
+    "disabledProviderCount": 2,
+    "publicStates": [
+      "Available",
+      "Missing Key",
+      "Disabled",
+      "Rate Limited",
+      "Error"
+    ],
+    "providers": [
+      {
+        "id": "codex-operator",
+        "displayName": "Codex Operator Session",
+        "category": "supervised-operator",
+        "publicStatus": "Available",
+        "credentialRequirement": "current-session-only",
+        "configured": true,
+        "enabled": true,
+        "routingEligible": true,
+        "privacyClass": "repo-local-supervised",
+        "actualModel": "current-codex-session",
+        "backendOnly": true,
+        "frontendSecretAllowed": false
+      },
+      {
+        "id": "seis-local-demo",
+        "displayName": "SEIS Local Demo Runtime",
+        "category": "local-demo",
+        "publicStatus": "Available",
+        "credentialRequirement": "none",
+        "configured": true,
+        "enabled": true,
+        "routingEligible": true,
+        "privacyClass": "browser-local-demo",
+        "actualModel": "none-local-demo",
+        "backendOnly": true,
+        "frontendSecretAllowed": false
+      },
+      {
+        "id": "anthropic-claude",
+        "displayName": "Anthropic Claude",
+        "category": "cloud-model-provider",
+        "publicStatus": "Missing Key",
+        "credentialRequirement": "optional-live-feature",
+        "configured": false,
+        "enabled": false,
+        "routingEligible": false,
+        "privacyClass": "server-only-cloud",
+        "actualModel": "not-configured",
+        "backendOnly": true,
+        "frontendSecretAllowed": false
+      },
+      {
+        "id": "openai-general",
+        "displayName": "OpenAI General Provider",
+        "category": "cloud-model-provider",
+        "publicStatus": "Missing Key",
+        "credentialRequirement": "optional-live-feature",
+        "configured": false,
+        "enabled": false,
+        "routingEligible": false,
+        "privacyClass": "server-only-cloud",
+        "actualModel": "not-configured",
+        "backendOnly": true,
+        "frontendSecretAllowed": false
+      },
+      {
+        "id": "google-gemini",
+        "displayName": "Google Gemini",
+        "category": "cloud-model-provider",
+        "publicStatus": "Missing Key",
+        "credentialRequirement": "optional-live-feature",
+        "configured": false,
+        "enabled": false,
+        "routingEligible": false,
+        "privacyClass": "server-only-cloud",
+        "actualModel": "not-configured",
+        "backendOnly": true,
+        "frontendSecretAllowed": false
+      },
+      {
+        "id": "qwen-review",
+        "displayName": "Qwen Alternative Review",
+        "category": "local-or-cloud-provider",
+        "publicStatus": "Disabled",
+        "credentialRequirement": "optional-future-provider",
+        "configured": false,
+        "enabled": false,
+        "routingEligible": false,
+        "privacyClass": "server-only-or-local-future",
+        "actualModel": "not-configured",
+        "backendOnly": true,
+        "frontendSecretAllowed": false
+      },
+      {
+        "id": "ollama-local",
+        "displayName": "Ollama Local Candidate",
+        "category": "local-model-provider",
+        "publicStatus": "Disabled",
+        "credentialRequirement": "none-local-service",
+        "configured": false,
+        "enabled": false,
+        "routingEligible": false,
+        "privacyClass": "local-private-future",
+        "actualModel": "not-configured",
+        "backendOnly": true,
+        "frontendSecretAllowed": false
+      }
+    ]
+  },
+  "router": {
+    "runtimeId": "seis-ai-core-read-only-router-runtime-v1",
+    "tool": "seis_ai_core_read_only_route",
+    "status": "review-only-no-runtime-authority",
+    "mode": "provider-neutral-read-only",
+    "scenarioCount": 7,
+    "scenarios": [
+      {
+        "id": "governance-plan",
+        "label": "Governance plan",
+        "description": "Route a repository governance plan through the SEIS Hub lane.",
+        "input": {
+          "taskType": "governance roadmap",
+          "capability": "planning",
+          "privacyMode": "local-only",
+          "localOnly": true
+        },
+        "decision": {
+          "decisionHash": "657c85594999e7a5b389a08495d5d38bc12eb2677c1c8f6a1dc06d9e096aba83",
+          "status": "review-only-no-runtime-authority",
+          "selectedProvider": "codex-operator",
+          "selectedModel": "current-codex-session",
+          "providerState": "Available",
+          "registryProviderState": "Available",
+          "selectionBasis": "available-provider-capability-match-without-runtime-authority",
+          "routeEligible": false,
+          "executionPerformed": false,
+          "providerCallsPerformed": false,
+          "fallbackUsed": false,
+          "fallbackPlan": "feature-disabled",
+          "agentLane": {
+            "id": "seis",
+            "displayName": "SEIS Hub",
+            "subAgentRole": "repository-governance-subagent",
+            "permissionLevel": "plan-only",
+            "statusTool": "seis_hub_status",
+            "planTool": "seis_hub_plan",
+            "qualityGate": "npm run check:seis-ai-agent",
+            "executionPerformed": false
+          },
+          "requiredApprovals": [
+            "human approval before live provider routing",
+            "backend-only provider mediation and typed environment validation"
+          ],
+          "blockedReasons": [
+            "read-only router has no runtime authority",
+            "live provider execution is disabled",
+            "backend-only provider mediation is not implemented",
+            "local-only mode never routes to cloud providers"
+          ],
+          "safetyBoundary": {
+            "credentialsRead": false,
+            "promptBodyRead": false,
+            "privateContentRead": false,
+            "networkCalled": false,
+            "sshExecuted": false,
+            "deploymentPerformed": false,
+            "githubMutationPerformed": false
+          },
+          "modelClaimBoundary": {
+            "isTrainedModel": false,
+            "isFoundationModel": false,
+            "isAgi": false,
+            "parameterCountBillion": null,
+            "providerRoutingIsModelOwnership": false,
+            "promptEngineeringIsTraining": false,
+            "ragIsTraining": false
+          }
+        }
+      },
+      {
+        "id": "cloud-preflight",
+        "label": "Cloud preflight",
+        "description": "Inspect a cloud/provider plan without starting SSH, deploy, or provider traffic.",
+        "input": {
+          "taskType": "cloud provider preflight",
+          "capability": "planning",
+          "privacyMode": "standard",
+          "localOnly": false
+        },
+        "decision": {
+          "decisionHash": "511ae07b19d5c8ab5904bbe662bf88165fdeb800b318fba0b56476ca37214532",
+          "status": "review-only-no-runtime-authority",
+          "selectedProvider": "codex-operator",
+          "selectedModel": "current-codex-session",
+          "providerState": "Available",
+          "registryProviderState": "Available",
+          "selectionBasis": "available-provider-capability-match-without-runtime-authority",
+          "routeEligible": false,
+          "executionPerformed": false,
+          "providerCallsPerformed": false,
+          "fallbackUsed": false,
+          "fallbackPlan": "feature-disabled",
+          "agentLane": {
+            "id": "seis-cloud",
+            "displayName": "SEIS Cloud",
+            "subAgentRole": "cloud-readiness-subagent",
+            "permissionLevel": "plan-only",
+            "statusTool": "seis_cloud_status",
+            "planTool": "seis_cloud_plan",
+            "qualityGate": "npm run check:cloud-access-policy",
+            "executionPerformed": false
+          },
+          "requiredApprovals": [
+            "human approval before live provider routing",
+            "backend-only provider mediation and typed environment validation"
+          ],
+          "blockedReasons": [
+            "read-only router has no runtime authority",
+            "live provider execution is disabled",
+            "backend-only provider mediation is not implemented"
+          ],
+          "safetyBoundary": {
+            "credentialsRead": false,
+            "promptBodyRead": false,
+            "privateContentRead": false,
+            "networkCalled": false,
+            "sshExecuted": false,
+            "deploymentPerformed": false,
+            "githubMutationPerformed": false
+          },
+          "modelClaimBoundary": {
+            "isTrainedModel": false,
+            "isFoundationModel": false,
+            "isAgi": false,
+            "parameterCountBillion": null,
+            "providerRoutingIsModelOwnership": false,
+            "promptEngineeringIsTraining": false,
+            "ragIsTraining": false
+          }
+        }
+      },
+      {
+        "id": "code-validation",
+        "label": "Code validation",
+        "description": "Route repository validation through the SEIS Code lane.",
+        "input": {
+          "taskType": "repository validation",
+          "capability": "validation",
+          "privacyMode": "local-only",
+          "localOnly": true
+        },
+        "decision": {
+          "decisionHash": "b14bcfcdd893d3dba71cb1f69bf2373ee478c73389f2a41f9fa0f5448f491906",
+          "status": "review-only-no-runtime-authority",
+          "selectedProvider": "codex-operator",
+          "selectedModel": "current-codex-session",
+          "providerState": "Available",
+          "registryProviderState": "Available",
+          "selectionBasis": "available-provider-capability-match-without-runtime-authority",
+          "routeEligible": false,
+          "executionPerformed": false,
+          "providerCallsPerformed": false,
+          "fallbackUsed": false,
+          "fallbackPlan": "feature-disabled",
+          "agentLane": {
+            "id": "seis-code",
+            "displayName": "SEIS-Code",
+            "subAgentRole": "engineering-subagent",
+            "permissionLevel": "plan-only",
+            "statusTool": "seis_code_status",
+            "planTool": "seis_code_plan",
+            "qualityGate": "node scripts/check-seis-plugin-bundle.mjs --no-local",
+            "executionPerformed": false
+          },
+          "requiredApprovals": [
+            "human approval before live provider routing",
+            "backend-only provider mediation and typed environment validation"
+          ],
+          "blockedReasons": [
+            "read-only router has no runtime authority",
+            "live provider execution is disabled",
+            "backend-only provider mediation is not implemented",
+            "local-only mode never routes to cloud providers"
+          ],
+          "safetyBoundary": {
+            "credentialsRead": false,
+            "promptBodyRead": false,
+            "privateContentRead": false,
+            "networkCalled": false,
+            "sshExecuted": false,
+            "deploymentPerformed": false,
+            "githubMutationPerformed": false
+          },
+          "modelClaimBoundary": {
+            "isTrainedModel": false,
+            "isFoundationModel": false,
+            "isAgi": false,
+            "parameterCountBillion": null,
+            "providerRoutingIsModelOwnership": false,
+            "promptEngineeringIsTraining": false,
+            "ragIsTraining": false
+          }
+        }
+      },
+      {
+        "id": "design-review",
+        "label": "Design review",
+        "description": "Plan an accessibility review through the SEIS Design lane.",
+        "input": {
+          "taskType": "design accessibility planning",
+          "capability": "repository-planning-demo",
+          "privacyMode": "local-only",
+          "localOnly": true
+        },
+        "decision": {
+          "decisionHash": "df7604f191c7fa6bff49c26d00258569e4d321bdf88be251b14bb9b6c7152756",
+          "status": "review-only-no-runtime-authority",
+          "selectedProvider": "codex-operator",
+          "selectedModel": "current-codex-session",
+          "providerState": "Available",
+          "registryProviderState": "Available",
+          "selectionBasis": "available-provider-capability-match-without-runtime-authority",
+          "routeEligible": false,
+          "executionPerformed": false,
+          "providerCallsPerformed": false,
+          "fallbackUsed": false,
+          "fallbackPlan": "feature-disabled",
+          "agentLane": {
+            "id": "seis-design",
+            "displayName": "SEIS-Design",
+            "subAgentRole": "product-design-subagent",
+            "permissionLevel": "plan-only",
+            "statusTool": "seis_design_status",
+            "planTool": "seis_design_plan",
+            "qualityGate": "npm run check:motion-evidence",
+            "executionPerformed": false
+          },
+          "requiredApprovals": [
+            "human approval before live provider routing",
+            "backend-only provider mediation and typed environment validation"
+          ],
+          "blockedReasons": [
+            "read-only router has no runtime authority",
+            "live provider execution is disabled",
+            "backend-only provider mediation is not implemented",
+            "local-only mode never routes to cloud providers"
+          ],
+          "safetyBoundary": {
+            "credentialsRead": false,
+            "promptBodyRead": false,
+            "privateContentRead": false,
+            "networkCalled": false,
+            "sshExecuted": false,
+            "deploymentPerformed": false,
+            "githubMutationPerformed": false
+          },
+          "modelClaimBoundary": {
+            "isTrainedModel": false,
+            "isFoundationModel": false,
+            "isAgi": false,
+            "parameterCountBillion": null,
+            "providerRoutingIsModelOwnership": false,
+            "promptEngineeringIsTraining": false,
+            "ragIsTraining": false
+          }
+        }
+      },
+      {
+        "id": "data-provenance",
+        "label": "Data provenance",
+        "description": "Plan schema and provenance work through the SEIS Data lane.",
+        "input": {
+          "taskType": "data schema provenance planning",
+          "capability": "repository-planning-demo",
+          "privacyMode": "local-only",
+          "localOnly": true
+        },
+        "decision": {
+          "decisionHash": "c60b1030e9d85a5a909d70a62934f0ae28f89cd2d4f2b8f17eb96de3a7999a87",
+          "status": "review-only-no-runtime-authority",
+          "selectedProvider": "codex-operator",
+          "selectedModel": "current-codex-session",
+          "providerState": "Available",
+          "registryProviderState": "Available",
+          "selectionBasis": "available-provider-capability-match-without-runtime-authority",
+          "routeEligible": false,
+          "executionPerformed": false,
+          "providerCallsPerformed": false,
+          "fallbackUsed": false,
+          "fallbackPlan": "feature-disabled",
+          "agentLane": {
+            "id": "seis-data",
+            "displayName": "SEIS-DATA",
+            "subAgentRole": "data-provenance-subagent",
+            "permissionLevel": "plan-only",
+            "statusTool": "seis_data_status",
+            "planTool": "seis_data_plan",
+            "qualityGate": "npm run check:plugin-capability-lanes",
+            "executionPerformed": false
+          },
+          "requiredApprovals": [
+            "human approval before live provider routing",
+            "backend-only provider mediation and typed environment validation"
+          ],
+          "blockedReasons": [
+            "read-only router has no runtime authority",
+            "live provider execution is disabled",
+            "backend-only provider mediation is not implemented",
+            "local-only mode never routes to cloud providers"
+          ],
+          "safetyBoundary": {
+            "credentialsRead": false,
+            "promptBodyRead": false,
+            "privateContentRead": false,
+            "networkCalled": false,
+            "sshExecuted": false,
+            "deploymentPerformed": false,
+            "githubMutationPerformed": false
+          },
+          "modelClaimBoundary": {
+            "isTrainedModel": false,
+            "isFoundationModel": false,
+            "isAgi": false,
+            "parameterCountBillion": null,
+            "providerRoutingIsModelOwnership": false,
+            "promptEngineeringIsTraining": false,
+            "ragIsTraining": false
+          }
+        }
+      },
+      {
+        "id": "private-vault-block",
+        "label": "Private vault boundary",
+        "description": "Prove that private Obsidian or personal note content is not routable.",
+        "input": {
+          "taskType": "private Obsidian vault review",
+          "capability": "personal notes",
+          "privacyMode": "review-gated",
+          "localOnly": true
+        },
+        "decision": {
+          "decisionHash": "48376b7a8baec2ffc34feb0a347646e3ec6be3c342c61595d079894dfbe8afce",
+          "status": "review-only-no-runtime-authority",
+          "selectedProvider": "none",
+          "selectedModel": "none",
+          "providerState": "Disabled",
+          "registryProviderState": null,
+          "selectionBasis": "no-provider-selected",
+          "routeEligible": false,
+          "executionPerformed": false,
+          "providerCallsPerformed": false,
+          "fallbackUsed": false,
+          "fallbackPlan": "feature-disabled",
+          "agentLane": {
+            "id": "seis",
+            "displayName": "SEIS Hub",
+            "subAgentRole": "repository-governance-subagent",
+            "permissionLevel": "plan-only",
+            "statusTool": "seis_hub_status",
+            "planTool": "seis_hub_plan",
+            "qualityGate": "npm run check:seis-ai-agent",
+            "executionPerformed": false
+          },
+          "requiredApprovals": [
+            "human approval before live provider routing",
+            "backend-only provider mediation and typed environment validation"
+          ],
+          "blockedReasons": [
+            "private Obsidian or personal note content is not routable",
+            "read-only router has no runtime authority",
+            "live provider execution is disabled",
+            "backend-only provider mediation is not implemented",
+            "explicit user-selected local source and separate approval are required",
+            "local-only mode never routes to cloud providers"
+          ],
+          "safetyBoundary": {
+            "credentialsRead": false,
+            "promptBodyRead": false,
+            "privateContentRead": false,
+            "networkCalled": false,
+            "sshExecuted": false,
+            "deploymentPerformed": false,
+            "githubMutationPerformed": false
+          },
+          "modelClaimBoundary": {
+            "isTrainedModel": false,
+            "isFoundationModel": false,
+            "isAgi": false,
+            "parameterCountBillion": null,
+            "providerRoutingIsModelOwnership": false,
+            "promptEngineeringIsTraining": false,
+            "ragIsTraining": false
+          }
+        }
+      },
+      {
+        "id": "frontier-model-block",
+        "label": "Frontier model boundary",
+        "description": "Prove that 512B and frontier records remain planning-only.",
+        "input": {
+          "taskType": "512B apex model route",
+          "capability": "frontier inference",
+          "privacyMode": "review-gated",
+          "localOnly": false
+        },
+        "decision": {
+          "decisionHash": "c22f90914b37ebfa8e0434b086a918097138a8cc964207b2d3301860c983ea7a",
+          "status": "review-only-no-runtime-authority",
+          "selectedProvider": "none",
+          "selectedModel": "none",
+          "providerState": "Disabled",
+          "registryProviderState": null,
+          "selectionBasis": "no-provider-selected",
+          "routeEligible": false,
+          "executionPerformed": false,
+          "providerCallsPerformed": false,
+          "fallbackUsed": false,
+          "fallbackPlan": "feature-disabled",
+          "agentLane": {
+            "id": "seis",
+            "displayName": "SEIS Hub",
+            "subAgentRole": "repository-governance-subagent",
+            "permissionLevel": "plan-only",
+            "statusTool": "seis_hub_status",
+            "planTool": "seis_hub_plan",
+            "qualityGate": "npm run check:seis-ai-agent",
+            "executionPerformed": false
+          },
+          "requiredApprovals": [
+            "human approval before live provider routing",
+            "backend-only provider mediation and typed environment validation"
+          ],
+          "blockedReasons": [
+            "frontier and 512B model classes are planning records, not routeable models",
+            "read-only router has no runtime authority",
+            "live provider execution is disabled",
+            "backend-only provider mediation is not implemented",
+            "weights, runtime adapter, benchmark evidence, safety evaluation, and approval are missing"
+          ],
+          "safetyBoundary": {
+            "credentialsRead": false,
+            "promptBodyRead": false,
+            "privateContentRead": false,
+            "networkCalled": false,
+            "sshExecuted": false,
+            "deploymentPerformed": false,
+            "githubMutationPerformed": false
+          },
+          "modelClaimBoundary": {
+            "isTrainedModel": false,
+            "isFoundationModel": false,
+            "isAgi": false,
+            "parameterCountBillion": null,
+            "providerRoutingIsModelOwnership": false,
+            "promptEngineeringIsTraining": false,
+            "ragIsTraining": false
+          }
+        }
+      }
+    ]
+  },
+  "agentRegistry": {
+    "id": "seis-second-brain-system",
+    "status": "review-only-agent-registry",
+    "mode": "local-demo",
+    "source": "content/development/seis-second-brain-system.json",
+    "sourceQualityGate": "npm run check:seis-second-brain",
+    "decision": "NO-GO-autonomous-execution-not-approved",
+    "truthBoundary": "Whitelisted public Second Brain contract only. Vault paths, training paths, installed AI profiles, generated audit reports, credentials, prompts, and private note content are excluded.",
+    "managedLaneCount": 9,
+    "agentCount": 13,
+    "runtimeAuthority": false,
+    "permissionBoundary": "status-and-plan-only",
+    "managedLanes": [
+      {
+        "id": "seis",
+        "displayName": "SEIS Hub",
+        "status": "status-and-plan-only"
+      },
+      {
+        "id": "seis-cloud",
+        "displayName": "SEIS Cloud",
+        "status": "status-and-plan-only"
+      },
+      {
+        "id": "seis-code",
+        "displayName": "SEIS-Code",
+        "status": "status-and-plan-only"
+      },
+      {
+        "id": "seis-design",
+        "displayName": "SEIS-Design",
+        "status": "status-and-plan-only"
+      },
+      {
+        "id": "seis-data",
+        "displayName": "SEIS-DATA",
+        "status": "status-and-plan-only"
+      },
+      {
+        "id": "seis-security",
+        "displayName": "SEIS-Security",
+        "status": "status-and-plan-only"
+      },
+      {
+        "id": "seis-research",
+        "displayName": "SEIS-Research",
+        "status": "status-and-plan-only"
+      },
+      {
+        "id": "seis-automation",
+        "displayName": "SEIS-Automation",
+        "status": "status-and-plan-only"
+      },
+      {
+        "id": "seis-product",
+        "displayName": "SEIS-Product",
+        "status": "status-and-plan-only"
+      }
+    ],
+    "agents": [
+      {
+        "id": "architect-agent",
+        "displayName": "Architect Agent",
+        "status": "status-plan-only",
+        "duty": "Architecture, module boundaries, and rollback-aware implementation plans.",
+        "executionAuthority": false
+      },
+      {
+        "id": "code-agent",
+        "displayName": "Code Agent",
+        "status": "status-plan-only",
+        "duty": "Scoped implementation notes, validators, and code review evidence.",
+        "executionAuthority": false
+      },
+      {
+        "id": "design-agent",
+        "displayName": "Design Agent",
+        "status": "status-plan-only",
+        "duty": "Visual system, product feel, design tokens, and interaction evidence.",
+        "executionAuthority": false
+      },
+      {
+        "id": "ui-ux-agent",
+        "displayName": "UI/UX Agent",
+        "status": "status-plan-only",
+        "duty": "Usability, mobile ergonomics, focus order, and accessibility notes.",
+        "executionAuthority": false
+      },
+      {
+        "id": "research-agent",
+        "displayName": "Research Agent",
+        "status": "status-plan-only",
+        "duty": "Source provenance, prior-art notes, and clean-room research summaries.",
+        "executionAuthority": false
+      },
+      {
+        "id": "search-agent",
+        "displayName": "Search Agent",
+        "status": "status-plan-only",
+        "duty": "Local vault, docs, route, file, and plugin indexing strategy.",
+        "executionAuthority": false
+      },
+      {
+        "id": "security-agent",
+        "displayName": "Security Agent",
+        "status": "blocking-review-gate",
+        "duty": "Secret hygiene, private vault boundaries, and approval requirements.",
+        "executionAuthority": false
+      },
+      {
+        "id": "devops-agent",
+        "displayName": "DevOps Agent",
+        "status": "status-plan-only",
+        "duty": "CI, release, deployment, rollback, and no-live-action runbooks.",
+        "executionAuthority": false
+      },
+      {
+        "id": "documentation-agent",
+        "displayName": "Documentation Agent",
+        "status": "status-plan-only",
+        "duty": "README, status, index, backlog, and PR queue alignment.",
+        "executionAuthority": false
+      },
+      {
+        "id": "qa-agent",
+        "displayName": "QA Agent",
+        "status": "status-plan-only",
+        "duty": "Validator, browser-smoke, regression, and acceptance evidence.",
+        "executionAuthority": false
+      },
+      {
+        "id": "cloud-agent",
+        "displayName": "Cloud Agent",
+        "status": "status-plan-only",
+        "duty": "Cloud, SSH, storage, sync, and provider readiness boundaries.",
+        "executionAuthority": false
+      },
+      {
+        "id": "automation-agent",
+        "displayName": "Automation Agent",
+        "status": "status-plan-only",
+        "duty": "Safe recurring workflows, ledgers, and human-approved automation gates.",
+        "executionAuthority": false
+      },
+      {
+        "id": "product-agent",
+        "displayName": "Product Agent",
+        "status": "status-plan-only",
+        "duty": "Requirements, acceptance criteria, roadmap slices, launch readiness, and delivery evidence.",
+        "executionAuthority": false
+      }
+    ],
+    "safetyBoundary": {
+      "storesSecrets": false,
+      "providerCalls": false,
+      "sshExecution": false,
+      "deployment": false,
+      "githubMutation": false
+    },
+    "humanApprovalRequiredForMutation": true
+  },
+  "pluginMesh": {
+    "id": "seis-agent-plugin-integration",
+    "status": "active",
+    "primaryInstallId": "seis-ai-agent@seis-repo",
+    "installedEnabledCount": 185,
+    "notInstalledCount": 5,
+    "helperUniquePlugins": 300,
+    "helperCapabilityLaneCount": 12,
+    "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved",
+    "personalLaneCount": 5,
+    "personalLaneToolCount": 10,
+    "personalLanes": [
+      {
+        "id": "seis",
+        "displayName": "SEIS Hub",
+        "role": "repository governance, architecture, migration safety, and ecosystem coordination",
+        "mcpTools": [
+          "seis_hub_status",
+          "seis_hub_plan"
+        ],
+        "qualityGate": "npm run check:seis-ai-agent"
+      },
+      {
+        "id": "seis-cloud",
+        "displayName": "SEIS Cloud",
+        "role": "cloud readiness, public cloud, team VPN cloud, provider preflight, rollback, and secret-safe infrastructure",
+        "mcpTools": [
+          "seis_cloud_status",
+          "seis_cloud_plan"
+        ],
+        "qualityGate": "npm run check:cloud-access-policy"
+      },
+      {
+        "id": "seis-code",
+        "displayName": "SEIS-Code",
+        "role": "architecture-aware implementation, tests, CI gates, MCP/plugin code, and automation",
+        "mcpTools": [
+          "seis_code_status",
+          "seis_code_plan"
+        ],
+        "qualityGate": "npm run check:seis-plugin-bundle"
+      },
+      {
+        "id": "seis-design",
+        "displayName": "SEIS-Design",
+        "role": "product design, UI/UX, design systems, accessibility, motion, and visual QA",
+        "mcpTools": [
+          "seis_design_status",
+          "seis_design_plan"
+        ],
+        "qualityGate": "npm run check:motion-evidence"
+      },
+      {
+        "id": "seis-data",
+        "displayName": "SEIS-DATA",
+        "role": "data architecture, reports, schemas, memory, context, RAG planning, and provenance",
+        "mcpTools": [
+          "seis_data_status",
+          "seis_data_plan"
+        ],
+        "qualityGate": "npm run check:plugin-capability-lanes"
+      }
+    ]
+  },
+  "mcpRuntime": {
+    "id": "seis-ai-core-mcp-runtime-contract",
+    "status": "local-smoke-verified",
+    "transport": "stdio JSON-RPC",
+    "fallbackRuntime": "LightweightMcpServer no-dependency fallback",
+    "toolCount": 35,
+    "resourceCount": 30,
+    "promptCount": 3,
+    "resourceUri": "seis://ai/mcp-runtime-contract.json",
+    "pluginIntegrationResource": "seis://agent/plugin-integration.json",
+    "boundary": "Browser demo and MCP smoke do not call remote MCP servers, store credentials, execute SSH, deploy, mutate GitHub, or run unrestricted shell tools.",
+    "surfaces": [
+      {
+        "id": "tools",
+        "label": "Tool registry",
+        "count": 35,
+        "state": "verified",
+        "method": "tools/list + tools/call",
+        "evidence": "25 MCP smoke tests pass through stdio JSON-RPC",
+        "duty": "Expose repo-backed SEIS AI checks, provider-neutral read-only route decisions, personal plugin lane tools, provider registry status, model scaling status, and AI Core version/sub-agent tools."
+      },
+      {
+        "id": "resources",
+        "label": "Resource registry",
+        "count": 30,
+        "state": "verified",
+        "method": "resources/list + resources/read",
+        "evidence": "Plugin integration, provider registry, executable read-only router runtime, model scaling profile, model parameter ladder, frontier escalation policy, 150B frontier model program, 512B apex AGI program, AGI evaluation protocol, AGI public readiness evidence, AGI GitHub user readiness gates, 20B model/dataset card templates, and MCP runtime contract resources are read through the protocol",
+        "duty": "Expose source-of-truth JSON resources for plugin integration, provider states, executable read-only route policy, planned model scaling, parameter ladder boundaries, no-skip-20B frontier policy, 150B frontier program, 512B apex AGI program, AGI evidence protocol, AGI public-readiness claim gates, AGI GitHub user-readiness gates, 20B clean-room evidence templates, MCP runtime, version gates, fixtures, and generated plan views."
+      },
+      {
+        "id": "prompts",
+        "label": "Prompt registry",
+        "count": 3,
+        "state": "verified",
+        "method": "prompts/list + prompts/get",
+        "evidence": "Prompt rendering is verified with arguments",
+        "duty": "Provide bounded audit, i18n, and review prompts without embedding secrets."
+      },
+      {
+        "id": "transport",
+        "label": "Transport boundary",
+        "count": 1,
+        "state": "verified",
+        "method": "stdio local process",
+        "evidence": "No dependency install required for local smoke",
+        "duty": "Keep MCP available for local verification while official SDK compatibility remains a separate hardening path."
+      }
+    ]
+  },
+  "runtimeBoundary": {
+    "providerCalls": false,
+    "credentialsRead": false,
+    "frontendSecretsAllowed": false,
+    "liveMcpSessionStarted": false,
+    "sshExecuted": false,
+    "deploymentPerformed": false,
+    "githubMutationPerformed": false,
+    "privateContentRead": false,
+    "routeExecutionPerformed": false,
+    "humanApprovalRequiredForLiveActions": true
+  },
+  "qualityGates": [
+    "npm run check:seis-core-ai-runtime-snapshot",
+    "npm run check:seis-ai-core-provider-registry",
+    "npm run check:seis-ai-core-read-only-router",
+    "npm run check:seis-agent-plugin-integration",
+    "npm run check:seis-second-brain",
+    "node --test packages/seis-ai/test/core-runtime-snapshot.test.mjs",
+    "node --test apps/seis-core/test/seis-core-static.test.js"
+  ]
+}

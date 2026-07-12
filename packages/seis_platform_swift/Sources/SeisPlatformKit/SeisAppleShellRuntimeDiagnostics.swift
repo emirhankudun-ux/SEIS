@@ -107,6 +107,24 @@ public struct SeisAppleShellRuntimeDiagnostics: Codable, Equatable, Sendable {
             qualityGate: "plugin_governance"
         ),
         SeisAppleShellRuntimeSurface(
+            id: "ai-core-runtime-contract",
+            title: "AI Core Runtime Contract",
+            relativePath: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAICoreRuntimeSnapshotContract.swift",
+            qualityGate: "ai_core_snapshot_validation"
+        ),
+        SeisAppleShellRuntimeSurface(
+            id: "ai-core-personal-lane-runtime",
+            title: "AI Core Personal Lane Runtime",
+            relativePath: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAIPersonalLaneRuntime.swift",
+            qualityGate: "ai_core_snapshot_validation"
+        ),
+        SeisAppleShellRuntimeSurface(
+            id: "ai-core-runtime-snapshot",
+            title: "AI Core Runtime Snapshot",
+            relativePath: "apps/seis-core/data/seis-ai-core-runtime-snapshot.json",
+            qualityGate: "ai_core_snapshot_validation"
+        ),
+        SeisAppleShellRuntimeSurface(
             id: "specialist-plugin-manifest",
             title: "Specialist Plugin Manifest",
             relativePath: "data/seis-specialist-plugins-2026-06-12.json",
@@ -199,12 +217,54 @@ public struct SeisAppleShellRuntimeDiagnostics: Codable, Equatable, Sendable {
                 .map(\.relativePath)
                 .filter { FileManager.default.fileExists(atPath: root.appending(path: $0).path) }
         )
-
-        return make(
+        let base = make(
             repositoryRoot: root,
             existingRelativePaths: existingPaths,
             operatingSystemVersion: ProcessInfo.processInfo.operatingSystemVersionString,
             processName: ProcessInfo.processInfo.processName
+        )
+        let snapshotPath = "apps/seis-core/data/seis-ai-core-runtime-snapshot.json"
+        guard existingPaths.contains(snapshotPath) else {
+            return base
+        }
+
+        let snapshotProbe: SeisAppleShellRuntimeProbe
+        do {
+            let data = try Data(contentsOf: root.appending(path: snapshotPath))
+            _ = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
+            snapshotProbe = SeisAppleShellRuntimeProbe(
+                id: "ai-core-runtime-snapshot",
+                title: "AI Core Runtime Snapshot",
+                relativePath: snapshotPath,
+                state: .ready,
+                evidence: "The tracked AI Core snapshot passed typed, fail-closed Swift validation.",
+                qualityGate: "ai_core_snapshot_validation"
+            )
+        } catch let error as SeisAICoreRuntimeSnapshotValidationError {
+            snapshotProbe = SeisAppleShellRuntimeProbe(
+                id: "ai-core-runtime-snapshot",
+                title: "AI Core Runtime Snapshot",
+                relativePath: snapshotPath,
+                state: .watch,
+                evidence: "The tracked AI Core snapshot failed typed validation with \(error.validationIssues.count) issue(s).",
+                qualityGate: "ai_core_snapshot_validation"
+            )
+        } catch {
+            snapshotProbe = SeisAppleShellRuntimeProbe(
+                id: "ai-core-runtime-snapshot",
+                title: "AI Core Runtime Snapshot",
+                relativePath: snapshotPath,
+                state: .watch,
+                evidence: "The tracked AI Core snapshot could not be decoded by the typed validator.",
+                qualityGate: "ai_core_snapshot_validation"
+            )
+        }
+
+        return SeisAppleShellRuntimeDiagnostics(
+            repositoryRootPath: base.repositoryRootPath,
+            processName: base.processName,
+            operatingSystemVersion: base.operatingSystemVersion,
+            probes: base.probes.map { $0.id == snapshotProbe.id ? snapshotProbe : $0 }
         )
     }
 
@@ -266,7 +326,7 @@ public struct SeisAppleShellRuntimeDiagnostics: Codable, Equatable, Sendable {
 
     private static func defaultRepositoryRoot() -> URL {
         let environment = ProcessInfo.processInfo.environment
-        let explicitRoot = environment["SEIS_REPOSITORY_ROOT"].map(URL.init(fileURLWithPath:))
+        let explicitRoot = repositoryRootOverride(from: environment)
         let workingRoot = environment["PWD"].map(URL.init(fileURLWithPath:))
         let currentRoot = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
         let bundleRoot = Bundle.main.bundleURL
@@ -274,10 +334,36 @@ public struct SeisAppleShellRuntimeDiagnostics: Codable, Equatable, Sendable {
             .deletingLastPathComponent()
 
         let candidates = [explicitRoot, workingRoot, currentRoot, bundleRoot].compactMap(\.self)
-        return candidates.first { candidate in
-            FileManager.default.fileExists(
-                atPath: candidate.appending(path: "packages/seis_platform_swift/Package.swift").path
-            )
-        } ?? currentRoot
+        return candidates.compactMap(repositoryRoot(containing:)).first ?? currentRoot
+    }
+
+    static func repositoryRootOverride(from environment: [String: String]) -> URL? {
+        for key in ["SEIS_REPO_ROOT", "SEIS_REPOSITORY_ROOT", "SEIS_ROOT"] {
+            guard let value = environment[key]?.trimmingCharacters(in: .whitespacesAndNewlines), !value.isEmpty else {
+                continue
+            }
+            return URL(fileURLWithPath: value).standardizedFileURL
+        }
+        return nil
+    }
+
+    static func repositoryRoot(containing candidate: URL) -> URL? {
+        let fileManager = FileManager.default
+        var current = candidate.standardizedFileURL
+
+        while true {
+            let packagePath = current
+                .appending(path: "packages/seis_platform_swift/Package.swift")
+                .path
+            if fileManager.fileExists(atPath: packagePath) {
+                return current
+            }
+
+            let parent = current.deletingLastPathComponent()
+            guard parent.path != current.path else {
+                return nil
+            }
+            current = parent
+        }
     }
 }
