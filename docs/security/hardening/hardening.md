@@ -26,9 +26,11 @@ source-derived or hypothetical rather than measured.
 
 The user's autonomous-development direction selected deterministic local
 controls. The selected controls are now implemented and validated in the local
-working tree under the same focused Goal slice and committed at `785c346d`;
-remote CI evidence remains pending on pull request #179. This portfolio remains
-a design artifact rather than proof of remote operation.
+working tree under the same focused Goal slice and committed through `7c230ca5`.
+Foundation and Enterprise gates passed on pull request #179; Guardian remains
+pending because the pull request is stacked on a non-triggering base. This
+portfolio remains a design artifact rather than proof of complete remote
+operation.
 
 ## Opportunity Portfolio
 

@@ -16,8 +16,9 @@ WP1 through WP5 are present and validated in the local working tree as of
 2026-07-13. `check:security-boundary`, `test:security-boundary`, ecosystem
 foundation validation and negative tests, shell syntax, foundation, legacy goal
 tracking, SEIS audit, formatting, and diff checks passed locally. The
-implementation commit is `785c346d`; remote CI evidence remains pending, and
-WP6 remains an explicit human decision.
+implementation head is `7c230ca5`; Foundation and Enterprise gates passed,
+remote Guardian evidence remains pending on the stacked base, and WP6 remains
+an explicit human decision.
 
 ## Source Revision And Drift Check
 
