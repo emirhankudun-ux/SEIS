@@ -5273,7 +5273,7 @@ function getSecondBrainObsidianFingerprint(modeId) {
   for (let index = 0; index < 64; index += 1) {
     hex += alphabet[(acc + index * 11 + seed.length) % alphabet.length];
   }
-  return `sha256:${hex}`;
+  return `demo-fp:${hex}`;
 }
 
 function buildSecondBrainObsidianDryRunManifest(data) {
@@ -5587,7 +5587,7 @@ function getSecondBrainSearchTokens(value) {
 function getSecondBrainSearchScoreBreakdown(item, query) {
   const trimmed = String(query || "").trim().toLowerCase();
   const base = item.priority || 0;
-  if (!trimmed) return { score: base || 1, reasons: ["base-priority"] };
+  if (!trimmed) return { score: base || 1, matchesQuery: true, reasons: ["base-priority"] };
   const tokens = getSecondBrainSearchTokens(trimmed);
   const title = normalizeSecondBrainSearch(item.title);
   const detail = normalizeSecondBrainSearch(item.detail);
@@ -5640,11 +5640,12 @@ function getSecondBrainSearchScoreBreakdown(item, query) {
     score += boost;
     signalReasons.push(`graph-proximity:${graphSignal}`);
   }
+  const matchesQuery = fieldReasons.length > 0 || signalReasons.length > 0;
   const sourceWeight = { Notes: 4, Backlinks: 6, Tags: 5, Plugins: 4, Agents: 4, Files: 2, Routes: 2, Apps: 2 }[item.type] || 1;
   score += sourceWeight;
   signalReasons.push(`source-weight:${item.type}`);
   const reasons = [...signalReasons, ...fieldReasons];
-  return { score, reasons: reasons.length ? reasons.slice(0, 8) : ["base-priority"] };
+  return { score, matchesQuery, reasons: reasons.length ? reasons.slice(0, 8) : ["base-priority"] };
 }
 
 function scoreSecondBrainSearchResult(item, query) {
@@ -5849,9 +5850,9 @@ function getSecondBrainSearchResults(index, data) {
     .filter((item) => activeFilter === "All" || item.type === activeFilter)
     .map((item) => {
       const breakdown = getSecondBrainSearchScoreBreakdown(item, query);
-      return { ...item, score: breakdown.score, scoreReasons: breakdown.reasons };
+      return { ...item, score: breakdown.score, scoreReasons: breakdown.reasons, matchesQuery: breakdown.matchesQuery };
     })
-    .filter((item) => !String(query || "").trim() || item.score > (item.priority || 0))
+    .filter((item) => !String(query || "").trim() || item.matchesQuery)
     .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
     .slice(0, 12);
 }
