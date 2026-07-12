@@ -38,6 +38,7 @@ for (const marker of [
   "data-second-brain-agent-review-brief",
   "data-ai-second-brain-agent-review-brief",
   "data-second-brain-agent-review-outcome",
+  "reviewOutcome",
   "approved-for-human-follow-up",
   "externalActionAllowed: false",
   "agentExecutionAllowed: false",

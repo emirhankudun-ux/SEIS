@@ -5835,9 +5835,9 @@ function getSecondBrainSearchIndex(data = getSecondBrainData()) {
     type: "Agents",
     title: `Plan-only assignment: ${assignment.agent.name}`,
     source: assignment.markdownPath,
-    detail: `${assignment.status}. Brief: ${assignment.humanReviewBrief?.text || "No brief recorded."} ${assignment.agent.duty} Local context: ${assignment.contextProfiles.map((profile) => profile.lane).join(", ") || "none"}.`,
+    detail: `${assignment.status}. Outcome: ${assignment.reviewOutcome?.label || "Draft"}. Brief: ${assignment.humanReviewBrief?.text || "No brief recorded."} ${assignment.agent.duty} Local context: ${assignment.contextProfiles.map((profile) => profile.lane).join(", ") || "none"}.`,
     tags: ["#agent-review", "#plan-only", "#human-selected", `#${assignment.agent.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`],
-    relatedText: `${assignment.humanReviewBrief?.text || ""} ${assignment.decision} ${assignment.contextProfiles.map((profile) => `${profile.lane} ${profile.plugin} ${profile.tools}`).join(" ")} ${assignment.installedAiProfiles.map((profile) => `${profile.name} ${profile.status}`).join(" ")}`,
+    relatedText: `${assignment.reviewOutcome?.label || "Draft"} ${assignment.humanReviewBrief?.text || ""} ${assignment.decision} ${assignment.contextProfiles.map((profile) => `${profile.lane} ${profile.plugin} ${profile.tools}`).join(" ")} ${assignment.installedAiProfiles.map((profile) => `${profile.name} ${profile.status}`).join(" ")}`,
     action: "open-file",
     path: assignment.markdownPath,
     priority: 28
@@ -9880,7 +9880,7 @@ function buildSecondBrainTrainingPackMarkdown(timestamp, data = getSecondBrainDa
   const contextProfileRows = SEIS_SECOND_BRAIN_SYSTEM.contextProfiles.map((profile) => `- ${profile.lane} | ${profile.plugin} | ${profile.statusTool} / ${profile.planTool} | agents: ${profile.relatedAgents.join(", ")} | output: ${profile.allowedOutput}`);
   const pluginSkillRows = SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.map((lane) => `- ${lane.plugin} | ${lane.skill} | ${lane.statusTool} / ${lane.planTool} | ${lane.readiness} | training: ${lane.trainingUse} | providerExecution=${lane.providerExecution} | externalMutation=${lane.externalMutation}`);
   const reviewAssignments = data.agentReviewAssignments || [];
-  const reviewAssignmentRows = reviewAssignments.map((assignment) => `- ${assignment.recordedAt} | ${assignment.agent.name} | ${assignment.status} | brief: ${assignment.humanReviewBrief?.text || "not recorded"} | lanes: ${assignment.contextProfiles.map((profile) => profile.lane).join(", ") || "none"} | agentExecuted=${assignment.execution.agentExecuted}; providerCallsPerformed=${assignment.execution.providerCallsPerformed}; mcpInvocationsPerformed=${assignment.execution.mcpInvocationsPerformed}`);
+  const reviewAssignmentRows = reviewAssignments.map((assignment) => `- ${assignment.recordedAt} | ${assignment.agent.name} | ${assignment.status} | outcome: ${assignment.reviewOutcome?.label || "Draft"} | brief: ${assignment.humanReviewBrief?.text || "not recorded"} | lanes: ${assignment.contextProfiles.map((profile) => profile.lane).join(", ") || "none"} | agentExecuted=${assignment.execution.agentExecuted}; providerCallsPerformed=${assignment.execution.providerCallsPerformed}; mcpInvocationsPerformed=${assignment.execution.mcpInvocationsPerformed}`);
 
   return `# SEIS Second Brain Agent Training Pack
 
