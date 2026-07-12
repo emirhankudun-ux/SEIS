@@ -171,6 +171,8 @@ for (const token of [
   "SEIS_DATA_FOUNDATION_SURFACE",
   "renderSeisData",
   "SEIS Data",
+  "seis-data-app",
+  "Data and SSH Evidence Flow",
   "seis-data-registry-snapshot.md",
   "content/development/seis-data-schema-registry.json",
   "npm run check:data-schema-registry"

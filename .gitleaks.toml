@@ -32,3 +32,14 @@ regexTarget = "line"
 regexes = [
   '''Spring Boot.*REST APIs.*microservices''',
 ]
+
+[[allowlists]]
+description = "Historic browser-local storage key for the removed five-year ledger route is not a credential"
+condition = "AND"
+paths = [
+  '''apps/web/seis-five-year-ledger\.js''',
+]
+regexTarget = "line"
+regexes = [
+  '''STORAGE_KEY = "seis\.evolution-ledger\.v1"''',
+]

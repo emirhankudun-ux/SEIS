@@ -261,6 +261,7 @@ const DEMO_DEFAULT_ROUTE_IDS = [
   "seis-website-hub",
   "seis-code-app",
   "seis-design-app",
+  "seis-data-app",
   "seis-cloud-app",
   "seis-second-brain-app",
   "seis-evolution-app",
@@ -320,6 +321,14 @@ const SEARCH_SPOTLIGHT_ITEMS = [
     action: "open-app",
     appId: "seis-cloud",
     keywords: "seis cloud ssh deployment vpn server safety"
+  },
+  {
+    title: "SEIS Data",
+    meta: "Registry and provenance surface",
+    description: "Open the schema-backed data lane for registry records, public SSH evidence, goal ledgers, and deterministic exports.",
+    action: "open-app",
+    appId: "seis-data",
+    keywords: "seis data registry schema provenance ssh evidence goal ledger exports"
   },
   {
     title: "Launchpad",
@@ -498,6 +507,14 @@ const DEMO_ROUTES = [
     appId: "seis-cloud",
     path: "./desktop.html#seis-cloud",
     keywords: "seis cloud ssh vpn deployment local cloud boundary windows linux macos"
+  },
+  {
+    id: "seis-data-app",
+    label: "SEIS Data Registry",
+    kind: "Desktop app",
+    appId: "seis-data",
+    path: "./desktop.html#seis-data",
+    keywords: "seis data registry schema provenance ssh public evidence export"
   },
   {
     id: "seis-second-brain-app",
@@ -1807,6 +1824,25 @@ const SEIS_DEMO_JOURNEYS = [
     gates: ["Source control is safe/mock", "AI assistant is Local Demo", "No Git push or merge", "No dependency install", "VFS remains browser-local"]
   },
   {
+    id: "data-evidence-flow",
+    title: "Data and SSH Evidence Flow",
+    mode: "Local Demo",
+    status: "Working",
+    summary: "A registry-first walkthrough that proves SEIS Data, SEIS Cloud, Search, and Command Center share the same SSH/public evidence without changing the endpoint.",
+    primaryApp: "seis-data",
+    routeId: "seis-data-app",
+    proof: "SEIS Data exports registry-backed schema, goal, and SSH evidence locally while SEIS Cloud preserves the same server/port contract and Search can reopen the same surfaces.",
+    steps: [
+      { id: "open-data", label: "Open SEIS Data", appId: "seis-data", routeId: "seis-data-app", state: "Working", output: "Shows schema registry, provenance records, SSH/public evidence, and plugin binding." },
+      { id: "save-data", label: "Save Data Snapshot", appId: "seis-data", actionId: "run-app-primary", state: "Working", output: "Writes the local SEIS Data registry snapshot into Documents." },
+      { id: "open-cloud", label: "Open SEIS Cloud", appId: "seis-cloud", routeId: "seis-cloud-app", state: "Mock Safe", output: "Shows the same SSH alias, host kind, port, and approval-gated live readiness boundary." },
+      { id: "run-cloud", label: "Run Cloud Preflight", appId: "seis-cloud", actionId: "run-app-primary", state: "Local Demo", output: "Writes the local cloud preflight with the preserved server/port invariant." },
+      { id: "search-data", label: "Open Search Gateway", appId: "search", routeId: "seis-search-gateway", state: "Working", output: "Shows SEIS Data alongside Code, Design, Cloud, plugins, and VFS-connected demo surfaces." },
+      { id: "review-data", label: "Return to Command Center", appId: "seis-command-center", state: "Working", output: "Keeps SEIS Data in the V17 module map and review-ready evidence loop." }
+    ],
+    gates: ["Keep same server and port", "No live SSH", "No GitHub mutation", "No secrets in browser", "Schema registry remains validator-backed"]
+  },
+  {
     id: "ai-agent-flow",
     title: "AI Core and Agent Flow",
     mode: "Status/plan only",
@@ -1932,10 +1968,10 @@ const defaultFiles = [
   file("/home/seis/Documents/welcome.md", "# SEIS Desktop\n\nThis is a browser-contained operating surface. Files, terminal history, notes, tasks, and app preferences persist locally.\n"),
   file("/home/seis/Projects/example.html", "<h1>SEIS Web Playground</h1>\n<p>Edit this file in SEIS Code or run `cat Projects/example.html` in Terminal.</p>\n"),
   file("/home/seis/Documents/seis-demo-websites.md", "# SEIS Demo Websites\n\n- SEIS Website Hub: ./website/index.html\n- SEIS AI Website: ./website/seis-ai.html\n- SEIS OS Website: ./website/seis-os.html\n- SEIS Code Website: ./website/seis-code.html\n- SEIS Design Website: ./website/seis-design.html\n- SEIS Search Website: ./website/seis-search.html\n- SEIS Cloud Website: ./website/seis-cloud.html\n- SEIS Store Website: ./website/seis-store.html\n- SEIS Agents Website: ./website/seis-agents.html\n- SEIS System OS: ./desktop.html#seis-system-os\n- SEIS AI Core 3D Demo: ./ai-core-demo/index.html\n- SEIS Code Web: ./seis-code.html\n- SEIS Linux Replica: ./seis-linux-replica.html\n- SEIS WOW Gallery: ./wow-gallery.html\n- Mythic Gacha: ./mythic-gacha.html\n- Nature Video Hero: ./showcase/nature.html\n- Still Life Video Hero: ./showcase/still-life.html\n- Materials Video Hero: ./showcase/materials.html\n- Metal Parts Video Hero: ./showcase/metal-parts.html\n\nExternal references are opened only as clearly labeled reference links. The SEIS_WOW reference board now indexes 190 PNG screens and 197 HTML references. The SEIS Linux Replica route adapts the supplied Web Linux code into a SEIS-branded browser-local shell.\n"),
-  file("/home/seis/Documents/seis-evolution-reference.md", "# SEIS Evolution Reference\n\nPinned scope: SEIS AI Core, Linux/macOS/Windows desktop demo, SEIS Code Web, SEIS AI integration, websites, and SEIS-SSH boundary.\n\nThis file is a local demo reference. It does not execute SSH or connect to cloud services.\n"),
-  file("/home/seis/Documents/seis-local-ecosystem-inventory.md", "# SEIS Local Ecosystem Inventory\n\nThis demo maps the local application and folder names into SEIS roles without copying application bundles, private files, unclear archives, provider keys, or machine-specific paths.\n\n## SEIS Routes\n- SEIS Search: gateway for apps, folders, websites, Code, Design, Cloud, and AI Core.\n- SEIS Code: repository and editor workspace.\n- SEIS Design: Adobe/Figma-style creative workflow mapped to SEIS surfaces.\n- SEIS Cloud: Chrome/Safari/Ollama/Qwen/cloud/SSH readiness boundary.\n- SEIS Evolution: pinned work, local inventory, and long-horizon map.\n\n## Safety\nUnclear, leaked, private, generated, or licensed material remains review-only and is not merged into official SEIS behavior.\n"),
+  file("/home/seis/Documents/seis-evolution-reference.md", "# SEIS Evolution Reference\n\nPinned scope: SEIS AI Core, Linux/macOS/Windows desktop demo, SEIS Code Web, SEIS Data, SEIS AI integration, websites, and SEIS-SSH boundary.\n\nThis file is a local demo reference. It does not execute SSH or connect to cloud services.\n"),
+  file("/home/seis/Documents/seis-local-ecosystem-inventory.md", "# SEIS Local Ecosystem Inventory\n\nThis demo maps the local application and folder names into SEIS roles without copying application bundles, private files, unclear archives, provider keys, or machine-specific paths.\n\n## SEIS Routes\n- SEIS Search: gateway for apps, folders, websites, Code, Design, Data, Cloud, and AI Core.\n- SEIS Code: repository and editor workspace.\n- SEIS Design: Adobe/Figma-style creative workflow mapped to SEIS surfaces.\n- SEIS Data: registry, provenance, goal evidence, and SEIS-SSH public review artifacts.\n- SEIS Cloud: Chrome/Safari/Ollama/Qwen/cloud/SSH readiness boundary.\n- SEIS Evolution: pinned work, local inventory, and long-horizon map.\n\n## Safety\nUnclear, leaked, private, generated, or licensed material remains review-only and is not merged into official SEIS behavior.\n"),
   file("/home/seis/Music/seis-demo-playlist.md", "# SEIS Demo Playlist\n\n- Core Orbit\n- Launch Sequence\n- Cloud Gate\n- Mythic Draw\n- Code Night\n\nThese are local demo track records, not external audio files.\n"),
-  file("/home/seis/Applications/seis-store-catalog.md", "# SEIS Store Catalog\n\nInstalled: SEIS System OS, SEIS Linux Replica, SEIS Code, Code IDE, SEIS Design, SEIS Website, SEIS Cloud, Music, SEIS WOW Gallery.\nAvailable routes: SEIS Website pages, SEIS Linux Replica Web, SEIS WOW Gallery, Mythic Gacha Web, Video Hero Gallery, SEIS AI Core 3D.\n"),
+  file("/home/seis/Applications/seis-store-catalog.md", "# SEIS Store Catalog\n\nInstalled: SEIS System OS, SEIS Linux Replica, SEIS Code, Code IDE, SEIS Design, SEIS Data, SEIS Website, SEIS Cloud, Music, SEIS WOW Gallery.\nAvailable routes: SEIS Website pages, SEIS Linux Replica Web, SEIS WOW Gallery, Mythic Gacha Web, Video Hero Gallery, SEIS AI Core 3D.\n"),
   file("/home/seis/Documents/seis-system-os-blueprint.md", "# SEIS System OS Blueprint\n\nSEIS System OS combines Linux-like activities, macOS-like dock/status ergonomics, and Windows-like app switching/task layout into an original browser-contained SEIS shell.\n\n## Connected OS modules\n- Home widgets\n- Dynamic/live status strip\n- App switcher\n- Multi-screen workspaces\n- Launcher search\n- Universal recents\n- File previews\n- Appearance and accessibility\n- Terminal multiplexer target\n\n## Boundary\nLocal demo only. No SSH execution, provider keys, deployment, or release promotion happens from the browser shell.\n"),
   file("/home/seis/Desktop/todo.txt", "Open Files\nRun Terminal\nTry Apps launcher\n")
 ];
@@ -4423,14 +4459,19 @@ function runDemoJourneyStep(stepId) {
   completeDemoStep(data, journey, step);
   if (step.appId && step.appId !== "demo-studio") openApp(step.appId);
   if (step.companionAppId) openApp(step.companionAppId);
-  if (step.actionId === "audit-installed-ai-systems") auditInstalledAiSystems();
-  if (step.actionId === "export-model-preflight") exportModelScalingPreflight();
-  if (step.appId === "demo-studio") exportDemoJourneyEvidence(journey.id, { quiet: true });
+  performDemoJourneyAction(step, journey);
   getAppStatus("demo-studio").lastAction = `Ran ${step.label}.`;
   log("demo-studio", `Ran ${journey.title} step: ${step.label}.`);
   toast("Demo Step", `${step.label} completed in ${step.state} mode.`);
   saveState();
   renderOpenWindows("demo-studio");
+}
+
+function performDemoJourneyAction(step, journey) {
+  if (step.actionId === "audit-installed-ai-systems") auditInstalledAiSystems();
+  if (step.actionId === "export-model-preflight") exportModelScalingPreflight();
+  if (step.actionId === "run-app-primary" && step.appId) runAppPrimaryAction(step.appId);
+  if (step.appId === "demo-studio") exportDemoJourneyEvidence(journey.id, { quiet: true });
 }
 
 function runDemoJourney(journeyId) {
@@ -4444,6 +4485,7 @@ function runDemoJourney(journeyId) {
     if (step.companionAppId) appIds.add(step.companionAppId);
   }
   for (const appId of appIds) openApp(appId);
+  for (const step of journey.steps) performDemoJourneyAction(step, journey);
   data.runs.unshift({
     id: `demo-run-${Date.now()}`,
     journeyId: journey.id,
@@ -5932,6 +5974,7 @@ function renderSeisSystemOSApp() {
   const nextApps = [
     ["seis-code", "SEIS Code", "VS Code-like editor"],
     ["seis-design", "SEIS Design", "Creative studio"],
+    ["seis-data", "SEIS Data", "Registry evidence"],
     ["second-brain", "Second Brain", "Vault and agent graph"],
     ["seis-website", "SEIS Website", "Product pages"],
     ["seis-cloud", "SEIS Cloud", "SSH/cloud boundary"],
@@ -6036,6 +6079,7 @@ function renderSeisSearchGateway() {
     ["seis-code", "SEIS Code", "VS Code-like app", "Monaco workspace, VFS bridge, terminal, extensions"],
     ["code-ide", "Code IDE", "Dedicated IDE cockpit", "Standalone cockpit for SEIS Code, terminal, extensions, and project files"],
     ["seis-design", "SEIS Design", "Creative OS", "Adobe/Figma-style workflow map, websites, motion, handoff"],
+    ["seis-data", "SEIS Data", "Registry evidence", "Schema registry, provenance, goal ledgers, SSH/public access artifacts, and local exports"],
     ["second-brain", "SEIS Second Brain", "Obsidian-style knowledge OS", "Markdown vault, graph, installed AI context, sub-agent lanes, and GitHub readiness gates"],
     ["seis-website", "SEIS Website", "Product pages", "Premium pages for SEIS AI, OS, Code, Design, Search, Cloud, Store, and Agents"],
     ["seis-cloud", "SEIS Cloud", "Runtime boundary", "Ollama/Qwen/local runtime references, SSH/cloud safety gates"],
@@ -6060,6 +6104,7 @@ function renderSeisSearchGateway() {
       <button type="button" data-action="open-app" data-app-id="seis-code">Open SEIS Code</button>
       <button type="button" data-action="open-app" data-app-id="code-ide">Open Code IDE</button>
       <button type="button" data-action="open-app" data-app-id="seis-design">Open SEIS Design</button>
+      <button type="button" data-action="open-app" data-app-id="seis-data">Open SEIS Data</button>
       <button type="button" data-action="open-app" data-app-id="second-brain">Open Second Brain</button>
       <button type="button" data-action="open-app" data-app-id="seis-website">Open SEIS Website</button>
       <button type="button" data-action="open-app" data-app-id="seis-cloud">Open SEIS Cloud</button>
@@ -6069,7 +6114,7 @@ function renderSeisSearchGateway() {
       <button type="button" data-action="open-demo-route" data-value="seis-ai-core-3d-demo">Open AI Core 3D</button>
       <button type="button" data-action="generic-export" data-app-id="search">Export Search Map</button>
     </div>
-    <p class="status-note">SEIS Search is the local demo gateway. It opens the VS Code-like SEIS Code app, SEIS Design, SEIS Cloud, AI Core 3D, local tool inventory, and all written website routes without cloud keys.</p>
+    <p class="status-note">SEIS Search is the local demo gateway. It opens SEIS Code, SEIS Design, SEIS Data, SEIS Cloud, AI Core 3D, local tool inventory, and all written website routes without cloud keys.</p>
     <label class="search-field search-gateway-input">
       <span aria-hidden="true">⌕</span>
       <input class="input" data-workflow-input value="${escapeAttr(query)}" aria-label="SEIS search query">
@@ -6200,6 +6245,7 @@ function getSeisSearchTabResults(tab, context) {
       routeResult(DEMO_ROUTES.find((route) => route.id === "mythic-gacha-web"))
     ],
     Cloud: [
+      appResult(["seis-data", "SEIS Data", "Registry evidence", "Schema-backed SSH/public evidence, provenance, and deterministic exports"]),
       appResult(["seis-cloud", "SEIS Cloud", "Mock Safe", "SSH/cloud readiness, deployment gates, health, logs, backups, and no-secret boundaries"]),
       appResult(["nvidia-catalog", "NVIDIA GPU/NIM Catalog", "Planned/Gated", "GPU, NIM, Docker, and model install paths stay dry-run until approved"]),
       appResult(["seis-evolution", "SEIS Evolution", "SSH boundary", "Pinned scope, local inventory, and approval-gated cloud/SSH references"]),
@@ -6213,7 +6259,7 @@ function getSeisSearchTabResults(tab, context) {
       appResult(["nvidia-catalog", "NVIDIA Accelerator Catalog", "Catalog-only", "Provider, skills, and model awareness without clone, download, NIM call, or credentials"]),
       ...NVIDIA_ACCELERATOR_CATALOG.installedSkillIntegrations.map(nvidiaIntegrationResult),
       ...SEIS_AI_PLUGIN_LANES.map(pluginResult),
-      ...SEIS_PERSONAL_PLUGIN_AI_CORE_LANE_MATRIX.slice(0, 4).map((plugin) => ({
+      ...SEIS_PERSONAL_PLUGIN_AI_CORE_LANE_MATRIX.map((plugin) => ({
         title: plugin.displayName,
         meta: `${plugin.permissionLevel} · ${plugin.versionTargetId}`,
         detail: plugin.boundary,
@@ -8604,7 +8650,7 @@ function runAppPrimaryAction(appId, body) {
     data.result = `${APPS.filter((item) => `${item.name} ${item.description}`.toLowerCase().includes(data.query.toLowerCase())).length} local app matches.`;
     const path = "/home/seis/Documents/seis-search-gateway-map.md";
     const websiteRoutes = DEMO_ROUTES.filter((route) => route.kind === "Website" || route.kind === "Playable route" || route.kind === "Full-page IDE" || route.kind === "Showcase route" || route.kind === "External reference");
-    upsertFile(path, `# SEIS Search Gateway Map\n\nGenerated: ${new Date().toISOString()}\nQuery: ${data.query}\n\n## Core Apps\n- SEIS System OS: Linux, macOS, and Windows-inspired shell where the rest of SEIS appears.\n- SEIS Code: VS Code-like desktop app.\n- Code IDE: dedicated IDE cockpit.\n- SEIS Design: design, website, and handoff surface.\n- SEIS Cloud: SSH/cloud safety and local runtime boundary.\n- SEIS Store: local app and route catalog.\n- NVIDIA Catalog: approval-gated NVIDIA GitHub, Build skills, model catalog intake, and ${NVIDIA_ACCELERATOR_CATALOG.installedSkillIntegrations.length} runtime-gated installed skill lanes.\n- Music: local demo soundtrack.\n- SEIS WOW Gallery: imported visual reference board for Kimi and SEIS_WOW packages.\n- SEIS AI: Local Demo AI Control Center.\n\n## NVIDIA Installed Integrations\n${NVIDIA_ACCELERATOR_CATALOG.installedSkillIntegrations.map(([id, name, category, status]) => `- ${name} (${id}): NVIDIA ${category} / ${status}`).join("\n")}\n\n## Website Routes\n${websiteRoutes.map((route) => `- ${route.label}: ${route.path}`).join("\n")}\n\n## Local Tool Inventory\n${LOCAL_ECOSYSTEM_INVENTORY.apps.map(([tool, role, use, status]) => `- ${tool}: ${role} / ${use} / ${status}`).join("\n")}\n\n## Safety\nNo application bundles, private keys, provider secrets, SSH commands, or licensed app contents are copied into this browser demo. External Kimi links are labeled as references.\n`);
+    upsertFile(path, `# SEIS Search Gateway Map\n\nGenerated: ${new Date().toISOString()}\nQuery: ${data.query}\n\n## Core Apps\n- SEIS System OS: Linux, macOS, and Windows-inspired shell where the rest of SEIS appears.\n- SEIS Code: VS Code-like desktop app.\n- Code IDE: dedicated IDE cockpit.\n- SEIS Design: design, website, and handoff surface.\n- SEIS Data: schema registry, provenance, goal evidence, and SEIS-SSH public review surface.\n- SEIS Cloud: SSH/cloud safety and local runtime boundary.\n- SEIS Store: local app and route catalog.\n- NVIDIA Catalog: approval-gated NVIDIA GitHub, Build skills, model catalog intake, and ${NVIDIA_ACCELERATOR_CATALOG.installedSkillIntegrations.length} runtime-gated installed skill lanes.\n- Music: local demo soundtrack.\n- SEIS WOW Gallery: imported visual reference board for Kimi and SEIS_WOW packages.\n- SEIS AI: Local Demo AI Control Center.\n\n## NVIDIA Installed Integrations\n${NVIDIA_ACCELERATOR_CATALOG.installedSkillIntegrations.map(([id, name, category, status]) => `- ${name} (${id}): NVIDIA ${category} / ${status}`).join("\n")}\n\n## Website Routes\n${websiteRoutes.map((route) => `- ${route.label}: ${route.path}`).join("\n")}\n\n## Local Tool Inventory\n${LOCAL_ECOSYSTEM_INVENTORY.apps.map(([tool, role, use, status]) => `- ${tool}: ${role} / ${use} / ${status}`).join("\n")}\n\n## Safety\nNo application bundles, private keys, provider secrets, SSH commands, or licensed app contents are copied into this browser demo. External Kimi links are labeled as references.\n`);
     getListData(appId).unshift({ id: `search-${Date.now()}`, title: "Search gateway snapshot saved", body: path, done: true });
     message = `SEIS Search gateway snapshot saved to ${path}.`;
   } else if (app.type === "extensions") {
