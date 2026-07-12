@@ -107,7 +107,7 @@ def validate_schema(value, schema, root_schema, label)
     if schema["minItems"] && value.length < schema["minItems"]
       ERRORS << "#{label}: must contain at least #{schema["minItems"]} item(s)"
     end
-    if schema["uniqueItems"] && value.map { |item| JSON.generate(item) }.uniq.length != value.length
+    if schema["uniqueItems"] && value.uniq.length != value.length
       ERRORS << "#{label}: items must be unique"
     end
     value.each_with_index do |item, index|
@@ -264,7 +264,11 @@ allowed_status_transitions = {
 goal_paths.each do |absolute_goal_path|
   relative_goal_path = absolute_goal_path.delete_prefix("#{ROOT}/")
   goal = read_yaml(relative_goal_path)
-  next unless goal
+  next if goal.nil?
+  unless goal.is_a?(Hash)
+    ERRORS << "#{relative_goal_path}: expected YAML object/hash at root"
+    next
+  end
   validate_schema(goal, goal_schema, goal_schema, relative_goal_path) if goal_schema
   goal_id = goal["id"]
   goal_ids << goal_id if goal_id
@@ -280,7 +284,9 @@ goal_paths.each do |absolute_goal_path|
   unless canonical_repository_ids.include?(goal["canonical_owner_repo"])
     ERRORS << "#{relative_goal_path}: canonical owner must be an observed canonical repository"
   end
-  Array(goal.dig("scope", "repositories")).each do |repository_id|
+  scope = goal["scope"]
+  scope_repositories = scope.is_a?(Hash) ? scope["repositories"] : nil
+  Array(scope_repositories).each do |repository_id|
     ERRORS << "#{relative_goal_path}: scope references unknown repository #{repository_id}" unless repository_ids.include?(repository_id)
   end
 
@@ -377,7 +383,8 @@ end
 
 package_json = read_json("package.json")
 expected_script = "ruby scripts/validate-ecosystem-foundation.rb"
-unless package_json&.dig("scripts", "check:ecosystem-foundation") == expected_script
+package_scripts = package_json.is_a?(Hash) ? package_json["scripts"] : nil
+unless package_scripts.is_a?(Hash) && package_scripts["check:ecosystem-foundation"] == expected_script
   ERRORS << "package.json: check:ecosystem-foundation must equal #{expected_script.inspect}"
 end
 

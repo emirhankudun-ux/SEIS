@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require "fileutils"
+require "json"
 require "open3"
 require "tmpdir"
 require "yaml"
@@ -120,6 +121,32 @@ assert_rejected("Goal without rollback", "missing required field rollback") do |
   write_yaml(directory, GOAL_RELATIVE_PATH, goal)
 end
 
+assert_rejected("Goal with scalar YAML root", "expected YAML object/hash at root") do |directory|
+  File.write(File.join(directory, GOAL_RELATIVE_PATH), "--- invalid-goal-root\n")
+end
+
+assert_rejected("Goal with malformed scope", ".scope: expected object, got String") do |directory|
+  goal = YAML.safe_load(File.read(File.join(directory, GOAL_RELATIVE_PATH)))
+  goal["scope"] = "invalid-scope"
+  write_yaml(directory, GOAL_RELATIVE_PATH, goal)
+end
+
+assert_rejected("Goal with unquoted date", "invalid YAML in #{GOAL_RELATIVE_PATH}") do |directory|
+  path = File.join(directory, GOAL_RELATIVE_PATH)
+  content = File.read(path).sub("start: '2026-07-13'", "start: 2026-07-13")
+  File.write(path, content)
+end
+
+assert_rejected(
+  "package with malformed scripts",
+  "package.json: check:ecosystem-foundation must equal"
+) do |directory|
+  path = File.join(directory, "package.json")
+  package_json = JSON.parse(File.read(path))
+  package_json["scripts"] = "invalid-scripts"
+  File.write(path, JSON.pretty_generate(package_json))
+end
+
 assert_rejected(
   "observed repository with unknown metadata",
   "observed repository seis has unknown remote metadata"
@@ -211,4 +238,4 @@ assert_rejected("completed Goal without evidence", "completed Goal must contain 
   write_yaml(directory, completed_relative_path, goal)
 end
 
-puts "Ecosystem foundation tests passed: repository-scoped ownership was preserved; duplicate ownership, missing rollback, unknown observed metadata, visibility mismatch, dangling Goal references, illegal lifecycle histories, invalid blocked state, and unsupported completion were rejected."
+puts "Ecosystem foundation tests passed: repository-scoped ownership was preserved; duplicate ownership, malformed roots and nested fields, unquoted dates, missing rollback, unknown observed metadata, visibility mismatch, dangling Goal references, illegal lifecycle histories, invalid blocked state, and unsupported completion were rejected."
