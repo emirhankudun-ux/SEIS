@@ -118,7 +118,7 @@ Primary demo routes:
   `seis-linux-replica.html?demo=live`.
 - `seis-code.html` - SEIS Code browser IDE route.
 - `website/index.html` - SEIS Website hub, with product pages for SEIS AI, OS,
-  Code, Design, Search, Cloud, Store, and Agents.
+  Code, Design, Data, Search, Cloud, Store, and Agents.
 - `wow-gallery.html` - imported SEIS_WOW visual reference catalog.
 - `mythic-gacha.html` - playable no-key Mythic Gacha and Bestiary route.
 - `showcase/*.html` - four cinematic Video Hero pages.

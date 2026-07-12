@@ -5,11 +5,11 @@
     overview: {
       title: "SEIS Website",
       eyebrow: "Product website hub",
-      subtitle: "A premium local website map for SEIS AI, OS, Code, Design, Search, Cloud, Store, and Agents.",
+      subtitle: "A premium local website map for SEIS AI, OS, Code, Design, Data, Search, Cloud, Store, and Agents.",
       pageStatus: "Local website pages. No provider key, SSH command, deployment, or external API call required.",
       cta: ["Open SEIS OS", "../seis-linux-replica.html?demo=live"],
       secondary: ["Open Search", "../desktop.html#search"],
-      stats: [["9", "website pages"], ["0", "core API keys"], ["Local", "demo boundary"], ["190", "WOW references"]],
+      stats: [["10", "website pages"], ["0", "core API keys"], ["Local", "demo boundary"], ["190", "WOW references"]],
       capabilities: [
         ["Unified story", "Explains the full ecosystem without requiring the user to read governance docs first."],
         ["Product routes", "Each core product lane has its own static page and direct OS route."],
@@ -17,7 +17,7 @@
         ["Runnable handoff", "All pages are included in the static package and can run from the local server."]
       ],
       proof: ["desktop.html", "seis-code.html", "wow-gallery.html", "mythic-gacha.html"],
-      related: ["seis-ai", "seis-os", "seis-code", "seis-design", "seis-search", "seis-cloud", "seis-store", "seis-agents"]
+      related: ["seis-ai", "seis-os", "seis-code", "seis-design", "seis-data", "seis-search", "seis-cloud", "seis-store", "seis-agents"]
     },
     "seis-ai": {
       title: "SEIS AI",
@@ -85,7 +85,24 @@
         ["Handoff", "Design state saves into the shared virtual file system for SEIS Code and Terminal."]
       ],
       proof: ["check:video-hero-showcase", "check:mythic-gacha", "wow-gallery.html", "SEIS_WOW imports"],
-      related: ["seis-code", "seis-store", "seis-ai", "seis-os"]
+      related: ["seis-code", "seis-data", "seis-store", "seis-ai", "seis-os"]
+    },
+    "seis-data": {
+      title: "SEIS Data",
+      eyebrow: "Registry and provenance lane",
+      subtitle: "A schema-backed data surface for evidence, records, freshness, SEIS-SSH public review artifacts, and deterministic local exports.",
+      pageStatus: "Current page is read-only Local Demo evidence. Live databases, live SSH proof, and GitHub mutation remain disabled until separately validated.",
+      cta: ["Open SEIS Data", "../desktop.html#seis-data"],
+      secondary: ["Open Cloud Center", "../desktop.html#seis-cloud"],
+      stats: [["Validated", "registry mode"], ["4", "curated records"], ["22", "port preserved"], ["0", "browser secrets"]],
+      capabilities: [
+        ["Schema registry", "Tracks repository-backed JSON records, validation commands, freshness rules, and safe boundaries."],
+        ["SSH evidence", "Carries the same SEIS-SSH alias, host-kind, and port evidence shown in SEIS Cloud without claiming live SSH."],
+        ["Goal and provenance ledgers", "Links deterministic evidence and goal records into one exportable data lane."],
+        ["Plugin binding", "Connects the personal seis-data bridge, status tool, and plan tool without runtime mutation."]
+      ],
+      proof: ["content/development/seis-data-schema-registry.json", "docs/data/seis-data-foundation.md", "deploy/seis-ssh-public-access-contract.json", "content/development/seis-ssh-live-readiness-evidence.json"],
+      related: ["seis-search", "seis-cloud", "seis-code", "seis-agents"]
     },
     "seis-search": {
       title: "SEIS Search",
@@ -102,7 +119,7 @@
         ["Truth boundary", "Mock results are explicitly local and do not imply external web crawling."]
       ],
       proof: ["DEMO_ROUTES", "Search gateway map", "command palette", "launcher route board"],
-      related: ["seis-ai", "seis-code", "seis-design", "seis-cloud"]
+      related: ["seis-ai", "seis-code", "seis-design", "seis-data", "seis-cloud"]
     },
     "seis-cloud": {
       title: "SEIS Cloud",
@@ -119,7 +136,7 @@
         ["Audit posture", "Cloud handoff writes safe local artifacts without external mutation."]
       ],
       proof: ["seis-cloud local preflight", "SECURITY.md", "approval required", "no SSH execution"],
-      related: ["seis-os", "seis-ai", "seis-agents", "seis-store"]
+      related: ["seis-os", "seis-ai", "seis-data", "seis-agents", "seis-store"]
     },
     "seis-store": {
       title: "SEIS Store",
@@ -157,7 +174,7 @@
     }
   };
 
-  const navOrder = ["overview", "seis-ai", "seis-os", "seis-code", "seis-design", "seis-search", "seis-cloud", "seis-store", "seis-agents"];
+  const navOrder = ["overview", "seis-ai", "seis-os", "seis-code", "seis-design", "seis-data", "seis-search", "seis-cloud", "seis-store", "seis-agents"];
   const root = document.querySelector("[data-product-page]");
   if (!root) return;
 

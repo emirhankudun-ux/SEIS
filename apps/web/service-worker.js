@@ -42,6 +42,7 @@
     "./website/seis-os.html",
     "./website/seis-code.html",
     "./website/seis-design.html",
+    "./website/seis-data.html",
     "./website/seis-search.html",
     "./website/seis-cloud.html",
     "./website/seis-store.html",

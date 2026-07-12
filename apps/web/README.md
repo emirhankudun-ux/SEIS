@@ -13,7 +13,7 @@ product-experience suite:
   files and folders are mirrored into the SEIS Code IndexedDB workspace under
   `/workspace` for the current browser-local create/move/delete handoff.
 - `website/` contains the premium SEIS Website hub and product pages for SEIS
-  AI, OS, Code, Design, Search, Cloud, Store, and Agents. It is checked by
+  AI, OS, Code, Design, Data, Search, Cloud, Store, and Agents. It is checked by
   `npm run check:seis-website-pages` and copied into the static package.
 - `scripts/check-seis-ultimate-demo.mjs` verifies V17 demo coverage across the
   required OS, AI, Search, Code, Design, Cloud, Store, Music, Launchpad, Files,
