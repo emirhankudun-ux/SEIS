@@ -37,6 +37,14 @@ try {
   ensure(explicit.report.localSshConfig?.transport === "codespace", "fixture must retain Codespaces transport");
   ensure(explicit.report.localSshConfig?.port === "22", "fixture must retain port 22");
   ensure(explicit.report.localSshConfig?.liveConnectionAttempted === false, "fixture must not open SSH");
+
+  const doctor = runDoctorInGithubActions();
+  ensure(doctor.status === 0, "GitHub Actions contributor doctor must pass static governance checks");
+  ensure(doctor.report.ok === true, "GitHub Actions contributor doctor must keep static contract status green");
+  ensure(doctor.report.status === "blocked", "GitHub Actions fixture must not mark contributor doctor review-ready");
+  ensure(doctor.report.readinessReady === false, "GitHub Actions fixture must never claim contributor readiness");
+  ensure(doctor.report.serverAndPortPolicy?.currentSnapshot?.configSource === "explicit-static-fixture", "GitHub Actions doctor must identify the static fixture source");
+  ensure(doctor.report.contributorReadiness?.liveReadinessProven === false, "GitHub Actions doctor must keep live readiness unproven");
 } finally {
   rmSync(tempRoot, { recursive: true, force: true });
 }
@@ -51,6 +59,7 @@ console.log(JSON.stringify({
   ok: true,
   missingAliasFailsClosed: true,
   explicitAliasFixtureVerified: true,
+  githubActionsFixtureReadinessBlocked: true,
   liveSshExecuted: false,
   serverAndPortChanged: false
 }, null, 2));
@@ -71,6 +80,27 @@ function runReport(configPath) {
     report = JSON.parse(result.stdout || "{}");
   } catch (error) {
     failures.push(`report returned invalid JSON: ${error.message}`);
+  }
+  return { status: result.status ?? 1, report };
+}
+
+function runDoctorInGithubActions() {
+  const env = { ...process.env, GITHUB_ACTIONS: "true" };
+  delete env.SEIS_SSH_CONFIG_PATH;
+  const result = spawnSync(process.execPath, [
+    "scripts/check-seis-ssh-public-contributor-doctor.mjs",
+    "--check"
+  ], {
+    cwd: process.cwd(),
+    env,
+    encoding: "utf8",
+    timeout: 30000
+  });
+  let report = {};
+  try {
+    report = JSON.parse(result.stdout || "{}");
+  } catch (error) {
+    failures.push(`contributor doctor returned invalid JSON: ${error.message}`);
   }
   return { status: result.status ?? 1, report };
 }

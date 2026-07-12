@@ -205,7 +205,7 @@ for (const token of [
 }
 
 const reportFixtureScript = read(files.reportFixtureScript);
-for (const token of ["missingAliasFailsClosed", "static-fixture-verified", "liveSshExecuted: false", "serverAndPortChanged: false"]) {
+for (const token of ["missingAliasFailsClosed", "static-fixture-verified", "githubActionsFixtureReadinessBlocked", "liveSshExecuted: false", "serverAndPortChanged: false"]) {
   ensure(reportFixtureScript.includes(token), `report fixture check must include ${token}`);
 }
 

@@ -8,6 +8,9 @@ const args = parseArgs(process.argv.slice(2));
 const write = Boolean(args.write);
 const check = Boolean(args.check);
 const requireLocalUse = Boolean(args["require-local-use"]);
+if (process.env.GITHUB_ACTIONS === "true" && !process.env.SEIS_SSH_CONFIG_PATH) {
+  process.env.SEIS_SSH_CONFIG_PATH = "scripts/fixtures/seis-ssh-public-access.conf";
+}
 const outputJson = args.output || "reports/seis-ssh-public-access/contributor-doctor-latest.json";
 const outputMarkdown = args.markdown || "reports/seis-ssh-public-access/contributor-doctor-latest.md";
 

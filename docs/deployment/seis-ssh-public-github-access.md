@@ -107,6 +107,9 @@ explicit `Host SEIS-SSH`, preserves `github.codespaces` and port `22`, and never
 opens a connection. Fixture output is labeled `static-fixture-verified` with
 `readinessReady: false`; it cannot be used as live endpoint evidence. A
 separate negative fixture proves that a missing alias exits non-zero.
+The contributor doctor selects this fixture automatically only when
+`GITHUB_ACTIONS=true` and no explicit config path was supplied; its CI result stays
+`blocked` with `readinessReady: false`.
 
 Run the same local gate before opening a PR:
 
