@@ -10,6 +10,10 @@ on:
       - 'docs/deployment/seis-codex-git-ssh-handoff.md'
       - 'scripts/check-seis-ssh-*.mjs'
       - 'scripts/create-seis-ssh-public-*.mjs'
+      - 'scripts/ensure-seis-ssh-online.mjs'
+      - 'scripts/lib/seis-ssh-network.mjs'
+      - 'scripts/tests/seis-ssh-network.test.mjs'
+      - 'scripts/fixtures/seis-ssh-public-access.conf'
       - 'content/development/seis-ssh-*.json'
       - 'apps/web/desktop.js'
       - 'docs/STATUS.md'
@@ -44,9 +48,13 @@ jobs:
           cache: npm
 
       - name: Run static SSH and GitHub gates
+        env:
+          SEIS_SSH_CONFIG_PATH: scripts/fixtures/seis-ssh-public-access.conf
         run: |
           npm run check:seis-ssh-github-pr-contract
           npm run check:seis-ssh-public-access
+          npm run check:seis-ssh-public-access-report-fixtures
+          npm run check:seis-ssh-network-boundaries
           npm run check:seis-ssh-public-access-report
           npm run check:seis-ssh-public-onboarding
           npm run check:seis-ssh-public-contributor-doctor
@@ -63,6 +71,7 @@ jobs:
           {
             echo '## SEIS-SSH Public Access Contract'
             echo '- Static repository and PR checks only.'
+            echo '- The explicit port-22 config fixture validates parsing only and never proves live endpoint readiness.'
             echo '- Live SSH, GitHub authentication, credentials, deployment, and server/port mutation are not executed.'
             echo '- Live-ready and mobile-24x7 claims remain blocked until approved strict evidence exists.'
           } >> "$GITHUB_STEP_SUMMARY"
