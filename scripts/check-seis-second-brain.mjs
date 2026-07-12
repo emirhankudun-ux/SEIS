@@ -376,6 +376,10 @@ for (const phrase of [
   "No model install",
   "exportSecondBrainTrainingPack",
   "buildSecondBrainTrainingPackMarkdown",
+  "Human-Selected Plan-Only Review Curriculum",
+  "Observed plan-only review assignments",
+  "Review ledger path",
+  "planOnlyReviewAssignments",
   "buildSecondBrainAgentReviewQueueRecord",
   "buildSecondBrainAgentReviewAssignmentRecord",
   "buildSecondBrainAgentReviewAssignmentMarkdown",
@@ -491,6 +495,7 @@ ensure(desktopJs.includes("Observed sub-agent lanes: ${SEIS_SECOND_BRAIN_SYSTEM.
 ensure(desktopJs.includes("Observed plugin/skill lanes: ${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.length}"), "Second Brain training pack must report the canonical plugin/skill lane count");
 ensure(desktopJs.includes("managedSubAgentLanes: SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.length"), "Second Brain training-pack activity must record the canonical managed-lane count");
 ensure(!desktopJs.includes("Observed sub-agent lanes: ${SUB_AGENT_DEMO.lanes.length}"), "Second Brain training pack must not report the legacy six-lane demo count");
+ensure(desktopJs.includes("The ledger is browser-local review context") && desktopJs.includes("does not prove agent execution, model training"), "Second Brain training pack must preserve the no-execution/no-model-training ledger boundary");
 ensure(desktopJs.includes("This receipt is not an agent run"), "Second Brain agent review assignment must state that no agent run is performed");
 ensure(desktopJs.includes("providerCallsPerformed: false") && desktopJs.includes("githubMutationPerformed: false"), "Second Brain agent review assignment must keep provider and GitHub execution false");
 ensure(desktopJs.includes("agentExecuted ${agentReviewAssignment.execution.agentExecuted}") && desktopJs.includes("mcpInvocationsPerformed ${agentReviewAssignment.execution.mcpInvocationsPerformed}"), "SEIS AI bridge must expose the plan-only assignment execution boundary");

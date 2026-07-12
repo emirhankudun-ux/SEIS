@@ -9851,12 +9851,14 @@ ${SEIS_SECOND_BRAIN_SYSTEM.runtimeBoundary}
 `;
 }
 
-function buildSecondBrainTrainingPackMarkdown(timestamp) {
+function buildSecondBrainTrainingPackMarkdown(timestamp, data = getSecondBrainData()) {
   const installedRows = SEIS_INSTALLED_AI_SYSTEMS.map((system) => `- ${system.name} | ${system.status} | ${system.role} | ${system.boundary}`);
   const laneRows = SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.map(([name, lane, tool, scope]) => `- ${name} | ${lane} | ${tool} | ${scope}`);
   const rosterRows = SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.map(([agent, status, duty]) => `- ${agent} | ${status} | ${duty}`);
   const contextProfileRows = SEIS_SECOND_BRAIN_SYSTEM.contextProfiles.map((profile) => `- ${profile.lane} | ${profile.plugin} | ${profile.statusTool} / ${profile.planTool} | agents: ${profile.relatedAgents.join(", ")} | output: ${profile.allowedOutput}`);
   const pluginSkillRows = SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.map((lane) => `- ${lane.plugin} | ${lane.skill} | ${lane.statusTool} / ${lane.planTool} | ${lane.readiness} | training: ${lane.trainingUse} | providerExecution=${lane.providerExecution} | externalMutation=${lane.externalMutation}`);
+  const reviewAssignments = data.agentReviewAssignments || [];
+  const reviewAssignmentRows = reviewAssignments.map((assignment) => `- ${assignment.recordedAt} | ${assignment.agent.name} | ${assignment.status} | lanes: ${assignment.contextProfiles.map((profile) => profile.lane).join(", ") || "none"} | agentExecuted=${assignment.execution.agentExecuted}; providerCallsPerformed=${assignment.execution.providerCallsPerformed}; mcpInvocationsPerformed=${assignment.execution.mcpInvocationsPerformed}`);
 
   return `# SEIS Second Brain Agent Training Pack
 
@@ -9875,6 +9877,15 @@ Observed sub-agent lanes: ${SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.length
 Observed autonomous agent roster: ${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length}
 Observed local context profiles: ${SEIS_SECOND_BRAIN_SYSTEM.contextProfiles.length}
 Observed plugin/skill lanes: ${SEIS_SECOND_BRAIN_SYSTEM.pluginSkillReadiness.lanes.length}
+Observed plan-only review assignments: ${reviewAssignments.length}
+Review ledger path: ${SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.ledgerMarkdownPath}
+Review ledger structured record: ${SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.ledgerJsonPath}
+
+## 0) Human-Selected Plan-Only Review Curriculum
+
+${reviewAssignmentRows.join("\n") || "- No human-selected plan-only assignments recorded yet."}
+
+The ledger is browser-local review context. It does not prove agent execution, model training, provider access, MCP invocation, SSH, deployment, GitHub mutation, or autonomous write authority.
 
 ## 1) Obsidian Bridge Safe Import And Repo-Owned Context
 
@@ -10160,7 +10171,8 @@ function saveSecondBrainSnapshot(mode = "snapshot", { quiet = false } = {}) {
 function exportSecondBrainTrainingPack() {
   const timestamp = new Date().toISOString();
   const path = SEIS_SECOND_BRAIN_SYSTEM.trainingPackPath;
-  upsertFile(path, buildSecondBrainTrainingPackMarkdown(timestamp));
+  const secondBrainData = getSecondBrainData();
+  upsertFile(path, buildSecondBrainTrainingPackMarkdown(timestamp, secondBrainData));
   const data = addSecondBrainActivity("Training Pack", "Read-only", `Training Pack saved to ${path}.`);
   data.lastTrainingPack = {
     time: timestamp,
@@ -10169,6 +10181,8 @@ function exportSecondBrainTrainingPack() {
     installedAiProfiles: SEIS_INSTALLED_AI_SYSTEMS.length,
     managedSubAgentLanes: SEIS_SECOND_BRAIN_SYSTEM.managedSubAgentLanes.length,
     autonomousAgentRoster: SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length,
+    planOnlyReviewAssignments: secondBrainData.agentReviewAssignments.length,
+    reviewLedgerPath: SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.ledgerMarkdownPath,
     mcpResource: SEIS_SECOND_BRAIN_SYSTEM.mcpResource,
     repositoryContextPack: SEIS_SECOND_BRAIN_SYSTEM.repositoryContextPack.path,
     artifactPath: path
