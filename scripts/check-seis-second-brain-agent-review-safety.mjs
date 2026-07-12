@@ -37,6 +37,10 @@ for (const marker of [
   "Plan-only assignment: ${assignment.agent.name}",
   "data-second-brain-agent-review-brief",
   "data-ai-second-brain-agent-review-brief",
+  "data-second-brain-agent-review-outcome",
+  "approved-for-human-follow-up",
+  "externalActionAllowed: false",
+  "agentExecutionAllowed: false",
   "humanReviewBrief",
   "human-authored-browser-local",
   "#human-selected"
