@@ -20,7 +20,9 @@ const REQUIRED_ARTIFACTS = [
   "/home/seis/SecondBrain/obsidian-safe-import-ui-dry-run.md",
   "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md",
   "/home/seis/SecondBrain/09-review/agent-review-queue.md",
-  "/home/seis/SecondBrain/09-review/agent-review-queue.json"
+  "/home/seis/SecondBrain/09-review/agent-review-queue.json",
+  "/home/seis/SecondBrain/09-review/agent-review-assignment.md",
+  "/home/seis/SecondBrain/09-review/agent-review-assignment.json"
 ];
 
 function ensure(condition, message) {
@@ -285,6 +287,9 @@ function validateStaticContract() {
     "data-second-brain-subagents",
     "data-second-brain-agent-roster",
     "data-second-brain-agent-review-queue",
+    "data-second-brain-agent-review-assignment",
+    "data-second-brain-agent-review-options",
+    "data-second-brain-active-review-agent",
     "data-second-brain-search-panel",
     "data-second-brain-search-results",
     "data-second-brain-search-filters",
@@ -391,6 +396,7 @@ async function smokeSecondBrain(client, baseUrl) {
       hasGithubGate: Boolean(root?.querySelector('[data-second-brain-github-gate]')),
       hasAgentRegistry: Boolean(root?.querySelector('[data-second-brain-agent-registry]')),
       hasAgentReviewQueue: Boolean(root?.querySelector('[data-second-brain-agent-review-queue]')),
+      hasAgentReviewAssignment: Boolean(root?.querySelector('[data-second-brain-agent-review-assignment]')),
       hasSearchPanel: Boolean(root?.querySelector('[data-second-brain-search-panel]')),
       hasObsidianSafeImport: Boolean(root?.querySelector('[data-second-brain-obsidian-safe-import]')),
       noteButtons: root?.querySelectorAll('[data-second-brain-vault] [data-action="second-brain-select-note"]').length || 0,
@@ -417,6 +423,8 @@ async function smokeSecondBrain(client, baseUrl) {
       pluginSkillMetric: root?.querySelector('[data-second-brain-plugin-skill-readiness] p')?.textContent?.trim() || '',
       agentRegistryDecision: root?.querySelector('[data-second-brain-agent-registry-decision]')?.innerText || '',
       agentReviewQueueMetric: root?.querySelector('[data-second-brain-agent-review-queue] p')?.textContent?.trim() || '',
+      agentReviewOptions: root?.querySelectorAll('[data-second-brain-agent-review-options] [data-action="second-brain-set-agent-review-agent"]').length || 0,
+      agentReviewAssignmentText: root?.querySelector('[data-second-brain-agent-review-assignment]')?.innerText || '',
       agentRegistryText: root?.querySelector('[data-second-brain-agent-registry]')?.innerText || '',
       pluginSkillText: root?.querySelector('[data-second-brain-plugin-skill-readiness-panel]')?.innerText || '',
       obsidianText: root?.querySelector('[data-second-brain-obsidian-safe-import]')?.innerText || '',
@@ -447,6 +455,7 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(initial.hasGithubGate, "Second Brain GitHub gate panel missing.");
   ensure(initial.hasAgentRegistry, "Second Brain agent registry evidence panel missing.");
   ensure(initial.hasAgentReviewQueue, "Second Brain agent review queue metric missing.");
+  ensure(initial.hasAgentReviewAssignment, "Second Brain human-selected agent review assignment panel missing.");
   ensure(initial.hasSearchPanel, "Second Brain local search panel missing.");
   ensure(initial.hasObsidianSafeImport, "Second Brain Obsidian safe import selector missing.");
   ensure(initial.noteButtons === 6, `expected six vault notes, got ${initial.noteButtons}`);
@@ -474,6 +483,8 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(initial.pluginSkillText.includes("@seis-cloud") && initial.pluginSkillText.includes("local-demo-readiness-matrix"), "Second Brain plugin/skill readiness matrix must render personal plugin lanes and status.");
   ensure(initial.agentRegistryDecision.includes("NO-GO"), "Second Brain must render the agent registry NO-GO decision.");
   ensure(initial.agentReviewQueueMetric === "13 plan-only / JSON", `Second Brain agent review queue metric mismatch: ${initial.agentReviewQueueMetric}`);
+  ensure(initial.agentReviewOptions === 13, `Second Brain expected thirteen selectable review roles, got ${initial.agentReviewOptions}`);
+  ensure(initial.agentReviewAssignmentText.includes("Human confirmation required") && initial.agentReviewAssignmentText.includes("No agent is assigned") === false && initial.agentReviewAssignmentText.includes("not-recorded"), "Second Brain agent review assignment panel must remain human-confirmed and unrecorded initially.");
   ensure(initial.agentRegistryText.includes("second-brain-agent-registry-latest.json") && initial.agentRegistryText.includes("NO-GO-autonomous-execution-not-approved"), "Second Brain must render the agent registry artifact and decision.");
   ensure(initial.obsidianDecision.includes("NO-GO-private-vault-import-not-approved"), "Second Brain must render the Obsidian safe-import NO-GO decision.");
   ensure(initial.obsidianText.includes("metadata-only dry-run") && initial.obsidianText.includes("does not scan host folders"), "Second Brain must render Obsidian safe-import local-only boundary.");
@@ -499,6 +510,28 @@ async function smokeSecondBrain(client, baseUrl) {
   })()`);
   ensure(selected.value === "github-readiness", `expected GitHub Readiness note selection, got ${JSON.stringify(selected)}`);
   ensure(selected.inspector.includes("GitHub Readiness"), "Second Brain inspector did not follow selected note.");
+
+  await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-set-agent-review-agent"][data-value="Security Agent"]');
+  await evaluate(client, `(() => {
+    const acknowledgement = document.querySelector('.app-window[data-app-id="second-brain"]:not([hidden]) [data-second-brain-agent-review-assignment-confirmed]');
+    if (acknowledgement) {
+      acknowledgement.checked = true;
+      acknowledgement.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  })()`);
+  await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-record-agent-review-assignment"]');
+  await waitFor(client, "window.__SEIS_DESKTOP__.filePaths().includes('/home/seis/SecondBrain/09-review/agent-review-assignment.json')", 5000);
+  const agentReviewAssignment = await evaluate(client, `(() => {
+    const root = document.querySelector('.app-window[data-app-id="second-brain"]:not([hidden]) [data-second-brain-agent-review-assignment]');
+    return {
+      selectedAgent: root?.querySelector('[data-second-brain-active-review-agent]')?.textContent?.trim() || '',
+      assignmentText: root?.innerText || '',
+      paths: window.__SEIS_DESKTOP__.filePaths()
+    };
+  })()`);
+  ensure(agentReviewAssignment.selectedAgent === "Security Agent", `Second Brain selected review role did not update: ${JSON.stringify(agentReviewAssignment)}`);
+  ensure(agentReviewAssignment.assignmentText.includes("human-selected-plan-only-review") && agentReviewAssignment.assignmentText.includes("agent-review-assignment.md"), `Second Brain plan-only assignment state was not visible: ${JSON.stringify(agentReviewAssignment)}`);
+  ensure(agentReviewAssignment.paths.includes('/home/seis/SecondBrain/09-review/agent-review-assignment.md') && agentReviewAssignment.paths.includes('/home/seis/SecondBrain/09-review/agent-review-assignment.json'), `Second Brain paired assignment artifacts were not written: ${JSON.stringify(agentReviewAssignment)}`);
 
   await clickSelector(client, '.app-window[data-app-id="second-brain"]:not([hidden]) [data-action="second-brain-set-obsidian-source-mode"][data-value="awaiting-user-selection"]');
   await evaluate(client, `(() => {
@@ -726,6 +759,8 @@ async function smokeSecondBrain(client, baseUrl) {
       reviewBundlePersisted: paths.includes('/home/seis/SecondBrain/07-learning/plugin-review-bundle-latest.md'),
       agentReviewQueuePersisted: paths.includes('/home/seis/SecondBrain/09-review/agent-review-queue.md'),
       agentReviewQueueJsonPersisted: paths.includes('/home/seis/SecondBrain/09-review/agent-review-queue.json'),
+      agentReviewAssignmentPersisted: paths.includes('/home/seis/SecondBrain/09-review/agent-review-assignment.md'),
+      agentReviewAssignmentJsonPersisted: paths.includes('/home/seis/SecondBrain/09-review/agent-review-assignment.json'),
       obsidianSelectionReceiptPersisted: paths.includes('/home/seis/SecondBrain/obsidian-explicit-selection-receipt.md'),
       obsidianPreflightRequestPersisted: paths.includes('/home/seis/SecondBrain/obsidian-preflight-approval-request.md')
     };
@@ -737,6 +772,8 @@ async function smokeSecondBrain(client, baseUrl) {
   ensure(persistence.reviewBundlePersisted, `Second Brain all-lane review bundle did not persist after reload: ${JSON.stringify(persistence)}`);
   ensure(persistence.agentReviewQueuePersisted, `Second Brain agent review queue did not persist after reload: ${JSON.stringify(persistence)}`);
   ensure(persistence.agentReviewQueueJsonPersisted, `Second Brain structured agent review queue did not persist after reload: ${JSON.stringify(persistence)}`);
+  ensure(persistence.agentReviewAssignmentPersisted, `Second Brain plan-only agent review assignment did not persist after reload: ${JSON.stringify(persistence)}`);
+  ensure(persistence.agentReviewAssignmentJsonPersisted, `Second Brain structured agent review assignment did not persist after reload: ${JSON.stringify(persistence)}`);
   ensure(persistence.obsidianSelectionReceiptPersisted, `Obsidian explicit selection receipt did not persist after reload: ${JSON.stringify(persistence)}`);
   ensure(persistence.obsidianPreflightRequestPersisted, `Obsidian preflight approval request did not persist after reload: ${JSON.stringify(persistence)}`);
 

@@ -1626,6 +1626,15 @@ const SEIS_SECOND_BRAIN_AGENT_REVIEW_QUEUE = {
   ]
 };
 
+const SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT = {
+  markdownPath: "/home/seis/SecondBrain/09-review/agent-review-assignment.md",
+  jsonPath: "/home/seis/SecondBrain/09-review/agent-review-assignment.json",
+  schemaVersion: "seis-second-brain-agent-review-assignment/v1",
+  status: "human-selected-plan-only-review",
+  decision: "NO-GO-agent-execution-requires-separate-approval",
+  boundary: "An assignment records a human-selected review role only. It does not execute an agent, inspect referenced files, or grant tool permissions."
+};
+
 const SEIS_OBSIDIAN_SAFE_IMPORT_UI = {
   id: "seis-obsidian-safe-import-ui",
   status: "planned-gated",
@@ -2834,6 +2843,12 @@ function handleClick(event) {
       break;
     case "second-brain-build-agent-review-queue":
       buildSecondBrainAgentReviewQueue();
+      break;
+    case "second-brain-set-agent-review-agent":
+      setSecondBrainActiveReviewAgent(value);
+      break;
+    case "second-brain-record-agent-review-assignment":
+      recordSecondBrainAgentReviewAssignment(button);
       break;
     case "second-brain-capture":
       captureSecondBrainNote();
@@ -5205,6 +5220,8 @@ function getSecondBrainData() {
   if (!data.obsidianDryRunManifest || typeof data.obsidianDryRunManifest !== "object") data.obsidianDryRunManifest = null;
   if (!data.obsidianSelectionReceipt || typeof data.obsidianSelectionReceipt !== "object") data.obsidianSelectionReceipt = null;
   if (!data.obsidianPreflightApprovalRequest || typeof data.obsidianPreflightApprovalRequest !== "object") data.obsidianPreflightApprovalRequest = null;
+  if (!SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.some(([agent]) => agent === data.activeAgentReviewAgent)) data.activeAgentReviewAgent = SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster[0][0];
+  if (!data.agentReviewAssignment || typeof data.agentReviewAssignment !== "object") data.agentReviewAssignment = null;
   if (!Array.isArray(data.searchSnapshots)) data.searchSnapshots = [];
   if (!Array.isArray(data.activity)) {
     data.activity = [
@@ -5221,6 +5238,10 @@ function getSecondBrainPluginSkill(pluginId) {
 
 function getSecondBrainPluginContextProfile(pluginId) {
   return SEIS_SECOND_BRAIN_SYSTEM.contextProfiles.find((profile) => profile.id === pluginId) || null;
+}
+
+function getSecondBrainAgentReviewDefinition(agentName) {
+  return SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.find(([agent]) => agent === agentName) || SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster[0];
 }
 
 function getSecondBrainLinks() {
@@ -5365,6 +5386,22 @@ function setSecondBrainObsidianSourceMode(modeId) {
   });
   data.activity = data.activity.slice(0, 12);
   log("second-brain", `Obsidian safe import mode set to ${mode.label}.`);
+  saveState();
+  renderOpenWindows("second-brain");
+}
+
+function setSecondBrainActiveReviewAgent(agentName) {
+  const data = getSecondBrainData();
+  const [agent, status, duty] = getSecondBrainAgentReviewDefinition(agentName);
+  data.activeAgentReviewAgent = agent;
+  data.activity.unshift({
+    id: `agent-review-role-${Date.now()}`,
+    step: "Agent Review",
+    status: "Plan-only role selected",
+    detail: `${agent} selected for a human-confirmed plan-only review. ${status}: ${duty}`
+  });
+  data.activity = data.activity.slice(0, 12);
+  log("second-brain", `Agent review role set to ${agent}.`);
   saveState();
   renderOpenWindows("second-brain");
 }
@@ -6202,6 +6239,32 @@ function renderSecondBrain() {
         <thead><tr><th>Agent</th><th>Status</th><th>Second Brain duty</th></tr></thead>
         <tbody>${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.map(([agent, status, duty]) => `<tr><td>${escapeHtml(agent)}</td><td>${escapeHtml(status)}</td><td>${escapeHtml(duty)}</td></tr>`).join("")}</tbody>
       </table>
+      <section class="subagent-panel" data-second-brain-agent-review-assignment>
+        <div class="second-brain-search-heading">
+          <div>
+            <h4>Human-Selected Agent Review</h4>
+            <p>Choose one of the ${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length} review roles, explicitly confirm plan-only intent, and record a paired local assignment receipt. This does not execute an agent or inspect any queue, vault, provider, MCP, SSH, or GitHub resource.</p>
+          </div>
+          <span class="status-pill">Human confirmation required</span>
+        </div>
+        <div class="toolbar" data-second-brain-agent-review-options>
+          ${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.map(([agent]) => `<button type="button" data-action="second-brain-set-agent-review-agent" data-value="${escapeAttr(agent)}" aria-pressed="${data.activeAgentReviewAgent === agent}">${escapeHtml(agent)}</button>`).join("")}
+        </div>
+        <div class="metric-grid">
+          <article class="metric-card"><strong>Selected role</strong><p data-second-brain-active-review-agent>${escapeHtml(data.activeAgentReviewAgent)}</p></article>
+          <article class="metric-card"><strong>Role status</strong><p>${escapeHtml(getSecondBrainAgentReviewDefinition(data.activeAgentReviewAgent)[1])}</p></article>
+          <article class="metric-card"><strong>Assignment decision</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.decision)}</p></article>
+          <article class="metric-card"><strong>Assignment state</strong><p>${escapeHtml(data.agentReviewAssignment?.status || "not-recorded")}</p></article>
+        </div>
+        <p class="status-note">Selected duty: ${escapeHtml(getSecondBrainAgentReviewDefinition(data.activeAgentReviewAgent)[2])}</p>
+        <div class="toolbar">
+          <label class="checkbox-row"><input type="checkbox" data-second-brain-agent-review-assignment-confirmed> I explicitly assign this role to prepare a plan-only review.</label>
+          <button type="button" data-action="second-brain-record-agent-review-assignment">Record Plan-Only Assignment</button>
+          <button type="button" data-action="open-app" data-app-id="files">Open Files</button>
+        </div>
+        <p class="status-note" data-second-brain-agent-review-assignment-action>Last assignment: ${data.lastAgentReviewAssignment ? `${escapeHtml(data.lastAgentReviewAssignment.time)} / ${escapeHtml(data.lastAgentReviewAssignment.agent)} / ${escapeHtml(data.lastAgentReviewAssignment.status)} / ${escapeHtml(data.lastAgentReviewAssignment.path)}` : "Not recorded"}.</p>
+        <p class="status-note">Outputs: ${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.markdownPath)} and ${escapeHtml(SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.jsonPath)}.</p>
+      </section>
       <h4>Local Context Profiles</h4>
       <p class="status-note">${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.contextProfilePolicy.installedAiProfileAccess)} ${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.contextProfilePolicy.boundary)}</p>
       <table class="data-table" data-second-brain-context-profiles>
@@ -10219,6 +10282,131 @@ function buildSecondBrainAgentReviewQueue() {
   renderOpenWindows("files");
   renderOpenWindows("system-logs");
   toast("SEIS Second Brain", `${record.agentQueue.length} plan-only agent reviews and one structured local record are ready for human assignment.`);
+}
+
+function buildSecondBrainAgentReviewAssignmentRecord(timestamp, agentName) {
+  const [agent, status, duty] = getSecondBrainAgentReviewDefinition(agentName);
+  const contextProfiles = SEIS_SECOND_BRAIN_SYSTEM.contextProfiles
+    .filter((profile) => profile.relatedAgents.includes(agent))
+    .map((profile) => ({
+      lane: profile.lane,
+      plugin: profile.plugin,
+      tools: `${profile.statusTool} / ${profile.planTool}`,
+      allowedOutput: profile.allowedOutput
+    }));
+  return {
+    schemaVersion: SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.schemaVersion,
+    recordedAt: timestamp,
+    status: SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.status,
+    decision: SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.decision,
+    markdownPath: SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.markdownPath,
+    jsonPath: SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.jsonPath,
+    selectedByUser: true,
+    agent: { name: agent, status, duty },
+    contextProfiles,
+    installedAiProfiles: SEIS_INSTALLED_AI_SYSTEMS.map((system) => ({ name: system.name, status: system.status, role: system.role })),
+    queueReferences: [
+      { path: SEIS_SECOND_BRAIN_AGENT_REVIEW_QUEUE.path, status: "review-reference-not-inspected" },
+      { path: SEIS_SECOND_BRAIN_AGENT_REVIEW_QUEUE.jsonPath, status: "review-reference-not-inspected" }
+    ],
+    execution: {
+      agentExecuted: false,
+      providerCallsPerformed: false,
+      mcpInvocationsPerformed: false,
+      hostFilesystemScanned: false,
+      privateVaultReadPerformed: false,
+      sshExecuted: false,
+      deploymentPerformed: false,
+      githubMutationPerformed: false,
+      autonomousWriteExecutionPerformed: false
+    },
+    boundary: SEIS_SECOND_BRAIN_AGENT_REVIEW_ASSIGNMENT.boundary
+  };
+}
+
+function buildSecondBrainAgentReviewAssignmentMarkdown(record) {
+  const contexts = record.contextProfiles.map((profile) => `- ${profile.lane} | ${profile.plugin} | ${profile.tools} | Allowed output: ${profile.allowedOutput}`);
+  const aiProfiles = record.installedAiProfiles.map((profile) => `- ${profile.name} | ${profile.status} | ${profile.role}`);
+  const queueReferences = record.queueReferences.map((reference) => `- ${reference.path} | ${reference.status}`);
+  return `# SEIS Second Brain Plan-Only Agent Review Assignment
+
+Recorded: ${record.recordedAt}
+Schema: ${record.schemaVersion}
+Status: ${record.status}
+Decision: ${record.decision}
+Selected by user: ${record.selectedByUser}
+Markdown path: ${record.markdownPath}
+Structured record: ${record.jsonPath}
+
+## Assigned Review Role
+
+- Agent: ${record.agent.name}
+- Agent status: ${record.agent.status}
+- Second Brain duty: ${record.agent.duty}
+
+## Related Local Context Profiles
+
+${contexts.join("\n") || "- No mapped context profile; review remains plan-only."}
+
+## Installed AI Context
+
+${aiProfiles.join("\n")}
+
+## Queue References
+
+${queueReferences.join("\n")}
+
+## Safety Boundary
+
+- ${record.boundary}
+- Agent executed: ${record.execution.agentExecuted}
+- Provider calls performed: ${record.execution.providerCallsPerformed}
+- MCP invocations performed: ${record.execution.mcpInvocationsPerformed}
+- Host filesystem scanned: ${record.execution.hostFilesystemScanned}
+- Private vault read: ${record.execution.privateVaultReadPerformed}
+- SSH executed: ${record.execution.sshExecuted}
+- Deployment performed: ${record.execution.deploymentPerformed}
+- GitHub mutation performed: ${record.execution.githubMutationPerformed}
+- Autonomous write execution performed: ${record.execution.autonomousWriteExecutionPerformed}
+
+This receipt is not an agent run, approval to mutate data, provider request, connector action, or release authorization.
+`;
+}
+
+function recordSecondBrainAgentReviewAssignment(button) {
+  const data = getSecondBrainData();
+  const root = button.closest("[data-second-brain-agent-review-assignment]");
+  const acknowledgement = root?.querySelector("[data-second-brain-agent-review-assignment-confirmed]");
+  if (!acknowledgement?.checked) {
+    toast("SEIS Second Brain", "Confirm the explicit plan-only assignment before recording the review receipt.");
+    return;
+  }
+  const timestamp = new Date().toISOString();
+  const record = buildSecondBrainAgentReviewAssignmentRecord(timestamp, data.activeAgentReviewAgent);
+  upsertFile(record.markdownPath, buildSecondBrainAgentReviewAssignmentMarkdown(record));
+  upsertFile(record.jsonPath, `${JSON.stringify(record, null, 2)}\n`);
+  data.agentReviewAssignment = record;
+  data.lastAgentReviewAssignment = {
+    time: new Date(timestamp).toLocaleTimeString(),
+    agent: record.agent.name,
+    status: record.status,
+    path: record.markdownPath
+  };
+  data.activity.unshift({
+    id: `agent-review-assignment-${Date.now()}`,
+    step: "Agent Review",
+    status: record.status,
+    detail: `Human-selected plan-only assignment for ${record.agent.name} saved to ${record.markdownPath}.`
+  });
+  data.activity = data.activity.slice(0, 12);
+  const message = `Plan-only agent review assignment saved for ${record.agent.name} at ${record.markdownPath}.`;
+  getAppStatus("second-brain").lastAction = message;
+  log("second-brain", message);
+  saveState();
+  renderOpenWindows("second-brain");
+  renderOpenWindows("files");
+  renderOpenWindows("system-logs");
+  toast("SEIS Second Brain", `${record.agent.name} has a local plan-only assignment. No agent execution was started.`);
 }
 
 function createSecondBrainPluginReviewBundle() {
