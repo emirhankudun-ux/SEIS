@@ -6,6 +6,7 @@ import AppKit
 enum SeisAppleNativeShellPanel: String, CaseIterable, Identifiable {
     case demo
     case applePlatform
+    case secondBrain
 
     var id: String { rawValue }
 
@@ -15,6 +16,8 @@ enum SeisAppleNativeShellPanel: String, CaseIterable, Identifiable {
             "Demo"
         case .applePlatform:
             "Platform"
+        case .secondBrain:
+            "Second Brain"
         }
     }
 
@@ -24,6 +27,8 @@ enum SeisAppleNativeShellPanel: String, CaseIterable, Identifiable {
             "sparkles"
         case .applePlatform:
             "desktopcomputer"
+        case .secondBrain:
+            "brain.head.profile"
         }
     }
 }
@@ -107,6 +112,9 @@ struct SeisAppleNativeShellRootView: View {
                                 case .applePlatform:
                                     AppleContinuationWindow()
                                         .transition(.opacity.combined(with: .move(edge: .leading)))
+                                case .secondBrain:
+                                    SeisSecondBrainReviewOutcomeView()
+                                        .transition(.opacity.combined(with: .move(edge: .trailing)))
                                 }
                             }
                             .frame(maxWidth: .infinity, alignment: .topLeading)
