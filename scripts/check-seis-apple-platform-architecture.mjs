@@ -256,10 +256,10 @@ const expectedEvidenceStates = {
   'SEIS1-EVIDENCE-002': { type: 'architecture-review', status: 'pending', exit_code: 'null' },
   'SEIS1-EVIDENCE-004': {
     type: 'native-package-validation',
-    status: 'pending',
-    exit_code: 'null',
+    status: 'passed',
+    exit_code: '0',
   },
-  'SEIS1-EVIDENCE-005': { type: 'remote-ci', status: 'pending', exit_code: 'null' },
+  'SEIS1-EVIDENCE-005': { type: 'remote-ci', status: 'passed', exit_code: '0' },
   'SEIS1-EVIDENCE-006': {
     type: 'native-library-build-attempt',
     status: 'failed',

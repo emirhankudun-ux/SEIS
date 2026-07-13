@@ -996,8 +996,8 @@ expectFailure(
 );
 
 for (const [id, originalStatus, originalExit, expectedError] of [
-  ['SEIS1-EVIDENCE-004', 'pending', 'null', 'status must remain pending'],
-  ['SEIS1-EVIDENCE-005', 'pending', 'null', 'status must remain pending'],
+  ['SEIS1-EVIDENCE-004', 'passed', '0', 'status must remain passed'],
+  ['SEIS1-EVIDENCE-005', 'passed', '0', 'status must remain passed'],
   ['SEIS1-EVIDENCE-006', 'failed', '130', 'status must remain failed'],
   ['SEIS1-EVIDENCE-010', 'failed', '1', 'status must remain failed'],
   ['SEIS1-EVIDENCE-011', 'failed', '1', 'status must remain failed'],
@@ -1016,8 +1016,14 @@ for (const [id, originalStatus, originalExit, expectedError] of [
           const end = next >= 0 ? next : text.indexOf('\nquality_gates:', start);
           const block = text
             .slice(start, end)
-            .replace(`    status: ${originalStatus}`, '    status: passed')
-            .replace(`    exit_code: ${originalExit}`, '    exit_code: 0');
+            .replace(
+              `    status: ${originalStatus}`,
+              `    status: ${originalStatus === 'passed' ? 'pending' : 'passed'}`,
+            )
+            .replace(
+              `    exit_code: ${originalExit}`,
+              `    exit_code: ${originalExit === '0' ? 'null' : '0'}`,
+            );
           return `${text.slice(0, start)}${block}${text.slice(end)}`;
         },
       ),
