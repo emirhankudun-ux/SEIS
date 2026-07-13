@@ -17,6 +17,17 @@ struct SeisPluginInterfaceRoadmapSnapshotTests {
         #expect(snapshot.validationIssues.isEmpty)
     }
 
+    @Test func laneAndYearLookupKeepsNativeInspectorSourceBacked() throws {
+        let snapshot = try SeisPluginInterfaceRoadmapSnapshot.validated(from: sourceData())
+
+        #expect(snapshot.interfaceRecord(for: "seis-cloud")?.handle == "@seis-cloud")
+        #expect(snapshot.horizonRecord(for: "2028")?.phase == "Integrated Workflows")
+        #expect(snapshot.commitment(for: "seis-code", year: "2028")?.interfaceOutcome.contains("working local development cockpit") == true)
+        #expect(snapshot.laneRoutine(for: "seis-data")?.h2.contains("provenance") == true)
+        #expect(snapshot.readinessRecord(for: "seis-data")?.currentMode == "schema and evidence registry")
+        #expect(snapshot.interfaceRecord(for: "unknown") == nil)
+    }
+
     @Test func liveActionBoundaryAndLaneIdentityAreRejected() throws {
         var object = try JSONSerialization.jsonObject(with: sourceData()) as! [String: Any]
         var signals = object["maturitySignals"] as! [String: Any]

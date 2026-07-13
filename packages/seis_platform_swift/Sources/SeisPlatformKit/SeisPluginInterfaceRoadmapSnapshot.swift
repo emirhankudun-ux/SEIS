@@ -112,6 +112,26 @@ public struct SeisPluginInterfaceRoadmapSnapshot: Codable, Equatable, Identifiab
         validationIssues.isEmpty && status == "documented-static-interface" && liveActionCount == 0
     }
 
+    public func interfaceRecord(for id: String) -> SeisPluginInterfaceRecord? {
+        interfaces.first(where: { $0.id == id })
+    }
+
+    public func horizonRecord(for year: String) -> SeisPluginInterfaceYearRecord? {
+        fiveYearHorizon.first(where: { $0.year == year })
+    }
+
+    public func commitment(for laneID: String, year: String) -> SeisPluginLaneCommitment? {
+        developmentProgram.first(where: { $0.year == year })?.laneCommitments.first(where: { $0.id == laneID })
+    }
+
+    public func laneRoutine(for laneID: String) -> SeisPluginLaneRoutine? {
+        developmentCadence.laneRoutines.first(where: { $0.id == laneID })
+    }
+
+    public func readinessRecord(for id: String) -> SeisPluginInterfaceReadiness? {
+        interfaceReadiness.first(where: { $0.id == id })
+    }
+
     public static func validated(from data: Data) throws -> Self {
         guard let snapshot = try? JSONDecoder().decode(Self.self, from: data) else {
             throw SeisPluginInterfaceRoadmapSnapshotError.invalidData

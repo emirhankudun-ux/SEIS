@@ -3016,9 +3016,7 @@ struct SeisAICoreLocalDemoView: View {
                 Text("Lanes: \(snapshot.interfaces.map(\.handle).joined(separator: " · ")) · current mode: documented-static-interface")
                     .font(.caption2)
                     .foregroundStyle(.orange)
-                Text("This roadmap is read-only product memory for @seis, @seis-cloud, @seis-code, @seis-design, and @seis-data. It does not install plugins, authenticate connectors, invoke MCP, deploy cloud resources, or claim live actions.")
-                    .font(.caption2)
-                    .foregroundStyle(.tertiary)
+                SeisPluginInterfaceRoadmapInspectorView(snapshot: snapshot)
             }
             .padding(.top, 8)
         } label: {

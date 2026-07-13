@@ -725,6 +725,13 @@ check is `plugin-interface-roadmap`. This remains product-memory metadata until
 the roadmap's browser QA, validators, approval gates, and real runtime
 boundaries are independently reviewed.
 
+The native disclosure now includes a bounded lane/year inspector. It selects
+one of the five named lanes and one of the five horizon years, then resolves the
+source-backed purpose, current surface, next action, development commitment,
+H1/H2 routine, readiness mode, allowed local actions, and blocked privileged
+actions without invoking a plugin, connector, MCP server, provider, cloud
+resource, or external mutation.
+
 ## Related Documents
 
 - [../security/security-baseline.md](../security/security-baseline.md)
