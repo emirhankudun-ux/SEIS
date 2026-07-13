@@ -11,6 +11,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var modelPlanningSnapshot: SeisAIModelPlanningEvidenceSnapshot?
     @Published private(set) var versionPromotionSnapshot: SeisAICoreVersionPromotionSnapshot?
     @Published private(set) var versionRegistrySnapshot: SeisAICoreVersionRegistrySnapshot?
+    @Published private(set) var subagentOperatingModelSnapshot: SeisAISubagentOperatingModelSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -56,6 +57,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         versionRegistrySnapshot = try? SeisAICoreVersionRegistrySnapshot.validated(
             from: Data(contentsOf: versionRegistryURL)
         )
+        subagentOperatingModelSnapshot = try? SeisAISubagentOperatingModelSnapshot.validated(
+            from: Data(contentsOf: subagentOperatingModelURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -75,7 +79,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 workforceTrainingSnapshot: workforceTrainingSnapshot,
                 modelPlanningSnapshot: modelPlanningSnapshot,
                 versionPromotionSnapshot: versionPromotionSnapshot,
-                versionRegistrySnapshot: versionRegistrySnapshot
+                versionRegistrySnapshot: versionRegistrySnapshot,
+                subagentOperatingModelSnapshot: subagentOperatingModelSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -108,11 +113,15 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             versionRegistrySnapshot = try? SeisAICoreVersionRegistrySnapshot.validated(
                 from: Data(contentsOf: versionRegistryURL)
             )
+            subagentOperatingModelSnapshot = try? SeisAISubagentOperatingModelSnapshot.validated(
+                from: Data(contentsOf: subagentOperatingModelURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
             versionPromotionSnapshot = nil
             versionRegistrySnapshot = nil
+            subagentOperatingModelSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -444,6 +453,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-ai-core-version-registry.json")
     }
 
+    private var subagentOperatingModelURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-ai-core-subagent-operating-model.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -492,6 +508,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let versionRegistrySnapshot = model.versionRegistrySnapshot {
                     versionRegistryDisclosure(snapshot: versionRegistrySnapshot)
+                }
+                if let subagentOperatingModelSnapshot = model.subagentOperatingModelSnapshot {
+                    subagentOperatingModelDisclosure(snapshot: subagentOperatingModelSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -982,6 +1001,57 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("AI Core version registry. SEIS AI Core v0.1, zero-key core, seven components, five plan-only lanes, and five-year roadmap. No trained model or autonomous write claim.")
+    }
+
+    private func subagentOperatingModelDisclosure(snapshot: SeisAISubagentOperatingModelSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Runtime: \(snapshot.runtimeBoundary.currentLevel) · Write: \(snapshot.runtimeBoundary.writeMode) · External mutation: \(snapshot.runtimeBoundary.externalMutation)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("\(snapshot.lanes.count) lanes · \(snapshot.permissionMatrix.count) permission levels · \(snapshot.evidenceRequirements.count) evidence requirements · five-year cadence")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Allowed now: \(snapshot.runtimeBoundary.allowedNow.joined(separator: ", "))")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+
+                Text("Permission matrix")
+                    .font(.caption.weight(.semibold))
+                ForEach(snapshot.permissionMatrix) { permission in
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: permission.status == "enabled" ? "checkmark.shield" : permission.level == "forbidden" ? "nosign" : "clock")
+                            .foregroundStyle(permission.status == "enabled" ? .green : permission.level == "forbidden" ? .red : .orange)
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("\(permission.level) · \(permission.status)")
+                                .font(.caption.weight(.semibold))
+                            Text("Approval: \(permission.approvalRequired) · Actions: \(permission.allowedActions.count) · Evidence: \(permission.evidenceRequired.count)")
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                }
+
+                Text("Sub-agent lanes")
+                    .font(.caption.weight(.semibold))
+                ForEach(snapshot.lanes) { lane in
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("\(lane.displayName) · \(lane.currentPermissionLevel)")
+                            .font(.caption.weight(.semibold))
+                        Text("\(lane.statusTool) / \(lane.planTool) · \(lane.qualityGate)")
+                            .font(.caption2.monospaced())
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Sub-agent operating model", systemImage: "person.2.badge.gearshape")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Sub-agent operating model. Five plan-only lanes, five permission levels, fourteen evidence requirements, and external actions approval-gated.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {

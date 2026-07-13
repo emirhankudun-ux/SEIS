@@ -43,7 +43,7 @@ The foundation includes:
 | AI Workforce Training | Active local seed training contract | `docs/ai/ai-workforce-training.md`, `content/development/seis-ai-workforce-training-plan.json`, `scripts/check-seis-ai-workforce-training.mjs`, `scripts/run-seis-ai-workforce-training.mjs` | No live provider calls, credential reads, cloud fine-tuning, dataset downloads, SSH, deployment, or runtime authority are performed. | Use installed assistants only as supervised candidate reviewers; rebuild deterministic local seed artifacts with `npm run automation:seis-ai-workforce-training`. |
 | Provider credentials | Statically audited | `docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md` | No runtime verification was performed. | Keep keys optional, server-only, and disabled until adapter tests exist. |
 | Local model mode | Planned | No local model adapter found in this branch. | No runtime integration. | Define Ollama/localhost as optional zero-key future mode. |
-| Evaluation | Implemented as local readiness evaluator | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAICoreReadinessEvaluator.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAICoreReadinessEvaluatorTests.swift`, canonical workforce assignment, training, model-planning, promotion, and version-registry snapshots | No live-model benchmark or provider evaluation exists. | Keep the report scoped to Local Demo readiness and add live-adapter evals only after backend approval. |
+| Evaluation | Implemented as local readiness evaluator | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAICoreReadinessEvaluator.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAICoreReadinessEvaluatorTests.swift`, canonical workforce assignment, training, model-planning, promotion, version-registry, and operating-model snapshots | No live-model benchmark or provider evaluation exists. | Keep the report scoped to Local Demo readiness and add live-adapter evals only after backend approval. |
 
 ## Rules / Policy
 
@@ -270,6 +270,14 @@ plan-only lane bindings, five-year version roadmap, promotion evidence
 requirements, and zero-key Local Demo runtime boundary. The registry is an
 application-layer intelligence profile; it is not a foundation model, trained
 model, autonomous write runtime, provider-ownership claim, or release approval.
+
+The panel also reads
+`content/development/seis-ai-core-subagent-operating-model.json`. It exposes
+the five permission levels, five sub-agent lanes, fourteen evidence
+requirements, five-year roadmap, and review cadence. Read-only and plan-only
+levels are enabled; write-gated and external-gated levels remain planned; the
+forbidden level remains active. This is a bounded sub-agent contract, not
+autonomous authority.
 
 Validation:
 `swift test --package-path packages/seis_platform_swift`.

@@ -26,6 +26,25 @@ MCP, SSH, deployment, or GitHub mutation authority.
 | MCP runtime contract | Local smoke verified | `content/development/seis-ai-core-mcp-runtime-contract.json`, `seis://ai/mcp-runtime-contract.json`. | This does not authenticate remote MCP servers, connectors, credentials, SSH, deploys, or GitHub mutation. | Keep runtime resources verified by `node --test packages/seis-ai/test/mcp-smoke.test.mjs`. |
 | Personal sub-agent lanes | Integrated as native status/plan-only runtime | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAIPersonalLaneRuntime.swift`, native all-lane batch planning, `content/development/seis-ai-core-subagent-operating-model.json`, `packages/seis-ai/src/agent/tools.mjs`. | No write-gated or background runtime exists. | Keep the five lanes read-only and add approved execution only through a separate server boundary. |
 
+## Permission Matrix
+
+The canonical permission matrix is
+`content/development/seis-ai-core-subagent-operating-model.json`. It is
+source-backed and is also projected into the Apple-native AI Core readiness
+surface.
+
+| Level | Status | Approval | Boundary |
+| --- | --- | --- | --- |
+| `read-only` | enabled | not required | Inspect manifests, docs, lane profiles, and validation commands. |
+| `plan-only` | enabled | not required | Produce scoped plans, validation plans, approval summaries, and handoff notes. |
+| `write-gated` | planned | task-scoped | Future scoped edits only after approved file scope, diff, validator output, and rollback note. |
+| `external-gated` | planned | required | Future GitHub, cloud, SSH, VPN, or connector mutation only after target, actor, rollback, preflight, and redaction evidence. |
+| `forbidden` | active | not sufficient alone | Silent credential access, history rewrite, unbounded training, private-key handling, and unrestricted shell execution remain denied. |
+
+The current runtime is `status-and-plan-only`; all five personal lanes remain
+`plan-only`. Permission declarations do not activate providers, MCP sessions,
+SSH, deployment, GitHub mutation, background automation, or autonomous agents.
+
 ## Rules / Policy
 
 - Exactly one assistant should hold writer role at a time.

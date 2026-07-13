@@ -65,7 +65,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "workforce-training-control-plane",
         "model-planning-evidence",
         "version-promotion-dry-run",
-        "version-registry"
+        "version-registry",
+        "subagent-operating-model"
     ]
 
     public init() {}
@@ -79,7 +80,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         workforceTrainingSnapshot: SeisAIWorkforceTrainingSnapshot? = nil,
         modelPlanningSnapshot: SeisAIModelPlanningEvidenceSnapshot? = nil,
         versionPromotionSnapshot: SeisAICoreVersionPromotionSnapshot? = nil,
-        versionRegistrySnapshot: SeisAICoreVersionRegistrySnapshot? = nil
+        versionRegistrySnapshot: SeisAICoreVersionRegistrySnapshot? = nil,
+        subagentOperatingModelSnapshot: SeisAISubagentOperatingModelSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -170,6 +172,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "AI Core version registry",
                 passed: versionRegistrySnapshot?.isMetadataOnly == true,
                 evidence: "SEIS AI Core v0.1, zero-key core, seven version components, five plan-only lanes, and a five-year roadmap are source-backed without foundation-model or autonomous-write claims."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "subagent-operating-model",
+                title: "Sub-agent operating model",
+                passed: subagentOperatingModelSnapshot?.isMetadataOnly == true,
+                evidence: "Five sub-agent lanes, five permission levels, fourteen evidence requirements, and five-year cadence remain status-and-plan-only; write and external levels stay planned or forbidden."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked
