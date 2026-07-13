@@ -8,6 +8,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var workspaceIndex: SeisAppleLocalWorkspaceIndex?
     @Published private(set) var workforceSnapshot: SeisAIWorkforceAssignmentSnapshot?
     @Published private(set) var workforceTrainingSnapshot: SeisAIWorkforceTrainingSnapshot?
+    @Published private(set) var modelPlanningSnapshot: SeisAIModelPlanningEvidenceSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -44,6 +45,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         workforceTrainingSnapshot = try? SeisAIWorkforceTrainingSnapshot.validated(
             from: Data(contentsOf: workforceTrainingURL)
         )
+        modelPlanningSnapshot = try? SeisAIModelPlanningEvidenceSnapshot.validated(
+            from: modelPlanningData()
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -60,7 +64,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 promptEngine: promptEngine,
                 handoffSnapshot: nextOrchestrationSnapshot,
                 workforceSnapshot: workforceSnapshot,
-                workforceTrainingSnapshot: workforceTrainingSnapshot
+                workforceTrainingSnapshot: workforceTrainingSnapshot,
+                modelPlanningSnapshot: modelPlanningSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -84,8 +89,12 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             workforceTrainingSnapshot = try? SeisAIWorkforceTrainingSnapshot.validated(
                 from: Data(contentsOf: workforceTrainingURL)
             )
+            modelPlanningSnapshot = try? SeisAIModelPlanningEvidenceSnapshot.validated(
+                from: modelPlanningData()
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
+            modelPlanningSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -393,6 +402,16 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-ai-workforce-training-plan.json")
     }
 
+    private func modelPlanningData() throws -> [String: Data] {
+        try Dictionary(uniqueKeysWithValues: SeisAIModelPlanningEvidenceSnapshot.canonicalIDs.map { id in
+            let url = URL(fileURLWithPath: repositoryPath)
+                .appendingPathComponent("content")
+                .appendingPathComponent("development")
+                .appendingPathComponent("\(id).json")
+            return (id, try Data(contentsOf: url))
+        })
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -432,6 +451,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let workforceTrainingSnapshot = model.workforceTrainingSnapshot {
                     workforceTrainingDisclosure(snapshot: workforceTrainingSnapshot)
+                }
+                if let modelPlanningSnapshot = model.modelPlanningSnapshot {
+                    modelPlanningDisclosure(snapshot: modelPlanningSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -761,6 +783,51 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("AI workforce training control plane. Ten trainer roles, seven local training loops, four runtime authority false seed targets, and no live training or provider access.")
+    }
+
+    private func modelPlanningDisclosure(snapshot: SeisAIModelPlanningEvidenceSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Six canonical model and readiness records · metadata-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("AGI claim: blocked · Local Demo: \(snapshot.localDemoIsAllowed ? "allowed" : "not established") · Plan-only: \(snapshot.isMetadataOnly ? "yes" : "no")")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.agiClaimIsBlocked ? .secondary : .red)
+                Text("No route today, runtime authority, production readiness, or trained foundation-model claim is inferred from these records.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+
+                ForEach(snapshot.records) { record in
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: record.isPlanOnly ? "lock.shield" : "exclamationmark.triangle")
+                            .foregroundStyle(record.isPlanOnly ? .green : .red)
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(record.id)
+                                .font(.caption.weight(.semibold))
+                            Text(record.statusLabel)
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                            Text("Runtime: \(record.runtimeAuthority == true ? "enabled" : "blocked") · Production: \(record.productionReady == true ? "ready" : "blocked") · AGI claim: \(record.agiClaimAllowed == true || record.publicReadyAsAgi == true ? "allowed" : "blocked")")
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                            Text("Forbidden claims: \(record.forbiddenClaimsCount) · Approvals: \(record.humanApprovalCount) · Next safe actions: \(record.nextSafeActionsCount)")
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.tertiary)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                    .padding(8)
+                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 8))
+                }
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Model scaling and AGI evidence", systemImage: "chart.bar.doc.horizontal")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Model scaling and AGI evidence. Six plan-only records. Route, runtime authority, production readiness, and AGI claims are blocked; Local Demo is the only allowed mode.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {

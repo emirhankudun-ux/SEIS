@@ -11,6 +11,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let handoffs = SeisAGIAgentHandoffSnapshot.current()
         let workforce = try SeisAIWorkforceAssignmentSnapshot.validated(from: workforceData())
         let workforceTraining = try SeisAIWorkforceTrainingSnapshot.validated(from: workforceTrainingData())
+        let modelPlanning = try SeisAIModelPlanningEvidenceSnapshot.validated(from: modelPlanningData())
 
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
@@ -18,14 +19,15 @@ struct SeisAICoreReadinessEvaluatorTests {
             promptEngine: promptEngine,
             handoffSnapshot: handoffs,
             workforceSnapshot: workforce,
-            workforceTrainingSnapshot: workforceTraining
+            workforceTrainingSnapshot: workforceTraining,
+            modelPlanningSnapshot: modelPlanning
         )
 
         #expect(report.isReadyLocalDemo)
         #expect(report.status == .readyLocalDemo)
         #expect(report.evaluatorVersion == SeisAICoreReadinessEvaluator.evaluatorVersion)
         #expect(report.checks.map(\.id) == SeisAICoreReadinessEvaluator.expectedCheckIDs)
-        #expect(report.passedCount == 10)
+        #expect(report.passedCount == 11)
         #expect(report.failedCount == 0)
         #expect(report.truthBoundary.contains("not proof of live provider access"))
     }
@@ -34,13 +36,15 @@ struct SeisAICoreReadinessEvaluatorTests {
         let snapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: runtimeSnapshotData())
         let workforce = try SeisAIWorkforceAssignmentSnapshot.validated(from: workforceData())
         let workforceTraining = try SeisAIWorkforceTrainingSnapshot.validated(from: workforceTrainingData())
+        let modelPlanning = try SeisAIModelPlanningEvidenceSnapshot.validated(from: modelPlanningData())
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
             capabilityMesh: SeisAICapabilityMesh(snapshot: snapshot),
             promptEngine: SeisAIPromptEngine.defaultEngine,
             handoffSnapshot: SeisAGIAgentHandoffSnapshot.current(),
             workforceSnapshot: workforce,
-            workforceTrainingSnapshot: workforceTraining
+            workforceTrainingSnapshot: workforceTraining,
+            modelPlanningSnapshot: modelPlanning
         )
 
         #expect(report.status.rawValue == "ready-local-demo")
@@ -70,5 +74,14 @@ struct SeisAICoreReadinessEvaluatorTests {
         var root = URL(fileURLWithPath: #filePath)
         for _ in 0..<5 { root.deleteLastPathComponent() }
         return try Data(contentsOf: root.appendingPathComponent("content/development/seis-ai-workforce-training-plan.json"))
+    }
+
+    private func modelPlanningData() throws -> [String: Data] {
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<5 { root.deleteLastPathComponent() }
+        return try Dictionary(uniqueKeysWithValues: SeisAIModelPlanningEvidenceSnapshot.canonicalIDs.map { id in
+            let url = root.appendingPathComponent("content/development/\(id).json")
+            return (id, try Data(contentsOf: url))
+        })
     }
 }

@@ -62,7 +62,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "prompt-engine",
         "subagent-handoffs",
         "installed-ai-workforce",
-        "workforce-training-control-plane"
+        "workforce-training-control-plane",
+        "model-planning-evidence"
     ]
 
     public init() {}
@@ -73,7 +74,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         promptEngine: SeisAIPromptEngine,
         handoffSnapshot: SeisAGIAgentHandoffSnapshot,
         workforceSnapshot: SeisAIWorkforceAssignmentSnapshot? = nil,
-        workforceTrainingSnapshot: SeisAIWorkforceTrainingSnapshot? = nil
+        workforceTrainingSnapshot: SeisAIWorkforceTrainingSnapshot? = nil,
+        modelPlanningSnapshot: SeisAIModelPlanningEvidenceSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -145,6 +147,13 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Workforce training control plane",
                 passed: workforceTrainingSnapshot?.isMetadataOnly == true,
                 evidence: "Ten trainer roles, seven local training loops, and four runtime-authority=false seed targets are source-backed; training remains synthetic, local, validator-gated, and approval-bound."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "model-planning-evidence",
+                title: "Model planning evidence",
+                passed: modelPlanningSnapshot?.isMetadataOnly == true &&
+                    modelPlanningSnapshot?.agiClaimIsBlocked == true,
+                evidence: "Six model-scaling and public-readiness records remain plan-only; route, runtime authority, production, and AGI claims stay blocked while Local Demo remains the only public-safe mode."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked
