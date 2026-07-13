@@ -67,7 +67,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "version-promotion-dry-run",
         "version-registry",
         "subagent-operating-model",
-        "subagent-runtime-fixtures"
+        "subagent-runtime-fixtures",
+        "subagent-review-ledger"
     ]
 
     public init() {}
@@ -83,7 +84,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         versionPromotionSnapshot: SeisAICoreVersionPromotionSnapshot? = nil,
         versionRegistrySnapshot: SeisAICoreVersionRegistrySnapshot? = nil,
         subagentOperatingModelSnapshot: SeisAISubagentOperatingModelSnapshot? = nil,
-        subagentRuntimeFixturesSnapshot: SeisAISubagentRuntimeFixturesSnapshot? = nil
+        subagentRuntimeFixturesSnapshot: SeisAISubagentRuntimeFixturesSnapshot? = nil,
+        subagentReviewLedgerSnapshot: SeisAISubagentReviewLedgerSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -186,6 +188,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Sub-agent runtime fixtures",
                 passed: subagentRuntimeFixturesSnapshot?.isMetadataOnly == true,
                 evidence: "Seven runtime fixtures cover role schema, permissions, dry-run queue, cancellation, approval, redaction, and append-only planned ledger without enabling autonomous execution."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "subagent-review-ledger",
+                title: "Sub-agent review ledger",
+                passed: subagentReviewLedgerSnapshot?.isMetadataOnly == true,
+                evidence: "Twenty quarterly records cover the five-year horizon; two are documented-validated, eighteen remain planned, and no write-gated, credential, merge, deploy, or external mutation evidence is recorded."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked

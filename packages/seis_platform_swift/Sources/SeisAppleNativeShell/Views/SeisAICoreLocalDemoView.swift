@@ -13,6 +13,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var versionRegistrySnapshot: SeisAICoreVersionRegistrySnapshot?
     @Published private(set) var subagentOperatingModelSnapshot: SeisAISubagentOperatingModelSnapshot?
     @Published private(set) var subagentRuntimeFixturesSnapshot: SeisAISubagentRuntimeFixturesSnapshot?
+    @Published private(set) var subagentReviewLedgerSnapshot: SeisAISubagentReviewLedgerSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -64,6 +65,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         subagentRuntimeFixturesSnapshot = try? SeisAISubagentRuntimeFixturesSnapshot.validated(
             from: Data(contentsOf: subagentRuntimeFixturesURL)
         )
+        subagentReviewLedgerSnapshot = try? SeisAISubagentReviewLedgerSnapshot.validated(
+            from: Data(contentsOf: subagentReviewLedgerURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -85,7 +89,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 versionPromotionSnapshot: versionPromotionSnapshot,
                 versionRegistrySnapshot: versionRegistrySnapshot,
                 subagentOperatingModelSnapshot: subagentOperatingModelSnapshot,
-                subagentRuntimeFixturesSnapshot: subagentRuntimeFixturesSnapshot
+                subagentRuntimeFixturesSnapshot: subagentRuntimeFixturesSnapshot,
+                subagentReviewLedgerSnapshot: subagentReviewLedgerSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -124,6 +129,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             subagentRuntimeFixturesSnapshot = try? SeisAISubagentRuntimeFixturesSnapshot.validated(
                 from: Data(contentsOf: subagentRuntimeFixturesURL)
             )
+            subagentReviewLedgerSnapshot = try? SeisAISubagentReviewLedgerSnapshot.validated(
+                from: Data(contentsOf: subagentReviewLedgerURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -131,6 +139,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             versionRegistrySnapshot = nil
             subagentOperatingModelSnapshot = nil
             subagentRuntimeFixturesSnapshot = nil
+            subagentReviewLedgerSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -476,6 +485,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-ai-core-subagent-runtime-fixtures.json")
     }
 
+    private var subagentReviewLedgerURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-ai-core-subagent-review-ledger.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -530,6 +546,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let subagentRuntimeFixturesSnapshot = model.subagentRuntimeFixturesSnapshot {
                     subagentRuntimeFixturesDisclosure(snapshot: subagentRuntimeFixturesSnapshot)
+                }
+                if let subagentReviewLedgerSnapshot = model.subagentReviewLedgerSnapshot {
+                    subagentReviewLedgerDisclosure(snapshot: subagentReviewLedgerSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -1114,6 +1133,46 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Sub-agent runtime fixtures. Seven verified fixture references for role schema, permission, dry-run queue, cancellation, approval, redaction, and planned ledger. No autonomous execution.")
+    }
+
+    private func subagentReviewLedgerDisclosure(snapshot: SeisAISubagentReviewLedgerSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Cadence: \(snapshot.cadence.reviewCadence) · Horizon: \(snapshot.cadence.horizonYears) years · Current: \(snapshot.cadence.currentHorizonQuarter) · Next: \(snapshot.cadence.nextReviewQuarter)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("\(snapshot.quarters.count) quarter records · \(snapshot.summary.documentedValidatedQuarterCount) validated · \(snapshot.summary.plannedQuarterCount) planned · write-gated enabled: \(snapshot.summary.writeGatedQuarterCountEnabled)")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("No external mutation, credential access, autonomous merge, or deploy evidence is recorded.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+
+                ForEach(snapshot.quarters) { quarter in
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: quarter.status == "documented-validated" ? "checkmark.circle" : quarter.humanApprovalNeeded ? "person.badge.key" : "clock")
+                            .foregroundStyle(quarter.status == "documented-validated" ? .green : quarter.humanApprovalNeeded ? .orange : .secondary)
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("\(quarter.id) · \(quarter.status)")
+                                .font(.caption.weight(.semibold))
+                            Text("Lanes: \(quarter.primaryLanes.joined(separator: ", "))")
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                            Text("Evidence: \(quarter.evidence.count) · Validator: \(quarter.validator)")
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                }
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Sub-agent quarterly review ledger", systemImage: "calendar.badge.clock")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Sub-agent quarterly review ledger. Twenty quarter records across five years, two documented and validated, eighteen planned, with no external mutation or autonomous merge evidence.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {
