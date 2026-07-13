@@ -365,7 +365,7 @@ const expectedGoalSemanticHashes = {
 };
 
 const expectedNormalizedGoalSemanticHash =
-  '17b035cddf4ea0f734f8abaedf71a5e3ea17e805e42a8e1b9e0d7103dd2626d3';
+  '6306042429b632b996fc80a8aaea4330dfe4a1390920c819b779f0990bca235a';
 
 const expectedGoalGithubEvidence = {
   issue_url: 'https://github.com/emirhankudun-ux/SEIS/issues/181',

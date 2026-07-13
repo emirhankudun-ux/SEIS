@@ -221,22 +221,22 @@ evidence_records:
   - id: SEIS1-EVIDENCE-004
     type: native-package-validation
     description: Swift package describe, library build, executable-product build, and tests pass on a verified Darwin Swift toolchain.
-    status: pending
+    status: passed
     command: >-
       swift package --package-path packages/seis_platform_swift describe &&
       swift build --package-path packages/seis_platform_swift --target
       SeisPlatformKit && swift build --package-path
       packages/seis_platform_swift --product SeisAppleNativeShell && swift test
       --package-path packages/seis_platform_swift
-    exit_code: null
-    artifact: null
+    exit_code: 0
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29235195720
   - id: SEIS1-EVIDENCE-005
     type: remote-ci
     description: The focused pull-request head passes the required repository workflows.
-    status: pending
-    command: null
-    exit_code: null
-    artifact: null
+    status: passed
+    command: gh pr checks 182 --repo emirhankudun-ux/SEIS
+    exit_code: 0
+    artifact: https://github.com/emirhankudun-ux/SEIS/pull/182/checks
   - id: SEIS1-EVIDENCE-006
     type: native-library-build-attempt
     description: >-
