@@ -161,6 +161,15 @@ if that location is unavailable, the UI reports `memory-only` or
 `local-file-unavailable` instead of implying persistence. This is not a durable
 audit database, authenticated provider access, or autonomous agent execution.
 
+`SeisAICapabilityMesh` is the native read-only projection of the same plugin
+and MCP evidence. It surfaces the installed/enabled and helper-plugin counts,
+the five personal lane IDs, the 35-tool/30-resource/3-prompt MCP inventory,
+and the four MCP transport surfaces without exposing a tool handle or opening
+a session. Its validation requires an active source-backed plugin mesh, a
+non-negative MCP inventory, a safe runtime boundary, and human approval for
+live actions. This keeps "listed", "source-backed", "locally smoke-verified",
+and "activated" as separate states.
+
 Validation:
 `swift test --package-path packages/seis_platform_swift`.
 

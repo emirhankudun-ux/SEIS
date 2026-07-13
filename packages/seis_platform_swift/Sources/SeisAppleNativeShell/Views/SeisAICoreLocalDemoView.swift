@@ -5,6 +5,7 @@ import SwiftUI
 @MainActor
 final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var snapshot: SeisAICoreRuntimeSnapshotContract?
+    @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var statusMessage = "AI Core snapshot has not been loaded."
     @Published private(set) var lastPlan: SeisAIPersonalLaneTaskPlan?
     @Published private(set) var lastAgentPlan: SeisAIAgentTaskPlan?
@@ -28,6 +29,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             let loadedRuntime = try SeisAIRuntime.localDemo(snapshotData: data, evidenceLedger: evidenceLedger)
             runtime = loadedRuntime
             snapshot = nextSnapshot
+            capabilityMesh = SeisAICapabilityMesh(snapshot: nextSnapshot)
             lastPlan = nil
             lastAgentPlan = nil
             statusMessage = "Local Demo ready: \(nextSnapshot.pluginMesh.personalLanes.count) lanes are linked to the typed runtime."
@@ -38,6 +40,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         } catch {
             runtime = nil
             snapshot = nil
+            capabilityMesh = nil
             lastPlan = nil
             lastAgentPlan = nil
             evidence = []
@@ -164,6 +167,9 @@ struct SeisAICoreLocalDemoView: View {
 
             if let snapshot = model.snapshot {
                 metrics(snapshot: snapshot)
+                if let capabilityMesh = model.capabilityMesh {
+                    capabilityMeshDisclosure(mesh: capabilityMesh)
+                }
                 providerList(snapshot: snapshot)
                 taskPlanner
                 laneList(snapshot: snapshot)
@@ -282,6 +288,54 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Provider status list with \(snapshot.providerRegistry.providers.count) source-backed providers. No credential validation or provider call is performed.")
+    }
+
+    private func capabilityMeshDisclosure(mesh: SeisAICapabilityMesh) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text(mesh.pluginStatusLabel)
+                    .font(.caption.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Activation: \(mesh.activationPolicy)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.tertiary)
+                Text(mesh.mcpStatusLabel)
+                    .font(.caption.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Personal lanes: \(mesh.laneIDs.joined(separator: ", "))")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.tertiary)
+
+                ForEach(mesh.mcpSurfaces) { surface in
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: surface.state == "verified" ? "checkmark.seal" : "questionmark.circle")
+                            .foregroundStyle(surface.state == "verified" ? .green : .orange)
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("\(surface.label) · \(surface.count)")
+                                .font(.caption.weight(.semibold))
+                            Text("\(surface.method) · \(surface.state)")
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                    .padding(8)
+                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 8))
+                }
+
+                Text(mesh.isValid
+                     ? "Source-backed capability mesh validated. Native view has no MCP invocation or plugin activation authority."
+                     : mesh.validationIssues.joined(separator: " "))
+                    .font(.caption2)
+                    .foregroundStyle(mesh.isValid ? .green : .orange)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Plugin + MCP capability mesh", systemImage: "point.3.connected.trianglepath.dotted")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Plugin and MCP capability mesh. \(mesh.pluginStatusLabel). \(mesh.mcpStatusLabel). No plugin activation or MCP invocation is performed.")
     }
 
     private func providerStatusColor(_ status: SeisAICoreProviderState) -> Color {
