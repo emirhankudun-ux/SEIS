@@ -452,3 +452,5 @@ owner explicitly requests removal.
 - GitHub PR classification, merge, close, reopen, or other write action.
 - Dependency installation.
 - SSH, deployment, release/tag creation, repository settings changes, secret rotation, public visibility changes, model training, benchmarks, or dataset downloads.
+- `ECO-GOAL-0001`: review and merge of SEIS PRs #177 and #180 and the two private manifest drafts through each repository's policy; no automatic merge or retargeting is authorized.
+- `ECO-GOAL-0001`: confirm the exact canonical Greek identity repository target or explicitly defer Greek publication. The observed ambiguous private candidate must not be named publicly, configured as a remote, assigned ownership, or pushed without that decision and a separate least-privilege identity review.

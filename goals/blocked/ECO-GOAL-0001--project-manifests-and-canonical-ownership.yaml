@@ -53,6 +53,7 @@ scope:
     - data/evidence/ECO-GOAL-0001-greek-repository-target-attestation.yaml
     - docs/ECOSYSTEM_GOAL_TRACKING.md
     - docs/REPOSITORY_OWNERSHIP.md
+    - docs/roadmap/NEXT_PR_QUEUE.md
     - docs/adr/0002-ecosystem-governance-bootstrap-ownership.md
     - goals
     - scripts/validate-ecosystem-foundation.rb
