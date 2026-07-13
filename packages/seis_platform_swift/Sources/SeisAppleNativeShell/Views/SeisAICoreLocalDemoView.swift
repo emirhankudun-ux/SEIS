@@ -47,6 +47,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var obsidianSafeImportSnapshot: SeisObsidianSafeImportSnapshot?
     @Published private(set) var readOnlyRouterRuntimeSnapshot: SeisReadOnlyRouterRuntimeSnapshot?
     @Published private(set) var modelFrontierEscalationPolicySnapshot: SeisModelFrontierEscalationPolicySnapshot?
+    @Published private(set) var agiSystemSourceSnapshot: SeisAGISystemSourceSnapshot?
+    @Published private(set) var projectIntakeSnapshot: SeisProjectIntakeSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -200,6 +202,12 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         modelFrontierEscalationPolicySnapshot = try? SeisModelFrontierEscalationPolicySnapshot.validated(
             from: Data(contentsOf: modelFrontierEscalationPolicyURL)
         )
+        agiSystemSourceSnapshot = try? SeisAGISystemSourceSnapshot.validated(
+            from: Data(contentsOf: agiSystemSourceURL)
+        )
+        projectIntakeSnapshot = try? SeisProjectIntakeSnapshot.validated(
+            from: Data(contentsOf: projectIntakeURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -255,7 +263,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 requestedSoftwareStackSnapshot: requestedSoftwareStackSnapshot,
                 obsidianSafeImportSnapshot: obsidianSafeImportSnapshot,
                 readOnlyRouterRuntimeSnapshot: readOnlyRouterRuntimeSnapshot,
-                modelFrontierEscalationPolicySnapshot: modelFrontierEscalationPolicySnapshot
+                modelFrontierEscalationPolicySnapshot: modelFrontierEscalationPolicySnapshot,
+                agiSystemSourceSnapshot: agiSystemSourceSnapshot,
+                projectIntakeSnapshot: projectIntakeSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -396,6 +406,12 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             modelFrontierEscalationPolicySnapshot = try? SeisModelFrontierEscalationPolicySnapshot.validated(
                 from: Data(contentsOf: modelFrontierEscalationPolicyURL)
             )
+            agiSystemSourceSnapshot = try? SeisAGISystemSourceSnapshot.validated(
+                from: Data(contentsOf: agiSystemSourceURL)
+            )
+            projectIntakeSnapshot = try? SeisProjectIntakeSnapshot.validated(
+                from: Data(contentsOf: projectIntakeURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -437,6 +453,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             obsidianSafeImportSnapshot = nil
             readOnlyRouterRuntimeSnapshot = nil
             modelFrontierEscalationPolicySnapshot = nil
+            agiSystemSourceSnapshot = nil
+            projectIntakeSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -1020,6 +1038,20 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-model-frontier-escalation-policy.json")
     }
 
+    private var agiSystemSourceURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-agi-system.json")
+    }
+
+    private var projectIntakeURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-project-intake-contract.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -1178,6 +1210,12 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let modelFrontierEscalationPolicySnapshot = model.modelFrontierEscalationPolicySnapshot {
                     modelFrontierEscalationPolicyDisclosure(snapshot: modelFrontierEscalationPolicySnapshot)
+                }
+                if let agiSystemSourceSnapshot = model.agiSystemSourceSnapshot {
+                    agiSystemSourceDisclosure(snapshot: agiSystemSourceSnapshot)
+                }
+                if let projectIntakeSnapshot = model.projectIntakeSnapshot {
+                    projectIntakeDisclosure(snapshot: projectIntakeSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -2772,6 +2810,54 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Model frontier escalation policy. Six metadata stages are visible; only Local Demo is allowed and route-eligible today. Twenty billion, seventy billion, one hundred fifty billion, and five hundred twelve billion parameter stages remain blocked pending evidence and human approval. No weights, inference, provider, benchmark, ownership, or AGI claim is made.")
+    }
+
+    private func agiSystemSourceDisclosure(snapshot: SeisAGISystemSourceSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.priorityDomainCount) priority domains · \(snapshot.domainTaxonomyCount) taxonomy terms · \(snapshot.domainLaneCount) domain lanes · metadata-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("\(snapshot.subsystemCount) subsystems · \(snapshot.pluginCapabilityLaneCount) capability lanes · \(snapshot.releaseMilestoneCount) release milestones · \(snapshot.memoryCheckpointCount) memory checkpoints / \(snapshot.planningLoopCount) loops")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Apple-first source strategy: \(snapshot.platformStrategy.priority) · JavaScript target: \(snapshot.platformStrategy.javascriptTargetPercent, specifier: "%.1f")% · token target: \(snapshot.tokenEfficiency.targetSavingsPercent)%")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("This is an AGI-inspired, human-owned operating architecture. It does not claim autonomous general intelligence, live model ownership, autonomous execution, or provider access.")
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("AGI system source contract", systemImage: "brain.head.profile")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("AGI system source contract. Twenty priority domains, 150 taxonomy terms, 125 domain lanes, ten subsystems, five plugin capability lanes, three release milestones, five memory checkpoints, and four planning loops are source-backed metadata. The contract explicitly does not claim autonomous general intelligence or live model ownership.")
+    }
+
+    private func projectIntakeDisclosure(snapshot: SeisProjectIntakeSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.requiredEvidence.count) evidence items · \(snapshot.requiredArtifacts.count) artifacts · \(snapshot.nextPhaseSuggestions.count) next actions · metadata-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("Read: allowed · Write: approval · Shell: approval · Network: disabled by default · Secret capture: forbidden")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Scope: \(snapshot.scopeRecommendation.primary) / \(snapshot.scopeRecommendation.secondary) · Target: \(snapshot.scopeRecommendation.target)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("The intake surface inspects a local repository and prepares evidence; it does not write, run shell, access network, capture secrets, or claim a completed project build.")
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Project intake safety contract", systemImage: "checklist")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Project intake safety contract. Read is allowed, write and shell require user approval, network is disabled by default, and secret capture is forbidden. Four evidence items, five artifacts, and three next actions are source-backed metadata only.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {

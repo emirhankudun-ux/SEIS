@@ -50,6 +50,8 @@ struct SeisAICoreReadinessEvaluatorTests {
         let readOnlyRouterRuntime = try SeisReadOnlyRouterRuntimeSnapshot.validated(from: readOnlyRouterRuntimeData())
         let technologyStack = try SeisTechnologyStackSnapshot.validated(from: technologyStackData())
         let modelFrontierEscalationPolicy = try SeisModelFrontierEscalationPolicySnapshot.validated(from: modelFrontierEscalationPolicyData())
+        let agiSystemSource = try SeisAGISystemSourceSnapshot.validated(from: agiSystemSourceData())
+        let projectIntake = try SeisProjectIntakeSnapshot.validated(from: projectIntakeData())
 
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
@@ -96,14 +98,16 @@ struct SeisAICoreReadinessEvaluatorTests {
             requestedSoftwareStackSnapshot: requestedSoftwareStack,
             obsidianSafeImportSnapshot: obsidianSafeImport,
             readOnlyRouterRuntimeSnapshot: readOnlyRouterRuntime,
-            modelFrontierEscalationPolicySnapshot: modelFrontierEscalationPolicy
+            modelFrontierEscalationPolicySnapshot: modelFrontierEscalationPolicy,
+            agiSystemSourceSnapshot: agiSystemSource,
+            projectIntakeSnapshot: projectIntake
         )
 
         #expect(report.isReadyLocalDemo)
         #expect(report.status == .readyLocalDemo)
         #expect(report.evaluatorVersion == SeisAICoreReadinessEvaluator.evaluatorVersion)
         #expect(report.checks.map(\.id) == SeisAICoreReadinessEvaluator.expectedCheckIDs)
-        #expect(report.passedCount == 47)
+        #expect(report.passedCount == 49)
         #expect(report.failedCount == 0)
         #expect(report.truthBoundary.contains("not proof of live provider access"))
     }
@@ -151,6 +155,8 @@ struct SeisAICoreReadinessEvaluatorTests {
         let readOnlyRouterRuntime = try SeisReadOnlyRouterRuntimeSnapshot.validated(from: readOnlyRouterRuntimeData())
         let technologyStack = try SeisTechnologyStackSnapshot.validated(from: technologyStackData())
         let modelFrontierEscalationPolicy = try SeisModelFrontierEscalationPolicySnapshot.validated(from: modelFrontierEscalationPolicyData())
+        let agiSystemSource = try SeisAGISystemSourceSnapshot.validated(from: agiSystemSourceData())
+        let projectIntake = try SeisProjectIntakeSnapshot.validated(from: projectIntakeData())
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
             capabilityMesh: SeisAICapabilityMesh(snapshot: snapshot),
@@ -196,7 +202,9 @@ struct SeisAICoreReadinessEvaluatorTests {
             requestedSoftwareStackSnapshot: requestedSoftwareStack,
             obsidianSafeImportSnapshot: obsidianSafeImport,
             readOnlyRouterRuntimeSnapshot: readOnlyRouterRuntime,
-            modelFrontierEscalationPolicySnapshot: modelFrontierEscalationPolicy
+            modelFrontierEscalationPolicySnapshot: modelFrontierEscalationPolicy,
+            agiSystemSourceSnapshot: agiSystemSource,
+            projectIntakeSnapshot: projectIntake
         )
 
         #expect(report.status.rawValue == "ready-local-demo")
@@ -463,5 +471,17 @@ struct SeisAICoreReadinessEvaluatorTests {
         var root = URL(fileURLWithPath: #filePath)
         for _ in 0..<5 { root.deleteLastPathComponent() }
         return try Data(contentsOf: root.appendingPathComponent("content/development/seis-model-frontier-escalation-policy.json"))
+    }
+
+    private func agiSystemSourceData() throws -> Data {
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<5 { root.deleteLastPathComponent() }
+        return try Data(contentsOf: root.appendingPathComponent("content/development/seis-agi-system.json"))
+    }
+
+    private func projectIntakeData() throws -> Data {
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<5 { root.deleteLastPathComponent() }
+        return try Data(contentsOf: root.appendingPathComponent("content/development/seis-project-intake-contract.json"))
     }
 }

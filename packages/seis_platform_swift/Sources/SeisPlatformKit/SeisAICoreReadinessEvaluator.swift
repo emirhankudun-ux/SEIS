@@ -99,7 +99,9 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "requested-software-stack",
         "second-brain-import-boundary",
         "read-only-router-runtime",
-        "model-frontier-escalation-policy"
+        "model-frontier-escalation-policy",
+        "agi-system-source-contract",
+        "project-intake-contract"
     ]
 
     public init() {}
@@ -149,7 +151,9 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         requestedSoftwareStackSnapshot: SeisRequestedSoftwareStackSnapshot? = nil,
         obsidianSafeImportSnapshot: SeisObsidianSafeImportSnapshot? = nil,
         readOnlyRouterRuntimeSnapshot: SeisReadOnlyRouterRuntimeSnapshot? = nil,
-        modelFrontierEscalationPolicySnapshot: SeisModelFrontierEscalationPolicySnapshot? = nil
+        modelFrontierEscalationPolicySnapshot: SeisModelFrontierEscalationPolicySnapshot? = nil,
+        agiSystemSourceSnapshot: SeisAGISystemSourceSnapshot? = nil,
+        projectIntakeSnapshot: SeisProjectIntakeSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -444,6 +448,18 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Model frontier escalation policy",
                 passed: modelFrontierEscalationPolicySnapshot?.isMetadataOnly == true,
                 evidence: "The frontier policy keeps Local Demo as the only allowed route today, blocks 20B/70B/150B/512B escalation until evidence and human approval, and records no weights, inference, provider runtime, benchmark, ownership, or AGI claim."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "agi-system-source-contract",
+                title: "AGI system source contract",
+                passed: agiSystemSourceSnapshot?.isMetadataOnly == true,
+                evidence: "The tracked AGI-inspired source contract exposes 20 priority domains, 150 taxonomy terms, 125 domain lanes, ten subsystems, five plugin capability lanes, three release milestones, and Apple-first memory/planning metadata while explicitly denying an autonomous general-intelligence claim."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "project-intake-contract",
+                title: "Project intake safety contract",
+                passed: projectIntakeSnapshot?.isMetadataOnly == true,
+                evidence: "The local-repo intake contract allows read, gates write and shell behind user approval, disables network by default, forbids secret capture, and keeps the CLI-first/macOS-aware intake surface metadata-only."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked
