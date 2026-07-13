@@ -68,7 +68,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "version-registry",
         "subagent-operating-model",
         "subagent-runtime-fixtures",
-        "subagent-review-ledger"
+        "subagent-review-ledger",
+        "model-scaling-council"
     ]
 
     public init() {}
@@ -85,7 +86,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         versionRegistrySnapshot: SeisAICoreVersionRegistrySnapshot? = nil,
         subagentOperatingModelSnapshot: SeisAISubagentOperatingModelSnapshot? = nil,
         subagentRuntimeFixturesSnapshot: SeisAISubagentRuntimeFixturesSnapshot? = nil,
-        subagentReviewLedgerSnapshot: SeisAISubagentReviewLedgerSnapshot? = nil
+        subagentReviewLedgerSnapshot: SeisAISubagentReviewLedgerSnapshot? = nil,
+        modelScalingCouncilSnapshot: SeisModelScalingSubagentCouncilSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -194,6 +196,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Sub-agent review ledger",
                 passed: subagentReviewLedgerSnapshot?.isMetadataOnly == true,
                 evidence: "Twenty quarterly records cover the five-year horizon; two are documented-validated, eighteen remain planned, and no write-gated, credential, merge, deploy, or external mutation evidence is recorded."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "model-scaling-council",
+                title: "Model scaling sub-agent council",
+                passed: modelScalingCouncilSnapshot?.isMetadataOnly == true,
+                evidence: "Twelve plan-only council agents cover 20B, 70B, 150B, 512B, and future stages; all routes remain blocked until evidence and human approval exist."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked

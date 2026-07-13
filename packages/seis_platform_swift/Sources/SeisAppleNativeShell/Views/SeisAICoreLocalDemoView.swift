@@ -14,6 +14,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var subagentOperatingModelSnapshot: SeisAISubagentOperatingModelSnapshot?
     @Published private(set) var subagentRuntimeFixturesSnapshot: SeisAISubagentRuntimeFixturesSnapshot?
     @Published private(set) var subagentReviewLedgerSnapshot: SeisAISubagentReviewLedgerSnapshot?
+    @Published private(set) var modelScalingCouncilSnapshot: SeisModelScalingSubagentCouncilSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -68,6 +69,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         subagentReviewLedgerSnapshot = try? SeisAISubagentReviewLedgerSnapshot.validated(
             from: Data(contentsOf: subagentReviewLedgerURL)
         )
+        modelScalingCouncilSnapshot = try? SeisModelScalingSubagentCouncilSnapshot.validated(
+            from: Data(contentsOf: modelScalingCouncilURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -90,7 +94,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 versionRegistrySnapshot: versionRegistrySnapshot,
                 subagentOperatingModelSnapshot: subagentOperatingModelSnapshot,
                 subagentRuntimeFixturesSnapshot: subagentRuntimeFixturesSnapshot,
-                subagentReviewLedgerSnapshot: subagentReviewLedgerSnapshot
+                subagentReviewLedgerSnapshot: subagentReviewLedgerSnapshot,
+                modelScalingCouncilSnapshot: modelScalingCouncilSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -132,6 +137,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             subagentReviewLedgerSnapshot = try? SeisAISubagentReviewLedgerSnapshot.validated(
                 from: Data(contentsOf: subagentReviewLedgerURL)
             )
+            modelScalingCouncilSnapshot = try? SeisModelScalingSubagentCouncilSnapshot.validated(
+                from: Data(contentsOf: modelScalingCouncilURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -140,6 +148,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             subagentOperatingModelSnapshot = nil
             subagentRuntimeFixturesSnapshot = nil
             subagentReviewLedgerSnapshot = nil
+            modelScalingCouncilSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -492,6 +501,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-ai-core-subagent-review-ledger.json")
     }
 
+    private var modelScalingCouncilURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-model-scaling-subagent-council.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -549,6 +565,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let subagentReviewLedgerSnapshot = model.subagentReviewLedgerSnapshot {
                     subagentReviewLedgerDisclosure(snapshot: subagentReviewLedgerSnapshot)
+                }
+                if let modelScalingCouncilSnapshot = model.modelScalingCouncilSnapshot {
+                    modelScalingCouncilDisclosure(snapshot: modelScalingCouncilSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -1173,6 +1192,58 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Sub-agent quarterly review ledger. Twenty quarter records across five years, two documented and validated, eighteen planned, with no external mutation or autonomous merge evidence.")
+    }
+
+    private func modelScalingCouncilDisclosure(snapshot: SeisModelScalingSubagentCouncilSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.agents.count) council agents · Runtime: \(snapshot.runtimeBoundary) · Route eligible today: \(snapshot.routeEligibleToday ? "yes" : "no")")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("Credential requirement: \(snapshot.coreCredentialRequirement) · Default mode: \(snapshot.defaultRuntimeMode) · Stages: \(snapshot.stageAssignments.count)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text(snapshot.truthBoundary)
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+
+                ForEach(snapshot.stageAssignments) { stage in
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: stage.routeEligibleToday ? "exclamationmark.triangle" : "lock.shield")
+                            .foregroundStyle(stage.routeEligibleToday ? .red : .green)
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("\(stage.stage) · \(stage.status)")
+                                .font(.caption.weight(.semibold))
+                            Text("Lead agents: \(stage.leadAgents.count) · Required before promotion: \(stage.requiredBeforePromotion.count)")
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                }
+
+                Text("Council agents")
+                    .font(.caption.weight(.semibold))
+                ForEach(snapshot.agents) { agent in
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("\(agent.displayName) · \(agent.lane) · \(agent.authority)")
+                            .font(.caption.weight(.semibold))
+                        Text("\(agent.primaryDuty) · Gate: \(agent.validationGate)")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                Text("All model stages remain plan-only and route-blocked. No model, dataset, benchmark, training, provider, SSH, cloud/GPU, checkpoint, or public-release action is executed.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Model scaling sub-agent council", systemImage: "person.3.sequence")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Model scaling sub-agent council. Twelve plan-only agents, five route-blocked stages, no credential requirement, and no model or provider execution.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {
