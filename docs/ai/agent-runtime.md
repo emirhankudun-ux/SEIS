@@ -34,6 +34,12 @@ lane order (`seis`, `seis-cloud`, `seis-code`, `seis-design`, `seis-data`), and
 returns per-lane checks, provenance, summary counts, and the shared approval
 boundary. It is still plan-only: it performs no provider call, remote MCP
 session, credential read, SSH, deployment, GitHub mutation, or workspace write.
+An explicit `--run-checks` CLI flag or the
+`seis_personal_lane_cycle_checks` agent tool can then run only source-declared
+local `check`/test commands with shell disabled, bounded timeouts, redacted
+output, and before/after visible Git status comparison. A failed, unsafe, or
+timed-out command, or a visible workspace mutation blocks the cycle; it does
+not expand permissions or trigger a fallback.
 
 ## Permission Matrix
 
