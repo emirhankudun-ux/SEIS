@@ -54,8 +54,10 @@ evidence, and a metadata-only private attestation.
    plus distribution-bound attestations; private consumers require
    schema-bound public-safe attestations and revision digests.
 8. The separately paired Greek identity repository remains a pending decision.
-   A pairing record is not independent repository observation and must not be
-   converted into invented ownership.
+   Authenticated lookup did not find the requested canonical target; an
+   ambiguous private candidate remains redacted and unassigned. A pairing record
+   or candidate existence is not identity proof and must not be converted into
+   invented ownership.
 9. Human architecture review is required before this decision can be accepted
    and `ECO-GOAL-0001` can be completed.
 
@@ -122,7 +124,7 @@ remote visibility as part of rollback.
 3. Refresh each observed canonical `main` revision and promote manifest status
    from `review` to `validated` only when the revision matches.
 4. Review the proposed module inventory and structured consumer mappings.
-5. Independently verify the separately paired Greek identity repository before
-   extending the registry.
+5. Obtain explicit human confirmation of the exact Greek target or defer Greek
+   publication; inspect any selected candidate before extending the registry.
 6. Run the local validators and obtain reviewed remote CI evidence before Goal
    completion.

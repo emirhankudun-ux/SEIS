@@ -299,5 +299,5 @@ pending_decisions:
     unblock_condition: Review the proposed canonical paths and structured consumer mappings, add durable evidence for any observed distribution, and accept or revise ADR-0002.
   - id: paired-greek-identity-repository
     description: Decide the ownership and synchronization boundary for the separately paired Greek identity repository referenced by Pantechnoesis governance.
-    reason: The pairing is documented inside the canonical Pantechnoesis repository, but that separate repository identity and visibility were not independently observed in this slice.
-    unblock_condition: Verify the repository identity and visibility read-only, then add a distinct repository and module decision without treating the pairing record as observation evidence.
+    reason: Authenticated read-only lookup did not find the requested canonical Greek target. A private ambiguous candidate exists, but its identity alignment is unverified and its identifier is intentionally withheld from this public registry.
+    unblock_condition: The accountable human must confirm the exact canonical target or explicitly defer Greek publication. If a candidate is selected, inspect identity and visibility under least privilege before adding any repository, module, remote, or synchronization claim.

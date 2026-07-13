@@ -111,9 +111,13 @@ two governance consumers are currently `planned`, `manual-adoption`, and
 `not-validated`; no distribution is claimed.
 
 The Pantechnoesis governance inventory also references a separately paired
-Greek identity repository. That reference is only a pending decision. The
-separate repository was not independently observed here, so it is not added to
-the repository or module registries and no ownership is invented for it.
+Greek identity repository. Authenticated read-only lookup did not find the
+requested canonical target. A private ambiguous candidate exists, but its
+identity alignment is unverified and its identifier is intentionally withheld
+from this public registry. The
+[public-safe target attestation](../data/evidence/ECO-GOAL-0001-greek-repository-target-attestation.yaml)
+therefore keeps this as a human-approval decision; no repository, module,
+remote, or synchronization ownership is invented for the ambiguous candidate.
 
 ## Validation contract
 
@@ -151,8 +155,9 @@ was verified, or that human review accepted the proposed ownership decision.
   manifest records from `review` to `validated`.
 - Review the proposed shared-module paths and structured consumer mappings,
   then accept or revise ADR-0002.
-- Independently verify the separately paired Greek identity repository before
-  adding any identity, visibility, module, or consumer claim for it.
+- Obtain explicit human confirmation of the exact Greek target or a decision to
+  defer Greek publication. Inspect any selected candidate under least privilege
+  before adding identity, visibility, module, remote, or consumer claims.
 - Preserve the successful pull-request CI evidence while completing the private
   manifests and ownership review; CI success does not prove those missing
   cross-repository artifacts.

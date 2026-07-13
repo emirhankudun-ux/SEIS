@@ -11,6 +11,7 @@ ERRORS = []
 MANIFEST_PATH = "project.ecosystem.yaml"
 OWNERSHIP_PATH = "data/repository-ownership.yaml"
 OWNERSHIP_DOC_PATH = "docs/REPOSITORY_OWNERSHIP.md"
+GREEK_TARGET_ATTESTATION_PATH = "data/evidence/ECO-GOAL-0001-greek-repository-target-attestation.yaml"
 GOAL_GLOB = "goals/{active,backlog,blocked,completed,archived}/*.yaml"
 
 def absolute(relative_path)
@@ -83,6 +84,34 @@ end
 
 def sha256_digest?(value)
   value.is_a?(String) && value.match?(/\Asha256:[0-9a-f]{64}\z/)
+end
+
+def unquoted_comment_marker?(line)
+  in_single_quote = false
+  in_double_quote = false
+  escaped = false
+
+  line.each_char do |character|
+    if in_double_quote && escaped
+      escaped = false
+      next
+    end
+    if in_double_quote && character == "\\"
+      escaped = true
+      next
+    end
+    if !in_single_quote && character == '"'
+      in_double_quote = !in_double_quote
+      next
+    end
+    if !in_double_quote && character == "'"
+      in_single_quote = !in_single_quote
+      next
+    end
+    return true if character == "#" && !in_single_quote && !in_double_quote
+  end
+
+  false
 end
 
 def existing_repository_artifact?(value)
@@ -207,6 +236,54 @@ ownership_schema = read_json("schemas/repository-ownership.schema.json")
 goal_schema = read_json("schemas/ecosystem-goal.schema.json")
 manifest = read_yaml(MANIFEST_PATH)
 ownership = read_yaml(OWNERSHIP_PATH)
+greek_target_attestation_text = read_text(GREEK_TARGET_ATTESTATION_PATH)
+greek_target_attestation = read_yaml(GREEK_TARGET_ATTESTATION_PATH)
+
+expected_greek_target_attestation = {
+  "schema_version" => 1,
+  "id" => "eco-goal-0001-greek-repository-target-attestation",
+  "goal_id" => "ECO-GOAL-0001",
+  "classification" => "public-safe-metadata-only",
+  "observed_at" => "2026-07-13",
+  "verification_method" => "authenticated-read-only-github-observation",
+  "requested_target" => {
+    "symbolic_name" => "Παντεχνοεπιστημονόησις",
+    "lookup_result" => "not-found"
+  },
+  "ambiguous_candidate" => {
+    "existence" => "observed",
+    "visibility" => "private",
+    "identity_alignment" => "unverified",
+    "identifier_disclosure" => "withheld-private-operational-metadata"
+  },
+  "decision" => {
+    "status" => "human-approval-needed",
+    "allowed_next_actions" => [
+      "confirm-exact-canonical-target",
+      "explicitly-defer-greek-publication"
+    ],
+    "prohibited_actions" => [
+      "claim-ambiguous-candidate-ownership",
+      "configure-remote-without-confirmation",
+      "push-or-force-push"
+    ]
+  },
+  "limitations" => [
+    "point-in-time-observation",
+    "private-identifiers-redacted",
+    "repository-contents-not-inspected",
+    "canonical-target-unresolved"
+  ]
+}
+unless greek_target_attestation == expected_greek_target_attestation
+  ERRORS << "#{GREEK_TARGET_ATTESTATION_PATH}: Greek target attestation must remain the canonical public-safe unresolved decision record"
+end
+if greek_target_attestation_text.lines.any? { |line| unquoted_comment_marker?(line) }
+  ERRORS << "#{GREEK_TARGET_ATTESTATION_PATH}: canonical Greek target attestation must not contain comments"
+end
+if greek_target_attestation_text.match?(%r{https?://|github\.com|\b[0-9a-f]{40}\b}i)
+  ERRORS << "#{GREEK_TARGET_ATTESTATION_PATH}: canonical Greek target attestation must not contain operational URLs or raw revisions"
+end
 
 validate_schema(manifest, manifest_schema, manifest_schema, MANIFEST_PATH) if manifest_schema
 validate_schema(ownership, ownership_schema, ownership_schema, OWNERSHIP_PATH) if ownership_schema
@@ -900,6 +977,11 @@ end
 referenced_attestation_paths = referenced_attestation_paths.compact.uniq.select do |relative_path|
   existing_repository_artifact?(relative_path)
 end
+goal_evidence_artifact_paths = goals.flat_map do |_relative_goal_path, goal|
+  Array(goal["evidence_records"]).map do |record|
+    record["artifact"] if record.is_a?(Hash) && existing_repository_artifact?(record["artifact"])
+  end
+end.compact.uniq
 
 scoped_files = [
   MANIFEST_PATH,
@@ -912,6 +994,7 @@ scoped_files = [
   "schemas/repository-ownership.schema.json",
   "schemas/ecosystem-goal.schema.json",
   *referenced_attestation_paths,
+  *goal_evidence_artifact_paths,
   *goal_paths.map { |path| path.delete_prefix("#{ROOT}/") }
 ].uniq
 secret_patterns = {

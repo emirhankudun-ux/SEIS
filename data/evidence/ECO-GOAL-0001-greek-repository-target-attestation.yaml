@@ -1,0 +1,33 @@
+schema_version: 1
+
+id: eco-goal-0001-greek-repository-target-attestation
+goal_id: ECO-GOAL-0001
+classification: public-safe-metadata-only
+observed_at: '2026-07-13'
+verification_method: authenticated-read-only-github-observation
+
+requested_target:
+  symbolic_name: Παντεχνοεπιστημονόησις
+  lookup_result: not-found
+
+ambiguous_candidate:
+  existence: observed
+  visibility: private
+  identity_alignment: unverified
+  identifier_disclosure: withheld-private-operational-metadata
+
+decision:
+  status: human-approval-needed
+  allowed_next_actions:
+    - confirm-exact-canonical-target
+    - explicitly-defer-greek-publication
+  prohibited_actions:
+    - claim-ambiguous-candidate-ownership
+    - configure-remote-without-confirmation
+    - push-or-force-push
+
+limitations:
+  - point-in-time-observation
+  - private-identifiers-redacted
+  - repository-contents-not-inspected
+  - canonical-target-unresolved

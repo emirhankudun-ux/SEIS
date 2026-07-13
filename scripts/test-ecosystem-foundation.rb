@@ -12,6 +12,7 @@ FIXTURE_FILES = [
   "project.ecosystem.yaml",
   "data/repository-ownership.yaml",
   "data/evidence/ECO-GOAL-0001-private-manifest-review.yaml",
+  "data/evidence/ECO-GOAL-0001-greek-repository-target-attestation.yaml",
   ".github/workflows/foundation-check.yml",
   "docs/ECOSYSTEM_GOAL_TRACKING.md",
   "docs/REPOSITORY_OWNERSHIP.md",
@@ -702,6 +703,59 @@ assert_rejected(
   attestation = YAML.safe_load(File.read(path))
   attestation["attestations"].first["limitations"] << "private-pr-2"
   write_yaml(directory, "data/evidence/ECO-GOAL-0001-private-manifest-review.yaml", attestation)
+end
+
+assert_rejected(
+  "Greek target attestation claiming ambiguous identity alignment",
+  "data/evidence/ECO-GOAL-0001-greek-repository-target-attestation.yaml: Greek target attestation must remain the canonical public-safe unresolved decision record"
+) do |directory|
+  path = "data/evidence/ECO-GOAL-0001-greek-repository-target-attestation.yaml"
+  attestation = YAML.safe_load(File.read(File.join(directory, path)))
+  attestation["ambiguous_candidate"]["identity_alignment"] = "verified"
+  write_yaml(directory, path, attestation)
+end
+
+assert_rejected(
+  "Goal evidence attestation comment with credential assignment",
+  "data/evidence/ECO-GOAL-0001-greek-repository-target-attestation.yaml: contains possible inline credential assignment"
+) do |directory|
+  path = File.join(directory, "data/evidence/ECO-GOAL-0001-greek-repository-target-attestation.yaml")
+  File.open(path, "a") { |file| file.write("\n# password = \"fixture-secret-value\"\n") }
+end
+
+assert_rejected(
+  "Greek target attestation comment with private candidate identifier",
+  "data/evidence/ECO-GOAL-0001-greek-repository-target-attestation.yaml: canonical Greek target attestation must not contain comments"
+) do |directory|
+  path = File.join(directory, "data/evidence/ECO-GOAL-0001-greek-repository-target-attestation.yaml")
+  File.open(path, "a") { |file| file.write("\n# owner/private-candidate\n") }
+end
+
+assert_rejected(
+  "Greek target attestation inline comment with private candidate identifier",
+  "data/evidence/ECO-GOAL-0001-greek-repository-target-attestation.yaml: canonical Greek target attestation must not contain comments"
+) do |directory|
+  path = File.join(directory, "data/evidence/ECO-GOAL-0001-greek-repository-target-attestation.yaml")
+  content = File.read(path)
+  updated = content.sub("schema_version: 1", "schema_version: 1 # owner/private-candidate")
+  abort "inline Greek target comment fixture could not locate schema version" if updated == content
+  File.write(path, updated)
+end
+
+assert_rejected(
+  "Greek target attestation comment with repository URL",
+  "data/evidence/ECO-GOAL-0001-greek-repository-target-attestation.yaml: canonical Greek target attestation must not contain operational URLs or raw revisions"
+) do |directory|
+  path = File.join(directory, "data/evidence/ECO-GOAL-0001-greek-repository-target-attestation.yaml")
+  File.open(path, "a") { |file| file.write("\n# https://github.com/owner/private-candidate\n") }
+end
+
+assert_rejected(
+  "Greek target attestation comment with raw revision",
+  "data/evidence/ECO-GOAL-0001-greek-repository-target-attestation.yaml: canonical Greek target attestation must not contain operational URLs or raw revisions"
+) do |directory|
+  path = File.join(directory, "data/evidence/ECO-GOAL-0001-greek-repository-target-attestation.yaml")
+  File.open(path, "a") { |file| file.write("\n# #{"0" * 40}\n") }
 end
 
 assert_rejected(

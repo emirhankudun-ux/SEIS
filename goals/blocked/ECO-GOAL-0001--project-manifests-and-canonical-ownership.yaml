@@ -50,6 +50,7 @@ scope:
     - schemas/ecosystem-goal.schema.json
     - data/repository-ownership.yaml
     - data/evidence/ECO-GOAL-0001-private-manifest-review.yaml
+    - data/evidence/ECO-GOAL-0001-greek-repository-target-attestation.yaml
     - docs/ECOSYSTEM_GOAL_TRACKING.md
     - docs/REPOSITORY_OWNERSHIP.md
     - docs/adr/0002-ecosystem-governance-bootstrap-ownership.md
@@ -126,8 +127,8 @@ blocked_by:
     unblock_condition: Review the proposed paths and structured consumer mappings, add evidence for any observed distribution, and accept or revise ADR-0002.
   - type: repository-identity
     reference: paired-greek-identity-repository
-    reason: Pantechnoesis governance references a separately paired Greek identity repository whose identity and visibility were not independently observed in this slice.
-    unblock_condition: Verify that repository read-only and make an explicit ownership and synchronization decision without treating the pairing record as observation evidence.
+    reason: Authenticated read-only lookup did not find the requested canonical Greek target. A private ambiguous candidate exists, but its identity alignment is unverified and its identifier is withheld from the public registry.
+    unblock_condition: The accountable human confirms the exact canonical target or explicitly defers Greek publication; any selected candidate then receives a least-privilege identity and visibility inspection before ownership is recorded.
 related_goals:
   - ECO-GOAL-0003
 
@@ -147,6 +148,7 @@ validation:
     - https://github.com/emirhankudun-ux/SEIS/actions/runs/29217557683
     - https://github.com/emirhankudun-ux/SEIS/pull/180
     - data/evidence/ECO-GOAL-0001-private-manifest-review.yaml
+    - data/evidence/ECO-GOAL-0001-greek-repository-target-attestation.yaml
 
 status_history:
   - status: planned
@@ -168,6 +170,7 @@ status_history:
       - ECO-EVIDENCE-008
       - ECO-EVIDENCE-009
       - ECO-EVIDENCE-010
+      - ECO-EVIDENCE-011
 
 evidence_records:
   - id: ECO-EVIDENCE-001
@@ -240,6 +243,13 @@ evidence_records:
     command: null
     exit_code: null
     artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29217557683
+  - id: ECO-EVIDENCE-011
+    type: repository-target-attestation
+    description: A public-safe authenticated lookup attestation records that the requested Greek target was not found and an ambiguous private candidate remains unassigned pending explicit human direction.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: data/evidence/ECO-GOAL-0001-greek-repository-target-attestation.yaml
 
 quality_gates:
   architecture: required
@@ -338,3 +348,4 @@ notes:
   - Scope expanded to CI and an ADR because both are explicit Definition of Done and ownership-decision requirements.
   - Draft pull request 180 carries the expanded evidence contract on top of pull request 177, and its available remote checks passed on the recorded head.
   - SEIS PR 177 remains open, both private manifest PRs remain drafts, and the Goal remains blocked on review and merge, canonical revision refresh, consumer and architecture review, and independent verification of the paired Greek identity repository.
+  - The paired Greek target lookup is now evidence-bound, but the ownership decision remains blocked on explicit human confirmation or deferral; no ambiguous candidate is treated as canonical.
