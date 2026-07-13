@@ -60,7 +60,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "plugin-mesh",
         "mcp-inventory",
         "prompt-engine",
-        "subagent-handoffs"
+        "subagent-handoffs",
+        "installed-ai-workforce"
     ]
 
     public init() {}
@@ -69,7 +70,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         snapshot: SeisAICoreRuntimeSnapshotContract,
         capabilityMesh: SeisAICapabilityMesh,
         promptEngine: SeisAIPromptEngine,
-        handoffSnapshot: SeisAGIAgentHandoffSnapshot
+        handoffSnapshot: SeisAGIAgentHandoffSnapshot,
+        workforceSnapshot: SeisAIWorkforceAssignmentSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -129,6 +131,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Sub-agent handoffs",
                 passed: handoffSnapshot.isReady,
                 evidence: "One writer, separated reviewer/researcher/designer roles, traceable plugin lanes, and human approval."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "installed-ai-workforce",
+                title: "Installed AI workforce registry",
+                passed: workforceSnapshot?.isMetadataOnly == true && workforceSnapshot?.assignments.count == 10,
+                evidence: "Ten source-backed AI/tool assignments are visible as metadata-only roles; Codex remains the primary writer and other roles do not gain direct execution authority."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked

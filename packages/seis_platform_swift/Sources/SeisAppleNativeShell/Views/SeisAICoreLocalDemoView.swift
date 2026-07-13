@@ -6,6 +6,7 @@ import SwiftUI
 final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var snapshot: SeisAICoreRuntimeSnapshotContract?
     @Published private(set) var workspaceIndex: SeisAppleLocalWorkspaceIndex?
+    @Published private(set) var workforceSnapshot: SeisAIWorkforceAssignmentSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -36,6 +37,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         workspaceIndex = SeisAppleLocalWorkspaceIndex.scan(
             rootURL: URL(fileURLWithPath: repositoryPath)
         )
+        workforceSnapshot = try? SeisAIWorkforceAssignmentSnapshot.validated(
+            from: Data(contentsOf: workforceURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -50,7 +54,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 snapshot: nextSnapshot,
                 capabilityMesh: nextCapabilityMesh,
                 promptEngine: promptEngine,
-                handoffSnapshot: nextOrchestrationSnapshot
+                handoffSnapshot: nextOrchestrationSnapshot,
+                workforceSnapshot: workforceSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -67,6 +72,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             snapshot = nil
             workspaceIndex = SeisAppleLocalWorkspaceIndex.scan(
                 rootURL: URL(fileURLWithPath: repositoryPath)
+            )
+            workforceSnapshot = try? SeisAIWorkforceAssignmentSnapshot.validated(
+                from: Data(contentsOf: workforceURL)
             )
             capabilityMesh = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
@@ -362,6 +370,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-ai-core-runtime-snapshot.json")
     }
 
+    private var workforceURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("ai-workforce-assignments.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -395,6 +410,9 @@ struct SeisAICoreLocalDemoView: View {
                 metrics(snapshot: snapshot)
                 if let workspaceIndex = model.workspaceIndex {
                     workspaceAwarenessDisclosure(index: workspaceIndex)
+                }
+                if let workforceSnapshot = model.workforceSnapshot {
+                    workforceDisclosure(snapshot: workforceSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -599,6 +617,62 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Local workspace awareness. \(index.entries.count) safe metadata entries indexed. File contents and mutations are disabled.")
+    }
+
+    private func workforceDisclosure(snapshot: SeisAIWorkforceAssignmentSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Source: content/development/ai-workforce-assignments.json · Version: \(snapshot.version)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Assignments: \(snapshot.assignments.count) · Primary writer: \(snapshot.writerPolicy.primaryWriter) · Status: metadata-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(.secondary)
+                Text(snapshot.writerPolicy.rule)
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+
+                ForEach(snapshot.assignments) { assignment in
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: workforceStatusIcon(assignment.launcherStatus))
+                            .foregroundStyle(workforceStatusColor(assignment.launcherStatus))
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(assignment.displayName)
+                                .font(.caption.weight(.semibold))
+                            Text("\(assignment.category) · \(assignment.route) · \(assignment.launcherStatus)")
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                            Text("No provider call, credential access, direct write, merge, deploy, or autonomous authority.")
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                    .padding(8)
+                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 8))
+                }
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Installed AI workforce roles", systemImage: "person.3.sequence.fill")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Installed AI workforce role registry. \(snapshot.assignments.count) metadata-only assignments. Codex is the primary writer and all other roles remain review, draft, or local-only surfaces.")
+    }
+
+    private func workforceStatusIcon(_ status: String) -> String {
+        if status == "installed" { return "checkmark.circle" }
+        if status.contains("missing-key") { return "key.slash" }
+        if status.contains("pending") || status.contains("defined") { return "clock" }
+        return "questionmark.circle"
+    }
+
+    private func workforceStatusColor(_ status: String) -> Color {
+        if status == "installed" { return .green }
+        if status.contains("missing-key") { return .orange }
+        if status.contains("pending") || status.contains("defined") { return .secondary }
+        return .orange
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {
