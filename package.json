@@ -307,6 +307,7 @@
     "check:seis-eval-critic-advisory": "node scripts/check-seis-eval-critic-advisory.mjs",
     "check:seis-agent-plugin-integration": "node scripts/check-seis-agent-plugin-integration.mjs",
     "check:seis-ai-core-provider-registry": "node scripts/check-seis-ai-core-provider-registry.mjs",
+    "check:seis-prompt-pack-contracts": "node scripts/check-seis-prompt-pack-contracts.mjs",
     "check:seis-ai-core-version-registry": "node scripts/check-seis-ai-core-version-registry.mjs",
     "check:seis-ai-core-version-promotion-gates": "node scripts/check-seis-ai-core-version-promotion-gates.mjs",
     "check:seis-ai-core-subagent-operating-model": "node scripts/check-seis-ai-core-subagent-operating-model.mjs",

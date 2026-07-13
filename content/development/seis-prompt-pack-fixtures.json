@@ -1,0 +1,245 @@
+{
+  "id": "seis-prompt-pack-fixtures",
+  "version": 1,
+  "status": "reviewed-fixture-set",
+  "updatedAt": "2026-07-01",
+  "purpose": "Provide the first schema-backed SEIS Prompt Engine prompt-pack fixtures for Local Demo, repository review, security review, PR rescue, and clean-room prompt defense without executing prompts or calling providers.",
+  "qualityGate": "npm run check:seis-prompt-pack-contracts",
+  "sourceOfTruth": {
+    "promptEngineDoc": "docs/ai/prompt-engine.md",
+    "schema": "content/development/seis-prompt-pack-schema.json",
+    "modelRouterDoc": "docs/ai/model-router.md",
+    "agentRuntimeDoc": "docs/ai/agent-runtime.md"
+  },
+  "truthBoundary": "Repository-local prompt-pack metadata only. The fixtures do not call OpenAI, Anthropic, Gemini, Ollama, Qwen, or any future SEIS model. They do not validate credentials, read private archives, or promote historical prompt material.",
+  "executionPolicyInvariant": {
+    "promptExecuted": false,
+    "providerCalled": false,
+    "credentialRead": false,
+    "archivePromoted": false,
+    "browserSecretAllowed": false,
+    "liveRoutingAllowed": false
+  },
+  "promptPacks": [
+    {
+      "id": "base-seis-identity",
+      "title": "Base SEIS Identity Prompt Pack",
+      "version": "1.0.0",
+      "ownerArea": "SEIS Governance",
+      "intendedCapability": "Preserve SEIS as an AI-native creative operating system rather than a generic dashboard.",
+      "promptSummary": "Establishes product identity, demo honesty, user-work preservation, and premium creative engineering constraints.",
+      "allowedContext": [
+        "public repository docs",
+        "current task objective",
+        "non-secret design notes",
+        "review-safe status summaries"
+      ],
+      "deniedContext": [
+        "API keys",
+        "private keys",
+        "cookies",
+        "private host credentials",
+        "unreviewed proprietary prompts"
+      ],
+      "providerCapabilityRequirements": [
+        "instruction following",
+        "repository reasoning",
+        "safety boundary retention"
+      ],
+      "outputSchema": {
+        "type": "object",
+        "required": ["decision", "evidence", "nextStep"],
+        "properties": {
+          "decision": "string",
+          "evidence": "array of public-safe references",
+          "nextStep": "string"
+        }
+      },
+      "evaluationFixture": {
+        "name": "identity-retention-static-review",
+        "inputClass": "repository status summary",
+        "expectedSignals": ["SEIS identity preserved", "generic dashboard drift rejected", "no live AI claim"]
+      },
+      "rollbackNote": "Remove this pack from the fixture set and keep AGENTS.md as the fallback identity contract.",
+      "allowedActions": ["summarize public docs", "propose scoped PRs", "label mock states"],
+      "forbiddenActions": ["delete user assets", "claim trained SEIS foundation model", "print secrets", "push to main"],
+      "safetyBoundaries": ["local-demo", "metadata-only", "no-secrets", "human-review-for-merge"],
+      "validationMethod": "Static fixture validation through scripts/check-seis-prompt-pack-contracts.mjs.",
+      "reviewState": "reviewed-fixture",
+      "executionPolicy": {
+        "promptExecuted": false,
+        "providerCalled": false,
+        "credentialRead": false,
+        "archivePromoted": false,
+        "browserSecretAllowed": false,
+        "liveRoutingAllowed": false
+      }
+    },
+    {
+      "id": "repo-audit",
+      "title": "Repository Audit Prompt Pack",
+      "version": "1.0.0",
+      "ownerArea": "SEIS Foundation Check",
+      "intendedCapability": "Inspect repository structure, docs, scripts, routes, and risk boundaries before implementation.",
+      "promptSummary": "Guides concise repository inspection and converts findings into scoped, reversible implementation plans.",
+      "allowedContext": ["git status summaries", "public file paths", "package scripts", "validation output"],
+      "deniedContext": [".env contents", "tokens", "private SSH configuration", "private user notes"],
+      "providerCapabilityRequirements": ["long-context review", "file-path reasoning", "risk classification"],
+      "outputSchema": {
+        "type": "object",
+        "required": ["findings", "scope", "validationPlan", "rollbackPlan"],
+        "properties": {
+          "findings": "array",
+          "scope": "array of affected paths",
+          "validationPlan": "array of commands",
+          "rollbackPlan": "string"
+        }
+      },
+      "evaluationFixture": {
+        "name": "dirty-worktree-scope-review",
+        "inputClass": "mixed clean worktree plus dirty original checkout",
+        "expectedSignals": ["dirty checkout preserved", "clean worktree selected", "explicit staged paths only"]
+      },
+      "rollbackNote": "Disable the fixture by removing repo-audit from promptPacks; no runtime adapter depends on it.",
+      "allowedActions": ["inspect public repo files", "draft implementation plans", "recommend validation commands"],
+      "forbiddenActions": ["stage unrelated changes", "reset dirty checkout", "scan private secrets", "force push"],
+      "safetyBoundaries": ["read-only-until-scope-confirmed", "explicit-path-staging", "no-secret-printing"],
+      "validationMethod": "Fixture must preserve deniedContext and forbiddenActions arrays.",
+      "reviewState": "reviewed-fixture",
+      "executionPolicy": {
+        "promptExecuted": false,
+        "providerCalled": false,
+        "credentialRead": false,
+        "archivePromoted": false,
+        "browserSecretAllowed": false,
+        "liveRoutingAllowed": false
+      }
+    },
+    {
+      "id": "security-review",
+      "title": "Security Review Prompt Pack",
+      "version": "1.0.0",
+      "ownerArea": "SEIS Security",
+      "intendedCapability": "Review AI, provider, SSH, and browser demo changes for secret exposure and fake live integration claims.",
+      "promptSummary": "Prioritizes P0/P1 security findings and keeps missing-key, disabled, blocked, planned, and local-only states explicit.",
+      "allowedContext": ["public diff summaries", "redacted validation output", "security policy docs", "provider metadata fixtures"],
+      "deniedContext": ["raw credentials", "private key material", "real host fingerprints", "provider response bodies with private data"],
+      "providerCapabilityRequirements": ["security review", "policy consistency", "structured findings"],
+      "outputSchema": {
+        "type": "object",
+        "required": ["findings", "severity", "evidence", "requiredFixes"],
+        "properties": {
+          "findings": "array",
+          "severity": "P0/P1/P2/P3",
+          "evidence": "array of file paths or public-safe snippets",
+          "requiredFixes": "array"
+        }
+      },
+      "evaluationFixture": {
+        "name": "frontend-provider-secret-block",
+        "inputClass": "browser demo mentions provider features",
+        "expectedSignals": ["no frontend secrets", "backend-only live provider note", "local demo fallback visible"]
+      },
+      "rollbackNote": "Remove security-review from promptPacks and retain SECURITY.md review rules.",
+      "allowedActions": ["flag unsafe patterns", "recommend redaction", "require backend-only provider routes"],
+      "forbiddenActions": ["print secrets", "invent credentials", "approve destructive actions", "mark live providers connected without evidence"],
+      "safetyBoundaries": ["no-secrets", "backend-only-live-ai", "explicit-missing-key-state", "human-approval-needed"],
+      "validationMethod": "Static check requires all executionPolicy flags false and forbidden secret categories present.",
+      "reviewState": "reviewed-fixture",
+      "executionPolicy": {
+        "promptExecuted": false,
+        "providerCalled": false,
+        "credentialRead": false,
+        "archivePromoted": false,
+        "browserSecretAllowed": false,
+        "liveRoutingAllowed": false
+      }
+    },
+    {
+      "id": "pr-rescue",
+      "title": "PR Rescue Prompt Pack",
+      "version": "1.0.0",
+      "ownerArea": "SEIS GitHub Governance",
+      "intendedCapability": "Diagnose failing checks, review blockers, and merge readiness without bypassing protected branch policy.",
+      "promptSummary": "Structures PR triage into evidence, failing gate, minimal fix, validation, rollback, and human approval status.",
+      "allowedContext": ["PR metadata", "CI status summaries", "redacted logs", "changed file list", "review decision state"],
+      "deniedContext": ["GitHub tokens", "secrets from CI logs", "private repository data outside SEIS", "unredacted credentials"],
+      "providerCapabilityRequirements": ["CI reasoning", "GitHub workflow reasoning", "short scoped fix planning"],
+      "outputSchema": {
+        "type": "object",
+        "required": ["blocker", "evidence", "fixPlan", "validation", "humanApprovalNeeded"],
+        "properties": {
+          "blocker": "string",
+          "evidence": "array",
+          "fixPlan": "array",
+          "validation": "array",
+          "humanApprovalNeeded": "boolean"
+        }
+      },
+      "evaluationFixture": {
+        "name": "review-required-auto-merge",
+        "inputClass": "mergeable PR with review gate blocked",
+        "expectedSignals": ["auto-merge enabled", "review required named", "no direct main merge"]
+      },
+      "rollbackNote": "Remove this pack from fixtures; PR template and AGENTS.md still enforce governance.",
+      "allowedActions": ["summarize blockers", "draft focused fixes", "create reviewable PR notes"],
+      "forbiddenActions": ["force push", "merge without approval", "bypass branch protection", "hide failed checks"],
+      "safetyBoundaries": ["main-sacred", "review-gate-respected", "no-force-push", "explicit-validation-status"],
+      "validationMethod": "Static fixture validates GitHub governance forbiddenActions and output schema.",
+      "reviewState": "reviewed-fixture",
+      "executionPolicy": {
+        "promptExecuted": false,
+        "providerCalled": false,
+        "credentialRead": false,
+        "archivePromoted": false,
+        "browserSecretAllowed": false,
+        "liveRoutingAllowed": false
+      }
+    },
+    {
+      "id": "clean-room-demo-packaging",
+      "title": "Clean-Room Demo Packaging Prompt Pack",
+      "version": "1.0.0",
+      "ownerArea": "SEIS Demo Package",
+      "intendedCapability": "Package supplied demo assets and reference-bank material without copying unclear-license implementation or deleting user work.",
+      "promptSummary": "Keeps supplied assets preserved, labels mock states, separates inspiration from implementation, and prevents broken CTA or route claims.",
+      "allowedContext": ["public asset manifests", "route lists", "demo screenshots", "license-safe summaries"],
+      "deniedContext": ["unclear-license source implementation", "private media", "secrets", "personal archive contents without review"],
+      "providerCapabilityRequirements": ["clean-room reasoning", "route coverage reasoning", "UI demo planning"],
+      "outputSchema": {
+        "type": "object",
+        "required": ["assetPolicy", "routePlan", "mockLabels", "validation"],
+        "properties": {
+          "assetPolicy": "string",
+          "routePlan": "array",
+          "mockLabels": "array",
+          "validation": "array"
+        }
+      },
+      "evaluationFixture": {
+        "name": "reference-bank-preservation",
+        "inputClass": "supplied zip/folder assets plus web demo surface",
+        "expectedSignals": ["no deletion", "mock labels visible", "route checks from repo root"]
+      },
+      "rollbackNote": "Remove clean-room-demo-packaging from the fixture set; no demo files are generated by this contract.",
+      "allowedActions": ["document provenance", "plan additive integration", "label mock or planned features"],
+      "forbiddenActions": ["delete supplied assets", "copy leaked code", "claim live integrations", "rewrite demo identity generically"],
+      "safetyBoundaries": ["clean-room", "asset-preservation", "mock-vs-real-labels", "route-evidence-required"],
+      "validationMethod": "Static fixture checks clean-room and asset-preservation invariants.",
+      "reviewState": "reviewed-fixture",
+      "executionPolicy": {
+        "promptExecuted": false,
+        "providerCalled": false,
+        "credentialRead": false,
+        "archivePromoted": false,
+        "browserSecretAllowed": false,
+        "liveRoutingAllowed": false
+      }
+    }
+  ],
+  "nextSafeActions": [
+    "Wire these fixtures into the Prompt Engine Studio UI after its route merges.",
+    "Add golden conversation tests that use redacted static inputs only.",
+    "Add prompt injection and redaction fixtures before any live provider adapter can consume prompt packs."
+  ]
+}

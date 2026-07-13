@@ -16,8 +16,8 @@ and compact context packages.
 
 | Area | Status | Evidence | Blocker | Next Safe Action |
 | --- | --- | --- | --- | --- |
-| Prompt registry | Planned | No versioned prompt registry exists in this branch. | No schema or fixtures. | Define prompt-pack schema. |
-| Prompt versioning | Documented | This document and `docs/ai/seis-ai-core.md`. | No regression suite. | Add golden conversation fixtures later. |
+| Prompt registry | Documented fixture | `content/development/seis-prompt-pack-schema.json`, `content/development/seis-prompt-pack-fixtures.json`, `npm run check:seis-prompt-pack-contracts`. | No runtime prompt execution or live provider adapter. | Wire reviewed fixtures into Prompt Engine Studio after route merge. |
+| Prompt versioning | Documented fixture | Versioned prompt packs in `content/development/seis-prompt-pack-fixtures.json`. | No golden conversation regression suite yet. | Add redacted golden conversation fixtures later. |
 | Context budget | Planned | No prompt budget records found. | No runtime tokenizer/counter. | Start with static budgets and manual review. |
 | Safety prompts | Documented | `AGENTS.md`, `SECURITY.md`, this contract. | No prompt injection regression tests. | Add repository-content injection fixtures. |
 
@@ -49,12 +49,22 @@ Each future prompt pack should include:
 - evaluation fixture
 - rollback note
 
+## Current Prompt-Pack Contract Artifacts
+
+The first prompt-pack contract artifacts are now schema-backed static fixtures:
+
+- `content/development/seis-prompt-pack-schema.json` defines the required fields, public safety invariants, and execution policy invariant for prompt packs.
+- `content/development/seis-prompt-pack-fixtures.json` contains a `reviewed-fixture-set` for base SEIS identity, repository audit, security review, PR rescue, and clean-room demo packaging.
+- `npm run check:seis-prompt-pack-contracts` validates the schema, fixtures, package script, safety boundaries, and this document.
+
+These artifacts keep `promptExecuted: false`, `providerCalled: false`, and `credentialRead: false`. They are implementation evidence for prompt-pack metadata only; they do not execute prompts, call providers, validate credentials, train a model, read private archives, or promote historical prompt material automatically.
+
 ## Evidence Requirements
 
 Before the prompt engine is marked implemented, add:
 
-- prompt-pack schema
-- at least three reviewed prompt fixtures
+- prompt-pack schema: `content/development/seis-prompt-pack-schema.json`
+- at least three reviewed prompt fixtures: `content/development/seis-prompt-pack-fixtures.json`
 - golden conversation tests
 - prompt injection tests
 - compact context test
@@ -70,5 +80,4 @@ Before the prompt engine is marked implemented, add:
 
 ## Next Safe Action
 
-Create a small prompt-pack schema and fixture set without connecting any live
-provider.
+Wire the reviewed prompt-pack fixture set into Prompt Engine Studio after its route merges, then add redacted golden conversation, prompt injection, compact context, and redaction tests before any live provider adapter consumes prompt packs.
