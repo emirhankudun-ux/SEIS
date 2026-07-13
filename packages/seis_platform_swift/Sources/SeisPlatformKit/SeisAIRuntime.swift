@@ -218,6 +218,12 @@ public actor SeisAIRuntime {
         router.route(request, providers: adaptersByID.values.map(\.descriptor))
     }
 
+    public func inspectRoute(_ request: SeisAIRoutingRequest) async -> SeisAIRouteDecision {
+        let decision = route(request)
+        await evidenceLedger.recordRouteInspection(decision)
+        return decision
+    }
+
     public func planAgentTask(_ request: SeisAIAgentTaskRequest) async -> SeisAIAgentTaskPlan {
         let plan: SeisAIAgentTaskPlan
         if let agentRuntime {

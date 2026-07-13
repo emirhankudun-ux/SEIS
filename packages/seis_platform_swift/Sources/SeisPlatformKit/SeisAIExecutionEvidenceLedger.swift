@@ -4,11 +4,13 @@ public enum SeisAIExecutionEvidenceKind: String, CaseIterable, Codable, Equatabl
     case agentPlan = "agent-plan"
     case personalLanePlan = "personal-lane-plan"
     case providerExecution = "provider-execution"
+    case routeInspection = "route-inspection"
 }
 
 public enum SeisAIExecutionEvidenceOutcome: String, CaseIterable, Codable, Equatable, Sendable {
     case planned
     case blocked
+    case routeInspection = "route-inspection"
     case completedLocalDemo = "completed-local-demo"
     case completedApprovedProvider = "completed-approved-provider"
     case approvalRequired = "approval-required"
@@ -220,6 +222,31 @@ public actor SeisAIExecutionEvidenceLedger {
             networkCallPerformed: result.networkCallPerformed,
             clientCredentialRead: result.clientCredentialRead,
             blockedReasonCount: result.blockedReasons.count
+        )
+    }
+
+    @discardableResult
+    public func recordRouteInspection(
+        _ decision: SeisAIRouteDecision
+    ) -> SeisAIExecutionEvidence {
+        append(
+            kind: .routeInspection,
+            subjectID: "route-inspection",
+            outcome: .routeInspection,
+            routeOutcome: decision.outcome,
+            providerID: decision.selectedProviderID,
+            modelIdentifier: decision.selectedModelIdentifier,
+            plannedActionIDs: [],
+            blockedActionIDs: [],
+            requiredApprovalCount: decision.requiresHumanApproval ? 1 : 0,
+            inputReferenceCount: 0,
+            localOnly: true,
+            executionPerformed: decision.executionPerformed,
+            adapterInvocationPerformed: false,
+            providerCallPerformed: decision.providerCallPerformed,
+            networkCallPerformed: decision.networkCallPerformed,
+            clientCredentialRead: false,
+            blockedReasonCount: decision.blockedReasons.count
         )
     }
 

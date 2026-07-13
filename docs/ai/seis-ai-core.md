@@ -190,6 +190,10 @@ policy against the registered Local Demo provider, then shows the selected
 provider/model, eligibility, fallback, approval, rejection, and fail-closed
 state. Inspection performs no provider call, network request, credential read,
 MCP invocation, SSH action, deployment, or GitHub mutation.
+An explicit inspection is recorded as a `route-inspection` evidence envelope
+with only route outcome, provider/model identity, approval count, and safety
+truth flags; request IDs, task types, prompt bodies, and blocked-reason text are
+not persisted.
 
 Managed-agent planning also supports a bounded batch action for all 13
 validated managed agents. The batch renders each purpose through the versioned

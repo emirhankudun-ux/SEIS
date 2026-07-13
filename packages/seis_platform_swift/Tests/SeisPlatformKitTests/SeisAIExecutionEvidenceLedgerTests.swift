@@ -80,6 +80,38 @@ struct SeisAIExecutionEvidenceLedgerTests {
         #expect(!encodedText.contains("output"))
     }
 
+    @Test func explicitRouteInspectionRecordsOnlyRedactedDecisionMetadata() async throws {
+        let ledger = SeisAIExecutionEvidenceLedger()
+        let runtime = try SeisAIRuntime(evidenceLedger: ledger)
+        let decision = await runtime.inspectRoute(
+            SeisAIRoutingRequest(
+                id: "route-inspection-test",
+                taskType: "repository readiness plan must not be stored",
+                capability: "planning",
+                privacyMode: .localOnly,
+                contentClassification: .repositoryMetadata,
+                localOnly: true,
+                fallbackPolicy: .none
+            )
+        )
+        let evidence = await runtime.evidenceSnapshot()
+        let encoded = try JSONEncoder().encode(evidence)
+        let encodedText = String(decoding: encoded, as: UTF8.self)
+
+        #expect(decision.outcome == .localDemoReady)
+        #expect(evidence.count == 1)
+        #expect(evidence[0].kind == .routeInspection)
+        #expect(evidence[0].outcome == .routeInspection)
+        #expect(evidence[0].routeOutcome == .localDemoReady)
+        #expect(evidence[0].providerID == SeisAIProviderDescriptor.localDemo.id)
+        #expect(evidence[0].modelIdentifier == SeisAIProviderDescriptor.localDemo.modelIdentifier)
+        #expect(evidence[0].isReadOnly)
+        #expect(evidence[0].localOnly)
+        #expect(evidence[0].respectsSecretBoundary)
+        #expect(!encodedText.contains("repository readiness plan must not be stored"))
+        #expect(!encodedText.contains("route-inspection-test"))
+    }
+
     @Test func blockedExecutionIsRecordedAsBlockedMetadata() async throws {
         let ledger = SeisAIExecutionEvidenceLedger()
         let runtime = try SeisAIRuntime(evidenceLedger: ledger)

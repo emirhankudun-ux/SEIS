@@ -327,7 +327,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
 
         isRouting = true
         Task {
-            let decision = await runtime.route(request)
+            let decision = await runtime.inspectRoute(request)
             routeDecision = decision
             isRouting = false
             switch decision.outcome {
