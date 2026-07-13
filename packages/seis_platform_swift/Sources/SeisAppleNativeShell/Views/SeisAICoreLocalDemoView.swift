@@ -6,6 +6,7 @@ import SwiftUI
 final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var snapshot: SeisAICoreRuntimeSnapshotContract?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
+    @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var statusMessage = "AI Core snapshot has not been loaded."
     @Published private(set) var lastPlan: SeisAIPersonalLaneTaskPlan?
     @Published private(set) var lastAgentPlan: SeisAIAgentTaskPlan?
@@ -30,6 +31,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             runtime = loadedRuntime
             snapshot = nextSnapshot
             capabilityMesh = SeisAICapabilityMesh(snapshot: nextSnapshot)
+            orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
             lastPlan = nil
             lastAgentPlan = nil
             statusMessage = "Local Demo ready: \(nextSnapshot.pluginMesh.personalLanes.count) lanes are linked to the typed runtime."
@@ -41,6 +43,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             runtime = nil
             snapshot = nil
             capabilityMesh = nil
+            orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             lastPlan = nil
             lastAgentPlan = nil
             evidence = []
@@ -170,6 +173,7 @@ struct SeisAICoreLocalDemoView: View {
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
                 }
+                orchestrationDisclosure(snapshot: model.orchestrationSnapshot)
                 providerList(snapshot: snapshot)
                 taskPlanner
                 laneList(snapshot: snapshot)
@@ -336,6 +340,58 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Plugin and MCP capability mesh. \(mesh.pluginStatusLabel). \(mesh.mcpStatusLabel). No plugin activation or MCP invocation is performed.")
+    }
+
+    private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    Text(snapshot.statusLabel)
+                        .font(.caption.monospaced())
+                        .foregroundStyle(snapshot.isReady ? .green : .orange)
+                    Spacer(minLength: 8)
+                    Text(snapshot.writerStatusLabel)
+                        .font(.caption2.monospaced())
+                        .foregroundStyle(.secondary)
+                }
+                Text("Plugin lanes: \(snapshot.pluginLaneSummary)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.tertiary)
+                Text("Governance: one writer, separated reviewer, researcher, and designer roles; all handoffs require human approval.")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+
+                ForEach(snapshot.records) { record in
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: record.writeAllowed ? "pencil.circle" : "checkmark.shield")
+                            .foregroundStyle(record.writeAllowed ? .orange : .green)
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("\(record.role.rawValue) · \(record.assignmentId)")
+                                .font(.caption.weight(.semibold))
+                            Text("\(record.pluginLaneId) · \(record.outputArtifact) · \(record.status.rawValue)")
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                            Text("Write: \(record.writeAllowed ? "yes" : "no") · Approval: \(record.requiresHumanApproval ? "required" : "missing")")
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                    .padding(8)
+                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 8))
+                }
+
+                Text("Handoff plan only. No agent was activated, no file was written, and no provider, MCP, SSH, deployment, or GitHub action was executed.")
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Sub-agent orchestration and handoffs", systemImage: "arrow.triangle.branch")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Sub-agent orchestration and handoffs. \(snapshot.statusLabel). One writer and separate reviewer, researcher, and designer roles. Human approval required; no execution performed.")
     }
 
     private func providerStatusColor(_ status: SeisAICoreProviderState) -> Color {

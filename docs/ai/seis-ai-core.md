@@ -170,6 +170,14 @@ non-negative MCP inventory, a safe runtime boundary, and human approval for
 live actions. This keeps "listed", "source-backed", "locally smoke-verified",
 and "activated" as separate states.
 
+The same native panel now exposes the existing
+`SeisAGIAgentHandoffSnapshot` as a governed sub-agent orchestration surface:
+one candidate writer, separated reviewer/researcher/designer roles, selected
+plugin lanes, output artifacts, handoff status, and human-approval requirements.
+This is decomposition and handoff evidence only. It does not activate agents,
+grant runtime authority, or turn the planned writer permission into an
+unapproved write.
+
 Validation:
 `swift test --package-path packages/seis_platform_swift`.
 
