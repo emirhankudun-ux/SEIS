@@ -22,6 +22,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var languageModelIntakeSnapshot: SeisLanguageModelIntakeRegistrySnapshot?
     @Published private(set) var languageModelTrainingCurriculumSnapshot: SeisLanguageModelTrainingCurriculumSnapshot?
     @Published private(set) var publicReadinessProgramSnapshot: SeisAIPublicReadinessProgramSnapshot?
+    @Published private(set) var commandCenterOperationsReadinessSnapshot: SeisCommandCenterOperationsReadinessSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -100,6 +101,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         publicReadinessProgramSnapshot = try? SeisAIPublicReadinessProgramSnapshot.validated(
             from: Data(contentsOf: publicReadinessProgramURL)
         )
+        commandCenterOperationsReadinessSnapshot = try? SeisCommandCenterOperationsReadinessSnapshot.validated(
+            from: Data(contentsOf: commandCenterOperationsReadinessURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -130,7 +134,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 readOnlyRouterContractSnapshot: readOnlyRouterContractSnapshot,
                 languageModelIntakeSnapshot: languageModelIntakeSnapshot,
                 languageModelTrainingCurriculumSnapshot: languageModelTrainingCurriculumSnapshot,
-                publicReadinessProgramSnapshot: publicReadinessProgramSnapshot
+                publicReadinessProgramSnapshot: publicReadinessProgramSnapshot,
+                commandCenterOperationsReadinessSnapshot: commandCenterOperationsReadinessSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -196,6 +201,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             publicReadinessProgramSnapshot = try? SeisAIPublicReadinessProgramSnapshot.validated(
                 from: Data(contentsOf: publicReadinessProgramURL)
             )
+            commandCenterOperationsReadinessSnapshot = try? SeisCommandCenterOperationsReadinessSnapshot.validated(
+                from: Data(contentsOf: commandCenterOperationsReadinessURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -212,6 +220,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             languageModelIntakeSnapshot = nil
             languageModelTrainingCurriculumSnapshot = nil
             publicReadinessProgramSnapshot = nil
+            commandCenterOperationsReadinessSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -620,6 +629,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-ai-public-readiness-program.json")
     }
 
+    private var commandCenterOperationsReadinessURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-command-center-operations-readiness.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -701,6 +717,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let publicReadinessProgramSnapshot = model.publicReadinessProgramSnapshot {
                     publicReadinessProgramDisclosure(snapshot: publicReadinessProgramSnapshot)
+                }
+                if let commandCenterOperationsReadinessSnapshot = model.commandCenterOperationsReadinessSnapshot {
+                    commandCenterOperationsReadinessDisclosure(snapshot: commandCenterOperationsReadinessSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -1675,6 +1694,47 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Public readiness program. Local Demo is review-ready without provider keys; GitHub-wide readiness and AGI claims remain blocked, with six readiness gates and explicit approval prerequisites.")
+    }
+
+    private func commandCenterOperationsReadinessDisclosure(snapshot: SeisCommandCenterOperationsReadinessSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.decisionState) · \(snapshot.summaryCards.count) summary cards · \(snapshot.checks.count) checks")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isReviewBeforeRelease ? .secondary : .red)
+                Text("Required areas: \(snapshot.requiredReadinessAreas.joined(separator: " · "))")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                ForEach(snapshot.summaryCards) { card in
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: card.status == "Ready" ? "checkmark.circle" : "eye")
+                            .foregroundStyle(card.status == "Ready" ? .green : .orange)
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("\(card.area) · \(card.status)")
+                                .font(.caption.weight(.semibold))
+                            Text(card.evidence)
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                }
+                ForEach(snapshot.checks) { check in
+                    Text("\(check.name) · \(check.status) · \(check.owner) · \(check.gate)")
+                        .font(.caption2.monospaced())
+                        .foregroundStyle(.secondary)
+                }
+                Text(snapshot.completionRule)
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Command Center operations readiness", systemImage: "checklist")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Command Center operations readiness. Review-before-release status across release, CI, security, rollback, and handoff; release-ready requires external evidence and rollback proof.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {

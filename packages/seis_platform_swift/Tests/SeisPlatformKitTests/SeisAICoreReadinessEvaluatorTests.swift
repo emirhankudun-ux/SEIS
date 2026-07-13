@@ -25,6 +25,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let languageModelIntake = try SeisLanguageModelIntakeRegistrySnapshot.validated(from: languageModelIntakeData())
         let languageModelTrainingCurriculum = try SeisLanguageModelTrainingCurriculumSnapshot.validated(from: languageModelTrainingCurriculumData())
         let publicReadinessProgram = try SeisAIPublicReadinessProgramSnapshot.validated(from: publicReadinessProgramData())
+        let commandCenterOperationsReadiness = try SeisCommandCenterOperationsReadinessSnapshot.validated(from: commandCenterOperationsReadinessData())
 
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
@@ -46,14 +47,15 @@ struct SeisAICoreReadinessEvaluatorTests {
             readOnlyRouterContractSnapshot: readOnlyRouterContract,
             languageModelIntakeSnapshot: languageModelIntake,
             languageModelTrainingCurriculumSnapshot: languageModelTrainingCurriculum,
-            publicReadinessProgramSnapshot: publicReadinessProgram
+            publicReadinessProgramSnapshot: publicReadinessProgram,
+            commandCenterOperationsReadinessSnapshot: commandCenterOperationsReadiness
         )
 
         #expect(report.isReadyLocalDemo)
         #expect(report.status == .readyLocalDemo)
         #expect(report.evaluatorVersion == SeisAICoreReadinessEvaluator.evaluatorVersion)
         #expect(report.checks.map(\.id) == SeisAICoreReadinessEvaluator.expectedCheckIDs)
-        #expect(report.passedCount == 24)
+        #expect(report.passedCount == 25)
         #expect(report.failedCount == 0)
         #expect(report.truthBoundary.contains("not proof of live provider access"))
     }
@@ -76,6 +78,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let languageModelIntake = try SeisLanguageModelIntakeRegistrySnapshot.validated(from: languageModelIntakeData())
         let languageModelTrainingCurriculum = try SeisLanguageModelTrainingCurriculumSnapshot.validated(from: languageModelTrainingCurriculumData())
         let publicReadinessProgram = try SeisAIPublicReadinessProgramSnapshot.validated(from: publicReadinessProgramData())
+        let commandCenterOperationsReadiness = try SeisCommandCenterOperationsReadinessSnapshot.validated(from: commandCenterOperationsReadinessData())
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
             capabilityMesh: SeisAICapabilityMesh(snapshot: snapshot),
@@ -96,7 +99,8 @@ struct SeisAICoreReadinessEvaluatorTests {
             readOnlyRouterContractSnapshot: readOnlyRouterContract,
             languageModelIntakeSnapshot: languageModelIntake,
             languageModelTrainingCurriculumSnapshot: languageModelTrainingCurriculum,
-            publicReadinessProgramSnapshot: publicReadinessProgram
+            publicReadinessProgramSnapshot: publicReadinessProgram,
+            commandCenterOperationsReadinessSnapshot: commandCenterOperationsReadiness
         )
 
         #expect(report.status.rawValue == "ready-local-demo")
@@ -213,5 +217,11 @@ struct SeisAICoreReadinessEvaluatorTests {
         var root = URL(fileURLWithPath: #filePath)
         for _ in 0..<5 { root.deleteLastPathComponent() }
         return try Data(contentsOf: root.appendingPathComponent("content/development/seis-ai-public-readiness-program.json"))
+    }
+
+    private func commandCenterOperationsReadinessData() throws -> Data {
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<5 { root.deleteLastPathComponent() }
+        return try Data(contentsOf: root.appendingPathComponent("content/development/seis-command-center-operations-readiness.json"))
     }
 }

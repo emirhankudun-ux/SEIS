@@ -76,7 +76,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "read-only-router-contract",
         "language-model-intake",
         "language-model-training-curriculum",
-        "public-readiness-program"
+        "public-readiness-program",
+        "command-center-operations-readiness"
     ]
 
     public init() {}
@@ -101,7 +102,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         readOnlyRouterContractSnapshot: SeisAIReadOnlyModelRouterContractSnapshot? = nil,
         languageModelIntakeSnapshot: SeisLanguageModelIntakeRegistrySnapshot? = nil,
         languageModelTrainingCurriculumSnapshot: SeisLanguageModelTrainingCurriculumSnapshot? = nil,
-        publicReadinessProgramSnapshot: SeisAIPublicReadinessProgramSnapshot? = nil
+        publicReadinessProgramSnapshot: SeisAIPublicReadinessProgramSnapshot? = nil,
+        commandCenterOperationsReadinessSnapshot: SeisCommandCenterOperationsReadinessSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -258,6 +260,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Public readiness program",
                 passed: publicReadinessProgramSnapshot?.isLocalDemoOnly == true,
                 evidence: "Local Demo is public-review-ready without keys, while GitHub-wide readiness, AGI claims, 512B route eligibility, runtime authority, training, weights, inference, and benchmark status remain explicitly blocked or not started."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "command-center-operations-readiness",
+                title: "Command Center operations readiness",
+                passed: commandCenterOperationsReadinessSnapshot?.isReviewBeforeRelease == true,
+                evidence: "Release, CI, security, rollback, and handoff evidence remain visible in review-before-release state; release-ready requires local quality, clean source boundary, external CI or explicit handoff evidence, and rollback proof."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked
