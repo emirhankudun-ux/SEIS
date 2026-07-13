@@ -77,7 +77,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "language-model-intake",
         "language-model-training-curriculum",
         "public-readiness-program",
-        "command-center-operations-readiness"
+        "command-center-operations-readiness",
+        "agi-independent-evidence-ledger"
     ]
 
     public init() {}
@@ -103,7 +104,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         languageModelIntakeSnapshot: SeisLanguageModelIntakeRegistrySnapshot? = nil,
         languageModelTrainingCurriculumSnapshot: SeisLanguageModelTrainingCurriculumSnapshot? = nil,
         publicReadinessProgramSnapshot: SeisAIPublicReadinessProgramSnapshot? = nil,
-        commandCenterOperationsReadinessSnapshot: SeisCommandCenterOperationsReadinessSnapshot? = nil
+        commandCenterOperationsReadinessSnapshot: SeisCommandCenterOperationsReadinessSnapshot? = nil,
+        agiIndependentEvidenceLedgerSnapshot: SeisAGIIndependentEvidenceLedgerSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -266,6 +268,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Command Center operations readiness",
                 passed: commandCenterOperationsReadinessSnapshot?.isReviewBeforeRelease == true,
                 evidence: "Release, CI, security, rollback, and handoff evidence remain visible in review-before-release state; release-ready requires local quality, clean source boundary, external CI or explicit handoff evidence, and rollback proof."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "agi-independent-evidence-ledger",
+                title: "AGI independent evidence ledger",
+                passed: agiIndependentEvidenceLedgerSnapshot?.isPlanOnly == true,
+                evidence: "Independent AGI and 512B evidence remains missing and approval is not recorded; Local Demo stays available while routeability, runtime authority, AGI claims, internet downloads, training, inference, benchmarks, and deployment remain blocked."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked

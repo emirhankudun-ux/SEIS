@@ -26,6 +26,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let languageModelTrainingCurriculum = try SeisLanguageModelTrainingCurriculumSnapshot.validated(from: languageModelTrainingCurriculumData())
         let publicReadinessProgram = try SeisAIPublicReadinessProgramSnapshot.validated(from: publicReadinessProgramData())
         let commandCenterOperationsReadiness = try SeisCommandCenterOperationsReadinessSnapshot.validated(from: commandCenterOperationsReadinessData())
+        let agiIndependentEvidenceLedger = try SeisAGIIndependentEvidenceLedgerSnapshot.validated(from: agiIndependentEvidenceLedgerData())
 
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
@@ -48,14 +49,15 @@ struct SeisAICoreReadinessEvaluatorTests {
             languageModelIntakeSnapshot: languageModelIntake,
             languageModelTrainingCurriculumSnapshot: languageModelTrainingCurriculum,
             publicReadinessProgramSnapshot: publicReadinessProgram,
-            commandCenterOperationsReadinessSnapshot: commandCenterOperationsReadiness
+            commandCenterOperationsReadinessSnapshot: commandCenterOperationsReadiness,
+            agiIndependentEvidenceLedgerSnapshot: agiIndependentEvidenceLedger
         )
 
         #expect(report.isReadyLocalDemo)
         #expect(report.status == .readyLocalDemo)
         #expect(report.evaluatorVersion == SeisAICoreReadinessEvaluator.evaluatorVersion)
         #expect(report.checks.map(\.id) == SeisAICoreReadinessEvaluator.expectedCheckIDs)
-        #expect(report.passedCount == 25)
+        #expect(report.passedCount == 26)
         #expect(report.failedCount == 0)
         #expect(report.truthBoundary.contains("not proof of live provider access"))
     }
@@ -79,6 +81,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let languageModelTrainingCurriculum = try SeisLanguageModelTrainingCurriculumSnapshot.validated(from: languageModelTrainingCurriculumData())
         let publicReadinessProgram = try SeisAIPublicReadinessProgramSnapshot.validated(from: publicReadinessProgramData())
         let commandCenterOperationsReadiness = try SeisCommandCenterOperationsReadinessSnapshot.validated(from: commandCenterOperationsReadinessData())
+        let agiIndependentEvidenceLedger = try SeisAGIIndependentEvidenceLedgerSnapshot.validated(from: agiIndependentEvidenceLedgerData())
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
             capabilityMesh: SeisAICapabilityMesh(snapshot: snapshot),
@@ -100,7 +103,8 @@ struct SeisAICoreReadinessEvaluatorTests {
             languageModelIntakeSnapshot: languageModelIntake,
             languageModelTrainingCurriculumSnapshot: languageModelTrainingCurriculum,
             publicReadinessProgramSnapshot: publicReadinessProgram,
-            commandCenterOperationsReadinessSnapshot: commandCenterOperationsReadiness
+            commandCenterOperationsReadinessSnapshot: commandCenterOperationsReadiness,
+            agiIndependentEvidenceLedgerSnapshot: agiIndependentEvidenceLedger
         )
 
         #expect(report.status.rawValue == "ready-local-demo")
@@ -223,5 +227,11 @@ struct SeisAICoreReadinessEvaluatorTests {
         var root = URL(fileURLWithPath: #filePath)
         for _ in 0..<5 { root.deleteLastPathComponent() }
         return try Data(contentsOf: root.appendingPathComponent("content/development/seis-command-center-operations-readiness.json"))
+    }
+
+    private func agiIndependentEvidenceLedgerData() throws -> Data {
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<5 { root.deleteLastPathComponent() }
+        return try Data(contentsOf: root.appendingPathComponent("content/development/seis-agi-independent-evidence-ledger.json"))
     }
 }

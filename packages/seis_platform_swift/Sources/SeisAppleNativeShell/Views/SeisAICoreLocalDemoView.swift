@@ -23,6 +23,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var languageModelTrainingCurriculumSnapshot: SeisLanguageModelTrainingCurriculumSnapshot?
     @Published private(set) var publicReadinessProgramSnapshot: SeisAIPublicReadinessProgramSnapshot?
     @Published private(set) var commandCenterOperationsReadinessSnapshot: SeisCommandCenterOperationsReadinessSnapshot?
+    @Published private(set) var agiIndependentEvidenceLedgerSnapshot: SeisAGIIndependentEvidenceLedgerSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -104,6 +105,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         commandCenterOperationsReadinessSnapshot = try? SeisCommandCenterOperationsReadinessSnapshot.validated(
             from: Data(contentsOf: commandCenterOperationsReadinessURL)
         )
+        agiIndependentEvidenceLedgerSnapshot = try? SeisAGIIndependentEvidenceLedgerSnapshot.validated(
+            from: Data(contentsOf: agiIndependentEvidenceLedgerURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -135,7 +139,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 languageModelIntakeSnapshot: languageModelIntakeSnapshot,
                 languageModelTrainingCurriculumSnapshot: languageModelTrainingCurriculumSnapshot,
                 publicReadinessProgramSnapshot: publicReadinessProgramSnapshot,
-                commandCenterOperationsReadinessSnapshot: commandCenterOperationsReadinessSnapshot
+                commandCenterOperationsReadinessSnapshot: commandCenterOperationsReadinessSnapshot,
+                agiIndependentEvidenceLedgerSnapshot: agiIndependentEvidenceLedgerSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -204,6 +209,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             commandCenterOperationsReadinessSnapshot = try? SeisCommandCenterOperationsReadinessSnapshot.validated(
                 from: Data(contentsOf: commandCenterOperationsReadinessURL)
             )
+            agiIndependentEvidenceLedgerSnapshot = try? SeisAGIIndependentEvidenceLedgerSnapshot.validated(
+                from: Data(contentsOf: agiIndependentEvidenceLedgerURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -221,6 +229,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             languageModelTrainingCurriculumSnapshot = nil
             publicReadinessProgramSnapshot = nil
             commandCenterOperationsReadinessSnapshot = nil
+            agiIndependentEvidenceLedgerSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -636,6 +645,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-command-center-operations-readiness.json")
     }
 
+    private var agiIndependentEvidenceLedgerURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-agi-independent-evidence-ledger.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -720,6 +736,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let commandCenterOperationsReadinessSnapshot = model.commandCenterOperationsReadinessSnapshot {
                     commandCenterOperationsReadinessDisclosure(snapshot: commandCenterOperationsReadinessSnapshot)
+                }
+                if let agiIndependentEvidenceLedgerSnapshot = model.agiIndependentEvidenceLedgerSnapshot {
+                    agiIndependentEvidenceLedgerDisclosure(snapshot: agiIndependentEvidenceLedgerSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -1735,6 +1754,48 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Command Center operations readiness. Review-before-release status across release, CI, security, rollback, and handoff; release-ready requires external evidence and rollback proof.")
+    }
+
+    private func agiIndependentEvidenceLedgerDisclosure(snapshot: SeisAGIIndependentEvidenceLedgerSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.status) · \(snapshot.researchBaseline.count) research baselines · \(snapshot.pendingExternalInquiries.count) pending inquiries")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isPlanOnly ? .secondary : .red)
+                Text("Local Demo: \(snapshot.publicReadyForLocalDemo ? "available" : "blocked") · AGI claim: \(snapshot.agiClaimAllowed ? "allowed" : "blocked") · 512B route: \(snapshot.routeEligibleToday ? "eligible" : "blocked") · Approval: \(snapshot.humanApprovalNeeded.decision)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                ForEach(snapshot.pendingExternalInquiries) { inquiry in
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: "person.crop.circle.badge.questionmark")
+                            .foregroundStyle(.orange)
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("\(inquiry.id) · \(inquiry.status)")
+                                .font(.caption.weight(.semibold))
+                            Text("Owners: \(inquiry.ownerAgents.joined(separator: ", "))")
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                            Text("Required: \(inquiry.requiredEvidence.joined(separator: " · "))")
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                }
+                Text("Readiness gates: \(snapshot.readinessChecks.gateIds.joined(separator: " · "))")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                Text(snapshot.truthBoundary)
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("AGI independent evidence ledger", systemImage: "person.2.badge.gearshape")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("AGI independent evidence ledger. Three external inquiries are missing, human approval is not recorded, Local Demo remains available, and AGI or 512B claims remain blocked.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {

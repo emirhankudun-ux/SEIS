@@ -43,7 +43,7 @@ The foundation includes:
 | AI Workforce Training | Active local seed training contract | `docs/ai/ai-workforce-training.md`, `content/development/seis-ai-workforce-training-plan.json`, `scripts/check-seis-ai-workforce-training.mjs`, `scripts/run-seis-ai-workforce-training.mjs` | No live provider calls, credential reads, cloud fine-tuning, dataset downloads, SSH, deployment, or runtime authority are performed. | Use installed assistants only as supervised candidate reviewers; rebuild deterministic local seed artifacts with `npm run automation:seis-ai-workforce-training`. |
 | Provider credentials | Statically audited | `docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md` | No runtime verification was performed. | Keep keys optional, server-only, and disabled until adapter tests exist. |
 | Local model mode | Planned | No local model adapter found in this branch. | No runtime integration. | Define Ollama/localhost as optional zero-key future mode. |
-| Evaluation | Implemented as local readiness evaluator | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAICoreReadinessEvaluator.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAICoreReadinessEvaluatorTests.swift`, canonical workforce assignment, training, model-planning, promotion, version-registry, operating-model, fixture-pack, review-ledger, scaling-council, MCP, plugin-integration, provider, router, intake, training-curriculum, public-readiness, and operations-readiness snapshots | No live-model benchmark or provider evaluation exists. | Keep the report scoped to Local Demo readiness and add live-adapter evals only after backend approval. |
+| Evaluation | Implemented as local readiness evaluator | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAICoreReadinessEvaluator.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAICoreReadinessEvaluatorTests.swift`, canonical workforce assignment, training, model-planning, promotion, version-registry, operating-model, fixture-pack, review-ledger, scaling-council, MCP, plugin-integration, provider, router, intake, training-curriculum, public-readiness, operations-readiness, and independent-evidence snapshots | No live-model benchmark or provider evaluation exists. | Keep the report scoped to Local Demo readiness and add live-adapter evals only after backend approval. |
 
 ## Rules / Policy
 
@@ -350,6 +350,14 @@ exposes release, CI, security, rollback, and handoff areas; four summary cards;
 six checks; owners, statuses, gates, and evidence; and the
 `review-before-release` completion rule. It does not promote release-ready,
 deploy, merge, external-CI, or rollback claims without their required evidence.
+
+The panel also reads
+`content/development/seis-agi-independent-evidence-ledger.json`. It exposes
+four research baselines, three missing external inquiries, seven readiness
+gates, seven required artifacts, human approval as `not-recorded`, and the
+five forbidden claims. The ledger remains plan-only and does not authorize AGI
+or 512B claims, internet downloads, training, inference, benchmarks, deployment,
+or routeability.
 
 The panel also reads
 `content/development/seis-ai-core-provider-registry.json`. It preserves
