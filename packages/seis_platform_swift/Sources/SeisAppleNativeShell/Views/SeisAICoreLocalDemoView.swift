@@ -11,10 +11,12 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var statusMessage = "AI Core snapshot has not been loaded."
     @Published private(set) var lastPlan: SeisAIPersonalLaneTaskPlan?
     @Published private(set) var lastAgentPlan: SeisAIAgentTaskPlan?
+    @Published private(set) var bulkAgentPlanStatus: String?
     @Published private(set) var routeDecision: SeisAIRouteDecision?
     @Published private(set) var evidence: [SeisAIExecutionEvidence] = []
     @Published private(set) var evidencePersistenceState: SeisAIExecutionEvidencePersistenceState = .memoryOnly
     @Published private(set) var isPlanning = false
+    @Published private(set) var isBulkPlanning = false
     @Published private(set) var isRouting = false
 
     private let repositoryPath: String
@@ -46,6 +48,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             )
             lastPlan = nil
             lastAgentPlan = nil
+            bulkAgentPlanStatus = nil
             routeDecision = nil
             statusMessage = "Local Demo ready: \(nextSnapshot.pluginMesh.personalLanes.count) lanes are linked to the typed runtime."
             Task {
@@ -60,6 +63,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             readinessReport = nil
             lastPlan = nil
             lastAgentPlan = nil
+            bulkAgentPlanStatus = nil
             routeDecision = nil
             evidence = []
             Task {
@@ -97,6 +101,58 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             statusMessage = plan.outcome == .planned
                 ? "\(agent.displayName) plan prepared without runtime authority."
                 : "\(agent.displayName) plan was blocked by the Local Demo boundary."
+        }
+    }
+
+    func planAllAgents(_ agents: [SeisAICoreManagedAgent]) {
+        guard let runtime else {
+            statusMessage = "Load a validated snapshot before planning managed agents."
+            return
+        }
+        guard !agents.isEmpty else {
+            statusMessage = "No managed agents are registered in the validated snapshot."
+            return
+        }
+
+        let requests = agents.compactMap { agent -> SeisAIAgentTaskRequest? in
+            guard let purpose = renderPlanPurpose(
+                goal: agent.displayName,
+                constraints: "Status-and-plan-only; inspect repository metadata and produce a bounded plan."
+            ) else {
+                return nil
+            }
+            return SeisAIAgentTaskRequest(
+                id: "apple-bulk-agent-plan-\(agent.id)",
+                agentID: agent.id,
+                purpose: purpose,
+                requestedActions: [.inspectRepositoryMetadata, .producePlan],
+                inputReferences: ["apps/seis-core/data/seis-ai-core-runtime-snapshot.json"]
+            )
+        }
+
+        guard requests.count == agents.count else {
+            statusMessage = "Managed-agent batch was blocked by the versioned prompt safety boundary."
+            return
+        }
+
+        isPlanning = true
+        isBulkPlanning = true
+        bulkAgentPlanStatus = nil
+
+        Task {
+            var plans: [SeisAIAgentTaskPlan] = []
+            for request in requests {
+                plans.append(await runtime.planAgentTask(request))
+            }
+
+            let plannedCount = plans.filter { $0.outcome == .planned }.count
+            lastAgentPlan = plans.last
+            bulkAgentPlanStatus = "\(plannedCount)/\(plans.count) managed agent plans prepared locally; no agent was activated."
+            evidence = await runtime.evidenceSnapshot(limit: 8)
+            evidencePersistenceState = await runtime.evidencePersistenceState()
+            isBulkPlanning = false
+            isPlanning = false
+            statusMessage = "Managed-agent batch completed as bounded plan-only work; no provider, MCP, SSH, deployment, or GitHub action was executed."
         }
     }
 
@@ -823,8 +879,25 @@ struct SeisAICoreLocalDemoView: View {
 
     private func agentList(snapshot: SeisAICoreRuntimeSnapshotContract) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Managed Agent Plans")
-                .font(.subheadline.weight(.semibold))
+            HStack(alignment: .firstTextBaseline) {
+                Text("Managed Agent Plans")
+                    .font(.subheadline.weight(.semibold))
+                Spacer(minLength: 8)
+                Button {
+                    model.planAllAgents(snapshot.agentRegistry.agents)
+                } label: {
+                    Label("Plan all", systemImage: "rectangle.stack.badge.play")
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.small)
+                .disabled(model.isPlanning || model.isBulkPlanning)
+            }
+
+            if let bulkAgentPlanStatus = model.bulkAgentPlanStatus {
+                Text(bulkAgentPlanStatus)
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
 
             ForEach(snapshot.agentRegistry.agents) { agent in
                 HStack(alignment: .top, spacing: 10) {

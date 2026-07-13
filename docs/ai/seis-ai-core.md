@@ -191,6 +191,13 @@ provider/model, eligibility, fallback, approval, rejection, and fail-closed
 state. Inspection performs no provider call, network request, credential read,
 MCP invocation, SSH action, deployment, or GitHub mutation.
 
+Managed-agent planning also supports a bounded batch action for all 13
+validated managed agents. The batch renders each purpose through the versioned
+prompt boundary, asks only the status-and-plan runtime for plans, reports the
+planned count, and refreshes redacted evidence. It does not activate agents,
+delegate recursively, write files, call providers or MCP, run SSH or
+deployment, or mutate GitHub.
+
 Validation:
 `swift test --package-path packages/seis_platform_swift`.
 
