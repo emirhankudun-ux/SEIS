@@ -9,6 +9,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var workforceSnapshot: SeisAIWorkforceAssignmentSnapshot?
     @Published private(set) var workforceTrainingSnapshot: SeisAIWorkforceTrainingSnapshot?
     @Published private(set) var modelPlanningSnapshot: SeisAIModelPlanningEvidenceSnapshot?
+    @Published private(set) var versionPromotionSnapshot: SeisAICoreVersionPromotionSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -48,6 +49,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         modelPlanningSnapshot = try? SeisAIModelPlanningEvidenceSnapshot.validated(
             from: modelPlanningData()
         )
+        versionPromotionSnapshot = try? SeisAICoreVersionPromotionSnapshot.validated(
+            from: Data(contentsOf: versionPromotionURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -65,7 +69,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 handoffSnapshot: nextOrchestrationSnapshot,
                 workforceSnapshot: workforceSnapshot,
                 workforceTrainingSnapshot: workforceTrainingSnapshot,
-                modelPlanningSnapshot: modelPlanningSnapshot
+                modelPlanningSnapshot: modelPlanningSnapshot,
+                versionPromotionSnapshot: versionPromotionSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -92,9 +97,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             modelPlanningSnapshot = try? SeisAIModelPlanningEvidenceSnapshot.validated(
                 from: modelPlanningData()
             )
+            versionPromotionSnapshot = try? SeisAICoreVersionPromotionSnapshot.validated(
+                from: Data(contentsOf: versionPromotionURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
+            versionPromotionSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -412,6 +421,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         })
     }
 
+    private var versionPromotionURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-ai-core-version-promotion-gates.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -454,6 +470,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let modelPlanningSnapshot = model.modelPlanningSnapshot {
                     modelPlanningDisclosure(snapshot: modelPlanningSnapshot)
+                }
+                if let versionPromotionSnapshot = model.versionPromotionSnapshot {
+                    versionPromotionDisclosure(snapshot: versionPromotionSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -828,6 +847,66 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Model scaling and AGI evidence. Six plan-only records. Route, runtime authority, production readiness, and AGI claims are blocked; Local Demo is the only allowed mode.")
+    }
+
+    private func versionPromotionDisclosure(snapshot: SeisAICoreVersionPromotionSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Source: content/development/seis-ai-core-version-promotion-gates.json · Version: \(snapshot.version)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Decision: \(snapshot.currentDryRun.decision) · Release promotion: \(snapshot.currentDryRun.releasePromotionAllowed ? "allowed" : "blocked") · Real execution: \(snapshot.currentDryRun.realExecutionBlocked ? "blocked" : "available")")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("Runtime: \(snapshot.runtimeBoundary.currentLevel) · Write: \(snapshot.runtimeBoundary.writeExecution) · Provider calls: \(snapshot.runtimeBoundary.liveProviderCalls) · Credentials: \(snapshot.runtimeBoundary.credentialAccess)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text(snapshot.currentDryRun.reason)
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+
+                Text("Lane responsibilities")
+                    .font(.caption.weight(.semibold))
+                ForEach(snapshot.laneResponsibilities) { lane in
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(lane.displayName)
+                            .font(.caption.weight(.semibold))
+                        Text(lane.promotionDuty)
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+
+                Text("Yearly promotion gates")
+                    .font(.caption.weight(.semibold))
+                ForEach(snapshot.gates) { gate in
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: gate.releasePromotionAllowed ? "exclamationmark.triangle" : "lock.shield")
+                            .foregroundStyle(gate.releasePromotionAllowed ? .red : .green)
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Year \(gate.year) · \(gate.versionTarget)")
+                                .font(.caption.weight(.semibold))
+                            Text("\(gate.status) · \(gate.dryRunDecision) · Human approval: \(gate.humanApprovalRequired ? "required" : "not required")")
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                            Text("Evidence: \(gate.requiredEvidence.count) · Validators: \(gate.validationCommands.count) · Blockers: \(gate.blockers.count)")
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                }
+                Text("This is a promotion dry-run, not release approval. No release, external mutation, credential access, deployment, SSH, provider call, or background automation was performed.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("AI Core version promotion gates", systemImage: "checkmark.seal")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("AI Core version promotion gates. Evidence-only dry-run, five yearly gates, release promotion blocked, external mutation blocked, and human approval boundaries visible.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {

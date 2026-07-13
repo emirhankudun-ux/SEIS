@@ -63,7 +63,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "subagent-handoffs",
         "installed-ai-workforce",
         "workforce-training-control-plane",
-        "model-planning-evidence"
+        "model-planning-evidence",
+        "version-promotion-dry-run"
     ]
 
     public init() {}
@@ -75,7 +76,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         handoffSnapshot: SeisAGIAgentHandoffSnapshot,
         workforceSnapshot: SeisAIWorkforceAssignmentSnapshot? = nil,
         workforceTrainingSnapshot: SeisAIWorkforceTrainingSnapshot? = nil,
-        modelPlanningSnapshot: SeisAIModelPlanningEvidenceSnapshot? = nil
+        modelPlanningSnapshot: SeisAIModelPlanningEvidenceSnapshot? = nil,
+        versionPromotionSnapshot: SeisAICoreVersionPromotionSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -154,6 +156,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 passed: modelPlanningSnapshot?.isMetadataOnly == true &&
                     modelPlanningSnapshot?.agiClaimIsBlocked == true,
                 evidence: "Six model-scaling and public-readiness records remain plan-only; route, runtime authority, production, and AGI claims stay blocked while Local Demo remains the only public-safe mode."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "version-promotion-dry-run",
+                title: "Version promotion dry-run",
+                passed: versionPromotionSnapshot?.isMetadataOnly == true,
+                evidence: "Version promotion is evidence-only: status-and-plan-only runtime, five yearly gates, no release promotion, no external mutation, no credential access, and explicit human approval boundaries."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked
