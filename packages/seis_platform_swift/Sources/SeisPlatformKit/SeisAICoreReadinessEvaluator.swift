@@ -88,7 +88,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "action-governance-contracts",
         "agent-governance-contracts",
         "active-mission-board",
-        "long-horizon-mission-kernel"
+        "long-horizon-mission-kernel",
+        "agi-evaluation-protocol-boundary"
     ]
 
     public init() {}
@@ -127,7 +128,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         agentRoleSchemaSnapshot: SeisAgentRoleSchemaSnapshot? = nil,
         agentPermissionMatrixSnapshot: SeisAgentPermissionMatrixSnapshot? = nil,
         activeMissionBoardSnapshot: SeisActiveMissionBoardSnapshot? = nil,
-        longHorizonMissionKernelSnapshot: SeisLongHorizonMissionKernelSnapshot? = nil
+        longHorizonMissionKernelSnapshot: SeisLongHorizonMissionKernelSnapshot? = nil,
+        agiEvaluationProtocolSnapshot: SeisAGIEvaluationProtocolSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -356,6 +358,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Long-horizon mission kernel",
                 passed: longHorizonMissionKernelSnapshot?.isMetadataOnly == true,
                 evidence: "One hundred twenty planned missions cover twelve waves, 38 domains, 35 languages, and Apple/Windows mission lanes without runtime installation by language percentage."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "agi-evaluation-protocol-boundary",
+                title: "AGI evaluation protocol boundary",
+                passed: agiEvaluationProtocolSnapshot?.isMetadataOnly == true,
+                evidence: "Twenty minimum AGI-claim evidence requirements, eleven evaluation dimensions, four source-derived gates, and eleven reviewers remain not-run and promotion-blocked; this is not AGI or benchmark evidence."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked

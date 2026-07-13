@@ -36,6 +36,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var agentPermissionMatrixSnapshot: SeisAgentPermissionMatrixSnapshot?
     @Published private(set) var activeMissionBoardSnapshot: SeisActiveMissionBoardSnapshot?
     @Published private(set) var longHorizonMissionKernelSnapshot: SeisLongHorizonMissionKernelSnapshot?
+    @Published private(set) var agiEvaluationProtocolSnapshot: SeisAGIEvaluationProtocolSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -156,6 +157,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         longHorizonMissionKernelSnapshot = try? SeisLongHorizonMissionKernelSnapshot.validated(
             from: Data(contentsOf: longHorizonMissionKernelURL)
         )
+        agiEvaluationProtocolSnapshot = try? SeisAGIEvaluationProtocolSnapshot.validated(
+            from: Data(contentsOf: agiEvaluationProtocolURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -200,7 +204,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 agentRoleSchemaSnapshot: agentRoleSchemaSnapshot,
                 agentPermissionMatrixSnapshot: agentPermissionMatrixSnapshot,
                 activeMissionBoardSnapshot: activeMissionBoardSnapshot,
-                longHorizonMissionKernelSnapshot: longHorizonMissionKernelSnapshot
+                longHorizonMissionKernelSnapshot: longHorizonMissionKernelSnapshot,
+                agiEvaluationProtocolSnapshot: agiEvaluationProtocolSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -308,6 +313,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             longHorizonMissionKernelSnapshot = try? SeisLongHorizonMissionKernelSnapshot.validated(
                 from: Data(contentsOf: longHorizonMissionKernelURL)
             )
+            agiEvaluationProtocolSnapshot = try? SeisAGIEvaluationProtocolSnapshot.validated(
+                from: Data(contentsOf: agiEvaluationProtocolURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -338,6 +346,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             agentPermissionMatrixSnapshot = nil
             activeMissionBoardSnapshot = nil
             longHorizonMissionKernelSnapshot = nil
+            agiEvaluationProtocolSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -844,6 +853,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-long-horizon-missions.json")
     }
 
+    private var agiEvaluationProtocolURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-agi-evaluation-protocol.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -969,6 +985,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let longHorizonMissionKernelSnapshot = model.longHorizonMissionKernelSnapshot {
                     longHorizonMissionKernelDisclosure(snapshot: longHorizonMissionKernelSnapshot)
+                }
+                if let agiEvaluationProtocolSnapshot = model.agiEvaluationProtocolSnapshot {
+                    agiEvaluationProtocolDisclosure(snapshot: agiEvaluationProtocolSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -2295,6 +2314,30 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Long-horizon mission kernel. Fifty-two weeks, twelve waves, 120 planned missions, 38 domains, 35 languages, 20 Apple missions, and 20 Windows missions; metadata-only.")
+    }
+
+    private func agiEvaluationProtocolDisclosure(snapshot: SeisAGIEvaluationProtocolSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("(snapshot.minimumEvidenceCount) minimum claim evidence items · (snapshot.evaluationDimensions.count) dimensions · (snapshot.sourceDerivedReadinessGates.count) source gates · metadata-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("Research sources: (snapshot.publicResearchBaseline.sources.count) · Reviewers: (snapshot.requiredReviewers.count) · Evaluation: (snapshot.evaluationRunStatus) · Benchmarks: (snapshot.benchmarkStatus)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Promotion: \(snapshot.promotionDecisionModel.defaultDecision) · External review: \(snapshot.promotionDecisionModel.publicClaimRequiresExternalReview ? "required" : "not required") · Human route approval: \(snapshot.promotionDecisionModel.routeEligibilityRequiresHumanApproval ? "required" : "not required")")
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+                Text(snapshot.truthBoundary)
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("AGI evaluation protocol boundary", systemImage: "checkmark.shield")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("AGI evaluation protocol boundary. Twenty minimum claim evidence items, eleven evaluation dimensions, four source gates, and eleven reviewers remain not-run; promotion is blocked and this is not AGI or benchmark evidence.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {

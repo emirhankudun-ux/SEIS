@@ -44,6 +44,7 @@ The foundation includes:
 | Provider credentials | Statically audited | `docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md` | No runtime verification was performed. | Keep keys optional, server-only, and disabled until adapter tests exist. |
 | Local model mode | Planned | No local model adapter found in this branch. | No runtime integration. | Define Ollama/localhost as optional zero-key future mode. |
 | Evaluation | Implemented as local readiness evaluator | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAICoreReadinessEvaluator.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAICoreReadinessEvaluatorTests.swift`, canonical workforce assignment, training, model-planning, promotion, version-registry, operating-model, fixture-pack, review-ledger, scaling-council, MCP, plugin-integration, provider, router, intake, training-curriculum, public-readiness, operations-readiness, independent-evidence, GitHub-readiness, AGI-public-evidence, knowledge-system, data-schema-registry, design-component-inventory, universal-capability-kernel, action-governance, agent-governance, active-mission-board, and long-horizon-mission-kernel snapshots | No live-model benchmark or provider evaluation exists. | Keep the report scoped to Local Demo readiness and add live-adapter evals only after backend approval. |
+| AGI evaluation protocol | Bound as metadata-only Apple readiness evidence | `content/development/seis-agi-evaluation-protocol.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIEvaluationProtocolSnapshot.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAGIEvaluationProtocolSnapshotTests.swift` | Protocol is draft/not-run; no AGI, benchmark, weights, inference, provider, or route-eligibility evidence exists. | Keep the promotion default blocked and require independent evidence, external review, and human approval before any future claim or route. |
 
 ## Rules / Policy
 
@@ -434,6 +435,15 @@ The panel also reads
 missions, 20 Windows missions, source references, and the same no-language-
 percentage runtime-install policy. This is metadata-only mission evidence; the
 native surface does not install runtimes, activate agents, or execute missions.
+
+The panel also reads
+`content/development/seis-agi-evaluation-protocol.json`. It exposes the
+protocol's 20 minimum evidence items, 11 evaluation dimensions, four
+source-derived gates, 10 public research sources, and 11 required reviewers.
+All evaluations remain `not-run`, the default promotion decision remains
+`blocked`, and external review plus human route approval remain required. This
+is a safety and evidence boundary, not AGI, benchmark, weights, inference, or
+provider evidence.
 
 The panel also reads
 `content/development/seis-ai-core-provider-registry.json`. It preserves
