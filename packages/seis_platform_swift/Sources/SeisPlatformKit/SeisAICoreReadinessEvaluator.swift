@@ -84,7 +84,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "command-center-knowledge-system",
         "data-schema-registry",
         "design-component-inventory",
-        "universal-capability-kernel"
+        "universal-capability-kernel",
+        "action-governance-contracts"
     ]
 
     public init() {}
@@ -117,7 +118,9 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         commandCenterKnowledgeSystemSnapshot: SeisCommandCenterKnowledgeSystemSnapshot? = nil,
         dataSchemaRegistrySnapshot: SeisDataSchemaRegistrySnapshot? = nil,
         designComponentInventorySnapshot: SeisDesignComponentInventorySnapshot? = nil,
-        universalCapabilityKernelSnapshot: SeisUniversalCapabilityKernelSnapshot? = nil
+        universalCapabilityKernelSnapshot: SeisUniversalCapabilityKernelSnapshot? = nil,
+        actionDecisionContractSnapshot: SeisActionDecisionContractSnapshot? = nil,
+        actionExecutionContractSnapshot: SeisActionExecutionContractSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -322,6 +325,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Universal capability kernel",
                 passed: universalCapabilityKernelSnapshot?.isMetadataOnly == true,
                 evidence: "Thirty-eight domains, fourteen lanes, thirty-eight agent roles, and 168 plugin inventory records remain source-backed and approval-gated."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "action-governance-contracts",
+                title: "Action governance contracts",
+                passed: actionDecisionContractSnapshot?.isMetadataOnly == true && actionExecutionContractSnapshot?.isMetadataOnly == true,
+                evidence: "Read-only decisions, dry-run execution, redaction, explicit approval, and documented rollback remain source-backed; no action authority is implied."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked

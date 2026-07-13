@@ -30,6 +30,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var dataSchemaRegistrySnapshot: SeisDataSchemaRegistrySnapshot?
     @Published private(set) var designComponentInventorySnapshot: SeisDesignComponentInventorySnapshot?
     @Published private(set) var universalCapabilityKernelSnapshot: SeisUniversalCapabilityKernelSnapshot?
+    @Published private(set) var actionDecisionContractSnapshot: SeisActionDecisionContractSnapshot?
+    @Published private(set) var actionExecutionContractSnapshot: SeisActionExecutionContractSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -132,6 +134,12 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         universalCapabilityKernelSnapshot = try? SeisUniversalCapabilityKernelSnapshot.validated(
             from: Data(contentsOf: universalCapabilityKernelURL)
         )
+        actionDecisionContractSnapshot = try? SeisActionDecisionContractSnapshot.validated(
+            from: Data(contentsOf: actionDecisionContractURL)
+        )
+        actionExecutionContractSnapshot = try? SeisActionExecutionContractSnapshot.validated(
+            from: Data(contentsOf: actionExecutionContractURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -170,7 +178,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 commandCenterKnowledgeSystemSnapshot: commandCenterKnowledgeSystemSnapshot,
                 dataSchemaRegistrySnapshot: dataSchemaRegistrySnapshot,
                 designComponentInventorySnapshot: designComponentInventorySnapshot,
-                universalCapabilityKernelSnapshot: universalCapabilityKernelSnapshot
+                universalCapabilityKernelSnapshot: universalCapabilityKernelSnapshot,
+                actionDecisionContractSnapshot: actionDecisionContractSnapshot,
+                actionExecutionContractSnapshot: actionExecutionContractSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -260,6 +270,12 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             universalCapabilityKernelSnapshot = try? SeisUniversalCapabilityKernelSnapshot.validated(
                 from: Data(contentsOf: universalCapabilityKernelURL)
             )
+            actionDecisionContractSnapshot = try? SeisActionDecisionContractSnapshot.validated(
+                from: Data(contentsOf: actionDecisionContractURL)
+            )
+            actionExecutionContractSnapshot = try? SeisActionExecutionContractSnapshot.validated(
+                from: Data(contentsOf: actionExecutionContractURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -284,6 +300,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             dataSchemaRegistrySnapshot = nil
             designComponentInventorySnapshot = nil
             universalCapabilityKernelSnapshot = nil
+            actionDecisionContractSnapshot = nil
+            actionExecutionContractSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -748,6 +766,20 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-universal-capability-kernel.json")
     }
 
+    private var actionDecisionContractURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-action-decision-contract.json")
+    }
+
+    private var actionExecutionContractURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-action-execution-contract.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -853,6 +885,13 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let universalCapabilityKernelSnapshot = model.universalCapabilityKernelSnapshot {
                     universalCapabilityKernelDisclosure(snapshot: universalCapabilityKernelSnapshot)
+                }
+                if let actionDecisionContractSnapshot = model.actionDecisionContractSnapshot,
+                   let actionExecutionContractSnapshot = model.actionExecutionContractSnapshot {
+                    actionGovernanceContractsDisclosure(
+                        decision: actionDecisionContractSnapshot,
+                        execution: actionExecutionContractSnapshot
+                    )
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -2076,6 +2115,33 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Universal capability kernel. Thirty-eight domains, fourteen lanes, thirty-eight agent roles, 168 plugin records, and explicit user approval before activation; metadata-only.")
+    }
+
+    private func actionGovernanceContractsDisclosure(
+        decision: SeisActionDecisionContractSnapshot,
+        execution: SeisActionExecutionContractSnapshot
+    ) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Decision: \(decision.defaultDecision) · Execution: \(execution.defaultDecision) · \(decision.ruleCount) capability rules")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(decision.isMetadataOnly && execution.isMetadataOnly ? .secondary : .red)
+                Text("Dry run: \(execution.executionPolicy.dryRun ? "yes" : "no") · Max command: \(execution.executionPolicy.maxCommandSeconds)s · Rollback: \(execution.executionPolicy.rollback.strategy)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.tertiary)
+                Text("Explicit approval: \(execution.executionPolicy.requiresExplicitApprovalFor.joined(separator: " · "))")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                Text("Secret capability is denied; write, shell, git, network, deploy, model, and data remain gated or approval-required. Reports are redacted and no action is executed by this inspection surface.")
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Action governance contracts", systemImage: "checkmark.shield")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Action governance contracts. Read-only decision default, dry-run execution default, twelve capability rules, explicit approval for higher-risk actions, redaction, documented rollback, and no execution authority.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {

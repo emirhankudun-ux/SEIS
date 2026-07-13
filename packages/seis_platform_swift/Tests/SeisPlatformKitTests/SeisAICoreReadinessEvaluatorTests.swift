@@ -33,6 +33,8 @@ struct SeisAICoreReadinessEvaluatorTests {
         let dataSchemaRegistry = try SeisDataSchemaRegistrySnapshot.validated(from: dataSchemaRegistryData())
         let designComponentInventory = try SeisDesignComponentInventorySnapshot.validated(from: designComponentInventoryData())
         let universalCapabilityKernel = try SeisUniversalCapabilityKernelSnapshot.validated(from: universalCapabilityKernelData())
+        let actionDecisionContract = try SeisActionDecisionContractSnapshot.validated(from: actionDecisionContractData())
+        let actionExecutionContract = try SeisActionExecutionContractSnapshot.validated(from: actionExecutionContractData())
 
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
@@ -62,14 +64,16 @@ struct SeisAICoreReadinessEvaluatorTests {
             commandCenterKnowledgeSystemSnapshot: commandCenterKnowledgeSystem,
             dataSchemaRegistrySnapshot: dataSchemaRegistry,
             designComponentInventorySnapshot: designComponentInventory,
-            universalCapabilityKernelSnapshot: universalCapabilityKernel
+            universalCapabilityKernelSnapshot: universalCapabilityKernel,
+            actionDecisionContractSnapshot: actionDecisionContract,
+            actionExecutionContractSnapshot: actionExecutionContract
         )
 
         #expect(report.isReadyLocalDemo)
         #expect(report.status == .readyLocalDemo)
         #expect(report.evaluatorVersion == SeisAICoreReadinessEvaluator.evaluatorVersion)
         #expect(report.checks.map(\.id) == SeisAICoreReadinessEvaluator.expectedCheckIDs)
-        #expect(report.passedCount == 32)
+        #expect(report.passedCount == 33)
         #expect(report.failedCount == 0)
         #expect(report.truthBoundary.contains("not proof of live provider access"))
     }
@@ -100,6 +104,8 @@ struct SeisAICoreReadinessEvaluatorTests {
         let dataSchemaRegistry = try SeisDataSchemaRegistrySnapshot.validated(from: dataSchemaRegistryData())
         let designComponentInventory = try SeisDesignComponentInventorySnapshot.validated(from: designComponentInventoryData())
         let universalCapabilityKernel = try SeisUniversalCapabilityKernelSnapshot.validated(from: universalCapabilityKernelData())
+        let actionDecisionContract = try SeisActionDecisionContractSnapshot.validated(from: actionDecisionContractData())
+        let actionExecutionContract = try SeisActionExecutionContractSnapshot.validated(from: actionExecutionContractData())
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
             capabilityMesh: SeisAICapabilityMesh(snapshot: snapshot),
@@ -128,7 +134,9 @@ struct SeisAICoreReadinessEvaluatorTests {
             commandCenterKnowledgeSystemSnapshot: commandCenterKnowledgeSystem,
             dataSchemaRegistrySnapshot: dataSchemaRegistry,
             designComponentInventorySnapshot: designComponentInventory,
-            universalCapabilityKernelSnapshot: universalCapabilityKernel
+            universalCapabilityKernelSnapshot: universalCapabilityKernel,
+            actionDecisionContractSnapshot: actionDecisionContract,
+            actionExecutionContractSnapshot: actionExecutionContract
         )
 
         #expect(report.status.rawValue == "ready-local-demo")
@@ -293,5 +301,17 @@ struct SeisAICoreReadinessEvaluatorTests {
         var root = URL(fileURLWithPath: #filePath)
         for _ in 0..<5 { root.deleteLastPathComponent() }
         return try Data(contentsOf: root.appendingPathComponent("content/development/seis-universal-capability-kernel.json"))
+    }
+
+    private func actionDecisionContractData() throws -> Data {
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<5 { root.deleteLastPathComponent() }
+        return try Data(contentsOf: root.appendingPathComponent("content/development/seis-action-decision-contract.json"))
+    }
+
+    private func actionExecutionContractData() throws -> Data {
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<5 { root.deleteLastPathComponent() }
+        return try Data(contentsOf: root.appendingPathComponent("content/development/seis-action-execution-contract.json"))
     }
 }
