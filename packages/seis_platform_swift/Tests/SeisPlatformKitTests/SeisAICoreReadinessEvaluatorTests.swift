@@ -15,6 +15,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let versionPromotion = try SeisAICoreVersionPromotionSnapshot.validated(from: versionPromotionData())
         let versionRegistry = try SeisAICoreVersionRegistrySnapshot.validated(from: versionRegistryData())
         let subagentOperatingModel = try SeisAISubagentOperatingModelSnapshot.validated(from: subagentOperatingModelData())
+        let subagentRuntimeFixtures = try SeisAISubagentRuntimeFixturesSnapshot.validated(from: subagentRuntimeFixturesData())
 
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
@@ -26,14 +27,15 @@ struct SeisAICoreReadinessEvaluatorTests {
             modelPlanningSnapshot: modelPlanning,
             versionPromotionSnapshot: versionPromotion,
             versionRegistrySnapshot: versionRegistry,
-            subagentOperatingModelSnapshot: subagentOperatingModel
+            subagentOperatingModelSnapshot: subagentOperatingModel,
+            subagentRuntimeFixturesSnapshot: subagentRuntimeFixtures
         )
 
         #expect(report.isReadyLocalDemo)
         #expect(report.status == .readyLocalDemo)
         #expect(report.evaluatorVersion == SeisAICoreReadinessEvaluator.evaluatorVersion)
         #expect(report.checks.map(\.id) == SeisAICoreReadinessEvaluator.expectedCheckIDs)
-        #expect(report.passedCount == 14)
+        #expect(report.passedCount == 15)
         #expect(report.failedCount == 0)
         #expect(report.truthBoundary.contains("not proof of live provider access"))
     }
@@ -46,6 +48,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let versionPromotion = try SeisAICoreVersionPromotionSnapshot.validated(from: versionPromotionData())
         let versionRegistry = try SeisAICoreVersionRegistrySnapshot.validated(from: versionRegistryData())
         let subagentOperatingModel = try SeisAISubagentOperatingModelSnapshot.validated(from: subagentOperatingModelData())
+        let subagentRuntimeFixtures = try SeisAISubagentRuntimeFixturesSnapshot.validated(from: subagentRuntimeFixturesData())
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
             capabilityMesh: SeisAICapabilityMesh(snapshot: snapshot),
@@ -56,7 +59,8 @@ struct SeisAICoreReadinessEvaluatorTests {
             modelPlanningSnapshot: modelPlanning,
             versionPromotionSnapshot: versionPromotion,
             versionRegistrySnapshot: versionRegistry,
-            subagentOperatingModelSnapshot: subagentOperatingModel
+            subagentOperatingModelSnapshot: subagentOperatingModel,
+            subagentRuntimeFixturesSnapshot: subagentRuntimeFixtures
         )
 
         #expect(report.status.rawValue == "ready-local-demo")
@@ -113,5 +117,11 @@ struct SeisAICoreReadinessEvaluatorTests {
         var root = URL(fileURLWithPath: #filePath)
         for _ in 0..<5 { root.deleteLastPathComponent() }
         return try Data(contentsOf: root.appendingPathComponent("content/development/seis-ai-core-subagent-operating-model.json"))
+    }
+
+    private func subagentRuntimeFixturesData() throws -> Data {
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<5 { root.deleteLastPathComponent() }
+        return try Data(contentsOf: root.appendingPathComponent("content/development/seis-ai-core-subagent-runtime-fixtures.json"))
     }
 }

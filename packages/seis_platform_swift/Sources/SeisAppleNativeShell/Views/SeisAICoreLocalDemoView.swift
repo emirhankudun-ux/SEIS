@@ -12,6 +12,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var versionPromotionSnapshot: SeisAICoreVersionPromotionSnapshot?
     @Published private(set) var versionRegistrySnapshot: SeisAICoreVersionRegistrySnapshot?
     @Published private(set) var subagentOperatingModelSnapshot: SeisAISubagentOperatingModelSnapshot?
+    @Published private(set) var subagentRuntimeFixturesSnapshot: SeisAISubagentRuntimeFixturesSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -60,6 +61,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         subagentOperatingModelSnapshot = try? SeisAISubagentOperatingModelSnapshot.validated(
             from: Data(contentsOf: subagentOperatingModelURL)
         )
+        subagentRuntimeFixturesSnapshot = try? SeisAISubagentRuntimeFixturesSnapshot.validated(
+            from: Data(contentsOf: subagentRuntimeFixturesURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -80,7 +84,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 modelPlanningSnapshot: modelPlanningSnapshot,
                 versionPromotionSnapshot: versionPromotionSnapshot,
                 versionRegistrySnapshot: versionRegistrySnapshot,
-                subagentOperatingModelSnapshot: subagentOperatingModelSnapshot
+                subagentOperatingModelSnapshot: subagentOperatingModelSnapshot,
+                subagentRuntimeFixturesSnapshot: subagentRuntimeFixturesSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -116,12 +121,16 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             subagentOperatingModelSnapshot = try? SeisAISubagentOperatingModelSnapshot.validated(
                 from: Data(contentsOf: subagentOperatingModelURL)
             )
+            subagentRuntimeFixturesSnapshot = try? SeisAISubagentRuntimeFixturesSnapshot.validated(
+                from: Data(contentsOf: subagentRuntimeFixturesURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
             versionPromotionSnapshot = nil
             versionRegistrySnapshot = nil
             subagentOperatingModelSnapshot = nil
+            subagentRuntimeFixturesSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -460,6 +469,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-ai-core-subagent-operating-model.json")
     }
 
+    private var subagentRuntimeFixturesURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-ai-core-subagent-runtime-fixtures.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -511,6 +527,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let subagentOperatingModelSnapshot = model.subagentOperatingModelSnapshot {
                     subagentOperatingModelDisclosure(snapshot: subagentOperatingModelSnapshot)
+                }
+                if let subagentRuntimeFixturesSnapshot = model.subagentRuntimeFixturesSnapshot {
+                    subagentRuntimeFixturesDisclosure(snapshot: subagentRuntimeFixturesSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -1052,6 +1071,49 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Sub-agent operating model. Five plan-only lanes, five permission levels, fourteen evidence requirements, and external actions approval-gated.")
+    }
+
+    private func subagentRuntimeFixturesDisclosure(snapshot: SeisAISubagentRuntimeFixturesSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Runtime: \(snapshot.runtimeBoundary["currentLevel"] ?? "unknown") · Write: \(snapshot.runtimeBoundary["writeExecution"] ?? "unknown") · Background: \(snapshot.runtimeBoundary["backgroundAutomation"] ?? "unknown")")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("\(snapshot.fixtures.count) fixture references · delegation depth \(snapshot.roleSchema.maxDelegationDepth) · single-writer queue · append-only planned ledger")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(.secondary)
+
+                ForEach(snapshot.fixtures) { fixture in
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: "checkmark.shield")
+                            .foregroundStyle(.green)
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(fixture.id)
+                                .font(.caption.weight(.semibold))
+                            Text(fixture.path)
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                            Text(fixture.summary)
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                }
+                Text("Cancellation: \(snapshot.cancellationFixture.supportedSignals.joined(separator: ", "))")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Approval records are scoped and blanket approval is disallowed. Redaction is required before promotion; secret values and raw provider errors are not stored.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Sub-agent runtime fixtures", systemImage: "checklist")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Sub-agent runtime fixtures. Seven verified fixture references for role schema, permission, dry-run queue, cancellation, approval, redaction, and planned ledger. No autonomous execution.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {

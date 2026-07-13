@@ -66,7 +66,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "model-planning-evidence",
         "version-promotion-dry-run",
         "version-registry",
-        "subagent-operating-model"
+        "subagent-operating-model",
+        "subagent-runtime-fixtures"
     ]
 
     public init() {}
@@ -81,7 +82,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         modelPlanningSnapshot: SeisAIModelPlanningEvidenceSnapshot? = nil,
         versionPromotionSnapshot: SeisAICoreVersionPromotionSnapshot? = nil,
         versionRegistrySnapshot: SeisAICoreVersionRegistrySnapshot? = nil,
-        subagentOperatingModelSnapshot: SeisAISubagentOperatingModelSnapshot? = nil
+        subagentOperatingModelSnapshot: SeisAISubagentOperatingModelSnapshot? = nil,
+        subagentRuntimeFixturesSnapshot: SeisAISubagentRuntimeFixturesSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -178,6 +180,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Sub-agent operating model",
                 passed: subagentOperatingModelSnapshot?.isMetadataOnly == true,
                 evidence: "Five sub-agent lanes, five permission levels, fourteen evidence requirements, and five-year cadence remain status-and-plan-only; write and external levels stay planned or forbidden."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "subagent-runtime-fixtures",
+                title: "Sub-agent runtime fixtures",
+                passed: subagentRuntimeFixturesSnapshot?.isMetadataOnly == true,
+                evidence: "Seven runtime fixtures cover role schema, permissions, dry-run queue, cancellation, approval, redaction, and append-only planned ledger without enabling autonomous execution."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked
