@@ -45,6 +45,7 @@ The foundation includes:
 | Local model mode | Planned | No local model adapter found in this branch. | No runtime integration. | Define Ollama/localhost as optional zero-key future mode. |
 | Evaluation | Implemented as local readiness evaluator | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAICoreReadinessEvaluator.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAICoreReadinessEvaluatorTests.swift`, canonical workforce assignment, training, model-planning, promotion, version-registry, operating-model, fixture-pack, review-ledger, scaling-council, MCP, plugin-integration, provider, router, intake, training-curriculum, public-readiness, operations-readiness, independent-evidence, GitHub-readiness, AGI-public-evidence, knowledge-system, data-schema-registry, design-component-inventory, universal-capability-kernel, action-governance, agent-governance, active-mission-board, and long-horizon-mission-kernel snapshots | No live-model benchmark or provider evaluation exists. | Keep the report scoped to Local Demo readiness and add live-adapter evals only after backend approval. |
 | AGI evaluation protocol | Bound as metadata-only Apple readiness evidence | `content/development/seis-agi-evaluation-protocol.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIEvaluationProtocolSnapshot.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAGIEvaluationProtocolSnapshotTests.swift` | Protocol is draft/not-run; no AGI, benchmark, weights, inference, provider, or route-eligibility evidence exists. | Keep the promotion default blocked and require independent evidence, external review, and human approval before any future claim or route. |
+| Full-stack contract | Bound as metadata-only Apple application boundary | `content/development/seis-fullstack-contract.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisFullStackContractSnapshot.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisFullStackContractSnapshotTests.swift` | First server/API/data slice remains read-only Local Demo; auth, database, live AI, SSH, deployment, and GitHub writes are not enabled. | Keep no-key startup and static fallback while adding future server adapters only behind backend and human approval. |
 
 ## Rules / Policy
 
@@ -444,6 +445,13 @@ All evaluations remain `not-run`, the default promotion decision remains
 `blocked`, and external review plus human route approval remain required. This
 is a safety and evidence boundary, not AGI, benchmark, weights, inference, or
 provider evidence.
+
+The panel also reads `content/development/seis-fullstack-contract.json`. It
+exposes eight read-only Local Demo endpoints, five backend-only provider
+states, three bounded dry-run agent tasks, seven capabilities, and the
+fixture-backed session summary. The server boundary remains read-only,
+frontend secret persistence remains forbidden, and the static demo must keep
+working without server endpoints, auth, provider keys, SSH, or deployment.
 
 The panel also reads
 `content/development/seis-ai-core-provider-registry.json`. It preserves

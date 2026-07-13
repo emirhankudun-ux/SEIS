@@ -37,6 +37,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var activeMissionBoardSnapshot: SeisActiveMissionBoardSnapshot?
     @Published private(set) var longHorizonMissionKernelSnapshot: SeisLongHorizonMissionKernelSnapshot?
     @Published private(set) var agiEvaluationProtocolSnapshot: SeisAGIEvaluationProtocolSnapshot?
+    @Published private(set) var fullStackContractSnapshot: SeisFullStackContractSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -160,6 +161,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         agiEvaluationProtocolSnapshot = try? SeisAGIEvaluationProtocolSnapshot.validated(
             from: Data(contentsOf: agiEvaluationProtocolURL)
         )
+        fullStackContractSnapshot = try? SeisFullStackContractSnapshot.validated(
+            from: Data(contentsOf: fullStackContractURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -205,7 +209,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 agentPermissionMatrixSnapshot: agentPermissionMatrixSnapshot,
                 activeMissionBoardSnapshot: activeMissionBoardSnapshot,
                 longHorizonMissionKernelSnapshot: longHorizonMissionKernelSnapshot,
-                agiEvaluationProtocolSnapshot: agiEvaluationProtocolSnapshot
+                agiEvaluationProtocolSnapshot: agiEvaluationProtocolSnapshot,
+                fullStackContractSnapshot: fullStackContractSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -316,6 +321,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             agiEvaluationProtocolSnapshot = try? SeisAGIEvaluationProtocolSnapshot.validated(
                 from: Data(contentsOf: agiEvaluationProtocolURL)
             )
+            fullStackContractSnapshot = try? SeisFullStackContractSnapshot.validated(
+                from: Data(contentsOf: fullStackContractURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -347,6 +355,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             activeMissionBoardSnapshot = nil
             longHorizonMissionKernelSnapshot = nil
             agiEvaluationProtocolSnapshot = nil
+            fullStackContractSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -860,6 +869,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-agi-evaluation-protocol.json")
     }
 
+    private var fullStackContractURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-fullstack-contract.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -988,6 +1004,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let agiEvaluationProtocolSnapshot = model.agiEvaluationProtocolSnapshot {
                     agiEvaluationProtocolDisclosure(snapshot: agiEvaluationProtocolSnapshot)
+                }
+                if let fullStackContractSnapshot = model.fullStackContractSnapshot {
+                    fullStackContractDisclosure(snapshot: fullStackContractSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -2338,6 +2357,30 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("AGI evaluation protocol boundary. Twenty minimum claim evidence items, eleven evaluation dimensions, four source gates, and eleven reviewers remain not-run; promotion is blocked and this is not AGI or benchmark evidence.")
+    }
+
+    private func fullStackContractDisclosure(snapshot: SeisFullStackContractSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.publicEndpoints.count) read-only endpoints · \(snapshot.providerStatus.count) providers · \(snapshot.agentTasks.count) dry-run tasks · \(snapshot.capabilities.count) capabilities · metadata-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("Session: \(snapshot.session.userMode) · Storage: \(snapshot.session.storageMode) · Auth: \(snapshot.session.auth.status) · AI Core: \(snapshot.session.capabilitySummary["aiCore"] ?? "unknown")")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Server: \(snapshot.serverBoundary.runtime) · Writes: \(snapshot.serverBoundary.writePolicy) · SSH: \(snapshot.session.capabilitySummary["ssh"] ?? "unknown") · Deployment: \(snapshot.session.capabilitySummary["deployment"] ?? "unknown")")
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+                Text("No-server fallback: \(snapshot.frontendState.fallbackContract)")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Full-stack contract boundary", systemImage: "server.rack")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Full-stack contract boundary. Eight read-only Local Demo endpoints, five backend-only provider states, three dry-run agent tasks, and seven capabilities preserve no-key startup and static fallback; auth, live AI, SSH, and deployment remain gated.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {

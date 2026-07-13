@@ -89,7 +89,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "agent-governance-contracts",
         "active-mission-board",
         "long-horizon-mission-kernel",
-        "agi-evaluation-protocol-boundary"
+        "agi-evaluation-protocol-boundary",
+        "fullstack-contract-boundary"
     ]
 
     public init() {}
@@ -129,7 +130,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         agentPermissionMatrixSnapshot: SeisAgentPermissionMatrixSnapshot? = nil,
         activeMissionBoardSnapshot: SeisActiveMissionBoardSnapshot? = nil,
         longHorizonMissionKernelSnapshot: SeisLongHorizonMissionKernelSnapshot? = nil,
-        agiEvaluationProtocolSnapshot: SeisAGIEvaluationProtocolSnapshot? = nil
+        agiEvaluationProtocolSnapshot: SeisAGIEvaluationProtocolSnapshot? = nil,
+        fullStackContractSnapshot: SeisFullStackContractSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -364,6 +366,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "AGI evaluation protocol boundary",
                 passed: agiEvaluationProtocolSnapshot?.isMetadataOnly == true,
                 evidence: "Twenty minimum AGI-claim evidence requirements, eleven evaluation dimensions, four source-derived gates, and eleven reviewers remain not-run and promotion-blocked; this is not AGI or benchmark evidence."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "fullstack-contract-boundary",
+                title: "Full-stack contract boundary",
+                passed: fullStackContractSnapshot?.isMetadataOnly == true,
+                evidence: "Eight read-only Local Demo endpoints, five backend-only provider states, three bounded dry-run agent tasks, and seven capabilities preserve no-key startup and static fallback without auth, database, live AI, SSH, deployment, or GitHub mutation."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked
