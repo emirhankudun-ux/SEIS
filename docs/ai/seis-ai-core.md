@@ -43,7 +43,7 @@ The foundation includes:
 | AI Workforce Training | Active local seed training contract | `docs/ai/ai-workforce-training.md`, `content/development/seis-ai-workforce-training-plan.json`, `scripts/check-seis-ai-workforce-training.mjs`, `scripts/run-seis-ai-workforce-training.mjs` | No live provider calls, credential reads, cloud fine-tuning, dataset downloads, SSH, deployment, or runtime authority are performed. | Use installed assistants only as supervised candidate reviewers; rebuild deterministic local seed artifacts with `npm run automation:seis-ai-workforce-training`. |
 | Provider credentials | Statically audited | `docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md` | No runtime verification was performed. | Keep keys optional, server-only, and disabled until adapter tests exist. |
 | Local model mode | Planned | No local model adapter found in this branch. | No runtime integration. | Define Ollama/localhost as optional zero-key future mode. |
-| Evaluation | Implemented as local readiness evaluator | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAICoreReadinessEvaluator.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAICoreReadinessEvaluatorTests.swift`, canonical workforce assignment, training, model-planning, promotion, version-registry, operating-model, fixture-pack, review-ledger, scaling-council, MCP, plugin-integration, provider, router, intake, training-curriculum, public-readiness, operations-readiness, independent-evidence, GitHub-readiness, AGI-public-evidence, and knowledge-system snapshots | No live-model benchmark or provider evaluation exists. | Keep the report scoped to Local Demo readiness and add live-adapter evals only after backend approval. |
+| Evaluation | Implemented as local readiness evaluator | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAICoreReadinessEvaluator.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAICoreReadinessEvaluatorTests.swift`, canonical workforce assignment, training, model-planning, promotion, version-registry, operating-model, fixture-pack, review-ledger, scaling-council, MCP, plugin-integration, provider, router, intake, training-curriculum, public-readiness, operations-readiness, independent-evidence, GitHub-readiness, AGI-public-evidence, knowledge-system, and data-schema-registry snapshots | No live-model benchmark or provider evaluation exists. | Keep the report scoped to Local Demo readiness and add live-adapter evals only after backend approval. |
 
 ## Rules / Policy
 
@@ -381,6 +381,13 @@ repository knowledge nodes, five evidence kinds, seven evidence records, the
 knowledge release rule, and a security boundary that stores no secrets. This is
 metadata-only knowledge-system evidence; it does not read private content,
 expose credentials, or imply external retrieval or provider authority.
+
+The panel also reads
+`content/development/seis-data-schema-registry.json`. It exposes eighteen
+source-backed records across the five SEIS lanes, with sixteen validated and two
+scaffolded records, plus their shapes, freshness, validation commands, and
+secret policies. This is metadata-only registry evidence; it does not read
+record contents, access credentials, or activate data connectors.
 
 The panel also reads
 `content/development/seis-ai-core-provider-registry.json`. It preserves

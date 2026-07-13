@@ -27,6 +27,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var agiGitHubUserReadinessGatesSnapshot: SeisAGIGitHubUserReadinessGatesSnapshot?
     @Published private(set) var agiPublicReadinessEvidenceSnapshot: SeisAGIPublicReadinessEvidenceSnapshot?
     @Published private(set) var commandCenterKnowledgeSystemSnapshot: SeisCommandCenterKnowledgeSystemSnapshot?
+    @Published private(set) var dataSchemaRegistrySnapshot: SeisDataSchemaRegistrySnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -120,6 +121,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         commandCenterKnowledgeSystemSnapshot = try? SeisCommandCenterKnowledgeSystemSnapshot.validated(
             from: Data(contentsOf: commandCenterKnowledgeSystemURL)
         )
+        dataSchemaRegistrySnapshot = try? SeisDataSchemaRegistrySnapshot.validated(
+            from: Data(contentsOf: dataSchemaRegistryURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -155,7 +159,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 agiIndependentEvidenceLedgerSnapshot: agiIndependentEvidenceLedgerSnapshot,
                 agiGitHubUserReadinessGatesSnapshot: agiGitHubUserReadinessGatesSnapshot,
                 agiPublicReadinessEvidenceSnapshot: agiPublicReadinessEvidenceSnapshot,
-                commandCenterKnowledgeSystemSnapshot: commandCenterKnowledgeSystemSnapshot
+                commandCenterKnowledgeSystemSnapshot: commandCenterKnowledgeSystemSnapshot,
+                dataSchemaRegistrySnapshot: dataSchemaRegistrySnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -236,6 +241,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             commandCenterKnowledgeSystemSnapshot = try? SeisCommandCenterKnowledgeSystemSnapshot.validated(
                 from: Data(contentsOf: commandCenterKnowledgeSystemURL)
             )
+            dataSchemaRegistrySnapshot = try? SeisDataSchemaRegistrySnapshot.validated(
+                from: Data(contentsOf: dataSchemaRegistryURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -257,6 +265,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             agiGitHubUserReadinessGatesSnapshot = nil
             agiPublicReadinessEvidenceSnapshot = nil
             commandCenterKnowledgeSystemSnapshot = nil
+            dataSchemaRegistrySnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -700,6 +709,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-command-center-knowledge-system.json")
     }
 
+    private var dataSchemaRegistryURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-data-schema-registry.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -796,6 +812,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let commandCenterKnowledgeSystemSnapshot = model.commandCenterKnowledgeSystemSnapshot {
                     commandCenterKnowledgeSystemDisclosure(snapshot: commandCenterKnowledgeSystemSnapshot)
+                }
+                if let dataSchemaRegistrySnapshot = model.dataSchemaRegistrySnapshot {
+                    dataSchemaRegistryDisclosure(snapshot: dataSchemaRegistrySnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -1953,6 +1972,27 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Command Center knowledge system. Six source-backed knowledge nodes, five evidence kinds, seven evidence records, and no secret storage.")
+    }
+
+    private func dataSchemaRegistryDisclosure(snapshot: SeisDataSchemaRegistrySnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.records.count) records · \(snapshot.laneIDs.count) lanes · \(snapshot.validatedRecordCount) validated · \(snapshot.scaffoldedRecordCount) scaffolded · metadata-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("Lanes: \(snapshot.laneIDs.joined(separator: " · "))")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.tertiary)
+                Text("Source-backed registry records expose paths, shapes, freshness, validation commands, and secret policies only. Record contents remain outside this native inspection surface.")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("SEIS-Data schema registry", systemImage: "tablecells")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("SEIS-Data schema registry. Eighteen source-backed records across five lanes, with sixteen validated and two scaffolded; metadata-only and no record contents are read.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {

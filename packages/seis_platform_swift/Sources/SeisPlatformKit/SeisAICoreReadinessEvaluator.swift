@@ -81,7 +81,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "agi-independent-evidence-ledger",
         "agi-github-user-readiness-gates",
         "agi-public-readiness-evidence",
-        "command-center-knowledge-system"
+        "command-center-knowledge-system",
+        "data-schema-registry"
     ]
 
     public init() {}
@@ -111,7 +112,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         agiIndependentEvidenceLedgerSnapshot: SeisAGIIndependentEvidenceLedgerSnapshot? = nil,
         agiGitHubUserReadinessGatesSnapshot: SeisAGIGitHubUserReadinessGatesSnapshot? = nil,
         agiPublicReadinessEvidenceSnapshot: SeisAGIPublicReadinessEvidenceSnapshot? = nil,
-        commandCenterKnowledgeSystemSnapshot: SeisCommandCenterKnowledgeSystemSnapshot? = nil
+        commandCenterKnowledgeSystemSnapshot: SeisCommandCenterKnowledgeSystemSnapshot? = nil,
+        dataSchemaRegistrySnapshot: SeisDataSchemaRegistrySnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -298,6 +300,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Command Center knowledge system",
                 passed: commandCenterKnowledgeSystemSnapshot?.isMetadataOnly == true,
                 evidence: "Repository memory, knowledge-graph nodes, research sources, decisions, reusable patterns, security policy, and agent handoff evidence remain source-backed and secret-free."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "data-schema-registry",
+                title: "SEIS-Data schema registry",
+                passed: dataSchemaRegistrySnapshot?.isMetadataOnly == true,
+                evidence: "Eighteen source-backed data contracts cover @seis, @seis-cloud, @seis-code, @seis-design, and @seis-data without reading record contents or storing secrets."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked
