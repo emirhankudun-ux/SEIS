@@ -84,6 +84,11 @@ The next evolution is to connect the local command model to repository health, p
 
 ## Platform Phases
 
+These phases describe how the current web Command Center workflow model may be
+carried forward; they do not redefine the platform roles or claim that the
+SwiftPM shell is a released native application. The proposed canonical role and
+maturity map is `docs/architecture/SEIS_APPLE_PLATFORM_MAP.md`.
+
 - Phase 1: HTML, CSS, and JavaScript static command shell with dependency-free local workflows.
 - Phase 2: TypeScript, React, and Next.js modules with typed API adapters and authenticated live data.
 - Phase 3: Native SwiftUI macOS and iOS applications once the workflow model is stable.

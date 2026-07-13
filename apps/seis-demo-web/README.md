@@ -19,7 +19,7 @@ Files:
 Local run:
 
 ```bash
-cd "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/apps/seis-demo-web"
+cd apps/seis-demo-web
 python3 -m http.server 4173
 ```
 
@@ -37,10 +37,15 @@ Deep link compatibility:
 
 Shared contract notes:
 
-- `contracts/seis-demo-contract.json` aynı dosya, hem web hem native shell tarafından kullanılır.
+- `contracts/seis-demo-contract.json` ve native shell resource kopyası şu an
+  byte-identical olarak doğrulanır.
+- Bu iki kopyanın canonical owner ve sync direction kararı henüz verilmemiştir;
+  `docs/architecture/SEIS_APPLE_PLATFORM_MAP.md` bu açığı izler.
 
 Deployment:
 
 - Vercel: project publish root olarak klasör seçin veya `vercel --prod` çalıştırın.
 - Netlify: build adımı yok. Publish directory `apps/seis-demo-web` olsun, `_redirects` kuralı zaten yüklü.
-- Native fallback: `seis-demo-native` iOS/macOS WebView shell, `main` route hedefini bu URL’den okur.
+- Native boundary: SwiftPM içinde bir `SeisAppleNativeShell` executable ürünü
+  vardır. Ayrı bir iOS/macOS WebView app target kanıtı yoktur; native fallback,
+  imzalama veya dağıtım hazır kabul edilmez.

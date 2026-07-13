@@ -1,0 +1,59 @@
+name: Apple Platform Foundation
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/apple-platform-foundation.yml'
+      - 'data/seis-apple-platform-architecture.json'
+      - 'docs/APPLE_PLATFORM_STRATEGY.md'
+      - 'docs/architecture/**'
+      - 'docs/adr/0003-seis-apple-native-architecture-foundation.md'
+      - 'goals/**'
+      - 'packages/seis_platform_swift/**'
+      - 'scripts/check-seis-apple-platform-architecture.mjs'
+      - 'scripts/test-seis-apple-platform-architecture.mjs'
+      - 'package.json'
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/apple-platform-foundation.yml'
+      - 'data/seis-apple-platform-architecture.json'
+      - 'docs/APPLE_PLATFORM_STRATEGY.md'
+      - 'docs/architecture/**'
+      - 'docs/adr/0003-seis-apple-native-architecture-foundation.md'
+      - 'goals/**'
+      - 'packages/seis_platform_swift/**'
+      - 'scripts/check-seis-apple-platform-architecture.mjs'
+      - 'scripts/test-seis-apple-platform-architecture.mjs'
+      - 'package.json'
+
+permissions:
+  contents: read
+
+jobs:
+  swiftpm:
+    name: SwiftPM package, library, executable, and tests
+    runs-on: macos-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Record toolchain
+        run: swift --version
+
+      - name: Describe package
+        run: swift package --package-path packages/seis_platform_swift describe
+
+      - name: Build shared library
+        run: swift build --package-path packages/seis_platform_swift --target SeisPlatformKit
+
+      - name: Build native shell executable
+        run: swift build --package-path packages/seis_platform_swift --product SeisAppleNativeShell
+
+      - name: Test package
+        run: swift test --package-path packages/seis_platform_swift

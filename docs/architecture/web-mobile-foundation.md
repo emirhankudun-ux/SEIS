@@ -1,5 +1,13 @@
 # Proposed Web And Mobile Architecture
 
+## Scope Note
+
+This document governs public web experiences and optional wrappers for those
+experiences. It does not define the SEIS native product center and does not
+replace the Apple-first macOS, iPadOS, and iOS roles in
+`docs/architecture/SEIS_APPLE_PLATFORM_MAP.md`. A PWA or Capacitor wrapper is
+not evidence of a SEIS native application.
+
 ## Recommended Stack
 
 Use a phased stack, not a dependency-heavy jump.
@@ -70,4 +78,3 @@ git checkout -b chore/seis-foundation-audit
 ```
 
 Keep the first commit documentation-heavy and low risk. Add runtime features only after the branch is visible and reviewable.
-

@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "goal_id": "SEIS-GOAL-0001",
+  "status": "proposed",
+  "maturity": "specification",
+  "canonical_owner_repo": "seis",
+  "package": {
+    "path": "packages/seis_platform_swift",
+    "manifest": "packages/seis_platform_swift/Package.swift",
+    "tools_version": "6.0",
+    "name": "SeisPlatformKit",
+    "minimum_platforms": [
+      {
+        "id": "macos",
+        "version": "13"
+      },
+      {
+        "id": "ios",
+        "version": "16"
+      }
+    ],
+    "products": [
+      {
+        "name": "SeisPlatformKit",
+        "kind": "library",
+        "targets": ["SeisPlatformKit"]
+      },
+      {
+        "name": "SeisAppleNativeShell",
+        "kind": "executable",
+        "targets": ["SeisAppleNativeShell"]
+      }
+    ],
+    "targets": [
+      {
+        "name": "SeisPlatformKit",
+        "kind": "library",
+        "dependencies": [],
+        "resources": [],
+        "current_layers": [
+          "domain-contracts",
+          "application-runtime",
+          "data-infrastructure",
+          "presentation",
+          "observability"
+        ]
+      },
+      {
+        "name": "SeisAppleNativeShell",
+        "kind": "executable",
+        "dependencies": ["SeisPlatformKit"],
+        "resources": [
+          "Resources/seisdemo-urlscheme-template.plist",
+          "Resources/seis-demo-contract.json"
+        ],
+        "current_layers": [
+          "presentation",
+          "application-runtime",
+          "resource-loading",
+          "local-process-integration",
+          "observability"
+        ]
+      },
+      {
+        "name": "SeisPlatformKitTests",
+        "kind": "test",
+        "dependencies": ["SeisPlatformKit"],
+        "resources": [],
+        "current_layers": ["testing"]
+      }
+    ],
+    "external_dependencies": []
+  },
+  "platform_roles": [
+    {
+      "id": "macos",
+      "display_name": "macOS",
+      "state": "prototype",
+      "role": "Primary native Command Center and deep production-workflow surface.",
+      "current_evidence": "SwiftPM exposes the SeisAppleNativeShell executable; this is package-level prototype evidence, not a signed or released app."
+    },
+    {
+      "id": "ipados",
+      "display_name": "iPadOS",
+      "state": "planned",
+      "role": "SEIS Brain, knowledge review, design review, and creative-planning surface.",
+      "current_evidence": "SwiftPM represents compatibility through the iOS 16 declaration; there is no dedicated iPadOS target or application evidence."
+    },
+    {
+      "id": "ios",
+      "display_name": "iOS",
+      "state": "planned",
+      "role": "Companion for status, alerts, search, capture, and quick notes.",
+      "current_evidence": "The package declares iOS 16, but no standalone iOS application target is present."
+    },
+    {
+      "id": "visionos",
+      "display_name": "visionOS",
+      "state": "research",
+      "role": "Research-only spatial surface after shared Apple foundations are healthy.",
+      "current_evidence": "No visionOS platform declaration, target, application, build, or release evidence is present."
+    },
+    {
+      "id": "web",
+      "display_name": "Web",
+      "state": "active-demo",
+      "role": "No-key public demo, onboarding, documentation, and GitHub showcase.",
+      "current_evidence": "Tracked static web surfaces provide public demonstration; web is not the long-term native architectural center."
+    }
+  ],
+  "web_native_contract": {
+    "state": "duplicated-fixture",
+    "ownership": "unresolved",
+    "sync_direction": "unresolved",
+    "required_compatibility": "byte-identical",
+    "content_sha256": "49474eda1de0808c200b5ae99b58a028a1727ec2fa6c6124e58c976b0add5da0",
+    "paths": [
+      "apps/seis-demo-web/contracts/seis-demo-contract.json",
+      "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Resources/seis-demo-contract.json"
+    ],
+    "next_decision": "Select one shared canonical contract owner or a generated one-way distribution path in a child Goal."
+  },
+  "readiness_semantics": {
+    "state": "declarative-prototype",
+    "current_evidence": [
+      "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisApplePersistenceReadinessContract.swift",
+      "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisPlatformPolicy.swift"
+    ],
+    "interpretation": "Current ready labels and aggregate booleans describe declared checklist coverage and configured policy strings; they do not prove runtime CloudKit, persistence, provider, platform, build, or release readiness.",
+    "required_action": "A child Goal must replace overloaded ready labels with planned, configured, verified, unavailable, and failed states backed by runtime or test evidence before product maturity advances."
+  },
+  "boundaries": {
+    "native_center": "macOS remains the primary native product center. SeisPlatformKit currently mixes shared contracts with a conditional SwiftUI/AppKit/UIKit continuation surface; separating presentation from shared domain contracts is a required child Goal before stable maturity.",
+    "web_demo": "Web remains a no-key public demo and onboarding surface and must not claim native, provider, credential, signing, or deployment readiness.",
+    "shared_contracts": "Target direction: platform consumers depend on explicit public-safe contracts and platform-specific presentation does not become a dependency of shared domain models. The current mixed library target is recorded technical debt, not proof that the target boundary is already achieved.",
+    "private_data": "The public-safe artifacts introduced by SEIS-GOAL-0001 contain no secret values, private memory, provider credentials, SSH material, or personal data; this is not a repository-wide privacy certification."
+  },
+  "validation": {
+    "portable": [
+      "npm run check:seis-apple-platform-architecture",
+      "npm run test:seis-apple-platform-architecture",
+      "npm run check:ecosystem-foundation",
+      "npm run test:ecosystem-foundation",
+      "npm run check:foundation",
+      "npm run check:seis-platform-kernel",
+      "git diff --check"
+    ],
+    "darwin_swiftpm": [
+      "swift package --package-path packages/seis_platform_swift describe",
+      "swift build --package-path packages/seis_platform_swift --target SeisPlatformKit",
+      "swift build --package-path packages/seis_platform_swift --product SeisAppleNativeShell",
+      "swift test --package-path packages/seis_platform_swift"
+    ],
+    "future_platform_evidence": [
+      "Dedicated macOS application accessibility and reduced-motion review before stable maturity.",
+      "Dedicated iPadOS and iOS targets plus simulator or device tests before implementation claims.",
+      "Measured launch, memory, energy, and interaction budgets before release-candidate maturity.",
+      "Signing, entitlements, sandbox, notarization, privacy, and rollback review before distribution."
+    ]
+  },
+  "non_claims": [
+    "No signed, notarized, distributed, or stable Apple application is claimed.",
+    "No dedicated iPadOS, iOS, or visionOS application target is claimed.",
+    "No live provider, CloudKit synchronization, credential, deployment, or background execution is claimed."
+  ]
+}

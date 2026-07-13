@@ -136,6 +136,7 @@ ios/
 *.json
 *.config.json
 !package-lock.json
+!data/seis-apple-platform-architecture.json
 !content/development/seis-*.json
 !apps/seis-demo-web/data/seis-ai-core-version-promotion-map.json
 !apps/seis-demo-web/data/seis-sub-agent-five-year-plan-view.json
@@ -227,6 +228,9 @@ docs/*
 !docs/governance/**/*.md
 !docs/adr/
 !docs/adr/*.md
+!docs/architecture/
+docs/architecture/*
+!docs/architecture/SEIS_APPLE_PLATFORM_MAP.md
 !docs/decisions/
 !docs/decisions/*.md
 
