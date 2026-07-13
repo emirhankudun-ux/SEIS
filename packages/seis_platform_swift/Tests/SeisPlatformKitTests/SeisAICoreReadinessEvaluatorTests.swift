@@ -13,6 +13,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let workforceTraining = try SeisAIWorkforceTrainingSnapshot.validated(from: workforceTrainingData())
         let modelPlanning = try SeisAIModelPlanningEvidenceSnapshot.validated(from: modelPlanningData())
         let versionPromotion = try SeisAICoreVersionPromotionSnapshot.validated(from: versionPromotionData())
+        let versionRegistry = try SeisAICoreVersionRegistrySnapshot.validated(from: versionRegistryData())
 
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
@@ -22,14 +23,15 @@ struct SeisAICoreReadinessEvaluatorTests {
             workforceSnapshot: workforce,
             workforceTrainingSnapshot: workforceTraining,
             modelPlanningSnapshot: modelPlanning,
-            versionPromotionSnapshot: versionPromotion
+            versionPromotionSnapshot: versionPromotion,
+            versionRegistrySnapshot: versionRegistry
         )
 
         #expect(report.isReadyLocalDemo)
         #expect(report.status == .readyLocalDemo)
         #expect(report.evaluatorVersion == SeisAICoreReadinessEvaluator.evaluatorVersion)
         #expect(report.checks.map(\.id) == SeisAICoreReadinessEvaluator.expectedCheckIDs)
-        #expect(report.passedCount == 12)
+        #expect(report.passedCount == 13)
         #expect(report.failedCount == 0)
         #expect(report.truthBoundary.contains("not proof of live provider access"))
     }
@@ -40,6 +42,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let workforceTraining = try SeisAIWorkforceTrainingSnapshot.validated(from: workforceTrainingData())
         let modelPlanning = try SeisAIModelPlanningEvidenceSnapshot.validated(from: modelPlanningData())
         let versionPromotion = try SeisAICoreVersionPromotionSnapshot.validated(from: versionPromotionData())
+        let versionRegistry = try SeisAICoreVersionRegistrySnapshot.validated(from: versionRegistryData())
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
             capabilityMesh: SeisAICapabilityMesh(snapshot: snapshot),
@@ -48,7 +51,8 @@ struct SeisAICoreReadinessEvaluatorTests {
             workforceSnapshot: workforce,
             workforceTrainingSnapshot: workforceTraining,
             modelPlanningSnapshot: modelPlanning,
-            versionPromotionSnapshot: versionPromotion
+            versionPromotionSnapshot: versionPromotion,
+            versionRegistrySnapshot: versionRegistry
         )
 
         #expect(report.status.rawValue == "ready-local-demo")
@@ -93,5 +97,11 @@ struct SeisAICoreReadinessEvaluatorTests {
         var root = URL(fileURLWithPath: #filePath)
         for _ in 0..<5 { root.deleteLastPathComponent() }
         return try Data(contentsOf: root.appendingPathComponent("content/development/seis-ai-core-version-promotion-gates.json"))
+    }
+
+    private func versionRegistryData() throws -> Data {
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<5 { root.deleteLastPathComponent() }
+        return try Data(contentsOf: root.appendingPathComponent("content/development/seis-ai-core-version-registry.json"))
     }
 }

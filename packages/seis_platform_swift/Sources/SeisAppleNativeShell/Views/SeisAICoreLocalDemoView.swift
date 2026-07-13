@@ -10,6 +10,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var workforceTrainingSnapshot: SeisAIWorkforceTrainingSnapshot?
     @Published private(set) var modelPlanningSnapshot: SeisAIModelPlanningEvidenceSnapshot?
     @Published private(set) var versionPromotionSnapshot: SeisAICoreVersionPromotionSnapshot?
+    @Published private(set) var versionRegistrySnapshot: SeisAICoreVersionRegistrySnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -52,6 +53,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         versionPromotionSnapshot = try? SeisAICoreVersionPromotionSnapshot.validated(
             from: Data(contentsOf: versionPromotionURL)
         )
+        versionRegistrySnapshot = try? SeisAICoreVersionRegistrySnapshot.validated(
+            from: Data(contentsOf: versionRegistryURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -70,7 +74,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 workforceSnapshot: workforceSnapshot,
                 workforceTrainingSnapshot: workforceTrainingSnapshot,
                 modelPlanningSnapshot: modelPlanningSnapshot,
-                versionPromotionSnapshot: versionPromotionSnapshot
+                versionPromotionSnapshot: versionPromotionSnapshot,
+                versionRegistrySnapshot: versionRegistrySnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -100,10 +105,14 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             versionPromotionSnapshot = try? SeisAICoreVersionPromotionSnapshot.validated(
                 from: Data(contentsOf: versionPromotionURL)
             )
+            versionRegistrySnapshot = try? SeisAICoreVersionRegistrySnapshot.validated(
+                from: Data(contentsOf: versionRegistryURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
             versionPromotionSnapshot = nil
+            versionRegistrySnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -428,6 +437,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-ai-core-version-promotion-gates.json")
     }
 
+    private var versionRegistryURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-ai-core-version-registry.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -473,6 +489,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let versionPromotionSnapshot = model.versionPromotionSnapshot {
                     versionPromotionDisclosure(snapshot: versionPromotionSnapshot)
+                }
+                if let versionRegistrySnapshot = model.versionRegistrySnapshot {
+                    versionRegistryDisclosure(snapshot: versionRegistrySnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -907,6 +926,62 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("AI Core version promotion gates. Evidence-only dry-run, five yearly gates, release promotion blocked, external mutation blocked, and human approval boundaries visible.")
+    }
+
+    private func versionRegistryDisclosure(snapshot: SeisAICoreVersionRegistrySnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.currentVersion.displayName) · \(snapshot.currentVersion.maturity)")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Provider mode: \(snapshot.currentVersion.providerMode) · Runtime: \(snapshot.runtimeBoundary.currentLevel) · Local Demo: \(snapshot.runtimeBoundary.localDemoAllowed ? "allowed" : "blocked")")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("\(snapshot.versionComponents.count) components · \(snapshot.linkedSubAgentLanes.count) plan-only lanes · \(snapshot.fiveYearVersionRoadmap.count)-year roadmap · \(snapshot.promotionEvidenceRequired.count) promotion evidence requirements")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.tertiary)
+                Text("The registry identifies an application-layer intelligence profile. It is not a foundation model, trained model, autonomous write runtime, provider ownership claim, or release approval.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+
+                ForEach(snapshot.versionComponents) { component in
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: component.status.contains("validated") ? "checkmark.circle" : "doc.text")
+                            .foregroundStyle(component.status.contains("validated") ? .green : .secondary)
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(component.name)
+                                .font(.caption.weight(.semibold))
+                            Text("\(component.kind) · \(component.status)")
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                            Text(component.validation)
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                }
+
+                Text("Linked lane permission levels")
+                    .font(.caption.weight(.semibold))
+                ForEach(snapshot.linkedSubAgentLanes) { lane in
+                    HStack {
+                        Text(lane.displayName)
+                            .font(.caption)
+                        Spacer(minLength: 8)
+                        Text(lane.permissionLevel)
+                            .font(.caption2.monospaced())
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("AI Core version registry", systemImage: "number.circle")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("AI Core version registry. SEIS AI Core v0.1, zero-key core, seven components, five plan-only lanes, and five-year roadmap. No trained model or autonomous write claim.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {
