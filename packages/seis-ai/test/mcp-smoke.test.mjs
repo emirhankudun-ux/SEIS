@@ -66,7 +66,7 @@ function rpcSession(requests, { timeoutMs = 15000 } = {}) {
 }
 
 describe("seis-mcp stdio smoke", () => {
-  it("initializes and lists 34 tools, 3 prompts, 29 resources", async () => {
+  it("initializes and lists 35 tools, 3 prompts, 30 resources", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -101,6 +101,7 @@ describe("seis-mcp stdio smoke", () => {
       "security_audit",
       "seis_ai_core_model_scaling_status",
       "seis_ai_core_provider_status",
+      "seis_ai_core_read_only_route",
       "seis_ai_core_subagent_dry_run",
       "seis_ai_core_subagent_model",
       "seis_ai_core_subagent_review_ledger",
@@ -146,6 +147,7 @@ describe("seis-mcp stdio smoke", () => {
       "seis://ai/model-parameter-ladder.json",
       "seis://ai/model-scaling-hardware-profile.json",
       "seis://ai/provider-registry.json",
+      "seis://ai/read-only-router-runtime.json",
       "seis://ai/redaction-fixture.json",
       "seis://ai/sub-agent-5-year-plan-view.json",
       "seis://ai/sub-agent-5-year-plan.json",
@@ -251,7 +253,7 @@ describe("seis-mcp stdio smoke", () => {
     assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
     const payload = JSON.parse(resource.result.contents[0].text);
     assert.equal(payload.id, "seis-ai-core-mcp-runtime-contract");
-    assert.equal(payload.resourceCount, 29);
+    assert.equal(payload.resourceCount, 30);
     assert.equal(payload.transport, "stdio JSON-RPC");
   });
 
@@ -284,6 +286,35 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.id, "seis-ai-core-provider-registry");
     assert.equal(payload.coreCredentialRequirement, "none");
     assert.ok(payload.publicStates.includes("Missing Key"));
+  });
+
+  it("reads the executable SEIS AI Core read-only router resource through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "resources/read",
+        params: { uri: "seis://ai/read-only-router-runtime.json" },
+      },
+    ]);
+
+    const resource = responses.get(2);
+    assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
+    const payload = JSON.parse(resource.result.contents[0].text);
+    assert.equal(payload.id, "seis-ai-core-read-only-router-runtime");
+    assert.equal(payload.runtimeBoundary.providerCalls, false);
+    assert.equal(payload.modelClaimBoundary.isAgi, false);
   });
 
   it("reads the SEIS AI Core model scaling profile resource through the protocol", async () => {
@@ -746,6 +777,39 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.coreCredentialRequirement, "none");
     assert.equal(payload.providerCount, 7);
     assert.ok(payload.providers.some((provider) => provider.id === "seis-local-demo" && provider.routingEligible === true));
+  });
+
+  it("executes the SEIS AI Core read-only route tool through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "tools/call",
+        params: {
+          name: "seis_ai_core_read_only_route",
+          arguments: { taskType: "repository-validation", capability: "validation", localOnly: true, privacyMode: "local-only" },
+        },
+      },
+    ]);
+
+    const call = responses.get(2);
+    assert.ok(!call.error, `tools/call errored: ${JSON.stringify(call.error)}`);
+    const payload = JSON.parse(call.result.content[0].text);
+    assert.equal(payload.selectedProvider, "codex-operator");
+    assert.equal(payload.agentLane.id, "seis-code");
+    assert.equal(payload.executionPerformed, false);
+    assert.equal(payload.providerCallsPerformed, false);
   });
 
   it("executes the SEIS AI Core model scaling status tool through the protocol", async () => {
