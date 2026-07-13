@@ -15,6 +15,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var subagentRuntimeFixturesSnapshot: SeisAISubagentRuntimeFixturesSnapshot?
     @Published private(set) var subagentReviewLedgerSnapshot: SeisAISubagentReviewLedgerSnapshot?
     @Published private(set) var modelScalingCouncilSnapshot: SeisModelScalingSubagentCouncilSnapshot?
+    @Published private(set) var mcpRuntimeContractSnapshot: SeisAICoreMCPRuntimeContractSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -72,6 +73,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         modelScalingCouncilSnapshot = try? SeisModelScalingSubagentCouncilSnapshot.validated(
             from: Data(contentsOf: modelScalingCouncilURL)
         )
+        mcpRuntimeContractSnapshot = try? SeisAICoreMCPRuntimeContractSnapshot.validated(
+            from: Data(contentsOf: mcpRuntimeContractURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -95,7 +99,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 subagentOperatingModelSnapshot: subagentOperatingModelSnapshot,
                 subagentRuntimeFixturesSnapshot: subagentRuntimeFixturesSnapshot,
                 subagentReviewLedgerSnapshot: subagentReviewLedgerSnapshot,
-                modelScalingCouncilSnapshot: modelScalingCouncilSnapshot
+                modelScalingCouncilSnapshot: modelScalingCouncilSnapshot,
+                mcpRuntimeContractSnapshot: mcpRuntimeContractSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -140,6 +145,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             modelScalingCouncilSnapshot = try? SeisModelScalingSubagentCouncilSnapshot.validated(
                 from: Data(contentsOf: modelScalingCouncilURL)
             )
+            mcpRuntimeContractSnapshot = try? SeisAICoreMCPRuntimeContractSnapshot.validated(
+                from: Data(contentsOf: mcpRuntimeContractURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -149,6 +157,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             subagentRuntimeFixturesSnapshot = nil
             subagentReviewLedgerSnapshot = nil
             modelScalingCouncilSnapshot = nil
+            mcpRuntimeContractSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -508,6 +517,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-model-scaling-subagent-council.json")
     }
 
+    private var mcpRuntimeContractURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-ai-core-mcp-runtime-contract.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -568,6 +584,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let modelScalingCouncilSnapshot = model.modelScalingCouncilSnapshot {
                     modelScalingCouncilDisclosure(snapshot: modelScalingCouncilSnapshot)
+                }
+                if let mcpRuntimeContractSnapshot = model.mcpRuntimeContractSnapshot {
+                    mcpRuntimeContractDisclosure(snapshot: mcpRuntimeContractSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -1244,6 +1263,49 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Model scaling sub-agent council. Twelve plan-only agents, five route-blocked stages, no credential requirement, and no model or provider execution.")
+    }
+
+    private func mcpRuntimeContractDisclosure(snapshot: SeisAICoreMCPRuntimeContractSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.transport) · \(snapshot.status) · \(snapshot.toolCount) tools · \(snapshot.resourceCount) resources · \(snapshot.promptCount) prompts")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("Fallback: \(snapshot.fallbackRuntime) · Official SDK: optional · Smoke: \(snapshot.smokeTest)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text(snapshot.boundary)
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+
+                ForEach(snapshot.surfaces) { surface in
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: "checkmark.shield")
+                            .foregroundStyle(.green)
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("\(surface.label) · \(surface.count)")
+                                .font(.caption.weight(.semibold))
+                            Text("\(surface.method) · \(surface.state)")
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                            Text(surface.duty)
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                }
+                Text("Local MCP smoke only. No remote server, credentials, SSH, deployment, GitHub mutation, or unrestricted shell tool is invoked from this disclosure.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("MCP runtime contract", systemImage: "point.3.connected.trianglepath.dotted")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("MCP runtime contract. Local stdio JSON-RPC smoke-verified with 35 tools, 30 resources, 3 prompts, and four verified surfaces. No remote or credentialed execution.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {
