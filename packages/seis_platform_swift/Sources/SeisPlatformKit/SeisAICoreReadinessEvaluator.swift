@@ -70,7 +70,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "subagent-runtime-fixtures",
         "subagent-review-ledger",
         "model-scaling-council",
-        "mcp-runtime-contract"
+        "mcp-runtime-contract",
+        "plugin-integration"
     ]
 
     public init() {}
@@ -89,7 +90,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         subagentRuntimeFixturesSnapshot: SeisAISubagentRuntimeFixturesSnapshot? = nil,
         subagentReviewLedgerSnapshot: SeisAISubagentReviewLedgerSnapshot? = nil,
         modelScalingCouncilSnapshot: SeisModelScalingSubagentCouncilSnapshot? = nil,
-        mcpRuntimeContractSnapshot: SeisAICoreMCPRuntimeContractSnapshot? = nil
+        mcpRuntimeContractSnapshot: SeisAICoreMCPRuntimeContractSnapshot? = nil,
+        pluginIntegrationSnapshot: SeisAgentPluginIntegrationSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -210,6 +212,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "MCP runtime contract",
                 passed: mcpRuntimeContractSnapshot?.isMetadataOnly == true,
                 evidence: "Local stdio JSON-RPC MCP contract exposes 35 tools, 30 resources, 3 prompts, and four verified surfaces without remote servers, credentials, SSH, deployment, GitHub mutation, or unrestricted shell execution."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "plugin-integration",
+                title: "Plugin integration manifest",
+                passed: pluginIntegrationSnapshot?.isMetadataOnly == true,
+                evidence: "185 installed/enabled and 5 not-installed audit states, five personal plugins, ten specialist lanes, 300 helper plugins, and scoped activation policy are source-backed without authentication or blanket activation claims."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked

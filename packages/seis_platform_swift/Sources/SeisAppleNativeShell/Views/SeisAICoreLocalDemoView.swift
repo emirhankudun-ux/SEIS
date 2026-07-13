@@ -16,6 +16,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var subagentReviewLedgerSnapshot: SeisAISubagentReviewLedgerSnapshot?
     @Published private(set) var modelScalingCouncilSnapshot: SeisModelScalingSubagentCouncilSnapshot?
     @Published private(set) var mcpRuntimeContractSnapshot: SeisAICoreMCPRuntimeContractSnapshot?
+    @Published private(set) var pluginIntegrationSnapshot: SeisAgentPluginIntegrationSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -76,6 +77,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         mcpRuntimeContractSnapshot = try? SeisAICoreMCPRuntimeContractSnapshot.validated(
             from: Data(contentsOf: mcpRuntimeContractURL)
         )
+        pluginIntegrationSnapshot = try? SeisAgentPluginIntegrationSnapshot.validated(
+            from: Data(contentsOf: pluginIntegrationURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -100,7 +104,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 subagentRuntimeFixturesSnapshot: subagentRuntimeFixturesSnapshot,
                 subagentReviewLedgerSnapshot: subagentReviewLedgerSnapshot,
                 modelScalingCouncilSnapshot: modelScalingCouncilSnapshot,
-                mcpRuntimeContractSnapshot: mcpRuntimeContractSnapshot
+                mcpRuntimeContractSnapshot: mcpRuntimeContractSnapshot,
+                pluginIntegrationSnapshot: pluginIntegrationSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -148,6 +153,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             mcpRuntimeContractSnapshot = try? SeisAICoreMCPRuntimeContractSnapshot.validated(
                 from: Data(contentsOf: mcpRuntimeContractURL)
             )
+            pluginIntegrationSnapshot = try? SeisAgentPluginIntegrationSnapshot.validated(
+                from: Data(contentsOf: pluginIntegrationURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -158,6 +166,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             subagentReviewLedgerSnapshot = nil
             modelScalingCouncilSnapshot = nil
             mcpRuntimeContractSnapshot = nil
+            pluginIntegrationSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -524,6 +533,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-ai-core-mcp-runtime-contract.json")
     }
 
+    private var pluginIntegrationURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-agent-plugin-integration.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -587,6 +603,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let mcpRuntimeContractSnapshot = model.mcpRuntimeContractSnapshot {
                     mcpRuntimeContractDisclosure(snapshot: mcpRuntimeContractSnapshot)
+                }
+                if let pluginIntegrationSnapshot = model.pluginIntegrationSnapshot {
+                    pluginIntegrationDisclosure(snapshot: pluginIntegrationSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -1306,6 +1325,51 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("MCP runtime contract. Local stdio JSON-RPC smoke-verified with 35 tools, 30 resources, 3 prompts, and four verified surfaces. No remote or credentialed execution.")
+    }
+
+    private func pluginIntegrationDisclosure(snapshot: SeisAgentPluginIntegrationSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("SEIS-Agent · \(snapshot.auditedSnapshot.installedEnabledCount) installed/enabled · \(snapshot.auditedSnapshot.notInstalledCount) not installed · authentication: \(snapshot.auditedSnapshot.authenticationClaim)")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("\(snapshot.personalPlugins.count) personal plugins · \(snapshot.lanes.count) specialist lanes · \(snapshot.helperPluginUniverse.uniquePlugins) helper plugins · \(snapshot.helperPluginUniverse.laneCount) helper lanes")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Activation: \(snapshot.activationPolicy.mode) · Blanket activation: no · Secret disclosure: no · External mutation: user confirmation")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+
+                ForEach(snapshot.personalPlugins) { plugin in
+                    HStack {
+                        Image(systemName: "puzzlepiece.extension.fill")
+                            .foregroundStyle(.green)
+                        Text("\(plugin.embeddedAs) · \(plugin.status)")
+                            .font(.caption)
+                        Spacer(minLength: 0)
+                    }
+                }
+                Text("Specialist lanes")
+                    .font(.caption.weight(.semibold))
+                ForEach(snapshot.lanes) { lane in
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("\(lane.displayName) · \(lane.mcpTools.joined(separator: ", "))")
+                            .font(.caption.weight(.semibold))
+                        Text("\(lane.role) · \(lane.defaultGate)")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                Text("Installed status and lane metadata do not claim connector authentication or activate tools. MCP, provider, SSH, deployment, and GitHub mutation remain separately gated.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Plugin integration manifest", systemImage: "puzzlepiece.extension")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Plugin integration manifest. 185 installed and enabled records, 5 not installed, 5 personal plugins, 10 specialist lanes, 300 helper plugins, and no connector authentication claim.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {

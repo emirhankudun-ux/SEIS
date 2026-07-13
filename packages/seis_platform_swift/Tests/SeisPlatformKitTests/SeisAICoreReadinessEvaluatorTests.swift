@@ -19,6 +19,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let subagentReviewLedger = try SeisAISubagentReviewLedgerSnapshot.validated(from: subagentReviewLedgerData())
         let modelScalingCouncil = try SeisModelScalingSubagentCouncilSnapshot.validated(from: modelScalingCouncilData())
         let mcpRuntimeContract = try SeisAICoreMCPRuntimeContractSnapshot.validated(from: mcpRuntimeContractData())
+        let pluginIntegration = try SeisAgentPluginIntegrationSnapshot.validated(from: pluginIntegrationData())
 
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
@@ -34,14 +35,15 @@ struct SeisAICoreReadinessEvaluatorTests {
             subagentRuntimeFixturesSnapshot: subagentRuntimeFixtures,
             subagentReviewLedgerSnapshot: subagentReviewLedger,
             modelScalingCouncilSnapshot: modelScalingCouncil,
-            mcpRuntimeContractSnapshot: mcpRuntimeContract
+            mcpRuntimeContractSnapshot: mcpRuntimeContract,
+            pluginIntegrationSnapshot: pluginIntegration
         )
 
         #expect(report.isReadyLocalDemo)
         #expect(report.status == .readyLocalDemo)
         #expect(report.evaluatorVersion == SeisAICoreReadinessEvaluator.evaluatorVersion)
         #expect(report.checks.map(\.id) == SeisAICoreReadinessEvaluator.expectedCheckIDs)
-        #expect(report.passedCount == 18)
+        #expect(report.passedCount == 19)
         #expect(report.failedCount == 0)
         #expect(report.truthBoundary.contains("not proof of live provider access"))
     }
@@ -58,6 +60,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let subagentReviewLedger = try SeisAISubagentReviewLedgerSnapshot.validated(from: subagentReviewLedgerData())
         let modelScalingCouncil = try SeisModelScalingSubagentCouncilSnapshot.validated(from: modelScalingCouncilData())
         let mcpRuntimeContract = try SeisAICoreMCPRuntimeContractSnapshot.validated(from: mcpRuntimeContractData())
+        let pluginIntegration = try SeisAgentPluginIntegrationSnapshot.validated(from: pluginIntegrationData())
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
             capabilityMesh: SeisAICapabilityMesh(snapshot: snapshot),
@@ -72,7 +75,8 @@ struct SeisAICoreReadinessEvaluatorTests {
             subagentRuntimeFixturesSnapshot: subagentRuntimeFixtures,
             subagentReviewLedgerSnapshot: subagentReviewLedger,
             modelScalingCouncilSnapshot: modelScalingCouncil,
-            mcpRuntimeContractSnapshot: mcpRuntimeContract
+            mcpRuntimeContractSnapshot: mcpRuntimeContract,
+            pluginIntegrationSnapshot: pluginIntegration
         )
 
         #expect(report.status.rawValue == "ready-local-demo")
@@ -153,5 +157,11 @@ struct SeisAICoreReadinessEvaluatorTests {
         var root = URL(fileURLWithPath: #filePath)
         for _ in 0..<5 { root.deleteLastPathComponent() }
         return try Data(contentsOf: root.appendingPathComponent("content/development/seis-ai-core-mcp-runtime-contract.json"))
+    }
+
+    private func pluginIntegrationData() throws -> Data {
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<5 { root.deleteLastPathComponent() }
+        return try Data(contentsOf: root.appendingPathComponent("content/development/seis-agent-plugin-integration.json"))
     }
 }
