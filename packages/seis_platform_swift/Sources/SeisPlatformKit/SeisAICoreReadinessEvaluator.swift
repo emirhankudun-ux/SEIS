@@ -93,7 +93,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "fullstack-contract-boundary",
         "agent-lane-status-contract",
         "second-brain-contract",
-        "platform-language-policy"
+        "platform-language-policy",
+        "technology-stack-contract"
     ]
 
     public init() {}
@@ -137,7 +138,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         fullStackContractSnapshot: SeisFullStackContractSnapshot? = nil,
         agentLaneStatusSnapshot: SeisAgentLaneStatusSnapshot? = nil,
         secondBrainContractSnapshot: SeisSecondBrainContractSnapshot? = nil,
-        platformLanguagePolicySnapshot: SeisPlatformLanguagePolicySnapshot? = nil
+        platformLanguagePolicySnapshot: SeisPlatformLanguagePolicySnapshot? = nil,
+        technologyStackSnapshot: SeisTechnologyStackSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -396,6 +398,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Apple-first platform language policy",
                 passed: platformLanguagePolicySnapshot?.isMetadataOnly == true,
                 evidence: "Apple-first policy covers five Apple language surfaces and ten native frameworks, while Windows keeps 41 polyglot surfaces and 18 required lanes without adding Apple-only surfaces for language-percentage reasons."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "technology-stack-contract",
+                title: "Technology stack contract",
+                passed: technologyStackSnapshot?.isMetadataOnly == true,
+                evidence: "The source-visible stack records 60 real source languages, seven ecosystem groups, 143 technologies, and six requested core technologies while keeping frameworks, SDKs, clouds, products, and tools outside the GitHub language surface; no runtime installation or filler code is implied."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked

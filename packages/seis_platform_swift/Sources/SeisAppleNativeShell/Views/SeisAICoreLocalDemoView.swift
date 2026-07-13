@@ -41,6 +41,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var agentLaneStatusSnapshot: SeisAgentLaneStatusSnapshot?
     @Published private(set) var secondBrainContractSnapshot: SeisSecondBrainContractSnapshot?
     @Published private(set) var platformLanguagePolicySnapshot: SeisPlatformLanguagePolicySnapshot?
+    @Published private(set) var technologyStackSnapshot: SeisTechnologyStackSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -176,6 +177,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         platformLanguagePolicySnapshot = try? SeisPlatformLanguagePolicySnapshot.validated(
             from: Data(contentsOf: platformLanguagePolicyURL)
         )
+        technologyStackSnapshot = try? SeisTechnologyStackSnapshot.validated(
+            from: Data(contentsOf: technologyStackURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -225,7 +229,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 fullStackContractSnapshot: fullStackContractSnapshot,
                 agentLaneStatusSnapshot: agentLaneStatusSnapshot,
                 secondBrainContractSnapshot: secondBrainContractSnapshot,
-                platformLanguagePolicySnapshot: platformLanguagePolicySnapshot
+                platformLanguagePolicySnapshot: platformLanguagePolicySnapshot,
+                technologyStackSnapshot: technologyStackSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -348,6 +353,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             platformLanguagePolicySnapshot = try? SeisPlatformLanguagePolicySnapshot.validated(
                 from: Data(contentsOf: platformLanguagePolicyURL)
             )
+            technologyStackSnapshot = try? SeisTechnologyStackSnapshot.validated(
+                from: Data(contentsOf: technologyStackURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -383,6 +391,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             agentLaneStatusSnapshot = nil
             secondBrainContractSnapshot = nil
             platformLanguagePolicySnapshot = nil
+            technologyStackSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -924,6 +933,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-platform-language-policy.json")
     }
 
+    private var technologyStackURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-technology-stack.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -1064,6 +1080,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let platformLanguagePolicySnapshot = model.platformLanguagePolicySnapshot {
                     platformLanguagePolicyDisclosure(snapshot: platformLanguagePolicySnapshot)
+                }
+                if let technologyStackSnapshot = model.technologyStackSnapshot {
+                    technologyStackDisclosure(snapshot: technologyStackSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -2514,6 +2533,30 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Apple-first platform language policy. Five Apple language surfaces and ten native frameworks are prioritized across macOS and iOS; Windows keeps 41 polyglot surfaces and excludes Apple-only surfaces. This is policy metadata, not runtime installation evidence.")
+    }
+
+    private func technologyStackDisclosure(snapshot: SeisTechnologyStackSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.sourceLanguageCount) source languages · \(snapshot.ecosystemGroups.count) ecosystem groups · \(snapshot.ecosystemTechnologyCount) technologies · metadata-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("GitHub panels: \(snapshot.summary.githubFocusedPanels.joined(separator: ", ")) · Requested core stack: \(snapshot.summary.requestedCoreStackCount)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text(snapshot.summary.githubLanguagePolicy)
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+                Text("Frameworks, SDKs, clouds, products, and tools remain ecosystem metadata. Runtime installation and filler code are not implied.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Technology stack contract", systemImage: "square.stack.3d.up")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Technology stack contract. Sixty real source languages, seven ecosystem groups, 143 technologies, and six requested core technologies are visible as metadata. GitHub language surfaces remain separate from frameworks, SDKs, clouds, products, and tools; no runtime installation or filler code is implied.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {
