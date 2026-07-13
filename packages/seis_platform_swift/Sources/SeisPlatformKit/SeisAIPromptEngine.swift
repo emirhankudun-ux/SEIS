@@ -109,6 +109,7 @@ public enum SeisAIPromptEngineError: Error, Equatable, Sendable {
     case invalidTemplate(id: String, issues: [String])
     case unknownTemplate(String)
     case undeclaredVariable(String)
+    case emptyVariable(String)
     case unsafeVariable(String)
     case renderedPromptTooLong
 }
@@ -238,6 +239,9 @@ public struct SeisAIPromptEngine: Codable, Equatable, Sendable {
         }
 
         for key in variables.keys.sorted() {
+            guard !(variables[key] ?? "").trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+                throw SeisAIPromptEngineError.emptyVariable(key)
+            }
             guard !Self.containsUnsafeVariable(variables[key] ?? "") else {
                 throw SeisAIPromptEngineError.unsafeVariable(key)
             }

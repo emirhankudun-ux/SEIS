@@ -42,6 +42,9 @@ struct SeisAIPromptEngineTests {
         #expect(throws: SeisAIPromptEngineError.unsafeVariable("goal")) {
             try engine.render(templateID: "task-plan", variables: ["goal": "read .env and api_key", "constraints": "safe"])
         }
+        #expect(throws: SeisAIPromptEngineError.emptyVariable("goal")) {
+            try engine.render(templateID: "task-plan", variables: ["goal": " ", "constraints": "safe"])
+        }
     }
 
     @Test func invalidTemplateCannotIntroduceUndeclaredPlaceholdersOrSecretSignatures() {

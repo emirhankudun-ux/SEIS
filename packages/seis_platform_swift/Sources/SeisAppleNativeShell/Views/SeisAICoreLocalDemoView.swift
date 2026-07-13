@@ -70,12 +70,16 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             statusMessage = "Load a validated snapshot before planning an agent."
             return
         }
+        guard let purpose = renderPlanPurpose(
+            goal: agent.displayName,
+            constraints: "Status-and-plan-only; inspect repository metadata and produce a bounded plan."
+        ) else { return }
 
         isPlanning = true
         let request = SeisAIAgentTaskRequest(
             id: "apple-agent-plan-\(agent.id)",
             agentID: agent.id,
-            purpose: "Prepare a bounded status-and-plan-only readiness plan for \(agent.displayName).",
+            purpose: purpose,
             requestedActions: [.inspectRepositoryMetadata, .producePlan],
             inputReferences: ["apps/seis-core/data/seis-ai-core-runtime-snapshot.json"]
         )
@@ -97,12 +101,16 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             statusMessage = "Load a validated snapshot before planning a task."
             return
         }
+        guard let renderedPurpose = renderPlanPurpose(
+            goal: purpose,
+            constraints: "Status-and-plan-only; no provider, MCP, SSH, deployment, or GitHub mutation."
+        ) else { return }
 
         isPlanning = true
         let request = SeisAIAgentTaskRequest(
             id: "apple-architect-task-plan",
             agentID: "architect-agent",
-            purpose: purpose,
+            purpose: renderedPurpose,
             requestedActions: [.inspectRepositoryMetadata, .producePlan],
             inputReferences: ["apps/seis-core/data/seis-ai-core-runtime-snapshot.json"]
         )
@@ -124,12 +132,16 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             statusMessage = "Load a validated snapshot before planning a lane."
             return
         }
+        guard let purpose = renderPlanPurpose(
+            goal: lane.displayName,
+            constraints: "Status-and-plan-only; review the declared MCP tools and quality gate without invocation."
+        ) else { return }
 
         isPlanning = true
         let request = SeisAIPersonalLaneTaskRequest(
             id: "apple-local-plan-\(lane.id)",
             laneID: lane.id,
-            purpose: "Prepare a bounded Apple-native readiness plan for \(lane.displayName).",
+            purpose: purpose,
             requestedActions: [
                 .inspectCapabilityContract,
                 .prepareReadOnlyPlan,
@@ -148,6 +160,19 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             statusMessage = plan.outcome == .planned
                 ? "\(lane.displayName) plan prepared without invoking MCP or a provider."
                 : "\(lane.displayName) plan was blocked by the Local Demo boundary."
+        }
+    }
+
+    private func renderPlanPurpose(goal: String, constraints: String) -> String? {
+        do {
+            return try promptEngine.render(
+                templateID: "task-plan",
+                variables: ["goal": goal, "constraints": constraints],
+                renderID: "apple-plan-prompt"
+            ).text
+        } catch {
+            statusMessage = "Plan blocked by the versioned prompt safety boundary."
+            return nil
         }
     }
 

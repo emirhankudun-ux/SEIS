@@ -155,6 +155,11 @@ prompt, provider output, blocked-reason text, secret, or private file content.
 The panel does not open a remote MCP session, call a model provider, or execute
 a tool merely because it is listed.
 
+Native task, lane, and managed-agent planning requests pass through the
+versioned `task-plan` prompt template first. Empty, undeclared, or
+secret-shaped input is rejected before the status-and-plan runtime receives it;
+the rendered prompt remains ephemeral and is not included in evidence.
+
 The ledger is capped at 256 records by default. The native shell persists only
 the redacted evidence envelope in the app's local Application Support directory;
 if that location is unavailable, the UI reports `memory-only` or
