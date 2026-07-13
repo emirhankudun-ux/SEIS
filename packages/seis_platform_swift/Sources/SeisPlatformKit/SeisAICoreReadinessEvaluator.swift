@@ -98,7 +98,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "platform-development-tracks",
         "requested-software-stack",
         "second-brain-import-boundary",
-        "read-only-router-runtime"
+        "read-only-router-runtime",
+        "model-frontier-escalation-policy"
     ]
 
     public init() {}
@@ -147,7 +148,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         platformDevelopmentTracksSnapshot: SeisPlatformDevelopmentTracksSnapshot? = nil,
         requestedSoftwareStackSnapshot: SeisRequestedSoftwareStackSnapshot? = nil,
         obsidianSafeImportSnapshot: SeisObsidianSafeImportSnapshot? = nil,
-        readOnlyRouterRuntimeSnapshot: SeisReadOnlyRouterRuntimeSnapshot? = nil
+        readOnlyRouterRuntimeSnapshot: SeisReadOnlyRouterRuntimeSnapshot? = nil,
+        modelFrontierEscalationPolicySnapshot: SeisModelFrontierEscalationPolicySnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -436,6 +438,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Read-only router runtime",
                 passed: readOnlyRouterRuntimeSnapshot?.isMetadataOnly == true,
                 evidence: "The provider-neutral router runtime uses nine metadata inputs, five supervised SEIS lane identifiers, and explicit provider-state/fallback rules while keeping runtime authority, route eligibility, provider calls, credentials, prompt bodies, private Obsidian content, agent execution, external mutation, and cloud-key requirements false."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "model-frontier-escalation-policy",
+                title: "Model frontier escalation policy",
+                passed: modelFrontierEscalationPolicySnapshot?.isMetadataOnly == true,
+                evidence: "The frontier policy keeps Local Demo as the only allowed route today, blocks 20B/70B/150B/512B escalation until evidence and human approval, and records no weights, inference, provider runtime, benchmark, ownership, or AGI claim."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked

@@ -46,6 +46,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var platformDevelopmentTracksSnapshot: SeisPlatformDevelopmentTracksSnapshot?
     @Published private(set) var obsidianSafeImportSnapshot: SeisObsidianSafeImportSnapshot?
     @Published private(set) var readOnlyRouterRuntimeSnapshot: SeisReadOnlyRouterRuntimeSnapshot?
+    @Published private(set) var modelFrontierEscalationPolicySnapshot: SeisModelFrontierEscalationPolicySnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -196,6 +197,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         readOnlyRouterRuntimeSnapshot = try? SeisReadOnlyRouterRuntimeSnapshot.validated(
             from: Data(contentsOf: readOnlyRouterRuntimeURL)
         )
+        modelFrontierEscalationPolicySnapshot = try? SeisModelFrontierEscalationPolicySnapshot.validated(
+            from: Data(contentsOf: modelFrontierEscalationPolicyURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -250,7 +254,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 platformDevelopmentTracksSnapshot: platformDevelopmentTracksSnapshot,
                 requestedSoftwareStackSnapshot: requestedSoftwareStackSnapshot,
                 obsidianSafeImportSnapshot: obsidianSafeImportSnapshot,
-                readOnlyRouterRuntimeSnapshot: readOnlyRouterRuntimeSnapshot
+                readOnlyRouterRuntimeSnapshot: readOnlyRouterRuntimeSnapshot,
+                modelFrontierEscalationPolicySnapshot: modelFrontierEscalationPolicySnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -388,6 +393,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             readOnlyRouterRuntimeSnapshot = try? SeisReadOnlyRouterRuntimeSnapshot.validated(
                 from: Data(contentsOf: readOnlyRouterRuntimeURL)
             )
+            modelFrontierEscalationPolicySnapshot = try? SeisModelFrontierEscalationPolicySnapshot.validated(
+                from: Data(contentsOf: modelFrontierEscalationPolicyURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -428,6 +436,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             platformDevelopmentTracksSnapshot = nil
             obsidianSafeImportSnapshot = nil
             readOnlyRouterRuntimeSnapshot = nil
+            modelFrontierEscalationPolicySnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -1004,6 +1013,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-ai-core-read-only-router-runtime.json")
     }
 
+    private var modelFrontierEscalationPolicyURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-model-frontier-escalation-policy.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -1159,6 +1175,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let readOnlyRouterRuntimeSnapshot = model.readOnlyRouterRuntimeSnapshot {
                     readOnlyRouterRuntimeDisclosure(snapshot: readOnlyRouterRuntimeSnapshot)
+                }
+                if let modelFrontierEscalationPolicySnapshot = model.modelFrontierEscalationPolicySnapshot {
+                    modelFrontierEscalationPolicyDisclosure(snapshot: modelFrontierEscalationPolicySnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -2729,6 +2748,30 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Read-only router runtime. Nine metadata inputs, five provider-state rules, seven forbidden input categories, and five SEIS lanes are visible. Runtime authority, route eligibility, provider calls, credential reads, prompt-body reads, private Obsidian reads, agent execution, external mutation, and cloud API key requirements are disabled. No trained model, foundation model, AGI, or 512B claim is made.")
+    }
+
+    private func modelFrontierEscalationPolicyDisclosure(snapshot: SeisModelFrontierEscalationPolicySnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.escalationStages.count) escalation stages · \(snapshot.routeEligibleStageCount) route-eligible today · \(snapshot.humanApprovalRequiredFor.count) approval gates · metadata-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("Current mode: \(snapshot.currentAllowedMode) · Default: \(snapshot.defaultRuntimeMode) · Route eligible today: \(snapshot.routeEligibleToday ? "yes" : "no")")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Only the Local Demo stage is allowed today. 20B, 70B, 150B, and 512B remain evidence-gated, approval-gated, and route-blocked.")
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+                Text("This policy does not download weights, run inference, call providers, execute benchmarks, or claim SEIS owns trained weights, AGI, or a routeable frontier model.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Model frontier escalation policy", systemImage: "chart.line.uptrend.xyaxis")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Model frontier escalation policy. Six metadata stages are visible; only Local Demo is allowed and route-eligible today. Twenty billion, seventy billion, one hundred fifty billion, and five hundred twelve billion parameter stages remain blocked pending evidence and human approval. No weights, inference, provider, benchmark, ownership, or AGI claim is made.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {
