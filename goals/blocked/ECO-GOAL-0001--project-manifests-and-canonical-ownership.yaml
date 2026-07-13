@@ -49,8 +49,13 @@ scope:
     - schemas/repository-ownership.schema.json
     - schemas/ecosystem-goal.schema.json
     - data/repository-ownership.yaml
+    - data/evidence/ECO-GOAL-0001-private-manifest-review.yaml
+    - data/evidence/ECO-GOAL-0001-greek-repository-target-attestation.yaml
+    - data/evidence/ECO-GOAL-0001-completion-audit.yaml
     - docs/ECOSYSTEM_GOAL_TRACKING.md
     - docs/REPOSITORY_OWNERSHIP.md
+    - docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md
+    - docs/roadmap/NEXT_PR_QUEUE.md
     - docs/adr/0002-ecosystem-governance-bootstrap-ownership.md
     - goals
     - scripts/validate-ecosystem-foundation.rb
@@ -74,21 +79,27 @@ requirements:
   - Every canonical repository contains project.ecosystem.yaml.
   - Every shared module has exactly one canonical owner repository.
   - Remote identity, visibility, local-worktree state, and manifest state are explicit and evidence-bound.
+  - External manifest validation uses repository-specific commit, pull-request, and CI evidence instead of sibling filesystem paths.
+  - Private operational identifiers are replaced by a public-safe attestation and SHA-256 revision digests in the public SEIS repository.
+  - Manifest state changes follow an explicit pending-to-review-to-validated-or-rejected history.
+  - Every consumer mapping records repository, distribution mode, compatibility, status, and evidence.
+  - The separately paired Greek repository target is confirmed through least-privilege evidence or explicitly deferred before Goal completion.
 
 non_goals:
   - Moving all production code into one repository.
   - Enabling bidirectional repository synchronization.
-  - Repairing, deleting, or replacing invalid Git metadata in this slice.
 
 acceptance_criteria:
   - Project manifests validate against the approved schema.
-  - The ownership registry lists every observed shared module.
+  - The ownership registry lists an exact non-overlapping proposed inventory for every module observed in the current repository audit.
   - Synchronization direction is explicit for each owned module.
   - Duplicate module ownership or overlapping paths within a canonical repository are rejected by validation.
-  - Invalid local worktrees remain classified separately from session-observed canonical remotes.
+  - Case-folded ownership collisions are rejected for case-insensitive worktrees.
+  - Repository observation, local-worktree validity, and manifest validation remain separate evidence states.
+  - Observed consumer mappings require durable evidence and unsafe or duplicate mappings are rejected.
 
 definition_of_ready:
-  - Candidate project roots are inventoried.
+  - Valid fresh clones and canonical HEADs are inventoried without machine-specific paths.
   - A clean isolated SEIS worktree exists on a non-default branch.
   - Canonical remote identity and visibility are observed read-only with an explicit evidence method and date.
   - No destructive repository move is required.
@@ -103,17 +114,25 @@ dependencies:
   - ECO-GOAL-0003
 blocked_by:
   - type: repository-content
+    reference: seis
+    reason: The SEIS manifest revision has revision-bound public PR and successful CI evidence, but PR 177 remains open and the observed canonical main revision lacks project.ecosystem.yaml.
+    unblock_condition: Complete human review, merge through repository policy, refresh the observed main revision, and promote the manifest from review to validated.
+  - type: repository-content
     reference: eleni-neferi
-    reason: The canonical private repository was observed in the authenticated session, but project.ecosystem.yaml is absent and the local candidate is not a valid worktree.
-    unblock_condition: Create a focused non-default branch in the canonical repository, add a private-accurate manifest, validate it, and obtain review.
+    reason: A public-safe attestation records a digest-bound open draft and successful repository-local CI observation, but canonical main lacks project.ecosystem.yaml.
+    unblock_condition: Complete human review, merge through repository policy, refresh the observed main revision, and promote the manifest from review to validated.
   - type: repository-content
     reference: pantechnoesis
-    reason: The canonical private repository was observed in the authenticated session, but project.ecosystem.yaml is absent and local candidates are not valid worktrees.
-    unblock_condition: Obtain the repository-required publication authorization, create a focused non-default branch, add a private-accurate manifest, validate it, and obtain review.
+    reason: A public-safe attestation records a digest-bound open draft and successful required/global repository-local CI observation, but canonical main lacks project.ecosystem.yaml; the optional paired-Greek check was skipped.
+    unblock_condition: Complete human review, merge through repository policy, refresh the observed main revision, and promote the manifest from review to validated; verify the paired Greek repository separately.
   - type: inventory
     reference: shared-module-inventory
-    reason: The current registry records the product-family ownership baseline but does not prove complete cross-repository shared-module coverage.
-    unblock_condition: Inspect all three valid repositories and accept a complete module and consumer mapping through an ADR.
+    reason: The fresh-clone audit produced an exact non-overlapping proposed inventory, but consumer distribution remains planned and ADR-0002 still requires human architecture review.
+    unblock_condition: Review the proposed paths and structured consumer mappings, add evidence for any observed distribution, and accept or revise ADR-0002.
+  - type: repository-identity
+    reference: paired-greek-identity-repository
+    reason: Authenticated read-only lookup did not find the requested canonical Greek target. A private ambiguous candidate exists, but its identity alignment is unverified and its identifier is withheld from the public registry.
+    unblock_condition: The accountable human confirms the exact canonical target or explicitly defers Greek publication; any selected candidate then receives a least-privilege identity and visibility inspection before ownership is recorded.
 related_goals:
   - ECO-GOAL-0003
 
@@ -128,8 +147,13 @@ validation:
   evidence:
     - validator output
     - focused branch diff
-    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29210762538
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29212479194
     - https://github.com/emirhankudun-ux/SEIS/pull/177
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29220246186
+    - https://github.com/emirhankudun-ux/SEIS/pull/180
+    - data/evidence/ECO-GOAL-0001-private-manifest-review.yaml
+    - data/evidence/ECO-GOAL-0001-greek-repository-target-attestation.yaml
+    - data/evidence/ECO-GOAL-0001-completion-audit.yaml
 
 status_history:
   - status: planned
@@ -143,15 +167,20 @@ status_history:
       - ECO-EVIDENCE-001
   - status: blocked
     at: '2026-07-13'
-    reason: The SEIS bootstrap slice and remote CI are validated, but the two private manifests, repository-specific publication authorization, full shared-module inventory, and accepted ADR are still required.
+    reason: All three manifest revisions have repository-local review evidence and fresh clones support a proposed module inventory, but their pull requests remain open, canonical main revisions lack the manifests, and Greek repository verification, consumer review, and an accepted ADR are still required.
     evidence_refs:
       - ECO-EVIDENCE-001
       - ECO-EVIDENCE-004
+      - ECO-EVIDENCE-007
+      - ECO-EVIDENCE-008
+      - ECO-EVIDENCE-009
+      - ECO-EVIDENCE-010
+      - ECO-EVIDENCE-011
 
 evidence_records:
   - id: ECO-EVIDENCE-001
     type: repository-inspection
-    description: SEIS, Eleni-Neferi, and Pantechnoesis canonical remotes, default branches, visibility, and local-worktree boundaries were inspected without mutation.
+    description: SEIS plus valid fresh Eleni-Neferi and Pantechnoesis clones were inspected without mutation; canonical remotes, default branches, visibility, canonical-HEAD manifest state, and worktree validity are recorded without machine-specific paths.
     status: passed
     command: null
     exit_code: null
@@ -172,18 +201,67 @@ evidence_records:
     artifact: scripts/test-ecosystem-foundation.rb
   - id: ECO-EVIDENCE-004
     type: remote-ci
-    description: Foundation Check run 781 invoked both ecosystem foundation commands on pull request 177 and passed.
+    description: The current pull request 177 head retains the manifest-introducing revision without a manifest-path change, and its Foundation Check passed on that current head.
     status: passed
     command: null
     exit_code: null
-    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29210762538
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29212479194
   - id: ECO-EVIDENCE-005
     type: github-handoff
-    description: Issue 176 and draft pull request 177 map the blocked ownership Goal and its active CI dependency to the focused branch and commit.
+    description: Issue 176 and open pull request 177 map the blocked ownership Goal and its active CI dependency to the focused branch and commit.
     status: passed
     command: null
     exit_code: null
     artifact: https://github.com/emirhankudun-ux/SEIS/pull/177
+  - id: ECO-EVIDENCE-006
+    type: architecture-inventory
+    description: The ownership registry records an exact non-overlapping proposed module inventory and structured planned consumer mappings from the fresh-clone audit.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: data/repository-ownership.yaml
+  - id: ECO-EVIDENCE-007
+    type: private-review-attestation
+    description: The public-safe attestation records an authenticated, digest-bound Eleni-Neferi open-draft and successful CI observation without publishing private operational identifiers; canonical main remains unchanged.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: data/evidence/ECO-GOAL-0001-private-manifest-review.yaml
+  - id: ECO-EVIDENCE-008
+    type: private-review-attestation
+    description: The public-safe attestation records an authenticated, digest-bound Pantechnoesis open-draft and required/global CI success without publishing private operational identifiers; the optional paired-Greek check was skipped and canonical main remains unchanged.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: data/evidence/ECO-GOAL-0001-private-manifest-review.yaml
+  - id: ECO-EVIDENCE-009
+    type: github-handoff
+    description: Draft pull request 180 isolates the expanded ownership-evidence contract on a compliant architecture branch stacked on pull request 177.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/pull/180
+  - id: ECO-EVIDENCE-010
+    type: remote-ci
+    description: Foundation Check ran the governance, completion-audit, and ecosystem foundation commands on pull request 180 implementation head 97b33915f2ab114a7ded030342268b7954582387 and passed.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29220246186
+  - id: ECO-EVIDENCE-011
+    type: repository-target-attestation
+    description: A public-safe authenticated lookup attestation records that the requested Greek target was not found and an ambiguous private candidate remains unassigned pending explicit human direction.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: data/evidence/ECO-GOAL-0001-greek-repository-target-attestation.yaml
+  - id: ECO-EVIDENCE-012
+    type: completion-audit
+    description: A public-safe machine-readable audit maps every requirement, acceptance criterion, Definition of Done item, quality gate, dependency, and blocker to durable evidence or an exact remaining action; the companion review packet records the human-controlled merge and retarget order without authorizing it.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: data/evidence/ECO-GOAL-0001-completion-audit.yaml
 
 quality_gates:
   architecture: required
@@ -196,13 +274,13 @@ quality_gates:
   model_provider_routing: not-applicable
   agent_permission: not-applicable
   mcp_plugin_tool: not-applicable
-  security: passed
+  security: required
   privacy: required
   accessibility: not-applicable
   performance: not-applicable
   data: not-applicable
   documentation: passed
-  devops: not-applicable
+  devops: passed
   testing: passed
   release: not-applicable
   public_readiness: required
@@ -218,13 +296,13 @@ risks:
     contingency: Keep the conflicting entry proposed and require an ADR before promotion.
     status: open
   - id: ECO-RISK-002
-    description: Invalid local Git folders may be mistaken for valid worktrees of session-observed canonical repositories.
-    likelihood: high
+    description: Uncommitted sibling-worktree manifests may be mistaken for validated canonical repository content.
+    likelihood: medium
     impact: high
     owner: repository-hygiene
-    mitigation: Track remote verification and local-worktree validity as separate fields and prohibit writes through invalid local metadata.
-    trigger: A manifest is proposed through an invalid local folder.
-    contingency: Use a fresh valid clone or an owner-authorized non-default remote branch and leave the invalid folder untouched.
+    mitigation: Separate worktree observation from manifest validation and require revision-bound public evidence or a checked public-safe private attestation.
+    trigger: External validation is proposed using only a local sibling path or uncommitted file.
+    contingency: Keep the manifest pending until its canonical repository supplies durable review and CI evidence that can be represented without exposing private operational identifiers.
     status: open
   - id: ECO-RISK-003
     description: A manifest may claim public visibility for a repository that is currently private.
@@ -267,15 +345,23 @@ observability:
 outputs:
   - SEIS project manifest
   - repository ownership registry
+  - structured consumer mapping contract
+  - proposed non-overlapping module inventory
   - canonical remote identity and visibility evidence
   - ecosystem ownership ADR
   - deterministic foundation validator
   - CI foundation gate
   - ownership documentation
+  - machine-readable completion audit
+  - human review and merge-order decision packet
 
 notes:
   - github.commit_sha records the substantive ECO-GOAL-0001 bootstrap implementation commit; later evidence-only or ECO-GOAL-0003 hardening commits may be newer.
   - This first slice does not claim ecosystem-wide completion.
-  - Eleni-Neferi and Pantechnoesis remotes were observed through an authenticated read-only connector and are canonical by repository identity, but their manifests are still missing.
+  - Eleni-Neferi and Pantechnoesis were observed through valid fresh clones and authenticated remote metadata; draft PR 2 and passing CI evidence now exist in each repository, but their observed canonical main revisions still lack manifests.
   - Scope expanded to CI and an ADR because both are explicit Definition of Done and ownership-decision requirements.
-  - All seven pull-request workflows passed; the Goal remains blocked only on the private manifests, publication authorization, complete ownership inventory, and architecture decision.
+  - Draft pull request 180 carries the expanded evidence contract on top of pull request 177, and its available remote checks passed on the recorded head.
+  - SEIS PR 177 remains open, both private manifest PRs remain drafts, and the Goal remains blocked on review and merge, canonical revision refresh, consumer and architecture review, and independent verification of the paired Greek identity repository.
+  - The paired Greek target lookup is now evidence-bound, but the ownership decision remains blocked on explicit human confirmation or deferral; no ambiguous candidate is treated as canonical.
+  - The completion audit is evidence of current blocked state, not evidence that ECO-GOAL-0001 is complete or that any protected action is authorized.
+  - Security remains required because the stacked ownership PR has not run the repository secret-scanning workflow on this final audit head; that check is deferred until a human retargets the PR to main and revalidates the changed diff.

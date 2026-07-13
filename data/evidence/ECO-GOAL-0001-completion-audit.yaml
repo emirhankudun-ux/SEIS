@@ -1,0 +1,326 @@
+schema_version: 1
+id: eco-goal-0001-completion-audit
+goal_id: ECO-GOAL-0001
+classification: public-safe
+assessed_at: '2026-07-13'
+outcome: blocked
+maturity: specification
+
+dependency_snapshot:
+  - goal_id: ECO-GOAL-0003
+    recorded_status: review
+    assessment: active
+    evidence_refs:
+      - ECO-EVIDENCE-004
+    remaining_action: Complete human review and merge of pull request 177 through repository policy before treating the dependency as closed.
+
+criteria:
+  requirements:
+    - criterion: Every canonical repository contains project.ecosystem.yaml.
+      assessment: partial
+      evidence_refs:
+        - ECO-EVIDENCE-004
+        - ECO-EVIDENCE-007
+        - ECO-EVIDENCE-008
+      remaining_action: Merge all three reviewed manifest changes, refresh canonical revisions, and promote each manifest record to validated.
+    - criterion: Every shared module has exactly one canonical owner repository.
+      assessment: partial
+      evidence_refs:
+        - ECO-EVIDENCE-006
+      remaining_action: Obtain human architecture review of the proposed inventory and accept or revise ADR-0002.
+    - criterion: Remote identity, visibility, local-worktree state, and manifest state are explicit and evidence-bound.
+      assessment: satisfied
+      evidence_refs:
+        - ECO-EVIDENCE-001
+        - ECO-EVIDENCE-002
+      remaining_action: null
+    - criterion: External manifest validation uses repository-specific commit, pull-request, and CI evidence instead of sibling filesystem paths.
+      assessment: satisfied
+      evidence_refs:
+        - ECO-EVIDENCE-004
+        - ECO-EVIDENCE-007
+        - ECO-EVIDENCE-008
+      remaining_action: null
+    - criterion: Private operational identifiers are replaced by a public-safe attestation and SHA-256 revision digests in the public SEIS repository.
+      assessment: satisfied
+      evidence_refs:
+        - ECO-EVIDENCE-007
+        - ECO-EVIDENCE-008
+        - ECO-EVIDENCE-011
+      remaining_action: null
+    - criterion: Manifest state changes follow an explicit pending-to-review-to-validated-or-rejected history.
+      assessment: satisfied
+      evidence_refs:
+        - ECO-EVIDENCE-002
+        - ECO-EVIDENCE-003
+      remaining_action: null
+    - criterion: Every consumer mapping records repository, distribution mode, compatibility, status, and evidence.
+      assessment: satisfied
+      evidence_refs:
+        - ECO-EVIDENCE-002
+        - ECO-EVIDENCE-003
+        - ECO-EVIDENCE-006
+      remaining_action: null
+    - criterion: The separately paired Greek repository target is confirmed through least-privilege evidence or explicitly deferred before Goal completion.
+      assessment: blocked
+      evidence_refs:
+        - ECO-EVIDENCE-011
+      remaining_action: The accountable human confirms the exact canonical target or explicitly defers Greek publication.
+
+  acceptance_criteria:
+    - criterion: Project manifests validate against the approved schema.
+      assessment: satisfied
+      evidence_refs:
+        - ECO-EVIDENCE-002
+        - ECO-EVIDENCE-003
+        - ECO-EVIDENCE-004
+        - ECO-EVIDENCE-007
+        - ECO-EVIDENCE-008
+      remaining_action: null
+    - criterion: The ownership registry lists an exact non-overlapping proposed inventory for every module observed in the current repository audit.
+      assessment: partial
+      evidence_refs:
+        - ECO-EVIDENCE-006
+      remaining_action: Human architecture review must confirm inventory completeness before the proposed records can be treated as accepted.
+    - criterion: Synchronization direction is explicit for each owned module.
+      assessment: satisfied
+      evidence_refs:
+        - ECO-EVIDENCE-002
+        - ECO-EVIDENCE-006
+      remaining_action: null
+    - criterion: Duplicate module ownership or overlapping paths within a canonical repository are rejected by validation.
+      assessment: satisfied
+      evidence_refs:
+        - ECO-EVIDENCE-003
+      remaining_action: null
+    - criterion: Case-folded ownership collisions are rejected for case-insensitive worktrees.
+      assessment: satisfied
+      evidence_refs:
+        - ECO-EVIDENCE-003
+      remaining_action: null
+    - criterion: Repository observation, local-worktree validity, and manifest validation remain separate evidence states.
+      assessment: satisfied
+      evidence_refs:
+        - ECO-EVIDENCE-001
+        - ECO-EVIDENCE-002
+      remaining_action: null
+    - criterion: Observed consumer mappings require durable evidence and unsafe or duplicate mappings are rejected.
+      assessment: satisfied
+      evidence_refs:
+        - ECO-EVIDENCE-002
+        - ECO-EVIDENCE-003
+      remaining_action: Current consumers remain planned; add distribution-bound evidence before any mapping is promoted to observed.
+
+  definition_of_done:
+    - criterion: SEIS, Eleni-Neferi, and Pantechnoesis each have a validated manifest in their observed canonical repositories.
+      assessment: blocked
+      evidence_refs:
+        - ECO-EVIDENCE-004
+        - ECO-EVIDENCE-007
+        - ECO-EVIDENCE-008
+      remaining_action: Merge the three manifest pull requests, refresh canonical revisions, verify content matches, and promote all records from review to validated.
+    - criterion: The ownership registry covers all shared modules with no conflicts.
+      assessment: partial
+      evidence_refs:
+        - ECO-EVIDENCE-003
+        - ECO-EVIDENCE-006
+      remaining_action: Accept or revise ADR-0002 and attest that the reviewed inventory is complete.
+    - criterion: Validation runs in CI and passes.
+      assessment: satisfied
+      evidence_refs:
+        - ECO-EVIDENCE-004
+        - ECO-EVIDENCE-010
+      remaining_action: null
+    - criterion: A focused pull request includes evidence, risks, and rollback instructions.
+      assessment: satisfied
+      evidence_refs:
+        - ECO-EVIDENCE-009
+      remaining_action: null
+
+quality_gates:
+  architecture:
+    declared: required
+    assessment: blocked
+    evidence_refs:
+      - ECO-EVIDENCE-006
+    remaining_action: A human architecture reviewer accepts or revises ADR-0002 and the proposed inventory.
+  product:
+    declared: not-applicable
+    assessment: not-applicable
+    evidence_refs: []
+    remaining_action: null
+  brand_creative_direction:
+    declared: not-applicable
+    assessment: not-applicable
+    evidence_refs: []
+    remaining_action: null
+  design_system:
+    declared: not-applicable
+    assessment: not-applicable
+    evidence_refs: []
+    remaining_action: null
+  ui_ux:
+    declared: not-applicable
+    assessment: not-applicable
+    evidence_refs: []
+    remaining_action: null
+  engineering:
+    declared: passed
+    assessment: passed
+    evidence_refs:
+      - ECO-EVIDENCE-002
+      - ECO-EVIDENCE-003
+      - ECO-EVIDENCE-010
+    remaining_action: null
+  ai_integrity:
+    declared: not-applicable
+    assessment: not-applicable
+    evidence_refs: []
+    remaining_action: null
+  model_provider_routing:
+    declared: not-applicable
+    assessment: not-applicable
+    evidence_refs: []
+    remaining_action: null
+  agent_permission:
+    declared: not-applicable
+    assessment: not-applicable
+    evidence_refs: []
+    remaining_action: null
+  mcp_plugin_tool:
+    declared: not-applicable
+    assessment: not-applicable
+    evidence_refs: []
+    remaining_action: null
+  security:
+    declared: required
+    assessment: partial
+    evidence_refs:
+      - ECO-EVIDENCE-003
+      - ECO-EVIDENCE-007
+      - ECO-EVIDENCE-008
+      - ECO-EVIDENCE-011
+    remaining_action: Run the repository secret-scanning workflow on the final audit head after the stacked pull request is human-retargeted to main, then bind the redacted run evidence before passing this gate.
+  privacy:
+    declared: required
+    assessment: partial
+    evidence_refs:
+      - ECO-EVIDENCE-007
+      - ECO-EVIDENCE-008
+      - ECO-EVIDENCE-011
+    remaining_action: Human review confirms the public-safe attestations and Greek-target deferral or selection boundary.
+  accessibility:
+    declared: not-applicable
+    assessment: not-applicable
+    evidence_refs: []
+    remaining_action: null
+  performance:
+    declared: not-applicable
+    assessment: not-applicable
+    evidence_refs: []
+    remaining_action: null
+  data:
+    declared: not-applicable
+    assessment: not-applicable
+    evidence_refs: []
+    remaining_action: null
+  documentation:
+    declared: passed
+    assessment: passed
+    evidence_refs:
+      - ECO-EVIDENCE-006
+      - ECO-EVIDENCE-009
+    remaining_action: null
+  devops:
+    declared: passed
+    assessment: passed
+    evidence_refs:
+      - ECO-EVIDENCE-004
+      - ECO-EVIDENCE-010
+    remaining_action: null
+  testing:
+    declared: passed
+    assessment: passed
+    evidence_refs:
+      - ECO-EVIDENCE-002
+      - ECO-EVIDENCE-003
+      - ECO-EVIDENCE-010
+    remaining_action: null
+  release:
+    declared: not-applicable
+    assessment: not-applicable
+    evidence_refs: []
+    remaining_action: null
+  public_readiness:
+    declared: required
+    assessment: blocked
+    evidence_refs:
+      - ECO-EVIDENCE-004
+      - ECO-EVIDENCE-007
+      - ECO-EVIDENCE-008
+      - ECO-EVIDENCE-009
+    remaining_action: Complete protected review, canonical publication, architecture approval, and final public/private-boundary review.
+
+blockers:
+  - reference: seis
+    assessment: active
+    accountable_role: project-owner
+    unblock_condition: Complete human review, merge through repository policy, refresh the observed main revision, and promote the manifest from review to validated.
+  - reference: eleni-neferi
+    assessment: active
+    accountable_role: project-owner
+    unblock_condition: Complete human review, merge through repository policy, refresh the observed main revision, and promote the manifest from review to validated.
+  - reference: pantechnoesis
+    assessment: active
+    accountable_role: project-owner
+    unblock_condition: Complete human review, merge through repository policy, refresh the observed main revision, and promote the manifest from review to validated; verify the paired Greek repository separately.
+  - reference: shared-module-inventory
+    assessment: active
+    accountable_role: project-owner
+    unblock_condition: Review the proposed paths and structured consumer mappings, add evidence for any observed distribution, and accept or revise ADR-0002.
+  - reference: paired-greek-identity-repository
+    assessment: active
+    accountable_role: project-owner
+    unblock_condition: The accountable human confirms the exact canonical target or explicitly defers Greek publication; any selected candidate then receives a least-privilege identity and visibility inspection before ownership is recorded.
+
+github_review_order:
+  - order: 1
+    artifact: https://github.com/emirhankudun-ux/SEIS/pull/177
+    action: review-and-merge-goal-governance-foundation
+    authorization: human-required
+    status: pending
+  - order: 2
+    artifact: https://github.com/emirhankudun-ux/SEIS/pull/179
+    action: retarget-to-main-after-pr-177-and-review-security-boundary-first
+    authorization: human-required
+    status: pending
+  - order: 3
+    artifact: https://github.com/emirhankudun-ux/SEIS/pull/180
+    action: retarget-to-main-after-pr-177-and-review-ownership-evidence-after-pr-179
+    authorization: human-required
+    status: pending
+  - order: 4
+    artifact: private-manifest-drafts
+    action: review-and-merge-through-each-private-repository-policy
+    authorization: human-required
+    status: pending
+  - order: 5
+    artifact: canonical-revision-refresh
+    action: reobserve-main-validate-manifest-content-and-promote-review-records
+    authorization: human-required
+    status: pending
+  - order: 6
+    artifact: architecture-and-greek-target-decisions
+    action: accept-or-revise-adr-0002-and-confirm-or-defer-greek-publication
+    authorization: human-required
+    status: pending
+
+limitations:
+  - point-in-time-observation
+  - no-protected-branch-write-authorized
+  - no-merge-or-retarget-authorized
+  - private-operational-identifiers-redacted
+  - canonical-manifest-publication-not-proven
+  - planned-consumer-distribution-not-proven
+  - greek-canonical-target-unresolved
+  - completion-not-claimed

@@ -1,0 +1,54 @@
+schema_version: 1
+
+id: eco-goal-0001-private-manifest-review
+goal_id: ECO-GOAL-0001
+classification: public-safe-metadata-only
+observed_at: '2026-07-13'
+verification_method: authenticated-read-only-github-observation
+
+attestations:
+  - repository_id: eleni-neferi
+    visibility: private
+    canonical_main_revision_digest: sha256:febff18a38701b041d6c2454bb286e712957a32d699da9c04bf51f64cbb02d31
+    review_revision_digest: sha256:1ec0132473d9ee2376ffe7f050dd9c5972992f092d4178700c2031455f5e69b8
+    status_revision_digest: sha256:1ec0132473d9ee2376ffe7f050dd9c5972992f092d4178700c2031455f5e69b8
+    canonical_manifest_revision_digest: null
+    pull_request_state: open
+    pull_request_draft: true
+    pull_request_head_matches_review_revision: true
+    manifest_revision_ancestor_of_pull_request_head: true
+    manifest_path_unchanged_at_pull_request_head: true
+    manifest_content_matches_review_at_canonical_revision: null
+    ci_event: pull_request
+    ci_status: completed
+    ci_conclusion: success
+    ci_head_matches_review_revision: true
+    required_checks_passed: true
+    skipped_checks: []
+    limitations:
+      - point-in-time-observation
+      - private-identifiers-redacted
+      - canonical-merge-not-proven
+  - repository_id: pantechnoesis
+    visibility: private
+    canonical_main_revision_digest: sha256:a7420301cb26e66e4ae5f72142c07cc0cbe88cfbf749990badd470b0167f9c32
+    review_revision_digest: sha256:095ebb58952e45636cfee23448ce9e2aeaec41289de70e48045ded58faf0a4fd
+    status_revision_digest: sha256:095ebb58952e45636cfee23448ce9e2aeaec41289de70e48045ded58faf0a4fd
+    canonical_manifest_revision_digest: null
+    pull_request_state: open
+    pull_request_draft: true
+    pull_request_head_matches_review_revision: true
+    manifest_revision_ancestor_of_pull_request_head: true
+    manifest_path_unchanged_at_pull_request_head: true
+    manifest_content_matches_review_at_canonical_revision: null
+    ci_event: pull_request
+    ci_status: completed
+    ci_conclusion: success
+    ci_head_matches_review_revision: true
+    required_checks_passed: true
+    skipped_checks:
+      - optional-paired-greek-repository-check
+    limitations:
+      - point-in-time-observation
+      - private-identifiers-redacted
+      - canonical-merge-not-proven

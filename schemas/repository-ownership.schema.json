@@ -31,13 +31,14 @@
           "verification",
           "verification_method",
           "observed_at",
+          "observed_revision",
+          "observed_revision_digest",
           "verification_evidence",
           "remote",
           "default_branch",
           "visibility",
           "local_worktree",
-          "manifest_status",
-          "manifest_path"
+          "manifest_validation"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
@@ -56,6 +57,7 @@
             "type": "string",
             "enum": [
               "local-git-and-authenticated-github-connector",
+              "fresh-clone-and-authenticated-github-connector",
               "authenticated-github-connector",
               "local-git",
               "not-observed"
@@ -65,19 +67,164 @@
             "type": ["string", "null"],
             "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
           },
+          "observed_revision": {
+            "type": ["string", "null"],
+            "pattern": "^[0-9a-f]{40}$"
+          },
+          "observed_revision_digest": {
+            "type": ["string", "null"],
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
           "verification_evidence": { "type": "string", "minLength": 1 },
-          "remote": { "type": "string", "minLength": 1 },
+          "remote": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9-]{0,38}/[A-Za-z0-9][A-Za-z0-9_.-]*$"
+          },
           "default_branch": { "type": "string", "minLength": 1 },
           "visibility": { "type": "string", "enum": ["public", "private"] },
           "local_worktree": {
             "type": "string",
             "enum": ["valid", "invalid", "not-present"]
           },
-          "manifest_status": {
-            "type": "string",
-            "enum": ["present-validated", "missing"]
-          },
-          "manifest_path": { "type": "string", "minLength": 1 }
+          "manifest_validation": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "status",
+              "status_history",
+              "manifest_path",
+              "manifest_revision",
+              "manifest_revision_digest",
+              "canonical_manifest_revision",
+              "canonical_manifest_revision_digest",
+              "expected",
+              "evidence"
+            ],
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": ["pending", "review", "validated", "rejected"]
+              },
+              "status_history": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["status", "at", "revision"],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": ["pending", "review", "validated", "rejected"]
+                    },
+                    "at": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+                    "revision": {
+                      "type": ["string", "null"],
+                      "pattern": "^(?:[0-9a-f]{40}|sha256:[0-9a-f]{64})$"
+                    }
+                  }
+                }
+              },
+              "manifest_path": { "type": "string", "minLength": 1 },
+              "manifest_revision": {
+                "type": ["string", "null"],
+                "pattern": "^[0-9a-f]{40}$"
+              },
+              "manifest_revision_digest": {
+                "type": ["string", "null"],
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "canonical_manifest_revision": {
+                "type": ["string", "null"],
+                "pattern": "^[0-9a-f]{40}$"
+              },
+              "canonical_manifest_revision_digest": {
+                "type": ["string", "null"],
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "expected": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["project_id", "canonical_owner_repo", "visibility", "public_repo"],
+                "properties": {
+                  "project_id": { "type": "string", "minLength": 1 },
+                  "canonical_owner_repo": { "type": "string", "minLength": 1 },
+                  "visibility": { "type": "string", "enum": ["public-safe", "private", "mixed"] },
+                  "public_repo": { "type": "boolean" }
+                }
+              },
+              "evidence": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "disclosure",
+                  "attestation_path",
+                  "observed_at",
+                  "commit_url",
+                  "pull_request_url",
+                  "ci_run_url",
+                  "pull_request_head_revision",
+                  "manifest_revision_ancestor_of_pull_request_head",
+                  "manifest_path_unchanged_at_pull_request_head",
+                  "manifest_content_matches_review_at_canonical_revision",
+                  "pull_request_state",
+                  "pull_request_draft",
+                  "ci_head_revision",
+                  "ci_status",
+                  "ci_conclusion",
+                  "ci_event"
+                ],
+                "properties": {
+                  "disclosure": {
+                    "type": "string",
+                    "enum": ["public-evidence", "public-safe-attestation"]
+                  },
+                  "attestation_path": { "type": ["string", "null"] },
+                  "observed_at": {
+                    "type": ["string", "null"],
+                    "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                  },
+                  "commit_url": { "type": ["string", "null"] },
+                  "pull_request_url": { "type": ["string", "null"] },
+                  "ci_run_url": { "type": ["string", "null"] },
+                  "pull_request_head_revision": {
+                    "type": ["string", "null"],
+                    "pattern": "^[0-9a-f]{40}$"
+                  },
+                  "manifest_revision_ancestor_of_pull_request_head": {
+                    "type": ["boolean", "null"]
+                  },
+                  "manifest_path_unchanged_at_pull_request_head": {
+                    "type": ["boolean", "null"]
+                  },
+                  "manifest_content_matches_review_at_canonical_revision": {
+                    "type": ["boolean", "null"]
+                  },
+                  "pull_request_state": {
+                    "type": ["string", "null"],
+                    "enum": ["open", "closed", "merged", null]
+                  },
+                  "pull_request_draft": { "type": ["boolean", "null"] },
+                  "ci_head_revision": {
+                    "type": ["string", "null"],
+                    "pattern": "^[0-9a-f]{40}$"
+                  },
+                  "ci_status": {
+                    "type": ["string", "null"],
+                    "enum": ["queued", "in-progress", "completed", null]
+                  },
+                  "ci_conclusion": {
+                    "type": ["string", "null"],
+                    "enum": ["success", "failure", "cancelled", "skipped", null]
+                  },
+                  "ci_event": {
+                    "type": ["string", "null"],
+                    "enum": ["pull_request", "push", "workflow_dispatch", null]
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -108,8 +255,60 @@
           },
           "consumers": {
             "type": "array",
-            "uniqueItems": true,
-            "items": { "type": "string", "minLength": 1 }
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "repository",
+                "status",
+                "distribution_mode",
+                "compatibility",
+                "evidence"
+              ],
+              "properties": {
+                "repository": { "type": "string", "minLength": 1 },
+                "consumer_path": { "type": "string", "minLength": 1 },
+                "status": { "type": "string", "enum": ["observed", "planned"] },
+                "distribution_mode": {
+                  "type": "string",
+                  "enum": [
+                    "versioned-package",
+                    "generated-artifact",
+                    "read-only-mirror",
+                    "manual-adoption"
+                  ]
+                },
+                "compatibility": {
+                  "type": "string",
+                  "enum": ["compatible", "not-validated", "incompatible"]
+                },
+                "evidence": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["kind", "artifact_url", "attestation_path", "revision", "revision_digest"],
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "enum": ["public-distribution-attestation", "public-safe-attestation"]
+                      },
+                      "artifact_url": { "type": ["string", "null"] },
+                      "attestation_path": { "type": ["string", "null"] },
+                      "revision": {
+                        "type": ["string", "null"],
+                        "pattern": "^[0-9a-f]{40}$"
+                      },
+                      "revision_digest": {
+                        "type": ["string", "null"],
+                        "pattern": "^sha256:[0-9a-f]{64}$"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "sync_direction": {
             "type": "string",

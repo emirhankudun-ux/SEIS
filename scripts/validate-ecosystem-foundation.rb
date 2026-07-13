@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 
 require "json"
+require "cgi"
+require "digest"
 require "pathname"
 require "uri"
 require "yaml"
@@ -11,6 +13,16 @@ ERRORS = []
 MANIFEST_PATH = "project.ecosystem.yaml"
 OWNERSHIP_PATH = "data/repository-ownership.yaml"
 OWNERSHIP_DOC_PATH = "docs/REPOSITORY_OWNERSHIP.md"
+GREEK_TARGET_ATTESTATION_PATH = "data/evidence/ECO-GOAL-0001-greek-repository-target-attestation.yaml"
+COMPLETION_AUDIT_PATH = "data/evidence/ECO-GOAL-0001-completion-audit.yaml"
+COMPLETION_AUDIT_DOC_PATH = "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md"
+COMPLETION_AUDIT_EVIDENCE_ID = "ECO-EVIDENCE-012"
+APPROVED_AUDIT_URLS = %w[
+  https://github.com/emirhankudun-ux/SEIS/pull/177
+  https://github.com/emirhankudun-ux/SEIS/pull/179
+  https://github.com/emirhankudun-ux/SEIS/pull/180
+].freeze
+COMPLETION_AUDIT_DOC_SHA256 = "53930ad75eb7795e6c47be6cc797c184f0fa39af6d03f391f34cb73aeb0b4e69"
 GOAL_GLOB = "goals/{active,backlog,blocked,completed,archived}/*.yaml"
 
 def absolute(relative_path)
@@ -52,8 +64,68 @@ def valid_https_url?(value)
   return false unless value.is_a?(String) && !value.strip.empty?
 
   uri = URI.parse(value)
-  uri.is_a?(URI::HTTPS) && !uri.host.to_s.empty? && uri.userinfo.nil?
+  uri.is_a?(URI::HTTPS) && !uri.host.to_s.empty? && uri.userinfo.nil? && uri.port == 443
 rescue URI::InvalidURIError
+  false
+end
+
+def valid_github_repository_url?(value, remote, suffix_pattern)
+  return false unless valid_https_url?(value)
+  return false unless value.start_with?("https://github.com/")
+
+  uri = URI.parse(value)
+  return false unless uri.host.to_s.casecmp("github.com").zero?
+
+  path_matches = uri.path.match?(%r{\A/#{Regexp.escape(remote)}/#{suffix_pattern}\z})
+  return false unless path_matches && uri.query.nil? && uri.fragment.nil?
+
+  true
+rescue URI::InvalidURIError
+  false
+end
+
+def valid_github_remote?(value)
+  return false unless value.is_a?(String)
+
+  segments = value.split("/", -1)
+  return false unless segments.length == 2
+
+  owner, repository = segments
+  return false unless owner.match?(/\A[A-Za-z0-9][A-Za-z0-9-]{0,38}\z/)
+  return false unless repository.match?(/\A[A-Za-z0-9][A-Za-z0-9_.-]*\z/)
+
+  ![".", ".."].include?(repository)
+end
+
+def sha256_digest?(value)
+  value.is_a?(String) && value.match?(/\Asha256:[0-9a-f]{64}\z/)
+end
+
+def unquoted_comment_marker?(line)
+  in_single_quote = false
+  in_double_quote = false
+  escaped = false
+
+  line.each_char do |character|
+    if in_double_quote && escaped
+      escaped = false
+      next
+    end
+    if in_double_quote && character == "\\"
+      escaped = true
+      next
+    end
+    if !in_single_quote && character == '"'
+      in_double_quote = !in_double_quote
+      next
+    end
+    if !in_double_quote && character == "'"
+      in_single_quote = !in_single_quote
+      next
+    end
+    return true if character == "#" && !in_single_quote && !in_double_quote
+  end
+
   false
 end
 
@@ -174,11 +246,118 @@ def duplicates(values)
   values.group_by(&:itself).select { |_value, matches| matches.length > 1 }.keys
 end
 
+def exact_string_keys?(value, expected_keys)
+  value.is_a?(Hash) && value.keys.all? { |key| key.is_a?(String) } &&
+    value.keys.sort == expected_keys.sort
+end
+
+def nested_strings(value)
+  case value
+  when Hash
+    value.values.flat_map { |nested_value| nested_strings(nested_value) }
+  when Array
+    value.flat_map { |nested_value| nested_strings(nested_value) }
+  when String
+    [value]
+  else
+    []
+  end
+end
+
+def valid_non_circular_evidence_refs?(value, known_ids, allow_empty: false)
+  return false unless value.is_a?(Array)
+  return false if !allow_empty && value.empty?
+
+  value.all? { |reference| reference.is_a?(String) } && value.uniq == value &&
+    (value - known_ids).empty? && !value.include?(COMPLETION_AUDIT_EVIDENCE_ID)
+end
+
+def normalize_public_markdown(text)
+  punctuation = (33..126).map(&:chr).reject { |character| character.match?(/[A-Za-z0-9]/) }
+  normalized = text.to_s
+  4.times do
+    decoded = CGI.unescapeHTML(normalized).gsub(/\\(.)/) do |match|
+      character = Regexp.last_match(1)
+      punctuation.include?(character) ? character : match
+    end
+    break if decoded == normalized
+    normalized = decoded
+  end
+  normalized
+end
+
+def normalize_host_reference_text(text)
+  normalized = text.to_s
+  4.times do
+    decoded = URI::DEFAULT_PARSER.unescape(normalized).force_encoding(Encoding::UTF_8).scrub
+    decoded = decoded.tr("\u3002\uFF0E\uFF61", ".")
+    break if decoded == normalized
+    normalized = decoded
+  end
+  normalized
+rescue ArgumentError
+  text.to_s
+end
+
+def unapproved_github_reference?(text)
+  residual = text.to_s.dup
+  APPROVED_AUDIT_URLS.each { |url| residual = residual.gsub(url, "") }
+  normalize_host_reference_text(residual).match?(%r{(?:/{2})?github\.com\.?(?::[0-9]+)?/}i)
+end
+
 manifest_schema = read_json("schemas/project-ecosystem.schema.json")
 ownership_schema = read_json("schemas/repository-ownership.schema.json")
 goal_schema = read_json("schemas/ecosystem-goal.schema.json")
 manifest = read_yaml(MANIFEST_PATH)
 ownership = read_yaml(OWNERSHIP_PATH)
+greek_target_attestation_text = read_text(GREEK_TARGET_ATTESTATION_PATH)
+greek_target_attestation = read_yaml(GREEK_TARGET_ATTESTATION_PATH)
+
+expected_greek_target_attestation = {
+  "schema_version" => 1,
+  "id" => "eco-goal-0001-greek-repository-target-attestation",
+  "goal_id" => "ECO-GOAL-0001",
+  "classification" => "public-safe-metadata-only",
+  "observed_at" => "2026-07-13",
+  "verification_method" => "authenticated-read-only-github-observation",
+  "requested_target" => {
+    "symbolic_name" => "Παντεχνοεπιστημονόησις",
+    "lookup_result" => "not-found"
+  },
+  "ambiguous_candidate" => {
+    "existence" => "observed",
+    "visibility" => "private",
+    "identity_alignment" => "unverified",
+    "identifier_disclosure" => "withheld-private-operational-metadata"
+  },
+  "decision" => {
+    "status" => "human-approval-needed",
+    "allowed_next_actions" => [
+      "confirm-exact-canonical-target",
+      "explicitly-defer-greek-publication"
+    ],
+    "prohibited_actions" => [
+      "claim-ambiguous-candidate-ownership",
+      "configure-remote-without-confirmation",
+      "push-or-force-push"
+    ]
+  },
+  "limitations" => [
+    "point-in-time-observation",
+    "private-identifiers-redacted",
+    "repository-contents-not-inspected",
+    "canonical-target-unresolved"
+  ]
+}
+unless greek_target_attestation == expected_greek_target_attestation
+  ERRORS << "#{GREEK_TARGET_ATTESTATION_PATH}: Greek target attestation must remain the canonical public-safe unresolved decision record"
+end
+if greek_target_attestation_text.lines.any? { |line| unquoted_comment_marker?(line) }
+  ERRORS << "#{GREEK_TARGET_ATTESTATION_PATH}: canonical Greek target attestation must not contain comments"
+end
+if greek_target_attestation_text.match?(%r{https?://|github\.com|\b[0-9a-f]{40}\b}i)
+  ERRORS << "#{GREEK_TARGET_ATTESTATION_PATH}: canonical Greek target attestation must not contain operational URLs or raw revisions"
+end
 
 validate_schema(manifest, manifest_schema, manifest_schema, MANIFEST_PATH) if manifest_schema
 validate_schema(ownership, ownership_schema, ownership_schema, OWNERSHIP_PATH) if ownership_schema
@@ -195,7 +374,10 @@ registry = ownership.is_a?(Hash) ? ownership["registry"] : nil
 coordinator = registry["canonical_coordinator_repo"] if registry.is_a?(Hash)
 observed_repository_states = ["observed-local-and-remote", "observed-remote"]
 verification_methods_by_state = {
-  "observed-local-and-remote" => ["local-git-and-authenticated-github-connector"],
+  "observed-local-and-remote" => [
+    "local-git-and-authenticated-github-connector",
+    "fresh-clone-and-authenticated-github-connector"
+  ],
   "observed-remote" => ["authenticated-github-connector"],
   "repository-metadata-invalid" => ["local-git", "not-observed"],
   "proposed" => ["not-observed"]
@@ -205,6 +387,7 @@ repositories.each do |repository|
   next unless repository.is_a?(Hash)
 
   repository_id = repository["id"]
+  remote = repository["remote"]
   verification = repository["verification"]
   verification_method = repository["verification_method"]
   allowed_verification_methods = verification_methods_by_state[verification]
@@ -218,8 +401,20 @@ repositories.each do |repository|
         ERRORS << "#{OWNERSHIP_PATH}: observed repository #{repository_id} has unknown #{field} metadata"
       end
     end
+    unless valid_github_remote?(remote)
+      ERRORS << "#{OWNERSHIP_PATH}: observed repository #{repository_id} remote must use an exact GitHub owner/repository identity"
+    end
     if repository["observed_at"].nil? || verification_method == "not-observed"
       ERRORS << "#{OWNERSHIP_PATH}: observed repository #{repository_id} must record observation date and method"
+    end
+    observed_revision = repository["observed_revision"]
+    observed_revision_digest = repository["observed_revision_digest"]
+    if repository["visibility"] == "private"
+      unless observed_revision.nil? && sha256_digest?(observed_revision_digest)
+        ERRORS << "#{OWNERSHIP_PATH}: private observed repository #{repository_id} must publish only a SHA-256 revision digest"
+      end
+    elsif !(observed_revision.is_a?(String) && observed_revision.match?(/\A[0-9a-f]{40}\z/) && observed_revision_digest.nil?)
+      ERRORS << "#{OWNERSHIP_PATH}: public observed repository #{repository_id} must record a full lowercase revision without a digest surrogate"
     end
     evidence_path = repository["verification_evidence"]
     unless existing_repository_artifact?(evidence_path)
@@ -232,33 +427,265 @@ repositories.each do |repository|
   if verification == "observed-local-and-remote" && repository["local_worktree"] != "valid"
     ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} marked observed-local-and-remote must have a valid local worktree"
   end
-  if repository["manifest_status"] == "present-validated"
-    manifest_path = repository["manifest_path"]
-    manifest_is_local = repository["local_worktree"] == "valid" && existing_repository_artifact?(manifest_path)
-    unless manifest_is_local
-      ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} present-validated manifest #{manifest_path.inspect} must be an existing file in a valid local worktree"
-    end
-    if manifest_is_local
-      claimed_manifest = read_yaml(manifest_path)
-      validate_schema(claimed_manifest, manifest_schema, manifest_schema, manifest_path) if manifest_schema
-      if claimed_manifest.is_a?(Hash)
-        claimed_project = claimed_manifest["project"]
-        claimed_ecosystem = claimed_manifest["ecosystem"]
-        claimed_security = claimed_manifest["security"]
-        claimed_project_id = claimed_project["id"] if claimed_project.is_a?(Hash)
-        claimed_owner_id = claimed_ecosystem["canonical_owner_repo"] if claimed_ecosystem.is_a?(Hash)
-        claimed_visibility = claimed_project["visibility"] if claimed_project.is_a?(Hash)
-        claimed_public_repo = claimed_security["public_repo"] if claimed_security.is_a?(Hash)
-        expected_visibilities = repository["visibility"] == "public" ? ["public-safe"] : ["private", "mixed"]
-        expected_public_repo = repository["visibility"] == "public"
+  manifest_validation = repository["manifest_validation"]
+  next unless manifest_validation.is_a?(Hash)
 
-        unless claimed_project_id == repository_id && claimed_owner_id == repository_id
-          ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} manifest identity must match its canonical repository id"
-        end
-        unless expected_visibilities.include?(claimed_visibility) && claimed_public_repo == expected_public_repo
-          ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} manifest visibility must match repository visibility #{repository["visibility"].inspect}"
+  manifest_status = manifest_validation["status"]
+  status_history = Array(manifest_validation["status_history"])
+  manifest_path = manifest_validation["manifest_path"]
+  manifest_revision = manifest_validation["manifest_revision"]
+  manifest_revision_digest = manifest_validation["manifest_revision_digest"]
+  canonical_manifest_revision = manifest_validation["canonical_manifest_revision"]
+  canonical_manifest_revision_digest = manifest_validation["canonical_manifest_revision_digest"]
+  expected = manifest_validation["expected"]
+  evidence = manifest_validation["evidence"]
+  history_transitions = {
+    "pending" => ["review"],
+    "review" => ["validated", "rejected"],
+    "validated" => [],
+    "rejected" => []
+  }
+  if status_history.empty? || status_history.first["status"] != "pending"
+    ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} manifest history must start at pending"
+  end
+  if status_history.any? && status_history.last["status"] != manifest_status
+    ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} manifest status must match its latest history entry"
+  end
+  status_history.each_cons(2) do |previous, current|
+    allowed = history_transitions.fetch(previous["status"], [])
+    unless allowed.include?(current["status"])
+      ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} manifest history cannot transition from #{previous["status"].inspect} to #{current["status"].inspect}"
+    end
+    if previous["at"].is_a?(String) && current["at"].is_a?(String) && current["at"] < previous["at"]
+      ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} manifest history dates must be nondecreasing"
+    end
+  end
+  status_history.each do |history_entry|
+    next unless history_entry.is_a?(Hash)
+
+    history_revision = history_entry["revision"]
+    if history_entry["status"] == "pending"
+      ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} pending manifest history must not record a revision" unless history_revision.nil?
+    elsif repository["visibility"] == "private"
+      ERRORS << "#{OWNERSHIP_PATH}: private repository #{repository_id} manifest history must use only SHA-256 revision digests" unless sha256_digest?(history_revision)
+    elsif !(history_revision.is_a?(String) && history_revision.match?(/\A[0-9a-f]{40}\z/))
+      ERRORS << "#{OWNERSHIP_PATH}: public repository #{repository_id} manifest history must use full lowercase revisions"
+    end
+  end
+  review_revision_reference = manifest_revision || manifest_revision_digest
+  canonical_revision_reference = canonical_manifest_revision || canonical_manifest_revision_digest
+  status_revision_reference = manifest_status == "validated" ? canonical_revision_reference : review_revision_reference
+  if status_history.any? && status_history.last["revision"] != status_revision_reference
+    ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} manifest revision must match its latest history entry"
+  end
+  review_history_entry = status_history.find { |entry| entry.is_a?(Hash) && entry["status"] == "review" }
+  if review_history_entry && review_history_entry["revision"] != review_revision_reference
+    ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} reviewed manifest revision must remain stable across later states"
+  end
+  normalized_manifest_path = normalized_repository_path(manifest_path)
+  if normalized_manifest_path.nil?
+    ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} manifest path #{manifest_path.inspect} must remain a nonempty repository-relative path"
+  elsif normalized_manifest_path != manifest_path
+    ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} manifest path #{manifest_path.inspect} must be normalized as #{normalized_manifest_path.inspect}"
+  end
+
+  if expected.is_a?(Hash)
+    expected_visibility = repository["visibility"] == "public" ? "public-safe" : "private"
+    expected_public_repo = repository["visibility"] == "public"
+    unless expected["project_id"] == repository_id && expected["canonical_owner_repo"] == repository_id
+      ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} manifest expected identity must match its canonical repository id"
+    end
+    unless expected["visibility"] == expected_visibility && expected["public_repo"] == expected_public_repo
+      ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} manifest expected visibility must match repository visibility #{repository["visibility"].inspect}"
+    end
+  end
+
+  evidence_detail_keys = %w[
+    attestation_path observed_at commit_url pull_request_url ci_run_url
+    pull_request_head_revision manifest_revision_ancestor_of_pull_request_head
+    manifest_path_unchanged_at_pull_request_head
+    manifest_content_matches_review_at_canonical_revision
+    pull_request_state pull_request_draft
+    ci_head_revision ci_status ci_conclusion ci_event
+  ]
+  evidence_values = evidence.is_a?(Hash) ? evidence_detail_keys.map { |key| evidence[key] } : []
+  if manifest_status == "pending"
+    unless manifest_revision.nil? && manifest_revision_digest.nil? &&
+        canonical_manifest_revision.nil? && canonical_manifest_revision_digest.nil? &&
+        evidence_values.all?(&:nil?)
+      ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} pending manifest must not claim a revision or validation evidence"
+    end
+  elsif ["review", "validated", "rejected"].include?(manifest_status)
+    public_evidence = repository["visibility"] == "public"
+    if public_evidence
+      revision_valid = manifest_revision.is_a?(String) && manifest_revision.match?(/\A[0-9a-f]{40}\z/) && manifest_revision_digest.nil?
+      evidence_valid = evidence.is_a?(Hash) &&
+        evidence["disclosure"] == "public-evidence" && evidence["attestation_path"].nil? &&
+        valid_github_repository_url?(evidence["commit_url"], remote.to_s, "commit/#{Regexp.escape(manifest_revision.to_s)}") &&
+        valid_github_repository_url?(evidence["pull_request_url"], remote.to_s, "pull/[1-9][0-9]*") &&
+        valid_github_repository_url?(evidence["ci_run_url"], remote.to_s, "actions/runs/[1-9][0-9]*") &&
+        evidence["observed_at"] == repository["observed_at"] &&
+        evidence["pull_request_head_revision"].is_a?(String) &&
+        evidence["ci_head_revision"] == evidence["pull_request_head_revision"] &&
+        evidence["manifest_revision_ancestor_of_pull_request_head"] == true &&
+        evidence["manifest_path_unchanged_at_pull_request_head"] == true
+      unless revision_valid && evidence_valid
+        ERRORS << "#{OWNERSHIP_PATH}: public repository #{repository_id} #{manifest_status} manifest requires revision-bound public commit, pull request, and CI evidence"
+      end
+    else
+      attestation_path = evidence["attestation_path"] if evidence.is_a?(Hash)
+      revision_valid = manifest_revision.nil? && sha256_digest?(manifest_revision_digest)
+      evidence_valid = evidence.is_a?(Hash) && evidence["disclosure"] == "public-safe-attestation" &&
+        existing_repository_artifact?(attestation_path) && evidence["commit_url"].nil? &&
+        evidence["pull_request_url"].nil? && evidence["ci_run_url"].nil? &&
+        evidence["pull_request_head_revision"].nil? && evidence["ci_head_revision"].nil? &&
+        evidence["manifest_revision_ancestor_of_pull_request_head"].nil? &&
+        evidence["manifest_path_unchanged_at_pull_request_head"].nil? &&
+        evidence["observed_at"] == repository["observed_at"]
+      unless revision_valid && evidence_valid
+        ERRORS << "#{OWNERSHIP_PATH}: private repository #{repository_id} #{manifest_status} manifest requires a public-safe revision digest and repository attestation without private operational URLs"
+      end
+    end
+    if manifest_status == "validated"
+      if public_evidence
+        canonical_reference_valid = canonical_manifest_revision.is_a?(String) &&
+          canonical_manifest_revision.match?(/\A[0-9a-f]{40}\z/) && canonical_manifest_revision_digest.nil?
+      else
+        canonical_reference_valid = canonical_manifest_revision.nil? && sha256_digest?(canonical_manifest_revision_digest)
+      end
+      unless canonical_reference_valid && evidence.is_a?(Hash) &&
+          evidence["manifest_content_matches_review_at_canonical_revision"] == true
+        ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} validated manifest requires a canonical revision reference whose content matches the reviewed manifest"
+      end
+    elsif !(canonical_manifest_revision.nil? && canonical_manifest_revision_digest.nil? &&
+        evidence.is_a?(Hash) && evidence["manifest_content_matches_review_at_canonical_revision"].nil?)
+      ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} #{manifest_status} manifest must not claim canonical manifest evidence"
+    end
+    if evidence.is_a?(Hash) && ["review", "validated"].include?(manifest_status)
+      expected_pull_request_state = manifest_status == "review" ? "open" : "merged"
+      coherent_pull_request = evidence["pull_request_state"] == expected_pull_request_state
+      coherent_pull_request &&= evidence["pull_request_draft"] == false if manifest_status == "validated"
+      unless coherent_pull_request && evidence["ci_status"] == "completed" &&
+          evidence["ci_conclusion"] == "success" && evidence["ci_event"] == "pull_request"
+        ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} #{manifest_status} manifest requires coherent pull-request state and successful completed pull-request CI"
+      end
+    end
+    observed_revision_reference = repository["observed_revision"] || repository["observed_revision_digest"]
+    if manifest_status == "validated" && canonical_revision_reference != observed_revision_reference
+      ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} validated manifest revision must match the observed canonical revision reference"
+    end
+    if evidence.is_a?(Hash) && manifest_status == "rejected" && evidence["pull_request_state"] != "closed"
+      ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} rejected manifest requires a closed pull-request observation"
+    end
+
+    local_project = manifest["project"] if manifest.is_a?(Hash)
+    local_manifest_id = local_project["id"] if local_project.is_a?(Hash)
+    if repository_id == local_manifest_id
+      manifest_is_local = repository["local_worktree"] == "valid" && existing_repository_artifact?(manifest_path)
+      unless manifest_is_local
+        ERRORS << "#{OWNERSHIP_PATH}: local repository #{repository_id} #{manifest_status} manifest #{manifest_path.inspect} must be an existing file in the current worktree"
+      end
+      if manifest_is_local && expected.is_a?(Hash)
+        claimed_project = manifest["project"]
+        claimed_ecosystem = manifest["ecosystem"]
+        claimed_security = manifest["security"]
+        unless claimed_project.is_a?(Hash) && claimed_ecosystem.is_a?(Hash) && claimed_security.is_a?(Hash) &&
+            claimed_project["id"] == expected["project_id"] &&
+            claimed_ecosystem["canonical_owner_repo"] == expected["canonical_owner_repo"] &&
+            claimed_project["visibility"] == expected["visibility"] &&
+            claimed_security["public_repo"] == expected["public_repo"]
+          ERRORS << "#{OWNERSHIP_PATH}: local repository #{repository_id} manifest content must match recorded expected identity and visibility"
         end
       end
+    end
+  end
+end
+
+private_review_repositories = repositories.select do |repository|
+  repository.is_a?(Hash) && repository["visibility"] == "private" &&
+    ["review", "validated", "rejected"].include?(repository.dig("manifest_validation", "status"))
+end
+private_review_repositories.group_by { |repository| repository.dig("manifest_validation", "evidence", "attestation_path") }.each do |attestation_path, attested_repositories|
+  next unless existing_repository_artifact?(attestation_path)
+
+  attestation_text = read_text(attestation_path)
+  attestation = read_yaml(attestation_path)
+  attestation_root_keys = %w[
+    schema_version id goal_id classification observed_at verification_method
+    attestations
+  ].sort
+  unless attestation.is_a?(Hash) && attestation.keys.sort == attestation_root_keys &&
+      attestation["schema_version"] == 1 &&
+      attestation["id"] == "eco-goal-0001-private-manifest-review" &&
+      attestation["goal_id"] == "ECO-GOAL-0001" &&
+      attestation["classification"] == "public-safe-metadata-only" &&
+      attestation["verification_method"] == "authenticated-read-only-github-observation"
+    ERRORS << "#{attestation_path}: private manifest attestation metadata is invalid"
+    next
+  end
+  if attestation_text.match?(%r{https?://|/pull/|/actions/runs/|\b[0-9a-f]{40}\b})
+    ERRORS << "#{attestation_path}: private manifest attestation must not publish operational URLs or raw revisions"
+  end
+  entries = Array(attestation["attestations"])
+  attestation_entry_keys = %w[
+    repository_id visibility canonical_main_revision_digest review_revision_digest
+    status_revision_digest canonical_manifest_revision_digest
+    pull_request_state pull_request_draft pull_request_head_matches_review_revision
+    manifest_revision_ancestor_of_pull_request_head manifest_path_unchanged_at_pull_request_head
+    manifest_content_matches_review_at_canonical_revision
+    ci_event ci_status ci_conclusion ci_head_matches_review_revision
+    required_checks_passed skipped_checks limitations
+  ].sort
+  entries.each do |entry|
+    unless entry.is_a?(Hash) && entry.keys.sort == attestation_entry_keys
+      ERRORS << "#{attestation_path}: private manifest attestation entry has an unexpected shape"
+    end
+  end
+  attested_repository_ids = entries.map { |entry| entry["repository_id"] if entry.is_a?(Hash) }.compact
+  duplicates(attested_repository_ids).each do |repository_id|
+    ERRORS << "#{attestation_path}: duplicate private manifest attestation for #{repository_id}"
+  end
+  expected_attested_repository_ids = attested_repositories.map { |repository| repository["id"] }.sort
+  unless attested_repository_ids.sort == expected_attested_repository_ids
+    ERRORS << "#{attestation_path}: private manifest attestation repository set does not match its ownership references"
+  end
+  allowed_skipped_checks = ["optional-paired-greek-repository-check"]
+  entries.each do |entry|
+    next unless entry.is_a?(Hash)
+
+    skipped_checks = entry["skipped_checks"]
+    unless skipped_checks.is_a?(Array) && skipped_checks.uniq == skipped_checks &&
+        (skipped_checks - allowed_skipped_checks).empty?
+      ERRORS << "#{attestation_path}: private manifest attestation skipped checks must use the public-safe allowlist"
+    end
+  end
+  attested_repositories.each do |repository|
+    repository_id = repository["id"]
+    validation = repository["manifest_validation"]
+    review_history_entry = Array(validation["status_history"]).find do |history_entry|
+      history_entry.is_a?(Hash) && history_entry["status"] == "review"
+    end
+    evidence = validation["evidence"]
+    expected_limitations = %w[point-in-time-observation private-identifiers-redacted]
+    expected_limitations << "canonical-merge-not-proven" unless validation["status"] == "validated"
+    entry = entries.find { |candidate| candidate.is_a?(Hash) && candidate["repository_id"] == repository_id }
+    unless entry && entry["visibility"] == "private" &&
+        attestation["observed_at"] == evidence["observed_at"] &&
+        entry["canonical_main_revision_digest"] == repository["observed_revision_digest"] &&
+        entry["review_revision_digest"] == review_history_entry&.dig("revision") &&
+        entry["status_revision_digest"] == Array(validation["status_history"]).last&.dig("revision") &&
+        entry["canonical_manifest_revision_digest"] == validation["canonical_manifest_revision_digest"] &&
+        entry["pull_request_state"] == evidence["pull_request_state"] &&
+        entry["pull_request_draft"] == evidence["pull_request_draft"] &&
+        entry["manifest_revision_ancestor_of_pull_request_head"] == true &&
+        entry["manifest_path_unchanged_at_pull_request_head"] == true &&
+        entry["manifest_content_matches_review_at_canonical_revision"] == evidence["manifest_content_matches_review_at_canonical_revision"] &&
+        entry["ci_event"] == evidence["ci_event"] && entry["ci_status"] == evidence["ci_status"] &&
+        entry["ci_conclusion"] == evidence["ci_conclusion"] &&
+        entry["pull_request_head_matches_review_revision"] == true &&
+        entry["ci_head_matches_review_revision"] == true && entry["required_checks_passed"] == true &&
+        entry["limitations"] == expected_limitations
+      ERRORS << "#{attestation_path}: private manifest attestation for #{repository_id} does not match the ownership record"
     end
   end
 end
@@ -300,8 +727,109 @@ modules.each do |mod|
   unless existing_repository_artifact?(decision_record)
     ERRORS << "#{OWNERSHIP_PATH}: #{mod["id"]} decision record #{decision_record.inspect} is missing or outside the repository"
   end
+  consumer_repositories = []
   Array(mod["consumers"]).each do |consumer|
-    ERRORS << "#{OWNERSHIP_PATH}: #{mod["id"]} has unknown consumer #{consumer}" unless repository_ids.include?(consumer)
+    next unless consumer.is_a?(Hash)
+
+    consumer_repository = consumer["repository"]
+    consumer_repositories << consumer_repository if consumer_repository
+    unless repository_ids.include?(consumer_repository)
+      ERRORS << "#{OWNERSHIP_PATH}: #{mod["id"]} has unknown consumer repository #{consumer_repository.inspect}"
+    end
+    consumer_path = consumer["consumer_path"]
+    if consumer_path
+      normalized_consumer_path = normalized_repository_path(consumer_path)
+      if normalized_consumer_path.nil?
+        ERRORS << "#{OWNERSHIP_PATH}: #{mod["id"]} consumer #{consumer_repository.inspect} path #{consumer_path.inspect} must remain a nonempty repository-relative path"
+      elsif normalized_consumer_path != consumer_path
+        ERRORS << "#{OWNERSHIP_PATH}: #{mod["id"]} consumer #{consumer_repository.inspect} path #{consumer_path.inspect} must be normalized as #{normalized_consumer_path.inspect}"
+      end
+    end
+    consumer_evidence = Array(consumer["evidence"])
+    if consumer["status"] == "observed" && consumer_evidence.empty?
+      ERRORS << "#{OWNERSHIP_PATH}: #{mod["id"]} observed consumer #{consumer_repository.inspect} requires evidence"
+    end
+    if consumer["status"] == "observed" && consumer["compatibility"] == "not-validated"
+      ERRORS << "#{OWNERSHIP_PATH}: #{mod["id"]} observed consumer #{consumer_repository.inspect} requires an evaluated compatibility state"
+    end
+    if consumer["status"] == "planned" && !consumer_evidence.empty?
+      ERRORS << "#{OWNERSHIP_PATH}: #{mod["id"]} planned consumer #{consumer_repository.inspect} must not claim distribution evidence"
+    end
+    consumer_repository_record = repositories.find { |candidate| candidate.is_a?(Hash) && candidate["id"] == consumer_repository }
+    consumer_remote = consumer_repository_record && consumer_repository_record["remote"]
+    consumer_evidence.each do |evidence_ref|
+      next unless evidence_ref.is_a?(Hash)
+
+      next unless consumer_repository_record
+
+      public_consumer = consumer_repository_record["visibility"] == "public"
+      artifact_url = evidence_ref["artifact_url"]
+      attestation_path = evidence_ref["attestation_path"]
+      if public_consumer
+        evidence_contract_valid = evidence_ref["kind"] == "public-distribution-attestation" &&
+          evidence_ref["revision"].is_a?(String) && evidence_ref["revision"].match?(/\A[0-9a-f]{40}\z/) &&
+          evidence_ref["revision_digest"].nil? && attestation_path.is_a?(String) &&
+          attestation_path.start_with?("data/evidence/") && existing_repository_artifact?(attestation_path) &&
+          valid_github_remote?(consumer_remote) && valid_github_repository_url?(
+            artifact_url,
+            consumer_remote,
+            "commit/#{Regexp.escape(evidence_ref["revision"].to_s)}"
+          )
+        unless evidence_contract_valid
+          ERRORS << "#{OWNERSHIP_PATH}: #{mod["id"]} public consumer #{consumer_repository.inspect} evidence must combine an exact repository-bound GitHub artifact, full revision, and schema-bound distribution attestation"
+          next
+        end
+      else
+        evidence_contract_valid = evidence_ref["kind"] == "public-safe-attestation" &&
+          artifact_url.nil? && evidence_ref["revision"].nil? && sha256_digest?(evidence_ref["revision_digest"]) &&
+          attestation_path.is_a?(String) && attestation_path.start_with?("data/evidence/") &&
+          existing_repository_artifact?(attestation_path)
+        unless evidence_contract_valid
+          ERRORS << "#{OWNERSHIP_PATH}: #{mod["id"]} private consumer #{consumer_repository.inspect} evidence requires a public-safe revision digest and schema-bound attestation"
+          next
+        end
+      end
+
+      attestation_text = read_text(attestation_path)
+      attestation = read_yaml(attestation_path)
+      allowed_consumer_limitations = %w[
+        point-in-time-observation
+        canonical-merge-not-proven
+        compatibility-limited-to-recorded-contract
+      ]
+      allowed_consumer_limitations << "private-identifiers-redacted" unless public_consumer
+      expected_keys = %w[
+        schema_version kind classification module_id consumer_repository
+        consumer_path distribution_mode compatibility artifact_url revision
+        revision_digest observed_at limitations
+      ].sort
+      expected_classification = public_consumer ? "public-evidence" : "public-safe-metadata-only"
+      fields_match = attestation.is_a?(Hash) && attestation.keys.sort == expected_keys &&
+        attestation["schema_version"] == 1 && attestation["kind"] == "consumer-distribution" &&
+        attestation["classification"] == expected_classification &&
+        attestation["module_id"] == mod["id"] &&
+        attestation["consumer_repository"] == consumer_repository &&
+        attestation["consumer_path"] == consumer_path &&
+        attestation["distribution_mode"] == consumer["distribution_mode"] &&
+        attestation["compatibility"] == consumer["compatibility"] &&
+        attestation["artifact_url"] == artifact_url &&
+        attestation["revision"] == evidence_ref["revision"] &&
+        attestation["revision_digest"] == evidence_ref["revision_digest"] &&
+        attestation["observed_at"].is_a?(String) &&
+        attestation["observed_at"].match?(/\A[0-9]{4}-[0-9]{2}-[0-9]{2}\z/) &&
+        attestation["limitations"].is_a?(Array) &&
+        attestation["limitations"].uniq == attestation["limitations"] &&
+        (attestation["limitations"] - allowed_consumer_limitations).empty?
+      if !public_consumer && attestation_text.match?(%r{https?://|/pull/|/actions/runs/|\b[0-9a-f]{40}\b})
+        ERRORS << "#{attestation_path}: private consumer attestation must not publish operational URLs or raw revisions"
+      end
+      unless fields_match
+        ERRORS << "#{attestation_path}: consumer attestation does not match #{mod["id"]} -> #{consumer_repository}"
+      end
+    end
+  end
+  duplicates(consumer_repositories).each do |consumer_repository|
+    ERRORS << "#{OWNERSHIP_PATH}: #{mod["id"]} has duplicate consumer repository #{consumer_repository.inspect}"
   end
   Array(mod["paths"]).each do |path|
     normalized_path = normalized_repository_path(path)
@@ -315,16 +843,18 @@ modules.each do |mod|
     owned_paths << [owner, normalized_path, mod["id"]]
   end
 end
-owned_paths.group_by { |owner, path, _module_id| [owner, path] }.each do |(owner, path), entries|
+owned_paths.group_by { |owner, path, _module_id| [owner, path.downcase] }.each do |(owner, _path_key), entries|
   next if entries.length == 1
-  ERRORS << "#{OWNERSHIP_PATH}: path #{path} has duplicate canonical owners in repository #{owner}: #{entries.map(&:last).join(", ")}"
+  ERRORS << "#{OWNERSHIP_PATH}: case-folded path #{entries.map { |entry| entry[1] }.join(" / ")} has duplicate canonical owners in repository #{owner}: #{entries.map(&:last).join(", ")}"
 end
 owned_paths.combination(2).each do |left, right|
   left_owner, left_path, left_module = left
   right_owner, right_path, right_module = right
   next unless left_owner == right_owner
-  next if left_path == right_path
-  next unless left_path.start_with?("#{right_path}/") || right_path.start_with?("#{left_path}/")
+  left_key = left_path.downcase
+  right_key = right_path.downcase
+  next if left_key == right_key
+  next unless left_key.start_with?("#{right_key}/") || right_key.start_with?("#{left_key}/")
   ERRORS << "#{OWNERSHIP_PATH}: owned paths #{left_path} (#{left_module}) and #{right_path} (#{right_module}) overlap in repository #{left_owner}"
 end
 
@@ -475,6 +1005,251 @@ goal_paths.each do |absolute_goal_path|
 end
 duplicates(goal_ids).each { |id| ERRORS << "duplicate Goal id #{id}" }
 
+completion_audit_text = read_text(COMPLETION_AUDIT_PATH)
+completion_audit = read_yaml(COMPLETION_AUDIT_PATH)
+ownership_goal_pair = goals.find { |_relative_goal_path, goal| goal["id"] == "ECO-GOAL-0001" }
+ownership_goal = ownership_goal_pair&.last
+if !completion_audit.is_a?(Hash)
+  ERRORS << "#{COMPLETION_AUDIT_PATH}: expected YAML object/hash at root"
+elsif !ownership_goal.is_a?(Hash)
+  ERRORS << "#{COMPLETION_AUDIT_PATH}: ECO-GOAL-0001 is missing"
+else
+  expected_audit_keys = %w[
+    schema_version id goal_id classification assessed_at outcome maturity
+    dependency_snapshot criteria quality_gates blockers github_review_order limitations
+  ].sort
+  unless exact_string_keys?(completion_audit, expected_audit_keys)
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: completion audit fields must match the canonical contract"
+  end
+  unless completion_audit["schema_version"] == 1 &&
+      completion_audit["id"] == "eco-goal-0001-completion-audit" &&
+      completion_audit["goal_id"] == ownership_goal["id"] &&
+      completion_audit["classification"] == "public-safe" &&
+      completion_audit["assessed_at"].is_a?(String) &&
+      completion_audit["assessed_at"].match?(/\A[0-9]{4}-[0-9]{2}-[0-9]{2}\z/) &&
+      completion_audit["outcome"] == ownership_goal["status"] &&
+      completion_audit["outcome"] == "blocked" &&
+      completion_audit["maturity"] == ownership_goal["maturity"]
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: completion audit identity, date, outcome, and maturity must match the blocked Goal"
+  end
+  if repositories.all? { |repository| repository.is_a?(Hash) && repository.dig("manifest_validation", "status") == "validated" }
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: blocked manifest assessment must be refreshed when every canonical manifest is validated"
+  end
+  ownership_adr = read_text("docs/adr/0002-ecosystem-governance-bootstrap-ownership.md")
+  unless ownership_adr.include?("## Status\n\nProposed")
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: blocked inventory snapshot requires ADR-0002 to remain Proposed"
+  end
+
+  ownership_evidence_ids = Array(ownership_goal["evidence_records"])
+    .map { |record| record["id"] if record.is_a?(Hash) && record["status"] == "passed" }
+    .compact
+  criteria = completion_audit["criteria"]
+  expected_criteria_sections = {
+    "requirements" => Array(ownership_goal["requirements"]),
+    "acceptance_criteria" => Array(ownership_goal["acceptance_criteria"]),
+    "definition_of_done" => Array(ownership_goal["definition_of_done"])
+  }
+  expected_criterion_assessments = {
+    "requirements" => %w[partial partial satisfied satisfied satisfied satisfied satisfied blocked],
+    "acceptance_criteria" => %w[satisfied partial satisfied satisfied satisfied satisfied satisfied],
+    "definition_of_done" => %w[blocked partial satisfied satisfied]
+  }
+  expected_criterion_remaining_actions = {
+    "requirements" => [
+      "Merge all three reviewed manifest changes, refresh canonical revisions, and promote each manifest record to validated.",
+      "Obtain human architecture review of the proposed inventory and accept or revise ADR-0002.",
+      nil,
+      nil,
+      nil,
+      nil,
+      nil,
+      "The accountable human confirms the exact canonical target or explicitly defers Greek publication."
+    ],
+    "acceptance_criteria" => [
+      nil,
+      "Human architecture review must confirm inventory completeness before the proposed records can be treated as accepted.",
+      nil,
+      nil,
+      nil,
+      nil,
+      "Current consumers remain planned; add distribution-bound evidence before any mapping is promoted to observed."
+    ],
+    "definition_of_done" => [
+      "Merge the three manifest pull requests, refresh canonical revisions, verify content matches, and promote all records from review to validated.",
+      "Accept or revise ADR-0002 and attest that the reviewed inventory is complete.",
+      nil,
+      nil
+    ]
+  }
+  unless exact_string_keys?(criteria, expected_criteria_sections.keys)
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: criteria sections must map requirements, acceptance criteria, and Definition of Done"
+  end
+  expected_criteria_sections.each do |section, expected_statements|
+    entries = criteria.is_a?(Hash) ? Array(criteria[section]) : []
+    unless entries.map { |entry| entry["criterion"] if entry.is_a?(Hash) } == expected_statements
+      ERRORS << "#{COMPLETION_AUDIT_PATH}: #{section} must preserve every Goal criterion in order"
+    end
+    entries.each_with_index do |entry, index|
+      next unless entry.is_a?(Hash)
+
+      unless exact_string_keys?(entry, %w[assessment criterion evidence_refs remaining_action])
+        ERRORS << "#{COMPLETION_AUDIT_PATH}: #{section} criterion fields must match the canonical audit contract"
+      end
+      assessment = entry["assessment"]
+      expected_assessment = expected_criterion_assessments.fetch(section)[index]
+      unless assessment == expected_assessment
+        ERRORS << "#{COMPLETION_AUDIT_PATH}: #{section} criterion assessment must remain #{expected_assessment.inspect} while this snapshot is blocked"
+      end
+      evidence_refs = entry["evidence_refs"]
+      unless valid_non_circular_evidence_refs?(evidence_refs, ownership_evidence_ids)
+        ERRORS << "#{COMPLETION_AUDIT_PATH}: #{section} criterion must reference unique, known, non-circular ECO-GOAL-0001 evidence"
+      end
+      remaining_action = entry["remaining_action"]
+      expected_remaining_action = expected_criterion_remaining_actions.fetch(section)[index]
+      unless remaining_action == expected_remaining_action
+        ERRORS << "#{COMPLETION_AUDIT_PATH}: #{section} criterion remaining action must remain canonical"
+      end
+    end
+  end
+
+  dependency_snapshot = Array(completion_audit["dependency_snapshot"])
+  expected_dependencies = Array(ownership_goal["dependencies"])
+  unless dependency_snapshot.map { |entry| entry["goal_id"] if entry.is_a?(Hash) } == expected_dependencies
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: dependency snapshot must match Goal dependencies in order"
+  end
+  dependency_snapshot.each do |entry|
+    next unless entry.is_a?(Hash)
+
+    unless exact_string_keys?(entry, %w[assessment evidence_refs goal_id recorded_status remaining_action])
+      ERRORS << "#{COMPLETION_AUDIT_PATH}: dependency fields must match the canonical audit contract"
+    end
+    dependency_goal = goals.find { |_path, goal| goal["id"] == entry["goal_id"] }&.last
+    expected_dependency_action = "Complete human review and merge of pull request 177 through repository policy before treating the dependency as closed."
+    unless dependency_goal && entry["recorded_status"] == dependency_goal["status"] &&
+        entry["assessment"] == "active" && entry["remaining_action"] == expected_dependency_action
+      ERRORS << "#{COMPLETION_AUDIT_PATH}: dependency #{entry["goal_id"].inspect} must preserve its active recorded state and remaining action"
+    end
+    evidence_refs = entry["evidence_refs"]
+    unless valid_non_circular_evidence_refs?(evidence_refs, ownership_evidence_ids)
+      ERRORS << "#{COMPLETION_AUDIT_PATH}: dependency #{entry["goal_id"].inspect} must reference unique, known, non-circular ECO-GOAL-0001 evidence"
+    end
+  end
+
+  audit_gates = completion_audit["quality_gates"]
+  declared_gates = ownership_goal["quality_gates"]
+  unless audit_gates.is_a?(Hash) && declared_gates.is_a?(Hash) &&
+      exact_string_keys?(audit_gates, declared_gates.keys)
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: quality gates must match the Goal gate inventory"
+  end
+  if audit_gates.is_a?(Hash) && declared_gates.is_a?(Hash)
+    expected_required_gate_assessments = {
+      "architecture" => "blocked",
+      "security" => "partial",
+      "privacy" => "partial",
+      "public_readiness" => "blocked"
+    }
+    expected_gate_remaining_actions = {
+      "architecture" => "A human architecture reviewer accepts or revises ADR-0002 and the proposed inventory.",
+      "security" => "Run the repository secret-scanning workflow on the final audit head after the stacked pull request is human-retargeted to main, then bind the redacted run evidence before passing this gate.",
+      "privacy" => "Human review confirms the public-safe attestations and Greek-target deferral or selection boundary.",
+      "public_readiness" => "Complete protected review, canonical publication, architecture approval, and final public/private-boundary review."
+    }
+    audit_gates.each do |gate, entry|
+      unless exact_string_keys?(entry, %w[assessment declared evidence_refs remaining_action])
+        ERRORS << "#{COMPLETION_AUDIT_PATH}: quality gate #{gate} fields must match the canonical audit contract"
+        next
+      end
+      declared = declared_gates[gate]
+      assessment = entry["assessment"]
+      expected_assessment = case declared
+      when "passed" then "passed"
+      when "not-applicable" then "not-applicable"
+      when "required" then expected_required_gate_assessments[gate]
+      end
+      unless entry["declared"] == declared && assessment == expected_assessment
+        ERRORS << "#{COMPLETION_AUDIT_PATH}: quality gate #{gate} assessment must remain #{expected_assessment.inspect} for declared state #{declared.inspect}"
+      end
+      evidence_refs = entry["evidence_refs"]
+      unless valid_non_circular_evidence_refs?(
+        evidence_refs,
+        ownership_evidence_ids,
+        allow_empty: assessment == "not-applicable"
+      )
+        ERRORS << "#{COMPLETION_AUDIT_PATH}: quality gate #{gate} requires unique, known, non-circular evidence unless it is not applicable"
+      end
+      remaining_action = entry["remaining_action"]
+      unless remaining_action == expected_gate_remaining_actions[gate]
+        ERRORS << "#{COMPLETION_AUDIT_PATH}: quality gate #{gate} remaining action must remain canonical"
+      end
+    end
+  end
+
+  audit_blockers = Array(completion_audit["blockers"])
+  goal_blockers = Array(ownership_goal["blocked_by"])
+  unless audit_blockers.map { |entry| entry["reference"] if entry.is_a?(Hash) } ==
+      goal_blockers.map { |entry| entry["reference"] if entry.is_a?(Hash) }
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: blocker ledger must match Goal blockers in order"
+  end
+  audit_blockers.each_with_index do |entry, index|
+    next unless entry.is_a?(Hash)
+
+    unless exact_string_keys?(entry, %w[accountable_role assessment reference unblock_condition]) &&
+        entry["assessment"] == "active" && entry["accountable_role"] == ownership_goal["accountable_human"] &&
+        entry["unblock_condition"] == goal_blockers[index]&.dig("unblock_condition")
+      ERRORS << "#{COMPLETION_AUDIT_PATH}: blocker #{entry["reference"].inspect} must preserve active ownership and the exact unblock condition"
+    end
+  end
+
+  expected_review_order = [
+    [1, "https://github.com/emirhankudun-ux/SEIS/pull/177", "review-and-merge-goal-governance-foundation"],
+    [2, "https://github.com/emirhankudun-ux/SEIS/pull/179", "retarget-to-main-after-pr-177-and-review-security-boundary-first"],
+    [3, "https://github.com/emirhankudun-ux/SEIS/pull/180", "retarget-to-main-after-pr-177-and-review-ownership-evidence-after-pr-179"],
+    [4, "private-manifest-drafts", "review-and-merge-through-each-private-repository-policy"],
+    [5, "canonical-revision-refresh", "reobserve-main-validate-manifest-content-and-promote-review-records"],
+    [6, "architecture-and-greek-target-decisions", "accept-or-revise-adr-0002-and-confirm-or-defer-greek-publication"]
+  ].map do |order, artifact, action|
+    {
+      "order" => order,
+      "artifact" => artifact,
+      "action" => action,
+      "authorization" => "human-required",
+      "status" => "pending"
+    }
+  end
+  unless completion_audit["github_review_order"] == expected_review_order
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: GitHub review order must remain the canonical pending human-controlled sequence"
+  end
+
+  limitations = Array(completion_audit["limitations"])
+  expected_limitations = %w[
+    point-in-time-observation no-protected-branch-write-authorized
+    no-merge-or-retarget-authorized private-operational-identifiers-redacted
+    canonical-manifest-publication-not-proven planned-consumer-distribution-not-proven
+    greek-canonical-target-unresolved completion-not-claimed
+  ]
+  unless limitations == expected_limitations
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: limitations must remain the canonical public-safe non-completion boundary"
+  end
+
+  parsed_audit_strings = nested_strings(completion_audit)
+  audit_urls = parsed_audit_strings.flat_map { |value| value.scan(%r{https?://[^\s'"\]\)]+}i) }
+  audit_urls.concat(completion_audit_text.scan(%r{https?://[^\s'"\]\)]+}i))
+  if (audit_urls - APPROVED_AUDIT_URLS).any?
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: completion audit must not publish unapproved operational URLs"
+  end
+  if parsed_audit_strings.any? { |value| unapproved_github_reference?(value) } ||
+      unapproved_github_reference?(completion_audit_text)
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: completion audit must not publish bare or protocol-relative GitHub references"
+  end
+  if parsed_audit_strings.any? { |value| value.match?(/\b[0-9a-f]{40}\b/i) } ||
+      completion_audit_text.match?(/\b[0-9a-f]{40}\b/i)
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: completion audit must not publish raw revisions"
+  end
+  if completion_audit_text.each_line.any? { |line| unquoted_comment_marker?(line) }
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: canonical completion audit must not contain comments"
+  end
+end
+
 goal_ids_set = goal_ids.compact.uniq
 goals.each do |relative_goal_path, goal|
   references = []
@@ -493,8 +1268,59 @@ goals.each do |relative_goal_path, goal|
 end
 
 ownership_doc = read_text(OWNERSHIP_DOC_PATH)
-for required_text in [OWNERSHIP_PATH, "ECO-GOAL-0001", "npm run check:ecosystem-foundation", "Rollback"]
+for required_text in [OWNERSHIP_PATH, COMPLETION_AUDIT_DOC_PATH.delete_prefix("docs/"), "ECO-GOAL-0001", "npm run check:ecosystem-foundation", "Rollback"]
   ERRORS << "#{OWNERSHIP_DOC_PATH}: missing #{required_text.inspect}" unless ownership_doc.include?(required_text)
+end
+
+completion_audit_doc = read_text(COMPLETION_AUDIT_DOC_PATH)
+normalized_completion_audit_doc_bytes = completion_audit_doc.gsub("\r\n", "\n").gsub("\r", "\n")
+unless Digest::SHA256.hexdigest(normalized_completion_audit_doc_bytes) == COMPLETION_AUDIT_DOC_SHA256
+  ERRORS << "#{COMPLETION_AUDIT_DOC_PATH}: completion decision packet content must match the canonical reviewed digest"
+end
+required_completion_doc_text = [
+  COMPLETION_AUDIT_PATH,
+  "ECO-GOAL-0001",
+  "Status: `blocked`",
+  "`ECO-GOAL-0001` is not completion-ready.",
+  "| Three validated canonical manifests | Blocked |",
+  "| Complete conflict-free ownership coverage | Partial |",
+  "| Passing CI | Satisfied as point-in-time evidence |",
+  "| Focused PR with evidence, risk, and rollback | Satisfied |",
+  "Architecture is blocked",
+  "Security remains partial",
+  "Privacy is partial",
+  "Public readiness is blocked",
+  "Human-Controlled Review Order",
+  "Rollback"
+]
+for required_text in required_completion_doc_text
+  ERRORS << "#{COMPLETION_AUDIT_DOC_PATH}: missing #{required_text.inspect}" unless completion_audit_doc.include?(required_text)
+end
+review_order_markers = [
+  "1. Review and merge [PR 177]",
+  "2. After PR 177, inspect and human-retarget",
+  "3. Inspect and human-retarget",
+  "4. Review the two private manifest drafts",
+  "5. Refresh canonical `main` observations",
+  "6. Accept or revise ADR-0002"
+]
+review_order_positions = review_order_markers.map { |marker| completion_audit_doc.index(marker) }
+unless review_order_positions.none?(&:nil?) && review_order_positions == review_order_positions.sort
+  ERRORS << "#{COMPLETION_AUDIT_DOC_PATH}: human review sequence must match the canonical six-step order"
+end
+normalized_completion_audit_doc = normalize_public_markdown(completion_audit_doc)
+if normalized_completion_audit_doc.match?(/&(?:#[xX]?[0-9A-Fa-f]+|[A-Za-z][A-Za-z0-9]+);/)
+  ERRORS << "#{COMPLETION_AUDIT_DOC_PATH}: completion decision packet must not retain unsupported HTML entity escapes"
+end
+completion_doc_urls = normalized_completion_audit_doc.scan(%r{https?://[^\s'"\]\)]+}i)
+if (completion_doc_urls - APPROVED_AUDIT_URLS).any?
+  ERRORS << "#{COMPLETION_AUDIT_DOC_PATH}: completion decision packet must not publish unapproved operational URLs"
+end
+if unapproved_github_reference?(normalized_completion_audit_doc)
+  ERRORS << "#{COMPLETION_AUDIT_DOC_PATH}: completion decision packet must not publish bare or protocol-relative GitHub references"
+end
+if normalized_completion_audit_doc.match?(/\b[0-9a-f]{40}\b/i)
+  ERRORS << "#{COMPLETION_AUDIT_DOC_PATH}: completion decision packet must not publish raw revisions"
 end
 
 package_json = read_json("package.json")
@@ -504,18 +1330,44 @@ unless package_scripts.is_a?(Hash) && package_scripts["check:ecosystem-foundatio
   ERRORS << "package.json: check:ecosystem-foundation must equal #{expected_script.inspect}"
 end
 
+referenced_attestation_paths = repositories.map do |repository|
+  repository.dig("manifest_validation", "evidence", "attestation_path") if repository.is_a?(Hash)
+end
+modules.each do |mod|
+  next unless mod.is_a?(Hash)
+
+  Array(mod["consumers"]).each do |consumer|
+    next unless consumer.is_a?(Hash)
+
+    Array(consumer["evidence"]).each do |evidence_ref|
+      referenced_attestation_paths << evidence_ref["attestation_path"] if evidence_ref.is_a?(Hash)
+    end
+  end
+end
+referenced_attestation_paths = referenced_attestation_paths.compact.uniq.select do |relative_path|
+  existing_repository_artifact?(relative_path)
+end
+goal_evidence_artifact_paths = goals.flat_map do |_relative_goal_path, goal|
+  Array(goal["evidence_records"]).map do |record|
+    record["artifact"] if record.is_a?(Hash) && existing_repository_artifact?(record["artifact"])
+  end
+end.compact.uniq
+
 scoped_files = [
   MANIFEST_PATH,
   OWNERSHIP_PATH,
   OWNERSHIP_DOC_PATH,
   "docs/ECOSYSTEM_GOAL_TRACKING.md",
+  COMPLETION_AUDIT_DOC_PATH,
   "docs/adr/0002-ecosystem-governance-bootstrap-ownership.md",
   ".github/workflows/foundation-check.yml",
   "schemas/project-ecosystem.schema.json",
   "schemas/repository-ownership.schema.json",
   "schemas/ecosystem-goal.schema.json",
+  *referenced_attestation_paths,
+  *goal_evidence_artifact_paths,
   *goal_paths.map { |path| path.delete_prefix("#{ROOT}/") }
-]
+].uniq
 secret_patterns = {
   "private key" => /-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----/,
   "OpenAI-style secret" => /\bsk-[A-Za-z0-9_-]{20,}/,
