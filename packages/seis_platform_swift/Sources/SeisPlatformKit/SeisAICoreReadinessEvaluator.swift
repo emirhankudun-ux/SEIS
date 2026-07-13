@@ -56,6 +56,7 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "runtime-boundary",
         "provider-registry",
         "agent-registry",
+        "agent-governance-budgets",
         "plugin-mesh",
         "mcp-inventory",
         "prompt-engine",
@@ -70,6 +71,10 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         promptEngine: SeisAIPromptEngine,
         handoffSnapshot: SeisAGIAgentHandoffSnapshot
     ) -> SeisAICoreReadinessReport {
+        let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
+        let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
+            agentRuntime?.definitions.allSatisfy { $0.governanceBudget.isSafeLocalPlanOnly } == true
+
         let checks = [
             SeisAICoreReadinessCheck(
                 id: "runtime-boundary",
@@ -91,6 +96,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 passed: snapshot.agentRegistry.isReadOnlySafe &&
                     snapshot.agentRegistry.agentCount == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount,
                 evidence: "Thirteen managed agents remain status-and-plan-only with mutation approval required."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "agent-governance-budgets",
+                title: "Agent governance budgets",
+                passed: governanceBudgetsAreSafe,
+                evidence: "Managed-agent plans are bounded to 8 steps, delegation depth 1, 30 minutes, zero cost, no background execution, and human approval for external actions."
             ),
             SeisAICoreReadinessCheck(
                 id: "plugin-mesh",
