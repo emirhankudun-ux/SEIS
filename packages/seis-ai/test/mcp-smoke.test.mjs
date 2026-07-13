@@ -24,10 +24,30 @@ function rpcSession(requests, { timeoutMs = 15000 } = {}) {
     const expectedIds = requests.filter((r) => r.id !== undefined).map((r) => r.id);
     let buffer = "";
     let stderr = "";
+    let settled = false;
+
+    const cleanup = ({ terminate = false } = {}) => {
+      clearTimeout(timer);
+      if (!child.stdin.destroyed) child.stdin.end();
+      if (terminate && child.exitCode === null) child.kill();
+    };
+
+    const succeed = (value) => {
+      if (settled) return;
+      settled = true;
+      cleanup();
+      resolve(value);
+    };
+
+    const fail = (error) => {
+      if (settled) return;
+      settled = true;
+      cleanup({ terminate: true });
+      reject(error);
+    };
 
     const timer = setTimeout(() => {
-      child.kill();
-      reject(new Error(`MCP smoke timed out. stderr: ${stderr.slice(0, 500)}`));
+      fail(new Error(`MCP smoke timed out. stderr: ${stderr.slice(0, 500)}`));
     }, timeoutMs);
 
     child.stderr.on("data", (d) => { stderr += d; });
@@ -43,24 +63,24 @@ function rpcSession(requests, { timeoutMs = 15000 } = {}) {
           if (msg.id !== undefined) responses.set(msg.id, msg);
         } catch {
           // Non-JSON output on stdout would corrupt the protocol — fail loudly.
-          clearTimeout(timer);
-          child.kill();
-          reject(new Error(`Non-JSON line on MCP stdout: ${line.slice(0, 200)}`));
+          fail(new Error(`Non-JSON line on MCP stdout: ${line.slice(0, 200)}`));
           return;
         }
         if (expectedIds.every((id) => responses.has(id))) {
-          clearTimeout(timer);
-          child.kill();
-          resolve(responses);
+          succeed(responses);
           return;
         }
       }
     });
 
-    child.on("error", (err) => { clearTimeout(timer); reject(err); });
+    child.on("error", fail);
 
-    for (const req of requests) {
-      child.stdin.write(JSON.stringify(req) + "\n");
+    try {
+      for (const req of requests) {
+        child.stdin.write(JSON.stringify(req) + "\n");
+      }
+    } catch (error) {
+      fail(error);
     }
   });
 }
@@ -162,6 +182,34 @@ describe("seis-mcp stdio smoke", () => {
 
     const prompts = responses.get(4).result.prompts.map((p) => p.name).sort();
     assert.deepEqual(prompts, ["add_i18n_key", "audit_and_fix", "review_locale"]);
+  });
+
+  it("returns standard JSON-RPC errors without terminating the transport", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      { jsonrpc: "2.0", id: 6 },
+      { jsonrpc: "2.0", id: 2, method: "not/a-real-method" },
+      { jsonrpc: "2.0", id: 3, method: "tools/call", params: { name: "not_a_real_tool", arguments: {} } },
+      { jsonrpc: "2.0", id: 4, method: "resources/read", params: { uri: "seis://not-a-real-resource" } },
+      { jsonrpc: "2.0", id: 5, method: "prompts/get", params: { name: "not_a_real_prompt" } },
+    ]);
+
+    assert.equal(responses.get(1).result.serverInfo.name, "seis");
+    assert.equal(responses.get(6).error.code, -32600);
+    assert.equal(responses.get(2).error.code, -32601);
+    assert.equal(responses.get(3).error.code, -32602);
+    assert.equal(responses.get(4).error.code, -32602);
+    assert.equal(responses.get(5).error.code, -32602);
   });
 
   it("renders the add_i18n_key prompt with arguments", async () => {

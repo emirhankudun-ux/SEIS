@@ -152,6 +152,14 @@ function createJsonRpcError(id, code, message) {
   return { jsonrpc: "2.0", id, error: { code, message } };
 }
 
+class McpProtocolError extends Error {
+  constructor(code, message) {
+    super(message);
+    this.name = "McpProtocolError";
+    this.code = code;
+  }
+}
+
 class LightweightMcpServer {
   constructor({ name, version }) {
     this.name = name;
@@ -179,25 +187,41 @@ class LightweightMcpServer {
       crlfDelay: Infinity,
     });
 
-    for await (const line of rl) {
-      const trimmed = line.trim();
-      if (!trimmed) continue;
-      let request;
-      try {
-        request = JSON.parse(trimmed);
-      } catch {
-        this.send(createJsonRpcError(null, -32700, "Parse error"));
-        continue;
-      }
+    try {
+      for await (const line of rl) {
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+        let request;
+        try {
+          request = JSON.parse(trimmed);
+        } catch {
+          this.send(createJsonRpcError(null, -32700, "Parse error"));
+          continue;
+        }
 
-      if (request.id === undefined) continue;
+        if (
+          !request ||
+          typeof request !== "object" ||
+          Array.isArray(request) ||
+          request.jsonrpc !== "2.0" ||
+          typeof request.method !== "string"
+        ) {
+          this.send(createJsonRpcError(request?.id ?? null, -32600, "Invalid Request"));
+          continue;
+        }
 
-      try {
-        const result = await this.handle(request);
-        this.send({ jsonrpc: "2.0", id: request.id, result });
-      } catch (error) {
-        this.send(createJsonRpcError(request.id, -32603, error.message));
+        if (request.id === undefined) continue;
+
+        try {
+          const result = await this.handle(request);
+          this.send({ jsonrpc: "2.0", id: request.id, result });
+        } catch (error) {
+          const code = error instanceof McpProtocolError ? error.code : -32603;
+          this.send(createJsonRpcError(request.id, code, error.message));
+        }
       }
+    } finally {
+      rl.close();
     }
   }
 
@@ -253,25 +277,25 @@ class LightweightMcpServer {
       case "resources/read":
         return this.readResource(request.params);
       default:
-        throw new Error(`Unsupported MCP method: ${request.method}`);
+        throw new McpProtocolError(-32601, `Method not found: ${request.method}`);
     }
   }
 
   async callTool(params = {}) {
     const tool = this.tools.get(params.name);
-    if (!tool) throw new Error(`Unknown tool: ${params.name}`);
+    if (!tool) throw new McpProtocolError(-32602, `Unknown tool: ${params.name}`);
     return tool.handler(params.arguments || {});
   }
 
   async getPrompt(params = {}) {
     const prompt = this.prompts.get(params.name);
-    if (!prompt) throw new Error(`Unknown prompt: ${params.name}`);
+    if (!prompt) throw new McpProtocolError(-32602, `Unknown prompt: ${params.name}`);
     return prompt.handler(params.arguments || {});
   }
 
   async readResource(params = {}) {
     const resource = this.resources.get(params.uri);
-    if (!resource) throw new Error(`Unknown resource: ${params.uri}`);
+    if (!resource) throw new McpProtocolError(-32602, `Unknown resource: ${params.uri}`);
     return resource.handler();
   }
 }

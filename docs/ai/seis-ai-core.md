@@ -323,7 +323,10 @@ the local stdio JSON-RPC transport, 35 tools, 30 resources, 3 prompts, four
 verified MCP surfaces, fallback runtime, smoke test, and credential boundary.
 This is local MCP smoke evidence only; it does not authenticate remote MCP
 servers or execute credentials, SSH, deployment, GitHub mutation, or
-unrestricted shell tools.
+unrestricted shell tools. The no-dependency fallback also returns standard
+JSON-RPC invalid-request, method-not-found, and invalid-parameter errors, and
+closes its readline transport when stdin reaches EOF; this hardens local smoke
+cleanup without claiming an official SDK or remote MCP compatibility.
 
 The panel also reads
 `content/development/seis-agent-plugin-integration.json`. It exposes 185
