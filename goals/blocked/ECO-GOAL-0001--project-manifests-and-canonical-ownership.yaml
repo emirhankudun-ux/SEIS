@@ -144,6 +144,8 @@ validation:
     - focused branch diff
     - https://github.com/emirhankudun-ux/SEIS/actions/runs/29212479194
     - https://github.com/emirhankudun-ux/SEIS/pull/177
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29217557683
+    - https://github.com/emirhankudun-ux/SEIS/pull/180
     - data/evidence/ECO-GOAL-0001-private-manifest-review.yaml
 
 status_history:
@@ -164,6 +166,8 @@ status_history:
       - ECO-EVIDENCE-004
       - ECO-EVIDENCE-007
       - ECO-EVIDENCE-008
+      - ECO-EVIDENCE-009
+      - ECO-EVIDENCE-010
 
 evidence_records:
   - id: ECO-EVIDENCE-001
@@ -222,6 +226,20 @@ evidence_records:
     command: null
     exit_code: null
     artifact: data/evidence/ECO-GOAL-0001-private-manifest-review.yaml
+  - id: ECO-EVIDENCE-009
+    type: github-handoff
+    description: Draft pull request 180 isolates the expanded ownership-evidence contract on a compliant architecture branch stacked on pull request 177.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/pull/180
+  - id: ECO-EVIDENCE-010
+    type: remote-ci
+    description: Foundation Check ran the governance and ecosystem foundation commands on pull request 180 head fcaacaa8c82f25cb3709934aa2ead387ca8d5695 and passed.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29217557683
 
 quality_gates:
   architecture: required
@@ -240,7 +258,7 @@ quality_gates:
   performance: not-applicable
   data: not-applicable
   documentation: passed
-  devops: required
+  devops: passed
   testing: passed
   release: not-applicable
   public_readiness: required
@@ -318,4 +336,5 @@ notes:
   - This first slice does not claim ecosystem-wide completion.
   - Eleni-Neferi and Pantechnoesis were observed through valid fresh clones and authenticated remote metadata; draft PR 2 and passing CI evidence now exist in each repository, but their observed canonical main revisions still lack manifests.
   - Scope expanded to CI and an ADR because both are explicit Definition of Done and ownership-decision requirements.
+  - Draft pull request 180 carries the expanded evidence contract on top of pull request 177, and its available remote checks passed on the recorded head.
   - SEIS PR 177 remains open, both private manifest PRs remain drafts, and the Goal remains blocked on review and merge, canonical revision refresh, consumer and architecture review, and independent verification of the paired Greek identity repository.
