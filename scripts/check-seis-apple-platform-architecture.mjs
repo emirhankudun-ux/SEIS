@@ -369,8 +369,8 @@ const expectedNormalizedGoalSemanticHash =
 
 const expectedGoalGithubEvidence = {
   issue_url: 'https://github.com/emirhankudun-ux/SEIS/issues/181',
-  commit_sha: null,
-  pull_request_url: null,
+  commit_sha: 'c756ce43477e1e7b53fc1eb48d96d0336ee17804',
+  pull_request_url: 'https://github.com/emirhankudun-ux/SEIS/pull/182',
   release_note_url: null,
 };
 
