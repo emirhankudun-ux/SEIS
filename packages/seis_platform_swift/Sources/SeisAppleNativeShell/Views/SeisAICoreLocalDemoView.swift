@@ -16,6 +16,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
 
     private let repositoryPath: String
     private let evidenceLedger: SeisAIExecutionEvidenceLedger
+    let promptEngine = SeisAIPromptEngine.defaultEngine
     private var runtime: SeisAIRuntime?
 
     init(repositoryPath: String) {
@@ -174,6 +175,7 @@ struct SeisAICoreLocalDemoView: View {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
                 }
                 orchestrationDisclosure(snapshot: model.orchestrationSnapshot)
+                promptCatalogDisclosure(engine: model.promptEngine)
                 providerList(snapshot: snapshot)
                 taskPlanner
                 laneList(snapshot: snapshot)
@@ -392,6 +394,49 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Sub-agent orchestration and handoffs. \(snapshot.statusLabel). One writer and separate reviewer, researcher, and designer roles. Human approval required; no execution performed.")
+    }
+
+    private func promptCatalogDisclosure(engine: SeisAIPromptEngine) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Version: \(engine.version) · \(engine.templates.count) templates")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("System, task, review, coding, documentation, security, SSH review, and clean-room prompts are versioned and secret-rejecting.")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+
+                ForEach(engine.templates) { template in
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: "text.book.closed")
+                            .foregroundStyle(.tint)
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("\(template.title) · \(template.kind.rawValue)")
+                                .font(.caption.weight(.semibold))
+                            Text("\(template.id) · \(template.version)")
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                            Text(template.safetyBoundary)
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                    .padding(8)
+                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 8))
+                }
+
+                Text("Rendered prompts are ephemeral and are not written to the evidence ledger, local session state, or repository.")
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Versioned prompt engine", systemImage: "text.book.closed.fill")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Versioned prompt engine. Eight typed prompt categories, secret rejection, and ephemeral rendering only.")
     }
 
     private func providerStatusColor(_ status: SeisAICoreProviderState) -> Color {

@@ -8,18 +8,19 @@ weights or foundation-model ownership claims.
 
 ## Scope
 
-The prompt engine will manage system prompts, task prompts, agent prompts,
-review prompts, repository scan prompts, security prompts, clean-room prompts,
-and compact context packages.
+The prompt engine manages system prompts, task prompts, review prompts, coding
+prompts, documentation prompts, security prompts, SSH review prompts, and
+clean-room prompts. Agent work uses the same versioned templates through the
+typed local runtime.
 
 ## Current Status
 
 | Area | Status | Evidence | Blocker | Next Safe Action |
 | --- | --- | --- | --- | --- |
-| Prompt registry | Planned | No versioned prompt registry exists in this branch. | No schema or fixtures. | Define prompt-pack schema. |
-| Prompt versioning | Documented | This document and `docs/ai/seis-ai-core.md`. | No regression suite. | Add golden conversation fixtures later. |
-| Context budget | Planned | No prompt budget records found. | No runtime tokenizer/counter. | Start with static budgets and manual review. |
-| Safety prompts | Documented | `AGENTS.md`, `SECURITY.md`, this contract. | No prompt injection regression tests. | Add repository-content injection fixtures. |
+| Prompt registry | Implemented locally | `SeisAIPromptEngine.defaultEngine` contains eight typed templates. | No live provider adapter. | Keep the registry local and source-reviewed. |
+| Prompt versioning | Implemented | `SeisAIPromptEngine.currentVersion` and template versions. | No golden conversation corpus. | Add reviewed fixtures before provider promotion. |
+| Context budget | Bounded static contract | `SeisAIPromptEngine.maximumRenderedPromptLength` is 16,384 characters. | No tokenizer-backed token counter. | Add a platform tokenizer only when a provider adapter is approved. |
+| Safety prompts | Partial local enforcement | Undeclared variables, secret-shaped templates, and secret-like values fail closed. | No repository-content prompt-injection corpus. | Add injection fixtures and redaction tests. |
 
 ## Rules / Policy
 
@@ -51,10 +52,9 @@ Each future prompt pack should include:
 
 ## Evidence Requirements
 
-Before the prompt engine is marked implemented, add:
+Before a live adapter is approved, add:
 
-- prompt-pack schema
-- at least three reviewed prompt fixtures
+- at least three reviewed prompt fixtures beyond the local catalog
 - golden conversation tests
 - prompt injection tests
 - compact context test
@@ -70,5 +70,6 @@ Before the prompt engine is marked implemented, add:
 
 ## Next Safe Action
 
-Create a small prompt-pack schema and fixture set without connecting any live
-provider.
+Keep the local Swift catalog passing, add prompt-injection fixtures, and do not
+connect a live provider until server-only environment validation and human
+approval exist.
