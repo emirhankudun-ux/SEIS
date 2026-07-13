@@ -50,6 +50,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var agiSystemSourceSnapshot: SeisAGISystemSourceSnapshot?
     @Published private(set) var projectIntakeSnapshot: SeisProjectIntakeSnapshot?
     @Published private(set) var connectorCapabilityRegistrySnapshot: SeisConnectorCapabilityRegistrySnapshot?
+    @Published private(set) var goalCommandCenterViewSnapshot: SeisGoalCommandCenterViewSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -212,6 +213,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         connectorCapabilityRegistrySnapshot = try? SeisConnectorCapabilityRegistrySnapshot.validated(
             from: Data(contentsOf: connectorCapabilityRegistryURL)
         )
+        goalCommandCenterViewSnapshot = try? SeisGoalCommandCenterViewSnapshot.validated(
+            from: Data(contentsOf: goalCommandCenterViewURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -270,7 +274,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 modelFrontierEscalationPolicySnapshot: modelFrontierEscalationPolicySnapshot,
                 agiSystemSourceSnapshot: agiSystemSourceSnapshot,
                 projectIntakeSnapshot: projectIntakeSnapshot,
-                connectorCapabilityRegistrySnapshot: connectorCapabilityRegistrySnapshot
+                connectorCapabilityRegistrySnapshot: connectorCapabilityRegistrySnapshot,
+                goalCommandCenterViewSnapshot: goalCommandCenterViewSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -420,6 +425,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             connectorCapabilityRegistrySnapshot = try? SeisConnectorCapabilityRegistrySnapshot.validated(
                 from: Data(contentsOf: connectorCapabilityRegistryURL)
             )
+            goalCommandCenterViewSnapshot = try? SeisGoalCommandCenterViewSnapshot.validated(
+                from: Data(contentsOf: goalCommandCenterViewURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -464,6 +472,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             agiSystemSourceSnapshot = nil
             projectIntakeSnapshot = nil
             connectorCapabilityRegistrySnapshot = nil
+            goalCommandCenterViewSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -1068,6 +1077,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("connector-capability-registry.json")
     }
 
+    private var goalCommandCenterViewURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-goal-command-center-view.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -1235,6 +1251,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let connectorCapabilityRegistrySnapshot = model.connectorCapabilityRegistrySnapshot {
                     connectorCapabilityRegistryDisclosure(snapshot: connectorCapabilityRegistrySnapshot)
+                }
+                if let goalCommandCenterViewSnapshot = model.goalCommandCenterViewSnapshot {
+                    goalCommandCenterViewDisclosure(snapshot: goalCommandCenterViewSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -2901,6 +2920,30 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Connector capability registry. Twenty-one connectors, fifty skills, seven capability families, and five activation rules are source-backed. Activation is registry-first and explicit-auth-only; token commits, blanket OAuth, unreviewed remote mutation, broad scans, and unbounded browser runs remain blocked. No connector is authenticated or called by this native surface.")
+    }
+
+    private func goalCommandCenterViewDisclosure(snapshot: SeisGoalCommandCenterViewSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.totalGoalCount) goals · \(snapshot.activeGoalCount) active · \(snapshot.blockedGoalCount) blocked · \(snapshot.plannedGoalCount) planned · metadata-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("\(snapshot.progressCardCount) progress cards · \(snapshot.panelCount) panels · \(snapshot.uxGuardCount) UX guards · \(snapshot.sourceRecordCount) source records")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("State: \(snapshot.finalState) · non-LLM generated view · repository hygiene remains visible as a blocker")
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+                Text("This native surface reads the tracked Goal Command Center view as evidence-backed metadata. It does not mark blocked goals complete, synchronize live GitHub state, or claim autonomous project execution.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Goal Command Center view", systemImage: "target")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Goal Command Center view. Twenty goals are tracked with five active, three blocked, and twelve planned. Twenty progress cards, twenty-four panels, four UX guards, and twelve source records are visible as non-LLM metadata. Repository hygiene remains an explicit blocker; this surface does not claim live GitHub synchronization or autonomous execution.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {

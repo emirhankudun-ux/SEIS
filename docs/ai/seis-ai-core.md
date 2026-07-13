@@ -680,6 +680,23 @@ executable redacted-output tests, runtime permission enforcement, provider
 registry fixtures, and persistent ledger storage before write-gated or
 background automation can be enabled.
 
+## Goal Command Center View
+
+The Apple-native AI Core demo also reads the tracked, non-LLM Goal Command
+Center view from
+`content/development/seis-goal-command-center-view.json`. The view is a
+source-backed metadata projection of 20 goals: 5 active, 3 blocked, and 12
+planned, with 20 progress cards, 24 panels, 4 UX guards, and 12 source
+records. Its `blocked_by_repository_hygiene` state is intentionally visible;
+the native surface does not convert a blocked goal into completion, perform
+live GitHub synchronization, or imply autonomous project execution.
+
+The Swift boundary is
+`SeisGoalCommandCenterViewSnapshot`, and its evaluator check is
+`goal-command-center-view`. The source remains valid only as a local/demo
+view model until the goal-tracking and repository-hygiene evidence is reviewed
+again.
+
 ## Related Documents
 
 - [../security/security-baseline.md](../security/security-baseline.md)

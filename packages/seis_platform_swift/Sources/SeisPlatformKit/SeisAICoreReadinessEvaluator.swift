@@ -102,7 +102,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "model-frontier-escalation-policy",
         "agi-system-source-contract",
         "project-intake-contract",
-        "connector-capability-registry"
+        "connector-capability-registry",
+        "goal-command-center-view"
     ]
 
     public init() {}
@@ -155,7 +156,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         modelFrontierEscalationPolicySnapshot: SeisModelFrontierEscalationPolicySnapshot? = nil,
         agiSystemSourceSnapshot: SeisAGISystemSourceSnapshot? = nil,
         projectIntakeSnapshot: SeisProjectIntakeSnapshot? = nil,
-        connectorCapabilityRegistrySnapshot: SeisConnectorCapabilityRegistrySnapshot? = nil
+        connectorCapabilityRegistrySnapshot: SeisConnectorCapabilityRegistrySnapshot? = nil,
+        goalCommandCenterViewSnapshot: SeisGoalCommandCenterViewSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -468,6 +470,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Connector capability registry",
                 passed: connectorCapabilityRegistrySnapshot?.isMetadataOnly == true,
                 evidence: "The explicit-auth connector registry records 21 connectors, 50 skills, seven capability families, and five activation rules while keeping registry-first routing, scoped blockers, token exclusion, and blanket live access disabled."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "goal-command-center-view",
+                title: "Goal Command Center view",
+                passed: goalCommandCenterViewSnapshot?.isMetadataOnly == true,
+                evidence: "The generated Goal Command Center view remains a non-LLM, source-backed metadata surface with 20 goals, explicit active/blocked/planned states, evidence and risk panels, and a repository-hygiene blocker that is visible rather than hidden."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked

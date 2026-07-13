@@ -53,6 +53,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let agiSystemSource = try SeisAGISystemSourceSnapshot.validated(from: agiSystemSourceData())
         let projectIntake = try SeisProjectIntakeSnapshot.validated(from: projectIntakeData())
         let connectorCapabilityRegistry = try SeisConnectorCapabilityRegistrySnapshot.validated(from: connectorCapabilityRegistryData())
+        let goalCommandCenterView = try SeisGoalCommandCenterViewSnapshot.validated(from: goalCommandCenterViewData())
 
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
@@ -102,14 +103,15 @@ struct SeisAICoreReadinessEvaluatorTests {
             modelFrontierEscalationPolicySnapshot: modelFrontierEscalationPolicy,
             agiSystemSourceSnapshot: agiSystemSource,
             projectIntakeSnapshot: projectIntake,
-            connectorCapabilityRegistrySnapshot: connectorCapabilityRegistry
+            connectorCapabilityRegistrySnapshot: connectorCapabilityRegistry,
+            goalCommandCenterViewSnapshot: goalCommandCenterView
         )
 
         #expect(report.isReadyLocalDemo)
         #expect(report.status == .readyLocalDemo)
         #expect(report.evaluatorVersion == SeisAICoreReadinessEvaluator.evaluatorVersion)
         #expect(report.checks.map(\.id) == SeisAICoreReadinessEvaluator.expectedCheckIDs)
-        #expect(report.passedCount == 50)
+        #expect(report.passedCount == 51)
         #expect(report.failedCount == 0)
         #expect(report.truthBoundary.contains("not proof of live provider access"))
     }
@@ -160,6 +162,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let agiSystemSource = try SeisAGISystemSourceSnapshot.validated(from: agiSystemSourceData())
         let projectIntake = try SeisProjectIntakeSnapshot.validated(from: projectIntakeData())
         let connectorCapabilityRegistry = try SeisConnectorCapabilityRegistrySnapshot.validated(from: connectorCapabilityRegistryData())
+        let goalCommandCenterView = try SeisGoalCommandCenterViewSnapshot.validated(from: goalCommandCenterViewData())
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
             capabilityMesh: SeisAICapabilityMesh(snapshot: snapshot),
@@ -208,7 +211,8 @@ struct SeisAICoreReadinessEvaluatorTests {
             modelFrontierEscalationPolicySnapshot: modelFrontierEscalationPolicy,
             agiSystemSourceSnapshot: agiSystemSource,
             projectIntakeSnapshot: projectIntake,
-            connectorCapabilityRegistrySnapshot: connectorCapabilityRegistry
+            connectorCapabilityRegistrySnapshot: connectorCapabilityRegistry,
+            goalCommandCenterViewSnapshot: goalCommandCenterView
         )
 
         #expect(report.status.rawValue == "ready-local-demo")
@@ -493,5 +497,11 @@ struct SeisAICoreReadinessEvaluatorTests {
         var root = URL(fileURLWithPath: #filePath)
         for _ in 0..<5 { root.deleteLastPathComponent() }
         return try Data(contentsOf: root.appendingPathComponent("content/development/connector-capability-registry.json"))
+    }
+
+    private func goalCommandCenterViewData() throws -> Data {
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<5 { root.deleteLastPathComponent() }
+        return try Data(contentsOf: root.appendingPathComponent("content/development/seis-goal-command-center-view.json"))
     }
 }
