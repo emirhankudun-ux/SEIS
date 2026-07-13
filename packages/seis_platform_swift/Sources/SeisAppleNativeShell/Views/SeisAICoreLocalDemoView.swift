@@ -7,6 +7,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var snapshot: SeisAICoreRuntimeSnapshotContract?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
+    @Published private(set) var readinessReport: SeisAICoreReadinessReport?
     @Published private(set) var statusMessage = "AI Core snapshot has not been loaded."
     @Published private(set) var lastPlan: SeisAIPersonalLaneTaskPlan?
     @Published private(set) var lastAgentPlan: SeisAIAgentTaskPlan?
@@ -29,10 +30,18 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
             let loadedRuntime = try SeisAIRuntime.localDemo(snapshotData: data, evidenceLedger: evidenceLedger)
+            let nextCapabilityMesh = SeisAICapabilityMesh(snapshot: nextSnapshot)
+            let nextOrchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
             runtime = loadedRuntime
             snapshot = nextSnapshot
-            capabilityMesh = SeisAICapabilityMesh(snapshot: nextSnapshot)
-            orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
+            capabilityMesh = nextCapabilityMesh
+            orchestrationSnapshot = nextOrchestrationSnapshot
+            readinessReport = SeisAICoreReadinessEvaluator().evaluate(
+                snapshot: nextSnapshot,
+                capabilityMesh: nextCapabilityMesh,
+                promptEngine: promptEngine,
+                handoffSnapshot: nextOrchestrationSnapshot
+            )
             lastPlan = nil
             lastAgentPlan = nil
             statusMessage = "Local Demo ready: \(nextSnapshot.pluginMesh.personalLanes.count) lanes are linked to the typed runtime."
@@ -45,6 +54,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             snapshot = nil
             capabilityMesh = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
+            readinessReport = nil
             lastPlan = nil
             lastAgentPlan = nil
             evidence = []
@@ -176,6 +186,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 orchestrationDisclosure(snapshot: model.orchestrationSnapshot)
                 promptCatalogDisclosure(engine: model.promptEngine)
+                if let readinessReport = model.readinessReport {
+                    readinessDisclosure(report: readinessReport)
+                }
                 providerList(snapshot: snapshot)
                 taskPlanner
                 laneList(snapshot: snapshot)
@@ -437,6 +450,42 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Versioned prompt engine. Eight typed prompt categories, secret rejection, and ephemeral rendering only.")
+    }
+
+    private func readinessDisclosure(report: SeisAICoreReadinessReport) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text(report.statusLabel)
+                    .font(.caption.monospaced())
+                    .foregroundStyle(report.isReadyLocalDemo ? .green : .orange)
+                Text(report.truthBoundary)
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+
+                ForEach(report.checks) { check in
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: check.passed ? "checkmark.circle.fill" : "xmark.octagon.fill")
+                            .foregroundStyle(check.passed ? .green : .orange)
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(check.title)
+                                .font(.caption.weight(.semibold))
+                            Text(check.evidence)
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                    .padding(8)
+                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 8))
+                }
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("AI Core local readiness evaluation", systemImage: "checkmark.shield.fill")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("AI Core local readiness evaluation. \(report.statusLabel). This is Local Demo readiness only, not production or live-provider readiness.")
     }
 
     private func providerStatusColor(_ status: SeisAICoreProviderState) -> Color {
