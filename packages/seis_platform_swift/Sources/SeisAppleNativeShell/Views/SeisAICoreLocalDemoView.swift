@@ -26,6 +26,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var agiIndependentEvidenceLedgerSnapshot: SeisAGIIndependentEvidenceLedgerSnapshot?
     @Published private(set) var agiGitHubUserReadinessGatesSnapshot: SeisAGIGitHubUserReadinessGatesSnapshot?
     @Published private(set) var agiPublicReadinessEvidenceSnapshot: SeisAGIPublicReadinessEvidenceSnapshot?
+    @Published private(set) var commandCenterKnowledgeSystemSnapshot: SeisCommandCenterKnowledgeSystemSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -116,6 +117,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         agiPublicReadinessEvidenceSnapshot = try? SeisAGIPublicReadinessEvidenceSnapshot.validated(
             from: Data(contentsOf: agiPublicReadinessEvidenceURL)
         )
+        commandCenterKnowledgeSystemSnapshot = try? SeisCommandCenterKnowledgeSystemSnapshot.validated(
+            from: Data(contentsOf: commandCenterKnowledgeSystemURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -150,7 +154,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 commandCenterOperationsReadinessSnapshot: commandCenterOperationsReadinessSnapshot,
                 agiIndependentEvidenceLedgerSnapshot: agiIndependentEvidenceLedgerSnapshot,
                 agiGitHubUserReadinessGatesSnapshot: agiGitHubUserReadinessGatesSnapshot,
-                agiPublicReadinessEvidenceSnapshot: agiPublicReadinessEvidenceSnapshot
+                agiPublicReadinessEvidenceSnapshot: agiPublicReadinessEvidenceSnapshot,
+                commandCenterKnowledgeSystemSnapshot: commandCenterKnowledgeSystemSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -228,6 +233,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             agiPublicReadinessEvidenceSnapshot = try? SeisAGIPublicReadinessEvidenceSnapshot.validated(
                 from: Data(contentsOf: agiPublicReadinessEvidenceURL)
             )
+            commandCenterKnowledgeSystemSnapshot = try? SeisCommandCenterKnowledgeSystemSnapshot.validated(
+                from: Data(contentsOf: commandCenterKnowledgeSystemURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -248,6 +256,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             agiIndependentEvidenceLedgerSnapshot = nil
             agiGitHubUserReadinessGatesSnapshot = nil
             agiPublicReadinessEvidenceSnapshot = nil
+            commandCenterKnowledgeSystemSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -684,6 +693,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-agi-public-readiness-evidence.json")
     }
 
+    private var commandCenterKnowledgeSystemURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-command-center-knowledge-system.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -777,6 +793,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let agiPublicReadinessEvidenceSnapshot = model.agiPublicReadinessEvidenceSnapshot {
                     agiPublicReadinessEvidenceDisclosure(snapshot: agiPublicReadinessEvidenceSnapshot)
+                }
+                if let commandCenterKnowledgeSystemSnapshot = model.commandCenterKnowledgeSystemSnapshot {
+                    commandCenterKnowledgeSystemDisclosure(snapshot: commandCenterKnowledgeSystemSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -1910,6 +1929,30 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("AGI public readiness evidence. Zero of twenty minimum claim evidence items are accepted, twenty remain missing, and the protocol is not run; Local Demo remains separate from AGI claims.")
+    }
+
+    private func commandCenterKnowledgeSystemDisclosure(snapshot: SeisCommandCenterKnowledgeSystemSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.requiredNodes.count) knowledge nodes · \(snapshot.requiredEvidenceKinds.count) evidence kinds · \(snapshot.evidence.count) evidence records · metadata-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("Secrets stored: \(snapshot.securityBoundary.storesSecrets ? "yes" : "no") · Forbidden data: \(snapshot.securityBoundary.forbiddenData.joined(separator: ", "))")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Nodes: \(snapshot.requiredNodes.joined(separator: " · "))")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+                Text(snapshot.releaseRule)
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Command Center knowledge system", systemImage: "brain")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Command Center knowledge system. Six source-backed knowledge nodes, five evidence kinds, seven evidence records, and no secret storage.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {

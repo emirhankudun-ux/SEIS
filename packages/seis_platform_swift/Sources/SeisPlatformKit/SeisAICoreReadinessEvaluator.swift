@@ -80,7 +80,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "command-center-operations-readiness",
         "agi-independent-evidence-ledger",
         "agi-github-user-readiness-gates",
-        "agi-public-readiness-evidence"
+        "agi-public-readiness-evidence",
+        "command-center-knowledge-system"
     ]
 
     public init() {}
@@ -109,7 +110,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         commandCenterOperationsReadinessSnapshot: SeisCommandCenterOperationsReadinessSnapshot? = nil,
         agiIndependentEvidenceLedgerSnapshot: SeisAGIIndependentEvidenceLedgerSnapshot? = nil,
         agiGitHubUserReadinessGatesSnapshot: SeisAGIGitHubUserReadinessGatesSnapshot? = nil,
-        agiPublicReadinessEvidenceSnapshot: SeisAGIPublicReadinessEvidenceSnapshot? = nil
+        agiPublicReadinessEvidenceSnapshot: SeisAGIPublicReadinessEvidenceSnapshot? = nil,
+        commandCenterKnowledgeSystemSnapshot: SeisCommandCenterKnowledgeSystemSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -290,6 +292,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "AGI public readiness evidence",
                 passed: agiPublicReadinessEvidenceSnapshot?.isBlockedPlanOnly == true,
                 evidence: "Twenty minimum AGI/512B evidence requirements remain missing, zero are accepted, and the protocol is not run; Local Demo remains available while AGI claims, routeability, inference, benchmarks, providers, training, and deployment stay blocked."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "command-center-knowledge-system",
+                title: "Command Center knowledge system",
+                passed: commandCenterKnowledgeSystemSnapshot?.isMetadataOnly == true,
+                evidence: "Repository memory, knowledge-graph nodes, research sources, decisions, reusable patterns, security policy, and agent handoff evidence remain source-backed and secret-free."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked
