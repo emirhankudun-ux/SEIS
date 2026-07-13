@@ -73,7 +73,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "mcp-runtime-contract",
         "plugin-integration",
         "provider-registry",
-        "read-only-router-contract"
+        "read-only-router-contract",
+        "language-model-intake"
     ]
 
     public init() {}
@@ -95,7 +96,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         mcpRuntimeContractSnapshot: SeisAICoreMCPRuntimeContractSnapshot? = nil,
         pluginIntegrationSnapshot: SeisAgentPluginIntegrationSnapshot? = nil,
         providerRegistrySnapshot: SeisAICoreProviderRegistrySnapshot? = nil,
-        readOnlyRouterContractSnapshot: SeisAIReadOnlyModelRouterContractSnapshot? = nil
+        readOnlyRouterContractSnapshot: SeisAIReadOnlyModelRouterContractSnapshot? = nil,
+        languageModelIntakeSnapshot: SeisLanguageModelIntakeRegistrySnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -234,6 +236,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Read-only router contract",
                 passed: readOnlyRouterContractSnapshot?.isMetadataOnly == true,
                 evidence: "Provider-neutral router contract keeps Local Demo default, named states, explicit fallback, redacted decisions, blocked private content, and executionPerformed=false."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "language-model-intake",
+                title: "Language model intake registry",
+                passed: languageModelIntakeSnapshot?.isMetadataOnly == true,
+                evidence: "Eight candidate model families remain metadata-only, three hardware lanes remain gated, and five training lanes keep downloads, inference, fine-tuning, and foundation training explicitly unauthorized."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked

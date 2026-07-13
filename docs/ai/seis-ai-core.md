@@ -320,6 +320,14 @@ authentication or activate plugins; no-blanket-activation, no-secret-disclosure,
 and user-confirmed external mutation boundaries remain enforced.
 
 The panel also reads
+`content/development/seis-language-model-intake-registry.json`. It exposes
+eight candidate model families, three hardware lanes, five training lanes,
+license/provenance gates, and the preferred retrieval-first knowledge strategy.
+Every family remains metadata-only and not installed by the registry; downloads,
+runtime authority, provider calls, training, fine-tuning, dataset downloads,
+secret reads, and browser secrets remain disabled.
+
+The panel also reads
 `content/development/seis-ai-core-provider-registry.json`. It preserves
 Available, Missing Key, Disabled, Rate Limited, and Error distinctions across
 seven providers, while keeping core zero-key, Local Demo fallback, backend-only
