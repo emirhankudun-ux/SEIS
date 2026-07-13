@@ -1,41 +1,542 @@
 {
   "id": "seis-core-ecosystem-registry",
-  "schemaVersion": "1.0.0",
-  "status": "active",
-  "updatedAt": "2026-07-10",
-  "purpose": "Expose the SEIS specialist lanes and SEIS Store through one local-first, source-backed Command Center control plane.",
-  "runtimeBoundary": "This registry renders local source evidence and browser-local demo entry points. It does not authenticate connectors, execute MCP tools, install packages, deploy cloud resources, execute SSH, or mutate GitHub.",
-  "sources": [
-    "data/seis-operating-identities.json",
-    "content/development/seis-agent-plugin-integration.json",
-    "apps/web/desktop.js",
-    "deploy/seis-ssh-public-access-contract.json"
-  ],
-  "store": {
-    "id": "seis-store",
-    "status": "Local Demo",
-    "surface": "apps/web/desktop.js#renderSeisStore",
-    "contract": "SEIS Store records catalog and install state in browser-local storage only.",
-    "approvalBoundary": "It does not download packages, install dependencies, call external services, or approve remote actions."
+  "schemaVersion": "2.0.0",
+  "status": "source-backed-local-demo",
+  "mode": "read-only-capability-control-plane",
+  "updatedAt": "2026-07-12",
+  "purpose": "Expose the SEIS product lanes, bundled plugin and skill sources, provider registry, MCP contract, and real browser-local launch targets through one fail-closed Core snapshot.",
+  "sourceOfTruth": {
+    "identities": "data/seis-operating-identities.json",
+    "capabilityAtlas": "data/seis-runtime-capability-atlas.json",
+    "pluginIntegration": "content/development/seis-agent-plugin-integration.json",
+    "providerRegistry": "content/development/seis-ai-core-provider-registry.json",
+    "mcpRuntime": "content/development/seis-ai-core-mcp-runtime-contract.json",
+    "agentRegistry": "content/development/seis-agent-registry.json",
+    "designInventory": "content/development/seis-design-component-inventory.json",
+    "dataRegistry": "content/development/seis-data-schema-registry.json",
+    "sshContract": "deploy/seis-ssh-public-access-contract.json",
+    "sshEvidence": "content/development/seis-ssh-live-readiness-evidence.json",
+    "desktopRuntime": "apps/web/desktop.js",
+    "pluginRoots": [
+      "plugins/seis-ai-agent",
+      "plugins/seis",
+      "plugins/seis-cloud",
+      "plugins/seis-code",
+      "plugins/seis-design",
+      "plugins/seis-data"
+    ],
+    "generator": "scripts/create-seis-core-ecosystem-snapshot.mjs",
+    "output": "apps/seis-core/data/seis-core-ecosystem-registry.json"
   },
+  "counts": {
+    "coreLanes": 6,
+    "bundledPluginSources": 6,
+    "repoSkills": 25,
+    "auditedInstalledEnabledPlugins": 185,
+    "cataloguedHelperPlugins": 300,
+    "providers": 7,
+    "mcpTools": 35,
+    "mcpResources": 30,
+    "mcpPrompts": 3,
+    "productModules": 18,
+    "dataContracts": 18,
+    "validatedDataContracts": 16,
+    "designComponents": 12,
+    "validatedDesignComponents": 12,
+    "managedAgentRoles": 13
+  },
+  "pluginAudit": {
+    "auditedAt": "2026-06-19",
+    "installedEnabledCount": 185,
+    "notInstalledCount": 5,
+    "authenticationClaim": "not-claimed",
+    "state": "dated-source-audit-not-live-rescan"
+  },
+  "helperPluginUniverse": {
+    "uniquePlugins": 300,
+    "totalLinks": 301,
+    "laneCount": 12,
+    "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved",
+    "state": "catalogued-not-blanket-activated"
+  },
+  "providers": {
+    "id": "seis-ai-core-provider-registry",
+    "status": "documented-fixture",
+    "state": "source-registry-not-live-probe",
+    "records": [
+      {
+        "id": "codex-operator",
+        "displayName": "Codex Operator Session",
+        "category": "supervised-operator",
+        "publicStatus": "Available",
+        "configured": true,
+        "enabled": true,
+        "routingEligible": true,
+        "credentialRequirement": "current-session-only",
+        "backendOnly": true,
+        "frontendSecretAllowed": false
+      },
+      {
+        "id": "seis-local-demo",
+        "displayName": "SEIS Local Demo Runtime",
+        "category": "local-demo",
+        "publicStatus": "Available",
+        "configured": true,
+        "enabled": true,
+        "routingEligible": true,
+        "credentialRequirement": "none",
+        "backendOnly": true,
+        "frontendSecretAllowed": false
+      },
+      {
+        "id": "anthropic-claude",
+        "displayName": "Anthropic Claude",
+        "category": "cloud-model-provider",
+        "publicStatus": "Missing Key",
+        "configured": false,
+        "enabled": false,
+        "routingEligible": false,
+        "credentialRequirement": "optional-live-feature",
+        "backendOnly": true,
+        "frontendSecretAllowed": false
+      },
+      {
+        "id": "openai-general",
+        "displayName": "OpenAI General Provider",
+        "category": "cloud-model-provider",
+        "publicStatus": "Missing Key",
+        "configured": false,
+        "enabled": false,
+        "routingEligible": false,
+        "credentialRequirement": "optional-live-feature",
+        "backendOnly": true,
+        "frontendSecretAllowed": false
+      },
+      {
+        "id": "google-gemini",
+        "displayName": "Google Gemini",
+        "category": "cloud-model-provider",
+        "publicStatus": "Missing Key",
+        "configured": false,
+        "enabled": false,
+        "routingEligible": false,
+        "credentialRequirement": "optional-live-feature",
+        "backendOnly": true,
+        "frontendSecretAllowed": false
+      },
+      {
+        "id": "qwen-review",
+        "displayName": "Qwen Alternative Review",
+        "category": "local-or-cloud-provider",
+        "publicStatus": "Disabled",
+        "configured": false,
+        "enabled": false,
+        "routingEligible": false,
+        "credentialRequirement": "optional-future-provider",
+        "backendOnly": true,
+        "frontendSecretAllowed": false
+      },
+      {
+        "id": "ollama-local",
+        "displayName": "Ollama Local Candidate",
+        "category": "local-model-provider",
+        "publicStatus": "Disabled",
+        "configured": false,
+        "enabled": false,
+        "routingEligible": false,
+        "credentialRequirement": "none-local-service",
+        "backendOnly": true,
+        "frontendSecretAllowed": false
+      }
+    ]
+  },
+  "mcpRuntime": {
+    "id": "seis-ai-core-mcp-runtime-contract",
+    "status": "local-smoke-verified",
+    "transport": "stdio JSON-RPC",
+    "toolCount": 35,
+    "resourceCount": 30,
+    "promptCount": 3,
+    "boundary": "Browser demo and MCP smoke do not call remote MCP servers, store credentials, execute SSH, deploy, mutate GitHub, or run unrestricted shell tools.",
+    "liveBrowserSessionStarted": false
+  },
+  "agentRegistry": {
+    "id": "seis-agent-registry",
+    "status": "active-public-safe",
+    "counts": {
+      "detailedLaneStatusRecords": 14,
+      "secondBrainManagedLanes": 9,
+      "secondBrainAgentRoles": 13,
+      "personalExecutablePlanningLanes": 5,
+      "routerLanes": 10
+    },
+    "executionAuthority": false
+  },
+  "plugins": [
+    {
+      "id": "seis-ai-agent",
+      "displayName": "SEIS-Agent",
+      "version": "0.1.0+codex.20260615102011",
+      "license": "MIT",
+      "category": "Developer Tools",
+      "status": "bundled-repository-source",
+      "manifestPath": "plugins/seis-ai-agent/.codex-plugin/plugin.json",
+      "mcpConfigPath": "plugins/seis-ai-agent/.mcp.json",
+      "skillCount": 11,
+      "skills": [
+        {
+          "id": "seis-ai-agent",
+          "path": "plugins/seis-ai-agent/skills/seis-ai-agent/SKILL.md"
+        },
+        {
+          "id": "seis-automation",
+          "path": "plugins/seis-ai-agent/skills/seis-automation/SKILL.md"
+        },
+        {
+          "id": "seis-cloud",
+          "path": "plugins/seis-ai-agent/skills/seis-cloud/SKILL.md"
+        },
+        {
+          "id": "seis-code",
+          "path": "plugins/seis-ai-agent/skills/seis-code/SKILL.md"
+        },
+        {
+          "id": "seis-data",
+          "path": "plugins/seis-ai-agent/skills/seis-data/SKILL.md"
+        },
+        {
+          "id": "seis-design",
+          "path": "plugins/seis-ai-agent/skills/seis-design/SKILL.md"
+        },
+        {
+          "id": "seis-governance",
+          "path": "plugins/seis-ai-agent/skills/seis-governance/SKILL.md"
+        },
+        {
+          "id": "seis-hub",
+          "path": "plugins/seis-ai-agent/skills/seis-hub/SKILL.md"
+        },
+        {
+          "id": "seis-product",
+          "path": "plugins/seis-ai-agent/skills/seis-product/SKILL.md"
+        },
+        {
+          "id": "seis-research",
+          "path": "plugins/seis-ai-agent/skills/seis-research/SKILL.md"
+        },
+        {
+          "id": "seis-security",
+          "path": "plugins/seis-ai-agent/skills/seis-security/SKILL.md"
+        }
+      ],
+      "capabilities": [
+        "Unified SEIS orchestration",
+        "SEIS governance readiness",
+        "Memory and context governance",
+        "SEIS Cloud deployment planning",
+        "SEIS-Code engineering governance",
+        "SEIS-Design cinematic product direction",
+        "SEIS-DATA knowledge and analytics governance",
+        "SEIS Security threat, secret, and release-risk review",
+        "SEIS Research evidence and source evaluation",
+        "SEIS Automation repeatable workflow and runbook design",
+        "SEIS Product roadmap, scope, and acceptance criteria",
+        "Cross-platform terminal install planning",
+        "Website and launch readiness planning",
+        "Repository-contained plugin development",
+        "MCP status and plan routing",
+        "Long-horizon open-source product evolution"
+      ],
+      "executionAuthority": false
+    },
+    {
+      "id": "seis",
+      "displayName": "SEIS",
+      "version": "0.1.0+codex.20260613134714",
+      "license": "UNLICENSED",
+      "category": "Productivity",
+      "status": "bundled-repository-source",
+      "manifestPath": "plugins/seis/.codex-plugin/plugin.json",
+      "mcpConfigPath": "plugins/seis/.mcp.json",
+      "skillCount": 10,
+      "skills": [
+        {
+          "id": "seis-cloud",
+          "path": "plugins/seis/skills/seis-cloud/SKILL.md"
+        },
+        {
+          "id": "seis-code",
+          "path": "plugins/seis/skills/seis-code/SKILL.md"
+        },
+        {
+          "id": "seis-data",
+          "path": "plugins/seis/skills/seis-data/SKILL.md"
+        },
+        {
+          "id": "seis-design",
+          "path": "plugins/seis/skills/seis-design/SKILL.md"
+        },
+        {
+          "id": "seis-focus-mode",
+          "path": "plugins/seis/skills/seis-focus-mode/SKILL.md"
+        },
+        {
+          "id": "seis-github-workflow",
+          "path": "plugins/seis/skills/seis-github-workflow/SKILL.md"
+        },
+        {
+          "id": "seis-god-mode-developer",
+          "path": "plugins/seis/skills/seis-god-mode-developer/SKILL.md"
+        },
+        {
+          "id": "seis-hub",
+          "path": "plugins/seis/skills/seis-hub/SKILL.md"
+        },
+        {
+          "id": "seis-master-prompt",
+          "path": "plugins/seis/skills/seis-master-prompt/SKILL.md"
+        },
+        {
+          "id": "seis-security-review",
+          "path": "plugins/seis/skills/seis-security-review/SKILL.md"
+        }
+      ],
+      "capabilities": [
+        "Repository workflow",
+        "Plugin development",
+        "Migration safety",
+        "SEIS-first governance routing",
+        "Local helper + SEIS remote build workflow",
+        "SEIS Repos bridge",
+        "LLM package governance",
+        "LLM adapter readiness",
+        "LLM request planning",
+        "MCP bundled install",
+        "MCP source proof",
+        "SEIS Cloud deployment lane",
+        "SEIS-Code engineering lane",
+        "SEIS-Design product lane",
+        "SEIS-DATA knowledge lane",
+        "SEIS Master Prompt governance",
+        "SEIS GitHub workflow governance",
+        "SEIS Security Review governance",
+        "SEIS Focus Mode AGI operating lane",
+        "SEIS God Mode Developer cross-layer lane"
+      ],
+      "executionAuthority": false
+    },
+    {
+      "id": "seis-cloud",
+      "displayName": "SEIS Cloud",
+      "version": "0.1.0+codex.20260613134630",
+      "license": "UNLICENSED",
+      "category": "Developer Tools",
+      "status": "bundled-repository-source",
+      "manifestPath": "plugins/seis-cloud/.codex-plugin/plugin.json",
+      "mcpConfigPath": "plugins/seis-cloud/.mcp.json",
+      "skillCount": 1,
+      "skills": [
+        {
+          "id": "seis-cloud",
+          "path": "plugins/seis-cloud/skills/seis-cloud/SKILL.md"
+        }
+      ],
+      "capabilities": [
+        "Provider-neutral cloud readiness",
+        "Public cloud access policy",
+        "Team VPN cloud planning",
+        "Server target selection",
+        "GCP Compute planning",
+        "WireGuard peer intake",
+        "Static hosting handoff",
+        "Secret-safe deployment preflight",
+        "Rollback planning",
+        "Cloud validation reports"
+      ],
+      "executionAuthority": false
+    },
+    {
+      "id": "seis-code",
+      "displayName": "SEIS-Code",
+      "version": "0.1.0",
+      "license": "UNLICENSED",
+      "category": "Developer Tools",
+      "status": "bundled-repository-source",
+      "manifestPath": "plugins/seis-code/.codex-plugin/plugin.json",
+      "mcpConfigPath": "plugins/seis-code/.mcp.json",
+      "skillCount": 1,
+      "skills": [
+        {
+          "id": "seis-code",
+          "path": "plugins/seis-code/skills/seis-code/SKILL.md"
+        }
+      ],
+      "capabilities": [
+        "Architecture-aware implementation",
+        "Scoped refactors",
+        "Test and CI planning",
+        "MCP and plugin engineering",
+        "Apple-first platform code",
+        "Repository automation",
+        "Rollback-safe validation"
+      ],
+      "executionAuthority": false
+    },
+    {
+      "id": "seis-design",
+      "displayName": "SEIS-Design",
+      "version": "0.1.0",
+      "license": "UNLICENSED",
+      "category": "Design",
+      "status": "bundled-repository-source",
+      "manifestPath": "plugins/seis-design/.codex-plugin/plugin.json",
+      "mcpConfigPath": "plugins/seis-design/.mcp.json",
+      "skillCount": 1,
+      "skills": [
+        {
+          "id": "seis-design",
+          "path": "plugins/seis-design/skills/seis-design/SKILL.md"
+        }
+      ],
+      "capabilities": [
+        "Product design",
+        "Design-system governance",
+        "Accessibility and responsive QA",
+        "Motion and interaction guidance",
+        "Frontend experience planning",
+        "Visual handoff",
+        "Calm technology review"
+      ],
+      "executionAuthority": false
+    },
+    {
+      "id": "seis-data",
+      "displayName": "SEIS-DATA",
+      "version": "0.1.0",
+      "license": "UNLICENSED",
+      "category": "Data",
+      "status": "bundled-repository-source",
+      "manifestPath": "plugins/seis-data/.codex-plugin/plugin.json",
+      "mcpConfigPath": "plugins/seis-data/.mcp.json",
+      "skillCount": 1,
+      "skills": [
+        {
+          "id": "seis-data",
+          "path": "plugins/seis-data/skills/seis-data/SKILL.md"
+        }
+      ],
+      "capabilities": [
+        "Data architecture",
+        "Analytics and reports",
+        "Schema and contract planning",
+        "Knowledge registry governance",
+        "RAG and memory planning",
+        "Source provenance",
+        "Privacy-aware validation"
+      ],
+      "executionAuthority": false
+    }
+  ],
   "lanes": [
     {
       "id": "seis",
       "label": "SEIS",
-      "identity": "SEIS-Agent",
+      "identity": "SEIS",
       "kind": "Ecosystem governance",
       "status": "Ready",
       "mode": "Core contract",
-      "coreBinding": "SEIS Core owns the visible operating map and routes governed work through the unified SEIS-Agent contract.",
-      "role": "Repository governance, architecture, documentation, quality, and ecosystem coordination.",
-      "mcpTools": [
-        "seis_hub_status",
-        "seis_hub_plan"
+      "role": "repository governance, architecture, migration safety, and ecosystem coordination",
+      "scope": "open-source governance, architecture, documentation, quality, and ecosystem coherence",
+      "executionAuthority": false,
+      "coreBinding": "SEIS is embedded in the canonical SEIS-Agent runtime and exposed through the source-backed SEIS Core control plane.",
+      "storeBinding": "SEIS is catalogued as a browser-local capability; external activation and mutation remain separately approval-gated.",
+      "route": {
+        "kind": "desktop-app",
+        "href": "../web/desktop.html?app=seis-command-center",
+        "targetId": "seis-command-center",
+        "label": "Open Command Center"
+      },
+      "pluginBinding": {
+        "runtimePlugin": "seis-ai-agent",
+        "runtimeInstallId": "seis-ai-agent@seis-repo",
+        "sourcePlugin": "seis",
+        "sourceManifest": "plugins/seis/.codex-plugin/plugin.json",
+        "personalInstallId": "seis@personal",
+        "auditedStatus": "installed-enabled-audited",
+        "embeddedSkill": "plugins/seis-ai-agent/skills/seis-hub/SKILL.md",
+        "standaloneInstallMode": "disabled"
+      },
+      "mcp": {
+        "server": "seis-ai-agent",
+        "sourceServer": "seis-governance",
+        "tools": [
+          "seis_hub_status",
+          "seis_hub_plan"
+        ],
+        "toolCount": 2,
+        "state": "contract-listed-local-smoke",
+        "executionAuthority": false
+      },
+      "skills": [
+        "plugins/seis-ai-agent/skills/seis-hub/SKILL.md",
+        "plugins/seis/skills/seis-cloud/SKILL.md",
+        "plugins/seis/skills/seis-code/SKILL.md",
+        "plugins/seis/skills/seis-data/SKILL.md",
+        "plugins/seis/skills/seis-design/SKILL.md",
+        "plugins/seis/skills/seis-focus-mode/SKILL.md",
+        "plugins/seis/skills/seis-github-workflow/SKILL.md",
+        "plugins/seis/skills/seis-god-mode-developer/SKILL.md",
+        "plugins/seis/skills/seis-hub/SKILL.md",
+        "plugins/seis/skills/seis-master-prompt/SKILL.md",
+        "plugins/seis/skills/seis-security-review/SKILL.md"
       ],
-      "qualityGate": "npm run check:seis-ai-agent",
-      "storeBinding": "The Store catalogs the unified agent as one published plugin rather than a standalone lane install.",
-      "demoHref": "../web/desktop.html",
-      "demoLabel": "Open desktop demo"
+      "capabilities": [
+        "Repository workflow",
+        "Plugin development",
+        "Migration safety",
+        "SEIS-first governance routing",
+        "MCP source proof",
+        "SEIS Cloud deployment lane",
+        "SEIS-Code engineering lane",
+        "SEIS-Design product lane",
+        "SEIS-DATA knowledge lane",
+        "SEIS Master Prompt governance",
+        "SEIS GitHub workflow governance",
+        "SEIS Security Review governance"
+      ],
+      "agentIds": [
+        "architect-agent",
+        "research-agent",
+        "security-agent",
+        "documentation-agent",
+        "qa-agent",
+        "automation-agent",
+        "product-agent"
+      ],
+      "moduleIds": [
+        "desktop-os",
+        "ai-core",
+        "agents",
+        "plugins",
+        "command-center",
+        "github-governance",
+        "security",
+        "documentation"
+      ],
+      "qualityGates": [
+        "npm run check:open-source-governance",
+        "npm run check:seis-ai-agent",
+        "npm run check:seis-master-prompt",
+        "npm run check:seis-specialist-plugins"
+      ],
+      "sourceRefs": [
+        "data/seis-operating-identities.json",
+        "data/seis-runtime-capability-atlas.json",
+        "content/development/seis-agent-plugin-integration.json",
+        "plugins/seis/.codex-plugin/plugin.json",
+        "plugins/seis-ai-agent/skills/seis-hub/SKILL.md"
+      ],
+      "authorityNote": "Runtime authority follows the canonical SEIS-Agent and SEIS Hub tools; the capability atlas source keeps its historical SEIS Governance server label as evidence only."
     },
     {
       "id": "seis-cloud",
@@ -44,25 +545,91 @@
       "kind": "Cloud readiness lane",
       "status": "Review",
       "mode": "Mock Safe",
-      "coreBinding": "SEIS Core exposes provider preflight, rollback, and approval facts without claiming a live cloud connection.",
-      "role": "Cloud readiness, public cloud planning, team VPN cloud planning, SSH boundaries, rollback, and secret-safe infrastructure work.",
+      "role": "cloud readiness, public cloud, team VPN cloud, provider preflight, rollback, and secret-safe infrastructure",
+      "scope": "SSH-enabled and VPN-ready engineering cloud for workplaces and teams, plus public cloud readiness for everyone-facing surfaces",
+      "executionAuthority": false,
+      "coreBinding": "SEIS Cloud is embedded in the canonical SEIS-Agent runtime and exposed through the source-backed SEIS Core control plane.",
+      "storeBinding": "SEIS Cloud is catalogued as a browser-local capability; external activation and mutation remain separately approval-gated.",
+      "route": {
+        "kind": "desktop-app",
+        "href": "../web/desktop.html?app=seis-cloud",
+        "targetId": "seis-cloud",
+        "label": "Open Cloud workspace"
+      },
+      "pluginBinding": {
+        "runtimePlugin": "seis-ai-agent",
+        "runtimeInstallId": "seis-ai-agent@seis-repo",
+        "sourcePlugin": "seis-cloud",
+        "sourceManifest": "plugins/seis-cloud/.codex-plugin/plugin.json",
+        "personalInstallId": "seis-cloud@personal",
+        "auditedStatus": "installed-enabled-audited",
+        "embeddedSkill": "plugins/seis-ai-agent/skills/seis-cloud/SKILL.md",
+        "standaloneInstallMode": "disabled"
+      },
+      "mcp": {
+        "server": "seis-ai-agent",
+        "sourceServer": "seis-cloud",
+        "tools": [
+          "seis_cloud_status",
+          "seis_cloud_plan"
+        ],
+        "toolCount": 2,
+        "state": "contract-listed-local-smoke",
+        "executionAuthority": false
+      },
+      "skills": [
+        "plugins/seis-ai-agent/skills/seis-cloud/SKILL.md",
+        "plugins/seis-cloud/skills/seis-cloud/SKILL.md"
+      ],
+      "capabilities": [
+        "Provider-neutral cloud readiness",
+        "Public cloud access policy",
+        "Team VPN cloud planning",
+        "Server target selection",
+        "GCP Compute planning",
+        "WireGuard peer intake",
+        "Static hosting handoff",
+        "Secret-safe deployment preflight",
+        "Rollback planning",
+        "Cloud validation reports"
+      ],
+      "agentIds": [
+        "cloud-agent",
+        "devops-agent",
+        "security-agent",
+        "automation-agent"
+      ],
+      "moduleIds": [
+        "cloud",
+        "terminal-ssh",
+        "command-center",
+        "github-governance",
+        "security"
+      ],
+      "qualityGates": [
+        "npm run check:ssh-vpn-cloud-server",
+        "npm run check:cloud-access-policy",
+        "npm run check:server-target",
+        "npm run check:gcp-cloud-server"
+      ],
+      "sourceRefs": [
+        "data/seis-operating-identities.json",
+        "data/seis-runtime-capability-atlas.json",
+        "content/development/seis-agent-plugin-integration.json",
+        "plugins/seis-cloud/.codex-plugin/plugin.json",
+        "plugins/seis-ai-agent/skills/seis-cloud/SKILL.md"
+      ],
       "sshBinding": {
         "alias": "SEIS-SSH",
         "contract": "deploy/seis-ssh-public-access-contract.json",
-        "statusCommand": "npm run check:seis-ssh-public-access-report",
-        "guardCommand": "npm run check:seis-ssh-github-pr-contract",
+        "evidence": "content/development/seis-ssh-live-readiness-evidence.json",
+        "evidenceStatus": "blocked-provider-billing",
+        "strictReady": false,
         "serverAndPortPolicy": "preserve-existing-server-and-port",
-        "runtimeMode": "static-read-only",
+        "serverOrPortChanged": false,
+        "runtimeMode": "status-and-plan-only",
         "liveClaim": "blocked-until-strict-online-evidence"
-      },
-      "mcpTools": [
-        "seis_cloud_status",
-        "seis_cloud_plan"
-      ],
-      "qualityGate": "npm run check:cloud-access-policy",
-      "storeBinding": "The Store can surface Cloud as a local demo item; provider activation remains separately approved.",
-      "demoHref": "../web/desktop.html",
-      "demoLabel": "Open desktop demo"
+      }
     },
     {
       "id": "seis-code",
@@ -71,16 +638,80 @@
       "kind": "Engineering lane",
       "status": "Ready",
       "mode": "Browser Local",
-      "coreBinding": "SEIS Core binds implementation, validation, and plugin engineering work to the Code lane and its visible quality gate.",
-      "role": "Architecture-aware implementation, tests, CI, MCP and plugin code, and repository automation.",
-      "mcpTools": [
-        "seis_code_status",
-        "seis_code_plan"
+      "role": "architecture-aware implementation, tests, CI gates, MCP/plugin code, and automation",
+      "scope": "architecture-aware implementation, tests, CI, MCP/plugin code, and repository automation",
+      "executionAuthority": false,
+      "coreBinding": "SEIS Code is embedded in the canonical SEIS-Agent runtime and exposed through the source-backed SEIS Core control plane.",
+      "storeBinding": "SEIS Code is catalogued as a browser-local capability; external activation and mutation remain separately approval-gated.",
+      "route": {
+        "kind": "standalone-page",
+        "href": "../web/seis-code.html",
+        "targetId": "seis-code",
+        "label": "Open Code IDE",
+        "source": "apps/web/seis-code.html"
+      },
+      "pluginBinding": {
+        "runtimePlugin": "seis-ai-agent",
+        "runtimeInstallId": "seis-ai-agent@seis-repo",
+        "sourcePlugin": "seis-code",
+        "sourceManifest": "plugins/seis-code/.codex-plugin/plugin.json",
+        "personalInstallId": "seis-code@personal",
+        "auditedStatus": "installed-enabled-audited",
+        "embeddedSkill": "plugins/seis-ai-agent/skills/seis-code/SKILL.md",
+        "standaloneInstallMode": "disabled"
+      },
+      "mcp": {
+        "server": "seis-ai-agent",
+        "sourceServer": "seis-code",
+        "tools": [
+          "seis_code_status",
+          "seis_code_plan"
+        ],
+        "toolCount": 2,
+        "state": "contract-listed-local-smoke",
+        "executionAuthority": false
+      },
+      "skills": [
+        "plugins/seis-ai-agent/skills/seis-code/SKILL.md",
+        "plugins/seis-code/skills/seis-code/SKILL.md"
       ],
-      "qualityGate": "npm run check:seis-code",
-      "storeBinding": "The Store exposes the browser-local Code surface without claiming host-shell or package installation access.",
-      "demoHref": "../web/seis-code.html",
-      "demoLabel": "Open Code demo"
+      "capabilities": [
+        "Architecture-aware implementation",
+        "Scoped refactors",
+        "Test and CI planning",
+        "MCP and plugin engineering",
+        "Apple-first platform code",
+        "Repository automation",
+        "Rollback-safe validation"
+      ],
+      "agentIds": [
+        "architect-agent",
+        "code-agent",
+        "qa-agent",
+        "automation-agent"
+      ],
+      "moduleIds": [
+        "desktop-os",
+        "code-ide",
+        "files",
+        "launchpad",
+        "terminal-ssh",
+        "command-center"
+      ],
+      "qualityGates": [
+        "npm run check:seis-specialist-plugins",
+        "npm run check:seis-plugin-bundle",
+        "npm run check:seis-code",
+        "npm run check:seis-linux-replica-browser-smoke",
+        "npm run check:seis-platform-kernel"
+      ],
+      "sourceRefs": [
+        "data/seis-operating-identities.json",
+        "data/seis-runtime-capability-atlas.json",
+        "content/development/seis-agent-plugin-integration.json",
+        "plugins/seis-code/.codex-plugin/plugin.json",
+        "plugins/seis-ai-agent/skills/seis-code/SKILL.md"
+      ]
     },
     {
       "id": "seis-design",
@@ -89,16 +720,83 @@
       "kind": "Design system lane",
       "status": "Ready",
       "mode": "Browser Local",
-      "coreBinding": "SEIS Core keeps design-system, accessibility, motion, and visual-QA work visible beside its implementation and evidence boundaries.",
-      "role": "Premium product design, UI and UX systems, accessibility, motion, and visual QA.",
-      "mcpTools": [
-        "seis_design_status",
-        "seis_design_plan"
+      "role": "product design, UI/UX, design systems, accessibility, motion, and visual QA",
+      "scope": "premium, minimal, cinematic, accessible, responsive, and consistent product and design-system work",
+      "executionAuthority": false,
+      "coreBinding": "SEIS Design is embedded in the canonical SEIS-Agent runtime and exposed through the source-backed SEIS Core control plane.",
+      "storeBinding": "SEIS Design is catalogued as a browser-local capability; external activation and mutation remain separately approval-gated.",
+      "route": {
+        "kind": "desktop-app",
+        "href": "../web/desktop.html?app=seis-design",
+        "targetId": "seis-design",
+        "label": "Open Design Studio"
+      },
+      "pluginBinding": {
+        "runtimePlugin": "seis-ai-agent",
+        "runtimeInstallId": "seis-ai-agent@seis-repo",
+        "sourcePlugin": "seis-design",
+        "sourceManifest": "plugins/seis-design/.codex-plugin/plugin.json",
+        "personalInstallId": "seis-design@personal",
+        "auditedStatus": "installed-enabled-audited",
+        "embeddedSkill": "plugins/seis-ai-agent/skills/seis-design/SKILL.md",
+        "standaloneInstallMode": "disabled"
+      },
+      "mcp": {
+        "server": "seis-ai-agent",
+        "sourceServer": "seis-design",
+        "tools": [
+          "seis_design_status",
+          "seis_design_plan"
+        ],
+        "toolCount": 2,
+        "state": "contract-listed-local-smoke",
+        "executionAuthority": false
+      },
+      "skills": [
+        "plugins/seis-ai-agent/skills/seis-design/SKILL.md",
+        "plugins/seis-design/skills/seis-design/SKILL.md"
       ],
-      "qualityGate": "npm run check:design-component-inventory",
-      "storeBinding": "The Store exposes Design as a local product surface, not a remote design-tool integration claim.",
-      "demoHref": "../web/desktop.html",
-      "demoLabel": "Open desktop demo"
+      "capabilities": [
+        "Product design",
+        "Design-system governance",
+        "Accessibility and responsive QA",
+        "Motion and interaction guidance",
+        "Frontend experience planning",
+        "Visual handoff",
+        "Calm technology review"
+      ],
+      "agentIds": [
+        "design-agent",
+        "ui-ux-agent",
+        "product-agent",
+        "qa-agent"
+      ],
+      "moduleIds": [
+        "design-studio",
+        "website",
+        "music",
+        "desktop-os",
+        "launchpad",
+        "search"
+      ],
+      "qualityGates": [
+        "npm run check:seis-specialist-plugins",
+        "npm run check:motion-evidence",
+        "npm run check:mobile-ergonomics",
+        "npm run check:seis-linux-replica-browser-smoke"
+      ],
+      "sourceRefs": [
+        "data/seis-operating-identities.json",
+        "data/seis-runtime-capability-atlas.json",
+        "content/development/seis-agent-plugin-integration.json",
+        "plugins/seis-design/.codex-plugin/plugin.json",
+        "plugins/seis-ai-agent/skills/seis-design/SKILL.md"
+      ],
+      "designSystem": {
+        "componentCount": 12,
+        "validatedComponentCount": 12,
+        "source": "content/development/seis-design-component-inventory.json"
+      }
     },
     {
       "id": "seis-data",
@@ -107,16 +805,85 @@
       "kind": "Data and knowledge lane",
       "status": "Ready",
       "mode": "Registry-backed",
-      "coreBinding": "SEIS Core uses Data to govern schemas, reports, memory, provenance, and safe knowledge intake before automation expands.",
-      "role": "Data architecture, analytics, generated reports, schemas, memory, context, RAG planning, and provenance.",
-      "mcpTools": [
-        "seis_data_status",
-        "seis_data_plan"
+      "role": "data architecture, reports, schemas, memory, context, RAG planning, and provenance",
+      "scope": "memory, context systems, analytics, reports, source intake, knowledge governance, and provenance",
+      "executionAuthority": false,
+      "coreBinding": "SEIS Data is embedded in the canonical SEIS-Agent runtime and exposed through the source-backed SEIS Core control plane.",
+      "storeBinding": "SEIS Data is catalogued as a browser-local capability; external activation and mutation remain separately approval-gated.",
+      "route": {
+        "kind": "desktop-app",
+        "href": "../web/desktop.html?app=second-brain",
+        "targetId": "second-brain",
+        "label": "Open Data workspace"
+      },
+      "pluginBinding": {
+        "runtimePlugin": "seis-ai-agent",
+        "runtimeInstallId": "seis-ai-agent@seis-repo",
+        "sourcePlugin": "seis-data",
+        "sourceManifest": "plugins/seis-data/.codex-plugin/plugin.json",
+        "personalInstallId": "seis-data@personal",
+        "auditedStatus": "installed-enabled-audited",
+        "embeddedSkill": "plugins/seis-ai-agent/skills/seis-data/SKILL.md",
+        "standaloneInstallMode": "disabled"
+      },
+      "mcp": {
+        "server": "seis-ai-agent",
+        "sourceServer": "seis-data",
+        "tools": [
+          "seis_data_status",
+          "seis_data_plan"
+        ],
+        "toolCount": 2,
+        "state": "contract-listed-local-smoke",
+        "executionAuthority": false
+      },
+      "skills": [
+        "plugins/seis-ai-agent/skills/seis-data/SKILL.md",
+        "plugins/seis-data/skills/seis-data/SKILL.md"
       ],
-      "qualityGate": "npm run check:data-schema-registry",
-      "storeBinding": "The Store catalogs Data-facing local experiences without exporting private datasets or connector credentials.",
-      "demoHref": "../web/desktop.html",
-      "demoLabel": "Open desktop demo"
+      "capabilities": [
+        "Data architecture",
+        "Analytics and reports",
+        "Schema and contract planning",
+        "Knowledge registry governance",
+        "RAG and memory planning",
+        "Source provenance",
+        "Privacy-aware validation"
+      ],
+      "agentIds": [
+        "research-agent",
+        "search-agent",
+        "documentation-agent",
+        "qa-agent",
+        "product-agent"
+      ],
+      "moduleIds": [
+        "search",
+        "agents",
+        "plugins",
+        "documentation",
+        "command-center",
+        "ai-core"
+      ],
+      "qualityGates": [
+        "npm run check:seis-specialist-plugins",
+        "npm run check:plugin-capability-lanes",
+        "npm run check:seis-technology-stack",
+        "npm run check:language-distribution"
+      ],
+      "sourceRefs": [
+        "data/seis-operating-identities.json",
+        "data/seis-runtime-capability-atlas.json",
+        "content/development/seis-agent-plugin-integration.json",
+        "plugins/seis-data/.codex-plugin/plugin.json",
+        "plugins/seis-ai-agent/skills/seis-data/SKILL.md"
+      ],
+      "dataSystem": {
+        "contractCount": 18,
+        "validatedContractCount": 16,
+        "scaffoldedContractCount": 2,
+        "source": "content/development/seis-data-schema-registry.json"
+      }
     },
     {
       "id": "seis-store",
@@ -125,13 +892,69 @@
       "kind": "Browser-local marketplace",
       "status": "Ready",
       "mode": "Local Demo",
-      "coreBinding": "SEIS Core treats the Store as the local catalog and install-state surface for apps, plugins, themes, tools, and specialist-lane discovery.",
-      "role": "Browser-local app, plugin, theme, tool, install, update, and enable state catalog.",
-      "mcpTools": [],
-      "qualityGate": "npm run check:desktop-os",
-      "storeBinding": "This lane is the catalog authority for browser-local Store state; it has no remote installer or MCP execution path.",
-      "demoHref": "../web/desktop.html",
-      "demoLabel": "Open Store desktop"
+      "role": "Browse and persist browser-local app, plugin, theme, tool, update, and enable states without remote installation.",
+      "scope": "Local catalog and install-state demonstration only.",
+      "executionAuthority": false,
+      "coreBinding": "SEIS Core exposes Store as the local catalog authority for the demo ecosystem.",
+      "storeBinding": "The Store owns browser-local catalog state and has no remote package installer.",
+      "route": {
+        "kind": "desktop-app",
+        "href": "../web/desktop.html?app=seis-store",
+        "targetId": "seis-store",
+        "label": "Open SEIS Store"
+      },
+      "pluginBinding": null,
+      "mcp": {
+        "server": null,
+        "tools": [],
+        "toolCount": 0,
+        "state": "no-remote-mcp",
+        "executionAuthority": false
+      },
+      "skills": [],
+      "capabilities": [
+        "Browser-local app catalog",
+        "Install and update state persistence",
+        "Enable and disable state",
+        "Category and search discovery"
+      ],
+      "agentIds": [],
+      "moduleIds": [
+        "store",
+        "plugins",
+        "launchpad"
+      ],
+      "qualityGates": [
+        "npm run check:desktop-os"
+      ],
+      "sourceRefs": [
+        "apps/web/desktop.js"
+      ]
     }
+  ],
+  "runtimeBoundary": {
+    "browserLocalReadOnly": true,
+    "providerCalls": false,
+    "credentialsRead": false,
+    "frontendSecretsAllowed": false,
+    "liveMcpSessionStarted": false,
+    "backgroundAutomation": false,
+    "agentExecution": false,
+    "sshExecuted": false,
+    "deploymentPerformed": false,
+    "githubMutationPerformed": false,
+    "packageInstallationPerformed": false,
+    "privateContentRead": false,
+    "humanApprovalRequiredForExternalMutation": true
+  },
+  "qualityGates": [
+    "npm run check:seis-core-ecosystem-registry",
+    "npm run check:seis-agent-plugin-integration",
+    "npm run check:seis-agent-registry",
+    "npm run check:seis-runtime-capability-atlas",
+    "npm run check:seis-ai-core-provider-registry",
+    "npm run check:seis-command-center",
+    "npm run check:desktop-os",
+    "node --test packages/seis-ai/test/ecosystem-capability-snapshot.test.mjs"
   ]
 }

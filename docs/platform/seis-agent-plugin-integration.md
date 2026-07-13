@@ -16,6 +16,7 @@ The primary install id is `seis-ai-agent@seis-repo`. Specialist SEIS plugin surf
 
 The runtime integration tools are `seis_plugin_integration`,
 `seis_ai_core_provider_status`, `seis_ai_core_model_scaling_status`,
+`seis_ai_core_read_only_route`,
 `seis_ai_core_version_status`, `seis_ai_core_version_promotion_dry_run`,
 `seis_ai_core_subagent_model`, `seis_ai_core_subagent_dry_run`, and
 `seis_ai_core_subagent_review_ledger`.
@@ -70,7 +71,7 @@ panels:
   `plan-only` permission boundaries.
 - `MCP Runtime Contract` in Installed AI displays the local stdio JSON-RPC
   contract from `content/development/seis-ai-core-mcp-runtime-contract.json`,
-  34 tools, 29 resources, 3 prompts, the no-dependency fallback transport, and
+  35 tools, 30 resources, 3 prompts, the no-dependency fallback transport, and
   the smoke-test gate that proves SEIS AI Core can read plugin/provider/model-scaling
   resources, including `seis://ai/model-parameter-ladder.json` and
   `seis://ai/model-frontier-escalation-policy.json`, read
@@ -80,6 +81,34 @@ panels:
 Both panels are evidence views. They do not store credentials, authenticate
 connectors, call live model providers, execute SSH, mutate GitHub, deploy, or
 promote SEIS AI Core versions.
+
+The dedicated `apps/seis-core` Command Center consumes the same evidence through
+`content/development/seis-ai-core-application-integration.json`. The deterministic
+builder at `packages/seis-ai/src/model/core-runtime-snapshot.mjs` joins the
+provider registry, executable read-only router, canonical Second Brain managed
+agent roster, unified plugin audit, five personal lanes, and MCP runtime metadata into the tracked static artifact
+`apps/seis-core/data/seis-ai-core-runtime-snapshot.json`.
+
+The AI Core Runtime panel can switch among source-generated decision scenarios
+and copy a credential-free handoff. It does not embed the MCP server, read
+credentials, call providers, start a live MCP session, execute SSH, deploy,
+read private content, or mutate GitHub. `Available` is repository-fixture status,
+not proof of browser provider connectivity. Validate delivery drift with
+`npm run check:seis-core-ai-runtime-snapshot`.
+
+The Agents surface reads the whitelisted 9-lane/13-agent roster from the same
+snapshot. Its authority is `status-and-plan-only`; every managed agent has
+`executionAuthority: false`, mutation requires human approval, and the browser
+does not receive vault paths, training paths, installed provider profiles,
+credentials, prompt bodies, or private note content. The scoped source is
+`content/development/seis-second-brain-system.json`; generated public-demo
+reports remain audit evidence rather than runtime authority.
+
+`SeisPlatformKit` consumes this artifact through
+`SeisAICoreRuntimeSnapshotContract`. Swift decoding uses injected `Data` and
+validates the native consumer, application boundary, managed agents, providers,
+routes, plugin lanes, MCP metrics, and no-live runtime claims. It does not start
+a provider, router, MCP client, SSH session, deployment, or GitHub mutation.
 
 The SEIS MCP stdio entrypoint also has a no-dependency local fallback transport
 for repository smoke tests. It serves the same repo-backed tools, prompts, and
@@ -178,11 +207,15 @@ The 2026-06-19 specialist expansion adds repo-contained skills inside
 ## Operating Rules
 
 - Treat `seis-ai-agent@seis-repo` as the single user-facing SEIS-Agent install.
+- Treat `content/development/seis-agent-registry.json` as the canonical machine-readable aggregate while each referenced source contract remains authoritative for its own scoped records.
 - Keep `seis@personal`, `seis-cloud@personal`, `seis-code@personal`, `seis-design@personal`, and `seis-data@personal` as embedded capability lanes.
 - Keep `seis-security`, `seis-research`, `seis-automation`, and `seis-product` embedded under SEIS-Agent rather than publishing standalone cards.
 - Do not claim connector authentication readiness from plugin inventory alone.
 - Validate the integration with `npm run check:seis-agent-plugin-integration`.
+- Validate global registry parity with `npm run check:seis-agent-registry`.
 - Validate SEIS AI Core promotion readiness wiring with `npm run check:seis-ai-core-version-promotion-gates`.
+- Validate the tracked SEIS Core read model with `npm run check:seis-core-ai-runtime-snapshot`.
+- Validate the native typed consumer with `swift test --package-path packages/seis_platform_swift`.
 - Keep Command Center and demo surfaces aligned with the manifest before release or handoff claims.
 
 ## Quality Gate

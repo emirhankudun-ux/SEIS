@@ -50,6 +50,14 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /tool: route\.tool/);
   assert.match(script, /defaultGate,/);
   assert.match(script, /routeSource: route\.routeSource/);
+  assert.match(script, /Object\.hasOwn\(viewMeta, next\.activeView\)/);
+  assert.match(script, /getAiCoreScenarioForRoute/);
+  assert.match(script, /providerState: runtimeDecision/);
+  assert.match(script, /executionPerformed: false/);
+  assert.match(script, /providerCallsPerformed: false/);
+  assert.match(script, /status: "Review"/);
+  assert.match(script, /handlePrimaryAction/);
+  assert.match(script, /window\.location\.assign\("search-center\.html"\)/);
   assert.match(script, /operationsReadiness/);
   assert.match(script, /renderOperationsReadiness/);
   assert.match(script, /featureGrowthLedger/);
@@ -139,31 +147,164 @@ test("SEIS Command Center binds specialist lanes and Store through a local contr
   const css = await readFile(new URL("styles.css", root), "utf8");
   const registry = JSON.parse(await readFile(new URL("data/seis-core-ecosystem-registry.json", root), "utf8"));
 
-  for (const id of ["ecosystem-control-state", "ecosystem-control-summary", "ecosystem-control-grid", "ecosystem-control-feedback"]) {
+  for (const id of ["ecosystem-control-state", "ecosystem-control-summary", "ecosystem-control-grid", "ecosystem-lane-detail", "ecosystem-control-feedback"]) {
     assert.match(html, new RegExp(`id="${id}"`));
   }
-  for (const signal of ["fallbackSeisCoreEcosystemRegistry", "renderEcosystemControlPlane", "loadSeisCoreEcosystemRegistry", "copyEcosystemGate"]) {
+  for (const signal of [
+    "fallbackSeisCoreEcosystemRegistry",
+    "renderEcosystemControlPlane",
+    "validateEcosystemRegistryForBrowser",
+    "loadSeisCoreEcosystemRegistry",
+    "data-ecosystem-lane",
+    "copyEcosystemGate"
+  ]) {
     assert.match(script, new RegExp(signal));
   }
-  for (const selector of ["ecosystem-control-plane", "ecosystem-lane-card", "ecosystem-facts", "ecosystem-lane-actions"]) {
+  for (const selector of [
+    "ecosystem-control-plane",
+    "ecosystem-control-layout",
+    "ecosystem-lane-button",
+    "ecosystem-lane-detail",
+    "ecosystem-boundary-strip",
+    "ecosystem-term-list",
+    "ecosystem-lane-actions"
+  ]) {
     assert.match(css, new RegExp(selector));
   }
   assert.equal(registry.id, "seis-core-ecosystem-registry");
-  assert.equal(registry.store.status, "Local Demo");
-  assert.match(registry.runtimeBoundary, /does not authenticate connectors/);
+  assert.equal(registry.schemaVersion, "2.0.0");
+  assert.equal(registry.status, "source-backed-local-demo");
+  assert.deepEqual(registry.counts, {
+    coreLanes: 6,
+    bundledPluginSources: 6,
+    repoSkills: 25,
+    auditedInstalledEnabledPlugins: 185,
+    cataloguedHelperPlugins: 300,
+    providers: 7,
+    mcpTools: 35,
+    mcpResources: 30,
+    mcpPrompts: 3,
+    productModules: 18,
+    dataContracts: 18,
+    validatedDataContracts: 16,
+    designComponents: 12,
+    validatedDesignComponents: 12,
+    managedAgentRoles: 13
+  });
+  assert.equal(registry.runtimeBoundary.browserLocalReadOnly, true);
+  assert.equal(registry.runtimeBoundary.humanApprovalRequiredForExternalMutation, true);
   for (const lane of ["seis", "seis-cloud", "seis-code", "seis-design", "seis-data", "seis-store"]) {
     const record = registry.lanes.find((candidate) => candidate.id === lane);
     assert.ok(record, `${lane} should have a Core control-plane record`);
-    assert.match(record.qualityGate, /^npm run check:/);
+    assert.ok(record.route.href, `${lane} should have a direct local route`);
+    assert.ok(record.qualityGates.every((gate) => /^npm run check:/.test(gate)));
+    assert.equal(record.executionAuthority, false);
+    assert.equal(record.mcp.executionAuthority, false);
     assert.equal(record.status === "Connected", false, `${lane} must not claim a live connection`);
   }
   const sshBinding = registry.lanes.find((candidate) => candidate.id === "seis-cloud")?.sshBinding;
   assert.equal(sshBinding?.alias, "SEIS-SSH");
   assert.equal(sshBinding?.contract, "deploy/seis-ssh-public-access-contract.json");
   assert.equal(sshBinding?.serverAndPortPolicy, "preserve-existing-server-and-port");
-  assert.equal(sshBinding?.runtimeMode, "static-read-only");
+  assert.equal(sshBinding?.serverOrPortChanged, false);
+  assert.equal(sshBinding?.strictReady, false);
+  assert.equal(sshBinding?.runtimeMode, "status-and-plan-only");
   assert.match(script, /sshBinding/);
-  assert.match(script, /SSH binding/);
+  assert.match(script, /SSH evidence/);
+});
+
+test("SEIS Command Center binds the source-backed AI Core runtime snapshot", async () => {
+  const html = await readFile(new URL("index.html", root), "utf8");
+  const script = await readFile(new URL("script.js", root), "utf8");
+  const css = await readFile(new URL("styles.css", root), "utf8");
+  const snapshot = JSON.parse(await readFile(new URL("data/seis-ai-core-runtime-snapshot.json", root), "utf8"));
+
+  for (const id of [
+    "ai-core-runtime-state",
+    "ai-core-runtime-summary",
+    "ai-core-provider-grid",
+    "ai-core-scenario-list",
+    "ai-core-decision",
+    "ai-core-mesh-strip",
+    "ai-core-runtime-feedback"
+  ]) {
+    assert.match(html, new RegExp(`id="${id}"`));
+  }
+
+  for (const signal of [
+    "fallbackSeisAiCoreRuntimeSnapshot",
+    "renderAiCoreRuntime",
+    "renderManagedAgentRegistry",
+    "loadSeisAiCoreRuntimeSnapshot",
+    "getActiveAiCoreScenario",
+    "copyAiCoreDecision",
+    "data/seis-ai-core-runtime-snapshot.json"
+  ]) {
+    assert.match(script, new RegExp(signal.replaceAll("/", "\\/")));
+  }
+
+  for (const selector of [
+    "ai-core-runtime-panel",
+    "ai-core-summary-card",
+    "ai-core-provider-card",
+    "ai-core-scenario-button",
+    "ai-core-decision-card",
+    "ai-core-mesh-strip"
+  ]) {
+    assert.match(css, new RegExp(`\\.${selector}`));
+  }
+
+  assert.equal(snapshot.id, "seis-ai-core-runtime-snapshot");
+  assert.equal(snapshot.status, "local-readiness-linked");
+  assert.equal(snapshot.mode, "Local Demo");
+  assert.equal(snapshot.providerRegistry.coreCredentialRequirement, "none");
+  assert.equal(snapshot.providerRegistry.providerCount, 7);
+  assert.equal(snapshot.providerRegistry.missingKeyProviderCount, 3);
+  assert.equal(snapshot.pluginMesh.installedEnabledCount, 185);
+  assert.equal(snapshot.pluginMesh.helperUniquePlugins, 300);
+  assert.equal(snapshot.pluginMesh.personalLaneCount, 5);
+  assert.equal(snapshot.pluginMesh.personalLaneToolCount, 10);
+  assert.equal(snapshot.agentRegistry.managedLaneCount, 9);
+  assert.equal(snapshot.agentRegistry.agentCount, 13);
+  assert.equal(snapshot.agentRegistry.runtimeAuthority, false);
+  assert.ok(snapshot.agentRegistry.agents.every((agent) => agent.executionAuthority === false));
+  assert.ok(Object.values(snapshot.agentRegistry.safetyBoundary).every((value) => value === false));
+  assert.equal(snapshot.mcpRuntime.toolCount, 35);
+  assert.equal(snapshot.mcpRuntime.resourceCount, 30);
+  assert.equal(snapshot.mcpRuntime.promptCount, 3);
+  assert.equal(snapshot.router.scenarioCount, 7);
+  assert.ok(snapshot.providerRegistry.providers.some((provider) => provider.publicStatus === "Missing Key"));
+  assert.ok(snapshot.router.scenarios.some((scenario) => scenario.decision.providerState === "Disabled"));
+  assert.ok(snapshot.router.scenarios.every((scenario) => scenario.decision.routeEligible === false));
+  assert.ok(snapshot.router.scenarios.every((scenario) => scenario.decision.executionPerformed === false));
+  assert.ok(snapshot.router.scenarios.every((scenario) => scenario.decision.providerCallsPerformed === false));
+  assert.equal(snapshot.runtimeBoundary.liveMcpSessionStarted, false);
+  assert.equal(snapshot.runtimeBoundary.sshExecuted, false);
+  assert.equal(snapshot.runtimeBoundary.deploymentPerformed, false);
+  assert.equal(snapshot.runtimeBoundary.githubMutationPerformed, false);
+});
+
+test("SEIS Command Center exposes the managed lane and agent registry", async () => {
+  const html = await readFile(new URL("index.html", root), "utf8");
+  const script = await readFile(new URL("script.js", root), "utf8");
+  const css = await readFile(new URL("styles.css", root), "utf8");
+
+  for (const id of [
+    "managed-agent-registry-state",
+    "managed-agent-registry-summary",
+    "managed-agent-lanes",
+    "managed-agent-list",
+    "managed-agent-detail",
+    "managed-agent-registry-feedback"
+  ]) {
+    assert.match(html, new RegExp(`id="${id}"`));
+  }
+  for (const signal of ["activeManagedAgentId", "renderManagedAgentRegistry", "data-managed-agent", "humanApprovalRequiredForMutation"]) {
+    assert.match(script, new RegExp(signal));
+  }
+  for (const selector of ["managed-agent-registry-panel", "managed-agent-summary-item", "managed-agent-button", "managed-agent-detail"]) {
+    assert.match(css, new RegExp(`\\.${selector}`));
+  }
 });
 
 
@@ -192,6 +333,9 @@ test("SEIS Command Center design system preserves required tokens", async () => 
   for (const token of ["--sidebar", "--accent", "--surface", "--radius"]) {
     assert.match(css, new RegExp(token));
   }
+  assert.doesNotMatch(css, /html,\s*body\s*{[^}]*overflow-x:/s);
+  assert.match(css, /\.sidebar\s*{[^}]*position:\s*sticky/s);
+  assert.match(css, /\.topbar\s*{[^}]*position:\s*sticky/s);
   assert.match(css, /plugin-card/);
   assert.match(css, /godmode-workbench/);
   assert.match(css, /mission-composer/);
@@ -206,6 +350,11 @@ test("SEIS Command Center design system preserves required tokens", async () => 
   assert.match(css, /artifact-card/);
   assert.match(css, /router-lane-card/);
   assert.match(css, /router-facts/);
+  assert.match(css, /ai-core-runtime-panel/);
+  assert.match(css, /ai-core-provider-card/);
+  assert.match(css, /ai-core-scenario-button/);
+  assert.match(css, /ai-core-decision-card/);
+  assert.match(css, /managed-agent-registry-panel/);
   assert.match(css, /routing-matrix-row/);
   assert.match(css, /operations-readiness-panel/);
   assert.match(css, /readiness-card/);

@@ -15,6 +15,9 @@ const seedState = {
   activeAgent: "Architect",
   godModeLane: "Build",
   godModeMission: "Build the next safe SEIS AI operating slice with clear evidence, rollback, and no-secret boundaries.",
+  activeAiCoreScenarioId: "governance-plan",
+  activeEcosystemLaneId: "seis",
+  activeManagedAgentId: "architect-agent",
   repositoryFilter: "all",
   settings: {
     compact: false,
@@ -187,31 +190,37 @@ const agents = [
 const aiSystems = [
   {
     name: "OpenAI",
+    providerId: "openai-general",
     role: "Primary execution and repository automation model lane.",
     mode: "Primary"
   },
   {
     name: "Claude",
+    providerId: "anthropic-claude",
     role: "Architecture review, long-context reasoning, and high-risk critique.",
     mode: "Review"
   },
   {
     name: "Gemini",
+    providerId: "google-gemini",
     role: "Google ecosystem validation, documentation synthesis, and secondary evidence.",
     mode: "Validation"
   },
   {
     name: "Qwen",
+    providerId: "qwen-review",
     role: "Alternative reasoning, counter-analysis, and implementation comparison.",
     mode: "Optional"
   },
   {
     name: "Local Models",
+    providerId: "ollama-local",
     role: "Offline experimentation and private draft workflows when resources allow.",
     mode: "Experimental"
   },
   {
     name: "Future AI Systems",
+    providerId: null,
     role: "Provider-neutral adapter lane for models not yet wired into SEIS.",
     mode: "Reserved"
   }
@@ -777,27 +786,48 @@ const pluginFamilies = [
 
 const fallbackSeisCoreEcosystemRegistry = {
   id: "seis-core-ecosystem-registry-fallback",
+  schemaVersion: "2.0.0",
   status: "fallback",
-  runtimeBoundary: "Fallback is local-only and does not authenticate or execute remote actions.",
-  store: {
-    status: "Local Demo",
-    contract: "Browser-local catalog state only."
+  mode: "read-only-fallback-control-plane",
+  counts: {
+    coreLanes: 6,
+    bundledPluginSources: 0,
+    repoSkills: 0,
+    auditedInstalledEnabledPlugins: 0,
+    cataloguedHelperPlugins: 0,
+    providers: 0,
+    mcpTools: 0,
+    mcpResources: 0,
+    mcpPrompts: 0,
+    productModules: 0,
+    dataContracts: 0,
+    validatedDataContracts: 0,
+    designComponents: 0,
+    validatedDesignComponents: 0,
+    managedAgentRoles: 0
   },
   lanes: [
     {
       id: "seis",
       label: "SEIS",
-      identity: "SEIS-Agent",
+      identity: "SEIS",
       kind: "Ecosystem governance",
       status: "Ready",
       mode: "Fallback contract",
-      coreBinding: "Unified Core control plane fallback.",
       role: "Governance and ecosystem coordination.",
-      mcpTools: ["seis_hub_status", "seis_hub_plan"],
-      qualityGate: "npm run check:seis-ai-agent",
+      scope: "Local fallback metadata while the generated ecosystem snapshot is unavailable.",
+      executionAuthority: false,
+      coreBinding: "Unified Core control plane fallback.",
       storeBinding: "Single published agent catalog policy.",
-      demoHref: "../web/desktop.html",
-      demoLabel: "Open desktop demo"
+      route: { href: "../web/desktop.html?app=seis-command-center", targetId: "seis-command-center", label: "Open Command Center" },
+      pluginBinding: null,
+      mcp: { server: null, tools: [], toolCount: 0, state: "fallback-not-verified", executionAuthority: false },
+      skills: [],
+      capabilities: ["Repository governance", "Architecture review"],
+      agentIds: [],
+      moduleIds: [],
+      qualityGates: ["npm run check:seis-ai-agent"],
+      sourceRefs: []
     },
     {
       id: "seis-cloud",
@@ -806,22 +836,29 @@ const fallbackSeisCoreEcosystemRegistry = {
       kind: "Cloud readiness lane",
       status: "Review",
       mode: "Mock Safe",
-      coreBinding: "No live provider claim in fallback mode.",
       role: "Cloud and SSH readiness boundaries.",
+      scope: "Local fallback metadata with no live cloud or SSH claim.",
+      executionAuthority: false,
+      coreBinding: "No live provider claim in fallback mode.",
+      storeBinding: "Local demo catalog item only.",
+      route: { href: "../web/desktop.html?app=seis-cloud", targetId: "seis-cloud", label: "Open Cloud workspace" },
+      pluginBinding: null,
+      mcp: { server: null, tools: [], toolCount: 0, state: "fallback-not-verified", executionAuthority: false },
+      skills: [],
+      capabilities: ["Cloud readiness", "SSH policy review"],
+      agentIds: [],
+      moduleIds: [],
+      qualityGates: ["npm run check:cloud-access-policy"],
+      sourceRefs: [],
       sshBinding: {
         alias: "SEIS-SSH",
         contract: "deploy/seis-ssh-public-access-contract.json",
-        statusCommand: "npm run check:seis-ssh-public-access-report",
-        guardCommand: "npm run check:seis-ssh-github-pr-contract",
         serverAndPortPolicy: "preserve-existing-server-and-port",
-        runtimeMode: "static-read-only",
+        serverOrPortChanged: false,
+        strictReady: false,
+        runtimeMode: "status-and-plan-only",
         liveClaim: "blocked-until-strict-online-evidence"
-      },
-      mcpTools: ["seis_cloud_status", "seis_cloud_plan"],
-      qualityGate: "npm run check:cloud-access-policy",
-      storeBinding: "Local demo catalog item only.",
-      demoHref: "../web/desktop.html",
-      demoLabel: "Open desktop demo"
+      }
     },
     {
       id: "seis-code",
@@ -830,13 +867,20 @@ const fallbackSeisCoreEcosystemRegistry = {
       kind: "Engineering lane",
       status: "Ready",
       mode: "Browser Local",
-      coreBinding: "Core exposes the Code quality gate.",
       role: "Implementation and validation work.",
-      mcpTools: ["seis_code_status", "seis_code_plan"],
-      qualityGate: "npm run check:seis-code",
+      scope: "Browser-local engineering workspace fallback.",
+      executionAuthority: false,
+      coreBinding: "Core exposes the Code quality gate.",
       storeBinding: "Browser-local Code listing.",
-      demoHref: "../web/seis-code.html",
-      demoLabel: "Open Code demo"
+      route: { href: "../web/seis-code.html", targetId: "seis-code", label: "Open Code IDE" },
+      pluginBinding: null,
+      mcp: { server: null, tools: [], toolCount: 0, state: "fallback-not-verified", executionAuthority: false },
+      skills: [],
+      capabilities: ["Code review", "Validation planning"],
+      agentIds: [],
+      moduleIds: [],
+      qualityGates: ["npm run check:seis-code"],
+      sourceRefs: []
     },
     {
       id: "seis-design",
@@ -845,13 +889,20 @@ const fallbackSeisCoreEcosystemRegistry = {
       kind: "Design system lane",
       status: "Ready",
       mode: "Browser Local",
-      coreBinding: "Core exposes accessible design evidence.",
       role: "Design systems and visual QA.",
-      mcpTools: ["seis_design_status", "seis_design_plan"],
-      qualityGate: "npm run check:design-component-inventory",
+      scope: "Browser-local design evidence fallback.",
+      executionAuthority: false,
+      coreBinding: "Core exposes accessible design evidence.",
       storeBinding: "Local design surface listing.",
-      demoHref: "../web/desktop.html",
-      demoLabel: "Open desktop demo"
+      route: { href: "../web/desktop.html?app=seis-design", targetId: "seis-design", label: "Open Design Studio" },
+      pluginBinding: null,
+      mcp: { server: null, tools: [], toolCount: 0, state: "fallback-not-verified", executionAuthority: false },
+      skills: [],
+      capabilities: ["Design system review", "Visual QA planning"],
+      agentIds: [],
+      moduleIds: [],
+      qualityGates: ["npm run check:design-component-inventory"],
+      sourceRefs: []
     },
     {
       id: "seis-data",
@@ -860,13 +911,20 @@ const fallbackSeisCoreEcosystemRegistry = {
       kind: "Data and knowledge lane",
       status: "Ready",
       mode: "Registry-backed",
-      coreBinding: "Core exposes schema and provenance evidence.",
       role: "Data, reports, memory, and provenance.",
-      mcpTools: ["seis_data_status", "seis_data_plan"],
-      qualityGate: "npm run check:data-schema-registry",
+      scope: "Browser-local data contract fallback.",
+      executionAuthority: false,
+      coreBinding: "Core exposes schema and provenance evidence.",
       storeBinding: "No private dataset export from the catalog.",
-      demoHref: "../web/desktop.html",
-      demoLabel: "Open desktop demo"
+      route: { href: "../web/desktop.html?app=second-brain", targetId: "second-brain", label: "Open Data workspace" },
+      pluginBinding: null,
+      mcp: { server: null, tools: [], toolCount: 0, state: "fallback-not-verified", executionAuthority: false },
+      skills: [],
+      capabilities: ["Schema review", "Provenance planning"],
+      agentIds: [],
+      moduleIds: [],
+      qualityGates: ["npm run check:data-schema-registry"],
+      sourceRefs: []
     },
     {
       id: "seis-store",
@@ -875,19 +933,178 @@ const fallbackSeisCoreEcosystemRegistry = {
       kind: "Browser-local marketplace",
       status: "Ready",
       mode: "Local Demo",
-      coreBinding: "Core exposes the Store catalog boundary.",
       role: "Local catalog and install-state surface.",
-      mcpTools: [],
-      qualityGate: "npm run check:desktop-os",
+      scope: "Browser-local catalog fallback with no remote installer.",
+      executionAuthority: false,
+      coreBinding: "Core exposes the Store catalog boundary.",
       storeBinding: "No remote installer or MCP execution path.",
-      demoHref: "../web/desktop.html",
-      demoLabel: "Open Store desktop"
+      route: { href: "../web/desktop.html?app=seis-store", targetId: "seis-store", label: "Open SEIS Store" },
+      pluginBinding: null,
+      mcp: { server: null, tools: [], toolCount: 0, state: "no-remote-mcp", executionAuthority: false },
+      skills: [],
+      capabilities: ["Browser-local catalog", "Install-state persistence"],
+      agentIds: [],
+      moduleIds: [],
+      qualityGates: ["npm run check:desktop-os"],
+      sourceRefs: []
     }
-  ]
+  ],
+  runtimeBoundary: {
+    browserLocalReadOnly: true,
+    providerCalls: false,
+    credentialsRead: false,
+    frontendSecretsAllowed: false,
+    liveMcpSessionStarted: false,
+    backgroundAutomation: false,
+    agentExecution: false,
+    sshExecuted: false,
+    deploymentPerformed: false,
+    githubMutationPerformed: false,
+    packageInstallationPerformed: false,
+    privateContentRead: false,
+    humanApprovalRequiredForExternalMutation: true
+  }
+};
+
+const fallbackSeisAiCoreRuntimeSnapshot = {
+  id: "seis-ai-core-runtime-snapshot-fallback",
+  status: "fallback-local-demo",
+  mode: "Local Demo",
+  providerRegistry: {
+    coreCredentialRequirement: "none",
+    defaultRoutingMode: "local-demo",
+    providerCount: 1,
+    availableProviderCount: 1,
+    missingKeyProviderCount: 0,
+    disabledProviderCount: 0,
+    providers: [
+      {
+        id: "seis-local-demo",
+        displayName: "SEIS Local Demo Runtime",
+        publicStatus: "Available",
+        credentialRequirement: "none",
+        routingEligible: true,
+        privacyClass: "browser-local-demo",
+        actualModel: "none-local-demo",
+        backendOnly: true,
+        frontendSecretAllowed: false
+      }
+    ]
+  },
+  router: {
+    runtimeId: "seis-ai-core-read-only-router-runtime-v1",
+    status: "fallback-review-only",
+    scenarioCount: 1,
+    scenarios: [
+      {
+        id: "governance-plan",
+        label: "Governance plan",
+        description: "Fallback decision while the generated runtime snapshot is unavailable.",
+        input: { privacyMode: "local-only", localOnly: true },
+        decision: {
+          decisionHash: "fallback-no-source-hash",
+          status: "review-only-no-runtime-authority",
+          selectedProvider: "seis-local-demo",
+          selectedModel: "none-local-demo",
+          providerState: "Local Demo",
+          selectionBasis: "fallback-local-demo",
+          routeEligible: false,
+          executionPerformed: false,
+          providerCallsPerformed: false,
+          fallbackUsed: false,
+          fallbackPlan: "feature-disabled",
+          agentLane: {
+            id: "seis",
+            displayName: "SEIS Hub",
+            permissionLevel: "plan-only",
+            qualityGate: "npm run check:seis-core-ai-runtime-snapshot"
+          },
+          requiredApprovals: ["source-backed snapshot required before review"],
+          blockedReasons: ["generated AI Core runtime snapshot is unavailable"],
+          safetyBoundary: {
+            credentialsRead: false,
+            networkCalled: false,
+            sshExecuted: false,
+            deploymentPerformed: false,
+            githubMutationPerformed: false
+          }
+        }
+      }
+    ]
+  },
+  agentRegistry: {
+    id: "seis-second-brain-agent-registry-fallback",
+    status: "fallback-review-only",
+    truthBoundary: "Generated managed agent registry is unavailable. No execution authority is granted.",
+    managedLaneCount: 1,
+    agentCount: 1,
+    runtimeAuthority: false,
+    permissionBoundary: "status-and-plan-only",
+    managedLanes: [
+      { id: "seis", displayName: "SEIS Hub", status: "status-and-plan-only" }
+    ],
+    agents: [
+      {
+        id: "architect-agent",
+        displayName: "Architect Agent",
+        status: "status-plan-only",
+        duty: "Fallback architecture review only while the source-backed registry is unavailable.",
+        executionAuthority: false
+      }
+    ],
+    safetyBoundary: {
+      providerCallsPerformed: false,
+      autonomousWriteExecutionPerformed: false,
+      sshExecuted: false,
+      deploymentPerformed: false,
+      githubMutationPerformed: false
+    },
+    humanApprovalRequiredForMutation: true
+  },
+  pluginMesh: {
+    primaryInstallId: "unavailable-in-fallback",
+    installedEnabledCount: 0,
+    helperUniquePlugins: 0,
+    personalLaneCount: 0,
+    personalLaneToolCount: 0
+  },
+  mcpRuntime: {
+    status: "unavailable-in-fallback",
+    transport: "not-started",
+    toolCount: 0,
+    resourceCount: 0,
+    promptCount: 0
+  },
+  runtimeBoundary: {
+    providerCalls: false,
+    credentialsRead: false,
+    frontendSecretsAllowed: false,
+    liveMcpSessionStarted: false,
+    sshExecuted: false,
+    deploymentPerformed: false,
+    githubMutationPerformed: false,
+    privateContentRead: false,
+    routeExecutionPerformed: false,
+    humanApprovalRequiredForLiveActions: true
+  }
 };
 
 let seisCoreEcosystemRegistry = fallbackSeisCoreEcosystemRegistry;
 let ecosystemControlNotice = "Using a local fallback until the source-backed registry loads.";
+let seisAiCoreRuntimeSnapshot = fallbackSeisAiCoreRuntimeSnapshot;
+let aiCoreRuntimeNotice = "Using a disabled fallback until the generated AI Core snapshot loads.";
+const AI_CORE_ROUTE_LANE_MAP = Object.freeze({
+  "seis": "seis",
+  "seis-governance": "seis",
+  "seis-cloud": "seis-cloud",
+  "seis-code": "seis-code",
+  "seis-design": "seis-design",
+  "seis-data": "seis-data",
+  "seis-security": "seis",
+  "seis-research": "seis",
+  "seis-automation": "seis",
+  "seis-product": "seis"
+});
 
 const automationWorkflows = [
   {
@@ -1569,23 +1786,30 @@ const viewMeta = {
   dashboard: ["Dashboard", "SEIS operating center", "Manage goals, repositories, architecture decisions, documentation, agents, and system health from one calm surface.", "New Goal"],
   godmode: ["God Mode", "SEIS AI mission control", "Coordinate custom SEIS AI setup, agent lanes, evidence gates, and controlled execution.", "Run Mission"],
   goals: ["Goals", "Goal tracking", "Create goals, edit priority/status, add risks, and keep next actions visible.", "Create Goal"],
-  repositories: ["Repositories", "Repository management", "Scan repository health, documentation coverage, security posture, and testing status.", "Refresh"],
-  documentation: ["Documentation", "Documentation management", "Track architecture notes, ADR records, roadmap, and knowledge base coverage.", "Add Note"],
+  repositories: ["Repositories", "Repository management", "Scan repository health, documentation coverage, security posture, and testing status.", "Reset Filter"],
+  documentation: ["Documentation", "Documentation management", "Track architecture notes, ADR records, roadmap, and knowledge base coverage.", "Open Knowledge"],
   search: ["Search", "SEIS Search Center", "Search across SEIS AI, Code, Design, Cloud, Website, Plugins, Files, and Apps with clear mock/real boundaries.", "Open Search"],
-  agents: ["Agents", "AI agent management", "Switch operating modes and inspect responsibility boundaries.", "Run Agent"],
-  plugins: ["Plugins", "Plugins and extensions", "Inspect plugin families, marketplace posture, permissions, updates, and activation policy.", "Review Plugins"],
-  automation: ["Automation", "Automation center", "Inspect workflows, triggers, scheduled tasks, automation history, and safe execution gates.", "Run Check"],
+  agents: ["Agents", "AI agent management", "Switch operating modes and inspect responsibility boundaries.", "Review Active"],
+  plugins: ["Plugins", "Plugins and extensions", "Inspect plugin families, marketplace posture, permissions, updates, and activation policy.", "Open Control Plane"],
+  automation: ["Automation", "Automation center", "Inspect workflows, triggers, scheduled tasks, automation history, and safe execution gates.", "Review Gates"],
   security: ["Security", "Security center", "Track risk reports, permission reviews, dependency scanning, access models, and auditability.", "Review Risk"],
-  architecture: ["Architecture", "Architecture tracking", "Map system structure, dependencies, decisions, and technical debt.", "Add ADR"],
-  knowledge: ["Knowledge", "Knowledge management", "Keep memory, research, and decisions discoverable.", "Capture Note"]
+  architecture: ["Architecture", "Architecture tracking", "Map system structure, dependencies, decisions, and technical debt.", "Review Dependencies"],
+  knowledge: ["Knowledge", "Knowledge management", "Keep memory, research, and decisions discoverable.", "Review Decisions"]
 };
 
-let state = loadState();
+const state = loadState();
 
 function loadState() {
   try {
     const stored = JSON.parse(localStorage.getItem(storageKey));
-    return { ...seedState, ...stored, settings: { ...seedState.settings, ...stored?.settings } };
+    if (!stored || typeof stored !== "object" || Array.isArray(stored)) return structuredClone(seedState);
+    const next = { ...seedState, ...stored, settings: { ...seedState.settings, ...stored.settings } };
+    if (!Object.hasOwn(viewMeta, next.activeView)) next.activeView = seedState.activeView;
+    if (!agents.some((agent) => agent.name === next.activeAgent)) next.activeAgent = seedState.activeAgent;
+    if (!godModeLanes.some((lane) => lane.name === next.godModeLane)) next.godModeLane = seedState.godModeLane;
+    if (!Array.isArray(next.goals)) next.goals = structuredClone(seedState.goals);
+    if (!Array.isArray(next.godModeRuns)) next.godModeRuns = structuredClone(seedState.godModeRuns);
+    return next;
   } catch {
     return structuredClone(seedState);
   }
@@ -1599,8 +1823,8 @@ const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
 function statusClass(status) {
-  if (status === "Ready" || status === "Active" || status === "Done") return "ready";
-  if (status === "Blocked") return "blocked";
+  if (["Ready", "Active", "Done", "Available", "Local Demo", "verified", "local-readiness-linked"].includes(status)) return "ready";
+  if (["Blocked", "Error"].includes(status)) return "blocked";
   return "attention";
 }
 
@@ -1611,10 +1835,12 @@ function render() {
   renderViewHeader();
   renderDashboard();
   renderGodMode();
+  renderAiCoreRuntime();
   renderGoals();
   renderRepositories();
   renderDocumentation();
   renderAgents();
+  renderManagedAgentRegistry();
   renderEcosystemControlPlane();
   renderPlugins();
   renderAutomation();
@@ -1838,6 +2064,9 @@ function renderGodMode() {
       run.tool ? `tool: ${run.tool}` : null,
       run.defaultGate ? `gate: ${run.defaultGate}` : null,
       run.routeSource ? `source: ${run.routeSource}` : null,
+      run.providerState ? `provider state: ${run.providerState}` : null,
+      run.selectedProvider ? `provider: ${run.selectedProvider}` : null,
+      run.executionPerformed === false ? "execution: not performed" : null,
       run.owner || null
     ].filter(Boolean);
 
@@ -1881,34 +2110,64 @@ function renderGodMode() {
   renderFeatureGrowthLedger();
 }
 
+function getAiCoreScenarioForRoute(route) {
+  const scenarios = Array.isArray(seisAiCoreRuntimeSnapshot.router?.scenarios)
+    ? seisAiCoreRuntimeSnapshot.router.scenarios
+    : [];
+  const targetLane = AI_CORE_ROUTE_LANE_MAP[route?.laneId] || "seis";
+  return scenarios.find((scenario) => scenario.decision?.agentLane?.id === targetLane)
+    || getActiveAiCoreScenario()
+    || null;
+}
+
 function renderMissionRoutePreview() {
   const input = $("#godmode-mission-input");
   const mission = input?.value || state.godModeMission || "";
   const route = predictMissionRoute(mission);
   const lane = getSeisRouterLanes().find((item) => item.laneId === route.laneId) || getSeisRouterLanes()[0];
+  const runtimeScenario = getAiCoreScenarioForRoute(route);
+  const decision = runtimeScenario?.decision || null;
+  const previewState = route.safetyAdjusted ? "Safety adjusted" : decision ? "Decision only" : "Snapshot unavailable";
   $("#mission-route-preview").innerHTML = `
     <div class="card-topline">
       <h3>Route Preview</h3>
-      <span class="status-pill ${route.safetyAdjusted ? "attention" : statusClass(lane.status)}">${route.safetyAdjusted ? "Safety adjusted" : lane.status}</span>
+      <span class="status-pill attention">${escapeHtml(previewState)}</span>
     </div>
     <div class="route-preview-grid">
       <article class="route-preview-card">
         <span>Tool</span>
-        <strong>${route.tool}</strong>
+        <strong>${escapeHtml(route.tool)}</strong>
       </article>
       <article class="route-preview-card">
         <span>SEIS Lane</span>
-        <strong>${route.laneId}</strong>
+        <strong>${escapeHtml(route.laneId)}</strong>
       </article>
       <article class="route-preview-card">
         <span>Default Gate</span>
-        <strong>${route.defaultGate || lane.defaultGate}</strong>
+        <strong>${escapeHtml(route.defaultGate || lane.defaultGate)}</strong>
+      </article>
+      <article class="route-preview-card" data-route-provider-state>
+        <span>Provider State</span>
+        <strong>${escapeHtml(decision?.providerState || "Unavailable")}</strong>
+      </article>
+      <article class="route-preview-card" data-route-provider>
+        <span>Provider / Model</span>
+        <strong>${escapeHtml(decision ? `${decision.selectedProvider} / ${decision.selectedModel}` : "none / none")}</strong>
+      </article>
+      <article class="route-preview-card" data-route-execution>
+        <span>Runtime</span>
+        <strong>${decision?.executionPerformed ? "Executed" : "Not performed"}</strong>
       </article>
     </div>
-    <p>${lane.handoff}</p>
+    <p>${escapeHtml(lane.handoff)}</p>
+    <p class="route-runtime-boundary">
+      ${escapeHtml(decision?.blockedReasons?.[0] || "Generated AI Core decision evidence is unavailable; live execution remains disabled.")}
+    </p>
     <div class="meta-row route-preview-reasons">
-      <span class="meta-chip">${route.routeSource}</span>
-      ${route.reasons.slice(0, 3).map((reason) => `<span class="meta-chip">${reason}</span>`).join("")}
+      <span class="meta-chip">${escapeHtml(route.routeSource)}</span>
+      <span class="meta-chip">route eligible: ${decision?.routeEligible ? "yes" : "no"}</span>
+      <span class="meta-chip">fallback: ${escapeHtml(decision?.fallbackPlan || "feature-disabled")}</span>
+      ${route.reasons.slice(0, 3).map((reason) => `<span class="meta-chip">${escapeHtml(reason)}</span>`).join("")}
     </div>
   `;
 }
@@ -2297,15 +2556,27 @@ function renderAgents() {
     </article>
   `).join("");
 
-  $("#ai-system-grid").innerHTML = aiSystems.map((system) => `
-    <article class="system-card">
-      <div class="card-topline">
-        <h3>${system.name}</h3>
-        <span class="status-pill ${statusClass(system.mode === "Primary" ? "Ready" : "Review")}">${system.mode}</span>
-      </div>
-      <p>${system.role}</p>
-    </article>
-  `).join("");
+  const providerFixtures = Array.isArray(seisAiCoreRuntimeSnapshot.providerRegistry?.providers)
+    ? seisAiCoreRuntimeSnapshot.providerRegistry.providers
+    : [];
+  $("#ai-system-grid").innerHTML = aiSystems.map((system) => {
+    const provider = providerFixtures.find((candidate) => candidate.id === system.providerId);
+    const publicStatus = provider?.publicStatus || "Reserved";
+    return `
+      <article class="system-card" data-ai-system-provider="${escapeHtml(system.providerId || "future")}">
+        <div class="card-topline">
+          <h3>${escapeHtml(system.name)}</h3>
+          <span class="status-pill ${statusClass(publicStatus)}">${escapeHtml(publicStatus)}</span>
+        </div>
+        <p>${escapeHtml(system.role)}</p>
+        <div class="meta-row">
+          <span class="meta-chip">role: ${escapeHtml(system.mode)}</span>
+          <span class="meta-chip">model: ${escapeHtml(provider?.actualModel || "not-configured")}</span>
+          <span class="meta-chip">route: ${provider?.routingEligible ? "fixture eligible" : "not eligible"}</span>
+        </div>
+      </article>
+    `;
+  }).join("");
 
   $("#orchestration-lanes").innerHTML = orchestrationLanes.map((lane) => `
     <article class="orchestration-card">
@@ -2348,6 +2619,85 @@ function renderAgentRoutingMatrix() {
   `).join("");
 }
 
+function renderManagedAgentRegistry() {
+  const registry = seisAiCoreRuntimeSnapshot.agentRegistry || fallbackSeisAiCoreRuntimeSnapshot.agentRegistry;
+  const agents = Array.isArray(registry.agents) ? registry.agents : [];
+  const lanes = Array.isArray(registry.managedLanes) ? registry.managedLanes : [];
+  const statePill = $("#managed-agent-registry-state");
+  const summary = $("#managed-agent-registry-summary");
+  const laneList = $("#managed-agent-lanes");
+  const agentList = $("#managed-agent-list");
+  const detail = $("#managed-agent-detail");
+  const feedback = $("#managed-agent-registry-feedback");
+  if (!statePill || !summary || !laneList || !agentList || !detail || !feedback) return;
+
+  const sourceBacked = registry.status === "review-only-agent-registry";
+  if (!agents.some((agent) => agent.id === state.activeManagedAgentId)) {
+    state.activeManagedAgentId = agents[0]?.id || "architect-agent";
+  }
+  const activeAgent = agents.find((agent) => agent.id === state.activeManagedAgentId) || agents[0] || null;
+
+  statePill.textContent = sourceBacked ? "Source-backed" : "Fallback";
+  statePill.className = `status-pill ${sourceBacked ? "ready" : "attention"}`;
+  summary.innerHTML = [
+    ["Managed lanes", registry.managedLaneCount || lanes.length, "public lane roster"],
+    ["Agents", registry.agentCount || agents.length, "duty-bound records"],
+    ["Mode", sourceBacked ? "Review only" : "Fallback", registry.decision || "no autonomous decision"],
+    ["Execution", registry.runtimeAuthority ? "Enabled" : "Disabled", registry.permissionBoundary || "status-and-plan-only"]
+  ].map(([label, value, note]) => `
+    <article class="managed-agent-summary-item">
+      <span>${escapeHtml(label)}</span>
+      <strong>${escapeHtml(value)}</strong>
+      <small>${escapeHtml(note)}</small>
+    </article>
+  `).join("");
+
+  laneList.innerHTML = lanes.map((lane) => `
+    <span class="managed-agent-lane" data-managed-lane="${escapeHtml(lane.id)}">
+      <strong>${escapeHtml(lane.displayName)}</strong>
+      <small>${escapeHtml(lane.status)}</small>
+    </span>
+  `).join("");
+
+  agentList.innerHTML = agents.map((agent) => {
+    const active = agent.id === activeAgent?.id;
+    const statusTone = agent.status === "blocking-review-gate" ? "blocked" : "attention";
+    return `
+      <button
+        class="managed-agent-button ${active ? "is-active" : ""}"
+        type="button"
+        role="listitem"
+        data-managed-agent="${escapeHtml(agent.id)}"
+        aria-pressed="${active}"
+      >
+        <span>
+          <strong>${escapeHtml(agent.displayName)}</strong>
+          <small>${escapeHtml(agent.duty)}</small>
+        </span>
+        <span class="status-pill ${statusTone}">${escapeHtml(agent.status)}</span>
+      </button>
+    `;
+  }).join("");
+
+  if (!activeAgent) {
+    detail.innerHTML = "<p>No managed agent record is available.</p>";
+  } else {
+    detail.innerHTML = `
+      <span class="eyebrow">Selected agent</span>
+      <h4>${escapeHtml(activeAgent.displayName)}</h4>
+      <p>${escapeHtml(activeAgent.duty)}</p>
+      <dl class="ai-core-facts">
+        <div><dt>Status</dt><dd>${escapeHtml(activeAgent.status)}</dd></div>
+        <div><dt>Execution authority</dt><dd>${activeAgent.executionAuthority ? "Enabled" : "None"}</dd></div>
+        <div><dt>Mutation</dt><dd>${registry.humanApprovalRequiredForMutation ? "Human approval required" : "Unspecified"}</dd></div>
+        <div><dt>Source</dt><dd>${sourceBacked ? "Second Brain public registry" : "Local fallback"}</dd></div>
+      </dl>
+    `;
+  }
+
+  feedback.textContent = registry.truthBoundary || "Only public, status-and-plan registry evidence is displayed.";
+}
+
 function renderAgentDetail(label, items) {
   return `
     <section class="agent-detail">
@@ -2375,74 +2725,190 @@ function renderPlugins() {
   `).join("");
 }
 
+function getActiveEcosystemLane() {
+  const lanes = Array.isArray(seisCoreEcosystemRegistry.lanes) ? seisCoreEcosystemRegistry.lanes : [];
+  return lanes.find((lane) => lane.id === state.activeEcosystemLaneId) || lanes[0] || null;
+}
+
+function renderEcosystemTerms(values, emptyLabel) {
+  const items = Array.isArray(values) ? values.filter(Boolean) : [];
+  if (!items.length) return `<p class="ecosystem-empty">${escapeHtml(emptyLabel)}</p>`;
+  return `<ul class="ecosystem-term-list">${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
+}
+
 function renderEcosystemControlPlane() {
   const lanes = Array.isArray(seisCoreEcosystemRegistry.lanes) ? seisCoreEcosystemRegistry.lanes : [];
-  const readyCount = lanes.filter((lane) => lane.status === "Ready").length;
-  const localCount = lanes.filter((lane) => /local|mock|registry|contract/i.test(lane.mode || "")).length;
-  const mcpToolCount = lanes.reduce((total, lane) => total + (lane.mcpTools || []).length, 0);
+  const counts = seisCoreEcosystemRegistry.counts || {};
+  const activeLane = getActiveEcosystemLane();
   const statePill = $("#ecosystem-control-state");
   const summary = $("#ecosystem-control-summary");
   const grid = $("#ecosystem-control-grid");
+  const detail = $("#ecosystem-lane-detail");
   const feedback = $("#ecosystem-control-feedback");
 
-  if (!statePill || !summary || !grid || !feedback) return;
+  if (!statePill || !summary || !grid || !detail || !feedback) return;
 
-  const sourceBacked = seisCoreEcosystemRegistry.status === "active";
+  const sourceBacked = seisCoreEcosystemRegistry.status === "source-backed-local-demo";
   statePill.textContent = sourceBacked ? "Source-backed" : "Fallback";
   statePill.className = `status-pill ${sourceBacked ? "ready" : "attention"}`;
   summary.innerHTML = [
-    ["Lanes", lanes.length, "Core-bound modules"],
-    ["Ready", readyCount, "visible local gates"],
-    ["Local boundaries", localCount, "no live connector claims"],
-    ["MCP tools", mcpToolCount, "status and plan tools only"]
-  ].map(([label, value, detail]) => `
+    ["Core lanes", counts.coreLanes ?? lanes.length, "six routed product surfaces"],
+    ["Plugins / skills", `${counts.bundledPluginSources ?? 0} / ${counts.repoSkills ?? 0}`, "repository sources, not blanket activation"],
+    ["Audit / catalog", `${counts.auditedInstalledEnabledPlugins ?? 0} / ${counts.cataloguedHelperPlugins ?? 0}`, "dated audit / helper universe"],
+    ["MCP T / R / P", `${counts.mcpTools ?? 0} / ${counts.mcpResources ?? 0} / ${counts.mcpPrompts ?? 0}`, "contract inventory, no live browser session"],
+    ["Providers", counts.providers ?? 0, "registry state only; backend secrets prohibited"]
+  ].map(([label, value, note]) => `
     <article class="ecosystem-summary-card">
-      <span>${label}</span>
-      <strong>${value}</strong>
-      <small>${detail}</small>
+      <span>${escapeHtml(label)}</span>
+      <strong>${escapeHtml(value)}</strong>
+      <small>${escapeHtml(note)}</small>
     </article>
   `).join("");
 
-  grid.innerHTML = lanes.map((lane) => `
-    <article class="ecosystem-lane-card">
-      <div class="card-topline">
-        <div>
-          <h4>${escapeHtml(lane.label)}</h4>
+  grid.innerHTML = lanes.map((lane) => {
+    const selected = lane.id === activeLane?.id;
+    const toolCount = lane.mcp?.toolCount ?? lane.mcp?.tools?.length ?? 0;
+    return `
+      <button
+        class="ecosystem-lane-button${selected ? " is-active" : ""}"
+        id="ecosystem-lane-tab-${escapeHtml(lane.id)}"
+        type="button"
+        role="tab"
+        aria-selected="${selected}"
+        aria-controls="ecosystem-lane-detail"
+        data-ecosystem-lane="${escapeHtml(lane.id)}"
+      >
+        <span class="ecosystem-lane-title">
+          <strong>${escapeHtml(lane.label)}</strong>
           <small>${escapeHtml(lane.identity)}</small>
-        </div>
-        <span class="status-pill ${statusClass(lane.status)}">${escapeHtml(lane.status)}</span>
+        </span>
+        <span class="ecosystem-lane-meta">${escapeHtml(lane.status)} · ${toolCount} MCP</span>
+      </button>
+    `;
+  }).join("");
+
+  if (!activeLane) {
+    detail.removeAttribute("aria-labelledby");
+    detail.innerHTML = '<p class="ecosystem-empty">No ecosystem lane is available.</p>';
+    feedback.textContent = ecosystemControlNotice;
+    return;
+  }
+
+  const qualityGates = Array.isArray(activeLane.qualityGates) ? activeLane.qualityGates : [];
+  const mcpTools = Array.isArray(activeLane.mcp?.tools) ? activeLane.mcp.tools : [];
+  const skillLabels = (activeLane.skills || []).map((skillPath) => {
+    const segments = String(skillPath).split("/");
+    return segments.length > 1 ? segments.at(-2) : skillPath;
+  });
+  const runtimePlugin = activeLane.pluginBinding?.runtimePlugin || "No runtime plugin";
+  const sourcePlugin = activeLane.pluginBinding?.sourcePlugin || "Browser-local module";
+  const sourceMcpLabel = activeLane.mcp?.sourceServer && activeLane.mcp.sourceServer !== activeLane.mcp.server
+    ? ` · source label ${activeLane.mcp.sourceServer}`
+    : "";
+  const route = activeLane.route || {};
+  const systemEvidence = activeLane.designSystem
+    ? `${activeLane.designSystem.validatedComponentCount}/${activeLane.designSystem.componentCount} design components validated`
+    : activeLane.dataSystem
+      ? `${activeLane.dataSystem.validatedContractCount}/${activeLane.dataSystem.contractCount} data contracts validated`
+      : `${activeLane.moduleIds?.length || 0} product modules · ${activeLane.agentIds?.length || 0} agent roles`;
+  const sshEvidence = activeLane.sshBinding
+    ? `<div><dt>SSH evidence</dt><dd>${escapeHtml(`${activeLane.sshBinding.evidenceStatus || "not verified"} · strict ready: ${activeLane.sshBinding.strictReady ? "yes" : "no"} · ${activeLane.sshBinding.serverAndPortPolicy}`)}</dd></div>`
+    : "";
+
+  detail.setAttribute("aria-labelledby", `ecosystem-lane-tab-${activeLane.id}`);
+  detail.dataset.ecosystemActiveLane = activeLane.id;
+  detail.innerHTML = `
+    <div class="ecosystem-detail-header">
+      <div>
+        <span class="eyebrow">${escapeHtml(activeLane.kind)}</span>
+        <h4>${escapeHtml(activeLane.label)}</h4>
+        <p>${escapeHtml(activeLane.role)}</p>
       </div>
-      <p>${escapeHtml(lane.role)}</p>
-      <dl class="ecosystem-facts">
-        <div>
-          <dt>Mode</dt>
-          <dd>${escapeHtml(lane.mode)}</dd>
-        </div>
-        <div>
-          <dt>MCP</dt>
-          <dd>${lane.mcpTools.length ? escapeHtml(lane.mcpTools.join(", ")) : "No remote MCP"}</dd>
-        </div>
-        <div>
-          <dt>Core binding</dt>
-          <dd>${escapeHtml(lane.coreBinding)}</dd>
-        </div>
-        <div>
-          <dt>Store binding</dt>
-          <dd>${escapeHtml(lane.storeBinding)}</dd>
-        </div>
-        ${lane.sshBinding ? `
-        <div>
-          <dt>SSH binding</dt>
-          <dd>${escapeHtml(`${lane.sshBinding.alias} · ${lane.sshBinding.serverAndPortPolicy} · ${lane.sshBinding.runtimeMode}`)}</dd>
-        </div>` : ""}
-      </dl>
-      <div class="ecosystem-lane-actions">
-        <a class="secondary-button ecosystem-link" href="${escapeHtml(lane.demoHref)}" target="_blank" rel="noreferrer">${escapeHtml(lane.demoLabel)}</a>
-        <button class="secondary-button" type="button" data-copy-ecosystem-gate="${escapeHtml(lane.qualityGate)}">Copy gate</button>
-      </div>
-    </article>
-  `).join("");
-  feedback.textContent = ecosystemControlNotice;
+      <span class="status-pill ${statusClass(activeLane.status)}">${escapeHtml(activeLane.status)}</span>
+    </div>
+    <div class="ecosystem-boundary-strip" aria-label="Runtime boundaries">
+      <span><strong>Execution</strong> Disabled</span>
+      <span><strong>Live MCP</strong> Not started</span>
+      <span><strong>Route</strong> ${escapeHtml(route.kind || "browser-local")}</span>
+    </div>
+    <dl class="ecosystem-facts">
+      <div><dt>Mode</dt><dd>${escapeHtml(activeLane.mode)}</dd></div>
+      <div><dt>Runtime binding</dt><dd>${escapeHtml(runtimePlugin)} · source ${escapeHtml(sourcePlugin)}</dd></div>
+      <div><dt>MCP contract</dt><dd>${escapeHtml(activeLane.mcp?.server || "none")}${escapeHtml(sourceMcpLabel)} · ${escapeHtml(activeLane.mcp?.state || "not available")}</dd></div>
+      <div><dt>Coverage</dt><dd>${escapeHtml(systemEvidence)}</dd></div>
+      <div><dt>Scope</dt><dd>${escapeHtml(activeLane.scope)}</dd></div>
+      <div><dt>Store boundary</dt><dd>${escapeHtml(activeLane.storeBinding)}</dd></div>
+      ${activeLane.authorityNote ? `<div><dt>Authority note</dt><dd>${escapeHtml(activeLane.authorityNote)}</dd></div>` : ""}
+      ${sshEvidence}
+    </dl>
+    <div class="ecosystem-detail-sections">
+      <section>
+        <h5>Capabilities <span>${activeLane.capabilities?.length || 0}</span></h5>
+        ${renderEcosystemTerms(activeLane.capabilities, "No capability evidence in fallback mode.")}
+      </section>
+      <section>
+        <h5>Skills <span>${skillLabels.length}</span></h5>
+        ${renderEcosystemTerms(skillLabels, "No source-backed skills in fallback mode.")}
+      </section>
+      <section>
+        <h5>MCP tools <span>${mcpTools.length}</span></h5>
+        ${renderEcosystemTerms(mcpTools, "No remote MCP execution path.")}
+      </section>
+      <section>
+        <h5>Quality gates <span>${qualityGates.length}</span></h5>
+        ${renderEcosystemTerms(qualityGates, "No generated quality gate is available.")}
+      </section>
+      <section class="ecosystem-source-section">
+        <h5>Source evidence <span>${activeLane.sourceRefs?.length || 0}</span></h5>
+        ${renderEcosystemTerms(activeLane.sourceRefs, "Generated source evidence is unavailable.")}
+      </section>
+    </div>
+    <div class="ecosystem-lane-actions">
+      <a class="secondary-button ecosystem-link" href="${escapeHtml(route.href || "#")}">${escapeHtml(route.label || "Open local surface")}</a>
+      ${qualityGates[0] ? `<button class="secondary-button" type="button" data-copy-ecosystem-gate="${escapeHtml(qualityGates[0])}">Copy primary gate</button>` : ""}
+    </div>
+  `;
+  feedback.textContent = `${ecosystemControlNotice} Execution authority is disabled across all ${lanes.length} lanes.`;
+}
+
+function validateEcosystemRegistryForBrowser(registry) {
+  const requiredLaneIds = ["seis", "seis-cloud", "seis-code", "seis-design", "seis-data", "seis-store"];
+  const disabledBoundaryFields = [
+    "providerCalls",
+    "credentialsRead",
+    "frontendSecretsAllowed",
+    "liveMcpSessionStarted",
+    "backgroundAutomation",
+    "agentExecution",
+    "sshExecuted",
+    "deploymentPerformed",
+    "githubMutationPerformed",
+    "packageInstallationPerformed",
+    "privateContentRead"
+  ];
+  if (registry.id !== "seis-core-ecosystem-registry" || registry.schemaVersion !== "2.0.0") {
+    throw new Error("registry identity or schema is not supported");
+  }
+  if (registry.status !== "source-backed-local-demo" || registry.mode !== "read-only-capability-control-plane") {
+    throw new Error("registry source-backed local-demo boundary is missing");
+  }
+  if (!Array.isArray(registry.lanes) || registry.lanes.length !== requiredLaneIds.length) {
+    throw new Error("registry must expose exactly six core lanes");
+  }
+  for (const laneId of requiredLaneIds) {
+    const lane = registry.lanes.find((candidate) => candidate.id === laneId);
+    if (!lane?.route?.href || !lane.route.targetId || lane.executionAuthority !== false || lane.mcp?.executionAuthority !== false) {
+      throw new Error(`registry lane ${laneId} violates its route or no-execution contract`);
+    }
+  }
+  if (!registry.providers?.records?.every((provider) => provider.backendOnly === true && provider.frontendSecretAllowed === false)) {
+    throw new Error("provider records violate the backend-only secret boundary");
+  }
+  if (disabledBoundaryFields.some((field) => registry.runtimeBoundary?.[field] !== false)
+    || registry.runtimeBoundary?.browserLocalReadOnly !== true
+    || registry.runtimeBoundary?.humanApprovalRequiredForExternalMutation !== true) {
+    throw new Error("registry runtime boundary permits an unapproved execution path");
+  }
 }
 
 async function loadSeisCoreEcosystemRegistry() {
@@ -2450,11 +2916,16 @@ async function loadSeisCoreEcosystemRegistry() {
     const response = await fetch("data/seis-core-ecosystem-registry.json", { cache: "no-store" });
     if (!response.ok) throw new Error(`registry request failed with ${response.status}`);
     const registry = await response.json();
-    if (!Array.isArray(registry.lanes) || registry.lanes.length === 0) throw new Error("registry has no lanes");
+    validateEcosystemRegistryForBrowser(registry);
     seisCoreEcosystemRegistry = registry;
-    ecosystemControlNotice = "Source-backed registry loaded. Remote actions remain disabled in this local Control Plane.";
+    if (!registry.lanes.some((lane) => lane.id === state.activeEcosystemLaneId)) {
+      state.activeEcosystemLaneId = registry.lanes[0].id;
+      saveState();
+    }
+    ecosystemControlNotice = "Generated source registry loaded. Provider, MCP, SSH, deployment, and GitHub execution remain disabled.";
   } catch (error) {
     seisCoreEcosystemRegistry = fallbackSeisCoreEcosystemRegistry;
+    state.activeEcosystemLaneId = fallbackSeisCoreEcosystemRegistry.lanes[0].id;
     ecosystemControlNotice = `Fallback active: ${error.message}. Remote actions remain disabled.`;
   }
   renderEcosystemControlPlane();
@@ -2470,6 +2941,210 @@ async function copyEcosystemGate(gate) {
     ecosystemControlNotice = `Validation gate: ${gate}`;
   }
   if (feedback) feedback.textContent = ecosystemControlNotice;
+}
+
+function getActiveAiCoreScenario() {
+  const scenarios = Array.isArray(seisAiCoreRuntimeSnapshot.router?.scenarios)
+    ? seisAiCoreRuntimeSnapshot.router.scenarios
+    : [];
+  return scenarios.find((scenario) => scenario.id === state.activeAiCoreScenarioId) || scenarios[0] || null;
+}
+
+function renderAiCoreRuntime() {
+  const statePill = $("#ai-core-runtime-state");
+  const summary = $("#ai-core-runtime-summary");
+  const providerGrid = $("#ai-core-provider-grid");
+  const scenarioList = $("#ai-core-scenario-list");
+  const decisionCard = $("#ai-core-decision");
+  const meshStrip = $("#ai-core-mesh-strip");
+  const feedback = $("#ai-core-runtime-feedback");
+  const providerBoundary = $("#ai-core-provider-boundary");
+  if (!statePill || !summary || !providerGrid || !scenarioList || !decisionCard || !meshStrip || !feedback) return;
+
+  const sourceBacked = seisAiCoreRuntimeSnapshot.status === "local-readiness-linked";
+  const providerRegistry = seisAiCoreRuntimeSnapshot.providerRegistry || {};
+  const providers = Array.isArray(providerRegistry.providers) ? providerRegistry.providers : [];
+  const pluginMesh = seisAiCoreRuntimeSnapshot.pluginMesh || {};
+  const mcp = seisAiCoreRuntimeSnapshot.mcpRuntime || {};
+  const scenarios = Array.isArray(seisAiCoreRuntimeSnapshot.router?.scenarios)
+    ? seisAiCoreRuntimeSnapshot.router.scenarios
+    : [];
+  const activeScenario = getActiveAiCoreScenario();
+
+  statePill.textContent = sourceBacked ? "Source-backed" : "Fallback";
+  statePill.className = `status-pill ${sourceBacked ? "ready" : "attention"}`;
+  if (providerBoundary) {
+    providerBoundary.textContent = providerRegistry.coreCredentialRequirement === "none"
+      ? "Zero-key core"
+      : "Credential review";
+  }
+
+  summary.innerHTML = [
+    ["Providers", providerRegistry.providerCount || 0, `${providerRegistry.availableProviderCount || 0} available`],
+    ["Route cases", scenarios.length, "decision-only fixtures"],
+    ["Personal lanes", pluginMesh.personalLaneCount || 0, `${pluginMesh.personalLaneToolCount || 0} lane tools`],
+    ["MCP mesh", `${mcp.toolCount || 0}/${mcp.resourceCount || 0}/${mcp.promptCount || 0}`, "tools / resources / prompts"]
+  ].map(([label, value, detail]) => `
+    <article class="ai-core-summary-card" data-ai-core-summary="${escapeHtml(label)}">
+      <span>${escapeHtml(label)}</span>
+      <strong>${escapeHtml(value)}</strong>
+      <small>${escapeHtml(detail)}</small>
+    </article>
+  `).join("");
+
+  providerGrid.innerHTML = providers.map((provider) => `
+    <article class="ai-core-provider-card" data-ai-core-provider="${escapeHtml(provider.id)}">
+      <div class="card-topline">
+        <div>
+          <strong>${escapeHtml(provider.displayName)}</strong>
+          <small>${escapeHtml(provider.category)}</small>
+        </div>
+        <span class="status-pill ${statusClass(provider.publicStatus)}">${escapeHtml(provider.publicStatus)}</span>
+      </div>
+      <dl class="ai-core-facts">
+        <div><dt>Model</dt><dd>${escapeHtml(provider.actualModel)}</dd></div>
+        <div><dt>Credential</dt><dd>${escapeHtml(provider.credentialRequirement)}</dd></div>
+        <div><dt>Privacy</dt><dd>${escapeHtml(provider.privacyClass)}</dd></div>
+        <div><dt>Route</dt><dd>${provider.routingEligible ? "Fixture eligible" : "Not eligible"}</dd></div>
+      </dl>
+    </article>
+  `).join("");
+
+  scenarioList.innerHTML = scenarios.map((scenario) => {
+    const active = scenario.id === activeScenario?.id;
+    return `
+      <button
+        class="ai-core-scenario-button ${active ? "is-active" : ""}"
+        type="button"
+        role="listitem"
+        data-ai-core-scenario="${escapeHtml(scenario.id)}"
+        aria-pressed="${active}"
+      >
+        <strong>${escapeHtml(scenario.label)}</strong>
+        <span>${escapeHtml(scenario.decision.agentLane.displayName || scenario.decision.agentLane.id)}</span>
+      </button>
+    `;
+  }).join("");
+
+  if (!activeScenario) {
+    decisionCard.innerHTML = "<p>No read-only route scenario is available.</p>";
+  } else {
+    const decision = activeScenario.decision;
+    decisionCard.dataset.aiCoreActiveDecision = activeScenario.id;
+    decisionCard.innerHTML = `
+      <div class="card-topline">
+        <div>
+          <span class="eyebrow">${escapeHtml(activeScenario.label)}</span>
+          <h4>${escapeHtml(decision.agentLane.displayName || decision.agentLane.id)}</h4>
+        </div>
+        <span class="status-pill ${statusClass(decision.providerState)}">${escapeHtml(decision.providerState)}</span>
+      </div>
+      <p>${escapeHtml(activeScenario.description)}</p>
+      <div class="ai-core-decision-grid">
+        <dl class="ai-core-facts">
+          <div><dt>Provider</dt><dd>${escapeHtml(decision.selectedProvider)}</dd></div>
+          <div><dt>Model</dt><dd>${escapeHtml(decision.selectedModel)}</dd></div>
+          <div><dt>Permission</dt><dd>${escapeHtml(decision.agentLane.permissionLevel)}</dd></div>
+          <div><dt>Quality gate</dt><dd>${escapeHtml(decision.agentLane.qualityGate)}</dd></div>
+          <div><dt>Route eligible</dt><dd>${decision.routeEligible ? "Yes" : "No"}</dd></div>
+          <div><dt>Execution</dt><dd>${decision.executionPerformed ? "Performed" : "Not performed"}</dd></div>
+        </dl>
+        <div class="ai-core-blocked-reasons">
+          <strong>Runtime boundaries</strong>
+          <ul>${decision.blockedReasons.map((reason) => `<li>${escapeHtml(reason)}</li>`).join("")}</ul>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-chip">fallback: ${escapeHtml(decision.fallbackPlan)}</span>
+        <span class="meta-chip">provider calls: ${decision.providerCallsPerformed ? "yes" : "no"}</span>
+        <span class="meta-chip">trace: ${escapeHtml(decision.decisionHash.slice(0, 12))}</span>
+      </div>
+    `;
+  }
+
+  meshStrip.innerHTML = [
+    ["Unified install", pluginMesh.primaryInstallId || "unavailable"],
+    ["Installed enabled", pluginMesh.installedEnabledCount || 0],
+    ["Helper universe", pluginMesh.helperUniquePlugins || 0],
+    ["MCP transport", mcp.transport || "not-started"]
+  ].map(([label, value]) => `
+    <article data-ai-core-mesh-metric="${escapeHtml(label)}">
+      <span>${escapeHtml(label)}</span>
+      <strong>${escapeHtml(value)}</strong>
+    </article>
+  `).join("");
+
+  feedback.textContent = aiCoreRuntimeNotice;
+}
+
+async function loadSeisAiCoreRuntimeSnapshot() {
+  try {
+    const response = await fetch("data/seis-ai-core-runtime-snapshot.json", { cache: "no-store" });
+    if (!response.ok) throw new Error(`runtime snapshot request failed with ${response.status}`);
+    const snapshot = await response.json();
+    if (snapshot.id !== "seis-ai-core-runtime-snapshot") throw new Error("runtime snapshot id mismatch");
+    if (!Array.isArray(snapshot.router?.scenarios) || snapshot.router.scenarios.length === 0) {
+      throw new Error("runtime snapshot has no read-only route scenarios");
+    }
+    if (!Array.isArray(snapshot.agentRegistry?.managedLanes) || !Array.isArray(snapshot.agentRegistry?.agents)) {
+      throw new Error("runtime snapshot has no managed agent registry");
+    }
+    if (snapshot.agentRegistry.managedLanes.length !== snapshot.agentRegistry.managedLaneCount ||
+        snapshot.agentRegistry.agents.length !== snapshot.agentRegistry.agentCount) {
+      throw new Error("runtime snapshot managed agent counts do not match");
+    }
+    if (snapshot.agentRegistry.runtimeAuthority !== false ||
+        snapshot.agentRegistry.agents.some((agent) => agent.executionAuthority !== false) ||
+        Object.values(snapshot.agentRegistry.safetyBoundary || {}).some((value) => value !== false)) {
+      throw new Error("runtime snapshot violates the managed agent no-execution boundary");
+    }
+    if (snapshot.runtimeBoundary?.providerCalls !== false || snapshot.runtimeBoundary?.liveMcpSessionStarted !== false) {
+      throw new Error("runtime snapshot violates the browser no-execution boundary");
+    }
+    seisAiCoreRuntimeSnapshot = snapshot;
+    if (!snapshot.router.scenarios.some((scenario) => scenario.id === state.activeAiCoreScenarioId)) {
+      state.activeAiCoreScenarioId = snapshot.router.scenarios[0].id;
+    }
+    if (!snapshot.agentRegistry.agents.some((agent) => agent.id === state.activeManagedAgentId)) {
+      state.activeManagedAgentId = snapshot.agentRegistry.agents[0]?.id || "architect-agent";
+    }
+    aiCoreRuntimeNotice = "Generated AI Core snapshot loaded. Decisions are source-backed and execution remains disabled.";
+  } catch (error) {
+    seisAiCoreRuntimeSnapshot = fallbackSeisAiCoreRuntimeSnapshot;
+    state.activeAiCoreScenarioId = fallbackSeisAiCoreRuntimeSnapshot.router.scenarios[0].id;
+    state.activeManagedAgentId = fallbackSeisAiCoreRuntimeSnapshot.agentRegistry.agents[0].id;
+    aiCoreRuntimeNotice = `Fallback active: ${error.message}. Provider, MCP, SSH, deploy, and GitHub execution remain disabled.`;
+  }
+  render();
+}
+
+async function copyAiCoreDecision() {
+  const scenario = getActiveAiCoreScenario();
+  const feedback = $("#ai-core-runtime-feedback");
+  if (!scenario) return;
+  const decision = scenario.decision;
+  const handoff = [
+    `SEIS AI Core decision: ${scenario.label}`,
+    `Lane: ${decision.agentLane.id}`,
+    `Provider: ${decision.selectedProvider}`,
+    `Model: ${decision.selectedModel}`,
+    `Provider state: ${decision.providerState}`,
+    `Route eligible: ${decision.routeEligible}`,
+    `Execution performed: ${decision.executionPerformed}`,
+    `Provider calls performed: ${decision.providerCallsPerformed}`,
+    `Quality gate: ${decision.agentLane.qualityGate}`,
+    `Decision trace: ${decision.decisionHash}`,
+    `Blocked reasons: ${decision.blockedReasons.join(" | ")}`
+  ].join("\n");
+
+  try {
+    if (!navigator.clipboard?.writeText) throw new Error("clipboard access is unavailable");
+    await navigator.clipboard.writeText(handoff);
+    aiCoreRuntimeNotice = `Copied read-only decision: ${scenario.label}`;
+  } catch {
+    aiCoreRuntimeNotice = `Read-only decision ready: ${scenario.label}. Clipboard access is unavailable.`;
+  }
+  if (feedback) feedback.textContent = aiCoreRuntimeNotice;
 }
 
 function renderAutomation() {
@@ -2767,6 +3442,61 @@ function setView(view) {
   render();
 }
 
+function revealPrimaryTarget(selector) {
+  const target = $(selector);
+  if (!target) return;
+  target.scrollIntoView({ block: "start", behavior: state.settings.reduceMotion ? "auto" : "smooth" });
+  if (!target.matches("button, a, input, select, textarea, [tabindex]")) target.setAttribute("tabindex", "-1");
+  target.focus({ preventScroll: true });
+}
+
+function handlePrimaryAction() {
+  switch (state.activeView) {
+    case "dashboard":
+      setView("goals");
+      $("#goal-title")?.focus();
+      break;
+    case "godmode":
+      $("#godmode-mission-input")?.focus();
+      break;
+    case "goals":
+      $("#goal-title")?.focus();
+      break;
+    case "repositories":
+      state.repositoryFilter = "all";
+      render();
+      revealPrimaryTarget("#repository-grid");
+      break;
+    case "documentation":
+      setView("knowledge");
+      revealPrimaryTarget("#knowledge-node-grid");
+      break;
+    case "search":
+      window.location.assign("search-center.html");
+      break;
+    case "agents":
+      revealPrimaryTarget("#agent-grid .agent-card.is-active");
+      break;
+    case "plugins":
+      revealPrimaryTarget(".ecosystem-control-plane");
+      break;
+    case "automation":
+      revealPrimaryTarget("#approval-gates");
+      break;
+    case "security":
+      revealPrimaryTarget("#permission-reviews");
+      break;
+    case "architecture":
+      revealPrimaryTarget("#dependency-graph");
+      break;
+    case "knowledge":
+      revealPrimaryTarget("#decision-history-list");
+      break;
+    default:
+      setView("dashboard");
+  }
+}
+
 function bindEvents() {
   document.addEventListener("click", (event) => {
     const viewButton = event.target.closest("[data-view]");
@@ -2793,15 +3523,44 @@ function bindEvents() {
       render();
     }
 
+    const managedAgentButton = event.target.closest("[data-managed-agent]");
+    if (managedAgentButton) {
+      state.activeManagedAgentId = managedAgentButton.dataset.managedAgent;
+      render();
+      revealPrimaryTarget("#managed-agent-detail");
+    }
+
     const godModeLaneButton = event.target.closest("[data-godmode-lane]");
     if (godModeLaneButton) {
       state.godModeLane = godModeLaneButton.dataset.godmodeLane;
       render();
     }
 
+    const ecosystemLaneButton = event.target.closest("[data-ecosystem-lane]");
+    if (ecosystemLaneButton) {
+      const laneId = ecosystemLaneButton.dataset.ecosystemLane;
+      if (seisCoreEcosystemRegistry.lanes?.some((lane) => lane.id === laneId)) {
+        state.activeEcosystemLaneId = laneId;
+        saveState();
+        renderEcosystemControlPlane();
+        $("#ecosystem-lane-detail")?.focus({ preventScroll: true });
+      }
+    }
+
     const ecosystemGateButton = event.target.closest("[data-copy-ecosystem-gate]");
     if (ecosystemGateButton) {
       void copyEcosystemGate(ecosystemGateButton.dataset.copyEcosystemGate);
+    }
+
+    const aiCoreScenarioButton = event.target.closest("[data-ai-core-scenario]");
+    if (aiCoreScenarioButton) {
+      state.activeAiCoreScenarioId = aiCoreScenarioButton.dataset.aiCoreScenario;
+      render();
+    }
+
+    const aiCoreCopyButton = event.target.closest("[data-copy-ai-core-decision]");
+    if (aiCoreCopyButton) {
+      void copyAiCoreDecision();
     }
 
     const closeButton = event.target.closest("[data-close-dialog]");
@@ -2837,6 +3596,8 @@ function bindEvents() {
     const route = predictMissionRoute(mission);
     const routeLane = getSeisRouterLanes().find((item) => item.laneId === route.laneId) || getSeisRouterLanes()[0];
     const defaultGate = route.defaultGate || routeLane.defaultGate || activeLane.gate;
+    const runtimeScenario = getAiCoreScenarioForRoute(route);
+    const runtimeDecision = runtimeScenario?.decision || null;
     state.godModeRuns.unshift({
       id: `godmode-run-${Date.now()}`,
       mission,
@@ -2850,8 +3611,15 @@ function bindEvents() {
       safetyLaneId: route.safetyLaneId,
       safetyAdjusted: route.safetyAdjusted,
       owner: routeLane.owner || activeLane.owner,
-      status: route.safetyAdjusted || lane === "Review" ? "Review" : "Active",
-      evidence: `${defaultGate} Route ${route.laneId} through ${route.tool}; evidence must be attached before release handoff.`
+      providerState: runtimeDecision?.providerState || "Unavailable",
+      selectedProvider: runtimeDecision?.selectedProvider || "none",
+      selectedModel: runtimeDecision?.selectedModel || "none",
+      routeEligible: runtimeDecision?.routeEligible === true,
+      executionPerformed: false,
+      providerCallsPerformed: false,
+      runtimeBlockedReasons: runtimeDecision?.blockedReasons || ["AI Core runtime snapshot unavailable"],
+      status: "Review",
+      evidence: `${defaultGate} Decision-only route ${route.laneId} through ${route.tool}; provider calls and execution were not performed.`
     });
     render();
   });
@@ -2884,16 +3652,7 @@ function bindEvents() {
     }
   });
 
-  $("#primary-action").addEventListener("click", () => {
-    if (state.activeView === "godmode") {
-      $("#godmode-mission-input").focus();
-    } else if (state.activeView !== "goals") {
-      setView("goals");
-      $("#goal-title").focus();
-    } else {
-      $("#goal-title").focus();
-    }
-  });
+  $("#primary-action").addEventListener("click", handlePrimaryAction);
 
   $("#open-command").addEventListener("click", openCommandPalette);
   $("#open-settings").addEventListener("click", () => $("#settings-dialog").showModal());
@@ -2962,3 +3721,4 @@ bindEvents();
 render();
 loadSeisRouterArtifact();
 loadSeisCoreEcosystemRegistry();
+loadSeisAiCoreRuntimeSnapshot();

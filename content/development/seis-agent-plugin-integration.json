@@ -212,6 +212,7 @@
   "runtimeIntegration": {
     "aiPackage": "packages/seis-ai",
     "toolLoopTool": "seis_plugin_integration",
+    "readOnlyRouterTool": "seis_ai_core_read_only_route",
     "providerRegistryTool": "seis_ai_core_provider_status",
     "modelScalingTool": "seis_ai_core_model_scaling_status",
     "versionRegistryTool": "seis_ai_core_version_status",
@@ -301,7 +302,17 @@
     "surface": "apps/seis-demo-web",
     "panel": "God Mode ecosystem lanes",
     "qualityPanelCommand": "npm run check:seis-agent-plugin-integration",
-    "serviceWorkerCache": "seis-demo-web-v17"
+    "serviceWorkerCache": "seis-demo-web-v17",
+    "seisCoreSurface": "apps/seis-core",
+    "seisCorePanel": "AI Core Runtime",
+    "seisCoreContract": "content/development/seis-ai-core-application-integration.json",
+    "seisCoreArtifact": "apps/seis-core/data/seis-ai-core-runtime-snapshot.json",
+    "seisCoreGenerator": "scripts/create-seis-core-ai-runtime-snapshot.mjs",
+    "seisCoreBoundary": "read-only-source-backed-no-runtime-authority",
+    "seisNativeSurface": "packages/seis_platform_swift",
+    "seisNativeContract": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAICoreRuntimeSnapshotContract.swift",
+    "seisNativeTests": "packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAICoreRuntimeSnapshotContractTests.swift",
+    "seisNativeBoundary": "injected-data-validation-only-no-runtime-authority"
   },
   "repoIntegration": {
     "docs": [
@@ -310,12 +321,17 @@
       "docs/platform/seis-specialist-plugins.md"
     ],
     "checker": "scripts/check-seis-agent-plugin-integration.mjs",
-    "packageScript": "check:seis-agent-plugin-integration"
+    "packageScript": "check:seis-agent-plugin-integration",
+    "agentRegistry": "content/development/seis-agent-registry.json",
+    "agentRegistryChecker": "scripts/check-seis-agent-registry.mjs",
+    "agentRegistryPackageScript": "check:seis-agent-registry"
   },
   "qualityCommands": [
     "npm run check:seis-agent-plugin-integration",
+    "npm run check:seis-agent-registry",
     "npm run check:seis-ai-core-provider-registry",
     "npm run check:seis-ai-core-read-only-router",
+    "npm run check:seis-core-ai-runtime-snapshot",
     "npm run check:seis-model-frontier-escalation-policy",
     "npm run check:seis-150b-frontier-model-program",
     "npm run check:seis-512b-apex-model-program",

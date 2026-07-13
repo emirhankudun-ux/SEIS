@@ -68,7 +68,10 @@
     "SEIS-Code",
     "SEIS-Design",
     "SEIS-DATA",
-    "SEIS-Security"
+    "SEIS-Security",
+    "SEIS-Research",
+    "SEIS-Automation",
+    "SEIS-Product"
   ],
   "vaultNotes": [
     {
@@ -162,6 +165,21 @@
       "agent": "Documentation Agent",
       "permission": "docs proposal only",
       "duty": "Keep README, status, index, backlog, and PR queue aligned with the Second Brain contract."
+    },
+    {
+      "agent": "Research Agent",
+      "permission": "read, cite, and propose only",
+      "duty": "Attach source provenance, validation evidence, and clean-room research summaries to the knowledge graph."
+    },
+    {
+      "agent": "Automation Agent",
+      "permission": "dry-run and proposal only",
+      "duty": "Design traceable, reversible workflows without enabling autonomous external mutations."
+    },
+    {
+      "agent": "Product Agent",
+      "permission": "read and propose only",
+      "duty": "Keep requirements, acceptance criteria, user outcomes, and roadmap slices linked to delivery evidence."
     }
   ],
   "autonomousAgentRoster": [
@@ -224,6 +242,11 @@
       "agent": "Automation Agent",
       "status": "status-plan-only",
       "duty": "Safe recurring workflows, ledgers, and human-approved automation gates."
+    },
+    {
+      "agent": "Product Agent",
+      "status": "status-plan-only",
+      "duty": "Requirements, acceptance criteria, roadmap slices, launch readiness, and delivery evidence."
     }
   ],
   "pipeline": [

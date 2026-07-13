@@ -29,7 +29,8 @@ Date: 2026-06-23
 | [../SEIS_OBSIDIAN_VAULT.md](../SEIS_OBSIDIAN_VAULT.md) | Obsidian-compatible vault rules for public-safe SEIS memory. |
 | [../SEIS_INSTALLED_AI_TOOLS.md](../SEIS_INSTALLED_AI_TOOLS.md) | Installed AI tooling and model/provider safety registry. |
 | [../SEIS_SUB_AGENTS.md](../SEIS_SUB_AGENTS.md) | Bounded sub-agent coordination model and output contract. |
-| [SEIS_AGENT_WORKFORCE.md](../SEIS_AGENT_WORKFORCE.md) | Agent workforce registry and role definitions for bounded supervision. |
+| [SEIS_AGENT_WORKFORCE.md](../SEIS_AGENT_WORKFORCE.md) | Human-readable workforce policy and role definitions for bounded supervision. |
+| [../content/development/seis-agent-registry.json](../content/development/seis-agent-registry.json) | Canonical machine-readable registry joining the independent 14/9/13/5/10 agent inventories without inventing cross-roster mappings. |
 | [../SEIS_SSH.md](../SEIS_SSH.md) | Safe remote-development/documented SSH concept and constraints. |
 | [../roadmap/seis-long-horizon-strategy.md](../roadmap/seis-long-horizon-strategy.md) | Long-horizon 0–10 year strategy with first- and second-stage operational blueprints. |
 | [GETTING_STARTED.md](GETTING_STARTED.md) | New contributor onboarding and run instructions. |
@@ -54,6 +55,7 @@ Date: 2026-06-23
 | [../scripts/check-seis-public-demo-go-no-go.mjs](../scripts/check-seis-public-demo-go-no-go.mjs) | SEIS public demo go/no-go gate for read-only PR #54 release classification. |
 | [../scripts/create-seis-obsidian-safe-import-dry-run.mjs](../scripts/create-seis-obsidian-safe-import-dry-run.mjs) | Repo-owned Obsidian safe-import dry-run artifact generator; no private vault read, plugin install, provider call, SSH, GitHub mutation, or deployment. |
 | [../scripts/check-seis-agent-workforce.mjs](../scripts/check-seis-agent-workforce.mjs) | Bounded sub-agent role parity validator for `SEIS_AGENT_WORKFORCE.md`, `seis-brain/vault/05_Agents/Agent Workforce.md`, and `SEIS_SUB_AGENTS.md` references. |
+| [../scripts/check-seis-agent-registry.mjs](../scripts/check-seis-agent-registry.mjs) | Canonical registry schema, source-parity, approval-boundary, and public-safety validator. |
 | [../scripts/create-seis-read-only-model-router-decision.mjs](../scripts/create-seis-read-only-model-router-decision.mjs) | Provider-neutral read-only model-router decision artifact generator; no credential validation, provider call, prompt-body storage, private Obsidian routing, or live-routing approval. |
 | [../scripts/create-seis-second-brain-accessibility-focus-report.mjs](../scripts/create-seis-second-brain-accessibility-focus-report.mjs) | Second Brain accessibility/focus QA artifact generator for ARIA/focus evidence and human-review blockers. |
 | [../scripts/create-seis-second-brain-agent-registry.mjs](../scripts/create-seis-second-brain-agent-registry.mjs) | Second Brain agent registry artifact generator for installed AI, sub-agent, Obsidian, plugin, MCP, and connector review boundaries. |

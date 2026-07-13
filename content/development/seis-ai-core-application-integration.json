@@ -1,0 +1,74 @@
+{
+  "id": "seis-ai-core-application-integration",
+  "schemaVersion": "1.0.0",
+  "status": "active-read-only",
+  "updatedAt": "2026-07-11",
+  "purpose": "Deliver provider, read-only router, unified plugin, personal lane, and local MCP evidence into SEIS Core without granting browser runtime authority.",
+  "consumer": {
+    "id": "seis-core-command-center",
+    "root": "apps/seis-core",
+    "panel": "AI Core Runtime",
+    "panelSelector": "[data-ai-core-runtime]",
+    "loadPath": "data/seis-ai-core-runtime-snapshot.json",
+    "interaction": "browser-local-scenario-selection-and-decision-copy"
+  },
+  "nativeConsumer": {
+    "id": "seis-platform-kit",
+    "root": "packages/seis_platform_swift",
+    "contract": "Sources/SeisPlatformKit/SeisAICoreRuntimeSnapshotContract.swift",
+    "tests": "Tests/SeisPlatformKitTests/SeisAICoreRuntimeSnapshotContractTests.swift",
+    "decodeMode": "injected-data-read-only-validation",
+    "runtimeAuthority": false,
+    "sourceArtifact": "apps/seis-core/data/seis-ai-core-runtime-snapshot.json"
+  },
+  "delivery": {
+    "builder": "packages/seis-ai/src/model/core-runtime-snapshot.mjs",
+    "generator": "scripts/create-seis-core-ai-runtime-snapshot.mjs",
+    "trackedArtifact": "apps/seis-core/data/seis-ai-core-runtime-snapshot.json",
+    "artifactTracked": true,
+    "gitignoreException": "!apps/seis-core/data/seis-ai-core-runtime-snapshot.json",
+    "failureState": "Local Demo / snapshot unavailable",
+    "networkFallback": false,
+    "mcpFallback": false,
+    "providerFallback": false
+  },
+  "sourceRecords": [
+    "content/development/seis-ai-core-provider-registry.json",
+    "content/development/seis-read-only-model-router-contract.json",
+    "content/development/seis-ai-core-subagent-operating-model.json",
+    "content/development/seis-agent-plugin-integration.json",
+    "content/development/seis-ai-core-mcp-runtime-contract.json",
+    "content/development/seis-second-brain-system.json"
+  ],
+  "providerStateSemantics": {
+    "Available": "Repository fixture availability inside its declared supervised or local boundary; not proof of browser connectivity.",
+    "Missing Key": "A backend-only credential is absent or unverified; this is not an Error state and is not routeable.",
+    "Disabled": "The provider or profile is intentionally unavailable for this demo slice.",
+    "Rate Limited": "Reserved redacted live-adapter state; not currently asserted by the offline fixture.",
+    "Error": "Reserved redacted live-adapter failure state; raw provider errors must never reach the browser."
+  },
+  "runtimeBoundary": {
+    "routeEligible": false,
+    "executionPerformed": false,
+    "providerCallsPerformed": false,
+    "fallbackUsed": false,
+    "credentialsRead": false,
+    "promptBodiesIncluded": false,
+    "privateContentRead": false,
+    "liveMcpSessionStarted": false,
+    "sshExecuted": false,
+    "deploymentPerformed": false,
+    "githubMutationPerformed": false,
+    "humanApprovalRequiredForLiveActions": true
+  },
+  "qualityGates": [
+    "npm run check:seis-core-ai-runtime-snapshot",
+    "npm run check:seis-ai-core-provider-registry",
+    "npm run check:seis-ai-core-read-only-router",
+    "npm run check:seis-agent-plugin-integration",
+    "npm run check:seis-command-center",
+    "npm run test:seis-command-center",
+    "npm test --prefix packages/seis-ai",
+    "swift test --package-path packages/seis_platform_swift"
+  ]
+}

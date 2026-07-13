@@ -135,6 +135,7 @@ ios/
 *.json
 *.config.json
 !content/development/seis-*.json
+!data/seis-runtime-capability-atlas.json
 !apps/seis-demo-web/data/seis-ai-core-version-promotion-map.json
 !apps/seis-demo-web/data/seis-sub-agent-five-year-plan-view.json
 !apps/web/wow-pages/*.json
@@ -150,6 +151,7 @@ ios/
 !packages/seis-ai/data/agent-router-seed-v0.json
 !packages/seis-ai/models/agent-router-seed-v0.json
 !apps/seis-core/data/seis-router-routes.json
+!apps/seis-core/data/seis-ai-core-runtime-snapshot.json
 !reports/seis-sub-agent-five-year-demo-evidence.json
 !reports/seis-sub-agent-five-year-demo-run.json
 !reports/seis-model-scaling/20b-16gb-memory-benchmark.json

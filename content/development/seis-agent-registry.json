@@ -1,0 +1,623 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "seis-agent-registry",
+  "status": "active-public-safe",
+  "purpose": "Provide one canonical machine-readable registry for SEIS agent governance and source-backed scoped inventories without granting runtime authority.",
+  "truthBoundary": {
+    "classification": "public-safe",
+    "sourceBacked": true,
+    "sourceParityRequired": true,
+    "inventoriesAreIndependent": true,
+    "nineManagedLanesToThirteenAgentRolesMappingDeclared": false,
+    "inferredCrossInventoryMappingAllowed": false,
+    "excludedContent": [
+      "local app inventory",
+      "absolute vault paths",
+      "credentials or secrets",
+      "provider authentication state",
+      "prompt bodies",
+      "private content"
+    ]
+  },
+  "authority": {
+    "globalGovernance": {
+      "path": "AGENTS.md",
+      "role": "highest-repository-governance"
+    },
+    "canonicalMachineReadableRegistry": {
+      "path": "content/development/seis-agent-registry.json",
+      "role": "canonical-machine-readable-agent-registry"
+    },
+    "humanReadableWorkforcePolicy": {
+      "path": "SEIS_AGENT_WORKFORCE.md",
+      "role": "human-readable-workforce-policy"
+    },
+    "sourceContracts": [
+      {
+        "id": "seis-agent-lane-status",
+        "path": "content/development/seis-agent-lane-status.json",
+        "status": "active",
+        "authorityScope": "detailed-lane-status-records",
+        "jsonPointers": [
+          "/lanes",
+          "/qualityGate"
+        ]
+      },
+      {
+        "id": "seis-second-brain-system",
+        "path": "content/development/seis-second-brain-system.json",
+        "status": "local-demo",
+        "authorityScope": "second-brain-managed-lanes-agent-roles-and-safety-boundary",
+        "jsonPointers": [
+          "/managedSubAgentLanes",
+          "/autonomousAgentRoster",
+          "/securityBoundary",
+          "/qualityGate"
+        ]
+      },
+      {
+        "id": "seis-agent-plugin-integration",
+        "path": "content/development/seis-agent-plugin-integration.json",
+        "status": "active",
+        "authorityScope": "personal-executable-planning-lanes-and-router-lanes",
+        "jsonPointers": [
+          "/personalPlugins",
+          "/lanes",
+          "/activationPolicy",
+          "/qualityCommands"
+        ]
+      }
+    ],
+    "preferenceRules": [
+      {
+        "priority": 1,
+        "id": "global-governance-first",
+        "rule": "AGENTS.md governs all repository agent behavior and cannot be weakened by this registry or a scoped source contract."
+      },
+      {
+        "priority": 2,
+        "id": "scoped-contracts-own-records",
+        "rule": "Each source contract remains authoritative for records in its declared scope; this registry must preserve exact source parity."
+      },
+      {
+        "priority": 3,
+        "id": "registry-for-machine-consumers",
+        "rule": "Machine consumers use this registry as the canonical aggregate and follow its source references when a scoped record changes."
+      },
+      {
+        "priority": 4,
+        "id": "workforce-policy-for-human-guidance",
+        "rule": "SEIS_AGENT_WORKFORCE.md remains the human-readable workforce policy and does not replace scoped machine-readable inventories."
+      },
+      {
+        "priority": 5,
+        "id": "strictest-safety-boundary-wins",
+        "rule": "When sources overlap or appear ambiguous, preserve the stricter no-secret, no-live-execution, single-writer, and human-approval boundary."
+      },
+      {
+        "priority": 6,
+        "id": "no-cross-roster-inference",
+        "rule": "The nine Second Brain managed lanes and thirteen Second Brain agent roles are independent scoped rosters; no mapping between them is declared or implied."
+      }
+    ]
+  },
+  "counts": {
+    "detailedLaneStatusRecords": 14,
+    "secondBrainManagedLanes": 9,
+    "secondBrainAgentRoles": 13,
+    "personalExecutablePlanningLanes": 5,
+    "routerLanes": 10
+  },
+  "inventories": {
+    "detailedLaneStatusRecords": {
+      "scope": "global-agent-lane-status",
+      "sourcePath": "content/development/seis-agent-lane-status.json",
+      "sourcePointer": "/lanes",
+      "count": 14,
+      "records": [
+        {
+          "id": "seis-god-mode-developer",
+          "displayName": "SEIS God Mode Developer",
+          "status": "active",
+          "skillPath": "plugins/seis/skills/seis-god-mode-developer/SKILL.md",
+          "agentManifest": "plugins/seis/skills/seis-god-mode-developer/agents/openai.yaml",
+          "autonomyLevel": "supervised-cross-layer-development",
+          "toolBoundary": "Codex execution, repository edits, governance artifacts, and validation reporting.",
+          "safetyBoundary": "No secret exposure, no destructive commands without explicit approval, no completion claim without evidence.",
+          "validationDuty": "Run or request God Mode, module coverage, plugin bundle, and quality governance gates."
+        },
+        {
+          "id": "seis-focus-mode",
+          "displayName": "SEIS Focus Mode",
+          "status": "active",
+          "skillPath": "plugins/seis/skills/seis-focus-mode/SKILL.md",
+          "agentManifest": "plugins/seis/skills/seis-focus-mode/agents/openai.yaml",
+          "autonomyLevel": "supervised-attention-control",
+          "toolBoundary": "Focus state, compact event logs, and concentrated SEIS work.",
+          "safetyBoundary": "No hiding material risks or validation gaps while reducing noise.",
+          "validationDuty": "Run or request focus mode checks before release claims."
+        },
+        {
+          "id": "seis-master-prompt",
+          "displayName": "SEIS Master Prompt Governance",
+          "status": "active",
+          "skillPath": "plugins/seis/skills/seis-master-prompt/SKILL.md",
+          "agentManifest": "plugins/seis/skills/seis-master-prompt/agents/openai.yaml",
+          "autonomyLevel": "supervised-governance",
+          "toolBoundary": "Architecture, operating principles, long-term mission, and quality rules.",
+          "safetyBoundary": "No scope shrinkage when the user requests ecosystem-level progress.",
+          "validationDuty": "Run or request master prompt governance checks."
+        },
+        {
+          "id": "seis-security-review",
+          "displayName": "SEIS Security Review",
+          "status": "active",
+          "skillPath": "plugins/seis/skills/seis-security-review/SKILL.md",
+          "agentManifest": "plugins/seis/skills/seis-security-review/agents/openai.yaml",
+          "autonomyLevel": "supervised-security-review",
+          "toolBoundary": "Threat review, secret-safety checks, and rollback/security evidence.",
+          "safetyBoundary": "Never weaken security for speed or convenience.",
+          "validationDuty": "Run or request security and governance checks for security-sensitive changes."
+        },
+        {
+          "id": "seis-github-workflow",
+          "displayName": "SEIS GitHub Workflow",
+          "status": "active",
+          "skillPath": "plugins/seis/skills/seis-github-workflow/SKILL.md",
+          "agentManifest": "plugins/seis/skills/seis-github-workflow/agents/openai.yaml",
+          "autonomyLevel": "supervised-repository-workflow",
+          "toolBoundary": "Branch, commit, CI, PR, release, and repository hygiene workflows.",
+          "safetyBoundary": "Do not discard user work, rewrite unrelated history, or push unverified release claims.",
+          "validationDuty": "Run or request repository health and CI governance checks before push or release."
+        },
+        {
+          "id": "seis-hub",
+          "displayName": "SEIS Hub Sub-Agent Lane",
+          "status": "active",
+          "skillPath": "plugins/seis-ai-agent/skills/seis-hub/SKILL.md",
+          "agentManifest": "plugins/seis-ai-agent/assets/agent-profile.json",
+          "autonomyLevel": "supervised-repository-governance-planning",
+          "toolBoundary": "Read-only status and plan-only routing through seis_hub_status, seis_hub_plan, and the canonical plugin integration manifest.",
+          "safetyBoundary": "No repository deletion, branch deletion, publishing, force-push, or history rewrite without explicit approval.",
+          "validationDuty": "Run or request SEIS-Agent plugin integration, operating identity, and repository governance checks."
+        },
+        {
+          "id": "seis-cloud",
+          "displayName": "SEIS Cloud Sub-Agent Lane",
+          "status": "active",
+          "skillPath": "plugins/seis-ai-agent/skills/seis-cloud/SKILL.md",
+          "agentManifest": "plugins/seis-ai-agent/skills/seis-cloud/agents/openai.yaml",
+          "autonomyLevel": "supervised-cloud-readiness-planning",
+          "toolBoundary": "Read-only status and plan-only routing through seis_cloud_status, seis_cloud_plan, cloud records, and deployment readiness docs.",
+          "safetyBoundary": "No deployment, SSH, VPN, firewall, provider mutation, credential access, or infrastructure apply without explicit approval.",
+          "validationDuty": "Run or request cloud access policy, cloud environment, server target, and rollback readiness checks."
+        },
+        {
+          "id": "seis-code",
+          "displayName": "SEIS-Code Sub-Agent Lane",
+          "status": "active",
+          "skillPath": "plugins/seis-ai-agent/skills/seis-code/SKILL.md",
+          "agentManifest": "plugins/seis-ai-agent/skills/seis-code/agents/openai.yaml",
+          "autonomyLevel": "supervised-engineering-execution-planning",
+          "toolBoundary": "Read-only status, plan-only routing, and explicitly scoped implementation work through SEIS-Code quality gates.",
+          "safetyBoundary": "No dependency installation, unrelated edits, destructive commands, or validation claims without observed evidence.",
+          "validationDuty": "Run or request package-local tests, SEIS plugin bundle checks, platform kernel checks, and SEIS AI checks."
+        },
+        {
+          "id": "seis-design",
+          "displayName": "SEIS-Design Sub-Agent Lane",
+          "status": "active",
+          "skillPath": "plugins/seis-ai-agent/skills/seis-design/SKILL.md",
+          "agentManifest": "plugins/seis-ai-agent/skills/seis-design/agents/openai.yaml",
+          "autonomyLevel": "supervised-product-design-planning",
+          "toolBoundary": "Read-only status and plan-only routing for UI, UX, design systems, accessibility, responsive ergonomics, and motion checks.",
+          "safetyBoundary": "No decorative-only controls, inaccessible UI claims, external asset generation, or visual readiness claims without validation.",
+          "validationDuty": "Run or request motion, mobile ergonomics, web, accessibility, and screenshot checks when UI surfaces change."
+        },
+        {
+          "id": "seis-data",
+          "displayName": "SEIS-DATA Sub-Agent Lane",
+          "status": "active",
+          "skillPath": "plugins/seis-ai-agent/skills/seis-data/SKILL.md",
+          "agentManifest": "plugins/seis-ai-agent/skills/seis-data/agents/openai.yaml",
+          "autonomyLevel": "supervised-data-provenance-planning",
+          "toolBoundary": "Read-only status and plan-only routing for structured records, schema governance, generated reports, memory, context, and provenance.",
+          "safetyBoundary": "No invented data, private data exposure, credential export, unsafe dataset handling, or hand-edited generated reports when a generator owns them.",
+          "validationDuty": "Run or request plugin capability lane, technology stack, AGI system, universal capability kernel, JSON, and report parity checks."
+        },
+        {
+          "id": "seis-security",
+          "displayName": "SEIS Security Sub-Agent Lane",
+          "status": "active",
+          "skillPath": "plugins/seis-ai-agent/skills/seis-security/SKILL.md",
+          "agentManifest": "plugins/seis-ai-agent/skills/seis-security/agents/openai.yaml",
+          "autonomyLevel": "supervised-security-review-planning",
+          "toolBoundary": "Read-only status and plan-only routing through seis_security_status, seis_security_plan, security records, and release gates.",
+          "safetyBoundary": "No secret access, credential validation, destructive remediation, SSH, or publishing without explicit approval.",
+          "validationDuty": "Run or request security, dependency, cloud access, SSH hardening, and release-gate checks."
+        },
+        {
+          "id": "seis-research",
+          "displayName": "SEIS Research Sub-Agent Lane",
+          "status": "active",
+          "skillPath": "plugins/seis-ai-agent/skills/seis-research/SKILL.md",
+          "agentManifest": "plugins/seis-ai-agent/skills/seis-research/agents/openai.yaml",
+          "autonomyLevel": "supervised-evidence-research-planning",
+          "toolBoundary": "Read-only status and plan-only routing through seis_research_status, seis_research_plan, source records, and evidence reviews.",
+          "safetyBoundary": "No unsupported claims, private-source import, provider credential access, or external mutation without explicit approval.",
+          "validationDuty": "Run or request source provenance, documentation, compatibility, and evidence-led governance checks."
+        },
+        {
+          "id": "seis-automation",
+          "displayName": "SEIS Automation Sub-Agent Lane",
+          "status": "active",
+          "skillPath": "plugins/seis-ai-agent/skills/seis-automation/SKILL.md",
+          "agentManifest": "plugins/seis-ai-agent/skills/seis-automation/agents/openai.yaml",
+          "autonomyLevel": "supervised-automation-planning",
+          "toolBoundary": "Read-only status and plan-only routing through seis_automation_status, seis_automation_plan, dry-runs, runbooks, and validation ledgers.",
+          "safetyBoundary": "No autonomous writes, schedules, deployments, or external connector mutations without explicit approval.",
+          "validationDuty": "Run or request idempotency, rollback, CI, dry-run, and command-center validation checks."
+        },
+        {
+          "id": "seis-product",
+          "displayName": "SEIS Product Sub-Agent Lane",
+          "status": "active",
+          "skillPath": "plugins/seis-ai-agent/skills/seis-product/SKILL.md",
+          "agentManifest": "plugins/seis-ai-agent/skills/seis-product/agents/openai.yaml",
+          "autonomyLevel": "supervised-product-planning",
+          "toolBoundary": "Read-only status and plan-only routing through seis_product_status, seis_product_plan, roadmap records, acceptance criteria, and release-readiness evidence.",
+          "safetyBoundary": "No scope expansion, release approval, publication, or customer-impact claim without explicit evidence and human review.",
+          "validationDuty": "Run or request roadmap, product acceptance, documentation, and release-readiness checks."
+        }
+      ]
+    },
+    "secondBrainManagedLanes": {
+      "scope": "second-brain-managed-lane-roster",
+      "sourcePath": "content/development/seis-second-brain-system.json",
+      "sourcePointer": "/managedSubAgentLanes",
+      "count": 9,
+      "records": [
+        "SEIS Hub",
+        "SEIS Cloud",
+        "SEIS-Code",
+        "SEIS-Design",
+        "SEIS-DATA",
+        "SEIS-Security",
+        "SEIS-Research",
+        "SEIS-Automation",
+        "SEIS-Product"
+      ]
+    },
+    "secondBrainAgentRoles": {
+      "scope": "second-brain-agent-role-roster",
+      "sourcePath": "content/development/seis-second-brain-system.json",
+      "sourcePointer": "/autonomousAgentRoster",
+      "count": 13,
+      "records": [
+        {
+          "agent": "Architect Agent",
+          "status": "status-plan-only",
+          "duty": "Architecture, module boundaries, and rollback-aware implementation plans."
+        },
+        {
+          "agent": "Code Agent",
+          "status": "status-plan-only",
+          "duty": "Scoped implementation notes, validators, and code review evidence."
+        },
+        {
+          "agent": "Design Agent",
+          "status": "status-plan-only",
+          "duty": "Visual system, product feel, design tokens, and interaction evidence."
+        },
+        {
+          "agent": "UI/UX Agent",
+          "status": "status-plan-only",
+          "duty": "Usability, mobile ergonomics, focus order, and accessibility notes."
+        },
+        {
+          "agent": "Research Agent",
+          "status": "status-plan-only",
+          "duty": "Source provenance, prior-art notes, and clean-room research summaries."
+        },
+        {
+          "agent": "Search Agent",
+          "status": "status-plan-only",
+          "duty": "Local vault, docs, route, file, and plugin indexing strategy."
+        },
+        {
+          "agent": "Security Agent",
+          "status": "blocking-review-gate",
+          "duty": "Secret hygiene, private vault boundaries, and approval requirements."
+        },
+        {
+          "agent": "DevOps Agent",
+          "status": "status-plan-only",
+          "duty": "CI, release, deployment, rollback, and no-live-action runbooks."
+        },
+        {
+          "agent": "Documentation Agent",
+          "status": "status-plan-only",
+          "duty": "README, status, index, backlog, and PR queue alignment."
+        },
+        {
+          "agent": "QA Agent",
+          "status": "status-plan-only",
+          "duty": "Validator, browser-smoke, regression, and acceptance evidence."
+        },
+        {
+          "agent": "Cloud Agent",
+          "status": "status-plan-only",
+          "duty": "Cloud, SSH, storage, sync, and provider readiness boundaries."
+        },
+        {
+          "agent": "Automation Agent",
+          "status": "status-plan-only",
+          "duty": "Safe recurring workflows, ledgers, and human-approved automation gates."
+        },
+        {
+          "agent": "Product Agent",
+          "status": "status-plan-only",
+          "duty": "Requirements, acceptance criteria, roadmap slices, launch readiness, and delivery evidence."
+        }
+      ]
+    },
+    "personalExecutablePlanningLanes": {
+      "scope": "installed-personal-status-and-plan-lanes",
+      "runtimeMode": "status-and-plan-only",
+      "sourcePath": "content/development/seis-agent-plugin-integration.json",
+      "sourcePointer": "/personalPlugins",
+      "count": 5,
+      "records": [
+        {
+          "id": "seis@personal",
+          "status": "installed-enabled-audited",
+          "embeddedAs": "seis",
+          "sourceMirror": "plugins/seis",
+          "embeddedSkill": "plugins/seis-ai-agent/skills/seis-hub/SKILL.md"
+        },
+        {
+          "id": "seis-cloud@personal",
+          "status": "installed-enabled-audited",
+          "embeddedAs": "seis-cloud",
+          "sourceMirror": "plugins/seis-cloud",
+          "embeddedSkill": "plugins/seis-ai-agent/skills/seis-cloud/SKILL.md"
+        },
+        {
+          "id": "seis-code@personal",
+          "status": "installed-enabled-audited",
+          "embeddedAs": "seis-code",
+          "sourceMirror": "plugins/seis-code",
+          "embeddedSkill": "plugins/seis-ai-agent/skills/seis-code/SKILL.md"
+        },
+        {
+          "id": "seis-design@personal",
+          "status": "installed-enabled-audited",
+          "embeddedAs": "seis-design",
+          "sourceMirror": "plugins/seis-design",
+          "embeddedSkill": "plugins/seis-ai-agent/skills/seis-design/SKILL.md"
+        },
+        {
+          "id": "seis-data@personal",
+          "status": "installed-enabled-audited",
+          "embeddedAs": "seis-data",
+          "sourceMirror": "plugins/seis-data",
+          "embeddedSkill": "plugins/seis-ai-agent/skills/seis-data/SKILL.md"
+        }
+      ]
+    },
+    "routerLanes": {
+      "scope": "agent-plugin-router-lanes",
+      "runtimeMode": "status-and-plan-only",
+      "sourcePath": "content/development/seis-agent-plugin-integration.json",
+      "sourcePointer": "/lanes",
+      "count": 10,
+      "records": [
+        {
+          "id": "seis",
+          "displayName": "SEIS Hub",
+          "role": "repository governance, architecture, migration safety, and ecosystem coordination",
+          "embeddedSkill": "plugins/seis-ai-agent/skills/seis-hub/SKILL.md",
+          "sourceMirror": "plugins/seis",
+          "mcpTools": [
+            "seis_hub_status",
+            "seis_hub_plan"
+          ],
+          "defaultGate": "npm run check:seis-ai-agent"
+        },
+        {
+          "id": "seis-governance",
+          "displayName": "SEIS Governance",
+          "role": "release readiness, marketplace policy, identity checks, and operating evidence",
+          "embeddedSkill": "plugins/seis-ai-agent/skills/seis-governance/SKILL.md",
+          "sourceMirror": "plugins/seis",
+          "mcpTools": [
+            "seis_governance_status",
+            "seis_governance_plan"
+          ],
+          "defaultGate": "npm run check:seis-specialist-plugins"
+        },
+        {
+          "id": "seis-cloud",
+          "displayName": "SEIS Cloud",
+          "role": "cloud readiness, public cloud, team VPN cloud, provider preflight, rollback, and secret-safe infrastructure",
+          "embeddedSkill": "plugins/seis-ai-agent/skills/seis-cloud/SKILL.md",
+          "sourceMirror": "plugins/seis-cloud",
+          "mcpTools": [
+            "seis_cloud_status",
+            "seis_cloud_plan"
+          ],
+          "defaultGate": "npm run check:cloud-access-policy"
+        },
+        {
+          "id": "seis-code",
+          "displayName": "SEIS-Code",
+          "role": "architecture-aware implementation, tests, CI gates, MCP/plugin code, and automation",
+          "embeddedSkill": "plugins/seis-ai-agent/skills/seis-code/SKILL.md",
+          "sourceMirror": "plugins/seis-code",
+          "mcpTools": [
+            "seis_code_status",
+            "seis_code_plan"
+          ],
+          "defaultGate": "npm run check:seis-plugin-bundle"
+        },
+        {
+          "id": "seis-design",
+          "displayName": "SEIS-Design",
+          "role": "product design, UI/UX, design systems, accessibility, motion, and visual QA",
+          "embeddedSkill": "plugins/seis-ai-agent/skills/seis-design/SKILL.md",
+          "sourceMirror": "plugins/seis-design",
+          "mcpTools": [
+            "seis_design_status",
+            "seis_design_plan"
+          ],
+          "defaultGate": "npm run check:motion-evidence"
+        },
+        {
+          "id": "seis-data",
+          "displayName": "SEIS-DATA",
+          "role": "data architecture, reports, schemas, memory, context, RAG planning, and provenance",
+          "embeddedSkill": "plugins/seis-ai-agent/skills/seis-data/SKILL.md",
+          "sourceMirror": "plugins/seis-data",
+          "mcpTools": [
+            "seis_data_status",
+            "seis_data_plan"
+          ],
+          "defaultGate": "npm run check:plugin-capability-lanes"
+        },
+        {
+          "id": "seis-security",
+          "displayName": "SEIS Security",
+          "role": "threat modeling, secret-safety review, dependency and permission risk, SSH/VPN hardening, and release-blocking security checks",
+          "embeddedSkill": "plugins/seis-ai-agent/skills/seis-security/SKILL.md",
+          "sourceMirror": "plugins/seis-ai-agent",
+          "mcpTools": [
+            "seis_security_status",
+            "seis_security_plan"
+          ],
+          "defaultGate": "npm run check:seis-ai-agent"
+        },
+        {
+          "id": "seis-research",
+          "displayName": "SEIS Research",
+          "role": "official source review, version checks, evidence synthesis, and research-backed technical decisions",
+          "embeddedSkill": "plugins/seis-ai-agent/skills/seis-research/SKILL.md",
+          "sourceMirror": "plugins/seis-ai-agent",
+          "mcpTools": [
+            "seis_research_status",
+            "seis_research_plan"
+          ],
+          "defaultGate": "npm run check:seis-ai-agent"
+        },
+        {
+          "id": "seis-automation",
+          "displayName": "SEIS Automation",
+          "role": "repeatable scripts, checks, CI steps, runbooks, scheduled jobs, and human-approved agent automation",
+          "embeddedSkill": "plugins/seis-ai-agent/skills/seis-automation/SKILL.md",
+          "sourceMirror": "plugins/seis-ai-agent",
+          "mcpTools": [
+            "seis_automation_status",
+            "seis_automation_plan"
+          ],
+          "defaultGate": "npm run check:seis-ai-agent"
+        },
+        {
+          "id": "seis-product",
+          "displayName": "SEIS Product",
+          "role": "roadmap slices, requirements, acceptance criteria, launch readiness, and product scope",
+          "embeddedSkill": "plugins/seis-ai-agent/skills/seis-product/SKILL.md",
+          "sourceMirror": "plugins/seis-ai-agent",
+          "mcpTools": [
+            "seis_product_status",
+            "seis_product_plan"
+          ],
+          "defaultGate": "npm run check:seis-ai-agent"
+        }
+      ]
+    }
+  },
+  "runtimeBoundary": {
+    "mode": "single-writer-supervised-status-and-plan-only",
+    "singleWriter": true,
+    "currentWriter": "Codex",
+    "reviewerDefault": "read-only-or-plan-only",
+    "registryGrantsPermissions": false,
+    "liveCapabilities": {
+      "storesSecrets": false,
+      "secretAccess": false,
+      "credentialAccess": false,
+      "providerCalls": false,
+      "providerAuthentication": false,
+      "sshExecution": false,
+      "deployment": false,
+      "githubMutation": false,
+      "externalConnectorMutation": false,
+      "autonomousWriteExecution": false,
+      "backgroundRunner": false,
+      "privateContentAccess": false,
+      "promptBodiesStored": false
+    }
+  },
+  "approvalBoundary": {
+    "humanApprovalRequired": true,
+    "agentsMaySelfApprove": false,
+    "implicitApprovalAllowed": false,
+    "defaultWithoutApproval": "blocked",
+    "requiredFor": [
+      "write-gated repository mutation outside an explicitly assigned scope",
+      "destructive operation",
+      "provider call or authenticated external connector use",
+      "SSH or remote execution",
+      "deployment or infrastructure mutation",
+      "GitHub push, merge, release, or publication"
+    ]
+  },
+  "qualityGates": {
+    "registry": [
+      "npm run check:seis-agent-registry",
+      "node --check scripts/check-seis-agent-registry.mjs",
+      "node scripts/check-seis-agent-registry.mjs",
+      "jq empty content/development/seis-agent-registry.json",
+      "git diff --check"
+    ],
+    "sourceContracts": [
+      {
+        "sourcePath": "content/development/seis-agent-lane-status.json",
+        "commands": [
+          "npm run check:seis-agent-lane-status"
+        ]
+      },
+      {
+        "sourcePath": "content/development/seis-second-brain-system.json",
+        "commands": [
+          "npm run check:seis-second-brain"
+        ]
+      },
+      {
+        "sourcePath": "content/development/seis-agent-plugin-integration.json",
+        "commands": [
+          "npm run check:seis-agent-plugin-integration",
+          "npm run check:seis-agent-registry",
+          "npm run check:seis-ai-core-provider-registry",
+          "npm run check:seis-ai-core-read-only-router",
+          "npm run check:seis-core-ai-runtime-snapshot",
+          "npm run check:seis-model-frontier-escalation-policy",
+          "npm run check:seis-150b-frontier-model-program",
+          "npm run check:seis-512b-apex-model-program",
+          "node scripts/check-seis-agi-evaluation-protocol.mjs",
+          "npm run check:seis-model-scaling-hardware-profile",
+          "npm run check:seis-model-parameter-ladder",
+          "npm run check:seis-model-scaling-subagent-council",
+          "npm run check:seis-ai-core-version-registry",
+          "npm run check:seis-ai-core-version-promotion-gates",
+          "npm run check:seis-ai-core-subagent-operating-model",
+          "npm run check:seis-ai-core-subagent-runtime-fixtures",
+          "npm run check:seis-ai-core-subagent-review-ledger",
+          "npm run check:seis-ai-agent",
+          "npm run check:seis-specialist-plugins",
+          "npm run check:plugin-capability-lanes",
+          "npm test --prefix packages/seis-ai"
+        ]
+      }
+    ]
+  }
+}

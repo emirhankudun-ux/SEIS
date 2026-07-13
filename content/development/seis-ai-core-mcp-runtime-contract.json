@@ -24,7 +24,7 @@
       "count": 35,
       "state": "verified",
       "method": "tools/list + tools/call",
-      "evidence": "18 MCP smoke tests pass through stdio JSON-RPC",
+      "evidence": "25 MCP smoke tests pass through stdio JSON-RPC",
       "duty": "Expose repo-backed SEIS AI checks, provider-neutral read-only route decisions, personal plugin lane tools, provider registry status, model scaling status, and AI Core version/sub-agent tools."
     },
     {

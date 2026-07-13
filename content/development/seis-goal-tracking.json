@@ -59,14 +59,19 @@
       "description": "Keep SEIS AI Core as an application layer with provider-neutral routing and no frontier-model overclaims.",
       "category": "SEIS AI Core",
       "priority": "P1 high",
-      "status": "planned",
+      "status": "active",
       "owner_role": "AI Core",
       "target_phase": "foundation",
       "related_docs": [
         "docs/goals/long-term-goals.md"
       ],
       "related_files": [
-        "content/development/seis-goal-tracking.json"
+        "content/development/seis-goal-tracking.json",
+        "project.ecosystem.yaml",
+        "content/development/seis-ai-core-application-integration.json",
+        "apps/seis-core/data/seis-ai-core-runtime-snapshot.json",
+        "packages/seis-ai/src/model/core-runtime-snapshot.mjs",
+        "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAICoreRuntimeSnapshotContract.swift"
       ],
       "dependencies": [
         "Model router docs"
@@ -79,17 +84,20 @@
         "Model claims can exceed evidence"
       ],
       "evidence_links": [
-        "evidence unavailable"
+        "npm run check:project-ecosystem-manifest",
+        "npm run check:seis-core-ai-runtime-snapshot",
+        "node --test packages/seis-ai/test/core-runtime-snapshot.test.mjs",
+        "apps/seis-core/data/seis-ai-core-runtime-snapshot.json"
       ],
-      "validation_method": "Architecture docs distinguish current app layer from future model research.",
-      "next_action": "Create AI Core foundation docs after Goal Tracking OS records validate.",
+      "validation_method": "Manifest, runtime snapshot generator/check, package tests, and native decoding contract distinguish the source-backed local AI Core from unverified live provider execution.",
+      "next_action": "Complete native Swift validation when the local CommandLineTools toolchain is repaired; keep live providers and mutation approval-gated.",
       "created_at": "2026-06-22",
       "related_milestone": "SEIS-MS-006",
       "related_epic": "epic not assigned",
-      "last_reviewed": "not reviewed",
+      "last_reviewed": "2026-07-13",
       "review_cadence": "monthly",
       "notes": [
-        "Foundation metadata placeholder; update only with evidence-backed review notes."
+        "AI Core application binding is active-read-only; native test evidence remains blocked by the local Swift toolchain."
       ]
     },
     {

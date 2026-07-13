@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "project": {
+    "id": "seis",
+    "display_name": "SEIS",
+    "symbolic_name": "SEIS",
+    "aliases": ["SEIS Core", "SEIS Brain", "SEIS Command Center"],
+    "kind": "creative-engineering-operating-system",
+    "lifecycle": "active",
+    "visibility": "public-safe",
+    "horizon": "5-years"
+  },
+  "ecosystem": {
+    "role": [
+      "apple-first-creative-engineering",
+      "ai-native-command-center",
+      "full-stack-development-platform",
+      "local-first-knowledge-system"
+    ],
+    "related_projects": ["pantechnoesis", "eleni-neferi"],
+    "canonical_owner_repo": "SEIS"
+  },
+  "platforms": {
+    "primary": ["macos"],
+    "planned": ["ipados", "ios", "web", "cli"],
+    "native_first": true,
+    "web_boundary": "public-demo-and-onboarding-surface"
+  },
+  "architecture": {
+    "mode": "modular-monolith",
+    "native_center": "Swift and SwiftUI",
+    "shared_packages": [
+      "packages/seis-ai",
+      "packages/seis_kernel",
+      "packages/seis_platform_swift"
+    ],
+    "ai_core": {
+      "status": "local-readiness-linked",
+      "execution_authority": false,
+      "provider_calls": false,
+      "external_mutation": "approval-required"
+    }
+  },
+  "security": {
+    "classification": "public-safe",
+    "secrets_policy": "local-or-managed-only",
+    "public_repo": true,
+    "frontend_secrets_allowed": false,
+    "private_content_read": false,
+    "live_provider_calls": false,
+    "live_mcp_sessions": false
+  },
+  "goal_tracking": {
+    "canonical_registry": "content/development/seis-goal-tracking.json",
+    "active_goal_ids": ["SEIS-GOAL-001", "SEIS-GOAL-002"],
+    "evidence_policy": "commands-and-source-artifacts-required"
+  },
+  "source_contracts": [
+    "content/development/seis-ai-core-application-integration.json",
+    "content/development/seis-agent-plugin-integration.json",
+    "content/development/seis-ai-core-mcp-runtime-contract.json",
+    "content/development/seis-agent-registry.json",
+    "apps/seis-core/data/seis-ai-core-runtime-snapshot.json",
+    "apps/seis-core/data/seis-core-ecosystem-registry.json"
+  ],
+  "commands": {
+    "install": "npm install",
+    "test": "npm test --prefix packages/seis-ai",
+    "validate": "npm run seis:check",
+    "manifest": "npm run check:project-ecosystem-manifest",
+    "ai_core_snapshot": "npm run check:seis-core-ai-runtime-snapshot",
+    "ecosystem_snapshot": "npm run check:seis-core-ecosystem-registry"
+  },
+  "status_boundary": {
+    "verified_local": [
+      "source-backed registry projection",
+      "read-only MCP JSON-RPC fallback",
+      "provider-neutral route evidence",
+      "native snapshot decoding contract"
+    ],
+    "not_claimed": [
+      "live provider authentication",
+      "live cloud deployment",
+      "live SSH execution",
+      "background autonomous execution",
+      "private content access"
+    ]
+  }
+}

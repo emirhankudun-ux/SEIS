@@ -1,5 +1,8 @@
+import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
+
+import { redactSecretText } from "./redaction.mjs";
 
 export const PLUGIN_INTEGRATION_PATH = "content/development/seis-agent-plugin-integration.json";
 export const SEIS_SSH_PUBLIC_ACCESS_CONTRACT_PATH = "deploy/seis-ssh-public-access-contract.json";
@@ -52,6 +55,7 @@ export const AI_CORE_MODEL_SCALING_STATUS_TOOL = "seis_ai_core_model_scaling_sta
 export const AI_CORE_VERSION_STATUS_TOOL = "seis_ai_core_version_status";
 export const AI_CORE_VERSION_PROMOTION_TOOL = "seis_ai_core_version_promotion_dry_run";
 export const PERSONAL_LANE_CYCLE_TOOL = "seis_personal_lane_cycle";
+export const PERSONAL_LANE_CYCLE_CHECKS_TOOL = "seis_personal_lane_cycle_checks";
 export const PERSONAL_PLUGIN_LANE_TOOLS = [
   {
     laneId: "seis",

@@ -4,6 +4,8 @@ import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 
+import { buildSeisEcosystemCapabilitySnapshot } from "../packages/seis-ai/src/model/ecosystem-capability-snapshot.mjs";
+
 const root = process.cwd();
 const failures = [];
 const registryPath = path.join(root, "apps", "seis-core", "data", "seis-core-ecosystem-registry.json");
@@ -64,6 +66,13 @@ const [registry, identities, integration, desktop, html, script, css, docs, pack
   readJson(packagePath, "package.json")
 ]);
 
+let expectedRegistry = null;
+try {
+  expectedRegistry = buildSeisEcosystemCapabilitySnapshot(root);
+} catch (error) {
+  fail(`source-backed ecosystem snapshot could not be built: ${error.message}`);
+}
+
 const expectedLanes = ["seis", "seis-cloud", "seis-code", "seis-design", "seis-data", "seis-store"];
 const expectedIdentityByLane = {
   seis: "SEIS",
@@ -75,14 +84,42 @@ const expectedIdentityByLane = {
 
 if (registry) {
   if (registry.id !== "seis-core-ecosystem-registry") fail("registry id must be seis-core-ecosystem-registry");
-  if (registry.schemaVersion !== "1.0.0") fail("registry schemaVersion must be 1.0.0");
-  if (registry.status !== "active") fail("registry status must be active");
-  if (!Array.isArray(registry.sources) || registry.sources.length < 3) fail("registry must name its source records");
-  if (!registry.runtimeBoundary?.includes("does not authenticate connectors")) fail("registry must keep the no-authentication runtime boundary explicit");
-  if (registry.store?.id !== "seis-store") fail("registry must bind the Store by id");
-  if (registry.store?.status !== "Local Demo") fail("Store must remain labeled Local Demo");
-  if (!registry.store?.contract?.includes("browser-local")) fail("Store contract must be browser-local");
-  if (!registry.store?.approvalBoundary?.includes("does not download packages")) fail("Store approval boundary must reject remote installation claims");
+  if (registry.schemaVersion !== "2.0.0") fail("registry schemaVersion must be 2.0.0");
+  if (registry.status !== "source-backed-local-demo") fail("registry status must be source-backed-local-demo");
+  if (registry.mode !== "read-only-capability-control-plane") fail("registry mode must remain read-only");
+  if (expectedRegistry && JSON.stringify(registry) !== JSON.stringify(expectedRegistry)) {
+    fail("generated ecosystem registry is stale; run npm run automation:seis-core-ecosystem-registry");
+  }
+
+  const expectedCounts = {
+    coreLanes: 6,
+    bundledPluginSources: 6,
+    repoSkills: 25,
+    auditedInstalledEnabledPlugins: 185,
+    cataloguedHelperPlugins: 300,
+    providers: 7,
+    mcpTools: 35,
+    mcpResources: 30,
+    mcpPrompts: 3,
+    productModules: 18,
+    dataContracts: 18,
+    validatedDataContracts: 16,
+    designComponents: 12,
+    validatedDesignComponents: 12,
+    managedAgentRoles: 13
+  };
+  for (const [field, expected] of Object.entries(expectedCounts)) {
+    if (registry.counts?.[field] !== expected) fail(`registry count ${field} must be ${expected}`);
+  }
+  if (registry.pluginAudit?.state !== "dated-source-audit-not-live-rescan") fail("plugin audit must remain explicitly dated");
+  if (registry.helperPluginUniverse?.state !== "catalogued-not-blanket-activated") fail("helper plugins must not claim blanket activation");
+  if (registry.helperPluginUniverse?.activationPolicy !== "activate_only_when_relevant_authenticated_scoped_and_user_approved") {
+    fail("helper plugin activation must remain relevant, scoped, authenticated, and approval-gated");
+  }
+  if (!registry.providers?.records?.every((provider) => provider.backendOnly === true && provider.frontendSecretAllowed === false)) {
+    fail("all provider records must remain backend-only with frontend secrets prohibited");
+  }
+  if (registry.mcpRuntime?.liveBrowserSessionStarted !== false) fail("browser registry must not claim a live MCP session");
 
   const lanes = Array.isArray(registry.lanes) ? registry.lanes : [];
   if (lanes.length !== expectedLanes.length) fail(`registry must expose exactly ${expectedLanes.length} core lanes`);
@@ -92,11 +129,15 @@ if (registry) {
       fail(`registry missing ${laneId}`);
       continue;
     }
-    for (const field of ["label", "identity", "kind", "status", "mode", "coreBinding", "role", "qualityGate", "storeBinding", "demoHref", "demoLabel"]) {
+    for (const field of ["label", "identity", "kind", "status", "mode", "coreBinding", "role", "scope", "storeBinding"]) {
       if (!String(lane[field] || "").trim()) fail(`${laneId} missing ${field}`);
     }
-    if (!Array.isArray(lane.mcpTools)) fail(`${laneId} mcpTools must be an array`);
-    if (!lane.qualityGate.startsWith("npm run check:")) fail(`${laneId} qualityGate must be a package check command`);
+    if (lane.executionAuthority !== false || lane.mcp?.executionAuthority !== false) fail(`${laneId} must remain execution-disabled`);
+    if (!Array.isArray(lane.mcp?.tools)) fail(`${laneId} MCP tools must be an array`);
+    if (!Array.isArray(lane.qualityGates) || !lane.qualityGates.every((gate) => gate.startsWith("npm run check:"))) {
+      fail(`${laneId} qualityGates must contain package check commands`);
+    }
+    if (!lane.route?.href || !lane.route?.targetId || !lane.route?.label) fail(`${laneId} must expose a local launch route`);
     if (["Connected", "Live", "Deployed"].includes(lane.status) || /\bconnected\b/i.test(lane.mode)) {
       fail(`${laneId} must not claim an externally connected runtime`);
     }
@@ -104,7 +145,9 @@ if (registry) {
 
   for (const laneId of ["seis", "seis-cloud", "seis-code", "seis-design", "seis-data"]) {
     const lane = lanes.find((candidate) => candidate.id === laneId);
-    if (!lane || lane.mcpTools.length !== 2) fail(`${laneId} must retain its status and plan MCP tools`);
+    if (!lane || lane.mcp.tools.length !== 2) fail(`${laneId} must retain its status and plan MCP tools`);
+    if (lane?.pluginBinding?.runtimePlugin !== "seis-ai-agent") fail(`${laneId} must bind to canonical SEIS-Agent runtime`);
+    if (lane?.pluginBinding?.standaloneInstallMode !== "disabled") fail(`${laneId} standalone install mode must remain disabled`);
   }
   const cloudLane = lanes.find((candidate) => candidate.id === "seis-cloud");
   if (cloudLane) {
@@ -112,14 +155,35 @@ if (registry) {
     if (!sshBinding) fail("seis-cloud must expose the SEIS-SSH Core transport binding");
     if (sshBinding?.alias !== "SEIS-SSH") fail("seis-cloud SSH binding must use the SEIS-SSH alias");
     if (sshBinding?.contract !== "deploy/seis-ssh-public-access-contract.json") fail("seis-cloud SSH binding must point to the public access contract");
-    if (sshBinding?.statusCommand !== "npm run check:seis-ssh-public-access-report") fail("seis-cloud SSH binding must expose the sanitized status command");
-    if (sshBinding?.guardCommand !== "npm run check:seis-ssh-github-pr-contract") fail("seis-cloud SSH binding must expose the PR guard command");
     if (sshBinding?.serverAndPortPolicy !== "preserve-existing-server-and-port") fail("seis-cloud SSH binding must preserve the existing server and port");
-    if (sshBinding?.runtimeMode !== "static-read-only") fail("seis-cloud SSH binding must remain static-read-only");
+    if (sshBinding?.serverOrPortChanged !== false) fail("seis-cloud SSH binding must not change server or port");
+    if (sshBinding?.strictReady !== false) fail("seis-cloud must not claim strict live SSH readiness");
+    if (sshBinding?.runtimeMode !== "status-and-plan-only") fail("seis-cloud SSH binding must remain status-and-plan-only");
     if (sshBinding?.liveClaim !== "blocked-until-strict-online-evidence") fail("seis-cloud SSH binding must block live claims until strict evidence");
   }
   const storeLane = lanes.find((candidate) => candidate.id === "seis-store");
-  if (storeLane && storeLane.mcpTools.length !== 0) fail("SEIS Store must not claim a remote MCP execution path");
+  if (storeLane?.mcp?.tools.length !== 0 || storeLane?.pluginBinding !== null) fail("SEIS Store must not claim a remote plugin or MCP execution path");
+
+  const disabledBoundaryFields = [
+    "providerCalls",
+    "credentialsRead",
+    "frontendSecretsAllowed",
+    "liveMcpSessionStarted",
+    "backgroundAutomation",
+    "agentExecution",
+    "sshExecuted",
+    "deploymentPerformed",
+    "githubMutationPerformed",
+    "packageInstallationPerformed",
+    "privateContentRead"
+  ];
+  if (disabledBoundaryFields.some((field) => registry.runtimeBoundary?.[field] !== false)) {
+    fail("runtime boundary must keep every execution and secret-reading field false");
+  }
+  if (registry.runtimeBoundary?.browserLocalReadOnly !== true
+    || registry.runtimeBoundary?.humanApprovalRequiredForExternalMutation !== true) {
+    fail("runtime boundary must remain browser-local, read-only, and approval-gated");
+  }
 }
 
 if (identities) {
@@ -141,18 +205,25 @@ if (integration) {
 
 for (const [text, label, required] of [
   [desktop, "desktop Store surface", "renderSeisStore"],
+  [desktop, "desktop route surface", "restoreDeepLinkedApp"],
+  [desktop, "desktop route surface", "new URLSearchParams(window.location.search)"],
   [html, "Command Center HTML", "ecosystem-control-plane"],
   [html, "Command Center HTML", "ecosystem-control-grid"],
+  [html, "Command Center HTML", "ecosystem-lane-detail"],
   [script, "Command Center script", "loadSeisCoreEcosystemRegistry"],
   [script, "Command Center script", "renderEcosystemControlPlane"],
+  [script, "Command Center script", "validateEcosystemRegistryForBrowser"],
+  [script, "Command Center script", "data-ecosystem-lane"],
   [script, "Command Center script", "copyEcosystemGate"],
-  [css, "Command Center CSS", ".ecosystem-lane-card"],
+  [css, "Command Center CSS", ".ecosystem-control-layout"],
+  [css, "Command Center CSS", ".ecosystem-lane-button"],
+  [css, "Command Center CSS", ".ecosystem-lane-detail"],
   [docs, "Command Center docs", "## Ecosystem Control Plane"]
 ]) {
   if (!text.includes(required)) fail(`${label} missing ${required}`);
 }
 
-if (packageJson?.scripts?.["check:seis-core-ecosystem-registry"] !== "node scripts/check-seis-core-ecosystem-registry.mjs") {
+if (packageJson?.scripts?.["check:seis-core-ecosystem-registry"] !== "node scripts/create-seis-core-ecosystem-snapshot.mjs --check && node scripts/check-seis-core-ecosystem-registry.mjs") {
   fail("package.json must expose check:seis-core-ecosystem-registry");
 }
 

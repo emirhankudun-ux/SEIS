@@ -1,6 +1,6 @@
 {
   "id": "seis-agent-lane-status",
-  "version": "2026.06.23",
+  "version": "2026.07.10",
   "status": "active",
   "purpose": "Track safe, observable, source-controlled SEIS agent lanes for God Mode development.",
   "qualityGate": "npm run check:seis-agent-lane-status",
@@ -121,6 +121,50 @@
       "toolBoundary": "Read-only status and plan-only routing for structured records, schema governance, generated reports, memory, context, and provenance.",
       "safetyBoundary": "No invented data, private data exposure, credential export, unsafe dataset handling, or hand-edited generated reports when a generator owns them.",
       "validationDuty": "Run or request plugin capability lane, technology stack, AGI system, universal capability kernel, JSON, and report parity checks."
+    },
+    {
+      "id": "seis-security",
+      "displayName": "SEIS Security Sub-Agent Lane",
+      "status": "active",
+      "skillPath": "plugins/seis-ai-agent/skills/seis-security/SKILL.md",
+      "agentManifest": "plugins/seis-ai-agent/skills/seis-security/agents/openai.yaml",
+      "autonomyLevel": "supervised-security-review-planning",
+      "toolBoundary": "Read-only status and plan-only routing through seis_security_status, seis_security_plan, security records, and release gates.",
+      "safetyBoundary": "No secret access, credential validation, destructive remediation, SSH, or publishing without explicit approval.",
+      "validationDuty": "Run or request security, dependency, cloud access, SSH hardening, and release-gate checks."
+    },
+    {
+      "id": "seis-research",
+      "displayName": "SEIS Research Sub-Agent Lane",
+      "status": "active",
+      "skillPath": "plugins/seis-ai-agent/skills/seis-research/SKILL.md",
+      "agentManifest": "plugins/seis-ai-agent/skills/seis-research/agents/openai.yaml",
+      "autonomyLevel": "supervised-evidence-research-planning",
+      "toolBoundary": "Read-only status and plan-only routing through seis_research_status, seis_research_plan, source records, and evidence reviews.",
+      "safetyBoundary": "No unsupported claims, private-source import, provider credential access, or external mutation without explicit approval.",
+      "validationDuty": "Run or request source provenance, documentation, compatibility, and evidence-led governance checks."
+    },
+    {
+      "id": "seis-automation",
+      "displayName": "SEIS Automation Sub-Agent Lane",
+      "status": "active",
+      "skillPath": "plugins/seis-ai-agent/skills/seis-automation/SKILL.md",
+      "agentManifest": "plugins/seis-ai-agent/skills/seis-automation/agents/openai.yaml",
+      "autonomyLevel": "supervised-automation-planning",
+      "toolBoundary": "Read-only status and plan-only routing through seis_automation_status, seis_automation_plan, dry-runs, runbooks, and validation ledgers.",
+      "safetyBoundary": "No autonomous writes, schedules, deployments, or external connector mutations without explicit approval.",
+      "validationDuty": "Run or request idempotency, rollback, CI, dry-run, and command-center validation checks."
+    },
+    {
+      "id": "seis-product",
+      "displayName": "SEIS Product Sub-Agent Lane",
+      "status": "active",
+      "skillPath": "plugins/seis-ai-agent/skills/seis-product/SKILL.md",
+      "agentManifest": "plugins/seis-ai-agent/skills/seis-product/agents/openai.yaml",
+      "autonomyLevel": "supervised-product-planning",
+      "toolBoundary": "Read-only status and plan-only routing through seis_product_status, seis_product_plan, roadmap records, acceptance criteria, and release-readiness evidence.",
+      "safetyBoundary": "No scope expansion, release approval, publication, or customer-impact claim without explicit evidence and human review.",
+      "validationDuty": "Run or request roadmap, product acceptance, documentation, and release-readiness checks."
     }
   ]
 }
