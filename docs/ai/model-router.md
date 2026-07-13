@@ -2,12 +2,13 @@
 
 ## Purpose
 
-Define the Provider-neutral routing contract for future SEIS AI features.
-This document is a foundation contract, not implementation evidence.
+Define the provider-neutral routing contract for SEIS AI Core. The local
+Swift implementation is real and executable as a deterministic route decision;
+live provider mediation remains disabled and approval-gated.
 
 ## Scope
 
-The model router will choose a provider and model profile only after checking
+The model router chooses a provider and model profile only after checking
 capability, privacy, provider status, workspace policy, fallback rules, and
 user selection.
 
@@ -15,10 +16,10 @@ user selection.
 
 | Area | Status | Evidence | Blocker | Next Safe Action |
 | --- | --- | --- | --- | --- |
-| Router implementation | Planned | No central router implementation exists in this branch. | Typed environment validation and live adapter tests are missing. | Keep routing disabled until server-only adapter tests exist. |
-| Routing policy | Documented | This document and `docs/ai/seis-ai-core.md`. | No runtime policy tests. | Add fixtures before live providers. |
+| Router implementation | Implemented Local Demo contract | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAIModelRouter.swift`, `SeisAIRuntime.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAIRuntimeTests.swift`, native AI Core router inspector. | Typed server-only validation and live adapter tests are still missing. | Keep external providers disabled until backend-only adapters and approval evidence exist. |
+| Routing policy | Implemented and tested locally | Swift request/provider descriptors, capability/privacy/cost/latency/tool/fallback checks, fail-closed rejection tests, `npm run check:seis-ai-core-read-only-router`. | No live health check or credential validation is performed. | Keep the decision surface local and expose actual provider/model identity when future adapters are approved. |
 | Provider state model | Documented fixture | `content/development/seis-ai-core-provider-registry.json`, `seis_ai_core_provider_status`, `seis://ai/provider-registry.json`. | No live health checks or credential validation are performed. | Use the fixture for UI/MCP status before live adapters. |
-| Read-only model-router contract | Planned-read-only contract | `content/development/seis-read-only-model-router-contract.json`, `docs/ai/read-only-model-router-contract.md`, `reports/seis-public-demo/read-only-model-router-decision-latest.json`, `npm run check:seis-read-only-model-router-decision`, `npm run check:seis-second-brain-readiness-contracts`. | No runtime gateway, provider calls, credential validation, browser secrets, silent fallback, or local-only cloud fallback. | Keep the contract explanatory until backend-only provider mediation and no-key fixtures exist. |
+| Read-only model-router contract | Implemented local decision surface | `content/development/seis-read-only-model-router-contract.json`, Swift router, native `inspectRoute`, `route-inspection` evidence, `docs/ai/read-only-model-router-contract.md`. | No runtime gateway, provider calls, credential validation, browser secrets, silent fallback, or local-only cloud fallback. | Keep backend mediation and live adapters approval-gated. |
 | Model scaling profile | Planned compatibility contract | `content/development/seis-model-scaling-hardware-profile.json`, `docs/ai/seis-model-scaling.md`, `seis_ai_core_model_scaling_status`. | The 20B / 16GB+ RAM target plus 70B, 150B, and 512B apex lanes are not routeable models until weights, model cards, runtime adapters, safety evals, AGI eval protocol, and benchmarks exist. | Keep Local Demo as fallback and block 20B, 70B, 150B, or 512B routing until profile gates pass. |
 | Model parameter ladder | Planning contract, not runtime | `content/development/seis-model-parameter-ladder.json`, `seis://ai/model-parameter-ladder.json`, `npm run check:seis-model-parameter-ladder`. | The 20B, 70B, 150B, 300B+, 512B, and highest-future parameter classes are explicit route-blocked targets, not trained, AGI, or routeable SEIS models. | Use the ladder only to explain promotion order and approval gates; never treat it as model availability. |
 | 150B frontier model program | Plan-only route gate | `content/development/seis-150b-frontier-model-program.json`, `seis://ai/150b-frontier-model-program.json`, `npm run check:seis-150b-frontier-model-program`. | The 150B program is a charter and promotion-gate record only, not weights, inference, benchmark evidence, cloud/GPU capacity, SSH, or production readiness. | Keep 150B route eligibility blocked until 20B and 70B evidence plus clean-room, budget, privacy, safety, observability, rollback, and approval gates pass. |
@@ -59,7 +60,7 @@ Initial capability labels should include:
 
 ## Evidence Requirements
 
-Before the router is marked implemented, add:
+Before any live or external router adapter is marked implemented, add:
 
 - typed server-only environment validation
 - provider registry contract tests with `npm run check:seis-ai-core-provider-registry`
@@ -87,8 +88,9 @@ Before the router is marked implemented, add:
 
 ## Next Safe Action
 
-Add a server-only provider registry fixture and no-key startup test before any
-live provider adapter work. The current provider registry fixture is
+The local router, no-key Local Demo, and native policy inspector are already
+implemented and tested. Add a server-only provider registry fixture and no-key
+startup test before any live provider adapter work. The current provider registry fixture is
 `content/development/seis-ai-core-provider-registry.json`; it is status evidence
 only and does not perform live provider calls.
 

@@ -8,22 +8,23 @@ security policy, deployment authority, or model release authority.
 
 ## Scope
 
-The runtime will coordinate agent roles, permissions, tool scopes, handoffs,
-validation, cancellation, and audit events. This document does not implement
-runtime orchestration.
+The runtime coordinates the bounded local status-and-plan slice of agent roles,
+permissions, tool scopes, prompt-gated planning, handoffs, validation, and
+redacted audit events. It does not grant background, write-capable, provider,
+MCP, SSH, deployment, or GitHub mutation authority.
 
 ## Current Status
 
 | Area | Status | Evidence | Blocker | Next Safe Action |
 | --- | --- | --- | --- | --- |
-| Agent definitions | Documented fixture, not implemented runtime orchestration | `AGENTS.md` names the multi-assistant model; `docs/development/agents/ai-workforce-assignments.md`; `content/development/seis-ai-core-agent-role-schema.json`. | No live scheduler or write-capable runtime exists. | Keep role schema plan-only until runtime tests exist. |
-| Tool permissions | Documented fixture | `content/development/seis-ai-core-agent-permission-matrix.json`. | No live permission registry enforcement exists. | Keep write-gated and external-gated levels planned until approval fixtures are wired to execution. |
-| Handoff protocol | Documented | `AGENTS.md` and this document. | No handoff artifact schema. | Add a reviewer handoff template later. |
-| Automation runtime | Dry-run fixture only | `scripts/ai-launcher.cjs`, `content/development/seis-ai-core-subagent-review-ledger.json`, `content/development/seis-ai-core-subagent-runtime-fixtures.json`, `content/development/seis-ai-core-dry-run-task-queue.json`, `content/development/seis-ai-core-cancellation-fixture.json`, `content/development/seis-ai-core-approval-fixture.json`, `content/development/seis-ai-core-redaction-fixture.json`, `content/development/seis-ai-core-execution-ledger-fixture.json`. | No background runner, write runner, or external mutation runner exists. | Keep automation dry-run until cancellation, approval, redaction, ledger, and validation behavior is executable and tested. |
+| Agent definitions | Implemented local status-and-plan runtime | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAIAgentPlanRuntime.swift`, `SeisAIRuntime.swift`, `content/development/seis-ai-core-runtime-snapshot.json`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAIRuntimeTests.swift`. | No live scheduler or write-capable runtime exists. | Keep the 13-agent runtime plan-only until approved mutation authority exists. |
+| Tool permissions | Enforced for local plans | `SeisAIAgentPlanRuntime`, `SeisAIExecutionEvidenceLedger`, agent runtime tests, and `npm run check:seis-agent-registry`. | Write, provider, network, MCP, private-content, secret, SSH, deployment, and GitHub actions remain forbidden in this runtime. | Add separately approved execution adapters only behind server-side permission tests. |
+| Handoff protocol | Implemented as governed local snapshot | `SeisAGIAgentHandoffSnapshot`, `SeisAGIAgentOrchestrationRuntime`, native AI Core handoff disclosure, `docs/ai/seis-ai-core.md`. | Handoffs do not activate agents or grant writer authority. | Keep one-writer and human-approval rules visible while adding future review artifacts. |
+| Automation runtime | Implemented bounded batch planning only | Native AI Core all-agent and all-personal-lane batch controls, prompt engine, redacted evidence ledger. | No background runner, write runner, or external mutation runner exists. | Keep batches user-triggered, sequential, bounded, and plan-only. |
 | Version binding | Documented fixture | `content/development/seis-ai-core-version-registry.json`, `content/development/seis-ai-core-provider-registry.json`, `seis_ai_core_version_status`, `seis_ai_core_provider_status`. | No live release channel, live provider adapter, or health-check runtime exists. | Keep SEIS AI Core v0.1 as a zero-key, status/plan-only application-layer profile. |
 | Version promotion dry-run | Documented fixture | `content/development/seis-ai-core-version-promotion-gates.json`, `seis_ai_core_version_promotion_dry_run`. | Dry-run output does not approve releases or enable write lanes. | Use promotion gate output as internal review evidence only. |
 | MCP runtime contract | Local smoke verified | `content/development/seis-ai-core-mcp-runtime-contract.json`, `seis://ai/mcp-runtime-contract.json`. | This does not authenticate remote MCP servers, connectors, credentials, SSH, deploys, or GitHub mutation. | Keep runtime resources verified by `node --test packages/seis-ai/test/mcp-smoke.test.mjs`. |
-| Personal sub-agent lanes | Integrated as status/plan-only | `content/development/seis-ai-core-subagent-operating-model.json`, `content/development/seis-ai-core-subagent-review-ledger.json`, `content/development/seis-ai-core-subagent-runtime-fixtures.json`, `content/development/seis-sub-agent-5-year-plan.json`, `content/development/seis-agent-lane-status.json`, `content/development/seis-ai-core-agent-permission-matrix.json`, `docs/ai/seis-ai-core.md`, `packages/seis-ai/src/agent/tools.mjs` | No write-gated or background runtime exists. | Promote the permission matrix fixture into executable enforcement tests before enabling autonomous write actions. |
+| Personal sub-agent lanes | Integrated as native status/plan-only runtime | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAIPersonalLaneRuntime.swift`, native all-lane batch planning, `content/development/seis-ai-core-subagent-operating-model.json`, `packages/seis-ai/src/agent/tools.mjs`. | No write-gated or background runtime exists. | Keep the five lanes read-only and add approved execution only through a separate server boundary. |
 
 ## Rules / Policy
 
@@ -59,7 +60,7 @@ Each future agent definition should include:
 
 ## Evidence Requirements
 
-Before the agent runtime is marked implemented, add:
+Before any external or write-capable agent runtime is marked implemented, add:
 
 - `content/development/seis-ai-core-agent-role-schema.json`
 - `content/development/seis-ai-core-agent-permission-matrix.json`
@@ -78,7 +79,10 @@ Before the agent runtime is marked implemented, add:
 - redacted tool-output test
 - handoff report template
 
-Runtime inspection tools currently include `seis_ai_core_provider_status`,
+The local Swift runtime currently exposes status-and-plan controls for 13
+managed agents and five personal lanes, including bounded all-agent and
+all-lane batches. Runtime inspection tools currently include
+`seis_ai_core_provider_status`,
 `seis_ai_core_version_status`,
 `seis_ai_core_version_promotion_dry_run`, `seis_ai_core_subagent_model`,
 `seis_ai_core_subagent_dry_run`, and `seis_ai_core_subagent_review_ledger`.
@@ -98,5 +102,6 @@ evidence for staged reviews, not autonomous execution.
 
 ## Next Safe Action
 
-Connect the documented fixtures to executable dry-run tests before enabling any
-background or write-capable automation.
+Keep the local runtime evidence current, then connect any future server-side
+provider or write-capable adapter to explicit approval, cancellation, timeout,
+redaction, permission, and rollback tests before enabling it.
