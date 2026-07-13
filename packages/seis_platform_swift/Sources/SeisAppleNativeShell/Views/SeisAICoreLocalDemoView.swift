@@ -35,6 +35,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var agentRoleSchemaSnapshot: SeisAgentRoleSchemaSnapshot?
     @Published private(set) var agentPermissionMatrixSnapshot: SeisAgentPermissionMatrixSnapshot?
     @Published private(set) var activeMissionBoardSnapshot: SeisActiveMissionBoardSnapshot?
+    @Published private(set) var longHorizonMissionKernelSnapshot: SeisLongHorizonMissionKernelSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -152,6 +153,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         activeMissionBoardSnapshot = try? SeisActiveMissionBoardSnapshot.validated(
             from: Data(contentsOf: activeMissionBoardURL)
         )
+        longHorizonMissionKernelSnapshot = try? SeisLongHorizonMissionKernelSnapshot.validated(
+            from: Data(contentsOf: longHorizonMissionKernelURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -195,7 +199,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 actionExecutionContractSnapshot: actionExecutionContractSnapshot,
                 agentRoleSchemaSnapshot: agentRoleSchemaSnapshot,
                 agentPermissionMatrixSnapshot: agentPermissionMatrixSnapshot,
-                activeMissionBoardSnapshot: activeMissionBoardSnapshot
+                activeMissionBoardSnapshot: activeMissionBoardSnapshot,
+                longHorizonMissionKernelSnapshot: longHorizonMissionKernelSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -300,6 +305,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             activeMissionBoardSnapshot = try? SeisActiveMissionBoardSnapshot.validated(
                 from: Data(contentsOf: activeMissionBoardURL)
             )
+            longHorizonMissionKernelSnapshot = try? SeisLongHorizonMissionKernelSnapshot.validated(
+                from: Data(contentsOf: longHorizonMissionKernelURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -329,6 +337,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             agentRoleSchemaSnapshot = nil
             agentPermissionMatrixSnapshot = nil
             activeMissionBoardSnapshot = nil
+            longHorizonMissionKernelSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -828,6 +837,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-active-mission-board.json")
     }
 
+    private var longHorizonMissionKernelURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-long-horizon-missions.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -950,6 +966,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let activeMissionBoardSnapshot = model.activeMissionBoardSnapshot {
                     activeMissionBoardDisclosure(snapshot: activeMissionBoardSnapshot)
+                }
+                if let longHorizonMissionKernelSnapshot = model.longHorizonMissionKernelSnapshot {
+                    longHorizonMissionKernelDisclosure(snapshot: longHorizonMissionKernelSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -2250,6 +2269,32 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Active mission board. Thirty cards across now, next, and queued lanes, five platforms, 29 languages, 41 quality gates, and 12 acceptance gates; deterministic plan-only metadata.")
+    }
+
+    private func longHorizonMissionKernelDisclosure(snapshot: SeisLongHorizonMissionKernelSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.duration.weeks) weeks · \(snapshot.summary.waveCount) waves · \(snapshot.summary.missionCount) missions · \(snapshot.summary.domainCoverageCount) domains · metadata-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("Languages: \(snapshot.summary.languageCoverageCount) · Apple missions: \(snapshot.summary.appleMissionCount) · Windows missions: \(snapshot.summary.windowsMissionCount) · Minimum gates: \(snapshot.summary.minimumQualityGateCount)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.tertiary)
+                ForEach(Array(snapshot.firstMissions)) { mission in
+                    Text("#\(mission.order) · \(mission.label) · \(mission.agentRole) · \(mission.status)")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
+                Text("Install policy: \(snapshot.installPolicy.default). All 120 records remain planned; this native surface does not install runtimes or execute missions.")
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Long-horizon mission kernel", systemImage: "calendar.badge.clock")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Long-horizon mission kernel. Fifty-two weeks, twelve waves, 120 planned missions, 38 domains, 35 languages, 20 Apple missions, and 20 Windows missions; metadata-only.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {

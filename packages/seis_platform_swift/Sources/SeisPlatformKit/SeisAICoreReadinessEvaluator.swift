@@ -87,7 +87,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "universal-capability-kernel",
         "action-governance-contracts",
         "agent-governance-contracts",
-        "active-mission-board"
+        "active-mission-board",
+        "long-horizon-mission-kernel"
     ]
 
     public init() {}
@@ -125,7 +126,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         actionExecutionContractSnapshot: SeisActionExecutionContractSnapshot? = nil,
         agentRoleSchemaSnapshot: SeisAgentRoleSchemaSnapshot? = nil,
         agentPermissionMatrixSnapshot: SeisAgentPermissionMatrixSnapshot? = nil,
-        activeMissionBoardSnapshot: SeisActiveMissionBoardSnapshot? = nil
+        activeMissionBoardSnapshot: SeisActiveMissionBoardSnapshot? = nil,
+        longHorizonMissionKernelSnapshot: SeisLongHorizonMissionKernelSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -348,6 +350,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Active mission board",
                 passed: activeMissionBoardSnapshot?.isMetadataOnly == true,
                 evidence: "Thirty deterministic mission cards cover now, next, and queued lanes with platform, language, quality-gate, and acceptance-gate metadata."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "long-horizon-mission-kernel",
+                title: "Long-horizon mission kernel",
+                passed: longHorizonMissionKernelSnapshot?.isMetadataOnly == true,
+                evidence: "One hundred twenty planned missions cover twelve waves, 38 domains, 35 languages, and Apple/Windows mission lanes without runtime installation by language percentage."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked

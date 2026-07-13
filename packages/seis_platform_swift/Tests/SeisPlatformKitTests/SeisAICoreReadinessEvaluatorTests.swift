@@ -38,6 +38,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let agentRoleSchema = try SeisAgentRoleSchemaSnapshot.validated(from: agentRoleSchemaData())
         let agentPermissionMatrix = try SeisAgentPermissionMatrixSnapshot.validated(from: agentPermissionMatrixData())
         let activeMissionBoard = try SeisActiveMissionBoardSnapshot.validated(from: activeMissionBoardData())
+        let longHorizonMissionKernel = try SeisLongHorizonMissionKernelSnapshot.validated(from: longHorizonMissionKernelData())
 
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
@@ -72,14 +73,15 @@ struct SeisAICoreReadinessEvaluatorTests {
             actionExecutionContractSnapshot: actionExecutionContract,
             agentRoleSchemaSnapshot: agentRoleSchema,
             agentPermissionMatrixSnapshot: agentPermissionMatrix,
-            activeMissionBoardSnapshot: activeMissionBoard
+            activeMissionBoardSnapshot: activeMissionBoard,
+            longHorizonMissionKernelSnapshot: longHorizonMissionKernel
         )
 
         #expect(report.isReadyLocalDemo)
         #expect(report.status == .readyLocalDemo)
         #expect(report.evaluatorVersion == SeisAICoreReadinessEvaluator.evaluatorVersion)
         #expect(report.checks.map(\.id) == SeisAICoreReadinessEvaluator.expectedCheckIDs)
-        #expect(report.passedCount == 35)
+        #expect(report.passedCount == 36)
         #expect(report.failedCount == 0)
         #expect(report.truthBoundary.contains("not proof of live provider access"))
     }
@@ -115,6 +117,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let agentRoleSchema = try SeisAgentRoleSchemaSnapshot.validated(from: agentRoleSchemaData())
         let agentPermissionMatrix = try SeisAgentPermissionMatrixSnapshot.validated(from: agentPermissionMatrixData())
         let activeMissionBoard = try SeisActiveMissionBoardSnapshot.validated(from: activeMissionBoardData())
+        let longHorizonMissionKernel = try SeisLongHorizonMissionKernelSnapshot.validated(from: longHorizonMissionKernelData())
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
             capabilityMesh: SeisAICapabilityMesh(snapshot: snapshot),
@@ -148,7 +151,8 @@ struct SeisAICoreReadinessEvaluatorTests {
             actionExecutionContractSnapshot: actionExecutionContract,
             agentRoleSchemaSnapshot: agentRoleSchema,
             agentPermissionMatrixSnapshot: agentPermissionMatrix,
-            activeMissionBoardSnapshot: activeMissionBoard
+            activeMissionBoardSnapshot: activeMissionBoard,
+            longHorizonMissionKernelSnapshot: longHorizonMissionKernel
         )
 
         #expect(report.status.rawValue == "ready-local-demo")
@@ -343,5 +347,11 @@ struct SeisAICoreReadinessEvaluatorTests {
         var root = URL(fileURLWithPath: #filePath)
         for _ in 0..<5 { root.deleteLastPathComponent() }
         return try Data(contentsOf: root.appendingPathComponent("content/development/seis-active-mission-board.json"))
+    }
+
+    private func longHorizonMissionKernelData() throws -> Data {
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<5 { root.deleteLastPathComponent() }
+        return try Data(contentsOf: root.appendingPathComponent("content/development/seis-long-horizon-missions.json"))
     }
 }
