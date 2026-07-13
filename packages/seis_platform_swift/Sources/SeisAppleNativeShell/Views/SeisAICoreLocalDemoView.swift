@@ -34,6 +34,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var actionExecutionContractSnapshot: SeisActionExecutionContractSnapshot?
     @Published private(set) var agentRoleSchemaSnapshot: SeisAgentRoleSchemaSnapshot?
     @Published private(set) var agentPermissionMatrixSnapshot: SeisAgentPermissionMatrixSnapshot?
+    @Published private(set) var activeMissionBoardSnapshot: SeisActiveMissionBoardSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -148,6 +149,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         agentPermissionMatrixSnapshot = try? SeisAgentPermissionMatrixSnapshot.validated(
             from: Data(contentsOf: agentPermissionMatrixURL)
         )
+        activeMissionBoardSnapshot = try? SeisActiveMissionBoardSnapshot.validated(
+            from: Data(contentsOf: activeMissionBoardURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -190,7 +194,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 actionDecisionContractSnapshot: actionDecisionContractSnapshot,
                 actionExecutionContractSnapshot: actionExecutionContractSnapshot,
                 agentRoleSchemaSnapshot: agentRoleSchemaSnapshot,
-                agentPermissionMatrixSnapshot: agentPermissionMatrixSnapshot
+                agentPermissionMatrixSnapshot: agentPermissionMatrixSnapshot,
+                activeMissionBoardSnapshot: activeMissionBoardSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -292,6 +297,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             agentPermissionMatrixSnapshot = try? SeisAgentPermissionMatrixSnapshot.validated(
                 from: Data(contentsOf: agentPermissionMatrixURL)
             )
+            activeMissionBoardSnapshot = try? SeisActiveMissionBoardSnapshot.validated(
+                from: Data(contentsOf: activeMissionBoardURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -320,6 +328,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             actionExecutionContractSnapshot = nil
             agentRoleSchemaSnapshot = nil
             agentPermissionMatrixSnapshot = nil
+            activeMissionBoardSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -812,6 +821,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-ai-core-agent-permission-matrix.json")
     }
 
+    private var activeMissionBoardURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-active-mission-board.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -931,6 +947,9 @@ struct SeisAICoreLocalDemoView: View {
                         roleSchema: agentRoleSchemaSnapshot,
                         permissionMatrix: agentPermissionMatrixSnapshot
                     )
+                }
+                if let activeMissionBoardSnapshot = model.activeMissionBoardSnapshot {
+                    activeMissionBoardDisclosure(snapshot: activeMissionBoardSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -2205,6 +2224,32 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Agent governance contracts. Five lane roles, five permission levels, two enabled safe levels, and write, external, and forbidden actions separately gated; status-and-plan-only.")
+    }
+
+    private func activeMissionBoardDisclosure(snapshot: SeisActiveMissionBoardSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.summary.cardCount) cards · \(snapshot.summary.laneCount) lanes · \(snapshot.summary.platformCoverageCount) platforms · \(snapshot.summary.languageCoverageCount) languages · metadata-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("Now/Next/Queued: \(snapshot.summary.nowCount)/\(snapshot.summary.nextCount)/\(snapshot.summary.queuedCount) · Quality gates: \(snapshot.summary.qualityGateCoverageCount) · Acceptance gates: \(snapshot.summary.acceptanceGateCoverageCount)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.tertiary)
+                ForEach(Array(snapshot.firstExecutionCards)) { card in
+                    Text("#\(card.order) · \(card.title) · \(card.agentRole) · \(card.executionMode)")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
+                Text("Install policy: \(snapshot.installPolicy.default). The board is a deterministic planning surface; it does not install runtimes or execute mission cards.")
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Active mission board", systemImage: "list.bullet.clipboard")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Active mission board. Thirty cards across now, next, and queued lanes, five platforms, 29 languages, 41 quality gates, and 12 acceptance gates; deterministic plan-only metadata.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {

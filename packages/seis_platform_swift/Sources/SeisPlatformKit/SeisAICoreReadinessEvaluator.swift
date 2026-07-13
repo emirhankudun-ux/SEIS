@@ -86,7 +86,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "design-component-inventory",
         "universal-capability-kernel",
         "action-governance-contracts",
-        "agent-governance-contracts"
+        "agent-governance-contracts",
+        "active-mission-board"
     ]
 
     public init() {}
@@ -123,7 +124,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         actionDecisionContractSnapshot: SeisActionDecisionContractSnapshot? = nil,
         actionExecutionContractSnapshot: SeisActionExecutionContractSnapshot? = nil,
         agentRoleSchemaSnapshot: SeisAgentRoleSchemaSnapshot? = nil,
-        agentPermissionMatrixSnapshot: SeisAgentPermissionMatrixSnapshot? = nil
+        agentPermissionMatrixSnapshot: SeisAgentPermissionMatrixSnapshot? = nil,
+        activeMissionBoardSnapshot: SeisActiveMissionBoardSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -340,6 +342,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Agent governance contracts",
                 passed: agentRoleSchemaSnapshot?.isMetadataOnly == true && agentPermissionMatrixSnapshot?.isMetadataOnly == true,
                 evidence: "Five lane roles and five permission levels remain status-and-plan-only, with write/external/forbidden actions separately gated or forbidden."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "active-mission-board",
+                title: "Active mission board",
+                passed: activeMissionBoardSnapshot?.isMetadataOnly == true,
+                evidence: "Thirty deterministic mission cards cover now, next, and queued lanes with platform, language, quality-gate, and acceptance-gate metadata."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked
