@@ -796,6 +796,47 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.sshBinding.liveClaimBlocked, true);
   });
 
+  it("keeps all five personal lane plans available through the bounded protocol", async () => {
+    const laneRequests = [
+      [2, "seis_hub_plan", "seis", "review governance boundaries"],
+      [3, "seis_cloud_plan", "seis-cloud", "prepare cloud readiness without deployment"],
+      [4, "seis_code_plan", "seis-code", "prepare a repository validation plan"],
+      [5, "seis_design_plan", "seis-design", "prepare a design quality review"],
+      [6, "seis_data_plan", "seis-data", "prepare a schema freshness review"],
+    ];
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      ...laneRequests.map(([id, name, , request]) => ({
+        jsonrpc: "2.0",
+        id,
+        method: "tools/call",
+        params: { name, arguments: { request } },
+      })),
+    ]);
+
+    for (const [id, , laneId, request] of laneRequests) {
+      const call = responses.get(id);
+      assert.ok(!call.error, `tools/call errored for ${laneId}: ${JSON.stringify(call.error)}`);
+      const payload = JSON.parse(call.result.content[0].text);
+      assert.equal(payload.ok, true);
+      assert.equal(payload.laneId, laneId);
+      assert.equal(payload.request, request);
+      assert.ok(Array.isArray(payload.steps));
+      assert.ok(Array.isArray(payload.defaultChecks));
+      assert.ok(payload.approvalBoundary);
+    }
+  });
+
   it("executes the SEIS AI Core provider status tool through the protocol", async () => {
     const responses = await rpcSession([
       {
