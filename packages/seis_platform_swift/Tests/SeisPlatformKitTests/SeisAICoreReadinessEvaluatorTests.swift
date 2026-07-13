@@ -28,6 +28,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let commandCenterOperationsReadiness = try SeisCommandCenterOperationsReadinessSnapshot.validated(from: commandCenterOperationsReadinessData())
         let agiIndependentEvidenceLedger = try SeisAGIIndependentEvidenceLedgerSnapshot.validated(from: agiIndependentEvidenceLedgerData())
         let agiGitHubUserReadinessGates = try SeisAGIGitHubUserReadinessGatesSnapshot.validated(from: agiGitHubUserReadinessGatesData())
+        let agiPublicReadinessEvidence = try SeisAGIPublicReadinessEvidenceSnapshot.validated(from: agiPublicReadinessEvidenceData())
 
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
@@ -52,14 +53,15 @@ struct SeisAICoreReadinessEvaluatorTests {
             publicReadinessProgramSnapshot: publicReadinessProgram,
             commandCenterOperationsReadinessSnapshot: commandCenterOperationsReadiness,
             agiIndependentEvidenceLedgerSnapshot: agiIndependentEvidenceLedger,
-            agiGitHubUserReadinessGatesSnapshot: agiGitHubUserReadinessGates
+            agiGitHubUserReadinessGatesSnapshot: agiGitHubUserReadinessGates,
+            agiPublicReadinessEvidenceSnapshot: agiPublicReadinessEvidence
         )
 
         #expect(report.isReadyLocalDemo)
         #expect(report.status == .readyLocalDemo)
         #expect(report.evaluatorVersion == SeisAICoreReadinessEvaluator.evaluatorVersion)
         #expect(report.checks.map(\.id) == SeisAICoreReadinessEvaluator.expectedCheckIDs)
-        #expect(report.passedCount == 27)
+        #expect(report.passedCount == 28)
         #expect(report.failedCount == 0)
         #expect(report.truthBoundary.contains("not proof of live provider access"))
     }
@@ -85,6 +87,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let commandCenterOperationsReadiness = try SeisCommandCenterOperationsReadinessSnapshot.validated(from: commandCenterOperationsReadinessData())
         let agiIndependentEvidenceLedger = try SeisAGIIndependentEvidenceLedgerSnapshot.validated(from: agiIndependentEvidenceLedgerData())
         let agiGitHubUserReadinessGates = try SeisAGIGitHubUserReadinessGatesSnapshot.validated(from: agiGitHubUserReadinessGatesData())
+        let agiPublicReadinessEvidence = try SeisAGIPublicReadinessEvidenceSnapshot.validated(from: agiPublicReadinessEvidenceData())
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
             capabilityMesh: SeisAICapabilityMesh(snapshot: snapshot),
@@ -108,7 +111,8 @@ struct SeisAICoreReadinessEvaluatorTests {
             publicReadinessProgramSnapshot: publicReadinessProgram,
             commandCenterOperationsReadinessSnapshot: commandCenterOperationsReadiness,
             agiIndependentEvidenceLedgerSnapshot: agiIndependentEvidenceLedger,
-            agiGitHubUserReadinessGatesSnapshot: agiGitHubUserReadinessGates
+            agiGitHubUserReadinessGatesSnapshot: agiGitHubUserReadinessGates,
+            agiPublicReadinessEvidenceSnapshot: agiPublicReadinessEvidence
         )
 
         #expect(report.status.rawValue == "ready-local-demo")
@@ -243,5 +247,11 @@ struct SeisAICoreReadinessEvaluatorTests {
         var root = URL(fileURLWithPath: #filePath)
         for _ in 0..<5 { root.deleteLastPathComponent() }
         return try Data(contentsOf: root.appendingPathComponent("content/development/seis-agi-github-user-readiness-gates.json"))
+    }
+
+    private func agiPublicReadinessEvidenceData() throws -> Data {
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<5 { root.deleteLastPathComponent() }
+        return try Data(contentsOf: root.appendingPathComponent("content/development/seis-agi-public-readiness-evidence.json"))
     }
 }

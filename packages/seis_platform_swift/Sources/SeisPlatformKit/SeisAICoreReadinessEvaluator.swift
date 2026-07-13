@@ -79,7 +79,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "public-readiness-program",
         "command-center-operations-readiness",
         "agi-independent-evidence-ledger",
-        "agi-github-user-readiness-gates"
+        "agi-github-user-readiness-gates",
+        "agi-public-readiness-evidence"
     ]
 
     public init() {}
@@ -107,7 +108,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         publicReadinessProgramSnapshot: SeisAIPublicReadinessProgramSnapshot? = nil,
         commandCenterOperationsReadinessSnapshot: SeisCommandCenterOperationsReadinessSnapshot? = nil,
         agiIndependentEvidenceLedgerSnapshot: SeisAGIIndependentEvidenceLedgerSnapshot? = nil,
-        agiGitHubUserReadinessGatesSnapshot: SeisAGIGitHubUserReadinessGatesSnapshot? = nil
+        agiGitHubUserReadinessGatesSnapshot: SeisAGIGitHubUserReadinessGatesSnapshot? = nil,
+        agiPublicReadinessEvidenceSnapshot: SeisAGIPublicReadinessEvidenceSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -282,6 +284,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "GitHub user readiness gates",
                 passed: agiGitHubUserReadinessGatesSnapshot?.isLocalDemoOnly == true,
                 evidence: "GitHub users may review the Local Demo and run no-key validators, while real AGI use, live providers, 512B routeability, runtime authority, release approval, and external mutation remain gated."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "agi-public-readiness-evidence",
+                title: "AGI public readiness evidence",
+                passed: agiPublicReadinessEvidenceSnapshot?.isBlockedPlanOnly == true,
+                evidence: "Twenty minimum AGI/512B evidence requirements remain missing, zero are accepted, and the protocol is not run; Local Demo remains available while AGI claims, routeability, inference, benchmarks, providers, training, and deployment stay blocked."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked

@@ -25,6 +25,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var commandCenterOperationsReadinessSnapshot: SeisCommandCenterOperationsReadinessSnapshot?
     @Published private(set) var agiIndependentEvidenceLedgerSnapshot: SeisAGIIndependentEvidenceLedgerSnapshot?
     @Published private(set) var agiGitHubUserReadinessGatesSnapshot: SeisAGIGitHubUserReadinessGatesSnapshot?
+    @Published private(set) var agiPublicReadinessEvidenceSnapshot: SeisAGIPublicReadinessEvidenceSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -112,6 +113,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         agiGitHubUserReadinessGatesSnapshot = try? SeisAGIGitHubUserReadinessGatesSnapshot.validated(
             from: Data(contentsOf: agiGitHubUserReadinessGatesURL)
         )
+        agiPublicReadinessEvidenceSnapshot = try? SeisAGIPublicReadinessEvidenceSnapshot.validated(
+            from: Data(contentsOf: agiPublicReadinessEvidenceURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -145,7 +149,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 publicReadinessProgramSnapshot: publicReadinessProgramSnapshot,
                 commandCenterOperationsReadinessSnapshot: commandCenterOperationsReadinessSnapshot,
                 agiIndependentEvidenceLedgerSnapshot: agiIndependentEvidenceLedgerSnapshot,
-                agiGitHubUserReadinessGatesSnapshot: agiGitHubUserReadinessGatesSnapshot
+                agiGitHubUserReadinessGatesSnapshot: agiGitHubUserReadinessGatesSnapshot,
+                agiPublicReadinessEvidenceSnapshot: agiPublicReadinessEvidenceSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -220,6 +225,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             agiGitHubUserReadinessGatesSnapshot = try? SeisAGIGitHubUserReadinessGatesSnapshot.validated(
                 from: Data(contentsOf: agiGitHubUserReadinessGatesURL)
             )
+            agiPublicReadinessEvidenceSnapshot = try? SeisAGIPublicReadinessEvidenceSnapshot.validated(
+                from: Data(contentsOf: agiPublicReadinessEvidenceURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -239,6 +247,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             commandCenterOperationsReadinessSnapshot = nil
             agiIndependentEvidenceLedgerSnapshot = nil
             agiGitHubUserReadinessGatesSnapshot = nil
+            agiPublicReadinessEvidenceSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -668,6 +677,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-agi-github-user-readiness-gates.json")
     }
 
+    private var agiPublicReadinessEvidenceURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-agi-public-readiness-evidence.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -758,6 +774,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let agiGitHubUserReadinessGatesSnapshot = model.agiGitHubUserReadinessGatesSnapshot {
                     agiGitHubUserReadinessGatesDisclosure(snapshot: agiGitHubUserReadinessGatesSnapshot)
+                }
+                if let agiPublicReadinessEvidenceSnapshot = model.agiPublicReadinessEvidenceSnapshot {
+                    agiPublicReadinessEvidenceDisclosure(snapshot: agiPublicReadinessEvidenceSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -1862,6 +1881,35 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("GitHub user readiness gates. Local Demo review and no-key validators are allowed; real AGI use, live providers, 512B routeability, runtime authority, and release approval remain gated.")
+    }
+
+    private func agiPublicReadinessEvidenceDisclosure(snapshot: SeisAGIPublicReadinessEvidenceSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.readinessSummary.acceptedClaimEvidenceCount)/\(snapshot.readinessSummary.minimumClaimEvidenceCount) minimum claim evidence accepted · \(snapshot.readinessSummary.missingClaimEvidenceCount) missing")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isBlockedPlanOnly ? .secondary : .red)
+                Text("Protocol: \(snapshot.readinessSummary.protocolStatus) · Apex: \(snapshot.readinessSummary.apexProgramStatus) · Dimensions: \(snapshot.readinessSummary.evaluationDimensionCount) · Source gates: \(snapshot.readinessSummary.sourceDerivedGateCount)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                ForEach(snapshot.sourceDerivedGateMatrix) { gate in
+                    Text("\(gate.gateId) · \(gate.status) · evidence: \(gate.evidenceStatus)")
+                        .font(.caption2.monospaced())
+                        .foregroundStyle(.secondary)
+                }
+                Text(snapshot.readinessSummary.blockedReason)
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+                Text(snapshot.truthBoundary)
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("AGI public readiness evidence", systemImage: "exclamationmark.shield")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("AGI public readiness evidence. Zero of twenty minimum claim evidence items are accepted, twenty remain missing, and the protocol is not run; Local Demo remains separate from AGI claims.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {
