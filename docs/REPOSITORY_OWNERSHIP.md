@@ -11,16 +11,62 @@ deletions, bidirectional synchronization, or writes to unverified folders.
 
 ## Current repository evidence
 
-| Repository    | Canonical remote                          | Visibility | Default | Local worktree | Manifest                      | Evidence boundary                                                                                                                                 |
-| ------------- | ----------------------------------------- | ---------- | ------- | -------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| SEIS          | `emirhankudun-ux/SEIS`                    | public     | `main`  | valid          | present and locally validated | Clean isolated worktree created from local `origin/main`.                                                                                         |
-| Eleni-Neferi  | `emirhankudun-ux/Eleni-Neferi-`           | private    | `main`  | invalid        | missing                       | Remote identity metadata was observed read-only through the authenticated connector; the top-level local candidate has incomplete Git metadata.   |
-| Pantechnoesis | `emirhankudun-ux/Pantechnoepistemonoesis` | private    | `main`  | invalid        | missing                       | Remote identity metadata was observed read-only through the authenticated connector; the top-level local candidates have incomplete Git metadata. |
+| Repository    | Canonical remote                          | Visibility | Observed `main`       | Local worktree | Manifest at observed revision | Registry validation                                                |
+| ------------- | ----------------------------------------- | ---------- | --------------------- | -------------- | ----------------------------- | ------------------------------------------------------------------ |
+| SEIS          | `emirhankudun-ux/SEIS`                    | public     | `38031939`            | valid          | missing                       | `review`; PR 177 has revision-bound passing CI evidence             |
+| Eleni-Neferi  | `emirhankudun-ux/Eleni-Neferi-`           | private    | digest-attested       | valid clone    | missing                       | `review`; public-safe attestation records open draft and passing CI |
+| Pantechnoesis | `emirhankudun-ux/Pantechnoepistemonoesis` | private    | digest-attested       | valid clone    | missing                       | `review`; public-safe attestation records required/global CI pass   |
 
-Canonical remote identity, local-worktree validity, manifest readiness, and CI
-evidence are separate facts. A dated session observation of a private remote
-does not make an invalid local folder writable, prove all repository contents,
-or satisfy the manifest gate. CI does not reverify the private remotes.
+The dated observation used the isolated SEIS worktree, fresh valid private
+clones, and authenticated remote metadata without recording a machine-specific
+path. The public repository keeps its full observed revision; private revision
+identifiers are represented only by SHA-256 digests. Canonical remote identity,
+local-worktree validity, observed-`main` content, and manifest validation remain
+separate facts. The
+SEIS manifest is validated on its review branch but is not claimed as present
+on the observed `main` revision. Uncommitted manifest work in another worktree
+is not evidence that a canonical private repository contains or has validated
+a manifest.
+
+Each repository entry therefore records a `manifest_validation` contract:
+
+- `pending`, `review`, `validated`, or `rejected` status plus ordered history;
+- repository-relative manifest path, an immutable reviewed revision or
+  public-safe digest, and a separate canonical revision reference after merge;
+- expected project id, canonical owner, visibility, and `public_repo` value;
+- revision-bound public GitHub evidence or a repository-local public-safe
+  attestation for private review metadata.
+
+For SEIS, the validator also reads the local manifest and compares its contents
+with those expected fields. For external private repositories, the validator
+must not read sibling worktrees, copy their manifests, or publish private
+commit, PR, or Actions identifiers. `review` records an authenticated
+point-in-time observation of an open pull request and successful revision-bound
+CI, but the manifest is not yet claimed on canonical `main`. `validated`
+additionally requires a merged observation and a revision reference matching
+the observed canonical revision. The validator enforces
+`pending -> review -> validated|rejected`. A normal merge or squash may create a
+canonical revision different from the reviewed PR revision; validation keeps
+those references separate and requires an explicit content-match observation.
+The deterministic check validates recorded evidence
+consistency but does not make network calls or continuously monitor GitHub.
+
+## Current manifest review evidence
+
+- SEIS
+  [revision `f772b6f364e49d438113b2d51f2e20027ae9f6b4`](https://github.com/emirhankudun-ux/SEIS/commit/f772b6f364e49d438113b2d51f2e20027ae9f6b4):
+  [PR 177](https://github.com/emirhankudun-ux/SEIS/pull/177) and
+  [Foundation Check](https://github.com/emirhankudun-ux/SEIS/actions/runs/29212479194).
+  The manifest-introducing revision is an observed ancestor of the current PR
+  head, the manifest path is unchanged there, and the cited check ran
+  successfully on that current head.
+- Eleni-Neferi and Pantechnoesis private review state is recorded in the
+  [public-safe attestation](../data/evidence/ECO-GOAL-0001-private-manifest-review.yaml).
+  It confirms open drafts, matching review/CI heads, and passing required
+  checks without publishing private commit identifiers, PR numbers, Actions
+  run identifiers, contents, or logs. The optional Pantechnoesis paired-Greek
+  check was skipped; the required/global check passed, and the skip does not
+  verify the paired repository.
 
 SEIS is the bootstrap coordinator because it has the current valid worktree and
 governance foundation. That limited coordination role does not transfer
@@ -28,20 +74,46 @@ ownership of Eleni identity modules or Pantechnoesis AI and knowledge modules
 to SEIS. The proposed decision is recorded in
 [`ADR-0002`](adr/0002-ecosystem-governance-bootstrap-ownership.md).
 
-## Owned modules
+## Proposed owned-module inventory
 
-| Module                            | Canonical repository | Decision                   | Sync direction                             |
-| --------------------------------- | -------------------- | -------------------------- | ------------------------------------------ |
-| `seis-product-platform`           | `seis`               | accepted                   | canonical only                             |
-| `ecosystem-governance-bootstrap`  | `seis`               | proposed                   | canonical to consumers only after approval |
-| `eleni-identity-platform`         | `eleni-neferi`       | proposed identity boundary | canonical only                             |
-| `pantechno-ai-knowledge-platform` | `pantechnoesis`      | proposed identity boundary | canonical only                             |
+| Module                           | Canonical repository | Paths summary                                           | Decision |
+| -------------------------------- | -------------------- | ------------------------------------------------------- | -------- |
+| `seis-product-platform`          | `seis`               | `apps`, `packages`                                      | accepted |
+| `ecosystem-governance-bootstrap` | `seis`               | constitution, manifest, registry, ownership docs, Goals | proposed |
+| `eleni-identity-and-brain`       | `eleni-neferi`       | identity docs, brain docs/data, `neferi-brain`          | proposed |
+| `eleni-native-core`              | `eleni-neferi`       | Swift package, sources, tests, native architecture docs | proposed |
+| `eleni-public-experience`        | `eleni-neferi`       | web app, design/visual data and docs                    | proposed |
+| `eleni-oracle-routing`           | `eleni-neferi`       | AI router source, AI data, AI docs                      | proposed |
+| `pantech-9router`                | `pantechnoesis`      | router source, AI content/docs, 9Router docs            | proposed |
+| `pantech-agent-governance`       | `pantechnoesis`      | agent content and operating docs                        | proposed |
+| `pantech-engineering-labs`       | `pantechnoesis`      | executable labs and engineering content/docs            | proposed |
+| `pantech-mcp-governance`         | `pantechnoesis`      | MCP registry and exact MCP governance records           | proposed |
 
-The product-family ownership boundaries above prevent accidental consolidation;
-they do not claim those private repositories are implementation-ready. Their
-missing manifests and invalid local candidates keep cross-repository execution
-blocked. Shared modules beyond this product-family baseline still require a
-complete inventory and an accepted follow-up decision.
+Every recorded path is exact and non-overlapping within its canonical
+repository. The inventory is still proposed: it establishes an audited review
+surface but does not make the private manifests validated or ADR-0002 accepted.
+
+## Consumer mappings
+
+Consumers are structured records rather than repository id strings. A mapping
+records the consumer repository, optional repository-relative consumer path,
+observed or planned status, one-way distribution mode, compatibility state,
+and typed evidence. Observed public consumers require an exact HTTPS artifact
+in the recorded consumer repository plus a schema-bound distribution
+attestation. Observed private consumers may use only a schema-bound public-safe
+attestation under `data/evidence/`. Both forms must match the module, consumer
+repository and path, distribution mode, compatibility state, and revision;
+private revisions use only SHA-256 digests.
+Unknown repositories, duplicate consumer repositories, absolute paths, and
+paths that escape a repository are rejected. Case-folded path collisions are
+also rejected for the ecosystem's common case-insensitive macOS worktrees. The
+two governance consumers are currently `planned`, `manual-adoption`, and
+`not-validated`; no distribution is claimed.
+
+The Pantechnoesis governance inventory also references a separately paired
+Greek identity repository. That reference is only a pending decision. The
+separate repository was not independently observed here, so it is not added to
+the repository or module registries and no ownership is invented for it.
 
 ## Validation contract
 
@@ -53,25 +125,34 @@ npm run test:ecosystem-foundation
 ```
 
 The check validates the SEIS manifest, ownership registry, and blocked
-`ECO-GOAL-0001` record. It rejects duplicate repository ids, duplicate module
-ids, duplicate owned paths, unknown canonical owners, invalid status-directory
-mappings, and canonical claims for repositories without dated observed metadata.
-The negative test injects duplicate path ownership into a temporary fixture and
-requires the validator to reject it.
+`ECO-GOAL-0001` record. It rejects duplicate repository or module ids,
+duplicate or overlapping owned paths, false external manifest validation,
+missing or cross-repository manifest evidence, illegal or skipped manifest
+lifecycle transitions, expected identity/visibility mismatches, malformed
+GitHub repository identities, unknown or duplicate consumers, unbound consumer
+evidence, case-folded ownership collisions, unsafe consumer paths, invalid
+status-directory mappings, and canonical claims without dated observation
+metadata. Secret-pattern checks also include every manifest or consumer
+attestation referenced by the registry, including comments ignored by YAML.
 
-Passing this check proves only the local SEIS bootstrap files are structurally
-consistent. It does not prove that valid Eleni-Neferi or Pantechnoesis
-worktrees exist, that their manifests were published, that every shared module
-has been inventoried, or that remote GitHub CI accepted the change.
+Passing this check proves the local SEIS registry is structurally consistent
+and that its recorded public evidence or private attestation fields agree. The
+authenticated observations were also checked live on the recorded date, but
+the deterministic validator does not query GitHub. Neither result proves the
+open pull requests were later approved or merged, that the manifests are
+present on canonical `main`,
+that planned consumers received an artifact, that the Greek paired repository
+was verified, or that human review accepted the proposed ownership decision.
 
 ## Current unblock requirements
 
-- Create valid, owner-authorized non-default worktrees for the two private
-  canonical repositories without modifying the invalid local folders.
-- Add private-accurate `project.ecosystem.yaml` manifests and validate them in
-  their canonical repositories.
-- Inventory shared modules and consumers across all three valid repositories,
-  then accept the final ownership map through review.
+- Complete review and merge of all three manifest pull requests through each
+  repository's policy, then refresh observed `main` revisions and promote the
+  manifest records from `review` to `validated`.
+- Review the proposed shared-module paths and structured consumer mappings,
+  then accept or revise ADR-0002.
+- Independently verify the separately paired Greek identity repository before
+  adding any identity, visibility, module, or consumer claim for it.
 - Preserve the successful pull-request CI evidence while completing the private
   manifests and ownership review; CI success does not prove those missing
   cross-repository artifacts.

@@ -11,6 +11,7 @@ GOAL_RELATIVE_PATH = "goals/active/ECO-GOAL-0003--goal-schema-validation-and-ci.
 FIXTURE_FILES = [
   "project.ecosystem.yaml",
   "data/repository-ownership.yaml",
+  "data/evidence/ECO-GOAL-0001-private-manifest-review.yaml",
   ".github/workflows/foundation-check.yml",
   "docs/ECOSYSTEM_GOAL_TRACKING.md",
   "docs/REPOSITORY_OWNERSHIP.md",
@@ -115,7 +116,7 @@ assert_rejected("manifest with malformed project object", "project.ecosystem.yam
   write_yaml(directory, "project.ecosystem.yaml", manifest)
 end
 
-assert_rejected("duplicate owned path", "path apps has duplicate canonical owners") do |directory|
+assert_rejected("duplicate owned path", "case-folded path apps / apps has duplicate canonical owners") do |directory|
   ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
   ownership["modules"] << {
     "id" => "duplicate-path-fixture",
@@ -129,6 +130,34 @@ assert_rejected("duplicate owned path", "path apps has duplicate canonical owner
   write_yaml(directory, "data/repository-ownership.yaml", ownership)
 end
 
+assert_rejected("case-folded overlapping owned path", "owned paths apps (seis-product-platform) and Apps/web (case-fold-overlap-fixture) overlap") do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  ownership["modules"] << {
+    "id" => "case-fold-overlap-fixture",
+    "canonical_repo" => "seis",
+    "decision_status" => "proposed",
+    "decision_record" => "docs/adr/0002-ecosystem-governance-bootstrap-ownership.md",
+    "paths" => ["Apps/web"],
+    "consumers" => [],
+    "sync_direction" => "canonical-only"
+  }
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
+assert_rejected("overlapping owned path", "owned paths apps (seis-product-platform) and apps/web (overlapping-path-fixture) overlap") do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  ownership["modules"] << {
+    "id" => "overlapping-path-fixture",
+    "canonical_repo" => "seis",
+    "decision_status" => "proposed",
+    "decision_record" => "docs/adr/0002-ecosystem-governance-bootstrap-ownership.md",
+    "paths" => ["apps/web"],
+    "consumers" => [],
+    "sync_direction" => "canonical-only"
+  }
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
 assert_accepted("same path in a different canonical repository") do |directory|
   ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
   ownership["modules"] << {
@@ -136,7 +165,7 @@ assert_accepted("same path in a different canonical repository") do |directory|
     "canonical_repo" => "eleni-neferi",
     "decision_status" => "proposed",
     "decision_record" => "docs/adr/0002-ecosystem-governance-bootstrap-ownership.md",
-    "paths" => ["apps"],
+    "paths" => ["packages"],
     "consumers" => [],
     "sync_direction" => "canonical-only"
   }
@@ -165,6 +194,214 @@ assert_rejected("Windows UNC ownership path", "must remain a nonempty repository
   ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
   ownership["modules"].find { |mod| mod["id"] == "seis-product-platform" }["paths"][0] = "\\\\server\\share"
   write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
+assert_rejected("duplicate structured consumer", "has duplicate consumer repository \"eleni-neferi\"") do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  mod = ownership["modules"].find { |candidate| candidate["id"] == "ecosystem-governance-bootstrap" }
+  mod["consumers"] << Marshal.load(Marshal.dump(mod["consumers"].first))
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
+assert_rejected("unknown structured consumer", "has unknown consumer repository \"unknown-repository\"") do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  consumer = ownership["modules"]
+    .find { |candidate| candidate["id"] == "ecosystem-governance-bootstrap" }["consumers"].first
+  consumer["repository"] = "unknown-repository"
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
+assert_rejected("absolute structured consumer path", "path \"/private/consumer\" must remain a nonempty repository-relative path") do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  consumer = ownership["modules"]
+    .find { |candidate| candidate["id"] == "ecosystem-governance-bootstrap" }["consumers"].first
+  consumer["consumer_path"] = "/private/consumer"
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
+assert_rejected("escaping structured consumer path", "path \"../private/consumer\" must remain a nonempty repository-relative path") do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  consumer = ownership["modules"]
+    .find { |candidate| candidate["id"] == "ecosystem-governance-bootstrap" }["consumers"].first
+  consumer["consumer_path"] = "../private/consumer"
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
+assert_rejected("observed structured consumer without evidence", "observed consumer \"eleni-neferi\" requires evidence") do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  consumer = ownership["modules"]
+    .find { |candidate| candidate["id"] == "ecosystem-governance-bootstrap" }["consumers"].first
+  consumer["status"] = "observed"
+  consumer["compatibility"] = "compatible"
+  consumer["evidence"] = []
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
+assert_rejected("private observed consumer with operational URL evidence", "private consumer \"eleni-neferi\" evidence requires a public-safe revision digest and schema-bound attestation") do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  consumer = ownership["modules"]
+    .find { |candidate| candidate["id"] == "ecosystem-governance-bootstrap" }["consumers"].first
+  consumer["status"] = "observed"
+  consumer["compatibility"] = "compatible"
+  consumer["evidence"] = [
+    {
+      "kind" => "public-distribution-attestation",
+      "artifact_url" => "https://example.invalid/unrelated",
+      "attestation_path" => nil,
+      "revision" => nil,
+      "revision_digest" => nil
+    }
+  ]
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
+assert_rejected("public observed consumer with unrelated GitHub evidence", "public consumer \"seis\" evidence must combine an exact repository-bound GitHub artifact, full revision, and schema-bound distribution attestation") do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  consumer = ownership["modules"]
+    .find { |candidate| candidate["id"] == "ecosystem-governance-bootstrap" }["consumers"].first
+  consumer["repository"] = "seis"
+  consumer["status"] = "observed"
+  consumer["compatibility"] = "compatible"
+  consumer["evidence"] = [
+    {
+      "kind" => "public-distribution-attestation",
+      "artifact_url" => "https://github.com/example/other/commit/#{"0" * 40}",
+      "attestation_path" => nil,
+      "revision" => "#{"0" * 40}",
+      "revision_digest" => nil
+    }
+  ]
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
+assert_rejected("public observed consumer with dot-segment release tag", "public consumer \"seis\" evidence must combine an exact repository-bound GitHub artifact, full revision, and schema-bound distribution attestation") do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  consumer = ownership["modules"]
+    .find { |candidate| candidate["id"] == "ecosystem-governance-bootstrap" }["consumers"].first
+  consumer["repository"] = "seis"
+  consumer["status"] = "observed"
+  consumer["compatibility"] = "compatible"
+  consumer["evidence"] = [
+    {
+      "kind" => "public-distribution-attestation",
+      "artifact_url" => "https://github.com/emirhankudun-ux/SEIS/releases/tag/..",
+      "attestation_path" => nil,
+      "revision" => "#{"0" * 40}",
+      "revision_digest" => nil
+    }
+  ]
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
+assert_accepted("private observed consumer with bound public-safe attestation") do |directory|
+  digest = "sha256:#{"0" * 64}"
+  attestation_path = "data/evidence/private-consumer-fixture.yaml"
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  consumer = ownership["modules"]
+    .find { |candidate| candidate["id"] == "ecosystem-governance-bootstrap" }["consumers"].first
+  consumer["status"] = "observed"
+  consumer["compatibility"] = "compatible"
+  consumer["evidence"] = [
+    {
+      "kind" => "public-safe-attestation",
+      "artifact_url" => nil,
+      "attestation_path" => attestation_path,
+      "revision" => nil,
+      "revision_digest" => digest
+    }
+  ]
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+  FileUtils.mkdir_p(File.dirname(File.join(directory, attestation_path)))
+  write_yaml(directory, attestation_path, {
+    "schema_version" => 1,
+    "kind" => "consumer-distribution",
+    "classification" => "public-safe-metadata-only",
+    "module_id" => "ecosystem-governance-bootstrap",
+    "consumer_repository" => "eleni-neferi",
+    "consumer_path" => "project.ecosystem.yaml",
+    "distribution_mode" => "manual-adoption",
+    "compatibility" => "compatible",
+    "artifact_url" => nil,
+    "revision" => nil,
+    "revision_digest" => digest,
+    "observed_at" => "2026-07-13",
+    "limitations" => ["point-in-time-observation", "private-identifiers-redacted"]
+  })
+end
+
+assert_rejected("dynamic private consumer attestation comment with credential assignment", "data/evidence/private-consumer-secret-fixture.yaml: contains possible inline credential assignment") do |directory|
+  digest = "sha256:#{"0" * 64}"
+  attestation_path = "data/evidence/private-consumer-secret-fixture.yaml"
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  consumer = ownership["modules"]
+    .find { |candidate| candidate["id"] == "ecosystem-governance-bootstrap" }["consumers"].first
+  consumer["status"] = "observed"
+  consumer["compatibility"] = "compatible"
+  consumer["evidence"] = [
+    {
+      "kind" => "public-safe-attestation",
+      "artifact_url" => nil,
+      "attestation_path" => attestation_path,
+      "revision" => nil,
+      "revision_digest" => digest
+    }
+  ]
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+  FileUtils.mkdir_p(File.dirname(File.join(directory, attestation_path)))
+  write_yaml(directory, attestation_path, {
+    "schema_version" => 1,
+    "kind" => "consumer-distribution",
+    "classification" => "public-safe-metadata-only",
+    "module_id" => "ecosystem-governance-bootstrap",
+    "consumer_repository" => "eleni-neferi",
+    "consumer_path" => "project.ecosystem.yaml",
+    "distribution_mode" => "manual-adoption",
+    "compatibility" => "compatible",
+    "artifact_url" => nil,
+    "revision" => nil,
+    "revision_digest" => digest,
+    "observed_at" => "2026-07-13",
+    "limitations" => ["point-in-time-observation", "private-identifiers-redacted"]
+  })
+  File.open(File.join(directory, attestation_path), "a") { |file| file.write("\n# secret = \"fixture-secret-value\"\n") }
+end
+
+assert_accepted("public observed consumer with repository and distribution-bound attestation") do |directory|
+  revision = "f772b6f364e49d438113b2d51f2e20027ae9f6b4"
+  artifact_url = "https://github.com/emirhankudun-ux/SEIS/commit/#{revision}"
+  attestation_path = "data/evidence/public-consumer-fixture.yaml"
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  consumer = ownership["modules"]
+    .find { |candidate| candidate["id"] == "ecosystem-governance-bootstrap" }["consumers"].first
+  consumer["repository"] = "seis"
+  consumer["status"] = "observed"
+  consumer["compatibility"] = "compatible"
+  consumer["evidence"] = [
+    {
+      "kind" => "public-distribution-attestation",
+      "artifact_url" => artifact_url,
+      "attestation_path" => attestation_path,
+      "revision" => revision,
+      "revision_digest" => nil
+    }
+  ]
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+  FileUtils.mkdir_p(File.dirname(File.join(directory, attestation_path)))
+  write_yaml(directory, attestation_path, {
+    "schema_version" => 1,
+    "kind" => "consumer-distribution",
+    "classification" => "public-evidence",
+    "module_id" => "ecosystem-governance-bootstrap",
+    "consumer_repository" => "seis",
+    "consumer_path" => "project.ecosystem.yaml",
+    "distribution_mode" => "manual-adoption",
+    "compatibility" => "compatible",
+    "artifact_url" => artifact_url,
+    "revision" => revision,
+    "revision_digest" => nil,
+    "observed_at" => "2026-07-13",
+    "limitations" => ["point-in-time-observation", "compatibility-limited-to-recorded-contract"]
+  })
 end
 
 assert_rejected("Goal without rollback", "missing required field rollback") do |directory|
@@ -215,8 +452,26 @@ assert_rejected(
 end
 
 assert_rejected(
+  "private observed repository without a revision digest",
+  "private observed repository eleni-neferi must publish only a SHA-256 revision digest"
+) do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  ownership["repositories"].find { |repository| repository["id"] == "eleni-neferi" }["observed_revision_digest"] = nil
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
+assert_rejected(
+  "path-confused GitHub remote",
+  "observed repository eleni-neferi remote must use an exact GitHub owner/repository identity"
+) do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  ownership["repositories"].find { |repository| repository["id"] == "eleni-neferi" }["remote"] = "trusted/repo/../other"
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
+assert_rejected(
   "remote observation with local-only verification method",
-  "repository eleni-neferi verification \"observed-remote\" cannot use method \"local-git\""
+  "repository eleni-neferi verification \"observed-local-and-remote\" cannot use method \"local-git\""
 ) do |directory|
   ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
   ownership["repositories"].find { |repository| repository["id"] == "eleni-neferi" }["verification_method"] = "local-git"
@@ -234,23 +489,238 @@ assert_rejected_with_parent(
 end
 
 assert_rejected(
-  "present-validated repository with missing manifest",
-  "repository seis present-validated manifest \"missing-project.ecosystem.yaml\" must be an existing file in a valid local worktree"
+  "locally validated repository with missing manifest",
+  "local repository seis review manifest \"missing-project.ecosystem.yaml\" must be an existing file in the current worktree"
 ) do |directory|
   ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
-  ownership["repositories"].find { |repository| repository["id"] == "seis" }["manifest_path"] = "missing-project.ecosystem.yaml"
+  ownership["repositories"].find { |repository| repository["id"] == "seis" }["manifest_validation"]["manifest_path"] = "missing-project.ecosystem.yaml"
   write_yaml(directory, "data/repository-ownership.yaml", ownership)
 end
 
 assert_rejected(
-  "present-validated repository with another repository manifest",
-  "repository eleni-neferi manifest identity must match its canonical repository id"
+  "public review with mismatched pull-request head",
+  "public repository seis review manifest requires revision-bound public commit, pull request, and CI evidence"
 ) do |directory|
   ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  evidence = ownership["repositories"]
+    .find { |candidate| candidate["id"] == "seis" }["manifest_validation"]["evidence"]
+  evidence["pull_request_head_revision"] = "0123456789abcdef0123456789abcdef01234567"
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
+assert_rejected(
+  "manifest lifecycle skips review",
+  "repository eleni-neferi manifest history cannot transition from \"pending\" to \"validated\""
+) do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  validation = ownership["repositories"]
+    .find { |candidate| candidate["id"] == "eleni-neferi" }["manifest_validation"]
+  validation["status"] = "validated"
+  validation["status_history"] = [
+    { "status" => "pending", "at" => "2026-07-13", "revision" => nil },
+    { "status" => "validated", "at" => "2026-07-13", "revision" => validation["manifest_revision_digest"] }
+  ]
+  validation["evidence"]["pull_request_state"] = "merged"
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
+assert_rejected(
+  "review manifest promoted before canonical revision refresh",
+  "repository eleni-neferi validated manifest revision must match the observed canonical revision reference"
+) do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  validation = ownership["repositories"]
+    .find { |candidate| candidate["id"] == "eleni-neferi" }["manifest_validation"]
+  validation["status"] = "validated"
+  validation["canonical_manifest_revision_digest"] = validation["manifest_revision_digest"]
+  validation["status_history"] << {
+    "status" => "validated",
+    "at" => "2026-07-13",
+    "revision" => validation["manifest_revision_digest"]
+  }
+  validation["evidence"]["pull_request_state"] = "merged"
+  validation["evidence"]["pull_request_draft"] = false
+  validation["evidence"]["manifest_content_matches_review_at_canonical_revision"] = true
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
+assert_rejected(
+  "validated manifest with failed CI metadata",
+  "repository seis validated manifest requires coherent pull-request state and successful completed pull-request CI"
+) do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  repository = ownership["repositories"].find { |candidate| candidate["id"] == "seis" }
+  validation = repository["manifest_validation"]
+  canonical_revision = repository["observed_revision"]
+  validation["status"] = "validated"
+  validation["canonical_manifest_revision"] = canonical_revision
+  validation["status_history"] << {
+    "status" => "validated",
+    "at" => "2026-07-13",
+    "revision" => canonical_revision
+  }
+  validation["evidence"]["pull_request_state"] = "merged"
+  validation["evidence"]["pull_request_draft"] = false
+  validation["evidence"]["manifest_content_matches_review_at_canonical_revision"] = true
+  validation["evidence"]["ci_conclusion"] = "failure"
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
+assert_accepted("public validated manifest with separate review and canonical merge revisions") do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  repository = ownership["repositories"].find { |candidate| candidate["id"] == "seis" }
+  validation = repository["manifest_validation"]
+  canonical_revision = repository["observed_revision"]
+  validation["status"] = "validated"
+  validation["canonical_manifest_revision"] = canonical_revision
+  validation["status_history"] << {
+    "status" => "validated",
+    "at" => "2026-07-13",
+    "revision" => canonical_revision
+  }
+  validation["evidence"]["pull_request_state"] = "merged"
+  validation["evidence"]["pull_request_draft"] = false
+  validation["evidence"]["manifest_content_matches_review_at_canonical_revision"] = true
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
+assert_accepted("private validated manifest with status-specific merged attestation") do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
   repository = ownership["repositories"].find { |candidate| candidate["id"] == "eleni-neferi" }
-  repository["local_worktree"] = "valid"
-  repository["manifest_status"] = "present-validated"
-  repository["manifest_path"] = "project.ecosystem.yaml"
+  validation = repository["manifest_validation"]
+  canonical_digest = repository["observed_revision_digest"]
+  validation["status"] = "validated"
+  validation["canonical_manifest_revision_digest"] = canonical_digest
+  validation["status_history"] << {
+    "status" => "validated",
+    "at" => "2026-07-13",
+    "revision" => canonical_digest
+  }
+  validation["evidence"]["pull_request_state"] = "merged"
+  validation["evidence"]["pull_request_draft"] = false
+  validation["evidence"]["manifest_content_matches_review_at_canonical_revision"] = true
+  attestation_path = File.join(directory, validation["evidence"]["attestation_path"])
+  attestation = YAML.safe_load(File.read(attestation_path))
+  entry = attestation["attestations"].find { |candidate| candidate["repository_id"] == "eleni-neferi" }
+  entry["status_revision_digest"] = canonical_digest
+  entry["canonical_manifest_revision_digest"] = canonical_digest
+  entry["pull_request_state"] = "merged"
+  entry["pull_request_draft"] = false
+  entry["manifest_content_matches_review_at_canonical_revision"] = true
+  entry["limitations"] = ["point-in-time-observation", "private-identifiers-redacted"]
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+  write_yaml(directory, validation["evidence"]["attestation_path"], attestation)
+end
+
+assert_rejected(
+  "private rejected manifest with raw revision history",
+  "private repository eleni-neferi manifest history must use only SHA-256 revision digests"
+) do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  validation = ownership["repositories"]
+    .find { |candidate| candidate["id"] == "eleni-neferi" }["manifest_validation"]
+  raw_revision = "0123456789abcdef0123456789abcdef01234567"
+  validation["status"] = "rejected"
+  validation["manifest_revision"] = raw_revision
+  validation["manifest_revision_digest"] = nil
+  validation["status_history"] << {
+    "status" => "rejected",
+    "at" => "2026-07-13",
+    "revision" => raw_revision
+  }
+  validation["evidence"]["pull_request_state"] = "closed"
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
+assert_rejected(
+  "pending manifest claiming review evidence",
+  "repository eleni-neferi pending manifest must not claim a revision or validation evidence"
+) do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  validation = ownership["repositories"]
+    .find { |candidate| candidate["id"] == "eleni-neferi" }["manifest_validation"]
+  validation["status"] = "pending"
+  validation["status_history"] = [
+    { "status" => "pending", "at" => "2026-07-13", "revision" => nil }
+  ]
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
+assert_rejected(
+  "private manifest review without public-safe attestation",
+  "private repository eleni-neferi review manifest requires a public-safe revision digest and repository attestation without private operational URLs"
+) do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  validation = ownership["repositories"]
+    .find { |candidate| candidate["id"] == "eleni-neferi" }["manifest_validation"]
+  validation["evidence"]["attestation_path"] = nil
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
+assert_rejected(
+  "private manifest attestation with mismatched digest",
+  "private manifest attestation for eleni-neferi does not match the ownership record"
+) do |directory|
+  path = File.join(directory, "data/evidence/ECO-GOAL-0001-private-manifest-review.yaml")
+  attestation = YAML.safe_load(File.read(path))
+  attestation["attestations"].find { |entry| entry["repository_id"] == "eleni-neferi" }["review_revision_digest"] =
+    "sha256:#{"0" * 64}"
+  write_yaml(directory, "data/evidence/ECO-GOAL-0001-private-manifest-review.yaml", attestation)
+end
+
+assert_rejected(
+  "private manifest attestation leaking an operational URL",
+  "private manifest attestation must not publish operational URLs or raw revisions"
+) do |directory|
+  path = File.join(directory, "data/evidence/ECO-GOAL-0001-private-manifest-review.yaml")
+  File.open(path, "a") { |file| file.write("\n# https://github.com/private/repository/pull/1\n") }
+end
+
+assert_rejected(
+  "private manifest attestation comment with credential assignment",
+  "data/evidence/ECO-GOAL-0001-private-manifest-review.yaml: contains possible inline credential assignment"
+) do |directory|
+  path = File.join(directory, "data/evidence/ECO-GOAL-0001-private-manifest-review.yaml")
+  File.open(path, "a") { |file| file.write("\n# token = \"fixture-secret-value\"\n") }
+end
+
+assert_rejected(
+  "private manifest attestation with unapproved skipped check",
+  "private manifest attestation skipped checks must use the public-safe allowlist"
+) do |directory|
+  path = File.join(directory, "data/evidence/ECO-GOAL-0001-private-manifest-review.yaml")
+  attestation = YAML.safe_load(File.read(path))
+  attestation["attestations"].first["skipped_checks"] << "private-run-123"
+  write_yaml(directory, "data/evidence/ECO-GOAL-0001-private-manifest-review.yaml", attestation)
+end
+
+assert_rejected(
+  "private manifest attestation with unapproved limitation",
+  "private manifest attestation for eleni-neferi does not match the ownership record"
+) do |directory|
+  path = File.join(directory, "data/evidence/ECO-GOAL-0001-private-manifest-review.yaml")
+  attestation = YAML.safe_load(File.read(path))
+  attestation["attestations"].first["limitations"] << "private-pr-2"
+  write_yaml(directory, "data/evidence/ECO-GOAL-0001-private-manifest-review.yaml", attestation)
+end
+
+assert_rejected(
+  "external manifest expected identity mismatch",
+  "repository eleni-neferi manifest expected identity must match its canonical repository id"
+) do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  ownership["repositories"]
+    .find { |candidate| candidate["id"] == "eleni-neferi" }["manifest_validation"]["expected"]["project_id"] = "seis"
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
+assert_rejected(
+  "external manifest expected visibility mismatch",
+  "repository eleni-neferi manifest expected visibility must match repository visibility \"private\""
+) do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  ownership["repositories"]
+    .find { |candidate| candidate["id"] == "eleni-neferi" }["manifest_validation"]["expected"]["visibility"] = "public-safe"
   write_yaml(directory, "data/repository-ownership.yaml", ownership)
 end
 
@@ -270,7 +740,7 @@ end
 
 assert_rejected(
   "manifest visibility mismatch",
-  "security.public_repo must match repository visibility \"private\""
+  "repository seis manifest expected visibility must match repository visibility \"private\""
 ) do |directory|
   ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
   ownership["repositories"].find { |repository| repository["id"] == "seis" }["visibility"] = "private"
@@ -450,4 +920,4 @@ assert_rejected("completed Goal with invalid release-note URL", "completed Goal 
   write_yaml(directory, completed_relative_path, goal)
 end
 
-puts "Ecosystem foundation tests passed: repository-scoped ownership was preserved; empty or malformed YAML, duplicate, non-normalized, or cross-platform absolute ownership paths, contradictory repository observations, escaping evidence and decision paths, missing or mismatched validated manifests, unquoted dates, missing rollback, unknown observed metadata, visibility mismatch, dangling Goal and blocker references, incomplete quality gates, proofless, nonexistent, or contradictory passed evidence, illegal lifecycle histories, invalid blocked state, and unsupported completion or release-note state were rejected."
+puts "Ecosystem foundation tests passed: repository-scoped ownership was preserved; empty or malformed YAML, duplicate, overlapping, case-folded, non-normalized, or cross-platform absolute ownership paths, path-confused remotes, contradictory repository observations, escaping evidence and decision paths, false, unbound, leaking, or unevidenced manifest review, illegal manifest lifecycle transitions, impossible validated CI or canonical states, expected identity or visibility mismatches, duplicate or unknown consumers, private operational URLs, unrelated or dot-segment public artifacts, unbound distribution claims, unevidenced observed consumers, unsafe consumer paths, unquoted dates, missing rollback, dangling Goal and blocker references, incomplete quality gates, proofless, nonexistent, or contradictory passed evidence, illegal Goal histories, invalid blocked state, and unsupported completion or release-note state were rejected; separate public merge revisions and bound public/private consumer attestations were accepted."

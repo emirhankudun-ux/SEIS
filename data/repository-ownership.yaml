@@ -13,39 +13,147 @@ repositories:
     verification: observed-local-and-remote
     verification_method: local-git-and-authenticated-github-connector
     observed_at: '2026-07-13'
+    observed_revision: 38031939b5a38270fad0ae8e0b5a96eceeabb4aa
+    observed_revision_digest: null
     verification_evidence: docs/REPOSITORY_OWNERSHIP.md
     remote: emirhankudun-ux/SEIS
     default_branch: main
     visibility: public
     local_worktree: valid
-    manifest_status: present-validated
-    manifest_path: project.ecosystem.yaml
+    manifest_validation:
+      status: review
+      status_history:
+        - status: pending
+          at: '2026-07-12'
+          revision: null
+        - status: review
+          at: '2026-07-12'
+          revision: f772b6f364e49d438113b2d51f2e20027ae9f6b4
+      manifest_path: project.ecosystem.yaml
+      manifest_revision: f772b6f364e49d438113b2d51f2e20027ae9f6b4
+      manifest_revision_digest: null
+      canonical_manifest_revision: null
+      canonical_manifest_revision_digest: null
+      expected:
+        project_id: seis
+        canonical_owner_repo: seis
+        visibility: public-safe
+        public_repo: true
+      evidence:
+        disclosure: public-evidence
+        attestation_path: null
+        observed_at: '2026-07-13'
+        commit_url: https://github.com/emirhankudun-ux/SEIS/commit/f772b6f364e49d438113b2d51f2e20027ae9f6b4
+        pull_request_url: https://github.com/emirhankudun-ux/SEIS/pull/177
+        ci_run_url: https://github.com/emirhankudun-ux/SEIS/actions/runs/29212479194
+        pull_request_head_revision: db81733053c94a28c1d404d76ca37c152f783c07
+        manifest_revision_ancestor_of_pull_request_head: true
+        manifest_path_unchanged_at_pull_request_head: true
+        manifest_content_matches_review_at_canonical_revision: null
+        pull_request_state: open
+        pull_request_draft: false
+        ci_head_revision: db81733053c94a28c1d404d76ca37c152f783c07
+        ci_status: completed
+        ci_conclusion: success
+        ci_event: pull_request
   - id: eleni-neferi
     display_name: Eleni-Neferi
     canonical: true
-    verification: observed-remote
-    verification_method: authenticated-github-connector
+    verification: observed-local-and-remote
+    verification_method: fresh-clone-and-authenticated-github-connector
     observed_at: '2026-07-13'
+    observed_revision: null
+    observed_revision_digest: sha256:febff18a38701b041d6c2454bb286e712957a32d699da9c04bf51f64cbb02d31
     verification_evidence: docs/REPOSITORY_OWNERSHIP.md
     remote: emirhankudun-ux/Eleni-Neferi-
     default_branch: main
     visibility: private
-    local_worktree: invalid
-    manifest_status: missing
-    manifest_path: project.ecosystem.yaml
+    local_worktree: valid
+    manifest_validation:
+      status: review
+      status_history:
+        - status: pending
+          at: '2026-07-13'
+          revision: null
+        - status: review
+          at: '2026-07-13'
+          revision: sha256:1ec0132473d9ee2376ffe7f050dd9c5972992f092d4178700c2031455f5e69b8
+      manifest_path: project.ecosystem.yaml
+      manifest_revision: null
+      manifest_revision_digest: sha256:1ec0132473d9ee2376ffe7f050dd9c5972992f092d4178700c2031455f5e69b8
+      canonical_manifest_revision: null
+      canonical_manifest_revision_digest: null
+      expected:
+        project_id: eleni-neferi
+        canonical_owner_repo: eleni-neferi
+        visibility: private
+        public_repo: false
+      evidence:
+        disclosure: public-safe-attestation
+        attestation_path: data/evidence/ECO-GOAL-0001-private-manifest-review.yaml
+        observed_at: '2026-07-13'
+        commit_url: null
+        pull_request_url: null
+        ci_run_url: null
+        pull_request_head_revision: null
+        manifest_revision_ancestor_of_pull_request_head: null
+        manifest_path_unchanged_at_pull_request_head: null
+        manifest_content_matches_review_at_canonical_revision: null
+        pull_request_state: open
+        pull_request_draft: true
+        ci_head_revision: null
+        ci_status: completed
+        ci_conclusion: success
+        ci_event: pull_request
   - id: pantechnoesis
     display_name: Pantechnoesis
     canonical: true
-    verification: observed-remote
-    verification_method: authenticated-github-connector
+    verification: observed-local-and-remote
+    verification_method: fresh-clone-and-authenticated-github-connector
     observed_at: '2026-07-13'
+    observed_revision: null
+    observed_revision_digest: sha256:a7420301cb26e66e4ae5f72142c07cc0cbe88cfbf749990badd470b0167f9c32
     verification_evidence: docs/REPOSITORY_OWNERSHIP.md
     remote: emirhankudun-ux/Pantechnoepistemonoesis
     default_branch: main
     visibility: private
-    local_worktree: invalid
-    manifest_status: missing
-    manifest_path: project.ecosystem.yaml
+    local_worktree: valid
+    manifest_validation:
+      status: review
+      status_history:
+        - status: pending
+          at: '2026-07-13'
+          revision: null
+        - status: review
+          at: '2026-07-13'
+          revision: sha256:095ebb58952e45636cfee23448ce9e2aeaec41289de70e48045ded58faf0a4fd
+      manifest_path: project.ecosystem.yaml
+      manifest_revision: null
+      manifest_revision_digest: sha256:095ebb58952e45636cfee23448ce9e2aeaec41289de70e48045ded58faf0a4fd
+      canonical_manifest_revision: null
+      canonical_manifest_revision_digest: null
+      expected:
+        project_id: pantechnoesis
+        canonical_owner_repo: pantechnoesis
+        visibility: private
+        public_repo: false
+      evidence:
+        disclosure: public-safe-attestation
+        attestation_path: data/evidence/ECO-GOAL-0001-private-manifest-review.yaml
+        observed_at: '2026-07-13'
+        commit_url: null
+        pull_request_url: null
+        ci_run_url: null
+        pull_request_head_revision: null
+        manifest_revision_ancestor_of_pull_request_head: null
+        manifest_path_unchanged_at_pull_request_head: null
+        manifest_content_matches_review_at_canonical_revision: null
+        pull_request_state: open
+        pull_request_draft: true
+        ci_head_revision: null
+        ci_status: completed
+        ci_conclusion: success
+        ci_event: pull_request
 
 modules:
   - id: seis-product-platform
@@ -68,38 +176,128 @@ modules:
       - docs/REPOSITORY_OWNERSHIP.md
       - goals
     consumers:
-      - eleni-neferi
-      - pantechnoesis
+      - repository: eleni-neferi
+        consumer_path: project.ecosystem.yaml
+        status: planned
+        distribution_mode: manual-adoption
+        compatibility: not-validated
+        evidence: []
+      - repository: pantechnoesis
+        consumer_path: project.ecosystem.yaml
+        status: planned
+        distribution_mode: manual-adoption
+        compatibility: not-validated
+        evidence: []
     sync_direction: canonical-to-consumers-after-approval
-  - id: eleni-identity-platform
+  - id: eleni-identity-and-brain
     canonical_repo: eleni-neferi
     decision_status: proposed
     decision_record: docs/adr/0002-ecosystem-governance-bootstrap-ownership.md
     paths:
       - docs/identity
+      - docs/brain
       - neferi-brain
+      - data/brain
     consumers: []
     sync_direction: canonical-only
-  - id: pantechno-ai-knowledge-platform
+  - id: eleni-native-core
+    canonical_repo: eleni-neferi
+    decision_status: proposed
+    decision_record: docs/adr/0002-ecosystem-governance-bootstrap-ownership.md
+    paths:
+      - Package.swift
+      - Sources
+      - Tests
+      - docs/architecture/eleni-core-swift.md
+      - docs/architecture/native-first-roadmap.md
+    consumers: []
+    sync_direction: canonical-only
+  - id: eleni-public-experience
+    canonical_repo: eleni-neferi
+    decision_status: proposed
+    decision_record: docs/adr/0002-ecosystem-governance-bootstrap-ownership.md
+    paths:
+      - apps/web
+      - data/design
+      - data/visual
+      - docs/design
+      - docs/public-readiness.md
+    consumers: []
+    sync_direction: canonical-only
+  - id: eleni-oracle-routing
+    canonical_repo: eleni-neferi
+    decision_status: proposed
+    decision_record: docs/adr/0002-ecosystem-governance-bootstrap-ownership.md
+    paths:
+      - src/ai
+      - data/ai
+      - docs/ai
+    consumers: []
+    sync_direction: canonical-only
+  - id: pantech-9router
     canonical_repo: pantechnoesis
     decision_status: proposed
     decision_record: docs/adr/0002-ecosystem-governance-bootstrap-ownership.md
     paths:
       - content/ai
       - docs/ai
+      - docs/9router.md
+      - src/ai
+    consumers: []
+    sync_direction: canonical-only
+  - id: pantech-agent-governance
+    canonical_repo: pantechnoesis
+    decision_status: proposed
+    decision_record: docs/adr/0002-ecosystem-governance-bootstrap-ownership.md
+    paths:
+      - content/agents
+      - docs/agents
+      - docs/agent-swarm.md
+    consumers: []
+    sync_direction: canonical-only
+  - id: pantech-engineering-labs
+    canonical_repo: pantechnoesis
+    decision_status: proposed
+    decision_record: docs/adr/0002-ecosystem-governance-bootstrap-ownership.md
+    paths:
+      - labs
+      - content/engineering
+      - docs/engineering
+    consumers: []
+    sync_direction: canonical-only
+  - id: pantech-mcp-governance
+    canonical_repo: pantechnoesis
+    decision_status: proposed
+    decision_record: docs/adr/0002-ecosystem-governance-bootstrap-ownership.md
+    paths:
+      - docs/mcp-registry.md
+      - content/governance/official-enterprise-mcp-integration.json
+      - content/governance/official-mcp-access-atlas.json
+      - content/governance/official-mcp-vendor-access-research.json
+      - docs/governance/official-enterprise-mcp-integration.md
+      - docs/governance/official-mcp-access-atlas.md
+      - docs/governance/official-mcp-vendor-access-research.md
     consumers: []
     sync_direction: canonical-only
 
 pending_decisions:
+  - id: seis-manifest-publication
+    description: Complete review of the SEIS project manifest in its canonical public repository.
+    reason: A public manifest review has an exact commit, open pull-request, and successful CI observation, but the pull request remains open and project.ecosystem.yaml is absent from the observed canonical main revision.
+    unblock_condition: Complete human review, merge through repository policy, refresh the observed main revision, and promote status from review to validated.
   - id: eleni-manifest-publication
     description: Add and validate the Eleni-Neferi project manifest in its canonical private repository.
-    reason: The remote repository is verified, but project.ecosystem.yaml is absent and the local candidate is not a valid Git worktree.
-    unblock_condition: Use a valid non-default branch in the canonical repository, preserve private visibility, and validate the manifest before review.
+    reason: A private-accurate manifest has passing repository-local commit, draft pull-request, and CI evidence, but the pull request is open and project.ecosystem.yaml is absent from the observed canonical main revision.
+    unblock_condition: Complete human review, merge the manifest through repository policy, refresh the observed main revision, and promote status from review to validated.
   - id: pantechno-manifest-publication
     description: Add and validate the Pantechnoesis project manifest in its canonical private repository.
-    reason: The remote repository is verified, but project.ecosystem.yaml is absent and the local candidates are not valid Git worktrees.
-    unblock_condition: Obtain the repository-required publication authorization, use a valid non-default branch, and validate the manifest before review.
+    reason: A private-accurate manifest has passing repository-local commit, draft pull-request, and CI evidence, but the pull request is open and project.ecosystem.yaml is absent from the observed canonical main revision.
+    unblock_condition: Complete human review, merge the manifest through repository policy, refresh the observed main revision, and promote status from review to validated.
   - id: shared-module-inventory
     description: Complete the cross-repository shared-module and consumer mapping inventory.
-    reason: This bootstrap records each product family and the SEIS governance coordinator, but does not yet prove full shared-contract coverage.
-    unblock_condition: Review canonical paths and consumer mappings in all three valid repositories and accept them through an ADR.
+    reason: The audited module paths now have an exact non-overlapping proposed inventory, but consumer mappings remain planned and ADR-0002 has not received human architecture review.
+    unblock_condition: Review the proposed canonical paths and structured consumer mappings, add durable evidence for any observed distribution, and accept or revise ADR-0002.
+  - id: paired-greek-identity-repository
+    description: Decide the ownership and synchronization boundary for the separately paired Greek identity repository referenced by Pantechnoesis governance.
+    reason: The pairing is documented inside the canonical Pantechnoesis repository, but that separate repository identity and visibility were not independently observed in this slice.
+    unblock_condition: Verify the repository identity and visibility read-only, then add a distinct repository and module decision without treating the pairing record as observation evidence.
