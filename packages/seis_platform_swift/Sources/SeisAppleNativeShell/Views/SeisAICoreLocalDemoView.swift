@@ -49,6 +49,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var modelFrontierEscalationPolicySnapshot: SeisModelFrontierEscalationPolicySnapshot?
     @Published private(set) var agiSystemSourceSnapshot: SeisAGISystemSourceSnapshot?
     @Published private(set) var projectIntakeSnapshot: SeisProjectIntakeSnapshot?
+    @Published private(set) var connectorCapabilityRegistrySnapshot: SeisConnectorCapabilityRegistrySnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -208,6 +209,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         projectIntakeSnapshot = try? SeisProjectIntakeSnapshot.validated(
             from: Data(contentsOf: projectIntakeURL)
         )
+        connectorCapabilityRegistrySnapshot = try? SeisConnectorCapabilityRegistrySnapshot.validated(
+            from: Data(contentsOf: connectorCapabilityRegistryURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -265,7 +269,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 readOnlyRouterRuntimeSnapshot: readOnlyRouterRuntimeSnapshot,
                 modelFrontierEscalationPolicySnapshot: modelFrontierEscalationPolicySnapshot,
                 agiSystemSourceSnapshot: agiSystemSourceSnapshot,
-                projectIntakeSnapshot: projectIntakeSnapshot
+                projectIntakeSnapshot: projectIntakeSnapshot,
+                connectorCapabilityRegistrySnapshot: connectorCapabilityRegistrySnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -412,6 +417,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             projectIntakeSnapshot = try? SeisProjectIntakeSnapshot.validated(
                 from: Data(contentsOf: projectIntakeURL)
             )
+            connectorCapabilityRegistrySnapshot = try? SeisConnectorCapabilityRegistrySnapshot.validated(
+                from: Data(contentsOf: connectorCapabilityRegistryURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -455,6 +463,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             modelFrontierEscalationPolicySnapshot = nil
             agiSystemSourceSnapshot = nil
             projectIntakeSnapshot = nil
+            connectorCapabilityRegistrySnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -1052,6 +1061,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-project-intake-contract.json")
     }
 
+    private var connectorCapabilityRegistryURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("connector-capability-registry.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -1216,6 +1232,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let projectIntakeSnapshot = model.projectIntakeSnapshot {
                     projectIntakeDisclosure(snapshot: projectIntakeSnapshot)
+                }
+                if let connectorCapabilityRegistrySnapshot = model.connectorCapabilityRegistrySnapshot {
+                    connectorCapabilityRegistryDisclosure(snapshot: connectorCapabilityRegistrySnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -2858,6 +2877,30 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Project intake safety contract. Read is allowed, write and shell require user approval, network is disabled by default, and secret capture is forbidden. Four evidence items, five artifacts, and three next actions are source-backed metadata only.")
+    }
+
+    private func connectorCapabilityRegistryDisclosure(snapshot: SeisConnectorCapabilityRegistrySnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.connectorCount) connectors · \(snapshot.skillCount) skills · \(snapshot.capabilityFamilyCount) families · \(snapshot.automationRules.count) activation rules · metadata-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("Ready-if-authenticated: \(snapshot.readyConnectorCount) · Candidate: \(snapshot.candidateConnectorCount) · Requested blocked: \(snapshot.requestedBlockedConnectorCount) · Registry-ready: \(snapshot.registryReadyConnectorCount)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Activation: registry-first · Auth: explicit · Tokens: never committed · Blanket OAuth, unreviewed remote mutation, broad scans, and unbounded browser runs: blocked")
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+                Text("The registry exposes capability selection and activation gates; it does not authenticate connectors, install skills, call remote services, or grant write authority.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Connector capability registry", systemImage: "point.3.connected.trianglepath.dotted")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Connector capability registry. Twenty-one connectors, fifty skills, seven capability families, and five activation rules are source-backed. Activation is registry-first and explicit-auth-only; token commits, blanket OAuth, unreviewed remote mutation, broad scans, and unbounded browser runs remain blocked. No connector is authenticated or called by this native surface.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {

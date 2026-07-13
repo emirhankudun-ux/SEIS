@@ -101,7 +101,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "read-only-router-runtime",
         "model-frontier-escalation-policy",
         "agi-system-source-contract",
-        "project-intake-contract"
+        "project-intake-contract",
+        "connector-capability-registry"
     ]
 
     public init() {}
@@ -153,7 +154,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         readOnlyRouterRuntimeSnapshot: SeisReadOnlyRouterRuntimeSnapshot? = nil,
         modelFrontierEscalationPolicySnapshot: SeisModelFrontierEscalationPolicySnapshot? = nil,
         agiSystemSourceSnapshot: SeisAGISystemSourceSnapshot? = nil,
-        projectIntakeSnapshot: SeisProjectIntakeSnapshot? = nil
+        projectIntakeSnapshot: SeisProjectIntakeSnapshot? = nil,
+        connectorCapabilityRegistrySnapshot: SeisConnectorCapabilityRegistrySnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -460,6 +462,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Project intake safety contract",
                 passed: projectIntakeSnapshot?.isMetadataOnly == true,
                 evidence: "The local-repo intake contract allows read, gates write and shell behind user approval, disables network by default, forbids secret capture, and keeps the CLI-first/macOS-aware intake surface metadata-only."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "connector-capability-registry",
+                title: "Connector capability registry",
+                passed: connectorCapabilityRegistrySnapshot?.isMetadataOnly == true,
+                evidence: "The explicit-auth connector registry records 21 connectors, 50 skills, seven capability families, and five activation rules while keeping registry-first routing, scoped blockers, token exclusion, and blanket live access disabled."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked
