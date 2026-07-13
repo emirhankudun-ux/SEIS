@@ -74,7 +74,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "plugin-integration",
         "provider-registry",
         "read-only-router-contract",
-        "language-model-intake"
+        "language-model-intake",
+        "language-model-training-curriculum"
     ]
 
     public init() {}
@@ -97,7 +98,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         pluginIntegrationSnapshot: SeisAgentPluginIntegrationSnapshot? = nil,
         providerRegistrySnapshot: SeisAICoreProviderRegistrySnapshot? = nil,
         readOnlyRouterContractSnapshot: SeisAIReadOnlyModelRouterContractSnapshot? = nil,
-        languageModelIntakeSnapshot: SeisLanguageModelIntakeRegistrySnapshot? = nil
+        languageModelIntakeSnapshot: SeisLanguageModelIntakeRegistrySnapshot? = nil,
+        languageModelTrainingCurriculumSnapshot: SeisLanguageModelTrainingCurriculumSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -242,6 +244,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Language model intake registry",
                 passed: languageModelIntakeSnapshot?.isMetadataOnly == true,
                 evidence: "Eight candidate model families remain metadata-only, three hardware lanes remain gated, and five training lanes keep downloads, inference, fine-tuning, and foundation training explicitly unauthorized."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "language-model-training-curriculum",
+                title: "Language model training curriculum",
+                passed: languageModelTrainingCurriculumSnapshot?.isMetadataOnly == true,
+                evidence: "Eight family candidates, three hardware lanes, four scaling targets, and four curriculum phases remain planning-only; safe controls keep installs, checkpoints, providers, datasets, fine-tuning, inference, benchmarks, and foundation training disabled."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked

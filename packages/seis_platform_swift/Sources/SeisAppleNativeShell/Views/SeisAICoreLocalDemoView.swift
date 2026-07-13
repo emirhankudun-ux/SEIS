@@ -20,6 +20,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var providerRegistrySnapshot: SeisAICoreProviderRegistrySnapshot?
     @Published private(set) var readOnlyRouterContractSnapshot: SeisAIReadOnlyModelRouterContractSnapshot?
     @Published private(set) var languageModelIntakeSnapshot: SeisLanguageModelIntakeRegistrySnapshot?
+    @Published private(set) var languageModelTrainingCurriculumSnapshot: SeisLanguageModelTrainingCurriculumSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -92,6 +93,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         languageModelIntakeSnapshot = try? SeisLanguageModelIntakeRegistrySnapshot.validated(
             from: Data(contentsOf: languageModelIntakeURL)
         )
+        languageModelTrainingCurriculumSnapshot = try? SeisLanguageModelTrainingCurriculumSnapshot.validated(
+            from: Data(contentsOf: languageModelTrainingCurriculumURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -120,7 +124,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 pluginIntegrationSnapshot: pluginIntegrationSnapshot,
                 providerRegistrySnapshot: providerRegistrySnapshot,
                 readOnlyRouterContractSnapshot: readOnlyRouterContractSnapshot,
-                languageModelIntakeSnapshot: languageModelIntakeSnapshot
+                languageModelIntakeSnapshot: languageModelIntakeSnapshot,
+                languageModelTrainingCurriculumSnapshot: languageModelTrainingCurriculumSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -180,6 +185,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             languageModelIntakeSnapshot = try? SeisLanguageModelIntakeRegistrySnapshot.validated(
                 from: Data(contentsOf: languageModelIntakeURL)
             )
+            languageModelTrainingCurriculumSnapshot = try? SeisLanguageModelTrainingCurriculumSnapshot.validated(
+                from: Data(contentsOf: languageModelTrainingCurriculumURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -194,6 +202,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             providerRegistrySnapshot = nil
             readOnlyRouterContractSnapshot = nil
             languageModelIntakeSnapshot = nil
+            languageModelTrainingCurriculumSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -588,6 +597,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-language-model-intake-registry.json")
     }
 
+    private var languageModelTrainingCurriculumURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-language-model-training-curriculum.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -663,6 +679,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let languageModelIntakeSnapshot = model.languageModelIntakeSnapshot {
                     languageModelIntakeDisclosure(snapshot: languageModelIntakeSnapshot)
+                }
+                if let languageModelTrainingCurriculumSnapshot = model.languageModelTrainingCurriculumSnapshot {
+                    languageModelTrainingCurriculumDisclosure(snapshot: languageModelTrainingCurriculumSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -1543,6 +1562,53 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Language model intake registry. Eight candidate families, all metadata-only and not installed, with downloads, training, fine-tuning, runtime authority, and browser secrets disabled.")
+    }
+
+    private func languageModelTrainingCurriculumDisclosure(snapshot: SeisLanguageModelTrainingCurriculumSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.familyCandidates.count) families · \(snapshot.hardwareLanes.count) hardware lanes · \(snapshot.scalingTargets.count) scaling targets · \(snapshot.curriculum.count) phases · planning-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("Hardware floor: \(snapshot.targetHardwareFloor)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Safe controls: \(snapshot.safeControls.joined(separator: " · "))")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+
+                ForEach(snapshot.scalingTargets) { target in
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: target.allowedRoute || target.runtimeAuthority ? "exclamationmark.triangle" : "lock.shield")
+                            .foregroundStyle(target.allowedRoute || target.runtimeAuthority ? .red : .green)
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("\(target.id) · \(target.status)")
+                                .font(.caption.weight(.semibold))
+                            Text("Route: \(target.allowedRoute ? "yes" : "no") · Runtime: \(target.runtimeAuthority ? "yes" : "no") · Training: \(target.trainingStatus)")
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                            Text(target.gate)
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                }
+
+                Text("Approval before any install or training: \(snapshot.nextApprovalNeeded.joined(separator: " · "))")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                Text("Planning-only curriculum. No model install, checkpoint download, provider call, dataset download, inference, benchmark, fine-tune, adapter training, or foundation pretraining is executed by this record.")
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Language model training curriculum", systemImage: "graduationcap")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Language model training curriculum. Eight families, three hardware lanes, four scaling targets, and four planning phases. Installs, downloads, provider calls, training, inference, benchmarks, and foundation-model claims are disabled.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {
