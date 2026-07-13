@@ -50,8 +50,8 @@ not fully satisfied.
 | --- | --- | --- |
 | Three validated canonical manifests | Blocked | Merge through each repository policy, refresh canonical revisions, verify content match, and promote `review` to `validated`. |
 | Complete conflict-free ownership coverage | Partial | Human acceptance or revision of ADR-0002 and the proposed inventory. |
-| Passing CI | Partial | Earlier heads have point-in-time success; push this audit implementation, obtain successful required checks for its immutable revision, and record that evidence. |
-| Focused PR with evidence, risk, and rollback | Partial | Publish this decision packet to PR 180, then verify the focused diff and required checks. |
+| Passing CI | Satisfied as point-in-time evidence | The published audit implementation passed the required available checks; this does not prove a later merge or canonical state. |
+| Focused PR with evidence, risk, and rollback | Satisfied | PR 180 now carries this decision packet and the immutable implementation evidence. |
 
 ## Quality Gates
 

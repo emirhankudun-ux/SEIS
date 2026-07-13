@@ -1061,13 +1061,13 @@ assert_accepted("completion decision packet with CRLF checkout bytes") do |direc
 end
 
 assert_rejected(
-  "completion decision packet overstating CI as satisfied",
-  "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md: missing \"| Passing CI | Partial |\""
+  "completion decision packet contradicting recorded CI satisfaction",
+  "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md: missing \"| Passing CI | Satisfied as point-in-time evidence |\""
 ) do |directory|
   path = File.join(directory, "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md")
   content = File.read(path)
-  updated = content.sub("| Passing CI | Partial |", "| Passing CI | Satisfied |")
-  abort "completion packet CI fixture could not locate partial assessment" if updated == content
+  updated = content.sub("| Passing CI | Satisfied as point-in-time evidence |", "| Passing CI | Partial |")
+  abort "completion packet CI fixture could not locate satisfied assessment" if updated == content
   File.write(path, updated)
 end
 

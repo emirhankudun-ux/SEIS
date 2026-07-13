@@ -125,12 +125,11 @@ evidence. These dated runs prove the named commit passed those workflows; they
 do not prove private-repository contents, deployments, provider connections,
 or ecosystem-wide publication readiness.
 
-The current pull request 180 worktree prepares the expanded ownership evidence,
-public-safe attestations, completion audit, and adversarial ownership fixtures.
-Until this audit implementation is committed, pushed, and checked remotely, the
-machine audit keeps PR inclusion and CI at `partial`. Earlier dated CI evidence
-remains point-in-time evidence and does not prove a later head, merge, or
-canonical-branch state.
+Pull request 180 now carries the expanded ownership evidence, public-safe
+attestations, completion audit, and adversarial ownership fixtures. The
+published audit implementation passed its required available checks and is
+recorded by `ECO-EVIDENCE-010`. That dated result remains point-in-time evidence
+and does not prove a later merge or canonical-branch state.
 
 ## Current blockers
 

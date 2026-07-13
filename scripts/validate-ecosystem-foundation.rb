@@ -22,7 +22,7 @@ APPROVED_AUDIT_URLS = %w[
   https://github.com/emirhankudun-ux/SEIS/pull/179
   https://github.com/emirhankudun-ux/SEIS/pull/180
 ].freeze
-COMPLETION_AUDIT_DOC_SHA256 = "754ccefddb67c7cb99374aa44a76317e2b08ae0a4d4fca1fd0e82e95bddf1674"
+COMPLETION_AUDIT_DOC_SHA256 = "53930ad75eb7795e6c47be6cc797c184f0fa39af6d03f391f34cb73aeb0b4e69"
 GOAL_GLOB = "goals/{active,backlog,blocked,completed,archived}/*.yaml"
 
 def absolute(relative_path)
@@ -1052,7 +1052,7 @@ else
   expected_criterion_assessments = {
     "requirements" => %w[partial partial satisfied satisfied satisfied satisfied satisfied blocked],
     "acceptance_criteria" => %w[satisfied partial satisfied satisfied satisfied satisfied satisfied],
-    "definition_of_done" => %w[blocked partial partial partial]
+    "definition_of_done" => %w[blocked partial satisfied satisfied]
   }
   expected_criterion_remaining_actions = {
     "requirements" => [
@@ -1077,8 +1077,8 @@ else
     "definition_of_done" => [
       "Merge the three manifest pull requests, refresh canonical revisions, verify content matches, and promote all records from review to validated.",
       "Accept or revise ADR-0002 and attest that the reviewed inventory is complete.",
-      "Push the completion-audit implementation, obtain successful required checks for that revision, and record the immutable head and run evidence.",
-      "Publish this completion audit to pull request 180 and verify its focused diff and required checks."
+      nil,
+      nil
     ]
   }
   unless exact_string_keys?(criteria, expected_criteria_sections.keys)
@@ -1284,8 +1284,8 @@ required_completion_doc_text = [
   "`ECO-GOAL-0001` is not completion-ready.",
   "| Three validated canonical manifests | Blocked |",
   "| Complete conflict-free ownership coverage | Partial |",
-  "| Passing CI | Partial |",
-  "| Focused PR with evidence, risk, and rollback | Partial |",
+  "| Passing CI | Satisfied as point-in-time evidence |",
+  "| Focused PR with evidence, risk, and rollback | Satisfied |",
   "Architecture is blocked",
   "Security remains partial",
   "Privacy is partial",

@@ -126,16 +126,16 @@ criteria:
         - ECO-EVIDENCE-006
       remaining_action: Accept or revise ADR-0002 and attest that the reviewed inventory is complete.
     - criterion: Validation runs in CI and passes.
-      assessment: partial
+      assessment: satisfied
       evidence_refs:
         - ECO-EVIDENCE-004
         - ECO-EVIDENCE-010
-      remaining_action: Push the completion-audit implementation, obtain successful required checks for that revision, and record the immutable head and run evidence.
+      remaining_action: null
     - criterion: A focused pull request includes evidence, risks, and rollback instructions.
-      assessment: partial
+      assessment: satisfied
       evidence_refs:
         - ECO-EVIDENCE-009
-      remaining_action: Publish this completion audit to pull request 180 and verify its focused diff and required checks.
+      remaining_action: null
 
 quality_gates:
   architecture:
