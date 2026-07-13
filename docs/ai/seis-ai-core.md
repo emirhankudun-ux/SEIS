@@ -43,7 +43,7 @@ The foundation includes:
 | AI Workforce Training | Active local seed training contract | `docs/ai/ai-workforce-training.md`, `content/development/seis-ai-workforce-training-plan.json`, `scripts/check-seis-ai-workforce-training.mjs`, `scripts/run-seis-ai-workforce-training.mjs` | No live provider calls, credential reads, cloud fine-tuning, dataset downloads, SSH, deployment, or runtime authority are performed. | Use installed assistants only as supervised candidate reviewers; rebuild deterministic local seed artifacts with `npm run automation:seis-ai-workforce-training`. |
 | Provider credentials | Statically audited | `docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md` | No runtime verification was performed. | Keep keys optional, server-only, and disabled until adapter tests exist. |
 | Local model mode | Planned | No local model adapter found in this branch. | No runtime integration. | Define Ollama/localhost as optional zero-key future mode. |
-| Evaluation | Implemented as local readiness evaluator | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAICoreReadinessEvaluator.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAICoreReadinessEvaluatorTests.swift`, canonical workforce assignment snapshot | No live-model benchmark or provider evaluation exists. | Keep the report scoped to Local Demo readiness and add live-adapter evals only after backend approval. |
+| Evaluation | Implemented as local readiness evaluator | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAICoreReadinessEvaluator.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAICoreReadinessEvaluatorTests.swift`, canonical workforce assignment and training snapshots | No live-model benchmark or provider evaluation exists. | Keep the report scoped to Local Demo readiness and add live-adapter evals only after backend approval. |
 
 ## Rules / Policy
 
@@ -228,6 +228,17 @@ launcher state, route, category, and Codex primary-writer policy. It does not
 call Claude, Gemini, Qwen, Ollama, Kimi, OpenCode, CodeRabbit, GitHub Actions,
 or any other provider merely because the role is listed; unavailable or
 approval-gated states remain visible.
+
+The same panel reads the canonical
+`content/development/seis-ai-workforce-training-plan.json` registry as a typed
+local training control-plane snapshot. It exposes the ten trainer roles, seven
+training loops, four deterministic seed-model targets, local quality and
+automation commands, launcher evidence, safety rules, and acceptance gates.
+Every trainer role remains credential-free, live-provider-disabled, and
+external-training-disabled; every seed target keeps `runtimeAuthority: false`.
+The panel only inspects this contract. It does not run training, download
+datasets, call providers, publish models, or claim SEIS owns a trained
+foundation model.
 
 Validation:
 `swift test --package-path packages/seis_platform_swift`.

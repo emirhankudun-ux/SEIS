@@ -61,7 +61,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "mcp-inventory",
         "prompt-engine",
         "subagent-handoffs",
-        "installed-ai-workforce"
+        "installed-ai-workforce",
+        "workforce-training-control-plane"
     ]
 
     public init() {}
@@ -71,7 +72,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         capabilityMesh: SeisAICapabilityMesh,
         promptEngine: SeisAIPromptEngine,
         handoffSnapshot: SeisAGIAgentHandoffSnapshot,
-        workforceSnapshot: SeisAIWorkforceAssignmentSnapshot? = nil
+        workforceSnapshot: SeisAIWorkforceAssignmentSnapshot? = nil,
+        workforceTrainingSnapshot: SeisAIWorkforceTrainingSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -137,6 +139,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Installed AI workforce registry",
                 passed: workforceSnapshot?.isMetadataOnly == true && workforceSnapshot?.assignments.count == 10,
                 evidence: "Ten source-backed AI/tool assignments are visible as metadata-only roles; Codex remains the primary writer and other roles do not gain direct execution authority."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "workforce-training-control-plane",
+                title: "Workforce training control plane",
+                passed: workforceTrainingSnapshot?.isMetadataOnly == true,
+                evidence: "Ten trainer roles, seven local training loops, and four runtime-authority=false seed targets are source-backed; training remains synthetic, local, validator-gated, and approval-bound."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked

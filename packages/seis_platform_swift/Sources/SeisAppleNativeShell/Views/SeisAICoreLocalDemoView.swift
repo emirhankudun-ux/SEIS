@@ -7,6 +7,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var snapshot: SeisAICoreRuntimeSnapshotContract?
     @Published private(set) var workspaceIndex: SeisAppleLocalWorkspaceIndex?
     @Published private(set) var workforceSnapshot: SeisAIWorkforceAssignmentSnapshot?
+    @Published private(set) var workforceTrainingSnapshot: SeisAIWorkforceTrainingSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -40,6 +41,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         workforceSnapshot = try? SeisAIWorkforceAssignmentSnapshot.validated(
             from: Data(contentsOf: workforceURL)
         )
+        workforceTrainingSnapshot = try? SeisAIWorkforceTrainingSnapshot.validated(
+            from: Data(contentsOf: workforceTrainingURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -55,7 +59,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 capabilityMesh: nextCapabilityMesh,
                 promptEngine: promptEngine,
                 handoffSnapshot: nextOrchestrationSnapshot,
-                workforceSnapshot: workforceSnapshot
+                workforceSnapshot: workforceSnapshot,
+                workforceTrainingSnapshot: workforceTrainingSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -76,7 +81,11 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             workforceSnapshot = try? SeisAIWorkforceAssignmentSnapshot.validated(
                 from: Data(contentsOf: workforceURL)
             )
+            workforceTrainingSnapshot = try? SeisAIWorkforceTrainingSnapshot.validated(
+                from: Data(contentsOf: workforceTrainingURL)
+            )
             capabilityMesh = nil
+            workforceTrainingSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -377,6 +386,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("ai-workforce-assignments.json")
     }
 
+    private var workforceTrainingURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-ai-workforce-training-plan.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -413,6 +429,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let workforceSnapshot = model.workforceSnapshot {
                     workforceDisclosure(snapshot: workforceSnapshot)
+                }
+                if let workforceTrainingSnapshot = model.workforceTrainingSnapshot {
+                    workforceTrainingDisclosure(snapshot: workforceTrainingSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -673,6 +692,75 @@ struct SeisAICoreLocalDemoView: View {
         if status.contains("missing-key") { return .orange }
         if status.contains("pending") || status.contains("defined") { return .secondary }
         return .orange
+    }
+
+    private func workforceTrainingDisclosure(snapshot: SeisAIWorkforceTrainingSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Source: content/development/seis-ai-workforce-training-plan.json · Version: \(snapshot.version)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("\(snapshot.trainerRoles.count) trainer roles · \(snapshot.trainingLoops.count) loops · \(snapshot.modelTargets.count) seed targets · metadata-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Quality gate: \(snapshot.qualityGate) · Automation: \(snapshot.automationCommand)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text(snapshot.truthBoundary)
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+
+                Text("Trainer roles")
+                    .font(.caption.weight(.semibold))
+                ForEach(snapshot.trainerRoles) { role in
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: role.routeStatus == "installed" ? "checkmark.shield" : "clock.badge.exclamationmark")
+                            .foregroundStyle(role.routeStatus == "installed" ? .green : .orange)
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(role.displayName)
+                                .font(.caption.weight(.semibold))
+                            Text("\(role.routeStatus) · \(role.trainingRole)")
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                            Text(role.outputStatus)
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                }
+
+                Text("Seed targets")
+                    .font(.caption.weight(.semibold))
+                ForEach(snapshot.modelTargets) { target in
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: target.runtimeAuthority ? "exclamationmark.triangle" : "lock.shield")
+                            .foregroundStyle(target.runtimeAuthority ? .red : .green)
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(target.id)
+                                .font(.caption.weight(.semibold))
+                            Text(target.purpose)
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                            Text("Runtime authority: \(target.runtimeAuthority ? "enabled" : "false") · validator: \(target.validationCommand)")
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.tertiary)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                }
+                Text("This surface inspects the local training contract only. It does not run training, download datasets, call providers, read credentials, publish models, or grant runtime authority.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("AI workforce training control plane", systemImage: "graduationcap.fill")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("AI workforce training control plane. Ten trainer roles, seven local training loops, four runtime authority false seed targets, and no live training or provider access.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {
