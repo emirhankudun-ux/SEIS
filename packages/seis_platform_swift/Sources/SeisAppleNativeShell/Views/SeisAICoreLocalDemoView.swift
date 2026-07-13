@@ -5,6 +5,7 @@ import SwiftUI
 @MainActor
 final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var snapshot: SeisAICoreRuntimeSnapshotContract?
+    @Published private(set) var workspaceIndex: SeisAppleLocalWorkspaceIndex?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -32,6 +33,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     }
 
     func load() {
+        workspaceIndex = SeisAppleLocalWorkspaceIndex.scan(
+            rootURL: URL(fileURLWithPath: repositoryPath)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -61,6 +65,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         } catch {
             runtime = nil
             snapshot = nil
+            workspaceIndex = SeisAppleLocalWorkspaceIndex.scan(
+                rootURL: URL(fileURLWithPath: repositoryPath)
+            )
             capabilityMesh = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
@@ -386,6 +393,9 @@ struct SeisAICoreLocalDemoView: View {
 
             if let snapshot = model.snapshot {
                 metrics(snapshot: snapshot)
+                if let workspaceIndex = model.workspaceIndex {
+                    workspaceAwarenessDisclosure(index: workspaceIndex)
+                }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
                 }
@@ -561,6 +571,34 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Plugin and MCP capability mesh. \(mesh.pluginStatusLabel). \(mesh.mcpStatusLabel). No plugin activation or MCP invocation is performed.")
+    }
+
+    private func workspaceAwarenessDisclosure(index: SeisAppleLocalWorkspaceIndex) -> some View {
+        let fileCount = index.entries.filter { $0.kind == .file }.count
+        let directoryCount = index.entries.filter { $0.kind == .directory }.count
+
+        return DisclosureGroup {
+            VStack(alignment: .leading, spacing: 7) {
+                Text("Root: \(index.rootPath)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+                Text("State: \(index.state.rawValue) · Entries: \(index.entries.count) · Files: \(fileCount) · Folders: \(directoryCount)")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Excluded: \(index.excludedCategories.joined(separator: ", "))")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+                Text("Metadata awareness only. AI Core does not read file contents, open files, write, rename, delete, execute, or infer private content from this index.")
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Local workspace awareness", systemImage: "folder.badge.gearshape")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Local workspace awareness. \(index.entries.count) safe metadata entries indexed. File contents and mutations are disabled.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {

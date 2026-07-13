@@ -205,6 +205,12 @@ the planned count and refreshes redacted evidence; it does not invoke MCP,
 activate plugins, call providers, access private content, run SSH or
 deployment, or mutate GitHub.
 
+AI Core now also shows safe local workspace awareness from the shared
+`SeisAppleLocalWorkspaceIndex`. It reports only the allow-listed root, bounded
+entry/file/folder counts, scan state, and excluded categories. The index does
+not read file contents and the AI Core surface exposes no file open, write,
+rename, delete, execution, or private-content inference authority.
+
 Validation:
 `swift test --package-path packages/seis_platform_swift`.
 
