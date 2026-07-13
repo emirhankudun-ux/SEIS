@@ -43,6 +43,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var platformLanguagePolicySnapshot: SeisPlatformLanguagePolicySnapshot?
     @Published private(set) var requestedSoftwareStackSnapshot: SeisRequestedSoftwareStackSnapshot?
     @Published private(set) var technologyStackSnapshot: SeisTechnologyStackSnapshot?
+    @Published private(set) var platformDevelopmentTracksSnapshot: SeisPlatformDevelopmentTracksSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -184,6 +185,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         requestedSoftwareStackSnapshot = try? SeisRequestedSoftwareStackSnapshot.validated(
             from: Data(contentsOf: requestedSoftwareStackURL)
         )
+        platformDevelopmentTracksSnapshot = try? SeisPlatformDevelopmentTracksSnapshot.validated(
+            from: Data(contentsOf: platformDevelopmentTracksURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -235,6 +239,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 secondBrainContractSnapshot: secondBrainContractSnapshot,
                 platformLanguagePolicySnapshot: platformLanguagePolicySnapshot,
                 technologyStackSnapshot: technologyStackSnapshot,
+                platformDevelopmentTracksSnapshot: platformDevelopmentTracksSnapshot,
                 requestedSoftwareStackSnapshot: requestedSoftwareStackSnapshot
             )
             lastPlan = nil
@@ -364,6 +369,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             requestedSoftwareStackSnapshot = try? SeisRequestedSoftwareStackSnapshot.validated(
                 from: Data(contentsOf: requestedSoftwareStackURL)
             )
+            platformDevelopmentTracksSnapshot = try? SeisPlatformDevelopmentTracksSnapshot.validated(
+                from: Data(contentsOf: platformDevelopmentTracksURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -401,6 +409,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             platformLanguagePolicySnapshot = nil
             technologyStackSnapshot = nil
             requestedSoftwareStackSnapshot = nil
+            platformDevelopmentTracksSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -956,6 +965,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("requested-software-stack.json")
     }
 
+    private var platformDevelopmentTracksURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-platform-development-tracks.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -1102,6 +1118,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let requestedSoftwareStackSnapshot = model.requestedSoftwareStackSnapshot {
                     requestedSoftwareStackDisclosure(snapshot: requestedSoftwareStackSnapshot)
+                }
+                if let platformDevelopmentTracksSnapshot = model.platformDevelopmentTracksSnapshot {
+                    platformDevelopmentTracksDisclosure(snapshot: platformDevelopmentTracksSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -2600,6 +2619,30 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Requested software stack. Six technologies, ten entrypoints, 300 submitted plugins, twelve capability lanes, and 117 polyglot language surfaces are visible as source metadata. Plugin references are not installed or activated; authentication, user approval, runtime, and credential boundaries remain explicit.")
+    }
+
+    private func platformDevelopmentTracksDisclosure(snapshot: SeisPlatformDevelopmentTracksSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.trackCount) tracks · Apple: \(snapshot.summary.appleLanguageCount) languages / \(snapshot.summary.appleNativeFrameworkCount) frameworks · Windows: \(snapshot.summary.windowsLanguageCoverageCount) surfaces · metadata-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("Required Windows: \(snapshot.summary.windowsRequiredLanguageCount) · Extended Windows: \(snapshot.summary.windowsExtendedLanguageCount) · Unique quality gates: \(snapshot.uniqueQualityGateCount)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Apple-native continuation remains first; Windows excludes Apple-only language surfaces; JavaScript remains compatibility-only and runtime installs stay requirement-led.")
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+                Text("Track records define policy, validation commands, agent roles, artifacts, and gates. They do not prove that every runtime or build tool is installed.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Platform development tracks", systemImage: "arrow.triangle.branch")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Platform development tracks. Four metadata tracks preserve Apple-native continuation, required and extended Windows polyglot execution, and governance. Apple has five language surfaces and ten frameworks; Windows has 41 surfaces and excludes Apple-only surfaces. Runtime or build tool installation is not claimed.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {

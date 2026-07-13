@@ -50,6 +50,7 @@ The foundation includes:
 | SEIS Second Brain | Bound as metadata-only local knowledge contract | `content/development/seis-second-brain-system.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisSecondBrainContractSnapshot.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisSecondBrainContractSnapshotTests.swift` | Local Demo vault notes, memory, and retrieval planning are bounded; private Obsidian import, secrets, provider calls, SSH, deployment, and GitHub mutation remain disabled. | Keep knowledge graph and capture flows browser/local-first until explicit import, provenance, privacy, and human-review gates pass. |
 | Platform language policy | Bound as Apple-first multiplatform metadata | `content/development/seis-platform-language-policy.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisPlatformLanguagePolicySnapshot.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisPlatformLanguagePolicySnapshotTests.swift` | Policy records platform/language choices only; it does not install runtimes or claim implementation coverage for every listed surface. | Keep Apple native continuation first and add Windows/polyglot helpers only when a real platform requirement and validation exist. |
 | Technology stack | Bound as source-visible metadata-only stack contract | `content/development/seis-technology-stack.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisTechnologyStackSnapshot.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisTechnologyStackSnapshotTests.swift` | The stack records 60 real source languages, 7 ecosystem groups, 143 technologies, and 6 requested core technologies; frameworks, SDKs, clouds, products, and tools remain outside the GitHub language surface. | Keep GitHub Linguist honest, avoid filler code, and do not install runtimes or activate plugins/connectors without a concrete scoped requirement and approval. |
+| Platform development tracks | Bound as metadata-only Apple/Windows execution policy | `content/development/seis-platform-development-tracks.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisPlatformDevelopmentTracksSnapshot.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisPlatformDevelopmentTracksSnapshotTests.swift` | Four tracks define Apple-native continuation, required and extended Windows polyglot boundaries, and governance gates; policy does not prove runtime/tool installation or implementation coverage. | Keep Apple-native work first, exclude Apple-only surfaces from Windows, keep JavaScript compatibility-only, and make runtime installation requirement-led. |
 | Requested software stack | Bound as metadata-only task-scoped software and plugin contract | `content/development/requested-software-stack.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisRequestedSoftwareStackSnapshot.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisRequestedSoftwareStackSnapshotTests.swift` | Six technologies, ten entrypoints, 300 submitted plugins, twelve capability lanes, and 117 polyglot surfaces remain source references; plugins are not thereby installed, authenticated, or active. | Keep activation relevant, authenticated, scoped, and user-approved; no blanket connector activation, runtime installation, or credential disclosure. |
 
 ## Rules / Policy
@@ -484,6 +485,14 @@ six requested core technologies. GitHub language panels remain separate from
 frameworks, SDKs, clouds, products, and tools; this source-visible inventory is
 metadata only and does not install runtimes, add filler code, or activate
 plugins and connectors.
+
+The panel also reads `content/development/seis-platform-development-tracks.json`.
+It exposes four tracks: Apple-native continuation, required Windows polyglot,
+extended Windows polyglot, and platform-boundary governance. The metadata keeps
+five Apple language surfaces and ten native frameworks distinct from 41 Windows
+surfaces, excludes Apple-only surfaces from Windows, and keeps JavaScript
+compatibility-only. These are execution policies and quality gates, not proof of
+installed runtimes or completed builds.
 
 The panel also reads `content/development/requested-software-stack.json`. It
 exposes six requested technologies, ten entrypoints, 300 submitted plugins,

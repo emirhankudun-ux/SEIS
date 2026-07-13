@@ -44,6 +44,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let agentLaneStatus = try SeisAgentLaneStatusSnapshot.validated(from: agentLaneStatusData())
         let secondBrainContract = try SeisSecondBrainContractSnapshot.validated(from: secondBrainContractData())
         let platformLanguagePolicy = try SeisPlatformLanguagePolicySnapshot.validated(from: platformLanguagePolicyData())
+        let platformDevelopmentTracks = try SeisPlatformDevelopmentTracksSnapshot.validated(from: platformDevelopmentTracksData())
         let requestedSoftwareStack = try SeisRequestedSoftwareStackSnapshot.validated(from: requestedSoftwareStackData())
         let technologyStack = try SeisTechnologyStackSnapshot.validated(from: technologyStackData())
 
@@ -88,6 +89,7 @@ struct SeisAICoreReadinessEvaluatorTests {
             secondBrainContractSnapshot: secondBrainContract,
             platformLanguagePolicySnapshot: platformLanguagePolicy,
             technologyStackSnapshot: technologyStack,
+            platformDevelopmentTracksSnapshot: platformDevelopmentTracks,
             requestedSoftwareStackSnapshot: requestedSoftwareStack
         )
 
@@ -95,7 +97,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         #expect(report.status == .readyLocalDemo)
         #expect(report.evaluatorVersion == SeisAICoreReadinessEvaluator.evaluatorVersion)
         #expect(report.checks.map(\.id) == SeisAICoreReadinessEvaluator.expectedCheckIDs)
-        #expect(report.passedCount == 43)
+        #expect(report.passedCount == 44)
         #expect(report.failedCount == 0)
         #expect(report.truthBoundary.contains("not proof of live provider access"))
     }
@@ -137,6 +139,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let agentLaneStatus = try SeisAgentLaneStatusSnapshot.validated(from: agentLaneStatusData())
         let secondBrainContract = try SeisSecondBrainContractSnapshot.validated(from: secondBrainContractData())
         let platformLanguagePolicy = try SeisPlatformLanguagePolicySnapshot.validated(from: platformLanguagePolicyData())
+        let platformDevelopmentTracks = try SeisPlatformDevelopmentTracksSnapshot.validated(from: platformDevelopmentTracksData())
         let requestedSoftwareStack = try SeisRequestedSoftwareStackSnapshot.validated(from: requestedSoftwareStackData())
         let technologyStack = try SeisTechnologyStackSnapshot.validated(from: technologyStackData())
         let report = SeisAICoreReadinessEvaluator().evaluate(
@@ -180,6 +183,7 @@ struct SeisAICoreReadinessEvaluatorTests {
             secondBrainContractSnapshot: secondBrainContract,
             platformLanguagePolicySnapshot: platformLanguagePolicy,
             technologyStackSnapshot: technologyStack,
+            platformDevelopmentTracksSnapshot: platformDevelopmentTracks,
             requestedSoftwareStackSnapshot: requestedSoftwareStack
         )
 
@@ -423,5 +427,11 @@ struct SeisAICoreReadinessEvaluatorTests {
         var root = URL(fileURLWithPath: #filePath)
         for _ in 0..<5 { root.deleteLastPathComponent() }
         return try Data(contentsOf: root.appendingPathComponent("content/development/requested-software-stack.json"))
+    }
+
+    private func platformDevelopmentTracksData() throws -> Data {
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<5 { root.deleteLastPathComponent() }
+        return try Data(contentsOf: root.appendingPathComponent("content/development/seis-platform-development-tracks.json"))
     }
 }

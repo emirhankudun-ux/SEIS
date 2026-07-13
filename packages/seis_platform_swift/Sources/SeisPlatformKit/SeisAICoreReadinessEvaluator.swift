@@ -95,6 +95,7 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "second-brain-contract",
         "platform-language-policy",
         "technology-stack-contract",
+        "platform-development-tracks",
         "requested-software-stack"
     ]
 
@@ -141,6 +142,7 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         secondBrainContractSnapshot: SeisSecondBrainContractSnapshot? = nil,
         platformLanguagePolicySnapshot: SeisPlatformLanguagePolicySnapshot? = nil,
         technologyStackSnapshot: SeisTechnologyStackSnapshot? = nil,
+        platformDevelopmentTracksSnapshot: SeisPlatformDevelopmentTracksSnapshot? = nil,
         requestedSoftwareStackSnapshot: SeisRequestedSoftwareStackSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
@@ -406,6 +408,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Technology stack contract",
                 passed: technologyStackSnapshot?.isMetadataOnly == true,
                 evidence: "The source-visible stack records 60 real source languages, seven ecosystem groups, 143 technologies, and six requested core technologies while keeping frameworks, SDKs, clouds, products, and tools outside the GitHub language surface; no runtime installation or filler code is implied."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "platform-development-tracks",
+                title: "Platform development tracks",
+                passed: platformDevelopmentTracksSnapshot?.isMetadataOnly == true,
+                evidence: "Four source-backed tracks preserve Apple-native continuation, Windows required and extended polyglot boundaries, and governance rules with five Apple language surfaces, ten native frameworks, 41 Windows language surfaces, and 31 unique quality gates; this is policy metadata, not runtime or build evidence."
             ),
             SeisAICoreReadinessCheck(
                 id: "requested-software-stack",
