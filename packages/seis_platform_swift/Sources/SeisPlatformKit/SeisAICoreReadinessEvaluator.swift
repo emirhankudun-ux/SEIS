@@ -71,7 +71,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "subagent-review-ledger",
         "model-scaling-council",
         "mcp-runtime-contract",
-        "plugin-integration"
+        "plugin-integration",
+        "provider-registry"
     ]
 
     public init() {}
@@ -91,7 +92,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         subagentReviewLedgerSnapshot: SeisAISubagentReviewLedgerSnapshot? = nil,
         modelScalingCouncilSnapshot: SeisModelScalingSubagentCouncilSnapshot? = nil,
         mcpRuntimeContractSnapshot: SeisAICoreMCPRuntimeContractSnapshot? = nil,
-        pluginIntegrationSnapshot: SeisAgentPluginIntegrationSnapshot? = nil
+        pluginIntegrationSnapshot: SeisAgentPluginIntegrationSnapshot? = nil,
+        providerRegistrySnapshot: SeisAICoreProviderRegistrySnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -218,6 +220,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Plugin integration manifest",
                 passed: pluginIntegrationSnapshot?.isMetadataOnly == true,
                 evidence: "185 installed/enabled and 5 not-installed audit states, five personal plugins, ten specialist lanes, 300 helper plugins, and scoped activation policy are source-backed without authentication or blanket activation claims."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "provider-registry",
+                title: "Provider registry",
+                passed: providerRegistrySnapshot?.isMetadataOnly == true,
+                evidence: "Seven provider records preserve Available, Missing Key, Disabled, Rate Limited, and Error semantics; core remains zero-key Local Demo and frontend secrets remain forbidden."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked

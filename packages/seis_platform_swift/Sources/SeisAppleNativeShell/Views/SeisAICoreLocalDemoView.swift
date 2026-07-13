@@ -17,6 +17,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var modelScalingCouncilSnapshot: SeisModelScalingSubagentCouncilSnapshot?
     @Published private(set) var mcpRuntimeContractSnapshot: SeisAICoreMCPRuntimeContractSnapshot?
     @Published private(set) var pluginIntegrationSnapshot: SeisAgentPluginIntegrationSnapshot?
+    @Published private(set) var providerRegistrySnapshot: SeisAICoreProviderRegistrySnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -80,6 +81,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         pluginIntegrationSnapshot = try? SeisAgentPluginIntegrationSnapshot.validated(
             from: Data(contentsOf: pluginIntegrationURL)
         )
+        providerRegistrySnapshot = try? SeisAICoreProviderRegistrySnapshot.validated(
+            from: Data(contentsOf: providerRegistryURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -105,7 +109,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 subagentReviewLedgerSnapshot: subagentReviewLedgerSnapshot,
                 modelScalingCouncilSnapshot: modelScalingCouncilSnapshot,
                 mcpRuntimeContractSnapshot: mcpRuntimeContractSnapshot,
-                pluginIntegrationSnapshot: pluginIntegrationSnapshot
+                pluginIntegrationSnapshot: pluginIntegrationSnapshot,
+                providerRegistrySnapshot: providerRegistrySnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -156,6 +161,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             pluginIntegrationSnapshot = try? SeisAgentPluginIntegrationSnapshot.validated(
                 from: Data(contentsOf: pluginIntegrationURL)
             )
+            providerRegistrySnapshot = try? SeisAICoreProviderRegistrySnapshot.validated(
+                from: Data(contentsOf: providerRegistryURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -167,6 +175,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             modelScalingCouncilSnapshot = nil
             mcpRuntimeContractSnapshot = nil
             pluginIntegrationSnapshot = nil
+            providerRegistrySnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -540,6 +549,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-agent-plugin-integration.json")
     }
 
+    private var providerRegistryURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-ai-core-provider-registry.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -606,6 +622,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let pluginIntegrationSnapshot = model.pluginIntegrationSnapshot {
                     pluginIntegrationDisclosure(snapshot: pluginIntegrationSnapshot)
+                }
+                if let providerRegistrySnapshot = model.providerRegistrySnapshot {
+                    providerRegistryDisclosure(snapshot: providerRegistrySnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -1370,6 +1389,46 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Plugin integration manifest. 185 installed and enabled records, 5 not installed, 5 personal plugins, 10 specialist lanes, 300 helper plugins, and no connector authentication claim.")
+    }
+
+    private func providerRegistryDisclosure(snapshot: SeisAICoreProviderRegistrySnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.providers.count) providers · Core credential requirement: \(snapshot.coreCredentialRequirement) · Default: \(snapshot.defaultRoutingMode)")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("Available: \(snapshot.providers.filter { $0.publicStatus == "Available" }.count) · Missing Key: \(snapshot.providers.filter { $0.publicStatus == "Missing Key" }.count) · Disabled: \(snapshot.providers.filter { $0.publicStatus == "Disabled" }.count)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Source-backed status only. No credential validation, network health check, provider call, or silent fallback is performed.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+
+                ForEach(snapshot.providers) { provider in
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: provider.publicStatus == "Available" ? "checkmark.shield" : provider.publicStatus == "Missing Key" ? "key.slash" : "pause.circle")
+                            .foregroundStyle(provider.publicStatus == "Available" ? .green : provider.publicStatus == "Missing Key" ? .orange : .secondary)
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(provider.displayName)
+                                .font(.caption.weight(.semibold))
+                            Text("\(provider.publicStatus) · \(provider.actualModel) · \(provider.privacyClass)")
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                            Text("Routing eligible: \(provider.routingEligible ? "yes" : "no") · Backend-only: \(provider.backendOnly ? "yes" : "no") · Frontend secret: no")
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                }
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Provider registry", systemImage: "server.rack")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Provider registry. Seven source-backed states, zero-key Local Demo, missing-key and disabled states distinct, backend-only credentials, and no frontend secrets.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {
