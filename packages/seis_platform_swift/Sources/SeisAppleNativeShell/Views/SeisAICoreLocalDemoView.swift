@@ -29,6 +29,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var commandCenterKnowledgeSystemSnapshot: SeisCommandCenterKnowledgeSystemSnapshot?
     @Published private(set) var dataSchemaRegistrySnapshot: SeisDataSchemaRegistrySnapshot?
     @Published private(set) var designComponentInventorySnapshot: SeisDesignComponentInventorySnapshot?
+    @Published private(set) var universalCapabilityKernelSnapshot: SeisUniversalCapabilityKernelSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -128,6 +129,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         designComponentInventorySnapshot = try? SeisDesignComponentInventorySnapshot.validated(
             from: Data(contentsOf: designComponentInventoryURL)
         )
+        universalCapabilityKernelSnapshot = try? SeisUniversalCapabilityKernelSnapshot.validated(
+            from: Data(contentsOf: universalCapabilityKernelURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -165,7 +169,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 agiPublicReadinessEvidenceSnapshot: agiPublicReadinessEvidenceSnapshot,
                 commandCenterKnowledgeSystemSnapshot: commandCenterKnowledgeSystemSnapshot,
                 dataSchemaRegistrySnapshot: dataSchemaRegistrySnapshot,
-                designComponentInventorySnapshot: designComponentInventorySnapshot
+                designComponentInventorySnapshot: designComponentInventorySnapshot,
+                universalCapabilityKernelSnapshot: universalCapabilityKernelSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -252,6 +257,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             designComponentInventorySnapshot = try? SeisDesignComponentInventorySnapshot.validated(
                 from: Data(contentsOf: designComponentInventoryURL)
             )
+            universalCapabilityKernelSnapshot = try? SeisUniversalCapabilityKernelSnapshot.validated(
+                from: Data(contentsOf: universalCapabilityKernelURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -275,6 +283,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             commandCenterKnowledgeSystemSnapshot = nil
             dataSchemaRegistrySnapshot = nil
             designComponentInventorySnapshot = nil
+            universalCapabilityKernelSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -732,6 +741,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-design-component-inventory.json")
     }
 
+    private var universalCapabilityKernelURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-universal-capability-kernel.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -834,6 +850,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let designComponentInventorySnapshot = model.designComponentInventorySnapshot {
                     designComponentInventoryDisclosure(snapshot: designComponentInventorySnapshot)
+                }
+                if let universalCapabilityKernelSnapshot = model.universalCapabilityKernelSnapshot {
+                    universalCapabilityKernelDisclosure(snapshot: universalCapabilityKernelSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -2033,6 +2052,30 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("SEIS-Design component inventory. Twelve source-backed components across multiple surfaces, twelve validated, with accessibility and motion metadata; metadata-only and no design mutation.")
+    }
+
+    private func universalCapabilityKernelDisclosure(snapshot: SeisUniversalCapabilityKernelSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.summary.domainCount) domains · \(snapshot.summary.laneCount) lanes · \(snapshot.summary.agentRoles.count) agent roles · \(snapshot.summary.pluginInventoryCount) plugin records · metadata-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("Platforms: \(snapshot.summary.platformCount) · Apple languages: \(snapshot.summary.appleLanguageCount) · Windows languages: \(snapshot.summary.windowsLanguageCount) · policy languages: \(snapshot.summary.windowsPolicyLanguageCount)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.tertiary)
+                Text("Lanes: \(snapshot.laneIDs.joined(separator: " · "))")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                Text(snapshot.routingContract.executionBoundary)
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Universal capability kernel", systemImage: "point.3.connected.trianglepath.dotted")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Universal capability kernel. Thirty-eight domains, fourteen lanes, thirty-eight agent roles, 168 plugin records, and explicit user approval before activation; metadata-only.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {
