@@ -104,7 +104,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "project-intake-contract",
         "connector-capability-registry",
         "goal-command-center-view",
-        "focus-mode-learning-contract"
+        "focus-mode-learning-contract",
+        "plugin-interface-roadmap"
     ]
 
     public init() {}
@@ -159,7 +160,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         projectIntakeSnapshot: SeisProjectIntakeSnapshot? = nil,
         connectorCapabilityRegistrySnapshot: SeisConnectorCapabilityRegistrySnapshot? = nil,
         goalCommandCenterViewSnapshot: SeisGoalCommandCenterViewSnapshot? = nil,
-        focusModeLearningContractSnapshot: SeisFocusModeLearningContractSnapshot? = nil
+        focusModeLearningContractSnapshot: SeisFocusModeLearningContractSnapshot? = nil,
+        pluginInterfaceRoadmapSnapshot: SeisPluginInterfaceRoadmapSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -484,6 +486,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Focus Mode learning contract",
                 passed: focusModeLearningContractSnapshot?.isMetadataOnly == true,
                 evidence: "Focus Mode keeps task scope, minimum-effective tooling, validation evidence, secret and repository protection, and risk-based escalation source-backed; it does not grant autonomous authority or suppress required review."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "plugin-interface-roadmap",
+                title: "Plugin interface roadmap",
+                passed: pluginInterfaceRoadmapSnapshot?.isMetadataOnly == true,
+                evidence: "Five named @seis lanes, five years, 25 lane-year commitments, ten H1/H2 cadence loops, five readiness gates, and zero live actions remain source-backed metadata; no connector activation or cloud execution is implied."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked

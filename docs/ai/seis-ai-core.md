@@ -709,6 +709,22 @@ ambiguity requires it. The contract exposes the
 `npm run check:seis-focus-mode` quality gate as metadata; it does not claim
 that telemetry is delivered live or grant autonomous execution.
 
+## Plugin Interface Roadmap
+
+The Apple-native demo also reads
+`content/development/seis-plugin-interface-roadmap.json` as a source-backed
+roadmap for the five named interface lanes: `@seis`, `@seis-cloud`,
+`@seis-code`, `@seis-design`, and `@seis-data`. The contract covers a five-year
+horizon, 25 lane-year commitments, ten H1/H2 cadence loops, four maturity
+markers, and five readiness records. Its current maturity marker declares
+`0` live actions; the native surface does not install plugins, authenticate
+connectors, invoke MCP, deploy cloud resources, or claim live execution.
+
+The Swift boundary is `SeisPluginInterfaceRoadmapSnapshot`, and its evaluator
+check is `plugin-interface-roadmap`. This remains product-memory metadata until
+the roadmap's browser QA, validators, approval gates, and real runtime
+boundaries are independently reviewed.
+
 ## Related Documents
 
 - [../security/security-baseline.md](../security/security-baseline.md)

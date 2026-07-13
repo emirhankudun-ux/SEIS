@@ -55,6 +55,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let connectorCapabilityRegistry = try SeisConnectorCapabilityRegistrySnapshot.validated(from: connectorCapabilityRegistryData())
         let goalCommandCenterView = try SeisGoalCommandCenterViewSnapshot.validated(from: goalCommandCenterViewData())
         let focusModeLearningContract = try SeisFocusModeLearningContractSnapshot.validated(from: focusModeLearningContractData())
+        let pluginInterfaceRoadmap = try SeisPluginInterfaceRoadmapSnapshot.validated(from: pluginInterfaceRoadmapData())
 
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
@@ -106,14 +107,15 @@ struct SeisAICoreReadinessEvaluatorTests {
             projectIntakeSnapshot: projectIntake,
             connectorCapabilityRegistrySnapshot: connectorCapabilityRegistry,
             goalCommandCenterViewSnapshot: goalCommandCenterView,
-            focusModeLearningContractSnapshot: focusModeLearningContract
+            focusModeLearningContractSnapshot: focusModeLearningContract,
+            pluginInterfaceRoadmapSnapshot: pluginInterfaceRoadmap
         )
 
         #expect(report.isReadyLocalDemo)
         #expect(report.status == .readyLocalDemo)
         #expect(report.evaluatorVersion == SeisAICoreReadinessEvaluator.evaluatorVersion)
         #expect(report.checks.map(\.id) == SeisAICoreReadinessEvaluator.expectedCheckIDs)
-        #expect(report.passedCount == 52)
+        #expect(report.passedCount == 53)
         #expect(report.failedCount == 0)
         #expect(report.truthBoundary.contains("not proof of live provider access"))
     }
@@ -166,6 +168,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let connectorCapabilityRegistry = try SeisConnectorCapabilityRegistrySnapshot.validated(from: connectorCapabilityRegistryData())
         let goalCommandCenterView = try SeisGoalCommandCenterViewSnapshot.validated(from: goalCommandCenterViewData())
         let focusModeLearningContract = try SeisFocusModeLearningContractSnapshot.validated(from: focusModeLearningContractData())
+        let pluginInterfaceRoadmap = try SeisPluginInterfaceRoadmapSnapshot.validated(from: pluginInterfaceRoadmapData())
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
             capabilityMesh: SeisAICapabilityMesh(snapshot: snapshot),
@@ -216,7 +219,8 @@ struct SeisAICoreReadinessEvaluatorTests {
             projectIntakeSnapshot: projectIntake,
             connectorCapabilityRegistrySnapshot: connectorCapabilityRegistry,
             goalCommandCenterViewSnapshot: goalCommandCenterView,
-            focusModeLearningContractSnapshot: focusModeLearningContract
+            focusModeLearningContractSnapshot: focusModeLearningContract,
+            pluginInterfaceRoadmapSnapshot: pluginInterfaceRoadmap
         )
 
         #expect(report.status.rawValue == "ready-local-demo")
@@ -513,5 +517,11 @@ struct SeisAICoreReadinessEvaluatorTests {
         var root = URL(fileURLWithPath: #filePath)
         for _ in 0..<5 { root.deleteLastPathComponent() }
         return try Data(contentsOf: root.appendingPathComponent(SeisFocusModeLearningContractSnapshot.sourcePath))
+    }
+
+    private func pluginInterfaceRoadmapData() throws -> Data {
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<5 { root.deleteLastPathComponent() }
+        return try Data(contentsOf: root.appendingPathComponent(SeisPluginInterfaceRoadmapSnapshot.sourcePath))
     }
 }

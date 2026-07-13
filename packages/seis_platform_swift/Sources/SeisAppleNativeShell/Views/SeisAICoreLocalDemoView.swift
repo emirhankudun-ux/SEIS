@@ -52,6 +52,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var connectorCapabilityRegistrySnapshot: SeisConnectorCapabilityRegistrySnapshot?
     @Published private(set) var goalCommandCenterViewSnapshot: SeisGoalCommandCenterViewSnapshot?
     @Published private(set) var focusModeLearningContractSnapshot: SeisFocusModeLearningContractSnapshot?
+    @Published private(set) var pluginInterfaceRoadmapSnapshot: SeisPluginInterfaceRoadmapSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -220,6 +221,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         focusModeLearningContractSnapshot = try? SeisFocusModeLearningContractSnapshot.validated(
             from: Data(contentsOf: focusModeLearningContractURL)
         )
+        pluginInterfaceRoadmapSnapshot = try? SeisPluginInterfaceRoadmapSnapshot.validated(
+            from: Data(contentsOf: pluginInterfaceRoadmapURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -280,7 +284,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 projectIntakeSnapshot: projectIntakeSnapshot,
                 connectorCapabilityRegistrySnapshot: connectorCapabilityRegistrySnapshot,
                 goalCommandCenterViewSnapshot: goalCommandCenterViewSnapshot,
-                focusModeLearningContractSnapshot: focusModeLearningContractSnapshot
+                focusModeLearningContractSnapshot: focusModeLearningContractSnapshot,
+                pluginInterfaceRoadmapSnapshot: pluginInterfaceRoadmapSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -436,6 +441,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             focusModeLearningContractSnapshot = try? SeisFocusModeLearningContractSnapshot.validated(
                 from: Data(contentsOf: focusModeLearningContractURL)
             )
+            pluginInterfaceRoadmapSnapshot = try? SeisPluginInterfaceRoadmapSnapshot.validated(
+                from: Data(contentsOf: pluginInterfaceRoadmapURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -482,6 +490,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             connectorCapabilityRegistrySnapshot = nil
             goalCommandCenterViewSnapshot = nil
             focusModeLearningContractSnapshot = nil
+            pluginInterfaceRoadmapSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -1098,6 +1107,11 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent(SeisFocusModeLearningContractSnapshot.sourcePath)
     }
 
+    private var pluginInterfaceRoadmapURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent(SeisPluginInterfaceRoadmapSnapshot.sourcePath)
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -1271,6 +1285,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let focusModeLearningContractSnapshot = model.focusModeLearningContractSnapshot {
                     focusModeLearningContractDisclosure(snapshot: focusModeLearningContractSnapshot)
+                }
+                if let pluginInterfaceRoadmapSnapshot = model.pluginInterfaceRoadmapSnapshot {
+                    pluginInterfaceRoadmapDisclosure(snapshot: pluginInterfaceRoadmapSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -2985,6 +3002,30 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("SEIS Focus Mode learning contract. Five bounded behaviors, four evidence paths, a focus mode telemetry event, and the local quality gate are source-backed metadata. Focus Mode does not suppress validation or grant autonomous execution.")
+    }
+
+    private func pluginInterfaceRoadmapDisclosure(snapshot: SeisPluginInterfaceRoadmapSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.interfaceCount) lanes · \(snapshot.yearCount)-year horizon · \(snapshot.laneYearCommitmentCount) lane-year commitments · metadata-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("\(snapshot.cadenceLoopCount) H1/H2 cadence loops · \(snapshot.readinessGateCount) readiness gates · \(snapshot.liveActionCount) live actions")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Lanes: \(snapshot.interfaces.map(\.handle).joined(separator: " · ")) · current mode: documented-static-interface")
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+                Text("This roadmap is read-only product memory for @seis, @seis-cloud, @seis-code, @seis-design, and @seis-data. It does not install plugins, authenticate connectors, invoke MCP, deploy cloud resources, or claim live actions.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Plugin interface roadmap", systemImage: "point.3.connected.trianglepath.dotted")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Plugin interface roadmap. Five named lanes, five years, twenty-five lane-year commitments, ten H1/H2 cadence loops, five readiness gates, and zero live actions are source-backed metadata. The native surface does not install plugins, authenticate connectors, invoke MCP, or claim live actions.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {
