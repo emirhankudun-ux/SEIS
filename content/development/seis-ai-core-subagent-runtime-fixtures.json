@@ -1,8 +1,8 @@
 {
   "id": "seis-ai-core-subagent-runtime-fixtures",
-  "version": "2026.06.23",
+  "version": "2026.06.29",
   "status": "documented-fixture",
-  "purpose": "Provide one bounded fixture pack for SEIS AI Core sub-agent roles, permissions, dry-run queue, cancellation, approvals, redaction, and execution ledger without enabling autonomous write execution.",
+  "purpose": "Provide one bounded fixture pack for SEIS AI Core sub-agent roles, permissions, dry-run queue, cancellation, approvals, redaction, execution ledger, and handoff reports without enabling autonomous write execution.",
   "qualityGate": "npm run check:seis-ai-core-subagent-runtime-fixtures",
   "sourceOfTruth": {
     "operatingModel": "content/development/seis-ai-core-subagent-operating-model.json",
@@ -14,6 +14,7 @@
     "approvalFixture": "content/development/seis-ai-core-approval-fixture.json",
     "redactionFixture": "content/development/seis-ai-core-redaction-fixture.json",
     "executionLedgerFixture": "content/development/seis-ai-core-execution-ledger-fixture.json",
+    "handoffFixture": "content/development/seis-ai-core-handoff-fixture.json",
     "reviewLedger": "content/development/seis-ai-core-subagent-review-ledger.json",
     "versionRegistry": "content/development/seis-ai-core-version-registry.json",
     "versionPromotionGates": "content/development/seis-ai-core-version-promotion-gates.json",
@@ -62,6 +63,11 @@
       "id": "execution-ledger-fixture",
       "path": "content/development/seis-ai-core-execution-ledger-fixture.json",
       "summary": "Append-only planned audit ledger shape for dry-run decisions and future approval-gated execution evidence."
+    },
+    {
+      "id": "handoff-fixture",
+      "path": "content/development/seis-ai-core-handoff-fixture.json",
+      "summary": "Single-writer handoff report shape for reviewer transfers, blocked approval gates, validation failures, and scope reduction."
     }
   ],
   "roleSchema": {
@@ -124,5 +130,18 @@
       "externalMutationPerformed": false,
       "status": "cancelled"
     }
+  },
+  "handoffFixture": {
+    "path": "content/development/seis-ai-core-handoff-fixture.json",
+    "writerPolicy": "single-writer",
+    "runtimeBoundary": "status-and-plan-only",
+    "requiredBeforePromotion": true,
+    "forbiddenContent": [
+      "secret values",
+      "private keys",
+      "raw provider errors",
+      "unapproved credentials",
+      "hidden chain-of-thought"
+    ]
   }
 }
