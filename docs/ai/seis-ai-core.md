@@ -697,6 +697,18 @@ The Swift boundary is
 view model until the goal-tracking and repository-hygiene evidence is reviewed
 again.
 
+## Focus Mode Learning Contract
+
+The Apple-native demo also reads
+`content/development/seis-focus-mode-learning-contract.json` as a supervised
+operating boundary. Its five behaviors keep the active task bounded, prefer a
+minimum effective toolset, require current validation evidence, protect user
+work, secrets, and repository integrity, and escalate only when risk or
+ambiguity requires it. The contract exposes the
+`seis_demo_focus_mode_changed` telemetry name and the
+`npm run check:seis-focus-mode` quality gate as metadata; it does not claim
+that telemetry is delivered live or grant autonomous execution.
+
 ## Related Documents
 
 - [../security/security-baseline.md](../security/security-baseline.md)

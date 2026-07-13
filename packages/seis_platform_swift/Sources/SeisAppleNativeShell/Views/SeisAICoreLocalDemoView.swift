@@ -51,6 +51,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var projectIntakeSnapshot: SeisProjectIntakeSnapshot?
     @Published private(set) var connectorCapabilityRegistrySnapshot: SeisConnectorCapabilityRegistrySnapshot?
     @Published private(set) var goalCommandCenterViewSnapshot: SeisGoalCommandCenterViewSnapshot?
+    @Published private(set) var focusModeLearningContractSnapshot: SeisFocusModeLearningContractSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -216,6 +217,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         goalCommandCenterViewSnapshot = try? SeisGoalCommandCenterViewSnapshot.validated(
             from: Data(contentsOf: goalCommandCenterViewURL)
         )
+        focusModeLearningContractSnapshot = try? SeisFocusModeLearningContractSnapshot.validated(
+            from: Data(contentsOf: focusModeLearningContractURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -275,7 +279,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 agiSystemSourceSnapshot: agiSystemSourceSnapshot,
                 projectIntakeSnapshot: projectIntakeSnapshot,
                 connectorCapabilityRegistrySnapshot: connectorCapabilityRegistrySnapshot,
-                goalCommandCenterViewSnapshot: goalCommandCenterViewSnapshot
+                goalCommandCenterViewSnapshot: goalCommandCenterViewSnapshot,
+                focusModeLearningContractSnapshot: focusModeLearningContractSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -428,6 +433,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             goalCommandCenterViewSnapshot = try? SeisGoalCommandCenterViewSnapshot.validated(
                 from: Data(contentsOf: goalCommandCenterViewURL)
             )
+            focusModeLearningContractSnapshot = try? SeisFocusModeLearningContractSnapshot.validated(
+                from: Data(contentsOf: focusModeLearningContractURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -473,6 +481,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             projectIntakeSnapshot = nil
             connectorCapabilityRegistrySnapshot = nil
             goalCommandCenterViewSnapshot = nil
+            focusModeLearningContractSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -1084,6 +1093,11 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-goal-command-center-view.json")
     }
 
+    private var focusModeLearningContractURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent(SeisFocusModeLearningContractSnapshot.sourcePath)
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -1254,6 +1268,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let goalCommandCenterViewSnapshot = model.goalCommandCenterViewSnapshot {
                     goalCommandCenterViewDisclosure(snapshot: goalCommandCenterViewSnapshot)
+                }
+                if let focusModeLearningContractSnapshot = model.focusModeLearningContractSnapshot {
+                    focusModeLearningContractDisclosure(snapshot: focusModeLearningContractSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -2944,6 +2961,30 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Goal Command Center view. Twenty goals are tracked with five active, three blocked, and twelve planned. Twenty progress cards, twenty-four panels, four UX guards, and twelve source records are visible as non-LLM metadata. Repository hygiene remains an explicit blocker; this surface does not claim live GitHub synchronization or autonomous execution.")
+    }
+
+    private func focusModeLearningContractDisclosure(snapshot: SeisFocusModeLearningContractSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.agiOperatingBehavior.count) bounded behaviors · \(snapshot.evidence.count) evidence paths · metadata-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("Telemetry: \(snapshot.feature.telemetryEvent) · Gate: \(snapshot.qualityGate)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Focus Mode narrows the current task to the minimum effective toolset, protects secrets and repository integrity, and escalates only for material risk or ambiguity.")
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+                Text("This contract is a supervised operating boundary. It does not suppress validation, grant autonomous execution, or claim live telemetry delivery from this native surface.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("SEIS Focus Mode learning contract", systemImage: "scope")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("SEIS Focus Mode learning contract. Five bounded behaviors, four evidence paths, a focus mode telemetry event, and the local quality gate are source-backed metadata. Focus Mode does not suppress validation or grant autonomous execution.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {

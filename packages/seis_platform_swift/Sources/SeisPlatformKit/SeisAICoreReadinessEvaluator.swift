@@ -103,7 +103,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "agi-system-source-contract",
         "project-intake-contract",
         "connector-capability-registry",
-        "goal-command-center-view"
+        "goal-command-center-view",
+        "focus-mode-learning-contract"
     ]
 
     public init() {}
@@ -157,7 +158,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         agiSystemSourceSnapshot: SeisAGISystemSourceSnapshot? = nil,
         projectIntakeSnapshot: SeisProjectIntakeSnapshot? = nil,
         connectorCapabilityRegistrySnapshot: SeisConnectorCapabilityRegistrySnapshot? = nil,
-        goalCommandCenterViewSnapshot: SeisGoalCommandCenterViewSnapshot? = nil
+        goalCommandCenterViewSnapshot: SeisGoalCommandCenterViewSnapshot? = nil,
+        focusModeLearningContractSnapshot: SeisFocusModeLearningContractSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -476,6 +478,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Goal Command Center view",
                 passed: goalCommandCenterViewSnapshot?.isMetadataOnly == true,
                 evidence: "The generated Goal Command Center view remains a non-LLM, source-backed metadata surface with 20 goals, explicit active/blocked/planned states, evidence and risk panels, and a repository-hygiene blocker that is visible rather than hidden."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "focus-mode-learning-contract",
+                title: "Focus Mode learning contract",
+                passed: focusModeLearningContractSnapshot?.isMetadataOnly == true,
+                evidence: "Focus Mode keeps task scope, minimum-effective tooling, validation evidence, secret and repository protection, and risk-based escalation source-backed; it does not grant autonomous authority or suppress required review."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked
