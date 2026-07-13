@@ -98,9 +98,11 @@ surface but does not make the private manifests validated or ADR-0002 accepted.
 Consumers are structured records rather than repository id strings. A mapping
 records the consumer repository, optional repository-relative consumer path,
 observed or planned status, one-way distribution mode, compatibility state,
-and typed evidence. Observed public consumers require an exact HTTPS artifact
-in the recorded consumer repository plus a schema-bound distribution
-attestation. Observed private consumers may use only a schema-bound public-safe
+and typed evidence. Observed public consumers require an exact revision-bound
+commit artifact in the recorded consumer repository plus a schema-bound
+distribution attestation. Pull-request, CI-run, and release URLs remain
+unsupported until their revision relationships have explicit contracts.
+Observed private consumers may use only a schema-bound public-safe
 attestation under `data/evidence/`. Both forms must match the module, consumer
 repository and path, distribution mode, compatibility state, and revision;
 private revisions use only SHA-256 digests.
@@ -147,6 +149,13 @@ open pull requests were later approved or merged, that the manifests are
 present on canonical `main`,
 that planned consumers received an artifact, that the Greek paired repository
 was verified, or that human review accepted the proposed ownership decision.
+
+The [completion audit and human decision packet](reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md)
+maps every Goal requirement, acceptance criterion, Definition of Done item,
+quality gate, dependency, and blocker to evidence or an exact remaining action.
+Its machine-readable source is validated with the ownership foundation and
+records `blocked`; the audit does not authorize merge, retarget, publication,
+or Goal promotion.
 
 ## Current unblock requirements
 

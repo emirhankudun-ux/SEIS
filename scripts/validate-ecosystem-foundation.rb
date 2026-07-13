@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 
 require "json"
+require "cgi"
+require "digest"
 require "pathname"
 require "uri"
 require "yaml"
@@ -12,6 +14,15 @@ MANIFEST_PATH = "project.ecosystem.yaml"
 OWNERSHIP_PATH = "data/repository-ownership.yaml"
 OWNERSHIP_DOC_PATH = "docs/REPOSITORY_OWNERSHIP.md"
 GREEK_TARGET_ATTESTATION_PATH = "data/evidence/ECO-GOAL-0001-greek-repository-target-attestation.yaml"
+COMPLETION_AUDIT_PATH = "data/evidence/ECO-GOAL-0001-completion-audit.yaml"
+COMPLETION_AUDIT_DOC_PATH = "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md"
+COMPLETION_AUDIT_EVIDENCE_ID = "ECO-EVIDENCE-012"
+APPROVED_AUDIT_URLS = %w[
+  https://github.com/emirhankudun-ux/SEIS/pull/177
+  https://github.com/emirhankudun-ux/SEIS/pull/179
+  https://github.com/emirhankudun-ux/SEIS/pull/180
+].freeze
+COMPLETION_AUDIT_DOC_SHA256 = "754ccefddb67c7cb99374aa44a76317e2b08ae0a4d4fca1fd0e82e95bddf1674"
 GOAL_GLOB = "goals/{active,backlog,blocked,completed,archived}/*.yaml"
 
 def absolute(relative_path)
@@ -53,18 +64,22 @@ def valid_https_url?(value)
   return false unless value.is_a?(String) && !value.strip.empty?
 
   uri = URI.parse(value)
-  uri.is_a?(URI::HTTPS) && !uri.host.to_s.empty? && uri.userinfo.nil?
+  uri.is_a?(URI::HTTPS) && !uri.host.to_s.empty? && uri.userinfo.nil? && uri.port == 443
 rescue URI::InvalidURIError
   false
 end
 
 def valid_github_repository_url?(value, remote, suffix_pattern)
   return false unless valid_https_url?(value)
+  return false unless value.start_with?("https://github.com/")
 
   uri = URI.parse(value)
   return false unless uri.host.to_s.casecmp("github.com").zero?
 
-  uri.path.match?(%r{\A/#{Regexp.escape(remote)}/#{suffix_pattern}\z}) && uri.query.nil? && uri.fragment.nil?
+  path_matches = uri.path.match?(%r{\A/#{Regexp.escape(remote)}/#{suffix_pattern}\z})
+  return false unless path_matches && uri.query.nil? && uri.fragment.nil?
+
+  true
 rescue URI::InvalidURIError
   false
 end
@@ -229,6 +244,65 @@ end
 
 def duplicates(values)
   values.group_by(&:itself).select { |_value, matches| matches.length > 1 }.keys
+end
+
+def exact_string_keys?(value, expected_keys)
+  value.is_a?(Hash) && value.keys.all? { |key| key.is_a?(String) } &&
+    value.keys.sort == expected_keys.sort
+end
+
+def nested_strings(value)
+  case value
+  when Hash
+    value.values.flat_map { |nested_value| nested_strings(nested_value) }
+  when Array
+    value.flat_map { |nested_value| nested_strings(nested_value) }
+  when String
+    [value]
+  else
+    []
+  end
+end
+
+def valid_non_circular_evidence_refs?(value, known_ids, allow_empty: false)
+  return false unless value.is_a?(Array)
+  return false if !allow_empty && value.empty?
+
+  value.all? { |reference| reference.is_a?(String) } && value.uniq == value &&
+    (value - known_ids).empty? && !value.include?(COMPLETION_AUDIT_EVIDENCE_ID)
+end
+
+def normalize_public_markdown(text)
+  punctuation = (33..126).map(&:chr).reject { |character| character.match?(/[A-Za-z0-9]/) }
+  normalized = text.to_s
+  4.times do
+    decoded = CGI.unescapeHTML(normalized).gsub(/\\(.)/) do |match|
+      character = Regexp.last_match(1)
+      punctuation.include?(character) ? character : match
+    end
+    break if decoded == normalized
+    normalized = decoded
+  end
+  normalized
+end
+
+def normalize_host_reference_text(text)
+  normalized = text.to_s
+  4.times do
+    decoded = URI::DEFAULT_PARSER.unescape(normalized).force_encoding(Encoding::UTF_8).scrub
+    decoded = decoded.tr("\u3002\uFF0E\uFF61", ".")
+    break if decoded == normalized
+    normalized = decoded
+  end
+  normalized
+rescue ArgumentError
+  text.to_s
+end
+
+def unapproved_github_reference?(text)
+  residual = text.to_s.dup
+  APPROVED_AUDIT_URLS.each { |url| residual = residual.gsub(url, "") }
+  normalize_host_reference_text(residual).match?(%r{(?:/{2})?github\.com\.?(?::[0-9]+)?/}i)
 end
 
 manifest_schema = read_json("schemas/project-ecosystem.schema.json")
@@ -699,7 +773,7 @@ modules.each do |mod|
           valid_github_remote?(consumer_remote) && valid_github_repository_url?(
             artifact_url,
             consumer_remote,
-            "(?:commit/[0-9a-f]{40}|pull/[1-9][0-9]*|actions/runs/[1-9][0-9]*|releases/tag/[A-Za-z0-9][A-Za-z0-9._-]*)"
+            "commit/#{Regexp.escape(evidence_ref["revision"].to_s)}"
           )
         unless evidence_contract_valid
           ERRORS << "#{OWNERSHIP_PATH}: #{mod["id"]} public consumer #{consumer_repository.inspect} evidence must combine an exact repository-bound GitHub artifact, full revision, and schema-bound distribution attestation"
@@ -931,6 +1005,251 @@ goal_paths.each do |absolute_goal_path|
 end
 duplicates(goal_ids).each { |id| ERRORS << "duplicate Goal id #{id}" }
 
+completion_audit_text = read_text(COMPLETION_AUDIT_PATH)
+completion_audit = read_yaml(COMPLETION_AUDIT_PATH)
+ownership_goal_pair = goals.find { |_relative_goal_path, goal| goal["id"] == "ECO-GOAL-0001" }
+ownership_goal = ownership_goal_pair&.last
+if !completion_audit.is_a?(Hash)
+  ERRORS << "#{COMPLETION_AUDIT_PATH}: expected YAML object/hash at root"
+elsif !ownership_goal.is_a?(Hash)
+  ERRORS << "#{COMPLETION_AUDIT_PATH}: ECO-GOAL-0001 is missing"
+else
+  expected_audit_keys = %w[
+    schema_version id goal_id classification assessed_at outcome maturity
+    dependency_snapshot criteria quality_gates blockers github_review_order limitations
+  ].sort
+  unless exact_string_keys?(completion_audit, expected_audit_keys)
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: completion audit fields must match the canonical contract"
+  end
+  unless completion_audit["schema_version"] == 1 &&
+      completion_audit["id"] == "eco-goal-0001-completion-audit" &&
+      completion_audit["goal_id"] == ownership_goal["id"] &&
+      completion_audit["classification"] == "public-safe" &&
+      completion_audit["assessed_at"].is_a?(String) &&
+      completion_audit["assessed_at"].match?(/\A[0-9]{4}-[0-9]{2}-[0-9]{2}\z/) &&
+      completion_audit["outcome"] == ownership_goal["status"] &&
+      completion_audit["outcome"] == "blocked" &&
+      completion_audit["maturity"] == ownership_goal["maturity"]
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: completion audit identity, date, outcome, and maturity must match the blocked Goal"
+  end
+  if repositories.all? { |repository| repository.is_a?(Hash) && repository.dig("manifest_validation", "status") == "validated" }
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: blocked manifest assessment must be refreshed when every canonical manifest is validated"
+  end
+  ownership_adr = read_text("docs/adr/0002-ecosystem-governance-bootstrap-ownership.md")
+  unless ownership_adr.include?("## Status\n\nProposed")
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: blocked inventory snapshot requires ADR-0002 to remain Proposed"
+  end
+
+  ownership_evidence_ids = Array(ownership_goal["evidence_records"])
+    .map { |record| record["id"] if record.is_a?(Hash) && record["status"] == "passed" }
+    .compact
+  criteria = completion_audit["criteria"]
+  expected_criteria_sections = {
+    "requirements" => Array(ownership_goal["requirements"]),
+    "acceptance_criteria" => Array(ownership_goal["acceptance_criteria"]),
+    "definition_of_done" => Array(ownership_goal["definition_of_done"])
+  }
+  expected_criterion_assessments = {
+    "requirements" => %w[partial partial satisfied satisfied satisfied satisfied satisfied blocked],
+    "acceptance_criteria" => %w[satisfied partial satisfied satisfied satisfied satisfied satisfied],
+    "definition_of_done" => %w[blocked partial partial partial]
+  }
+  expected_criterion_remaining_actions = {
+    "requirements" => [
+      "Merge all three reviewed manifest changes, refresh canonical revisions, and promote each manifest record to validated.",
+      "Obtain human architecture review of the proposed inventory and accept or revise ADR-0002.",
+      nil,
+      nil,
+      nil,
+      nil,
+      nil,
+      "The accountable human confirms the exact canonical target or explicitly defers Greek publication."
+    ],
+    "acceptance_criteria" => [
+      nil,
+      "Human architecture review must confirm inventory completeness before the proposed records can be treated as accepted.",
+      nil,
+      nil,
+      nil,
+      nil,
+      "Current consumers remain planned; add distribution-bound evidence before any mapping is promoted to observed."
+    ],
+    "definition_of_done" => [
+      "Merge the three manifest pull requests, refresh canonical revisions, verify content matches, and promote all records from review to validated.",
+      "Accept or revise ADR-0002 and attest that the reviewed inventory is complete.",
+      "Push the completion-audit implementation, obtain successful required checks for that revision, and record the immutable head and run evidence.",
+      "Publish this completion audit to pull request 180 and verify its focused diff and required checks."
+    ]
+  }
+  unless exact_string_keys?(criteria, expected_criteria_sections.keys)
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: criteria sections must map requirements, acceptance criteria, and Definition of Done"
+  end
+  expected_criteria_sections.each do |section, expected_statements|
+    entries = criteria.is_a?(Hash) ? Array(criteria[section]) : []
+    unless entries.map { |entry| entry["criterion"] if entry.is_a?(Hash) } == expected_statements
+      ERRORS << "#{COMPLETION_AUDIT_PATH}: #{section} must preserve every Goal criterion in order"
+    end
+    entries.each_with_index do |entry, index|
+      next unless entry.is_a?(Hash)
+
+      unless exact_string_keys?(entry, %w[assessment criterion evidence_refs remaining_action])
+        ERRORS << "#{COMPLETION_AUDIT_PATH}: #{section} criterion fields must match the canonical audit contract"
+      end
+      assessment = entry["assessment"]
+      expected_assessment = expected_criterion_assessments.fetch(section)[index]
+      unless assessment == expected_assessment
+        ERRORS << "#{COMPLETION_AUDIT_PATH}: #{section} criterion assessment must remain #{expected_assessment.inspect} while this snapshot is blocked"
+      end
+      evidence_refs = entry["evidence_refs"]
+      unless valid_non_circular_evidence_refs?(evidence_refs, ownership_evidence_ids)
+        ERRORS << "#{COMPLETION_AUDIT_PATH}: #{section} criterion must reference unique, known, non-circular ECO-GOAL-0001 evidence"
+      end
+      remaining_action = entry["remaining_action"]
+      expected_remaining_action = expected_criterion_remaining_actions.fetch(section)[index]
+      unless remaining_action == expected_remaining_action
+        ERRORS << "#{COMPLETION_AUDIT_PATH}: #{section} criterion remaining action must remain canonical"
+      end
+    end
+  end
+
+  dependency_snapshot = Array(completion_audit["dependency_snapshot"])
+  expected_dependencies = Array(ownership_goal["dependencies"])
+  unless dependency_snapshot.map { |entry| entry["goal_id"] if entry.is_a?(Hash) } == expected_dependencies
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: dependency snapshot must match Goal dependencies in order"
+  end
+  dependency_snapshot.each do |entry|
+    next unless entry.is_a?(Hash)
+
+    unless exact_string_keys?(entry, %w[assessment evidence_refs goal_id recorded_status remaining_action])
+      ERRORS << "#{COMPLETION_AUDIT_PATH}: dependency fields must match the canonical audit contract"
+    end
+    dependency_goal = goals.find { |_path, goal| goal["id"] == entry["goal_id"] }&.last
+    expected_dependency_action = "Complete human review and merge of pull request 177 through repository policy before treating the dependency as closed."
+    unless dependency_goal && entry["recorded_status"] == dependency_goal["status"] &&
+        entry["assessment"] == "active" && entry["remaining_action"] == expected_dependency_action
+      ERRORS << "#{COMPLETION_AUDIT_PATH}: dependency #{entry["goal_id"].inspect} must preserve its active recorded state and remaining action"
+    end
+    evidence_refs = entry["evidence_refs"]
+    unless valid_non_circular_evidence_refs?(evidence_refs, ownership_evidence_ids)
+      ERRORS << "#{COMPLETION_AUDIT_PATH}: dependency #{entry["goal_id"].inspect} must reference unique, known, non-circular ECO-GOAL-0001 evidence"
+    end
+  end
+
+  audit_gates = completion_audit["quality_gates"]
+  declared_gates = ownership_goal["quality_gates"]
+  unless audit_gates.is_a?(Hash) && declared_gates.is_a?(Hash) &&
+      exact_string_keys?(audit_gates, declared_gates.keys)
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: quality gates must match the Goal gate inventory"
+  end
+  if audit_gates.is_a?(Hash) && declared_gates.is_a?(Hash)
+    expected_required_gate_assessments = {
+      "architecture" => "blocked",
+      "security" => "partial",
+      "privacy" => "partial",
+      "public_readiness" => "blocked"
+    }
+    expected_gate_remaining_actions = {
+      "architecture" => "A human architecture reviewer accepts or revises ADR-0002 and the proposed inventory.",
+      "security" => "Run the repository secret-scanning workflow on the final audit head after the stacked pull request is human-retargeted to main, then bind the redacted run evidence before passing this gate.",
+      "privacy" => "Human review confirms the public-safe attestations and Greek-target deferral or selection boundary.",
+      "public_readiness" => "Complete protected review, canonical publication, architecture approval, and final public/private-boundary review."
+    }
+    audit_gates.each do |gate, entry|
+      unless exact_string_keys?(entry, %w[assessment declared evidence_refs remaining_action])
+        ERRORS << "#{COMPLETION_AUDIT_PATH}: quality gate #{gate} fields must match the canonical audit contract"
+        next
+      end
+      declared = declared_gates[gate]
+      assessment = entry["assessment"]
+      expected_assessment = case declared
+      when "passed" then "passed"
+      when "not-applicable" then "not-applicable"
+      when "required" then expected_required_gate_assessments[gate]
+      end
+      unless entry["declared"] == declared && assessment == expected_assessment
+        ERRORS << "#{COMPLETION_AUDIT_PATH}: quality gate #{gate} assessment must remain #{expected_assessment.inspect} for declared state #{declared.inspect}"
+      end
+      evidence_refs = entry["evidence_refs"]
+      unless valid_non_circular_evidence_refs?(
+        evidence_refs,
+        ownership_evidence_ids,
+        allow_empty: assessment == "not-applicable"
+      )
+        ERRORS << "#{COMPLETION_AUDIT_PATH}: quality gate #{gate} requires unique, known, non-circular evidence unless it is not applicable"
+      end
+      remaining_action = entry["remaining_action"]
+      unless remaining_action == expected_gate_remaining_actions[gate]
+        ERRORS << "#{COMPLETION_AUDIT_PATH}: quality gate #{gate} remaining action must remain canonical"
+      end
+    end
+  end
+
+  audit_blockers = Array(completion_audit["blockers"])
+  goal_blockers = Array(ownership_goal["blocked_by"])
+  unless audit_blockers.map { |entry| entry["reference"] if entry.is_a?(Hash) } ==
+      goal_blockers.map { |entry| entry["reference"] if entry.is_a?(Hash) }
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: blocker ledger must match Goal blockers in order"
+  end
+  audit_blockers.each_with_index do |entry, index|
+    next unless entry.is_a?(Hash)
+
+    unless exact_string_keys?(entry, %w[accountable_role assessment reference unblock_condition]) &&
+        entry["assessment"] == "active" && entry["accountable_role"] == ownership_goal["accountable_human"] &&
+        entry["unblock_condition"] == goal_blockers[index]&.dig("unblock_condition")
+      ERRORS << "#{COMPLETION_AUDIT_PATH}: blocker #{entry["reference"].inspect} must preserve active ownership and the exact unblock condition"
+    end
+  end
+
+  expected_review_order = [
+    [1, "https://github.com/emirhankudun-ux/SEIS/pull/177", "review-and-merge-goal-governance-foundation"],
+    [2, "https://github.com/emirhankudun-ux/SEIS/pull/179", "retarget-to-main-after-pr-177-and-review-security-boundary-first"],
+    [3, "https://github.com/emirhankudun-ux/SEIS/pull/180", "retarget-to-main-after-pr-177-and-review-ownership-evidence-after-pr-179"],
+    [4, "private-manifest-drafts", "review-and-merge-through-each-private-repository-policy"],
+    [5, "canonical-revision-refresh", "reobserve-main-validate-manifest-content-and-promote-review-records"],
+    [6, "architecture-and-greek-target-decisions", "accept-or-revise-adr-0002-and-confirm-or-defer-greek-publication"]
+  ].map do |order, artifact, action|
+    {
+      "order" => order,
+      "artifact" => artifact,
+      "action" => action,
+      "authorization" => "human-required",
+      "status" => "pending"
+    }
+  end
+  unless completion_audit["github_review_order"] == expected_review_order
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: GitHub review order must remain the canonical pending human-controlled sequence"
+  end
+
+  limitations = Array(completion_audit["limitations"])
+  expected_limitations = %w[
+    point-in-time-observation no-protected-branch-write-authorized
+    no-merge-or-retarget-authorized private-operational-identifiers-redacted
+    canonical-manifest-publication-not-proven planned-consumer-distribution-not-proven
+    greek-canonical-target-unresolved completion-not-claimed
+  ]
+  unless limitations == expected_limitations
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: limitations must remain the canonical public-safe non-completion boundary"
+  end
+
+  parsed_audit_strings = nested_strings(completion_audit)
+  audit_urls = parsed_audit_strings.flat_map { |value| value.scan(%r{https?://[^\s'"\]\)]+}i) }
+  audit_urls.concat(completion_audit_text.scan(%r{https?://[^\s'"\]\)]+}i))
+  if (audit_urls - APPROVED_AUDIT_URLS).any?
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: completion audit must not publish unapproved operational URLs"
+  end
+  if parsed_audit_strings.any? { |value| unapproved_github_reference?(value) } ||
+      unapproved_github_reference?(completion_audit_text)
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: completion audit must not publish bare or protocol-relative GitHub references"
+  end
+  if parsed_audit_strings.any? { |value| value.match?(/\b[0-9a-f]{40}\b/i) } ||
+      completion_audit_text.match?(/\b[0-9a-f]{40}\b/i)
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: completion audit must not publish raw revisions"
+  end
+  if completion_audit_text.each_line.any? { |line| unquoted_comment_marker?(line) }
+    ERRORS << "#{COMPLETION_AUDIT_PATH}: canonical completion audit must not contain comments"
+  end
+end
+
 goal_ids_set = goal_ids.compact.uniq
 goals.each do |relative_goal_path, goal|
   references = []
@@ -949,8 +1268,59 @@ goals.each do |relative_goal_path, goal|
 end
 
 ownership_doc = read_text(OWNERSHIP_DOC_PATH)
-for required_text in [OWNERSHIP_PATH, "ECO-GOAL-0001", "npm run check:ecosystem-foundation", "Rollback"]
+for required_text in [OWNERSHIP_PATH, COMPLETION_AUDIT_DOC_PATH.delete_prefix("docs/"), "ECO-GOAL-0001", "npm run check:ecosystem-foundation", "Rollback"]
   ERRORS << "#{OWNERSHIP_DOC_PATH}: missing #{required_text.inspect}" unless ownership_doc.include?(required_text)
+end
+
+completion_audit_doc = read_text(COMPLETION_AUDIT_DOC_PATH)
+normalized_completion_audit_doc_bytes = completion_audit_doc.gsub("\r\n", "\n").gsub("\r", "\n")
+unless Digest::SHA256.hexdigest(normalized_completion_audit_doc_bytes) == COMPLETION_AUDIT_DOC_SHA256
+  ERRORS << "#{COMPLETION_AUDIT_DOC_PATH}: completion decision packet content must match the canonical reviewed digest"
+end
+required_completion_doc_text = [
+  COMPLETION_AUDIT_PATH,
+  "ECO-GOAL-0001",
+  "Status: `blocked`",
+  "`ECO-GOAL-0001` is not completion-ready.",
+  "| Three validated canonical manifests | Blocked |",
+  "| Complete conflict-free ownership coverage | Partial |",
+  "| Passing CI | Partial |",
+  "| Focused PR with evidence, risk, and rollback | Partial |",
+  "Architecture is blocked",
+  "Security remains partial",
+  "Privacy is partial",
+  "Public readiness is blocked",
+  "Human-Controlled Review Order",
+  "Rollback"
+]
+for required_text in required_completion_doc_text
+  ERRORS << "#{COMPLETION_AUDIT_DOC_PATH}: missing #{required_text.inspect}" unless completion_audit_doc.include?(required_text)
+end
+review_order_markers = [
+  "1. Review and merge [PR 177]",
+  "2. After PR 177, inspect and human-retarget",
+  "3. Inspect and human-retarget",
+  "4. Review the two private manifest drafts",
+  "5. Refresh canonical `main` observations",
+  "6. Accept or revise ADR-0002"
+]
+review_order_positions = review_order_markers.map { |marker| completion_audit_doc.index(marker) }
+unless review_order_positions.none?(&:nil?) && review_order_positions == review_order_positions.sort
+  ERRORS << "#{COMPLETION_AUDIT_DOC_PATH}: human review sequence must match the canonical six-step order"
+end
+normalized_completion_audit_doc = normalize_public_markdown(completion_audit_doc)
+if normalized_completion_audit_doc.match?(/&(?:#[xX]?[0-9A-Fa-f]+|[A-Za-z][A-Za-z0-9]+);/)
+  ERRORS << "#{COMPLETION_AUDIT_DOC_PATH}: completion decision packet must not retain unsupported HTML entity escapes"
+end
+completion_doc_urls = normalized_completion_audit_doc.scan(%r{https?://[^\s'"\]\)]+}i)
+if (completion_doc_urls - APPROVED_AUDIT_URLS).any?
+  ERRORS << "#{COMPLETION_AUDIT_DOC_PATH}: completion decision packet must not publish unapproved operational URLs"
+end
+if unapproved_github_reference?(normalized_completion_audit_doc)
+  ERRORS << "#{COMPLETION_AUDIT_DOC_PATH}: completion decision packet must not publish bare or protocol-relative GitHub references"
+end
+if normalized_completion_audit_doc.match?(/\b[0-9a-f]{40}\b/i)
+  ERRORS << "#{COMPLETION_AUDIT_DOC_PATH}: completion decision packet must not publish raw revisions"
 end
 
 package_json = read_json("package.json")
@@ -988,6 +1358,7 @@ scoped_files = [
   OWNERSHIP_PATH,
   OWNERSHIP_DOC_PATH,
   "docs/ECOSYSTEM_GOAL_TRACKING.md",
+  COMPLETION_AUDIT_DOC_PATH,
   "docs/adr/0002-ecosystem-governance-bootstrap-ownership.md",
   ".github/workflows/foundation-check.yml",
   "schemas/project-ecosystem.schema.json",

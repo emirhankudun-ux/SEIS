@@ -13,9 +13,11 @@ FIXTURE_FILES = [
   "data/repository-ownership.yaml",
   "data/evidence/ECO-GOAL-0001-private-manifest-review.yaml",
   "data/evidence/ECO-GOAL-0001-greek-repository-target-attestation.yaml",
+  "data/evidence/ECO-GOAL-0001-completion-audit.yaml",
   ".github/workflows/foundation-check.yml",
   "docs/ECOSYSTEM_GOAL_TRACKING.md",
   "docs/REPOSITORY_OWNERSHIP.md",
+  "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md",
   "docs/seis-canonical-github-hub.md",
   "docs/adr/0002-ecosystem-governance-bootstrap-ownership.md",
   "schemas/project-ecosystem.schema.json",
@@ -48,6 +50,43 @@ end
 
 def write_yaml(directory, relative_path, value)
   File.write(File.join(directory, relative_path), YAML.dump(value))
+end
+
+def configure_public_consumer_evidence(directory, artifact_url)
+  revision = "f772b6f364e49d438113b2d51f2e20027ae9f6b4"
+  attestation_path = "data/evidence/public-consumer-url-fixture.yaml"
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  consumer = ownership["modules"]
+    .find { |candidate| candidate["id"] == "ecosystem-governance-bootstrap" }["consumers"].first
+  consumer["repository"] = "seis"
+  consumer["status"] = "observed"
+  consumer["compatibility"] = "compatible"
+  consumer["evidence"] = [
+    {
+      "kind" => "public-distribution-attestation",
+      "artifact_url" => artifact_url,
+      "attestation_path" => attestation_path,
+      "revision" => revision,
+      "revision_digest" => nil
+    }
+  ]
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+  FileUtils.mkdir_p(File.dirname(File.join(directory, attestation_path)))
+  write_yaml(directory, attestation_path, {
+    "schema_version" => 1,
+    "kind" => "consumer-distribution",
+    "classification" => "public-evidence",
+    "module_id" => "ecosystem-governance-bootstrap",
+    "consumer_repository" => "seis",
+    "consumer_path" => "project.ecosystem.yaml",
+    "distribution_mode" => "manual-adoption",
+    "compatibility" => "compatible",
+    "artifact_url" => artifact_url,
+    "revision" => revision,
+    "revision_digest" => nil,
+    "observed_at" => "2026-07-13",
+    "limitations" => ["point-in-time-observation"]
+  })
 end
 
 def assert_rejected(label, expected_error)
@@ -115,6 +154,12 @@ assert_rejected("manifest with malformed project object", "project.ecosystem.yam
   manifest = YAML.safe_load(File.read(File.join(directory, "project.ecosystem.yaml")))
   manifest["project"] = "invalid-project"
   write_yaml(directory, "project.ecosystem.yaml", manifest)
+end
+
+assert_rejected("ownership registry with scalar repository record", "data/repository-ownership.yaml.repositories[0]: expected object, got String") do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  ownership["repositories"][0] = "invalid-repository"
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
 end
 
 assert_rejected("duplicate owned path", "case-folded path apps / apps has duplicate canonical owners") do |directory|
@@ -275,23 +320,22 @@ assert_rejected("public observed consumer with unrelated GitHub evidence", "publ
   write_yaml(directory, "data/repository-ownership.yaml", ownership)
 end
 
-assert_rejected("public observed consumer with dot-segment release tag", "public consumer \"seis\" evidence must combine an exact repository-bound GitHub artifact, full revision, and schema-bound distribution attestation") do |directory|
-  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
-  consumer = ownership["modules"]
-    .find { |candidate| candidate["id"] == "ecosystem-governance-bootstrap" }["consumers"].first
-  consumer["repository"] = "seis"
-  consumer["status"] = "observed"
-  consumer["compatibility"] = "compatible"
-  consumer["evidence"] = [
-    {
-      "kind" => "public-distribution-attestation",
-      "artifact_url" => "https://github.com/emirhankudun-ux/SEIS/releases/tag/..",
-      "attestation_path" => nil,
-      "revision" => "#{"0" * 40}",
-      "revision_digest" => nil
-    }
-  ]
-  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+invalid_public_consumer_urls = {
+  "unsupported valid release tag" => "https://github.com/emirhankudun-ux/SEIS/releases/tag/v1.0.0",
+  "dot-segment release tag" => "https://github.com/emirhankudun-ux/SEIS/releases/tag/..",
+  "double-dot release tag" => "https://github.com/emirhankudun-ux/SEIS/releases/tag/v..",
+  "trailing-dot release tag" => "https://github.com/emirhankudun-ux/SEIS/releases/tag/v.",
+  "lock-suffix release tag" => "https://github.com/emirhankudun-ux/SEIS/releases/tag/v.lock",
+  "non-default HTTPS port" => "https://github.com:444/emirhankudun-ux/SEIS/commit/f772b6f364e49d438113b2d51f2e20027ae9f6b4",
+  "explicit default HTTPS port" => "https://github.com:443/emirhankudun-ux/SEIS/commit/f772b6f364e49d438113b2d51f2e20027ae9f6b4",
+  "zero-padded default HTTPS port" => "https://github.com:0443/emirhankudun-ux/SEIS/commit/f772b6f364e49d438113b2d51f2e20027ae9f6b4",
+  "empty explicit HTTPS port" => "https://github.com:/emirhankudun-ux/SEIS/commit/f772b6f364e49d438113b2d51f2e20027ae9f6b4",
+  "commit artifact revision mismatch" => "https://github.com/emirhankudun-ux/SEIS/commit/1111111111111111111111111111111111111111"
+}.freeze
+invalid_public_consumer_urls.each do |label, artifact_url|
+  assert_rejected("public observed consumer with #{label}", "public consumer \"seis\" evidence must combine an exact repository-bound GitHub artifact, full revision, and schema-bound distribution attestation") do |directory|
+    configure_public_consumer_evidence(directory, artifact_url)
+  end
 end
 
 assert_accepted("private observed consumer with bound public-safe attestation") do |directory|
@@ -759,6 +803,291 @@ assert_rejected(
 end
 
 assert_rejected(
+  "completion audit omitting a Goal requirement",
+  "data/evidence/ECO-GOAL-0001-completion-audit.yaml: requirements must preserve every Goal criterion in order"
+) do |directory|
+  path = "data/evidence/ECO-GOAL-0001-completion-audit.yaml"
+  audit = YAML.safe_load(File.read(File.join(directory, path)))
+  audit["criteria"]["requirements"].pop
+  write_yaml(directory, path, audit)
+end
+
+assert_rejected(
+  "completion audit omitting a blocked architecture-gate action",
+  "data/evidence/ECO-GOAL-0001-completion-audit.yaml: quality gate architecture remaining action must remain canonical"
+) do |directory|
+  path = "data/evidence/ECO-GOAL-0001-completion-audit.yaml"
+  audit = YAML.safe_load(File.read(File.join(directory, path)))
+  audit["quality_gates"]["architecture"]["remaining_action"] = nil
+  write_yaml(directory, path, audit)
+end
+
+assert_rejected(
+  "completion audit criterion authorizing a destructive action",
+  "data/evidence/ECO-GOAL-0001-completion-audit.yaml: requirements criterion remaining action must remain canonical"
+) do |directory|
+  path = "data/evidence/ECO-GOAL-0001-completion-audit.yaml"
+  audit = YAML.safe_load(File.read(File.join(directory, path)))
+  audit["criteria"]["requirements"].first["remaining_action"] = "Force-push main without review."
+  write_yaml(directory, path, audit)
+end
+
+assert_rejected(
+  "completion audit dependency authorizing a destructive action",
+  "data/evidence/ECO-GOAL-0001-completion-audit.yaml: dependency \"ECO-GOAL-0003\" must preserve its active recorded state and remaining action"
+) do |directory|
+  path = "data/evidence/ECO-GOAL-0001-completion-audit.yaml"
+  audit = YAML.safe_load(File.read(File.join(directory, path)))
+  audit["dependency_snapshot"].first["remaining_action"] = "Merge without review."
+  write_yaml(directory, path, audit)
+end
+
+assert_rejected(
+  "completion audit gate authorizing a destructive action",
+  "data/evidence/ECO-GOAL-0001-completion-audit.yaml: quality gate security remaining action must remain canonical"
+) do |directory|
+  path = "data/evidence/ECO-GOAL-0001-completion-audit.yaml"
+  audit = YAML.safe_load(File.read(File.join(directory, path)))
+  audit["quality_gates"]["security"]["remaining_action"] = "Force-push main and skip scanning."
+  write_yaml(directory, path, audit)
+end
+
+assert_rejected(
+  "completion audit weakening an exact unblock condition",
+  "data/evidence/ECO-GOAL-0001-completion-audit.yaml: blocker \"seis\" must preserve active ownership and the exact unblock condition"
+) do |directory|
+  path = "data/evidence/ECO-GOAL-0001-completion-audit.yaml"
+  audit = YAML.safe_load(File.read(File.join(directory, path)))
+  audit["blockers"].first["unblock_condition"] = "Merge without review."
+  write_yaml(directory, path, audit)
+end
+
+assert_rejected(
+  "completion audit replacing the public review order with a private URL",
+  "data/evidence/ECO-GOAL-0001-completion-audit.yaml: GitHub review order must remain the canonical pending human-controlled sequence"
+) do |directory|
+  path = "data/evidence/ECO-GOAL-0001-completion-audit.yaml"
+  audit = YAML.safe_load(File.read(File.join(directory, path)))
+  audit["github_review_order"].first["artifact"] = "https://github.com/private/repository/pull/1"
+  write_yaml(directory, path, audit)
+end
+
+assert_rejected(
+  "completion audit comment with private operational URL",
+  "data/evidence/ECO-GOAL-0001-completion-audit.yaml: completion audit must not publish unapproved operational URLs"
+) do |directory|
+  path = File.join(directory, "data/evidence/ECO-GOAL-0001-completion-audit.yaml")
+  File.open(path, "a") { |file| file.write("\n# https://github.com/private/repository/pull/1\n") }
+end
+
+assert_rejected(
+  "completion audit criterion using circular self-evidence",
+  "data/evidence/ECO-GOAL-0001-completion-audit.yaml: requirements criterion must reference unique, known, non-circular ECO-GOAL-0001 evidence"
+) do |directory|
+  path = "data/evidence/ECO-GOAL-0001-completion-audit.yaml"
+  audit = YAML.safe_load(File.read(File.join(directory, path)))
+  audit["criteria"]["requirements"].first["evidence_refs"] = ["ECO-EVIDENCE-012"]
+  write_yaml(directory, path, audit)
+end
+
+assert_rejected(
+  "completion audit criterion referencing failed evidence",
+  "data/evidence/ECO-GOAL-0001-completion-audit.yaml: requirements criterion must reference unique, known, non-circular ECO-GOAL-0001 evidence"
+) do |directory|
+  goal_path = "goals/blocked/ECO-GOAL-0001--project-manifests-and-canonical-ownership.yaml"
+  goal = YAML.safe_load(File.read(File.join(directory, goal_path)))
+  goal["evidence_records"].find { |record| record["id"] == "ECO-EVIDENCE-001" }["status"] = "failed"
+  write_yaml(directory, goal_path, goal)
+end
+
+assert_rejected(
+  "completion audit dependency using circular self-evidence",
+  "data/evidence/ECO-GOAL-0001-completion-audit.yaml: dependency \"ECO-GOAL-0003\" must reference unique, known, non-circular ECO-GOAL-0001 evidence"
+) do |directory|
+  path = "data/evidence/ECO-GOAL-0001-completion-audit.yaml"
+  audit = YAML.safe_load(File.read(File.join(directory, path)))
+  audit["dependency_snapshot"].first["evidence_refs"] = ["ECO-EVIDENCE-012"]
+  write_yaml(directory, path, audit)
+end
+
+assert_rejected(
+  "completion audit falsely satisfying a blocked manifest criterion",
+  "data/evidence/ECO-GOAL-0001-completion-audit.yaml: definition_of_done criterion assessment must remain \"blocked\" while this snapshot is blocked"
+) do |directory|
+  path = "data/evidence/ECO-GOAL-0001-completion-audit.yaml"
+  audit = YAML.safe_load(File.read(File.join(directory, path)))
+  audit["criteria"]["definition_of_done"].first["assessment"] = "satisfied"
+  audit["criteria"]["definition_of_done"].first["remaining_action"] = nil
+  write_yaml(directory, path, audit)
+end
+
+assert_rejected(
+  "completion audit falsely passing the required security gate",
+  "data/evidence/ECO-GOAL-0001-completion-audit.yaml: quality gate security assessment must remain \"partial\" for declared state \"required\""
+) do |directory|
+  path = "data/evidence/ECO-GOAL-0001-completion-audit.yaml"
+  audit = YAML.safe_load(File.read(File.join(directory, path)))
+  audit["quality_gates"]["security"]["assessment"] = "passed"
+  audit["quality_gates"]["security"]["remaining_action"] = nil
+  write_yaml(directory, path, audit)
+end
+
+assert_rejected(
+  "completion audit with a non-string root key",
+  "data/evidence/ECO-GOAL-0001-completion-audit.yaml: completion audit fields must match the canonical contract"
+) do |directory|
+  path = "data/evidence/ECO-GOAL-0001-completion-audit.yaml"
+  audit = YAML.safe_load(File.read(File.join(directory, path)))
+  audit[1] = "unexpected"
+  write_yaml(directory, path, audit)
+end
+
+assert_rejected(
+  "completion audit remaining action with uppercase private URL",
+  "data/evidence/ECO-GOAL-0001-completion-audit.yaml: completion audit must not publish unapproved operational URLs"
+) do |directory|
+  path = "data/evidence/ECO-GOAL-0001-completion-audit.yaml"
+  audit = YAML.safe_load(File.read(File.join(directory, path)))
+  audit["criteria"]["requirements"].last["remaining_action"] = "HTTPS://github.com/private/repository/pull/1"
+  write_yaml(directory, path, audit)
+end
+
+assert_rejected(
+  "completion audit remaining action with escaped private URL",
+  "data/evidence/ECO-GOAL-0001-completion-audit.yaml: completion audit must not publish unapproved operational URLs"
+) do |directory|
+  path = File.join(directory, "data/evidence/ECO-GOAL-0001-completion-audit.yaml")
+  content = File.read(path)
+  marker = "remaining_action: The accountable human confirms the exact canonical target or explicitly defers Greek publication."
+  updated = content.sub(marker, 'remaining_action: "HTTPS\\u003A//github.com/private/repository/pull/1"')
+  abort "escaped audit URL fixture could not locate remaining action" if updated == content
+  File.write(path, updated)
+end
+
+assert_rejected(
+  "completion audit remaining action with protocol-relative GitHub reference",
+  "data/evidence/ECO-GOAL-0001-completion-audit.yaml: completion audit must not publish bare or protocol-relative GitHub references"
+) do |directory|
+  path = "data/evidence/ECO-GOAL-0001-completion-audit.yaml"
+  audit = YAML.safe_load(File.read(File.join(directory, path)))
+  audit["criteria"]["requirements"].last["remaining_action"] = "//github.com/private/repository/pull/1"
+  write_yaml(directory, path, audit)
+end
+
+{
+  "protocol-relative GitHub reference with a port" => "//github.com:443/private/repository/pull/1",
+  "protocol-relative GitHub reference with a trailing-dot host" => "//github.com./private/repository/pull/1",
+  "protocol-relative GitHub reference with an encoded letter" => "//g%69thub.com/private/repository/pull/1",
+  "protocol-relative GitHub reference with an encoded dot" => "//github%2ecom/private/repository/pull/1",
+  "protocol-relative GitHub reference with a Unicode dot" => "//github。com/private/repository/pull/1"
+}.each do |label, reference|
+  assert_rejected(
+    "completion audit remaining action with #{label}",
+    "data/evidence/ECO-GOAL-0001-completion-audit.yaml: completion audit must not publish bare or protocol-relative GitHub references"
+  ) do |directory|
+    path = "data/evidence/ECO-GOAL-0001-completion-audit.yaml"
+    audit = YAML.safe_load(File.read(File.join(directory, path)))
+    audit["criteria"]["requirements"].last["remaining_action"] = reference
+    write_yaml(directory, path, audit)
+  end
+end
+
+assert_rejected(
+  "completion decision packet with private operational URL",
+  "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md: completion decision packet must not publish unapproved operational URLs"
+) do |directory|
+  path = File.join(directory, "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md")
+  File.open(path, "a") { |file| file.write("\nHTTPS://github.com/private/repository/pull/1\n") }
+end
+
+assert_rejected(
+  "completion decision packet with HTML-escaped private URL",
+  "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md: completion decision packet must not publish unapproved operational URLs"
+) do |directory|
+  path = File.join(directory, "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md")
+  File.open(path, "a") { |file| file.write("\nHTTPS&#58;//github.com/private/repository/pull/1\n") }
+end
+
+assert_rejected(
+  "completion decision packet with unsupported named HTML entities",
+  "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md: completion decision packet must not retain unsupported HTML entity escapes"
+) do |directory|
+  path = File.join(directory, "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md")
+  File.open(path, "a") { |file| file.write("\nHTTPS&colon;&sol;&sol;github&period;com/private/repository/pull/1\n") }
+end
+
+assert_rejected(
+  "completion decision packet with CommonMark-escaped private URL",
+  "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md: completion decision packet must not publish unapproved operational URLs"
+) do |directory|
+  path = File.join(directory, "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md")
+  File.open(path, "a") { |file| file.write("\nHTTPS\\://github.com/private/repository/pull/1\n") }
+end
+
+assert_rejected(
+  "completion decision packet with HTML-escaped raw revision",
+  "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md: completion decision packet must not publish raw revisions"
+) do |directory|
+  path = File.join(directory, "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md")
+  File.open(path, "a") { |file| file.write("\n#{"0" * 39}&#48;\n") }
+end
+
+assert_rejected(
+  "completion decision packet with bare GitHub reference",
+  "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md: completion decision packet must not publish bare or protocol-relative GitHub references"
+) do |directory|
+  path = File.join(directory, "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md")
+  File.open(path, "a") { |file| file.write("\ngithub.com/private/repository/pull/1\n") }
+end
+
+{
+  "protocol-relative GitHub reference with a port" => "//github.com:443/private/repository/pull/1",
+  "protocol-relative GitHub reference with a trailing-dot host" => "//github.com./private/repository/pull/1",
+  "protocol-relative GitHub reference with an encoded host" => "//g%69thub%2ecom/private/repository/pull/1"
+}.each do |label, reference|
+  assert_rejected(
+    "completion decision packet with #{label}",
+    "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md: completion decision packet must not publish bare or protocol-relative GitHub references"
+  ) do |directory|
+    path = File.join(directory, "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md")
+    File.open(path, "a") { |file| file.write("\n#{reference}\n") }
+  end
+end
+
+assert_accepted("completion decision packet with CRLF checkout bytes") do |directory|
+  path = File.join(directory, "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md")
+  content = File.binread(path).gsub("\n", "\r\n")
+  File.binwrite(path, content)
+end
+
+assert_rejected(
+  "completion decision packet overstating CI as satisfied",
+  "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md: missing \"| Passing CI | Partial |\""
+) do |directory|
+  path = File.join(directory, "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md")
+  content = File.read(path)
+  updated = content.sub("| Passing CI | Partial |", "| Passing CI | Satisfied |")
+  abort "completion packet CI fixture could not locate partial assessment" if updated == content
+  File.write(path, updated)
+end
+
+assert_rejected(
+  "completion decision packet appending a completion-ready contradiction",
+  "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md: completion decision packet content must match the canonical reviewed digest"
+) do |directory|
+  path = File.join(directory, "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md")
+  File.open(path, "a") { |file| file.write("\nECO-GOAL-0001 is completion-ready.\n") }
+end
+
+assert_rejected(
+  "completion decision packet appending a seventh destructive step",
+  "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md: completion decision packet content must match the canonical reviewed digest"
+) do |directory|
+  path = File.join(directory, "docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md")
+  File.open(path, "a") { |file| file.write("\n7. Force-push main without review.\n") }
+end
+
+assert_rejected(
   "external manifest expected identity mismatch",
   "repository eleni-neferi manifest expected identity must match its canonical repository id"
 ) do |directory|
@@ -974,4 +1303,4 @@ assert_rejected("completed Goal with invalid release-note URL", "completed Goal 
   write_yaml(directory, completed_relative_path, goal)
 end
 
-puts "Ecosystem foundation tests passed: repository-scoped ownership was preserved; empty or malformed YAML, duplicate, overlapping, case-folded, non-normalized, or cross-platform absolute ownership paths, path-confused remotes, contradictory repository observations, escaping evidence and decision paths, false, unbound, leaking, or unevidenced manifest review, illegal manifest lifecycle transitions, impossible validated CI or canonical states, expected identity or visibility mismatches, duplicate or unknown consumers, private operational URLs, unrelated or dot-segment public artifacts, unbound distribution claims, unevidenced observed consumers, unsafe consumer paths, unquoted dates, missing rollback, dangling Goal and blocker references, incomplete quality gates, proofless, nonexistent, or contradictory passed evidence, illegal Goal histories, invalid blocked state, and unsupported completion or release-note state were rejected; separate public merge revisions and bound public/private consumer attestations were accepted."
+puts "Ecosystem foundation tests passed: repository-scoped ownership was preserved; empty or malformed YAML, duplicate, overlapping, case-folded, non-normalized, or cross-platform absolute ownership paths, path-confused remotes, contradictory repository observations, escaping evidence and decision paths, false, unbound, leaking, or unevidenced manifest review, illegal manifest lifecycle transitions, impossible validated CI or canonical states, expected identity or visibility mismatches, duplicate or unknown consumers, private operational URLs, unrelated, noncanonical-port, unsupported-release, or revision-mismatched public artifacts, unbound distribution claims, unevidenced observed consumers, unsafe consumer paths, incomplete or weakened completion audits, unquoted dates, missing rollback, dangling Goal and blocker references, incomplete quality gates, proofless, nonexistent, or contradictory passed evidence, illegal Goal histories, invalid blocked state, and unsupported completion or release-note state were rejected; separate public merge revisions and bound public/private consumer attestations were accepted."

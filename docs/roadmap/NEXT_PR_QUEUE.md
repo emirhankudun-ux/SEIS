@@ -453,4 +453,5 @@ owner explicitly requests removal.
 - Dependency installation.
 - SSH, deployment, release/tag creation, repository settings changes, secret rotation, public visibility changes, model training, benchmarks, or dataset downloads.
 - `ECO-GOAL-0001`: review and merge of SEIS PRs #177 and #180 and the two private manifest drafts through each repository's policy; no automatic merge or retargeting is authorized.
+- `ECO-GOAL-0001`: after PR #177 is reviewed and merged, a human must inspect and retarget the stacked diffs; review security-boundary PR #179 before ownership-evidence PR #180, and rerun required checks after each base change. See `docs/reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md`.
 - `ECO-GOAL-0001`: confirm the exact canonical Greek identity repository target or explicitly defer Greek publication. The observed ambiguous private candidate must not be named publicly, configured as a remote, assigned ownership, or pushed without that decision and a separate least-privilege identity review.

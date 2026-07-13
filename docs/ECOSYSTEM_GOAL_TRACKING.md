@@ -29,13 +29,14 @@ another project's identity.
 | Artifact                                                                                                                                                        | Role                                     | Current boundary                                                            |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- | --------------------------------------------------------------------------- |
 | [`project.ecosystem.yaml`](../project.ecosystem.yaml)                                                                                                           | SEIS machine-readable identity           | Present and locally validated in this worktree only.                        |
-| [`data/repository-ownership.yaml`](../data/repository-ownership.yaml)                                                                                           | Repository and module ownership registry | Product-family baseline; shared-module inventory remains incomplete.        |
+| [`data/repository-ownership.yaml`](../data/repository-ownership.yaml)                                                                                           | Repository and module ownership registry | Exact conflict-free proposed inventory; human architecture review remains.  |
 | [`schemas/project-ecosystem.schema.json`](../schemas/project-ecosystem.schema.json)                                                                             | Project manifest contract                | Bootstrap schema.                                                           |
 | [`schemas/repository-ownership.schema.json`](../schemas/repository-ownership.schema.json)                                                                       | Ownership contract                       | Bootstrap schema with semantic checks in the validator.                     |
 | [`schemas/ecosystem-goal.schema.json`](../schemas/ecosystem-goal.schema.json)                                                                                   | Goal YAML contract                       | Schema version 2 bootstrap.                                                 |
-| [`goals/blocked/ECO-GOAL-0001--project-manifests-and-canonical-ownership.yaml`](../goals/blocked/ECO-GOAL-0001--project-manifests-and-canonical-ownership.yaml) | Blocked ownership record                 | Blocked on private-repository manifests, authorization, and full inventory. |
-| [`goals/active/ECO-GOAL-0003--goal-schema-validation-and-ci.yaml`](../goals/active/ECO-GOAL-0003--goal-schema-validation-and-ci.yaml)                           | Active validation and CI record          | In review; dated workflow evidence is recorded below.                       |
+| [`goals/blocked/ECO-GOAL-0001--project-manifests-and-canonical-ownership.yaml`](../goals/blocked/ECO-GOAL-0001--project-manifests-and-canonical-ownership.yaml) | Blocked ownership record                 | Blocked on canonical publication, reviews, ADR acceptance, and Greek target decision. |
+| [`goals/active/ECO-GOAL-0003--goal-schema-validation-and-ci.yaml`](../goals/active/ECO-GOAL-0003--goal-schema-validation-and-ci.yaml)                           | Active validation and CI record          | In review on public PR 177; dated workflow evidence is recorded below.      |
 | [`adr/0002-ecosystem-governance-bootstrap-ownership.md`](adr/0002-ecosystem-governance-bootstrap-ownership.md)                                                  | Coordination and ownership decision      | Proposed; requires review before promotion.                                 |
+| [`reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md`](reviews/ECO_GOAL_0001_COMPLETION_AUDIT.md)                                                                        | Completion audit and decision packet     | Machine-bound evidence of blocked state; no protected action is authorized. |
 
 Existing SEIS JSON goal records remain valid SEIS operational history. They are
 not silently rewritten, renumbered, or presented as Goal schema v2 records.
@@ -45,16 +46,21 @@ not silently rewritten, renumbered, or presented as Goal schema v2 records.
 - `emirhankudun-ux/SEIS` was observed locally and through the authenticated
   GitHub connector as the canonical public SEIS repository and current bootstrap
   coordinator.
-- `emirhankudun-ux/Eleni-Neferi-` was observed through the authenticated GitHub
-  connector as the canonical private Eleni-Neferi repository; its default branch
-  is `main`, its remote manifest is missing, and the current top-level local
-  candidate is not a valid worktree.
-- `emirhankudun-ux/Pantechnoepistemonoesis` was observed through the
-  authenticated GitHub connector as the canonical private Pantechnoesis
-  repository; its default branch is `main`, its remote manifest is missing, and
-  the current top-level local candidates are not valid worktrees.
+- `emirhankudun-ux/Eleni-Neferi-` was observed through a valid fresh clone and
+  authenticated remote metadata as the canonical private Eleni-Neferi
+  repository. Its private-accurate manifest has an open draft review with
+  successful repository-local CI attested without publishing private
+  operational identifiers; canonical `main` still lacks the manifest.
+- `emirhankudun-ux/Pantechnoepistemonoesis` was observed through a valid fresh
+  clone and authenticated remote metadata as the canonical private
+  Pantechnoesis repository. Its private-accurate manifest has an open draft
+  review with successful required/global repository-local CI attested without
+  publishing private operational identifiers; canonical `main` still lacks the
+  manifest and the optional paired-Greek check was skipped.
 
-These are dated session observations, not CI-reverified repository metadata.
+These are dated point-in-time observations. Private operational identifiers and
+contents remain outside public SEIS; the deterministic validator verifies the
+recorded public-safe contract but does not continuously query GitHub.
 
 SEIS owns SEIS product modules and provisionally owns only the governance
 bootstrap artifacts in this repository. Eleni-Neferi owns its identity and
@@ -119,15 +125,27 @@ evidence. These dated runs prove the named commit passed those workflows; they
 do not prove private-repository contents, deployments, provider connections,
 or ecosystem-wide publication readiness.
 
+The current pull request 180 worktree prepares the expanded ownership evidence,
+public-safe attestations, completion audit, and adversarial ownership fixtures.
+Until this audit implementation is committed, pushed, and checked remotely, the
+machine audit keeps PR inclusion and CI at `partial`. Earlier dated CI evidence
+remains point-in-time evidence and does not prove a later head, merge, or
+canonical-branch state.
+
 ## Current blockers
 
-1. Eleni-Neferi needs a valid owner-authorized worktree and a private-accurate
-   manifest committed through a non-default branch.
-2. Pantechnoesis needs the same, including its repository-required publication
-   authorization.
-3. Shared modules and consumers must be inventoried from all three valid
-   repositories before ownership coverage can be called complete.
-4. The proposed ADR and focused pull request require human review.
+1. PR 177 and the stacked public PRs require protected human review, merge, and
+   post-merge canonical revision refresh; no automatic retarget is authorized.
+2. The two private manifest drafts require review and merge through their own
+   repository policies before manifest records can become `validated`.
+3. The exact non-overlapping proposed inventory and structured planned consumer
+   mappings require human architecture review and acceptance or revision of
+   ADR-0002.
+4. The accountable human must confirm the exact canonical Greek repository
+   target or explicitly defer Greek publication; the ambiguous private
+   candidate remains redacted and unassigned.
+5. Architecture, security, privacy, and public-readiness gates must receive
+   durable review evidence before Goal completion.
 
 ## Public/private and rollback boundaries
 
