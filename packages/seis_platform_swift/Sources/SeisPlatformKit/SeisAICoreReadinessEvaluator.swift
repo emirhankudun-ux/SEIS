@@ -72,7 +72,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "model-scaling-council",
         "mcp-runtime-contract",
         "plugin-integration",
-        "provider-registry"
+        "provider-registry",
+        "read-only-router-contract"
     ]
 
     public init() {}
@@ -93,7 +94,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         modelScalingCouncilSnapshot: SeisModelScalingSubagentCouncilSnapshot? = nil,
         mcpRuntimeContractSnapshot: SeisAICoreMCPRuntimeContractSnapshot? = nil,
         pluginIntegrationSnapshot: SeisAgentPluginIntegrationSnapshot? = nil,
-        providerRegistrySnapshot: SeisAICoreProviderRegistrySnapshot? = nil
+        providerRegistrySnapshot: SeisAICoreProviderRegistrySnapshot? = nil,
+        readOnlyRouterContractSnapshot: SeisAIReadOnlyModelRouterContractSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -226,6 +228,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Provider registry",
                 passed: providerRegistrySnapshot?.isMetadataOnly == true,
                 evidence: "Seven provider records preserve Available, Missing Key, Disabled, Rate Limited, and Error semantics; core remains zero-key Local Demo and frontend secrets remain forbidden."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "read-only-router-contract",
+                title: "Read-only router contract",
+                passed: readOnlyRouterContractSnapshot?.isMetadataOnly == true,
+                evidence: "Provider-neutral router contract keeps Local Demo default, named states, explicit fallback, redacted decisions, blocked private content, and executionPerformed=false."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked

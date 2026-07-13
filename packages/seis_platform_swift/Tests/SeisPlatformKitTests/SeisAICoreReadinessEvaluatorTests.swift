@@ -21,6 +21,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let mcpRuntimeContract = try SeisAICoreMCPRuntimeContractSnapshot.validated(from: mcpRuntimeContractData())
         let pluginIntegration = try SeisAgentPluginIntegrationSnapshot.validated(from: pluginIntegrationData())
         let providerRegistry = try SeisAICoreProviderRegistrySnapshot.validated(from: providerRegistryData())
+        let readOnlyRouterContract = try SeisAIReadOnlyModelRouterContractSnapshot.validated(from: readOnlyRouterContractData())
 
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
@@ -38,14 +39,15 @@ struct SeisAICoreReadinessEvaluatorTests {
             modelScalingCouncilSnapshot: modelScalingCouncil,
             mcpRuntimeContractSnapshot: mcpRuntimeContract,
             pluginIntegrationSnapshot: pluginIntegration,
-            providerRegistrySnapshot: providerRegistry
+            providerRegistrySnapshot: providerRegistry,
+            readOnlyRouterContractSnapshot: readOnlyRouterContract
         )
 
         #expect(report.isReadyLocalDemo)
         #expect(report.status == .readyLocalDemo)
         #expect(report.evaluatorVersion == SeisAICoreReadinessEvaluator.evaluatorVersion)
         #expect(report.checks.map(\.id) == SeisAICoreReadinessEvaluator.expectedCheckIDs)
-        #expect(report.passedCount == 20)
+        #expect(report.passedCount == 21)
         #expect(report.failedCount == 0)
         #expect(report.truthBoundary.contains("not proof of live provider access"))
     }
@@ -64,6 +66,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let mcpRuntimeContract = try SeisAICoreMCPRuntimeContractSnapshot.validated(from: mcpRuntimeContractData())
         let pluginIntegration = try SeisAgentPluginIntegrationSnapshot.validated(from: pluginIntegrationData())
         let providerRegistry = try SeisAICoreProviderRegistrySnapshot.validated(from: providerRegistryData())
+        let readOnlyRouterContract = try SeisAIReadOnlyModelRouterContractSnapshot.validated(from: readOnlyRouterContractData())
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
             capabilityMesh: SeisAICapabilityMesh(snapshot: snapshot),
@@ -80,7 +83,8 @@ struct SeisAICoreReadinessEvaluatorTests {
             modelScalingCouncilSnapshot: modelScalingCouncil,
             mcpRuntimeContractSnapshot: mcpRuntimeContract,
             pluginIntegrationSnapshot: pluginIntegration,
-            providerRegistrySnapshot: providerRegistry
+            providerRegistrySnapshot: providerRegistry,
+            readOnlyRouterContractSnapshot: readOnlyRouterContract
         )
 
         #expect(report.status.rawValue == "ready-local-demo")
@@ -173,5 +177,11 @@ struct SeisAICoreReadinessEvaluatorTests {
         var root = URL(fileURLWithPath: #filePath)
         for _ in 0..<5 { root.deleteLastPathComponent() }
         return try Data(contentsOf: root.appendingPathComponent("content/development/seis-ai-core-provider-registry.json"))
+    }
+
+    private func readOnlyRouterContractData() throws -> Data {
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<5 { root.deleteLastPathComponent() }
+        return try Data(contentsOf: root.appendingPathComponent("content/development/seis-read-only-model-router-contract.json"))
     }
 }

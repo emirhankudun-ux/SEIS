@@ -18,6 +18,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var mcpRuntimeContractSnapshot: SeisAICoreMCPRuntimeContractSnapshot?
     @Published private(set) var pluginIntegrationSnapshot: SeisAgentPluginIntegrationSnapshot?
     @Published private(set) var providerRegistrySnapshot: SeisAICoreProviderRegistrySnapshot?
+    @Published private(set) var readOnlyRouterContractSnapshot: SeisAIReadOnlyModelRouterContractSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -84,6 +85,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         providerRegistrySnapshot = try? SeisAICoreProviderRegistrySnapshot.validated(
             from: Data(contentsOf: providerRegistryURL)
         )
+        readOnlyRouterContractSnapshot = try? SeisAIReadOnlyModelRouterContractSnapshot.validated(
+            from: Data(contentsOf: readOnlyRouterContractURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -110,7 +114,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 modelScalingCouncilSnapshot: modelScalingCouncilSnapshot,
                 mcpRuntimeContractSnapshot: mcpRuntimeContractSnapshot,
                 pluginIntegrationSnapshot: pluginIntegrationSnapshot,
-                providerRegistrySnapshot: providerRegistrySnapshot
+                providerRegistrySnapshot: providerRegistrySnapshot,
+                readOnlyRouterContractSnapshot: readOnlyRouterContractSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -164,6 +169,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             providerRegistrySnapshot = try? SeisAICoreProviderRegistrySnapshot.validated(
                 from: Data(contentsOf: providerRegistryURL)
             )
+            readOnlyRouterContractSnapshot = try? SeisAIReadOnlyModelRouterContractSnapshot.validated(
+                from: Data(contentsOf: readOnlyRouterContractURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -176,6 +184,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             mcpRuntimeContractSnapshot = nil
             pluginIntegrationSnapshot = nil
             providerRegistrySnapshot = nil
+            readOnlyRouterContractSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -556,6 +565,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-ai-core-provider-registry.json")
     }
 
+    private var readOnlyRouterContractURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-read-only-model-router-contract.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -625,6 +641,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let providerRegistrySnapshot = model.providerRegistrySnapshot {
                     providerRegistryDisclosure(snapshot: providerRegistrySnapshot)
+                }
+                if let readOnlyRouterContractSnapshot = model.readOnlyRouterContractSnapshot {
+                    readOnlyRouterContractDisclosure(snapshot: readOnlyRouterContractSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -1429,6 +1448,36 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Provider registry. Seven source-backed states, zero-key Local Demo, missing-key and disabled states distinct, backend-only credentials, and no frontend secrets.")
+    }
+
+    private func readOnlyRouterContractDisclosure(snapshot: SeisAIReadOnlyModelRouterContractSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Default: \(snapshot.defaultMode) · Runtime authority: \(snapshot.runtimeAuthority ? "enabled" : "blocked") · Provider calls: \(snapshot.providerCalls ? "enabled" : "blocked")")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("Inputs allowed: \(snapshot.routerInputsAllowed.count) · Forbidden: \(snapshot.routerInputsForbidden.count) · Provider states: \(snapshot.providerStates.count) · Live evidence gates: \(snapshot.requiredEvidenceBeforeLiveRouting.count)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Decision integrity: redacted, named provider state, explicit provider/model, explicit fallback, blocked reasons, no private Obsidian routing.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+                Text("Review artifact: \(snapshot.reviewArtifact.json) · \(snapshot.reviewArtifact.markdown)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Blocked model classes: \(snapshot.blockedModelClasses.joined(separator: ", "))")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+                Text("This contract describes read-only decisions only. It does not execute a provider, validate credentials, route local-only content to cloud, or store prompt/private content.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Read-only model router contract", systemImage: "arrow.triangle.branch")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Read-only model router contract. Local Demo default, named provider states, explicit fallback, redacted decisions, blocked private content, and execution disabled.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {
