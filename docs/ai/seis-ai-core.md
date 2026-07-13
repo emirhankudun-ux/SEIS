@@ -183,6 +183,13 @@ This is decomposition and handoff evidence only. It does not activate agents,
 grant runtime authority, or turn the planned writer permission into an
 unapproved write.
 
+The native panel also exposes a model-router inspector. It evaluates a typed
+task type, capability, privacy mode, content classification, and local-only
+flag against the registered Local Demo provider, then shows the selected
+provider/model, eligibility, fallback, approval, rejection, and fail-closed
+state. Inspection performs no provider call, network request, credential read,
+MCP invocation, SSH action, deployment, or GitHub mutation.
+
 Validation:
 `swift test --package-path packages/seis_platform_swift`.
 

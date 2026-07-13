@@ -4,6 +4,34 @@ import Testing
 
 @Suite("SEIS AI Runtime")
 struct SeisAIRuntimeTests {
+    @Test func localRouteInspectionSelectsOnlyTheDeterministicDemoProvider() {
+        let request = SeisAIRoutingRequest(
+            id: "apple-route-inspection",
+            taskType: "repository readiness plan",
+            capability: "planning",
+            privacyMode: .localOnly,
+            contentClassification: .repositoryMetadata,
+            localOnly: true,
+            maximumCostTier: .zero,
+            preferredLatencyTier: .immediate,
+            preferLocal: true,
+            fallbackPolicy: .none
+        )
+
+        let decision = SeisAIModelRouter().route(request, providers: [.localDemo])
+
+        #expect(decision.outcome == .localDemoReady)
+        #expect(decision.selectedProviderID == SeisAIProviderDescriptor.localDemo.id)
+        #expect(decision.selectedModelIdentifier == SeisAIProviderDescriptor.localDemo.modelIdentifier)
+        #expect(decision.routeEligible)
+        #expect(!decision.requiresHumanApproval)
+        #expect(!decision.fallbackUsed)
+        #expect(decision.executionPerformed == false)
+        #expect(decision.providerCallPerformed == false)
+        #expect(decision.networkCallPerformed == false)
+        #expect(decision.isFailClosed == false)
+    }
+
     @Test func localDemoExecutionReportsNoModelProviderNetworkOrCredentialUse() async throws {
         let runtime = try SeisAIRuntime()
         let request = localDemoExecutionRequest(id: "local-demo-execution")

@@ -11,9 +11,11 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var statusMessage = "AI Core snapshot has not been loaded."
     @Published private(set) var lastPlan: SeisAIPersonalLaneTaskPlan?
     @Published private(set) var lastAgentPlan: SeisAIAgentTaskPlan?
+    @Published private(set) var routeDecision: SeisAIRouteDecision?
     @Published private(set) var evidence: [SeisAIExecutionEvidence] = []
     @Published private(set) var evidencePersistenceState: SeisAIExecutionEvidencePersistenceState = .memoryOnly
     @Published private(set) var isPlanning = false
+    @Published private(set) var isRouting = false
 
     private let repositoryPath: String
     private let evidenceLedger: SeisAIExecutionEvidenceLedger
@@ -44,6 +46,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             )
             lastPlan = nil
             lastAgentPlan = nil
+            routeDecision = nil
             statusMessage = "Local Demo ready: \(nextSnapshot.pluginMesh.personalLanes.count) lanes are linked to the typed runtime."
             Task {
                 evidence = await loadedRuntime.evidenceSnapshot(limit: 8)
@@ -57,6 +60,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             readinessReport = nil
             lastPlan = nil
             lastAgentPlan = nil
+            routeDecision = nil
             evidence = []
             Task {
                 evidencePersistenceState = await evidenceLedger.persistenceState
@@ -163,6 +167,47 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         }
     }
 
+    func inspectRoute(
+        taskType: String,
+        capability: String,
+        privacyMode: SeisAIPrivacyMode,
+        contentClassification: SeisAIContentClassification,
+        localOnly: Bool
+    ) {
+        guard let runtime else {
+            statusMessage = "Load a validated snapshot before inspecting a route."
+            return
+        }
+
+        let request = SeisAIRoutingRequest(
+            id: "apple-route-inspection",
+            taskType: taskType,
+            capability: capability,
+            privacyMode: privacyMode,
+            contentClassification: contentClassification,
+            localOnly: localOnly,
+            maximumCostTier: .zero,
+            preferredLatencyTier: .immediate,
+            preferLocal: true,
+            fallbackPolicy: .none
+        )
+
+        isRouting = true
+        Task {
+            let decision = await runtime.route(request)
+            routeDecision = decision
+            isRouting = false
+            switch decision.outcome {
+            case .localDemoReady:
+                statusMessage = "Route is Local Demo ready; no provider or network call was performed."
+            case .approvalRequired:
+                statusMessage = "Route found, but live or model-backed execution requires human approval."
+            case .blocked:
+                statusMessage = "Route blocked by the typed privacy, capability, or provider boundary."
+            }
+        }
+    }
+
     private func renderPlanPurpose(goal: String, constraints: String) -> String? {
         do {
             return try promptEngine.render(
@@ -195,6 +240,11 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
 struct SeisAICoreLocalDemoView: View {
     @StateObject private var model: SeisAICoreLocalDemoModel
     @State private var taskPurpose = "Prepare a bounded repository readiness plan."
+    @State private var routeTaskType = "repository readiness plan"
+    @State private var routeCapability = "planning"
+    @State private var routePrivacyMode: SeisAIPrivacyMode = .localOnly
+    @State private var routeContentClassification: SeisAIContentClassification = .repositoryMetadata
+    @State private var routeLocalOnly = true
 
     init(repositoryPath: String) {
         _model = StateObject(wrappedValue: SeisAICoreLocalDemoModel(repositoryPath: repositoryPath))
@@ -214,6 +264,7 @@ struct SeisAICoreLocalDemoView: View {
                 if let readinessReport = model.readinessReport {
                     readinessDisclosure(report: readinessReport)
                 }
+                routeInspector
                 providerList(snapshot: snapshot)
                 taskPlanner
                 laneList(snapshot: snapshot)
@@ -511,6 +562,127 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("AI Core local readiness evaluation. \(report.statusLabel). This is Local Demo readiness only, not production or live-provider readiness.")
+    }
+
+    private var routeInspector: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Label("Model router inspector", systemImage: "arrow.triangle.swap")
+                .font(.subheadline.weight(.semibold))
+
+            Text("Evaluate a typed request against the registered Local Demo provider. This does not execute a provider, read credentials, or perform network work.")
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+
+            TextField("Task type", text: $routeTaskType)
+                .textFieldStyle(.roundedBorder)
+            TextField("Capability", text: $routeCapability)
+                .textFieldStyle(.roundedBorder)
+
+            HStack(alignment: .top, spacing: 8) {
+                Picker("Privacy", selection: $routePrivacyMode) {
+                    ForEach(SeisAIPrivacyMode.allCases, id: \.rawValue) { mode in
+                        Text(mode.rawValue).tag(mode)
+                    }
+                }
+                .pickerStyle(.menu)
+
+                Picker("Content", selection: $routeContentClassification) {
+                    ForEach(SeisAIContentClassification.allCases, id: \.rawValue) { classification in
+                        Text(classification.rawValue).tag(classification)
+                    }
+                }
+                .pickerStyle(.menu)
+
+                Toggle("Local only", isOn: $routeLocalOnly)
+                    .toggleStyle(.switch)
+            }
+
+            HStack {
+                Button {
+                    model.inspectRoute(
+                        taskType: routeTaskType,
+                        capability: routeCapability,
+                        privacyMode: routePrivacyMode,
+                        contentClassification: routeContentClassification,
+                        localOnly: routeLocalOnly
+                    )
+                } label: {
+                    Label("Inspect route", systemImage: "arrow.triangle.swap")
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.small)
+                .disabled(model.isRouting || model.isPlanning)
+
+                if model.isRouting {
+                    ProgressView()
+                        .controlSize(.small)
+                }
+            }
+
+            if let decision = model.routeDecision {
+                routeDecisionView(decision)
+            }
+        }
+        .padding(10)
+        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 8))
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Model router inspector. It evaluates typed local routing policy without executing providers or network calls.")
+    }
+
+    private func routeDecisionView(_ decision: SeisAIRouteDecision) -> some View {
+        VStack(alignment: .leading, spacing: 7) {
+            HStack(alignment: .firstTextBaseline) {
+                Text(decision.outcome.rawValue)
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(routeOutcomeColor(decision.outcome))
+                Spacer(minLength: 8)
+                Text(decision.isFailClosed ? "fail-closed" : "review")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+            }
+
+            Text(decision.selectedProviderID.map { "Provider: \($0)" } ?? "Provider: none")
+                .font(.caption2.monospaced())
+            Text(decision.selectedModelIdentifier.map { "Model: \($0)" } ?? "Model: none")
+                .font(.caption2.monospaced())
+            Text("Basis: \(decision.selectionBasis)")
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+            Text("Eligible: \(decision.routeEligible ? "yes" : "no") · Approval: \(decision.requiresHumanApproval ? "required" : "not required") · Fallback: \(decision.fallbackUsed ? "explicit" : "none")")
+                .font(.caption2)
+                .foregroundStyle(.tertiary)
+
+            if !decision.blockedReasons.isEmpty {
+                Text(decision.blockedReasons.joined(separator: " "))
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+            }
+
+            ForEach(decision.providerRejections) { rejection in
+                if !rejection.reasons.isEmpty {
+                    Text("\(rejection.providerID): \(rejection.reasons.joined(separator: "; "))")
+                        .font(.caption2)
+                        .foregroundStyle(.tertiary)
+                }
+            }
+
+            Text("Inspection only. Execution: no · Provider call: no · Network: no · Credentials: no")
+                .font(.caption2)
+                .foregroundStyle(.orange)
+        }
+        .padding(8)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
+    }
+
+    private func routeOutcomeColor(_ outcome: SeisAIRouteOutcome) -> Color {
+        switch outcome {
+        case .localDemoReady:
+            .green
+        case .approvalRequired:
+            .orange
+        case .blocked:
+            .red
+        }
     }
 
     private func providerStatusColor(_ status: SeisAICoreProviderState) -> Color {
