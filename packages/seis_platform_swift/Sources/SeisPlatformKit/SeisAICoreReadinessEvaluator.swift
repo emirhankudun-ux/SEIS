@@ -82,7 +82,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "agi-github-user-readiness-gates",
         "agi-public-readiness-evidence",
         "command-center-knowledge-system",
-        "data-schema-registry"
+        "data-schema-registry",
+        "design-component-inventory"
     ]
 
     public init() {}
@@ -113,7 +114,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         agiGitHubUserReadinessGatesSnapshot: SeisAGIGitHubUserReadinessGatesSnapshot? = nil,
         agiPublicReadinessEvidenceSnapshot: SeisAGIPublicReadinessEvidenceSnapshot? = nil,
         commandCenterKnowledgeSystemSnapshot: SeisCommandCenterKnowledgeSystemSnapshot? = nil,
-        dataSchemaRegistrySnapshot: SeisDataSchemaRegistrySnapshot? = nil
+        dataSchemaRegistrySnapshot: SeisDataSchemaRegistrySnapshot? = nil,
+        designComponentInventorySnapshot: SeisDesignComponentInventorySnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -306,6 +308,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "SEIS-Data schema registry",
                 passed: dataSchemaRegistrySnapshot?.isMetadataOnly == true,
                 evidence: "Eighteen source-backed data contracts cover @seis, @seis-cloud, @seis-code, @seis-design, and @seis-data without reading record contents or storing secrets."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "design-component-inventory",
+                title: "SEIS-Design component inventory",
+                passed: designComponentInventorySnapshot?.isMetadataOnly == true,
+                evidence: "Twelve source-backed design components preserve accessibility, motion, selectors, and validation metadata without executable UI mutation."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked

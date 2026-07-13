@@ -28,6 +28,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var agiPublicReadinessEvidenceSnapshot: SeisAGIPublicReadinessEvidenceSnapshot?
     @Published private(set) var commandCenterKnowledgeSystemSnapshot: SeisCommandCenterKnowledgeSystemSnapshot?
     @Published private(set) var dataSchemaRegistrySnapshot: SeisDataSchemaRegistrySnapshot?
+    @Published private(set) var designComponentInventorySnapshot: SeisDesignComponentInventorySnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -124,6 +125,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         dataSchemaRegistrySnapshot = try? SeisDataSchemaRegistrySnapshot.validated(
             from: Data(contentsOf: dataSchemaRegistryURL)
         )
+        designComponentInventorySnapshot = try? SeisDesignComponentInventorySnapshot.validated(
+            from: Data(contentsOf: designComponentInventoryURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -160,7 +164,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 agiGitHubUserReadinessGatesSnapshot: agiGitHubUserReadinessGatesSnapshot,
                 agiPublicReadinessEvidenceSnapshot: agiPublicReadinessEvidenceSnapshot,
                 commandCenterKnowledgeSystemSnapshot: commandCenterKnowledgeSystemSnapshot,
-                dataSchemaRegistrySnapshot: dataSchemaRegistrySnapshot
+                dataSchemaRegistrySnapshot: dataSchemaRegistrySnapshot,
+                designComponentInventorySnapshot: designComponentInventorySnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -244,6 +249,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             dataSchemaRegistrySnapshot = try? SeisDataSchemaRegistrySnapshot.validated(
                 from: Data(contentsOf: dataSchemaRegistryURL)
             )
+            designComponentInventorySnapshot = try? SeisDesignComponentInventorySnapshot.validated(
+                from: Data(contentsOf: designComponentInventoryURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -266,6 +274,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             agiPublicReadinessEvidenceSnapshot = nil
             commandCenterKnowledgeSystemSnapshot = nil
             dataSchemaRegistrySnapshot = nil
+            designComponentInventorySnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -716,6 +725,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-data-schema-registry.json")
     }
 
+    private var designComponentInventoryURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-design-component-inventory.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -815,6 +831,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let dataSchemaRegistrySnapshot = model.dataSchemaRegistrySnapshot {
                     dataSchemaRegistryDisclosure(snapshot: dataSchemaRegistrySnapshot)
+                }
+                if let designComponentInventorySnapshot = model.designComponentInventorySnapshot {
+                    designComponentInventoryDisclosure(snapshot: designComponentInventorySnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -1993,6 +2012,27 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("SEIS-Data schema registry. Eighteen source-backed records across five lanes, with sixteen validated and two scaffolded; metadata-only and no record contents are read.")
+    }
+
+    private func designComponentInventoryDisclosure(snapshot: SeisDesignComponentInventorySnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.components.count) components · \(snapshot.surfaceIDs.count) surfaces · \(snapshot.selectorCount) selectors · \(snapshot.validatedComponentCount) validated · metadata-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("Surfaces: \(snapshot.surfaceIDs.joined(separator: " · "))")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.tertiary)
+                Text("Accessibility, motion policy, source paths, selectors, and validation commands remain inspectable design metadata; this panel does not mutate the web or native design system.")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("SEIS-Design component inventory", systemImage: "rectangle.3.group")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("SEIS-Design component inventory. Twelve source-backed components across multiple surfaces, twelve validated, with accessibility and motion metadata; metadata-only and no design mutation.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {

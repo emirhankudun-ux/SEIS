@@ -31,6 +31,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let agiPublicReadinessEvidence = try SeisAGIPublicReadinessEvidenceSnapshot.validated(from: agiPublicReadinessEvidenceData())
         let commandCenterKnowledgeSystem = try SeisCommandCenterKnowledgeSystemSnapshot.validated(from: commandCenterKnowledgeSystemData())
         let dataSchemaRegistry = try SeisDataSchemaRegistrySnapshot.validated(from: dataSchemaRegistryData())
+        let designComponentInventory = try SeisDesignComponentInventorySnapshot.validated(from: designComponentInventoryData())
 
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
@@ -58,14 +59,15 @@ struct SeisAICoreReadinessEvaluatorTests {
             agiGitHubUserReadinessGatesSnapshot: agiGitHubUserReadinessGates,
             agiPublicReadinessEvidenceSnapshot: agiPublicReadinessEvidence,
             commandCenterKnowledgeSystemSnapshot: commandCenterKnowledgeSystem,
-            dataSchemaRegistrySnapshot: dataSchemaRegistry
+            dataSchemaRegistrySnapshot: dataSchemaRegistry,
+            designComponentInventorySnapshot: designComponentInventory
         )
 
         #expect(report.isReadyLocalDemo)
         #expect(report.status == .readyLocalDemo)
         #expect(report.evaluatorVersion == SeisAICoreReadinessEvaluator.evaluatorVersion)
         #expect(report.checks.map(\.id) == SeisAICoreReadinessEvaluator.expectedCheckIDs)
-        #expect(report.passedCount == 30)
+        #expect(report.passedCount == 31)
         #expect(report.failedCount == 0)
         #expect(report.truthBoundary.contains("not proof of live provider access"))
     }
@@ -94,6 +96,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let agiPublicReadinessEvidence = try SeisAGIPublicReadinessEvidenceSnapshot.validated(from: agiPublicReadinessEvidenceData())
         let commandCenterKnowledgeSystem = try SeisCommandCenterKnowledgeSystemSnapshot.validated(from: commandCenterKnowledgeSystemData())
         let dataSchemaRegistry = try SeisDataSchemaRegistrySnapshot.validated(from: dataSchemaRegistryData())
+        let designComponentInventory = try SeisDesignComponentInventorySnapshot.validated(from: designComponentInventoryData())
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
             capabilityMesh: SeisAICapabilityMesh(snapshot: snapshot),
@@ -120,7 +123,8 @@ struct SeisAICoreReadinessEvaluatorTests {
             agiGitHubUserReadinessGatesSnapshot: agiGitHubUserReadinessGates,
             agiPublicReadinessEvidenceSnapshot: agiPublicReadinessEvidence,
             commandCenterKnowledgeSystemSnapshot: commandCenterKnowledgeSystem,
-            dataSchemaRegistrySnapshot: dataSchemaRegistry
+            dataSchemaRegistrySnapshot: dataSchemaRegistry,
+            designComponentInventorySnapshot: designComponentInventory
         )
 
         #expect(report.status.rawValue == "ready-local-demo")
@@ -273,5 +277,11 @@ struct SeisAICoreReadinessEvaluatorTests {
         var root = URL(fileURLWithPath: #filePath)
         for _ in 0..<5 { root.deleteLastPathComponent() }
         return try Data(contentsOf: root.appendingPathComponent("content/development/seis-data-schema-registry.json"))
+    }
+
+    private func designComponentInventoryData() throws -> Data {
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<5 { root.deleteLastPathComponent() }
+        return try Data(contentsOf: root.appendingPathComponent("content/development/seis-design-component-inventory.json"))
     }
 }
