@@ -39,6 +39,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var agiEvaluationProtocolSnapshot: SeisAGIEvaluationProtocolSnapshot?
     @Published private(set) var fullStackContractSnapshot: SeisFullStackContractSnapshot?
     @Published private(set) var agentLaneStatusSnapshot: SeisAgentLaneStatusSnapshot?
+    @Published private(set) var secondBrainContractSnapshot: SeisSecondBrainContractSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -168,6 +169,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         agentLaneStatusSnapshot = try? SeisAgentLaneStatusSnapshot.validated(
             from: Data(contentsOf: agentLaneStatusURL)
         )
+        secondBrainContractSnapshot = try? SeisSecondBrainContractSnapshot.validated(
+            from: Data(contentsOf: secondBrainContractURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -215,7 +219,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 longHorizonMissionKernelSnapshot: longHorizonMissionKernelSnapshot,
                 agiEvaluationProtocolSnapshot: agiEvaluationProtocolSnapshot,
                 fullStackContractSnapshot: fullStackContractSnapshot,
-                agentLaneStatusSnapshot: agentLaneStatusSnapshot
+                agentLaneStatusSnapshot: agentLaneStatusSnapshot,
+                secondBrainContractSnapshot: secondBrainContractSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -332,6 +337,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             agentLaneStatusSnapshot = try? SeisAgentLaneStatusSnapshot.validated(
                 from: Data(contentsOf: agentLaneStatusURL)
             )
+            secondBrainContractSnapshot = try? SeisSecondBrainContractSnapshot.validated(
+                from: Data(contentsOf: secondBrainContractURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -365,6 +373,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             agiEvaluationProtocolSnapshot = nil
             fullStackContractSnapshot = nil
             agentLaneStatusSnapshot = nil
+            secondBrainContractSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -892,6 +901,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-agent-lane-status.json")
     }
 
+    private var secondBrainContractURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-second-brain-system.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -1026,6 +1042,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let agentLaneStatusSnapshot = model.agentLaneStatusSnapshot {
                     agentLaneStatusDisclosure(snapshot: agentLaneStatusSnapshot)
+                }
+                if let secondBrainContractSnapshot = model.secondBrainContractSnapshot {
+                    secondBrainContractDisclosure(snapshot: secondBrainContractSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -2426,6 +2445,32 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Agent lane status. Fourteen active observable lanes include five supervised personal SEIS lanes; each declares skill, tool, safety, autonomy, and validation boundaries. No agents are activated.")
+    }
+
+    private func secondBrainContractDisclosure(snapshot: SeisSecondBrainContractSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.vaultNoteCount) local vault notes · \(snapshot.managedLaneCount) managed lanes · \(snapshot.autonomousAgentRoster.count) roster agents · \(snapshot.installedAiProfiles.count) AI profiles · metadata-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("Vault: \(snapshot.vaultRoot) · Obsidian bridge: \(snapshot.obsidianBridge.status) · Publish: \(snapshot.pipeline.first(where: { $0.step == "Publish" })?.status ?? "unknown")")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                ForEach(snapshot.firstNotes) { note in
+                    Text("\(note.title) · \(note.status)")
+                        .font(.caption2)
+                        .foregroundStyle(.tertiary)
+                }
+                Text("No secrets, provider calls, SSH, deployment, private-vault import, or GitHub mutation. Human review is required before public use.")
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("SEIS Second Brain", systemImage: "brain.head.profile")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("SEIS Second Brain. Six local vault notes, nine managed lanes, thirteen plan-only roster agents, six installed AI profiles, and a publish-blocked pipeline. No private vault import or external mutation is enabled.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {

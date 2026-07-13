@@ -91,7 +91,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "long-horizon-mission-kernel",
         "agi-evaluation-protocol-boundary",
         "fullstack-contract-boundary",
-        "agent-lane-status-contract"
+        "agent-lane-status-contract",
+        "second-brain-contract"
     ]
 
     public init() {}
@@ -133,7 +134,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         longHorizonMissionKernelSnapshot: SeisLongHorizonMissionKernelSnapshot? = nil,
         agiEvaluationProtocolSnapshot: SeisAGIEvaluationProtocolSnapshot? = nil,
         fullStackContractSnapshot: SeisFullStackContractSnapshot? = nil,
-        agentLaneStatusSnapshot: SeisAgentLaneStatusSnapshot? = nil
+        agentLaneStatusSnapshot: SeisAgentLaneStatusSnapshot? = nil,
+        secondBrainContractSnapshot: SeisSecondBrainContractSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -380,6 +382,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Agent lane status contract",
                 passed: agentLaneStatusSnapshot?.isMetadataOnly == true,
                 evidence: "Fourteen active, source-controlled lanes include five supervised SEIS personal lanes with declared skill, tool, safety, autonomy, and validation boundaries; this is observable plan metadata, not background autonomy."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "second-brain-contract",
+                title: "SEIS Second Brain contract",
+                passed: secondBrainContractSnapshot?.isMetadataOnly == true,
+                evidence: "Local Demo Second Brain metadata covers six local vault notes, nine managed lanes, thirteen roster agents, six installed AI profiles, and a publish-blocked pipeline without private vault import, secrets, provider calls, SSH, deployment, or GitHub mutation."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked

@@ -47,6 +47,7 @@ The foundation includes:
 | AGI evaluation protocol | Bound as metadata-only Apple readiness evidence | `content/development/seis-agi-evaluation-protocol.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIEvaluationProtocolSnapshot.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAGIEvaluationProtocolSnapshotTests.swift` | Protocol is draft/not-run; no AGI, benchmark, weights, inference, provider, or route-eligibility evidence exists. | Keep the promotion default blocked and require independent evidence, external review, and human approval before any future claim or route. |
 | Full-stack contract | Bound as metadata-only Apple application boundary | `content/development/seis-fullstack-contract.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisFullStackContractSnapshot.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisFullStackContractSnapshotTests.swift` | First server/API/data slice remains read-only Local Demo; auth, database, live AI, SSH, deployment, and GitHub writes are not enabled. | Keep no-key startup and static fallback while adding future server adapters only behind backend and human approval. |
 | Agent lane status | Bound as observable metadata-only sub-agent governance | `content/development/seis-agent-lane-status.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAgentLaneStatusSnapshot.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAgentLaneStatusSnapshotTests.swift` | Fourteen lanes are active records only; no background autonomy, connector mutation, secret access, or destructive authority is enabled. | Keep the five personal lanes supervised and require declared skill, tool, safety, autonomy, and validation evidence for new lanes. |
+| SEIS Second Brain | Bound as metadata-only local knowledge contract | `content/development/seis-second-brain-system.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisSecondBrainContractSnapshot.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisSecondBrainContractSnapshotTests.swift` | Local Demo vault notes, memory, and retrieval planning are bounded; private Obsidian import, secrets, provider calls, SSH, deployment, and GitHub mutation remain disabled. | Keep knowledge graph and capture flows browser/local-first until explicit import, provenance, privacy, and human-review gates pass. |
 
 ## Rules / Policy
 
@@ -459,6 +460,14 @@ exposes 14 active source-controlled lanes and the five personal SEIS lanes
 (`seis`, `seis-cloud`, `seis-code`, `seis-design`, `seis-data`) with declared
 skill, tool, safety, autonomy, and validation boundaries. This is observable
 sub-agent metadata; it does not activate agents or claim background autonomy.
+
+The panel also reads `content/development/seis-second-brain-system.json`. It
+exposes six local vault notes, nine managed lanes, thirteen plan-only roster
+agents, six installed AI profiles, and a publish-blocked pipeline. The
+browser-local Markdown vault, no-secret boundary, planned Obsidian bridge,
+human-review requirement, and no-provider/no-SSH/no-deployment rules remain
+visible as metadata; the native surface does not import private vaults or
+execute external actions.
 
 The panel also reads
 `content/development/seis-ai-core-provider-registry.json`. It preserves

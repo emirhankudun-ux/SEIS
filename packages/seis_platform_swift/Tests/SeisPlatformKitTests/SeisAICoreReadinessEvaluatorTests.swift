@@ -42,6 +42,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let agiEvaluationProtocol = try SeisAGIEvaluationProtocolSnapshot.validated(from: agiEvaluationProtocolData())
         let fullStackContract = try SeisFullStackContractSnapshot.validated(from: fullStackContractData())
         let agentLaneStatus = try SeisAgentLaneStatusSnapshot.validated(from: agentLaneStatusData())
+        let secondBrainContract = try SeisSecondBrainContractSnapshot.validated(from: secondBrainContractData())
 
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
@@ -80,14 +81,15 @@ struct SeisAICoreReadinessEvaluatorTests {
             longHorizonMissionKernelSnapshot: longHorizonMissionKernel,
             agiEvaluationProtocolSnapshot: agiEvaluationProtocol,
             fullStackContractSnapshot: fullStackContract,
-            agentLaneStatusSnapshot: agentLaneStatus
+            agentLaneStatusSnapshot: agentLaneStatus,
+            secondBrainContractSnapshot: secondBrainContract
         )
 
         #expect(report.isReadyLocalDemo)
         #expect(report.status == .readyLocalDemo)
         #expect(report.evaluatorVersion == SeisAICoreReadinessEvaluator.evaluatorVersion)
         #expect(report.checks.map(\.id) == SeisAICoreReadinessEvaluator.expectedCheckIDs)
-        #expect(report.passedCount == 39)
+        #expect(report.passedCount == 40)
         #expect(report.failedCount == 0)
         #expect(report.truthBoundary.contains("not proof of live provider access"))
     }
@@ -127,6 +129,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         let agiEvaluationProtocol = try SeisAGIEvaluationProtocolSnapshot.validated(from: agiEvaluationProtocolData())
         let fullStackContract = try SeisFullStackContractSnapshot.validated(from: fullStackContractData())
         let agentLaneStatus = try SeisAgentLaneStatusSnapshot.validated(from: agentLaneStatusData())
+        let secondBrainContract = try SeisSecondBrainContractSnapshot.validated(from: secondBrainContractData())
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
             capabilityMesh: SeisAICapabilityMesh(snapshot: snapshot),
@@ -164,7 +167,8 @@ struct SeisAICoreReadinessEvaluatorTests {
             longHorizonMissionKernelSnapshot: longHorizonMissionKernel,
             agiEvaluationProtocolSnapshot: agiEvaluationProtocol,
             fullStackContractSnapshot: fullStackContract,
-            agentLaneStatusSnapshot: agentLaneStatus
+            agentLaneStatusSnapshot: agentLaneStatus,
+            secondBrainContractSnapshot: secondBrainContract
         )
 
         #expect(report.status.rawValue == "ready-local-demo")
@@ -383,5 +387,11 @@ struct SeisAICoreReadinessEvaluatorTests {
         var root = URL(fileURLWithPath: #filePath)
         for _ in 0..<5 { root.deleteLastPathComponent() }
         return try Data(contentsOf: root.appendingPathComponent("content/development/seis-agent-lane-status.json"))
+    }
+
+    private func secondBrainContractData() throws -> Data {
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<5 { root.deleteLastPathComponent() }
+        return try Data(contentsOf: root.appendingPathComponent("content/development/seis-second-brain-system.json"))
     }
 }
