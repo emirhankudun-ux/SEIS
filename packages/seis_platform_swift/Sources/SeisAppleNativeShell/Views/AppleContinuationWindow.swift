@@ -76,6 +76,8 @@ struct AppleContinuationWindow: View {
 
                     SeisAppleLocalSearchView()
 
+                    SeisAppleLocalWorkspaceFilesView(repositoryPath: repositoryRoot)
+
                     SeisAppleProductSurfaceCatalogView()
 
                     #if os(macOS)

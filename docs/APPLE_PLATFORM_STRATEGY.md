@@ -41,6 +41,15 @@ or `approval-required` state plus a boundary and evidence description. Selecting
 a tile inspects the contract only; it does not imply live provider, MCP, SSH,
 deployment, or filesystem execution.
 
+The native shell also exposes `SeisAppleLocalWorkspaceIndex` and
+`SeisAppleLocalWorkspaceFilesView`. This is a bounded, allow-listed metadata
+index for the selected repository root. It records relative paths, entry kind,
+and byte counts without reading file contents. Hidden paths, `.git`, build
+output, `node_modules`, environment files, credentials, secrets, and symbolic
+links are excluded. Refresh and filtering are local inspection actions only;
+file creation, rename, deletion, opening, and external execution remain
+disabled.
+
 ## Native Boundaries
 
 Platform APIs remain isolated from shared models. SwiftUI surfaces preserve
