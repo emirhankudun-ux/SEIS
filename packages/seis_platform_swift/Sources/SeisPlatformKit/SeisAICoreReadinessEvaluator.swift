@@ -78,7 +78,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "language-model-training-curriculum",
         "public-readiness-program",
         "command-center-operations-readiness",
-        "agi-independent-evidence-ledger"
+        "agi-independent-evidence-ledger",
+        "agi-github-user-readiness-gates"
     ]
 
     public init() {}
@@ -105,7 +106,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         languageModelTrainingCurriculumSnapshot: SeisLanguageModelTrainingCurriculumSnapshot? = nil,
         publicReadinessProgramSnapshot: SeisAIPublicReadinessProgramSnapshot? = nil,
         commandCenterOperationsReadinessSnapshot: SeisCommandCenterOperationsReadinessSnapshot? = nil,
-        agiIndependentEvidenceLedgerSnapshot: SeisAGIIndependentEvidenceLedgerSnapshot? = nil
+        agiIndependentEvidenceLedgerSnapshot: SeisAGIIndependentEvidenceLedgerSnapshot? = nil,
+        agiGitHubUserReadinessGatesSnapshot: SeisAGIGitHubUserReadinessGatesSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -274,6 +276,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "AGI independent evidence ledger",
                 passed: agiIndependentEvidenceLedgerSnapshot?.isPlanOnly == true,
                 evidence: "Independent AGI and 512B evidence remains missing and approval is not recorded; Local Demo stays available while routeability, runtime authority, AGI claims, internet downloads, training, inference, benchmarks, and deployment remain blocked."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "agi-github-user-readiness-gates",
+                title: "GitHub user readiness gates",
+                passed: agiGitHubUserReadinessGatesSnapshot?.isLocalDemoOnly == true,
+                evidence: "GitHub users may review the Local Demo and run no-key validators, while real AGI use, live providers, 512B routeability, runtime authority, release approval, and external mutation remain gated."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked
