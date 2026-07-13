@@ -266,11 +266,20 @@ export interface SeisPersonalLaneCycle {
 }
 
 export declare const PERSONAL_LANE_CYCLE_TOOL: string;
+export declare const PERSONAL_LANE_CYCLE_CHECKS_TOOL: string;
 export declare function personalPluginLaneCycle(
   repoRoot: string,
   request: string,
   laneIds?: string[],
 ): SeisPersonalLaneCycle;
+export declare function runPersonalLaneCycleChecks(
+  repoRoot: string,
+  cycle: SeisPersonalLaneCycle,
+  options?: { timeoutMs?: number },
+): SeisPersonalLaneCycle & {
+  checks?: unknown[];
+  checkBoundary?: Record<string, unknown>;
+};
 
 /* ------------------------------------------------------------------ */
 /* SEIS Universe seed model surfaces                                   */

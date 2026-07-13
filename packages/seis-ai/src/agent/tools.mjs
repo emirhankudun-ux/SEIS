@@ -8,6 +8,7 @@ import {
   AI_CORE_VERSION_PROMOTION_TOOL,
   AI_CORE_VERSION_STATUS_TOOL,
   PERSONAL_LANE_CYCLE_TOOL,
+  PERSONAL_LANE_CYCLE_CHECKS_TOOL,
   PERSONAL_PLUGIN_LANE_TOOLS,
   SUBAGENT_DRY_RUN_TASK_TOOL,
   SUBAGENT_OPERATING_MODEL_TOOL,
@@ -18,6 +19,7 @@ import {
   aiCoreVersionStatus,
   personalPluginLanePlan,
   personalPluginLaneCycle,
+  runPersonalLaneCycleChecks,
   personalPluginLaneStatus,
   pluginIntegrationStatus,
   resolvePersonalPluginLaneTool,
@@ -118,6 +120,19 @@ export function toolDefinitions({ allowWrite = false } = {}) {
         type: "object",
         properties: {
           request: { type: "string", description: "One scoped request to route through all five personal SEIS lanes." },
+        },
+        required: ["request"],
+      },
+    },
+    {
+      name: PERSONAL_LANE_CYCLE_CHECKS_TOOL,
+      description:
+        "Build the five-lane personal SEIS plan and run only its source-declared local validation commands with a shell-disabled child-process boundary, timeouts, redacted output, and visible git-status comparison. No provider calls, remote MCP session, credentials, SSH, deployment, GitHub mutation, or write mode.",
+      input_schema: {
+        type: "object",
+        properties: {
+          request: { type: "string", description: "One scoped request to route through all five personal SEIS lanes." },
+          timeoutMs: { type: "integer", description: "Per-check timeout in milliseconds, bounded by the local runner." },
         },
         required: ["request"],
       },
@@ -370,6 +385,10 @@ export function executeTool(name, input, { repoRoot, webRoot, allowWrite = false
     }
     case PERSONAL_LANE_CYCLE_TOOL: {
       return JSON.stringify(personalPluginLaneCycle(repoRoot, input?.request), null, 2);
+    }
+    case PERSONAL_LANE_CYCLE_CHECKS_TOOL: {
+      const cycle = personalPluginLaneCycle(repoRoot, input?.request);
+      return JSON.stringify(runPersonalLaneCycleChecks(repoRoot, cycle, { timeoutMs: input?.timeoutMs }), null, 2);
     }
     case AI_CORE_PROVIDER_STATUS_TOOL: {
       return JSON.stringify(

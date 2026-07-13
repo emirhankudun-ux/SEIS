@@ -232,6 +232,7 @@
     "seis:watch": "node packages/seis-ai/bin/seis-check.mjs --watch",
     "seis:agent": "node packages/seis-ai/bin/seis-agent.mjs",
     "seis:mcp": "node packages/seis-ai/bin/seis-mcp.mjs",
+    "seis:lane-cycle": "node packages/seis-ai/bin/seis-lane-cycle.mjs",
     "seis:router": "node packages/seis-ai/bin/seis-router.mjs",
     "seis:test": "npm test --prefix packages/seis-ai",
     "check:ssh-hardening-contract": "node scripts/check-ssh-hardening-contract.mjs",

@@ -1622,6 +1622,148 @@ export function personalPluginLaneCycle(repoRoot, request, laneIds = PERSONAL_PL
   };
 }
 
+const SAFE_CHECK_COMMAND = /^(?:npm run (?:check:[a-z0-9:_-]+|seis:check)(?: -- --[a-z0-9:_=-]+)*|node scripts\/(?:check|create)-[a-z0-9._-]+\.mjs(?: --check)?|node --test (?:apps|packages)\/[a-z0-9._/*-]+)$/;
+const CYCLE_CHECK_OUTPUT_LIMIT = 8 * 1024;
+const CYCLE_CHECK_TIMEOUT_MS = 120_000;
+
+function isSafeCycleCheckCommand(command) {
+  return typeof command === "string" && SAFE_CHECK_COMMAND.test(command.trim()) && !/[;&|`$<>]/.test(command);
+}
+
+function splitCheckCommand(command) {
+  return command.trim().split(/\s+/);
+}
+
+function redactedCheckOutput(value) {
+  const output = redactSecretText(String(value || ""));
+  return output.length > CYCLE_CHECK_OUTPUT_LIMIT
+    ? `${output.slice(0, CYCLE_CHECK_OUTPUT_LIMIT)}\n[output truncated]`
+    : output;
+}
+
+function visibleGitStatus(repoRoot) {
+  try {
+    return execFileSync("git", ["status", "--short", "--untracked-files=all"], {
+      cwd: repoRoot,
+      encoding: "utf8",
+      maxBuffer: CYCLE_CHECK_OUTPUT_LIMIT,
+      stdio: ["ignore", "pipe", "ignore"],
+    });
+  } catch {
+    return null;
+  }
+}
+
+function executeAllowlistedCheck(repoRoot, laneId, command, timeoutMs) {
+  if (!isSafeCycleCheckCommand(command)) {
+    return {
+      laneId,
+      command,
+      status: "blocked",
+      exitCode: null,
+      output: "Command is outside the local validation allowlist.",
+    };
+  }
+
+  const argv = splitCheckCommand(command);
+  const executable = argv[0] === "node" ? process.execPath : argv[0];
+  const args = argv.slice(1);
+  const env = {
+    PATH: process.env.PATH || "/usr/bin:/bin",
+    HOME: process.env.HOME || "",
+    TMPDIR: process.env.TMPDIR || "",
+    LANG: process.env.LANG || "C",
+    LC_ALL: process.env.LC_ALL || "C",
+    CI: "1",
+    NODE_ENV: "test",
+    npm_config_update_notifier: "false",
+  };
+
+  try {
+    const output = execFileSync(executable, args, {
+      cwd: repoRoot,
+      encoding: "utf8",
+      env,
+      timeout: timeoutMs,
+      maxBuffer: CYCLE_CHECK_OUTPUT_LIMIT,
+      shell: false,
+    });
+    return { laneId, command, status: "passed", exitCode: 0, output: redactedCheckOutput(output) };
+  } catch (error) {
+    const timedOut = error?.killed === true || error?.signal === "SIGTERM";
+    const output = [error?.stdout, error?.stderr, error?.message].filter(Boolean).join("\n");
+    return {
+      laneId,
+      command,
+      status: timedOut ? "timed-out" : "failed",
+      exitCode: Number.isInteger(error?.status) ? error.status : null,
+      output: redactedCheckOutput(output),
+    };
+  }
+}
+
+/**
+ * Run only source-declared local validation commands for a cycle. The direct
+ * child-process boundary disables the outer shell; npm scripts remain
+ * repository-defined commands and their output is redacted and bounded.
+ * This is opt-in and never grants provider, MCP, network, credential, SSH,
+ * deployment, GitHub, or write authority to a lane.
+ */
+export function runPersonalLaneCycleChecks(repoRoot, cycle, options = {}) {
+  if (!cycle || cycle.ok !== true || !Array.isArray(cycle.plans)) {
+    return {
+      ok: false,
+      cycleId: cycle?.cycleId || "seis-personal-lane-cycle-v1",
+      status: "checks-blocked",
+      error: "a successful personal lane cycle is required before checks can run",
+    };
+  }
+
+  const timeoutMs = Math.min(Math.max(Number(options.timeoutMs) || 30_000, 100), CYCLE_CHECK_TIMEOUT_MS);
+  const beforeStatus = visibleGitStatus(repoRoot);
+  const checks = [];
+  for (const plan of cycle.plans) {
+    for (const command of plan.defaultChecks || []) {
+      checks.push(executeAllowlistedCheck(repoRoot, plan.laneId, command, timeoutMs));
+    }
+  }
+  const afterStatus = visibleGitStatus(repoRoot);
+  const failed = checks.filter((check) => check.status !== "passed");
+  const workspaceStatusCompared = beforeStatus !== null && afterStatus !== null;
+  const workspaceMutationDetected = workspaceStatusCompared && beforeStatus !== afterStatus;
+  const blocked = failed.length > 0 || !workspaceStatusCompared || workspaceMutationDetected;
+
+  return {
+    ...cycle,
+    ok: !blocked,
+    status: blocked ? "checks-blocked" : "checks-passed",
+    checks,
+    summary: {
+      ...cycle.summary,
+      checkTotal: checks.length,
+      checkPassed: checks.filter((check) => check.status === "passed").length,
+      checkFailed: failed.length,
+      checkBlocked: checks.filter((check) => check.status === "blocked").length,
+    },
+    runtimeBoundary: {
+      ...cycle.runtimeBoundary,
+      localValidationPerformed: true,
+      externalMutationPerformed: false,
+      workspaceMutationDetected,
+    },
+    checkBoundary: {
+      allowlist: "npm run check:* or npm run seis:check; node scripts/check-*.mjs; node scripts/create-*.mjs --check; node --test apps|packages",
+      shell: false,
+      packageScriptDelegation: true,
+      timeoutMs,
+      outputRedacted: true,
+      workspaceStatusCompared,
+      workspaceStatusUnavailable: !workspaceStatusCompared,
+      workspaceMutationDetected,
+    },
+  };
+}
+
 function findLane(manifest, laneId) {
   return (Array.isArray(manifest.lanes) ? manifest.lanes : []).find((lane) => lane.id === laneId);
 }

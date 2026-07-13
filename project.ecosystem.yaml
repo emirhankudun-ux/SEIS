@@ -68,6 +68,7 @@
     "test": "npm test --prefix packages/seis-ai",
     "validate": "npm run seis:check",
     "manifest": "npm run check:project-ecosystem-manifest",
+    "lane_cycle": "npm run seis:lane-cycle",
     "ai_core_snapshot": "npm run check:seis-core-ai-runtime-snapshot",
     "ecosystem_snapshot": "npm run check:seis-core-ecosystem-registry"
   },
