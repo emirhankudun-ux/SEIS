@@ -35,6 +35,8 @@ struct SeisAICoreReadinessEvaluatorTests {
         let universalCapabilityKernel = try SeisUniversalCapabilityKernelSnapshot.validated(from: universalCapabilityKernelData())
         let actionDecisionContract = try SeisActionDecisionContractSnapshot.validated(from: actionDecisionContractData())
         let actionExecutionContract = try SeisActionExecutionContractSnapshot.validated(from: actionExecutionContractData())
+        let agentRoleSchema = try SeisAgentRoleSchemaSnapshot.validated(from: agentRoleSchemaData())
+        let agentPermissionMatrix = try SeisAgentPermissionMatrixSnapshot.validated(from: agentPermissionMatrixData())
 
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
@@ -66,14 +68,16 @@ struct SeisAICoreReadinessEvaluatorTests {
             designComponentInventorySnapshot: designComponentInventory,
             universalCapabilityKernelSnapshot: universalCapabilityKernel,
             actionDecisionContractSnapshot: actionDecisionContract,
-            actionExecutionContractSnapshot: actionExecutionContract
+            actionExecutionContractSnapshot: actionExecutionContract,
+            agentRoleSchemaSnapshot: agentRoleSchema,
+            agentPermissionMatrixSnapshot: agentPermissionMatrix
         )
 
         #expect(report.isReadyLocalDemo)
         #expect(report.status == .readyLocalDemo)
         #expect(report.evaluatorVersion == SeisAICoreReadinessEvaluator.evaluatorVersion)
         #expect(report.checks.map(\.id) == SeisAICoreReadinessEvaluator.expectedCheckIDs)
-        #expect(report.passedCount == 33)
+        #expect(report.passedCount == 34)
         #expect(report.failedCount == 0)
         #expect(report.truthBoundary.contains("not proof of live provider access"))
     }
@@ -106,6 +110,8 @@ struct SeisAICoreReadinessEvaluatorTests {
         let universalCapabilityKernel = try SeisUniversalCapabilityKernelSnapshot.validated(from: universalCapabilityKernelData())
         let actionDecisionContract = try SeisActionDecisionContractSnapshot.validated(from: actionDecisionContractData())
         let actionExecutionContract = try SeisActionExecutionContractSnapshot.validated(from: actionExecutionContractData())
+        let agentRoleSchema = try SeisAgentRoleSchemaSnapshot.validated(from: agentRoleSchemaData())
+        let agentPermissionMatrix = try SeisAgentPermissionMatrixSnapshot.validated(from: agentPermissionMatrixData())
         let report = SeisAICoreReadinessEvaluator().evaluate(
             snapshot: snapshot,
             capabilityMesh: SeisAICapabilityMesh(snapshot: snapshot),
@@ -136,7 +142,9 @@ struct SeisAICoreReadinessEvaluatorTests {
             designComponentInventorySnapshot: designComponentInventory,
             universalCapabilityKernelSnapshot: universalCapabilityKernel,
             actionDecisionContractSnapshot: actionDecisionContract,
-            actionExecutionContractSnapshot: actionExecutionContract
+            actionExecutionContractSnapshot: actionExecutionContract,
+            agentRoleSchemaSnapshot: agentRoleSchema,
+            agentPermissionMatrixSnapshot: agentPermissionMatrix
         )
 
         #expect(report.status.rawValue == "ready-local-demo")
@@ -313,5 +321,17 @@ struct SeisAICoreReadinessEvaluatorTests {
         var root = URL(fileURLWithPath: #filePath)
         for _ in 0..<5 { root.deleteLastPathComponent() }
         return try Data(contentsOf: root.appendingPathComponent("content/development/seis-action-execution-contract.json"))
+    }
+
+    private func agentRoleSchemaData() throws -> Data {
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<5 { root.deleteLastPathComponent() }
+        return try Data(contentsOf: root.appendingPathComponent("content/development/seis-ai-core-agent-role-schema.json"))
+    }
+
+    private func agentPermissionMatrixData() throws -> Data {
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<5 { root.deleteLastPathComponent() }
+        return try Data(contentsOf: root.appendingPathComponent("content/development/seis-ai-core-agent-permission-matrix.json"))
     }
 }

@@ -85,7 +85,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "data-schema-registry",
         "design-component-inventory",
         "universal-capability-kernel",
-        "action-governance-contracts"
+        "action-governance-contracts",
+        "agent-governance-contracts"
     ]
 
     public init() {}
@@ -120,7 +121,9 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         designComponentInventorySnapshot: SeisDesignComponentInventorySnapshot? = nil,
         universalCapabilityKernelSnapshot: SeisUniversalCapabilityKernelSnapshot? = nil,
         actionDecisionContractSnapshot: SeisActionDecisionContractSnapshot? = nil,
-        actionExecutionContractSnapshot: SeisActionExecutionContractSnapshot? = nil
+        actionExecutionContractSnapshot: SeisActionExecutionContractSnapshot? = nil,
+        agentRoleSchemaSnapshot: SeisAgentRoleSchemaSnapshot? = nil,
+        agentPermissionMatrixSnapshot: SeisAgentPermissionMatrixSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -331,6 +334,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Action governance contracts",
                 passed: actionDecisionContractSnapshot?.isMetadataOnly == true && actionExecutionContractSnapshot?.isMetadataOnly == true,
                 evidence: "Read-only decisions, dry-run execution, redaction, explicit approval, and documented rollback remain source-backed; no action authority is implied."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "agent-governance-contracts",
+                title: "Agent governance contracts",
+                passed: agentRoleSchemaSnapshot?.isMetadataOnly == true && agentPermissionMatrixSnapshot?.isMetadataOnly == true,
+                evidence: "Five lane roles and five permission levels remain status-and-plan-only, with write/external/forbidden actions separately gated or forbidden."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked

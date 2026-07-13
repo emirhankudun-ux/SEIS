@@ -32,6 +32,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var universalCapabilityKernelSnapshot: SeisUniversalCapabilityKernelSnapshot?
     @Published private(set) var actionDecisionContractSnapshot: SeisActionDecisionContractSnapshot?
     @Published private(set) var actionExecutionContractSnapshot: SeisActionExecutionContractSnapshot?
+    @Published private(set) var agentRoleSchemaSnapshot: SeisAgentRoleSchemaSnapshot?
+    @Published private(set) var agentPermissionMatrixSnapshot: SeisAgentPermissionMatrixSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -140,6 +142,12 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         actionExecutionContractSnapshot = try? SeisActionExecutionContractSnapshot.validated(
             from: Data(contentsOf: actionExecutionContractURL)
         )
+        agentRoleSchemaSnapshot = try? SeisAgentRoleSchemaSnapshot.validated(
+            from: Data(contentsOf: agentRoleSchemaURL)
+        )
+        agentPermissionMatrixSnapshot = try? SeisAgentPermissionMatrixSnapshot.validated(
+            from: Data(contentsOf: agentPermissionMatrixURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -180,7 +188,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 designComponentInventorySnapshot: designComponentInventorySnapshot,
                 universalCapabilityKernelSnapshot: universalCapabilityKernelSnapshot,
                 actionDecisionContractSnapshot: actionDecisionContractSnapshot,
-                actionExecutionContractSnapshot: actionExecutionContractSnapshot
+                actionExecutionContractSnapshot: actionExecutionContractSnapshot,
+                agentRoleSchemaSnapshot: agentRoleSchemaSnapshot,
+                agentPermissionMatrixSnapshot: agentPermissionMatrixSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -276,6 +286,12 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             actionExecutionContractSnapshot = try? SeisActionExecutionContractSnapshot.validated(
                 from: Data(contentsOf: actionExecutionContractURL)
             )
+            agentRoleSchemaSnapshot = try? SeisAgentRoleSchemaSnapshot.validated(
+                from: Data(contentsOf: agentRoleSchemaURL)
+            )
+            agentPermissionMatrixSnapshot = try? SeisAgentPermissionMatrixSnapshot.validated(
+                from: Data(contentsOf: agentPermissionMatrixURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -302,6 +318,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             universalCapabilityKernelSnapshot = nil
             actionDecisionContractSnapshot = nil
             actionExecutionContractSnapshot = nil
+            agentRoleSchemaSnapshot = nil
+            agentPermissionMatrixSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -780,6 +798,20 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-action-execution-contract.json")
     }
 
+    private var agentRoleSchemaURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-ai-core-agent-role-schema.json")
+    }
+
+    private var agentPermissionMatrixURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-ai-core-agent-permission-matrix.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -891,6 +923,13 @@ struct SeisAICoreLocalDemoView: View {
                     actionGovernanceContractsDisclosure(
                         decision: actionDecisionContractSnapshot,
                         execution: actionExecutionContractSnapshot
+                    )
+                }
+                if let agentRoleSchemaSnapshot = model.agentRoleSchemaSnapshot,
+                   let agentPermissionMatrixSnapshot = model.agentPermissionMatrixSnapshot {
+                    agentGovernanceContractsDisclosure(
+                        roleSchema: agentRoleSchemaSnapshot,
+                        permissionMatrix: agentPermissionMatrixSnapshot
                     )
                 }
                 if let capabilityMesh = model.capabilityMesh {
@@ -2142,6 +2181,30 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Action governance contracts. Read-only decision default, dry-run execution default, twelve capability rules, explicit approval for higher-risk actions, redaction, documented rollback, and no execution authority.")
+    }
+
+    private func agentGovernanceContractsDisclosure(
+        roleSchema: SeisAgentRoleSchemaSnapshot,
+        permissionMatrix: SeisAgentPermissionMatrixSnapshot
+    ) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(roleSchema.roles.count) lane roles · \(permissionMatrix.levels.count) permission levels · \(permissionMatrix.enabledLevelCount) enabled · status-and-plan-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(roleSchema.isMetadataOnly && permissionMatrix.isMetadataOnly ? .secondary : .red)
+                Text("Lanes: \(roleSchema.laneIDs.joined(separator: " · "))")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.tertiary)
+                Text("Read-only and plan-only are enabled. Write-gated, external-gated, and forbidden actions remain planned, approval-gated, or forbidden without a separate security and recovery plan.")
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Agent governance contracts", systemImage: "person.3.sequence")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Agent governance contracts. Five lane roles, five permission levels, two enabled safe levels, and write, external, and forbidden actions separately gated; status-and-plan-only.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {
