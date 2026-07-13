@@ -48,6 +48,7 @@ The foundation includes:
 | Full-stack contract | Bound as metadata-only Apple application boundary | `content/development/seis-fullstack-contract.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisFullStackContractSnapshot.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisFullStackContractSnapshotTests.swift` | First server/API/data slice remains read-only Local Demo; auth, database, live AI, SSH, deployment, and GitHub writes are not enabled. | Keep no-key startup and static fallback while adding future server adapters only behind backend and human approval. |
 | Agent lane status | Bound as observable metadata-only sub-agent governance | `content/development/seis-agent-lane-status.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAgentLaneStatusSnapshot.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAgentLaneStatusSnapshotTests.swift` | Fourteen lanes are active records only; no background autonomy, connector mutation, secret access, or destructive authority is enabled. | Keep the five personal lanes supervised and require declared skill, tool, safety, autonomy, and validation evidence for new lanes. |
 | SEIS Second Brain | Bound as metadata-only local knowledge contract | `content/development/seis-second-brain-system.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisSecondBrainContractSnapshot.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisSecondBrainContractSnapshotTests.swift` | Local Demo vault notes, memory, and retrieval planning are bounded; private Obsidian import, secrets, provider calls, SSH, deployment, and GitHub mutation remain disabled. | Keep knowledge graph and capture flows browser/local-first until explicit import, provenance, privacy, and human-review gates pass. |
+| Platform language policy | Bound as Apple-first multiplatform metadata | `content/development/seis-platform-language-policy.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisPlatformLanguagePolicySnapshot.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisPlatformLanguagePolicySnapshotTests.swift` | Policy records platform/language choices only; it does not install runtimes or claim implementation coverage for every listed surface. | Keep Apple native continuation first and add Windows/polyglot helpers only when a real platform requirement and validation exist. |
 
 ## Rules / Policy
 
@@ -468,6 +469,12 @@ browser-local Markdown vault, no-secret boundary, planned Obsidian bridge,
 human-review requirement, and no-provider/no-SSH/no-deployment rules remain
 visible as metadata; the native surface does not import private vaults or
 execute external actions.
+
+The panel also reads `content/development/seis-platform-language-policy.json`. It
+exposes five Apple language surfaces, ten prioritized native frameworks, 41
+Windows language surfaces, and 18 required Windows lanes. Apple-only surfaces
+remain excluded from Windows; this is a platform policy boundary and does not
+install runtimes to influence language percentages.
 
 The panel also reads
 `content/development/seis-ai-core-provider-registry.json`. It preserves

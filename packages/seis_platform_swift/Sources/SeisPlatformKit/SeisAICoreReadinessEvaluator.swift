@@ -92,7 +92,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "agi-evaluation-protocol-boundary",
         "fullstack-contract-boundary",
         "agent-lane-status-contract",
-        "second-brain-contract"
+        "second-brain-contract",
+        "platform-language-policy"
     ]
 
     public init() {}
@@ -135,7 +136,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         agiEvaluationProtocolSnapshot: SeisAGIEvaluationProtocolSnapshot? = nil,
         fullStackContractSnapshot: SeisFullStackContractSnapshot? = nil,
         agentLaneStatusSnapshot: SeisAgentLaneStatusSnapshot? = nil,
-        secondBrainContractSnapshot: SeisSecondBrainContractSnapshot? = nil
+        secondBrainContractSnapshot: SeisSecondBrainContractSnapshot? = nil,
+        platformLanguagePolicySnapshot: SeisPlatformLanguagePolicySnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -388,6 +390,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "SEIS Second Brain contract",
                 passed: secondBrainContractSnapshot?.isMetadataOnly == true,
                 evidence: "Local Demo Second Brain metadata covers six local vault notes, nine managed lanes, thirteen roster agents, six installed AI profiles, and a publish-blocked pipeline without private vault import, secrets, provider calls, SSH, deployment, or GitHub mutation."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "platform-language-policy",
+                title: "Apple-first platform language policy",
+                passed: platformLanguagePolicySnapshot?.isMetadataOnly == true,
+                evidence: "Apple-first policy covers five Apple language surfaces and ten native frameworks, while Windows keeps 41 polyglot surfaces and 18 required lanes without adding Apple-only surfaces for language-percentage reasons."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked

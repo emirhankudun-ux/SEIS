@@ -40,6 +40,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var fullStackContractSnapshot: SeisFullStackContractSnapshot?
     @Published private(set) var agentLaneStatusSnapshot: SeisAgentLaneStatusSnapshot?
     @Published private(set) var secondBrainContractSnapshot: SeisSecondBrainContractSnapshot?
+    @Published private(set) var platformLanguagePolicySnapshot: SeisPlatformLanguagePolicySnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -172,6 +173,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         secondBrainContractSnapshot = try? SeisSecondBrainContractSnapshot.validated(
             from: Data(contentsOf: secondBrainContractURL)
         )
+        platformLanguagePolicySnapshot = try? SeisPlatformLanguagePolicySnapshot.validated(
+            from: Data(contentsOf: platformLanguagePolicyURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -220,7 +224,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 agiEvaluationProtocolSnapshot: agiEvaluationProtocolSnapshot,
                 fullStackContractSnapshot: fullStackContractSnapshot,
                 agentLaneStatusSnapshot: agentLaneStatusSnapshot,
-                secondBrainContractSnapshot: secondBrainContractSnapshot
+                secondBrainContractSnapshot: secondBrainContractSnapshot,
+                platformLanguagePolicySnapshot: platformLanguagePolicySnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -340,6 +345,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             secondBrainContractSnapshot = try? SeisSecondBrainContractSnapshot.validated(
                 from: Data(contentsOf: secondBrainContractURL)
             )
+            platformLanguagePolicySnapshot = try? SeisPlatformLanguagePolicySnapshot.validated(
+                from: Data(contentsOf: platformLanguagePolicyURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -374,6 +382,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             fullStackContractSnapshot = nil
             agentLaneStatusSnapshot = nil
             secondBrainContractSnapshot = nil
+            platformLanguagePolicySnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -908,6 +917,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-second-brain-system.json")
     }
 
+    private var platformLanguagePolicyURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-platform-language-policy.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -1045,6 +1061,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let secondBrainContractSnapshot = model.secondBrainContractSnapshot {
                     secondBrainContractDisclosure(snapshot: secondBrainContractSnapshot)
+                }
+                if let platformLanguagePolicySnapshot = model.platformLanguagePolicySnapshot {
+                    platformLanguagePolicyDisclosure(snapshot: platformLanguagePolicySnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -2471,6 +2490,30 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("SEIS Second Brain. Six local vault notes, nine managed lanes, thirteen plan-only roster agents, six installed AI profiles, and a publish-blocked pipeline. No private vault import or external mutation is enabled.")
+    }
+
+    private func platformLanguagePolicyDisclosure(snapshot: SeisPlatformLanguagePolicySnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Apple: \(snapshot.appleLanguageCount) language surfaces · \(snapshot.summary.appleNativeFrameworkCount) frameworks · Windows: \(snapshot.windowsLanguageCount) surfaces · metadata-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("Apple platforms: \(snapshot.apple.platforms.joined(separator: ", ")) · Windows required lanes: \(snapshot.summary.windowsRequiredLanguageCount)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Apple-only surfaces stay excluded from Windows: \(snapshot.summary.appleOnlyLanguageSurfaces.joined(separator: ", ")).")
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+                Text(snapshot.routingRule)
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Apple-first platform language policy", systemImage: "macwindow.on.rectangle")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Apple-first platform language policy. Five Apple language surfaces and ten native frameworks are prioritized across macOS and iOS; Windows keeps 41 polyglot surfaces and excludes Apple-only surfaces. This is policy metadata, not runtime installation evidence.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {
