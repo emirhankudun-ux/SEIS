@@ -198,6 +198,13 @@ planned count, and refreshes redacted evidence. It does not activate agents,
 delegate recursively, write files, call providers or MCP, run SSH or
 deployment, or mutate GitHub.
 
+The same native panel supports a bounded batch across all five personal lanes.
+Each lane is checked against its declared MCP tool and quality gate, then sent
+to the read-only lane planner without opening an MCP session. The result shows
+the planned count and refreshes redacted evidence; it does not invoke MCP,
+activate plugins, call providers, access private content, run SSH or
+deployment, or mutate GitHub.
+
 Validation:
 `swift test --package-path packages/seis_platform_swift`.
 

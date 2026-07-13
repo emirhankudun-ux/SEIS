@@ -11,11 +11,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var statusMessage = "AI Core snapshot has not been loaded."
     @Published private(set) var lastPlan: SeisAIPersonalLaneTaskPlan?
     @Published private(set) var lastAgentPlan: SeisAIAgentTaskPlan?
+    @Published private(set) var bulkLanePlanStatus: String?
     @Published private(set) var bulkAgentPlanStatus: String?
     @Published private(set) var routeDecision: SeisAIRouteDecision?
     @Published private(set) var evidence: [SeisAIExecutionEvidence] = []
     @Published private(set) var evidencePersistenceState: SeisAIExecutionEvidencePersistenceState = .memoryOnly
     @Published private(set) var isPlanning = false
+    @Published private(set) var isBulkLanePlanning = false
     @Published private(set) var isBulkPlanning = false
     @Published private(set) var isRouting = false
 
@@ -48,6 +50,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             )
             lastPlan = nil
             lastAgentPlan = nil
+            bulkLanePlanStatus = nil
             bulkAgentPlanStatus = nil
             routeDecision = nil
             statusMessage = "Local Demo ready: \(nextSnapshot.pluginMesh.personalLanes.count) lanes are linked to the typed runtime."
@@ -63,6 +66,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             readinessReport = nil
             lastPlan = nil
             lastAgentPlan = nil
+            bulkLanePlanStatus = nil
             bulkAgentPlanStatus = nil
             routeDecision = nil
             evidence = []
@@ -220,6 +224,67 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             statusMessage = plan.outcome == .planned
                 ? "\(lane.displayName) plan prepared without invoking MCP or a provider."
                 : "\(lane.displayName) plan was blocked by the Local Demo boundary."
+        }
+    }
+
+    func planAllLanes(_ lanes: [SeisAICorePersonalLane]) {
+        guard let runtime else {
+            statusMessage = "Load a validated snapshot before planning personal lanes."
+            return
+        }
+        guard !lanes.isEmpty else {
+            statusMessage = "No personal lanes are registered in the validated snapshot."
+            return
+        }
+
+        let requests = lanes.compactMap { lane -> SeisAIPersonalLaneTaskRequest? in
+            guard let purpose = renderPlanPurpose(
+                goal: lane.displayName,
+                constraints: "Status-and-plan-only; review the declared MCP tools and quality gate without invocation."
+            ) else {
+                return nil
+            }
+            guard let toolID = lane.mcpTools.last, !toolID.isEmpty else {
+                statusMessage = "Personal-lane batch was blocked because a lane has no declared MCP tool."
+                return nil
+            }
+            return SeisAIPersonalLaneTaskRequest(
+                id: "apple-bulk-lane-plan-\(lane.id)",
+                laneID: lane.id,
+                purpose: purpose,
+                requestedActions: [
+                    .inspectCapabilityContract,
+                    .prepareReadOnlyPlan,
+                    .reviewQualityGate
+                ],
+                requestedMCPToolIDs: [toolID],
+                inputReferences: ["apps/seis-core/data/seis-ai-core-runtime-snapshot.json"]
+            )
+        }
+
+        guard requests.count == lanes.count else {
+            statusMessage = "Personal-lane batch was blocked by the prompt or capability safety boundary."
+            return
+        }
+
+        isPlanning = true
+        isBulkLanePlanning = true
+        bulkLanePlanStatus = nil
+
+        Task {
+            var plans: [SeisAIPersonalLaneTaskPlan] = []
+            for request in requests {
+                plans.append(await runtime.planPersonalLaneTask(request))
+            }
+
+            let plannedCount = plans.filter { $0.outcome == .planned }.count
+            lastPlan = plans.last
+            bulkLanePlanStatus = "\(plannedCount)/\(plans.count) personal lane plans prepared locally; MCP invocation was not performed."
+            evidence = await runtime.evidenceSnapshot(limit: 8)
+            evidencePersistenceState = await runtime.evidencePersistenceState()
+            isBulkLanePlanning = false
+            isPlanning = false
+            statusMessage = "Personal-lane batch completed as bounded plan-only work; no MCP, provider, SSH, deployment, or GitHub action was executed."
         }
     }
 
@@ -836,8 +901,25 @@ struct SeisAICoreLocalDemoView: View {
 
     private func laneList(snapshot: SeisAICoreRuntimeSnapshotContract) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Personal Lane Plans")
-                .font(.subheadline.weight(.semibold))
+            HStack(alignment: .firstTextBaseline) {
+                Text("Personal Lane Plans")
+                    .font(.subheadline.weight(.semibold))
+                Spacer(minLength: 8)
+                Button {
+                    model.planAllLanes(snapshot.pluginMesh.personalLanes)
+                } label: {
+                    Label("Plan all", systemImage: "rectangle.stack.badge.play")
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.small)
+                .disabled(model.isPlanning || model.isBulkLanePlanning)
+            }
+
+            if let bulkLanePlanStatus = model.bulkLanePlanStatus {
+                Text(bulkLanePlanStatus)
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
 
             ForEach(snapshot.pluginMesh.personalLanes) { lane in
                 HStack(alignment: .top, spacing: 10) {
