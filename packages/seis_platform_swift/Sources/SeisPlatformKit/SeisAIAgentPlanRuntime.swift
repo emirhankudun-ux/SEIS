@@ -17,6 +17,56 @@ public enum SeisAIAgentAction: String, CaseIterable, Codable, Equatable, Hashabl
     case githubMutation = "github-mutation"
 }
 
+/// Explicit bounds for local agent planning. This is policy metadata, not an
+/// execution grant or evidence of autonomous runtime authority.
+public struct SeisAIAgentGovernanceBudget: Codable, Equatable, Sendable {
+    public let maximumSteps: Int
+    public let maximumDelegationDepth: Int
+    public let timeoutMinutes: Int
+    public let maximumCostTier: SeisAICostTier
+    public let backgroundExecutionAllowed: Bool
+    public let humanApprovalRequiredForExternalActions: Bool
+
+    public init(
+        maximumSteps: Int,
+        maximumDelegationDepth: Int,
+        timeoutMinutes: Int,
+        maximumCostTier: SeisAICostTier,
+        backgroundExecutionAllowed: Bool,
+        humanApprovalRequiredForExternalActions: Bool
+    ) {
+        self.maximumSteps = maximumSteps
+        self.maximumDelegationDepth = maximumDelegationDepth
+        self.timeoutMinutes = timeoutMinutes
+        self.maximumCostTier = maximumCostTier
+        self.backgroundExecutionAllowed = backgroundExecutionAllowed
+        self.humanApprovalRequiredForExternalActions = humanApprovalRequiredForExternalActions
+    }
+
+    public static let localPlanOnly = SeisAIAgentGovernanceBudget(
+        maximumSteps: 8,
+        maximumDelegationDepth: 1,
+        timeoutMinutes: 30,
+        maximumCostTier: .zero,
+        backgroundExecutionAllowed: false,
+        humanApprovalRequiredForExternalActions: true
+    )
+
+    public var validationIssues: [String] {
+        var issues: [String] = []
+        if maximumSteps < 1 { issues.append("maximumSteps must be at least 1") }
+        if maximumDelegationDepth < 0 { issues.append("maximumDelegationDepth must not be negative") }
+        if timeoutMinutes < 1 { issues.append("timeoutMinutes must be at least 1") }
+        if backgroundExecutionAllowed { issues.append("background execution is disabled for the local plan runtime") }
+        if !humanApprovalRequiredForExternalActions { issues.append("external actions require human approval") }
+        return issues
+    }
+
+    public var isSafeLocalPlanOnly: Bool {
+        validationIssues.isEmpty && maximumCostTier == .zero
+    }
+}
+
 public struct SeisAIAgentDefinition: Codable, Equatable, Identifiable, Sendable {
     public let id: String
     public let displayName: String
@@ -30,6 +80,7 @@ public struct SeisAIAgentDefinition: Codable, Equatable, Identifiable, Sendable 
     public let validationRules: [String]
     public let failureBehavior: String
     public let executionAuthority: Bool
+    public let governanceBudget: SeisAIAgentGovernanceBudget
 
     public init(
         id: String,
@@ -43,7 +94,8 @@ public struct SeisAIAgentDefinition: Codable, Equatable, Identifiable, Sendable 
         approvalRequirements: [String],
         validationRules: [String],
         failureBehavior: String,
-        executionAuthority: Bool
+        executionAuthority: Bool,
+        governanceBudget: SeisAIAgentGovernanceBudget = .localPlanOnly
     ) {
         self.id = id
         self.displayName = displayName
@@ -57,15 +109,17 @@ public struct SeisAIAgentDefinition: Codable, Equatable, Identifiable, Sendable 
         self.validationRules = validationRules
         self.failureBehavior = failureBehavior
         self.executionAuthority = executionAuthority
+        self.governanceBudget = governanceBudget
     }
 
     public var isStatusAndPlanOnly: Bool {
-        !executionAuthority &&
+            !executionAuthority &&
             allowedActions.isSubset(of: Self.planOnlyActions) &&
             Self.mutationActions.isSubset(of: forbiddenActions) &&
             !approvalRequirements.isEmpty &&
             !validationRules.isEmpty &&
-            !failureBehavior.isEmpty
+            !failureBehavior.isEmpty &&
+            governanceBudget.isSafeLocalPlanOnly
     }
 
     public static let planOnlyActions: Set<SeisAIAgentAction> = [
@@ -170,6 +224,7 @@ public struct SeisAIAgentTaskPlan: Codable, Equatable, Identifiable, Sendable {
     public let failureBehavior: String
     public let blockedReasons: [String]
     public let executionPerformed: Bool
+    public let governanceBudget: SeisAIAgentGovernanceBudget
 
     public init(
         id: String,
@@ -184,7 +239,8 @@ public struct SeisAIAgentTaskPlan: Codable, Equatable, Identifiable, Sendable {
         expectedOutputs: [String],
         failureBehavior: String,
         blockedReasons: [String],
-        executionPerformed: Bool = false
+        executionPerformed: Bool = false,
+        governanceBudget: SeisAIAgentGovernanceBudget = .localPlanOnly
     ) {
         self.id = id
         self.taskID = taskID
@@ -199,6 +255,7 @@ public struct SeisAIAgentTaskPlan: Codable, Equatable, Identifiable, Sendable {
         self.failureBehavior = failureBehavior
         self.blockedReasons = blockedReasons
         self.executionPerformed = executionPerformed
+        self.governanceBudget = governanceBudget
     }
 
     public var isPlanOnly: Bool {
@@ -257,7 +314,8 @@ public struct SeisAIAgentPlanRuntime: Sendable {
                     "fail-closed-on-unknown-action"
                 ],
                 failureBehavior: "Return a blocked plan with reasons; never expand permissions or execute a fallback.",
-                executionAuthority: agent.executionAuthority
+                executionAuthority: agent.executionAuthority,
+                governanceBudget: .localPlanOnly
             )
         }
         guard definitions.allSatisfy(\.isStatusAndPlanOnly) else {
@@ -317,7 +375,8 @@ public struct SeisAIAgentPlanRuntime: Sendable {
             validationRules: definition.validationRules,
             expectedOutputs: definition.expectedOutputs,
             failureBehavior: definition.failureBehavior,
-            blockedReasons: []
+            blockedReasons: [],
+            governanceBudget: definition.governanceBudget
         )
     }
 
@@ -339,7 +398,8 @@ public struct SeisAIAgentPlanRuntime: Sendable {
             validationRules: definition?.validationRules ?? ["fail-closed-on-unknown-agent"],
             expectedOutputs: definition?.expectedOutputs ?? ["blocked plan with reasons"],
             failureBehavior: definition?.failureBehavior ?? "Return blocked; do not infer or create an agent.",
-            blockedReasons: reasons
+            blockedReasons: reasons,
+            governanceBudget: definition?.governanceBudget ?? .localPlanOnly
         )
     }
 }

@@ -90,6 +90,10 @@ These are read-only or dry-run-only and do not prove background automation,
 release approval, provider readiness, or write permission. The quarterly review ledger remains
 evidence for staged reviews, not autonomous execution.
 
+Each native managed-agent plan also carries a fail-closed local governance
+budget: maximum 8 steps, delegation depth 1, 30-minute timeout, zero-cost
+tier, no background execution, and human approval for external actions.
+
 ## Related Documents
 
 - [installed-ai-collaboration-protocol.md](installed-ai-collaboration-protocol.md)

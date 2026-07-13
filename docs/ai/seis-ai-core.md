@@ -202,6 +202,12 @@ planned count, and refreshes redacted evidence. It does not activate agents,
 delegate recursively, write files, call providers or MCP, run SSH or
 deployment, or mutate GitHub.
 
+Each native managed-agent plan now carries an explicit local governance budget:
+maximum 8 steps, delegation depth 1, 30-minute timeout, zero-cost tier, no
+background execution, and human approval for external actions. These are
+fail-closed planning bounds, not runtime authority or evidence of autonomous
+execution.
+
 The same native panel supports a bounded batch across all five personal lanes.
 Each lane is checked against its declared MCP tool and quality gate, then sent
 to the read-only lane planner without opening an MCP session. The result shows

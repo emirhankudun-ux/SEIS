@@ -4,6 +4,24 @@ import Testing
 
 @Suite("SEIS AI Runtime")
 struct SeisAIRuntimeTests {
+    @Test func localAgentGovernanceBudgetRejectsUnboundedOrBackgroundExecution() {
+        let unsafe = SeisAIAgentGovernanceBudget(
+            maximumSteps: 0,
+            maximumDelegationDepth: -1,
+            timeoutMinutes: 0,
+            maximumCostTier: .low,
+            backgroundExecutionAllowed: true,
+            humanApprovalRequiredForExternalActions: false
+        )
+
+        #expect(!unsafe.isSafeLocalPlanOnly)
+        #expect(unsafe.validationIssues.contains("maximumSteps must be at least 1"))
+        #expect(unsafe.validationIssues.contains("maximumDelegationDepth must not be negative"))
+        #expect(unsafe.validationIssues.contains("timeoutMinutes must be at least 1"))
+        #expect(unsafe.validationIssues.contains("background execution is disabled for the local plan runtime"))
+        #expect(unsafe.validationIssues.contains("external actions require human approval"))
+    }
+
     @Test func localRouteInspectionSelectsOnlyTheDeterministicDemoProvider() {
         let request = SeisAIRoutingRequest(
             id: "apple-route-inspection",
@@ -270,6 +288,13 @@ struct SeisAIRuntimeTests {
             #expect(plan.isPlanOnly)
             #expect(plan.requiredApprovals.count == 1)
             #expect(plan.validationRules.contains("status-and-plan-only"))
+            #expect(plan.governanceBudget.maximumSteps == 8)
+            #expect(plan.governanceBudget.maximumDelegationDepth == 1)
+            #expect(plan.governanceBudget.timeoutMinutes == 30)
+            #expect(plan.governanceBudget.maximumCostTier == .zero)
+            #expect(!plan.governanceBudget.backgroundExecutionAllowed)
+            #expect(plan.governanceBudget.humanApprovalRequiredForExternalActions)
+            #expect(plan.governanceBudget.isSafeLocalPlanOnly)
         }
 
         requireSendable(snapshot)

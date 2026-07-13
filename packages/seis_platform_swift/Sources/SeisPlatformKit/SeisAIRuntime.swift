@@ -241,7 +241,8 @@ public actor SeisAIRuntime {
                 validationRules: ["fail-closed-without-agent-registry"],
                 expectedOutputs: ["blocked plan with reasons"],
                 failureBehavior: "Return blocked; do not infer runtime authority.",
-                blockedReasons: ["no validated agent registry was injected"]
+                blockedReasons: ["no validated agent registry was injected"],
+                governanceBudget: .localPlanOnly
             )
         }
         await evidenceLedger.recordAgentPlan(plan, inputReferenceCount: request.inputReferences.count)
