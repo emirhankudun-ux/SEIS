@@ -44,6 +44,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var requestedSoftwareStackSnapshot: SeisRequestedSoftwareStackSnapshot?
     @Published private(set) var technologyStackSnapshot: SeisTechnologyStackSnapshot?
     @Published private(set) var platformDevelopmentTracksSnapshot: SeisPlatformDevelopmentTracksSnapshot?
+    @Published private(set) var obsidianSafeImportSnapshot: SeisObsidianSafeImportSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -188,6 +189,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         platformDevelopmentTracksSnapshot = try? SeisPlatformDevelopmentTracksSnapshot.validated(
             from: Data(contentsOf: platformDevelopmentTracksURL)
         )
+        obsidianSafeImportSnapshot = try? SeisObsidianSafeImportSnapshot.validated(
+            from: Data(contentsOf: obsidianSafeImportURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -240,7 +244,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 platformLanguagePolicySnapshot: platformLanguagePolicySnapshot,
                 technologyStackSnapshot: technologyStackSnapshot,
                 platformDevelopmentTracksSnapshot: platformDevelopmentTracksSnapshot,
-                requestedSoftwareStackSnapshot: requestedSoftwareStackSnapshot
+                requestedSoftwareStackSnapshot: requestedSoftwareStackSnapshot,
+                obsidianSafeImportSnapshot: obsidianSafeImportSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -372,6 +377,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             platformDevelopmentTracksSnapshot = try? SeisPlatformDevelopmentTracksSnapshot.validated(
                 from: Data(contentsOf: platformDevelopmentTracksURL)
             )
+            obsidianSafeImportSnapshot = try? SeisObsidianSafeImportSnapshot.validated(
+                from: Data(contentsOf: obsidianSafeImportURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -410,6 +418,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             technologyStackSnapshot = nil
             requestedSoftwareStackSnapshot = nil
             platformDevelopmentTracksSnapshot = nil
+            obsidianSafeImportSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -972,6 +981,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-platform-development-tracks.json")
     }
 
+    private var obsidianSafeImportURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-obsidian-bridge-safe-import-contract.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -1121,6 +1137,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let platformDevelopmentTracksSnapshot = model.platformDevelopmentTracksSnapshot {
                     platformDevelopmentTracksDisclosure(snapshot: platformDevelopmentTracksSnapshot)
+                }
+                if let obsidianSafeImportSnapshot = model.obsidianSafeImportSnapshot {
+                    obsidianSafeImportDisclosure(snapshot: obsidianSafeImportSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -2643,6 +2662,30 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Platform development tracks. Four metadata tracks preserve Apple-native continuation, required and extended Windows polyglot execution, and governance. Apple has five language surfaces and ten frameworks; Windows has 41 surfaces and excludes Apple-only surfaces. Runtime or build tool installation is not claimed.")
+    }
+
+    private func obsidianSafeImportDisclosure(snapshot: SeisObsidianSafeImportSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.allowedToday.count) allowed local-demo actions · \(snapshot.blockedActionCount) forbidden actions · \(snapshot.importPhaseCount) future phases · metadata-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("Body policy: \(snapshot.dryRunManifestSchema.bodyImportPolicy) · Private paths: \(snapshot.dryRunManifestSchema.privatePathPolicy) · Public sync: \(snapshot.futureImportPhases.last?.status ?? "unknown")")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("No host vault read, private import, Obsidian plugin install, provider submission, external mutation, secrets, or GitHub publication is enabled. Human approval remains required.")
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+                Text("The native surface reads the contract only; it does not scan a vault or import note bodies.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Obsidian safe import boundary", systemImage: "lock.doc")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Obsidian safe import boundary. Explicit user-selected import only, metadata-only by default, with redaction and provenance gates. Host vault reads, private import, plugin installation, provider submission, external mutation, secrets, and GitHub publication remain disabled or blocked. The native surface does not scan a vault.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {

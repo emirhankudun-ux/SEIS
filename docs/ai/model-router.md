@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Define the provider-neutral routing contract for SEIS AI Core. The local
+Define the Provider-neutral routing contract for SEIS AI Core. The local
 Swift implementation is real and executable as a deterministic route decision;
 live provider mediation remains disabled and approval-gated.
 

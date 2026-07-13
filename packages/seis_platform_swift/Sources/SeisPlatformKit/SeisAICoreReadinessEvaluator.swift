@@ -96,7 +96,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "platform-language-policy",
         "technology-stack-contract",
         "platform-development-tracks",
-        "requested-software-stack"
+        "requested-software-stack",
+        "second-brain-import-boundary"
     ]
 
     public init() {}
@@ -143,7 +144,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         platformLanguagePolicySnapshot: SeisPlatformLanguagePolicySnapshot? = nil,
         technologyStackSnapshot: SeisTechnologyStackSnapshot? = nil,
         platformDevelopmentTracksSnapshot: SeisPlatformDevelopmentTracksSnapshot? = nil,
-        requestedSoftwareStackSnapshot: SeisRequestedSoftwareStackSnapshot? = nil
+        requestedSoftwareStackSnapshot: SeisRequestedSoftwareStackSnapshot? = nil,
+        obsidianSafeImportSnapshot: SeisObsidianSafeImportSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -420,6 +422,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Requested software stack",
                 passed: requestedSoftwareStackSnapshot?.isMetadataOnly == true,
                 evidence: "The requested stack records six technologies, ten entrypoints, 300 submitted plugins, twelve capability lanes, and 117 polyglot language surfaces; activation remains task-scoped, authenticated, user-approved, and non-secret, with no blanket connector activation claim."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "second-brain-import-boundary",
+                title: "Second Brain import boundary",
+                passed: obsidianSafeImportSnapshot?.isMetadataOnly == true,
+                evidence: "Obsidian safe import remains explicit-user-selected and metadata-only by default: private vault reads, plugin installation, external mutation, provider submission, GitHub publication, secrets, and automatic discovery are blocked or approval-gated; the public-sync phase remains blocked."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked
