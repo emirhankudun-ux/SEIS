@@ -97,7 +97,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "technology-stack-contract",
         "platform-development-tracks",
         "requested-software-stack",
-        "second-brain-import-boundary"
+        "second-brain-import-boundary",
+        "read-only-router-runtime"
     ]
 
     public init() {}
@@ -145,7 +146,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         technologyStackSnapshot: SeisTechnologyStackSnapshot? = nil,
         platformDevelopmentTracksSnapshot: SeisPlatformDevelopmentTracksSnapshot? = nil,
         requestedSoftwareStackSnapshot: SeisRequestedSoftwareStackSnapshot? = nil,
-        obsidianSafeImportSnapshot: SeisObsidianSafeImportSnapshot? = nil
+        obsidianSafeImportSnapshot: SeisObsidianSafeImportSnapshot? = nil,
+        readOnlyRouterRuntimeSnapshot: SeisReadOnlyRouterRuntimeSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -428,6 +430,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Second Brain import boundary",
                 passed: obsidianSafeImportSnapshot?.isMetadataOnly == true,
                 evidence: "Obsidian safe import remains explicit-user-selected and metadata-only by default: private vault reads, plugin installation, external mutation, provider submission, GitHub publication, secrets, and automatic discovery are blocked or approval-gated; the public-sync phase remains blocked."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "read-only-router-runtime",
+                title: "Read-only router runtime",
+                passed: readOnlyRouterRuntimeSnapshot?.isMetadataOnly == true,
+                evidence: "The provider-neutral router runtime uses nine metadata inputs, five supervised SEIS lane identifiers, and explicit provider-state/fallback rules while keeping runtime authority, route eligibility, provider calls, credentials, prompt bodies, private Obsidian content, agent execution, external mutation, and cloud-key requirements false."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked

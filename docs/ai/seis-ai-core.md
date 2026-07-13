@@ -53,6 +53,7 @@ The foundation includes:
 | Platform development tracks | Bound as metadata-only Apple/Windows execution policy | `content/development/seis-platform-development-tracks.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisPlatformDevelopmentTracksSnapshot.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisPlatformDevelopmentTracksSnapshotTests.swift` | Four tracks define Apple-native continuation, required and extended Windows polyglot boundaries, and governance gates; policy does not prove runtime/tool installation or implementation coverage. | Keep Apple-native work first, exclude Apple-only surfaces from Windows, keep JavaScript compatibility-only, and make runtime installation requirement-led. |
 | Requested software stack | Bound as metadata-only task-scoped software and plugin contract | `content/development/requested-software-stack.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisRequestedSoftwareStackSnapshot.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisRequestedSoftwareStackSnapshotTests.swift` | Six technologies, ten entrypoints, 300 submitted plugins, twelve capability lanes, and 117 polyglot surfaces remain source references; plugins are not thereby installed, authenticated, or active. | Keep activation relevant, authenticated, scoped, and user-approved; no blanket connector activation, runtime installation, or credential disclosure. |
 | Obsidian safe import | Bound as metadata-only Second Brain import boundary | `content/development/seis-obsidian-bridge-safe-import-contract.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisObsidianSafeImportSnapshot.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisObsidianSafeImportSnapshotTests.swift` | Explicit user-selected import only, metadata-only body policy, redaction/provenance gates, blocked public sync, and no host-vault/provider/plugin/secret mutation remain visible. | Keep the bridge review-only until explicit source selection, dry-run evidence, provenance, accessibility, redaction, and human approval pass. |
+| Read-only router runtime | Bound as metadata-only provider-neutral runtime contract | `content/development/seis-ai-core-read-only-router-runtime.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisReadOnlyRouterRuntimeSnapshot.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisReadOnlyRouterRuntimeSnapshotTests.swift` | Nine metadata inputs, five provider rules, five SEIS lanes, seven forbidden input classes, and a false runtime/model-claim boundary are visible; no provider execution is enabled. | Keep route decisions deterministic, read-only, no-key, provider-neutral, and fail-closed until a scoped backend adapter and approval evidence exist. |
 
 ## Rules / Policy
 
@@ -510,6 +511,15 @@ approval gates. Host-vault reads, private note-body import, Obsidian plugin
 installation, provider submission, external mutation, secrets, and GitHub
 publication remain disabled or blocked; the native surface does not scan a
 vault.
+
+The panel also reads
+`content/development/seis-ai-core-read-only-router-runtime.json`. It exposes
+nine metadata inputs, five provider-state rules, five personal SEIS lanes, and
+seven forbidden input classes while keeping runtime authority, route
+eligibility, provider calls, credential reads, prompt-body reads, private
+Obsidian reads, agent execution, external mutation, and cloud-key requirements
+disabled. The evaluator does not claim a trained model, foundation model, AGI,
+or 512B route eligibility.
 
 The panel also reads
 `content/development/seis-ai-core-provider-registry.json`. It preserves

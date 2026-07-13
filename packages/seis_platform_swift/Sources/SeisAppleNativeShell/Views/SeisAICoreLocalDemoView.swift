@@ -45,6 +45,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var technologyStackSnapshot: SeisTechnologyStackSnapshot?
     @Published private(set) var platformDevelopmentTracksSnapshot: SeisPlatformDevelopmentTracksSnapshot?
     @Published private(set) var obsidianSafeImportSnapshot: SeisObsidianSafeImportSnapshot?
+    @Published private(set) var readOnlyRouterRuntimeSnapshot: SeisReadOnlyRouterRuntimeSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -192,6 +193,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         obsidianSafeImportSnapshot = try? SeisObsidianSafeImportSnapshot.validated(
             from: Data(contentsOf: obsidianSafeImportURL)
         )
+        readOnlyRouterRuntimeSnapshot = try? SeisReadOnlyRouterRuntimeSnapshot.validated(
+            from: Data(contentsOf: readOnlyRouterRuntimeURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -245,7 +249,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 technologyStackSnapshot: technologyStackSnapshot,
                 platformDevelopmentTracksSnapshot: platformDevelopmentTracksSnapshot,
                 requestedSoftwareStackSnapshot: requestedSoftwareStackSnapshot,
-                obsidianSafeImportSnapshot: obsidianSafeImportSnapshot
+                obsidianSafeImportSnapshot: obsidianSafeImportSnapshot,
+                readOnlyRouterRuntimeSnapshot: readOnlyRouterRuntimeSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -380,6 +385,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             obsidianSafeImportSnapshot = try? SeisObsidianSafeImportSnapshot.validated(
                 from: Data(contentsOf: obsidianSafeImportURL)
             )
+            readOnlyRouterRuntimeSnapshot = try? SeisReadOnlyRouterRuntimeSnapshot.validated(
+                from: Data(contentsOf: readOnlyRouterRuntimeURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -419,6 +427,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             requestedSoftwareStackSnapshot = nil
             platformDevelopmentTracksSnapshot = nil
             obsidianSafeImportSnapshot = nil
+            readOnlyRouterRuntimeSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -988,6 +997,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-obsidian-bridge-safe-import-contract.json")
     }
 
+    private var readOnlyRouterRuntimeURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-ai-core-read-only-router-runtime.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -1140,6 +1156,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let obsidianSafeImportSnapshot = model.obsidianSafeImportSnapshot {
                     obsidianSafeImportDisclosure(snapshot: obsidianSafeImportSnapshot)
+                }
+                if let readOnlyRouterRuntimeSnapshot = model.readOnlyRouterRuntimeSnapshot {
+                    readOnlyRouterRuntimeDisclosure(snapshot: readOnlyRouterRuntimeSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -2686,6 +2705,30 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Obsidian safe import boundary. Explicit user-selected import only, metadata-only by default, with redaction and provenance gates. Host vault reads, private import, plugin installation, provider submission, external mutation, secrets, and GitHub publication remain disabled or blocked. The native surface does not scan a vault.")
+    }
+
+    private func readOnlyRouterRuntimeDisclosure(snapshot: SeisReadOnlyRouterRuntimeSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.inputCount) metadata inputs · \(snapshot.providerStateRules.count) provider rules · \(snapshot.coveredLaneCount) SEIS lanes · metadata-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("Runtime authority: disabled · Route eligibility: disabled · Provider calls: disabled · Cloud key required: disabled")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Inputs are metadata only. Prompt bodies, API keys, private Obsidian contents, SSH credentials, cookies, service accounts, and unredacted provider errors are forbidden.")
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+                Text("This evaluator does not claim a trained model, foundation model, AGI, or 512B route eligibility.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Read-only router runtime", systemImage: "arrow.triangle.2.circlepath")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Read-only router runtime. Nine metadata inputs, five provider-state rules, seven forbidden input categories, and five SEIS lanes are visible. Runtime authority, route eligibility, provider calls, credential reads, prompt-body reads, private Obsidian reads, agent execution, external mutation, and cloud API key requirements are disabled. No trained model, foundation model, AGI, or 512B claim is made.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {
