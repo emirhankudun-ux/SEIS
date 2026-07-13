@@ -32,6 +32,30 @@ struct SeisAIRuntimeTests {
         #expect(decision.isFailClosed == false)
     }
 
+    @Test func localRouteInspectionBlocksToolRequirementsTheDemoCannotSatisfy() throws {
+        let request = SeisAIRoutingRequest(
+            id: "apple-route-tools-required",
+            taskType: "tool-assisted repository plan",
+            capability: "planning",
+            localOnly: true,
+            requiresTools: true,
+            maximumCostTier: .zero,
+            fallbackPolicy: .none
+        )
+
+        let decision = SeisAIModelRouter().route(request, providers: [.localDemo])
+        let rejection = try #require(decision.providerRejections.first)
+
+        #expect(decision.outcome == .blocked)
+        #expect(decision.selectedProviderID == nil)
+        #expect(!decision.routeEligible)
+        #expect(decision.isFailClosed)
+        #expect(rejection.reasons.contains("tool support is required"))
+        #expect(!decision.executionPerformed)
+        #expect(!decision.providerCallPerformed)
+        #expect(!decision.networkCallPerformed)
+    }
+
     @Test func localDemoExecutionReportsNoModelProviderNetworkOrCredentialUse() async throws {
         let runtime = try SeisAIRuntime()
         let request = localDemoExecutionRequest(id: "local-demo-execution")

@@ -184,8 +184,9 @@ grant runtime authority, or turn the planned writer permission into an
 unapproved write.
 
 The native panel also exposes a model-router inspector. It evaluates a typed
-task type, capability, privacy mode, content classification, and local-only
-flag against the registered Local Demo provider, then shows the selected
+task type, capability, privacy mode, content classification, local-only flag,
+tool requirement, maximum cost, preferred latency, and explicit fallback
+policy against the registered Local Demo provider, then shows the selected
 provider/model, eligibility, fallback, approval, rejection, and fail-closed
 state. Inspection performs no provider call, network request, credential read,
 MCP invocation, SSH action, deployment, or GitHub mutation.

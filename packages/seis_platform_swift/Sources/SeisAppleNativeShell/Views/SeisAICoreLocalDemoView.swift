@@ -172,7 +172,11 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         capability: String,
         privacyMode: SeisAIPrivacyMode,
         contentClassification: SeisAIContentClassification,
-        localOnly: Bool
+        localOnly: Bool,
+        requiresTools: Bool,
+        maximumCostTier: SeisAICostTier,
+        preferredLatencyTier: SeisAILatencyTier,
+        fallbackPolicy: SeisAIFallbackPolicy
     ) {
         guard let runtime else {
             statusMessage = "Load a validated snapshot before inspecting a route."
@@ -186,10 +190,11 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             privacyMode: privacyMode,
             contentClassification: contentClassification,
             localOnly: localOnly,
-            maximumCostTier: .zero,
-            preferredLatencyTier: .immediate,
+            requiresTools: requiresTools,
+            maximumCostTier: maximumCostTier,
+            preferredLatencyTier: preferredLatencyTier,
             preferLocal: true,
-            fallbackPolicy: .none
+            fallbackPolicy: fallbackPolicy
         )
 
         isRouting = true
@@ -245,6 +250,10 @@ struct SeisAICoreLocalDemoView: View {
     @State private var routePrivacyMode: SeisAIPrivacyMode = .localOnly
     @State private var routeContentClassification: SeisAIContentClassification = .repositoryMetadata
     @State private var routeLocalOnly = true
+    @State private var routeRequiresTools = false
+    @State private var routeMaximumCostTier: SeisAICostTier = .zero
+    @State private var routePreferredLatencyTier: SeisAILatencyTier = .immediate
+    @State private var routeFallbackPolicy: SeisAIFallbackPolicy = .none
 
     init(repositoryPath: String) {
         _model = StateObject(wrappedValue: SeisAICoreLocalDemoModel(repositoryPath: repositoryPath))
@@ -597,6 +606,32 @@ struct SeisAICoreLocalDemoView: View {
                     .toggleStyle(.switch)
             }
 
+            HStack(alignment: .top, spacing: 8) {
+                Picker("Cost", selection: $routeMaximumCostTier) {
+                    ForEach(SeisAICostTier.allCases, id: \.rawValue) { tier in
+                        Text(tier.rawValue).tag(tier)
+                    }
+                }
+                .pickerStyle(.menu)
+
+                Picker("Latency", selection: $routePreferredLatencyTier) {
+                    ForEach(SeisAILatencyTier.allCases, id: \.rawValue) { tier in
+                        Text(tier.rawValue).tag(tier)
+                    }
+                }
+                .pickerStyle(.menu)
+
+                Picker("Fallback", selection: $routeFallbackPolicy) {
+                    ForEach(SeisAIFallbackPolicy.allCases, id: \.rawValue) { policy in
+                        Text(policy.rawValue).tag(policy)
+                    }
+                }
+                .pickerStyle(.menu)
+            }
+
+            Toggle("Require tools", isOn: $routeRequiresTools)
+                .toggleStyle(.switch)
+
             HStack {
                 Button {
                     model.inspectRoute(
@@ -604,7 +639,11 @@ struct SeisAICoreLocalDemoView: View {
                         capability: routeCapability,
                         privacyMode: routePrivacyMode,
                         contentClassification: routeContentClassification,
-                        localOnly: routeLocalOnly
+                        localOnly: routeLocalOnly,
+                        requiresTools: routeRequiresTools,
+                        maximumCostTier: routeMaximumCostTier,
+                        preferredLatencyTier: routePreferredLatencyTier,
+                        fallbackPolicy: routeFallbackPolicy
                     )
                 } label: {
                     Label("Inspect route", systemImage: "arrow.triangle.swap")
