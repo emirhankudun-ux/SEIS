@@ -242,6 +242,36 @@ export declare function pluginIntegrationStatus(
   options?: { includeFullManifest?: boolean },
 ): SeisPluginIntegrationStatus;
 
+export interface SeisPersonalLaneCycle {
+  ok: boolean;
+  cycleId: string;
+  status?: 'plan-ready' | 'partial-blocked';
+  request?: string;
+  laneOrder?: string[];
+  plans?: unknown[];
+  summary?: {
+    total: number;
+    successful: number;
+    blocked: number;
+    ready: number;
+    partial: number;
+  };
+  sourceOfTruth?: {
+    pluginIntegrationManifest: string;
+    planner: string;
+  };
+  runtimeBoundary?: Record<string, boolean>;
+  approvalBoundary?: string;
+  error?: string;
+}
+
+export declare const PERSONAL_LANE_CYCLE_TOOL: string;
+export declare function personalPluginLaneCycle(
+  repoRoot: string,
+  request: string,
+  laneIds?: string[],
+): SeisPersonalLaneCycle;
+
 /* ------------------------------------------------------------------ */
 /* SEIS Universe seed model surfaces                                   */
 /* ------------------------------------------------------------------ */

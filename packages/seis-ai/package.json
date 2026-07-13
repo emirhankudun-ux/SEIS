@@ -14,6 +14,7 @@
     "test": "node --test test/**/*.test.mjs",
     "check": "node bin/seis-check.mjs",
     "mcp": "node bin/seis-mcp.mjs",
+    "lane-cycle": "node bin/seis-lane-cycle.mjs",
     "agent": "node bin/seis-agent.mjs",
     "router": "node bin/seis-router.mjs",
     "check:router": "node bin/seis-router.mjs --check"

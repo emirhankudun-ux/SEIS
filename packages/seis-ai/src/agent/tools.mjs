@@ -7,6 +7,7 @@ import {
   AI_CORE_PROVIDER_STATUS_TOOL,
   AI_CORE_VERSION_PROMOTION_TOOL,
   AI_CORE_VERSION_STATUS_TOOL,
+  PERSONAL_LANE_CYCLE_TOOL,
   PERSONAL_PLUGIN_LANE_TOOLS,
   SUBAGENT_DRY_RUN_TASK_TOOL,
   SUBAGENT_OPERATING_MODEL_TOOL,
@@ -16,6 +17,7 @@ import {
   aiCoreVersionPromotionDryRun,
   aiCoreVersionStatus,
   personalPluginLanePlan,
+  personalPluginLaneCycle,
   personalPluginLaneStatus,
   pluginIntegrationStatus,
   resolvePersonalPluginLaneTool,
@@ -106,6 +108,18 @@ export function toolDefinitions({ allowWrite = false } = {}) {
         properties: {
           includeFullManifest: { type: "boolean", description: "Return the full manifest in addition to the compact status summary." },
         },
+      },
+    },
+    {
+      name: PERSONAL_LANE_CYCLE_TOOL,
+      description:
+        "Build one deterministic plan-only handoff for the five personal SEIS lanes (@seis, @seis-cloud, @seis-code, @seis-design, and @seis-data) from the canonical plugin manifest. No provider calls, remote MCP session, credentials, SSH, deployment, GitHub mutation, or file writes.",
+      input_schema: {
+        type: "object",
+        properties: {
+          request: { type: "string", description: "One scoped request to route through all five personal SEIS lanes." },
+        },
+        required: ["request"],
       },
     },
     {
@@ -353,6 +367,9 @@ export function executeTool(name, input, { repoRoot, webRoot, allowWrite = false
         null,
         2
       );
+    }
+    case PERSONAL_LANE_CYCLE_TOOL: {
+      return JSON.stringify(personalPluginLaneCycle(repoRoot, input?.request), null, 2);
     }
     case AI_CORE_PROVIDER_STATUS_TOOL: {
       return JSON.stringify(

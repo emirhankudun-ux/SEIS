@@ -26,6 +26,15 @@ MCP, SSH, deployment, or GitHub mutation authority.
 | MCP runtime contract | Local smoke verified | `content/development/seis-ai-core-mcp-runtime-contract.json`, `seis://ai/mcp-runtime-contract.json`. | This does not authenticate remote MCP servers, connectors, credentials, SSH, deploys, or GitHub mutation. | Keep runtime resources verified by `node --test packages/seis-ai/test/mcp-smoke.test.mjs`. |
 | Personal sub-agent lanes | Integrated as native status/plan-only runtime | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAIPersonalLaneRuntime.swift`, native all-lane batch planning, `content/development/seis-ai-core-subagent-operating-model.json`, `packages/seis-ai/src/agent/tools.mjs`. | No write-gated or background runtime exists. | Keep the five lanes read-only and add approved execution only through a separate server boundary. |
 
+The five personal lanes can also be composed into one deterministic handoff with
+the `seis_personal_lane_cycle` local AI-agent tool or
+`npm run lane-cycle --prefix packages/seis-ai -- "<scoped request>"`. The cycle delegates each lane
+to the existing `personalPluginLanePlan` source contract, preserves canonical
+lane order (`seis`, `seis-cloud`, `seis-code`, `seis-design`, `seis-data`), and
+returns per-lane checks, provenance, summary counts, and the shared approval
+boundary. It is still plan-only: it performs no provider call, remote MCP
+session, credential read, SSH, deployment, GitHub mutation, or workspace write.
+
 ## Permission Matrix
 
 The canonical permission matrix is

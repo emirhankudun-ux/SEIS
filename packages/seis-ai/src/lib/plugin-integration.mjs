@@ -51,6 +51,7 @@ export const AI_CORE_PROVIDER_STATUS_TOOL = "seis_ai_core_provider_status";
 export const AI_CORE_MODEL_SCALING_STATUS_TOOL = "seis_ai_core_model_scaling_status";
 export const AI_CORE_VERSION_STATUS_TOOL = "seis_ai_core_version_status";
 export const AI_CORE_VERSION_PROMOTION_TOOL = "seis_ai_core_version_promotion_dry_run";
+export const PERSONAL_LANE_CYCLE_TOOL = "seis_personal_lane_cycle";
 export const PERSONAL_PLUGIN_LANE_TOOLS = [
   {
     laneId: "seis",
@@ -1509,6 +1510,7 @@ export function personalPluginLanePlan(repoRoot, laneId, request) {
     ok: true,
     laneId: status.laneId,
     displayName: status.displayName,
+    status: status.status,
     request: request.trim(),
     role: status.role,
     focus: status.profile?.intent || status.role,
@@ -1521,6 +1523,14 @@ export function personalPluginLanePlan(repoRoot, laneId, request) {
       "Document remaining blockers and next safe action.",
     ],
     primaryPaths: status.profile?.primaryPaths || [],
+    sourceMirror: status.sourceMirror,
+    sourceMirrorExists: status.sourceMirrorExists,
+    embeddedSkill: status.embeddedSkill,
+    embeddedSkillExists: status.embeddedSkillExists,
+    sourceProfilePath: status.sourceProfilePath,
+    sourceProfileExists: status.sourceProfileExists,
+    agentLaneProfilePath: status.agentLaneProfilePath,
+    agentLaneProfileExists: status.agentLaneProfileExists,
     guardrails: status.profile?.guardrails || [
       "preserve user work",
       "do not expose secrets",
@@ -1532,6 +1542,79 @@ export function personalPluginLanePlan(repoRoot, laneId, request) {
       ? "External mutation, deployment, SSH, credential, destructive, or GitHub write actions require explicit human approval."
       : "Use repository governance and task scope to determine approval requirements.",
     authenticationClaim: status.authenticationClaim,
+  };
+}
+
+/**
+ * Build one deterministic, plan-only handoff for the five personal SEIS lanes.
+ * The cycle intentionally composes the existing lane planner instead of
+ * inventing a second source of truth for lane steps, paths, or guardrails.
+ */
+export function personalPluginLaneCycle(repoRoot, request, laneIds = PERSONAL_PLUGIN_LANE_TOOLS.map((lane) => lane.laneId)) {
+  if (typeof request !== "string" || !request.trim()) {
+    return {
+      ok: false,
+      cycleId: "seis-personal-lane-cycle-v1",
+      error: "request is required",
+    };
+  }
+  if (!Array.isArray(laneIds) || laneIds.length === 0 || new Set(laneIds).size !== laneIds.length) {
+    return {
+      ok: false,
+      cycleId: "seis-personal-lane-cycle-v1",
+      error: "laneIds must be a non-empty array without duplicates",
+    };
+  }
+
+  const requestedLanes = laneIds.map((laneId) => PERSONAL_PLUGIN_LANE_TOOLS.find((lane) => lane.laneId === laneId));
+  const unknownLaneIds = laneIds.filter((laneId, index) => !requestedLanes[index]);
+  if (unknownLaneIds.length > 0) {
+    return {
+      ok: false,
+      cycleId: "seis-personal-lane-cycle-v1",
+      laneIds,
+      error: `unknown personal SEIS lane: ${unknownLaneIds.join(", ")}`,
+    };
+  }
+
+  const plans = requestedLanes.map((lane) => personalPluginLanePlan(repoRoot, lane.laneId, request));
+  const successfulPlans = plans.filter((plan) => plan.ok === true);
+  const blockedPlans = plans.filter((plan) => plan.ok !== true);
+  const allRequireApproval = successfulPlans.every((plan) =>
+    plan.approvalBoundary?.toLowerCase().includes("require explicit human approval")
+  );
+
+  return {
+    ok: blockedPlans.length === 0,
+    cycleId: "seis-personal-lane-cycle-v1",
+    status: blockedPlans.length === 0 ? "plan-ready" : "partial-blocked",
+    request: request.trim(),
+    laneOrder: laneIds,
+    plans,
+    summary: {
+      total: plans.length,
+      successful: successfulPlans.length,
+      blocked: blockedPlans.length,
+      ready: successfulPlans.filter((plan) => plan.status === "ready").length,
+      partial: successfulPlans.filter((plan) => plan.status === "partial").length,
+    },
+    sourceOfTruth: {
+      pluginIntegrationManifest: PLUGIN_INTEGRATION_PATH,
+      planner: "personalPluginLanePlan",
+    },
+    runtimeBoundary: {
+      planOnly: true,
+      executionPerformed: false,
+      providerCallsPerformed: false,
+      liveMcpSessionStarted: false,
+      credentialsRead: false,
+      privateContentRead: false,
+      sshExecuted: false,
+      deploymentPerformed: false,
+      githubMutationPerformed: false,
+      humanApprovalRequiredForExternalMutation: allRequireApproval,
+    },
+    approvalBoundary: "External mutation, deployment, SSH, credential, destructive, or GitHub write actions require explicit human approval.",
   };
 }
 
