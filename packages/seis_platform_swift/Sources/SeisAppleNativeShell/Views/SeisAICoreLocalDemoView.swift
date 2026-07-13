@@ -41,6 +41,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var agentLaneStatusSnapshot: SeisAgentLaneStatusSnapshot?
     @Published private(set) var secondBrainContractSnapshot: SeisSecondBrainContractSnapshot?
     @Published private(set) var platformLanguagePolicySnapshot: SeisPlatformLanguagePolicySnapshot?
+    @Published private(set) var requestedSoftwareStackSnapshot: SeisRequestedSoftwareStackSnapshot?
     @Published private(set) var technologyStackSnapshot: SeisTechnologyStackSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
@@ -180,6 +181,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         technologyStackSnapshot = try? SeisTechnologyStackSnapshot.validated(
             from: Data(contentsOf: technologyStackURL)
         )
+        requestedSoftwareStackSnapshot = try? SeisRequestedSoftwareStackSnapshot.validated(
+            from: Data(contentsOf: requestedSoftwareStackURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -230,7 +234,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 agentLaneStatusSnapshot: agentLaneStatusSnapshot,
                 secondBrainContractSnapshot: secondBrainContractSnapshot,
                 platformLanguagePolicySnapshot: platformLanguagePolicySnapshot,
-                technologyStackSnapshot: technologyStackSnapshot
+                technologyStackSnapshot: technologyStackSnapshot,
+                requestedSoftwareStackSnapshot: requestedSoftwareStackSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -356,6 +361,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             technologyStackSnapshot = try? SeisTechnologyStackSnapshot.validated(
                 from: Data(contentsOf: technologyStackURL)
             )
+            requestedSoftwareStackSnapshot = try? SeisRequestedSoftwareStackSnapshot.validated(
+                from: Data(contentsOf: requestedSoftwareStackURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -392,6 +400,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             secondBrainContractSnapshot = nil
             platformLanguagePolicySnapshot = nil
             technologyStackSnapshot = nil
+            requestedSoftwareStackSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -940,6 +949,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-technology-stack.json")
     }
 
+    private var requestedSoftwareStackURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("requested-software-stack.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -1083,6 +1099,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let technologyStackSnapshot = model.technologyStackSnapshot {
                     technologyStackDisclosure(snapshot: technologyStackSnapshot)
+                }
+                if let requestedSoftwareStackSnapshot = model.requestedSoftwareStackSnapshot {
+                    requestedSoftwareStackDisclosure(snapshot: requestedSoftwareStackSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -2557,6 +2576,30 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Technology stack contract. Sixty real source languages, seven ecosystem groups, 143 technologies, and six requested core technologies are visible as metadata. GitHub language surfaces remain separate from frameworks, SDKs, clouds, products, and tools; no runtime installation or filler code is implied.")
+    }
+
+    private func requestedSoftwareStackDisclosure(snapshot: SeisRequestedSoftwareStackSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.requestedTechnologyCount) technologies · \(snapshot.summary.entrypointCount) entrypoints · \(snapshot.uniqueSubmittedPluginCount) submitted plugins · metadata-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("Capability lanes: \(snapshot.capabilityLaneCount) · Polyglot language surfaces: \(snapshot.summary.polyglotLanguageSurfaces)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Activation: task-scoped, authenticated, relevant, and user-approved. Supporting plugins are references, not installed or active connectors.")
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+                Text("No runtime dependencies are installed by this metadata contract; credentials and live connector tokens remain out of source control.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Requested software stack", systemImage: "shippingbox")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Requested software stack. Six technologies, ten entrypoints, 300 submitted plugins, twelve capability lanes, and 117 polyglot language surfaces are visible as source metadata. Plugin references are not installed or activated; authentication, user approval, runtime, and credential boundaries remain explicit.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {

@@ -94,7 +94,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "agent-lane-status-contract",
         "second-brain-contract",
         "platform-language-policy",
-        "technology-stack-contract"
+        "technology-stack-contract",
+        "requested-software-stack"
     ]
 
     public init() {}
@@ -139,7 +140,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         agentLaneStatusSnapshot: SeisAgentLaneStatusSnapshot? = nil,
         secondBrainContractSnapshot: SeisSecondBrainContractSnapshot? = nil,
         platformLanguagePolicySnapshot: SeisPlatformLanguagePolicySnapshot? = nil,
-        technologyStackSnapshot: SeisTechnologyStackSnapshot? = nil
+        technologyStackSnapshot: SeisTechnologyStackSnapshot? = nil,
+        requestedSoftwareStackSnapshot: SeisRequestedSoftwareStackSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -404,6 +406,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Technology stack contract",
                 passed: technologyStackSnapshot?.isMetadataOnly == true,
                 evidence: "The source-visible stack records 60 real source languages, seven ecosystem groups, 143 technologies, and six requested core technologies while keeping frameworks, SDKs, clouds, products, and tools outside the GitHub language surface; no runtime installation or filler code is implied."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "requested-software-stack",
+                title: "Requested software stack",
+                passed: requestedSoftwareStackSnapshot?.isMetadataOnly == true,
+                evidence: "The requested stack records six technologies, ten entrypoints, 300 submitted plugins, twelve capability lanes, and 117 polyglot language surfaces; activation remains task-scoped, authenticated, user-approved, and non-secret, with no blanket connector activation claim."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked
