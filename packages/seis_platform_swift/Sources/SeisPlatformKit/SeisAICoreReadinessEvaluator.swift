@@ -75,7 +75,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "provider-registry",
         "read-only-router-contract",
         "language-model-intake",
-        "language-model-training-curriculum"
+        "language-model-training-curriculum",
+        "public-readiness-program"
     ]
 
     public init() {}
@@ -99,7 +100,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         providerRegistrySnapshot: SeisAICoreProviderRegistrySnapshot? = nil,
         readOnlyRouterContractSnapshot: SeisAIReadOnlyModelRouterContractSnapshot? = nil,
         languageModelIntakeSnapshot: SeisLanguageModelIntakeRegistrySnapshot? = nil,
-        languageModelTrainingCurriculumSnapshot: SeisLanguageModelTrainingCurriculumSnapshot? = nil
+        languageModelTrainingCurriculumSnapshot: SeisLanguageModelTrainingCurriculumSnapshot? = nil,
+        publicReadinessProgramSnapshot: SeisAIPublicReadinessProgramSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -250,6 +252,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Language model training curriculum",
                 passed: languageModelTrainingCurriculumSnapshot?.isMetadataOnly == true,
                 evidence: "Eight family candidates, three hardware lanes, four scaling targets, and four curriculum phases remain planning-only; safe controls keep installs, checkpoints, providers, datasets, fine-tuning, inference, benchmarks, and foundation training disabled."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "public-readiness-program",
+                title: "Public readiness program",
+                passed: publicReadinessProgramSnapshot?.isLocalDemoOnly == true,
+                evidence: "Local Demo is public-review-ready without keys, while GitHub-wide readiness, AGI claims, 512B route eligibility, runtime authority, training, weights, inference, and benchmark status remain explicitly blocked or not started."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked

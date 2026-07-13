@@ -21,6 +21,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var readOnlyRouterContractSnapshot: SeisAIReadOnlyModelRouterContractSnapshot?
     @Published private(set) var languageModelIntakeSnapshot: SeisLanguageModelIntakeRegistrySnapshot?
     @Published private(set) var languageModelTrainingCurriculumSnapshot: SeisLanguageModelTrainingCurriculumSnapshot?
+    @Published private(set) var publicReadinessProgramSnapshot: SeisAIPublicReadinessProgramSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -96,6 +97,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         languageModelTrainingCurriculumSnapshot = try? SeisLanguageModelTrainingCurriculumSnapshot.validated(
             from: Data(contentsOf: languageModelTrainingCurriculumURL)
         )
+        publicReadinessProgramSnapshot = try? SeisAIPublicReadinessProgramSnapshot.validated(
+            from: Data(contentsOf: publicReadinessProgramURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -125,7 +129,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 providerRegistrySnapshot: providerRegistrySnapshot,
                 readOnlyRouterContractSnapshot: readOnlyRouterContractSnapshot,
                 languageModelIntakeSnapshot: languageModelIntakeSnapshot,
-                languageModelTrainingCurriculumSnapshot: languageModelTrainingCurriculumSnapshot
+                languageModelTrainingCurriculumSnapshot: languageModelTrainingCurriculumSnapshot,
+                publicReadinessProgramSnapshot: publicReadinessProgramSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -188,6 +193,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             languageModelTrainingCurriculumSnapshot = try? SeisLanguageModelTrainingCurriculumSnapshot.validated(
                 from: Data(contentsOf: languageModelTrainingCurriculumURL)
             )
+            publicReadinessProgramSnapshot = try? SeisAIPublicReadinessProgramSnapshot.validated(
+                from: Data(contentsOf: publicReadinessProgramURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -203,6 +211,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             readOnlyRouterContractSnapshot = nil
             languageModelIntakeSnapshot = nil
             languageModelTrainingCurriculumSnapshot = nil
+            publicReadinessProgramSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -604,6 +613,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-language-model-training-curriculum.json")
     }
 
+    private var publicReadinessProgramURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-ai-public-readiness-program.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -682,6 +698,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let languageModelTrainingCurriculumSnapshot = model.languageModelTrainingCurriculumSnapshot {
                     languageModelTrainingCurriculumDisclosure(snapshot: languageModelTrainingCurriculumSnapshot)
+                }
+                if let publicReadinessProgramSnapshot = model.publicReadinessProgramSnapshot {
+                    publicReadinessProgramDisclosure(snapshot: publicReadinessProgramSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -1609,6 +1628,53 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Language model training curriculum. Eight families, three hardware lanes, four scaling targets, and four planning phases. Installs, downloads, provider calls, training, inference, benchmarks, and foundation-model claims are disabled.")
+    }
+
+    private func publicReadinessProgramDisclosure(snapshot: SeisAIPublicReadinessProgramSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Local Demo: \(snapshot.publicReadyForLocalDemo ? "review-ready" : "blocked") · GitHub-wide: \(snapshot.githubReadyForEveryone ? "ready" : "not ready") · AGI: \(snapshot.publicReadyAsAgi ? "claimed" : "blocked")")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isLocalDemoOnly ? .secondary : .red)
+                Text("Route today: \(snapshot.routeEligibleToday ? "yes" : "no") · Runtime authority: \(snapshot.runtimeAuthority ? "yes" : "no") · Training: \(snapshot.trainingStatus) · Weights: \(snapshot.weightsAvailable ? "available" : "unavailable") · Inference: \(snapshot.inferenceAvailable ? "available" : "unavailable")")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("\(snapshot.readinessGates.count) readiness gates · \(snapshot.githubAudienceModes.count) audience modes · \(snapshot.requiredBeforeAnyAgiClaim.count) AGI prerequisites · \(snapshot.forbiddenClaims.count) forbidden claims")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+
+                ForEach(snapshot.readinessGates) { gate in
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: gate.status == "available" ? "checkmark.shield" : "lock.shield")
+                            .foregroundStyle(gate.status == "available" ? .green : .orange)
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("\(gate.id) · \(gate.status)")
+                                .font(.caption.weight(.semibold))
+                            Text("GitHub-wide blocked: \(gate.blocksGithubReadyForEveryone ? "yes" : "no") · AGI blocked: \(gate.blocksAgiClaim ? "yes" : "no")")
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                            Text(gate.evidence.joined(separator: " · "))
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                }
+
+                Text("Council: \(snapshot.subAgentCouncilUse.status) · allowed: \(snapshot.subAgentCouncilUse.allowedActions.joined(separator: ", "))")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                Text(snapshot.truthBoundary)
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Public readiness program", systemImage: "checkmark.seal")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Public readiness program. Local Demo is review-ready without provider keys; GitHub-wide readiness and AGI claims remain blocked, with six readiness gates and explicit approval prerequisites.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {
