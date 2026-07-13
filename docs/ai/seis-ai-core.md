@@ -46,6 +46,7 @@ The foundation includes:
 | Evaluation | Implemented as local readiness evaluator | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAICoreReadinessEvaluator.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAICoreReadinessEvaluatorTests.swift`, canonical workforce assignment, training, model-planning, promotion, version-registry, operating-model, fixture-pack, review-ledger, scaling-council, MCP, plugin-integration, provider, router, intake, training-curriculum, public-readiness, operations-readiness, independent-evidence, GitHub-readiness, AGI-public-evidence, knowledge-system, data-schema-registry, design-component-inventory, universal-capability-kernel, action-governance, agent-governance, active-mission-board, and long-horizon-mission-kernel snapshots | No live-model benchmark or provider evaluation exists. | Keep the report scoped to Local Demo readiness and add live-adapter evals only after backend approval. |
 | AGI evaluation protocol | Bound as metadata-only Apple readiness evidence | `content/development/seis-agi-evaluation-protocol.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIEvaluationProtocolSnapshot.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAGIEvaluationProtocolSnapshotTests.swift` | Protocol is draft/not-run; no AGI, benchmark, weights, inference, provider, or route-eligibility evidence exists. | Keep the promotion default blocked and require independent evidence, external review, and human approval before any future claim or route. |
 | Full-stack contract | Bound as metadata-only Apple application boundary | `content/development/seis-fullstack-contract.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisFullStackContractSnapshot.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisFullStackContractSnapshotTests.swift` | First server/API/data slice remains read-only Local Demo; auth, database, live AI, SSH, deployment, and GitHub writes are not enabled. | Keep no-key startup and static fallback while adding future server adapters only behind backend and human approval. |
+| Agent lane status | Bound as observable metadata-only sub-agent governance | `content/development/seis-agent-lane-status.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAgentLaneStatusSnapshot.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAgentLaneStatusSnapshotTests.swift` | Fourteen lanes are active records only; no background autonomy, connector mutation, secret access, or destructive authority is enabled. | Keep the five personal lanes supervised and require declared skill, tool, safety, autonomy, and validation evidence for new lanes. |
 
 ## Rules / Policy
 
@@ -452,6 +453,12 @@ states, three bounded dry-run agent tasks, seven capabilities, and the
 fixture-backed session summary. The server boundary remains read-only,
 frontend secret persistence remains forbidden, and the static demo must keep
 working without server endpoints, auth, provider keys, SSH, or deployment.
+
+The panel also reads `content/development/seis-agent-lane-status.json`. It
+exposes 14 active source-controlled lanes and the five personal SEIS lanes
+(`seis`, `seis-cloud`, `seis-code`, `seis-design`, `seis-data`) with declared
+skill, tool, safety, autonomy, and validation boundaries. This is observable
+sub-agent metadata; it does not activate agents or claim background autonomy.
 
 The panel also reads
 `content/development/seis-ai-core-provider-registry.json`. It preserves

@@ -90,7 +90,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "active-mission-board",
         "long-horizon-mission-kernel",
         "agi-evaluation-protocol-boundary",
-        "fullstack-contract-boundary"
+        "fullstack-contract-boundary",
+        "agent-lane-status-contract"
     ]
 
     public init() {}
@@ -131,7 +132,8 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         activeMissionBoardSnapshot: SeisActiveMissionBoardSnapshot? = nil,
         longHorizonMissionKernelSnapshot: SeisLongHorizonMissionKernelSnapshot? = nil,
         agiEvaluationProtocolSnapshot: SeisAGIEvaluationProtocolSnapshot? = nil,
-        fullStackContractSnapshot: SeisFullStackContractSnapshot? = nil
+        fullStackContractSnapshot: SeisFullStackContractSnapshot? = nil,
+        agentLaneStatusSnapshot: SeisAgentLaneStatusSnapshot? = nil
     ) -> SeisAICoreReadinessReport {
         let agentRuntime = try? SeisAIAgentPlanRuntime.statusAndPlanOnly(from: snapshot)
         let governanceBudgetsAreSafe = agentRuntime?.definitions.count == SeisAICoreRuntimeSnapshotContract.expectedManagedAgentCount &&
@@ -372,6 +374,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Full-stack contract boundary",
                 passed: fullStackContractSnapshot?.isMetadataOnly == true,
                 evidence: "Eight read-only Local Demo endpoints, five backend-only provider states, three bounded dry-run agent tasks, and seven capabilities preserve no-key startup and static fallback without auth, database, live AI, SSH, deployment, or GitHub mutation."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "agent-lane-status-contract",
+                title: "Agent lane status contract",
+                passed: agentLaneStatusSnapshot?.isMetadataOnly == true,
+                evidence: "Fourteen active, source-controlled lanes include five supervised SEIS personal lanes with declared skill, tool, safety, autonomy, and validation boundaries; this is observable plan metadata, not background autonomy."
             )
         ]
         let status: SeisAICoreReadinessStatus = checks.allSatisfy(\.passed) ? .readyLocalDemo : .blocked

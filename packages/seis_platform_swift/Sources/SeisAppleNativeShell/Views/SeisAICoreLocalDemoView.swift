@@ -38,6 +38,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var longHorizonMissionKernelSnapshot: SeisLongHorizonMissionKernelSnapshot?
     @Published private(set) var agiEvaluationProtocolSnapshot: SeisAGIEvaluationProtocolSnapshot?
     @Published private(set) var fullStackContractSnapshot: SeisFullStackContractSnapshot?
+    @Published private(set) var agentLaneStatusSnapshot: SeisAgentLaneStatusSnapshot?
     @Published private(set) var capabilityMesh: SeisAICapabilityMesh?
     @Published private(set) var orchestrationSnapshot = SeisAGIAgentHandoffSnapshot.current()
     @Published private(set) var readinessReport: SeisAICoreReadinessReport?
@@ -164,6 +165,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         fullStackContractSnapshot = try? SeisFullStackContractSnapshot.validated(
             from: Data(contentsOf: fullStackContractURL)
         )
+        agentLaneStatusSnapshot = try? SeisAgentLaneStatusSnapshot.validated(
+            from: Data(contentsOf: agentLaneStatusURL)
+        )
         do {
             let data = try Data(contentsOf: snapshotURL)
             let nextSnapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: data)
@@ -210,7 +214,8 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 activeMissionBoardSnapshot: activeMissionBoardSnapshot,
                 longHorizonMissionKernelSnapshot: longHorizonMissionKernelSnapshot,
                 agiEvaluationProtocolSnapshot: agiEvaluationProtocolSnapshot,
-                fullStackContractSnapshot: fullStackContractSnapshot
+                fullStackContractSnapshot: fullStackContractSnapshot,
+                agentLaneStatusSnapshot: agentLaneStatusSnapshot
             )
             lastPlan = nil
             lastAgentPlan = nil
@@ -324,6 +329,9 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             fullStackContractSnapshot = try? SeisFullStackContractSnapshot.validated(
                 from: Data(contentsOf: fullStackContractURL)
             )
+            agentLaneStatusSnapshot = try? SeisAgentLaneStatusSnapshot.validated(
+                from: Data(contentsOf: agentLaneStatusURL)
+            )
             capabilityMesh = nil
             workforceTrainingSnapshot = nil
             modelPlanningSnapshot = nil
@@ -356,6 +364,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             longHorizonMissionKernelSnapshot = nil
             agiEvaluationProtocolSnapshot = nil
             fullStackContractSnapshot = nil
+            agentLaneStatusSnapshot = nil
             orchestrationSnapshot = SeisAGIAgentHandoffSnapshot(records: [])
             readinessReport = nil
             lastPlan = nil
@@ -876,6 +885,13 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("seis-fullstack-contract.json")
     }
 
+    private var agentLaneStatusURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-agent-lane-status.json")
+    }
+
     private static func evidenceStorageURL() -> URL? {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first?
@@ -1007,6 +1023,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let fullStackContractSnapshot = model.fullStackContractSnapshot {
                     fullStackContractDisclosure(snapshot: fullStackContractSnapshot)
+                }
+                if let agentLaneStatusSnapshot = model.agentLaneStatusSnapshot {
+                    agentLaneStatusDisclosure(snapshot: agentLaneStatusSnapshot)
                 }
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
@@ -2381,6 +2400,32 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Full-stack contract boundary. Eight read-only Local Demo endpoints, five backend-only provider states, three dry-run agent tasks, and seven capabilities preserve no-key startup and static fallback; auth, live AI, SSH, and deployment remain gated.")
+    }
+
+    private func agentLaneStatusDisclosure(snapshot: SeisAgentLaneStatusSnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(snapshot.activeLaneCount) active lanes · \(snapshot.personalLaneCount) personal SEIS lanes · metadata-only")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+                Text("Personal lanes: seis, seis-cloud, seis-code, seis-design, seis-data")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                ForEach(snapshot.firstLanes) { lane in
+                    Text("\(lane.displayName) · \(lane.autonomyLevel) · \(lane.status)")
+                        .font(.caption2)
+                        .foregroundStyle(.tertiary)
+                }
+                Text("Every lane declares skill, tool, safety, autonomy, and validation boundaries. This surface does not activate agents or run background work.")
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Agent lane status", systemImage: "person.3.sequence")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Agent lane status. Fourteen active observable lanes include five supervised personal SEIS lanes; each declares skill, tool, safety, autonomy, and validation boundaries. No agents are activated.")
     }
 
     private func orchestrationDisclosure(snapshot: SeisAGIAgentHandoffSnapshot) -> some View {
