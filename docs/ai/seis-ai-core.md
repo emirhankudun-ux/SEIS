@@ -759,6 +759,15 @@ approval flag is present. `npm run check:seis-command-center` checks these nativ
 source contracts even when the local Swift SDK is unavailable; that source check
 does not claim a successful Swift typecheck.
 
+The plugin MCP mesh has an opt-in local smoke mode that executes exactly one
+allowlisted status tool for each of the six repository-local MCP entrypoints:
+SEIS-Agent, SEIS, SEIS Cloud, SEIS-Code, SEIS-Design, and SEIS-DATA. This
+proves the declared status surfaces respond through stdio JSON-RPC. It does not
+invoke plans, authentication, providers, network services, shell tools, SSH,
+deployment, or mutation. The default AI Core snapshot remains manifest and
+`tools/list` backed; the stronger status probe is used by
+`npm run check:seis-plugin-mcp-mesh` and its focused tests.
+
 ## Related Documents
 
 - [../security/security-baseline.md](../security/security-baseline.md)

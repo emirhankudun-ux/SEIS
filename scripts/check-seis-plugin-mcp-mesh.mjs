@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import { probeSeisPluginMcpMesh } from "../packages/seis-ai/src/lib/plugin-mcp-mesh.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const result = probeSeisPluginMcpMesh(repoRoot);
+const result = probeSeisPluginMcpMesh(repoRoot, { probeSafeTools: true });
 
 console.log(JSON.stringify(result, null, 2));
 if (!result.ok) {

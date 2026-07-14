@@ -87,3 +87,32 @@ test("probes every bundled MCP entrypoint through local stdio tools/list only", 
   assert.equal(mesh.boundary.externalMutationPerformed, false);
   assert.doesNotMatch(JSON.stringify(mesh), /ghp_[A-Za-z0-9]/);
 });
+
+test("can opt into one allowlisted local status probe per bundled MCP entrypoint", () => {
+  const mesh = probeSeisPluginMcpMesh(repoRoot, { timeoutMs: 5_000, probeSafeTools: true });
+
+  assert.equal(mesh.ok, true);
+  assert.equal(mesh.probe.safeToolCallsPerformed, true);
+  assert.equal(mesh.probe.safeToolProbeCount, 6);
+  assert.equal(mesh.probe.lifecycle, "initialize -> notifications/initialized -> tools/list -> allowlisted status tool");
+  assert.equal(mesh.boundary.safeToolCallsPerformed, true);
+  assert.match(mesh.boundary.probeScope, /allowlisted repository-local status tool/);
+  assert.match(mesh.boundary.safeToolProbePolicy, /one repository-local status tool/);
+
+  const expectedSafeTools = {
+    "seis-ai-agent": "seis_ai_agent_status",
+    seis: "seis_repos_bridge_status",
+    "seis-cloud": "seis_cloud_status",
+    "seis-code": "seis_code_status",
+    "seis-design": "seis_design_status",
+    "seis-data": "seis_data_status",
+  };
+  for (const server of mesh.servers) {
+    assert.equal(server.safeToolProbe.status, "verified");
+    assert.equal(server.safeToolProbe.requestedTool, expectedSafeTools[server.id]);
+    assert.equal(server.safeToolProbe.error, null);
+    assert.equal(server.externalMutationPerformed, false);
+    assert.equal(server.networkCalled, false);
+    assert.equal(server.credentialsRead, false);
+  }
+});

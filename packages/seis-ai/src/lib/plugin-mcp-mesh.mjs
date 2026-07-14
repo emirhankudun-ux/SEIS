@@ -17,6 +17,15 @@ const PLUGIN_MCP_SOURCES = Object.freeze([
   { id: "seis-data", serverId: "seis-data", pluginRoot: "plugins/seis-data" },
 ]);
 
+const SAFE_TOOL_PROBES = Object.freeze({
+  "seis-ai-agent": { name: "seis_ai_agent_status", arguments: {} },
+  seis: { name: "seis_repos_bridge_status", arguments: {} },
+  "seis-cloud": { name: "seis_cloud_status", arguments: {} },
+  "seis-code": { name: "seis_code_status", arguments: {} },
+  "seis-design": { name: "seis_design_status", arguments: {} },
+  "seis-data": { name: "seis_data_status", arguments: {} },
+});
+
 const SAFE_ENV_KEYS = ["HOME", "PATH", "TMPDIR", "LANG", "LC_ALL"];
 const MCP_OUTPUT_LIMIT = 64 * 1024;
 
@@ -165,7 +174,22 @@ function parseFrames(output) {
   return responses;
 }
 
-function probeServer(repoRoot, server, timeoutMs) {
+function summarizeSafeToolResponse(response, safeTool) {
+  const result = response?.result;
+  return {
+    mode: "stdio-safe-tool-call",
+    requestedTool: safeTool.name,
+    status: response?.error ? "failed" : "verified",
+    resultKeys: result && typeof result === "object" ? Object.keys(result).sort() : [],
+    reportedStatus: typeof result?.status === "string" ? result.status : null,
+    reportedLane: typeof result?.lane === "string" ? result.lane : null,
+    executionAuthority: result?.executionAuthority === false ? false : null,
+    humanApprovalRequiredForLiveActions: result?.humanApprovalRequiredForLiveActions === true ? true : null,
+    error: response?.error?.message ? redactedOutput(response.error.message) : null,
+  };
+}
+
+function probeServer(repoRoot, server, timeoutMs, options = {}) {
   if (server.status !== "configured" || !server.entrypoint) {
     return {
       ...server,
@@ -175,6 +199,7 @@ function probeServer(repoRoot, server, timeoutMs) {
   }
 
   const entrypoint = path.join(repoRoot, server.entrypoint);
+  const safeTool = options.probeSafeTools === true ? SAFE_TOOL_PROBES[server.id] : null;
   const input = [
     frame({
       jsonrpc: "2.0",
@@ -188,6 +213,14 @@ function probeServer(repoRoot, server, timeoutMs) {
     }),
     frame({ jsonrpc: "2.0", method: "notifications/initialized" }),
     frame({ jsonrpc: "2.0", id: 2, method: "tools/list" }),
+    ...(safeTool
+      ? [frame({
+        jsonrpc: "2.0",
+        id: 3,
+        method: "tools/call",
+        params: { name: safeTool.name, arguments: safeTool.arguments },
+      })]
+      : []),
   ].join("");
 
   try {
@@ -214,6 +247,22 @@ function probeServer(repoRoot, server, timeoutMs) {
       };
     }
     const tools = toolsList.result.tools.filter((tool) => typeof tool?.name === "string");
+    const safeToolResponse = safeTool ? responses.find((response) => response.id === 3) : null;
+    const safeToolProbe = safeTool ? summarizeSafeToolResponse(safeToolResponse, safeTool) : null;
+    if (safeTool && (!safeToolResponse || safeToolProbe.status !== "verified")) {
+      return {
+        ...server,
+        status: "probe-tool-failed",
+        serverInfo: initialize.result?.serverInfo || null,
+        toolInventory: {
+          mode: "stdio-probe",
+          toolCount: tools.length,
+          toolNames: tools.map((tool) => tool.name).sort(),
+        },
+        safeToolProbe,
+        probeError: safeToolProbe?.error || "allowlisted safe tool probe did not return a result",
+      };
+    }
     return {
       ...server,
       status: "probe-verified",
@@ -223,6 +272,7 @@ function probeServer(repoRoot, server, timeoutMs) {
         toolCount: tools.length,
         toolNames: tools.map((tool) => tool.name).sort(),
       },
+      ...(safeToolProbe ? { safeToolProbe } : {}),
       probeError: null,
     };
   } catch (error) {
@@ -242,7 +292,8 @@ export function probeSeisPluginMcpMesh(repoRoot = process.cwd(), options = {}) {
     Math.max(Number(options.timeoutMs) || 5_000, 250),
     SEIS_PLUGIN_MCP_MESH_TIMEOUT_MS,
   );
-  const servers = mesh.servers.map((server) => probeServer(repoRoot, server, timeoutMs));
+  const probeSafeTools = options.probeSafeTools === true;
+  const servers = mesh.servers.map((server) => probeServer(repoRoot, server, timeoutMs, { probeSafeTools }));
   const verified = servers.filter((server) => server.status === "probe-verified").length;
   const failed = servers.length - verified;
 
@@ -256,12 +307,29 @@ export function probeSeisPluginMcpMesh(repoRoot = process.cwd(), options = {}) {
       verifiedServerCount: verified,
       failedServerCount: failed,
       transport: "stdio newline-delimited JSON-RPC",
-      lifecycle: "initialize -> notifications/initialized -> tools/list",
+      lifecycle: probeSafeTools
+        ? "initialize -> notifications/initialized -> tools/list -> allowlisted status tool"
+        : "initialize -> notifications/initialized -> tools/list",
+      ...(probeSafeTools
+        ? {
+          safeToolCallsPerformed: true,
+          safeToolProbeCount: servers.filter((server) => server.safeToolProbe?.status === "verified").length,
+        }
+        : {}),
     },
     boundary: {
       ...mesh.boundary,
       liveSessionStarted: false,
       localProbePerformed: true,
+      probeScope: probeSafeTools
+        ? "initialize -> notifications/initialized -> tools/list plus one allowlisted repository-local status tool per server"
+        : mesh.boundary.probeScope,
+      ...(probeSafeTools
+        ? {
+          safeToolCallsPerformed: true,
+          safeToolProbePolicy: "one repository-local status tool per bundled server; no plan, auth, network, shell, or mutation tool calls",
+        }
+        : {}),
       externalMutationPerformed: false,
     },
     ok: failed === 0,
