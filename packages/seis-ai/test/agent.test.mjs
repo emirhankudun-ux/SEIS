@@ -722,6 +722,30 @@ describe("executeTool", () => {
           { level: "forbidden", approvalRequired: "separate security and recovery plan required" }
         ]
       }),
+      "content/development/seis-ai-core-read-only-router-runtime.json": JSON.stringify({
+        id: "seis-ai-core-read-only-router-runtime",
+        runtimeBoundary: { providerCalls: false },
+        providerMediation: {
+          mode: "backend-only",
+          frontendSecretAllowed: false,
+          routeExecutionEnabled: false,
+          status: "required-before-live-routing"
+        },
+        decisionIntegrity: {
+          readOnlyOnly: true,
+          runtimeAuthority: false,
+          executionPerformedAlwaysFalse: true,
+          noPromptBodyInDecision: true,
+          noCredentialMaterialInDecision: true,
+          decisionLogsRedacted: true,
+          providerStateNamed: true,
+          selectedProviderExplicit: true,
+          fallbackExplicit: true,
+          blockedReasonsRequired: true,
+          backendOnlyProvidersRequired: true,
+          privateObsidianContentRoutable: false
+        }
+      }),
       "content/development/seis-ai-core-dry-run-task-queue.json": JSON.stringify({
         id: "seis-ai-core-dry-run-task-queue",
         status: "dry-run-only",
@@ -1403,6 +1427,11 @@ describe("executeTool", () => {
     assert.equal(payload.permissionEvidence.level, "plan-only");
     assert.equal(payload.permissionEvidence.decision, "recognized");
     assert.equal(payload.permissionEvidence.matrixRuntimeBoundary, "status-and-plan-only");
+    assert.equal(payload.providerMediationEvidence.mode, "backend-only");
+    assert.equal(payload.providerMediationEvidence.frontendSecretAllowed, false);
+    assert.equal(payload.providerMediationEvidence.routeExecutionEnabled, false);
+    assert.equal(payload.providerMediationEvidence.providerCallsPerformed, false);
+    assert.match(payload.providerMediationEvidence.truthBoundary, /no provider call/);
   });
 
   it("seis_ai_core_subagent_dry_run blocks approval-gated external tasks", () => {
@@ -1446,6 +1475,21 @@ describe("executeTool", () => {
     ));
     assert.equal(payload.ok, false);
     assert.match(payload.error, /execution ledger fixture is missing or violates/);
+  });
+
+  it("seis_ai_core_subagent_dry_run fails closed when router mediation evidence is invalid", () => {
+    const routerPath = path.join(repoRoot, "content/development/seis-ai-core-read-only-router-runtime.json");
+    const routerRuntime = JSON.parse(readFileSync(routerPath, "utf8"));
+    routerRuntime.providerMediation.frontendSecretAllowed = true;
+    writeFileSync(routerPath, JSON.stringify(routerRuntime), "utf8");
+
+    const payload = JSON.parse(executeTool(
+      "seis_ai_core_subagent_dry_run",
+      { taskId: "dry-run-seis-hub-foundation-review" },
+      ctx()
+    ));
+    assert.equal(payload.ok, false);
+    assert.match(payload.error, /router mediation fixture is missing or violates/);
   });
 
   it("seis_ai_core_subagent_dry_run denies forbidden and unknown permission levels", () => {

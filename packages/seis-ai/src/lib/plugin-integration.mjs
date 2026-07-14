@@ -1322,6 +1322,7 @@ export function subagentDryRunTaskDecision(repoRoot, input = {}) {
     const approvalFixture = readJsonIfExists(repoRoot, model.sourceOfTruth?.approvalFixture || SUBAGENT_APPROVAL_FIXTURE_PATH);
     const executionLedgerPath = model.sourceOfTruth?.executionLedgerFixture || SUBAGENT_EXECUTION_LEDGER_FIXTURE_PATH;
     const executionLedgerFixture = readJsonIfExists(repoRoot, executionLedgerPath);
+    const routerRuntime = readJsonIfExists(repoRoot, AI_CORE_READ_ONLY_ROUTER_RUNTIME_PATH);
 
     if (!queue || !Array.isArray(queue.sampleTasks)) {
       return { ok: false, tool: SUBAGENT_DRY_RUN_TASK_TOOL, taskId, error: "dry-run task queue fixture is missing or invalid" };
@@ -1353,6 +1354,38 @@ export function subagentDryRunTaskDecision(repoRoot, input = {}) {
         taskId,
         executionLedgerPath,
         error: "execution ledger fixture is missing or violates the plan-only evidence contract",
+      };
+    }
+
+    const providerMediation = routerRuntime?.providerMediation;
+    const decisionIntegrity = routerRuntime?.decisionIntegrity;
+    const routerMediationIsValid =
+      routerRuntime?.id === "seis-ai-core-read-only-router-runtime" &&
+      routerRuntime.runtimeBoundary?.providerCalls === false &&
+      providerMediation?.mode === "backend-only" &&
+      providerMediation.frontendSecretAllowed === false &&
+      providerMediation.routeExecutionEnabled === false &&
+      providerMediation.status === "required-before-live-routing" &&
+      decisionIntegrity?.readOnlyOnly === true &&
+      decisionIntegrity.runtimeAuthority === false &&
+      decisionIntegrity.executionPerformedAlwaysFalse === true &&
+      decisionIntegrity.noPromptBodyInDecision === true &&
+      decisionIntegrity.noCredentialMaterialInDecision === true &&
+      decisionIntegrity.decisionLogsRedacted === true &&
+      decisionIntegrity.providerStateNamed === true &&
+      decisionIntegrity.selectedProviderExplicit === true &&
+      decisionIntegrity.fallbackExplicit === true &&
+      decisionIntegrity.blockedReasonsRequired === true &&
+      decisionIntegrity.backendOnlyProvidersRequired === true &&
+      decisionIntegrity.privateObsidianContentRoutable === false;
+
+    if (!routerMediationIsValid) {
+      return {
+        ok: false,
+        tool: SUBAGENT_DRY_RUN_TASK_TOOL,
+        taskId,
+        providerMediationPath: AI_CORE_READ_ONLY_ROUTER_RUNTIME_PATH,
+        error: "router mediation fixture is missing or violates the backend-only plan-only evidence contract",
       };
     }
 
@@ -1437,6 +1470,15 @@ export function subagentDryRunTaskDecision(repoRoot, input = {}) {
       requestedPath: requestedPathDecision,
       validator: task.validator ?? null,
       rollbackNote: task.rollbackNote ?? null,
+      providerMediationEvidence: {
+        path: AI_CORE_READ_ONLY_ROUTER_RUNTIME_PATH,
+        mode: providerMediation.mode,
+        frontendSecretAllowed: providerMediation.frontendSecretAllowed,
+        routeExecutionEnabled: providerMediation.routeExecutionEnabled,
+        providerCallsPerformed: routerRuntime.runtimeBoundary.providerCalls,
+        status: providerMediation.status,
+        truthBoundary: "Source-backed router mediation metadata only; no provider call or route execution is performed by this dry-run tool.",
+      },
       permissionEvidence: {
         level: permission?.level ?? null,
         status: permission?.status ?? null,
