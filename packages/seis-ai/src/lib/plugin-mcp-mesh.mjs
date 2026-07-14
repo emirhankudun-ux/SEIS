@@ -40,7 +40,9 @@ function safeEnvironment(repoRoot, pluginRoot) {
 }
 
 function redactedOutput(value) {
-  const output = redactSecretText(String(value || ""));
+  const output = redactSecretText(String(value || ""))
+    .replace(/\/Users\/[^\r\n"'`]+/g, "[local-path-redacted]")
+    .replace(/\/home\/[^\r\n"'`]+/g, "[local-path-redacted]");
   return output.length > MCP_OUTPUT_LIMIT
     ? `${output.slice(0, MCP_OUTPUT_LIMIT)}\n[output truncated]`
     : output;
@@ -133,7 +135,8 @@ export function buildSeisPluginMcpMesh(repoRoot = process.cwd()) {
     })),
     boundary: {
       sourceOfTruth: ".mcp.json plus local plugin entrypoints",
-      transport: "stdio JSON-RPC",
+      transport: "stdio newline-delimited JSON-RPC",
+      probeScope: "initialize and tools/list only; no tool execution or OS-level side-effect instrumentation",
       liveSessionStarted: false,
       probeOptIn: true,
       shell: false,
@@ -146,33 +149,18 @@ export function buildSeisPluginMcpMesh(repoRoot = process.cwd()) {
 }
 
 function frame(request) {
-  const body = JSON.stringify(request);
-  return `Content-Length: ${Buffer.byteLength(body, "utf8")}\r\n\r\n${body}`;
+  return `${JSON.stringify(request)}\n`;
 }
 
 function parseFrames(output) {
-  const buffer = Buffer.from(output || "", "utf8");
   const responses = [];
-  let offset = 0;
-  while (offset < buffer.length) {
-    const separator = buffer.indexOf(Buffer.from("\r\n\r\n"), offset);
-    if (separator < 0) break;
-    const header = buffer.slice(offset, separator).toString("utf8");
-    const lengthMatch = /Content-Length:\s*(\d+)/i.exec(header);
-    if (!lengthMatch) {
-      offset = separator + 4;
-      continue;
-    }
-    const length = Number.parseInt(lengthMatch[1], 10);
-    const bodyStart = separator + 4;
-    const bodyEnd = bodyStart + length;
-    if (!Number.isSafeInteger(length) || length < 0 || bodyEnd > buffer.length) break;
+  for (const line of String(output || "").split(/\r?\n/)) {
+    if (!line.trim()) continue;
     try {
-      responses.push(JSON.parse(buffer.slice(bodyStart, bodyEnd).toString("utf8")));
+      responses.push(JSON.parse(line));
     } catch {
-      // Ignore malformed frames and report a bounded probe failure below.
+      // Ignore malformed lines and report a bounded probe failure below.
     }
-    offset = bodyEnd;
   }
   return responses;
 }
@@ -198,6 +186,7 @@ function probeServer(repoRoot, server, timeoutMs) {
         clientInfo: { name: "seis-mcp-mesh-check", version: "1.0.0" },
       },
     }),
+    frame({ jsonrpc: "2.0", method: "notifications/initialized" }),
     frame({ jsonrpc: "2.0", id: 2, method: "tools/list" }),
   ].join("");
 
@@ -266,7 +255,8 @@ export function probeSeisPluginMcpMesh(repoRoot = process.cwd(), options = {}) {
       timeoutMs,
       verifiedServerCount: verified,
       failedServerCount: failed,
-      transport: "stdio JSON-RPC",
+      transport: "stdio newline-delimited JSON-RPC",
+      lifecycle: "initialize -> notifications/initialized -> tools/list",
     },
     boundary: {
       ...mesh.boundary,

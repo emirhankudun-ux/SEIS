@@ -4,7 +4,9 @@ import process from "node:process";
 import path from "node:path";
 import { PLAN_VERSION, planTask } from "../packages/ai-language/src/llm-task-planner.mjs";
 
-let pending = Buffer.alloc(0);
+let pending = "";
+let initializationStarted = false;
+let initialized = false;
 const SEIS_ROOT = path.resolve(process.env.SEIS_ROOT || process.cwd());
 const BRIDGE_MANIFEST = path.join(SEIS_ROOT, "data", "seis-repos-llm-bridge-2026-06-08.json");
 const SPECIALIST_LANES = [
@@ -540,17 +542,19 @@ function llmRolePlan(input) {
 }
 
 function sendResponse(message) {
-  const body = JSON.stringify(message);
-  const payload = `Content-Length: ${Buffer.byteLength(body, "utf8")}\r\n\r\n${body}`;
-  process.stdout.write(payload);
+  process.stdout.write(`${JSON.stringify(message)}\n`);
 }
 
-function parseBody(bodyBuffer) {
-  if (!bodyBuffer.length) {
+function sendError(id, code, message) {
+  sendResponse({ jsonrpc: "2.0", id: id ?? null, error: { code, message } });
+}
+
+function parseBody(body) {
+  if (!body) {
     return null;
   }
   try {
-    return JSON.parse(bodyBuffer.toString("utf8"));
+    return JSON.parse(body);
   } catch (error) {
     return null;
   }
@@ -558,15 +562,21 @@ function parseBody(bodyBuffer) {
 
 function handleMessage(message) {
   if (!message || typeof message !== "object") {
+    sendError(null, -32600, "Invalid Request");
     return;
   }
 
   if (message.method === "initialize") {
+    if (initializationStarted) {
+      sendError(message.id, -32600, "Initialize may only be sent once.");
+      return;
+    }
+    initializationStarted = true;
     sendResponse({
       jsonrpc: "2.0",
       id: message.id,
       result: {
-        protocolVersion: "2024-11-05",
+        protocolVersion: message.params?.protocolVersion || "2024-11-05",
         capabilities: {
           tools: {
             listChanged: false,
@@ -579,6 +589,16 @@ function handleMessage(message) {
         },
       },
     });
+    return;
+  }
+
+  if (message.method === "notifications/initialized") {
+    initialized = initializationStarted;
+    return;
+  }
+
+  if (!initialized) {
+    if (message.id !== undefined) sendError(message.id, -32002, "Server not initialized.");
     return;
   }
 
@@ -707,51 +727,28 @@ function handleMessage(message) {
     return;
   }
 
-  if (message.method && message.method.startsWith("notification")) {
-    return;
+  if (message.id !== undefined) {
+    sendError(message.id, -32601, `Method not found: ${message.method ?? "undefined"}`);
   }
 }
 
 function processStream() {
   while (true) {
-    const separatorIndex = pending.indexOf("\r\n\r\n");
-    if (separatorIndex < 0) {
+    const newlineIndex = pending.indexOf("\n");
+    if (newlineIndex < 0) {
       return;
     }
-
-    const headerRaw = pending.slice(0, separatorIndex).toString("utf8");
-    const lengthMatch = /Content-Length:\s*(\d+)/i.exec(headerRaw);
-    if (!lengthMatch) {
-      pending = pending.slice(separatorIndex + 4);
-      continue;
-    }
-
-    const contentLength = Number.parseInt(lengthMatch[1], 10);
-    if (Number.isNaN(contentLength) || contentLength < 0) {
-      pending = pending.slice(separatorIndex + 4);
-      continue;
-    }
-
-    const bodyStart = separatorIndex + 4;
-    if (pending.length < bodyStart + contentLength) {
-      return;
-    }
-
-    const body = parseBody(pending.slice(bodyStart, bodyStart + contentLength));
-    pending = pending.slice(bodyStart + contentLength);
-    handleMessage(body);
+    const line = pending.slice(0, newlineIndex).replace(/\r$/, "");
+    pending = pending.slice(newlineIndex + 1);
+    if (!line.trim()) continue;
+    handleMessage(parseBody(line));
   }
 }
 
+process.stdin.setEncoding("utf8");
 process.stdin.on("data", (chunk) => {
-  pending = Buffer.concat([pending, Buffer.from(chunk)]);
+  pending += chunk;
   processStream();
 });
 
-process.stdin.on("end", () => {
-  process.exit(0);
-});
-
-setInterval(() => {
-  process.stdout.write("");
-}, 10_000);
+process.stdin.on("end", () => process.exit(0));

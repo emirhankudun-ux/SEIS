@@ -332,7 +332,8 @@
       ],
       "boundary": {
         "sourceOfTruth": ".mcp.json plus local plugin entrypoints",
-        "transport": "stdio JSON-RPC",
+        "transport": "stdio newline-delimited JSON-RPC",
+        "probeScope": "initialize and tools/list only; no tool execution or OS-level side-effect instrumentation",
         "liveSessionStarted": false,
         "probeOptIn": true,
         "shell": false,

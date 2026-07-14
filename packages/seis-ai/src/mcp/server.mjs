@@ -168,6 +168,8 @@ class LightweightMcpServer {
   constructor({ name, version }) {
     this.name = name;
     this.version = version;
+    this.initializationStarted = false;
+    this.initialized = false;
     this.tools = new Map();
     this.prompts = new Map();
     this.resources = new Map();
@@ -214,14 +216,16 @@ class LightweightMcpServer {
           continue;
         }
 
-        if (request.id === undefined) continue;
-
         try {
           const result = await this.handle(request);
-          this.send({ jsonrpc: "2.0", id: request.id, result });
+          if (request.id !== undefined) {
+            this.send({ jsonrpc: "2.0", id: request.id, result });
+          }
         } catch (error) {
           const code = error instanceof McpProtocolError ? error.code : -32603;
-          this.send(createJsonRpcError(request.id, code, error.message));
+          if (request.id !== undefined) {
+            this.send(createJsonRpcError(request.id, code, error.message));
+          }
         }
       }
     } finally {
@@ -234,8 +238,20 @@ class LightweightMcpServer {
   }
 
   async handle(request) {
+    if (
+      request.method !== "initialize" &&
+      request.method !== "notifications/initialized" &&
+      !this.initialized
+    ) {
+      throw new McpProtocolError(-32002, "Server not initialized");
+    }
+
     switch (request.method) {
       case "initialize":
+        if (this.initializationStarted) {
+          throw new McpProtocolError(-32600, "Initialize may only be sent once");
+        }
+        this.initializationStarted = true;
         return {
           protocolVersion: request.params?.protocolVersion || "2024-11-05",
           capabilities: {
@@ -245,6 +261,12 @@ class LightweightMcpServer {
           },
           serverInfo: { name: this.name, version: this.version },
         };
+      case "notifications/initialized":
+        if (!this.initializationStarted) {
+          throw new McpProtocolError(-32600, "Server initialization has not started");
+        }
+        this.initialized = true;
+        return null;
       case "tools/list":
         return {
           tools: [...this.tools.values()].map((tool) => ({

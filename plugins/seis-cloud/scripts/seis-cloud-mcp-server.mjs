@@ -12,7 +12,9 @@ const LANE = {
   focus: "provider-neutral deployment readiness, public cloud targets for everyone, self-hosted SEIS Cloud kits, cloud-only SEIS SSH, team/workplace VPN cloud, closed developer cloud systems, cloud preflight, rollback planning, and secret-safe infrastructure automation",
 };
 
-let pending = Buffer.alloc(0);
+let pending = "";
+let initializationStarted = false;
+let initialized = false;
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 
 function pluginRoot() {
@@ -108,22 +110,41 @@ function plan(input) {
 }
 
 function send(message) {
-  const body = JSON.stringify(message);
-  process.stdout.write(`Content-Length: ${Buffer.byteLength(body, "utf8")}\r\n\r\n${body}`);
+  process.stdout.write(`${JSON.stringify(message)}\n`);
 }
 
-function parseBody(bodyBuffer) {
+function sendError(id, code, message) {
+  send({ jsonrpc: "2.0", id: id ?? null, error: { code, message } });
+}
+
+function parseBody(body) {
   try {
-    return JSON.parse(bodyBuffer.toString("utf8"));
+    return JSON.parse(body);
   } catch {
     return null;
   }
 }
 
 function handle(message) {
-  if (!message || typeof message !== "object") return;
+  if (!message || typeof message !== "object") {
+    sendError(null, -32600, "Invalid Request");
+    return;
+  }
   if (message.method === "initialize") {
+    if (initializationStarted) {
+      sendError(message.id, -32600, "Initialize may only be sent once.");
+      return;
+    }
+    initializationStarted = true;
     send({ jsonrpc: "2.0", id: message.id, result: { protocolVersion: "2024-11-05", capabilities: { tools: { listChanged: false } }, serverInfo: { name: "seis-cloud", version: "0.1.0" } } });
+    return;
+  }
+  if (message.method === "notifications/initialized") {
+    initialized = initializationStarted;
+    return;
+  }
+  if (!initialized) {
+    if (message.id !== undefined) sendError(message.id, -32002, "Server not initialized.");
     return;
   }
   if (message.method === "tools/list") {
@@ -148,25 +169,18 @@ function handle(message) {
 
 function processStream() {
   while (true) {
-    const separatorIndex = pending.indexOf("\r\n\r\n");
-    if (separatorIndex < 0) return;
-    const headerRaw = pending.slice(0, separatorIndex).toString("utf8");
-    const lengthMatch = /Content-Length:\s*(\d+)/i.exec(headerRaw);
-    if (!lengthMatch) {
-      pending = pending.slice(separatorIndex + 4);
-      continue;
-    }
-    const contentLength = Number.parseInt(lengthMatch[1], 10);
-    const bodyStart = separatorIndex + 4;
-    if (pending.length < bodyStart + contentLength) return;
-    const body = parseBody(pending.slice(bodyStart, bodyStart + contentLength));
-    pending = pending.slice(bodyStart + contentLength);
-    handle(body);
+    const newlineIndex = pending.indexOf("\n");
+    if (newlineIndex < 0) return;
+    const line = pending.slice(0, newlineIndex).replace(/\r$/, "");
+    pending = pending.slice(newlineIndex + 1);
+    if (!line.trim()) continue;
+    handle(parseBody(line));
   }
 }
 
+process.stdin.setEncoding("utf8");
 process.stdin.on("data", (chunk) => {
-  pending = Buffer.concat([pending, Buffer.from(chunk)]);
+  pending += chunk;
   processStream();
 });
 
