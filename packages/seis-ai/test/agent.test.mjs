@@ -1133,6 +1133,10 @@ describe("executeTool", () => {
     assert.equal(payload.id, "seis-agent-plugin-integration");
     assert.equal(payload.primaryInstallId, "seis-ai-agent@seis-repo");
     assert.equal(payload.personalPlugins[0].id, "seis@personal");
+    assert.equal(payload.capabilityCatalog.id, "seis-plugin-capability-catalog");
+    assert.equal(typeof payload.capabilityCatalog.manifestCapabilityCount, "number");
+    assert.ok(Array.isArray(payload.capabilityCatalog.qualityCommandGaps));
+    assert.equal(payload.capabilityCatalog.boundary.externalMutationPerformed, false);
   });
 
   it("seis_ai_core_subagent_model returns the bounded operating model and five-year linkage", () => {
