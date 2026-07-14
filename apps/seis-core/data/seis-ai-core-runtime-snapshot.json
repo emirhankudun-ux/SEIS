@@ -11,6 +11,10 @@
     "mcpRuntimeContract": "content/development/seis-ai-core-mcp-runtime-contract.json",
     "applicationIntegration": "content/development/seis-ai-core-application-integration.json",
     "agentRegistry": "content/development/seis-second-brain-system.json",
+    "installedCapabilityInventory": {
+      "bigTechMcpSkillInventory": "content/development/seis-big-tech-mcp-skill-inventory.json",
+      "nvidiaInstalledIntegrations": "content/development/seis-nvidia-installed-integrations.json"
+    },
     "generator": "scripts/create-seis-core-ai-runtime-snapshot.mjs",
     "output": "apps/seis-core/data/seis-ai-core-runtime-snapshot.json"
   },
@@ -799,6 +803,133 @@
       "githubMutation": false
     },
     "humanApprovalRequiredForMutation": true
+  },
+  "installedCapabilityInventory": {
+    "id": "seis-installed-capability-inventory",
+    "status": "source-backed-metadata-only",
+    "sourcePaths": [
+      "content/development/seis-big-tech-mcp-skill-inventory.json",
+      "content/development/seis-nvidia-installed-integrations.json"
+    ],
+    "bigTech": {
+      "status": "kimi-cli-installed-claude-detected-apple-mcp-configured",
+      "installedSkillCount": 38,
+      "installedSkillIDs": [
+        "aspnet-core",
+        "chatgpt-apps",
+        "cli-creator",
+        "cloudflare-deploy",
+        "define-goal",
+        "figma",
+        "figma-code-connect-components",
+        "figma-create-design-system-rules",
+        "figma-create-new-file",
+        "figma-generate-design",
+        "figma-generate-library",
+        "figma-implement-design",
+        "figma-use",
+        "gh-address-comments",
+        "gh-fix-ci",
+        "jupyter-notebook",
+        "linear",
+        "migrate-to-codex",
+        "netlify-deploy",
+        "notion-knowledge-capture",
+        "notion-meeting-intelligence",
+        "notion-research-documentation",
+        "notion-spec-to-implementation",
+        "openai-docs",
+        "pdf",
+        "playwright",
+        "playwright-interactive",
+        "render-deploy",
+        "screenshot",
+        "security-best-practices",
+        "security-ownership-map",
+        "security-threat-model",
+        "sentry",
+        "speech",
+        "transcribe",
+        "vercel-deploy",
+        "winui-app",
+        "yeet"
+      ],
+      "cliToolProfiles": [
+        {
+          "vendor": "Moonshot AI",
+          "name": "Kimi Code CLI",
+          "status": "installed_and_path_verified",
+          "providerState": "No providers configured; login or API-key setup remains user-owned."
+        },
+        {
+          "vendor": "Anthropic",
+          "name": "Claude Code CLI",
+          "status": "installed_and_path_verified",
+          "providerState": "Claude Code MCP entries are project-visible but pending user approval inside Claude Code."
+        },
+        {
+          "vendor": "Apple",
+          "name": "XcodeBuildMCP",
+          "status": "npx_runnable_and_project_mcp_registered",
+          "providerState": "Claude Code lists xcodebuildmcp as Pending approval; Codex session also exposes XcodeBuildMCP tools for enabled workflows."
+        }
+      ],
+      "projectMCPConfigurations": [
+        {
+          "path": ".mcp.json",
+          "client": "Claude Code compatible project MCP config",
+          "serverIDs": [
+            "seis",
+            "xcodebuildmcp"
+          ],
+          "status": "valid_json; Claude Code lists both servers as Pending approval"
+        },
+        {
+          "path": ".kimi-code/mcp.json",
+          "client": "Kimi Code project MCP config",
+          "serverIDs": [
+            "seis",
+            "xcodebuildmcp"
+          ],
+          "status": "valid_json; activates in Kimi sessions after user login/provider setup as needed"
+        },
+        {
+          "path": ".kimi-code/skills/seis-integration-guardian/SKILL.md",
+          "client": "Kimi Code project Skill",
+          "serverIDs": [],
+          "status": "installed as a secrets-free project skill"
+        }
+      ],
+      "currentSessionMCPSurfaceCount": 17,
+      "localAppCount": 8,
+      "pendingConnectorInstallCount": 1
+    },
+    "nvidia": {
+      "status": "installed-local-skill-registry-runtime-gated",
+      "skillManifestCount": 11,
+      "integrationIDs": [
+        "aiq-deploy",
+        "aiq-research",
+        "cuopt-user-rules",
+        "dynamo-interconnect-check",
+        "dynamo-router-starter",
+        "nemoclaw-user-get-started",
+        "omniverse-cad-to-simready",
+        "omniverse-realtime-viewer",
+        "omniverse-usd-performance-tuning",
+        "physical-ai-infrastructure-setup-and-resilient-scaling",
+        "physical-ai-neural-reconstruction"
+      ],
+      "runtimeBlockedCount": 8
+    },
+    "runtimeBoundary": {
+      "runtimeAuthority": false,
+      "credentialsRead": false,
+      "networkCalled": false,
+      "externalMutationPerformed": false,
+      "humanApprovalRequiredForActivation": true
+    },
+    "truthBoundary": "Installed AI, MCP, skill, CLI, and NVIDIA surfaces are source-backed metadata only. Activation, provider authentication, credential access, network calls, runtime execution, and external mutation remain blocked or human-approval gated."
   },
   "pluginMesh": {
     "id": "seis-agent-plugin-integration",

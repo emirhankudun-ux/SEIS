@@ -31,7 +31,12 @@ test("SEIS Core renders source-backed providers, scenarios, and MCP mesh", async
   assert.equal(window.document.querySelectorAll("[data-ai-core-scenario]").length, 7);
   assert.match(window.document.querySelector("#ai-core-runtime-summary")?.textContent || "", /37\/30\/3/);
   assert.match(window.document.querySelector("#ai-core-runtime-summary")?.textContent || "", /6\/6/);
+  assert.match(window.document.querySelector("#ai-core-runtime-summary")?.textContent || "", /38\/11/);
   assert.match(window.document.querySelector("#ai-core-mesh-strip")?.textContent || "", /6\/6/);
+  const inventoryCard = window.document.querySelector("[data-ai-core-capability-inventory]");
+  assert.equal(inventoryCard?.getAttribute("data-ai-core-capability-inventory"), "seis-installed-capability-inventory");
+  assert.match(inventoryCard?.textContent || "", /38 skills/);
+  assert.match(inventoryCard?.textContent || "", /11 NVIDIA integrations/);
   const probeRows = [...window.document.querySelectorAll("[data-ai-core-mcp-probe]")];
   assert.equal(probeRows.length, 6);
   assert.ok(probeRows.some((row) => row.textContent?.includes("seis_cloud_status")));
@@ -90,6 +95,22 @@ test("SEIS Core rejects a non-allowlisted plugin MCP tool", async () => {
   window.document.querySelector('[data-view="godmode"]')?.click();
   assert.equal(window.document.querySelector("#ai-core-runtime-state")?.textContent, "Fallback");
   assert.match(window.document.querySelector("#ai-core-runtime-feedback")?.textContent || "", /plugin MCP safe-probe boundary/i);
+});
+
+test("SEIS Core rejects an unsafe installed capability inventory", async () => {
+  const { window } = await boot({
+    snapshotTransform(snapshot) {
+      snapshot.installedCapabilityInventory.runtimeBoundary.networkCalled = true;
+      return snapshot;
+    }
+  });
+
+  window.document.querySelector('[data-view="godmode"]')?.click();
+  assert.equal(window.document.querySelector("#ai-core-runtime-state")?.textContent, "Fallback");
+  assert.match(window.document.querySelector("#ai-core-runtime-feedback")?.textContent || "", /installed capability inventory boundary/i);
+  const inventoryCard = window.document.querySelector("[data-ai-core-capability-inventory]");
+  assert.equal(inventoryCard?.getAttribute("data-ai-core-capability-inventory"), "seis-installed-capability-inventory-fallback");
+  assert.match(inventoryCard?.textContent || "", /unavailable/);
 });
 
 test("God Mode mission submission records a decision-only route", async () => {

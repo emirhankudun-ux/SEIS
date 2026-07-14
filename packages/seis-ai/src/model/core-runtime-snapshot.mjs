@@ -21,6 +21,8 @@ export const AI_CORE_RUNTIME_SNAPSHOT_ID = "seis-ai-core-runtime-snapshot";
 export const AI_CORE_RUNTIME_SNAPSHOT_PATH = "apps/seis-core/data/seis-ai-core-runtime-snapshot.json";
 export const AI_CORE_APPLICATION_INTEGRATION_PATH = "content/development/seis-ai-core-application-integration.json";
 export const SECOND_BRAIN_SYSTEM_PATH = "content/development/seis-second-brain-system.json";
+export const BIG_TECH_MCP_SKILL_INVENTORY_PATH = "content/development/seis-big-tech-mcp-skill-inventory.json";
+export const NVIDIA_INSTALLED_INTEGRATIONS_PATH = "content/development/seis-nvidia-installed-integrations.json";
 
 const PERSONAL_LANE_IDS = Object.freeze([
   "seis",
@@ -117,6 +119,7 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
   const pluginMcpMesh = probeSeisPluginMcpMesh(repoRoot, { probeSafeTools: true });
   const applicationIntegration = readJson(repoRoot, AI_CORE_APPLICATION_INTEGRATION_PATH);
   const agentRegistry = buildAgentRegistrySnapshot(readJson(repoRoot, SECOND_BRAIN_SYSTEM_PATH));
+  const installedCapabilityInventory = buildInstalledCapabilityInventory(repoRoot);
 
   if (!provider.ok) throw new Error(provider.error || "SEIS AI Core provider registry is unavailable");
   if (!plugin.ok) throw new Error(plugin.error || "SEIS plugin integration is unavailable");
@@ -208,6 +211,10 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
       mcpRuntimeContract: MCP_RUNTIME_CONTRACT_PATH,
       applicationIntegration: AI_CORE_APPLICATION_INTEGRATION_PATH,
       agentRegistry: SECOND_BRAIN_SYSTEM_PATH,
+      installedCapabilityInventory: {
+        bigTechMcpSkillInventory: BIG_TECH_MCP_SKILL_INVENTORY_PATH,
+        nvidiaInstalledIntegrations: NVIDIA_INSTALLED_INTEGRATIONS_PATH,
+      },
       generator: "scripts/create-seis-core-ai-runtime-snapshot.mjs",
       output: AI_CORE_RUNTIME_SNAPSHOT_PATH,
     },
@@ -257,6 +264,7 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
       scenarios,
     },
     agentRegistry,
+    installedCapabilityInventory,
     pluginMesh: {
       id: plugin.id,
       status: plugin.status,
@@ -308,6 +316,142 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
       "node --test packages/seis-ai/test/core-runtime-snapshot.test.mjs",
       "node --test apps/seis-core/test/seis-core-static.test.js",
     ],
+  };
+}
+
+function buildInstalledCapabilityInventory(repoRoot) {
+  const bigTech = readJson(repoRoot, BIG_TECH_MCP_SKILL_INVENTORY_PATH);
+  const nvidia = readJson(repoRoot, NVIDIA_INSTALLED_INTEGRATIONS_PATH);
+  if (bigTech.id !== "seis-big-tech-mcp-skill-inventory") {
+    throw new Error("Big Tech MCP/skill inventory id mismatch");
+  }
+  if (nvidia.id !== "seis-nvidia-installed-integrations" || nvidia.version !== 1) {
+    throw new Error("NVIDIA installed integrations identity mismatch");
+  }
+
+  const bigTechSafetyBoundary = bigTech.security_boundary || {};
+  const requiredBigTechSafetyClaims = [
+    "no_secrets_stored",
+    "no_provider_calls",
+    "no_ssh",
+    "no_deployment",
+    "no_git_push_or_merge",
+  ];
+  if (requiredBigTechSafetyClaims.some((claim) => bigTechSafetyBoundary[claim] !== true)) {
+    throw new Error("Big Tech capability inventory violates its no-secret/no-provider safety boundary");
+  }
+
+  const installedSkillPass = bigTech.installed_skill_pass || {};
+  const installedSkillIDs = Array.isArray(installedSkillPass.skills) ? installedSkillPass.skills : [];
+  if (installedSkillPass.installed_skill_count !== 38 ||
+      installedSkillIDs.length !== installedSkillPass.installed_skill_count ||
+      installedSkillIDs.some((skillID) => typeof skillID !== "string" || skillID.length === 0) ||
+      installedSkillPass.requires_codex_restart !== true) {
+    throw new Error("Big Tech capability inventory skill pass is incomplete");
+  }
+
+  const cliToolProfiles = Array.isArray(bigTech.cli_installations)
+    ? bigTech.cli_installations.map((profile) => ({
+      vendor: profile.vendor,
+      name: profile.name,
+      status: profile.status,
+      providerState: profile.provider_state,
+    }))
+    : [];
+  if (cliToolProfiles.length !== 3 || cliToolProfiles.some((profile) => Object.values(profile).some((value) => typeof value !== "string" || value.length === 0))) {
+    throw new Error("Big Tech capability inventory CLI/tool profiles are incomplete");
+  }
+
+  const projectMCPConfigurations = Array.isArray(bigTech.project_mcp_and_skill_configs)
+    ? bigTech.project_mcp_and_skill_configs.map((configuration) => ({
+      path: configuration.path,
+      client: configuration.client,
+      serverIDs: Array.isArray(configuration.servers) ? configuration.servers : [],
+      status: configuration.status,
+    }))
+    : [];
+  if (projectMCPConfigurations.length !== 3 || projectMCPConfigurations.some((configuration) =>
+    !configuration.path || !configuration.client || !configuration.status || configuration.serverIDs.some((serverID) => typeof serverID !== "string" || serverID.length === 0))) {
+    throw new Error("Big Tech capability inventory MCP/skill configurations are incomplete");
+  }
+
+  const connectorInstallAttempts = Array.isArray(bigTech.connector_install_attempts)
+    ? bigTech.connector_install_attempts
+    : [];
+  const pendingConnectorInstallCount = connectorInstallAttempts.filter((attempt) =>
+    attempt.completed === false && attempt.user_confirmed === false
+  ).length;
+  if (bigTech.local_apps_detected?.length !== 8 ||
+      bigTech.current_session_mcp_surfaces?.length !== 17 ||
+      pendingConnectorInstallCount !== 1) {
+    throw new Error("Big Tech capability inventory counts are incomplete");
+  }
+
+  const policy = nvidia.installPolicy || {};
+  const blockedNVIDIAFlags = [
+    "executeSkillCommandsAllowed",
+    "networkInstallAllowed",
+    "repoCloneAllowed",
+    "modelDownloadAllowed",
+    "nimApiCallAllowed",
+    "dockerAllowed",
+    "kubernetesAllowed",
+    "terraformAllowed",
+    "azureAllowed",
+    "gpuRuntimeAllowed",
+    "sshAllowed",
+    "secretReadAllowed",
+  ];
+  if (nvidia.status !== "installed-local-skill-registry-runtime-gated" ||
+      nvidia.source?.plugin !== "nvidia" ||
+      nvidia.source?.registryMode !== "metadata-only-no-runtime-execution" ||
+      policy.installedIntoSeis !== true ||
+      policy.localSkillManifestCount !== 11 ||
+      policy.credentialRequiredForCoreDemo !== false ||
+      policy.approvalRequiredForRuntime !== true ||
+      policy.truthBoundary?.length === 0 ||
+      blockedNVIDIAFlags.some((flag) => policy[flag] !== false)) {
+    throw new Error("NVIDIA capability inventory violates its runtime-gated policy");
+  }
+
+  const nvidiaIntegrations = Array.isArray(nvidia.installedIntegrations) ? nvidia.installedIntegrations : [];
+  const nvidiaIntegrationIDs = nvidiaIntegrations.map((integration) => integration.id);
+  if (nvidiaIntegrations.length !== 11 ||
+      nvidiaIntegrationIDs.some((integrationID) => typeof integrationID !== "string" || integrationID.length === 0) ||
+      new Set(nvidiaIntegrationIDs).size !== nvidiaIntegrationIDs.length ||
+      nvidiaIntegrations.some((integration) => integration.status !== "installed-gated") ||
+      nvidia.runtimeBlockedUntilApproved?.length !== 8) {
+    throw new Error("NVIDIA capability inventory integration counts or statuses are invalid");
+  }
+
+  return {
+    id: "seis-installed-capability-inventory",
+    status: "source-backed-metadata-only",
+    sourcePaths: [BIG_TECH_MCP_SKILL_INVENTORY_PATH, NVIDIA_INSTALLED_INTEGRATIONS_PATH],
+    bigTech: {
+      status: bigTech.status,
+      installedSkillCount: installedSkillPass.installed_skill_count,
+      installedSkillIDs,
+      cliToolProfiles,
+      projectMCPConfigurations,
+      currentSessionMCPSurfaceCount: bigTech.current_session_mcp_surfaces.length,
+      localAppCount: bigTech.local_apps_detected.length,
+      pendingConnectorInstallCount,
+    },
+    nvidia: {
+      status: nvidia.status,
+      skillManifestCount: policy.localSkillManifestCount,
+      integrationIDs: nvidiaIntegrationIDs,
+      runtimeBlockedCount: nvidia.runtimeBlockedUntilApproved.length,
+    },
+    runtimeBoundary: {
+      runtimeAuthority: false,
+      credentialsRead: false,
+      networkCalled: false,
+      externalMutationPerformed: false,
+      humanApprovalRequiredForActivation: true,
+    },
+    truthBoundary: "Installed AI, MCP, skill, CLI, and NVIDIA surfaces are source-backed metadata only. Activation, provider authentication, credential access, network calls, runtime execution, and external mutation remain blocked or human-approval gated.",
   };
 }
 

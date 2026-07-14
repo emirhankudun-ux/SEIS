@@ -1077,6 +1077,35 @@ const fallbackSeisAiCoreRuntimeSnapshot = {
     personalLaneCount: 0,
     personalLaneToolCount: 0
   },
+  installedCapabilityInventory: {
+    id: "seis-installed-capability-inventory-fallback",
+    status: "fallback-unavailable",
+    sourcePaths: [],
+    bigTech: {
+      status: "unavailable",
+      installedSkillCount: 0,
+      installedSkillIDs: [],
+      cliToolProfiles: [],
+      projectMCPConfigurations: [],
+      currentSessionMCPSurfaceCount: 0,
+      localAppCount: 0,
+      pendingConnectorInstallCount: 0
+    },
+    nvidia: {
+      status: "unavailable",
+      skillManifestCount: 0,
+      integrationIDs: [],
+      runtimeBlockedCount: 0
+    },
+    runtimeBoundary: {
+      runtimeAuthority: false,
+      credentialsRead: false,
+      networkCalled: false,
+      externalMutationPerformed: false,
+      humanApprovalRequiredForActivation: true
+    },
+    truthBoundary: "Source-backed installed capability inventory is unavailable; no activation or external authority is granted."
+  },
   mcpRuntime: {
     status: "unavailable-in-fallback",
     transport: "not-started",
@@ -2977,6 +3006,10 @@ function renderAiCoreRuntime() {
   const pluginMcpMesh = pluginMesh.mcpMesh || {};
   const pluginMcpProbe = pluginMcpMesh.probe || {};
   const pluginMcpServers = Array.isArray(pluginMcpMesh.servers) ? pluginMcpMesh.servers : [];
+  const installedCapabilityInventory = seisAiCoreRuntimeSnapshot.installedCapabilityInventory || {};
+  const installedCapabilityBigTech = installedCapabilityInventory.bigTech || {};
+  const installedCapabilityNVIDIA = installedCapabilityInventory.nvidia || {};
+  const installedCapabilityBoundary = installedCapabilityInventory.runtimeBoundary || {};
   const mcp = seisAiCoreRuntimeSnapshot.mcpRuntime || {};
   const scenarios = Array.isArray(seisAiCoreRuntimeSnapshot.router?.scenarios)
     ? seisAiCoreRuntimeSnapshot.router.scenarios
@@ -2996,7 +3029,8 @@ function renderAiCoreRuntime() {
     ["Route cases", scenarios.length, "decision-only fixtures"],
     ["Personal lanes", pluginMesh.personalLaneCount || 0, `${pluginMesh.personalLaneToolCount || 0} lane tools`],
     ["MCP mesh", `${mcp.toolCount || 0}/${mcp.resourceCount || 0}/${mcp.promptCount || 0}`, "tools / resources / prompts"],
-    ["Plugin MCP", `${pluginMcpProbe.safeToolProbeCount || 0}/${pluginMcpMesh.serverCount || 0}`, "safe status probes"]
+    ["Plugin MCP", `${pluginMcpProbe.safeToolProbeCount || 0}/${pluginMcpMesh.serverCount || 0}`, "safe status probes"],
+    ["Installed inventory", `${installedCapabilityBigTech.installedSkillCount || 0}/${installedCapabilityNVIDIA.integrationIDs?.length || 0}`, "skills / NVIDIA integrations"]
   ].map(([label, value, detail]) => `
     <article class="ai-core-summary-card" data-ai-core-summary="${escapeHtml(label)}">
       <span>${escapeHtml(label)}</span>
@@ -3080,14 +3114,28 @@ function renderAiCoreRuntime() {
     ["Installed enabled", pluginMesh.installedEnabledCount || 0],
     ["Helper universe", pluginMesh.helperUniquePlugins || 0],
     ["MCP transport", mcp.transport || "not-started"],
-    ["Plugin MCP probes", `${pluginMcpProbe.safeToolProbeCount || 0}/${pluginMcpMesh.serverCount || 0}`, "local status-only"]
+    ["Plugin MCP probes", `${pluginMcpProbe.safeToolProbeCount || 0}/${pluginMcpMesh.serverCount || 0}`, "local status-only"],
+    ["Capability inventory", `${installedCapabilityBigTech.installedSkillCount || 0} / ${installedCapabilityNVIDIA.integrationIDs?.length || 0}`, "skills / NVIDIA"]
   ];
+  const inventoryBoundarySafe = installedCapabilityInventory.status === "source-backed-metadata-only" &&
+    installedCapabilityBoundary.runtimeAuthority === false &&
+    installedCapabilityBoundary.credentialsRead === false &&
+    installedCapabilityBoundary.networkCalled === false &&
+    installedCapabilityBoundary.externalMutationPerformed === false &&
+    installedCapabilityBoundary.humanApprovalRequiredForActivation === true;
+  const inventoryCard = `
+    <article class="ai-core-capability-inventory-card" data-ai-core-capability-inventory="${escapeHtml(installedCapabilityInventory.id || "unavailable")}" aria-label="Installed AI capability inventory">
+      <span>Installed AI/MCP/NVIDIA inventory</span>
+      <strong>${escapeHtml(`${installedCapabilityBigTech.installedSkillCount || 0} skills · ${installedCapabilityNVIDIA.integrationIDs?.length || 0} NVIDIA integrations`)}</strong>
+      <small>${escapeHtml(`${installedCapabilityBigTech.cliToolProfiles?.length || 0} CLI/tool profiles · ${installedCapabilityBigTech.currentSessionMCPSurfaceCount || 0} current-session MCP surfaces · ${inventoryBoundarySafe ? "metadata-only" : "unavailable"}`)}</small>
+    </article>
+  `;
   meshStrip.innerHTML = meshMetrics.map(([label, value]) => `
     <article data-ai-core-mesh-metric="${escapeHtml(label)}">
       <span>${escapeHtml(label)}</span>
       <strong>${escapeHtml(value)}</strong>
     </article>
-  `).join("") + pluginMcpServers.map((server) => {
+  `).join("") + inventoryCard + pluginMcpServers.map((server) => {
     const probe = server.safeToolProbe || {};
     const resultKeyCount = Array.isArray(probe.resultKeys) ? probe.resultKeys.length : 0;
     const boundarySafe = server.status === "probe-verified" &&
@@ -3162,8 +3210,35 @@ async function loadSeisAiCoreRuntimeSnapshot() {
           server.executionAuthority !== false ||
           server.credentialsRead !== false ||
           server.networkCalled !== false ||
-          server.externalMutationPerformed !== false)) {
+        server.externalMutationPerformed !== false)) {
       throw new Error("runtime snapshot violates the plugin MCP safe-probe boundary");
+    }
+    const installedCapabilityInventory = snapshot.installedCapabilityInventory;
+    const installedCapabilityBigTech = installedCapabilityInventory?.bigTech || {};
+    const installedCapabilityNVIDIA = installedCapabilityInventory?.nvidia || {};
+    const installedCapabilityBoundary = installedCapabilityInventory?.runtimeBoundary || {};
+    if (installedCapabilityInventory?.id !== "seis-installed-capability-inventory" ||
+        installedCapabilityInventory.status !== "source-backed-metadata-only" ||
+        installedCapabilityBigTech.installedSkillCount !== 38 ||
+        !Array.isArray(installedCapabilityBigTech.installedSkillIDs) ||
+        installedCapabilityBigTech.installedSkillIDs.length !== 38 ||
+        !Array.isArray(installedCapabilityBigTech.cliToolProfiles) ||
+        installedCapabilityBigTech.cliToolProfiles.length !== 3 ||
+        !Array.isArray(installedCapabilityBigTech.projectMCPConfigurations) ||
+        installedCapabilityBigTech.projectMCPConfigurations.length !== 3 ||
+        installedCapabilityBigTech.currentSessionMCPSurfaceCount !== 17 ||
+        installedCapabilityBigTech.localAppCount !== 8 ||
+        installedCapabilityBigTech.pendingConnectorInstallCount !== 1 ||
+        !Array.isArray(installedCapabilityNVIDIA.integrationIDs) ||
+        installedCapabilityNVIDIA.skillManifestCount !== 11 ||
+        installedCapabilityNVIDIA.integrationIDs.length !== 11 ||
+        installedCapabilityNVIDIA.runtimeBlockedCount !== 8 ||
+        installedCapabilityBoundary.runtimeAuthority !== false ||
+        installedCapabilityBoundary.credentialsRead !== false ||
+        installedCapabilityBoundary.networkCalled !== false ||
+        installedCapabilityBoundary.externalMutationPerformed !== false ||
+        installedCapabilityBoundary.humanApprovalRequiredForActivation !== true) {
+      throw new Error("runtime snapshot violates the installed capability inventory boundary");
     }
     seisAiCoreRuntimeSnapshot = snapshot;
     if (!snapshot.router.scenarios.some((scenario) => scenario.id === state.activeAiCoreScenarioId)) {

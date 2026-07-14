@@ -238,6 +238,7 @@ test("SEIS Command Center binds the source-backed AI Core runtime snapshot", asy
     "loadSeisAiCoreRuntimeSnapshot",
     "getActiveAiCoreScenario",
     "copyAiCoreDecision",
+    "data-ai-core-capability-inventory",
     "data/seis-ai-core-runtime-snapshot.json"
   ]) {
     assert.match(script, new RegExp(signal.replaceAll("/", "\\/")));
@@ -264,6 +265,12 @@ test("SEIS Command Center binds the source-backed AI Core runtime snapshot", asy
   assert.equal(snapshot.pluginMesh.helperUniquePlugins, 300);
   assert.equal(snapshot.pluginMesh.personalLaneCount, 5);
   assert.equal(snapshot.pluginMesh.personalLaneToolCount, 10);
+  assert.equal(snapshot.installedCapabilityInventory.bigTech.installedSkillCount, 38);
+  assert.equal(snapshot.installedCapabilityInventory.bigTech.cliToolProfiles.length, 3);
+  assert.equal(snapshot.installedCapabilityInventory.bigTech.currentSessionMCPSurfaceCount, 17);
+  assert.equal(snapshot.installedCapabilityInventory.nvidia.integrationIDs.length, 11);
+  assert.equal(snapshot.installedCapabilityInventory.runtimeBoundary.runtimeAuthority, false);
+  assert.equal(snapshot.installedCapabilityInventory.runtimeBoundary.humanApprovalRequiredForActivation, true);
   assert.equal(snapshot.agentRegistry.managedLaneCount, 9);
   assert.equal(snapshot.agentRegistry.agentCount, 13);
   assert.equal(snapshot.agentRegistry.runtimeAuthority, false);
