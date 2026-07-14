@@ -14,6 +14,7 @@ is not a live automation queue yet.
 | `SEIS-TASK-001` | active | Run `npm run check:goal-tracking`. |
 | `SEIS-TASK-002` | blocked | Stage only scoped Goal Tracking OS files. |
 | `SEIS-TASK-003` | active | Keep generated/static Goal Tracking Center fresh from source records. |
+| `SEIS-TASK-004` | active | Emit a structured proposal and run both Goal Tracking validators before canonical updates. |
 
 ## Current Blockers
 
@@ -28,3 +29,4 @@ is not a live automation queue yet.
 | --- | --- |
 | `SEIS-DEC-001` | Use file-backed non-LLM goal records first. |
 | `SEIS-DEC-002` | Do not stage unrelated deletion set. |
+| `SEIS-DEC-003` | Treat the five-million-character request as an aggregate context ceiling. |

@@ -42,6 +42,19 @@
       "related_paths": ["docs/goals/goal-tracking-system.md", "docs/STATUS.md"],
       "success_condition": "No secret assignment, key block, private path, file URI, or editor URI appears in scoped Goal Tracking files.",
       "next_action": "Keep scan output value-free and report only path/category if a finding appears."
+    },
+    {
+      "id": "SEIS-VAL-004",
+      "title": "Validate bounded Goal Tracking update prompt",
+      "status": "active",
+      "priority": "P1 high",
+      "command": "npm run check:seis-goal-tracking-update-prompt",
+      "owner_role": "Program System",
+      "supports_goal_ids": ["SEIS-GOAL-003"],
+      "evidence_ids": ["SEIS-EVID-014"],
+      "related_paths": ["data/seis-goal-tracking-update-prompt.json", "docs/governance/seis-goal-tracking-update-prompt.md", "schemas/seis-goal-tracking-update.schema.json", "scripts/check-seis-goal-tracking-update-prompt.mjs"],
+      "success_condition": "The prompt contract stays within the rendered character limit, references existing sources, defines eight ordered chunks, rejects padding, and exposes all proposal schema fields without secret-shaped values.",
+      "next_action": "Run before each canonical Goal Tracking update that uses the prompt package."
     }
   ]
 }

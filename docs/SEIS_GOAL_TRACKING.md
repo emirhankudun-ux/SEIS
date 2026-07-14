@@ -24,6 +24,27 @@ SEIS is not a normal website, random app, short-term demo, fake live AI wrapper,
 or uncontrolled automation playground. SEIS is a five-year creative engineering
 ecosystem.
 
+## Goal-tracking update prompt
+
+The canonical prompt for updating this file-backed Goal Tracking OS is
+[`docs/governance/seis-goal-tracking-update-prompt.md`](governance/seis-goal-tracking-update-prompt.md).
+Its machine-readable prompt contract is
+[`data/seis-goal-tracking-update-prompt.json`](../data/seis-goal-tracking-update-prompt.json),
+and its structured proposal output is validated by
+[`schemas/seis-goal-tracking-update.schema.json`](../schemas/seis-goal-tracking-update.schema.json).
+
+The requested five-million-character context is recorded as a ceiling, not as a
+literal prompt-body target. The Prompt Engine keeps each rendered prompt within
+16,384 characters; relevant context is loaded through bounded, source-linked
+chunks. Padding, duplicate source text, fake progress, and unsupported
+completion claims are forbidden.
+
+Validate the prompt contract with:
+
+```bash
+npm run check:seis-goal-tracking-update-prompt
+```
+
 ## Master Goal
 
 Build SEIS into an enterprise-grade, Apple-first, AI-native creative engineering

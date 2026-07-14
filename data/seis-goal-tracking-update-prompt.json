@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-goal-tracking-update-orchestrator",
+  "title": "SEIS Goal Tracking Update Orchestrator",
+  "status": "active",
+  "goalId": "SEIS-GOAL-003",
+  "purpose": "Update the file-backed Goal Tracking OS from inspected repository evidence without inventing progress, expanding scope silently, or requiring a monolithic prompt body.",
+  "promptPath": "docs/governance/seis-goal-tracking-update-prompt.md",
+  "proposalSchemaPath": "schemas/seis-goal-tracking-update.schema.json",
+  "proposalPath": "reports/seis-goal-tracking-update-proposal-20260714.json",
+  "validationCommand": "npm run check:seis-goal-tracking-update-prompt",
+  "characterBudget": {
+    "requestedAggregateCharacterBudget": 5000000,
+    "isLiteralBodyRequirement": false,
+    "singlePromptCharacterLimit": 16384,
+    "maxChunkCharacters": 12000,
+    "maxChunks": 416,
+    "paddingAllowed": false,
+    "unusedBudgetMustRemainUnused": true,
+    "reason": "The prompt engine already defines a bounded rendered prompt contract. The five-million-character request is recorded as an upper context budget, not as permission to add filler or duplicate source documents."
+  },
+  "canonicalSources": [
+    "AGENTS.md",
+    "project.ecosystem.yaml",
+    "docs/SEIS_GOAL_TRACKING.md",
+    "docs/goals/goal-schema.md",
+    "docs/goals/goal-tracking-system.md",
+    "docs/governance/seis-master-prompt.md",
+    "content/development/seis-goal-tracking.json",
+    "content/development/seis-goal-evidence.json",
+    "content/development/seis-goal-execution.json",
+    "content/development/seis-goal-validation-steps.json",
+    "content/development/seis-goal-roadmap-links.json"
+  ],
+  "chunks": [
+    {
+      "id": "foundation-and-identity",
+      "order": 1,
+      "maxCharacters": 12000,
+      "requiredSources": ["AGENTS.md", "project.ecosystem.yaml", "docs/SEIS_GOAL_TRACKING.md"],
+      "responsibility": "Establish project identity, authority order, Apple-first boundaries, public/private status, and the active goal namespace.",
+      "output": "A bounded execution context and a list of source records that are allowed to change."
+    },
+    {
+      "id": "goal-state-and-scope",
+      "order": 2,
+      "maxCharacters": 12000,
+      "requiredSources": ["docs/goals/goal-schema.md", "docs/goals/goal-tracking-system.md", "content/development/seis-goal-tracking.json"],
+      "responsibility": "Select the highest-priority unblocked goal, preserve its status vocabulary, define non-goals, dependencies, risks, acceptance criteria, and rollback.",
+      "output": "A small goal update plan linked to an existing canonical goal id."
+    },
+    {
+      "id": "evidence-and-execution",
+      "order": 3,
+      "maxCharacters": 12000,
+      "requiredSources": ["content/development/seis-goal-evidence.json", "content/development/seis-goal-execution.json"],
+      "responsibility": "Map implementation work to evidence, execution records, reviewer ownership, and explicit blockers. Do not turn plans into completed work.",
+      "output": "Evidence-backed task and handoff records with limitations."
+    },
+    {
+      "id": "architecture-ai-and-agent-boundaries",
+      "order": 4,
+      "maxCharacters": 12000,
+      "requiredSources": ["AGENTS.md", "docs/governance/seis-master-prompt.md", "project.ecosystem.yaml"],
+      "responsibility": "Check architecture, AI Core, provider, model, agent, MCP, tool, skill, security, and approval boundaries before proposing a change.",
+      "output": "A risk-aware change boundary and a bounded delegation plan."
+    },
+    {
+      "id": "implementation-and-validation",
+      "order": 5,
+      "maxCharacters": 12000,
+      "requiredSources": ["docs/goals/goal-tracking-system.md", "content/development/seis-goal-validation-steps.json"],
+      "responsibility": "Implement only the scoped change, run the relevant real checks, and record failed or skipped checks without replacing them with claims.",
+      "output": "Changed files, exact validation commands, results, and residual risk."
+    },
+    {
+      "id": "roadmap-and-status-reconciliation",
+      "order": 6,
+      "maxCharacters": 12000,
+      "requiredSources": ["content/development/seis-goal-roadmap-links.json", "content/development/seis-goal-tracking.json"],
+      "responsibility": "Reconcile goal, roadmap, PR queue, status, evidence, next action, and maturity without overwriting unrelated user work.",
+      "output": "A consistent source record or an explicit follow-up goal for remaining work."
+    },
+    {
+      "id": "security-and-public-boundary",
+      "order": 7,
+      "maxCharacters": 12000,
+      "requiredSources": ["AGENTS.md", "project.ecosystem.yaml", "docs/governance/seis-master-prompt.md"],
+      "responsibility": "Verify secrets, private content, provider calls, external mutation, deployment, SSH, and background execution claims remain outside the allowed boundary.",
+      "output": "Security notes, approval requirements, and a rollback statement."
+    },
+    {
+      "id": "handoff-and-repository-state",
+      "order": 8,
+      "maxCharacters": 12000,
+      "requiredSources": ["AGENTS.md", "docs/goals/goal-schema.md", "docs/goals/goal-tracking-system.md"],
+      "responsibility": "Prepare a concise handoff containing goal status, evidence, risks, blockers, next recommended goal, GitHub output, and the exact repository-state line.",
+      "output": "A reviewable run summary; never a claim of work that happened outside the active environment."
+    }
+  ],
+  "requiredPromptTerms": [
+    "AGENTS.md",
+    "project.ecosystem.yaml",
+    "SEIS-GOAL-003",
+    "npm run check:goal-tracking",
+    "npm run check:seis-goal-tracking-update-prompt",
+    "evidence",
+    "rollback",
+    "subagent",
+    "MCP",
+    "provider",
+    "public/private",
+    "Repository state:"
+  ],
+  "forbiddenClaims": [
+    "background execution",
+    "persistent agents after the session stops",
+    "fake provider or model calls",
+    "unverified build, test, deployment, or integration success",
+    "secret or private-content exposure",
+    "destructive git or filesystem mutation",
+    "completion without evidence"
+  ],
+  "outputContract": {
+    "requiredSections": [
+      "Project",
+      "Goal ID",
+      "Goal Status",
+      "Scope",
+      "Completed",
+      "Changed Files",
+      "Validation Commands",
+      "Validation Results",
+      "Failed or Skipped Checks",
+      "Security Notes",
+      "Risks",
+      "Blockers",
+      "Rollback Plan",
+      "Next Recommended Goal",
+      "Worktree Status"
+    ],
+    "requiredJsonFields": [
+      "$schema",
+      "schema_version",
+      "update_id",
+      "goal_id",
+      "requested_by",
+      "owner_role",
+      "change_reason",
+      "non_goals",
+      "affected_paths",
+      "current_status",
+      "proposed_status",
+      "status_reason",
+      "evidence_links",
+      "validation_commands",
+      "validation_results",
+      "blockers",
+      "affected_source_records",
+      "generated_outputs",
+      "approval_required",
+      "worktree_state",
+      "failed_or_skipped_checks"
+    ],
+    "repositoryStateValues": ["clean", "dirty", "blocked", "not verified"]
+  }
+}

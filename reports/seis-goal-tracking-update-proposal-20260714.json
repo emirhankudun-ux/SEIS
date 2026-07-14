@@ -1,0 +1,90 @@
+{
+  "$schema": "https://seis.dev/schemas/seis-goal-tracking-update.schema.json",
+  "schema_version": 1,
+  "update_id": "SEIS-UPDATE-001",
+  "goal_id": "SEIS-GOAL-003",
+  "requested_by": "project-owner",
+  "owner_role": "Program System",
+  "change_reason": "User-approved activation of the bounded Goal Tracking Update Orchestrator prompt package.",
+  "scope": "Add a source-backed prompt contract, structured proposal schema, validator, and evidence-linked Goal Tracking records.",
+  "non_goals": [
+    "Do not mark SEIS-GOAL-003 completed.",
+    "Do not run live providers, MCP sessions, deployment, SSH, or external mutation.",
+    "Do not stage unrelated user worktree changes."
+  ],
+  "affected_paths": [
+    "data/seis-goal-tracking-update-prompt.json",
+    "docs/governance/seis-goal-tracking-update-prompt.md",
+    "schemas/seis-goal-tracking-update.schema.json",
+    "scripts/check-seis-goal-tracking-update-prompt.mjs",
+    "content/development/seis-goal-tracking.json",
+    "content/development/seis-goal-evidence.json",
+    "content/development/seis-goal-execution.json",
+    "content/development/seis-goal-validation-steps.json",
+    "content/development/seis-goal-roadmap-links.json",
+    "content/development/seis-goal-command-center-view.json",
+    "apps/web/goal-tracking.html"
+  ],
+  "current_status": "active",
+  "proposed_status": "active",
+  "status_reason": "The Goal Tracking OS capability is improved and validated, but its broader foundation remains active with existing blockers and future work.",
+  "evidence_links": [
+    "SEIS-EVID-014",
+    "docs/governance/seis-goal-tracking-update-prompt.md",
+    "schemas/seis-goal-tracking-update.schema.json",
+    "reports/seis-goal-tracking-update-proposal-20260714.json"
+  ],
+  "validation_commands": [
+    "npm run check:seis-goal-tracking-update-prompt",
+    "npm run check:goal-tracking",
+    "npm run check:goal-command-center-view",
+    "git diff --check"
+  ],
+  "validation_results": [
+    {
+      "command": "npm run check:seis-goal-tracking-update-prompt",
+      "status": "passed",
+      "scope": "Prompt contract, source references, chunk limits, proposal schema fields, and secret-shaped pattern scan."
+    },
+    {
+      "command": "npm run check:goal-tracking",
+      "status": "passed",
+      "scope": "Canonical Goal Tracking OS records, ledgers, links, generated panels, and static page."
+    },
+    {
+      "command": "npm run check:goal-command-center-view",
+      "status": "passed",
+      "scope": "Generated Goal Tracking Center view and static page freshness."
+    },
+    {
+      "command": "git diff --check",
+      "status": "passed",
+      "scope": "Whitespace errors in the focused diff."
+    }
+  ],
+  "blockers": [
+    "Pre-existing unrelated tracked changes remain in the owner checkout.",
+    "SEIS-GOAL-003 remains a foundation goal with broader follow-up work."
+  ],
+  "risks": [
+    "A prompt contract could be mistaken for a live automation runtime.",
+    "Generated Goal Tracking outputs can drift if source records change without regeneration.",
+    "A large context budget could encourage padding if the validator and source references are bypassed."
+  ],
+  "rollback_plan": "Revert the focused prompt, schema, proposal, ledger, and generated-view changes together; leave unrelated user changes untouched and rerun the Goal Tracking validators.",
+  "affected_source_records": [
+    "content/development/seis-goal-tracking.json",
+    "content/development/seis-goal-evidence.json",
+    "content/development/seis-goal-execution.json",
+    "content/development/seis-goal-validation-steps.json",
+    "content/development/seis-goal-roadmap-links.json"
+  ],
+  "generated_outputs": [
+    "content/development/seis-goal-command-center-view.json",
+    "apps/web/goal-tracking.html"
+  ],
+  "approval_required": false,
+  "next_action": "Use the structured proposal schema and run both Goal Tracking validators before each future canonical record update.",
+  "worktree_state": "dirty",
+  "failed_or_skipped_checks": []
+}

@@ -69,6 +69,10 @@ Rules:
 - `content/development/seis-goal-roadmap-links.json`
 - `content/development/seis-universe-omega-goal-system.json`
 - `content/development/seis-universe-omega-phase-evidence.json`
+- `data/seis-goal-tracking-update-prompt.json`
+- `schemas/seis-goal-tracking-update.schema.json`
+- `docs/governance/seis-goal-tracking-update-prompt.md`
+- `reports/seis-goal-tracking-update-proposal-20260714.json`
 - `docs/goals/evidence-ledger.md`
 - `docs/goals/execution-board.md`
 - `docs/goals/review-cadence.md`
@@ -85,6 +89,7 @@ Rules:
 - `docs/goals/command-center-view-model.md`
 - `scripts/check-goal-tracking.mjs`
 - `scripts/check-seis-universe-omega-goal-system.mjs`
+- `scripts/check-seis-goal-tracking-update-prompt.mjs`
 
 Run:
 

@@ -151,12 +151,19 @@
       "target_phase": "foundation",
       "related_docs": [
         "docs/goals/goal-tracking-system.md",
-        "docs/goals/goal-schema.md"
+        "docs/goals/goal-schema.md",
+        "docs/governance/seis-goal-tracking-update-prompt.md"
       ],
       "related_files": [
         "content/development/seis-goal-tracking.json",
         "content/development/seis-goal-evidence.json",
-        "content/development/seis-goal-execution.json"
+        "content/development/seis-goal-execution.json",
+        "content/development/seis-goal-validation-steps.json",
+        "content/development/seis-goal-roadmap-links.json",
+        "data/seis-goal-tracking-update-prompt.json",
+        "schemas/seis-goal-tracking-update.schema.json",
+        "scripts/check-seis-goal-tracking-update-prompt.mjs",
+        "reports/seis-goal-tracking-update-proposal-20260714.json"
       ],
       "dependencies": [
         "Repository docs"
@@ -169,17 +176,19 @@
         "Fake completion if validation gaps are hidden"
       ],
       "evidence_links": [
-        "docs/reviews/GOAL_TRACKING_REVIEW.md"
+        "docs/reviews/GOAL_TRACKING_REVIEW.md",
+        "reports/seis-goal-tracking-update-proposal-20260714.json"
       ],
-      "validation_method": "npm run check:goal-tracking validates docs, categories, goals, evidence, and execution records.",
-      "next_action": "Run validator and keep completion claims scoped.",
+      "validation_method": "npm run check:goal-tracking and npm run check:seis-goal-tracking-update-prompt validate source records, the bounded prompt package, proposal schema, evidence, and execution records.",
+      "next_action": "Use the structured proposal contract and run both validators before each canonical Goal Tracking update; keep completion claims scoped.",
       "created_at": "2026-06-22",
       "related_milestone": "SEIS-MS-001",
       "related_epic": "SEIS-EPIC-001",
-      "last_reviewed": "not reviewed",
+      "last_reviewed": "2026-07-14",
       "review_cadence": "weekly",
       "notes": [
-        "Foundation metadata placeholder; update only with evidence-backed review notes."
+        "User-approved bounded Goal Tracking Update Orchestrator prompt package added on 2026-07-14.",
+        "The five-million-character request is modeled as an aggregate context ceiling; no filler, live provider claim, or automatic completion claim is allowed."
       ]
     },
     {

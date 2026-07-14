@@ -15,6 +15,7 @@ been performed.
 | `SEIS-VAL-001` | active | `npm run check:goal-tracking` | Passing output supports source-record consistency only. |
 | `SEIS-VAL-002` | active | `npm run check:goal-command-center-view` | Passing output supports generated-view freshness only. |
 | `SEIS-VAL-003` | active | scoped sensitive-pattern scan | No matches supports scoped exposure hygiene only. |
+| `SEIS-VAL-004` | active | `npm run check:seis-goal-tracking-update-prompt` | Passing output supports the bounded prompt contract and proposal schema only. |
 
 ## Rules
 

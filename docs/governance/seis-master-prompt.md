@@ -53,6 +53,9 @@ Companion governance surfaces:
 - reports/seis-master-objective-coverage.md
 - data/seis-operational-goal-tracker.json
 - reports/seis-master-prompt-governance.md
+- docs/governance/seis-goal-tracking-update-prompt.md
+- data/seis-goal-tracking-update-prompt.json
+- schemas/seis-goal-tracking-update.schema.json
 
 ## Security Rules
 

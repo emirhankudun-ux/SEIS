@@ -135,6 +135,7 @@ ios/
 *.json
 *.config.json
 !content/development/seis-*.json
+!data/seis-goal-tracking-update-prompt.json
 !data/seis-runtime-capability-atlas.json
 !apps/seis-demo-web/data/seis-ai-core-version-promotion-map.json
 !apps/seis-demo-web/data/seis-sub-agent-five-year-plan-view.json
@@ -154,6 +155,7 @@ ios/
 !apps/seis-core/data/seis-ai-core-runtime-snapshot.json
 !reports/seis-sub-agent-five-year-demo-evidence.json
 !reports/seis-sub-agent-five-year-demo-run.json
+!reports/seis-goal-tracking-update-proposal-20260714.json
 !reports/seis-model-scaling/20b-16gb-memory-benchmark.json
 !packages/seis-ai/models/seis-model-family-registry.json
 !packages/seis-ai/data/model-benchmark-suite-v0.json
@@ -231,6 +233,7 @@ docs/*
 !schemas/
 schemas/*
 !schemas/seis-goal-execution.schema.json
+!schemas/seis-goal-tracking-update.schema.json
 
 # Local accidental artifacts from monorepo preparation
 SEİS/

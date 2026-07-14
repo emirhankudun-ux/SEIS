@@ -9,6 +9,13 @@ horizon, repository areas, definition of done, validation, risk, rollback, and
 GitHub output without adding a package dependency. Historical Goal Tracking OS
 records keep their established shape and remain the only canonical goal IDs.
 
+Canonical Goal Tracking updates use the bounded prompt contract at
+[`docs/governance/seis-goal-tracking-update-prompt.md`](../governance/seis-goal-tracking-update-prompt.md)
+and proposal schema at
+[`schemas/seis-goal-tracking-update.schema.json`](../../schemas/seis-goal-tracking-update.schema.json).
+The prompt must emit a structured proposal before a source record changes; no
+status transition is valid without evidence and validation.
+
 ## Goal Object
 
 | Field | Required | Notes |

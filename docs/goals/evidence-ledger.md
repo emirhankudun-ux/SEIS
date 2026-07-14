@@ -33,3 +33,4 @@ claims unless the named scope is fully proved.
 | `SEIS-EVID-011` | passed | Goal cycle plan records validate. |
 | `SEIS-EVID-012` | passed | Risk and validation step records validate. |
 | `SEIS-EVID-013` | passed | Goal roadmap links validate. |
+| `SEIS-EVID-014` | passed | Bounded Goal Tracking update prompt, proposal schema, and validator validate. |
