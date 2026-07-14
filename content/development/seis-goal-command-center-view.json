@@ -1162,7 +1162,7 @@
           "Does not run live observability, knowledge-graph synchronization, providers, models, plugins, MCP servers, background agents, deployment, or enterprise release operations.",
           "Does not resolve the pre-existing repository hygiene blocker."
         ],
-        "nextAction": "Create the focused plugin-reference governance commit, record its short hash, regenerate the Command Center view if needed, and rerun all focused validators."
+        "nextAction": "Keep Enterprise Expansion V3 terms specification-only and create separate implementation Goals only with evidence-backed scope."
       }
     ],
     "readinessConnections": [
