@@ -15,7 +15,7 @@ import {
   buildReadOnlyRouteDecision,
   validateReadOnlyRouteDecision,
 } from "./read-only-router.mjs";
-import { buildSeisPluginMcpMesh } from "../lib/plugin-mcp-mesh.mjs";
+import { probeSeisPluginMcpMesh } from "../lib/plugin-mcp-mesh.mjs";
 
 export const AI_CORE_RUNTIME_SNAPSHOT_ID = "seis-ai-core-runtime-snapshot";
 export const AI_CORE_RUNTIME_SNAPSHOT_PATH = "apps/seis-core/data/seis-ai-core-runtime-snapshot.json";
@@ -114,7 +114,7 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
   const provider = aiCoreProviderStatus(repoRoot);
   const plugin = pluginIntegrationStatus(repoRoot);
   const mcp = readJson(repoRoot, MCP_RUNTIME_CONTRACT_PATH);
-  const pluginMcpMesh = buildSeisPluginMcpMesh(repoRoot);
+  const pluginMcpMesh = probeSeisPluginMcpMesh(repoRoot);
   const applicationIntegration = readJson(repoRoot, AI_CORE_APPLICATION_INTEGRATION_PATH);
   const agentRegistry = buildAgentRegistrySnapshot(readJson(repoRoot, SECOND_BRAIN_SYSTEM_PATH));
 
@@ -275,6 +275,7 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
       id: mcp.id,
       status: mcp.status,
       transport: mcp.transport,
+      lifecycle: mcp.lifecycle,
       fallbackRuntime: mcp.fallbackRuntime,
       toolCount: mcp.toolCount,
       resourceCount: mcp.resourceCount,

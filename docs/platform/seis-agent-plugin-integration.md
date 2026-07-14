@@ -69,7 +69,7 @@ panels:
   `seis-design@personal`, and `seis-data@personal` to explicit SEIS AI Core
   version gates, direct plan/status tool pairs, validation gates, and
   `plan-only` permission boundaries.
-- `MCP Runtime Contract` in Installed AI displays the local stdio JSON-RPC
+- `MCP Runtime Contract` in Installed AI displays the local newline-delimited stdio JSON-RPC
   contract from `content/development/seis-ai-core-mcp-runtime-contract.json`,
   37 tools, 30 resources, 3 prompts, the no-dependency fallback transport, and
   the smoke-test gate that proves SEIS AI Core can read plugin/provider/model-scaling

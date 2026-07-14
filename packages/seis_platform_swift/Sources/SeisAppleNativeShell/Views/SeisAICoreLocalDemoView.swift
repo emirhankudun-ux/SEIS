@@ -2006,7 +2006,7 @@ struct SeisAICoreLocalDemoView: View {
             Label("MCP runtime contract", systemImage: "point.3.connected.trianglepath.dotted")
                 .font(.subheadline.weight(.semibold))
         }
-        .accessibilityLabel("MCP runtime contract. Local stdio JSON-RPC smoke-verified with 37 tools, 30 resources, 3 prompts, and four verified surfaces. No remote or credentialed execution.")
+        .accessibilityLabel("MCP runtime contract. Local newline-delimited stdio JSON-RPC smoke-verified with initialize, notifications initialized, and tools list; 37 tools, 30 resources, 3 prompts, and four verified surfaces. No remote or credentialed execution.")
     }
 
     private func pluginIntegrationDisclosure(snapshot: SeisAgentPluginIntegrationSnapshot) -> some View {

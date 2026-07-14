@@ -146,6 +146,27 @@ public struct SeisAIProviderDescriptor: Codable, Equatable, Identifiable, Sendab
         requiresHumanApproval: false
     )
 
+    public static func localLoopback(modelIdentifier: String = "ollama-local") -> SeisAIProviderDescriptor {
+        SeisAIProviderDescriptor(
+            id: "ollama-local",
+            displayName: "Ollama Local Loopback",
+            modelIdentifier: modelIdentifier,
+            publicState: .available,
+            enabled: true,
+            routingEligible: true,
+            transport: .localProcess,
+            credentialBoundary: .none,
+            modelBacked: true,
+            capabilities: ["planning", "repository-review", "summarization", "code-review"],
+            allowedContent: [.publicContent, .repositoryMetadata],
+            maximumContextTokens: 32_768,
+            supportsTools: false,
+            costTier: .low,
+            latencyTier: .interactive,
+            requiresHumanApproval: true
+        )
+    }
+
     public var validationIssues: [String] {
         var issues: [String] = []
         if id.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {

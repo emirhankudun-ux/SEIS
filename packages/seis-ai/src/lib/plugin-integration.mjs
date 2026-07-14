@@ -829,6 +829,8 @@ export function aiCoreVersionStatus(repoRoot, options = {}) {
           ? {
               id: mcpRuntimeContract.id,
               status: mcpRuntimeContract.status,
+              transport: mcpRuntimeContract.transport,
+              lifecycle: mcpRuntimeContract.lifecycle,
               resourceUri: mcpRuntimeContract.resourceUri,
               toolCount: mcpRuntimeContract.toolCount,
               resourceCount: mcpRuntimeContract.resourceCount,
@@ -965,6 +967,8 @@ export function aiCoreVersionPromotionDryRun(repoRoot, input = {}) {
         ? {
             id: mcpRuntimeContract.id,
             status: mcpRuntimeContract.status,
+            transport: mcpRuntimeContract.transport,
+            lifecycle: mcpRuntimeContract.lifecycle,
             resourceUri: mcpRuntimeContract.resourceUri,
             resourceCount: mcpRuntimeContract.resourceCount,
             smokeTest: mcpRuntimeContract.smokeTest,

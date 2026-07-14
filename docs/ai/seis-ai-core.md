@@ -42,7 +42,7 @@ The foundation includes:
 | AI Core constellation inspector | Browser-smoke verified Local Demo surface | `apps/seis-demo-web/index.html`, `apps/seis-demo-web/script.js`, `scripts/check-product-experience-browser-smoke.mjs` | This proves only local UI integration of installed AI routes, personal plugin lanes, and the MCP runtime contract. | Keep the inspector backed by generated plan-view data and product browser smoke before claiming broader runtime integration. |
 | AI Workforce Training | Active local seed training contract | `docs/ai/ai-workforce-training.md`, `content/development/seis-ai-workforce-training-plan.json`, `scripts/check-seis-ai-workforce-training.mjs`, `scripts/run-seis-ai-workforce-training.mjs` | No live provider calls, credential reads, cloud fine-tuning, dataset downloads, SSH, deployment, or runtime authority are performed. | Use installed assistants only as supervised candidate reviewers; rebuild deterministic local seed artifacts with `npm run automation:seis-ai-workforce-training`. |
 | Provider credentials | Statically audited | `docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md` | No runtime verification was performed. | Keep keys optional, server-only, and disabled until adapter tests exist. |
-| Local model mode | Planned | No local model adapter found in this branch. | No runtime integration. | Define Ollama/localhost as optional zero-key future mode. |
+| Local model mode | Opt-in adapter implemented, live service unverified | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAILocalLoopbackProviderAdapter.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAIRuntimeTests.swift` | No real Ollama service call was performed in this environment; the default runtime remains Local Demo-only. | Enable only with `approvedLocalLoopback`, an explicit local-only route, a loopback HTTP endpoint, and a human approval boundary. |
 | Evaluation | Implemented as local readiness evaluator | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAICoreReadinessEvaluator.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAICoreReadinessEvaluatorTests.swift`, canonical workforce assignment, training, model-planning, promotion, version-registry, operating-model, fixture-pack, review-ledger, scaling-council, MCP, plugin-integration, provider, router, intake, training-curriculum, public-readiness, operations-readiness, independent-evidence, GitHub-readiness, AGI-public-evidence, knowledge-system, data-schema-registry, design-component-inventory, universal-capability-kernel, action-governance, agent-governance, active-mission-board, and long-horizon-mission-kernel snapshots | No live-model benchmark or provider evaluation exists. | Keep the report scoped to Local Demo readiness and add live-adapter evals only after backend approval. |
 | AGI evaluation protocol | Bound as metadata-only Apple readiness evidence | `content/development/seis-agi-evaluation-protocol.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIEvaluationProtocolSnapshot.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAGIEvaluationProtocolSnapshotTests.swift` | Protocol is draft/not-run; no AGI, benchmark, weights, inference, provider, or route-eligibility evidence exists. | Keep the promotion default blocked and require independent evidence, external review, and human approval before any future claim or route. |
 | Full-stack contract | Bound as metadata-only Apple application boundary | `content/development/seis-fullstack-contract.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisFullStackContractSnapshot.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisFullStackContractSnapshotTests.swift` | First server/API/data slice remains read-only Local Demo; auth, database, live AI, SSH, deployment, and GitHub writes are not enabled. | Keep no-key startup and static fallback while adding future server adapters only behind backend and human approval. |
@@ -67,6 +67,9 @@ The foundation includes:
 - Missing provider keys disable only the provider, not the whole product.
 - Browser code must not receive provider secrets.
 - Local-only mode must never fall back to cloud silently.
+- The Ollama-compatible loopback adapter is disabled by default, accepts only
+  `http://127.0.0.1`, `http://localhost`, or `http://[::1]`, and never reads a
+  client credential.
 - Fallback identity must be visible to the user.
 - Claude-style interfaces must not label non-Anthropic output as Claude.
 - SEIS plugin lane tools may inspect repo-local manifests, skills, and lane
@@ -319,7 +322,8 @@ checkpoints, or claim SEIS owns frontier or AGI weights.
 
 The panel also reads
 `content/development/seis-ai-core-mcp-runtime-contract.json`. It exposes
-the local stdio JSON-RPC transport, 37 tools, 30 resources, 3 prompts, four
+the local newline-delimited stdio JSON-RPC transport, the initialize ->
+notifications/initialized -> tools/list lifecycle, 37 tools, 30 resources, 3 prompts, four
 verified MCP surfaces, fallback runtime, smoke test, and credential boundary.
 This is local MCP smoke evidence only; it does not authenticate remote MCP
 servers or execute credentials, SSH, deployment, GitHub mutation, or

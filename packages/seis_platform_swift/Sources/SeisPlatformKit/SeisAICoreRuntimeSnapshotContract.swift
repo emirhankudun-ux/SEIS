@@ -438,6 +438,7 @@ public struct SeisAICorePluginMCPServer: Codable, Equatable, Identifiable, Senda
 public struct SeisAICorePluginMCPBoundary: Codable, Equatable, Sendable {
     public let sourceOfTruth: String
     public let transport: String
+    public let localProbePerformed: Bool
     public let liveSessionStarted: Bool
     public let probeOptIn: Bool
     public let shell: Bool
@@ -499,6 +500,7 @@ public struct SeisAICoreMCPRuntimeSnapshot: Codable, Equatable, Identifiable, Se
     public let id: String
     public let status: String
     public let transport: String
+    public let lifecycle: String
     public let fallbackRuntime: String
     public let toolCount: Int
     public let resourceCount: Int
@@ -666,6 +668,47 @@ public struct SeisAICoreRuntimeSnapshotContract: Codable, Equatable, Sendable {
         "cloud-agent",
         "automation-agent",
         "product-agent"
+    ]
+
+    public static let expectedPluginMCPToolNames: [String: [String]] = [
+        "seis-ai-agent": [
+            "seis_agent_lanes",
+            "seis_ai_agent_plan",
+            "seis_ai_agent_status",
+            "seis_automation_plan",
+            "seis_automation_status",
+            "seis_cloud_plan",
+            "seis_cloud_status",
+            "seis_code_plan",
+            "seis_code_status",
+            "seis_data_plan",
+            "seis_data_status",
+            "seis_design_plan",
+            "seis_design_status",
+            "seis_governance_plan",
+            "seis_governance_status",
+            "seis_hub_plan",
+            "seis_hub_status",
+            "seis_product_plan",
+            "seis_product_status",
+            "seis_research_plan",
+            "seis_research_status",
+            "seis_security_plan",
+            "seis_security_status"
+        ],
+        "seis": [
+            "seis_llm_package_snapshot",
+            "seis_llm_plan_request",
+            "seis_llm_role_plan_request",
+            "seis_repos_bridge_status",
+            "seis_specialist_lane_plan",
+            "seis_specialist_lane_status",
+            "seis_specialist_lanes"
+        ],
+        "seis-cloud": ["seis_cloud_plan", "seis_cloud_status"],
+        "seis-code": ["seis_code_plan", "seis_code_status"],
+        "seis-design": ["seis_design_plan", "seis_design_status"],
+        "seis-data": ["seis_data_plan", "seis_data_status"]
     ]
 
     public let id: String
@@ -1299,7 +1342,8 @@ private extension SeisAICoreRuntimeSnapshotContract {
         check(pluginMesh.mcpMesh.serverCount == pluginMesh.mcpMesh.servers.count, "pluginMesh.mcpMesh.serverCount must match decoded servers.")
         check(pluginMesh.mcpMesh.serverCount == 6, "pluginMesh.mcpMesh must expose exactly six bundled MCP entrypoints.")
         check(pluginMesh.mcpMesh.configuredServerCount == 6, "pluginMesh.mcpMesh must expose six configured MCP entrypoints.")
-        check(pluginMesh.mcpMesh.status == "configured-local-read-only", "pluginMesh.mcpMesh must remain configured and read-only.")
+        check(pluginMesh.mcpMesh.status == "probe-verified-local-read-only", "pluginMesh.mcpMesh must remain probe-verified and read-only.")
+        check(pluginMesh.mcpMesh.boundary.localProbePerformed, "pluginMesh.mcpMesh must retain local probe evidence.")
         check(pluginMesh.mcpMesh.boundary.liveSessionStarted == false, "pluginMesh.mcpMesh must not claim a live MCP session.")
         check(pluginMesh.mcpMesh.boundary.probeOptIn, "pluginMesh.mcpMesh probing must remain opt-in.")
         check(pluginMesh.mcpMesh.boundary.shell == false, "pluginMesh.mcpMesh must not enable a shell.")
@@ -1310,7 +1354,7 @@ private extension SeisAICoreRuntimeSnapshotContract {
         check(Set(pluginMesh.mcpMesh.servers.map(\.id)).count == pluginMesh.mcpMesh.servers.count, "pluginMesh.mcpMesh server IDs must be unique.")
         for server in pluginMesh.mcpMesh.servers {
             let path = "pluginMesh.mcpMesh.servers[\(server.id)]"
-            check(server.status == "configured", "\(path).status must be configured in the static native snapshot.")
+            check(server.status == "probe-verified", "\(path).status must be probe-verified in the native snapshot.")
             check(server.serverId == server.id, "\(path).serverId must match id.")
             check(server.configExists && server.pluginManifestExists && server.skillRootExists && server.entrypointExists, "\(path) must have local source files.")
             check(server.command == "node", "\(path).command must remain node.")
@@ -1320,9 +1364,10 @@ private extension SeisAICoreRuntimeSnapshotContract {
             check(server.credentialsRead == false, "\(path).credentialsRead must be false.")
             check(server.networkCalled == false, "\(path).networkCalled must be false.")
             check(server.externalMutationPerformed == false, "\(path).externalMutationPerformed must be false.")
-            check(server.toolInventory.mode == "not-probed", "\(path).toolInventory must remain static until opt-in probe evidence is supplied.")
-            check(server.toolInventory.toolCount == nil, "\(path).toolInventory.toolCount must remain nil until probed.")
-            check(server.toolInventory.toolNames.isEmpty, "\(path).toolInventory.toolNames must remain empty until probed.")
+            check(server.toolInventory.mode == "stdio-probe", "\(path).toolInventory must identify the local stdio probe.")
+            let expectedToolNames = Self.expectedPluginMCPToolNames[server.id] ?? []
+            check((server.toolInventory.toolCount ?? -1) == expectedToolNames.count, "\(path).toolInventory.toolCount must match the canonical probe inventory.")
+            check(server.toolInventory.toolNames == expectedToolNames, "\(path).toolInventory.toolNames must match the canonical probe inventory.")
         }
 
         for lane in lanes {
@@ -1345,7 +1390,8 @@ private extension SeisAICoreRuntimeSnapshotContract {
 
         check(mcpRuntime.id == "seis-ai-core-mcp-runtime-contract", "mcpRuntime.id must identify the MCP contract.")
         check(mcpRuntime.status == "local-smoke-verified", "mcpRuntime.status must remain local-smoke-verified.")
-        check(mcpRuntime.transport == "stdio JSON-RPC", "mcpRuntime.transport must remain local stdio JSON-RPC.")
+        check(mcpRuntime.transport == "stdio newline-delimited JSON-RPC", "mcpRuntime.transport must remain newline-delimited local stdio JSON-RPC.")
+        check(mcpRuntime.lifecycle == "initialize -> notifications/initialized -> tools/list", "mcpRuntime.lifecycle must remain initialize -> notifications/initialized -> tools/list.")
         check(counts == Self.expectedMCPCounts, "mcpRuntime must report exactly 37 tools, 30 resources, and 3 prompts.")
         check(Set(surfaceIDs).count == surfaceIDs.count, "mcpRuntime.surfaces must not contain duplicate IDs.")
         check(surfaceByID["tools"]?.count == counts.tools, "mcpRuntime tools surface count must match toolCount.")

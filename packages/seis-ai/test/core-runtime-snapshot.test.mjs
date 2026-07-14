@@ -34,7 +34,12 @@ describe("SEIS AI Core runtime snapshot", () => {
     assert.equal(snapshot.pluginMesh.personalLaneToolCount, 10);
     assert.equal(snapshot.pluginMesh.mcpMesh.serverCount, 6);
     assert.equal(snapshot.pluginMesh.mcpMesh.configuredServerCount, 6);
+    assert.equal(snapshot.pluginMesh.mcpMesh.status, "probe-verified-local-read-only");
     assert.equal(snapshot.pluginMesh.mcpMesh.boundary.liveSessionStarted, false);
+    assert.equal(snapshot.pluginMesh.mcpMesh.boundary.localProbePerformed, true);
+    assert.equal(snapshot.pluginMesh.mcpMesh.probe.lifecycle, "initialize -> notifications/initialized -> tools/list");
+    assert.equal(snapshot.pluginMesh.mcpMesh.servers.reduce((sum, server) => sum + server.toolInventory.toolCount, 0), 38);
+    assert.ok(snapshot.pluginMesh.mcpMesh.servers.every((server) => server.toolInventory.mode === "stdio-probe"));
     assert.equal(snapshot.agentRegistry.managedLaneCount, 9);
     assert.equal(snapshot.agentRegistry.agentCount, 13);
     assert.equal(snapshot.agentRegistry.id, "seis-second-brain-system");
@@ -46,6 +51,8 @@ describe("SEIS AI Core runtime snapshot", () => {
     assert.equal(snapshot.mcpRuntime.toolCount, 37);
     assert.equal(snapshot.mcpRuntime.resourceCount, 30);
     assert.equal(snapshot.mcpRuntime.promptCount, 3);
+    assert.equal(snapshot.mcpRuntime.transport, "stdio newline-delimited JSON-RPC");
+    assert.equal(snapshot.mcpRuntime.lifecycle, "initialize -> notifications/initialized -> tools/list");
     assert.equal(snapshot.router.scenarioCount, 7);
 
     assert.deepEqual(

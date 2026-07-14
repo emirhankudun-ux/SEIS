@@ -304,7 +304,8 @@ describe("seis-mcp stdio smoke", () => {
     const payload = JSON.parse(resource.result.contents[0].text);
     assert.equal(payload.id, "seis-ai-core-mcp-runtime-contract");
     assert.equal(payload.resourceCount, 30);
-    assert.equal(payload.transport, "stdio JSON-RPC");
+    assert.equal(payload.transport, "stdio newline-delimited JSON-RPC");
+    assert.equal(payload.lifecycle, "initialize -> notifications/initialized -> tools/list");
   });
 
   it("reads the SEIS AI Core provider registry resource through the protocol", async () => {

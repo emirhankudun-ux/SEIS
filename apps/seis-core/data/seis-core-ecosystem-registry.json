@@ -153,7 +153,7 @@
   "mcpRuntime": {
     "id": "seis-ai-core-mcp-runtime-contract",
     "status": "local-smoke-verified",
-    "transport": "stdio JSON-RPC",
+    "transport": "stdio newline-delimited JSON-RPC",
     "toolCount": 37,
     "resourceCount": 30,
     "promptCount": 3,

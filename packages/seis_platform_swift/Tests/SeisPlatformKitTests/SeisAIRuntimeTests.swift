@@ -99,6 +99,89 @@ struct SeisAIRuntimeTests {
         requireSendable(runtime)
     }
 
+    @Test func localLoopbackAdapterIsOptInAndReportsRealExecutionTruth() async throws {
+        let client = RecordingLoopbackHTTPClient(
+            responseData: Data(#"{"model":"llama3.2:3b","response":"local model response"}"#.utf8)
+        )
+        let adapter = try SeisAILocalLoopbackProviderAdapter(
+            endpoint: URL(string: "http://127.0.0.1:11434/api/generate")!,
+            modelIdentifier: "llama3.2:3b",
+            httpClient: client
+        )
+        let runtime = try SeisAIRuntime(
+            adapters: [adapter],
+            executionMode: .approvedLocalLoopback
+        )
+        let request = SeisAIProviderExecutionRequest(
+            id: "local-loopback-execution",
+            routing: SeisAIRoutingRequest(
+                id: "local-loopback-execution",
+                taskType: "repository readiness plan",
+                capability: "planning",
+                privacyMode: .localOnly,
+                contentClassification: .repositoryMetadata,
+                localOnly: true,
+                maximumCostTier: .low,
+                preferredLatencyTier: .interactive,
+                requestedProviderID: "ollama-local"
+            ),
+            input: "Produce a bounded repository readiness plan."
+        )
+
+        let result = await runtime.execute(request)
+        let capturedRequest = try #require(await client.request())
+        let body = try #require(capturedRequest.httpBody)
+        let json = try #require(JSONSerialization.jsonObject(with: body) as? [String: Any])
+
+        #expect(result.outcome == .completedApprovedProvider)
+        #expect(result.providerID == "ollama-local")
+        #expect(result.modelIdentifier == "llama3.2:3b")
+        #expect(result.modelGenerated)
+        #expect(result.adapterInvocationPerformed)
+        #expect(result.executionCompleted)
+        #expect(result.providerCallPerformed)
+        #expect(result.networkCallPerformed)
+        #expect(!result.clientCredentialRead)
+        #expect(json["model"] as? String == "llama3.2:3b")
+        #expect(json["prompt"] as? String == "Produce a bounded repository readiness plan.")
+        #expect(json["stream"] as? Bool == false)
+        #expect(capturedRequest.value(forHTTPHeaderField: "Authorization") == nil)
+    }
+
+    @Test func localLoopbackEndpointRejectsNonLoopbackHosts() {
+        #expect(throws: SeisAILocalLoopbackProviderError.invalidEndpoint("Only http loopback endpoints are allowed: 127.0.0.1, localhost, or ::1.")) {
+            _ = try SeisAILocalLoopbackProviderAdapter(endpoint: URL(string: "https://example.com/api/generate")!)
+        }
+    }
+
+    @Test func localLoopbackAdapterRejectsNonSuccessResponses() async throws {
+        let adapter = try SeisAILocalLoopbackProviderAdapter(
+            httpClient: RecordingLoopbackHTTPClient(
+                responseData: Data(#"{"error":"model unavailable"}"#.utf8),
+                statusCode: 503
+            )
+        )
+
+        do {
+            _ = try await adapter.execute(localDemoExecutionRequest(id: "local-loopback-service-unavailable"))
+            #expect(Bool(false), "a non-success loopback response must fail closed")
+        } catch let error as SeisAILocalLoopbackProviderError {
+            #expect(error == .unexpectedStatusCode(503))
+        }
+    }
+
+    @Test func localLoopbackAdapterIsRejectedByTheDefaultRuntimeMode() throws {
+        let adapter = try SeisAILocalLoopbackProviderAdapter(
+            httpClient: RecordingLoopbackHTTPClient(
+                responseData: Data(#"{"response":"unused"}"#.utf8)
+            )
+        )
+
+        #expect(throws: SeisAIRuntimeConfigurationError.nonDemoAdapters(["ollama-local"])) {
+            _ = try SeisAIRuntime(adapters: [adapter])
+        }
+    }
+
     @Test func routerNeverFallsBackWithoutExplicitPolicy() {
         let router = SeisAIModelRouter()
         let noFallbackRequest = SeisAIRoutingRequest(
@@ -360,6 +443,32 @@ private actor FakeLocalDemoAdapter: SeisAIProviderAdapter {
 
     func invocationCount() -> Int {
         invocations
+    }
+}
+
+private actor RecordingLoopbackHTTPClient: SeisAILocalLoopbackHTTPClient {
+    let responseData: Data
+    let statusCode: Int
+    private var lastRequest: URLRequest?
+
+    init(responseData: Data, statusCode: Int = 200) {
+        self.responseData = responseData
+        self.statusCode = statusCode
+    }
+
+    func data(for request: URLRequest) async throws -> (Data, URLResponse) {
+        lastRequest = request
+        let response = HTTPURLResponse(
+            url: request.url!,
+            statusCode: statusCode,
+            httpVersion: nil,
+            headerFields: ["Content-Type": "application/json"]
+        )!
+        return (responseData, response)
+    }
+
+    func request() -> URLRequest? {
+        lastRequest
     }
 }
 

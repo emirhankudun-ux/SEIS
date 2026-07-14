@@ -4,7 +4,8 @@
   "status": "local-smoke-verified",
   "sourcePath": "content/development/seis-ai-core-mcp-runtime-contract.json",
   "resourceUri": "seis://ai/mcp-runtime-contract.json",
-  "transport": "stdio JSON-RPC",
+  "transport": "stdio newline-delimited JSON-RPC",
+  "lifecycle": "initialize -> notifications/initialized -> tools/list",
   "fallbackRuntime": "LightweightMcpServer no-dependency fallback",
   "fallback": "LightweightMcpServer no-dependency fallback",
   "officialSdk": "@modelcontextprotocol/sdk remains optional unless dependencies are installed",
@@ -24,7 +25,7 @@
       "count": 37,
       "state": "verified",
       "method": "tools/list + tools/call",
-      "evidence": "29 MCP smoke tests pass through stdio JSON-RPC",
+      "evidence": "29 MCP smoke tests pass through newline-delimited stdio JSON-RPC",
       "duty": "Expose repo-backed SEIS AI checks, provider-neutral read-only route decisions, personal plugin lane tools, the five-lane plan and bounded local-check cycle, provider registry status, model scaling status, and AI Core version/sub-agent tools."
     },
     {

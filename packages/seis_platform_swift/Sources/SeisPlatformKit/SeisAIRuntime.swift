@@ -1,12 +1,16 @@
 import Foundation
 
 public struct SeisAIProviderExecutionRequest: Codable, Equatable, Identifiable, Sendable {
+    public static let maximumInputLength = 32_768
+
     public let id: String
     public let routing: SeisAIRoutingRequest
+    public let input: String?
 
-    public init(id: String, routing: SeisAIRoutingRequest) {
+    public init(id: String, routing: SeisAIRoutingRequest, input: String? = nil) {
         self.id = id
         self.routing = routing
+        self.input = input
     }
 
     public var validationIssues: [String] {
@@ -16,6 +20,14 @@ public struct SeisAIProviderExecutionRequest: Codable, Equatable, Identifiable, 
         }
         if routing.contentClassification == .secret || routing.contentClassification == .unknown {
             issues.append("secret or unknown content is not executable")
+        }
+        if let input {
+            if input.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                issues.append("execution input must not be empty when provided")
+            }
+            if input.count > Self.maximumInputLength {
+                issues.append("execution input exceeds the \(Self.maximumInputLength)-character limit")
+            }
         }
         return issues
     }
@@ -149,9 +161,15 @@ public enum SeisAIRuntimeConfigurationError: Error, Equatable, Sendable {
     case nonDemoAdapters([String])
 }
 
+public enum SeisAIRuntimeExecutionMode: String, Codable, Equatable, Sendable {
+    case localDemoOnly = "local-demo-only"
+    case approvedLocalLoopback = "approved-local-loopback"
+}
+
 public actor SeisAIRuntime {
     private let router: SeisAIModelRouter
     private let adaptersByID: [String: any SeisAIProviderAdapter]
+    private let executionMode: SeisAIRuntimeExecutionMode
     private let agentRuntime: SeisAIAgentPlanRuntime?
     private let personalLaneRuntime: SeisAIPersonalLaneRuntime?
     private let evidenceLedger: SeisAIExecutionEvidenceLedger
@@ -161,7 +179,8 @@ public actor SeisAIRuntime {
         router: SeisAIModelRouter = SeisAIModelRouter(),
         agentRuntime: SeisAIAgentPlanRuntime? = nil,
         personalLaneRuntime: SeisAIPersonalLaneRuntime? = nil,
-        evidenceLedger: SeisAIExecutionEvidenceLedger = SeisAIExecutionEvidenceLedger()
+        evidenceLedger: SeisAIExecutionEvidenceLedger = SeisAIExecutionEvidenceLedger(),
+        executionMode: SeisAIRuntimeExecutionMode = .localDemoOnly
     ) throws {
         let duplicateProviderIDs = adapters
             .reduce(into: [String: Int]()) { counts, adapter in
@@ -174,12 +193,19 @@ public actor SeisAIRuntime {
             throw SeisAIRuntimeConfigurationError.duplicateProviderIDs(duplicateProviderIDs)
         }
 
-        let nonDemoAdapterIDs = adapters
-            .filter { $0.descriptor.transport != .deterministicLocalDemo }
+        let unsupportedAdapterIDs = adapters
+            .filter { adapter in
+                switch executionMode {
+                case .localDemoOnly:
+                    return adapter.descriptor.transport != .deterministicLocalDemo
+                case .approvedLocalLoopback:
+                    return ![.deterministicLocalDemo, .localProcess].contains(adapter.descriptor.transport)
+                }
+            }
             .map(\.descriptor.id)
             .sorted()
-        guard nonDemoAdapterIDs.isEmpty else {
-            throw SeisAIRuntimeConfigurationError.nonDemoAdapters(nonDemoAdapterIDs)
+        guard unsupportedAdapterIDs.isEmpty else {
+            throw SeisAIRuntimeConfigurationError.nonDemoAdapters(unsupportedAdapterIDs)
         }
 
         for adapter in adapters where !adapter.descriptor.validationIssues.isEmpty {
@@ -191,6 +217,7 @@ public actor SeisAIRuntime {
 
         self.adaptersByID = Dictionary(uniqueKeysWithValues: adapters.map { ($0.descriptor.id, $0) })
         self.router = router
+        self.executionMode = executionMode
         self.agentRuntime = agentRuntime
         self.personalLaneRuntime = personalLaneRuntime
         self.evidenceLedger = evidenceLedger
@@ -280,7 +307,7 @@ public actor SeisAIRuntime {
         if request.routing.id != request.id {
             preflightIssues.append("routing request id must match the execution request id")
         }
-        if decision.outcome == .approvalRequired {
+        if decision.outcome == .approvalRequired && !allowsApprovedLocalLoopback(request: request, decision: decision) {
             preflightIssues.append("local-only runtime does not execute approval-required routes")
         }
         if decision.outcome == .blocked {
@@ -330,7 +357,9 @@ public actor SeisAIRuntime {
             return await finish(result(
                 request: request,
                 decision: decision,
-                outcome: .completedLocalDemo,
+                outcome: adapter.descriptor.transport == .deterministicLocalDemo
+                    ? .completedLocalDemo
+                    : .completedApprovedProvider,
                 response: response,
                 adapterInvocationPerformed: true,
                 blockedReasons: []
@@ -344,6 +373,23 @@ public actor SeisAIRuntime {
                 blockedReasons: ["provider adapter failed; inspect redacted adapter logs"]
             ))
         }
+    }
+
+    private func allowsApprovedLocalLoopback(
+        request: SeisAIProviderExecutionRequest,
+        decision: SeisAIRouteDecision
+    ) -> Bool {
+        guard executionMode == .approvedLocalLoopback,
+              request.routing.localOnly,
+              request.routing.privacyMode == .localOnly,
+              request.routing.requestedProviderID == decision.selectedProviderID,
+              let providerID = decision.selectedProviderID,
+              let adapter = adaptersByID[providerID]
+        else {
+            return false
+        }
+
+        return adapter.descriptor.transport == .localProcess && adapter.descriptor.requiresHumanApproval
     }
 
     private func finish(_ result: SeisAIExecutionResult) async -> SeisAIExecutionResult {
@@ -375,8 +421,11 @@ public actor SeisAIRuntime {
                 issues.append("Local Demo must not claim model, provider, or network execution")
             }
         case .localProcess:
-            if response.networkCallPerformed {
-                issues.append("local-process adapters must not report network execution")
+            if !response.networkCallPerformed {
+                issues.append("local-process adapters must report loopback network execution")
+            }
+            if !response.providerCallPerformed {
+                issues.append("local-process adapters must report provider execution")
             }
             if descriptor.modelBacked && !response.modelGenerated {
                 issues.append("model-backed local adapters must report model-generated output")

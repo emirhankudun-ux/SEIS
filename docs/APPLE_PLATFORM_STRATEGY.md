@@ -28,10 +28,13 @@ and validation issues for future native views.
 
 Every native consumer must reject snapshots that claim provider calls,
 credential reads, frontend secrets, live MCP sessions, SSH, deployment, GitHub
-mutation, private-content reads, or route execution outside Local Demo mode.
-The implemented Swift runtime is Local Demo-only and deterministic in this branch.
-Live adapters remain a separate backend-only capability requiring typed
-environment validation, redacted audit evidence, and explicit human approval.
+mutation, private-content reads, or route execution outside the declared Local
+Demo or approved local loopback modes.
+The implemented Swift runtime defaults to deterministic Local Demo-only mode in
+this branch. An opt-in Ollama-compatible loopback adapter exists for explicit
+local-only routes, but it requires `approvedLocalLoopback`, a loopback HTTP
+endpoint, bounded input/output, redacted evidence, and human approval. No live
+Ollama service call is claimed unless the current environment verifies one.
 
 The native shell also exposes `SeisAppleProductSurfaceCatalog`, a typed atlas
 for Desktop OS, AI Core, Search, Code, Design, Cloud, Store, Music, Launchpad,

@@ -42,6 +42,7 @@ public struct SeisAICoreMCPRuntimeContractSnapshot: Codable, Equatable, Sendable
     public let sourcePath: String
     public let resourceUri: String
     public let transport: String
+    public let lifecycle: String
     public let fallbackRuntime: String
     public let fallback: String
     public let officialSdk: String
@@ -63,6 +64,7 @@ public struct SeisAICoreMCPRuntimeContractSnapshot: Codable, Equatable, Sendable
         sourcePath: String,
         resourceUri: String,
         transport: String,
+        lifecycle: String,
         fallbackRuntime: String,
         fallback: String,
         officialSdk: String,
@@ -83,6 +85,7 @@ public struct SeisAICoreMCPRuntimeContractSnapshot: Codable, Equatable, Sendable
         self.sourcePath = sourcePath
         self.resourceUri = resourceUri
         self.transport = transport
+        self.lifecycle = lifecycle
         self.fallbackRuntime = fallbackRuntime
         self.fallback = fallback
         self.officialSdk = officialSdk
@@ -113,12 +116,13 @@ public struct SeisAICoreMCPRuntimeContractSnapshot: Codable, Equatable, Sendable
         var issues: [String] = []
         if id != "seis-ai-core-mcp-runtime-contract" { issues.append("MCP contract id must identify the canonical runtime contract") }
         if version != 1 || status != "local-smoke-verified" { issues.append("MCP contract version/status is not the verified local fixture") }
-        let textValues = [sourcePath, resourceUri, transport, fallbackRuntime, fallback, officialSdk, smokeTest, pluginGate, resourceRead, pluginIntegrationResource, boundary, credentialBoundary]
+        let textValues = [sourcePath, resourceUri, transport, lifecycle, fallbackRuntime, fallback, officialSdk, smokeTest, pluginGate, resourceRead, pluginIntegrationResource, boundary, credentialBoundary]
         if textValues.contains(where: { $0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) {
             issues.append("MCP contract identity fields must not be empty")
         }
         if toolCount != 37 || resourceCount != 30 || promptCount != 3 { issues.append("MCP contract inventory counts are not the expected local fixture counts") }
-        if transport != "stdio JSON-RPC" { issues.append("MCP transport must remain local stdio JSON-RPC") }
+        if transport != "stdio newline-delimited JSON-RPC" { issues.append("MCP transport must remain newline-delimited local stdio JSON-RPC") }
+        if lifecycle != "initialize -> notifications/initialized -> tools/list" { issues.append("MCP lifecycle must remain initialize -> notifications/initialized -> tools/list") }
         if surfaces.count != 4 { issues.append("MCP contract must expose four verified surfaces") }
         let expectedSurfaceIDs = ["tools", "resources", "prompts", "transport"]
         if surfaces.map(\.id) != expectedSurfaceIDs { issues.append("MCP surface IDs must remain ordered and canonical") }
@@ -134,7 +138,8 @@ public struct SeisAICoreMCPRuntimeContractSnapshot: Codable, Equatable, Sendable
     public var isMetadataOnly: Bool {
         isValid &&
             surfaces.allSatisfy { $0.state == "verified" } &&
-            transport == "stdio JSON-RPC" &&
+            transport == "stdio newline-delimited JSON-RPC" &&
+            lifecycle == "initialize -> notifications/initialized -> tools/list" &&
             credentialBoundary.localizedCaseInsensitiveContains("No provider keys")
     }
 }

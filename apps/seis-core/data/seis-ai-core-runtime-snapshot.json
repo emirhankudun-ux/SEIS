@@ -866,7 +866,7 @@
     "mcpMesh": {
       "id": "seis-plugin-mcp-mesh",
       "schemaVersion": "1.0.0",
-      "status": "configured-local-read-only",
+      "status": "probe-verified-local-read-only",
       "mode": "manifest-backed-no-live-session",
       "serverCount": 6,
       "configuredServerCount": 6,
@@ -887,16 +887,45 @@
           ],
           "entrypoint": "plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs",
           "entrypointExists": true,
-          "status": "configured",
+          "status": "probe-verified",
           "executionAuthority": false,
           "credentialsRead": false,
           "networkCalled": false,
           "externalMutationPerformed": false,
           "toolInventory": {
-            "mode": "not-probed",
-            "toolCount": null,
-            "toolNames": []
-          }
+            "mode": "stdio-probe",
+            "toolCount": 23,
+            "toolNames": [
+              "seis_agent_lanes",
+              "seis_ai_agent_plan",
+              "seis_ai_agent_status",
+              "seis_automation_plan",
+              "seis_automation_status",
+              "seis_cloud_plan",
+              "seis_cloud_status",
+              "seis_code_plan",
+              "seis_code_status",
+              "seis_data_plan",
+              "seis_data_status",
+              "seis_design_plan",
+              "seis_design_status",
+              "seis_governance_plan",
+              "seis_governance_status",
+              "seis_hub_plan",
+              "seis_hub_status",
+              "seis_product_plan",
+              "seis_product_status",
+              "seis_research_plan",
+              "seis_research_status",
+              "seis_security_plan",
+              "seis_security_status"
+            ]
+          },
+          "serverInfo": {
+            "name": "SEIS-Agent",
+            "version": "0.1.0"
+          },
+          "probeError": null
         },
         {
           "id": "seis",
@@ -914,16 +943,29 @@
           ],
           "entrypoint": "plugins/seis/scripts/seis-mcp-launcher.mjs",
           "entrypointExists": true,
-          "status": "configured",
+          "status": "probe-verified",
           "executionAuthority": false,
           "credentialsRead": false,
           "networkCalled": false,
           "externalMutationPerformed": false,
           "toolInventory": {
-            "mode": "not-probed",
-            "toolCount": null,
-            "toolNames": []
-          }
+            "mode": "stdio-probe",
+            "toolCount": 7,
+            "toolNames": [
+              "seis_llm_package_snapshot",
+              "seis_llm_plan_request",
+              "seis_llm_role_plan_request",
+              "seis_repos_bridge_status",
+              "seis_specialist_lane_plan",
+              "seis_specialist_lane_status",
+              "seis_specialist_lanes"
+            ]
+          },
+          "serverInfo": {
+            "name": "seis-mcp-server",
+            "version": "0.1.0"
+          },
+          "probeError": null
         },
         {
           "id": "seis-cloud",
@@ -941,16 +983,24 @@
           ],
           "entrypoint": "plugins/seis-cloud/scripts/seis-cloud-mcp-server.mjs",
           "entrypointExists": true,
-          "status": "configured",
+          "status": "probe-verified",
           "executionAuthority": false,
           "credentialsRead": false,
           "networkCalled": false,
           "externalMutationPerformed": false,
           "toolInventory": {
-            "mode": "not-probed",
-            "toolCount": null,
-            "toolNames": []
-          }
+            "mode": "stdio-probe",
+            "toolCount": 2,
+            "toolNames": [
+              "seis_cloud_plan",
+              "seis_cloud_status"
+            ]
+          },
+          "serverInfo": {
+            "name": "seis-cloud",
+            "version": "0.1.0"
+          },
+          "probeError": null
         },
         {
           "id": "seis-code",
@@ -968,16 +1018,24 @@
           ],
           "entrypoint": "plugins/seis-code/scripts/seis-code-mcp-server.mjs",
           "entrypointExists": true,
-          "status": "configured",
+          "status": "probe-verified",
           "executionAuthority": false,
           "credentialsRead": false,
           "networkCalled": false,
           "externalMutationPerformed": false,
           "toolInventory": {
-            "mode": "not-probed",
-            "toolCount": null,
-            "toolNames": []
-          }
+            "mode": "stdio-probe",
+            "toolCount": 2,
+            "toolNames": [
+              "seis_code_plan",
+              "seis_code_status"
+            ]
+          },
+          "serverInfo": {
+            "name": "seis-code",
+            "version": "0.1.0"
+          },
+          "probeError": null
         },
         {
           "id": "seis-design",
@@ -995,16 +1053,24 @@
           ],
           "entrypoint": "plugins/seis-design/scripts/seis-design-mcp-server.mjs",
           "entrypointExists": true,
-          "status": "configured",
+          "status": "probe-verified",
           "executionAuthority": false,
           "credentialsRead": false,
           "networkCalled": false,
           "externalMutationPerformed": false,
           "toolInventory": {
-            "mode": "not-probed",
-            "toolCount": null,
-            "toolNames": []
-          }
+            "mode": "stdio-probe",
+            "toolCount": 2,
+            "toolNames": [
+              "seis_design_plan",
+              "seis_design_status"
+            ]
+          },
+          "serverInfo": {
+            "name": "seis-design",
+            "version": "0.1.0"
+          },
+          "probeError": null
         },
         {
           "id": "seis-data",
@@ -1022,16 +1088,24 @@
           ],
           "entrypoint": "plugins/seis-data/scripts/seis-data-mcp-server.mjs",
           "entrypointExists": true,
-          "status": "configured",
+          "status": "probe-verified",
           "executionAuthority": false,
           "credentialsRead": false,
           "networkCalled": false,
           "externalMutationPerformed": false,
           "toolInventory": {
-            "mode": "not-probed",
-            "toolCount": null,
-            "toolNames": []
-          }
+            "mode": "stdio-probe",
+            "toolCount": 2,
+            "toolNames": [
+              "seis_data_plan",
+              "seis_data_status"
+            ]
+          },
+          "serverInfo": {
+            "name": "seis-data",
+            "version": "0.1.0"
+          },
+          "probeError": null
         }
       ],
       "boundary": {
@@ -1044,14 +1118,25 @@
         "credentialsRead": false,
         "networkCalled": false,
         "externalMutationPerformed": false,
-        "humanApprovalRequiredForExternalMutation": true
-      }
+        "humanApprovalRequiredForExternalMutation": true,
+        "localProbePerformed": true
+      },
+      "probe": {
+        "performed": true,
+        "timeoutMs": 5000,
+        "verifiedServerCount": 6,
+        "failedServerCount": 0,
+        "transport": "stdio newline-delimited JSON-RPC",
+        "lifecycle": "initialize -> notifications/initialized -> tools/list"
+      },
+      "ok": true
     }
   },
   "mcpRuntime": {
     "id": "seis-ai-core-mcp-runtime-contract",
     "status": "local-smoke-verified",
-    "transport": "stdio JSON-RPC",
+    "transport": "stdio newline-delimited JSON-RPC",
+    "lifecycle": "initialize -> notifications/initialized -> tools/list",
     "fallbackRuntime": "LightweightMcpServer no-dependency fallback",
     "toolCount": 37,
     "resourceCount": 30,
@@ -1066,7 +1151,7 @@
         "count": 37,
         "state": "verified",
         "method": "tools/list + tools/call",
-        "evidence": "29 MCP smoke tests pass through stdio JSON-RPC",
+        "evidence": "29 MCP smoke tests pass through newline-delimited stdio JSON-RPC",
         "duty": "Expose repo-backed SEIS AI checks, provider-neutral read-only route decisions, personal plugin lane tools, the five-lane plan and bounded local-check cycle, provider registry status, model scaling status, and AI Core version/sub-agent tools."
       },
       {
