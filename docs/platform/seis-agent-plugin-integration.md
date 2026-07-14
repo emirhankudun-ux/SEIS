@@ -227,7 +227,11 @@ The 2026-06-19 specialist expansion adds repo-contained skills inside
 - Keep `seis@personal`, `seis-cloud@personal`, `seis-code@personal`, `seis-design@personal`, and `seis-data@personal` as embedded capability lanes.
 - Keep `seis-security`, `seis-research`, `seis-automation`, and `seis-product` embedded under SEIS-Agent rather than publishing standalone cards.
 - Do not claim connector authentication readiness from plugin inventory alone.
+- Treat the six local MCP servers and six allowlisted status probes as a separate
+  Local Demo readiness gate; the probe evidence does not authorize live sessions,
+  credentials, network access, shell execution, or external mutation.
 - Validate the integration with `npm run check:seis-agent-plugin-integration`.
+- Validate the local probe gate with `npm run check:seis-plugin-mcp-mesh`.
 - Validate global registry parity with `npm run check:seis-agent-registry`.
 - Validate SEIS AI Core promotion readiness wiring with `npm run check:seis-ai-core-version-promotion-gates`.
 - Validate the tracked SEIS Core read model with `npm run check:seis-core-ai-runtime-snapshot`.

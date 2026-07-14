@@ -115,8 +115,9 @@ struct SeisAICoreReadinessEvaluatorTests {
         #expect(report.status == .readyLocalDemo)
         #expect(report.evaluatorVersion == SeisAICoreReadinessEvaluator.evaluatorVersion)
         #expect(report.checks.map(\.id) == SeisAICoreReadinessEvaluator.expectedCheckIDs)
-        #expect(report.passedCount == 53)
+        #expect(report.passedCount == 54)
         #expect(report.failedCount == 0)
+        #expect(report.checks.first { $0.id == "plugin-mcp-safe-probes" }?.evidence.contains("6/6 local servers") == true)
         #expect(report.truthBoundary.contains("not proof of live provider access"))
     }
 

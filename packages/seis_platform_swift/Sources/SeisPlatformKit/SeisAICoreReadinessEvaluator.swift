@@ -58,6 +58,7 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "agent-registry",
         "agent-governance-budgets",
         "plugin-mesh",
+        "plugin-mcp-safe-probes",
         "mcp-inventory",
         "prompt-engine",
         "subagent-handoffs",
@@ -200,6 +201,15 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Plugin capability mesh",
                 passed: capabilityMesh.isValid,
                 evidence: capabilityMesh.pluginStatusLabel
+            ),
+            SeisAICoreReadinessCheck(
+                id: "plugin-mcp-safe-probes",
+                title: "Plugin MCP safe probes",
+                passed: capabilityMesh.pluginMcpServerCount == 6 &&
+                    capabilityMesh.pluginMcpVerifiedServerCount == 6 &&
+                    capabilityMesh.pluginMcpSafeToolProbeCount == 6 &&
+                    capabilityMesh.pluginMcpBoundarySafe,
+                evidence: "\(capabilityMesh.pluginMcpVerifiedServerCount)/\(capabilityMesh.pluginMcpServerCount) local servers and \(capabilityMesh.pluginMcpSafeToolProbeCount) allowlisted status probes; no live session, credentials, network, shell, or mutation."
             ),
             SeisAICoreReadinessCheck(
                 id: "mcp-inventory",
