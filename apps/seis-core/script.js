@@ -2965,6 +2965,8 @@ function renderAiCoreRuntime() {
   const providerRegistry = seisAiCoreRuntimeSnapshot.providerRegistry || {};
   const providers = Array.isArray(providerRegistry.providers) ? providerRegistry.providers : [];
   const pluginMesh = seisAiCoreRuntimeSnapshot.pluginMesh || {};
+  const pluginMcpMesh = pluginMesh.mcpMesh || {};
+  const pluginMcpProbe = pluginMcpMesh.probe || {};
   const mcp = seisAiCoreRuntimeSnapshot.mcpRuntime || {};
   const scenarios = Array.isArray(seisAiCoreRuntimeSnapshot.router?.scenarios)
     ? seisAiCoreRuntimeSnapshot.router.scenarios
@@ -2983,7 +2985,8 @@ function renderAiCoreRuntime() {
     ["Providers", providerRegistry.providerCount || 0, `${providerRegistry.availableProviderCount || 0} available`],
     ["Route cases", scenarios.length, "decision-only fixtures"],
     ["Personal lanes", pluginMesh.personalLaneCount || 0, `${pluginMesh.personalLaneToolCount || 0} lane tools`],
-    ["MCP mesh", `${mcp.toolCount || 0}/${mcp.resourceCount || 0}/${mcp.promptCount || 0}`, "tools / resources / prompts"]
+    ["MCP mesh", `${mcp.toolCount || 0}/${mcp.resourceCount || 0}/${mcp.promptCount || 0}`, "tools / resources / prompts"],
+    ["Plugin MCP", `${pluginMcpProbe.safeToolProbeCount || 0}/${pluginMcpMesh.serverCount || 0}`, "safe status probes"]
   ].map(([label, value, detail]) => `
     <article class="ai-core-summary-card" data-ai-core-summary="${escapeHtml(label)}">
       <span>${escapeHtml(label)}</span>
@@ -3066,7 +3069,8 @@ function renderAiCoreRuntime() {
     ["Unified install", pluginMesh.primaryInstallId || "unavailable"],
     ["Installed enabled", pluginMesh.installedEnabledCount || 0],
     ["Helper universe", pluginMesh.helperUniquePlugins || 0],
-    ["MCP transport", mcp.transport || "not-started"]
+    ["MCP transport", mcp.transport || "not-started"],
+    ["Plugin MCP probes", `${pluginMcpProbe.safeToolProbeCount || 0}/${pluginMcpMesh.serverCount || 0}`, "local status-only"]
   ].map(([label, value]) => `
     <article data-ai-core-mesh-metric="${escapeHtml(label)}">
       <span>${escapeHtml(label)}</span>
@@ -3100,6 +3104,28 @@ async function loadSeisAiCoreRuntimeSnapshot() {
     }
     if (snapshot.runtimeBoundary?.providerCalls !== false || snapshot.runtimeBoundary?.liveMcpSessionStarted !== false) {
       throw new Error("runtime snapshot violates the browser no-execution boundary");
+    }
+    const pluginMcpMesh = snapshot.pluginMesh?.mcpMesh;
+    const pluginMcpBoundary = pluginMcpMesh?.boundary || {};
+    const pluginMcpProbe = pluginMcpMesh?.probe || {};
+    if (pluginMcpMesh?.serverCount !== 6 ||
+        pluginMcpMesh.configuredServerCount !== 6 ||
+        pluginMcpProbe.safeToolProbeCount !== 6 ||
+        pluginMcpProbe.failedServerCount !== 0 ||
+        pluginMcpProbe.safeToolCallsPerformed !== true ||
+        pluginMcpBoundary.liveSessionStarted !== false ||
+        pluginMcpBoundary.credentialsRead !== false ||
+        pluginMcpBoundary.networkCalled !== false ||
+        pluginMcpBoundary.externalMutationPerformed !== false ||
+        pluginMcpBoundary.safeToolCallsPerformed !== true ||
+        pluginMcpMesh.servers.some((server) => server.status !== "probe-verified" ||
+          server.safeToolProbe?.status !== "verified" ||
+          server.safeToolProbe?.error !== null ||
+          server.executionAuthority !== false ||
+          server.credentialsRead !== false ||
+          server.networkCalled !== false ||
+          server.externalMutationPerformed !== false)) {
+      throw new Error("runtime snapshot violates the plugin MCP safe-probe boundary");
     }
     seisAiCoreRuntimeSnapshot = snapshot;
     if (!snapshot.router.scenarios.some((scenario) => scenario.id === state.activeAiCoreScenarioId)) {

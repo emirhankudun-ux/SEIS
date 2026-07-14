@@ -30,6 +30,8 @@ test("SEIS Core renders source-backed providers, scenarios, and MCP mesh", async
   assert.equal(window.document.querySelectorAll("[data-ai-core-provider]").length, 7);
   assert.equal(window.document.querySelectorAll("[data-ai-core-scenario]").length, 7);
   assert.match(window.document.querySelector("#ai-core-runtime-summary")?.textContent || "", /37\/30\/3/);
+  assert.match(window.document.querySelector("#ai-core-runtime-summary")?.textContent || "", /6\/6/);
+  assert.match(window.document.querySelector("#ai-core-mesh-strip")?.textContent || "", /6\/6/);
 
   window.document.querySelector('[data-ai-core-scenario="private-vault-block"]')?.click();
   const decision = window.document.querySelector("#ai-core-decision");
@@ -43,6 +45,19 @@ test("SEIS Core renders source-backed providers, scenarios, and MCP mesh", async
   const ollamaCard = window.document.querySelector('[data-ai-system-provider="ollama-local"]');
   assert.match(openAiCard?.textContent || "", /Missing Key/);
   assert.match(ollamaCard?.textContent || "", /Disabled/);
+});
+
+test("SEIS Core rejects an unsafe plugin MCP probe snapshot", async () => {
+  const { window } = await boot({
+    snapshotTransform(snapshot) {
+      snapshot.pluginMesh.mcpMesh.probe.safeToolProbeCount = 5;
+      return snapshot;
+    }
+  });
+
+  window.document.querySelector('[data-view="godmode"]')?.click();
+  assert.equal(window.document.querySelector("#ai-core-runtime-state")?.textContent, "Fallback");
+  assert.match(window.document.querySelector("#ai-core-runtime-feedback")?.textContent || "", /plugin MCP safe-probe boundary/i);
 });
 
 test("God Mode mission submission records a decision-only route", async () => {
@@ -144,7 +159,7 @@ test("view-specific primary actions stay in their operational context", async ()
   assert.equal(window.document.activeElement?.classList.contains("ecosystem-control-plane"), true);
 });
 
-async function boot({ storedState, snapshotAvailable = true, ecosystemAvailable = true } = {}) {
+async function boot({ storedState, snapshotAvailable = true, ecosystemAvailable = true, snapshotTransform } = {}) {
   const dom = new JSDOM(html, {
     url: "http://127.0.0.1:4174/",
     runScripts: "outside-only",
@@ -176,7 +191,7 @@ async function boot({ storedState, snapshotAvailable = true, ecosystemAvailable 
     }
     const fixture = [...fixtures].find(([name]) => key.endsWith(name))?.[1];
     return fixture
-      ? { ok: true, status: 200, async json() { return structuredClone(fixture); } }
+      ? { ok: true, status: 200, async json() { return snapshotTransform && key.endsWith("data/seis-ai-core-runtime-snapshot.json") ? snapshotTransform(structuredClone(fixture)) : structuredClone(fixture); } }
       : { ok: false, status: 404, async json() { return {}; } };
   };
 
