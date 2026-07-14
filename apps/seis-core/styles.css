@@ -1692,6 +1692,119 @@ select {
   line-height: 1.45;
 }
 
+.ai-runtime-fixtures-panel {
+  background: var(--surface);
+}
+
+.ai-runtime-fixtures-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-block: 1px solid var(--line);
+  margin: 14px 0;
+}
+
+.ai-runtime-fixtures-summary-item {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding: 12px;
+  border-inline-end: 1px solid var(--line);
+}
+
+.ai-runtime-fixtures-summary-item:last-child {
+  border-inline-end: 0;
+}
+
+.ai-runtime-fixtures-summary-item span,
+.ai-runtime-fixtures-summary-item small,
+.ai-runtime-fixtures-feedback,
+.ai-runtime-fixture small,
+.ai-runtime-fixture p,
+.ai-execution-ledger-details,
+.ai-execution-ledger-next {
+  color: var(--muted);
+}
+
+.ai-runtime-fixtures-summary-item strong {
+  font-size: 19px;
+  overflow-wrap: anywhere;
+}
+
+.ai-runtime-fixtures-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.ai-runtime-fixture-list {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.ai-runtime-fixture,
+.ai-execution-ledger {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px;
+  background: var(--surface-strong);
+}
+
+.ai-runtime-fixture h4,
+.ai-runtime-fixture p,
+.ai-execution-ledger h4,
+.ai-execution-ledger p,
+.ai-execution-ledger dl {
+  margin: 0;
+}
+
+.ai-runtime-fixture h4,
+.ai-runtime-fixture small,
+.ai-execution-ledger small {
+  overflow-wrap: anywhere;
+}
+
+.ai-runtime-fixture p,
+.ai-execution-ledger-next {
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.ai-execution-ledger-details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  font-size: 12px;
+}
+
+.ai-execution-ledger-details div {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+
+.ai-execution-ledger-details dt {
+  color: var(--muted);
+}
+
+.ai-execution-ledger-details dd {
+  margin: 0;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.ai-runtime-fixtures-feedback {
+  margin-top: 14px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
 .ai-workforce-registry-panel {
   background: var(--surface);
 }
@@ -2813,7 +2926,8 @@ select {
 
   .ai-workforce-registry-layout,
   .ai-training-registry-layout,
-  .ai-permission-matrix-layout {
+  .ai-permission-matrix-layout,
+  .ai-runtime-fixtures-layout {
     grid-template-columns: 1fr;
   }
 
@@ -2882,6 +2996,8 @@ select {
   .ai-training-target-list,
   .ai-permission-matrix-summary,
   .ai-permission-level-grid,
+  .ai-runtime-fixtures-summary,
+  .ai-execution-ledger-details,
   .automation-ops-layout,
   .architecture-ops-layout,
   .security-ops-layout,
@@ -2983,6 +3099,15 @@ select {
   }
 
   .ai-permission-summary-item:last-child {
+    border-bottom: 0;
+  }
+
+  .ai-runtime-fixtures-summary-item {
+    border-inline-end: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .ai-runtime-fixtures-summary-item:last-child {
     border-bottom: 0;
   }
 

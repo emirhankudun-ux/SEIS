@@ -3,7 +3,7 @@
   "schemaVersion": "1.0.0",
   "status": "local-readiness-linked",
   "mode": "Local Demo",
-  "purpose": "Bind provider, read-only router, unified plugin, managed agent, permission matrix, workforce assignment, workforce training, personal lane, and local MCP evidence directly into the static SEIS Core Command Center.",
+  "purpose": "Bind provider, read-only router, unified plugin, managed agent, permission matrix, sub-agent runtime fixtures, workforce assignment, workforce training, personal lane, and local MCP evidence directly into the static SEIS Core Command Center.",
   "sourceOfTruth": {
     "providerRegistry": "content/development/seis-ai-core-provider-registry.json",
     "routerContract": "content/development/seis-read-only-model-router-contract.json",
@@ -12,6 +12,7 @@
     "applicationIntegration": "content/development/seis-ai-core-application-integration.json",
     "agentRegistry": "content/development/seis-second-brain-system.json",
     "agentPermissionMatrix": "content/development/seis-ai-core-agent-permission-matrix.json",
+    "subagentRuntimeFixtures": "content/development/seis-ai-core-subagent-runtime-fixtures.json",
     "workforceAssignments": "content/development/ai-workforce-assignments.json",
     "workforceTraining": "content/development/seis-ai-workforce-training-plan.json",
     "installedCapabilityInventory": {
@@ -912,6 +913,144 @@
       "unrestricted shell execution"
     ],
     "truthBoundary": "Source-backed permission metadata only. Permission levels describe approval and evidence boundaries; they do not grant runtime authority, credentials, network, shell, provider, SSH, deployment, GitHub, training, or dataset access."
+  },
+  "subagentRuntimeFixturesRegistry": {
+    "id": "seis-ai-core-subagent-runtime-fixtures",
+    "version": "2026.06.23",
+    "status": "source-backed-metadata-only",
+    "source": "content/development/seis-ai-core-subagent-runtime-fixtures.json",
+    "purpose": "Provide one bounded fixture pack for SEIS AI Core sub-agent roles, permissions, dry-run queue, cancellation, approvals, redaction, and execution ledger without enabling autonomous write execution.",
+    "qualityGate": "npm run check:seis-ai-core-subagent-runtime-fixtures",
+    "runtimeBoundary": {
+      "currentLevel": "status-and-plan-only",
+      "backgroundAutomation": "disabled",
+      "writeExecution": "disabled",
+      "credentialAccess": "forbidden",
+      "externalMutation": "requires-explicit-human-approval"
+    },
+    "fixtureCount": 7,
+    "fixtureIds": [
+      "role-schema",
+      "permission-matrix",
+      "dry-run-task-queue",
+      "cancellation-fixture",
+      "approval-fixture",
+      "redaction-fixture",
+      "execution-ledger-fixture"
+    ],
+    "fixtures": [
+      {
+        "id": "role-schema",
+        "path": "content/development/seis-ai-core-agent-role-schema.json",
+        "summary": "Five plan-only lane roles with bounded tool, file, network, time, and approval scopes."
+      },
+      {
+        "id": "permission-matrix",
+        "path": "content/development/seis-ai-core-agent-permission-matrix.json",
+        "summary": "Read-only and plan-only are enabled; write-gated and external-gated remain planned and approval-bound."
+      },
+      {
+        "id": "dry-run-task-queue",
+        "path": "content/development/seis-ai-core-dry-run-task-queue.json",
+        "summary": "Single-writer dry-run queue with explicit states, approval waiting, validators, and rollback notes."
+      },
+      {
+        "id": "cancellation-fixture",
+        "path": "content/development/seis-ai-core-cancellation-fixture.json",
+        "summary": "Cancellation tokens preserve artifacts and block later tool calls, file writes, and external requests."
+      },
+      {
+        "id": "approval-fixture",
+        "path": "content/development/seis-ai-core-approval-fixture.json",
+        "summary": "Scoped, action-specific, expiring human approval records; blanket autonomous approval is disallowed."
+      },
+      {
+        "id": "redaction-fixture",
+        "path": "content/development/seis-ai-core-redaction-fixture.json",
+        "summary": "Redaction and safe-output requirements for dry-run tool output, provider diagnostics, and future write-gated records."
+      },
+      {
+        "id": "execution-ledger-fixture",
+        "path": "content/development/seis-ai-core-execution-ledger-fixture.json",
+        "summary": "Append-only planned audit ledger shape for dry-run decisions and future approval-gated execution evidence."
+      }
+    ],
+    "sourceOfTruth": {
+      "operatingModel": "content/development/seis-ai-core-subagent-operating-model.json",
+      "fiveYearPlan": "content/development/seis-sub-agent-5-year-plan.json",
+      "roleSchema": "content/development/seis-ai-core-agent-role-schema.json",
+      "permissionMatrix": "content/development/seis-ai-core-agent-permission-matrix.json",
+      "dryRunTaskQueue": "content/development/seis-ai-core-dry-run-task-queue.json",
+      "cancellationFixture": "content/development/seis-ai-core-cancellation-fixture.json",
+      "approvalFixture": "content/development/seis-ai-core-approval-fixture.json",
+      "redactionFixture": "content/development/seis-ai-core-redaction-fixture.json",
+      "executionLedgerFixture": "content/development/seis-ai-core-execution-ledger-fixture.json",
+      "reviewLedger": "content/development/seis-ai-core-subagent-review-ledger.json",
+      "versionRegistry": "content/development/seis-ai-core-version-registry.json",
+      "versionPromotionGates": "content/development/seis-ai-core-version-promotion-gates.json",
+      "aiCoreDoc": "docs/ai/seis-ai-core.md",
+      "agentRuntimeDoc": "docs/ai/agent-runtime.md"
+    },
+    "executionLedgerFixture": {
+      "id": "seis-ai-core-execution-ledger-fixture",
+      "status": "documented-fixture",
+      "source": "content/development/seis-ai-core-execution-ledger-fixture.json",
+      "mode": "append-only-planned",
+      "writerPolicy": "single-writer",
+      "requiredFieldCount": 19,
+      "requiredFields": [
+        "id",
+        "taskId",
+        "laneId",
+        "roleId",
+        "permissionLevel",
+        "decision",
+        "stateBefore",
+        "stateAfter",
+        "dryRunOnly",
+        "realExecutionBlocked",
+        "externalMutationPerformed",
+        "fileMutationPerformed",
+        "approvalRequired",
+        "approvalRecordId",
+        "cancellationSignal",
+        "validator",
+        "rollbackNote",
+        "redactionStatus",
+        "createdAt"
+      ],
+      "recordsForbidden": [
+        "secret values",
+        "private keys",
+        "raw provider errors",
+        "unapproved external mutation"
+      ],
+      "sampleRecordCount": 1,
+      "sampleRecord": {
+        "id": "ledger-dry-run-seis-code-patch-plan",
+        "taskId": "dry-run-seis-code-patch-plan",
+        "laneId": "seis-code",
+        "roleId": "engineering-subagent",
+        "permissionLevel": "plan-only",
+        "decision": "cancelled",
+        "stateBefore": "validated",
+        "stateAfter": "cancelled",
+        "dryRunOnly": true,
+        "realExecutionBlocked": true,
+        "externalMutationPerformed": false,
+        "fileMutationPerformed": false,
+        "approvalRequired": false,
+        "approvalRecordId": null,
+        "cancellationSignal": "operator-cancel",
+        "validator": "npm run test:web",
+        "rollbackNote": "No file edits performed by this dry-run task.",
+        "redactionStatus": "passed",
+        "secretValuesStored": false,
+        "createdAt": "2026-06-23T00:00:00.000Z"
+      },
+      "nextPromotionGate": "Persist ledger records in a runtime store only after redaction, cancellation, approval, and permission tests pass."
+    },
+    "truthBoundary": "Source-backed runtime fixture metadata only. The seven fixtures describe plan-only controls and future evidence requirements; they do not execute agents, persist a durable audit database, grant write authority, call providers, open MCP sessions, read credentials, or perform external mutations."
   },
   "workforceAssignmentRegistry": {
     "id": "seis-ai-workforce-assignments",

@@ -132,6 +132,26 @@ describe("SEIS AI Core runtime snapshot", () => {
     assert.ok(snapshot.agentPermissionMatrixRegistry.forbiddenWithoutSeparatePlan.includes("credential access"));
     assert.ok(snapshot.agentPermissionMatrixRegistry.forbiddenWithoutSeparatePlan.includes("unrestricted shell execution"));
     assert.match(snapshot.agentPermissionMatrixRegistry.truthBoundary, /do not grant runtime authority/);
+    assert.equal(snapshot.subagentRuntimeFixturesRegistry.id, "seis-ai-core-subagent-runtime-fixtures");
+    assert.equal(snapshot.subagentRuntimeFixturesRegistry.status, "source-backed-metadata-only");
+    assert.equal(snapshot.subagentRuntimeFixturesRegistry.fixtureCount, 7);
+    assert.deepEqual(snapshot.subagentRuntimeFixturesRegistry.fixtureIds, [
+      "role-schema",
+      "permission-matrix",
+      "dry-run-task-queue",
+      "cancellation-fixture",
+      "approval-fixture",
+      "redaction-fixture",
+      "execution-ledger-fixture"
+    ]);
+    assert.equal(snapshot.subagentRuntimeFixturesRegistry.executionLedgerFixture.mode, "append-only-planned");
+    assert.equal(snapshot.subagentRuntimeFixturesRegistry.executionLedgerFixture.writerPolicy, "single-writer");
+    assert.equal(snapshot.subagentRuntimeFixturesRegistry.executionLedgerFixture.requiredFieldCount, 19);
+    assert.equal(snapshot.subagentRuntimeFixturesRegistry.executionLedgerFixture.sampleRecordCount, 1);
+    assert.equal(snapshot.subagentRuntimeFixturesRegistry.executionLedgerFixture.sampleRecord.decision, "cancelled");
+    assert.equal(snapshot.subagentRuntimeFixturesRegistry.executionLedgerFixture.sampleRecord.fileMutationPerformed, false);
+    assert.equal(snapshot.subagentRuntimeFixturesRegistry.executionLedgerFixture.sampleRecord.externalMutationPerformed, false);
+    assert.match(snapshot.subagentRuntimeFixturesRegistry.truthBoundary, /do not execute agents/);
     assert.equal(snapshot.mcpRuntime.toolCount, 37);
     assert.equal(snapshot.mcpRuntime.resourceCount, 30);
     assert.equal(snapshot.mcpRuntime.promptCount, 3);

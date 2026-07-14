@@ -5,6 +5,8 @@ import {
   AI_CORE_PROVIDER_REGISTRY_PATH,
   MCP_RUNTIME_CONTRACT_PATH,
   PLUGIN_INTEGRATION_PATH,
+  SUBAGENT_EXECUTION_LEDGER_FIXTURE_PATH,
+  SUBAGENT_RUNTIME_FIXTURES_PATH,
   aiCoreProviderStatus,
   pluginIntegrationStatus,
 } from "../lib/plugin-integration.mjs";
@@ -24,12 +26,14 @@ export const SECOND_BRAIN_SYSTEM_PATH = "content/development/seis-second-brain-s
 export const BIG_TECH_MCP_SKILL_INVENTORY_PATH = "content/development/seis-big-tech-mcp-skill-inventory.json";
 export const NVIDIA_INSTALLED_INTEGRATIONS_PATH = "content/development/seis-nvidia-installed-integrations.json";
 export const AI_CORE_AGENT_PERMISSION_MATRIX_PATH = "content/development/seis-ai-core-agent-permission-matrix.json";
+export const AI_CORE_SUBAGENT_RUNTIME_FIXTURES_PATH = SUBAGENT_RUNTIME_FIXTURES_PATH;
 export const AI_WORKFORCE_ASSIGNMENTS_PATH = "content/development/ai-workforce-assignments.json";
 export const AI_WORKFORCE_TRAINING_PATH = "content/development/seis-ai-workforce-training-plan.json";
 
 const EXPECTED_AI_WORKFORCE_TRUTH_BOUNDARY = "Workforce assignments are source-backed role and launcher metadata. Installed status is not live-model, authentication, provider-call, execution, or external-mutation evidence; Codex remains the only repository writer by default.";
 const EXPECTED_AI_WORKFORCE_TRAINING_TRUTH_BOUNDARY = "Repository-local training control plane only. It performs no live provider calls, no credential validation, no SSH, no deployment, no external dataset download, no cloud fine-tuning, and no claim that SEIS owns a trained foundation model.";
 const EXPECTED_AI_AGENT_PERMISSION_TRUTH_BOUNDARY = "Source-backed permission metadata only. Permission levels describe approval and evidence boundaries; they do not grant runtime authority, credentials, network, shell, provider, SSH, deployment, GitHub, training, or dataset access.";
+const EXPECTED_AI_SUBAGENT_RUNTIME_FIXTURES_TRUTH_BOUNDARY = "Source-backed runtime fixture metadata only. The seven fixtures describe plan-only controls and future evidence requirements; they do not execute agents, persist a durable audit database, grant write authority, call providers, open MCP sessions, read credentials, or perform external mutations.";
 const AI_WORKFORCE_LAUNCHER_STATUSES = new Set([
   "installed",
   "route-defined-current-shell-missing-key",
@@ -156,6 +160,7 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
   const agentPermissionMatrixRegistry = buildAgentPermissionMatrixRegistry(
     readJson(repoRoot, AI_CORE_AGENT_PERMISSION_MATRIX_PATH)
   );
+  const subagentRuntimeFixturesRegistry = buildSubagentRuntimeFixturesRegistry(repoRoot);
   const installedCapabilityInventory = buildInstalledCapabilityInventory(repoRoot);
   const workforceAssignmentRegistry = buildWorkforceAssignmentRegistry(
     readJson(repoRoot, AI_WORKFORCE_ASSIGNMENTS_PATH)
@@ -246,7 +251,7 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
     schemaVersion: "1.0.0",
     status: "local-readiness-linked",
     mode: "Local Demo",
-    purpose: "Bind provider, read-only router, unified plugin, managed agent, permission matrix, workforce assignment, workforce training, personal lane, and local MCP evidence directly into the static SEIS Core Command Center.",
+    purpose: "Bind provider, read-only router, unified plugin, managed agent, permission matrix, sub-agent runtime fixtures, workforce assignment, workforce training, personal lane, and local MCP evidence directly into the static SEIS Core Command Center.",
     sourceOfTruth: {
       providerRegistry: AI_CORE_PROVIDER_REGISTRY_PATH,
       routerContract: READ_ONLY_ROUTER_CONTRACT_PATH,
@@ -255,6 +260,7 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
       applicationIntegration: AI_CORE_APPLICATION_INTEGRATION_PATH,
       agentRegistry: SECOND_BRAIN_SYSTEM_PATH,
       agentPermissionMatrix: AI_CORE_AGENT_PERMISSION_MATRIX_PATH,
+      subagentRuntimeFixtures: SUBAGENT_RUNTIME_FIXTURES_PATH,
       workforceAssignments: AI_WORKFORCE_ASSIGNMENTS_PATH,
       workforceTraining: AI_WORKFORCE_TRAINING_PATH,
       installedCapabilityInventory: {
@@ -311,6 +317,7 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
     },
     agentRegistry,
     agentPermissionMatrixRegistry,
+    subagentRuntimeFixturesRegistry,
     workforceAssignmentRegistry,
     workforceTrainingRegistry,
     installedCapabilityInventory,
@@ -562,6 +569,149 @@ function buildAgentPermissionMatrixRegistry(source) {
     levels: publicLevels,
     forbiddenWithoutSeparatePlan,
     truthBoundary: EXPECTED_AI_AGENT_PERMISSION_TRUTH_BOUNDARY,
+  };
+}
+
+function buildSubagentRuntimeFixturesRegistry(repoRoot) {
+  const fixturePack = readJson(repoRoot, SUBAGENT_RUNTIME_FIXTURES_PATH);
+  const ledgerPath = fixturePack.sourceOfTruth?.executionLedgerFixture || SUBAGENT_EXECUTION_LEDGER_FIXTURE_PATH;
+  const ledger = readJson(repoRoot, ledgerPath);
+  const expectedFixtureIds = [
+    "role-schema",
+    "permission-matrix",
+    "dry-run-task-queue",
+    "cancellation-fixture",
+    "approval-fixture",
+    "redaction-fixture",
+    "execution-ledger-fixture",
+  ];
+  const expectedRequiredFields = [
+    "id",
+    "taskId",
+    "laneId",
+    "roleId",
+    "permissionLevel",
+    "decision",
+    "stateBefore",
+    "stateAfter",
+    "dryRunOnly",
+    "realExecutionBlocked",
+    "externalMutationPerformed",
+    "fileMutationPerformed",
+    "approvalRequired",
+    "approvalRecordId",
+    "cancellationSignal",
+    "validator",
+    "rollbackNote",
+    "redactionStatus",
+    "createdAt",
+  ];
+  const expectedForbiddenRecords = [
+    "secret values",
+    "private keys",
+    "raw provider errors",
+    "unapproved external mutation",
+  ];
+  const boundary = fixturePack.runtimeBoundary || {};
+  const fixtures = Array.isArray(fixturePack.fixtures) ? fixturePack.fixtures : [];
+  const fixtureIds = fixtures.map((fixture) => fixture.id);
+  if (fixturePack.id !== "seis-ai-core-subagent-runtime-fixtures" ||
+      fixturePack.status !== "documented-fixture" ||
+      typeof fixturePack.version !== "string" || fixturePack.version.trim().length === 0 ||
+      typeof fixturePack.purpose !== "string" || fixturePack.purpose.trim().length === 0 ||
+      fixturePack.qualityGate !== "npm run check:seis-ai-core-subagent-runtime-fixtures" ||
+      boundary.currentLevel !== "status-and-plan-only" ||
+      boundary.backgroundAutomation !== "disabled" ||
+      boundary.writeExecution !== "disabled" ||
+      boundary.credentialAccess !== "forbidden" ||
+      boundary.externalMutation !== "requires-explicit-human-approval" ||
+      fixtures.length !== expectedFixtureIds.length ||
+      fixtureIds.some((id, index) => id !== expectedFixtureIds[index]) ||
+      fixtures.some((fixture) => [fixture.id, fixture.path, fixture.summary].some((value) => typeof value !== "string" || value.trim().length === 0)) ||
+      ledgerPath !== SUBAGENT_EXECUTION_LEDGER_FIXTURE_PATH) {
+    throw new Error("SEIS AI sub-agent runtime fixture pack identity or boundary is invalid");
+  }
+
+  const requiredFields = Array.isArray(ledger.requiredFields) ? ledger.requiredFields : [];
+  const recordsForbidden = Array.isArray(ledger.recordsForbidden) ? ledger.recordsForbidden : [];
+  const sampleRecords = Array.isArray(ledger.sampleRecords) ? ledger.sampleRecords : [];
+  const sampleRecord = sampleRecords[0] || {};
+  if (ledger.id !== "seis-ai-core-execution-ledger-fixture" ||
+      ledger.status !== "documented-fixture" ||
+      ledger.mode !== "append-only-planned" ||
+      ledger.writerPolicy !== "single-writer" ||
+      requiredFields.length !== expectedRequiredFields.length ||
+      requiredFields.some((field, index) => field !== expectedRequiredFields[index]) ||
+      recordsForbidden.length !== expectedForbiddenRecords.length ||
+      expectedForbiddenRecords.some((value) => !recordsForbidden.includes(value)) ||
+      sampleRecords.length !== 1 ||
+      sampleRecord.id !== "ledger-dry-run-seis-code-patch-plan" ||
+      sampleRecord.permissionLevel !== "plan-only" ||
+      sampleRecord.decision !== "cancelled" ||
+      sampleRecord.dryRunOnly !== true ||
+      sampleRecord.realExecutionBlocked !== true ||
+      sampleRecord.externalMutationPerformed !== false ||
+      sampleRecord.fileMutationPerformed !== false ||
+      sampleRecord.approvalRequired !== false ||
+      sampleRecord.approvalRecordId !== null ||
+      sampleRecord.cancellationSignal !== "operator-cancel" ||
+      sampleRecord.redactionStatus !== "passed" ||
+      sampleRecord.secretValuesStored !== false ||
+      typeof sampleRecord.createdAt !== "string" || sampleRecord.createdAt.trim().length === 0) {
+    throw new Error("SEIS AI sub-agent execution ledger fixture is unsafe");
+  }
+
+  return {
+    id: fixturePack.id,
+    version: fixturePack.version,
+    status: "source-backed-metadata-only",
+    source: SUBAGENT_RUNTIME_FIXTURES_PATH,
+    purpose: fixturePack.purpose,
+    qualityGate: fixturePack.qualityGate,
+    runtimeBoundary: boundary,
+    fixtureCount: fixtures.length,
+    fixtureIds,
+    fixtures: fixtures.map((fixture) => ({
+      id: fixture.id,
+      path: fixture.path,
+      summary: fixture.summary,
+    })),
+    sourceOfTruth: fixturePack.sourceOfTruth,
+    executionLedgerFixture: {
+      id: ledger.id,
+      status: ledger.status,
+      source: ledgerPath,
+      mode: ledger.mode,
+      writerPolicy: ledger.writerPolicy,
+      requiredFieldCount: requiredFields.length,
+      requiredFields,
+      recordsForbidden,
+      sampleRecordCount: sampleRecords.length,
+      sampleRecord: {
+        id: sampleRecord.id,
+        taskId: sampleRecord.taskId,
+        laneId: sampleRecord.laneId,
+        roleId: sampleRecord.roleId,
+        permissionLevel: sampleRecord.permissionLevel,
+        decision: sampleRecord.decision,
+        stateBefore: sampleRecord.stateBefore,
+        stateAfter: sampleRecord.stateAfter,
+        dryRunOnly: sampleRecord.dryRunOnly,
+        realExecutionBlocked: sampleRecord.realExecutionBlocked,
+        externalMutationPerformed: sampleRecord.externalMutationPerformed,
+        fileMutationPerformed: sampleRecord.fileMutationPerformed,
+        approvalRequired: sampleRecord.approvalRequired,
+        approvalRecordId: sampleRecord.approvalRecordId,
+        cancellationSignal: sampleRecord.cancellationSignal,
+        validator: sampleRecord.validator,
+        rollbackNote: sampleRecord.rollbackNote,
+        redactionStatus: sampleRecord.redactionStatus,
+        secretValuesStored: sampleRecord.secretValuesStored,
+        createdAt: sampleRecord.createdAt,
+      },
+      nextPromotionGate: ledger.nextPromotionGate,
+    },
+    truthBoundary: EXPECTED_AI_SUBAGENT_RUNTIME_FIXTURES_TRUTH_BOUNDARY,
   };
 }
 

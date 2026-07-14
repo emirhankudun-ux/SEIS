@@ -190,6 +190,29 @@ test("SEIS Core renders and fail-closes the AI agent permission matrix", async (
   assert.equal(unsafeWindow.document.querySelectorAll("[data-agent-permission-level]").length, 0);
 });
 
+test("SEIS Core renders and fail-closes sub-agent runtime fixture evidence", async () => {
+  const { window } = await boot();
+  window.document.querySelector('[data-view="agents"]')?.click();
+
+  assert.equal(window.document.querySelector("#ai-runtime-fixtures-state")?.textContent, "Source-backed");
+  assert.equal(window.document.querySelectorAll("[data-ai-runtime-fixture]").length, 7);
+  assert.match(window.document.querySelector("#ai-runtime-fixtures-summary")?.textContent || "", /Ledger fields\s*19/);
+  assert.match(window.document.querySelector("#ai-execution-ledger")?.textContent || "", /append-only-planned/i);
+  assert.match(window.document.querySelector("#ai-execution-ledger")?.textContent || "", /operator-cancel/i);
+  assert.match(window.document.querySelector("#ai-runtime-fixtures-feedback")?.textContent || "", /do not execute agents/i);
+
+  const { window: unsafeWindow } = await boot({
+    snapshotTransform(snapshot) {
+      snapshot.subagentRuntimeFixturesRegistry.executionLedgerFixture.sampleRecord.externalMutationPerformed = true;
+      return snapshot;
+    }
+  });
+  unsafeWindow.document.querySelector('[data-view="agents"]')?.click();
+  assert.equal(unsafeWindow.document.querySelector("#ai-runtime-fixtures-state")?.textContent, "Fallback");
+  assert.match(unsafeWindow.document.querySelector("#ai-core-runtime-feedback")?.textContent || "", /execution ledger boundary/i);
+  assert.equal(unsafeWindow.document.querySelectorAll("[data-ai-runtime-fixture]").length, 0);
+});
+
 test("God Mode mission submission records a decision-only route", async () => {
   const { window } = await boot();
   window.document.querySelector('[data-view="godmode"]')?.click();

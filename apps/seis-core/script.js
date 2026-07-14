@@ -24,6 +24,22 @@ const expectedAIAgentForbiddenActions = Object.freeze([
   "dataset ingestion",
   "unrestricted shell execution"
 ]);
+const expectedAISubagentRuntimeFixturesTruthBoundary = "Source-backed runtime fixture metadata only. The seven fixtures describe plan-only controls and future evidence requirements; they do not execute agents, persist a durable audit database, grant write authority, call providers, open MCP sessions, read credentials, or perform external mutations.";
+const expectedAISubagentRuntimeFixtureIds = Object.freeze([
+  "role-schema",
+  "permission-matrix",
+  "dry-run-task-queue",
+  "cancellation-fixture",
+  "approval-fixture",
+  "redaction-fixture",
+  "execution-ledger-fixture"
+]);
+const expectedAISubagentForbiddenRecords = Object.freeze([
+  "secret values",
+  "private keys",
+  "raw provider errors",
+  "unapproved external mutation"
+]);
 const expectedAIWorkforceLauncherStatuses = Object.freeze([
   "installed",
   "route-defined-current-shell-missing-key",
@@ -1126,6 +1142,36 @@ const fallbackSeisAiCoreRuntimeSnapshot = {
     forbiddenWithoutSeparatePlan: [],
     truthBoundary: "Source-backed agent permission metadata is unavailable; no permission, runtime authority, credential, network, shell, provider, SSH, deployment, GitHub, training, or dataset access is granted."
   },
+  subagentRuntimeFixturesRegistry: {
+    id: "seis-ai-core-subagent-runtime-fixtures-fallback",
+    status: "fallback-unavailable",
+    source: "content/development/seis-ai-core-subagent-runtime-fixtures.json",
+    purpose: "Fallback runtime fixture boundary while the source-backed fixture pack is unavailable.",
+    qualityGate: "npm run check:seis-ai-core-subagent-runtime-fixtures",
+    runtimeBoundary: {
+      currentLevel: "status-and-plan-only",
+      backgroundAutomation: "disabled",
+      writeExecution: "disabled",
+      credentialAccess: "forbidden",
+      externalMutation: "requires-explicit-human-approval"
+    },
+    fixtureCount: 0,
+    fixtureIds: [],
+    executionLedgerFixture: {
+      id: "seis-ai-core-execution-ledger-fixture-fallback",
+      status: "fallback-unavailable",
+      source: "content/development/seis-ai-core-execution-ledger-fixture.json",
+      mode: "append-only-planned",
+      writerPolicy: "single-writer",
+      requiredFieldCount: 0,
+      requiredFields: [],
+      recordsForbidden: [],
+      sampleRecordCount: 0,
+      sampleRecord: null,
+      nextPromotionGate: "Source-backed fixture pack required before review."
+    },
+    truthBoundary: "Source-backed runtime fixture metadata is unavailable; no agent execution, durable audit persistence, write authority, provider call, MCP session, credential access, or external mutation is granted."
+  },
   pluginMesh: {
     primaryInstallId: "unavailable-in-fallback",
     installedEnabledCount: 0,
@@ -2029,6 +2075,7 @@ function render() {
   renderAgents();
   renderManagedAgentRegistry();
   renderAIAgentPermissionMatrix();
+  renderAISubagentRuntimeFixtures();
   renderAIWorkforceRegistry();
   renderAIWorkforceTrainingRegistry();
   renderEcosystemControlPlane();
@@ -2947,6 +2994,71 @@ function renderAIAgentPermissionMatrix() {
     : (registry.truthBoundary || "Source-backed permission metadata is unavailable; no runtime authority is granted.");
 }
 
+function renderAISubagentRuntimeFixtures() {
+  const registry = seisAiCoreRuntimeSnapshot.subagentRuntimeFixturesRegistry || fallbackSeisAiCoreRuntimeSnapshot.subagentRuntimeFixturesRegistry;
+  const fixtures = Array.isArray(registry.fixtures) ? registry.fixtures : [];
+  const fixtureIds = Array.isArray(registry.fixtureIds) ? registry.fixtureIds : [];
+  const ledger = registry.executionLedgerFixture || {};
+  const sampleRecord = ledger.sampleRecord;
+  const statePill = $("#ai-runtime-fixtures-state");
+  const summary = $("#ai-runtime-fixtures-summary");
+  const fixtureList = $("#ai-runtime-fixture-list");
+  const ledgerPanel = $("#ai-execution-ledger");
+  const feedback = $("#ai-runtime-fixtures-feedback");
+  if (!statePill || !summary || !fixtureList || !ledgerPanel || !feedback) return;
+
+  const sourceBacked = registry.status === "source-backed-metadata-only";
+  statePill.textContent = sourceBacked ? "Source-backed" : "Fallback";
+  statePill.className = `status-pill ${sourceBacked ? "ready" : "attention"}`;
+  summary.innerHTML = [
+    ["Fixture references", registry.fixtureCount ?? fixtureIds.length, "seven bounded controls"],
+    ["Ledger fields", ledger.requiredFieldCount ?? 0, "required metadata keys"],
+    ["Forbidden records", ledger.recordsForbidden?.length ?? 0, "redaction and mutation classes"],
+    ["Writer policy", ledger.writerPolicy || "unknown", ledger.mode || "unknown mode"]
+  ].map(([label, value, note]) => `
+    <article class="ai-runtime-fixtures-summary-item">
+      <span>${escapeHtml(label)}</span>
+      <strong>${escapeHtml(value)}</strong>
+      <small>${escapeHtml(note)}</small>
+    </article>
+  `).join("");
+
+  fixtureList.innerHTML = fixtures.map((fixture) => `
+    <article class="ai-runtime-fixture" role="listitem" data-ai-runtime-fixture="${escapeHtml(fixture.id)}">
+      <div class="card-topline">
+        <div>
+          <h4>${escapeHtml(fixture.id)}</h4>
+          <small>${escapeHtml(fixture.path)}</small>
+        </div>
+        <span class="status-pill ready">verified</span>
+      </div>
+      <p>${escapeHtml(fixture.summary)}</p>
+    </article>
+  `).join("") || "<p>No source-backed runtime fixtures are available.</p>";
+
+  ledgerPanel.innerHTML = `
+    <div class="card-topline">
+      <div>
+        <h4>Append-only execution ledger</h4>
+        <small>${escapeHtml(ledger.source || "source unavailable")}</small>
+      </div>
+      <span class="status-pill ${sourceBacked ? "ready" : "attention"}">${escapeHtml(ledger.mode || "unavailable")}</span>
+    </div>
+    <dl class="ai-execution-ledger-details">
+      <div><dt>Required fields</dt><dd>${escapeHtml(ledger.requiredFieldCount ?? 0)}</dd></div>
+      <div><dt>Sample records</dt><dd>${escapeHtml(ledger.sampleRecordCount ?? 0)}</dd></div>
+      <div><dt>Sample decision</dt><dd>${escapeHtml(sampleRecord?.decision || "unavailable")}</dd></div>
+      <div><dt>Cancellation</dt><dd>${escapeHtml(sampleRecord?.cancellationSignal || "unavailable")}</dd></div>
+      <div><dt>File mutation</dt><dd>${sampleRecord?.fileMutationPerformed === false ? "false" : "unavailable"}</dd></div>
+      <div><dt>External mutation</dt><dd>${sampleRecord?.externalMutationPerformed === false ? "false" : "unavailable"}</dd></div>
+    </dl>
+    <p class="ai-execution-ledger-next">${escapeHtml(ledger.nextPromotionGate || "Source-backed promotion gate unavailable.")}</p>
+  `;
+  feedback.textContent = sourceBacked
+    ? expectedAISubagentRuntimeFixturesTruthBoundary
+    : (registry.truthBoundary || "Source-backed runtime fixture metadata is unavailable; no execution authority is granted.");
+}
+
 function renderAIWorkforceRegistry() {
   const registry = seisAiCoreRuntimeSnapshot.workforceAssignmentRegistry || fallbackSeisAiCoreRuntimeSnapshot.workforceAssignmentRegistry;
   const assignments = Array.isArray(registry.assignments) ? registry.assignments : [];
@@ -3615,6 +3727,46 @@ async function loadSeisAiCoreRuntimeSnapshot() {
         new Set(forbiddenPermissionActions).size !== forbiddenPermissionActions.length ||
         expectedAIAgentForbiddenActions.some((action) => !forbiddenPermissionActions.includes(action))) {
       throw new Error("runtime snapshot violates the AI agent permission matrix boundary");
+    }
+    const runtimeFixtures = snapshot.subagentRuntimeFixturesRegistry;
+    const runtimeFixtureRows = Array.isArray(runtimeFixtures?.fixtures) ? runtimeFixtures.fixtures : [];
+    const runtimeFixtureIds = Array.isArray(runtimeFixtures?.fixtureIds) ? runtimeFixtures.fixtureIds : [];
+    const executionLedger = runtimeFixtures?.executionLedgerFixture;
+    const sampleLedgerRecord = executionLedger?.sampleRecord;
+    if (runtimeFixtures?.id !== "seis-ai-core-subagent-runtime-fixtures" ||
+        runtimeFixtures.status !== "source-backed-metadata-only" ||
+        runtimeFixtures.source !== "content/development/seis-ai-core-subagent-runtime-fixtures.json" ||
+        runtimeFixtures.runtimeBoundary?.currentLevel !== "status-and-plan-only" ||
+        runtimeFixtures.runtimeBoundary?.backgroundAutomation !== "disabled" ||
+        runtimeFixtures.runtimeBoundary?.writeExecution !== "disabled" ||
+        runtimeFixtures.runtimeBoundary?.credentialAccess !== "forbidden" ||
+        runtimeFixtures.runtimeBoundary?.externalMutation !== "requires-explicit-human-approval" ||
+        runtimeFixtures.fixtureCount !== expectedAISubagentRuntimeFixtureIds.length ||
+        runtimeFixtureIds.length !== expectedAISubagentRuntimeFixtureIds.length ||
+        runtimeFixtureIds.some((id, index) => id !== expectedAISubagentRuntimeFixtureIds[index]) ||
+        runtimeFixtureRows.length !== expectedAISubagentRuntimeFixtureIds.length ||
+        runtimeFixtureRows.some((fixture, index) =>
+          fixture.id !== expectedAISubagentRuntimeFixtureIds[index] ||
+          typeof fixture.path !== "string" || fixture.path.length === 0 ||
+          typeof fixture.summary !== "string" || fixture.summary.length === 0) ||
+        runtimeFixtures.truthBoundary !== expectedAISubagentRuntimeFixturesTruthBoundary ||
+        executionLedger?.id !== "seis-ai-core-execution-ledger-fixture" ||
+        executionLedger.status !== "documented-fixture" ||
+        executionLedger.source !== "content/development/seis-ai-core-execution-ledger-fixture.json" ||
+        executionLedger.mode !== "append-only-planned" ||
+        executionLedger.writerPolicy !== "single-writer" ||
+        executionLedger.requiredFieldCount !== 19 ||
+        executionLedger.recordsForbidden?.length !== 4 ||
+        expectedAISubagentForbiddenRecords.some((record) => !executionLedger.recordsForbidden.includes(record)) ||
+        executionLedger.sampleRecordCount !== 1 ||
+        sampleLedgerRecord?.decision !== "cancelled" ||
+        sampleLedgerRecord?.dryRunOnly !== true ||
+        sampleLedgerRecord?.realExecutionBlocked !== true ||
+        sampleLedgerRecord?.externalMutationPerformed !== false ||
+        sampleLedgerRecord?.fileMutationPerformed !== false ||
+        sampleLedgerRecord?.secretValuesStored !== false ||
+        sampleLedgerRecord?.redactionStatus !== "passed") {
+      throw new Error("runtime snapshot violates the sub-agent execution ledger boundary");
     }
     if (snapshot.runtimeBoundary?.providerCalls !== false || snapshot.runtimeBoundary?.liveMcpSessionStarted !== false) {
       throw new Error("runtime snapshot violates the browser no-execution boundary");

@@ -324,6 +324,15 @@ permission metadata only: it describes approval and evidence boundaries, but
 does not grant runtime authority, credentials, network, shell, provider, SSH,
 deployment, GitHub, training, or dataset access.
 
+The same native and web panels expose the source-backed seven-fixture runtime
+pack at `content/development/seis-ai-core-subagent-runtime-fixtures.json`.
+Its append-only-planned execution ledger requires nineteen redacted metadata
+fields, a single-writer policy, cancellation evidence, and explicit false
+mutation flags in the sample record. The projection keeps the ledger as
+evidence metadata only; it does not create a durable audit database, execute
+agents, call providers, open MCP sessions, read credentials, or perform file
+or external mutations.
+
 The panel also reads
 `content/development/seis-ai-core-subagent-operating-model.json`. It exposes
 the five permission levels, five sub-agent lanes, fourteen evidence

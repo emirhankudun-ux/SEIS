@@ -455,6 +455,58 @@ test("SEIS Command Center exposes the source-backed AI agent permission matrix",
   assert.match(matrix.truthBoundary, /do not grant runtime authority/);
 });
 
+test("SEIS Command Center exposes source-backed sub-agent runtime fixture evidence", async () => {
+  const html = await readFile(new URL("index.html", root), "utf8");
+  const script = await readFile(new URL("script.js", root), "utf8");
+  const css = await readFile(new URL("styles.css", root), "utf8");
+  const snapshot = JSON.parse(await readFile(new URL("data/seis-ai-core-runtime-snapshot.json", root), "utf8"));
+  const fixtures = snapshot.subagentRuntimeFixturesRegistry;
+
+  for (const id of [
+    "ai-runtime-fixtures-state",
+    "ai-runtime-fixtures-summary",
+    "ai-runtime-fixture-list",
+    "ai-execution-ledger",
+    "ai-runtime-fixtures-feedback"
+  ]) {
+    assert.match(html, new RegExp(`id="${id}"`));
+  }
+  for (const signal of [
+    "renderAISubagentRuntimeFixtures",
+    "expectedAISubagentRuntimeFixturesTruthBoundary",
+    "expectedAISubagentRuntimeFixtureIds",
+    "subagentRuntimeFixturesRegistry",
+    "runtime snapshot violates the sub-agent execution ledger boundary"
+  ]) {
+    assert.match(script, new RegExp(signal));
+  }
+  for (const selector of [
+    "ai-runtime-fixtures-panel",
+    "ai-runtime-fixtures-summary",
+    "ai-runtime-fixture",
+    "ai-execution-ledger",
+    "ai-runtime-fixtures-feedback"
+  ]) {
+    assert.match(css, new RegExp(`\.${selector}`));
+  }
+  assert.equal(fixtures.id, "seis-ai-core-subagent-runtime-fixtures");
+  assert.equal(fixtures.status, "source-backed-metadata-only");
+  assert.equal(fixtures.fixtureCount, 7);
+  assert.deepEqual(fixtures.fixtureIds, [
+    "role-schema",
+    "permission-matrix",
+    "dry-run-task-queue",
+    "cancellation-fixture",
+    "approval-fixture",
+    "redaction-fixture",
+    "execution-ledger-fixture"
+  ]);
+  assert.equal(fixtures.executionLedgerFixture.requiredFieldCount, 19);
+  assert.equal(fixtures.executionLedgerFixture.sampleRecordCount, 1);
+  assert.equal(fixtures.executionLedgerFixture.sampleRecord.externalMutationPerformed, false);
+  assert.match(fixtures.truthBoundary, /do not execute agents/);
+});
+
 
 test("SEIS Command Center covers the required ecosystem operating domains", async () => {
   const script = await readFile(new URL("script.js", root), "utf8");
