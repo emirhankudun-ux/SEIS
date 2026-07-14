@@ -52,7 +52,37 @@ test("ecosystem snapshot binds all six SEIS lanes to verified local routes", () 
     assert.equal(lane.route.href, expectedRoutes.get(lane.id));
     assert.equal(lane.executionAuthority, false);
     assert.equal(lane.mcp.executionAuthority, false);
-    assert.ok(lane.qualityGates.every((gate) => gate.startsWith("npm run check:")));
+    assert.ok(
+      lane.qualityGates.every((gate) =>
+        gate.startsWith("npm run check:") || gate === "npm run seis:check",
+      ),
+    );
+  }
+
+  const profileQualityCommands = {
+    "seis-cloud": [
+      "npm run check:cloud-environment",
+      "npm run check:server-cloud-report",
+    ],
+    "seis-code": [
+      "npm run seis:check",
+      "npm run check:seis-agi-system",
+    ],
+    "seis-design": [
+      "npm run check:web",
+      "npm run seis:check",
+    ],
+    "seis-data": [
+      "npm run check:seis-agi-system",
+      "npm run check:universal-capability-kernel",
+    ],
+  };
+  for (const [laneID, commands] of Object.entries(profileQualityCommands)) {
+    const lane = snapshot.lanes.find((candidate) => candidate.id === laneID);
+    assert.ok(lane, `${laneID} lane should exist`);
+    for (const command of commands) {
+      assert.ok(lane.qualityGates.includes(command), `${laneID} should expose ${command}`);
+    }
   }
 
   const hub = snapshot.lanes.find((lane) => lane.id === "seis");

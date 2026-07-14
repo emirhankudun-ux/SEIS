@@ -1278,48 +1278,7 @@
         "npm run check:web",
         "npm run seis:check"
       ],
-      "qualityCommandGaps": [
-        {
-          "pluginId": "seis-cloud",
-          "command": "npm run check:cloud-environment",
-          "status": "not-in-core-qualityCommands"
-        },
-        {
-          "pluginId": "seis-cloud",
-          "command": "npm run check:server-cloud-report",
-          "status": "not-in-core-qualityCommands"
-        },
-        {
-          "pluginId": "seis-code",
-          "command": "npm run seis:check",
-          "status": "not-in-core-qualityCommands"
-        },
-        {
-          "pluginId": "seis-code",
-          "command": "npm run check:seis-agi-system",
-          "status": "not-in-core-qualityCommands"
-        },
-        {
-          "pluginId": "seis-design",
-          "command": "npm run check:web",
-          "status": "not-in-core-qualityCommands"
-        },
-        {
-          "pluginId": "seis-design",
-          "command": "npm run seis:check",
-          "status": "not-in-core-qualityCommands"
-        },
-        {
-          "pluginId": "seis-data",
-          "command": "npm run check:seis-agi-system",
-          "status": "not-in-core-qualityCommands"
-        },
-        {
-          "pluginId": "seis-data",
-          "command": "npm run check:universal-capability-kernel",
-          "status": "not-in-core-qualityCommands"
-        }
-      ],
+      "qualityCommandGaps": [],
       "missingProfilePaths": [
         "plugins/seis/assets/lane-profile.json"
       ],

@@ -1440,7 +1440,7 @@ private extension SeisAICoreRuntimeSnapshotContract {
         check(capabilityCatalog.specialistManifestCapabilityCount == 31, "capabilityCatalog must expose 31 specialist manifest capabilities.")
         check(capabilityCatalog.profileCount == 4, "capabilityCatalog must expose four specialist lane profiles.")
         check(capabilityCatalog.profileQualityCommandCount == 18, "capabilityCatalog must expose 18 specialist profile quality commands.")
-        check(capabilityCatalog.qualityCommandGaps.count == 8, "capabilityCatalog must retain eight quality command gaps.")
+        check(capabilityCatalog.qualityCommandGaps.isEmpty, "capabilityCatalog must connect every specialist profile quality command to Core.")
         check(capabilityCatalog.missingProfilePaths == ["plugins/seis/assets/lane-profile.json"], "capabilityCatalog must retain the missing SEIS hub profile path.")
         check(Set(capabilityCatalog.plugins.map(\.id)).count == capabilityCatalog.plugins.count, "capabilityCatalog plugin IDs must be unique.")
         check(capabilityCatalog.plugins.allSatisfy { $0.manifestExists && $0.manifestStatus == "source-backed" }, "capabilityCatalog plugin manifests must be source-backed.")

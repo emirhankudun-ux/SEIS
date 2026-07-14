@@ -194,8 +194,8 @@ and "activated" as separate states.
 
 The runtime snapshot also carries the source-backed plugin capability catalog:
 six bundled manifests, 67 manifest capabilities, five personal plugin records,
-four specialist profiles, 18 specialist profile command declarations, and
-eight quality-command gaps against the Core registry. The catalog preserves all
+four specialist profiles, and 18 specialist profile command declarations linked
+to the Core lane quality-gate projection. The catalog preserves all
 declared capabilities, primary paths, guardrails, helper families, provenance,
 and missing profile paths without claiming plugin installation, activation,
 authentication, or external mutation.

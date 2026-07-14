@@ -22,7 +22,7 @@ import Testing
     #expect(snapshot.pluginMesh.capabilityCatalog.manifestCapabilityCount == 67)
     #expect(snapshot.pluginMesh.capabilityCatalog.personalManifestCapabilityCount == 51)
     #expect(snapshot.pluginMesh.capabilityCatalog.profileQualityCommandCount == 18)
-    #expect(snapshot.pluginMesh.capabilityCatalog.qualityCommandGaps.count == 8)
+    #expect(snapshot.pluginMesh.capabilityCatalog.qualityCommandGaps.isEmpty)
     #expect(snapshot.pluginMesh.capabilityCatalog.missingProfilePaths == ["plugins/seis/assets/lane-profile.json"])
     #expect(snapshot.pluginMesh.capabilityCatalog.boundary.localReadOnly)
     #expect(snapshot.pluginMesh.capabilityCatalog.boundary.blanketActivationClaimed == false)

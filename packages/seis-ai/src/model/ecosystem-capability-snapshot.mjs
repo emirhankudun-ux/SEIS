@@ -29,6 +29,15 @@ const PLUGIN_ROOTS = Object.freeze([
   "plugins/seis-data",
 ]);
 
+const PLUGIN_PROFILE_PATHS = Object.freeze({
+  "seis-ai-agent": "plugins/seis-ai-agent/assets/agent-profile.json",
+  seis: "plugins/seis/assets/lane-profile.json",
+  "seis-cloud": "plugins/seis-cloud/assets/lane-profile.json",
+  "seis-code": "plugins/seis-code/assets/lane-profile.json",
+  "seis-design": "plugins/seis-design/assets/lane-profile.json",
+  "seis-data": "plugins/seis-data/assets/lane-profile.json",
+});
+
 const CORE_LANES = Object.freeze([
   {
     id: "seis",
@@ -182,12 +191,14 @@ export function buildSeisEcosystemCapabilitySnapshot(repoRoot = process.cwd()) {
         identity.qualityGate,
         integrationLane.defaultGate,
         ...atlasLane.qualityGates,
+        ...plugin.qualityCommands,
       ]),
       sourceRefs: uniqueStrings([
         SOURCE_PATHS.identities,
         SOURCE_PATHS.capabilityAtlas,
         SOURCE_PATHS.pluginIntegration,
         plugin.manifestPath,
+        plugin.profilePath,
         personalPlugin.embeddedSkill,
       ]),
     };
@@ -414,6 +425,8 @@ function buildPluginRecord(repoRoot, pluginRoot) {
   const mcpConfigPath = `${pluginRoot}/.mcp.json`;
   const skillsRoot = `${pluginRoot}/skills`;
   const manifest = readJson(repoRoot, manifestPath);
+  const profilePath = PLUGIN_PROFILE_PATHS[manifest.name];
+  const profile = profilePath ? readJsonIfExists(repoRoot, profilePath) : null;
   const skills = listSkills(repoRoot, skillsRoot);
 
   if (!manifest.name || !manifest.version || !manifest.interface?.displayName || !Array.isArray(manifest.interface?.capabilities)) {
@@ -430,10 +443,14 @@ function buildPluginRecord(repoRoot, pluginRoot) {
     category: manifest.interface.category,
     status: "bundled-repository-source",
     manifestPath,
+    profilePath: profilePath || null,
     mcpConfigPath,
     skillCount: skills.length,
     skills,
     capabilities: [...manifest.interface.capabilities],
+    qualityCommands: Array.isArray(profile?.qualityCommands)
+      ? profile.qualityCommands.filter((value) => typeof value === "string")
+      : [],
     executionAuthority: false,
   };
 }
@@ -539,6 +556,11 @@ function exists(repoRoot, relativePath) {
 
 function readJson(repoRoot, relativePath) {
   return JSON.parse(readText(repoRoot, relativePath));
+}
+
+function readJsonIfExists(repoRoot, relativePath) {
+  if (!exists(repoRoot, relativePath)) return null;
+  return readJson(repoRoot, relativePath);
 }
 
 function readText(repoRoot, relativePath) {

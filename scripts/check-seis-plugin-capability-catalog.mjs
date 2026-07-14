@@ -17,7 +17,7 @@ if (catalog.personalPluginCount !== 5) failures.push("catalog must expose five p
 if (catalog.manifestCapabilityCount !== 67) failures.push("catalog must expose 67 manifest capabilities");
 if (catalog.personalManifestCapabilityCount !== 51) failures.push("catalog must expose 51 personal manifest capabilities");
 if (catalog.profileQualityCommandCount !== 18) failures.push("catalog must expose 18 specialist profile command declarations");
-if (catalog.qualityCommandGaps.length !== 8) failures.push("catalog must retain eight Core quality-command gaps");
+if (catalog.qualityCommandGaps.length !== 0) failures.push("catalog must connect every specialist profile quality command to Core");
 if (JSON.stringify(snapshot.pluginMesh?.capabilityCatalog) !== JSON.stringify(catalog)) {
   failures.push("AI Core runtime snapshot capability catalog is stale");
 }

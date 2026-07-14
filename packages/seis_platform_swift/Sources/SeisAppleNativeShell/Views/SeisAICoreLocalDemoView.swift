@@ -1527,6 +1527,10 @@ struct SeisAICoreLocalDemoView: View {
                             .font(.caption2.monospaced())
                             .foregroundStyle(.orange)
                     }
+                } else {
+                    Text("All specialist profile quality commands are linked to the Core lane gates.")
+                        .font(.caption2)
+                        .foregroundStyle(.green)
                 }
 
                 if !snapshot.missingProfilePaths.isEmpty {

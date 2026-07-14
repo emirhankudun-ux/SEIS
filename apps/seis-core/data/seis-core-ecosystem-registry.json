@@ -365,6 +365,7 @@
       "category": "Developer Tools",
       "status": "bundled-repository-source",
       "manifestPath": "plugins/seis-ai-agent/.codex-plugin/plugin.json",
+      "profilePath": "plugins/seis-ai-agent/assets/agent-profile.json",
       "mcpConfigPath": "plugins/seis-ai-agent/.mcp.json",
       "skillCount": 11,
       "skills": [
@@ -431,6 +432,12 @@
         "MCP status and plan routing",
         "Long-horizon open-source product evolution"
       ],
+      "qualityCommands": [
+        "npm run check:seis-ai-agent",
+        "npm run check:seis-agent-plugin-integration",
+        "npm run check:seis-repo-marketplace",
+        "npm run quality"
+      ],
       "executionAuthority": false
     },
     {
@@ -441,6 +448,7 @@
       "category": "Productivity",
       "status": "bundled-repository-source",
       "manifestPath": "plugins/seis/.codex-plugin/plugin.json",
+      "profilePath": "plugins/seis/assets/lane-profile.json",
       "mcpConfigPath": "plugins/seis/.mcp.json",
       "skillCount": 10,
       "skills": [
@@ -507,6 +515,7 @@
         "SEIS Focus Mode AGI operating lane",
         "SEIS God Mode Developer cross-layer lane"
       ],
+      "qualityCommands": [],
       "executionAuthority": false
     },
     {
@@ -517,6 +526,7 @@
       "category": "Developer Tools",
       "status": "bundled-repository-source",
       "manifestPath": "plugins/seis-cloud/.codex-plugin/plugin.json",
+      "profilePath": "plugins/seis-cloud/assets/lane-profile.json",
       "mcpConfigPath": "plugins/seis-cloud/.mcp.json",
       "skillCount": 1,
       "skills": [
@@ -537,6 +547,13 @@
         "Rollback planning",
         "Cloud validation reports"
       ],
+      "qualityCommands": [
+        "npm run check:cloud-access-policy",
+        "npm run check:cloud-environment",
+        "npm run check:server-cloud-report",
+        "npm run check:server-target",
+        "npm run check:gcp-cloud-server"
+      ],
       "executionAuthority": false
     },
     {
@@ -547,6 +564,7 @@
       "category": "Developer Tools",
       "status": "bundled-repository-source",
       "manifestPath": "plugins/seis-code/.codex-plugin/plugin.json",
+      "profilePath": "plugins/seis-code/assets/lane-profile.json",
       "mcpConfigPath": "plugins/seis-code/.mcp.json",
       "skillCount": 1,
       "skills": [
@@ -564,6 +582,12 @@
         "Repository automation",
         "Rollback-safe validation"
       ],
+      "qualityCommands": [
+        "npm run seis:check",
+        "npm run check:seis-plugin-bundle",
+        "npm run check:seis-platform-kernel",
+        "npm run check:seis-agi-system"
+      ],
       "executionAuthority": false
     },
     {
@@ -574,6 +598,7 @@
       "category": "Design",
       "status": "bundled-repository-source",
       "manifestPath": "plugins/seis-design/.codex-plugin/plugin.json",
+      "profilePath": "plugins/seis-design/assets/lane-profile.json",
       "mcpConfigPath": "plugins/seis-design/.mcp.json",
       "skillCount": 1,
       "skills": [
@@ -591,6 +616,12 @@
         "Visual handoff",
         "Calm technology review"
       ],
+      "qualityCommands": [
+        "npm run check:motion-evidence",
+        "npm run check:mobile-ergonomics",
+        "npm run check:web",
+        "npm run seis:check"
+      ],
       "executionAuthority": false
     },
     {
@@ -601,6 +632,7 @@
       "category": "Data",
       "status": "bundled-repository-source",
       "manifestPath": "plugins/seis-data/.codex-plugin/plugin.json",
+      "profilePath": "plugins/seis-data/assets/lane-profile.json",
       "mcpConfigPath": "plugins/seis-data/.mcp.json",
       "skillCount": 1,
       "skills": [
@@ -617,6 +649,13 @@
         "RAG and memory planning",
         "Source provenance",
         "Privacy-aware validation"
+      ],
+      "qualityCommands": [
+        "npm run check:plugin-capability-lanes",
+        "npm run check:seis-technology-stack",
+        "npm run check:seis-agi-system",
+        "npm run check:universal-capability-kernel",
+        "npm run check:language-distribution"
       ],
       "executionAuthority": false
     }
@@ -718,6 +757,7 @@
         "data/seis-runtime-capability-atlas.json",
         "content/development/seis-agent-plugin-integration.json",
         "plugins/seis/.codex-plugin/plugin.json",
+        "plugins/seis/assets/lane-profile.json",
         "plugins/seis-ai-agent/skills/seis-hub/SKILL.md"
       ],
       "authorityNote": "Runtime authority follows the canonical SEIS-Agent and SEIS Hub tools; the capability atlas source keeps its historical SEIS Governance server label as evidence only."
@@ -794,13 +834,16 @@
         "npm run check:ssh-vpn-cloud-server",
         "npm run check:cloud-access-policy",
         "npm run check:server-target",
-        "npm run check:gcp-cloud-server"
+        "npm run check:gcp-cloud-server",
+        "npm run check:cloud-environment",
+        "npm run check:server-cloud-report"
       ],
       "sourceRefs": [
         "data/seis-operating-identities.json",
         "data/seis-runtime-capability-atlas.json",
         "content/development/seis-agent-plugin-integration.json",
         "plugins/seis-cloud/.codex-plugin/plugin.json",
+        "plugins/seis-cloud/assets/lane-profile.json",
         "plugins/seis-ai-agent/skills/seis-cloud/SKILL.md"
       ],
       "sshBinding": {
@@ -887,13 +930,16 @@
         "npm run check:seis-plugin-bundle",
         "npm run check:seis-code",
         "npm run check:seis-linux-replica-browser-smoke",
-        "npm run check:seis-platform-kernel"
+        "npm run check:seis-platform-kernel",
+        "npm run seis:check",
+        "npm run check:seis-agi-system"
       ],
       "sourceRefs": [
         "data/seis-operating-identities.json",
         "data/seis-runtime-capability-atlas.json",
         "content/development/seis-agent-plugin-integration.json",
         "plugins/seis-code/.codex-plugin/plugin.json",
+        "plugins/seis-code/assets/lane-profile.json",
         "plugins/seis-ai-agent/skills/seis-code/SKILL.md"
       ]
     },
@@ -967,13 +1013,16 @@
         "npm run check:seis-specialist-plugins",
         "npm run check:motion-evidence",
         "npm run check:mobile-ergonomics",
-        "npm run check:seis-linux-replica-browser-smoke"
+        "npm run check:seis-linux-replica-browser-smoke",
+        "npm run check:web",
+        "npm run seis:check"
       ],
       "sourceRefs": [
         "data/seis-operating-identities.json",
         "data/seis-runtime-capability-atlas.json",
         "content/development/seis-agent-plugin-integration.json",
         "plugins/seis-design/.codex-plugin/plugin.json",
+        "plugins/seis-design/assets/lane-profile.json",
         "plugins/seis-ai-agent/skills/seis-design/SKILL.md"
       ],
       "designSystem": {
@@ -1053,13 +1102,16 @@
         "npm run check:seis-specialist-plugins",
         "npm run check:plugin-capability-lanes",
         "npm run check:seis-technology-stack",
-        "npm run check:language-distribution"
+        "npm run check:language-distribution",
+        "npm run check:seis-agi-system",
+        "npm run check:universal-capability-kernel"
       ],
       "sourceRefs": [
         "data/seis-operating-identities.json",
         "data/seis-runtime-capability-atlas.json",
         "content/development/seis-agent-plugin-integration.json",
         "plugins/seis-data/.codex-plugin/plugin.json",
+        "plugins/seis-data/assets/lane-profile.json",
         "plugins/seis-ai-agent/skills/seis-data/SKILL.md"
       ],
       "dataSystem": {

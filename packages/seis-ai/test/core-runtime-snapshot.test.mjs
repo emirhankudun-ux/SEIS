@@ -42,7 +42,7 @@ describe("SEIS AI Core runtime snapshot", () => {
     assert.equal(snapshot.pluginMesh.capabilityCatalog.specialistManifestCapabilityCount, 31);
     assert.equal(snapshot.pluginMesh.capabilityCatalog.profileCount, 4);
     assert.equal(snapshot.pluginMesh.capabilityCatalog.profileQualityCommandCount, 18);
-    assert.equal(snapshot.pluginMesh.capabilityCatalog.qualityCommandGaps.length, 8);
+    assert.equal(snapshot.pluginMesh.capabilityCatalog.qualityCommandGaps.length, 0);
     assert.deepEqual(snapshot.pluginMesh.capabilityCatalog.missingProfilePaths, ["plugins/seis/assets/lane-profile.json"]);
     assert.ok(snapshot.pluginMesh.capabilityCatalog.plugins.every((plugin) => plugin.manifestStatus === "source-backed"));
     assert.equal(snapshot.pluginMesh.capabilityCatalog.boundary.localReadOnly, true);

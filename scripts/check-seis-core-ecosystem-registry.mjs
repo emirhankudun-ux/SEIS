@@ -137,7 +137,8 @@ if (registry) {
     }
     if (lane.executionAuthority !== false || lane.mcp?.executionAuthority !== false) fail(`${laneId} must remain execution-disabled`);
     if (!Array.isArray(lane.mcp?.tools)) fail(`${laneId} MCP tools must be an array`);
-    if (!Array.isArray(lane.qualityGates) || !lane.qualityGates.every((gate) => gate.startsWith("npm run check:"))) {
+    if (!Array.isArray(lane.qualityGates) || !lane.qualityGates.every((gate) =>
+      gate.startsWith("npm run check:") || gate === "npm run seis:check")) {
       fail(`${laneId} qualityGates must contain package check commands`);
     }
     if (!lane.route?.href || !lane.route?.targetId || !lane.route?.label) fail(`${laneId} must expose a local launch route`);
