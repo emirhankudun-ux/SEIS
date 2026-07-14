@@ -9,6 +9,35 @@ const expectedPluginMcpSafeToolNames = Object.freeze({
   "seis-data": "seis_data_status"
 });
 
+const expectedAIWorkforceTruthBoundary = "Workforce assignments are source-backed role and launcher metadata. Installed status is not live-model, authentication, provider-call, execution, or external-mutation evidence; Codex remains the only repository writer by default.";
+const expectedAIWorkforceTrainingTruthBoundary = "Repository-local training control plane only. It performs no live provider calls, no credential validation, no SSH, no deployment, no external dataset download, no cloud fine-tuning, and no claim that SEIS owns a trained foundation model.";
+const expectedAIWorkforceLauncherStatuses = Object.freeze([
+  "installed",
+  "route-defined-current-shell-missing-key",
+  "pr-dependent",
+  "remote-ci",
+  "route-defined-current-shell-missing-command"
+]);
+const expectedAITrainingRouteStatuses = Object.freeze(["installed", "missing-key-current-shell"]);
+const expectedAIWorkforceLauncherEvidence = Object.freeze({
+  command: "npm run ai -- list",
+  observedDate: "2026-06-23",
+  notes: Object.freeze([
+    "The command checks local route readiness only.",
+    "No provider call, repository upload, secret read, or live model verification was performed.",
+    "Missing environment-variable status does not prove a credential does not exist outside the current shell."
+  ])
+});
+const expectedAIWorkforceTrainingLauncherEvidence = Object.freeze({
+  command: "npm run ai -- list",
+  observedDate: "2026-06-23",
+  notes: Object.freeze([
+    "The command checks route readiness only.",
+    "No provider prompt, repository upload, credential read, or live model verification was performed.",
+    "Missing key status means the current shell did not expose that provider credential."
+  ])
+});
+
 function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>"']/g, (character) => ({
     "&": "&amp;",
@@ -28,6 +57,7 @@ const seedState = {
   activeEcosystemLaneId: "seis",
   activeManagedAgentId: "architect-agent",
   activeAIWorkforceAssignmentId: "codex",
+  activeAITrainingRoleId: "codex",
   repositoryFilter: "all",
   settings: {
     compact: false,
@@ -1148,6 +1178,56 @@ const fallbackSeisAiCoreRuntimeSnapshot = {
     },
     truthBoundary: "Source-backed workforce assignments are unavailable; no activation, provider call, credential access, execution, or external mutation is granted."
   },
+  workforceTrainingRegistry: {
+    id: "seis-ai-workforce-training-plan-fallback",
+    status: "fallback-unavailable",
+    source: "content/development/seis-ai-workforce-training-plan.json",
+    updatedAt: "unavailable",
+    purpose: "Fallback local seed-training boundary while the source-backed training plan is unavailable.",
+    qualityGate: "unavailable",
+    automationCommand: "unavailable",
+    sourceOfTruth: {},
+    trainingMeaning: {
+      currentMeaning: "Source-backed training meaning is unavailable.",
+      notMeaning: ["No training authority is granted by this fallback."]
+    },
+    currentLauncherEvidence: {
+      command: "unavailable",
+      observedDate: "unavailable",
+      notes: ["Source-backed launcher evidence is unavailable."],
+      installedRoutes: [],
+      missingOrDisabledRoutes: []
+    },
+    trainerRoles: [
+      {
+        id: "codex",
+        displayName: "Codex",
+        routeStatus: "fallback-only",
+        trainingRole: "repository integration and validation",
+        allowedContribution: "Review fallback status only.",
+        secretAccessAllowed: false,
+        liveProviderCallAllowed: false,
+        externalTrainingAllowed: false,
+        outputStatus: "source unavailable"
+      }
+    ],
+    trainingLoops: [],
+    modelTargets: [],
+    safetyRules: ["No live training or provider call is granted by fallback state."],
+    acceptanceGates: ["source-backed training plan required"],
+    runtimeBoundary: {
+      trainingPerformed: false,
+      liveProviderCalls: false,
+      credentialsRead: false,
+      networkCalled: false,
+      externalDatasetDownloaded: false,
+      cloudFineTuningPerformed: false,
+      externalMutationPerformed: false,
+      runtimeAuthority: false,
+      humanApprovalRequiredForLiveActions: true
+    },
+    truthBoundary: "Source-backed training control-plane evidence is unavailable; no training, provider call, credential access, download, execution, or external mutation is granted."
+  },
   mcpRuntime: {
     status: "unavailable-in-fallback",
     transport: "not-started",
@@ -1888,6 +1968,7 @@ function loadState() {
     if (!agents.some((agent) => agent.name === next.activeAgent)) next.activeAgent = seedState.activeAgent;
     if (!godModeLanes.some((lane) => lane.name === next.godModeLane)) next.godModeLane = seedState.godModeLane;
     if (typeof next.activeAIWorkforceAssignmentId !== "string") next.activeAIWorkforceAssignmentId = seedState.activeAIWorkforceAssignmentId;
+    if (typeof next.activeAITrainingRoleId !== "string") next.activeAITrainingRoleId = seedState.activeAITrainingRoleId;
     if (!Array.isArray(next.goals)) next.goals = structuredClone(seedState.goals);
     if (!Array.isArray(next.godModeRuns)) next.godModeRuns = structuredClone(seedState.godModeRuns);
     return next;
@@ -1923,6 +2004,7 @@ function render() {
   renderAgents();
   renderManagedAgentRegistry();
   renderAIWorkforceRegistry();
+  renderAIWorkforceTrainingRegistry();
   renderEcosystemControlPlane();
   renderPlugins();
   renderAutomation();
@@ -2819,19 +2901,20 @@ function renderAIWorkforceRegistry() {
     const active = assignment.id === activeAssignment?.id;
     const launcherTone = assignment.launcherStatus === "installed" || assignment.launcherStatus === "remote-ci" ? "ready" : "attention";
     return `
-      <button
-        class="ai-workforce-assignment-button ${active ? "is-active" : ""}"
-        type="button"
-        role="listitem"
-        data-ai-workforce-assignment="${escapeHtml(assignment.id)}"
-        aria-pressed="${active}"
-      >
-        <span>
-          <strong>${escapeHtml(assignment.displayName)}</strong>
-          <small>${escapeHtml(assignment.category)} · ${escapeHtml(assignment.route)}</small>
-        </span>
-        <span class="status-pill ${launcherTone}">${escapeHtml(assignment.launcherStatus)}</span>
-      </button>
+      <div role="listitem">
+        <button
+          class="ai-workforce-assignment-button ${active ? "is-active" : ""}"
+          type="button"
+          data-ai-workforce-assignment="${escapeHtml(assignment.id)}"
+          aria-pressed="${active}"
+        >
+          <span>
+            <strong>${escapeHtml(assignment.displayName)}</strong>
+            <small>${escapeHtml(assignment.category)} · ${escapeHtml(assignment.route)}</small>
+          </span>
+          <span class="status-pill ${launcherTone}">${escapeHtml(assignment.launcherStatus)}</span>
+        </button>
+      </div>
     `;
   }).join("");
 
@@ -2870,7 +2953,116 @@ function renderAIWorkforceRegistry() {
     `;
   }
 
-  feedback.textContent = registry.truthBoundary || "Only source-backed role metadata is displayed; live AI activation remains outside this surface.";
+  feedback.textContent = sourceBacked
+    ? expectedAIWorkforceTruthBoundary
+    : (registry.truthBoundary || "Source-backed role metadata is unavailable; live AI activation remains outside this surface.");
+}
+
+function renderAIWorkforceTrainingRegistry() {
+  const registry = seisAiCoreRuntimeSnapshot.workforceTrainingRegistry || fallbackSeisAiCoreRuntimeSnapshot.workforceTrainingRegistry;
+  const roles = Array.isArray(registry.trainerRoles) ? registry.trainerRoles : [];
+  const loops = Array.isArray(registry.trainingLoops) ? registry.trainingLoops : [];
+  const targets = Array.isArray(registry.modelTargets) ? registry.modelTargets : [];
+  const statePill = $("#ai-training-registry-state");
+  const summary = $("#ai-training-registry-summary");
+  const roleList = $("#ai-training-role-list");
+  const detail = $("#ai-training-role-detail");
+  const loopList = $("#ai-training-loop-list");
+  const targetList = $("#ai-training-target-list");
+  const feedback = $("#ai-training-registry-feedback");
+  if (!statePill || !summary || !roleList || !detail || !loopList || !targetList || !feedback) return;
+
+  const sourceBacked = registry.status === "source-backed-metadata-only";
+  if (!roles.some((role) => role.id === state.activeAITrainingRoleId)) {
+    state.activeAITrainingRoleId = roles[0]?.id || "codex";
+  }
+  const activeRole = roles.find((role) => role.id === state.activeAITrainingRoleId) || roles[0] || null;
+  const boundary = registry.runtimeBoundary || {};
+
+  statePill.textContent = sourceBacked ? "Source-backed" : "Fallback";
+  statePill.className = `status-pill ${sourceBacked ? "ready" : "attention"}`;
+  summary.innerHTML = [
+    ["Trainer roles", roles.length, "supervised contributors"],
+    ["Training loops", loops.length, "recorded control steps"],
+    ["Seed targets", targets.length, "deterministic local artifacts"],
+    ["Runtime authority", boundary.runtimeAuthority ? "Enabled" : "Disabled", "training remains gated"]
+  ].map(([label, value, note]) => `
+    <article class="ai-training-summary-item">
+      <span>${escapeHtml(label)}</span>
+      <strong>${escapeHtml(value)}</strong>
+      <small>${escapeHtml(note)}</small>
+    </article>
+  `).join("");
+
+  roleList.innerHTML = roles.map((role) => {
+    const active = role.id === activeRole?.id;
+    const routeTone = role.routeStatus === "installed" ? "ready" : "attention";
+    return `
+      <div role="listitem">
+        <button
+          class="ai-training-role-button ${active ? "is-active" : ""}"
+          type="button"
+          data-ai-training-role="${escapeHtml(role.id)}"
+          aria-pressed="${active}"
+        >
+          <span>
+            <strong>${escapeHtml(role.displayName)}</strong>
+            <small>${escapeHtml(role.trainingRole)}</small>
+          </span>
+          <span class="status-pill ${routeTone}">${escapeHtml(role.routeStatus)}</span>
+        </button>
+      </div>
+    `;
+  }).join("");
+
+  if (!activeRole) {
+    detail.innerHTML = "<p>No trainer role record is available.</p>";
+  } else {
+    detail.innerHTML = `
+      <span class="eyebrow">Selected trainer role</span>
+      <h4>${escapeHtml(activeRole.displayName)}</h4>
+      <p>${escapeHtml(activeRole.allowedContribution)}</p>
+      <dl class="ai-core-facts">
+        <div><dt>Training role</dt><dd>${escapeHtml(activeRole.trainingRole)}</dd></div>
+        <div><dt>Output status</dt><dd>${escapeHtml(activeRole.outputStatus)}</dd></div>
+        <div><dt>Secret access</dt><dd>${activeRole.secretAccessAllowed ? "Allowed" : "Not allowed"}</dd></div>
+        <div><dt>Provider calls</dt><dd>${activeRole.liveProviderCallAllowed ? "Allowed" : "Not allowed"}</dd></div>
+        <div><dt>External training</dt><dd>${activeRole.externalTrainingAllowed ? "Allowed" : "Not allowed"}</dd></div>
+        <div><dt>Runtime authority</dt><dd>${boundary.runtimeAuthority ? "Enabled" : "None"}</dd></div>
+      </dl>
+    `;
+  }
+
+  loopList.innerHTML = loops.map((loop, index) => `
+    <article class="ai-training-loop" data-ai-training-loop="${escapeHtml(loop.id)}">
+      <div class="card-topline">
+        <h5>${index + 1}. ${escapeHtml(loop.id)}</h5>
+        <span class="meta-chip">owner: ${escapeHtml(loop.owner)}</span>
+      </div>
+      <p>${escapeHtml(loop.output)}</p>
+      <small><strong>Acceptance:</strong> ${escapeHtml(loop.acceptanceGate)}</small>
+    </article>
+  `).join("") || "<p>No training loop record is available.</p>";
+
+  targetList.innerHTML = targets.map((target) => `
+    <article class="ai-training-target" data-ai-training-target="${escapeHtml(target.id)}">
+      <div class="card-topline">
+        <h5>${escapeHtml(target.id)}</h5>
+        <span class="status-pill ${target.runtimeAuthority ? "blocked" : "ready"}">${target.runtimeAuthority ? "Authority enabled" : "Authority false"}</span>
+      </div>
+      <p>${escapeHtml(target.purpose)}</p>
+      <div class="ai-training-target-facts">
+        <span>dataset: ${escapeHtml(target.datasetPath)}</span>
+        <span>artifact: ${escapeHtml(target.artifactPath)}</span>
+        <span>validation: ${escapeHtml(target.validationCommand)}</span>
+      </div>
+    </article>
+  `).join("") || "<p>No seed target record is available.</p>";
+
+  const trainingBoundaryCopy = sourceBacked
+    ? expectedAIWorkforceTrainingTruthBoundary
+    : (registry.truthBoundary || "Source-backed local training metadata is unavailable; no training authority is granted.");
+  feedback.innerHTML = `${escapeHtml(trainingBoundaryCopy)} <span class="ai-training-gates">Recorded gate: ${escapeHtml(registry.qualityGate || "unavailable")} · Automation record: ${escapeHtml(registry.automationCommand || "unavailable")}</span>`;
 }
 
 function renderAgentDetail(label, items) {
@@ -3383,17 +3575,23 @@ async function loadSeisAiCoreRuntimeSnapshot() {
       : [];
     const workforceAssignmentIDs = workforceAssignments.map((assignment) => assignment.id);
     const workforceBoundary = workforceAssignmentRegistry?.runtimeBoundary || {};
+    const workforceLauncherEvidence = workforceAssignmentRegistry?.launcherEvidence || {};
     if (workforceAssignmentRegistry?.id !== "seis-ai-workforce-assignments" ||
         workforceAssignmentRegistry.status !== "source-backed-metadata-only" ||
         workforceAssignmentRegistry.assignmentCount !== 10 ||
         workforceAssignments.length !== 10 ||
         new Set(workforceAssignmentIDs).size !== workforceAssignmentIDs.length ||
         workforceAssignmentRegistry.writerPolicy?.primaryWriter !== "codex" ||
+        workforceAssignmentRegistry.truthBoundary !== expectedAIWorkforceTruthBoundary ||
         !Array.isArray(workforceAssignmentRegistry.workflow) ||
         workforceAssignmentRegistry.workflow.length !== 10 ||
+        workforceLauncherEvidence.command !== expectedAIWorkforceLauncherEvidence.command ||
+        workforceLauncherEvidence.observedDate !== expectedAIWorkforceLauncherEvidence.observedDate ||
+        JSON.stringify(workforceLauncherEvidence.notes) !== JSON.stringify(expectedAIWorkforceLauncherEvidence.notes) ||
         workforceAssignments.some((assignment) =>
           ["id", "displayName", "route", "launcherStatus", "category", "validationDuty"]
             .some((field) => typeof assignment[field] !== "string" || assignment[field].length === 0) ||
+          !expectedAIWorkforceLauncherStatuses.includes(assignment.launcherStatus) ||
           !Array.isArray(assignment.coreDuties) || assignment.coreDuties.length === 0 ||
           !Array.isArray(assignment.allowedOutputs) || assignment.allowedOutputs.length === 0 ||
           !Array.isArray(assignment.deniedActions) || assignment.deniedActions.length === 0) ||
@@ -3405,6 +3603,58 @@ async function loadSeisAiCoreRuntimeSnapshot() {
         workforceBoundary.humanApprovalRequiredForMutation !== true) {
       throw new Error("runtime snapshot violates the AI workforce assignment boundary");
     }
+    const workforceTrainingRegistry = snapshot.workforceTrainingRegistry;
+    const trainerRoles = Array.isArray(workforceTrainingRegistry?.trainerRoles)
+      ? workforceTrainingRegistry.trainerRoles
+      : [];
+    const trainingLoops = Array.isArray(workforceTrainingRegistry?.trainingLoops)
+      ? workforceTrainingRegistry.trainingLoops
+      : [];
+    const trainingTargets = Array.isArray(workforceTrainingRegistry?.modelTargets)
+      ? workforceTrainingRegistry.modelTargets
+      : [];
+    const trainingBoundary = workforceTrainingRegistry?.runtimeBoundary || {};
+    const trainingTruthBoundary = String(workforceTrainingRegistry?.truthBoundary || "").toLowerCase();
+    const trainingLauncherEvidence = workforceTrainingRegistry?.currentLauncherEvidence || {};
+    if (workforceTrainingRegistry?.id !== "seis-ai-workforce-training-plan" ||
+        workforceTrainingRegistry.status !== "source-backed-metadata-only" ||
+        workforceTrainingRegistry.truthBoundary !== expectedAIWorkforceTrainingTruthBoundary ||
+        trainerRoles.length !== 10 ||
+        trainingLoops.length !== 7 ||
+        trainingTargets.length !== 4 ||
+        workforceTrainingRegistry.qualityGate?.startsWith("npm run check:") !== true ||
+        workforceTrainingRegistry.automationCommand?.startsWith("npm run automation:") !== true ||
+        trainingLauncherEvidence.command !== expectedAIWorkforceTrainingLauncherEvidence.command ||
+        trainingLauncherEvidence.observedDate !== expectedAIWorkforceTrainingLauncherEvidence.observedDate ||
+        JSON.stringify(trainingLauncherEvidence.notes) !== JSON.stringify(expectedAIWorkforceTrainingLauncherEvidence.notes) ||
+        !Array.isArray(workforceTrainingRegistry.currentLauncherEvidence?.installedRoutes) ||
+        workforceTrainingRegistry.currentLauncherEvidence.installedRoutes.length === 0 ||
+        !Array.isArray(workforceTrainingRegistry.currentLauncherEvidence?.missingOrDisabledRoutes) ||
+        workforceTrainingRegistry.currentLauncherEvidence.missingOrDisabledRoutes.length === 0 ||
+        trainerRoles.some((role) =>
+          ["id", "displayName", "routeStatus", "trainingRole", "allowedContribution", "outputStatus"]
+            .some((field) => typeof role[field] !== "string" || role[field].length === 0) ||
+          !expectedAITrainingRouteStatuses.includes(role.routeStatus) ||
+          role.secretAccessAllowed !== false ||
+          role.liveProviderCallAllowed !== false ||
+          role.externalTrainingAllowed !== false) ||
+        trainingTargets.some((target) =>
+          ["id", "purpose", "datasetPath", "artifactPath", "trainingCommand", "validationCommand"]
+            .some((field) => typeof target[field] !== "string" || target[field].length === 0) ||
+          target.runtimeAuthority !== false) ||
+        trainingBoundary.trainingPerformed !== false ||
+        trainingBoundary.liveProviderCalls !== false ||
+        trainingBoundary.credentialsRead !== false ||
+        trainingBoundary.networkCalled !== false ||
+        trainingBoundary.externalDatasetDownloaded !== false ||
+        trainingBoundary.cloudFineTuningPerformed !== false ||
+        trainingBoundary.externalMutationPerformed !== false ||
+        trainingBoundary.runtimeAuthority !== false ||
+        trainingBoundary.humanApprovalRequiredForLiveActions !== true ||
+        ["no live provider calls", "no credential validation", "no ssh", "no deployment", "no external dataset download", "no cloud fine-tuning"]
+          .some((term) => !trainingTruthBoundary.includes(term))) {
+      throw new Error("runtime snapshot violates the AI workforce training boundary");
+    }
     seisAiCoreRuntimeSnapshot = snapshot;
     if (!snapshot.router.scenarios.some((scenario) => scenario.id === state.activeAiCoreScenarioId)) {
       state.activeAiCoreScenarioId = snapshot.router.scenarios[0].id;
@@ -3415,12 +3665,16 @@ async function loadSeisAiCoreRuntimeSnapshot() {
     if (!snapshot.workforceAssignmentRegistry.assignments.some((assignment) => assignment.id === state.activeAIWorkforceAssignmentId)) {
       state.activeAIWorkforceAssignmentId = snapshot.workforceAssignmentRegistry.assignments[0]?.id || "codex";
     }
+    if (!snapshot.workforceTrainingRegistry.trainerRoles.some((role) => role.id === state.activeAITrainingRoleId)) {
+      state.activeAITrainingRoleId = snapshot.workforceTrainingRegistry.trainerRoles[0]?.id || "codex";
+    }
     aiCoreRuntimeNotice = "Generated AI Core snapshot loaded. Decisions are source-backed and execution remains disabled.";
   } catch (error) {
     seisAiCoreRuntimeSnapshot = fallbackSeisAiCoreRuntimeSnapshot;
     state.activeAiCoreScenarioId = fallbackSeisAiCoreRuntimeSnapshot.router.scenarios[0].id;
     state.activeManagedAgentId = fallbackSeisAiCoreRuntimeSnapshot.agentRegistry.agents[0].id;
     state.activeAIWorkforceAssignmentId = fallbackSeisAiCoreRuntimeSnapshot.workforceAssignmentRegistry.assignments[0].id;
+    state.activeAITrainingRoleId = fallbackSeisAiCoreRuntimeSnapshot.workforceTrainingRegistry.trainerRoles[0].id;
     aiCoreRuntimeNotice = `Fallback active: ${error.message}. Provider, MCP, SSH, deploy, and GitHub execution remain disabled.`;
   }
   render();
@@ -3843,6 +4097,13 @@ function bindEvents() {
       state.activeAIWorkforceAssignmentId = workforceAssignmentButton.dataset.aiWorkforceAssignment;
       render();
       revealPrimaryTarget("#ai-workforce-assignment-detail");
+    }
+
+    const trainingRoleButton = event.target.closest("[data-ai-training-role]");
+    if (trainingRoleButton) {
+      state.activeAITrainingRoleId = trainingRoleButton.dataset.aiTrainingRole;
+      render();
+      revealPrimaryTarget("#ai-training-role-detail");
     }
 
     const godModeLaneButton = event.target.closest("[data-godmode-lane]");

@@ -231,7 +231,14 @@ test("SEIS Command Center binds the source-backed AI Core runtime snapshot", asy
     "ai-workforce-registry-summary",
     "ai-workforce-assignment-list",
     "ai-workforce-assignment-detail",
-    "ai-workforce-registry-feedback"
+    "ai-workforce-registry-feedback",
+    "ai-training-registry-state",
+    "ai-training-registry-summary",
+    "ai-training-role-list",
+    "ai-training-role-detail",
+    "ai-training-loop-list",
+    "ai-training-target-list",
+    "ai-training-registry-feedback"
   ]) {
     assert.match(html, new RegExp(`id="${id}"`));
   }
@@ -241,11 +248,15 @@ test("SEIS Command Center binds the source-backed AI Core runtime snapshot", asy
     "renderAiCoreRuntime",
     "renderManagedAgentRegistry",
     "renderAIWorkforceRegistry",
+    "renderAIWorkforceTrainingRegistry",
     "loadSeisAiCoreRuntimeSnapshot",
     "getActiveAiCoreScenario",
     "copyAiCoreDecision",
     "data-ai-core-capability-inventory",
     "data-ai-workforce-assignment",
+    "data-ai-training-role",
+    "data-ai-training-loop",
+    "data-ai-training-target",
     "data/seis-ai-core-runtime-snapshot.json"
   ]) {
     assert.match(script, new RegExp(signal.replaceAll("/", "\\/")));
@@ -261,7 +272,13 @@ test("SEIS Command Center binds the source-backed AI Core runtime snapshot", asy
     "ai-workforce-registry-panel",
     "ai-workforce-summary-item",
     "ai-workforce-assignment-button",
-    "ai-workforce-assignment-detail"
+    "ai-workforce-assignment-detail",
+    "ai-training-registry-panel",
+    "ai-training-summary-item",
+    "ai-training-role-button",
+    "ai-training-role-detail",
+    "ai-training-loop",
+    "ai-training-target"
   ]) {
     assert.match(css, new RegExp(`\\.${selector}`));
   }
@@ -292,6 +309,19 @@ test("SEIS Command Center binds the source-backed AI Core runtime snapshot", asy
   assert.equal(snapshot.workforceAssignmentRegistry.runtimeBoundary.credentialsRead, false);
   assert.equal(snapshot.workforceAssignmentRegistry.runtimeBoundary.externalMutationPerformed, false);
   assert.equal(snapshot.workforceAssignmentRegistry.runtimeBoundary.humanApprovalRequiredForMutation, true);
+  assert.equal(snapshot.workforceTrainingRegistry.id, "seis-ai-workforce-training-plan");
+  assert.equal(snapshot.workforceTrainingRegistry.status, "source-backed-metadata-only");
+  assert.equal(snapshot.workforceTrainingRegistry.trainerRoles.length, 10);
+  assert.equal(snapshot.workforceTrainingRegistry.trainingLoops.length, 7);
+  assert.equal(snapshot.workforceTrainingRegistry.modelTargets.length, 4);
+  assert.ok(snapshot.workforceTrainingRegistry.trainerRoles.every((role) => role.secretAccessAllowed === false));
+  assert.ok(snapshot.workforceTrainingRegistry.trainerRoles.every((role) => role.liveProviderCallAllowed === false));
+  assert.ok(snapshot.workforceTrainingRegistry.modelTargets.every((target) => target.runtimeAuthority === false));
+  assert.equal(snapshot.workforceTrainingRegistry.runtimeBoundary.trainingPerformed, false);
+  assert.equal(snapshot.workforceTrainingRegistry.runtimeBoundary.liveProviderCalls, false);
+  assert.equal(snapshot.workforceTrainingRegistry.runtimeBoundary.externalDatasetDownloaded, false);
+  assert.equal(snapshot.workforceTrainingRegistry.runtimeBoundary.runtimeAuthority, false);
+  assert.equal(snapshot.workforceTrainingRegistry.runtimeBoundary.humanApprovalRequiredForLiveActions, true);
   assert.equal(snapshot.agentRegistry.managedLaneCount, 9);
   assert.equal(snapshot.agentRegistry.agentCount, 13);
   assert.equal(snapshot.agentRegistry.runtimeAuthority, false);
@@ -355,6 +385,32 @@ test("SEIS Command Center exposes the source-backed AI workforce assignment regi
   for (const selector of ["ai-workforce-registry-panel", "ai-workforce-summary-item", "ai-workforce-assignment-button", "ai-workforce-assignment-detail"]) {
     assert.match(css, new RegExp(`\\.${selector}`));
   }
+  assert.match(html, /id="ai-workforce-assignment-detail"[^>]*aria-label="Selected AI workforce assignment detail"/);
+});
+
+test("SEIS Command Center exposes the source-backed AI workforce training control plane", async () => {
+  const html = await readFile(new URL("index.html", root), "utf8");
+  const script = await readFile(new URL("script.js", root), "utf8");
+  const css = await readFile(new URL("styles.css", root), "utf8");
+
+  for (const id of [
+    "ai-training-registry-state",
+    "ai-training-registry-summary",
+    "ai-training-role-list",
+    "ai-training-role-detail",
+    "ai-training-loop-list",
+    "ai-training-target-list",
+    "ai-training-registry-feedback"
+  ]) {
+    assert.match(html, new RegExp(`id="${id}"`));
+  }
+  for (const signal of ["activeAITrainingRoleId", "renderAIWorkforceTrainingRegistry", "data-ai-training-role", "data-ai-training-loop", "data-ai-training-target"]) {
+    assert.match(script, new RegExp(signal));
+  }
+  for (const selector of ["ai-training-registry-panel", "ai-training-summary-item", "ai-training-role-button", "ai-training-role-detail", "ai-training-loop", "ai-training-target"]) {
+    assert.match(css, new RegExp(`\\.${selector}`));
+  }
+  assert.match(html, /id="ai-training-role-detail"[^>]*aria-label="Selected AI workforce training role detail"/);
 });
 
 

@@ -24,6 +24,37 @@ export const SECOND_BRAIN_SYSTEM_PATH = "content/development/seis-second-brain-s
 export const BIG_TECH_MCP_SKILL_INVENTORY_PATH = "content/development/seis-big-tech-mcp-skill-inventory.json";
 export const NVIDIA_INSTALLED_INTEGRATIONS_PATH = "content/development/seis-nvidia-installed-integrations.json";
 export const AI_WORKFORCE_ASSIGNMENTS_PATH = "content/development/ai-workforce-assignments.json";
+export const AI_WORKFORCE_TRAINING_PATH = "content/development/seis-ai-workforce-training-plan.json";
+
+const EXPECTED_AI_WORKFORCE_TRUTH_BOUNDARY = "Workforce assignments are source-backed role and launcher metadata. Installed status is not live-model, authentication, provider-call, execution, or external-mutation evidence; Codex remains the only repository writer by default.";
+const EXPECTED_AI_WORKFORCE_TRAINING_TRUTH_BOUNDARY = "Repository-local training control plane only. It performs no live provider calls, no credential validation, no SSH, no deployment, no external dataset download, no cloud fine-tuning, and no claim that SEIS owns a trained foundation model.";
+const AI_WORKFORCE_LAUNCHER_STATUSES = new Set([
+  "installed",
+  "route-defined-current-shell-missing-key",
+  "pr-dependent",
+  "remote-ci",
+  "route-defined-current-shell-missing-command",
+]);
+const AI_WORKFORCE_TRAINER_ROUTE_STATUSES = new Set(["installed", "missing-key-current-shell"]);
+const AI_WORKFORCE_LAUNCHER_EVIDENCE = Object.freeze({
+  command: "npm run ai -- list",
+  observedDate: "2026-06-23",
+  notes: Object.freeze([
+    "The command checks local route readiness only.",
+    "No provider call, repository upload, secret read, or live model verification was performed.",
+    "Missing environment-variable status does not prove a credential does not exist outside the current shell.",
+  ]),
+});
+const AI_WORKFORCE_TRAINING_LAUNCHER_EVIDENCE = Object.freeze({
+  command: "npm run ai -- list",
+  observedDate: "2026-06-23",
+  notes: Object.freeze([
+    "The command checks route readiness only.",
+    "No provider prompt, repository upload, credential read, or live model verification was performed.",
+    "Missing key status means the current shell did not expose that provider credential.",
+  ]),
+});
+const MAX_LOCAL_EVIDENCE_AGE_DAYS = 31;
 
 const PERSONAL_LANE_IDS = Object.freeze([
   "seis",
@@ -124,6 +155,9 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
   const workforceAssignmentRegistry = buildWorkforceAssignmentRegistry(
     readJson(repoRoot, AI_WORKFORCE_ASSIGNMENTS_PATH)
   );
+  const workforceTrainingRegistry = buildWorkforceTrainingRegistry(
+    readJson(repoRoot, AI_WORKFORCE_TRAINING_PATH)
+  );
 
   if (!provider.ok) throw new Error(provider.error || "SEIS AI Core provider registry is unavailable");
   if (!plugin.ok) throw new Error(plugin.error || "SEIS plugin integration is unavailable");
@@ -207,7 +241,7 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
     schemaVersion: "1.0.0",
     status: "local-readiness-linked",
     mode: "Local Demo",
-    purpose: "Bind provider, read-only router, unified plugin, managed agent, workforce assignment, personal lane, and local MCP evidence directly into the static SEIS Core Command Center.",
+    purpose: "Bind provider, read-only router, unified plugin, managed agent, workforce assignment, workforce training, personal lane, and local MCP evidence directly into the static SEIS Core Command Center.",
     sourceOfTruth: {
       providerRegistry: AI_CORE_PROVIDER_REGISTRY_PATH,
       routerContract: READ_ONLY_ROUTER_CONTRACT_PATH,
@@ -216,6 +250,7 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
       applicationIntegration: AI_CORE_APPLICATION_INTEGRATION_PATH,
       agentRegistry: SECOND_BRAIN_SYSTEM_PATH,
       workforceAssignments: AI_WORKFORCE_ASSIGNMENTS_PATH,
+      workforceTraining: AI_WORKFORCE_TRAINING_PATH,
       installedCapabilityInventory: {
         bigTechMcpSkillInventory: BIG_TECH_MCP_SKILL_INVENTORY_PATH,
         nvidiaInstalledIntegrations: NVIDIA_INSTALLED_INTEGRATIONS_PATH,
@@ -270,6 +305,7 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
     },
     agentRegistry,
     workforceAssignmentRegistry,
+    workforceTrainingRegistry,
     installedCapabilityInventory,
     pluginMesh: {
       id: plugin.id,
@@ -493,6 +529,7 @@ function buildWorkforceAssignmentRegistry(source) {
   ];
   const publicAssignments = assignments.map((assignment) => {
     if (requiredAssignmentFields.some((field) => typeof assignment[field] !== "string" || assignment[field].trim().length === 0) ||
+        !AI_WORKFORCE_LAUNCHER_STATUSES.has(assignment.launcherStatus) ||
         !Array.isArray(assignment.coreDuties) || assignment.coreDuties.length === 0 ||
         !Array.isArray(assignment.allowedOutputs) || assignment.allowedOutputs.length === 0 ||
         !Array.isArray(assignment.deniedActions) || assignment.deniedActions.length === 0 ||
@@ -515,14 +552,12 @@ function buildWorkforceAssignmentRegistry(source) {
   });
 
   const launcherEvidence = source.currentLauncherEvidence || {};
-  if (typeof launcherEvidence.command !== "string" || launcherEvidence.command.trim().length === 0 ||
-      typeof launcherEvidence.observedDate !== "string" || launcherEvidence.observedDate.trim().length === 0 ||
-      !Array.isArray(launcherEvidence.notes) || launcherEvidence.notes.length === 0 ||
-      launcherEvidence.notes.some((note) => typeof note !== "string" || note.trim().length === 0) ||
-      !launcherEvidence.notes.some((note) => /no provider call/i.test(note)) ||
-      !launcherEvidence.notes.some((note) => /no .*secret read/i.test(note))) {
+  if (launcherEvidence.command !== AI_WORKFORCE_LAUNCHER_EVIDENCE.command ||
+      launcherEvidence.observedDate !== AI_WORKFORCE_LAUNCHER_EVIDENCE.observedDate ||
+      JSON.stringify(launcherEvidence.notes) !== JSON.stringify(AI_WORKFORCE_LAUNCHER_EVIDENCE.notes)) {
     throw new Error("SEIS AI workforce launcher evidence must remain local-readiness-only");
   }
+  validateLocalEvidenceDate(launcherEvidence.observedDate, "SEIS AI workforce launcher evidence");
 
   const approvalRequiredFor = Array.isArray(source.approvalRequiredFor) ? source.approvalRequiredFor : [];
   const requiredApprovalClaims = [
@@ -574,7 +609,166 @@ function buildWorkforceAssignmentRegistry(source) {
       externalMutationPerformed: false,
       humanApprovalRequiredForMutation: true,
     },
-    truthBoundary: "Workforce assignments are source-backed role and launcher metadata. Installed status is not live-model, authentication, provider-call, execution, or external-mutation evidence; Codex remains the only repository writer by default.",
+    truthBoundary: EXPECTED_AI_WORKFORCE_TRUTH_BOUNDARY,
+  };
+}
+
+function buildWorkforceTrainingRegistry(source) {
+  if (source.id !== "seis-ai-workforce-training-plan" || source.status !== "active-local-seed-training-contract") {
+    throw new Error("SEIS AI workforce training registry identity or status mismatch");
+  }
+
+  const requiredTextFields = ["version", "updatedAt", "purpose", "qualityGate", "automationCommand", "truthBoundary"];
+  if (requiredTextFields.some((field) => typeof source[field] !== "string" || source[field].trim().length === 0) ||
+      !source.qualityGate.startsWith("npm run check:") ||
+      !source.automationCommand.startsWith("npm run automation:")) {
+    throw new Error("SEIS AI workforce training registry metadata is incomplete");
+  }
+
+  if (source.truthBoundary !== EXPECTED_AI_WORKFORCE_TRAINING_TRUTH_BOUNDARY) {
+    throw new Error("SEIS AI workforce training registry truth boundary is incomplete");
+  }
+
+  const trainingMeaning = source.trainingMeaning || {};
+  if (typeof trainingMeaning.currentMeaning !== "string" || trainingMeaning.currentMeaning.trim().length === 0 ||
+      !Array.isArray(trainingMeaning.notMeaning) || trainingMeaning.notMeaning.length === 0 ||
+      trainingMeaning.notMeaning.some((term) => typeof term !== "string" || term.trim().length === 0)) {
+    throw new Error("SEIS AI workforce training meaning is incomplete");
+  }
+
+  const launcherEvidence = source.currentLauncherEvidence || {};
+  if (launcherEvidence.command !== AI_WORKFORCE_TRAINING_LAUNCHER_EVIDENCE.command ||
+      launcherEvidence.observedDate !== AI_WORKFORCE_TRAINING_LAUNCHER_EVIDENCE.observedDate ||
+      JSON.stringify(launcherEvidence.notes) !== JSON.stringify(AI_WORKFORCE_TRAINING_LAUNCHER_EVIDENCE.notes) ||
+      !Array.isArray(launcherEvidence.installedRoutes) || launcherEvidence.installedRoutes.length === 0 ||
+      !Array.isArray(launcherEvidence.missingOrDisabledRoutes) || launcherEvidence.missingOrDisabledRoutes.length === 0) {
+    throw new Error("SEIS AI workforce training launcher evidence is incomplete");
+  }
+  validateLocalEvidenceDate(launcherEvidence.observedDate, "SEIS AI workforce training launcher evidence");
+
+  const trainerRoles = Array.isArray(source.trainerRoles) ? source.trainerRoles : [];
+  if (trainerRoles.length !== 10) {
+    throw new Error("SEIS AI workforce training registry must expose exactly ten trainer roles");
+  }
+  const roleIDs = trainerRoles.map((role) => role.id);
+  if (roleIDs.some((id) => typeof id !== "string" || id.trim().length === 0) ||
+      new Set(roleIDs).size !== roleIDs.length) {
+    throw new Error("SEIS AI workforce training registry contains invalid or duplicate trainer role IDs");
+  }
+  const publicTrainerRoles = trainerRoles.map((role) => {
+    const textFields = ["displayName", "routeStatus", "trainingRole", "allowedContribution", "outputStatus"];
+    if (textFields.some((field) => typeof role[field] !== "string" || role[field].trim().length === 0) ||
+        !AI_WORKFORCE_TRAINER_ROUTE_STATUSES.has(role.routeStatus) ||
+        role.secretAccessAllowed !== false || role.liveProviderCallAllowed !== false || role.externalTrainingAllowed !== false) {
+      throw new Error(`SEIS AI trainer role ${role.id || "unknown"} violates the local-only training boundary`);
+    }
+    return {
+      id: role.id,
+      displayName: role.displayName,
+      routeStatus: role.routeStatus,
+      trainingRole: role.trainingRole,
+      allowedContribution: role.allowedContribution,
+      secretAccessAllowed: false,
+      liveProviderCallAllowed: false,
+      externalTrainingAllowed: false,
+      outputStatus: role.outputStatus,
+    };
+  });
+
+  const trainingLoops = Array.isArray(source.trainingLoops) ? source.trainingLoops : [];
+  if (trainingLoops.length !== 7) {
+    throw new Error("SEIS AI workforce training registry must expose exactly seven training loops");
+  }
+  const loopIDs = trainingLoops.map((loop) => loop.id);
+  if (loopIDs.some((id) => typeof id !== "string" || id.trim().length === 0) ||
+      new Set(loopIDs).size !== loopIDs.length) {
+    throw new Error("SEIS AI workforce training registry contains invalid or duplicate loop IDs");
+  }
+  const publicTrainingLoops = trainingLoops.map((loop) => {
+    const textFields = ["owner", "input", "output", "acceptanceGate"];
+    if (textFields.some((field) => typeof loop[field] !== "string" || loop[field].trim().length === 0)) {
+      throw new Error(`SEIS AI training loop ${loop.id || "unknown"} is incomplete`);
+    }
+    return {
+      id: loop.id,
+      owner: loop.owner,
+      input: loop.input,
+      output: loop.output,
+      acceptanceGate: loop.acceptanceGate,
+    };
+  });
+
+  const modelTargets = Array.isArray(source.modelTargets) ? source.modelTargets : [];
+  if (modelTargets.length !== 4) {
+    throw new Error("SEIS AI workforce training registry must expose exactly four model targets");
+  }
+  const modelTargetIDs = modelTargets.map((target) => target.id);
+  if (modelTargetIDs.some((id) => typeof id !== "string" || id.trim().length === 0) ||
+      new Set(modelTargetIDs).size !== modelTargetIDs.length) {
+    throw new Error("SEIS AI workforce training registry contains invalid or duplicate model target IDs");
+  }
+  const publicModelTargets = modelTargets.map((target) => {
+    const textFields = ["purpose", "datasetPath", "artifactPath", "trainingCommand", "validationCommand"];
+    if (textFields.some((field) => typeof target[field] !== "string" || target[field].trim().length === 0) ||
+        target.runtimeAuthority !== false) {
+      throw new Error(`SEIS AI model target ${target.id || "unknown"} violates the no-runtime-authority boundary`);
+    }
+    return {
+      id: target.id,
+      purpose: target.purpose,
+      datasetPath: target.datasetPath,
+      artifactPath: target.artifactPath,
+      trainingCommand: target.trainingCommand,
+      validationCommand: target.validationCommand,
+      runtimeAuthority: false,
+    };
+  });
+
+  const safetyRules = Array.isArray(source.safetyRules) ? source.safetyRules : [];
+  const acceptanceGates = Array.isArray(source.acceptanceGates) ? source.acceptanceGates : [];
+  if (safetyRules.length === 0 || safetyRules.some((rule) => typeof rule !== "string" || rule.trim().length === 0) ||
+      acceptanceGates.length === 0 || acceptanceGates.some((gate) => typeof gate !== "string" || gate.trim().length === 0)) {
+    throw new Error("SEIS AI workforce training safety or acceptance records are incomplete");
+  }
+
+  return {
+    id: source.id,
+    version: source.version,
+    status: "source-backed-metadata-only",
+    source: AI_WORKFORCE_TRAINING_PATH,
+    updatedAt: source.updatedAt,
+    purpose: source.purpose,
+    qualityGate: source.qualityGate,
+    automationCommand: source.automationCommand,
+    sourceOfTruth: source.sourceOfTruth,
+    truthBoundary: EXPECTED_AI_WORKFORCE_TRAINING_TRUTH_BOUNDARY,
+    trainingMeaning: {
+      currentMeaning: trainingMeaning.currentMeaning,
+      notMeaning: trainingMeaning.notMeaning,
+    },
+    currentLauncherEvidence: {
+      command: launcherEvidence.command,
+      observedDate: launcherEvidence.observedDate,
+      notes: launcherEvidence.notes,
+      installedRoutes: launcherEvidence.installedRoutes,
+      missingOrDisabledRoutes: launcherEvidence.missingOrDisabledRoutes,
+    },
+    trainerRoles: publicTrainerRoles,
+    trainingLoops: publicTrainingLoops,
+    modelTargets: publicModelTargets,
+    safetyRules,
+    acceptanceGates,
+    runtimeBoundary: {
+      trainingPerformed: false,
+      liveProviderCalls: false,
+      credentialsRead: false,
+      networkCalled: false,
+      externalDatasetDownloaded: false,
+      cloudFineTuningPerformed: false,
+      externalMutationPerformed: false,
+      runtimeAuthority: false,
+      humanApprovalRequiredForLiveActions: true,
+    },
   };
 }
 
@@ -651,6 +845,21 @@ function slugify(value) {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
+}
+
+function validateLocalEvidenceDate(observedDate, label) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(observedDate)) {
+    throw new Error(`${label} must use YYYY-MM-DD evidence dates`);
+  }
+  const observed = Date.parse(`${observedDate}T00:00:00Z`);
+  const today = Date.parse(`${new Date().toISOString().slice(0, 10)}T00:00:00Z`);
+  if (!Number.isFinite(observed) || observed > today) {
+    throw new Error(`${label} must not be a future evidence date`);
+  }
+  const ageDays = Math.floor((today - observed) / 86_400_000);
+  if (ageDays > MAX_LOCAL_EVIDENCE_AGE_DAYS) {
+    throw new Error(`${label} is stale by ${ageDays} days; refresh the local route evidence`);
+  }
 }
 
 function readJson(repoRoot, relativePath) {

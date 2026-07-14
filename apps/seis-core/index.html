@@ -483,9 +483,28 @@
                 <div class="ai-workforce-assignment-index">
                   <div class="ai-workforce-assignment-list" id="ai-workforce-assignment-list" role="list" aria-label="SEIS AI workforce assignments"></div>
                 </div>
-                <aside class="ai-workforce-assignment-detail" id="ai-workforce-assignment-detail" aria-live="polite"></aside>
+                <aside class="ai-workforce-assignment-detail" id="ai-workforce-assignment-detail" aria-label="Selected AI workforce assignment detail" aria-live="polite"></aside>
               </div>
               <p class="ai-workforce-registry-feedback" id="ai-workforce-registry-feedback">Workforce assignment registry loading.</p>
+            </section>
+            <section class="panel ai-training-registry-panel module-spacer" data-ai-training-registry aria-labelledby="ai-training-registry-title">
+              <div class="panel-header">
+                <div>
+                  <h3 id="ai-training-registry-title">AI Workforce Training Control Plane</h3>
+                  <p class="panel-summary">Inspect supervised trainer roles, local seed loops, and model targets without running training, downloading datasets, or enabling runtime authority.</p>
+                </div>
+                <span class="status-pill attention" id="ai-training-registry-state">Loading</span>
+              </div>
+              <div class="ai-training-registry-summary" id="ai-training-registry-summary"></div>
+              <div class="ai-training-registry-layout">
+                <div class="ai-training-role-index">
+                  <div class="ai-training-role-list" id="ai-training-role-list" role="list" aria-label="SEIS AI workforce trainer roles"></div>
+                  <div class="ai-training-loop-list" id="ai-training-loop-list" aria-label="SEIS AI workforce training loops"></div>
+                </div>
+                <aside class="ai-training-role-detail" id="ai-training-role-detail" aria-label="Selected AI workforce training role detail" aria-live="polite"></aside>
+              </div>
+              <div class="ai-training-target-list" id="ai-training-target-list" aria-label="SEIS deterministic seed model targets"></div>
+              <p class="ai-training-registry-feedback" id="ai-training-registry-feedback">Training control-plane registry loading.</p>
             </section>
           </section>
 

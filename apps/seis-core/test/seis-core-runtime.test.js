@@ -41,6 +41,12 @@ test("SEIS Core renders source-backed providers, scenarios, and MCP mesh", async
   assert.equal(window.document.querySelectorAll("[data-ai-workforce-assignment]").length, 10);
   assert.match(window.document.querySelector("#ai-workforce-registry-summary")?.textContent || "", /Codex/);
   assert.match(window.document.querySelector("#ai-workforce-registry-feedback")?.textContent || "", /source-backed role and launcher metadata/i);
+  assert.equal(window.document.querySelector("#ai-training-registry-state")?.textContent, "Source-backed");
+  assert.equal(window.document.querySelectorAll("[data-ai-training-role]").length, 10);
+  assert.equal(window.document.querySelectorAll("[data-ai-training-loop]").length, 7);
+  assert.equal(window.document.querySelectorAll("[data-ai-training-target]").length, 4);
+  assert.match(window.document.querySelector("#ai-training-registry-summary")?.textContent || "", /Disabled/);
+  assert.match(window.document.querySelector("#ai-training-registry-feedback")?.textContent || "", /no live provider calls/i);
   const probeRows = [...window.document.querySelectorAll("[data-ai-core-mcp-probe]")];
   assert.equal(probeRows.length, 6);
   assert.ok(probeRows.some((row) => row.textContent?.includes("seis_cloud_status")));
@@ -132,6 +138,36 @@ test("SEIS Core rejects an unsafe AI workforce assignment snapshot", async () =>
   assert.match(window.document.querySelector("#ai-workforce-registry-feedback")?.textContent || "", /unavailable/i);
 });
 
+test("SEIS Core rejects an AI workforce assignment with unsafe boundary text or launcher status", async () => {
+  const { window } = await boot({
+    snapshotTransform(snapshot) {
+      snapshot.workforceAssignmentRegistry.truthBoundary = "Live autonomous execution enabled.";
+      snapshot.workforceAssignmentRegistry.assignments[0].launcherStatus = "live";
+      return snapshot;
+    }
+  });
+
+  window.document.querySelector('[data-view="agents"]')?.click();
+  assert.equal(window.document.querySelector("#ai-workforce-registry-state")?.textContent, "Fallback");
+  assert.match(window.document.querySelector("#ai-core-runtime-feedback")?.textContent || "", /AI workforce assignment boundary/i);
+});
+
+test("SEIS Core rejects an unsafe AI workforce training snapshot", async () => {
+  const { window } = await boot({
+    snapshotTransform(snapshot) {
+      snapshot.workforceTrainingRegistry.modelTargets[0].runtimeAuthority = true;
+      return snapshot;
+    }
+  });
+
+  window.document.querySelector('[data-view="agents"]')?.click();
+  assert.equal(window.document.querySelector("#ai-training-registry-state")?.textContent, "Fallback");
+  assert.match(window.document.querySelector("#ai-core-runtime-feedback")?.textContent || "", /AI workforce training boundary/i);
+  assert.equal(window.document.querySelectorAll("[data-ai-training-role]").length, 1);
+  assert.equal(window.document.querySelectorAll("[data-ai-training-loop]").length, 0);
+  assert.match(window.document.querySelector("#ai-training-registry-feedback")?.textContent || "", /unavailable/i);
+});
+
 test("God Mode mission submission records a decision-only route", async () => {
   const { window } = await boot();
   window.document.querySelector('[data-view="godmode"]')?.click();
@@ -182,6 +218,19 @@ test("SEIS Core renders and selects the full managed agent registry", async () =
   assert.match(workforceDetail?.textContent || "", /Provider calls\s*Not performed/);
   assert.match(workforceDetail?.textContent || "", /Human approval required/);
   assert.equal(JSON.parse(window.localStorage.getItem("seis-core-state-v1")).activeAIWorkforceAssignmentId, "qwen");
+  assert.equal(window.document.querySelector('[data-ai-workforce-assignment="qwen"]')?.getAttribute("role"), null);
+  assert.equal(window.document.querySelector('[data-ai-workforce-assignment="qwen"]')?.parentElement?.getAttribute("role"), "listitem");
+
+  assert.equal(window.document.querySelector("#ai-training-registry-state")?.textContent, "Source-backed");
+  window.document.querySelector('[data-ai-training-role="ollama"]')?.click();
+  const trainingDetail = window.document.querySelector("#ai-training-role-detail");
+  assert.match(trainingDetail?.textContent || "", /Ollama/);
+  assert.match(trainingDetail?.textContent || "", /Secret access\s*Not allowed/);
+  assert.match(trainingDetail?.textContent || "", /Provider calls\s*Not allowed/);
+  assert.match(trainingDetail?.textContent || "", /Runtime authority\s*None/);
+  assert.equal(JSON.parse(window.localStorage.getItem("seis-core-state-v1")).activeAITrainingRoleId, "ollama");
+  assert.equal(window.document.querySelector('[data-ai-training-role="ollama"]')?.getAttribute("role"), null);
+  assert.equal(window.document.querySelector('[data-ai-training-role="ollama"]')?.parentElement?.getAttribute("role"), "listitem");
 });
 
 test("SEIS Core renders and selects source-backed ecosystem lanes", async () => {
@@ -234,6 +283,8 @@ test("SEIS Core keeps an explicit disabled fallback when the snapshot cannot loa
   assert.equal(window.document.querySelectorAll("[data-managed-agent]").length, 1);
   assert.equal(window.document.querySelector("#ai-workforce-registry-state")?.textContent, "Fallback");
   assert.equal(window.document.querySelectorAll("[data-ai-workforce-assignment]").length, 1);
+  assert.equal(window.document.querySelector("#ai-training-registry-state")?.textContent, "Fallback");
+  assert.equal(window.document.querySelectorAll("[data-ai-training-role]").length, 1);
 });
 
 test("view-specific primary actions stay in their operational context", async () => {

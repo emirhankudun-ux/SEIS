@@ -1714,6 +1714,166 @@ select {
   line-height: 1.45;
 }
 
+.ai-training-registry-panel {
+  background: var(--surface);
+}
+
+.ai-training-registry-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-block: 1px solid var(--line);
+  margin: 14px 0;
+}
+
+.ai-training-summary-item {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding: 12px;
+  border-inline-end: 1px solid var(--line);
+}
+
+.ai-training-summary-item:last-child {
+  border-inline-end: 0;
+}
+
+.ai-training-summary-item span,
+.ai-training-summary-item small,
+.ai-training-role-button small,
+.ai-training-loop small,
+.ai-training-registry-feedback,
+.ai-training-target-facts {
+  color: var(--muted);
+}
+
+.ai-training-summary-item strong {
+  font-size: 19px;
+  overflow-wrap: anywhere;
+}
+
+.ai-training-registry-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.ai-training-role-index,
+.ai-training-role-list,
+.ai-training-loop-list,
+.ai-training-role-detail,
+.ai-training-target-list {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.ai-training-role-button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  min-height: 62px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  padding: 10px 4px;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+}
+
+.ai-training-role-button > span:first-child {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.ai-training-role-button small {
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.ai-training-role-button:hover,
+.ai-training-role-button:focus-visible,
+.ai-training-role-button.is-active {
+  background: var(--accent-soft);
+}
+
+.ai-training-role-button.is-active {
+  box-shadow: inset 2px 0 0 var(--accent);
+}
+
+.ai-training-role-detail {
+  position: static;
+  padding-inline-start: 16px;
+  border-inline-start: 1px solid var(--line);
+}
+
+.ai-training-role-detail h4,
+.ai-training-role-detail p,
+.ai-training-loop h5,
+.ai-training-loop p,
+.ai-training-loop small,
+.ai-training-registry-feedback {
+  margin: 0;
+}
+
+.ai-training-role-detail p,
+.ai-training-loop p,
+.ai-training-target p {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.ai-training-loop-list {
+  margin-top: 12px;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+
+.ai-training-loop,
+.ai-training-target {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px;
+  background: var(--surface-strong);
+}
+
+.ai-training-loop h5,
+.ai-training-target h5 {
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.ai-training-target-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 16px;
+}
+
+.ai-training-target-facts {
+  display: grid;
+  gap: 4px;
+  font-size: 11px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.ai-training-registry-feedback {
+  margin-top: 14px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.ai-training-gates {
+  display: block;
+  margin-top: 6px;
+}
+
 .ecosystem-control-plane {
   margin-bottom: 14px;
   background:
@@ -2536,6 +2696,18 @@ select {
     grid-template-columns: 1fr;
   }
 
+  .ai-workforce-registry-layout,
+  .ai-training-registry-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .ai-workforce-assignment-detail,
+  .ai-training-role-detail {
+    padding: 14px 0 0;
+    border-inline-start: 0;
+    border-top: 1px solid var(--line);
+  }
+
   .inspector {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -2583,6 +2755,9 @@ select {
   .ai-workforce-registry-summary,
   .ai-workforce-registry-layout,
   .ai-workforce-detail-grid,
+  .ai-training-registry-summary,
+  .ai-training-registry-layout,
+  .ai-training-target-list,
   .automation-ops-layout,
   .architecture-ops-layout,
   .security-ops-layout,
@@ -2656,6 +2831,22 @@ select {
   }
 
   .ai-workforce-assignment-detail {
+    position: static;
+    padding: 14px 0 0;
+    border-inline-start: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .ai-training-summary-item {
+    border-inline-end: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .ai-training-summary-item:last-child {
+    border-bottom: 0;
+  }
+
+  .ai-training-role-detail {
     position: static;
     padding: 14px 0 0;
     border-inline-start: 0;
