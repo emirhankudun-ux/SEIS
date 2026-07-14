@@ -1,0 +1,2267 @@
+{
+  "schema_version": 1,
+  "id": "seis-10-year-capability-matrix",
+  "title": "SEIS 10-Year Capability Term Matrix",
+  "status": "active",
+  "maturity": "specification",
+  "project": "seis",
+  "related_goal_ids": [
+    "SEIS-GOAL-003",
+    "SEIS-GOAL-020"
+  ],
+  "source_basis": "User-provided goal objective attachment read at session start; terminology is transcribed without treating metrics as current evidence.",
+  "anchor_date": "2026-07-14",
+  "target_date": "2036-07-14",
+  "target_horizon_years": 10,
+  "baseline_phase_id": "SEIS-10Y-Y01",
+  "category_count": 5,
+  "term_count": 104,
+  "lifecycle_states": [
+    "specified",
+    "planned",
+    "active",
+    "blocked",
+    "completed",
+    "unavailable",
+    "deprecated"
+  ],
+  "required_term_fields": [
+    "id",
+    "label",
+    "status",
+    "maturity",
+    "baseline_phase",
+    "target_phase",
+    "owner_role",
+    "evidence_state",
+    "validation_status",
+    "evidence_sources",
+    "measurement_scope"
+  ],
+  "interpretation_rules": [
+    "Stars, downloads, visitors, and similar adoption values are signals, not active-user proof.",
+    "A planned validation or documented contract does not prove live runtime, external integration, deployment, or production readiness.",
+    "A high metric cannot override security, accessibility, reliability, maintenance, or human-experience evidence.",
+    "Unavailable external telemetry must remain unavailable rather than being estimated or fabricated."
+  ],
+  "non_claims": [
+    "No live GitHub Insights, package registry, provider, MCP, deployment, or external telemetry connection is claimed.",
+    "No term is marked completed merely because it appears in this matrix.",
+    "The ten-year target uses session-based continuation and does not claim background execution or elapsed time."
+  ],
+  "categories": [
+    {
+      "id": "github-adoption-signals",
+      "title": "GitHub adoption and usage signals",
+      "baseline_phase": "SEIS-10Y-Y01",
+      "target_phase": "SEIS-10Y-Y09",
+      "owner_role": "GitHub Workflow",
+      "evidence_sources": [
+        "docs/STATUS.md",
+        "docs/ROADMAP.md",
+        "docs/RELEASE.md"
+      ],
+      "term_count": 14,
+      "terms": [
+        {
+          "id": "github-adoption-signals-stars",
+          "label": "Stars",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y09",
+          "owner_role": "GitHub Workflow",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md"
+          ],
+          "measurement_scope": "GitHub Insights, package usage, or release telemetry when explicitly available; unavailable state must be recorded otherwise.",
+          "turkish": "Yıldızlar",
+          "meaning": "Projeye verilen ilgi veya yer imi",
+          "interpretation": "Popülerlik göstergesidir; aktif kullanıcı sayısı değildir"
+        },
+        {
+          "id": "github-adoption-signals-forks",
+          "label": "Forks",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y09",
+          "owner_role": "GitHub Workflow",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md"
+          ],
+          "measurement_scope": "GitHub Insights, package usage, or release telemetry when explicitly available; unavailable state must be recorded otherwise.",
+          "turkish": "Kopyalar",
+          "meaning": "Projenin başka hesaplara kopyalanması",
+          "interpretation": "Geliştirme ve deney sinyali verir"
+        },
+        {
+          "id": "github-adoption-signals-watchers-subscribers",
+          "label": "Watchers / Subscribers",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y09",
+          "owner_role": "GitHub Workflow",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md"
+          ],
+          "measurement_scope": "GitHub Insights, package usage, or release telemetry when explicitly available; unavailable state must be recorded otherwise.",
+          "turkish": "Takipçiler",
+          "meaning": "Bildirim almak için takip edenler",
+          "interpretation": "Aktif kullanıcı anlamına gelmez"
+        },
+        {
+          "id": "github-adoption-signals-contributors",
+          "label": "Contributors",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y09",
+          "owner_role": "GitHub Workflow",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md"
+          ],
+          "measurement_scope": "GitHub Insights, package usage, or release telemetry when explicitly available; unavailable state must be recorded otherwise.",
+          "turkish": "Katkıcılar",
+          "meaning": "Koda katkı yapan kişiler",
+          "interpretation": "Tek kişiye bağımlılık riskini anlamak için önemlidir"
+        },
+        {
+          "id": "github-adoption-signals-used-by",
+          "label": "Used by",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y09",
+          "owner_role": "GitHub Workflow",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md"
+          ],
+          "measurement_scope": "GitHub Insights, package usage, or release telemetry when explicitly available; unavailable state must be recorded otherwise.",
+          "turkish": "Kullananlar",
+          "meaning": "Paketi kullanan public repo sayısı",
+          "interpretation": "Gerçek teknik kullanıma star’dan daha yakın sinyaldir"
+        },
+        {
+          "id": "github-adoption-signals-dependents",
+          "label": "Dependents",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y09",
+          "owner_role": "GitHub Workflow",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md"
+          ],
+          "measurement_scope": "GitHub Insights, package usage, or release telemetry when explicitly available; unavailable state must be recorded otherwise.",
+          "turkish": "Bağımlı projeler",
+          "meaning": "Bu projeye bağlı diğer projeler",
+          "interpretation": "Ekosistem etkisini gösterir"
+        },
+        {
+          "id": "github-adoption-signals-downloads",
+          "label": "Downloads",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y09",
+          "owner_role": "GitHub Workflow",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md"
+          ],
+          "measurement_scope": "GitHub Insights, package usage, or release telemetry when explicitly available; unavailable state must be recorded otherwise.",
+          "turkish": "İndirmeler",
+          "meaning": "Paket veya release indirme sayısı",
+          "interpretation": "CI botları ve otomatik indirmeler sayıyı şişirebilir"
+        },
+        {
+          "id": "github-adoption-signals-release-assets",
+          "label": "Release assets",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y09",
+          "owner_role": "GitHub Workflow",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md"
+          ],
+          "measurement_scope": "GitHub Insights, package usage, or release telemetry when explicitly available; unavailable state must be recorded otherwise.",
+          "turkish": "Sürüm dosyaları",
+          "meaning": "Binary, installer, tarball, zip indirmeleri",
+          "interpretation": "Masaüstü ve CLI araçlarında önemlidir"
+        },
+        {
+          "id": "github-adoption-signals-clones",
+          "label": "Clones",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y09",
+          "owner_role": "GitHub Workflow",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md"
+          ],
+          "measurement_scope": "GitHub Insights, package usage, or release telemetry when explicitly available; unavailable state must be recorded otherwise.",
+          "turkish": "Klonlamalar",
+          "meaning": "Repo’nun kaç kez clone edildiği",
+          "interpretation": "Genelde sadece repo sahibi Insights ekranında görür"
+        },
+        {
+          "id": "github-adoption-signals-unique-visitors",
+          "label": "Unique visitors",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y09",
+          "owner_role": "GitHub Workflow",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md"
+          ],
+          "measurement_scope": "GitHub Insights, package usage, or release telemetry when explicitly available; unavailable state must be recorded otherwise.",
+          "turkish": "Benzersiz ziyaretçiler",
+          "meaning": "Repo sayfasını ziyaret eden kişiler",
+          "interpretation": "İlgi için daha gerçekçi bir sinyal olabilir"
+        },
+        {
+          "id": "github-adoption-signals-issues",
+          "label": "Issues",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y09",
+          "owner_role": "GitHub Workflow",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md"
+          ],
+          "measurement_scope": "GitHub Insights, package usage, or release telemetry when explicitly available; unavailable state must be recorded otherwise.",
+          "turkish": "Sorunlar",
+          "meaning": "Kullanıcıların açtığı bug ve talepler",
+          "interpretation": "Çok olması hem popülerlik hem sorun anlamına gelebilir"
+        },
+        {
+          "id": "github-adoption-signals-pull-requests",
+          "label": "Pull requests",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y09",
+          "owner_role": "GitHub Workflow",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md"
+          ],
+          "measurement_scope": "GitHub Insights, package usage, or release telemetry when explicitly available; unavailable state must be recorded otherwise.",
+          "turkish": "Kod talepleri",
+          "meaning": "Dış katkı ve düzeltmeler",
+          "interpretation": "Aktif topluluk sinyalidir"
+        },
+        {
+          "id": "github-adoption-signals-discussions",
+          "label": "Discussions",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y09",
+          "owner_role": "GitHub Workflow",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md"
+          ],
+          "measurement_scope": "GitHub Insights, package usage, or release telemetry when explicitly available; unavailable state must be recorded otherwise.",
+          "turkish": "Tartışmalar",
+          "meaning": "Kullanıcı topluluğu iletişimi",
+          "interpretation": "Destek ve topluluk olgunluğunu gösterir"
+        },
+        {
+          "id": "github-adoption-signals-stars-forks-ratio",
+          "label": "Stars/forks ratio",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y09",
+          "owner_role": "GitHub Workflow",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md"
+          ],
+          "measurement_scope": "GitHub Insights, package usage, or release telemetry when explicitly available; unavailable state must be recorded otherwise.",
+          "turkish": "Star/fork oranı",
+          "meaning": "İlgi ile gerçek kod kullanımı arasındaki oran",
+          "interpretation": "Çok yüksek star, az fork ise proje daha çok kaynak olarak kullanılıyor olabilir"
+        }
+      ]
+    },
+    {
+      "id": "maintenance-and-release",
+      "title": "Maintenance and release health",
+      "baseline_phase": "SEIS-10Y-Y01",
+      "target_phase": "SEIS-10Y-Y02",
+      "owner_role": "Release Manager",
+      "evidence_sources": [
+        "docs/ROADMAP.md",
+        "docs/RELEASE.md",
+        "docs/ROLLBACK.md",
+        "package.json",
+        "package-lock.json"
+      ],
+      "term_count": 17,
+      "terms": [
+        {
+          "id": "maintenance-and-release-last-commit",
+          "label": "Last commit",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Release Manager",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md",
+            "docs/ROLLBACK.md",
+            "package.json",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Repository history, tags, changelog, ownership, and rollback records; live cadence is not inferred from documentation.",
+          "turkish": "Son commit",
+          "meaning": "Projenin aktif geliştirilip geliştirilmediğini gösterir",
+          "interpretation": "Son aylarda düzenli commit"
+        },
+        {
+          "id": "maintenance-and-release-commit-frequency",
+          "label": "Commit frequency",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Release Manager",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md",
+            "docs/ROLLBACK.md",
+            "package.json",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Repository history, tags, changelog, ownership, and rollback records; live cadence is not inferred from documentation.",
+          "turkish": "Commit sıklığı",
+          "meaning": "Geliştirme temposunu gösterir",
+          "interpretation": "Dengeli ve düzenli ilerleme"
+        },
+        {
+          "id": "maintenance-and-release-latest-release",
+          "label": "Latest release",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y09",
+          "owner_role": "Release Manager",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md",
+            "docs/ROLLBACK.md",
+            "package.json",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Repository history, tags, changelog, ownership, and rollback records; live cadence is not inferred from documentation.",
+          "turkish": "Son sürüm",
+          "meaning": "Kullanılabilir stabil paketin güncelliğini gösterir",
+          "interpretation": "Yakın zamanda yayımlanmış release"
+        },
+        {
+          "id": "maintenance-and-release-release-cadence",
+          "label": "Release cadence",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y09",
+          "owner_role": "Release Manager",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md",
+            "docs/ROLLBACK.md",
+            "package.json",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Repository history, tags, changelog, ownership, and rollback records; live cadence is not inferred from documentation.",
+          "turkish": "Sürüm periyodu",
+          "meaning": "Yeni sürümlerin hangi aralıklarla çıktığı",
+          "interpretation": "Öngörülebilir yayın düzeni"
+        },
+        {
+          "id": "maintenance-and-release-changelog",
+          "label": "Changelog",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y09",
+          "owner_role": "Release Manager",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md",
+            "docs/ROLLBACK.md",
+            "package.json",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Repository history, tags, changelog, ownership, and rollback records; live cadence is not inferred from documentation.",
+          "turkish": "Değişiklik günlüğü",
+          "meaning": "Yeni sürümde ne değiştiğini anlatır",
+          "interpretation": "Her release için açıklama"
+        },
+        {
+          "id": "maintenance-and-release-roadmap",
+          "label": "Roadmap",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Release Manager",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md",
+            "docs/ROLLBACK.md",
+            "package.json",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Repository history, tags, changelog, ownership, and rollback records; live cadence is not inferred from documentation.",
+          "turkish": "Yol haritası",
+          "meaning": "Projenin yönünü gösterir",
+          "interpretation": "Açık ve gerçekçi hedefler"
+        },
+        {
+          "id": "maintenance-and-release-semver",
+          "label": "SemVer",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y09",
+          "owner_role": "Release Manager",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md",
+            "docs/ROLLBACK.md",
+            "package.json",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Repository history, tags, changelog, ownership, and rollback records; live cadence is not inferred from documentation.",
+          "turkish": "Semantic Versioning",
+          "meaning": "Sürüm numarası standardı",
+          "interpretation": "`MAJOR.MINOR.PATCH` düzeni"
+        },
+        {
+          "id": "maintenance-and-release-lts",
+          "label": "LTS",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y09",
+          "owner_role": "Release Manager",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md",
+            "docs/ROLLBACK.md",
+            "package.json",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Repository history, tags, changelog, ownership, and rollback records; live cadence is not inferred from documentation.",
+          "turkish": "Long-Term Support",
+          "meaning": "Uzun süre desteklenen sürüm",
+          "interpretation": "Production için daha güvenlidir"
+        },
+        {
+          "id": "maintenance-and-release-archived",
+          "label": "Archived",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Release Manager",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md",
+            "docs/ROLLBACK.md",
+            "package.json",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Repository history, tags, changelog, ownership, and rollback records; live cadence is not inferred from documentation.",
+          "turkish": "Arşivlenmiş",
+          "meaning": "Projenin artık aktif geliştirilmediğini gösterir",
+          "interpretation": "Production’da genelde kaçınılmalı"
+        },
+        {
+          "id": "maintenance-and-release-maintainer",
+          "label": "Maintainer",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Release Manager",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md",
+            "docs/ROLLBACK.md",
+            "package.json",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Repository history, tags, changelog, ownership, and rollback records; live cadence is not inferred from documentation.",
+          "turkish": "Bakımcı",
+          "meaning": "Projeyi sürdüren kişi veya ekip",
+          "interpretation": "Birden fazla aktif bakımcı"
+        },
+        {
+          "id": "maintenance-and-release-bus-factor",
+          "label": "Bus factor",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y01",
+          "owner_role": "Release Manager",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md",
+            "docs/ROLLBACK.md",
+            "package.json",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Repository history, tags, changelog, ownership, and rollback records; live cadence is not inferred from documentation.",
+          "turkish": "Tek kişiye bağımlılık",
+          "meaning": "Ana geliştirici ayrılırsa proje devam eder mi?",
+          "interpretation": "Birden fazla uzman katkıcı"
+        },
+        {
+          "id": "maintenance-and-release-governance",
+          "label": "Governance",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y01",
+          "owner_role": "Release Manager",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md",
+            "docs/ROLLBACK.md",
+            "package.json",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Repository history, tags, changelog, ownership, and rollback records; live cadence is not inferred from documentation.",
+          "turkish": "Yönetişim",
+          "meaning": "Kararların nasıl alındığını gösterir",
+          "interpretation": "Açık katkı ve karar süreci"
+        },
+        {
+          "id": "maintenance-and-release-codeowners",
+          "label": "CODEOWNERS",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y01",
+          "owner_role": "Release Manager",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md",
+            "docs/ROLLBACK.md",
+            "package.json",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Repository history, tags, changelog, ownership, and rollback records; live cadence is not inferred from documentation.",
+          "turkish": "Kod sahipleri",
+          "meaning": "Hangi dosyadan kimin sorumlu olduğunu belirtir",
+          "interpretation": "Açık sahiplik"
+        },
+        {
+          "id": "maintenance-and-release-community-health",
+          "label": "Community health",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y01",
+          "owner_role": "Release Manager",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md",
+            "docs/ROLLBACK.md",
+            "package.json",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Repository history, tags, changelog, ownership, and rollback records; live cadence is not inferred from documentation.",
+          "turkish": "Topluluk sağlığı",
+          "meaning": "Code of Conduct, contributing, issue template gibi dosyalar",
+          "interpretation": "Düzenli ve açık topluluk belgeleri"
+        },
+        {
+          "id": "maintenance-and-release-maintenance-mode",
+          "label": "Maintenance mode",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Release Manager",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md",
+            "docs/ROLLBACK.md",
+            "package.json",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Repository history, tags, changelog, ownership, and rollback records; live cadence is not inferred from documentation.",
+          "turkish": "Bakım modu",
+          "meaning": "Yeni özellik yerine yalnızca hata düzeltme",
+          "interpretation": "Kullanım amacına göre kabul edilebilir"
+        },
+        {
+          "id": "maintenance-and-release-breaking-change",
+          "label": "Breaking change",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y09",
+          "owner_role": "Release Manager",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md",
+            "docs/ROLLBACK.md",
+            "package.json",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Repository history, tags, changelog, ownership, and rollback records; live cadence is not inferred from documentation.",
+          "turkish": "Uyumsuz değişiklik",
+          "meaning": "Eski kodun çalışmasını bozabilecek değişiklik",
+          "interpretation": "Önceden belgelenmiş olmalı"
+        },
+        {
+          "id": "maintenance-and-release-migration-guide",
+          "label": "Migration guide",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y09",
+          "owner_role": "Release Manager",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ROADMAP.md",
+            "docs/RELEASE.md",
+            "docs/ROLLBACK.md",
+            "package.json",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Repository history, tags, changelog, ownership, and rollback records; live cadence is not inferred from documentation.",
+          "turkish": "Geçiş rehberi",
+          "meaning": "Eski sürümden yeni sürüme geçiş adımları",
+          "interpretation": "Production kullanıcıları için çok önemlidir"
+        }
+      ]
+    },
+    {
+      "id": "quality-and-engineering",
+      "title": "Quality and engineering controls",
+      "baseline_phase": "SEIS-10Y-Y01",
+      "target_phase": "SEIS-10Y-Y02",
+      "owner_role": "Testing and QA",
+      "evidence_sources": [
+        "docs/TESTING.md",
+        "docs/DEVOPS.md",
+        "docs/ACCESSIBILITY.md",
+        ".github/workflows/foundation-check.yml"
+      ],
+      "term_count": 19,
+      "terms": [
+        {
+          "id": "quality-and-engineering-unit-tests",
+          "label": "Unit tests",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Testing and QA",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/TESTING.md",
+            "docs/DEVOPS.md",
+            "docs/ACCESSIBILITY.md",
+            ".github/workflows/foundation-check.yml"
+          ],
+          "measurement_scope": "Executable checks, CI artifacts, contract tests, audits, and reproducible reports.",
+          "turkish": "Birim testleri",
+          "meaning": "Küçük fonksiyonları test eder",
+          "interpretation": "Testler gerçekten çalışıyor mu?"
+        },
+        {
+          "id": "quality-and-engineering-integration-tests",
+          "label": "Integration tests",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Testing and QA",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/TESTING.md",
+            "docs/DEVOPS.md",
+            "docs/ACCESSIBILITY.md",
+            ".github/workflows/foundation-check.yml"
+          ],
+          "measurement_scope": "Executable checks, CI artifacts, contract tests, audits, and reproducible reports.",
+          "turkish": "Entegrasyon testleri",
+          "meaning": "Birden fazla modülün birlikte çalışmasını test eder",
+          "interpretation": "Veritabanı/API testleri var mı?"
+        },
+        {
+          "id": "quality-and-engineering-e2e-tests",
+          "label": "E2E tests",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Testing and QA",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/TESTING.md",
+            "docs/DEVOPS.md",
+            "docs/ACCESSIBILITY.md",
+            ".github/workflows/foundation-check.yml"
+          ],
+          "measurement_scope": "Executable checks, CI artifacts, contract tests, audits, and reproducible reports.",
+          "turkish": "Uçtan uca test",
+          "meaning": "Kullanıcı akışını baştan sona test eder",
+          "interpretation": "Gerçek senaryolar test ediliyor mu?"
+        },
+        {
+          "id": "quality-and-engineering-test-coverage",
+          "label": "Test coverage",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Testing and QA",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/TESTING.md",
+            "docs/DEVOPS.md",
+            "docs/ACCESSIBILITY.md",
+            ".github/workflows/foundation-check.yml"
+          ],
+          "measurement_scope": "Executable checks, CI artifacts, contract tests, audits, and reproducible reports.",
+          "turkish": "Test kapsamı",
+          "meaning": "Kodun ne kadarının test edildiği",
+          "interpretation": "Yüksek oran tek başına kalite garantisi değildir"
+        },
+        {
+          "id": "quality-and-engineering-ci",
+          "label": "CI",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Testing and QA",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/TESTING.md",
+            "docs/DEVOPS.md",
+            "docs/ACCESSIBILITY.md",
+            ".github/workflows/foundation-check.yml"
+          ],
+          "measurement_scope": "Executable checks, CI artifacts, contract tests, audits, and reproducible reports.",
+          "turkish": "Continuous Integration",
+          "meaning": "Her değişiklikte otomatik kontrol",
+          "interpretation": "Build, test, lint çalışıyor mu?"
+        },
+        {
+          "id": "quality-and-engineering-cd",
+          "label": "CD",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Testing and QA",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/TESTING.md",
+            "docs/DEVOPS.md",
+            "docs/ACCESSIBILITY.md",
+            ".github/workflows/foundation-check.yml"
+          ],
+          "measurement_scope": "Executable checks, CI artifacts, contract tests, audits, and reproducible reports.",
+          "turkish": "Continuous Delivery/Deployment",
+          "meaning": "Otomatik yayın süreci",
+          "interpretation": "Release güvenli ve geri alınabilir mi?"
+        },
+        {
+          "id": "quality-and-engineering-lint",
+          "label": "Lint",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Testing and QA",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/TESTING.md",
+            "docs/DEVOPS.md",
+            "docs/ACCESSIBILITY.md",
+            ".github/workflows/foundation-check.yml"
+          ],
+          "measurement_scope": "Executable checks, CI artifacts, contract tests, audits, and reproducible reports.",
+          "turkish": "Kod analizi",
+          "meaning": "Stil ve olası hata kontrolü",
+          "interpretation": "Linter CI’da zorunlu mu?"
+        },
+        {
+          "id": "quality-and-engineering-formatter",
+          "label": "Formatter",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Testing and QA",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/TESTING.md",
+            "docs/DEVOPS.md",
+            "docs/ACCESSIBILITY.md",
+            ".github/workflows/foundation-check.yml"
+          ],
+          "measurement_scope": "Executable checks, CI artifacts, contract tests, audits, and reproducible reports.",
+          "turkish": "Biçimlendirici",
+          "meaning": "Kod stilini otomatik düzenler",
+          "interpretation": "Projede standart var mı?"
+        },
+        {
+          "id": "quality-and-engineering-type-checking",
+          "label": "Type checking",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Testing and QA",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/TESTING.md",
+            "docs/DEVOPS.md",
+            "docs/ACCESSIBILITY.md",
+            ".github/workflows/foundation-check.yml"
+          ],
+          "measurement_scope": "Executable checks, CI artifacts, contract tests, audits, and reproducible reports.",
+          "turkish": "Tip kontrolü",
+          "meaning": "Veri tiplerini doğrular",
+          "interpretation": "TypeScript, Rust, Swift, mypy vb."
+        },
+        {
+          "id": "quality-and-engineering-benchmark",
+          "label": "Benchmark",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Testing and QA",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/TESTING.md",
+            "docs/DEVOPS.md",
+            "docs/ACCESSIBILITY.md",
+            ".github/workflows/foundation-check.yml"
+          ],
+          "measurement_scope": "Executable checks, CI artifacts, contract tests, audits, and reproducible reports.",
+          "turkish": "Performans testi",
+          "meaning": "Hız ve kaynak kullanımını ölçer",
+          "interpretation": "Gerçek senaryolar kullanılıyor mu?"
+        },
+        {
+          "id": "quality-and-engineering-api-contract",
+          "label": "API contract",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Testing and QA",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/TESTING.md",
+            "docs/DEVOPS.md",
+            "docs/ACCESSIBILITY.md",
+            ".github/workflows/foundation-check.yml"
+          ],
+          "measurement_scope": "Executable checks, CI artifacts, contract tests, audits, and reproducible reports.",
+          "turkish": "API sözleşmesi",
+          "meaning": "İstek ve cevap formatını tanımlar",
+          "interpretation": "OpenAPI, JSON Schema veya Protobuf var mı?"
+        },
+        {
+          "id": "quality-and-engineering-backward-compatibility",
+          "label": "Backward compatibility",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Testing and QA",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/TESTING.md",
+            "docs/DEVOPS.md",
+            "docs/ACCESSIBILITY.md",
+            ".github/workflows/foundation-check.yml"
+          ],
+          "measurement_scope": "Executable checks, CI artifacts, contract tests, audits, and reproducible reports.",
+          "turkish": "Geriye uyumluluk",
+          "meaning": "Eski kullanıcıların kodu çalışmaya devam eder mi?",
+          "interpretation": "Deprecation ve migration politikası var mı?"
+        },
+        {
+          "id": "quality-and-engineering-documentation",
+          "label": "Documentation",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Testing and QA",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/TESTING.md",
+            "docs/DEVOPS.md",
+            "docs/ACCESSIBILITY.md",
+            ".github/workflows/foundation-check.yml"
+          ],
+          "measurement_scope": "Executable checks, CI artifacts, contract tests, audits, and reproducible reports.",
+          "turkish": "Dokümantasyon",
+          "meaning": "Kurulum, kullanım ve mimari açıklamalar",
+          "interpretation": "README dışında gerçek belgeler var mı?"
+        },
+        {
+          "id": "quality-and-engineering-examples",
+          "label": "Examples",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Testing and QA",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/TESTING.md",
+            "docs/DEVOPS.md",
+            "docs/ACCESSIBILITY.md",
+            ".github/workflows/foundation-check.yml"
+          ],
+          "measurement_scope": "Executable checks, CI artifacts, contract tests, audits, and reproducible reports.",
+          "turkish": "Örnekler",
+          "meaning": "Projeyi nasıl kullanacağını gösterir",
+          "interpretation": "Çalışan örnekler mevcut mu?"
+        },
+        {
+          "id": "quality-and-engineering-error-handling",
+          "label": "Error handling",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Testing and QA",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/TESTING.md",
+            "docs/DEVOPS.md",
+            "docs/ACCESSIBILITY.md",
+            ".github/workflows/foundation-check.yml"
+          ],
+          "measurement_scope": "Executable checks, CI artifacts, contract tests, audits, and reproducible reports.",
+          "turkish": "Hata yönetimi",
+          "meaning": "Hataların nasıl ele alındığı",
+          "interpretation": "Loading, timeout, retry, degraded state var mı?"
+        },
+        {
+          "id": "quality-and-engineering-observability",
+          "label": "Observability",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y06",
+          "owner_role": "Testing and QA",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/TESTING.md",
+            "docs/DEVOPS.md",
+            "docs/ACCESSIBILITY.md",
+            ".github/workflows/foundation-check.yml"
+          ],
+          "measurement_scope": "Executable checks, CI artifacts, contract tests, audits, and reproducible reports.",
+          "turkish": "Gözlemlenebilirlik",
+          "meaning": "Sistem davranışını izleme",
+          "interpretation": "Logs, metrics, traces var mı?"
+        },
+        {
+          "id": "quality-and-engineering-performance-budget",
+          "label": "Performance budget",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y08",
+          "owner_role": "Testing and QA",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/TESTING.md",
+            "docs/DEVOPS.md",
+            "docs/ACCESSIBILITY.md",
+            ".github/workflows/foundation-check.yml"
+          ],
+          "measurement_scope": "Executable checks, CI artifacts, contract tests, audits, and reproducible reports.",
+          "turkish": "Performans bütçesi",
+          "meaning": "Kabul edilebilir boyut ve hız sınırı",
+          "interpretation": "Web ve mobil projelerde ölçülüyor mu?"
+        },
+        {
+          "id": "quality-and-engineering-accessibility-a11y",
+          "label": "Accessibility / A11y",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y08",
+          "owner_role": "Testing and QA",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/TESTING.md",
+            "docs/DEVOPS.md",
+            "docs/ACCESSIBILITY.md",
+            ".github/workflows/foundation-check.yml"
+          ],
+          "measurement_scope": "Executable checks, CI artifacts, contract tests, audits, and reproducible reports.",
+          "turkish": "Erişilebilirlik",
+          "meaning": "Klavye, ekran okuyucu, kontrast desteği",
+          "interpretation": "WCAG, semantic HTML, focus states var mı?"
+        },
+        {
+          "id": "quality-and-engineering-i18n-l10n",
+          "label": "i18n / l10n",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y09",
+          "owner_role": "Testing and QA",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/TESTING.md",
+            "docs/DEVOPS.md",
+            "docs/ACCESSIBILITY.md",
+            ".github/workflows/foundation-check.yml"
+          ],
+          "measurement_scope": "Executable checks, CI artifacts, contract tests, audits, and reproducible reports.",
+          "turkish": "Uluslararasılaştırma / yerelleştirme",
+          "meaning": "Farklı dil ve bölgelere uyum",
+          "interpretation": "Türkçe, Yunanca ve İngilizce desteği var mı?"
+        }
+      ]
+    },
+    {
+      "id": "architecture-and-platform",
+      "title": "Architecture, platform, and AI vocabulary",
+      "baseline_phase": "SEIS-10Y-Y01",
+      "target_phase": "SEIS-10Y-Y03",
+      "owner_role": "Lead Architect",
+      "evidence_sources": [
+        "docs/ARCHITECTURE.md",
+        "project.ecosystem.yaml",
+        "docs/AI_CORE.md",
+        "docs/MCP_REGISTRY.md"
+      ],
+      "term_count": 39,
+      "terms": [
+        {
+          "id": "architecture-and-platform-library",
+          "label": "Library",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y03",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Kütüphane",
+          "when_useful": "Kodunu sen çağırırsın; kontrol sende kalır"
+        },
+        {
+          "id": "architecture-and-platform-framework",
+          "label": "Framework",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y03",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Çatı",
+          "when_useful": "Uygulamanın yapısını framework belirler"
+        },
+        {
+          "id": "architecture-and-platform-sdk",
+          "label": "SDK",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y03",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Geliştirici kiti",
+          "when_useful": "Belirli platform veya servise bağlanmak için"
+        },
+        {
+          "id": "architecture-and-platform-cli",
+          "label": "CLI",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y03",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Command-Line Interface",
+          "when_useful": "Terminalden çalışan araçlar"
+        },
+        {
+          "id": "architecture-and-platform-tui",
+          "label": "TUI",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y03",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Terminal User Interface",
+          "when_useful": "Terminal içinde görsel arayüz"
+        },
+        {
+          "id": "architecture-and-platform-gui",
+          "label": "GUI",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y03",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Graphical User Interface",
+          "when_useful": "Pencereli masaüstü arayüz"
+        },
+        {
+          "id": "architecture-and-platform-api",
+          "label": "API",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Application Programming Interface",
+          "when_useful": "Sistemler arası iletişim"
+        },
+        {
+          "id": "architecture-and-platform-rest",
+          "label": "REST",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "HTTP tabanlı API modeli",
+          "when_useful": "Web backend için yaygın seçenek"
+        },
+        {
+          "id": "architecture-and-platform-graphql",
+          "label": "GraphQL",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "İstemcinin istediği veriyi seçtiği API",
+          "when_useful": "Karmaşık veri ilişkilerinde"
+        },
+        {
+          "id": "architecture-and-platform-grpc",
+          "label": "gRPC",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Performanslı servisler arası iletişim",
+          "when_useful": "Microservice ve internal API’lerde"
+        },
+        {
+          "id": "architecture-and-platform-websocket",
+          "label": "WebSocket",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Sürekli çift yönlü bağlantı",
+          "when_useful": "Gerçek zamanlı chat ve bildirimlerde"
+        },
+        {
+          "id": "architecture-and-platform-full-stack",
+          "label": "Full-stack",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y03",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Frontend + backend",
+          "when_useful": "Tüm uygulama katmanını kapsar"
+        },
+        {
+          "id": "architecture-and-platform-bff",
+          "label": "BFF",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y03",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Backend for Frontend",
+          "when_useful": "Her arayüz için özel backend katmanı"
+        },
+        {
+          "id": "architecture-and-platform-monolith",
+          "label": "Monolith",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y03",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Tek uygulama",
+          "when_useful": "Küçük ve orta projelerde daha basit"
+        },
+        {
+          "id": "architecture-and-platform-modular-monolith",
+          "label": "Modular monolith",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y03",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Modüllere ayrılmış tek uygulama",
+          "when_useful": "SEIS gibi büyüyen projelerde iyi başlangıç"
+        },
+        {
+          "id": "architecture-and-platform-microservices",
+          "label": "Microservices",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y03",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Dağıtık servisler",
+          "when_useful": "Büyük ekip ve bağımsız ölçekleme gerektiren sistemlerde"
+        },
+        {
+          "id": "architecture-and-platform-serverless",
+          "label": "Serverless",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y03",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Sunucu yönetmeden çalışma",
+          "when_useful": "Değişken trafik ve hızlı prototiplerde"
+        },
+        {
+          "id": "architecture-and-platform-saas",
+          "label": "SaaS",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y03",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Hizmet olarak yazılım",
+          "when_useful": "Kullanıcı servisi dışarıdan kullanır"
+        },
+        {
+          "id": "architecture-and-platform-self-hosted",
+          "label": "Self-hosted",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y03",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Kendi sunucunda çalıştırma",
+          "when_useful": "Gizlilik ve kontrol gerektiğinde"
+        },
+        {
+          "id": "architecture-and-platform-on-premise",
+          "label": "On-premise",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y03",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Kurum içinde çalıştırma",
+          "when_useful": "Hassas veya kurumsal sistemlerde"
+        },
+        {
+          "id": "architecture-and-platform-local-first",
+          "label": "Local-first",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y03",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Önce yerel çalışma",
+          "when_useful": "Offline ve gizlilik odaklı ürünlerde"
+        },
+        {
+          "id": "architecture-and-platform-offline-first",
+          "label": "Offline-first",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y03",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "İnternet olmadan çalışabilme",
+          "when_useful": "Mobil, saha ve güvenilirlik gerektiren uygulamalarda"
+        },
+        {
+          "id": "architecture-and-platform-sync",
+          "label": "Sync",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y03",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Senkronizasyon",
+          "when_useful": "Yerel ve bulut verisini birleştirmede"
+        },
+        {
+          "id": "architecture-and-platform-plugin",
+          "label": "Plugin",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y07",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Eklenti",
+          "when_useful": "Sisteme sonradan yetenek eklemede"
+        },
+        {
+          "id": "architecture-and-platform-extension",
+          "label": "Extension",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y07",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Uzantı",
+          "when_useful": "Tarayıcı, editör veya platform özelleştirmede"
+        },
+        {
+          "id": "architecture-and-platform-mcp",
+          "label": "MCP",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y04",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Model Context Protocol",
+          "when_useful": "AI modeline kontrollü araç ve veri bağlamı vermede"
+        },
+        {
+          "id": "architecture-and-platform-provider-routing",
+          "label": "Provider routing",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y04",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Sağlayıcı yönlendirme",
+          "when_useful": "Farklı AI servisleri arasında seçim yapmada"
+        },
+        {
+          "id": "architecture-and-platform-model-routing",
+          "label": "Model routing",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y04",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Model yönlendirme",
+          "when_useful": "Göreve göre farklı LLM seçmede"
+        },
+        {
+          "id": "architecture-and-platform-rag",
+          "label": "RAG",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y05",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Retrieval-Augmented Generation",
+          "when_useful": "AI’ın arama ve dokümanlarla cevap üretmesinde"
+        },
+        {
+          "id": "architecture-and-platform-vector-database",
+          "label": "Vector database",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y05",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Vektör veritabanı",
+          "when_useful": "Semantic search ve RAG için"
+        },
+        {
+          "id": "architecture-and-platform-agent",
+          "label": "Agent",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y04",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "AI ajanı",
+          "when_useful": "Araç kullanabilen, görev yürüten AI sistemi"
+        },
+        {
+          "id": "architecture-and-platform-workflow",
+          "label": "Workflow",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y03",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "İş akışı",
+          "when_useful": "Birden fazla adımın sıralı çalışması"
+        },
+        {
+          "id": "architecture-and-platform-queue",
+          "label": "Queue",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y03",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "İş kuyruğu",
+          "when_useful": "Uzun veya arka plan işlerini yönetmede"
+        },
+        {
+          "id": "architecture-and-platform-cache",
+          "label": "Cache",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y03",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Önbellek",
+          "when_useful": "Yanıt süresini ve maliyeti azaltmada"
+        },
+        {
+          "id": "architecture-and-platform-rate-limit",
+          "label": "Rate limit",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y03",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "İstek sınırı",
+          "when_useful": "API kötüye kullanımını ve maliyeti kontrol etmede"
+        },
+        {
+          "id": "architecture-and-platform-rbac",
+          "label": "RBAC",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y03",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Role-Based Access Control",
+          "when_useful": "Kullanıcı rollerine göre yetki vermede"
+        },
+        {
+          "id": "architecture-and-platform-feature-flag",
+          "label": "Feature flag",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y03",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Özellik bayrağı",
+          "when_useful": "Özelliği kullanıcıya kademeli açmada"
+        },
+        {
+          "id": "architecture-and-platform-migration",
+          "label": "Migration",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Veri geçişi",
+          "when_useful": "Şema veya veritabanı değişikliklerinde"
+        },
+        {
+          "id": "architecture-and-platform-rollback",
+          "label": "Rollback",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y02",
+          "owner_role": "Lead Architect",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/ARCHITECTURE.md",
+            "project.ecosystem.yaml",
+            "docs/AI_CORE.md",
+            "docs/MCP_REGISTRY.md"
+          ],
+          "measurement_scope": "Architecture documents, manifests, registries, ADRs, and runtime contracts; no provider or live-service claim is implied.",
+          "meaning": "Geri alma",
+          "when_useful": "Hatalı sürümden önceki sürüme dönmede"
+        }
+      ]
+    },
+    {
+      "id": "ecosystem-health-signals",
+      "title": "Ecosystem health signals",
+      "baseline_phase": "SEIS-10Y-Y01",
+      "target_phase": "SEIS-10Y-Y01",
+      "owner_role": "Governance",
+      "evidence_sources": [
+        "docs/STATUS.md",
+        "SECURITY.md",
+        "README.md",
+        "package-lock.json"
+      ],
+      "term_count": 15,
+      "terms": [
+        {
+          "id": "ecosystem-health-signals-bak-m",
+          "label": "Bakım",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y01",
+          "owner_role": "Governance",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "SECURITY.md",
+            "README.md",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Public-safe repository, security, release, dependency, and product-health records.",
+          "good_signal": "Son aylarda düzenli commit",
+          "risk_signal": "Yıllardır güncelleme yok"
+        },
+        {
+          "id": "ecosystem-health-signals-s-r-m",
+          "label": "Sürüm",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y01",
+          "owner_role": "Governance",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "SECURITY.md",
+            "README.md",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Public-safe repository, security, release, dependency, and product-health records.",
+          "good_signal": "Tag, changelog ve migration guide var",
+          "risk_signal": "Sürüm sistemi yok"
+        },
+        {
+          "id": "ecosystem-health-signals-lisans",
+          "label": "Lisans",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y01",
+          "owner_role": "Governance",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "SECURITY.md",
+            "README.md",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Public-safe repository, security, release, dependency, and product-health records.",
+          "good_signal": "Açık ve anlaşılır lisans var",
+          "risk_signal": "Lisans dosyası yok"
+        },
+        {
+          "id": "ecosystem-health-signals-g-venlik",
+          "label": "Güvenlik",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y01",
+          "owner_role": "Governance",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "SECURITY.md",
+            "README.md",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Public-safe repository, security, release, dependency, and product-health records.",
+          "good_signal": "SECURITY.md, Dependabot, CodeQL var",
+          "risk_signal": "Güvenlik iletişim kanalı yok"
+        },
+        {
+          "id": "ecosystem-health-signals-test",
+          "label": "Test",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y01",
+          "owner_role": "Governance",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "SECURITY.md",
+            "README.md",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Public-safe repository, security, release, dependency, and product-health records.",
+          "good_signal": "Unit, integration veya E2E testleri var",
+          "risk_signal": "Test yok veya CI çalışmıyor"
+        },
+        {
+          "id": "ecosystem-health-signals-katk",
+          "label": "Katkı",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y01",
+          "owner_role": "Governance",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "SECURITY.md",
+            "README.md",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Public-safe repository, security, release, dependency, and product-health records.",
+          "good_signal": "Birden fazla aktif maintainer var",
+          "risk_signal": "Tek kişiye tamamen bağımlı"
+        },
+        {
+          "id": "ecosystem-health-signals-dok-mantasyon",
+          "label": "Dokümantasyon",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y01",
+          "owner_role": "Governance",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "SECURITY.md",
+            "README.md",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Public-safe repository, security, release, dependency, and product-health records.",
+          "good_signal": "Kurulum, API ve örnekler iyi",
+          "risk_signal": "Sadece tek satırlık README"
+        },
+        {
+          "id": "ecosystem-health-signals-release",
+          "label": "Release",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y09",
+          "owner_role": "Governance",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "SECURITY.md",
+            "README.md",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Public-safe repository, security, release, dependency, and product-health records.",
+          "good_signal": "İmzalı veya doğrulanabilir release",
+          "risk_signal": "Rastgele binary veya script"
+        },
+        {
+          "id": "ecosystem-health-signals-ba-ml-l-k",
+          "label": "Bağımlılık",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y01",
+          "owner_role": "Governance",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "SECURITY.md",
+            "README.md",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Public-safe repository, security, release, dependency, and product-health records.",
+          "good_signal": "Lockfile ve güncel dependency graph",
+          "risk_signal": "Sabitlenmemiş, eski bağımlılıklar"
+        },
+        {
+          "id": "ecosystem-health-signals-api",
+          "label": "API",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y09",
+          "owner_role": "Governance",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "SECURITY.md",
+            "README.md",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Public-safe repository, security, release, dependency, and product-health records.",
+          "good_signal": "Versioned API ve compatibility policy",
+          "risk_signal": "Her sürümde sessiz breaking change"
+        },
+        {
+          "id": "ecosystem-health-signals-performans",
+          "label": "Performans",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y01",
+          "owner_role": "Governance",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "SECURITY.md",
+            "README.md",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Public-safe repository, security, release, dependency, and product-health records.",
+          "good_signal": "Benchmark ve bütçe mevcut",
+          "risk_signal": "Performans iddiası ölçülmemiş"
+        },
+        {
+          "id": "ecosystem-health-signals-gizlilik",
+          "label": "Gizlilik",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y01",
+          "owner_role": "Governance",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "SECURITY.md",
+            "README.md",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Public-safe repository, security, release, dependency, and product-health records.",
+          "good_signal": "Telemetry açıkça belgelenmiş",
+          "risk_signal": "Hangi verinin toplandığı belirsiz"
+        },
+        {
+          "id": "ecosystem-health-signals-kullan-m",
+          "label": "Kullanım",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y09",
+          "owner_role": "Governance",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "SECURITY.md",
+            "README.md",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Public-safe repository, security, release, dependency, and product-health records.",
+          "good_signal": "Used by, package download veya release download var",
+          "risk_signal": "Sadece yüksek star var"
+        },
+        {
+          "id": "ecosystem-health-signals-topluluk",
+          "label": "Topluluk",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y01",
+          "owner_role": "Governance",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "SECURITY.md",
+            "README.md",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Public-safe repository, security, release, dependency, and product-health records.",
+          "good_signal": "Issue template, code of conduct, discussions var",
+          "risk_signal": "Sorular cevapsız kalıyor"
+        },
+        {
+          "id": "ecosystem-health-signals-r-n-durumu",
+          "label": "Ürün durumu",
+          "status": "specified",
+          "maturity": "specification",
+          "baseline_phase": "SEIS-10Y-Y01",
+          "target_phase": "SEIS-10Y-Y01",
+          "owner_role": "Governance",
+          "evidence_state": "not-collected",
+          "validation_status": "planned",
+          "evidence_sources": [
+            "docs/STATUS.md",
+            "SECURITY.md",
+            "README.md",
+            "package-lock.json"
+          ],
+          "measurement_scope": "Public-safe repository, security, release, dependency, and product-health records.",
+          "good_signal": "Stable, beta veya prototype açıkça yazıyor",
+          "risk_signal": "Demo production gibi sunuluyor"
+        }
+      ]
+    }
+  ]
+}

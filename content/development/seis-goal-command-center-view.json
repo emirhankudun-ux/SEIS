@@ -26,14 +26,14 @@
       "blocked": 3
     },
     "totalCategories": 20,
-    "totalEvidenceRecords": 16,
+    "totalEvidenceRecords": 18,
     "evidenceByStatus": {
-      "passed": 15,
+      "passed": 17,
       "blocked": 1
     },
-    "totalTasks": 6,
+    "totalTasks": 8,
     "tasksByStatus": {
-      "active": 5,
+      "active": 7,
       "blocked": 1
     },
     "totalBlockers": 2,
@@ -110,9 +110,9 @@
       "high": 1,
       "medium": 2
     },
-    "totalValidationSteps": 6,
+    "totalValidationSteps": 8,
     "validationStepsByStatus": {
-      "active": 6
+      "active": 8
     },
     "totalRoadmapLinks": 20,
     "roadmapLinksByStatus": {
@@ -165,13 +165,13 @@
     {
       "id": "evidence",
       "label": "Evidence",
-      "value": 16,
+      "value": 18,
       "description": "Evidence records with limitations and next actions."
     },
     {
       "id": "tasks",
       "label": "Tasks",
-      "value": 6,
+      "value": 8,
       "description": "Execution tasks tied to goals and evidence."
     },
     {
@@ -243,7 +243,7 @@
     {
       "id": "validation",
       "label": "Validation Steps",
-      "value": 6,
+      "value": 8,
       "description": "Scoped checks with success conditions."
     },
     {
@@ -326,16 +326,18 @@
           "User-approved bounded Goal Tracking Update Orchestrator prompt package added on 2026-07-14.",
           "The five-million-character request is modeled as an aggregate context ceiling; no filler, live provider claim, or automatic completion claim is allowed.",
           "SEIS Enterprise Expansion V3 is registered as a specification-only governance surface. Each term requires a separate evidence-backed implementation goal before production status can be claimed.",
-          "The ten-year focus is represented by a session-based stewardship contract with ten planned annual phases, review cadence, metrics, stop conditions, and a next-session continuation command."
+          "The ten-year focus is represented by a session-based stewardship contract with ten planned annual phases, review cadence, metrics, stop conditions, and a next-session continuation command.",
+          "The updated objective vocabulary is represented by a five-family, 104-term capability matrix; terms remain specified and not-collected until evidence exists."
         ],
         "evidenceLinks": [
           "docs/reviews/GOAL_TRACKING_REVIEW.md",
-          "reports/seis-goal-tracking-update-proposal-20260714.json"
+          "reports/seis-goal-tracking-update-proposal-20260714.json",
+          "SEIS-EVID-018"
         ],
         "blockers": [
           "Pre-existing deletion set remains unresolved"
         ],
-        "nextAction": "Use the structured proposal contract and run both validators before each canonical Goal Tracking update; keep completion claims scoped."
+        "nextAction": "Select one unblocked Year 1 capability term or measurement contract, create a scoped implementation Goal, and keep completion claims scoped."
       },
       {
         "id": "SEIS-GOAL-004",
@@ -508,18 +510,18 @@
         "createdAt": "2026-06-22",
         "relatedMilestone": "milestone not assigned",
         "relatedEpic": "epic not assigned",
-        "lastReviewed": "not reviewed",
+        "lastReviewed": "2026-07-14",
         "reviewCadence": "monthly",
         "notes": [
-          "Foundation metadata placeholder; update only with evidence-backed review notes."
+          "2026-07-14: supervised agency overlay and registry permission defaults validated; live runtime remains unimplemented."
         ],
         "evidenceLinks": [
-          "evidence unavailable"
+          "SEIS-EVID-017"
         ],
         "blockers": [
-          "No agent runtime spec yet"
+          "No live agent runtime implementation or external write approval"
         ],
-        "nextAction": "Add agent runtime doc in a focused PR."
+        "nextAction": "Use the agency brief template for the next non-trivial request and keep runtime execution separately gated."
       },
       {
         "id": "SEIS-GOAL-012",
@@ -715,18 +717,20 @@
         "createdAt": "2026-06-22",
         "relatedMilestone": "SEIS-MS-001",
         "relatedEpic": "epic not assigned",
-        "lastReviewed": "not reviewed",
+        "lastReviewed": "2026-07-14",
         "reviewCadence": "weekly",
         "notes": [
-          "Foundation metadata placeholder; update only with evidence-backed review notes."
+          "2026-07-14: agency operating overlay now links long-term direction to a bounded brief-to-handoff workflow."
         ],
         "evidenceLinks": [
-          "docs/goals/seis-vision.md"
+          "docs/goals/seis-vision.md",
+          "SEIS-EVID-017",
+          "SEIS-EVID-018"
         ],
         "blockers": [
           "Long-term roadmap needs recurring review"
         ],
-        "nextAction": "Review monthly and keep active/planned/blocked states honest."
+        "nextAction": "Use the agency operating model and brief template to keep long-term direction connected to supervised delivery evidence."
       }
     ],
     "milestoneTimeline": [
@@ -877,6 +881,36 @@
           "SEIS-EVID-016"
         ],
         "nextAction": "Run the ten-year registry and Goal Tracking validators, record the phase state, and leave the next session continuation command."
+      },
+      {
+        "id": "SEIS-TASK-007",
+        "title": "Validate supervised SEIS Agency operating overlay",
+        "status": "active",
+        "priority": "P1 high",
+        "ownerRole": "Agent Runtime",
+        "supportsGoalIds": [
+          "SEIS-GOAL-011",
+          "SEIS-GOAL-020"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-017"
+        ],
+        "nextAction": "Use the agency brief template for the next non-trivial request and keep pod assignments supervised, source-backed, and approval-gated."
+      },
+      {
+        "id": "SEIS-TASK-008",
+        "title": "Register updated objective capability matrix",
+        "status": "active",
+        "priority": "P1 high",
+        "ownerRole": "Program System",
+        "supportsGoalIds": [
+          "SEIS-GOAL-003",
+          "SEIS-GOAL-020"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-018"
+        ],
+        "nextAction": "Select one unblocked Year 1 term or measurement contract, create a scoped implementation Goal, and keep the remaining matrix terms specified."
       }
     ],
     "blockedItems": [
@@ -1195,6 +1229,40 @@
           "Does not resolve the pre-existing repository hygiene blocker."
         ],
         "nextAction": "Continue from the recorded phase state, keep all annual phases planned until current evidence exists, and use the session-based continuation command for the next review."
+      },
+      {
+        "id": "SEIS-EVID-017",
+        "title": "Supervised SEIS Agency operating overlay validates",
+        "type": "validation",
+        "status": "passed",
+        "supportsGoalIds": [
+          "SEIS-GOAL-011",
+          "SEIS-GOAL-020"
+        ],
+        "summary": "The supervised SEIS Agency overlay is represented by five pods, thirteen source-backed roles, a planning-only 300-person headcount model, nine services, a seven-stage handoff workflow, a public-safe brief template, and explicit approval boundaries.",
+        "limitations": [
+          "Does not create runtime workers or autonomous agents.",
+          "Does not prove current payroll, hiring, live staffing, provider calls, MCP sessions, external mutation, deployment, or publication.",
+          "Does not prove a merged pull request or resolve unrelated dirty worktree changes."
+        ],
+        "nextAction": "Use the agency brief template for the next non-trivial request and keep pod assignments supervised, source-backed, and approval-gated."
+      },
+      {
+        "id": "SEIS-EVID-018",
+        "title": "Updated objective capability matrix validates",
+        "type": "validation",
+        "status": "passed",
+        "supportsGoalIds": [
+          "SEIS-GOAL-003",
+          "SEIS-GOAL-020"
+        ],
+        "summary": "The updated ten-year objective is represented as five phase-aware capability families containing exactly 104 terms. Each term preserves source meaning or interpretation, owner role, baseline and target phase, measurement scope, evidence state, and planned validation status.",
+        "limitations": [
+          "No GitHub Insights, package registry, provider, MCP, deployment, community, or external telemetry was queried or claimed.",
+          "All terms remain specified and not-collected until separate evidence-backed Goals produce current measurements or implementation evidence.",
+          "Does not prove a ten-year elapsed-time result, background execution, production readiness, or a merged pull request."
+        ],
+        "nextAction": "Select one unblocked Year 1 term or measurement contract, create a scoped implementation Goal, and keep the remaining matrix terms specified."
       }
     ],
     "readinessConnections": [
@@ -1972,6 +2040,23 @@
     ],
     "validationSteps": [
       {
+        "id": "SEIS-VAL-008",
+        "title": "Validate updated objective capability matrix",
+        "status": "active",
+        "priority": "P1 high",
+        "command": "npm run check:seis-10-year-capability-matrix",
+        "ownerRole": "Program System",
+        "supportsGoalIds": [
+          "SEIS-GOAL-003",
+          "SEIS-GOAL-020"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-018"
+        ],
+        "successCondition": "The matrix contains the exact 104 updated-objective terms, five categories, valid ten-year phase IDs, owner and evidence fields, planned validation state, and explicit non-claims.",
+        "nextAction": "Run with Goal Tracking and prompt validators before each capability matrix or term-state update."
+      },
+      {
         "id": "SEIS-VAL-001",
         "title": "Validate Goal Tracking source records",
         "status": "active",
@@ -2071,6 +2156,23 @@
         ],
         "successCondition": "The registry contains ten ordered planned annual phases, session-based continuation state, required review cadences, eight stewardship metrics, explicit stop conditions, and no background execution claim.",
         "nextAction": "Run at every ten-year stewardship handoff and after any phase or continuation-state change."
+      },
+      {
+        "id": "SEIS-VAL-007",
+        "title": "Validate supervised SEIS Agency operating overlay",
+        "status": "active",
+        "priority": "P1 high",
+        "command": "npm run check:seis-agency-team",
+        "ownerRole": "Agent Runtime",
+        "supportsGoalIds": [
+          "SEIS-GOAL-011",
+          "SEIS-GOAL-020"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-017"
+        ],
+        "successCondition": "The agency registry validates five pods, thirteen source-backed roles, the planning-only headcount model, nine services, seven workflow stages, the brief contract, and human approval boundaries.",
+        "nextAction": "Run with the governance foundation check before each agency overlay or brief-contract update."
       }
     ],
     "roadmapLinks": [
@@ -2268,7 +2370,7 @@
         "statusRefs": [
           "docs/STATUS.md#agent-runtime"
         ],
-        "nextAction": "Define bounded agent permissions before automation expansion."
+        "nextAction": "Use the supervised agency brief and registry permission defaults before automation expansion."
       },
       {
         "id": "SEIS-ROADMAP-LINK-012",
@@ -2419,7 +2521,7 @@
         "statusRefs": [
           "docs/STATUS.md#source-of-truth"
         ],
-        "nextAction": "Keep long-term direction connected to status, backlog, reviews, and next actions."
+        "nextAction": "Keep long-term direction connected to status, backlog, reviews, and supervised agency handoffs."
       }
     ],
     "omegaPhaseEvidence": [

@@ -5,6 +5,19 @@
   "mode": "non_llm_goal_validation_steps",
   "steps": [
     {
+      "id": "SEIS-VAL-008",
+      "title": "Validate updated objective capability matrix",
+      "status": "active",
+      "priority": "P1 high",
+      "command": "npm run check:seis-10-year-capability-matrix",
+      "owner_role": "Program System",
+      "supports_goal_ids": ["SEIS-GOAL-003", "SEIS-GOAL-020"],
+      "evidence_ids": ["SEIS-EVID-018"],
+      "related_paths": ["data/seis-10-year-capability-matrix.json", "schemas/seis-10-year-capability-matrix.schema.json", "docs/governance/seis-10-year-capability-matrix.md", "scripts/check-seis-10-year-capability-matrix.mjs"],
+      "success_condition": "The matrix contains the exact 104 updated-objective terms, five categories, valid ten-year phase IDs, owner and evidence fields, planned validation state, and explicit non-claims.",
+      "next_action": "Run with Goal Tracking and prompt validators before each capability matrix or term-state update."
+    },
+    {
       "id": "SEIS-VAL-001",
       "title": "Validate Goal Tracking source records",
       "status": "active",
@@ -81,6 +94,19 @@
       "related_paths": ["data/seis-enterprise-expansion-v3.json", "schemas/seis-enterprise-expansion-v3.schema.json", "docs/governance/seis-enterprise-expansion-10-year-stewardship.md", "scripts/check-seis-enterprise-expansion-v3.mjs", "project.ecosystem.yaml"],
       "success_condition": "The registry contains ten ordered planned annual phases, session-based continuation state, required review cadences, eight stewardship metrics, explicit stop conditions, and no background execution claim.",
       "next_action": "Run at every ten-year stewardship handoff and after any phase or continuation-state change."
+    },
+    {
+      "id": "SEIS-VAL-007",
+      "title": "Validate supervised SEIS Agency operating overlay",
+      "status": "active",
+      "priority": "P1 high",
+      "command": "npm run check:seis-agency-team",
+      "owner_role": "Agent Runtime",
+      "supports_goal_ids": ["SEIS-GOAL-011", "SEIS-GOAL-020"],
+      "evidence_ids": ["SEIS-EVID-017"],
+      "related_paths": ["content/development/seis-agency-team.json", "docs/governance/SEIS_AGENCY_OPERATING_MODEL.md", "docs/governance/SEIS_AGENCY_BRIEF_TEMPLATE.md", "scripts/check-seis-agency-team.mjs", "docs/AGENT_REGISTRY.md"],
+      "success_condition": "The agency registry validates five pods, thirteen source-backed roles, the planning-only headcount model, nine services, seven workflow stages, the brief contract, and human approval boundaries.",
+      "next_action": "Run with the governance foundation check before each agency overlay or brief-contract update."
     }
   ]
 }

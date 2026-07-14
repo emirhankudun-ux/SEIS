@@ -366,6 +366,27 @@
       ],
       "freshness": "review after visual system changes",
       "secretPolicy": "must not contain secrets"
+    },
+    {
+      "id": "seis-10-year-capability-matrix",
+      "path": "data/seis-10-year-capability-matrix.json",
+      "lane": "@seis-governance",
+      "currentStatus": "validated",
+      "sourceType": "ten-year-capability-vocabulary",
+      "expectedShape": "object",
+      "requiredTopLevelKeys": [
+        "schema_version",
+        "id",
+        "related_goal_ids",
+        "target_horizon_years",
+        "categories",
+        "term_count"
+      ],
+      "validationCommands": [
+        "npm run check:seis-10-year-capability-matrix"
+      ],
+      "freshness": "review after objective vocabulary, phase mapping, or evidence-policy changes",
+      "secretPolicy": "must not contain secrets, live credentials, private paths, or fabricated telemetry"
     }
   ]
 }

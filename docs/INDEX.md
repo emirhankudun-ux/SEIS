@@ -130,6 +130,7 @@ Date: 2026-06-23
 | [goals/goal-tracking.md](goals/goal-tracking.md) | Operational goal-tracking workflow, evidence rules, bounded prompt updates, and validation commands. |
 | [governance/seis-enterprise-expansion-v3.md](governance/seis-enterprise-expansion-v3.md) | Enterprise Expansion V3 architecture, execution, validation, observability, design, AI, knowledge, and long-term governance registry. |
 | [governance/seis-enterprise-expansion-10-year-stewardship.md](governance/seis-enterprise-expansion-10-year-stewardship.md) | Ten-year session-based stewardship plan, annual phases, review cadence, metrics, and continuation boundaries. |
+| [governance/seis-10-year-capability-matrix.md](governance/seis-10-year-capability-matrix.md) | 104-term capability vocabulary covering GitHub signals, maintenance, quality, architecture, AI, and ecosystem health with phase and evidence boundaries. |
 | [goals/goal-tracking-system.md](goals/goal-tracking-system.md) | Goal Tracking OS rules and storage model. |
 | [goals/seis-universe-omega-goal-system.md](goals/seis-universe-omega-goal-system.md) | SEIS Universe Omega 24-phase goal coverage record and validator. |
 | [goals/seis-universe-omega-phase-evidence.md](goals/seis-universe-omega-phase-evidence.md) | Phase 01, 02, 03, and 10 dependency, KPI, and success-metric evidence slice. |

@@ -155,6 +155,7 @@
       "docs/governance/seis-goal-tracking-update-prompt.md",
       "docs/governance/seis-enterprise-expansion-v3.md",
       "docs/governance/seis-enterprise-expansion-10-year-stewardship.md",
+      "docs/governance/seis-10-year-capability-matrix.md",
       "docs/goals/goal-tracking.md"
       ],
       "related_files": [
@@ -167,6 +168,9 @@
       "schemas/seis-goal-tracking-update.schema.json",
       "scripts/check-seis-goal-tracking-update-prompt.mjs",
       "scripts/check-seis-enterprise-expansion-v3.mjs",
+      "data/seis-10-year-capability-matrix.json",
+      "schemas/seis-10-year-capability-matrix.schema.json",
+      "scripts/check-seis-10-year-capability-matrix.mjs",
       "reports/seis-goal-tracking-update-proposal-20260714.json",
       "data/seis-enterprise-expansion-v3.json",
       "schemas/seis-enterprise-expansion-v3.schema.json",
@@ -188,10 +192,11 @@
       ],
       "evidence_links": [
         "docs/reviews/GOAL_TRACKING_REVIEW.md",
-        "reports/seis-goal-tracking-update-proposal-20260714.json"
+        "reports/seis-goal-tracking-update-proposal-20260714.json",
+        "SEIS-EVID-018"
       ],
-      "validation_method": "npm run check:goal-tracking and npm run check:seis-goal-tracking-update-prompt validate source records, the bounded prompt package, proposal schema, evidence, and execution records.",
-      "next_action": "Use the structured proposal contract and run both validators before each canonical Goal Tracking update; keep completion claims scoped.",
+      "validation_method": "npm run check:goal-tracking, npm run check:seis-goal-tracking-update-prompt, and npm run check:seis-10-year-capability-matrix validate source records, the bounded prompt package, capability terms, evidence, and execution records.",
+      "next_action": "Select one unblocked Year 1 capability term or measurement contract, create a scoped implementation Goal, and keep completion claims scoped.",
       "created_at": "2026-06-22",
       "related_milestone": "SEIS-MS-001",
       "related_epic": "SEIS-EPIC-001",
@@ -202,6 +207,7 @@
       "The five-million-character request is modeled as an aggregate context ceiling; no filler, live provider claim, or automatic completion claim is allowed.",
       "SEIS Enterprise Expansion V3 is registered as a specification-only governance surface. Each term requires a separate evidence-backed implementation goal before production status can be claimed.",
       "The ten-year focus is represented by a session-based stewardship contract with ten planned annual phases, review cadence, metrics, stop conditions, and a next-session continuation command."
+      ,"The updated objective vocabulary is represented by a five-family, 104-term capability matrix; terms remain specified and not-collected until evidence exists."
       ]
     },
     {
@@ -489,33 +495,38 @@
       "owner_role": "Agent Runtime",
       "target_phase": "foundation",
       "related_docs": [
-        "docs/roadmap/MASTER_BACKLOG.md"
+        "docs/roadmap/MASTER_BACKLOG.md",
+        "docs/AGENT_REGISTRY.md",
+        "docs/governance/SEIS_AGENCY_OPERATING_MODEL.md",
+      "docs/governance/SEIS_AGENCY_BRIEF_TEMPLATE.md"
       ],
       "related_files": [
-        "docs"
+        "content/development/seis-agent-registry.json",
+        "content/development/seis-agency-team.json",
+        "scripts/check-seis-agency-team.mjs"
       ],
       "dependencies": [
         "Security boundaries"
       ],
       "blockers": [
-        "No agent runtime spec yet"
+        "No live agent runtime implementation or external write approval"
       ],
       "risk_level": "medium",
       "risks": [
         "Agents can appear to own approvals"
       ],
       "evidence_links": [
-        "evidence unavailable"
+        "SEIS-EVID-017"
       ],
-      "validation_method": "Future spec defines roles, inputs, outputs, and permission boundaries.",
-      "next_action": "Add agent runtime doc in a focused PR.",
+      "validation_method": "Agency registry, governance foundation, and brief-contract checks define source-backed roles, inputs, outputs, and permission boundaries.",
+      "next_action": "Use the agency brief template for the next non-trivial request and keep runtime execution separately gated.",
       "created_at": "2026-06-22",
       "related_milestone": "milestone not assigned",
       "related_epic": "epic not assigned",
-      "last_reviewed": "not reviewed",
+      "last_reviewed": "2026-07-14",
       "review_cadence": "monthly",
       "notes": [
-        "Foundation metadata placeholder; update only with evidence-backed review notes."
+        "2026-07-14: supervised agency overlay and registry permission defaults validated; live runtime remains unimplemented."
       ]
     },
     {
@@ -842,10 +853,13 @@
       "target_phase": "foundation",
       "related_docs": [
         "docs/goals/seis-vision.md",
-        "docs/roadmap/MASTER_BACKLOG.md"
+        "docs/roadmap/MASTER_BACKLOG.md",
+        "docs/governance/SEIS_AGENCY_OPERATING_MODEL.md",
+        "docs/governance/SEIS_AGENCY_BRIEF_TEMPLATE.md"
       ],
       "related_files": [
-        "docs"
+        "content/development/seis-agency-team.json",
+        "docs/AGENT_REGISTRY.md"
       ],
       "dependencies": [
         "Review cadence"
@@ -858,17 +872,19 @@
         "Short-term tasks can obscure platform direction"
       ],
       "evidence_links": [
-        "docs/goals/seis-vision.md"
+        "docs/goals/seis-vision.md",
+        "SEIS-EVID-017",
+        "SEIS-EVID-018"
       ],
       "validation_method": "Vision, backlog, and review docs agree on non-LLM platform and Goal Tracking OS direction.",
-      "next_action": "Review monthly and keep active/planned/blocked states honest.",
+      "next_action": "Use the agency operating model and brief template to keep long-term direction connected to supervised delivery evidence.",
       "created_at": "2026-06-22",
       "related_milestone": "SEIS-MS-001",
       "related_epic": "epic not assigned",
-      "last_reviewed": "not reviewed",
+      "last_reviewed": "2026-07-14",
       "review_cadence": "weekly",
       "notes": [
-        "Foundation metadata placeholder; update only with evidence-backed review notes."
+        "2026-07-14: agency operating overlay now links long-term direction to a bounded brief-to-handoff workflow."
       ]
     }
   ]

@@ -88,12 +88,13 @@ The current continuation state is intentionally explicit:
 - last reviewed: `2026-07-14`;
 - last validated stewardship commit: `219989d9`;
 - validation: Enterprise Expansion V3, Goal Tracking Update Prompt, Goal Tracking,
-  and Goal Command Center View checks passed;
+  Goal Command Center View, and 104-term capability matrix checks passed;
 - open blocker: the pre-existing repository hygiene blocker remains unresolved
   in the shared dirty worktree;
 - next action: read the repository instructions, project manifest, this registry,
-  and latest Goal evidence, then select the highest-priority unblocked Year 1
-  task.
+  capability matrix, and latest Goal evidence, then select one highest-priority
+  unblocked Year 1 term or measurement contract for a scoped implementation
+  Goal.
 
 This state is a handoff record, not a claim that the annual phase has been
 completed or that work continues without a new supported session.
@@ -128,3 +129,4 @@ human approval under `AGENTS.md`.
 - [Goal Tracking operations](../goals/goal-tracking.md)
 - [Goal Tracking evidence](../../content/development/seis-goal-evidence.json)
 - [Goal Tracking validation](../../content/development/seis-goal-validation-steps.json)
+- [10-year capability matrix](seis-10-year-capability-matrix.md)

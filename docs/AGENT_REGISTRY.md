@@ -18,7 +18,7 @@ inside its own declared scope. Human-readable policy cannot override source
 parity, runtime restrictions, or approval requirements. When boundaries differ,
 the stricter safety rule applies.
 
-## Scoped Sources
+## Sources
 
 | Scope | Count | Authoritative source |
 | --- | ---: | --- |
@@ -31,6 +31,34 @@ the stricter safety rule applies.
 These inventories have different scopes. No 9-lane-to-13-agent mapping exists,
 and consumers must not infer one. Shared names across inventories do not imply
 identity, ownership, assignment, or runtime permission.
+
+The source records are read-only inputs to the aggregate registry. A source
+contract owns the records in its declared scope, while `AGENTS.md` remains the
+global authority. Any source-parity change must update the owning contract,
+regenerate the aggregate when required, and run the registry validator.
+
+## Agency operating overlay
+
+The supervised agency-shaped operating model is documented in
+docs/governance/SEIS_AGENCY_OPERATING_MODEL.md. Its machine-readable contract
+is content/development/seis-agency-team.json.
+
+The overlay groups the existing role records into five delivery pods and adds a
+brief-to-handoff workflow. It does not create runtime workers, grant
+permissions, or infer a mapping between the separate managed-lane and
+agent-role inventories.
+
+## Permission Defaults
+
+- Read-only inspection is the default for every registry consumer.
+- Planning and dry-run output do not grant write, network, credential, or
+  private-content access.
+- A write-capable action requires an explicit scope, a human approval record,
+  and a rollback path before execution.
+- Provider calls, MCP sessions, external connectors, SSH, deployment, and
+  publication remain disabled unless a separate approved contract enables them.
+- No registry record can self-grant permission or promote a reviewer into a
+  writer.
 
 ## Runtime And Approval Boundary
 
@@ -52,6 +80,19 @@ identity, ownership, assignment, or runtime permission.
 Every role report names the objective, scope, affected files, validation
 commands, failed or skipped checks, security notes, blockers, rollback, and
 whether the output is planning, read-only evidence, or an approved action.
+
+## Required Handoff
+
+Every non-trivial change package must hand off the following fields:
+
+- Goal ID and accountable role;
+- canonical repository and affected paths;
+- completed work and maturity/status boundary;
+- exact validation commands and results;
+- failed or skipped checks;
+- security, privacy, accessibility, and performance notes where applicable;
+- blockers, human approvals, rollback, remaining gaps, and next decision;
+- repository state: clean, dirty, blocked, or not verified.
 
 ## Validation
 

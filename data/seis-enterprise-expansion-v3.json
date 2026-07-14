@@ -374,12 +374,13 @@
           {"command": "npm run check:seis-enterprise-expansion-v3", "status": "passed"},
           {"command": "npm run check:seis-goal-tracking-update-prompt", "status": "passed"},
           {"command": "npm run check:goal-tracking", "status": "passed"},
-          {"command": "npm run check:goal-command-center-view", "status": "passed"}
+          {"command": "npm run check:goal-command-center-view", "status": "passed"},
+          {"command": "npm run check:seis-10-year-capability-matrix", "status": "passed"}
         ],
         "open_blockers": [
           "The pre-existing repository hygiene blocker remains unresolved in the shared dirty worktree."
         ],
-        "next_action": "At the next session, read AGENTS.md, the project manifest, this registry, and the latest Goal evidence, then select the highest-priority unblocked Year 1 task."
+        "next_action": "At the next session, read AGENTS.md, the project manifest, this registry, the capability matrix, and the latest Goal evidence, then select one highest-priority unblocked Year 1 term or measurement contract for a scoped implementation Goal."
       },
       "annual_phases": [
       {

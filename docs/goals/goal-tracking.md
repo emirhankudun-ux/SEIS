@@ -60,6 +60,10 @@ condition.
 | `docs/governance/seis-enterprise-expansion-v3.md` | Human-readable Enterprise Expansion V3 governance and implementation boundary. |
 | `docs/governance/seis-enterprise-expansion-10-year-stewardship.md` | Ten-year continuation contract with annual phases, metrics, review cadence, and session handoff rules. |
 | `scripts/check-seis-enterprise-expansion-v3.mjs` | Deterministic validator for exact term sets, Goal links, evidence boundaries, and non-claims. |
+| `data/seis-10-year-capability-matrix.json` | 104-term capability vocabulary transcribed from the updated ten-year objective with phase, owner, measurement, and evidence state. |
+| `schemas/seis-10-year-capability-matrix.schema.json` | Structural contract for the capability matrix. |
+| `docs/governance/seis-10-year-capability-matrix.md` | Human-readable term matrix and interpretation rules. |
+| `scripts/check-seis-10-year-capability-matrix.mjs` | Exact-term, phase, path, and non-claim validator for the matrix. |
 | `content/development/seis-goal-command-center-view.json` | Command Center view model generated from tracked records. |
 | `apps/web/goal-tracking.html` | Public-safe static Goal Tracking Center surface. |
 
@@ -234,6 +238,12 @@ The 10-year focus is represented by the planned stewardship contract in
 Future sessions must continue from its recorded state rather than claiming
 that work happened between sessions.
 
+The updated objective vocabulary is represented by the 104-term capability
+matrix in [`seis-10-year-capability-matrix.md`](../governance/seis-10-year-capability-matrix.md).
+It is a specification and measurement contract: GitHub, package, provider,
+community, and telemetry values remain unavailable until collected through an
+approved evidence path.
+
 The prompt package does not claim that thousands of agents, providers, MCP
 servers, or background workers actually ran. It may describe roles and work
 packages, but execution claims require current-environment evidence.
@@ -285,6 +295,7 @@ Run the focused checks first:
 npm run check:goal-tracking
 npm run check:seis-goal-tracking-update-prompt
 npm run check:goal-command-center-view
+npm run check:seis-10-year-capability-matrix
 ```
 
 When the change touches governance or broader repository behavior, also run:

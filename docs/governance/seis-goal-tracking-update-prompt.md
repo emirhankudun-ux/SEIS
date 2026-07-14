@@ -50,6 +50,12 @@ Authority and source order:
    docs/governance/seis-enterprise-expansion-10-year-stewardship.md and use
    its session-based-continuation protocol. Never convert the annual phases
    into a claim of elapsed time or background execution.
+8. When the selected Goal touches the updated objective vocabulary, read the
+   104-term capability matrix at data/seis-10-year-capability-matrix.json and
+   docs/governance/seis-10-year-capability-matrix.md. Treat all terms as
+   specified vocabulary with `evidence_state: not-collected` until a separate
+   validation record proves a current measurement or implementation; preserve
+   each term's measurement scope and interpretation rules.
 
 Hard rules:
 - Inspect git status, branch, remote, recent history, and the focused diff

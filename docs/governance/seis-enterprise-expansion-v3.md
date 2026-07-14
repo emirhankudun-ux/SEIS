@@ -178,6 +178,7 @@ It is a planned, session-based stewardship contract, not a background runtime.
 
 - [SEIS Goal Tracking Constitution](../SEIS_GOAL_TRACKING.md)
 - [Goal Tracking Operations Guide](../goals/goal-tracking.md)
+- [Ten-Year Capability Matrix](seis-10-year-capability-matrix.md)
 - [SEIS Architecture](../ARCHITECTURE.md)
 - [SEIS AI Core](../AI_CORE.md)
 - [SEIS Design System](../DESIGN_SYSTEM.md)

@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seis.example/schemas/seis-10-year-capability-matrix.schema.json",
+  "title": "SEIS 10-Year Capability Term Matrix",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "title",
+    "status",
+    "maturity",
+    "project",
+    "related_goal_ids",
+    "source_basis",
+    "anchor_date",
+    "target_date",
+    "target_horizon_years",
+    "baseline_phase_id",
+    "category_count",
+    "term_count",
+    "lifecycle_states",
+    "required_term_fields",
+    "interpretation_rules",
+    "non_claims",
+    "categories"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "id": {"const": "seis-10-year-capability-matrix"},
+    "title": {"const": "SEIS 10-Year Capability Term Matrix"},
+    "status": {"const": "active"},
+    "maturity": {"const": "specification"},
+    "project": {"const": "seis"},
+    "related_goal_ids": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"type": "string", "pattern": "^SEIS-GOAL-\\d{3}$"}},
+    "source_basis": {"type": "string", "minLength": 40},
+    "anchor_date": {"type": "string", "format": "date"},
+    "target_date": {"type": "string", "format": "date"},
+    "target_horizon_years": {"const": 10},
+    "baseline_phase_id": {"const": "SEIS-10Y-Y01"},
+    "category_count": {"const": 5},
+    "term_count": {"const": 104},
+    "lifecycle_states": {"type": "array", "const": ["specified", "planned", "active", "blocked", "completed", "unavailable", "deprecated"]},
+    "required_term_fields": {"type": "array", "minItems": 11, "uniqueItems": true, "items": {"type": "string", "minLength": 2}},
+    "interpretation_rules": {"type": "array", "minItems": 4, "items": {"type": "string", "minLength": 20}},
+    "non_claims": {"type": "array", "minItems": 3, "items": {"type": "string", "minLength": 20}},
+    "categories": {"type": "array", "minItems": 5, "maxItems": 5, "uniqueItems": true, "items": {"$ref": "#/$defs/category"}}
+  },
+  "$defs": {
+    "phaseId": {"type": "string", "pattern": "^SEIS-10Y-Y(?:0[1-9]|10)$"},
+    "repoPath": {"type": "string", "minLength": 1, "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"},
+    "category": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "baseline_phase", "target_phase", "owner_role", "evidence_sources", "term_count", "terms"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+        "title": {"type": "string", "minLength": 3},
+        "baseline_phase": {"const": "SEIS-10Y-Y01"},
+        "target_phase": {"$ref": "#/$defs/phaseId"},
+        "owner_role": {"type": "string", "minLength": 3},
+        "evidence_sources": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/repoPath"}},
+        "term_count": {"type": "integer", "minimum": 1},
+        "terms": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/term"}}
+      }
+    },
+    "term": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "status", "maturity", "baseline_phase", "target_phase", "owner_role", "evidence_state", "validation_status", "evidence_sources", "measurement_scope"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+        "label": {"type": "string", "minLength": 2},
+        "status": {"const": "specified"},
+        "maturity": {"const": "specification"},
+        "baseline_phase": {"const": "SEIS-10Y-Y01"},
+        "target_phase": {"$ref": "#/$defs/phaseId"},
+        "owner_role": {"type": "string", "minLength": 3},
+        "evidence_state": {"const": "not-collected"},
+        "validation_status": {"const": "planned"},
+        "evidence_sources": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/repoPath"}},
+        "measurement_scope": {"type": "string", "minLength": 30},
+        "turkish": {"type": "string", "minLength": 2},
+        "meaning": {"type": "string", "minLength": 2},
+        "interpretation": {"type": "string", "minLength": 2},
+        "when_useful": {"type": "string", "minLength": 2},
+        "good_signal": {"type": "string", "minLength": 2},
+        "risk_signal": {"type": "string", "minLength": 2}
+      }
+    }
+  }
+}
