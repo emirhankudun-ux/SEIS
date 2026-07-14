@@ -168,6 +168,9 @@ import Testing
     #expect(snapshot.runtimeBoundary.isSafe)
     #expect(snapshot.routeScenarios.allSatisfy { $0.decision.respectsReadOnlyBoundary })
     #expect(snapshot.routeScenarios.allSatisfy { $0.decision.safetyBoundary.isIsolated })
+    #expect(snapshot.routeScenarios.allSatisfy { $0.decision.decisionIntegrity.isSafe })
+    #expect(snapshot.routeScenarios.allSatisfy { $0.decision.agentLane.permissionBoundary == "plan-only" })
+    #expect(snapshot.routeScenarios.allSatisfy { ["verified", "fail-closed"].contains($0.decision.agentLane.permissionSourceStatus) })
     #expect(snapshot.routeScenarios.allSatisfy { !$0.decision.agentLane.executionPerformed })
 }
 

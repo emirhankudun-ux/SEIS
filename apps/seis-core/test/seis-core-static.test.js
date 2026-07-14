@@ -413,6 +413,25 @@ test("SEIS Command Center exposes the source-backed AI workforce training contro
   assert.match(html, /id="ai-training-role-detail"[^>]*aria-label="Selected AI workforce training role detail"/);
 });
 
+test("SEIS Command Center exposes router mediation evidence", async () => {
+  const html = await readFile(new URL("index.html", root), "utf8");
+  const script = await readFile(new URL("script.js", root), "utf8");
+  const snapshot = JSON.parse(await readFile(new URL("data/seis-ai-core-runtime-snapshot.json", root), "utf8"));
+
+  assert.match(html, /id="ai-core-decision"/);
+  for (const signal of [
+    "decisionIntegrity",
+    "backendOnlyProvidersRequired",
+    "permissionSourceStatus",
+    "runtime snapshot violates the router mediation boundary"
+  ]) {
+    assert.match(script, new RegExp(signal));
+  }
+  assert.ok(snapshot.router.scenarios.every((scenario) => scenario.decision.decisionIntegrity.backendOnlyProvidersRequired === true));
+  assert.ok(snapshot.router.scenarios.every((scenario) => scenario.decision.agentLane.permissionBoundary === "plan-only"));
+  assert.ok(snapshot.router.scenarios.every((scenario) => ["verified", "fail-closed"].includes(scenario.decision.agentLane.permissionSourceStatus)));
+});
+
 test("SEIS Command Center exposes the source-backed AI agent permission matrix", async () => {
   const html = await readFile(new URL("index.html", root), "utf8");
   const script = await readFile(new URL("script.js", root), "utf8");

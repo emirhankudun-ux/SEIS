@@ -32,6 +32,9 @@ test("SEIS Core renders source-backed providers, scenarios, and MCP mesh", async
   assert.match(window.document.querySelector("#ai-core-runtime-summary")?.textContent || "", /37\/30\/3/);
   assert.match(window.document.querySelector("#ai-core-runtime-summary")?.textContent || "", /6\/6/);
   assert.match(window.document.querySelector("#ai-core-runtime-summary")?.textContent || "", /38\/11/);
+  assert.match(window.document.querySelector('[data-ai-core-provider="codex-operator"]')?.textContent || "", /Backend only/);
+  assert.match(window.document.querySelector("#ai-core-decision")?.textContent || "", /Permission source\s*verified/);
+  assert.match(window.document.querySelector("#ai-core-decision")?.textContent || "", /Mediation\s*Backend only/);
   assert.match(window.document.querySelector("#ai-core-mesh-strip")?.textContent || "", /6\/6/);
   const inventoryCard = window.document.querySelector("[data-ai-core-capability-inventory]");
   assert.equal(inventoryCard?.getAttribute("data-ai-core-capability-inventory"), "seis-installed-capability-inventory");
@@ -78,6 +81,19 @@ test("SEIS Core rejects an unsafe plugin MCP probe snapshot", async () => {
   assert.equal(window.document.querySelector("#ai-core-runtime-state")?.textContent, "Fallback");
   assert.match(window.document.querySelector("#ai-core-runtime-feedback")?.textContent || "", /plugin MCP safe-probe boundary/i);
   assert.equal(window.document.querySelectorAll("[data-ai-core-mcp-probe]").length, 0);
+});
+
+test("SEIS Core rejects an unsafe router mediation snapshot", async () => {
+  const { window } = await boot({
+    snapshotTransform(snapshot) {
+      snapshot.router.scenarios[0].decision.decisionIntegrity.backendOnlyProvidersRequired = false;
+      return snapshot;
+    }
+  });
+
+  window.document.querySelector('[data-view="godmode"]')?.click();
+  assert.equal(window.document.querySelector("#ai-core-runtime-state")?.textContent, "Fallback");
+  assert.match(window.document.querySelector("#ai-core-runtime-feedback")?.textContent || "", /router mediation boundary/i);
 });
 
 test("SEIS Core rejects incomplete plugin MCP lifecycle evidence", async () => {

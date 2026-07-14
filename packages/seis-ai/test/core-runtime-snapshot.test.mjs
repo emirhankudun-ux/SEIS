@@ -181,6 +181,12 @@ describe("SEIS AI Core runtime snapshot", () => {
       assert.equal(scenario.decision.executionPerformed, false);
       assert.equal(scenario.decision.providerCallsPerformed, false);
       assert.equal(scenario.decision.fallbackUsed, false);
+      assert.equal(scenario.decision.decisionIntegrity.readOnlyOnly, true);
+      assert.equal(scenario.decision.decisionIntegrity.runtimeAuthority, false);
+      assert.equal(scenario.decision.decisionIntegrity.backendOnlyProvidersRequired, true);
+      assert.equal(scenario.decision.decisionIntegrity.privateObsidianContentRoutable, false);
+      assert.equal(scenario.decision.agentLane.permissionBoundary, "plan-only");
+      assert.ok(["verified", "fail-closed"].includes(scenario.decision.agentLane.permissionSourceStatus));
       assert.equal(scenario.decision.safetyBoundary.credentialsRead, false);
       assert.equal(scenario.decision.safetyBoundary.networkCalled, false);
       assert.ok(scenario.decision.blockedReasons.length > 0);

@@ -225,6 +225,7 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
         fallbackUsed: decision.fallbackUsed,
         fallbackPlan: decision.fallbackPlan,
         agentLane: decision.agentLane,
+        decisionIntegrity: decision.decisionIntegrity,
         requiredApprovals: decision.requiredApprovals,
         blockedReasons: decision.blockedReasons,
         safetyBoundary: decision.safetyBoundary,

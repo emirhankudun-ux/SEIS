@@ -160,13 +160,18 @@ public struct SeisAICoreAgentLane: Codable, Equatable, Identifiable, Sendable {
     public let displayName: String
     public let subAgentRole: String
     public let permissionLevel: String
+    public let permissionBoundary: String
+    public let permissionSourceStatus: String
     public let statusTool: String
     public let planTool: String
     public let qualityGate: String
     public let executionPerformed: Bool
 
     public var isPlanOnly: Bool {
-        permissionLevel == "plan-only" && !executionPerformed
+        permissionLevel == "plan-only" &&
+            permissionBoundary == "plan-only" &&
+            ["verified", "fail-closed"].contains(permissionSourceStatus) &&
+            !executionPerformed
     }
 }
 
@@ -235,6 +240,36 @@ public struct SeisAICoreModelClaimBoundary: Codable, Equatable, Sendable {
     }
 }
 
+public struct SeisAICoreDecisionIntegrity: Codable, Equatable, Sendable {
+    public let readOnlyOnly: Bool
+    public let runtimeAuthority: Bool
+    public let executionPerformedAlwaysFalse: Bool
+    public let noPromptBodyInDecision: Bool
+    public let noCredentialMaterialInDecision: Bool
+    public let decisionLogsRedacted: Bool
+    public let providerStateNamed: Bool
+    public let selectedProviderExplicit: Bool
+    public let fallbackExplicit: Bool
+    public let blockedReasonsRequired: Bool
+    public let backendOnlyProvidersRequired: Bool
+    public let privateObsidianContentRoutable: Bool
+
+    public var isSafe: Bool {
+        readOnlyOnly &&
+            !runtimeAuthority &&
+            executionPerformedAlwaysFalse &&
+            noPromptBodyInDecision &&
+            noCredentialMaterialInDecision &&
+            decisionLogsRedacted &&
+            providerStateNamed &&
+            selectedProviderExplicit &&
+            fallbackExplicit &&
+            blockedReasonsRequired &&
+            backendOnlyProvidersRequired &&
+            !privateObsidianContentRoutable
+    }
+}
+
 public struct SeisAICoreRouteDecision: Codable, Equatable, Sendable {
     public let decisionHash: String
     public let status: String
@@ -249,6 +284,7 @@ public struct SeisAICoreRouteDecision: Codable, Equatable, Sendable {
     public let fallbackUsed: Bool
     public let fallbackPlan: String
     public let agentLane: SeisAICoreAgentLane
+    public let decisionIntegrity: SeisAICoreDecisionIntegrity
     public let requiredApprovals: [String]
     public let blockedReasons: [String]
     public let safetyBoundary: SeisAICoreRouteSafetyBoundary
@@ -261,6 +297,7 @@ public struct SeisAICoreRouteDecision: Codable, Equatable, Sendable {
             !providerCallsPerformed &&
             !fallbackUsed &&
             agentLane.isPlanOnly &&
+            decisionIntegrity.isSafe &&
             safetyBoundary.isIsolated &&
             modelClaimBoundary.isClaimSafe
     }
@@ -279,6 +316,7 @@ public struct SeisAICoreRouteDecision: Codable, Equatable, Sendable {
         case fallbackUsed
         case fallbackPlan
         case agentLane
+        case decisionIntegrity
         case requiredApprovals
         case blockedReasons
         case safetyBoundary
@@ -1397,6 +1435,15 @@ private extension SeisAICoreRuntimeSnapshotContract {
             check(!decision.fallbackUsed, "\(path).fallbackUsed must be false.")
             check(decision.fallbackPlan == "feature-disabled", "\(path).fallbackPlan must disable the feature.")
             check(decision.agentLane.isPlanOnly, "\(path).agentLane must remain plan-only and non-executing.")
+            check(
+                decision.agentLane.permissionBoundary == "plan-only",
+                "\(path).agentLane.permissionBoundary must remain plan-only."
+            )
+            check(
+                ["verified", "fail-closed"].contains(decision.agentLane.permissionSourceStatus),
+                "\(path).agentLane.permissionSourceStatus must be verified or fail-closed."
+            )
+            check(decision.decisionIntegrity.isSafe, "\(path).decisionIntegrity must preserve the read-only mediation boundary.")
             check(!decision.requiredApprovals.isEmpty, "\(path).requiredApprovals must not be empty.")
             check(!decision.blockedReasons.isEmpty, "\(path).blockedReasons must not be empty.")
             validateRouteSafetyBoundary(decision.safetyBoundary, path: path, check: check)

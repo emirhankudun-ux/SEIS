@@ -1086,7 +1086,23 @@ const fallbackSeisAiCoreRuntimeSnapshot = {
             id: "seis",
             displayName: "SEIS Hub",
             permissionLevel: "plan-only",
+            permissionBoundary: "plan-only",
+            permissionSourceStatus: "fail-closed",
             qualityGate: "npm run check:seis-core-ai-runtime-snapshot"
+          },
+          decisionIntegrity: {
+            readOnlyOnly: true,
+            runtimeAuthority: false,
+            executionPerformedAlwaysFalse: true,
+            noPromptBodyInDecision: true,
+            noCredentialMaterialInDecision: true,
+            decisionLogsRedacted: true,
+            providerStateNamed: true,
+            selectedProviderExplicit: true,
+            fallbackExplicit: true,
+            blockedReasonsRequired: true,
+            backendOnlyProvidersRequired: true,
+            privateObsidianContentRoutable: false
           },
           requiredApprovals: ["source-backed snapshot required before review"],
           blockedReasons: ["generated AI Core runtime snapshot is unavailable"],
@@ -3578,6 +3594,7 @@ function renderAiCoreRuntime() {
         <div><dt>Model</dt><dd>${escapeHtml(provider.actualModel)}</dd></div>
         <div><dt>Credential</dt><dd>${escapeHtml(provider.credentialRequirement)}</dd></div>
         <div><dt>Privacy</dt><dd>${escapeHtml(provider.privacyClass)}</dd></div>
+        <div><dt>Mediation</dt><dd>${provider.backendOnly && !provider.frontendSecretAllowed ? "Backend only" : "Unavailable"}</dd></div>
         <div><dt>Route</dt><dd>${provider.routingEligible ? "Fixture eligible" : "Not eligible"}</dd></div>
       </dl>
     </article>
@@ -3618,6 +3635,8 @@ function renderAiCoreRuntime() {
           <div><dt>Provider</dt><dd>${escapeHtml(decision.selectedProvider)}</dd></div>
           <div><dt>Model</dt><dd>${escapeHtml(decision.selectedModel)}</dd></div>
           <div><dt>Permission</dt><dd>${escapeHtml(decision.agentLane.permissionLevel)}</dd></div>
+          <div><dt>Permission source</dt><dd>${escapeHtml(decision.agentLane.permissionSourceStatus || "unavailable")}</dd></div>
+          <div><dt>Mediation</dt><dd>${decision.decisionIntegrity?.backendOnlyProvidersRequired ? "Backend only" : "Unavailable"}</dd></div>
           <div><dt>Quality gate</dt><dd>${escapeHtml(decision.agentLane.qualityGate)}</dd></div>
           <div><dt>Route eligible</dt><dd>${decision.routeEligible ? "Yes" : "No"}</dd></div>
           <div><dt>Execution</dt><dd>${decision.executionPerformed ? "Performed" : "Not performed"}</dd></div>
@@ -3703,6 +3722,27 @@ async function loadSeisAiCoreRuntimeSnapshot() {
         snapshot.agentRegistry.agents.some((agent) => agent.executionAuthority !== false) ||
         Object.values(snapshot.agentRegistry.safetyBoundary || {}).some((value) => value !== false)) {
       throw new Error("runtime snapshot violates the managed agent no-execution boundary");
+    }
+    if (snapshot.router.scenarios.some((scenario) => {
+      const decision = scenario.decision || {};
+      const integrity = decision.decisionIntegrity || {};
+      return integrity.readOnlyOnly !== true ||
+        integrity.runtimeAuthority !== false ||
+        integrity.executionPerformedAlwaysFalse !== true ||
+        integrity.noPromptBodyInDecision !== true ||
+        integrity.noCredentialMaterialInDecision !== true ||
+        integrity.decisionLogsRedacted !== true ||
+        integrity.providerStateNamed !== true ||
+        integrity.selectedProviderExplicit !== true ||
+        integrity.fallbackExplicit !== true ||
+        integrity.blockedReasonsRequired !== true ||
+        integrity.backendOnlyProvidersRequired !== true ||
+        integrity.privateObsidianContentRoutable !== false ||
+        decision.agentLane?.permissionLevel !== "plan-only" ||
+        decision.agentLane?.permissionBoundary !== "plan-only" ||
+        !["verified", "fail-closed"].includes(decision.agentLane?.permissionSourceStatus);
+    })) {
+      throw new Error("runtime snapshot violates the router mediation boundary");
     }
     const permissionMatrix = snapshot.agentPermissionMatrixRegistry;
     const permissionLevels = Array.isArray(permissionMatrix?.levels) ? permissionMatrix.levels : [];

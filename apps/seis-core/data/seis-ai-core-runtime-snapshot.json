@@ -237,6 +237,20 @@
             "qualityGate": "npm run check:seis-ai-agent",
             "executionPerformed": false
           },
+          "decisionIntegrity": {
+            "readOnlyOnly": true,
+            "runtimeAuthority": false,
+            "executionPerformedAlwaysFalse": true,
+            "noPromptBodyInDecision": true,
+            "noCredentialMaterialInDecision": true,
+            "decisionLogsRedacted": true,
+            "providerStateNamed": true,
+            "selectedProviderExplicit": true,
+            "fallbackExplicit": true,
+            "blockedReasonsRequired": true,
+            "backendOnlyProvidersRequired": true,
+            "privateObsidianContentRoutable": false
+          },
           "requiredApprovals": [
             "human approval before live provider routing",
             "backend-only provider mediation and typed environment validation"
@@ -302,6 +316,20 @@
             "qualityGate": "npm run check:cloud-access-policy",
             "executionPerformed": false
           },
+          "decisionIntegrity": {
+            "readOnlyOnly": true,
+            "runtimeAuthority": false,
+            "executionPerformedAlwaysFalse": true,
+            "noPromptBodyInDecision": true,
+            "noCredentialMaterialInDecision": true,
+            "decisionLogsRedacted": true,
+            "providerStateNamed": true,
+            "selectedProviderExplicit": true,
+            "fallbackExplicit": true,
+            "blockedReasonsRequired": true,
+            "backendOnlyProvidersRequired": true,
+            "privateObsidianContentRoutable": false
+          },
           "requiredApprovals": [
             "human approval before live provider routing",
             "backend-only provider mediation and typed environment validation"
@@ -365,6 +393,20 @@
             "planTool": "seis_code_plan",
             "qualityGate": "node scripts/check-seis-plugin-bundle.mjs --no-local",
             "executionPerformed": false
+          },
+          "decisionIntegrity": {
+            "readOnlyOnly": true,
+            "runtimeAuthority": false,
+            "executionPerformedAlwaysFalse": true,
+            "noPromptBodyInDecision": true,
+            "noCredentialMaterialInDecision": true,
+            "decisionLogsRedacted": true,
+            "providerStateNamed": true,
+            "selectedProviderExplicit": true,
+            "fallbackExplicit": true,
+            "blockedReasonsRequired": true,
+            "backendOnlyProvidersRequired": true,
+            "privateObsidianContentRoutable": false
           },
           "requiredApprovals": [
             "human approval before live provider routing",
@@ -431,6 +473,20 @@
             "qualityGate": "npm run check:motion-evidence",
             "executionPerformed": false
           },
+          "decisionIntegrity": {
+            "readOnlyOnly": true,
+            "runtimeAuthority": false,
+            "executionPerformedAlwaysFalse": true,
+            "noPromptBodyInDecision": true,
+            "noCredentialMaterialInDecision": true,
+            "decisionLogsRedacted": true,
+            "providerStateNamed": true,
+            "selectedProviderExplicit": true,
+            "fallbackExplicit": true,
+            "blockedReasonsRequired": true,
+            "backendOnlyProvidersRequired": true,
+            "privateObsidianContentRoutable": false
+          },
           "requiredApprovals": [
             "human approval before live provider routing",
             "backend-only provider mediation and typed environment validation"
@@ -496,6 +552,20 @@
             "qualityGate": "npm run check:plugin-capability-lanes",
             "executionPerformed": false
           },
+          "decisionIntegrity": {
+            "readOnlyOnly": true,
+            "runtimeAuthority": false,
+            "executionPerformedAlwaysFalse": true,
+            "noPromptBodyInDecision": true,
+            "noCredentialMaterialInDecision": true,
+            "decisionLogsRedacted": true,
+            "providerStateNamed": true,
+            "selectedProviderExplicit": true,
+            "fallbackExplicit": true,
+            "blockedReasonsRequired": true,
+            "backendOnlyProvidersRequired": true,
+            "privateObsidianContentRoutable": false
+          },
           "requiredApprovals": [
             "human approval before live provider routing",
             "backend-only provider mediation and typed environment validation"
@@ -560,6 +630,20 @@
             "planTool": "seis_hub_plan",
             "qualityGate": "npm run check:seis-ai-agent",
             "executionPerformed": false
+          },
+          "decisionIntegrity": {
+            "readOnlyOnly": true,
+            "runtimeAuthority": false,
+            "executionPerformedAlwaysFalse": true,
+            "noPromptBodyInDecision": true,
+            "noCredentialMaterialInDecision": true,
+            "decisionLogsRedacted": true,
+            "providerStateNamed": true,
+            "selectedProviderExplicit": true,
+            "fallbackExplicit": true,
+            "blockedReasonsRequired": true,
+            "backendOnlyProvidersRequired": true,
+            "privateObsidianContentRoutable": false
           },
           "requiredApprovals": [
             "human approval before live provider routing",
@@ -627,6 +711,20 @@
             "planTool": "seis_hub_plan",
             "qualityGate": "npm run check:seis-ai-agent",
             "executionPerformed": false
+          },
+          "decisionIntegrity": {
+            "readOnlyOnly": true,
+            "runtimeAuthority": false,
+            "executionPerformedAlwaysFalse": true,
+            "noPromptBodyInDecision": true,
+            "noCredentialMaterialInDecision": true,
+            "decisionLogsRedacted": true,
+            "providerStateNamed": true,
+            "selectedProviderExplicit": true,
+            "fallbackExplicit": true,
+            "blockedReasonsRequired": true,
+            "backendOnlyProvidersRequired": true,
+            "privateObsidianContentRoutable": false
           },
           "requiredApprovals": [
             "human approval before live provider routing",
