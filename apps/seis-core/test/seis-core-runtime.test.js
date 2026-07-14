@@ -37,6 +37,10 @@ test("SEIS Core renders source-backed providers, scenarios, and MCP mesh", async
   assert.equal(inventoryCard?.getAttribute("data-ai-core-capability-inventory"), "seis-installed-capability-inventory");
   assert.match(inventoryCard?.textContent || "", /38 skills/);
   assert.match(inventoryCard?.textContent || "", /11 NVIDIA integrations/);
+  assert.equal(window.document.querySelector("#ai-workforce-registry-state")?.textContent, "Source-backed");
+  assert.equal(window.document.querySelectorAll("[data-ai-workforce-assignment]").length, 10);
+  assert.match(window.document.querySelector("#ai-workforce-registry-summary")?.textContent || "", /Codex/);
+  assert.match(window.document.querySelector("#ai-workforce-registry-feedback")?.textContent || "", /source-backed role and launcher metadata/i);
   const probeRows = [...window.document.querySelectorAll("[data-ai-core-mcp-probe]")];
   assert.equal(probeRows.length, 6);
   assert.ok(probeRows.some((row) => row.textContent?.includes("seis_cloud_status")));
@@ -113,6 +117,21 @@ test("SEIS Core rejects an unsafe installed capability inventory", async () => {
   assert.match(inventoryCard?.textContent || "", /unavailable/);
 });
 
+test("SEIS Core rejects an unsafe AI workforce assignment snapshot", async () => {
+  const { window } = await boot({
+    snapshotTransform(snapshot) {
+      snapshot.workforceAssignmentRegistry.runtimeBoundary.externalMutationPerformed = true;
+      return snapshot;
+    }
+  });
+
+  window.document.querySelector('[data-view="agents"]')?.click();
+  assert.equal(window.document.querySelector("#ai-workforce-registry-state")?.textContent, "Fallback");
+  assert.match(window.document.querySelector("#ai-core-runtime-feedback")?.textContent || "", /AI workforce assignment boundary/i);
+  assert.equal(window.document.querySelectorAll("[data-ai-workforce-assignment]").length, 1);
+  assert.match(window.document.querySelector("#ai-workforce-registry-feedback")?.textContent || "", /unavailable/i);
+});
+
 test("God Mode mission submission records a decision-only route", async () => {
   const { window } = await boot();
   window.document.querySelector('[data-view="godmode"]')?.click();
@@ -145,12 +164,24 @@ test("SEIS Core renders and selects the full managed agent registry", async () =
   assert.equal(window.document.querySelectorAll("[data-managed-agent]").length, 13);
   assert.match(window.document.querySelector("#managed-agent-registry-summary")?.textContent || "", /Execution\s*Disabled/);
 
+  assert.equal(window.document.querySelector("#ai-workforce-registry-state")?.textContent, "Source-backed");
+  assert.equal(window.document.querySelectorAll("[data-ai-workforce-assignment]").length, 10);
+  assert.match(window.document.querySelector("#ai-workforce-registry-summary")?.textContent || "", /10/);
+
   window.document.querySelector('[data-managed-agent="security-agent"]')?.click();
   const detail = window.document.querySelector("#managed-agent-detail");
   assert.match(detail?.textContent || "", /Security Agent/);
   assert.match(detail?.textContent || "", /Execution authority\s*None/);
   assert.match(detail?.textContent || "", /Human approval required/);
   assert.equal(JSON.parse(window.localStorage.getItem("seis-core-state-v1")).activeManagedAgentId, "security-agent");
+
+  window.document.querySelector('[data-ai-workforce-assignment="qwen"]')?.click();
+  const workforceDetail = window.document.querySelector("#ai-workforce-assignment-detail");
+  assert.match(workforceDetail?.textContent || "", /Qwen/);
+  assert.match(workforceDetail?.textContent || "", /Execution authority\s*None/);
+  assert.match(workforceDetail?.textContent || "", /Provider calls\s*Not performed/);
+  assert.match(workforceDetail?.textContent || "", /Human approval required/);
+  assert.equal(JSON.parse(window.localStorage.getItem("seis-core-state-v1")).activeAIWorkforceAssignmentId, "qwen");
 });
 
 test("SEIS Core renders and selects source-backed ecosystem lanes", async () => {
@@ -201,6 +232,8 @@ test("SEIS Core keeps an explicit disabled fallback when the snapshot cannot loa
   window.document.querySelector('[data-view="agents"]')?.click();
   assert.equal(window.document.querySelector("#managed-agent-registry-state")?.textContent, "Fallback");
   assert.equal(window.document.querySelectorAll("[data-managed-agent]").length, 1);
+  assert.equal(window.document.querySelector("#ai-workforce-registry-state")?.textContent, "Fallback");
+  assert.equal(window.document.querySelectorAll("[data-ai-workforce-assignment]").length, 1);
 });
 
 test("view-specific primary actions stay in their operational context", async () => {

@@ -23,6 +23,7 @@ export const AI_CORE_APPLICATION_INTEGRATION_PATH = "content/development/seis-ai
 export const SECOND_BRAIN_SYSTEM_PATH = "content/development/seis-second-brain-system.json";
 export const BIG_TECH_MCP_SKILL_INVENTORY_PATH = "content/development/seis-big-tech-mcp-skill-inventory.json";
 export const NVIDIA_INSTALLED_INTEGRATIONS_PATH = "content/development/seis-nvidia-installed-integrations.json";
+export const AI_WORKFORCE_ASSIGNMENTS_PATH = "content/development/ai-workforce-assignments.json";
 
 const PERSONAL_LANE_IDS = Object.freeze([
   "seis",
@@ -120,6 +121,9 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
   const applicationIntegration = readJson(repoRoot, AI_CORE_APPLICATION_INTEGRATION_PATH);
   const agentRegistry = buildAgentRegistrySnapshot(readJson(repoRoot, SECOND_BRAIN_SYSTEM_PATH));
   const installedCapabilityInventory = buildInstalledCapabilityInventory(repoRoot);
+  const workforceAssignmentRegistry = buildWorkforceAssignmentRegistry(
+    readJson(repoRoot, AI_WORKFORCE_ASSIGNMENTS_PATH)
+  );
 
   if (!provider.ok) throw new Error(provider.error || "SEIS AI Core provider registry is unavailable");
   if (!plugin.ok) throw new Error(plugin.error || "SEIS plugin integration is unavailable");
@@ -203,7 +207,7 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
     schemaVersion: "1.0.0",
     status: "local-readiness-linked",
     mode: "Local Demo",
-    purpose: "Bind provider, read-only router, unified plugin, managed agent, personal lane, and local MCP evidence directly into the static SEIS Core Command Center.",
+    purpose: "Bind provider, read-only router, unified plugin, managed agent, workforce assignment, personal lane, and local MCP evidence directly into the static SEIS Core Command Center.",
     sourceOfTruth: {
       providerRegistry: AI_CORE_PROVIDER_REGISTRY_PATH,
       routerContract: READ_ONLY_ROUTER_CONTRACT_PATH,
@@ -211,6 +215,7 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
       mcpRuntimeContract: MCP_RUNTIME_CONTRACT_PATH,
       applicationIntegration: AI_CORE_APPLICATION_INTEGRATION_PATH,
       agentRegistry: SECOND_BRAIN_SYSTEM_PATH,
+      workforceAssignments: AI_WORKFORCE_ASSIGNMENTS_PATH,
       installedCapabilityInventory: {
         bigTechMcpSkillInventory: BIG_TECH_MCP_SKILL_INVENTORY_PATH,
         nvidiaInstalledIntegrations: NVIDIA_INSTALLED_INTEGRATIONS_PATH,
@@ -264,6 +269,7 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
       scenarios,
     },
     agentRegistry,
+    workforceAssignmentRegistry,
     installedCapabilityInventory,
     pluginMesh: {
       id: plugin.id,
@@ -452,6 +458,123 @@ function buildInstalledCapabilityInventory(repoRoot) {
       humanApprovalRequiredForActivation: true,
     },
     truthBoundary: "Installed AI, MCP, skill, CLI, and NVIDIA surfaces are source-backed metadata only. Activation, provider authentication, credential access, network calls, runtime execution, and external mutation remain blocked or human-approval gated.",
+  };
+}
+
+function buildWorkforceAssignmentRegistry(source) {
+  if (source.id !== "seis-ai-workforce-assignments" || source.status !== "documented") {
+    throw new Error("SEIS AI workforce assignment registry identity or status mismatch");
+  }
+
+  const writerPolicy = source.writerPolicy || {};
+  if (writerPolicy.primaryWriter !== "codex" ||
+      typeof writerPolicy.rule !== "string" || writerPolicy.rule.trim().length === 0 ||
+      typeof writerPolicy.handoffRequirement !== "string" || writerPolicy.handoffRequirement.trim().length === 0) {
+    throw new Error("SEIS AI workforce assignment registry must keep Codex as the primary writer");
+  }
+
+  const assignments = Array.isArray(source.assignments) ? source.assignments : [];
+  if (assignments.length !== 10) {
+    throw new Error("SEIS AI workforce assignment registry must expose exactly ten assignments");
+  }
+
+  const assignmentIDs = assignments.map((assignment) => assignment.id);
+  if (assignmentIDs.some((id) => typeof id !== "string" || id.trim().length === 0) ||
+      new Set(assignmentIDs).size !== assignmentIDs.length) {
+    throw new Error("SEIS AI workforce assignment registry contains invalid or duplicate IDs");
+  }
+
+  const requiredAssignmentFields = [
+    "displayName",
+    "route",
+    "launcherStatus",
+    "category",
+    "validationDuty",
+  ];
+  const publicAssignments = assignments.map((assignment) => {
+    if (requiredAssignmentFields.some((field) => typeof assignment[field] !== "string" || assignment[field].trim().length === 0) ||
+        !Array.isArray(assignment.coreDuties) || assignment.coreDuties.length === 0 ||
+        !Array.isArray(assignment.allowedOutputs) || assignment.allowedOutputs.length === 0 ||
+        !Array.isArray(assignment.deniedActions) || assignment.deniedActions.length === 0 ||
+        [...assignment.coreDuties, ...assignment.allowedOutputs, ...assignment.deniedActions]
+          .some((value) => typeof value !== "string" || value.trim().length === 0)) {
+      throw new Error(`SEIS AI workforce assignment ${assignment.id || "unknown"} is incomplete`);
+    }
+
+    return {
+      id: assignment.id,
+      displayName: assignment.displayName,
+      route: assignment.route,
+      launcherStatus: assignment.launcherStatus,
+      category: assignment.category,
+      coreDuties: assignment.coreDuties,
+      allowedOutputs: assignment.allowedOutputs,
+      deniedActions: assignment.deniedActions,
+      validationDuty: assignment.validationDuty,
+    };
+  });
+
+  const launcherEvidence = source.currentLauncherEvidence || {};
+  if (typeof launcherEvidence.command !== "string" || launcherEvidence.command.trim().length === 0 ||
+      typeof launcherEvidence.observedDate !== "string" || launcherEvidence.observedDate.trim().length === 0 ||
+      !Array.isArray(launcherEvidence.notes) || launcherEvidence.notes.length === 0 ||
+      launcherEvidence.notes.some((note) => typeof note !== "string" || note.trim().length === 0) ||
+      !launcherEvidence.notes.some((note) => /no provider call/i.test(note)) ||
+      !launcherEvidence.notes.some((note) => /no .*secret read/i.test(note))) {
+    throw new Error("SEIS AI workforce launcher evidence must remain local-readiness-only");
+  }
+
+  const approvalRequiredFor = Array.isArray(source.approvalRequiredFor) ? source.approvalRequiredFor : [];
+  const requiredApprovalClaims = [
+    "push to main",
+    "merge",
+    "deployment",
+    "SSH command execution",
+    "paid or live provider smoke tests",
+  ];
+  if (requiredApprovalClaims.some((claim) => !approvalRequiredFor.includes(claim))) {
+    throw new Error("SEIS AI workforce approval boundary is incomplete");
+  }
+
+  const workflow = Array.isArray(source.workflow) ? source.workflow : [];
+  if (workflow.length !== assignments.length || workflow.some((step) =>
+    ["step", "owner", "output"].some((field) => typeof step[field] !== "string" || step[field].trim().length === 0))) {
+    throw new Error("SEIS AI workforce workflow does not cover every assignment safely");
+  }
+
+  return {
+    id: source.id,
+    version: source.version,
+    status: "source-backed-metadata-only",
+    source: AI_WORKFORCE_ASSIGNMENTS_PATH,
+    purpose: source.purpose,
+    assignmentCount: publicAssignments.length,
+    writerPolicy: {
+      primaryWriter: writerPolicy.primaryWriter,
+      rule: writerPolicy.rule,
+      handoffRequirement: writerPolicy.handoffRequirement,
+    },
+    assignments: publicAssignments,
+    workflow: workflow.map((step) => ({
+      step: step.step,
+      owner: step.owner,
+      output: step.output,
+    })),
+    launcherEvidence: {
+      command: launcherEvidence.command,
+      observedDate: launcherEvidence.observedDate,
+      notes: launcherEvidence.notes,
+    },
+    approvalRequiredFor,
+    runtimeBoundary: {
+      executionAuthority: false,
+      providerCalls: false,
+      credentialsRead: false,
+      networkCalled: false,
+      externalMutationPerformed: false,
+      humanApprovalRequiredForMutation: true,
+    },
+    truthBoundary: "Workforce assignments are source-backed role and launcher metadata. Installed status is not live-model, authentication, provider-call, execution, or external-mutation evidence; Codex remains the only repository writer by default.",
   };
 }
 

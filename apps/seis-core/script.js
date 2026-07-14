@@ -27,6 +27,7 @@ const seedState = {
   activeAiCoreScenarioId: "governance-plan",
   activeEcosystemLaneId: "seis",
   activeManagedAgentId: "architect-agent",
+  activeAIWorkforceAssignmentId: "codex",
   repositoryFilter: "all",
   settings: {
     compact: false,
@@ -1106,6 +1107,47 @@ const fallbackSeisAiCoreRuntimeSnapshot = {
     },
     truthBoundary: "Source-backed installed capability inventory is unavailable; no activation or external authority is granted."
   },
+  workforceAssignmentRegistry: {
+    id: "seis-ai-workforce-assignments-fallback",
+    status: "fallback-unavailable",
+    source: "content/development/ai-workforce-assignments.json",
+    purpose: "Fallback workforce role boundary while the source-backed assignment registry is unavailable.",
+    assignmentCount: 0,
+    writerPolicy: {
+      primaryWriter: "codex",
+      rule: "Codex remains the only repository writer by default.",
+      handoffRequirement: "A bounded handoff and validation target is required before review work is accepted."
+    },
+    assignments: [
+      {
+        id: "codex",
+        displayName: "Codex",
+        route: "codex",
+        launcherStatus: "fallback-only",
+        category: "primary-writer",
+        coreDuties: ["Repository integration and validation"],
+        allowedOutputs: ["Scoped code and documentation"],
+        deniedActions: ["Provider calls", "Credential reads", "Unapproved external mutation"],
+        validationDuty: "Keep fallback status explicit until source evidence loads."
+      }
+    ],
+    workflow: [],
+    launcherEvidence: {
+      command: "unavailable",
+      observedDate: "unavailable",
+      notes: ["Source-backed workforce evidence is unavailable."]
+    },
+    approvalRequiredFor: ["live actions"],
+    runtimeBoundary: {
+      executionAuthority: false,
+      providerCalls: false,
+      credentialsRead: false,
+      networkCalled: false,
+      externalMutationPerformed: false,
+      humanApprovalRequiredForMutation: true
+    },
+    truthBoundary: "Source-backed workforce assignments are unavailable; no activation, provider call, credential access, execution, or external mutation is granted."
+  },
   mcpRuntime: {
     status: "unavailable-in-fallback",
     transport: "not-started",
@@ -1845,6 +1887,7 @@ function loadState() {
     if (!Object.hasOwn(viewMeta, next.activeView)) next.activeView = seedState.activeView;
     if (!agents.some((agent) => agent.name === next.activeAgent)) next.activeAgent = seedState.activeAgent;
     if (!godModeLanes.some((lane) => lane.name === next.godModeLane)) next.godModeLane = seedState.godModeLane;
+    if (typeof next.activeAIWorkforceAssignmentId !== "string") next.activeAIWorkforceAssignmentId = seedState.activeAIWorkforceAssignmentId;
     if (!Array.isArray(next.goals)) next.goals = structuredClone(seedState.goals);
     if (!Array.isArray(next.godModeRuns)) next.godModeRuns = structuredClone(seedState.godModeRuns);
     return next;
@@ -1879,6 +1922,7 @@ function render() {
   renderDocumentation();
   renderAgents();
   renderManagedAgentRegistry();
+  renderAIWorkforceRegistry();
   renderEcosystemControlPlane();
   renderPlugins();
   renderAutomation();
@@ -2736,6 +2780,99 @@ function renderManagedAgentRegistry() {
   feedback.textContent = registry.truthBoundary || "Only public, status-and-plan registry evidence is displayed.";
 }
 
+function renderAIWorkforceRegistry() {
+  const registry = seisAiCoreRuntimeSnapshot.workforceAssignmentRegistry || fallbackSeisAiCoreRuntimeSnapshot.workforceAssignmentRegistry;
+  const assignments = Array.isArray(registry.assignments) ? registry.assignments : [];
+  const statePill = $("#ai-workforce-registry-state");
+  const summary = $("#ai-workforce-registry-summary");
+  const assignmentList = $("#ai-workforce-assignment-list");
+  const detail = $("#ai-workforce-assignment-detail");
+  const feedback = $("#ai-workforce-registry-feedback");
+  if (!statePill || !summary || !assignmentList || !detail || !feedback) return;
+
+  const sourceBacked = registry.status === "source-backed-metadata-only";
+  if (!assignments.some((assignment) => assignment.id === state.activeAIWorkforceAssignmentId)) {
+    state.activeAIWorkforceAssignmentId = assignments[0]?.id || "codex";
+  }
+  const activeAssignment = assignments.find((assignment) => assignment.id === state.activeAIWorkforceAssignmentId) || assignments[0] || null;
+  const boundary = registry.runtimeBoundary || {};
+  const primaryWriter = registry.writerPolicy?.primaryWriter === "codex"
+    ? "Codex"
+    : (registry.writerPolicy?.primaryWriter || "unknown");
+
+  statePill.textContent = sourceBacked ? "Source-backed" : "Fallback";
+  statePill.className = `status-pill ${sourceBacked ? "ready" : "attention"}`;
+  summary.innerHTML = [
+    ["Assignments", registry.assignmentCount || assignments.length, "declared workforce roles"],
+    ["Primary writer", primaryWriter, "single-writer policy"],
+    ["Workflow", registry.workflow?.length || 0, "bounded handoff steps"],
+    ["Authority", boundary.executionAuthority ? "Enabled" : "Disabled", "metadata-only surface"]
+  ].map(([label, value, note]) => `
+    <article class="ai-workforce-summary-item">
+      <span>${escapeHtml(label)}</span>
+      <strong>${escapeHtml(value)}</strong>
+      <small>${escapeHtml(note)}</small>
+    </article>
+  `).join("");
+
+  assignmentList.innerHTML = assignments.map((assignment) => {
+    const active = assignment.id === activeAssignment?.id;
+    const launcherTone = assignment.launcherStatus === "installed" || assignment.launcherStatus === "remote-ci" ? "ready" : "attention";
+    return `
+      <button
+        class="ai-workforce-assignment-button ${active ? "is-active" : ""}"
+        type="button"
+        role="listitem"
+        data-ai-workforce-assignment="${escapeHtml(assignment.id)}"
+        aria-pressed="${active}"
+      >
+        <span>
+          <strong>${escapeHtml(assignment.displayName)}</strong>
+          <small>${escapeHtml(assignment.category)} · ${escapeHtml(assignment.route)}</small>
+        </span>
+        <span class="status-pill ${launcherTone}">${escapeHtml(assignment.launcherStatus)}</span>
+      </button>
+    `;
+  }).join("");
+
+  if (!activeAssignment) {
+    detail.innerHTML = "<p>No workforce assignment record is available.</p>";
+  } else {
+    const list = (items) => items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+    detail.innerHTML = `
+      <span class="eyebrow">Selected workforce role</span>
+      <h4>${escapeHtml(activeAssignment.displayName)}</h4>
+      <p>${escapeHtml(activeAssignment.validationDuty)}</p>
+      <div class="meta-row">
+        <span class="meta-chip">route: ${escapeHtml(activeAssignment.route)}</span>
+        <span class="meta-chip">launcher: ${escapeHtml(activeAssignment.launcherStatus)}</span>
+      </div>
+      <dl class="ai-core-facts">
+        <div><dt>Execution authority</dt><dd>${boundary.executionAuthority ? "Enabled" : "None"}</dd></div>
+        <div><dt>Provider calls</dt><dd>${boundary.providerCalls ? "Performed" : "Not performed"}</dd></div>
+        <div><dt>Credentials</dt><dd>${boundary.credentialsRead ? "Read" : "Not read"}</dd></div>
+        <div><dt>Mutation</dt><dd>${boundary.humanApprovalRequiredForMutation ? "Human approval required" : "Unspecified"}</dd></div>
+      </dl>
+      <div class="ai-workforce-detail-grid">
+        <section>
+          <h5>Core duties</h5>
+          <ul>${list(activeAssignment.coreDuties || [])}</ul>
+        </section>
+        <section>
+          <h5>Allowed outputs</h5>
+          <ul>${list(activeAssignment.allowedOutputs || [])}</ul>
+        </section>
+        <section>
+          <h5>Denied actions</h5>
+          <ul>${list(activeAssignment.deniedActions || [])}</ul>
+        </section>
+      </div>
+    `;
+  }
+
+  feedback.textContent = registry.truthBoundary || "Only source-backed role metadata is displayed; live AI activation remains outside this surface.";
+}
+
 function renderAgentDetail(label, items) {
   return `
     <section class="agent-detail">
@@ -3240,6 +3377,34 @@ async function loadSeisAiCoreRuntimeSnapshot() {
         installedCapabilityBoundary.humanApprovalRequiredForActivation !== true) {
       throw new Error("runtime snapshot violates the installed capability inventory boundary");
     }
+    const workforceAssignmentRegistry = snapshot.workforceAssignmentRegistry;
+    const workforceAssignments = Array.isArray(workforceAssignmentRegistry?.assignments)
+      ? workforceAssignmentRegistry.assignments
+      : [];
+    const workforceAssignmentIDs = workforceAssignments.map((assignment) => assignment.id);
+    const workforceBoundary = workforceAssignmentRegistry?.runtimeBoundary || {};
+    if (workforceAssignmentRegistry?.id !== "seis-ai-workforce-assignments" ||
+        workforceAssignmentRegistry.status !== "source-backed-metadata-only" ||
+        workforceAssignmentRegistry.assignmentCount !== 10 ||
+        workforceAssignments.length !== 10 ||
+        new Set(workforceAssignmentIDs).size !== workforceAssignmentIDs.length ||
+        workforceAssignmentRegistry.writerPolicy?.primaryWriter !== "codex" ||
+        !Array.isArray(workforceAssignmentRegistry.workflow) ||
+        workforceAssignmentRegistry.workflow.length !== 10 ||
+        workforceAssignments.some((assignment) =>
+          ["id", "displayName", "route", "launcherStatus", "category", "validationDuty"]
+            .some((field) => typeof assignment[field] !== "string" || assignment[field].length === 0) ||
+          !Array.isArray(assignment.coreDuties) || assignment.coreDuties.length === 0 ||
+          !Array.isArray(assignment.allowedOutputs) || assignment.allowedOutputs.length === 0 ||
+          !Array.isArray(assignment.deniedActions) || assignment.deniedActions.length === 0) ||
+        workforceBoundary.executionAuthority !== false ||
+        workforceBoundary.providerCalls !== false ||
+        workforceBoundary.credentialsRead !== false ||
+        workforceBoundary.networkCalled !== false ||
+        workforceBoundary.externalMutationPerformed !== false ||
+        workforceBoundary.humanApprovalRequiredForMutation !== true) {
+      throw new Error("runtime snapshot violates the AI workforce assignment boundary");
+    }
     seisAiCoreRuntimeSnapshot = snapshot;
     if (!snapshot.router.scenarios.some((scenario) => scenario.id === state.activeAiCoreScenarioId)) {
       state.activeAiCoreScenarioId = snapshot.router.scenarios[0].id;
@@ -3247,11 +3412,15 @@ async function loadSeisAiCoreRuntimeSnapshot() {
     if (!snapshot.agentRegistry.agents.some((agent) => agent.id === state.activeManagedAgentId)) {
       state.activeManagedAgentId = snapshot.agentRegistry.agents[0]?.id || "architect-agent";
     }
+    if (!snapshot.workforceAssignmentRegistry.assignments.some((assignment) => assignment.id === state.activeAIWorkforceAssignmentId)) {
+      state.activeAIWorkforceAssignmentId = snapshot.workforceAssignmentRegistry.assignments[0]?.id || "codex";
+    }
     aiCoreRuntimeNotice = "Generated AI Core snapshot loaded. Decisions are source-backed and execution remains disabled.";
   } catch (error) {
     seisAiCoreRuntimeSnapshot = fallbackSeisAiCoreRuntimeSnapshot;
     state.activeAiCoreScenarioId = fallbackSeisAiCoreRuntimeSnapshot.router.scenarios[0].id;
     state.activeManagedAgentId = fallbackSeisAiCoreRuntimeSnapshot.agentRegistry.agents[0].id;
+    state.activeAIWorkforceAssignmentId = fallbackSeisAiCoreRuntimeSnapshot.workforceAssignmentRegistry.assignments[0].id;
     aiCoreRuntimeNotice = `Fallback active: ${error.message}. Provider, MCP, SSH, deploy, and GitHub execution remain disabled.`;
   }
   render();
@@ -3667,6 +3836,13 @@ function bindEvents() {
       state.activeManagedAgentId = managedAgentButton.dataset.managedAgent;
       render();
       revealPrimaryTarget("#managed-agent-detail");
+    }
+
+    const workforceAssignmentButton = event.target.closest("[data-ai-workforce-assignment]");
+    if (workforceAssignmentButton) {
+      state.activeAIWorkforceAssignmentId = workforceAssignmentButton.dataset.aiWorkforceAssignment;
+      render();
+      revealPrimaryTarget("#ai-workforce-assignment-detail");
     }
 
     const godModeLaneButton = event.target.closest("[data-godmode-lane]");

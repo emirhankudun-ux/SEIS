@@ -63,6 +63,18 @@ describe("SEIS AI Core runtime snapshot", () => {
     assert.equal(snapshot.installedCapabilityInventory.runtimeBoundary.networkCalled, false);
     assert.equal(snapshot.installedCapabilityInventory.runtimeBoundary.externalMutationPerformed, false);
     assert.equal(snapshot.installedCapabilityInventory.runtimeBoundary.humanApprovalRequiredForActivation, true);
+    assert.equal(snapshot.workforceAssignmentRegistry.id, "seis-ai-workforce-assignments");
+    assert.equal(snapshot.workforceAssignmentRegistry.status, "source-backed-metadata-only");
+    assert.equal(snapshot.workforceAssignmentRegistry.assignmentCount, 10);
+    assert.equal(snapshot.workforceAssignmentRegistry.writerPolicy.primaryWriter, "codex");
+    assert.equal(snapshot.workforceAssignmentRegistry.assignments.length, 10);
+    assert.equal(snapshot.workforceAssignmentRegistry.workflow.length, 10);
+    assert.equal(snapshot.workforceAssignmentRegistry.runtimeBoundary.executionAuthority, false);
+    assert.equal(snapshot.workforceAssignmentRegistry.runtimeBoundary.providerCalls, false);
+    assert.equal(snapshot.workforceAssignmentRegistry.runtimeBoundary.credentialsRead, false);
+    assert.equal(snapshot.workforceAssignmentRegistry.runtimeBoundary.networkCalled, false);
+    assert.equal(snapshot.workforceAssignmentRegistry.runtimeBoundary.externalMutationPerformed, false);
+    assert.equal(snapshot.workforceAssignmentRegistry.runtimeBoundary.humanApprovalRequiredForMutation, true);
     assert.equal(snapshot.pluginMesh.mcpMesh.serverCount, 6);
     assert.equal(snapshot.pluginMesh.mcpMesh.configuredServerCount, 6);
     assert.equal(snapshot.pluginMesh.mcpMesh.status, "probe-verified-local-read-only");

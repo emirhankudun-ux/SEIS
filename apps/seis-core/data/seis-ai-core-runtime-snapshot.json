@@ -3,7 +3,7 @@
   "schemaVersion": "1.0.0",
   "status": "local-readiness-linked",
   "mode": "Local Demo",
-  "purpose": "Bind provider, read-only router, unified plugin, managed agent, personal lane, and local MCP evidence directly into the static SEIS Core Command Center.",
+  "purpose": "Bind provider, read-only router, unified plugin, managed agent, workforce assignment, personal lane, and local MCP evidence directly into the static SEIS Core Command Center.",
   "sourceOfTruth": {
     "providerRegistry": "content/development/seis-ai-core-provider-registry.json",
     "routerContract": "content/development/seis-read-only-model-router-contract.json",
@@ -11,6 +11,7 @@
     "mcpRuntimeContract": "content/development/seis-ai-core-mcp-runtime-contract.json",
     "applicationIntegration": "content/development/seis-ai-core-application-integration.json",
     "agentRegistry": "content/development/seis-second-brain-system.json",
+    "workforceAssignments": "content/development/ai-workforce-assignments.json",
     "installedCapabilityInventory": {
       "bigTechMcpSkillInventory": "content/development/seis-big-tech-mcp-skill-inventory.json",
       "nvidiaInstalledIntegrations": "content/development/seis-nvidia-installed-integrations.json"
@@ -803,6 +804,345 @@
       "githubMutation": false
     },
     "humanApprovalRequiredForMutation": true
+  },
+  "workforceAssignmentRegistry": {
+    "id": "seis-ai-workforce-assignments",
+    "version": "2026.06.23",
+    "status": "source-backed-metadata-only",
+    "source": "content/development/ai-workforce-assignments.json",
+    "purpose": "Define the supervised AI workforce assignment model for SEIS without granting uncontrolled repository, credential, deployment, or merge authority.",
+    "assignmentCount": 10,
+    "writerPolicy": {
+      "primaryWriter": "codex",
+      "rule": "Exactly one assistant may hold writer role for a change package. Other assistants provide scoped review, research, design, or contradiction analysis unless explicitly handed off.",
+      "handoffRequirement": "A handoff must include objective, affected paths, context included, context excluded, risks, expected output, validation command, and approval boundary."
+    },
+    "assignments": [
+      {
+        "id": "codex",
+        "displayName": "Codex",
+        "route": "codex",
+        "launcherStatus": "installed",
+        "category": "primary-writer",
+        "coreDuties": [
+          "Inspect repository state.",
+          "Apply focused file edits.",
+          "Fix bugs and documentation drift.",
+          "Run available validation.",
+          "Prepare small reviewable commits and PR descriptions."
+        ],
+        "allowedOutputs": [
+          "patches",
+          "validation logs",
+          "status reports",
+          "commit plans",
+          "PR descriptions"
+        ],
+        "deniedActions": [
+          "push to main",
+          "merge without human approval",
+          "expose secrets",
+          "deploy without approval",
+          "rewrite history without approval"
+        ],
+        "validationDuty": "Compare every secondary-agent recommendation against repository evidence before accepting it."
+      },
+      {
+        "id": "claude",
+        "displayName": "Claude",
+        "route": "claude",
+        "launcherStatus": "route-defined-current-shell-missing-key",
+        "category": "architecture-review",
+        "coreDuties": [
+          "Review architecture and product strategy.",
+          "Check AGENTS, SECURITY, ARCHITECTURE, and ROADMAP alignment.",
+          "Review high-risk PRs and cross-layer decisions."
+        ],
+        "allowedOutputs": [
+          "architecture review",
+          "product strategy memo",
+          "risk notes",
+          "PR review notes"
+        ],
+        "deniedActions": [
+          "direct repository writes by default",
+          "credential handling",
+          "merge or deploy authority"
+        ],
+        "validationDuty": "Produce decision-oriented review notes with explicit evidence gaps."
+      },
+      {
+        "id": "qwen",
+        "displayName": "Qwen",
+        "route": "qwen",
+        "launcherStatus": "installed",
+        "category": "contradiction-review",
+        "coreDuties": [
+          "Find contradictions between docs, prompts, and implementation claims.",
+          "Analyze duplicate or stale archive material.",
+          "Challenge weak assumptions and hidden risk."
+        ],
+        "allowedOutputs": [
+          "contradiction report",
+          "duplicate analysis",
+          "risk matrix",
+          "archive summary"
+        ],
+        "deniedActions": [
+          "promoting archive content into official docs without Codex review",
+          "direct writes by default",
+          "destructive cleanup"
+        ],
+        "validationDuty": "Flag exact conflicting files or claims so Codex can repair them."
+      },
+      {
+        "id": "gemini",
+        "displayName": "Gemini",
+        "route": "gemini",
+        "launcherStatus": "route-defined-current-shell-missing-key",
+        "category": "external-readiness-review",
+        "coreDuties": [
+          "Provide second-opinion review for public readiness.",
+          "Check UX, accessibility, and documentation clarity.",
+          "Support Google ecosystem and source comparison tasks when authorized."
+        ],
+        "allowedOutputs": [
+          "public readiness notes",
+          "UX and accessibility review",
+          "documentation clarity review",
+          "source comparison notes"
+        ],
+        "deniedActions": [
+          "direct writes by default",
+          "secret handling",
+          "unbounded web or provider calls without approval"
+        ],
+        "validationDuty": "Separate observed repository evidence from external or inferred recommendations."
+      },
+      {
+        "id": "coderabbit",
+        "displayName": "CodeRabbit",
+        "route": "github-pr-review",
+        "launcherStatus": "pr-dependent",
+        "category": "pull-request-review",
+        "coreDuties": [
+          "Review PR diffs after a pull request exists.",
+          "Surface code, docs, security, and maintainability comments.",
+          "Keep review scoped to the submitted change package."
+        ],
+        "allowedOutputs": [
+          "PR review comments",
+          "risk findings",
+          "follow-up suggestions"
+        ],
+        "deniedActions": [
+          "local repository writes",
+          "merge authority",
+          "secret access"
+        ],
+        "validationDuty": "Codex triages each comment and fixes only evidence-backed issues."
+      },
+      {
+        "id": "ollama",
+        "displayName": "Ollama / Local Model",
+        "route": "ollama",
+        "launcherStatus": "installed",
+        "category": "local-private-draft",
+        "coreDuties": [
+          "Create local-only drafts for sensitive summaries.",
+          "Help with offline analysis when cloud providers are unavailable or inappropriate.",
+          "Support no-key fallback experiments without claiming live provider output."
+        ],
+        "allowedOutputs": [
+          "private draft",
+          "offline summary",
+          "local-only analysis"
+        ],
+        "deniedActions": [
+          "canonical source-of-truth edits by default",
+          "model ownership claims",
+          "secret storage"
+        ],
+        "validationDuty": "Label output as local/offline draft until Codex verifies it."
+      },
+      {
+        "id": "open-design",
+        "displayName": "OpenDesign / Design Agent",
+        "route": "open-design",
+        "launcherStatus": "installed",
+        "category": "visual-system-review",
+        "coreDuties": [
+          "Propose visual systems for Command Center.",
+          "Propose SEIS Desktop and SEIS Code interface refinements.",
+          "Propose Video Hero and Mythic Gacha visual directions."
+        ],
+        "allowedOutputs": [
+          "design brief",
+          "visual-system proposal",
+          "component and motion recommendations"
+        ],
+        "deniedActions": [
+          "production asset import without provenance",
+          "fake UI control claims",
+          "accessibility bypass"
+        ],
+        "validationDuty": "Design proposals need implementation, accessibility, and browser evidence before release claims."
+      },
+      {
+        "id": "github-actions",
+        "displayName": "GitHub Actions",
+        "route": "github-actions",
+        "launcherStatus": "remote-ci",
+        "category": "automation-validation",
+        "coreDuties": [
+          "Run CI validation on configured events.",
+          "Run tests, lint, build, docs checks, provider audits, and secret scans where configured.",
+          "Expose failures as review evidence."
+        ],
+        "allowedOutputs": [
+          "check run",
+          "workflow log",
+          "artifact",
+          "annotation"
+        ],
+        "deniedActions": [
+          "untrusted-fork live provider calls",
+          "secret echoing",
+          "deployment without protected policy"
+        ],
+        "validationDuty": "CI output is evidence only for checks actually configured and executed."
+      },
+      {
+        "id": "kimi",
+        "displayName": "Kimi / Kimi Code",
+        "route": "kimi",
+        "launcherStatus": "route-defined-current-shell-missing-command",
+        "category": "conditional-code-and-localization-review",
+        "coreDuties": [
+          "Support multilingual review, localization, and translation tasks when available.",
+          "If a Kimi Code route is configured, provide bounded code second opinions under Codex review."
+        ],
+        "allowedOutputs": [
+          "localization review",
+          "multilingual copy notes",
+          "bounded code review"
+        ],
+        "deniedActions": [
+          "primary writer role by default",
+          "unreviewed code application",
+          "secret handling"
+        ],
+        "validationDuty": "Codex must verify any Kimi-generated code or copy against repository conventions."
+      },
+      {
+        "id": "opencode",
+        "displayName": "OpenCode",
+        "route": "opencode",
+        "launcherStatus": "installed",
+        "category": "bounded-terminal-coding-helper",
+        "coreDuties": [
+          "Provide terminal coding assistance for bounded local tasks.",
+          "Generate narrow patch suggestions when Codex delegates explicitly."
+        ],
+        "allowedOutputs": [
+          "patch suggestion",
+          "terminal-focused code review",
+          "debug hypothesis"
+        ],
+        "deniedActions": [
+          "direct merge authority",
+          "unbounded repository edits",
+          "secret handling"
+        ],
+        "validationDuty": "Codex remains responsible for applying, reviewing, and validating any suggested patch."
+      }
+    ],
+    "workflow": [
+      {
+        "step": "intake",
+        "owner": "codex",
+        "output": "Bounded objective, affected paths, risk class, and validation target."
+      },
+      {
+        "step": "architecture_review",
+        "owner": "claude",
+        "output": "Architecture, product, AGENTS, SECURITY, and ARCHITECTURE alignment notes."
+      },
+      {
+        "step": "contradiction_review",
+        "owner": "qwen",
+        "output": "Contradictions, duplicate archive material, risky assumptions, and stale prompt findings."
+      },
+      {
+        "step": "public_readiness_review",
+        "owner": "gemini",
+        "output": "Public readiness, UX, accessibility, documentation clarity, and external-doc consistency notes."
+      },
+      {
+        "step": "design_review",
+        "owner": "open-design",
+        "output": "Visual-system proposals for Command Center, SEIS Desktop, SEIS Code, Video Hero, and Mythic Gacha."
+      },
+      {
+        "step": "private_draft_review",
+        "owner": "ollama",
+        "output": "Offline or local-only summaries and drafts for sensitive repository context."
+      },
+      {
+        "step": "implementation",
+        "owner": "codex",
+        "output": "Repository edits, docs updates, bug fixes, focused validation, and commit-ready diff."
+      },
+      {
+        "step": "ci_validation",
+        "owner": "github-actions",
+        "output": "Automated lint, build, tests, docs checks, provider audit, and secret scanning where configured."
+      },
+      {
+        "step": "pr_review",
+        "owner": "coderabbit",
+        "output": "Pull-request review comments after a PR exists."
+      },
+      {
+        "step": "repair_and_handoff",
+        "owner": "codex",
+        "output": "Fixes for review findings, final status report, and human approval queue."
+      }
+    ],
+    "launcherEvidence": {
+      "command": "npm run ai -- list",
+      "observedDate": "2026-06-23",
+      "notes": [
+        "The command checks local route readiness only.",
+        "No provider call, repository upload, secret read, or live model verification was performed.",
+        "Missing environment-variable status does not prove a credential does not exist outside the current shell."
+      ]
+    },
+    "approvalRequiredFor": [
+      "push to main",
+      "merge",
+      "force-push",
+      "branch deletion",
+      "deployment",
+      "release or tag creation",
+      "dependency installation",
+      "secret rotation",
+      "SSH command execution",
+      "repository setting changes",
+      "public visibility changes",
+      "model training",
+      "dataset download",
+      "paid or live provider smoke tests"
+    ],
+    "runtimeBoundary": {
+      "executionAuthority": false,
+      "providerCalls": false,
+      "credentialsRead": false,
+      "networkCalled": false,
+      "externalMutationPerformed": false,
+      "humanApprovalRequiredForMutation": true
+    },
+    "truthBoundary": "Workforce assignments are source-backed role and launcher metadata. Installed status is not live-model, authentication, provider-call, execution, or external-mutation evidence; Codex remains the only repository writer by default."
   },
   "installedCapabilityInventory": {
     "id": "seis-installed-capability-inventory",

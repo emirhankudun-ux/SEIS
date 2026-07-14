@@ -41,6 +41,7 @@ The foundation includes:
 | SEIS plugin lanes | Integrated as read-only/status and plan-only tools | `content/development/seis-agent-plugin-integration.json`, `packages/seis-ai/src/lib/plugin-integration.mjs`, `packages/seis-ai/src/agent/tools.mjs`, `packages/seis-ai/src/mcp/server.mjs` | No external connector authentication is claimed. | Keep lane tools scoped to status and planning until explicit approval enables mutation. |
 | Plugin MCP safe probes | Bound as a dedicated native Local Demo readiness gate | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAICoreReadinessEvaluator.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAICoreReadinessEvaluatorTests.swift`, `npm run check:seis-plugin-mcp-mesh` | Six repository-local MCP servers and six allowlisted status probes are verified; this does not prove remote readiness, connector authentication, or live-session authority. | Keep the probe allowlist narrow and preserve the no-credential, no-network, no-shell, no-mutation boundary. |
 | Installed AI/MCP/NVIDIA capability inventory | Bound as typed native and web metadata-only readiness evidence | `content/development/seis-big-tech-mcp-skill-inventory.json`, `content/development/seis-nvidia-installed-integrations.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAIInstalledCapabilityInventorySnapshot.swift`, `packages/seis-ai/src/model/core-runtime-snapshot.mjs`, `apps/seis-core/data/seis-ai-core-runtime-snapshot.json`, `apps/seis-core/script.js` | The inventory exposes 38 curated skills, three local CLI/tool profiles, three project MCP/skill configs, 17 current-session MCP surfaces, eight local apps, one pending connector approval, and 11 NVIDIA integrations with eight runtime blockers. It does not claim activation, provider authentication, credential access, network calls, runtime execution, or external mutation. | Keep source drift fail-closed and require human approval before activating any listed provider, connector, skill command, NVIDIA runtime, cloud, GPU, cluster, or deployment action. |
+| AI workforce assignment registry | Bound as source-backed native and web metadata-only workforce evidence | `content/development/ai-workforce-assignments.json`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAIWorkforceAssignmentSnapshot.swift`, `packages/seis-ai/src/model/core-runtime-snapshot.mjs`, `apps/seis-core/data/seis-ai-core-runtime-snapshot.json`, `apps/seis-core/script.js` | The projection exposes ten declared roles, launcher readiness, route, duties, allowed outputs, denied actions, validation duty, and the Codex primary-writer policy. It does not claim live model access, authentication, provider calls, credential reads, autonomous execution, or external mutation. | Keep the source projection fail-closed, preserve the single-writer handoff rule, and require human approval for mutation, deployment, SSH, paid/live provider tests, merge, and protected-branch writes. |
 | AI Core constellation inspector | Browser-smoke verified Local Demo surface | `apps/seis-demo-web/index.html`, `apps/seis-demo-web/script.js`, `scripts/check-product-experience-browser-smoke.mjs` | This proves only local UI integration of installed AI routes, personal plugin lanes, and the MCP runtime contract. | Keep the inspector backed by generated plan-view data and product browser smoke before claiming broader runtime integration. |
 | AI Workforce Training | Active local seed training contract | `docs/ai/ai-workforce-training.md`, `content/development/seis-ai-workforce-training-plan.json`, `scripts/check-seis-ai-workforce-training.mjs`, `scripts/run-seis-ai-workforce-training.mjs` | No live provider calls, credential reads, cloud fine-tuning, dataset downloads, SSH, deployment, or runtime authority are performed. | Use installed assistants only as supervised candidate reviewers; rebuild deterministic local seed artifacts with `npm run automation:seis-ai-workforce-training`. |
 | Provider credentials | Statically audited | `docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md` | No runtime verification was performed. | Keep keys optional, server-only, and disabled until adapter tests exist. |
@@ -259,13 +260,15 @@ entry/file/folder counts, scan state, and excluded categories. The index does
 not read file contents and the AI Core surface exposes no file open, write,
 rename, delete, execution, or private-content inference authority.
 
-The native panel also reads the canonical
+The native and web panels also read the canonical
 `content/development/ai-workforce-assignments.json` registry as a typed
-metadata-only workforce snapshot. It shows the ten declared AI/tool roles,
-launcher state, route, category, and Codex primary-writer policy. It does not
-call Claude, Gemini, Qwen, Ollama, Kimi, OpenCode, CodeRabbit, GitHub Actions,
-or any other provider merely because the role is listed; unavailable or
-approval-gated states remain visible.
+metadata-only workforce snapshot. The generated browser artifact mirrors the
+same ten declared AI/tool roles, while the native panel consumes the typed
+source directly. Both show launcher state, route, category, duties, allowed
+outputs, denied actions, validation duty, and Codex primary-writer policy. This
+does not call Claude, Gemini, Qwen, Ollama, Kimi, OpenCode, CodeRabbit, GitHub
+Actions, or any other provider merely because the role is listed; unavailable
+or approval-gated states remain visible.
 
 The same panel reads the canonical
 `content/development/seis-ai-workforce-training-plan.json` registry as a typed

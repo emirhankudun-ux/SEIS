@@ -226,7 +226,12 @@ test("SEIS Command Center binds the source-backed AI Core runtime snapshot", asy
     "ai-core-scenario-list",
     "ai-core-decision",
     "ai-core-mesh-strip",
-    "ai-core-runtime-feedback"
+    "ai-core-runtime-feedback",
+    "ai-workforce-registry-state",
+    "ai-workforce-registry-summary",
+    "ai-workforce-assignment-list",
+    "ai-workforce-assignment-detail",
+    "ai-workforce-registry-feedback"
   ]) {
     assert.match(html, new RegExp(`id="${id}"`));
   }
@@ -235,10 +240,12 @@ test("SEIS Command Center binds the source-backed AI Core runtime snapshot", asy
     "fallbackSeisAiCoreRuntimeSnapshot",
     "renderAiCoreRuntime",
     "renderManagedAgentRegistry",
+    "renderAIWorkforceRegistry",
     "loadSeisAiCoreRuntimeSnapshot",
     "getActiveAiCoreScenario",
     "copyAiCoreDecision",
     "data-ai-core-capability-inventory",
+    "data-ai-workforce-assignment",
     "data/seis-ai-core-runtime-snapshot.json"
   ]) {
     assert.match(script, new RegExp(signal.replaceAll("/", "\\/")));
@@ -250,7 +257,11 @@ test("SEIS Command Center binds the source-backed AI Core runtime snapshot", asy
     "ai-core-provider-card",
     "ai-core-scenario-button",
     "ai-core-decision-card",
-    "ai-core-mesh-strip"
+    "ai-core-mesh-strip",
+    "ai-workforce-registry-panel",
+    "ai-workforce-summary-item",
+    "ai-workforce-assignment-button",
+    "ai-workforce-assignment-detail"
   ]) {
     assert.match(css, new RegExp(`\\.${selector}`));
   }
@@ -271,6 +282,16 @@ test("SEIS Command Center binds the source-backed AI Core runtime snapshot", asy
   assert.equal(snapshot.installedCapabilityInventory.nvidia.integrationIDs.length, 11);
   assert.equal(snapshot.installedCapabilityInventory.runtimeBoundary.runtimeAuthority, false);
   assert.equal(snapshot.installedCapabilityInventory.runtimeBoundary.humanApprovalRequiredForActivation, true);
+  assert.equal(snapshot.workforceAssignmentRegistry.id, "seis-ai-workforce-assignments");
+  assert.equal(snapshot.workforceAssignmentRegistry.status, "source-backed-metadata-only");
+  assert.equal(snapshot.workforceAssignmentRegistry.assignmentCount, 10);
+  assert.equal(snapshot.workforceAssignmentRegistry.writerPolicy.primaryWriter, "codex");
+  assert.equal(snapshot.workforceAssignmentRegistry.assignments.length, 10);
+  assert.equal(snapshot.workforceAssignmentRegistry.runtimeBoundary.executionAuthority, false);
+  assert.equal(snapshot.workforceAssignmentRegistry.runtimeBoundary.providerCalls, false);
+  assert.equal(snapshot.workforceAssignmentRegistry.runtimeBoundary.credentialsRead, false);
+  assert.equal(snapshot.workforceAssignmentRegistry.runtimeBoundary.externalMutationPerformed, false);
+  assert.equal(snapshot.workforceAssignmentRegistry.runtimeBoundary.humanApprovalRequiredForMutation, true);
   assert.equal(snapshot.agentRegistry.managedLaneCount, 9);
   assert.equal(snapshot.agentRegistry.agentCount, 13);
   assert.equal(snapshot.agentRegistry.runtimeAuthority, false);
@@ -310,6 +331,28 @@ test("SEIS Command Center exposes the managed lane and agent registry", async ()
     assert.match(script, new RegExp(signal));
   }
   for (const selector of ["managed-agent-registry-panel", "managed-agent-summary-item", "managed-agent-button", "managed-agent-detail"]) {
+    assert.match(css, new RegExp(`\\.${selector}`));
+  }
+});
+
+test("SEIS Command Center exposes the source-backed AI workforce assignment registry", async () => {
+  const html = await readFile(new URL("index.html", root), "utf8");
+  const script = await readFile(new URL("script.js", root), "utf8");
+  const css = await readFile(new URL("styles.css", root), "utf8");
+
+  for (const id of [
+    "ai-workforce-registry-state",
+    "ai-workforce-registry-summary",
+    "ai-workforce-assignment-list",
+    "ai-workforce-assignment-detail",
+    "ai-workforce-registry-feedback"
+  ]) {
+    assert.match(html, new RegExp(`id="${id}"`));
+  }
+  for (const signal of ["activeAIWorkforceAssignmentId", "renderAIWorkforceRegistry", "data-ai-workforce-assignment", "source-backed-metadata-only"]) {
+    assert.match(script, new RegExp(signal));
+  }
+  for (const selector of ["ai-workforce-registry-panel", "ai-workforce-summary-item", "ai-workforce-assignment-button", "ai-workforce-assignment-detail"]) {
     assert.match(css, new RegExp(`\\.${selector}`));
   }
 });
