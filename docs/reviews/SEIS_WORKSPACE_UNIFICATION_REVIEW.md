@@ -1,132 +1,191 @@
-# SEIS Workspace Unification Review
+# SEIS Local Workspace Truth And Recovery Review
 
-Date: 2026-06-23
+Date: 2026-07-14
+Goal: `OPS-GOAL-0002`
+Status: In progress
 
 ## Purpose
 
-This review reduces SEIS workspace confusion by defining one canonical local
-working root and classifying nearby SEIS-like folders as review-only inputs,
-worktrees, archives, backups, or separate repositories.
+This review replaces the earlier single-writable-folder claim with an
+evidence-bound routing model. The canonical identity is the GitHub repository
+slug `emirhankudun-ux/SEIS`; no permanent local folder is canonical.
 
-It does not merge, delete, move, push, deploy, or rewrite history.
+This Goal records an immutable redacted historical snapshot and a
+non-destructive recovery plan. The snapshot grants no current routing
+authority. This Goal does not move, copy, restore, stage, delete, initialize,
+prune, repair, push, merge, deploy, or rewrite anything.
 
-## Scope
+## Snapshot Metadata
 
-Inspected from the workspace parent using read-only filesystem and Git commands:
+<!-- BEGIN OPS-GOAL-0002 REGISTRY METADATA -->
+Goal: `OPS-GOAL-0002`
+Dataset: `data/seis-local-workspace-registry.json`
+Dataset ID: `seis-local-workspace-registry-2026-07-14`
+Record count: `4 records`
+Registry digest: `sha256:5ad26241ec18c6f5ca122637b1b7989123ef1f854c52c7f1cfb61daa8bca6bcf`
+Captured at: `2026-07-14T07:24:28Z`
+Canonical repository: `emirhankudun-ux/SEIS`
+Write-eligible at observation: `0`
+Dirty aggregate: `158 modified / 865 deleted / 93 untracked / 1116 total`
+<!-- END OPS-GOAL-0002 REGISTRY METADATA -->
 
-- top-level folders whose names contain `SEIS` or `seis`
-- Git worktree metadata visible from the canonical repository
-- current branches and dirty-state counts where Git could inspect them
-- existing integration policy, status, backlog, and next PR queue documents
+## Scope And Method
 
-## Current Status
+The bounded discovery used read-only filesystem and Git metadata inspection to
+classify:
 
-| Area | Status | Evidence | Next Safe Action |
-| --- | --- | --- | --- |
-| Canonical writable root | `SEIS/` | `git worktree list --porcelain` shows this root on `codex/plugin-interface-handoff-20260623`; `origin` points to `emirhankudun-ux/SEIS`. | Continue all new SEIS repo work from `SEIS/` unless the user explicitly selects a different checkout. |
-| Protected source of truth | GitHub repository `emirhankudun-ux/SEIS` | `git remote -v` in `SEIS/` points to the GitHub repository. | Use scoped branches and PRs; do not push to `main`. |
-| Active branch during this pass | `codex/plugin-interface-handoff-20260623` | `git status --short --branch` and `git worktree list --porcelain`. | Keep current changes review-scoped; push only if explicitly approved. |
-| Existing worktree set | Multiple SEIS worktrees exist | `SEIS-ai-core-app-foundation-continuation/`, `SEIS-ai-model-env-defaults/`, `SEIS-ai-workforce-assignments-20260623/`, `SEIS-download-assets-app-integration/`, `SEIS-goal-tracking-os-foundation/`. | Treat each as a PR candidate, not a second source of truth. |
-| Legacy/broken worktree folders | Present | `SEIS-ai-core-app-foundation/`, `SEIS-ai-demo-app-worktree/`, and `SEIS-open-pr-consolidation-20260619/` contain `.git` markers but were not inspectable as healthy Git repositories through `git -C`. | Do not bulk import. Review metadata and recover only specific files through a dedicated rescue PR. |
-| Separate SEIS-like repo | Present | `seis-digital-experience-foundation/` was not inspectable as the same Git repository in this pass. | Keep separate until explicitly selected for intake. |
-| Secondary checkout | Present | `Github/SEIS/` points to the same GitHub repository but uses a different local branch. | Do not edit unless the user explicitly selects the SSH-AI workstream. |
+- the shared SEIS Git common root;
+- the direct non-Git SEIS intake tree;
+- incomplete Git metadata at the workspace root; and
+- the task-scoped worktree for this Goal, whose historical Gitlink state was
+  not observed.
 
-## Canonical Path Rule
+It stores opaque record IDs rather than local paths. Generic relative candidate
+locators are committed only as bounded implementation topology; personal,
+absolute, and resolved paths are never persisted or emitted. Discovery code
+does not directly open application or user content. Git may internally read
+contained working-tree content and status names while computing aggregate
+status. External-command and include-capable local Git configuration is
+rejected before status inspection; names, content, raw configuration, and raw
+Git values are not retained, persisted, or emitted.
 
-From the shared workspace parent, the canonical local SEIS working root is:
+## Registry Classification
 
-```text
-SEIS/
-```
+<!-- BEGIN OPS-GOAL-0002 WORKSPACE TABLE -->
+| Opaque ID | Kind | Git state | Worktree state | Routing | Repository | Aggregate changes | Human approval |
+| --- | --- | --- | --- | --- | --- | ---: | --- |
+| direct-seis-intake | non-git-intake | not-repository | not-applicable | read-only | none | n/a | yes |
+| ops2-task-worktree | task-worktree | valid | unverified | blocked | emirhankudun-ux/SEIS | 0 | yes |
+| shared-seis-common-root | git-common-root | valid | dirty | recovery-read-only | emirhankudun-ux/SEIS | 1116 | yes |
+| workspace-metadata | workspace-root-metadata | incomplete-metadata | not-applicable | blocked | none | n/a | yes |
+<!-- END OPS-GOAL-0002 WORKSPACE TABLE -->
 
-Operational rule:
+## Findings
 
-1. Start all general SEIS work in `SEIS/`.
-2. Treat every other SEIS-like folder as read-only until its diff is reviewed.
-3. Extract one coherent workstream at a time into `SEIS/` through a named branch
-   and PR queue entry.
-4. Never bulk-copy a worktree, archive, generated folder, backup, nested repo,
-   or media folder into `SEIS/`.
-5. Never delete or retire another folder without explicit approval and a
-   rollback note.
+### Canonical identity
 
-## Workspace Classification
+`emirhankudun-ux/SEIS` is the single canonical repository identity. The
+previous assertion that a folder named `SEIS/` was the canonical writable root
+was disproven by current inspection: that observed surface is non-Git. The
+correction does not promote another local folder into permanent authority.
 
-| Relative path | Classification | Reason | Action |
-| --- | --- | --- | --- |
-| `SEIS/` | Canonical writable root | Main inspected repository, current branch, GitHub origin, active docs and product surface. | Continue here. |
-| `SEIS-ai-core-app-foundation-continuation/` | Reviewable worktree | Healthy worktree for AI Core continuation branch. | Compare diff, extract AI Core contracts into a dedicated PR. |
-| `SEIS-ai-model-env-defaults/` | Reviewable worktree | Healthy worktree with clean status in this pass. | Keep available for provider/env workstream review. |
-| `SEIS-ai-workforce-assignments-20260623/` | Reviewable worktree | Healthy worktree with clean status in this pass. | Keep available for workforce/agent assignment review. |
-| `SEIS-download-assets-app-integration/` | Reviewable worktree | Healthy worktree with clean status in this pass. | Review asset provenance before integration. |
-| `SEIS-goal-tracking-os-foundation/` | Reviewable worktree | Healthy worktree with clean status in this pass. | Use only for targeted Goal Tracking comparison. |
-| `SEIS-ai-core-app-foundation/` | Legacy/broken worktree candidate | `.git` marker exists but Git inspection did not resolve it as a healthy repo in this pass. | Do not import; repair or archive only after review. |
-| `SEIS-ai-demo-app-worktree/` | Legacy/broken worktree candidate | `.git` marker exists but Git inspection did not resolve it as a healthy repo in this pass. | Do not import; recover specific useful files only after review. |
-| `SEIS-open-pr-consolidation-20260619/` | Legacy/broken worktree candidate | `.git` marker exists but Git inspection did not resolve it as a healthy repo in this pass. | Keep as review reference; do not treat as current source. |
-| `seis-digital-experience-foundation/` | Separate repo/intake candidate | Not confirmed as the same Git repository in this pass. | Keep separate unless a dedicated intake task is approved. |
-| `Github/SEIS/` | Secondary checkout / SSH-AI workstream | Same GitHub project with a different local branch and dirty state. | Do not edit for general SEIS work; use only when SSH-AI workstream is explicitly selected. |
+### Recovery-critical common root
 
-## Integration Flow
+`shared-seis-common-root` resolves locally to the Git common root for the
+canonical repository. Its aggregate status is 158 modified, 865 deleted, and
+93 untracked entries, for 1,116 total. It is therefore recovery-critical and
+read-only. This Goal records no dirty filename or content and makes no judgment
+about which local changes should be retained.
 
-Use this order for every future SEIS consolidation step:
+### Non-Git intake
 
-1. Open `SEIS/`.
-2. Run `git status --short --branch`.
-3. Identify the target workstream and compare only that workstream.
-4. Create a narrow branch or use the current review branch.
-5. Copy or reimplement only reviewed, non-secret, non-generated source.
-6. Link the work from `docs/STATUS.md`, `docs/roadmap/MASTER_BACKLOG.md`, and
-   `docs/roadmap/NEXT_PR_QUEUE.md`.
-7. Run the smallest reliable validation already available.
-8. Commit only the coherent slice.
+`direct-seis-intake` contains SEIS-shaped material but is not a Git checkout.
+It is read-only intake, cannot establish repository identity, and cannot be
+used for commits or shipment claims.
+
+### Incomplete metadata
+
+`workspace-metadata` represents incomplete Git metadata at the shared
+workspace root. It is not a valid checkout. Initialization or repair could
+hide or overwrite recovery evidence, so the surface remains blocked.
+
+### Task-scoped execution
+
+`ops2-task-worktree` had zero aggregate changes at the Goal-start boundary, but
+the historical capture did not include the later-required Git index-mode scan.
+The final contract therefore freezes it as unverified, blocked, and
+non-writable rather than retroactively claiming Gitlink evidence. A new live
+observation must verify identity, branch, containment, index modes, and
+cleanliness; it may validly identify zero eligible routes. This worktree is not
+a permanent canonical folder.
+
+### Gitlink and submodule boundary
+
+Any gitlink or submodule presence makes the relevant worktree state unverified
+and blocks writes. The aggregate parent status is not accepted as proof that
+nested repository content is safe.
+
+### Stale worktree metadata
+
+Read-only inspection found stale worktree metadata candidates. This Goal does
+not expose their machine paths and does not prune, repair, move, or retire them.
+
+## Snapshot Limitations
+
+- The capture is an immutable bounded snapshot with declared UTC evidence
+  times, not a live monitoring claim. Records may have distinct observation
+  times inside that boundary.
+- The candidate set is deliberately bounded and is not a complete inventory of
+  every checkout, archive, backup, or project on the machine.
+- Aggregate dirty counts can change after capture; live discovery is a local
+  comparison aid and does not silently refresh committed evidence.
+- Live discovery emits a timestamped live-observation dataset ID and validates
+  the complete observation semantically before stdout; zero eligible routes is
+  an allowed fail-closed result.
+- Repository identity does not prove that a particular branch is current,
+  mergeable, releasable, or safe to write.
+- A live-verified clean task worktree does not resolve the recovery-critical
+  common root.
+
+## Non-Destructive Recovery Plan
+
+1. Preserve `shared-seis-common-root`, `direct-seis-intake`, and
+   `workspace-metadata` as read-only while this review is active.
+2. Freeze the public-safe aggregate snapshot and validate it offline.
+3. Have the accountable human classify the recovery-critical state locally,
+   without publishing filenames or contents.
+4. Approve a separate, reversible recovery Goal with explicit retained-state,
+   backup, rollback, and validation decisions.
+5. Recover only human-selected coherent slices through clean task worktrees and
+   focused PRs.
+6. Reinspect all affected surfaces before considering any metadata repair,
+   pruning, archival, or retirement.
+
+No recovery phase is authorized by this document alone.
 
 ## Deferred Dangerous Actions
 
-The following were intentionally not performed:
-
-- folder deletion
-- branch deletion
-- history rewrite
-- bulk copying from other SEIS folders
-- cherry-picking whole branches
-- pushing to GitHub
-- merging PRs
-- SSH execution
-- deployment
-- secret rotation
+- Git metadata initialization, repair, or pruning
+- staging, restoring, copying, or deleting recovery-critical state
+- folder or worktree move, archive, or deletion
+- branch deletion or history rewrite
+- remote, credential, repository-setting, or branch-protection changes
+- GitHub PR or issue mutation
+- SSH execution, deployment, or secret rotation
 
 ## Human Approval Needed
 
-Approval is required before:
+The accountable human must decide which recovery-critical changes are valuable,
+where an approved backup lives, which clean base is authoritative, and whether
+stale metadata should be repaired or retired. Each approved action needs a
+bounded command plan, rollback, and post-action verification before execution.
 
-- deleting or archiving any SEIS-like folder
-- repairing broken worktree metadata if it may remove local work
-- moving work between checkouts with file deletion
-- pushing any branch
-- merging, closing, or reopening PRs
-- changing repository settings or branch protection
+## Validation
 
-## Validation Performed
+```bash
+npm run check:seis-local-workspace-registry
+npm run test:seis-local-workspace-registry
+git diff --check
+```
 
-| Check | Result | Notes |
-| --- | --- | --- |
-| `jq empty content/development/seis-integration-map.json` | Passed | The machine-readable integration map remains valid JSON. |
-| `git diff --check` | Passed | No whitespace errors were reported in the current diff. |
-| `npm run check:foundation` | Passed | The repository foundation check completed successfully. |
+Local discovery is separate and read-only:
 
-## Validation Not Performed
+```bash
+npm run inspect:seis-local-workspaces
+```
 
-- No physical folder merge.
-- No branch cleanup.
-- No deletion or archive move.
-- No push, PR open, merge, or GitHub write action.
-- No SSH, deployment, external provider call, secret rotation, model training,
-  benchmark, or dataset download.
+Hosted CI validates only the committed schema, registry, aligned documentation,
+and adversarial fixtures. It cannot verify or repair a contributor's current
+local workspace.
 
-## Final Decision
+The JSON Schema is the shared structural and semantic-shape contract. The
+generic observation validator enforces cross-field and routing relationships.
+The frozen checker then applies snapshot-specific candidate, count, digest,
+documentation, and CI assertions to the committed historical dataset.
 
-Ready for internal review.
+## Decision
 
-The canonical working path is now documented as `SEIS/`. Other SEIS folders are
-not discarded; they are queued as reviewable inputs that must be integrated one
-workstream at a time through GitHub.
+The earlier canonical-local-folder rule is withdrawn. Repository identity is
+canonical; local work is routed through a currently verified, clean,
+task-scoped worktree. Recovery-critical, non-Git, incomplete, and stale local
+surfaces remain preserved until a separate approved recovery action exists.

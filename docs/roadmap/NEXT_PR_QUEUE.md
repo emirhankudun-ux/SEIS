@@ -1,6 +1,26 @@
 # SEIS Next PR Queue
 
 Date: 2026-06-23
+Last updated: 2026-07-14 (`OPS-GOAL-0002`)
+
+## Local Workspace Truth Snapshot
+
+<!-- BEGIN OPS-GOAL-0002 REGISTRY METADATA -->
+Goal: `OPS-GOAL-0002`
+Dataset: `data/seis-local-workspace-registry.json`
+Dataset ID: `seis-local-workspace-registry-2026-07-14`
+Record count: `4 records`
+Registry digest: `sha256:5ad26241ec18c6f5ca122637b1b7989123ef1f854c52c7f1cfb61daa8bca6bcf`
+Captured at: `2026-07-14T07:24:28Z`
+Canonical repository: `emirhankudun-ux/SEIS`
+Write-eligible at observation: `0`
+Dirty aggregate: `158 modified / 865 deleted / 93 untracked / 1116 total`
+<!-- END OPS-GOAL-0002 REGISTRY METADATA -->
+
+Repository identity `emirhankudun-ux/SEIS` is canonical; no permanent local
+path is. The recovery-critical common root, non-Git intake, and incomplete
+workspace metadata remain read-only. This queue grants no authority to repair,
+prune, stage, restore, copy, delete, initialize, push, or merge.
 
 ## Canonical Open Pull-Request Portfolio — 2026-07-14 reconciliation
 
@@ -46,17 +66,17 @@ requires a separate human decision.
 | Validation | `jq empty content/development/seis-integration-map.json`, documentation review, `git diff --check`. |
 | Approval needed | None for scoped docs/JSON updates; approval required for cross-worktree merge, push, or deletion. |
 
-## PR 0C: SEIS Workspace Unification Spine
+## PR 0C: SEIS Workspace Truth And Recovery Guard
 
 | Field | Value |
 | --- | --- |
-| Suggested branch | `seis/workspace-unification-spine` |
+| Suggested branch | `audit/seis-workspace-truth-recovery` |
 | Priority | P0 |
-| Goal | Make `SEIS/` the single canonical writable local root and keep every other SEIS-like folder as a review-only input until a scoped PR extracts useful work. |
-| Include | `docs/reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md`, `docs/governance/seis-integration-and-github-development.md`, `content/development/seis-integration-map.json`, `docs/STATUS.md`, `docs/SEIS_MASTER_INDEX.md`, `docs/INDEX.md`, and backlog/queue updates. |
-| Exclude | Folder deletion, branch deletion, history rewrite, bulk copy, whole-branch cherry-pick, SSH, deployment, live provider calls, and secret rotation. |
-| Validation | `jq empty content/development/seis-integration-map.json`, `git diff --check`, documentation review. |
-| Approval needed | None for docs/JSON classification; approval required for physical consolidation, deletion, branch cleanup, push, merge, or remote changes. |
+| Goal | Execute `OPS-GOAL-0002`: establish canonical repository identity, an immutable opaque-ID local workspace snapshot, task-scoped write routing, and a non-destructive recovery plan. |
+| Include | Registry and schema, read-only discovery, offline validator/adversarial tests, `docs/reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md`, routing and ingestion policy, integration map, status/index/backlog/queue alignment, package scripts, and static CI gates. |
+| Exclude | Local path or dirty-filename publication; file-content or Git-config capture; worktree repair or pruning; repository initialization; staging, restoration, copying, deletion, physical consolidation, branch cleanup, history rewrite, SSH, deployment, provider calls, or secret rotation. |
+| Validation | `npm run check:seis-local-workspace-registry`, `npm run test:seis-local-workspace-registry`, `jq empty content/development/seis-integration-map.json`, `git diff --check`, documentation review. |
+| Approval needed | None for public-safe registry/docs/validator work; separate explicit approval and rollback are required for every local recovery action, metadata mutation, GitHub write, push, or merge. |
 
 ## PR 0A: Open PR Stack Triage
 
@@ -442,6 +462,10 @@ requires a separate human decision.
 
 ## Human Approval Needed
 
+- Any staging, restoration, copying, deletion, or other recovery action in
+  `shared-seis-common-root`.
+- Repair or pruning of worktree metadata, repository initialization, or
+  retirement of a local workspace surface.
 - Push to `main`, merge, force-push, branch deletion, or history rewrite.
 - File deletion.
 - Cross-worktree cherry-pick, bulk copy, or branch reconciliation.

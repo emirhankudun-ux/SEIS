@@ -1,37 +1,67 @@
 {
   "schemaVersion": 1,
-  "date": "2026-06-23",
-  "purpose": "Canonical integration map for SEIS workstreams that must land through the GitHub repository with evidence, validation, and PR sequencing.",
+  "date": "2026-07-14",
+  "purpose": "Canonical integration map for SEIS workstreams that must land through the verified GitHub repository identity, clean task-scoped worktrees, evidence, validation, and PR sequencing.",
   "sourceOfTruth": {
     "repository": "emirhankudun-ux/SEIS",
     "protectedBranch": "main",
-    "activeIntegrationBranch": "codex/plugin-interface-handoff-20260623",
-    "rule": "Do not push directly to main; reconcile every SEIS workstream through scoped branches and reviewable PRs."
+    "localPathAuthority": "none",
+    "taskBranchPolicy": "scoped non-default review branch",
+    "rule": "Repository identity is canonical. Do not push directly to main; reconcile every SEIS workstream through a currently verified clean task worktree, scoped branch, and reviewable PR."
   },
   "canonicalWorkspace": {
-    "relativeRoot": "SEIS/",
-    "status": "canonical writable local root",
-    "rule": "Start general SEIS work in SEIS/ and treat nearby SEIS-like folders as review-only inputs until a dedicated PR extracts a scoped, validated slice.",
+    "repositoryIdentity": "emirhankudun-ux/SEIS",
+    "permanentLocalRoot": null,
+    "registry": "data/seis-local-workspace-registry.json",
+    "status": "identity-canonical and path-independent",
+    "rule": "Resolve local paths only during read-only discovery. Write only in a clean task-scoped worktree whose repository identity, branch, Goal scope, and status are currently verified.",
     "evidence": [
+      "data/seis-local-workspace-registry.json",
       "docs/reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md",
       "docs/governance/seis-integration-and-github-development.md"
     ]
   },
+  "workspaceRecords": [
+    {
+      "id": "direct-seis-intake",
+      "role": "non-git intake",
+      "writePolicy": "read-only"
+    },
+    {
+      "id": "ops2-task-worktree",
+      "role": "task-scoped worktree with zero aggregate changes but unobserved historical gitlink state",
+      "writePolicy": "blocked"
+    },
+    {
+      "id": "shared-seis-common-root",
+      "role": "recovery-critical git common root",
+      "writePolicy": "read-only"
+    },
+    {
+      "id": "workspace-metadata",
+      "role": "incomplete git metadata",
+      "writePolicy": "blocked"
+    }
+  ],
   "workstreams": [
     {
       "id": "workspace-unification",
-      "branch": "codex/plugin-interface-handoff-20260623",
-      "status": "active documentation spine",
+      "goalId": "OPS-GOAL-0002",
+      "branch": "task-scoped review branch",
+      "status": "workspace truth and recovery review in progress",
       "evidence": [
+        "data/seis-local-workspace-registry.json",
+        "data/seis-local-workspace-registry.schema.json",
         "docs/reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md",
         "docs/governance/seis-integration-and-github-development.md",
         "docs/STATUS.md",
         "docs/roadmap/NEXT_PR_QUEUE.md"
       ],
       "blockers": [
-        "physical folder merge, branch deletion, and folder deletion require explicit approval"
+        "the shared Git common root has 1116 aggregate dirty entries and is recovery-critical",
+        "physical recovery, metadata repair or pruning, branch deletion, and folder retirement require explicit approval"
       ],
-      "nextSafeAction": "Keep SEIS/ as the only active writable root and reconcile other SEIS-like folders one workstream at a time."
+      "nextSafeAction": "Validate the redacted registry and route new work through clean task-scoped worktrees without changing recovery-critical or invalid local state."
     },
     {
       "id": "product-experience-suite",
@@ -108,10 +138,13 @@
       "blockers": [
         "some local worktree metadata cannot be inspected by git"
       ],
-      "nextSafeAction": "Repair, retire, or recreate broken worktrees only after review; do not treat them as source of truth."
+      "nextSafeAction": "Propose a separate recovery Goal with exact scope, backup, rollback, approval, and validation before any physical action."
     }
   ],
   "deferredDangerousActions": [
+    "worktree metadata repair or pruning",
+    "recovery-critical state staging, restoration, copying, or deletion",
+    "repository initialization",
     "push to main",
     "merge",
     "force-push",

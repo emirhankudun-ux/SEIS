@@ -1,6 +1,27 @@
 # SEIS Master Backlog
 
 Date: 2026-06-23
+Last updated: 2026-07-14 (`OPS-GOAL-0002`)
+
+## Local Workspace Truth And Recovery
+
+<!-- BEGIN OPS-GOAL-0002 REGISTRY METADATA -->
+Goal: `OPS-GOAL-0002`
+Dataset: `data/seis-local-workspace-registry.json`
+Dataset ID: `seis-local-workspace-registry-2026-07-14`
+Record count: `4 records`
+Registry digest: `sha256:5ad26241ec18c6f5ca122637b1b7989123ef1f854c52c7f1cfb61daa8bca6bcf`
+Captured at: `2026-07-14T07:24:28Z`
+Canonical repository: `emirhankudun-ux/SEIS`
+Write-eligible at observation: `0`
+Dirty aggregate: `158 modified / 865 deleted / 93 untracked / 1116 total`
+<!-- END OPS-GOAL-0002 REGISTRY METADATA -->
+
+The canonical repository identity is `emirhankudun-ux/SEIS`; there is no
+permanent canonical local path. `shared-seis-common-root` is recovery-critical
+and read-only with 1,116 aggregate dirty entries. `direct-seis-intake` is
+non-Git and read-only, `workspace-metadata` is incomplete and blocked, and new
+work is allowed only in a currently verified clean task-scoped worktree.
 
 Goal: `OPS-GOAL-0001`
 Dataset: `data/seis-open-pr-portfolio.json`
@@ -39,7 +60,7 @@ Retrieved at: `2026-07-14T05:54:16Z`
 | `SEIS-BL-018` | P1 | AI Core | Run provider audit before adding live provider adapters. | Audit distinguishes docs-only, mock, placeholder, and live integrations. |
 | `SEIS-BL-019` | P1 | Plugin interfaces | Keep `@seis`, `@seis-cloud`, `@seis-code`, `@seis-design`, and `@seis-data` visible as a read-only static interface with a selectable five-year development program, H1/H2 cadence, maturity signals, readiness gates, and coverage metrics. | `npm run check:plugin-interface-roadmap` and `npm run check:data-schema-registry` validate the static UI bindings, support data, evidence paths, 2026-2030 horizon, lane commitments, cadence routines, maturity signals, readiness gates, and coverage metrics. |
 | `SEIS-BL-021` | P0 | Integration | Keep every SEIS workstream tied to GitHub, evidence, validation, and PR sequencing. | `docs/governance/seis-integration-and-github-development.md` and `content/development/seis-integration-map.json` stay current. |
-| `SEIS-BL-042` | P0 | Workspace unification | Keep `SEIS/` as the single canonical writable local root and classify every nearby SEIS-like folder as review-only until a scoped PR extracts it. | `docs/reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md`, `docs/governance/seis-integration-and-github-development.md`, and `content/development/seis-integration-map.json` stay aligned. |
+| `SEIS-BL-042` | P0 | Workspace truth and recovery | Execute `OPS-GOAL-0002`: keep repository identity canonical, validate an opaque-ID workspace snapshot, preserve recovery-critical and invalid local surfaces, and route writes through clean task-scoped worktrees. | `data/seis-local-workspace-registry.json`, its schema, offline validator/tests, `docs/reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md`, `docs/governance/seis-integration-and-github-development.md`, and `content/development/seis-integration-map.json` stay aligned. |
 | `SEIS-BL-022` | P1 | Mythic Gacha | Keep the no-key Shan Hai Jing inspired gacha playable and evidence-backed. | `npm run check:mythic-gacha` validates route, draw controls, 60 card markers, IndexedDB hooks, pity marker, filters, atlas binding, and SEIS Code export bridge. |
 | `SEIS-BL-023` | P0 | GitHub governance | Execute `OPS-GOAL-0001`: classify all 90 captured open PRs into controlled advisory dispositions without mutating any classified PR. | `data/seis-open-pr-portfolio.json`, `docs/reviews/PR_STACK_REVIEW.md`, the captured timestamp and digest above, `npm run check:seis-open-pr-portfolio`, and `npm run test:seis-open-pr-portfolio` provide reproducible evidence. |
 | `SEIS-BL-024` | P0 | CI | Keep GitHub Actions aligned with declared package scripts without weakening checks. | Current `foundation-check.yml` uses declared scripts only; maintain this with package-script drift checks before adding new CI gates. |
@@ -85,7 +106,7 @@ Retrieved at: `2026-07-14T05:54:16Z`
 | `SEIS-BL-018` | `ai/provider-audit` | `docs: add AI provider credential audit` | High | Yes for live provider calls | Inspect SDK/env/client exposure without requesting keys. |
 | `SEIS-BL-019` | `seis/plugin-interface-suite` | `feat: add SEIS plugin interface suite` | Medium | No unless adding dependencies or live integrations | Keep schema validation passing and refresh manual browser QA evidence for lane tabs, year controls, maturity signals, readiness gates, H1/H2 cadence, coverage metrics, and program rows. |
 | `SEIS-BL-021` | `seis/integration-spine` | `docs: add SEIS integration and GitHub development spine` | Medium | No for documentation and JSON records | Keep local workstreams visible without merging risky code. |
-| `SEIS-BL-042` | `seis/workspace-unification-spine` | `docs: define SEIS canonical workspace spine` | Medium | No for documentation and JSON records; yes for folder deletion, branch deletion, physical consolidation, push, or merge | Continue from `SEIS/`, review other SEIS-like folders one at a time, and never bulk-copy or delete without approval. |
+| `SEIS-BL-042` | `audit/seis-workspace-truth-recovery` | `docs(ops): establish SEIS workspace truth and recovery guard` | High | No for public-safe registry/docs/validator work; yes for local recovery, metadata repair or pruning, repository initialization, folder retirement, staging/restoration/copying/deletion, push, or merge | Keep the shared common root, non-Git intake, and incomplete workspace metadata read-only; route new Goals through verified clean task worktrees. |
 | `SEIS-BL-022` | `seis/mythic-gacha-foundation` | `feat: add Mythic Gacha foundation` | Medium | No unless adding dependencies or live image generation | Add browser QA for draw flows, refresh persistence, SEIS Code export visibility, and per-card artwork provenance review. |
 | `SEIS-BL-023` | `audit/seis-open-pr-portfolio-triage` | `docs(governance): classify the complete open pr portfolio` | High | Yes for every merge, close, reopen, rebase, label, comment, edit, branch, or history action | Publish recommendations only; after human decisions, recover unique value through separate Goal-linked implementation PRs rather than mutating branches from this audit. |
 | `SEIS-BL-024` | `ci/foundation-workflow-alignment` | `ci: align foundation workflow scripts` | Medium | No for script alignment; yes if weakening required checks | Replace missing workflow script calls with existing validation scripts or add narrow aliases. |
