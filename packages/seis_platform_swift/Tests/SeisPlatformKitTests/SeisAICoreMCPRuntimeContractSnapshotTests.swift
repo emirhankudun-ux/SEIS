@@ -11,7 +11,7 @@ struct SeisAICoreMCPRuntimeContractSnapshotTests {
         #expect(snapshot.isMetadataOnly)
         #expect(snapshot.version == 1)
         #expect(snapshot.transport == "stdio JSON-RPC")
-        #expect(snapshot.toolCount == 35)
+        #expect(snapshot.toolCount == 37)
         #expect(snapshot.resourceCount == 30)
         #expect(snapshot.promptCount == 3)
         #expect(snapshot.surfaces.count == 4)

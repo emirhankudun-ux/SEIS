@@ -181,7 +181,7 @@ test("SEIS Command Center binds specialist lanes and Store through a local contr
     auditedInstalledEnabledPlugins: 185,
     cataloguedHelperPlugins: 300,
     providers: 7,
-    mcpTools: 35,
+    mcpTools: 37,
     mcpResources: 30,
     mcpPrompts: 3,
     productModules: 18,
@@ -269,7 +269,7 @@ test("SEIS Command Center binds the source-backed AI Core runtime snapshot", asy
   assert.equal(snapshot.agentRegistry.runtimeAuthority, false);
   assert.ok(snapshot.agentRegistry.agents.every((agent) => agent.executionAuthority === false));
   assert.ok(Object.values(snapshot.agentRegistry.safetyBoundary).every((value) => value === false));
-  assert.equal(snapshot.mcpRuntime.toolCount, 35);
+  assert.equal(snapshot.mcpRuntime.toolCount, 37);
   assert.equal(snapshot.mcpRuntime.resourceCount, 30);
   assert.equal(snapshot.mcpRuntime.promptCount, 3);
   assert.equal(snapshot.router.scenarioCount, 7);

@@ -330,6 +330,9 @@ if (seisCoreRuntimeSnapshot) {
   ensure(seisCoreRuntimeSnapshot.id === "seis-ai-core-runtime-snapshot", "SEIS Core AI runtime snapshot id mismatch");
   ensure(seisCoreRuntimeSnapshot.providerRegistry?.coreCredentialRequirement === "none", "SEIS Core AI runtime snapshot must keep a zero-key core");
   ensure(seisCoreRuntimeSnapshot.pluginMesh?.personalLaneCount === 5, "SEIS Core AI runtime snapshot must expose five personal lanes");
+  ensure(seisCoreRuntimeSnapshot.pluginMesh?.mcpMesh?.serverCount === 6, "SEIS Core AI runtime snapshot must expose six local MCP entrypoints");
+  ensure(seisCoreRuntimeSnapshot.pluginMesh?.mcpMesh?.configuredServerCount === 6, "SEIS Core AI runtime snapshot MCP mesh must be fully configured");
+  ensure(seisCoreRuntimeSnapshot.pluginMesh?.mcpMesh?.boundary?.liveSessionStarted === false, "SEIS Core AI runtime snapshot MCP mesh must remain non-live");
   ensure(seisCoreRuntimeSnapshot.sourceOfTruth?.agentRegistry === "content/development/seis-second-brain-system.json", "SEIS Core AI runtime snapshot must source the canonical Second Brain contract");
   ensure(seisCoreRuntimeSnapshot.agentRegistry?.managedLaneCount === 9, "SEIS Core AI runtime snapshot must expose nine managed lanes");
   ensure(seisCoreRuntimeSnapshot.agentRegistry?.agentCount === 13, "SEIS Core AI runtime snapshot must expose thirteen managed agents");
@@ -343,7 +346,7 @@ if (seisCoreRuntimeSnapshot) {
     Object.values(seisCoreRuntimeSnapshot.agentRegistry?.safetyBoundary || {}).every((value) => value === false),
     "SEIS Core managed agent safety boundary must remain false"
   );
-  ensure(seisCoreRuntimeSnapshot.mcpRuntime?.toolCount === 35, "SEIS Core AI runtime snapshot MCP tool count drifted");
+  ensure(seisCoreRuntimeSnapshot.mcpRuntime?.toolCount === 37, "SEIS Core AI runtime snapshot MCP tool count drifted");
   ensure(seisCoreRuntimeSnapshot.mcpRuntime?.resourceCount === 30, "SEIS Core AI runtime snapshot MCP resource count drifted");
   ensure(
     seisCoreRuntimeSnapshot.router?.scenarios?.every((scenario) => scenario.decision?.executionPerformed === false),

@@ -188,7 +188,7 @@
     }
   ],
   "mcpRuntimeSurfaceCount": 4,
-  "mcpRuntimeToolCount": 35,
+  "mcpRuntimeToolCount": 37,
   "mcpRuntimeResourceCount": 30,
   "mcpRuntimePromptCount": 3,
   "mcpRuntimeContract": {
@@ -201,7 +201,7 @@
     "fallbackRuntime": "LightweightMcpServer no-dependency fallback",
     "fallback": "LightweightMcpServer no-dependency fallback",
     "officialSdk": "@modelcontextprotocol/sdk remains optional unless dependencies are installed",
-    "toolCount": 35,
+    "toolCount": 37,
     "resourceCount": 30,
     "promptCount": 3,
     "smokeTest": "node --test packages/seis-ai/test/mcp-smoke.test.mjs",
@@ -214,11 +214,11 @@
       {
         "id": "tools",
         "label": "Tool registry",
-        "count": 35,
+        "count": 37,
         "state": "verified",
         "method": "tools/list + tools/call",
-        "evidence": "18 MCP smoke tests pass through stdio JSON-RPC",
-        "duty": "Expose repo-backed SEIS AI checks, provider-neutral read-only route decisions, personal plugin lane tools, provider registry status, model scaling status, and AI Core version/sub-agent tools."
+        "evidence": "29 MCP smoke tests pass through stdio JSON-RPC",
+        "duty": "Expose repo-backed SEIS AI checks, provider-neutral read-only route decisions, personal plugin lane tools, the five-lane plan and bounded local-check cycle, provider registry status, model scaling status, and AI Core version/sub-agent tools."
       },
       {
         "id": "resources",

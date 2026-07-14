@@ -117,7 +117,7 @@ public struct SeisAICoreMCPRuntimeContractSnapshot: Codable, Equatable, Sendable
         if textValues.contains(where: { $0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) {
             issues.append("MCP contract identity fields must not be empty")
         }
-        if toolCount != 35 || resourceCount != 30 || promptCount != 3 { issues.append("MCP contract inventory counts are not the expected local fixture counts") }
+        if toolCount != 37 || resourceCount != 30 || promptCount != 3 { issues.append("MCP contract inventory counts are not the expected local fixture counts") }
         if transport != "stdio JSON-RPC" { issues.append("MCP transport must remain local stdio JSON-RPC") }
         if surfaces.count != 4 { issues.append("MCP contract must expose four verified surfaces") }
         let expectedSurfaceIDs = ["tools", "resources", "prompts", "transport"]

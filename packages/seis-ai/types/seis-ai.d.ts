@@ -231,6 +231,7 @@ export interface SeisPluginIntegrationStatus {
     defaultGate: string;
   }[];
   helperPluginUniverse?: unknown;
+  mcpMesh?: unknown;
   qualityCommands?: string[];
   manifest?: unknown;
   error?: string;
@@ -280,6 +281,12 @@ export declare function runPersonalLaneCycleChecks(
   checks?: unknown[];
   checkBoundary?: Record<string, unknown>;
 };
+
+export declare const SEIS_PLUGIN_MCP_MESH_ID: string;
+export declare const SEIS_PLUGIN_MCP_MESH_SCHEMA_VERSION: string;
+export declare const SEIS_PLUGIN_MCP_MESH_TIMEOUT_MS: number;
+export declare function buildSeisPluginMcpMesh(repoRoot: string): unknown;
+export declare function probeSeisPluginMcpMesh(repoRoot: string, options?: { timeoutMs?: number }): unknown;
 
 /* ------------------------------------------------------------------ */
 /* SEIS Universe seed model surfaces                                   */

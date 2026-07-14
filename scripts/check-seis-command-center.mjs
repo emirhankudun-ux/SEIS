@@ -224,7 +224,7 @@ if (ecosystemRegistry.counts?.coreLanes !== 6
   || ecosystemRegistry.counts?.auditedInstalledEnabledPlugins !== 185
   || ecosystemRegistry.counts?.cataloguedHelperPlugins !== 300
   || ecosystemRegistry.counts?.providers !== 7
-  || ecosystemRegistry.counts?.mcpTools !== 35
+  || ecosystemRegistry.counts?.mcpTools !== 37
   || ecosystemRegistry.counts?.mcpResources !== 30
   || ecosystemRegistry.counts?.mcpPrompts !== 3) {
   fail("ecosystem capability snapshot coverage counts drifted");
@@ -260,7 +260,7 @@ if (!aiCoreRuntimeSnapshot.agentRegistry?.agents?.every((agent) => agent.executi
 if (!Object.values(aiCoreRuntimeSnapshot.agentRegistry?.safetyBoundary || {}).every((value) => value === false)) {
   fail("AI Core managed agent registry safety claims must remain false");
 }
-if (aiCoreRuntimeSnapshot.mcpRuntime?.toolCount !== 35 || aiCoreRuntimeSnapshot.mcpRuntime?.resourceCount !== 30) {
+if (aiCoreRuntimeSnapshot.mcpRuntime?.toolCount !== 37 || aiCoreRuntimeSnapshot.mcpRuntime?.resourceCount !== 30) {
   fail("AI Core runtime snapshot MCP counts drifted from the canonical runtime contract");
 }
 if (!aiCoreRuntimeSnapshot.router?.scenarios?.every((scenario) => scenario.decision?.executionPerformed === false && scenario.decision?.providerCallsPerformed === false)) {

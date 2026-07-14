@@ -862,14 +862,197 @@
         ],
         "qualityGate": "npm run check:plugin-capability-lanes"
       }
-    ]
+    ],
+    "mcpMesh": {
+      "id": "seis-plugin-mcp-mesh",
+      "schemaVersion": "1.0.0",
+      "status": "configured-local-read-only",
+      "mode": "manifest-backed-no-live-session",
+      "serverCount": 6,
+      "configuredServerCount": 6,
+      "servers": [
+        {
+          "id": "seis-ai-agent",
+          "serverId": "seis-ai-agent",
+          "pluginRoot": "plugins/seis-ai-agent",
+          "configPath": "plugins/seis-ai-agent/.mcp.json",
+          "pluginManifestPath": "plugins/seis-ai-agent/.codex-plugin/plugin.json",
+          "skillRoot": "plugins/seis-ai-agent/skills",
+          "configExists": true,
+          "pluginManifestExists": true,
+          "skillRootExists": true,
+          "command": "node",
+          "args": [
+            "./scripts/seis-ai-agent-mcp-server.mjs"
+          ],
+          "entrypoint": "plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs",
+          "entrypointExists": true,
+          "status": "configured",
+          "executionAuthority": false,
+          "credentialsRead": false,
+          "networkCalled": false,
+          "externalMutationPerformed": false,
+          "toolInventory": {
+            "mode": "not-probed",
+            "toolCount": null,
+            "toolNames": []
+          }
+        },
+        {
+          "id": "seis",
+          "serverId": "seis",
+          "pluginRoot": "plugins/seis",
+          "configPath": "plugins/seis/.mcp.json",
+          "pluginManifestPath": "plugins/seis/.codex-plugin/plugin.json",
+          "skillRoot": "plugins/seis/skills",
+          "configExists": true,
+          "pluginManifestExists": true,
+          "skillRootExists": true,
+          "command": "node",
+          "args": [
+            "scripts/seis-mcp-launcher.mjs"
+          ],
+          "entrypoint": "plugins/seis/scripts/seis-mcp-launcher.mjs",
+          "entrypointExists": true,
+          "status": "configured",
+          "executionAuthority": false,
+          "credentialsRead": false,
+          "networkCalled": false,
+          "externalMutationPerformed": false,
+          "toolInventory": {
+            "mode": "not-probed",
+            "toolCount": null,
+            "toolNames": []
+          }
+        },
+        {
+          "id": "seis-cloud",
+          "serverId": "seis-cloud",
+          "pluginRoot": "plugins/seis-cloud",
+          "configPath": "plugins/seis-cloud/.mcp.json",
+          "pluginManifestPath": "plugins/seis-cloud/.codex-plugin/plugin.json",
+          "skillRoot": "plugins/seis-cloud/skills",
+          "configExists": true,
+          "pluginManifestExists": true,
+          "skillRootExists": true,
+          "command": "node",
+          "args": [
+            "scripts/seis-cloud-mcp-server.mjs"
+          ],
+          "entrypoint": "plugins/seis-cloud/scripts/seis-cloud-mcp-server.mjs",
+          "entrypointExists": true,
+          "status": "configured",
+          "executionAuthority": false,
+          "credentialsRead": false,
+          "networkCalled": false,
+          "externalMutationPerformed": false,
+          "toolInventory": {
+            "mode": "not-probed",
+            "toolCount": null,
+            "toolNames": []
+          }
+        },
+        {
+          "id": "seis-code",
+          "serverId": "seis-code",
+          "pluginRoot": "plugins/seis-code",
+          "configPath": "plugins/seis-code/.mcp.json",
+          "pluginManifestPath": "plugins/seis-code/.codex-plugin/plugin.json",
+          "skillRoot": "plugins/seis-code/skills",
+          "configExists": true,
+          "pluginManifestExists": true,
+          "skillRootExists": true,
+          "command": "node",
+          "args": [
+            "scripts/seis-code-mcp-server.mjs"
+          ],
+          "entrypoint": "plugins/seis-code/scripts/seis-code-mcp-server.mjs",
+          "entrypointExists": true,
+          "status": "configured",
+          "executionAuthority": false,
+          "credentialsRead": false,
+          "networkCalled": false,
+          "externalMutationPerformed": false,
+          "toolInventory": {
+            "mode": "not-probed",
+            "toolCount": null,
+            "toolNames": []
+          }
+        },
+        {
+          "id": "seis-design",
+          "serverId": "seis-design",
+          "pluginRoot": "plugins/seis-design",
+          "configPath": "plugins/seis-design/.mcp.json",
+          "pluginManifestPath": "plugins/seis-design/.codex-plugin/plugin.json",
+          "skillRoot": "plugins/seis-design/skills",
+          "configExists": true,
+          "pluginManifestExists": true,
+          "skillRootExists": true,
+          "command": "node",
+          "args": [
+            "scripts/seis-design-mcp-server.mjs"
+          ],
+          "entrypoint": "plugins/seis-design/scripts/seis-design-mcp-server.mjs",
+          "entrypointExists": true,
+          "status": "configured",
+          "executionAuthority": false,
+          "credentialsRead": false,
+          "networkCalled": false,
+          "externalMutationPerformed": false,
+          "toolInventory": {
+            "mode": "not-probed",
+            "toolCount": null,
+            "toolNames": []
+          }
+        },
+        {
+          "id": "seis-data",
+          "serverId": "seis-data",
+          "pluginRoot": "plugins/seis-data",
+          "configPath": "plugins/seis-data/.mcp.json",
+          "pluginManifestPath": "plugins/seis-data/.codex-plugin/plugin.json",
+          "skillRoot": "plugins/seis-data/skills",
+          "configExists": true,
+          "pluginManifestExists": true,
+          "skillRootExists": true,
+          "command": "node",
+          "args": [
+            "scripts/seis-data-mcp-server.mjs"
+          ],
+          "entrypoint": "plugins/seis-data/scripts/seis-data-mcp-server.mjs",
+          "entrypointExists": true,
+          "status": "configured",
+          "executionAuthority": false,
+          "credentialsRead": false,
+          "networkCalled": false,
+          "externalMutationPerformed": false,
+          "toolInventory": {
+            "mode": "not-probed",
+            "toolCount": null,
+            "toolNames": []
+          }
+        }
+      ],
+      "boundary": {
+        "sourceOfTruth": ".mcp.json plus local plugin entrypoints",
+        "transport": "stdio JSON-RPC",
+        "liveSessionStarted": false,
+        "probeOptIn": true,
+        "shell": false,
+        "credentialsRead": false,
+        "networkCalled": false,
+        "externalMutationPerformed": false,
+        "humanApprovalRequiredForExternalMutation": true
+      }
+    }
   },
   "mcpRuntime": {
     "id": "seis-ai-core-mcp-runtime-contract",
     "status": "local-smoke-verified",
     "transport": "stdio JSON-RPC",
     "fallbackRuntime": "LightweightMcpServer no-dependency fallback",
-    "toolCount": 35,
+    "toolCount": 37,
     "resourceCount": 30,
     "promptCount": 3,
     "resourceUri": "seis://ai/mcp-runtime-contract.json",
@@ -879,11 +1062,11 @@
       {
         "id": "tools",
         "label": "Tool registry",
-        "count": 35,
+        "count": 37,
         "state": "verified",
         "method": "tools/list + tools/call",
-        "evidence": "25 MCP smoke tests pass through stdio JSON-RPC",
-        "duty": "Expose repo-backed SEIS AI checks, provider-neutral read-only route decisions, personal plugin lane tools, provider registry status, model scaling status, and AI Core version/sub-agent tools."
+        "evidence": "29 MCP smoke tests pass through stdio JSON-RPC",
+        "duty": "Expose repo-backed SEIS AI checks, provider-neutral read-only route decisions, personal plugin lane tools, the five-lane plan and bounded local-check cycle, provider registry status, model scaling status, and AI Core version/sub-agent tools."
       },
       {
         "id": "resources",

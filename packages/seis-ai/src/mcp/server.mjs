@@ -40,6 +40,8 @@ import {
   AI_CORE_VERSION_REGISTRY_PATH,
   AI_CORE_VERSION_STATUS_TOOL,
   MCP_RUNTIME_CONTRACT_PATH,
+  PERSONAL_LANE_CYCLE_CHECKS_TOOL,
+  PERSONAL_LANE_CYCLE_TOOL,
   PERSONAL_PLUGIN_LANE_TOOLS,
   PLUGIN_INTEGRATION_PATH,
   SUBAGENT_APPROVAL_FIXTURE_PATH,
@@ -62,6 +64,8 @@ import {
   aiCoreVersionPromotionDryRun,
   aiCoreVersionStatus,
   personalPluginLanePlan,
+  personalPluginLaneCycle,
+  runPersonalLaneCycleChecks,
   personalPluginLaneStatus,
   pluginIntegrationStatus,
   subagentDryRunTaskDecision,
@@ -710,6 +714,38 @@ export function buildServer() {
       }
     );
   }
+
+  server.tool(
+    PERSONAL_LANE_CYCLE_TOOL,
+    "Build one deterministic plan-only handoff for all five personal SEIS lanes. Read-only; does not call providers, open remote MCP sessions, read credentials, execute SSH, deploy, mutate GitHub, or write files.",
+    {
+      request: z.string().describe("One scoped request to route through all five personal SEIS lanes."),
+    },
+    async ({ request }) => {
+      try {
+        return jsonResult(personalPluginLaneCycle(repoRoot, request));
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
+
+  server.tool(
+    PERSONAL_LANE_CYCLE_CHECKS_TOOL,
+    "Build the five-lane personal SEIS plan and run only its source-declared local validation commands with a shell-disabled child-process boundary, bounded timeouts, redacted output, and visible git-status comparison. No provider calls, remote MCP session, credentials, SSH, deployment, GitHub mutation, or write mode.",
+    {
+      request: z.string().describe("One scoped request to route through all five personal SEIS lanes."),
+      timeoutMs: z.number().int().min(100).max(120000).optional().describe("Per-check timeout in milliseconds, bounded by the local runner."),
+    },
+    async ({ request, timeoutMs }) => {
+      try {
+        const cycle = personalPluginLaneCycle(repoRoot, request);
+        return jsonResult(runPersonalLaneCycleChecks(repoRoot, cycle, { timeoutMs }));
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
 
   server.tool(
     "a11y_check",

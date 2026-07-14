@@ -38,7 +38,7 @@ apps/seis-core/
 
 `packages/seis-ai/src/model/ecosystem-capability-snapshot.mjs` builds the browser artifact from canonical identities, capability, plugin, provider, MCP, agent, design, data, SSH, and Desktop sources. `npm run automation:seis-core-ecosystem-registry` regenerates it; `npm run check:seis-core-ecosystem-registry` fails when the tracked artifact drifts.
 
-The current projection contains six Core lanes, six bundled plugin sources, 25 repository skills, seven providers, MCP coverage of 35 tools / 30 resources / three prompts, 18 product modules, 18 data contracts, 12 design components, and 13 managed agent roles. The 185 installed-enabled plugin value is a dated source audit, while the 300 helper-plugin value is only a catalogued universe. Neither value means every plugin is authenticated, active for the current task, or permitted to mutate an external system.
+The current projection contains six Core lanes, six bundled plugin sources, 25 repository skills, seven providers, MCP coverage of 37 tools / 30 resources / three prompts, six local plugin MCP entrypoints, 18 product modules, 18 data contracts, 12 design components, and 13 managed agent roles. The 185 installed-enabled plugin value is a dated source audit, while the 300 helper-plugin value is only a catalogued universe. Neither value means every plugin is authenticated, active for the current task, or permitted to mutate an external system.
 
 Lane selection is browser-local and opens a source-evidence detail view. Routes lead to verified local surfaces, including allow-listed Desktop app deep links. Every lane and MCP record remains execution-disabled; no provider calls, credentials, frontend secrets, live MCP sessions, background agents, SSH, deployment, package installation, private-content reads, or GitHub mutation occur from this panel.
 
@@ -86,7 +86,7 @@ Lane selection is browser-local and opens a source-evidence detail view. Routes 
 - Inspect all seven provider profiles as `Available`, `Missing Key`, or `Disabled` without reading credentials or starting provider traffic.
 - Switch among seven source-generated read-only route scenarios covering all five personal SEIS lanes plus private-vault and frontier-model blocks.
 - Copy the selected decision handoff with provider, model, lane, gate, opaque decision trace, and blocked reasons; route execution remains false. The trace is correlation metadata, not integrity or authenticity proof.
-- Inspect the unified plugin/MCP mesh as 185 installed-enabled audit records, 300 helper plugins, five embedded personal lanes, 35 MCP tools, 30 resources, and three prompts.
+- Inspect the unified plugin/MCP mesh as 185 installed-enabled audit records, 300 helper plugins, five embedded personal lanes, 37 MCP tools, 30 resources, and three prompts.
 - Inspect and select all 13 public managed agents across nine SEIS lanes while execution authority, background runners, private content, provider calls, SSH, deployment, and GitHub mutation remain disabled.
 - See the same provider state, selected provider/model, eligibility, fallback, and no-execution boundary in the live Mission Composer route preview and each new run record.
 - Recover safely to Dashboard when an older browser session contains an unknown view, agent, lane, goal list, or run list.

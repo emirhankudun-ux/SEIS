@@ -19,7 +19,7 @@ const expectedCounts = {
   auditedInstalledEnabledPlugins: 185,
   cataloguedHelperPlugins: 300,
   providers: 7,
-  mcpTools: 35,
+  mcpTools: 37,
   mcpResources: 30,
   mcpPrompts: 3,
   productModules: 18,
@@ -89,6 +89,9 @@ test("ecosystem snapshot keeps plugin, provider, MCP, and mutation claims fail c
   assert.equal(snapshot.pluginAudit.state, "dated-source-audit-not-live-rescan");
   assert.equal(snapshot.helperPluginUniverse.state, "catalogued-not-blanket-activated");
   assert.equal(snapshot.mcpRuntime.liveBrowserSessionStarted, false);
+  assert.equal(snapshot.mcpRuntime.pluginMesh.serverCount, 6);
+  assert.equal(snapshot.mcpRuntime.pluginMesh.configuredServerCount, 6);
+  assert.equal(snapshot.mcpRuntime.pluginMesh.boundary.liveSessionStarted, false);
   assert.ok(snapshot.providers.records.every((provider) => provider.backendOnly && !provider.frontendSecretAllowed));
   assert.ok(snapshot.plugins.every((plugin) => plugin.executionAuthority === false));
   assert.ok(falseBoundaryFields.every((field) => snapshot.runtimeBoundary[field] === false));

@@ -29,7 +29,7 @@ struct SeisAICapabilityMeshTests {
 
         #expect(mesh.pluginStatusLabel.contains("185 installed/enabled"))
         #expect(mesh.pluginStatusLabel.contains("300 helper plugins"))
-        #expect(mesh.mcpStatusLabel == "35 tools · 30 resources · 3 prompts")
+        #expect(mesh.mcpStatusLabel == "37 tools · 30 resources · 3 prompts")
         #expect(mesh.activationPolicy.contains("user_approved"))
     }
 

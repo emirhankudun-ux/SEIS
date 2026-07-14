@@ -71,12 +71,16 @@ panels:
   `plan-only` permission boundaries.
 - `MCP Runtime Contract` in Installed AI displays the local stdio JSON-RPC
   contract from `content/development/seis-ai-core-mcp-runtime-contract.json`,
-  35 tools, 30 resources, 3 prompts, the no-dependency fallback transport, and
+  37 tools, 30 resources, 3 prompts, the no-dependency fallback transport, and
   the smoke-test gate that proves SEIS AI Core can read plugin/provider/model-scaling
   resources, including `seis://ai/model-parameter-ladder.json` and
   `seis://ai/model-frontier-escalation-policy.json`, read
   `seis://ai/mcp-runtime-contract.json`, and execute repo-backed tools without
   external servers.
+- The same plugin integration resource exposes the six-entrypoint local MCP mesh
+  from the bundled `.mcp.json` files. `npm run check:seis-plugin-mcp-mesh` probes
+  each local entrypoint through shell-free stdio `tools/list`; it does not start
+  remote sessions, read credentials, or perform mutation.
 
 Both panels are evidence views. They do not store credentials, authenticate
 connectors, call live model providers, execute SSH, mutate GitHub, deploy, or

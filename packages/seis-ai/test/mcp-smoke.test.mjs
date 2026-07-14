@@ -86,7 +86,7 @@ function rpcSession(requests, { timeoutMs = 15000 } = {}) {
 }
 
 describe("seis-mcp stdio smoke", () => {
-  it("initializes and lists 35 tools, 3 prompts, 30 resources", async () => {
+  it("initializes and lists 37 tools, 3 prompts, 30 resources", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -137,6 +137,8 @@ describe("seis-mcp stdio smoke", () => {
       "seis_design_status",
       "seis_hub_plan",
       "seis_hub_status",
+      "seis_personal_lane_cycle",
+      "seis_personal_lane_cycle_checks",
       "seis_plugin_integration",
       "seo_audit",
       "site_config_get",
@@ -835,6 +837,79 @@ describe("seis-mcp stdio smoke", () => {
       assert.ok(Array.isArray(payload.defaultChecks));
       assert.ok(payload.approvalBoundary);
     }
+  });
+
+  it("executes the all-lane personal cycle plan through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "tools/call",
+        params: {
+          name: "seis_personal_lane_cycle",
+          arguments: { request: "review the next AI Core readiness change" },
+        },
+      },
+    ]);
+
+    const call = responses.get(2);
+    assert.ok(!call.error, `tools/call errored: ${JSON.stringify(call.error)}`);
+    const payload = JSON.parse(call.result.content[0].text);
+    assert.equal(payload.ok, true);
+    assert.equal(payload.status, "plan-ready");
+    assert.deepEqual(payload.laneOrder, ["seis", "seis-cloud", "seis-code", "seis-design", "seis-data"]);
+    assert.equal(payload.summary.total, 5);
+    assert.equal(payload.runtimeBoundary.planOnly, true);
+    assert.equal(payload.runtimeBoundary.providerCallsPerformed, false);
+    assert.equal(payload.runtimeBoundary.githubMutationPerformed, false);
+  });
+
+  it("exposes bounded all-lane validation through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "tools/call",
+        params: {
+          name: "seis_personal_lane_cycle_checks",
+          arguments: { request: "validate the bounded personal lane cycle", timeoutMs: 100 },
+        },
+      },
+    ], { timeoutMs: 15000 });
+
+    const call = responses.get(2);
+    assert.ok(!call.error, `tools/call errored: ${JSON.stringify(call.error)}`);
+    const payload = JSON.parse(call.result.content[0].text);
+    assert.equal(payload.status, "checks-blocked");
+    assert.equal(payload.runtimeBoundary.localValidationPerformed, true);
+    assert.equal(payload.runtimeBoundary.externalMutationPerformed, false);
+    assert.equal(payload.runtimeBoundary.workspaceMutationDetected, false);
+    assert.equal(payload.checkBoundary.shell, false);
+    assert.equal(payload.checkBoundary.outputRedacted, true);
+    assert.ok(payload.checks.length > 0);
+    assert.ok(payload.checks.every((check) => !check.output.includes("AZURE_OPENAI_API_KEY")));
   });
 
   it("executes the SEIS AI Core provider status tool through the protocol", async () => {

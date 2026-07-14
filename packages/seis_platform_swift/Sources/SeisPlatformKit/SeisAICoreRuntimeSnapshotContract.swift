@@ -390,6 +390,57 @@ public struct SeisAICorePersonalLane: Codable, Equatable, Identifiable, Sendable
     public let qualityGate: String
 }
 
+public struct SeisAICorePluginMCPToolInventory: Codable, Equatable, Sendable {
+    public let mode: String
+    public let toolCount: Int?
+    public let toolNames: [String]
+}
+
+public struct SeisAICorePluginMCPServer: Codable, Equatable, Identifiable, Sendable {
+    public let id: String
+    public let serverId: String
+    public let pluginRoot: String
+    public let configPath: String
+    public let pluginManifestPath: String
+    public let skillRoot: String
+    public let configExists: Bool
+    public let pluginManifestExists: Bool
+    public let skillRootExists: Bool
+    public let command: String?
+    public let args: [String]
+    public let entrypoint: String?
+    public let entrypointExists: Bool
+    public let status: String
+    public let executionAuthority: Bool
+    public let credentialsRead: Bool
+    public let networkCalled: Bool
+    public let externalMutationPerformed: Bool
+    public let toolInventory: SeisAICorePluginMCPToolInventory
+}
+
+public struct SeisAICorePluginMCPBoundary: Codable, Equatable, Sendable {
+    public let sourceOfTruth: String
+    public let transport: String
+    public let liveSessionStarted: Bool
+    public let probeOptIn: Bool
+    public let shell: Bool
+    public let credentialsRead: Bool
+    public let networkCalled: Bool
+    public let externalMutationPerformed: Bool
+    public let humanApprovalRequiredForExternalMutation: Bool
+}
+
+public struct SeisAICorePluginMCPMeshSnapshot: Codable, Equatable, Identifiable, Sendable {
+    public let id: String
+    public let schemaVersion: String
+    public let status: String
+    public let mode: String
+    public let serverCount: Int
+    public let configuredServerCount: Int
+    public let servers: [SeisAICorePluginMCPServer]
+    public let boundary: SeisAICorePluginMCPBoundary
+}
+
 public struct SeisAICorePluginMeshSnapshot: Codable, Equatable, Identifiable, Sendable {
     public let id: String
     public let status: String
@@ -402,6 +453,7 @@ public struct SeisAICorePluginMeshSnapshot: Codable, Equatable, Identifiable, Se
     public let personalLaneCount: Int
     public let personalLaneToolCount: Int
     public let personalLanes: [SeisAICorePersonalLane]
+    public let mcpMesh: SeisAICorePluginMCPMeshSnapshot
 }
 
 public struct SeisAICoreMCPSurface: Codable, Equatable, Identifiable, Sendable {
@@ -541,7 +593,7 @@ public struct SeisAICoreRuntimeSnapshotContract: Codable, Equatable, Sendable {
     public static let expectedManagedLaneCount = 9
     public static let expectedManagedAgentCount = 13
     public static let expectedPersonalLaneCount = 5
-    public static let expectedMCPCounts = SeisAICoreMCPCounts(tools: 35, resources: 30, prompts: 3)
+    public static let expectedMCPCounts = SeisAICoreMCPCounts(tools: 37, resources: 30, prompts: 3)
 
     public static let expectedProviderIDs = [
         "codex-operator",
@@ -1225,6 +1277,30 @@ private extension SeisAICoreRuntimeSnapshotContract {
         )
         check(pluginMesh.personalLaneToolCount == toolCount, "pluginMesh.personalLaneToolCount must match lane tools.")
         check(pluginMesh.personalLaneToolCount == 10, "pluginMesh must expose exactly 10 personal lane tools.")
+        check(pluginMesh.mcpMesh.id == "seis-plugin-mcp-mesh", "pluginMesh.mcpMesh.id must identify the local MCP mesh.")
+        check(pluginMesh.mcpMesh.schemaVersion == "1.0.0", "pluginMesh.mcpMesh.schemaVersion must remain 1.0.0.")
+        check(pluginMesh.mcpMesh.serverCount == pluginMesh.mcpMesh.servers.count, "pluginMesh.mcpMesh.serverCount must match decoded servers.")
+        check(pluginMesh.mcpMesh.serverCount == 6, "pluginMesh.mcpMesh must expose exactly six bundled MCP entrypoints.")
+        check(pluginMesh.mcpMesh.configuredServerCount == 6, "pluginMesh.mcpMesh must expose six configured MCP entrypoints.")
+        check(pluginMesh.mcpMesh.status == "configured-local-read-only", "pluginMesh.mcpMesh must remain configured and read-only.")
+        check(pluginMesh.mcpMesh.boundary.liveSessionStarted == false, "pluginMesh.mcpMesh must not claim a live MCP session.")
+        check(pluginMesh.mcpMesh.boundary.probeOptIn, "pluginMesh.mcpMesh probing must remain opt-in.")
+        check(pluginMesh.mcpMesh.boundary.shell == false, "pluginMesh.mcpMesh must not enable a shell.")
+        check(pluginMesh.mcpMesh.boundary.credentialsRead == false, "pluginMesh.mcpMesh must not read credentials.")
+        check(pluginMesh.mcpMesh.boundary.networkCalled == false, "pluginMesh.mcpMesh must not call the network.")
+        check(pluginMesh.mcpMesh.boundary.externalMutationPerformed == false, "pluginMesh.mcpMesh must not perform external mutation.")
+        check(pluginMesh.mcpMesh.boundary.humanApprovalRequiredForExternalMutation, "pluginMesh.mcpMesh must require approval for external mutation.")
+        check(Set(pluginMesh.mcpMesh.servers.map(\.id)).count == pluginMesh.mcpMesh.servers.count, "pluginMesh.mcpMesh server IDs must be unique.")
+        for server in pluginMesh.mcpMesh.servers {
+            let path = "pluginMesh.mcpMesh.servers[\(server.id)]"
+            check(server.status == "configured", "\(path).status must be configured in the static native snapshot.")
+            check(server.configExists && server.pluginManifestExists && server.skillRootExists && server.entrypointExists, "\(path) must have local source files.")
+            check(server.executionAuthority == false, "\(path).executionAuthority must be false.")
+            check(server.credentialsRead == false, "\(path).credentialsRead must be false.")
+            check(server.networkCalled == false, "\(path).networkCalled must be false.")
+            check(server.externalMutationPerformed == false, "\(path).externalMutationPerformed must be false.")
+            check(server.toolInventory.mode == "not-probed", "\(path).toolInventory must remain static until opt-in probe evidence is supplied.")
+        }
 
         for lane in lanes {
             let path = "pluginMesh.personalLanes[\(lane.id)]"
@@ -1247,7 +1323,7 @@ private extension SeisAICoreRuntimeSnapshotContract {
         check(mcpRuntime.id == "seis-ai-core-mcp-runtime-contract", "mcpRuntime.id must identify the MCP contract.")
         check(mcpRuntime.status == "local-smoke-verified", "mcpRuntime.status must remain local-smoke-verified.")
         check(mcpRuntime.transport == "stdio JSON-RPC", "mcpRuntime.transport must remain local stdio JSON-RPC.")
-        check(counts == Self.expectedMCPCounts, "mcpRuntime must report exactly 35 tools, 30 resources, and 3 prompts.")
+        check(counts == Self.expectedMCPCounts, "mcpRuntime must report exactly 37 tools, 30 resources, and 3 prompts.")
         check(Set(surfaceIDs).count == surfaceIDs.count, "mcpRuntime.surfaces must not contain duplicate IDs.")
         check(surfaceByID["tools"]?.count == counts.tools, "mcpRuntime tools surface count must match toolCount.")
         check(

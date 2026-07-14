@@ -1,6 +1,8 @@
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 
+import { buildSeisPluginMcpMesh } from "../lib/plugin-mcp-mesh.mjs";
+
 export const SEIS_CORE_ECOSYSTEM_SNAPSHOT_ID = "seis-core-ecosystem-registry";
 export const SEIS_CORE_ECOSYSTEM_SNAPSHOT_PATH = "apps/seis-core/data/seis-core-ecosystem-registry.json";
 
@@ -112,6 +114,7 @@ export function buildSeisEcosystemCapabilitySnapshot(repoRoot = process.cwd()) {
   const integration = readJson(repoRoot, SOURCE_PATHS.pluginIntegration);
   const providers = readJson(repoRoot, SOURCE_PATHS.providerRegistry);
   const mcp = readJson(repoRoot, SOURCE_PATHS.mcpRuntime);
+  const pluginMcpMesh = buildSeisPluginMcpMesh(repoRoot);
   const agents = readJson(repoRoot, SOURCE_PATHS.agentRegistry);
   const design = readJson(repoRoot, SOURCE_PATHS.designInventory);
   const data = readJson(repoRoot, SOURCE_PATHS.dataRegistry);
@@ -292,6 +295,7 @@ export function buildSeisEcosystemCapabilitySnapshot(repoRoot = process.cwd()) {
       promptCount: mcp.promptCount,
       boundary: mcp.boundary,
       liveBrowserSessionStarted: false,
+      pluginMesh: pluginMcpMesh,
     },
     agentRegistry: {
       id: agents.id,

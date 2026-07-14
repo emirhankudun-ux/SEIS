@@ -32,6 +32,9 @@ describe("SEIS AI Core runtime snapshot", () => {
     assert.equal(snapshot.pluginMesh.helperUniquePlugins, 300);
     assert.equal(snapshot.pluginMesh.personalLaneCount, 5);
     assert.equal(snapshot.pluginMesh.personalLaneToolCount, 10);
+    assert.equal(snapshot.pluginMesh.mcpMesh.serverCount, 6);
+    assert.equal(snapshot.pluginMesh.mcpMesh.configuredServerCount, 6);
+    assert.equal(snapshot.pluginMesh.mcpMesh.boundary.liveSessionStarted, false);
     assert.equal(snapshot.agentRegistry.managedLaneCount, 9);
     assert.equal(snapshot.agentRegistry.agentCount, 13);
     assert.equal(snapshot.agentRegistry.id, "seis-second-brain-system");
@@ -40,7 +43,7 @@ describe("SEIS AI Core runtime snapshot", () => {
     assert.equal(snapshot.agentRegistry.source, "content/development/seis-second-brain-system.json");
     assert.equal(snapshot.agentRegistry.runtimeAuthority, false);
     assert.equal(snapshot.agentRegistry.permissionBoundary, "status-and-plan-only");
-    assert.equal(snapshot.mcpRuntime.toolCount, 35);
+    assert.equal(snapshot.mcpRuntime.toolCount, 37);
     assert.equal(snapshot.mcpRuntime.resourceCount, 30);
     assert.equal(snapshot.mcpRuntime.promptCount, 3);
     assert.equal(snapshot.router.scenarioCount, 7);

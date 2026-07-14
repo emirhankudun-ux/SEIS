@@ -123,7 +123,7 @@ The standalone SEIS demo now includes an AI Core constellation inspector that
 joins the installed AI route mesh, personal plugin lane mesh, MCP runtime
 contract, selected five-year quarter, and 3D hero diagnostics into one local
 read-only surface. Product browser smoke verifies the inspector exposes six AI
-routes, five personal plugin lanes, 35 MCP tools, 30 MCP resources, three MCP
+routes, five personal plugin lanes, 37 MCP tools, 30 MCP resources, three MCP
 prompts, and a 32-node / 53-edge AI Core 3D graph without requiring provider
 keys, SSH, deployment, GitHub mutation, or external connector authentication.
 
@@ -182,7 +182,7 @@ audit database, authenticated provider access, or autonomous agent execution.
 
 `SeisAICapabilityMesh` is the native read-only projection of the same plugin
 and MCP evidence. It surfaces the installed/enabled and helper-plugin counts,
-the five personal lane IDs, the 35-tool/30-resource/3-prompt MCP inventory,
+the five personal lane IDs, the 37-tool/30-resource/3-prompt MCP inventory,
 and the four MCP transport surfaces without exposing a tool handle or opening
 a session. Its validation requires an active source-backed plugin mesh, a
 non-negative MCP inventory, a safe runtime boundary, and human approval for
@@ -319,7 +319,7 @@ checkpoints, or claim SEIS owns frontier or AGI weights.
 
 The panel also reads
 `content/development/seis-ai-core-mcp-runtime-contract.json`. It exposes
-the local stdio JSON-RPC transport, 35 tools, 30 resources, 3 prompts, four
+the local stdio JSON-RPC transport, 37 tools, 30 resources, 3 prompts, four
 verified MCP surfaces, fallback runtime, smoke test, and credential boundary.
 This is local MCP smoke evidence only; it does not authenticate remote MCP
 servers or execute credentials, SSH, deployment, GitHub mutation, or

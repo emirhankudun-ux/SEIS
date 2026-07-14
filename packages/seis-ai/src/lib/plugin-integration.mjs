@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 
 import { redactSecretText } from "./redaction.mjs";
+import { buildSeisPluginMcpMesh } from "./plugin-mcp-mesh.mjs";
 
 export const PLUGIN_INTEGRATION_PATH = "content/development/seis-agent-plugin-integration.json";
 export const SEIS_SSH_PUBLIC_ACCESS_CONTRACT_PATH = "deploy/seis-ssh-public-access-contract.json";
@@ -1402,6 +1403,7 @@ export function pluginIntegrationStatus(repoRoot, options = {}) {
         defaultGate: lane.defaultGate
       })),
       helperPluginUniverse: manifest.helperPluginUniverse,
+      mcpMesh: buildSeisPluginMcpMesh(repoRoot),
       runtimeIntegration: {
         toolLoopTool: manifest.runtimeIntegration?.toolLoopTool ?? null,
         mcpTool: manifest.runtimeIntegration?.mcpTool ?? null,

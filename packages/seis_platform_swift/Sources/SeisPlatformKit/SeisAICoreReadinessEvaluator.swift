@@ -281,7 +281,7 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 id: "mcp-runtime-contract",
                 title: "MCP runtime contract",
                 passed: mcpRuntimeContractSnapshot?.isMetadataOnly == true,
-                evidence: "Local stdio JSON-RPC MCP contract exposes 35 tools, 30 resources, 3 prompts, and four verified surfaces without remote servers, credentials, SSH, deployment, GitHub mutation, or unrestricted shell execution."
+                evidence: "Local stdio JSON-RPC MCP contract exposes 37 tools, 30 resources, 3 prompts, and four verified surfaces without remote servers, credentials, SSH, deployment, GitHub mutation, or unrestricted shell execution."
             ),
             SeisAICoreReadinessCheck(
                 id: "plugin-integration",

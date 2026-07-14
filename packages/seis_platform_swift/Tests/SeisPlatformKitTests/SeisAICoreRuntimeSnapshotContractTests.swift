@@ -14,7 +14,15 @@ import Testing
     #expect(snapshot.agentRegistry.managedLanes.count == 9)
     #expect(snapshot.agentRegistry.agents.count == 13)
     #expect(snapshot.pluginMesh.personalLanes.count == 5)
-    #expect(snapshot.mcpRuntime.counts == SeisAICoreMCPCounts(tools: 35, resources: 30, prompts: 3))
+    #expect(snapshot.pluginMesh.mcpMesh.id == "seis-plugin-mcp-mesh")
+    #expect(snapshot.pluginMesh.mcpMesh.serverCount == 6)
+    #expect(snapshot.pluginMesh.mcpMesh.configuredServerCount == 6)
+    #expect(snapshot.pluginMesh.mcpMesh.servers.count == 6)
+    #expect(snapshot.pluginMesh.mcpMesh.boundary.liveSessionStarted == false)
+    #expect(snapshot.pluginMesh.mcpMesh.boundary.probeOptIn)
+    #expect(snapshot.pluginMesh.mcpMesh.servers.allSatisfy { $0.status == "configured" })
+    #expect(snapshot.pluginMesh.mcpMesh.servers.allSatisfy { $0.toolInventory.mode == "not-probed" })
+    #expect(snapshot.mcpRuntime.counts == SeisAICoreMCPCounts(tools: 37, resources: 30, prompts: 3))
 
     #expect(metrics.providerCount == 7)
     #expect(metrics.availableProviderCount == 2)
@@ -27,7 +35,7 @@ import Testing
     #expect(metrics.managedAgentCount == 13)
     #expect(metrics.personalLaneCount == 5)
     #expect(metrics.personalLaneToolCount == 10)
-    #expect(metrics.mcpToolCount == 35)
+    #expect(metrics.mcpToolCount == 37)
     #expect(metrics.mcpResourceCount == 30)
     #expect(metrics.mcpPromptCount == 3)
     #expect(metrics.runtimeBoundarySafe)
@@ -205,7 +213,7 @@ import Testing
         with: 36
     )
     let incorrectMCPCountError = try validationError(for: incorrectMCPCountData)
-    #expect(incorrectMCPCountError.validationIssues.contains { $0.contains("35 tools") })
+    #expect(incorrectMCPCountError.validationIssues.contains { $0.contains("37 tools") })
 }
 
 @Test func aiCoreRuntimeSnapshotValidatedDecoderRejectsAgentAndNativeAuthorityMutations() throws {

@@ -98,7 +98,7 @@ if (registry) {
     auditedInstalledEnabledPlugins: 185,
     cataloguedHelperPlugins: 300,
     providers: 7,
-    mcpTools: 35,
+    mcpTools: 37,
     mcpResources: 30,
     mcpPrompts: 3,
     productModules: 18,
@@ -120,6 +120,9 @@ if (registry) {
     fail("all provider records must remain backend-only with frontend secrets prohibited");
   }
   if (registry.mcpRuntime?.liveBrowserSessionStarted !== false) fail("browser registry must not claim a live MCP session");
+  if (registry.mcpRuntime?.pluginMesh?.serverCount !== 6) fail("browser registry must expose six local MCP entrypoints");
+  if (registry.mcpRuntime?.pluginMesh?.configuredServerCount !== 6) fail("browser registry MCP mesh must be fully configured");
+  if (registry.mcpRuntime?.pluginMesh?.boundary?.liveSessionStarted !== false) fail("browser registry MCP mesh must remain non-live");
 
   const lanes = Array.isArray(registry.lanes) ? registry.lanes : [];
   if (lanes.length !== expectedLanes.length) fail(`registry must expose exactly ${expectedLanes.length} core lanes`);

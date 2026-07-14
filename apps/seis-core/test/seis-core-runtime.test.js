@@ -29,7 +29,7 @@ test("SEIS Core renders source-backed providers, scenarios, and MCP mesh", async
   assert.equal(window.document.querySelector("#ai-core-runtime-state")?.textContent, "Source-backed");
   assert.equal(window.document.querySelectorAll("[data-ai-core-provider]").length, 7);
   assert.equal(window.document.querySelectorAll("[data-ai-core-scenario]").length, 7);
-  assert.match(window.document.querySelector("#ai-core-runtime-summary")?.textContent || "", /35\/30\/3/);
+  assert.match(window.document.querySelector("#ai-core-runtime-summary")?.textContent || "", /37\/30\/3/);
 
   window.document.querySelector('[data-ai-core-scenario="private-vault-block"]')?.click();
   const decision = window.document.querySelector("#ai-core-decision");
@@ -92,7 +92,7 @@ test("SEIS Core renders and selects source-backed ecosystem lanes", async () => 
   assert.equal(window.document.querySelector("#ecosystem-control-state")?.textContent, "Source-backed");
   assert.equal(window.document.querySelectorAll("[data-ecosystem-lane]").length, 6);
   assert.match(window.document.querySelector("#ecosystem-control-summary")?.textContent || "", /6 \/ 25/);
-  assert.match(window.document.querySelector("#ecosystem-control-summary")?.textContent || "", /35 \/ 30 \/ 3/);
+  assert.match(window.document.querySelector("#ecosystem-control-summary")?.textContent || "", /37 \/ 30 \/ 3/);
 
   window.document.querySelector('[data-ecosystem-lane="seis-cloud"]')?.click();
   const detail = window.document.querySelector("#ecosystem-lane-detail");
