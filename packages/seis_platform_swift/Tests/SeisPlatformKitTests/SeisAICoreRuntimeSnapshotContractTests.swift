@@ -22,6 +22,8 @@ import Testing
     #expect(snapshot.pluginMesh.mcpMesh.boundary.probeOptIn)
     #expect(snapshot.pluginMesh.mcpMesh.servers.allSatisfy { $0.status == "configured" })
     #expect(snapshot.pluginMesh.mcpMesh.servers.allSatisfy { $0.toolInventory.mode == "not-probed" })
+    #expect(snapshot.pluginMesh.mcpMesh.servers.allSatisfy { $0.toolInventory.toolCount == nil })
+    #expect(snapshot.pluginMesh.mcpMesh.servers.allSatisfy { $0.toolInventory.toolNames.isEmpty })
     #expect(snapshot.mcpRuntime.counts == SeisAICoreMCPCounts(tools: 37, resources: 30, prompts: 3))
 
     #expect(metrics.providerCount == 7)
@@ -43,6 +45,8 @@ import Testing
     requireSendable(snapshot)
 
     let encoded = try JSONEncoder().encode(snapshot)
+    let encodedText = String(decoding: encoded, as: UTF8.self)
+    #expect(encodedText.contains("\"toolCount\":null"))
     let roundTrip = try SeisAICoreRuntimeSnapshotContract.validated(from: encoded)
     #expect(roundTrip == snapshot)
     #expect(roundTrip.applicationIntegration.runtimeBoundary == snapshot.applicationIntegration.runtimeBoundary)

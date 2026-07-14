@@ -394,6 +394,23 @@ public struct SeisAICorePluginMCPToolInventory: Codable, Equatable, Sendable {
     public let mode: String
     public let toolCount: Int?
     public let toolNames: [String]
+
+    private enum CodingKeys: String, CodingKey {
+        case mode
+        case toolCount
+        case toolNames
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(mode, forKey: .mode)
+        if let toolCount {
+            try container.encode(toolCount, forKey: .toolCount)
+        } else {
+            try container.encodeNil(forKey: .toolCount)
+        }
+        try container.encode(toolNames, forKey: .toolNames)
+    }
 }
 
 public struct SeisAICorePluginMCPServer: Codable, Equatable, Identifiable, Sendable {
@@ -1294,12 +1311,18 @@ private extension SeisAICoreRuntimeSnapshotContract {
         for server in pluginMesh.mcpMesh.servers {
             let path = "pluginMesh.mcpMesh.servers[\(server.id)]"
             check(server.status == "configured", "\(path).status must be configured in the static native snapshot.")
+            check(server.serverId == server.id, "\(path).serverId must match id.")
             check(server.configExists && server.pluginManifestExists && server.skillRootExists && server.entrypointExists, "\(path) must have local source files.")
+            check(server.command == "node", "\(path).command must remain node.")
+            check(server.args.count == 1 && server.args.first?.isEmpty == false, "\(path).args must contain one entrypoint argument.")
+            check(server.entrypoint?.isEmpty == false, "\(path).entrypoint must not be empty.")
             check(server.executionAuthority == false, "\(path).executionAuthority must be false.")
             check(server.credentialsRead == false, "\(path).credentialsRead must be false.")
             check(server.networkCalled == false, "\(path).networkCalled must be false.")
             check(server.externalMutationPerformed == false, "\(path).externalMutationPerformed must be false.")
             check(server.toolInventory.mode == "not-probed", "\(path).toolInventory must remain static until opt-in probe evidence is supplied.")
+            check(server.toolInventory.toolCount == nil, "\(path).toolInventory.toolCount must remain nil until probed.")
+            check(server.toolInventory.toolNames.isEmpty, "\(path).toolInventory.toolNames must remain empty until probed.")
         }
 
         for lane in lanes {
