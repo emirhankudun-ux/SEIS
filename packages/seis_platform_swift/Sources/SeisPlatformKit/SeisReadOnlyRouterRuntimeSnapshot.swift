@@ -12,6 +12,50 @@ public struct SeisReadOnlyRouterRuntimeBoundary: Codable, Equatable, Sendable {
     public let coreRequiresCloudApiKey: Bool
 }
 
+public struct SeisReadOnlyRouterProviderMediation: Codable, Equatable, Sendable {
+    public let mode: String
+    public let frontendSecretAllowed: Bool
+    public let routeExecutionEnabled: Bool
+    public let status: String
+
+    public var isSafe: Bool {
+        mode == "backend-only" &&
+            !frontendSecretAllowed &&
+            !routeExecutionEnabled &&
+            status == "required-before-live-routing"
+    }
+}
+
+public struct SeisReadOnlyRouterDecisionIntegrity: Codable, Equatable, Sendable {
+    public let readOnlyOnly: Bool
+    public let runtimeAuthority: Bool
+    public let executionPerformedAlwaysFalse: Bool
+    public let noPromptBodyInDecision: Bool
+    public let noCredentialMaterialInDecision: Bool
+    public let decisionLogsRedacted: Bool
+    public let providerStateNamed: Bool
+    public let selectedProviderExplicit: Bool
+    public let fallbackExplicit: Bool
+    public let blockedReasonsRequired: Bool
+    public let backendOnlyProvidersRequired: Bool
+    public let privateObsidianContentRoutable: Bool
+
+    public var isSafe: Bool {
+        readOnlyOnly &&
+            !runtimeAuthority &&
+            executionPerformedAlwaysFalse &&
+            noPromptBodyInDecision &&
+            noCredentialMaterialInDecision &&
+            decisionLogsRedacted &&
+            providerStateNamed &&
+            selectedProviderExplicit &&
+            fallbackExplicit &&
+            blockedReasonsRequired &&
+            backendOnlyProvidersRequired &&
+            !privateObsidianContentRoutable
+    }
+}
+
 public struct SeisReadOnlyRouterSourceOfTruth: Codable, Equatable, Sendable {
     public let contract: String
     public let providerRegistry: String
@@ -51,6 +95,8 @@ public struct SeisReadOnlyRouterRuntimeSnapshot: Codable, Equatable, Sendable {
     public let purpose: String
     public let qualityGate: String
     public let runtimeBoundary: SeisReadOnlyRouterRuntimeBoundary
+    public let providerMediation: SeisReadOnlyRouterProviderMediation
+    public let decisionIntegrity: SeisReadOnlyRouterDecisionIntegrity
     public let sourceOfTruth: SeisReadOnlyRouterSourceOfTruth
     public let inputs: [String]
     public let providerStateRules: [String]
@@ -91,6 +137,12 @@ public struct SeisReadOnlyRouterRuntimeSnapshot: Codable, Equatable, Sendable {
             boundary.externalMutation || boundary.coreRequiresCloudApiKey {
             issues.append("read-only router runtime boundary permits unsafe authority")
         }
+        if !providerMediation.isSafe {
+            issues.append("read-only router runtime provider mediation is not backend-only and pre-live")
+        }
+        if !decisionIntegrity.isSafe {
+            issues.append("read-only router runtime decision integrity is unsafe")
+        }
         if sourceOfTruth.contract != "content/development/seis-read-only-model-router-contract.json" ||
             sourceOfTruth.providerRegistry != "content/development/seis-ai-core-provider-registry.json" ||
             sourceOfTruth.subagentOperatingModel != "content/development/seis-ai-core-subagent-operating-model.json" ||
@@ -113,6 +165,8 @@ public struct SeisReadOnlyRouterRuntimeSnapshot: Codable, Equatable, Sendable {
             !runtimeBoundary.runtimeAuthority &&
             !runtimeBoundary.routeEligible &&
             !runtimeBoundary.providerCalls &&
+            providerMediation.isSafe &&
+            decisionIntegrity.isSafe &&
             !modelClaimBoundary.isAgi
     }
 

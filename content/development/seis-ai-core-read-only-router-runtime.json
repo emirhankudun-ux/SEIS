@@ -25,6 +25,26 @@
     "externalMutation": false,
     "coreRequiresCloudApiKey": false
   },
+  "providerMediation": {
+    "mode": "backend-only",
+    "frontendSecretAllowed": false,
+    "routeExecutionEnabled": false,
+    "status": "required-before-live-routing"
+  },
+  "decisionIntegrity": {
+    "readOnlyOnly": true,
+    "runtimeAuthority": false,
+    "executionPerformedAlwaysFalse": true,
+    "noPromptBodyInDecision": true,
+    "noCredentialMaterialInDecision": true,
+    "decisionLogsRedacted": true,
+    "providerStateNamed": true,
+    "selectedProviderExplicit": true,
+    "fallbackExplicit": true,
+    "blockedReasonsRequired": true,
+    "backendOnlyProvidersRequired": true,
+    "privateObsidianContentRoutable": false
+  },
   "inputs": [
     "task type metadata",
     "capability label metadata",

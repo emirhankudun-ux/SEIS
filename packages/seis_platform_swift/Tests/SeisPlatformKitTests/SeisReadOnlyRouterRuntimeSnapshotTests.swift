@@ -13,6 +13,8 @@ struct SeisReadOnlyRouterRuntimeSnapshotTests {
         #expect(snapshot.forbiddenInputs.count == 7)
         #expect(snapshot.coveredLaneCount == 5)
         #expect(!snapshot.runtimeBoundary.coreRequiresCloudApiKey)
+        #expect(snapshot.providerMediation.isSafe)
+        #expect(snapshot.decisionIntegrity.isSafe)
     }
 
     @Test func modelClaimsAndPrivateInputsRemainBlocked() throws {
@@ -25,6 +27,7 @@ struct SeisReadOnlyRouterRuntimeSnapshotTests {
         #expect(snapshot.forbiddenInputs.contains("API keys and tokens"))
         #expect(snapshot.forbiddenInputs.contains("private Obsidian vault contents"))
         #expect(snapshot.agentLaneCoverage == ["seis", "seis-cloud", "seis-code", "seis-design", "seis-data"])
+        #expect(snapshot.decisionIntegrity.backendOnlyProvidersRequired)
     }
 
     private func runtimeData() throws -> Data {

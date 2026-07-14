@@ -470,6 +470,11 @@ describe("seis-mcp stdio smoke", () => {
     const payload = JSON.parse(resource.result.contents[0].text);
     assert.equal(payload.id, "seis-ai-core-read-only-router-runtime");
     assert.equal(payload.runtimeBoundary.providerCalls, false);
+    assert.equal(payload.providerMediation.mode, "backend-only");
+    assert.equal(payload.providerMediation.frontendSecretAllowed, false);
+    assert.equal(payload.providerMediation.routeExecutionEnabled, false);
+    assert.equal(payload.decisionIntegrity.backendOnlyProvidersRequired, true);
+    assert.equal(payload.decisionIntegrity.privateObsidianContentRoutable, false);
     assert.equal(payload.modelClaimBoundary.isAgi, false);
   });
 

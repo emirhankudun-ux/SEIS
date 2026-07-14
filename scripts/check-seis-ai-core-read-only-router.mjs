@@ -31,6 +31,26 @@ if (contract) {
   ensure(contract.runtimeBoundary?.credentialRead === false, "credential reads must remain false");
   ensure(contract.runtimeBoundary?.agentExecution === false, "agent execution must remain false");
   ensure(contract.runtimeBoundary?.externalMutation === false, "external mutation must remain false");
+  ensure(contract.providerMediation?.mode === "backend-only", "provider mediation must remain backend-only");
+  ensure(contract.providerMediation?.frontendSecretAllowed === false, "frontend provider secrets must remain forbidden");
+  ensure(contract.providerMediation?.routeExecutionEnabled === false, "provider route execution must remain disabled");
+  ensure(contract.providerMediation?.status === "required-before-live-routing", "provider mediation status must remain pre-live");
+  for (const [key, expected] of [
+    ["readOnlyOnly", true],
+    ["runtimeAuthority", false],
+    ["executionPerformedAlwaysFalse", true],
+    ["noPromptBodyInDecision", true],
+    ["noCredentialMaterialInDecision", true],
+    ["decisionLogsRedacted", true],
+    ["providerStateNamed", true],
+    ["selectedProviderExplicit", true],
+    ["fallbackExplicit", true],
+    ["blockedReasonsRequired", true],
+    ["backendOnlyProvidersRequired", true],
+    ["privateObsidianContentRoutable", false]
+  ]) {
+    ensure(contract.decisionIntegrity?.[key] === expected, `router runtime decision integrity ${key} must be ${expected}`);
+  }
   ensure(contract.sourceOfTruth?.agentTool === "seis_ai_core_read_only_route", "runtime contract must expose the read-only agent tool");
   ensure(contract.sourceOfTruth?.mcpResource === "seis://ai/read-only-router-runtime.json", "runtime contract must expose the read-only MCP resource");
   ensure(contract.modelClaimBoundary?.isAgi === false, "runtime must not claim AGI");
