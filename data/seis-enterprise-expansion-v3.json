@@ -369,7 +369,7 @@
         "current_phase_id": "SEIS-10Y-Y01",
         "phase_status": "planned",
         "last_reviewed_at": "2026-07-14",
-        "last_commit_hash": "28549402",
+        "last_commit_hash": "219989d9",
         "validation_results": [
           {"command": "npm run check:seis-enterprise-expansion-v3", "status": "passed"},
           {"command": "npm run check:seis-goal-tracking-update-prompt", "status": "passed"},
