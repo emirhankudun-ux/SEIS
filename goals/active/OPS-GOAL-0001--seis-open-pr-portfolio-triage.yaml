@@ -20,7 +20,7 @@ category:
   - governance
 
 priority: critical
-status: in-progress
+status: review
 maturity: specification
 confidence: medium
 
@@ -71,7 +71,7 @@ security_classification: public-safe
 privacy_impact: low
 
 requirements:
-  - Capture every live open SEIS pull request in one immutable, timestamped snapshot.
+  - Capture every live open SEIS pull request present at the declared retrieval boundary in one immutable, timestamped snapshot.
   - Assign each captured pull request exactly one controlled disposition.
   - Record evidence, risks, dependencies, successors, and the next safe action without performing GitHub mutations.
   - Preserve active ecosystem foundation and Apple-native pull requests in their current review lanes.
@@ -197,8 +197,8 @@ github:
   suggested_commit: 'docs(governance): classify the complete open pr portfolio'
   issue_url: https://github.com/emirhankudun-ux/SEIS/issues/183
   branch_name: audit/seis-open-pr-portfolio-triage
-  commit_sha: null
-  pull_request_url: null
+  commit_sha: f357786be66a6b35ebbd00457b12f33e22de18e5
+  pull_request_url: https://github.com/emirhankudun-ux/SEIS/pull/184
   release_note_url: null
 
 observability:
@@ -222,6 +222,8 @@ outputs:
 notes:
   - This Goal authorizes read-only GitHub inspection and a new Goal-linked issue and pull request only; it does not authorize mutation of any classified pull request.
   - Dispositions are recommendations until a human separately approves the corresponding GitHub action.
+  - GitHub accepted the initial audit-branch push with owner-bypass warnings for restricted ref creation, an inherited merge commit in the stacked base history, and the unsigned audit commit; maintainers must resolve the acceptable policy and signature path before merge.
+  - After publication, the live reconciler correctly reported the newly created audit PR 184 and a timestamp-only PR 154 delta. The frozen 05:54:16Z capture remains unchanged; a later portfolio decision requires a new versioned capture rather than silently rewriting this evidence.
 
 status_history:
   - status: planned
@@ -234,6 +236,13 @@ status_history:
     reason: A clean focused worktree was created from the remote ecosystem Goal foundation head and read-only portfolio capture began.
     evidence_refs:
       - OPS1-EVIDENCE-002
+  - status: review
+    at: '2026-07-14'
+    reason: The complete audit is committed, the local and live validation matrix is green, independent reviews found no publication blocker, and issue 183 plus stacked draft pull request 184 expose the evidence for human review.
+    evidence_refs:
+      - OPS1-EVIDENCE-003
+      - OPS1-EVIDENCE-004
+      - OPS1-EVIDENCE-005
 
 evidence_records:
   - id: OPS1-EVIDENCE-001
@@ -259,8 +268,15 @@ evidence_records:
     artifact: data/seis-open-pr-portfolio.json
   - id: OPS1-EVIDENCE-004
     type: validation
-    description: The frozen 90-record snapshot passed the deterministic validator, 87 adversarial assertions, read-only live reconciliation, ecosystem schema and negative tests, Goal Tracking validation, foundation, workspace, governance, open-source, formatting, syntax, and diff-integrity checks. Three independent read-only reviews reported no remaining publication blocker.
+    description: At the declared capture boundary, the frozen 90-record snapshot passed the deterministic validator, 87 adversarial assertions, read-only live reconciliation, ecosystem schema and negative tests, Goal Tracking validation, foundation, workspace, governance, open-source, formatting, syntax, and diff-integrity checks. Independent validator and Goal/CI reviews reported no remaining publication blocker.
     status: passed
     command: npm run check:seis-open-pr-portfolio && npm run test:seis-open-pr-portfolio && npm run check:seis-open-pr-portfolio-live
     exit_code: 0
     artifact: scripts/test-seis-open-pr-portfolio.mjs
+  - id: OPS1-EVIDENCE-005
+    type: github-delivery
+    description: Issue 183 and stacked draft pull request 184 expose the Goal, complete advisory review, validation evidence, policy-boundary warning, risk, and rollback without mutating any classified pull request.
+    status: passed
+    command: gh pr view 184 --repo emirhankudun-ux/SEIS --json number,state,isDraft,baseRefName,headRefName,url
+    exit_code: 0
+    artifact: goals/active/OPS-GOAL-0001--seis-open-pr-portfolio-triage.yaml
