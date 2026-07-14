@@ -1400,6 +1400,9 @@ describe("executeTool", () => {
     assert.equal(payload.executionLedgerEvidence.persistence, "disabled");
     assert.equal(payload.executionLedgerEvidence.recordWritten, false);
     assert.match(payload.executionLedgerEvidence.truthBoundary, /no durable record is persisted/);
+    assert.equal(payload.permissionEvidence.level, "plan-only");
+    assert.equal(payload.permissionEvidence.decision, "recognized");
+    assert.equal(payload.permissionEvidence.matrixRuntimeBoundary, "status-and-plan-only");
   });
 
   it("seis_ai_core_subagent_dry_run blocks approval-gated external tasks", () => {
@@ -1443,6 +1446,62 @@ describe("executeTool", () => {
     ));
     assert.equal(payload.ok, false);
     assert.match(payload.error, /execution ledger fixture is missing or violates/);
+  });
+
+  it("seis_ai_core_subagent_dry_run denies forbidden and unknown permission levels", () => {
+    const queuePath = path.join(repoRoot, "content/development/seis-ai-core-dry-run-task-queue.json");
+    const queue = JSON.parse(readFileSync(queuePath, "utf8"));
+    queue.sampleTasks.push(
+      {
+        id: "forbidden-seis-code-task",
+        laneId: "seis-code",
+        roleId: "engineering-subagent",
+        permissionLevel: "forbidden",
+        state: "running",
+        dryRunOnly: true,
+        approvalRequired: false,
+        externalMutation: false,
+        targetScope: ["apps/**"],
+        validator: "npm run test:web",
+        rollbackNote: "Forbidden task remains unexecuted."
+      },
+      {
+        id: "unknown-permission-seis-code-task",
+        laneId: "seis-code",
+        roleId: "engineering-subagent",
+        permissionLevel: "unknown-level",
+        state: "running",
+        dryRunOnly: true,
+        approvalRequired: false,
+        externalMutation: false,
+        targetScope: ["apps/**"],
+        validator: "npm run test:web",
+        rollbackNote: "Unknown permission task remains unexecuted."
+      }
+    );
+    writeFileSync(queuePath, JSON.stringify(queue), "utf8");
+
+    const forbidden = JSON.parse(executeTool(
+      "seis_ai_core_subagent_dry_run",
+      { taskId: "forbidden-seis-code-task", requestedPath: "apps/web/index.html" },
+      ctx()
+    ));
+    assert.equal(forbidden.ok, true);
+    assert.equal(forbidden.decision, "denied");
+    assert.equal(forbidden.permissionEvidence.level, "forbidden");
+    assert.equal(forbidden.permissionEvidence.decision, "denied");
+    assert.match(forbidden.reason, /separate security and recovery plan/);
+
+    const unknown = JSON.parse(executeTool(
+      "seis_ai_core_subagent_dry_run",
+      { taskId: "unknown-permission-seis-code-task", requestedPath: "apps/web/index.html" },
+      ctx()
+    ));
+    assert.equal(unknown.ok, true);
+    assert.equal(unknown.decision, "denied");
+    assert.equal(unknown.permissionEvidence.level, null);
+    assert.equal(unknown.permissionEvidence.decision, "denied");
+    assert.match(unknown.reason, /missing from the permission matrix/);
   });
 
   it("seis_ai_core_subagent_dry_run cancels with a supported signal", () => {

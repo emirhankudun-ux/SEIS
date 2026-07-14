@@ -1339,6 +1339,8 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.executionLedgerEvidence.requiredFieldCount, 19);
     assert.equal(payload.executionLedgerEvidence.persistence, "disabled");
     assert.equal(payload.executionLedgerEvidence.recordWritten, false);
+    assert.equal(payload.permissionEvidence.level, "plan-only");
+    assert.equal(payload.permissionEvidence.decision, "recognized");
   });
 
   it("executes the SEIS AI Core review ledger tool through the protocol", async () => {

@@ -1375,6 +1375,9 @@ export function subagentDryRunTaskDecision(repoRoot, input = {}) {
     const cancellation = evaluateCancellationSignal(cancellationFixture, signal);
     const tool = evaluateRequestedTool(role, requestedTool);
     const requestedPathDecision = evaluateRequestedPath(repoRoot, requestedPath, task.targetScope);
+    const permissionDenied = !permission ||
+      permission.level === "forbidden" ||
+      permission.approvalRequired === "separate security and recovery plan required";
     const approvalRequired =
       task.approvalRequired === true ||
       permission?.approvalRequired === true ||
@@ -1392,6 +1395,11 @@ export function subagentDryRunTaskDecision(repoRoot, input = {}) {
     } else if (cancellation.allowed === false) {
       decision = "denied";
       reason = cancellation.reason;
+    } else if (permissionDenied) {
+      decision = "denied";
+      reason = permission
+        ? "permission level is forbidden without a separate security and recovery plan"
+        : "task permission level is missing from the permission matrix";
     } else if (tool.allowed === false) {
       decision = "denied";
       reason = tool.reason;
@@ -1429,6 +1437,13 @@ export function subagentDryRunTaskDecision(repoRoot, input = {}) {
       requestedPath: requestedPathDecision,
       validator: task.validator ?? null,
       rollbackNote: task.rollbackNote ?? null,
+      permissionEvidence: {
+        level: permission?.level ?? null,
+        status: permission?.status ?? null,
+        approvalRequired: permission?.approvalRequired ?? null,
+        matrixRuntimeBoundary: permissionMatrixFixture?.runtimeBoundary ?? "status-and-plan-only",
+        decision: permissionDenied ? "denied" : "recognized",
+      },
       executionLedgerEvidence: {
         path: executionLedgerPath,
         id: executionLedgerFixture.id,
