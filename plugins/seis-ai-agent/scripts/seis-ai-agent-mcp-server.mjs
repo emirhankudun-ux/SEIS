@@ -11,6 +11,15 @@ const AGENT = {
   skillPath: "skills/seis-ai-agent/SKILL.md",
 };
 
+const RUNTIME_BOUNDARY = Object.freeze({
+  mode: "status-and-plan-only",
+  executionAuthority: false,
+  credentialsRead: false,
+  networkCalled: false,
+  externalMutationPerformed: false,
+  humanApprovalRequiredForExternalMutation: true,
+});
+
 let initializationStarted = false;
 let initialized = false;
 
@@ -290,6 +299,7 @@ function status() {
     status: Object.values(readiness).every(Boolean) ? "ready" : "partial",
     agent: AGENT.id,
     identity: AGENT.identity,
+    runtimeBoundary: { ...RUNTIME_BOUNDARY },
     pluginRoot: root,
     repoRoot: repo,
     readiness,
@@ -308,6 +318,9 @@ function laneStatus(lane) {
     id: lane.id,
     label: lane.label,
     status: skill && profileReady ? "ready" : "partial",
+    permissionLevel: "plan-only",
+    executionAuthority: false,
+    humanApprovalRequiredForLiveActions: true,
     skillPath: lane.skillPath,
     profilePath: lane.profilePath || null,
     focus: lane.focus,
@@ -323,6 +336,7 @@ function lanesStatus() {
     status: lanes.every((lane) => lane.status === "ready") ? "ready" : "partial",
     agent: AGENT.id,
     identity: AGENT.identity,
+    runtimeBoundary: { ...RUNTIME_BOUNDARY },
     laneCount: lanes.length,
     lanes,
   };
@@ -342,6 +356,7 @@ function lanePlan(lane, input) {
     focus: lane.focus,
     steps: lane.steps,
     defaultChecks: current.defaultChecks,
+    runtimeBoundary: { ...RUNTIME_BOUNDARY },
     readiness: {
       status: current.status,
       skillPath: current.skillPath,
@@ -358,6 +373,7 @@ function plan(input) {
     agent: AGENT.id,
     identity: AGENT.identity,
     request: input.request,
+    runtimeBoundary: { ...RUNTIME_BOUNDARY },
     lanes: [
       "SEIS: repository governance, architecture, documentation, quality, and source-of-truth discipline.",
       "SEIS-Agent: unified orchestration across MCP, skills, plugins, automation, memory, context, and delivery.",

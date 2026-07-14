@@ -56,6 +56,15 @@ npm run install:seis-ai-agent
 
 The website is a future release surface, not the immediate source of truth. Build it only when the agent, install flow, docs, quality gates, and release decision are ready.
 
+## Runtime Boundary
+
+The repo-contained MCP server exposes source-backed `status` and `plan` tools in
+`status-and-plan-only` mode. These responses explicitly report no execution
+authority, no credential reads, no network calls, and no external mutation.
+External mutation remains human-approval-required. A passing local smoke test
+proves the declared stdio JSON-RPC contract and tool responses; it does not
+prove provider access, live MCP sessions, SSH, deployment, or GitHub mutation.
+
 ## Terminal Install
 
 macOS and Linux:

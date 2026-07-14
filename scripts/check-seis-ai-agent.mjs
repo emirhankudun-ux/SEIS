@@ -179,14 +179,29 @@ function validateMcpSmoke() {
     ensure(tools.some((record) => record.name === tool), `MCP tools/list must include ${tool}`);
   }
   ensure(responses.find((response) => response.id === 3)?.result?.identity === "SEIS-Agent", "MCP status must report SEIS-Agent identity");
+  const status = responses.find((response) => response.id === 3)?.result;
+  ensure(status?.runtimeBoundary?.mode === "status-and-plan-only", "MCP status must report status-and-plan-only runtime");
+  ensure(status?.runtimeBoundary?.executionAuthority === false, "MCP status must report no execution authority");
+  ensure(status?.runtimeBoundary?.credentialsRead === false, "MCP status must report no credential reads");
+  ensure(status?.runtimeBoundary?.networkCalled === false, "MCP status must report no network calls");
+  ensure(status?.runtimeBoundary?.externalMutationPerformed === false, "MCP status must report no external mutation");
+  ensure(status?.runtimeBoundary?.humanApprovalRequiredForExternalMutation === true, "MCP status must require human approval for external mutation");
   const plan = responses.find((response) => response.id === 4)?.result;
   ensure(plan?.lanes?.some((lane) => String(lane).includes("SEIS-Data: memory, context systems")), "MCP plan must route memory/context through SEIS-Data");
+  ensure(plan?.runtimeBoundary?.mode === "status-and-plan-only", "MCP plan must report status-and-plan-only runtime");
+  ensure(plan?.runtimeBoundary?.executionAuthority === false, "MCP plan must report no execution authority");
   const lanes = responses.find((response) => response.id === 5)?.result;
   ensure(lanes?.status === "ready" && lanes?.laneCount === 10, "MCP lane inventory must report ten embedded lanes");
+  ensure(lanes?.runtimeBoundary?.externalMutationPerformed === false, "MCP lane inventory must report no external mutation");
   const dataPlan = responses.find((response) => response.id === 6)?.result;
   ensure(dataPlan?.lane === "seis-data", "MCP data plan must route through embedded SEIS-DATA lane");
   ensure(responses.find((response) => response.id === 7)?.result?.lane === "seis-security", "MCP security plan must route through embedded SEIS Security lane");
   ensure(responses.find((response) => response.id === 8)?.result?.lane === "seis-research", "MCP research plan must route through embedded SEIS Research lane");
   ensure(responses.find((response) => response.id === 9)?.result?.lane === "seis-automation", "MCP automation plan must route through embedded SEIS Automation lane");
   ensure(responses.find((response) => response.id === 10)?.result?.lane === "seis-product", "MCP product plan must route through embedded SEIS Product lane");
+  for (const responseID of [6, 7, 8, 9, 10]) {
+    const lanePlan = responses.find((response) => response.id === responseID)?.result;
+    ensure(lanePlan?.runtimeBoundary?.mode === "status-and-plan-only", `MCP lane plan ${responseID} must remain status-and-plan-only`);
+    ensure(lanePlan?.runtimeBoundary?.executionAuthority === false, `MCP lane plan ${responseID} must report no execution authority`);
+  }
 }
