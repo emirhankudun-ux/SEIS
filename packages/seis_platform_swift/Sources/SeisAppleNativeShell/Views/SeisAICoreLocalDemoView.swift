@@ -1196,6 +1196,7 @@ struct SeisAICoreLocalDemoView: View {
 
             if let snapshot = model.snapshot {
                 metrics(snapshot: snapshot)
+                routerEvidenceDisclosure(snapshot: snapshot)
                 if let workspaceIndex = model.workspaceIndex {
                     workspaceAwarenessDisclosure(index: workspaceIndex)
                 }
@@ -1436,6 +1437,45 @@ struct SeisAICoreLocalDemoView: View {
             metric("Boundary", value: metrics.runtimeBoundarySafe ? "safe" : "watch", image: "checkmark.shield")
             metric("Evidence", value: model.evidencePersistenceState.displayLabel, image: "externaldrive")
         }
+    }
+
+    private func routerEvidenceDisclosure(snapshot: SeisAICoreRuntimeSnapshotContract) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 7) {
+                Text("Source-backed route decisions only; no provider, network, credential, or sub-agent execution is performed.")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+
+                ForEach(snapshot.routeScenarios) { scenario in
+                    let decision = scenario.decision
+                    VStack(alignment: .leading, spacing: 3) {
+                        HStack(alignment: .firstTextBaseline) {
+                            Text(scenario.label)
+                                .font(.caption.weight(.semibold))
+                            Spacer(minLength: 8)
+                            Text(decision.decisionIntegrity.isSafe ? "safe" : "watch")
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(decision.decisionIntegrity.isSafe ? .green : .orange)
+                        }
+                        Text("Provider: \(decision.selectedProvider) · Model: \(decision.selectedModel) · State: \(decision.providerState.rawValue)")
+                            .font(.caption2.monospaced())
+                        Text("Permission: \(decision.agentLane.permissionLevel) · Source: \(decision.agentLane.permissionSourceStatus) · Mediation: \(decision.decisionIntegrity.backendOnlyProvidersRequired ? "backend-only" : "unavailable")")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                        Text("Route eligible: no · Execution: no · Provider call: no")
+                            .font(.caption2)
+                            .foregroundStyle(.tertiary)
+                    }
+                    .padding(8)
+                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 8))
+                }
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Router evidence (\(snapshot.router.scenarioCount))", systemImage: "arrow.triangle.branch")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Source-backed router evidence for \(snapshot.router.scenarioCount) read-only scenarios. Permission source and backend-only mediation are validated.")
     }
 
     private func providerList(snapshot: SeisAICoreRuntimeSnapshotContract) -> some View {

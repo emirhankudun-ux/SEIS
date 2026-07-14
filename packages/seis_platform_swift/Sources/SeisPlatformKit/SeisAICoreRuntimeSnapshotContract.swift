@@ -342,6 +342,7 @@ public struct SeisAICoreRouteDecision: Codable, Equatable, Sendable {
         try container.encode(fallbackUsed, forKey: .fallbackUsed)
         try container.encode(fallbackPlan, forKey: .fallbackPlan)
         try container.encode(agentLane, forKey: .agentLane)
+        try container.encode(decisionIntegrity, forKey: .decisionIntegrity)
         try container.encode(requiredApprovals, forKey: .requiredApprovals)
         try container.encode(blockedReasons, forKey: .blockedReasons)
         try container.encode(safetyBoundary, forKey: .safetyBoundary)

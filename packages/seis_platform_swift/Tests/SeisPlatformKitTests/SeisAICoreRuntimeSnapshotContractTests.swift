@@ -174,6 +174,17 @@ import Testing
     #expect(snapshot.routeScenarios.allSatisfy { !$0.decision.agentLane.executionPerformed })
 }
 
+@Test func aiCoreRuntimeSnapshotRoundTripPreservesRouterIntegrityEvidence() throws {
+    let snapshot = try loadRuntimeSnapshot()
+    let encoded = try JSONEncoder().encode(snapshot)
+    let decoded = try SeisAICoreRuntimeSnapshotContract(data: encoded)
+
+    #expect(decoded.routeScenarios.count == snapshot.routeScenarios.count)
+    #expect(decoded.routeScenarios.allSatisfy { $0.decision.decisionIntegrity.isSafe })
+    #expect(decoded.routeScenarios.allSatisfy { $0.decision.agentLane.permissionBoundary == "plan-only" })
+    #expect(decoded.routeScenarios.allSatisfy { ["verified", "fail-closed"].contains($0.decision.agentLane.permissionSourceStatus) })
+}
+
 @Test func aiCoreRuntimeSnapshotRejectsMutatedRuntimeBoundaries() throws {
     let fixtureData = try runtimeSnapshotData()
     let prohibitedTrueValues = [
