@@ -15,7 +15,8 @@
     "content/development/seis-public-plugin-family.json",
     "reports/seis-public-plugin-family.md",
     "data/seis-plugin-package-intake-2026-06-13.json",
-    "docs/platform/seis-plugin-package-intake.md"
+    "docs/platform/seis-plugin-package-intake.md",
+    "docs/platform/seis-legacy-personal-plugin-reconciliation.md"
   ],
   "marketplace": {
     "path": ".agents/plugins/marketplace.json",

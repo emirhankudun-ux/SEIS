@@ -82,6 +82,7 @@ Date: 2026-06-23
 | [deployment/seis-ssh-live-readiness-evidence.md](deployment/seis-ssh-live-readiness-evidence.md) | Latest approval-gated `SEIS-SSH` live probe evidence, currently blocked by GitHub Codespaces billing while preserving the same server and port. |
 | [platform/big-tech-mcp-skill-inventory.md](platform/big-tech-mcp-skill-inventory.md) | Google, Kimi, Claude, Apple, Windows/Microsoft, and major technology MCP/skill/plugin inventory. |
 | [platform/mcp-plugin-development-focus.md](platform/mcp-plugin-development-focus.md) | Safe development focus for using plugins, MCP servers, skills, and connectors without overclaiming authentication, live provider access, SSH, deployment, or external write readiness. |
+| [platform/seis-legacy-personal-plugin-reconciliation.md](platform/seis-legacy-personal-plugin-reconciliation.md) | Public-safe reconciliation record for legacy personal SEIS source packages and their canonical repo mirrors. |
 | [product/seis-code-foundation.md](product/seis-code-foundation.md) | SEIS Code workspace foundation. |
 | [reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md](reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md) | Browser-smoke evidence for SEIS Code, Mythic Gacha, SEIS Linux Replica, and shared workspace export behavior. |
 | [design-system/seis-design-foundation.md](design-system/seis-design-foundation.md) | Design-system foundation and evidence rules. |

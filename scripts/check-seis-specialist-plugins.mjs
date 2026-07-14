@@ -122,7 +122,8 @@ Options:
                Statically discover legacy personal SEIS sources from configured
                roots, ~/plugins, and the Codex personal cache. Each discovered
                source must have a public-safe repo counterpart; local source
-               code is never executed by this mode.
+               code is never executed by this mode. The result reports only
+               package names and discovery-origin categories, never local paths.
   --no-local   Skip local plugin root and personal marketplace checks.
   --help       Show usage
 `);
@@ -148,6 +149,11 @@ const specialistManifest = validateJsonObject(path.join(ROOT, "data", "seis-spec
 if (specialistManifest) {
   ensure(specialistManifest.mode === "single-public-seis-agent-with-embedded-modules", "specialist plugin manifest must use the single public SEIS-Agent mode");
   ensure(Array.isArray(specialistManifest.centralMcpTools), "specialist plugin manifest centralMcpTools must be an array");
+  ensure(Array.isArray(specialistManifest.sourceEvidence), "specialist plugin manifest sourceEvidence must be an array");
+  ensure(
+    specialistManifest.sourceEvidence?.includes("docs/platform/seis-legacy-personal-plugin-reconciliation.md"),
+    "specialist plugin manifest sourceEvidence must include the legacy personal reconciliation record"
+  );
   ensure(specialistManifest.consolidation?.primaryInstallId === "seis-ai-agent@seis-repo", "specialist plugin manifest must point at the SEIS-Agent primary install id");
   ensure(specialistManifest.consolidation?.defaultInstallMode === "single-public-plugin", "specialist plugin manifest must use the single public install mode");
   ensure(specialistManifest.consolidation?.legacyPersonalMarketplace === "compatibility-mirror-only", "specialist plugin manifest must mark personal marketplace as compatibility mirror only");
@@ -164,6 +170,10 @@ if (specialistManifest) {
 }
 
 validateEmbeddedAgentPlugin();
+ensureFile(
+  path.join(ROOT, "docs", "platform", "seis-legacy-personal-plugin-reconciliation.md"),
+  "legacy personal plugin reconciliation record"
+);
 
 const centralMcp = path.join(ROOT, "mcp", "seis-mcp-server.mjs");
 ensureFile(centralMcp, "central SEIS MCP server");
@@ -190,6 +200,7 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
+if (includeLegacyPersonal) reportLegacyPersonalSourceAudit(legacyPersonalSources);
 console.log("SEIS specialist plugin check passed.");
 
 function validatePluginRoot(pluginRoot, lane, scope, options = {}) {
@@ -576,7 +587,8 @@ function discoverLegacyPersonalSources() {
   const sources = new Map();
   const addSource = (name, root, origin) => {
     if (!isSeisPluginName(name) || !isPluginRoot(root)) return;
-    sources.set(name, { name, root, origin });
+    const normalizedRoot = path.resolve(root);
+    sources.set(`${name}:${normalizedRoot}`, { name, root: normalizedRoot, origin });
   };
 
   const cacheRoot = process.env.SEIS_LEGACY_PERSONAL_CACHE_ROOT
@@ -613,7 +625,23 @@ function discoverLegacyPersonalSources() {
   const configuredHubRoot = process.env.SEIS_PLUGIN_ROOT;
   if (configuredHubRoot) addSource("seis", configuredHubRoot, "configured-plugin-root");
 
-  return [...sources.values()].sort((left, right) => left.name.localeCompare(right.name));
+  return [...sources.values()].sort((left, right) => {
+    const byName = left.name.localeCompare(right.name);
+    return byName || left.origin.localeCompare(right.origin) || left.root.localeCompare(right.root);
+  });
+}
+
+function reportLegacyPersonalSourceAudit(sources) {
+  if (sources.length === 0) {
+    console.log("Legacy personal-source audit: no SEIS source packages discovered in configured roots.");
+    return;
+  }
+
+  const names = [...new Set(sources.map((source) => source.name))].join(", ");
+  const origins = [...new Set(sources.map((source) => source.origin))].sort().join(", ");
+  console.log(
+    `Legacy personal-source audit: verified ${sources.length} source root(s) for ${new Set(sources.map((source) => source.name)).size} package(s) (${names}); origins: ${origins}; local MCP execution: disabled.`
+  );
 }
 
 function isSeisPluginName(name) {

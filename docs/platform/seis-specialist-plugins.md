@@ -121,6 +121,11 @@ sensitive local path such as an env file, private key, or credential file is
 eligible for promotion. Legacy local manifests may remain `UNLICENSED`; they
 are source evidence rather than public installation surfaces.
 
+When sources are found, the command prints a concise source-root, package-name,
+and discovery-origin summary without exposing absolute local paths. The
+documented reconciliation decision for the known legacy sources lives in
+[SEIS Legacy Personal Plugin Reconciliation](./seis-legacy-personal-plugin-reconciliation.md).
+
 For plugin ingestion checks:
 
 ```bash
