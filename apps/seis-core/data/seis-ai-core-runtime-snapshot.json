@@ -80,6 +80,163 @@
     "id": "seis-ai-core-provider-registry",
     "status": "documented-fixture",
     "truthBoundary": "Repository-local provider status fixture only. It performs no live provider calls, no credential validation, no network health checks, no SSH checks, no deployment, and no GitHub mutation.",
+    "environmentValidation": {
+      "id": "seis-ai-core-provider-environment-validation",
+      "schemaVersion": "1.0.0",
+      "registryPath": "content/development/seis-ai-core-provider-registry.json",
+      "mode": "server-only-presence-and-shape",
+      "status": "validated-no-network",
+      "ok": true,
+      "providerCount": 7,
+      "configuredProviderCount": 2,
+      "missingRequiredProviderCount": 3,
+      "invalidProviderCount": 0,
+      "publicSecretExposureCount": 0,
+      "publicEnvKeys": [],
+      "secretValuesReturned": false,
+      "secretValuesLogged": false,
+      "credentialAuthenticationPerformed": false,
+      "networkCalled": false,
+      "externalMutationPerformed": false,
+      "liveRoutingEnabled": false,
+      "providers": [
+        {
+          "id": "codex-operator",
+          "publicStatus": "Available",
+          "mode": "session",
+          "requiredEnv": [],
+          "optionalEnv": [],
+          "presentRequiredEnv": [],
+          "presentOptionalEnv": [],
+          "missingRequiredEnv": [],
+          "invalidEnv": [],
+          "publicExposureEnv": [],
+          "configured": true,
+          "status": "not-required",
+          "credentialAuthenticationPerformed": false,
+          "networkCalled": false
+        },
+        {
+          "id": "seis-local-demo",
+          "publicStatus": "Available",
+          "mode": "none",
+          "requiredEnv": [],
+          "optionalEnv": [],
+          "presentRequiredEnv": [],
+          "presentOptionalEnv": [],
+          "missingRequiredEnv": [],
+          "invalidEnv": [],
+          "publicExposureEnv": [],
+          "configured": true,
+          "status": "not-required",
+          "credentialAuthenticationPerformed": false,
+          "networkCalled": false
+        },
+        {
+          "id": "anthropic-claude",
+          "publicStatus": "Missing Key",
+          "mode": "server-only-key",
+          "requiredEnv": [
+            "ANTHROPIC_API_KEY"
+          ],
+          "optionalEnv": [],
+          "presentRequiredEnv": [],
+          "presentOptionalEnv": [],
+          "missingRequiredEnv": [
+            "ANTHROPIC_API_KEY"
+          ],
+          "invalidEnv": [],
+          "publicExposureEnv": [],
+          "configured": false,
+          "status": "missing-required",
+          "credentialAuthenticationPerformed": false,
+          "networkCalled": false
+        },
+        {
+          "id": "openai-general",
+          "publicStatus": "Missing Key",
+          "mode": "server-only-key",
+          "requiredEnv": [
+            "OPENAI_API_KEY"
+          ],
+          "optionalEnv": [
+            "OPENAI_BASE_URL",
+            "OPENAI_ORG_ID",
+            "OPENAI_PROJECT_ID"
+          ],
+          "presentRequiredEnv": [],
+          "presentOptionalEnv": [],
+          "missingRequiredEnv": [
+            "OPENAI_API_KEY"
+          ],
+          "invalidEnv": [],
+          "publicExposureEnv": [],
+          "configured": false,
+          "status": "missing-required",
+          "credentialAuthenticationPerformed": false,
+          "networkCalled": false
+        },
+        {
+          "id": "google-gemini",
+          "publicStatus": "Missing Key",
+          "mode": "server-only-key",
+          "requiredEnv": [
+            "GEMINI_API_KEY"
+          ],
+          "optionalEnv": [],
+          "presentRequiredEnv": [],
+          "presentOptionalEnv": [],
+          "missingRequiredEnv": [
+            "GEMINI_API_KEY"
+          ],
+          "invalidEnv": [],
+          "publicExposureEnv": [],
+          "configured": false,
+          "status": "missing-required",
+          "credentialAuthenticationPerformed": false,
+          "networkCalled": false
+        },
+        {
+          "id": "qwen-review",
+          "publicStatus": "Disabled",
+          "mode": "disabled",
+          "requiredEnv": [],
+          "optionalEnv": [],
+          "presentRequiredEnv": [],
+          "presentOptionalEnv": [],
+          "missingRequiredEnv": [],
+          "invalidEnv": [],
+          "publicExposureEnv": [],
+          "configured": false,
+          "status": "disabled",
+          "credentialAuthenticationPerformed": false,
+          "networkCalled": false
+        },
+        {
+          "id": "ollama-local",
+          "publicStatus": "Disabled",
+          "mode": "local-service",
+          "requiredEnv": [],
+          "optionalEnv": [
+            "OLLAMA_BASE_URL",
+            "OLLAMA_HOST"
+          ],
+          "presentRequiredEnv": [],
+          "presentOptionalEnv": [],
+          "missingRequiredEnv": [],
+          "invalidEnv": [],
+          "publicExposureEnv": [],
+          "configured": false,
+          "status": "not-configured",
+          "credentialAuthenticationPerformed": false,
+          "networkCalled": false
+        }
+      ],
+      "nextSafeActions": [
+        "Treat present server-only values as shape-valid only; do not call a provider from this report.",
+        "Keep Missing Key and Disabled providers out of routing until a separate adapter and approval gate exists."
+      ]
+    },
     "coreCredentialRequirement": "none",
     "defaultRoutingMode": "local-demo",
     "localOnlyRespected": true,

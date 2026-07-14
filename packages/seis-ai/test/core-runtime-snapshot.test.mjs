@@ -26,6 +26,10 @@ describe("SEIS AI Core runtime snapshot", () => {
     assert.equal(snapshot.applicationIntegration.runtimeBoundary.promptBodiesIncluded, false);
     assert.equal(snapshot.applicationIntegration.runtimeBoundary.humanApprovalRequiredForLiveActions, true);
     assert.equal(snapshot.providerRegistry.coreCredentialRequirement, "none");
+    assert.equal(snapshot.providerRegistry.environmentValidation.status, "validated-no-network");
+    assert.equal(snapshot.providerRegistry.environmentValidation.secretValuesReturned, false);
+    assert.equal(snapshot.providerRegistry.environmentValidation.credentialAuthenticationPerformed, false);
+    assert.equal(snapshot.providerRegistry.environmentValidation.networkCalled, false);
     assert.equal(snapshot.providerRegistry.providerCount, 7);
     assert.equal(snapshot.providerRegistry.missingKeyProviderCount, 3);
     assert.equal(snapshot.pluginMesh.installedEnabledCount, 185);

@@ -15,6 +15,22 @@
     "mcpRuntimeContract": "content/development/seis-ai-core-mcp-runtime-contract.json"
   },
   "truthBoundary": "Repository-local provider status fixture only. It performs no live provider calls, no credential validation, no network health checks, no SSH checks, no deployment, and no GitHub mutation.",
+  "environmentValidation": {
+    "schemaVersion": "1.0.0",
+    "mode": "server-only-presence-and-shape",
+    "secretValuesReturned": false,
+    "networkCalled": false,
+    "externalMutationPerformed": false,
+    "publicEnvPrefixes": [
+      "VITE_",
+      "NEXT_PUBLIC_",
+      "PUBLIC_",
+      "REACT_APP_",
+      "NUXT_PUBLIC_",
+      "EXPO_PUBLIC_",
+      "ASTRO_PUBLIC_"
+    ]
+  },
   "publicStates": [
     "Available",
     "Missing Key",
@@ -67,6 +83,14 @@
       "category": "supervised-operator",
       "publicStatus": "Available",
       "credentialRequirement": "current-session-only",
+      "expectedEnv": [],
+      "environmentPolicy": {
+        "mode": "session",
+        "required": [],
+        "optional": [],
+        "secretVariables": [],
+        "endpointVariables": []
+      },
       "configured": true,
       "enabled": true,
       "routingEligible": true,
@@ -96,6 +120,14 @@
       "category": "local-demo",
       "publicStatus": "Available",
       "credentialRequirement": "none",
+      "expectedEnv": [],
+      "environmentPolicy": {
+        "mode": "none",
+        "required": [],
+        "optional": [],
+        "secretVariables": [],
+        "endpointVariables": []
+      },
       "configured": true,
       "enabled": true,
       "routingEligible": true,
@@ -129,6 +161,17 @@
       "expectedEnv": [
         "ANTHROPIC_API_KEY"
       ],
+      "environmentPolicy": {
+        "mode": "server-only-key",
+        "required": [
+          "ANTHROPIC_API_KEY"
+        ],
+        "optional": [],
+        "secretVariables": [
+          "ANTHROPIC_API_KEY"
+        ],
+        "endpointVariables": []
+      },
       "configured": false,
       "enabled": false,
       "routingEligible": false,
@@ -162,6 +205,23 @@
         "OPENAI_ORG_ID",
         "OPENAI_PROJECT_ID"
       ],
+      "environmentPolicy": {
+        "mode": "server-only-key",
+        "required": [
+          "OPENAI_API_KEY"
+        ],
+        "optional": [
+          "OPENAI_BASE_URL",
+          "OPENAI_ORG_ID",
+          "OPENAI_PROJECT_ID"
+        ],
+        "secretVariables": [
+          "OPENAI_API_KEY"
+        ],
+        "endpointVariables": [
+          "OPENAI_BASE_URL"
+        ]
+      },
       "configured": false,
       "enabled": false,
       "routingEligible": false,
@@ -192,6 +252,17 @@
       "expectedEnv": [
         "GEMINI_API_KEY"
       ],
+      "environmentPolicy": {
+        "mode": "server-only-key",
+        "required": [
+          "GEMINI_API_KEY"
+        ],
+        "optional": [],
+        "secretVariables": [
+          "GEMINI_API_KEY"
+        ],
+        "endpointVariables": []
+      },
       "configured": false,
       "enabled": false,
       "routingEligible": false,
@@ -219,6 +290,13 @@
       "publicStatus": "Disabled",
       "credentialRequirement": "optional-future-provider",
       "expectedEnv": [],
+      "environmentPolicy": {
+        "mode": "disabled",
+        "required": [],
+        "optional": [],
+        "secretVariables": [],
+        "endpointVariables": []
+      },
       "configured": false,
       "enabled": false,
       "routingEligible": false,
@@ -250,6 +328,19 @@
         "OLLAMA_BASE_URL",
         "OLLAMA_HOST"
       ],
+      "environmentPolicy": {
+        "mode": "local-service",
+        "required": [],
+        "optional": [
+          "OLLAMA_BASE_URL",
+          "OLLAMA_HOST"
+        ],
+        "secretVariables": [],
+        "endpointVariables": [
+          "OLLAMA_BASE_URL",
+          "OLLAMA_HOST"
+        ]
+      },
       "configured": false,
       "enabled": false,
       "routingEligible": false,

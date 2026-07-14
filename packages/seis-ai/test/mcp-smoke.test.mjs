@@ -1054,6 +1054,10 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.id, "seis-ai-core-provider-registry");
     assert.equal(payload.coreCredentialRequirement, "none");
     assert.equal(payload.providerCount, 7);
+    assert.equal(payload.environmentValidation.status, "validated-no-network");
+    assert.equal(payload.environmentValidation.secretValuesReturned, false);
+    assert.equal(payload.environmentValidation.credentialAuthenticationPerformed, false);
+    assert.equal(payload.environmentValidation.networkCalled, false);
     assert.ok(payload.providers.some((provider) => provider.id === "seis-local-demo" && provider.routingEligible === true));
   });
 

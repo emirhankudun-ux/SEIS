@@ -4,6 +4,7 @@ import path from "node:path";
 
 import { redactSecretText } from "./redaction.mjs";
 import { buildSeisPluginMcpMesh } from "./plugin-mcp-mesh.mjs";
+import { validateProviderEnvironment } from "../provider/provider-env-validation.mjs";
 
 export const PLUGIN_INTEGRATION_PATH = "content/development/seis-agent-plugin-integration.json";
 export const SEIS_SSH_PUBLIC_ACCESS_CONTRACT_PATH = "deploy/seis-ssh-public-access-contract.json";
@@ -269,6 +270,21 @@ export function aiCoreProviderStatus(repoRoot, options = {}) {
       ? registry.optionalForLiveFeatures
       : [];
     const noKeyProviders = Array.isArray(registry.noKeyProviders) ? registry.noKeyProviders : [];
+    const environmentValidation = registry.environmentValidation
+      ? validateProviderEnvironment(repoRoot, { registry })
+      : {
+        id: "seis-ai-core-provider-environment-validation",
+        schemaVersion: "1.0.0",
+        status: "not-configured",
+        performed: false,
+        secretValuesReturned: false,
+        secretValuesLogged: false,
+        credentialAuthenticationPerformed: false,
+        networkCalled: false,
+        externalMutationPerformed: false,
+        liveRoutingEnabled: false,
+        providers: [],
+      };
 
     const payload = {
       ok: true,
@@ -317,6 +333,7 @@ export function aiCoreProviderStatus(repoRoot, options = {}) {
       noKeyProviders,
       securityInvariants: registry.securityInvariants || [],
       nextSafeActions: registry.nextSafeActions || [],
+      environmentValidation,
     };
 
     if (options.includeFullRegistry === true) {

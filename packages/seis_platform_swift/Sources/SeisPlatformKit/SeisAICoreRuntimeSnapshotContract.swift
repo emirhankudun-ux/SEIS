@@ -133,10 +133,40 @@ public struct SeisAICoreProviderFixture: Codable, Equatable, Identifiable, Senda
     }
 }
 
+public struct SeisAICoreProviderEnvironmentValidationSnapshot: Codable, Equatable, Sendable {
+    public let id: String
+    public let schemaVersion: String
+    public let mode: String
+    public let status: String
+    public let ok: Bool
+    public let secretValuesReturned: Bool
+    public let secretValuesLogged: Bool
+    public let credentialAuthenticationPerformed: Bool
+    public let networkCalled: Bool
+    public let externalMutationPerformed: Bool
+    public let liveRoutingEnabled: Bool
+    public let publicSecretExposureCount: Int
+
+    public var isSafe: Bool {
+        schemaVersion == "1.0.0" &&
+            mode == "server-only-presence-and-shape" &&
+            status == "validated-no-network" &&
+            ok &&
+            !secretValuesReturned &&
+            !secretValuesLogged &&
+            !credentialAuthenticationPerformed &&
+            !networkCalled &&
+            !externalMutationPerformed &&
+            !liveRoutingEnabled &&
+            publicSecretExposureCount == 0
+    }
+}
+
 public struct SeisAICoreProviderRegistrySnapshot: Codable, Equatable, Identifiable, Sendable {
     public let id: String
     public let status: String
     public let truthBoundary: String
+    public let environmentValidation: SeisAICoreProviderEnvironmentValidationSnapshot
     public let coreCredentialRequirement: String
     public let defaultRoutingMode: String
     public let localOnlyRespected: Bool
@@ -1335,6 +1365,10 @@ private extension SeisAICoreRuntimeSnapshotContract {
         check(
             providerRegistry.coreCredentialRequirement == "none",
             "providerRegistry.coreCredentialRequirement must remain none."
+        )
+        check(
+            providerRegistry.environmentValidation.isSafe,
+            "providerRegistry.environmentValidation must be a safe server-only no-network report."
         )
         check(providerRegistry.localOnlyRespected, "providerRegistry.localOnlyRespected must be true.")
         check(

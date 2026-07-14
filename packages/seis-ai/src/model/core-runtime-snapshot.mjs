@@ -287,6 +287,7 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
       id: provider.id,
       status: provider.status,
       truthBoundary: provider.truthBoundary,
+      environmentValidation: provider.environmentValidation,
       coreCredentialRequirement: provider.coreCredentialRequirement,
       defaultRoutingMode: provider.defaultRoutingMode,
       localOnlyRespected: provider.localOnlyRespected,

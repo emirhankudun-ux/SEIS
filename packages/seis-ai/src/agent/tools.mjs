@@ -140,7 +140,7 @@ export function toolDefinitions({ allowWrite = false } = {}) {
     {
       name: AI_CORE_PROVIDER_STATUS_TOOL,
       description:
-        "Read the SEIS AI Core provider registry for zero-key Local Demo, supervised Codex, optional server-only cloud providers, local-provider candidates, public provider states, and security invariants. Read-only; performs no live provider calls, credential validation, network checks, SSH, deployment, or GitHub mutation.",
+        "Read the SEIS AI Core provider registry and server-only environment presence/shape summary for zero-key Local Demo, supervised Codex, optional cloud providers, local-provider candidates, public provider states, and security invariants. Read-only; never returns credential values, authenticates credentials, calls providers, checks network health, uses SSH, deploys, or mutates GitHub.",
       input_schema: {
         type: "object",
         properties: {

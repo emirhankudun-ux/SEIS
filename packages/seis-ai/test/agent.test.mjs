@@ -1210,6 +1210,8 @@ describe("executeTool", () => {
     assert.equal(payload.providerCount, 2);
     assert.equal(payload.noKeyProviderCount, 1);
     assert.ok(payload.publicStates.includes("Rate Limited"));
+    assert.equal(payload.environmentValidation.status, "not-configured");
+    assert.equal(payload.environmentValidation.secretValuesReturned, false);
     assert.ok(payload.providers.some((provider) => provider.id === "seis-local-demo" && provider.routingEligible === true));
     assert.ok(payload.providers.some((provider) => provider.id === "anthropic-claude" && provider.publicStatus === "Missing Key"));
   });

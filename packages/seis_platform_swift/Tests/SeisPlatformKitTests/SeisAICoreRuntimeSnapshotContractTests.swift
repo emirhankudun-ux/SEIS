@@ -131,6 +131,10 @@ import Testing
     )
 
     #expect(snapshot.providerRegistry.publicStates == SeisAICoreProviderState.allCases)
+    #expect(snapshot.providerRegistry.environmentValidation.isSafe)
+    #expect(snapshot.providerRegistry.environmentValidation.secretValuesReturned == false)
+    #expect(snapshot.providerRegistry.environmentValidation.credentialAuthenticationPerformed == false)
+    #expect(snapshot.providerRegistry.environmentValidation.networkCalled == false)
     #expect(fixturesByID["codex-operator"]?.publicStatus == .available)
     #expect(fixturesByID["seis-local-demo"]?.publicStatus == .available)
     #expect(fixturesByID["anthropic-claude"]?.publicStatus == .missingKey)

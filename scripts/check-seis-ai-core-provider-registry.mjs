@@ -15,6 +15,7 @@ const paths = {
   modelRouterDoc: "docs/ai/model-router.md",
   providerAudit: "docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md",
   helper: "packages/seis-ai/src/lib/plugin-integration.mjs",
+  environmentValidator: "packages/seis-ai/src/provider/provider-env-validation.mjs",
   tools: "packages/seis-ai/src/agent/tools.mjs",
   mcp: "packages/seis-ai/src/mcp/server.mjs",
   packageJson: "package.json",
@@ -70,6 +71,11 @@ if (registry) {
   ensureArrayIncludesAll((registry.providers || []).map((provider) => provider.id), requiredProviders, "providers");
   ensureArrayIncludesAll(registry.fallbackOrder, ["local-demo", "feature-disabled"], "fallbackOrder");
   ensureArrayIncludesAll(registry.noKeyProviders, ["codex-operator", "seis-local-demo", "ollama-local"], "noKeyProviders");
+  ensure(registry.environmentValidation?.schemaVersion === "1.0.0", "environment validation schema version mismatch");
+  ensure(registry.environmentValidation?.mode === "server-only-presence-and-shape", "environment validation must stay server-only presence-and-shape");
+  ensure(registry.environmentValidation?.secretValuesReturned === false, "environment validation must not return secret values");
+  ensure(registry.environmentValidation?.networkCalled === false, "environment validation must not call the network");
+  ensureArrayIncludesAll(registry.environmentValidation?.publicEnvPrefixes, publicEnvPrefixes, "environmentValidation.publicEnvPrefixes");
 
   const providers = Array.isArray(registry.providers) ? registry.providers : [];
   const localDemo = providers.find((provider) => provider.id === "seis-local-demo");
@@ -85,6 +91,14 @@ if (registry) {
     ensure(typeof provider.credentialRequirement === "string" && provider.credentialRequirement.length > 0, `${provider.id}.credentialRequirement required`);
     ensure(Array.isArray(provider.capabilities) && provider.capabilities.length > 0, `${provider.id}.capabilities required`);
     ensure(provider.actualModel !== undefined, `${provider.id}.actualModel required`);
+    ensure(Array.isArray(provider.expectedEnv), `${provider.id}.expectedEnv must be an array`);
+    ensure(provider.environmentPolicy?.mode, `${provider.id}.environmentPolicy.mode required`);
+    for (const field of ["required", "optional", "secretVariables", "endpointVariables"]) {
+      ensure(Array.isArray(provider.environmentPolicy?.[field]), `${provider.id}.environmentPolicy.${field} must be an array`);
+      for (const envName of provider.environmentPolicy?.[field] || []) {
+        ensure(provider.expectedEnv.includes(envName), `${provider.id}.environmentPolicy.${field} references undeclared ${envName}`);
+      }
+    }
     if (provider.publicStatus === "Missing Key" || provider.publicStatus === "Disabled") {
       ensure(provider.routingEligible === false, `${provider.id} must not route while ${provider.publicStatus}`);
       ensure(provider.enabled === false, `${provider.id} must not be enabled while ${provider.publicStatus}`);
@@ -155,6 +169,9 @@ for (const [text, label] of [
 ensure(helper.includes("AI_CORE_PROVIDER_STATUS_TOOL"), "helper must expose AI_CORE_PROVIDER_STATUS_TOOL");
 ensure(helper.includes("aiCoreProviderStatus"), "helper must define aiCoreProviderStatus");
 ensure(helper.includes("seis-ai-core-provider-registry.json"), "helper must reference provider registry path");
+ensure(helper.includes("validateProviderEnvironment"), "helper must bind server-only provider environment validation");
+ensure(readText(paths.environmentValidator, "provider environment validator").includes("secretValuesReturned: false"), "provider environment validator must return no secret values");
+ensure(readText(paths.environmentValidator, "provider environment validator").includes("networkCalled: false"), "provider environment validator must never call the network");
 ensure(mcp.includes("seis://ai/provider-registry.json"), "MCP server must expose provider registry resource");
 ensure(mcp.includes("seis://ai/read-only-router-runtime.json"), "MCP server must expose read-only router resource");
 

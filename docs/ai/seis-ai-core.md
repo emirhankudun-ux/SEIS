@@ -30,7 +30,7 @@ The foundation includes:
 | Prompt engine | Implemented as a versioned, local Swift contract | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAIPromptEngine.swift`, `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisAIPromptEngineTests.swift`, `docs/ai/prompt-engine.md` | No live provider adapter, tokenizer-backed budget, or prompt-injection corpus exists. | Keep rendering ephemeral and add reviewed injection fixtures before any live adapter. |
 | Agent runtime | Implemented as status-and-plan only | `docs/ai/agent-runtime.md`, `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAIAgentPlanRuntime.swift`, `content/development/seis-ai-core-subagent-runtime-fixtures.json`, `content/development/seis-ai-core-subagent-review-ledger.json` | No write authority, background automation, or live mutation exists in Swift. | Keep runtime authority gated and dry-run before provider, deployment, SSH, GitHub, or storage write approvals exist. |
 | Version registry | Documented fixture | `content/development/seis-ai-core-version-registry.json`, `seis_ai_core_version_status` | No live release channel, live provider adapter, or model ownership evidence exists. | Keep SEIS AI Core v0.1 as a zero-key application-layer profile until provider and runtime gates exist. |
-| Provider registry | Documented fixture | `content/development/seis-ai-core-provider-registry.json`, `seis_ai_core_provider_status`, `seis://ai/provider-registry.json` | This is repo-local status evidence only; it performs no provider calls or credential validation. | Use it for SEIS AI status surfaces before live provider adapters. |
+| Provider registry | Documented fixture with server-only environment presence/shape validation | `content/development/seis-ai-core-provider-registry.json`, `packages/seis-ai/src/provider/provider-env-validation.mjs`, `seis_ai_core_provider_status`, `seis://ai/provider-registry.json` | The validator never returns values, authenticates credentials, calls providers, or checks network health; Missing Key and Disabled remain non-routable. | Use the redacted status summary for no-key startup and adapter preflight evidence before live provider adapters. |
 | Model scaling hardware profile | Planned compatibility contract | `content/development/seis-model-scaling-hardware-profile.json`, `docs/ai/seis-model-scaling.md`, `seis_ai_core_model_scaling_status` | The 20B target for 16GB+ RAM plus future 70B, 150B, and 512B apex lanes are not trained weights, live inference, downloads, AGI proof, or benchmark evidence. | Keep the profile blocked until clean-room model cards, dataset cards, quantized/distributed runtime plans, safety evals, and memory benchmarks exist. |
 | 150B frontier model program | Plan-only frontier program record | `content/development/seis-150b-frontier-model-program.json`, `seis://ai/150b-frontier-model-program.json`, `npm run check:seis-150b-frontier-model-program` | The 150B lane is a charter, stage plan, and promotion-gate record only; it is not trained weights, inference, benchmark evidence, provider access, cloud/GPU provisioning, SSH execution, or production readiness. | Keep it blocked until 20B and 70B evidence, clean-room training plan, distributed runtime budget, privacy/safety review, observability, rollback, cost-stop, and human approval exist. |
 | 512B apex model program | Plan-only SEIS AGI readiness record with public research baseline | `content/development/seis-512b-apex-model-program.json`, `seis://ai/512b-apex-model-program.json`, `npm run check:seis-512b-apex-model-program` | The 512B lane is an apex charter, internet-researched frontier-model baseline, AGI-readiness definition, and GitHub-public-readiness gate only; it is not AGI, trained weights, inference, benchmark evidence, provider access, cloud/GPU provisioning, SSH execution, or production readiness. | Keep it blocked until 20B, 70B, 150B, and 300B+ evidence, clean-room training plan, independent AGI eval protocol, all installed AI/sub-agent council review, public readiness evidence, and human approval exist. |
@@ -99,7 +99,7 @@ Public provider states must remain:
 
 AI features need evidence before being marked implemented:
 
-- server-only environment validation
+- server-only environment presence/shape validation
 - provider registry tests
 - no-key startup test
 - fallback test
@@ -822,6 +822,7 @@ snapshot generator, and the focused tests.
 
 ## Next Safe Action
 
-Add typed server-only environment validation, provider registry fixtures, prompt
-pack fixtures, and an agent permission matrix before adding live provider
-adapters or requesting API keys.
+The typed server-only environment validator now covers declared variable
+presence, placeholder rejection, endpoint shape, and public-prefix exposure
+without returning values or calling a provider. Keep live adapters disabled
+until adapter tests, gateway hardening, and explicit approval exist.
