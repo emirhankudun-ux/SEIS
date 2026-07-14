@@ -14,6 +14,7 @@ struct SeisDesktopDemoCommandCenterView: View {
     @State private var historyTimeFilter: HistoryTimeFilter = .all
     @State private var copyToast: String? = nil
     @State private var copyToastToken = UUID()
+    @State private var showGitHubAuthApproval = false
 
     enum HistoryFilter: String, CaseIterable, Identifiable {
         case all = "Tüm Kayıtlar"
@@ -128,7 +129,7 @@ struct SeisDesktopDemoCommandCenterView: View {
                 .disabled(model.isRunning)
 
                 Button("Run gh auth login") {
-                    model.runGitHubAuthLogin()
+                    showGitHubAuthApproval = true
                 }
                 .disabled(model.isRunning)
 
@@ -340,6 +341,18 @@ struct SeisDesktopDemoCommandCenterView: View {
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
         .onAppear {
             model.refreshWorkspacePath(workspacePath)
+        }
+        .confirmationDialog(
+            "Approve GitHub authentication",
+            isPresented: $showGitHubAuthApproval,
+            titleVisibility: .visible
+        ) {
+            Button("Approve and Run gh auth login", role: .destructive) {
+                model.runGitHubAuthLogin()
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("This starts an interactive credential and network flow. It is not a read-only check and may change the local GitHub CLI session.")
         }
     }
 
