@@ -70,6 +70,9 @@ test('source policy rejects traversal, private paths, and supplemental secret pa
     'see /home/example\n',
     'see C:\\Users\\example\n',
     'read ~/.ssh\n',
+    'HOME=/Users/example/private.txt\n',
+    'path=[/home/example/private.txt]\n',
+    'target=~/.ssh/config\n',
   ]) {
     assert.throws(() => scanPublicSafeText(value, 'fixture'), /public-safety-rule/u);
   }

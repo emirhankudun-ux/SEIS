@@ -70,10 +70,10 @@ const SECRET_RULES = Object.freeze([
 ]);
 
 const PRIVATE_PATH_RULES = Object.freeze([
-  ['macos-user-home', /(?:^|[\s('"`<])\/Users\/[A-Za-z0-9._-]+(?=\/|>|[\s'"`),.;:]|$)/mu],
-  ['unix-user-home', /(?:^|[\s('"`<])\/home\/[A-Za-z0-9._-]+(?=\/|>|[\s'"`),.;:]|$)/mu],
+  ['macos-user-home', /\/Users\/[A-Za-z0-9._-]+(?=\/|>|[\s'"`),.;:]|$)/mu],
+  ['unix-user-home', /\/home\/[A-Za-z0-9._-]+(?=\/|>|[\s'"`),.;:]|$)/mu],
   ['windows-user-home', /[A-Za-z]:\\Users\\[A-Za-z0-9._-]+(?=\\|[\s'"`),.;:]|$)/mu],
-  ['ssh-home', /(?:^|[\s('"`<])~\/\.ssh(?=\/|>|[\s'"`),.;:]|$)/mu],
+  ['ssh-home', /~\/\.ssh(?=\/|>|[\s'"`),.;:]|$)/mu],
   ['file-uri', /file:\/\//iu],
 ]);
 
