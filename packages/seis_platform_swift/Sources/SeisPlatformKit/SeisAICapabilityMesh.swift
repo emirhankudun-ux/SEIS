@@ -1,5 +1,33 @@
 import Foundation
 
+public struct SeisAICapabilityMeshPluginMCPProbe: Codable, Equatable, Identifiable, Sendable {
+    public let id: String
+    public let serverID: String
+    public let requestedTool: String
+    public let status: String
+    public let resultKeyCount: Int
+    public let isVerified: Bool
+    public let boundarySafe: Bool
+
+    public init(
+        id: String,
+        serverID: String,
+        requestedTool: String,
+        status: String,
+        resultKeyCount: Int,
+        isVerified: Bool,
+        boundarySafe: Bool
+    ) {
+        self.id = id
+        self.serverID = serverID
+        self.requestedTool = requestedTool
+        self.status = status
+        self.resultKeyCount = resultKeyCount
+        self.isVerified = isVerified
+        self.boundarySafe = boundarySafe
+    }
+}
+
 /// A read-only projection of the source-backed plugin and MCP mesh for native surfaces.
 /// It intentionally contains no executable tool handle, credential, prompt body, or transport.
 public struct SeisAICapabilityMesh: Codable, Equatable, Sendable {
@@ -17,6 +45,7 @@ public struct SeisAICapabilityMesh: Codable, Equatable, Sendable {
     public let pluginMcpVerifiedServerCount: Int
     public let pluginMcpSafeToolProbeCount: Int
     public let pluginMcpSafeToolNames: [String]
+    public let pluginMcpProbes: [SeisAICapabilityMeshPluginMCPProbe]
     public let pluginMcpBoundarySafe: Bool
     public let runtimeBoundarySafe: Bool
     public let humanApprovalRequiredForLiveActions: Bool
@@ -41,6 +70,26 @@ public struct SeisAICapabilityMesh: Codable, Equatable, Sendable {
             .filter { $0.safeToolProbe.isVerified }
             .map { $0.safeToolProbe.requestedTool }
             .sorted()
+        self.pluginMcpProbes = pluginMcpMesh.servers
+            .map { server in
+                let serverBoundarySafe = server.status == "probe-verified" &&
+                    !server.executionAuthority &&
+                    !server.credentialsRead &&
+                    !server.networkCalled &&
+                    !server.externalMutationPerformed &&
+                    server.safeToolProbe.isVerified &&
+                    !server.safeToolProbe.resultKeys.isEmpty
+                return SeisAICapabilityMeshPluginMCPProbe(
+                    id: server.id,
+                    serverID: server.serverId,
+                    requestedTool: server.safeToolProbe.requestedTool,
+                    status: server.safeToolProbe.status,
+                    resultKeyCount: server.safeToolProbe.resultKeys.count,
+                    isVerified: server.safeToolProbe.isVerified,
+                    boundarySafe: serverBoundarySafe
+                )
+            }
+            .sorted { $0.serverID < $1.serverID }
         self.pluginMcpBoundarySafe = pluginMcpMesh.boundary.liveSessionStarted == false &&
             pluginMcpMesh.boundary.shell == false &&
             pluginMcpMesh.boundary.credentialsRead == false &&
@@ -65,6 +114,7 @@ public struct SeisAICapabilityMesh: Codable, Equatable, Sendable {
         if mcpSurfaces.isEmpty { issues.append("MCP surfaces are missing") }
         if pluginMcpServerCount != 6 || pluginMcpVerifiedServerCount != pluginMcpServerCount { issues.append("plugin MCP mesh must verify all six local servers") }
         if pluginMcpSafeToolProbeCount != pluginMcpServerCount || pluginMcpSafeToolNames.count != pluginMcpServerCount { issues.append("plugin MCP mesh must expose one safe status probe per server") }
+        if pluginMcpProbes.count != pluginMcpServerCount || !pluginMcpProbes.allSatisfy({ $0.isVerified && $0.boundarySafe && $0.resultKeyCount > 0 }) { issues.append("plugin MCP mesh must expose verified per-server probe metadata") }
         if !pluginMcpBoundarySafe { issues.append("plugin MCP mesh boundary is not read-only safe") }
         if !runtimeBoundarySafe { issues.append("runtime boundary is not read-only safe") }
         if !humanApprovalRequiredForLiveActions { issues.append("live actions are missing human approval") }

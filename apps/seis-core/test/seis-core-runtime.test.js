@@ -32,6 +32,10 @@ test("SEIS Core renders source-backed providers, scenarios, and MCP mesh", async
   assert.match(window.document.querySelector("#ai-core-runtime-summary")?.textContent || "", /37\/30\/3/);
   assert.match(window.document.querySelector("#ai-core-runtime-summary")?.textContent || "", /6\/6/);
   assert.match(window.document.querySelector("#ai-core-mesh-strip")?.textContent || "", /6\/6/);
+  const probeRows = [...window.document.querySelectorAll("[data-ai-core-mcp-probe]")];
+  assert.equal(probeRows.length, 6);
+  assert.ok(probeRows.some((row) => row.textContent?.includes("seis_cloud_status")));
+  assert.ok(probeRows.every((row) => row.textContent?.includes("read-only")));
 
   window.document.querySelector('[data-ai-core-scenario="private-vault-block"]')?.click();
   const decision = window.document.querySelector("#ai-core-decision");
@@ -58,6 +62,7 @@ test("SEIS Core rejects an unsafe plugin MCP probe snapshot", async () => {
   window.document.querySelector('[data-view="godmode"]')?.click();
   assert.equal(window.document.querySelector("#ai-core-runtime-state")?.textContent, "Fallback");
   assert.match(window.document.querySelector("#ai-core-runtime-feedback")?.textContent || "", /plugin MCP safe-probe boundary/i);
+  assert.equal(window.document.querySelectorAll("[data-ai-core-mcp-probe]").length, 0);
 });
 
 test("God Mode mission submission records a decision-only route", async () => {

@@ -2967,6 +2967,7 @@ function renderAiCoreRuntime() {
   const pluginMesh = seisAiCoreRuntimeSnapshot.pluginMesh || {};
   const pluginMcpMesh = pluginMesh.mcpMesh || {};
   const pluginMcpProbe = pluginMcpMesh.probe || {};
+  const pluginMcpServers = Array.isArray(pluginMcpMesh.servers) ? pluginMcpMesh.servers : [];
   const mcp = seisAiCoreRuntimeSnapshot.mcpRuntime || {};
   const scenarios = Array.isArray(seisAiCoreRuntimeSnapshot.router?.scenarios)
     ? seisAiCoreRuntimeSnapshot.router.scenarios
@@ -3065,18 +3066,36 @@ function renderAiCoreRuntime() {
     `;
   }
 
-  meshStrip.innerHTML = [
+  const meshMetrics = [
     ["Unified install", pluginMesh.primaryInstallId || "unavailable"],
     ["Installed enabled", pluginMesh.installedEnabledCount || 0],
     ["Helper universe", pluginMesh.helperUniquePlugins || 0],
     ["MCP transport", mcp.transport || "not-started"],
     ["Plugin MCP probes", `${pluginMcpProbe.safeToolProbeCount || 0}/${pluginMcpMesh.serverCount || 0}`, "local status-only"]
-  ].map(([label, value]) => `
+  ];
+  meshStrip.innerHTML = meshMetrics.map(([label, value]) => `
     <article data-ai-core-mesh-metric="${escapeHtml(label)}">
       <span>${escapeHtml(label)}</span>
       <strong>${escapeHtml(value)}</strong>
     </article>
-  `).join("");
+  `).join("") + pluginMcpServers.map((server) => {
+    const probe = server.safeToolProbe || {};
+    const resultKeyCount = Array.isArray(probe.resultKeys) ? probe.resultKeys.length : 0;
+    const boundarySafe = server.status === "probe-verified" &&
+      probe.status === "verified" &&
+      probe.error == null &&
+      server.executionAuthority === false &&
+      server.credentialsRead === false &&
+      server.networkCalled === false &&
+      server.externalMutationPerformed === false;
+    return `
+      <article class="ai-core-mcp-probe-card" data-ai-core-mcp-probe="${escapeHtml(server.serverId || server.id || "unknown")}" aria-label="Plugin MCP probe ${escapeHtml(server.serverId || server.id || "unknown")}">
+        <span>Probe · ${escapeHtml(server.serverId || server.id || "unknown")}</span>
+        <strong>${escapeHtml(probe.requestedTool || "not declared")}</strong>
+        <small>${escapeHtml(probe.status || "unverified")} · ${resultKeyCount} redacted result keys · ${boundarySafe ? "read-only" : "watch"}</small>
+      </article>
+    `;
+  }).join("");
 
   feedback.textContent = aiCoreRuntimeNotice;
 }

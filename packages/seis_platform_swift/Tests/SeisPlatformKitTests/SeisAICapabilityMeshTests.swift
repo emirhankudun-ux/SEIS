@@ -29,6 +29,15 @@ struct SeisAICapabilityMeshTests {
             "seis_design_status",
             "seis_repos_bridge_status"
         ])
+        #expect(mesh.pluginMcpProbes.map(\.serverID) == [
+            "seis",
+            "seis-ai-agent",
+            "seis-cloud",
+            "seis-code",
+            "seis-data",
+            "seis-design"
+        ])
+        #expect(mesh.pluginMcpProbes.allSatisfy { $0.isVerified && $0.boundarySafe && $0.resultKeyCount > 0 })
         #expect(mesh.pluginMcpBoundarySafe)
         #expect(mesh.runtimeBoundarySafe)
         #expect(mesh.humanApprovalRequiredForLiveActions)
@@ -43,6 +52,7 @@ struct SeisAICapabilityMeshTests {
         #expect(mesh.pluginStatusLabel.contains("300 helper plugins"))
         #expect(mesh.mcpStatusLabel == "37 tools · 30 resources · 3 prompts")
         #expect(mesh.pluginMcpStatusLabel == "Plugin MCP: 6/6 servers · 6/6 safe status probes · read-only")
+        #expect(mesh.pluginMcpProbes.first { $0.serverID == "seis-cloud" }?.requestedTool == "seis_cloud_status")
         #expect(mesh.activationPolicy.contains("user_approved"))
     }
 

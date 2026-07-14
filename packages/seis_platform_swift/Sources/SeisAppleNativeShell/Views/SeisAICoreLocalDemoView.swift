@@ -1466,6 +1466,28 @@ struct SeisAICoreLocalDemoView: View {
                 Text("Allowlisted local status tools: \(mesh.pluginMcpSafeToolNames.joined(separator: ", "))")
                     .font(.caption2.monospaced())
                     .foregroundStyle(.tertiary)
+                Text("Per-server probe evidence")
+                    .font(.caption.weight(.semibold))
+                ForEach(mesh.pluginMcpProbes) { probe in
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: probe.isVerified && probe.boundarySafe ? "checkmark.seal" : "exclamationmark.triangle")
+                            .foregroundStyle(probe.isVerified && probe.boundarySafe ? .green : .orange)
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(probe.serverID)
+                                .font(.caption.weight(.semibold))
+                            Text("\(probe.requestedTool) · \(probe.status)")
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                            Text("\(probe.resultKeyCount) redacted result keys · \(probe.boundarySafe ? "read-only" : "watch")")
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                    .padding(8)
+                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 8))
+                }
                 Text("Status probes only. No plugin activation, MCP invocation, credentials, network, SSH, or mutation is performed.")
                     .font(.caption2)
                     .foregroundStyle(.secondary)

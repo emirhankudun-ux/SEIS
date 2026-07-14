@@ -197,6 +197,10 @@ non-negative MCP inventory, a verified safe-probe count, a safe runtime
 boundary, and human approval for live actions. This keeps "listed",
 "source-backed", "locally smoke-verified", and "activated" as separate
 states.
+The native Local Demo also renders a compact per-server probe projection with
+the allowlisted tool name, probe status, redacted result-key count, and the
+server-level read-only boundary; command, args, paths, and tool handles are not
+exposed in that projection.
 
 The runtime snapshot also carries the source-backed plugin capability catalog:
 six bundled manifests, 67 manifest capabilities, five personal plugin records,
