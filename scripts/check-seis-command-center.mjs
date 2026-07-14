@@ -7,6 +7,15 @@ import { buildSeisEcosystemCapabilitySnapshot } from "../packages/seis-ai/src/mo
 
 const root = process.cwd();
 const appRoot = path.join(root, "apps", "seis-core");
+const nativeCommandCenterPath = path.join(
+  root,
+  "packages",
+  "seis_platform_swift",
+  "Sources",
+  "SeisAppleNativeShell",
+  "Views",
+  "SeisDesktopDemoCommandCenterView.swift",
+);
 const requiredFiles = [
   "index.html",
   "styles.css",
@@ -138,6 +147,18 @@ const requiredOrchestrationLanes = [
   "Future Adapter"
 ];
 
+const requiredNativeSecuritySignals = [
+  "showGitHubAuthApproval",
+  "showGitHubChecksApproval",
+  "func runGitHubAuthLogin(approved: Bool)",
+  "func runGitHubChecks(approved: Bool)",
+  "func rerun(result: CommandResult, approved: Bool = false)",
+  "guard approved else",
+  "model.runGitHubAuthLogin(approved: true)",
+  "model.runGitHubChecks(approved: true)",
+  "result.command.hasPrefix(\"gh \")",
+];
+
 function fail(message) {
   console.error(`SEIS Command Center check failed: ${message}`);
   process.exit(1);
@@ -166,6 +187,18 @@ if (!existsSync(architectureDocPath)) {
 }
 
 const architectureDoc = await readFile(architectureDocPath, "utf8");
+if (!existsSync(nativeCommandCenterPath)) {
+  fail("missing native Command Center source");
+}
+const nativeCommandCenter = await readFile(nativeCommandCenterPath, "utf8");
+for (const signal of requiredNativeSecuritySignals) {
+  if (!nativeCommandCenter.includes(signal)) {
+    fail(`native Command Center is missing GitHub approval signal: ${signal}`);
+  }
+}
+if (nativeCommandCenter.includes("model.runGitHubAuthLogin()") || nativeCommandCenter.includes("model.runGitHubChecks()")) {
+  fail("native Command Center must not bypass approval arguments for GitHub actions");
+}
 
 for (const moduleName of requiredModules) {
   if (!html.includes(`>${moduleName}<`) && !html.includes(`>${moduleName} &amp;`)) {

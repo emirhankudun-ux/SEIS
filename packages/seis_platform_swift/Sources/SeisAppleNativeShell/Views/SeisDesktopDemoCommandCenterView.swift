@@ -15,6 +15,7 @@ struct SeisDesktopDemoCommandCenterView: View {
     @State private var copyToast: String? = nil
     @State private var copyToastToken = UUID()
     @State private var showGitHubAuthApproval = false
+    @State private var showGitHubChecksApproval = false
 
     enum HistoryFilter: String, CaseIterable, Identifiable {
         case all = "Tüm Kayıtlar"
@@ -114,7 +115,7 @@ struct SeisDesktopDemoCommandCenterView: View {
                 .disabled(model.isRunning)
 
                 Button("Run GitHub Checks") {
-                    model.runGitHubChecks()
+                    showGitHubChecksApproval = true
                 }
                 .disabled(model.isRunning)
 
@@ -354,11 +355,25 @@ struct SeisDesktopDemoCommandCenterView: View {
         } message: {
             Text("This starts an interactive credential and network flow. It is not a read-only check and may change the local GitHub CLI session.")
         }
+        .confirmationDialog(
+            "Approve GitHub checks",
+            isPresented: $showGitHubChecksApproval,
+            titleVisibility: .visible
+        ) {
+            Button("Approve and Run GitHub Checks", role: .destructive) {
+                model.runGitHubChecks(approved: true)
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("This reads the local GitHub CLI authentication state and may make network requests for workflow data. No repository mutation is performed.")
+        }
     }
 
     private func rerun(result: SeisDesktopDemoCommandCenterModel.CommandResult) {
-        if result.label == "GitHub Auth Login" {
+        if result.command == "gh auth login" {
             showGitHubAuthApproval = true
+        } else if result.command.hasPrefix("gh ") {
+            showGitHubChecksApproval = true
         } else {
             model.rerun(result: result)
         }
@@ -508,7 +523,11 @@ final class SeisDesktopDemoCommandCenterModel: ObservableObject {
         )
     }
 
-    func runGitHubChecks() {
+    func runGitHubChecks(approved: Bool) {
+        guard approved else {
+            statusMessage = "GitHub checks require explicit human approval; no command was run."
+            return
+        }
         runBatch(
             commands: [
                 ("GitHub Auth", "gh auth status"),
@@ -529,7 +548,15 @@ final class SeisDesktopDemoCommandCenterModel: ObservableObject {
         )
     }
 
-    func rerun(result: CommandResult) {
+    func rerun(result: CommandResult, approved: Bool = false) {
+        if result.command == "gh auth login" {
+            runGitHubAuthLogin(approved: approved)
+            return
+        }
+        if result.command.hasPrefix("gh ") {
+            runGitHubChecks(approved: approved)
+            return
+        }
         runSingle(label: result.label, command: result.command, source: "rerun")
     }
 

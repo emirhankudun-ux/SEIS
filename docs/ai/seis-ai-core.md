@@ -752,6 +752,13 @@ H1/H2 routine, readiness mode, allowed local actions, and blocked privileged
 actions without invoking a plugin, connector, MCP server, provider, cloud
 resource, or external mutation.
 
+The macOS Command Center also keeps GitHub CLI boundaries explicit. Interactive
+authentication and GitHub status/workflow checks require separate human
+approval, and the model-level rerun path rejects `gh` commands unless the
+approval flag is present. `npm run check:seis-command-center` checks these native
+source contracts even when the local Swift SDK is unavailable; that source check
+does not claim a successful Swift typecheck.
+
 ## Related Documents
 
 - [../security/security-baseline.md](../security/security-baseline.md)
