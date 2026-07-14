@@ -154,6 +154,67 @@ struct SeisAIRuntimeTests {
         }
     }
 
+    @Test func localLoopbackPreflightReportsServiceWithoutRequestedModel() async throws {
+        let client = RecordingLoopbackHTTPClient(
+            responseData: Data(#"{"models":[]}"#.utf8)
+        )
+        let adapter = try SeisAILocalLoopbackProviderAdapter(
+            endpoint: URL(string: "http://127.0.0.1:11434/api/generate")!,
+            modelIdentifier: "llama3.2:3b",
+            httpClient: client
+        )
+
+        let readiness = await adapter.preflight()
+        let request = try #require(await client.request())
+
+        #expect(readiness.status == .serviceAvailableWithoutModel)
+        #expect(readiness.endpoint == "http://127.0.0.1:11434/api/generate")
+        #expect(readiness.requestedModelIdentifier == "llama3.2:3b")
+        #expect(readiness.modelCount == 0)
+        #expect(!readiness.requestedModelAvailable)
+        #expect(readiness.serviceReachable)
+        #expect(readiness.networkCallPerformed)
+        #expect(!readiness.clientCredentialRead)
+        #expect(!readiness.externalMutationPerformed)
+        #expect(request.httpMethod == "GET")
+        #expect(request.url?.path == "/api/tags")
+        #expect(request.httpBody == nil)
+        #expect(request.value(forHTTPHeaderField: "Authorization") == nil)
+    }
+
+    @Test func localLoopbackPreflightReportsRequestedModelAvailability() async throws {
+        let adapter = try SeisAILocalLoopbackProviderAdapter(
+            modelIdentifier: "llama3.2:3b",
+            httpClient: RecordingLoopbackHTTPClient(
+                responseData: Data(#"{"models":[{"name":"llama3.2:3b"},{"name":"qwen2.5:7b"}]}"#.utf8)
+            )
+        )
+
+        let readiness = await adapter.preflight()
+
+        #expect(readiness.status == .modelAvailable)
+        #expect(readiness.modelCount == 2)
+        #expect(readiness.requestedModelAvailable)
+        #expect(readiness.serviceReachable)
+        #expect(readiness.networkCallPerformed)
+    }
+
+    @Test func localLoopbackPreflightRejectsExternalResponseEndpoint() async throws {
+        let adapter = try SeisAILocalLoopbackProviderAdapter(
+            httpClient: RecordingLoopbackHTTPClient(
+                responseData: Data(#"{"models":[]}"#.utf8),
+                responseURL: URL(string: "http://example.com/api/tags")!
+            )
+        )
+
+        let readiness = await adapter.preflight()
+
+        #expect(readiness.status == .unavailable)
+        #expect(!readiness.serviceReachable)
+        #expect(readiness.networkCallPerformed)
+        #expect(!readiness.requestedModelAvailable)
+    }
+
     @Test func localLoopbackAdapterRejectsNonSuccessResponses() async throws {
         let adapter = try SeisAILocalLoopbackProviderAdapter(
             httpClient: RecordingLoopbackHTTPClient(

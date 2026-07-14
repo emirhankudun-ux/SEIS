@@ -62,12 +62,14 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var bulkLanePlanStatus: String?
     @Published private(set) var bulkAgentPlanStatus: String?
     @Published private(set) var routeDecision: SeisAIRouteDecision?
+    @Published private(set) var localLoopbackReadiness: SeisAILocalLoopbackReadiness?
     @Published private(set) var evidence: [SeisAIExecutionEvidence] = []
     @Published private(set) var evidencePersistenceState: SeisAIExecutionEvidencePersistenceState = .memoryOnly
     @Published private(set) var isPlanning = false
     @Published private(set) var isBulkLanePlanning = false
     @Published private(set) var isBulkPlanning = false
     @Published private(set) var isRouting = false
+    @Published private(set) var isCheckingLocalLoopback = false
 
     private let repositoryPath: String
     private let evidenceLedger: SeisAIExecutionEvidenceLedger
@@ -763,6 +765,24 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         }
     }
 
+    func checkLocalLoopback() {
+        guard !isCheckingLocalLoopback else { return }
+
+        isCheckingLocalLoopback = true
+        Task {
+            do {
+                let adapter = try SeisAILocalLoopbackProviderAdapter()
+                let readiness = await adapter.preflight()
+                localLoopbackReadiness = readiness
+                statusMessage = "Local loopback preflight: \(readiness.status.rawValue), \(readiness.modelCount) model(s); no prompt was sent."
+            } catch {
+                localLoopbackReadiness = nil
+                statusMessage = "Local loopback preflight could not be configured; no prompt was sent."
+            }
+            isCheckingLocalLoopback = false
+        }
+    }
+
     private func renderPlanPurpose(goal: String, constraints: String) -> String? {
         do {
             return try promptEngine.render(
@@ -1300,6 +1320,7 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 routeInspector
                 providerList(snapshot: snapshot)
+                localLoopbackPreflight
                 taskPlanner
                 laneList(snapshot: snapshot)
                 agentList(snapshot: snapshot)
@@ -3420,6 +3441,62 @@ struct SeisAICoreLocalDemoView: View {
             .green
         case .missingKey, .disabled, .rateLimited, .error:
             .orange
+        }
+    }
+
+    private var localLoopbackPreflight: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Label("Local model runtime", systemImage: "antenna.radiowaves.left.and.right")
+                .font(.subheadline.weight(.semibold))
+
+            if let readiness = model.localLoopbackReadiness {
+                HStack(spacing: 6) {
+                    Image(systemName: readiness.status == .modelAvailable ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")
+                        .foregroundStyle(localLoopbackReadinessColor(readiness.status))
+                    Text("\(readiness.status.rawValue) · \(readiness.modelCount) model(s)")
+                        .font(.caption.weight(.semibold))
+                }
+                Text("Endpoint: \(readiness.endpoint) · Requested model: \(readiness.requestedModelIdentifier)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Service reachable: \(readiness.serviceReachable ? "yes" : "no") · Model available: \(readiness.requestedModelAvailable ? "yes" : "no")")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            } else {
+                Text("Not checked")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            HStack {
+                Text("Read-only GET /api/tags. No prompt, credentials, model generation, or mutation.")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                Spacer(minLength: 8)
+                Button {
+                    model.checkLocalLoopback()
+                } label: {
+                    Label("Check", systemImage: "arrow.clockwise")
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+                .disabled(model.isCheckingLocalLoopback)
+            }
+        }
+        .padding(10)
+        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 8))
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Local model runtime preflight. Reads the loopback tags endpoint only and does not send a prompt or perform model execution.")
+    }
+
+    private func localLoopbackReadinessColor(_ status: SeisAILocalLoopbackReadinessStatus) -> Color {
+        switch status {
+        case .modelAvailable:
+            .green
+        case .serviceAvailableWithoutModel:
+            .orange
+        case .unavailable, .invalidResponse:
+            .red
         }
     }
 

@@ -38,6 +38,47 @@ public enum SeisAILocalLoopbackProviderError: Error, Equatable, Sendable {
     case outputTooLarge
 }
 
+public enum SeisAILocalLoopbackReadinessStatus: String, Codable, Equatable, Sendable {
+    case unavailable
+    case serviceAvailableWithoutModel = "service-available-without-model"
+    case modelAvailable = "model-available"
+    case invalidResponse = "invalid-response"
+}
+
+public struct SeisAILocalLoopbackReadiness: Codable, Equatable, Sendable {
+    public let status: SeisAILocalLoopbackReadinessStatus
+    public let endpoint: String
+    public let requestedModelIdentifier: String
+    public let modelCount: Int
+    public let requestedModelAvailable: Bool
+    public let serviceReachable: Bool
+    public let networkCallPerformed: Bool
+    public let clientCredentialRead: Bool
+    public let externalMutationPerformed: Bool
+
+    public init(
+        status: SeisAILocalLoopbackReadinessStatus,
+        endpoint: String,
+        requestedModelIdentifier: String,
+        modelCount: Int,
+        requestedModelAvailable: Bool,
+        serviceReachable: Bool,
+        networkCallPerformed: Bool,
+        clientCredentialRead: Bool,
+        externalMutationPerformed: Bool
+    ) {
+        self.status = status
+        self.endpoint = endpoint
+        self.requestedModelIdentifier = requestedModelIdentifier
+        self.modelCount = modelCount
+        self.requestedModelAvailable = requestedModelAvailable
+        self.serviceReachable = serviceReachable
+        self.networkCallPerformed = networkCallPerformed
+        self.clientCredentialRead = clientCredentialRead
+        self.externalMutationPerformed = externalMutationPerformed
+    }
+}
+
 /// Opt-in Ollama-compatible adapter. It never reads credentials and only accepts loopback hosts.
 public struct SeisAILocalLoopbackProviderAdapter: SeisAIProviderAdapter, Sendable {
     private struct GenerateRequest: Encodable {
@@ -50,6 +91,14 @@ public struct SeisAILocalLoopbackProviderAdapter: SeisAIProviderAdapter, Sendabl
         let model: String?
         let response: String?
         let error: String?
+    }
+
+    private struct TagsResponse: Decodable {
+        let models: [TagModel]?
+    }
+
+    private struct TagModel: Decodable {
+        let name: String?
     }
 
     public let descriptor: SeisAIProviderDescriptor
@@ -128,6 +177,89 @@ public struct SeisAILocalLoopbackProviderAdapter: SeisAIProviderAdapter, Sendabl
             networkCallPerformed: true,
             clientCredentialRead: false
         )
+    }
+
+    /// Performs a read-only local service and model availability check without sending a prompt.
+    public func preflight() async -> SeisAILocalLoopbackReadiness {
+        guard let tagsEndpoint = Self.tagsEndpoint(for: endpoint) else {
+            return readiness(
+                status: .invalidResponse,
+                modelCount: 0,
+                requestedModelAvailable: false,
+                serviceReachable: false,
+                networkCallPerformed: false
+            )
+        }
+
+        var request = URLRequest(url: tagsEndpoint)
+        request.httpMethod = "GET"
+        request.timeoutInterval = 5
+
+        do {
+            let (data, response) = try await httpClient.data(for: request)
+            guard let httpResponse = response as? HTTPURLResponse,
+                  let responseURL = httpResponse.url,
+                  Self.isAllowedLoopbackEndpoint(responseURL),
+                  (200..<300).contains(httpResponse.statusCode)
+            else {
+                return readiness(
+                    status: .unavailable,
+                    modelCount: 0,
+                    requestedModelAvailable: false,
+                    serviceReachable: false,
+                    networkCallPerformed: true
+                )
+            }
+
+            let payload = try JSONDecoder().decode(TagsResponse.self, from: data)
+            let modelNames = (payload.models ?? []).compactMap(\.name)
+            let modelAvailable = modelNames.contains(descriptor.modelIdentifier)
+            return readiness(
+                status: modelAvailable ? .modelAvailable : .serviceAvailableWithoutModel,
+                modelCount: modelNames.count,
+                requestedModelAvailable: modelAvailable,
+                serviceReachable: true,
+                networkCallPerformed: true
+            )
+        } catch {
+            return readiness(
+                status: .unavailable,
+                modelCount: 0,
+                requestedModelAvailable: false,
+                serviceReachable: false,
+                networkCallPerformed: true
+            )
+        }
+    }
+
+    private func readiness(
+        status: SeisAILocalLoopbackReadinessStatus,
+        modelCount: Int,
+        requestedModelAvailable: Bool,
+        serviceReachable: Bool,
+        networkCallPerformed: Bool
+    ) -> SeisAILocalLoopbackReadiness {
+        SeisAILocalLoopbackReadiness(
+            status: status,
+            endpoint: endpoint.absoluteString,
+            requestedModelIdentifier: descriptor.modelIdentifier,
+            modelCount: modelCount,
+            requestedModelAvailable: requestedModelAvailable,
+            serviceReachable: serviceReachable,
+            networkCallPerformed: networkCallPerformed,
+            clientCredentialRead: false,
+            externalMutationPerformed: false
+        )
+    }
+
+    private static func tagsEndpoint(for endpoint: URL) -> URL? {
+        guard var components = URLComponents(url: endpoint, resolvingAgainstBaseURL: false) else {
+            return nil
+        }
+        components.path = "/api/tags"
+        components.query = nil
+        components.fragment = nil
+        return components.url
     }
 
     private static func isAllowedLoopbackEndpoint(_ endpoint: URL) -> Bool {
