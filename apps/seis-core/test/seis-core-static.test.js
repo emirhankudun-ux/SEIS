@@ -197,7 +197,7 @@ test("SEIS Command Center binds specialist lanes and Store through a local contr
     const record = registry.lanes.find((candidate) => candidate.id === lane);
     assert.ok(record, `${lane} should have a Core control-plane record`);
     assert.ok(record.route.href, `${lane} should have a direct local route`);
-    assert.ok(record.qualityGates.every((gate) => /^npm run check:/.test(gate)));
+    assert.ok(record.qualityGates.every((gate) => /^npm run check:/.test(gate) || gate === "npm run seis:check"));
     assert.equal(record.executionAuthority, false);
     assert.equal(record.mcp.executionAuthority, false);
     assert.equal(record.status === "Connected", false, `${lane} must not claim a live connection`);
