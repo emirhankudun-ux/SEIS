@@ -7,6 +7,7 @@
   "sourceOfTruth": {
     "providerRegistry": "content/development/seis-ai-core-provider-registry.json",
     "routerContract": "content/development/seis-read-only-model-router-contract.json",
+    "routerRuntime": "content/development/seis-ai-core-read-only-router-runtime.json",
     "pluginIntegration": "content/development/seis-agent-plugin-integration.json",
     "mcpRuntimeContract": "content/development/seis-ai-core-mcp-runtime-contract.json",
     "applicationIntegration": "content/development/seis-ai-core-application-integration.json",
@@ -213,7 +214,7 @@
           "localOnly": true
         },
         "decision": {
-          "decisionHash": "da3d41bb138074f677bc701d4294ecbe9e5bb37d08163b2b9570e31f20bdc13d",
+          "decisionHash": "59557e824bbfb958b7387ef2ecddbccc5fd189340380270fb9811283f6c72ca7",
           "status": "review-only-no-runtime-authority",
           "selectedProvider": "codex-operator",
           "selectedModel": "current-codex-session",
@@ -236,6 +237,12 @@
             "planTool": "seis_hub_plan",
             "qualityGate": "npm run check:seis-ai-agent",
             "executionPerformed": false
+          },
+          "providerMediation": {
+            "mode": "backend-only",
+            "frontendSecretAllowed": false,
+            "routeExecutionEnabled": false,
+            "status": "required-before-live-routing"
           },
           "decisionIntegrity": {
             "readOnlyOnly": true,
@@ -292,7 +299,7 @@
           "localOnly": false
         },
         "decision": {
-          "decisionHash": "505d5109c2128e19c854b81a5c7119092bbdfaab1fc5b2dbaaa00cc6de65fc92",
+          "decisionHash": "8c0c34c94e860a9e81d92fe76175e04811a39d2d3b5edba6abdb9b01bc2684ce",
           "status": "review-only-no-runtime-authority",
           "selectedProvider": "codex-operator",
           "selectedModel": "current-codex-session",
@@ -315,6 +322,12 @@
             "planTool": "seis_cloud_plan",
             "qualityGate": "npm run check:cloud-access-policy",
             "executionPerformed": false
+          },
+          "providerMediation": {
+            "mode": "backend-only",
+            "frontendSecretAllowed": false,
+            "routeExecutionEnabled": false,
+            "status": "required-before-live-routing"
           },
           "decisionIntegrity": {
             "readOnlyOnly": true,
@@ -370,7 +383,7 @@
           "localOnly": true
         },
         "decision": {
-          "decisionHash": "a6a92fb63b2e2b5e183397b4e118a249959c82585f19f5bb2a228c755f4e7058",
+          "decisionHash": "732a94c5b7150bfd04e6b0b0e7207f50a9bb6a279587fb672566d001468272e0",
           "status": "review-only-no-runtime-authority",
           "selectedProvider": "codex-operator",
           "selectedModel": "current-codex-session",
@@ -393,6 +406,12 @@
             "planTool": "seis_code_plan",
             "qualityGate": "node scripts/check-seis-plugin-bundle.mjs --no-local",
             "executionPerformed": false
+          },
+          "providerMediation": {
+            "mode": "backend-only",
+            "frontendSecretAllowed": false,
+            "routeExecutionEnabled": false,
+            "status": "required-before-live-routing"
           },
           "decisionIntegrity": {
             "readOnlyOnly": true,
@@ -449,7 +468,7 @@
           "localOnly": true
         },
         "decision": {
-          "decisionHash": "3f8659b2df100a0c386129b29a12ccc7e9aaf3cf4b1dfdb39859f9878c921f5e",
+          "decisionHash": "95c494b373386e40a9eed330590b69290a0060ea2f8977c72242809c5180a1f4",
           "status": "review-only-no-runtime-authority",
           "selectedProvider": "codex-operator",
           "selectedModel": "current-codex-session",
@@ -472,6 +491,12 @@
             "planTool": "seis_design_plan",
             "qualityGate": "npm run check:motion-evidence",
             "executionPerformed": false
+          },
+          "providerMediation": {
+            "mode": "backend-only",
+            "frontendSecretAllowed": false,
+            "routeExecutionEnabled": false,
+            "status": "required-before-live-routing"
           },
           "decisionIntegrity": {
             "readOnlyOnly": true,
@@ -528,7 +553,7 @@
           "localOnly": true
         },
         "decision": {
-          "decisionHash": "71adc85b678ec0c95e146b4b5e6ec089461334fd5b93bbacc107ef912d555741",
+          "decisionHash": "6a322ba22d09c2d55a362a7de96e797003bcf19d3fe9799b20d6307559b5cb94",
           "status": "review-only-no-runtime-authority",
           "selectedProvider": "codex-operator",
           "selectedModel": "current-codex-session",
@@ -551,6 +576,12 @@
             "planTool": "seis_data_plan",
             "qualityGate": "npm run check:plugin-capability-lanes",
             "executionPerformed": false
+          },
+          "providerMediation": {
+            "mode": "backend-only",
+            "frontendSecretAllowed": false,
+            "routeExecutionEnabled": false,
+            "status": "required-before-live-routing"
           },
           "decisionIntegrity": {
             "readOnlyOnly": true,
@@ -607,7 +638,7 @@
           "localOnly": true
         },
         "decision": {
-          "decisionHash": "50261acab73ebc8268c9589aad00e429df41cc76abba044ca849cbf7decdf411",
+          "decisionHash": "dad65f7c944612b2a5da24670b7a82cdd98d3ed82f13b99bdc73d5ee51c3bc4b",
           "status": "review-only-no-runtime-authority",
           "selectedProvider": "none",
           "selectedModel": "none",
@@ -630,6 +661,12 @@
             "planTool": "seis_hub_plan",
             "qualityGate": "npm run check:seis-ai-agent",
             "executionPerformed": false
+          },
+          "providerMediation": {
+            "mode": "backend-only",
+            "frontendSecretAllowed": false,
+            "routeExecutionEnabled": false,
+            "status": "required-before-live-routing"
           },
           "decisionIntegrity": {
             "readOnlyOnly": true,
@@ -688,7 +725,7 @@
           "localOnly": false
         },
         "decision": {
-          "decisionHash": "41e687be70ff0e4e555a48f199968cf04210e7809cb73f49a1090f9663c7f1db",
+          "decisionHash": "50d7a655f30cba86b7afce190922567695df863616b4feb6de8b2ad3a97683e7",
           "status": "review-only-no-runtime-authority",
           "selectedProvider": "none",
           "selectedModel": "none",
@@ -711,6 +748,12 @@
             "planTool": "seis_hub_plan",
             "qualityGate": "npm run check:seis-ai-agent",
             "executionPerformed": false
+          },
+          "providerMediation": {
+            "mode": "backend-only",
+            "frontendSecretAllowed": false,
+            "routeExecutionEnabled": false,
+            "status": "required-before-live-routing"
           },
           "decisionIntegrity": {
             "readOnlyOnly": true,

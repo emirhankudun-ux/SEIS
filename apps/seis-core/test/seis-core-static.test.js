@@ -421,12 +421,16 @@ test("SEIS Command Center exposes router mediation evidence", async () => {
   assert.match(html, /id="ai-core-decision"/);
   for (const signal of [
     "decisionIntegrity",
+    "providerMediation",
     "backendOnlyProvidersRequired",
     "permissionSourceStatus",
     "runtime snapshot violates the router mediation boundary"
   ]) {
     assert.match(script, new RegExp(signal));
   }
+  assert.ok(snapshot.router.scenarios.every((scenario) => scenario.decision.providerMediation.mode === "backend-only"));
+  assert.ok(snapshot.router.scenarios.every((scenario) => scenario.decision.providerMediation.frontendSecretAllowed === false));
+  assert.ok(snapshot.router.scenarios.every((scenario) => scenario.decision.providerMediation.routeExecutionEnabled === false));
   assert.ok(snapshot.router.scenarios.every((scenario) => scenario.decision.decisionIntegrity.backendOnlyProvidersRequired === true));
   assert.ok(snapshot.router.scenarios.every((scenario) => scenario.decision.agentLane.permissionBoundary === "plan-only"));
   assert.ok(snapshot.router.scenarios.every((scenario) => ["verified", "fail-closed"].includes(scenario.decision.agentLane.permissionSourceStatus)));

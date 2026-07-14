@@ -16,6 +16,7 @@ public enum SeisAICoreRouteProviderState: String, Codable, Equatable, Hashable, 
 public struct SeisAICoreRuntimeSnapshotSourceOfTruth: Codable, Equatable, Sendable {
     public let providerRegistry: String
     public let routerContract: String
+    public let routerRuntime: String
     public let pluginIntegration: String
     public let mcpRuntimeContract: String
     public let applicationIntegration: String
@@ -284,6 +285,7 @@ public struct SeisAICoreRouteDecision: Codable, Equatable, Sendable {
     public let fallbackUsed: Bool
     public let fallbackPlan: String
     public let agentLane: SeisAICoreAgentLane
+    public let providerMediation: SeisReadOnlyRouterProviderMediation
     public let decisionIntegrity: SeisAICoreDecisionIntegrity
     public let requiredApprovals: [String]
     public let blockedReasons: [String]
@@ -297,6 +299,7 @@ public struct SeisAICoreRouteDecision: Codable, Equatable, Sendable {
             !providerCallsPerformed &&
             !fallbackUsed &&
             agentLane.isPlanOnly &&
+            providerMediation.isSafe &&
             decisionIntegrity.isSafe &&
             safetyBoundary.isIsolated &&
             modelClaimBoundary.isClaimSafe
@@ -316,6 +319,7 @@ public struct SeisAICoreRouteDecision: Codable, Equatable, Sendable {
         case fallbackUsed
         case fallbackPlan
         case agentLane
+        case providerMediation
         case decisionIntegrity
         case requiredApprovals
         case blockedReasons
@@ -342,6 +346,7 @@ public struct SeisAICoreRouteDecision: Codable, Equatable, Sendable {
         try container.encode(fallbackUsed, forKey: .fallbackUsed)
         try container.encode(fallbackPlan, forKey: .fallbackPlan)
         try container.encode(agentLane, forKey: .agentLane)
+        try container.encode(providerMediation, forKey: .providerMediation)
         try container.encode(decisionIntegrity, forKey: .decisionIntegrity)
         try container.encode(requiredApprovals, forKey: .requiredApprovals)
         try container.encode(blockedReasons, forKey: .blockedReasons)
@@ -1130,6 +1135,10 @@ public struct SeisAICoreRuntimeSnapshotContract: Codable, Equatable, Sendable {
             sourceOfTruth.output == "apps/seis-core/data/seis-ai-core-runtime-snapshot.json",
             "sourceOfTruth.output must point to the tracked runtime snapshot."
         )
+        check(
+            sourceOfTruth.routerRuntime == "content/development/seis-ai-core-read-only-router-runtime.json",
+            "sourceOfTruth.routerRuntime must identify the canonical router mediation fixture."
+        )
 
         validateApplicationIntegration(check: check)
         validateProviderRegistry(check: check)
@@ -1444,6 +1453,7 @@ private extension SeisAICoreRuntimeSnapshotContract {
                 ["verified", "fail-closed"].contains(decision.agentLane.permissionSourceStatus),
                 "\(path).agentLane.permissionSourceStatus must be verified or fail-closed."
             )
+            check(decision.providerMediation.isSafe, "\(path).providerMediation must remain backend-only and pre-live.")
             check(decision.decisionIntegrity.isSafe, "\(path).decisionIntegrity must preserve the read-only mediation boundary.")
             check(!decision.requiredApprovals.isEmpty, "\(path).requiredApprovals must not be empty.")
             check(!decision.blockedReasons.isEmpty, "\(path).blockedReasons must not be empty.")

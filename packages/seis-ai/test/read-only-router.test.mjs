@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 
 import {
   buildReadOnlyRouteDecision,
+  loadReadOnlyRouterSources,
   runReadOnlyRouterSmokeChecks,
   validateReadOnlyRouteDecision,
 } from "../src/model/read-only-router.mjs";
@@ -20,7 +21,23 @@ describe("SEIS provider-neutral read-only router", () => {
     assert.equal(decision.routeEligible, false);
     assert.equal(decision.executionPerformed, false);
     assert.equal(decision.agentLane.permissionLevel, "plan-only");
+    assert.deepEqual(decision.providerMediation, {
+      mode: "backend-only",
+      frontendSecretAllowed: false,
+      routeExecutionEnabled: false,
+      status: "required-before-live-routing",
+    });
     assert.deepEqual(validateReadOnlyRouteDecision(decision), { ok: true, failures: [] });
+  });
+
+  it("fails closed when the source-backed mediation fixture is unsafe", () => {
+    const sources = loadReadOnlyRouterSources(packageRoot);
+    sources.runtime.providerMediation.frontendSecretAllowed = true;
+
+    assert.throws(
+      () => buildReadOnlyRouteDecision({}, { root: packageRoot, sources }),
+      /read-only router mediation contract failed: frontend provider secrets must remain forbidden/,
+    );
   });
 
   it("fails closed when a provider violates backend mediation or a lane requests write authority", () => {
@@ -188,6 +205,7 @@ describe("SEIS provider-neutral read-only router", () => {
       assert.equal(first.decisionHash, second.decisionHash);
       assert.equal(first.agentLane.id, lane);
       assert.equal(first.agentLane.executionPerformed, false);
+      assert.equal(first.providerMediation.mode, "backend-only");
       assert.equal(first.decisionIntegrity.noCredentialMaterialInDecision, true);
     }
   });

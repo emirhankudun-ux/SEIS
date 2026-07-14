@@ -1,10 +1,12 @@
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 export const READ_ONLY_ROUTER_RUNTIME_ID = "seis-ai-core-read-only-router-runtime-v1";
 export const READ_ONLY_ROUTER_TOOL = "seis_ai_core_read_only_route";
 export const READ_ONLY_ROUTER_CONTRACT_PATH = "content/development/seis-read-only-model-router-contract.json";
+export const READ_ONLY_ROUTER_RUNTIME_PATH = "content/development/seis-ai-core-read-only-router-runtime.json";
 export const PROVIDER_REGISTRY_PATH = "content/development/seis-ai-core-provider-registry.json";
 export const SUBAGENT_OPERATING_MODEL_PATH = "content/development/seis-ai-core-subagent-operating-model.json";
 
@@ -45,17 +47,23 @@ const DEFAULT_INPUT = Object.freeze({
 });
 
 export function loadReadOnlyRouterSources(root) {
+  const routerRoot = resolveRouterRoot(root);
   return {
-    contract: readJson(root, READ_ONLY_ROUTER_CONTRACT_PATH),
-    providerRegistry: readJson(root, PROVIDER_REGISTRY_PATH),
-    operatingModel: readJson(root, SUBAGENT_OPERATING_MODEL_PATH),
+    contract: readJson(routerRoot, READ_ONLY_ROUTER_CONTRACT_PATH),
+    providerRegistry: readJson(routerRoot, PROVIDER_REGISTRY_PATH),
+    operatingModel: readJson(routerRoot, SUBAGENT_OPERATING_MODEL_PATH),
+    runtime: readJson(routerRoot, READ_ONLY_ROUTER_RUNTIME_PATH),
   };
 }
 
 export function buildReadOnlyRouteDecision(input = {}, options = {}) {
-  const sources = options.sources || loadReadOnlyRouterSources(options.root || process.cwd());
+  const routerRoot = resolveRouterRoot(options.root);
+  const sources = options.sources || loadReadOnlyRouterSources(routerRoot);
+  const runtime = sources.runtime || readJson(routerRoot, READ_ONLY_ROUTER_RUNTIME_PATH);
   const normalized = normalizeRouterInput(input);
   const lane = selectLane(normalized, sources.operatingModel);
+  const providerMediation = runtime?.providerMediation || {};
+  const decisionIntegrity = runtime?.decisionIntegrity || {};
   const providers = Array.isArray(sources.providerRegistry?.providers)
     ? sources.providerRegistry.providers
     : [];
@@ -156,26 +164,19 @@ export function buildReadOnlyRouteDecision(input = {}, options = {}) {
       qualityGate: lane.qualityGate,
       executionPerformed: false,
     },
+    providerMediation: {
+      mode: providerMediation.mode ?? null,
+      frontendSecretAllowed: providerMediation.frontendSecretAllowed ?? null,
+      routeExecutionEnabled: providerMediation.routeExecutionEnabled ?? null,
+      status: providerMediation.status ?? null,
+    },
     providerCandidates: candidates.map(toPublicCandidate),
     requiredApprovals: [
       "human approval before live provider routing",
       "backend-only provider mediation and typed environment validation",
     ],
     blockedReasons: uniqueBlockedReasons,
-    decisionIntegrity: {
-      readOnlyOnly: true,
-      runtimeAuthority: false,
-      executionPerformedAlwaysFalse: true,
-      noPromptBodyInDecision: true,
-      noCredentialMaterialInDecision: true,
-      decisionLogsRedacted: true,
-      providerStateNamed: true,
-      selectedProviderExplicit: true,
-      fallbackExplicit: true,
-      blockedReasonsRequired: true,
-      backendOnlyProvidersRequired: true,
-      privateObsidianContentRoutable: false,
-    },
+    decisionIntegrity: { ...decisionIntegrity },
     modelClaimBoundary: {
       isTrainedModel: false,
       isFoundationModel: false,
@@ -197,6 +198,10 @@ export function buildReadOnlyRouteDecision(input = {}, options = {}) {
   };
 
   decision.decisionHash = hashDecision(decision);
+  const validation = validateReadOnlyRouteDecision(decision);
+  if (!validation.ok) {
+    throw new Error(`read-only router mediation contract failed: ${validation.failures.join("; ")}`);
+  }
   return decision;
 }
 
@@ -209,6 +214,10 @@ export function validateReadOnlyRouteDecision(decision) {
   ensure(decision?.executionPerformed === false, "executionPerformed must remain false", failures);
   ensure(decision?.providerCallsPerformed === false, "providerCallsPerformed must remain false", failures);
   ensure(decision?.fallbackUsed === false, "fallbackUsed must remain false until execution exists", failures);
+  ensure(decision?.providerMediation?.mode === "backend-only", "provider mediation must remain backend-only", failures);
+  ensure(decision?.providerMediation?.frontendSecretAllowed === false, "frontend provider secrets must remain forbidden", failures);
+  ensure(decision?.providerMediation?.routeExecutionEnabled === false, "provider route execution must remain disabled", failures);
+  ensure(decision?.providerMediation?.status === "required-before-live-routing", "provider mediation must remain pre-live", failures);
   ensure(typeof decision?.selectedProvider === "string" && decision.selectedProvider.length > 0, "selected provider must be explicit", failures);
   ensure(typeof decision?.selectedModel === "string" && decision.selectedModel.length > 0, "selected model must be explicit", failures);
   ensure(ROUTER_PROVIDER_STATES.includes(decision?.providerState), "provider state is not in the public state model", failures);
@@ -435,6 +444,7 @@ function containsForbiddenKey(value) {
   if (!value || typeof value !== "object") return false;
   const safeBoundaryKeys = new Set([
     "credentialsRead",
+    "frontendSecretAllowed",
     "privateContentRead",
     "noCredentialMaterialInDecision",
     "noPromptBodyInDecision",
@@ -472,6 +482,14 @@ function readJson(root, relativePath) {
   const filePath = path.join(root, ...relativePath.split("/"));
   if (!existsSync(filePath)) throw new Error(`missing router source: ${relativePath}`);
   return JSON.parse(readFileSync(filePath, "utf8"));
+}
+
+function resolveRouterRoot(root) {
+  if (typeof root === "string" && root.length > 0) return root;
+  if (typeof process.env.SEIS_REPO_ROOT === "string" && process.env.SEIS_REPO_ROOT.length > 0) {
+    return process.env.SEIS_REPO_ROOT;
+  }
+  return path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../../..");
 }
 
 function ensure(condition, message, failures) {

@@ -158,6 +158,7 @@ describe("SEIS AI Core runtime snapshot", () => {
     assert.equal(snapshot.mcpRuntime.transport, "stdio newline-delimited JSON-RPC");
     assert.equal(snapshot.mcpRuntime.lifecycle, "initialize -> notifications/initialized -> tools/list");
     assert.equal(snapshot.router.scenarioCount, 7);
+    assert.equal(snapshot.sourceOfTruth.routerRuntime, "content/development/seis-ai-core-read-only-router-runtime.json");
 
     assert.deepEqual(
       snapshot.pluginMesh.personalLanes.map((lane) => lane.id),
@@ -181,6 +182,10 @@ describe("SEIS AI Core runtime snapshot", () => {
       assert.equal(scenario.decision.executionPerformed, false);
       assert.equal(scenario.decision.providerCallsPerformed, false);
       assert.equal(scenario.decision.fallbackUsed, false);
+      assert.equal(scenario.decision.providerMediation.mode, "backend-only");
+      assert.equal(scenario.decision.providerMediation.frontendSecretAllowed, false);
+      assert.equal(scenario.decision.providerMediation.routeExecutionEnabled, false);
+      assert.equal(scenario.decision.providerMediation.status, "required-before-live-routing");
       assert.equal(scenario.decision.decisionIntegrity.readOnlyOnly, true);
       assert.equal(scenario.decision.decisionIntegrity.runtimeAuthority, false);
       assert.equal(scenario.decision.decisionIntegrity.backendOnlyProvidersRequired, true);

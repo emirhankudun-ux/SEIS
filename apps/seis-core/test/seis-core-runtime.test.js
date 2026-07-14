@@ -96,6 +96,19 @@ test("SEIS Core rejects an unsafe router mediation snapshot", async () => {
   assert.match(window.document.querySelector("#ai-core-runtime-feedback")?.textContent || "", /router mediation boundary/i);
 });
 
+test("SEIS Core rejects missing backend-only router mediation evidence", async () => {
+  const { window } = await boot({
+    snapshotTransform(snapshot) {
+      delete snapshot.router.scenarios[0].decision.providerMediation;
+      return snapshot;
+    }
+  });
+
+  window.document.querySelector('[data-view="godmode"]')?.click();
+  assert.equal(window.document.querySelector("#ai-core-runtime-state")?.textContent, "Fallback");
+  assert.match(window.document.querySelector("#ai-core-runtime-feedback")?.textContent || "", /router mediation boundary/i);
+});
+
 test("SEIS Core rejects incomplete plugin MCP lifecycle evidence", async () => {
   const { window } = await boot({
     snapshotTransform(snapshot) {

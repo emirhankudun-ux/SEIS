@@ -1090,6 +1090,12 @@ const fallbackSeisAiCoreRuntimeSnapshot = {
             permissionSourceStatus: "fail-closed",
             qualityGate: "npm run check:seis-core-ai-runtime-snapshot"
           },
+          providerMediation: {
+            mode: "backend-only",
+            frontendSecretAllowed: false,
+            routeExecutionEnabled: false,
+            status: "required-before-live-routing"
+          },
           decisionIntegrity: {
             readOnlyOnly: true,
             runtimeAuthority: false,
@@ -3636,7 +3642,7 @@ function renderAiCoreRuntime() {
           <div><dt>Model</dt><dd>${escapeHtml(decision.selectedModel)}</dd></div>
           <div><dt>Permission</dt><dd>${escapeHtml(decision.agentLane.permissionLevel)}</dd></div>
           <div><dt>Permission source</dt><dd>${escapeHtml(decision.agentLane.permissionSourceStatus || "unavailable")}</dd></div>
-          <div><dt>Mediation</dt><dd>${decision.decisionIntegrity?.backendOnlyProvidersRequired ? "Backend only" : "Unavailable"}</dd></div>
+          <div><dt>Mediation</dt><dd>${decision.providerMediation?.mode === "backend-only" && decision.providerMediation?.frontendSecretAllowed === false && decision.providerMediation?.routeExecutionEnabled === false ? "Backend only" : "Unavailable"}</dd></div>
           <div><dt>Quality gate</dt><dd>${escapeHtml(decision.agentLane.qualityGate)}</dd></div>
           <div><dt>Route eligible</dt><dd>${decision.routeEligible ? "Yes" : "No"}</dd></div>
           <div><dt>Execution</dt><dd>${decision.executionPerformed ? "Performed" : "Not performed"}</dd></div>
@@ -3725,8 +3731,13 @@ async function loadSeisAiCoreRuntimeSnapshot() {
     }
     if (snapshot.router.scenarios.some((scenario) => {
       const decision = scenario.decision || {};
+      const mediation = decision.providerMediation || {};
       const integrity = decision.decisionIntegrity || {};
-      return integrity.readOnlyOnly !== true ||
+      return mediation.mode !== "backend-only" ||
+        mediation.frontendSecretAllowed !== false ||
+        mediation.routeExecutionEnabled !== false ||
+        mediation.status !== "required-before-live-routing" ||
+        integrity.readOnlyOnly !== true ||
         integrity.runtimeAuthority !== false ||
         integrity.executionPerformedAlwaysFalse !== true ||
         integrity.noPromptBodyInDecision !== true ||

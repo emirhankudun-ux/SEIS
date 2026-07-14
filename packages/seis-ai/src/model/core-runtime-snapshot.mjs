@@ -12,6 +12,7 @@ import {
 } from "../lib/plugin-integration.mjs";
 import {
   READ_ONLY_ROUTER_CONTRACT_PATH,
+  READ_ONLY_ROUTER_RUNTIME_PATH,
   READ_ONLY_ROUTER_RUNTIME_ID,
   READ_ONLY_ROUTER_TOOL,
   buildReadOnlyRouteDecision,
@@ -225,6 +226,7 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
         fallbackUsed: decision.fallbackUsed,
         fallbackPlan: decision.fallbackPlan,
         agentLane: decision.agentLane,
+        providerMediation: decision.providerMediation,
         decisionIntegrity: decision.decisionIntegrity,
         requiredApprovals: decision.requiredApprovals,
         blockedReasons: decision.blockedReasons,
@@ -256,6 +258,7 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
     sourceOfTruth: {
       providerRegistry: AI_CORE_PROVIDER_REGISTRY_PATH,
       routerContract: READ_ONLY_ROUTER_CONTRACT_PATH,
+      routerRuntime: READ_ONLY_ROUTER_RUNTIME_PATH,
       pluginIntegration: PLUGIN_INTEGRATION_PATH,
       mcpRuntimeContract: MCP_RUNTIME_CONTRACT_PATH,
       applicationIntegration: AI_CORE_APPLICATION_INTEGRATION_PATH,

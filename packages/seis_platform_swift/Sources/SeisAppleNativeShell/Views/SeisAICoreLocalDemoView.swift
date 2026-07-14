@@ -1459,7 +1459,7 @@ struct SeisAICoreLocalDemoView: View {
                         }
                         Text("Provider: \(decision.selectedProvider) · Model: \(decision.selectedModel) · State: \(decision.providerState.rawValue)")
                             .font(.caption2.monospaced())
-                        Text("Permission: \(decision.agentLane.permissionLevel) · Source: \(decision.agentLane.permissionSourceStatus) · Mediation: \(decision.decisionIntegrity.backendOnlyProvidersRequired ? "backend-only" : "unavailable")")
+                        Text("Permission: \(decision.agentLane.permissionLevel) · Source: \(decision.agentLane.permissionSourceStatus) · Mediation: \(decision.providerMediation.isSafe ? "backend-only" : "unavailable")")
                             .font(.caption2)
                             .foregroundStyle(.secondary)
                         Text("Route eligible: no · Execution: no · Provider call: no")

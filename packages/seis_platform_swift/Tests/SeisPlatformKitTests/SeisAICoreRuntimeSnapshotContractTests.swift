@@ -168,6 +168,7 @@ import Testing
     #expect(snapshot.runtimeBoundary.isSafe)
     #expect(snapshot.routeScenarios.allSatisfy { $0.decision.respectsReadOnlyBoundary })
     #expect(snapshot.routeScenarios.allSatisfy { $0.decision.safetyBoundary.isIsolated })
+    #expect(snapshot.routeScenarios.allSatisfy { $0.decision.providerMediation.isSafe })
     #expect(snapshot.routeScenarios.allSatisfy { $0.decision.decisionIntegrity.isSafe })
     #expect(snapshot.routeScenarios.allSatisfy { $0.decision.agentLane.permissionBoundary == "plan-only" })
     #expect(snapshot.routeScenarios.allSatisfy { ["verified", "fail-closed"].contains($0.decision.agentLane.permissionSourceStatus) })
@@ -180,6 +181,7 @@ import Testing
     let decoded = try SeisAICoreRuntimeSnapshotContract(data: encoded)
 
     #expect(decoded.routeScenarios.count == snapshot.routeScenarios.count)
+    #expect(decoded.routeScenarios.allSatisfy { $0.decision.providerMediation.isSafe })
     #expect(decoded.routeScenarios.allSatisfy { $0.decision.decisionIntegrity.isSafe })
     #expect(decoded.routeScenarios.allSatisfy { $0.decision.agentLane.permissionBoundary == "plan-only" })
     #expect(decoded.routeScenarios.allSatisfy { ["verified", "fail-closed"].contains($0.decision.agentLane.permissionSourceStatus) })
