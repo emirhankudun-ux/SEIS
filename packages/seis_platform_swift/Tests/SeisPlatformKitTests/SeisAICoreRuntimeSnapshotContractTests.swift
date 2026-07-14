@@ -13,6 +13,13 @@ import Testing
     #expect(snapshot.routeScenarios.count == 7)
     #expect(snapshot.agentRegistry.managedLanes.count == 9)
     #expect(snapshot.agentRegistry.agents.count == 13)
+    #expect(snapshot.agentPermissionMatrixRegistry.levels.count == 5)
+    #expect(snapshot.agentPermissionMatrixRegistry.enabledLevelCount == 2)
+    #expect(snapshot.agentPermissionMatrixRegistry.isMetadataOnly)
+    #expect(snapshot.subagentRuntimeFixturesRegistry.fixtureCount == 7)
+    #expect(snapshot.subagentRuntimeFixturesRegistry.executionLedgerFixture.requiredFieldCount == 19)
+    #expect(snapshot.subagentRuntimeFixturesRegistry.executionLedgerFixture.sampleRecord.isSafe)
+    #expect(snapshot.subagentRuntimeFixturesRegistry.isMetadataOnly)
     #expect(snapshot.pluginMesh.personalLanes.count == 5)
     #expect(snapshot.pluginMesh.capabilityCatalog.id == "seis-plugin-capability-catalog")
     #expect(snapshot.pluginMesh.capabilityCatalog.status == "source-backed-read-only")
@@ -296,6 +303,32 @@ import Testing
     #expect(
         approvalMutationError.validationIssues.contains {
             $0.contains("agentRegistry.humanApprovalRequiredForMutation")
+        }
+    )
+
+    let permissionMatrixMutationData = try replacingJSONObjectValue(
+        in: fixtureData,
+        objectPath: ["agentPermissionMatrixRegistry"],
+        key: "enabledLevelCount",
+        with: 3
+    )
+    let permissionMatrixMutationError = try validationError(for: permissionMatrixMutationData)
+    #expect(
+        permissionMatrixMutationError.validationIssues.contains {
+            $0.contains("agentPermissionMatrixRegistry")
+        }
+    )
+
+    let executionLedgerMutationData = try replacingJSONObjectValue(
+        in: fixtureData,
+        objectPath: ["subagentRuntimeFixturesRegistry", "executionLedgerFixture", "sampleRecord"],
+        key: "externalMutationPerformed",
+        with: true
+    )
+    let executionLedgerMutationError = try validationError(for: executionLedgerMutationData)
+    #expect(
+        executionLedgerMutationError.validationIssues.contains {
+            $0.contains("execution ledger fixture") || $0.contains("subagentRuntimeFixturesRegistry")
         }
     )
 

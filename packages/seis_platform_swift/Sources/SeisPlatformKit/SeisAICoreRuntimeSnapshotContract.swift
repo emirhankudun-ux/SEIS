@@ -20,6 +20,8 @@ public struct SeisAICoreRuntimeSnapshotSourceOfTruth: Codable, Equatable, Sendab
     public let mcpRuntimeContract: String
     public let applicationIntegration: String
     public let agentRegistry: String
+    public let agentPermissionMatrix: String
+    public let subagentRuntimeFixtures: String
     public let generator: String
     public let output: String
 }
@@ -379,6 +381,125 @@ public struct SeisAICoreAgentRegistrySnapshot: Codable, Equatable, Identifiable,
             agents.allSatisfy { !$0.executionAuthority } &&
             safetyBoundary.isSafe &&
             humanApprovalRequiredForMutation
+    }
+}
+
+public struct SeisAICoreAgentPermissionMatrixRuntimeSnapshot: Codable, Equatable, Identifiable, Sendable {
+    public let id: String
+    public let version: String
+    public let status: String
+    public let source: String
+    public let purpose: String
+    public let qualityGate: String
+    public let runtimeBoundary: String
+    public let enabledLevelCount: Int
+    public let levels: [SeisAgentPermissionLevel]
+    public let forbiddenWithoutSeparatePlan: [String]
+    public let truthBoundary: String
+
+    public var isMetadataOnly: Bool {
+        id == "seis-ai-core-agent-permission-matrix" &&
+            status == "source-backed-metadata-only" &&
+            source == "content/development/seis-ai-core-agent-permission-matrix.json" &&
+            runtimeBoundary == "status-and-plan-only" &&
+            enabledLevelCount == 2 &&
+            truthBoundary.contains("do not grant runtime authority")
+    }
+}
+
+public struct SeisAICoreExecutionLedgerSampleRecord: Codable, Equatable, Sendable {
+    public let id: String
+    public let taskId: String
+    public let laneId: String
+    public let roleId: String
+    public let permissionLevel: String
+    public let decision: String
+    public let stateBefore: String
+    public let stateAfter: String
+    public let dryRunOnly: Bool
+    public let realExecutionBlocked: Bool
+    public let externalMutationPerformed: Bool
+    public let fileMutationPerformed: Bool
+    public let approvalRequired: Bool
+    public let approvalRecordId: String?
+    public let cancellationSignal: String
+    public let validator: String
+    public let rollbackNote: String
+    public let redactionStatus: String
+    public let secretValuesStored: Bool
+    public let createdAt: String
+
+    public var isSafe: Bool {
+        permissionLevel == "plan-only" &&
+            decision == "cancelled" &&
+            stateAfter == "cancelled" &&
+            dryRunOnly &&
+            realExecutionBlocked &&
+            !externalMutationPerformed &&
+            !fileMutationPerformed &&
+            !approvalRequired &&
+            approvalRecordId == nil &&
+            cancellationSignal == "operator-cancel" &&
+            redactionStatus == "passed" &&
+            !secretValuesStored
+    }
+}
+
+public struct SeisAICoreExecutionLedgerFixtureRuntimeSnapshot: Codable, Equatable, Identifiable, Sendable {
+    public let id: String
+    public let status: String
+    public let source: String
+    public let mode: String
+    public let writerPolicy: String
+    public let requiredFieldCount: Int
+    public let requiredFields: [String]
+    public let recordsForbidden: [String]
+    public let sampleRecordCount: Int
+    public let sampleRecord: SeisAICoreExecutionLedgerSampleRecord
+    public let nextPromotionGate: String
+
+    public var isSafe: Bool {
+        id == "seis-ai-core-execution-ledger-fixture" &&
+            status == "documented-fixture" &&
+            source == "content/development/seis-ai-core-execution-ledger-fixture.json" &&
+            mode == "append-only-planned" &&
+            writerPolicy == "single-writer" &&
+            requiredFieldCount == 19 &&
+            recordsForbidden == ["secret values", "private keys", "raw provider errors", "unapproved external mutation"] &&
+            sampleRecordCount == 1 &&
+            sampleRecord.isSafe
+    }
+}
+
+public struct SeisAICoreSubagentRuntimeFixturesRuntimeSnapshot: Codable, Equatable, Identifiable, Sendable {
+    public let id: String
+    public let version: String
+    public let status: String
+    public let source: String
+    public let purpose: String
+    public let qualityGate: String
+    public let runtimeBoundary: [String: String]
+    public let fixtureCount: Int
+    public let fixtureIds: [String]
+    public let fixtures: [SeisAISubagentFixtureReference]
+    public let sourceOfTruth: [String: String]
+    public let executionLedgerFixture: SeisAICoreExecutionLedgerFixtureRuntimeSnapshot
+    public let truthBoundary: String
+
+    public var isMetadataOnly: Bool {
+        id == "seis-ai-core-subagent-runtime-fixtures" &&
+            status == "source-backed-metadata-only" &&
+            source == "content/development/seis-ai-core-subagent-runtime-fixtures.json" &&
+            runtimeBoundary["currentLevel"] == "status-and-plan-only" &&
+            runtimeBoundary["backgroundAutomation"] == "disabled" &&
+            runtimeBoundary["writeExecution"] == "disabled" &&
+            runtimeBoundary["credentialAccess"] == "forbidden" &&
+            runtimeBoundary["externalMutation"] == "requires-explicit-human-approval" &&
+            fixtureCount == 7 &&
+            fixtureIds == ["role-schema", "permission-matrix", "dry-run-task-queue", "cancellation-fixture", "approval-fixture", "redaction-fixture", "execution-ledger-fixture"] &&
+            fixtures.map(\.id) == fixtureIds &&
+            executionLedgerFixture.isSafe &&
+            truthBoundary.contains("do not execute agents")
     }
 }
 
@@ -853,6 +974,8 @@ public struct SeisAICoreRuntimeSnapshotContract: Codable, Equatable, Sendable {
     public let providerRegistry: SeisAICoreProviderRegistrySnapshot
     public let router: SeisAICoreRouterSnapshot
     public let agentRegistry: SeisAICoreAgentRegistrySnapshot
+    public let agentPermissionMatrixRegistry: SeisAICoreAgentPermissionMatrixRuntimeSnapshot
+    public let subagentRuntimeFixturesRegistry: SeisAICoreSubagentRuntimeFixturesRuntimeSnapshot
     public let pluginMesh: SeisAICorePluginMeshSnapshot
     public let mcpRuntime: SeisAICoreMCPRuntimeSnapshot
     public let runtimeBoundary: SeisAICoreRuntimeBoundary
@@ -869,6 +992,8 @@ public struct SeisAICoreRuntimeSnapshotContract: Codable, Equatable, Sendable {
         providerRegistry: SeisAICoreProviderRegistrySnapshot,
         router: SeisAICoreRouterSnapshot,
         agentRegistry: SeisAICoreAgentRegistrySnapshot,
+        agentPermissionMatrixRegistry: SeisAICoreAgentPermissionMatrixRuntimeSnapshot,
+        subagentRuntimeFixturesRegistry: SeisAICoreSubagentRuntimeFixturesRuntimeSnapshot,
         pluginMesh: SeisAICorePluginMeshSnapshot,
         mcpRuntime: SeisAICoreMCPRuntimeSnapshot,
         runtimeBoundary: SeisAICoreRuntimeBoundary,
@@ -884,6 +1009,8 @@ public struct SeisAICoreRuntimeSnapshotContract: Codable, Equatable, Sendable {
         self.providerRegistry = providerRegistry
         self.router = router
         self.agentRegistry = agentRegistry
+        self.agentPermissionMatrixRegistry = agentPermissionMatrixRegistry
+        self.subagentRuntimeFixturesRegistry = subagentRuntimeFixturesRegistry
         self.pluginMesh = pluginMesh
         self.mcpRuntime = mcpRuntime
         self.runtimeBoundary = runtimeBoundary
@@ -969,6 +1096,8 @@ public struct SeisAICoreRuntimeSnapshotContract: Codable, Equatable, Sendable {
         validateProviderRegistry(check: check)
         validateRouter(check: check)
         validateAgentRegistry(check: check)
+        validateAgentPermissionMatrix(check: check)
+        validateSubagentRuntimeFixtures(check: check)
         validatePluginMesh(check: check)
         validateMCPRuntime(check: check)
         validateRuntimeBoundary(check: check)
@@ -1445,6 +1574,106 @@ private extension SeisAICoreRuntimeSnapshotContract {
             agentRegistry.humanApprovalRequiredForMutation,
             "agentRegistry.humanApprovalRequiredForMutation must be true."
         )
+    }
+
+    func validateAgentPermissionMatrix(check: ValidationCheck) {
+        let matrix = agentPermissionMatrixRegistry
+        let expectedLevels = ["read-only", "plan-only", "write-gated", "external-gated", "forbidden"]
+        let expectedStatuses = ["enabled", "enabled", "planned", "planned", "active"]
+        let expectedApprovalRequirements: [SeisAgentApprovalRequirement] = [
+            .boolean(false),
+            .boolean(false),
+            .text("task-scoped"),
+            .boolean(true),
+            .text("separate security and recovery plan required")
+        ]
+        let expectedForbiddenActions = [
+            "credential access",
+            "private key handling",
+            "history rewrite",
+            "public visibility change",
+            "model training",
+            "dataset ingestion",
+            "unrestricted shell execution"
+        ]
+
+        check(
+            sourceOfTruth.agentPermissionMatrix == "content/development/seis-ai-core-agent-permission-matrix.json",
+            "sourceOfTruth.agentPermissionMatrix must identify the canonical permission matrix."
+        )
+        check(matrix.id == "seis-ai-core-agent-permission-matrix", "agentPermissionMatrixRegistry.id must identify the canonical matrix.")
+        check(matrix.status == "source-backed-metadata-only", "agentPermissionMatrixRegistry.status must remain source-backed-metadata-only.")
+        check(matrix.source == sourceOfTruth.agentPermissionMatrix, "agentPermissionMatrixRegistry.source must match sourceOfTruth.agentPermissionMatrix.")
+        check(matrix.runtimeBoundary == "status-and-plan-only", "agentPermissionMatrixRegistry.runtimeBoundary must remain status-and-plan-only.")
+        check(matrix.levels.count == 5, "agentPermissionMatrixRegistry must contain exactly five permission levels.")
+        check(matrix.levels.map(\.level) == expectedLevels, "agentPermissionMatrixRegistry level IDs must remain canonical.")
+        check(matrix.levels.map(\.status) == expectedStatuses, "agentPermissionMatrixRegistry statuses must remain canonical.")
+        check(matrix.levels.map(\.approvalRequired) == expectedApprovalRequirements, "agentPermissionMatrixRegistry approval requirements must remain canonical.")
+        check(matrix.levels.allSatisfy(\.isComplete), "agentPermissionMatrixRegistry levels must contain actions and evidence.")
+        check(matrix.enabledLevelCount == 2, "agentPermissionMatrixRegistry must expose exactly two enabled levels.")
+        check(matrix.forbiddenWithoutSeparatePlan == expectedForbiddenActions, "agentPermissionMatrixRegistry forbidden actions must remain canonical.")
+        check(matrix.truthBoundary.contains("do not grant runtime authority"), "agentPermissionMatrixRegistry.truthBoundary must deny runtime authority.")
+        check(matrix.isMetadataOnly, "agentPermissionMatrixRegistry must remain metadata-only.")
+    }
+
+    func validateSubagentRuntimeFixtures(check: ValidationCheck) {
+        let fixtures = subagentRuntimeFixturesRegistry
+        let ledger = fixtures.executionLedgerFixture
+        let expectedFixtureIDs = [
+            "role-schema",
+            "permission-matrix",
+            "dry-run-task-queue",
+            "cancellation-fixture",
+            "approval-fixture",
+            "redaction-fixture",
+            "execution-ledger-fixture"
+        ]
+        let expectedLedgerFields = [
+            "id",
+            "taskId",
+            "laneId",
+            "roleId",
+            "permissionLevel",
+            "decision",
+            "stateBefore",
+            "stateAfter",
+            "dryRunOnly",
+            "realExecutionBlocked",
+            "externalMutationPerformed",
+            "fileMutationPerformed",
+            "approvalRequired",
+            "approvalRecordId",
+            "cancellationSignal",
+            "validator",
+            "rollbackNote",
+            "redactionStatus",
+            "createdAt"
+        ]
+
+        check(
+            sourceOfTruth.subagentRuntimeFixtures == "content/development/seis-ai-core-subagent-runtime-fixtures.json",
+            "sourceOfTruth.subagentRuntimeFixtures must identify the canonical fixture pack."
+        )
+        check(fixtures.id == "seis-ai-core-subagent-runtime-fixtures", "subagentRuntimeFixturesRegistry.id must identify the canonical fixture pack.")
+        check(fixtures.status == "source-backed-metadata-only", "subagentRuntimeFixturesRegistry.status must remain source-backed-metadata-only.")
+        check(fixtures.source == sourceOfTruth.subagentRuntimeFixtures, "subagentRuntimeFixturesRegistry.source must match sourceOfTruth.subagentRuntimeFixtures.")
+        check(fixtures.runtimeBoundary["currentLevel"] == "status-and-plan-only", "subagent runtime fixtures must remain status-and-plan-only.")
+        check(fixtures.runtimeBoundary["backgroundAutomation"] == "disabled", "subagent runtime fixtures must keep background automation disabled.")
+        check(fixtures.runtimeBoundary["writeExecution"] == "disabled", "subagent runtime fixtures must keep write execution disabled.")
+        check(fixtures.runtimeBoundary["credentialAccess"] == "forbidden", "subagent runtime fixtures must keep credential access forbidden.")
+        check(fixtures.runtimeBoundary["externalMutation"] == "requires-explicit-human-approval", "subagent runtime fixtures must require human approval for external mutation.")
+        check(fixtures.fixtureCount == 7, "subagentRuntimeFixturesRegistry must contain exactly seven fixtures.")
+        check(fixtures.fixtureCount == fixtures.fixtures.count, "subagentRuntimeFixturesRegistry.fixtureCount must match decoded fixtures.")
+        check(fixtures.fixtureIds == expectedFixtureIDs, "subagentRuntimeFixturesRegistry fixture IDs must remain canonical.")
+        check(fixtures.fixtures.map(\.id) == expectedFixtureIDs, "subagentRuntimeFixturesRegistry fixture references must remain ordered.")
+        for fixture in fixtures.fixtures {
+            check(fixture.validationIssues.isEmpty, "subagent runtime fixture (fixture.id) must contain source metadata.")
+        }
+        check(ledger.requiredFieldCount == expectedLedgerFields.count, "execution ledger required field count must remain 19.")
+        check(ledger.requiredFields == expectedLedgerFields, "execution ledger required fields must remain canonical.")
+        check(ledger.isSafe, "execution ledger fixture must remain append-only, redacted, and mutation-free.")
+        check(fixtures.truthBoundary.contains("do not execute agents"), "subagentRuntimeFixturesRegistry.truthBoundary must deny execution.")
+        check(fixtures.isMetadataOnly, "subagentRuntimeFixturesRegistry must remain metadata-only.")
     }
 
     func validatePluginMesh(check: ValidationCheck) {
