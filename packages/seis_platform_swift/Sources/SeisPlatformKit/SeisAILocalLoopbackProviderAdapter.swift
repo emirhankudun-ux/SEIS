@@ -101,6 +101,9 @@ public struct SeisAILocalLoopbackProviderAdapter: SeisAIProviderAdapter, Sendabl
         guard let httpResponse = response as? HTTPURLResponse else {
             throw SeisAILocalLoopbackProviderError.invalidResponse("loopback response was not HTTP")
         }
+        guard let responseURL = httpResponse.url, Self.isAllowedLoopbackEndpoint(responseURL) else {
+            throw SeisAILocalLoopbackProviderError.invalidResponse("loopback response endpoint was outside the allowlist")
+        }
         guard (200..<300).contains(httpResponse.statusCode) else {
             throw SeisAILocalLoopbackProviderError.unexpectedStatusCode(httpResponse.statusCode)
         }

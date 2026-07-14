@@ -170,6 +170,22 @@ struct SeisAIRuntimeTests {
         }
     }
 
+    @Test func localLoopbackAdapterRejectsResponsesFromOutsideTheAllowlist() async throws {
+        let adapter = try SeisAILocalLoopbackProviderAdapter(
+            httpClient: RecordingLoopbackHTTPClient(
+                responseData: Data(#"{"response":"unexpected"}"#.utf8),
+                responseURL: URL(string: "http://example.com/api/generate")!
+            )
+        )
+
+        do {
+            _ = try await adapter.execute(localDemoExecutionRequest(id: "local-loopback-external-response"))
+            #expect(Bool(false), "a response from outside loopback must fail closed")
+        } catch let error as SeisAILocalLoopbackProviderError {
+            #expect(error == .invalidResponse("loopback response endpoint was outside the allowlist"))
+        }
+    }
+
     @Test func localLoopbackAdapterIsRejectedByTheDefaultRuntimeMode() throws {
         let adapter = try SeisAILocalLoopbackProviderAdapter(
             httpClient: RecordingLoopbackHTTPClient(
@@ -449,17 +465,19 @@ private actor FakeLocalDemoAdapter: SeisAIProviderAdapter {
 private actor RecordingLoopbackHTTPClient: SeisAILocalLoopbackHTTPClient {
     let responseData: Data
     let statusCode: Int
+    let responseURL: URL?
     private var lastRequest: URLRequest?
 
-    init(responseData: Data, statusCode: Int = 200) {
+    init(responseData: Data, statusCode: Int = 200, responseURL: URL? = nil) {
         self.responseData = responseData
         self.statusCode = statusCode
+        self.responseURL = responseURL
     }
 
     func data(for request: URLRequest) async throws -> (Data, URLResponse) {
         lastRequest = request
         let response = HTTPURLResponse(
-            url: request.url!,
+            url: responseURL ?? request.url!,
             statusCode: statusCode,
             httpVersion: nil,
             headerFields: ["Content-Type": "application/json"]
