@@ -2,6 +2,13 @@
 
 Date: 2026-06-23
 
+Goal: `OPS-GOAL-0001`
+Dataset: `data/seis-open-pr-portfolio.json`
+Dataset ID: `seis-open-pr-portfolio-2026-07-14`
+Snapshot count: `90 open pull requests`
+Snapshot digest: `sha256:7c2b783eb302f9d25f64da5a9221d03e9db3a543abe7384d86b8c46d86c4bd69`
+Retrieved at: `2026-07-14T05:54:16Z`
+
 | ID | Priority | Lane | Work | Acceptance evidence |
 | --- | --- | --- | --- | --- |
 | `SEIS-BL-001` | P0 | Goal Tracking OS | Keep structured goal, evidence, and execution records valid. | `npm run check:goal-tracking` passes. |
@@ -34,7 +41,7 @@ Date: 2026-06-23
 | `SEIS-BL-021` | P0 | Integration | Keep every SEIS workstream tied to GitHub, evidence, validation, and PR sequencing. | `docs/governance/seis-integration-and-github-development.md` and `content/development/seis-integration-map.json` stay current. |
 | `SEIS-BL-042` | P0 | Workspace unification | Keep `SEIS/` as the single canonical writable local root and classify every nearby SEIS-like folder as review-only until a scoped PR extracts it. | `docs/reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md`, `docs/governance/seis-integration-and-github-development.md`, and `content/development/seis-integration-map.json` stay aligned. |
 | `SEIS-BL-022` | P1 | Mythic Gacha | Keep the no-key Shan Hai Jing inspired gacha playable and evidence-backed. | `npm run check:mythic-gacha` validates route, draw controls, 60 card markers, IndexedDB hooks, pity marker, filters, atlas binding, and SEIS Code export bridge. |
-| `SEIS-BL-023` | P0 | GitHub governance | Triage 25 open PRs into merge-ready, replace, close, archive, or superseded buckets without merging or closing them. | Read-only `gh pr list --state open --limit 30` inventory exists in `docs/STATUS.md`. |
+| `SEIS-BL-023` | P0 | GitHub governance | Execute `OPS-GOAL-0001`: classify all 90 captured open PRs into controlled advisory dispositions without mutating any classified PR. | `data/seis-open-pr-portfolio.json`, `docs/reviews/PR_STACK_REVIEW.md`, the captured timestamp and digest above, `npm run check:seis-open-pr-portfolio`, and `npm run test:seis-open-pr-portfolio` provide reproducible evidence. |
 | `SEIS-BL-024` | P0 | CI | Keep GitHub Actions aligned with declared package scripts without weakening checks. | Current `foundation-check.yml` uses declared scripts only; maintain this with package-script drift checks before adding new CI gates. |
 | `SEIS-BL-025` | P1 | AI Core | Keep model-router, prompt-engine, and agent-runtime contracts documented before live provider integration. | `docs/ai/model-router.md`, `docs/ai/prompt-engine.md`, and `docs/ai/agent-runtime.md` exist. |
 | `SEIS-BL-026` | P1 | Public readiness | Resolve public-indexing intent before release. | `robots.txt` and sitemap point toward public crawling while core page metadata still uses `noindex, nofollow`. |
@@ -80,7 +87,7 @@ Date: 2026-06-23
 | `SEIS-BL-021` | `seis/integration-spine` | `docs: add SEIS integration and GitHub development spine` | Medium | No for documentation and JSON records | Keep local workstreams visible without merging risky code. |
 | `SEIS-BL-042` | `seis/workspace-unification-spine` | `docs: define SEIS canonical workspace spine` | Medium | No for documentation and JSON records; yes for folder deletion, branch deletion, physical consolidation, push, or merge | Continue from `SEIS/`, review other SEIS-like folders one at a time, and never bulk-copy or delete without approval. |
 | `SEIS-BL-022` | `seis/mythic-gacha-foundation` | `feat: add Mythic Gacha foundation` | Medium | No unless adding dependencies or live image generation | Add browser QA for draw flows, refresh persistence, SEIS Code export visibility, and per-card artwork provenance review. |
-| `SEIS-BL-023` | `seis/pr-stack-triage` | `docs: add SEIS open PR triage plan` | Medium | Yes for merge/close/reopen actions | Produce a PR stack review with keep/replace/close/archive recommendations only. |
+| `SEIS-BL-023` | `audit/seis-open-pr-portfolio-triage` | `docs(governance): classify the complete open pr portfolio` | High | Yes for every merge, close, reopen, rebase, label, comment, edit, branch, or history action | Publish recommendations only; after human decisions, recover unique value through separate Goal-linked implementation PRs rather than mutating branches from this audit. |
 | `SEIS-BL-024` | `ci/foundation-workflow-alignment` | `ci: align foundation workflow scripts` | Medium | No for script alignment; yes if weakening required checks | Replace missing workflow script calls with existing validation scripts or add narrow aliases. |
 | `SEIS-BL-025` | `ai/core-contracts` | `docs: add SEIS AI Core routing and agent contracts` | Medium | No for docs; yes for live providers | Keep contracts linked from status, index, and AI Core docs. |
 | `SEIS-BL-026` | `docs/public-indexing-intent` | `docs: define public indexing readiness` | Medium | No for docs; yes for public visibility changes | Decide preview/private/public SEO posture before release. |

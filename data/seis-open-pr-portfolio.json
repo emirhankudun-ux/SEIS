@@ -1,0 +1,3552 @@
+{
+  "schemaVersion": 1,
+  "datasetId": "seis-open-pr-portfolio-2026-07-14",
+  "goalId": "OPS-GOAL-0001",
+  "repository": "emirhankudun-ux/SEIS",
+  "snapshot": {
+    "state": "open",
+    "retrievedAt": "2026-07-14T05:54:16Z",
+    "sourceCommand": "gh api --method GET 'repos/emirhankudun-ux/SEIS/pulls?state=open&per_page=100&sort=created&direction=desc'",
+    "count": 90,
+    "digest": "sha256:7c2b783eb302f9d25f64da5a9221d03e9db3a543abe7384d86b8c46d86c4bd69",
+    "defaultBranchRefName": "main",
+    "defaultBranchRefOid": "38031939b5a38270fad0ae8e0b5a96eceeabb4aa",
+    "identityFields": [
+      "number",
+      "title",
+      "url",
+      "isDraft",
+      "createdAt",
+      "updatedAt",
+      "headRefName",
+      "headRefOid",
+      "baseRefName",
+      "baseRefOid",
+      "author",
+      "labels"
+    ]
+  },
+  "policy": {
+    "advisoryOnly": true,
+    "githubMutationsPerformed": false,
+    "requiresHumanApprovalForGitHubMutation": true,
+    "allowedDispositions": [
+      "retain",
+      "merge-candidate",
+      "replace",
+      "close-candidate",
+      "archive-candidate",
+      "superseded",
+      "needs-human-review"
+    ],
+    "protectedPullRequests": [
+      177,
+      179,
+      180,
+      182
+    ]
+  },
+  "classificationSummary": {
+    "total": 90,
+    "byDisposition": {
+      "retain": 16,
+      "merge-candidate": 1,
+      "replace": 20,
+      "close-candidate": 1,
+      "archive-candidate": 3,
+      "superseded": 42,
+      "needs-human-review": 7
+    },
+    "byCluster": {
+      "ai-core-and-routing": 17,
+      "apple-native": 3,
+      "archive-extraction": 3,
+      "ecosystem-governance": 8,
+      "legacy-consolidation": 10,
+      "platform-language": 2,
+      "plugins-and-agent-tooling": 1,
+      "product-experience": 15,
+      "roadmaps-and-enterprise": 3,
+      "second-brain": 14,
+      "security-and-ci": 4,
+      "ssh-cloud": 10
+    }
+  },
+  "sequence": [
+    {
+      "order": 1,
+      "cluster": "ecosystem-governance",
+      "prNumbers": [
+        1,
+        11,
+        46,
+        65,
+        70,
+        177,
+        179,
+        180
+      ],
+      "gate": "Resolve protected-branch prerequisites and accountable ownership before any state change.",
+      "rationale": "This lane contains 8 pull request(s): 3 superseded, 1 replace, 3 retain, 1 merge-candidate.",
+      "humanApprovalRequired": true
+    },
+    {
+      "order": 2,
+      "cluster": "security-and-ci",
+      "prNumbers": [
+        37,
+        77,
+        131,
+        137
+      ],
+      "gate": "Preserve fail-closed scanning and resolve issue #129 through an accountable owner decision.",
+      "rationale": "This lane contains 4 pull request(s): 2 superseded, 1 needs-human-review, 1 replace.",
+      "humanApprovalRequired": true
+    },
+    {
+      "order": 3,
+      "cluster": "apple-native",
+      "prNumbers": [
+        24,
+        175,
+        182
+      ],
+      "gate": "Require accepted Apple architecture, Swift validation, privacy review, and migration evidence.",
+      "rationale": "This lane contains 3 pull request(s): 1 superseded, 2 retain.",
+      "humanApprovalRequired": true
+    },
+    {
+      "order": 4,
+      "cluster": "second-brain",
+      "prNumbers": [
+        55,
+        57,
+        59,
+        60,
+        61,
+        63,
+        84,
+        85,
+        87,
+        104,
+        127,
+        128,
+        153,
+        157
+      ],
+      "gate": "Inventory unique work and separate public-safe contracts from generated or private-memory surfaces.",
+      "rationale": "This lane contains 14 pull request(s): 4 needs-human-review, 3 replace, 1 close-candidate, 6 superseded.",
+      "humanApprovalRequired": true
+    },
+    {
+      "order": 5,
+      "cluster": "ssh-cloud",
+      "prNumbers": [
+        22,
+        28,
+        40,
+        56,
+        76,
+        116,
+        159,
+        161,
+        163,
+        165
+      ],
+      "gate": "Preserve the existing server and port; require security review before any live infrastructure action.",
+      "rationale": "This lane contains 10 pull request(s): 7 superseded, 1 needs-human-review, 1 replace, 1 retain.",
+      "humanApprovalRequired": true
+    },
+    {
+      "order": 6,
+      "cluster": "ai-core-and-routing",
+      "prNumbers": [
+        41,
+        44,
+        45,
+        48,
+        52,
+        62,
+        90,
+        93,
+        95,
+        106,
+        111,
+        112,
+        113,
+        114,
+        117,
+        155,
+        156
+      ],
+      "gate": "Require configurable contracts, claim safety, redaction, permission boundaries, and focused validation.",
+      "rationale": "This lane contains 17 pull request(s): 9 superseded, 6 replace, 2 retain.",
+      "humanApprovalRequired": true
+    },
+    {
+      "order": 7,
+      "cluster": "plugins-and-agent-tooling",
+      "prNumbers": [
+        12
+      ],
+      "gate": "Refresh provenance, permissions, versions, and installed-state evidence before adoption.",
+      "rationale": "This lane contains 1 pull request(s): 1 replace.",
+      "humanApprovalRequired": true
+    },
+    {
+      "order": 8,
+      "cluster": "product-experience",
+      "prNumbers": [
+        3,
+        23,
+        58,
+        66,
+        67,
+        68,
+        69,
+        105,
+        107,
+        108,
+        109,
+        110,
+        115,
+        118,
+        119
+      ],
+      "gate": "Confirm product ownership, accessibility, provenance, and current-main integration.",
+      "rationale": "This lane contains 15 pull request(s): 5 replace, 2 superseded, 7 retain, 1 needs-human-review.",
+      "humanApprovalRequired": true
+    },
+    {
+      "order": 9,
+      "cluster": "platform-language",
+      "prNumbers": [
+        19,
+        27
+      ],
+      "gate": "Recover only unique policy or validator value after canonical ownership review.",
+      "rationale": "This lane contains 2 pull request(s): 2 superseded.",
+      "humanApprovalRequired": true
+    },
+    {
+      "order": 10,
+      "cluster": "roadmaps-and-enterprise",
+      "prNumbers": [
+        141,
+        142,
+        143
+      ],
+      "gate": "Split strategy, contracts, and UI into independently reviewable Goal-linked slices.",
+      "rationale": "This lane contains 3 pull request(s): 1 retain, 2 replace.",
+      "humanApprovalRequired": true
+    },
+    {
+      "order": 11,
+      "cluster": "archive-extraction",
+      "prNumbers": [
+        71,
+        125,
+        154
+      ],
+      "gate": "Never merge wholesale; complete a unique-file and sensitive-path extraction inventory.",
+      "rationale": "This lane contains 3 pull request(s): 3 archive-candidate.",
+      "humanApprovalRequired": true
+    },
+    {
+      "order": 12,
+      "cluster": "legacy-consolidation",
+      "prNumbers": [
+        2,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        16,
+        20,
+        33
+      ],
+      "gate": "Verify canonical successor coverage before any human-approved historical closure.",
+      "rationale": "This lane contains 10 pull request(s): 10 superseded.",
+      "humanApprovalRequired": true
+    }
+  ],
+  "pullRequests": [
+    {
+      "number": 1,
+      "title": "Add GitHub SEIS operating model",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/1",
+      "isDraft": false,
+      "createdAt": "2026-06-06T09:17:10Z",
+      "updatedAt": "2026-06-16T07:18:07Z",
+      "headRefName": "codex/gelistir-seis-modelini-github-da",
+      "headRefOid": "8dcd648a99927704ae972375826e14113fef1057",
+      "baseRefName": "main",
+      "baseRefOid": "d3816f9f4959dcab51978aba1cc46d44e088f6a4",
+      "author": "emirhankudun-ux",
+      "labels": [
+        "codex"
+      ],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "ecosystem-governance",
+        "risk": "medium",
+        "rationale": "The original GitHub operating model has been overtaken by merged evolution and consolidation governance plus the current ecosystem Goal Tracking system.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, CONFLICTING with main, 11 files, +630/-9.",
+          "The consolidation record says current main already contains newer governance material and explicitly supersedes #1.",
+          "Merged #4 and #39 plus current PR #177 form the newer governance chain."
+        ],
+        "successorPullRequests": [
+          177
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/pull/1",
+          "https://github.com/emirhankudun-ux/SEIS/pull/177",
+          "https://github.com/emirhankudun-ux/SEIS/pull/39",
+          "https://github.com/emirhankudun-ux/SEIS/pull/4"
+        ],
+        "nextSafeAction": "Human review: confirm no unique operating-model rule remains outside current AGENTS and Goal governance, then request human-approved closure.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 2,
+      "title": "Add SEIS evolution model, documentation, and validation script",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/2",
+      "isDraft": false,
+      "createdAt": "2026-06-06T09:26:06Z",
+      "updatedAt": "2026-06-19T12:13:50Z",
+      "headRefName": "codex/gelistir-seis-modelini-github-da-qo9wqj",
+      "headRefOid": "879de6fc58f26323af61e85700bccd8ccc5f8222",
+      "baseRefName": "main",
+      "baseRefOid": "dfb731ee7d444bd9bf5b253da53bd764ee3683f8",
+      "author": "emirhankudun-ux",
+      "labels": [
+        "codex"
+      ],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "legacy-consolidation",
+        "risk": "medium",
+        "rationale": "This small early evolution-model variant is already represented by merged #4 and the later consolidation decision.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, CONFLICTING with main, 6 files, +580/-1.",
+          "Merged #4 is the canonical evolution and GitHub-remote baseline.",
+          "The consolidation record explicitly places #2 in the duplicate evolution-model family."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/pull/2",
+          "https://github.com/emirhankudun-ux/SEIS/pull/39",
+          "https://github.com/emirhankudun-ux/SEIS/pull/4"
+        ],
+        "nextSafeAction": "Human review: verify its validator and documentation are present or obsolete in current main, then request human-approved batch closure.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 3,
+      "title": "Add portfolio content and UI, resilient JSON loading, service-worker cache bump, and build fallback",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/3",
+      "isDraft": false,
+      "createdAt": "2026-06-06T10:10:28Z",
+      "updatedAt": "2026-06-16T07:17:32Z",
+      "headRefName": "codex/create-portfolio-website-using-app-plugins",
+      "headRefOid": "b754195ed2a0d77b1baaaccbda81a5df44509335",
+      "baseRefName": "main",
+      "baseRefOid": "d3816f9f4959dcab51978aba1cc46d44e088f6a4",
+      "author": "emirhankudun-ux",
+      "labels": [
+        "codex"
+      ],
+      "classification": {
+        "disposition": "replace",
+        "cluster": "product-experience",
+        "risk": "medium",
+        "rationale": "The portfolio content model may contain reusable intent, but its stale conflicting web and release-mirror patch predates the current product and public-demo architecture.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, CONFLICTING with main, 9 files, +1010/-52.",
+          "The consolidation record keeps portfolio work separate rather than merging it into foundation cleanup.",
+          "PRs #42, #51, #54, #86, #88, and #89 subsequently established product, website, demo launcher, index, and smoke-test surfaces."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [
+          177
+        ],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/pull/3",
+          "https://github.com/emirhankudun-ux/SEIS/pull/42",
+          "https://github.com/emirhankudun-ux/SEIS/pull/51",
+          "https://github.com/emirhankudun-ux/SEIS/pull/54",
+          "https://github.com/emirhankudun-ux/SEIS/pull/86",
+          "https://github.com/emirhankudun-ux/SEIS/pull/88",
+          "https://github.com/emirhankudun-ux/SEIS/pull/89",
+          "OPS-GOAL-0001#replacement-product-experience"
+        ],
+        "nextSafeAction": "Human review: extract only still-valid portfolio content into the current content model and rebuild UI behavior against current web contracts in a new Goal-linked PR.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 5,
+      "title": "Add SEIS evolution model, publish-gate and GitHub-remote artifacts with UI and validation checks",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/5",
+      "isDraft": false,
+      "createdAt": "2026-06-06T11:23:32Z",
+      "updatedAt": "2026-06-19T12:13:48Z",
+      "headRefName": "codex/gelistir-seis-modelini-github-da-o1mh4x",
+      "headRefOid": "9b96b176234a46acf33fec3ebe583bcb9d41fcd4",
+      "baseRefName": "main",
+      "baseRefOid": "dfb731ee7d444bd9bf5b253da53bd764ee3683f8",
+      "author": "emirhankudun-ux",
+      "labels": [
+        "codex"
+      ],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "legacy-consolidation",
+        "risk": "high",
+        "rationale": "It is an exact-scope sibling of #6 in the duplicate evolution and GitHub-remote artifact family.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, CONFLICTING with main, 18 files, +1679/-3.",
+          "PR #6 has the same title, file count, additions, and deletions.",
+          "Merged #4 and the consolidation record are the canonical successors."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/pull/39",
+          "https://github.com/emirhankudun-ux/SEIS/pull/4",
+          "https://github.com/emirhankudun-ux/SEIS/pull/5"
+        ],
+        "nextSafeAction": "Human review: confirm patch equivalence with #6 and merged #4, then request human-approved batch closure.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 6,
+      "title": "Add SEIS evolution model, publish-gate and GitHub-remote artifacts with UI and validation checks",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/6",
+      "isDraft": false,
+      "createdAt": "2026-06-06T11:23:37Z",
+      "updatedAt": "2026-06-19T12:13:45Z",
+      "headRefName": "codex/gelistir-seis-modelini-github-da-fbvbce",
+      "headRefOid": "24a5abb8d023e5f8116afcba208ca651f4957e89",
+      "baseRefName": "main",
+      "baseRefOid": "dfb731ee7d444bd9bf5b253da53bd764ee3683f8",
+      "author": "emirhankudun-ux",
+      "labels": [
+        "codex"
+      ],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "legacy-consolidation",
+        "risk": "high",
+        "rationale": "It is an exact-scope sibling of #5 in the duplicate evolution and GitHub-remote artifact family.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, CONFLICTING with main, 18 files, +1679/-3.",
+          "PR #5 has the same title, file count, additions, and deletions.",
+          "Merged #4 and the consolidation record are the canonical successors."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/pull/39",
+          "https://github.com/emirhankudun-ux/SEIS/pull/4",
+          "https://github.com/emirhankudun-ux/SEIS/pull/6"
+        ],
+        "nextSafeAction": "Human review: confirm patch equivalence with #5 and merged #4, then request human-approved batch closure.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 7,
+      "title": "Add SEIS evolution model, publish-gate and GitHub-remote artifacts with UI and validation checks",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/7",
+      "isDraft": false,
+      "createdAt": "2026-06-06T11:25:53Z",
+      "updatedAt": "2026-06-19T12:13:43Z",
+      "headRefName": "codex/gelistir-seis-modelini-github-da-nguhru",
+      "headRefOid": "60d1be45779e37f27beb7279f446253eea67ac17",
+      "baseRefName": "main",
+      "baseRefOid": "dfb731ee7d444bd9bf5b253da53bd764ee3683f8",
+      "author": "emirhankudun-ux",
+      "labels": [
+        "codex"
+      ],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "legacy-consolidation",
+        "risk": "high",
+        "rationale": "This is a larger intermediate duplicate in the evolution and GitHub-remote artifact family already represented by merged #4.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, CONFLICTING with main, 20 files, +2222/-3.",
+          "PRs #5 and #6 share the same title, while #7 adds another overlapping variant.",
+          "The consolidation record explicitly classifies #7 as duplicate."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/pull/39",
+          "https://github.com/emirhankudun-ux/SEIS/pull/4",
+          "https://github.com/emirhankudun-ux/SEIS/pull/7"
+        ],
+        "nextSafeAction": "Human review: compare only unique paths against merged #4, then request human-approved batch closure.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 8,
+      "title": "Add SEIS evolution model, publish-gate & aggressive execution plan with UI and validation scripts",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/8",
+      "isDraft": false,
+      "createdAt": "2026-06-06T12:29:42Z",
+      "updatedAt": "2026-06-16T07:16:51Z",
+      "headRefName": "codex/gelistir-seis-modelini-github-da-2o2er1",
+      "headRefOid": "8bf170f93c217b2a688761d2c3b310a3fc923688",
+      "baseRefName": "main",
+      "baseRefOid": "537f2510d7275ceb68d0607db542f7d297dac1d3",
+      "author": "emirhankudun-ux",
+      "labels": [
+        "codex"
+      ],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "legacy-consolidation",
+        "risk": "high",
+        "rationale": "Its evolution, publish-gate, UI, and execution-plan scope is a stale duplicate of the already merged evolution baseline.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, CONFLICTING with main, 24 files, +2964/-3.",
+          "Its scope metrics match PR #16.",
+          "The consolidation record explicitly classifies #8 as a duplicate evolution-model variant."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/pull/39",
+          "https://github.com/emirhankudun-ux/SEIS/pull/4",
+          "https://github.com/emirhankudun-ux/SEIS/pull/8"
+        ],
+        "nextSafeAction": "Human review: check for any unique validator not present in current main, then request human-approved batch closure.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 9,
+      "title": "Introduce SEIS evolution model, publish-gate, aggressive execution plan, UI panels and validation scripts",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/9",
+      "isDraft": false,
+      "createdAt": "2026-06-06T12:35:39Z",
+      "updatedAt": "2026-06-19T12:13:40Z",
+      "headRefName": "codex/gelistir-seis-modelini-github-da-r3b8y5",
+      "headRefOid": "1f53b34c9a90214bee473a05aee8f94e03c62449",
+      "baseRefName": "main",
+      "baseRefOid": "dfb731ee7d444bd9bf5b253da53bd764ee3683f8",
+      "author": "emirhankudun-ux",
+      "labels": [
+        "codex"
+      ],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "legacy-consolidation",
+        "risk": "high",
+        "rationale": "This same-size, same-title evolution-model variant duplicates #10 and the merged #4 baseline.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, CONFLICTING with main, 22 files, +2587/-3.",
+          "PR #10 has the same title, file count, additions, and deletions.",
+          "The consolidation record classifies #9 in the duplicate evolution-model group."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/pull/39",
+          "https://github.com/emirhankudun-ux/SEIS/pull/4",
+          "https://github.com/emirhankudun-ux/SEIS/pull/9"
+        ],
+        "nextSafeAction": "Human review: confirm patch equivalence with #10 and merged #4, then request human-approved batch closure.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 10,
+      "title": "Introduce SEIS evolution model, publish-gate, aggressive execution plan, UI panels and validation scripts",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/10",
+      "isDraft": false,
+      "createdAt": "2026-06-06T12:35:41Z",
+      "updatedAt": "2026-06-19T12:13:38Z",
+      "headRefName": "codex/gelistir-seis-modelini-github-da-hhbqqm",
+      "headRefOid": "c207aa6007dd5c39b75ba16330ed99dfaabd918b",
+      "baseRefName": "main",
+      "baseRefOid": "dfb731ee7d444bd9bf5b253da53bd764ee3683f8",
+      "author": "emirhankudun-ux",
+      "labels": [
+        "codex"
+      ],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "legacy-consolidation",
+        "risk": "high",
+        "rationale": "This is one of two same-size, same-title evolution-model variants and duplicates the merged #4 baseline.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, CONFLICTING with main, 22 files, +2587/-3.",
+          "PR #9 has the same title, file count, additions, and deletions.",
+          "The consolidation record classifies #10 in the duplicate evolution-model group."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/pull/10",
+          "https://github.com/emirhankudun-ux/SEIS/pull/39",
+          "https://github.com/emirhankudun-ux/SEIS/pull/4"
+        ],
+        "nextSafeAction": "Human review: confirm patch equivalence with the duplicate family and merged #4, then request human-approved batch closure.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 11,
+      "title": "Add CLAUDE.md: operating instructions + test improvement roadmap",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/11",
+      "isDraft": false,
+      "createdAt": "2026-06-07T16:39:33Z",
+      "updatedAt": "2026-06-19T09:53:38Z",
+      "headRefName": "claude/test-improvements-8u81C",
+      "headRefOid": "0b7097a57bd9bc3bd0f53032c8fb57d985f80668",
+      "baseRefName": "main",
+      "baseRefOid": "c001ef29e068977f80e95a75990457a028ec0a6d",
+      "author": "emirhankudun-ux",
+      "labels": [
+        "bug",
+        "codex",
+        "documentation",
+        "duplicate",
+        "enhancement",
+        "good first issue",
+        "governance",
+        "help wanted",
+        "invalid",
+        "question"
+      ],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "ecosystem-governance",
+        "risk": "high",
+        "rationale": "Its claim that CLAUDE.md is authoritative conflicts with current AGENTS.md authority, and its 140-file test, CI, dependency, polyglot, and agent changes are no longer a reviewable unit.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, CONFLICTING with main, 140 files, +15793/-809.",
+          "The canonical consolidation record says to summarize only still-needed material into governance docs.",
+          "Merged #39 and current #177 provide newer repository and Goal governance."
+        ],
+        "successorPullRequests": [
+          177
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/pull/11",
+          "https://github.com/emirhankudun-ux/SEIS/pull/177",
+          "https://github.com/emirhankudun-ux/SEIS/pull/39"
+        ],
+        "nextSafeAction": "Human review: do not merge the instruction file or dependency changes; compare documented test gaps with current CI and create narrowly scoped follow-ups only for gaps still reproducible.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 12,
+      "title": "feat: register all 179 installed Codex plugins across lanes and categories",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/12",
+      "isDraft": false,
+      "createdAt": "2026-06-07T17:39:58Z",
+      "updatedAt": "2026-06-16T07:15:20Z",
+      "headRefName": "claude/feature-suggestions-WzUCe",
+      "headRefOid": "1681f8025d031eab24fc50c027fbbf5e792be0d8",
+      "baseRefName": "main",
+      "baseRefOid": "9a9dceecd7c66ee21e7c17c2859a2947a4608fc7",
+      "author": "emirhankudun-ux",
+      "labels": [
+        "bug",
+        "codex",
+        "duplicate",
+        "enhancement",
+        "good first issue",
+        "governance",
+        "help wanted",
+        "invalid",
+        "question"
+      ],
+      "classification": {
+        "disposition": "replace",
+        "cluster": "plugins-and-agent-tooling",
+        "risk": "high",
+        "rationale": "A dated inventory of 179 locally installed plugins cannot be treated as current ecosystem truth or safely promoted without source, version, permission, and installation evidence.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, CONFLICTING with main, REVIEW_REQUIRED, 4 files, +185/-15.",
+          "The inventory path is explicitly dated 2026-06-05.",
+          "The consolidation record allows extraction only if the data matches current installed-plugin audit records.",
+          "Merged #21 and #49 plus current #165 provide newer specialist-plugin and interface evidence."
+        ],
+        "successorPullRequests": [
+          165
+        ],
+        "dependsOnPullRequests": [
+          177,
+          179
+        ],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/pull/12",
+          "https://github.com/emirhankudun-ux/SEIS/pull/165",
+          "https://github.com/emirhankudun-ux/SEIS/pull/21",
+          "https://github.com/emirhankudun-ux/SEIS/pull/49"
+        ],
+        "nextSafeAction": "Human review: regenerate the inventory from currently verified installations and registry provenance under least privilege; create a new Goal-linked contract instead of reusing the stale snapshot.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 16,
+      "title": "Add SEIS evolution model, publish-gate, and aggressive execution safety tooling + UI",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/16",
+      "isDraft": false,
+      "createdAt": "2026-06-09T07:05:59Z",
+      "updatedAt": "2026-06-16T07:14:12Z",
+      "headRefName": "codex/gelistir-seis-modelini-github-da-8xnss4",
+      "headRefOid": "52dd16dd509d82acd86c9adc84510612e6f95756",
+      "baseRefName": "main",
+      "baseRefOid": "3d08f5c86dbad327fbaedacca6b3aafc0c8dbba3",
+      "author": "emirhankudun-ux",
+      "labels": [
+        "codex"
+      ],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "legacy-consolidation",
+        "risk": "high",
+        "rationale": "This is a duplicate evolution-model and aggressive-execution variant whose canonical baseline already merged through #4.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, CONFLICTING with main, 24 files, +2964/-3.",
+          "Merged PR #4 is the documented evolution and GitHub-remote baseline.",
+          "The consolidation record groups #16 with the duplicate #1/#2/#5-#10 family."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/pull/16",
+          "https://github.com/emirhankudun-ux/SEIS/pull/39",
+          "https://github.com/emirhankudun-ux/SEIS/pull/4"
+        ],
+        "nextSafeAction": "Human review: confirm no validator unique to #16 remains absent from current main, then request human-approved closure with the duplicate family.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 19,
+      "title": "Codex/seis platform polyglot kernel",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/19",
+      "isDraft": false,
+      "createdAt": "2026-06-11T13:28:32Z",
+      "updatedAt": "2026-06-11T14:53:13Z",
+      "headRefName": "codex/seis-platform-polyglot-kernel",
+      "headRefOid": "8b8c7cf281638ce1a43088ac233d702fd843c878",
+      "baseRefName": "main",
+      "baseRefOid": "f7a9a71d1c7d65c0faecff70aecefa34da35e0a8",
+      "author": "emirhankudun-ux",
+      "labels": [
+        "bug",
+        "codex",
+        "documentation",
+        "duplicate",
+        "enhancement",
+        "good first issue",
+        "help wanted",
+        "invalid",
+        "question"
+      ],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "platform-language",
+        "risk": "critical",
+        "rationale": "The 187-file polyglot branch duplicates the already merged #18 baseline and is too broad and conflicting for direct recovery.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, CONFLICTING with main, 187 files, +53799/-466.",
+          "Merged PR #18 has the same Codex/seis platform polyglot kernel title and is the canonical baseline.",
+          "The consolidation record explicitly says #18 supersedes #19 overlap."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "docs/governance/open-pr-consolidation-2026-06-19.md",
+          "https://github.com/emirhankudun-ux/SEIS/pull/18",
+          "https://github.com/emirhankudun-ux/SEIS/pull/19",
+          "https://github.com/emirhankudun-ux/SEIS/pull/39"
+        ],
+        "nextSafeAction": "Human review: run a unique-path inventory against merged #18 and current main, recover only proven missing capability contracts, then request human-approved closure.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 20,
+      "title": "Consolidate all open PRs: GitHub model, portfolio, evolution, plugins, tests",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/20",
+      "isDraft": false,
+      "createdAt": "2026-06-11T16:27:57Z",
+      "updatedAt": "2026-06-16T07:13:17Z",
+      "headRefName": "consolidate/all-prs",
+      "headRefOid": "0ef987b7f24fa6a2b05d4e3b4206b24fb48845d9",
+      "baseRefName": "main",
+      "baseRefOid": "4bdfb98992fb5816b9a3559ac619232d3f20e74c",
+      "author": "emirhankudun-ux",
+      "labels": [
+        "bug",
+        "codex",
+        "documentation",
+        "duplicate",
+        "enhancement",
+        "good first issue",
+        "governance",
+        "help wanted",
+        "invalid",
+        "question"
+      ],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "legacy-consolidation",
+        "risk": "critical",
+        "rationale": "This broad merge-X-ours consolidation is replaced by the evidence-based #39 review and cannot establish which conflicting source was actually preserved.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, CONFLICTING with main, 142 files, +13229/-271.",
+          "Its body says multiple old branches were combined using an ours-biased merge strategy.",
+          "The canonical consolidation record explicitly supersedes #20 with merged PR #39."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "docs/governance/open-pr-consolidation-2026-06-19.md",
+          "https://github.com/emirhankudun-ux/SEIS/pull/20",
+          "https://github.com/emirhankudun-ux/SEIS/pull/39"
+        ],
+        "nextSafeAction": "Human review: treat it only as an index of old themes; never merge or cherry-pick it wholesale, and request closure after targeted recovery records are complete.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 22,
+      "title": "Harden SEIS cloud readiness guards",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/22",
+      "isDraft": false,
+      "createdAt": "2026-06-13T13:05:51Z",
+      "updatedAt": "2026-06-16T07:11:40Z",
+      "headRefName": "codex/harden-cloud-readiness-guards",
+      "headRefOid": "c19598c945a70b98e621b0d8ff5c79c5c2fefe1f",
+      "baseRefName": "main",
+      "baseRefOid": "88d5e2c44b4db35b4f1167861b2f7f4feae1d0c0",
+      "author": "emirhankudun-ux",
+      "labels": [
+        "bug",
+        "codex",
+        "documentation",
+        "duplicate",
+        "enhancement",
+        "good first issue",
+        "governance",
+        "help wanted",
+        "invalid",
+        "question"
+      ],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "ssh-cloud",
+        "risk": "high",
+        "rationale": "Its GCP, WireGuard, firewall, MCP, and SSH guards are stale and should be evaluated only against the current provider-neutral SEIS-SSH mainline work.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, CONFLICTING with main, 13 files, +296/-89.",
+          "The consolidation record says to supersede or extract #22 into a later scoped cloud-readiness PR.",
+          "Current main has later cloud-readiness commits, and PR #165 is the active current-mainline SSH/cloud integration."
+        ],
+        "successorPullRequests": [
+          165
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "docs/governance/open-pr-consolidation-2026-06-19.md",
+          "https://github.com/emirhankudun-ux/SEIS/pull/165",
+          "https://github.com/emirhankudun-ux/SEIS/pull/22"
+        ],
+        "nextSafeAction": "Human review: perform a guard-by-guard comparison against current main and #165, extract only missing provider-neutral validations, and require approval for any live-cloud behavior.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 23,
+      "title": "feat: portfolio as app + website — installable PWA + macOS demo",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/23",
+      "isDraft": true,
+      "createdAt": "2026-06-15T13:04:05Z",
+      "updatedAt": "2026-06-17T00:05:24Z",
+      "headRefName": "claude/trusting-edison-u0sfo7",
+      "headRefOid": "7540ffb1fdf2ee3a82753e1a4fec128a38398854",
+      "baseRefName": "main",
+      "baseRefOid": "cff7eb77e34038fea53458cbb2567a531a0af3bf",
+      "author": "emirhankudun-ux",
+      "labels": [
+        "bug",
+        "codex",
+        "documentation",
+        "duplicate",
+        "enhancement",
+        "good first issue",
+        "governance",
+        "help wanted",
+        "invalid",
+        "question"
+      ],
+      "classification": {
+        "disposition": "replace",
+        "cluster": "product-experience",
+        "risk": "medium",
+        "rationale": "The PWA and native macOS demo concept may still have product value, but the stale conflicting branch predates the merged product, desktop, website, and app-manifest foundations.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, draft, CONFLICTING with main, 15 files, +639/-15.",
+          "The consolidation record keeps portfolio/PWA work separate rather than treating it as a foundation merge.",
+          "PRs #42, #47, #51, and #86 subsequently merged product experience, Desktop OS, one-page website, and app-manifest launcher foundations."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [
+          177
+        ],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/pull/23",
+          "https://github.com/emirhankudun-ux/SEIS/pull/42",
+          "https://github.com/emirhankudun-ux/SEIS/pull/47",
+          "https://github.com/emirhankudun-ux/SEIS/pull/51",
+          "https://github.com/emirhankudun-ux/SEIS/pull/86",
+          "OPS-GOAL-0001#replacement-product-experience"
+        ],
+        "nextSafeAction": "Human review: re-specify the desired installable PWA and native demo against current web and Apple architecture in a small Goal-linked PR, then close the old branch only after unique UX behavior is inventoried.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 24,
+      "title": "feat(seis): stabilize swift diagnostics and align language-governance artifacts",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/24",
+      "isDraft": false,
+      "createdAt": "2026-06-15T14:35:23Z",
+      "updatedAt": "2026-06-16T07:10:43Z",
+      "headRefName": "chore/seis-pr-release-readiness-2026-06-15-signed",
+      "headRefOid": "845fb40eef7c9721a815ae114f803ff225e96692",
+      "baseRefName": "main",
+      "baseRefOid": "e58d52bf1363f88a582029d08f37bc9b660ca393",
+      "author": "emirhankudun-ux",
+      "labels": [
+        "bug",
+        "codex",
+        "documentation",
+        "duplicate",
+        "enhancement",
+        "good first issue",
+        "governance",
+        "help wanted",
+        "invalid",
+        "question"
+      ],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "apple-native",
+        "risk": "high",
+        "rationale": "The Swift/language-policy baseline was merged through #25, while #24 carries a much broader stale mix of deployment, plugin, MCP, generated-report, and Apple-shell changes.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, CONFLICTING with main, 60 files, +3794/-208.",
+          "Merged PR #25 is the canonical Swift policy and language-governance baseline.",
+          "The consolidation record explicitly uses #25 to supersede #24 overlap."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "docs/governance/open-pr-consolidation-2026-06-19.md",
+          "https://github.com/emirhankudun-ux/SEIS/pull/24",
+          "https://github.com/emirhankudun-ux/SEIS/pull/25",
+          "https://github.com/emirhankudun-ux/SEIS/pull/39"
+        ],
+        "nextSafeAction": "Human review: compare only the Swift diagnostics and tests against current Apple work; do not replay deployment or generated artifacts, then request closure after any unique slice is reimplemented.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 27,
+      "title": "Main-first governance, language-boundary policy, and polyglot capability kernel (docs + policy + kernel code)",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/27",
+      "isDraft": false,
+      "createdAt": "2026-06-16T07:44:34Z",
+      "updatedAt": "2026-06-16T07:56:07Z",
+      "headRefName": "codex/develop-seis-repository-with-dual-focus",
+      "headRefOid": "438edd594c13d8f62352b7c346fcc3f9cd4ed555",
+      "baseRefName": "main",
+      "baseRefOid": "cff7eb77e34038fea53458cbb2567a531a0af3bf",
+      "author": "emirhankudun-ux",
+      "labels": [
+        "codex"
+      ],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "platform-language",
+        "risk": "high",
+        "rationale": "Its main-first and polyglot governance overlaps the already merged kernel baseline and the later canonical consolidation record.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, CONFLICTING with main, 26 files, +906/-132.",
+          "Merged PR #18 is the documented polyglot baseline.",
+          "The consolidation record says to supersede #27 after checking only for unique docs or validators."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "docs/governance/open-pr-consolidation-2026-06-19.md",
+          "https://github.com/emirhankudun-ux/SEIS/pull/18",
+          "https://github.com/emirhankudun-ux/SEIS/pull/27",
+          "https://github.com/emirhankudun-ux/SEIS/pull/39"
+        ],
+        "nextSafeAction": "Human review: diff its policy and validator paths against current main, extract any demonstrably unique rule into a new scoped Goal, then request human-approved closure.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 28,
+      "title": "Update from task 03e00d7b-7588-43dc-b46c-c02de97972b8",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/28",
+      "isDraft": false,
+      "createdAt": "2026-06-17T11:52:58Z",
+      "updatedAt": "2026-06-17T12:10:27Z",
+      "headRefName": "cloud-ssh-sunucusu-kurulumu-972b8",
+      "headRefOid": "11e0aa69581441b136b56efa05a0a09e8a904eb0",
+      "baseRefName": "main",
+      "baseRefOid": "cff7eb77e34038fea53458cbb2567a531a0af3bf",
+      "author": "emirhankudun-ux",
+      "labels": [
+        "bug",
+        "codex",
+        "documentation",
+        "duplicate",
+        "enhancement",
+        "good first issue",
+        "governance",
+        "help wanted",
+        "invalid",
+        "question"
+      ],
+      "classification": {
+        "disposition": "needs-human-review",
+        "cluster": "ssh-cloud",
+        "risk": "critical",
+        "rationale": "The branch includes multi-cloud provisioning, firewall, Fail2Ban, SSH setup, packaged archives, and release bundles; deciding whether any of it remains wanted requires an explicit infrastructure-owner decision.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, CONFLICTING with main, 69 files, +4101/-611.",
+          "Files include cloud_ssh_manager.py, deploy_ssh_server.py, setup_ssh_server.sh, firewall and Fail2Ban configuration, plus nested tar.gz and zip archives.",
+          "The canonical consolidation record requires #28 to remain in a separate approval-gated SSH/cloud lane.",
+          "PR #165 is the current safer SEIS-SSH mainline successor and preserves the existing host and port contract."
+        ],
+        "successorPullRequests": [
+          165
+        ],
+        "dependsOnPullRequests": [
+          179
+        ],
+        "externalReferences": [
+          "docs/governance/open-pr-consolidation-2026-06-19.md",
+          "https://github.com/emirhankudun-ux/SEIS/pull/165",
+          "https://github.com/emirhankudun-ux/SEIS/pull/179",
+          "https://github.com/emirhankudun-ux/SEIS/pull/28"
+        ],
+        "nextSafeAction": "Human review: do not execute or merge it; have the infrastructure owner decide whether any provider-neutral documentation or tests should be extracted after #165, while preserving the existing server and port.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 33,
+      "title": "Codex/sync icloud seis 20260619",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/33",
+      "isDraft": false,
+      "createdAt": "2026-06-19T07:56:48Z",
+      "updatedAt": "2026-06-20T15:05:02Z",
+      "headRefName": "codex/sync-icloud-seis-20260619",
+      "headRefOid": "12d56315adb397c9402e2f3c7e91d43ebfe8e346",
+      "baseRefName": "main",
+      "baseRefOid": "fd1af03083677471dafb958137a482e0e77d20d4",
+      "author": "emirhankudun-ux",
+      "labels": [
+        "bug",
+        "codex",
+        "documentation",
+        "duplicate",
+        "enhancement",
+        "good first issue",
+        "governance",
+        "help wanted",
+        "invalid",
+        "question"
+      ],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "legacy-consolidation",
+        "risk": "critical",
+        "rationale": "This enormous cross-domain iCloud synchronization branch is explicitly replaced by the merged consolidation path and is unsafe to merge or cherry-pick wholesale.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, CONFLICTING with main, 321 files, +86702/-1028.",
+          "The diff spans governance, CI, environment examples, MCP, apps, generated assets, binaries, AI, and platform work.",
+          "The canonical consolidation record says supersede #33 and notes that review exceeded CodeRabbit file limits."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "docs/governance/open-pr-consolidation-2026-06-19.md",
+          "https://github.com/emirhankudun-ux/SEIS/pull/33",
+          "https://github.com/emirhankudun-ux/SEIS/pull/39"
+        ],
+        "nextSafeAction": "Human review: preserve the branch for forensics, produce a unique-file and sensitive-path inventory, recover only reviewed small slices, and require human approval before closing.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 37,
+      "title": "ci: stabilize main governance and secret scans",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/37",
+      "isDraft": false,
+      "createdAt": "2026-06-19T12:45:16Z",
+      "updatedAt": "2026-06-19T13:19:53Z",
+      "headRefName": "codex/stabilize-main-20260619-152211",
+      "headRefOid": "835a45e64dfd46c26f3ea54cd601666b0dc50a91",
+      "baseRefName": "main",
+      "baseRefOid": "8538342579a1467a48ea58575360325561962926",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "security-and-ci",
+        "risk": "medium",
+        "rationale": "The canonical consolidation review already replaced this dirty CI branch and current governance workflows have moved beyond its generated-report conflict.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, CONFLICTING with main, 11 files, +88/-59.",
+          "The consolidation record explicitly says to supersede #37 and extract only still-needed conflict-free security changes.",
+          "PR #39 merged on 2026-06-20 as the canonical open-PR rescue path."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "docs/governance/open-pr-consolidation-2026-06-19.md",
+          "https://github.com/emirhankudun-ux/SEIS/pull/37",
+          "https://github.com/emirhankudun-ux/SEIS/pull/39"
+        ],
+        "nextSafeAction": "Human review: run a path-level diff against current workflows without replaying generated reports; if no unique guard remains, request human-approved closure.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 40,
+      "title": "docs: define specialist AI MCP SSH integration",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/40",
+      "isDraft": false,
+      "createdAt": "2026-06-20T08:46:39Z",
+      "updatedAt": "2026-07-10T15:36:02Z",
+      "headRefName": "seis/specialist-ai-mcp-ssh-integration",
+      "headRefOid": "90a65bcaf6edc7a496c729ed5de81ab6294c4353",
+      "baseRefName": "main",
+      "baseRefOid": "ec77b6422ef2ce108fc097d87b526ddf2239c9d1",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "ssh-cloud",
+        "risk": "high",
+        "rationale": "The old specialist integration contract is conflicting and has been overtaken by the current-mainline SEIS-SSH integration in PR #165.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, CONFLICTING with main, 17 files, +1013/-112.",
+          "The 2026-06-19 consolidation record designated #40 as the then-next integration draft after #39.",
+          "PR #165 is OPEN, MERGEABLE, current to 2026-07-12, and covers SEIS Core, cloud, plugin, MCP, agent registry, static SSH contracts, and the preserved endpoint."
+        ],
+        "successorPullRequests": [
+          165
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "docs/governance/open-pr-consolidation-2026-06-19.md",
+          "https://github.com/emirhankudun-ux/SEIS/pull/165",
+          "https://github.com/emirhankudun-ux/SEIS/pull/40"
+        ],
+        "nextSafeAction": "Human review: wait for maintainer review of #165, compare #40's two unique contract artifacts against #165, extract only proven gaps, then request human-approved closure.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 41,
+      "title": "docs: define SEIS AI Core and Command Center foundation",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/41",
+      "isDraft": true,
+      "createdAt": "2026-06-20T15:14:05Z",
+      "updatedAt": "2026-06-21T07:18:30Z",
+      "headRefName": "seis/ai-core-app-foundation",
+      "headRefOid": "9113baf7162efd52aa4596dca841cd3b2c0a439e",
+      "baseRefName": "main",
+      "baseRefOid": "ec77b6422ef2ce108fc097d87b526ddf2239c9d1",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "ai-core-and-routing",
+        "risk": "high",
+        "rationale": "Its original AI Core foundation was extended in #44 and subsequently recovered in #52, leaving this stale draft as the oldest branch in the chain.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, draft, CONFLICTING with main, 110 files, +13846/-141.",
+          "PR #44 commit history contains the PR #41 foundation commits followed by retrieval, browser QA, operating-model, and scorecard work.",
+          "PR #52 is the later explicit recovery branch."
+        ],
+        "successorPullRequests": [
+          44,
+          52
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/pull/41",
+          "https://github.com/emirhankudun-ux/SEIS/pull/44",
+          "https://github.com/emirhankudun-ux/SEIS/pull/52"
+        ],
+        "nextSafeAction": "Human review: confirm all unique commits are represented in the #44/#52 recovery inventory, then request human-approved closure.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 44,
+      "title": "Seis/ai core app foundation continuation",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/44",
+      "isDraft": false,
+      "createdAt": "2026-06-22T20:13:52Z",
+      "updatedAt": "2026-06-23T10:10:37Z",
+      "headRefName": "seis/ai-core-app-foundation-continuation",
+      "headRefOid": "b8b9eaf45461b15f455069aaa08c6ecff2a18867",
+      "baseRefName": "main",
+      "baseRefOid": "f8c0c5a097c23a4b1275174d177203b6bf287349",
+      "author": "emirhankudun-ux",
+      "labels": [
+        "bug",
+        "codex",
+        "documentation",
+        "duplicate",
+        "enhancement",
+        "good first issue",
+        "governance",
+        "help wanted",
+        "invalid",
+        "question"
+      ],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "ai-core-and-routing",
+        "risk": "high",
+        "rationale": "PR #52 explicitly recovers PR #44's AI Core foundation into a smaller review branch, so this 134-file continuation is no longer the active recovery path.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, CONFLICTING with main, 134 files, +23843/-173.",
+          "PR #52 uses branch seis/pr44-ai-core-docs-recovery and states that it recovers and hardens the AI Core foundation.",
+          "PR #44 has a template-only body despite a very broad mixed code, CI, UI, contract, and documentation diff."
+        ],
+        "successorPullRequests": [
+          52
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/pull/44",
+          "https://github.com/emirhankudun-ux/SEIS/pull/52"
+        ],
+        "nextSafeAction": "Human review: use #52 only as the forensic recovery source, verify that #44 has no unique patch residue, and request human-approved closure of #44.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 45,
+      "title": "Add SEIS AI integration & training orchestrator",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/45",
+      "isDraft": false,
+      "createdAt": "2026-06-22T23:03:29Z",
+      "updatedAt": "2026-06-24T14:11:53Z",
+      "headRefName": "claude/seis-ai-integration-training-p176l8",
+      "headRefOid": "ed77534caf5ebd434b5f5461188aa9dc61857981",
+      "baseRefName": "main",
+      "baseRefOid": "f8c0c5a097c23a4b1275174d177203b6bf287349",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "replace",
+        "cluster": "ai-core-and-routing",
+        "risk": "high",
+        "rationale": "The branch contains a still-unmerged integration ledger and also mixes MCP-server, Go health, model-card, and full-stack changes that should not be recovered as one conflicting unit.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, CONFLICTING with main, 13 files, +667/-4.",
+          "Its data/seis-ai-integration-training.json and scripts/seis-ai-integration-training.mjs artifacts are absent from current main.",
+          "Merged PR #53 provides a newer workforce-training control plane but does not contain the integration-ledger files."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [
+          177,
+          179
+        ],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/pull/45",
+          "https://github.com/emirhankudun-ux/SEIS/pull/53",
+          "OPS-GOAL-0001#replacement-ai-core-and-routing"
+        ],
+        "nextSafeAction": "Human review: diff each of the 13 paths against current main and #53, then extract only a refreshed evidence-backed integration ledger into a small Goal-linked PR; route server and model work separately.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 46,
+      "title": "docs: add Goal Tracking OS foundation",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/46",
+      "isDraft": false,
+      "createdAt": "2026-06-23T05:46:36Z",
+      "updatedAt": "2026-06-23T14:57:17Z",
+      "headRefName": "seis/goal-tracking-os-foundation",
+      "headRefOid": "ada0b2597120fd97ea5de78e8ec512a459dc9f57",
+      "baseRefName": "main",
+      "baseRefOid": "684310c89cceefdea9fd2a67698c6902083ef2b5",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "ecosystem-governance",
+        "risk": "low",
+        "rationale": "Its Goal Tracking OS commits are already in merged PR #53, while PR #177 is the current schema-v2 ecosystem Goal Tracking authority.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, CONFLICTING with main, 27 files, +367/-168.",
+          "Merged PR #53 contains the Goal Tracking OS, static center, cadence, hierarchy, metadata, archive, cycle, risk, and validation commits.",
+          "PR #177 is OPEN, MERGEABLE, and implements the newer schema-v2 Goal lifecycle and CI validation."
+        ],
+        "successorPullRequests": [
+          177
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/pull/177",
+          "https://github.com/emirhankudun-ux/SEIS/pull/46",
+          "https://github.com/emirhankudun-ux/SEIS/pull/53"
+        ],
+        "nextSafeAction": "Human review: verify no unique documentation remains outside merged #53 and current #177, then request human-approved closure.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 48,
+      "title": "docs: define AI workforce assignments",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/48",
+      "isDraft": false,
+      "createdAt": "2026-06-23T05:59:07Z",
+      "updatedAt": "2026-06-23T06:05:08Z",
+      "headRefName": "codex/ai-workforce-assignments-20260623",
+      "headRefOid": "70d91410c8056920884b1bd32c5d9224948b4ed6",
+      "baseRefName": "main",
+      "baseRefOid": "f8c0c5a097c23a4b1275174d177203b6bf287349",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "ai-core-and-routing",
+        "risk": "low",
+        "rationale": "Its four-file workforce-assignment contract was incorporated into the merged workforce-training control-plane history.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, CONFLICTING with main, 4 files, +686/-0.",
+          "Merged PR #53 includes the exact commit headline docs: define AI workforce assignments.",
+          "Current main contains content/development/ai-workforce-assignments.json and scripts/check-ai-workforce-assignments.mjs."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/pull/48",
+          "https://github.com/emirhankudun-ux/SEIS/pull/53"
+        ],
+        "nextSafeAction": "Human review: confirm the four paths have no patch-only residue, then request human-approved closure as superseded by merged PR #53.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 52,
+      "title": "Recover SEIS AI Core foundation and Command Center QA",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/52",
+      "isDraft": true,
+      "createdAt": "2026-06-23T14:10:54Z",
+      "updatedAt": "2026-06-23T14:18:38Z",
+      "headRefName": "seis/pr44-ai-core-docs-recovery",
+      "headRefOid": "02b72d3dfc78ddb0812b7e6f2bb1356930e1d68a",
+      "baseRefName": "main",
+      "baseRefOid": "f8c0c5a097c23a4b1275174d177203b6bf287349",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "replace",
+        "cluster": "ai-core-and-routing",
+        "risk": "high",
+        "rationale": "The latest recovery branch contains potentially useful AI Core contracts, but its broad, stale, conflicting draft is not a safe merge unit and has no comprehensive current successor.",
+        "evidence": [
+          "Live 2026-07-13 state: OPEN, draft, CONFLICTING with main, 92 files, +19904/-163.",
+          "Scope combines AI contracts, Command Center UI, browser QA, dependency-lock changes, and model-research documents.",
+          "Representative contract artifacts packages/shared-types/fixtures/ai-core-command-center-foundation.json and scripts/check-ai-core-app-contracts.mjs are absent from current main."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [
+          177,
+          179
+        ],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/pull/177",
+          "https://github.com/emirhankudun-ux/SEIS/pull/179",
+          "https://github.com/emirhankudun-ux/SEIS/pull/52",
+          "OPS-GOAL-0001#replacement-ai-core-and-routing"
+        ],
+        "nextSafeAction": "Human review: freeze the branch, inventory unique files against current main, split accepted contracts, UI, QA, and model-research work into separate Goal-linked PRs after the governance and secret-boundary stack is accepted.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 55,
+      "title": "docs: add second-brain readiness and agent-registry slice",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/55",
+      "isDraft": false,
+      "createdAt": "2026-06-29T13:03:08Z",
+      "updatedAt": "2026-06-29T13:18:54Z",
+      "headRefName": "codex/seis-demo-github-upload-20260624",
+      "headRefOid": "fd0fa6abe3372b099ba3e89162cd31efc11c0d84",
+      "baseRefName": "main",
+      "baseRefOid": "ebbee8219bb160d1229d51146c7ec98bc133d229",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "needs-human-review",
+        "cluster": "second-brain",
+        "risk": "critical",
+        "rationale": "This is a very large mixed foundation branch and the base of PR #56; its unique content spans hundreds of product, AI, SSH, demo, report, and imported visual files, so neither wholesale merge nor blanket supersession is defensible from title-level evidence.",
+        "evidence": [
+          "GitHub reports 32 commits, 927 changed files, +173186/-1402, and mergeable_state dirty.",
+          "Only 55 of 927 paths overlap PR #157 and 45 overlap PR #165.",
+          "The largest changes include thousands of lines in desktop UI, generated reports, reference banks, AI runtime code, model-program records, and broad roadmap/governance surfaces; PR #56 is stacked directly on this head."
+        ],
+        "successorPullRequests": [
+          155,
+          157,
+          165
+        ],
+        "dependsOnPullRequests": [
+          177,
+          179
+        ],
+        "externalReferences": [
+          "SEIS-GOAL-0004"
+        ],
+        "nextSafeAction": "Human review: freeze this branch as a review source, run a human-owned path inventory and public/private/provenance audit, map durable subsets to #155/#157/#165 or new child goals, and forbid wholesale merge, close, or branch deletion until PR #56 and unique value are resolved.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 56,
+      "title": "[codex] add SEIS SSH public access contract",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/56",
+      "isDraft": false,
+      "createdAt": "2026-06-29T13:03:17Z",
+      "updatedAt": "2026-07-08T12:41:59Z",
+      "headRefName": "codex/seis-ssh-public-access-20260629",
+      "headRefOid": "67b2f8781d42c7a4a0345eb084240f747e261178",
+      "baseRefName": "codex/seis-demo-github-upload-20260624",
+      "baseRefOid": "fd0fa6abe3372b099ba3e89162cd31efc11c0d84",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "ssh-cloud",
+        "risk": "high",
+        "rationale": "This stacked SSH contract PR targets the old #55 branch, while PR #165 is the later current-main SEIS-SSH integration that explicitly preserves the same github.codespaces:22 endpoint and adds stronger boundary validation.",
+        "evidence": [
+          "GitHub reports base codex/seis-demo-github-upload-20260624 (PR #55), 26 commits, 38 changed files, +7368/-145, MERGEABLE, and mergeStateStatus BLOCKED.",
+          "Thirteen of 38 paths overlap PR #165.",
+          "PR #165 explicitly preserves the server and port, keeps live SSH approval-gated, and reports comprehensive network-boundary and fixture checks."
+        ],
+        "successorPullRequests": [
+          165
+        ],
+        "dependsOnPullRequests": [
+          55
+        ],
+        "externalReferences": [
+          "SEIS-GOAL-0004"
+        ],
+        "nextSafeAction": "Human review: use PR #165 as the SSH review lane, compare the 25 non-overlapping paths for documentation-only value, preserve github.codespaces:22 exactly, and perform no live SSH, deployment, credential, or endpoint mutation.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 57,
+      "title": "feat(ai): add AGI GitHub readiness gates",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/57",
+      "isDraft": false,
+      "createdAt": "2026-06-29T13:04:46Z",
+      "updatedAt": "2026-06-29T13:17:38Z",
+      "headRefName": "codex/seis-second-brain-readiness-clean",
+      "headRefOid": "61ba0122369b8c2a7c5b0ac44774e9fc7b4d6792",
+      "baseRefName": "main",
+      "baseRefOid": "ebbee8219bb160d1229d51146c7ec98bc133d229",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "needs-human-review",
+        "cluster": "second-brain",
+        "risk": "high",
+        "rationale": "The branch title claims AGI gates while its body describes a Second Brain slice, and its 136-file scope contains substantial unique content not proven to be represented by later PRs.",
+        "evidence": [
+          "GitHub reports 10 commits, 136 changed files, +10595/-83, and mergeable_state dirty.",
+          "Only 29 of 136 paths overlap PR #104 and 49 of 136 overlap PR #157.",
+          "The mismatch between title and body weakens provenance and makes automated supersession unsafe."
+        ],
+        "successorPullRequests": [
+          104,
+          157
+        ],
+        "dependsOnPullRequests": [
+          177,
+          179
+        ],
+        "externalReferences": [
+          "SEIS-GOAL-0004"
+        ],
+        "nextSafeAction": "Human review: require a human provenance and path-scope review, separate AGI claims from Second Brain assets, and create narrowly named replacement goals for any unique work that remains valid.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 58,
+      "title": "test(seis): cover Linux replica public demo entry",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/58",
+      "isDraft": false,
+      "createdAt": "2026-06-29T13:09:15Z",
+      "updatedAt": "2026-06-29T13:14:59Z",
+      "headRefName": "codex/seis-public-demo-smoke-20260629",
+      "headRefOid": "05987acfd79bf19e86c8142f85ed3e32da42569f",
+      "baseRefName": "main",
+      "baseRefOid": "ebbee8219bb160d1229d51146c7ec98bc133d229",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "product-experience",
+        "risk": "medium",
+        "rationale": "The later SEIS-SSH integration PR #165 modifies the same Linux Replica smoke script and README and reports a newer desktop/mobile smoke run; only the old review note is unique.",
+        "evidence": [
+          "GitHub reports 1 commit, 3 changed files, +94/-6, and mergeable_state dirty.",
+          "Two of three paths overlap PR #165: README.md and scripts/check-seis-linux-replica-browser-smoke.mjs.",
+          "PR #165 reports the newer Linux Replica browser/mobile validation; the only non-overlapping path is docs/reviews/SEIS_LINUX_REPLICA_LIVE_DEMO_REVIEW.md."
+        ],
+        "successorPullRequests": [
+          165
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [],
+        "nextSafeAction": "Human review: confirm the public-entry assertion is present in #165 and carry forward any still-valid review-note requirement; then treat #58 as superseded rather than merging the stale smoke branch.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 59,
+      "title": "chore: refresh second brain readiness and agent registry docs",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/59",
+      "isDraft": false,
+      "createdAt": "2026-06-29T13:16:42Z",
+      "updatedAt": "2026-06-29T13:22:39Z",
+      "headRefName": "codex/seis-second-brain-readiness-clean-pr-clean",
+      "headRefOid": "e0a546267f07308eacb820bf3270cfc0c6b42589",
+      "baseRefName": "main",
+      "baseRefOid": "ebbee8219bb160d1229d51146c7ec98bc133d229",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "replace",
+        "cluster": "second-brain",
+        "risk": "medium",
+        "rationale": "This is smaller than the broad vault branches but still conflicting, with only partial overlap in later readiness PRs and six unique paths that require current-state review.",
+        "evidence": [
+          "GitHub reports 1 commit, 11 changed files, +694/-1, and mergeable_state dirty.",
+          "Only 5 of 11 paths overlap PR #104 and the same 5 overlap PR #157.",
+          "The branch is an older readiness and agent-registry documentation slice from 2026-06-29."
+        ],
+        "successorPullRequests": [
+          104,
+          157
+        ],
+        "dependsOnPullRequests": [
+          177,
+          179
+        ],
+        "externalReferences": [
+          "SEIS-GOAL-0004"
+        ],
+        "nextSafeAction": "Human review: inspect the six unique paths, discard stale PR #54 snapshot text, and recreate only durable onboarding or safety contracts on current main with regenerated evidence.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 60,
+      "title": "docs: publish complete second brain vault seed and onboarding docs",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/60",
+      "isDraft": false,
+      "createdAt": "2026-06-29T13:20:53Z",
+      "updatedAt": "2026-06-29T13:34:40Z",
+      "headRefName": "codex/seis-second-brain-vault-seed-20260629",
+      "headRefOid": "32602b54cddd91ba8740de4e966cf373186de79d",
+      "baseRefName": "main",
+      "baseRefOid": "ebbee8219bb160d1229d51146c7ec98bc133d229",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "needs-human-review",
+        "cluster": "second-brain",
+        "risk": "high",
+        "rationale": "The vault-seed branch contains a large amount of unique public documentation and agent material that is not proven to be carried by the later Second Brain PR, while the branch itself is conflicting and too broad for safe wholesale integration.",
+        "evidence": [
+          "GitHub reports 12 commits, 257 changed files, +12666/-83, and mergeable_state dirty.",
+          "Only 32 of 257 paths overlap PR #104 and 49 of 257 overlap PR #157.",
+          "The stated scope spans a complete vault seed, onboarding, architecture, prompts, ADRs, logs, and roadmap notes."
+        ],
+        "successorPullRequests": [
+          104,
+          157
+        ],
+        "dependsOnPullRequests": [
+          177,
+          179
+        ],
+        "externalReferences": [
+          "SEIS-GOAL-0004"
+        ],
+        "nextSafeAction": "Human review: require public/private and provenance review of every vault subtree, compare the 208 paths not covered by #157, and split only approved public-safe notes into small owned goals.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 61,
+      "title": "docs: add second brain readiness artifact snapshots",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/61",
+      "isDraft": true,
+      "createdAt": "2026-06-29T13:24:31Z",
+      "updatedAt": "2026-06-29T13:58:07Z",
+      "headRefName": "codex/seis-second-brain-readiness-refresh-20260629",
+      "headRefOid": "01ec915e70b3f85023821c9ef69943c8f4092482",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "close-candidate",
+        "cluster": "second-brain",
+        "risk": "low",
+        "rationale": "GitHub currently reports no diff against main, so the open draft has no mergeable content to preserve.",
+        "evidence": [
+          "GitHub reports 2 commits but 0 changed files, +0/-0.",
+          "The PR remains draft=true and mergeStateStatus BLOCKED.",
+          "PR #157 is the later active Second Brain readiness surface."
+        ],
+        "successorPullRequests": [
+          157
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "SEIS-GOAL-0004"
+        ],
+        "nextSafeAction": "Human review: ask a human to confirm the live zero-diff state and preserve any useful discussion link, then close as a no-op candidate without merging or deleting the branch automatically.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 62,
+      "title": "feat(ai-core): add subagent handoff fixture",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/62",
+      "isDraft": false,
+      "createdAt": "2026-06-29T13:25:05Z",
+      "updatedAt": "2026-06-29T13:30:32Z",
+      "headRefName": "codex/seis-ai-core-governance-20260629",
+      "headRefOid": "9849695fbfe373cf87f8ef49fbb6ce08a5587336",
+      "baseRefName": "main",
+      "baseRefOid": "ebbee8219bb160d1229d51146c7ec98bc133d229",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "replace",
+        "cluster": "ai-core-and-routing",
+        "risk": "medium",
+        "rationale": "The handoff fixture is focused and useful, but it predates the current Goal system and current AI Core/router work; its unique contract should be reintroduced through the supervised-agent Goal rather than merged from a 129-commit-old branch.",
+        "evidence": [
+          "GitHub reports 1 commit, 8 changed files, +178/-9, MERGEABLE, and all 15 checks passing.",
+          "content/development/seis-ai-core-handoff-fixture.json is absent on the current audit base, proving the focused contract remains unique.",
+          "There is zero path overlap with PR #156 and only 2 of 8 paths overlap PR #165; the head is 129 commits behind main."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [
+          156,
+          177
+        ],
+        "externalReferences": [
+          "OPS-GOAL-0001#replacement-ai-core-and-routing",
+          "PANTECH-GOAL-0003"
+        ],
+        "nextSafeAction": "Human review: port the fixture and its adversarial validation into a current supervised-agent-runtime Goal, reconcile it with PR #156's router boundary, and rerun permission, redaction, cancellation, and handoff tests.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 63,
+      "title": "chore: update second brain readiness and agent registry slice",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/63",
+      "isDraft": true,
+      "createdAt": "2026-06-29T13:26:58Z",
+      "updatedAt": "2026-06-30T19:37:07Z",
+      "headRefName": "seis/agi-github-readiness-gates-20260629",
+      "headRefOid": "e3fe3b1068b0ccfadaf60c09a51ec018813b7d9d",
+      "baseRefName": "main",
+      "baseRefOid": "ebbee8219bb160d1229d51146c7ec98bc133d229",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "second-brain",
+        "risk": "high",
+        "rationale": "PR #63 and PR #84 point to the exact same head SHA, while #84 is the later non-draft review surface for that duplicate branch state.",
+        "evidence": [
+          "GitHub reports 18 commits, 270 changed files, +13342/-90, draft=true, and mergeable_state dirty.",
+          "PR #63 and PR #84 both have head SHA e3fe3b1068b0ccfadaf60c09a51ec018813b7d9d.",
+          "The GitHub compare API reports the two heads identical."
+        ],
+        "successorPullRequests": [
+          84
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "SEIS-GOAL-0004"
+        ],
+        "nextSafeAction": "Human review: use PR #84 as the sole human-review surface for this exact head and treat #63 as duplicate/superseded only after the owner confirms no discussion metadata must be preserved separately.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 65,
+      "title": "docs(github): add merge gate governance contract",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/65",
+      "isDraft": false,
+      "createdAt": "2026-06-29T13:33:20Z",
+      "updatedAt": "2026-06-29T13:56:50Z",
+      "headRefName": "codex/seis-github-merge-gates-20260629",
+      "headRefOid": "15205c740d056d2ee7768f2d4d7bad614b2aead8",
+      "baseRefName": "main",
+      "baseRefOid": "ebbee8219bb160d1229d51146c7ec98bc133d229",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "replace",
+        "cluster": "ecosystem-governance",
+        "risk": "medium",
+        "rationale": "The validator-backed merge-gate concept is useful, but the contract records observed branch rules from a stale snapshot and should be regenerated after the ecosystem goal foundation rather than merged unchanged.",
+        "evidence": [
+          "GitHub reports 1 commit, 4 changed files, +300/-1, MERGEABLE, and all 16 visible checks passing.",
+          "The head is 129 commits behind current main.",
+          "The PR body explicitly describes blocked PR examples as timestamped governance evidence that can become stale."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [
+          177
+        ],
+        "externalReferences": [
+          "ECO-GOAL-0003",
+          "OPS-GOAL-0001#replacement-ecosystem-governance"
+        ],
+        "nextSafeAction": "Human review: regenerate the branch-rule contract from current protected-branch evidence after PR #177, preserve deterministic validation, and issue a current snapshot rather than merging the old examples.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 66,
+      "title": "fix(ci): restore public demo readiness reports",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/66",
+      "isDraft": false,
+      "createdAt": "2026-06-30T11:56:30Z",
+      "updatedAt": "2026-06-30T14:38:58Z",
+      "headRefName": "codex/pages-second-brain-readiness",
+      "headRefOid": "9a82a5ebb6cf4cba4a6c75fd267ab5c318522b54",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "replace",
+        "cluster": "product-experience",
+        "risk": "high",
+        "rationale": "The branch is conflict-prone and mostly overlapped by later report work, but it also changes Gitleaks and publish-gate contracts, so a blanket supersede would be unsafe.",
+        "evidence": [
+          "GitHub reports 5 commits, 23 changed files, +1744/-79, mergeable_state dirty, with all 15 historical checks passing.",
+          "Eighteen of 23 paths overlap PR #157.",
+          "Four paths are not represented by the union of PRs #68, #69, and #157: .gitleaks.toml, the publish-gate JSON/doc, and the accessibility-report generator."
+        ],
+        "successorPullRequests": [
+          68,
+          69,
+          157
+        ],
+        "dependsOnPullRequests": [
+          179
+        ],
+        "externalReferences": [
+          "ECO-GOAL-0005",
+          "https://github.com/emirhankudun-ux/SEIS/issues/129"
+        ],
+        "nextSafeAction": "Human review: audit the four unique paths under the current security policy, reject any Gitleaks weakening, and rebuild only still-required contract or generator changes in focused replacement PRs.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 67,
+      "title": "ci(pages): require Second Brain browser smoke",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/67",
+      "isDraft": false,
+      "createdAt": "2026-06-30T12:18:56Z",
+      "updatedAt": "2026-06-30T12:34:00Z",
+      "headRefName": "codex/pages-actions-browser-smoke",
+      "headRefOid": "287f6d53a202e5381597cd225de74f7659dbc5ff",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "retain",
+        "cluster": "product-experience",
+        "risk": "medium",
+        "rationale": "The PR adds a focused Pages-hosted Second Brain browser-smoke gate and cloud policy updates that are not fully represented by the later report branches.",
+        "evidence": [
+          "GitHub reports 3 commits, 6 changed files, +59/-1, MERGEABLE, and all 15 checks passing.",
+          "The Pages patch adds a Chrome-backed Second Brain smoke step and limits deploy to main; current main's workflow does not contain that smoke step.",
+          "The head is 128 commits behind main, so historical green checks are not proof on the current workflow."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [
+          177,
+          179
+        ],
+        "externalReferences": [
+          "ECO-GOAL-0005"
+        ],
+        "nextSafeAction": "Human review: keep the smoke-gate intent, replay it in a current-main goal-scoped PR, run the actual Chrome smoke and Pages build, and require human workflow/security review before merge.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 68,
+      "title": "ci(readiness): restore public demo report artifacts",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/68",
+      "isDraft": false,
+      "createdAt": "2026-06-30T12:52:07Z",
+      "updatedAt": "2026-06-30T13:02:44Z",
+      "headRefName": "codex/restore-public-demo-report-artifacts",
+      "headRefOid": "3e0a03f51aac72f68cbe1594cecbe5eccb85a205",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "replace",
+        "cluster": "product-experience",
+        "risk": "medium",
+        "rationale": "This green but stale branch overlaps both the later Pages/report PR #69 and the later Second Brain PR #157, while ten static-build and generated-governance paths remain unique and require current-main validation.",
+        "evidence": [
+          "GitHub reports 1 commit, 26 changed files, +2016/-264, MERGEABLE, with all 15 checks passing and the head 128 commits behind main.",
+          "Sixteen paths overlap PR #69 and sixteen overlap PR #157.",
+          "Ten paths are unique relative to #69, including build-static, check-static-build, platform-kernel, and generated language/technology reports."
+        ],
+        "successorPullRequests": [
+          69,
+          157
+        ],
+        "dependsOnPullRequests": [
+          177,
+          179
+        ],
+        "externalReferences": [
+          "ECO-GOAL-0005"
+        ],
+        "nextSafeAction": "Human review: reproduce the static-build need on current main, discard timestamp-only report churn, and create a minimal replacement containing only current failing behavior plus regenerated evidence.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 69,
+      "title": "fix(ci): restore publish reports and Pages gate",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/69",
+      "isDraft": false,
+      "createdAt": "2026-06-30T12:53:22Z",
+      "updatedAt": "2026-06-30T13:04:20Z",
+      "headRefName": "codex/fix-ci-report-pages",
+      "headRefOid": "4428494ec52d2f13f869307e2ace555b162a0996",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "replace",
+        "cluster": "product-experience",
+        "risk": "medium",
+        "rationale": "Most of the PR is stale generated Second Brain readiness output now overlapped by PR #157; only the Pages workflow and publish-gate validator remain unique and should be reimplemented against current main.",
+        "evidence": [
+          "GitHub reports 1 commit, 18 changed files, +1749/-47, MERGEABLE, with all 15 checks passing but the head 128 commits behind main.",
+          "PR #157 overlaps 16 of 18 paths.",
+          "The only paths unique relative to #157 are .github/workflows/pages.yml and scripts/check-publish-gate-contract.mjs."
+        ],
+        "successorPullRequests": [
+          157
+        ],
+        "dependsOnPullRequests": [
+          177,
+          179
+        ],
+        "externalReferences": [
+          "ECO-GOAL-0005"
+        ],
+        "nextSafeAction": "Human review: re-evaluate the two unique CI changes on current main and current Pages settings, regenerate readiness reports from current code instead of replaying snapshots, and publish a small replacement PR only if the behavior is still missing.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 70,
+      "title": "docs: add iCloud local access troubleshooting",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/70",
+      "isDraft": false,
+      "createdAt": "2026-06-30T13:06:32Z",
+      "updatedAt": "2026-06-30T13:28:20Z",
+      "headRefName": "codex/local-access-boundary-troubleshooting-20260630",
+      "headRefOid": "afae738d036b13c44e989747070f9f532bf59a29",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "retain",
+        "cluster": "ecosystem-governance",
+        "risk": "low",
+        "rationale": "This is a focused public-safe documentation fix for a real macOS/iCloud permission boundary, with no credential, runtime, or deployment change and a clean hosted check set.",
+        "evidence": [
+          "GitHub reports 2 commits, 2 changed documentation files, +76/-0, MERGEABLE, and mergeStateStatus BLOCKED only by review governance.",
+          "All 11 visible checks pass, including Secret & Vulnerability Scan and Security Summary.",
+          "The branch is 128 commits behind main, and the PR body explicitly avoids personal paths, secrets, live SSH, and false build-failure claims."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [],
+        "nextSafeAction": "Human review: keep the focused documentation intent, refresh it onto current main, re-run link and public-path scans, and request human documentation review before any merge decision.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 71,
+      "title": "feat(ai): specify SEIS-150B native model (150B-param model card + CI gate)",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/71",
+      "isDraft": false,
+      "createdAt": "2026-06-30T13:14:37Z",
+      "updatedAt": "2026-07-10T15:42:06Z",
+      "headRefName": "claude/seis-150b-ai-model-4f4jtx",
+      "headRefOid": "b44b376e74dfbe337c18d399c4be2513c00e0121",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "archive-candidate",
+        "cluster": "archive-extraction",
+        "risk": "critical",
+        "rationale": "The intended 150B model-card slice is buried in a massive cross-repository/generated-source import that directly conflicts with the generated-bundle safety policy and is not reviewable as one PR.",
+        "evidence": [
+          "GitHub reports 24 commits, 399 changed files, +1236113/-38, mergeable_state dirty, and the head 297 commits behind main.",
+          "sources/github-unified-source/_generated/github-code-bundle.txt alone adds 1,191,054 lines.",
+          "The branch also vendors broad portfolio and marketplace source trees, while PR #77 and issue #129 identify generated-source history as a security boundary."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [
+          77,
+          179
+        ],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/issues/129",
+          "PANTECH-GOAL-0001"
+        ],
+        "nextSafeAction": "Human review: archive the branch as historical evidence after human approval, and independently reconstruct only the model spec, model card, registry record, and deterministic validator in a clean goal-scoped PR; never merge the generated bundle or mirrored repositories wholesale.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 76,
+      "title": "docs: add SSH signing readiness gate",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/76",
+      "isDraft": false,
+      "createdAt": "2026-06-30T14:12:10Z",
+      "updatedAt": "2026-07-10T15:30:56Z",
+      "headRefName": "codex/ssh-signing-readiness-verified-20260630",
+      "headRefOid": "fc63b571aac030c23ad6358a24a85c67295fbe51",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "ssh-cloud",
+        "risk": "high",
+        "rationale": "The later SEIS-SSH integration PR #165 carries three of the four paths and a more complete, currently validated SSH safety contract while preserving the same server and port.",
+        "evidence": [
+          "GitHub reports 1 commit, 4 changed files, +74/-0, and mergeable_state dirty.",
+          "Three of four paths overlap PR #165; the only non-overlapping path is docs/SEIS_SSH_SETUP.md.",
+          "PR #165 reports the preserved github.codespaces:22 contract and comprehensive SSH boundary tests; #76 has failing Security Summary and Secret & Vulnerability Scan checks."
+        ],
+        "successorPullRequests": [
+          165
+        ],
+        "dependsOnPullRequests": [
+          179
+        ],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/issues/129",
+          "SEIS-GOAL-0004"
+        ],
+        "nextSafeAction": "Human review: confirm the commit-verification wording from docs/SEIS_SSH_SETUP.md is present or deliberately re-extracted after PR #165 review, then treat #76 as superseded; preserve the server and port exactly and perform no live SSH action.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 77,
+      "title": "ci: add generated source bundle guard",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/77",
+      "isDraft": false,
+      "createdAt": "2026-06-30T14:15:06Z",
+      "updatedAt": "2026-07-01T18:28:45Z",
+      "headRefName": "codex/security-history-remediation-verified-20260630",
+      "headRefOid": "8f8e34072d38d383b36428d8a1ed51ca4664d49e",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "needs-human-review",
+        "cluster": "security-and-ci",
+        "risk": "critical",
+        "rationale": "The PR adds a useful generated-source guard and remediation record, but it intentionally cannot resolve the historical Gitleaks blocker without an owner decision; the failing security gate is the subject of open issue #129.",
+        "evidence": [
+          "GitHub reports 4 commits, 7 changed files, +292/-0, and mergeable_state dirty.",
+          "The branch adds scripts/check-generated-source-bundles.mjs and public-safe history-remediation and owner-decision documentation.",
+          "Security Summary and Secret & Vulnerability Scan fail, while issue #129 remains open for historical generated-bundle findings."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [
+          179
+        ],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/issues/129"
+        ],
+        "nextSafeAction": "Human review: have the repository owner choose the documented remediation or scan-scope policy, then recreate only the non-weakening guard on the current security foundation; keep historical commit changes and security-policy changes outside this audit.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 84,
+      "title": "docs: tighten second-brain registry and local AI policy pointers",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/84",
+      "isDraft": false,
+      "createdAt": "2026-06-30T19:38:23Z",
+      "updatedAt": "2026-07-10T15:34:05Z",
+      "headRefName": "seis/agi-second-brain-registry-pr20260630",
+      "headRefOid": "e3fe3b1068b0ccfadaf60c09a51ec018813b7d9d",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "needs-human-review",
+        "cluster": "second-brain",
+        "risk": "high",
+        "rationale": "This is the newest direct duplicate-family head for #63/#85, but its 270-file scope is far broader than its title and only a minority of its paths overlap later Second Brain PRs.",
+        "evidence": [
+          "GitHub reports 18 commits, 270 changed files, +13342/-90, and mergeable_state dirty.",
+          "Its head SHA is exactly identical to PR #63, and PR #85 is one commit behind it.",
+          "Only 42 of 270 paths overlap PR #104 and 49 of 270 overlap PR #157, leaving substantial unique scope."
+        ],
+        "successorPullRequests": [
+          104,
+          157
+        ],
+        "dependsOnPullRequests": [
+          177,
+          179
+        ],
+        "externalReferences": [
+          "SEIS-GOAL-0004"
+        ],
+        "nextSafeAction": "Human review: require a human path-by-path extraction review, classify the unrelated AI, SSH, plugin, report, and roadmap changes into child goals, and prohibit a wholesale merge or close decision until unique value is resolved.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 85,
+      "title": "docs: tighten second-brain registry and local AI policy pointers",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/85",
+      "isDraft": false,
+      "createdAt": "2026-06-30T19:47:04Z",
+      "updatedAt": "2026-07-10T15:31:57Z",
+      "headRefName": "seis/agi-second-brain-registry-only-20260630",
+      "headRefOid": "9a18e9923ceff3aa9c4f887a20084a04f08853bd",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "second-brain",
+        "risk": "high",
+        "rationale": "This 270-file branch is one commit behind PR #84 with the same broad file set, so #84 is the direct duplicate-family successor.",
+        "evidence": [
+          "GitHub reports 17 commits, 270 changed files, +13342/-90, and mergeable_state dirty.",
+          "The compare API reports PR #85 behind PR #84 by exactly 1 commit and not ahead.",
+          "PR #85 and #84 expose the same 270 changed paths and near-identical titles."
+        ],
+        "successorPullRequests": [
+          84
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "SEIS-GOAL-0004"
+        ],
+        "nextSafeAction": "Human review: perform unique-value review only on PR #84, not both branches; after a human confirms the one-commit relationship, treat #85 as superseded without merging.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 87,
+      "title": "docs: add second-brain local AI pointer and SSH agent note",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/87",
+      "isDraft": false,
+      "createdAt": "2026-06-30T19:58:25Z",
+      "updatedAt": "2026-07-10T15:20:01Z",
+      "headRefName": "seis/agi-second-brain-registry-mini2",
+      "headRefOid": "9ad84d139ffb2699f00f5d4b13f97002ee8ef3ab",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "second-brain",
+        "risk": "medium",
+        "rationale": "Both files in this small local-AI and SSH-agent note are contained in the later PR #84 branch, which is itself subject to broader review.",
+        "evidence": [
+          "GitHub reports 2 commits, 2 changed files, +24/-2, and mergeable_state dirty.",
+          "Both AGENTS.md and seis-brain/vault/05_Agents/SSH Agent.md overlap PR #84.",
+          "The current head has failing Security Summary and Secret & Vulnerability Scan checks."
+        ],
+        "successorPullRequests": [
+          84,
+          104,
+          157
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/issues/129",
+          "SEIS-GOAL-0004"
+        ],
+        "nextSafeAction": "Human review: verify the two policy statements during the #84 extraction review, then treat #87 as superseded; do not merge it independently.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 90,
+      "title": "feat(ai): add language model training curriculum checks",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/90",
+      "isDraft": false,
+      "createdAt": "2026-06-30T20:05:23Z",
+      "updatedAt": "2026-06-30T20:24:10Z",
+      "headRefName": "seis/agi-language-model-curriculum-20260630",
+      "headRefOid": "89b7ff063f07274f70c18394b5ae4fe43c54c019",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "ai-core-and-routing",
+        "risk": "medium",
+        "rationale": "The complete seven-file curriculum slice is already carried by the later PR #93 history and is further replaced at the AGI boundary by PR #155.",
+        "evidence": [
+          "GitHub reports 3 commits, 7 changed files, +55/-5, and mergeable_state dirty.",
+          "All 7 changed paths overlap PR #93, and the GitHub compare API reports #93 ahead of #90 by 3 commits with #90 not ahead.",
+          "Security Summary and Secret & Vulnerability Scan are failing."
+        ],
+        "successorPullRequests": [
+          93,
+          155
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/issues/129"
+        ],
+        "nextSafeAction": "Human review: preserve any curriculum requirement through the #93-to-#155 extraction review; do not merge #90 separately, and require human confirmation before closure.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 93,
+      "title": "feat(ai): add AGI GitHub readiness gates",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/93",
+      "isDraft": false,
+      "createdAt": "2026-06-30T20:20:48Z",
+      "updatedAt": "2026-06-30T21:09:23Z",
+      "headRefName": "seis-agi-github-gates-20260630",
+      "headRefOid": "342db668a5d4e7af759d9942aba6e4fd3af4cc28",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "replace",
+        "cluster": "ai-core-and-routing",
+        "risk": "high",
+        "rationale": "The branch mixes AGI gates with NVIDIA, workforce, roadmap, generated-report, and package changes. PR #155 is the cleaner successor for the AGI boundary, but the many unique paths require extraction review rather than a wholesale supersede claim.",
+        "evidence": [
+          "GitHub reports 6 commits, 45 changed files, +2679/-250, and mergeable_state dirty.",
+          "Only 3 of the 45 paths overlap PR #155's focused 14-file readiness package.",
+          "PR #90 is an ancestor and all 7 of its changed paths are contained in #93; Security Summary and Secret & Vulnerability Scan fail."
+        ],
+        "successorPullRequests": [
+          155
+        ],
+        "dependsOnPullRequests": [
+          177
+        ],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/issues/129"
+        ],
+        "nextSafeAction": "Human review: use PR #155 for AGI-claim gating, inventory the other 42 paths by domain, and create separate current-main goals only for unique evidence-backed work; do not merge the mixed branch wholesale.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 95,
+      "title": "feat(ai): add AGI GitHub readiness gates",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/95",
+      "isDraft": false,
+      "createdAt": "2026-06-30T20:30:42Z",
+      "updatedAt": "2026-06-30T20:40:36Z",
+      "headRefName": "codex/agi-github-readiness-gates-clean-20260630",
+      "headRefOid": "45fc9d9ade56bb1bd6fefa2d3d129f404638068e",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "ai-core-and-routing",
+        "risk": "medium",
+        "rationale": "This three-line documentation hardening is replaced semantically by the later, validator-backed AGI readiness package in PR #155.",
+        "evidence": [
+          "GitHub reports 1 commit, 1 changed file, +3/-0, and mergeable_state dirty.",
+          "The sole path is docs/ai/seis-agi-github-user-readiness-gates.md.",
+          "PR #155 provides a 14-file readiness chain, workflow, and regression test for the same unsupported-AGI claim boundary; PR #95 also has two failing security checks."
+        ],
+        "successorPullRequests": [
+          155
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/issues/129"
+        ],
+        "nextSafeAction": "Human review: have a human compare the three hard-requirement lines against PR #155's contract and regression test; if the semantics are present, treat #95 as a superseded close candidate without merging it.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 104,
+      "title": "[codex] add Second Brain readiness agent registry",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/104",
+      "isDraft": true,
+      "createdAt": "2026-06-30T21:37:58Z",
+      "updatedAt": "2026-07-01T16:19:34Z",
+      "headRefName": "codex/second-brain-readiness-agent-registry-20260701",
+      "headRefOid": "37b7b833c50ce88b6dd701175e350672f0c9ef0a",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "replace",
+        "cluster": "second-brain",
+        "risk": "high",
+        "rationale": "The draft is broad, conflicting, and only partially covered by the later Second Brain PR. A fresh scoped replacement is safer than treating either the broad branch or its generated evidence as current.",
+        "evidence": [
+          "GitHub reports 12 commits, 59 changed files, +5490/-130, draft=true, and mergeable_state dirty.",
+          "PR #157 overlaps 29 of the 59 paths, while 30 paths remain unique, including security-owner handoff reports, reviewer-pack generators, agent notes, and context packs.",
+          "Security Summary and Secret & Vulnerability Scan are failing on the current head."
+        ],
+        "successorPullRequests": [
+          157
+        ],
+        "dependsOnPullRequests": [
+          177,
+          179
+        ],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/issues/129",
+          "SEIS-GOAL-0004"
+        ],
+        "nextSafeAction": "Human review: diff the 30 paths not represented by PR #157, split durable agent and security-review contracts into goal-scoped current-main PRs, regenerate evidence from current code, and leave GitHub state unchanged pending human review.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 105,
+      "title": "feat(command-center): add browser-local SEIS Command Center demo",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/105",
+      "isDraft": false,
+      "createdAt": "2026-06-30T21:43:23Z",
+      "updatedAt": "2026-06-30T21:48:45Z",
+      "headRefName": "codex/seis-command-center-demo-20260701",
+      "headRefOid": "228a98afb9966a65c748976e573aafdfb9b7b7b6",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "retain",
+        "cluster": "product-experience",
+        "risk": "medium",
+        "rationale": "This is a focused, honest browser-local Command Center demo with no live backend or credential path. It remains distinct from the Apple-native architecture work, but it is stale against current main and cannot be treated as merge-ready while security checks fail.",
+        "evidence": [
+          "GitHub reports 1 commit, 3 changed files, +1884/-0, MERGEABLE, and mergeStateStatus BLOCKED.",
+          "The changed paths are limited to apps/web/seis-command-center.html, docs/product/seis-command-center-demo.md, and scripts/check-seis-command-center-demo.mjs.",
+          "Security Summary and Secret & Vulnerability Scan are failing, and the head is 128 commits behind current main."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [
+          177,
+          182
+        ],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/issues/129",
+          "SEIS-GOAL-0003"
+        ],
+        "nextSafeAction": "Human review: keep it open as an advisory web-demo candidate; after the goal and Apple architecture stack is settled, create a current-main review branch, preserve the browser-local boundary, and rerun all security and demo checks before any human merge decision.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 106,
+      "title": "feat(ai): add fresh-clone readiness gates",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/106",
+      "isDraft": true,
+      "createdAt": "2026-06-30T21:53:50Z",
+      "updatedAt": "2026-07-10T15:15:10Z",
+      "headRefName": "codex/seis-ai-fresh-clone-readiness-20260701",
+      "headRefOid": "2c90e570c99f8834d27ab780994bf17db4fafc50",
+      "baseRefName": "main",
+      "baseRefOid": "bd38021af40c262fdfa822439c3bb34e9d7b4af1",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "ai-core-and-routing",
+        "risk": "high",
+        "rationale": "This conflicting fresh-clone root is fully ancestral to the later #111, #114, and #117 retrieval stack, whose final state should be replaced as one current Goal-backed unit.",
+        "evidence": [
+          "Draft and conflicting against main.",
+          "#111's base OID exactly equals this PR's head; #114 and #117 continue that exact branch chain.",
+          "The PR explicitly inherits the unresolved historical security blocker from merged #100."
+        ],
+        "successorPullRequests": [
+          111,
+          114,
+          117
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "issue #129",
+          "merged PR #100"
+        ],
+        "nextSafeAction": "Human review: do not close until the #117 replacement proves that all fresh-clone, model-ledger, retrieval-training, and public-readiness controls are preserved; then seek human closure.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 107,
+      "title": "feat(ai-core): add browser-local foundation demo",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/107",
+      "isDraft": false,
+      "createdAt": "2026-06-30T21:54:29Z",
+      "updatedAt": "2026-06-30T22:00:09Z",
+      "headRefName": "codex/seis-ai-core-foundation-demo-20260701",
+      "headRefOid": "bf28f09ad5167b5e915e1e6d918e4bd2f55a6c25",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "product-experience",
+        "risk": "medium",
+        "rationale": "Its combined provider, router, and prompt demo has been overtaken by the more focused #109, #110, and #112 surfaces plus the executable read-only router in #165.",
+        "evidence": [
+          "Mergeable with three new files but Guardian checks are failing.",
+          "The page combines provider registry, model router, and prompt engine in one duplicated static source.",
+          "Later focused PRs split each surface and #165 supplies the hardened runtime contract."
+        ],
+        "successorPullRequests": [
+          109,
+          110,
+          112,
+          165
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "issue #129"
+        ],
+        "nextSafeAction": "Human review: confirm the focused successors preserve any unique accessibility or safety markers, then request human closure rather than maintaining duplicate registry and routing data.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 108,
+      "title": "feat(ai): add browser-local Local Model Center demo",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/108",
+      "isDraft": false,
+      "createdAt": "2026-06-30T22:04:34Z",
+      "updatedAt": "2026-06-30T22:07:33Z",
+      "headRefName": "codex/seis-local-model-center-demo-20260701",
+      "headRefOid": "c78ceca6b2406756013c657c3a0ac91f1aeba528",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "retain",
+        "cluster": "product-experience",
+        "risk": "medium",
+        "rationale": "The Local Model Center is a unique offline-planning demo with explicit denial of localhost and model-runtime claims.",
+        "evidence": [
+          "Mergeable with three new files.",
+          "No network, localhost call, model download, inference, provider call, SSH, or GitHub mutation is implemented.",
+          "Guardian Secret Scan and Security Summary are failing under issue #129."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "issue #129"
+        ],
+        "nextSafeAction": "Human review: add a Goal, rebase, resolve security evidence, and require model-card, license, privacy, benchmark, endpoint-consent, and redacted-log review before any adapter work.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 109,
+      "title": "feat(ai): add browser-local Provider Registry demo",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/109",
+      "isDraft": false,
+      "createdAt": "2026-06-30T22:14:25Z",
+      "updatedAt": "2026-06-30T22:14:50Z",
+      "headRefName": "codex/seis-provider-registry-demo-20260701",
+      "headRefOid": "95c58e1a0a6d0e0637fa2cd7cdce56cf1bb48217",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "retain",
+        "cluster": "product-experience",
+        "risk": "medium",
+        "rationale": "The Provider Registry demo is a small unique read-only surface, but it still requires current registry ownership and security evidence.",
+        "evidence": [
+          "Mergeable with three new files and review required.",
+          "No provider, network, credential-validation, deployment, inference, SSH, or GitHub mutation path exists.",
+          "Guardian Secret Scan and Security Summary are failing under issue #129."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "issue #129"
+        ],
+        "nextSafeAction": "Human review: add a Goal, rebase, resolve security evidence, and bind displayed providers and states to the canonical registry rather than duplicated page data.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 110,
+      "title": "feat(ai): add browser-local Model Router Decision Studio",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/110",
+      "isDraft": false,
+      "createdAt": "2026-06-30T22:23:41Z",
+      "updatedAt": "2026-06-30T22:29:04Z",
+      "headRefName": "codex/seis-model-router-studio-20260701",
+      "headRefOid": "f6919216eae3539cf0aa5552436ccf745b3d3cc2",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "retain",
+        "cluster": "product-experience",
+        "risk": "medium",
+        "rationale": "The Model Router Decision Studio is a small provider-neutral review surface distinct from the executable router.",
+        "evidence": [
+          "Mergeable with three new files.",
+          "No prompt body, provider, credential, network, deployment, SSH, or GitHub mutation path exists.",
+          "Guardian Secret Scan and Security Summary are failing under issue #129."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "issue #129"
+        ],
+        "nextSafeAction": "Human review: add a Goal, rebase, resolve security evidence, and align its deterministic decisions and explanation fields with the hardened #165 router contract.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 111,
+      "title": "feat(ai): add retrieval source provenance gate",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/111",
+      "isDraft": true,
+      "createdAt": "2026-06-30T22:24:07Z",
+      "updatedAt": "2026-06-30T22:24:19Z",
+      "headRefName": "codex/seis-ai-retrieval-provenance-20260701",
+      "headRefOid": "baf6b7017b7ed4353ebaa913b3964ef9a36a90ed",
+      "baseRefName": "codex/seis-ai-fresh-clone-readiness-20260701",
+      "baseRefOid": "2c90e570c99f8834d27ab780994bf17db4fafc50",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "ai-core-and-routing",
+        "risk": "high",
+        "rationale": "Its provenance gate is an ancestor of #114 and the later top-of-stack #117.",
+        "evidence": [
+          "Draft and mergeable only against #106's branch.",
+          "The base OID exactly equals #106's head; #114 then bases exactly on this PR's head.",
+          "#117 is the final branch in the same explicit stack."
+        ],
+        "successorPullRequests": [
+          114,
+          117
+        ],
+        "dependsOnPullRequests": [
+          106
+        ],
+        "externalReferences": [
+          "issue #129",
+          "merged PR #100"
+        ],
+        "nextSafeAction": "Human review: preserve branch provenance until the replacement of #117 includes its allowlist, hashes, private-path blocks, and redacted scan behavior; then request human closure.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 112,
+      "title": "feat(ai): add browser-local Prompt Engine Studio",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/112",
+      "isDraft": false,
+      "createdAt": "2026-06-30T22:34:40Z",
+      "updatedAt": "2026-06-30T22:52:35Z",
+      "headRefName": "codex/seis-prompt-engine-studio-20260701",
+      "headRefOid": "fe781214a45ebab148ac1e91634b1b180feb6cd8",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "retain",
+        "cluster": "ai-core-and-routing",
+        "risk": "medium",
+        "rationale": "The standalone no-key Prompt Engine Studio remains a small unique web-demo surface.",
+        "evidence": [
+          "Mergeable with only three new files.",
+          "Prompt execution, provider calls, and credential handling are explicitly disabled.",
+          "Guardian Secret Scan and Security Summary are failing under issue #129."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "issue #129"
+        ],
+        "nextSafeAction": "Human review: coordinate with #113, add a Goal, rebase, resolve security evidence, and add route integration, accessibility, injection, redaction, and contract-consumption tests.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 113,
+      "title": "feat(ai): add schema-backed prompt pack contracts",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/113",
+      "isDraft": false,
+      "createdAt": "2026-06-30T22:42:36Z",
+      "updatedAt": "2026-06-30T22:47:29Z",
+      "headRefName": "codex/seis-prompt-pack-contracts-20260701",
+      "headRefOid": "77a89c732ce842a27b547417fafbea3e64a2baef",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "retain",
+        "cluster": "ai-core-and-routing",
+        "risk": "medium",
+        "rationale": "The schema-backed prompt-pack contract is a small unique foundation that should precede or be integrated with the Prompt Engine Studio.",
+        "evidence": [
+          "Mergeable with five focused files.",
+          "Prompt execution, provider calls, credential reads, archive promotion, and live routing remain false.",
+          "Guardian Secret Scan and Security Summary are failing under issue #129."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "issue #129"
+        ],
+        "nextSafeAction": "Human review: add a Goal, rebase, resolve security evidence, add injection and redaction adversarial fixtures, then integrate with #112.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 114,
+      "title": "feat(ai): add retrieval evaluation fixtures",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/114",
+      "isDraft": true,
+      "createdAt": "2026-06-30T22:43:00Z",
+      "updatedAt": "2026-06-30T22:43:10Z",
+      "headRefName": "codex/seis-ai-retrieval-evaluation-20260701",
+      "headRefOid": "57d65fdf983090b3d8ba7b946067f611320be144",
+      "baseRefName": "codex/seis-ai-retrieval-provenance-20260701",
+      "baseRefOid": "baf6b7017b7ed4353ebaa913b3964ef9a36a90ed",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "ai-core-and-routing",
+        "risk": "medium",
+        "rationale": "Its evaluation-fixture commit is an ancestor of the later top-of-stack #117 branch.",
+        "evidence": [
+          "Draft and mergeable only against #111's branch.",
+          "The base OID equals #111's head and #117's base OID equals this PR's head.",
+          "#117 carries the full retrieval chain plus dry-run, citation, and log-safety work."
+        ],
+        "successorPullRequests": [
+          117
+        ],
+        "dependsOnPullRequests": [
+          111
+        ],
+        "externalReferences": [
+          "issue #129",
+          "merged PR #100"
+        ],
+        "nextSafeAction": "Human review: keep branch evidence until the #117 replacement preserves the full chain, then request human closure without deleting the source branch prematurely.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 115,
+      "title": "feat(ai): add browser-local Agent Workforce Console",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/115",
+      "isDraft": false,
+      "createdAt": "2026-06-30T22:50:37Z",
+      "updatedAt": "2026-06-30T22:55:23Z",
+      "headRefName": "codex/seis-agent-workforce-console-20260701",
+      "headRefOid": "4ca35f91e2cd7e726439ef221deabdee3af4a888",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "retain",
+        "cluster": "product-experience",
+        "risk": "medium",
+        "rationale": "The Agent Workforce Console is a bounded standalone demo and does not grant agent execution authority.",
+        "evidence": [
+          "Mergeable with five new files.",
+          "Provider calls, credential reads, SSH, GitHub mutation, and agent execution are explicitly false.",
+          "Guardian Secret Scan and Security Summary are failing under issue #129."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "issue #129"
+        ],
+        "nextSafeAction": "Human review: add a Goal and current agent-permission contract, rebase, resolve security evidence, and add cancellation, redaction, approval, handoff, and accessibility tests.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 116,
+      "title": "feat(cloud): add browser-local Cloud SSH Center",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/116",
+      "isDraft": false,
+      "createdAt": "2026-06-30T22:58:24Z",
+      "updatedAt": "2026-07-01T08:43:00Z",
+      "headRefName": "codex/seis-cloud-ssh-center-20260701",
+      "headRefOid": "b47311d52e386e5fc999a3f73448bdd29963b4d2",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "replace",
+        "cluster": "ssh-cloud",
+        "risk": "high",
+        "rationale": "The browser-local Cloud SSH Center is unique, but its direct-cloud and mobile claim gates should be rebuilt on the newer #165 SSH contract rather than merged from this older branch.",
+        "evidence": [
+          "Mergeable with 18 files and 14 commits.",
+          "Guardian Secret Scan and Security Summary are failing.",
+          "The PR correctly denies live SSH and continuity claims, while #165 has later endpoint, parser, network-boundary, and static-fixture hardening."
+        ],
+        "successorPullRequests": [
+          165
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "issue #129"
+        ],
+        "nextSafeAction": "Human review: after #165 review, extract the center and claim-gate UI into a focused Goal PR while preserving github.codespaces:22 and prohibiting live probes without approval.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 117,
+      "title": "feat(ai): add retrieval evaluation dry-run gate",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/117",
+      "isDraft": true,
+      "createdAt": "2026-06-30T23:01:09Z",
+      "updatedAt": "2026-07-10T15:13:42Z",
+      "headRefName": "codex/seis-ai-retrieval-dry-run-20260701",
+      "headRefOid": "e72f938ad23f37f2a6d003016b03cb7a502a7d56",
+      "baseRefName": "codex/seis-ai-retrieval-evaluation-20260701",
+      "baseRefOid": "57d65fdf983090b3d8ba7b946067f611320be144",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "replace",
+        "cluster": "ai-core-and-routing",
+        "risk": "high",
+        "rationale": "This is the top of a coherent four-PR retrieval stack, but the whole chain should be rebuilt as a current Goal-backed unit rather than preserving fragile branch-to-branch bases.",
+        "evidence": [
+          "Draft and mergeable only against the #114 branch.",
+          "Its ancestry is exactly #106 to #111 to #114 to #117.",
+          "Current attached Foundation, Enterprise, CodeRabbit, and Socket checks are green, but the stack depends on stale pre-governance security assumptions."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [
+          114
+        ],
+        "externalReferences": [
+          "issue #129",
+          "merged PR #100",
+          "OPS-GOAL-0001#replacement-ai-core-and-routing"
+        ],
+        "nextSafeAction": "Human review: create one or a small sequence of Goal-backed clean-base PRs preserving provenance, fixtures, dry-run, citation, and no-secret logging controls; rerun full security and adversarial validation.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 118,
+      "title": "feat(core): add browser-local Files Terminal Center",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/118",
+      "isDraft": false,
+      "createdAt": "2026-06-30T23:08:06Z",
+      "updatedAt": "2026-06-30T23:15:56Z",
+      "headRefName": "codex/seis-files-terminal-center-20260701",
+      "headRefOid": "22aaaa1b2e4017382c866915e9ea1b8d39995d50",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "retain",
+        "cluster": "product-experience",
+        "risk": "medium",
+        "rationale": "The Files and Terminal Center is a small unique browser-local demo with explicit host-execution denial.",
+        "evidence": [
+          "Mergeable with five new standalone files and four focused static tests.",
+          "No host shell, network, remote workspace, host filesystem write, or credential path is implemented.",
+          "Guardian Secret Scan and Security Summary are failing under issue #129."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "issue #129"
+        ],
+        "nextSafeAction": "Human review: add a Goal record, rebase after governance stabilization, resolve security evidence, and review terminal wording, keyboard access, and launcher integration before promotion.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 119,
+      "title": "feat(core): add browser-local Store Music Center",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/119",
+      "isDraft": false,
+      "createdAt": "2026-06-30T23:16:28Z",
+      "updatedAt": "2026-06-30T23:23:36Z",
+      "headRefName": "codex/seis-store-music-center-20260701",
+      "headRefOid": "4314da7c1cc4324425c78d37ab30b828d157a62f",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "needs-human-review",
+        "cluster": "product-experience",
+        "risk": "medium",
+        "rationale": "The route is technically bounded, but a combined marketplace and music product needs an explicit product-ownership, licensing, provenance, and ecosystem-placement decision.",
+        "evidence": [
+          "Mergeable, with five new standalone files and four focused static tests.",
+          "Guardian Secret Scan and Security Summary are failing under issue #129.",
+          "Payment, licensing, streaming, network, package download, and real audio are explicitly disabled."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "issue #129"
+        ],
+        "nextSafeAction": "Human review: have the product owner decide SEIS versus Eleni ownership and rights requirements; if approved, add a Goal, rebase, resolve security evidence, and add launcher and accessibility validation.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 125,
+      "title": "feat(platform): expand SEIS Agency Kit and Apple readiness foundation",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/125",
+      "isDraft": false,
+      "createdAt": "2026-07-01T06:43:35Z",
+      "updatedAt": "2026-07-07T13:34:48Z",
+      "headRefName": "feature/apple-first-foundation",
+      "headRefOid": "8f48e18a4b8191a84561e78a6dddfad6de67b1ee",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "archive-candidate",
+        "cluster": "archive-extraction",
+        "risk": "critical",
+        "rationale": "This 356-file Apple, agency, Brain, SSH, AI, governance, and audit megabranch is too broad and stale to merge safely.",
+        "evidence": [
+          "Conflicting against main.",
+          "Approximately 71,728 additions and 23,507 deletions across 356 files.",
+          "Only Socket checks are successful and CodeRabbit is skipped; newer focused governance, security, SSH, and Apple PRs now exist."
+        ],
+        "successorPullRequests": [
+          165,
+          177,
+          179,
+          182
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [],
+        "nextSafeAction": "Human review: inventory unique Design Agency Kit and other uncarried work, create small Goal-backed extraction PRs, and archive only after human review confirms successor coverage.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 127,
+      "title": "[codex] extend second brain agent registry roster",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/127",
+      "isDraft": false,
+      "createdAt": "2026-07-01T16:20:51Z",
+      "updatedAt": "2026-07-08T15:33:09Z",
+      "headRefName": "codex/second-brain-agent-registry-roster-20260701-clean",
+      "headRefOid": "fb45dfffaffda15e57cba50150fc5cf5b8a23c99",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "second-brain",
+        "risk": "high",
+        "rationale": "Its complete 29-commit Second Brain lineage is carried into #153 and subsequently overtaken by #157.",
+        "evidence": [
+          "Conflicting against main with 113 changed files.",
+          "Core SEIS audit fails.",
+          "#153's commit list contains the same 29 commit OIDs before its additional staging commit."
+        ],
+        "successorPullRequests": [
+          153,
+          157
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "issue #129"
+        ],
+        "nextSafeAction": "Human review: use commit identity to verify complete carry-forward, inventory any branch-only metadata, then request human closure.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 128,
+      "title": "[codex] align second brain xcode roster",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/128",
+      "isDraft": false,
+      "createdAt": "2026-07-01T16:28:19Z",
+      "updatedAt": "2026-07-01T16:36:21Z",
+      "headRefName": "codex/second-brain-readiness-agent-registry-xcode-20260701",
+      "headRefOid": "5fe69cf6fa476cae0588777a931172793d4ee28d",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "second-brain",
+        "risk": "high",
+        "rationale": "The advertised Xcode roster alignment is already present in the broader later Second Brain branches.",
+        "evidence": [
+          "Conflicting against main with 49 files and failing Guardian checks.",
+          "The PR's core stated change is adding Xcode to installed profiles and workforce mapping.",
+          "The #153 lineage contains Xcode plus the broader installed-profile roster, and #157 is the later replacement direction."
+        ],
+        "successorPullRequests": [
+          153,
+          157
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "issue #129"
+        ],
+        "nextSafeAction": "Human review: check for unrelated unique NVIDIA or readiness artifacts, extract them separately if justified, then seek human closure.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 131,
+      "title": "feat(web): show security gate in Linux demo readiness",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/131",
+      "isDraft": false,
+      "createdAt": "2026-07-01T18:42:51Z",
+      "updatedAt": "2026-07-01T18:44:32Z",
+      "headRefName": "codex/seis-linux-demo-security-gate-20260701",
+      "headRefOid": "f77d2899d1f6ff5d9bacdcdd61bba1923118f5b4",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "security-and-ci",
+        "risk": "low",
+        "rationale": "Main already contains the richer Linux Security Gate application delivered by merged #132.",
+        "evidence": [
+          "Conflicting against main and Guardian checks are failing.",
+          "This PR only changes one HTML file to surface issue #129.",
+          "Current main contains a dedicated Security Gate app with issue #129, bypass-disabled state, and the affected PR list; git history attributes it to #132."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/pull/132",
+          "issue #129",
+          "merged PR #132"
+        ],
+        "nextSafeAction": "Human review: verify the current main UI covers every unique string and action, then request human closure as superseded.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 137,
+      "title": "ci: install dependencies in governance workflows",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/137",
+      "isDraft": false,
+      "createdAt": "2026-07-01T19:48:00Z",
+      "updatedAt": "2026-07-01T19:48:09Z",
+      "headRefName": "ci/governance-workflow-install-20260701",
+      "headRefOid": "8130853b3b180b3fe6973a46735a29df87ae54b3",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "replace",
+        "cluster": "security-and-ci",
+        "risk": "medium",
+        "rationale": "The two-workflow fix is useful but its plain npm ci steps conflict with the newer lifecycle-suppression security posture.",
+        "evidence": [
+          "Mergeable and only two workflow files change.",
+          "Guardian Secret Scan and Security Summary are failing.",
+          "#179 requires package lifecycle scripts to be suppressed in relevant CI paths."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "issue #129",
+          "OPS-GOAL-0001#replacement-security-and-ci"
+        ],
+        "nextSafeAction": "Human review: recreate the two workflow changes after #179 using pinned actions, persist-credentials false, npm ci --ignore-scripts, and current remote validation.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 141,
+      "title": "Add SEIS enterprise readiness strategy and gates",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/141",
+      "isDraft": true,
+      "createdAt": "2026-07-05T18:20:13Z",
+      "updatedAt": "2026-07-05T20:14:27Z",
+      "headRefName": "chatgpt/enterprise-readiness-20260705",
+      "headRefOid": "4bbde7df74f1b78dd55f7570cba705d5bb107c41",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "retain",
+        "cluster": "roadmaps-and-enterprise",
+        "risk": "medium",
+        "rationale": "The enterprise claim-safety package is narrow, unique, and honestly non-claiming, but it needs current Goal linkage and security evidence.",
+        "evidence": [
+          "Draft and mergeable.",
+          "Ten new data, documentation, and validator files are limited to enterprise readiness and claim controls.",
+          "Guardian Secret Scan and Security Summary are failing under the unresolved repository-level issue."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "issue #129"
+        ],
+        "nextSafeAction": "Human review: keep draft, add a Goal record after #177, rebase, reconcile with current enterprise gates, resolve security evidence, and rerun validators before promotion.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 142,
+      "title": "Add SEIS developer role roadmap",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/142",
+      "isDraft": true,
+      "createdAt": "2026-07-06T04:39:24Z",
+      "updatedAt": "2026-07-07T05:11:27Z",
+      "headRefName": "chatgpt/developer-roadmap-20260706",
+      "headRefOid": "f530e943c8722ad024307043ec4150935ce5435d",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "replace",
+        "cluster": "roadmaps-and-enterprise",
+        "risk": "medium",
+        "rationale": "The developer-role roadmap overlaps #143's later role and production-roadmap work and should be consolidated rather than merged as a separate stale draft.",
+        "evidence": [
+          "Draft and mergeable, but Guardian Secret Scan and Security Summary are failing.",
+          "Twelve new data, documentation, and Python-validator files are not integrated with the current Goal system.",
+          "#143 later covers role-based skill tracks and full-stack production sequencing."
+        ],
+        "successorPullRequests": [
+          143
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "issue #129"
+        ],
+        "nextSafeAction": "Human review: extract unique milestone, issue-pack, and skill-matrix data into a focused Goal-backed successor rather than merging this branch unchanged.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 143,
+      "title": "docs: add agent full-stack production roadmap intake",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/143",
+      "isDraft": false,
+      "createdAt": "2026-07-07T15:11:31Z",
+      "updatedAt": "2026-07-10T12:33:32Z",
+      "headRefName": "seis/agent-fullstack-roadmap-intake",
+      "headRefOid": "7792c7f6a0542a225cd3fe2227ed64dabd382d1a",
+      "baseRefName": "main",
+      "baseRefOid": "31266027d7c5d91d3b9f56d790d6d4ccd59a7672",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "replace",
+        "cluster": "roadmaps-and-enterprise",
+        "risk": "high",
+        "rationale": "The PR has valuable roadmap and language work, but its title and body describe docs-only intake while its actual scope includes interactive language and God Mode UI.",
+        "evidence": [
+          "Mergeable with green checks.",
+          "Twenty files and roughly 5,451 additions span roadmap JSON, language-atlas sync, two user interfaces, and God Mode command-center assets.",
+          "The commit series expanded materially beyond the original stated scope."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "OPS-GOAL-0001#replacement-roadmaps-and-enterprise"
+        ],
+        "nextSafeAction": "Human review: split into Goal-backed roadmap, language-contract, language-selector, and God Mode UI PRs with independent architecture, accessibility, and rollback evidence.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 153,
+      "title": "feat(seis): stage second-brain agent registry slice",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/153",
+      "isDraft": false,
+      "createdAt": "2026-07-10T17:03:25Z",
+      "updatedAt": "2026-07-10T17:25:44Z",
+      "headRefName": "codex/second-brain-agent-registry-slice-pr54-update",
+      "headRefOid": "6f72e0b822243c17c58c6982b3a1bcc8a6701c79",
+      "baseRefName": "main",
+      "baseRefOid": "e65f56f4f94ac24bcb9b4e1c52e780b56c0f76bc",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "second-brain",
+        "risk": "high",
+        "rationale": "The advertised Second Brain agent-registry slice was overtaken by the later #157 branch.",
+        "evidence": [
+          "Conflicting against main with 129 changed files and roughly 17,389 additions.",
+          "It includes the same earlier 29-commit lineage as #127 plus its staging commit.",
+          "#157 is newer and expands the same readiness, registry, MCP, review, and native outcome areas."
+        ],
+        "successorPullRequests": [
+          157
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "PR #54"
+        ],
+        "nextSafeAction": "Human review: diff unique contributor, vault, security, and report artifacts against #157; extract needed items before human-approved closure.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 154,
+      "title": "feat(ai-core): verify plugin MCP mesh",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/154",
+      "isDraft": true,
+      "createdAt": "2026-07-10T18:12:46Z",
+      "updatedAt": "2026-07-14T05:53:33Z",
+      "headRefName": "codex/ai-core-capability-contract-20260710",
+      "headRefOid": "e66c1444210b9a91731e9ee0f15520269e67d0f9",
+      "baseRefName": "main",
+      "baseRefOid": "1ed73f519d20d4ac31834c812885a8c202ac98e7",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "archive-candidate",
+        "cluster": "archive-extraction",
+        "risk": "critical",
+        "rationale": "This draft combines SSH, router, Core, a new Plugin/MCP mesh, and dozens of Apple-native snapshots across 225 files and 88 commits; its dirty merge state and cross-domain scope make wholesale integration unsafe.",
+        "evidence": [
+          "Draft and conflicting against main.",
+          "GitHub reports 35,618 additions, 596 deletions, 225 changed files, 88 commits, and a dirty merge state at the final capture.",
+          "Only Socket checks are successful and CodeRabbit is skipped; full SwiftPM and browser smoke are explicitly unavailable."
+        ],
+        "successorPullRequests": [
+          165,
+          175,
+          182
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [],
+        "nextSafeAction": "Human review: create an extraction inventory, move unique capabilities into separate Goal-backed Apple, AI, Plugin/MCP, and SSH PRs, then archive after human confirmation that no unique work is lost.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 155,
+      "title": "feat(ai): add AGI GitHub readiness gates",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/155",
+      "isDraft": false,
+      "createdAt": "2026-07-10T18:19:05Z",
+      "updatedAt": "2026-07-10T19:52:58Z",
+      "headRefName": "agent/agi-github-readiness-gates-20260710",
+      "headRefOid": "060d0b3d381d9f933e28741824eedd580d07cb21",
+      "baseRefName": "main",
+      "baseRefOid": "e65f56f4f94ac24bcb9b4e1c52e780b56c0f76bc",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "replace",
+        "cluster": "ai-core-and-routing",
+        "risk": "high",
+        "rationale": "The claim-control intent is useful, but this conflicting pre-Goal package duplicates existing AGI-readiness concepts and its workflow must be reconciled with the newer security boundary.",
+        "evidence": [
+          "Conflicting against main despite green historical checks.",
+          "It adds 14 files, including a new workflow that runs npm ci without the lifecycle suppression required by #179.",
+          "Main already contains AGI user-readiness and public-readiness foundations from merged #64 and #100."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "merged PR #100",
+          "merged PR #64",
+          "OPS-GOAL-0001#replacement-ai-core-and-routing"
+        ],
+        "nextSafeAction": "Human review: extract only unique regression and claim-boundary controls into a current Goal-backed PR after #179, with fail-closed workflow hardening and no unsupported AGI claims.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 156,
+      "title": "feat(ai): ship provider-neutral read-only router through MCP",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/156",
+      "isDraft": false,
+      "createdAt": "2026-07-10T18:45:06Z",
+      "updatedAt": "2026-07-10T19:03:27Z",
+      "headRefName": "codex/ai-core-router-clean-20260710",
+      "headRefOid": "492c427c76ce4c28f29628871a06663933be7ccf",
+      "baseRefName": "main",
+      "baseRefOid": "e65f56f4f94ac24bcb9b4e1c52e780b56c0f76bc",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "ai-core-and-routing",
+        "risk": "medium",
+        "rationale": "The provider-neutral read-only router is carried and further hardened in #165.",
+        "evidence": [
+          "Mergeable, but Core SEIS audit and Foundation checks are failing.",
+          "Its 23-file router/MCP slice appears in #165 with later routing, MCP, network-boundary, and test hardening.",
+          "#165 reports 214 package tests versus this PR's 207."
+        ],
+        "successorPullRequests": [
+          165
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [],
+        "nextSafeAction": "Human review: confirm patch-equivalence and any unique tests, transfer omissions to #165 if needed, then seek human closure.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 157,
+      "title": "feat: ship Second Brain readiness and agent registry slice",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/157",
+      "isDraft": false,
+      "createdAt": "2026-07-10T19:10:45Z",
+      "updatedAt": "2026-07-12T15:41:54Z",
+      "headRefName": "codex/second-brain-readiness-agent-registry-20260710",
+      "headRefOid": "13c76621769a61cd4e559ecaa4a9f53500a0b69e",
+      "baseRefName": "main",
+      "baseRefOid": "e65f56f4f94ac24bcb9b4e1c52e780b56c0f76bc",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "replace",
+        "cluster": "second-brain",
+        "risk": "high",
+        "rationale": "The latest Second Brain slice has valuable work but is too large, conflicting, and multi-layered to merge as one pre-Goal PR.",
+        "evidence": [
+          "Conflicting against main with 87 changed files and roughly 7,738 additions.",
+          "The branch contains more than 80 commits spanning web, MCP, reports, plugins, Swift persistence, and generated evidence.",
+          "Only CodeRabbit and Socket checks are currently attached; the body still records a NO-GO human release gate."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "OPS-GOAL-0001#replacement-second-brain",
+          "PR #54"
+        ],
+        "nextSafeAction": "Human review: freeze wholesale merge, inventory unique value, and replace it with small Goal-backed PRs for contracts, MCP, web review UI, native persistence, and generated evidence.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 159,
+      "title": "feat: deliver SEIS-SSH Core and Cloud MCP integration",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/159",
+      "isDraft": false,
+      "createdAt": "2026-07-10T21:03:37Z",
+      "updatedAt": "2026-07-11T05:55:16Z",
+      "headRefName": "codex/seis-ssh-linear-20260710",
+      "headRefOid": "8b94788c576dcd73fbdb1a437a000c0f74746c91",
+      "baseRefName": "main",
+      "baseRefOid": "1ed73f519d20d4ac31834c812885a8c202ac98e7",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "ssh-cloud",
+        "risk": "high",
+        "rationale": "This initial SSH/Core/MCP integration was explicitly rebased through #161, #163, and #165.",
+        "evidence": [
+          "Conflicting against main.",
+          "Its body describes itself as a review draft even though live metadata is non-draft, showing stale PR state.",
+          "#161 explicitly says it replaced #159, and #165 is the final mergeable superseding iteration."
+        ],
+        "successorPullRequests": [
+          161,
+          163,
+          165
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [],
+        "nextSafeAction": "Human review: retain only as provenance until #165 unique-diff verification is complete, then seek human approval to close.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 161,
+      "title": "feat: land SEIS-SSH integration on current mainline",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/161",
+      "isDraft": false,
+      "createdAt": "2026-07-11T05:50:47Z",
+      "updatedAt": "2026-07-11T06:25:31Z",
+      "headRefName": "codex/seis-ssh-public-mainline-20260711",
+      "headRefOid": "b71c557b17c5546f2914e3cd47b48d1dccc52701",
+      "baseRefName": "main",
+      "baseRefOid": "1fa5a0c29a1e564ab85a5ba136e45b151abefa9c",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "ssh-cloud",
+        "risk": "high",
+        "rationale": "This rebased replacement for #159 was itself overtaken first by #163 and finally by #165.",
+        "evidence": [
+          "Conflicting against main.",
+          "Its body says it rebases the integration after #159 became conflicting.",
+          "#163 and #165 carry the same integration with later review fixes; #165 is mergeable with full green checks."
+        ],
+        "successorPullRequests": [
+          163,
+          165
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [],
+        "nextSafeAction": "Human review: verify no unique commit remains outside #165, then request human closure as superseded.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 163,
+      "title": "feat: land SEIS-SSH integration on current mainline",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/163",
+      "isDraft": false,
+      "createdAt": "2026-07-11T06:22:49Z",
+      "updatedAt": "2026-07-11T06:35:07Z",
+      "headRefName": "codex/seis-ssh-public-mainline-20260711-r2",
+      "headRefOid": "962fd3182537cf4f636cd449b32a108edfae966a",
+      "baseRefName": "main",
+      "baseRefOid": "941e1ad961895b2b3923d52330a94635571cc4c2",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "superseded",
+        "cluster": "ssh-cloud",
+        "risk": "high",
+        "rationale": "Its own body identifies it as a superseding iteration, while #165 is the later current-mainline replacement with additional SSH, router, data, and review hardening.",
+        "evidence": [
+          "Conflicting against main.",
+          "The branch has 66 changed files and only CodeRabbit and Socket evidence.",
+          "#165 has the same core purpose, a later head, more hardening, green full CI, and explicitly supersedes the earlier mainline attempts."
+        ],
+        "successorPullRequests": [
+          165
+        ],
+        "dependsOnPullRequests": [],
+        "externalReferences": [],
+        "nextSafeAction": "Human review: compare for unique changes, record any extraction into #165 or a child Goal, then seek human approval to close without deleting evidence prematurely.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 165,
+      "title": "feat: land SEIS-SSH integration on current mainline",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/165",
+      "isDraft": false,
+      "createdAt": "2026-07-11T06:33:20Z",
+      "updatedAt": "2026-07-12T15:08:03Z",
+      "headRefName": "codex/seis-ssh-public-mainline-20260711-r3",
+      "headRefOid": "8b7a5a9677350dafeaa6f0f1221b5d56cd180097",
+      "baseRefName": "main",
+      "baseRefOid": "0c38f47da9bb9bc943049d4b28463d0794686cbc",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "retain",
+        "cluster": "ssh-cloud",
+        "risk": "high",
+        "rationale": "This is the latest explicit SEIS-SSH superseding branch and preserves the mandatory github.codespaces port-22 contract, but its 89-file SSH, AI, data, and demo scope requires human architecture review.",
+        "evidence": [
+          "Non-draft and mergeable against current main.",
+          "All current CI, CodeQL, Guardian, Foundation, SEIS AI, SSH, Enterprise, governance, polyglot, CodeRabbit, and Socket checks are green.",
+          "The body explicitly keeps live SSH, credentials, deployment, provider calls, and endpoint migration disabled or approval-gated."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "issue #129"
+        ],
+        "nextSafeAction": "Human review: preserve server and port, perform a Goal-backed architecture and security review, reconcile with #179, split unrelated lanes if needed, and do not execute live SSH.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 175,
+      "title": "feat(apple): add native conversation continuity",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/175",
+      "isDraft": false,
+      "createdAt": "2026-07-12T15:19:52Z",
+      "updatedAt": "2026-07-12T15:28:20Z",
+      "headRefName": "codex/seis-conversation-continuity-20260712",
+      "headRefOid": "dd50ebafeb651351753935222b2c28b958b245f4",
+      "baseRefName": "main",
+      "baseRefOid": "38031939b5a38270fad0ae8e0b5a96eceeabb4aa",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "retain",
+        "cluster": "apple-native",
+        "risk": "high",
+        "rationale": "The native conversation-continuity slice is focused and green, but persistent import and restrictive-state semantics should follow the proposed Apple architecture rather than precede it.",
+        "evidence": [
+          "Non-draft, mergeable, and all current remote checks are green.",
+          "Only five Swift and documentation files change.",
+          "No local Swift test pass was obtained; the PR records an interrupted build with exit 130."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [],
+        "nextSafeAction": "Human review: keep open; after #182 is accepted, add a Goal-backed scope, rebase, run remote SwiftPM tests, and review persistence, import, restrictive-state, privacy, and migration behavior.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 177,
+      "title": "feat(governance): bootstrap ecosystem goal tracking",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/177",
+      "isDraft": false,
+      "createdAt": "2026-07-12T22:02:30Z",
+      "updatedAt": "2026-07-12T23:07:33Z",
+      "headRefName": "architecture/ecosystem-goal-tracking-v1",
+      "headRefOid": "db81733053c94a28c1d404d76ca37c152f783c07",
+      "baseRefName": "main",
+      "baseRefOid": "38031939b5a38270fad0ae8e0b5a96eceeabb4aa",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "merge-candidate",
+        "cluster": "ecosystem-governance",
+        "risk": "medium",
+        "rationale": "This is the prerequisite Goal-tracking foundation and is the only assigned PR with a current green, mergeable, non-draft foundation suitable for protected review.",
+        "evidence": [
+          "Non-draft and mergeable against main.",
+          "Both substantive and current heads have complete green CI, CodeQL, Guardian, Foundation, Enterprise, governance, CodeRabbit, and Socket evidence.",
+          "The PR has a focused ECO-GOAL-0003 scope and explicit rollback."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [],
+        "externalReferences": [
+          "issue #176"
+        ],
+        "nextSafeAction": "Human review: complete required human review and open review-conversation confirmation, then merge through protected-branch policy without direct main writes or history rewriting.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 179,
+      "title": "fix(security): enforce the local-secret boundary",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/179",
+      "isDraft": false,
+      "createdAt": "2026-07-12T23:47:42Z",
+      "updatedAt": "2026-07-12T23:59:47Z",
+      "headRefName": "security/ecosystem-local-secret-boundary",
+      "headRefOid": "b915502502fd2c7f96bf377d60d5b874aad4f17f",
+      "baseRefName": "architecture/ecosystem-goal-tracking-v1",
+      "baseRefOid": "db81733053c94a28c1d404d76ca37c152f783c07",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "retain",
+        "cluster": "ecosystem-governance",
+        "risk": "high",
+        "rationale": "Preserve the security-boundary implementation, but it is explicitly not merge-ready while stacked and while the historical secret finding remains owner-gated.",
+        "evidence": [
+          "Non-draft and mergeable; base is architecture/ecosystem-goal-tracking-v1.",
+          "Current Foundation, Governance, Enterprise, and Socket checks are green.",
+          "The PR states that Guardian evidence is absent on the stacked base and that ECO-GOAL-0002 is not complete."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [
+          177
+        ],
+        "externalReferences": [
+          "issue #129",
+          "issue #178"
+        ],
+        "nextSafeAction": "Human review: do not merge before #177; afterward retarget to main, collect Guardian evidence, and obtain the accountable owner's disposition for issue #129.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 180,
+      "title": "feat(governance): expand ecosystem ownership evidence",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/180",
+      "isDraft": true,
+      "createdAt": "2026-07-13T01:30:47Z",
+      "updatedAt": "2026-07-13T02:53:49Z",
+      "headRefName": "architecture/ecosystem-ownership-evidence",
+      "headRefOid": "d2da2717aadabb988a71d584aed0337a49d2e0cf",
+      "baseRefName": "architecture/ecosystem-goal-tracking-v1",
+      "baseRefOid": "db81733053c94a28c1d404d76ca37c152f783c07",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "retain",
+        "cluster": "ecosystem-governance",
+        "risk": "high",
+        "rationale": "Preserve the ownership-evidence work because it is the active ECO-GOAL-0001 decision packet, but it remains intentionally blocked and draft.",
+        "evidence": [
+          "Draft and mergeable; base is architecture/ecosystem-goal-tracking-v1.",
+          "Foundation, Enterprise, and Socket checks are green; CodeRabbit is skipped because the PR is draft.",
+          "The PR explicitly leaves ADR-0002, private manifests, the Greek target, and final secret-scan evidence unresolved."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [
+          177
+        ],
+        "externalReferences": [
+          "ADR-0002",
+          "issue #176"
+        ],
+        "nextSafeAction": "Human review: keep draft; merge #177 and review #179 first, then retarget, rerun all required scans, and obtain human ownership, manifest, ADR, and Greek-target decisions.",
+        "humanApprovalRequired": true
+      }
+    },
+    {
+      "number": 182,
+      "title": "docs(apple): define the SEIS native architecture foundation",
+      "url": "https://github.com/emirhankudun-ux/SEIS/pull/182",
+      "isDraft": true,
+      "createdAt": "2026-07-13T08:19:53Z",
+      "updatedAt": "2026-07-13T08:35:18Z",
+      "headRefName": "apple/seis-native-architecture-foundation",
+      "headRefOid": "10965aef3003a9d1a859f6182cd37a86a1b7bbeb",
+      "baseRefName": "security/ecosystem-local-secret-boundary",
+      "baseRefOid": "b915502502fd2c7f96bf377d60d5b874aad4f17f",
+      "author": "emirhankudun-ux",
+      "labels": [],
+      "classification": {
+        "disposition": "retain",
+        "cluster": "apple-native",
+        "risk": "medium",
+        "rationale": "Preserve the proposed Apple-native architecture foundation, but keep it draft and stacked until its governance and security prerequisites are resolved.",
+        "evidence": [
+          "Draft and mergeable; base is security/ecosystem-local-secret-boundary.",
+          "All current Apple, Foundation, Enterprise, Socket, and draft-status checks are green at head 10965aef.",
+          "The PR changes contracts, documentation, CI, and validators but no production Swift source."
+        ],
+        "successorPullRequests": [],
+        "dependsOnPullRequests": [
+          179
+        ],
+        "externalReferences": [
+          "https://github.com/emirhankudun-ux/SEIS/actions/runs/29235814467",
+          "issue #181"
+        ],
+        "nextSafeAction": "Human review: keep draft; after #177 and #179 land, resolve #180 ownership decisions, retarget to main, re-audit the full diff, rerun checks, and obtain human ADR acceptance.",
+        "humanApprovalRequired": true
+      }
+    }
+  ]
+}

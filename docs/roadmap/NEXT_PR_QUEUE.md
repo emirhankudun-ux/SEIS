@@ -2,26 +2,22 @@
 
 Date: 2026-06-23
 
-## Active GitHub Merge Queue Continuity - 2026-07-01
+## Canonical Open Pull-Request Portfolio — 2026-07-14 reconciliation
 
-This queue keeps current GitHub work resumable across local machine changes and
-new Codex sessions. The listed PRs may remain in auto-merge mode, but auto-merge
-must stay subordinate to branch protection, CI, code review, and the security
-gate tracked in issue #129.
+Goal: `OPS-GOAL-0001`
+Dataset: `data/seis-open-pr-portfolio.json`
+Dataset ID: `seis-open-pr-portfolio-2026-07-14`
+Snapshot count: `90 open pull requests`
+Snapshot digest: `sha256:7c2b783eb302f9d25f64da5a9221d03e9db3a543abe7384d86b8c46d86c4bd69`
+Retrieved at: `2026-07-14T05:54:16Z`
 
-| Order | PR | Scope | Current gate | Approval needed |
-| --- | --- | --- | --- | --- |
-| 0 | #77 | Security owner decision pack for the historical gitleaks blocker | Issue #129 owner decision path must be completed without exposing secret values or weakening the scanner. | Required for secret rotation, history rewrite, or destructive cleanup. |
-| 1 | #126 | SEIS Search Center foundation | Repository security gate must clear before protected-branch merge. | None for queued feature review; approval required for security-history remediation. |
-| 2 | #133 | Search Center review fixes stacked on #126 | Depends on #126 plus the repository security gate. | None for review-comment fixes; approval required for force push, history rewrite, or bypassing checks. |
-| 3 | #132 | Linux-like demo Security Gate app | Repository security gate must clear before protected-branch merge. | None for local demo code/docs; approval required for live SSH, deployment, provider calls, or deleting supplied assets. |
-| 4 | #130 | Follow-up queued PR | Protected-branch checks and security gate. | Inspect review comments before any code change. |
-| 5 | #131 | Follow-up queued PR | Protected-branch checks and security gate. | Inspect review comments before any code change. |
-
-Do not merge these by force. Do not push directly to `main`. Do not rewrite
-history or rotate secrets from an automation agent without explicit owner
-approval. Keep supplied ZIP/folder-derived demo assets preserved unless the
-owner explicitly requests removal.
+The complete classification, dependency graph, risks, and human-gated next
+actions live in `docs/reviews/PR_STACK_REVIEW.md`. A July 14 read-only
+reconciliation detected a PR #154 identity delta and refreshed the frozen
+capture. The protected review chain is PR #177, then PR #179, with PR #180
+retained as a draft ownership lane and PR #182 remaining draft behind #179.
+This is an advisory queue, not merge approval; every classified-PR mutation
+requires a separate human decision.
 
 ## Current Recommended Product Demo Stack
 
@@ -66,13 +62,13 @@ owner explicitly requests removal.
 
 | Field | Value |
 | --- | --- |
-| Suggested branch | `seis/pr-stack-triage` |
+| Suggested branch | `audit/seis-open-pr-portfolio-triage` |
 | Priority | P0 |
-| Goal | Classify the 25 open PRs visible in the read-only GitHub inventory into merge-ready, replace, close, archive, superseded, or needs-human-review buckets. |
-| Include | `docs/reviews/PR_STACK_REVIEW.md`, PR number/title/head/base/state table, duplication notes, security/readiness risks, and recommended replacement order. |
-| Exclude | Closing PRs, merging PRs, reopening PRs, force-push, branch deletion, cross-worktree cherry-pick, and history rewrite. |
-| Validation | Read-only `gh pr list`, local docs review, `git diff --check`. |
-| Approval needed | None for the review document; approval required for any GitHub write action. |
+| Goal | Execute `OPS-GOAL-0001`: classify and sequence all 90 captured open PRs with exactly one controlled advisory disposition and no classified-PR mutation. |
+| Include | `data/seis-open-pr-portfolio.json`, `docs/reviews/PR_STACK_REVIEW.md`, the Goal YAML, validator/tests, all 90 identity and classification rows, protected records, dependency-safe sequence, source query, retrieval timestamp, default-branch identity, and digest. |
+| Exclude | Merging, closing, reopening, rebasing, labeling, commenting on, or editing classified PRs; branch deletion; cross-worktree cherry-pick; history changes; secret rotation; live SSH/cloud/deployment/provider actions. |
+| Validation | `npm run check:seis-open-pr-portfolio`, `npm run test:seis-open-pr-portfolio`, `npm run check:ecosystem-foundation`, `npm run test:ecosystem-foundation`, `npm run check:goal-tracking`, and `git diff --check`. |
+| Approval needed | None for the public-safe audit artifacts; separate human approval is required for every classified-PR write or implementation decision. |
 
 ## PR 0B: CI Foundation Workflow Alignment
 

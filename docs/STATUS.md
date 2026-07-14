@@ -1,32 +1,26 @@
 # SEIS Status
 
 Date: 2026-06-24
+Last updated: 2026-07-14 (OPS-GOAL-0001 snapshot reconciliation)
 
 This status captures the current branch foundation state. It is not a release,
 deployment, public-readiness, or merge-readiness claim.
 
-## GitHub Merge Queue Continuity - 2026-07-01
+## Open Pull-Request Portfolio — 2026-07-14 reconciliation
 
-The current GitHub queue is being kept in PR-safe auto-merge mode so a machine
-change or Codex session change does not lose review state. Auto-merge means
-GitHub may merge after required branch protections and checks pass; it is not a
-direct main push, not a force merge, and not approval to bypass security.
+Goal: `OPS-GOAL-0001`
+Dataset: `data/seis-open-pr-portfolio.json`
+Dataset ID: `seis-open-pr-portfolio-2026-07-14`
+Snapshot count: `90 open pull requests`
+Snapshot digest: `sha256:7c2b783eb302f9d25f64da5a9221d03e9db3a543abe7384d86b8c46d86c4bd69`
+Retrieved at: `2026-07-14T05:54:16Z`
 
-Tracked queue:
-
-| PR | Purpose | Current gate | Next safe action |
-| --- | --- | --- | --- |
-| #77 | Security owner decision pack for the historical gitleaks blocker | Issue #129 remains the security source of truth; owner approval is needed for rotation or history rewrite paths. | Complete the selected owner path without printing secret values or weakening gitleaks. |
-| #126 | SEIS Search Center foundation | Depends on the repository security gate clearing. | Keep queued; do not mix security-history cleanup into the feature branch. |
-| #130 | Follow-up queue item | Depends on the same protected-branch/security gate. | Keep queued; inspect comments before any code change. |
-| #131 | Follow-up queue item | Depends on the same protected-branch/security gate. | Keep queued; inspect comments before any code change. |
-| #132 | Linux demo Security Gate app | Depends on the repository security gate clearing. | Keep queued; preserve Linux-like demo assets and Local Demo boundaries. |
-| #133 | Search Center review fixes | Stacked on the Search Center branch and depends on #126 plus the repository security gate. | Keep queued; address only concrete review comments. |
-
-Human approval remains required for secret rotation, Git history rewrite,
-branch-protection changes, destructive cleanup, deployment, SSH execution,
-provider credentials, or public release. The queue is intentionally documented
-without secret values.
+The versioned snapshot and `docs/reviews/PR_STACK_REVIEW.md` replace the stale
+25-PR queue baseline. A read-only July 14 reconciliation detected a new PR #154
+title, head, and update timestamp, so the 90-record capture was versioned and
+refreshed. Recommendations only: Human approval is required before every GitHub
+mutation. No classified pull request was merged, closed, reopened, rebased,
+labeled, commented on, or edited by this Goal.
 
 ## SEIS AI 512B Apex Status
 
@@ -59,7 +53,7 @@ resources including the 512B apex program.
 | Worktree hygiene | Scoped local edits in progress | Current modifications include the SEIS AI 20B/150B evidence chain and a Desktop OS design-fusion pass that uses the imported SEIS_WOW packs plus user-supplied Kimi LinuxOS / VS Code Web references as visual direction. | Review and stage only coherent slices after validation; keep product UI and AI Core evidence changes separate if this becomes more than one PR. |
 | Full-stack contract foundation | Validated Local Demo contract added | `content/development/seis-fullstack-contract.json`, `server/node/static-server.mjs`, `docs/architecture/seis-full-stack-transition.md`, `apps/fullstack/README.md`, `scripts/check-seis-fullstack-contract.mjs`, `scripts/check-seis-fullstack-server-smoke.mjs`, `scripts/check-seis-fullstack-no-server-fallback-smoke.mjs`, `npm run check:seis-fullstack-contract`, `npm run check:seis-fullstack-server-smoke`, `npm run check:seis-fullstack-no-server-fallback-smoke` | Read-only fixture-backed `/_server/*` endpoints only; no auth, database, live provider calls, SSH, deployment, GitHub writes, or real credentials. Static fallback is browser-smoked with `/_server/*` intentionally unavailable. |
 | SEIS integration posture | Documented | `docs/governance/seis-integration-and-github-development.md`, `content/development/seis-integration-map.json`, `docs/reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md` | Use the integration map to reconcile one SEIS workstream per PR. |
-| GitHub PR state | Read-only inspected | `gh pr list --state open --limit 30` found 25 open PRs; `gh pr list --state closed --limit 30` found 13 recently closed PRs, all merged in the returned set. | Do not merge, close, or reopen without approval; triage into a dedicated PR-stack review. |
+| GitHub PR portfolio | Structured and read-only reconciled | `OPS-GOAL-0001`, `data/seis-open-pr-portfolio.json`, and `docs/reviews/PR_STACK_REVIEW.md` record 90 unique open PR identities, advisory dispositions, dependencies, and a deterministic digest; the July 14 reconciliation detected and incorporated the PR #154 delta. | Publish the Goal-linked review only after local gates pass; every classified-PR write remains a separate human decision. |
 | Public readiness | Not ready | Worktree is dirty, full secret-history scan and browser QA are incomplete. | Resolve blockers before public preparation. |
 | Release readiness | Not ready | Static build passed, but no release dry-run, tag, deployment, or rollback drill was performed. | Defer release work until review. |
 | GitHub Actions | Aligned for foundation workflow | `.github/workflows/foundation-check.yml` uses declared package scripts only; `npm run check:workspace`, `npm run check:foundation`, and `npm run check:open-source-governance` pass from the SSH clone. `check:js` is not declared in this snapshot and is no longer a foundation workflow requirement. | Keep workflow command references checked against `package.json` before adding new gates. |
@@ -162,7 +156,7 @@ resources including the 512B apex program.
 | `npm run check:mobile-ergonomics` | Passed | Existing mobile ergonomics check passed. |
 | `npm run audit:ai-providers` | Passed | Redacted static provider/credential audit generated Markdown and JSON without live provider calls. |
 | `.env` ignore check | Passed | `.env`, `.env.local`, `.env.development.local`, `secrets/*`, `service-account*.json`, and `*.pem` are ignored; `.env.example` is not ignored. |
-| `gh pr list --state open --limit 30 --json number,title,headRefName,baseRefName,isDraft,mergeStateStatus,updatedAt` | Passed | Read-only inventory returned 25 open PRs; no PR write action was performed. |
+| Canonical read-only open-PR REST capture and July 14 reconciliation | Passed | The bounded query returned 90 unique open identities both times; the final dataset stores the exact source query, retrieval time, default-branch identity, and identity digest. No classified-PR write action was performed. |
 | `gh pr list --state closed --limit 30 --json number,title,headRefName,baseRefName,mergedAt,closedAt,updatedAt` | Passed | Read-only inventory returned 13 recently closed PRs, all merged in the returned set. |
 | `git branch --no-merged main --no-color` | Passed | Local unmerged branches visible: `seis/product-experience-suite`, `seis/ai-core-app-foundation-continuation`, and `seis/ai-model-env-defaults`. |
 | Root pointer/source-of-truth review | Passed | `ARCHITECTURE.md` and `ROADMAP.md` now point to canonical docs without duplicating implementation claims. |
