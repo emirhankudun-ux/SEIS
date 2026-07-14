@@ -270,6 +270,7 @@
     "inspect:seis-action-execution": "node scripts/inspect-seis-action-execution.mjs",
     "check:seis-agent-lane-status": "node scripts/check-seis-agent-lane-status.mjs",
     "check:seis-agent-registry": "node scripts/check-seis-agent-registry.mjs",
+    "check:seis-agency-team": "node scripts/check-seis-agency-team.mjs",
     "check:ai-workforce-assignments": "node scripts/check-ai-workforce-assignments.mjs",
     "check:seis-god-mode-release-readiness": "node scripts/check-seis-god-mode-release-readiness.mjs",
     "check:seis-god-mode-validation-plan": "node scripts/check-seis-god-mode-validation-plan.mjs",

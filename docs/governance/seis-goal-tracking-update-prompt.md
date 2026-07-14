@@ -46,6 +46,10 @@ Authority and source order:
    Observability, Universal Design Governance, Universal AI Governance,
    Universal Knowledge Graph, and Long Term Evolution as specification-only
    vocabulary unless separate implementation evidence exists.
+7. For ten-year stewardship continuity, read
+   docs/governance/seis-enterprise-expansion-10-year-stewardship.md and use
+   its session-based-continuation protocol. Never convert the annual phases
+   into a claim of elapsed time or background execution.
 
 Hard rules:
 - Inspect git status, branch, remote, recent history, and the focused diff

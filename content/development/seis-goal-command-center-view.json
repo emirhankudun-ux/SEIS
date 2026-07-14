@@ -26,21 +26,21 @@
       "blocked": 3
     },
     "totalCategories": 20,
-    "totalEvidenceRecords": 15,
+    "totalEvidenceRecords": 16,
     "evidenceByStatus": {
-      "passed": 14,
+      "passed": 15,
       "blocked": 1
     },
-    "totalTasks": 5,
+    "totalTasks": 6,
     "tasksByStatus": {
-      "active": 4,
+      "active": 5,
       "blocked": 1
     },
     "totalBlockers": 2,
     "blockersByStatus": {
       "active": 2
     },
-    "totalDecisions": 4,
+    "totalDecisions": 5,
     "totalReviewRecords": 3,
     "reviewRecordsByStatus": {
       "planned": 3
@@ -110,9 +110,9 @@
       "high": 1,
       "medium": 2
     },
-    "totalValidationSteps": 5,
+    "totalValidationSteps": 6,
     "validationStepsByStatus": {
-      "active": 5
+      "active": 6
     },
     "totalRoadmapLinks": 20,
     "roadmapLinksByStatus": {
@@ -165,13 +165,13 @@
     {
       "id": "evidence",
       "label": "Evidence",
-      "value": 15,
+      "value": 16,
       "description": "Evidence records with limitations and next actions."
     },
     {
       "id": "tasks",
       "label": "Tasks",
-      "value": 5,
+      "value": 6,
       "description": "Execution tasks tied to goals and evidence."
     },
     {
@@ -243,7 +243,7 @@
     {
       "id": "validation",
       "label": "Validation Steps",
-      "value": 5,
+      "value": 6,
       "description": "Scoped checks with success conditions."
     },
     {
@@ -325,7 +325,8 @@
         "notes": [
           "User-approved bounded Goal Tracking Update Orchestrator prompt package added on 2026-07-14.",
           "The five-million-character request is modeled as an aggregate context ceiling; no filler, live provider claim, or automatic completion claim is allowed.",
-          "SEIS Enterprise Expansion V3 is registered as a specification-only governance surface. Each term requires a separate evidence-backed implementation goal before production status can be claimed."
+          "SEIS Enterprise Expansion V3 is registered as a specification-only governance surface. Each term requires a separate evidence-backed implementation goal before production status can be claimed.",
+          "The ten-year focus is represented by a session-based stewardship contract with ten planned annual phases, review cadence, metrics, stop conditions, and a next-session continuation command."
         ],
         "evidenceLinks": [
           "docs/reviews/GOAL_TRACKING_REVIEW.md",
@@ -862,6 +863,20 @@
           "SEIS-EVID-015"
         ],
         "nextAction": "Run the Enterprise Expansion validator and Goal Tracking checks, regenerate the Command Center view, then record the focused commit hash."
+      },
+      {
+        "id": "SEIS-TASK-006",
+        "title": "Establish ten-year Enterprise Expansion stewardship loop",
+        "status": "active",
+        "priority": "P1 high",
+        "ownerRole": "Program System",
+        "supportsGoalIds": [
+          "SEIS-GOAL-003"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-016"
+        ],
+        "nextAction": "Run the ten-year registry and Goal Tracking validators, record the phase state, and leave the next session continuation command."
       }
     ],
     "blockedItems": [
@@ -1163,6 +1178,23 @@
           "Does not resolve the pre-existing repository hygiene blocker."
         ],
         "nextAction": "Keep Enterprise Expansion V3 terms specification-only and create separate implementation Goals only with evidence-backed scope."
+      },
+      {
+        "id": "SEIS-EVID-016",
+        "title": "Ten-year Enterprise Expansion stewardship contract is registered",
+        "type": "validation",
+        "status": "passed",
+        "supportsGoalIds": [
+          "SEIS-GOAL-003"
+        ],
+        "summary": "The ten-year focus is represented as a planned session-based stewardship contract with ten ordered annual phases, required review cadences, continuation state, stop conditions, eight stewardship metrics, and explicit non-background execution boundaries.",
+        "limitations": [
+          "No ten-year elapsed-time claim is made.",
+          "Annual phases remain planned until separate Goals produce current evidence.",
+          "Does not run background agents, live providers, external connectors, deployment, or autonomous execution.",
+          "Does not resolve the pre-existing repository hygiene blocker."
+        ],
+        "nextAction": "Create the focused ten-year stewardship commit, record its hash, and leave the next annual phase state."
       }
     ],
     "readinessConnections": [
@@ -1238,6 +1270,13 @@
         "status": "accepted",
         "decision": "Register all requested architecture, execution, validation, observability, design, AI, knowledge-graph, and long-term evolution terms with explicit ownership and evidence requirements, while preserving their specification maturity.",
         "consequence": "The registry can guide decomposition without falsely claiming live implementation, provider/model/plugin/MCP execution, background agents, or enterprise release readiness."
+      },
+      {
+        "id": "SEIS-DEC-005",
+        "title": "Interpret ten-year continuous development as session-based stewardship",
+        "status": "accepted",
+        "decision": "Represent the ten-year focus as ten planned annual phases with explicit continuation state, review cadences, metrics, stop conditions, and evidence requirements.",
+        "consequence": "Future sessions can continue from a durable state without claiming hidden background execution, elapsed time, or unsupported future completion."
       }
     ],
     "reviewCadence": [
@@ -2016,6 +2055,22 @@
         ],
         "successCondition": "The registry contains the exact eight-domain Enterprise Expansion V3 term sets, nine universal node fields, eight long-term horizons, seven forecast lanes, active Goal link, public-safe metadata, and explicit implementation non-claims.",
         "nextAction": "Run before each Enterprise Expansion V3 governance update and before decomposing any term into implementation work."
+      },
+      {
+        "id": "SEIS-VAL-006",
+        "title": "Validate ten-year Enterprise Expansion stewardship contract",
+        "status": "active",
+        "priority": "P1 high",
+        "command": "npm run check:seis-enterprise-expansion-v3",
+        "ownerRole": "Program System",
+        "supportsGoalIds": [
+          "SEIS-GOAL-003"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-016"
+        ],
+        "successCondition": "The registry contains ten ordered planned annual phases, session-based continuation state, required review cadences, eight stewardship metrics, explicit stop conditions, and no background execution claim.",
+        "nextAction": "Run at every ten-year stewardship handoff and after any phase or continuation-state change."
       }
     ],
     "roadmapLinks": [
@@ -2079,7 +2134,7 @@
         "statusRefs": [
           "docs/STATUS.md#goal-tracking-os"
         ],
-        "nextAction": "Keep source records, Enterprise Expansion V3 registry, structured prompt proposals, generated view, and all validators synchronized."
+        "nextAction": "Keep source records, Enterprise Expansion V3 registry, ten-year stewardship state, structured prompt proposals, generated view, and all validators synchronized."
       },
       {
         "id": "SEIS-ROADMAP-LINK-004",

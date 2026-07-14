@@ -6,6 +6,7 @@ const root = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const registryPath = "data/seis-enterprise-expansion-v3.json";
 const schemaPath = "schemas/seis-enterprise-expansion-v3.schema.json";
 const documentationPath = "docs/governance/seis-enterprise-expansion-v3.md";
+const stewardshipDocumentationPath = "docs/governance/seis-enterprise-expansion-10-year-stewardship.md";
 const manifestPath = "project.ecosystem.yaml";
 const goalRegistryPath = "content/development/seis-goal-tracking.json";
 const failures = [];
@@ -85,6 +86,17 @@ const expectedPluginReferences = [
   "twilio-developer-kit",
   "wix"
 ];
+const expectedAnnualPhaseIds = Array.from({length: 10}, (_, index) => `SEIS-10Y-Y${String(index + 1).padStart(2, "0")}`);
+const expectedMetricIds = [
+  "architecture-ownership-conflicts",
+  "evidence-freshness",
+  "security-findings",
+  "maintainability-debt",
+  "accessibility-gaps",
+  "performance-budget-pass-rate",
+  "human-experience-blockers",
+  "sustainability-review-coverage"
+];
 
 function absolute(relativePath) {
   return resolve(root, relativePath);
@@ -119,6 +131,7 @@ const schema = readJson(schemaPath);
 const manifest = readJson(manifestPath);
 const goalRegistry = readJson(goalRegistryPath);
 const documentation = readText(documentationPath);
+const stewardshipDocumentation = readText(stewardshipDocumentationPath);
 
 requireValue(schema.$schema === "https://json-schema.org/draft/2020-12/schema", `${schemaPath} must use JSON Schema 2020-12`);
 requireValue(schema.$id === "https://seis.dev/schemas/seis-enterprise-expansion-v3.schema.json", `${schemaPath} has an invalid $id`);
@@ -134,15 +147,18 @@ requireValue(registry.privacy_impact === "none", `${registryPath} privacy_impact
 requireValue(registry.registry_path === registryPath, `${registryPath} registry_path must be canonical`);
 requireValue(registry.schema_path === schemaPath, `${registryPath} schema_path must be canonical`);
 requireValue(registry.documentation_path === documentationPath, `${registryPath} documentation_path must be canonical`);
+requireValue(registry.stewardship_documentation_path === stewardshipDocumentationPath, `${registryPath} stewardship_documentation_path must be canonical`);
 requireValue(registry.validation_command === "npm run check:seis-enterprise-expansion-v3", `${registryPath} validation_command is invalid`);
 
-for (const path of [registryPath, schemaPath, documentationPath]) {
+for (const path of [registryPath, schemaPath, documentationPath, stewardshipDocumentationPath]) {
   requireValue(existsSync(absolute(path)), `${registryPath} references missing artifact: ${path}`);
 }
 
 const activeGoalIds = manifest.goal_tracking?.active_goal_ids;
 requireValue(manifest.project?.id === "seis", `${manifestPath} project.id must be seis`);
 requireValue(Array.isArray(activeGoalIds) && activeGoalIds.includes(registry.related_goal_id), `${manifestPath} must list ${registry.related_goal_id} as active`);
+requireValue(manifest.enterprise_expansion?.stewardship_documentation === stewardshipDocumentationPath, `${manifestPath} must link the ten-year stewardship document`);
+requireValue(manifest.enterprise_expansion?.target_horizon_years === 10, `${manifestPath} must preserve the ten-year target horizon`);
 const goals = Array.isArray(goalRegistry.goals) ? goalRegistry.goals : [];
 const relatedGoal = goals.find((goal) => goal.id === registry.related_goal_id);
 requireValue(Boolean(relatedGoal), `${goalRegistryPath} must contain ${registry.related_goal_id}`);
@@ -186,6 +202,36 @@ requireValue(JSON.stringify(registry.implementation_boundary?.not_claimed) === J
 requireValue(JSON.stringify(domains.find((domain) => domain.id === "long-term-evolution")?.horizons) === JSON.stringify(expectedHorizonLabels), `${registryPath} long-term horizons are invalid`);
 requireValue(JSON.stringify(domains.find((domain) => domain.id === "long-term-evolution")?.forecasts) === JSON.stringify(expectedForecastLabels), `${registryPath} long-term forecasts are invalid`);
 
+const stewardship = registry.ten_year_stewardship || {};
+requireValue(stewardship.status === "planned", `${registryPath} ten_year_stewardship must remain planned`);
+requireValue(stewardship.anchor_date === "2026-07-14", `${registryPath} ten_year_stewardship anchor_date is invalid`);
+requireValue(stewardship.target_date === "2036-07-14", `${registryPath} ten_year_stewardship target_date is invalid`);
+requireValue(stewardship.target_horizon_years === 10, `${registryPath} ten_year_stewardship must target ten years`);
+requireValue(stewardship.continuation_mode === "session-based-continuation", `${registryPath} must use session-based continuation`);
+requireValue(stewardship.background_execution_claim === false, `${registryPath} must not claim background execution`);
+requireValue(JSON.stringify(stewardship.required_review_cadences) === JSON.stringify(["daily", "weekly", "monthly", "quarterly", "annual"]), `${registryPath} review cadences are incomplete or reordered`);
+const protocol = stewardship.continuation_protocol || {};
+for (const field of ["before_session", "during_session", "after_session", "required_state", "stop_conditions", "continuation_command"]) {
+  requireValue(Array.isArray(protocol[field]) ? protocol[field].length > 0 : typeof protocol[field] === "string" && protocol[field].length > 0, `${registryPath} continuation protocol must define ${field}`);
+}
+requireValue(protocol.background_execution_claim === undefined, `${registryPath} continuation protocol must not duplicate runtime state`);
+const phases = Array.isArray(stewardship.annual_phases) ? stewardship.annual_phases : [];
+requireValue(JSON.stringify(phases.map((phase) => phase.id)) === JSON.stringify(expectedAnnualPhaseIds), `${registryPath} must define ten ordered annual phases`);
+for (const [index, phase] of phases.entries()) {
+  requireValue(phase.year === index + 1, `${phase.id || "annual phase"} year must be ${index + 1}`);
+  requireValue(phase.status === "planned", `${phase.id || "annual phase"} must remain planned`);
+  requireValue(phase.review_cadence === "annual", `${phase.id || "annual phase"} must use annual review cadence`);
+  requireValue(Array.isArray(phase.focus) && phase.focus.length > 0, `${phase.id || "annual phase"} must define focus`);
+  requireValue(Array.isArray(phase.required_evidence) && phase.required_evidence.length > 0, `${phase.id || "annual phase"} must define required evidence`);
+  requireValue(Array.isArray(phase.exit_criteria) && phase.exit_criteria.length > 0, `${phase.id || "annual phase"} must define exit criteria`);
+}
+const metrics = Array.isArray(stewardship.stewardship_metrics) ? stewardship.stewardship_metrics : [];
+requireValue(JSON.stringify(metrics.map((metric) => metric.id)) === JSON.stringify(expectedMetricIds), `${registryPath} stewardship metrics are incomplete or reordered`);
+for (const metric of metrics) {
+  requireValue(["increase", "decrease", "stable"].includes(metric.direction), `${metric.id || "metric"} direction is invalid`);
+  requireValue(typeof metric.evidence_source === "string" && metric.evidence_source.length > 0, `${metric.id || "metric"} must define evidence_source`);
+}
+
 for (const label of [...expectedDomains.values()].flat()) {
   requireValue(registry.domains.some((domain) => domain.terms?.some((term) => term.label === label)), `${registryPath} is missing term ${label}`);
 }
@@ -201,7 +247,13 @@ const secretPatterns = [
   /AKIA[0-9A-Z]{12,}/,
   /(?:file|vscode|cursor):\/\//
 ];
-const inspectedText = [JSON.stringify(registry), JSON.stringify(schema), documentation].join("\n");
+requireValue(stewardshipDocumentation.includes("session-based-continuation"), `${stewardshipDocumentationPath} must document session-based continuation`);
+requireValue(stewardshipDocumentation.includes("ten-year"), `${stewardshipDocumentationPath} must document the ten-year horizon`);
+requireValue(stewardshipDocumentation.includes("does not claim"), `${stewardshipDocumentationPath} must document non-claims`);
+for (const phase of phases) {
+  requireValue(stewardshipDocumentation.includes(phase.title), `${stewardshipDocumentationPath} must document ${phase.title}`);
+}
+const inspectedText = [JSON.stringify(registry), JSON.stringify(schema), documentation, stewardshipDocumentation].join("\n");
 for (const pattern of secretPatterns) {
   requireValue(!pattern.test(inspectedText), `${registryPath} governance artifacts contain a secret-shaped or machine-local URI value`);
 }
@@ -212,5 +264,5 @@ if (failures.length > 0) {
   process.exitCode = 1;
 } else {
   const termCount = domains.reduce((count, domain) => count + domain.terms.length, 0);
-  console.log(`SEIS Enterprise Expansion V3 check passed (${domains.length} domains, ${termCount} specified terms, ${termIds.size} unique term ids).`);
+  console.log(`SEIS Enterprise Expansion V3 check passed (${domains.length} domains, ${termCount} specified terms, ${phases.length} annual phases, ${metrics.length} stewardship metrics).`);
 }

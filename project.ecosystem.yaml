@@ -59,6 +59,8 @@
     "registry": "data/seis-enterprise-expansion-v3.json",
     "schema": "schemas/seis-enterprise-expansion-v3.schema.json",
     "documentation": "docs/governance/seis-enterprise-expansion-v3.md",
+    "stewardship_documentation": "docs/governance/seis-enterprise-expansion-10-year-stewardship.md",
+    "target_horizon_years": 10,
     "status": "specified",
     "validation": "npm run check:seis-enterprise-expansion-v3"
   },

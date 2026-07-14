@@ -12,6 +12,8 @@ Date: 2026-06-23
 | [AI_CORE.md](AI_CORE.md) | Provider-neutral AI Core states, routing, prompt/memory boundaries, and safety. |
 | [MCP_REGISTRY.md](MCP_REGISTRY.md) | MCP status, permissions, current records, and rollback boundary. |
 | [AGENT_REGISTRY.md](AGENT_REGISTRY.md) | Supervised specialist roles, permissions, and handoff evidence. |
+| [governance/SEIS_AGENCY_OPERATING_MODEL.md](governance/SEIS_AGENCY_OPERATING_MODEL.md) | Agency-shaped pods, 300-person headcount model, service ownership, brief-to-handoff flow, and human approval boundaries. |
+| [governance/SEIS_AGENCY_BRIEF_TEMPLATE.md](governance/SEIS_AGENCY_BRIEF_TEMPLATE.md) | Public-safe intake template for bounded SEIS agency work. |
 | [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) | SEIS tokens, icon language, motion, and accessibility direction. |
 | [APPLE_PLATFORM_STRATEGY.md](APPLE_PLATFORM_STRATEGY.md) | macOS, iPadOS, iOS, visionOS research, and Swift package strategy. |
 | [SECURITY.md](SECURITY.md) | Focused secrets, permission, supply-chain, and public-review rules. |
@@ -31,6 +33,7 @@ Date: 2026-06-23
 | [../SEIS_SUB_AGENTS.md](../SEIS_SUB_AGENTS.md) | Bounded sub-agent coordination model and output contract. |
 | [SEIS_AGENT_WORKFORCE.md](../SEIS_AGENT_WORKFORCE.md) | Human-readable workforce policy and role definitions for bounded supervision. |
 | [../content/development/seis-agent-registry.json](../content/development/seis-agent-registry.json) | Canonical machine-readable registry joining the independent 14/9/13/5/10 agent inventories without inventing cross-roster mappings. |
+| [../content/development/seis-agency-team.json](../content/development/seis-agency-team.json) | Machine-readable agency overlay for five pods, thirteen source-backed roles, a validated 300-person planning model, services, workflow, approvals, and initial backlog. |
 | [../SEIS_SSH.md](../SEIS_SSH.md) | Safe remote-development/documented SSH concept and constraints. |
 | [../roadmap/seis-long-horizon-strategy.md](../roadmap/seis-long-horizon-strategy.md) | Long-horizon 0–10 year strategy with first- and second-stage operational blueprints. |
 | [GETTING_STARTED.md](GETTING_STARTED.md) | New contributor onboarding and run instructions. |
@@ -56,6 +59,7 @@ Date: 2026-06-23
 | [../scripts/create-seis-obsidian-safe-import-dry-run.mjs](../scripts/create-seis-obsidian-safe-import-dry-run.mjs) | Repo-owned Obsidian safe-import dry-run artifact generator; no private vault read, plugin install, provider call, SSH, GitHub mutation, or deployment. |
 | [../scripts/check-seis-agent-workforce.mjs](../scripts/check-seis-agent-workforce.mjs) | Bounded sub-agent role parity validator for `SEIS_AGENT_WORKFORCE.md`, `seis-brain/vault/05_Agents/Agent Workforce.md`, and `SEIS_SUB_AGENTS.md` references. |
 | [../scripts/check-seis-agent-registry.mjs](../scripts/check-seis-agent-registry.mjs) | Canonical registry schema, source-parity, approval-boundary, and public-safety validator. |
+| [../scripts/check-seis-agency-team.mjs](../scripts/check-seis-agency-team.mjs) | Agency pod, role, service, workflow, brief, approval, Goal-link, and public-safety validator. |
 | [../scripts/create-seis-read-only-model-router-decision.mjs](../scripts/create-seis-read-only-model-router-decision.mjs) | Provider-neutral read-only model-router decision artifact generator; no credential validation, provider call, prompt-body storage, private Obsidian routing, or live-routing approval. |
 | [../scripts/create-seis-second-brain-accessibility-focus-report.mjs](../scripts/create-seis-second-brain-accessibility-focus-report.mjs) | Second Brain accessibility/focus QA artifact generator for ARIA/focus evidence and human-review blockers. |
 | [../scripts/create-seis-second-brain-agent-registry.mjs](../scripts/create-seis-second-brain-agent-registry.mjs) | Second Brain agent registry artifact generator for installed AI, sub-agent, Obsidian, plugin, MCP, and connector review boundaries. |
@@ -125,6 +129,7 @@ Date: 2026-06-23
 | [goals/long-term-goals.md](goals/long-term-goals.md) | Strategic category goal matrix. |
 | [goals/goal-tracking.md](goals/goal-tracking.md) | Operational goal-tracking workflow, evidence rules, bounded prompt updates, and validation commands. |
 | [governance/seis-enterprise-expansion-v3.md](governance/seis-enterprise-expansion-v3.md) | Enterprise Expansion V3 architecture, execution, validation, observability, design, AI, knowledge, and long-term governance registry. |
+| [governance/seis-enterprise-expansion-10-year-stewardship.md](governance/seis-enterprise-expansion-10-year-stewardship.md) | Ten-year session-based stewardship plan, annual phases, review cadence, metrics, and continuation boundaries. |
 | [goals/goal-tracking-system.md](goals/goal-tracking-system.md) | Goal Tracking OS rules and storage model. |
 | [goals/seis-universe-omega-goal-system.md](goals/seis-universe-omega-goal-system.md) | SEIS Universe Omega 24-phase goal coverage record and validator. |
 | [goals/seis-universe-omega-phase-evidence.md](goals/seis-universe-omega-phase-evidence.md) | Phase 01, 02, 03, and 10 dependency, KPI, and success-metric evidence slice. |

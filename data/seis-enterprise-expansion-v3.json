@@ -13,6 +13,7 @@
   "registry_path": "data/seis-enterprise-expansion-v3.json",
   "schema_path": "schemas/seis-enterprise-expansion-v3.schema.json",
   "documentation_path": "docs/governance/seis-enterprise-expansion-v3.md",
+  "stewardship_documentation_path": "docs/governance/seis-enterprise-expansion-10-year-stewardship.md",
   "validation_command": "npm run check:seis-enterprise-expansion-v3",
   "lifecycle_states": [
     "specified",
@@ -318,6 +319,163 @@
     ],
     "prohibited_optimization": "Never optimize only for the current iteration.",
     "long_term_rule": "Always optimize for the long-term evolution of the SEIS ecosystem."
+  },
+  "ten_year_stewardship": {
+    "status": "planned",
+    "anchor_date": "2026-07-14",
+    "target_date": "2036-07-14",
+    "target_horizon_years": 10,
+    "continuation_mode": "session-based-continuation",
+    "background_execution_claim": false,
+    "required_review_cadences": ["daily", "weekly", "monthly", "quarterly", "annual"],
+    "continuation_protocol": {
+      "before_session": [
+        "Read AGENTS.md and project.ecosystem.yaml.",
+        "Read the active Goal, latest evidence, validation, roadmap, and decision records.",
+        "Inspect branch, worktree, recent commits, and existing blockers.",
+        "Select the highest-priority unblocked task that advances the current phase."
+      ],
+      "during_session": [
+        "Work in a small reversible scope with one canonical owner.",
+        "Produce a real code, schema, design, documentation, test, or validation artifact.",
+        "Run applicable checks and record failed or skipped checks.",
+        "Do not claim elapsed time, background execution, live integration, or completion without evidence."
+      ],
+      "after_session": [
+        "Update Goal, task, evidence, validation, roadmap, and generated views when affected.",
+        "Record the latest commit, exact validation commands, limitations, risks, and next action.",
+        "Leave unrelated user changes untouched and report the repository state."
+      ],
+      "required_state": [
+        "active_goal_id",
+        "current_phase_id",
+        "last_reviewed_at",
+        "last_commit_hash",
+        "validation_results",
+        "open_blockers",
+        "next_action"
+      ],
+      "stop_conditions": [
+        "required human approval is missing",
+        "external provider, plugin, MCP, deployment, or account state is unavailable",
+        "the next action could expose secrets or private content",
+        "validation is unavailable or contradicts the proposed change",
+        "unrelated dirty work would be overwritten or scope ownership is ambiguous"
+      ],
+      "continuation_command": "Read AGENTS.md, project.ecosystem.yaml, this registry, the active Goal, and the latest evidence first. Continue only the highest-priority unblocked phase task, produce a reviewable artifact, validate it, update evidence and rollback, and finish with the exact repository-state line."
+    },
+    "annual_phases": [
+      {
+        "id": "SEIS-10Y-Y01",
+        "year": 1,
+        "title": "Evidence and Ownership Foundation",
+        "status": "planned",
+        "focus": ["Architecture Ownership", "Goal Validation", "Security Validation", "Execution Evidence"],
+        "required_evidence": ["canonical owners", "validated schemas", "public/private boundary", "rollback records"],
+        "exit_criteria": ["No unresolved canonical ownership conflict in the scoped modules", "Every active phase task has evidence and a next action"],
+        "review_cadence": "annual"
+      },
+      {
+        "id": "SEIS-10Y-Y02",
+        "year": 2,
+        "title": "Contracts and Compatibility",
+        "status": "planned",
+        "focus": ["Architecture Compatibility", "Contract Validation", "Dependency Validation", "API and storage boundaries"],
+        "required_evidence": ["versioned contracts", "compatibility tests", "migration plans", "reversible changes"],
+        "exit_criteria": ["Breaking changes have an explicit migration decision", "Consumers can validate contract compatibility before release"],
+        "review_cadence": "annual"
+      },
+      {
+        "id": "SEIS-10Y-Y03",
+        "year": 3,
+        "title": "Native and Web Product Surfaces",
+        "status": "planned",
+        "focus": ["Platform Guidelines", "Design Language", "Component Ownership", "Human Experience"],
+        "required_evidence": ["platform role decisions", "accessible interaction evidence", "performance budgets", "responsive review"],
+        "exit_criteria": ["Native, web, and companion surfaces share stable contracts", "Critical workflows have accessible degraded states"],
+        "review_cadence": "annual"
+      },
+      {
+        "id": "SEIS-10Y-Y04",
+        "year": 4,
+        "title": "AI Governance and Evaluation",
+        "status": "planned",
+        "focus": ["Reasoning Policy", "Routing Policy", "Safety Policy", "Evaluation Policy", "Human Review Policy"],
+        "required_evidence": ["explainable route decisions", "evaluation results", "permission boundaries", "cost and latency records"],
+        "exit_criteria": ["AI capabilities remain provider-neutral and fail closed", "No model or provider maturity claim lacks current evidence"],
+        "review_cadence": "annual"
+      },
+      {
+        "id": "SEIS-10Y-Y05",
+        "year": 5,
+        "title": "Knowledge Graph and Retrieval",
+        "status": "planned",
+        "focus": ["Universal Knowledge Graph", "Knowledge Policy", "Evidence", "Research", "Retrieval"],
+        "required_evidence": ["stable node identities", "relationship provenance", "confidence fields", "retention and deletion rules"],
+        "exit_criteria": ["Knowledge records remain source-backed and privacy-classified", "Graph synchronization is explicit rather than implied"],
+        "review_cadence": "annual"
+      },
+      {
+        "id": "SEIS-10Y-Y06",
+        "year": 6,
+        "title": "Observability and Reliability",
+        "status": "planned",
+        "focus": ["Metrics", "Tracing", "Audit Trails", "Architecture Timeline", "Execution Rollback"],
+        "required_evidence": ["event source definitions", "ordering and retention rules", "incident records", "recovery tests"],
+        "exit_criteria": ["Operational timelines are privacy-safe and reproducible", "Rollback and recovery are tested for critical workflows"],
+        "review_cadence": "annual"
+      },
+      {
+        "id": "SEIS-10Y-Y07",
+        "year": 7,
+        "title": "Extension and Integration Governance",
+        "status": "planned",
+        "focus": ["Plugin Validation", "MCP Validation", "Provider Validation", "Approval Policy"],
+        "required_evidence": ["vendor/source review", "least-privilege permissions", "read-only-first tests", "revocation and rollback"],
+        "exit_criteria": ["Every external capability has one owner and a permission record", "Write access is approval-gated and auditable"],
+        "review_cadence": "annual"
+      },
+      {
+        "id": "SEIS-10Y-Y08",
+        "year": 8,
+        "title": "Accessibility, Performance, and Sustainability",
+        "status": "planned",
+        "focus": ["Accessibility Rules", "Performance Validation", "Long-Term Sustainability", "Visual Consistency"],
+        "required_evidence": ["accessibility audits", "performance measurements", "dependency health", "resource budgets"],
+        "exit_criteria": ["Critical workflows meet current accessibility and performance budgets", "Sustainability tradeoffs are documented before expansion"],
+        "review_cadence": "annual"
+      },
+      {
+        "id": "SEIS-10Y-Y09",
+        "year": 9,
+        "title": "Public Platform and Interoperability",
+        "status": "planned",
+        "focus": ["Release Validation", "Architecture Compatibility", "Public APIs", "Localization Validation"],
+        "required_evidence": ["compatibility matrix", "release notes", "deprecation policy", "localization and privacy review"],
+        "exit_criteria": ["Public surfaces have stable compatibility and rollback policies", "Deprecation is evidence-backed and communicated"],
+        "review_cadence": "annual"
+      },
+      {
+        "id": "SEIS-10Y-Y10",
+        "year": 10,
+        "title": "Renewal, Deprecation, and Next-Horizon Stewardship",
+        "status": "planned",
+        "focus": ["Architecture Evolution", "Architecture Risk", "Research", "Innovation Forecast", "Civilization Forecast"],
+        "required_evidence": ["ten-year retrospective", "retired and retained capability ledger", "risk trend analysis", "next-horizon proposal"],
+        "exit_criteria": ["The next ten-year horizon is proposed from evidence", "Obsolete capabilities are retired or explicitly retained with owners"],
+        "review_cadence": "annual"
+      }
+    ],
+    "stewardship_metrics": [
+      {"id": "architecture-ownership-conflicts", "label": "Architecture ownership conflicts", "unit": "count", "direction": "decrease", "evidence_source": "ownership validator and review records"},
+      {"id": "evidence-freshness", "label": "Evidence freshness", "unit": "days", "direction": "decrease", "evidence_source": "dated evidence records"},
+      {"id": "security-findings", "label": "Open security findings", "unit": "count", "direction": "decrease", "evidence_source": "security validation and incident records"},
+      {"id": "maintainability-debt", "label": "Unowned maintainability debt", "unit": "count", "direction": "decrease", "evidence_source": "Goal and risk registries"},
+      {"id": "accessibility-gaps", "label": "Open accessibility gaps", "unit": "count", "direction": "decrease", "evidence_source": "accessibility validation records"},
+      {"id": "performance-budget-pass-rate", "label": "Performance budget pass rate", "unit": "percent", "direction": "increase", "evidence_source": "performance validation records"},
+      {"id": "human-experience-blockers", "label": "Human experience blockers", "unit": "count", "direction": "decrease", "evidence_source": "product and UX review records"},
+      {"id": "sustainability-review-coverage", "label": "Sustainability review coverage", "unit": "percent", "direction": "increase", "evidence_source": "architecture and release review records"}
+    ]
   },
   "implementation_boundary": {
     "registry_status_means": "The term is named, scoped, owned, and ready for evidence-backed decomposition.",

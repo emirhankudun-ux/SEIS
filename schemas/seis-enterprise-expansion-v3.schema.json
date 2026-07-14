@@ -20,6 +20,7 @@
     "registry_path",
     "schema_path",
     "documentation_path",
+    "stewardship_documentation_path",
     "validation_command",
     "lifecycle_states",
     "principles",
@@ -27,6 +28,7 @@
     "universal_node_contract",
     "requested_plugin_references",
     "final_enterprise_rule",
+    "ten_year_stewardship",
     "implementation_boundary"
   ],
   "properties": {
@@ -44,6 +46,7 @@
     "registry_path": {"$ref": "#/$defs/repoPath"},
     "schema_path": {"$ref": "#/$defs/repoPath"},
     "documentation_path": {"$ref": "#/$defs/repoPath"},
+    "stewardship_documentation_path": {"$ref": "#/$defs/repoPath"},
     "validation_command": {"type": "string", "minLength": 3},
     "lifecycle_states": {
       "type": "array",
@@ -96,6 +99,61 @@
         "long_term_rule": {"const": "Always optimize for the long-term evolution of the SEIS ecosystem."}
       }
     },
+    "ten_year_stewardship": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "anchor_date",
+        "target_date",
+        "target_horizon_years",
+        "continuation_mode",
+        "background_execution_claim",
+        "required_review_cadences",
+        "continuation_protocol",
+        "annual_phases",
+        "stewardship_metrics"
+      ],
+      "properties": {
+        "status": {"const": "planned"},
+        "anchor_date": {"type": "string", "format": "date"},
+        "target_date": {"type": "string", "format": "date"},
+        "target_horizon_years": {"const": 10},
+        "continuation_mode": {"const": "session-based-continuation"},
+        "background_execution_claim": {"const": false},
+        "required_review_cadences": {
+          "type": "array",
+          "const": ["daily", "weekly", "monthly", "quarterly", "annual"]
+        },
+        "continuation_protocol": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["before_session", "during_session", "after_session", "required_state", "stop_conditions", "continuation_command"],
+          "properties": {
+            "before_session": {"type": "array", "minItems": 4, "items": {"type": "string", "minLength": 10}},
+            "during_session": {"type": "array", "minItems": 4, "items": {"type": "string", "minLength": 10}},
+            "after_session": {"type": "array", "minItems": 3, "items": {"type": "string", "minLength": 10}},
+            "required_state": {"type": "array", "minItems": 6, "uniqueItems": true, "items": {"type": "string", "minLength": 3}},
+            "stop_conditions": {"type": "array", "minItems": 4, "items": {"type": "string", "minLength": 10}},
+            "continuation_command": {"type": "string", "minLength": 40}
+          }
+        },
+        "annual_phases": {
+          "type": "array",
+          "minItems": 10,
+          "maxItems": 10,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/annualPhase"}
+        },
+        "stewardship_metrics": {
+          "type": "array",
+          "minItems": 8,
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/stewardshipMetric"}
+        }
+      }
+    },
     "implementation_boundary": {
       "type": "object",
       "additionalProperties": false,
@@ -135,6 +193,33 @@
         "node_required_fields": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 2}},
         "horizons": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 2}},
         "forecasts": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 2}}
+      }
+    },
+    "annualPhase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "year", "title", "status", "focus", "required_evidence", "exit_criteria", "review_cadence"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^SEIS-10Y-Y(?:0[1-9]|10)$"},
+        "year": {"type": "integer", "minimum": 1, "maximum": 10},
+        "title": {"type": "string", "minLength": 3},
+        "status": {"const": "planned"},
+        "focus": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 2}},
+        "required_evidence": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 3}},
+        "exit_criteria": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 3}},
+        "review_cadence": {"const": "annual"}
+      }
+    },
+    "stewardshipMetric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "unit", "direction", "evidence_source"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+        "label": {"type": "string", "minLength": 3},
+        "unit": {"type": "string", "minLength": 1},
+        "direction": {"enum": ["increase", "decrease", "stable"]},
+        "evidence_source": {"type": "string", "minLength": 3}
       }
     }
   }

@@ -43,6 +43,11 @@ with machine-readable terms in
 and validation in `npm run check:seis-enterprise-expansion-v3`. Its terms are
 specification-only until separate implementation evidence exists.
 
+The ten-year continuation contract is
+[`docs/governance/seis-enterprise-expansion-10-year-stewardship.md`](governance/seis-enterprise-expansion-10-year-stewardship.md).
+It defines planned annual phases and session handoffs; it does not claim
+background execution or elapsed ten-year progress.
+
 The requested five-million-character context is recorded as a ceiling, not as a
 literal prompt-body target. The Prompt Engine keeps each rendered prompt within
 16,384 characters; relevant context is loaded through bounded, source-linked

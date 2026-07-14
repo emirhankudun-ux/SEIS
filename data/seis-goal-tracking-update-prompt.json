@@ -62,7 +62,8 @@
     "data/seis-enterprise-expansion-v3.json",
     "schemas/seis-enterprise-expansion-v3.schema.json",
     "docs/governance/seis-enterprise-expansion-v3.md",
-    "scripts/check-seis-enterprise-expansion-v3.mjs"
+    "scripts/check-seis-enterprise-expansion-v3.mjs",
+    "docs/governance/seis-enterprise-expansion-10-year-stewardship.md"
   ],
   "chunks": [
     {
@@ -109,7 +110,7 @@
       "id": "roadmap-and-status-reconciliation",
       "order": 6,
       "maxCharacters": 12000,
-      "requiredSources": ["content/development/seis-goal-roadmap-links.json", "content/development/seis-goal-tracking.json", "data/seis-enterprise-expansion-v3.json"],
+      "requiredSources": ["content/development/seis-goal-roadmap-links.json", "content/development/seis-goal-tracking.json", "data/seis-enterprise-expansion-v3.json", "docs/governance/seis-enterprise-expansion-10-year-stewardship.md"],
       "responsibility": "Reconcile goal, roadmap, PR queue, status, evidence, next action, and maturity without overwriting unrelated user work.",
       "output": "A consistent source record or an explicit follow-up goal for remaining work."
     },
@@ -125,7 +126,7 @@
       "id": "handoff-and-repository-state",
       "order": 8,
       "maxCharacters": 12000,
-      "requiredSources": ["AGENTS.md", "docs/goals/goal-schema.md", "docs/goals/goal-tracking-system.md", "docs/governance/seis-enterprise-expansion-v3.md"],
+      "requiredSources": ["AGENTS.md", "docs/goals/goal-schema.md", "docs/goals/goal-tracking-system.md", "docs/governance/seis-enterprise-expansion-v3.md", "docs/governance/seis-enterprise-expansion-10-year-stewardship.md"],
       "responsibility": "Prepare a concise handoff containing goal status, evidence, risks, blockers, next recommended goal, GitHub output, and the exact repository-state line.",
       "output": "A reviewable run summary; never a claim of work that happened outside the active environment."
     }
@@ -147,6 +148,9 @@
     "Universal Validation Matrix",
     "Universal Knowledge Graph",
     "Long Term Evolution",
+    "session-based-continuation",
+    "ten-year stewardship",
+    "annual phases",
     "Repository state:"
   ],
   "prohibited_claims": [
@@ -211,6 +215,7 @@
       "proposal schema parses as JSON Schema 2020-12",
       "budget forbids literal five-million-character generation and padding",
       "Enterprise Expansion V3 terms match the canonical registry",
+      "ten-year stewardship contract contains ten planned annual phases",
       "related active Goal ID exists in the project manifest and goal registry",
       "evidence record exists and links the Goal ID",
       "validation step exists and links the Goal ID and evidence record",

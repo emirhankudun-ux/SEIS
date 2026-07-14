@@ -100,6 +100,7 @@ for (const source of canonicalSources) {
 }
 requireValue(canonicalSources.includes("data/seis-enterprise-expansion-v3.json"), `${contractPath} must include the Enterprise Expansion registry as a conditional source`);
 requireValue(canonicalSources.includes("docs/governance/seis-enterprise-expansion-v3.md"), `${contractPath} must include the Enterprise Expansion governance document as a conditional source`);
+requireValue(canonicalSources.includes("docs/governance/seis-enterprise-expansion-10-year-stewardship.md"), `${contractPath} must include the ten-year stewardship document as a conditional source`);
 requireValue(existsSync(absolute(proposalSchemaPath)), `missing ${proposalSchemaPath}`);
 requireValue(proposalSchema.schema_version === undefined, `${proposalSchemaPath} must be a JSON Schema, not an emitted proposal`);
 requireValue(proposalSchema.$schema === "https://json-schema.org/draft/2020-12/schema", `${proposalSchemaPath} must use JSON Schema 2020-12`);

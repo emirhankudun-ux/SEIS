@@ -58,6 +58,7 @@ condition.
 | `data/seis-enterprise-expansion-v3.json` | Specification-only Enterprise Expansion V3 term registry. |
 | `schemas/seis-enterprise-expansion-v3.schema.json` | Structural schema for the Enterprise Expansion V3 registry. |
 | `docs/governance/seis-enterprise-expansion-v3.md` | Human-readable Enterprise Expansion V3 governance and implementation boundary. |
+| `docs/governance/seis-enterprise-expansion-10-year-stewardship.md` | Ten-year continuation contract with annual phases, metrics, review cadence, and session handoff rules. |
 | `scripts/check-seis-enterprise-expansion-v3.mjs` | Deterministic validator for exact term sets, Goal links, evidence boundaries, and non-claims. |
 | `content/development/seis-goal-command-center-view.json` | Command Center view model generated from tracked records. |
 | `apps/web/goal-tracking.html` | Public-safe static Goal Tracking Center surface. |
@@ -227,6 +228,11 @@ source is [`seis-enterprise-expansion-v3.md`](../governance/seis-enterprise-expa
 with its registry, schema, and validator. Its eight domains and all named
 terms are specification-only until separate evidence-backed implementation
 goals exist.
+
+The 10-year focus is represented by the planned stewardship contract in
+[`seis-enterprise-expansion-10-year-stewardship.md`](../governance/seis-enterprise-expansion-10-year-stewardship.md).
+Future sessions must continue from its recorded state rather than claiming
+that work happened between sessions.
 
 The prompt package does not claim that thousands of agents, providers, MCP
 servers, or background workers actually ran. It may describe roles and work

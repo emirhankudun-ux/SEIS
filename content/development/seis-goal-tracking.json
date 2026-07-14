@@ -154,6 +154,7 @@
       "docs/goals/goal-schema.md",
       "docs/governance/seis-goal-tracking-update-prompt.md",
       "docs/governance/seis-enterprise-expansion-v3.md",
+      "docs/governance/seis-enterprise-expansion-10-year-stewardship.md",
       "docs/goals/goal-tracking.md"
       ],
       "related_files": [
@@ -165,6 +166,7 @@
         "data/seis-goal-tracking-update-prompt.json",
       "schemas/seis-goal-tracking-update.schema.json",
       "scripts/check-seis-goal-tracking-update-prompt.mjs",
+      "scripts/check-seis-enterprise-expansion-v3.mjs",
       "reports/seis-goal-tracking-update-proposal-20260714.json",
       "data/seis-enterprise-expansion-v3.json",
       "schemas/seis-enterprise-expansion-v3.schema.json",
@@ -198,7 +200,8 @@
     "notes": [
       "User-approved bounded Goal Tracking Update Orchestrator prompt package added on 2026-07-14.",
       "The five-million-character request is modeled as an aggregate context ceiling; no filler, live provider claim, or automatic completion claim is allowed.",
-      "SEIS Enterprise Expansion V3 is registered as a specification-only governance surface. Each term requires a separate evidence-backed implementation goal before production status can be claimed."
+      "SEIS Enterprise Expansion V3 is registered as a specification-only governance surface. Each term requires a separate evidence-backed implementation goal before production status can be claimed.",
+      "The ten-year focus is represented by a session-based stewardship contract with ten planned annual phases, review cadence, metrics, stop conditions, and a next-session continuation command."
       ]
     },
     {

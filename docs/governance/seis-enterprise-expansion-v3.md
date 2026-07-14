@@ -170,6 +170,10 @@ The registry explicitly does not claim:
 - background agent execution;
 - enterprise release readiness.
 
+The ten-year continuation plan is documented in
+[`seis-enterprise-expansion-10-year-stewardship.md`](seis-enterprise-expansion-10-year-stewardship.md).
+It is a planned, session-based stewardship contract, not a background runtime.
+
 ## Related Governance
 
 - [SEIS Goal Tracking Constitution](../SEIS_GOAL_TRACKING.md)
