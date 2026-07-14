@@ -114,7 +114,7 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
   const provider = aiCoreProviderStatus(repoRoot);
   const plugin = pluginIntegrationStatus(repoRoot);
   const mcp = readJson(repoRoot, MCP_RUNTIME_CONTRACT_PATH);
-  const pluginMcpMesh = probeSeisPluginMcpMesh(repoRoot);
+  const pluginMcpMesh = probeSeisPluginMcpMesh(repoRoot, { probeSafeTools: true });
   const applicationIntegration = readJson(repoRoot, AI_CORE_APPLICATION_INTEGRATION_PATH);
   const agentRegistry = buildAgentRegistrySnapshot(readJson(repoRoot, SECOND_BRAIN_SYSTEM_PATH));
 

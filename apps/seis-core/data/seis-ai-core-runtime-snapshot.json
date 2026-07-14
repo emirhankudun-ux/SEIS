@@ -1354,6 +1354,28 @@
             "name": "SEIS-Agent",
             "version": "0.1.0"
           },
+          "safeToolProbe": {
+            "mode": "stdio-safe-tool-call",
+            "requestedTool": "seis_ai_agent_status",
+            "status": "verified",
+            "resultKeys": [
+              "agent",
+              "identity",
+              "laneReadiness",
+              "operatingIdentities",
+              "pluginRoot",
+              "profile",
+              "readiness",
+              "repoRoot",
+              "runtimeBoundary",
+              "status"
+            ],
+            "reportedStatus": "ready",
+            "reportedLane": null,
+            "executionAuthority": null,
+            "humanApprovalRequiredForLiveActions": null,
+            "error": null
+          },
           "probeError": null
         },
         {
@@ -1394,6 +1416,24 @@
             "name": "seis-mcp-server",
             "version": "0.1.0"
           },
+          "safeToolProbe": {
+            "mode": "stdio-safe-tool-call",
+            "requestedTool": "seis_repos_bridge_status",
+            "status": "verified",
+            "resultKeys": [
+              "bridge",
+              "pluginRoot",
+              "records",
+              "root",
+              "status",
+              "strict"
+            ],
+            "reportedStatus": "ok",
+            "reportedLane": null,
+            "executionAuthority": null,
+            "humanApprovalRequiredForLiveActions": null,
+            "error": null
+          },
           "probeError": null
         },
         {
@@ -1428,6 +1468,28 @@
           "serverInfo": {
             "name": "seis-cloud",
             "version": "0.1.0"
+          },
+          "safeToolProbe": {
+            "mode": "stdio-safe-tool-call",
+            "requestedTool": "seis_cloud_status",
+            "status": "verified",
+            "resultKeys": [
+              "accessPolicy",
+              "lane",
+              "mcpManifestExists",
+              "pluginRoot",
+              "profile",
+              "repoMirrorExists",
+              "repoRoot",
+              "skillExists",
+              "sshAccessModel",
+              "status"
+            ],
+            "reportedStatus": "ready",
+            "reportedLane": "seis-cloud",
+            "executionAuthority": null,
+            "humanApprovalRequiredForLiveActions": null,
+            "error": null
           },
           "probeError": null
         },
@@ -1464,6 +1526,26 @@
             "name": "seis-code",
             "version": "0.1.0"
           },
+          "safeToolProbe": {
+            "mode": "stdio-safe-tool-call",
+            "requestedTool": "seis_code_status",
+            "status": "verified",
+            "resultKeys": [
+              "lane",
+              "mcpManifestExists",
+              "pluginRoot",
+              "profile",
+              "repoMirrorExists",
+              "repoRoot",
+              "skillExists",
+              "status"
+            ],
+            "reportedStatus": "ready",
+            "reportedLane": "seis-code",
+            "executionAuthority": null,
+            "humanApprovalRequiredForLiveActions": null,
+            "error": null
+          },
           "probeError": null
         },
         {
@@ -1498,6 +1580,26 @@
           "serverInfo": {
             "name": "seis-design",
             "version": "0.1.0"
+          },
+          "safeToolProbe": {
+            "mode": "stdio-safe-tool-call",
+            "requestedTool": "seis_design_status",
+            "status": "verified",
+            "resultKeys": [
+              "lane",
+              "mcpManifestExists",
+              "pluginRoot",
+              "profile",
+              "repoMirrorExists",
+              "repoRoot",
+              "skillExists",
+              "status"
+            ],
+            "reportedStatus": "ready",
+            "reportedLane": "seis-design",
+            "executionAuthority": null,
+            "humanApprovalRequiredForLiveActions": null,
+            "error": null
           },
           "probeError": null
         },
@@ -1534,13 +1636,33 @@
             "name": "seis-data",
             "version": "0.1.0"
           },
+          "safeToolProbe": {
+            "mode": "stdio-safe-tool-call",
+            "requestedTool": "seis_data_status",
+            "status": "verified",
+            "resultKeys": [
+              "lane",
+              "mcpManifestExists",
+              "pluginRoot",
+              "profile",
+              "repoMirrorExists",
+              "repoRoot",
+              "skillExists",
+              "status"
+            ],
+            "reportedStatus": "ready",
+            "reportedLane": "seis-data",
+            "executionAuthority": null,
+            "humanApprovalRequiredForLiveActions": null,
+            "error": null
+          },
           "probeError": null
         }
       ],
       "boundary": {
         "sourceOfTruth": ".mcp.json plus local plugin entrypoints",
         "transport": "stdio newline-delimited JSON-RPC",
-        "probeScope": "initialize and tools/list only; no tool execution or OS-level side-effect instrumentation",
+        "probeScope": "initialize -> notifications/initialized -> tools/list plus one allowlisted repository-local status tool per server",
         "liveSessionStarted": false,
         "probeOptIn": true,
         "shell": false,
@@ -1548,7 +1670,9 @@
         "networkCalled": false,
         "externalMutationPerformed": false,
         "humanApprovalRequiredForExternalMutation": true,
-        "localProbePerformed": true
+        "localProbePerformed": true,
+        "safeToolCallsPerformed": true,
+        "safeToolProbePolicy": "one repository-local status tool per bundled server; no plan, auth, network, shell, or mutation tool calls"
       },
       "probe": {
         "performed": true,
@@ -1556,7 +1680,9 @@
         "verifiedServerCount": 6,
         "failedServerCount": 0,
         "transport": "stdio newline-delimited JSON-RPC",
-        "lifecycle": "initialize -> notifications/initialized -> tools/list"
+        "lifecycle": "initialize -> notifications/initialized -> tools/list -> allowlisted status tool",
+        "safeToolCallsPerformed": true,
+        "safeToolProbeCount": 6
       },
       "ok": true
     }

@@ -52,9 +52,12 @@ describe("SEIS AI Core runtime snapshot", () => {
     assert.equal(snapshot.pluginMesh.mcpMesh.status, "probe-verified-local-read-only");
     assert.equal(snapshot.pluginMesh.mcpMesh.boundary.liveSessionStarted, false);
     assert.equal(snapshot.pluginMesh.mcpMesh.boundary.localProbePerformed, true);
-    assert.equal(snapshot.pluginMesh.mcpMesh.probe.lifecycle, "initialize -> notifications/initialized -> tools/list");
+    assert.equal(snapshot.pluginMesh.mcpMesh.probe.lifecycle, "initialize -> notifications/initialized -> tools/list -> allowlisted status tool");
+    assert.equal(snapshot.pluginMesh.mcpMesh.probe.safeToolCallsPerformed, true);
+    assert.equal(snapshot.pluginMesh.mcpMesh.probe.safeToolProbeCount, 6);
     assert.equal(snapshot.pluginMesh.mcpMesh.servers.reduce((sum, server) => sum + server.toolInventory.toolCount, 0), 38);
     assert.ok(snapshot.pluginMesh.mcpMesh.servers.every((server) => server.toolInventory.mode === "stdio-probe"));
+    assert.ok(snapshot.pluginMesh.mcpMesh.servers.every((server) => server.safeToolProbe.status === "verified"));
     assert.equal(snapshot.agentRegistry.managedLaneCount, 9);
     assert.equal(snapshot.agentRegistry.agentCount, 13);
     assert.equal(snapshot.agentRegistry.id, "seis-second-brain-system");

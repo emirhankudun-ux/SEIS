@@ -764,9 +764,10 @@ allowlisted status tool for each of the six repository-local MCP entrypoints:
 SEIS-Agent, SEIS, SEIS Cloud, SEIS-Code, SEIS-Design, and SEIS-DATA. This
 proves the declared status surfaces respond through stdio JSON-RPC. It does not
 invoke plans, authentication, providers, network services, shell tools, SSH,
-deployment, or mutation. The default AI Core snapshot remains manifest and
-`tools/list` backed; the stronger status probe is used by
-`npm run check:seis-plugin-mcp-mesh` and its focused tests.
+deployment, or mutation. The default AI Core snapshot is backed by the
+manifest, `tools/list`, and this allowlisted status probe; the same stronger
+status evidence is used by `npm run check:seis-plugin-mcp-mesh`, the runtime
+snapshot generator, and the focused tests.
 
 ## Related Documents
 

@@ -79,8 +79,9 @@ panels:
   external servers.
 - The same plugin integration resource exposes the six-entrypoint local MCP mesh
   from the bundled `.mcp.json` files. `npm run check:seis-plugin-mcp-mesh` probes
-  each local entrypoint through shell-free stdio `tools/list`; it does not start
-  remote sessions, read credentials, or perform mutation.
+  each local entrypoint through shell-free stdio `tools/list` and exactly one
+  allowlisted local status tool; it does not start remote sessions, read
+  credentials, or perform mutation.
 
 Both panels are evidence views. They do not store credentials, authenticate
 connectors, call live model providers, execute SSH, mutate GitHub, deploy, or

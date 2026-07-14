@@ -413,6 +413,24 @@ public struct SeisAICorePluginMCPToolInventory: Codable, Equatable, Sendable {
     }
 }
 
+public struct SeisAICorePluginMCPSafeToolProbe: Codable, Equatable, Sendable {
+    public let mode: String
+    public let requestedTool: String
+    public let status: String
+    public let resultKeys: [String]
+    public let reportedStatus: String?
+    public let reportedLane: String?
+    public let executionAuthority: Bool?
+    public let humanApprovalRequiredForLiveActions: Bool?
+    public let error: String?
+
+    public var isVerified: Bool {
+        mode == "stdio-safe-tool-call" &&
+            status == "verified" &&
+            error == nil
+    }
+}
+
 public struct SeisAICorePluginMCPServer: Codable, Equatable, Identifiable, Sendable {
     public let id: String
     public let serverId: String
@@ -433,12 +451,16 @@ public struct SeisAICorePluginMCPServer: Codable, Equatable, Identifiable, Senda
     public let networkCalled: Bool
     public let externalMutationPerformed: Bool
     public let toolInventory: SeisAICorePluginMCPToolInventory
+    public let safeToolProbe: SeisAICorePluginMCPSafeToolProbe
 }
 
 public struct SeisAICorePluginMCPBoundary: Codable, Equatable, Sendable {
     public let sourceOfTruth: String
     public let transport: String
+    public let probeScope: String
     public let localProbePerformed: Bool
+    public let safeToolCallsPerformed: Bool
+    public let safeToolProbePolicy: String
     public let liveSessionStarted: Bool
     public let probeOptIn: Bool
     public let shell: Bool
@@ -457,6 +479,18 @@ public struct SeisAICorePluginMCPMeshSnapshot: Codable, Equatable, Identifiable,
     public let configuredServerCount: Int
     public let servers: [SeisAICorePluginMCPServer]
     public let boundary: SeisAICorePluginMCPBoundary
+    public let probe: SeisAICorePluginMCPProbe
+}
+
+public struct SeisAICorePluginMCPProbe: Codable, Equatable, Sendable {
+    public let performed: Bool
+    public let timeoutMs: Int
+    public let verifiedServerCount: Int
+    public let failedServerCount: Int
+    public let transport: String
+    public let lifecycle: String
+    public let safeToolCallsPerformed: Bool
+    public let safeToolProbeCount: Int
 }
 
 public struct SeisAICorePluginEmbeddedLaneProfile: Codable, Equatable, Sendable {
@@ -798,6 +832,15 @@ public struct SeisAICoreRuntimeSnapshotContract: Codable, Equatable, Sendable {
         "seis-code": ["seis_code_plan", "seis_code_status"],
         "seis-design": ["seis_design_plan", "seis_design_status"],
         "seis-data": ["seis_data_plan", "seis_data_status"]
+    ]
+
+    public static let expectedPluginMCPSafeToolNames: [String: String] = [
+        "seis-ai-agent": "seis_ai_agent_status",
+        "seis": "seis_repos_bridge_status",
+        "seis-cloud": "seis_cloud_status",
+        "seis-code": "seis_code_status",
+        "seis-design": "seis_design_status",
+        "seis-data": "seis_data_status"
     ]
 
     public let id: String
@@ -1457,7 +1500,17 @@ private extension SeisAICoreRuntimeSnapshotContract {
         check(pluginMesh.mcpMesh.serverCount == 6, "pluginMesh.mcpMesh must expose exactly six bundled MCP entrypoints.")
         check(pluginMesh.mcpMesh.configuredServerCount == 6, "pluginMesh.mcpMesh must expose six configured MCP entrypoints.")
         check(pluginMesh.mcpMesh.status == "probe-verified-local-read-only", "pluginMesh.mcpMesh must remain probe-verified and read-only.")
+        check(pluginMesh.mcpMesh.probe.performed, "pluginMesh.mcpMesh.probe must retain local probe evidence.")
+        check(pluginMesh.mcpMesh.probe.verifiedServerCount == 6, "pluginMesh.mcpMesh.probe must verify all six servers.")
+        check(pluginMesh.mcpMesh.probe.failedServerCount == 0, "pluginMesh.mcpMesh.probe must not contain failed servers.")
+        check(pluginMesh.mcpMesh.probe.transport == "stdio newline-delimited JSON-RPC", "pluginMesh.mcpMesh.probe transport must remain local stdio JSON-RPC.")
+        check(pluginMesh.mcpMesh.probe.lifecycle == "initialize -> notifications/initialized -> tools/list -> allowlisted status tool", "pluginMesh.mcpMesh.probe must include the allowlisted status tool lifecycle.")
+        check(pluginMesh.mcpMesh.probe.safeToolCallsPerformed, "pluginMesh.mcpMesh.probe must record safe status tool calls.")
+        check(pluginMesh.mcpMesh.probe.safeToolProbeCount == 6, "pluginMesh.mcpMesh.probe must record one safe status call per server.")
         check(pluginMesh.mcpMesh.boundary.localProbePerformed, "pluginMesh.mcpMesh must retain local probe evidence.")
+        check(pluginMesh.mcpMesh.boundary.probeScope == "initialize -> notifications/initialized -> tools/list plus one allowlisted repository-local status tool per server", "pluginMesh.mcpMesh boundary must identify the safe probe scope.")
+        check(pluginMesh.mcpMesh.boundary.safeToolCallsPerformed, "pluginMesh.mcpMesh boundary must record safe status tool calls.")
+        check(pluginMesh.mcpMesh.boundary.safeToolProbePolicy.contains("one repository-local status tool"), "pluginMesh.mcpMesh boundary must retain the allowlist policy.")
         check(pluginMesh.mcpMesh.boundary.liveSessionStarted == false, "pluginMesh.mcpMesh must not claim a live MCP session.")
         check(pluginMesh.mcpMesh.boundary.probeOptIn, "pluginMesh.mcpMesh probing must remain opt-in.")
         check(pluginMesh.mcpMesh.boundary.shell == false, "pluginMesh.mcpMesh must not enable a shell.")
@@ -1482,6 +1535,11 @@ private extension SeisAICoreRuntimeSnapshotContract {
             let expectedToolNames = Self.expectedPluginMCPToolNames[server.id] ?? []
             check((server.toolInventory.toolCount ?? -1) == expectedToolNames.count, "\(path).toolInventory.toolCount must match the canonical probe inventory.")
             check(server.toolInventory.toolNames == expectedToolNames, "\(path).toolInventory.toolNames must match the canonical probe inventory.")
+            let expectedSafeToolName = Self.expectedPluginMCPSafeToolNames[server.id] ?? ""
+            check(server.safeToolProbe.isVerified, "\(path).safeToolProbe must be a verified local status call.")
+            check(server.safeToolProbe.requestedTool == expectedSafeToolName, "\(path).safeToolProbe must use the canonical allowlisted status tool.")
+            check(server.safeToolProbe.error == nil, "\(path).safeToolProbe must not contain an error.")
+            check(server.safeToolProbe.resultKeys.isEmpty == false, "\(path).safeToolProbe must retain redacted result metadata.")
         }
 
         for lane in lanes {
