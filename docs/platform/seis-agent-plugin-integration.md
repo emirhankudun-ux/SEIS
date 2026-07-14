@@ -93,6 +93,17 @@ provider registry, executable read-only router, canonical Second Brain managed
 agent roster, unified plugin audit, five personal lanes, and MCP runtime metadata into the tracked static artifact
 `apps/seis-core/data/seis-ai-core-runtime-snapshot.json`.
 
+The same artifact now includes the source-backed
+`seis-plugin-capability-catalog`. It projects all six bundled plugin manifests,
+the five personal plugin manifests and their 51 declared capabilities, the four
+specialist lane profiles and their 18 quality-command declarations, every
+declared capability/path/guardrail/helper family, and the eight quality-command
+gaps against the generated Core registry. Missing source files remain explicit:
+the SEIS hub lane profile is not fabricated when
+`plugins/seis/assets/lane-profile.json` is absent. This catalog is local,
+read-only evidence; it does not install, activate, authenticate, or invoke a
+plugin.
+
 The AI Core Runtime panel can switch among source-generated decision scenarios
 and copy a credential-free handoff. It does not embed the MCP server, read
 credentials, call providers, start a live MCP session, execute SSH, deploy,

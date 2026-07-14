@@ -459,6 +459,94 @@ public struct SeisAICorePluginMCPMeshSnapshot: Codable, Equatable, Identifiable,
     public let boundary: SeisAICorePluginMCPBoundary
 }
 
+public struct SeisAICorePluginEmbeddedLaneProfile: Codable, Equatable, Sendable {
+    public let path: String
+    public let exists: Bool
+}
+
+public struct SeisAICorePluginCapabilityProfile: Codable, Equatable, Sendable {
+    public let path: String
+    public let exists: Bool
+    public let status: String
+    public let id: String?
+    public let version: Int?
+    public let lane: String?
+    public let primaryPaths: [String]
+    public let qualityCommands: [String]
+    public let guardrails: [String]
+    public let helperFamilies: [String]
+    public let sourceEvidence: [String]
+}
+
+public struct SeisAICorePluginCapabilityEntry: Codable, Equatable, Identifiable, Sendable {
+    public let id: String
+    public let classification: String
+    public let displayName: String
+    public let manifestPath: String
+    public let manifestExists: Bool
+    public let manifestStatus: String
+    public let capabilityCount: Int
+    public let capabilities: [String]
+    public let profile: SeisAICorePluginCapabilityProfile
+    public let embeddedLaneProfiles: [SeisAICorePluginEmbeddedLaneProfile]
+
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case classification = "class"
+        case displayName
+        case manifestPath
+        case manifestExists
+        case manifestStatus
+        case capabilityCount
+        case capabilities
+        case profile
+        case embeddedLaneProfiles
+    }
+}
+
+public struct SeisAICorePluginQualityCommandGap: Codable, Equatable, Sendable {
+    public let pluginID: String
+    public let command: String
+    public let status: String
+
+    private enum CodingKeys: String, CodingKey {
+        case pluginID = "pluginId"
+        case command
+        case status
+    }
+}
+
+public struct SeisAICorePluginCapabilityBoundary: Codable, Equatable, Sendable {
+    public let sourceOfTruth: String
+    public let localReadOnly: Bool
+    public let credentialsRead: Bool
+    public let networkCalled: Bool
+    public let externalMutationPerformed: Bool
+    public let blanketActivationClaimed: Bool
+    public let missingSourcesRemainExplicit: Bool
+}
+
+public struct SeisAICorePluginCapabilityCatalog: Codable, Equatable, Identifiable, Sendable {
+    public let id: String
+    public let schemaVersion: String
+    public let status: String
+    public let mode: String
+    public let pluginCount: Int
+    public let personalPluginCount: Int
+    public let specialistPluginCount: Int
+    public let manifestCapabilityCount: Int
+    public let personalManifestCapabilityCount: Int
+    public let specialistManifestCapabilityCount: Int
+    public let profileCount: Int
+    public let profileQualityCommandCount: Int
+    public let plugins: [SeisAICorePluginCapabilityEntry]
+    public let qualityCommandSource: String
+    public let qualityCommands: [String]
+    public let qualityCommandGaps: [SeisAICorePluginQualityCommandGap]
+    public let missingProfilePaths: [String]
+    public let boundary: SeisAICorePluginCapabilityBoundary
+}
+
 public struct SeisAICorePluginMeshSnapshot: Codable, Equatable, Identifiable, Sendable {
     public let id: String
     public let status: String
@@ -471,6 +559,7 @@ public struct SeisAICorePluginMeshSnapshot: Codable, Equatable, Identifiable, Se
     public let personalLaneCount: Int
     public let personalLaneToolCount: Int
     public let personalLanes: [SeisAICorePersonalLane]
+    public let capabilityCatalog: SeisAICorePluginCapabilityCatalog
     public let mcpMesh: SeisAICorePluginMCPMeshSnapshot
 }
 
@@ -1337,6 +1426,31 @@ private extension SeisAICoreRuntimeSnapshotContract {
         )
         check(pluginMesh.personalLaneToolCount == toolCount, "pluginMesh.personalLaneToolCount must match lane tools.")
         check(pluginMesh.personalLaneToolCount == 10, "pluginMesh must expose exactly 10 personal lane tools.")
+        let capabilityCatalog = pluginMesh.capabilityCatalog
+        check(capabilityCatalog.id == "seis-plugin-capability-catalog", "capabilityCatalog.id must identify the plugin capability catalog.")
+        check(capabilityCatalog.schemaVersion == "1.0.0", "capabilityCatalog.schemaVersion must remain 1.0.0.")
+        check(capabilityCatalog.status == "source-backed-read-only", "capabilityCatalog.status must remain source-backed and read-only.")
+        check(capabilityCatalog.mode == "manifest-and-lane-profile-read-only", "capabilityCatalog.mode must remain manifest-and-lane-profile-read-only.")
+        check(capabilityCatalog.pluginCount == capabilityCatalog.plugins.count, "capabilityCatalog.pluginCount must match decoded plugins.")
+        check(capabilityCatalog.pluginCount == 6, "capabilityCatalog must expose all six bundled plugin manifests.")
+        check(capabilityCatalog.personalPluginCount == 5, "capabilityCatalog must expose five personal plugin manifests.")
+        check(capabilityCatalog.specialistPluginCount == 4, "capabilityCatalog must expose four specialist plugin manifests.")
+        check(capabilityCatalog.manifestCapabilityCount == 67, "capabilityCatalog must expose 67 source-backed manifest capabilities.")
+        check(capabilityCatalog.personalManifestCapabilityCount == 51, "capabilityCatalog must expose 51 personal plugin manifest capabilities.")
+        check(capabilityCatalog.specialistManifestCapabilityCount == 31, "capabilityCatalog must expose 31 specialist manifest capabilities.")
+        check(capabilityCatalog.profileCount == 4, "capabilityCatalog must expose four specialist lane profiles.")
+        check(capabilityCatalog.profileQualityCommandCount == 18, "capabilityCatalog must expose 18 specialist profile quality commands.")
+        check(capabilityCatalog.qualityCommandGaps.count == 8, "capabilityCatalog must retain eight quality command gaps.")
+        check(capabilityCatalog.missingProfilePaths == ["plugins/seis/assets/lane-profile.json"], "capabilityCatalog must retain the missing SEIS hub profile path.")
+        check(Set(capabilityCatalog.plugins.map(\.id)).count == capabilityCatalog.plugins.count, "capabilityCatalog plugin IDs must be unique.")
+        check(capabilityCatalog.plugins.allSatisfy { $0.manifestExists && $0.manifestStatus == "source-backed" }, "capabilityCatalog plugin manifests must be source-backed.")
+        check(capabilityCatalog.plugins.reduce(0) { $0 + $1.capabilityCount } == capabilityCatalog.manifestCapabilityCount, "capabilityCatalog capability counts must match entries.")
+        check(capabilityCatalog.boundary.localReadOnly, "capabilityCatalog must remain local read-only.")
+        check(capabilityCatalog.boundary.credentialsRead == false, "capabilityCatalog must not read credentials.")
+        check(capabilityCatalog.boundary.networkCalled == false, "capabilityCatalog must not call the network.")
+        check(capabilityCatalog.boundary.externalMutationPerformed == false, "capabilityCatalog must not mutate external systems.")
+        check(capabilityCatalog.boundary.blanketActivationClaimed == false, "capabilityCatalog must not claim blanket activation.")
+        check(capabilityCatalog.boundary.missingSourcesRemainExplicit, "capabilityCatalog must keep missing sources explicit.")
         check(pluginMesh.mcpMesh.id == "seis-plugin-mcp-mesh", "pluginMesh.mcpMesh.id must identify the local MCP mesh.")
         check(pluginMesh.mcpMesh.schemaVersion == "1.0.0", "pluginMesh.mcpMesh.schemaVersion must remain 1.0.0.")
         check(pluginMesh.mcpMesh.serverCount == pluginMesh.mcpMesh.servers.count, "pluginMesh.mcpMesh.serverCount must match decoded servers.")

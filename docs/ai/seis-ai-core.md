@@ -192,6 +192,14 @@ non-negative MCP inventory, a safe runtime boundary, and human approval for
 live actions. This keeps "listed", "source-backed", "locally smoke-verified",
 and "activated" as separate states.
 
+The runtime snapshot also carries the source-backed plugin capability catalog:
+six bundled manifests, 67 manifest capabilities, five personal plugin records,
+four specialist profiles, 18 specialist profile command declarations, and
+eight quality-command gaps against the Core registry. The catalog preserves all
+declared capabilities, primary paths, guardrails, helper families, provenance,
+and missing profile paths without claiming plugin installation, activation,
+authentication, or external mutation.
+
 The same native panel now exposes the existing
 `SeisAGIAgentHandoffSnapshot` as a governed sub-agent orchestration surface:
 one candidate writer, separated reviewer/researcher/designer roles, selected

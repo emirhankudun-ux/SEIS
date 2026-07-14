@@ -310,6 +310,7 @@
     "inspect:seis-model-local-hardware:write": "node scripts/inspect-seis-model-local-hardware.mjs --write",
     "check:seis-eval-critic-advisory": "node scripts/check-seis-eval-critic-advisory.mjs",
     "check:seis-agent-plugin-integration": "node scripts/check-seis-agent-plugin-integration.mjs",
+    "check:seis-plugin-capability-catalog": "node scripts/check-seis-plugin-capability-catalog.mjs",
     "check:seis-plugin-mcp-mesh": "node scripts/check-seis-plugin-mcp-mesh.mjs",
     "check:seis-ai-core-provider-registry": "node scripts/check-seis-ai-core-provider-registry.mjs",
     "check:seis-ai-core-read-only-router": "node scripts/check-seis-ai-core-read-only-router.mjs",

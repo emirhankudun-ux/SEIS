@@ -90,6 +90,36 @@ export const PERSONAL_PLUGIN_LANE_TOOLS = [
   },
 ];
 
+const PLUGIN_CAPABILITY_SOURCES = Object.freeze([
+  {
+    id: "seis",
+    root: "plugins/seis",
+    profilePath: "plugins/seis/assets/lane-profile.json",
+    class: "personal",
+  },
+  {
+    id: "seis-ai-agent",
+    root: "plugins/seis-ai-agent",
+    profilePath: "plugins/seis-ai-agent/assets/agent-profile.json",
+    class: "orchestrator",
+    embeddedLaneProfilePaths: [
+      "plugins/seis-ai-agent/assets/lanes/seis-governance.json",
+      "plugins/seis-ai-agent/assets/lanes/seis-cloud.json",
+      "plugins/seis-ai-agent/assets/lanes/seis-code.json",
+      "plugins/seis-ai-agent/assets/lanes/seis-design.json",
+      "plugins/seis-ai-agent/assets/lanes/seis-data.json",
+      "plugins/seis-ai-agent/assets/lanes/seis-security.json",
+      "plugins/seis-ai-agent/assets/lanes/seis-research.json",
+      "plugins/seis-ai-agent/assets/lanes/seis-automation.json",
+      "plugins/seis-ai-agent/assets/lanes/seis-product.json",
+    ],
+  },
+  { id: "seis-cloud", root: "plugins/seis-cloud", profilePath: "plugins/seis-cloud/assets/lane-profile.json", class: "specialist" },
+  { id: "seis-code", root: "plugins/seis-code", profilePath: "plugins/seis-code/assets/lane-profile.json", class: "specialist" },
+  { id: "seis-design", root: "plugins/seis-design", profilePath: "plugins/seis-design/assets/lane-profile.json", class: "specialist" },
+  { id: "seis-data", root: "plugins/seis-data", profilePath: "plugins/seis-data/assets/lane-profile.json", class: "specialist" },
+]);
+
 const LANE_PLAN_STEPS = {
   "seis": [
     "Inspect git status, active branch, remote, and SEIS source-of-truth documents.",
@@ -1407,6 +1437,7 @@ export function pluginIntegrationStatus(repoRoot, options = {}) {
         defaultGate: lane.defaultGate
       })),
       helperPluginUniverse: manifest.helperPluginUniverse,
+      capabilityCatalog: pluginCapabilityCatalog(repoRoot),
       mcpMesh: buildSeisPluginMcpMesh(repoRoot),
       runtimeIntegration: {
         toolLoopTool: manifest.runtimeIntegration?.toolLoopTool ?? null,
@@ -1870,6 +1901,127 @@ function readJsonSource(repoRoot, relativePath) {
       },
     };
   }
+}
+
+export function pluginCapabilityCatalog(repoRoot) {
+  readPluginIntegration(repoRoot);
+  const coreRegistryPath = "apps/seis-core/data/seis-core-ecosystem-registry.json";
+  const coreRegistry = readJsonIfExists(repoRoot, coreRegistryPath);
+  const coreQualityCommands = new Set(
+    [
+      ...(Array.isArray(coreRegistry?.qualityGates) ? coreRegistry.qualityGates : []),
+      ...(Array.isArray(coreRegistry?.lanes)
+        ? coreRegistry.lanes.flatMap((lane) => Array.isArray(lane.qualityGates) ? lane.qualityGates : [])
+        : []),
+    ],
+  );
+  const plugins = PLUGIN_CAPABILITY_SOURCES.map((source) => {
+    const manifestPath = `${source.root}/.codex-plugin/plugin.json`;
+    const manifest = readJsonIfExists(repoRoot, manifestPath);
+    const profile = readJsonIfExists(repoRoot, source.profilePath);
+    const capabilities = Array.isArray(manifest?.interface?.capabilities)
+      ? manifest.interface.capabilities.filter((value) => typeof value === "string")
+      : [];
+    const qualityCommands = Array.isArray(profile?.qualityCommands)
+      ? profile.qualityCommands.filter((value) => typeof value === "string")
+      : [];
+    const embeddedLaneProfiles = (source.embeddedLaneProfilePaths || []).map((profilePath) => ({
+      path: profilePath,
+      exists: readJsonIfExists(repoRoot, profilePath) !== null,
+    }));
+
+    return {
+      id: source.id,
+      class: source.class,
+      displayName: manifest?.interface?.displayName || source.id,
+      manifestPath,
+      manifestExists: manifest !== null,
+      manifestStatus: manifest ? "source-backed" : "missing",
+      capabilityCount: capabilities.length,
+      capabilities,
+      profile: {
+        path: source.profilePath,
+        exists: profile !== null,
+        status: profile ? "source-backed" : "missing",
+        id: profile?.id || null,
+        version: profile?.version || null,
+        lane: profile?.lane || null,
+        primaryPaths: Array.isArray(profile?.primaryPaths) ? profile.primaryPaths : [],
+        qualityCommands,
+        guardrails: Array.isArray(profile?.guardrails) ? profile.guardrails : [],
+        helperFamilies: Array.isArray(profile?.helperFamilies) ? profile.helperFamilies : [],
+        sourceEvidence: Array.isArray(profile?.sourceEvidence) ? profile.sourceEvidence : [],
+      },
+      embeddedLaneProfiles,
+    };
+  });
+
+  const profilePlugins = plugins.filter(
+    (plugin) => plugin.class === "specialist" && plugin.profile.qualityCommands.length > 0,
+  );
+  const profileQualityCommands = [...new Set(
+    profilePlugins.flatMap((plugin) => plugin.profile.qualityCommands),
+  )].sort();
+  const qualityCommandGaps = profilePlugins.flatMap((plugin) =>
+    plugin.profile.qualityCommands
+      .filter((command) => !coreQualityCommands.has(command))
+      .map((command) => ({
+        pluginId: plugin.id,
+        command,
+        status: "not-in-core-qualityCommands",
+      })),
+  );
+  const missingProfilePaths = plugins.flatMap((plugin) => {
+    const paths = [];
+    if (!plugin.profile.exists) paths.push(plugin.profile.path);
+    for (const embedded of plugin.embeddedLaneProfiles) {
+      if (!embedded.exists) paths.push(embedded.path);
+    }
+    return paths;
+  });
+  const allManifestCapabilities = plugins.reduce((sum, plugin) => sum + plugin.capabilityCount, 0);
+  const personalPlugins = plugins.filter((plugin) => ["personal", "specialist"].includes(plugin.class));
+  const specialistPlugins = plugins.filter((plugin) => plugin.class === "specialist");
+
+  return {
+    id: "seis-plugin-capability-catalog",
+    schemaVersion: "1.0.0",
+    status: plugins.every((plugin) => plugin.manifestExists)
+      ? "source-backed-read-only"
+      : "source-gap-read-only",
+    mode: "manifest-and-lane-profile-read-only",
+    pluginCount: plugins.length,
+    personalPluginCount: personalPlugins.length,
+    specialistPluginCount: specialistPlugins.length,
+    manifestCapabilityCount: allManifestCapabilities,
+    personalManifestCapabilityCount: personalPlugins.reduce(
+      (sum, plugin) => sum + plugin.capabilityCount,
+      0,
+    ),
+    specialistManifestCapabilityCount: specialistPlugins.reduce(
+      (sum, plugin) => sum + plugin.capabilityCount,
+      0,
+    ),
+    profileCount: profilePlugins.length,
+    profileQualityCommandCount: profilePlugins.reduce(
+      (sum, plugin) => sum + plugin.profile.qualityCommands.length,
+      0,
+    ),
+    plugins,
+    qualityCommandSource: coreRegistryPath,
+    qualityCommands: profileQualityCommands,
+    qualityCommandGaps,
+    missingProfilePaths,
+    boundary: {
+      sourceOfTruth: "bundled plugin manifests and lane profiles",
+      localReadOnly: true,
+      credentialsRead: false,
+      networkCalled: false,
+      externalMutationPerformed: false,
+      blanketActivationClaimed: false,
+      missingSourcesRemainExplicit: true,
+    },
+  };
 }
 
 function evaluateCancellationSignal(cancellationFixture, signal) {

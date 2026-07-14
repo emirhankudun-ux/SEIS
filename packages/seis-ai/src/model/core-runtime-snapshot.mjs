@@ -269,6 +269,7 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
       personalLaneCount: personalLanes.length,
       personalLaneToolCount: personalLanes.reduce((sum, lane) => sum + lane.mcpTools.length, 0),
       personalLanes,
+      capabilityCatalog: plugin.capabilityCatalog,
       mcpMesh: pluginMcpMesh,
     },
     mcpRuntime: {
@@ -302,6 +303,7 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
       "npm run check:seis-ai-core-provider-registry",
       "npm run check:seis-ai-core-read-only-router",
       "npm run check:seis-agent-plugin-integration",
+      "npm run check:seis-plugin-capability-catalog",
       "npm run check:seis-second-brain",
       "node --test packages/seis-ai/test/core-runtime-snapshot.test.mjs",
       "node --test apps/seis-core/test/seis-core-static.test.js",

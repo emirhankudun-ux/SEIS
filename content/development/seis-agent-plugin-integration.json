@@ -328,6 +328,7 @@
   },
   "qualityCommands": [
     "npm run check:seis-agent-plugin-integration",
+    "npm run check:seis-plugin-capability-catalog",
     "npm run check:seis-agent-registry",
     "npm run check:seis-ai-core-provider-registry",
     "npm run check:seis-ai-core-read-only-router",

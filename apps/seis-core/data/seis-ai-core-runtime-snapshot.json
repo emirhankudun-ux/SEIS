@@ -863,6 +863,476 @@
         "qualityGate": "npm run check:plugin-capability-lanes"
       }
     ],
+    "capabilityCatalog": {
+      "id": "seis-plugin-capability-catalog",
+      "schemaVersion": "1.0.0",
+      "status": "source-backed-read-only",
+      "mode": "manifest-and-lane-profile-read-only",
+      "pluginCount": 6,
+      "personalPluginCount": 5,
+      "specialistPluginCount": 4,
+      "manifestCapabilityCount": 67,
+      "personalManifestCapabilityCount": 51,
+      "specialistManifestCapabilityCount": 31,
+      "profileCount": 4,
+      "profileQualityCommandCount": 18,
+      "plugins": [
+        {
+          "id": "seis",
+          "class": "personal",
+          "displayName": "SEIS",
+          "manifestPath": "plugins/seis/.codex-plugin/plugin.json",
+          "manifestExists": true,
+          "manifestStatus": "source-backed",
+          "capabilityCount": 20,
+          "capabilities": [
+            "Repository workflow",
+            "Plugin development",
+            "Migration safety",
+            "SEIS-first governance routing",
+            "Local helper + SEIS remote build workflow",
+            "SEIS Repos bridge",
+            "LLM package governance",
+            "LLM adapter readiness",
+            "LLM request planning",
+            "MCP bundled install",
+            "MCP source proof",
+            "SEIS Cloud deployment lane",
+            "SEIS-Code engineering lane",
+            "SEIS-Design product lane",
+            "SEIS-DATA knowledge lane",
+            "SEIS Master Prompt governance",
+            "SEIS GitHub workflow governance",
+            "SEIS Security Review governance",
+            "SEIS Focus Mode AGI operating lane",
+            "SEIS God Mode Developer cross-layer lane"
+          ],
+          "profile": {
+            "path": "plugins/seis/assets/lane-profile.json",
+            "exists": false,
+            "status": "missing",
+            "id": null,
+            "version": null,
+            "lane": null,
+            "primaryPaths": [],
+            "qualityCommands": [],
+            "guardrails": [],
+            "helperFamilies": [],
+            "sourceEvidence": []
+          },
+          "embeddedLaneProfiles": []
+        },
+        {
+          "id": "seis-ai-agent",
+          "class": "orchestrator",
+          "displayName": "SEIS-Agent",
+          "manifestPath": "plugins/seis-ai-agent/.codex-plugin/plugin.json",
+          "manifestExists": true,
+          "manifestStatus": "source-backed",
+          "capabilityCount": 16,
+          "capabilities": [
+            "Unified SEIS orchestration",
+            "SEIS governance readiness",
+            "Memory and context governance",
+            "SEIS Cloud deployment planning",
+            "SEIS-Code engineering governance",
+            "SEIS-Design cinematic product direction",
+            "SEIS-DATA knowledge and analytics governance",
+            "SEIS Security threat, secret, and release-risk review",
+            "SEIS Research evidence and source evaluation",
+            "SEIS Automation repeatable workflow and runbook design",
+            "SEIS Product roadmap, scope, and acceptance criteria",
+            "Cross-platform terminal install planning",
+            "Website and launch readiness planning",
+            "Repository-contained plugin development",
+            "MCP status and plan routing",
+            "Long-horizon open-source product evolution"
+          ],
+          "profile": {
+            "path": "plugins/seis-ai-agent/assets/agent-profile.json",
+            "exists": true,
+            "status": "source-backed",
+            "id": "seis-ai-agent",
+            "version": 1,
+            "lane": null,
+            "primaryPaths": [],
+            "qualityCommands": [
+              "npm run check:seis-ai-agent",
+              "npm run check:seis-agent-plugin-integration",
+              "npm run check:seis-repo-marketplace",
+              "npm run quality"
+            ],
+            "guardrails": [
+              "keep development inside the SEIS repo",
+              "do not publish or deploy before explicit release decision",
+              "keep memory and context systems under SEIS-Data and SEIS-Agent governance",
+              "avoid dependency bloat",
+              "do not expose secrets",
+              "validate plugin, terminal install, docs, and generated reports before handoff"
+            ],
+            "helperFamilies": [],
+            "sourceEvidence": []
+          },
+          "embeddedLaneProfiles": [
+            {
+              "path": "plugins/seis-ai-agent/assets/lanes/seis-governance.json",
+              "exists": true
+            },
+            {
+              "path": "plugins/seis-ai-agent/assets/lanes/seis-cloud.json",
+              "exists": true
+            },
+            {
+              "path": "plugins/seis-ai-agent/assets/lanes/seis-code.json",
+              "exists": true
+            },
+            {
+              "path": "plugins/seis-ai-agent/assets/lanes/seis-design.json",
+              "exists": true
+            },
+            {
+              "path": "plugins/seis-ai-agent/assets/lanes/seis-data.json",
+              "exists": true
+            },
+            {
+              "path": "plugins/seis-ai-agent/assets/lanes/seis-security.json",
+              "exists": true
+            },
+            {
+              "path": "plugins/seis-ai-agent/assets/lanes/seis-research.json",
+              "exists": true
+            },
+            {
+              "path": "plugins/seis-ai-agent/assets/lanes/seis-automation.json",
+              "exists": true
+            },
+            {
+              "path": "plugins/seis-ai-agent/assets/lanes/seis-product.json",
+              "exists": true
+            }
+          ]
+        },
+        {
+          "id": "seis-cloud",
+          "class": "specialist",
+          "displayName": "SEIS Cloud",
+          "manifestPath": "plugins/seis-cloud/.codex-plugin/plugin.json",
+          "manifestExists": true,
+          "manifestStatus": "source-backed",
+          "capabilityCount": 10,
+          "capabilities": [
+            "Provider-neutral cloud readiness",
+            "Public cloud access policy",
+            "Team VPN cloud planning",
+            "Server target selection",
+            "GCP Compute planning",
+            "WireGuard peer intake",
+            "Static hosting handoff",
+            "Secret-safe deployment preflight",
+            "Rollback planning",
+            "Cloud validation reports"
+          ],
+          "profile": {
+            "path": "plugins/seis-cloud/assets/lane-profile.json",
+            "exists": true,
+            "status": "source-backed",
+            "id": "seis-cloud",
+            "version": 1,
+            "lane": "cloud",
+            "primaryPaths": [
+              "deploy",
+              "server",
+              "scripts",
+              "docs/deployment",
+              "reports"
+            ],
+            "qualityCommands": [
+              "npm run check:cloud-access-policy",
+              "npm run check:cloud-environment",
+              "npm run check:server-cloud-report",
+              "npm run check:server-target",
+              "npm run check:gcp-cloud-server"
+            ],
+            "guardrails": [
+              "never commit secrets",
+              "keep apply commands behind explicit user confirmation",
+              "prefer provider-neutral readiness before provider-specific mutation",
+              "route everyone-facing surfaces to public cloud without VPN",
+              "route workplace/team workspaces to VPN cloud with approved peers only",
+              "require rollback owner and public URL before live upload",
+              "validate cloud reports before completion"
+            ],
+            "helperFamilies": [],
+            "sourceEvidence": [
+              "data/seis-plugin-package-intake-2026-06-13.json",
+              "docs/platform/seis-plugin-package-intake.md"
+            ]
+          },
+          "embeddedLaneProfiles": []
+        },
+        {
+          "id": "seis-code",
+          "class": "specialist",
+          "displayName": "SEIS-Code",
+          "manifestPath": "plugins/seis-code/.codex-plugin/plugin.json",
+          "manifestExists": true,
+          "manifestStatus": "source-backed",
+          "capabilityCount": 7,
+          "capabilities": [
+            "Architecture-aware implementation",
+            "Scoped refactors",
+            "Test and CI planning",
+            "MCP and plugin engineering",
+            "Apple-first platform code",
+            "Repository automation",
+            "Rollback-safe validation"
+          ],
+          "profile": {
+            "path": "plugins/seis-code/assets/lane-profile.json",
+            "exists": true,
+            "status": "source-backed",
+            "id": "seis-code",
+            "version": 1,
+            "lane": "engineering",
+            "primaryPaths": [
+              "packages",
+              "mcp",
+              "plugins",
+              "scripts",
+              "apps",
+              ".github/workflows"
+            ],
+            "qualityCommands": [
+              "npm run seis:check",
+              "npm run check:seis-plugin-bundle",
+              "npm run check:seis-platform-kernel",
+              "npm run check:seis-agi-system"
+            ],
+            "guardrails": [
+              "inspect git status before edits",
+              "preserve user work",
+              "avoid dependency bloat",
+              "never expose secrets",
+              "validate before completion"
+            ],
+            "helperFamilies": [
+              "GitHub",
+              "CircleCI",
+              "Superpowers",
+              "Build iOS Apps",
+              "Build macOS Apps",
+              "Build Web Apps",
+              "Test Android Apps",
+              "OpenAI Developers",
+              "Hugging Face"
+            ],
+            "sourceEvidence": [
+              "data/seis-plugin-package-intake-2026-06-13.json",
+              "docs/platform/seis-plugin-package-intake.md"
+            ]
+          },
+          "embeddedLaneProfiles": []
+        },
+        {
+          "id": "seis-design",
+          "class": "specialist",
+          "displayName": "SEIS-Design",
+          "manifestPath": "plugins/seis-design/.codex-plugin/plugin.json",
+          "manifestExists": true,
+          "manifestStatus": "source-backed",
+          "capabilityCount": 7,
+          "capabilities": [
+            "Product design",
+            "Design-system governance",
+            "Accessibility and responsive QA",
+            "Motion and interaction guidance",
+            "Frontend experience planning",
+            "Visual handoff",
+            "Calm technology review"
+          ],
+          "profile": {
+            "path": "plugins/seis-design/assets/lane-profile.json",
+            "exists": true,
+            "status": "source-backed",
+            "id": "seis-design",
+            "version": 1,
+            "lane": "design",
+            "primaryPaths": [
+              "apps/web",
+              "docs/design",
+              "docs/platform",
+              "content",
+              "plugins",
+              "reports"
+            ],
+            "qualityCommands": [
+              "npm run check:motion-evidence",
+              "npm run check:mobile-ergonomics",
+              "npm run check:web",
+              "npm run seis:check"
+            ],
+            "guardrails": [
+              "build the usable experience first",
+              "preserve accessibility",
+              "respect reduced motion",
+              "avoid decorative one-off systems",
+              "validate rendered surfaces when available"
+            ],
+            "helperFamilies": [
+              "Canva",
+              "BioRender",
+              "HeyGen",
+              "Picsart",
+              "Remotion",
+              "HyperFrames by HeyGen",
+              "Shutterstock",
+              "Fal"
+            ],
+            "sourceEvidence": [
+              "data/seis-plugin-package-intake-2026-06-13.json",
+              "docs/platform/seis-plugin-package-intake.md"
+            ]
+          },
+          "embeddedLaneProfiles": []
+        },
+        {
+          "id": "seis-data",
+          "class": "specialist",
+          "displayName": "SEIS-DATA",
+          "manifestPath": "plugins/seis-data/.codex-plugin/plugin.json",
+          "manifestExists": true,
+          "manifestStatus": "source-backed",
+          "capabilityCount": 7,
+          "capabilities": [
+            "Data architecture",
+            "Analytics and reports",
+            "Schema and contract planning",
+            "Knowledge registry governance",
+            "RAG and memory planning",
+            "Source provenance",
+            "Privacy-aware validation"
+          ],
+          "profile": {
+            "path": "plugins/seis-data/assets/lane-profile.json",
+            "exists": true,
+            "status": "source-backed",
+            "id": "seis-data",
+            "version": 1,
+            "lane": "data",
+            "primaryPaths": [
+              "data",
+              "content/development",
+              "reports",
+              "packages/seis_kernel",
+              "scripts/create-*",
+              "docs"
+            ],
+            "qualityCommands": [
+              "npm run check:plugin-capability-lanes",
+              "npm run check:seis-technology-stack",
+              "npm run check:seis-agi-system",
+              "npm run check:universal-capability-kernel",
+              "npm run check:language-distribution"
+            ],
+            "guardrails": [
+              "do not invent data",
+              "preserve provenance",
+              "avoid exposing secrets or PII",
+              "keep generated reports synchronized",
+              "validate structured records"
+            ],
+            "helperFamilies": [
+              "Deepnote",
+              "MotherDuck",
+              "Amplitude",
+              "Omni Analytics",
+              "Alation",
+              "Coupler.io",
+              "Conductor",
+              "Neon Postgres"
+            ],
+            "sourceEvidence": [
+              "data/seis-plugin-package-intake-2026-06-13.json",
+              "docs/platform/seis-plugin-package-intake.md"
+            ]
+          },
+          "embeddedLaneProfiles": []
+        }
+      ],
+      "qualityCommandSource": "apps/seis-core/data/seis-core-ecosystem-registry.json",
+      "qualityCommands": [
+        "npm run check:cloud-access-policy",
+        "npm run check:cloud-environment",
+        "npm run check:gcp-cloud-server",
+        "npm run check:language-distribution",
+        "npm run check:mobile-ergonomics",
+        "npm run check:motion-evidence",
+        "npm run check:plugin-capability-lanes",
+        "npm run check:seis-agi-system",
+        "npm run check:seis-platform-kernel",
+        "npm run check:seis-plugin-bundle",
+        "npm run check:seis-technology-stack",
+        "npm run check:server-cloud-report",
+        "npm run check:server-target",
+        "npm run check:universal-capability-kernel",
+        "npm run check:web",
+        "npm run seis:check"
+      ],
+      "qualityCommandGaps": [
+        {
+          "pluginId": "seis-cloud",
+          "command": "npm run check:cloud-environment",
+          "status": "not-in-core-qualityCommands"
+        },
+        {
+          "pluginId": "seis-cloud",
+          "command": "npm run check:server-cloud-report",
+          "status": "not-in-core-qualityCommands"
+        },
+        {
+          "pluginId": "seis-code",
+          "command": "npm run seis:check",
+          "status": "not-in-core-qualityCommands"
+        },
+        {
+          "pluginId": "seis-code",
+          "command": "npm run check:seis-agi-system",
+          "status": "not-in-core-qualityCommands"
+        },
+        {
+          "pluginId": "seis-design",
+          "command": "npm run check:web",
+          "status": "not-in-core-qualityCommands"
+        },
+        {
+          "pluginId": "seis-design",
+          "command": "npm run seis:check",
+          "status": "not-in-core-qualityCommands"
+        },
+        {
+          "pluginId": "seis-data",
+          "command": "npm run check:seis-agi-system",
+          "status": "not-in-core-qualityCommands"
+        },
+        {
+          "pluginId": "seis-data",
+          "command": "npm run check:universal-capability-kernel",
+          "status": "not-in-core-qualityCommands"
+        }
+      ],
+      "missingProfilePaths": [
+        "plugins/seis/assets/lane-profile.json"
+      ],
+      "boundary": {
+        "sourceOfTruth": "bundled plugin manifests and lane profiles",
+        "localReadOnly": true,
+        "credentialsRead": false,
+        "networkCalled": false,
+        "externalMutationPerformed": false,
+        "blanketActivationClaimed": false,
+        "missingSourcesRemainExplicit": true
+      }
+    },
     "mcpMesh": {
       "id": "seis-plugin-mcp-mesh",
       "schemaVersion": "1.0.0",
@@ -1200,6 +1670,7 @@
     "npm run check:seis-ai-core-provider-registry",
     "npm run check:seis-ai-core-read-only-router",
     "npm run check:seis-agent-plugin-integration",
+    "npm run check:seis-plugin-capability-catalog",
     "npm run check:seis-second-brain",
     "node --test packages/seis-ai/test/core-runtime-snapshot.test.mjs",
     "node --test apps/seis-core/test/seis-core-static.test.js"
