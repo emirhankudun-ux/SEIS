@@ -23,6 +23,88 @@ describe("SEIS provider-neutral read-only router", () => {
     assert.deepEqual(validateReadOnlyRouteDecision(decision), { ok: true, failures: [] });
   });
 
+  it("fails closed when a provider violates backend mediation or a lane requests write authority", () => {
+    const unsafeProviderDecision = buildReadOnlyRouteDecision(
+      {},
+      {
+        sources: {
+          contract: { id: "seis-read-only-model-router-contract" },
+          operatingModel: { lanes: [{ id: "seis", currentPermissionLevel: "plan-only" }] },
+          providerRegistry: {
+            providers: [
+              {
+                id: "unsafe-browser-provider",
+                displayName: "Unsafe Browser Provider",
+                category: "browser-provider",
+                publicStatus: "Available",
+                enabled: true,
+                routingEligible: true,
+                privacyClass: "browser-local",
+                capabilities: ["general-chat-demo"],
+                actualModel: "unsafe-browser-model",
+                frontendSecretAllowed: true,
+                backendOnly: false,
+                fallbackEligible: false,
+              },
+            ],
+          },
+        },
+      },
+    );
+
+    assert.equal(unsafeProviderDecision.selectedProvider, "none");
+    assert.equal(unsafeProviderDecision.providerCandidates[0].compatible, false);
+    assert.equal(unsafeProviderDecision.providerCandidates[0].securityCompatible, false);
+    assert.ok(unsafeProviderDecision.providerCandidates[0].blockers.includes("frontend secrets are forbidden"));
+    assert.ok(unsafeProviderDecision.providerCandidates[0].blockers.includes("backend-only provider mediation is required"));
+    assert.deepEqual(validateReadOnlyRouteDecision(unsafeProviderDecision), { ok: true, failures: [] });
+
+    const unsafeLaneDecision = buildReadOnlyRouteDecision(
+      {},
+      {
+        sources: {
+          contract: { id: "seis-read-only-model-router-contract" },
+          operatingModel: {
+            lanes: [
+              {
+                id: "seis",
+                displayName: "SEIS Hub",
+                currentPermissionLevel: "write-gated",
+                subAgentRole: "repository-governance-subagent",
+                statusTool: "seis_hub_status",
+                planTool: "seis_hub_plan",
+                qualityGate: "npm run check:seis-ai-agent",
+              },
+            ],
+          },
+          providerRegistry: {
+            providers: [
+              {
+                id: "seis-local-demo",
+                displayName: "SEIS Local Demo Runtime",
+                category: "local-demo",
+                publicStatus: "Available",
+                enabled: true,
+                routingEligible: true,
+                privacyClass: "browser-local-demo",
+                capabilities: ["general-chat-demo"],
+                actualModel: "none-local-demo",
+                frontendSecretAllowed: false,
+                backendOnly: true,
+                fallbackEligible: true,
+              },
+            ],
+          },
+        },
+      },
+    );
+
+    assert.equal(unsafeLaneDecision.agentLane.permissionLevel, "plan-only");
+    assert.equal(unsafeLaneDecision.agentLane.permissionBoundary, "plan-only");
+    assert.equal(unsafeLaneDecision.agentLane.permissionSourceStatus, "fail-closed");
+    assert.deepEqual(validateReadOnlyRouteDecision(unsafeLaneDecision), { ok: true, failures: [] });
+  });
+
   it("routes repo-local implementation metadata to the supervised Codex lane", () => {
     const decision = buildReadOnlyRouteDecision(
       { taskType: "repository-validation", capability: "validation", privacyMode: "local-only", localOnly: true },

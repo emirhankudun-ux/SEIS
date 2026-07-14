@@ -149,6 +149,8 @@ export function buildReadOnlyRouteDecision(input = {}, options = {}) {
       displayName: lane.displayName,
       subAgentRole: lane.subAgentRole,
       permissionLevel: lane.currentPermissionLevel,
+      permissionBoundary: "plan-only",
+      permissionSourceStatus: lane.permissionSourceStatus,
       statusTool: lane.statusTool,
       planTool: lane.planTool,
       qualityGate: lane.qualityGate,
@@ -171,6 +173,7 @@ export function buildReadOnlyRouteDecision(input = {}, options = {}) {
       selectedProviderExplicit: true,
       fallbackExplicit: true,
       blockedReasonsRequired: true,
+      backendOnlyProvidersRequired: true,
       privateObsidianContentRoutable: false,
     },
     modelClaimBoundary: {
@@ -212,11 +215,21 @@ export function validateReadOnlyRouteDecision(decision) {
   ensure(Array.isArray(decision?.blockedReasons) && decision.blockedReasons.length > 0, "blocked reasons are required", failures);
   ensure(decision?.decisionIntegrity?.noPromptBodyInDecision === true, "decision must exclude prompt bodies", failures);
   ensure(decision?.decisionIntegrity?.noCredentialMaterialInDecision === true, "decision must exclude credential material", failures);
+  ensure(decision?.decisionIntegrity?.backendOnlyProvidersRequired === true, "provider mediation must remain backend-only", failures);
   ensure(decision?.decisionIntegrity?.privateObsidianContentRoutable === false, "private Obsidian content must not be routable", failures);
   ensure(decision?.modelClaimBoundary?.isAgi === false, "decision must not claim AGI", failures);
   ensure(decision?.modelClaimBoundary?.isTrainedModel === false, "decision must not claim a trained model", failures);
   ensure(decision?.agentLane?.permissionLevel === "plan-only", "agent lane must remain plan-only", failures);
+  ensure(decision?.agentLane?.permissionBoundary === "plan-only", "agent lane permission boundary must remain plan-only", failures);
+  ensure(["verified", "fail-closed"].includes(decision?.agentLane?.permissionSourceStatus), "agent lane permission source must be verified or fail-closed", failures);
   ensure(decision?.agentLane?.executionPerformed === false, "agent lane must not execute", failures);
+  const selectedCandidate = decision?.providerCandidates?.find((candidate) => candidate.id === decision.selectedProvider);
+  ensure(
+    !selectedCandidate || selectedCandidate.compatible === true || decision.selectionBasis === "explicit-local-demo-fallback",
+    "selected provider must be compatible unless the explicit local demo fallback is selected",
+    failures,
+  );
+  ensure(!selectedCandidate || selectedCandidate.securityCompatible === true, "selected provider must satisfy backend mediation security", failures);
   ensure(!containsForbiddenKey(decision), "decision contains a forbidden secret-like key", failures);
   ensure(!containsForbiddenValue(decision), "decision contains a forbidden secret-like value", failures);
 
@@ -304,12 +317,14 @@ function describeCandidate(provider, input) {
   const capabilityMatch = providerSupportsCapability(provider, input.capability, input.taskType);
   const privacyCompatible = isPrivacyCompatible(provider, input);
   const stateEligible = provider.publicStatus === "Available" && provider.enabled === true && provider.routingEligible === true;
+  const securityCompatible = provider.frontendSecretAllowed !== true && provider.backendOnly === true;
   const blockers = [];
 
   if (!capabilityMatch) blockers.push("capability mismatch");
   if (!privacyCompatible) blockers.push(input.localOnly ? "local-only mode excludes cloud providers" : "privacy mode mismatch");
   if (!stateEligible) blockers.push(`provider state is ${provider.publicStatus || "Unknown"}`);
   if (provider.frontendSecretAllowed === true) blockers.push("frontend secrets are forbidden");
+  if (provider.backendOnly !== true) blockers.push("backend-only provider mediation is required");
 
   return {
     id: String(provider.id || "unknown"),
@@ -322,8 +337,9 @@ function describeCandidate(provider, input) {
     fallbackEligible: provider.fallbackEligible === true,
     capabilityMatch,
     privacyCompatible,
+    securityCompatible,
     available: stateEligible,
-    compatible: capabilityMatch && privacyCompatible && stateEligible,
+    compatible: capabilityMatch && privacyCompatible && stateEligible && securityCompatible,
     blockers,
   };
 }
@@ -361,11 +377,13 @@ function selectLane(input, operatingModel) {
   const text = `${input.taskType} ${input.capability}`.toLowerCase();
   const matched = ROUTER_LANES.find((lane) => lane.keywords.some((keyword) => text.includes(keyword)));
   const sourceLane = (operatingModel?.lanes || []).find((lane) => lane.id === (matched?.id || "seis")) || {};
+  const permissionSourceStatus = sourceLane.currentPermissionLevel === "plan-only" ? "verified" : "fail-closed";
   return {
     id: sourceLane.id || matched?.id || "seis",
     displayName: sourceLane.displayName || "SEIS Hub",
     subAgentRole: sourceLane.subAgentRole || "repository-governance-subagent",
-    currentPermissionLevel: sourceLane.currentPermissionLevel || "plan-only",
+    currentPermissionLevel: "plan-only",
+    permissionSourceStatus,
     statusTool: sourceLane.statusTool || "seis_hub_status",
     planTool: sourceLane.planTool || "seis_hub_plan",
     qualityGate: sourceLane.qualityGate || "npm run check:seis-ai-agent",
@@ -384,6 +402,7 @@ function toPublicCandidate(candidate) {
     fallbackEligible: candidate.fallbackEligible,
     capabilityMatch: candidate.capabilityMatch,
     privacyCompatible: candidate.privacyCompatible,
+    securityCompatible: candidate.securityCompatible,
     available: candidate.available,
     compatible: candidate.compatible,
     blockers: candidate.blockers,
