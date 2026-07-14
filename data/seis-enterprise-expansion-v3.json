@@ -292,6 +292,19 @@
     ],
     "completion_rule": "A node is not complete until each required field is either evidenced or explicitly marked unavailable with an unblock condition."
   },
+  "requested_plugin_references": [
+    {"id": "template-creator", "status": "requested", "runtime_status": "unverified", "write_access": "not-granted"},
+    {"id": "sites", "status": "requested", "runtime_status": "unverified", "write_access": "not-granted"},
+    {"id": "app-69312da8e4dc81919370cb86fd172b6c", "status": "requested", "runtime_status": "unverified", "write_access": "not-granted"},
+    {"id": "app-699d522f170c81919c824678c7c03732", "status": "requested", "runtime_status": "unverified", "write_access": "not-granted"},
+    {"id": "canva", "status": "requested", "runtime_status": "unverified", "write_access": "not-granted"},
+    {"id": "figma", "status": "requested", "runtime_status": "unverified", "write_access": "not-granted"},
+    {"id": "nvidia", "status": "requested", "runtime_status": "unverified", "write_access": "not-granted"},
+    {"id": "lovable", "status": "requested", "runtime_status": "unverified", "write_access": "not-granted"},
+    {"id": "openai-developers", "status": "requested", "runtime_status": "unverified", "write_access": "not-granted"},
+    {"id": "twilio-developer-kit", "status": "requested", "runtime_status": "unverified", "write_access": "not-granted"},
+    {"id": "wix", "status": "requested", "runtime_status": "unverified", "write_access": "not-granted"}
+  ],
   "final_enterprise_rule": {
     "required_strengths": [
       "Architecture",

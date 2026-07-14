@@ -141,6 +141,17 @@ Security, Maintainability, Accessibility, Performance, Human Experience, and
 Long-Term Sustainability. Never optimize only for the current iteration.
 Always optimize for the long-term evolution of the SEIS ecosystem.
 
+## Requested Plugin References
+
+The request also names `template-creator`, `sites`, two opaque app references,
+`canva`, `figma`, `nvidia`, `lovable`, `openai-developers`,
+`twilio-developer-kit`, and `wix`. They are recorded as requested external
+capabilities with `runtime_status: unverified` and `write_access: not-granted`.
+No external connector, design file, hosted site, deployment, model, or account
+was changed by this repository governance update. A future activation requires
+a scoped Goal, source/vendor review, least-privilege permissions, human
+approval for writes, and reproducible evidence.
+
 ## Completion Boundary
 
 The Enterprise Expansion V3 registry is complete as a specification when all

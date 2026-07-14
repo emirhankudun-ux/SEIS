@@ -72,6 +72,19 @@ const expectedNotClaimed = [
   "background agent execution",
   "enterprise release readiness"
 ];
+const expectedPluginReferences = [
+  "template-creator",
+  "sites",
+  "app-69312da8e4dc81919370cb86fd172b6c",
+  "app-699d522f170c81919c824678c7c03732",
+  "canva",
+  "figma",
+  "nvidia",
+  "lovable",
+  "openai-developers",
+  "twilio-developer-kit",
+  "wix"
+];
 
 function absolute(relativePath) {
   return resolve(root, relativePath);
@@ -162,6 +175,13 @@ requireValue(typeof registry.universal_node_contract?.completion_rule === "strin
 requireValue(JSON.stringify(registry.final_enterprise_rule?.required_strengths) === JSON.stringify(expectedFinalStrengths), `${registryPath} final enterprise strengths are incomplete or reordered`);
 requireValue(registry.final_enterprise_rule?.prohibited_optimization === "Never optimize only for the current iteration.", `${registryPath} must prohibit current-iteration-only optimization`);
 requireValue(registry.final_enterprise_rule?.long_term_rule === "Always optimize for the long-term evolution of the SEIS ecosystem.", `${registryPath} must preserve the long-term evolution rule`);
+const pluginReferences = Array.isArray(registry.requested_plugin_references) ? registry.requested_plugin_references : [];
+requireValue(JSON.stringify(pluginReferences.map((reference) => reference.id)) === JSON.stringify(expectedPluginReferences), `${registryPath} requested plugin references are incomplete or reordered`);
+for (const reference of pluginReferences) {
+  requireValue(reference.status === "requested", `${reference.id} plugin reference must remain requested`);
+  requireValue(reference.runtime_status === "unverified", `${reference.id} plugin runtime must remain unverified`);
+  requireValue(reference.write_access === "not-granted", `${reference.id} plugin write access must remain not-granted`);
+}
 requireValue(JSON.stringify(registry.implementation_boundary?.not_claimed) === JSON.stringify(expectedNotClaimed), `${registryPath} implementation boundary must preserve explicit non-claims`);
 requireValue(JSON.stringify(domains.find((domain) => domain.id === "long-term-evolution")?.horizons) === JSON.stringify(expectedHorizonLabels), `${registryPath} long-term horizons are invalid`);
 requireValue(JSON.stringify(domains.find((domain) => domain.id === "long-term-evolution")?.forecasts) === JSON.stringify(expectedForecastLabels), `${registryPath} long-term forecasts are invalid`);

@@ -25,6 +25,7 @@
     "principles",
     "domains",
     "universal_node_contract",
+    "requested_plugin_references",
     "final_enterprise_rule",
     "implementation_boundary"
   ],
@@ -64,6 +65,22 @@
       "properties": {
         "required_fields": {"type": "array", "minItems": 9, "uniqueItems": true, "items": {"type": "string", "minLength": 2}},
         "completion_rule": {"type": "string", "minLength": 20}
+      }
+    },
+    "requested_plugin_references": {
+      "type": "array",
+      "minItems": 11,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "status", "runtime_status", "write_access"],
+        "properties": {
+          "id": {"type": "string", "minLength": 3},
+          "status": {"const": "requested"},
+          "runtime_status": {"const": "unverified"},
+          "write_access": {"const": "not-granted"}
+        }
       }
     },
     "final_enterprise_rule": {
