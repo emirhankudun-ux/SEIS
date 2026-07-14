@@ -120,11 +120,31 @@ public struct SeisAgentPermissionMatrixSnapshot: Codable, Equatable, Sendable {
     public var validationIssues: [String] {
         var issues: [String] = []
         let expectedLevels = ["read-only", "plan-only", "write-gated", "external-gated", "forbidden"]
+        let expectedApprovalRequirements: [SeisAgentApprovalRequirement] = [
+            .boolean(false),
+            .boolean(false),
+            .text("task-scoped"),
+            .boolean(true),
+            .text("separate security and recovery plan required")
+        ]
+        let expectedForbiddenActions = [
+            "credential access",
+            "private key handling",
+            "history rewrite",
+            "public visibility change",
+            "model training",
+            "dataset ingestion",
+            "unrestricted shell execution"
+        ]
         if id != "seis-ai-core-agent-permission-matrix" || status != "documented-fixture" || runtimeBoundary != "status-and-plan-only" { issues.append("permission matrix identity or boundary is invalid") }
         if qualityGate != "npm run check:seis-ai-core-subagent-runtime-fixtures" || purpose.isEmpty { issues.append("permission matrix quality contract is incomplete") }
         if levels.count != 5 || levels.map(\.level) != expectedLevels || !levels.allSatisfy(\.isComplete) { issues.append("permission matrix must contain five complete levels") }
-        if levels[0].status != "enabled" || levels[1].status != "enabled" || levels[2].status != "planned" || levels[3].status != "planned" || levels[4].status != "active" { issues.append("permission matrix statuses are unsafe") }
-        if forbiddenWithoutSeparatePlan.count != 7 || !forbiddenWithoutSeparatePlan.contains("credential access") { issues.append("permission matrix forbidden plan boundary is incomplete") }
+        if levels.count == 5 {
+            let expectedStatuses = ["enabled", "enabled", "planned", "planned", "active"]
+            if levels.map(\.status) != expectedStatuses { issues.append("permission matrix statuses are unsafe") }
+            if levels.map(\.approvalRequired) != expectedApprovalRequirements { issues.append("permission matrix approval requirements are unsafe") }
+        }
+        if forbiddenWithoutSeparatePlan != expectedForbiddenActions { issues.append("permission matrix forbidden plan boundary is incomplete") }
         return issues
     }
 

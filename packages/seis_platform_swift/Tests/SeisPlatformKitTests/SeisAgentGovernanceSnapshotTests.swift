@@ -40,6 +40,29 @@ struct SeisAgentGovernanceSnapshotTests {
         #expect(!role.isSafe)
     }
 
+    @Test func permissionMatrixWithMissingLevelsFailsClosedWithoutIndexing() throws {
+        var root = try #require(JSONSerialization.jsonObject(with: permissionMatrixData()) as? [String: Any])
+        root["levels"] = []
+        let invalidData = try JSONSerialization.data(withJSONObject: root)
+
+        #expect(throws: SeisAgentGovernanceSnapshotError.self) {
+            try SeisAgentPermissionMatrixSnapshot.validated(from: invalidData)
+        }
+    }
+
+    @Test func permissionMatrixWithUnsafeApprovalOrForbiddenRecordFailsClosed() throws {
+        var root = try #require(JSONSerialization.jsonObject(with: permissionMatrixData()) as? [String: Any])
+        var levels = try #require(root["levels"] as? [[String: Any]])
+        levels[0]["approvalRequired"] = true
+        root["levels"] = levels
+        root["forbiddenWithoutSeparatePlan"] = ["credential access"]
+        let invalidData = try JSONSerialization.data(withJSONObject: root)
+
+        #expect(throws: SeisAgentGovernanceSnapshotError.self) {
+            try SeisAgentPermissionMatrixSnapshot.validated(from: invalidData)
+        }
+    }
+
     private func roleSchemaData() throws -> Data {
         var root = URL(fileURLWithPath: #filePath)
         for _ in 0..<5 { root.deleteLastPathComponent() }
