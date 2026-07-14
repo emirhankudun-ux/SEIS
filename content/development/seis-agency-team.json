@@ -1,0 +1,607 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "seis-agency-team",
+  "status": "active-public-safe",
+  "purpose": "Define a supervised agency operating overlay for SEIS briefs, pod ownership, review gates, evidence, and handoff without granting runtime authority.",
+  "relatedGoalIds": [
+    "SEIS-GOAL-011",
+    "SEIS-GOAL-020"
+  ],
+  "truthBoundary": {
+    "classification": "public-safe",
+    "organizationalOverlay": true,
+    "runtimeAuthority": false,
+    "backgroundExecution": false,
+    "providerCalls": false,
+    "externalMutation": "human-approval-required",
+    "singleWriterPerChangePackage": true,
+    "secretAccess": false,
+    "privateContentAccess": false
+  },
+  "sourceOfTruth": {
+    "globalGovernance": "AGENTS.md",
+    "roleCatalog": "content/development/seis-agency-team.json",
+    "workforcePolicy": "SEIS_AGENT_WORKFORCE.md",
+    "coordinationPolicy": "SEIS_SUB_AGENTS.md",
+    "operatingModel": "docs/governance/SEIS_AGENCY_OPERATING_MODEL.md",
+    "briefTemplate": "docs/governance/SEIS_AGENCY_BRIEF_TEMPLATE.md"
+  },
+  "agency": {
+    "id": "seis-creative-engineering-agency",
+    "name": "SEIS Creative Engineering Agency",
+    "shortName": "SEIS Agency",
+    "mission": "Turn bounded SEIS briefs into coherent, evidence-backed product, design, engineering, AI, and delivery outcomes.",
+    "model": "supervised-pod-agency",
+    "clientBoundary": [
+      "SEIS"
+    ],
+    "accountableLeadRoleId": "architect-agent",
+    "frontDoorRoleId": "product-agent",
+    "defaultWriter": "Codex current single writer",
+    "engagementStates": [
+      "intake",
+      "framed",
+      "assigned",
+      "in-progress",
+      "review",
+      "handoff",
+      "blocked"
+    ]
+  },
+  "headcountModel": {
+    "status": "planning-model-not-payroll-evidence",
+    "totalEmployees": 300,
+    "unitCount": 8,
+    "allocationBasis": "Proposed company-wide employee allocation for agency planning.",
+    "notClaims": [
+      "verified current payroll",
+      "completed hiring",
+      "300 autonomous agents",
+      "live staffing or HR availability"
+    ],
+    "units": [
+      {
+        "id": "executive-strategy",
+        "name": "Executive & Strategy",
+        "employees": 12,
+        "podIds": [
+          "direction-product"
+        ],
+        "mandate": "Company direction, portfolio strategy, architecture governance, and long-horizon planning."
+      },
+      {
+        "id": "client-product-program",
+        "name": "Client, Product & Program Management",
+        "employees": 28,
+        "podIds": [
+          "direction-product"
+        ],
+        "mandate": "Client briefs, product management, program delivery, and measurable acceptance."
+      },
+      {
+        "id": "creative-brand-design",
+        "name": "Creative Direction, Brand & Design",
+        "employees": 42,
+        "podIds": [
+          "experience"
+        ],
+        "mandate": "Brand systems, graphic design, visual direction, interaction, motion, and content craft."
+      },
+      {
+        "id": "product-ux-research",
+        "name": "Product, UX & Research",
+        "employees": 28,
+        "podIds": [
+          "direction-product",
+          "experience"
+        ],
+        "mandate": "User research, product discovery, service design, accessibility, and evidence-led decisions."
+      },
+      {
+        "id": "software-engineering",
+        "name": "Software Engineering",
+        "employees": 100,
+        "podIds": [
+          "engineering"
+        ],
+        "mandate": "Apple-native, web, backend, full-stack, systems, and shared platform implementation."
+      },
+      {
+        "id": "ai-data-knowledge",
+        "name": "AI, Data & Knowledge Systems",
+        "employees": 42,
+        "podIds": [
+          "intelligence-automation"
+        ],
+        "mandate": "AI Core, model and provider routing, agent systems, data, retrieval, memory, and evaluation."
+      },
+      {
+        "id": "platform-security-qa-devops",
+        "name": "Platform, Security, QA & DevOps",
+        "employees": 30,
+        "podIds": [
+          "engineering",
+          "trust-delivery"
+        ],
+        "mandate": "Infrastructure, reliability, security, quality gates, release engineering, and incident readiness."
+      },
+      {
+        "id": "people-finance-legal-marketing-operations",
+        "name": "People, Finance, Legal, Marketing & Operations",
+        "employees": 18,
+        "podIds": [],
+        "sharedServices": true,
+        "mandate": "People operations, finance, legal, communications, marketing, procurement, and company operations."
+      }
+    ]
+  },
+  "pods": [
+    {
+      "id": "direction-product",
+      "name": "Direction & Product",
+      "mandate": "Clarify the brief, protect scope, define acceptance, and keep the work tied to SEIS goals.",
+      "leadRoleId": "architect-agent",
+      "roleIds": [
+        "architect-agent",
+        "product-agent",
+        "documentation-agent"
+      ],
+      "serviceIds": [
+        "brief-framing",
+        "architecture-decision"
+      ]
+    },
+    {
+      "id": "experience",
+      "name": "Experience",
+      "mandate": "Shape the SEIS product feel, interaction model, accessibility, motion, and visual evidence.",
+      "leadRoleId": "design-agent",
+      "roleIds": [
+        "design-agent",
+        "ui-ux-agent"
+      ],
+      "serviceIds": [
+        "product-design-accessibility"
+      ]
+    },
+    {
+      "id": "engineering",
+      "name": "Engineering",
+      "mandate": "Deliver scoped Apple-native, web, full-stack, platform, and release engineering outputs.",
+      "leadRoleId": "code-agent",
+      "roleIds": [
+        "code-agent",
+        "devops-agent"
+      ],
+      "serviceIds": [
+        "apple-and-platform-engineering",
+        "web-and-fullstack-engineering"
+      ]
+    },
+    {
+      "id": "intelligence-automation",
+      "name": "Intelligence & Automation",
+      "mandate": "Provide evidence-backed research, search, knowledge, cloud-readiness, and safe automation planning.",
+      "leadRoleId": "research-agent",
+      "roleIds": [
+        "research-agent",
+        "search-agent",
+        "cloud-agent",
+        "automation-agent"
+      ],
+      "serviceIds": [
+        "ai-knowledge-and-evidence",
+        "cloud-automation-readiness"
+      ]
+    },
+    {
+      "id": "trust-delivery",
+      "name": "Trust & Delivery",
+      "mandate": "Protect secrets, privacy, quality, regression safety, release evidence, and honest status.",
+      "leadRoleId": "security-agent",
+      "roleIds": [
+        "security-agent",
+        "qa-agent"
+      ],
+      "serviceIds": [
+        "security-and-privacy-review",
+        "quality-and-release-handoff"
+      ]
+    }
+  ],
+  "roles": [
+    {
+      "id": "architect-agent",
+      "displayName": "Architect Agent",
+      "podId": "direction-product",
+      "sourceRole": "Architect Agent",
+      "defaultMode": "status-plan-only",
+      "duty": "Own boundaries, architecture decisions, decomposition, and rollback-aware plans.",
+      "accountability": "scope-and-architecture"
+    },
+    {
+      "id": "product-agent",
+      "displayName": "Product Agent",
+      "podId": "direction-product",
+      "sourceRole": "Product Agent",
+      "defaultMode": "status-plan-only",
+      "duty": "Own briefs, requirements, acceptance criteria, roadmap slices, and launch readiness.",
+      "accountability": "brief-and-acceptance"
+    },
+    {
+      "id": "documentation-agent",
+      "displayName": "Documentation Agent",
+      "podId": "direction-product",
+      "sourceRole": "Documentation Agent",
+      "defaultMode": "status-plan-only",
+      "duty": "Keep decisions, status, evidence, backlog, and handoff records navigable.",
+      "accountability": "knowledge-and-handoff"
+    },
+    {
+      "id": "design-agent",
+      "displayName": "Design Agent",
+      "podId": "experience",
+      "sourceRole": "Design Agent",
+      "defaultMode": "status-plan-only",
+      "duty": "Own visual language, product feel, design tokens, and interaction evidence.",
+      "accountability": "visual-system"
+    },
+    {
+      "id": "ui-ux-agent",
+      "displayName": "UI/UX Agent",
+      "podId": "experience",
+      "sourceRole": "UI/UX Agent",
+      "defaultMode": "status-plan-only",
+      "duty": "Review usability, focus order, mobile ergonomics, and accessibility.",
+      "accountability": "interaction-and-accessibility"
+    },
+    {
+      "id": "code-agent",
+      "displayName": "Code Agent",
+      "podId": "engineering",
+      "sourceRole": "Code Agent",
+      "defaultMode": "status-plan-only",
+      "duty": "Prepare scoped implementation notes, validators, tests, and code review evidence.",
+      "accountability": "engineering-output"
+    },
+    {
+      "id": "devops-agent",
+      "displayName": "DevOps Agent",
+      "podId": "engineering",
+      "sourceRole": "DevOps Agent",
+      "defaultMode": "status-plan-only",
+      "duty": "Own CI, release, deployment planning, rollback, and operational runbooks.",
+      "accountability": "delivery-safety"
+    },
+    {
+      "id": "research-agent",
+      "displayName": "Research Agent",
+      "podId": "intelligence-automation",
+      "sourceRole": "Research Agent",
+      "defaultMode": "status-plan-only",
+      "duty": "Provide source provenance, prior-art notes, and evidence-backed technical decisions.",
+      "accountability": "evidence-quality"
+    },
+    {
+      "id": "search-agent",
+      "displayName": "Search Agent",
+      "podId": "intelligence-automation",
+      "sourceRole": "Search Agent",
+      "defaultMode": "status-plan-only",
+      "duty": "Plan local documentation, route, file, plugin, and knowledge indexing.",
+      "accountability": "retrieval-and-context"
+    },
+    {
+      "id": "cloud-agent",
+      "displayName": "Cloud Agent",
+      "podId": "intelligence-automation",
+      "sourceRole": "Cloud Agent",
+      "defaultMode": "status-plan-only",
+      "duty": "Prepare cloud, SSH, storage, sync, and provider-readiness boundaries.",
+      "accountability": "infrastructure-readiness"
+    },
+    {
+      "id": "automation-agent",
+      "displayName": "Automation Agent",
+      "podId": "intelligence-automation",
+      "sourceRole": "Automation Agent",
+      "defaultMode": "status-plan-only",
+      "duty": "Design idempotent workflows, ledgers, dry-runs, and human-approved automation gates.",
+      "accountability": "repeatability"
+    },
+    {
+      "id": "security-agent",
+      "displayName": "Security Agent",
+      "podId": "trust-delivery",
+      "sourceRole": "Security Agent",
+      "defaultMode": "blocking-review-gate",
+      "duty": "Protect secrets, private-vault boundaries, permissions, threat posture, and approvals.",
+      "accountability": "security-gate"
+    },
+    {
+      "id": "qa-agent",
+      "displayName": "QA Agent",
+      "podId": "trust-delivery",
+      "sourceRole": "QA Agent",
+      "defaultMode": "status-plan-only",
+      "duty": "Own deterministic validators, smoke checks, regression evidence, and acceptance proof.",
+      "accountability": "quality-evidence"
+    }
+  ],
+  "serviceCatalog": [
+    {
+      "id": "brief-framing",
+      "name": "Brief framing and goal decomposition",
+      "ownerRoleId": "product-agent",
+      "reviewerRoleIds": [
+        "architect-agent",
+        "security-agent"
+      ],
+      "output": "Bounded agency brief with goal, scope, non-goals, acceptance, risks, and validation.",
+      "validation": "Brief template contains every required field and names a repository boundary."
+    },
+    {
+      "id": "architecture-decision",
+      "name": "Architecture and ADR decision",
+      "ownerRoleId": "architect-agent",
+      "reviewerRoleIds": [
+        "code-agent",
+        "security-agent",
+        "devops-agent"
+      ],
+      "output": "Smallest safe architecture decision, affected paths, dependencies, and rollback.",
+      "validation": "Decision identifies canonical owner, boundaries, and a reproducible validation command."
+    },
+    {
+      "id": "product-design-accessibility",
+      "name": "Product design, UI/UX, and accessibility",
+      "ownerRoleId": "design-agent",
+      "reviewerRoleIds": [
+        "ui-ux-agent",
+        "qa-agent"
+      ],
+      "output": "Token-driven interaction proposal or implementation with accessible states and evidence.",
+      "validation": "Keyboard, focus, contrast, responsive, and reduced-motion considerations are recorded."
+    },
+    {
+      "id": "apple-and-platform-engineering",
+      "name": "Apple-native and platform engineering",
+      "ownerRoleId": "code-agent",
+      "reviewerRoleIds": [
+        "architect-agent",
+        "design-agent",
+        "qa-agent"
+      ],
+      "output": "Scoped Swift, SwiftUI, package, platform, or contract change.",
+      "validation": "Relevant package or platform checks run, with unavailable toolchains disclosed."
+    },
+    {
+      "id": "web-and-fullstack-engineering",
+      "name": "Web and full-stack engineering",
+      "ownerRoleId": "code-agent",
+      "reviewerRoleIds": [
+        "architect-agent",
+        "security-agent",
+        "qa-agent"
+      ],
+      "output": "Scoped frontend, backend, API, data, or demo-surface change.",
+      "validation": "Targeted tests, route checks, and public/private boundary checks run."
+    },
+    {
+      "id": "ai-knowledge-and-evidence",
+      "name": "AI, agent, knowledge, and research planning",
+      "ownerRoleId": "research-agent",
+      "reviewerRoleIds": [
+        "architect-agent",
+        "search-agent",
+        "security-agent"
+      ],
+      "output": "Source-backed AI or knowledge design with explicit maturity and non-claims.",
+      "validation": "Sources, privacy class, provider status, evaluation path, and fallback are documented."
+    },
+    {
+      "id": "cloud-automation-readiness",
+      "name": "Cloud, SSH, and automation readiness",
+      "ownerRoleId": "cloud-agent",
+      "reviewerRoleIds": [
+        "security-agent",
+        "automation-agent",
+        "devops-agent"
+      ],
+      "output": "Readiness plan, dry-run, runbook, or rollback-aware infrastructure contract.",
+      "validation": "No live mutation occurs; approval requirements, endpoint constraints, and rollback are explicit."
+    },
+    {
+      "id": "security-and-privacy-review",
+      "name": "Security, privacy, and permission review",
+      "ownerRoleId": "security-agent",
+      "reviewerRoleIds": [
+        "architect-agent",
+        "qa-agent"
+      ],
+      "output": "Threat, secret, permission, public/private, and approval review.",
+      "validation": "Required security checks pass or the blocker is recorded with an unblock condition."
+    },
+    {
+      "id": "quality-and-release-handoff",
+      "name": "Quality, release, and handoff",
+      "ownerRoleId": "qa-agent",
+      "reviewerRoleIds": [
+        "security-agent",
+        "devops-agent",
+        "documentation-agent"
+      ],
+      "output": "Validation evidence, failed/skipped checks, release note, rollback, and next decision.",
+      "validation": "Evidence is reproducible, status is honest, and the worktree state is reported."
+    }
+  ],
+  "workflow": [
+    {
+      "order": 1,
+      "id": "intake",
+      "name": "Intake",
+      "ownerRoleIds": [
+        "product-agent"
+      ],
+      "output": "A complete brief or an explicit clarification request.",
+      "gate": "No implementation starts without a goal, scope, and validation target."
+    },
+    {
+      "order": 2,
+      "id": "frame",
+      "name": "Frame",
+      "ownerRoleIds": [
+        "architect-agent",
+        "product-agent"
+      ],
+      "output": "Bounded scope, non-goals, dependencies, risks, and rollback.",
+      "gate": "Canonical repository ownership and public/private boundary are known."
+    },
+    {
+      "order": 3,
+      "id": "assign",
+      "name": "Assign",
+      "ownerRoleIds": [
+        "architect-agent"
+      ],
+      "output": "One accountable role, supporting reviewers, and an approved file scope.",
+      "gate": "One writer per change package; reviewers do not self-promote to writers."
+    },
+    {
+      "order": 4,
+      "id": "produce",
+      "name": "Produce",
+      "ownerRoleIds": [
+        "code-agent",
+        "design-agent",
+        "research-agent"
+      ],
+      "output": "Code, design, schema, documentation, test, or architecture artifact.",
+      "gate": "Only scoped, reversible, evidence-oriented work is accepted."
+    },
+    {
+      "order": 5,
+      "id": "review",
+      "name": "Review",
+      "ownerRoleIds": [
+        "qa-agent",
+        "security-agent"
+      ],
+      "output": "Quality, security, accessibility, and risk findings.",
+      "gate": "Required gates pass or remain explicitly blocked."
+    },
+    {
+      "order": 6,
+      "id": "evidence",
+      "name": "Evidence",
+      "ownerRoleIds": [
+        "qa-agent",
+        "documentation-agent"
+      ],
+      "output": "Commands, results, artifacts, limitations, and remaining gaps.",
+      "gate": "No completion claim without current, relevant evidence."
+    },
+    {
+      "order": 7,
+      "id": "handoff",
+      "name": "Handoff",
+      "ownerRoleIds": [
+        "product-agent",
+        "architect-agent"
+      ],
+      "output": "Review-ready package, rollback, next decision, and human approval queue.",
+      "gate": "External writes, deployment, publication, credentials, and destructive work remain human-gated."
+    }
+  ],
+  "intakeContract": {
+    "templatePath": "docs/governance/SEIS_AGENCY_BRIEF_TEMPLATE.md",
+    "requiredFields": [
+      "briefId",
+      "goalId",
+      "project",
+      "objective",
+      "deliverables",
+      "scope",
+      "nonGoals",
+      "canonicalOwnerRepository",
+      "affectedPaths",
+      "acceptanceCriteria",
+      "validationCommands",
+      "securityAndPrivacy",
+      "risks",
+      "rollback",
+      "humanApprovalNeeded"
+    ],
+    "stopAndAskWhen": [
+      "The requested output changes the project identity or repository boundary.",
+      "The required validation environment is unknown and a safe local validator cannot be chosen.",
+      "A destructive, external, credential, deployment, publication, or paid-provider action is required."
+    ]
+  },
+  "approvalBoundary": {
+    "agentMaySelfApprove": false,
+    "defaultMode": "read-only-first-and-scoped-local-edits",
+    "humanApprovalRequiredFor": [
+      "credential or secret changes",
+      "external provider calls",
+      "MCP or plugin write access",
+      "SSH, VPN, cloud, or deployment mutation",
+      "protected-branch writes",
+      "force push or history rewrite",
+      "destructive filesystem or data operations",
+      "publication, release, or visibility changes",
+      "paid benchmarks, downloads, or external training"
+    ],
+    "completionRequires": [
+      "acceptance criteria met",
+      "required validation evidence",
+      "failed or skipped checks disclosed",
+      "security and privacy review",
+      "rollback recorded",
+      "worktree status reported"
+    ]
+  },
+  "initialBacklog": [
+    {
+      "id": "agency-brief-contract",
+      "title": "Use the agency brief for the next SEIS request",
+      "status": "ready",
+      "ownerRoleId": "product-agent",
+      "goalId": "SEIS-GOAL-011",
+      "acceptance": "The next brief names scope, non-goals, owner, reviewers, validation, risks, and rollback."
+    },
+    {
+      "id": "agency-pod-assignment-pilot",
+      "title": "Run one bounded brief through pod assignment",
+      "status": "planned",
+      "ownerRoleId": "architect-agent",
+      "goalId": "SEIS-GOAL-011",
+      "acceptance": "Exactly one accountable role and at least one review gate are recorded without granting new runtime authority."
+    },
+    {
+      "id": "agency-experience-pilot",
+      "title": "Pilot an accessible Command Center experience brief",
+      "status": "planned",
+      "ownerRoleId": "design-agent",
+      "goalId": "SEIS-GOAL-020",
+      "acceptance": "The output includes responsive, keyboard, focus, contrast, reduced-motion, and evidence requirements."
+    },
+    {
+      "id": "agency-ai-evidence-pilot",
+      "title": "Pilot an AI or knowledge brief with explicit truth boundaries",
+      "status": "planned",
+      "ownerRoleId": "research-agent",
+      "goalId": "SEIS-GOAL-011",
+      "acceptance": "Provider status, privacy class, evaluation path, fallback, and non-claims are recorded."
+    },
+    {
+      "id": "agency-delivery-review",
+      "title": "Review the first agency package and update the roster",
+      "status": "planned",
+      "ownerRoleId": "qa-agent",
+      "goalId": "SEIS-GOAL-011",
+      "acceptance": "Validation, risks, blockers, rollback, and next decision are captured after the pilot."
+    }
+  ],
+  "qualityGate": "npm run check:seis-agency-team"
+}

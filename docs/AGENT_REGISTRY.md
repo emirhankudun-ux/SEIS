@@ -6,10 +6,21 @@ background workers or grant permissions.
 
 ## Sources
 
-- `content/development/seis-agent-registry.json` is the machine-readable source.
+- `SEIS_AGENT_WORKFORCE.md` is the canonical bounded-agent workforce contract.
+- `content/development/seis-agency-team.json` is the machine-readable agency overlay.
 - `docs/ai/agent-registry.md` explains the current role and permission model.
 - `docs/ai/agent-runtime.md` documents the plan-only/read-only runtime boundary.
 - `docs/SEIS_GOAL_TRACKING.md` defines the long-term role families.
+
+## Agency operating overlay
+
+The agency-shaped operating model is documented in
+docs/governance/SEIS_AGENCY_OPERATING_MODEL.md. Its machine-readable contract
+is content/development/seis-agency-team.json.
+
+The overlay groups thirteen agency role families into five delivery pods and
+defines a validated 300-person planning model. It does not create runtime
+workers, grant permissions, or claim current payroll or hiring evidence.
 
 ## Permission Defaults
 

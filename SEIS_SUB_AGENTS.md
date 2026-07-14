@@ -9,6 +9,11 @@ The canonical bounded-agent roster is maintained in
 [`SEIS_AGENT_WORKFORCE.md`](./SEIS_AGENT_WORKFORCE.md) and mirrored in
 [`seis-brain/vault/05_Agents/Agent Workforce.md`](./seis-brain/vault/05_Agents/Agent%20Workforce.md).
 
+The agency operating overlay is defined in
+docs/governance/SEIS_AGENCY_OPERATING_MODEL.md and
+content/development/seis-agency-team.json. It organizes thirteen agency role
+families and a 300-person planning model without creating runtime authority.
+
 ## Supervision model
 
 - Human objective defines scope.
