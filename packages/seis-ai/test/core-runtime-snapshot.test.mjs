@@ -114,6 +114,24 @@ describe("SEIS AI Core runtime snapshot", () => {
     assert.equal(snapshot.agentRegistry.source, "content/development/seis-second-brain-system.json");
     assert.equal(snapshot.agentRegistry.runtimeAuthority, false);
     assert.equal(snapshot.agentRegistry.permissionBoundary, "status-and-plan-only");
+    assert.equal(snapshot.agentPermissionMatrixRegistry.id, "seis-ai-core-agent-permission-matrix");
+    assert.equal(snapshot.agentPermissionMatrixRegistry.status, "source-backed-metadata-only");
+    assert.equal(snapshot.agentPermissionMatrixRegistry.runtimeBoundary, "status-and-plan-only");
+    assert.equal(snapshot.agentPermissionMatrixRegistry.enabledLevelCount, 2);
+    assert.deepEqual(
+      snapshot.agentPermissionMatrixRegistry.levels.map((level) => [level.level, level.status, level.approvalRequired]),
+      [
+        ["read-only", "enabled", false],
+        ["plan-only", "enabled", false],
+        ["write-gated", "planned", "task-scoped"],
+        ["external-gated", "planned", true],
+        ["forbidden", "active", "separate security and recovery plan required"]
+      ]
+    );
+    assert.equal(snapshot.agentPermissionMatrixRegistry.forbiddenWithoutSeparatePlan.length, 7);
+    assert.ok(snapshot.agentPermissionMatrixRegistry.forbiddenWithoutSeparatePlan.includes("credential access"));
+    assert.ok(snapshot.agentPermissionMatrixRegistry.forbiddenWithoutSeparatePlan.includes("unrestricted shell execution"));
+    assert.match(snapshot.agentPermissionMatrixRegistry.truthBoundary, /do not grant runtime authority/);
     assert.equal(snapshot.mcpRuntime.toolCount, 37);
     assert.equal(snapshot.mcpRuntime.resourceCount, 30);
     assert.equal(snapshot.mcpRuntime.promptCount, 3);

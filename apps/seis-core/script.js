@@ -11,6 +11,19 @@ const expectedPluginMcpSafeToolNames = Object.freeze({
 
 const expectedAIWorkforceTruthBoundary = "Workforce assignments are source-backed role and launcher metadata. Installed status is not live-model, authentication, provider-call, execution, or external-mutation evidence; Codex remains the only repository writer by default.";
 const expectedAIWorkforceTrainingTruthBoundary = "Repository-local training control plane only. It performs no live provider calls, no credential validation, no SSH, no deployment, no external dataset download, no cloud fine-tuning, and no claim that SEIS owns a trained foundation model.";
+const expectedAIAgentPermissionTruthBoundary = "Source-backed permission metadata only. Permission levels describe approval and evidence boundaries; they do not grant runtime authority, credentials, network, shell, provider, SSH, deployment, GitHub, training, or dataset access.";
+const expectedAIAgentPermissionLevels = Object.freeze(["read-only", "plan-only", "write-gated", "external-gated", "forbidden"]);
+const expectedAIAgentPermissionStatuses = Object.freeze(["enabled", "enabled", "planned", "planned", "active"]);
+const expectedAIAgentPermissionApprovals = Object.freeze([false, false, "task-scoped", true, "separate security and recovery plan required"]);
+const expectedAIAgentForbiddenActions = Object.freeze([
+  "credential access",
+  "private key handling",
+  "history rewrite",
+  "public visibility change",
+  "model training",
+  "dataset ingestion",
+  "unrestricted shell execution"
+]);
 const expectedAIWorkforceLauncherStatuses = Object.freeze([
   "installed",
   "route-defined-current-shell-missing-key",
@@ -1101,6 +1114,18 @@ const fallbackSeisAiCoreRuntimeSnapshot = {
     },
     humanApprovalRequiredForMutation: true
   },
+  agentPermissionMatrixRegistry: {
+    id: "seis-ai-core-agent-permission-matrix-fallback",
+    status: "fallback-unavailable",
+    source: "content/development/seis-ai-core-agent-permission-matrix.json",
+    purpose: "Fallback permission boundary while the source-backed agent matrix is unavailable.",
+    qualityGate: "npm run check:seis-ai-core-subagent-runtime-fixtures",
+    runtimeBoundary: "status-and-plan-only",
+    enabledLevelCount: 0,
+    levels: [],
+    forbiddenWithoutSeparatePlan: [],
+    truthBoundary: "Source-backed agent permission metadata is unavailable; no permission, runtime authority, credential, network, shell, provider, SSH, deployment, GitHub, training, or dataset access is granted."
+  },
   pluginMesh: {
     primaryInstallId: "unavailable-in-fallback",
     installedEnabledCount: 0,
@@ -2003,6 +2028,7 @@ function render() {
   renderDocumentation();
   renderAgents();
   renderManagedAgentRegistry();
+  renderAIAgentPermissionMatrix();
   renderAIWorkforceRegistry();
   renderAIWorkforceTrainingRegistry();
   renderEcosystemControlPlane();
@@ -2862,6 +2888,65 @@ function renderManagedAgentRegistry() {
   feedback.textContent = registry.truthBoundary || "Only public, status-and-plan registry evidence is displayed.";
 }
 
+function renderAIAgentPermissionMatrix() {
+  const registry = seisAiCoreRuntimeSnapshot.agentPermissionMatrixRegistry || fallbackSeisAiCoreRuntimeSnapshot.agentPermissionMatrixRegistry;
+  const levels = Array.isArray(registry.levels) ? registry.levels : [];
+  const forbidden = Array.isArray(registry.forbiddenWithoutSeparatePlan) ? registry.forbiddenWithoutSeparatePlan : [];
+  const statePill = $("#agent-permission-matrix-state");
+  const summary = $("#agent-permission-matrix-summary");
+  const levelList = $("#agent-permission-level-list");
+  const forbiddenList = $("#agent-permission-forbidden-list");
+  const feedback = $("#agent-permission-matrix-feedback");
+  if (!statePill || !summary || !levelList || !forbiddenList || !feedback) return;
+
+  const sourceBacked = registry.status === "source-backed-metadata-only";
+  statePill.textContent = sourceBacked ? "Source-backed" : "Fallback";
+  statePill.className = `status-pill ${sourceBacked ? "ready" : "attention"}`;
+  summary.innerHTML = [
+    ["Permission levels", levels.length, "declared governance tiers"],
+    ["Enabled now", registry.enabledLevelCount ?? 0, "read-only and plan-only"],
+    ["Approval gates", levels.filter((level) => level.approvalRequired !== false).length, "task or security review"],
+    ["Runtime authority", "None", registry.runtimeBoundary || "status-and-plan-only"]
+  ].map(([label, value, note]) => `
+    <article class="ai-permission-summary-item">
+      <span>${escapeHtml(label)}</span>
+      <strong>${escapeHtml(value)}</strong>
+      <small>${escapeHtml(note)}</small>
+    </article>
+  `).join("");
+
+  levelList.innerHTML = levels.map((level) => {
+    const tone = level.status === "enabled" ? "ready" : level.status === "active" ? "blocked" : "attention";
+    const approval = level.approvalRequired === false ? "No approval" : String(level.approvalRequired);
+    return `
+      <article class="ai-permission-level" role="listitem" data-agent-permission-level="${escapeHtml(level.level)}">
+        <div class="card-topline">
+          <div>
+            <h4>${escapeHtml(level.level)}</h4>
+            <small>${escapeHtml(approval)}</small>
+          </div>
+          <span class="status-pill ${tone}">${escapeHtml(level.status)}</span>
+        </div>
+        <div class="ai-permission-level-grid">
+          <div>
+            <strong>Actions</strong>
+            <ul>${(level.actions || []).map((action) => `<li>${escapeHtml(action)}</li>`).join("")}</ul>
+          </div>
+          <div>
+            <strong>Evidence required</strong>
+            <ul>${(level.evidenceRequired || []).map((evidence) => `<li>${escapeHtml(evidence)}</li>`).join("")}</ul>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join("") || "<p>No source-backed permission levels are available.</p>";
+
+  forbiddenList.innerHTML = forbidden.map((action) => `<li>${escapeHtml(action)}</li>`).join("") || "<li>Source-backed forbidden list unavailable.</li>";
+  feedback.textContent = sourceBacked
+    ? expectedAIAgentPermissionTruthBoundary
+    : (registry.truthBoundary || "Source-backed permission metadata is unavailable; no runtime authority is granted.");
+}
+
 function renderAIWorkforceRegistry() {
   const registry = seisAiCoreRuntimeSnapshot.workforceAssignmentRegistry || fallbackSeisAiCoreRuntimeSnapshot.workforceAssignmentRegistry;
   const assignments = Array.isArray(registry.assignments) ? registry.assignments : [];
@@ -3506,6 +3591,30 @@ async function loadSeisAiCoreRuntimeSnapshot() {
         snapshot.agentRegistry.agents.some((agent) => agent.executionAuthority !== false) ||
         Object.values(snapshot.agentRegistry.safetyBoundary || {}).some((value) => value !== false)) {
       throw new Error("runtime snapshot violates the managed agent no-execution boundary");
+    }
+    const permissionMatrix = snapshot.agentPermissionMatrixRegistry;
+    const permissionLevels = Array.isArray(permissionMatrix?.levels) ? permissionMatrix.levels : [];
+    const forbiddenPermissionActions = Array.isArray(permissionMatrix?.forbiddenWithoutSeparatePlan)
+      ? permissionMatrix.forbiddenWithoutSeparatePlan
+      : [];
+    if (permissionMatrix?.id !== "seis-ai-core-agent-permission-matrix" ||
+        permissionMatrix.status !== "source-backed-metadata-only" ||
+        permissionMatrix.source !== "content/development/seis-ai-core-agent-permission-matrix.json" ||
+        permissionMatrix.runtimeBoundary !== "status-and-plan-only" ||
+        permissionMatrix.truthBoundary !== expectedAIAgentPermissionTruthBoundary ||
+        permissionMatrix.enabledLevelCount !== 2 ||
+        permissionLevels.length !== expectedAIAgentPermissionLevels.length ||
+        permissionLevels.some((level, index) =>
+          level.level !== expectedAIAgentPermissionLevels[index] ||
+          level.status !== expectedAIAgentPermissionStatuses[index] ||
+          level.approvalRequired !== expectedAIAgentPermissionApprovals[index] ||
+          !Array.isArray(level.actions) || level.actions.length === 0 ||
+          !Array.isArray(level.evidenceRequired) || level.evidenceRequired.length === 0 ||
+          [...level.actions, ...level.evidenceRequired].some((value) => typeof value !== "string" || value.length === 0)) ||
+        forbiddenPermissionActions.length !== expectedAIAgentForbiddenActions.length ||
+        new Set(forbiddenPermissionActions).size !== forbiddenPermissionActions.length ||
+        expectedAIAgentForbiddenActions.some((action) => !forbiddenPermissionActions.includes(action))) {
+      throw new Error("runtime snapshot violates the AI agent permission matrix boundary");
     }
     if (snapshot.runtimeBoundary?.providerCalls !== false || snapshot.runtimeBoundary?.liveMcpSessionStarted !== false) {
       throw new Error("runtime snapshot violates the browser no-execution boundary");

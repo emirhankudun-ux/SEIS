@@ -23,11 +23,13 @@ export const AI_CORE_APPLICATION_INTEGRATION_PATH = "content/development/seis-ai
 export const SECOND_BRAIN_SYSTEM_PATH = "content/development/seis-second-brain-system.json";
 export const BIG_TECH_MCP_SKILL_INVENTORY_PATH = "content/development/seis-big-tech-mcp-skill-inventory.json";
 export const NVIDIA_INSTALLED_INTEGRATIONS_PATH = "content/development/seis-nvidia-installed-integrations.json";
+export const AI_CORE_AGENT_PERMISSION_MATRIX_PATH = "content/development/seis-ai-core-agent-permission-matrix.json";
 export const AI_WORKFORCE_ASSIGNMENTS_PATH = "content/development/ai-workforce-assignments.json";
 export const AI_WORKFORCE_TRAINING_PATH = "content/development/seis-ai-workforce-training-plan.json";
 
 const EXPECTED_AI_WORKFORCE_TRUTH_BOUNDARY = "Workforce assignments are source-backed role and launcher metadata. Installed status is not live-model, authentication, provider-call, execution, or external-mutation evidence; Codex remains the only repository writer by default.";
 const EXPECTED_AI_WORKFORCE_TRAINING_TRUTH_BOUNDARY = "Repository-local training control plane only. It performs no live provider calls, no credential validation, no SSH, no deployment, no external dataset download, no cloud fine-tuning, and no claim that SEIS owns a trained foundation model.";
+const EXPECTED_AI_AGENT_PERMISSION_TRUTH_BOUNDARY = "Source-backed permission metadata only. Permission levels describe approval and evidence boundaries; they do not grant runtime authority, credentials, network, shell, provider, SSH, deployment, GitHub, training, or dataset access.";
 const AI_WORKFORCE_LAUNCHER_STATUSES = new Set([
   "installed",
   "route-defined-current-shell-missing-key",
@@ -151,6 +153,9 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
   const pluginMcpMesh = probeSeisPluginMcpMesh(repoRoot, { probeSafeTools: true });
   const applicationIntegration = readJson(repoRoot, AI_CORE_APPLICATION_INTEGRATION_PATH);
   const agentRegistry = buildAgentRegistrySnapshot(readJson(repoRoot, SECOND_BRAIN_SYSTEM_PATH));
+  const agentPermissionMatrixRegistry = buildAgentPermissionMatrixRegistry(
+    readJson(repoRoot, AI_CORE_AGENT_PERMISSION_MATRIX_PATH)
+  );
   const installedCapabilityInventory = buildInstalledCapabilityInventory(repoRoot);
   const workforceAssignmentRegistry = buildWorkforceAssignmentRegistry(
     readJson(repoRoot, AI_WORKFORCE_ASSIGNMENTS_PATH)
@@ -241,7 +246,7 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
     schemaVersion: "1.0.0",
     status: "local-readiness-linked",
     mode: "Local Demo",
-    purpose: "Bind provider, read-only router, unified plugin, managed agent, workforce assignment, workforce training, personal lane, and local MCP evidence directly into the static SEIS Core Command Center.",
+    purpose: "Bind provider, read-only router, unified plugin, managed agent, permission matrix, workforce assignment, workforce training, personal lane, and local MCP evidence directly into the static SEIS Core Command Center.",
     sourceOfTruth: {
       providerRegistry: AI_CORE_PROVIDER_REGISTRY_PATH,
       routerContract: READ_ONLY_ROUTER_CONTRACT_PATH,
@@ -249,6 +254,7 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
       mcpRuntimeContract: MCP_RUNTIME_CONTRACT_PATH,
       applicationIntegration: AI_CORE_APPLICATION_INTEGRATION_PATH,
       agentRegistry: SECOND_BRAIN_SYSTEM_PATH,
+      agentPermissionMatrix: AI_CORE_AGENT_PERMISSION_MATRIX_PATH,
       workforceAssignments: AI_WORKFORCE_ASSIGNMENTS_PATH,
       workforceTraining: AI_WORKFORCE_TRAINING_PATH,
       installedCapabilityInventory: {
@@ -304,6 +310,7 @@ export function buildAiCoreRuntimeSnapshot(repoRoot = process.cwd()) {
       scenarios,
     },
     agentRegistry,
+    agentPermissionMatrixRegistry,
     workforceAssignmentRegistry,
     workforceTrainingRegistry,
     installedCapabilityInventory,
@@ -494,6 +501,67 @@ function buildInstalledCapabilityInventory(repoRoot) {
       humanApprovalRequiredForActivation: true,
     },
     truthBoundary: "Installed AI, MCP, skill, CLI, and NVIDIA surfaces are source-backed metadata only. Activation, provider authentication, credential access, network calls, runtime execution, and external mutation remain blocked or human-approval gated.",
+  };
+}
+
+function buildAgentPermissionMatrixRegistry(source) {
+  const expectedLevels = ["read-only", "plan-only", "write-gated", "external-gated", "forbidden"];
+  const expectedStatuses = ["enabled", "enabled", "planned", "planned", "active"];
+  const expectedApprovalRequirements = [false, false, "task-scoped", true, "separate security and recovery plan required"];
+  if (source.id !== "seis-ai-core-agent-permission-matrix" ||
+      source.status !== "documented-fixture" ||
+      source.runtimeBoundary !== "status-and-plan-only" ||
+      source.qualityGate !== "npm run check:seis-ai-core-subagent-runtime-fixtures" ||
+      typeof source.purpose !== "string" || source.purpose.trim().length === 0) {
+    throw new Error("SEIS AI agent permission matrix identity or boundary is invalid");
+  }
+
+  const levels = Array.isArray(source.levels) ? source.levels : [];
+  if (levels.length !== expectedLevels.length) {
+    throw new Error("SEIS AI agent permission matrix must expose exactly five levels");
+  }
+
+  const publicLevels = levels.map((level, index) => {
+    if (level.level !== expectedLevels[index] ||
+        level.status !== expectedStatuses[index] ||
+        level.approvalRequired !== expectedApprovalRequirements[index] ||
+        !Array.isArray(level.actions) || level.actions.length === 0 ||
+        !Array.isArray(level.evidenceRequired) || level.evidenceRequired.length === 0 ||
+        [...level.actions, ...level.evidenceRequired].some((value) => typeof value !== "string" || value.trim().length === 0)) {
+      throw new Error(`SEIS AI permission level ${level.level || "unknown"} violates the governance matrix`);
+    }
+    return {
+      level: level.level,
+      status: level.status,
+      actions: level.actions,
+      approvalRequired: level.approvalRequired,
+      evidenceRequired: level.evidenceRequired,
+    };
+  });
+
+  const forbiddenWithoutSeparatePlan = Array.isArray(source.forbiddenWithoutSeparatePlan)
+    ? source.forbiddenWithoutSeparatePlan
+    : [];
+  if (forbiddenWithoutSeparatePlan.length !== 7 ||
+      new Set(forbiddenWithoutSeparatePlan).size !== forbiddenWithoutSeparatePlan.length ||
+      forbiddenWithoutSeparatePlan.some((value) => typeof value !== "string" || value.trim().length === 0) ||
+      !forbiddenWithoutSeparatePlan.includes("credential access") ||
+      !forbiddenWithoutSeparatePlan.includes("unrestricted shell execution")) {
+    throw new Error("SEIS AI permission matrix forbidden boundary is incomplete");
+  }
+
+  return {
+    id: source.id,
+    version: source.version,
+    status: "source-backed-metadata-only",
+    source: AI_CORE_AGENT_PERMISSION_MATRIX_PATH,
+    purpose: source.purpose,
+    qualityGate: source.qualityGate,
+    runtimeBoundary: source.runtimeBoundary,
+    enabledLevelCount: publicLevels.filter((level) => level.status === "enabled").length,
+    levels: publicLevels,
+    forbiddenWithoutSeparatePlan,
+    truthBoundary: EXPECTED_AI_AGENT_PERMISSION_TRUTH_BOUNDARY,
   };
 }
 

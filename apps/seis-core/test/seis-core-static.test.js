@@ -413,6 +413,48 @@ test("SEIS Command Center exposes the source-backed AI workforce training contro
   assert.match(html, /id="ai-training-role-detail"[^>]*aria-label="Selected AI workforce training role detail"/);
 });
 
+test("SEIS Command Center exposes the source-backed AI agent permission matrix", async () => {
+  const html = await readFile(new URL("index.html", root), "utf8");
+  const script = await readFile(new URL("script.js", root), "utf8");
+  const css = await readFile(new URL("styles.css", root), "utf8");
+  const snapshot = JSON.parse(await readFile(new URL("data/seis-ai-core-runtime-snapshot.json", root), "utf8"));
+  const matrix = snapshot.agentPermissionMatrixRegistry;
+
+  for (const id of [
+    "agent-permission-matrix-state",
+    "agent-permission-matrix-summary",
+    "agent-permission-level-list",
+    "agent-permission-forbidden-list",
+    "agent-permission-matrix-feedback"
+  ]) {
+    assert.match(html, new RegExp(`id="${id}"`));
+  }
+  for (const signal of [
+    "renderAIAgentPermissionMatrix",
+    "expectedAIAgentPermissionTruthBoundary",
+    "expectedAIAgentForbiddenActions",
+    "agentPermissionMatrixRegistry",
+    "runtime snapshot violates the AI agent permission matrix boundary"
+  ]) {
+    assert.match(script, new RegExp(signal));
+  }
+  for (const selector of [
+    "ai-permission-matrix-panel",
+    "ai-permission-matrix-summary",
+    "ai-permission-level",
+    "ai-permission-level-grid",
+    "ai-permission-forbidden"
+  ]) {
+    assert.match(css, new RegExp(`\\.${selector}`));
+  }
+  assert.equal(matrix.id, "seis-ai-core-agent-permission-matrix");
+  assert.equal(matrix.status, "source-backed-metadata-only");
+  assert.equal(matrix.enabledLevelCount, 2);
+  assert.equal(matrix.levels.length, 5);
+  assert.equal(matrix.forbiddenWithoutSeparatePlan.length, 7);
+  assert.match(matrix.truthBoundary, /do not grant runtime authority/);
+});
+
 
 test("SEIS Command Center covers the required ecosystem operating domains", async () => {
   const script = await readFile(new URL("script.js", root), "utf8");

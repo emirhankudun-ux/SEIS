@@ -315,6 +315,15 @@ requirements, and zero-key Local Demo runtime boundary. The registry is an
 application-layer intelligence profile; it is not a foundation model, trained
 model, autonomous write runtime, provider-ownership claim, or release approval.
 
+The native and web Command Center panels also read the canonical
+`content/development/seis-ai-core-agent-permission-matrix.json` registry. The
+generated web runtime snapshot mirrors its five permission levels, two enabled
+safe levels, status-and-plan-only boundary, and seven forbidden actions that
+require a separate security and recovery plan. The matrix is source-backed
+permission metadata only: it describes approval and evidence boundaries, but
+does not grant runtime authority, credentials, network, shell, provider, SSH,
+deployment, GitHub, training, or dataset access.
+
 The panel also reads
 `content/development/seis-ai-core-subagent-operating-model.json`. It exposes
 the five permission levels, five sub-agent lanes, fourteen evidence

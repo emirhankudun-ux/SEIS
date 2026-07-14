@@ -168,6 +168,28 @@ test("SEIS Core rejects an unsafe AI workforce training snapshot", async () => {
   assert.match(window.document.querySelector("#ai-training-registry-feedback")?.textContent || "", /unavailable/i);
 });
 
+test("SEIS Core renders and fail-closes the AI agent permission matrix", async () => {
+  const { window } = await boot();
+  window.document.querySelector('[data-view="agents"]')?.click();
+
+  assert.equal(window.document.querySelector("#agent-permission-matrix-state")?.textContent, "Source-backed");
+  assert.equal(window.document.querySelectorAll("[data-agent-permission-level]").length, 5);
+  assert.equal(window.document.querySelectorAll("#agent-permission-forbidden-list li").length, 7);
+  assert.match(window.document.querySelector("#agent-permission-matrix-summary")?.textContent || "", /Enabled now\s*2/);
+  assert.match(window.document.querySelector("#agent-permission-matrix-feedback")?.textContent || "", /do not grant runtime authority/i);
+
+  const { window: unsafeWindow } = await boot({
+    snapshotTransform(snapshot) {
+      snapshot.agentPermissionMatrixRegistry.enabledLevelCount = 3;
+      return snapshot;
+    }
+  });
+  unsafeWindow.document.querySelector('[data-view="agents"]')?.click();
+  assert.equal(unsafeWindow.document.querySelector("#agent-permission-matrix-state")?.textContent, "Fallback");
+  assert.match(unsafeWindow.document.querySelector("#ai-core-runtime-feedback")?.textContent || "", /AI agent permission matrix boundary/i);
+  assert.equal(unsafeWindow.document.querySelectorAll("[data-agent-permission-level]").length, 0);
+});
+
 test("God Mode mission submission records a decision-only route", async () => {
   const { window } = await boot();
   window.document.querySelector('[data-view="godmode"]')?.click();
