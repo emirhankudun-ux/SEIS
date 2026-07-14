@@ -292,6 +292,20 @@
     ],
     "completion_rule": "A node is not complete until each required field is either evidenced or explicitly marked unavailable with an unblock condition."
   },
+  "final_enterprise_rule": {
+    "required_strengths": [
+      "Architecture",
+      "Knowledge",
+      "Security",
+      "Maintainability",
+      "Accessibility",
+      "Performance",
+      "Human Experience",
+      "Long-Term Sustainability"
+    ],
+    "prohibited_optimization": "Never optimize only for the current iteration.",
+    "long_term_rule": "Always optimize for the long-term evolution of the SEIS ecosystem."
+  },
   "implementation_boundary": {
     "registry_status_means": "The term is named, scoped, owned, and ready for evidence-backed decomposition.",
     "not_claimed": [

@@ -25,6 +25,7 @@
     "principles",
     "domains",
     "universal_node_contract",
+    "final_enterprise_rule",
     "implementation_boundary"
   ],
   "properties": {
@@ -63,6 +64,19 @@
       "properties": {
         "required_fields": {"type": "array", "minItems": 9, "uniqueItems": true, "items": {"type": "string", "minLength": 2}},
         "completion_rule": {"type": "string", "minLength": 20}
+      }
+    },
+    "final_enterprise_rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required_strengths", "prohibited_optimization", "long_term_rule"],
+      "properties": {
+        "required_strengths": {
+          "type": "array",
+          "const": ["Architecture", "Knowledge", "Security", "Maintainability", "Accessibility", "Performance", "Human Experience", "Long-Term Sustainability"]
+        },
+        "prohibited_optimization": {"const": "Never optimize only for the current iteration."},
+        "long_term_rule": {"const": "Always optimize for the long-term evolution of the SEIS ecosystem."}
       }
     },
     "implementation_boundary": {

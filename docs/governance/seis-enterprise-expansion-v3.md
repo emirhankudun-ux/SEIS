@@ -134,6 +134,13 @@ Long-term records must include an owner, assumptions, dependencies, confidence,
 review cadence, and a revision or retirement rule. A horizon is a planning
 boundary, not an assertion of autonomous execution over that period.
 
+## Final Enterprise Rule
+
+Every future expansion of SEIS must strengthen Architecture, Knowledge,
+Security, Maintainability, Accessibility, Performance, Human Experience, and
+Long-Term Sustainability. Never optimize only for the current iteration.
+Always optimize for the long-term evolution of the SEIS ecosystem.
+
 ## Completion Boundary
 
 The Enterprise Expansion V3 registry is complete as a specification when all

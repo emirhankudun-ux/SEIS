@@ -63,6 +63,7 @@ const expectedNodeFields = [
 ];
 const expectedHorizonLabels = ["1 Month", "3 Months", "6 Months", "12 Months", "24 Months", "36 Months", "60 Months", "10 Years"];
 const expectedForecastLabels = ["Technology Forecast", "Architecture Forecast", "AI Forecast", "Platform Forecast", "Research Forecast", "Innovation Forecast", "Civilization Forecast"];
+const expectedFinalStrengths = ["Architecture", "Knowledge", "Security", "Maintainability", "Accessibility", "Performance", "Human Experience", "Long-Term Sustainability"];
 const expectedNotClaimed = [
   "production implementation of every listed term",
   "live observability or timeline ingestion",
@@ -158,6 +159,9 @@ for (const [domainId, expectedLabels] of expectedDomains) {
 const nodeFields = registry.universal_node_contract?.required_fields || [];
 requireValue(JSON.stringify(nodeFields) === JSON.stringify(expectedNodeFields), `${registryPath} universal node fields are incomplete or reordered`);
 requireValue(typeof registry.universal_node_contract?.completion_rule === "string", `${registryPath} must define a node completion rule`);
+requireValue(JSON.stringify(registry.final_enterprise_rule?.required_strengths) === JSON.stringify(expectedFinalStrengths), `${registryPath} final enterprise strengths are incomplete or reordered`);
+requireValue(registry.final_enterprise_rule?.prohibited_optimization === "Never optimize only for the current iteration.", `${registryPath} must prohibit current-iteration-only optimization`);
+requireValue(registry.final_enterprise_rule?.long_term_rule === "Always optimize for the long-term evolution of the SEIS ecosystem.", `${registryPath} must preserve the long-term evolution rule`);
 requireValue(JSON.stringify(registry.implementation_boundary?.not_claimed) === JSON.stringify(expectedNotClaimed), `${registryPath} implementation boundary must preserve explicit non-claims`);
 requireValue(JSON.stringify(domains.find((domain) => domain.id === "long-term-evolution")?.horizons) === JSON.stringify(expectedHorizonLabels), `${registryPath} long-term horizons are invalid`);
 requireValue(JSON.stringify(domains.find((domain) => domain.id === "long-term-evolution")?.forecasts) === JSON.stringify(expectedForecastLabels), `${registryPath} long-term forecasts are invalid`);

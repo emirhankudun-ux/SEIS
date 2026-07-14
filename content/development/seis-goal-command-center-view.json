@@ -1155,13 +1155,13 @@
         "supportsGoalIds": [
           "SEIS-GOAL-003"
         ],
-        "summary": "The Enterprise Expansion V3 brief is represented as an eight-domain, public-safe, specification-only registry with exact term sets, universal node fields, long-term horizons, forecast lanes, and explicit implementation non-claims.",
+        "summary": "The Enterprise Expansion V3 brief is represented as an eight-domain, public-safe, specification-only registry with exact term sets, universal node fields, long-term horizons, forecast lanes, an exact Final Enterprise Rule, and explicit implementation non-claims.",
         "limitations": [
           "Does not implement every listed capability.",
           "Does not run live observability, knowledge-graph synchronization, providers, models, plugins, MCP servers, background agents, deployment, or enterprise release operations.",
           "Does not resolve the pre-existing repository hygiene blocker."
         ],
-        "nextAction": "Keep Enterprise Expansion V3 terms specification-only and create separate implementation Goals only with evidence-backed scope."
+        "nextAction": "Create the focused Final Enterprise Rule commit, record its short hash, regenerate the Command Center view if needed, and rerun all focused validators."
       }
     ],
     "readinessConnections": [
