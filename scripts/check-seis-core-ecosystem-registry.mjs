@@ -102,8 +102,8 @@ if (registry) {
     mcpResources: 30,
     mcpPrompts: 3,
     productModules: 18,
-    dataContracts: 18,
-    validatedDataContracts: 16,
+    dataContracts: 19,
+    validatedDataContracts: 17,
     designComponents: 12,
     validatedDesignComponents: 12,
     managedAgentRoles: 13

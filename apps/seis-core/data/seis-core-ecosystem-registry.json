@@ -39,8 +39,8 @@
     "mcpResources": 30,
     "mcpPrompts": 3,
     "productModules": 18,
-    "dataContracts": 18,
-    "validatedDataContracts": 16,
+    "dataContracts": 19,
+    "validatedDataContracts": 17,
     "designComponents": 12,
     "validatedDesignComponents": 12,
     "managedAgentRoles": 13
@@ -1115,8 +1115,8 @@
         "plugins/seis-ai-agent/skills/seis-data/SKILL.md"
       ],
       "dataSystem": {
-        "contractCount": 18,
-        "validatedContractCount": 16,
+        "contractCount": 19,
+        "validatedContractCount": 17,
         "scaffoldedContractCount": 2,
         "source": "content/development/seis-data-schema-registry.json"
       }
