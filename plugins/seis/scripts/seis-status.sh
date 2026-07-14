@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-WORKSPACE_ROOT="${WORKSPACE_ROOT:-/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github}"
-PLUGIN_ROOT="${PLUGIN_ROOT:-/Users/emirhankudun/plugins/seis}"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+WORKSPACE_ROOT="${WORKSPACE_ROOT:-$(cd -- "${SCRIPT_DIR}/../../.." && pwd)}"
+PLUGIN_ROOT="${PLUGIN_ROOT:-$(cd -- "${SCRIPT_DIR}/.." && pwd)}"
 MARKETPLACE_JSON="${MARKETPLACE_JSON:-/Users/emirhankudun/.agents/plugins/marketplace.json}"
 SEIS_REPO="${SEIS_REPO:-emirhankudun-ux/SEIS}"
 SEIS_BRANCH="${SEIS_BRANCH:-UIXAppTTR}"

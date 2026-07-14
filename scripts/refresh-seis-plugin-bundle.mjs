@@ -31,7 +31,7 @@ Options:
 }
 
 const sourceRoot = resolvePath(args.source || ROOT);
-const localRoot = resolveLocalPluginRoot(args.local);
+const localRoot = resolveLocalPluginRoot(args.local, sourceRoot);
 const marketplace = args.marketplace || "personal";
 const plugin = args.plugin || "seis";
 
@@ -161,7 +161,7 @@ function resolvePath(candidate) {
   return path.resolve(candidate);
 }
 
-function resolveLocalPluginRoot(explicit) {
+function resolveLocalPluginRoot(explicit, sourceRoot) {
   if (explicit) {
     return resolvePath(explicit);
   }
@@ -173,9 +173,10 @@ function resolveLocalPluginRoot(explicit) {
 
   const fallbackCandidates = [
     ...explicitCandidates,
-    "/Users/emirhankudun/plugins/seis",
-    path.join(process.env.HOME || "", "Library", "Mobile Documents", "com~apple~CloudDocs", "Github", "SEIS", "SEIS", "plugins", "seis"),
+    path.join(sourceRoot, "plugins", "seis"),
     path.join(process.cwd(), "plugins", "seis"),
+    path.join(process.env.HOME || "", "Library", "Mobile Documents", "com~apple~CloudDocs", "Github", "SEIS", "SEIS", "plugins", "seis"),
+    "/Users/emirhankudun/plugins/seis",
   ].filter(Boolean);
 
   for (const candidate of fallbackCandidates) {
@@ -184,5 +185,5 @@ function resolveLocalPluginRoot(explicit) {
     }
   }
 
-  return resolvePath("/Users/emirhankudun/plugins/seis");
+  return path.join(sourceRoot, "plugins", "seis");
 }
