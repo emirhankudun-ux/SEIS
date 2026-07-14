@@ -47,6 +47,7 @@
         "projects",
         "appInstalls",
         "providerStatus",
+        "providerEnvironmentValidation",
         "auditLogs",
         "agentTasks"
       ],

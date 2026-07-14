@@ -8,6 +8,7 @@ const failures = [];
 
 const paths = {
   contract: "content/development/seis-fullstack-contract.json",
+  providerEnvironmentValidator: "packages/seis-ai/src/provider/provider-env-validation.mjs",
   server: "server/node/static-server.mjs",
   serverSmoke: "scripts/check-seis-fullstack-server-smoke.mjs",
   noServerFallbackSmoke: "scripts/check-seis-fullstack-no-server-fallback-smoke.mjs",
@@ -106,6 +107,19 @@ if (contract) {
     "real credential handling"
   ], "serverBoundary.approvalRequiredFor");
 
+  const environmentValidation = contract.providerEnvironmentValidation;
+  ensure(environmentValidation?.id === "seis-ai-core-provider-environment-validation", "provider environment validation id mismatch");
+  ensure(environmentValidation?.schemaVersion === "1.0.0", "provider environment validation schemaVersion mismatch");
+  ensure(environmentValidation?.mode === "server-only-presence-and-shape", "provider environment validation mode mismatch");
+  ensure(environmentValidation?.source === paths.providerEnvironmentValidator, "provider environment validation source mismatch");
+  ensure(environmentValidation?.secretValuesReturned === false, "provider environment validation must not return secret values");
+  ensure(environmentValidation?.secretValuesLogged === false, "provider environment validation must not log secret values");
+  ensure(environmentValidation?.credentialAuthenticationPerformed === false, "provider environment validation must not authenticate credentials");
+  ensure(environmentValidation?.networkCalled === false, "provider environment validation must not call the network");
+  ensure(environmentValidation?.externalMutationPerformed === false, "provider environment validation must not mutate external systems");
+  ensure(environmentValidation?.liveRoutingEnabled === false, "provider environment validation must not enable live routing");
+  ensure(String(environmentValidation?.statusBoundary || "").includes("non-routable"), "provider environment validation must preserve non-routable missing and disabled states");
+
   const endpoints = Array.isArray(contract.publicEndpoints) ? contract.publicEndpoints : [];
   ensureArrayIncludesAll(endpoints.map((endpoint) => endpoint.route), requiredRoutes, "publicEndpoints.route");
   ensureArrayIncludesAll(endpoints.map((endpoint) => endpoint.sourceKey), [...requiredSourceKeys, "self"], "publicEndpoints.sourceKey");
@@ -171,6 +185,8 @@ for (const route of requiredRoutes) {
 }
 ensure(server.includes("buildFullstackPayload"), "static server must expose buildFullstackPayload");
 ensure(server.includes("seis-fullstack-contract.json"), "static server must read seis-fullstack-contract.json");
+ensure(server.includes("validateProviderEnvironment"), "static server must use the provider environment validator");
+ensure(server.includes("environmentValidation"), "static server must expose redacted provider environment validation evidence");
 
 ensure(
   packageJson?.scripts?.["check:seis-fullstack-contract"] === "node scripts/check-seis-fullstack-contract.mjs",
@@ -197,7 +213,7 @@ if (schemaRecord) {
   ensure((schemaRecord.validationCommands || []).includes("npm run check:seis-fullstack-contract"), "schema record missing validator command");
   ensure((schemaRecord.validationCommands || []).includes("npm run check:seis-fullstack-server-smoke"), "schema record missing server smoke command");
   ensure((schemaRecord.validationCommands || []).includes("npm run check:seis-fullstack-no-server-fallback-smoke"), "schema record missing no-server fallback smoke command");
-  ensureArrayIncludesAll(schemaRecord.requiredTopLevelKeys, ["schemaVersion", "id", "updated", "publicEndpoints", "session", "providerStatus", "agentTasks"], "schemaRecord.requiredTopLevelKeys");
+  ensureArrayIncludesAll(schemaRecord.requiredTopLevelKeys, ["schemaVersion", "id", "updated", "publicEndpoints", "session", "providerStatus", "providerEnvironmentValidation", "agentTasks"], "schemaRecord.requiredTopLevelKeys");
 }
 
 for (const [text, label] of [

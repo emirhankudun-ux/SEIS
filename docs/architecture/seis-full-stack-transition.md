@@ -45,7 +45,7 @@ The first server/API slice is read-only and fixture-backed:
 | `/_server/capabilities` | Frontend/backend/AI/cloud/SSH/deployment capability states. | read-only |
 | `/_server/projects` | Demo project/workspace records. | read-only |
 | `/_server/app-installs` | Store install/update/enable state records. | read-only |
-| `/_server/provider-status` | Provider status rows without credential values. | read-only |
+| `/_server/provider-status` | Provider status rows without credential values, plus a redacted server-only environment presence/shape report. | read-only |
 | `/_server/audit-log` | Redacted Local Demo audit events. | read-only |
 | `/_server/agent-tasks` | Dry-run agent task records and approval gates. | read-only |
 | `/_server/fullstack-contract` | Complete contract payload for validation. | read-only |
@@ -61,9 +61,10 @@ browser-smokes Desktop and the Website hub.
 
 ## Security Boundary
 
-Backend-only means provider credentials may only be read by an approved server
-runtime in a later implementation. The current contract does not read provider
-credentials, does not call providers, and does not serialize secrets.
+Backend-only means provider credentials may only be handled by an approved server
+runtime. The current provider-status route performs presence and shape inspection
+through the source validator, but does not authenticate credentials, call
+providers, perform network health checks, or serialize secret values.
 
 Forbidden in browser storage:
 
@@ -94,9 +95,11 @@ Provider states must remain explicit:
 - `Error`
 
 `Missing Key` is not an error. SEIS must not silently switch to a cloud provider.
-Local-only mode must not route to a cloud provider. Live provider use requires
-backend-only env validation, a provider health check, redacted audit logging, and
-human approval before any public readiness claim.
+Local-only mode must not route to a cloud provider. The provider-status route now
+exposes backend-only environment presence and shape evidence without enabling
+live use. Live provider use still requires a separate adapter, a provider health
+check, redacted audit logging, and human approval before any public readiness
+claim.
 
 ## Agent Policy
 
@@ -113,8 +116,8 @@ deploy, SSH, push, merge, or approve destructive actions themselves.
 3. Keep `npm run check:seis-fullstack-no-server-fallback-smoke` passing so the
    product remains usable without the API server.
 4. Add database/auth only after approval and after the static demo still passes.
-5. Add backend-only provider health checks only after the secret boundary is
-   validated and the user approves live provider calls.
+5. Add provider adapters and backend-only provider health checks only after the
+   secret boundary is validated and the user approves live provider calls.
 
 ## Validation
 

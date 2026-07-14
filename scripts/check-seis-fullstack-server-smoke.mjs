@@ -66,6 +66,17 @@ try {
     ensure(payload.contractId === "seis-fullstack-contract", `${endpoint.route} contractId mismatch`);
     ensure(payload.sourceKey === endpoint.sourceKey, `${endpoint.route} sourceKey mismatch`);
     ensure(payload.data !== undefined, `${endpoint.route} data missing`);
+    if (endpoint.sourceKey === "providerStatus") {
+      const validation = payload.environmentValidation;
+      ensure(validation?.id === "seis-ai-core-provider-environment-validation", `${endpoint.route} must expose provider environment validation id`);
+      ensure(["validated-no-network", "blocked-unsafe-environment", "unavailable"].includes(validation?.status), `${endpoint.route} must expose an honest non-network validation status`);
+      ensure(validation?.secretValuesReturned === false, `${endpoint.route} must not return secret values`);
+      ensure(validation?.secretValuesLogged === false, `${endpoint.route} must not log secret values`);
+      ensure(validation?.credentialAuthenticationPerformed === false, `${endpoint.route} must not authenticate credentials`);
+      ensure(validation?.networkCalled === false, `${endpoint.route} must not call the network`);
+      ensure(validation?.externalMutationPerformed === false, `${endpoint.route} must not mutate external systems`);
+      ensure(validation?.liveRoutingEnabled === false, `${endpoint.route} must not enable live routing`);
+    }
     summaries.push({
       route: endpoint.route,
       sourceKey: payload.sourceKey,

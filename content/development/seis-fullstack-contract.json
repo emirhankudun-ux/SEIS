@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "seis-fullstack-contract",
-  "updated": "2026-06-24",
+  "updated": "2026-07-14",
   "status": "validated-contract",
   "mode": "local-demo-no-key-fullstack-foundation",
   "qualityGate": "npm run check:seis-fullstack-contract",
@@ -57,7 +57,7 @@
     "dependencyPolicy": "no-new-dependencies-first",
     "writePolicy": "read-only endpoints for first contract slice",
     "storagePolicy": "fixture-backed Local Demo JSON until database/auth approval",
-    "secretPolicy": "server-only environment variables may be detected later, but values must never be serialized",
+    "secretPolicy": "server-only environment presence and shape may be inspected through a redacted validator, but values must never be serialized or authenticated",
     "approvalRequiredFor": [
       "new runtime dependencies",
       "external database",
@@ -68,6 +68,20 @@
       "GitHub write actions",
       "real credential handling"
     ]
+  },
+  "providerEnvironmentValidation": {
+    "id": "seis-ai-core-provider-environment-validation",
+    "schemaVersion": "1.0.0",
+    "source": "packages/seis-ai/src/provider/provider-env-validation.mjs",
+    "mode": "server-only-presence-and-shape",
+    "status": "server-runtime-derived-redacted-report",
+    "secretValuesReturned": false,
+    "secretValuesLogged": false,
+    "credentialAuthenticationPerformed": false,
+    "networkCalled": false,
+    "externalMutationPerformed": false,
+    "liveRoutingEnabled": false,
+    "statusBoundary": "Presence and shape only; Missing Key and Disabled providers remain non-routable."
   },
   "publicEndpoints": [
     {

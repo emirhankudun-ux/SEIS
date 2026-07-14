@@ -2,6 +2,8 @@ import { createReadStream, existsSync, readFileSync, statSync } from "node:fs";
 import { createServer } from "node:http";
 import { extname, join, normalize, resolve } from "node:path";
 
+import { validateProviderEnvironment } from "../../packages/seis-ai/src/provider/provider-env-validation.mjs";
+
 const root = resolve(process.env.SEIS_STATIC_ROOT || "dist/seis-static");
 const workspaceRoot = resolve(process.env.SEIS_WORKSPACE_ROOT || ".");
 const host = process.env.HOST || "127.0.0.1";
@@ -283,8 +285,32 @@ function buildFullstackPayload(sourceKey) {
     source: "node-server",
     contractId: contract.id,
     sourceKey,
-    data: contract[sourceKey]
+    data: contract[sourceKey],
+    ...(sourceKey === "providerStatus"
+      ? { environmentValidation: buildProviderEnvironmentValidation() }
+      : {})
   };
+}
+
+function buildProviderEnvironmentValidation() {
+  try {
+    return validateProviderEnvironment(workspaceRoot);
+  } catch (_error) {
+    return {
+      id: "seis-ai-core-provider-environment-validation",
+      schemaVersion: "1.0.0",
+      mode: "server-only-presence-and-shape",
+      status: "unavailable",
+      ok: false,
+      secretValuesReturned: false,
+      secretValuesLogged: false,
+      credentialAuthenticationPerformed: false,
+      networkCalled: false,
+      externalMutationPerformed: false,
+      liveRoutingEnabled: false,
+      error: "provider_environment_validation_unavailable"
+    };
+  }
 }
 
 function readFullstackContract() {
