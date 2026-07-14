@@ -78,6 +78,20 @@ test("SEIS Core rejects incomplete plugin MCP lifecycle evidence", async () => {
   assert.match(window.document.querySelector("#ai-core-runtime-feedback")?.textContent || "", /plugin MCP safe-probe boundary/i);
 });
 
+test("SEIS Core rejects a non-allowlisted plugin MCP tool", async () => {
+  const { window } = await boot({
+    snapshotTransform(snapshot) {
+      const cloudServer = snapshot.pluginMesh.mcpMesh.servers.find((server) => server.serverId === "seis-cloud");
+      cloudServer.safeToolProbe.requestedTool = "seis_cloud_plan";
+      return snapshot;
+    }
+  });
+
+  window.document.querySelector('[data-view="godmode"]')?.click();
+  assert.equal(window.document.querySelector("#ai-core-runtime-state")?.textContent, "Fallback");
+  assert.match(window.document.querySelector("#ai-core-runtime-feedback")?.textContent || "", /plugin MCP safe-probe boundary/i);
+});
+
 test("God Mode mission submission records a decision-only route", async () => {
   const { window } = await boot();
   window.document.querySelector('[data-view="godmode"]')?.click();

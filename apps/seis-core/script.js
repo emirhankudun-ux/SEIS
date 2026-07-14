@@ -1,5 +1,14 @@
 const storageKey = "seis-core-state-v1";
 
+const expectedPluginMcpSafeToolNames = Object.freeze({
+  "seis-ai-agent": "seis_ai_agent_status",
+  seis: "seis_repos_bridge_status",
+  "seis-cloud": "seis_cloud_status",
+  "seis-code": "seis_code_status",
+  "seis-design": "seis_design_status",
+  "seis-data": "seis_data_status"
+});
+
 function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>"']/g, (character) => ({
     "&": "&amp;",
@@ -3144,6 +3153,7 @@ async function loadSeisAiCoreRuntimeSnapshot() {
         pluginMcpBoundary.externalMutationPerformed !== false ||
         pluginMcpBoundary.safeToolCallsPerformed !== true ||
         pluginMcpMesh.servers.some((server) => server.status !== "probe-verified" ||
+          expectedPluginMcpSafeToolNames[server.serverId || server.id] !== server.safeToolProbe?.requestedTool ||
           server.safeToolProbe?.mode !== "stdio-safe-tool-call" ||
           server.safeToolProbe?.status !== "verified" ||
           server.safeToolProbe?.error !== null ||
