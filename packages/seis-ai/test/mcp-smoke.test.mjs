@@ -339,6 +339,111 @@ describe("seis-mcp stdio smoke", () => {
     assert.ok(payload.publicStates.includes("Missing Key"));
   });
 
+  it("reads the SEIS AI Core permission and runtime evidence resources through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "resources/read",
+        params: { uri: "seis://ai/agent-permission-matrix.json" },
+      },
+      {
+        jsonrpc: "2.0",
+        id: 3,
+        method: "resources/read",
+        params: { uri: "seis://ai/execution-ledger-fixture.json" },
+      },
+      {
+        jsonrpc: "2.0",
+        id: 4,
+        method: "resources/read",
+        params: { uri: "seis://ai/subagent-runtime-fixtures.json" },
+      },
+    ]);
+
+    const permissionResource = responses.get(2);
+    assert.ok(!permissionResource.error, `permission resource errored: ${JSON.stringify(permissionResource.error)}`);
+    assert.equal(permissionResource.result.contents[0].uri, "seis://ai/agent-permission-matrix.json");
+    const permission = JSON.parse(permissionResource.result.contents[0].text);
+    assert.equal(permission.id, "seis-ai-core-agent-permission-matrix");
+    assert.equal(permission.runtimeBoundary, "status-and-plan-only");
+    assert.deepEqual(permission.levels.map((level) => level.level), [
+      "read-only",
+      "plan-only",
+      "write-gated",
+      "external-gated",
+      "forbidden",
+    ]);
+    assert.deepEqual(permission.levels.filter((level) => level.status === "enabled").map((level) => level.level), [
+      "read-only",
+      "plan-only",
+    ]);
+    assert.deepEqual(permission.forbiddenWithoutSeparatePlan, [
+      "credential access",
+      "private key handling",
+      "history rewrite",
+      "public visibility change",
+      "model training",
+      "dataset ingestion",
+      "unrestricted shell execution",
+    ]);
+
+    const ledgerResource = responses.get(3);
+    assert.ok(!ledgerResource.error, `ledger resource errored: ${JSON.stringify(ledgerResource.error)}`);
+    assert.equal(ledgerResource.result.contents[0].uri, "seis://ai/execution-ledger-fixture.json");
+    const ledger = JSON.parse(ledgerResource.result.contents[0].text);
+    assert.equal(ledger.id, "seis-ai-core-execution-ledger-fixture");
+    assert.equal(ledger.mode, "append-only-planned");
+    assert.equal(ledger.writerPolicy, "single-writer");
+    assert.equal(ledger.requiredFields.length, 19);
+    assert.deepEqual(ledger.recordsForbidden, [
+      "secret values",
+      "private keys",
+      "raw provider errors",
+      "unapproved external mutation",
+    ]);
+    assert.equal(ledger.sampleRecords.length, 1);
+    assert.equal(ledger.sampleRecords[0].dryRunOnly, true);
+    assert.equal(ledger.sampleRecords[0].realExecutionBlocked, true);
+    assert.equal(ledger.sampleRecords[0].externalMutationPerformed, false);
+    assert.equal(ledger.sampleRecords[0].fileMutationPerformed, false);
+    assert.equal(ledger.sampleRecords[0].secretValuesStored, false);
+
+    const runtimeResource = responses.get(4);
+    assert.ok(!runtimeResource.error, `runtime fixtures resource errored: ${JSON.stringify(runtimeResource.error)}`);
+    assert.equal(runtimeResource.result.contents[0].uri, "seis://ai/subagent-runtime-fixtures.json");
+    const runtimeFixtures = JSON.parse(runtimeResource.result.contents[0].text);
+    assert.equal(runtimeFixtures.id, "seis-ai-core-subagent-runtime-fixtures");
+    assert.equal(runtimeFixtures.runtimeBoundary.currentLevel, "status-and-plan-only");
+    assert.equal(runtimeFixtures.runtimeBoundary.backgroundAutomation, "disabled");
+    assert.equal(runtimeFixtures.runtimeBoundary.writeExecution, "disabled");
+    assert.equal(runtimeFixtures.runtimeBoundary.credentialAccess, "forbidden");
+    assert.equal(runtimeFixtures.runtimeBoundary.externalMutation, "requires-explicit-human-approval");
+    assert.deepEqual(runtimeFixtures.fixtures.map((fixture) => fixture.id), [
+      "role-schema",
+      "permission-matrix",
+      "dry-run-task-queue",
+      "cancellation-fixture",
+      "approval-fixture",
+      "redaction-fixture",
+      "execution-ledger-fixture",
+    ]);
+    assert.equal(runtimeFixtures.executionLedgerFixture.mode, "append-only-planned");
+    assert.equal(runtimeFixtures.executionLedgerFixture.sampleRecord.status, "cancelled");
+    assert.equal(runtimeFixtures.executionLedgerFixture.sampleRecord.externalMutationPerformed, false);
+  });
+
   it("reads the executable SEIS AI Core read-only router resource through the protocol", async () => {
     const responses = await rpcSession([
       {
