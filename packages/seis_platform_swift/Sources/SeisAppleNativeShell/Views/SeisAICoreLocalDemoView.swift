@@ -63,6 +63,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var bulkAgentPlanStatus: String?
     @Published private(set) var routeDecision: SeisAIRouteDecision?
     @Published private(set) var localLoopbackReadiness: SeisAILocalLoopbackReadiness?
+    @Published var localLoopbackModelIdentifier = "ollama-local"
     @Published private(set) var evidence: [SeisAIExecutionEvidence] = []
     @Published private(set) var evidencePersistenceState: SeisAIExecutionEvidencePersistenceState = .memoryOnly
     @Published private(set) var isPlanning = false
@@ -771,7 +772,14 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         isCheckingLocalLoopback = true
         Task {
             do {
-                let adapter = try SeisAILocalLoopbackProviderAdapter()
+                let modelIdentifier = localLoopbackModelIdentifier.trimmingCharacters(in: .whitespacesAndNewlines)
+                guard !modelIdentifier.isEmpty else {
+                    localLoopbackReadiness = nil
+                    statusMessage = "Enter a local model identifier before checking; no prompt was sent."
+                    isCheckingLocalLoopback = false
+                    return
+                }
+                let adapter = try SeisAILocalLoopbackProviderAdapter(modelIdentifier: modelIdentifier)
                 let readiness = await adapter.preflight()
                 localLoopbackReadiness = readiness
                 statusMessage = "Local loopback preflight: \(readiness.status.rawValue), \(readiness.modelCount) model(s); no prompt was sent."
@@ -3467,6 +3475,12 @@ struct SeisAICoreLocalDemoView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
+
+            TextField("Model identifier", text: $model.localLoopbackModelIdentifier)
+                .textFieldStyle(.roundedBorder)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+                .accessibilityLabel("Local model identifier")
 
             HStack {
                 Text("Read-only GET /api/tags. No prompt, credentials, model generation, or mutation.")
