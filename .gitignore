@@ -234,6 +234,12 @@ schemas/*
 !schemas/project-ecosystem.schema.json
 !schemas/repository-ownership.schema.json
 !schemas/ecosystem-goal.schema.json
+!schemas/goal-tracking-mega-prompt-pack.schema.json
+
+# Reviewed Goal Tracking prompt-pack contracts. The 5M generated corpus stays
+# under ignored build/ and is never added to Git.
+!prompts/goal-tracking-update-v1/pack.json
+!prompts/goal-tracking-update-v1/expected-build.json
 
 # Local accidental artifacts from monorepo preparation
 SEİS/

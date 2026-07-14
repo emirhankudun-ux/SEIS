@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "promptId": "seis-goal-tracking-update-v1",
+  "targetCodePoints": 5000000,
+  "outputSha256": "574af3e6e17b22276550d04da908a28fc5164f6c4ccce44db82772084c53d359",
+  "sourceSetSha256": "17cd996d8ee68c755750f0ad76953da1320978c3d1817a43b06549286d75220f",
+  "compilerSetSha256": "85b2a4289ff14b442f60ecc5b451ab05d1d72fc7cd577cdd67416efa27be7313",
+  "manifestSha256": "1c20765e59b710ac8579d75397eefd69771eaefec792ef96607211b5510317c9",
+  "chunkCount": 51
+}
