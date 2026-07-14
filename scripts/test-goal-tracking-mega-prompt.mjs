@@ -24,11 +24,14 @@ import {
   assertValidUnicode,
   compileGoalTrackingPrompt,
   countCodePoints,
+  decodeUtf8,
   loadPack,
   normalizePromptText,
+  scanParsedPublicSafeValue,
   scanPublicSafeText,
   solveSemanticExactFit,
   validateGoalDimensionContract,
+  validatePackContract,
   verifyExpectedBuild,
   verifyWrittenBuild,
   writeBuild,
@@ -49,7 +52,19 @@ test('Unicode contract counts normalized scalar values and rejects noncanonical 
   assert.equal(normalized.length, 5);
   assert.throws(() => assertValidUnicode('\ud800', 'fixture'), /unpaired-high-surrogate/u);
   assert.throws(() => scanPublicSafeText('line\r\n', 'fixture'), /noncanonical-line-ending/u);
+  for (const separator of ['\u2028', '\u2029']) {
+    assert.throws(
+      () => scanPublicSafeText(`line${separator}break\n`, 'fixture'),
+      /prohibited-non-lf-line-separator/u,
+    );
+  }
   assert.throws(() => scanPublicSafeText('\ufeffprefixed\n', 'fixture'), /prohibited-utf8-bom/u);
+  const bomEncoded = Buffer.from([0xef, 0xbb, 0xbf, 0x70, 0x72, 0x65, 0x66, 0x69, 0x78, 0x0a]);
+  assert.throws(
+    () => scanPublicSafeText(decodeUtf8(bomEncoded, 'fixture'), 'fixture'),
+    /prohibited-utf8-bom/u,
+  );
+  assert.throws(() => decodeUtf8(Buffer.from([0xff]), 'fixture'), /invalid-utf8/u);
   assert.throws(
     () => scanPublicSafeText('hidden\u001bcontrol\n', 'fixture'),
     /prohibited-control-character/u,
@@ -58,10 +73,36 @@ test('Unicode contract counts normalized scalar values and rejects noncanonical 
     () => scanPublicSafeText('unsafe\u202etext\n', 'fixture'),
     /prohibited-bidi-control/u,
   );
+  for (const value of [
+    '\u200b',
+    '\u200c',
+    '\u200d',
+    '\u2060',
+    String.fromCodePoint(0xe0061),
+    String.fromCodePoint(0x1bca0),
+    String.fromCodePoint(0x1d173),
+  ]) {
+    assert.throws(
+      () => scanPublicSafeText(`hidden${value}format\n`, 'fixture'),
+      /prohibited-invisible-format/u,
+    );
+  }
+  assert.throws(() => scanPublicSafeText('mid\ufeffstring\n', 'fixture'), /prohibited-utf8-bom/u);
 });
 
 test('source policy rejects traversal, private paths, and supplemental secret patterns without echoing values', () => {
-  for (const value of ['/absolute', '../escape', 'a/../b', 'a\\b', 'a/*', 'a\0b', 'a//b']) {
+  for (const value of [
+    '/absolute',
+    '../escape',
+    'a/../b',
+    'a\\b',
+    'a/*',
+    'a\0b',
+    'a//b',
+    'build/hidden\u202e',
+    'build/zero\u200bwidth',
+    'build/line\u2028break',
+  ]) {
     assert.throws(() => assertSafeRelativePath(value));
   }
   for (const value of [
@@ -73,6 +114,17 @@ test('source policy rejects traversal, private paths, and supplemental secret pa
     'HOME=/Users/example/private.txt\n',
     'path=[/home/example/private.txt]\n',
     'target=~/.ssh/config\n',
+    'path=[/Users/example]\n',
+    'path={/home/example}\n',
+    'target=~/.ssh]\n',
+    'path=/users/example/private.txt\n',
+    'path=/USERS/example/private.txt\n',
+    'path=c:\\users\\example\\private.txt\n',
+    'path=C:\\USERS\\example\\private.txt\n',
+    'target=~/.SSH/config\n',
+    'path=/Users/é/private.txt\n',
+    'path=/home/用户/private.txt\n',
+    'path=C:\\Users\\用户\\private.txt\n',
   ]) {
     assert.throws(() => scanPublicSafeText(value, 'fixture'), /public-safety-rule/u);
   }
@@ -183,6 +235,34 @@ test('prompt-pack JSON Schema and canonical Goal dimensions fail closed on drift
   assert.throws(
     () => assertJsonSchema('value', { type: 'string', pattern: '[' }),
     /invalid pattern/u,
+  );
+  const parsedSecretPath = structuredClone(pack);
+  parsedSecretPath.outputRoot = JSON.parse(
+    `"build/${['s', 'k-'].join('')}\\u0041${'A'.repeat(23)}"`,
+  );
+  assert.throws(
+    () => validatePackContract(parsedSecretPath),
+    /public-safety-rule=provider-secret/u,
+  );
+  const parsedSecretMarker = structuredClone(pack);
+  parsedSecretMarker.requiredMarkers[0] = JSON.parse(
+    `"marker ${['g', 'hp_'].join('')}\\u0041${'A'.repeat(29)}"`,
+  );
+  assert.throws(() => validatePackContract(parsedSecretMarker), /public-safety-rule=github-token/u);
+  const secretKey = JSON.parse(`"${['g', 'hp_'].join('')}\\u0041${'A'.repeat(29)}"`);
+  const parsedSecretKey = { ...pack, [secretKey]: true };
+  assert.throws(
+    () => scanParsedPublicSafeValue(parsedSecretKey, 'fixture'),
+    error =>
+      error.message.includes('public-safety-rule=github-token') &&
+      !error.message.includes(secretKey),
+  );
+  const additionalProperty = { ...pack, unexpected: true };
+  assert.throws(
+    () => assertJsonSchema(additionalProperty, packSchema),
+    error =>
+      error.message.includes('additional property index=0 digest=') &&
+      !error.message.includes('unexpected'),
   );
   assert.equal(validateGoalDimensionContract(pack, goalSchema), true);
 });

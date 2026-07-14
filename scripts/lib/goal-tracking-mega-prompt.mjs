@@ -70,15 +70,16 @@ const SECRET_RULES = Object.freeze([
 ]);
 
 const PRIVATE_PATH_RULES = Object.freeze([
-  ['macos-user-home', /\/Users\/[A-Za-z0-9._-]+(?=\/|>|[\s'"`),.;:]|$)/mu],
-  ['unix-user-home', /\/home\/[A-Za-z0-9._-]+(?=\/|>|[\s'"`),.;:]|$)/mu],
-  ['windows-user-home', /[A-Za-z]:\\Users\\[A-Za-z0-9._-]+(?=\\|[\s'"`),.;:]|$)/mu],
-  ['ssh-home', /~\/\.ssh(?=\/|>|[\s'"`),.;:]|$)/mu],
+  ['macos-user-home', /\/Users\//iu],
+  ['unix-user-home', /\/home\//u],
+  ['windows-user-home', /[A-Za-z]:\\Users\\/iu],
+  ['ssh-home', /~\/\.ssh(?=\/|[^A-Za-z0-9._-]|$)/imu],
   ['file-uri', /file:\/\//iu],
 ]);
 
 const BIDI_CONTROL_PATTERN = /[\u202a-\u202e\u2066-\u2069]/u;
-const STRICT_UTF8 = new TextDecoder('utf-8', { fatal: true });
+const INVISIBLE_FORMAT_PATTERN = /\p{Cf}/u;
+const STRICT_UTF8 = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true });
 
 function fail(message) {
   throw new Error(message);
@@ -130,8 +131,10 @@ export function assertCanonicalSourceText(value, label) {
     }
   }
   if (value.includes('\r')) fail(`${label}: noncanonical-line-ending`);
-  if (value.charCodeAt(0) === 0xfeff) fail(`${label}: prohibited-utf8-bom`);
+  if (/[\u2028\u2029]/u.test(value)) fail(`${label}: prohibited-non-lf-line-separator`);
+  if (value.includes('\ufeff')) fail(`${label}: prohibited-utf8-bom`);
   if (BIDI_CONTROL_PATTERN.test(value)) fail(`${label}: prohibited-bidi-control`);
+  if (INVISIBLE_FORMAT_PATTERN.test(value)) fail(`${label}: prohibited-invisible-format`);
   if (value !== value.normalize('NFC')) fail(`${label}: noncanonical-unicode-nfc`);
 }
 
@@ -145,10 +148,32 @@ export function scanPublicSafeText(value, label = 'source') {
   }
 }
 
+export function scanParsedPublicSafeValue(value, label = 'parsed-value') {
+  const visit = (current, currentLabel) => {
+    if (typeof current === 'string') {
+      scanPublicSafeText(current, currentLabel);
+      return;
+    }
+    if (Array.isArray(current)) {
+      current.forEach((item, index) => visit(item, `${currentLabel}.item[${index}]`));
+      return;
+    }
+    if (current && typeof current === 'object') {
+      Object.entries(current).forEach(([key, item], index) => {
+        scanPublicSafeText(key, `${currentLabel}.key[${index}]`);
+        visit(item, `${currentLabel}.value[${index}]`);
+      });
+    }
+  };
+  visit(value, label);
+  return true;
+}
+
 export function assertSafeRelativePath(relativePath, label = 'path') {
   if (typeof relativePath !== 'string' || relativePath.length === 0) {
     fail(`${label}: expected nonempty repository-relative path`);
   }
+  assertCanonicalSourceText(relativePath, label);
   const prohibitedSyntax = ['*', '?', '[', ']', '{', '}', '\\', '\0'];
   const hasControl = [...relativePath].some(character => {
     const codePoint = character.codePointAt(0);
@@ -261,7 +286,7 @@ export function assertTrackedBlob(root, relativePath, capturedBuffer) {
   }
 }
 
-function decodeUtf8(buffer, label) {
+export function decodeUtf8(buffer, label) {
   try {
     return STRICT_UTF8.decode(buffer);
   } catch {
@@ -440,9 +465,11 @@ export function assertJsonSchema(value, schema, rootSchema = schema, valuePath =
     }
     const properties = schema.properties ?? {};
     if (schema.additionalProperties === false) {
-      for (const property of Object.keys(value)) {
-        if (!(property in properties))
-          fail(`${valuePath}: additional property ${property} is prohibited`);
+      const additionalProperties = Object.keys(value).filter(property => !(property in properties));
+      if (additionalProperties.length > 0) {
+        fail(
+          `${valuePath}: additional property index=0 digest=${sha256(additionalProperties[0]).slice(0, 12)} is prohibited`,
+        );
       }
     }
     for (const [property, childSchema] of Object.entries(properties)) {
@@ -477,6 +504,7 @@ export function validateGoalDimensionContract(pack, goalSchema) {
 }
 
 export function validatePackContract(pack, label = PACK_PATH) {
+  scanParsedPublicSafeValue(pack, 'parsed-pack');
   requireExactKeys(pack, PACK_KEYS, PACK_PATH);
   if (pack.schemaVersion !== 1) fail(`${label}: unsupported schemaVersion`);
   if (!isCanonicalIdentifier(pack.id)) fail(`${label}: invalid id`);
@@ -499,14 +527,23 @@ export function validatePackContract(pack, label = PACK_PATH) {
   ) {
     fail(`${label}: invalid minimumExactFitCodePoints`);
   }
-  assertSafeRelativePath(pack.outputRoot, 'outputRoot');
-  assertSafeRelativePath(pack.expectedBuildPath, 'expectedBuildPath');
-  assertSafeRelativePath(pack.contextCapsulePath, 'contextCapsulePath');
+  for (const [pathLabel, relativePath] of [
+    ['outputRoot', pack.outputRoot],
+    ['expectedBuildPath', pack.expectedBuildPath],
+    ['contextCapsulePath', pack.contextCapsulePath],
+  ]) {
+    assertSafeRelativePath(relativePath, pathLabel);
+    scanPublicSafeText(relativePath, pathLabel);
+  }
   requireUniqueStrings(pack.modulePaths, 'modulePaths', 8);
   requireUniqueStrings(pack.authorityPaths, 'authorityPaths', 5);
   requireUniqueStrings(pack.requiredMarkers, 'requiredMarkers', 8);
+  pack.requiredMarkers.forEach((marker, index) =>
+    scanPublicSafeText(marker, `requiredMarkers[${index}]`),
+  );
   for (const sourcePath of [...pack.modulePaths, ...pack.authorityPaths]) {
     assertSafeRelativePath(sourcePath, 'source path');
+    scanPublicSafeText(sourcePath, 'source path');
   }
   if (!pack.modulePaths.includes(pack.contextCapsulePath)) {
     fail(`${label}: contextCapsulePath must be in modulePaths`);
@@ -539,6 +576,7 @@ export function loadPack(root, { enforceTracked = true } = {}) {
   } catch {
     fail(`${PACK_PATH} or ${PACK_SCHEMA_PATH}: malformed-json`);
   }
+  scanParsedPublicSafeValue(pack, 'parsed-pack');
   assertJsonSchema(pack, packSchema);
   validatePackContract(pack);
   return { pack, descriptor, packSchema, schemaDescriptor };
@@ -906,8 +944,12 @@ export function compileGoalTrackingPrompt(root, { enforceTracked = true } = {}) 
   if (!prompt.endsWith('\n') || prompt.endsWith('\n\n'))
     fail('compiled prompt must end with exactly one LF');
   if (countCodePoints(prompt) !== pack.targetCodePoints) fail('compiled prompt recount failed');
-  for (const marker of pack.requiredMarkers) {
-    if (!prompt.includes(marker)) fail(`compiled prompt is missing required marker ${marker}`);
+  for (const [index, marker] of pack.requiredMarkers.entries()) {
+    if (!prompt.includes(marker)) {
+      fail(
+        `compiled prompt is missing required marker index=${index} digest=${sha256(marker).slice(0, 12)}`,
+      );
+    }
   }
   assertNoPaddingRuns(prompt);
   const duplicateParagraphs = duplicateLongParagraphCount(prompt);
