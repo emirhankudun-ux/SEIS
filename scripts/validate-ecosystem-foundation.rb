@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
 
 require "json"
+require "open3"
 require "pathname"
+require "set"
 require "uri"
 require "yaml"
 
@@ -12,6 +14,28 @@ MANIFEST_PATH = "project.ecosystem.yaml"
 OWNERSHIP_PATH = "data/repository-ownership.yaml"
 OWNERSHIP_DOC_PATH = "docs/REPOSITORY_OWNERSHIP.md"
 GOAL_GLOB = "goals/{active,backlog,blocked,completed,archived}/*.yaml"
+JSON_SCHEMA_DRAFT = "https://json-schema.org/draft/2020-12/schema"
+SUPPORTED_SCHEMA_KEYWORDS = Set.new([
+  "$schema", "$id", "$defs", "$ref", "title", "description", "type",
+  "additionalProperties", "required", "properties", "const", "enum",
+  "minLength", "pattern", "minItems", "uniqueItems", "items"
+]).freeze
+SUPPORTED_SCHEMA_TYPES = Set.new(["object", "array", "string", "integer", "number", "boolean", "null"]).freeze
+REGULAR_GIT_BLOB_MODES = Set.new(["100644", "100755"]).freeze
+SAFE_GIT_ENV = {
+  "GIT_CONFIG_NOSYSTEM" => "1",
+  "GIT_CONFIG_GLOBAL" => File::NULL,
+  "GIT_CONFIG_SYSTEM" => File::NULL,
+  "GIT_CONFIG" => nil,
+  "GIT_CONFIG_PARAMETERS" => nil,
+  "GIT_CONFIG_COUNT" => nil,
+  "GIT_DIR" => nil,
+  "GIT_WORK_TREE" => nil,
+  "GIT_COMMON_DIR" => nil,
+  "GIT_INDEX_FILE" => nil,
+  "GIT_OBJECT_DIRECTORY" => nil,
+  "GIT_ALTERNATE_OBJECT_DIRECTORIES" => nil
+}.freeze
 
 def absolute(relative_path)
   File.join(ROOT, relative_path)
@@ -48,6 +72,21 @@ rescue JSON::ParserError => error
   nil
 end
 
+def read_schema(relative_path)
+  schema = read_json(relative_path)
+  unless schema.is_a?(Hash)
+    ERRORS << "#{relative_path}: expected JSON object/hash at root"
+    return nil
+  end
+
+  error_count = ERRORS.length
+  validate_schema_definition(schema, schema, relative_path, root: true, expected_id: relative_path)
+  validate_schema_reference_graph(schema, relative_path)
+  return nil if ERRORS.length > error_count
+
+  schema
+end
+
 def valid_https_url?(value)
   return false unless value.is_a?(String) && !value.strip.empty?
 
@@ -58,11 +97,14 @@ rescue URI::InvalidURIError
 end
 
 def existing_repository_artifact?(value)
-  return false unless value.is_a?(String) && !value.strip.empty?
-  return false if value.start_with?(File::SEPARATOR)
+  normalized = normalized_repository_path(value)
+  return false unless normalized && normalized == value
+  return false if normalized.split("/").include?("node_modules")
+  return false unless tracked_repository_paths.include?(normalized)
 
-  candidate = File.expand_path(value, ROOT)
+  candidate = File.expand_path(normalized, ROOT)
   return false unless candidate.start_with?("#{ROOT}#{File::SEPARATOR}") && File.file?(candidate)
+  return false if repository_path_contains_symlink?(normalized)
 
   real_root = File.realpath(ROOT)
   real_candidate = File.realpath(candidate)
@@ -71,8 +113,121 @@ rescue Errno::ENOENT, Errno::EACCES
   false
 end
 
+def tracked_repository_paths
+  return @tracked_repository_paths if defined?(@tracked_repository_paths)
+
+  intent_to_add_paths = git_intent_to_add_paths
+  if intent_to_add_paths.nil?
+    @tracked_repository_paths = Set.new
+    return @tracked_repository_paths
+  end
+
+  stdout, _stderr, status = Open3.capture3(
+    SAFE_GIT_ENV,
+    "git",
+    "-c", "core.fsmonitor=false",
+    "-c", "core.untrackedCache=false",
+    "-C", ROOT,
+    "ls-files", "--stage", "-z"
+  )
+  unless status.success?
+    ERRORS << "could not enumerate Git-tracked repository artifacts"
+    @tracked_repository_paths = Set.new
+    return @tracked_repository_paths
+  end
+
+  entries = []
+  invalid_inventory = false
+  stdout.split("\0").each do |entry|
+    metadata, path = entry.split("\t", 2)
+    match = metadata.to_s.match(/\A([0-7]{6}) ([0-9a-f]+) ([0-3])\z/)
+    unless path && !path.empty? && match
+      ERRORS << "could not parse Git-tracked repository artifacts"
+      invalid_inventory = true
+      next
+    end
+
+    mode, object_id, stage = match.captures
+    if stage != "0"
+      ERRORS << "Git-tracked repository artifacts include unmerged index entries"
+      invalid_inventory = true
+      next
+    end
+    if intent_to_add_paths.include?(path)
+      ERRORS << "Git-tracked repository artifacts include intent-to-add entries"
+      invalid_inventory = true
+      next
+    end
+    entries << [path, object_id] if REGULAR_GIT_BLOB_MODES.include?(mode)
+  end
+  if invalid_inventory || !valid_git_blob_object_ids?(entries.map(&:last))
+    @tracked_repository_paths = Set.new
+    return @tracked_repository_paths
+  end
+
+  @tracked_repository_paths = Set.new(entries.map(&:first))
+rescue Errno::ENOENT
+  ERRORS << "could not enumerate Git-tracked repository artifacts"
+  @tracked_repository_paths = Set.new
+end
+
+def git_intent_to_add_paths
+  stdout, _stderr, status = Open3.capture3(
+    SAFE_GIT_ENV,
+    "git",
+    "-c", "core.fsmonitor=false",
+    "-c", "core.untrackedCache=false",
+    "-C", ROOT,
+    "diff-files", "--name-only", "--diff-filter=A", "--no-renames",
+    "--no-ext-diff", "--no-textconv", "-z"
+  )
+  unless status.success?
+    ERRORS << "could not inspect Git intent-to-add repository artifacts"
+    return nil
+  end
+
+  Set.new(stdout.split("\0"))
+rescue Errno::ENOENT
+  ERRORS << "could not inspect Git intent-to-add repository artifacts"
+  nil
+end
+
+def valid_git_blob_object_ids?(object_ids)
+  object_ids = object_ids.uniq.sort
+  return true if object_ids.empty?
+
+  stdout, _stderr, status = Open3.capture3(
+    SAFE_GIT_ENV,
+    "git",
+    "-c", "core.fsmonitor=false",
+    "-c", "core.untrackedCache=false",
+    "-C", ROOT,
+    "cat-file", "--batch-check=%(objectname) %(objecttype)",
+    stdin_data: "#{object_ids.join("\n")}\n"
+  )
+  lines = stdout.lines(chomp: true)
+  valid = status.success? && lines.length == object_ids.length && lines.zip(object_ids).all? do |line, expected_object_id|
+    returned_object_id, object_type = line.split(" ", 2)
+    returned_object_id == expected_object_id && object_type == "blob"
+  end
+  ERRORS << "Git-tracked repository artifacts reference missing or non-blob objects" unless valid
+  valid
+rescue Errno::ENOENT
+  ERRORS << "could not verify Git-tracked repository artifact objects"
+  false
+end
+
+def repository_path_contains_symlink?(normalized_path)
+  current = ROOT
+  normalized_path.split("/").any? do |component|
+    current = File.join(current, component)
+    File.symlink?(current)
+  end
+end
+
 def normalized_repository_path(value)
   return nil unless value.is_a?(String) && !value.strip.empty?
+  return nil if value.include?("\0")
   return nil if value.match?(/\A[A-Za-z]:/) || value.start_with?("\\", "//")
 
   path = Pathname.new(value)
@@ -80,8 +235,44 @@ def normalized_repository_path(value)
 
   normalized = path.cleanpath.to_s.tr("\\", "/")
   return nil if normalized == "." || normalized == ".." || normalized.start_with?("../")
+  return nil if normalized == ".git" || normalized.start_with?(".git/")
 
   normalized
+rescue ArgumentError
+  nil
+end
+
+def valid_github_repository_slug?(value)
+  return false unless value.is_a?(String)
+  owner, repository_name = value.split("/", 2)
+  return false unless owner && repository_name
+  return false unless owner.length.between?(1, 39) && owner.match?(/\A[A-Za-z0-9-]+\z/)
+  return false if owner.start_with?("-") || owner.end_with?("-") || owner.include?("--")
+  return false unless repository_name.length.between?(1, 100) && repository_name.match?(/\A[A-Za-z0-9._-]+\z/)
+
+  ![".", ".."].include?(repository_name) && !repository_name.end_with?(".")
+end
+
+def valid_git_branch_name?(value)
+  return false unless value.is_a?(String) && !value.empty? && value == value.strip
+  return false if ["@", "HEAD"].include?(value) || value.start_with?("-", "refs/") || value.end_with?("/", ".")
+  return false if value.match?(/\A[0-9a-fA-F]{40}\z/)
+  return false if value.include?("..") || value.include?("@{") || value.include?("//")
+  return false if value.match?(/[\x00-\x20\x7f~^:?*\[\\]/)
+
+  components = value.split("/")
+  components.none? { |component| component.empty? || component.start_with?(".") || component.end_with?(".lock") }
+end
+
+def schema_pattern_matches?(value, pattern, label)
+  regexp = Regexp.new(pattern)
+  match = regexp.match(value)
+  return !match.nil? unless pattern.start_with?("^") && pattern.end_with?("$")
+
+  !match.nil? && match.begin(0).zero? && match.end(0) == value.length
+rescue RegexpError => error
+  ERRORS << "#{label}: invalid schema pattern #{pattern.inspect}: #{error.message}"
+  false
 end
 
 def schema_type?(value, type)
@@ -98,11 +289,170 @@ def schema_type?(value, type)
 end
 
 def resolve_ref(root_schema, reference)
-  return nil unless reference.start_with?("#/")
+  return nil unless reference.is_a?(String) && reference.start_with?("#/")
 
   reference.delete_prefix("#/").split("/").reduce(root_schema) do |value, token|
     break nil unless value.is_a?(Hash)
     value[token.gsub("~1", "/").gsub("~0", "~")]
+  end
+end
+
+def collect_schema_nodes(schema, nodes = [])
+  return nodes unless schema.is_a?(Hash)
+
+  nodes << schema
+  if schema["properties"].is_a?(Hash)
+    schema["properties"].each_value { |nested_schema| collect_schema_nodes(nested_schema, nodes) }
+  end
+  if schema["$defs"].is_a?(Hash)
+    schema["$defs"].each_value { |nested_schema| collect_schema_nodes(nested_schema, nodes) }
+  end
+  collect_schema_nodes(schema["items"], nodes) if schema.key?("items")
+  nodes
+end
+
+def schema_runtime_cycle?(schema, root_schema, visiting, visited)
+  return false unless schema.is_a?(Hash)
+
+  schema_id = schema.object_id
+  return true if visiting.include?(schema_id)
+  return false if visited.include?(schema_id)
+
+  visiting << schema_id
+  children = if schema.key?("$ref")
+               target = resolve_ref(root_schema, schema["$ref"])
+               target.is_a?(Hash) ? [target] : []
+             else
+               nested = schema["properties"].is_a?(Hash) ? schema["properties"].values : []
+               nested << schema["items"] if schema["items"].is_a?(Hash)
+               nested
+             end
+  cyclic = children.any? { |child| schema_runtime_cycle?(child, root_schema, visiting, visited) }
+  visiting.delete(schema_id)
+  visited << schema_id
+  cyclic
+end
+
+def validate_schema_reference_graph(root_schema, label)
+  visited = Set.new
+  collect_schema_nodes(root_schema).each do |schema|
+    next if visited.include?(schema.object_id)
+
+    if schema_runtime_cycle?(schema, root_schema, Set.new, visited)
+      ERRORS << "#{label}: cyclic schema reference graph is not supported"
+      return
+    end
+  end
+end
+
+def validate_schema_definition(schema, root_schema, label, root: false, expected_id: nil)
+  unless schema.is_a?(Hash)
+    ERRORS << "#{label}: schema definition must be an object"
+    return
+  end
+
+  schema.each_key do |keyword|
+    ERRORS << "#{label}: unsupported schema keyword #{keyword.inspect}" unless SUPPORTED_SCHEMA_KEYWORDS.include?(keyword)
+  end
+
+  if root
+    ERRORS << "#{label}: $schema must equal #{JSON_SCHEMA_DRAFT.inspect}" unless schema["$schema"] == JSON_SCHEMA_DRAFT
+    ERRORS << "#{label}: $id must equal #{expected_id.inspect}" unless schema["$id"] == expected_id
+    ERRORS << "#{label}: root type must equal \"object\"" unless schema["type"] == "object"
+    ERRORS << "#{label}: root additionalProperties must equal false" unless schema["additionalProperties"] == false
+    unless schema["required"].is_a?(Array) && !schema["required"].empty?
+      ERRORS << "#{label}: root required must be a nonempty array"
+    end
+    unless schema["properties"].is_a?(Hash) && !schema["properties"].empty?
+      ERRORS << "#{label}: root properties must be a nonempty object"
+    end
+  end
+
+  if schema.key?("$ref")
+    reference = schema["$ref"]
+    siblings = schema.keys - ["$ref"]
+    ERRORS << "#{label}.$ref: assertion siblings are not supported: #{siblings.sort.inspect}" unless siblings.empty?
+    if !reference.is_a?(String)
+      ERRORS << "#{label}.$ref: must be a string"
+    else
+      target = resolve_ref(root_schema, reference)
+      if target.nil?
+        ERRORS << "#{label}.$ref: unresolved schema reference #{reference.inspect}"
+      elsif !target.is_a?(Hash)
+        ERRORS << "#{label}.$ref: schema reference #{reference.inspect} must resolve to an object"
+      end
+    end
+  end
+
+  if schema.key?("type")
+    types = schema["type"].is_a?(Array) ? schema["type"] : [schema["type"]]
+    unless !types.empty? && types.uniq.length == types.length && types.all? { |type| SUPPORTED_SCHEMA_TYPES.include?(type) }
+      ERRORS << "#{label}.type: must contain supported unique JSON Schema types"
+    end
+  end
+
+  if schema.key?("additionalProperties") && ![true, false].include?(schema["additionalProperties"])
+    ERRORS << "#{label}.additionalProperties: must be a boolean"
+  end
+
+  required = schema["required"]
+  if schema.key?("required") && (!required.is_a?(Array) || required.uniq.length != required.length || required.any? { |item| !item.is_a?(String) || item.empty? })
+    ERRORS << "#{label}.required: must be an array of unique nonempty strings"
+  end
+
+  properties = schema["properties"]
+  if schema.key?("properties") && !properties.is_a?(Hash)
+    ERRORS << "#{label}.properties: must be an object"
+  elsif properties.is_a?(Hash)
+    if required.is_a?(Array)
+      (required - properties.keys).each do |missing_property|
+        ERRORS << "#{label}.required: references missing property #{missing_property.inspect}"
+      end
+    end
+    properties.each do |property, nested_schema|
+      validate_schema_definition(nested_schema, root_schema, "#{label}.properties.#{property}")
+    end
+  end
+
+  definitions = schema["$defs"]
+  if schema.key?("$defs") && !definitions.is_a?(Hash)
+    ERRORS << "#{label}.$defs: must be an object"
+  elsif definitions.is_a?(Hash)
+    definitions.each do |definition, nested_schema|
+      validate_schema_definition(nested_schema, root_schema, "#{label}.$defs.#{definition}")
+    end
+  end
+
+  if schema.key?("items")
+    validate_schema_definition(schema["items"], root_schema, "#{label}.items")
+  end
+
+  if schema.key?("enum") && (!schema["enum"].is_a?(Array) || schema["enum"].empty?)
+    ERRORS << "#{label}.enum: must be a nonempty array"
+  end
+  ["minLength", "minItems"].each do |keyword|
+    next unless schema.key?(keyword)
+    value = schema[keyword]
+    ERRORS << "#{label}.#{keyword}: must be a nonnegative integer" unless value.is_a?(Integer) && value >= 0
+  end
+  if schema.key?("uniqueItems") && ![true, false].include?(schema["uniqueItems"])
+    ERRORS << "#{label}.uniqueItems: must be a boolean"
+  end
+  if schema.key?("pattern")
+    pattern = schema["pattern"]
+    if !pattern.is_a?(String)
+      ERRORS << "#{label}.pattern: must be a string"
+    else
+      begin
+        Regexp.new(pattern)
+      rescue RegexpError => error
+        ERRORS << "#{label}.pattern: invalid regular expression: #{error.message}"
+      end
+    end
+  end
+  ["$schema", "$id", "title", "description"].each do |keyword|
+    next unless schema.key?(keyword)
+    ERRORS << "#{label}.#{keyword}: must be a nonempty string" unless schema[keyword].is_a?(String) && !schema[keyword].empty?
   end
 end
 
@@ -136,8 +486,13 @@ def validate_schema(value, schema, root_schema, label)
     if schema["minLength"] && value.length < schema["minLength"]
       ERRORS << "#{label}: must contain at least #{schema["minLength"]} character(s)"
     end
-    if schema["pattern"] && !Regexp.new(schema["pattern"]).match?(value)
-      ERRORS << "#{label}: does not match #{schema["pattern"]}"
+    if schema.key?("pattern")
+      pattern = schema["pattern"]
+      if !pattern.is_a?(String)
+        ERRORS << "#{label}: schema pattern must be a string"
+      elsif !schema_pattern_matches?(value, pattern, label)
+        ERRORS << "#{label}: does not match #{pattern}"
+      end
     end
   end
 
@@ -174,9 +529,9 @@ def duplicates(values)
   values.group_by(&:itself).select { |_value, matches| matches.length > 1 }.keys
 end
 
-manifest_schema = read_json("schemas/project-ecosystem.schema.json")
-ownership_schema = read_json("schemas/repository-ownership.schema.json")
-goal_schema = read_json("schemas/ecosystem-goal.schema.json")
+manifest_schema = read_schema("schemas/project-ecosystem.schema.json")
+ownership_schema = read_schema("schemas/repository-ownership.schema.json")
+goal_schema = read_schema("schemas/ecosystem-goal.schema.json")
 manifest = read_yaml(MANIFEST_PATH)
 ownership = read_yaml(OWNERSHIP_PATH)
 
@@ -212,11 +567,13 @@ repositories.each do |repository|
     ERRORS << "#{OWNERSHIP_PATH}: repository #{repository_id} verification #{verification.inspect} cannot use method #{verification_method.inspect}"
   end
   if observed_repository_states.include?(verification)
-    ["remote", "default_branch"].each do |field|
-      value = repository[field]
-      if !value.is_a?(String) || value.strip.empty? || value.strip.casecmp("unknown").zero?
-        ERRORS << "#{OWNERSHIP_PATH}: observed repository #{repository_id} has unknown #{field} metadata"
-      end
+    remote = repository["remote"]
+    default_branch = repository["default_branch"]
+    unless valid_github_repository_slug?(remote)
+      ERRORS << "#{OWNERSHIP_PATH}: observed repository #{repository_id} has invalid remote metadata"
+    end
+    unless valid_git_branch_name?(default_branch)
+      ERRORS << "#{OWNERSHIP_PATH}: observed repository #{repository_id} has invalid default_branch metadata"
     end
     if repository["observed_at"].nil? || verification_method == "not-observed"
       ERRORS << "#{OWNERSHIP_PATH}: observed repository #{repository_id} must record observation date and method"
@@ -377,6 +734,15 @@ goal_paths.each do |absolute_goal_path|
   scope_repositories = scope.is_a?(Hash) ? scope["repositories"] : nil
   Array(scope_repositories).each do |repository_id|
     ERRORS << "#{relative_goal_path}: scope references unknown repository #{repository_id}" unless repository_ids.include?(repository_id)
+  end
+  scope_paths = scope.is_a?(Hash) ? scope["paths"] : nil
+  Array(scope_paths).each do |scope_path|
+    normalized_path = normalized_repository_path(scope_path)
+    if normalized_path.nil?
+      ERRORS << "#{relative_goal_path}: scope path #{scope_path.inspect} must remain a nonempty repository-relative path"
+    elsif normalized_path != scope_path
+      ERRORS << "#{relative_goal_path}: scope path #{scope_path.inspect} must be normalized as #{normalized_path.inspect}"
+    end
   end
 
   blockers = Array(goal["blocked_by"])

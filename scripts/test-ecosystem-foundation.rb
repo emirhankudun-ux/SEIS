@@ -26,6 +26,20 @@ FIXTURE_GOAL_FILES = Dir.glob(
   "goals/{active,backlog,blocked,completed,archived}/*.yaml",
   base: ROOT
 ).freeze
+FIXTURE_GIT_ENV = {
+  "GIT_CONFIG_NOSYSTEM" => "1",
+  "GIT_CONFIG_GLOBAL" => File::NULL,
+  "GIT_CONFIG_SYSTEM" => File::NULL,
+  "GIT_CONFIG" => nil,
+  "GIT_CONFIG_PARAMETERS" => nil,
+  "GIT_CONFIG_COUNT" => nil,
+  "GIT_DIR" => nil,
+  "GIT_WORK_TREE" => nil,
+  "GIT_COMMON_DIR" => nil,
+  "GIT_INDEX_FILE" => nil,
+  "GIT_OBJECT_DIRECTORY" => nil,
+  "GIT_ALTERNATE_OBJECT_DIRECTORIES" => nil
+}.freeze
 
 def prepare_fixture(directory)
   (FIXTURE_FILES + FIXTURE_GOAL_FILES).each do |relative_path|
@@ -34,10 +48,23 @@ def prepare_fixture(directory)
     FileUtils.mkdir_p(File.dirname(target))
     FileUtils.cp(source, target)
   end
+
+  run_fixture_command!(directory, "git", "init", "--quiet")
+  run_fixture_command!(directory, "git", "add", "--all")
 end
 
-def run_validator(directory)
+def run_fixture_command!(directory, *command, environment: FIXTURE_GIT_ENV, stdin_data: "")
+  stdout, stderr, status = Open3.capture3(environment, *command, chdir: directory, stdin_data: stdin_data)
+  return stdout if status.success?
+
+  warn stdout
+  warn stderr
+  abort "fixture command failed: #{command.join(" ")}"
+end
+
+def run_validator(directory, environment = {})
   Open3.capture3(
+    environment,
     "ruby",
     "scripts/validate-ecosystem-foundation.rb",
     chdir: directory
@@ -187,6 +214,33 @@ assert_rejected("Goal with malformed scope", ".scope: expected object, got Strin
   write_yaml(directory, GOAL_RELATIVE_PATH, goal)
 end
 
+assert_rejected(
+  "Goal with escaping scope path",
+  "scope path \"../../private-vault\" must remain a nonempty repository-relative path"
+) do |directory|
+  goal = YAML.safe_load(File.read(File.join(directory, GOAL_RELATIVE_PATH)))
+  goal["scope"]["paths"] = ["../../private-vault"]
+  write_yaml(directory, GOAL_RELATIVE_PATH, goal)
+end
+
+assert_rejected(
+  "Goal with absolute scope path",
+  "scope path \"/Users/example/private-vault\" must remain a nonempty repository-relative path"
+) do |directory|
+  goal = YAML.safe_load(File.read(File.join(directory, GOAL_RELATIVE_PATH)))
+  goal["scope"]["paths"] = ["/Users/example/private-vault"]
+  write_yaml(directory, GOAL_RELATIVE_PATH, goal)
+end
+
+assert_rejected(
+  "Goal with NUL-containing scope path",
+  "scope path \"a\\u0000b\" must remain a nonempty repository-relative path"
+) do |directory|
+  goal = YAML.safe_load(File.read(File.join(directory, GOAL_RELATIVE_PATH)))
+  goal["scope"]["paths"] = ["a\0b"]
+  write_yaml(directory, GOAL_RELATIVE_PATH, goal)
+end
+
 assert_rejected("Goal with unquoted date", "invalid YAML in #{GOAL_RELATIVE_PATH}") do |directory|
   path = File.join(directory, GOAL_RELATIVE_PATH)
   content = File.read(path)
@@ -207,10 +261,66 @@ end
 
 assert_rejected(
   "observed repository with unknown metadata",
-  "observed repository seis has unknown remote metadata"
+  "observed repository seis has invalid remote metadata"
 ) do |directory|
   ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
   ownership["repositories"].find { |repository| repository["id"] == "seis" }["remote"] = "unknown"
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
+assert_rejected(
+  "observed repository with malformed remote metadata",
+  "observed repository seis has invalid remote metadata"
+) do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  ownership["repositories"].find { |repository| repository["id"] == "seis" }["remote"] = "definitely-not-a-github-remote"
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
+["owner-/repo", "owner--name/repo"].each do |remote|
+  assert_rejected(
+    "observed repository with invalid GitHub owner #{remote}",
+    "observed repository seis has invalid remote metadata"
+  ) do |directory|
+    ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+    ownership["repositories"].find { |repository| repository["id"] == "seis" }["remote"] = remote
+    write_yaml(directory, "data/repository-ownership.yaml", ownership)
+  end
+end
+
+assert_rejected(
+  "observed repository with malformed default branch metadata",
+  "observed repository seis has invalid default_branch metadata"
+) do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  ownership["repositories"].find { |repository| repository["id"] == "seis" }["default_branch"] = "main..shadow"
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
+assert_rejected(
+  "observed repository with reserved HEAD default branch metadata",
+  "observed repository seis has invalid default_branch metadata"
+) do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  ownership["repositories"].find { |repository| repository["id"] == "seis" }["default_branch"] = "HEAD"
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
+assert_rejected(
+  "observed repository with fully qualified default branch metadata",
+  "observed repository seis has invalid default_branch metadata"
+) do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  ownership["repositories"].find { |repository| repository["id"] == "seis" }["default_branch"] = "refs/heads/main"
+  write_yaml(directory, "data/repository-ownership.yaml", ownership)
+end
+
+assert_rejected(
+  "observed repository with object-ID-like default branch metadata",
+  "observed repository seis has invalid default_branch metadata"
+) do |directory|
+  ownership = YAML.safe_load(File.read(File.join(directory, "data/repository-ownership.yaml")))
+  ownership["repositories"].find { |repository| repository["id"] == "seis" }["default_branch"] = "a" * 40
   write_yaml(directory, "data/repository-ownership.yaml", ownership)
 end
 
@@ -324,6 +434,214 @@ assert_rejected(
   evidence["exit_code"] = nil
   evidence["artifact"] = "reports/nonexistent-evidence.txt"
   write_yaml(directory, GOAL_RELATIVE_PATH, goal)
+end
+
+assert_rejected(
+  "passed evidence with an untracked artifact",
+  "passed evidence ECO3-EVIDENCE-001 must include an existing repository artifact, a valid HTTPS artifact, or a successful command with exit code 0"
+) do |directory|
+  artifact_path = "reports/untracked-evidence.md"
+  FileUtils.mkdir_p(File.join(directory, "reports"))
+  File.write(File.join(directory, artifact_path), "synthetic untracked fixture\n")
+  goal = YAML.safe_load(File.read(File.join(directory, GOAL_RELATIVE_PATH)))
+  evidence = goal["evidence_records"].find { |record| record["id"] == "ECO3-EVIDENCE-001" }
+  evidence["command"] = nil
+  evidence["exit_code"] = nil
+  evidence["artifact"] = artifact_path
+  write_yaml(directory, GOAL_RELATIVE_PATH, goal)
+end
+
+assert_rejected(
+  "passed evidence with Git metadata artifact",
+  "passed evidence ECO3-EVIDENCE-001 must include an existing repository artifact, a valid HTTPS artifact, or a successful command with exit code 0"
+) do |directory|
+  goal = YAML.safe_load(File.read(File.join(directory, GOAL_RELATIVE_PATH)))
+  evidence = goal["evidence_records"].find { |record| record["id"] == "ECO3-EVIDENCE-001" }
+  evidence["command"] = nil
+  evidence["exit_code"] = nil
+  evidence["artifact"] = ".git/config"
+  write_yaml(directory, GOAL_RELATIVE_PATH, goal)
+end
+
+assert_rejected(
+  "passed evidence with tracked symlink to untracked target",
+  "passed evidence ECO3-EVIDENCE-001 must include an existing repository artifact, a valid HTTPS artifact, or a successful command with exit code 0"
+) do |directory|
+  target_path = File.join(directory, "reports", "untracked-symlink-target.md")
+  link_relative_path = "docs/tracked-evidence-link.md"
+  link_path = File.join(directory, link_relative_path)
+  FileUtils.mkdir_p(File.dirname(target_path))
+  File.write(target_path, "synthetic untracked target\n")
+  File.symlink("../reports/untracked-symlink-target.md", link_path)
+  run_fixture_command!(directory, "git", "add", "--", link_relative_path)
+  goal = YAML.safe_load(File.read(File.join(directory, GOAL_RELATIVE_PATH)))
+  evidence = goal["evidence_records"].find { |record| record["id"] == "ECO3-EVIDENCE-001" }
+  evidence["command"] = nil
+  evidence["exit_code"] = nil
+  evidence["artifact"] = link_relative_path
+  write_yaml(directory, GOAL_RELATIVE_PATH, goal)
+end
+
+assert_rejected(
+  "passed evidence through tracked path under replaced symlink parent",
+  "passed evidence ECO3-EVIDENCE-001 must include an existing repository artifact, a valid HTTPS artifact, or a successful command with exit code 0"
+) do |directory|
+  artifact_relative_path = "docs/tracked-parent/evidence.md"
+  artifact_path = File.join(directory, artifact_relative_path)
+  FileUtils.mkdir_p(File.dirname(artifact_path))
+  File.write(artifact_path, "tracked baseline evidence\n")
+  run_fixture_command!(directory, "git", "add", "--", artifact_relative_path)
+  FileUtils.rm_rf(File.join(directory, "docs", "tracked-parent"))
+  replacement_directory = File.join(directory, "reports", "untracked-parent")
+  FileUtils.mkdir_p(replacement_directory)
+  File.write(File.join(replacement_directory, "evidence.md"), "synthetic untracked replacement\n")
+  File.symlink("../reports/untracked-parent", File.join(directory, "docs", "tracked-parent"))
+  goal = YAML.safe_load(File.read(File.join(directory, GOAL_RELATIVE_PATH)))
+  evidence = goal["evidence_records"].find { |record| record["id"] == "ECO3-EVIDENCE-001" }
+  evidence["command"] = nil
+  evidence["exit_code"] = nil
+  evidence["artifact"] = artifact_relative_path
+  write_yaml(directory, GOAL_RELATIVE_PATH, goal)
+end
+
+assert_rejected(
+  "Git index with a nonzero-stage artifact",
+  "Git-tracked repository artifacts include unmerged index entries"
+) do |directory|
+  artifact_relative_path = "docs/unmerged-index-artifact.md"
+  File.write(File.join(directory, artifact_relative_path), "synthetic unmerged evidence\n")
+  object_id = run_fixture_command!(
+    directory,
+    "git", "hash-object", "-w", "--", artifact_relative_path
+  ).strip
+  run_fixture_command!(
+    directory,
+    "git", "update-index", "--index-info",
+    stdin_data: "100644 #{object_id} 1\t#{artifact_relative_path}\n"
+  )
+end
+
+assert_rejected(
+  "Git index with a missing stage-zero blob",
+  "Git-tracked repository artifacts reference missing or non-blob objects"
+) do |directory|
+  artifact_relative_path = "docs/missing-blob-artifact.md"
+  File.write(File.join(directory, artifact_relative_path), "synthetic missing blob evidence\n")
+  run_fixture_command!(
+    directory,
+    "git", "update-index", "--add", "--info-only", "--cacheinfo",
+    "100644,#{"1" * 40},#{artifact_relative_path}"
+  )
+end
+
+assert_rejected(
+  "Git intent-to-add artifact",
+  "Git-tracked repository artifacts include intent-to-add entries"
+) do |directory|
+  artifact_relative_path = "docs/intent-to-add-artifact.md"
+  File.write(File.join(directory, artifact_relative_path), "synthetic intent-to-add evidence\n")
+  run_fixture_command!(directory, "git", "add", "--intent-to-add", "--", artifact_relative_path)
+end
+
+[
+  "schemas/project-ecosystem.schema.json",
+  "schemas/repository-ownership.schema.json",
+  "schemas/ecosystem-goal.schema.json"
+].each do |schema_path|
+  assert_rejected("scalar schema root in #{schema_path}", "#{schema_path}: expected JSON object/hash at root") do |directory|
+    File.write(File.join(directory, schema_path), "false\n")
+  end
+end
+
+assert_rejected("empty object schema root", "schemas/ecosystem-goal.schema.json: $schema must equal") do |directory|
+  File.write(File.join(directory, "schemas/ecosystem-goal.schema.json"), "{}\n")
+end
+
+assert_rejected("newline-suffixed schema pattern value", ".github.commit_sha: does not match") do |directory|
+  goal = YAML.safe_load(File.read(File.join(directory, GOAL_RELATIVE_PATH)))
+  goal["github"]["commit_sha"] = "cf972f6\nnotasha"
+  write_yaml(directory, GOAL_RELATIVE_PATH, goal)
+end
+
+[false, 1].each do |invalid_pattern|
+  assert_rejected(
+    "malformed nested schema pattern #{invalid_pattern.inspect}",
+    "schemas/ecosystem-goal.schema.json.properties.github.properties.commit_sha.pattern: must be a string"
+  ) do |directory|
+    schema_path = File.join(directory, "schemas/ecosystem-goal.schema.json")
+    schema = JSON.parse(File.read(schema_path))
+    schema["properties"]["github"]["properties"]["commit_sha"]["pattern"] = invalid_pattern
+    File.write(schema_path, JSON.pretty_generate(schema))
+  end
+end
+
+assert_rejected(
+  "schema reference with a scalar target",
+  "schemas/ecosystem-goal.schema.json.properties.project.$ref: schema reference \"#/properties/schema_version/const\" must resolve to an object"
+) do |directory|
+  schema_path = File.join(directory, "schemas/ecosystem-goal.schema.json")
+  schema = JSON.parse(File.read(schema_path))
+  schema["properties"]["project"] = { "$ref" => "#/properties/schema_version/const" }
+  File.write(schema_path, JSON.pretty_generate(schema))
+end
+
+assert_rejected(
+  "schema reference with a non-string value",
+  "schemas/ecosystem-goal.schema.json.properties.project.$ref: must be a string"
+) do |directory|
+  schema_path = File.join(directory, "schemas/ecosystem-goal.schema.json")
+  schema = JSON.parse(File.read(schema_path))
+  schema["properties"]["project"]["$ref"] = false
+  File.write(schema_path, JSON.pretty_generate(schema))
+end
+
+assert_rejected(
+  "self-referential schema definition",
+  "schemas/ecosystem-goal.schema.json: cyclic schema reference graph is not supported"
+) do |directory|
+  schema_path = File.join(directory, "schemas/ecosystem-goal.schema.json")
+  schema = JSON.parse(File.read(schema_path))
+  schema["$defs"]["text"] = { "$ref" => "#/$defs/text" }
+  File.write(schema_path, JSON.pretty_generate(schema))
+end
+
+assert_rejected(
+  "schema reference with assertion sibling",
+  "schemas/ecosystem-goal.schema.json.properties.project.$ref: assertion siblings are not supported: [\"minLength\"]"
+) do |directory|
+  schema_path = File.join(directory, "schemas/ecosystem-goal.schema.json")
+  schema = JSON.parse(File.read(schema_path))
+  schema["properties"]["project"]["minLength"] = 1
+  File.write(schema_path, JSON.pretty_generate(schema))
+end
+
+assert_rejected(
+  "schema with invalid regular expression",
+  "schemas/ecosystem-goal.schema.json.$defs.nullableHttpsUrl.pattern: invalid regular expression"
+) do |directory|
+  schema_path = File.join(directory, "schemas/ecosystem-goal.schema.json")
+  schema = JSON.parse(File.read(schema_path))
+  schema["$defs"]["nullableHttpsUrl"]["pattern"] = "["
+  File.write(schema_path, JSON.pretty_generate(schema))
+end
+
+
+Dir.mktmpdir("seis-ecosystem-foundation-git-config-") do |directory|
+  prepare_fixture(directory)
+  marker = File.join(directory, "fsmonitor-helper-ran")
+  run_fixture_command!(directory, "git", "config", "core.fsmonitor", "touch #{marker}")
+  environment = {
+    "GIT_CONFIG_COUNT" => "1",
+    "GIT_CONFIG_KEY_0" => "core.fsmonitor",
+    "GIT_CONFIG_VALUE_0" => "touch #{marker}"
+  }
+  stdout, stderr, status = run_validator(directory, environment)
+  unless status.success?
+    warn stdout
+    warn stderr
+    abort "hostile Git configuration fixture must pass with helpers disabled"
+  end
+  abort "Git-tracked artifact enumeration must not execute fsmonitor helpers" if File.exist?(marker)
 end
 
 assert_rejected("passed command evidence with a failed exit code", "passed evidence ECO3-EVIDENCE-002 command exit code must equal 0") do |directory|
@@ -450,4 +768,4 @@ assert_rejected("completed Goal with invalid release-note URL", "completed Goal 
   write_yaml(directory, completed_relative_path, goal)
 end
 
-puts "Ecosystem foundation tests passed: repository-scoped ownership was preserved; empty or malformed YAML, duplicate, non-normalized, or cross-platform absolute ownership paths, contradictory repository observations, escaping evidence and decision paths, missing or mismatched validated manifests, unquoted dates, missing rollback, unknown observed metadata, visibility mismatch, dangling Goal and blocker references, incomplete quality gates, proofless, nonexistent, or contradictory passed evidence, illegal lifecycle histories, invalid blocked state, and unsupported completion or release-note state were rejected."
+puts "Ecosystem foundation tests passed: repository-scoped ownership was preserved; empty or malformed YAML and schema roots, duplicate, non-normalized, escaping, or cross-platform absolute ownership and Goal scope paths, contradictory or malformed repository observations, escaping, untracked, Git-metadata, or nonexistent evidence and decision paths, missing or mismatched validated manifests, unquoted dates, full-string schema pattern bypasses, missing rollback, visibility mismatch, dangling Goal and blocker references, incomplete quality gates, proofless or contradictory passed evidence, illegal lifecycle histories, invalid blocked state, and unsupported completion or release-note state were rejected."
