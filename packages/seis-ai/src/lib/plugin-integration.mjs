@@ -1320,9 +1320,40 @@ export function subagentDryRunTaskDecision(repoRoot, input = {}) {
     const permissionMatrixFixture = readJsonIfExists(repoRoot, model.sourceOfTruth?.permissionMatrix || SUBAGENT_PERMISSION_MATRIX_PATH);
     const cancellationFixture = readJsonIfExists(repoRoot, model.sourceOfTruth?.cancellationFixture || SUBAGENT_CANCELLATION_FIXTURE_PATH);
     const approvalFixture = readJsonIfExists(repoRoot, model.sourceOfTruth?.approvalFixture || SUBAGENT_APPROVAL_FIXTURE_PATH);
+    const executionLedgerPath = model.sourceOfTruth?.executionLedgerFixture || SUBAGENT_EXECUTION_LEDGER_FIXTURE_PATH;
+    const executionLedgerFixture = readJsonIfExists(repoRoot, executionLedgerPath);
 
     if (!queue || !Array.isArray(queue.sampleTasks)) {
       return { ok: false, tool: SUBAGENT_DRY_RUN_TASK_TOOL, taskId, error: "dry-run task queue fixture is missing or invalid" };
+    }
+
+    const requiredLedgerForbiddenRecords = [
+      "secret values",
+      "private keys",
+      "raw provider errors",
+      "unapproved external mutation",
+    ];
+    const ledgerIsValid =
+      executionLedgerFixture?.id === "seis-ai-core-execution-ledger-fixture" &&
+      executionLedgerFixture.status === "documented-fixture" &&
+      executionLedgerFixture.runtimeBoundary === "status-and-plan-only" &&
+      executionLedgerFixture.mode === "append-only-planned" &&
+      executionLedgerFixture.writerPolicy === "single-writer" &&
+      Array.isArray(executionLedgerFixture.requiredFields) &&
+      executionLedgerFixture.requiredFields.length === 19 &&
+      Array.isArray(executionLedgerFixture.recordsForbidden) &&
+      JSON.stringify(executionLedgerFixture.recordsForbidden) === JSON.stringify(requiredLedgerForbiddenRecords) &&
+      Array.isArray(executionLedgerFixture.sampleRecords) &&
+      executionLedgerFixture.sampleRecords.length > 0;
+
+    if (!ledgerIsValid) {
+      return {
+        ok: false,
+        tool: SUBAGENT_DRY_RUN_TASK_TOOL,
+        taskId,
+        executionLedgerPath,
+        error: "execution ledger fixture is missing or violates the plan-only evidence contract",
+      };
     }
 
     const task = queue.sampleTasks.find((candidate) => candidate.id === taskId);
@@ -1398,6 +1429,20 @@ export function subagentDryRunTaskDecision(repoRoot, input = {}) {
       requestedPath: requestedPathDecision,
       validator: task.validator ?? null,
       rollbackNote: task.rollbackNote ?? null,
+      executionLedgerEvidence: {
+        path: executionLedgerPath,
+        id: executionLedgerFixture.id,
+        status: executionLedgerFixture.status,
+        runtimeBoundary: executionLedgerFixture.runtimeBoundary,
+        mode: executionLedgerFixture.mode,
+        writerPolicy: executionLedgerFixture.writerPolicy,
+        requiredFieldCount: executionLedgerFixture.requiredFields.length,
+        forbiddenRecordClassCount: executionLedgerFixture.recordsForbidden.length,
+        sampleRecordCount: executionLedgerFixture.sampleRecords.length,
+        persistence: "disabled",
+        recordWritten: false,
+        truthBoundary: "Source-backed ledger fixture metadata only; no durable record is persisted by this dry-run tool.",
+      },
     };
   } catch (error) {
     return {

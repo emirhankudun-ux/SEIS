@@ -822,7 +822,7 @@ describe("executeTool", () => {
         runtimeBoundary: "status-and-plan-only",
         mode: "append-only-planned",
         writerPolicy: "single-writer",
-        recordsForbidden: ["secret values", "private keys", "raw provider errors"],
+        recordsForbidden: ["secret values", "private keys", "raw provider errors", "unapproved external mutation"],
         requiredFields: [
           "id",
           "taskId",
@@ -837,6 +837,10 @@ describe("executeTool", () => {
           "externalMutationPerformed",
           "fileMutationPerformed",
           "approvalRequired",
+          "approvalRecordId",
+          "cancellationSignal",
+          "validator",
+          "rollbackNote",
           "redactionStatus",
           "createdAt"
         ],
@@ -855,6 +859,10 @@ describe("executeTool", () => {
             externalMutationPerformed: false,
             fileMutationPerformed: false,
             approvalRequired: false,
+            approvalRecordId: null,
+            cancellationSignal: "operator-cancel",
+            validator: "npm run test:web",
+            rollbackNote: "No file edits performed by this dry-run task.",
             redactionStatus: "passed",
             secretValuesStored: false,
             createdAt: "2026-06-23T00:00:00.000Z"
@@ -1386,6 +1394,12 @@ describe("executeTool", () => {
     assert.equal(payload.realExecutionBlocked, true);
     assert.equal(payload.externalMutationPerformed, false);
     assert.equal(payload.requestedPath.allowed, true);
+    assert.equal(payload.executionLedgerEvidence.mode, "append-only-planned");
+    assert.equal(payload.executionLedgerEvidence.writerPolicy, "single-writer");
+    assert.equal(payload.executionLedgerEvidence.requiredFieldCount, 19);
+    assert.equal(payload.executionLedgerEvidence.persistence, "disabled");
+    assert.equal(payload.executionLedgerEvidence.recordWritten, false);
+    assert.match(payload.executionLedgerEvidence.truthBoundary, /no durable record is persisted/);
   });
 
   it("seis_ai_core_subagent_dry_run blocks approval-gated external tasks", () => {
@@ -1406,6 +1420,31 @@ describe("executeTool", () => {
     assert.deepEqual(payload.requiredApprovalEvidence, ["target", "rollback plan", "credential boundary", "dry-run result"]);
   });
 
+  it("seis_ai_core_subagent_dry_run fails closed when ledger evidence is invalid", () => {
+    writeFileSync(
+      path.join(repoRoot, "content/development/seis-ai-core-execution-ledger-fixture.json"),
+      JSON.stringify({
+        id: "seis-ai-core-execution-ledger-fixture",
+        status: "documented-fixture",
+        runtimeBoundary: "status-and-plan-only",
+        mode: "append-only-planned",
+        writerPolicy: "single-writer",
+        requiredFields: [],
+        recordsForbidden: [],
+        sampleRecords: []
+      }),
+      "utf8"
+    );
+
+    const payload = JSON.parse(executeTool(
+      "seis_ai_core_subagent_dry_run",
+      { taskId: "dry-run-seis-hub-foundation-review" },
+      ctx()
+    ));
+    assert.equal(payload.ok, false);
+    assert.match(payload.error, /execution ledger fixture is missing or violates/);
+  });
+
   it("seis_ai_core_subagent_dry_run cancels with a supported signal", () => {
     const out = executeTool(
       "seis_ai_core_subagent_dry_run",
@@ -1418,6 +1457,7 @@ describe("executeTool", () => {
     assert.equal(payload.nextState, "cancelled");
     assert.equal(payload.cancellation.laterToolCallsAllowed, false);
     assert.equal(payload.externalMutationPerformed, false);
+    assert.equal(payload.executionLedgerEvidence.recordWritten, false);
   });
 
   it("seis_ai_core_subagent_dry_run denies out-of-scope paths and denied tools", () => {
