@@ -42,9 +42,9 @@ The reviewed compiler contract records:
 - source-set SHA-256:
   `17cd996d8ee68c755750f0ad76953da1320978c3d1817a43b06549286d75220f`
 - compiler-set SHA-256:
-  `87c25802fb04852f1e5da56aebb8c973e871c4e2f7020335e435184a491eb433`
+  `e319f9caf96e0a0c49dedf8f8fc79378a3828c47940c67d83a9156c062ca148d`
 - manifest SHA-256:
-  `e8e599e64c29893658e1c618478a15d030e65488e6c5e9388dfc39b23c3715df`
+  `d3928ee534e707361cf3a114f684eb8dcc11380b49d7995bdfda33cf949902e8`
 - chunk count: `51`
 - unique scenario count: `2,626`
 - semantic exact-fit directive count: `61`
