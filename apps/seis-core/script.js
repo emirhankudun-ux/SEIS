@@ -3129,17 +3129,26 @@ async function loadSeisAiCoreRuntimeSnapshot() {
     const pluginMcpProbe = pluginMcpMesh?.probe || {};
     if (pluginMcpMesh?.serverCount !== 6 ||
         pluginMcpMesh.configuredServerCount !== 6 ||
+        pluginMcpProbe.performed !== true ||
+        pluginMcpProbe.verifiedServerCount !== 6 ||
         pluginMcpProbe.safeToolProbeCount !== 6 ||
         pluginMcpProbe.failedServerCount !== 0 ||
+        pluginMcpProbe.transport !== "stdio newline-delimited JSON-RPC" ||
+        pluginMcpProbe.lifecycle !== "initialize -> notifications/initialized -> tools/list -> allowlisted status tool" ||
         pluginMcpProbe.safeToolCallsPerformed !== true ||
+        pluginMcpBoundary.localProbePerformed !== true ||
+        pluginMcpBoundary.probeOptIn !== true ||
         pluginMcpBoundary.liveSessionStarted !== false ||
         pluginMcpBoundary.credentialsRead !== false ||
         pluginMcpBoundary.networkCalled !== false ||
         pluginMcpBoundary.externalMutationPerformed !== false ||
         pluginMcpBoundary.safeToolCallsPerformed !== true ||
         pluginMcpMesh.servers.some((server) => server.status !== "probe-verified" ||
+          server.safeToolProbe?.mode !== "stdio-safe-tool-call" ||
           server.safeToolProbe?.status !== "verified" ||
           server.safeToolProbe?.error !== null ||
+          !Array.isArray(server.safeToolProbe?.resultKeys) ||
+          server.safeToolProbe.resultKeys.length === 0 ||
           server.executionAuthority !== false ||
           server.credentialsRead !== false ||
           server.networkCalled !== false ||
