@@ -169,7 +169,7 @@ struct SeisDesktopDemoCommandCenterView: View {
                         }
                         Spacer()
                         Button("Rerun") {
-                            model.rerun(result: last)
+                            rerun(result: last)
                         }
                         .disabled(model.isRunning)
                         .buttonStyle(.bordered)
@@ -235,7 +235,7 @@ struct SeisDesktopDemoCommandCenterView: View {
 
                             HStack(spacing: 8) {
                                 Button("Rerun") {
-                                    model.rerun(result: result)
+                                    rerun(result: result)
                                 }
                                 .disabled(model.isRunning)
                                 .buttonStyle(.bordered)
@@ -307,7 +307,7 @@ struct SeisDesktopDemoCommandCenterView: View {
                                 }
                                 Spacer()
                                 Button("Rerun") {
-                                    model.rerun(result: entry)
+                                    rerun(result: entry)
                                 }
                                 .disabled(model.isRunning)
                                 .buttonStyle(.bordered)
@@ -353,6 +353,14 @@ struct SeisDesktopDemoCommandCenterView: View {
             Button("Cancel", role: .cancel) {}
         } message: {
             Text("This starts an interactive credential and network flow. It is not a read-only check and may change the local GitHub CLI session.")
+        }
+    }
+
+    private func rerun(result: SeisDesktopDemoCommandCenterModel.CommandResult) {
+        if result.label == "GitHub Auth Login" {
+            showGitHubAuthApproval = true
+        } else {
+            model.rerun(result: result)
         }
     }
 
