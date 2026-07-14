@@ -215,6 +215,19 @@ for (const field of ["before_session", "during_session", "after_session", "requi
   requireValue(Array.isArray(protocol[field]) ? protocol[field].length > 0 : typeof protocol[field] === "string" && protocol[field].length > 0, `${registryPath} continuation protocol must define ${field}`);
 }
 requireValue(protocol.background_execution_claim === undefined, `${registryPath} continuation protocol must not duplicate runtime state`);
+const currentPhaseState = stewardship.current_phase_state || {};
+requireValue(currentPhaseState.active_goal_id === "SEIS-GOAL-003", `${registryPath} current phase state must point to SEIS-GOAL-003`);
+requireValue(currentPhaseState.current_phase_id === "SEIS-10Y-Y01", `${registryPath} current phase state must start at SEIS-10Y-Y01`);
+requireValue(currentPhaseState.phase_status === "planned", `${registryPath} current phase state must remain planned`);
+requireValue(currentPhaseState.last_reviewed_at === "2026-07-14", `${registryPath} current phase state last_reviewed_at is invalid`);
+requireValue(currentPhaseState.last_commit_hash === "28549402", `${registryPath} current phase state must reference the validated stewardship commit`);
+requireValue(Array.isArray(currentPhaseState.validation_results) && currentPhaseState.validation_results.length >= 4, `${registryPath} current phase state must record validation results`);
+for (const result of currentPhaseState.validation_results || []) {
+  requireValue(typeof result.command === "string" && result.command.length > 2, `${registryPath} current phase validation command is invalid`);
+  requireValue(result.status === "passed", `${registryPath} current phase validation must be passed`);
+}
+requireValue(Array.isArray(currentPhaseState.open_blockers) && currentPhaseState.open_blockers.length > 0, `${registryPath} current phase state must record open blockers`);
+requireValue(typeof currentPhaseState.next_action === "string" && currentPhaseState.next_action.length > 40, `${registryPath} current phase state must record a next action`);
 const phases = Array.isArray(stewardship.annual_phases) ? stewardship.annual_phases : [];
 requireValue(JSON.stringify(phases.map((phase) => phase.id)) === JSON.stringify(expectedAnnualPhaseIds), `${registryPath} must define ten ordered annual phases`);
 for (const [index, phase] of phases.entries()) {

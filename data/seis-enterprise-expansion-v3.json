@@ -328,7 +328,7 @@
     "continuation_mode": "session-based-continuation",
     "background_execution_claim": false,
     "required_review_cadences": ["daily", "weekly", "monthly", "quarterly", "annual"],
-    "continuation_protocol": {
+      "continuation_protocol": {
       "before_session": [
         "Read AGENTS.md and project.ecosystem.yaml.",
         "Read the active Goal, latest evidence, validation, roadmap, and decision records.",
@@ -363,8 +363,25 @@
         "unrelated dirty work would be overwritten or scope ownership is ambiguous"
       ],
       "continuation_command": "Read AGENTS.md, project.ecosystem.yaml, this registry, the active Goal, and the latest evidence first. Continue only the highest-priority unblocked phase task, produce a reviewable artifact, validate it, update evidence and rollback, and finish with the exact repository-state line."
-    },
-    "annual_phases": [
+      },
+      "current_phase_state": {
+        "active_goal_id": "SEIS-GOAL-003",
+        "current_phase_id": "SEIS-10Y-Y01",
+        "phase_status": "planned",
+        "last_reviewed_at": "2026-07-14",
+        "last_commit_hash": "28549402",
+        "validation_results": [
+          {"command": "npm run check:seis-enterprise-expansion-v3", "status": "passed"},
+          {"command": "npm run check:seis-goal-tracking-update-prompt", "status": "passed"},
+          {"command": "npm run check:goal-tracking", "status": "passed"},
+          {"command": "npm run check:goal-command-center-view", "status": "passed"}
+        ],
+        "open_blockers": [
+          "The pre-existing repository hygiene blocker remains unresolved in the shared dirty worktree."
+        ],
+        "next_action": "At the next session, read AGENTS.md, the project manifest, this registry, and the latest Goal evidence, then select the highest-priority unblocked Year 1 task."
+      },
+      "annual_phases": [
       {
         "id": "SEIS-10Y-Y01",
         "year": 1,

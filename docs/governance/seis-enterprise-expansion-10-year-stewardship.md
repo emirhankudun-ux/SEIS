@@ -78,6 +78,26 @@ count:
 Metrics may be unavailable in a given session. In that case, record the
 unavailable state and an unblock condition rather than inventing a value.
 
+## Current Phase State
+
+The current continuation state is intentionally explicit:
+
+- active Goal: `SEIS-GOAL-003`;
+- phase: `SEIS-10Y-Y01`, Evidence and Ownership Foundation;
+- phase status: planned;
+- last reviewed: `2026-07-14`;
+- last validated stewardship commit: `28549402`;
+- validation: Enterprise Expansion V3, Goal Tracking Update Prompt, Goal Tracking,
+  and Goal Command Center View checks passed;
+- open blocker: the pre-existing repository hygiene blocker remains unresolved
+  in the shared dirty worktree;
+- next action: read the repository instructions, project manifest, this registry,
+  and latest Goal evidence, then select the highest-priority unblocked Year 1
+  task.
+
+This state is a handoff record, not a claim that the annual phase has been
+completed or that work continues without a new supported session.
+
 ## Session Handoff
 
 Use this continuation instruction at the start of a future session:

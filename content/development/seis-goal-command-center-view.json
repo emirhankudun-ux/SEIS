@@ -1194,7 +1194,7 @@
           "Does not run background agents, live providers, external connectors, deployment, or autonomous execution.",
           "Does not resolve the pre-existing repository hygiene blocker."
         ],
-        "nextAction": "Create the focused ten-year stewardship commit, record its hash, and leave the next annual phase state."
+        "nextAction": "Continue from the recorded phase state, keep all annual phases planned until current evidence exists, and use the session-based continuation command for the next review."
       }
     ],
     "readinessConnections": [
