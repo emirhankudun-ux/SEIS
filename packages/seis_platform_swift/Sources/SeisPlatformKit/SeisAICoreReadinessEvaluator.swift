@@ -63,6 +63,7 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         "prompt-engine",
         "subagent-handoffs",
         "installed-ai-workforce",
+        "installed-capability-inventory",
         "workforce-training-control-plane",
         "model-planning-evidence",
         "version-promotion-dry-run",
@@ -117,6 +118,7 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
         promptEngine: SeisAIPromptEngine,
         handoffSnapshot: SeisAGIAgentHandoffSnapshot,
         workforceSnapshot: SeisAIWorkforceAssignmentSnapshot? = nil,
+        installedCapabilityInventorySnapshot: SeisAIInstalledCapabilityInventorySnapshot? = nil,
         workforceTrainingSnapshot: SeisAIWorkforceTrainingSnapshot? = nil,
         modelPlanningSnapshot: SeisAIModelPlanningEvidenceSnapshot? = nil,
         versionPromotionSnapshot: SeisAICoreVersionPromotionSnapshot? = nil,
@@ -237,6 +239,12 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 title: "Installed AI workforce registry",
                 passed: workforceSnapshot?.isMetadataOnly == true && workforceSnapshot?.assignments.count == 10,
                 evidence: "Ten source-backed AI/tool assignments are visible as metadata-only roles; Codex remains the primary writer and other roles do not gain direct execution authority."
+            ),
+            SeisAICoreReadinessCheck(
+                id: "installed-capability-inventory",
+                title: "Installed capability inventory",
+                passed: installedCapabilityInventorySnapshot?.isMetadataOnly == true,
+                evidence: "\(installedCapabilityInventorySnapshot?.installedSkillCount ?? 0) installed skills, \(installedCapabilityInventorySnapshot?.cliToolProfiles.count ?? 0) local tool profiles, \(installedCapabilityInventorySnapshot?.currentSessionMCPSurfaceCount ?? 0) current-session MCP surfaces, and \(installedCapabilityInventorySnapshot?.nvidiaIntegrationIDs.count ?? 0) NVIDIA integrations remain metadata-only and activation-gated."
             ),
             SeisAICoreReadinessCheck(
                 id: "workforce-training-control-plane",

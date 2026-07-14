@@ -10,6 +10,10 @@ struct SeisAICoreReadinessEvaluatorTests {
         let promptEngine = SeisAIPromptEngine.defaultEngine
         let handoffs = SeisAGIAgentHandoffSnapshot.current()
         let workforce = try SeisAIWorkforceAssignmentSnapshot.validated(from: workforceData())
+        let installedCapabilityInventory = try SeisAIInstalledCapabilityInventorySnapshot.validated(
+            bigTechData: bigTechCapabilityInventoryData(),
+            nvidiaData: nvidiaCapabilityInventoryData()
+        )
         let workforceTraining = try SeisAIWorkforceTrainingSnapshot.validated(from: workforceTrainingData())
         let modelPlanning = try SeisAIModelPlanningEvidenceSnapshot.validated(from: modelPlanningData())
         let versionPromotion = try SeisAICoreVersionPromotionSnapshot.validated(from: versionPromotionData())
@@ -63,6 +67,7 @@ struct SeisAICoreReadinessEvaluatorTests {
             promptEngine: promptEngine,
             handoffSnapshot: handoffs,
             workforceSnapshot: workforce,
+            installedCapabilityInventorySnapshot: installedCapabilityInventory,
             workforceTrainingSnapshot: workforceTraining,
             modelPlanningSnapshot: modelPlanning,
             versionPromotionSnapshot: versionPromotion,
@@ -115,7 +120,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         #expect(report.status == .readyLocalDemo)
         #expect(report.evaluatorVersion == SeisAICoreReadinessEvaluator.evaluatorVersion)
         #expect(report.checks.map(\.id) == SeisAICoreReadinessEvaluator.expectedCheckIDs)
-        #expect(report.passedCount == 54)
+        #expect(report.passedCount == 55)
         #expect(report.failedCount == 0)
         #expect(report.checks.first { $0.id == "plugin-mcp-safe-probes" }?.evidence.contains("6/6 local servers") == true)
         #expect(report.truthBoundary.contains("not proof of live provider access"))
@@ -124,6 +129,10 @@ struct SeisAICoreReadinessEvaluatorTests {
     @Test func readinessReportCannotCallLocalDemoProductionReady() throws {
         let snapshot = try SeisAICoreRuntimeSnapshotContract.validated(from: runtimeSnapshotData())
         let workforce = try SeisAIWorkforceAssignmentSnapshot.validated(from: workforceData())
+        let installedCapabilityInventory = try SeisAIInstalledCapabilityInventorySnapshot.validated(
+            bigTechData: bigTechCapabilityInventoryData(),
+            nvidiaData: nvidiaCapabilityInventoryData()
+        )
         let workforceTraining = try SeisAIWorkforceTrainingSnapshot.validated(from: workforceTrainingData())
         let modelPlanning = try SeisAIModelPlanningEvidenceSnapshot.validated(from: modelPlanningData())
         let versionPromotion = try SeisAICoreVersionPromotionSnapshot.validated(from: versionPromotionData())
@@ -176,6 +185,7 @@ struct SeisAICoreReadinessEvaluatorTests {
             promptEngine: SeisAIPromptEngine.defaultEngine,
             handoffSnapshot: SeisAGIAgentHandoffSnapshot.current(),
             workforceSnapshot: workforce,
+            installedCapabilityInventorySnapshot: installedCapabilityInventory,
             workforceTrainingSnapshot: workforceTraining,
             modelPlanningSnapshot: modelPlanning,
             versionPromotionSnapshot: versionPromotion,
@@ -524,5 +534,17 @@ struct SeisAICoreReadinessEvaluatorTests {
         var root = URL(fileURLWithPath: #filePath)
         for _ in 0..<5 { root.deleteLastPathComponent() }
         return try Data(contentsOf: root.appendingPathComponent(SeisPluginInterfaceRoadmapSnapshot.sourcePath))
+    }
+
+    private func bigTechCapabilityInventoryData() throws -> Data {
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<5 { root.deleteLastPathComponent() }
+        return try Data(contentsOf: root.appendingPathComponent("content/development/seis-big-tech-mcp-skill-inventory.json"))
+    }
+
+    private func nvidiaCapabilityInventoryData() throws -> Data {
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<5 { root.deleteLastPathComponent() }
+        return try Data(contentsOf: root.appendingPathComponent("content/development/seis-nvidia-installed-integrations.json"))
     }
 }

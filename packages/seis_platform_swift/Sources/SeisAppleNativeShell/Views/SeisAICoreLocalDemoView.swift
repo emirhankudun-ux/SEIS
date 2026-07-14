@@ -50,6 +50,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
     @Published private(set) var agiSystemSourceSnapshot: SeisAGISystemSourceSnapshot?
     @Published private(set) var projectIntakeSnapshot: SeisProjectIntakeSnapshot?
     @Published private(set) var connectorCapabilityRegistrySnapshot: SeisConnectorCapabilityRegistrySnapshot?
+    @Published private(set) var installedCapabilityInventorySnapshot: SeisAIInstalledCapabilityInventorySnapshot?
     @Published private(set) var goalCommandCenterViewSnapshot: SeisGoalCommandCenterViewSnapshot?
     @Published private(set) var focusModeLearningContractSnapshot: SeisFocusModeLearningContractSnapshot?
     @Published private(set) var pluginInterfaceRoadmapSnapshot: SeisPluginInterfaceRoadmapSnapshot?
@@ -218,6 +219,10 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
         connectorCapabilityRegistrySnapshot = try? SeisConnectorCapabilityRegistrySnapshot.validated(
             from: Data(contentsOf: connectorCapabilityRegistryURL)
         )
+        installedCapabilityInventorySnapshot = try? SeisAIInstalledCapabilityInventorySnapshot.validated(
+            bigTechData: Data(contentsOf: bigTechCapabilityInventoryURL),
+            nvidiaData: Data(contentsOf: nvidiaCapabilityInventoryURL)
+        )
         goalCommandCenterViewSnapshot = try? SeisGoalCommandCenterViewSnapshot.validated(
             from: Data(contentsOf: goalCommandCenterViewURL)
         )
@@ -243,6 +248,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
                 promptEngine: promptEngine,
                 handoffSnapshot: nextOrchestrationSnapshot,
                 workforceSnapshot: workforceSnapshot,
+                installedCapabilityInventorySnapshot: installedCapabilityInventorySnapshot,
                 workforceTrainingSnapshot: workforceTrainingSnapshot,
                 modelPlanningSnapshot: modelPlanningSnapshot,
                 versionPromotionSnapshot: versionPromotionSnapshot,
@@ -438,6 +444,10 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             connectorCapabilityRegistrySnapshot = try? SeisConnectorCapabilityRegistrySnapshot.validated(
                 from: Data(contentsOf: connectorCapabilityRegistryURL)
             )
+            installedCapabilityInventorySnapshot = try? SeisAIInstalledCapabilityInventorySnapshot.validated(
+                bigTechData: Data(contentsOf: bigTechCapabilityInventoryURL),
+                nvidiaData: Data(contentsOf: nvidiaCapabilityInventoryURL)
+            )
             goalCommandCenterViewSnapshot = try? SeisGoalCommandCenterViewSnapshot.validated(
                 from: Data(contentsOf: goalCommandCenterViewURL)
             )
@@ -491,6 +501,7 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             agiSystemSourceSnapshot = nil
             projectIntakeSnapshot = nil
             connectorCapabilityRegistrySnapshot = nil
+            installedCapabilityInventorySnapshot = nil
             goalCommandCenterViewSnapshot = nil
             focusModeLearningContractSnapshot = nil
             pluginInterfaceRoadmapSnapshot = nil
@@ -1123,6 +1134,20 @@ final class SeisAICoreLocalDemoModel: ObservableObject {
             .appendingPathComponent("connector-capability-registry.json")
     }
 
+    private var bigTechCapabilityInventoryURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-big-tech-mcp-skill-inventory.json")
+    }
+
+    private var nvidiaCapabilityInventoryURL: URL {
+        URL(fileURLWithPath: repositoryPath)
+            .appendingPathComponent("content")
+            .appendingPathComponent("development")
+            .appendingPathComponent("seis-nvidia-installed-integrations.json")
+    }
+
     private var goalCommandCenterViewURL: URL {
         URL(fileURLWithPath: repositoryPath)
             .appendingPathComponent("content")
@@ -1176,6 +1201,9 @@ struct SeisAICoreLocalDemoView: View {
                 }
                 if let workforceSnapshot = model.workforceSnapshot {
                     workforceDisclosure(snapshot: workforceSnapshot)
+                }
+                if let installedCapabilityInventorySnapshot = model.installedCapabilityInventorySnapshot {
+                    installedCapabilityInventoryDisclosure(snapshot: installedCapabilityInventorySnapshot)
                 }
                 if let workforceTrainingSnapshot = model.workforceTrainingSnapshot {
                     workforceTrainingDisclosure(snapshot: workforceTrainingSnapshot)
@@ -1700,6 +1728,70 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Installed AI workforce role registry. \(snapshot.assignments.count) metadata-only assignments. Codex is the primary writer and all other roles remain review, draft, or local-only surfaces.")
+    }
+
+    private func installedCapabilityInventoryDisclosure(snapshot: SeisAIInstalledCapabilityInventorySnapshot) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Sources: \(snapshot.sourcePaths.joined(separator: " · "))")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Skills: \(snapshot.installedSkillCount) · CLI/tool profiles: \(snapshot.cliToolProfiles.count) · Project MCP/skill configs: \(snapshot.projectMCPConfigurations.count)")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Current-session MCP surfaces: \(snapshot.currentSessionMCPSurfaceCount) · Local apps: \(snapshot.localAppCount) · Pending connector approvals: \(snapshot.pendingConnectorInstallCount)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("NVIDIA skill manifests: \(snapshot.nvidiaSkillManifestCount) · Installed-gated integrations: \(snapshot.nvidiaIntegrationIDs.count) · Runtime blockers: \(snapshot.nvidiaRuntimeBlockedCount)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Runtime authority: \(snapshot.runtimeAuthority ? "enabled" : "blocked") · Credentials: \(snapshot.credentialsRead ? "read" : "not read") · Network: \(snapshot.networkCalled ? "called" : "not called") · Mutation: \(snapshot.externalMutationPerformed ? "performed" : "not performed")")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(snapshot.isMetadataOnly ? .secondary : .red)
+
+                Text("Installed skill IDs")
+                    .font(.caption.weight(.semibold))
+                Text(snapshot.installedSkillIDs.joined(separator: " · "))
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.tertiary)
+
+                Text("Local CLI and tool profiles")
+                    .font(.caption.weight(.semibold))
+                ForEach(snapshot.cliToolProfiles) { profile in
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("\(profile.vendor) · \(profile.name)")
+                            .font(.caption.weight(.semibold))
+                        Text("\(profile.status) · \(profile.providerState)")
+                            .font(.caption2.monospaced())
+                            .foregroundStyle(.secondary)
+                    }
+                }
+
+                Text("Project MCP and skill configurations")
+                    .font(.caption.weight(.semibold))
+                ForEach(snapshot.projectMCPConfigurations) { configuration in
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("\(configuration.client) · \(configuration.path)")
+                            .font(.caption.weight(.semibold))
+                        Text("Servers: \(configuration.serverIDs.isEmpty ? "none" : configuration.serverIDs.joined(separator: ", ")) · \(configuration.status)")
+                            .font(.caption2.monospaced())
+                            .foregroundStyle(.secondary)
+                    }
+                }
+
+                Text("NVIDIA integrations: \(snapshot.nvidiaIntegrationIDs.joined(separator: " · "))")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.tertiary)
+                Text(snapshot.truthBoundary)
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Installed AI, MCP, skill, and NVIDIA inventory", systemImage: "square.stack.3d.up")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Installed AI, MCP, skill, and NVIDIA inventory. 38 skills, 3 local tool profiles, 17 current-session MCP surfaces, and 11 NVIDIA integrations are metadata-only; activation requires human approval.")
     }
 
     private func workforceStatusIcon(_ status: String) -> String {
