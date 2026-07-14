@@ -75,6 +75,9 @@ The foundation includes:
 - SEIS plugin lane tools may inspect repo-local manifests, skills, and lane
   profiles, but must not claim connector authentication or perform external
   mutation.
+- The native Command Center keeps `gh auth login` behind an explicit human
+  confirmation because it changes local credentials and performs network work;
+  read-only GitHub status checks remain separately available.
 
 ## Provider Status Model
 
