@@ -23,7 +23,7 @@ category:
   - governance
 
 priority: critical
-status: in-progress
+status: review
 maturity: prototype
 confidence: medium
 
@@ -253,8 +253,8 @@ github:
   suggested_commit: 'feat(governance): add safe local workspace routing'
   issue_url: https://github.com/emirhankudun-ux/SEIS/issues/185
   branch_name: audit/seis-workspace-truth-recovery
-  commit_sha: null
-  pull_request_url: null
+  commit_sha: 4053db88af55779a2080551e651032b317e7e404
+  pull_request_url: https://github.com/emirhankudun-ux/SEIS/pull/186
   release_note_url: null
 
 observability:
@@ -300,6 +300,16 @@ status_history:
       - OPS2-EVIDENCE-001
       - OPS2-EVIDENCE-002
       - OPS2-EVIDENCE-003
+  - status: review
+    at: '2026-07-14'
+    reason: The public-safe registry, fail-closed discovery, executable schema, adversarial validation, aligned governance surfaces, independent reviews, issue, implementation commit, upstream branch, and stacked draft pull request are ready for hosted review; no recovery action was authorized.
+    evidence_refs:
+      - OPS2-EVIDENCE-004
+      - OPS2-EVIDENCE-005
+      - OPS2-EVIDENCE-006
+      - OPS2-EVIDENCE-007
+      - OPS2-EVIDENCE-008
+      - OPS2-EVIDENCE-009
 
 evidence_records:
   - id: OPS2-EVIDENCE-001
@@ -358,3 +368,10 @@ evidence_records:
     command: null
     exit_code: null
     artifact: https://github.com/emirhankudun-ux/SEIS/issues/185
+  - id: OPS2-EVIDENCE-009
+    type: github-delivery
+    description: Issue 185 and stacked draft pull request 186 expose the Goal, zero-authority snapshot, implementation commit, validation evidence, security boundaries, risks, rollback, deferred recovery actions, and hosted-review dependency on draft pull request 184. The upstream push succeeded while the remote reported bypassed branch-creation and signature policy violations, so merge readiness is not claimed.
+    status: passed
+    command: gh pr view 186 --repo emirhankudun-ux/SEIS --json number,state,isDraft,baseRefName,headRefName,url
+    exit_code: 0
+    artifact: https://github.com/emirhankudun-ux/SEIS/pull/186
