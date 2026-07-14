@@ -13,6 +13,11 @@ public struct SeisAICapabilityMesh: Codable, Equatable, Sendable {
     public let personalLanes: [SeisAICorePersonalLane]
     public let mcpCounts: SeisAICoreMCPCounts
     public let mcpSurfaces: [SeisAICoreMCPSurface]
+    public let pluginMcpServerCount: Int
+    public let pluginMcpVerifiedServerCount: Int
+    public let pluginMcpSafeToolProbeCount: Int
+    public let pluginMcpSafeToolNames: [String]
+    public let pluginMcpBoundarySafe: Bool
     public let runtimeBoundarySafe: Bool
     public let humanApprovalRequiredForLiveActions: Bool
 
@@ -28,6 +33,23 @@ public struct SeisAICapabilityMesh: Codable, Equatable, Sendable {
         self.personalLanes = pluginMesh.personalLanes
         self.mcpCounts = snapshot.mcpRuntime.counts
         self.mcpSurfaces = snapshot.mcpRuntime.surfaces
+        let pluginMcpMesh = pluginMesh.mcpMesh
+        self.pluginMcpServerCount = pluginMcpMesh.serverCount
+        self.pluginMcpVerifiedServerCount = pluginMcpMesh.probe.verifiedServerCount
+        self.pluginMcpSafeToolProbeCount = pluginMcpMesh.probe.safeToolProbeCount
+        self.pluginMcpSafeToolNames = pluginMcpMesh.servers
+            .filter { $0.safeToolProbe.isVerified }
+            .map { $0.safeToolProbe.requestedTool }
+            .sorted()
+        self.pluginMcpBoundarySafe = pluginMcpMesh.boundary.liveSessionStarted == false &&
+            pluginMcpMesh.boundary.shell == false &&
+            pluginMcpMesh.boundary.credentialsRead == false &&
+            pluginMcpMesh.boundary.networkCalled == false &&
+            pluginMcpMesh.boundary.externalMutationPerformed == false &&
+            pluginMcpMesh.boundary.humanApprovalRequiredForExternalMutation &&
+            pluginMcpMesh.probe.safeToolCallsPerformed &&
+            pluginMcpMesh.probe.failedServerCount == 0 &&
+            pluginMcpMesh.servers.allSatisfy { $0.safeToolProbe.isVerified }
         self.runtimeBoundarySafe = snapshot.runtimeBoundary.isSafe && snapshot.agentRegistry.isReadOnlySafe
         self.humanApprovalRequiredForLiveActions = snapshot.runtimeBoundary.humanApprovalRequiredForLiveActions
     }
@@ -41,6 +63,9 @@ public struct SeisAICapabilityMesh: Codable, Equatable, Sendable {
         if personalLanes.isEmpty { issues.append("personal plugin lanes are missing") }
         if mcpCounts.tools < 0 || mcpCounts.resources < 0 || mcpCounts.prompts < 0 { issues.append("MCP counts must not be negative") }
         if mcpSurfaces.isEmpty { issues.append("MCP surfaces are missing") }
+        if pluginMcpServerCount != 6 || pluginMcpVerifiedServerCount != pluginMcpServerCount { issues.append("plugin MCP mesh must verify all six local servers") }
+        if pluginMcpSafeToolProbeCount != pluginMcpServerCount || pluginMcpSafeToolNames.count != pluginMcpServerCount { issues.append("plugin MCP mesh must expose one safe status probe per server") }
+        if !pluginMcpBoundarySafe { issues.append("plugin MCP mesh boundary is not read-only safe") }
         if !runtimeBoundarySafe { issues.append("runtime boundary is not read-only safe") }
         if !humanApprovalRequiredForLiveActions { issues.append("live actions are missing human approval") }
         return issues
@@ -54,6 +79,10 @@ public struct SeisAICapabilityMesh: Codable, Equatable, Sendable {
 
     public var mcpStatusLabel: String {
         "\(mcpCounts.tools) tools · \(mcpCounts.resources) resources · \(mcpCounts.prompts) prompts"
+    }
+
+    public var pluginMcpStatusLabel: String {
+        "Plugin MCP: \(pluginMcpVerifiedServerCount)/\(pluginMcpServerCount) servers · \(pluginMcpSafeToolProbeCount)/\(pluginMcpServerCount) safe status probes · \(pluginMcpBoundarySafe ? "read-only" : "watch")"
     }
 
     public var laneIDs: [String] {

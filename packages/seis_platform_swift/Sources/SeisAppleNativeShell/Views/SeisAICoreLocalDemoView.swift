@@ -1460,6 +1460,15 @@ struct SeisAICoreLocalDemoView: View {
                 Text(mesh.mcpStatusLabel)
                     .font(.caption.monospaced())
                     .foregroundStyle(.secondary)
+                Text(mesh.pluginMcpStatusLabel)
+                    .font(.caption.monospaced())
+                    .foregroundStyle(mesh.pluginMcpBoundarySafe ? .green : .orange)
+                Text("Allowlisted local status tools: \(mesh.pluginMcpSafeToolNames.joined(separator: ", "))")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.tertiary)
+                Text("Status probes only. No plugin activation, MCP invocation, credentials, network, SSH, or mutation is performed.")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
                 Text("Personal lanes: \(mesh.laneIDs.joined(separator: ", "))")
                     .font(.caption2.monospaced())
                     .foregroundStyle(.tertiary)
@@ -1493,7 +1502,7 @@ struct SeisAICoreLocalDemoView: View {
             Label("Plugin + MCP capability mesh", systemImage: "point.3.connected.trianglepath.dotted")
                 .font(.subheadline.weight(.semibold))
         }
-        .accessibilityLabel("Plugin and MCP capability mesh. \(mesh.pluginStatusLabel). \(mesh.mcpStatusLabel). No plugin activation or MCP invocation is performed.")
+        .accessibilityLabel("Plugin and MCP capability mesh. \(mesh.pluginStatusLabel). \(mesh.mcpStatusLabel). \(mesh.pluginMcpStatusLabel). Status probes only; no plugin activation or MCP invocation is performed.")
     }
 
     private func pluginCapabilityCatalogDisclosure(

@@ -18,6 +18,18 @@ struct SeisAICapabilityMeshTests {
         #expect(mesh.laneIDs == ["seis", "seis-cloud", "seis-code", "seis-design", "seis-data"])
         #expect(mesh.mcpCounts == SeisAICoreRuntimeSnapshotContract.expectedMCPCounts)
         #expect(mesh.mcpSurfaces.map(\.id) == ["tools", "resources", "prompts", "transport"])
+        #expect(mesh.pluginMcpServerCount == 6)
+        #expect(mesh.pluginMcpVerifiedServerCount == 6)
+        #expect(mesh.pluginMcpSafeToolProbeCount == 6)
+        #expect(mesh.pluginMcpSafeToolNames == [
+            "seis_ai_agent_status",
+            "seis_cloud_status",
+            "seis_code_status",
+            "seis_data_status",
+            "seis_design_status",
+            "seis_repos_bridge_status"
+        ])
+        #expect(mesh.pluginMcpBoundarySafe)
         #expect(mesh.runtimeBoundarySafe)
         #expect(mesh.humanApprovalRequiredForLiveActions)
         #expect(mesh.validationIssues.isEmpty)
@@ -30,6 +42,7 @@ struct SeisAICapabilityMeshTests {
         #expect(mesh.pluginStatusLabel.contains("185 installed/enabled"))
         #expect(mesh.pluginStatusLabel.contains("300 helper plugins"))
         #expect(mesh.mcpStatusLabel == "37 tools · 30 resources · 3 prompts")
+        #expect(mesh.pluginMcpStatusLabel == "Plugin MCP: 6/6 servers · 6/6 safe status probes · read-only")
         #expect(mesh.activationPolicy.contains("user_approved"))
     }
 
