@@ -310,6 +310,7 @@ status_history:
       - OPS2-EVIDENCE-007
       - OPS2-EVIDENCE-008
       - OPS2-EVIDENCE-009
+      - OPS2-EVIDENCE-010
 
 evidence_records:
   - id: OPS2-EVIDENCE-001
@@ -373,5 +374,12 @@ evidence_records:
     description: Issue 185 and stacked draft pull request 186 expose the Goal, zero-authority snapshot, implementation commit, validation evidence, security boundaries, risks, rollback, deferred recovery actions, and hosted-review dependency on draft pull request 184. The upstream push succeeded while the remote reported bypassed branch-creation and signature policy violations, so merge readiness is not claimed.
     status: passed
     command: gh pr view 186 --repo emirhankudun-ux/SEIS --json number,state,isDraft,baseRefName,headRefName,url
+    exit_code: 0
+    artifact: https://github.com/emirhankudun-ux/SEIS/pull/186
+  - id: OPS2-EVIDENCE-010
+    type: hosted-validation
+    description: On delivery commit c4567590a5615810084126bfe38ca2c352122c1e, the draft pull request reported successful Foundation governance, Enterprise gates, Governance, Socket project, Socket pull-request alert, and CodeRabbit status checks. CodeRabbit explicitly skipped review because the pull request is draft; merge readiness is not claimed.
+    status: passed
+    command: gh pr checks 186 --repo emirhankudun-ux/SEIS
     exit_code: 0
     artifact: https://github.com/emirhankudun-ux/SEIS/pull/186
