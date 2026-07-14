@@ -150,7 +150,7 @@ status_history:
       - ECO7-EVIDENCE-001
   - status: review
     at: '2026-07-14'
-    reason: The exact corpus compiler, adversarial tests, local validation, substantive commit, issue, and stacked draft pull request exist; hosted security and branch-policy review remain unresolved.
+    reason: The exact corpus compiler, adversarial tests, local validation, substantive commit, issue, and stacked ready-for-review pull request exist; hosted Guardian, branch-policy, and human review remain unresolved.
     evidence_refs:
       - ECO7-EVIDENCE-002
       - ECO7-EVIDENCE-003
@@ -159,6 +159,11 @@ status_history:
       - ECO7-EVIDENCE-014
       - ECO7-EVIDENCE-015
       - ECO7-EVIDENCE-016
+      - ECO7-EVIDENCE-017
+      - ECO7-EVIDENCE-018
+      - ECO7-EVIDENCE-019
+      - ECO7-EVIDENCE-021
+      - ECO7-EVIDENCE-025
 
 evidence_records:
   - id: ECO7-EVIDENCE-001
@@ -261,7 +266,7 @@ evidence_records:
     artifact: https://github.com/emirhankudun-ux/SEIS/commit/5d095fcb9d5a442ccd0e6ad2fe6cc5ae5e7c766a
   - id: ECO7-EVIDENCE-015
     type: github-handoff
-    description: Draft pull request 188 maps ECO-GOAL-0007 to the focused branch, parent Goal branch, validation evidence, risks, rollback, and explicit no-merge condition.
+    description: Ready-for-review pull request 188 maps ECO-GOAL-0007 to the focused branch, parent Goal branch, validation evidence, risks, rollback, and explicit no-merge condition.
     status: passed
     command: null
     exit_code: null
@@ -273,6 +278,69 @@ evidence_records:
     command: git push -u origin docs/goal-tracking-mega-prompt-v1
     exit_code: 0
     artifact: https://github.com/emirhankudun-ux/SEIS/pull/188
+  - id: ECO7-EVIDENCE-017
+    type: security-hardening
+    description: Final security hardening rejects decoded prompt-metadata secrets, private paths including Unicode home segments, unsafe Unicode controls and separators, and redacts schema failures; commit 4b73129a pins the resulting reviewed integrity contract.
+    status: passed
+    command: npm run test:goal-tracking-mega-prompt
+    exit_code: 0
+    artifact: https://github.com/emirhankudun-ux/SEIS/commit/4b73129a236680ed5c0942af1d051f4dd063c60c
+  - id: ECO7-EVIDENCE-018
+    type: remote-ci
+    description: Foundation Check run 29342588925 passed on final code head 4b73129a, including exact corpus build, eight adversarial prompt tests, deterministic checking, ecosystem Goal fixtures, compatibility checks, and repository gates.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29342588925
+  - id: ECO7-EVIDENCE-019
+    type: remote-ci
+    description: SEIS System Gates run 29342586061 passed the Enterprise gates on final code head 4b73129a.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29342586061
+  - id: ECO7-EVIDENCE-020
+    type: security-validation
+    description: Socket pull-request alerts and project-report checks passed for final code head 4b73129a.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://socket.dev/dashboard/org/emirhan-kudun/sbom/b56b1345-564b-4475-847a-d1a2e202157d
+  - id: ECO7-EVIDENCE-021
+    type: security-validation
+    description: Manually dispatched CodeQL JavaScript and TypeScript job 87118276742 passed on final code head 4b73129a and uploaded validated SARIF.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29342683412/job/87118276742
+  - id: ECO7-EVIDENCE-022
+    type: security-validation
+    description: Manually dispatched CodeQL Python job 87118276668 passed on final code head 4b73129a and uploaded validated SARIF.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29342683412/job/87118276668
+  - id: ECO7-EVIDENCE-023
+    type: security-validation
+    description: The manual CodeQL Swift lane was cancelled after applicable JavaScript and Python lanes passed because ECO-GOAL-0007 changes no Swift paths; no Swift pass is claimed.
+    status: skipped
+    command: gh run cancel 29342683412 --repo emirhankudun-ux/SEIS
+    exit_code: 0
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29342683412
+  - id: ECO7-EVIDENCE-024
+    type: review
+    description: CodeRabbit did not review pull request 188 because automated reviews are disabled for its stacked non-default base branch; no review pass is claimed.
+    status: skipped
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/pull/188
+  - id: ECO7-EVIDENCE-025
+    type: security-validation
+    description: Guardian cannot run on the stacked base and parent pull request 177 remains blocked by a full-history GitLeaks candidate from unrelated open pull request 154; this dependency blocks security completion without weakening the scanner.
+    status: failed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29335647966
 
 quality_gates:
   architecture: passed
@@ -285,7 +353,7 @@ quality_gates:
   model_provider_routing: not-applicable
   agent_permission: passed
   mcp_plugin_tool: not-applicable
-  security: required
+  security: blocked
   privacy: passed
   accessibility: not-applicable
   performance: passed
@@ -294,7 +362,7 @@ quality_gates:
   devops: failed
   testing: passed
   release: not-applicable
-  public_readiness: required
+  public_readiness: blocked
 
 risks:
   - id: ECO7-RISK-001
@@ -338,7 +406,7 @@ risks:
     likelihood: high
     impact: high
     owner: devops
-    mitigation: Keep the pull request in draft, disclose the bypass, prohibit merge, and require repository-owner review of a policy-compliant signed history strategy.
+    mitigation: Keep the pull request unmerged, disclose the bypass, and require repository-owner review of a policy-compliant signed history strategy.
     trigger: The push response reports branch-creation, merge-commit, or signature rule violations.
     contingency: Recreate or rebase the branch through the approved signed workflow only after explicit owner direction; do not force-push or rewrite history autonomously.
     status: open
@@ -361,7 +429,7 @@ github:
   suggested_commit: 'feat(governance): compile exact 5m goal-tracking prompt'
   issue_url: https://github.com/emirhankudun-ux/SEIS/issues/187
   branch_name: docs/goal-tracking-mega-prompt-v1
-  commit_sha: 5d095fcb9d5a442ccd0e6ad2fe6cc5ae5e7c766a
+  commit_sha: 4b73129a236680ed5c0942af1d051f4dd063c60c
   pull_request_url: https://github.com/emirhankudun-ux/SEIS/pull/188
   release_note_url: null
 
@@ -389,4 +457,5 @@ notes:
   - The generated corpus is a provenance and retrieval artifact, not a claim that one provider request can consume it.
   - Root AGENTS.md remains authoritative; authored modules summarize operating actions and tell the runtime to reread current canonical records instead of embedding stale copies.
   - The user explicitly approved creating the missing Goal record and proceeding under it on 2026-07-14.
-  - Pull request 188 is intentionally draft and stacked on pull request 177; it must not merge while hosted security, branch-policy, and required human review evidence remain unresolved.
+  - Pull request 188 is ready for review and stacked on pull request 177; it must not merge while hosted Guardian, branch-policy, and required human review evidence remain unresolved.
+  - Final code head 4b73129a includes security hardening and the reviewed integrity contract; earlier 5d095fcb remains the substantive feature implementation commit.

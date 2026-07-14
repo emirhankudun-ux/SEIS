@@ -1,7 +1,7 @@
 # ECO-GOAL-0007 Independent Review
 
 Review date: 2026-07-14
-Review state: local implementation review complete; hosted checks pending
+Review state: local and applicable hosted implementation checks complete; Guardian and branch-policy review blocked
 
 ## Scope
 
@@ -64,13 +64,18 @@ sources.
 - scoped ESLint, Prettier, Node syntax, and `git diff --check` passed
 - AI provider audit reported 21 providers and zero secret findings; its generated
   audit-file refresh was restored because it was outside this Goal's scope
+- hosted Foundation governance, Enterprise gates, and Socket checks passed on
+  final code head `4b73129a`
+- manually dispatched CodeQL JavaScript/TypeScript and Python jobs passed on
+  `4b73129a`; the unrelated Swift build was cancelled after applicable lanes passed
 
 Local `gitleaks` execution was unavailable because the binary is not installed
 (`exit 127`). This remains a disclosed skipped check, not a passing security
-claim. Hosted Guardian evidence is still required. The parent Goal's hosted
-Guardian is known to report a redacted full-history candidate from unrelated open
-pull request 154; this Goal must not weaken the scanner, add an allowlist, or hide
-that external blocker.
+claim. Hosted Guardian does not run for the stacked base branch and remains
+required. The parent Goal's hosted Guardian reports a redacted full-history
+candidate from unrelated open pull request 154; this Goal must not weaken the
+scanner, add an allowlist, or hide that external blocker. CodeRabbit also skipped
+review because reviews are disabled for this non-default base branch.
 
 ## Review decision
 
