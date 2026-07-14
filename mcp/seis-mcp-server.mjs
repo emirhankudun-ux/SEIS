@@ -78,6 +78,74 @@ const SPECIALIST_LANES = [
     ],
   },
   {
+    id: "seis-security",
+    label: "SEIS Security",
+    pluginPath: "plugins/seis-security",
+    profilePath: "plugins/seis-security/assets/lane-profile.json",
+    skillPath: "plugins/seis-security/skills/seis-security/SKILL.md",
+    mcpToolStatus: "seis_security_status",
+    mcpToolPlan: "seis_security_plan",
+    focus: "threat modeling, secret-safety review, dependency and permission risk, CI/security gates, cloud access safety, SSH/VPN hardening, and release-blocking security checks",
+    planSteps: [
+      "Inspect git status, branch, remotes, and the affected security surface.",
+      "Read SECURITY.md, deployment docs, plugin manifests, and relevant check scripts.",
+      "Check secret, permission, dependency, cloud, SSH/VPN, and release risk without printing secret values.",
+      "Prefer least privilege, explicit approval gates, reversible changes, and narrow tool scope.",
+      "Validate with security, cloud access, SSH hardening, and plugin integration checks before handoff.",
+    ],
+  },
+  {
+    id: "seis-research",
+    label: "SEIS Research",
+    pluginPath: "plugins/seis-research",
+    profilePath: "plugins/seis-research/assets/lane-profile.json",
+    skillPath: "plugins/seis-research/skills/seis-research/SKILL.md",
+    mcpToolStatus: "seis_research_status",
+    mcpToolPlan: "seis_research_plan",
+    focus: "evidence-led technical research, source evaluation, product and architecture discovery, official documentation review, standards/version checks, and research-to-decision synthesis",
+    planSteps: [
+      "Define the decision question, affected SEIS surface, and evidence level.",
+      "Prefer official docs, standards, release notes, and source repositories.",
+      "Verify version, date, compatibility, licensing, security, and maintenance status when relevant.",
+      "Separate observed facts from inference, recommendation, and stale or partial evidence.",
+      "Record provenance in docs, reports, or decision artifacts before implementation.",
+    ],
+  },
+  {
+    id: "seis-automation",
+    label: "SEIS Automation",
+    pluginPath: "plugins/seis-automation",
+    profilePath: "plugins/seis-automation/assets/lane-profile.json",
+    skillPath: "plugins/seis-automation/skills/seis-automation/SKILL.md",
+    mcpToolStatus: "seis_automation_status",
+    mcpToolPlan: "seis_automation_plan",
+    focus: "repeatable workflows, scripts, checks, scheduled jobs, runbooks, CI steps, agent loops, and human-approved automation gates",
+    planSteps: [
+      "Classify the automation as a script, check, generator, CI step, runbook, scheduled job, or agent loop.",
+      "Define inputs, outputs, owner, rollback path, failure behavior, and validation command.",
+      "Reuse existing scripts and package commands before adding a new workflow.",
+      "Default mutating automation to plan-only or dry-run mode.",
+      "Validate syntax and one representative execution path before handoff.",
+    ],
+  },
+  {
+    id: "seis-product",
+    label: "SEIS Product",
+    pluginPath: "plugins/seis-product",
+    profilePath: "plugins/seis-product/assets/lane-profile.json",
+    skillPath: "plugins/seis-product/skills/seis-product/SKILL.md",
+    mcpToolStatus: "seis_product_status",
+    mcpToolPlan: "seis_product_plan",
+    focus: "scoped product requirements, roadmap slices, acceptance criteria, UX outcomes, launch readiness, open-source positioning, and validation-backed delivery plans",
+    planSteps: [
+      "Define the target user, job, product surface, and measurable outcome.",
+      "Convert the idea into a bounded slice with acceptance criteria and non-goals.",
+      "Map ownership across SEIS-Agent, Cloud, Code, Design, Data, Security, Research, and Automation.",
+      "Tie product claims to validation, screenshots, tests, docs, or generated reports.",
+      "Record rollout, rollback, risks, and the next implementation step.",
+    ],
+  },
+  {
     id: "seis-governance",
     label: "SEIS Governance",
     pluginPath: "plugins/seis-ai-agent",
@@ -159,7 +227,7 @@ const MCP_TOOLS = [
   },
   {
     name: "seis_specialist_lanes",
-    description: "List the SEIS Cloud, SEIS-Code, SEIS-Design, SEIS-DATA, and SEIS Governance specialist plugin lanes and readiness summaries.",
+    description: "List public SEIS specialist plugin lanes and readiness summaries.",
     inputSchema: {
       type: "object",
       properties: {},
@@ -174,7 +242,7 @@ const MCP_TOOLS = [
       properties: {
         lane: {
           type: "string",
-          description: "Lane id: seis-cloud | seis-code | seis-design | seis-data | seis-governance",
+          description: "Lane id: seis-cloud | seis-code | seis-design | seis-data | seis-security | seis-research | seis-automation | seis-product | seis-governance",
         },
       },
     },
@@ -188,7 +256,7 @@ const MCP_TOOLS = [
       properties: {
         lane: {
           type: "string",
-          description: "Lane id: seis-cloud | seis-code | seis-design | seis-data | seis-governance",
+          description: "Lane id: seis-cloud | seis-code | seis-design | seis-data | seis-security | seis-research | seis-automation | seis-product | seis-governance",
         },
         request: {
           type: "string",
@@ -293,6 +361,18 @@ function bridgeStatus(payload = {}) {
     "plugins/seis-data/.codex-plugin/plugin.json",
     "plugins/seis-data/.mcp.json",
     "plugins/seis-data/skills/seis-data/SKILL.md",
+    "plugins/seis-security/.codex-plugin/plugin.json",
+    "plugins/seis-security/.mcp.json",
+    "plugins/seis-security/skills/seis-security/SKILL.md",
+    "plugins/seis-research/.codex-plugin/plugin.json",
+    "plugins/seis-research/.mcp.json",
+    "plugins/seis-research/skills/seis-research/SKILL.md",
+    "plugins/seis-automation/.codex-plugin/plugin.json",
+    "plugins/seis-automation/.mcp.json",
+    "plugins/seis-automation/skills/seis-automation/SKILL.md",
+    "plugins/seis-product/.codex-plugin/plugin.json",
+    "plugins/seis-product/.mcp.json",
+    "plugins/seis-product/skills/seis-product/SKILL.md",
   ];
   const pluginPath = path.join(SEIS_ROOT, "plugins/seis");
 
@@ -396,7 +476,7 @@ function specialistLaneStatusRequest(input = {}) {
     return {
       error: {
         code: -32602,
-        message: "Invalid params: lane must be one of seis-cloud, seis-code, seis-design, seis-data, or seis-governance.",
+        message: "Invalid params: lane must be one of seis-cloud, seis-code, seis-design, seis-data, seis-security, seis-research, seis-automation, seis-product, or seis-governance.",
       },
     };
   }
@@ -410,7 +490,7 @@ function specialistLanePlan(input = {}) {
     return {
       error: {
         code: -32602,
-        message: "Invalid params: lane must be one of seis-cloud, seis-code, seis-design, seis-data, or seis-governance.",
+        message: "Invalid params: lane must be one of seis-cloud, seis-code, seis-design, seis-data, seis-security, seis-research, seis-automation, seis-product, or seis-governance.",
       },
     };
   }

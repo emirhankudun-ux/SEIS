@@ -1,10 +1,11 @@
 # SEIS Codex Plugin
 
-This local Codex plugin makes SEIS the default operating center for the `emirhankudun-ux` GitHub ecosystem.
+This Codex plugin makes SEIS the default operating center for the `emirhankudun-ux` GitHub ecosystem.
 
-Normal user-facing SEIS work should start from `seis-ai-agent@seis-repo`. This
-`seis` package stays in the repository as the optional governance lane and
-legacy compatibility mirror.
+Normal user-facing SEIS work starts from `seis-ai-agent@seis-repo`. This
+package is the preserved governance source module embedded in that public
+SEIS-Agent installation alongside Cloud, Code, Design, Data, Security,
+Research, Automation, and Product lanes.
 
 ## Scope
 
@@ -25,17 +26,18 @@ legacy compatibility mirror.
 
 ## Local Paths
 
-- Repo plugin root: `plugins/seis`
+- Repo source module root: `plugins/seis`
 - Repo marketplace: `.agents/plugins/marketplace.json`
-- Install id: `seis@seis-repo`
-- Primary SEIS-Agent install id: `seis-ai-agent@seis-repo`
-- Personal marketplace: `/Users/emirhankudun/.agents/plugins/marketplace.json` (compatibility mirror only)
-- Workspace root: `/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github`
+- Public install id: `seis-ai-agent@seis-repo`
+- Embedded module id: `seis`
+- Personal marketplace: `~/.agents/plugins/marketplace.json` (compatibility mirror only)
+- Workspace root: the configured local SEIS workspace root (`SEIS_ROOT`/`SEIS_ROOT_HINTS`)
 
 ## Validate
 
 ```bash
-python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis
+python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py" plugins/seis
+npm run check:seis-public-plugin-family
 ```
 
 ## Status
@@ -76,7 +78,7 @@ External or non-installed plugin URI families are fallback paths unless the user
 
 Role-aware LLM planning for SEIS is documented in:
 
-`/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/docs/development/llm-role-routing-blueprint.md`
+`docs/development/llm-role-routing-blueprint.md`
 
 Bu repo içinde pratik rol akışı:
 
@@ -95,6 +97,8 @@ MCP plan endpoints:
 - `skills/seis-design/SKILL.md` routes UI/UX, product surfaces, design systems, accessibility, motion, and visual QA through the SEIS design constitution.
 - `skills/seis-data/SKILL.md` routes data architecture, analytics, generated reports, schemas, knowledge registries, RAG/memory planning, and provenance through SEIS data governance.
 - `skills/seis-master-prompt/SKILL.md` routes Master Prompt operating-contract changes through the canonical governance document, implementation map, acceptance criteria, GitHub controls, generated report, CODEOWNERS, and dedicated quality checks.
+- `skills/seis-plugin-runtime/SKILL.md` routes plugin capability, manifest health, and publication-readiness evidence for repo-contained SEIS lanes.
+- `skills/seis-mcp-runtime/SKILL.md` routes MCP tool compatibility, endpoint mapping, and audit evidence for AI runtime surfaces.
 - `skills/seis-github-workflow/SKILL.md` routes GitHub source-of-truth work through branch, PR, check-run, CODEOWNERS, workflow, and no-push/no-readiness gates.
 - `skills/seis-security-review/SKILL.md` routes security, privacy, least-privilege, SSH/cloud, rollback, secret-safety, and validation-claim review through the SEIS plugin bundle.
 - `skills/seis-focus-mode/SKILL.md` routes Focus Mode work through the app/website toggle, telemetry contract, AI/AGI learning contract, and dedicated Focus Mode quality check.
@@ -119,7 +123,11 @@ Use `data/seis-repos-llm-bridge-2026-06-08.json` as the canonical bridge between
 
 ## MCP Bundle
 
-The plugin ships `./.mcp.json` and the manifest points `mcpServers` to it, so installing the SEIS plugin brings the SEIS MCP surface and `seis-hub` skill together. The MCP launches through `scripts/seis-mcp-launcher.mjs`, which resolves the canonical SEIS MCP server path from the local environment and fallback workspace locations.
+The source module retains `./.mcp.json` and `seis-hub` for validation and
+provenance. The public SEIS-Agent package embeds the active hub skill and lane
+tools. The source MCP launches through `scripts/seis-mcp-launcher.mjs`, which
+resolves the canonical SEIS MCP server path from the local environment and
+fallback workspace locations.
 To customize search locations, set `SEIS_ROOT_HINTS` (path list, platform delimiter-separated) before launching plugin-based MCP.
 
 ```bash
@@ -155,10 +163,11 @@ This legacy compatibility command:
 - regenerates cachebuster in the local plugin manifest,
 - and runs `codex plugin add seis@personal` only for the personal mirror.
 
-For repo-source governance lane work, use the unified `seis-ai-agent@seis-repo`
-plugin. This `plugins/seis` directory is a source mirror for governance scripts,
-skills, and validation contracts; the repo marketplace does not publish it as a
-separate plugin card.
+For repo-source governance lane work, use the unified
+`seis-ai-agent@seis-repo` plugin. The repo marketplace publishes this one
+public agent and keeps `seis` as its embedded governance module; live external
+access, authentication, deployment, and destructive actions still require
+explicit approval.
 
 Optional flags:
 

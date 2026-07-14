@@ -11,12 +11,12 @@ Use this skill whenever the user wants to work on SEIS, consolidate repositories
 
 - Canonical GitHub repository: `emirhankudun-ux/SEIS`
 - Canonical default branch: `main`
-- Local workspace root: `/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github`
-- Repo plugin root: `plugins/seis`
+- Local workspace root: the configured SEIS workspace root (`SEIS_ROOT`/`SEIS_ROOT_HINTS`)
+- Repo source module root: `plugins/seis`
 - Repo marketplace: `.agents/plugins/marketplace.json`
-- Install id: `seis@seis-repo`
-- Primary SEIS-Agent install id: `seis-ai-agent@seis-repo`
-- Personal marketplace: `/Users/emirhankudun/.agents/plugins/marketplace.json` (compatibility mirror only)
+- Public install id: `seis-ai-agent@seis-repo`
+- Embedded module id: `seis`
+- Personal marketplace: `~/.agents/plugins/marketplace.json` (compatibility mirror only)
 
 SEIS-Agent is the normal user-facing entrypoint. This SEIS hub skill remains
 available as the governance lane for repository discovery, branch consolidation,
@@ -70,9 +70,9 @@ plugins/seis/scripts/seis-zip-audit.sh
 plugins/seis/scripts/seis-repo-visibility-audit.sh
 plugins/seis/scripts/seis-main-branch-sync.sh
 plugins/seis/scripts/seis-installed-plugin-audit.sh
-python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis
-python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/update_plugin_cachebuster.py plugins/seis
-codex plugin add seis@seis-repo
+python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py" plugins/seis
+python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/update_plugin_cachebuster.py" plugins/seis
+codex plugin add seis-ai-agent@seis-repo
 ```
 
 ## Zip Import Rule

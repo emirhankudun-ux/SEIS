@@ -41,6 +41,38 @@ const standaloneLanes = [
     mcpServer: "seis-data",
     tools: ["seis_data_status", "seis_data_plan"],
   },
+  {
+    name: "seis-security",
+    displayName: "SEIS Security",
+    marketplaceCategory: "Security",
+    pluginRootEnv: "SEIS_SECURITY_PLUGIN_ROOT",
+    mcpServer: "seis-security",
+    tools: ["seis_security_status", "seis_security_plan"],
+  },
+  {
+    name: "seis-research",
+    displayName: "SEIS Research",
+    marketplaceCategory: "Research",
+    pluginRootEnv: "SEIS_RESEARCH_PLUGIN_ROOT",
+    mcpServer: "seis-research",
+    tools: ["seis_research_status", "seis_research_plan"],
+  },
+  {
+    name: "seis-automation",
+    displayName: "SEIS Automation",
+    marketplaceCategory: "Developer",
+    pluginRootEnv: "SEIS_AUTOMATION_PLUGIN_ROOT",
+    mcpServer: "seis-automation",
+    tools: ["seis_automation_status", "seis_automation_plan"],
+  },
+  {
+    name: "seis-product",
+    displayName: "SEIS Product",
+    marketplaceCategory: "Productivity",
+    pluginRootEnv: "SEIS_PRODUCT_PLUGIN_ROOT",
+    mcpServer: "seis-product",
+    tools: ["seis_product_status", "seis_product_plan"],
+  },
 ];
 
 const governanceLane = {
@@ -55,6 +87,24 @@ const governanceLane = {
 const lanes = [
   ...standaloneLanes,
   governanceLane,
+];
+
+const publicMarketplaceEntries = [{
+  name: "seis-ai-agent",
+  path: "./plugins/seis-ai-agent",
+  category: "Developer",
+}];
+const embeddedModuleNames = [
+  "seis-ai-agent",
+  "seis",
+  "seis-cloud",
+  "seis-code",
+  "seis-design",
+  "seis-data",
+  "seis-security",
+  "seis-research",
+  "seis-automation",
+  "seis-product",
 ];
 
 const checkLocal = args["include-legacy-personal"] === true && args["no-local"] !== true && legacyPersonalAvailable();
@@ -83,13 +133,18 @@ for (const lane of standaloneLanes) {
 
 const specialistManifest = validateJsonObject(path.join(ROOT, "data", "seis-specialist-plugins-2026-06-12.json"), "specialist plugin manifest", ["id", "version", "plugins", "marketplace", "centralMcpTools"]);
 if (specialistManifest) {
-  ensure(specialistManifest.mode === "single-seis-agent-embedded-lanes", "specialist plugin manifest must use single-agent embedded lane mode");
+  ensure(specialistManifest.mode === "single-public-seis-agent-with-embedded-modules", "specialist plugin manifest must use the single public SEIS-Agent mode");
   ensure(Array.isArray(specialistManifest.centralMcpTools), "specialist plugin manifest centralMcpTools must be an array");
   ensure(specialistManifest.consolidation?.primaryInstallId === "seis-ai-agent@seis-repo", "specialist plugin manifest must point at the SEIS-Agent primary install id");
-  ensure(specialistManifest.consolidation?.defaultInstallMode === "single-agent", "specialist plugin manifest must keep single-agent default install mode");
+  ensure(specialistManifest.consolidation?.defaultInstallMode === "single-public-plugin", "specialist plugin manifest must use the single public install mode");
   ensure(specialistManifest.consolidation?.legacyPersonalMarketplace === "compatibility-mirror-only", "specialist plugin manifest must mark personal marketplace as compatibility mirror only");
-  ensure(specialistManifest.consolidation?.standaloneLaneInstallMode === "disabled", "specialist plugin manifest must disable standalone lane installs");
-  ensure(specialistManifest.consolidation?.marketplacePolicy === "only-seis-ai-agent-is-published", "specialist plugin manifest must publish only SEIS-Agent");
+  ensure(specialistManifest.consolidation?.standaloneLaneInstallMode === "source-module-only", "specialist plugin manifest must retain lanes as source modules only");
+  ensure(specialistManifest.consolidation?.marketplacePolicy === "seis-agent-is-the-only-public-plugin-with-embedded-source-modules", "specialist plugin manifest must publish only SEIS-Agent");
+  for (const entry of publicMarketplaceEntries) {
+    ensure(specialistManifest.marketplace?.publishedPlugins?.includes(entry.name), `specialist plugin manifest marketplace missing ${entry.name}`);
+  }
+  ensure(specialistManifest.marketplace?.publishedPlugins?.length === 1, "specialist plugin manifest marketplace must contain only SEIS-Agent");
+  ensureArrayContainsAll(specialistManifest.embeddedModules, embeddedModuleNames, "specialist plugin manifest embeddedModules");
   for (const tool of ["seis_specialist_lanes", "seis_specialist_lane_status", "seis_specialist_lane_plan"]) {
     ensure(specialistManifest.centralMcpTools?.includes(tool), `specialist plugin manifest centralMcpTools missing ${tool}`);
   }
@@ -151,6 +206,7 @@ function validatePluginRoot(pluginRoot, lane, scope) {
   const manifest = readJson(manifestPath);
   if (manifest) {
     ensure(manifest.name === lane.name, `${scope} ${lane.name}: manifest name must match`);
+    ensure(manifest.license === "MIT", `${scope} ${lane.name}: manifest license must be MIT for public plugin availability`);
     ensure(manifest.mcpServers === "./.mcp.json", `${scope} ${lane.name}: manifest must reference .mcp.json`);
     ensure(manifest.interface?.displayName === lane.displayName, `${scope} ${lane.name}: displayName must be ${lane.displayName}`);
     ensure(Array.isArray(manifest.interface?.capabilities) && manifest.interface.capabilities.length >= 5, `${scope} ${lane.name}: capabilities must be meaningful`);
@@ -420,31 +476,21 @@ function validateMarketplace(marketplacePath, label, expectedName) {
   ensure(Array.isArray(marketplace.plugins), `${label}: plugins must be an array`);
 
   if (expectedName === "seis-repo") {
-    ensure(marketplace.plugins.length === 1, `${label}: must publish exactly one plugin`);
-    const entry = marketplace.plugins?.[0];
-    ensure(entry?.name === "seis-ai-agent", `${label}: only entry must be seis-ai-agent`);
-    ensure(entry?.source?.source === "local", `${label} seis-ai-agent: source must be local`);
-    ensure(entry?.source?.path === "./plugins/seis-ai-agent", `${label} seis-ai-agent: path must be ./plugins/seis-ai-agent`);
-    ensure(entry?.policy?.installation === "AVAILABLE", `${label} seis-ai-agent: installation must be AVAILABLE`);
-    ensure(entry?.policy?.authentication === "ON_INSTALL", `${label} seis-ai-agent: authentication must be ON_INSTALL`);
-    ensure(entry?.category === "Developer", `${label} seis-ai-agent: category must be Developer`);
-    for (const lane of standaloneLanes) {
-      ensure(!marketplace.plugins.some((plugin) => plugin.name === lane.name), `${label}: ${lane.name} must be embedded in SEIS-Agent instead of published`);
+    ensure(marketplace.plugins.length === publicMarketplaceEntries.length, `${label}: must publish only SEIS-Agent`);
+    for (const expected of publicMarketplaceEntries) {
+      const entry = marketplace.plugins?.find((plugin) => plugin.name === expected.name);
+      ensure(entry, `${label}: entry missing: ${expected.name}`);
+      if (!entry) continue;
+      ensure(entry.source?.source === "local", `${label} ${expected.name}: source must be local`);
+      ensure(entry.source?.path === expected.path, `${label} ${expected.name}: path must be ${expected.path}`);
+      ensure(entry.policy?.installation === "AVAILABLE", `${label} ${expected.name}: installation must be AVAILABLE`);
+      ensure(entry.policy?.authentication === "ON_INSTALL", `${label} ${expected.name}: authentication must be ON_INSTALL`);
+      ensure(entry.category === expected.category, `${label} ${expected.name}: category must be ${expected.category}`);
     }
     return;
   }
 
-  for (const lane of lanes) {
-    if (lane.embeddedOnly) continue;
-    const entry = marketplace.plugins?.find((plugin) => plugin.name === lane.name);
-    ensure(entry, `${label}: entry missing: ${lane.name}`);
-    if (!entry) continue;
-    ensure(entry.source?.source === "local", `${label} ${lane.name}: source must be local`);
-    ensure(entry.source?.path === `./plugins/${lane.name}`, `${label} ${lane.name}: path must be ./plugins/${lane.name}`);
-    ensure(entry.policy?.installation === "AVAILABLE", `${label} ${lane.name}: installation must be AVAILABLE`);
-    ensure(entry.policy?.authentication === "ON_INSTALL", `${label} ${lane.name}: authentication must be ON_INSTALL`);
-    ensure(entry.category === lane.marketplaceCategory, `${label} ${lane.name}: category must be ${lane.marketplaceCategory}`);
-  }
+  ensure(Array.isArray(marketplace.plugins), `${label}: legacy plugin inventory must remain readable`);
 }
 
 function validateEmbeddedAgentPlugin() {
@@ -452,8 +498,8 @@ function validateEmbeddedAgentPlugin() {
   const profile = readJson(path.join(agentRoot, "assets", "agent-profile.json"));
   ensureFile(path.join(agentRoot, ".codex-plugin", "plugin.json"), "embedded SEIS-Agent manifest");
   ensureFile(path.join(agentRoot, "scripts", "seis-ai-agent-mcp-server.mjs"), "embedded SEIS-Agent MCP server");
-  ensure(profile?.consolidationPolicy?.standaloneLaneInstallMode === "disabled", "SEIS-Agent profile must disable standalone lane installs");
-  ensure(profile?.consolidationPolicy?.marketplacePolicy === "only-seis-ai-agent-is-published", "SEIS-Agent profile must publish only one marketplace card");
+  ensure(profile?.consolidationPolicy?.standaloneLaneInstallMode === "source-module-only", "SEIS-Agent profile must retain lanes as source modules only");
+  ensure(profile?.consolidationPolicy?.marketplacePolicy === "seis-agent-is-the-only-public-plugin-with-embedded-source-modules", "SEIS-Agent profile must expose the single public plugin policy");
 
   for (const skill of ["seis-ai-agent", "seis-hub", ...lanes.map((lane) => lane.name)]) {
     ensureFile(path.join(agentRoot, "skills", skill, "SKILL.md"), `embedded ${skill} skill`);
@@ -481,6 +527,12 @@ function ensure(condition, message) {
   if (!condition) fail(message);
 }
 
+function ensureArrayContainsAll(candidate, expected, label) {
+  ensure(Array.isArray(candidate), `${label} must be an array`);
+  const values = new Set(Array.isArray(candidate) ? candidate : []);
+  for (const item of expected) ensure(values.has(item), `${label} missing ${item}`);
+}
+
 function ensureDir(candidate, label) {
   if (!fs.existsSync(candidate) || !fs.statSync(candidate).isDirectory()) {
     fail(`${label} not found: ${candidate}`);
@@ -498,7 +550,7 @@ function fail(message) {
 }
 
 function homeDir() {
-  return process.env.HOME || "/Users/emirhankudun";
+  return process.env.HOME || process.env.USERPROFILE || "";
 }
 
 function localPluginRoot(lane) {

@@ -1,0 +1,44 @@
+{
+  "name": "seis-research",
+  "version": "0.3.0+codex.20260712",
+  "description": "SEIS Research gives Codex a public SEIS plugin lane for official-source research, standards and version checks, source evaluation, product and architecture discovery, ecosystem analysis, and research-to-decision synthesis under SEIS-Agent governance.",
+  "author": {
+    "name": "emirhankudun-ux",
+    "url": "https://github.com/emirhankudun-ux"
+  },
+  "homepage": "https://github.com/emirhankudun-ux/SEIS",
+  "repository": "https://github.com/emirhankudun-ux/SEIS",
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "research",
+    "evidence",
+    "documentation",
+    "codex",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "SEIS Research",
+    "shortDescription": "Evidence-led SEIS research lane.",
+    "longDescription": "SEIS Research gives Codex a public SEIS plugin lane for official-source research, standards and version checks, source evaluation, product and architecture discovery, ecosystem analysis, and research-to-decision synthesis under SEIS-Agent governance.",
+    "developerName": "emirhankudun-ux",
+    "category": "Research",
+    "capabilities": [
+      "Official-source research",
+      "Standards and version checks",
+      "Source evaluation",
+      "Architecture discovery",
+      "Research-to-decision synthesis",
+      "Provenance review"
+    ],
+    "websiteURL": "https://github.com/emirhankudun-ux/SEIS",
+    "defaultPrompt": [
+      "Use SEIS Research to verify this decision.",
+      "Find official source context for this SEIS change.",
+      "Turn this research into a SEIS decision record."
+    ],
+    "brandColor": "#9333EA"
+  }
+}

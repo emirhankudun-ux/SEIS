@@ -1,0 +1,146 @@
+{
+  "id": "seis-public-plugin-independent-runner-evidence-contract",
+  "version": 1,
+  "generatedAt": "2026-07-12",
+  "status": "active-evidence-intake-contract",
+  "decision": "not-ready-for-public-preview",
+  "sourcePath": "content/development/seis-public-plugin-independent-runner-evidence-contract.json",
+  "reportPath": "reports/seis-public-plugin-independent-runner-evidence-contract.md",
+  "publicPluginFamily": "content/development/seis-public-plugin-family.json",
+  "evidencePath": "content/development/seis-public-plugin-independent-runner-evidence.json",
+  "publicReleaseAllowed": false,
+  "purpose": "Define the sanitized evidence required from an independent clean runner or public installation of the single SEIS-Agent plugin without treating a repo-local working tree, cache, manifest, or template as public release proof.",
+  "expectedPluginIds": [
+    "seis-ai-agent@seis-repo"
+  ],
+  "expectedEmbeddedModuleIds": [
+    "seis-ai-agent",
+    "seis",
+    "seis-cloud",
+    "seis-code",
+    "seis-design",
+    "seis-data",
+    "seis-security",
+    "seis-research",
+    "seis-automation",
+    "seis-product"
+  ],
+  "runnerIndependenceRequirements": [
+    "The runner cannot read the original SEIS working tree used to create this proof contract.",
+    "The runner cannot use the pre-existing local Codex plugin cache as installation evidence.",
+    "The runner records the immutable public marketplace or package revision used for installation.",
+    "The runner opens a fresh Codex task after installation before observing the SEIS AI public plugin family bridge."
+  ],
+  "redactionBoundary": {
+    "allowedMetadata": [
+      "sanitized task reference",
+      "operating system family",
+      "CPU architecture",
+      "Node major version",
+      "Codex version",
+      "public marketplace or package revision",
+      "plugin ids and aggregate command counts"
+    ],
+    "prohibitedData": [
+      "API keys, tokens, cookies, passwords, credentials, private keys, .env contents, private filesystem paths, raw command output, or private repository data"
+    ],
+    "rawCommandOutputAllowed": false,
+    "privatePathsAllowed": false
+  },
+  "requiredAssertions": [
+    "The single expected seis-ai-agent@seis-repo plugin id is installed from the declared public source.",
+    "The installed SEIS-Agent MCP server initializes, lists tools, and completes representative lane calls.",
+    "The observed embedded source-module inventory exactly matches the current SEIS module contract.",
+    "A fresh task opened after installation reports publicPluginCount=1, embeddedModuleCount=current contract count, connected counts, and runtimeConnected=true through SEIS AI.",
+    "The evidence explicitly says publicReleaseAllowed=false; human approval remains a separate gate."
+  ],
+  "submissionTemplate": {
+    "id": "seis-public-plugin-independent-runner-evidence",
+    "version": 1,
+    "status": "recorded-independent-clean-runner-evidence",
+    "recordedAt": "<ISO-8601-UTC>",
+    "publicReleaseAllowed": false,
+    "source": {
+      "marketplaceName": "seis-repo",
+      "artifactKind": "public-marketplace-or-package",
+      "immutableRevision": "<public-commit-or-package-revision>"
+    },
+    "runner": {
+      "classification": "independent-clean-runner",
+      "sourceWorktreeAccessible": false,
+      "existingCodexCacheAccessible": false,
+      "os": "<operating-system-family>",
+      "architecture": "<cpu-architecture>",
+      "nodeMajor": 24,
+      "codexVersion": "<codex-version>"
+    },
+    "installation": {
+      "expectedPluginIds": [
+        "seis-ai-agent@seis-repo"
+      ],
+      "installedPluginIds": [
+        "seis-ai-agent@seis-repo"
+      ],
+      "installedCount": 1,
+      "expectedEmbeddedModuleIds": [
+        "seis-ai-agent",
+        "seis",
+        "seis-cloud",
+        "seis-code",
+        "seis-design",
+        "seis-data",
+        "seis-security",
+        "seis-research",
+        "seis-automation",
+        "seis-product"
+      ],
+      "observedEmbeddedModuleIds": [
+        "seis-ai-agent",
+        "seis",
+        "seis-cloud",
+        "seis-code",
+        "seis-design",
+        "seis-data",
+        "seis-security",
+        "seis-research",
+        "seis-automation",
+        "seis-product"
+      ],
+      "embeddedModuleCount": 10,
+      "publicSourceInstalled": true
+    },
+    "mcpSmoke": {
+      "pluginCount": 1,
+      "initializedCount": 1,
+      "toolsListCount": 1,
+      "representativeCallCount": 1,
+      "allPassed": true
+    },
+    "freshTask": {
+      "observedAfterInstall": true,
+      "taskReference": "<sanitized-task-reference>",
+      "seisAiPublicPluginFamily": {
+        "publicPluginCount": 1,
+        "connectedPluginCount": 1,
+        "embeddedModuleCount": 10,
+        "connectedModuleCount": 10,
+        "runtimeConnected": true
+      }
+    },
+    "redaction": {
+      "rawCommandOutputIncluded": false,
+      "secretsIncluded": false,
+      "privatePathsIncluded": false
+    },
+    "attestation": {
+      "evidenceSource": "external-runner",
+      "operatorRole": "maintainer"
+    }
+  },
+  "validation": {
+    "contractGate": "npm run check:seis-public-plugin-independent-runner-evidence",
+    "strictRecordedEvidenceGate": "npm run check:seis-public-plugin-independent-runner-evidence:recorded",
+    "explicitInputExample": "node scripts/check-seis-public-plugin-independent-runner-evidence.mjs --require-recorded --input /safe/sanitized-evidence.json"
+  },
+  "completionRule": "The intake contract is complete for internal review when it validates its schema and remains publicReleaseAllowed=false. Public preview remains blocked until a strict recorded evidence check passes and a human owner approves the release action."
+}

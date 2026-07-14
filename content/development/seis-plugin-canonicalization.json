@@ -1,0 +1,124 @@
+{
+  "id": "seis-plugin-canonicalization",
+  "version": 1,
+  "generatedAt": "2026-07-12",
+  "status": "active-non-destructive-canonicalization",
+  "decision": "ready-for-internal-review",
+  "sourcePath": "content/development/seis-plugin-canonicalization.json",
+  "reportPath": "reports/seis-plugin-canonicalization.md",
+  "integrationManifest": "content/development/seis-agent-plugin-integration.json",
+  "publicPluginFamily": "content/development/seis-public-plugin-family.json",
+  "publicReleaseAllowed": false,
+  "purpose": "Combine duplicate personal and seis-repo SEIS plugin identities into one public SEIS-Agent installation while preserving user-installed personal plugins as read-only legacy aliases until a human chooses a separate cleanup action.",
+  "canonicalMarketplace": "seis-repo",
+  "canonicalOrchestrator": "seis-ai-agent@seis-repo",
+  "canonicalPluginIds": [
+    "seis-ai-agent@seis-repo"
+  ],
+  "effectivePluginCount": 1,
+  "embeddedModuleCount": 10,
+  "currentBaselinePluginCount": 1,
+  "currentBaselineModuleCount": 10,
+  "legacyAliasCount": 5,
+  "duplicateResolutionMode": "legacy-personal-alias-to-single-seis-ai-agent",
+  "globalMarketplaceMutation": {
+    "performed": false,
+    "allowedWithoutHumanApproval": false,
+    "rationale": "Personal marketplace entries and user plugin folders are preserved. SEIS AI and installer output use canonical repo identities without deleting, disabling, or rewriting user-installed plugins."
+  },
+  "aliases": [
+    {
+      "legacyInstallId": "seis@personal",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "pluginName": "seis",
+      "lane": "seis",
+      "canonicalModuleId": "seis",
+      "canonicalModuleSourceMirror": "plugins/seis",
+      "legacyStatus": "installed-enabled-audited",
+      "canonicalSourceMirror": "plugins/seis-ai-agent",
+      "canonicalManifestLicense": "MIT",
+      "canonicalManifestVersion": "0.3.0+codex.20260712",
+      "resolution": "resolve-to-single-seis-ai-agent",
+      "userPluginPreserved": true,
+      "automaticRemoval": false
+    },
+    {
+      "legacyInstallId": "seis-cloud@personal",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "pluginName": "seis-cloud",
+      "lane": "seis-cloud",
+      "canonicalModuleId": "seis-cloud",
+      "canonicalModuleSourceMirror": "plugins/seis-cloud",
+      "legacyStatus": "installed-enabled-audited",
+      "canonicalSourceMirror": "plugins/seis-ai-agent",
+      "canonicalManifestLicense": "MIT",
+      "canonicalManifestVersion": "0.3.0+codex.20260712",
+      "resolution": "resolve-to-single-seis-ai-agent",
+      "userPluginPreserved": true,
+      "automaticRemoval": false
+    },
+    {
+      "legacyInstallId": "seis-code@personal",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "pluginName": "seis-code",
+      "lane": "seis-code",
+      "canonicalModuleId": "seis-code",
+      "canonicalModuleSourceMirror": "plugins/seis-code",
+      "legacyStatus": "installed-enabled-audited",
+      "canonicalSourceMirror": "plugins/seis-ai-agent",
+      "canonicalManifestLicense": "MIT",
+      "canonicalManifestVersion": "0.3.0+codex.20260712",
+      "resolution": "resolve-to-single-seis-ai-agent",
+      "userPluginPreserved": true,
+      "automaticRemoval": false
+    },
+    {
+      "legacyInstallId": "seis-design@personal",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "pluginName": "seis-design",
+      "lane": "seis-design",
+      "canonicalModuleId": "seis-design",
+      "canonicalModuleSourceMirror": "plugins/seis-design",
+      "legacyStatus": "installed-enabled-audited",
+      "canonicalSourceMirror": "plugins/seis-ai-agent",
+      "canonicalManifestLicense": "MIT",
+      "canonicalManifestVersion": "0.3.0+codex.20260712",
+      "resolution": "resolve-to-single-seis-ai-agent",
+      "userPluginPreserved": true,
+      "automaticRemoval": false
+    },
+    {
+      "legacyInstallId": "seis-data@personal",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "pluginName": "seis-data",
+      "lane": "seis-data",
+      "canonicalModuleId": "seis-data",
+      "canonicalModuleSourceMirror": "plugins/seis-data",
+      "legacyStatus": "installed-enabled-audited",
+      "canonicalSourceMirror": "plugins/seis-ai-agent",
+      "canonicalManifestLicense": "MIT",
+      "canonicalManifestVersion": "0.3.0+codex.20260712",
+      "resolution": "resolve-to-single-seis-ai-agent",
+      "userPluginPreserved": true,
+      "automaticRemoval": false
+    }
+  ],
+  "runtimeBehavior": {
+    "statusSurface": "SEIS AI reports one public SEIS-Agent installation, its embedded modules, and personal duplicates as legacy aliases rather than additional active lanes.",
+    "installSurface": "The SEIS installer targets only seis-ai-agent@seis-repo and never adds or removes @personal duplicates.",
+    "mcpSurface": "SEIS AI lane routing uses embedded modules through the one public SEIS-Agent plugin; legacy aliases remain compatibility evidence only."
+  },
+  "qualityGates": [
+    "npm run check:seis-plugin-canonicalization",
+    "npm run check:seis-agent-plugin-integration",
+    "npm run check:seis-public-plugin-family",
+    "npm run check:seis-public-plugin-install-smoke:local:mcp",
+    "npm run check:seis-ai-agent"
+  ],
+  "humanApprovalRequiredFor": [
+    "removing, disabling, or editing personal marketplace entries",
+    "deleting or replacing user plugin directories",
+    "public preview, publication, push, merge, tag, deployment, live SSH, or provider access"
+  ],
+  "completionRule": "Canonicalization is complete for internal review when five personal aliases map to the one public SEIS-Agent installation, every registered current or future SEIS source plugin appears once as an embedded module, installer output excludes personal duplicates, and SEIS AI exposes the mapping. Public release remains separately gated."
+}

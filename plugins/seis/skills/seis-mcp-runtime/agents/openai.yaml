@@ -1,0 +1,4 @@
+interface:
+  display_name: "SEIS MCP Runtime"
+  short_description: "MCP endpoint audit, tool mapping, and runtime evidence tracking."
+  default_prompt: "Use $seis-mcp-runtime to validate MCP tool boundaries and runtime readiness gates."

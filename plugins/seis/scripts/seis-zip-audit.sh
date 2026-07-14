@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ZIP_PATH="${ZIP_PATH:-/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github.zip}"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd -- "${SCRIPT_DIR}/../.." && pwd)"
+ZIP_PATH="${ZIP_PATH:-${REPO_ROOT}.zip}"
 WORKDIR="${WORKDIR:-/tmp/seis-zip-audit}"
 OUTPUT_JSON="${OUTPUT_JSON:-${WORKDIR}/github-zip-inventory.json}"
 COMPUTE_HASH="${COMPUTE_HASH:-0}"

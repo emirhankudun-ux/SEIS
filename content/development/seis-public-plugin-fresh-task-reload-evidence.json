@@ -1,0 +1,213 @@
+{
+  "id": "seis-public-plugin-fresh-task-reload-evidence",
+  "version": 1,
+  "generatedAt": "2026-07-12",
+  "status": "recorded-local-fresh-task-evidence",
+  "decision": "not-ready-for-public-preview",
+  "sourcePath": "content/development/seis-public-plugin-fresh-task-reload-evidence.json",
+  "reportPath": "reports/seis-public-plugin-fresh-task-reload-evidence.md",
+  "publicReleaseAllowed": false,
+  "releaseBoundary": "Fresh-task reload evidence is local proof only; public preview still requires security/provenance review and human approval.",
+  "task": {
+    "threadId": "019f611a-e488-7691-9ecf-f064faa571f4",
+    "idSource": "CODEX_THREAD_ID",
+    "observedDate": "2026-07-12",
+    "freshTaskContinuation": true,
+    "note": "Captured from the current Codex task environment."
+  },
+  "commands": {
+    "installSmoke": {
+      "id": "install-smoke-local-mcp",
+      "command": "npm run check:seis-public-plugin-install-smoke:local:mcp",
+      "ok": true,
+      "exitCode": 0,
+      "signal": null,
+      "summary": {
+        "ok": true,
+        "mode": "require-installed-mcp-smoke",
+        "status": "repo-and-local-cache-ready",
+        "publicPluginCount": 1,
+        "installedCount": 1,
+        "embeddedModuleCount": 10,
+        "mcpSmokePassed": true,
+        "runtime": {
+          "ok": true,
+          "installMode": "single-public-plugin",
+          "standaloneLaneInstallMode": "source-module-only",
+          "publicPluginCount": 1,
+          "embeddedModuleCount": 10,
+          "primaryInstallId": "seis-ai-agent@seis-repo",
+          "unifiedSuite": {
+            "path": "plugins/seis-ai-agent/assets/unified-suite.json",
+            "id": "seis-unified-plugin-suite",
+            "status": "active-single-public-plugin",
+            "releaseVersion": "0.3.0+codex.20260712",
+            "canonicalInstallId": "seis-ai-agent@seis-repo",
+            "defaultInstallMode": "single-public-plugin",
+            "componentCount": 10,
+            "publicPluginCount": 1,
+            "embeddedModuleCount": 10,
+            "standaloneLaneInstallMode": "source-module-only",
+            "legacyAliasCount": 5,
+            "personalMarketplaceMutation": false,
+            "discoveredPluginCount": 10,
+            "uncoveredSourcePlugins": [],
+            "futurePluginDefaultRule": "New SEIS plugins are embedded in seis-ai-agent and must not become separate public plugin or install targets."
+          }
+        },
+        "plugins": [
+          {
+            "name": "seis-ai-agent",
+            "installId": "seis-ai-agent@seis-repo",
+            "installed": true,
+            "version": "0.3.0+codex.20260712",
+            "manifestPresent": true,
+            "mcpPresent": true
+          }
+        ],
+        "representativeToolCalls": [
+          {
+            "name": "seis-ai-agent",
+            "ok": true,
+            "serverName": "seis-ai-agent",
+            "toolCount": 23,
+            "requiredTools": [
+              "seis_ai_agent_status",
+              "seis_agent_lanes"
+            ],
+            "callCount": 2,
+            "missingTools": [],
+            "callErrors": [],
+            "missingResponses": []
+          }
+        ]
+      }
+    },
+    "agentIntegration": {
+      "id": "agent-plugin-integration",
+      "command": "npm run check:seis-agent-plugin-integration",
+      "ok": true,
+      "exitCode": 0,
+      "signal": null,
+      "summary": {
+        "passed": true,
+        "check": "npm run check:seis-agent-plugin-integration"
+      }
+    },
+    "packageTests": {
+      "id": "seis-ai-package-tests",
+      "command": "npm test --prefix packages/seis-ai",
+      "ok": true,
+      "exitCode": 0,
+      "signal": null,
+      "summary": {
+        "ok": true,
+        "tests": 198,
+        "suites": 30,
+        "pass": 198,
+        "fail": 0,
+        "mcpInventory": {
+          "tools": 35,
+          "prompts": 3,
+          "resources": 31
+        }
+      }
+    }
+  },
+  "seisAiBridge": {
+    "ok": true,
+    "tool": "seis_public_plugin_family",
+    "integrationTool": "seis_plugin_integration",
+    "publicPluginCount": 1,
+    "connectedPluginCount": 1,
+    "embeddedModuleCount": 10,
+    "connectedModuleCount": 10,
+    "runtimeConnected": true,
+    "currentChannel": "internal-review-local-proof",
+    "publicPreviewRequires": [
+      "npm run check:seis-public-plugin-family",
+      "npm run check:seis-public-plugin-fresh-task-proof",
+      "npm run check:seis-public-plugin-fresh-task-reload-evidence",
+      "npm run check:seis-public-plugin-security-provenance-review",
+      "npm run check:seis-public-plugin-external-install-proof",
+      "npm run check:seis-plugin-canonicalization",
+      "npm run check:seis-unified-plugin-suite",
+      "npm run check:seis-public-plugin-independent-runner-evidence-contract",
+      "npm run check:seis-public-plugin-independent-runner-evidence:recorded",
+      "npm run check:seis-public-plugin-install-smoke:mcp",
+      "npm run check:seis-agent-plugin-integration",
+      "npm run check:seis-ai-agent",
+      "npm run check:seis-repo-marketplace",
+      "fresh task reload proof",
+      "security and provenance review",
+      "independent clean-runner or public installation proof",
+      "human approval"
+    ],
+    "integrationInstallMode": "single-public-plugin",
+    "integrationPublicPluginCount": 1,
+    "integrationEmbeddedModuleCount": 10
+  },
+  "securityProvenanceReview": {
+    "path": "content/development/seis-public-plugin-security-provenance-review.json",
+    "status": "repo-local-security-provenance-reviewed",
+    "passed": true,
+    "secretFindingCount": 0,
+    "blockingFindingCount": 0,
+    "hygieneFindingCount": 0
+  },
+  "mcpInventory": {
+    "ok": true,
+    "publicPluginCount": 1,
+    "installedCount": 1,
+    "embeddedModuleCount": 10,
+    "mcpSmokePassed": true,
+    "plugins": [
+      {
+        "name": "seis-ai-agent",
+        "installId": "seis-ai-agent@seis-repo",
+        "installed": true,
+        "version": "0.3.0+codex.20260712",
+        "manifestPresent": true,
+        "mcpPresent": true
+      }
+    ],
+    "representativeToolCalls": [
+      {
+        "name": "seis-ai-agent",
+        "ok": true,
+        "serverName": "seis-ai-agent",
+        "toolCount": 23,
+        "requiredTools": [
+          "seis_ai_agent_status",
+          "seis_agent_lanes"
+        ],
+        "callCount": 2,
+        "missingTools": [],
+        "callErrors": [],
+        "missingResponses": []
+      }
+    ]
+  },
+  "packageTestSummary": {
+    "ok": true,
+    "tests": 198,
+    "suites": 30,
+    "pass": 198,
+    "fail": 0,
+    "mcpInventory": {
+      "tools": 35,
+      "prompts": 3,
+      "resources": 31
+    }
+  },
+  "remainingReleaseBlockers": [
+    "Human approval for public preview, release, publish, push, merge, tag, deploy, live SSH, or provider credentials has not been recorded.",
+    "External clean-runner or public package installation proof has not been recorded."
+  ],
+  "noSecretPolicy": {
+    "rawCommandOutputStored": false,
+    "credentialsStored": false,
+    "privateKeysStored": false,
+    "providerTokensStored": false
+  }
+}

@@ -1,0 +1,237 @@
+{
+  "id": "seis-unified-plugin-suite",
+  "version": 1,
+  "generatedAt": "2026-07-12",
+  "status": "active-single-public-plugin",
+  "releaseVersion": "0.3.0+codex.20260712",
+  "publicReleaseAllowed": false,
+  "purpose": "Define the one public SEIS-Agent install surface that embeds every SEIS source module while preserving older personal installations as non-destructive aliases.",
+  "canonicalInstall": {
+    "installId": "seis-ai-agent@seis-repo",
+    "pluginName": "seis-ai-agent",
+    "defaultInstallMode": "single-public-plugin",
+    "installCommand": "npm run install:seis-ai-agent"
+  },
+  "sourceContracts": {
+    "publicPluginFamily": "content/development/seis-public-plugin-family.json",
+    "canonicalization": "content/development/seis-plugin-canonicalization.json",
+    "agentManifest": "plugins/seis-ai-agent/.codex-plugin/plugin.json"
+  },
+  "sourceDiscovery": {
+    "pattern": "plugins/seis-*/.codex-plugin/plugin.json plus plugins/seis/.codex-plugin/plugin.json",
+    "discoveredPluginNames": [
+      "seis",
+      "seis-ai-agent",
+      "seis-automation",
+      "seis-cloud",
+      "seis-code",
+      "seis-data",
+      "seis-design",
+      "seis-product",
+      "seis-research",
+      "seis-security"
+    ],
+    "embeddedModuleNames": [
+      "seis-ai-agent",
+      "seis",
+      "seis-cloud",
+      "seis-code",
+      "seis-design",
+      "seis-data",
+      "seis-security",
+      "seis-research",
+      "seis-automation",
+      "seis-product"
+    ],
+    "uncoveredSourcePlugins": [],
+    "rule": "Every current or future SEIS plugin manifest must be registered as an embedded module in this single SEIS-Agent suite before it can be treated as a SEIS capability."
+  },
+  "publicDistribution": {
+    "publicPluginCount": 1,
+    "publicInstallIds": [
+      "seis-ai-agent@seis-repo"
+    ],
+    "embeddedModuleCount": 10
+  },
+  "componentCount": 10,
+  "components": [
+    {
+      "moduleId": "seis-ai-agent",
+      "role": "orchestrator",
+      "sourcePath": "plugins/seis-ai-agent",
+      "version": "0.3.0+codex.20260712",
+      "license": "MIT",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "embeddedInSeisAiAgent": true,
+      "sourceModuleStatus": "public-plugin-root"
+    },
+    {
+      "moduleId": "seis",
+      "role": "governance",
+      "sourcePath": "plugins/seis",
+      "version": "0.3.0+codex.20260712",
+      "license": "MIT",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "embeddedInSeisAiAgent": true,
+      "sourceModuleStatus": "embedded-source-module"
+    },
+    {
+      "moduleId": "seis-cloud",
+      "role": "cloud",
+      "sourcePath": "plugins/seis-cloud",
+      "version": "0.3.0+codex.20260712",
+      "license": "MIT",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "embeddedInSeisAiAgent": true,
+      "sourceModuleStatus": "embedded-source-module"
+    },
+    {
+      "moduleId": "seis-code",
+      "role": "code",
+      "sourcePath": "plugins/seis-code",
+      "version": "0.3.0+codex.20260712",
+      "license": "MIT",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "embeddedInSeisAiAgent": true,
+      "sourceModuleStatus": "embedded-source-module"
+    },
+    {
+      "moduleId": "seis-design",
+      "role": "design",
+      "sourcePath": "plugins/seis-design",
+      "version": "0.3.0+codex.20260712",
+      "license": "MIT",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "embeddedInSeisAiAgent": true,
+      "sourceModuleStatus": "embedded-source-module"
+    },
+    {
+      "moduleId": "seis-data",
+      "role": "data",
+      "sourcePath": "plugins/seis-data",
+      "version": "0.3.0+codex.20260712",
+      "license": "MIT",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "embeddedInSeisAiAgent": true,
+      "sourceModuleStatus": "embedded-source-module"
+    },
+    {
+      "moduleId": "seis-security",
+      "role": "security",
+      "sourcePath": "plugins/seis-security",
+      "version": "0.3.0+codex.20260712",
+      "license": "MIT",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "embeddedInSeisAiAgent": true,
+      "sourceModuleStatus": "embedded-source-module"
+    },
+    {
+      "moduleId": "seis-research",
+      "role": "research",
+      "sourcePath": "plugins/seis-research",
+      "version": "0.3.0+codex.20260712",
+      "license": "MIT",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "embeddedInSeisAiAgent": true,
+      "sourceModuleStatus": "embedded-source-module"
+    },
+    {
+      "moduleId": "seis-automation",
+      "role": "automation",
+      "sourcePath": "plugins/seis-automation",
+      "version": "0.3.0+codex.20260712",
+      "license": "MIT",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "embeddedInSeisAiAgent": true,
+      "sourceModuleStatus": "embedded-source-module"
+    },
+    {
+      "moduleId": "seis-product",
+      "role": "product",
+      "sourcePath": "plugins/seis-product",
+      "version": "0.3.0+codex.20260712",
+      "license": "MIT",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "embeddedInSeisAiAgent": true,
+      "sourceModuleStatus": "embedded-source-module"
+    }
+  ],
+  "compatibility": {
+    "standaloneLaneInstallMode": "source-module-only",
+    "legacyAliasCount": 5,
+    "duplicateResolutionMode": "legacy-personal-alias-to-single-seis-ai-agent",
+    "personalMarketplaceMutation": false,
+    "personalAliases": [
+      {
+        "legacyInstallId": "seis@personal",
+        "canonicalInstallId": "seis-ai-agent@seis-repo",
+        "moduleId": "seis",
+        "userPluginPreserved": true
+      },
+      {
+        "legacyInstallId": "seis-cloud@personal",
+        "canonicalInstallId": "seis-ai-agent@seis-repo",
+        "moduleId": "seis-cloud",
+        "userPluginPreserved": true
+      },
+      {
+        "legacyInstallId": "seis-code@personal",
+        "canonicalInstallId": "seis-ai-agent@seis-repo",
+        "moduleId": "seis-code",
+        "userPluginPreserved": true
+      },
+      {
+        "legacyInstallId": "seis-design@personal",
+        "canonicalInstallId": "seis-ai-agent@seis-repo",
+        "moduleId": "seis-design",
+        "userPluginPreserved": true
+      },
+      {
+        "legacyInstallId": "seis-data@personal",
+        "canonicalInstallId": "seis-ai-agent@seis-repo",
+        "moduleId": "seis-data",
+        "userPluginPreserved": true
+      }
+    ]
+  },
+  "runtime": {
+    "mcpServer": "scripts/seis-ai-agent-mcp-server.mjs",
+    "embeddedSkillRoot": "skills",
+    "embeddedLaneProfileRoot": "assets/lanes",
+    "seisAiConnection": "SEIS AI reports one public SEIS-Agent install and exposes all source modules through its embedded lane tools."
+  },
+  "futurePluginIntake": {
+    "owner": "seis-ai-agent",
+    "requiredOrder": [
+      "create or update the source plugin under plugins/seis-*",
+      "add the plugin to the embedded module generator and canonical route",
+      "update the shared SEIS-Agent suite release version when the module is released",
+      "regenerate assets/unified-suite.json",
+      "validate SEIS AI status, MCP routing, installer plan, and compatibility smoke"
+    ],
+    "defaultInstallRule": "New SEIS plugins are embedded in seis-ai-agent and must not become separate public plugin or install targets."
+  },
+  "releaseBoundary": {
+    "publicReleaseAllowed": false,
+    "forbiddenWithoutHumanApproval": [
+      "removing or rewriting personal marketplace entries",
+      "deleting embedded source-module directories",
+      "publish marketplace listing",
+      "push",
+      "merge",
+      "tag",
+      "release",
+      "deploy",
+      "live SSH",
+      "provider credential use"
+    ]
+  },
+  "qualityGates": [
+    "npm run check:seis-unified-plugin-suite",
+    "npm run check:seis-plugin-canonicalization",
+    "npm run check:seis-agent-plugin-integration",
+    "npm run check:seis-ai-agent",
+    "npm run check:seis-public-plugin-install-smoke:local:mcp"
+  ],
+  "completionRule": "The unified suite is complete for internal review when the single public SEIS-Agent plugin embeds every current source module at the shared release version, five personal aliases resolve to it without mutation, and SEIS AI reports the suite. Public release remains separately approval-gated."
+}

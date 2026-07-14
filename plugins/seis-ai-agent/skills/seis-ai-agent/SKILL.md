@@ -1,6 +1,6 @@
 ---
 name: seis-ai-agent
-description: Use SEIS-Agent as the combined SEIS orchestration layer across SEIS, SEIS-Cloud, SEIS-Code, SEIS-Design, and SEIS-Data.
+description: Use SEIS-Agent as the single versioned SEIS orchestration install surface across all SEIS lanes.
 ---
 
 # SEIS-Agent
@@ -19,7 +19,8 @@ source mirrors behind the unified agent.
 - Repo marketplace: `.agents/plugins/marketplace.json`
 - Install id: `seis-ai-agent@seis-repo`
 - Default install mode: one visible SEIS-Agent plugin
-- Composed lanes: `seis`, `seis-cloud`, `seis-code`, `seis-design`, `seis-data`
+- Unified suite: `assets/unified-suite.json`
+- Composed lanes: `seis`, `seis-governance`, `seis-cloud`, `seis-code`, `seis-design`, `seis-data`, `seis-security`, `seis-research`, `seis-automation`, `seis-product`
 - Operating identity: `SEIS-Agent`
 - Legacy personal marketplace: compatibility mirror only
 
@@ -41,15 +42,16 @@ source mirrors behind the unified agent.
 ## Consolidation Rules
 
 - Use `seis-ai-agent@seis-repo` as the canonical install and user-facing plugin.
-- Do not install the old `personal` SEIS plugin family unless maintaining a legacy mirror.
-- Do not publish standalone `seis`, `seis-cloud`, `seis-code`, `seis-design`, or `seis-data` cards from the repo marketplace.
+- Treat focused lane packages as embedded source modules, never as separate public installs.
+- Do not remove, disable, replace, or rewrite the old `personal` SEIS plugin family without explicit human approval.
 - Keep specialist source mirrors in `plugins/` so their skills, MCP servers, lane profiles, and validation contracts stay testable inside the repo.
-- If duplicate plugin cards are already installed, prefer removing the legacy `personal` duplicates first and keeping SEIS-Agent as the active surface.
+- If duplicate plugin cards are already installed, keep them preserved and route new work through the canonical SEIS-Agent suite.
 
 ## Validation
 
 ```bash
 npm run check:seis-ai-agent
+npm run check:seis-unified-plugin-suite
 npm run check:seis-specialist-plugins
 npm run check:seis-operating-identities
 npm run quality

@@ -1,9 +1,9 @@
 {
   "id": "seis-agent-plugin-integration",
-  "version": "2026.06.23",
+  "version": "2026.06.19",
   "status": "active",
-  "updatedAt": "2026-06-23",
-  "purpose": "Bind the personal SEIS plugin family, the new embedded specialist skills, and the submitted plugin universe into the repo-contained SEIS-Agent, the SEIS AI runtime, the demo application surface, and SEIS repository governance without publishing standalone lane cards.",
+  "updatedAt": "2026-07-12",
+  "purpose": "Bind one public SEIS-Agent plugin, its embedded SEIS source modules, non-destructive legacy personal aliases, and the submitted plugin universe into the SEIS AI runtime, demo application surface, and repository governance.",
   "primaryInstallId": "seis-ai-agent@seis-repo",
   "canonicalAgent": {
     "identity": "SEIS-Agent",
@@ -11,12 +11,30 @@
     "repoMarketplace": ".agents/plugins/marketplace.json",
     "marketplaceName": "seis-repo",
     "publishedPlugin": "seis-ai-agent",
-    "installMode": "single-agent",
-    "standaloneLaneInstallMode": "disabled"
+    "publishedPluginFamily": [
+      "seis-ai-agent"
+    ],
+    "embeddedSourceModules": [
+      "seis-ai-agent",
+      "seis",
+      "seis-cloud",
+      "seis-code",
+      "seis-design",
+      "seis-data",
+      "seis-security",
+      "seis-research",
+      "seis-automation",
+      "seis-product"
+    ],
+    "installMode": "single-public-plugin",
+    "standaloneLaneInstallMode": "source-module-only",
+    "publicPluginContract": "content/development/seis-public-plugin-family.json",
+    "canonicalizationContract": "content/development/seis-plugin-canonicalization.json",
+    "unifiedSuite": "plugins/seis-ai-agent/assets/unified-suite.json"
   },
   "auditedSnapshot": {
     "auditedAt": "2026-06-19",
-    "sourceCommand": "WORKDIR=/tmp/seis-installed-plugin-audit-20260619 bash /Users/emirhankudun/plugins/seis/scripts/seis-installed-plugin-audit.sh",
+    "sourceCommand": "WORKDIR=/tmp/seis-installed-plugin-audit bash plugins/seis/scripts/seis-installed-plugin-audit.sh",
     "installedEnabledCount": 185,
     "notInstalledCount": 5,
     "personalPluginsInstalledEnabled": [
@@ -42,6 +60,110 @@
     "noSecretDisclosure": true,
     "externalMutationRequiresUserConfirmation": true
   },
+  "unifiedPluginSuite": {
+    "contract": "plugins/seis-ai-agent/assets/unified-suite.json",
+    "qualityGate": "npm run check:seis-unified-plugin-suite",
+    "canonicalInstallId": "seis-ai-agent@seis-repo",
+    "defaultInstallMode": "single-public-plugin",
+    "standaloneLaneInstallMode": "source-module-only",
+    "releaseVersion": "0.3.0+codex.20260712",
+    "minimumComponentCount": 10,
+    "futureSourcePluginPattern": "plugins/seis-*",
+    "futurePluginRule": "Every new SEIS plugin must enter plugins/seis-* and be registered in plugins/seis-ai-agent/assets/unified-suite.json as an embedded module before it becomes a SEIS capability.",
+    "legacyAliasCount": 5,
+    "personalMarketplaceMutation": false
+  },
+  "publicPlugins": [
+    {
+      "id": "seis-ai-agent@seis-repo",
+      "status": "available-public-repo-marketplace",
+      "role": "orchestrator",
+      "sourceMirror": "plugins/seis-ai-agent",
+      "installMode": "primary-orchestrator"
+    }
+  ],
+  "embeddedModules": [
+    {
+      "id": "seis-ai-agent",
+      "status": "public-plugin-root",
+      "role": "orchestrator",
+      "sourceMirror": "plugins/seis-ai-agent",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-ai-agent/SKILL.md",
+      "canonicalInstallId": "seis-ai-agent@seis-repo"
+    },
+    {
+      "id": "seis",
+      "status": "embedded-source-module",
+      "role": "governance",
+      "sourceMirror": "plugins/seis",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-hub/SKILL.md",
+      "canonicalInstallId": "seis-ai-agent@seis-repo"
+    },
+    {
+      "id": "seis-cloud",
+      "status": "embedded-source-module",
+      "role": "cloud",
+      "sourceMirror": "plugins/seis-cloud",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-cloud/SKILL.md",
+      "canonicalInstallId": "seis-ai-agent@seis-repo"
+    },
+    {
+      "id": "seis-code",
+      "status": "embedded-source-module",
+      "role": "code",
+      "sourceMirror": "plugins/seis-code",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-code/SKILL.md",
+      "canonicalInstallId": "seis-ai-agent@seis-repo"
+    },
+    {
+      "id": "seis-design",
+      "status": "embedded-source-module",
+      "role": "design",
+      "sourceMirror": "plugins/seis-design",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-design/SKILL.md",
+      "canonicalInstallId": "seis-ai-agent@seis-repo"
+    },
+    {
+      "id": "seis-data",
+      "status": "embedded-source-module",
+      "role": "data",
+      "sourceMirror": "plugins/seis-data",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-data/SKILL.md",
+      "canonicalInstallId": "seis-ai-agent@seis-repo"
+    },
+    {
+      "id": "seis-security",
+      "status": "embedded-source-module",
+      "role": "security",
+      "sourceMirror": "plugins/seis-security",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-security/SKILL.md",
+      "canonicalInstallId": "seis-ai-agent@seis-repo"
+    },
+    {
+      "id": "seis-research",
+      "status": "embedded-source-module",
+      "role": "research",
+      "sourceMirror": "plugins/seis-research",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-research/SKILL.md",
+      "canonicalInstallId": "seis-ai-agent@seis-repo"
+    },
+    {
+      "id": "seis-automation",
+      "status": "embedded-source-module",
+      "role": "automation",
+      "sourceMirror": "plugins/seis-automation",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-automation/SKILL.md",
+      "canonicalInstallId": "seis-ai-agent@seis-repo"
+    },
+    {
+      "id": "seis-product",
+      "status": "embedded-source-module",
+      "role": "product",
+      "sourceMirror": "plugins/seis-product",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-product/SKILL.md",
+      "canonicalInstallId": "seis-ai-agent@seis-repo"
+    }
+  ],
   "personalPlugins": [
     {
       "id": "seis@personal",
@@ -153,11 +275,35 @@
       "defaultGate": "npm run check:plugin-capability-lanes"
     },
     {
+      "id": "seis-plugin-runtime",
+      "displayName": "SEIS Plugin Runtime",
+      "role": "plugin manifest health, capability lane drift checks, and safe installation-readiness evidence",
+      "embeddedSkill": "plugins/seis/skills/seis-plugin-runtime/SKILL.md",
+      "sourceMirror": "plugins/seis",
+      "mcpTools": [
+        "seis_plugin_runtime_status",
+        "seis_plugin_runtime_plan"
+      ],
+      "defaultGate": "npm run check:seis-agent-plugin-integration"
+    },
+    {
+      "id": "seis-mcp-runtime",
+      "displayName": "SEIS MCP Runtime",
+      "role": "MCP endpoint compatibility, tool availability, and runtime safety evidence for SEIS connectors",
+      "embeddedSkill": "plugins/seis/skills/seis-mcp-runtime/SKILL.md",
+      "sourceMirror": "plugins/seis",
+      "mcpTools": [
+        "seis_mcp_runtime_status",
+        "seis_mcp_runtime_plan"
+      ],
+      "defaultGate": "npm run check:plugin-capability-lanes"
+    },
+    {
       "id": "seis-security",
       "displayName": "SEIS Security",
       "role": "threat modeling, secret-safety review, dependency and permission risk, SSH/VPN hardening, and release-blocking security checks",
       "embeddedSkill": "plugins/seis-ai-agent/skills/seis-security/SKILL.md",
-      "sourceMirror": "plugins/seis-ai-agent",
+      "sourceMirror": "plugins/seis-security",
       "mcpTools": [
         "seis_security_status",
         "seis_security_plan"
@@ -169,7 +315,7 @@
       "displayName": "SEIS Research",
       "role": "official source review, version checks, evidence synthesis, and research-backed technical decisions",
       "embeddedSkill": "plugins/seis-ai-agent/skills/seis-research/SKILL.md",
-      "sourceMirror": "plugins/seis-ai-agent",
+      "sourceMirror": "plugins/seis-research",
       "mcpTools": [
         "seis_research_status",
         "seis_research_plan"
@@ -181,7 +327,7 @@
       "displayName": "SEIS Automation",
       "role": "repeatable scripts, checks, CI steps, runbooks, scheduled jobs, and human-approved agent automation",
       "embeddedSkill": "plugins/seis-ai-agent/skills/seis-automation/SKILL.md",
-      "sourceMirror": "plugins/seis-ai-agent",
+      "sourceMirror": "plugins/seis-automation",
       "mcpTools": [
         "seis_automation_status",
         "seis_automation_plan"
@@ -193,7 +339,7 @@
       "displayName": "SEIS Product",
       "role": "roadmap slices, requirements, acceptance criteria, launch readiness, and product scope",
       "embeddedSkill": "plugins/seis-ai-agent/skills/seis-product/SKILL.md",
-      "sourceMirror": "plugins/seis-ai-agent",
+      "sourceMirror": "plugins/seis-product",
       "mcpTools": [
         "seis_product_status",
         "seis_product_plan"
@@ -212,16 +358,25 @@
   "runtimeIntegration": {
     "aiPackage": "packages/seis-ai",
     "toolLoopTool": "seis_plugin_integration",
+    "publicPluginFamilyTool": "seis_public_plugin_family",
+    "mcpTool": "seis_plugin_integration",
+    "mcpPublicPluginFamilyTool": "seis_public_plugin_family",
+    "mcpResource": "seis://agent/plugin-integration.json",
+    "mcpPublicPluginFamilyResource": "seis://agent/public-plugin-family.json",
+    "mcpPublicPluginLifecycleResource": "seis://agent/public-plugin-lifecycle.json",
+    "canonicalizationContract": "content/development/seis-plugin-canonicalization.json",
+    "unifiedSuite": "plugins/seis-ai-agent/assets/unified-suite.json",
+    "sharedHelper": "packages/seis-ai/src/lib/plugin-integration.mjs",
     "providerRegistryTool": "seis_ai_core_provider_status",
     "modelScalingTool": "seis_ai_core_model_scaling_status",
     "versionRegistryTool": "seis_ai_core_version_status",
     "versionPromotionTool": "seis_ai_core_version_promotion_dry_run",
     "subagentOperatingModelTool": "seis_ai_core_subagent_model",
-    "mcpTool": "seis_plugin_integration",
-    "mcpResource": "seis://agent/plugin-integration.json",
     "mcpResources": [
       "seis://agent/plugin-integration.json",
-      "seis://ai/mcp-runtime-contract.json",
+      "seis://agent/public-plugin-family.json",
+      "seis://agent/public-plugin-lifecycle.json",
+      "seis://ai/version-registry.json",
       "seis://ai/provider-registry.json",
       "seis://ai/model-scaling-hardware-profile.json",
       "seis://ai/model-parameter-ladder.json",
@@ -233,7 +388,6 @@
       "seis://ai/agi-github-user-readiness-gates.json",
       "seis://ai/20b-model-card-template.json",
       "seis://ai/20b-dataset-card-template.json",
-      "seis://ai/version-registry.json",
       "seis://ai/version-promotion-gates.json",
       "seis://ai/subagent-operating-model.json",
       "seis://ai/sub-agent-5-year-plan.json",
@@ -248,7 +402,6 @@
       "seis://ai/subagent-runtime-fixtures.json",
       "seis://ai/subagent-review-ledger.json"
     ],
-    "sharedHelper": "packages/seis-ai/src/lib/plugin-integration.mjs",
     "directPersonalLaneTools": [
       "seis_hub_status",
       "seis_hub_plan",
@@ -262,36 +415,38 @@
       "seis_data_plan"
     ]
   },
-  "fiveYearSubagentDevelopment": {
-    "status": "planned-from-active-status-plan-lanes",
-    "providerRegistry": "content/development/seis-ai-core-provider-registry.json",
-    "versionRegistry": "content/development/seis-ai-core-version-registry.json",
-    "versionPromotionGates": "content/development/seis-ai-core-version-promotion-gates.json",
-    "mcpRuntimeContract": "content/development/seis-ai-core-mcp-runtime-contract.json",
-    "operatingModel": "content/development/seis-ai-core-subagent-operating-model.json",
-    "operatingModelDocs": "docs/ai/seis-ai-core.md",
-    "longHorizonPlan": "content/development/seis-sub-agent-5-year-plan.json",
-    "longHorizonPlanView": "apps/seis-demo-web/data/seis-sub-agent-five-year-plan-view.json",
-    "longHorizonReview": "docs/reviews/SUB_AGENT_LONG_HORIZON_AUDIT.md",
-    "laneStatusContract": "content/development/seis-agent-lane-status.json",
-    "roleSchema": "content/development/seis-ai-core-agent-role-schema.json",
-    "permissionMatrix": "content/development/seis-ai-core-agent-permission-matrix.json",
-    "dryRunTaskQueue": "content/development/seis-ai-core-dry-run-task-queue.json",
-    "cancellationFixture": "content/development/seis-ai-core-cancellation-fixture.json",
-    "approvalFixture": "content/development/seis-ai-core-approval-fixture.json",
-    "redactionFixture": "content/development/seis-ai-core-redaction-fixture.json",
-    "executionLedgerFixture": "content/development/seis-ai-core-execution-ledger-fixture.json",
-    "runtimeFixtures": "content/development/seis-ai-core-subagent-runtime-fixtures.json",
-    "reviewLedger": "content/development/seis-ai-core-subagent-review-ledger.json",
-    "rule": "Five-year development is governed through bounded sub-agent lanes, quarterly reviewable slices, explicit validation, and human approval for write, cloud, SSH, GitHub, credential, dataset, benchmark, or model-training actions.",
-    "currentRuntimeBoundary": "status-and-plan-only",
-    "qualityGate": "npm run check:seis-ai-core-subagent-operating-model"
+  "lifecycle": {
+    "contract": "content/development/seis-public-plugin-lifecycle.json",
+    "report": "reports/seis-public-plugin-lifecycle.md",
+    "qualityGate": "npm run check:seis-public-plugin-lifecycle",
+    "freshTaskProofContract": "content/development/seis-public-plugin-fresh-task-proof.json",
+    "freshTaskProofReport": "reports/seis-public-plugin-fresh-task-proof.md",
+    "freshTaskProofGate": "npm run check:seis-public-plugin-fresh-task-proof",
+    "freshTaskReloadEvidence": "content/development/seis-public-plugin-fresh-task-reload-evidence.json",
+    "freshTaskReloadEvidenceReport": "reports/seis-public-plugin-fresh-task-reload-evidence.md",
+    "freshTaskReloadEvidenceGate": "npm run check:seis-public-plugin-fresh-task-reload-evidence",
+    "securityProvenanceReview": "content/development/seis-public-plugin-security-provenance-review.json",
+    "securityProvenanceReviewReport": "reports/seis-public-plugin-security-provenance-review.md",
+    "securityProvenanceReviewGate": "npm run check:seis-public-plugin-security-provenance-review",
+    "externalInstallProof": "content/development/seis-public-plugin-external-install-proof.json",
+    "externalInstallProofReport": "reports/seis-public-plugin-external-install-proof.md",
+    "externalInstallProofGate": "npm run check:seis-public-plugin-external-install-proof",
+    "canonicalizationContract": "content/development/seis-plugin-canonicalization.json",
+    "canonicalizationReport": "reports/seis-plugin-canonicalization.md",
+    "canonicalizationGate": "npm run check:seis-plugin-canonicalization",
+    "independentRunnerEvidenceContract": "content/development/seis-public-plugin-independent-runner-evidence-contract.json",
+    "independentRunnerEvidenceContractReport": "reports/seis-public-plugin-independent-runner-evidence-contract.md",
+    "independentRunnerEvidenceContractGate": "npm run check:seis-public-plugin-independent-runner-evidence-contract",
+    "independentRunnerEvidenceGate": "npm run check:seis-public-plugin-independent-runner-evidence",
+    "independentRunnerEvidenceRecordedGate": "npm run check:seis-public-plugin-independent-runner-evidence:recorded",
+    "releaseChannel": "internal-review-local-proof",
+    "publicReleaseBoundary": "canonicalization_fresh_task_reload_security_provenance_strict_independent_install_and_human_approval_required"
   },
   "applicationIntegration": {
     "surface": "apps/seis-demo-web",
     "panel": "God Mode ecosystem lanes",
     "qualityPanelCommand": "npm run check:seis-agent-plugin-integration",
-    "serviceWorkerCache": "seis-demo-web-v17"
+    "serviceWorkerCache": "seis-demo-web-v20"
   },
   "repoIntegration": {
     "docs": [
@@ -304,14 +459,24 @@
   },
   "qualityCommands": [
     "npm run check:seis-agent-plugin-integration",
+    "npm run check:seis-public-plugin-lifecycle",
+    "npm run check:seis-public-plugin-family",
+    "npm run check:seis-public-plugin-fresh-task-proof",
+    "npm run check:seis-public-plugin-fresh-task-reload-evidence",
+    "npm run check:seis-public-plugin-security-provenance-review",
+    "npm run check:seis-public-plugin-external-install-proof",
+    "npm run check:seis-plugin-canonicalization",
+    "npm run check:seis-unified-plugin-suite",
+    "npm run check:seis-public-plugin-independent-runner-evidence-contract",
+    "npm run check:seis-public-plugin-independent-runner-evidence",
+    "npm run check:seis-public-plugin-install-smoke",
+    "npm run check:seis-public-plugin-install-smoke:mcp",
     "npm run check:seis-ai-core-provider-registry",
-    "npm run check:seis-model-frontier-escalation-policy",
+    "npm run check:seis-model-scaling-hardware-profile",
+    "npm run check:seis-model-parameter-ladder",
     "npm run check:seis-150b-frontier-model-program",
     "npm run check:seis-512b-apex-model-program",
     "node scripts/check-seis-agi-evaluation-protocol.mjs",
-    "npm run check:seis-model-scaling-hardware-profile",
-    "npm run check:seis-model-parameter-ladder",
-    "npm run check:seis-model-scaling-subagent-council",
     "npm run check:seis-ai-core-version-registry",
     "npm run check:seis-ai-core-version-promotion-gates",
     "npm run check:seis-ai-core-subagent-operating-model",
@@ -322,5 +487,24 @@
     "npm run check:plugin-capability-lanes",
     "npm test --prefix packages/seis-ai"
   ],
-  "completionRule": "The integration is active when the manifest, AI runtime tool, MCP tool/resource, demo application surface, docs, package script, and checker all validate without claiming connector authentication or external deployment readiness."
+  "completionRule": "The integration is active when the manifest, one-file unified suite contract, canonical alias contract, AI runtime tool, MCP tool/resource, one public SEIS-Agent marketplace entry, embedded module inventory, install smoke check, MCP smoke check, demo application surface, docs, package script, and checker all validate without claiming connector authentication or external deployment readiness. Source modules are not separately installable public plugins. Public release additionally requires strict independent-runner evidence and human approval.",
+  "fiveYearSubagentDevelopment": {
+    "currentRuntimeBoundary": "status-and-plan-only",
+    "providerRegistry": "content/development/seis-ai-core-provider-registry.json",
+    "versionRegistry": "content/development/seis-ai-core-version-registry.json",
+    "versionPromotionGates": "content/development/seis-ai-core-version-promotion-gates.json",
+    "operatingModel": "content/development/seis-ai-core-subagent-operating-model.json",
+    "laneStatusContract": "content/development/seis-agent-lane-status.json",
+    "roleSchema": "content/development/seis-ai-core-agent-role-schema.json",
+    "permissionMatrix": "content/development/seis-ai-core-agent-permission-matrix.json",
+    "dryRunTaskQueue": "content/development/seis-ai-core-dry-run-task-queue.json",
+    "cancellationFixture": "content/development/seis-ai-core-cancellation-fixture.json",
+    "approvalFixture": "content/development/seis-ai-core-approval-fixture.json",
+    "redactionFixture": "content/development/seis-ai-core-redaction-fixture.json",
+    "executionLedgerFixture": "content/development/seis-ai-core-execution-ledger-fixture.json",
+    "runtimeFixtures": "content/development/seis-ai-core-subagent-runtime-fixtures.json",
+    "reviewLedger": "content/development/seis-ai-core-subagent-review-ledger.json",
+    "longHorizonPlan": "content/development/seis-sub-agent-5-year-plan.json",
+    "longHorizonPlanView": "apps/seis-demo-web/data/seis-sub-agent-five-year-plan-view.json"
+  }
 }

@@ -32,6 +32,7 @@ Date: 2026-06-23
 | [SEIS_AGENT_WORKFORCE.md](../SEIS_AGENT_WORKFORCE.md) | Agent workforce registry and role definitions for bounded supervision. |
 | [../SEIS_SSH.md](../SEIS_SSH.md) | Safe remote-development/documented SSH concept and constraints. |
 | [../roadmap/seis-long-horizon-strategy.md](../roadmap/seis-long-horizon-strategy.md) | Long-horizon 0–10 year strategy with first- and second-stage operational blueprints. |
+| [roadmap/seis-plugin-ecosystem-10-year-stewardship.md](roadmap/seis-plugin-ecosystem-10-year-stewardship.md) | Ten-year stewardship, admission, validation, and archival roadmap for repository-contained SEIS plugins. |
 | [GETTING_STARTED.md](GETTING_STARTED.md) | New contributor onboarding and run instructions. |
 | [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | Common operational and demo troubleshooting guidance. |
 | [PUBLIC_READINESS.md](PUBLIC_READINESS.md) | Public readiness evidence checklist and readiness criteria. |

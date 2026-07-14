@@ -1,6 +1,6 @@
 {
   "name": "seis-cloud",
-  "version": "0.1.0+codex.20260613134630",
+  "version": "0.3.0+codex.20260712",
   "description": "SEIS Cloud lane for public cloud readiness, team VPN cloud workspaces, server targets, cloud preflight, rollback planning, and secret-safe infrastructure automation.",
   "author": {
     "name": "emirhankudun-ux",
@@ -8,7 +8,7 @@
   },
   "homepage": "https://github.com/emirhankudun-ux/SEIS",
   "repository": "https://github.com/emirhankudun-ux/SEIS",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "keywords": [
     "seis",
     "cloud",

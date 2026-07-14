@@ -5,19 +5,23 @@
     "SEIS-AI Agent",
     "seis-ai-agent"
   ],
-  "version": 1,
+  "version": 2,
+  "releaseVersion": "0.3.0+codex.20260712",
   "status": "development",
-  "intent": "Unify SEIS, SEIS-Cloud, SEIS-Code, SEIS-Design, SEIS-Data, SEIS Security, SEIS Research, SEIS Automation, and SEIS Product into one repo-contained AI-native agent system before public launch.",
+  "intent": "Unify SEIS, SEIS-Cloud, SEIS-Code, SEIS-Design, SEIS-Data, SEIS Security, SEIS Research, SEIS Automation, and SEIS Product into one versioned, repo-contained AI-native agent install surface while keeping older lane packages and personal installs as preserved compatibility paths.",
   "canonicalRepo": "emirhankudun-ux/SEIS",
   "canonicalBranch": "main",
   "repoMarketplace": "seis-repo",
   "installId": "seis-ai-agent@seis-repo",
   "consolidationPolicy": {
     "primaryInstallId": "seis-ai-agent@seis-repo",
-    "defaultInstallMode": "single-agent",
+    "defaultInstallMode": "single-public-plugin",
     "legacyPersonalMarketplace": "compatibility-mirror-only",
-    "standaloneLaneInstallMode": "disabled",
-    "marketplacePolicy": "only-seis-ai-agent-is-published",
+    "legacyPersonalAliasesPreserved": true,
+    "standaloneLaneInstallMode": "source-module-only",
+    "marketplacePolicy": "seis-agent-is-the-only-public-plugin-with-embedded-source-modules",
+    "unifiedSuite": "assets/unified-suite.json",
+    "futurePluginIntake": "Every future SEIS plugin must be registered in assets/unified-suite.json and embedded under this single public SEIS-Agent install before it is presented as a SEIS capability.",
     "embeddedSkills": [
       "seis-ai-agent",
       "seis-governance",
@@ -58,6 +62,7 @@
   "terminalInstall": {
     "entrypoint": "node scripts/install-seis-ai-agent.mjs",
     "packageScript": "npm run install:seis-ai-agent",
+    "defaultTarget": "seis-ai-agent@seis-repo",
     "platforms": [
       "macos",
       "windows",
@@ -69,6 +74,8 @@
     "direction": "Cinematic, premium, design-driven, accessible, responsive, and grounded in real SEIS product surfaces."
   },
   "qualityCommands": [
+    "npm run check:seis-unified-plugin-suite",
+    "npm run check:seis-public-plugin-family",
     "npm run check:seis-ai-agent",
     "npm run check:seis-agent-plugin-integration",
     "npm run check:seis-repo-marketplace",
@@ -76,7 +83,7 @@
   ],
   "guardrails": [
     "keep development inside the SEIS repo",
-    "do not publish or deploy before explicit release decision",
+    "do not deploy, authenticate, or enable live external access before explicit release decision",
     "keep memory and context systems under SEIS-Data and SEIS-Agent governance",
     "avoid dependency bloat",
     "do not expose secrets",

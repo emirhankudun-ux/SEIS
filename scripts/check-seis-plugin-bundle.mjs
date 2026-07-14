@@ -175,7 +175,6 @@ if (checkLocal) {
 
     const localMirrorFiles = [
       path.join(localRoot, "scripts", "seis-mcp-launcher.mjs"),
-      path.join(localRoot, "scripts", "seis-mcp-bundle-audit.sh"),
       path.join(localRoot, "skills", "seis-hub", "SKILL.md"),
       path.join(localRoot, "skills", "seis-cloud", "SKILL.md"),
       path.join(localRoot, "skills", "seis-code", "SKILL.md"),
@@ -186,6 +185,15 @@ if (checkLocal) {
     ];
     for (const localFile of localMirrorFiles) {
       ensureFile(localFile, `local mirror file: ${path.relative(ROOT, localFile)}`);
+    }
+
+    const optionalLocalMirrorFiles = [
+      path.join(localRoot, "scripts", "seis-mcp-bundle-audit.sh"),
+    ];
+    for (const optionalLocalFile of optionalLocalMirrorFiles) {
+      if (!fs.existsSync(optionalLocalFile)) {
+        console.log(`[optional-missing] ${path.relative(ROOT, optionalLocalFile)}`);
+      }
     }
   } else {
     console.log(`[skip] local plugin root not found: ${localRoot}`);
@@ -301,7 +309,6 @@ function resolveLocalPluginRoot(explicit) {
 
   const fallbackCandidates = [
     ...explicitCandidates,
-    "/Users/emirhankudun/plugins/seis",
     path.join(process.env.HOME || "", "Library", "Mobile Documents", "com~apple~CloudDocs", "Github", "SEIS", "SEIS", "plugins", "seis"),
     path.join(process.cwd(), "plugins", "seis"),
   ].filter(Boolean);
@@ -312,7 +319,7 @@ function resolveLocalPluginRoot(explicit) {
     }
   }
 
-  return resolvePath("/Users/emirhankudun/plugins/seis");
+  return resolvePath(path.join(process.cwd(), "plugins", "seis"));
 }
 
 function parseArgs(argv) {

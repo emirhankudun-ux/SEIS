@@ -1,0 +1,4 @@
+interface:
+  display_name: "SEIS Plugin Runtime"
+  short_description: "Plugin runtime orchestration, manifest review, and capability-gate planning."
+  default_prompt: "Use $seis-plugin-runtime to keep plugin manifests and capability lanes safely auditable."

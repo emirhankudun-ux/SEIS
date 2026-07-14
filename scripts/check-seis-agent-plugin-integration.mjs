@@ -12,6 +12,31 @@ const toolsPath = path.join(root, "packages", "seis-ai", "src", "agent", "tools.
 const loopPath = path.join(root, "packages", "seis-ai", "src", "agent", "loop.mjs");
 const mcpPath = path.join(root, "packages", "seis-ai", "src", "mcp", "server.mjs");
 const helperPath = path.join(root, "packages", "seis-ai", "src", "lib", "plugin-integration.mjs");
+const installSmokePath = path.join(root, "scripts", "check-seis-public-plugin-install-smoke.mjs");
+const lifecycleScriptPath = path.join(root, "scripts", "create-seis-public-plugin-lifecycle.mjs");
+const freshTaskProofScriptPath = path.join(root, "scripts", "create-seis-public-plugin-fresh-task-proof.mjs");
+const lifecyclePath = path.join(root, "content", "development", "seis-public-plugin-lifecycle.json");
+const lifecycleReportPath = path.join(root, "reports", "seis-public-plugin-lifecycle.md");
+const freshTaskProofPath = path.join(root, "content", "development", "seis-public-plugin-fresh-task-proof.json");
+const freshTaskProofReportPath = path.join(root, "reports", "seis-public-plugin-fresh-task-proof.md");
+const freshTaskReloadEvidenceScriptPath = path.join(root, "scripts", "capture-seis-public-plugin-fresh-task-reload-evidence.mjs");
+const freshTaskReloadEvidencePath = path.join(root, "content", "development", "seis-public-plugin-fresh-task-reload-evidence.json");
+const freshTaskReloadEvidenceReportPath = path.join(root, "reports", "seis-public-plugin-fresh-task-reload-evidence.md");
+const securityProvenanceReviewScriptPath = path.join(root, "scripts", "create-seis-public-plugin-security-provenance-review.mjs");
+const securityProvenanceReviewPath = path.join(root, "content", "development", "seis-public-plugin-security-provenance-review.json");
+const securityProvenanceReviewReportPath = path.join(root, "reports", "seis-public-plugin-security-provenance-review.md");
+const externalInstallProofScriptPath = path.join(root, "scripts", "create-seis-public-plugin-external-install-proof.mjs");
+const externalInstallProofPath = path.join(root, "content", "development", "seis-public-plugin-external-install-proof.json");
+const externalInstallProofReportPath = path.join(root, "reports", "seis-public-plugin-external-install-proof.md");
+const canonicalizationScriptPath = path.join(root, "scripts", "create-seis-plugin-canonicalization.mjs");
+const canonicalizationPath = path.join(root, "content", "development", "seis-plugin-canonicalization.json");
+const canonicalizationReportPath = path.join(root, "reports", "seis-plugin-canonicalization.md");
+const independentRunnerEvidenceContractScriptPath = path.join(root, "scripts", "create-seis-public-plugin-independent-runner-evidence-contract.mjs");
+const independentRunnerEvidenceScriptPath = path.join(root, "scripts", "check-seis-public-plugin-independent-runner-evidence.mjs");
+const independentRunnerEvidenceContractPath = path.join(root, "content", "development", "seis-public-plugin-independent-runner-evidence-contract.json");
+const independentRunnerEvidenceContractReportPath = path.join(root, "reports", "seis-public-plugin-independent-runner-evidence-contract.md");
+const unifiedSuiteScriptPath = path.join(root, "scripts", "create-seis-unified-plugin-suite.mjs");
+const unifiedSuitePath = path.join(root, "plugins", "seis-ai-agent", "assets", "unified-suite.json");
 const webIndexPath = path.join(root, "apps", "seis-demo-web", "index.html");
 const webScriptPath = path.join(root, "apps", "seis-demo-web", "script.js");
 const desktopScriptPath = path.join(root, "apps", "web", "desktop.js");
@@ -23,6 +48,19 @@ const requiredPersonalPlugins = [
   "seis-code@personal",
   "seis-design@personal",
   "seis-data@personal"
+];
+const requiredPublicPlugins = ["seis-ai-agent@seis-repo"];
+const requiredEmbeddedModules = [
+  "seis-ai-agent",
+  "seis",
+  "seis-cloud",
+  "seis-code",
+  "seis-design",
+  "seis-data",
+  "seis-security",
+  "seis-research",
+  "seis-automation",
+  "seis-product"
 ];
 const requiredLanes = [
   "seis",
@@ -57,6 +95,31 @@ for (const [filePath, label] of [
   [loopPath, "SEIS AI loop"],
   [mcpPath, "SEIS AI MCP server"],
   [helperPath, "SEIS AI plugin integration helper"],
+  [installSmokePath, "SEIS public plugin install smoke checker"],
+  [lifecycleScriptPath, "SEIS public plugin lifecycle generator"],
+  [freshTaskProofScriptPath, "SEIS public plugin fresh-task proof generator"],
+  [freshTaskReloadEvidenceScriptPath, "SEIS public plugin fresh-task reload evidence capture"],
+  [securityProvenanceReviewScriptPath, "SEIS public plugin security/provenance review generator"],
+  [externalInstallProofScriptPath, "SEIS public plugin external install proof generator"],
+  [canonicalizationScriptPath, "SEIS plugin canonicalization generator"],
+  [canonicalizationPath, "SEIS plugin canonicalization contract"],
+  [canonicalizationReportPath, "SEIS plugin canonicalization report"],
+  [independentRunnerEvidenceContractScriptPath, "SEIS independent runner evidence contract generator"],
+  [independentRunnerEvidenceScriptPath, "SEIS independent runner evidence checker"],
+  [independentRunnerEvidenceContractPath, "SEIS independent runner evidence contract"],
+  [independentRunnerEvidenceContractReportPath, "SEIS independent runner evidence contract report"],
+  [unifiedSuiteScriptPath, "SEIS unified plugin suite generator"],
+  [unifiedSuitePath, "SEIS unified plugin suite"],
+  [lifecyclePath, "SEIS public plugin lifecycle contract"],
+  [lifecycleReportPath, "SEIS public plugin lifecycle report"],
+  [freshTaskProofPath, "SEIS public plugin fresh-task proof contract"],
+  [freshTaskProofReportPath, "SEIS public plugin fresh-task proof report"],
+  [freshTaskReloadEvidencePath, "SEIS public plugin fresh-task reload evidence contract"],
+  [freshTaskReloadEvidenceReportPath, "SEIS public plugin fresh-task reload evidence report"],
+  [securityProvenanceReviewPath, "SEIS public plugin security/provenance review contract"],
+  [securityProvenanceReviewReportPath, "SEIS public plugin security/provenance review report"],
+  [externalInstallProofPath, "SEIS public plugin external install proof contract"],
+  [externalInstallProofReportPath, "SEIS public plugin external install proof report"],
   [webIndexPath, "SEIS demo index"],
   [webScriptPath, "SEIS demo script"],
   [desktopScriptPath, "SEIS desktop script"],
@@ -81,16 +144,34 @@ if (manifest) {
   ensure(manifest.id === "seis-agent-plugin-integration", "manifest id must be seis-agent-plugin-integration");
   ensure(manifest.status === "active", "manifest status must be active");
   ensure(manifest.primaryInstallId === "seis-ai-agent@seis-repo", "manifest must bind to seis-ai-agent@seis-repo");
-  ensure(manifest.canonicalAgent?.publishedPlugin === "seis-ai-agent", "manifest must publish only seis-ai-agent");
-  ensure(manifest.canonicalAgent?.standaloneLaneInstallMode === "disabled", "standalone lane install mode must stay disabled");
+  ensure(manifest.canonicalAgent?.publishedPlugin === "seis-ai-agent", "manifest must keep SEIS-Agent as the primary published plugin");
+  ensure(manifest.canonicalAgent?.installMode === "single-public-plugin", "canonical agent install mode must be single-public-plugin");
+  ensure(manifest.canonicalAgent?.standaloneLaneInstallMode === "source-module-only", "standalone lane install mode must retain source modules without public installs");
+  ensure(manifest.canonicalAgent?.publicPluginContract === "content/development/seis-public-plugin-family.json", "canonical agent must point at the public plugin family contract");
+  ensure(manifest.canonicalAgent?.unifiedSuite === "plugins/seis-ai-agent/assets/unified-suite.json", "canonical agent must point at the unified suite");
+  ensure(manifest.unifiedPluginSuite?.canonicalInstallId === "seis-ai-agent@seis-repo", "manifest unified suite must keep SEIS-Agent canonical");
+  ensure(manifest.unifiedPluginSuite?.defaultInstallMode === "single-public-plugin", "manifest unified suite must use one public install");
+  ensure(manifest.unifiedPluginSuite?.minimumComponentCount === 10, "manifest unified suite must set the current component minimum");
+  ensure(manifest.unifiedPluginSuite?.futureSourcePluginPattern === "plugins/seis-*", "manifest unified suite must define future source discovery");
+  ensure(manifest.unifiedPluginSuite?.futurePluginRule?.includes("unified-suite.json"), "manifest unified suite must route future plugins into the unified suite");
+  ensure(manifest.unifiedPluginSuite?.legacyAliasCount === 5, "manifest unified suite must preserve five aliases");
+  ensure(manifest.unifiedPluginSuite?.personalMarketplaceMutation === false, "manifest unified suite must not mutate the personal marketplace");
+  ensureArrayIncludesAll(manifest.canonicalAgent?.publishedPluginFamily, requiredPublicPlugins.map((id) => id.replace("@seis-repo", "")), "canonicalAgent.publishedPluginFamily");
+  ensure(manifest.canonicalAgent?.publishedPluginFamily?.length === 1, "canonicalAgent.publishedPluginFamily must contain only SEIS-Agent");
   ensure(manifest.auditedSnapshot?.installedEnabledCount === 185, "manifest must record the 2026-06-19 installed-enabled count");
   ensure(manifest.auditedSnapshot?.notInstalledCount === 5, "manifest must record the 2026-06-19 not-installed count");
   ensure(manifest.auditedSnapshot?.authenticationClaim === "not-claimed", "manifest must not claim connector authentication readiness");
   ensureArrayIncludesAll(manifest.auditedSnapshot?.personalPluginsInstalledEnabled, requiredPersonalPlugins, "auditedSnapshot.personalPluginsInstalledEnabled");
+  ensureArrayIncludesAll((manifest.publicPlugins || []).map((plugin) => plugin.id), requiredPublicPlugins, "publicPlugins");
+  ensure((manifest.publicPlugins || []).length === 1, "publicPlugins must contain only SEIS-Agent");
+  ensureArrayIncludesAll((manifest.embeddedModules || []).map((module) => module.id), requiredEmbeddedModules, "embeddedModules");
+  ensure((manifest.embeddedModules || []).length === requiredEmbeddedModules.length, "embeddedModules must cover each current SEIS module exactly once");
+  ensure((manifest.embeddedModules || []).every((module) => module.canonicalInstallId === "seis-ai-agent@seis-repo"), "embeddedModules must resolve to SEIS-Agent");
   ensureArrayIncludesAll((manifest.personalPlugins || []).map((plugin) => plugin.id), requiredPersonalPlugins, "personalPlugins");
   ensureArrayIncludesAll((manifest.lanes || []).map((lane) => lane.id), requiredLanes, "lanes");
   ensure(manifest.helperPluginUniverse?.uniquePlugins === 300, "helper plugin universe must keep the requested unique plugin count");
   ensure(manifest.runtimeIntegration?.toolLoopTool === "seis_plugin_integration", "runtimeIntegration must expose the tool-loop tool");
+  ensure(manifest.runtimeIntegration?.publicPluginFamilyTool === "seis_public_plugin_family", "runtimeIntegration must expose the public plugin family tool-loop tool");
   ensure(manifest.runtimeIntegration?.providerRegistryTool === "seis_ai_core_provider_status", "runtimeIntegration must expose the SEIS AI Core provider status tool");
   ensure(manifest.runtimeIntegration?.modelScalingTool === "seis_ai_core_model_scaling_status", "runtimeIntegration must expose the SEIS AI Core model scaling status tool");
   ensure(manifest.runtimeIntegration?.versionRegistryTool === "seis_ai_core_version_status", "runtimeIntegration must expose the SEIS AI Core version status tool");
@@ -100,9 +181,15 @@ if (manifest) {
   );
   ensure(manifest.runtimeIntegration?.subagentOperatingModelTool === "seis_ai_core_subagent_model", "runtimeIntegration must expose the SEIS AI Core sub-agent model tool");
   ensure(manifest.runtimeIntegration?.mcpTool === "seis_plugin_integration", "runtimeIntegration must expose the MCP tool");
+  ensure(manifest.runtimeIntegration?.mcpPublicPluginFamilyTool === "seis_public_plugin_family", "runtimeIntegration must expose the public plugin family MCP tool");
   ensure(manifest.runtimeIntegration?.mcpResource === "seis://agent/plugin-integration.json", "runtimeIntegration must expose the MCP resource");
+  ensure(manifest.runtimeIntegration?.mcpPublicPluginFamilyResource === "seis://agent/public-plugin-family.json", "runtimeIntegration must expose the public plugin family MCP resource");
+  ensure(manifest.runtimeIntegration?.mcpPublicPluginLifecycleResource === "seis://agent/public-plugin-lifecycle.json", "runtimeIntegration must expose the public plugin lifecycle MCP resource");
+  ensure(manifest.runtimeIntegration?.unifiedSuite === "plugins/seis-ai-agent/assets/unified-suite.json", "runtimeIntegration must expose the unified suite");
   ensureArrayIncludesAll(manifest.runtimeIntegration?.mcpResources, [
     "seis://agent/plugin-integration.json",
+    "seis://agent/public-plugin-family.json",
+    "seis://agent/public-plugin-lifecycle.json",
     "seis://ai/version-registry.json",
     "seis://ai/provider-registry.json",
     "seis://ai/model-scaling-hardware-profile.json",
@@ -138,6 +225,21 @@ if (manifest) {
     manifest.fiveYearSubagentDevelopment?.currentRuntimeBoundary === "status-and-plan-only",
     "fiveYearSubagentDevelopment must keep the current runtime boundary status-and-plan-only"
   );
+  ensure(manifest.lifecycle?.contract === "content/development/seis-public-plugin-lifecycle.json", "manifest must point at public plugin lifecycle contract");
+  ensure(manifest.lifecycle?.qualityGate === "npm run check:seis-public-plugin-lifecycle", "manifest must expose public plugin lifecycle quality gate");
+  ensure(manifest.lifecycle?.freshTaskProofContract === "content/development/seis-public-plugin-fresh-task-proof.json", "manifest must point at public plugin fresh-task proof contract");
+  ensure(manifest.lifecycle?.freshTaskProofGate === "npm run check:seis-public-plugin-fresh-task-proof", "manifest must expose public plugin fresh-task proof gate");
+  ensure(manifest.lifecycle?.freshTaskReloadEvidence === "content/development/seis-public-plugin-fresh-task-reload-evidence.json", "manifest must point at public plugin fresh-task reload evidence");
+  ensure(manifest.lifecycle?.freshTaskReloadEvidenceGate === "npm run check:seis-public-plugin-fresh-task-reload-evidence", "manifest must expose public plugin fresh-task reload evidence gate");
+  ensure(manifest.lifecycle?.securityProvenanceReview === "content/development/seis-public-plugin-security-provenance-review.json", "manifest must point at public plugin security/provenance review");
+  ensure(manifest.lifecycle?.securityProvenanceReviewGate === "npm run check:seis-public-plugin-security-provenance-review", "manifest must expose public plugin security/provenance review gate");
+  ensure(manifest.lifecycle?.externalInstallProof === "content/development/seis-public-plugin-external-install-proof.json", "manifest must point at public plugin external install proof");
+  ensure(manifest.lifecycle?.externalInstallProofGate === "npm run check:seis-public-plugin-external-install-proof", "manifest must expose public plugin external install proof gate");
+  ensure(manifest.lifecycle?.canonicalizationContract === "content/development/seis-plugin-canonicalization.json", "manifest must expose canonicalization contract");
+  ensure(manifest.lifecycle?.canonicalizationGate === "npm run check:seis-plugin-canonicalization", "manifest must expose canonicalization gate");
+  ensure(manifest.lifecycle?.independentRunnerEvidenceContract === "content/development/seis-public-plugin-independent-runner-evidence-contract.json", "manifest must expose independent runner evidence contract");
+  ensure(manifest.lifecycle?.independentRunnerEvidenceRecordedGate === "npm run check:seis-public-plugin-independent-runner-evidence:recorded", "manifest must expose strict independent runner gate");
+  ensure(manifest.lifecycle?.publicReleaseBoundary === "canonicalization_fresh_task_reload_security_provenance_strict_independent_install_and_human_approval_required", "manifest must preserve the strict independent installation release boundary");
   ensureFile(
     path.join(root, manifest.fiveYearSubagentDevelopment?.providerRegistry || ""),
     "five-year SEIS AI Core provider registry"
@@ -172,6 +274,18 @@ if (manifest) {
   }
   ensureArrayIncludesAll(manifest.qualityCommands, [
     "npm run check:seis-agent-plugin-integration",
+    "npm run check:seis-public-plugin-lifecycle",
+    "npm run check:seis-public-plugin-family",
+    "npm run check:seis-public-plugin-fresh-task-proof",
+    "npm run check:seis-public-plugin-fresh-task-reload-evidence",
+    "npm run check:seis-public-plugin-security-provenance-review",
+    "npm run check:seis-public-plugin-external-install-proof",
+    "npm run check:seis-plugin-canonicalization",
+    "npm run check:seis-unified-plugin-suite",
+    "npm run check:seis-public-plugin-independent-runner-evidence-contract",
+    "npm run check:seis-public-plugin-independent-runner-evidence",
+    "npm run check:seis-public-plugin-install-smoke",
+    "npm run check:seis-public-plugin-install-smoke:mcp",
     "npm run check:seis-ai-core-provider-registry",
     "npm run check:seis-model-scaling-hardware-profile",
     "npm run check:seis-model-parameter-ladder",
@@ -187,6 +301,17 @@ if (manifest) {
     "npm run check:seis-specialist-plugins",
     "npm test --prefix packages/seis-ai"
   ], "qualityCommands");
+
+  for (const plugin of manifest.publicPlugins || []) {
+    ensureFile(path.join(root, plugin.sourceMirror || ""), `${plugin.id} source mirror`);
+    if (plugin.embeddedSkill) {
+      ensureFile(path.join(root, plugin.embeddedSkill), `${plugin.id} embedded skill`);
+    }
+  }
+
+  for (const module of manifest.embeddedModules || []) {
+    ensureFile(path.join(root, module.sourceMirror || ""), `${module.id} source module`);
+  }
 
   for (const plugin of manifest.personalPlugins || []) {
     ensureFile(path.join(root, plugin.sourceMirror || ""), `${plugin.id} source mirror`);
@@ -204,12 +329,83 @@ if (packageJson) {
     packageJson.scripts?.["check:seis-agent-plugin-integration"] === "node scripts/check-seis-agent-plugin-integration.mjs",
     "package.json must expose check:seis-agent-plugin-integration"
   );
+  ensure(
+    packageJson.scripts?.["check:seis-public-plugin-lifecycle"] === "node scripts/create-seis-public-plugin-lifecycle.mjs --check",
+    "package.json must expose check:seis-public-plugin-lifecycle"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-public-plugin-fresh-task-proof"] === "node scripts/create-seis-public-plugin-fresh-task-proof.mjs --check",
+    "package.json must expose check:seis-public-plugin-fresh-task-proof"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-public-plugin-fresh-task-reload-evidence"] === "node scripts/capture-seis-public-plugin-fresh-task-reload-evidence.mjs --check",
+    "package.json must expose check:seis-public-plugin-fresh-task-reload-evidence"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-public-plugin-security-provenance-review"] === "node scripts/create-seis-public-plugin-security-provenance-review.mjs --check",
+    "package.json must expose check:seis-public-plugin-security-provenance-review"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-public-plugin-external-install-proof"] === "node scripts/create-seis-public-plugin-external-install-proof.mjs --check",
+    "package.json must expose check:seis-public-plugin-external-install-proof"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-plugin-canonicalization"] === "node scripts/create-seis-plugin-canonicalization.mjs --check",
+    "package.json must expose check:seis-plugin-canonicalization"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-unified-plugin-suite"] === "node scripts/create-seis-unified-plugin-suite.mjs --check",
+    "package.json must expose check:seis-unified-plugin-suite"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-public-plugin-independent-runner-evidence-contract"] === "node scripts/create-seis-public-plugin-independent-runner-evidence-contract.mjs --check",
+    "package.json must expose check:seis-public-plugin-independent-runner-evidence-contract"
+  );
+  ensure(
+    packageJson.scripts?.["automation:seis-public-plugin-lifecycle"] === "node scripts/create-seis-public-plugin-lifecycle.mjs",
+    "package.json must expose automation:seis-public-plugin-lifecycle"
+  );
+  ensure(
+    packageJson.scripts?.["automation:seis-public-plugin-fresh-task-proof"] === "node scripts/create-seis-public-plugin-fresh-task-proof.mjs",
+    "package.json must expose automation:seis-public-plugin-fresh-task-proof"
+  );
+  ensure(
+    packageJson.scripts?.["automation:seis-public-plugin-fresh-task-reload-evidence"] === "node scripts/capture-seis-public-plugin-fresh-task-reload-evidence.mjs",
+    "package.json must expose automation:seis-public-plugin-fresh-task-reload-evidence"
+  );
+  ensure(
+    packageJson.scripts?.["automation:seis-public-plugin-security-provenance-review"] === "node scripts/create-seis-public-plugin-security-provenance-review.mjs",
+    "package.json must expose automation:seis-public-plugin-security-provenance-review"
+  );
+  ensure(
+    packageJson.scripts?.["automation:seis-public-plugin-external-install-proof"] === "node scripts/create-seis-public-plugin-external-install-proof.mjs",
+    "package.json must expose automation:seis-public-plugin-external-install-proof"
+  );
+  ensure(
+    packageJson.scripts?.["automation:seis-unified-plugin-suite"] === "node scripts/create-seis-unified-plugin-suite.mjs",
+    "package.json must expose automation:seis-unified-plugin-suite"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-public-plugin-install-smoke"] === "node scripts/check-seis-public-plugin-install-smoke.mjs",
+    "package.json must expose check:seis-public-plugin-install-smoke"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-public-plugin-install-smoke:local"] === "node scripts/check-seis-public-plugin-install-smoke.mjs --require-installed",
+    "package.json must expose check:seis-public-plugin-install-smoke:local"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-public-plugin-install-smoke:mcp"] === "node scripts/check-seis-public-plugin-install-smoke.mjs --mcp-smoke",
+    "package.json must expose check:seis-public-plugin-install-smoke:mcp"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-public-plugin-install-smoke:local:mcp"] === "node scripts/check-seis-public-plugin-install-smoke.mjs --require-installed --mcp-smoke",
+    "package.json must expose check:seis-public-plugin-install-smoke:local:mcp"
+  );
 }
 
 for (const [text, label] of [
   [docs, "docs"],
-  [loop, "agent loop"],
-  [webScript, "web script"]
+  [loop, "agent loop"]
 ]) {
   ensure(text.includes("seis_plugin_integration"), `${label} must reference seis_plugin_integration`);
   ensure(text.includes("seis_ai_core_provider_status"), `${label} must reference seis_ai_core_provider_status`);
@@ -217,6 +413,14 @@ for (const [text, label] of [
   ensure(text.includes("seis_ai_core_version_status"), `${label} must reference seis_ai_core_version_status`);
   ensure(text.includes("seis_ai_core_version_promotion_dry_run"), `${label} must reference seis_ai_core_version_promotion_dry_run`);
   ensure(text.includes("seis_ai_core_subagent_model"), `${label} must reference seis_ai_core_subagent_model`);
+}
+for (const [text, label] of [
+  [docs, "docs"],
+  [tools, "tool loop"],
+  [loop, "agent loop"],
+  [mcp, "MCP server"]
+]) {
+  ensure(text.includes("seis_public_plugin_family"), `${label} must reference seis_public_plugin_family`);
 }
 for (const [text, label] of [
   [tools, "tool loop"],
@@ -235,6 +439,7 @@ for (const token of requiredDirectLaneTools) {
   ensure(helper.includes(token), `helper missing direct lane tool ${token}`);
 }
 ensure(tools.includes("PERSONAL_PLUGIN_LANE_TOOLS"), "tool loop must consume PERSONAL_PLUGIN_LANE_TOOLS");
+ensure(helper.includes("UNIFIED_PLUGIN_SUITE_PATH"), "helper must expose the one-file unified suite path");
 ensure(tools.includes("resolvePersonalPluginLaneTool"), "tool loop must resolve direct personal lane tools");
 ensure(tools.includes("SUBAGENT_OPERATING_MODEL_TOOL"), "tool loop must consume SUBAGENT_OPERATING_MODEL_TOOL");
 ensure(tools.includes("subagentOperatingModelStatus"), "tool loop must expose sub-agent operating model status");
@@ -255,6 +460,19 @@ ensure(mcp.includes("seis://ai/20b-dataset-card-template.json"), "MCP server mus
 
 for (const token of [
   "seis-agent-plugin-integration.json",
+  "seis-public-plugin-family.json",
+  "seis-public-plugin-lifecycle.json",
+  "seis-public-plugin-fresh-task-proof.json",
+  "seis-public-plugin-fresh-task-reload-evidence.json",
+  "seis-public-plugin-security-provenance-review.json",
+  "seis-public-plugin-external-install-proof.json",
+  "seis-plugin-canonicalization.json",
+  "seis-public-plugin-independent-runner-evidence-contract.json",
+  "unified-suite.json",
+  "single-public-plugin",
+  "source-module-only",
+  "check:seis-unified-plugin-suite",
+  "check:seis-public-plugin-independent-runner-evidence:recorded",
   "seis-ai-agent@seis-repo",
   "Personal SEIS Plugin Bridge",
   "AI Core Resource Bridge",
@@ -265,6 +483,9 @@ for (const token of [
   "seis-ai-core-provider-registry.json",
   "seis-model-scaling-hardware-profile.json",
   "seis://ai/mcp-runtime-contract.json",
+  "seis://agent/public-plugin-family.json",
+  "seis://agent/public-plugin-lifecycle.json",
+  "Clean Artifact and Independent Runner Proof",
   "seis://ai/provider-registry.json",
   "seis://ai/model-scaling-hardware-profile.json",
   "seis://ai/model-parameter-ladder.json",

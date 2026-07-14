@@ -11,11 +11,11 @@ Use this skill when a request affects repository governance, branch policy, inst
 
 - Canonical GitHub repository: `emirhankudun-ux/SEIS`
 - Canonical default branch: `main`
-- Local workspace root: `/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github`
+- Local workspace root: the configured SEIS workspace root (`SEIS_ROOT`/`SEIS_ROOT_HINTS`)
 - Repo plugin root: `plugins/seis-ai-agent`
 - Repo marketplace: `.agents/plugins/marketplace.json`
 - Primary install ID: `seis-ai-agent@seis-repo`
-- Legacy standalone plugin IDs: `seis@seis-repo`, `seis-cloud@seis-repo`, `seis-code@seis-repo`, `seis-design@seis-repo`, `seis-data@seis-repo` (compatibility only)
+- Legacy personal plugin IDs remain compatibility aliases. Former standalone `@seis-repo` lane IDs are retired; all current lane access resolves through `seis-ai-agent@seis-repo`.
 
 ## Operating Rules
 

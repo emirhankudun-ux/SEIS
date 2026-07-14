@@ -58,6 +58,7 @@ describe("toolDefinitions", () => {
     assert.ok(names.includes("read_file"));
     assert.ok(names.includes("git_diff"));
     assert.ok(names.includes("git_log"));
+    assert.ok(names.includes("seis_public_plugin_family"));
     assert.ok(names.includes("seis_cloud_status"));
     assert.ok(names.includes("seis_code_plan"));
     assert.ok(names.includes("seis_design_status"));
@@ -96,8 +97,21 @@ describe("executeTool", () => {
         status: "active",
         primaryInstallId: "seis-ai-agent@seis-repo",
         auditedSnapshot: { installedEnabledCount: 185, notInstalledCount: 5, authenticationClaim: "not-claimed" },
-        canonicalAgent: { standaloneLaneInstallMode: "disabled" },
+        canonicalAgent: {
+          installMode: "single-public-plugin",
+          standaloneLaneInstallMode: "source-module-only",
+          marketplaceName: "seis-repo",
+          publicPluginContract: "content/development/seis-public-plugin-family.json",
+          unifiedSuite: "plugins/seis-ai-agent/assets/unified-suite.json"
+        },
         activationPolicy: { mode: "task-scoped-lane-activation", externalMutationRequiresUserConfirmation: true },
+        publicPlugins: [
+          { id: "seis-ai-agent", status: "public-ready", role: "orchestrator", sourceMirror: "plugins/seis-ai-agent" }
+        ],
+        embeddedModules: [
+          { id: "seis-ai-agent", status: "public-plugin", role: "orchestrator", sourceMirror: "plugins/seis-ai-agent", canonicalInstallId: "seis-ai-agent@seis-repo" },
+          { id: "seis", status: "embedded-source-module", role: "hub", sourceMirror: "plugins/seis", canonicalInstallId: "seis-ai-agent@seis-repo" }
+        ],
         personalPlugins: [{ id: "seis@personal", status: "installed-enabled-audited", embeddedAs: "seis" }],
         lanes: [
           {
@@ -148,11 +162,17 @@ describe("executeTool", () => {
         ],
         runtimeIntegration: {
           toolLoopTool: "seis_plugin_integration",
+          publicPluginFamilyTool: "seis_public_plugin_family",
+          mcpPublicPluginFamilyTool: "seis_public_plugin_family",
+          mcpPublicPluginFamilyResource: "seis://agent/public-plugin-family.json",
+          mcpPublicPluginLifecycleResource: "seis://agent/public-plugin-lifecycle.json",
           versionRegistryTool: "seis_ai_core_version_status",
           versionPromotionTool: "seis_ai_core_version_promotion_dry_run",
           subagentOperatingModelTool: "seis_ai_core_subagent_model",
           mcpResources: [
             "seis://agent/plugin-integration.json",
+            "seis://agent/public-plugin-family.json",
+            "seis://agent/public-plugin-lifecycle.json",
             "seis://ai/version-registry.json",
             "seis://ai/version-promotion-gates.json",
             "seis://ai/subagent-operating-model.json",
@@ -187,8 +207,148 @@ describe("executeTool", () => {
         helperPluginUniverse: { uniquePlugins: 300 },
         qualityCommands: [
           "npm run check:seis-agent-plugin-integration",
+          "npm run check:seis-public-plugin-family",
           "npm run check:seis-ai-core-version-registry",
           "npm run check:seis-ai-core-version-promotion-gates"
+        ]
+      }),
+      "content/development/seis-plugin-canonicalization.json": JSON.stringify({
+        id: "seis-plugin-canonicalization",
+        status: "active-non-destructive-canonicalization",
+        canonicalMarketplace: "seis-repo",
+        canonicalOrchestrator: "seis-ai-agent@seis-repo",
+        effectivePluginCount: 1,
+        embeddedModuleCount: 2,
+        legacyAliasCount: 1,
+        duplicateResolutionMode: "legacy-personal-alias-to-single-seis-ai-agent",
+        globalMarketplaceMutation: {
+          performed: false,
+          allowedWithoutHumanApproval: false
+        },
+        aliases: [
+          {
+            legacyInstallId: "seis@personal",
+            canonicalInstallId: "seis-ai-agent@seis-repo",
+            lane: "seis",
+            resolution: "resolve-to-single-seis-ai-agent",
+            userPluginPreserved: true
+          }
+        ]
+      }),
+      "plugins/seis-ai-agent/assets/unified-suite.json": JSON.stringify({
+        id: "seis-unified-plugin-suite",
+        status: "active-single-public-plugin",
+        releaseVersion: "0.3.0+test",
+        canonicalInstall: {
+          installId: "seis-ai-agent@seis-repo",
+          defaultInstallMode: "single-public-plugin"
+        },
+        componentCount: 2,
+        publicDistribution: { publicPluginCount: 1, embeddedModuleCount: 2 },
+        compatibility: {
+          standaloneLaneInstallMode: "source-module-only",
+          legacyAliasCount: 1,
+          personalMarketplaceMutation: false
+        }
+      }),
+      "content/development/seis-public-plugin-family.json": JSON.stringify({
+        id: "seis-public-plugin-family",
+        mode: "single-public-seis-agent-with-embedded-modules",
+        marketplace: {
+          name: "seis-repo",
+          publicAudience: "Codex users",
+          entries: [
+            { name: "seis-ai-agent", installId: "seis-ai-agent@seis-repo", installation: "AVAILABLE", sourcePath: "./plugins/seis-ai-agent" }
+          ]
+        },
+        seisAiConnection: { orchestrator: "seis-ai-agent@seis-repo" },
+        publicPlugins: [
+          { name: "seis-ai-agent", installId: "seis-ai-agent@seis-repo", role: "orchestrator", sourcePath: "./plugins/seis-ai-agent", publicStatus: "AVAILABLE", connectedToSeisAi: true }
+        ],
+        embeddedModules: [
+          { name: "seis-ai-agent", canonicalInstallId: "seis-ai-agent@seis-repo", role: "orchestrator", sourcePath: "./plugins/seis-ai-agent", publicStatus: "public-plugin", connectedToSeisAi: true },
+          { name: "seis", canonicalInstallId: "seis-ai-agent@seis-repo", role: "hub", sourcePath: "./plugins/seis", publicStatus: "embedded-source-module", connectedToSeisAi: true }
+        ]
+      }),
+      "content/development/seis-public-plugin-lifecycle.json": JSON.stringify({
+        id: "seis-public-plugin-lifecycle",
+        status: "internal-review-local-proof",
+        orchestrator: "seis-ai-agent@seis-repo",
+        releasePolicy: {
+          currentChannel: "internal-review-local-proof",
+          releaseAuthority: "human-approved",
+          publicPreviewRequires: ["fresh task reload proof"],
+          forbiddenWithoutApproval: ["public marketplace release"]
+        },
+        compatibility: { minimumCodexSurface: "MCP tools/list and tools/call" },
+        qualityGates: ["npm run check:seis-public-plugin-lifecycle", "npm run check:seis-public-plugin-install-smoke:mcp"],
+        completionRule: "public preview is blocked until fresh task reload proof exists",
+        plugins: [
+          { name: "seis-ai-agent", version: "0.3.0", releaseChannel: "internal-review-local-proof", supportTier: "orchestrator", compatibilityBand: "codex-local", mcpServers: ["seis-ai-agent"] }
+        ],
+        embeddedModules: [
+          { name: "seis-ai-agent", version: "0.3.0", releaseChannel: "internal-review-local-proof", supportTier: "orchestrator", compatibilityBand: "codex-local", mcpServers: ["seis-ai-agent"] },
+          { name: "seis", version: "0.3.0", releaseChannel: "internal-review-local-proof", supportTier: "embedded-source-module", compatibilityBand: "codex-local", mcpServers: ["seis-ai-agent"] }
+        ]
+      }),
+      "content/development/seis-public-plugin-fresh-task-proof.json": JSON.stringify({
+        id: "seis-public-plugin-fresh-task-proof",
+        status: "pending-fresh-task-reload-proof",
+        decision: "not-ready-for-public-preview",
+        publicReleaseAllowed: false,
+        reloadEvidence: { status: "recorded-local-fresh-task-evidence" },
+        blockers: ["Security and provenance review for public preview has not been recorded.", "Human approval has not been recorded."]
+      }),
+      "content/development/seis-public-plugin-fresh-task-reload-evidence.json": JSON.stringify({
+        id: "seis-public-plugin-fresh-task-reload-evidence",
+        status: "recorded-local-fresh-task-evidence",
+        decision: "not-ready-for-public-preview",
+        publicReleaseAllowed: false,
+        task: { threadId: "test-thread", idSource: "fixture", observedDate: "2026-07-12" },
+        commands: {
+          installSmoke: { ok: true },
+          agentIntegration: { ok: true },
+          packageTests: { ok: true }
+        },
+        mcpInventory: { ok: true },
+        seisAiBridge: { ok: true },
+        remainingReleaseBlockers: ["Security and provenance review for public preview has not been recorded.", "Human approval has not been recorded."]
+      }),
+      "content/development/seis-public-plugin-security-provenance-review.json": JSON.stringify({
+        id: "seis-public-plugin-security-provenance-review",
+        status: "repo-local-security-provenance-reviewed",
+        decision: "not-ready-for-public-preview",
+        publicReleaseAllowed: false,
+        aggregate: {
+          pluginCount: 1,
+          reviewedPluginCount: 1,
+          embeddedModuleCount: 2,
+          reviewedEmbeddedModuleCount: 2,
+          secretFindingCount: 0,
+          blockingFindingCount: 0,
+          hygieneFindingCount: 0
+        },
+        remainingReleaseBlockers: ["Human approval has not been recorded."]
+      }),
+      "content/development/seis-public-plugin-external-install-proof.json": JSON.stringify({
+        id: "seis-public-plugin-external-install-proof",
+        status: "repo-local-clean-artifact-staged-external-proof-pending",
+        decision: "not-ready-for-public-preview",
+        publicReleaseAllowed: false,
+        repoLocalArtifactStaging: {
+          ok: true,
+          stagedPluginCount: 1,
+          stagedManifestCount: 1,
+          stagedMcpEntryScriptCount: 1,
+          excludedSourceArtifactCount: 0,
+          disallowedSourceArtifactCount: 0
+        },
+        externalCleanRunnerEvidence: {
+          status: "pending-independent-clean-runner-or-public-install"
+        },
+        remainingReleaseBlockers: [
+          "Independent clean-runner or public package installation proof has not been recorded.",
+          "Human approval has not been recorded."
         ]
       }),
       "content/development/seis-ai-core-provider-registry.json": JSON.stringify({
@@ -1101,7 +1261,52 @@ describe("executeTool", () => {
     assert.equal(payload.ok, true);
     assert.equal(payload.id, "seis-agent-plugin-integration");
     assert.equal(payload.primaryInstallId, "seis-ai-agent@seis-repo");
+    assert.equal(payload.installMode, "single-public-plugin");
+    assert.equal(payload.publicPluginCount, 1);
+    assert.equal(payload.embeddedModuleCount, 2);
     assert.equal(payload.personalPlugins[0].id, "seis@personal");
+    assert.equal(payload.effectivePluginCount, 1);
+    assert.equal(payload.legacyAliasCount, 1);
+    assert.equal(payload.canonicalization.canonicalMarketplace, "seis-repo");
+    assert.equal(payload.canonicalization.aliases[0].canonicalInstallId, "seis-ai-agent@seis-repo");
+    assert.equal(payload.unifiedSuite.canonicalInstallId, "seis-ai-agent@seis-repo");
+    assert.equal(payload.unifiedSuite.componentCount, 2);
+  });
+
+  it("seis_public_plugin_family returns lifecycle-backed public plugin readiness", () => {
+    const out = executeTool("seis_public_plugin_family", {}, ctx());
+    const payload = JSON.parse(out);
+    assert.equal(payload.ok, true);
+    assert.equal(payload.id, "seis-public-plugin-family");
+    assert.equal(payload.lifecycleId, "seis-public-plugin-lifecycle");
+    assert.equal(payload.publicPluginCount, 1);
+    assert.equal(payload.embeddedModuleCount, 2);
+    assert.equal(payload.effectivePluginCount, 1);
+    assert.equal(payload.legacyAliasCount, 1);
+    assert.equal(payload.duplicateResolutionMode, "legacy-personal-alias-to-single-seis-ai-agent");
+    assert.equal(payload.unifiedSuite.defaultInstallMode, "single-public-plugin");
+    assert.equal(payload.connectedPluginCount, 1);
+    assert.equal(payload.connectedModuleCount, 2);
+    assert.equal(payload.runtimeConnected, true);
+    assert.equal(payload.currentChannel, "internal-review-local-proof");
+    assert.ok(payload.publicPreviewRequires.includes("fresh task reload proof"));
+    assert.equal(payload.freshTaskProof.publicReleaseAllowed, false);
+    assert.equal(payload.freshTaskProof.reloadEvidenceStatus, "recorded-local-fresh-task-evidence");
+    assert.equal(payload.freshTaskReloadEvidence.status, "recorded-local-fresh-task-evidence");
+    assert.equal(payload.freshTaskReloadEvidence.commandEvidenceOk, true);
+    assert.equal(payload.freshTaskReloadEvidence.mcpInventoryOk, true);
+    assert.equal(payload.freshTaskReloadEvidence.seisAiBridgeOk, true);
+    assert.equal(payload.securityProvenanceReview.publicReleaseAllowed, false);
+    assert.equal(payload.securityProvenanceReview.status, "repo-local-security-provenance-reviewed");
+    assert.equal(payload.securityProvenanceReview.secretFindingCount, 0);
+    assert.equal(payload.securityProvenanceReview.blockingFindingCount, 0);
+    assert.equal(payload.externalInstallProof.publicReleaseAllowed, false);
+    assert.equal(payload.externalInstallProof.status, "repo-local-clean-artifact-staged-external-proof-pending");
+    assert.equal(payload.externalInstallProof.artifactStagingOk, true);
+    assert.equal(payload.externalInstallProof.stagedPluginCount, 1);
+    assert.equal(payload.externalInstallProof.stagedManifestCount, 1);
+    assert.equal(payload.externalInstallProof.stagedMcpEntryScriptCount, 1);
+    assert.equal(payload.externalInstallProof.independentRunnerEvidenceStatus, "pending-independent-clean-runner-or-public-install");
   });
 
   it("seis_ai_core_subagent_model returns the bounded operating model and five-year linkage", () => {

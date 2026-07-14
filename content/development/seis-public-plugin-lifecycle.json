@@ -1,0 +1,549 @@
+{
+  "id": "seis-public-plugin-lifecycle",
+  "version": 1,
+  "generatedAt": "2026-07-12",
+  "status": "active-local-proof-public-release-gated",
+  "sourcePath": "content/development/seis-public-plugin-lifecycle.json",
+  "reportPath": "reports/seis-public-plugin-lifecycle.md",
+  "publicFamilyContract": "content/development/seis-public-plugin-family.json",
+  "freshTaskProofContract": "content/development/seis-public-plugin-fresh-task-proof.json",
+  "freshTaskReloadEvidence": "content/development/seis-public-plugin-fresh-task-reload-evidence.json",
+  "freshTaskReloadEvidenceReport": "reports/seis-public-plugin-fresh-task-reload-evidence.md",
+  "securityProvenanceReview": "content/development/seis-public-plugin-security-provenance-review.json",
+  "securityProvenanceReviewReport": "reports/seis-public-plugin-security-provenance-review.md",
+  "externalInstallProof": "content/development/seis-public-plugin-external-install-proof.json",
+  "externalInstallProofReport": "reports/seis-public-plugin-external-install-proof.md",
+  "externalInstallProofSummary": {
+    "status": "repo-local-clean-artifact-staged-external-proof-pending",
+    "artifactStagingOk": true,
+    "independentRunnerEvidenceStatus": "pending-independent-clean-runner-or-public-install",
+    "publicReleaseAllowed": false
+  },
+  "canonicalizationContract": "content/development/seis-plugin-canonicalization.json",
+  "canonicalizationReport": "reports/seis-plugin-canonicalization.md",
+  "canonicalizationSummary": {
+    "status": "active-non-destructive-canonicalization",
+    "ready": true,
+    "canonicalMarketplace": "seis-repo",
+    "canonicalOrchestrator": "seis-ai-agent@seis-repo",
+    "effectivePluginCount": 1,
+    "embeddedModuleCount": 10,
+    "legacyAliasCount": 5,
+    "duplicateResolutionMode": "legacy-personal-alias-to-single-seis-ai-agent",
+    "personalMarketplaceMutation": false
+  },
+  "unifiedSuite": "plugins/seis-ai-agent/assets/unified-suite.json",
+  "unifiedSuiteSummary": {
+    "status": "active-single-public-plugin",
+    "releaseVersion": "0.3.0+codex.20260712",
+    "componentCount": 10,
+    "publicPluginCount": 1,
+    "embeddedModuleCount": 10,
+    "defaultInstallMode": "single-public-plugin",
+    "standaloneLaneInstallMode": "source-module-only",
+    "ready": true
+  },
+  "independentRunnerEvidenceContract": "content/development/seis-public-plugin-independent-runner-evidence-contract.json",
+  "independentRunnerEvidenceContractReport": "reports/seis-public-plugin-independent-runner-evidence-contract.md",
+  "independentRunnerEvidenceIntake": {
+    "contractStatus": "active-evidence-intake-contract",
+    "evidenceStatus": "pending-independent-clean-runner-or-public-install",
+    "status": "awaiting-independent-clean-runner-evidence",
+    "recordedGate": "npm run check:seis-public-plugin-independent-runner-evidence:recorded"
+  },
+  "marketplace": ".agents/plugins/marketplace.json",
+  "purpose": "Keep the single public SEIS-Agent plugin and its embedded SEIS source modules maintainable over a long horizon by tracking release phases, compatibility, validation gates, ownership, and approval boundaries.",
+  "publicAudience": "everyone",
+  "orchestrator": "seis-ai-agent@seis-repo",
+  "publicDistribution": {
+    "publicPluginCount": 1,
+    "embeddedModuleCount": 10,
+    "canonicalInstallId": "seis-ai-agent@seis-repo",
+    "mode": "single-public-plugin"
+  },
+  "releasePolicy": {
+    "currentChannel": "internal-review-local-proof",
+    "releaseAuthority": "human_owner_required",
+    "publicPreviewRequires": [
+      "npm run check:seis-public-plugin-family",
+      "npm run check:seis-public-plugin-fresh-task-proof",
+      "npm run check:seis-public-plugin-fresh-task-reload-evidence",
+      "npm run check:seis-public-plugin-security-provenance-review",
+      "npm run check:seis-public-plugin-external-install-proof",
+      "npm run check:seis-plugin-canonicalization",
+      "npm run check:seis-unified-plugin-suite",
+      "npm run check:seis-public-plugin-independent-runner-evidence-contract",
+      "npm run check:seis-public-plugin-independent-runner-evidence:recorded",
+      "npm run check:seis-public-plugin-install-smoke:mcp",
+      "npm run check:seis-agent-plugin-integration",
+      "npm run check:seis-ai-agent",
+      "npm run check:seis-repo-marketplace",
+      "fresh task reload proof",
+      "security and provenance review",
+      "independent clean-runner or public installation proof",
+      "human approval"
+    ],
+    "forbiddenWithoutApproval": [
+      "push",
+      "merge",
+      "tag",
+      "release",
+      "deploy",
+      "publish marketplace listing",
+      "execute live SSH",
+      "use provider credentials",
+      "claim live cloud or AI provider connectivity"
+    ]
+  },
+  "compatibility": {
+    "pluginApi": "codex-plugin-json-plus-mcp-json",
+    "mcpTransport": "stdio-jsonrpc-content-length",
+    "runtime": "node",
+    "minimumNodeMajorObserved": 24,
+    "secretsRequiredForCoreDemo": false,
+    "defaultInstallMode": "single-public-plugin",
+    "standaloneLaneInstallMode": "source-module-only",
+    "authBoundary": "ON_INSTALL means account or provider auth is explicit and never implied by marketplace availability"
+  },
+  "cadence": {
+    "patchWindow": "as-needed-small-safe-fixes",
+    "minorWindow": "monthly-when-feature-lanes-change",
+    "majorWindow": "only-after-breaking-contract-review",
+    "longHorizonReview": "quarterly-public-plugin-family-review"
+  },
+  "phases": [
+    {
+      "id": "repo-contract",
+      "label": "Repo Contract",
+      "status": "active",
+      "ownerLane": "seis-governance",
+      "requiredEvidence": [
+        "content/development/seis-public-plugin-family.json",
+        ".agents/plugins/marketplace.json",
+        "npm run check:seis-public-plugin-family"
+      ],
+      "exitRule": "All public plugin manifests, marketplace entries, source mirrors, and SEIS AI lane links validate in the repo."
+    },
+    {
+      "id": "canonical-alias-resolution",
+      "label": "Canonical Alias Resolution",
+      "status": "active-non-destructive-canonicalization",
+      "ownerLane": "seis-governance",
+      "requiredEvidence": [
+        "content/development/seis-plugin-canonicalization.json",
+        "reports/seis-plugin-canonicalization.md",
+        "npm run check:seis-plugin-canonicalization",
+        "five @personal compatibility aliases resolve to the single public SEIS-Agent install without mutating user installations"
+      ],
+      "exitRule": "SEIS AI and the installer report one canonical public SEIS-Agent install while preserving legacy personal plugins as read-only compatibility aliases."
+    },
+    {
+      "id": "single-public-install",
+      "label": "Single Public Install",
+      "status": "active-single-public-plugin",
+      "ownerLane": "seis-ai-agent",
+      "requiredEvidence": [
+        "plugins/seis-ai-agent/assets/unified-suite.json",
+        "npm run check:seis-unified-plugin-suite",
+        "npm run install:seis-ai-agent",
+        "the default installer targets only seis-ai-agent@seis-repo"
+      ],
+      "exitRule": "All SEIS source modules share one versioned suite file, and SEIS-Agent is the only public install target; module folders do not create standalone public installs."
+    },
+    {
+      "id": "installed-cache",
+      "label": "Installed Cache",
+      "status": "active-local-proof",
+      "ownerLane": "seis-automation",
+      "requiredEvidence": [
+        "npm run check:seis-public-plugin-install-smoke:local",
+        "npm run check:seis-public-plugin-install-smoke:local:mcp"
+      ],
+      "exitRule": "The single public SEIS-Agent plugin exists in the local Codex cache, its MCP server initializes, lists tools, and answers representative lane calls."
+    },
+    {
+      "id": "clean-artifact-stage",
+      "label": "Clean Artifact Stage",
+      "status": "repo-local-artifact-staged",
+      "ownerLane": "seis-automation",
+      "requiredEvidence": [
+        "content/development/seis-public-plugin-external-install-proof.json",
+        "reports/seis-public-plugin-external-install-proof.md",
+        "npm run check:seis-public-plugin-external-install-proof",
+        "disposable local stage excludes macOS metadata and forbidden artifact classes"
+      ],
+      "exitRule": "A disposable local artifact stage contains the sole marketplace plugin plus its embedded module suite without forbidden release artifacts. This does not prove an independent installation."
+    },
+    {
+      "id": "fresh-task-reload",
+      "label": "Fresh Task Reload",
+      "status": "human-triggered-next-proof",
+      "ownerLane": "seis-product",
+      "requiredEvidence": [
+        "content/development/seis-public-plugin-fresh-task-proof.json",
+        "content/development/seis-public-plugin-fresh-task-reload-evidence.json",
+        "reports/seis-public-plugin-fresh-task-reload-evidence.md",
+        "npm run check:seis-public-plugin-fresh-task-proof",
+        "npm run check:seis-public-plugin-fresh-task-reload-evidence",
+        "new Codex task opened after plugin install",
+        "installed plugin skills and MCP tools visible in the new task",
+        "same smoke commands pass from the refreshed task context"
+      ],
+      "exitRule": "A newly started task can use the public SEIS plugin family without relying on this thread's pre-install tool surface."
+    },
+    {
+      "id": "independent-runner-evidence",
+      "label": "Independent Runner Evidence",
+      "status": "awaiting-independent-clean-runner-evidence",
+      "ownerLane": "seis-automation",
+      "requiredEvidence": [
+        "content/development/seis-public-plugin-independent-runner-evidence-contract.json",
+        "reports/seis-public-plugin-independent-runner-evidence-contract.md",
+        "npm run check:seis-public-plugin-independent-runner-evidence-contract",
+        "npm run check:seis-public-plugin-independent-runner-evidence:recorded",
+        "sanitized evidence from an external clean runner or public package install"
+      ],
+      "exitRule": "A strict recorded-evidence check proves the single SEIS-Agent public plugin installed from an independent public source, exposed every embedded module, passed MCP smoke, and was visible through SEIS AI in a fresh task. Human approval still remains required."
+    },
+    {
+      "id": "public-preview",
+      "label": "Public Preview",
+      "status": "approval-gated",
+      "ownerLane": "seis-security",
+      "requiredEvidence": [
+        "license and provenance review",
+        "content/development/seis-public-plugin-security-provenance-review.json",
+        "reports/seis-public-plugin-security-provenance-review.md",
+        "npm run check:seis-public-plugin-security-provenance-review",
+        "content/development/seis-public-plugin-external-install-proof.json",
+        "reports/seis-public-plugin-external-install-proof.md",
+        "npm run check:seis-public-plugin-external-install-proof",
+        "content/development/seis-plugin-canonicalization.json",
+        "npm run check:seis-plugin-canonicalization",
+        "plugins/seis-ai-agent/assets/unified-suite.json",
+        "npm run check:seis-unified-plugin-suite",
+        "content/development/seis-public-plugin-independent-runner-evidence-contract.json",
+        "npm run check:seis-public-plugin-independent-runner-evidence:recorded",
+        "independent clean-runner or public package installation proof",
+        "secret scan and access review",
+        "human approval for public release or PR",
+        "rollback note and release notes"
+      ],
+      "exitRule": "Security, provenance, clean-artifact staging, independent installation, validation, rollback, and human release approval are recorded before public preview claims."
+    },
+    {
+      "id": "stable",
+      "label": "Stable",
+      "status": "planned",
+      "ownerLane": "seis-governance",
+      "requiredEvidence": [
+        "repeatable CI checks",
+        "fresh clone install proof",
+        "versioned changelog",
+        "compatibility matrix across supported Codex runtimes"
+      ],
+      "exitRule": "Stable is only claimed after repeatable install/runtime evidence exists outside this local machine."
+    }
+  ],
+  "plugins": [
+    {
+      "name": "seis-ai-agent",
+      "displayName": "SEIS-Agent",
+      "role": "orchestrator",
+      "sourcePath": "./plugins/seis-ai-agent",
+      "installId": "seis-ai-agent@seis-repo",
+      "version": "0.3.0+codex.20260712",
+      "license": "MIT",
+      "category": "Developer",
+      "mcpServers": [
+        "seis-ai-agent"
+      ],
+      "lifecycleState": "public-repo-available-local-proof",
+      "supportTier": "orchestrator-critical",
+      "compatibilityBand": "^0.3.x",
+      "releaseChannel": "internal-review-local-proof",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true,
+      "requiredGates": [
+        "manifest-valid",
+        "mcp-manifest-valid",
+        "repo-marketplace-available",
+        "seis-ai-connected",
+        "install-smoke",
+        "mcp-smoke",
+        "security-boundary"
+      ],
+      "rollback": "Remove seis-ai-agent@seis-repo from the repo marketplace only with human approval, then rerun public plugin family, install smoke, and SEIS AI checks."
+    }
+  ],
+  "embeddedModules": [
+    {
+      "name": "seis-ai-agent",
+      "displayName": "SEIS-Agent",
+      "role": "orchestrator",
+      "sourcePath": "./plugins/seis-ai-agent",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "sourceModuleStatus": "public-plugin",
+      "version": "0.3.0+codex.20260712",
+      "license": "MIT",
+      "mcpServers": [
+        "seis-ai-agent"
+      ],
+      "lifecycleState": "embedded-in-public-seis-agent",
+      "supportTier": "orchestrator-root",
+      "compatibilityBand": "^0.3.x",
+      "releaseChannel": "internal-review-local-proof",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true,
+      "requiredGates": [
+        "source-manifest-valid",
+        "embedded-suite-discovery",
+        "seis-ai-connected",
+        "security-boundary"
+      ]
+    },
+    {
+      "name": "seis",
+      "displayName": "SEIS",
+      "role": "governance",
+      "sourcePath": "./plugins/seis",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "sourceModuleStatus": "embedded-source-module",
+      "version": "0.3.0+codex.20260712",
+      "license": "MIT",
+      "mcpServers": [
+        "seis"
+      ],
+      "lifecycleState": "embedded-in-public-seis-agent",
+      "supportTier": "embedded-lane-critical",
+      "compatibilityBand": "^0.3.x",
+      "releaseChannel": "internal-review-local-proof",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true,
+      "requiredGates": [
+        "source-manifest-valid",
+        "embedded-suite-discovery",
+        "seis-ai-connected",
+        "security-boundary"
+      ]
+    },
+    {
+      "name": "seis-cloud",
+      "displayName": "SEIS Cloud",
+      "role": "cloud",
+      "sourcePath": "./plugins/seis-cloud",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "sourceModuleStatus": "embedded-source-module",
+      "version": "0.3.0+codex.20260712",
+      "license": "MIT",
+      "mcpServers": [
+        "seis-cloud"
+      ],
+      "lifecycleState": "embedded-in-public-seis-agent",
+      "supportTier": "embedded-lane-critical",
+      "compatibilityBand": "^0.3.x",
+      "releaseChannel": "internal-review-local-proof",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true,
+      "requiredGates": [
+        "source-manifest-valid",
+        "embedded-suite-discovery",
+        "seis-ai-connected",
+        "security-boundary"
+      ]
+    },
+    {
+      "name": "seis-code",
+      "displayName": "SEIS-Code",
+      "role": "code",
+      "sourcePath": "./plugins/seis-code",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "sourceModuleStatus": "embedded-source-module",
+      "version": "0.3.0+codex.20260712",
+      "license": "MIT",
+      "mcpServers": [
+        "seis-code"
+      ],
+      "lifecycleState": "embedded-in-public-seis-agent",
+      "supportTier": "embedded-lane-critical",
+      "compatibilityBand": "^0.3.x",
+      "releaseChannel": "internal-review-local-proof",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true,
+      "requiredGates": [
+        "source-manifest-valid",
+        "embedded-suite-discovery",
+        "seis-ai-connected",
+        "security-boundary"
+      ]
+    },
+    {
+      "name": "seis-design",
+      "displayName": "SEIS-Design",
+      "role": "design",
+      "sourcePath": "./plugins/seis-design",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "sourceModuleStatus": "embedded-source-module",
+      "version": "0.3.0+codex.20260712",
+      "license": "MIT",
+      "mcpServers": [
+        "seis-design"
+      ],
+      "lifecycleState": "embedded-in-public-seis-agent",
+      "supportTier": "embedded-lane-critical",
+      "compatibilityBand": "^0.3.x",
+      "releaseChannel": "internal-review-local-proof",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true,
+      "requiredGates": [
+        "source-manifest-valid",
+        "embedded-suite-discovery",
+        "seis-ai-connected",
+        "security-boundary"
+      ]
+    },
+    {
+      "name": "seis-data",
+      "displayName": "SEIS-DATA",
+      "role": "data",
+      "sourcePath": "./plugins/seis-data",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "sourceModuleStatus": "embedded-source-module",
+      "version": "0.3.0+codex.20260712",
+      "license": "MIT",
+      "mcpServers": [
+        "seis-data"
+      ],
+      "lifecycleState": "embedded-in-public-seis-agent",
+      "supportTier": "embedded-lane-critical",
+      "compatibilityBand": "^0.3.x",
+      "releaseChannel": "internal-review-local-proof",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true,
+      "requiredGates": [
+        "source-manifest-valid",
+        "embedded-suite-discovery",
+        "seis-ai-connected",
+        "security-boundary"
+      ]
+    },
+    {
+      "name": "seis-security",
+      "displayName": "SEIS Security",
+      "role": "security",
+      "sourcePath": "./plugins/seis-security",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "sourceModuleStatus": "embedded-source-module",
+      "version": "0.3.0+codex.20260712",
+      "license": "MIT",
+      "mcpServers": [
+        "seis-security"
+      ],
+      "lifecycleState": "embedded-in-public-seis-agent",
+      "supportTier": "embedded-lane-critical",
+      "compatibilityBand": "^0.3.x",
+      "releaseChannel": "internal-review-local-proof",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true,
+      "requiredGates": [
+        "source-manifest-valid",
+        "embedded-suite-discovery",
+        "seis-ai-connected",
+        "security-boundary"
+      ]
+    },
+    {
+      "name": "seis-research",
+      "displayName": "SEIS Research",
+      "role": "research",
+      "sourcePath": "./plugins/seis-research",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "sourceModuleStatus": "embedded-source-module",
+      "version": "0.3.0+codex.20260712",
+      "license": "MIT",
+      "mcpServers": [
+        "seis-research"
+      ],
+      "lifecycleState": "embedded-in-public-seis-agent",
+      "supportTier": "embedded-lane-critical",
+      "compatibilityBand": "^0.3.x",
+      "releaseChannel": "internal-review-local-proof",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true,
+      "requiredGates": [
+        "source-manifest-valid",
+        "embedded-suite-discovery",
+        "seis-ai-connected",
+        "security-boundary"
+      ]
+    },
+    {
+      "name": "seis-automation",
+      "displayName": "SEIS Automation",
+      "role": "automation",
+      "sourcePath": "./plugins/seis-automation",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "sourceModuleStatus": "embedded-source-module",
+      "version": "0.3.0+codex.20260712",
+      "license": "MIT",
+      "mcpServers": [
+        "seis-automation"
+      ],
+      "lifecycleState": "embedded-in-public-seis-agent",
+      "supportTier": "embedded-lane-critical",
+      "compatibilityBand": "^0.3.x",
+      "releaseChannel": "internal-review-local-proof",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true,
+      "requiredGates": [
+        "source-manifest-valid",
+        "embedded-suite-discovery",
+        "seis-ai-connected",
+        "security-boundary"
+      ]
+    },
+    {
+      "name": "seis-product",
+      "displayName": "SEIS Product",
+      "role": "product",
+      "sourcePath": "./plugins/seis-product",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "sourceModuleStatus": "embedded-source-module",
+      "version": "0.3.0+codex.20260712",
+      "license": "MIT",
+      "mcpServers": [
+        "seis-product"
+      ],
+      "lifecycleState": "embedded-in-public-seis-agent",
+      "supportTier": "embedded-lane-critical",
+      "compatibilityBand": "^0.3.x",
+      "releaseChannel": "internal-review-local-proof",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true,
+      "requiredGates": [
+        "source-manifest-valid",
+        "embedded-suite-discovery",
+        "seis-ai-connected",
+        "security-boundary"
+      ]
+    }
+  ],
+  "qualityGates": [
+    "npm run check:seis-public-plugin-lifecycle",
+    "npm run check:seis-public-plugin-family",
+    "npm run check:seis-public-plugin-fresh-task-proof",
+    "npm run check:seis-public-plugin-fresh-task-reload-evidence",
+    "npm run check:seis-public-plugin-security-provenance-review",
+    "npm run check:seis-public-plugin-external-install-proof",
+    "npm run check:seis-plugin-canonicalization",
+    "npm run check:seis-unified-plugin-suite",
+    "npm run check:seis-public-plugin-independent-runner-evidence-contract",
+    "npm run check:seis-public-plugin-independent-runner-evidence",
+    "npm run check:seis-public-plugin-install-smoke:mcp",
+    "npm run check:seis-agent-plugin-integration",
+    "npm run check:seis-ai-agent",
+    "npm run check:seis-specialist-plugins",
+    "npm run check:seis-repo-marketplace"
+  ],
+  "completionRule": "The lifecycle is ready for internal review when the single public SEIS-Agent suite, embedded module discovery, canonical alias resolution, repo, clean-artifact, install-smoke, MCP-smoke, SEIS AI, specialist, and marketplace checks pass. Public release remains gated on fresh-task reload proof, security/provenance review, strict independent clean-runner/public installation evidence, and human approval."
+}

@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SEIS_ROOT="${SEIS_ROOT:-/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/SEIS}"
-if [[ ! -d "${SEIS_ROOT}" && -d "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS" ]]; then
-  SEIS_ROOT="/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS"
-fi
-PLUGIN_ROOT="${PLUGIN_ROOT:-/Users/emirhankudun/plugins/seis}"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd -- "${SCRIPT_DIR}/../.." && pwd)"
+SEIS_ROOT="${SEIS_ROOT:-${REPO_ROOT}}"
+PLUGIN_ROOT="${PLUGIN_ROOT:-${REPO_ROOT}/plugins/seis}"
 STRICT="${SEIS_MCP_AUDIT_STRICT:-0}"
 
 if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then

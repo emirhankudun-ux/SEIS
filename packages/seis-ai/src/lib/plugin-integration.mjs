@@ -2,6 +2,14 @@ import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 
 export const PLUGIN_INTEGRATION_PATH = "content/development/seis-agent-plugin-integration.json";
+export const PUBLIC_PLUGIN_FAMILY_PATH = "content/development/seis-public-plugin-family.json";
+export const PUBLIC_PLUGIN_LIFECYCLE_PATH = "content/development/seis-public-plugin-lifecycle.json";
+export const PUBLIC_PLUGIN_FRESH_TASK_PROOF_PATH = "content/development/seis-public-plugin-fresh-task-proof.json";
+export const PUBLIC_PLUGIN_FRESH_TASK_RELOAD_EVIDENCE_PATH = "content/development/seis-public-plugin-fresh-task-reload-evidence.json";
+export const PUBLIC_PLUGIN_SECURITY_PROVENANCE_REVIEW_PATH = "content/development/seis-public-plugin-security-provenance-review.json";
+export const PUBLIC_PLUGIN_EXTERNAL_INSTALL_PROOF_PATH = "content/development/seis-public-plugin-external-install-proof.json";
+export const PLUGIN_CANONICALIZATION_PATH = "content/development/seis-plugin-canonicalization.json";
+export const UNIFIED_PLUGIN_SUITE_PATH = "plugins/seis-ai-agent/assets/unified-suite.json";
 export const MCP_RUNTIME_CONTRACT_PATH = "content/development/seis-ai-core-mcp-runtime-contract.json";
 export const AI_CORE_PROVIDER_REGISTRY_PATH = "content/development/seis-ai-core-provider-registry.json";
 export const AI_CORE_MODEL_SCALING_PROFILE_PATH = "content/development/seis-model-scaling-hardware-profile.json";
@@ -123,6 +131,58 @@ export function readPluginIntegration(repoRoot) {
   if (!existsSync(filePath)) {
     throw new Error(`SEIS plugin integration manifest is missing: ${PLUGIN_INTEGRATION_PATH}`);
   }
+  return JSON.parse(readFileSync(filePath, "utf8"));
+}
+
+export function readPublicPluginFamily(repoRoot) {
+  const filePath = path.join(repoRoot, ...PUBLIC_PLUGIN_FAMILY_PATH.split("/"));
+  if (!existsSync(filePath)) {
+    throw new Error(`SEIS public plugin family contract is missing: ${PUBLIC_PLUGIN_FAMILY_PATH}`);
+  }
+  return JSON.parse(readFileSync(filePath, "utf8"));
+}
+
+export function readPublicPluginLifecycle(repoRoot) {
+  const filePath = path.join(repoRoot, ...PUBLIC_PLUGIN_LIFECYCLE_PATH.split("/"));
+  if (!existsSync(filePath)) {
+    throw new Error(`SEIS public plugin lifecycle contract is missing: ${PUBLIC_PLUGIN_LIFECYCLE_PATH}`);
+  }
+  return JSON.parse(readFileSync(filePath, "utf8"));
+}
+
+export function readPublicPluginFreshTaskProof(repoRoot) {
+  const filePath = path.join(repoRoot, ...PUBLIC_PLUGIN_FRESH_TASK_PROOF_PATH.split("/"));
+  if (!existsSync(filePath)) return null;
+  return JSON.parse(readFileSync(filePath, "utf8"));
+}
+
+export function readPublicPluginFreshTaskReloadEvidence(repoRoot) {
+  const filePath = path.join(repoRoot, ...PUBLIC_PLUGIN_FRESH_TASK_RELOAD_EVIDENCE_PATH.split("/"));
+  if (!existsSync(filePath)) return null;
+  return JSON.parse(readFileSync(filePath, "utf8"));
+}
+
+export function readPublicPluginSecurityProvenanceReview(repoRoot) {
+  const filePath = path.join(repoRoot, ...PUBLIC_PLUGIN_SECURITY_PROVENANCE_REVIEW_PATH.split("/"));
+  if (!existsSync(filePath)) return null;
+  return JSON.parse(readFileSync(filePath, "utf8"));
+}
+
+export function readPublicPluginExternalInstallProof(repoRoot) {
+  const filePath = path.join(repoRoot, ...PUBLIC_PLUGIN_EXTERNAL_INSTALL_PROOF_PATH.split("/"));
+  if (!existsSync(filePath)) return null;
+  return JSON.parse(readFileSync(filePath, "utf8"));
+}
+
+export function readPluginCanonicalization(repoRoot) {
+  const filePath = path.join(repoRoot, ...PLUGIN_CANONICALIZATION_PATH.split("/"));
+  if (!existsSync(filePath)) return null;
+  return JSON.parse(readFileSync(filePath, "utf8"));
+}
+
+export function readUnifiedPluginSuite(repoRoot) {
+  const filePath = path.join(repoRoot, ...UNIFIED_PLUGIN_SUITE_PATH.split("/"));
+  if (!existsSync(filePath)) return null;
   return JSON.parse(readFileSync(filePath, "utf8"));
 }
 
@@ -1366,14 +1426,86 @@ export function subagentDryRunTaskDecision(repoRoot, input = {}) {
 export function pluginIntegrationStatus(repoRoot, options = {}) {
   try {
     const manifest = readPluginIntegration(repoRoot);
+    const canonicalization = readPluginCanonicalization(repoRoot);
+    const unifiedSuite = readUnifiedPluginSuite(repoRoot);
     const lanes = Array.isArray(manifest.lanes) ? manifest.lanes : [];
+    const publicPlugins = Array.isArray(manifest.publicPlugins) ? manifest.publicPlugins : [];
+    const embeddedModules = Array.isArray(manifest.embeddedModules) ? manifest.embeddedModules : [];
     const personalPlugins = Array.isArray(manifest.personalPlugins) ? manifest.personalPlugins : [];
+    const aliases = Array.isArray(canonicalization?.aliases) ? canonicalization.aliases : [];
+    const canonicalizationSummary = canonicalization
+      ? {
+          contractPath: PLUGIN_CANONICALIZATION_PATH,
+          id: canonicalization.id,
+          status: canonicalization.status,
+          canonicalMarketplace: canonicalization.canonicalMarketplace,
+          canonicalOrchestrator: canonicalization.canonicalOrchestrator,
+          effectivePluginCount: canonicalization.effectivePluginCount,
+          embeddedModuleCount: canonicalization.embeddedModuleCount ?? null,
+          legacyAliasCount: canonicalization.legacyAliasCount,
+          duplicateResolutionMode: canonicalization.duplicateResolutionMode,
+          globalMarketplaceMutation: {
+            performed: canonicalization.globalMarketplaceMutation?.performed === true,
+            allowedWithoutHumanApproval: canonicalization.globalMarketplaceMutation?.allowedWithoutHumanApproval === true,
+          },
+          aliases: aliases.map((alias) => ({
+            legacyInstallId: alias.legacyInstallId,
+            canonicalInstallId: alias.canonicalInstallId,
+            lane: alias.lane,
+            resolution: alias.resolution,
+            userPluginPreserved: alias.userPluginPreserved === true,
+          })),
+        }
+      : null;
+    const unifiedSuiteSummary = unifiedSuite
+      ? {
+          path: UNIFIED_PLUGIN_SUITE_PATH,
+          id: unifiedSuite.id,
+          status: unifiedSuite.status,
+          releaseVersion: unifiedSuite.releaseVersion,
+          canonicalInstallId: unifiedSuite.canonicalInstall?.installId ?? null,
+          defaultInstallMode: unifiedSuite.canonicalInstall?.defaultInstallMode ?? null,
+          componentCount: unifiedSuite.componentCount ?? null,
+          publicPluginCount: unifiedSuite.publicDistribution?.publicPluginCount ?? null,
+          embeddedModuleCount: unifiedSuite.publicDistribution?.embeddedModuleCount ?? null,
+          standaloneLaneInstallMode: unifiedSuite.compatibility?.standaloneLaneInstallMode ?? null,
+          legacyAliasCount: unifiedSuite.compatibility?.legacyAliasCount ?? null,
+          personalMarketplaceMutation: unifiedSuite.compatibility?.personalMarketplaceMutation === true,
+          discoveredPluginCount: unifiedSuite.sourceDiscovery?.discoveredPluginNames?.length ?? null,
+          uncoveredSourcePlugins: unifiedSuite.sourceDiscovery?.uncoveredSourcePlugins ?? [],
+          futurePluginDefaultRule: unifiedSuite.futurePluginIntake?.defaultInstallRule ?? null,
+        }
+      : null;
     const payload = {
       ok: true,
       manifestPath: PLUGIN_INTEGRATION_PATH,
       id: manifest.id,
       status: manifest.status,
       primaryInstallId: manifest.primaryInstallId,
+      installMode: manifest.canonicalAgent?.installMode ?? null,
+      standaloneLaneInstallMode: manifest.canonicalAgent?.standaloneLaneInstallMode ?? null,
+      marketplaceName: manifest.canonicalAgent?.marketplaceName ?? null,
+      publicPluginContract: manifest.canonicalAgent?.publicPluginContract ?? null,
+      publicPluginCount: publicPlugins.length,
+      embeddedModuleCount: embeddedModules.length,
+      effectivePluginCount: canonicalizationSummary?.effectivePluginCount ?? publicPlugins.length,
+      legacyAliasCount: canonicalizationSummary?.legacyAliasCount ?? 0,
+      duplicateResolutionMode: canonicalizationSummary?.duplicateResolutionMode ?? null,
+      canonicalization: canonicalizationSummary,
+      unifiedSuite: unifiedSuiteSummary,
+      publicPlugins: publicPlugins.map((plugin) => ({
+        id: plugin.id,
+        status: plugin.status,
+        role: plugin.role,
+        sourceMirror: plugin.sourceMirror
+      })),
+      embeddedModules: embeddedModules.map((module) => ({
+        id: module.id,
+        status: module.status,
+        role: module.role,
+        sourceMirror: module.sourceMirror,
+        canonicalInstallId: module.canonicalInstallId ?? manifest.primaryInstallId,
+      })),
       installedEnabledCount: manifest.auditedSnapshot?.installedEnabledCount ?? null,
       notInstalledCount: manifest.auditedSnapshot?.notInstalledCount ?? null,
       personalPluginCount: personalPlugins.length,
@@ -1399,6 +1531,10 @@ export function pluginIntegrationStatus(repoRoot, options = {}) {
         versionRegistryTool: manifest.runtimeIntegration?.versionRegistryTool ?? null,
         versionPromotionTool: manifest.runtimeIntegration?.versionPromotionTool ?? null,
         subagentOperatingModelTool: manifest.runtimeIntegration?.subagentOperatingModelTool ?? null,
+        publicPluginFamilyTool: manifest.runtimeIntegration?.publicPluginFamilyTool ?? null,
+        mcpPublicPluginFamilyTool: manifest.runtimeIntegration?.mcpPublicPluginFamilyTool ?? null,
+        mcpPublicPluginFamilyResource: manifest.runtimeIntegration?.mcpPublicPluginFamilyResource ?? null,
+        mcpPublicPluginLifecycleResource: manifest.runtimeIntegration?.mcpPublicPluginLifecycleResource ?? null,
       },
       qualityCommands: manifest.qualityCommands
     };
@@ -1413,6 +1549,167 @@ export function pluginIntegrationStatus(repoRoot, options = {}) {
       ok: false,
       manifestPath: PLUGIN_INTEGRATION_PATH,
       error: error.message
+    };
+  }
+}
+
+export function publicPluginFamilyStatus(repoRoot, options = {}) {
+  try {
+    const family = readPublicPluginFamily(repoRoot);
+    const lifecycle = readPublicPluginLifecycle(repoRoot);
+    const freshTaskProof = readPublicPluginFreshTaskProof(repoRoot);
+    const freshTaskReloadEvidence = readPublicPluginFreshTaskReloadEvidence(repoRoot);
+    const securityProvenanceReview = readPublicPluginSecurityProvenanceReview(repoRoot);
+    const externalInstallProof = readPublicPluginExternalInstallProof(repoRoot);
+    const integration = pluginIntegrationStatus(repoRoot);
+    const canonicalization = integration.canonicalization;
+    const unifiedSuite = integration.unifiedSuite;
+    const lifecyclePlugins = new Map((lifecycle.plugins || []).map((plugin) => [plugin.name, plugin]));
+    const lifecycleModules = new Map((lifecycle.embeddedModules || []).map((module) => [module.name, module]));
+    const familyPlugins = Array.isArray(family.plugins) ? family.plugins : [];
+    const publicFamilyPlugins = Array.isArray(family.publicPlugins) ? family.publicPlugins : [];
+    const familyModules = Array.isArray(family.embeddedModules) ? family.embeddedModules : [];
+    const marketplaceEntries = Array.isArray(family.marketplace?.entries) ? family.marketplace.entries : [];
+    const plugins = (publicFamilyPlugins.length ? publicFamilyPlugins : (familyPlugins.length ? familyPlugins : marketplaceEntries)).map((plugin) => {
+      const name = plugin.name;
+      const lifecyclePlugin = lifecyclePlugins.get(name) || {};
+      return {
+        name,
+        installId: plugin.installId,
+        role: plugin.role,
+        sourcePath: plugin.sourcePath,
+        publicStatus: plugin.publicStatus || plugin.installation,
+        liveRuntimeStatus: plugin.liveRuntimeStatus,
+        connectedToSeisAi: plugin.connectedToSeisAi === true,
+        version: lifecyclePlugin.version,
+        releaseChannel: lifecyclePlugin.releaseChannel,
+        supportTier: lifecyclePlugin.supportTier,
+        compatibilityBand: lifecyclePlugin.compatibilityBand,
+        mcpServers: lifecyclePlugin.mcpServers || [],
+      };
+    });
+    const embeddedModules = (familyModules.length ? familyModules : familyPlugins).map((module) => {
+      const name = module.name;
+      const lifecycleModule = lifecycleModules.get(name) || lifecyclePlugins.get(name) || {};
+      return {
+        name,
+        installId: module.canonicalInstallId || module.installId || family.seisAiConnection?.orchestrator || null,
+        role: module.role,
+        sourcePath: module.sourcePath,
+        publicStatus: module.publicStatus || module.installation || "embedded-source-module",
+        liveRuntimeStatus: module.liveRuntimeStatus,
+        connectedToSeisAi: module.connectedToSeisAi === true,
+        version: lifecycleModule.version,
+        releaseChannel: lifecycleModule.releaseChannel,
+        supportTier: lifecycleModule.supportTier,
+        compatibilityBand: lifecycleModule.compatibilityBand,
+        mcpServers: lifecycleModule.mcpServers || [],
+      };
+    });
+
+    const payload = {
+      ok: true,
+      familyPath: PUBLIC_PLUGIN_FAMILY_PATH,
+      lifecyclePath: PUBLIC_PLUGIN_LIFECYCLE_PATH,
+      id: family.id,
+      lifecycleId: lifecycle.id,
+      mode: family.mode,
+      lifecycleStatus: lifecycle.status,
+      publicAudience: family.marketplace?.publicAudience,
+      marketplaceName: family.marketplace?.name,
+      orchestrator: family.seisAiConnection?.orchestrator || lifecycle.orchestrator,
+      runtimeConnected:
+        integration.ok === true &&
+        integration.publicPluginCount === plugins.length &&
+        integration.embeddedModuleCount === embeddedModules.length &&
+        (canonicalization?.effectivePluginCount ?? plugins.length) === plugins.length,
+      publicPluginCount: plugins.length,
+      embeddedModuleCount: embeddedModules.length,
+      effectivePluginCount: canonicalization?.effectivePluginCount ?? plugins.length,
+      legacyAliasCount: canonicalization?.legacyAliasCount ?? 0,
+      duplicateResolutionMode: canonicalization?.duplicateResolutionMode ?? null,
+      canonicalization,
+      unifiedSuite,
+      connectedPluginCount: plugins.filter((plugin) => plugin.connectedToSeisAi).length,
+      connectedModuleCount: embeddedModules.filter((module) => module.connectedToSeisAi).length,
+      currentChannel: lifecycle.releasePolicy?.currentChannel,
+      releaseAuthority: lifecycle.releasePolicy?.releaseAuthority,
+      publicPreviewRequires: lifecycle.releasePolicy?.publicPreviewRequires || [],
+      forbiddenWithoutApproval: lifecycle.releasePolicy?.forbiddenWithoutApproval || [],
+      compatibility: lifecycle.compatibility,
+      qualityGates: lifecycle.qualityGates || [],
+      completionRule: lifecycle.completionRule,
+      freshTaskProof: freshTaskProof
+        ? {
+            id: freshTaskProof.id,
+            status: freshTaskProof.status,
+            decision: freshTaskProof.decision,
+            publicReleaseAllowed: freshTaskProof.publicReleaseAllowed === true,
+            reloadEvidenceStatus: freshTaskProof.reloadEvidence?.status ?? null,
+            blockers: freshTaskProof.blockers || [],
+          }
+        : null,
+      freshTaskReloadEvidence: freshTaskReloadEvidence
+        ? {
+            id: freshTaskReloadEvidence.id,
+            status: freshTaskReloadEvidence.status,
+            decision: freshTaskReloadEvidence.decision,
+            publicReleaseAllowed: freshTaskReloadEvidence.publicReleaseAllowed === true,
+            taskThreadIdRecorded: Boolean(freshTaskReloadEvidence.task?.threadId),
+            commandEvidenceOk:
+              Object.values(freshTaskReloadEvidence.commands || {}).length > 0 &&
+              Object.values(freshTaskReloadEvidence.commands || {}).every((command) => command.ok === true),
+            mcpInventoryOk: freshTaskReloadEvidence.mcpInventory?.ok === true,
+            seisAiBridgeOk: freshTaskReloadEvidence.seisAiBridge?.ok === true,
+            remainingReleaseBlockers: freshTaskReloadEvidence.remainingReleaseBlockers || [],
+          }
+        : null,
+      securityProvenanceReview: securityProvenanceReview
+        ? {
+            id: securityProvenanceReview.id,
+            status: securityProvenanceReview.status,
+            decision: securityProvenanceReview.decision,
+            publicReleaseAllowed: securityProvenanceReview.publicReleaseAllowed === true,
+            pluginCount: securityProvenanceReview.aggregate?.pluginCount ?? null,
+            reviewedPluginCount: securityProvenanceReview.aggregate?.reviewedPluginCount ?? null,
+            secretFindingCount: securityProvenanceReview.aggregate?.secretFindingCount ?? null,
+            blockingFindingCount: securityProvenanceReview.aggregate?.blockingFindingCount ?? null,
+            hygieneFindingCount: securityProvenanceReview.aggregate?.hygieneFindingCount ?? null,
+            remainingReleaseBlockers: securityProvenanceReview.remainingReleaseBlockers || [],
+          }
+        : null,
+      externalInstallProof: externalInstallProof
+        ? {
+            id: externalInstallProof.id,
+            status: externalInstallProof.status,
+            decision: externalInstallProof.decision,
+            publicReleaseAllowed: externalInstallProof.publicReleaseAllowed === true,
+            artifactStagingOk: externalInstallProof.repoLocalArtifactStaging?.ok === true,
+            stagedPluginCount: externalInstallProof.repoLocalArtifactStaging?.stagedPluginCount ?? null,
+            stagedManifestCount: externalInstallProof.repoLocalArtifactStaging?.stagedManifestCount ?? null,
+            stagedMcpEntryScriptCount: externalInstallProof.repoLocalArtifactStaging?.stagedMcpEntryScriptCount ?? null,
+            excludedSourceArtifactCount: externalInstallProof.repoLocalArtifactStaging?.excludedSourceArtifactCount ?? null,
+            disallowedSourceArtifactCount: externalInstallProof.repoLocalArtifactStaging?.disallowedSourceArtifactCount ?? null,
+            independentRunnerEvidenceStatus: externalInstallProof.externalCleanRunnerEvidence?.status ?? null,
+            remainingReleaseBlockers: externalInstallProof.remainingReleaseBlockers || [],
+          }
+        : null,
+      plugins,
+      embeddedModules,
+    };
+
+    if (options.includeFullContracts === true) {
+      payload.family = family;
+      payload.lifecycle = lifecycle;
+    }
+
+    return payload;
+  } catch (error) {
+    return {
+      ok: false,
+      familyPath: PUBLIC_PLUGIN_FAMILY_PATH,
+      lifecyclePath: PUBLIC_PLUGIN_LIFECYCLE_PATH,
+      error: error.message,
     };
   }
 }

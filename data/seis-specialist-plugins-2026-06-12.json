@@ -1,29 +1,43 @@
 {
   "id": "seis-specialist-plugins",
-  "version": 1,
-  "updatedAt": "2026-06-15",
-  "mode": "single-seis-agent-embedded-lanes",
-  "summary": "SEIS-Agent is the only repo marketplace plugin. SEIS Hub, SEIS Governance, SEIS Cloud, SEIS-Code, SEIS-Design, and SEIS-DATA are embedded lane skills and profiles inside the single agent, while standalone lane directories remain source mirrors for focused development.",
+  "version": 3,
+  "updatedAt": "2026-07-12",
+  "mode": "single-public-seis-agent-with-embedded-modules",
+  "summary": "SEIS exposes only SEIS-Agent as a public repo marketplace plugin. SEIS, Cloud, Code, Design, Data, Security, Research, Automation, and Product stay preserved as embedded source modules with lane parity and repo validation.",
   "consolidation": {
     "primaryInstallId": "seis-ai-agent@seis-repo",
-    "defaultInstallMode": "single-agent",
+    "defaultInstallMode": "single-public-plugin",
     "legacyPersonalMarketplace": "compatibility-mirror-only",
-    "standaloneLaneInstallMode": "disabled",
-    "marketplacePolicy": "only-seis-ai-agent-is-published"
+    "standaloneLaneInstallMode": "source-module-only",
+    "marketplacePolicy": "seis-agent-is-the-only-public-plugin-with-embedded-source-modules"
   },
   "sourceEvidence": [
+    "content/development/seis-public-plugin-family.json",
+    "reports/seis-public-plugin-family.md",
     "data/seis-plugin-package-intake-2026-06-13.json",
     "docs/platform/seis-plugin-package-intake.md"
   ],
   "marketplace": {
     "path": ".agents/plugins/marketplace.json",
     "name": "seis-repo",
-    "publishedPlugin": "seis-ai-agent",
+    "publishedPlugins": ["seis-ai-agent"],
     "entryPolicy": {
       "installation": "AVAILABLE",
       "authentication": "ON_INSTALL"
     }
   },
+  "embeddedModules": [
+    "seis-ai-agent",
+    "seis",
+    "seis-cloud",
+    "seis-code",
+    "seis-design",
+    "seis-data",
+    "seis-security",
+    "seis-research",
+    "seis-automation",
+    "seis-product"
+  ],
   "centralMcpTools": [
     "seis_specialist_lanes",
     "seis_specialist_lane_status",
@@ -96,11 +110,68 @@
       "mcpServer": "seis-data",
       "tools": ["seis_data_status", "seis_data_plan"],
       "laneProfile": "assets/lanes/seis-data.json"
+    },
+    {
+      "name": "seis-security",
+      "displayName": "SEIS Security",
+      "category": "Security",
+      "repoRoot": "plugins/seis-ai-agent",
+      "sourceMirror": "plugins/seis-security",
+      "installId": "seis-ai-agent@seis-repo",
+      "embeddedInstallId": "seis-ai-agent@seis-repo#seis-security",
+      "skill": "skills/seis-security/SKILL.md",
+      "mcpServer": "seis-security",
+      "tools": ["seis_security_status", "seis_security_plan"],
+      "laneProfile": "assets/lanes/seis-security.json"
+    },
+    {
+      "name": "seis-research",
+      "displayName": "SEIS Research",
+      "category": "Research",
+      "repoRoot": "plugins/seis-ai-agent",
+      "sourceMirror": "plugins/seis-research",
+      "installId": "seis-ai-agent@seis-repo",
+      "embeddedInstallId": "seis-ai-agent@seis-repo#seis-research",
+      "skill": "skills/seis-research/SKILL.md",
+      "mcpServer": "seis-research",
+      "tools": ["seis_research_status", "seis_research_plan"],
+      "laneProfile": "assets/lanes/seis-research.json"
+    },
+    {
+      "name": "seis-automation",
+      "displayName": "SEIS Automation",
+      "category": "Developer",
+      "repoRoot": "plugins/seis-ai-agent",
+      "sourceMirror": "plugins/seis-automation",
+      "installId": "seis-ai-agent@seis-repo",
+      "embeddedInstallId": "seis-ai-agent@seis-repo#seis-automation",
+      "skill": "skills/seis-automation/SKILL.md",
+      "mcpServer": "seis-automation",
+      "tools": ["seis_automation_status", "seis_automation_plan"],
+      "laneProfile": "assets/lanes/seis-automation.json"
+    },
+    {
+      "name": "seis-product",
+      "displayName": "SEIS Product",
+      "category": "Productivity",
+      "repoRoot": "plugins/seis-ai-agent",
+      "sourceMirror": "plugins/seis-product",
+      "installId": "seis-ai-agent@seis-repo",
+      "embeddedInstallId": "seis-ai-agent@seis-repo#seis-product",
+      "skill": "skills/seis-product/SKILL.md",
+      "mcpServer": "seis-product",
+      "tools": ["seis_product_status", "seis_product_plan"],
+      "laneProfile": "assets/lanes/seis-product.json"
     }
   ],
   "validation": [
+    "npm run check:seis-public-plugin-family",
     "npm run check:seis-specialist-plugins",
     "npm run check:seis-ai-agent",
-    "python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-ai-agent"
+    "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-ai-agent",
+    "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-security",
+    "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-research",
+    "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-automation",
+    "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-product"
   ]
 }
