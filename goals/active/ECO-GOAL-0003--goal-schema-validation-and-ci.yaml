@@ -122,6 +122,9 @@ validation:
     - https://github.com/emirhankudun-ux/SEIS/pull/177
     - https://github.com/emirhankudun-ux/SEIS/commit/cf972f6f9275fec305019fdc33b0bf5cda2d5cbe
     - https://github.com/emirhankudun-ux/SEIS/commit/14989f439439a59a03fc19db23887dc2bee4602e
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29334272295
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29334272335
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29334272479
 
 status_history:
   - status: planned
@@ -262,6 +265,27 @@ evidence_records:
     command: npm run test:ecosystem-foundation
     exit_code: 0
     artifact: https://github.com/emirhankudun-ux/SEIS/commit/14989f439439a59a03fc19db23887dc2bee4602e
+  - id: ECO3-EVIDENCE-017
+    type: remote-ci
+    description: Foundation Check run 805 passed on review-hardening head c1abec61, including the ecosystem validator and adversarial fixture suite.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29334272295
+  - id: ECO3-EVIDENCE-018
+    type: security-validation
+    description: CodeQL run 458 passed for JavaScript, Python, and Swift on review-hardening head c1abec61.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29334272335
+  - id: ECO3-EVIDENCE-019
+    type: security-validation
+    description: Guardian run 547 failed because full-history GitLeaks found one redacted generic credential candidate in commit 1fb90357 from unrelated open PR 154; that commit is not an ancestor of this Goal branch or main.
+    status: failed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29334272479
 
 quality_gates:
   architecture: required
@@ -274,7 +298,7 @@ quality_gates:
   model_provider_routing: not-applicable
   agent_permission: not-applicable
   mcp_plugin_tool: not-applicable
-  security: passed
+  security: failed
   privacy: passed
   accessibility: not-applicable
   performance: not-applicable
@@ -283,7 +307,7 @@ quality_gates:
   devops: passed
   testing: passed
   release: not-applicable
-  public_readiness: passed
+  public_readiness: blocked
 
 risks:
   - id: ECO3-RISK-001
@@ -304,6 +328,15 @@ risks:
     trigger: Documentation says CI passed without a checks URL.
     contingency: Retain required gates and CI evidence as pending until the remote run exists.
     status: closed
+  - id: ECO3-RISK-003
+    description: Full-history security scanning may expose a credential candidate from another open branch even when the current Goal diff is clean.
+    likelihood: high
+    impact: critical
+    owner: security
+    mitigation: Preserve redaction, keep full-history scanning enabled, and require private provenance review before rotation or a narrowly bounded synthetic-fixture exception.
+    trigger: The Guardian full-history GitLeaks job reports a finding outside the current Goal ancestry.
+    contingency: Block public readiness, rotate if potentially real, or constrain an exception by exact commit, path, and nonsecret fixture pattern after proof.
+    status: open
 
 rollback:
   strategy: revert
@@ -344,6 +377,8 @@ notes:
   - github.commit_sha records substantive review-hardening commit 14989f43; evidence-only follow-ups may be newer without creating a self-reference.
   - Review hardening rejects non-object or structurally unsafe schemas, scalar or cyclic references, invalid regular expressions, non-stage-zero and missing-blob index entries, intent-to-add artifacts, symlink chains, hostile Git helper configuration, unsafe Goal paths, and malformed GitHub repository metadata.
   - Independent read-only reviews identified adjacent schema and Git-index bypasses that were incorporated; the final fixture review found no remaining actionable issue, while the committed tests and hosted checks remain the durable evidence.
+  - Hosted review-hardening checks passed Foundation Check, CodeQL, CI, governance, system gates, and Socket checks; Guardian alone failed on a redacted candidate from unrelated PR 154 history.
+  - The candidate value was never printed or copied into repository records. Its provenance must be reviewed privately; broad path allowlisting and PR-range-only scanning were rejected as unsafe shortcuts.
   - The Goal reached review after all seven pull-request workflows passed; completion still requires the architecture gate and review decision.
   - Local actionlint was unavailable, but GitHub parsed and executed the changed workflow successfully; the skipped local check remains disclosed in the pull request.
   - Branch publication reported administrative bypasses for branch-creation and signature rules; no protected default-branch write occurred.
