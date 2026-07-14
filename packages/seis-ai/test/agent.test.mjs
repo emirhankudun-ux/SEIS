@@ -1225,6 +1225,10 @@ describe("executeTool", () => {
     assert.equal(payload.agentLane.id, "seis-code");
     assert.equal(payload.routeEligible, false);
     assert.equal(payload.executionPerformed, false);
+    assert.equal(payload.providerMediation.mode, "backend-only");
+    assert.equal(payload.providerMediation.frontendSecretAllowed, false);
+    assert.equal(payload.providerMediation.routeExecutionEnabled, false);
+    assert.equal(payload.providerMediation.status, "required-before-live-routing");
     assert.equal(payload.safetyBoundary.networkCalled, false);
   });
 

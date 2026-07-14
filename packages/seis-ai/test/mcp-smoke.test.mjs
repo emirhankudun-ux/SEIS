@@ -1086,6 +1086,10 @@ describe("seis-mcp stdio smoke", () => {
     const payload = JSON.parse(call.result.content[0].text);
     assert.equal(payload.selectedProvider, "codex-operator");
     assert.equal(payload.agentLane.id, "seis-code");
+    assert.equal(payload.providerMediation.mode, "backend-only");
+    assert.equal(payload.providerMediation.frontendSecretAllowed, false);
+    assert.equal(payload.providerMediation.routeExecutionEnabled, false);
+    assert.equal(payload.providerMediation.status, "required-before-live-routing");
     assert.equal(payload.executionPerformed, false);
     assert.equal(payload.providerCallsPerformed, false);
   });
