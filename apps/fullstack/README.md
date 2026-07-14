@@ -19,8 +19,11 @@ no-new-dependencies `node:http` contract:
 
 This contract exposes read-only Local Demo data for session, capabilities,
 projects, app installs, provider status, audit logs, and dry-run agent tasks.
-Provider credentials remain backend-only and are not read, serialized, or stored
-in browser storage.
+Provider credentials remain backend-only. The provider preflight may inspect
+presence and shape metadata on the server, but never returns values,
+authenticates credentials, calls providers, or stores secrets in browser
+storage. SEIS Code requests this preflight only when the user opens provider
+status and keeps a Local Demo fallback when the route is unavailable.
 
 Convex can still be the preferred later backend for reactive state. Supabase can
 be added later for Postgres-heavy data, SQL reporting, storage, or auth

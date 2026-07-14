@@ -266,6 +266,29 @@ function installDomHarness(window) {
   window.confirm = () => true;
   window.alert = () => {};
   window.prompt = (_message, fallback = "") => fallback || "demo";
+  window.fetch = async (url) => {
+    if (url !== "/_server/provider-status") throw new Error(`Unexpected runtime fetch: ${url}`);
+    return {
+      ok: true,
+      status: 200,
+      async json() {
+        return {
+          ok: true,
+          data: [
+            { providerId: "seis-local-demo", name: "Local Demo", status: "Available", routeEligible: true, notes: "Deterministic local responses only." },
+            { providerId: "openai-general", name: "OpenAI", status: "Missing Key", routeEligible: false, notes: "Backend-only and not route eligible." }
+          ],
+          environmentValidation: {
+            status: "validated-no-network",
+            configuredProviderCount: 1,
+            missingRequiredProviderCount: 1,
+            invalidProviderCount: 0,
+            publicSecretExposureCount: 0
+          }
+        };
+      }
+    };
+  };
   window.URL.createObjectURL = () => "blob:seis-code-check";
   window.URL.revokeObjectURL = () => {};
   window.BroadcastChannel = class {
@@ -328,6 +351,12 @@ async function runRuntimeSmoke() {
   ensure(diagnostics.evolutionPhaseCount() === 5, "Runtime Command Lens must expose the 5-year evolution rail.");
   ensure(diagnostics.commandLensSummary().includes("Year 1"), "Runtime Command Lens summary must identify the selected horizon.");
   ensure(diagnostics.evolutionDetailText().includes("Proof gate"), "Runtime Command Lens detail must expose the selected phase proof gate.");
+
+  click(dom.window, "[data-action=\"show-provider-status\"]");
+  await waitFor(() => dom.window.document.querySelector("[data-modal-body]")?.textContent.includes("validated-no-network"), "server-aware provider status modal");
+  ensure(dom.window.document.querySelector("[data-modal-body]")?.textContent.includes("Network called: no"), "Provider status modal must state that the server preflight made no network call.");
+  ensure(dom.window.document.querySelector("[data-modal-body]")?.textContent.includes("Local Demo"), "Provider status modal must include the Local Demo row.");
+  click(dom.window, "[data-action=\"close-modal\"]");
 
   for (const menu of requiredMenus) {
     click(dom.window, `[data-menu="${menu}"] .menu-button`);
@@ -486,6 +515,10 @@ for (const required of ["evolutionPhases", "renderCommandLens", "toggleCommandLe
 
 for (const required of ["buildPaletteItems", "runPaletteItem", "rememberPaletteCommand", "movePaletteSelection", "paletteRecentCommandIds"]) {
   ensure(js.includes(required), `SEIS Code runtime missing command palette capability marker: ${required}`);
+}
+
+for (const required of ["/_server/provider-status", "cache: \"no-store\"", "renderProviderStatusReport", "LOCAL_PROVIDER_STATUS_FALLBACK", "environmentValidation"]) {
+  ensure(js.includes(required), `SEIS Code runtime missing server-aware provider status marker: ${required}`);
 }
 
 for (const required of ["normalized !== WORKSPACE", "startsWith(`${WORKSPACE}/`)", "unsafe characters", "toolPath = args.path ? normalizePath(args.path)", "Blocked external workspace update"]) {

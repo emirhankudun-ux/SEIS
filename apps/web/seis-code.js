@@ -3,6 +3,7 @@ const DB_VERSION = 1;
 const WORKSPACE = "/workspace";
 const WORKSPACE_CHANNEL = "seis-code-workspace";
 const MONACO_LOADER_URL = "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/loader.js";
+const PROVIDER_STATUS_ROUTE = "/_server/provider-status";
 
 const languageByExtension = {
   js: "javascript",
@@ -65,6 +66,12 @@ const supportedLanguageModes = [
 ];
 
 const aiTruthfulnessMarker = "not Anthropic";
+
+const LOCAL_PROVIDER_STATUS_FALLBACK = Object.freeze([
+  { providerId: "seis-local-demo", name: "Local Demo", status: "Available", routeEligible: true, notes: "Runs entirely in browser logic." },
+  { providerId: "anthropic-claude", name: "Anthropic Claude", status: "Missing Key", routeEligible: false, notes: "No server preflight was available in this static session." },
+  { providerId: "cloud-fallback", name: "Cloud fallback", status: "Disabled", routeEligible: false, notes: "Local-only demo policy prevents silent provider switching." }
+]);
 
 const evolutionPhases = [
   {
@@ -2264,16 +2271,44 @@ function showFiveYearPlan() {
   );
 }
 
-function showProviderStatus() {
-  showModal(
-    "AI Provider Status",
-    `<table>
-      <tr><th>Provider</th><th>Status</th><th>Reason</th></tr>
-      <tr><td>Local Demo</td><td>Available</td><td>Runs entirely in browser logic.</td></tr>
-      <tr><td>Anthropic Claude</td><td>Missing Key</td><td>No backend gateway exists in this static slice.</td></tr>
-      <tr><td>Cloud fallback</td><td>Disabled</td><td>Local-only demo policy prevents silent provider switching.</td></tr>
-    </table>`
-  );
+async function showProviderStatus() {
+  showModal("AI Provider Status", `<p class="notice">Checking the read-only server preflight. No provider call will be made.</p>`);
+
+  try {
+    const response = await fetch(PROVIDER_STATUS_ROUTE, {
+      method: "GET",
+      headers: { Accept: "application/json" },
+      cache: "no-store"
+    });
+    if (!response.ok) throw new Error("provider status route unavailable");
+    const payload = await response.json();
+    if (!payload?.ok || !Array.isArray(payload.data)) throw new Error("provider status payload invalid");
+    showModal("AI Provider Status", renderProviderStatusReport(payload.data, payload.environmentValidation, "server"));
+  } catch (_error) {
+    showModal("AI Provider Status", renderProviderStatusReport(LOCAL_PROVIDER_STATUS_FALLBACK, null, "static-fallback"));
+  }
+}
+
+function renderProviderStatusReport(providers, validation, source) {
+  const sourceLabel = source === "server"
+    ? "Server preflight: redacted presence and shape only."
+    : "Static Local Demo fallback: the server route was unavailable in this session.";
+  const validationLabel = validation
+    ? `Environment preflight: ${escapeHtml(validation.status || "unknown")}. Configured shape-valid providers: ${escapeHtml(validation.configuredProviderCount ?? "unknown")}; missing required configuration: ${escapeHtml(validation.missingRequiredProviderCount ?? "unknown")}; invalid shape: ${escapeHtml(validation.invalidProviderCount ?? "unknown")}; public exposure findings: ${escapeHtml(validation.publicSecretExposureCount ?? "unknown")}. Network called: no. Credential authentication: no. Live routing: no.`
+    : "Environment preflight: not available. No provider call was attempted and Local Demo remains the only usable runtime.";
+
+  return `<p class="notice">${sourceLabel}</p>
+    <p class="notice">${validationLabel}</p>
+    <table>
+      <thead><tr><th>Provider</th><th>Status</th><th>Route</th><th>Boundary</th></tr></thead>
+      <tbody>${providers.map((provider) => `
+        <tr>
+          <td>${escapeHtml(provider.name || provider.providerId || "Unknown")}</td>
+          <td>${escapeHtml(provider.status || "Unknown")}</td>
+          <td>${provider.routeEligible === true ? "Route eligible" : "Not route eligible"}</td>
+          <td>${escapeHtml(provider.notes || "No additional details.")}</td>
+        </tr>`).join("")}</tbody>
+    </table>`;
 }
 
 function showLanguageList() {
