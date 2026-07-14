@@ -369,13 +369,14 @@
         "current_phase_id": "SEIS-10Y-Y01",
         "phase_status": "planned",
         "last_reviewed_at": "2026-07-14",
-        "last_commit_hash": "16fbd03e",
+        "last_commit_hash": "33dda17f",
         "validation_results": [
           {"command": "npm run check:seis-enterprise-expansion-v3", "status": "passed"},
           {"command": "npm run check:seis-goal-tracking-update-prompt", "status": "passed"},
           {"command": "npm run check:goal-tracking", "status": "passed"},
           {"command": "npm run check:goal-command-center-view", "status": "passed"},
-          {"command": "npm run check:seis-10-year-capability-matrix", "status": "passed"}
+          {"command": "npm run check:seis-10-year-capability-matrix", "status": "passed"},
+          {"command": "npm run check:seis-core-ecosystem-registry", "status": "passed"}
         ],
         "open_blockers": [
           "The pre-existing repository hygiene blocker remains unresolved in the shared dirty worktree."

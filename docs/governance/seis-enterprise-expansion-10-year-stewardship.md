@@ -86,9 +86,10 @@ The current continuation state is intentionally explicit:
 - phase: `SEIS-10Y-Y01`, Evidence and Ownership Foundation;
 - phase status: planned;
 - last reviewed: `2026-07-14`;
-- last validated stewardship commit: `16fbd03e`;
+- last validated stewardship commit: `33dda17f`;
 - validation: Enterprise Expansion V3, Goal Tracking Update Prompt, Goal Tracking,
-  Goal Command Center View, and 104-term capability matrix checks passed;
+  Goal Command Center View, 104-term capability matrix, and SEIS Core ecosystem
+  registry checks passed;
 - open blocker: the pre-existing repository hygiene blocker remains unresolved
   in the shared dirty worktree;
 - next action: read the repository instructions, project manifest, this registry,
