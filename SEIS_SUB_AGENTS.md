@@ -14,6 +14,8 @@ validation requirement.
 
 `SEIS_AGENT_WORKFORCE.md` remains the human-readable workforce policy.
 
+The mirrored workforce record is `seis-brain/vault/05_Agents/Agent Workforce.md`.
+
 The registry aggregates source-backed inventories for machines. The workforce
 policy explains supervised collaboration for humans. Neither grants execution
 authority, and neither may weaken global governance or a stricter source

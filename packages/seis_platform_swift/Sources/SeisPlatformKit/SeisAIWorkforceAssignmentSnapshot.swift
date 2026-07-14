@@ -12,6 +12,28 @@ public struct SeisAIWorkforceWriterPolicy: Codable, Equatable, Sendable {
     }
 }
 
+public struct SeisAIWorkforceLauncherEvidence: Codable, Equatable, Sendable {
+    public let command: String
+    public let observedDate: String
+    public let notes: [String]
+
+    public init(command: String, observedDate: String, notes: [String]) {
+        self.command = command
+        self.observedDate = observedDate
+        self.notes = notes
+    }
+
+    public var validationIssues: [String] {
+        var issues: [String] = []
+        if command.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { issues.append("launcher evidence command must not be empty") }
+        if observedDate.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { issues.append("launcher evidence observedDate must not be empty") }
+        if notes.isEmpty || notes.contains(where: { $0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) {
+            issues.append("launcher evidence notes must be non-empty")
+        }
+        return issues
+    }
+}
+
 public struct SeisAIWorkforceAssignment: Codable, Equatable, Identifiable, Sendable {
     public let id: String
     public let displayName: String
@@ -66,11 +88,37 @@ public enum SeisAIWorkforceAssignmentSnapshotError: Error, Equatable, Sendable {
 }
 
 public struct SeisAIWorkforceAssignmentSnapshot: Codable, Equatable, Sendable {
+    private static let expectedLauncherCommand = "npm run ai -- list"
+    private static let expectedLauncherObservedDate = "2026-06-23"
+    private static let expectedLauncherNotes = [
+        "The command checks local route readiness only.",
+        "No provider call, repository upload, secret read, or live model verification was performed.",
+        "Missing environment-variable status does not prove a credential does not exist outside the current shell.",
+    ]
+    private static let expectedTruthBoundary = "Workforce assignments are source-backed role and launcher metadata. Installed status is not live-model, authentication, provider-call, execution, or external-mutation evidence; Codex remains the only repository writer by default."
+    private static let allowedLauncherStatuses = Set([
+        "installed",
+        "route-defined-current-shell-missing-key",
+        "pr-dependent",
+        "remote-ci",
+        "route-defined-current-shell-missing-command",
+    ])
+    private static let requiredApprovalClaims = [
+        "push to main",
+        "merge",
+        "deployment",
+        "SSH command execution",
+        "paid or live provider smoke tests",
+    ]
+
     public let id: String
     public let version: String
     public let status: String
     public let purpose: String
     public let writerPolicy: SeisAIWorkforceWriterPolicy
+    public let currentLauncherEvidence: SeisAIWorkforceLauncherEvidence
+    public let truthBoundary: String
+    public let approvalRequiredFor: [String]
     public let assignments: [SeisAIWorkforceAssignment]
 
     public init(
@@ -79,6 +127,9 @@ public struct SeisAIWorkforceAssignmentSnapshot: Codable, Equatable, Sendable {
         status: String,
         purpose: String,
         writerPolicy: SeisAIWorkforceWriterPolicy,
+        currentLauncherEvidence: SeisAIWorkforceLauncherEvidence,
+        truthBoundary: String,
+        approvalRequiredFor: [String],
         assignments: [SeisAIWorkforceAssignment]
     ) {
         self.id = id
@@ -86,6 +137,9 @@ public struct SeisAIWorkforceAssignmentSnapshot: Codable, Equatable, Sendable {
         self.status = status
         self.purpose = purpose
         self.writerPolicy = writerPolicy
+        self.currentLauncherEvidence = currentLauncherEvidence
+        self.truthBoundary = truthBoundary
+        self.approvalRequiredFor = approvalRequiredFor
         self.assignments = assignments
     }
 
@@ -105,12 +159,20 @@ public struct SeisAIWorkforceAssignmentSnapshot: Codable, Equatable, Sendable {
         var issues: [String] = []
         if id != "seis-ai-workforce-assignments" { issues.append("workforce snapshot id must identify the canonical assignment registry") }
         if version.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { issues.append("workforce snapshot version must not be empty") }
-        if status.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { issues.append("workforce snapshot status must not be empty") }
+        if status != "documented" { issues.append("workforce snapshot status must remain documented") }
         if purpose.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { issues.append("workforce snapshot purpose must not be empty") }
         if writerPolicy.primaryWriter != "codex" { issues.append("workforce writer policy must keep Codex as primary writer") }
         if writerPolicy.rule.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { issues.append("workforce writer policy rule must not be empty") }
         if writerPolicy.handoffRequirement.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { issues.append("workforce handoff requirement must not be empty") }
-        if assignments.isEmpty { issues.append("workforce assignments must not be empty") }
+        if assignments.count != 10 { issues.append("workforce assignments must expose exactly ten roles") }
+        issues.append(contentsOf: currentLauncherEvidence.validationIssues)
+        if currentLauncherEvidence.command != Self.expectedLauncherCommand { issues.append("launcher evidence command must remain local-readiness-only") }
+        if currentLauncherEvidence.observedDate != Self.expectedLauncherObservedDate { issues.append("launcher evidence observedDate must match the recorded local check") }
+        if currentLauncherEvidence.notes != Self.expectedLauncherNotes { issues.append("launcher evidence notes must remain local-readiness-only") }
+        if truthBoundary != Self.expectedTruthBoundary { issues.append("workforce truth boundary must remain source-backed and metadata-only") }
+        if approvalRequiredFor.isEmpty || Self.requiredApprovalClaims.contains(where: { !approvalRequiredFor.contains($0) }) {
+            issues.append("workforce approvalRequiredFor must include mutation and live-provider gates")
+        }
 
         let duplicateIDs = assignments
             .reduce(into: [String: Int]()) { counts, assignment in counts[assignment.id, default: 0] += 1 }
@@ -118,8 +180,13 @@ public struct SeisAIWorkforceAssignmentSnapshot: Codable, Equatable, Sendable {
             .map(\.key)
             .sorted()
         if !duplicateIDs.isEmpty { issues.append("duplicate workforce assignment IDs: \(duplicateIDs.joined(separator: ", "))") }
-        for assignment in assignments where !assignment.validationIssues.isEmpty {
-            issues.append(contentsOf: assignment.validationIssues.map { "\(assignment.id): \($0)" })
+        for assignment in assignments {
+            if !assignment.validationIssues.isEmpty {
+                issues.append(contentsOf: assignment.validationIssues.map { "\(assignment.id): \($0)" })
+            }
+            if !Self.allowedLauncherStatuses.contains(assignment.launcherStatus) {
+                issues.append("\(assignment.id): launcherStatus is not allowlisted")
+            }
         }
         return issues
     }

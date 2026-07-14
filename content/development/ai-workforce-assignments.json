@@ -13,6 +13,7 @@
       "Missing environment-variable status does not prove a credential does not exist outside the current shell."
     ]
   },
+  "truthBoundary": "Workforce assignments are source-backed role and launcher metadata. Installed status is not live-model, authentication, provider-call, execution, or external-mutation evidence; Codex remains the only repository writer by default.",
   "writerPolicy": {
     "primaryWriter": "codex",
     "rule": "Exactly one assistant may hold writer role for a change package. Other assistants provide scoped review, research, design, or contradiction analysis unless explicitly handed off.",

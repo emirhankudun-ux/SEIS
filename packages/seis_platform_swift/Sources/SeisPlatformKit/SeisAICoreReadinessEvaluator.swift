@@ -238,7 +238,7 @@ public struct SeisAICoreReadinessEvaluator: Sendable {
                 id: "installed-ai-workforce",
                 title: "Installed AI workforce registry",
                 passed: workforceSnapshot?.isMetadataOnly == true && workforceSnapshot?.assignments.count == 10,
-                evidence: "Ten source-backed AI/tool assignments are visible as metadata-only roles; Codex remains the primary writer and other roles do not gain direct execution authority."
+                evidence: "Ten source-backed AI/tool assignments include local launcher evidence, approval requirements, and an explicit truth boundary; Codex remains the primary writer and other roles do not gain direct execution authority."
             ),
             SeisAICoreReadinessCheck(
                 id: "installed-capability-inventory",

@@ -11,6 +11,11 @@ struct SeisAIWorkforceAssignmentSnapshotTests {
         #expect(snapshot.isMetadataOnly)
         #expect(snapshot.assignments.count == 10)
         #expect(snapshot.writerPolicy.primaryWriter == "codex")
+        #expect(snapshot.currentLauncherEvidence.command == "npm run ai -- list")
+        #expect(snapshot.currentLauncherEvidence.observedDate == "2026-06-23")
+        #expect(snapshot.currentLauncherEvidence.notes.count == 3)
+        #expect(snapshot.truthBoundary.contains("not live-model"))
+        #expect(snapshot.approvalRequiredFor.contains("merge"))
         #expect(snapshot.assignments.contains { $0.id == "claude" && $0.launcherStatus.contains("missing-key") })
         #expect(snapshot.assignments.contains { $0.id == "ollama" && $0.launcherStatus == "installed" })
         #expect(snapshot.assignments.contains { $0.id == "kimi" })
@@ -39,11 +44,20 @@ struct SeisAIWorkforceAssignmentSnapshotTests {
                 rule: "one writer",
                 handoffRequirement: "review"
             ),
+            currentLauncherEvidence: SeisAIWorkforceLauncherEvidence(
+                command: "live-provider-call",
+                observedDate: "2026-06-23",
+                notes: ["unsafe"]
+            ),
+            truthBoundary: "Live autonomous execution enabled.",
+            approvalRequiredFor: ["merge"],
             assignments: [assignment, assignment]
         )
 
         #expect(!snapshot.isValid)
         #expect(snapshot.validationIssues.contains("duplicate workforce assignment IDs: duplicate"))
+        #expect(snapshot.validationIssues.contains("workforce truth boundary must remain source-backed and metadata-only"))
+        #expect(snapshot.validationIssues.contains("launcher evidence command must remain local-readiness-only"))
     }
 
     private func assignmentData() throws -> Data {

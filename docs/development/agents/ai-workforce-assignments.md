@@ -107,6 +107,11 @@ Before an assistant output becomes repository direction, it needs one of:
 - review note accepted by Codex with a concrete file/path change
 - CI check output after a PR exists
 
+The source contract also records the exact local launcher command/date/notes and
+the metadata-only truth boundary. Any drift in those fields fails validation;
+they do not prove provider authentication, live model access, execution, or
+external mutation.
+
 Provider availability, installed CLI routes, and API keys are not evidence that
 an integration is live, safe, or production-ready.
 

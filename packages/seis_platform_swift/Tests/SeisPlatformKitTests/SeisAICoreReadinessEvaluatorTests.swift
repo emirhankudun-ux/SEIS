@@ -123,6 +123,7 @@ struct SeisAICoreReadinessEvaluatorTests {
         #expect(report.passedCount == 55)
         #expect(report.failedCount == 0)
         #expect(report.checks.first { $0.id == "plugin-mcp-safe-probes" }?.evidence.contains("6/6 local servers") == true)
+        #expect(report.checks.first { $0.id == "installed-ai-workforce" }?.evidence.contains("launcher evidence") == true)
         #expect(report.truthBoundary.contains("not proof of live provider access"))
     }
 

@@ -39,6 +39,23 @@ const forbiddenApprovalGates = [
   "model training",
   "dataset download"
 ];
+const expectedTruthBoundary = "Workforce assignments are source-backed role and launcher metadata. Installed status is not live-model, authentication, provider-call, execution, or external-mutation evidence; Codex remains the only repository writer by default.";
+const expectedLauncherEvidence = {
+  command: "npm run ai -- list",
+  observedDate: "2026-06-23",
+  notes: [
+    "The command checks local route readiness only.",
+    "No provider call, repository upload, secret read, or live model verification was performed.",
+    "Missing environment-variable status does not prove a credential does not exist outside the current shell."
+  ]
+};
+const allowedLauncherStatuses = new Set([
+  "installed",
+  "route-defined-current-shell-missing-key",
+  "pr-dependent",
+  "remote-ci",
+  "route-defined-current-shell-missing-command"
+]);
 
 ensureFile(contractPath, "AI workforce assignment contract");
 ensureFile(docsPath, "AI workforce assignment docs");
@@ -52,6 +69,13 @@ if (contract) {
   ensure(
     contract.qualityGate === "node scripts/check-ai-workforce-assignments.mjs",
     "contract qualityGate must point to this validator"
+  );
+  ensure(contract.truthBoundary === expectedTruthBoundary, "truthBoundary must remain source-backed and metadata-only");
+  ensure(
+    contract.currentLauncherEvidence?.command === expectedLauncherEvidence.command &&
+      contract.currentLauncherEvidence?.observedDate === expectedLauncherEvidence.observedDate &&
+      JSON.stringify(contract.currentLauncherEvidence?.notes) === JSON.stringify(expectedLauncherEvidence.notes),
+    "currentLauncherEvidence must remain local-readiness-only"
   );
   ensure(contract.writerPolicy?.primaryWriter === "codex", "Codex must remain the primary writer");
   ensure(
@@ -88,6 +112,7 @@ if (contract) {
   }
 
   ensure(Array.isArray(contract.assignments), "contract.assignments must be an array");
+  ensure(contract.assignments?.length === requiredAssignments.length, "contract.assignments must expose exactly ten assignments");
   const assignments = new Map((contract.assignments || []).map((assignment) => [assignment.id, assignment]));
   for (const assignmentId of requiredAssignments) {
     const assignment = assignments.get(assignmentId);
@@ -96,6 +121,7 @@ if (contract) {
     ensureNonEmptyString(assignment.displayName, `${assignmentId}.displayName`);
     ensureNonEmptyString(assignment.route, `${assignmentId}.route`);
     ensureNonEmptyString(assignment.launcherStatus, `${assignmentId}.launcherStatus`);
+    ensure(allowedLauncherStatuses.has(assignment.launcherStatus), `${assignmentId}.launcherStatus must be allowlisted`);
     ensureNonEmptyString(assignment.category, `${assignmentId}.category`);
     ensureArrayWithMinimum(assignment.coreDuties, 2, `${assignmentId}.coreDuties`);
     ensureArrayWithMinimum(assignment.allowedOutputs, 1, `${assignmentId}.allowedOutputs`);

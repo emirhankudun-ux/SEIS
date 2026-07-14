@@ -508,6 +508,9 @@ function buildWorkforceAssignmentRegistry(source) {
       typeof writerPolicy.handoffRequirement !== "string" || writerPolicy.handoffRequirement.trim().length === 0) {
     throw new Error("SEIS AI workforce assignment registry must keep Codex as the primary writer");
   }
+  if (source.truthBoundary !== EXPECTED_AI_WORKFORCE_TRUTH_BOUNDARY) {
+    throw new Error("SEIS AI workforce assignment registry truth boundary is incomplete");
+  }
 
   const assignments = Array.isArray(source.assignments) ? source.assignments : [];
   if (assignments.length !== 10) {

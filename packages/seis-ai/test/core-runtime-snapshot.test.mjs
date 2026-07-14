@@ -69,6 +69,10 @@ describe("SEIS AI Core runtime snapshot", () => {
     assert.equal(snapshot.workforceAssignmentRegistry.writerPolicy.primaryWriter, "codex");
     assert.equal(snapshot.workforceAssignmentRegistry.assignments.length, 10);
     assert.equal(snapshot.workforceAssignmentRegistry.workflow.length, 10);
+    assert.equal(snapshot.workforceAssignmentRegistry.launcherEvidence.command, "npm run ai -- list");
+    assert.equal(snapshot.workforceAssignmentRegistry.launcherEvidence.observedDate, "2026-06-23");
+    assert.ok(snapshot.workforceAssignmentRegistry.approvalRequiredFor.includes("merge"));
+    assert.match(snapshot.workforceAssignmentRegistry.truthBoundary, /not live-model/);
     assert.equal(snapshot.workforceAssignmentRegistry.runtimeBoundary.executionAuthority, false);
     assert.equal(snapshot.workforceAssignmentRegistry.runtimeBoundary.providerCalls, false);
     assert.equal(snapshot.workforceAssignmentRegistry.runtimeBoundary.credentialsRead, false);
