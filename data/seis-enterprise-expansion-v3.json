@@ -1,0 +1,306 @@
+{
+  "schema_version": 1,
+  "id": "seis-enterprise-expansion-v3",
+  "title": "SEIS Enterprise Expansion V3",
+  "status": "active",
+  "maturity": "specification",
+  "project": "seis",
+  "related_goal_id": "SEIS-GOAL-003",
+  "owner": "lead-architect / governance",
+  "security_classification": "public-safe",
+  "privacy_impact": "none",
+  "source_of_truth": "AGENTS.md, project.ecosystem.yaml, and this registry",
+  "registry_path": "data/seis-enterprise-expansion-v3.json",
+  "schema_path": "schemas/seis-enterprise-expansion-v3.schema.json",
+  "documentation_path": "docs/governance/seis-enterprise-expansion-v3.md",
+  "validation_command": "npm run check:seis-enterprise-expansion-v3",
+  "lifecycle_states": [
+    "specified",
+    "planned",
+    "active",
+    "blocked",
+    "completed",
+    "unavailable",
+    "deprecated"
+  ],
+  "principles": [
+    "Registry presence is not implementation evidence.",
+    "Every capability has one owner, explicit boundaries, validation, risk, and rollback.",
+    "Unverified providers, plugins, MCP servers, models, deployments, and background agents remain unclaimed.",
+    "Architecture, knowledge, security, maintainability, accessibility, performance, human experience, and sustainability are co-equal constraints.",
+    "The long-term roadmap does not imply hidden background execution."
+  ],
+  "domains": [
+    {
+      "id": "architecture-governance",
+      "title": "Universal Architecture Governance",
+      "status": "specified",
+      "terms": [
+        {"id": "architecture-registry", "label": "Architecture Registry", "status": "specified"},
+        {"id": "architecture-graph", "label": "Architecture Graph", "status": "specified"},
+        {"id": "architecture-ownership", "label": "Architecture Ownership", "status": "specified"},
+        {"id": "architecture-validation", "label": "Architecture Validation", "status": "specified"},
+        {"id": "architecture-evolution", "label": "Architecture Evolution", "status": "specified"},
+        {"id": "architecture-compatibility", "label": "Architecture Compatibility", "status": "specified"},
+        {"id": "architecture-metrics", "label": "Architecture Metrics", "status": "specified"},
+        {"id": "architecture-risk", "label": "Architecture Risk", "status": "specified"},
+        {"id": "architecture-decisions", "label": "Architecture Decisions", "status": "specified"},
+        {"id": "architecture-review", "label": "Architecture Review", "status": "specified"}
+      ],
+      "required_evidence": [
+        "canonical owner repository",
+        "dependency direction",
+        "compatibility constraints",
+        "validation command",
+        "rollback or migration decision"
+      ]
+    },
+    {
+      "id": "execution-engine",
+      "title": "Universal Execution Engine",
+      "status": "specified",
+      "terms": [
+        {"id": "execution-context", "label": "Execution Context", "status": "specified"},
+        {"id": "execution-scope", "label": "Execution Scope", "status": "specified"},
+        {"id": "execution-boundary", "label": "Execution Boundary", "status": "specified"},
+        {"id": "execution-policy", "label": "Execution Policy", "status": "specified"},
+        {"id": "execution-strategy", "label": "Execution Strategy", "status": "specified"},
+        {"id": "execution-evidence", "label": "Execution Evidence", "status": "specified"},
+        {"id": "execution-timeline", "label": "Execution Timeline", "status": "specified"},
+        {"id": "execution-state", "label": "Execution State", "status": "specified"},
+        {"id": "execution-audit", "label": "Execution Audit", "status": "specified"},
+        {"id": "execution-rollback", "label": "Execution Rollback", "status": "specified"},
+        {"id": "execution-replay", "label": "Execution Replay", "status": "specified"},
+        {"id": "execution-history", "label": "Execution History", "status": "specified"},
+        {"id": "execution-metrics", "label": "Execution Metrics", "status": "specified"},
+        {"id": "execution-optimization", "label": "Execution Optimization", "status": "specified"}
+      ],
+      "required_evidence": [
+        "scoped task record",
+        "execution state transition",
+        "exact command output",
+        "failure or skip record",
+        "replay or rollback boundary"
+      ]
+    },
+    {
+      "id": "validation-matrix",
+      "title": "Universal Validation Matrix",
+      "status": "specified",
+      "terms": [
+        {"id": "syntax-validation", "label": "Syntax Validation", "status": "specified"},
+        {"id": "schema-validation", "label": "Schema Validation", "status": "specified"},
+        {"id": "contract-validation", "label": "Contract Validation", "status": "specified"},
+        {"id": "dependency-validation", "label": "Dependency Validation", "status": "specified"},
+        {"id": "repository-validation", "label": "Repository Validation", "status": "specified"},
+        {"id": "goal-validation", "label": "Goal Validation", "status": "specified"},
+        {"id": "security-validation", "label": "Security Validation", "status": "specified"},
+        {"id": "performance-validation", "label": "Performance Validation", "status": "specified"},
+        {"id": "accessibility-validation", "label": "Accessibility Validation", "status": "specified"},
+        {"id": "localization-validation", "label": "Localization Validation", "status": "specified"},
+        {"id": "storage-validation", "label": "Storage Validation", "status": "specified"},
+        {"id": "database-validation", "label": "Database Validation", "status": "specified"},
+        {"id": "workflow-validation", "label": "Workflow Validation", "status": "specified"},
+        {"id": "plugin-validation", "label": "Plugin Validation", "status": "specified"},
+        {"id": "mcp-validation", "label": "MCP Validation", "status": "specified"},
+        {"id": "provider-validation", "label": "Provider Validation", "status": "specified"},
+        {"id": "model-validation", "label": "Model Validation", "status": "specified"},
+        {"id": "ai-validation", "label": "AI Validation", "status": "specified"},
+        {"id": "design-validation", "label": "Design Validation", "status": "specified"},
+        {"id": "build-validation", "label": "Build Validation", "status": "specified"},
+        {"id": "release-validation", "label": "Release Validation", "status": "specified"},
+        {"id": "rollback-validation", "label": "Rollback Validation", "status": "specified"}
+      ],
+      "required_evidence": [
+        "command or review method",
+        "success condition",
+        "scope limitation",
+        "failed or skipped result"
+      ]
+    },
+    {
+      "id": "observability",
+      "title": "Universal Observability",
+      "status": "specified",
+      "terms": [
+        {"id": "metrics", "label": "Metrics", "status": "specified"},
+        {"id": "tracing", "label": "Tracing", "status": "specified"},
+        {"id": "logging", "label": "Logging", "status": "specified"},
+        {"id": "events", "label": "Events", "status": "specified"},
+        {"id": "audit-trails", "label": "Audit Trails", "status": "specified"},
+        {"id": "repository-timeline", "label": "Repository Timeline", "status": "specified"},
+        {"id": "agent-timeline", "label": "Agent Timeline", "status": "specified"},
+        {"id": "workflow-timeline", "label": "Workflow Timeline", "status": "specified"},
+        {"id": "goal-timeline", "label": "Goal Timeline", "status": "specified"},
+        {"id": "knowledge-timeline", "label": "Knowledge Timeline", "status": "specified"},
+        {"id": "model-timeline", "label": "Model Timeline", "status": "specified"},
+        {"id": "plugin-timeline", "label": "Plugin Timeline", "status": "specified"},
+        {"id": "security-timeline", "label": "Security Timeline", "status": "specified"},
+        {"id": "architecture-timeline", "label": "Architecture Timeline", "status": "specified"}
+      ],
+      "required_evidence": [
+        "event source",
+        "timestamp or ordering rule",
+        "privacy classification",
+        "retention and rollback policy"
+      ]
+    },
+    {
+      "id": "design-governance",
+      "title": "Universal Design Governance",
+      "status": "specified",
+      "terms": [
+        {"id": "design-language", "label": "Design Language", "status": "specified"},
+        {"id": "component-ownership", "label": "Component Ownership", "status": "specified"},
+        {"id": "design-tokens", "label": "Design Tokens", "status": "specified"},
+        {"id": "spacing-tokens", "label": "Spacing Tokens", "status": "specified"},
+        {"id": "typography-tokens", "label": "Typography Tokens", "status": "specified"},
+        {"id": "motion-tokens", "label": "Motion Tokens", "status": "specified"},
+        {"id": "icon-registry", "label": "Icon Registry", "status": "specified"},
+        {"id": "illustration-registry", "label": "Illustration Registry", "status": "specified"},
+        {"id": "asset-registry", "label": "Asset Registry", "status": "specified"},
+        {"id": "theme-registry", "label": "Theme Registry", "status": "specified"},
+        {"id": "brand-registry", "label": "Brand Registry", "status": "specified"},
+        {"id": "accessibility-rules", "label": "Accessibility Rules", "status": "specified"},
+        {"id": "platform-guidelines", "label": "Platform Guidelines", "status": "specified"},
+        {"id": "visual-consistency", "label": "Visual Consistency", "status": "specified"}
+      ],
+      "required_evidence": [
+        "token or component source",
+        "canonical owner",
+        "accessibility review",
+        "platform impact",
+        "visual regression or review evidence where applicable"
+      ]
+    },
+    {
+      "id": "ai-governance",
+      "title": "Universal AI Governance",
+      "status": "specified",
+      "terms": [
+        {"id": "reasoning-policy", "label": "Reasoning Policy", "status": "specified"},
+        {"id": "prompt-policy", "label": "Prompt Policy", "status": "specified"},
+        {"id": "context-policy", "label": "Context Policy", "status": "specified"},
+        {"id": "memory-policy", "label": "Memory Policy", "status": "specified"},
+        {"id": "knowledge-policy", "label": "Knowledge Policy", "status": "specified"},
+        {"id": "routing-policy", "label": "Routing Policy", "status": "specified"},
+        {"id": "safety-policy", "label": "Safety Policy", "status": "specified"},
+        {"id": "evaluation-policy", "label": "Evaluation Policy", "status": "specified"},
+        {"id": "model-policy", "label": "Model Policy", "status": "specified"},
+        {"id": "provider-policy", "label": "Provider Policy", "status": "specified"},
+        {"id": "autonomy-policy", "label": "Autonomy Policy", "status": "specified"},
+        {"id": "approval-policy", "label": "Approval Policy", "status": "specified"},
+        {"id": "human-review-policy", "label": "Human Review Policy", "status": "specified"},
+        {"id": "audit-policy", "label": "Audit Policy", "status": "specified"}
+      ],
+      "required_evidence": [
+        "provider and model state",
+        "permission boundary",
+        "evaluation result",
+        "human approval requirement",
+        "audit event or explicit unavailable state"
+      ]
+    },
+    {
+      "id": "knowledge-graph",
+      "title": "Universal Knowledge Graph",
+      "status": "specified",
+      "terms": [
+        {"id": "projects", "label": "Projects", "status": "specified"},
+        {"id": "repositories", "label": "Repositories", "status": "specified"},
+        {"id": "goals", "label": "Goals", "status": "specified"},
+        {"id": "tasks", "label": "Tasks", "status": "specified"},
+        {"id": "agents", "label": "Agents", "status": "specified"},
+        {"id": "models", "label": "Models", "status": "specified"},
+        {"id": "providers", "label": "Providers", "status": "specified"},
+        {"id": "workflows", "label": "Workflows", "status": "specified"},
+        {"id": "plugins", "label": "Plugins", "status": "specified"},
+        {"id": "mcp-servers", "label": "MCP Servers", "status": "specified"},
+        {"id": "datasets", "label": "Datasets", "status": "specified"},
+        {"id": "assets", "label": "Assets", "status": "specified"},
+        {"id": "templates", "label": "Templates", "status": "specified"},
+        {"id": "design-systems", "label": "Design Systems", "status": "specified"},
+        {"id": "architectures", "label": "Architectures", "status": "specified"},
+        {"id": "policies", "label": "Policies", "status": "specified"},
+        {"id": "evidence", "label": "Evidence", "status": "specified"},
+        {"id": "validation", "label": "Validation", "status": "specified"},
+        {"id": "research", "label": "Research", "status": "specified"},
+        {"id": "technology", "label": "Technology", "status": "specified"}
+      ],
+      "node_required_fields": [
+        "relationships",
+        "dependencies",
+        "version_history",
+        "ownership",
+        "confidence",
+        "evidence",
+        "references",
+        "risk",
+        "lifecycle"
+      ],
+      "required_evidence": [
+        "stable node id",
+        "ownership record",
+        "relationship references",
+        "confidence and evidence",
+        "lifecycle state"
+      ]
+    },
+    {
+      "id": "long-term-evolution",
+      "title": "Long Term Evolution",
+      "status": "specified",
+      "terms": [
+        {"id": "horizon-1-month", "label": "1 Month", "status": "specified"},
+        {"id": "horizon-3-months", "label": "3 Months", "status": "specified"},
+        {"id": "horizon-6-months", "label": "6 Months", "status": "specified"},
+        {"id": "horizon-12-months", "label": "12 Months", "status": "specified"},
+        {"id": "horizon-24-months", "label": "24 Months", "status": "specified"},
+        {"id": "horizon-36-months", "label": "36 Months", "status": "specified"},
+        {"id": "horizon-60-months", "label": "60 Months", "status": "specified"},
+        {"id": "horizon-10-years", "label": "10 Years", "status": "specified"},
+        {"id": "technology-forecast", "label": "Technology Forecast", "status": "specified"},
+        {"id": "architecture-forecast", "label": "Architecture Forecast", "status": "specified"},
+        {"id": "ai-forecast", "label": "AI Forecast", "status": "specified"},
+        {"id": "platform-forecast", "label": "Platform Forecast", "status": "specified"},
+        {"id": "research-forecast", "label": "Research Forecast", "status": "specified"},
+        {"id": "innovation-forecast", "label": "Innovation Forecast", "status": "specified"},
+        {"id": "civilization-forecast", "label": "Civilization Forecast", "status": "specified"}
+      ],
+      "horizons": ["1 Month", "3 Months", "6 Months", "12 Months", "24 Months", "36 Months", "60 Months", "10 Years"],
+      "forecasts": ["Technology Forecast", "Architecture Forecast", "AI Forecast", "Platform Forecast", "Research Forecast", "Innovation Forecast", "Civilization Forecast"],
+      "required_evidence": [
+        "dated horizon owner",
+        "dependency and assumption record",
+        "forecast confidence",
+        "review cadence",
+        "retirement or revision rule"
+      ]
+    }
+  ],
+  "universal_node_contract": {
+    "required_fields": [
+      "relationships",
+      "dependencies",
+      "version_history",
+      "ownership",
+      "confidence",
+      "evidence",
+      "references",
+      "risk",
+      "lifecycle"
+    ],
+    "completion_rule": "A node is not complete until each required field is either evidenced or explicitly marked unavailable with an unblock condition."
+  },
+  "implementation_boundary": {
+    "registry_status_means": "The term is named, scoped, owned, and ready for evidence-backed decomposition.",
+    "not_claimed": [
+      "production implementation of every listed term",
+      "live observability or timeline ingestion",
+      "live knowledge graph synchronization",
+      "live provider, model, plugin, or MCP execution",
+      "background agent execution",
+      "enterprise release readiness"
+    ]
+  }
+}

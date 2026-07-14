@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "seis-goal-validation-steps",
-  "updated": "2026-06-22",
+  "updated": "2026-07-14",
   "mode": "non_llm_goal_validation_steps",
   "steps": [
     {
@@ -55,6 +55,19 @@
       "related_paths": ["data/seis-goal-tracking-update-prompt.json", "docs/governance/seis-goal-tracking-update-prompt.md", "schemas/seis-goal-tracking-update.schema.json", "scripts/check-seis-goal-tracking-update-prompt.mjs"],
       "success_condition": "The prompt contract stays within the rendered character limit, references existing sources, defines eight ordered chunks, rejects padding, and exposes all proposal schema fields without secret-shaped values.",
       "next_action": "Run before each canonical Goal Tracking update that uses the prompt package."
+    },
+    {
+      "id": "SEIS-VAL-005",
+      "title": "Validate SEIS Enterprise Expansion V3 registry",
+      "status": "active",
+      "priority": "P0 critical",
+      "command": "npm run check:seis-enterprise-expansion-v3",
+      "owner_role": "Program System",
+      "supports_goal_ids": ["SEIS-GOAL-003"],
+      "evidence_ids": ["SEIS-EVID-015"],
+      "related_paths": ["data/seis-enterprise-expansion-v3.json", "schemas/seis-enterprise-expansion-v3.schema.json", "docs/governance/seis-enterprise-expansion-v3.md", "scripts/check-seis-enterprise-expansion-v3.mjs", "project.ecosystem.yaml"],
+      "success_condition": "The registry contains the exact eight-domain Enterprise Expansion V3 term sets, nine universal node fields, eight long-term horizons, seven forecast lanes, active Goal link, public-safe metadata, and explicit implementation non-claims.",
+      "next_action": "Run before each Enterprise Expansion V3 governance update and before decomposing any term into implementation work."
     }
   ]
 }

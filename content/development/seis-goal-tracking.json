@@ -149,10 +149,12 @@
       "status": "active",
       "owner_role": "Program System",
       "target_phase": "foundation",
-      "related_docs": [
-        "docs/goals/goal-tracking-system.md",
-        "docs/goals/goal-schema.md",
-        "docs/governance/seis-goal-tracking-update-prompt.md"
+    "related_docs": [
+      "docs/goals/goal-tracking-system.md",
+      "docs/goals/goal-schema.md",
+      "docs/governance/seis-goal-tracking-update-prompt.md",
+      "docs/governance/seis-enterprise-expansion-v3.md",
+      "docs/goals/goal-tracking.md"
       ],
       "related_files": [
         "content/development/seis-goal-tracking.json",
@@ -161,9 +163,16 @@
         "content/development/seis-goal-validation-steps.json",
         "content/development/seis-goal-roadmap-links.json",
         "data/seis-goal-tracking-update-prompt.json",
-        "schemas/seis-goal-tracking-update.schema.json",
-        "scripts/check-seis-goal-tracking-update-prompt.mjs",
-        "reports/seis-goal-tracking-update-proposal-20260714.json"
+      "schemas/seis-goal-tracking-update.schema.json",
+      "scripts/check-seis-goal-tracking-update-prompt.mjs",
+      "reports/seis-goal-tracking-update-proposal-20260714.json",
+      "data/seis-enterprise-expansion-v3.json",
+      "schemas/seis-enterprise-expansion-v3.schema.json",
+      "scripts/check-seis-enterprise-expansion-v3.mjs",
+      "project.ecosystem.yaml",
+      "content/development/seis-goal-command-center-view.json",
+      "apps/web/goal-tracking.html",
+      "package.json"
       ],
       "dependencies": [
         "Repository docs"
@@ -186,9 +195,10 @@
       "related_epic": "SEIS-EPIC-001",
       "last_reviewed": "2026-07-14",
       "review_cadence": "weekly",
-      "notes": [
-        "User-approved bounded Goal Tracking Update Orchestrator prompt package added on 2026-07-14.",
-        "The five-million-character request is modeled as an aggregate context ceiling; no filler, live provider claim, or automatic completion claim is allowed."
+    "notes": [
+      "User-approved bounded Goal Tracking Update Orchestrator prompt package added on 2026-07-14.",
+      "The five-million-character request is modeled as an aggregate context ceiling; no filler, live provider claim, or automatic completion claim is allowed.",
+      "SEIS Enterprise Expansion V3 is registered as a specification-only governance surface. Each term requires a separate evidence-backed implementation goal before production status can be claimed."
       ]
     },
     {

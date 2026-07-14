@@ -26,21 +26,22 @@
       "blocked": 3
     },
     "totalCategories": 20,
-    "totalEvidenceRecords": 14,
+    "totalEvidenceRecords": 15,
     "evidenceByStatus": {
       "passed": 13,
-      "blocked": 1
+      "blocked": 1,
+      "active": 1
     },
-    "totalTasks": 4,
+    "totalTasks": 5,
     "tasksByStatus": {
-      "active": 3,
+      "active": 4,
       "blocked": 1
     },
     "totalBlockers": 2,
     "blockersByStatus": {
       "active": 2
     },
-    "totalDecisions": 3,
+    "totalDecisions": 4,
     "totalReviewRecords": 3,
     "reviewRecordsByStatus": {
       "planned": 3
@@ -110,9 +111,9 @@
       "high": 1,
       "medium": 2
     },
-    "totalValidationSteps": 4,
+    "totalValidationSteps": 5,
     "validationStepsByStatus": {
-      "active": 4
+      "active": 5
     },
     "totalRoadmapLinks": 20,
     "roadmapLinksByStatus": {
@@ -165,13 +166,13 @@
     {
       "id": "evidence",
       "label": "Evidence",
-      "value": 14,
+      "value": 15,
       "description": "Evidence records with limitations and next actions."
     },
     {
       "id": "tasks",
       "label": "Tasks",
-      "value": 4,
+      "value": 5,
       "description": "Execution tasks tied to goals and evidence."
     },
     {
@@ -243,7 +244,7 @@
     {
       "id": "validation",
       "label": "Validation Steps",
-      "value": 4,
+      "value": 5,
       "description": "Scoped checks with success conditions."
     },
     {
@@ -324,7 +325,8 @@
         "reviewCadence": "weekly",
         "notes": [
           "User-approved bounded Goal Tracking Update Orchestrator prompt package added on 2026-07-14.",
-          "The five-million-character request is modeled as an aggregate context ceiling; no filler, live provider claim, or automatic completion claim is allowed."
+          "The five-million-character request is modeled as an aggregate context ceiling; no filler, live provider claim, or automatic completion claim is allowed.",
+          "SEIS Enterprise Expansion V3 is registered as a specification-only governance surface. Each term requires a separate evidence-backed implementation goal before production status can be claimed."
         ],
         "evidenceLinks": [
           "docs/reviews/GOAL_TRACKING_REVIEW.md",
@@ -847,6 +849,20 @@
           "SEIS-EVID-014"
         ],
         "nextAction": "Emit a structured proposal, run both Goal Tracking validators, then update only evidence-backed canonical records."
+      },
+      {
+        "id": "SEIS-TASK-005",
+        "title": "Register SEIS Enterprise Expansion V3 governance surface",
+        "status": "active",
+        "priority": "P0 critical",
+        "ownerRole": "Program System",
+        "supportsGoalIds": [
+          "SEIS-GOAL-003"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-015"
+        ],
+        "nextAction": "Run the Enterprise Expansion validator and Goal Tracking checks, regenerate the Command Center view, then record the focused commit hash."
       }
     ],
     "blockedItems": [
@@ -1131,6 +1147,22 @@
           "Does not mark SEIS-GOAL-003 complete or resolve its pre-existing repository hygiene blocker."
         ],
         "nextAction": "Use the structured proposal schema and run the prompt and Goal Tracking validators before future canonical record updates."
+      },
+      {
+        "id": "SEIS-EVID-015",
+        "title": "SEIS Enterprise Expansion V3 registry validates",
+        "type": "validation",
+        "status": "active",
+        "supportsGoalIds": [
+          "SEIS-GOAL-003"
+        ],
+        "summary": "The Enterprise Expansion V3 brief is represented as an eight-domain, public-safe, specification-only registry with exact term sets, universal node fields, long-term horizons, forecast lanes, and explicit implementation non-claims.",
+        "limitations": [
+          "Does not implement every listed capability.",
+          "Does not run live observability, knowledge-graph synchronization, providers, models, plugins, MCP servers, background agents, deployment, or enterprise release operations.",
+          "Does not resolve the pre-existing repository hygiene blocker."
+        ],
+        "nextAction": "Run the Enterprise Expansion validator and Goal Tracking checks, regenerate the Command Center view, then record the focused commit hash."
       }
     ],
     "readinessConnections": [
@@ -1199,6 +1231,13 @@
         "status": "accepted",
         "decision": "Keep the rendered prompt bounded and load only source-linked chunks required by the selected goal.",
         "consequence": "Goal Tracking remains evidence-backed and maintainable without filler, duplicate source text, or inflated file counts."
+      },
+      {
+        "id": "SEIS-DEC-004",
+        "title": "Keep Enterprise Expansion V3 specification-only until implementation evidence exists",
+        "status": "accepted",
+        "decision": "Register all requested architecture, execution, validation, observability, design, AI, knowledge-graph, and long-term evolution terms with explicit ownership and evidence requirements, while preserving their specification maturity.",
+        "consequence": "The registry can guide decomposition without falsely claiming live implementation, provider/model/plugin/MCP execution, background agents, or enterprise release readiness."
       }
     ],
     "reviewCadence": [
@@ -1961,6 +2000,22 @@
         ],
         "successCondition": "The prompt contract stays within the rendered character limit, references existing sources, defines eight ordered chunks, rejects padding, and exposes all proposal schema fields without secret-shaped values.",
         "nextAction": "Run before each canonical Goal Tracking update that uses the prompt package."
+      },
+      {
+        "id": "SEIS-VAL-005",
+        "title": "Validate SEIS Enterprise Expansion V3 registry",
+        "status": "active",
+        "priority": "P0 critical",
+        "command": "npm run check:seis-enterprise-expansion-v3",
+        "ownerRole": "Program System",
+        "supportsGoalIds": [
+          "SEIS-GOAL-003"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-015"
+        ],
+        "successCondition": "The registry contains the exact eight-domain Enterprise Expansion V3 term sets, nine universal node fields, eight long-term horizons, seven forecast lanes, active Goal link, public-safe metadata, and explicit implementation non-claims.",
+        "nextAction": "Run before each Enterprise Expansion V3 governance update and before decomposing any term into implementation work."
       }
     ],
     "roadmapLinks": [
@@ -2024,7 +2079,7 @@
         "statusRefs": [
           "docs/STATUS.md#goal-tracking-os"
         ],
-        "nextAction": "Keep source records, structured prompt proposals, generated view, and both validators synchronized."
+        "nextAction": "Keep source records, Enterprise Expansion V3 registry, structured prompt proposals, generated view, and all validators synchronized."
       },
       {
         "id": "SEIS-ROADMAP-LINK-004",

@@ -40,6 +40,12 @@ Authority and source order:
 4. Read the canonical goal and evidence records named by the selected goal.
 5. Read linked architecture, security, AI, MCP, plugin, skill, and rollback
    documents only when the scope requires them.
+6. For SEIS-GOAL-003 governance work, read the Enterprise Expansion V3
+   registry and governance document. Treat Universal Architecture Governance,
+   Universal Execution Engine, Universal Validation Matrix, Universal
+   Observability, Universal Design Governance, Universal AI Governance,
+   Universal Knowledge Graph, and Long Term Evolution as specification-only
+   vocabulary unless separate implementation evidence exists.
 
 Hard rules:
 - Inspect git status, branch, remote, recent history, and the focused diff
@@ -115,8 +121,8 @@ public/private boundary. Use only terms supported by repository evidence.
 Output format:
 Return both a human-readable run summary and a machine-readable update proposal.
 The summary must contain Project, Goal ID, Goal Status, Scope, Completed,
-Changed Files, Validation Commands, Validation Results, Failed or Skipped
-Checks, Security Notes, Risks, Blockers, Rollback Plan, Next Recommended Goal,
+Changed Files, Validation Commands, Validation Results, Failed or Skipped Checks,
+Security Notes, Risks, Blockers, Rollback Plan, Next Recommended Goal,
 and Worktree Status. The proposal must validate against
 schemas/seis-goal-tracking-update.schema.json and contain update_id, goal_id,
 requested_by, owner_role, change_reason, scope, non_goals, affected_paths,

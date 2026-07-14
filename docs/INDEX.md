@@ -123,6 +123,8 @@ Date: 2026-06-23
 | --- | --- |
 | [goals/seis-vision.md](goals/seis-vision.md) | Long-term SEIS vision and guardrails. |
 | [goals/long-term-goals.md](goals/long-term-goals.md) | Strategic category goal matrix. |
+| [goals/goal-tracking.md](goals/goal-tracking.md) | Operational goal-tracking workflow, evidence rules, bounded prompt updates, and validation commands. |
+| [governance/seis-enterprise-expansion-v3.md](governance/seis-enterprise-expansion-v3.md) | Enterprise Expansion V3 architecture, execution, validation, observability, design, AI, knowledge, and long-term governance registry. |
 | [goals/goal-tracking-system.md](goals/goal-tracking-system.md) | Goal Tracking OS rules and storage model. |
 | [goals/seis-universe-omega-goal-system.md](goals/seis-universe-omega-goal-system.md) | SEIS Universe Omega 24-phase goal coverage record and validator. |
 | [goals/seis-universe-omega-phase-evidence.md](goals/seis-universe-omega-phase-evidence.md) | Phase 01, 02, 03, and 10 dependency, KPI, and success-metric evidence slice. |

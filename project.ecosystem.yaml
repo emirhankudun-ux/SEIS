@@ -52,8 +52,15 @@
   },
   "goal_tracking": {
     "canonical_registry": "content/development/seis-goal-tracking.json",
-    "active_goal_ids": ["SEIS-GOAL-001", "SEIS-GOAL-002"],
+    "active_goal_ids": ["SEIS-GOAL-001", "SEIS-GOAL-002", "SEIS-GOAL-003"],
     "evidence_policy": "commands-and-source-artifacts-required"
+  },
+  "enterprise_expansion": {
+    "registry": "data/seis-enterprise-expansion-v3.json",
+    "schema": "schemas/seis-enterprise-expansion-v3.schema.json",
+    "documentation": "docs/governance/seis-enterprise-expansion-v3.md",
+    "status": "specified",
+    "validation": "npm run check:seis-enterprise-expansion-v3"
   },
   "source_contracts": [
     "content/development/seis-ai-core-application-integration.json",
