@@ -4,11 +4,29 @@ public protocol SeisAILocalLoopbackHTTPClient: Sendable {
     func data(for request: URLRequest) async throws -> (Data, URLResponse)
 }
 
+private final class SeisAILocalLoopbackURLSessionDelegate: NSObject, URLSessionTaskDelegate, @unchecked Sendable {
+    func urlSession(
+        _ session: URLSession,
+        task: URLSessionTask,
+        willPerformHTTPRedirection response: HTTPURLResponse,
+        newRequest request: URLRequest,
+        completionHandler: @escaping (URLRequest?) -> Void
+    ) {
+        completionHandler(nil)
+    }
+}
+
 public struct SeisAIURLSessionHTTPClient: SeisAILocalLoopbackHTTPClient, Sendable {
     public init() {}
 
     public func data(for request: URLRequest) async throws -> (Data, URLResponse) {
-        try await URLSession.shared.data(for: request)
+        let session = URLSession(
+            configuration: .ephemeral,
+            delegate: SeisAILocalLoopbackURLSessionDelegate(),
+            delegateQueue: nil
+        )
+        defer { session.invalidateAndCancel() }
+        return try await session.data(for: request)
     }
 }
 
