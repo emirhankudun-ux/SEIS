@@ -23,6 +23,35 @@ public struct SeisFullStackServerBoundary: Codable, Equatable, Sendable {
     public let approvalRequiredFor: [String]
 }
 
+public struct SeisFullStackProviderEnvironmentValidation: Codable, Equatable, Sendable {
+    public let id: String
+    public let schemaVersion: String
+    public let source: String
+    public let mode: String
+    public let status: String
+    public let secretValuesReturned: Bool
+    public let secretValuesLogged: Bool
+    public let credentialAuthenticationPerformed: Bool
+    public let networkCalled: Bool
+    public let externalMutationPerformed: Bool
+    public let liveRoutingEnabled: Bool
+    public let statusBoundary: String
+
+    public var isSafe: Bool {
+        id == "seis-ai-core-provider-environment-validation" &&
+            schemaVersion == "1.0.0" &&
+            source == "packages/seis-ai/src/provider/provider-env-validation.mjs" &&
+            mode == "server-only-presence-and-shape" &&
+            secretValuesReturned == false &&
+            secretValuesLogged == false &&
+            credentialAuthenticationPerformed == false &&
+            networkCalled == false &&
+            externalMutationPerformed == false &&
+            liveRoutingEnabled == false &&
+            statusBoundary.contains("non-routable")
+    }
+}
+
 public struct SeisFullStackAuth: Codable, Equatable, Sendable {
     public let status: String
     public let provider: String
@@ -96,6 +125,7 @@ public struct SeisFullStackContractSnapshot: Codable, Equatable, Sendable {
     public let securityInvariants: [String]
     public let frontendState: SeisFullStackFrontendState
     public let serverBoundary: SeisFullStackServerBoundary
+    public let providerEnvironmentValidation: SeisFullStackProviderEnvironmentValidation
     public let publicEndpoints: [SeisFullStackEndpoint]
     public let session: SeisFullStackSession
     public let providerStatus: [SeisFullStackProviderStatus]
@@ -121,6 +151,7 @@ public struct SeisFullStackContractSnapshot: Codable, Equatable, Sendable {
         if !securityInvariants.contains("Core SEIS must start with zero cloud provider keys.") || !securityInvariants.contains("Provider secrets must never be stored in browser localStorage, IndexedDB, route config, static JSON, or frontend bundles.") || !securityInvariants.contains("Local Demo fallback must remain available when every optional provider key is missing.") { issues.append("full-stack security invariants are incomplete") }
         if !frontendState.forbiddenClientPersistence.contains("API keys") || !frontendState.forbiddenClientPersistence.contains("provider credentials") || !frontendState.fallbackContract.contains("without the server endpoints") { issues.append("full-stack client fallback or secret boundary is incomplete") }
         if serverBoundary.runtime != "node:http static server" || serverBoundary.dependencyPolicy != "no-new-dependencies-first" || serverBoundary.writePolicy != "read-only endpoints for first contract slice" || !serverBoundary.approvalRequiredFor.contains("live AI provider calls") || !serverBoundary.approvalRequiredFor.contains("SSH execution") || !serverBoundary.approvalRequiredFor.contains("deployment") { issues.append("full-stack server boundary is unsafe") }
+        if !providerEnvironmentValidation.isSafe { issues.append("full-stack provider environment validation boundary is unsafe") }
         let requiredRoutes = ["/_server/session", "/_server/capabilities", "/_server/projects", "/_server/app-installs", "/_server/provider-status", "/_server/audit-log", "/_server/agent-tasks", "/_server/fullstack-contract"]
         if publicEndpoints.count != requiredRoutes.count || Set(publicEndpoints.map(\.route)) != Set(requiredRoutes) || !publicEndpoints.allSatisfy(\.isReadOnlyLocalDemo) { issues.append("full-stack endpoint contract is incomplete or writable") }
         if session.sessionId != "local-demo-session" || session.userMode != "anonymous-local-demo" || session.privacyMode != "local-first" || session.auth.status != "planned" || session.auth.provider != "none" || !session.auth.approvalRequired || session.capabilitySummary["ssh"] != "disabled" || session.capabilitySummary["deployment"] != "disabled" { issues.append("full-stack session boundary is unsafe") }
