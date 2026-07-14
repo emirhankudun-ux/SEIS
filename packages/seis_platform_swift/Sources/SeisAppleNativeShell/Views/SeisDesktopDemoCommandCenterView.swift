@@ -348,7 +348,7 @@ struct SeisDesktopDemoCommandCenterView: View {
             titleVisibility: .visible
         ) {
             Button("Approve and Run gh auth login", role: .destructive) {
-                model.runGitHubAuthLogin()
+                model.runGitHubAuthLogin(approved: true)
             }
             Button("Cancel", role: .cancel) {}
         } message: {
@@ -488,7 +488,11 @@ final class SeisDesktopDemoCommandCenterModel: ObservableObject {
         runSingle(label: "Quality Gate", command: "npm run quality", source: "quality")
     }
 
-    func runGitHubAuthLogin() {
+    func runGitHubAuthLogin(approved: Bool) {
+        guard approved else {
+            statusMessage = "GitHub authentication requires explicit human approval; no command was run."
+            return
+        }
         runSingle(label: "GitHub Auth Login", command: "gh auth login", source: "github")
     }
 
