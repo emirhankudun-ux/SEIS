@@ -23,7 +23,7 @@ with `seis-`. Its supported discovery categories are:
 
 - explicitly configured plugin roots;
 - `$HOME/plugins`; and
-- the Codex personal plugin cache.
+- every readable version root in the Codex personal plugin cache.
 
 It is read-only. It validates manifests and portable source paths but never
 executes a legacy MCP server, invokes a provider, changes a personal

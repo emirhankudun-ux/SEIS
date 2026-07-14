@@ -120,10 +120,11 @@ Usage:
 Options:
   --include-legacy-personal
                Statically discover legacy personal SEIS sources from configured
-               roots, ~/plugins, and the Codex personal cache. Each discovered
-               source must have a public-safe repo counterpart; local source
-               code is never executed by this mode. The result reports only
-               package names and discovery-origin categories, never local paths.
+               roots, ~/plugins, and every readable Codex personal-cache version.
+               Each discovered source must have a public-safe repo counterpart;
+               local source code is never executed by this mode. The result
+               reports only package names and discovery-origin categories, never
+               local paths.
   --no-local   Skip local plugin root and personal marketplace checks.
   --help       Show usage
 `);
@@ -601,10 +602,10 @@ function discoverLegacyPersonalSources() {
         .filter((candidate) => candidate.isDirectory())
         .map((candidate) => candidate.name)
         .sort((left, right) => right.localeCompare(left, undefined, { numeric: true }));
-      const latestRoot = versions
-        .map((version) => path.join(pluginCacheRoot, version))
-        .find((candidate) => isPluginRoot(candidate));
-      if (latestRoot) addSource(entry.name, latestRoot, "codex-personal-cache");
+      for (const version of versions) {
+        const versionRoot = path.join(pluginCacheRoot, version);
+        if (isPluginRoot(versionRoot)) addSource(entry.name, versionRoot, "codex-personal-cache");
+      }
     }
   }
 
