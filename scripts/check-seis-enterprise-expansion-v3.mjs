@@ -220,7 +220,7 @@ requireValue(currentPhaseState.active_goal_id === "SEIS-GOAL-003", `${registryPa
 requireValue(currentPhaseState.current_phase_id === "SEIS-10Y-Y01", `${registryPath} current phase state must start at SEIS-10Y-Y01`);
 requireValue(currentPhaseState.phase_status === "planned", `${registryPath} current phase state must remain planned`);
 requireValue(currentPhaseState.last_reviewed_at === "2026-07-14", `${registryPath} current phase state last_reviewed_at is invalid`);
-requireValue(currentPhaseState.last_commit_hash === "219989d9", `${registryPath} current phase state must reference the validated stewardship commit`);
+requireValue(currentPhaseState.last_commit_hash === "16fbd03e", `${registryPath} current phase state must reference the validated stewardship commit`);
 requireValue(Array.isArray(currentPhaseState.validation_results) && currentPhaseState.validation_results.length >= 4, `${registryPath} current phase state must record validation results`);
 for (const result of currentPhaseState.validation_results || []) {
   requireValue(typeof result.command === "string" && result.command.length > 2, `${registryPath} current phase validation command is invalid`);
