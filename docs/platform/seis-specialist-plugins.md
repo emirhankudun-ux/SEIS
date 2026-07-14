@@ -107,6 +107,20 @@ npm run check:seis-agent-plugin-integration
 npm run quality:governance
 ```
 
+### Legacy personal-source verification
+
+`npm run check:seis-specialist-plugins -- --include-legacy-personal` is an
+optional local migration audit. It discovers only SEIS-named source packages
+that are actually present in configured plugin roots, `~/plugins`, or the
+Codex personal cache. It does not require newer repo-only lanes to exist in a
+legacy cache and does not execute local cache MCP scripts.
+
+For every discovered legacy source, the audit verifies that the public repo has
+the same source paths, that the repo manifest is MIT-licensed, and that no
+sensitive local path such as an env file, private key, or credential file is
+eligible for promotion. Legacy local manifests may remain `UNLICENSED`; they
+are source evidence rather than public installation surfaces.
+
 For plugin ingestion checks:
 
 ```bash

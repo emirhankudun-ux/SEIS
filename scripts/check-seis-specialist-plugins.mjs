@@ -107,7 +107,10 @@ const embeddedModuleNames = [
   "seis-product",
 ];
 
-const checkLocal = args["include-legacy-personal"] === true && args["no-local"] !== true && legacyPersonalAvailable();
+const includeLegacyPersonal = args["include-legacy-personal"] === true && args["no-local"] !== true;
+const legacyPersonalSources = includeLegacyPersonal ? discoverLegacyPersonalSources() : [];
+const personalMarketplacePath = path.join(homeDir(), ".agents", "plugins", "marketplace.json");
+const checkLocalMarketplace = includeLegacyPersonal && fs.existsSync(personalMarketplacePath);
 
 if (args.help) {
   console.log(`
@@ -116,8 +119,10 @@ Usage:
 
 Options:
   --include-legacy-personal
-               Also check the old personal marketplace mirror and local plugin roots.
-               The repo-contained marketplace is always checked.
+               Statically discover legacy personal SEIS sources from configured
+               roots, ~/plugins, and the Codex personal cache. Each discovered
+               source must have a public-safe repo counterpart; local source
+               code is never executed by this mode.
   --no-local   Skip local plugin root and personal marketplace checks.
   --help       Show usage
 `);
@@ -126,9 +131,17 @@ Options:
 
 for (const lane of standaloneLanes) {
   validatePluginRoot(path.join(ROOT, "plugins", lane.name), lane, "repo");
-  if (checkLocal) {
-    validatePluginRoot(localPluginRoot(lane), lane, "local");
+}
+
+for (const source of legacyPersonalSources) {
+  const lane = standaloneLanes.find((candidate) => candidate.name === source.name);
+  if (lane) {
+    validatePluginRoot(source.root, lane, "legacy personal", {
+      requirePublicLicense: false,
+      runMcpSmoke: false,
+    });
   }
+  validateLegacyPersonalMirror(source);
 }
 
 const specialistManifest = validateJsonObject(path.join(ROOT, "data", "seis-specialist-plugins-2026-06-12.json"), "specialist plugin manifest", ["id", "version", "plugins", "marketplace", "centralMcpTools"]);
@@ -165,8 +178,8 @@ for (const token of [
 validateCentralMcpSmoke(centralMcp);
 
 validateMarketplace(path.join(ROOT, ".agents", "plugins", "marketplace.json"), "repo marketplace", "seis-repo");
-if (checkLocal) {
-  validateMarketplace(path.join(homeDir(), ".agents", "plugins", "marketplace.json"), "personal marketplace", "personal");
+if (checkLocalMarketplace) {
+  validateMarketplace(personalMarketplacePath, "personal marketplace", "personal");
 }
 
 if (failures.length > 0) {
@@ -179,7 +192,9 @@ if (failures.length > 0) {
 
 console.log("SEIS specialist plugin check passed.");
 
-function validatePluginRoot(pluginRoot, lane, scope) {
+function validatePluginRoot(pluginRoot, lane, scope, options = {}) {
+  const requirePublicLicense = options.requirePublicLicense ?? scope === "repo";
+  const runMcpSmoke = options.runMcpSmoke ?? scope === "repo";
   ensureDir(pluginRoot, `${scope} ${lane.name} plugin root`);
   const manifestPath = path.join(pluginRoot, ".codex-plugin", "plugin.json");
   const mcpPath = path.join(pluginRoot, ".mcp.json");
@@ -206,7 +221,9 @@ function validatePluginRoot(pluginRoot, lane, scope) {
   const manifest = readJson(manifestPath);
   if (manifest) {
     ensure(manifest.name === lane.name, `${scope} ${lane.name}: manifest name must match`);
-    ensure(manifest.license === "MIT", `${scope} ${lane.name}: manifest license must be MIT for public plugin availability`);
+    if (requirePublicLicense) {
+      ensure(manifest.license === "MIT", `${scope} ${lane.name}: manifest license must be MIT for public plugin availability`);
+    }
     ensure(manifest.mcpServers === "./.mcp.json", `${scope} ${lane.name}: manifest must reference .mcp.json`);
     ensure(manifest.interface?.displayName === lane.displayName, `${scope} ${lane.name}: displayName must be ${lane.displayName}`);
     ensure(Array.isArray(manifest.interface?.capabilities) && manifest.interface.capabilities.length >= 5, `${scope} ${lane.name}: capabilities must be meaningful`);
@@ -239,7 +256,9 @@ function validatePluginRoot(pluginRoot, lane, scope) {
   for (const tool of lane.tools) {
     validateCodeContains(mcpScript, tool, `${scope} ${lane.name}: MCP script must expose ${tool}`);
   }
-  validateMcpServerSmoke(pluginRoot, mcpScript, lane, scope);
+  if (runMcpSmoke) {
+    validateMcpServerSmoke(pluginRoot, mcpScript, lane, scope);
+  }
 }
 
 function validateMcpServerSmoke(pluginRoot, mcpScript, lane, scope) {
@@ -553,16 +572,112 @@ function homeDir() {
   return process.env.HOME || process.env.USERPROFILE || "";
 }
 
-function localPluginRoot(lane) {
-  const envRoot = lane.pluginRootEnv ? process.env[lane.pluginRootEnv] : "";
-  return envRoot || path.join(homeDir(), "plugins", lane.name);
+function discoverLegacyPersonalSources() {
+  const sources = new Map();
+  const addSource = (name, root, origin) => {
+    if (!isSeisPluginName(name) || !isPluginRoot(root)) return;
+    sources.set(name, { name, root, origin });
+  };
+
+  const cacheRoot = process.env.SEIS_LEGACY_PERSONAL_CACHE_ROOT
+    || path.join(homeDir(), ".codex", "plugins", "cache", "personal");
+  if (fs.existsSync(cacheRoot) && fs.statSync(cacheRoot).isDirectory()) {
+    for (const entry of fs.readdirSync(cacheRoot, { withFileTypes: true }).sort((left, right) => left.name.localeCompare(right.name))) {
+      if (!entry.isDirectory() || !isSeisPluginName(entry.name)) continue;
+      const pluginCacheRoot = path.join(cacheRoot, entry.name);
+      const versions = fs.readdirSync(pluginCacheRoot, { withFileTypes: true })
+        .filter((candidate) => candidate.isDirectory())
+        .map((candidate) => candidate.name)
+        .sort((left, right) => right.localeCompare(left, undefined, { numeric: true }));
+      const latestRoot = versions
+        .map((version) => path.join(pluginCacheRoot, version))
+        .find((candidate) => isPluginRoot(candidate));
+      if (latestRoot) addSource(entry.name, latestRoot, "codex-personal-cache");
+    }
+  }
+
+  const manualPluginRoot = path.join(homeDir(), "plugins");
+  if (fs.existsSync(manualPluginRoot) && fs.statSync(manualPluginRoot).isDirectory()) {
+    for (const entry of fs.readdirSync(manualPluginRoot, { withFileTypes: true }).sort((left, right) => left.name.localeCompare(right.name))) {
+      if (entry.isDirectory() && isSeisPluginName(entry.name)) {
+        addSource(entry.name, path.join(manualPluginRoot, entry.name), "legacy-plugin-root");
+      }
+    }
+  }
+
+  for (const lane of standaloneLanes) {
+    const configuredRoot = lane.pluginRootEnv ? process.env[lane.pluginRootEnv] : "";
+    if (configuredRoot) addSource(lane.name, configuredRoot, "configured-plugin-root");
+  }
+
+  const configuredHubRoot = process.env.SEIS_PLUGIN_ROOT;
+  if (configuredHubRoot) addSource("seis", configuredHubRoot, "configured-plugin-root");
+
+  return [...sources.values()].sort((left, right) => left.name.localeCompare(right.name));
 }
 
-function legacyPersonalAvailable() {
-  if (fs.existsSync(path.join(homeDir(), ".agents", "plugins", "marketplace.json"))) {
-    return true;
+function isSeisPluginName(name) {
+  return name === "seis" || name.startsWith("seis-");
+}
+
+function isPluginRoot(candidate) {
+  return fs.existsSync(path.join(candidate, ".codex-plugin", "plugin.json"));
+}
+
+function validateLegacyPersonalMirror(source) {
+  const manifestPath = path.join(source.root, ".codex-plugin", "plugin.json");
+  const manifest = readJson(manifestPath);
+  ensure(manifest?.name === source.name, `legacy personal ${source.name}: manifest name must match its source directory`);
+  ensure(manifest?.mcpServers === "./.mcp.json", `legacy personal ${source.name}: manifest must reference .mcp.json`);
+
+  const repoRoot = path.join(ROOT, "plugins", source.name);
+  ensureDir(repoRoot, `repo counterpart for legacy personal ${source.name}`);
+  const repoManifest = readJson(path.join(repoRoot, ".codex-plugin", "plugin.json"));
+  ensure(repoManifest?.name === source.name, `repo counterpart for legacy personal ${source.name}: manifest name must match`);
+  ensure(repoManifest?.license === "MIT", `repo counterpart for legacy personal ${source.name}: public manifest license must be MIT`);
+
+  const localFiles = listPortablePluginFiles(source.root);
+  ensure(localFiles.length > 0, `legacy personal ${source.name}: source must contain portable plugin files`);
+  for (const relativePath of localFiles) {
+    if (isSensitiveLocalPluginPath(relativePath)) {
+      fail(`legacy personal ${source.name}: sensitive local path must not be promoted: ${relativePath}`);
+      continue;
+    }
+    ensureFile(
+      path.join(repoRoot, relativePath),
+      `repo counterpart for legacy personal ${source.name}: missing promoted source path ${relativePath}`
+    );
   }
-  return standaloneLanes.some((lane) => fs.existsSync(localPluginRoot(lane)));
+}
+
+function listPortablePluginFiles(root) {
+  const files = [];
+  const ignoredDirectories = new Set([".git", "node_modules", "dist", "build", "coverage"]);
+  const walk = (directory) => {
+    for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+      if (entry.isDirectory()) {
+        if (!ignoredDirectories.has(entry.name)) walk(path.join(directory, entry.name));
+        continue;
+      }
+      if (entry.isFile() && entry.name !== ".DS_Store") {
+        files.push(path.relative(root, path.join(directory, entry.name)));
+      }
+    }
+  };
+  walk(root);
+  return files.sort();
+}
+
+function isSensitiveLocalPluginPath(relativePath) {
+  const fileName = path.basename(relativePath).toLowerCase();
+  return fileName === ".env"
+    || (fileName.startsWith(".env.") && fileName !== ".env.example")
+    || fileName === "credentials.json"
+    || fileName === "tokens.json"
+    || fileName === "id_rsa"
+    || fileName === "id_ed25519"
+    || fileName.endsWith(".pem")
+    || fileName.endsWith(".key");
 }
 
 function readJson(filePath) {
