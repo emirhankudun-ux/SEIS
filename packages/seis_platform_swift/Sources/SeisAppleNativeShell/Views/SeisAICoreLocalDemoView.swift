@@ -1292,6 +1292,7 @@ struct SeisAICoreLocalDemoView: View {
                 if let capabilityMesh = model.capabilityMesh {
                     capabilityMeshDisclosure(mesh: capabilityMesh)
                 }
+                pluginCapabilityCatalogDisclosure(snapshot: snapshot.pluginMesh.capabilityCatalog)
                 orchestrationDisclosure(snapshot: model.orchestrationSnapshot)
                 promptCatalogDisclosure(engine: model.promptEngine)
                 if let readinessReport = model.readinessReport {
@@ -1464,6 +1465,107 @@ struct SeisAICoreLocalDemoView: View {
                 .font(.subheadline.weight(.semibold))
         }
         .accessibilityLabel("Plugin and MCP capability mesh. \(mesh.pluginStatusLabel). \(mesh.mcpStatusLabel). No plugin activation or MCP invocation is performed.")
+    }
+
+    private func pluginCapabilityCatalogDisclosure(
+        snapshot: SeisAICorePluginCapabilityCatalog
+    ) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Source: \(snapshot.boundary.sourceOfTruth) · Mode: \(snapshot.mode)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("\(snapshot.pluginCount) bundled plugins · \(snapshot.manifestCapabilityCount) manifest capabilities · \(snapshot.profileQualityCommandCount) specialist profile command declarations")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(.secondary)
+                Text("Personal: \(snapshot.personalPluginCount) plugins / \(snapshot.personalManifestCapabilityCount) capabilities · Specialist: \(snapshot.specialistPluginCount) plugins / \(snapshot.specialistManifestCapabilityCount) capabilities")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+
+                ForEach(snapshot.plugins) { plugin in
+                    DisclosureGroup {
+                        VStack(alignment: .leading, spacing: 6) {
+                            catalogTerms(title: "Capabilities", values: plugin.capabilities)
+                            catalogTerms(title: "Primary paths", values: plugin.profile.primaryPaths)
+                            catalogTerms(title: "Quality commands", values: plugin.profile.qualityCommands)
+                            catalogTerms(title: "Guardrails", values: plugin.profile.guardrails)
+                            catalogTerms(title: "Helper families", values: plugin.profile.helperFamilies)
+                            catalogTerms(title: "Source evidence", values: plugin.profile.sourceEvidence)
+                            if !plugin.embeddedLaneProfiles.isEmpty {
+                                Text("Embedded lane profiles")
+                                    .font(.caption.weight(.semibold))
+                                ForEach(plugin.embeddedLaneProfiles, id: \.path) { embedded in
+                                    Label(embedded.path, systemImage: embedded.exists ? "checkmark.circle" : "questionmark.circle")
+                                        .font(.caption2.monospaced())
+                                        .foregroundStyle(embedded.exists ? .secondary : .orange)
+                                }
+                            }
+                        }
+                        .padding(.top, 6)
+                    } label: {
+                        HStack(spacing: 7) {
+                            Image(systemName: plugin.profile.exists ? "checkmark.seal" : "exclamationmark.triangle")
+                                .foregroundStyle(plugin.profile.exists ? .green : .orange)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(plugin.displayName)
+                                    .font(.caption.weight(.semibold))
+                                Text("\(plugin.classification) · \(plugin.capabilityCount) capabilities · profile: \(plugin.profile.status)")
+                                    .font(.caption2.monospaced())
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                    }
+                    .padding(8)
+                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 8))
+                }
+
+                if !snapshot.qualityCommandGaps.isEmpty {
+                    Text("Core quality-command gaps (\(snapshot.qualityCommandGaps.count))")
+                        .font(.caption.weight(.semibold))
+                    ForEach(snapshot.qualityCommandGaps, id: { gap in "\(gap.pluginID):\(gap.command)" }) { gap in
+                        Text("\(gap.pluginID): \(gap.command)")
+                            .font(.caption2.monospaced())
+                            .foregroundStyle(.orange)
+                    }
+                }
+
+                if !snapshot.missingProfilePaths.isEmpty {
+                    Text("Missing profile sources")
+                        .font(.caption.weight(.semibold))
+                    ForEach(snapshot.missingProfilePaths, id: \.self) { path in
+                        Text(path)
+                            .font(.caption2.monospaced())
+                            .foregroundStyle(.orange)
+                    }
+                }
+
+                Text(snapshot.boundary.localReadOnly && !snapshot.boundary.blanketActivationClaimed
+                     ? "Source-backed catalog only. No plugin is installed, activated, authenticated, invoked, or granted mutation authority by this panel."
+                     : "Capability catalog boundary requires review.")
+                    .font(.caption2)
+                    .foregroundStyle(snapshot.boundary.localReadOnly ? .green : .orange)
+            }
+            .padding(.top, 8)
+        } label: {
+            Label("Plugin capability catalog", systemImage: "list.bullet.rectangle.portrait")
+                .font(.subheadline.weight(.semibold))
+        }
+        .accessibilityLabel("Plugin capability catalog. \(snapshot.pluginCount) bundled plugins and \(snapshot.manifestCapabilityCount) source-backed capabilities. Missing profiles and quality gaps remain explicit. No activation or mutation is performed.")
+    }
+
+    private func catalogTerms(title: String, values: [String]) -> some View {
+        guard !values.isEmpty else { return AnyView(EmptyView()) }
+        return AnyView(
+            VStack(alignment: .leading, spacing: 3) {
+                Text(title)
+                    .font(.caption.weight(.semibold))
+                ForEach(values, id: \.self) { value in
+                    Text(value)
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
+            }
+        )
     }
 
     private func workspaceAwarenessDisclosure(index: SeisAppleLocalWorkspaceIndex) -> some View {

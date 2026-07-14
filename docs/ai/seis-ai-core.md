@@ -199,6 +199,8 @@ eight quality-command gaps against the Core registry. The catalog preserves all
 declared capabilities, primary paths, guardrails, helper families, provenance,
 and missing profile paths without claiming plugin installation, activation,
 authentication, or external mutation.
+The native AI Core panel renders this catalog as an expandable inspection
+surface; selecting a capability only reveals its source terms and boundary.
 
 The same native panel now exposes the existing
 `SeisAGIAgentHandoffSnapshot` as a governed sub-agent orchestration surface:
