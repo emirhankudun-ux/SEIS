@@ -150,6 +150,18 @@ function parseResponses(stdout) {
 function validateMcpSmoke() {
   const server = path.join(root, "plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs");
   if (!fs.existsSync(server)) return;
+  const laneStatusTools = [
+    "seis_hub_status",
+    "seis_governance_status",
+    "seis_cloud_status",
+    "seis_code_status",
+    "seis_design_status",
+    "seis_data_status",
+    "seis_security_status",
+    "seis_research_status",
+    "seis_automation_status",
+    "seis_product_status",
+  ];
   const input = [
     frame({ jsonrpc: "2.0", id: 1, method: "initialize", params: {} }),
     frame({ jsonrpc: "2.0", method: "notifications/initialized" }),
@@ -162,6 +174,12 @@ function validateMcpSmoke() {
     frame({ jsonrpc: "2.0", id: 8, method: "tools/call", params: { name: "seis_research_plan", arguments: { request: "Research official integration requirements." } } }),
     frame({ jsonrpc: "2.0", id: 9, method: "tools/call", params: { name: "seis_automation_plan", arguments: { request: "Plan a repeatable validation workflow." } } }),
     frame({ jsonrpc: "2.0", id: 10, method: "tools/call", params: { name: "seis_product_plan", arguments: { request: "Scope a launch readiness slice." } } }),
+    ...laneStatusTools.map((name, index) => frame({
+      jsonrpc: "2.0",
+      id: 11 + index,
+      method: "tools/call",
+      params: { name, arguments: {} },
+    })),
   ].join("");
   const result = spawnSync("node", [server], { cwd: root, input, timeout: 5000 });
   if (result.error) {
@@ -203,5 +221,13 @@ function validateMcpSmoke() {
     const lanePlan = responses.find((response) => response.id === responseID)?.result;
     ensure(lanePlan?.runtimeBoundary?.mode === "status-and-plan-only", `MCP lane plan ${responseID} must remain status-and-plan-only`);
     ensure(lanePlan?.runtimeBoundary?.executionAuthority === false, `MCP lane plan ${responseID} must report no execution authority`);
+  }
+  for (const [index, name] of laneStatusTools.entries()) {
+    const laneStatus = responses.find((response) => response.id === 11 + index)?.result;
+    ensure(laneStatus?.id === name.replace(/_status$/, "").replace(/_/g, "-"), `MCP lane status ${name} must identify its lane`);
+    ensure(laneStatus?.status === "ready", `MCP lane status ${name} must report ready`);
+    ensure(laneStatus?.permissionLevel === "plan-only", `MCP lane status ${name} must remain plan-only`);
+    ensure(laneStatus?.executionAuthority === false, `MCP lane status ${name} must report no execution authority`);
+    ensure(laneStatus?.humanApprovalRequiredForLiveActions === true, `MCP lane status ${name} must require human approval for live actions`);
   }
 }
