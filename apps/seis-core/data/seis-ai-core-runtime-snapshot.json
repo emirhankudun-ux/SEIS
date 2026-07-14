@@ -213,7 +213,7 @@
           "localOnly": true
         },
         "decision": {
-          "decisionHash": "657c85594999e7a5b389a08495d5d38bc12eb2677c1c8f6a1dc06d9e096aba83",
+          "decisionHash": "da3d41bb138074f677bc701d4294ecbe9e5bb37d08163b2b9570e31f20bdc13d",
           "status": "review-only-no-runtime-authority",
           "selectedProvider": "codex-operator",
           "selectedModel": "current-codex-session",
@@ -230,6 +230,8 @@
             "displayName": "SEIS Hub",
             "subAgentRole": "repository-governance-subagent",
             "permissionLevel": "plan-only",
+            "permissionBoundary": "plan-only",
+            "permissionSourceStatus": "verified",
             "statusTool": "seis_hub_status",
             "planTool": "seis_hub_plan",
             "qualityGate": "npm run check:seis-ai-agent",
@@ -276,7 +278,7 @@
           "localOnly": false
         },
         "decision": {
-          "decisionHash": "511ae07b19d5c8ab5904bbe662bf88165fdeb800b318fba0b56476ca37214532",
+          "decisionHash": "505d5109c2128e19c854b81a5c7119092bbdfaab1fc5b2dbaaa00cc6de65fc92",
           "status": "review-only-no-runtime-authority",
           "selectedProvider": "codex-operator",
           "selectedModel": "current-codex-session",
@@ -293,6 +295,8 @@
             "displayName": "SEIS Cloud",
             "subAgentRole": "cloud-readiness-subagent",
             "permissionLevel": "plan-only",
+            "permissionBoundary": "plan-only",
+            "permissionSourceStatus": "verified",
             "statusTool": "seis_cloud_status",
             "planTool": "seis_cloud_plan",
             "qualityGate": "npm run check:cloud-access-policy",
@@ -338,7 +342,7 @@
           "localOnly": true
         },
         "decision": {
-          "decisionHash": "b14bcfcdd893d3dba71cb1f69bf2373ee478c73389f2a41f9fa0f5448f491906",
+          "decisionHash": "a6a92fb63b2e2b5e183397b4e118a249959c82585f19f5bb2a228c755f4e7058",
           "status": "review-only-no-runtime-authority",
           "selectedProvider": "codex-operator",
           "selectedModel": "current-codex-session",
@@ -355,6 +359,8 @@
             "displayName": "SEIS-Code",
             "subAgentRole": "engineering-subagent",
             "permissionLevel": "plan-only",
+            "permissionBoundary": "plan-only",
+            "permissionSourceStatus": "verified",
             "statusTool": "seis_code_status",
             "planTool": "seis_code_plan",
             "qualityGate": "node scripts/check-seis-plugin-bundle.mjs --no-local",
@@ -401,7 +407,7 @@
           "localOnly": true
         },
         "decision": {
-          "decisionHash": "df7604f191c7fa6bff49c26d00258569e4d321bdf88be251b14bb9b6c7152756",
+          "decisionHash": "3f8659b2df100a0c386129b29a12ccc7e9aaf3cf4b1dfdb39859f9878c921f5e",
           "status": "review-only-no-runtime-authority",
           "selectedProvider": "codex-operator",
           "selectedModel": "current-codex-session",
@@ -418,6 +424,8 @@
             "displayName": "SEIS-Design",
             "subAgentRole": "product-design-subagent",
             "permissionLevel": "plan-only",
+            "permissionBoundary": "plan-only",
+            "permissionSourceStatus": "verified",
             "statusTool": "seis_design_status",
             "planTool": "seis_design_plan",
             "qualityGate": "npm run check:motion-evidence",
@@ -464,7 +472,7 @@
           "localOnly": true
         },
         "decision": {
-          "decisionHash": "c60b1030e9d85a5a909d70a62934f0ae28f89cd2d4f2b8f17eb96de3a7999a87",
+          "decisionHash": "71adc85b678ec0c95e146b4b5e6ec089461334fd5b93bbacc107ef912d555741",
           "status": "review-only-no-runtime-authority",
           "selectedProvider": "codex-operator",
           "selectedModel": "current-codex-session",
@@ -481,6 +489,8 @@
             "displayName": "SEIS-DATA",
             "subAgentRole": "data-provenance-subagent",
             "permissionLevel": "plan-only",
+            "permissionBoundary": "plan-only",
+            "permissionSourceStatus": "verified",
             "statusTool": "seis_data_status",
             "planTool": "seis_data_plan",
             "qualityGate": "npm run check:plugin-capability-lanes",
@@ -527,7 +537,7 @@
           "localOnly": true
         },
         "decision": {
-          "decisionHash": "48376b7a8baec2ffc34feb0a347646e3ec6be3c342c61595d079894dfbe8afce",
+          "decisionHash": "50261acab73ebc8268c9589aad00e429df41cc76abba044ca849cbf7decdf411",
           "status": "review-only-no-runtime-authority",
           "selectedProvider": "none",
           "selectedModel": "none",
@@ -544,6 +554,8 @@
             "displayName": "SEIS Hub",
             "subAgentRole": "repository-governance-subagent",
             "permissionLevel": "plan-only",
+            "permissionBoundary": "plan-only",
+            "permissionSourceStatus": "verified",
             "statusTool": "seis_hub_status",
             "planTool": "seis_hub_plan",
             "qualityGate": "npm run check:seis-ai-agent",
@@ -592,7 +604,7 @@
           "localOnly": false
         },
         "decision": {
-          "decisionHash": "c22f90914b37ebfa8e0434b086a918097138a8cc964207b2d3301860c983ea7a",
+          "decisionHash": "41e687be70ff0e4e555a48f199968cf04210e7809cb73f49a1090f9663c7f1db",
           "status": "review-only-no-runtime-authority",
           "selectedProvider": "none",
           "selectedModel": "none",
@@ -609,6 +621,8 @@
             "displayName": "SEIS Hub",
             "subAgentRole": "repository-governance-subagent",
             "permissionLevel": "plan-only",
+            "permissionBoundary": "plan-only",
+            "permissionSourceStatus": "verified",
             "statusTool": "seis_hub_status",
             "planTool": "seis_hub_plan",
             "qualityGate": "npm run check:seis-ai-agent",
