@@ -5,6 +5,7 @@ require "json"
 require "open3"
 require "tmpdir"
 require "yaml"
+require_relative "ecosystem-foundation-git-env"
 
 ROOT = File.expand_path("..", __dir__)
 GOAL_RELATIVE_PATH = "goals/active/ECO-GOAL-0003--goal-schema-validation-and-ci.yaml"
@@ -19,6 +20,7 @@ FIXTURE_FILES = [
   "schemas/project-ecosystem.schema.json",
   "schemas/repository-ownership.schema.json",
   "schemas/ecosystem-goal.schema.json",
+  "scripts/ecosystem-foundation-git-env.rb",
   "scripts/validate-ecosystem-foundation.rb",
   "package.json"
 ].freeze
@@ -26,21 +28,6 @@ FIXTURE_GOAL_FILES = Dir.glob(
   "goals/{active,backlog,blocked,completed,archived}/*.yaml",
   base: ROOT
 ).freeze
-FIXTURE_GIT_ENV = {
-  "GIT_CONFIG_NOSYSTEM" => "1",
-  "GIT_CONFIG_GLOBAL" => File::NULL,
-  "GIT_CONFIG_SYSTEM" => File::NULL,
-  "GIT_CONFIG" => nil,
-  "GIT_CONFIG_PARAMETERS" => nil,
-  "GIT_CONFIG_COUNT" => nil,
-  "GIT_DIR" => nil,
-  "GIT_WORK_TREE" => nil,
-  "GIT_COMMON_DIR" => nil,
-  "GIT_INDEX_FILE" => nil,
-  "GIT_OBJECT_DIRECTORY" => nil,
-  "GIT_ALTERNATE_OBJECT_DIRECTORIES" => nil
-}.freeze
-
 def prepare_fixture(directory)
   (FIXTURE_FILES + FIXTURE_GOAL_FILES).each do |relative_path|
     source = File.join(ROOT, relative_path)
@@ -53,7 +40,7 @@ def prepare_fixture(directory)
   run_fixture_command!(directory, "git", "add", "--all")
 end
 
-def run_fixture_command!(directory, *command, environment: FIXTURE_GIT_ENV, stdin_data: "")
+def run_fixture_command!(directory, *command, environment: EcosystemFoundationGitEnvironment::SAFE, stdin_data: "")
   stdout, stderr, status = Open3.capture3(environment, *command, chdir: directory, stdin_data: stdin_data)
   return stdout if status.success?
 

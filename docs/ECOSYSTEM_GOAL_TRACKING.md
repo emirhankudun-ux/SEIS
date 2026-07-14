@@ -42,6 +42,12 @@ not silently rewritten, renumbered, or presented as Goal schema v2 records.
 
 ## Repository truth
 
+Observation date: 2026-07-13. Each repository's verification method and exact
+`observed_at` value are recorded in
+[`data/repository-ownership.yaml`](../data/repository-ownership.yaml); the
+statements below are that dated snapshot, not timeless or continuously refreshed
+claims.
+
 - `emirhankudun-ux/SEIS` was observed locally and through the authenticated
   GitHub connector as the canonical public SEIS repository and current bootstrap
   coordinator.

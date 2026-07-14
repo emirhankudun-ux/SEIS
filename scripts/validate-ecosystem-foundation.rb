@@ -6,6 +6,7 @@ require "pathname"
 require "set"
 require "uri"
 require "yaml"
+require_relative "ecosystem-foundation-git-env"
 
 ROOT = File.expand_path("..", __dir__)
 ERRORS = []
@@ -22,20 +23,6 @@ SUPPORTED_SCHEMA_KEYWORDS = Set.new([
 ]).freeze
 SUPPORTED_SCHEMA_TYPES = Set.new(["object", "array", "string", "integer", "number", "boolean", "null"]).freeze
 REGULAR_GIT_BLOB_MODES = Set.new(["100644", "100755"]).freeze
-SAFE_GIT_ENV = {
-  "GIT_CONFIG_NOSYSTEM" => "1",
-  "GIT_CONFIG_GLOBAL" => File::NULL,
-  "GIT_CONFIG_SYSTEM" => File::NULL,
-  "GIT_CONFIG" => nil,
-  "GIT_CONFIG_PARAMETERS" => nil,
-  "GIT_CONFIG_COUNT" => nil,
-  "GIT_DIR" => nil,
-  "GIT_WORK_TREE" => nil,
-  "GIT_COMMON_DIR" => nil,
-  "GIT_INDEX_FILE" => nil,
-  "GIT_OBJECT_DIRECTORY" => nil,
-  "GIT_ALTERNATE_OBJECT_DIRECTORIES" => nil
-}.freeze
 
 def absolute(relative_path)
   File.join(ROOT, relative_path)
@@ -123,7 +110,7 @@ def tracked_repository_paths
   end
 
   stdout, _stderr, status = Open3.capture3(
-    SAFE_GIT_ENV,
+    EcosystemFoundationGitEnvironment::SAFE,
     "git",
     "-c", "core.fsmonitor=false",
     "-c", "core.untrackedCache=false",
@@ -173,7 +160,7 @@ end
 
 def git_intent_to_add_paths
   stdout, _stderr, status = Open3.capture3(
-    SAFE_GIT_ENV,
+    EcosystemFoundationGitEnvironment::SAFE,
     "git",
     "-c", "core.fsmonitor=false",
     "-c", "core.untrackedCache=false",
@@ -197,7 +184,7 @@ def valid_git_blob_object_ids?(object_ids)
   return true if object_ids.empty?
 
   stdout, _stderr, status = Open3.capture3(
-    SAFE_GIT_ENV,
+    EcosystemFoundationGitEnvironment::SAFE,
     "git",
     "-c", "core.fsmonitor=false",
     "-c", "core.untrackedCache=false",
