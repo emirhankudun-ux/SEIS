@@ -133,23 +133,17 @@ function validateInstallerPlan(extraArgs, expectStandaloneTargets) {
   }
 }
 function frame(message) {
-  const body = JSON.stringify(message);
-  return `Content-Length: ${Buffer.byteLength(body, "utf8")}\r\n\r\n${body}`;
+  return `${JSON.stringify(message)}\n`;
 }
 function parseResponses(stdout) {
   const responses = [];
-  let buffer = Buffer.from(stdout);
-  while (buffer.length > 0) {
-    const separator = buffer.indexOf("\r\n\r\n");
-    if (separator < 0) break;
-    const header = buffer.slice(0, separator).toString("utf8");
-    const match = /Content-Length:\s*(\d+)/i.exec(header);
-    if (!match) break;
-    const start = separator + 4;
-    const end = start + Number(match[1]);
-    if (buffer.length < end) break;
-    responses.push(JSON.parse(buffer.slice(start, end).toString("utf8")));
-    buffer = buffer.slice(end);
+  for (const line of String(stdout || "").split(/\r?\n/)) {
+    if (!line.trim()) continue;
+    try {
+      responses.push(JSON.parse(line));
+    } catch {
+      // Ignore malformed lines and report a bounded smoke-test failure below.
+    }
   }
   return responses;
 }
@@ -158,6 +152,7 @@ function validateMcpSmoke() {
   if (!fs.existsSync(server)) return;
   const input = [
     frame({ jsonrpc: "2.0", id: 1, method: "initialize", params: {} }),
+    frame({ jsonrpc: "2.0", method: "notifications/initialized" }),
     frame({ jsonrpc: "2.0", id: 2, method: "tools/list", params: {} }),
     frame({ jsonrpc: "2.0", id: 3, method: "tools/call", params: { name: "seis_ai_agent_status", arguments: {} } }),
     frame({ jsonrpc: "2.0", id: 4, method: "tools/call", params: { name: "seis_ai_agent_plan", arguments: { request: "Plan memory context governance." } } }),
