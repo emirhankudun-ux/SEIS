@@ -1189,9 +1189,9 @@ const SEIS_MCP_RUNTIME_CONTRACT = {
   fallbackRuntime: "LightweightMcpServer no-dependency fallback",
   fallback: "LightweightMcpServer no-dependency fallback",
   officialSdk: "@modelcontextprotocol/sdk remains optional unless dependencies are installed",
-  toolCount: 34,
+  toolCount: 35,
   promptCount: 3,
-  resourceCount: 29,
+  resourceCount: 31,
   smokeTest: "node --test packages/seis-ai/test/mcp-smoke.test.mjs",
   pluginGate: "npm run check:seis-agent-plugin-integration",
   resourceRead: "seis://ai/mcp-runtime-contract.json",
@@ -1201,18 +1201,18 @@ const SEIS_MCP_RUNTIME_CONTRACT = {
     {
       id: "tools",
       label: "Tool registry",
-      count: 34,
+      count: 35,
       method: "tools/list + tools/call",
-      evidence: "16 MCP smoke tests pass through stdio JSON-RPC",
-      duty: "Expose repo-backed SEIS AI checks, personal plugin lane tools, provider registry status, model scaling status, and AI Core version/sub-agent tools."
+      evidence: "24 MCP smoke tests pass through stdio JSON-RPC",
+      duty: "Expose repo-backed SEIS AI checks, public plugin family readiness, personal plugin lane tools, provider registry status, model scaling status, and AI Core version/sub-agent tools."
     },
     {
       id: "resources",
       label: "Resource registry",
-      count: 29,
+      count: 31,
       method: "resources/list + resources/read",
-      evidence: "Plugin integration, provider registry, model scaling profile, model parameter ladder, frontier escalation policy, 150B frontier model program, 512B apex AGI program, 20B model/dataset card templates, and MCP runtime contract resources are read through the protocol",
-      duty: "Expose source-of-truth JSON resources for plugin integration, provider states, planned model scaling, parameter ladder boundaries, no-skip-20B frontier policy, 150B frontier program, 512B apex AGI program, 20B clean-room evidence templates, MCP runtime, version gates, fixtures, and generated plan views."
+      evidence: "Plugin integration, public plugin family, public plugin lifecycle, provider registry, model scaling profile, model parameter ladder, frontier escalation policy, 150B frontier model program, 512B apex AGI program, AGI evaluation protocol, AGI public readiness evidence, AGI GitHub user readiness gates, 20B model/dataset card templates, and MCP runtime contract resources are read through the protocol",
+      duty: "Expose source-of-truth JSON resources for plugin integration, public plugin family lifecycle, provider states, planned model scaling, parameter ladder boundaries, no-skip-20B frontier policy, 150B frontier program, 512B apex AGI program, AGI evidence protocol, AGI public-readiness claim gates, AGI GitHub user-readiness gates, 20B clean-room evidence templates, MCP runtime, version gates, fixtures, and generated plan views."
     },
     {
       id: "prompts",

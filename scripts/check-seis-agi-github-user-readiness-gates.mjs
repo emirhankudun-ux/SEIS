@@ -169,7 +169,7 @@ ensure(apexProgram?.routeEligibleToday === false, "512B apex program must stay r
 ensureArrayIncludesAll(pluginIntegration?.runtimeIntegration?.mcpResources, [
   "seis://ai/agi-github-user-readiness-gates.json"
 ], "pluginIntegration.runtimeIntegration.mcpResources");
-ensure(mcpRuntime?.resourceCount === 29, "MCP runtime contract must record 29 resources");
+ensure(mcpRuntime?.resourceCount === 31, "MCP runtime contract must record 31 resources");
 ensure(String(mcpRuntime?.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("AGI GitHub user readiness gates"), "MCP resource evidence must mention AGI GitHub user readiness gates");
 
 for (const [text, label] of [

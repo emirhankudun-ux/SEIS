@@ -59,6 +59,12 @@ grounded in repo evidence rather than marketing copy. Runtime tools include
 `seis_ai_core_version_status`, `seis_ai_core_version_promotion_dry_run`, and
 `seis_ai_core_subagent_model`.
 
+`SEIS AI Core v0.1` remains a zero-key, status-and-plan-only profile. Its
+version registry is `content/development/seis-ai-core-version-registry.json`,
+its promotion gates are
+`content/development/seis-ai-core-version-promotion-gates.json`, and the MCP
+runtime contract is exposed through `seis://ai/mcp-runtime-contract.json`.
+
 The Installed AI Core Route Matrix and Personal Plugin AI Core Lane Matrix bind
 these records to SEIS-Agent lane routing. The MCP Runtime Contract lives at
 `content/development/seis-ai-core-mcp-runtime-contract.json` and is exposed as
@@ -67,8 +73,14 @@ these records to SEIS-Agent lane routing. The MCP Runtime Contract lives at
 AI Core source records and resources include:
 
 - `content/development/seis-ai-core-provider-registry.json`
+- `content/development/seis-ai-core-version-registry.json`
+- `content/development/seis-ai-core-version-promotion-gates.json`
+- `content/development/seis-ai-core-mcp-runtime-contract.json`
 - `content/development/seis-model-scaling-hardware-profile.json`
+- `seis://ai/mcp-runtime-contract.json`
 - `seis://ai/provider-registry.json`
+- `seis://ai/version-registry.json`
+- `seis://ai/version-promotion-gates.json`
 - `seis://ai/model-scaling-hardware-profile.json`
 - `seis://ai/model-parameter-ladder.json`
 - `seis://ai/model-frontier-escalation-policy.json`

@@ -109,7 +109,7 @@ The standalone SEIS demo now includes an AI Core constellation inspector that
 joins the installed AI route mesh, personal plugin lane mesh, MCP runtime
 contract, selected five-year quarter, and 3D hero diagnostics into one local
 read-only surface. Product browser smoke verifies the inspector exposes six AI
-routes, five personal plugin lanes, 34 MCP tools, 29 MCP resources, three MCP
+routes, five personal plugin lanes, 35 MCP tools, 31 MCP resources, three MCP
 prompts, and a 32-node / 53-edge AI Core 3D graph without requiring provider
 keys, SSH, deployment, GitHub mutation, or external connector authentication.
 

@@ -596,8 +596,8 @@ async function runRuntimeSmoke(html, js) {
     ensure(window.document.querySelectorAll("[data-installed-ai-system]").length === 6, "Installed AI Systems must render six supervised AI/operator profiles.");
     ensure(diagnostics.installedAiSystems().length === 6, `Installed AI diagnostics expected six systems, got ${diagnostics.installedAiSystems().length}.`);
     ensure(diagnostics.installedAiCoreRouteMatrix().length === 6, `Installed AI Core route diagnostics expected six routes, got ${diagnostics.installedAiCoreRouteMatrix().length}.`);
-    ensure(diagnostics.mcpRuntimeContract().toolCount === 34, `MCP Runtime Contract diagnostics expected 34 tools, got ${diagnostics.mcpRuntimeContract().toolCount}.`);
-    ensure(diagnostics.mcpRuntimeContract().resourceCount === 29, `MCP Runtime Contract diagnostics expected 29 resources, got ${diagnostics.mcpRuntimeContract().resourceCount}.`);
+    ensure(diagnostics.mcpRuntimeContract().toolCount === 35, `MCP Runtime Contract diagnostics expected 35 tools, got ${diagnostics.mcpRuntimeContract().toolCount}.`);
+    ensure(diagnostics.mcpRuntimeContract().resourceCount === 31, `MCP Runtime Contract diagnostics expected 31 resources, got ${diagnostics.mcpRuntimeContract().resourceCount}.`);
     ensure(diagnostics.mcpRuntimeContract().sourcePath === "content/development/seis-ai-core-mcp-runtime-contract.json", "MCP Runtime Contract diagnostics must expose the canonical source path.");
     ensure(diagnostics.mcpRuntimeContract().resourceUri === "seis://ai/mcp-runtime-contract.json", "MCP Runtime Contract diagnostics must expose the canonical MCP resource URI.");
     ensure(window.document.querySelector("[data-installed-ai-core-route-matrix]"), "Installed AI Systems must render the installed AI Core route matrix.");
