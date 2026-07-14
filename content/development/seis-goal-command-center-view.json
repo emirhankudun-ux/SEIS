@@ -28,9 +28,8 @@
     "totalCategories": 20,
     "totalEvidenceRecords": 15,
     "evidenceByStatus": {
-      "passed": 13,
-      "blocked": 1,
-      "active": 1
+      "passed": 14,
+      "blocked": 1
     },
     "totalTasks": 5,
     "tasksByStatus": {
@@ -1152,7 +1151,7 @@
         "id": "SEIS-EVID-015",
         "title": "SEIS Enterprise Expansion V3 registry validates",
         "type": "validation",
-        "status": "active",
+        "status": "passed",
         "supportsGoalIds": [
           "SEIS-GOAL-003"
         ],
@@ -1162,7 +1161,7 @@
           "Does not run live observability, knowledge-graph synchronization, providers, models, plugins, MCP servers, background agents, deployment, or enterprise release operations.",
           "Does not resolve the pre-existing repository hygiene blocker."
         ],
-        "nextAction": "Run the Enterprise Expansion validator and Goal Tracking checks, regenerate the Command Center view, then record the focused commit hash."
+        "nextAction": "Keep Enterprise Expansion V3 terms specification-only and create separate implementation Goals only with evidence-backed scope."
       }
     ],
     "readinessConnections": [
