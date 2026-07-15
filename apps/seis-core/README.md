@@ -9,6 +9,10 @@ SEIS Command Center is the central operating interface for the SEIS ecosystem. P
 - `script.js`: local state, goal creation, repository filtering, agent mode switching, generated 10-lane SEIS router artifact loading, architecture evidence, automation evidence, security evidence, knowledge graph evidence, command palette, settings, and dashboard rendering.
 - `data/seis-router-routes.json`: generated Command Center router artifact produced from `scripts/ai-routing-policy.cjs#chooseAutoRoute`.
 - `manifest.webmanifest` and `icon.svg`: installable app metadata and SEIS Core visual identity.
+- `plugins/seis-core/`: 50 personal app-owned local plugin packages inside the SEIS repository plugin boundary; current shared release is `0.00000001` (`0.0.10` in strict plugin manifests).
+- `data/seis-core-plugin-sources.json`: generated app plugin source inventory and release projection.
+- `data/seis-core-plugin-catalog.json`: generated metadata catalog consumed by the Plugins view for real app-owned search and inspection.
+- `plugins/seis-core/bin/seis-core-plugins.mjs`: application-local list, search, inspect, status, and approval-plan CLI.
 
 ## Folder Structure
 
@@ -49,7 +53,7 @@ apps/seis-core/
 - Repositories: filter chips, health cards, documentation coverage, security posture, testing status, and dependency overview.
 - Documentation: index and coverage plan.
 - Agents: mode cards, capabilities, tasks, logs, outputs, AI system support, orchestration lanes, 10-lane routing matrix, handoff audit, and inspector sync.
-- Plugins & Extensions: plugin family health, permission posture, update gates, and activation policy.
+- Plugins & Extensions: plugin family health, the generated 50-plugin app catalog, search, permission posture, update gates, activation policy, and the app-owned personal plugin source boundary.
 - Automation Center: workflows, triggers, run history, approval gates, rollback evidence, and execution gates.
 - Security Center: risk reports, permission reviews, dependency scans, security audits, access model, and no-secret policy.
 - Architecture Center: system map, module relationships, dependency graph, technical debt register, and platform phases.
@@ -74,6 +78,9 @@ apps/seis-core/
 - Review handoff audit records between Architect, Builder, Security, Research, and Design lanes.
 - Inspect recent activity across builder, security, architecture, and automation lanes.
 - Inspect plugin, automation run history, approval gate, rollback evidence, security operations, and AI system surfaces.
+- Inspect the 50 local app-owned plugin packages from `plugins/seis-core` through the source inventory and read-only AI Core registry projection.
+- Search and inspect the same 50 packages from the Command Center catalog; status checks remain bounded to each plugin's local `--status` entrypoint.
+- Inspect the gradual app plugin release train at `0.00000001`; large-code changes advance one micro step, annual/major updates advance one major step, and no bulk jump is allowed.
 - Inspect permission reviews, dependency scans, and security audit evidence.
 - Inspect architecture dependency graph, module contracts, and technical debt register.
 - Inspect knowledge graph nodes, memory freshness, decision history, and reusable implementation patterns.
@@ -115,4 +122,5 @@ Open `http://127.0.0.1:4174/`.
 ```bash
 node --test apps/seis-core/test/*.test.js
 npm run check:seis-command-center-router
+npm run check:seis-core-plugin-release
 ```

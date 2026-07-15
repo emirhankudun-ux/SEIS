@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-goal-integrity": {
+      "command": "node",
+      "args": ["scripts/seis-goal-integrity-mcp-server.mjs"]
+    }
+  }
+}

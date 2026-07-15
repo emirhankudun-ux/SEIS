@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-a11y-regression": {
+      "command": "node",
+      "args": ["scripts/seis-a11y-regression-mcp-server.mjs"]
+    }
+  }
+}

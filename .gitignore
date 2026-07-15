@@ -153,6 +153,7 @@ ios/
 !packages/seis-ai/data/agent-router-seed-v0.json
 !packages/seis-ai/models/agent-router-seed-v0.json
 !apps/seis-core/data/seis-router-routes.json
+!apps/seis-core/data/seis-core-plugin-catalog.json
 !reports/seis-sub-agent-five-year-demo-evidence.json
 !reports/seis-sub-agent-five-year-demo-run.json
 !reports/seis-model-scaling/20b-16gb-memory-benchmark.json
@@ -252,3 +253,15 @@ reports/seis-ssh-public-access/onboarding-pack-latest.json
 reports/seis-ssh-public-access/onboarding-pack-latest.md
 reports/seis-ssh-public-access/contributor-doctor-latest.json
 reports/seis-ssh-public-access/contributor-doctor-latest.md
+
+# SEIS Command Center personal plugin source boundary
+!plugins/
+!plugins/seis-core/
+!plugins/seis-core/**/
+!plugins/seis-core/**/.codex-plugin/
+!plugins/seis-core/**/.codex-plugin/*.json
+!plugins/seis-core/**/assets/
+!plugins/seis-core/**/assets/**/*.json
+!plugins/seis-core/**/scripts/
+!plugins/seis-core/**/scripts/**/*.mjs
+!plugins/seis-core/**/.mcp.json

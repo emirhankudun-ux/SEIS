@@ -1,0 +1,19 @@
+{
+  "name": "seis-repository-scorecard",
+  "version": "0.0.10",
+  "description": "Read-only local repository scorecard based on evidence files and bounded metadata.",
+  "author": { "name": "Emirhan Kudun" },
+  "license": "UNLICENSED-LOCAL",
+  "keywords": ["seis", "repository", "scorecard", "governance", "read-only"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS Repository Scorecard",
+    "shortDescription": "Score local repository readiness without popularity signals.",
+    "longDescription": "Produces a deterministic, read-only scorecard from local repository metadata, documentation, security, testing and release evidence. It does not query GitHub or claim production health.",
+    "developerName": "Emirhan Kudun",
+    "category": "Developer",
+    "capabilities": ["local-read-only", "evidence-linked"],
+    "defaultPrompt": "Score this local repository using only bounded metadata and explain missing evidence."
+  },
+  "mcpServers": "./.mcp.json"
+}

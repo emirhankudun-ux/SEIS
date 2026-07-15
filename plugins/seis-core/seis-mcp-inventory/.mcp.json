@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-mcp-inventory": {
+      "command": "node",
+      "args": ["scripts/seis-mcp-inventory-mcp-server.mjs"]
+    }
+  }
+}

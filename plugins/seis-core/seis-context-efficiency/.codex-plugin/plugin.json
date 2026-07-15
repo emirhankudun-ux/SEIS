@@ -1,0 +1,19 @@
+{
+  "name": "seis-context-efficiency",
+  "version": "0.0.10",
+  "description": "Measure recorded context usefulness and latency from local evidence.",
+  "author": {
+    "name": "Local developer"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Seis Context Efficiency",
+    "shortDescription": "Measure local context efficiency.",
+    "longDescription": "Compute useful-token ratios and recorded latency summaries without model calls or prompt transmission.",
+    "developerName": "Local developer",
+    "category": "AI",
+    "capabilities": ["local-readonly-analysis"],
+    "defaultPrompt": "Measure recorded context efficiency."
+  },
+  "mcpServers": "./.mcp.json"
+}

@@ -1,0 +1,32 @@
+{
+  "stableId": "seis-release-readiness",
+  "slug": "seis-release-readiness",
+  "version": "0.0.10",
+  "releaseMicroUnits": 10,
+  "releaseRevision": 0,
+  "releaseMajor": 0,
+  "releaseKind": "initial",
+  "releaseTrainVersion": "0.00000001",
+  "category": "release",
+  "owner": "@seis-release",
+  "publisher": "emirhankudun-ux",
+  "sourceClassification": "original-SEIS-local",
+  "license": "UNLICENSED-LOCAL",
+  "status": "approved-local-readonly",
+  "implementationState": "functional-local-demo",
+  "entrypoint": "scripts/seis-release-readiness-mcp-server.mjs",
+  "permissions": {
+    "read": ["recorded local JSON release-check evidence"],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "risk": "low",
+  "validation": [
+    "node scripts/seis-release-readiness-mcp-server.mjs --status",
+    "node scripts/seis-release-readiness-mcp-server.mjs --report --path /path/to/tree"
+  ],
+  "rollback": "Disable or remove the local plugin; no source data is mutated.",
+  "reviewState": "local-development",
+  "provenance": "Created from the SEIS master prompt plugin portfolio for SEIS-GOAL-021."
+}

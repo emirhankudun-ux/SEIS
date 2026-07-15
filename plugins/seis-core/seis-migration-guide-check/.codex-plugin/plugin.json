@@ -1,0 +1,19 @@
+{
+  "name": "seis-migration-guide-check",
+  "version": "0.0.10",
+  "description": "Check local migration and compatibility guidance without changing release documentation.",
+  "author": { "name": "Emirhan Kudun" },
+  "license": "UNLICENSED-LOCAL",
+  "keywords": ["seis", "migration", "compatibility", "rollback", "read-only"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS Migration Guide Check",
+    "shortDescription": "Check migration, compatibility and rollback guidance.",
+    "longDescription": "Inspects bounded local Markdown release guidance for migration, compatibility and rollback sections. It never edits docs or certifies a migration.",
+    "developerName": "Emirhan Kudun",
+    "category": "Developer",
+    "capabilities": ["local-read-only", "migration-review"],
+    "defaultPrompt": "Check migration and rollback guidance in this local repository."
+  },
+  "mcpServers": "./.mcp.json"
+}

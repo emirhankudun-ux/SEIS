@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-community-health": {
+      "command": "node",
+      "args": ["scripts/seis-community-health-mcp-server.mjs"]
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "id": "seis-workspace-inspector",
+  "name": "seis-workspace-inspector",
+  "version": "0.0.10",
+  "description": "Read-only local workspace metadata and technology inventory for SEIS.",
+  "author": {
+    "name": "emirhankudun-ux"
+  },
+  "license": "UNLICENSED-LOCAL",
+  "keywords": ["seis", "workspace", "inventory", "read-only"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "SEIS Workspace Inspector",
+    "shortDescription": "Inspect workspace metadata without changing files.",
+    "longDescription": "A deterministic, local-only SEIS foundation plugin that inventories safe workspace metadata, common technology manifests, and repository markers without network access, secret access, or filesystem writes.",
+    "developerName": "emirhankudun-ux",
+    "category": "Developer",
+    "capabilities": [
+      "Read-only workspace inventory",
+      "Technology manifest detection",
+      "Symlink-safe scanning",
+      "Local deterministic reports"
+    ],
+    "defaultPrompt": [
+      "Inspect this workspace safely.",
+      "Detect the project stack without changing files.",
+      "Report safe workspace metadata for SEIS."
+    ],
+    "brandColor": "#2563EB"
+  }
+}

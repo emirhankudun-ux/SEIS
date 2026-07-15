@@ -7,13 +7,15 @@
   "bin": {
     "seis-mcp": "bin/seis-mcp.mjs",
     "seis-agent": "bin/seis-agent.mjs",
-    "seis-check": "bin/seis-check.mjs"
+    "seis-check": "bin/seis-check.mjs",
+    "seis-plugin-registry": "bin/seis-plugin-registry.mjs"
   },
   "scripts": {
     "test": "node --test test/**/*.test.mjs",
     "check": "node bin/seis-check.mjs",
     "mcp": "node bin/seis-mcp.mjs",
-    "agent": "node bin/seis-agent.mjs"
+    "agent": "node bin/seis-agent.mjs",
+    "plugin-registry": "node bin/seis-plugin-registry.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.103.0",

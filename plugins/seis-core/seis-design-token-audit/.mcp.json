@@ -1,0 +1,3 @@
+{
+  "mcpServers": { "seis-design-token-audit": { "command": "node", "args": ["scripts/seis-design-token-audit-mcp-server.mjs"] } }
+}

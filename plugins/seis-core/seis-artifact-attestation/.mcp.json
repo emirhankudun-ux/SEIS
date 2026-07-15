@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-artifact-attestation": {
+      "command": "node",
+      "args": ["scripts/seis-artifact-attestation-mcp-server.mjs"]
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-maintainer-risk": {
+      "command": "node",
+      "args": ["scripts/seis-maintainer-risk-mcp-server.mjs"]
+    }
+  }
+}

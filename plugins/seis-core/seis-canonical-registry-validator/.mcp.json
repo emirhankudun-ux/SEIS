@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-canonical-registry-validator": {
+      "command": "node",
+      "args": ["scripts/seis-canonical-registry-validator-mcp-server.mjs"]
+    }
+  }
+}

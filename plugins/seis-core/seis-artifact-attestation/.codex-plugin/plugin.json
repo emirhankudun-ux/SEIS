@@ -1,0 +1,19 @@
+{
+  "name": "seis-artifact-attestation",
+  "version": "0.0.10",
+  "description": "Review local artifact provenance evidence without signing or publishing artifacts.",
+  "author": {
+    "name": "Local developer"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Seis Artifact Attestation",
+    "shortDescription": "Review local artifact provenance.",
+    "longDescription": "Inspect bounded artifact manifests and digest evidence without writing signatures, contacting registries, or publishing artifacts.",
+    "developerName": "Local developer",
+    "category": "Security",
+    "capabilities": ["local-readonly-analysis", "provenance-review"],
+    "defaultPrompt": "Review local artifact provenance evidence."
+  },
+  "mcpServers": "./.mcp.json"
+}

@@ -1,0 +1,19 @@
+{
+  "name": "seis-download-anomaly",
+  "version": "0.0.10",
+  "description": "Detect deterministic download-count outliers in recorded local metrics.",
+  "author": {
+    "name": "Local developer"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Seis Download Anomaly",
+    "shortDescription": "Find local download anomalies.",
+    "longDescription": "Analyze recorded download counts with a transparent median and MAD threshold without querying a registry.",
+    "developerName": "Local developer",
+    "category": "Data",
+    "capabilities": ["local-readonly-analysis", "deterministic-outlier-detection"],
+    "defaultPrompt": "Find anomalies in recorded download metrics."
+  },
+  "mcpServers": "./.mcp.json"
+}

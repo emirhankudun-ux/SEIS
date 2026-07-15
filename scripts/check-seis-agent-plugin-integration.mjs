@@ -8,10 +8,21 @@ const failures = [];
 const manifestPath = path.join(root, "content", "development", "seis-agent-plugin-integration.json");
 const docsPath = path.join(root, "docs", "platform", "seis-agent-plugin-integration.md");
 const packagePath = path.join(root, "package.json");
+const gitignorePath = path.join(root, ".gitignore");
 const toolsPath = path.join(root, "packages", "seis-ai", "src", "agent", "tools.mjs");
 const loopPath = path.join(root, "packages", "seis-ai", "src", "agent", "loop.mjs");
 const mcpPath = path.join(root, "packages", "seis-ai", "src", "mcp", "server.mjs");
 const helperPath = path.join(root, "packages", "seis-ai", "src", "lib", "plugin-integration.mjs");
+const pluginRegistryPath = path.join(root, "content", "development", "seis-ai-core-plugin-registry.json");
+const personalPluginCoveragePath = path.join(root, "content", "development", "seis-ai-core-personal-plugin-coverage.json");
+const appPluginSourcesPath = path.join(root, "apps", "seis-core", "data", "seis-core-plugin-sources.json");
+const appPluginCatalogPath = path.join(root, "apps", "seis-core", "data", "seis-core-plugin-catalog.json");
+const releaseTrainPath = path.join(root, "content", "development", "seis-core-plugin-release-train.json");
+const appPluginCatalogScriptPath = path.join(root, "scripts", "create-seis-core-plugin-catalog.mjs");
+const appPluginCatalogRuntimePath = path.join(root, "plugins", "seis-core", "runtime", "plugin-catalog.mjs");
+const appPluginCliPath = path.join(root, "plugins", "seis-core", "bin", "seis-core-plugins.mjs");
+const pluginRegistryHelperPath = path.join(root, "packages", "seis-ai", "src", "lib", "plugin-registry.mjs");
+const pluginSourceCheckPath = path.join(root, "scripts", "check-seis-ai-core-plugin-sources.mjs");
 const installSmokePath = path.join(root, "scripts", "check-seis-public-plugin-install-smoke.mjs");
 const lifecycleScriptPath = path.join(root, "scripts", "create-seis-public-plugin-lifecycle.mjs");
 const freshTaskProofScriptPath = path.join(root, "scripts", "create-seis-public-plugin-fresh-task-proof.mjs");
@@ -91,10 +102,21 @@ for (const [filePath, label] of [
   [manifestPath, "plugin integration manifest"],
   [docsPath, "plugin integration docs"],
   [packagePath, "package.json"],
+  [gitignorePath, "repository gitignore"],
   [toolsPath, "SEIS AI tool loop"],
   [loopPath, "SEIS AI loop"],
   [mcpPath, "SEIS AI MCP server"],
   [helperPath, "SEIS AI plugin integration helper"],
+  [pluginRegistryPath, "SEIS AI Core plugin registry"],
+  [personalPluginCoveragePath, "SEIS AI personal plugin coverage"],
+  [appPluginSourcesPath, "SEIS Command Center app plugin source manifest"],
+  [appPluginCatalogPath, "SEIS Command Center app plugin catalog"],
+  [releaseTrainPath, "SEIS Command Center app plugin release train"],
+  [appPluginCatalogScriptPath, "SEIS Core app plugin catalog generator"],
+  [appPluginCatalogRuntimePath, "SEIS Core app plugin catalog runtime"],
+  [appPluginCliPath, "SEIS Core app plugin CLI"],
+  [pluginRegistryHelperPath, "SEIS AI Core plugin registry helper"],
+  [pluginSourceCheckPath, "SEIS AI Core plugin source checker"],
   [installSmokePath, "SEIS public plugin install smoke checker"],
   [lifecycleScriptPath, "SEIS public plugin lifecycle generator"],
   [freshTaskProofScriptPath, "SEIS public plugin fresh-task proof generator"],
@@ -130,11 +152,25 @@ for (const [filePath, label] of [
 
 const manifest = readJson(manifestPath, "plugin integration manifest");
 const packageJson = readJson(packagePath, "package.json");
+const gitignore = readText(gitignorePath, "repository gitignore");
 const docs = readText(docsPath, "plugin integration docs");
 const tools = readText(toolsPath, "SEIS AI tool loop");
 const loop = readText(loopPath, "SEIS AI loop");
 const mcp = readText(mcpPath, "SEIS AI MCP server");
 const helper = readText(helperPath, "SEIS AI plugin integration helper");
+const pluginRegistry = readJson(pluginRegistryPath, "SEIS AI Core plugin registry");
+const personalPluginCoverage = readJson(personalPluginCoveragePath, "SEIS AI personal plugin coverage");
+const appPluginSources = readJson(appPluginSourcesPath, "SEIS Command Center app plugin source manifest");
+const appPluginCatalog = readJson(appPluginCatalogPath, "SEIS Command Center app plugin catalog");
+const releaseTrain = readJson(releaseTrainPath, "SEIS Command Center app plugin release train");
+const appRelease = releaseTrain?.currentRelease || {};
+const appReleaseLabel = appRelease.label || null;
+const appReleaseSemver = appRelease.semver || null;
+const pluginRegistryHelper = readText(pluginRegistryHelperPath, "SEIS AI Core plugin registry helper");
+const pluginSourceCheck = readText(pluginSourceCheckPath, "SEIS AI Core plugin source checker");
+const appPluginCatalogScript = readText(appPluginCatalogScriptPath, "SEIS Core app plugin catalog generator");
+const appPluginCatalogRuntime = readText(appPluginCatalogRuntimePath, "SEIS Core app plugin catalog runtime");
+const appPluginCli = readText(appPluginCliPath, "SEIS Core app plugin CLI");
 const webIndex = readText(webIndexPath, "SEIS demo index");
 const webScript = readText(webScriptPath, "SEIS demo script");
 const desktopScript = readText(desktopScriptPath, "SEIS desktop script");
@@ -149,6 +185,14 @@ if (manifest) {
   ensure(manifest.canonicalAgent?.standaloneLaneInstallMode === "source-module-only", "standalone lane install mode must retain source modules without public installs");
   ensure(manifest.canonicalAgent?.publicPluginContract === "content/development/seis-public-plugin-family.json", "canonical agent must point at the public plugin family contract");
   ensure(manifest.canonicalAgent?.unifiedSuite === "plugins/seis-ai-agent/assets/unified-suite.json", "canonical agent must point at the unified suite");
+  ensure(manifest.canonicalAgent?.aiCorePluginRegistry === "content/development/seis-ai-core-plugin-registry.json", "canonical agent must point at the AI Core plugin registry");
+  ensure(manifest.canonicalAgent?.applicationPluginSourceRoot === "plugins/seis-core", "canonical agent must expose the app-owned plugin source root");
+  ensure(manifest.canonicalAgent?.applicationPluginManifest === "apps/seis-core/data/seis-core-plugin-sources.json", "canonical agent must expose the app plugin source manifest");
+  ensure(manifest.canonicalAgent?.applicationPluginReleaseTrain === "content/development/seis-core-plugin-release-train.json", "canonical agent must expose the app plugin release train");
+  ensure(manifest.canonicalAgent?.applicationPluginReleaseLabel === appReleaseLabel, "canonical agent app release label is stale");
+  ensure(manifest.canonicalAgent?.applicationPluginReleaseSemver === appReleaseSemver, "canonical agent app release semver is stale");
+  ensure(manifest.canonicalAgent?.applicationPluginReleaseMajor === appRelease.major, "canonical agent app release major is stale");
+  ensure(manifest.canonicalAgent?.applicationPluginReleaseRevision === appRelease.revision, "canonical agent app release revision is stale");
   ensure(manifest.unifiedPluginSuite?.canonicalInstallId === "seis-ai-agent@seis-repo", "manifest unified suite must keep SEIS-Agent canonical");
   ensure(manifest.unifiedPluginSuite?.defaultInstallMode === "single-public-plugin", "manifest unified suite must use one public install");
   ensure(manifest.unifiedPluginSuite?.minimumComponentCount === 10, "manifest unified suite must set the current component minimum");
@@ -156,6 +200,15 @@ if (manifest) {
   ensure(manifest.unifiedPluginSuite?.futurePluginRule?.includes("unified-suite.json"), "manifest unified suite must route future plugins into the unified suite");
   ensure(manifest.unifiedPluginSuite?.legacyAliasCount === 5, "manifest unified suite must preserve five aliases");
   ensure(manifest.unifiedPluginSuite?.personalMarketplaceMutation === false, "manifest unified suite must not mutate the personal marketplace");
+  ensure(manifest.unifiedPluginSuite?.aiCorePluginRegistry === "content/development/seis-ai-core-plugin-registry.json", "manifest unified suite must point at the AI Core plugin registry");
+  ensure(manifest.unifiedPluginSuite?.aiCorePluginRegistryEntryCount === 5000, "manifest unified suite must expose the 5000-entry AI Core plugin registry target");
+  ensure(manifest.unifiedPluginSuite?.applicationPluginSourceRoot === "plugins/seis-core", "manifest unified suite must expose the app-owned plugin source root");
+  ensure(manifest.unifiedPluginSuite?.applicationPluginManifest === "apps/seis-core/data/seis-core-plugin-sources.json", "manifest unified suite must expose the app plugin source manifest");
+  ensure(manifest.unifiedPluginSuite?.applicationPluginReleaseTrain === "content/development/seis-core-plugin-release-train.json", "manifest unified suite must expose the app plugin release train");
+  ensure(manifest.unifiedPluginSuite?.applicationPluginReleaseLabel === appReleaseLabel, "manifest unified suite app release label is stale");
+  ensure(manifest.unifiedPluginSuite?.applicationPluginReleaseSemver === appReleaseSemver, "manifest unified suite app release semver is stale");
+  ensure(manifest.unifiedPluginSuite?.applicationPluginReleaseMajor === appRelease.major, "manifest unified suite app release major is stale");
+  ensure(manifest.unifiedPluginSuite?.applicationPluginReleaseRevision === appRelease.revision, "manifest unified suite app release revision is stale");
   ensureArrayIncludesAll(manifest.canonicalAgent?.publishedPluginFamily, requiredPublicPlugins.map((id) => id.replace("@seis-repo", "")), "canonicalAgent.publishedPluginFamily");
   ensure(manifest.canonicalAgent?.publishedPluginFamily?.length === 1, "canonicalAgent.publishedPluginFamily must contain only SEIS-Agent");
   ensure(manifest.auditedSnapshot?.installedEnabledCount === 185, "manifest must record the 2026-06-19 installed-enabled count");
@@ -170,6 +223,17 @@ if (manifest) {
   ensureArrayIncludesAll((manifest.personalPlugins || []).map((plugin) => plugin.id), requiredPersonalPlugins, "personalPlugins");
   ensureArrayIncludesAll((manifest.lanes || []).map((lane) => lane.id), requiredLanes, "lanes");
   ensure(manifest.helperPluginUniverse?.uniquePlugins === 300, "helper plugin universe must keep the requested unique plugin count");
+  ensure(manifest.helperPluginUniverse?.canonicalSeisAiCoreRegistry === "content/development/seis-ai-core-plugin-registry.json", "helper plugin universe must point at the canonical SEIS AI Core plugin registry");
+  ensure(manifest.helperPluginUniverse?.canonicalSeisAiCorePluginCount === 5000, "helper plugin universe must expose the 5000-entry SEIS AI Core plugin registry");
+  ensure(manifest.helperPluginUniverse?.personalPluginCoverage === "content/development/seis-ai-core-personal-plugin-coverage.json", "helper plugin universe must expose personal plugin coverage");
+  ensure(manifest.helperPluginUniverse?.personalPluginCount === 55, "helper plugin universe must expose 55 personal plugins");
+  ensure(manifest.helperPluginUniverse?.applicationPluginSourceRoot === "plugins/seis-core", "helper plugin universe must expose the app-owned source root");
+  ensure(manifest.helperPluginUniverse?.applicationPluginReleaseTrain === "content/development/seis-core-plugin-release-train.json", "helper plugin universe must expose the app plugin release train");
+  ensure(manifest.helperPluginUniverse?.applicationPluginReleaseLabel === appReleaseLabel, "helper plugin universe app release label is stale");
+  ensure(manifest.helperPluginUniverse?.applicationPluginReleaseSemver === appReleaseSemver, "helper plugin universe app release semver is stale");
+  ensure(manifest.helperPluginUniverse?.applicationPluginReleaseMajor === appRelease.major, "helper plugin universe app release major is stale");
+  ensure(manifest.helperPluginUniverse?.applicationPluginReleaseRevision === appRelease.revision, "helper plugin universe app release revision is stale");
+  ensure(manifest.helperPluginUniverse?.applicationOwnedPluginCount === 50, "helper plugin universe must expose 50 app-owned plugins");
   ensure(manifest.runtimeIntegration?.toolLoopTool === "seis_plugin_integration", "runtimeIntegration must expose the tool-loop tool");
   ensure(manifest.runtimeIntegration?.publicPluginFamilyTool === "seis_public_plugin_family", "runtimeIntegration must expose the public plugin family tool-loop tool");
   ensure(manifest.runtimeIntegration?.providerRegistryTool === "seis_ai_core_provider_status", "runtimeIntegration must expose the SEIS AI Core provider status tool");
@@ -186,10 +250,21 @@ if (manifest) {
   ensure(manifest.runtimeIntegration?.mcpPublicPluginFamilyResource === "seis://agent/public-plugin-family.json", "runtimeIntegration must expose the public plugin family MCP resource");
   ensure(manifest.runtimeIntegration?.mcpPublicPluginLifecycleResource === "seis://agent/public-plugin-lifecycle.json", "runtimeIntegration must expose the public plugin lifecycle MCP resource");
   ensure(manifest.runtimeIntegration?.unifiedSuite === "plugins/seis-ai-agent/assets/unified-suite.json", "runtimeIntegration must expose the unified suite");
+  ensure(manifest.runtimeIntegration?.pluginRegistryPath === "content/development/seis-ai-core-plugin-registry.json", "runtimeIntegration must expose the plugin registry path");
+  ensure(manifest.runtimeIntegration?.pluginRegistryTool === "seis_ai_core_plugin_registry_status", "runtimeIntegration must expose the plugin registry tool");
+  ensure(manifest.runtimeIntegration?.pluginRegistryResource === "seis://ai/plugin-registry.json", "runtimeIntegration must expose the plugin registry resource");
+  ensure(manifest.runtimeIntegration?.applicationPluginSourceRoot === "plugins/seis-core", "runtimeIntegration must expose the app-owned plugin source root");
+  ensure(manifest.runtimeIntegration?.applicationPluginManifest === "apps/seis-core/data/seis-core-plugin-sources.json", "runtimeIntegration must expose the app plugin source manifest");
+  ensure(manifest.runtimeIntegration?.applicationPluginReleaseTrain === "content/development/seis-core-plugin-release-train.json", "runtimeIntegration must expose the app plugin release train");
+  ensure(manifest.runtimeIntegration?.applicationPluginReleaseLabel === appReleaseLabel, "runtimeIntegration app release label is stale");
+  ensure(manifest.runtimeIntegration?.applicationPluginReleaseSemver === appReleaseSemver, "runtimeIntegration app release semver is stale");
+  ensure(manifest.runtimeIntegration?.applicationPluginReleaseMajor === appRelease.major, "runtimeIntegration app release major is stale");
+  ensure(manifest.runtimeIntegration?.applicationPluginReleaseRevision === appRelease.revision, "runtimeIntegration app release revision is stale");
   ensureArrayIncludesAll(manifest.runtimeIntegration?.mcpResources, [
     "seis://agent/plugin-integration.json",
     "seis://agent/public-plugin-family.json",
     "seis://agent/public-plugin-lifecycle.json",
+    "seis://ai/plugin-registry.json",
     "seis://ai/version-registry.json",
     "seis://ai/provider-registry.json",
     "seis://ai/model-scaling-hardware-profile.json",
@@ -216,6 +291,13 @@ if (manifest) {
     "seis://ai/subagent-runtime-fixtures.json",
     "seis://ai/subagent-review-ledger.json"
   ], "runtimeIntegration.mcpResources");
+  ensure(manifest.applicationIntegration?.surface === "apps/seis-core", "application integration must target the SEIS Command Center app");
+  ensure(manifest.applicationIntegration?.panel === "Plugins & Extensions", "application integration must expose the app plugin panel");
+  ensure(manifest.applicationIntegration?.pluginReleaseTrain === "content/development/seis-core-plugin-release-train.json", "application integration must expose the app plugin release train");
+  ensure(manifest.applicationIntegration?.pluginReleaseLabel === appReleaseLabel, "application integration app release label is stale");
+  ensure(manifest.applicationIntegration?.pluginReleaseSemver === appReleaseSemver, "application integration app release semver is stale");
+  ensure(manifest.applicationIntegration?.pluginReleaseMajor === appRelease.major, "application integration app release major is stale");
+  ensure(manifest.applicationIntegration?.pluginReleaseRevision === appRelease.revision, "application integration app release revision is stale");
   ensureArrayIncludesAll(
     manifest.runtimeIntegration?.directPersonalLaneTools,
     requiredDirectLaneTools,
@@ -273,6 +355,13 @@ if (manifest) {
     ensureFile(path.join(root, manifest.fiveYearSubagentDevelopment?.[key] || ""), label);
   }
   ensureArrayIncludesAll(manifest.qualityCommands, [
+    "npm run check:seis-ai-core-plugin-registry",
+    "npm run check:seis-ai-personal-plugin-coverage",
+    "npm run check:seis-core-plugin-sources",
+    "npm run check:seis-core-plugin-release",
+    "npm run check:seis-core-plugin-catalog",
+    "npm run check:seis-core-plugin-matrix",
+    "npm run check:seis-ai-core-plugin-sources",
     "npm run check:seis-agent-plugin-integration",
     "npm run check:seis-public-plugin-lifecycle",
     "npm run check:seis-public-plugin-family",
@@ -302,6 +391,68 @@ if (manifest) {
     "npm test --prefix packages/seis-ai"
   ], "qualityCommands");
 
+  ensure(pluginRegistry?.id === "seis-ai-core-plugin-registry", "AI Core plugin registry id must be stable");
+  ensure(pluginRegistry?.goalId === "SEIS-GOAL-021", "AI Core plugin registry must bind to SEIS-GOAL-021");
+  ensure(pluginRegistry?.target?.registryEntryCount === 5000, "AI Core plugin registry must contain exactly 5000 entries");
+  ensure(pluginRegistry?.target?.appOwnedPluginCount === 50, "AI Core plugin registry must record 50 app-owned personal plugins");
+  ensure(pluginRegistry?.applicationRelease?.releaseTrainPath === "content/development/seis-core-plugin-release-train.json", "AI Core plugin registry must expose the app plugin release train");
+  ensure(pluginRegistry?.applicationRelease?.label === appReleaseLabel, "AI Core plugin registry app release label is stale");
+  ensure(pluginRegistry?.applicationRelease?.semver === appReleaseSemver, "AI Core plugin registry app release semver is stale");
+  ensure(pluginRegistry?.applicationRelease?.major === appRelease.major, "AI Core plugin registry app release major is stale");
+  ensure(pluginRegistry?.applicationRelease?.revision === appRelease.revision, "AI Core plugin registry app release revision is stale");
+  ensure(pluginRegistry?.target?.appReleaseLabel === appReleaseLabel, "AI Core plugin registry target app release label is stale");
+  ensure(pluginRegistry?.target?.appReleaseSemver === appReleaseSemver, "AI Core plugin registry target app release semver is stale");
+  ensure(pluginRegistry?.target?.appReleaseMajor === appRelease.major, "AI Core plugin registry target app release major is stale");
+  ensure(pluginRegistry?.target?.appReleaseRevision === appRelease.revision, "AI Core plugin registry target app release revision is stale");
+  ensure(pluginRegistry?.canonicalOwnership?.applicationPluginSourceRoot === "plugins/seis-core", "AI Core plugin registry must point at the app-owned plugin source root");
+  ensure(pluginRegistry?.canonicalOwnership?.applicationPluginManifest === "apps/seis-core/data/seis-core-plugin-sources.json", "AI Core plugin registry must point at the app plugin source manifest");
+  ensure(pluginRegistry?.target?.personalPluginCount === 55 && pluginRegistry?.target?.personalRepoCounterpartCount === 55, "AI Core plugin registry must record complete personal plugin coverage");
+  ensure(pluginRegistry?.canonicalOwnership?.personalPluginCoverage === "content/development/seis-ai-core-personal-plugin-coverage.json", "AI Core plugin registry must point at personal plugin coverage");
+  ensure(personalPluginCoverage?.personalMarketplace?.pluginCount === 55, "personal plugin coverage must include 55 marketplace plugins");
+  ensure(personalPluginCoverage?.repository?.counterpartCount === 55, "personal plugin coverage must include 55 repository counterparts");
+  ensure(personalPluginCoverage?.repository?.migratedCount === 50, "personal plugin coverage must include 50 migrated packages");
+  ensure(personalPluginCoverage?.repository?.applicationOwnedCount === 50, "personal plugin coverage must include 50 app-owned packages");
+  ensure(personalPluginCoverage?.repository?.applicationSourceRoot === "plugins/seis-core", "personal plugin coverage must point at the app-owned source root");
+  ensure(personalPluginCoverage?.repository?.missingRepoCounterparts?.length === 0, "personal plugin coverage must have no missing repository counterparts");
+  ensure(appPluginSources?.owner === "apps/seis-core", "app plugin source manifest must be owned by apps/seis-core");
+  ensure(appPluginSources?.pluginCount === 50, "app plugin source manifest must list 50 packages");
+  ensure(appPluginSources?.releaseTrainPath === "content/development/seis-core-plugin-release-train.json", "app plugin source manifest must expose the release train");
+  ensure(appPluginSources?.releaseTrainVersion === appReleaseLabel, "app plugin source manifest release label is stale");
+  ensure(appPluginSources?.releaseSemver === appReleaseSemver, "app plugin source manifest release semver is stale");
+  ensure(appPluginSources?.releaseMajor === appRelease.major, "app plugin source manifest release major is stale");
+  ensure(appPluginSources?.releaseRevision === appRelease.revision, "app plugin source manifest release revision is stale");
+  ensure(appPluginCatalog?.id === "seis-core-application-plugin-catalog", "app plugin catalog id must be stable");
+  ensure(appPluginCatalog?.sourceRoot === "plugins/seis-core", "app plugin catalog source root is invalid");
+  ensure(appPluginCatalog?.counts?.discovered === 50, "app plugin catalog must discover 50 packages");
+  ensure(appPluginCatalog?.plugins?.length === 50, "app plugin catalog must contain 50 packages");
+  ensure(appPluginCatalog?.release?.label === appReleaseLabel, "app plugin catalog release label is stale");
+  ensure(appPluginCatalog?.policy?.sourceMutation === false, "app plugin catalog must not mutate source");
+  ensure(appPluginCatalog?.policy?.executableAction === "status-only", "app plugin catalog executable action must be status-only");
+  ensure(appPluginCatalog?.counts?.statusReady === 50, "app plugin catalog must expose 50 ready status checks");
+  ensure(packageJson.scripts?.["check:seis-core-plugin-catalog"] === "node scripts/create-seis-core-plugin-catalog.mjs --check", "package scripts must expose the app plugin catalog check");
+  ensure(packageJson.scripts?.["seis:core:plugins"] === "node plugins/seis-core/bin/seis-core-plugins.mjs", "package scripts must expose the app plugin CLI");
+  ensure(gitignore.includes("!apps/seis-core/data/seis-core-plugin-catalog.json"), "repository gitignore must track the app plugin catalog");
+  ensure(releaseTrain?.currentRelease?.label === appReleaseLabel, "app plugin release train current label is invalid");
+  ensure(releaseTrain?.currentRelease?.semver === appReleaseSemver, "app plugin release train current semver is invalid");
+  ensure(gitignore.includes("!plugins/seis-core/**/.codex-plugin/*.json"), "repository gitignore must track app plugin manifests");
+  ensure(gitignore.includes("!plugins/seis-core/**/assets/**/*.json"), "repository gitignore must track app plugin profile metadata");
+  const corePluginRoot = path.join(root, "packages", "seis-ai", "plugins");
+  ensure(!fs.existsSync(corePluginRoot) || !Array.from(fs.readdirSync(corePluginRoot, { withFileTypes: true })).some((entry) => entry.isDirectory()), "AI Core must not own personal plugin source directories");
+  ensure(pluginSourceCheck.includes("--status"), "AI Core plugin source checker must execute bounded status validation");
+  ensure(appPluginCatalogScript.includes("buildApplicationPluginCatalog"), "app plugin catalog generator must use the app runtime catalog");
+  ensure(appPluginCatalogRuntime.includes("APP_PLUGIN_ALLOWED_INSPECTION_ACTIONS"), "app plugin catalog runtime must declare bounded inspection actions");
+  ensure(appPluginCatalogRuntime.includes("approval-required"), "app plugin catalog runtime must expose approval-required plans");
+  ensure(appPluginCli.includes("activation-plan"), "app plugin CLI must expose activation plans");
+  ensure(pluginRegistryHelper.includes("AI_CORE_PLUGIN_REGISTRY_STATUS_TOOL"), "AI Core plugin registry helper must expose the status tool constant");
+  ensure(
+    tools.includes("AI_CORE_PLUGIN_REGISTRY_STATUS_TOOL") || tools.includes("seis_ai_core_plugin_registry_status"),
+    "SEIS AI tool loop must expose the plugin registry status tool"
+  );
+  ensure(
+    mcp.includes("AI_CORE_PLUGIN_REGISTRY_STATUS_TOOL") || mcp.includes("seis_ai_core_plugin_registry_status"),
+    "SEIS AI MCP server must expose the plugin registry status tool"
+  );
+
   for (const plugin of manifest.publicPlugins || []) {
     ensureFile(path.join(root, plugin.sourceMirror || ""), `${plugin.id} source mirror`);
     if (plugin.embeddedSkill) {
@@ -325,6 +476,22 @@ if (manifest) {
 }
 
 if (packageJson) {
+  ensure(
+    packageJson.scripts?.["check:seis-ai-core-plugin-registry"] === "node scripts/create-seis-ai-core-plugin-registry.mjs --check",
+    "package.json must expose check:seis-ai-core-plugin-registry"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-ai-personal-plugin-coverage"] === "node scripts/create-seis-ai-personal-plugin-coverage.mjs --check",
+    "package.json must expose check:seis-ai-personal-plugin-coverage"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-core-plugin-sources"] === "node scripts/check-seis-ai-core-plugin-sources.mjs && node scripts/create-seis-core-plugin-sources.mjs --check",
+    "package.json must expose check:seis-core-plugin-sources"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-ai-core-plugin-sources"] === "node scripts/check-seis-ai-core-plugin-sources.mjs",
+    "package.json must expose check:seis-ai-core-plugin-sources"
+  );
   ensure(
     packageJson.scripts?.["check:seis-agent-plugin-integration"] === "node scripts/check-seis-agent-plugin-integration.mjs",
     "package.json must expose check:seis-agent-plugin-integration"

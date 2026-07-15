@@ -1,0 +1,19 @@
+{
+  "name": "seis-mcp-inventory",
+  "version": "0.0.10",
+  "description": "Inventory local MCP manifests and declared capabilities without starting servers.",
+  "author": { "name": "Emirhan Kudun" },
+  "license": "UNLICENSED-LOCAL",
+  "keywords": ["seis", "mcp", "inventory", "permissions", "read-only"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS MCP Inventory",
+    "shortDescription": "Project declared MCP servers and permission metadata.",
+    "longDescription": "Reads bounded local MCP and plugin manifests and summarizes declared server names, transports and tools. It never starts a server or verifies connectivity.",
+    "developerName": "Emirhan Kudun",
+    "category": "AI",
+    "capabilities": ["local-read-only", "mcp-governance"],
+    "defaultPrompt": "Inventory declared MCP manifests in this local repository."
+  },
+  "mcpServers": "./.mcp.json"
+}

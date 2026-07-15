@@ -1,0 +1,19 @@
+{
+  "name": "seis-plugin-migration",
+  "version": "0.0.10",
+  "description": "Create a read-only migration plan for selected local plugins without copying or executing them.",
+  "author": {
+    "name": "Local developer"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Seis Plugin Migration",
+    "shortDescription": "Plan local plugin migrations safely.",
+    "longDescription": "Inspect selected plugin metadata and produce a dry-run readiness plan; no source copy, execution, or registry mutation occurs.",
+    "developerName": "Local developer",
+    "category": "Developer",
+    "capabilities": ["metadata-only", "dry-run"],
+    "defaultPrompt": "Create a dry-run plan for selected local plugins."
+  },
+  "mcpServers": "./.mcp.json"
+}

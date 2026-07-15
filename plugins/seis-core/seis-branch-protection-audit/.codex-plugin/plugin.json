@@ -1,0 +1,19 @@
+{
+  "name": "seis-branch-protection-audit",
+  "version": "0.0.10",
+  "description": "Audit recorded local branch and ruleset policy declarations without contacting GitHub.",
+  "author": {
+    "name": "Local developer"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Seis Branch Protection Audit",
+    "shortDescription": "Review local branch protection policy.",
+    "longDescription": "Inspect bounded JSON and YAML-like policy evidence for review, status checks, and administrator enforcement without writes.",
+    "developerName": "Local developer",
+    "category": "Security",
+    "capabilities": ["local-readonly-analysis", "policy-review"],
+    "defaultPrompt": "Audit recorded branch protection policy."
+  },
+  "mcpServers": "./.mcp.json"
+}

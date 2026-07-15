@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 2,
+  "id": "seis-core-plugin-release-train",
+  "goalId": "SEIS-GOAL-021",
+  "status": "active-app-release-train",
+  "updatedAt": "2026-07-15",
+  "scope": {
+    "application": "apps/seis-core",
+    "sourceRoot": "plugins/seis-core",
+    "pluginCount": 50,
+    "ownership": "personal-app-owned",
+    "publicSuiteReleaseTrack": "plugins/seis-ai-agent"
+  },
+  "currentRelease": {
+    "label": "0.00000001",
+    "semver": "0.0.10",
+    "major": 0,
+    "minor": 0,
+    "patch": 10,
+    "revision": 0,
+    "microUnits": 10,
+    "kind": "initial",
+    "maturity": "functional-local-demo",
+    "status": "internal-local-app-release",
+    "previousLabel": "0.000000001",
+    "previousSemver": "0.0.1",
+    "trigger": "user-selected initial app release baseline",
+    "codeLines": null,
+    "codeLineThreshold": 500,
+    "annualYear": null,
+    "reason": "The user selected 0.00000001 as the current gradual-release baseline."
+  },
+  "policy": {
+    "labelFormat": "micro 0.<decimal-units> up to 0.999999999; standard <major>.<revision-padded-4>",
+    "manifestVersionFormat": "micro 0.0.<microUnits>; standard <major>.0.<revision>",
+    "minimumLabel": "0.000000001",
+    "initialLabel": "0.00000001",
+    "maximumLabel": "45.0000",
+    "majorUpdateRule": "Every major update increments the shared major by +1, resets the code revision to 0000, and updates every app-owned personal plugin together. The first major update after the micro baseline is 1.0000.",
+    "annualUpdateRule": "Once per calendar year, an approved annual promotion increments the shared major by +1 and updates every app-owned personal plugin together. It never bulk-promotes directly to 45.0000.",
+    "largeCodeChangeRule": "Every explicitly approved large-code promotion increments the micro unit by +1 during the micro stage or the four-digit code revision by +1 after the major stage, updating every app-owned personal plugin together.",
+    "majorIncrement": 1,
+    "annualIncrement": 1,
+    "largeCodeChangeIncrement": 1,
+    "largeCodeChangeThreshold": 500,
+    "currentBaselineLabel": "0.00000001",
+    "nextMicroExample": "0.00000001 -> 0.000000011",
+    "nextAnnualExample": "0.00000001 -> 1.0000",
+    "nextMajorExample": "1.0000 -> 2.0000",
+    "codeRevisionExample": "1.0000 -> 1.0001",
+    "seedSemverMapping": "0.000000001 -> 0.0.1",
+    "initialSemverMapping": "0.00000001 -> 0.0.10",
+    "applicationReleaseScope": "plugins/seis-core only",
+    "catalogSlotsCarryNoApplicationReleaseTrain": true,
+    "publicSuiteUsesSeparateReleaseTrack": true,
+    "publicMarketplaceMutation": false,
+    "publicReleaseAllowed": false,
+    "coreOwnsSource": false,
+    "bulkPromotionAllowed": false
+  },
+  "cadence": {
+    "mode": "gradual",
+    "annualPromotionCommand": "npm run promote:seis-core-plugin-annual-release",
+    "majorPromotionCommand": "npm run promote:seis-core-plugin-major-release",
+    "largeCodePromotionCommand": "npm run promote:seis-core-plugin-release",
+    "currentYear": 2026,
+    "nextAnnualYear": 2027,
+    "rule": "At most one annual +1 is recorded for a calendar year; large-code +1 promotions remain evidence-gated between annual releases.",
+    "lastAnnualYear": null
+  },
+  "legacyLabels": [
+    "26.000",
+    "26.0000",
+    "26.0001",
+    "26.0002"
+  ],
+  "publicSuite": {
+    "path": "plugins/seis-ai-agent",
+    "releaseVersion": "0.3.0+codex.20260712",
+    "managedByThisTrain": false,
+    "reason": "The public orchestrator and embedded suite retain their own review and marketplace release lifecycle."
+  },
+  "sources": {
+    "appManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
+    "registry": "content/development/seis-ai-core-plugin-registry.json",
+    "coverage": "content/development/seis-ai-core-personal-plugin-coverage.json"
+  },
+  "releaseHistory": [
+    {
+      "label": "0.000000001",
+      "semver": "0.0.1",
+      "major": 0,
+      "minor": 0,
+      "patch": 1,
+      "revision": 0,
+      "microUnits": 1,
+      "kind": "bootstrap",
+      "date": "2026-07-15",
+      "status": "bootstrap-baseline"
+    },
+    {
+      "label": "0.00000001",
+      "semver": "0.0.10",
+      "major": 0,
+      "minor": 0,
+      "patch": 10,
+      "revision": 0,
+      "microUnits": 10,
+      "kind": "initial",
+      "date": "2026-07-15",
+      "status": "internal-local-app-release",
+      "trigger": "user-selected initial app release baseline",
+      "codeLines": null,
+      "codeLineThreshold": 500,
+      "annualYear": null,
+      "reason": "The user selected 0.00000001 as the current gradual-release baseline."
+    }
+  ],
+  "qualityGates": [
+    "npm run check:seis-core-plugin-release",
+    "npm run check:seis-core-plugin-sources",
+    "npm run check:seis-ai-core-plugin-registry",
+    "npm test --prefix packages/seis-ai",
+    "git diff --check"
+  ]
+}

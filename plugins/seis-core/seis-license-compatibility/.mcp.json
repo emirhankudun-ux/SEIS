@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-license-compatibility": {
+      "command": "node",
+      "args": ["scripts/seis-license-compatibility-mcp-server.mjs"]
+    }
+  }
+}

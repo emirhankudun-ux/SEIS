@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-github-metrics-collector": {
+      "command": "node",
+      "args": ["scripts/seis-github-metrics-collector-mcp-server.mjs"]
+    }
+  }
+}

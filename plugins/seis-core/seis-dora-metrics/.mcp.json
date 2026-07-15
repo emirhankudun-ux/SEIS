@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-dora-metrics": {
+      "command": "node",
+      "args": ["scripts/seis-dora-metrics-mcp-server.mjs"]
+    }
+  }
+}

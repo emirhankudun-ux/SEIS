@@ -20,6 +20,7 @@ SEIS-Agent development stays directly inside the SEIS repository:
 - repo marketplace: `.agents/plugins/marketplace.json`
 - install id: `seis-ai-agent@seis-repo`
 - terminal installer: `scripts/install-seis-ai-agent.mjs`
+- AI Core registry: `content/development/seis-ai-core-plugin-registry.json`
 
 ## Consolidation Rule
 
@@ -32,6 +33,14 @@ The old `personal` marketplace is a compatibility mirror only. The `seis`,
 `seis-cloud`, `seis-code`, `seis-design`, and `seis-data` directories remain
 source mirrors for lane development, but the repo marketplace publishes only the
 single `seis-ai-agent` plugin card.
+
+The AI Core registry keeps exactly 5000 entries inside the SEIS repository. It
+indexes 50 personal source packages owned by the SEIS Command Center under
+`plugins/seis-core` and separates them from plan-only catalog slots.
+`packages/seis-ai` remains the metadata, contract, permission, and read-only
+inspection layer; it does not own the personal source packages. Catalog
+presence never claims a working provider, MCP server, external integration, or
+public release.
 
 ## Embedded Specialist Lanes
 

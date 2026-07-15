@@ -1,0 +1,832 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-core-plugin-matrix",
+  "goalId": "SEIS-GOAL-021",
+  "application": "apps/seis-core",
+  "sourceRoot": "plugins/seis-core",
+  "generatedAt": "2026-07-15",
+  "release": {
+    "label": "0.00000001",
+    "semver": "0.0.10",
+    "kind": "initial",
+    "major": 0,
+    "revision": 0,
+    "microUnits": 10
+  },
+  "policy": {
+    "mode": "status-only-local-runtime",
+    "sourceMutation": false,
+    "network": "disabled-by-default",
+    "secrets": "not-read",
+    "writePermissionsRequired": false,
+    "timeoutMs": 5000
+  },
+  "pluginCount": 50,
+  "expectedPluginCount": 50,
+  "readyCount": 50,
+  "attentionCount": 0,
+  "failureCount": 0,
+  "failures": [],
+  "plugins": [
+    {
+      "name": "seis-a11y-regression",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-a11y-regression-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-action-pin-audit",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-action-pin-audit-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-agent-audit",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-agent-audit-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-agent-contract-validator",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-agent-contract-validator-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-artifact-attestation",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-artifact-attestation-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-branch-protection-audit",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-branch-protection-audit-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-canonical-registry-validator",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-canonical-registry-validator-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-changelog-validator",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-changelog-validator-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-codeowners-audit",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-codeowners-audit-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-community-health",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-community-health-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-context-efficiency",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-context-efficiency-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-contributor-map",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-contributor-map-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-dependency-freshness",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-dependency-freshness-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-design-token-audit",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-design-token-audit-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-doc-indexer",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-doc-indexer-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-docs-freshness",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-docs-freshness-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-dora-metrics",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-dora-metrics-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-download-anomaly",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-download-anomaly-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-github-metrics-collector",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-github-metrics-collector-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-goal-integrity",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-goal-integrity-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-issue-triage",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-issue-triage-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-license-compatibility",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-license-compatibility-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-localization-coverage",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-localization-coverage-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-maintainer-risk",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-maintainer-risk-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-mcp-inventory",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-mcp-inventory-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-migration-guide-check",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-migration-guide-check-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-model-fallback",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-model-fallback-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-package-adoption",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-package-adoption-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-performance-budget",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-performance-budget-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-personal-plugin-discovery",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-personal-plugin-discovery-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-plugin-migration",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-plugin-migration-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-pr-cycle-time",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-pr-cycle-time-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-provider-health",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-provider-health-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-public-safe-scan",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-public-safe-scan-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-rag-citation-coverage",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-rag-citation-coverage-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-release-cadence",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-release-cadence-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-release-readiness",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-release-readiness-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-repository-health",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-repository-health-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-repository-scorecard",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-repository-scorecard-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-route-explainer",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-route-explainer-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-sbom-generator",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-sbom-generator-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-secret-boundary-scan",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-secret-boundary-scan-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-semver-audit",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-semver-audit-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-source-provenance",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-source-provenance-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-technology-ontology",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-technology-ontology-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-test-flakiness",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-test-flakiness-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-vulnerability-triage",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-vulnerability-triage-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-workflow-linter",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-workflow-linter-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-workflow-permission-audit",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-workflow-permission-audit-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-workspace-inspector",
+      "version": "0.0.10",
+      "releaseTrainVersion": "0.00000001",
+      "entrypoint": "scripts/seis-workspace-inspector-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    }
+  ]
+}

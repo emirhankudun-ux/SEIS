@@ -1,0 +1,19 @@
+{
+  "name": "seis-maintainer-risk",
+  "version": "0.0.10",
+  "description": "Assess recorded ownership and maintainer-risk signals from local evidence.",
+  "author": {
+    "name": "Local developer"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Seis Maintainer Risk",
+    "shortDescription": "Review local maintainer-risk signals.",
+    "longDescription": "Identify missing ownership, stale activity, and low bus-factor signals without contacting GitHub or changing repositories.",
+    "developerName": "Local developer",
+    "category": "Governance",
+    "capabilities": ["local-readonly-analysis", "risk-signals"],
+    "defaultPrompt": "Review recorded maintainer-risk signals."
+  },
+  "mcpServers": "./.mcp.json"
+}

@@ -1,0 +1,32 @@
+{
+  "stableId": "seis-doc-indexer",
+  "slug": "seis-doc-indexer",
+  "version": "0.0.10",
+  "releaseMicroUnits": 10,
+  "releaseRevision": 0,
+  "releaseMajor": 0,
+  "releaseKind": "initial",
+  "releaseTrainVersion": "0.00000001",
+  "category": "knowledge",
+  "owner": "@seis-knowledge",
+  "publisher": "emirhankudun-ux",
+  "sourceClassification": "original-SEIS-local",
+  "license": "UNLICENSED-LOCAL",
+  "status": "approved-local-readonly",
+  "implementationState": "functional-local-demo",
+  "entrypoint": "scripts/seis-doc-indexer-mcp-server.mjs",
+  "permissions": {
+    "read": ["bounded local Markdown and text files"],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "risk": "low",
+  "validation": [
+    "node scripts/seis-doc-indexer-mcp-server.mjs --status",
+    "node scripts/seis-doc-indexer-mcp-server.mjs --search --path /path/to/tree --query SEIS"
+  ],
+  "rollback": "Disable or remove the local plugin; no source data is mutated.",
+  "reviewState": "local-development",
+  "provenance": "Created from the SEIS master prompt plugin portfolio for SEIS-GOAL-021."
+}

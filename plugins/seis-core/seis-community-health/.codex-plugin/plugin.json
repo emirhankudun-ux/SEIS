@@ -1,0 +1,19 @@
+{
+  "name": "seis-community-health",
+  "version": "0.0.10",
+  "description": "Audit local community and contribution templates without contacting GitHub.",
+  "author": { "name": "Emirhan Kudun" },
+  "license": "UNLICENSED-LOCAL",
+  "keywords": ["seis", "community", "contributing", "github", "read-only"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS Community Health",
+    "shortDescription": "Review local contribution, support and conduct templates.",
+    "longDescription": "Checks bounded repository templates for contribution, issue, pull request, support and conduct guidance. It does not query GitHub or assess community activity.",
+    "developerName": "Emirhan Kudun",
+    "category": "Developer",
+    "capabilities": ["local-read-only", "community-review"],
+    "defaultPrompt": "Audit community health templates in this local repository."
+  },
+  "mcpServers": "./.mcp.json"
+}

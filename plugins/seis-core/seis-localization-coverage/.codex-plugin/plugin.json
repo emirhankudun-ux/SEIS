@@ -1,0 +1,19 @@
+{
+  "name": "seis-localization-coverage",
+  "version": "0.0.10",
+  "description": "Compare bounded local localization dictionaries without changing translations.",
+  "author": { "name": "Emirhan Kudun" },
+  "license": "UNLICENSED-LOCAL",
+  "keywords": ["seis", "localization", "i18n", "translation", "read-only"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS Localization Coverage",
+    "shortDescription": "Report missing keys across local locale dictionaries.",
+    "longDescription": "Compares bounded JSON localization dictionaries across locale files and reports missing or extra keys. It does not translate, edit or publish content.",
+    "developerName": "Emirhan Kudun",
+    "category": "Data",
+    "capabilities": ["local-read-only", "localization-review"],
+    "defaultPrompt": "Audit localization key coverage in this local repository."
+  },
+  "mcpServers": "./.mcp.json"
+}

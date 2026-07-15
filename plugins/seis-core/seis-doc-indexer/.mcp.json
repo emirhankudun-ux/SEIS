@@ -1,0 +1,3 @@
+{
+  "mcpServers": { "seis-doc-indexer": { "command": "node", "args": ["scripts/seis-doc-indexer-mcp-server.mjs"] } }
+}

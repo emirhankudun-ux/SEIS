@@ -1,0 +1,32 @@
+{
+  "stableId": "seis-route-explainer",
+  "slug": "seis-route-explainer",
+  "version": "0.0.10",
+  "releaseMicroUnits": 10,
+  "releaseRevision": 0,
+  "releaseMajor": 0,
+  "releaseKind": "initial",
+  "releaseTrainVersion": "0.00000001",
+  "category": "ai-routing",
+  "owner": "@seis-ai-agent",
+  "publisher": "emirhankudun-ux",
+  "sourceClassification": "original-SEIS-local",
+  "license": "UNLICENSED-LOCAL",
+  "status": "approved-local-readonly",
+  "implementationState": "functional-local-demo",
+  "entrypoint": "scripts/seis-route-explainer-mcp-server.mjs",
+  "permissions": {
+    "read": ["task route parameters"],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "risk": "low",
+  "validation": [
+    "node scripts/seis-route-explainer-mcp-server.mjs --status",
+    "node scripts/seis-route-explainer-mcp-server.mjs --explain --taskClass architecture"
+  ],
+  "rollback": "Disable or remove the local plugin; no source data is mutated.",
+  "reviewState": "local-development",
+  "provenance": "Created from the SEIS master prompt plugin portfolio for SEIS-GOAL-021."
+}

@@ -1,0 +1,19 @@
+{
+  "name": "seis-dora-metrics",
+  "version": "0.0.10",
+  "description": "Analyze recorded delivery evidence with local-only DORA-style metrics.",
+  "author": {
+    "name": "Local developer"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Seis Dora Metrics",
+    "shortDescription": "Compute DORA-style delivery signals locally.",
+    "longDescription": "Read bounded, recorded deployment and change evidence without network access, provider calls, or repository writes.",
+    "developerName": "Local developer",
+    "category": "Observability",
+    "capabilities": ["local-readonly-analysis"],
+    "defaultPrompt": "Analyze recorded delivery evidence with DORA-style metrics."
+  },
+  "mcpServers": "./.mcp.json"
+}

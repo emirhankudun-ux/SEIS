@@ -70,6 +70,12 @@ import {
   subagentOperatingModelStatus,
   subagentReviewLedgerStatus,
 } from "../lib/plugin-integration.mjs";
+import {
+  AI_CORE_PLUGIN_REGISTRY_PATH,
+  AI_CORE_PLUGIN_REGISTRY_RESOURCE_URI,
+  AI_CORE_PLUGIN_REGISTRY_STATUS_TOOL,
+  aiCorePluginRegistryStatus,
+} from "../lib/plugin-registry.mjs";
 
 const repoRoot = resolveRepoRoot();
 const webRoot = resolveWebRoot(repoRoot);
@@ -530,6 +536,23 @@ export function buildServer() {
   );
 
   server.tool(
+    AI_CORE_PLUGIN_REGISTRY_STATUS_TOOL,
+    "Read the canonical SEIS AI Core Plugin Registry for the exact 5000-entry target, repo-owned physical plugins, app-owned personal sources, catalog-only capability slots, permission boundaries, and bounded search. Read-only; catalog presence never claims an implemented or connected plugin.",
+    {
+      query: z.string().optional().describe("Optional search across ids, names, owners, categories, domains, and operations"),
+      limit: z.number().optional().int().min(1).max(100).describe("Maximum search results from 1 to 100"),
+      includeFullRegistry: z.boolean().optional().describe("Return the full machine-readable registry"),
+    },
+    async ({ query, limit, includeFullRegistry }) => {
+      try {
+        return jsonResult(aiCorePluginRegistryStatus(repoRoot, { query, limit, includeFullRegistry: includeFullRegistry === true }));
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
+
+  server.tool(
     AI_CORE_PROVIDER_STATUS_TOOL,
     "Read the SEIS AI Core provider registry for zero-key Local Demo, supervised Codex, optional server-only cloud providers, local-provider candidates, public provider states, and security invariants. Read-only; performs no live provider calls, credential validation, network checks, SSH, deployment, or GitHub mutation.",
     {
@@ -834,6 +857,21 @@ Steps:
           uri: "seis://agent/plugin-integration.json",
           mimeType: "application/json",
           text: readFileSync(path.join(repoRoot, ...PLUGIN_INTEGRATION_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "ai-core-plugin-registry",
+    AI_CORE_PLUGIN_REGISTRY_RESOURCE_URI,
+    { description: "SEIS AI Core canonical 5000-entry plugin registry", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: AI_CORE_PLUGIN_REGISTRY_RESOURCE_URI,
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...AI_CORE_PLUGIN_REGISTRY_PATH.split("/")), "utf8"),
         },
       ],
     })

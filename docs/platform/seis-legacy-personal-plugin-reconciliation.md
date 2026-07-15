@@ -1,7 +1,7 @@
 # SEIS Legacy Personal Plugin Reconciliation
 
 Date: 2026-07-14
-Status: active migration evidence; not a public release confirmation
+Status: active migration evidence; 50 local packages copied into the SEIS Command Center application boundary; not a public release confirmation
 
 ## Purpose
 
@@ -42,6 +42,48 @@ marketplace, or copies a local folder into the repository.
 Repo-only modules such as Security, Research, Automation, Product, and the
 SEIS-Agent orchestrator do not require a legacy personal-cache counterpart.
 They are intentional additions to the repository-owned suite.
+
+## SEIS Command Center application migration
+
+On 2026-07-15, the 50 personal-only SEIS plugin packages that were absent from
+the repository were copied, without execution or overwrite, into:
+
+```text
+plugins/seis-core/
+```
+
+The migration intentionally excludes macOS metadata, symlinks, private
+filenames, credentials, environment files, keys, caches, and personal
+marketplace mutation. The canonical Plugin Registry records the migrated
+packages and preserves their local-only license and implementation states:
+
+```text
+content/development/seis-ai-core-plugin-registry.json
+```
+
+The complete 55-name personal coverage evidence is recorded in:
+
+```text
+content/development/seis-ai-core-personal-plugin-coverage.json
+```
+
+It records 55 repository counterparts, five existing-module overlaps and 50
+packages migrated into the SEIS Command Center application source boundary
+without storing the local machine path or mutating the personal marketplace.
+
+The app-owned source inventory is recorded in:
+
+```text
+apps/seis-core/data/seis-core-plugin-sources.json
+```
+
+`packages/seis-ai` owns only the registry projection, contracts, permission
+policy, and read-only inspection runtime. It must not become a second source
+root for the personal packages.
+
+The five overlapping personal lane identities continue to resolve to their
+existing repository source modules. Their older personal folders remain
+compatibility evidence and were not deleted or rewritten.
 
 ## Public-Safe Divergence Rules
 

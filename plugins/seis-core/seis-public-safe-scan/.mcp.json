@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-public-safe-scan": {
+      "command": "node",
+      "args": ["scripts/seis-public-safe-scan-mcp-server.mjs"]
+    }
+  }
+}

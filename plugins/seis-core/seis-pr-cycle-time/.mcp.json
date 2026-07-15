@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-pr-cycle-time": {
+      "command": "node",
+      "args": ["scripts/seis-pr-cycle-time-mcp-server.mjs"]
+    }
+  }
+}

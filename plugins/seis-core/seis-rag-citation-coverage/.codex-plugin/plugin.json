@@ -1,0 +1,19 @@
+{
+  "name": "seis-rag-citation-coverage",
+  "version": "0.0.10",
+  "description": "Measure declared local retrieval citation coverage without running retrieval.",
+  "author": { "name": "Emirhan Kudun" },
+  "license": "UNLICENSED-LOCAL",
+  "keywords": ["seis", "rag", "citation", "knowledge", "read-only"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS RAG Citation Coverage",
+    "shortDescription": "Measure source citation fields in recorded retrieval output.",
+    "longDescription": "Reads bounded local JSON retrieval records and reports responses with source or citation references. It does not run RAG, score groundedness or expose document content.",
+    "developerName": "Emirhan Kudun",
+    "category": "Data",
+    "capabilities": ["local-read-only", "knowledge-evidence"],
+    "defaultPrompt": "Measure citation coverage in recorded local retrieval outputs."
+  },
+  "mcpServers": "./.mcp.json"
+}

@@ -1,0 +1,19 @@
+{
+  "name": "seis-pr-cycle-time",
+  "version": "0.0.10",
+  "description": "Measure recorded pull-request cycle times from local evidence.",
+  "author": {
+    "name": "Local developer"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Seis Pr Cycle Time",
+    "shortDescription": "Measure local PR cycle-time evidence.",
+    "longDescription": "Read recorded pull-request timestamps and summarize cycle-time distributions without GitHub access or writes.",
+    "developerName": "Local developer",
+    "category": "Developer",
+    "capabilities": ["local-readonly-analysis"],
+    "defaultPrompt": "Measure recorded pull-request cycle times."
+  },
+  "mcpServers": "./.mcp.json"
+}

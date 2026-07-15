@@ -33,6 +33,12 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /repositoryFilter/);
   assert.match(script, /activeAgent/);
   assert.match(script, /pluginFamilies/);
+  assert.match(script, /SEIS Command Center App Plugins/);
+  assert.match(script, /plugins\/seis-core/);
+  assert.match(script, /seis-core-plugin-catalog\.json/);
+  assert.match(script, /app-plugin-filter/);
+  assert.match(script, /loadSeisCorePluginArtifact/);
+  assert.match(script, /at app release \d+\.\d{4}/);
   assert.match(script, /automationWorkflows/);
   assert.match(script, /godModeLanes/);
   assert.match(script, /godModeProtocol/);
@@ -80,6 +86,34 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /decisionHistory/);
   assert.match(script, /reusablePatterns/);
   assert.match(script, /openCommandPalette/);
+});
+
+test("SEIS Command Center owns the personal plugin source boundary", async () => {
+  const manifest = JSON.parse(await readFile(new URL("data/seis-core-plugin-sources.json", root), "utf8"));
+  const catalog = JSON.parse(await readFile(new URL("data/seis-core-plugin-catalog.json", root), "utf8"));
+  const releaseTrain = JSON.parse(await readFile(new URL("../../content/development/seis-core-plugin-release-train.json", root), "utf8"));
+  assert.equal(manifest.owner, "apps/seis-core");
+  assert.equal(manifest.sourceRoot, "plugins/seis-core");
+  assert.equal(manifest.pluginCount, 50);
+  assert.equal(catalog.sourceRoot, "plugins/seis-core");
+  assert.equal(catalog.counts.discovered, 50);
+  assert.equal(catalog.plugins.length, 50);
+  assert.equal(manifest.releaseTrainPath, "content/development/seis-core-plugin-release-train.json");
+  assert.equal(manifest.releaseTrainVersion, releaseTrain.currentRelease.label);
+  assert.equal(manifest.releaseSemver, releaseTrain.currentRelease.semver);
+  assert.equal(manifest.releaseMajor, releaseTrain.currentRelease.major);
+  assert.equal(manifest.releaseRevision, releaseTrain.currentRelease.revision);
+  assert.equal(manifest.releaseMicroUnits ?? null, releaseTrain.currentRelease.microUnits ?? null);
+  assert.match(releaseTrain.currentRelease.label, /^(?:0\.\d{1,9}|\d+\.\d{4})$/);
+  assert.match(releaseTrain.currentRelease.semver, /^\d+\.0\.\d+$/);
+  assert.equal(releaseTrain.policy.minimumLabel, "0.000000001");
+  assert.equal(releaseTrain.policy.initialLabel, "0.00000001");
+  assert.equal(releaseTrain.policy.maximumLabel, "45.0000");
+  assert.equal(manifest.coreBoundary.package, "packages/seis-ai");
+  assert.match(manifest.coreBoundary.personalPluginSourcePolicy, /No personal plugin source/);
+  assert.equal(manifest.activationPolicy.defaultPermissions.write.length, 0);
+  assert.equal(manifest.activationPolicy.defaultPermissions.network.length, 0);
+  assert.equal(manifest.activationPolicy.defaultPermissions.secrets.length, 0);
 });
 
 test("SEIS Command Center exposes 10-lane router contract", async () => {

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-agent-audit": {
+      "command": "node",
+      "args": ["scripts/seis-agent-audit-mcp-server.mjs"]
+    }
+  }
+}

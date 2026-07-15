@@ -1,0 +1,19 @@
+{
+  "name": "seis-issue-triage",
+  "version": "0.0.10",
+  "description": "Classify recorded local issue reports for human triage.",
+  "author": {
+    "name": "Local developer"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Seis Issue Triage",
+    "shortDescription": "Prioritize local issue evidence.",
+    "longDescription": "Classify bounded issue records by severity and attention need without changing issues or contacting a provider.",
+    "developerName": "Local developer",
+    "category": "Developer",
+    "capabilities": ["local-readonly-analysis"],
+    "defaultPrompt": "Triage recorded local issue reports."
+  },
+  "mcpServers": "./.mcp.json"
+}

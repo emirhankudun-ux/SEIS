@@ -1,0 +1,19 @@
+{
+  "name": "seis-package-adoption",
+  "version": "0.0.10",
+  "description": "Summarize recorded package adoption signals from local evidence.",
+  "author": {
+    "name": "Local developer"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Seis Package Adoption",
+    "shortDescription": "Review local package adoption.",
+    "longDescription": "Combine recorded dependents, downloads, and release-use signals without querying a registry or inventing adoption data.",
+    "developerName": "Local developer",
+    "category": "Data",
+    "capabilities": ["local-readonly-analysis", "evidence-aggregation"],
+    "defaultPrompt": "Review recorded package adoption signals."
+  },
+  "mcpServers": "./.mcp.json"
+}

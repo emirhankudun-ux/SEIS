@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-download-anomaly": {
+      "command": "node",
+      "args": ["scripts/seis-download-anomaly-mcp-server.mjs"]
+    }
+  }
+}

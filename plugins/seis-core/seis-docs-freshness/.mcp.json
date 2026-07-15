@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-docs-freshness": {
+      "command": "node",
+      "args": ["scripts/seis-docs-freshness-mcp-server.mjs"]
+    }
+  }
+}

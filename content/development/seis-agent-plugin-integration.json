@@ -2,8 +2,8 @@
   "id": "seis-agent-plugin-integration",
   "version": "2026.06.19",
   "status": "active",
-  "updatedAt": "2026-07-12",
-  "purpose": "Bind one public SEIS-Agent plugin, its embedded SEIS source modules, non-destructive legacy personal aliases, and the submitted plugin universe into the SEIS AI runtime, demo application surface, and repository governance.",
+  "updatedAt": "2026-07-15",
+  "purpose": "Bind one public SEIS-Agent plugin, its embedded SEIS source modules, non-destructive legacy personal aliases, and app-owned personal plugin sources into the SEIS AI runtime, Command Center application surface, and repository governance.",
   "primaryInstallId": "seis-ai-agent@seis-repo",
   "canonicalAgent": {
     "identity": "SEIS-Agent",
@@ -30,7 +30,17 @@
     "standaloneLaneInstallMode": "source-module-only",
     "publicPluginContract": "content/development/seis-public-plugin-family.json",
     "canonicalizationContract": "content/development/seis-plugin-canonicalization.json",
-    "unifiedSuite": "plugins/seis-ai-agent/assets/unified-suite.json"
+    "unifiedSuite": "plugins/seis-ai-agent/assets/unified-suite.json",
+    "aiCorePluginRegistry": "content/development/seis-ai-core-plugin-registry.json",
+    "personalPluginCoverage": "content/development/seis-ai-core-personal-plugin-coverage.json",
+    "applicationPluginSourceRoot": "plugins/seis-core",
+    "applicationPluginManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
+    "applicationPluginReleaseTrain": "content/development/seis-core-plugin-release-train.json",
+    "applicationPluginReleaseLabel": "0.00000001",
+    "applicationPluginReleaseSemver": "0.0.10",
+    "applicationPluginReleaseMajor": 0,
+    "applicationPluginReleaseRevision": 0,
+    "applicationPluginReleaseMicroUnits": 10
   },
   "auditedSnapshot": {
     "auditedAt": "2026-06-19",
@@ -69,9 +79,22 @@
     "releaseVersion": "0.3.0+codex.20260712",
     "minimumComponentCount": 10,
     "futureSourcePluginPattern": "plugins/seis-*",
-    "futurePluginRule": "Every new SEIS plugin must enter plugins/seis-* and be registered in plugins/seis-ai-agent/assets/unified-suite.json as an embedded module before it becomes a SEIS capability.",
+    "futurePluginRule": "Every new public SEIS module must enter plugins/seis-* and be registered in plugins/seis-ai-agent/assets/unified-suite.json; personal local packages must enter plugins/seis-core and the AI Core metadata projection before they become a SEIS capability.",
     "legacyAliasCount": 5,
-    "personalMarketplaceMutation": false
+    "personalMarketplaceMutation": false,
+    "aiCorePluginRegistry": "content/development/seis-ai-core-plugin-registry.json",
+    "aiCorePluginRegistryEntryCount": 5000,
+    "personalPluginCoverage": "content/development/seis-ai-core-personal-plugin-coverage.json",
+    "personalPluginCount": 55,
+    "applicationPluginSourceRoot": "plugins/seis-core",
+    "applicationPluginManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
+    "applicationPluginReleaseTrain": "content/development/seis-core-plugin-release-train.json",
+    "applicationPluginReleaseLabel": "0.00000001",
+    "applicationPluginReleaseSemver": "0.0.10",
+    "applicationPluginReleaseMajor": 0,
+    "applicationPluginReleaseRevision": 0,
+    "applicationOwnedPluginCount": 50,
+    "applicationPluginReleaseMicroUnits": 10
   },
   "publicPlugins": [
     {
@@ -353,7 +376,23 @@
     "uniquePlugins": 300,
     "totalLinks": 301,
     "laneCount": 12,
-    "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved",
+    "canonicalSeisAiCoreRegistry": "content/development/seis-ai-core-plugin-registry.json",
+    "canonicalSeisAiCorePluginCount": 5000,
+    "canonicalSeisAiCorePhysicalPluginCount": 60,
+    "catalogOnlyPluginSlotCount": 4940,
+    "personalPluginCoverage": "content/development/seis-ai-core-personal-plugin-coverage.json",
+    "personalPluginCount": 55,
+    "personalRepoCounterpartCount": 55,
+    "applicationPluginSourceRoot": "plugins/seis-core",
+    "applicationPluginManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
+    "applicationPluginReleaseTrain": "content/development/seis-core-plugin-release-train.json",
+    "applicationPluginReleaseLabel": "0.00000001",
+    "applicationPluginReleaseSemver": "0.0.10",
+    "applicationPluginReleaseMajor": 0,
+    "applicationPluginReleaseRevision": 0,
+    "applicationOwnedPluginCount": 50,
+    "applicationPluginReleaseMicroUnits": 10
   },
   "runtimeIntegration": {
     "aiPackage": "packages/seis-ai",
@@ -367,6 +406,20 @@
     "canonicalizationContract": "content/development/seis-plugin-canonicalization.json",
     "unifiedSuite": "plugins/seis-ai-agent/assets/unified-suite.json",
     "sharedHelper": "packages/seis-ai/src/lib/plugin-integration.mjs",
+    "pluginRegistryPath": "content/development/seis-ai-core-plugin-registry.json",
+    "pluginRegistryTool": "seis_ai_core_plugin_registry_status",
+    "pluginRegistryResource": "seis://ai/plugin-registry.json",
+    "pluginRegistryHelper": "packages/seis-ai/src/lib/plugin-registry.mjs",
+    "personalPluginCoverage": "content/development/seis-ai-core-personal-plugin-coverage.json",
+    "applicationPluginSourceRoot": "plugins/seis-core",
+    "applicationPluginManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
+    "applicationPluginReleaseTrain": "content/development/seis-core-plugin-release-train.json",
+    "applicationPluginReleaseLabel": "0.00000001",
+    "applicationPluginReleaseSemver": "0.0.10",
+    "applicationPluginReleaseMajor": 0,
+    "applicationPluginReleaseRevision": 0,
+    "pluginSourceCheck": "scripts/check-seis-ai-core-plugin-sources.mjs",
+    "appPluginSourceManifestCheck": "scripts/create-seis-core-plugin-sources.mjs",
     "providerRegistryTool": "seis_ai_core_provider_status",
     "modelScalingTool": "seis_ai_core_model_scaling_status",
     "versionRegistryTool": "seis_ai_core_version_status",
@@ -376,6 +429,7 @@
       "seis://agent/plugin-integration.json",
       "seis://agent/public-plugin-family.json",
       "seis://agent/public-plugin-lifecycle.json",
+      "seis://ai/plugin-registry.json",
       "seis://ai/mcp-runtime-contract.json",
       "seis://ai/version-registry.json",
       "seis://ai/provider-registry.json",
@@ -414,7 +468,8 @@
       "seis_design_plan",
       "seis_data_status",
       "seis_data_plan"
-    ]
+    ],
+    "applicationPluginReleaseMicroUnits": 10
   },
   "lifecycle": {
     "contract": "content/development/seis-public-plugin-lifecycle.json",
@@ -444,21 +499,36 @@
     "publicReleaseBoundary": "canonicalization_fresh_task_reload_security_provenance_strict_independent_install_and_human_approval_required"
   },
   "applicationIntegration": {
-    "surface": "apps/seis-demo-web",
-    "panel": "God Mode ecosystem lanes",
+    "surface": "apps/seis-core",
+    "panel": "Plugins & Extensions",
+    "pluginReleaseTrain": "content/development/seis-core-plugin-release-train.json",
+    "pluginReleaseLabel": "0.00000001",
+    "pluginReleaseSemver": "0.0.10",
+    "pluginReleaseMajor": 0,
+    "pluginReleaseRevision": 0,
+    "secondarySurface": "apps/seis-demo-web",
     "qualityPanelCommand": "npm run check:seis-agent-plugin-integration",
-    "serviceWorkerCache": "seis-demo-web-v20"
+    "serviceWorkerCache": "seis-demo-web-v20",
+    "pluginReleaseMicroUnits": 10
   },
   "repoIntegration": {
     "docs": [
       "docs/platform/seis-agent-plugin-integration.md",
       "docs/platform/seis-ai-agent.md",
-      "docs/platform/seis-specialist-plugins.md"
+      "docs/platform/seis-specialist-plugins.md",
+      "docs/platform/seis-ai-core-plugin-registry.md"
     ],
     "checker": "scripts/check-seis-agent-plugin-integration.mjs",
     "packageScript": "check:seis-agent-plugin-integration"
   },
   "qualityCommands": [
+    "npm run check:seis-ai-core-plugin-registry",
+    "npm run check:seis-ai-personal-plugin-coverage",
+    "npm run check:seis-core-plugin-sources",
+    "npm run check:seis-core-plugin-release",
+    "npm run check:seis-core-plugin-catalog",
+    "npm run check:seis-core-plugin-matrix",
+    "npm run check:seis-ai-core-plugin-sources",
     "npm run check:seis-agent-plugin-integration",
     "npm run check:seis-public-plugin-lifecycle",
     "npm run check:seis-public-plugin-family",
@@ -489,7 +559,7 @@
     "npm run check:plugin-capability-lanes",
     "npm test --prefix packages/seis-ai"
   ],
-  "completionRule": "The integration is active when the manifest, one-file unified suite contract, canonical alias contract, AI runtime tool, MCP tool/resource, one public SEIS-Agent marketplace entry, embedded module inventory, install smoke check, MCP smoke check, demo application surface, docs, package script, and checker all validate without claiming connector authentication or external deployment readiness. Source modules are not separately installable public plugins. Public release additionally requires strict independent-runner evidence and human approval.",
+  "completionRule": "The integration is active when the manifest, one-file unified suite contract, canonical alias contract, 5000-entry AI Core registry, complete personal-plugin coverage, bounded local source status checks, AI runtime tool, MCP tool/resource, one public SEIS-Agent marketplace entry, embedded module inventory, install smoke check, MCP smoke check, demo application surface, docs, package script, and checker all validate without claiming connector authentication or external deployment readiness. Source modules are not separately installable public plugins. Public release additionally requires strict independent-runner evidence and human approval.",
   "fiveYearSubagentDevelopment": {
     "currentRuntimeBoundary": "status-and-plan-only",
     "mcpRuntimeContract": "content/development/seis-ai-core-mcp-runtime-contract.json",
@@ -509,7 +579,6 @@
     "executionLedgerFixture": "content/development/seis-ai-core-execution-ledger-fixture.json",
     "runtimeFixtures": "content/development/seis-ai-core-subagent-runtime-fixtures.json",
     "reviewLedger": "content/development/seis-ai-core-subagent-review-ledger.json",
-    "longHorizonPlan": "content/development/seis-sub-agent-5-year-plan.json",
     "longHorizonPlanView": "apps/seis-demo-web/data/seis-sub-agent-five-year-plan-view.json"
   }
 }

@@ -16,6 +16,7 @@ const seedState = {
   godModeLane: "Build",
   godModeMission: "Build the next safe SEIS AI operating slice with clear evidence, rollback, and no-secret boundaries.",
   repositoryFilter: "all",
+  pluginQuery: "",
   settings: {
     compact: false,
     reduceMotion: false
@@ -444,6 +445,14 @@ let seisRouterArtifact = {
   routes: fallbackSeisRouterLanes
 };
 
+let seisCorePluginArtifact = {
+  sourceRoot: "plugins/seis-core",
+  release: { label: "0.00000001", semver: "0.0.10", kind: "initial" },
+  counts: { discovered: 50, returned: 0, contractValid: 50, statusReady: 0 },
+  plugins: [],
+  loadError: "Application plugin catalog has not loaded yet."
+};
+
 const godModeGuardrails = [
   {
     rule: "No secrets in state",
@@ -772,6 +781,12 @@ const pluginFamilies = [
     health: "Active",
     permissions: "Source-visible",
     summary: "MCP, skills, browser/document tools, memory systems and knowledge workflow."
+  },
+  {
+    name: "SEIS Command Center App Plugins",
+    health: "Local Demo",
+    permissions: "Read-only, task-scoped",
+    summary: "50 personal plugin packages owned by plugins/seis-core at app release 0.00000001; AI Core indexes metadata without owning their source."
   }
 ];
 
@@ -2044,6 +2059,24 @@ async function loadSeisRouterArtifact() {
   renderAgentRoutingMatrix();
 }
 
+async function loadSeisCorePluginArtifact() {
+  try {
+    const response = await fetch("data/seis-core-plugin-catalog.json", { cache: "no-store" });
+    if (!response.ok) throw new Error(`plugin catalog request failed with ${response.status}`);
+    const artifact = await response.json();
+    if (artifact.sourceRoot !== "plugins/seis-core" || artifact.counts?.discovered !== 50 || !Array.isArray(artifact.plugins)) {
+      throw new Error("plugin catalog contract is invalid");
+    }
+    seisCorePluginArtifact = artifact;
+  } catch (error) {
+    seisCorePluginArtifact = {
+      ...seisCorePluginArtifact,
+      loadError: error.message
+    };
+  }
+  renderPlugins();
+}
+
 function renderFeatureGrowthLedger() {
   const readyTopics = featureGrowthLedger.topics.filter((topic) => topic.status === "Ready").length;
   const reviewTopics = featureGrowthLedger.topics.length - readyTopics;
@@ -2258,6 +2291,66 @@ function renderPlugins() {
       </div>
     </article>
   `).join("");
+
+  const catalog = seisCorePluginArtifact;
+  const query = String(state.pluginQuery || "").trim().toLowerCase();
+  const plugins = (catalog.plugins || []).filter((plugin) => {
+    if (!query) return true;
+    return [plugin.name, plugin.displayName, plugin.description, plugin.category, ...(plugin.capabilities || [])]
+      .join(" ")
+      .toLowerCase()
+      .includes(query);
+  });
+  const catalogState = catalog.loadError
+    ? "Fallback"
+    : catalog.counts.statusNotChecked === catalog.counts.returned
+      ? "Catalog loaded"
+      : `${catalog.counts.statusReady || 0}/${catalog.counts.discovered || plugins.length} ready`;
+  const catalogStateElement = $("#app-plugin-catalog-state");
+  if (catalogStateElement) {
+    catalogStateElement.textContent = catalogState;
+    catalogStateElement.className = `status-pill ${catalog.loadError ? "attention" : "ready"}`;
+  }
+  const catalogMeta = $("#app-plugin-catalog-meta");
+  if (catalogMeta) {
+    catalogMeta.innerHTML = [
+      `release ${escapeHtml(catalog.release?.label || "unknown")}`,
+      `${catalog.counts.discovered || 0} app-owned`,
+      "status-only",
+      "write/network/secrets: empty"
+    ].map((value) => `<span class="meta-chip">${escapeHtml(value)}</span>`).join("");
+  }
+  const filter = $("#app-plugin-filter");
+  if (filter && filter.value !== state.pluginQuery) filter.value = state.pluginQuery;
+  const list = $("#app-plugin-catalog-list");
+  if (!list) return;
+  if (catalog.loadError && plugins.length === 0) {
+    list.innerHTML = `<p class="empty-state">Application plugin catalog is unavailable; the static plugin families remain visible.</p>`;
+    return;
+  }
+  list.innerHTML = plugins.length > 0
+    ? plugins.map((plugin) => `
+      <article class="app-plugin-row">
+        <div>
+          <div class="card-topline">
+            <h4>${escapeHtml(plugin.displayName || plugin.name)}</h4>
+            <span class="status-pill ${plugin.contract?.valid ? "ready" : "blocked"}">${plugin.contract?.valid ? "Contract ready" : "Contract invalid"}</span>
+          </div>
+          <p>${escapeHtml(plugin.description)}</p>
+          <div class="meta-row">
+            <span class="meta-chip">${escapeHtml(plugin.name)}</span>
+            <span class="meta-chip">${escapeHtml(plugin.category)}</span>
+            <span class="meta-chip">${escapeHtml(plugin.release?.semver || "unknown")}</span>
+            <span class="meta-chip">local status-only</span>
+          </div>
+        </div>
+        <div class="app-plugin-row-side">
+          <span class="status-pill ${statusClass(plugin.status?.state === "not-checked" ? "Review" : plugin.status?.state === "ready" ? "Ready" : "Blocked")}">${escapeHtml(plugin.status?.state || "not-checked")}</span>
+          <small>${escapeHtml(plugin.sourcePath)}</small>
+        </div>
+      </article>
+    `).join("")
+    : `<p class="empty-state">No app-owned plugin matches “${escapeHtml(state.pluginQuery)}”.</p>`;
 }
 
 function renderAutomation() {
@@ -2667,6 +2760,11 @@ function bindEvents() {
     }
   });
 
+  $("#app-plugin-filter").addEventListener("input", (event) => {
+    state.pluginQuery = event.target.value;
+    renderPlugins();
+  });
+
   $("#primary-action").addEventListener("click", () => {
     if (state.activeView === "godmode") {
       $("#godmode-mission-input").focus();
@@ -2744,3 +2842,4 @@ $("#motion-toggle").checked = state.settings.reduceMotion;
 bindEvents();
 render();
 loadSeisRouterArtifact();
+loadSeisCorePluginArtifact();

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-dependency-freshness": {
+      "command": "node",
+      "args": ["scripts/seis-dependency-freshness-mcp-server.mjs"]
+    }
+  }
+}

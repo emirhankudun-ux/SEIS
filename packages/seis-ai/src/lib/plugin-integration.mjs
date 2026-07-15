@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
+import { aiCorePluginRegistryStatus } from "./plugin-registry.mjs";
 
 export const PLUGIN_INTEGRATION_PATH = "content/development/seis-agent-plugin-integration.json";
 export const PUBLIC_PLUGIN_FAMILY_PATH = "content/development/seis-public-plugin-family.json";
@@ -1428,6 +1429,7 @@ export function pluginIntegrationStatus(repoRoot, options = {}) {
     const manifest = readPluginIntegration(repoRoot);
     const canonicalization = readPluginCanonicalization(repoRoot);
     const unifiedSuite = readUnifiedPluginSuite(repoRoot);
+    const pluginRegistry = aiCorePluginRegistryStatus(repoRoot);
     const lanes = Array.isArray(manifest.lanes) ? manifest.lanes : [];
     const publicPlugins = Array.isArray(manifest.publicPlugins) ? manifest.publicPlugins : [];
     const embeddedModules = Array.isArray(manifest.embeddedModules) ? manifest.embeddedModules : [];
@@ -1493,6 +1495,35 @@ export function pluginIntegrationStatus(repoRoot, options = {}) {
       duplicateResolutionMode: canonicalizationSummary?.duplicateResolutionMode ?? null,
       canonicalization: canonicalizationSummary,
       unifiedSuite: unifiedSuiteSummary,
+      pluginRegistry: pluginRegistry.ok
+        ? {
+            registryPath: pluginRegistry.registryPath,
+            resourceUri: pluginRegistry.resourceUri,
+            requestedPluginCount: pluginRegistry.requestedPluginCount,
+            registryEntryCount: pluginRegistry.registryEntryCount,
+            physicalPluginCount: pluginRegistry.physicalPluginCount,
+            appOwnedPluginCount: pluginRegistry.appOwnedPluginCount,
+            catalogOnlyEntryCount: pluginRegistry.catalogOnlyEntryCount,
+            functionalLocalDemoCount: pluginRegistry.functionalLocalDemoCount,
+            publicMarketplacePluginCount: pluginRegistry.publicMarketplacePluginCount,
+            personalPluginCoveragePath: pluginRegistry.personalPluginCoveragePath,
+            personalPluginCount: pluginRegistry.personalPluginCount,
+            personalRepoCounterpartCount: pluginRegistry.personalRepoCounterpartCount,
+            applicationPluginSourceRoot: pluginRegistry.applicationPluginSourceRoot,
+            applicationPluginManifest: pluginRegistry.applicationPluginManifest,
+            applicationPluginReleaseTrain: pluginRegistry.applicationPluginReleaseTrain,
+            applicationPluginReleaseLabel: pluginRegistry.applicationPluginReleaseLabel,
+            applicationPluginReleaseSemver: pluginRegistry.applicationPluginReleaseSemver,
+            applicationPluginReleaseKind: pluginRegistry.applicationPluginReleaseKind,
+            applicationPluginReleaseMajor: pluginRegistry.applicationPluginReleaseMajor,
+            applicationPluginReleaseRevision: pluginRegistry.applicationPluginReleaseRevision,
+            applicationPluginReleaseMicroUnits: pluginRegistry.applicationPluginReleaseMicroUnits,
+            coreSourcePolicy: pluginRegistry.coreSourcePolicy,
+            routeEligibleCount: pluginRegistry.routeEligibleCount,
+            canonicalOwner: pluginRegistry.canonicalOwner,
+            canonicalSourcePath: pluginRegistry.canonicalSourcePath,
+          }
+        : { ok: false, error: pluginRegistry.error },
       publicPlugins: publicPlugins.map((plugin) => ({
         id: plugin.id,
         status: plugin.status,

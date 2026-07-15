@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-performance-budget": {
+      "command": "node",
+      "args": ["scripts/seis-performance-budget-mcp-server.mjs"]
+    }
+  }
+}

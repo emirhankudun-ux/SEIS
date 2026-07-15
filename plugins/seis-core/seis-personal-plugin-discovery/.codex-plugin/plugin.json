@@ -1,0 +1,19 @@
+{
+  "name": "seis-personal-plugin-discovery",
+  "version": "0.0.10",
+  "description": "Discover selected local plugins through metadata-only inspection with symlink refusal.",
+  "author": {
+    "name": "Local developer"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Seis Personal Plugin Discovery",
+    "shortDescription": "Discover local plugin metadata safely.",
+    "longDescription": "Inspect an explicitly selected directory without executing code, following symlinks, copying data, or scanning the device.",
+    "developerName": "Local developer",
+    "category": "Developer",
+    "capabilities": ["metadata-only", "symlink-refusal"],
+    "defaultPrompt": "Discover plugins in this explicitly selected directory."
+  },
+  "mcpServers": "./.mcp.json"
+}

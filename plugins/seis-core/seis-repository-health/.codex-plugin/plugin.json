@@ -1,0 +1,32 @@
+{
+  "id": "seis-repository-health",
+  "name": "seis-repository-health",
+  "version": "0.0.10",
+  "description": "Read-only repository hygiene and public-safe health findings for SEIS.",
+  "author": {
+    "name": "emirhankudun-ux"
+  },
+  "license": "UNLICENSED-LOCAL",
+  "keywords": ["seis", "repository", "hygiene", "health"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "SEIS Repository Health",
+    "shortDescription": "Find repository hygiene gaps without mutating Git.",
+    "longDescription": "A deterministic, local-only SEIS repository review plugin that reports branch markers, tracked worktree state, governance files, CI presence, manifest coverage, and secret-risk filenames without modifying the repository.",
+    "developerName": "emirhankudun-ux",
+    "category": "Developer",
+    "capabilities": [
+      "Read-only Git health snapshot",
+      "Governance file coverage",
+      "CI and manifest detection",
+      "Secret-risk filename findings"
+    ],
+    "defaultPrompt": [
+      "Run a safe SEIS repository health check.",
+      "Find hygiene gaps without changing Git.",
+      "Summarize this repository's public-safe readiness."
+    ],
+    "brandColor": "#0EA5E9"
+  }
+}

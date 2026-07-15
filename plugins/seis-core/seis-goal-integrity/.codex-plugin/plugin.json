@@ -1,0 +1,32 @@
+{
+  "id": "seis-goal-integrity",
+  "name": "seis-goal-integrity",
+  "version": "0.0.10",
+  "description": "Read-only validation of SEIS goal IDs, statuses, evidence hints, and single-goal bindings.",
+  "author": {
+    "name": "emirhankudun-ux"
+  },
+  "license": "UNLICENSED-LOCAL",
+  "keywords": ["seis", "goals", "governance", "validation"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "SEIS Goal Integrity",
+    "shortDescription": "Check goal identity and status truthfulness locally.",
+    "longDescription": "A deterministic, local-only SEIS governance plugin that checks goal records for stable IDs, valid lifecycle states, duplicate records, blocked-state explanations, and the SEIS-GOAL-021 single-goal binding without writing files.",
+    "developerName": "emirhankudun-ux",
+    "category": "Productivity",
+    "capabilities": [
+      "Goal ID validation",
+      "Lifecycle status checks",
+      "Duplicate goal detection",
+      "Evidence and blocker hints"
+    ],
+    "defaultPrompt": [
+      "Validate the active SEIS goals safely.",
+      "Check this goal set for duplicate IDs.",
+      "Audit SEIS-GOAL-021 binding and status claims."
+    ],
+    "brandColor": "#7C3AED"
+  }
+}

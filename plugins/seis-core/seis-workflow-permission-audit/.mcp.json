@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-workflow-permission-audit": {
+      "command": "node",
+      "args": ["scripts/seis-workflow-permission-audit-mcp-server.mjs"]
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-personal-plugin-discovery": {
+      "command": "node",
+      "args": ["scripts/seis-personal-plugin-discovery-mcp-server.mjs"]
+    }
+  }
+}

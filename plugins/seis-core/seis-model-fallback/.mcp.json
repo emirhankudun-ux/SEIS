@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-model-fallback": {
+      "command": "node",
+      "args": ["scripts/seis-model-fallback-mcp-server.mjs"]
+    }
+  }
+}

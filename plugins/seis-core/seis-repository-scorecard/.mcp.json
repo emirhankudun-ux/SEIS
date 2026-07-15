@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-repository-scorecard": {
+      "command": "node",
+      "args": ["scripts/seis-repository-scorecard-mcp-server.mjs"]
+    }
+  }
+}

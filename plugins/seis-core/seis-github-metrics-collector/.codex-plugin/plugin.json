@@ -1,0 +1,19 @@
+{
+  "name": "seis-github-metrics-collector",
+  "version": "0.0.10",
+  "description": "Normalize recorded GitHub-style metrics from local evidence without live API access.",
+  "author": {
+    "name": "Local developer"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Seis Github Metrics Collector",
+    "shortDescription": "Review recorded GitHub metrics locally.",
+    "longDescription": "Read saved repository metrics and report their provenance and coverage; no GitHub API call is made.",
+    "developerName": "Local developer",
+    "category": "Developer",
+    "capabilities": ["local-readonly-analysis", "provenance-reporting"],
+    "defaultPrompt": "Review recorded GitHub-style metrics locally."
+  },
+  "mcpServers": "./.mcp.json"
+}

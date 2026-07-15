@@ -1,0 +1,3 @@
+{
+  "mcpServers": { "seis-release-readiness": { "command": "node", "args": ["scripts/seis-release-readiness-mcp-server.mjs"] } }
+}

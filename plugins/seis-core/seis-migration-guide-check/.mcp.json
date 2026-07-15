@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-migration-guide-check": {
+      "command": "node",
+      "args": ["scripts/seis-migration-guide-check-mcp-server.mjs"]
+    }
+  }
+}

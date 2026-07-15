@@ -1,0 +1,19 @@
+{
+  "name": "seis-semver-audit",
+  "version": "0.0.10",
+  "description": "Audit local package version metadata against semantic-versioning syntax.",
+  "author": { "name": "Emirhan Kudun" },
+  "license": "UNLICENSED-LOCAL",
+  "keywords": ["seis", "semver", "package", "release", "read-only"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS Semver Audit",
+    "shortDescription": "Check local package versions and release declarations.",
+    "longDescription": "Audits bounded package.json version fields and reports missing or invalid semantic-version values. It does not compare external registries or publish packages.",
+    "developerName": "Emirhan Kudun",
+    "category": "Developer",
+    "capabilities": ["local-read-only", "release-evidence"],
+    "defaultPrompt": "Audit semantic-version metadata in this local repository."
+  },
+  "mcpServers": "./.mcp.json"
+}

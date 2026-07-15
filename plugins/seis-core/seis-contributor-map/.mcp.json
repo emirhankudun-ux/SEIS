@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-contributor-map": {
+      "command": "node",
+      "args": ["scripts/seis-contributor-map-mcp-server.mjs"]
+    }
+  }
+}

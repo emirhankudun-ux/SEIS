@@ -1,0 +1,19 @@
+{
+  "name": "seis-test-flakiness",
+  "version": "0.0.10",
+  "description": "Analyze recorded local test results for flaky or nondeterministic patterns without rerunning tests.",
+  "author": { "name": "Emirhan Kudun" },
+  "license": "UNLICENSED-LOCAL",
+  "keywords": ["seis", "testing", "flakiness", "qa", "read-only"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS Test Flakiness",
+    "shortDescription": "Analyze recorded test repetitions and failure variance.",
+    "longDescription": "Reads bounded local JSON test result records and reports tests with mixed pass/fail outcomes. It never reruns tests or claims a current build result.",
+    "developerName": "Emirhan Kudun",
+    "category": "Developer",
+    "capabilities": ["local-read-only", "qa-review"],
+    "defaultPrompt": "Analyze recorded test flakiness evidence in this local repository."
+  },
+  "mcpServers": "./.mcp.json"
+}

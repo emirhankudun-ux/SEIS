@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-release-cadence": {
+      "command": "node",
+      "args": ["scripts/seis-release-cadence-mcp-server.mjs"]
+    }
+  }
+}

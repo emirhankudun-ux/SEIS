@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-localization-coverage": {
+      "command": "node",
+      "args": ["scripts/seis-localization-coverage-mcp-server.mjs"]
+    }
+  }
+}

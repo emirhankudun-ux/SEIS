@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-test-flakiness": {
+      "command": "node",
+      "args": ["scripts/seis-test-flakiness-mcp-server.mjs"]
+    }
+  }
+}

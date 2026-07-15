@@ -1,0 +1,32 @@
+{
+  "stableId": "seis-agent-contract-validator",
+  "slug": "seis-agent-contract-validator",
+  "version": "0.0.10",
+  "releaseMicroUnits": 10,
+  "releaseRevision": 0,
+  "releaseMajor": 0,
+  "releaseKind": "initial",
+  "releaseTrainVersion": "0.00000001",
+  "category": "agent-governance",
+  "owner": "@seis-ai-agent",
+  "publisher": "emirhankudun-ux",
+  "sourceClassification": "original-SEIS-local",
+  "license": "UNLICENSED-LOCAL",
+  "status": "approved-local-readonly",
+  "implementationState": "functional-local-demo",
+  "entrypoint": "scripts/seis-agent-contract-validator-mcp-server.mjs",
+  "permissions": {
+    "read": ["bounded local JSON agent contracts"],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "risk": "low",
+  "validation": [
+    "node scripts/seis-agent-contract-validator-mcp-server.mjs --status",
+    "node scripts/seis-agent-contract-validator-mcp-server.mjs --validate --path /path/to/tree"
+  ],
+  "rollback": "Disable or remove the local plugin; no source data is mutated.",
+  "reviewState": "local-development",
+  "provenance": "Created from the SEIS master prompt plugin portfolio for SEIS-GOAL-021."
+}

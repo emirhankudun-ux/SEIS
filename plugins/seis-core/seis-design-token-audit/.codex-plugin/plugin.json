@@ -1,0 +1,21 @@
+{
+  "id": "seis-design-token-audit",
+  "name": "seis-design-token-audit",
+  "version": "0.0.10",
+  "description": "Read-only validation of SEIS design token categories, naming, states, and platform mappings.",
+  "author": { "name": "emirhankudun-ux" },
+  "license": "UNLICENSED-LOCAL",
+  "keywords": ["seis", "design", "tokens", "accessibility", "platform"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "SEIS Design Token Audit",
+    "shortDescription": "Audit token structure without changing design files.",
+    "longDescription": "A deterministic local SEIS design-system plugin that validates JSON token objects for required categories, primitive values, semantic states, and platform mapping hints without editing source files.",
+    "developerName": "emirhankudun-ux",
+    "category": "Design",
+    "capabilities": ["Token category checks", "Semantic state checks", "Platform mapping hints"],
+    "defaultPrompt": ["Audit these SEIS design tokens.", "Find missing token categories safely.", "Check token states and platform mappings."],
+    "brandColor": "#0F766E"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-branch-protection-audit": {
+      "command": "node",
+      "args": ["scripts/seis-branch-protection-audit-mcp-server.mjs"]
+    }
+  }
+}

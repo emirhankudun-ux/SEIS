@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-package-adoption": {
+      "command": "node",
+      "args": ["scripts/seis-package-adoption-mcp-server.mjs"]
+    }
+  }
+}

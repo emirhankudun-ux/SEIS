@@ -1,0 +1,3 @@
+{
+  "mcpServers": { "seis-secret-boundary-scan": { "command": "node", "args": ["scripts/seis-secret-boundary-scan-mcp-server.mjs"] } }
+}

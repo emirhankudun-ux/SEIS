@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-issue-triage": {
+      "command": "node",
+      "args": ["scripts/seis-issue-triage-mcp-server.mjs"]
+    }
+  }
+}

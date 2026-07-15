@@ -1,0 +1,32 @@
+{
+  "id": "seis-canonical-registry-validator",
+  "name": "seis-canonical-registry-validator",
+  "version": "0.0.10",
+  "description": "Read-only validation of SEIS registry records, owners, statuses, and duplicate IDs.",
+  "author": {
+    "name": "emirhankudun-ux"
+  },
+  "license": "UNLICENSED-LOCAL",
+  "keywords": ["seis", "registry", "canonical-owner", "validation"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "SEIS Canonical Registry Validator",
+    "shortDescription": "Check registry identity and ownership locally.",
+    "longDescription": "A deterministic, local-only SEIS governance plugin that inspects JSON registry projections for stable IDs, statuses, owners, duplicate records, and source-of-truth hints without editing registry files.",
+    "developerName": "emirhankudun-ux",
+    "category": "Developer",
+    "capabilities": [
+      "Registry ID validation",
+      "Duplicate record detection",
+      "Owner and status checks",
+      "Canonical-source reporting"
+    ],
+    "defaultPrompt": [
+      "Validate the canonical registries safely.",
+      "Find duplicate registry IDs and owner gaps.",
+      "Report registry evidence without editing files."
+    ],
+    "brandColor": "#14B8A6"
+  }
+}

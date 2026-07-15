@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-sbom-generator": {
+      "command": "node",
+      "args": ["scripts/seis-sbom-generator-mcp-server.mjs"]
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-changelog-validator": {
+      "command": "node",
+      "args": ["scripts/seis-changelog-validator-mcp-server.mjs"]
+    }
+  }
+}

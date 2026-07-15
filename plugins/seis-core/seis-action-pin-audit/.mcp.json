@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-action-pin-audit": {
+      "command": "node",
+      "args": ["scripts/seis-action-pin-audit-mcp-server.mjs"]
+    }
+  }
+}

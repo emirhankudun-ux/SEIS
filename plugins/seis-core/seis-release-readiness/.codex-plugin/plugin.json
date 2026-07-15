@@ -1,0 +1,21 @@
+{
+  "id": "seis-release-readiness",
+  "name": "seis-release-readiness",
+  "version": "0.0.10",
+  "description": "Honest local release-readiness report from recorded checks and repository metadata.",
+  "author": { "name": "emirhankudun-ux" },
+  "license": "UNLICENSED-LOCAL",
+  "keywords": ["seis", "release", "readiness", "validation", "rollback"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "SEIS Release Readiness",
+    "shortDescription": "Report release evidence without claiming a release.",
+    "longDescription": "A deterministic local SEIS release gate that reads project metadata and optional recorded check results, then separates passed, failed, skipped, and unavailable evidence without publishing or deploying anything.",
+    "developerName": "emirhankudun-ux",
+    "category": "Developer",
+    "capabilities": ["Evidence-based readiness report", "Failed/skipped check separation", "Rollback reminder"],
+    "defaultPrompt": ["Assess local SEIS release readiness.", "Separate passed, failed, and skipped checks.", "Prepare a release gate without deploying."],
+    "brandColor": "#F97316"
+  }
+}

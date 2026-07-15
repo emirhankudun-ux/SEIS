@@ -1,0 +1,2487 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-core-application-plugin-catalog",
+  "goalId": "SEIS-GOAL-021",
+  "application": "apps/seis-core",
+  "mode": "local-read-only",
+  "sourceRoot": "plugins/seis-core",
+  "release": {
+    "label": "0.00000001",
+    "semver": "0.0.10",
+    "kind": "initial",
+    "major": 0,
+    "revision": 0,
+    "microUnits": 10
+  },
+  "policy": {
+    "sourceOwnership": "apps/seis-core",
+    "sourceMutation": false,
+    "network": "disabled-by-default",
+    "secrets": "not-read",
+    "write": "approval-required",
+    "executableAction": "status-only",
+    "allowedInspectionActions": [
+      "inspect",
+      "status"
+    ],
+    "approvalRequiredActions": [
+      "run",
+      "write",
+      "network",
+      "secrets"
+    ]
+  },
+  "counts": {
+    "discovered": 50,
+    "returned": 50,
+    "contractValid": 50,
+    "contractInvalid": 0,
+    "statusReady": 50,
+    "statusNotChecked": 0
+  },
+  "query": null,
+  "plugins": [
+    {
+      "id": "seis-a11y-regression",
+      "name": "seis-a11y-regression",
+      "displayName": "SEIS A11y Regression",
+      "description": "Audit declared local accessibility coverage without running a UI.",
+      "category": "Design",
+      "capabilities": [
+        "local-read-only",
+        "accessibility-review"
+      ],
+      "owner": "@seis-accessibility",
+      "sourcePath": "plugins/seis-core/seis-a11y-regression",
+      "entrypoint": "scripts/seis-a11y-regression-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local accessibility JSON declarations"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-a11y-regression-mcp-server.mjs --status",
+        "node scripts/seis-a11y-regression-mcp-server.mjs --audit --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-action-pin-audit",
+      "name": "seis-action-pin-audit",
+      "displayName": "SEIS Action Pin Audit",
+      "description": "Audit local workflow action references for immutable pin declarations without executing actions.",
+      "category": "Security",
+      "capabilities": [
+        "local-read-only",
+        "supply-chain-review"
+      ],
+      "owner": "@seis-security",
+      "sourcePath": "plugins/seis-core/seis-action-pin-audit",
+      "entrypoint": "scripts/seis-action-pin-audit-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local workflow files"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-action-pin-audit-mcp-server.mjs --status",
+        "node scripts/seis-action-pin-audit-mcp-server.mjs --audit --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-agent-audit",
+      "name": "seis-agent-audit",
+      "displayName": "SEIS Agent Audit",
+      "description": "Audit local agent evidence, cancellation and handoff metadata without executing agents.",
+      "category": "AI",
+      "capabilities": [
+        "local-read-only",
+        "agent-governance"
+      ],
+      "owner": "@seis-ai-agent",
+      "sourcePath": "plugins/seis-core/seis-agent-audit",
+      "entrypoint": "scripts/seis-agent-audit-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local agent JSON metadata"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-agent-audit-mcp-server.mjs --status",
+        "node scripts/seis-agent-audit-mcp-server.mjs --audit --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-agent-contract-validator",
+      "name": "seis-agent-contract-validator",
+      "displayName": "SEIS Agent Contract Validator",
+      "description": "Read-only validation of supervised SEIS agent purpose, permissions, approvals, and handoff contracts.",
+      "category": "AI",
+      "capabilities": [
+        "Agent contract checks",
+        "Permission boundary checks",
+        "Approval and handoff validation"
+      ],
+      "owner": "@seis-ai-agent",
+      "sourcePath": "plugins/seis-core/seis-agent-contract-validator",
+      "entrypoint": "scripts/seis-agent-contract-validator-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local JSON agent contracts"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-agent-contract-validator-mcp-server.mjs --status",
+        "node scripts/seis-agent-contract-validator-mcp-server.mjs --validate --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-artifact-attestation",
+      "name": "seis-artifact-attestation",
+      "displayName": "Seis Artifact Attestation",
+      "description": "Review local artifact provenance evidence without signing or publishing artifacts.",
+      "category": "Security",
+      "capabilities": [
+        "local-readonly-analysis",
+        "provenance-review"
+      ],
+      "owner": "@seis-release",
+      "sourcePath": "plugins/seis-core/seis-artifact-attestation",
+      "entrypoint": "scripts/seis-artifact-attestation-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local artifact and provenance evidence"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "plugin validator",
+        "skill quick validator",
+        "node --check",
+        "MCP initialize/tools/list/tools/call smoke"
+      ],
+      "rollback": "Disable or remove the local plugin; no artifact is modified."
+    },
+    {
+      "id": "seis-branch-protection-audit",
+      "name": "seis-branch-protection-audit",
+      "displayName": "Seis Branch Protection Audit",
+      "description": "Audit recorded local branch and ruleset policy declarations without contacting GitHub.",
+      "category": "Security",
+      "capabilities": [
+        "local-readonly-analysis",
+        "policy-review"
+      ],
+      "owner": "@seis-github",
+      "sourcePath": "plugins/seis-core/seis-branch-protection-audit",
+      "entrypoint": "scripts/seis-branch-protection-audit-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local branch and ruleset policy files"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "plugin validator",
+        "skill quick validator",
+        "node --check",
+        "MCP initialize/tools/list/tools/call smoke"
+      ],
+      "rollback": "Disable or remove the local plugin; no branch policy is changed."
+    },
+    {
+      "id": "seis-canonical-registry-validator",
+      "name": "seis-canonical-registry-validator",
+      "displayName": "SEIS Canonical Registry Validator",
+      "description": "Read-only validation of SEIS registry records, owners, statuses, and duplicate IDs.",
+      "category": "Developer",
+      "capabilities": [
+        "Registry ID validation",
+        "Duplicate record detection",
+        "Owner and status checks",
+        "Canonical-source reporting"
+      ],
+      "owner": "@seis-governance",
+      "sourcePath": "plugins/seis-core/seis-canonical-registry-validator",
+      "entrypoint": "scripts/seis-canonical-registry-validator-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded JSON registry and catalog projections"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-canonical-registry-validator-mcp-server.mjs --status",
+        "node scripts/seis-canonical-registry-validator-mcp-server.mjs --validate --path <workspace>"
+      ],
+      "rollback": "Disable or remove the local plugin; registry files and generated projections are never edited."
+    },
+    {
+      "id": "seis-changelog-validator",
+      "name": "seis-changelog-validator",
+      "displayName": "SEIS Changelog Validator",
+      "description": "Validate local changelog structure without publishing or modifying release notes.",
+      "category": "Developer",
+      "capabilities": [
+        "local-read-only",
+        "release-evidence"
+      ],
+      "owner": "@seis-docs",
+      "sourcePath": "plugins/seis-core/seis-changelog-validator",
+      "entrypoint": "scripts/seis-changelog-validator-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local changelog files"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-changelog-validator-mcp-server.mjs --status",
+        "node scripts/seis-changelog-validator-mcp-server.mjs --validate --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-codeowners-audit",
+      "name": "seis-codeowners-audit",
+      "displayName": "SEIS CODEOWNERS Audit",
+      "description": "Audit local CODEOWNERS coverage without changing GitHub settings.",
+      "category": "Developer",
+      "capabilities": [
+        "local-read-only",
+        "ownership-review"
+      ],
+      "owner": "@seis-governance",
+      "sourcePath": "plugins/seis-core/seis-codeowners-audit",
+      "entrypoint": "scripts/seis-codeowners-audit-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local CODEOWNERS files"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-codeowners-audit-mcp-server.mjs --status",
+        "node scripts/seis-codeowners-audit-mcp-server.mjs --audit --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-community-health",
+      "name": "seis-community-health",
+      "displayName": "SEIS Community Health",
+      "description": "Audit local community and contribution templates without contacting GitHub.",
+      "category": "Developer",
+      "capabilities": [
+        "local-read-only",
+        "community-review"
+      ],
+      "owner": "@seis-github",
+      "sourcePath": "plugins/seis-core/seis-community-health",
+      "entrypoint": "scripts/seis-community-health-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local contribution and community documents"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-community-health-mcp-server.mjs --status",
+        "node scripts/seis-community-health-mcp-server.mjs --audit --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-context-efficiency",
+      "name": "seis-context-efficiency",
+      "displayName": "Seis Context Efficiency",
+      "description": "Measure recorded context usefulness and latency from local evidence.",
+      "category": "AI",
+      "capabilities": [
+        "local-readonly-analysis"
+      ],
+      "owner": "@seis-ai-agent",
+      "sourcePath": "plugins/seis-core/seis-context-efficiency",
+      "entrypoint": "scripts/seis-context-efficiency-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local context usage JSON"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "plugin validator",
+        "skill quick validator",
+        "node --check",
+        "MCP initialize/tools/list/tools/call smoke"
+      ],
+      "rollback": "Disable or remove the local plugin; no prompt or source data is mutated."
+    },
+    {
+      "id": "seis-contributor-map",
+      "name": "seis-contributor-map",
+      "displayName": "Seis Contributor Map",
+      "description": "Summarize local contributor and ownership evidence with redacted identifiers.",
+      "category": "Developer",
+      "capabilities": [
+        "local-readonly-analysis",
+        "redacted-aggregation"
+      ],
+      "owner": "@seis-github",
+      "sourcePath": "plugins/seis-core/seis-contributor-map",
+      "entrypoint": "scripts/seis-contributor-map-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local contributor and ownership JSON"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "plugin validator",
+        "skill quick validator",
+        "node --check",
+        "MCP initialize/tools/list/tools/call smoke"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-dependency-freshness",
+      "name": "seis-dependency-freshness",
+      "displayName": "SEIS Dependency Freshness",
+      "description": "Audit local dependency declaration and lockfile coverage without registry access.",
+      "category": "Security",
+      "capabilities": [
+        "local-read-only",
+        "supply-chain-review"
+      ],
+      "owner": "@seis-security",
+      "sourcePath": "plugins/seis-core/seis-dependency-freshness",
+      "entrypoint": "scripts/seis-dependency-freshness-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local dependency manifests and lockfiles"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-dependency-freshness-mcp-server.mjs --status",
+        "node scripts/seis-dependency-freshness-mcp-server.mjs --audit --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-design-token-audit",
+      "name": "seis-design-token-audit",
+      "displayName": "SEIS Design Token Audit",
+      "description": "Read-only validation of SEIS design token categories, naming, states, and platform mappings.",
+      "category": "Design",
+      "capabilities": [
+        "Token category checks",
+        "Semantic state checks",
+        "Platform mapping hints"
+      ],
+      "owner": "@seis-design",
+      "sourcePath": "plugins/seis-core/seis-design-token-audit",
+      "entrypoint": "scripts/seis-design-token-audit-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local JSON token and theme files"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-design-token-audit-mcp-server.mjs --status",
+        "node scripts/seis-design-token-audit-mcp-server.mjs --audit --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-doc-indexer",
+      "name": "seis-doc-indexer",
+      "displayName": "SEIS Doc Indexer",
+      "description": "Deterministic local full-text index for bounded Markdown and text documents.",
+      "category": "Data",
+      "capabilities": [
+        "Bounded local document search",
+        "Snippet extraction",
+        "Private-path exclusion"
+      ],
+      "owner": "@seis-knowledge",
+      "sourcePath": "plugins/seis-core/seis-doc-indexer",
+      "entrypoint": "scripts/seis-doc-indexer-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local Markdown and text files"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-doc-indexer-mcp-server.mjs --status",
+        "node scripts/seis-doc-indexer-mcp-server.mjs --search --path /path/to/tree --query SEIS"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-docs-freshness",
+      "name": "seis-docs-freshness",
+      "displayName": "SEIS Docs Freshness",
+      "description": "Report bounded local documentation freshness from file metadata.",
+      "category": "Data",
+      "capabilities": [
+        "local-read-only",
+        "documentation-review"
+      ],
+      "owner": "@seis-docs",
+      "sourcePath": "plugins/seis-core/seis-docs-freshness",
+      "entrypoint": "scripts/seis-docs-freshness-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local Markdown metadata"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-docs-freshness-mcp-server.mjs --status",
+        "node scripts/seis-docs-freshness-mcp-server.mjs --audit --path /path/to/tree --days 180"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-dora-metrics",
+      "name": "seis-dora-metrics",
+      "displayName": "Seis Dora Metrics",
+      "description": "Analyze recorded delivery evidence with local-only DORA-style metrics.",
+      "category": "Observability",
+      "capabilities": [
+        "local-readonly-analysis"
+      ],
+      "owner": "@seis-observability",
+      "sourcePath": "plugins/seis-core/seis-dora-metrics",
+      "entrypoint": "scripts/seis-dora-metrics-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local delivery JSON"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "plugin validator",
+        "skill quick validator",
+        "node --check",
+        "MCP initialize/tools/list/tools/call smoke"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-download-anomaly",
+      "name": "seis-download-anomaly",
+      "displayName": "Seis Download Anomaly",
+      "description": "Detect deterministic download-count outliers in recorded local metrics.",
+      "category": "Data",
+      "capabilities": [
+        "local-readonly-analysis",
+        "deterministic-outlier-detection"
+      ],
+      "owner": "@seis-data",
+      "sourcePath": "plugins/seis-core/seis-download-anomaly",
+      "entrypoint": "scripts/seis-download-anomaly-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local download metrics JSON"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "plugin validator",
+        "skill quick validator",
+        "node --check",
+        "MCP initialize/tools/list/tools/call smoke"
+      ],
+      "rollback": "Disable or remove the local plugin; no metric data is mutated."
+    },
+    {
+      "id": "seis-github-metrics-collector",
+      "name": "seis-github-metrics-collector",
+      "displayName": "Seis Github Metrics Collector",
+      "description": "Normalize recorded GitHub-style metrics from local evidence without live API access.",
+      "category": "Developer",
+      "capabilities": [
+        "local-readonly-analysis",
+        "provenance-reporting"
+      ],
+      "owner": "@seis-github",
+      "sourcePath": "plugins/seis-core/seis-github-metrics-collector",
+      "entrypoint": "scripts/seis-github-metrics-collector-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local recorded GitHub-style metrics"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "plugin validator",
+        "skill quick validator",
+        "node --check",
+        "MCP initialize/tools/list/tools/call smoke"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-goal-integrity",
+      "name": "seis-goal-integrity",
+      "displayName": "SEIS Goal Integrity",
+      "description": "Read-only validation of SEIS goal IDs, statuses, evidence hints, and single-goal bindings.",
+      "category": "Productivity",
+      "capabilities": [
+        "Goal ID validation",
+        "Lifecycle status checks",
+        "Duplicate goal detection",
+        "Evidence and blocker hints"
+      ],
+      "owner": "@seis-governance",
+      "sourcePath": "plugins/seis-core/seis-goal-integrity",
+      "entrypoint": "scripts/seis-goal-integrity-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded goal files"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-goal-integrity-mcp-server.mjs --status",
+        "node scripts/seis-goal-integrity-mcp-server.mjs --validate --path <workspace>"
+      ],
+      "rollback": "Disable or remove the local plugin; goal records are never auto-completed or rewritten."
+    },
+    {
+      "id": "seis-issue-triage",
+      "name": "seis-issue-triage",
+      "displayName": "Seis Issue Triage",
+      "description": "Classify recorded local issue reports for human triage.",
+      "category": "Developer",
+      "capabilities": [
+        "local-readonly-analysis"
+      ],
+      "owner": "@seis-product",
+      "sourcePath": "plugins/seis-core/seis-issue-triage",
+      "entrypoint": "scripts/seis-issue-triage-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local issue JSON"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "plugin validator",
+        "skill quick validator",
+        "node --check",
+        "MCP initialize/tools/list/tools/call smoke"
+      ],
+      "rollback": "Disable or remove the local plugin; no issue data is mutated."
+    },
+    {
+      "id": "seis-license-compatibility",
+      "name": "seis-license-compatibility",
+      "displayName": "SEIS License Compatibility",
+      "description": "Audit local package and repository license declarations without legal approval claims.",
+      "category": "Security",
+      "capabilities": [
+        "local-read-only",
+        "license-review"
+      ],
+      "owner": "@seis-docs",
+      "sourcePath": "plugins/seis-core/seis-license-compatibility",
+      "entrypoint": "scripts/seis-license-compatibility-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local package and license files"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-license-compatibility-mcp-server.mjs --status",
+        "node scripts/seis-license-compatibility-mcp-server.mjs --audit --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-localization-coverage",
+      "name": "seis-localization-coverage",
+      "displayName": "SEIS Localization Coverage",
+      "description": "Compare bounded local localization dictionaries without changing translations.",
+      "category": "Data",
+      "capabilities": [
+        "local-read-only",
+        "localization-review"
+      ],
+      "owner": "@seis-localization",
+      "sourcePath": "plugins/seis-core/seis-localization-coverage",
+      "entrypoint": "scripts/seis-localization-coverage-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local locale JSON dictionaries"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-localization-coverage-mcp-server.mjs --status",
+        "node scripts/seis-localization-coverage-mcp-server.mjs --audit --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-maintainer-risk",
+      "name": "seis-maintainer-risk",
+      "displayName": "Seis Maintainer Risk",
+      "description": "Assess recorded ownership and maintainer-risk signals from local evidence.",
+      "category": "Governance",
+      "capabilities": [
+        "local-readonly-analysis",
+        "risk-signals"
+      ],
+      "owner": "@seis-governance",
+      "sourcePath": "plugins/seis-core/seis-maintainer-risk",
+      "entrypoint": "scripts/seis-maintainer-risk-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local maintainer and activity JSON"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "plugin validator",
+        "skill quick validator",
+        "node --check",
+        "MCP initialize/tools/list/tools/call smoke"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-mcp-inventory",
+      "name": "seis-mcp-inventory",
+      "displayName": "SEIS MCP Inventory",
+      "description": "Inventory local MCP manifests and declared capabilities without starting servers.",
+      "category": "AI",
+      "capabilities": [
+        "local-read-only",
+        "mcp-governance"
+      ],
+      "owner": "@seis-mcp",
+      "sourcePath": "plugins/seis-core/seis-mcp-inventory",
+      "entrypoint": "scripts/seis-mcp-inventory-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local MCP and plugin JSON manifests"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-mcp-inventory-mcp-server.mjs --status",
+        "node scripts/seis-mcp-inventory-mcp-server.mjs --inventory --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-migration-guide-check",
+      "name": "seis-migration-guide-check",
+      "displayName": "SEIS Migration Guide Check",
+      "description": "Check local migration and compatibility guidance without changing release documentation.",
+      "category": "Developer",
+      "capabilities": [
+        "local-read-only",
+        "migration-review"
+      ],
+      "owner": "@seis-docs",
+      "sourcePath": "plugins/seis-core/seis-migration-guide-check",
+      "entrypoint": "scripts/seis-migration-guide-check-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local migration documentation"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-migration-guide-check-mcp-server.mjs --status",
+        "node scripts/seis-migration-guide-check-mcp-server.mjs --audit --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-model-fallback",
+      "name": "seis-model-fallback",
+      "displayName": "SEIS Model Fallback",
+      "description": "Audit local route fallback declarations without selecting or calling models.",
+      "category": "AI",
+      "capabilities": [
+        "local-read-only",
+        "routing-review"
+      ],
+      "owner": "@seis-ai-agent",
+      "sourcePath": "plugins/seis-core/seis-model-fallback",
+      "entrypoint": "scripts/seis-model-fallback-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local route and fallback JSON"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-model-fallback-mcp-server.mjs --status",
+        "node scripts/seis-model-fallback-mcp-server.mjs --audit --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-package-adoption",
+      "name": "seis-package-adoption",
+      "displayName": "Seis Package Adoption",
+      "description": "Summarize recorded package adoption signals from local evidence.",
+      "category": "Data",
+      "capabilities": [
+        "local-readonly-analysis",
+        "evidence-aggregation"
+      ],
+      "owner": "@seis-product",
+      "sourcePath": "plugins/seis-core/seis-package-adoption",
+      "entrypoint": "scripts/seis-package-adoption-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local package adoption JSON"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "plugin validator",
+        "skill quick validator",
+        "node --check",
+        "MCP initialize/tools/list/tools/call smoke"
+      ],
+      "rollback": "Disable or remove the local plugin; no adoption data is mutated."
+    },
+    {
+      "id": "seis-performance-budget",
+      "name": "seis-performance-budget",
+      "displayName": "SEIS Performance Budget",
+      "description": "Audit bounded local performance budget declarations without running benchmarks.",
+      "category": "Developer",
+      "capabilities": [
+        "local-read-only",
+        "performance-review"
+      ],
+      "owner": "@seis-observability",
+      "sourcePath": "plugins/seis-core/seis-performance-budget",
+      "entrypoint": "scripts/seis-performance-budget-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local performance JSON"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-performance-budget-mcp-server.mjs --status",
+        "node scripts/seis-performance-budget-mcp-server.mjs --audit --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-personal-plugin-discovery",
+      "name": "seis-personal-plugin-discovery",
+      "displayName": "Seis Personal Plugin Discovery",
+      "description": "Discover selected local plugins through metadata-only inspection with symlink refusal.",
+      "category": "Developer",
+      "capabilities": [
+        "metadata-only",
+        "symlink-refusal"
+      ],
+      "owner": "@seis-mcp",
+      "sourcePath": "plugins/seis-core/seis-personal-plugin-discovery",
+      "entrypoint": "scripts/seis-personal-plugin-discovery-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "explicitly selected local plugin metadata"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "plugin validator",
+        "skill quick validator",
+        "node --check",
+        "MCP initialize/tools/list/tools/call smoke"
+      ],
+      "rollback": "Disable or remove the local plugin; discovery never mutates the selected directory."
+    },
+    {
+      "id": "seis-plugin-migration",
+      "name": "seis-plugin-migration",
+      "displayName": "Seis Plugin Migration",
+      "description": "Create a read-only migration plan for selected local plugins without copying or executing them.",
+      "category": "Developer",
+      "capabilities": [
+        "metadata-only",
+        "dry-run"
+      ],
+      "owner": "@seis-mcp",
+      "sourcePath": "plugins/seis-core/seis-plugin-migration",
+      "entrypoint": "scripts/seis-plugin-migration-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "selected local plugin metadata"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "plugin validator",
+        "skill quick validator",
+        "node --check",
+        "MCP initialize/tools/list/tools/call smoke"
+      ],
+      "rollback": "Disable or remove the local plugin; the dry-run changes no source or registry state."
+    },
+    {
+      "id": "seis-pr-cycle-time",
+      "name": "seis-pr-cycle-time",
+      "displayName": "Seis Pr Cycle Time",
+      "description": "Measure recorded pull-request cycle times from local evidence.",
+      "category": "Developer",
+      "capabilities": [
+        "local-readonly-analysis"
+      ],
+      "owner": "@seis-observability",
+      "sourcePath": "plugins/seis-core/seis-pr-cycle-time",
+      "entrypoint": "scripts/seis-pr-cycle-time-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local pull-request JSON"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "plugin validator",
+        "skill quick validator",
+        "node --check",
+        "MCP initialize/tools/list/tools/call smoke"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-provider-health",
+      "name": "seis-provider-health",
+      "displayName": "SEIS Provider Health",
+      "description": "Summarize recorded local provider health and credential states without making calls.",
+      "category": "AI",
+      "capabilities": [
+        "local-read-only",
+        "provider-governance"
+      ],
+      "owner": "@seis-ai-agent",
+      "sourcePath": "plugins/seis-core/seis-provider-health",
+      "entrypoint": "scripts/seis-provider-health-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local provider and capability JSON records"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-provider-health-mcp-server.mjs --status",
+        "node scripts/seis-provider-health-mcp-server.mjs --audit --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-public-safe-scan",
+      "name": "seis-public-safe-scan",
+      "displayName": "SEIS Public-Safe Scan",
+      "description": "Scan bounded local text for redacted public-private boundary findings.",
+      "category": "Security",
+      "capabilities": [
+        "local-read-only",
+        "redacted-findings"
+      ],
+      "owner": "@seis-security",
+      "sourcePath": "plugins/seis-core/seis-public-safe-scan",
+      "entrypoint": "scripts/seis-public-safe-scan-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local text files and path names"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-public-safe-scan-mcp-server.mjs --status",
+        "node scripts/seis-public-safe-scan-mcp-server.mjs --scan --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-rag-citation-coverage",
+      "name": "seis-rag-citation-coverage",
+      "displayName": "SEIS RAG Citation Coverage",
+      "description": "Measure declared local retrieval citation coverage without running retrieval.",
+      "category": "Data",
+      "capabilities": [
+        "local-read-only",
+        "knowledge-evidence"
+      ],
+      "owner": "@seis-knowledge",
+      "sourcePath": "plugins/seis-core/seis-rag-citation-coverage",
+      "entrypoint": "scripts/seis-rag-citation-coverage-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local retrieval JSON records"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-rag-citation-coverage-mcp-server.mjs --status",
+        "node scripts/seis-rag-citation-coverage-mcp-server.mjs --audit --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-release-cadence",
+      "name": "seis-release-cadence",
+      "displayName": "SEIS Release Cadence",
+      "description": "Analyze local release heading intervals without GitHub or publishing access.",
+      "category": "Developer",
+      "capabilities": [
+        "local-read-only",
+        "release-evidence"
+      ],
+      "owner": "@seis-release",
+      "sourcePath": "plugins/seis-core/seis-release-cadence",
+      "entrypoint": "scripts/seis-release-cadence-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local changelog files"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-release-cadence-mcp-server.mjs --status",
+        "node scripts/seis-release-cadence-mcp-server.mjs --analyze --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-release-readiness",
+      "name": "seis-release-readiness",
+      "displayName": "SEIS Release Readiness",
+      "description": "Honest local release-readiness report from recorded checks and repository metadata.",
+      "category": "Developer",
+      "capabilities": [
+        "Evidence-based readiness report",
+        "Failed/skipped check separation",
+        "Rollback reminder"
+      ],
+      "owner": "@seis-release",
+      "sourcePath": "plugins/seis-core/seis-release-readiness",
+      "entrypoint": "scripts/seis-release-readiness-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "recorded local JSON release-check evidence"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-release-readiness-mcp-server.mjs --status",
+        "node scripts/seis-release-readiness-mcp-server.mjs --report --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-repository-health",
+      "name": "seis-repository-health",
+      "displayName": "SEIS Repository Health",
+      "description": "Read-only repository hygiene and public-safe health findings for SEIS.",
+      "category": "Developer",
+      "capabilities": [
+        "Read-only Git health snapshot",
+        "Governance file coverage",
+        "CI and manifest detection",
+        "Secret-risk filename findings"
+      ],
+      "owner": "@seis-code",
+      "sourcePath": "plugins/seis-core/seis-repository-health",
+      "entrypoint": "scripts/seis-repository-health-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "explicit repository metadata",
+          "non-destructive Git status"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-repository-health-mcp-server.mjs --status",
+        "node scripts/seis-repository-health-mcp-server.mjs --scan --path <repository>"
+      ],
+      "rollback": "Disable or remove the local plugin; Git and repository files are never mutated."
+    },
+    {
+      "id": "seis-repository-scorecard",
+      "name": "seis-repository-scorecard",
+      "displayName": "SEIS Repository Scorecard",
+      "description": "Read-only local repository scorecard based on evidence files and bounded metadata.",
+      "category": "Developer",
+      "capabilities": [
+        "local-read-only",
+        "evidence-linked"
+      ],
+      "owner": "@seis-governance",
+      "sourcePath": "plugins/seis-core/seis-repository-scorecard",
+      "entrypoint": "scripts/seis-repository-scorecard-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local repository metadata"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-repository-scorecard-mcp-server.mjs --status",
+        "node scripts/seis-repository-scorecard-mcp-server.mjs --score --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-route-explainer",
+      "name": "seis-route-explainer",
+      "displayName": "SEIS Route Explainer",
+      "description": "Deterministic provider-neutral route explanation for SEIS policy review.",
+      "category": "AI",
+      "capabilities": [
+        "Explainable route proposal",
+        "Privacy-aware policy hints",
+        "Deterministic fallback explanation"
+      ],
+      "owner": "@seis-ai-agent",
+      "sourcePath": "plugins/seis-core/seis-route-explainer",
+      "entrypoint": "scripts/seis-route-explainer-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "task route parameters"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-route-explainer-mcp-server.mjs --status",
+        "node scripts/seis-route-explainer-mcp-server.mjs --explain --taskClass architecture"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-sbom-generator",
+      "name": "seis-sbom-generator",
+      "displayName": "SEIS SBOM Generator",
+      "description": "Generate an in-memory local SBOM projection from bounded manifests without writing artifacts.",
+      "category": "Security",
+      "capabilities": [
+        "local-read-only",
+        "supply-chain-review"
+      ],
+      "owner": "@seis-security",
+      "sourcePath": "plugins/seis-core/seis-sbom-generator",
+      "entrypoint": "scripts/seis-sbom-generator-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local package manifests and lockfiles"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-sbom-generator-mcp-server.mjs --status",
+        "node scripts/seis-sbom-generator-mcp-server.mjs --generate --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-secret-boundary-scan",
+      "name": "seis-secret-boundary-scan",
+      "displayName": "SEIS Secret Boundary Scan",
+      "description": "Read-only scoped scan for likely secrets and private-path leakage in text files.",
+      "category": "Security",
+      "capabilities": [
+        "Redacted secret-pattern findings",
+        "Private-path detection",
+        "Bounded text scan"
+      ],
+      "owner": "@seis-security",
+      "sourcePath": "plugins/seis-core/seis-secret-boundary-scan",
+      "entrypoint": "scripts/seis-secret-boundary-scan-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local text files and path names"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-secret-boundary-scan-mcp-server.mjs --status",
+        "node scripts/seis-secret-boundary-scan-mcp-server.mjs --scan --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-semver-audit",
+      "name": "seis-semver-audit",
+      "displayName": "SEIS Semver Audit",
+      "description": "Audit local package version metadata against semantic-versioning syntax.",
+      "category": "Developer",
+      "capabilities": [
+        "local-read-only",
+        "release-evidence"
+      ],
+      "owner": "@seis-release",
+      "sourcePath": "plugins/seis-core/seis-semver-audit",
+      "entrypoint": "scripts/seis-semver-audit-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local package.json files"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-semver-audit-mcp-server.mjs --status",
+        "node scripts/seis-semver-audit-mcp-server.mjs --audit --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-source-provenance",
+      "name": "seis-source-provenance",
+      "displayName": "SEIS Source Provenance",
+      "description": "Read-only file hashing and source, rights, and classification metadata for SEIS.",
+      "category": "Productivity",
+      "capabilities": [
+        "Bounded SHA-256 inventory",
+        "Source classification",
+        "Rights-risk hints",
+        "No-upload provenance reports"
+      ],
+      "owner": "@seis-docs",
+      "sourcePath": "plugins/seis-core/seis-source-provenance",
+      "entrypoint": "scripts/seis-source-provenance-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded regular files under an explicit workspace"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-source-provenance-mcp-server.mjs --status",
+        "node scripts/seis-source-provenance-mcp-server.mjs --scan --path <workspace> --max-files 25"
+      ],
+      "rollback": "Disable or remove the local plugin; hashes are emitted to stdout and no report file is written."
+    },
+    {
+      "id": "seis-technology-ontology",
+      "name": "seis-technology-ontology",
+      "displayName": "SEIS Technology Ontology",
+      "description": "Read-only searchable technology taxonomy and relationship projection for SEIS.",
+      "category": "Data",
+      "capabilities": [
+        "Technology taxonomy search",
+        "Relationship projection",
+        "Local deterministic output"
+      ],
+      "owner": "@seis-knowledge",
+      "sourcePath": "plugins/seis-core/seis-technology-ontology",
+      "entrypoint": "scripts/seis-technology-ontology-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bundled ontology profile"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-technology-ontology-mcp-server.mjs --status",
+        "node scripts/seis-technology-ontology-mcp-server.mjs --search --query agent"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-test-flakiness",
+      "name": "seis-test-flakiness",
+      "displayName": "SEIS Test Flakiness",
+      "description": "Analyze recorded local test results for flaky or nondeterministic patterns without rerunning tests.",
+      "category": "Developer",
+      "capabilities": [
+        "local-read-only",
+        "qa-review"
+      ],
+      "owner": "@seis-qa",
+      "sourcePath": "plugins/seis-core/seis-test-flakiness",
+      "entrypoint": "scripts/seis-test-flakiness-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local test result JSON"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-test-flakiness-mcp-server.mjs --status",
+        "node scripts/seis-test-flakiness-mcp-server.mjs --audit --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-vulnerability-triage",
+      "name": "seis-vulnerability-triage",
+      "displayName": "SEIS Vulnerability Triage",
+      "description": "Triage recorded local vulnerability findings without querying advisories or changing dependencies.",
+      "category": "Security",
+      "capabilities": [
+        "local-read-only",
+        "security-review"
+      ],
+      "owner": "@seis-security",
+      "sourcePath": "plugins/seis-core/seis-vulnerability-triage",
+      "entrypoint": "scripts/seis-vulnerability-triage-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local vulnerability JSON reports"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-vulnerability-triage-mcp-server.mjs --status",
+        "node scripts/seis-vulnerability-triage-mcp-server.mjs --triage --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-workflow-linter",
+      "name": "seis-workflow-linter",
+      "displayName": "SEIS Workflow Linter",
+      "description": "Read-only validation of SEIS workflow trigger, condition, approval, action, retry, and audit stages.",
+      "category": "Developer",
+      "capabilities": [
+        "Workflow stage validation",
+        "Approval-gate hints",
+        "Retry and audit checks"
+      ],
+      "owner": "@seis-automation",
+      "sourcePath": "plugins/seis-core/seis-workflow-linter",
+      "entrypoint": "scripts/seis-workflow-linter-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local JSON workflow definitions"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-workflow-linter-mcp-server.mjs --status",
+        "node scripts/seis-workflow-linter-mcp-server.mjs --lint --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-workflow-permission-audit",
+      "name": "seis-workflow-permission-audit",
+      "displayName": "SEIS Workflow Permission Audit",
+      "description": "Review local workflow permission declarations without running workflows.",
+      "category": "Security",
+      "capabilities": [
+        "local-read-only",
+        "permission-review"
+      ],
+      "owner": "@seis-security",
+      "sourcePath": "plugins/seis-core/seis-workflow-permission-audit",
+      "entrypoint": "scripts/seis-workflow-permission-audit-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "bounded local workflow JSON and YAML-like files"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-workflow-permission-audit-mcp-server.mjs --status",
+        "node scripts/seis-workflow-permission-audit-mcp-server.mjs --audit --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-workspace-inspector",
+      "name": "seis-workspace-inspector",
+      "displayName": "SEIS Workspace Inspector",
+      "description": "Read-only local workspace metadata and technology inventory for SEIS.",
+      "category": "Developer",
+      "capabilities": [
+        "Read-only workspace inventory",
+        "Technology manifest detection",
+        "Symlink-safe scanning",
+        "Local deterministic reports"
+      ],
+      "owner": "@seis",
+      "sourcePath": "plugins/seis-core/seis-workspace-inspector",
+      "entrypoint": "scripts/seis-workspace-inspector-mcp-server.mjs",
+      "release": {
+        "label": "0.00000001",
+        "semver": "0.0.10",
+        "kind": "initial",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 10
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "permissions": {
+        "read": [
+          "explicit workspace root metadata"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-workspace-inspector-mcp-server.mjs --status",
+        "node scripts/seis-workspace-inspector-mcp-server.mjs --inspect --path <workspace>"
+      ],
+      "rollback": "Disable or remove the local plugin; no inspected workspace data is mutated."
+    }
+  ],
+  "generatedAt": "2026-07-15"
+}

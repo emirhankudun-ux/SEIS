@@ -1,0 +1,3 @@
+{
+  "mcpServers": { "seis-route-explainer": { "command": "node", "args": ["scripts/seis-route-explainer-mcp-server.mjs"] } }
+}

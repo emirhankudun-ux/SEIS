@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-semver-audit": {
+      "command": "node",
+      "args": ["scripts/seis-semver-audit-mcp-server.mjs"]
+    }
+  }
+}

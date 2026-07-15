@@ -100,6 +100,7 @@ describe("seis-mcp stdio smoke", () => {
       "run_all_checks",
       "security_audit",
       "seis_ai_core_model_scaling_status",
+      "seis_ai_core_plugin_registry_status",
       "seis_ai_core_provider_status",
       "seis_ai_core_subagent_dry_run",
       "seis_ai_core_subagent_model",
@@ -148,6 +149,7 @@ describe("seis-mcp stdio smoke", () => {
       "seis://ai/model-frontier-escalation-policy.json",
       "seis://ai/model-parameter-ladder.json",
       "seis://ai/model-scaling-hardware-profile.json",
+      "seis://ai/plugin-registry.json",
       "seis://ai/provider-registry.json",
       "seis://ai/redaction-fixture.json",
       "seis://ai/sub-agent-5-year-plan-view.json",
@@ -225,6 +227,71 @@ describe("seis-mcp stdio smoke", () => {
     const payload = JSON.parse(resource.result.contents[0].text);
     assert.equal(payload.id, "seis-agent-plugin-integration");
     assert.equal(payload.primaryInstallId, "seis-ai-agent@seis-repo");
+  });
+
+  it("exposes the canonical AI Core plugin registry tool and resource", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "tools/call",
+        params: {
+          name: "seis_ai_core_plugin_registry_status",
+          arguments: { query: "security", limit: 2 },
+        },
+      },
+      {
+        jsonrpc: "2.0",
+        id: 3,
+        method: "resources/read",
+        params: { uri: "seis://ai/plugin-registry.json" },
+      },
+    ]);
+
+    const toolCall = responses.get(2);
+    assert.ok(!toolCall.error, `tools/call errored: ${JSON.stringify(toolCall.error)}`);
+    const status = JSON.parse(toolCall.result.content[0].text);
+    assert.equal(status.ok, true);
+    assert.equal(status.registryEntryCount, 5000);
+    assert.equal(status.physicalPluginCount, 60);
+    assert.equal(status.catalogOnlyEntryCount, 4940);
+    assert.equal(status.personalPluginCount, 55);
+    assert.equal(status.personalRepoCounterpartCount, 55);
+    assert.equal(status.appOwnedPluginCount, 50);
+    assert.equal(status.applicationPluginSourceRoot, "plugins/seis-core");
+    assert.equal(status.applicationPluginManifest, "apps/seis-core/data/seis-core-plugin-sources.json");
+    assert.equal(status.applicationPluginReleaseTrain, "content/development/seis-core-plugin-release-train.json");
+    assert.match(status.applicationPluginReleaseLabel, /^(?:0\.\d{1,9}|\d+\.\d{4})$/);
+    assert.match(status.applicationPluginReleaseSemver, /^\d+\.0\.\d+$/);
+    assert.ok(Number.isInteger(status.applicationPluginReleaseMajor));
+    assert.ok(Number.isInteger(status.applicationPluginReleaseRevision));
+    assert.ok(Number.isInteger(status.applicationPluginReleaseMicroUnits));
+    assert.equal(status.personalPluginCoveragePath, "content/development/seis-ai-core-personal-plugin-coverage.json");
+    assert.equal(status.matches.length, 2);
+    assert.equal(status.routeEligibleCount, 0);
+
+    const resource = responses.get(3);
+    assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
+    const registry = JSON.parse(resource.result.contents[0].text);
+    assert.equal(registry.id, "seis-ai-core-plugin-registry");
+    assert.equal(registry.entries.length, 5000);
+    assert.equal(registry.target.appOwnedPluginCount, 50);
+    assert.equal(registry.target.appReleaseLabel, status.applicationPluginReleaseLabel);
+    assert.equal(registry.target.appReleaseSemver, status.applicationPluginReleaseSemver);
+    assert.equal(registry.target.appReleaseRevision, status.applicationPluginReleaseRevision);
+    assert.equal(registry.target.personalPluginCount, 55);
+    assert.equal(registry.target.personalRepoCounterpartCount, 55);
   });
 
   it("executes seis_public_plugin_family through the protocol", async () => {

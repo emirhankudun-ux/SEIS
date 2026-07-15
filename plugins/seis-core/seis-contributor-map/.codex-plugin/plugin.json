@@ -1,0 +1,19 @@
+{
+  "name": "seis-contributor-map",
+  "version": "0.0.10",
+  "description": "Summarize local contributor and ownership evidence with redacted identifiers.",
+  "author": {
+    "name": "Local developer"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Seis Contributor Map",
+    "shortDescription": "Map local ownership evidence safely.",
+    "longDescription": "Read bounded contributor, CODEOWNERS, and ownership records and report redacted public-safe aggregates.",
+    "developerName": "Local developer",
+    "category": "Developer",
+    "capabilities": ["local-readonly-analysis", "redacted-aggregation"],
+    "defaultPrompt": "Summarize recorded contributor ownership evidence."
+  },
+  "mcpServers": "./.mcp.json"
+}

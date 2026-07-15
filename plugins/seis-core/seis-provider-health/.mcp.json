@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-provider-health": {
+      "command": "node",
+      "args": ["scripts/seis-provider-health-mcp-server.mjs"]
+    }
+  }
+}

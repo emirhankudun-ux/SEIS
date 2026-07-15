@@ -1,0 +1,3 @@
+{
+  "mcpServers": { "seis-workflow-linter": { "command": "node", "args": ["scripts/seis-workflow-linter-mcp-server.mjs"] } }
+}

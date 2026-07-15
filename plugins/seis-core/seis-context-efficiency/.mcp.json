@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-context-efficiency": {
+      "command": "node",
+      "args": ["scripts/seis-context-efficiency-mcp-server.mjs"]
+    }
+  }
+}

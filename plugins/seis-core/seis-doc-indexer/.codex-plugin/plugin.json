@@ -1,0 +1,21 @@
+{
+  "id": "seis-doc-indexer",
+  "name": "seis-doc-indexer",
+  "version": "0.0.10",
+  "description": "Deterministic local full-text index for bounded Markdown and text documents.",
+  "author": { "name": "emirhankudun-ux" },
+  "license": "UNLICENSED-LOCAL",
+  "keywords": ["seis", "documents", "index", "search", "knowledge"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "SEIS Doc Indexer",
+    "shortDescription": "Search bounded local documents without creating an index file.",
+    "longDescription": "A read-only SEIS knowledge foundation plugin that scans bounded Markdown and text files, returns matching document metadata and snippets, and never writes an index or sends content to a remote service.",
+    "developerName": "emirhankudun-ux",
+    "category": "Data",
+    "capabilities": ["Bounded local document search", "Snippet extraction", "Private-path exclusion"],
+    "defaultPrompt": ["Search the local SEIS documents.", "Find relevant Markdown without uploading it.", "Index this document set in read-only mode."],
+    "brandColor": "#0EA5E9"
+  }
+}

@@ -26,6 +26,7 @@ import {
 } from "../lib/plugin-integration.mjs";
 import { resolveInside } from "../lib/repo.mjs";
 import { runAllChecks, i18nStatus, seoAudit, contractCheck, drawingsCatalog, styleAudit, perfAudit, a11yAudit, securityAudit } from "../lib/checks.mjs";
+import { AI_CORE_PLUGIN_REGISTRY_STATUS_TOOL, aiCorePluginRegistryStatus } from "../lib/plugin-registry.mjs";
 
 const MAX_READ_BYTES = 64 * 1024;
 const MAX_GREP_HITS = 60;
@@ -116,6 +117,19 @@ export function toolDefinitions({ allowWrite = false } = {}) {
         type: "object",
         properties: {
           includeFullContracts: { type: "boolean", description: "Return the full family and lifecycle contracts in addition to the compact status summary." },
+        },
+      },
+    },
+    {
+      name: AI_CORE_PLUGIN_REGISTRY_STATUS_TOOL,
+      description:
+        "Read the canonical SEIS AI Core Plugin Registry. Reports the exact 5000-entry target, physical repo-owned plugins, app-owned personal sources, plan-only catalog slots, permission boundaries, and optional bounded search. Read-only; catalog presence never claims an implemented or connected plugin.",
+      input_schema: {
+        type: "object",
+        properties: {
+          query: { type: "string", description: "Optional bounded search across plugin ids, names, owners, categories, domains, and operations." },
+          limit: { type: "integer", description: "Maximum search results from 1 to 100 (default 20)." },
+          includeFullRegistry: { type: "boolean", description: "Return the full machine-readable registry; use only when the full artifact is needed." },
         },
       },
     },
@@ -349,6 +363,17 @@ export function executeTool(name, input, { repoRoot, webRoot, allowWrite = false
     case "seis_public_plugin_family": {
       return JSON.stringify(
         publicPluginFamilyStatus(repoRoot, { includeFullContracts: input.includeFullContracts === true }),
+        null,
+        2
+      );
+    }
+    case AI_CORE_PLUGIN_REGISTRY_STATUS_TOOL: {
+      return JSON.stringify(
+        aiCorePluginRegistryStatus(repoRoot, {
+          query: input?.query,
+          limit: input?.limit,
+          includeFullRegistry: input?.includeFullRegistry === true,
+        }),
         null,
         2
       );

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-workspace-inspector": {
+      "command": "node",
+      "args": ["scripts/seis-workspace-inspector-mcp-server.mjs"]
+    }
+  }
+}

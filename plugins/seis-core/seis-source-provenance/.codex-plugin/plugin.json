@@ -1,0 +1,32 @@
+{
+  "id": "seis-source-provenance",
+  "name": "seis-source-provenance",
+  "version": "0.0.10",
+  "description": "Read-only file hashing and source, rights, and classification metadata for SEIS.",
+  "author": {
+    "name": "emirhankudun-ux"
+  },
+  "license": "UNLICENSED-LOCAL",
+  "keywords": ["seis", "provenance", "sha256", "rights", "classification"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "SEIS Source Provenance",
+    "shortDescription": "Hash and classify local source files without uploading them.",
+    "longDescription": "A deterministic, local-only SEIS provenance plugin that records relative paths, sizes, SHA-256 hashes, source classes, and rights-risk hints for a bounded file scan without network access or writes.",
+    "developerName": "emirhankudun-ux",
+    "category": "Productivity",
+    "capabilities": [
+      "Bounded SHA-256 inventory",
+      "Source classification",
+      "Rights-risk hints",
+      "No-upload provenance reports"
+    ],
+    "defaultPrompt": [
+      "Create a bounded source provenance report.",
+      "Hash these files without uploading them.",
+      "Flag unknown-rights and private-risk paths."
+    ],
+    "brandColor": "#F59E0B"
+  }
+}

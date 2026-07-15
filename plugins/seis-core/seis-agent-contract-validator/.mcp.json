@@ -1,0 +1,3 @@
+{
+  "mcpServers": { "seis-agent-contract-validator": { "command": "node", "args": ["scripts/seis-agent-contract-validator-mcp-server.mjs"] } }
+}

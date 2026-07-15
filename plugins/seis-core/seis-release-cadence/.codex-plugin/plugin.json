@@ -1,0 +1,19 @@
+{
+  "name": "seis-release-cadence",
+  "version": "0.0.10",
+  "description": "Analyze local release heading intervals without GitHub or publishing access.",
+  "author": { "name": "Emirhan Kudun" },
+  "license": "UNLICENSED-LOCAL",
+  "keywords": ["seis", "release", "cadence", "changelog", "read-only"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS Release Cadence",
+    "shortDescription": "Measure local release intervals from changelog evidence.",
+    "longDescription": "Extracts dated or versioned release headings from bounded local changelogs and reports cadence gaps. It does not query GitHub, publish releases or infer delivery performance.",
+    "developerName": "Emirhan Kudun",
+    "category": "Developer",
+    "capabilities": ["local-read-only", "release-evidence"],
+    "defaultPrompt": "Analyze release cadence from this local repository's changelog evidence."
+  },
+  "mcpServers": "./.mcp.json"
+}

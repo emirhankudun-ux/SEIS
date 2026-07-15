@@ -1,0 +1,3 @@
+{
+  "mcpServers": { "seis-technology-ontology": { "command": "node", "args": ["scripts/seis-technology-ontology-mcp-server.mjs"] } }
+}
