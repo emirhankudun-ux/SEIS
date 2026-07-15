@@ -1,6 +1,6 @@
 {
   "name": "seis-personal-plugin-discovery",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Discover selected local plugins through metadata-only inspection with symlink refusal.",
   "author": {
     "name": "Local developer"

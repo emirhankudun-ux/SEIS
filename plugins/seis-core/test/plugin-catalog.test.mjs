@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
+import { readFileSync } from "node:fs";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
@@ -14,6 +15,7 @@ import {
 const pluginRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const repoRoot = path.resolve(pluginRoot, "../..");
 const cliPath = path.join(pluginRoot, "bin", "seis-core-plugins.mjs");
+const releaseTrain = JSON.parse(readFileSync(path.join(repoRoot, "content/development/seis-core-plugin-release-train.json"), "utf8"));
 
 test("application catalog is sourced from exactly 50 SEIS Core plugins", () => {
   const catalog = buildApplicationPluginCatalog(repoRoot);
@@ -33,7 +35,7 @@ test("catalog search and inspection expose app-owned plugin metadata", () => {
   assert.ok(matches.plugins.some((plugin) => plugin.name === "seis-release-cadence"));
 
   const plugin = inspectApplicationPlugin(repoRoot, "seis-release-cadence");
-  assert.equal(plugin.release.label, "0.00000001");
+  assert.equal(plugin.release.label, releaseTrain.currentRelease.label);
   assert.equal(plugin.status.state, "not-checked");
   assert.equal(plugin.activation.status.ok, true);
   assert.equal(plugin.activation.status.executes, false);

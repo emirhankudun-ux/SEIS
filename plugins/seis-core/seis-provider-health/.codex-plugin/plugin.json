@@ -1,6 +1,6 @@
 {
   "name": "seis-provider-health",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Summarize recorded local provider health and credential states without making calls.",
   "author": { "name": "Emirhan Kudun" },
   "license": "UNLICENSED-LOCAL",

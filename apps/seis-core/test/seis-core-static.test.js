@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import assert from "node:assert/strict";
+import { nextLargeCodeRelease } from "../../../scripts/seis-core-plugin-release-policy.mjs";
 
 const root = new URL("../", import.meta.url);
 
@@ -36,8 +37,11 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /SEIS Command Center App Plugins/);
   assert.match(script, /plugins\/seis-core/);
   assert.match(script, /seis-core-plugin-catalog\.json/);
+  assert.match(script, /seis-core-plugin-release-readiness\.json/);
   assert.match(script, /app-plugin-filter/);
   assert.match(script, /loadSeisCorePluginArtifact/);
+  assert.match(script, /loadSeisCorePluginReleaseReadiness/);
+  assert.match(script, /renderPluginReleaseReadiness/);
   assert.match(script, /at app release \d+\.\d{4}/);
   assert.match(script, /automationWorkflows/);
   assert.match(script, /godModeLanes/);
@@ -91,6 +95,7 @@ test("SEIS Command Center script implements local workflows", async () => {
 test("SEIS Command Center owns the personal plugin source boundary", async () => {
   const manifest = JSON.parse(await readFile(new URL("data/seis-core-plugin-sources.json", root), "utf8"));
   const catalog = JSON.parse(await readFile(new URL("data/seis-core-plugin-catalog.json", root), "utf8"));
+  const readiness = JSON.parse(await readFile(new URL("data/seis-core-plugin-release-readiness.json", root), "utf8"));
   const releaseTrain = JSON.parse(await readFile(new URL("../../content/development/seis-core-plugin-release-train.json", root), "utf8"));
   assert.equal(manifest.owner, "apps/seis-core");
   assert.equal(manifest.sourceRoot, "plugins/seis-core");
@@ -98,6 +103,11 @@ test("SEIS Command Center owns the personal plugin source boundary", async () =>
   assert.equal(catalog.sourceRoot, "plugins/seis-core");
   assert.equal(catalog.counts.discovered, 50);
   assert.equal(catalog.plugins.length, 50);
+  assert.equal(readiness.sourceRoot, "plugins/seis-core");
+  assert.equal(readiness.currentRelease.label, releaseTrain.currentRelease.label);
+  assert.equal(readiness.next.largeCode.label, nextLargeCodeRelease(releaseTrain.currentRelease.label).label);
+  assert.equal(readiness.next.annual.label, "1.0000");
+  assert.equal(readiness.policy.largeCodeChangeRequiresEvidence, true);
   assert.equal(manifest.releaseTrainPath, "content/development/seis-core-plugin-release-train.json");
   assert.equal(manifest.releaseTrainVersion, releaseTrain.currentRelease.label);
   assert.equal(manifest.releaseSemver, releaseTrain.currentRelease.semver);

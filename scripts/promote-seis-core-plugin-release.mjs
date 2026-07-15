@@ -14,6 +14,10 @@ import {
   parseReleaseLabel,
   releaseRecord,
 } from "./seis-core-plugin-release-policy.mjs";
+import {
+  collectSeisCorePluginChangeEvidence,
+  SEIS_CORE_PLUGIN_CHANGE_EVIDENCE_ID,
+} from "./seis-core-plugin-change-evidence.mjs";
 
 const root = process.cwd();
 const sourceRoot = "plugins/seis-core";
@@ -25,12 +29,14 @@ const requestedKind = readOption("--kind");
 const majorMode = process.argv.includes("--major");
 const annualMode = process.argv.includes("--annual");
 const codeLines = readIntegerOption("--code-lines");
+const evidencePath = readOption("--evidence");
 const largeCodeChangeThreshold = trainBeforePromotion.policy?.largeCodeChangeThreshold ?? 500;
 const largeCodeMode = process.argv.includes("--large-code-change") || (codeLines !== null && codeLines >= largeCodeChangeThreshold);
 
 if ((majorMode || annualMode) && largeCodeMode) throw new Error("Choose either --major/--annual or --large-code-change, not both.");
 if (majorMode && annualMode) throw new Error("Choose either --major or --annual, not both.");
 if (requestedLabel && (majorMode || annualMode || largeCodeMode)) throw new Error("Use --label explicitly or choose an automatic promotion mode, not both.");
+if (evidencePath && codeLines !== null) throw new Error("Use --evidence or --code-lines as the large-code proof source, not both.");
 if (largeCodeMode && codeLines !== null && codeLines < largeCodeChangeThreshold) {
   throw new Error(`--code-lines must be at least ${largeCodeChangeThreshold} for a large-code promotion.`);
 }
@@ -46,6 +52,23 @@ const promotion = determinePromotion({ current, requestedLabel, requestedKind, m
 if (compareReleases(promotion.parsed, current) < 0) {
   throw new Error(`Release promotion cannot move backwards from ${current.label} to ${promotion.parsed.label}.`);
 }
+const requiresLargeCodeEvidence = promotion.kind === "large-code-change";
+const workingTreeEvidence = requiresLargeCodeEvidence && !evidencePath && codeLines === null
+  ? collectSeisCorePluginChangeEvidence(root, { threshold: largeCodeChangeThreshold })
+  : null;
+const changeEvidence = evidencePath
+  ? readChangeEvidence(evidencePath, largeCodeChangeThreshold)
+  : workingTreeEvidence;
+const measuredCodeLines = changeEvidence?.codeLinesChanged ?? codeLines;
+if (evidencePath && !requiresLargeCodeEvidence) {
+  throw new Error("--evidence is only valid for a large-code-change promotion.");
+}
+if (requiresLargeCodeEvidence && apply && !evidencePath) {
+  throw new Error("Large-code promotion requires --evidence content/development/seis-core-plugin-change-evidence.json; generate it after the code change is complete.");
+}
+if (requiresLargeCodeEvidence && apply && (measuredCodeLines === null || measuredCodeLines < largeCodeChangeThreshold)) {
+  throw new Error(`Large-code evidence must report at least ${largeCodeChangeThreshold} changed code lines; received ${measuredCodeLines ?? "none"}.`);
+}
 const plugins = listPlugins();
 
 if (plugins.length !== 50) {
@@ -54,8 +77,11 @@ if (plugins.length !== 50) {
 
 const evidence = {
   trigger: promotion.kind === "large-code-change" ? "explicit --large-code-change" : promotion.kind === "annual" ? `annual release ${annualYear}` : promotion.kind,
-  codeLines,
+  codeLines: measuredCodeLines,
   codeLineThreshold: largeCodeChangeThreshold,
+  evidencePath: evidencePath || null,
+  evidenceBaseCommit: changeEvidence?.baseCommit || null,
+  evidenceEligible: changeEvidence?.eligible ?? (promotion.kind !== "large-code-change"),
   annualYear: promotion.kind === "annual" ? annualYear : lastAnnualYear,
   reason: readOption("--reason") || (promotion.kind === "large-code-change" ? "large code change after the previous app release" : promotion.kind === "annual" ? `annual app release for ${annualYear}` : promotion.kind === "initial" ? "user-selected initial app release baseline" : "major app plugin update"),
 };
@@ -71,6 +97,7 @@ if (!apply) {
     range: { start: APP_PLUGIN_RELEASE_SEED_LABEL, maximum: APP_PLUGIN_RELEASE_MAX_LABEL },
     filesToUpdate: plugins.length * 2 + 6,
     publicMarketplaceMutation: false,
+    readyForApply: !requiresLargeCodeEvidence || Boolean(changeEvidence?.eligible),
     message: "Pass --apply to update all app-owned plugin manifests, profiles, release metadata, and generated projections.",
   }, null, 2));
   process.exit(0);
@@ -153,6 +180,8 @@ run("scripts/create-seis-ai-core-plugin-registry.mjs");
 run("scripts/create-seis-core-plugin-catalog.mjs");
 updateIntegrationManifest(promotion.parsed);
 updateCommandCenterSurface(promotion.parsed);
+run("scripts/create-seis-core-plugin-change-evidence.mjs");
+run("scripts/create-seis-core-plugin-release-readiness.mjs");
 
 console.log(`Promoted ${plugins.length} app-owned plugins to ${promotion.parsed.label} (${promotion.parsed.semver}).`);
 console.log("Public suite and personal marketplace were not mutated.");
@@ -191,6 +220,21 @@ function listPlugins() {
     .map((entry) => ({ name: entry.name, root: path.join(absoluteRoot, entry.name) }))
     .filter((plugin) => fs.existsSync(path.join(plugin.root, ".codex-plugin", "plugin.json")))
     .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+function readChangeEvidence(filePath, threshold) {
+  const evidence = readJson(filePath);
+  if (evidence.id !== SEIS_CORE_PLUGIN_CHANGE_EVIDENCE_ID) {
+    throw new Error(`Change evidence must have id ${SEIS_CORE_PLUGIN_CHANGE_EVIDENCE_ID}.`);
+  }
+  const currentCommit = execFileSync("git", ["rev-parse", "HEAD"], { cwd: root, encoding: "utf8" }).trim();
+  if (evidence.baseCommit !== currentCommit) {
+    throw new Error(`Change evidence base commit ${evidence.baseCommit} does not match current HEAD ${currentCommit}.`);
+  }
+  if (!Number.isSafeInteger(evidence.codeLinesChanged) || evidence.codeLinesChanged < threshold || evidence.eligible !== true) {
+    throw new Error(`Change evidence must be eligible with at least ${threshold} changed code lines.`);
+  }
+  return evidence;
 }
 
 function replaceStringProperty(text, key, value, label) {

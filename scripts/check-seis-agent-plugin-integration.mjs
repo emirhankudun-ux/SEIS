@@ -17,10 +17,13 @@ const pluginRegistryPath = path.join(root, "content", "development", "seis-ai-co
 const personalPluginCoveragePath = path.join(root, "content", "development", "seis-ai-core-personal-plugin-coverage.json");
 const appPluginSourcesPath = path.join(root, "apps", "seis-core", "data", "seis-core-plugin-sources.json");
 const appPluginCatalogPath = path.join(root, "apps", "seis-core", "data", "seis-core-plugin-catalog.json");
+const appPluginReadinessPath = path.join(root, "apps", "seis-core", "data", "seis-core-plugin-release-readiness.json");
 const releaseTrainPath = path.join(root, "content", "development", "seis-core-plugin-release-train.json");
 const appPluginCatalogScriptPath = path.join(root, "scripts", "create-seis-core-plugin-catalog.mjs");
 const appPluginCatalogRuntimePath = path.join(root, "plugins", "seis-core", "runtime", "plugin-catalog.mjs");
 const appPluginCliPath = path.join(root, "plugins", "seis-core", "bin", "seis-core-plugins.mjs");
+const appPluginChangeEvidenceScriptPath = path.join(root, "scripts", "create-seis-core-plugin-change-evidence.mjs");
+const appPluginReadinessScriptPath = path.join(root, "scripts", "create-seis-core-plugin-release-readiness.mjs");
 const pluginRegistryHelperPath = path.join(root, "packages", "seis-ai", "src", "lib", "plugin-registry.mjs");
 const pluginSourceCheckPath = path.join(root, "scripts", "check-seis-ai-core-plugin-sources.mjs");
 const installSmokePath = path.join(root, "scripts", "check-seis-public-plugin-install-smoke.mjs");
@@ -111,10 +114,13 @@ for (const [filePath, label] of [
   [personalPluginCoveragePath, "SEIS AI personal plugin coverage"],
   [appPluginSourcesPath, "SEIS Command Center app plugin source manifest"],
   [appPluginCatalogPath, "SEIS Command Center app plugin catalog"],
+  [appPluginReadinessPath, "SEIS Command Center app plugin release readiness"],
   [releaseTrainPath, "SEIS Command Center app plugin release train"],
   [appPluginCatalogScriptPath, "SEIS Core app plugin catalog generator"],
   [appPluginCatalogRuntimePath, "SEIS Core app plugin catalog runtime"],
   [appPluginCliPath, "SEIS Core app plugin CLI"],
+  [appPluginChangeEvidenceScriptPath, "SEIS Core app plugin change evidence generator"],
+  [appPluginReadinessScriptPath, "SEIS Core app plugin release readiness generator"],
   [pluginRegistryHelperPath, "SEIS AI Core plugin registry helper"],
   [pluginSourceCheckPath, "SEIS AI Core plugin source checker"],
   [installSmokePath, "SEIS public plugin install smoke checker"],
@@ -162,6 +168,7 @@ const pluginRegistry = readJson(pluginRegistryPath, "SEIS AI Core plugin registr
 const personalPluginCoverage = readJson(personalPluginCoveragePath, "SEIS AI personal plugin coverage");
 const appPluginSources = readJson(appPluginSourcesPath, "SEIS Command Center app plugin source manifest");
 const appPluginCatalog = readJson(appPluginCatalogPath, "SEIS Command Center app plugin catalog");
+const appPluginReadiness = readJson(appPluginReadinessPath, "SEIS Command Center app plugin release readiness");
 const releaseTrain = readJson(releaseTrainPath, "SEIS Command Center app plugin release train");
 const appRelease = releaseTrain?.currentRelease || {};
 const appReleaseLabel = appRelease.label || null;
@@ -171,6 +178,8 @@ const pluginSourceCheck = readText(pluginSourceCheckPath, "SEIS AI Core plugin s
 const appPluginCatalogScript = readText(appPluginCatalogScriptPath, "SEIS Core app plugin catalog generator");
 const appPluginCatalogRuntime = readText(appPluginCatalogRuntimePath, "SEIS Core app plugin catalog runtime");
 const appPluginCli = readText(appPluginCliPath, "SEIS Core app plugin CLI");
+const appPluginChangeEvidenceScript = readText(appPluginChangeEvidenceScriptPath, "SEIS Core app plugin change evidence generator");
+const appPluginReadinessScript = readText(appPluginReadinessScriptPath, "SEIS Core app plugin release readiness generator");
 const webIndex = readText(webIndexPath, "SEIS demo index");
 const webScript = readText(webScriptPath, "SEIS demo script");
 const desktopScript = readText(desktopScriptPath, "SEIS desktop script");
@@ -359,7 +368,10 @@ if (manifest) {
     "npm run check:seis-ai-personal-plugin-coverage",
     "npm run check:seis-core-plugin-sources",
     "npm run check:seis-core-plugin-release",
+    "npm run check:seis-core-plugin-release-policy",
     "npm run check:seis-core-plugin-catalog",
+    "npm run check:seis-core-plugin-release-readiness",
+    "npm run check:seis-core-plugin-change-evidence",
     "npm run check:seis-core-plugin-matrix",
     "npm run check:seis-ai-core-plugin-sources",
     "npm run check:seis-agent-plugin-integration",
@@ -429,6 +441,10 @@ if (manifest) {
   ensure(appPluginCatalog?.policy?.sourceMutation === false, "app plugin catalog must not mutate source");
   ensure(appPluginCatalog?.policy?.executableAction === "status-only", "app plugin catalog executable action must be status-only");
   ensure(appPluginCatalog?.counts?.statusReady === 50, "app plugin catalog must expose 50 ready status checks");
+  ensure(appPluginReadiness?.id === "seis-core-plugin-release-readiness", "app plugin release readiness id must be stable");
+  ensure(appPluginReadiness?.currentRelease?.label === appReleaseLabel, "app plugin release readiness current label is stale");
+  ensure(appPluginReadiness?.next?.largeCode?.label, "app plugin release readiness must expose the next large-code label");
+  ensure(appPluginReadiness?.policy?.largeCodeChangeRequiresEvidence === true, "app plugin release readiness must require large-code evidence");
   ensure(packageJson.scripts?.["check:seis-core-plugin-catalog"] === "node scripts/create-seis-core-plugin-catalog.mjs --check", "package scripts must expose the app plugin catalog check");
   ensure(packageJson.scripts?.["seis:core:plugins"] === "node plugins/seis-core/bin/seis-core-plugins.mjs", "package scripts must expose the app plugin CLI");
   ensure(gitignore.includes("!apps/seis-core/data/seis-core-plugin-catalog.json"), "repository gitignore must track the app plugin catalog");
@@ -440,6 +456,8 @@ if (manifest) {
   ensure(!fs.existsSync(corePluginRoot) || !Array.from(fs.readdirSync(corePluginRoot, { withFileTypes: true })).some((entry) => entry.isDirectory()), "AI Core must not own personal plugin source directories");
   ensure(pluginSourceCheck.includes("--status"), "AI Core plugin source checker must execute bounded status validation");
   ensure(appPluginCatalogScript.includes("buildApplicationPluginCatalog"), "app plugin catalog generator must use the app runtime catalog");
+  ensure(appPluginChangeEvidenceScript.includes("SEIS_CORE_PLUGIN_CHANGE_EVIDENCE_THRESHOLD"), "change evidence generator must declare the code threshold");
+  ensure(appPluginReadinessScript.includes("collectSeisCorePluginChangeEvidence"), "release readiness generator must use code evidence");
   ensure(appPluginCatalogRuntime.includes("APP_PLUGIN_ALLOWED_INSPECTION_ACTIONS"), "app plugin catalog runtime must declare bounded inspection actions");
   ensure(appPluginCatalogRuntime.includes("approval-required"), "app plugin catalog runtime must expose approval-required plans");
   ensure(appPluginCli.includes("activation-plan"), "app plugin CLI must expose activation plans");

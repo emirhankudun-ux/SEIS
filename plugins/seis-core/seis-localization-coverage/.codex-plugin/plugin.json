@@ -1,6 +1,6 @@
 {
   "name": "seis-localization-coverage",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Compare bounded local localization dictionaries without changing translations.",
   "author": { "name": "Emirhan Kudun" },
   "license": "UNLICENSED-LOCAL",

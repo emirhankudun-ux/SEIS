@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-core-plugin-change-evidence",
+  "goalId": "SEIS-GOAL-021",
+  "baseCommit": "2bf2b1155277092ba2e4e124821794df68be6f90",
+  "generatedAt": "2026-07-15",
+  "scope": {
+    "application": "apps/seis-core",
+    "sourceRoot": "plugins/seis-core",
+    "paths": [
+      "plugins/seis-core",
+      "apps/seis-core",
+      "packages/seis-ai",
+      "scripts"
+    ],
+    "codeExtensions": [
+      ".cjs",
+      ".css",
+      ".go",
+      ".html",
+      ".js",
+      ".mjs",
+      ".py",
+      ".rs",
+      ".sh",
+      ".swift",
+      ".ts",
+      ".tsx"
+    ]
+  },
+  "threshold": 500,
+  "codeLinesAdded": 539,
+  "codeLinesRemoved": 3,
+  "codeLinesChanged": 542,
+  "eligible": true,
+  "files": [
+    {
+      "path": "scripts/check-seis-core-plugin-release-policy.mjs",
+      "added": 111,
+      "removed": 0,
+      "state": "untracked",
+      "changed": 111
+    },
+    {
+      "path": "scripts/create-seis-core-plugin-release-readiness.mjs",
+      "added": 96,
+      "removed": 0,
+      "state": "untracked",
+      "changed": 96
+    },
+    {
+      "path": "scripts/seis-core-plugin-change-evidence.mjs",
+      "added": 88,
+      "removed": 0,
+      "state": "untracked",
+      "changed": 88
+    },
+    {
+      "path": "apps/seis-core/script.js",
+      "added": 66,
+      "removed": 1,
+      "state": "tracked-diff",
+      "changed": 67
+    },
+    {
+      "path": "scripts/promote-seis-core-plugin-release.mjs",
+      "added": 45,
+      "removed": 1,
+      "state": "tracked-diff",
+      "changed": 46
+    },
+    {
+      "path": "scripts/create-seis-core-plugin-change-evidence.mjs",
+      "added": 38,
+      "removed": 0,
+      "state": "untracked",
+      "changed": 38
+    },
+    {
+      "path": "apps/seis-core/styles.css",
+      "added": 37,
+      "removed": 0,
+      "state": "tracked-diff",
+      "changed": 37
+    },
+    {
+      "path": "scripts/check-seis-agent-plugin-integration.mjs",
+      "added": 18,
+      "removed": 0,
+      "state": "tracked-diff",
+      "changed": 18
+    },
+    {
+      "path": "scripts/check-seis-core-plugin-release.mjs",
+      "added": 13,
+      "removed": 0,
+      "state": "tracked-diff",
+      "changed": 13
+    },
+    {
+      "path": "apps/seis-core/index.html",
+      "added": 11,
+      "removed": 0,
+      "state": "tracked-diff",
+      "changed": 11
+    },
+    {
+      "path": "apps/seis-core/test/seis-core-static.test.js",
+      "added": 10,
+      "removed": 0,
+      "state": "tracked-diff",
+      "changed": 10
+    },
+    {
+      "path": "plugins/seis-core/test/plugin-catalog.test.mjs",
+      "added": 3,
+      "removed": 1,
+      "state": "tracked-diff",
+      "changed": 4
+    },
+    {
+      "path": "scripts/create-seis-core-plugin-sources.mjs",
+      "added": 3,
+      "removed": 0,
+      "state": "tracked-diff",
+      "changed": 3
+    }
+  ]
+}

@@ -97,7 +97,10 @@ function buildRecord() {
     qualityGates: [
       "npm run check:seis-core-plugin-sources",
       "npm run check:seis-core-plugin-release",
+      "npm run check:seis-core-plugin-release-policy",
       "npm run check:seis-core-plugin-catalog",
+      "npm run check:seis-core-plugin-release-readiness",
+      "npm run check:seis-core-plugin-change-evidence",
       "npm run check:seis-core-plugin-matrix",
       "npm run check:seis-ai-core-plugin-registry",
       "node --test plugins/seis-core/test/plugin-catalog.test.mjs",

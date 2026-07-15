@@ -36,11 +36,11 @@
     "applicationPluginSourceRoot": "plugins/seis-core",
     "applicationPluginManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
     "applicationPluginReleaseTrain": "content/development/seis-core-plugin-release-train.json",
-    "applicationPluginReleaseLabel": "0.00000001",
-    "applicationPluginReleaseSemver": "0.0.10",
+    "applicationPluginReleaseLabel": "0.000000011",
+    "applicationPluginReleaseSemver": "0.0.11",
     "applicationPluginReleaseMajor": 0,
     "applicationPluginReleaseRevision": 0,
-    "applicationPluginReleaseMicroUnits": 10
+    "applicationPluginReleaseMicroUnits": 11
   },
   "auditedSnapshot": {
     "auditedAt": "2026-06-19",
@@ -89,12 +89,12 @@
     "applicationPluginSourceRoot": "plugins/seis-core",
     "applicationPluginManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
     "applicationPluginReleaseTrain": "content/development/seis-core-plugin-release-train.json",
-    "applicationPluginReleaseLabel": "0.00000001",
-    "applicationPluginReleaseSemver": "0.0.10",
+    "applicationPluginReleaseLabel": "0.000000011",
+    "applicationPluginReleaseSemver": "0.0.11",
     "applicationPluginReleaseMajor": 0,
     "applicationPluginReleaseRevision": 0,
     "applicationOwnedPluginCount": 50,
-    "applicationPluginReleaseMicroUnits": 10
+    "applicationPluginReleaseMicroUnits": 11
   },
   "publicPlugins": [
     {
@@ -387,12 +387,12 @@
     "applicationPluginSourceRoot": "plugins/seis-core",
     "applicationPluginManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
     "applicationPluginReleaseTrain": "content/development/seis-core-plugin-release-train.json",
-    "applicationPluginReleaseLabel": "0.00000001",
-    "applicationPluginReleaseSemver": "0.0.10",
+    "applicationPluginReleaseLabel": "0.000000011",
+    "applicationPluginReleaseSemver": "0.0.11",
     "applicationPluginReleaseMajor": 0,
     "applicationPluginReleaseRevision": 0,
     "applicationOwnedPluginCount": 50,
-    "applicationPluginReleaseMicroUnits": 10
+    "applicationPluginReleaseMicroUnits": 11
   },
   "runtimeIntegration": {
     "aiPackage": "packages/seis-ai",
@@ -414,8 +414,8 @@
     "applicationPluginSourceRoot": "plugins/seis-core",
     "applicationPluginManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
     "applicationPluginReleaseTrain": "content/development/seis-core-plugin-release-train.json",
-    "applicationPluginReleaseLabel": "0.00000001",
-    "applicationPluginReleaseSemver": "0.0.10",
+    "applicationPluginReleaseLabel": "0.000000011",
+    "applicationPluginReleaseSemver": "0.0.11",
     "applicationPluginReleaseMajor": 0,
     "applicationPluginReleaseRevision": 0,
     "pluginSourceCheck": "scripts/check-seis-ai-core-plugin-sources.mjs",
@@ -469,7 +469,7 @@
       "seis_data_status",
       "seis_data_plan"
     ],
-    "applicationPluginReleaseMicroUnits": 10
+    "applicationPluginReleaseMicroUnits": 11
   },
   "lifecycle": {
     "contract": "content/development/seis-public-plugin-lifecycle.json",
@@ -502,14 +502,14 @@
     "surface": "apps/seis-core",
     "panel": "Plugins & Extensions",
     "pluginReleaseTrain": "content/development/seis-core-plugin-release-train.json",
-    "pluginReleaseLabel": "0.00000001",
-    "pluginReleaseSemver": "0.0.10",
+    "pluginReleaseLabel": "0.000000011",
+    "pluginReleaseSemver": "0.0.11",
     "pluginReleaseMajor": 0,
     "pluginReleaseRevision": 0,
     "secondarySurface": "apps/seis-demo-web",
     "qualityPanelCommand": "npm run check:seis-agent-plugin-integration",
     "serviceWorkerCache": "seis-demo-web-v20",
-    "pluginReleaseMicroUnits": 10
+    "pluginReleaseMicroUnits": 11
   },
   "repoIntegration": {
     "docs": [
@@ -526,7 +526,10 @@
     "npm run check:seis-ai-personal-plugin-coverage",
     "npm run check:seis-core-plugin-sources",
     "npm run check:seis-core-plugin-release",
+    "npm run check:seis-core-plugin-release-policy",
     "npm run check:seis-core-plugin-catalog",
+    "npm run check:seis-core-plugin-release-readiness",
+    "npm run check:seis-core-plugin-change-evidence",
     "npm run check:seis-core-plugin-matrix",
     "npm run check:seis-ai-core-plugin-sources",
     "npm run check:seis-agent-plugin-integration",

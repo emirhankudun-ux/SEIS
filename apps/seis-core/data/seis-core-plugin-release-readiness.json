@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-core-plugin-release-readiness",
+  "goalId": "SEIS-GOAL-021",
+  "application": "apps/seis-core",
+  "sourceRoot": "plugins/seis-core",
+  "generatedAt": "2026-07-15",
+  "currentRelease": {
+    "label": "0.000000011",
+    "semver": "0.0.11",
+    "major": 0,
+    "revision": 0,
+    "microUnits": 11,
+    "kind": "large-code-change"
+  },
+  "next": {
+    "largeCode": {
+      "label": "0.000000012",
+      "semver": "0.0.12",
+      "major": 0,
+      "revision": 0,
+      "microUnits": 12,
+      "kind": "large-code-change"
+    },
+    "annual": {
+      "label": "1.0000",
+      "semver": "1.0.0",
+      "major": 1,
+      "revision": 0,
+      "microUnits": null,
+      "kind": "annual",
+      "year": 2027
+    }
+  },
+  "policy": {
+    "minimumLabel": "0.000000001",
+    "initialLabel": "0.00000001",
+    "maximumLabel": "45.0000",
+    "largeCodeChangeThreshold": 500,
+    "largeCodeChangeRequiresEvidence": true,
+    "annualPromotionCommand": "npm run promote:seis-core-plugin-annual-release",
+    "largeCodeEvidenceCommand": "npm run automation:seis-core-plugin-change-evidence",
+    "largeCodePromotionCommand": "npm run promote:seis-core-plugin-release -- --evidence content/development/seis-core-plugin-change-evidence.json",
+    "bulkPromotionAllowed": false
+  },
+  "workingTree": {
+    "baseCommit": "2bf2b1155277092ba2e4e124821794df68be6f90",
+    "codeLinesAdded": 539,
+    "codeLinesRemoved": 3,
+    "codeLinesChanged": 542,
+    "changedCodeFileCount": 13,
+    "largeCodeEligible": true,
+    "evidenceArtifact": "content/development/seis-core-plugin-change-evidence.json"
+  },
+  "decision": "large-code-promotion-evidence-ready"
+}

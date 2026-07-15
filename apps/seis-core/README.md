@@ -12,6 +12,7 @@ SEIS Command Center is the central operating interface for the SEIS ecosystem. P
 - `plugins/seis-core/`: 50 personal app-owned local plugin packages inside the SEIS repository plugin boundary; current shared release is `0.00000001` (`0.0.10` in strict plugin manifests).
 - `data/seis-core-plugin-sources.json`: generated app plugin source inventory and release projection.
 - `data/seis-core-plugin-catalog.json`: generated metadata catalog consumed by the Plugins view for real app-owned search and inspection.
+- `data/seis-core-plugin-release-readiness.json`: current/next release ladder, annual cadence, code threshold, and working-tree evidence decision consumed by the Plugins view.
 - `plugins/seis-core/bin/seis-core-plugins.mjs`: application-local list, search, inspect, status, and approval-plan CLI.
 
 ## Folder Structure
@@ -80,6 +81,7 @@ apps/seis-core/
 - Inspect plugin, automation run history, approval gate, rollback evidence, security operations, and AI system surfaces.
 - Inspect the 50 local app-owned plugin packages from `plugins/seis-core` through the source inventory and read-only AI Core registry projection.
 - Search and inspect the same 50 packages from the Command Center catalog; status checks remain bounded to each plugin's local `--status` entrypoint.
+- Review the current release, next large-code `+1`, next annual `+1`, `45.0000` ceiling, and evidence threshold from the release-readiness panel.
 - Inspect the gradual app plugin release train at `0.00000001`; large-code changes advance one micro step, annual/major updates advance one major step, and no bulk jump is allowed.
 - Inspect permission reviews, dependency scans, and security audit evidence.
 - Inspect architecture dependency graph, module contracts, and technical debt register.

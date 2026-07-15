@@ -453,6 +453,15 @@ let seisCorePluginArtifact = {
   loadError: "Application plugin catalog has not loaded yet."
 };
 
+let seisCorePluginReleaseReadinessArtifact = {
+  currentRelease: { label: "0.00000001", semver: "0.0.10" },
+  next: { largeCode: { label: "0.000000011" }, annual: { label: "1.0000", year: 2027 } },
+  policy: { maximumLabel: "45.0000", largeCodeChangeThreshold: 500 },
+  workingTree: { codeLinesChanged: 0, changedCodeFileCount: 0, largeCodeEligible: false },
+  decision: "loading",
+  loadError: "Release readiness has not loaded yet."
+};
+
 const godModeGuardrails = [
   {
     rule: "No secrets in state",
@@ -786,7 +795,7 @@ const pluginFamilies = [
     name: "SEIS Command Center App Plugins",
     health: "Local Demo",
     permissions: "Read-only, task-scoped",
-    summary: "50 personal plugin packages owned by plugins/seis-core at app release 0.00000001; AI Core indexes metadata without owning their source."
+    summary: "50 personal plugin packages owned by plugins/seis-core at app release 0.000000011; AI Core indexes metadata without owning their source."
   }
 ];
 
@@ -1517,6 +1526,7 @@ function render() {
   renderDocumentation();
   renderAgents();
   renderPlugins();
+  renderPluginReleaseReadiness();
   renderAutomation();
   renderSecurity();
   renderArchitecture();
@@ -2077,6 +2087,24 @@ async function loadSeisCorePluginArtifact() {
   renderPlugins();
 }
 
+async function loadSeisCorePluginReleaseReadiness() {
+  try {
+    const response = await fetch("data/seis-core-plugin-release-readiness.json", { cache: "no-store" });
+    if (!response.ok) throw new Error(`release readiness request failed with ${response.status}`);
+    const artifact = await response.json();
+    if (artifact.id !== "seis-core-plugin-release-readiness" || artifact.sourceRoot !== "plugins/seis-core") {
+      throw new Error("release readiness contract is invalid");
+    }
+    seisCorePluginReleaseReadinessArtifact = artifact;
+  } catch (error) {
+    seisCorePluginReleaseReadinessArtifact = {
+      ...seisCorePluginReleaseReadinessArtifact,
+      loadError: error.message
+    };
+  }
+  renderPluginReleaseReadiness();
+}
+
 function renderFeatureGrowthLedger() {
   const readyTopics = featureGrowthLedger.topics.filter((topic) => topic.status === "Ready").length;
   const reviewTopics = featureGrowthLedger.topics.length - readyTopics;
@@ -2351,6 +2379,42 @@ function renderPlugins() {
       </article>
     `).join("")
     : `<p class="empty-state">No app-owned plugin matches “${escapeHtml(state.pluginQuery)}”.</p>`;
+}
+
+function renderPluginReleaseReadiness() {
+  const artifact = seisCorePluginReleaseReadinessArtifact;
+  const stateElement = $("#plugin-release-readiness-state");
+  const ready = artifact.workingTree?.largeCodeEligible === true;
+  if (stateElement) {
+    stateElement.textContent = artifact.loadError ? "Fallback" : ready ? "Promotion ready" : "Evidence pending";
+    stateElement.className = `status-pill ${artifact.loadError || !ready ? "attention" : "ready"}`;
+  }
+  const grid = $("#plugin-release-readiness-grid");
+  if (grid) {
+    const cards = [
+      ["Current", artifact.currentRelease?.label, artifact.currentRelease?.semver],
+      ["Large-code +1", artifact.next?.largeCode?.label || "Ceiling reached", "evidence required"],
+      ["Annual +1", artifact.next?.annual?.label || "Ceiling reached", artifact.next?.annual?.year ? `calendar year ${artifact.next.annual.year}` : "annual path"],
+      ["Ceiling", artifact.policy?.maximumLabel, "bulk promotion disabled"]
+    ];
+    grid.innerHTML = cards.map(([title, value, detail]) => `
+      <article class="release-readiness-card">
+        <span class="eyebrow">${escapeHtml(title)}</span>
+        <strong>${escapeHtml(value || "unknown")}</strong>
+        <small>${escapeHtml(detail || "")}</small>
+      </article>
+    `).join("");
+  }
+  const evidence = $("#plugin-release-readiness-evidence");
+  if (evidence) {
+    evidence.innerHTML = [
+      `changed code lines ${artifact.workingTree?.codeLinesChanged ?? 0}/${artifact.policy?.largeCodeChangeThreshold ?? 500}`,
+      `${artifact.workingTree?.changedCodeFileCount ?? 0} code files`,
+      `decision ${artifact.decision || "unknown"}`,
+      `base ${artifact.workingTree?.baseCommit || "unknown"}`,
+      "status-only evidence"
+    ].map((value) => `<span class="meta-chip">${escapeHtml(value)}</span>`).join("");
+  }
 }
 
 function renderAutomation() {
@@ -2843,3 +2907,4 @@ bindEvents();
 render();
 loadSeisRouterArtifact();
 loadSeisCorePluginArtifact();
+loadSeisCorePluginReleaseReadiness();

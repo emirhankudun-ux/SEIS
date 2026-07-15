@@ -48,6 +48,7 @@ npm run check:seis-core-plugin-matrix
 node plugins/seis-core/scripts/run-plugin-matrix.mjs --json --strict
 node plugins/seis-core/bin/seis-core-plugins.mjs search release --status --json
 node plugins/seis-core/bin/seis-core-plugins.mjs activation-plan seis-release-readiness --action run --json
+npm run automation:seis-core-plugin-release-readiness
 ```
 
 The generated matrix is
@@ -58,6 +59,11 @@ packages under this directory.
 The Command Center reads the generated app catalog at
 `apps/seis-core/data/seis-core-plugin-catalog.json`; this keeps the UI backed
 by the same 50 local manifests instead of a second static source of truth.
+Its release panel reads
+`apps/seis-core/data/seis-core-plugin-release-readiness.json`, which reports
+the next large-code and annual transitions plus measured working-tree code
+evidence. Large-code application is refused until the 500-line evidence gate
+is met.
 
 ## Ownership and publication
 

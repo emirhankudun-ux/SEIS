@@ -1333,6 +1333,42 @@ select {
   color: var(--muted);
 }
 
+.plugin-release-readiness-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.release-readiness-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.release-readiness-card {
+  display: grid;
+  gap: 6px;
+  min-height: 92px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.56);
+}
+
+.release-readiness-card strong {
+  font-size: 18px;
+  letter-spacing: -0.02em;
+}
+
+.release-readiness-card small {
+  color: var(--muted);
+}
+
+.release-readiness-evidence {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .knowledge-map-panel {
   display: grid;
   gap: 14px;
@@ -1920,6 +1956,7 @@ select {
   .knowledge-ops-layout,
   .ledger-summary-grid,
   .router-summary-grid,
+  .release-readiness-grid,
   .routing-matrix-row,
   .feature-growth-grid,
   .inspector {

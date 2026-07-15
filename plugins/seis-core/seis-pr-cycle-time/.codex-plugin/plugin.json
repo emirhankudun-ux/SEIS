@@ -1,6 +1,6 @@
 {
   "name": "seis-pr-cycle-time",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Measure recorded pull-request cycle times from local evidence.",
   "author": {
     "name": "Local developer"

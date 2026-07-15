@@ -1,6 +1,6 @@
 {
   "name": "seis-license-compatibility",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Audit local package and repository license declarations without legal approval claims.",
   "author": { "name": "Emirhan Kudun" },
   "license": "UNLICENSED-LOCAL",

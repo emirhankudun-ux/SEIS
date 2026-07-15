@@ -8,12 +8,15 @@ import {
   APP_PLUGIN_RELEASE_SEED_LABEL,
   APP_PLUGIN_RELEASE_TRAIN_PATH,
   compareReleases,
+  nextLargeCodeRelease,
+  nextMajorRelease,
   parseReleaseLabel,
 } from "./seis-core-plugin-release-policy.mjs";
 
 const root = process.cwd();
 const appManifestPath = "apps/seis-core/data/seis-core-plugin-sources.json";
 const appCatalogPath = "apps/seis-core/data/seis-core-plugin-catalog.json";
+const readinessPath = "apps/seis-core/data/seis-core-plugin-release-readiness.json";
 const registryPath = "content/development/seis-ai-core-plugin-registry.json";
 const sourceRoot = "plugins/seis-core";
 const failures = [];
@@ -21,6 +24,7 @@ const failures = [];
 const releaseTrain = readJson(APP_PLUGIN_RELEASE_TRAIN_PATH);
 const appManifest = readJson(appManifestPath);
 const appCatalog = readJson(appCatalogPath);
+const readiness = readJson(readinessPath);
 const registry = readJson(registryPath);
 const current = releaseTrain.currentRelease || {};
 let parsedCurrent = null;
@@ -113,6 +117,15 @@ for (const plugin of appCatalog.plugins || []) {
   ensure(plugin.release?.label === current.label, `${plugin.name}: app plugin catalog release label is stale`);
   ensure(plugin.release?.semver === current.semver, `${plugin.name}: app plugin catalog release semver is stale`);
 }
+
+ensure(readiness.id === "seis-core-plugin-release-readiness", "release readiness id is invalid");
+ensure(readiness.sourceRoot === sourceRoot, "release readiness source root is invalid");
+ensure(readiness.currentRelease?.label === current.label, "release readiness current label is stale");
+ensure(readiness.currentRelease?.semver === current.semver, "release readiness current semver is stale");
+ensure(readiness.next?.largeCode?.label === (() => { try { return nextLargeCodeRelease(parsedCurrent).label; } catch { return null; } })(), "release readiness next large-code label is stale");
+ensure(readiness.next?.annual?.label === (() => { try { return nextMajorRelease(parsedCurrent).label; } catch { return null; } })(), "release readiness next annual label is stale");
+ensure(readiness.policy?.largeCodeChangeRequiresEvidence === true, "release readiness must require large-code evidence");
+ensure(readiness.workingTree?.codeLinesChanged >= 0, "release readiness code line count is invalid");
 
 ensure(registry.applicationRelease?.releaseTrainPath === APP_PLUGIN_RELEASE_TRAIN_PATH, "registry must point to the app release train");
 ensure(registry.applicationRelease?.label === current.label, "registry app release label is stale");

@@ -1,6 +1,6 @@
 {
   "name": "seis-dora-metrics",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Analyze recorded delivery evidence with local-only DORA-style metrics.",
   "author": {
     "name": "Local developer"

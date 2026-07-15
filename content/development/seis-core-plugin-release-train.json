@@ -12,23 +12,26 @@
     "publicSuiteReleaseTrack": "plugins/seis-ai-agent"
   },
   "currentRelease": {
-    "label": "0.00000001",
-    "semver": "0.0.10",
+    "label": "0.000000011",
+    "semver": "0.0.11",
     "major": 0,
     "minor": 0,
-    "patch": 10,
+    "patch": 11,
     "revision": 0,
-    "microUnits": 10,
-    "kind": "initial",
+    "microUnits": 11,
+    "kind": "large-code-change",
     "maturity": "functional-local-demo",
     "status": "internal-local-app-release",
-    "previousLabel": "0.000000001",
-    "previousSemver": "0.0.1",
-    "trigger": "user-selected initial app release baseline",
-    "codeLines": null,
+    "previousLabel": "0.00000001",
+    "previousSemver": "0.0.10",
+    "trigger": "explicit --large-code-change",
+    "codeLines": 535,
     "codeLineThreshold": 500,
+    "evidencePath": "content/development/seis-core-plugin-change-evidence.json",
+    "evidenceBaseCommit": "2bf2b1155277092ba2e4e124821794df68be6f90",
+    "evidenceEligible": true,
     "annualYear": null,
-    "reason": "The user selected 0.00000001 as the current gradual-release baseline."
+    "reason": "large code change after the previous app release"
   },
   "policy": {
     "labelFormat": "micro 0.<decimal-units> up to 0.999999999; standard <major>.<revision-padded-4>",
@@ -114,6 +117,26 @@
       "codeLineThreshold": 500,
       "annualYear": null,
       "reason": "The user selected 0.00000001 as the current gradual-release baseline."
+    },
+    {
+      "label": "0.000000011",
+      "semver": "0.0.11",
+      "major": 0,
+      "minor": 0,
+      "patch": 11,
+      "revision": 0,
+      "microUnits": 11,
+      "kind": "large-code-change",
+      "trigger": "explicit --large-code-change",
+      "codeLines": 535,
+      "codeLineThreshold": 500,
+      "evidencePath": "content/development/seis-core-plugin-change-evidence.json",
+      "evidenceBaseCommit": "2bf2b1155277092ba2e4e124821794df68be6f90",
+      "evidenceEligible": true,
+      "annualYear": null,
+      "reason": "large code change after the previous app release",
+      "date": "2026-07-15",
+      "status": "internal-local-app-release"
     }
   ],
   "qualityGates": [
