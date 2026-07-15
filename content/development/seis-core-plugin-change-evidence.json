@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "seis-core-plugin-change-evidence",
   "goalId": "SEIS-GOAL-021",
-  "baseCommit": "2d4fc32ad7b1fe08fbfed79e34ca1ef8465f43f8",
+  "baseCommit": null,
   "generatedAt": "2026-07-15",
   "scope": {
     "application": "apps/seis-core",
@@ -29,17 +29,9 @@
     ]
   },
   "threshold": 500,
-  "codeLinesAdded": 1,
-  "codeLinesRemoved": 1,
-  "codeLinesChanged": 2,
+  "codeLinesAdded": 0,
+  "codeLinesRemoved": 0,
+  "codeLinesChanged": 0,
   "eligible": false,
-  "files": [
-    {
-      "path": "scripts/seis-core-plugin-change-evidence.mjs",
-      "added": 1,
-      "removed": 1,
-      "state": "tracked-diff",
-      "changed": 2
-    }
-  ]
+  "files": []
 }
