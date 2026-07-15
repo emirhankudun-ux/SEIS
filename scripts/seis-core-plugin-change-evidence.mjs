@@ -15,7 +15,6 @@ export function collectSeisCorePluginChangeEvidence(repoRoot, options = {}) {
   const threshold = Number.isSafeInteger(options.threshold) && options.threshold > 0
     ? options.threshold
     : SEIS_CORE_PLUGIN_CHANGE_EVIDENCE_THRESHOLD;
-  const baseCommit = git(repoRoot, ["rev-parse", "HEAD"]).trim();
   const files = new Map();
 
   for (const row of git(repoRoot, ["diff", "--numstat", "HEAD", "--", ...SEIS_CORE_PLUGIN_CHANGE_SCOPE]).split("\n")) {
@@ -44,6 +43,7 @@ export function collectSeisCorePluginChangeEvidence(repoRoot, options = {}) {
   const codeLinesAdded = entries.reduce((sum, entry) => sum + entry.added, 0);
   const codeLinesRemoved = entries.reduce((sum, entry) => sum + entry.removed, 0);
   const codeLinesChanged = codeLinesAdded + codeLinesRemoved;
+  const baseCommit = codeLinesChanged > 0 ? git(repoRoot, ["rev-parse", "HEAD"]).trim() : null;
 
   return {
     schemaVersion: 1,
